@@ -1053,9 +1053,9 @@ namespace PadForge.Services
                     // descriptor into a device's PadSetting), so the
                     // filter here is no longer needed.
                     string primaryDesc = mapping.SourceDescriptor ?? "";
-                    // A Toggle primary (#461) keeps its input in the descriptor
-                    // like Direct, so it saves through the descriptor branch
-                    // below, carrying its kind.
+                    // A Toggle (#461) or Rapid Trigger (#482) primary keeps its
+                    // input in the descriptor like Direct, so it saves through
+                    // the descriptor branch below, carrying its kind.
                     bool primaryIsKind = mapping.PrimaryKindSource != null
                         && !PadForge.Engine.Common.Mapping.SourceEvaluator.IsDescriptorKind(mapping.PrimaryKindSource.Kind);
                     if (primaryIsKind)
@@ -1096,7 +1096,7 @@ namespace PadForge.Services
 
                         rebuiltSources.Add(new MappingSource
                         {
-                            Kind = mapping.PrimaryKindSource?.IsToggleKind == true ? "Toggle" : "Direct",
+                            Kind = mapping.PrimaryKindSource?.DescriptorKind ?? "Direct",
                             DeviceGuid = mapping.PrimarySourceDeviceGuid ?? "",
                             Descriptor = clean,
                             Invert = inv,
@@ -1109,6 +1109,8 @@ namespace PadForge.Services
                             MouseCursorSensitivity = mapping.MouseCursorSensitivity > 0 ? mapping.MouseCursorSensitivity : 1.0,
                             IrPointerSensitivity = mapping.IrPointerSensitivity > 0 ? mapping.IrPointerSensitivity : 1.0,
                             Sensitivity = mapping.Sensitivity > 0 ? mapping.Sensitivity : 1.0,
+                            ParamRapidTriggerDistance = mapping.PrimaryKindSource?.ParamRapidTriggerDistance
+                                ?? MappingSource.DefaultRapidTriggerDistance,
                         });
 
                         // For bipolar axis rows, also encode the Neg
@@ -2055,8 +2057,9 @@ namespace PadForge.Services
 
                     var key = (er.Target ?? "", er.LayerMask ?? "Base");
                     bool preserveMotionSources = MappingSetMigrator.PreservesMotionSources(er);
-                    // A Toggle reads its own input on every device just as
-                    // Direct does, so an any-device Toggle covers them too.
+                    // A Toggle or Rapid Trigger reads its own input on every
+                    // device just as Direct does, so an any-device one covers
+                    // them too.
                     bool preserveAnyDeviceSources = er.Sources?.Any(source => source != null
                         && PadForge.Engine.Common.Mapping.SourceEvaluator.IsDescriptorKind(source.Kind)
                         && string.IsNullOrEmpty(source.DeviceGuid)

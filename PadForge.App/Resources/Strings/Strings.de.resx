@@ -588,9 +588,12 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. English placeholders pending translation. -->
   <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>Direkt</value></data>
   <data name="Pad_Mapping_Kind_Toggle" xml:space="preserve"><value>Umschalten</value></data>
+  <data name="Pad_Mapping_Kind_RapidTrigger" xml:space="preserve"><value>Rapid Trigger</value></data>
+  <data name="Pad_Mapping_RapidTrigger_Distance" xml:space="preserve"><value>Weg</value></data>
+  <data name="Pad_Mapping_RapidTrigger_Distance_Tooltip" xml:space="preserve"><value>Wie weit die Eingabe zurückgehen muss, um loszulassen, oder wieder hinunter, um erneut auszulösen, in Prozent des vollen Wegs. Gilt, solange die Eingabe hinter der Totzone bleibt.</value></data>
   <data name="Pad_Mapping_Kind_Incremental" xml:space="preserve"><value>Inkrementell</value></data>
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Beim Halten umkehren</value></data>
-  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direkt - Quelldeskriptor direkt lesen. Umschalten - ein Druck hält den Ausgang aktiv, der nächste Druck gibt ihn frei. Inkrementell - Akkumulator über Auf/Ab-Tasten rampen. Beim Halten umkehren - Ausgang der Zeile umkehren, solange eine Modifikator-Taste gehalten wird. Rampe - eine zeitbasierte Achsen-Hüllkurve (Attack und Release), gesteuert durch die Auf/Ab-Richtungstasten.</value></data>
+  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direkt - Quelldeskriptor direkt lesen. Umschalten - ein Druck hält den Ausgang aktiv, der nächste Druck gibt ihn frei. Rapid Trigger - hinter der Totzone gibt ein kurzes Zurückgehen frei, und ein kurzes Drücken löst erneut aus. Inkrementell - Akkumulator über Auf/Ab-Tasten rampen. Beim Halten umkehren - Ausgang der Zeile umkehren, solange eine Modifikator-Taste gehalten wird. Rampe - eine zeitbasierte Achsen-Hüllkurve (Attack und Release), gesteuert durch die Auf/Ab-Richtungstasten.</value></data>
   <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>Taste, die den Akkumulator beim Halten nach oben rampt</value></data>
   <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>Auf: Taste, die den Akkumulator beim Halten nach oben rampt.</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Taste, die den Akkumulator beim Halten nach unten rampt</value></data>

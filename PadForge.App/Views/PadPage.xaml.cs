@@ -3991,9 +3991,12 @@ namespace PadForge.Views
                 double oldGyroSensitivity = mi.GyroSensitivity;
                 double oldMouseCursorSensitivity = mi.MouseCursorSensitivity;
                 double oldIrPointerSensitivity = mi.IrPointerSensitivity;
-                // A Toggle primary (#461) reads the same descriptor, latched,
-                // so it moves over as a Toggle rather than a plain Direct read.
-                string oldKind = mi.PrimaryKindSource?.IsToggleKind == true ? "Toggle" : "Direct";
+                // A Toggle (#461) or Rapid Trigger (#482) primary reads the
+                // same descriptor, so it moves over with its kind rather than
+                // as a plain Direct read, and Rapid Trigger with its distance.
+                string oldKind = mi.PrimaryKindSource?.DescriptorKind ?? "Direct";
+                int oldRapidTriggerDistance = mi.PrimaryKindSource?.ParamRapidTriggerDistance
+                    ?? PadForge.Engine.Data.MappingSource.DefaultRapidTriggerDistance;
                 bool demote = !primaryIsCloneDevice && !string.IsNullOrEmpty(oldDesc)
                     && !string.IsNullOrEmpty(oldGuid);
 
@@ -4047,6 +4050,7 @@ namespace PadForge.Views
                             GyroSensitivity = oldGyroSensitivity,
                             MouseCursorSensitivity = oldMouseCursorSensitivity,
                             IrPointerSensitivity = oldIrPointerSensitivity,
+                            ParamRapidTriggerDistance = oldRapidTriggerDistance,
                         });
                     }
                 }

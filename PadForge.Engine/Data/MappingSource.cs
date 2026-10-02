@@ -24,6 +24,8 @@ namespace PadForge.Engine.Data
     {
         /// <summary>Source kind discriminator. <c>"Direct"</c> (default),
         /// <c>"Toggle"</c> (#461, the Direct read latched by each press),
+        /// <c>"RapidTrigger"</c> (#482, the Direct read, released and pressed
+        /// again by small moves while the input stays past the deadzone),
         /// <c>"Incremental"</c>, <c>"InvertOnHold"</c>, <c>"Ramped"</c>, plus the
         /// steering kinds. Forward-compatible: unknown values treated as Direct.</summary>
         [XmlAttribute] public string Kind { get; set; } = "Direct";
@@ -139,6 +141,34 @@ namespace PadForge.Engine.Data
         /// side, so a direction switch returns to zero faster before attacking the new
         /// side. 1.0 disables the speed-up. Gated on <see cref="ParamAutocenter"/>.</summary>
         [XmlAttribute] public double ParamReverseMultiplier { get; set; } = 4.0;
+
+        // ─── Rapid Trigger (#482) ───
+
+        /// <summary>Rapid Trigger distance in percent of full travel: how far
+        /// the input must rise from its deepest point to release, or push back
+        /// down from its shallowest point to press again, while it stays past
+        /// the <see cref="DeadZone"/> (the actuation point). 1 to
+        /// <see cref="MaxRapidTriggerDistance"/>, read through
+        /// <see cref="EffectiveRapidTriggerDistance"/>. Only read when
+        /// <c>Kind == "RapidTrigger"</c>.</summary>
+        [XmlAttribute] public int ParamRapidTriggerDistance { get; set; } = DefaultRapidTriggerDistance;
+
+        /// <summary>minipad-firmware's default, a tenth of the travel
+        /// (<c>rapidTriggerUpSensitivity = TRAVEL_DISTANCE_IN_0_01MM / 10</c>,
+        /// 0.40 mm of its 4.00 mm switch).</summary>
+        public const int DefaultRapidTriggerDistance = 10;
+
+        /// <summary>The longest Rapid Trigger distance. Past half the travel
+        /// the input could no longer release and press again inside the zone
+        /// a mid-travel deadzone leaves.</summary>
+        public const int MaxRapidTriggerDistance = 50;
+
+        /// <summary>The distance the engine and the editors read for a stored
+        /// value: 1 to <see cref="MaxRapidTriggerDistance"/> percent. A value
+        /// below 1 (a hand-edited profile) reads as the default, since at 0
+        /// the input would release and press again on sensor noise.</summary>
+        public static int EffectiveRapidTriggerDistance(int stored)
+            => stored < 1 ? DefaultRapidTriggerDistance : System.Math.Min(stored, MaxRapidTriggerDistance);
 
         /// <summary>v3.2 per-source gyro sensitivity multiplier. Applied
         /// to the calibrated gyro rate during bipolar / unipolar coercion

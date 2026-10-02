@@ -7113,8 +7113,8 @@ namespace PadForge.Services
                 mapping.NoInherit = msRowsByTarget.TryGetValue(target, out var preCheck)
                                     && preCheck != null && preCheck.NoInherit;
 
-                // Sources[0] is the row's primary. A Direct or Toggle first source
-                // feeds the descriptor-based primary (the usual case). A stateful first source
+                // Sources[0] is the row's primary. A Direct, Toggle or Rapid Trigger first
+                // source feeds the descriptor-based primary (the usual case). A stateful first source
                 // (Incremental / Ramped / InvertOnHold) feeds the reused
                 // PrimaryKindSource so the primary can carry a kind, not only Direct
                 // (#111 follow-up). Either way the extras start at index 1.
@@ -7148,7 +7148,7 @@ namespace PadForge.Services
                     mapping.Sensitivity = primary.Sensitivity > 0 ? primary.Sensitivity : 1.0;
                     mapping.PrimarySourceDeviceGuid = primary.DeviceGuid ?? "";
                     mapping.PrimarySourceDeviceLabel = ResolveDeviceLabel(primary.DeviceGuid);
-                    mapping.LoadPrimaryKind(primary); // Direct or Toggle: the holder keeps only the kind
+                    mapping.LoadPrimaryKind(primary); // Direct, Toggle or Rapid Trigger: the holder keeps the kind and the distance
 
                     if (!string.IsNullOrEmpty(primary.DeviceGuid)
                         && Guid.TryParse(primary.DeviceGuid, out var primaryGuid))
@@ -13707,7 +13707,7 @@ namespace PadForge.Services
                                         AddDescriptor(src.Descriptor);
                                         AddDescriptor(src.ParamYDescriptor);
                                         break;
-                                    default: // Direct, Toggle (the same input, latched), unknown kinds
+                                    default: // Direct, Toggle and Rapid Trigger (the same input), unknown kinds
                                         AddDescriptor(src.Descriptor);
                                         break;
                                 }

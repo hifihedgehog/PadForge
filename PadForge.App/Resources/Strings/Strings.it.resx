@@ -588,9 +588,12 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. English placeholders pending translation. -->
   <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>Diretto</value></data>
   <data name="Pad_Mapping_Kind_Toggle" xml:space="preserve"><value>Alterna</value></data>
+  <data name="Pad_Mapping_Kind_RapidTrigger" xml:space="preserve"><value>Rapid Trigger</value></data>
+  <data name="Pad_Mapping_RapidTrigger_Distance" xml:space="preserve"><value>Distanza</value></data>
+  <data name="Pad_Mapping_RapidTrigger_Distance_Tooltip" xml:space="preserve"><value>Di quanto l'ingresso deve risalire per rilasciare, o riscendere per premere di nuovo, in percentuale della corsa completa. Vale finché l'ingresso resta oltre la zona morta.</value></data>
   <data name="Pad_Mapping_Kind_Incremental" xml:space="preserve"><value>Incrementale</value></data>
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Inverti al mantenimento</value></data>
-  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Diretto - legge il descrittore della sorgente. Alterna - una pressione mantiene attiva l'uscita e la successiva la rilascia. Incrementale - incrementa un accumulatore con i pulsanti Su/Giù. Inverti al mantenimento - inverte l'uscita della riga mentre è premuto un pulsante modificatore. Rampa - un inviluppo dell'asse basato sul tempo (attacco e rilascio) guidato dai tasti direzionali Su/Giù.</value></data>
+  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Diretto - legge il descrittore della sorgente. Alterna - una pressione mantiene attiva l'uscita e la successiva la rilascia. Rapid Trigger - oltre la zona morta, una piccola risalita rilascia e una piccola pressione attiva di nuovo. Incrementale - incrementa un accumulatore con i pulsanti Su/Giù. Inverti al mantenimento - inverte l'uscita della riga mentre è premuto un pulsante modificatore. Rampa - un inviluppo dell'asse basato sul tempo (attacco e rilascio) guidato dai tasti direzionali Su/Giù.</value></data>
   <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>Pulsante che incrementa l'accumulatore verso l'alto mentre è tenuto premuto</value></data>
   <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>Su: pulsante che incrementa l'accumulatore verso l'alto mentre è tenuto premuto.</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Pulsante che decrementa l'accumulatore verso il basso mentre è tenuto premuto</value></data>

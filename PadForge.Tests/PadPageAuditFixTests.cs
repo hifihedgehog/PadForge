@@ -204,6 +204,7 @@ namespace PadForge.Tests
         [InlineData("MouseCursorSensitivity = oldMouseCursorSensitivity,")]
         [InlineData("IrPointerSensitivity = oldIrPointerSensitivity,")]
         [InlineData("Kind = oldKind,")]
+        [InlineData("ParamRapidTriggerDistance = oldRapidTriggerDistance,")]
         public void ADisplacedPrimaryKeepsWhatItCarried(string assignment)
         {
             Assert.Contains(assignment, CodeBehind());

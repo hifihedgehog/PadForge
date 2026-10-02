@@ -649,6 +649,12 @@
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamRapidTriggerDistance_4316",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamRapidTriggerDistance"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_MappingSourceItem_ParamAttackTime_4288",
     "Owner": "PadForge.ViewModels.MappingSourceItem",
     "Property": "ParamAttackTime"
@@ -790,6 +796,12 @@
     "Id": "Reset_MappingSourceItem_ParamDownInputChoice_5299",
     "Owner": "PadForge.ViewModels.MappingSourceItem",
     "Property": "ParamDownInputChoice"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamRapidTriggerDistance_5377",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamRapidTriggerDistance"
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",

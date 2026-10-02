@@ -628,6 +628,7 @@ namespace PadForge.ViewModels
             nameof(ParamReleaseTime) or
             nameof(ParamReverseMultiplier) or
             nameof(ParamAutocenter) or
+            nameof(ParamRapidTriggerDistance) or
             nameof(ParamUpInputChoice) or
             nameof(ParamDownInputChoice) or
             nameof(ParamModifierInputChoice);
@@ -699,6 +700,11 @@ namespace PadForge.ViewModels
                 case nameof(ParamAutocenter):
                 {
                     ParamAutocenter = true;
+                    break;
+                }
+                case nameof(ParamRapidTriggerDistance):
+                {
+                    ParamRapidTriggerDistance = Engine.Data.MappingSource.DefaultRapidTriggerDistance;
                     break;
                 }
                 case nameof(ParamUpInputChoice):

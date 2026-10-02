@@ -1572,6 +1572,9 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Half => Get("Pad_Half");
     public string Pad_Mapping_Kind_Direct => Get("Pad_Mapping_Kind_Direct");
     public string Pad_Mapping_Kind_Toggle => Get("Pad_Mapping_Kind_Toggle");
+    public string Pad_Mapping_Kind_RapidTrigger => Get("Pad_Mapping_Kind_RapidTrigger");
+    public string Pad_Mapping_RapidTrigger_Distance => Get("Pad_Mapping_RapidTrigger_Distance");
+    public string Pad_Mapping_RapidTrigger_Distance_Tooltip => Get("Pad_Mapping_RapidTrigger_Distance_Tooltip");
     public string Pad_Mapping_Kind_Incremental => Get("Pad_Mapping_Kind_Incremental");
     public string Pad_Mapping_Kind_InvertOnHold => Get("Pad_Mapping_Kind_InvertOnHold");
     public string Pad_Mapping_Kind_Tooltip => Get("Pad_Mapping_Kind_Tooltip");

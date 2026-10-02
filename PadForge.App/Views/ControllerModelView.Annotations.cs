@@ -378,10 +378,12 @@ namespace PadForge.Views
             string primary = (row.SourceDisplayText ?? string.Empty).Trim();
             if (row.IsMapped && primary.Length > 0)
             {
-                // A Toggle primary (#461) says so, the way Inv. and Half
-                // mark an inverted or half-axis source.
+                // A Toggle (#461) or Rapid Trigger (#482) primary says so, the
+                // way Inv. and Half mark an inverted or half-axis source.
                 if (row.PrimaryKindSource?.IsToggleKind == true)
                     primary = PadForge.Resources.Strings.Strings.Instance.Pad_Mapping_Kind_Toggle + " " + primary;
+                else if (row.PrimaryKindSource?.IsRapidTriggerKind == true)
+                    primary = PadForge.Resources.Strings.Strings.Instance.Pad_Mapping_Kind_RapidTrigger + " " + primary;
                 ResolveAnnotationDevice(row.PrimarySourceDeviceGuid,
                     (row.PrimarySourceDeviceLabel ?? string.Empty).Trim(),
                     out string dn, out string dg);
@@ -432,6 +434,7 @@ namespace PadForge.Views
                 else if (src.Invert) name = s.Mapping_Inv + " " + name;
                 else if (src.HalfAxis) name = s.Mapping_Half + " " + name;
                 if (src.IsToggleKind) name = s.Pad_Mapping_Kind_Toggle + " " + name;
+                else if (src.IsRapidTriggerKind) name = s.Pad_Mapping_Kind_RapidTrigger + " " + name;
                 AppendAnnotationWire(rows, src.DeviceGuid,
                     src.DisplayDeviceLabel, name);
             }

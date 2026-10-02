@@ -1094,9 +1094,12 @@ A copy of the previous version is in this folder: {1}</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. -->
   <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>Direct</value></data>
   <data name="Pad_Mapping_Kind_Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Pad_Mapping_Kind_RapidTrigger" xml:space="preserve"><value>Rapid Trigger</value></data>
+  <data name="Pad_Mapping_RapidTrigger_Distance" xml:space="preserve"><value>Distance</value></data>
+  <data name="Pad_Mapping_RapidTrigger_Distance_Tooltip" xml:space="preserve"><value>How far the input must rise to release, or push back down to press again, as a percent of its full travel. It applies while the input stays past the deadzone.</value></data>
   <data name="Pad_Mapping_Kind_Incremental" xml:space="preserve"><value>Incremental</value></data>
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Invert On Hold</value></data>
-  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direct - read the source descriptor. Toggle - one press holds the output on and the next press releases it. Incremental - ramp an accumulator via Up/Down buttons. Invert On Hold - flip the row's output while a modifier button is held. Ramp - a time-based axis envelope (attack and release) driven by Up/Down direction keys.</value></data>
+  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direct - read the source descriptor. Toggle - one press holds the output on and the next press releases it. Rapid Trigger - past the deadzone, a small rise releases and a small push presses again. Incremental - ramp an accumulator via Up/Down buttons. Invert On Hold - flip the row's output while a modifier button is held. Ramp - a time-based axis envelope (attack and release) driven by Up/Down direction keys.</value></data>
   <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>Button that ramps the accumulator upward while held</value></data>
   <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>Up: button that ramps the accumulator upward while held.</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Button that ramps the accumulator downward while held</value></data>

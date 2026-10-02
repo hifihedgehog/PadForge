@@ -588,9 +588,12 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. English placeholders pending translation. -->
   <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>Direct</value></data>
   <data name="Pad_Mapping_Kind_Toggle" xml:space="preserve"><value>Schakelen</value></data>
+  <data name="Pad_Mapping_Kind_RapidTrigger" xml:space="preserve"><value>Rapid Trigger</value></data>
+  <data name="Pad_Mapping_RapidTrigger_Distance" xml:space="preserve"><value>Afstand</value></data>
+  <data name="Pad_Mapping_RapidTrigger_Distance_Tooltip" xml:space="preserve"><value>Hoe ver de invoer moet terugkomen om los te laten, of weer omlaag moet om opnieuw in te drukken, als percentage van de volledige slag. Geldt zolang de invoer voorbij de deadzone blijft.</value></data>
   <data name="Pad_Mapping_Kind_Incremental" xml:space="preserve"><value>Incrementeel</value></data>
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Inverteren bij vasthouden</value></data>
-  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direct - lees de brondescriptor. Schakelen - één druk houdt de uitvoer actief en de volgende druk laat hem los. Incrementeel - verhoog een accumulator via Omhoog/Omlaag-knoppen. Inverteren bij vasthouden - draai de uitvoer van de rij om terwijl een aanpassingsknop ingedrukt is. Verloop - een tijdgebaseerde as-envelop (attack en release), aangestuurd door de Omhoog/Omlaag-richtingstoetsen.</value></data>
+  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direct - lees de brondescriptor. Schakelen - één druk houdt de uitvoer actief en de volgende druk laat hem los. Rapid Trigger - voorbij de deadzone laat een kleine beweging omhoog los en drukt een kleine druk opnieuw in. Incrementeel - verhoog een accumulator via Omhoog/Omlaag-knoppen. Inverteren bij vasthouden - draai de uitvoer van de rij om terwijl een aanpassingsknop ingedrukt is. Verloop - een tijdgebaseerde as-envelop (attack en release), aangestuurd door de Omhoog/Omlaag-richtingstoetsen.</value></data>
   <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>Knop die de accumulator omhoog stuurt zolang ingedrukt</value></data>
   <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>Omhoog: knop die de accumulator omhoog stuurt zolang ingedrukt.</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Knop die de accumulator omlaag stuurt zolang ingedrukt</value></data>

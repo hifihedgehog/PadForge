@@ -588,9 +588,12 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. English placeholders pending translation. -->
   <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>Direto</value></data>
   <data name="Pad_Mapping_Kind_Toggle" xml:space="preserve"><value>Alternar</value></data>
+  <data name="Pad_Mapping_Kind_RapidTrigger" xml:space="preserve"><value>Rapid Trigger</value></data>
+  <data name="Pad_Mapping_RapidTrigger_Distance" xml:space="preserve"><value>Distância</value></data>
+  <data name="Pad_Mapping_RapidTrigger_Distance_Tooltip" xml:space="preserve"><value>Quanto a entrada precisa subir para soltar, ou descer de novo para pressionar outra vez, em porcentagem do curso total. Vale enquanto a entrada continua além da deadzone.</value></data>
   <data name="Pad_Mapping_Kind_Incremental" xml:space="preserve"><value>Incremental</value></data>
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Inverter ao Segurar</value></data>
-  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direto - ler o descritor da fonte. Alternar - um toque mantém a saída ativa e o próximo toque a solta. Incremental - rampar um acumulador via botões Cima/Baixo. Inverter ao Segurar - inverter a saída da linha enquanto um botão modificador estiver pressionado. Rampa - um envelope de eixo baseado em tempo (ataque e liberação) acionado pelas teclas de direção Cima/Baixo.</value></data>
+  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direto - ler o descritor da fonte. Alternar - um toque mantém a saída ativa e o próximo toque a solta. Rapid Trigger - além da deadzone, uma pequena subida solta e um pequeno toque aciona de novo. Incremental - rampar um acumulador via botões Cima/Baixo. Inverter ao Segurar - inverter a saída da linha enquanto um botão modificador estiver pressionado. Rampa - um envelope de eixo baseado em tempo (ataque e liberação) acionado pelas teclas de direção Cima/Baixo.</value></data>
   <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>Botão que rampa o acumulador para cima enquanto pressionado</value></data>
   <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>Cima: botão que rampa o acumulador para cima enquanto pressionado.</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Botão que rampa o acumulador para baixo enquanto pressionado</value></data>

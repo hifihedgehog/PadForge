@@ -2408,6 +2408,30 @@ namespace PadForge.Engine.Common.Mapping
                 || IsAnalogKeyDescriptor(descriptor);
         }
 
+        /// <summary>True for a source with press depth, the inputs Rapid
+        /// Trigger (#482) acts on: an analog key, a numbered axis or slider
+        /// (the abstract gamepad sticks and triggers fold to one), a MIDI
+        /// control change or pitch bend, touchpad pressure, and the Ring-Con
+        /// squeeze and pull. Each one's button read crosses the row's DeadZone
+        /// as the input deepens, and its trigger-lane pull is that depth.
+        /// Motion, pointer, tilt, rumble and ring sources measure speed, aim,
+        /// angle or a radius instead, so a Rapid Trigger source on one reads
+        /// as Direct. The evaluator and both editors ask here, so the dropdown
+        /// never offers what the engine would ignore.</summary>
+        public static bool IsRapidTriggerSource(string descriptor)
+        {
+            string s = CanonicalDescriptor(descriptor);
+            if (s.Length == 0) return false;
+            if (s.StartsWith("Axis ", StringComparison.Ordinal)
+                || s.StartsWith("Slider ", StringComparison.Ordinal))
+                return true;
+            if (s.StartsWith(AnalogKeyPrefix, StringComparison.Ordinal))
+                return IsAnalogKeyDescriptor(s);
+            if (s.StartsWith("Midi ", StringComparison.Ordinal))
+                return TryParseMidi(s, out char midiKind, out _) && (midiKind == 'C' || midiKind == 'P');
+            return IsTouchpadPressureDescriptor(s) || IsRingConDescriptor(s);
+        }
+
         /// <summary>True for either stick-ring descriptor.</summary>
         public static bool IsStickRingDescriptor(string descriptor)
         {

@@ -18,30 +18,51 @@ namespace PadForge.Engine.Common.Mapping
     /// button's current state.
     /// Toggle: latches the Direct read of the same input through
     /// <see cref="SourceKindRuntime.TickToggle"/>. Each press flips it.
+    /// RapidTrigger: the Direct read of the same input, released and
+    /// pressed again by small moves past the deadzone through
+    /// <see cref="SourceKindRuntime.TickRapidTrigger"/>.
     /// </para>
     /// </summary>
     public static class SourceEvaluator
     {
         /// <summary>A blank Direct source occupies a position but reads no input.
-        /// So does a blank Toggle, which latches that same read.</summary>
+        /// So does a blank Toggle or Rapid Trigger, which act on that same read.</summary>
         public static bool IsUnmappedDirect(MappingSource source)
             => source != null && string.IsNullOrEmpty(source.Descriptor)
                 && IsDescriptorKind(source.Kind);
 
         /// <summary>True for the kinds that read the source's own descriptor
-        /// as a plain input: Direct (also a null or empty kind) and Toggle
-        /// (#461), which latches that same read. The other kinds read their
+        /// as a plain input: Direct (also a null or empty kind), Toggle (#461),
+        /// which latches that same read, and Rapid Trigger (#482), which
+        /// releases and presses it again by travel. The other kinds read their
         /// own parameter keys, or modify the row instead.</summary>
         public static bool IsDescriptorKind(string kind)
             => string.IsNullOrEmpty(kind)
             || string.Equals(kind, "Direct", StringComparison.Ordinal)
-            || string.Equals(kind, "Toggle", StringComparison.Ordinal);
+            || string.Equals(kind, "Toggle", StringComparison.Ordinal)
+            || string.Equals(kind, "RapidTrigger", StringComparison.Ordinal);
 
         /// <summary>True for the Toggle kind (#461). Its read advances a
         /// latch, so a caller walking the slot's devices must read them
         /// all rather than stop at the first one that answers.</summary>
         public static bool IsToggleKind(MappingSource source)
             => source != null && string.Equals(source.Kind, "Toggle", StringComparison.Ordinal);
+
+        /// <summary>True for the Rapid Trigger kind (#482).</summary>
+        public static bool IsRapidTriggerKind(MappingSource source)
+            => source != null && string.Equals(source.Kind, "RapidTrigger", StringComparison.Ordinal);
+
+        /// <summary>True when a read of the source advances per-frame state that
+        /// every device on the slot must feed: Toggle's latch and Rapid
+        /// Trigger's zone. A caller walking the slot's devices for an
+        /// any-device source reads them all rather than stop at the first one
+        /// that answers.</summary>
+        public static bool ReadsEveryDevice(MappingSource source)
+            => IsToggleKind(source) || IsRapidTriggerKind(source);
+
+        /// <summary>The Rapid Trigger distance as a fraction of full travel.</summary>
+        private static double RapidTriggerDistance(MappingSource src)
+            => MappingSource.EffectiveRapidTriggerDistance(src.ParamRapidTriggerDistance) / 100.0;
 
         /// <summary>How far a trigger or axis read must travel to count as a
         /// Toggle press, as a fraction of full scale: the source's own
@@ -143,6 +164,21 @@ namespace PadForge.Engine.Common.Mapping
                         globalThresholdPercent, slotIndex, evaluatedDeviceGuid);
                     return runtime.TickToggle(slotIndex, target, sourceIndex, pressed, 1.0) != 0;
                 }
+                case "RapidTrigger":
+                {
+                    // The Direct read decides the zone, so the first press lands
+                    // where a Direct row presses, and the trigger lane's pull of
+                    // the same input is the travel inside it. With no runtime
+                    // (a preview) or an input with no depth, the Direct read.
+                    bool past = SourceCoercion.EvaluateForButtonTarget(state, src,
+                        globalThresholdPercent, slotIndex, evaluatedDeviceGuid);
+                    if (runtime == null || !SourceCoercion.IsRapidTriggerSource(src.Descriptor))
+                        return past;
+                    float depth = SourceCoercion.EvaluateForTriggerTarget(state, src,
+                        slotIndex, evaluatedDeviceGuid);
+                    return runtime.TickRapidTrigger(slotIndex, target, sourceIndex,
+                        past, depth, RapidTriggerDistance(src));
+                }
                 case "Ramped":
                     // A ramped axis envelope has no defensible boolean reading; a
                     // button target gets nothing (issue #111). Picking a threshold
@@ -179,6 +215,10 @@ namespace PadForge.Engine.Common.Mapping
                     SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid)) ?? false);
 
             string kind = src.Kind ?? "Direct";
+            // Rapid Trigger acts on presses (#482). On a stick an analog input
+            // is proportional movement, so the row reads it as Direct, the
+            // Motion rows' one-way read included.
+            if (kind == "RapidTrigger") kind = "Direct";
             if (kind != "Toggle")
                 return EvaluateBipolarKind(kind, state, src, slotIndex, target, sourceIndex,
                     runtime, frameDeltaSeconds, evaluatedDeviceGuid, oneWay);
@@ -423,6 +463,24 @@ namespace PadForge.Engine.Common.Mapping
                         slotIndex, evaluatedDeviceGuid);
                     return (float)runtime.TickToggle(slotIndex, target, sourceIndex,
                         pull >= TogglePressLevel(src), 1.0);
+                }
+                case "RapidTrigger":
+                {
+                    // A full pull while pressed and rest while released, the
+                    // level Toggle holds on a trigger row. The zone opens at the
+                    // source's own deadzone, 50 percent unless the row sets
+                    // another, the default Toggle's trigger lane uses. With no
+                    // runtime (the Triggers tab preview) it reads as its first
+                    // press, and an input with no depth reads as Direct.
+                    if (!SourceCoercion.IsRapidTriggerSource(src.Descriptor))
+                        return SourceCoercion.EvaluateForTriggerTarget(state, src, slotIndex, evaluatedDeviceGuid);
+                    bool past = SourceCoercion.EvaluateForButtonTarget(state, src,
+                        50, slotIndex, evaluatedDeviceGuid);
+                    if (runtime == null) return past ? 1f : 0f;
+                    float depth = SourceCoercion.EvaluateForTriggerTarget(state, src,
+                        slotIndex, evaluatedDeviceGuid);
+                    return runtime.TickRapidTrigger(slotIndex, target, sourceIndex,
+                        past, depth, RapidTriggerDistance(src)) ? 1f : 0f;
                 }
                 case "Ramped":
                 {

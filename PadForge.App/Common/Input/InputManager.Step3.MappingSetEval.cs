@@ -3821,10 +3821,12 @@ namespace PadForge.Common.Input
                         continue;
                     }
                     bool any = false;
-                    // A Toggle read advances its latch, so every device is read:
-                    // while the latch is on, the first device answers true, and
-                    // stopping there would hide a press on the others.
-                    bool readAll = SourceEvaluator.IsToggleKind(src);
+                    // A Toggle read advances its latch and a Rapid Trigger read
+                    // its zone, so every device is read: while the latch is on,
+                    // the first device answers true, and stopping there would
+                    // hide a press on the others. Rapid Trigger steps on the
+                    // deepest read of the frame, which may be the last device's.
+                    bool readAll = SourceEvaluator.ReadsEveryDevice(src);
                     for (int d = 0; d < slotStates.Count; d++)
                     {
                         // Each device read under its own identity, so per-device

@@ -6,7 +6,7 @@ namespace PadForge.Engine.Common.Mapping
 {
     /// <summary>
     /// Per-VC runtime state for stateful source kinds (Incremental, Ramp,
-    /// Toggle, and the steering and flick kinds).
+    /// Toggle, Rapid Trigger, and the steering and flick kinds).
     /// Lives on the polling-thread side of Step 3; cleared on profile
     /// switch and on app restart.
     ///
@@ -45,6 +45,23 @@ namespace PadForge.Engine.Common.Mapping
             public double Level;             // output while latched, signed on an axis
         }
         private Dictionary<(int slot, string target, int srcIdx), ToggleState> _toggleState
+            = new();
+
+        // Rapid Trigger (#482), same (slot, target, srcIdx) key. The three
+        // modes are libhmk's key_dir: outside the zone (INACTIVE), pressed
+        // (DOWN), and released inside the zone (UP).
+        private const byte RapidOutside = 0, RapidPressed = 1, RapidReleased = 2;
+        private sealed class RapidTriggerState
+        {
+            public long Seq = -1;            // frame of the last read
+            public byte BaseMode;            // where the previous frame ended, this frame's starting point
+            public double BaseExtremum;
+            public bool FramePast;           // this frame's reads so far: past the deadzone on any device
+            public double FrameDepth;        // and the deepest of them
+            public byte Mode;                // the step from the base on this frame's reads so far
+            public double Extremum;          // deepest point while pressed, shallowest while released
+        }
+        private Dictionary<(int slot, string target, int srcIdx), RapidTriggerState> _rapidTriggerState
             = new();
 
         // ── Steering kinds (v3.4 #94) ──
@@ -137,6 +154,7 @@ namespace PadForge.Engine.Common.Mapping
             _incrementalReplay = new();
             _rampedReplay = new();
             _toggleState = new();
+            _rapidTriggerState = new();
         }
 
         /// <summary>Drops all steering + flick state for a slot. Called on profile switch.</summary>
@@ -155,6 +173,7 @@ namespace PadForge.Engine.Common.Mapping
             _incrementalReplay = Without(_incrementalReplay, slot, null);
             _rampedReplay = Without(_rampedReplay, slot, null);
             _toggleState = Without(_toggleState, slot, null);
+            _rapidTriggerState = Without(_rapidTriggerState, slot, null);
         }
 
         /// <summary>Drops steering state for one (slot, target). The
@@ -172,6 +191,7 @@ namespace PadForge.Engine.Common.Mapping
             _incrementalReplay = Without(_incrementalReplay, slot, target ?? "");
             _rampedReplay = Without(_rampedReplay, slot, target ?? "");
             _toggleState = Without(_toggleState, slot, target ?? "");
+            _rapidTriggerState = Without(_rapidTriggerState, slot, target ?? "");
         }
 
         /// <summary>Drops the captured MotionLean neutral orientations (the
@@ -404,6 +424,92 @@ namespace PadForge.Engine.Common.Mapping
                 st.CurPressed = true;
             }
             return st.Latched ? st.Level : 0;
+        }
+
+        /// <summary>
+        /// Advances Rapid Trigger (#482) with one read of its input and
+        /// returns whether it is pressed. <paramref name="pastActuation"/> is
+        /// the row's Direct read, so the first press lands where a Direct row
+        /// presses. <paramref name="depth"/> is the input's travel, 0 to 1,
+        /// and <paramref name="distance"/> the share of it that releases or
+        /// presses again. The steps are libhmk's matrix_scan (src/matrix.c,
+        /// the non-continuous mode, where the actuation point is also the
+        /// reset point): past the actuation point the input presses and the
+        /// depth is recorded. While pressed, a deeper read moves that point
+        /// down and a rise of more than the distance releases. While released,
+        /// a shallower read moves it up and a push of more than the distance
+        /// presses again. Leaving the zone releases from either side.
+        /// <para>An any-device source is read once per device on the slot.
+        /// Each read folds into the frame's deepest read, and the frame steps
+        /// from where the previous frame ended, so it steps once whatever
+        /// order the devices are read in. The pressed result only grows with
+        /// depth, so no read in a frame returns more than the frame's last
+        /// one, and the OR and max combines across devices agree with it. A
+        /// frame with no read (the row's shift layer closed, its gate input
+        /// released, its input suppressed, its device offline) puts the input back
+        /// outside the zone, the way Toggle's latch releases, and the first
+        /// read afterward presses at once if the input is past the deadzone,
+        /// as a Direct row would.</para>
+        /// </summary>
+        public bool TickRapidTrigger(int slotIndex, string target, int sourceIndex,
+            bool pastActuation, double depth, double distance)
+        {
+            var key = (slotIndex, target ?? "", sourceIndex);
+            if (!_rapidTriggerState.TryGetValue(key, out var st))
+                _rapidTriggerState[key] = st = new RapidTriggerState();
+            if (st.Seq != FrameSeq)
+            {
+                if (st.Seq < 0 || FrameSeq - st.Seq > 1) st.Mode = RapidOutside;
+                st.BaseMode = st.Mode;
+                st.BaseExtremum = st.Extremum;
+                st.FramePast = pastActuation;
+                st.FrameDepth = depth;
+                st.Seq = FrameSeq;
+            }
+            else
+            {
+                // A second device's read of the same source this frame. Only
+                // a deeper read can change the step.
+                if ((!pastActuation || st.FramePast) && depth <= st.FrameDepth)
+                    return st.Mode == RapidPressed;
+                st.FramePast |= pastActuation;
+                if (depth > st.FrameDepth) st.FrameDepth = depth;
+            }
+            StepRapidTrigger(st, distance);
+            return st.Mode == RapidPressed;
+        }
+
+        private static void StepRapidTrigger(RapidTriggerState st, double distance)
+        {
+            byte mode = st.BaseMode;
+            double extremum = st.BaseExtremum;
+            double depth = st.FrameDepth;
+            if (!st.FramePast)
+            {
+                // Short of the deadzone: outside the zone, released.
+                mode = RapidOutside;
+                extremum = depth;
+            }
+            else
+            {
+                switch (mode)
+                {
+                    case RapidOutside:
+                        mode = RapidPressed;
+                        extremum = depth;
+                        break;
+                    case RapidPressed:
+                        if (depth + distance < extremum) { mode = RapidReleased; extremum = depth; }
+                        else if (depth > extremum) extremum = depth;
+                        break;
+                    default:
+                        if (extremum + distance < depth) { mode = RapidPressed; extremum = depth; }
+                        else if (depth < extremum) extremum = depth;
+                        break;
+                }
+            }
+            st.Mode = mode;
+            st.Extremum = extremum;
         }
 
         // ── Steering kind ticks (v3.4 #94) ──

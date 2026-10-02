@@ -588,9 +588,12 @@
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. English placeholders pending translation. -->
   <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>直接</value></data>
   <data name="Pad_Mapping_Kind_Toggle" xml:space="preserve"><value>切换</value></data>
+  <data name="Pad_Mapping_Kind_RapidTrigger" xml:space="preserve"><value>快速触发</value></data>
+  <data name="Pad_Mapping_RapidTrigger_Distance" xml:space="preserve"><value>距离</value></data>
+  <data name="Pad_Mapping_RapidTrigger_Distance_Tooltip" xml:space="preserve"><value>输入回弹多少即释放、再次按下多少即重新触发，以全行程的百分比表示。仅在输入越过死区时生效。</value></data>
   <data name="Pad_Mapping_Kind_Incremental" xml:space="preserve"><value>渐增</value></data>
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>按住反转</value></data>
-  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>直接 - 读取来源描述符。切换 - 按一次保持输出，再按一次释放。渐增 - 通过上/下按钮累加。按住反转 - 按住修改键时翻转该行输出。渐变 - 由上/下方向键驱动的基于时间的轴包络（起音与释音）。</value></data>
+  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>直接 - 读取来源描述符。切换 - 按一次保持输出，再按一次释放。快速触发 - 越过死区后，稍微抬起即释放，稍微按下即再次触发。渐增 - 通过上/下按钮累加。按住反转 - 按住修改键时翻转该行输出。渐变 - 由上/下方向键驱动的基于时间的轴包络（起音与释音）。</value></data>
   <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>按住时向上累加的按钮</value></data>
   <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>向上：按住时向上累加的按钮。</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>按住时向下累加的按钮</value></data>

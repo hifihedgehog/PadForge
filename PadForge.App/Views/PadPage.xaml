@@ -4569,6 +4569,18 @@
                                                          ToolTip="{Binding Pad_Mapping_Max_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ParamMax" SettingLabel="{Binding Pad_Mapping_Max, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamMax_4314"/>
                                             </StackPanel>
+                                            <!-- Rapid Trigger (#482): the distance that releases, or presses
+                                                 again, while the input stays past the row's deadzone. -->
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                                                        Visibility="{Binding IsRapidTriggerKind, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_RapidTrigger_Distance, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                <Slider Value="{Binding ParamRapidTriggerDistance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Maximum="50" SmallChange="1" LargeChange="5" IsSnapToTickEnabled="True" TickFrequency="1" Width="80" VerticalAlignment="Center"
+                                                        ToolTip="{Binding Pad_Mapping_RapidTrigger_Distance_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBox Text="{Binding ParamRapidTriggerDistance, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="44" Margin="4,0,0,0" Padding="2,1" VerticalContentAlignment="Center"
+                                                         ToolTip="{Binding Pad_Mapping_RapidTrigger_Distance_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ParamRapidTriggerDistance" SettingLabel="{Binding Pad_Mapping_RapidTrigger_Distance, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamRapidTriggerDistance_4316" Margin="4,0,8,0"/>
+                                            </StackPanel>
                                         </StackPanel>
 
                                         <!-- Note (#475): a Motion row holding a source it cannot read, any
@@ -5406,6 +5418,23 @@
                                                                      Style="{StaticResource DzValueEdit}"/>
                                                             <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                             <ui:Button Command="{Binding ResetDeadZoneCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset_DeadZone, Source={x:Static strings:Strings.Instance}}"/>
+                                                        </StackPanel>
+                                                        <!-- Rapid Trigger distance (#482), beside the deadzone it
+                                                             works past. -->
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0"
+                                                                    Visibility="{Binding IsRapidTriggerKind, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_RapidTrigger_Distance, Source={x:Static strings:Strings.Instance}}"
+                                                                       VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                            <Slider Value="{Binding ParamRapidTriggerDistance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                    Minimum="1" Maximum="50" SmallChange="1" LargeChange="5" IsSnapToTickEnabled="True" TickFrequency="1"
+                                                                    Width="80" VerticalAlignment="Center"
+                                                                    ToolTip="{Binding Pad_Mapping_RapidTrigger_Distance_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <TextBox Text="{Binding ParamRapidTriggerDistance, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                                     Width="44" Margin="4,0,0,0" Padding="2,1"
+                                                                     VerticalContentAlignment="Center"
+                                                                     ToolTip="{Binding Pad_Mapping_RapidTrigger_Distance_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ParamRapidTriggerDistance" SettingLabel="{Binding Pad_Mapping_RapidTrigger_Distance, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamRapidTriggerDistance_5377" Margin="4,0,8,0"/>
                                                         </StackPanel>
                                                         <!-- Remove this source from the row entirely.
                                                              Distinct from Clear (which keeps the row) — uses

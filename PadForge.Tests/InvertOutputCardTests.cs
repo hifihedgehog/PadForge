@@ -186,6 +186,7 @@ namespace PadForge.Tests
                 Kind = "Incremental",
                 ParamUp = "Button 1",
                 ParamDown = "Button 2",
+                ParamRapidTriggerDistance = 30,
             });
             vm.Mappings.Add(m);
 
@@ -205,6 +206,8 @@ namespace PadForge.Tests
             // reset hydration applies to an unmapped row.
             Assert.Equal("Direct", m.PrimaryKindSource?.Kind ?? "Direct");
             Assert.Equal("", m.PrimaryKindSource?.ParamUp ?? "");
+            Assert.Equal(PadForge.Engine.Data.MappingSource.DefaultRapidTriggerDistance,
+                m.PrimaryKindSource?.ParamRapidTriggerDistance);
         }
 
         [Fact]

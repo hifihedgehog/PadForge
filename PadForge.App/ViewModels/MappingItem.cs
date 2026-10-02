@@ -56,8 +56,10 @@ namespace PadForge.ViewModels
         //  ExtraSources wiring
         //
         //  Each ExtraSource (MappingSourceItem) gets:
-        //    - ParentTargetIsDiscrete pushed from this row so the
-        //      per-source deadzone visibility tracks the target type.
+        //    - ParentTargetIsDiscrete, ParentTargetIsTrigger and
+        //      ParentTargetTakesRapidTrigger pushed from this row so the
+        //      per-source deadzone and the Rapid Trigger offer track the
+        //      target type.
         //    - SelectedInput synced against the row's cross-device
         //      AvailableInputs list whenever the user adds a source
         //      or this row's AvailableInputs gets rebuilt.
@@ -194,6 +196,13 @@ namespace PadForge.ViewModels
             if (msi == null) return;
             msi.ParentMappingItem = this;
             msi.ParentTargetIsDiscrete = IsTargetDiscrete;
+            msi.ParentTargetIsTrigger = IsGamepadTriggerTarget;
+            msi.ParentTargetTakesRapidTrigger = IsRapidTriggerTarget;
+            // An extra source learns its row's target here, so a Rapid
+            // Trigger kind the row cannot use drops now. The primary's kind
+            // holder answers to EnforcePrimaryKindGate instead, which also
+            // knows the row's own input.
+            if (!ReferenceEquals(msi, _primaryKindSource)) msi.EnforceRapidTriggerGate();
             msi.SyncSelectedInputFromState(AvailableInputs);
             // ParamUp/Down/Modifier picker bridges resolve their
             // InputChoice against this row's AvailableInputs — re-fire
@@ -227,6 +236,31 @@ namespace PadForge.ViewModels
                 return true;
             }
         }
+
+        /// <summary>True on the virtual controller's two trigger rows. Rapid
+        /// Trigger (#482) acts there as well as on button-class rows: a
+        /// controller game fires on the trigger, so the row sends a full pull
+        /// while pressed and rest while released. Narrower than
+        /// <see cref="IsTriggerTarget"/>, which also admits Extended trigger
+        /// axes and the button pressure rows.</summary>
+        public bool IsGamepadTriggerTarget =>
+            TargetSettingName == "LeftTrigger" || TargetSettingName == "RightTrigger";
+
+        /// <summary>True when the row's output is a press Rapid Trigger can
+        /// drive: a button-class target or a virtual trigger. The touchpad
+        /// X/Y rows count as discrete for the deadzone, but they read every
+        /// source as a position, so Rapid Trigger would do nothing there.</summary>
+        public bool IsRapidTriggerTarget =>
+            (IsTargetDiscrete && !IsTouchpadAxisTarget) || IsGamepadTriggerTarget;
+
+        /// <summary>True when the primary's mode list offers Rapid Trigger: the
+        /// row's output is a press and its input has press depth, or none is
+        /// picked yet, so the mode can be chosen before the input is
+        /// recorded.</summary>
+        public bool IsRapidTriggerOffered =>
+            IsRapidTriggerTarget
+            && (string.IsNullOrEmpty(_sourceDescriptor)
+                || PadForge.Engine.Common.Mapping.SourceCoercion.IsRapidTriggerSource(StripLegacyPrefix(_sourceDescriptor)));
 
         /// <summary>Bulk-refresh every extra source's selected-input
         /// state. Called by InputService after the slot's
@@ -305,17 +339,24 @@ namespace PadForge.ViewModels
         /// unless the row has a contributing secondary source (#111 audit C). As a
         /// solo primary, InvertOnHold flips nothing, so offering it would invite a
         /// mapping that silently does nothing. The extra-source dropdown still binds
-        /// the full list, since that is where InvertOnHold belongs.</summary>
+        /// the full list, since that is where InvertOnHold belongs. Rapid Trigger
+        /// (#482) is hidden the same way where it cannot act
+        /// (<see cref="IsRapidTriggerOffered"/>).</summary>
         public System.Collections.Generic.IReadOnlyList<MappingSourceItem.KindChoice> PrimaryKindOptions
         {
             get
             {
                 var all = MappingSourceItem.KindOptions;
-                if (HasContributingExtraSource) return all;
+                bool keepInvertOnHold = HasContributingExtraSource;
+                bool keepRapidTrigger = IsRapidTriggerOffered;
+                if (keepInvertOnHold && keepRapidTrigger) return all;
                 var filtered = new System.Collections.Generic.List<MappingSourceItem.KindChoice>(all.Count);
                 foreach (var k in all)
-                    if (!string.Equals(k.Value, "InvertOnHold", StringComparison.Ordinal))
-                        filtered.Add(k);
+                {
+                    if (!keepInvertOnHold && string.Equals(k.Value, "InvertOnHold", StringComparison.Ordinal)) continue;
+                    if (!keepRapidTrigger && string.Equals(k.Value, "RapidTrigger", StringComparison.Ordinal)) continue;
+                    filtered.Add(k);
+                }
                 return filtered;
             }
         }
@@ -352,6 +393,11 @@ namespace PadForge.ViewModels
             {
                 PrimaryKindSource.Kind = "Direct";
             }
+            // Rapid Trigger on a row or an input it cannot act on (#482): a
+            // picked input with no press depth, or a stored row whose target
+            // is not a press. The engine reads it as Direct there.
+            if (PrimaryKindSource?.IsRapidTriggerKind == true && !IsRapidTriggerOffered)
+                PrimaryKindSource.Kind = "Direct";
             OnPropertyChanged(nameof(PrimaryKindOptions));
         }
 
@@ -361,6 +407,8 @@ namespace PadForge.ViewModels
             {
                 OnPropertyChanged(nameof(IsPrimaryDirect));
                 OnPropertyChanged(nameof(IsPrimaryDescriptor));
+                // A trigger row shows its deadzone only in Rapid Trigger (#482).
+                OnPropertyChanged(nameof(IsDeadZoneApplicable));
                 OnPropertyChanged(nameof(IsMultiSource));
                 OnPropertyChanged(nameof(PrimaryKindLabel));
                 OnPropertyChanged(nameof(IsTrivialDirect));
@@ -399,21 +447,24 @@ namespace PadForge.ViewModels
         /// <see cref="Engine.Data.MappingSource"/> on load. Copies into the existing
         /// object so its PropertyChanged wiring (recording, dirty, picker refresh)
         /// survives. A null or Direct source resets it to a plain Direct holder so the
-        /// row falls back to its <see cref="SourceDescriptor"/> primary. A Toggle
-        /// source resets it the same way and keeps the kind, since Toggle reads
-        /// that descriptor too.</summary>
+        /// row falls back to its <see cref="SourceDescriptor"/> primary. A Toggle or
+        /// Rapid Trigger source resets it the same way and keeps the kind, since
+        /// both read that descriptor too, and the holder keeps the Rapid Trigger
+        /// distance. A null source (an unmapped row, Clear All) resets the
+        /// distance with the rest.</summary>
         public void LoadPrimaryKind(Engine.Data.MappingSource src)
         {
             var p = PrimaryKindSource;
             if (p == null) return;
+            p.ParamRapidTriggerDistance = Engine.Data.MappingSource.EffectiveRapidTriggerDistance(
+                src?.ParamRapidTriggerDistance ?? Engine.Data.MappingSource.DefaultRapidTriggerDistance);
             if (src == null || PadForge.Engine.Common.Mapping.SourceEvaluator.IsDescriptorKind(src.Kind))
             {
                 p.Invert = false;
                 p.ParamUp = "";
                 p.ParamDown = "";
                 p.ParamModifier = "";
-                p.Kind = string.Equals(src?.Kind, "Toggle", StringComparison.Ordinal)
-                    ? "Toggle" : "Direct";
+                p.Kind = src?.Kind is "Toggle" or "RapidTrigger" ? src.Kind : "Direct";
                 return;
             }
             p.DeviceGuid = src.DeviceGuid ?? "";
@@ -528,6 +579,11 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsIrPointerSource));
                     OnPropertyChanged(nameof(IsMouseMotionSource));
                     OnPropertyChanged(nameof(IsGenericSensitivitySource));
+                    OnPropertyChanged(nameof(IsRapidTriggerOffered));
+                    // A newly picked input with no press depth drops Rapid
+                    // Trigger (#482). A load runs the gate once the whole row
+                    // is in (EndLoadRow).
+                    EnforcePrimaryKindGate();
                     OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
                     RaiseMotionRowNote();
                     // Toggling the primary source flips the row's
@@ -1446,6 +1502,9 @@ namespace PadForge.ViewModels
         /// True when the deadzone column is applicable for this row:
         /// the source is an axis/slider AND the target is a discrete output
         /// (button, d-pad, POV, key, note) — NOT an axis-to-axis mapping.
+        /// A gamepad trigger row in Rapid Trigger (#482) counts too: that
+        /// mode turns the trigger into a press, and the deadzone is its
+        /// actuation point.
         /// </summary>
         public bool IsDeadZoneApplicable
         {
@@ -1519,8 +1578,12 @@ namespace PadForge.ViewModels
                     || t.StartsWith("MidiCC") || IsVrAxisTarget(t)
                     || Engine.Data.MappingSetMigrator.IsMotionAxisTarget(t))
                     return false;
+                // A trigger row passes the pull straight through, except in
+                // Rapid Trigger (#482), where the deadzone is the actuation
+                // point. The mode is offered only for inputs with press depth.
                 if (t == "LeftTrigger" || t == "RightTrigger")
-                    return false;
+                    return PrimaryKindSource?.IsRapidTriggerKind == true
+                        && PadForge.Engine.Common.Mapping.SourceCoercion.IsRapidTriggerSource(desc);
                 if (Engine.Data.MappingSetMigrator.IsPressureTarget(t))
                     return false;
 
@@ -1671,6 +1734,7 @@ namespace PadForge.ViewModels
                     p.ParamUp = "";
                     p.ParamDown = "";
                     p.ParamModifier = "";
+                    p.ParamRapidTriggerDistance = Engine.Data.MappingSource.DefaultRapidTriggerDistance;
                     p.Kind = "Direct";
                 }
                 SyncSelectedInputFromDescriptor();

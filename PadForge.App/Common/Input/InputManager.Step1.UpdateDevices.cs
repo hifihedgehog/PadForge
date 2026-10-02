@@ -1274,6 +1274,7 @@ namespace PadForge.Common.Input
                         us.OutputState = default;
                         us.RawMappedState = default;
                         us.MotionRowsOutputState = default;
+                        us.PressureOutputState = default;
                     }
                 }
             }

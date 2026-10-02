@@ -1121,6 +1121,26 @@ namespace PadForge.Common.Input
                     }
                 }
 
+                // Button pressure (discussion #476): a DualShock 3 that
+                // reports it in SDL's order, on the preset whose report
+                // carries it.
+                if (outputType == Engine.VirtualControllerType.PlayStation
+                    && HMaestroProfileCatalog.ReportCarriesPressure(profileId)
+                    && ButtonPressureSources.AxesFor(ud) is { } pressureAxes)
+                {
+                    string Axis(int i) => "Axis " + pressureAxes[i].ToString(System.Globalization.CultureInfo.InvariantCulture);
+                    ps.PressureButtonA = Axis(0);
+                    ps.PressureButtonB = Axis(1);
+                    ps.PressureButtonX = Axis(2);
+                    ps.PressureButtonY = Axis(3);
+                    ps.PressureLeftShoulder = Axis(4);
+                    ps.PressureRightShoulder = Axis(5);
+                    ps.PressureDPadUp = Axis(6);
+                    ps.PressureDPadDown = Axis(7);
+                    ps.PressureDPadLeft = Axis(8);
+                    ps.PressureDPadRight = Axis(9);
+                }
+
                 // Default deadzones and gains.
                 ps.LeftThumbDeadZoneX = "0";
                 ps.LeftThumbDeadZoneY = "0";

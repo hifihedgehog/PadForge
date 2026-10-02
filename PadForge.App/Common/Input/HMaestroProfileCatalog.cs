@@ -465,6 +465,17 @@ namespace PadForge.Common.Input
             || string.Equals(profileId, "switch2-pro-controller", StringComparison.OrdinalIgnoreCase);
 
         /// <summary>
+        /// True for the preset whose report carries button pressure: the
+        /// DualShock 3 (SIXAXIS): Full, HIDMaestro 1.10.0's form of the pad
+        /// that Sony's sixaxis driver and DsHidMini's SXS mode present, and
+        /// the one PCSX2 and RPCS3 read pressure from (discussion #476). Its
+        /// slots grow the ten pressure rows. An id, not a descriptor read,
+        /// because the SDK keeps the profile's sixaxis flag internal.
+        /// </summary>
+        internal static bool ReportCarriesPressure(string profileId) =>
+            string.Equals(profileId, "dualshock-3-full", StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>
         /// Resolve a profile id to the 2D + 3D asset folders PadForge should
         /// render for that controller. Profile-id prefixes match HM's catalog
         /// slugs (sony/, microsoft/) so adding a new profile in HM

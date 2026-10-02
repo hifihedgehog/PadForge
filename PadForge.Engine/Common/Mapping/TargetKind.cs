@@ -50,6 +50,10 @@ namespace PadForge.Engine.Common.Mapping
                 return TargetKind.Button;
             }
 
+            // Button pressure (discussion #476) reads like a trigger.
+            if (PadForge.Engine.Data.MappingSetMigrator.IsPressureTarget(target))
+                return TargetKind.Trigger;
+
             switch (target)
             {
                 case "LeftTrigger":

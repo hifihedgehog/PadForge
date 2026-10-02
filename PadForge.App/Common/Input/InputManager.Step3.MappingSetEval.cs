@@ -2436,6 +2436,10 @@ namespace PadForge.Common.Input
                 // simulated motion, not a gamepad field. The motion pass in
                 // UpdateOutputStates reads them.
                 if (MappingSetMigrator.IsMotionAxisTarget(row.Target)) continue;
+                // The button pressure rows (discussion #476) are not gamepad
+                // fields either. They set how hard a button is pressed, and
+                // the pressure pass in UpdateOutputStates reads them.
+                if (MappingSetMigrator.IsPressureTarget(row.Target)) continue;
 
                 // Layer-row picking. Default = replace: when active mask is
                 // non-Base, only that layer's rows fire (Base entirely

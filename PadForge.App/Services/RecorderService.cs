@@ -272,6 +272,7 @@ namespace PadForge.Services
             _paramTarget = ParamTarget.None;
             _negRecording = false;
             _motionKind = 0;
+            _analogOnly = false;
 
             _activeDevices.Clear();
             _baselines.Clear();
@@ -337,6 +338,14 @@ namespace PadForge.Services
         /// <summary>Half a g of change from the reading at the start, a shake
         /// or a quick tilt.</summary>
         internal const float MotionRecordAccelMs2 = 0.5f * 9.80665f;
+
+        /// <summary>True while a button pressure row (discussion #476)
+        /// records. It takes an analog input only: a pressure axis, an analog
+        /// key, a fader or an axis. A DualShock 3's press reaches the button
+        /// sweep before its pressure axis crosses the axis threshold, and a
+        /// digital source on a pressure row reads only released or full, the
+        /// same as no row at all.</summary>
+        private bool _analogOnly;
 
         private static int MotionKindFor(string target) => target switch
         {
@@ -476,6 +485,10 @@ namespace PadForge.Services
             // A Motion row records a controller's own motion (#475). A
             // modifier recorded for one is still a button.
             _motionKind = _paramTarget == ParamTarget.None ? MotionKindFor(mapping.TargetSettingName) : 0;
+            // A pressure row records an analog input. Its modifiers and
+            // Up and Down params are still buttons.
+            _analogOnly = _paramTarget == ParamTarget.None
+                && PadForge.Engine.Data.MappingSetMigrator.IsPressureTarget(mapping.TargetSettingName);
             if (_motionKind != 0 && !AnyActiveDeviceHasMotionSensor())
             {
                 _motionKind = 0;
@@ -769,7 +782,10 @@ namespace PadForge.Services
                 //     can land on slot 16, and neither should record as a
                 //     touchpad click (audit M2). ──
                 bool hasTouchpad = ud.HasTouchpad;
-                if (hasTouchpad
+                // A pressure row skips every button-class capture below
+                // (see _analogOnly), so its press records the analog read.
+                bool digital = !_analogOnly;
+                if (digital && hasTouchpad
                     && current.Buttons.Length > 16 && current.Buttons[16]
                     && baseline.Buttons.Length > 16 && !baseline.Buttons[16])
                 {
@@ -787,7 +803,7 @@ namespace PadForge.Services
                 //     (lowest index), so every phrase would record as "any".
                 //     So scan the whole range and keep the most specific
                 //     rising slot: the spoken phrase beats Any Voice Phrase. ──
-                if (ud.HasVoicePhrases)
+                if (digital && ud.HasVoicePhrases)
                 {
                     int vBase = PadForge.Engine.Common.Mapping.SourceCoercion.VoicePhraseButtonBase;
                     int bestVoice = -1;
@@ -809,7 +825,7 @@ namespace PadForge.Services
                 //     Any and the phrase together. The generic sweep would
                 //     record Any (index 0) every time; prefer the specific
                 //     phrase button. ──
-                if (ud.CapType == PadForge.Engine.InputDeviceType.Microphone)
+                if (digital && ud.CapType == PadForge.Engine.InputDeviceType.Microphone)
                 {
                     int bestMic = -1;
                     for (int i = 0; i < CustomInputState.MaxButtons; i++)
@@ -827,7 +843,7 @@ namespace PadForge.Services
                 //     Click" so the recorder never reports the touchpad as
                 //     raw "Button 16". Skip the voice range on phrase-bearing
                 //     pads: handled above as "Voice Phrase N". ──
-                for (int i = 0; i < CustomInputState.MaxButtons; i++)
+                for (int i = 0; digital && i < CustomInputState.MaxButtons; i++)
                 {
                     if (i == 16 && hasTouchpad) continue;
                     if (ud.HasVoicePhrases
@@ -841,7 +857,7 @@ namespace PadForge.Services
                 }
 
                 // ── Check POV hats ──
-                for (int i = 0; i < CustomInputState.MaxPovs; i++)
+                for (int i = 0; digital && i < CustomInputState.MaxPovs; i++)
                 {
                     if (baseline.Povs[i] < 0 && current.Povs[i] >= 0)
                     {
@@ -891,7 +907,7 @@ namespace PadForge.Services
                 //     detects exactly the descriptors the mapping picker
                 //     offers. Checked after buttons / POVs so a deliberate
                 //     press wins the tick over an incidental touch. ──
-                if (hasTouchpad || ud.IsTouchpad)
+                if (digital && (hasTouchpad || ud.IsTouchpad))
                 {
                     string gestureDesc = DetectNewGestureFire(dg);
                     if (gestureDesc != null)
@@ -936,7 +952,7 @@ namespace PadForge.Services
                     else
                     {
                         bool noteFired = false;
-                        for (int i = 0; i < current.Midi.Notes.Length; i++)
+                        for (int i = 0; digital && i < current.Midi.Notes.Length; i++)
                         {
                             if (current.Midi.Notes[i] && !baseline.Midi.Notes[i])
                             {
@@ -951,7 +967,7 @@ namespace PadForge.Services
                         // encoder fires a momentary CcUp/CcDown while its value
                         // hovers near center. Gated near-center so a fader
                         // sweeping past center isn't misread as an encoder.
-                        for (int i = 0; i < current.Midi.CcUp.Length; i++)
+                        for (int i = 0; digital && i < current.Midi.CcUp.Length; i++)
                         {
                             // A CC that has MOVED outside the band this session is a
                             // fader sweeping through center, not an encoder. Its
@@ -1510,6 +1526,8 @@ namespace PadForge.Services
                 || target.StartsWith("KbmScroll", StringComparison.Ordinal)) return false;
             // The Motion Pitch, Yaw and Roll rows (#475) read a stick whole.
             if (PadForge.Engine.Data.MappingSetMigrator.IsMotionAxisTarget(target)) return false;
+            // Button pressure (discussion #476) reads like a trigger.
+            if (PadForge.Engine.Data.MappingSetMigrator.IsPressureTarget(target)) return false;
             return true;
         }
 

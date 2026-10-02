@@ -376,6 +376,16 @@ namespace PadForge.ViewModels
                         // the previous profile's rows go stale (the
                         // dualsense-default slot would keep a Mic Mute
                         // row after switching to a DualShock 4).
+                        //
+                        // A live change to the DualShock 3 (SIXAXIS): Full
+                        // fills its pressure rows from the slot's pads
+                        // (discussion #476), merged into the set before the
+                        // rebuild for the reason the Extended branch gives.
+                        // A restore stamps first, so it fills nothing.
+                        if (liveRetarget && _outputType == VirtualControllerType.PlayStation
+                            && HMaestroProfileCatalog.ReportCarriesPressure(value)
+                            && DeviceService.FillEmptyPressureMappingsForSlot(PadIndex, value))
+                            SettingsService.RefreshMappingSetsFromLegacy();
                         RebuildMappings();
                     }
                     ConfigItemDirtyCallback?.Invoke();
@@ -2728,6 +2738,12 @@ namespace PadForge.ViewModels
             Mappings.Add(new MappingItem(isPlayStation ? "L2" : Strings.Instance.Btn_LeftTrigger, "LeftTrigger", MappingCategory.Triggers));
             Mappings.Add(new MappingItem(isPlayStation ? "R2" : Strings.Instance.Btn_RightTrigger, "RightTrigger", MappingCategory.Triggers));
 
+            // Button pressure (discussion #476): only the DualShock 3
+            // (SIXAXIS): Full preset's report carries it.
+            if (isPlayStation
+                && PadForge.Common.Input.HMaestroProfileCatalog.ReportCarriesPressure(ProfileId))
+                AddPressureRows();
+
             // Stick axes
             Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickX, "LeftThumbAxisX", MappingCategory.LeftStick, "LeftThumbAxisXNeg"));
             Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickY, "LeftThumbAxisY", MappingCategory.LeftStick, "LeftThumbAxisYNeg"));
@@ -2758,6 +2774,28 @@ namespace PadForge.ViewModels
                 // gyro / accel-capable devices via EnsureMotionRows.
                 AddMotionRows();
             }
+        }
+
+        /// <summary>The ten button pressure rows (discussion #476), after L2
+        /// and R2, whose pull is their own pressure. Each reads like a
+        /// trigger. They stay out of Map All: a pad without pressure has
+        /// nothing to give their prompts, and the default mapping fills
+        /// them for a DualShock 3.</summary>
+        private void AddPressureRows()
+        {
+            MappingItem Row(string button, string target) => new(
+                string.Format(Strings.Instance.DevObj_Pressure_Format, button), target,
+                MappingCategory.Triggers, includeInMapAll: false);
+            Mappings.Add(Row("✕", "PressureButtonA"));
+            Mappings.Add(Row("○", "PressureButtonB"));
+            Mappings.Add(Row("◻", "PressureButtonX"));
+            Mappings.Add(Row("△", "PressureButtonY"));
+            Mappings.Add(Row("L1", "PressureLeftShoulder"));
+            Mappings.Add(Row("R1", "PressureRightShoulder"));
+            Mappings.Add(Row(Strings.Instance.Btn_DPadUp, "PressureDPadUp"));
+            Mappings.Add(Row(Strings.Instance.Btn_DPadDown, "PressureDPadDown"));
+            Mappings.Add(Row(Strings.Instance.Btn_DPadLeft, "PressureDPadLeft"));
+            Mappings.Add(Row(Strings.Instance.Btn_DPadRight, "PressureDPadRight"));
         }
 
         /// <summary>The Motion Gyro and Motion Accelerometer rows, then the

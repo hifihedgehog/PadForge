@@ -736,15 +736,20 @@ namespace PadForge.Common.Input
         /// the consumer side from this path; SubmitRawReport (called
         /// separately for USB profiles) covers the same surface for the
         /// USB Report 0x01 layout. Pass through whatever the assigned
-        /// physical pad reported via SDL — for non-Sony or sensor-less
+        /// physical pad reported via SDL. For non-Sony or sensor-less
         /// physicals, supply zeros / Has=false and the encoder writes
-        /// zeros to those positions.</summary>
+        /// zeros to those positions. The slot's button pressure (discussion
+        /// #476) rides along too, which only the DualShock 3 (SIXAXIS): Full
+        /// preset's report carries, and <see cref="PressureOnTheWire"/>
+        /// sends each button's pressure only while the frame presses
+        /// it.</summary>
         public void SubmitGamepadState(
             Gamepad gp,
             in TouchpadState tp,
             in MotionSnapshot motion,
             byte batteryPercent,
-            bool batteryCharging)
+            bool batteryCharging,
+            in PadForge.Engine.Common.ButtonPressureState pressure)
         {
             if (_controller == null) return;
             TickFfb();
@@ -817,7 +822,63 @@ namespace PadForge.Common.Input
                 HeadphonesConnected = false,
             };
 
+            WritePressure(ref state, PressureOnTheWire(pressure, gp));
+
             _controller.SubmitState(state);
+        }
+
+        /// <summary>Copies the frame's pressure into HIDMaestro's ten pressure
+        /// fields, cross into PressureA (HMButton.A) through the D-pad.</summary>
+        internal static void WritePressure(ref HMGamepadState state,
+            in PadForge.Engine.Common.ButtonPressureState wire)
+        {
+            state.PressureA = wire.ButtonA;
+            state.PressureB = wire.ButtonB;
+            state.PressureX = wire.ButtonX;
+            state.PressureY = wire.ButtonY;
+            state.PressureLeftBumper = wire.LeftShoulder;
+            state.PressureRightBumper = wire.RightShoulder;
+            state.PressureDpadUp = wire.DPadUp;
+            state.PressureDpadDown = wire.DPadDown;
+            state.PressureDpadLeft = wire.DPadLeft;
+            state.PressureDpadRight = wire.DPadRight;
+        }
+
+        /// <summary>
+        /// The pressure the frame sends: each button's pressure while the
+        /// frame presses it, 0 while it does not. The D-pad follows the hat
+        /// <see cref="MapHat"/> builds, so a direction the hat drops sends
+        /// none.
+        ///
+        /// <para>PCSX2 binds these ten buttons to the pressure axes alone
+        /// (SDLInputSource s_sdl_ps3_binding_pressure_mapping) and counts any
+        /// value above its button deadzone, 0 by default, as a press
+        /// (PadDualshock2::Set). A pressure left up while a turbo, a consumed
+        /// macro trigger, SOCD or a shift layer released the button would
+        /// hold it down there.</para>
+        ///
+        /// <para>A pressed button whose pressure reads 0 sends 0, which
+        /// HIDMaestro sends as fully pressed (HMGamepadState's pressure
+        /// rule), so a press from a macro, a key or a pad without pressure
+        /// reads at full strength.</para>
+        /// </summary>
+        internal static PadForge.Engine.Common.ButtonPressureState PressureOnTheWire(
+            in PadForge.Engine.Common.ButtonPressureState pressure, in Gamepad gp)
+        {
+            var wire = default(PadForge.Engine.Common.ButtonPressureState);
+            ushort b = gp.Buttons;
+            if ((b & Gamepad.A) != 0) wire.ButtonA = pressure.ButtonA;
+            if ((b & Gamepad.B) != 0) wire.ButtonB = pressure.ButtonB;
+            if ((b & Gamepad.X) != 0) wire.ButtonX = pressure.ButtonX;
+            if ((b & Gamepad.Y) != 0) wire.ButtonY = pressure.ButtonY;
+            if ((b & Gamepad.LEFT_SHOULDER) != 0) wire.LeftShoulder = pressure.LeftShoulder;
+            if ((b & Gamepad.RIGHT_SHOULDER) != 0) wire.RightShoulder = pressure.RightShoulder;
+            var hat = MapHat(b);
+            if (hat is HMHat.North or HMHat.NorthEast or HMHat.NorthWest) wire.DPadUp = pressure.DPadUp;
+            if (hat is HMHat.South or HMHat.SouthEast or HMHat.SouthWest) wire.DPadDown = pressure.DPadDown;
+            if (hat is HMHat.West or HMHat.NorthWest or HMHat.SouthWest) wire.DPadLeft = pressure.DPadLeft;
+            if (hat is HMHat.East or HMHat.NorthEast or HMHat.SouthEast) wire.DPadRight = pressure.DPadRight;
+            return wire;
         }
 
         /// <summary>

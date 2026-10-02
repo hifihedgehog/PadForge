@@ -124,6 +124,26 @@ namespace PadForge.Engine.Data
         [XmlElement] public string RightTriggerMaxRange { get; set; } = "100";
 
         // ─────────────────────────────────────────────
+        //  Button pressure mappings
+        // ─────────────────────────────────────────────
+
+        /// <summary>How hard cross, circle, square, triangle, L1, R1 and the
+        /// four D-pad directions are pressed (discussion #476). Only the
+        /// DualShock 3 (SIXAXIS): Full preset carries them, and they read
+        /// like the trigger fields above. L2 and R2 pressure is the trigger
+        /// pull itself.</summary>
+        [XmlElement] public string PressureButtonA { get; set; } = "";
+        [XmlElement] public string PressureButtonB { get; set; } = "";
+        [XmlElement] public string PressureButtonX { get; set; } = "";
+        [XmlElement] public string PressureButtonY { get; set; } = "";
+        [XmlElement] public string PressureLeftShoulder { get; set; } = "";
+        [XmlElement] public string PressureRightShoulder { get; set; } = "";
+        [XmlElement] public string PressureDPadUp { get; set; } = "";
+        [XmlElement] public string PressureDPadDown { get; set; } = "";
+        [XmlElement] public string PressureDPadLeft { get; set; } = "";
+        [XmlElement] public string PressureDPadRight { get; set; } = "";
+
+        // ─────────────────────────────────────────────
         //  Thumbstick axis mappings
         // ─────────────────────────────────────────────
 
@@ -1471,6 +1491,18 @@ namespace PadForge.Engine.Data
             sb.Append(LeftTriggerMaxRange); sb.Append('|');
             sb.Append(RightTriggerMaxRange); sb.Append('|');
 
+            // Button pressure
+            sb.Append(PressureButtonA); sb.Append('|');
+            sb.Append(PressureButtonB); sb.Append('|');
+            sb.Append(PressureButtonX); sb.Append('|');
+            sb.Append(PressureButtonY); sb.Append('|');
+            sb.Append(PressureLeftShoulder); sb.Append('|');
+            sb.Append(PressureRightShoulder); sb.Append('|');
+            sb.Append(PressureDPadUp); sb.Append('|');
+            sb.Append(PressureDPadDown); sb.Append('|');
+            sb.Append(PressureDPadLeft); sb.Append('|');
+            sb.Append(PressureDPadRight); sb.Append('|');
+
             // Thumbstick axes
             sb.Append(LeftThumbAxisX); sb.Append('|');
             sb.Append(LeftThumbAxisY); sb.Append('|');
@@ -1907,6 +1939,16 @@ namespace PadForge.Engine.Data
             !string.IsNullOrEmpty(DPadRight) ||
             !string.IsNullOrEmpty(LeftTrigger) ||
             !string.IsNullOrEmpty(RightTrigger) ||
+            !string.IsNullOrEmpty(PressureButtonA) ||
+            !string.IsNullOrEmpty(PressureButtonB) ||
+            !string.IsNullOrEmpty(PressureButtonX) ||
+            !string.IsNullOrEmpty(PressureButtonY) ||
+            !string.IsNullOrEmpty(PressureLeftShoulder) ||
+            !string.IsNullOrEmpty(PressureRightShoulder) ||
+            !string.IsNullOrEmpty(PressureDPadUp) ||
+            !string.IsNullOrEmpty(PressureDPadDown) ||
+            !string.IsNullOrEmpty(PressureDPadLeft) ||
+            !string.IsNullOrEmpty(PressureDPadRight) ||
             !string.IsNullOrEmpty(LeftThumbAxisX) ||
             !string.IsNullOrEmpty(LeftThumbAxisY) ||
             !string.IsNullOrEmpty(RightThumbAxisX) ||
@@ -1975,6 +2017,16 @@ namespace PadForge.Engine.Data
             DPadRight = V(nameof(DPadRight));
             LeftTrigger = V(nameof(LeftTrigger));
             RightTrigger = V(nameof(RightTrigger));
+            PressureButtonA = V(nameof(PressureButtonA));
+            PressureButtonB = V(nameof(PressureButtonB));
+            PressureButtonX = V(nameof(PressureButtonX));
+            PressureButtonY = V(nameof(PressureButtonY));
+            PressureLeftShoulder = V(nameof(PressureLeftShoulder));
+            PressureRightShoulder = V(nameof(PressureRightShoulder));
+            PressureDPadUp = V(nameof(PressureDPadUp));
+            PressureDPadDown = V(nameof(PressureDPadDown));
+            PressureDPadLeft = V(nameof(PressureDPadLeft));
+            PressureDPadRight = V(nameof(PressureDPadRight));
             LeftThumbAxisX = V(nameof(LeftThumbAxisX));
             LeftThumbAxisY = V(nameof(LeftThumbAxisY));
             RightThumbAxisX = V(nameof(RightThumbAxisX));
@@ -2112,6 +2164,11 @@ namespace PadForge.Engine.Data
             // Triggers
             Add(LeftTrigger); Add(RightTrigger);
 
+            // Button pressure
+            Add(PressureButtonA); Add(PressureButtonB); Add(PressureButtonX); Add(PressureButtonY);
+            Add(PressureLeftShoulder); Add(PressureRightShoulder);
+            Add(PressureDPadUp); Add(PressureDPadDown); Add(PressureDPadLeft); Add(PressureDPadRight);
+
             // Thumbstick axes
             Add(LeftThumbAxisX); Add(LeftThumbAxisY);
             Add(RightThumbAxisX); Add(RightThumbAxisY);
@@ -2198,6 +2255,10 @@ namespace PadForge.Engine.Data
             nameof(LeftTriggerDeadZone), nameof(RightTriggerDeadZone),
             nameof(LeftTriggerAntiDeadZone), nameof(RightTriggerAntiDeadZone),
             nameof(LeftTriggerMaxRange), nameof(RightTriggerMaxRange),
+            // Button pressure
+            nameof(PressureButtonA), nameof(PressureButtonB), nameof(PressureButtonX), nameof(PressureButtonY),
+            nameof(PressureLeftShoulder), nameof(PressureRightShoulder),
+            nameof(PressureDPadUp), nameof(PressureDPadDown), nameof(PressureDPadLeft), nameof(PressureDPadRight),
             // Sticks
             nameof(LeftThumbAxisX), nameof(LeftThumbAxisY),
             nameof(RightThumbAxisX), nameof(RightThumbAxisY),
@@ -2761,6 +2822,12 @@ namespace PadForge.Engine.Data
             nameof(LeftThumbButton), nameof(RightThumbButton),
             nameof(DPad), nameof(DPadUp), nameof(DPadDown), nameof(DPadLeft), nameof(DPadRight),
             nameof(LeftTrigger), nameof(RightTrigger),
+            // No other layout has pressure, so a cross-layout copy drops it
+            // (MappingTranslation names no position for it) and clears it
+            // on a gamepad target like every other mapping field.
+            nameof(PressureButtonA), nameof(PressureButtonB), nameof(PressureButtonX), nameof(PressureButtonY),
+            nameof(PressureLeftShoulder), nameof(PressureRightShoulder),
+            nameof(PressureDPadUp), nameof(PressureDPadDown), nameof(PressureDPadLeft), nameof(PressureDPadRight),
             nameof(LeftThumbAxisX), nameof(LeftThumbAxisY),
             nameof(RightThumbAxisX), nameof(RightThumbAxisY),
             nameof(LeftThumbAxisXNeg), nameof(LeftThumbAxisYNeg),

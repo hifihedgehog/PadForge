@@ -52,6 +52,13 @@ namespace PadForge.Common.Input
                     if (_motionRowsActive[padIndex]) CombineMotionRows(padIndex, slotCount);
                     else CombinedMotionRows[padIndex] = default;
 
+                    // The button pressure rows (discussion #476).
+                    var pressureSet = SettingsManager.SlotMappingSets != null
+                        && padIndex < SettingsManager.SlotMappingSets.Length
+                        ? SettingsManager.SlotMappingSets[padIndex] : null;
+                    if (PressureRowsActive(padIndex, pressureSet)) CombinePressureRows(padIndex, slotCount);
+                    else CombinedPressureStates[padIndex] = default;
+
                     bool isExtended = SlotControllerTypes[padIndex] is VirtualControllerType.Extended
                                          or VirtualControllerType.Nintendo
                                      && SlotRawHidSurface[padIndex];

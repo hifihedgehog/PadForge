@@ -3832,6 +3832,11 @@ namespace PadForge.Common.Input
                 CombinedKbmRawStates[i] = default;
                 CombinedVrRawStates[i] = default;
                 CombinedTouchpadStates[i] = default;
+                // Button pressure (discussion #476). The neutral frame
+                // releases every button, so Step 5 sends none either way.
+                // Cleared so the grid's value column, which reads it, rests
+                // too for the length of the suspension.
+                CombinedPressureStates[i] = default;
                 // Motion rides beside the raw surface on every Step 5 submit
                 // (HasMotion=false submits zeroes), so leaving it out froze
                 // the LAST gyro/accel sample into the driver: tab away

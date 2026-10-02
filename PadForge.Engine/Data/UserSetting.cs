@@ -196,6 +196,15 @@ namespace PadForge.Engine.Data
         public PadForge.Engine.Common.MotionRowValues MotionRowsOutputState { get; set; }
 
         /// <summary>
+        /// This device's button pressure rows (discussion #476), computed in
+        /// Step 3 on a slot whose preset carries pressure. Like
+        /// <see cref="OutputState"/> it holds its last value while the device
+        /// is briefly unavailable and goes to rest when the device leaves.
+        /// </summary>
+        [XmlIgnore]
+        public PadForge.Engine.Common.ButtonPressureState PressureOutputState { get; set; }
+
+        /// <summary>
         /// PlayStation touchpad output state for this device.
         /// Written by the background thread, read by Step 4.
         /// </summary>

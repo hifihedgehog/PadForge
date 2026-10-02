@@ -222,6 +222,8 @@ namespace PadForge.ViewModels
                     || Engine.Data.MappingSetMigrator.IsMotionAxisTarget(t))
                     return false;
                 if (t == "LeftTrigger" || t == "RightTrigger") return false;
+                // Button pressure (discussion #476) reads like a trigger.
+                if (Engine.Data.MappingSetMigrator.IsPressureTarget(t)) return false;
                 return true;
             }
         }
@@ -1519,6 +1521,8 @@ namespace PadForge.ViewModels
                     return false;
                 if (t == "LeftTrigger" || t == "RightTrigger")
                     return false;
+                if (Engine.Data.MappingSetMigrator.IsPressureTarget(t))
+                    return false;
 
                 return true;
             }
@@ -1912,7 +1916,10 @@ namespace PadForge.ViewModels
             string.Equals(TargetSettingName, "LeftTrigger", StringComparison.Ordinal)
          || string.Equals(TargetSettingName, "RightTrigger", StringComparison.Ordinal)
          || ((TargetSettingName?.StartsWith("RawAxis", StringComparison.Ordinal) ?? false)
-             && Category == MappingCategory.Triggers);
+             && Category == MappingCategory.Triggers)
+         // Button pressure (discussion #476) evaluates through the same
+         // trigger read, StickTrim intercept included.
+         || Engine.Data.MappingSetMigrator.IsPressureTarget(TargetSettingName);
 
         /// <summary>Gates the Stick Trim settings strip (#155), same
         /// pattern as <see cref="ShouldShowCustomExpression"/> plus the
@@ -2355,7 +2362,8 @@ namespace PadForge.ViewModels
                 || IsTouchpadAxisTarget
                 || IsVrAxisTarget(t)
                 || Engine.Data.MappingSetMigrator.IsMotionTarget(t)
-                || Engine.Data.MappingSetMigrator.IsMotionAxisTarget(t);
+                || Engine.Data.MappingSetMigrator.IsMotionAxisTarget(t)
+                || Engine.Data.MappingSetMigrator.IsPressureTarget(t);
             CombineMode = isAxis ? "MaxAbs" : "OR";
         }
 

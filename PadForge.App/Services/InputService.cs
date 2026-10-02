@@ -5743,6 +5743,19 @@ namespace PadForge.Services
                     continue;
                 }
 
+                // The button pressure rows (discussion #476): the slot's
+                // combined pressure on the trigger scale, shown and lit
+                // like L2 and R2.
+                int pressureIndex = MappingSetMigrator.PressureIndexOf(target);
+                if (pressureIndex >= 0)
+                {
+                    int pull = haveEngine
+                        ? _inputManager.CombinedPressureStates[padIndex][pressureIndex] * 257 : 0;
+                    mapping.CurrentValueText = LiveValueString(pull);
+                    mapping.IsInputActive = pull > 1500;
+                    continue;
+                }
+
                 int? combined = null;
                 if (haveEngine)
                     combined = ReadCombinedOutputValue(padVm, padIndex, outputType, target);

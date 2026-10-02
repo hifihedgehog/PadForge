@@ -669,6 +669,57 @@ namespace PadForge.Services
             }
         }
 
+        /// <summary>Fills the empty button pressure fields (discussion #476)
+        /// of every device on a slot from that device's default mapping under
+        /// <paramref name="profileId"/>, for a live change to a preset whose
+        /// report carries pressure. Only those ten: a preset change within
+        /// PlayStation leaves every other binding as the user left it.
+        ///
+        /// <para>Snapshot under the UserSettings lock and resolve devices
+        /// outside it, the order <see cref="FillEmptyAutoMappingsForSlot"/>
+        /// gives for the same reason.</para>
+        ///
+        /// <returns>True when a field was filled, so the caller merges the
+        /// slot's set only when there is something to merge.</returns></summary>
+        public static bool FillEmptyPressureMappingsForSlot(int padIndex, string profileId)
+        {
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return false;
+            bool any = false;
+
+            var slot = new System.Collections.Generic.List<UserSetting>();
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                    if (us.MapTo == padIndex) slot.Add(us);
+            }
+
+            foreach (var us in slot)
+            {
+                var ud = SettingsManager.FindDeviceByInstanceGuid(us.InstanceGuid);
+                var ps = us.GetPadSetting();
+                if (ud == null || ps == null) continue;
+                var fresh = SettingsManager.CreateDefaultPadSetting(ud,
+                    Engine.VirtualControllerType.PlayStation, profileId);
+                if (fresh == null) continue;
+                bool changed = false;
+                foreach (var target in MappingSetMigrator.PressureTargets)
+                {
+                    var prop = typeof(PadSetting).GetProperty(target);
+                    if (prop == null || !string.IsNullOrEmpty(prop.GetValue(ps) as string)) continue;
+                    string value = prop.GetValue(fresh) as string;
+                    if (string.IsNullOrEmpty(value)) continue;
+                    prop.SetValue(ps, value);
+                    changed = true;
+                }
+                if (!changed) continue;
+                ps.UpdateChecksum();
+                us.PadSettingChecksum = ps.PadSettingChecksum;
+                any = true;
+            }
+            return any;
+        }
+
         private static void FillEmptyAutoMappingsIfApplicable(PadSetting existingPs,
             UserDevice ud, Engine.VirtualControllerType outputType, string profileId = null)
         {

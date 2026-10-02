@@ -1877,6 +1877,7 @@ namespace PadForge.Common.Input
                         CombinedKbmRawStates[padIndex].Clear();
                         CombinedVrRawStates[padIndex].Clear();
                         CombinedTouchpadStates[padIndex] = default;
+                        CombinedPressureStates[padIndex] = default;
                     }
 
                     if (vc != null && _slotInactiveCounter[padIndex] <= 1)
@@ -2058,13 +2059,18 @@ namespace PadForge.Common.Input
                                 // arm. Publishing both was two seqlock
                                 // writes + two kernel SetEvents per tick.
                                 // SubmitRawReport ticks FFB itself now.
+                                // The DualShock 3 (SIXAXIS): Full rides this leg
+                                // (no packer), and the button pressure rides
+                                // with it (discussion #476). gpOut decides
+                                // which buttons may send theirs.
                                 if (SonyReportPackers.ForProfile(hmExtState.ProfileId) == null)
                                     hmExtState.SubmitGamepadState(
                                         gpOut,
                                         CombinedTouchpadStates[padIndex],
                                         MotionSnapshots[padIndex],
                                         pctByte,
-                                        BatteryCharging[padIndex]);
+                                        BatteryCharging[padIndex],
+                                        CombinedPressureStates[padIndex]);
                             }
                             else
                             {

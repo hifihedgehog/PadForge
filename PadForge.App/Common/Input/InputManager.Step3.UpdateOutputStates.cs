@@ -81,6 +81,7 @@ namespace PadForge.Common.Input
                         us.OutputState = default;
                         us.RawMappedState = default; // preview must not freeze on a removed device
                         us.MotionRowsOutputState = default;
+                        us.PressureOutputState = default;
                         continue;
                     }
                     // Device exists but input temporarily unavailable — keep
@@ -210,6 +211,11 @@ namespace PadForge.Common.Input
                     // this pass so Step 4 drops a device that stops answering.
                     if (slot >= 0 && slot < MaxPads && _motionRowsActive[slot])
                         us.MotionRowsOutputState = EvaluateMotionRows(ud.InputState, ms, deviceGuidStr, slot);
+
+                    // The button pressure rows (discussion #476) on a slot
+                    // whose preset carries them.
+                    if (PressureRowsActive(slot, ms))
+                        us.PressureOutputState = EvaluatePressureRows(ud.InputState, ms, deviceGuidStr, slot);
 
                     // Touchpad state for every slot whose wire carries a
                     // touch surface: PlayStation, and the Valve frames on

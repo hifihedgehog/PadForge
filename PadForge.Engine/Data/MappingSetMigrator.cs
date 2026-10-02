@@ -57,6 +57,41 @@ namespace PadForge.Engine.Data
         private const string TriggerLeft = "LeftTrigger";
         private const string TriggerRight = "RightTrigger";
 
+        /// <summary>How hard ten of a DualShock 3's buttons are pressed
+        /// (discussion #476), in the order of HIDMaestro's pressure fields:
+        /// cross, circle, square, triangle, L1, R1, then the D-pad. Each
+        /// target is "Pressure" plus the button target it pairs with, and a
+        /// PadSetting field of the same name stores it. They read like the
+        /// trigger targets, a pull from released to fully pressed.</summary>
+        public static readonly IReadOnlyList<string> PressureTargets = new[]
+        {
+            "PressureButtonA", "PressureButtonB", "PressureButtonX", "PressureButtonY",
+            "PressureLeftShoulder", "PressureRightShoulder",
+            "PressureDPadUp", "PressureDPadDown", "PressureDPadLeft", "PressureDPadRight",
+        };
+
+        private const string PressurePrefix = "Pressure";
+
+        /// <summary>True for the ten <see cref="PressureTargets"/>.</summary>
+        public static bool IsPressureTarget(string target)
+            => PressureIndexOf(target) >= 0;
+
+        /// <summary>The target's position in <see cref="PressureTargets"/>,
+        /// or -1.</summary>
+        public static int PressureIndexOf(string target)
+        {
+            if (target == null || !target.StartsWith(PressurePrefix, StringComparison.Ordinal)) return -1;
+            for (int i = 0; i < PressureTargets.Count; i++)
+                if (string.Equals(PressureTargets[i], target, StringComparison.Ordinal)) return i;
+            return -1;
+        }
+
+        /// <summary>The button target a pressure target pairs with
+        /// ("PressureButtonA" to "ButtonA"), or null for any other
+        /// target.</summary>
+        public static string PressedButtonTarget(string pressureTarget)
+            => IsPressureTarget(pressureTarget) ? pressureTarget.Substring(PressurePrefix.Length) : null;
+
         // Bundled motion-passthrough targets. Sony-class VCs only — Xbox and
         // friends have no motion channel to relay. Sub-channels: one row per
         // sensor type, source descriptors "Motion Gyro" / "Motion Accel".
@@ -225,6 +260,10 @@ namespace PadForge.Engine.Data
             // Trigger targets (gamepad-only, axis-class).
             AppendSimpleRow(ms, TriggerLeft,  devicesAndPadSettings, gamepadOnly: true);
             AppendSimpleRow(ms, TriggerRight, devicesAndPadSettings, gamepadOnly: true);
+
+            // Button pressure (discussion #476): trigger-class, same rule.
+            foreach (var target in PressureTargets)
+                AppendSimpleRow(ms, target, devicesAndPadSettings, gamepadOnly: true);
 
             // Bipolar axis targets: collapse primary + Neg fields into one
             // row with up-to-2 sources per device (negative source has

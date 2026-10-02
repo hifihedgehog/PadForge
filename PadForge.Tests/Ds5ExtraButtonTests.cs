@@ -17,6 +17,7 @@ namespace PadForge.Tests
     /// the third buttons byte), the profile-gated mapping rows, and the
     /// physical-to-virtual automap.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class Ds5ExtraButtonTests
     {
         private static byte PackButtons3(Gamepad gp)

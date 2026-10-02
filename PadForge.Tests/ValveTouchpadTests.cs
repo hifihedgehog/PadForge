@@ -19,6 +19,7 @@ namespace PadForge.Tests
     /// packer's split, the 1:1 automap of a physical Valve pad, and the
     /// motion-row backfill for an Extended slot on a Valve profile.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class ValveTouchpadTests
     {
         private static short I16(byte[] b, int off) => (short)(b[off] | (b[off + 1] << 8));
@@ -81,22 +82,43 @@ namespace PadForge.Tests
         [InlineData("steam-controller-2")]
         public void Grid_ListsBothPads(string id)
         {
-            var vm = new PadViewModel(0)
+            // A profile change on a slot whose wire stamp names another
+            // profile is a live retarget, which merges the slot's set from
+            // the settings. Give it settings of its own, as the collection's
+            // other tests do, and put the stamp back.
+            var settings = SettingsManager.UserSettings;
+            var devices = SettingsManager.UserDevices;
+            var sets = SettingsManager.SlotMappingSets;
+            string stamp = SettingsManager.GetWireStamp(0);
+            try
             {
-                OutputType = VirtualControllerType.Extended,
-                ProfileId = id,
-            };
-            var byTarget = vm.Mappings.ToDictionary(m => m.TargetSettingName, m => m.TargetLabel);
-            var s = Strings.Instance;
-            Assert.Equal(s.Mapping_LeftPadX, byTarget["TouchpadX1"]);
-            Assert.Equal(s.Mapping_LeftPadY, byTarget["TouchpadY1"]);
-            Assert.Equal(s.Mapping_LeftPadTouch, byTarget["TouchpadContact1"]);
-            Assert.Equal(s.Mapping_RightPadX, byTarget["TouchpadX2"]);
-            Assert.Equal(s.Mapping_RightPadY, byTarget["TouchpadY2"]);
-            Assert.Equal(s.Mapping_RightPadTouch, byTarget["TouchpadContact2"]);
-            Assert.False(byTarget.ContainsKey("TouchpadClick"));
-            Assert.Contains($"RawBtn{NintendoPreviewMap.IndexOf(id, "LeftTouchpadClick")}", byTarget.Keys);
-            Assert.Contains($"RawBtn{NintendoPreviewMap.IndexOf(id, "RightTouchpadClick")}", byTarget.Keys);
+                SettingsManager.UserSettings = new SettingsCollection();
+                SettingsManager.UserDevices = new DeviceCollection();
+                SettingsManager.SlotMappingSets = new MappingSet[InputManager.MaxPads];
+                var vm = new PadViewModel(0)
+                {
+                    OutputType = VirtualControllerType.Extended,
+                    ProfileId = id,
+                };
+                var byTarget = vm.Mappings.ToDictionary(m => m.TargetSettingName, m => m.TargetLabel);
+                var s = Strings.Instance;
+                Assert.Equal(s.Mapping_LeftPadX, byTarget["TouchpadX1"]);
+                Assert.Equal(s.Mapping_LeftPadY, byTarget["TouchpadY1"]);
+                Assert.Equal(s.Mapping_LeftPadTouch, byTarget["TouchpadContact1"]);
+                Assert.Equal(s.Mapping_RightPadX, byTarget["TouchpadX2"]);
+                Assert.Equal(s.Mapping_RightPadY, byTarget["TouchpadY2"]);
+                Assert.Equal(s.Mapping_RightPadTouch, byTarget["TouchpadContact2"]);
+                Assert.False(byTarget.ContainsKey("TouchpadClick"));
+                Assert.Contains($"RawBtn{NintendoPreviewMap.IndexOf(id, "LeftTouchpadClick")}", byTarget.Keys);
+                Assert.Contains($"RawBtn{NintendoPreviewMap.IndexOf(id, "RightTouchpadClick")}", byTarget.Keys);
+            }
+            finally
+            {
+                SettingsManager.UserSettings = settings;
+                SettingsManager.UserDevices = devices;
+                SettingsManager.SlotMappingSets = sets;
+                SettingsManager.StampNintendoWire(0, stamp);
+            }
         }
 
         private static DeviceObjectItem Btn(int i) => new() { InputIndex = i, ObjectType = DeviceObjectTypeFlags.PushButton };

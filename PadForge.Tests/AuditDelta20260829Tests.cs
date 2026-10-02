@@ -10,6 +10,7 @@ namespace PadForge.Tests
 {
     /// <summary>Delta-audit 2026-08-29 contracts (4287822d..HEAD, the Valve
     /// profile and preview delta).</summary>
+    [Collection("SettingsManagerStatics")]
     public class AuditDelta20260829Tests
     {
         private static string RepoText(params string[] parts)

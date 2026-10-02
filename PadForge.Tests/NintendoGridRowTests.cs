@@ -18,6 +18,7 @@ namespace PadForge.Tests
     /// D-pad group at a hat the descriptor does not declare, and stopped at
     /// index 13 so Minus, LS, Home, Capture, GR, GL and C had no row at all.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class NintendoGridRowTests
     {
         private const string S1 = "switch-pro";

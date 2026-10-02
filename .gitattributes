@@ -2,12 +2,16 @@
 # Commit d30921e4 stored a CRLF copy of one file and turned a 167-line change into 12,000.
 * text=auto
 
-# The driver INFs under PadForge.App/Resources are members of a signed
-# catalog (.cat), and a catalog hashes the exact bytes of every file it
-# covers. The index holds these with LF, so pin the checkout to CRLF. A
-# clone with core.autocrlf=false or input would otherwise write LF and the
-# bytes would no longer match the signature.
+# A catalog (.cat) hashes the exact bytes of every file it covers. The
+# BthPS3 and BthPS3PSM INFs arrive signed from upstream, and two of them mix
+# line endings: BthPS3.inf has one bare LF at line 67 and
+# BthPS3_PDO_NULL_Device.inf has one at line 53. Converting them in either
+# direction changes those bytes and the catalog then rejects the INF, so git
+# stores and checks them out untouched. ds3_winusb.inf is signed on the
+# machine that installs it, so it keeps the CRLF checkout.
 PadForge.App/Resources/**/*.inf text eol=crlf
+PadForge.App/Resources/BthPS3/BthPS3/*.inf -text
+PadForge.App/Resources/BthPS3/BthPS3PSM/*.inf -text
 
 # A shell script checked out with CRLF does not run: bash reads the carriage
 # return as part of each command. Pin LF whatever core.autocrlf says.

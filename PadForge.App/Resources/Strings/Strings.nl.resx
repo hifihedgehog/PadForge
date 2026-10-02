@@ -2796,7 +2796,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
   <data name="About_BthPS3Desc" xml:space="preserve"><value>Meegeleverde Bluetooth-profiel- en PSM-filterstuurprogramma's van nefarius waarmee een DualShock 3 via de gedeelde radio kan verbinden. Wordt tijdens het koppelen in de app geïnstalleerd. BSD 3-Clause.</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
-  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>DualShock 3-protocolreferentie van Benjamin Höglinger-Stelzer: sixpair-featurereports, Bluetooth-outputreporttemplate, inschakelvolgorde, batterijmapping. De implementatie van PadForge is originele C#. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>DualShock 3-protocolreferentie van Benjamin Höglinger-Stelzer: sixpair-featurereports, Bluetooth-outputreporttemplate, inschakelvolgorde, batterijmapping. De implementatie van PadForge is originele C#. De DualShock 3 (SIXAXIS): Full-controller van HIDMaestro gebruikt de reportdescriptor van de SXS-modus van DsHidMini. BSD 3-Clause.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
   <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Installatie in de driver-store, registratie van het Bluetooth-klassefilter en het in- en uitschakelen van de USB-poort voor de BthPS3-installatie in de app, door nefarius. MIT.</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>

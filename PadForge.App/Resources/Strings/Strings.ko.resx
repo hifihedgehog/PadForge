@@ -2776,7 +2776,7 @@
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
   <data name="About_BthPS3Desc" xml:space="preserve"><value>DualShock 3가 공유 무선 장치를 통해 연결되도록 해주는 nefarius의 번들 Bluetooth 프로파일 및 PSM 필터 드라이버입니다. 페어링 시 앱 내에서 설치됩니다. BSD 3-Clause.</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
-  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer의 DualShock 3 프로토콜 참조 자료: sixpair 기능 리포트, Bluetooth 출력 리포트 템플릿, 활성화 순서, 배터리 맵. PadForge의 구현은 독자적인 C#입니다. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer의 DualShock 3 프로토콜 참조 자료: sixpair 기능 리포트, Bluetooth 출력 리포트 템플릿, 활성화 순서, 배터리 맵. PadForge의 구현은 독자적인 C#입니다. HIDMaestro의 DualShock 3 (SIXAXIS): Full 컨트롤러는 DsHidMini SXS 모드의 리포트 디스크립터를 사용합니다. BSD 3-Clause.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
   <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>앱 내 BthPS3 설정을 위한 드라이버 저장소 설치, Bluetooth 클래스 필터 등록, USB 포트 순환. nefarius 제작. MIT.</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>

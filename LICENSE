@@ -138,8 +138,12 @@ DsHidMini
   Copyright (c) 2020-2025, Benjamin Höglinger-Stelzer
   DualShock 3 protocol reference: sixpair feature reports, Bluetooth
   output-report template, enable ordering, battery status map.
-  PadForge's implementation is original C#.
-  Licensed under the BSD 3-Clause License
+  PadForge's implementation is original C#. HIDMaestro.Core.dll carries
+  DsHidMini's SXS-mode HID report descriptor for its DualShock 3
+  (SIXAXIS): Full controller, and its driver derives that mode's input
+  and feature reports from the native DualShock 3 report the way
+  DsHidMini does.
+  Licensed under the BSD 3-Clause License (full text at the end of this file)
 
 duaLib
   https://github.com/WujekFoliarz/duaLib
@@ -1377,15 +1381,18 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 --------------------------------------------------------------------------------
 
 BSD 3-Clause License (BthPS3 and BthPS3PSM, CLAPACK and OpenBLAS inside
-libvosk, HIDAPI inside SDL3.dll, the OpenVR API C# binding, the $Q
-Super-Quick Recognizer re-derivation and the SIPSorcery STUN code, all
-redistributed in binary form)
+libvosk, the DsHidMini report descriptor inside HIDMaestro.Core.dll,
+HIDAPI inside SDL3.dll, the OpenVR API C# binding, the $Q Super-Quick
+Recognizer re-derivation and the SIPSorcery STUN code, all redistributed
+in binary form)
 =======================================================================
 
 Copyright (c) 2018-2026, Nefarius Software Solutions e.U.
   (BthPS3 and BthPS3PSM)
 Copyright (c) 1992-2008 The University of Tennessee
   (CLAPACK)
+Copyright (c) 2020-2025, Benjamin Höglinger-Stelzer
+  (DsHidMini)
 Copyright (c) 2010, Alan Ott, Signal 11 Software
   (HIDAPI)
 Copyright (c) 2011-2014, The OpenBLAS Project

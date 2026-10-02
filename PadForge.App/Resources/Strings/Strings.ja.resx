@@ -2776,7 +2776,7 @@
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
   <data name="About_BthPS3Desc" xml:space="preserve"><value>DualShock 3 を共有無線経由で接続できるようにする、nefarius 製の Bluetooth プロファイルおよび PSM フィルタードライバー一式。ペアリング時にアプリ内でインストールされます。BSD 3-Clause。</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
-  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer による DualShock 3 プロトコルのリファレンス。sixpair のフィーチャーレポート、Bluetooth 出力レポートのテンプレート、有効化の順序、バッテリーマップを収録。PadForge の実装は独自の C# です。BSD 3-Clause。</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer による DualShock 3 プロトコルのリファレンス。sixpair のフィーチャーレポート、Bluetooth 出力レポートのテンプレート、有効化の順序、バッテリーマップを収録。PadForge の実装は独自の C# です。HIDMaestro の DualShock 3 (SIXAXIS): Full コントローラーは DsHidMini の SXS モードのレポート記述子を使用します。BSD 3-Clause。</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
   <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>アプリ内での BthPS3 セットアップに用いる、ドライバーストアへのインストール、Bluetooth クラスフィルターの登録、USB ポートの再接続処理。nefarius 製。MIT。</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>

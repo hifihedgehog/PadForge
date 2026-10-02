@@ -2776,7 +2776,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
   <data name="About_BthPS3Desc" xml:space="preserve"><value>Pilotes de profil Bluetooth et de filtre PSM fournis par nefarius, permettant à une DualShock 3 de se connecter via la radio partagée. Installés dans l'application au moment de l'appairage. BSD 3-Clause.</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
-  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Référence du protocole DualShock 3 par Benjamin Höglinger-Stelzer : rapports de fonctionnalité sixpair, modèle de rapport de sortie Bluetooth, ordre d'activation, correspondance de la batterie. L'implémentation de PadForge est en C# original. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Référence du protocole DualShock 3 par Benjamin Höglinger-Stelzer : rapports de fonctionnalité sixpair, modèle de rapport de sortie Bluetooth, ordre d'activation, correspondance de la batterie. L'implémentation de PadForge est en C# original. Le contrôleur DualShock 3 (SIXAXIS): Full de HIDMaestro utilise le descripteur de rapport du mode SXS de DsHidMini. BSD 3-Clause.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
   <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Installation dans le magasin de pilotes, enregistrement du filtre de classe Bluetooth et cycle du port USB pour la configuration BthPS3 intégrée, par nefarius. MIT.</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>

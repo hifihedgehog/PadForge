@@ -50,6 +50,12 @@ namespace PadForge.Common.Input
         private const ushort DS3_PID = 0x0268;
         private const ushort NAV_PID = 0x042F;   // BTHPS3_NAVIGATION_PID (BthPS3.h:48)
 
+        /// <summary>The buttons this reader's virtual joystick has, the count
+        /// that tells it apart from DsHidMini's SDF mode when the default
+        /// mapping looks for a DualShock 3's pressure axes
+        /// (ButtonPressureSources).</summary>
+        internal const int VirtualJoystickButtons = 15;
+
         // Navigation-controller profile (#277). The Nav IS a half sixaxis over
         // Bluetooth: hid-sony's NAVIGATION_CONTROLLER_BT branch calls the same
         // sixaxis_set_operational_bt enable and sends the same sixaxis output
@@ -1053,7 +1059,7 @@ namespace PadForge.Common.Input
                     // HasExtraGenericAxes seam surfaces them as "Axis 6".."Axis 15"
                     // identically on both transports.
                     naxes = 16,
-                    nbuttons = 15,
+                    nbuttons = VirtualJoystickButtons,
                     nhats = 0,
                     // The Navigation controller carries no motion sensors
                     // (hid-sony registers sensors only for SIXAXIS_CONTROLLER,

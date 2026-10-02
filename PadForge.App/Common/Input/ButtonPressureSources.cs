@@ -27,6 +27,10 @@ namespace PadForge.Common.Input
         /// (Ds3DirectService's virtual joystick).</summary>
         internal const int Ds3FirstPressureAxis = 6;
 
+        /// <summary>The buttons SDL's PS3 driver opens a DualShock 3 with
+        /// (SDL_hidapi_ps3.c, joystick->nbuttons).</summary>
+        private const int SdlPs3DriverButtons = 11;
+
         /// <summary>
         /// True for a DualShock 3 whose axes 6 to 15 are its pressures in SDL's
         /// order: 054C:0268 with 16 raw axes, opened by SDL's PS3 driver (11
@@ -44,18 +48,40 @@ namespace PadForge.Common.Input
             int rawAxes, int rawButtons)
             => vendorId == 0x054C && productId == 0x0268
             && rawAxes >= Ds3FirstPressureAxis + PadForge.Engine.Common.ButtonPressureState.Count
-            && (rawButtons == 11 || rawButtons == 15);
+            && (rawButtons == SdlPs3DriverButtons || rawButtons == Ds3DirectService.VirtualJoystickButtons);
 
         /// <summary>The axis each pressure target reads on
-        /// <paramref name="ud"/>, or null.</summary>
+        /// <paramref name="ud"/>, or null. A pad that is not connected answers
+        /// from its cached entry, so assigning a cached DualShock 3 maps its
+        /// pressure the way assigning a connected one does.</summary>
         internal static int[] AxesFor(UserDevice ud)
         {
-            if (ud?.Device is not SdlDeviceWrapper w
-                || !IsSdlOrderDualShock3(w.VendorId, w.ProductId, w.RawAxisCount, w.RawButtonCount))
-                return null;
+            bool sdlOrder = ud?.Device switch
+            {
+                SdlDeviceWrapper w => IsSdlOrderDualShock3(w.VendorId, w.ProductId, w.RawAxisCount, w.RawButtonCount),
+                null => ud != null && CachedRawButtons(ud.SdlGuid) is int buttons
+                    && IsSdlOrderDualShock3(ud.VendorId, ud.ProdId, ud.RawAxisCount, buttons),
+                _ => false,
+            };
+            if (!sdlOrder) return null;
             var axes = new int[PadForge.Engine.Common.ButtonPressureState.Count];
             for (int i = 0; i < axes.Length; i++) axes[i] = Ds3FirstPressureAxis + i;
             return axes;
         }
+
+        /// <summary>The raw button count of the driver that last opened a
+        /// cached pad. The entry itself keeps the larger of that count and the
+        /// 22 gamepad positions (UserDevice.LoadFromDevice), which hides 11,
+        /// 15 and DsHidMini SDF's 17 alike. The SDL GUID it also keeps names
+        /// the driver in its signature byte (SDL_CreateJoystickGUID data[14]):
+        /// HIDAPI is SDL's PS3 driver for a DualShock 3, and a virtual
+        /// joystick with the DualShock 3's ids is PadForge's own reader. Any
+        /// other driver gives no answer.</summary>
+        private static int? CachedRawButtons(string sdlGuid) => SdlDeviceWrapper.BackendFromGuid(sdlGuid) switch
+        {
+            "hidapi" => SdlPs3DriverButtons,
+            "virtual" => Ds3DirectService.VirtualJoystickButtons,
+            _ => null,
+        };
     }
 }

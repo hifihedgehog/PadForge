@@ -307,7 +307,9 @@ namespace PadForge.Engine
         /// <summary>Which SDL Windows backend produced this joystick, read
         /// from the GUID's driver-signature byte (SDL_CreateJoystickGUID puts
         /// it at data[14], hex chars 28-29 of the GUID string): 'x' XInput,
-        /// 'h' HIDAPI, 'r' RawInput, 'w' WGI, and DirectInput leaves it zero.
+        /// 'h' HIDAPI, 'r' RawInput, 'w' WGI, 'v' a virtual joystick
+        /// (SDL_virtualjoystick.c, the joysticks PadForge's own readers
+        /// attach), and DirectInput leaves it zero.
         /// The name cannot tell a pad's views apart (#395: one Vader 5 Pro
         /// arrives as three or four joysticks, two of them named alike).</summary>
         public string Backend => GameInputInfo != null ? "gameinput" : BackendFromGuid(SdlGuid);
@@ -323,6 +325,7 @@ namespace PadForge.Engine
                 'h' => "hidapi",
                 'r' => "rawinput",
                 'w' => "wgi",
+                'v' => "virtual",
                 'g' => "gameinput",
                 0 => "dinput",
                 _ => $"0x{sig:X2}",

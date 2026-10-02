@@ -673,6 +673,116 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>A DualShock 3 as its cached entry keeps it while the pad is
+        /// not connected: no device object, the raw button count folded into
+        /// the 22 gamepad positions, and the SDL GUID of the driver that last
+        /// opened it. The defaults are a real entry's: PadForge's own reader
+        /// over Bluetooth, GUID ff00788c4c0500006802000000007601.</summary>
+        private static UserDevice CachedDs3(string signature = "76", int rawAxes = 16, ushort pid = 0x0268)
+        {
+            string guid = "ff00788c4c050000" + $"{pid & 0xFF:x2}{pid >> 8:x2}" + "00000000" + signature + "01";
+            var objects = new List<DeviceObjectItem>();
+            for (int a = 0; a < rawAxes; a++)
+                objects.Add(new DeviceObjectItem { InputIndex = a, ObjectType = DeviceObjectTypeFlags.AbsoluteAxis });
+            objects.Add(new DeviceObjectItem { InputIndex = 0, ObjectType = DeviceObjectTypeFlags.PointOfViewController });
+            for (int b = 0; b < 11; b++)
+                objects.Add(new DeviceObjectItem { InputIndex = b, ObjectType = DeviceObjectTypeFlags.PushButton });
+            return new UserDevice
+            {
+                InstanceGuid = Guid.NewGuid(), VendorId = 0x054C, ProdId = pid,
+                SdlGuid = guid, RawAxisCount = rawAxes, RawButtonCount = 22,
+                CapType = InputDeviceType.Gamepad, HasGyro = true, HasAccel = true,
+                DeviceObjects = objects.ToArray(),
+            };
+        }
+
+        [Fact]
+        public void ACachedDualShock3MapsItsPressureLikeAConnectedOne()
+        {
+            var cached = CachedDs3();
+            Assert.Null(cached.Device);
+            Assert.Equal(32, cached.SdlGuid.Length);
+            Assert.Equal("ff00788c4c0500006802000000007601", cached.SdlGuid);
+
+            var ps = SettingsManager.CreateDefaultPadSetting(cached, PS, Full);
+            Assert.Equal(Enumerable.Range(6, 10).Select(i => $"Axis {i}"), Targets.Select(t => Field(ps, t)));
+            // The rest of the pad maps one to one as before.
+            Assert.Equal("Button 0", ps.ButtonA);
+            Assert.Equal("Button 6", ps.ButtonBack);
+            Assert.Equal("Button 10", ps.ButtonGuide);
+            Assert.Equal("Axis 2", ps.LeftTrigger);
+            Assert.Equal("POV 0 Up", ps.DPadUp);
+            Assert.Equal("Motion Gyro", ps.MotionGyro);
+
+            // A preset without pressure, or another slot type, gets none.
+            foreach (var other in new[]
+            {
+                SettingsManager.CreateDefaultPadSetting(cached, PS, "dualshock-3"),
+                SettingsManager.CreateDefaultPadSetting(cached, VirtualControllerType.Xbox, "xbox-360-wired"),
+            })
+                Assert.All(Targets, t => Assert.Equal("", Field(other, t)));
+        }
+
+        /// <summary>The driver byte stands in for the raw button count the
+        /// entry folds away: SDL's PS3 driver ('h', 11 buttons) and PadForge's
+        /// own reader ('v', 15) post the pressures in SDL's order, and any
+        /// other driver gives no answer. DsHidMini's SDF mode, whose report
+        /// SDL's sixaxis driver cannot open (InputManager's hint comment),
+        /// reaches SDL through another driver with its own order.</summary>
+        [Theory]
+        [InlineData("76", 16, 0x0268, true)]    // PadForge's own reader
+        [InlineData("68", 16, 0x0268, true)]    // SDL's PS3 driver
+        [InlineData("68", 6, 0x0268, false)]    // the PS3 driver without analog buttons
+        [InlineData("00", 16, 0x0268, false)]   // DirectInput
+        [InlineData("72", 16, 0x0268, false)]   // RawInput
+        [InlineData("78", 16, 0x0268, false)]   // XInput
+        [InlineData("76", 16, 0x042F, false)]   // PadForge's Navigation controller reader
+        public void ACachedEntryAnswersByTheDriverThatOpenedIt(string signature, int rawAxes, int pid, bool expected)
+            => Assert.Equal(expected, ButtonPressureSources.AxesFor(CachedDs3(signature, rawAxes, (ushort)pid)) != null);
+
+        [Fact]
+        public void ACachedEntryWithoutAGuidOrWithAnotherDeviceObjectGetsNone()
+        {
+            var noGuid = CachedDs3();
+            noGuid.SdlGuid = "";
+            Assert.Null(ButtonPressureSources.AxesFor(noGuid));
+
+            // A connected device that is not an SDL joystick answers from
+            // itself, never from the cached fields.
+            var other = CachedDs3();
+            using var pad = new Pad();
+            other.Device = pad;
+            Assert.Null(ButtonPressureSources.AxesFor(other));
+            Assert.Null(ButtonPressureSources.AxesFor(null));
+        }
+
+        [Fact]
+        public void ChangingToTheFullPresetFillsACachedDualShock3()
+        {
+            var devices = SettingsManager.UserDevices;
+            var settings = SettingsManager.UserSettings;
+            var cached = CachedDs3();
+            try
+            {
+                SettingsManager.UserDevices = new DeviceCollection();
+                SettingsManager.UserSettings = new SettingsCollection();
+                lock (SettingsManager.UserDevices.SyncRoot) SettingsManager.UserDevices.Items.Add(cached);
+                var ps = new PadSetting { ButtonA = "Button 0" };
+                var us = new UserSetting { InstanceGuid = cached.InstanceGuid, MapTo = 0 };
+                us.SetPadSetting(ps);
+                lock (SettingsManager.UserSettings.SyncRoot) SettingsManager.UserSettings.Items.Add(us);
+
+                Assert.True(DeviceService.FillEmptyPressureMappingsForSlot(0, Full));
+                Assert.Equal("Axis 6", ps.PressureButtonA);
+                Assert.Equal("Axis 15", ps.PressureDPadRight);
+            }
+            finally
+            {
+                SettingsManager.UserDevices = devices;
+                SettingsManager.UserSettings = settings;
+            }
+        }
+
         [Fact]
         public void ChangingToTheFullPresetFillsOnlyThePressureFields()
         {

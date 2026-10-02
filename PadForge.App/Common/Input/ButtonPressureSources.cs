@@ -11,11 +11,11 @@ namespace PadForge.Common.Input
     /// right. Null means PadForge knows no layout for the pad, and the rows
     /// stay empty for the user to record.
     ///
-    /// <para>Only a gamepad reaches the default mapping. A Bliss-Box port
-    /// read raw is a joystick, which PadForge never maps on its own, so its
-    /// DualShock 2 pressures ("Cross Pressure" and the rest) are recorded
-    /// by hand, and a pressure row's recording takes the pressure axis
-    /// rather than the button (RecorderService._analogOnly).</para>
+    /// <para>A DualShock 2 in a Bliss-Box port gets its pressures ("Cross
+    /// Pressure" and the rest) from the port's placement instead
+    /// (<see cref="PadForge.Engine.Common.BlissBox.BlissBoxGamepadMap.PressureAxes"/>).
+    /// A pressure row's recording takes the pressure axis rather than the
+    /// button (RecorderService._analogOnly).</para>
     /// </summary>
     internal static class ButtonPressureSources
     {

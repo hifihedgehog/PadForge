@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace PadForge.Engine.Common.BlissBox
 {
@@ -40,7 +43,9 @@ namespace PadForge.Engine.Common.BlissBox
     /// names 27, 49 and 54 "SNES", "NEO" and "PCEngine", which no layout file
     /// carries, so those three are matched here by hand to supernintendo,
     /// neogeo and pce. A controller neither source lays out, or a button a
-    /// source leaves unlabeled, keeps the joystick's own name.</para>
+    /// source leaves unlabeled, keeps the joystick's own name, except the
+    /// GPA's button 18 on a PlayStation pad, which the firmware sends for
+    /// Select and Start (<see cref="PlayStationGpaButtons"/>).</para>
     ///
     /// <para>The names follow each adapter's default map. The GPA's
     /// alternate maps (one swaps Z with C and L with R), its custom maps and
@@ -365,6 +370,24 @@ namespace PadForge.Engine.Common.BlissBox
 
         private static readonly Layout PlayStation = new() { Buttons = PlayStationButtons, Axes = TwoSticks };
         private static readonly Layout PlayStationDigital = new() { Buttons = PlayStationButtons };
+
+        /// <summary>A GPA's PlayStation pads, plus button 18. Holding Start
+        /// arms GPA 4.86's hotkey once its timer runs out (0x32C8 to 0x3340,
+        /// "holding start for 2 seconds" in the API document), and with
+        /// Select held as well the firmware drops both and sends button 18
+        /// alone (0x33FA to 0x3405), unless a port setting skips those
+        /// routines (0x06AC, 0x3613 to 0x362A). DeviceBuddy draws that button
+        /// on the pad, unlabeled (playstation.layout BTN_HOME). It takes
+        /// SDL's name for the role, the guide, as PadForge names an SDL
+        /// gamepad's (<see cref="GamepadObjectNames.Button"/>). The 3.0
+        /// firmware has no such swap.</summary>
+        private static readonly Dictionary<int, string> PlayStationGpaButtons = new(PlayStationButtons)
+        {
+            [18] = "Guide",
+        };
+
+        private static readonly Layout PlayStationGpa = new() { Buttons = PlayStationGpaButtons, Axes = TwoSticks };
+        private static readonly Layout PlayStationDigitalGpa = new() { Buttons = PlayStationGpaButtons };
         private static readonly Layout AtariJoystick = new() { Buttons = new() { [0] = "Fire" } };
         private static readonly Layout OneDial = new() { Axes = new() { [7] = "Dial" }, DPad = false };
 
@@ -528,11 +551,11 @@ namespace PadForge.Engine.Common.BlissBox
                     [0] = "II", [1] = "I", [6] = "III", [3] = "IV", [2] = "V", [7] = "VI", [4] = "Select", [5] = "Run",
                 },
             },
-            [65] = PlayStationDigital,
-            [83] = PlayStation,
-            [115] = PlayStation,
-            [119] = PlayStation,
-            [121] = PlayStation,
+            [65] = PlayStationDigitalGpa,
+            [83] = PlayStationGpa,
+            [115] = PlayStationGpa,
+            [119] = PlayStationGpa,
+            [121] = PlayStationGpa,
             [3] = new() { Buttons = SaturnButtons },
             [8] = new() { Buttons = SaturnButtons, Axes = OneStickAndTriggers },
             [27] = new()
@@ -599,5 +622,322 @@ namespace PadForge.Engine.Common.BlissBox
         /// to keep the joystick's own name.</summary>
         public static string HatName(byte type, byte major)
             => LayoutFor(type, major) is { DPad: true } ? "D-Pad" : null;
+
+        /// <summary>The roles in SDL's gamepad layout the default mapping
+        /// gives a controller's inputs. South to Guide are the button
+        /// positions 0 to 10 of <see cref="GamepadObjectNames.Button"/> and
+        /// Misc2 its position 17. LeftX to RightTrigger are the axis
+        /// positions 0 to 5 of <see cref="GamepadObjectNames.Axis"/>, and a
+        /// trigger takes a button as readily as an axis.</summary>
+        private enum Role : byte
+        {
+            South, East, West, North, LeftShoulder, RightShoulder, Back, Start,
+            LeftStick, RightStick, Guide, Misc2,
+            LeftX, LeftY, LeftTrigger, RightX, RightY, RightTrigger,
+        }
+
+        /// <summary>The role of each input a controller's layout names, keyed
+        /// by that name, so an input lands by what it is on either firmware,
+        /// whichever index each sends it on.</summary>
+        private sealed class Placement
+        {
+            public Dictionary<string, Role> Inputs { get; init; } = new();
+
+            /// <summary>The hat is the D-pad.</summary>
+            public bool DPad { get; init; } = true;
+        }
+
+        /// <summary>SDL's PS3 driver: Cross is the south button, Circle east,
+        /// Square west and Triangle north (SDL_gamepad.c, the Sony face
+        /// style), L2 and R2 the triggers, L3 and R3 the stick buttons, Select
+        /// the back button and the PS button the guide
+        /// (SDL_hidapi_ps3.c).</summary>
+        private static readonly Placement PlayStationPlacement = new()
+        {
+            Inputs = new()
+            {
+                ["Cross"] = Role.South, ["Circle"] = Role.East, ["Square"] = Role.West, ["Triangle"] = Role.North,
+                ["L1"] = Role.LeftShoulder, ["R1"] = Role.RightShoulder,
+                ["L2"] = Role.LeftTrigger, ["R2"] = Role.RightTrigger,
+                ["L3"] = Role.LeftStick, ["R3"] = Role.RightStick,
+                ["Select"] = Role.Back, ["Start"] = Role.Start, ["Guide"] = Role.Guide,
+                ["Left Stick X"] = Role.LeftX, ["Left Stick Y"] = Role.LeftY,
+                ["Right Stick X"] = Role.RightX, ["Right Stick Y"] = Role.RightY,
+            },
+        };
+
+        /// <summary>SDL's mapping for Nintendo's SNES pad for the Switch, by
+        /// position: B south, A east, Y west, X north (SDL_gamepad.c, with the
+        /// pad's buttons on the Pro Controller's bits per hid-nintendo.c
+        /// snescon_button_mappings).</summary>
+        private static readonly Placement SnesPlacement = new()
+        {
+            Inputs = new()
+            {
+                ["B"] = Role.South, ["A"] = Role.East, ["Y"] = Role.West, ["X"] = Role.North,
+                ["L"] = Role.LeftShoulder, ["R"] = Role.RightShoulder,
+                ["Select"] = Role.Back, ["Start"] = Role.Start,
+            },
+        };
+
+        /// <summary>SDL's mapping for Nintendo's NES pads for the Switch. SDL
+        /// reads a pad without a diamond of four face buttons by its letters
+        /// (SDL_hidapi_switch.c AlwaysUsesLabels), so A is south and B
+        /// east.</summary>
+        private static readonly Placement NesPlacement = new()
+        {
+            Inputs = new()
+            {
+                ["A"] = Role.South, ["B"] = Role.East, ["Select"] = Role.Back, ["Start"] = Role.Start,
+            },
+        };
+
+        /// <summary>SDL's mapping for Nintendo's N64 pad for the Switch, by
+        /// letter as for the NES: A south, B east, C-Down west, C-Left north,
+        /// C-Up the back button, C-Right Misc 2, Z the left trigger
+        /// (SDL_gamepad.c, with the pad's buttons on the Pro Controller's bits
+        /// per hid-nintendo.c n64con_button_mappings).</summary>
+        private static readonly Placement N64Placement = new()
+        {
+            Inputs = new()
+            {
+                ["A"] = Role.South, ["B"] = Role.East, ["C-Down"] = Role.West, ["C-Left"] = Role.North,
+                ["C-Up"] = Role.Back, ["C-Right"] = Role.Misc2, ["Z Trigger"] = Role.LeftTrigger,
+                ["L"] = Role.LeftShoulder, ["R"] = Role.RightShoulder, ["Start"] = Role.Start,
+                ["Stick X"] = Role.LeftX, ["Stick Y"] = Role.LeftY,
+            },
+        };
+
+        /// <summary>SDL's mapping for the Genesis pad for the Switch, by
+        /// letter: A south, B east, X west, Y north, C the right shoulder, Z
+        /// the left, Mode the right trigger (SDL_gamepad.c, with the pad's
+        /// buttons on the Pro Controller's bits per hid-nintendo.c
+        /// gencon_button_mappings).</summary>
+        private static readonly Placement GenesisPlacement = new()
+        {
+            Inputs = new()
+            {
+                ["A"] = Role.South, ["B"] = Role.East, ["X"] = Role.West, ["Y"] = Role.North,
+                ["C"] = Role.RightShoulder, ["Z"] = Role.LeftShoulder, ["Mode"] = Role.RightTrigger,
+                ["Start"] = Role.Start,
+            },
+        };
+
+        /// <summary>SDL's GameCube adapter mapping, by position: A south, X
+        /// east, B west, Y north, Z the right shoulder, the analog L and R
+        /// the triggers and the C-stick the right stick (SDL_gamepad.c, over
+        /// SDL_hidapi_gamecube.c's button order). SDL puts the digital L and R
+        /// on Misc 3 and Misc 4, which no default binds.</summary>
+        private static readonly Placement GameCubePlacement = new()
+        {
+            Inputs = new()
+            {
+                ["A"] = Role.South, ["X"] = Role.East, ["B"] = Role.West, ["Y"] = Role.North,
+                ["Z"] = Role.RightShoulder, ["Start"] = Role.Start,
+                ["Left Trigger"] = Role.LeftTrigger, ["Right Trigger"] = Role.RightTrigger,
+                ["Left Stick X"] = Role.LeftX, ["Left Stick Y"] = Role.LeftY,
+                ["C-Stick X"] = Role.RightX, ["C-Stick Y"] = Role.RightY,
+            },
+        };
+
+        /// <summary>SDL's Wii driver, by position: B south, A east, Y west, X
+        /// north, L and R the shoulders, ZL and ZR the triggers, minus the
+        /// back button, plus Start and Home the guide (SDL_hidapi_wii.c
+        /// GAMEPAD_BUTTON_DEFS).</summary>
+        private static readonly Placement WiiClassicPlacement = new()
+        {
+            Inputs = new()
+            {
+                ["B"] = Role.South, ["A"] = Role.East, ["Y"] = Role.West, ["X"] = Role.North,
+                ["L"] = Role.LeftShoulder, ["R"] = Role.RightShoulder,
+                ["ZL"] = Role.LeftTrigger, ["ZR"] = Role.RightTrigger,
+                ["-"] = Role.Back, ["+"] = Role.Start, ["Home Button"] = Role.Guide,
+                ["Left Stick X"] = Role.LeftX, ["Left Stick Y"] = Role.LeftY,
+                ["Right Stick X"] = Role.RightX, ["Right Stick Y"] = Role.RightY,
+            },
+        };
+
+        /// <summary>SDL's Wii driver for the Nunchuk: C the left shoulder, Z
+        /// the left trigger, its stick the left stick
+        /// (SDL_hidapi_wii.c HandleNunchuckButtonData).</summary>
+        private static readonly Placement NunchukPlacement = new()
+        {
+            Inputs = new()
+            {
+                ["C"] = Role.LeftShoulder, ["Z"] = Role.LeftTrigger,
+                ["Stick X"] = Role.LeftX, ["Stick Y"] = Role.LeftY,
+            },
+            DPad = false,
+        };
+
+        // The pads below have no SDL mapping. RetroArch's Bliss-Box 4-Play
+        // files (firmware 3.24) bind each to its RetroPad, and RetroArch's
+        // own SDL3 table puts the RetroPad's B on SDL's south button, A east,
+        // Y west and X north (input_autodetect_builtin.c SDL3_DEFAULT_BINDS).
+
+        /// <summary>The Dreamcast pad: A south, B east, X west, Y north, the
+        /// analog L and R the triggers. The ASCII pad's digital L and R take
+        /// the triggers, which it has no analog ones for.</summary>
+        private static readonly Placement DreamcastPlacement = new()
+        {
+            Inputs = new()
+            {
+                ["A"] = Role.South, ["B"] = Role.East, ["X"] = Role.West, ["Y"] = Role.North,
+                ["Start"] = Role.Start,
+                ["Left Trigger"] = Role.LeftTrigger, ["Right Trigger"] = Role.RightTrigger,
+                ["L"] = Role.LeftTrigger, ["R"] = Role.RightTrigger,
+                ["Stick X"] = Role.LeftX, ["Stick Y"] = Role.LeftY,
+            },
+        };
+
+        /// <summary>The Saturn pads: A south, B east, X west, Y north, Z and C
+        /// the shoulders, where SDL's Genesis mapping puts the same six
+        /// buttons, and L and R the triggers, analog on the 3D Control
+        /// Pad.</summary>
+        private static readonly Placement SaturnPlacement = new()
+        {
+            Inputs = new()
+            {
+                ["A"] = Role.South, ["B"] = Role.East, ["X"] = Role.West, ["Y"] = Role.North,
+                ["Z"] = Role.LeftShoulder, ["C"] = Role.RightShoulder,
+                ["Left Trigger"] = Role.LeftTrigger, ["Right Trigger"] = Role.RightTrigger,
+                ["L"] = Role.LeftTrigger, ["R"] = Role.RightTrigger,
+                ["Start"] = Role.Start,
+                ["Stick X"] = Role.LeftX, ["Stick Y"] = Role.LeftY,
+            },
+        };
+
+        /// <summary>The Neo Geo pad: A south, B east, C west, D
+        /// north.</summary>
+        private static readonly Placement NeoGeoPlacement = new()
+        {
+            Inputs = new()
+            {
+                ["A"] = Role.South, ["B"] = Role.East, ["C"] = Role.West, ["D"] = Role.North,
+                ["Select"] = Role.Back, ["Start"] = Role.Start,
+            },
+        };
+
+        /// <summary>The TurboGrafx-16 pad: II south, I east. The 6-button pad
+        /// shares them and keeps III to VI unbound.</summary>
+        private static readonly Placement TurboGrafxPlacement = new()
+        {
+            Inputs = new()
+            {
+                ["II"] = Role.South, ["I"] = Role.East, ["Select"] = Role.Back, ["Run"] = Role.Start,
+            },
+        };
+
+        /// <summary>The 3DO pad: B south, A west, C east, X the back button,
+        /// P Start.</summary>
+        private static readonly Placement ThreeDoPlacement = new()
+        {
+            Inputs = new()
+            {
+                ["B"] = Role.South, ["A"] = Role.West, ["C"] = Role.East,
+                ["L"] = Role.LeftShoulder, ["R"] = Role.RightShoulder,
+                ["X"] = Role.Back, ["P"] = Role.Start,
+            },
+        };
+
+        /// <summary>The Jaguar pad: B south, A west, C east. The keypad stays
+        /// unbound.</summary>
+        private static readonly Placement JaguarPlacement = new()
+        {
+            Inputs = new() { ["B"] = Role.South, ["A"] = Role.West, ["C"] = Role.East },
+        };
+
+        /// <summary>The Atari joystick: its fire button south.</summary>
+        private static readonly Placement AtariPlacement = new()
+        {
+            Inputs = new() { ["Fire"] = Role.South },
+        };
+
+        /// <summary>The ColecoVision controller: the right fire button south,
+        /// the left east, the disc the D-pad. The keypad stays
+        /// unbound.</summary>
+        private static readonly Placement ColecoPlacement = new()
+        {
+            Inputs = new() { ["Right Fire"] = Role.South, ["Left Fire"] = Role.East },
+        };
+
+        private static readonly Dictionary<byte, Placement> Placements = new()
+        {
+            [0] = AtariPlacement,
+            [255] = AtariPlacement,
+            [1] = ColecoPlacement,
+            [3] = SaturnPlacement,
+            [8] = SaturnPlacement,
+            [9] = GameCubePlacement,
+            [11] = JaguarPlacement,
+            [13] = NunchukPlacement,
+            [15] = DreamcastPlacement,
+            [16] = DreamcastPlacement,
+            [17] = NesPlacement,
+            [19] = N64Placement,
+            [20] = GenesisPlacement,
+            [21] = GenesisPlacement,
+            [23] = TurboGrafxPlacement,
+            [54] = TurboGrafxPlacement,
+            [25] = ThreeDoPlacement,
+            [27] = SnesPlacement,
+            [31] = WiiClassicPlacement,
+            [49] = NeoGeoPlacement,
+            [65] = PlayStationPlacement,
+            [83] = PlayStationPlacement,
+            [115] = PlayStationPlacement,
+            [119] = PlayStationPlacement,
+            [121] = PlayStationPlacement,
+        };
+
+        /// <summary>A DualShock 2's pressures for the button pressure targets,
+        /// in their order: the four face buttons south, east, west and north,
+        /// the shoulders, then the D-pad's up, down, left and right.</summary>
+        private static readonly string[] PressureTargetNames =
+        {
+            "Cross Pressure", "Circle Pressure", "Square Pressure", "Triangle Pressure",
+            "L1 Pressure", "R1 Pressure",
+            "D-Pad Up Pressure", "D-Pad Down Pressure", "D-Pad Left Pressure", "D-Pad Right Pressure",
+        };
+
+        /// <summary>
+        /// Where this controller's inputs land in SDL's gamepad layout, for the
+        /// default mapping, or null when no source lays the controller out for
+        /// this firmware or places its inputs. SDL's own mapping for the
+        /// console's pad comes first. The pads SDL has none for follow
+        /// RetroArch's Bliss-Box files. An input named as an analog trigger
+        /// takes its role before a digital button that shares it.
+        /// <paramref name="firstPressureAxis"/> is the port's first pressure
+        /// axis, -1 when twelve do not fit after its own.
+        /// </summary>
+        public static BlissBoxGamepadMap GamepadMap(byte type, byte major, int firstPressureAxis = -1)
+        {
+            if (LayoutFor(type, major) is not { } layout || !Placements.TryGetValue(type, out var placement))
+                return null;
+            var buttons = new string[BlissBoxGamepadMap.ButtonPositions];
+            var axes = new string[BlissBoxGamepadMap.AxisPositions];
+            foreach (var input in layout.Axes.OrderBy(i => i.Key)) Place(input.Value, "Axis ", input.Key);
+            foreach (var input in layout.Buttons.OrderBy(i => i.Key)) Place(input.Value, "Button ", input.Key);
+
+            int[] pressure = null;
+            if (HasPressure(type) && firstPressureAxis >= 0)
+                pressure = Array.ConvertAll(PressureTargetNames, name => firstPressureAxis + PressureIndex(name));
+            return new BlissBoxGamepadMap(buttons, axes, placement.DPad, pressure);
+
+            void Place(string name, string kind, int index)
+            {
+                if (!placement.Inputs.TryGetValue(name, out Role role)) return;
+                string source = kind + index.ToString(CultureInfo.InvariantCulture);
+                if (role >= Role.LeftX) axes[role - Role.LeftX] ??= source;
+                else buttons[role == Role.Misc2 ? 17 : (int)role] ??= source;
+            }
+        }
+
+        private static int PressureIndex(string name)
+        {
+            for (int i = 0; i < PressureNames.Count; i++)
+                if (PressureNames[i] == name) return i;
+            throw new ArgumentException(name, nameof(name));
+        }
     }
 }

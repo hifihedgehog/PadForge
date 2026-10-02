@@ -2780,7 +2780,8 @@ namespace PadForge.ViewModels
         /// and R2, whose pull is their own pressure. Each reads like a
         /// trigger. They stay out of Map All: a pad without pressure has
         /// nothing to give their prompts, and the default mapping fills
-        /// them for a DualShock 3.</summary>
+        /// them for a DualShock 3 and for a DualShock 2 in a Bliss-Box
+        /// port.</summary>
         private void AddPressureRows()
         {
             MappingItem Row(string button, string target) => new(

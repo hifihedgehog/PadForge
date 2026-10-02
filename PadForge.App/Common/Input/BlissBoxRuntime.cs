@@ -502,6 +502,20 @@ namespace PadForge.Common.Input
         internal static bool NamesObjectsFor(BlissBoxInfo info)
             => BlissBoxControllers.HasLayout(info.Type, info.Major) || BlissBoxControllers.HasPressure(info.Type);
 
+        /// <summary>Where the controller in this row's port puts its inputs
+        /// in SDL's gamepad layout, for the default mapping
+        /// (<see cref="BlissBoxControllers.GamepadMap"/>). Null unless the
+        /// row is a port read raw with a controller identified in it that
+        /// a source places: a searching port has none, and a Remote Link
+        /// peer's copy finds no port on its own PC to ask.</summary>
+        public static BlissBoxGamepadMap GamepadMapFor(UserDevice ud)
+        {
+            if (ud == null || !BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId) || !OpenedRaw(ud.Device)) return null;
+            return Find(ud)?.Session.LiveInfo is { } info
+                ? BlissBoxControllers.GamepadMap(info.Type, info.Major, PressureAxisBase(ud.Device))
+                : null;
+        }
+
         /// <summary>True for a port's axes that rest at 0 and travel one way,
         /// a trigger's shape (the #443 rule): the pressure axes, which the
         /// merge leaves at 0 whenever no DualShock 2 is in the port, and the

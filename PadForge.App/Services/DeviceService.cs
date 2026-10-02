@@ -720,6 +720,99 @@ namespace PadForge.Services
             return any;
         }
 
+        /// <summary>
+        /// Maps the controller a Bliss-Box port has identified on every slot
+        /// the port is assigned to that binds nothing from it yet: the default
+        /// mapping assigning the port builds once a controller is in it
+        /// (<paramref name="map"/>, BlissBoxRuntime.GamepadMapFor). A port
+        /// assigned while it searched, before a controller was plugged in,
+        /// got an empty one. A slot where the port binds anything keeps it,
+        /// whichever controller it was made for.
+        ///
+        /// <para>Binding nothing means no mapping on the port's PadSetting
+        /// and no source of the port's own in the slot's set. The caller
+        /// flushes the grids' pending edits first, so a binding recorded a
+        /// moment ago counts.</para>
+        /// </summary>
+        /// <param name="slotShape">A slot's output type, profile and Extended
+        /// layout, from its view model.</param>
+        /// <returns>True when a slot was mapped, so the caller merges the
+        /// sets, reloads the grids and saves.</returns>
+        public static bool AutoMapIdentifiedPort(UserDevice ud, PadForge.Engine.Common.BlissBox.BlissBoxGamepadMap map,
+            Func<int, (Engine.VirtualControllerType Type, string ProfileId, ViewModels.ExtendedSlotConfig Extended)> slotShape)
+        {
+            if (ud == null || map == null || slotShape == null) return false;
+
+            bool any = false;
+            foreach (var us in AssignedSettings(ud))
+            {
+                if (!BindsNothing(us, ud.InstanceGuid)) continue;
+                var existing = us.GetPadSetting();
+                var (type, profileId, extended) = slotShape(us.MapTo);
+                var fresh = SettingsManager.CreateDefaultPadSetting(ud, type, profileId, extended, map);
+                if (!fresh.HasAnyMapping) continue;
+                if (existing == null)
+                {
+                    us.SetPadSetting(fresh);
+                    us.PadSettingChecksum = fresh.PadSettingChecksum;
+                }
+                else
+                {
+                    MergeEmptyFrom(existing, fresh);
+                    us.PadSettingChecksum = existing.PadSettingChecksum;
+                }
+                any = true;
+            }
+            return any;
+        }
+
+        /// <summary>True when the port is assigned to a slot where it binds
+        /// nothing yet, the slots <see cref="AutoMapIdentifiedPort"/> maps.
+        /// The caller asks before flushing the grids' edits.</summary>
+        public static bool PortHasUnboundSlot(UserDevice ud)
+        {
+            if (ud == null) return false;
+            foreach (var us in AssignedSettings(ud))
+                if (BindsNothing(us, ud.InstanceGuid)) return true;
+            return false;
+        }
+
+        /// <summary>The device's slot assignments, snapshot under the
+        /// UserSettings lock.</summary>
+        private static System.Collections.Generic.List<UserSetting> AssignedSettings(UserDevice ud)
+        {
+            var slots = new System.Collections.Generic.List<UserSetting>();
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return slots;
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                    if (us.InstanceGuid == ud.InstanceGuid && us.MapTo >= 0) slots.Add(us);
+            }
+            return slots;
+        }
+
+        private static bool BindsNothing(UserSetting us, Guid instanceGuid)
+            => us.GetPadSetting()?.HasAnyMapping != true && !SlotBindsDevice(us.MapTo, instanceGuid);
+
+        /// <summary>True when a source of the device's own sits on a row of
+        /// the slot's set.</summary>
+        private static bool SlotBindsDevice(int slot, Guid instanceGuid)
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            var rows = sets != null && slot >= 0 && slot < sets.Length ? sets[slot]?.Rows : null;
+            if (rows == null) return false;
+            string guid = instanceGuid.ToString();
+            for (int r = 0; r < rows.Count; r++)
+            {
+                var sources = rows[r]?.Sources;
+                if (sources == null) continue;
+                for (int s = 0; s < sources.Count; s++)
+                    if (string.Equals(sources[s]?.DeviceGuid, guid, StringComparison.OrdinalIgnoreCase)) return true;
+            }
+            return false;
+        }
+
         private static void FillEmptyAutoMappingsIfApplicable(PadSetting existingPs,
             UserDevice ud, Engine.VirtualControllerType outputType, string profileId = null)
         {
@@ -734,7 +827,15 @@ namespace PadForge.Services
 
             var freshPs = SettingsManager.CreateDefaultPadSetting(ud, outputType, profileId);
             if (freshPs == null) return;
+            MergeEmptyFrom(existingPs, freshPs);
+        }
 
+        /// <summary>Copies onto every field <paramref name="existingPs"/>
+        /// leaves empty what <paramref name="freshPs"/> sets there, the
+        /// mapping dictionaries included, and leaves every field it already
+        /// sets alone.</summary>
+        private static void MergeEmptyFrom(PadSetting existingPs, PadSetting freshPs)
+        {
             // Raw-surface automap (Nintendo): the positional defaults live
             // in the Extended mapping dictionary, which the string-property
             // reflection walk below cannot see. Merge missing keys first,

@@ -9316,15 +9316,18 @@ namespace PadForge.Services
         private int _blissBoxRefreshQueued;
 
         /// <summary>A Bliss-Box port opened, closed or identified another
-        /// controller (#469): its row's objects take the new names and the
-        /// pickers follow. The Devices page line follows on its own tick.
-        /// Changes that land together are refreshed once.</summary>
+        /// controller (#469): its row's objects take the new names, a port
+        /// assigned before a controller was in it gets the controller's
+        /// default mapping, and the pickers follow. The Devices page line
+        /// follows on its own tick. Changes that land together are refreshed
+        /// once.</summary>
         private void OnBlissBoxPortChanged(PadForge.Common.Input.BlissBoxPort port)
         {
             if (System.Threading.Interlocked.Exchange(ref _blissBoxRefreshQueued, 1) == 1) return;
             _dispatcher.BeginInvoke(new Action(() =>
             {
                 System.Threading.Interlocked.Exchange(ref _blissBoxRefreshQueued, 0);
+                var placed = new List<(UserDevice Device, PadForge.Engine.Common.BlissBox.BlissBoxGamepadMap Map)>();
                 try
                 {
                     lock (SettingsManager.UserDevices.SyncRoot)
@@ -9332,10 +9335,24 @@ namespace PadForge.Services
                         foreach (var ud in SettingsManager.UserDevices.Items)
                             if (ud?.Device is PadForge.Engine.SdlDeviceWrapper wrapper
                                 && PadForge.Engine.Common.BlissBox.BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId))
+                            {
                                 ud.DeviceObjects = wrapper.GetDeviceObjects();
+                                if (PadForge.Common.Input.BlissBoxRuntime.GamepadMapFor(ud) is { } map)
+                                    placed.Add((ud, map));
+                            }
                     }
                 }
                 catch { /* refresh is best-effort */ }
+
+                try
+                {
+                    if (placed.Count > 0 && AutoMapIdentifiedPorts(placed))
+                    {
+                        _settingsService?.MarkDirty();
+                        RefreshAfterDeviceAssignmentChange();
+                    }
+                }
+                catch { /* the port keeps whatever it had */ }
 
                 try
                 {
@@ -9344,6 +9361,24 @@ namespace PadForge.Services
                 }
                 catch { /* picker refresh is cosmetic */ }
             }));
+        }
+
+        /// <summary>Gives each placed port's slots that bind nothing from it
+        /// the controller's default mapping
+        /// (<see cref="DeviceService.AutoMapIdentifiedPort"/>), with the
+        /// grids' pending edits flushed first, as an assignment does.</summary>
+        private bool AutoMapIdentifiedPorts(List<(UserDevice Device, PadForge.Engine.Common.BlissBox.BlissBoxGamepadMap Map)> placed)
+        {
+            if (!placed.Exists(p => DeviceService.PortHasUnboundSlot(p.Device))) return false;
+            _settingsService?.FlushPendingDeviceEdits();
+            bool any = false;
+            foreach (var (ud, map) in placed)
+                any |= DeviceService.AutoMapIdentifiedPort(ud, map, slot =>
+                {
+                    var pad = _mainVm.Pads[slot];
+                    return (pad.OutputType, pad.ProfileId, pad.ExtendedConfig);
+                });
+            return any;
         }
 
         /// <summary>Handheld hidden buttons registry changed (#343): the NFC

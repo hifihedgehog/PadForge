@@ -741,6 +741,16 @@ namespace PadForge.Common.Input
             Engine.VirtualControllerType outputType = Engine.VirtualControllerType.Xbox,
             string profileId = null,
             ViewModels.ExtendedSlotConfig extended = null)
+            => CreateDefaultPadSetting(ud, outputType, profileId, extended,
+                ud == null ? null : Common.Input.BlissBoxRuntime.GamepadMapFor(ud));
+
+        /// <param name="blissBox">Where the controller in a Bliss-Box port
+        /// read raw puts its inputs in SDL's gamepad layout
+        /// (<see cref="Common.Input.BlissBoxRuntime.GamepadMapFor"/>), null for
+        /// any other device.</param>
+        internal static PadSetting CreateDefaultPadSetting(UserDevice ud,
+            Engine.VirtualControllerType outputType, string profileId,
+            ViewModels.ExtendedSlotConfig extended, Engine.Common.BlissBox.BlissBoxGamepadMap blissBox)
         {
             var ps = new PadSetting();
 
@@ -756,9 +766,12 @@ namespace PadForge.Common.Input
             //   Buttons: A(0), B(1), X(2), Y(3), LB(4), RB(5),
             //            Back(6), Start(7), LS(8), RS(9), Guide(10)
             //   Hats: 1 (D-pad)
-            // Skip auto-mapping when Force Raw Joystick Mode is enabled —
-            // the user wants to record raw mappings manually.
-            if (ud.CapType == InputDeviceType.Gamepad && !ud.ForceRawJoystickMode)
+            // A Bliss-Box port read raw is a joystick, but the controller in
+            // it has a place in that layout, so it maps the same way through
+            // its placement, as SDL would map the console's pad.
+            // Skip auto-mapping when Force Raw Joystick Mode is enabled. The
+            // user wants to record raw mappings manually.
+            if ((ud.CapType == InputDeviceType.Gamepad || blissBox != null) && !ud.ForceRawJoystickMode)
             {
                 // Only auto-map inputs the device actually exposes. Binding an
                 // output to a source the device lacks is NOT harmless: a missing
@@ -778,13 +791,40 @@ namespace PadForge.Common.Input
                 bool HasHat() => !haveCaps || objs.Any(o => o != null
                     && (o.ObjectType & DeviceObjectTypeFlags.PointOfViewController) != 0);
 
+                // The source for each standardized gamepad position: the
+                // position itself on an SDL gamepad, the input the placement
+                // puts there on a Bliss-Box port. Btn and Ax cover the layout
+                // HasButton and HasAxis gate. Extra covers the positions only
+                // some pads report past it (Misc 1 at 11, the paddles at 12 to
+                // 15, the touchpad click at 16, Misc 2 at 17), which bind only
+                // when the device lists them.
+                string Btn(int i) => blissBox != null ? OnDevice(blissBox.Button(i))
+                    : HasButton(i) ? $"Button {i}" : null;
+                string Ax(int i) => blissBox != null ? OnDevice(blissBox.Axis(i))
+                    : HasAxis(i) ? $"Axis {i}" : null;
+                string Extra(int i) => blissBox != null ? OnDevice(blissBox.Button(i))
+                    : objs != null && objs.Any(o => o != null
+                        && (o.ObjectType & DeviceObjectTypeFlags.PushButton) != 0
+                        && o.InputIndex == i) ? $"Button {i}" : null;
+                bool DPad() => (blissBox == null || blissBox.DPad) && HasHat();
+
+                // A port's input binds only while the port's own object list
+                // carries it, the rule HasButton and HasAxis keep above.
+                string OnDevice(string source)
+                {
+                    if (source == null) return null;
+                    bool axis = source.StartsWith("Axis ", StringComparison.Ordinal);
+                    int index = int.Parse(source.AsSpan(axis ? 5 : 7), System.Globalization.CultureInfo.InvariantCulture);
+                    return (axis ? HasAxis(index) : HasButton(index)) ? source : null;
+                }
+
                 if (outputType == Engine.VirtualControllerType.Midi)
                 {
                     // MIDI auto-mapping: CC0-CC5 for axes, Note0-Note10 for buttons.
                     for (int i = 0; i < 6; i++)
-                        if (HasAxis(i)) ps.SetMidiMapping($"MidiCC{i}", $"Axis {i}");
+                        if (Ax(i) is { } cc) ps.SetMidiMapping($"MidiCC{i}", cc);
                     for (int i = 0; i < 11; i++)
-                        if (HasButton(i)) ps.SetMidiMapping($"MidiNote{i}", $"Button {i}");
+                        if (Btn(i) is { } note) ps.SetMidiMapping($"MidiNote{i}", note);
                     ps.FlushMidiMappings();
 
                     ps.UpdateChecksum();
@@ -801,38 +841,38 @@ namespace PadForge.Common.Input
                     // Back/Start press the System buttons. Trigger CLICK
                     // rides the same physical axis as the trigger pull via
                     // the standard axis-as-button coercion.
-                    if (HasAxis(0)) ps.SetVrMapping(Engine.VrLayout.LStickX, "Axis 0");
-                    if (HasAxis(1)) ps.SetVrMapping(Engine.VrLayout.LStickY, "Axis 1");
-                    if (HasAxis(3)) ps.SetVrMapping(Engine.VrLayout.RStickX, "Axis 3");
-                    if (HasAxis(4)) ps.SetVrMapping(Engine.VrLayout.RStickY, "Axis 4");
-                    if (HasAxis(2))
+                    if (Ax(0) is { } lx) ps.SetVrMapping(Engine.VrLayout.LStickX, lx);
+                    if (Ax(1) is { } ly) ps.SetVrMapping(Engine.VrLayout.LStickY, ly);
+                    if (Ax(3) is { } rx) ps.SetVrMapping(Engine.VrLayout.RStickX, rx);
+                    if (Ax(4) is { } ry) ps.SetVrMapping(Engine.VrLayout.RStickY, ry);
+                    if (Ax(2) is { } lt)
                     {
-                        ps.SetVrMapping(Engine.VrLayout.LTrigger, "Axis 2");
-                        ps.SetVrMapping("VrLTriggerClick", "Axis 2");
+                        ps.SetVrMapping(Engine.VrLayout.LTrigger, lt);
+                        ps.SetVrMapping("VrLTriggerClick", lt);
                     }
-                    if (HasAxis(5))
+                    if (Ax(5) is { } rt)
                     {
-                        ps.SetVrMapping(Engine.VrLayout.RTrigger, "Axis 5");
-                        ps.SetVrMapping("VrRTriggerClick", "Axis 5");
+                        ps.SetVrMapping(Engine.VrLayout.RTrigger, rt);
+                        ps.SetVrMapping("VrRTriggerClick", rt);
                     }
-                    if (HasButton(0)) ps.SetVrMapping("VrRA", "Button 0");
-                    if (HasButton(1)) ps.SetVrMapping("VrRB", "Button 1");
-                    if (HasButton(2)) ps.SetVrMapping("VrLA", "Button 2");
-                    if (HasButton(3)) ps.SetVrMapping("VrLB", "Button 3");
-                    if (HasButton(4))
+                    if (Btn(0) is { } south) ps.SetVrMapping("VrRA", south);
+                    if (Btn(1) is { } east) ps.SetVrMapping("VrRB", east);
+                    if (Btn(2) is { } west) ps.SetVrMapping("VrLA", west);
+                    if (Btn(3) is { } north) ps.SetVrMapping("VrLB", north);
+                    if (Btn(4) is { } lb)
                     {
-                        ps.SetVrMapping("VrLGripClick", "Button 4");
-                        ps.SetVrMapping(Engine.VrLayout.LGrip, "Button 4");
+                        ps.SetVrMapping("VrLGripClick", lb);
+                        ps.SetVrMapping(Engine.VrLayout.LGrip, lb);
                     }
-                    if (HasButton(5))
+                    if (Btn(5) is { } rb)
                     {
-                        ps.SetVrMapping("VrRGripClick", "Button 5");
-                        ps.SetVrMapping(Engine.VrLayout.RGrip, "Button 5");
+                        ps.SetVrMapping("VrRGripClick", rb);
+                        ps.SetVrMapping(Engine.VrLayout.RGrip, rb);
                     }
-                    if (HasButton(6)) ps.SetVrMapping("VrLSystem", "Button 6");
-                    if (HasButton(7)) ps.SetVrMapping("VrRSystem", "Button 7");
-                    if (HasButton(8)) ps.SetVrMapping("VrLStickClick", "Button 8");
-                    if (HasButton(9)) ps.SetVrMapping("VrRStickClick", "Button 9");
+                    if (Btn(6) is { } back) ps.SetVrMapping("VrLSystem", back);
+                    if (Btn(7) is { } start) ps.SetVrMapping("VrRSystem", start);
+                    if (Btn(8) is { } ls) ps.SetVrMapping("VrLStickClick", ls);
+                    if (Btn(9) is { } rs) ps.SetVrMapping("VrRStickClick", rs);
                     ps.FlushVrMappings();
 
                     ps.UpdateChecksum();
@@ -857,17 +897,17 @@ namespace PadForge.Common.Input
                     for (int g = 0; g < slotX.Length; g++)
                     {
                         int sx = g < srcInterleave ? g * 3 : srcInterleave * 3 + (g - srcInterleave) * 2;
-                        if (HasAxis(sx)) ps.SetRawMapping($"RawAxis{slotX[g]}", $"Axis {sx}");
-                        if (HasAxis(sx + 1)) ps.SetRawMapping($"RawAxis{slotY[g]}", $"Axis {sx + 1}");
+                        if (Ax(sx) is { } x) ps.SetRawMapping($"RawAxis{slotX[g]}", x);
+                        if (Ax(sx + 1) is { } y) ps.SetRawMapping($"RawAxis{slotY[g]}", y);
                     }
                     for (int t = 0; t < slotTrig.Length; t++)
                     {
                         int st = t < srcInterleave ? t * 3 + 2 : -1;
-                        if (st >= 0 && HasAxis(st)) ps.SetRawMapping($"RawAxis{slotTrig[t]}", $"Axis {st}");
+                        if (st >= 0 && Ax(st) is { } trigger) ps.SetRawMapping($"RawAxis{slotTrig[t]}", trigger);
                     }
                     for (int b = 0; b < extended.ButtonCount; b++)
-                        if (HasButton(b)) ps.SetRawMapping($"RawBtn{b}", $"Button {b}");
-                    if (extended.PovCount > 0 && HasHat())
+                        if (Btn(b) is { } button) ps.SetRawMapping($"RawBtn{b}", button);
+                    if (extended.PovCount > 0 && DPad())
                         foreach (string dir in new[] { "Up", "Down", "Left", "Right" })
                             ps.SetRawMapping($"RawPov0{dir}", $"POV 0 {dir}");
                     ps.FlushRawMappings();
@@ -888,22 +928,23 @@ namespace PadForge.Common.Input
                     // 2026 pad, and the table decides which.
                     void MapValve(string role, string source)
                     {
+                        if (source == null) return;
                         int i = Models2D.NintendoPreviewMap.IndexOf(profileId, role);
                         if (i >= 0) ps.SetRawMapping($"RawBtn{i}", source);
                     }
                     for (int a = 0; a < 6; a++)
-                        if (HasAxis(a)) ps.SetRawMapping($"RawAxis{a}", $"Axis {a}");
-                    if (HasButton(0)) MapValve("ButtonA", "Button 0");
-                    if (HasButton(1)) MapValve("ButtonB", "Button 1");
-                    if (HasButton(2)) MapValve("ButtonX", "Button 2");
-                    if (HasButton(3)) MapValve("ButtonY", "Button 3");
-                    if (HasButton(4)) MapValve("LeftShoulder", "Button 4");
-                    if (HasButton(5)) MapValve("RightShoulder", "Button 5");
-                    if (HasButton(6)) MapValve("ButtonBack", "Button 6");
-                    if (HasButton(7)) MapValve("ButtonStart", "Button 7");
-                    if (HasButton(8)) MapValve("LeftThumbButton", "Button 8");
-                    if (HasButton(9)) MapValve("RightThumbButton", "Button 9");
-                    if (HasButton(10)) MapValve("ButtonGuide", "Button 10");
+                        if (Ax(a) is { } axis) ps.SetRawMapping($"RawAxis{a}", axis);
+                    MapValve("ButtonA", Btn(0));
+                    MapValve("ButtonB", Btn(1));
+                    MapValve("ButtonX", Btn(2));
+                    MapValve("ButtonY", Btn(3));
+                    MapValve("LeftShoulder", Btn(4));
+                    MapValve("RightShoulder", Btn(5));
+                    MapValve("ButtonBack", Btn(6));
+                    MapValve("ButtonStart", Btn(7));
+                    MapValve("LeftThumbButton", Btn(8));
+                    MapValve("RightThumbButton", Btn(9));
+                    MapValve("ButtonGuide", Btn(10));
 
                     // Every source-side extra a Valve pad reports through
                     // SDL, each gated on the pad exposing it: Quick Access
@@ -913,15 +954,11 @@ namespace PadForge.Common.Input
                     // 1263 / 1266 / 1269). MapValve drops a role the target
                     // wire has no slot for, so both spellings of 12 and 13
                     // are offered and the table keeps the one that fits.
-                    bool HasSrc(int idx) => ud.DeviceObjects != null
-                        && ud.DeviceObjects.Any(o => o != null
-                            && (o.ObjectType & DeviceObjectTypeFlags.PushButton) != 0
-                            && o.InputIndex == idx);
-                    if (HasSrc(11)) MapValve("ButtonQuickAccess", "Button 11");
-                    if (HasSrc(12)) { MapValve("Paddle1", "Button 12"); MapValve("RightGrip", "Button 12"); }
-                    if (HasSrc(13)) { MapValve("Paddle2", "Button 13"); MapValve("LeftGrip", "Button 13"); }
-                    if (HasSrc(14)) MapValve("Paddle3", "Button 14");
-                    if (HasSrc(15)) MapValve("Paddle4", "Button 15");
+                    MapValve("ButtonQuickAccess", Extra(11));
+                    if (Extra(12) is { } paddle1) { MapValve("Paddle1", paddle1); MapValve("RightGrip", paddle1); }
+                    if (Extra(13) is { } paddle2) { MapValve("Paddle2", paddle2); MapValve("LeftGrip", paddle2); }
+                    MapValve("Paddle3", Extra(14));
+                    MapValve("Paddle4", Extra(15));
 
                     // Trackpads. All three Valve drivers register the left
                     // pad as touchpad 0 and the right as touchpad 1, one
@@ -946,14 +983,14 @@ namespace PadForge.Common.Input
                         ps.TouchpadX1 = "Touchpad 0 Finger 0 X";
                         ps.TouchpadY1 = "Touchpad 0 Finger 0 Y";
                         ps.TouchpadContact1 = "Touchpad 0 Finger 0 Down";
-                        MapValve("LeftTouchpadClick", HasSrc(16) ? "Button 16" : "Touchpad 0 Click");
+                        MapValve("LeftTouchpadClick", Extra(16) ?? "Touchpad 0 Click");
                     }
                     if (pads >= 2)
                     {
                         ps.TouchpadX2 = "Touchpad 1 Finger 0 X";
                         ps.TouchpadY2 = "Touchpad 1 Finger 0 Y";
                         ps.TouchpadContact2 = "Touchpad 1 Finger 0 Down";
-                        MapValve("RightTouchpadClick", HasSrc(17) ? "Button 17" : "Touchpad 1 Click");
+                        MapValve("RightTouchpadClick", Extra(17) ?? "Touchpad 1 Click");
                     }
 
                     // IMU: every Valve frame carries gyro and accel, which
@@ -961,7 +998,7 @@ namespace PadForge.Common.Input
                     if (ud.HasGyro)  ps.MotionGyro  = "Motion Gyro";
                     if (ud.HasAccel) ps.MotionAccel = "Motion Accel";
 
-                    if (HasHat())
+                    if (DPad())
                     {
                         foreach (var role in new[] { "DPadUp", "DPadDown", "DPadLeft", "DPadRight" })
                         {
@@ -988,10 +1025,10 @@ namespace PadForge.Common.Input
                     // ComputeAxisLayout packs LX LY RX RY at 0-3. Physical
                     // trigger PULLS press the digital ZL/ZR buttons through
                     // the standard axis-as-button coercion.
-                    if (HasAxis(0)) ps.SetRawMapping("RawAxis0", "Axis 0");
-                    if (HasAxis(1)) ps.SetRawMapping("RawAxis1", "Axis 1");
-                    if (HasAxis(3)) ps.SetRawMapping("RawAxis2", "Axis 3");
-                    if (HasAxis(4)) ps.SetRawMapping("RawAxis3", "Axis 4");
+                    if (Ax(0) is { } lx) ps.SetRawMapping("RawAxis0", lx);
+                    if (Ax(1) is { } ly) ps.SetRawMapping("RawAxis1", ly);
+                    if (Ax(3) is { } rx) ps.SetRawMapping("RawAxis2", rx);
+                    if (Ax(4) is { } ry) ps.SetRawMapping("RawAxis3", ry);
 
                     // Every binding names a ROLE and lets the canonical wire
                     // table resolve the index. The hardcoded index list this
@@ -1002,27 +1039,24 @@ namespace PadForge.Common.Input
                     // not declare, leaving its D-pad unmapped entirely.
                     void MapRole(string role, string source)
                     {
+                        if (source == null) return;
                         int i = Models2D.NintendoPreviewMap.IndexOf(profileId, role);
                         if (i >= 0) ps.SetRawMapping($"RawBtn{i}", source);
                     }
-                    bool HasSourceButton(int sdlIndex) => ud.DeviceObjects != null
-                        && ud.DeviceObjects.Any(o => o != null
-                            && (o.ObjectType & DeviceObjectTypeFlags.PushButton) != 0
-                            && o.InputIndex == sdlIndex);
 
-                    if (HasButton(0)) MapRole("ButtonB", "Button 0");   // south
-                    if (HasButton(1)) MapRole("ButtonA", "Button 1");   // east
-                    if (HasButton(2)) MapRole("ButtonY", "Button 2");   // west
-                    if (HasButton(3)) MapRole("ButtonX", "Button 3");   // north
-                    if (HasButton(4)) MapRole("LeftShoulder", "Button 4");
-                    if (HasButton(5)) MapRole("RightShoulder", "Button 5");
-                    if (HasAxis(2)) MapRole("LeftTrigger", "Axis 2");   // LT pull → ZL
-                    if (HasAxis(5)) MapRole("RightTrigger", "Axis 5");  // RT pull → ZR
-                    if (HasButton(6)) MapRole("ButtonBack", "Button 6");    // → Minus
-                    if (HasButton(7)) MapRole("ButtonStart", "Button 7");   // → Plus
-                    if (HasButton(8)) MapRole("LeftThumbButton", "Button 8");
-                    if (HasButton(9)) MapRole("RightThumbButton", "Button 9");
-                    if (HasButton(10)) MapRole("ButtonGuide", "Button 10"); // → Home
+                    MapRole("ButtonB", Btn(0));   // south
+                    MapRole("ButtonA", Btn(1));   // east
+                    MapRole("ButtonY", Btn(2));   // west
+                    MapRole("ButtonX", Btn(3));   // north
+                    MapRole("LeftShoulder", Btn(4));
+                    MapRole("RightShoulder", Btn(5));
+                    MapRole("LeftTrigger", Ax(2));   // LT pull → ZL
+                    MapRole("RightTrigger", Ax(5));  // RT pull → ZR
+                    MapRole("ButtonBack", Btn(6));    // → Minus
+                    MapRole("ButtonStart", Btn(7));   // → Plus
+                    MapRole("LeftThumbButton", Btn(8));
+                    MapRole("RightThumbButton", Btn(9));
+                    MapRole("ButtonGuide", Btn(10)); // → Home
 
                     // Source-side extras, each gated on the pad actually
                     // exposing that button so a plain gamepad carries no dead
@@ -1030,15 +1064,15 @@ namespace PadForge.Common.Input
                     // Capture) at 11, the first paddle pair at 12/13, Misc2
                     // at 17. The last three land on roles only the Switch 2
                     // Pro has, so MapRole drops them on the original.
-                    if (HasSourceButton(11)) MapRole("ButtonShare", "Button 11");
-                    if (HasSourceButton(12)) MapRole("RightPaddle", "Button 12");
-                    if (HasSourceButton(13)) MapRole("LeftPaddle", "Button 13");
-                    if (HasSourceButton(17)) MapRole("ButtonC", "Button 17");
+                    MapRole("ButtonShare", Extra(11));
+                    MapRole("RightPaddle", Extra(12));
+                    MapRole("LeftPaddle", Extra(13));
+                    MapRole("ButtonC", Extra(17));
 
                     // D-pad: bind whichever encoding the TARGET declares. A
                     // hat source still has to reach a pad that spends four
                     // discrete buttons on its D-pad.
-                    if (HasHat())
+                    if (DPad())
                     {
                         foreach (var role in new[] { "DPadUp", "DPadDown", "DPadLeft", "DPadRight" })
                         {
@@ -1053,15 +1087,15 @@ namespace PadForge.Common.Input
                 else
                 {
                 // Sticks and triggers (SDL3 axis order LX/LY/LT/RX/RY/RT).
-                if (HasAxis(0)) ps.LeftThumbAxisX = "Axis 0";
-                if (HasAxis(1)) ps.LeftThumbAxisY = "Axis 1";
-                if (HasAxis(2)) ps.LeftTrigger = "Axis 2";
-                if (HasAxis(3)) ps.RightThumbAxisX = "Axis 3";
-                if (HasAxis(4)) ps.RightThumbAxisY = "Axis 4";
-                if (HasAxis(5)) ps.RightTrigger = "Axis 5";
+                if (Ax(0) is { } lx) ps.LeftThumbAxisX = lx;
+                if (Ax(1) is { } ly) ps.LeftThumbAxisY = ly;
+                if (Ax(2) is { } lt) ps.LeftTrigger = lt;
+                if (Ax(3) is { } rx) ps.RightThumbAxisX = rx;
+                if (Ax(4) is { } ry) ps.RightThumbAxisY = ry;
+                if (Ax(5) is { } rt) ps.RightTrigger = rt;
 
                 // D-pad from hat switch (individual directions for UI display and remapping).
-                if (HasHat())
+                if (DPad())
                 {
                     ps.DPadUp = "POV 0 Up";
                     ps.DPadDown = "POV 0 Down";
@@ -1070,17 +1104,17 @@ namespace PadForge.Common.Input
                 }
 
                 // SDL3 XInput backend button indices.
-                if (HasButton(0)) ps.ButtonA = "Button 0";
-                if (HasButton(1)) ps.ButtonB = "Button 1";
-                if (HasButton(2)) ps.ButtonX = "Button 2";
-                if (HasButton(3)) ps.ButtonY = "Button 3";
-                if (HasButton(4)) ps.LeftShoulder = "Button 4";
-                if (HasButton(5)) ps.RightShoulder = "Button 5";
-                if (HasButton(6)) ps.ButtonBack = "Button 6";
-                if (HasButton(7)) ps.ButtonStart = "Button 7";
-                if (HasButton(8)) ps.LeftThumbButton = "Button 8";
-                if (HasButton(9)) ps.RightThumbButton = "Button 9";
-                if (HasButton(10)) ps.ButtonGuide = "Button 10";
+                if (Btn(0) is { } south) ps.ButtonA = south;
+                if (Btn(1) is { } east) ps.ButtonB = east;
+                if (Btn(2) is { } west) ps.ButtonX = west;
+                if (Btn(3) is { } north) ps.ButtonY = north;
+                if (Btn(4) is { } lb) ps.LeftShoulder = lb;
+                if (Btn(5) is { } rb) ps.RightShoulder = rb;
+                if (Btn(6) is { } back) ps.ButtonBack = back;
+                if (Btn(7) is { } start) ps.ButtonStart = start;
+                if (Btn(8) is { } ls) ps.LeftThumbButton = ls;
+                if (Btn(9) is { } rs) ps.RightThumbButton = rs;
+                if (Btn(10) is { } guide) ps.ButtonGuide = guide;
                 }
 
                 // Xbox Share auto-map: any controller that exposes
@@ -1090,12 +1124,9 @@ namespace PadForge.Common.Input
                 // Gated on the device actually having the button so
                 // controllers without it (Xbox 360, classic gamepads)
                 // don't carry a dead binding through the mapping table.
-                bool hasMisc1 = ud.DeviceObjects != null
-                    && ud.DeviceObjects.Any(o => o != null
-                        && (o.ObjectType & DeviceObjectTypeFlags.PushButton) != 0
-                        && o.InputIndex == 11);
-                if (outputType == Engine.VirtualControllerType.Xbox && hasMisc1)
-                    ps.ButtonShare = "Button 11";
+                string misc1 = Extra(11);
+                if (outputType == Engine.VirtualControllerType.Xbox && misc1 != null)
+                    ps.ButtonShare = misc1;
 
                 // PlayStation mirror of the same idea: the physical mic
                 // button (SDL misc1, source position 11) lands on the
@@ -1103,42 +1134,44 @@ namespace PadForge.Common.Input
                 // paddles / Fn land on the virtual Edge's same-role
                 // outputs (positions 12-15 per SDL's paddle order:
                 // RP1, LP1, RP2=right Fn, LP2=left Fn).
-                bool ButtonAt(int idx) => ud.DeviceObjects != null
-                    && ud.DeviceObjects.Any(o => o != null
-                        && (o.ObjectType & DeviceObjectTypeFlags.PushButton) != 0
-                        && o.InputIndex == idx);
                 if (outputType == Engine.VirtualControllerType.PlayStation
                     && !string.IsNullOrEmpty(profileId)
                     && profileId.StartsWith("dualsense", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (hasMisc1) ps.ButtonMute = "Button 11";
+                    if (misc1 != null) ps.ButtonMute = misc1;
                     if (profileId.StartsWith("dualsense-edge", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (ButtonAt(12)) ps.RightPaddle = "Button 12";
-                        if (ButtonAt(13)) ps.LeftPaddle = "Button 13";
-                        if (ButtonAt(14)) ps.RightFunction = "Button 14";
-                        if (ButtonAt(15)) ps.LeftFunction = "Button 15";
+                        if (Extra(12) is { } rp) ps.RightPaddle = rp;
+                        if (Extra(13) is { } lp) ps.LeftPaddle = lp;
+                        if (Extra(14) is { } rf) ps.RightFunction = rf;
+                        if (Extra(15) is { } lf) ps.LeftFunction = lf;
                     }
                 }
 
                 // Button pressure (discussion #476): a DualShock 3 that
-                // reports it in SDL's order, on the preset whose report
-                // carries it.
+                // reports it in SDL's order, or a DualShock 2 in a
+                // Bliss-Box port, on the preset whose report carries it.
                 if (outputType == Engine.VirtualControllerType.PlayStation
                     && HMaestroProfileCatalog.ReportCarriesPressure(profileId)
-                    && ButtonPressureSources.AxesFor(ud) is { } pressureAxes)
+                    && (blissBox != null ? blissBox.PressureAxes : ButtonPressureSources.AxesFor(ud)) is { } pressureAxes)
                 {
-                    string Axis(int i) => "Axis " + pressureAxes[i].ToString(System.Globalization.CultureInfo.InvariantCulture);
-                    ps.PressureButtonA = Axis(0);
-                    ps.PressureButtonB = Axis(1);
-                    ps.PressureButtonX = Axis(2);
-                    ps.PressureButtonY = Axis(3);
-                    ps.PressureLeftShoulder = Axis(4);
-                    ps.PressureRightShoulder = Axis(5);
-                    ps.PressureDPadUp = Axis(6);
-                    ps.PressureDPadDown = Axis(7);
-                    ps.PressureDPadLeft = Axis(8);
-                    ps.PressureDPadRight = Axis(9);
+                    // A port's pressure axis its object list lacks keeps the
+                    // field's empty default.
+                    string Axis(int i, string unset)
+                    {
+                        string source = "Axis " + pressureAxes[i].ToString(System.Globalization.CultureInfo.InvariantCulture);
+                        return (blissBox != null ? OnDevice(source) : source) ?? unset;
+                    }
+                    ps.PressureButtonA = Axis(0, ps.PressureButtonA);
+                    ps.PressureButtonB = Axis(1, ps.PressureButtonB);
+                    ps.PressureButtonX = Axis(2, ps.PressureButtonX);
+                    ps.PressureButtonY = Axis(3, ps.PressureButtonY);
+                    ps.PressureLeftShoulder = Axis(4, ps.PressureLeftShoulder);
+                    ps.PressureRightShoulder = Axis(5, ps.PressureRightShoulder);
+                    ps.PressureDPadUp = Axis(6, ps.PressureDPadUp);
+                    ps.PressureDPadDown = Axis(7, ps.PressureDPadDown);
+                    ps.PressureDPadLeft = Axis(8, ps.PressureDPadLeft);
+                    ps.PressureDPadRight = Axis(9, ps.PressureDPadRight);
                 }
 
                 // Default deadzones and gains.
@@ -1219,8 +1252,9 @@ namespace PadForge.Common.Input
                 return ps;
             }
 
-            // Non-gamepad, non-touchpad devices are not auto-mapped.
-            // The user must manually record mappings for these devices.
+            // Devices that are not gamepads, touchpads or Bliss-Box ports
+            // with a placed controller are not auto-mapped. The user must
+            // manually record mappings for these devices.
 
             ps.UpdateChecksum();
             return ps;

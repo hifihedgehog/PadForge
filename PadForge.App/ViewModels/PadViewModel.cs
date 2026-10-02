@@ -387,6 +387,10 @@ namespace PadForge.ViewModels
                             && DeviceService.FillEmptyPressureMappingsForSlot(PadIndex, value))
                             SettingsService.RefreshMappingSetsFromLegacy();
                         RebuildMappings();
+                        // The DualShock 3 presets letter the macro and menu
+                        // buttons Select and Start, the other PlayStation
+                        // presets Share and Options.
+                        SyncMacroButtonStyle();
                     }
                     ConfigItemDirtyCallback?.Invoke();
                 }
@@ -2651,11 +2655,14 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Standard gamepad mappings (21 items). Xbox → Xbox 360 labels,
-        /// PlayStation → DualShock 4 labels.
+        /// PlayStation → DualShock 4 labels, or the DualShock 3's on its two
+        /// presets: Select and Start, and no touchpad rows.
         /// </summary>
         private void InitializeGamepadMappings()
         {
             bool isPlayStation = OutputType == VirtualControllerType.PlayStation;
+            bool isDualShock3 = isPlayStation
+                && PadForge.Common.Input.HMaestroProfileCatalog.IsDualShock3(ProfileId);
 
             // Buttons
             if (isPlayStation)
@@ -2666,8 +2673,8 @@ namespace PadForge.ViewModels
                 Mappings.Add(new MappingItem("\u25B3", "ButtonY", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("L1", "LeftShoulder", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("R1", "RightShoulder", MappingCategory.Buttons));
-                Mappings.Add(new MappingItem("Share", "ButtonBack", MappingCategory.Buttons));
-                Mappings.Add(new MappingItem("Options", "ButtonStart", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(isDualShock3 ? "Select" : "Share", "ButtonBack", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(isDualShock3 ? "Start" : "Options", "ButtonStart", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("PS", "ButtonGuide", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("L3", "LeftThumbButton", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("R3", "RightThumbButton", MappingCategory.Buttons));
@@ -2750,20 +2757,23 @@ namespace PadForge.ViewModels
             Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickX, "RightThumbAxisX", MappingCategory.RightStick, "RightThumbAxisXNeg"));
             Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickY, "RightThumbAxisY", MappingCategory.RightStick, "RightThumbAxisYNeg"));
 
-            // Touchpad (PlayStation only)
+            // Touchpad (PlayStation only, and never the DualShock 3's)
             if (isPlayStation)
             {
                 // The virtual DualSense / DS4 exposes one touchpad with two
                 // fingers. Labels use the explicit "Touchpad {pad} Finger
                 // {finger}" format (pad 1, fingers 1-2) so the output targets
                 // read the same way as the physical-device picker.
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerX_Format,     1, 1), "TouchpadX1", MappingCategory.Touchpad));
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerY_Format,     1, 1), "TouchpadY1", MappingCategory.Touchpad));
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerX_Format,     1, 2), "TouchpadX2", MappingCategory.Touchpad));
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerY_Format,     1, 2), "TouchpadY2", MappingCategory.Touchpad));
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerTouch_Format, 1, 1), "TouchpadContact1", MappingCategory.Touchpad));
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerTouch_Format, 1, 2), "TouchpadContact2", MappingCategory.Touchpad));
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadClick, "TouchpadClick", MappingCategory.Buttons));
+                if (!isDualShock3)
+                {
+                    Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerX_Format,     1, 1), "TouchpadX1", MappingCategory.Touchpad));
+                    Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerY_Format,     1, 1), "TouchpadY1", MappingCategory.Touchpad));
+                    Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerX_Format,     1, 2), "TouchpadX2", MappingCategory.Touchpad));
+                    Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerY_Format,     1, 2), "TouchpadY2", MappingCategory.Touchpad));
+                    Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerTouch_Format, 1, 1), "TouchpadContact1", MappingCategory.Touchpad));
+                    Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerTouch_Format, 1, 2), "TouchpadContact2", MappingCategory.Touchpad));
+                    Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadClick, "TouchpadClick", MappingCategory.Buttons));
+                }
 
                 // Motion passthrough — the virtual DualSense / DS4
                 // exposes a 3-axis gyro + 3-axis accel HID report and
@@ -5659,7 +5669,7 @@ namespace PadForge.ViewModels
                 {
                     PadIndex = PadIndex,
                     Name = $"Macro {Macros.Count + 1}",
-                    ButtonStyle = MacroButtonNames.DeriveStyle(_outputType),
+                    ButtonStyle = MacroButtonNames.DeriveStyle(_outputType, _profileId),
                     RawProfileId = SlotRawProfileId
                 };
                 Macros.Add(macro);
@@ -6535,7 +6545,7 @@ namespace PadForge.ViewModels
                 {
                     PadIndex = PadIndex,
                     Name = string.Format(Strings.Instance.Pad_Audio_SoundMacroName_Format, Macros.Count + 1),
-                    ButtonStyle = MacroButtonNames.DeriveStyle(_outputType),
+                    ButtonStyle = MacroButtonNames.DeriveStyle(_outputType, _profileId),
                     RawProfileId = SlotRawProfileId
                 };
                 macro.Actions.Add(new MacroAction { Type = MacroActionType.PlaySound });
@@ -6566,7 +6576,7 @@ namespace PadForge.ViewModels
         /// </summary>
         private void SyncMacroButtonStyle()
         {
-            var style = MacroButtonNames.DeriveStyle(_outputType);
+            var style = MacroButtonNames.DeriveStyle(_outputType, _profileId);
             int btnCount = (_outputType is VirtualControllerType.Extended
                 or VirtualControllerType.Nintendo
                 ? _extendedConfig?.ButtonCount : null) ?? 11;
@@ -6591,7 +6601,7 @@ namespace PadForge.ViewModels
         /// table's "(Any device)" convention) and needs no slot caps.</summary>
         private void ApplyMenuButtonStyle(MenuEditorItem vm)
         {
-            vm.ButtonStyle = MacroButtonNames.DeriveStyle(_outputType);
+            vm.ButtonStyle = MacroButtonNames.DeriveStyle(_outputType, _profileId);
             vm.RawButtonCount =
                 (_outputType is VirtualControllerType.Extended
                  or VirtualControllerType.Nintendo
@@ -7321,6 +7331,8 @@ namespace PadForge.ViewModels
                     return opts;
                 }
                 bool ps = _outputType == VirtualControllerType.PlayStation;
+                // A DualShock 3 preset has Select and Start, as its rows say.
+                bool ds3 = ps && HMaestroProfileCatalog.IsDualShock3(ProfileId);
                 return new[]
                 {
                     new GyroLabeledOption(() => ps ? "✕" : "A", "ButtonA"),
@@ -7329,8 +7341,8 @@ namespace PadForge.ViewModels
                     new GyroLabeledOption(() => ps ? "△" : "Y", "ButtonY"),
                     new GyroLabeledOption(() => ps ? "L1" : s.Btn_LeftShoulder, "LeftShoulder"),
                     new GyroLabeledOption(() => ps ? "R1" : s.Btn_RightShoulder, "RightShoulder"),
-                    new GyroLabeledOption(() => ps ? s.Btn_Share : s.Btn_Back, "ButtonBack"),
-                    new GyroLabeledOption(() => ps ? s.Btn_Options : s.Btn_Start, "ButtonStart"),
+                    new GyroLabeledOption(() => ds3 ? s.DevObj_Select : ps ? s.Btn_Share : s.Btn_Back, "ButtonBack"),
+                    new GyroLabeledOption(() => ps && !ds3 ? s.Btn_Options : s.Btn_Start, "ButtonStart"),
                     new GyroLabeledOption(() => ps ? s.Btn_PS : s.Btn_Guide, "ButtonGuide"),
                     new GyroLabeledOption(() => ps ? "L3" : s.Btn_LeftStickButton, "LeftThumbButton"),
                     new GyroLabeledOption(() => ps ? "R3" : s.Btn_RightStickButton, "RightThumbButton"),

@@ -1195,8 +1195,10 @@ namespace PadForge.Common.Input
                 // that reports HasTouchpad here (DualSense, DS4, DualSense Edge,
                 // web-gamepad-with-touchpad) exposes a touchpad click. PTP
                 // system touchpads have CapType == Touchpad and never reach
-                // this branch, so no per-device gate is needed.
-                if (outputType == Engine.VirtualControllerType.PlayStation && ud.HasTouchpad)
+                // this branch, so no per-device gate is needed. A DualShock 3
+                // preset has no touchpad and no rows to show these on.
+                if (outputType == Engine.VirtualControllerType.PlayStation && ud.HasTouchpad
+                    && HMaestroProfileCatalog.ReportCarriesTouchpad(profileId))
                 {
                     ps.TouchpadX1 = "Touchpad 0 Finger 0 X";
                     ps.TouchpadY1 = "Touchpad 0 Finger 0 Y";
@@ -1231,8 +1233,10 @@ namespace PadForge.Common.Input
 
             // Touchpad and tablet sources carry their contact surface to PlayStation.
             // Verified capabilities control finger count and click availability.
+            // A DualShock 3 preset has no touchpad to carry it to.
             if ((ud.CapType == InputDeviceType.Touchpad || ud.IsTablet) && ud.HasTouchpad &&
-                outputType == Engine.VirtualControllerType.PlayStation)
+                outputType == Engine.VirtualControllerType.PlayStation &&
+                HMaestroProfileCatalog.ReportCarriesTouchpad(profileId))
             {
                 ps.TouchpadX1 = "Touchpad 0 Finger 0 X";
                 ps.TouchpadY1 = "Touchpad 0 Finger 0 Y";

@@ -7218,7 +7218,8 @@ namespace PadForge.ViewModels
     {
         Xbox360,
         DualShock4,
-        Numbered  // Extended Custom: "Btn 1", "Btn 2", etc.
+        Numbered,  // Extended Custom: "Btn 1", "Btn 2", etc.
+        DualShock3 // The DualShock 4's, with Select and Start and no touchpad
     }
 
     /// <summary>One <see cref="MacroOutputChannel"/> + its localized display
@@ -7260,6 +7261,7 @@ namespace PadForge.ViewModels
             switch (style)
             {
                 case MacroButtonStyle.DualShock4:
+                case MacroButtonStyle.DualShock3:
                     return channel switch
                     {
                         MacroOutputChannel.A => "✕",  // ✕ (matches PS mapping row)
@@ -7270,8 +7272,8 @@ namespace PadForge.ViewModels
                         MacroOutputChannel.RB => "R1",
                         MacroOutputChannel.LS => "L3",
                         MacroOutputChannel.RS => "R3",
-                        MacroOutputChannel.Back => s.Btn_Share,
-                        MacroOutputChannel.Start => s.Btn_Options,
+                        MacroOutputChannel.Back => style == MacroButtonStyle.DualShock3 ? s.DevObj_Select : s.Btn_Share,
+                        MacroOutputChannel.Start => style == MacroButtonStyle.DualShock3 ? s.Btn_Start : s.Btn_Options,
                         MacroOutputChannel.Guide => s.Btn_PS,
                         MacroOutputChannel.LT => "L2",
                         MacroOutputChannel.RT => "R2",
@@ -7380,6 +7382,7 @@ namespace PadForge.ViewModels
         public static (string Label, ushort Flag)[] GetButtonDefs(MacroButtonStyle style, string profileId = null) => style switch
         {
             MacroButtonStyle.DualShock4 => BuildDS4Defs(),
+            MacroButtonStyle.DualShock3 => BuildDS3Defs(),
             MacroButtonStyle.Numbered => BuildNumberedDefs(profileId),
             _ => BuildXboxDefs()
         };
@@ -7414,13 +7417,16 @@ namespace PadForge.ViewModels
         /// Derives the button style from the output controller type. Extended
         /// slots show numbered labels (Btn1, Btn2, ...) since the active
         /// HIDMaestro profile drives the layout. Xbox-style "A B X Y" labels
-        /// belong on Xbox slots, DualShock labels on PlayStation slots.
+        /// belong on Xbox slots, DualShock labels on PlayStation slots: the
+        /// DualShock 3's on its two presets (the slot's profile id), the
+        /// DualShock 4's on every other.
         /// Switch Pro profiles keep the Numbered value space and re-letter
         /// the labels per raw index (see <see cref="RawButtonLabel"/>).
         /// </summary>
-        public static MacroButtonStyle DeriveStyle(VirtualControllerType outputType) => outputType switch
+        public static MacroButtonStyle DeriveStyle(VirtualControllerType outputType, string profileId = null) => outputType switch
         {
-            VirtualControllerType.PlayStation => MacroButtonStyle.DualShock4,
+            VirtualControllerType.PlayStation => HMaestroProfileCatalog.IsDualShock3(profileId)
+                ? MacroButtonStyle.DualShock3 : MacroButtonStyle.DualShock4,
             VirtualControllerType.Extended    => MacroButtonStyle.Numbered,
             // Nintendo rides the Numbered value space and re-letters per
             // raw index through the switch-pro profile (#215), exactly
@@ -7622,6 +7628,20 @@ namespace PadForge.ViewModels
             (Strings.Instance.Btn_Share, 0x0020), (Strings.Instance.Btn_Options, 0x0010),
             (Strings.Instance.Btn_L3, 0x0040), (Strings.Instance.Btn_R3, 0x0080),
             (Strings.Instance.Btn_PS, 0x0400), (Strings.Instance.Btn_Touchpad, 0x0800),
+            (Strings.Instance.Btn_Up, 0x0001), (Strings.Instance.Btn_Down, 0x0002),
+            (Strings.Instance.Btn_Left, 0x0004), (Strings.Instance.Btn_Right, 0x0008),
+        };
+
+        // The DualShock 3 has Select and Start on the Back and Start bits,
+        // and no touchpad to click.
+        private static (string Label, ushort Flag)[] BuildDS3Defs() => new (string, ushort)[]
+        {
+            (Strings.Instance.Btn_Cross, 0x1000), (Strings.Instance.Btn_Circle, 0x2000),
+            (Strings.Instance.Btn_Square, 0x4000), (Strings.Instance.Btn_Triangle, 0x8000),
+            (Strings.Instance.Btn_L1, 0x0100), (Strings.Instance.Btn_R1, 0x0200),
+            (Strings.Instance.DevObj_Select, 0x0020), (Strings.Instance.Btn_Start, 0x0010),
+            (Strings.Instance.Btn_L3, 0x0040), (Strings.Instance.Btn_R3, 0x0080),
+            (Strings.Instance.Btn_PS, 0x0400),
             (Strings.Instance.Btn_Up, 0x0001), (Strings.Instance.Btn_Down, 0x0002),
             (Strings.Instance.Btn_Left, 0x0004), (Strings.Instance.Btn_Right, 0x0008),
         };

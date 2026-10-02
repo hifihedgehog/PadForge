@@ -476,6 +476,24 @@ namespace PadForge.Common.Input
             string.Equals(profileId, "dualshock-3-full", StringComparison.OrdinalIgnoreCase);
 
         /// <summary>
+        /// True for the two DualShock 3 presets, dualshock-3 and
+        /// dualshock-3-full. The pad has Select and Start where the DualShock
+        /// 4 and the DualSense have Share and Options, and no touchpad: both
+        /// HM profiles describe none (profiles/sony/dualshock-3*.json carry
+        /// no touch field, where every DualShock 4 and DualSense profile
+        /// does).
+        /// </summary>
+        internal static bool IsDualShock3(string profileId) =>
+            profileId != null && profileId.StartsWith("dualshock-3", StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// True when a PlayStation slot's preset has a touchpad to send:
+        /// every one but the DualShock 3's. A slot with no preset yet runs
+        /// the category default, dualsense-composite, which has one.
+        /// </summary>
+        internal static bool ReportCarriesTouchpad(string profileId) => !IsDualShock3(profileId);
+
+        /// <summary>
         /// Resolve a profile id to the 2D + 3D asset folders PadForge should
         /// render for that controller. Profile-id prefixes match HM's catalog
         /// slugs (sony/, microsoft/) so adding a new profile in HM

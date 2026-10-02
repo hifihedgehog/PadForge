@@ -3760,7 +3760,10 @@ namespace PadForge.Services
                     macro.Actions.Add(BuildMacroAction(ad));
 
             // Set after actions are populated so propagation reaches all of them.
-            var style = MacroButtonNames.DeriveStyle(outputType);
+            // Callers pass the slot's profile id whatever its type, and on a
+            // PlayStation slot it picks the DualShock 3's labels or the
+            // DualShock 4's.
+            var style = MacroButtonNames.DeriveStyle(outputType, extendedProfileId);
             int btnCount = (outputType is VirtualControllerType.Extended
                 or VirtualControllerType.Nintendo ? extendedButtonCount : null) ?? 11;
             macro.CustomButtonCount = btnCount;

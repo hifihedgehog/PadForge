@@ -278,17 +278,210 @@ namespace PadForge.Tests
 
             var buttonARow = pad0.Mappings.First(m => m.TargetSettingName == "ButtonA");
 
-            // The concrete device still contributes its own abstract entry
-            // (its group is unchanged) ...
+            // The concrete device lists the same read under its own name
+            // (A is Button 0) and no longer repeats the abstract one ...
+            Assert.DoesNotContain(buttonARow.AvailableInputs, c =>
+                c.Descriptor == "Gamepad ButtonA" && !string.IsNullOrEmpty(c.DeviceGuid));
             Assert.Contains(buttonARow.AvailableInputs, c =>
-                c.Descriptor == "Gamepad ButtonA" && string.Equals(
+                c.Descriptor == "Button 0" && string.Equals(
                     c.DeviceGuid, XboxGuid.ToString(), StringComparison.OrdinalIgnoreCase));
 
-            // ... but the empty-guid source selects the "(Any device)"
-            // entry, not the concrete one.
+            // ... and the empty-guid source selects the "(Any device)" entry.
             Assert.NotNull(buttonARow.SelectedInput);
             Assert.Equal("Gamepad ButtonA", buttonARow.SelectedInput.Descriptor);
             Assert.True(string.IsNullOrEmpty(buttonARow.SelectedInput.DeviceGuid));
+        }
+
+        private static HashSet<string> AbstractGamepadNames()
+            => PadForge.Engine.Common.Mapping.SourceCoercion.GamepadAliasTable
+                .Select(t => "Gamepad " + t.Member)
+                .ToHashSet(StringComparer.Ordinal);
+
+        [Fact]
+        public void AbstractGamepadNames_AreListedOnlyUnderAnyDevice()
+        {
+            // Owner report 2026-10-02: an Xbox Series controller's group
+            // listed "Gamepad A" beside its own A. Each abstract name is
+            // offered once, under "(Any device)", and the controller's group
+            // keeps its own reads plus the compound stick sources, which
+            // nothing else in that group reads.
+            var (mainVm, svc) = ArrangeDefaultProfileWithXboxPad();
+            var pad0 = mainVm.Pads[0];
+            svc.RefreshAvailableInputsForSlot(pad0);
+
+            var abstractNames = AbstractGamepadNames();
+            var choices = pad0.Mappings.First(m => m.TargetSettingName == "ButtonA").AvailableInputs;
+            foreach (string name in abstractNames)
+            {
+                var copies = choices.Where(c => c.Descriptor == name).ToList();
+                Assert.True(copies.Count <= 1, name + " is listed " + copies.Count + " times");
+                Assert.All(copies, c => Assert.True(string.IsNullOrEmpty(c.DeviceGuid), name + " is listed under a device"));
+            }
+            Assert.Contains(choices, c => c.Descriptor == "Gamepad ButtonA" && string.IsNullOrEmpty(c.DeviceGuid));
+
+            string xbox = XboxGuid.ToString();
+            bool OnXbox(InputChoice c) => string.Equals(c.DeviceGuid, xbox, StringComparison.OrdinalIgnoreCase);
+            Assert.Contains(choices, c => c.Descriptor == "Button 0" && OnXbox(c));
+            Assert.Contains(choices, c => c.Descriptor == PadForge.Engine.Common.Mapping.SourceCoercion.FlickStickRightDescriptor && OnXbox(c));
+            Assert.Contains(choices, c => c.Descriptor == PadForge.Engine.Common.Mapping.SourceCoercion.RightStickRingDescriptor && OnXbox(c));
+
+            // The per-device builder itself emits none of them.
+            var device = SettingsManager.UserDevices.Items.First(u => u.InstanceGuid == XboxGuid);
+            Assert.DoesNotContain(PadForge.Common.MappingDisplayResolver.BuildInputChoices(device),
+                c => abstractNames.Contains(c.Descriptor));
+        }
+
+        [Fact]
+        public void HidingAnyDevice_HidesEveryAbstractGamepadName()
+        {
+            // The picker's device filter hides a group by its key, "any" for
+            // the device-agnostic group. With that group hidden, no abstract
+            // name may survive under a concrete controller.
+            var (mainVm, svc) = ArrangeDefaultProfileWithXboxPad();
+            var pad0 = mainVm.Pads[0];
+            svc.RefreshAvailableInputsForSlot(pad0);
+
+            var hidden = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "any" };
+            var visible = pad0.Mappings.First(m => m.TargetSettingName == "ButtonA").AvailableInputs
+                .Where(c => PadViewModel.MatchesPickerFilter(c, "", hidden)).ToList();
+            var abstractNames = AbstractGamepadNames();
+            Assert.DoesNotContain(visible, c => abstractNames.Contains(c.Descriptor));
+            Assert.Contains(visible, c => c.Descriptor == "Button 0");
+        }
+
+        [Fact]
+        public void AnAbstractSourcePinnedToADevice_SelectsThatDevicesOwnEntry()
+        {
+            // Before the abstract names left the device groups, a user could
+            // pick "Gamepad A" under a controller, which stores that device.
+            // Such a row keeps its binding and selects the controller's own
+            // entry for the same read (Gamepad A is Button 0, listed as A),
+            // for the primary source and for an extra one.
+            var (mainVm, svc) = ArrangeDefaultProfileWithXboxPad();
+            var pad0 = mainVm.Pads[0];
+            string xbox = XboxGuid.ToString();
+            var ms = new MappingSet();
+            ms.Rows.Add(new MappingRow
+            {
+                Target = "ButtonA",
+                Sources =
+                {
+                    new MappingSource { Descriptor = "Gamepad ButtonA", DeviceGuid = xbox },
+                    new MappingSource { Descriptor = "Gamepad ButtonB", DeviceGuid = xbox },
+                },
+            });
+            SettingsManager.SlotMappingSets[0] = ms;
+
+            InputService.RefreshMappingsToViewModel(pad0);
+            svc.RefreshAvailableInputsForSlot(pad0);
+
+            var row = pad0.Mappings.First(m => m.TargetSettingName == "ButtonA");
+            Assert.NotNull(row.SelectedInput);
+            Assert.Equal("Button 0", row.SelectedInput.Descriptor);
+            Assert.Equal(xbox, row.SelectedInput.DeviceGuid, ignoreCase: true);
+            Assert.Equal("Gamepad ButtonA", row.SourceDescriptor);
+            Assert.Equal(xbox, row.PrimarySourceDeviceGuid, ignoreCase: true);
+
+            var extra = Assert.Single(row.ExtraSources);
+            Assert.NotNull(extra.SelectedInput);
+            Assert.Equal("Button 1", extra.SelectedInput.Descriptor);
+            Assert.Equal(xbox, extra.SelectedInput.DeviceGuid, ignoreCase: true);
+            Assert.Equal("Gamepad ButtonB", extra.Descriptor);
+            Assert.Equal(xbox, extra.DeviceGuid, ignoreCase: true);
+
+            // The device's own entry is a match on the device, so the source
+            // takes its device label from it, as an exact match would.
+            string xboxLabel = extra.SelectedInput.DeviceLabel;
+            Assert.False(string.IsNullOrEmpty(xboxLabel));
+            extra.DeviceLabel = "";
+            svc.RefreshAvailableInputsForSlot(pad0);
+            Assert.Equal(xboxLabel, Assert.Single(row.ExtraSources).DeviceLabel);
+        }
+
+        [Fact]
+        public void SingleInputPickers_SelectTheDevicesOwnEntryForAPinnedAbstractName()
+        {
+            // The Gyro tab's aim engage, the trigger-route activators and the
+            // mouse-gesture engage match their stored input by descriptor and
+            // device with no "(Any device)" fallback, which could unpin a
+            // binding on write-back. A pinned abstract name selects the
+            // device's own entry instead, still on that device.
+            var (mainVm, svc) = ArrangeDefaultProfileWithXboxPad();
+            var pad0 = mainVm.Pads[0];
+            svc.RefreshAvailableInputsForSlot(pad0);
+            string xbox = XboxGuid.ToString();
+
+            pad0.GyroAimEngageButton = "Gamepad LeftShoulder";
+            pad0.GyroAimEngageDeviceGuid = xbox;
+            pad0.LeftTriggerRouteActivator = "Gamepad ButtonX";
+            pad0.LeftTriggerRouteActivatorDeviceGuid = xbox;
+            pad0.RightTriggerRouteActivator = "Gamepad ButtonY";
+            pad0.RightTriggerRouteActivatorDeviceGuid = xbox;
+            pad0.MouseGestureCustomEngageButton = "Gamepad RightShoulder";
+            pad0.MouseGestureCustomEngageDeviceGuid = xbox;
+            pad0.DeviceConfig.AudioMirrorEngageButton = "Gamepad ButtonB";
+            pad0.DeviceConfig.AudioMirrorEngageDeviceGuid = xbox;
+
+            void AssertOnXbox(InputChoice c, string descriptor)
+            {
+                Assert.NotNull(c);
+                Assert.Equal(descriptor, c.Descriptor);
+                Assert.Equal(xbox, c.DeviceGuid, ignoreCase: true);
+            }
+            AssertOnXbox(pad0.GyroAimEngageSelectedInput, "Button 4");
+            AssertOnXbox(pad0.LeftTriggerRouteActivatorSelectedInput, "Button 2");
+            AssertOnXbox(pad0.RightTriggerRouteActivatorSelectedInput, "Button 3");
+            AssertOnXbox(pad0.MouseGestureCustomEngageSelectedInput, "Button 5");
+            AssertOnXbox(pad0.MirrorEngageSelectedInput, "Button 1");
+
+            // An any-device abstract name still selects its "(Any device)" entry.
+            pad0.GyroAimEngageDeviceGuid = "";
+            Assert.Equal("Gamepad LeftShoulder", pad0.GyroAimEngageSelectedInput?.Descriptor);
+            Assert.True(string.IsNullOrEmpty(pad0.GyroAimEngageSelectedInput.DeviceGuid));
+        }
+
+        [Fact]
+        public void ShiftActivatorDialog_ReselectsAPinnedAbstractNameThroughTheDevicesOwnEntry()
+        {
+            // WPF dialogs cannot run headless, so the lookup is pinned where it
+            // lives. Without it, an activator picked as "Gamepad A" under a
+            // controller could not be re-selected, and Save would block on the
+            // input-required validation.
+            string root = new System.IO.DirectoryInfo(AppContext.BaseDirectory).FullName;
+            while (!System.IO.Directory.Exists(System.IO.Path.Combine(root, "PadForge.App")))
+                root = System.IO.Directory.GetParent(root).FullName;
+            string dlg = System.Text.RegularExpressions.Regex.Replace(
+                System.IO.File.ReadAllText(System.IO.Path.Combine(root,
+                    "PadForge.App", "Views", "ShiftActivatorDialog.xaml.cs")), @"\s+", "");
+            Assert.Contains("FindChoiceOnDevice(InputCombo.Items.OfType<InputChoice>(),existing.Descriptor,existing.DeviceGuid);", dlg);
+            Assert.Contains("FindChoiceOnDevice(ChordSecondCombo.Items.OfType<InputChoice>(),secondDesc,secondGuid);", dlg);
+        }
+
+        [Fact]
+        public void FindChoiceOnDevice_PrefersTheExactEntryAndNeverLeavesTheDevice()
+        {
+            const string pad = "33333333-3333-3333-3333-333333333333";
+            var anyA = new InputChoice { Descriptor = "Gamepad ButtonA", DeviceGuid = "" };
+            var padA = new InputChoice { Descriptor = "Button 0", DeviceGuid = pad };
+            var padAliasA = new InputChoice { Descriptor = "Gamepad ButtonA", DeviceGuid = pad };
+            var otherA = new InputChoice { Descriptor = "Button 0", DeviceGuid = "44444444-4444-4444-4444-444444444444" };
+
+            // The exact entry wins over the device's own spelling.
+            Assert.Same(padAliasA, PadForge.Common.MappingDisplayResolver.FindChoiceOnDevice(
+                new[] { anyA, padA, padAliasA }, "Gamepad ButtonA", pad));
+            // Without it, the device's own entry for the same read.
+            Assert.Same(padA, PadForge.Common.MappingDisplayResolver.FindChoiceOnDevice(
+                new[] { anyA, otherA, padA }, "Gamepad ButtonA", pad.ToUpperInvariant()));
+            // An any-device name matches only the "(Any device)" entry.
+            Assert.Same(anyA, PadForge.Common.MappingDisplayResolver.FindChoiceOnDevice(
+                new[] { padA, anyA }, "Gamepad ButtonA", ""));
+            // Never another device's entry, and nothing for a name that is not an alias.
+            Assert.Null(PadForge.Common.MappingDisplayResolver.FindChoiceOnDevice(
+                new[] { anyA, otherA }, "Gamepad ButtonA", pad));
+            Assert.Null(PadForge.Common.MappingDisplayResolver.FindChoiceOnDevice(
+                new[] { padA }, "Gamepad LeftStickRing", pad));
+            Assert.Null(PadForge.Common.MappingDisplayResolver.FindChoiceOnDevice(
+                new[] { padA }, "", pad));
         }
     
         /// <summary>The row DATA itself must be reloaded on a deviceless

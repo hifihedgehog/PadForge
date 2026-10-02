@@ -144,14 +144,8 @@ namespace PadForge.ViewModels
             get
             {
                 if (string.IsNullOrEmpty(_mouseGestureCustomEngageButton)) return null;
-                foreach (var c in SlotAvailableInputs)
-                {
-                    if (c == null) continue;
-                    if (string.Equals(c.Descriptor, _mouseGestureCustomEngageButton, StringComparison.OrdinalIgnoreCase)
-                        && string.Equals(c.DeviceGuid ?? "", _mouseGestureCustomEngageDeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
-                        return c;
-                }
-                return null;
+                return PadForge.Common.MappingDisplayResolver.FindChoiceOnDevice(
+                    SlotAvailableInputs, _mouseGestureCustomEngageButton, _mouseGestureCustomEngageDeviceGuid);
             }
             set
             {

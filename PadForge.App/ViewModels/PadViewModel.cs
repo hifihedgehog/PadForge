@@ -3631,14 +3631,8 @@ namespace PadForge.ViewModels
             get
             {
                 if (string.IsNullOrEmpty(_gyroAimEngageButton)) return null;
-                foreach (var c in SlotAvailableInputs)
-                {
-                    if (c == null) continue;
-                    if (string.Equals(c.Descriptor, _gyroAimEngageButton, StringComparison.OrdinalIgnoreCase)
-                        && string.Equals(c.DeviceGuid ?? "", _gyroAimEngageDeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
-                        return c;
-                }
-                return null;
+                return PadForge.Common.MappingDisplayResolver.FindChoiceOnDevice(
+                    SlotAvailableInputs, _gyroAimEngageButton, _gyroAimEngageDeviceGuid);
             }
             set
             {
@@ -4067,14 +4061,8 @@ namespace PadForge.ViewModels
             get
             {
                 if (string.IsNullOrEmpty(_leftTriggerRouteActivator)) return null;
-                foreach (var c in SlotAvailableInputs)
-                {
-                    if (c == null) continue;
-                    if (string.Equals(c.Descriptor, _leftTriggerRouteActivator, StringComparison.OrdinalIgnoreCase)
-                        && string.Equals(c.DeviceGuid ?? "", _leftTriggerRouteActivatorDeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
-                        return c;
-                }
-                return null;
+                return PadForge.Common.MappingDisplayResolver.FindChoiceOnDevice(
+                    SlotAvailableInputs, _leftTriggerRouteActivator, _leftTriggerRouteActivatorDeviceGuid);
             }
             set
             {
@@ -4168,14 +4156,8 @@ namespace PadForge.ViewModels
             get
             {
                 if (string.IsNullOrEmpty(_rightTriggerRouteActivator)) return null;
-                foreach (var c in SlotAvailableInputs)
-                {
-                    if (c == null) continue;
-                    if (string.Equals(c.Descriptor, _rightTriggerRouteActivator, StringComparison.OrdinalIgnoreCase)
-                        && string.Equals(c.DeviceGuid ?? "", _rightTriggerRouteActivatorDeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
-                        return c;
-                }
-                return null;
+                return PadForge.Common.MappingDisplayResolver.FindChoiceOnDevice(
+                    SlotAvailableInputs, _rightTriggerRouteActivator, _rightTriggerRouteActivatorDeviceGuid);
             }
             set
             {
@@ -6051,14 +6033,8 @@ namespace PadForge.ViewModels
             {
                 var cfg = DeviceConfig;
                 if (cfg == null || string.IsNullOrEmpty(cfg.AudioMirrorEngageButton)) return null;
-                foreach (var c in SlotAvailableInputs)
-                {
-                    if (c == null) continue;
-                    if (string.Equals(c.Descriptor, cfg.AudioMirrorEngageButton, StringComparison.OrdinalIgnoreCase)
-                        && string.Equals(c.DeviceGuid ?? "", cfg.AudioMirrorEngageDeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
-                        return c;
-                }
-                return null;
+                return PadForge.Common.MappingDisplayResolver.FindChoiceOnDevice(
+                    SlotAvailableInputs, cfg.AudioMirrorEngageButton, cfg.AudioMirrorEngageDeviceGuid);
             }
             set
             {

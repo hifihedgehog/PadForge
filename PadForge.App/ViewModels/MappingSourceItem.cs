@@ -962,10 +962,19 @@ namespace PadForge.ViewModels
                     return;
                 }
                 string wantGuid = (_deviceGuid ?? "").ToLowerInvariant();
+                // An abstract "Gamepad ..." name stored with a concrete device
+                // selects that device's own entry for the same read, ahead of
+                // the "(Any device)" copy of the name.
+                string pinnedCanonical = PadForge.Common.MappingDisplayResolver.PinnedAliasCanonical(_descriptor, wantGuid);
                 InputChoice match = null;
+                InputChoice canonicalMatch = null;
                 InputChoice descriptorOnlyMatch = null;
                 foreach (var choice in choices)
                 {
+                    if (pinnedCanonical != null && canonicalMatch == null
+                        && string.Equals(choice.Descriptor, pinnedCanonical, StringComparison.OrdinalIgnoreCase)
+                        && string.Equals(choice.DeviceGuid ?? "", wantGuid, StringComparison.OrdinalIgnoreCase))
+                        canonicalMatch = choice;
                     if (!string.Equals(choice.Descriptor, _descriptor, StringComparison.OrdinalIgnoreCase))
                         continue;
                     if (descriptorOnlyMatch == null) descriptorOnlyMatch = choice;
@@ -980,7 +989,8 @@ namespace PadForge.ViewModels
                         break;
                     }
                 }
-                var picked = match ?? descriptorOnlyMatch;
+                var onDevice = match ?? canonicalMatch;
+                var picked = onDevice ?? descriptorOnlyMatch;
                 _selectedInput = picked;
                 // Only adopt a device label when the picked choice matched on
                 // GUID. A descriptor-only fallback (empty guid = "any device",
@@ -990,8 +1000,8 @@ namespace PadForge.ViewModels
                 // concrete controller instead of "(Any device)". The primary row
                 // resolves its label straight from its own guid and never did
                 // this, so gating here unifies the two paths.
-                if (match != null && !string.IsNullOrEmpty(match.DeviceLabel))
-                    DeviceLabel = match.DeviceLabel;
+                if (onDevice != null && !string.IsNullOrEmpty(onDevice.DeviceLabel))
+                    DeviceLabel = onDevice.DeviceLabel;
                 OnPropertyChanged(nameof(SelectedInput));
             }
             finally

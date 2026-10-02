@@ -971,10 +971,19 @@ namespace PadForge.ViewModels
                     clean = clean.Substring(1);
 
                 string wantGuid = (_primarySourceDeviceGuid ?? "").ToLowerInvariant();
+                // An abstract "Gamepad ..." name stored with a concrete device
+                // selects that device's own entry for the same read, ahead of
+                // the "(Any device)" copy of the name.
+                string pinnedCanonical = PadForge.Common.MappingDisplayResolver.PinnedAliasCanonical(clean, wantGuid);
                 InputChoice match = null;
+                InputChoice canonicalMatch = null;
                 InputChoice descriptorOnlyMatch = null;
                 foreach (var choice in AvailableInputs)
                 {
+                    if (pinnedCanonical != null && canonicalMatch == null
+                        && string.Equals(choice.Descriptor, pinnedCanonical, StringComparison.OrdinalIgnoreCase)
+                        && string.Equals(choice.DeviceGuid ?? "", wantGuid, StringComparison.OrdinalIgnoreCase))
+                        canonicalMatch = choice;
                     if (!string.Equals(choice.Descriptor, clean, StringComparison.OrdinalIgnoreCase))
                         continue;
                     if (descriptorOnlyMatch == null) descriptorOnlyMatch = choice;
@@ -990,7 +999,7 @@ namespace PadForge.ViewModels
                         break;
                     }
                 }
-                _selectedInput = match ?? descriptorOnlyMatch;
+                _selectedInput = match ?? canonicalMatch ?? descriptorOnlyMatch;
                 OnPropertyChanged(nameof(SelectedInput));
             }
             finally

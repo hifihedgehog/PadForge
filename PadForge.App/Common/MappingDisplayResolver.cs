@@ -798,6 +798,46 @@ namespace PadForge.Common
             }
         }
 
+        /// <summary>The device's own descriptor for an abstract
+        /// <c>"Gamepad ..."</c> name stored with a concrete device, or null
+        /// for any other pair. The abstract names are offered only under
+        /// "(Any device)", so a source picked as "Gamepad A" under a
+        /// controller before that (descriptor "Gamepad ButtonA" with the
+        /// controller's guid) has no entry of its own any more. It resolves
+        /// to the controller's own entry for the same read, "Button 0" listed
+        /// as A. Both spellings read the same input on that device, so a
+        /// picker that writes the entry back stores an equivalent binding,
+        /// still on that device.</summary>
+        internal static string PinnedAliasCanonical(string descriptor, string deviceGuid)
+            => string.IsNullOrEmpty(deviceGuid)
+                ? null
+                : PadForge.Engine.Common.Mapping.SourceCoercion.ResolveGamepadAlias(descriptor);
+
+        /// <summary>The picker entry for a stored descriptor and device: the
+        /// entry with that descriptor on that device (the empty guid matching
+        /// the "(Any device)" group), else that device's own entry for an
+        /// abstract name (<see cref="PinnedAliasCanonical"/>), else null.
+        /// Both comparisons ignore case.</summary>
+        internal static InputChoice FindChoiceOnDevice(
+            System.Collections.Generic.IEnumerable<InputChoice> choices, string descriptor, string deviceGuid)
+        {
+            if (choices == null || string.IsNullOrEmpty(descriptor)) return null;
+            string guid = deviceGuid ?? "";
+            string canonical = PinnedAliasCanonical(descriptor, guid);
+            InputChoice canonicalMatch = null;
+            foreach (var c in choices)
+            {
+                if (c == null || !string.Equals(c.DeviceGuid ?? "", guid, System.StringComparison.OrdinalIgnoreCase))
+                    continue;
+                if (string.Equals(c.Descriptor, descriptor, System.StringComparison.OrdinalIgnoreCase))
+                    return c;
+                if (canonicalMatch == null && canonical != null
+                    && string.Equals(c.Descriptor, canonical, System.StringComparison.OrdinalIgnoreCase))
+                    canonicalMatch = c;
+            }
+            return canonicalMatch;
+        }
+
         /// <summary>The picker's device-independent "(Any device)" group
         /// (#9): every descriptor namespace that resolves per-device at
         /// evaluation time rather than naming a concrete controller. An
@@ -1707,75 +1747,46 @@ namespace PadForge.Common
                 }
             }
 
-            // Abstract "Gamepad ..." family (issue #9). Device-agnostic
-            // semantic names for the standardized gamepad inputs, gated on
-            // the device being a gamepad read through SDL's normalized
-            // mapping (not a force-raw device, where "Gamepad ButtonA" would
-            // read the raw joystick button instead of A). Each descriptor
-            // canonicalizes in SourceCoercion to the per-device Button/Axis/
-            // POV read. Gyro and touchpad members of the family reuse the
-            // existing "Gyro ..." / "Touchpad ..." entries below, so they are
-            // not duplicated here.
+            // The abstract "Gamepad ..." names (issue #9) are offered only in
+            // the "(Any device)" group (BuildDeviceAgnosticChoices). Each one
+            // re-spells a read this group already lists under the device's
+            // own name ("Gamepad A" is Button 0, listed as A), so a copy here
+            // showed every name twice and stayed visible when the picker's
+            // device filter hid "(Any device)". A stored source that pins one
+            // of them to this device selects the device's own entry for the
+            // same read instead (FindChoiceOnDevice).
+            //
+            // The whole-stick compound sources below are different. Nothing
+            // else in this group reads them, and an entry here is the only
+            // way to pin one to this controller, so they stay, on a gamepad
+            // read through SDL's normalized mapping (not a force-raw device).
             if (ud.CapType == PadForge.Engine.InputDeviceType.Gamepad && !UseRawNumberedNaming(ud))
             {
-                // Gate each alias on the canonical read it resolves to. The raw
-                // blocks above already asked the device which slots it populates,
-                // so a pad without a right stick drops those indices there.
-                // Emitting the alias family dense put every one of them straight
-                // back under an abstract name that hid the fact they read
-                // nothing. Membership in what the raw pass emitted IS the
-                // capability answer, so the gate cannot drift from it. Hat
-                // aliases stay ungated on purpose: a pad can carry a directional
-                // pad the capability list reports as buttons rather than a hat,
-                // and gating there would remove a working binding to fix a
-                // phantom one.
-                var emitted = new System.Collections.Generic.HashSet<string>(
+                // Gate each compound source on the stick axes it reads. The
+                // raw blocks above already asked the device which slots it
+                // populates, so membership in what they emitted IS the
+                // capability answer: a pad without a right stick has none to
+                // flick or ring. A pad this app has never seen online reports
+                // no slots at all, and an empty surface keeps the dense
+                // behavior, the never-seen fallback the raw blocks take.
+                var emittedAxes = new System.Collections.Generic.HashSet<string>(
                     System.StringComparer.Ordinal);
-                bool sawAxis = false, sawButton = false;
                 foreach (var c in list)
                 {
-                    if (c?.Descriptor == null) continue;
-                    emitted.Add(c.Descriptor);
-                    if (c.Descriptor.StartsWith("Axis ", System.StringComparison.Ordinal)) sawAxis = true;
-                    else if (c.Descriptor.StartsWith("Button ", System.StringComparison.Ordinal)) sawButton = true;
+                    if (c?.Descriptor != null
+                        && c.Descriptor.StartsWith("Axis ", System.StringComparison.Ordinal))
+                        emittedAxes.Add(c.Descriptor);
                 }
-                // A pad this app has never seen online reports no slots at all.
-                // Subtracting from nothing would strip the whole family, so an
-                // empty surface keeps the dense behavior, the same never-seen
-                // fallback the raw blocks take.
-                bool AliasSupported(string canonical)
-                {
-                    if (canonical == null) return true;
-                    if (canonical.StartsWith("Axis ", System.StringComparison.Ordinal))
-                        return !sawAxis || emitted.Contains(canonical);
-                    if (canonical.StartsWith("Button ", System.StringComparison.Ordinal))
-                        return !sawButton || emitted.Contains(canonical);
-                    return true;
-                }
-
-                foreach (var (member, canonical) in PadForge.Engine.Common.Mapping.SourceCoercion.GamepadAliasTable)
-                {
-                    string memberDisplay = GamepadMemberDisplay(member);
-                    if (memberDisplay == null) continue;
-                    if (!AliasSupported(canonical)) continue;
-                    list.Add(new InputChoice
-                    {
-                        Descriptor = "Gamepad " + member,
-                        DisplayName = string.Format(si.Mapping_Gamepad_Format, memberDisplay)
-                    });
-                }
+                bool AxisSupported(string canonical)
+                    => emittedAxes.Count == 0 || emittedAxes.Contains(canonical);
 
                 // Flick stick (#225): whole-stick mouse-turn inputs. Map one
                 // to Mouse X on a keyboard/mouse slot. The engine resolves
                 // the stick axes per device through the Gamepad alias table
                 // and the tuning rides the Flick Stick card on the Sticks
-                // tab. Same gamepad gate as the alias family: the read is
-                // the canonical stick pair.
-                // The compound stick sources read a PAIR of canonical axes, so
-                // they inherit the same gate: a pad without a right stick has
-                // none to flick or ring.
-                bool leftStickOk = AliasSupported("Axis 0") && AliasSupported("Axis 1");
-                bool rightStickOk = AliasSupported("Axis 3") && AliasSupported("Axis 4");
+                // tab. Each compound source reads a PAIR of canonical axes.
+                bool leftStickOk = AxisSupported("Axis 0") && AxisSupported("Axis 1");
+                bool rightStickOk = AxisSupported("Axis 3") && AxisSupported("Axis 4");
                 if (rightStickOk)
                     list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.FlickStickRightDescriptor, DisplayName = si.Mapping_FlickStickRight });
                 if (leftStickOk)

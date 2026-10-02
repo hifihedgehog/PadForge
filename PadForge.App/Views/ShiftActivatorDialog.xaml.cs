@@ -493,18 +493,15 @@ namespace PadForge.Views
 
         private void SelectInputs(ShiftActivator existing)
         {
+            // Each picker selects the entry on the stored device, or that
+            // device's own entry for an abstract "Gamepad ..." name picked
+            // under it, which the device groups no longer list. Without it the
+            // saved input could not be re-selected and Save would block.
             if (InputCombo.ItemsSource != null)
             {
-                foreach (var item in InputCombo.Items)
-                {
-                    if (item is InputChoice c
-                        && string.Equals(c.Descriptor ?? "", existing.Descriptor ?? "", StringComparison.OrdinalIgnoreCase)
-                        && string.Equals(c.DeviceGuid ?? "", existing.DeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
-                    {
-                        InputCombo.SelectedItem = c;
-                        break;
-                    }
-                }
+                var found = PadForge.Common.MappingDisplayResolver.FindChoiceOnDevice(
+                    InputCombo.Items.OfType<InputChoice>(), existing.Descriptor, existing.DeviceGuid);
+                if (found != null) InputCombo.SelectedItem = found;
             }
             // The second picker holds the chord second half (Kind=Chord) or the
             // Cycle Previous button (Mode=Cycle, #119).
@@ -513,16 +510,9 @@ namespace PadForge.Views
             string secondGuid = isCycle ? existing.CyclePrevDeviceGuid : existing.ChordSecondDeviceGuid;
             if (ChordSecondCombo.ItemsSource != null && !string.IsNullOrEmpty(secondDesc))
             {
-                foreach (var item in ChordSecondCombo.Items)
-                {
-                    if (item is InputChoice c
-                        && string.Equals(c.Descriptor ?? "", secondDesc, StringComparison.OrdinalIgnoreCase)
-                        && string.Equals(c.DeviceGuid ?? "", secondGuid ?? "", StringComparison.OrdinalIgnoreCase))
-                    {
-                        ChordSecondCombo.SelectedItem = c;
-                        break;
-                    }
-                }
+                var found = PadForge.Common.MappingDisplayResolver.FindChoiceOnDevice(
+                    ChordSecondCombo.Items.OfType<InputChoice>(), secondDesc, secondGuid);
+                if (found != null) ChordSecondCombo.SelectedItem = found;
             }
         }
 

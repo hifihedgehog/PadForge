@@ -2185,7 +2185,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Pointer" xml:space="preserve"><value>Puntatore</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Puntatore IR</value></data>
-  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Punta questo telecomando Wii verso lo schermo con la sua fotocamera IR. Richiede una barra sensori, o due LED a infrarossi, sopra o sotto lo schermo.</value></data>
+  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Punta questo telecomando Wii verso lo schermo con la sua fotocamera IR. Richiede una barra sensori, o due LED a infrarossi, sopra o sotto lo schermo. Calibralo come pistola ottica nella pagina Dispositivi per mirare al punto esatto. Un telecomando calibrato ignora Posizione della barra sensori e Scostamento verticale.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Regolazione del puntatore</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Posizione della barra sensori</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Centrata</value></data>
@@ -2755,12 +2755,18 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Calibrazione della pistola</value></data>
   <data name="Devices_GunCalibrate" xml:space="preserve"><value>Calibra</value></data>
   <data name="Devices_GunCalibrateTooltip" xml:space="preserve"><value>Rende bianco ogni schermo e mostra quattro bersagli uno alla volta. Punta la pistola su ogni bersaglio sul suo schermo CRT e premi il grilletto. La pistola deve essere collegata a questo PC.</value></data>
+  <data name="Devices_WiiAimDefault" xml:space="preserve"><value>Non calibrato. Il telecomando mira con il suo intervallo predefinito.</value></data>
+  <data name="Devices_WiiAimCalibrated" xml:space="preserve"><value>Calibrato per questo schermo.</value></data>
+  <data name="Devices_WiiCalibrateTooltip" xml:space="preserve"><value>Mostra quattro bersagli uno alla volta. Dalla posizione in cui giochi, punta il telecomando Wii su ogni bersaglio e premi B. Il telecomando deve essere collegato a questo PC.</value></data>
   <data name="GunCalibration_Title" xml:space="preserve"><value>Calibrazione della pistola</value></data>
   <data name="GunCalibration_Instruction" xml:space="preserve"><value>Punta la pistola sul bersaglio e premi il grilletto.</value></data>
   <data name="GunCalibration_Progress" xml:space="preserve"><value>Bersaglio {0} di {1}</value></data>
   <data name="GunCalibration_OffScreen" xml:space="preserve"><value>La pistola non ha visto lo schermo. Punta il bersaglio e premi di nuovo il grilletto.</value></data>
   <data name="GunCalibration_TooClose" xml:space="preserve"><value>I colpi sono troppo vicini per misurare lo schermo. Ricomincia dal primo bersaglio.</value></data>
   <data name="GunCalibration_Cancel" xml:space="preserve"><value>Esc, A o B annulla.</value></data>
+  <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Punta il telecomando Wii sul bersaglio e premi B.</value></data>
+  <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Il telecomando Wii non ha visto la barra sensori. Punta il bersaglio e premi di nuovo B.</value></data>
+  <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Esc o Home annulla.</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Disconnette questo controller Bluetooth dopo questi minuti senza input, così entra in sospensione e risparmia batteria. Non si attiva mai via USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Accensione</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>

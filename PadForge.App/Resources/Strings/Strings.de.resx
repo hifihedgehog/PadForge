@@ -2163,7 +2163,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Pointer" xml:space="preserve"><value>Zeiger</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-Zeiger</value></data>
-  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Richten Sie diese Wii-Fernbedienung mit ihrer IR-Kamera auf den Bildschirm. Erfordert eine Sensorleiste oder zwei Infrarot-LEDs ober- oder unterhalb des Bildschirms.</value></data>
+  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Richten Sie diese Wii-Fernbedienung mit ihrer IR-Kamera auf den Bildschirm. Erfordert eine Sensorleiste oder zwei Infrarot-LEDs ober- oder unterhalb des Bildschirms. Kalibrieren Sie sie auf der Seite Geräte als Lightgun, um genau auf die Stelle zu zielen. Eine kalibrierte Fernbedienung ignoriert Position der Sensorleiste und Vertikaler Versatz.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Zeiger-Abstimmung</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Position der Sensorleiste</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Zentriert</value></data>
@@ -2733,12 +2733,18 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Lightgun-Kalibrierung</value></data>
   <data name="Devices_GunCalibrate" xml:space="preserve"><value>Kalibrieren</value></data>
   <data name="Devices_GunCalibrateTooltip" xml:space="preserve"><value>Färbt jeden Bildschirm weiß und zeigt nacheinander vier Ziele. Richten Sie die Lightgun auf jedes Ziel auf ihrem Röhrenbildschirm und drücken Sie den Abzug. Die Lightgun muss an diesen PC angeschlossen sein.</value></data>
+  <data name="Devices_WiiAimDefault" xml:space="preserve"><value>Nicht kalibriert. Die Fernbedienung zielt mit ihrem Standardbereich.</value></data>
+  <data name="Devices_WiiAimCalibrated" xml:space="preserve"><value>Auf diesen Bildschirm kalibriert.</value></data>
+  <data name="Devices_WiiCalibrateTooltip" xml:space="preserve"><value>Zeigt nacheinander vier Ziele. Richten Sie die Wii-Fernbedienung von Ihrer Spielposition aus auf jedes Ziel und drücken Sie B. Die Fernbedienung muss an diesen PC angeschlossen sein.</value></data>
   <data name="GunCalibration_Title" xml:space="preserve"><value>Lightgun-Kalibrierung</value></data>
   <data name="GunCalibration_Instruction" xml:space="preserve"><value>Richten Sie die Lightgun auf das Ziel und drücken Sie den Abzug.</value></data>
   <data name="GunCalibration_Progress" xml:space="preserve"><value>Ziel {0} von {1}</value></data>
   <data name="GunCalibration_OffScreen" xml:space="preserve"><value>Die Lightgun hat den Bildschirm nicht erfasst. Richten Sie sie auf das Ziel und drücken Sie den Abzug erneut.</value></data>
   <data name="GunCalibration_TooClose" xml:space="preserve"><value>Die Schüsse lagen zu dicht beieinander, um den Bildschirm zu vermessen. Beginnen Sie erneut beim ersten Ziel.</value></data>
   <data name="GunCalibration_Cancel" xml:space="preserve"><value>Esc, A oder B bricht ab.</value></data>
+  <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Richten Sie die Wii-Fernbedienung auf das Ziel und drücken Sie B.</value></data>
+  <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Die Wii-Fernbedienung hat die Sensorleiste nicht erfasst. Richten Sie sie auf das Ziel und drücken Sie B erneut.</value></data>
+  <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Esc oder Home bricht ab.</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Trennt diesen Bluetooth-Controller nach so vielen Minuten ohne Eingabe, sodass er in den Ruhezustand wechselt und Akku spart. Löst nie über USB aus.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Ein/Aus</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menü</value></data>

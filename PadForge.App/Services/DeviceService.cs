@@ -414,9 +414,16 @@ namespace PadForge.Services
                 ud.IdleDisconnectSeconds = Math.Max(0, row.IdleDisconnectMinutes) * 60;
                 ud.QuickChargeEnabled = row.QuickChargeEnabled;
                 ud.GunCalibration = row.GunCalibration ?? string.Empty;
-                // A connected gun scales its aim by the new window at once.
-                if (ud.Device is PadForge.Engine.SdlDeviceWrapper gun && gun.IsGunCon2)
-                    gun.GunCon2Calibration = PadForge.Engine.GunCon2Calibration.Parse(ud.GunCalibration);
+                // A connected gun scales its aim by the new window at once, and
+                // so does a Wii Remote calibrated as a light gun (#485).
+                if (ud.Device is PadForge.Engine.SdlDeviceWrapper gun)
+                {
+                    if (gun.IsGunCon2)
+                        gun.GunCon2Calibration = PadForge.Engine.GunCon2Calibration.Parse(ud.GunCalibration);
+                    else if (gun.HasIrCamera)
+                        gun.WiiPointerCalibration = PadForge.Engine.GunCon2Calibration.TryParse(ud.GunCalibration, out var pointer)
+                            ? pointer : null;
+                }
             }
 
             _settingsService.MarkDirty();

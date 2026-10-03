@@ -2163,7 +2163,7 @@
   <data name="Pad_Audio" xml:space="preserve"><value>オーディオ</value></data>
   <data name="Pad_Pointer" xml:space="preserve"><value>ポインター</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IRポインター</value></data>
-  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>このWiiリモコンのIRカメラで画面に向けます。ディスプレイの上または下にセンサーバー（または赤外線LED2個）が必要です。</value></data>
+  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>このWiiリモコンのIRカメラで画面に向けます。ディスプレイの上または下にセンサーバー（または赤外線LED2個）が必要です。正確な位置を狙うには、デバイスページでライトガンとしてキャリブレーションしてください。キャリブレーション済みのリモコンはセンサーバーの位置と垂直オフセットを使いません。</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>ポインター調整</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>センサーバーの位置</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>中央</value></data>
@@ -2733,12 +2733,18 @@
   <data name="Devices_GunCalibration" xml:space="preserve"><value>ガンのキャリブレーション</value></data>
   <data name="Devices_GunCalibrate" xml:space="preserve"><value>キャリブレーション</value></data>
   <data name="Devices_GunCalibrateTooltip" xml:space="preserve"><value>すべての画面を白くして、4 つの的を順に表示します。ブラウン管に映った各的にガンを向けてトリガーを引いてください。ガンはこの PC に接続されている必要があります。</value></data>
+  <data name="Devices_WiiAimDefault" xml:space="preserve"><value>未キャリブレーション。リモコンは既定の範囲で照準します。</value></data>
+  <data name="Devices_WiiAimCalibrated" xml:space="preserve"><value>この画面に合わせてキャリブレーション済み。</value></data>
+  <data name="Devices_WiiCalibrateTooltip" xml:space="preserve"><value>4 つの的を順に表示します。プレイする位置から、Wii リモコンを各的に向けて B を押してください。リモコンはこの PC に接続されている必要があります。</value></data>
   <data name="GunCalibration_Title" xml:space="preserve"><value>ガンのキャリブレーション</value></data>
   <data name="GunCalibration_Instruction" xml:space="preserve"><value>ガンを的に向けてトリガーを引いてください。</value></data>
   <data name="GunCalibration_Progress" xml:space="preserve"><value>的 {0} / {1}</value></data>
   <data name="GunCalibration_OffScreen" xml:space="preserve"><value>ガンが画面を捉えられませんでした。的に向けてもう一度トリガーを引いてください。</value></data>
   <data name="GunCalibration_TooClose" xml:space="preserve"><value>着弾が近すぎて画面を測定できません。最初の的からやり直してください。</value></data>
   <data name="GunCalibration_Cancel" xml:space="preserve"><value>Esc、A、B でキャンセル</value></data>
+  <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Wii リモコンを的に向けて B を押してください。</value></data>
+  <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Wii リモコンがセンサーバーを捉えられませんでした。的に向けてもう一度 B を押してください。</value></data>
+  <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Esc、Home でキャンセル</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>入力がないままこの分数が経過すると、このBluetoothコントローラーを切断してスリープさせ、バッテリーを節約します。USB接続時には作動しません。</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>電源</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>メニュー</value></data>

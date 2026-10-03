@@ -2179,7 +2179,7 @@
   <data name="Pad_Audio" xml:space="preserve"><value>音频</value></data>
   <data name="Pad_Pointer" xml:space="preserve"><value>指针</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>红外指针</value></data>
-  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>用此 Wii 遥控器的红外摄像头指向屏幕。需要在显示屏上方或下方放置感应条（或两个红外 LED）。</value></data>
+  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>用此 Wii 遥控器的红外摄像头指向屏幕。需要在显示屏上方或下方放置感应条（或两个红外 LED）。在设备页面将其校准为光枪即可精确瞄准。校准后的遥控器不再使用感应条位置和垂直偏移。</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>指针调节</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>感应条位置</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>居中</value></data>
@@ -2733,12 +2733,18 @@
   <data name="Devices_GunCalibration" xml:space="preserve"><value>光枪校准</value></data>
   <data name="Devices_GunCalibrate" xml:space="preserve"><value>校准</value></data>
   <data name="Devices_GunCalibrateTooltip" xml:space="preserve"><value>将所有屏幕变为白色，并依次显示四个目标。用光枪瞄准其 CRT 显示器上的每个目标并扣动扳机。光枪必须连接到这台电脑。</value></data>
+  <data name="Devices_WiiAimDefault" xml:space="preserve"><value>未校准。遥控器使用默认范围瞄准。</value></data>
+  <data name="Devices_WiiAimCalibrated" xml:space="preserve"><value>已针对此屏幕校准。</value></data>
+  <data name="Devices_WiiCalibrateTooltip" xml:space="preserve"><value>依次显示四个目标。请在你游玩的位置用 Wii 遥控器指向每个目标并按 B。遥控器必须连接到这台电脑。</value></data>
   <data name="GunCalibration_Title" xml:space="preserve"><value>光枪校准</value></data>
   <data name="GunCalibration_Instruction" xml:space="preserve"><value>用光枪瞄准目标并扣动扳机。</value></data>
   <data name="GunCalibration_Progress" xml:space="preserve"><value>目标 {0} / {1}</value></data>
   <data name="GunCalibration_OffScreen" xml:space="preserve"><value>光枪没有检测到屏幕。请瞄准目标并再次扣动扳机。</value></data>
   <data name="GunCalibration_TooClose" xml:space="preserve"><value>射击点过于接近，无法测量屏幕。请从第一个目标重新开始。</value></data>
   <data name="GunCalibration_Cancel" xml:space="preserve"><value>按 Esc、A 或 B 取消</value></data>
+  <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>用 Wii 遥控器指向目标并按 B。</value></data>
+  <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Wii 遥控器没有检测到感应条。请指向目标并再次按 B。</value></data>
+  <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>按 Esc 或 Home 取消</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>在无输入达到设定分钟数后断开此蓝牙控制器，使其休眠以节省电量。USB 连接时不会触发。</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>电源</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>菜单</value></data>

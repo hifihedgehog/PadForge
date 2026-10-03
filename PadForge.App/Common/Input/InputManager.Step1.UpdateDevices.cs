@@ -1259,6 +1259,11 @@ namespace PadForge.Common.Input
             PadForge.Engine.Common.Mapping.SourceCoercion.ResetTouchMomentumForDevice(
                 ud.InstanceGuid.ToString());
 
+            // The IR pointer's held aim (#485) keys on the device guid the same
+            // way, so a remote that reconnects starts from center.
+            PadForge.Engine.Common.Mapping.SourceCoercion.ForgetIrPointerForDevice(
+                ud.InstanceGuid.ToString());
+
             // Voice pulse arrays key on the pad guid the same way (#317):
             // a removed device's pulses ride the same teardown funnel.
             PadForge.Common.Input.VoicePulse.Forget(ud.InstanceGuid);

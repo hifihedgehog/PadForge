@@ -635,12 +635,18 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Gun Calibration</value></data>
   <data name="Devices_GunCalibrate" xml:space="preserve"><value>Calibrate</value></data>
   <data name="Devices_GunCalibrateTooltip" xml:space="preserve"><value>Turns every screen white and shows four targets in turn. Aim the gun at each target on its CRT and pull the trigger. The gun has to be connected to this PC.</value></data>
+  <data name="Devices_WiiAimDefault" xml:space="preserve"><value>Not calibrated. The remote aims with its default range.</value></data>
+  <data name="Devices_WiiAimCalibrated" xml:space="preserve"><value>Calibrated to this screen.</value></data>
+  <data name="Devices_WiiCalibrateTooltip" xml:space="preserve"><value>Shows four targets in turn. From where you play, point the Wii Remote at each target and press B. The remote has to be connected to this PC.</value></data>
   <data name="GunCalibration_Title" xml:space="preserve"><value>Gun Calibration</value></data>
   <data name="GunCalibration_Instruction" xml:space="preserve"><value>Aim the gun at the target and pull the trigger.</value></data>
   <data name="GunCalibration_Progress" xml:space="preserve"><value>Target {0} of {1}</value></data>
   <data name="GunCalibration_OffScreen" xml:space="preserve"><value>The gun did not see the screen. Aim at the target and pull the trigger again.</value></data>
   <data name="GunCalibration_TooClose" xml:space="preserve"><value>The shots landed too close together to measure the screen. Start again at the first target.</value></data>
   <data name="GunCalibration_Cancel" xml:space="preserve"><value>Esc, A or B cancels.</value></data>
+  <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Point the Wii Remote at the target and press B.</value></data>
+  <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>The Wii Remote did not see the sensor bar. Point it at the target and press B again.</value></data>
+  <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Esc or Home cancels.</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Disconnects this Bluetooth controller after this many minutes without input, so it sleeps and saves battery. Never fires over USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Power</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>
@@ -2683,7 +2689,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Pointer" xml:space="preserve"><value>Pointer</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR Pointer</value></data>
-  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Aim this Wii Remote at the screen with its IR camera. Needs a sensor bar, or two infrared LEDs, above or below the display.</value></data>
+  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Aim this Wii Remote at the screen with its IR camera. Needs a sensor bar, or two infrared LEDs, above or below the display. Calibrate it as a light gun on the Devices page to aim at the exact spot. A calibrated remote ignores Sensor Bar Position and Vertical Offset.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Pointer Tuning</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Sensor Bar Position</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Centered</value></data>

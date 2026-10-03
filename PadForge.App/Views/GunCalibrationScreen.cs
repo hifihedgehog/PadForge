@@ -15,17 +15,75 @@ using PadForge.Resources.Strings;
 
 namespace PadForge.Views
 {
+    /// <summary>What the calibration screen reads from one kind of light gun:
+    /// its latest latched shot, whether its cancel buttons are down, and the
+    /// words the screen shows for it.</summary>
+    internal sealed class CalibrationGun
+    {
+        /// <summary>The latest shot: whether one was latched yet, the counts,
+        /// whether they landed on the screen, and a count that changes with
+        /// each shot.</summary>
+        public Func<(bool Any, short X, short Y, bool OnScreen, int Shot)> LatestShot { get; init; }
+
+        public Func<bool> CancelHeld { get; init; }
+        public string Instruction { get; init; }
+        public string OffScreen { get; init; }
+        public string Cancel { get; init; }
+
+        /// <summary>A GunCon 2: the raw beam counts latched with the trigger
+        /// pull (SdlDeviceWrapper.TryGetGunCon2Pull), on the screen past
+        /// GunconUSB's off-screen counts, and the gun's A and B (buttons 1 and
+        /// 2) cancel, as they end psakhis's calibration.</summary>
+        public static CalibrationGun ForGunCon2(UserDevice device, SdlDeviceWrapper gun) => new()
+        {
+            LatestShot = () =>
+            {
+                bool any = gun.TryGetGunCon2Pull(out short x, out short y, out int pull);
+                return (any, x, y, SdlDeviceWrapper.GunCon2OnScreen(x, y), pull);
+            },
+            CancelHeld = () =>
+            {
+                var state = device.InputState;
+                return state?.Buttons != null && state.Buttons.Length > 2
+                    && (state.Buttons[1] || state.Buttons[2]);
+            },
+            Instruction = Strings.Instance.GunCalibration_Instruction,
+            OffScreen = Strings.Instance.GunCalibration_OffScreen,
+            Cancel = Strings.Instance.GunCalibration_Cancel,
+        };
+
+        /// <summary>A Wii Remote (#485): the twist-compensated aim in pointer
+        /// counts latched with a press of B, the trigger
+        /// (SdlDeviceWrapper.TryGetWiiPointerShot), on the screen while the
+        /// remote saw the sensor bar, and Home cancels, since B shoots.</summary>
+        public static CalibrationGun ForWiiRemote(SdlDeviceWrapper remote) => new()
+        {
+            LatestShot = () =>
+            {
+                bool any = remote.TryGetWiiPointerShot(out short x, out short y, out bool onScreen, out int shot);
+                return (any, x, y, onScreen, shot);
+            },
+            CancelHeld = () => remote.WiiHomeHeld,
+            Instruction = Strings.Instance.GunCalibration_WiiInstruction,
+            OffScreen = Strings.Instance.GunCalibration_WiiOffScreen,
+            Cancel = Strings.Instance.GunCalibration_WiiCancel,
+        };
+    }
+
     /// <summary>
-    /// The GunCon 2 calibration screen (hifihedgehog/SDL#33 Part 9). The gun
-    /// reads only a 15 kHz CRT and sees nothing on a dark screen, so every
-    /// monitor turns white and shows the same target, and whichever screen
-    /// is the CRT is the one the gun reads. Four targets, set in from the
-    /// corners the way beardypig's and psakhis's calibrate.py set theirs,
-    /// one pull each. The shot is the raw count the poll thread latched with
-    /// the pull (SdlDeviceWrapper.TryGetGunCon2Pull), and the window is the
-    /// line through the shots read at the picture's edges
-    /// (GunCon2Calibration.TryFit). Esc, or the gun's A or B, cancels, as A
-    /// and B end psakhis's calibration.
+    /// The light-gun calibration screen, first for the GunCon 2
+    /// (hifihedgehog/SDL#33 Part 9) and then for a Wii Remote (#485). The
+    /// GunCon reads only a 15 kHz CRT and sees nothing on a dark screen, so
+    /// every monitor turns white and shows the same target, and whichever
+    /// screen is the CRT is the one the gun reads. A Wii Remote aims at the
+    /// sensor bar and reads any screen. Four targets, set in from the corners
+    /// the way beardypig's and psakhis's calibrate.py set theirs, one shot
+    /// each. The shot is what the poll thread latched with the trigger
+    /// (<see cref="CalibrationGun.LatestShot"/>), and the window is the line
+    /// through the shots read at the picture's edges
+    /// (GunCon2Calibration.TryFit), which is also how Touchmote's light-gun
+    /// fork calibrates two-LED aim, one line per axis. Esc, or the gun's
+    /// cancel buttons, cancels.
     /// </summary>
     internal sealed class GunCalibrationScreen
     {
@@ -37,7 +95,7 @@ namespace PadForge.Views
         };
 
         private readonly UserDevice _device;
-        private readonly SdlDeviceWrapper _gun;
+        private readonly CalibrationGun _gun;
         private readonly List<Surface> _surfaces = new();
         private readonly (int X, int Y)[] _shots = new (int X, int Y)[Targets.Length];
         private readonly TaskCompletionSource<GunCon2Calibration> _result = new();
@@ -47,7 +105,7 @@ namespace PadForge.Views
         private bool _cancelHeld = true;
         private bool _finished;
 
-        private GunCalibrationScreen(UserDevice device, SdlDeviceWrapper gun)
+        private GunCalibrationScreen(UserDevice device, CalibrationGun gun)
         {
             _device = device;
             _gun = gun;
@@ -57,7 +115,7 @@ namespace PadForge.Views
 
         /// <summary>Runs the screen and returns the fitted window, or null
         /// when it was canceled or the gun left.</summary>
-        public static Task<GunCon2Calibration> RunAsync(UserDevice device, SdlDeviceWrapper gun, Window owner)
+        public static Task<GunCon2Calibration> RunAsync(UserDevice device, CalibrationGun gun, Window owner)
         {
             var screen = new GunCalibrationScreen(device, gun);
             screen.Start(owner);
@@ -66,12 +124,12 @@ namespace PadForge.Views
 
         private void Start(Window owner)
         {
-            // A pull from before the screen opened is not a shot.
-            _gun.TryGetGunCon2Pull(out _, out _, out _lastPull);
+            // A shot from before the screen opened is not a shot.
+            _lastPull = _gun.LatestShot().Shot;
 
             foreach (var monitor in System.Windows.Forms.Screen.AllScreens)
             {
-                var surface = new Surface(monitor.Bounds, owner);
+                var surface = new Surface(monitor.Bounds, owner, _gun.Instruction, _gun.Cancel);
                 surface.Window.KeyDown += (_, e) =>
                 {
                     if (e.Key == Key.Escape)
@@ -95,12 +153,11 @@ namespace PadForge.Views
                 return;
             }
 
-            // The gun's A and B are buttons 1 and 2 (docs/README-guncon.md in
-            // the fork). Held when the screen opens, they count only after a
-            // release, so the press that opened nothing cannot close it.
-            var state = _device.InputState;
-            bool cancel = state?.Buttons != null && state.Buttons.Length > 2
-                && (state.Buttons[1] || state.Buttons[2]);
+            // The gun's cancel buttons (the GunCon's A and B, buttons 1 and 2
+            // in docs/README-guncon.md in the fork, or a Wii Remote's Home).
+            // Held when the screen opens, they count only after a release, so
+            // the press that opened nothing cannot close it.
+            bool cancel = _gun.CancelHeld();
             if (cancel && !_cancelHeld)
             {
                 Finish(null);
@@ -108,13 +165,14 @@ namespace PadForge.Views
             }
             _cancelHeld = cancel;
 
-            if (!_gun.TryGetGunCon2Pull(out short x, out short y, out int pull) || pull == _lastPull)
+            var (any, x, y, onScreen, pull) = _gun.LatestShot();
+            if (!any || pull == _lastPull)
                 return;
             _lastPull = pull;
 
-            if (!SdlDeviceWrapper.GunCon2OnScreen(x, y))
+            if (!onScreen)
             {
-                ShowTarget(Strings.Instance.GunCalibration_OffScreen);
+                ShowTarget(_gun.OffScreen);
                 return;
             }
 
@@ -169,7 +227,7 @@ namespace PadForge.Views
             private double _u, _v;
             private bool _closing;
 
-            public Surface(System.Drawing.Rectangle bounds, Window owner)
+            public Surface(System.Drawing.Rectangle bounds, Window owner, string instructionText, string cancelText)
             {
                 _bounds = bounds;
                 var ink = new SolidColorBrush(Color.FromRgb(0x10, 0x10, 0x10));
@@ -177,7 +235,7 @@ namespace PadForge.Views
 
                 var instruction = new TextBlock
                 {
-                    Text = Strings.Instance.GunCalibration_Instruction,
+                    Text = instructionText,
                     FontSize = 28,
                     Foreground = ink,
                     TextAlignment = TextAlignment.Center,
@@ -200,7 +258,7 @@ namespace PadForge.Views
                 };
                 var cancel = new TextBlock
                 {
-                    Text = Strings.Instance.GunCalibration_Cancel,
+                    Text = cancelText,
                     FontSize = 16,
                     Foreground = ink,
                     Opacity = 0.7,

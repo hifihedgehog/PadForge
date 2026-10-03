@@ -101,6 +101,11 @@ namespace PadForge.Engine.RemoteLink
             /// the neutral the encoder skipped. Written after RingCon under
             /// the same tail rule.</summary>
             AnalogKeys = 1 << 2,
+            /// <summary>The Wii IR aim went through the remote's light-gun
+            /// calibration (#485), so the receiving read adds no Pointer-tab
+            /// bar offset. The bit alone carries it, with no payload, and it
+            /// means nothing without the Ir block.</summary>
+            IrCalibrated = 1 << 3,
         }
 
         /// <summary>Capsense channels carried on the wire (one byte,
@@ -366,6 +371,7 @@ namespace PadForge.Engine.RemoteLink
             if (state.RingConStrain != 0f) ext |= BlockExt.RingCon;
             var analogKeys = state.AnalogKeys;
             if (analogKeys != null && analogKeys.Count > 0) ext |= BlockExt.AnalogKeys;
+            if (state.Ir.Detected && state.Ir.Calibrated) ext |= BlockExt.IrCalibrated;
             if (ext != BlockExt.None)
             {
                 destination[o++] = ExtMagic;
@@ -414,7 +420,8 @@ namespace PadForge.Engine.RemoteLink
             if (caps.Accel) size += 12;
             if (caps.AccelAux) size += 12;
             if (caps.GyroAux) size += 3 + 12; // ext magic + ext mask + 3 floats
-            size += 3 + 4; // Ring-Con flex (1 float) with its own ext header: 3 bytes over when GyroAux opened the tail
+            size += 3 + 4; // Ring-Con flex (1 float) with its own ext header: 3 bytes over when GyroAux opened the tail.
+                           // The IR calibrated bit (#485) has no payload, and this header also covers a tail it opens alone.
             size += 2; // battery
             if (state?.Touchpads != null)
             {
@@ -680,6 +687,8 @@ namespace PadForge.Engine.RemoteLink
                             target.AnalogKeys.Set(code, depth / 65535f);
                         }
                     }
+                    if ((ext & BlockExt.IrCalibrated) != 0 && target.Ir.Detected)
+                        target.Ir.Calibrated = true;
                 }
 
                 return o <= payload.Length;

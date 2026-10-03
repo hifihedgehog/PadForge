@@ -122,13 +122,16 @@ namespace PadForge.Tests
                 Assert.Equal(0.9f, SourceCoercion.EvaluateForBipolarAxisTarget(s2, src, 0), precision: 5);
                 Assert.Equal(0.0f, SourceCoercion.EvaluateForBipolarAxisTarget(s2, src, 1), precision: 5);
 
-                // Sight loss resets slot 0's EMA, so a re-acquire snaps.
+                // Sight loss holds slot 0's last aim (#485) and resets its
+                // EMA, so a re-acquire snaps.
                 var lost = new CustomInputState(); lost.Ir.Detected = false;
                 SourceCoercion.BeginPollFrame();
-                Assert.Equal(0f, SourceCoercion.EvaluateForBipolarAxisTarget(lost, src, 0), precision: 5);
-                var s3 = new CustomInputState(); s3.Ir.X = 1.0f; s3.Ir.Detected = true;
+                Assert.Equal(0.9f, SourceCoercion.EvaluateForBipolarAxisTarget(lost, src, 0), precision: 5);
+                // Re-acquired at 0.25, 0.45 stretched: a smoothing state kept
+                // through the loss would slide in from the held 0.9 to 0.675.
+                var s3 = new CustomInputState(); s3.Ir.X = 0.25f; s3.Ir.Detected = true;
                 SourceCoercion.BeginPollFrame();
-                Assert.Equal(1.0f, SourceCoercion.EvaluateForBipolarAxisTarget(s3, src, 0), precision: 5);
+                Assert.Equal(0.45f, SourceCoercion.EvaluateForBipolarAxisTarget(s3, src, 0), precision: 5);
             }
             finally
             {

@@ -132,15 +132,34 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void IrPointer_ReadsZeroWhenNoDotDetected()
+        public void IrPointer_HoldsItsLastAimWhenNoDotDetected()
         {
-            // Sight lost: the source relaxes to center rather than sticking.
-            var state = new CustomInputState();
-            state.Ir.X = 0.9f;
-            state.Ir.Detected = false;
+            // Sight lost: the source holds the last aim it read for the
+            // device (#485), and reads center for a device it never saw.
+            var prev = SourceCoercion.IrTuningProvider;
+            try
+            {
+                SourceCoercion.IrTuningProvider = null;
+                var lost = new CustomInputState();
+                lost.Ir.X = 0.9f;
+                lost.Ir.Detected = false;
 
-            var src = new MappingSource { Descriptor = "IR Pointer X" };
-            Assert.Equal(0f, SourceCoercion.EvaluateForBipolarAxisTarget(state, src), precision: 5);
+                var unseen = new MappingSource { Descriptor = "IR Pointer X", DeviceGuid = "grammar-unseen" };
+                Assert.Equal(0f, SourceCoercion.EvaluateForBipolarAxisTarget(lost, unseen), precision: 5);
+
+                var seen = new MappingSource { Descriptor = "IR Pointer X", DeviceGuid = "grammar-seen" };
+                var aim = new CustomInputState();
+                aim.Ir.X = 0.25f;
+                aim.Ir.Detected = true;
+                SourceCoercion.BeginPollFrame();
+                Assert.Equal(0.45f, SourceCoercion.EvaluateForBipolarAxisTarget(aim, seen), precision: 5);
+                SourceCoercion.BeginPollFrame();
+                Assert.Equal(0.45f, SourceCoercion.EvaluateForBipolarAxisTarget(lost, seen), precision: 5);
+            }
+            finally
+            {
+                SourceCoercion.IrTuningProvider = prev;
+            }
         }
 
         [Fact]

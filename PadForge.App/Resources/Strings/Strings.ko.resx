@@ -2163,7 +2163,7 @@
   <data name="Pad_Audio" xml:space="preserve"><value>오디오</value></data>
   <data name="Pad_Pointer" xml:space="preserve"><value>포인터</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR 포인터</value></data>
-  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>이 Wii 리모컨의 IR 카메라로 화면을 가리킵니다. 디스플레이 위나 아래에 센서 바 또는 적외선 LED 2개가 필요합니다.</value></data>
+  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>이 Wii 리모컨의 IR 카메라로 화면을 가리킵니다. 디스플레이 위나 아래에 센서 바 또는 적외선 LED 2개가 필요합니다. 정확한 위치를 조준하려면 장치 페이지에서 라이트 건으로 보정하세요. 보정된 리모컨은 센서 바 위치와 수직 오프셋을 사용하지 않습니다.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>포인터 조정</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>센서 바 위치</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>중앙</value></data>
@@ -2733,12 +2733,18 @@
   <data name="Devices_GunCalibration" xml:space="preserve"><value>건 보정</value></data>
   <data name="Devices_GunCalibrate" xml:space="preserve"><value>보정</value></data>
   <data name="Devices_GunCalibrateTooltip" xml:space="preserve"><value>모든 화면을 흰색으로 바꾸고 표적 네 개를 차례로 표시합니다. CRT 화면의 각 표적을 건으로 조준하고 트리거를 당기세요. 건이 이 PC에 연결되어 있어야 합니다.</value></data>
+  <data name="Devices_WiiAimDefault" xml:space="preserve"><value>보정되지 않음. 리모컨이 기본 범위로 조준합니다.</value></data>
+  <data name="Devices_WiiAimCalibrated" xml:space="preserve"><value>이 화면에 맞게 보정됨.</value></data>
+  <data name="Devices_WiiCalibrateTooltip" xml:space="preserve"><value>표적 네 개를 차례로 표시합니다. 플레이하는 위치에서 Wii 리모컨으로 각 표적을 가리키고 B를 누르세요. 리모컨이 이 PC에 연결되어 있어야 합니다.</value></data>
   <data name="GunCalibration_Title" xml:space="preserve"><value>건 보정</value></data>
   <data name="GunCalibration_Instruction" xml:space="preserve"><value>건으로 표적을 조준하고 트리거를 당기세요.</value></data>
   <data name="GunCalibration_Progress" xml:space="preserve"><value>표적 {0} / {1}</value></data>
   <data name="GunCalibration_OffScreen" xml:space="preserve"><value>건이 화면을 인식하지 못했습니다. 표적을 조준하고 트리거를 다시 당기세요.</value></data>
   <data name="GunCalibration_TooClose" xml:space="preserve"><value>탄착점이 너무 가까워 화면을 측정할 수 없습니다. 첫 번째 표적부터 다시 시작하세요.</value></data>
   <data name="GunCalibration_Cancel" xml:space="preserve"><value>Esc, A 또는 B로 취소</value></data>
+  <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Wii 리모컨으로 표적을 가리키고 B를 누르세요.</value></data>
+  <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Wii 리모컨이 센서 바를 인식하지 못했습니다. 표적을 가리키고 B를 다시 누르세요.</value></data>
+  <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Esc 또는 Home으로 취소</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>입력이 없는 상태로 설정한 분이 지나면 이 Bluetooth 컨트롤러의 연결을 끊어 절전 상태로 전환하고 배터리를 절약합니다. USB 연결 시에는 작동하지 않습니다.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>전원</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>메뉴</value></data>

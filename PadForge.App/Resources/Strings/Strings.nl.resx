@@ -2183,7 +2183,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Pointer" xml:space="preserve"><value>Aanwijzer</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-aanwijzer</value></data>
-  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Richt deze Wii-afstandsbediening met de IR-camera op het scherm. Vereist een sensorbalk of twee infraroodleds boven of onder het scherm.</value></data>
+  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Richt deze Wii-afstandsbediening met de IR-camera op het scherm. Vereist een sensorbalk of twee infraroodleds boven of onder het scherm. Kalibreer haar op de pagina Apparaten als lichtpistool om precies op de plek te richten. Een gekalibreerde afstandsbediening negeert Positie sensorbalk en Verticale verschuiving.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Aanwijzer afstemmen</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Positie sensorbalk</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Gecentreerd</value></data>
@@ -2753,12 +2753,18 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Pistoolkalibratie</value></data>
   <data name="Devices_GunCalibrate" xml:space="preserve"><value>Kalibreren</value></data>
   <data name="Devices_GunCalibrateTooltip" xml:space="preserve"><value>Maakt elk scherm wit en toont om de beurt vier doelen. Richt het pistool op elk doel op zijn CRT-scherm en haal de trekker over. Het pistool moet op deze pc zijn aangesloten.</value></data>
+  <data name="Devices_WiiAimDefault" xml:space="preserve"><value>Niet gekalibreerd. De afstandsbediening richt met haar standaardbereik.</value></data>
+  <data name="Devices_WiiAimCalibrated" xml:space="preserve"><value>Gekalibreerd op dit scherm.</value></data>
+  <data name="Devices_WiiCalibrateTooltip" xml:space="preserve"><value>Toont om de beurt vier doelen. Richt de Wii-afstandsbediening vanaf je speelplek op elk doel en druk op B. De afstandsbediening moet op deze pc zijn aangesloten.</value></data>
   <data name="GunCalibration_Title" xml:space="preserve"><value>Pistoolkalibratie</value></data>
   <data name="GunCalibration_Instruction" xml:space="preserve"><value>Richt het pistool op het doel en haal de trekker over.</value></data>
   <data name="GunCalibration_Progress" xml:space="preserve"><value>Doel {0} van {1}</value></data>
   <data name="GunCalibration_OffScreen" xml:space="preserve"><value>Het pistool zag het scherm niet. Richt op het doel en haal de trekker opnieuw over.</value></data>
   <data name="GunCalibration_TooClose" xml:space="preserve"><value>De schoten lagen te dicht bij elkaar om het scherm te meten. Begin opnieuw bij het eerste doel.</value></data>
   <data name="GunCalibration_Cancel" xml:space="preserve"><value>Esc, A of B annuleert.</value></data>
+  <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Richt de Wii-afstandsbediening op het doel en druk op B.</value></data>
+  <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>De Wii-afstandsbediening zag de sensorbalk niet. Richt op het doel en druk opnieuw op B.</value></data>
+  <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Esc of Home annuleert.</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Koppelt deze Bluetooth-controller los na dit aantal minuten zonder invoer, zodat deze in slaapstand gaat en batterij bespaart. Wordt nooit geactiveerd via USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Aan/uit</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>

@@ -14133,10 +14133,13 @@ namespace PadForge.Services
 
             // GunCon 2 calibration (hifihedgehog/SDL#33 Part 9): shown for the
             // gun online or off, and the screen runs only while the gun is
-            // connected to this PC.
+            // connected to this PC. A Wii Remote with an IR camera gets the
+            // same section as a light gun (#485).
             row.GunCalibration = ud.GunCalibration ?? string.Empty;
-            row.ShowGunCalibration = ud.IsGunCon2;
-            row.GunConnectedHere = ud.Device is PadForge.Engine.SdlDeviceWrapper { IsGunCon2: true };
+            row.GunIsWiiRemote = !ud.IsGunCon2 && ud.HasIrCamera;
+            row.ShowGunCalibration = ud.IsGunCon2 || ud.HasIrCamera;
+            row.GunConnectedHere = ud.Device is PadForge.Engine.SdlDeviceWrapper w
+                && (w.IsGunCon2 || w.HasIrCamera);
 
             // Pads in iCade mode (hifihedgehog/SDL#33 Part 16): a Bluetooth
             // keyboard can be marked as one, and a marked pair turns back

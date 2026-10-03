@@ -2163,7 +2163,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Pointer" xml:space="preserve"><value>Pointeur</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Pointeur IR</value></data>
-  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Visez l'écran avec la caméra IR de cette télécommande Wii. Nécessite une barre de capteurs, ou deux LED infrarouges, au-dessus ou en dessous de l'écran.</value></data>
+  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Visez l'écran avec la caméra IR de cette télécommande Wii. Nécessite une barre de capteurs, ou deux LED infrarouges, au-dessus ou en dessous de l'écran. Calibrez-la comme pistolet optique sur la page Appareils pour viser le point exact. Une télécommande calibrée ignore Position de la barre de capteurs et Décalage vertical.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Réglage du pointeur</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Position de la barre de capteurs</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Centrée</value></data>
@@ -2733,12 +2733,18 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Calibrage du pistolet</value></data>
   <data name="Devices_GunCalibrate" xml:space="preserve"><value>Calibrer</value></data>
   <data name="Devices_GunCalibrateTooltip" xml:space="preserve"><value>Passe chaque écran en blanc et affiche quatre cibles l'une après l'autre. Visez chaque cible avec le pistolet sur son écran cathodique et appuyez sur la détente. Le pistolet doit être branché sur ce PC.</value></data>
+  <data name="Devices_WiiAimDefault" xml:space="preserve"><value>Non calibrée. La télécommande vise avec sa plage par défaut.</value></data>
+  <data name="Devices_WiiAimCalibrated" xml:space="preserve"><value>Calibrée pour cet écran.</value></data>
+  <data name="Devices_WiiCalibrateTooltip" xml:space="preserve"><value>Affiche quatre cibles l'une après l'autre. Depuis votre position de jeu, visez chaque cible avec la télécommande Wii et appuyez sur B. La télécommande doit être branchée sur ce PC.</value></data>
   <data name="GunCalibration_Title" xml:space="preserve"><value>Calibrage du pistolet</value></data>
   <data name="GunCalibration_Instruction" xml:space="preserve"><value>Visez la cible avec le pistolet et appuyez sur la détente.</value></data>
   <data name="GunCalibration_Progress" xml:space="preserve"><value>Cible {0} sur {1}</value></data>
   <data name="GunCalibration_OffScreen" xml:space="preserve"><value>Le pistolet n'a pas vu l'écran. Visez la cible et appuyez de nouveau sur la détente.</value></data>
   <data name="GunCalibration_TooClose" xml:space="preserve"><value>Les tirs sont trop rapprochés pour mesurer l'écran. Recommencez à la première cible.</value></data>
   <data name="GunCalibration_Cancel" xml:space="preserve"><value>Échap, A ou B annule.</value></data>
+  <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Visez la cible avec la télécommande Wii et appuyez sur B.</value></data>
+  <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>La télécommande Wii n'a pas vu la barre de capteurs. Visez la cible et appuyez de nouveau sur B.</value></data>
+  <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Échap ou Home annule.</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Déconnecte cette manette Bluetooth après ce nombre de minutes sans entrée, pour qu'elle se mette en veille et économise la batterie. Ne se déclenche jamais en USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Alimentation</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>

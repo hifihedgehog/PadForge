@@ -36,5 +36,17 @@ namespace PadForge.Engine
                     return true;
             return false;
         }
+
+        /// <summary>The raw joystick buttons that carry the remote's own B (the
+        /// trigger) and Home in a configuration. A bare remote and one with a
+        /// Nunchuk post them on the gamepad positions, B as south (0) and Home
+        /// as guide (5). With a Classic Controller the Classic takes those
+        /// positions, and the remote's buttons stay in the raw block from
+        /// misc1 (15): B 16 and Home 21 (SDL_hidapi_wii.c, the extension
+        /// switch after HandleNunchuckButtonData, and k_eWiiButtons).</summary>
+        public static (int B, int Home) RemoteButtons(string name)
+            => string.Equals(name?.Trim(), "Nintendo Wii Remote with Classic Controller", StringComparison.OrdinalIgnoreCase)
+                ? (16, 21)
+                : (0, 5);
     }
 }

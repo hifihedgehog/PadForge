@@ -332,21 +332,27 @@ namespace PadForge.Views
             vm.NotifyDeviceHidingChanged(dev.InstanceGuid);
         }
 
-        /// <summary>GunCon 2 calibration (hifihedgehog/SDL#33 Part 9): runs
-        /// the four-target screen against the gun's live wrapper, then stores
-        /// the fitted window on the row and flushes it through the same lane
-        /// as the checkboxes above, which also hands it to the wrapper.</summary>
+        /// <summary>Light-gun calibration, the GunCon 2's (hifihedgehog/SDL#33
+        /// Part 9) and a Wii Remote's (#485): runs the four-target screen
+        /// against the gun's live wrapper, then stores the fitted window on the
+        /// row and flushes it through the same lane as the checkboxes above,
+        /// which also hands it to the wrapper. A GunCon window equal to the
+        /// PC tools' starting one is stored as empty, which means the same.</summary>
         private async void GunCalibrate_Click(object sender, RoutedEventArgs e)
         {
             var vm = DataContext as ViewModels.DevicesViewModel;
             var dev = vm?.SelectedDevice;
             if (dev == null || !dev.CanCalibrateGun) return;
             var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(dev.InstanceGuid);
-            if (ud?.Device is not PadForge.Engine.SdlDeviceWrapper { IsGunCon2: true } gun) return;
+            if (ud?.Device is not PadForge.Engine.SdlDeviceWrapper wrapper) return;
+            CalibrationGun gun;
+            if (wrapper.IsGunCon2) gun = CalibrationGun.ForGunCon2(ud, wrapper);
+            else if (wrapper.HasIrCamera) gun = CalibrationGun.ForWiiRemote(wrapper);
+            else return;
 
             var calibration = await GunCalibrationScreen.RunAsync(ud, gun, Window.GetWindow(this));
             if (calibration == null) return;
-            dev.GunCalibration = calibration.IsDefault ? string.Empty : calibration.ToString();
+            dev.GunCalibration = wrapper.IsGunCon2 && calibration.IsDefault ? string.Empty : calibration.ToString();
             vm.NotifyDeviceHidingChanged(dev.InstanceGuid);
         }
 

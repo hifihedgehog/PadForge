@@ -670,6 +670,19 @@ namespace PadForge.Engine.Common.Mapping
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<
             (string Dev, int Slot, char Axis), (float Value, ulong Seq)> _irEmaPrev = new();
 
+        // Per-(device, slot, axis) last aim the IR pointer read returned while
+        // the remote saw the sensor bar, after smoothing and before a source's
+        // own sensitivity, so two rows with different sensitivities each hold
+        // their own reading (#485). Sight loss serves it instead of center.
+        // Touchmote's CalculateCursorPos returns lastPos
+        // (ScreenPositionCalculator.cs 153-159), and Ryochan7's light-gun
+        // fork skips its IR stick update, so the stick keeps its value
+        // (ViGEmHandler.cs 340). That fork's light-gun stick pins to the
+        // border instead (376-470), and the cursor here freezes (#203), so
+        // the stick holds. Dropped with the device (ForgetIrPointerForDevice).
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<
+            (string Dev, int Slot, char Axis), float> _irHeld = new();
+
         /// <summary>Full-scale weight (kg) that maps Total Weight to 1.0. A normal
         /// adult stays well under this, so the normalized source keeps useful
         /// resolution.</summary>
@@ -2047,15 +2060,6 @@ namespace PadForge.Engine.Common.Mapping
             return v;
         }
 
-        /// <summary>Reads the per-source Wii IR pointer axis (issue #146): pulls the
-        /// normalized pointer from the device's own <see cref="CustomInputState.Ir"/>
-        /// (so two remotes never share a pointer), selects X or Y from the
-        /// descriptor, applies the per-source
-        /// <see cref="MappingSource.IrPointerSensitivity"/>, then clamps to
-        /// [-1..+1]. Returns 0 when no dot is seen this frame (Detected false), which
-        /// the callers read as "centered", so a brief loss of sight relaxes the
-        /// stick rather than snapping it. Invert is applied by the public Evaluate*
-        /// wrappers, matching the cursor and gyro paths.</summary>
         /// <summary>The lineage's default aim-range normalization. All four
         /// Touchmote variants on disk ship pointer_marginsLeftRight = 0.4 and
         /// pointer_marginsTopBottom = 0.5 as DEFAULTS (each repo's
@@ -2073,6 +2077,17 @@ namespace PadForge.Engine.Common.Mapping
         internal const float IrMarginStretchX = 1.8f;
         internal const float IrMarginStretchY = 2.0f;
 
+        /// <summary>Reads the per-source Wii IR pointer axis (issue #146): pulls the
+        /// normalized pointer from the device's own <see cref="CustomInputState.Ir"/>
+        /// (so two remotes never share a pointer), selects X or Y from the
+        /// descriptor, applies the per-source
+        /// <see cref="MappingSource.IrPointerSensitivity"/>, then clamps to
+        /// [-1..+1]. While no dot pair is seen (Detected false) it serves the last
+        /// aim it read for this device, slot and axis (#485): a light gun on a
+        /// stick otherwise jumped to the middle of the screen whenever an LED
+        /// left the camera's view near an edge. A remote that has not seen the
+        /// bar since it connected reads center. Invert is applied by the public
+        /// Evaluate* wrappers, matching the cursor and gyro paths.</summary>
         private static float ReadTunedIrPointer(CustomInputState state, MappingSource src, int slotIndex, string deviceGuid)
         {
             if (src == null || state == null) return 0f;
@@ -2086,10 +2101,12 @@ namespace PadForge.Engine.Common.Mapping
             string dev = deviceGuid ?? "";
             if (!state.Ir.Detected)
             {
-                // Sight lost: relax to center and drop the smoothing state so a
-                // re-acquire snaps instead of sliding in from stale.
+                // Sight lost: hold the last aim, and drop the smoothing state
+                // so a re-acquire snaps instead of sliding in from stale.
                 _irEmaPrev.TryRemove((dev, slotIndex, axis), out _);
-                return 0f;
+                return _irHeld.TryGetValue((dev, slotIndex, axis), out float held)
+                    ? ScaleIrAim(held, src)
+                    : 0f;
             }
 
             // Lineage margin stretch first, then the bar offset in its
@@ -2104,10 +2121,12 @@ namespace PadForge.Engine.Common.Mapping
             // the slot-scoped read (not the per-device wrapper) so each virtual
             // controller keeps its own pointer feel. Same order the wrapper
             // used: offset -> smoothing -> sensitivity -> clamp.
+            // A calibrated remote's window already measured where the bar
+            // sits (#485), so the offset would shift its aim twice.
             var tuning = IrTuningProvider?.Invoke(dev, slotIndex);
             if (tuning.HasValue)
             {
-                if (axis == 'Y') baseVal += tuning.Value.barOffset;
+                if (axis == 'Y' && !state.Ir.Calibrated) baseVal += tuning.Value.barOffset;
                 float sm = Math.Clamp(tuning.Value.smoothing, 0f, 0.95f);
                 if (sm > 0f)
                 {
@@ -2131,10 +2150,33 @@ namespace PadForge.Engine.Common.Mapping
                 }
             }
 
+            _irHeld[(dev, slotIndex, axis)] = baseVal;
+            return ScaleIrAim(baseVal, src);
+        }
+
+        /// <summary>The per-source sensitivity, then the clamp to [-1..+1].</summary>
+        private static float ScaleIrAim(float baseVal, MappingSource src)
+        {
             float v = baseVal * (float)src.IrPointerSensitivity;
             if (v < -1f) v = -1f;
             else if (v > 1f) v = 1f;
             return v;
+        }
+
+        /// <summary>Drops one device's IR pointer memory across every slot: the
+        /// held aim (#485) and the smoothing state. Called from the device
+        /// removal path beside <see cref="ResetTouchMomentumForDevice"/>, so a
+        /// remote that reconnects starts from center rather than from the aim
+        /// it held when it left.</summary>
+        public static void ForgetIrPointerForDevice(string deviceGuid)
+        {
+            if (string.IsNullOrEmpty(deviceGuid)) return;
+            foreach (var k in _irHeld.Keys)
+                if (string.Equals(k.Dev, deviceGuid, StringComparison.OrdinalIgnoreCase))
+                    _irHeld.TryRemove(k, out _);
+            foreach (var k in _irEmaPrev.Keys)
+                if (string.Equals(k.Dev, deviceGuid, StringComparison.OrdinalIgnoreCase))
+                    _irEmaPrev.TryRemove(k, out _);
         }
 
         /// <summary>Sensor counts per SECOND that map to full deflection for

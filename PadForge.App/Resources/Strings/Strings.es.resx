@@ -2163,7 +2163,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Pointer" xml:space="preserve"><value>Puntero</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Puntero IR</value></data>
-  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Apunta este mando de Wii a la pantalla con su cámara IR. Necesita una barra de sensores, o dos LED infrarrojos, encima o debajo de la pantalla.</value></data>
+  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Apunta este mando de Wii a la pantalla con su cámara IR. Necesita una barra de sensores, o dos LED infrarrojos, encima o debajo de la pantalla. Calíbralo como pistola de luz en la página Dispositivos para apuntar al punto exacto. Un mando calibrado ignora Posición de la barra de sensores y Desplazamiento vertical.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Ajuste del puntero</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Posición de la barra de sensores</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Centrada</value></data>
@@ -2733,12 +2733,18 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Calibración de la pistola</value></data>
   <data name="Devices_GunCalibrate" xml:space="preserve"><value>Calibrar</value></data>
   <data name="Devices_GunCalibrateTooltip" xml:space="preserve"><value>Pone todas las pantallas en blanco y muestra cuatro objetivos por turno. Apunta la pistola a cada objetivo en su monitor CRT y aprieta el gatillo. La pistola tiene que estar conectada a este PC.</value></data>
+  <data name="Devices_WiiAimDefault" xml:space="preserve"><value>Sin calibrar. El mando apunta con su rango predeterminado.</value></data>
+  <data name="Devices_WiiAimCalibrated" xml:space="preserve"><value>Calibrado para esta pantalla.</value></data>
+  <data name="Devices_WiiCalibrateTooltip" xml:space="preserve"><value>Muestra cuatro objetivos por turno. Desde donde juegas, apunta el mando de Wii a cada objetivo y pulsa B. El mando tiene que estar conectado a este PC.</value></data>
   <data name="GunCalibration_Title" xml:space="preserve"><value>Calibración de la pistola</value></data>
   <data name="GunCalibration_Instruction" xml:space="preserve"><value>Apunta la pistola al objetivo y aprieta el gatillo.</value></data>
   <data name="GunCalibration_Progress" xml:space="preserve"><value>Objetivo {0} de {1}</value></data>
   <data name="GunCalibration_OffScreen" xml:space="preserve"><value>La pistola no vio la pantalla. Apunta al objetivo y aprieta el gatillo otra vez.</value></data>
   <data name="GunCalibration_TooClose" xml:space="preserve"><value>Los disparos quedaron demasiado juntos para medir la pantalla. Empieza de nuevo por el primer objetivo.</value></data>
   <data name="GunCalibration_Cancel" xml:space="preserve"><value>Esc, A o B cancela.</value></data>
+  <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Apunta el mando de Wii al objetivo y pulsa B.</value></data>
+  <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>El mando de Wii no vio la barra de sensores. Apunta al objetivo y pulsa B otra vez.</value></data>
+  <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Esc o Home cancela.</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Desconecta este mando Bluetooth tras esos minutos sin entrada, para que entre en reposo y ahorre batería. Nunca se activa por USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Encendido</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menú</value></data>

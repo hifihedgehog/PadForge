@@ -564,7 +564,10 @@ namespace PadForge.Engine.Data
         /// the Devices page's calibration screen. Empty means the PC tools'
         /// starting window (<see cref="GunCon2Calibration.Default"/>). It
         /// belongs to the gun and the CRT it aims at, so it is kept per
-        /// device, and the gun's wrapper takes it on every connect.</summary>
+        /// device, and the gun's wrapper takes it on every connect. A Wii
+        /// Remote calibrated as a light gun (#485) keeps its window here too,
+        /// in pointer counts (SdlDeviceWrapper.WiiPointerCountsX/Y), and empty
+        /// means its default aim range.</summary>
         [XmlElement]
         public string GunCalibration { get; set; } = string.Empty;
 
@@ -791,9 +794,13 @@ namespace PadForge.Engine.Data
 
             LoadFromDevice(wrapper);
 
-            // The gun scales its aim by the calibration this record keeps.
+            // The gun scales its aim by the calibration this record keeps, and
+            // so does a Wii Remote calibrated as a light gun (#485). An empty
+            // record leaves the remote on its default aim range.
             if (wrapper.IsGunCon2)
                 wrapper.GunCon2Calibration = GunCon2Calibration.Parse(GunCalibration);
+            else if (wrapper.HasIrCamera)
+                wrapper.WiiPointerCalibration = GunCon2Calibration.TryParse(GunCalibration, out var pointer) ? pointer : null;
         }
 
         /// <summary>

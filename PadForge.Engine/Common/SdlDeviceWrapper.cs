@@ -1323,28 +1323,272 @@ namespace PadForge.Engine
         // one with an extension (Basic IR, 0x37). Both feed the same axes 6-9.
         private void ReadIrPointer(CustomInputState state)
         {
-            var (x, y, detected) = ComputeIrAim(
+            var (bButton, homeButton) = WiiRemoteIdentity.RemoteButtons(Name);
+            bool trigger = SDL_GetJoystickButton(Joystick, bButton);
+            System.Threading.Volatile.Write(ref _wiiHomeHeld, SDL_GetJoystickButton(Joystick, homeButton));
+
+            // The fork posts SDL's accelerometer X as the remote's own X
+            // negated and SDL's Y as the remote's Z
+            // (SDL_hidapi_wii.c HandleWiiRemoteAccelData).
+            bool accel = state.Accel != null && state.Accel.Length > 1;
+            var (x, y, detected, calibrated) = StepIrPointer(
                 SDL_GetJoystickAxis(Joystick, 6),
                 SDL_GetJoystickAxis(Joystick, 7),
                 SDL_GetJoystickAxis(Joystick, 8),
-                SDL_GetJoystickAxis(Joystick, 9));
-
-            if (!detected)
-            {
-                state.Ir.Detected = false;
-                return;
-            }
+                SDL_GetJoystickAxis(Joystick, 9),
+                accel ? -state.Accel[0] : 0f,
+                accel ? state.Accel[1] : 0f,
+                System.Diagnostics.Stopwatch.GetTimestamp(),
+                trigger);
 
             // Pointer-tab tuning (sensor-bar offset, smoothing) is applied at
             // the SLOT-scoped read (SourceCoercion.ReadTunedIrPointer), not
             // here: this wrapper is per-device and one remote can feed several
             // virtual controllers, each with its own Pointer-tab settings
-            // (issue #146 follow-up). state.Ir carries the raw screen-aligned
-            // aim only.
-            state.Ir.X = x;
-            state.Ir.Y = y;
-            state.Ir.Detected = true;
+            // (issue #146 follow-up). state.Ir carries the screen-aligned aim.
+            state.Ir.Detected = detected;
+            if (detected)
+            {
+                state.Ir.X = x;
+                state.Ir.Y = y;
+                state.Ir.Calibrated = calibrated;
+            }
         }
+
+        /// <summary>One poll of the IR pointer from the two dot slots, the
+        /// remote's own accelerometer X and Z (m/s²), the poll's Stopwatch
+        /// time and B: the aim, twist-compensated (#485), mapped through the
+        /// light-gun calibration when there is one, whether it was, and the
+        /// shot latched for the calibration screen. Poll-thread only. Split
+        /// from <see cref="ReadIrPointer"/> so it runs without SDL.</summary>
+        internal (float X, float Y, bool Detected, bool Calibrated) StepIrPointer(short d0x, short d0y, short d1x, short d1y,
+            float accelX, float accelZ, long timestamp, bool trigger)
+        {
+            var (x, y, detected) = ComputeIrAim(d0x, d0y, d1x, d1y);
+            if (!detected)
+            {
+                // Tracking ended: the next pair picks its left LED afresh,
+                // as Touchmote resets leftPoint on a lost pair.
+                _irLeftDot = -1;
+                RecordWiiPointerShot(0f, 0f, onScreen: false, trigger);
+                return (0f, 0f, false, false);
+            }
+
+            // Twist compensation, Touchmote's pointer_considerRotation: the
+            // orientation, read when tracking starts, picks the left LED,
+            // which holds while tracking lasts, and the aim turns about the
+            // camera's center by the dot pair's angle.
+            StepIrAccel(accelX, accelZ, timestamp);
+            if (_irLeftDot < 0)
+            {
+                _irOrientation = UpdateIrOrientation(_irOrientation, _irAccelX, _irAccelZ);
+                _irLeftDot = PickIrLeftDot(_irOrientation, d0x, d0y, d1x, d1y);
+            }
+            // Clamped to the picture, as the light-gun and 4IR forks'
+            // rotatePoint clamps its half-scale point to 0.5.
+            (x, y) = RotateIrAim(x, y, IrPairAngle(_irLeftDot, d0x, d0y, d1x, d1y));
+            x = Math.Clamp(x, -1f, 1f);
+            y = Math.Clamp(y, -1f, 1f);
+
+            // The calibration screen's shot is the compensated aim before the
+            // calibration maps it, which is what the fit runs on.
+            RecordWiiPointerShot(x, y, onScreen: true, trigger);
+
+            // A calibrated remote aims through its window, stored divided by
+            // the read's margin stretch, which restores it (ApplyGunCon2's
+            // convention).
+            var calibration = WiiPointerCalibration;
+            if (calibration == null)
+                return (x, y, true, false);
+            (x, y) = ApplyWiiPointerCalibration(x, y, calibration);
+            return (x, y, true, true);
+        }
+
+        // ── Twist compensation (#485) ──
+        // A port of Touchmote's pointer_considerRotation, on by default in
+        // every Touchmote variant (base ScreenPositionCalculator.cs 103-147 and
+        // 175-180). Poll-thread state: GetCurrentState is the wrapper's only
+        // caller of ReadIrPointer.
+
+        /// <summary>The remote's own X (across its face) and Z (out of its
+        /// face), m/s², smoothed while the pair is tracked. The fork posts
+        /// SDL's X as the remote's X negated and SDL's Y as the remote's Z
+        /// (SDL_hidapi_wii.c HandleWiiRemoteAccelData).</summary>
+        private float _irAccelX, _irAccelZ;
+        private bool _irAccelSeeded;
+        private long _irAccelTicks;
+
+        /// <summary>0 upright, 2 upside down, 1 and 3 on a side.</summary>
+        private int _irOrientation;
+
+        /// <summary>The dot slot that is the left LED while the pair is
+        /// tracked, -1 between tracks.</summary>
+        private int _irLeftDot = -1;
+
+        /// <summary>The IR report period Touchmote smooths over: one 0.9 to
+        /// 0.1 step per 10 ms report.</summary>
+        private const double IrReportSeconds = 0.010;
+
+        /// <summary>Touchmote's orientation margin: 5 of the remote's 25
+        /// accelerometer counts per g (the fork's 100 per g in 10-bit),
+        /// 0.2 g.</summary>
+        internal const float IrOrientationMargin = 0.2f * 9.80665f;
+
+        /// <summary>Touchmote's accelerometer smoothing, 0.9 to 0.1 per report,
+        /// spread over the polls between reports so the poll rate does not
+        /// change it. A gap longer than a report counts as one report, as
+        /// Touchmote smooths only frames with a pair. Seeded with the first
+        /// sample: Touchmote's fields start at 0, which reads upside down on
+        /// the first acquisition and flips the first track's aim.</summary>
+        private void StepIrAccel(float ax, float az, long now)
+        {
+            if (!_irAccelSeeded)
+            {
+                _irAccelX = ax;
+                _irAccelZ = az;
+                _irAccelSeeded = true;
+            }
+            else
+            {
+                double dt = Math.Min((now - _irAccelTicks) / (double)System.Diagnostics.Stopwatch.Frequency, IrReportSeconds);
+                float a = (float)(1.0 - Math.Pow(0.9, Math.Max(dt, 0) / IrReportSeconds));
+                _irAccelX += (ax - _irAccelX) * a;
+                _irAccelZ += (az - _irAccelZ) * a;
+            }
+            _irAccelTicks = now;
+        }
+
+        /// <summary>Touchmote's orientation pick from the smoothed accelerometer
+        /// in the remote's own axes: upright (0) or upside down (2) when Z
+        /// leads, on a side (3 for +X, 1 for -X) when X leads. The current
+        /// orientation's axis gets the margin, and a reading under the margin
+        /// changes nothing.</summary>
+        internal static int UpdateIrOrientation(int orientation, float accelX, float accelZ)
+        {
+            float absx = Math.Abs(accelX), absz = Math.Abs(accelZ);
+            if (orientation == 0 || orientation == 2) absx -= IrOrientationMargin;
+            if (orientation == 1 || orientation == 3) absz -= IrOrientationMargin;
+            if (absz >= absx)
+            {
+                if (absz > IrOrientationMargin)
+                    orientation = accelZ > 0 ? 0 : 2;
+            }
+            else if (absx > IrOrientationMargin)
+            {
+                orientation = accelX > 0 ? 3 : 1;
+            }
+            return orientation;
+        }
+
+        /// <summary>Which dot slot is the left LED in an orientation,
+        /// Touchmote's table over raw camera pixels: the smaller X upright, the
+        /// larger X upside down, the larger Y in orientation 1 and the smaller Y
+        /// in 3. Ties go to dot 1, as Touchmote's comparisons do.</summary>
+        internal static int PickIrLeftDot(int orientation, short d0x, short d0y, short d1x, short d1y)
+            => orientation switch
+            {
+                1 => d0y > d1y ? 0 : 1,
+                2 => d0x > d1x ? 0 : 1,
+                3 => d0y < d1y ? 0 : 1,
+                _ => d0x < d1x ? 0 : 1,
+            };
+
+        /// <summary>The angle of the left-to-right dot vector in raw camera
+        /// pixels, atan2(dy, dx), Touchmote's smoothedRotation. Two dots on one
+        /// pixel give 0 where Touchmote's normalization would give NaN.</summary>
+        internal static float IrPairAngle(int leftDot, short d0x, short d0y, short d1x, short d1y)
+        {
+            int lx = leftDot == 0 ? d0x : d1x, ly = leftDot == 0 ? d0y : d1y;
+            int rx = leftDot == 0 ? d1x : d0x, ry = leftDot == 0 ? d1y : d0y;
+            return (float)Math.Atan2(ry - ly, rx - lx);
+        }
+
+        /// <summary>Turns the screen-aligned aim about the camera's center,
+        /// Touchmote's rotatePoint (x cos - y sin, x sin + y cos). Touchmote
+        /// rotates the mirrored point less 0.5, half of this aim, and the
+        /// rotation is linear, so the two agree. The light-gun and 4IR forks
+        /// rotate the point before mirroring it and negate the angle in their
+        /// rotatePoint, which comes to the same turn.</summary>
+        internal static (float X, float Y) RotateIrAim(float x, float y, float angle)
+        {
+            double s = Math.Sin(angle), c = Math.Cos(angle);
+            return ((float)(x * c - y * s), (float)(x * s + y * c));
+        }
+
+        // ── Light-gun calibration (#485), the GunCon 2's flow ──
+
+        /// <summary>Pointer counts per unit of aim, the camera's 1024 by 768
+        /// pixels over the aim's -1..+1 span. The calibration window is kept
+        /// in these counts, where the GunCon window's 16-count minimum span is
+        /// a similar share of the picture.</summary>
+        internal const float WiiPointerCountsX = 512f;
+        internal const float WiiPointerCountsY = 384f;
+
+        /// <summary>This remote's light-gun window from its device record
+        /// (UserDevice.GunCalibration), or null for the default aim range. The
+        /// UI thread replaces it and the poll thread reads it, and the object
+        /// is immutable.</summary>
+        public GunCon2Calibration WiiPointerCalibration
+        {
+            get => System.Threading.Volatile.Read(ref _wiiPointerCalibration);
+            set => System.Threading.Volatile.Write(ref _wiiPointerCalibration, value);
+        }
+        private GunCon2Calibration _wiiPointerCalibration;
+
+        /// <summary>A twist-compensated aim mapped through the remote's window:
+        /// the window's edges are the picture's, as GunCon2Aim reads them,
+        /// clamped to the picture, then divided by the IR read's margin
+        /// stretch, which restores it.</summary>
+        internal static (float X, float Y) ApplyWiiPointerCalibration(float aimX, float aimY, GunCon2Calibration c)
+        {
+            float x = (aimX * WiiPointerCountsX - c.MinX) / (c.MaxX - c.MinX) * 2f - 1f;
+            float y = (aimY * WiiPointerCountsY - c.MinY) / (c.MaxY - c.MinY) * 2f - 1f;
+            return (Math.Clamp(x, -1f, 1f) / PadForge.Engine.Common.Mapping.SourceCoercion.IrMarginStretchX,
+                    Math.Clamp(y, -1f, 1f) / PadForge.Engine.Common.Mapping.SourceCoercion.IrMarginStretchY);
+        }
+
+        // The latest B press, for the calibration screen: the aim in pointer
+        // counts in bits 0-15 and 16-31, a press count in 32-47 and whether
+        // the pair was tracked in bit 48. 0 until the first press. The screen
+        // samples at display rate, so the poll thread latches the press, as
+        // it latches the GunCon 2's pull.
+        private long _wiiShot;
+        private ushort _wiiShots;
+        private bool _wiiTriggerWasDown;
+        private bool _wiiHomeHeld;
+
+        /// <summary>Latches a B press with the aim read in the same poll.
+        /// Poll-thread only.</summary>
+        internal void RecordWiiPointerShot(float aimX, float aimY, bool onScreen, bool triggerDown)
+        {
+            if (triggerDown && !_wiiTriggerWasDown)
+            {
+                _wiiShots++;
+                short cx = (short)Math.Round(aimX * WiiPointerCountsX);
+                short cy = (short)Math.Round(aimY * WiiPointerCountsY);
+                long packed = (ushort)cx | ((long)(ushort)cy << 16) | ((long)_wiiShots << 32)
+                    | (onScreen ? 1L << 48 : 0L);
+                System.Threading.Volatile.Write(ref _wiiShot, packed);
+            }
+            _wiiTriggerWasDown = triggerDown;
+        }
+
+        /// <summary>The latest B press: the aim in pointer counts, whether the
+        /// remote saw the sensor bar, and a count that changes with each press.
+        /// False before the first.</summary>
+        public bool TryGetWiiPointerShot(out short countsX, out short countsY, out bool onScreen, out int shot)
+        {
+            long packed = System.Threading.Volatile.Read(ref _wiiShot);
+            countsX = (short)(packed & 0xFFFF);
+            countsY = (short)((packed >> 16) & 0xFFFF);
+            shot = (int)((packed >> 32) & 0xFFFF);
+            onScreen = (packed & (1L << 48)) != 0;
+            return packed != 0;
+        }
+
+        /// <summary>Whether the remote's Home is down, for the calibration
+        /// screen's cancel.</summary>
+        public bool WiiHomeHeld => System.Threading.Volatile.Read(ref _wiiHomeHeld);
 
         /// <summary>Screen-aligned aim from the two raw IR dot slots. The aim
         /// exists ONLY when BOTH sensor-bar dots are visible: every proven

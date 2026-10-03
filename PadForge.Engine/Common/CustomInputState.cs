@@ -312,7 +312,7 @@ namespace PadForge.Engine
                 dst.AnalogKeys ??= new AnalogKeyInputState();
                 AnalogKeys.CopyInto(dst.AnalogKeys);
             }
-            dst.Ir = Ir; // value type copy (X/Y/Detected)
+            dst.Ir = Ir; // value type copy (X/Y/Detected/Calibrated)
             dst.JoyConIrIntensity = JoyConIrIntensity;
             dst.RingConStrain = RingConStrain;
             dst.JoyCon2MouseDX = JoyCon2MouseDX;
@@ -446,5 +446,10 @@ namespace PadForge.Engine
         public float X;
         public float Y;
         public bool Detected;
+
+        /// <summary>The aim went through the remote's light-gun calibration
+        /// (#485). The calibration measured where the sensor bar sits, so
+        /// the IR Pointer read adds no Pointer-tab bar offset to it.</summary>
+        public bool Calibrated;
     }
 }

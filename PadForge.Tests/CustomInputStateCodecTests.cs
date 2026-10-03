@@ -278,6 +278,51 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void WiiIr_CalibratedAim_CarriesItsFlagInTheTail()
+        {
+            // #485: a remote calibrated as a light gun sends its aim already
+            // mapped through its window, and the receiving read must not add
+            // its own bar offset. The flag is a payload-free ext bit.
+            var s = Centered();
+            s.Ir = new WiiIrState { X = 0.3f, Y = -0.2f, Detected = true, Calibrated = true };
+            var bytes = CustomInputStateCodec.Encode(s, NoSensors);
+            Assert.Equal(3 + 8 + 3, bytes.Length); // header, Ir block, ext header
+            var rt = CustomInputStateCodec.Decode(bytes);
+            Assert.True(rt.Ir.Detected);
+            Assert.True(rt.Ir.Calibrated);
+            Assert.Equal(0.3f, rt.Ir.X);
+            Assert.Equal(-0.2f, rt.Ir.Y);
+
+            // An uncalibrated aim opens no tail, and decoding it clears a
+            // stale flag in the target.
+            s.Ir.Calibrated = false;
+            bytes = CustomInputStateCodec.Encode(s, NoSensors);
+            Assert.Equal(3 + 8, bytes.Length);
+            Assert.True(CustomInputStateCodec.DecodeInto(bytes, rt));
+            Assert.True(rt.Ir.Detected);
+            Assert.False(rt.Ir.Calibrated);
+        }
+
+        [Fact]
+        public void WiiIr_CalibratedFlagWithoutAim_SendsNothing()
+        {
+            var s = Centered();
+            s.Ir = new WiiIrState { X = 0.3f, Y = -0.2f, Detected = false, Calibrated = true };
+            var bytes = CustomInputStateCodec.Encode(s, NoSensors);
+            Assert.Equal(3, bytes.Length);
+            var rt = CustomInputStateCodec.Decode(bytes);
+            Assert.False(rt.Ir.Detected);
+            Assert.False(rt.Ir.Calibrated);
+
+            // A frame whose tail carries the bit with no Ir block decodes as
+            // no aim: the flag means nothing without one.
+            var lone = new byte[] { CustomInputStateCodec.Version, 0, 0, 0xE6, 1 << 3, 0 };
+            Assert.True(CustomInputStateCodec.DecodeInto(lone, rt));
+            Assert.False(rt.Ir.Detected);
+            Assert.False(rt.Ir.Calibrated);
+        }
+
+        [Fact]
         public void JoyConIrAndMouse_RoundTrip()
         {
             var s = new CustomInputState();
@@ -548,6 +593,18 @@ namespace PadForge.Tests
                 .OrderBy(n => n)
                 .ToArray();
             Assert.Equal(known.OrderBy(n => n).ToArray(), actual);
+
+            // The Ir block's own fields. X, Y and Detected ride Block.Ir.
+            // #485's Calibrated rides the extension tail
+            // (BlockExt.IrCalibrated), and DecodeInto sets it only with the
+            // Ir block.
+            var knownIr = new[] { "X", "Y", "Detected", "Calibrated" };
+            var actualIr = typeof(WiiIrState)
+                .GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)
+                .Select(f => f.Name)
+                .OrderBy(n => n)
+                .ToArray();
+            Assert.Equal(knownIr.OrderBy(n => n).ToArray(), actualIr);
         }
     }
 }

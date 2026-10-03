@@ -238,7 +238,8 @@ namespace PadForge.Tests
         {
             string fill = RepoText("PadForge.App", "Services", "InputService.cs");
             Assert.Contains("row.GunCalibration = ud.GunCalibration ?? string.Empty;", fill);
-            Assert.Contains("row.ShowGunCalibration = ud.IsGunCon2;", fill);
+            // A Wii Remote shares the section (#485).
+            Assert.Contains("row.ShowGunCalibration = ud.IsGunCon2 || ud.HasIrCamera;", fill);
 
             string flush = RepoText("PadForge.App", "Services", "DeviceService.cs");
             Assert.Contains("ud.GunCalibration = row.GunCalibration ?? string.Empty;", flush);

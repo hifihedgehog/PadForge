@@ -834,10 +834,29 @@ namespace PadForge.ViewModels
             }
         }
 
+        private bool _gunIsWiiRemote;
+
+        /// <summary>Whether the light gun is a Wii Remote aiming with its IR
+        /// camera (#485) rather than a GunCon 2: its status line and Calibrate
+        /// tooltip speak of the sensor bar instead of a CRT's beam counts.</summary>
+        public bool GunIsWiiRemote
+        {
+            get => _gunIsWiiRemote;
+            set
+            {
+                if (SetProperty(ref _gunIsWiiRemote, value))
+                {
+                    OnPropertyChanged(nameof(GunCalibrationStatus));
+                    OnPropertyChanged(nameof(GunCalibrateTooltip));
+                }
+            }
+        }
+
         private bool _showGunCalibration;
 
         /// <summary>Whether the Light Gun section draws: the row is a GunCon 2
-        /// (hifihedgehog/SDL#33 Part 9).</summary>
+        /// (hifihedgehog/SDL#33 Part 9) or a Wii Remote with an IR camera
+        /// (#485).</summary>
         public bool ShowGunCalibration
         {
             get => _showGunCalibration;
@@ -984,11 +1003,17 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _blissBoxIdle, value);
         }
 
-        /// <summary>The beam-count window the gun's aim scales by.</summary>
+        /// <summary>The beam-count window the gun's aim scales by. A Wii
+        /// Remote's window is in pointer counts no one reads, so its line says
+        /// only whether it is calibrated.</summary>
         public string GunCalibrationStatus
         {
             get
             {
+                if (_gunIsWiiRemote)
+                    return PadForge.Engine.GunCon2Calibration.TryParse(_gunCalibration, out _)
+                        ? Strings.Instance.Devices_WiiAimCalibrated
+                        : Strings.Instance.Devices_WiiAimDefault;
                 var c = PadForge.Engine.GunCon2Calibration.Parse(_gunCalibration);
                 string format = c.IsDefault
                     ? Strings.Instance.Devices_GunWindowDefault
@@ -997,6 +1022,11 @@ namespace PadForge.ViewModels
                     c.MinX, c.MaxX, c.MinY, c.MaxY);
             }
         }
+
+        /// <summary>What Calibrate does for this light gun.</summary>
+        public string GunCalibrateTooltip => _gunIsWiiRemote
+            ? Strings.Instance.Devices_WiiCalibrateTooltip
+            : Strings.Instance.Devices_GunCalibrateTooltip;
 
         // ─────────────────────────────────────────────
         //  Device path

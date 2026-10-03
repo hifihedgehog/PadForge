@@ -266,6 +266,7 @@ namespace PadForge.Engine.Common
             return decision == ChordDecision.Swallow;
         }
 
+        private const uint LLKHF_EXTENDED = 0x01;
         private const uint LLKHF_INJECTED = 0x10;
         private const uint LLMHF_INJECTED = 0x01;
 
@@ -392,7 +393,9 @@ namespace PadForge.Engine.Common
         }
 
         /// <summary>
-        /// Updates the set of virtual key codes to suppress from keyboard hooks.
+        /// Updates the set of keys to suppress from keyboard hooks, as
+        /// keyboard state indices (RawInputListener.KeyIndex), the numbers a
+        /// keyboard mapping's "Button N" carries.
         /// Pass an empty set to stop suppressing keyboard input.
         /// Clears hooked state for keys no longer in the suppression set.
         /// </summary>
@@ -610,22 +613,35 @@ namespace PadForge.Engine.Common
                     if (ChordSwallows(vk, isDown, kb.dwExtraInfo, (kb.flags & LLKHF_INJECTED) != 0))
                         return (IntPtr)1;
 
-                    if (_suppressedVKeys.Contains(vk))
-                    {
-                        // Capture key state before suppressing — WH_KEYBOARD_LL
-                        // runs in the RIT before WM_INPUT is posted, so suppressed
-                        // keys never reach RawInputListener. Write state here so
-                        // the polling loop can still read it.
-                        if (vk >= 0 && vk < 256)
-                        {
-                            _hookedKeyState[vk] = isDown;
-                            _hasHookedKeys = true;
-                        }
+                    if (ConsumeKey(vk, kb.scanCode, kb.flags, isDown))
                         return (IntPtr)1; // Suppress
-                    }
                 }
             }
             return CallNextHookEx(_keyboardHook, nCode, wParam, lParam);
+        }
+
+        /// <summary>Whether the hook swallows a key event: its index in
+        /// RawInputListener's numbering is in the suppression set. The event's
+        /// own code is not that index for every key. Numpad Enter reaches the
+        /// hook as VK_RETURN with LLKHF_EXTENDED (KBDLLHOOKSTRUCT), the flag
+        /// libuiohook's keycode_to_scancode and AutoHotkey's hook read to tell
+        /// it from Enter, and a mapping names it 0x88, so a consumed Numpad
+        /// Enter typed on and a consumed Enter took Numpad Enter with it
+        /// (#486).</summary>
+        internal static bool ConsumeKey(int vk, uint scanCode, uint flags, bool isDown)
+        {
+            int key = RawInputListener.KeyIndex(vk, (int)scanCode, (flags & LLKHF_EXTENDED) != 0);
+            if (!_suppressedVKeys.Contains(key)) return false;
+
+            // A swallowed key never reaches RawInputListener, since
+            // WH_KEYBOARD_LL runs in the RIT before WM_INPUT is posted, so its
+            // state is kept here for the polling loop to read.
+            if (key >= 0 && key < 256)
+            {
+                _hookedKeyState[key] = isDown;
+                _hasHookedKeys = true;
+            }
+            return true;
         }
 
         private static void CheckHotkeyTriggers(List<GlobalHotkeyRegistration> hotkeys)

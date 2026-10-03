@@ -1417,26 +1417,34 @@ namespace PadForge.Engine
                 if (_keyboardStatesValues.Length != _keyboardStates.Count)
                     _keyboardStatesValues = System.Linq.Enumerable.ToArray(_keyboardStates.Values);
 
-                // Translate generic modifier VKeys to left/right specific
-                // codes using hardcoded scan code + E0 flag lookup.
-                // MapVirtualKey is unreliable for this across Windows versions.
-                int specific = (vk, makeCode, isE0) switch
-                {
-                    (0x10, 0x2A, _) => 0xA0,   // LShift (scan 0x2A)
-                    (0x10, 0x36, _) => 0xA1,   // RShift (scan 0x36)
-                    (0x11, _, false) => 0xA2,   // LCtrl  (scan 0x1D, no E0)
-                    (0x11, _, true)  => 0xA3,   // RCtrl  (scan 0x1D + E0)
-                    (0x12, _, false) => 0xA4,   // LAlt   (scan 0x38, no E0)
-                    (0x12, _, true)  => 0xA5,   // RAlt   (scan 0x38 + E0)
-                    (0x0D, _, true)  => 0x88,   // Numpad Enter (VK_RETURN + E0)
-                    _ => -1
-                };
-                if (specific >= 0)
-                    state[specific] = isDown;
-                else
-                    state[vk] = isDown;
+                state[KeyIndex(vk, makeCode, isE0)] = isDown;
             }
         }
+
+        /// <summary>The keyboard state index of Numpad Enter. Windows reports
+        /// it as VK_RETURN, the main Enter key's code, with the E0 prefix, so
+        /// it is kept apart at 0x88, a code Windows leaves unassigned.</summary>
+        internal const int NumpadEnterKey = 0x88;
+
+        /// <summary>The keyboard state index of a key from its virtual-key
+        /// code, scan code and E0 prefix: the left or right code of a
+        /// modifier reported neutral, Numpad Enter apart from Enter, and
+        /// every other key at its own code. The low-level hook numbers what it
+        /// swallows through this same table, so a mapping, the suppression
+        /// set and the swallowed key's state name a key alike (#486). The
+        /// lookup is hardcoded by scan code and E0, since MapVirtualKey is
+        /// unreliable for this across Windows versions.</summary>
+        internal static int KeyIndex(int vk, int makeCode, bool e0) => (vk, makeCode, e0) switch
+        {
+            (0x10, 0x2A, _) => 0xA0,   // LShift (scan 0x2A)
+            (0x10, 0x36, _) => 0xA1,   // RShift (scan 0x36)
+            (0x11, _, false) => 0xA2,  // LCtrl  (scan 0x1D, no E0)
+            (0x11, _, true)  => 0xA3,  // RCtrl  (scan 0x1D + E0)
+            (0x12, _, false) => 0xA4,  // LAlt   (scan 0x38, no E0)
+            (0x12, _, true)  => 0xA5,  // RAlt   (scan 0x38 + E0)
+            (0x0D, _, true)  => NumpadEnterKey, // Numpad Enter (VK_RETURN + E0)
+            _ => vk,
+        };
 
         /// <summary>True when SDL's iCade driver decodes the keyboard, which
         /// makes the record the iCade joystick's. The driver identifies a new

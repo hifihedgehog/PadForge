@@ -13,7 +13,7 @@
 ---
 
 <p align="center">
-  <a href="https://github.com/hifihedgehog/PadForge/actions/workflows/build.yml"><img src="https://img.shields.io/github/actions/workflow/status/hifihedgehog/PadForge/build.yml?branch=v4-dev&label=build" alt="Build status"></a>
+  <a href="https://github.com/hifihedgehog/PadForge/actions/workflows/build.yml"><img src="https://img.shields.io/github/actions/workflow/status/hifihedgehog/PadForge/build.yml?branch=v5-dev&label=build" alt="Build status"></a>
   <a href="https://somsubhra.github.io/github-release-stats/?username=hifihedgehog&repository=PadForge"><img src="https://img.shields.io/github/downloads/hifihedgehog/PadForge/total" alt="Total downloads"></a>
   <a href="https://discord.gg/qawTZHVhNH"><img src="https://img.shields.io/discord/1507059039844962425?label=Discord&logo=discord&logoColor=white&color=5865F2" alt="Discord"></a>
   <a href="https://padforge.org/"><img src="https://img.shields.io/badge/website-padforge.org-blue" alt="Website"></a>

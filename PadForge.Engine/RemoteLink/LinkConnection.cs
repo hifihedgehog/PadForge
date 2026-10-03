@@ -332,6 +332,19 @@ namespace PadForge.Engine.RemoteLink
         // native axis N.
         private const byte DeviceListExtV10Magic = 0xEB;
 
+        // Eleventh extension tail (#474 over the wire): a DualShock 3's
+        // identity as the owner names it ("address/source"). A calibration on
+        // the peer keys on it, and the peer has no address of its own to read
+        // for a shared pad. Written only when some row carries one and the
+        // list with it fits the old peers' budget. Encoding: [magic][records],
+        // then per record [record index][string].
+        private const byte DeviceListExtV11Magic = 0xEC;
+
+        /// <summary>The longest identity the v11 tail accepts: twelve hex
+        /// digits, "/node:", a driver release and "/cal" fit with room to
+        /// spare.</summary>
+        private const int MaxDs3IdentityLength = 64;
+
         /// <summary>The most a device list datagram's payload holds for a peer
         /// older than 3.6.0, whose UDP loop reads into 4 KB with a 14-byte
         /// header and a 16-byte tag, less a margin. A full list budgets its
@@ -346,8 +359,14 @@ namespace PadForge.Engine.RemoteLink
         // Shared by the handshake exchange AND the post-connect DeviceList sync (#138).
         // Each entry leads with the owner's STABLE slot, and caps now carry HasHaptic +
         // Online so a remote wheel's FFB pipeline runs and active/inactive propagates.
+        /// <param name="tailBudget">The budget the v9, v10 and v11 tails
+        /// fit in: <see cref="OldPeerPayloadBudget"/> for the connect-time
+        /// list, the one list a peer older than 3.6.0 can receive, and
+        /// <see cref="MaxListPayload"/> for a publication to a peer that reads
+        /// full lists. The named objects keep the older budget either
+        /// way.</param>
         internal static byte[] EncodeDeviceList(IReadOnlyList<RemotePeerDeviceInfo> devices,
-            string localMachineName = null)
+            string localMachineName = null, int tailBudget = OldPeerPayloadBudget)
         {
             var buf = new List<byte>();
             int count = WriteBasicRecords(buf, devices);
@@ -365,19 +384,28 @@ namespace PadForge.Engine.RemoteLink
             for (int i = count - 2; i >= 0; i--)
                 after[i] = after[i + 1] + MandatoryMetadataBytes(devices[i + 1]);
 
-            // The v9 and v10 tails are metadata, as the names are, and ride
-            // only while the list with them fits the budget without a single
-            // name: they must never push a list an older peer could read past
-            // what it can. The rest masks go first, since they change how a
-            // trigger reads, where a key list changes only what the picker
-            // offers.
+            // The v9, v10 and v11 tails are metadata, as the names are, and
+            // ride only while the list with them fits the budget without a
+            // single name: they must never push a list an older peer could
+            // read past what it can. Only the connect-time list can reach
+            // one, so a publication to a peer that reads full lists passes
+            // that peer's budget, and a large inventory keeps them. The rest
+            // masks go first, since they change how a trigger reads, then the
+            // DualShock 3 identities, which decide what a calibration takes,
+            // where a key list changes only what the picker offers.
             var keyOrders = EncodeKeyOrderTail(devices, count);
             var restMasks = EncodeRestMaskTail(devices, count);
+            var identities = EncodeDs3IdentityTail(devices, count);
             int required = buf.Count + 1 + tail.Count + (count > 0 ? after[0] + MandatoryMetadataBytes(devices[0]) : 0);
-            bool masksFit = restMasks.Count > 0 && required + restMasks.Count <= PayloadBudget;
-            if (masksFit) required += restMasks.Count;
-            if (keyOrders.Count > 0 && required + keyOrders.Count <= PayloadBudget) tail.AddRange(keyOrders);
-            if (masksFit) tail.AddRange(restMasks);
+            var fit = FitOptionalTails(required, tailBudget, restMasks.Count, identities.Count, keyOrders.Count);
+            // The names get the room the older budget leaves them whichever
+            // budget the tails ride in, so a tail only a full-list peer takes
+            // never costs a device its names.
+            int namesTail = tail.Count + FitOptionalTails(required, OldPeerPayloadBudget,
+                restMasks.Count, identities.Count, keyOrders.Count).Bytes;
+            if (fit.KeyOrders) tail.AddRange(keyOrders);
+            if (fit.Masks) tail.AddRange(restMasks);
+            if (fit.Identities) tail.AddRange(identities);
 
             // Metadata extension (one section per v1 record, same order), so
             // a remote device's mapping picker and Devices-page preview show
@@ -416,7 +444,7 @@ namespace PadForge.Engine.RemoteLink
                 // "Axis 0" through "Axis 5".
                 if (objCount > 0)
                 {
-                    int room = Math.Min(PayloadBudget - buf.Count - 2 - after[i] - tail.Count, PayloadBudget / 2);
+                    int room = Math.Min(PayloadBudget - buf.Count - 2 - after[i] - namesTail, PayloadBudget / 2);
                     int used = 0;
                     int fits = 0;
                     for (int j = 0; j < objCount; j++)
@@ -605,6 +633,43 @@ namespace PadForge.Engine.RemoteLink
             }
             return tail;
         }
+
+        /// <summary>The v11 tail, the owner's DualShock 3 identities, or
+        /// nothing when no row carries one.</summary>
+        /// <summary>Which of the v10, v11 and v9 tails fit in
+        /// <paramref name="budget"/> after <paramref name="required"/> bytes,
+        /// taken in that order, and the bytes they add.</summary>
+        private static (bool Masks, bool Identities, bool KeyOrders, int Bytes) FitOptionalTails(
+            int required, int budget, int masks, int identities, int keyOrders)
+        {
+            bool m = masks > 0 && required + masks <= budget;
+            if (m) required += masks;
+            bool id = identities > 0 && required + identities <= budget;
+            if (id) required += identities;
+            bool k = keyOrders > 0 && required + keyOrders <= budget;
+            return (m, id, k, (m ? masks : 0) + (id ? identities : 0) + (k ? keyOrders : 0));
+        }
+
+        private static List<byte> EncodeDs3IdentityTail(IReadOnlyList<RemotePeerDeviceInfo> devices, int count)
+        {
+            var tail = new List<byte>();
+            int ids = 0;
+            for (int i = 0; i < count; i++)
+                if (IsWireIdentity(devices[i].Ds3Identity)) ids++;
+            if (ids == 0) return tail;
+            tail.Add(DeviceListExtV11Magic);
+            tail.Add((byte)ids);
+            for (int i = 0; i < count; i++)
+            {
+                if (!IsWireIdentity(devices[i].Ds3Identity)) continue;
+                tail.Add((byte)i);
+                WriteString(tail, devices[i].Ds3Identity);
+            }
+            return tail;
+        }
+
+        private static bool IsWireIdentity(string identity)
+            => !string.IsNullOrEmpty(identity) && identity.Length <= MaxDs3IdentityLength;
 
         /// <summary>A device's metadata section without its objects: the
         /// serial string, the touchpad count, one finger count per touchpad,
@@ -990,6 +1055,37 @@ namespace PadForge.Engine.RemoteLink
                 catch
                 {
                     foreach (var info in list) info.BlissBoxRestMask = null;
+                    v1ExtOk = false; // cursor unreliable: do not read v11
+                }
+            }
+
+            // v11 tail: DualShock 3 identities. Same guarantees as v9.
+            if (v1ExtOk)
+            {
+                try
+                {
+                    if (o < data.Length && data[o] == DeviceListExtV11Magic)
+                    {
+                        o++;
+                        int records = data[o++];
+                        var ids = new string[count];
+                        for (int r = 0; r < records; r++)
+                        {
+                            int index = data[o++];
+                            if (index >= count || ids[index] != null)
+                                throw new InvalidOperationException("ds3 identity record");
+                            string id = ReadString(data, ref o);
+                            if (!IsWireIdentity(id))
+                                throw new InvalidOperationException("ds3 identity");
+                            ids[index] = id;
+                        }
+                        for (int i = 0; i < count; i++)
+                            if (ids[i] != null) list[i].Ds3Identity = ids[i];
+                    }
+                }
+                catch
+                {
+                    foreach (var info in list) info.Ds3Identity = null;
                 }
             }
             return list;

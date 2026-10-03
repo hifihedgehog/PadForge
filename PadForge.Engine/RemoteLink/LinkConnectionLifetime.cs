@@ -226,7 +226,7 @@ namespace PadForge.Engine.RemoteLink
                 // what the peer reads went out anyway, and the peer dropped
                 // every update after connect.
                 var payload = _peerReadsFullLists
-                    ? LinkConnection.EncodeDeviceList(wire)
+                    ? LinkConnection.EncodeDeviceList(wire, tailBudget: LinkConnection.MaxListPayload)
                     : LinkConnection.EncodeBasicDeviceList(wire);
                 if (payload.Length > (_peerReadsFullLists
                         ? LinkConnection.MaxListPayload : LinkConnection.OldPeerPayloadBudget))

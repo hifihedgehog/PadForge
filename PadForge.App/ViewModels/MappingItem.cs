@@ -18,7 +18,7 @@ namespace PadForge.ViewModels
     /// Displayed in the mapping grid on the Pad page. Supports input
     /// recording to auto-detect the source.
     /// </summary>
-    public partial class MappingItem : ObservableObject
+    public partial class MappingItem : FiniteObservableObject
     {
         /// <summary>
         /// Creates a mapping item.
@@ -1747,6 +1747,7 @@ namespace PadForge.ViewModels
                     p.Kind = "Direct";
                 }
                 SyncSelectedInputFromDescriptor();
+                Cleared?.Invoke(this, EventArgs.Empty);
             });
 
         private RelayCommand _resetDeadZoneCommand;
@@ -1774,6 +1775,10 @@ namespace PadForge.ViewModels
         /// <summary>Resets the primary source's generic sensitivity to 1.0 (#9).</summary>
         public RelayCommand ResetSensitivityCommand =>
             _resetSensitivityCommand ??= new RelayCommand(() => Sensitivity = 1.0);
+
+        /// <summary>Raised when Clear empties this row, a row that held
+        /// nothing included, which changes no property.</summary>
+        public event EventHandler Cleared;
 
         /// <summary>Raised when the user clicks Record on this row.</summary>
         public event EventHandler StartRecordingRequested;

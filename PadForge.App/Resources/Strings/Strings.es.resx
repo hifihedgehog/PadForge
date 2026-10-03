@@ -1334,6 +1334,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="DevObj_Guide" xml:space="preserve"><value>Guía</value></data>
   <data name="DevObj_Select" xml:space="preserve"><value>Seleccionar</value></data>
   <data name="DevObj_Mode" xml:space="preserve"><value>Modo</value></data>
+  <data name="DevObj_Option" xml:space="preserve"><value>Opción</value></data>
   <data name="DevObj_Run" xml:space="preserve"><value>Run</value></data>
   <data name="DevObj_Reset" xml:space="preserve"><value>Reset</value></data>
   <data name="DevObj_HomeButton" xml:space="preserve"><value>Botón HOME</value></data>
@@ -3058,6 +3059,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_Mapping_MotionRowUnreadNote" xml:space="preserve"><value>En esta fila no se leen palancas ni botones. Asígnalos a Movimiento cabeceo, Movimiento guiñada o Movimiento alabeo y quítalos de aquí.</value></data>
   <data name="Pad_Mapping_MotionSourceElsewhereNote" xml:space="preserve"><value>Las fuentes Movimiento giroscopio y Movimiento acelerómetro solo funcionan en las filas Movimiento giroscopio y Movimiento acelerómetro.</value></data>
   <data name="Pad_Mapping_MotionPresetNote" xml:space="preserve"><value>El informe de este preajuste no lleva movimiento. El servidor de movimiento (DSU) lo sigue recibiendo para las ranuras 1 a 4.</value></data>
+  <data name="Pad_Mapping_MotionPitchRollRateNote" xml:space="preserve"><value>El informe de este preajuste no lleva velocidad de cabeceo ni de alabeo. En el modo Velocidad, esta fila llega al juego solo como inclinación, y solo mientras ningún acelerómetro alimente la fila Movimiento acelerómetro. El servidor de movimiento (DSU) la sigue recibiendo para las ranuras 1 a 4.</value></data>
   <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>Restablecer al soltar</value></data>
   <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>Cuando está marcado, soltar el gatillo devuelve el nivel retenido al 100%, así la siguiente pulsación empieza a tope. Sin marcar, el nivel ajustado se conserva entre soltadas hasta que lo vuelvas a ajustar.</value></data>
   <data name="Pad_ResetGuideLed" xml:space="preserve"><value>Restablecer LED del botón Guía</value></data>

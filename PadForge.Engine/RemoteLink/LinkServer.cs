@@ -1964,7 +1964,7 @@ namespace PadForge.Engine.RemoteLink
                         var publication = conn.Lifetime.PublishLocalInventory(currentInventory);
                         if (publication != LinkConnectionLifetime.InventoryResult.Stale) conn.LatestInventory = currentInventory;
                         if (publication == LinkConnectionLifetime.InventoryResult.Exhausted) QueueRekey(conn);
-                        if (publication == LinkConnectionLifetime.InventoryResult.TooLarge) DiagLastError = ListTooLarge;
+                        NoteListSize(conn, publication);
                     }
                     conn.Lifetime.Send(LinkMessageType.Keepalive, 0, Array.Empty<byte>());
                 }
@@ -2256,6 +2256,9 @@ namespace PadForge.Engine.RemoteLink
                     bool keysChanged = !SameKeys(existing.Info.AnalogKeyOrder, info.AnalogKeyOrder);
                     existing.Info.AnalogKeyOrder = info.AnalogKeyOrder;
                     existing.Info.BlissBoxRestMask = info.BlissBoxRestMask;
+                    // Every DualShock 3 on the owner's own path shares one row,
+                    // so another pad connecting there changes the identity.
+                    existing.Info.Ds3Identity = info.Ds3Identity;
                     if (keysChanged) notifications.Add(() => DeviceKeyOrderChanged?.Invoke(existing));
                     next[info.Slot] = existing;
                     // Re-register only when the slot moved, so the slot-stamped output route refreshes,
@@ -2295,6 +2298,34 @@ namespace PadForge.Engine.RemoteLink
 
         private const string ListTooLarge = "devlist: the list is larger than this peer's version can read";
 
+        /// <summary>Records a list publish's size state for the connection.
+        /// A peer older than 3.6.0 cannot receive a list past its 4 KB
+        /// buffer, and every two-second push to it fails the same way, so the
+        /// last error alone changed nothing anyone would notice and the
+        /// peer's list stayed frozen. The log gets one line when the peer
+        /// stops receiving the list and one when it receives it again.</summary>
+        private void NoteListSize(LinkPeerConnection connection, LinkConnectionLifetime.InventoryResult result)
+        {
+            if (result == LinkConnectionLifetime.InventoryResult.TooLarge) DiagLastError = ListTooLarge;
+            string line = ListSizeNote(ref connection.ListTooLarge, result, Short(connection.PeerFingerprintHex));
+            if (line != null) SdlDiagLog.WriteLine(line);
+        }
+
+        /// <summary>The diagnostics line a publish result adds, or null: one
+        /// when the list first fails to fit the peer, one when it is sent
+        /// again. <paramref name="tooLarge"/> is the connection's state, 1
+        /// while the list does not fit.</summary>
+        internal static string ListSizeNote(ref int tooLarge, LinkConnectionLifetime.InventoryResult result, string peer)
+        {
+            if (result == LinkConnectionLifetime.InventoryResult.TooLarge)
+                return Interlocked.Exchange(ref tooLarge, 1) == 0
+                    ? $"DEVLIST too large for peer {peer}, whose version reads lists only to 4 KB: its device list stays as it was until the list shrinks or it updates"
+                    : null;
+            if (result == LinkConnectionLifetime.InventoryResult.Sent)
+                return Interlocked.Exchange(ref tooLarge, 0) == 1 ? $"DEVLIST fits again for peer {peer}" : null;
+            return null;
+        }
+
         /// <summary>Owner: push the current exposed-device set to every connected peer
         /// (issue #138 live device sync). Sent on change and periodically; the consumer
         /// reconciles. Each info carries its stable Slot + Online.</summary>
@@ -2310,7 +2341,7 @@ namespace PadForge.Engine.RemoteLink
                     var result = connection.Lifetime.PublishLocalInventory(devices);
                     if (result != LinkConnectionLifetime.InventoryResult.Stale) connection.LatestInventory = devices;
                     if (result == LinkConnectionLifetime.InventoryResult.Exhausted) QueueRekey(connection);
-                    if (result == LinkConnectionLifetime.InventoryResult.TooLarge) DiagLastError = ListTooLarge;
+                    NoteListSize(connection, result);
                 }
                 catch (Exception ex) { DiagLastError = "devlist: " + ex.Message; }
             }
@@ -2589,6 +2620,9 @@ namespace PadForge.Engine.RemoteLink
             public int UpgradeRunning;
             public TcpClient Tcp;
             public string PeerFingerprintHex;
+            /// <summary>1 while this peer's version cannot receive the device
+            /// list (LinkServer.ListSizeNote).</summary>
+            public int ListTooLarge;
             public long LastActivityTicks; // QPC; updated on each verified datagram, read by the reaper
         }
     }

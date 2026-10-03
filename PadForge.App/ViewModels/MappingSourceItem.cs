@@ -11,7 +11,7 @@ namespace PadForge.ViewModels
     /// the Mappings UI. Bound by the (forthcoming) RowDetailsTemplate
     /// inside the Mappings DataGrid.
     /// </summary>
-    public partial class MappingSourceItem : ObservableObject
+    public partial class MappingSourceItem : FiniteObservableObject
     {
         private string _kind = "Direct";
         private string _deviceGuid = "";
@@ -215,21 +215,31 @@ namespace PadForge.ViewModels
             // whichever group listed it first, so a source pinned to the second
             // controller showed the first one's name under a key the engine
             // reads on the second, and re-picking the same descriptor from
-            // another device's group looked like no change at all.
+            // another device's group looked like no change at all. An abstract
+            // "Gamepad ..." name on a source pinned to a device selects that
+            // device's own entry for the same read, as the source's own picker
+            // does (SyncSelectedInputFromState), since a device group no
+            // longer lists the abstract names.
             string wantGuid = (_deviceGuid ?? "").ToLowerInvariant();
+            string pinnedCanonical = PadForge.Common.MappingDisplayResolver.PinnedAliasCanonical(descriptor, wantGuid);
+            InputChoice canonicalMatch = null;
             InputChoice descriptorOnlyMatch = null;
             foreach (var c in ParentMappingItem.ParamInputs)
             {
-                if (c == null || !string.Equals(c.Descriptor, descriptor, StringComparison.Ordinal))
+                if (c == null) continue;
+                bool onDevice = string.Equals(c.DeviceGuid ?? "", wantGuid, StringComparison.OrdinalIgnoreCase);
+                if (pinnedCanonical != null && canonicalMatch == null && onDevice
+                    && string.Equals(c.Descriptor, pinnedCanonical, StringComparison.Ordinal))
+                    canonicalMatch = c;
+                if (!string.Equals(c.Descriptor, descriptor, StringComparison.Ordinal))
                     continue;
                 descriptorOnlyMatch ??= c;
-                if (string.Equals(c.DeviceGuid ?? "", wantGuid, StringComparison.OrdinalIgnoreCase))
-                    return c;
+                if (onDevice) return c;
             }
             // A keyboard key on a gamepad source is the normal case for the
-            // fallback: no entry carries the source's guid and the engine still
-            // reads the key off the state the grip resolves to.
-            return descriptorOnlyMatch;
+            // descriptor-only fallback: no entry carries the source's guid and
+            // the engine still reads the key off the state the grip resolves to.
+            return canonicalMatch ?? descriptorOnlyMatch;
         }
 
         // #111 audit fix A. A stateful kind (Ramp / Incremental) is keyed only by
@@ -787,7 +797,10 @@ namespace PadForge.ViewModels
                 }
             }
         }
-        public double ParamRate { get => _paramRate; set => SetProperty(ref _paramRate, value); }
+        // The three unclamped numbers take finite values only: infinity
+        // passes the NaN-refusing overload, and an infinite range or step
+        // turns the accumulator NaN on the next opposite press.
+        public double ParamRate { get => _paramRate; set { if (double.IsFinite(value)) SetProperty(ref _paramRate, value); } }
 
         /// <summary>Per-source gyro sensitivity multiplier. Only applied
         /// for Gyro descriptors (see <see cref="IsGyroSource"/>). UI shows
@@ -850,12 +863,12 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _sensitivity, System.Math.Clamp(value, 0.1, 5.0));
         }
         public bool ParamSticky { get => _paramSticky; set => SetProperty(ref _paramSticky, value); }
-        public double ParamMin { get => _paramMin; set => SetProperty(ref _paramMin, value); }
-        public double ParamMax { get => _paramMax; set => SetProperty(ref _paramMax, value); }
+        public double ParamMin { get => _paramMin; set { if (double.IsFinite(value)) SetProperty(ref _paramMin, value); } }
+        public double ParamMax { get => _paramMax; set { if (double.IsFinite(value)) SetProperty(ref _paramMax, value); } }
 
-        /// <summary>Ramped attack time in seconds (issue #111). 0 to 5; the UI slider
-        /// runs 0 to 2. Time for the axis to travel 0 to ±1 while the matching key is
-        /// held. Only meaningful when <see cref="IsRampedKind"/>.</summary>
+        /// <summary>Ramped attack time in seconds (issue #111). 0 to 5, the
+        /// slider's range too. Time for the axis to travel 0 to ±1 while the
+        /// matching key is held. Only meaningful when <see cref="IsRampedKind"/>.</summary>
         public double ParamAttackTime
         {
             get => _paramAttackTime;

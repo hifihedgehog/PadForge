@@ -37,9 +37,12 @@ namespace PadForge.Tests
         private readonly bool[] _created = (bool[])SettingsManager.SlotCreated.Clone();
         private readonly bool[] _enabled = (bool[])SettingsManager.SlotEnabled.Clone();
         private readonly MappingSet _set = new();
+        private readonly Func<string, BlissBoxGamepadMap> _placementProvider = SourceCoercion.GamepadPlacementProvider;
+        private readonly Dictionary<string, BlissBoxGamepadMap> _placements = new(StringComparer.OrdinalIgnoreCase);
 
         public AnyDeviceMissingAxisTests()
         {
+            SourceCoercion.GamepadPlacementProvider = g => g != null && _placements.TryGetValue(g, out var m) ? m : null;
             SettingsManager.UserSettings = new SettingsCollection();
             SettingsManager.UserDevices = new DeviceCollection();
             SettingsManager.SlotMappingSets = new MappingSet[InputManager.MaxPads];
@@ -55,6 +58,7 @@ namespace PadForge.Tests
 
         public void Dispose()
         {
+            SourceCoercion.GamepadPlacementProvider = _placementProvider;
             InputManager.EndDeviceStateMemo();
             InputManager.ClearAllShiftRuntime();
             InputManager.ClearSourceKindRuntime();
@@ -291,22 +295,27 @@ namespace PadForge.Tests
         [Theory]
         [InlineData(false)]
         [InlineData(true)]
-        public void ATouchpadOrKeyboardPass_ReadsStickRowsAtRest_AndStillAnswersButtons(bool keyboard)
+        public void ATouchpadOrKeyboardPass_ReadsStickRowsAtRest_AndAnswersNumberedButtonsAlone(bool keyboard)
         {
             var pad = Pad();
             var device = keyboard ? Keyboard() : Touchpad();
             AddRow("LeftThumbAxisX", Any("Gamepad LeftStickX"));
             AddRow("RightThumbAxisY", Any("Axis 4"));
             AddRow("LeftTrigger", AnyNegativeHalf("Axis 0"));
-            AddRow("ButtonA", Any("Gamepad ButtonA"));
+            AddRow("ButtonA", Any("Button 0"));
+            AddRow("ButtonB", Any("Gamepad ButtonB"));
             device.InputState.Buttons[0] = true;
+            device.InputState.Buttons[1] = true;
 
             var gp = Pass(device);
             Assert.Equal((short)0, gp.ThumbLX);
             Assert.Equal((short)0, gp.ThumbRY);
             Assert.Equal((ushort)0, gp.LeftTrigger);
-            // The gate is per input: the device's buttons still answer.
+            // The gate is per input: the device's buttons still answer a
+            // numbered read, and no Gamepad name, which only a device in
+            // SDL's gamepad layout has.
             Assert.True(gp.IsButtonPressed(Gamepad.A));
+            Assert.False(gp.IsButtonPressed(Gamepad.B));
 
             // The pad still reads through the same rows.
             pad.InputState.Axis[0] = 65535;
@@ -576,6 +585,160 @@ namespace PadForge.Tests
             var pad = Pad();
             pad.InputState.Axis[0] = 0;
             Assert.True((bool)anySlot.Invoke(new InputManager(), new object[] { Slot, entry }));
+        }
+
+        private static MappingSource Modifier(string descriptor, UserDevice pinned = null)
+            => new() { Kind = "InvertOnHold", DeviceGuid = pinned?.InstanceGuidString ?? "", ParamModifier = descriptor };
+
+        /// <summary>The row-level InvertOnHold modifier takes the full Direct
+        /// read, so an "(Any Device)" stick ring read a keyboard's missing
+        /// axes, held at 0, as pushed to the rim, and the trigger it inverts
+        /// sat at full pull with nothing touched. The keyboard now has no say
+        /// in a modifier it has no axes for, and the pad still inverts.</summary>
+        [Fact]
+        public void AnAnyDeviceRingModifier_ReadsNoKeyboardAsHeld()
+        {
+            var keyboard = Keyboard();
+            var pad = Pad();
+            AddRow("RightTrigger", Any("Gamepad ButtonA"), Modifier("Gamepad LeftStickRing"));
+
+            Assert.Equal(0, Pass(keyboard).RightTrigger);
+            Assert.Equal(0, Pass(pad).RightTrigger);
+            pad.InputState.Axis[0] = 65535;
+            Assert.Equal(ushort.MaxValue, Pass(pad).RightTrigger);
+        }
+
+        /// <summary>A pinned modifier whose device goes offline reads
+        /// released. It was read against the all-rest state, whose zeroed
+        /// axes read a ring as held, so unplugging the modifier's device
+        /// pulled the trigger it inverts all the way.</summary>
+        [Fact]
+        public void AnOfflinePinnedRingModifier_ReadsReleased()
+        {
+            var pad = Pad();
+            var other = Pad();
+            AddRow("RightTrigger", Named(pad, "Gamepad RightTrigger"), Modifier("Gamepad LeftStickRing", other));
+
+            Assert.Equal(0, Pass(pad).RightTrigger);
+            other.InputState.Axis[0] = 65535;
+            Assert.Equal(ushort.MaxValue, Pass(pad).RightTrigger);
+            other.InputState.Axis[0] = 32768;
+            other.IsOnline = false;
+            Assert.Equal(0, Pass(pad).RightTrigger);
+        }
+
+        /// <summary>A row read once per frame takes an "(Any Device)"
+        /// modifier from every device on the slot. It read only the device
+        /// whose pass claimed the row, so with a keyboard listed first a
+        /// press on the controller never inverted it.</summary>
+        [Fact]
+        public void AnAnyDeviceModifierOnARowReadOncePerFrame_ReadsEveryDevice()
+        {
+            var keyboard = Keyboard();
+            var pad = Pad();
+            AddRow("RightTrigger", Named(pad, "Gamepad RightTrigger"), Named(pad, "Gamepad LeftTrigger"), Modifier("Button 1"));
+
+            Assert.Equal(0, Pass(keyboard).RightTrigger);
+            pad.InputState.Buttons[1] = true;
+            Assert.Equal(ushort.MaxValue, Pass(keyboard).RightTrigger);
+        }
+
+        /// <summary>A mouse's wheel rests at center on its Axis 2, which the
+        /// wildcard reads as the gamepad's Left Trigger: a mouse on the slot
+        /// held an "(Any Device)" Left Trigger at half pull. The wheel stays
+        /// out of every wildcard read and still reads as the mouse's own
+        /// source.</summary>
+        [Fact]
+        public void AMouseWheel_HoldsNoAnyDeviceTriggerAtHalfPull()
+        {
+            var mouse = Mouse();
+            var pad = Pad();
+            AddRow("LeftTrigger", Any("Gamepad LeftTrigger"));
+            AddRow("RightTrigger", Named(mouse, "Axis 2"));
+
+            var gp = Pass(mouse);
+            Assert.Equal(0, gp.LeftTrigger);
+            Assert.InRange(gp.RightTrigger, 32000, 33000);   // its own source still reads the wheel
+            pad.InputState.Axis[2] = 65535;
+            Assert.Equal(ushort.MaxValue, Pass(pad).LeftTrigger);
+        }
+
+        /// <summary>The mouse rate lanes resolve a source the row evaluators'
+        /// way (SourceMatchesDevice): "(Any Device)" only from a device that
+        /// answers the wildcard, and a pinned source on its own device's pass
+        /// only. A pen tablet's touchpad 0 drove "(Any Device)" trackpad rows,
+        /// and a pinned gyro was read on every device's pass and summed.</summary>
+        [Fact]
+        public void TheKbmRateLanes_ReadASourceOnTheRowEvaluatorsPassOnly()
+        {
+            var resolve = typeof(InputManager).GetMethod("LaneDeviceState", BindingFlags.NonPublic | BindingFlags.Static);
+            Assert.NotNull(resolve);
+            var pad = Pad();
+            var keyboard = Keyboard();
+            var tablet = Touchpad();
+            tablet.CapType = InputDeviceType.Tablet;
+            CustomInputState Read(MappingSource src, UserDevice pass)
+                => (CustomInputState)resolve.Invoke(null, new object[] { src, pass.InputState, pass.InstanceGuidString });
+
+            var any = Any("Touchpad 0 Finger 0 X");
+            Assert.Null(Read(any, tablet));
+            Assert.Same(keyboard.InputState, Read(any, keyboard));
+
+            var pinned = Named(pad, "Gyro Yaw");
+            Assert.Null(Read(pinned, keyboard));
+            Assert.Same(pad.InputState, Read(pinned, pad));
+        }
+
+        [Fact]
+        public void APinnedGyroMouseSource_TurnsTheCursorOnceASlotsPasses()
+        {
+            var tick = typeof(InputManager).GetMethod("TickGyroMouseSources", BindingFlags.NonPublic | BindingFlags.Static);
+            var delta = (double[])typeof(InputManager).GetField("_currentFrameDelta", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+            Assert.NotNull(tick);
+            var pad = Pad();
+            var keyboard = Keyboard();
+            pad.InputState.Gyro[0] = pad.InputState.Gyro[1] = pad.InputState.Gyro[2] = 3f;
+            _set.Rows.Add(new MappingRow
+            {
+                Target = "KbmMouseX", LayerMask = "Base",
+                Sources = new List<MappingSource> { Named(pad, "Gyro Yaw") },
+            });
+            double saved = delta[Slot];
+            delta[Slot] = 0.004;
+            try
+            {
+                var (padX, _) = ((float, float))tick.Invoke(null, new object[] { pad.InputState, _set, pad.InstanceGuidString, Slot });
+                var (keyboardX, _) = ((float, float))tick.Invoke(null, new object[] { keyboard.InputState, _set, keyboard.InstanceGuidString, Slot });
+                Assert.NotEqual(0f, padX);
+                Assert.Equal(0f, keyboardX);
+            }
+            finally { delta[Slot] = saved; }
+        }
+
+        [Fact]
+        public void TheAbsoluteTouchpadPointer_IsNotSteeredByATabletThroughTheWildcard()
+        {
+            var find = typeof(InputManager).GetMethod("FindEngagedTouchpadPointerSource", BindingFlags.NonPublic | BindingFlags.Static);
+            Assert.NotNull(find);
+            _set.Rows.Add(new MappingRow
+            {
+                Target = "KbmMouseX", LayerMask = "Base",
+                Sources = new List<MappingSource> { Any("Touchpad 0 Pointer X") },
+            });
+            UserDevice Pen(int capType)
+            {
+                var ud = Touchpad();
+                ud.CapType = capType;
+                var pad = new TouchpadInputState(2);
+                pad.FingerDown[0] = true;
+                pad.FingerX[0] = pad.FingerY[0] = 0.5f;
+                ud.InputState = new CustomInputState { Touchpads = new[] { pad } };
+                return ud;
+            }
+            var tablet = Pen(InputDeviceType.Tablet);
+            var trackpad = Pen(InputDeviceType.Touchpad);
+            Assert.Null(find.Invoke(null, new object[] { tablet.InputState, _set, "KbmMouseX", Slot, tablet.InstanceGuidString }));
+            Assert.NotNull(find.Invoke(null, new object[] { trackpad.InputState, _set, "KbmMouseX", Slot, trackpad.InstanceGuidString }));
         }
 
         [Fact]
@@ -1312,6 +1475,490 @@ namespace PadForge.Tests
             Assert.NotNull(d);
             string src = System.IO.File.ReadAllText(System.IO.Path.Combine(d.FullName, "PadForge.App", "Services", "InputService.cs"));
             Assert.Contains("SupportedAxisIndices = RawModeAxes(ud, dev) ?? dev.SupportedAxisIndices,", src);
+        }
+
+        // ── The Gamepad names on a Bliss-Box port read raw (#469) ────────
+
+        /// <summary>A port's controller as its placement puts it in SDL's
+        /// layout: south on raw button 3, east on 2, west on 1, north
+        /// unplaced, the left stick on raw axes 6 and 7, no right stick, a
+        /// digital left trigger on raw button 8 and the right trigger on raw
+        /// axis 2.</summary>
+        private static BlissBoxGamepadMap Placement(bool dpad = true)
+        {
+            var buttons = new string[BlissBoxGamepadMap.ButtonPositions];
+            buttons[0] = "Button 3";
+            buttons[1] = "Button 2";
+            buttons[2] = "Button 1";
+            var axes = new string[BlissBoxGamepadMap.AxisPositions];
+            axes[0] = "Axis 6";
+            axes[1] = "Axis 7";
+            axes[2] = "Button 8";
+            axes[5] = "Axis 2";
+            return new BlissBoxGamepadMap(buttons, axes, dpad, null);
+        }
+
+        private static DeviceObjectItem ButtonObject(int index) => new()
+        {
+            InputIndex = index, ObjectTypeGuid = ObjectGuid.Button, Name = "Button " + index,
+            ObjectType = DeviceObjectTypeFlags.PushButton, Offset = 100 + index,
+        };
+
+        /// <summary>A Bliss-Box port read raw, at rest: ten buttons, raw axes
+        /// 2, 6 and 7, one hat, and <paramref name="placement"/> as the
+        /// controller identified in it, or none.</summary>
+        private UserDevice Port(BlissBoxGamepadMap placement)
+        {
+            var objects = Enumerable.Range(0, 10).Select(ButtonObject)
+                .Concat(AxisObjects(2, 6, 7))
+                .Append(new DeviceObjectItem
+                {
+                    InputIndex = 0, ObjectTypeGuid = ObjectGuid.PovController, Name = "POV 0",
+                    ObjectType = DeviceObjectTypeFlags.PointOfViewController, Offset = 200,
+                })
+                .ToArray();
+            var port = Row(new ShapedDevice { NumAxes = 8, Objects = objects });
+            port.InputState.Axis[6] = port.InputState.Axis[7] = 32768;
+            Array.Fill(port.InputState.Povs, -1);
+            if (placement != null) _placements[port.InstanceGuidString] = placement;
+            return port;
+        }
+
+        [Fact]
+        public void APlacedPortAnswersTheGamepadNamesThroughItsPlacement()
+        {
+            var port = Port(Placement());
+            AddRow("ButtonA", Any("Gamepad ButtonA"));
+            AddRow("ButtonY", Any("Gamepad ButtonY"));
+            AddRow("LeftThumbAxisX", Any("Gamepad LeftStickX"));
+            AddRow("LeftTrigger", Any("Gamepad LeftTrigger"));
+            AddRow("RightTrigger", Any("Gamepad RightTrigger"));
+            var s = port.InputState;
+
+            // The port's first raw button is not SDL's south.
+            s.Buttons[0] = true;
+            Assert.False(Pass(port).IsButtonPressed(Gamepad.A));
+            // Raw button 3 is. Y, which SDL's numbering reads from raw button
+            // 3, takes nothing the placement does not give it.
+            s.Buttons[3] = true;
+            var gp = Pass(port);
+            Assert.True(gp.IsButtonPressed(Gamepad.A));
+            Assert.False(gp.IsButtonPressed(Gamepad.Y));
+
+            // The left stick sits on raw axes 6 and 7, not 0 and 1.
+            s.Axis[0] = 65535;
+            Assert.Equal((short)0, Pass(port).ThumbLX);
+            s.Axis[6] = 65535;
+            Assert.Equal((short)32767, Pass(port).ThumbLX);
+
+            // A digital left trigger on raw button 8, an analog right trigger
+            // on raw axis 2.
+            Assert.Equal((ushort)0, Pass(port).LeftTrigger);
+            s.Buttons[8] = true;
+            s.Axis[2] = 65535;
+            gp = Pass(port);
+            Assert.Equal(ushort.MaxValue, gp.LeftTrigger);
+            Assert.Equal(ushort.MaxValue, gp.RightTrigger);
+        }
+
+        /// <summary>SDL's numbering reads raw axis 3, which the port lacks and
+        /// holds at 0, as pushed hard left. The placement puts no right stick
+        /// there, so the name reads centered.</summary>
+        [Fact]
+        public void APositionThePlacementLeavesEmptyReadsNothingOnThePort()
+        {
+            var port = Port(Placement());
+            AddRow("RightThumbAxisX", Any("Gamepad RightStickX"));
+            Assert.Equal((short)0, Pass(port).ThumbRX);
+            port.InputState.Axis[3] = 65535;
+            Assert.Equal((short)0, Pass(port).ThumbRX);
+        }
+
+        [Fact]
+        public void ThePortsHatAnswersTheDPadOnlyWhereThePlacementPutsTheDPad()
+        {
+            var port = Port(Placement(dpad: false));
+            AddRow("DPadUp", Any("Gamepad DPadUp"));
+            port.InputState.Povs[0] = 0;
+            Assert.False(Pass(port).IsButtonPressed(Gamepad.DPAD_UP));
+            _placements[port.InstanceGuidString] = Placement(dpad: true);
+            Assert.True(Pass(port).IsButtonPressed(Gamepad.DPAD_UP));
+        }
+
+        /// <summary>A searching port, or a controller no source lays out,
+        /// answers no Gamepad name, as SDL leaves an unmapped joystick. A
+        /// numbered read still reaches it.</summary>
+        [Fact]
+        public void APortWithNoControllerPlacedAnswersNoGamepadName()
+        {
+            var port = Port(null);
+            AddRow("ButtonA", Any("Gamepad ButtonA"));
+            AddRow("ButtonB", Any("Button 1"));
+            port.InputState.Buttons[0] = port.InputState.Buttons[1] = true;
+            var gp = Pass(port);
+            Assert.False(gp.IsButtonPressed(Gamepad.A));
+            Assert.True(gp.IsButtonPressed(Gamepad.B));
+        }
+
+        /// <summary>SDL types a pad by its kind even when PadForge opens it
+        /// raw (Force Raw Joystick Mode), and its raw numbers are not SDL's
+        /// positions.</summary>
+        [Fact]
+        public void AnSdlGamepadOpenedRawAnswersNoGamepadName()
+        {
+            var wrapper = new SdlDeviceWrapper();
+            GC.SuppressFinalize(wrapper);
+            var id = Guid.NewGuid();
+            var ud = new UserDevice
+            {
+                InstanceGuid = id, ProductGuid = id, IsOnline = true, CapType = InputDeviceType.Gamepad,
+                Device = wrapper, InputState = new CustomInputState(),
+            };
+            Assign(ud);
+            AddRow("ButtonA", Any("Gamepad ButtonA"));
+            ud.InputState.Buttons[0] = true;
+            Assert.False(Pass(ud).IsButtonPressed(Gamepad.A));
+        }
+
+        /// <summary>The axis memo holds SDL's answer for a name, and a placed
+        /// port's read never takes it: the port lacks axis 0 and answers
+        /// through raw axis 6, and the pad reads axis 0 again after it.</summary>
+        [Fact]
+        public void APadAndAPlacedPortEachReadTheirOwnAxisForTheSameName()
+        {
+            var pad = Pad();
+            var port = Port(Placement());
+            AddRow("LeftThumbAxisX", Any("Gamepad LeftStickX"));
+            pad.InputState.Axis[0] = 65535;
+            Assert.Equal((short)32767, Pass(pad).ThumbLX);
+            port.InputState.Axis[6] = 65535;
+            Assert.Equal((short)32767, Pass(port).ThumbLX);
+            Assert.Equal((short)32767, Pass(pad).ThumbLX);
+        }
+
+        /// <summary>The steering memo, likewise.</summary>
+        [Fact]
+        public void ASteeringReadOfAGamepadNameTakesEachDevicesOwnAxis()
+        {
+            var pad = Pad();
+            var port = Port(Placement());
+            AddRow("LeftThumbAxisX", new MappingSource
+            {
+                DeviceGuid = "", Kind = "AngleToAxisX", Descriptor = "Gamepad LeftStickX",
+            });
+            pad.InputState.Axis[0] = 65535;
+            Assert.True(Pass(pad).ThumbLX > 32000);
+            port.InputState.Axis[6] = 65535;
+            Assert.True(Pass(port).ThumbLX > 32000);
+        }
+
+        /// <summary>An "(Any Device)" activator on a Gamepad name holds its
+        /// layer from the port's placed south button alone. The port's first
+        /// raw button and a keyboard's first key hold nothing.</summary>
+        [Fact]
+        public void AnAnyDeviceActivatorReadsThePortThroughItsPlacementAndNoKeyboard()
+        {
+            var port = Port(Placement());
+            var keyboard = Keyboard();
+            _set.ShiftActivators.Add(new ShiftActivator
+            {
+                DeviceGuid = "", Descriptor = "Gamepad ButtonA", Mode = "Hold", LayerMask = "Shift",
+            });
+            AddLayerRow("ButtonB", "Shift", Named(port, "Button 9"));
+            port.InputState.Buttons[9] = true;
+
+            port.InputState.Buttons[0] = true;
+            keyboard.InputState.Buttons[0] = true;
+            Pass(keyboard);
+            Assert.False(Pass(port).IsButtonPressed(Gamepad.B));
+
+            port.InputState.Buttons[3] = true;
+            Assert.True(Pass(port).IsButtonPressed(Gamepad.B));
+        }
+
+        /// <summary>An "(Any Device)" Invert On Hold modifier on a Gamepad name
+        /// is held by the port's placed south button alone.</summary>
+        [Fact]
+        public void AnAnyDeviceModifierReadsThePortThroughItsPlacementAndNoKeyboard()
+        {
+            var port = Port(Placement());
+            var keyboard = Keyboard();
+            AddRow("RightTrigger", Named(port, "Button 9"), Modifier("Gamepad ButtonA"));
+            port.InputState.Buttons[0] = true;
+            keyboard.InputState.Buttons[0] = true;
+            Assert.Equal(0, Pass(keyboard).RightTrigger);
+            Assert.Equal(0, Pass(port).RightTrigger);
+            port.InputState.Buttons[3] = true;
+            Assert.Equal(ushort.MaxValue, Pass(port).RightTrigger);
+        }
+
+        /// <summary>A Cycle's "(Any Device)" Previous button reads the port
+        /// through its placement too: raw button 1 is SDL's east by number but
+        /// the port's west, and its east is raw button 2.</summary>
+        [Fact]
+        public void AnAnyDeviceCyclesPreviousButtonReadsThePortThroughItsPlacement()
+        {
+            var port = Port(Placement());
+            var pad = Pad();
+            _set.ShiftActivators.Add(new ShiftActivator
+            {
+                DeviceGuid = "", Kind = "Button", Descriptor = "Gamepad ButtonY", Mode = "Cycle",
+                CycleLayers = "One|Two", CyclePrevDescriptor = "Gamepad ButtonB",
+            });
+            AddLayerRow("ButtonB", "One", Named(pad, "Button 9"));
+            AddLayerRow("ButtonX", "Two", Named(pad, "Button 9"));
+            pad.InputState.Buttons[9] = true;
+
+            port.InputState.Buttons[1] = true;
+            Pass(port);
+            Assert.False(OnCycleLayer(Pass(pad)));
+            port.InputState.Buttons[1] = false;
+            port.InputState.Buttons[2] = true;
+            Pass(port);
+            Assert.True(OnCycleLayer(Pass(pad)));
+        }
+
+        [Fact]
+        public void APlacementScopeResolvesTheNamesAndRestoresTheOneBeforeIt()
+        {
+            var outer = Placement();
+            Assert.Equal("Button 0", SourceCoercion.ResolveGamepadAlias("Gamepad ButtonA"));
+            using (SourceCoercion.UsePlacement(outer))
+            {
+                Assert.Equal("Button 3", SourceCoercion.ResolveGamepadAlias("Gamepad ButtonA"));
+                Assert.Equal("Button 8", SourceCoercion.ResolveGamepadAlias("Gamepad LeftTrigger"));
+                Assert.Null(SourceCoercion.ResolveGamepadAlias("Gamepad ButtonY"));
+                Assert.Equal("", SourceCoercion.CanonicalDescriptor("Gamepad ButtonY"));
+                // A read that names no device follows the one around it.
+                using (SourceCoercion.ReadingDevice(""))
+                    Assert.Same(outer, SourceCoercion.ActivePlacement);
+                // A device with no placement reads SDL's layout inside it.
+                using (SourceCoercion.ReadingDevice(Guid.NewGuid().ToString()))
+                    Assert.Equal("Button 0", SourceCoercion.ResolveGamepadAlias("Gamepad ButtonA"));
+                Assert.Same(outer, SourceCoercion.ActivePlacement);
+            }
+            Assert.Null(SourceCoercion.ActivePlacement);
+            Assert.Equal("Button 0", SourceCoercion.ResolveGamepadAlias("Gamepad ButtonA"));
+        }
+
+        [Fact]
+        public void AReadTakesAPinnedSourcesOwnDeviceAndElseTheDeviceItEvaluates()
+        {
+            var port = Port(Placement());
+            string other = Guid.NewGuid().ToString();
+            using (SourceCoercion.ReadingDevice(new MappingSource { DeviceGuid = port.InstanceGuidString }, other))
+                Assert.NotNull(SourceCoercion.ActivePlacement);
+            using (SourceCoercion.ReadingDevice(new MappingSource { DeviceGuid = "" }, port.InstanceGuidString))
+                Assert.NotNull(SourceCoercion.ActivePlacement);
+            using (SourceCoercion.ReadingDevice(new MappingSource { DeviceGuid = other }, port.InstanceGuidString))
+                Assert.Null(SourceCoercion.ActivePlacement);
+        }
+
+        [Theory]
+        [InlineData("Gamepad LeftStickX", true)]
+        [InlineData("Gamepad RightTrigger", true)]
+        [InlineData("Gamepad ButtonA", false)]
+        [InlineData("Gamepad DPadUp", false)]
+        [InlineData("Gamepad LeftStickRing", false)]
+        [InlineData("Axis 0", false)]
+        public void OnlyStickAndTriggerNamesAreAxisAliases(string descriptor, bool axis)
+        {
+            Assert.Equal(axis, SourceCoercion.IsGamepadAxisAlias(descriptor));
+            using (SourceCoercion.UsePlacement(Placement()))
+                Assert.Equal(axis, SourceCoercion.IsGamepadAxisAlias(descriptor));
+        }
+
+        /// <summary>A gate on a Gamepad name is read for the device the source
+        /// reads. Its synthetic source once kept the name resolved for the
+        /// first device that read it, so after a pad's pass a placed port's
+        /// gate read the port's raw button 0.</summary>
+        [Fact]
+        public void AGateOnAGamepadNameReadsEachDevicesOwnButton()
+        {
+            var pad = Pad();
+            var port = Port(Placement());
+            var keyboard = Keyboard();
+            AddRow("ButtonB", new MappingSource { DeviceGuid = "", Descriptor = "Button 9", GateDescriptor = "Gamepad ButtonA" });
+            pad.InputState.Buttons[9] = port.InputState.Buttons[9] = keyboard.InputState.Buttons[9] = true;
+
+            pad.InputState.Buttons[0] = true;
+            Assert.True(Pass(pad).IsButtonPressed(Gamepad.B));
+            port.InputState.Buttons[0] = true;
+            Assert.False(Pass(port).IsButtonPressed(Gamepad.B));
+            port.InputState.Buttons[3] = true;
+            Assert.True(Pass(port).IsButtonPressed(Gamepad.B));
+            keyboard.InputState.Buttons[0] = true;
+            Assert.False(Pass(keyboard).IsButtonPressed(Gamepad.B));
+        }
+
+        private double RunIncremental(UserDevice dev, MappingSource src, string lane)
+        {
+            var runtime = new SourceKindRuntime();
+            double v = 0;
+            for (int frame = 0; frame < 30; frame++)
+            {
+                runtime.FrameSeq++;
+                v = lane switch
+                {
+                    "Button" => SourceEvaluator.EvaluateForButtonTarget(dev.InputState, src, 50, Slot, "ButtonA", 0,
+                        runtime, 0.05, dev.InstanceGuidString) ? 1 : 0,
+                    "Trigger" => SourceEvaluator.EvaluateForTriggerTarget(dev.InputState, src, Slot, "LeftTrigger", 0,
+                        runtime, 0.05, dev.InstanceGuidString),
+                    _ => SourceEvaluator.EvaluateForBipolarAxisTarget(dev.InputState, src, Slot, "LeftThumbAxisX", 0,
+                        runtime, 0.05, dev.InstanceGuidString),
+                };
+            }
+            return v;
+        }
+
+        /// <summary>An Incremental source's step buttons are read by its kind's
+        /// own reader, which takes the port's placement from the evaluation
+        /// around it.</summary>
+        [Theory]
+        [InlineData("Button")]
+        [InlineData("Trigger")]
+        [InlineData("Stick")]
+        public void AnIncrementalSourcesStepButtonsReadThePortThroughItsPlacement(string lane)
+        {
+            var port = Port(Placement());
+            var src = new MappingSource
+            {
+                DeviceGuid = "", Kind = "Incremental", ParamUp = "Gamepad ButtonA", ParamDown = "Gamepad ButtonX",
+                ParamRate = 0.5, ParamMin = 0, ParamMax = 1, ParamSticky = true,
+            };
+            double rest = RunIncremental(port, src, lane);
+            port.InputState.Buttons[0] = true;
+            Assert.Equal(rest, RunIncremental(port, src, lane), 6);
+            port.InputState.Buttons[3] = true;
+            Assert.NotEqual(rest, RunIncremental(port, src, lane));
+        }
+
+        private static readonly MethodInfo HasAxesForSource = typeof(InputManager).GetMethod("HasAxesFor",
+            BindingFlags.NonPublic | BindingFlags.Static, null,
+            new[] { typeof(string), typeof(MappingSource), typeof(CustomInputState), typeof(bool) }, null);
+
+        private static bool Answers(UserDevice dev, MappingSource src, bool stickRead = false)
+        {
+            Assert.NotNull(HasAxesForSource);
+            return (bool)HasAxesForSource.Invoke(null, new object[] { dev.InstanceGuidString, src, dev.InputState, stickRead });
+        }
+
+        /// <summary>Every read of a source that names the family needs a
+        /// device in SDL's gamepad layout: its gate, an Incremental source's
+        /// step buttons, and a steering kind's axis. A ring in a steering
+        /// kind's Y slot is read as centered, so it asks for nothing.</summary>
+        [Fact]
+        public void EveryFamilyReadOfASourceNeedsTheGamepadLayout()
+        {
+            var pad = Pad();
+            var keyboard = Keyboard();
+            var joystick = Row(new ShapedDevice { NumAxes = 2, Objects = AxisObjects(0, 1) });
+            joystick.InputState.Axis[0] = joystick.InputState.Axis[1] = 32768;
+
+            var gated = new MappingSource { DeviceGuid = "", Descriptor = "Button 9", GateDescriptor = "Gamepad ButtonA" };
+            Assert.True(Answers(pad, gated));
+            Assert.False(Answers(keyboard, gated));
+
+            var stepped = new MappingSource { DeviceGuid = "", Kind = "Incremental", ParamUp = "Gamepad ButtonA" };
+            Assert.True(Answers(pad, stepped));
+            Assert.False(Answers(keyboard, stepped));
+
+            var steered = new MappingSource { DeviceGuid = "", Kind = "AngleToAxisX", Descriptor = "Gamepad LeftStickX" };
+            Assert.True(Answers(pad, steered, stickRead: true));
+            Assert.False(Answers(joystick, steered, stickRead: true));
+            var ringInY = new MappingSource
+            {
+                DeviceGuid = "", Kind = "AngleToAxisX", Descriptor = "Axis 0", ParamYDescriptor = SourceCoercion.RightStickRingDescriptor,
+            };
+            Assert.True(Answers(joystick, ringInY, stickRead: true));
+        }
+
+        /// <summary>The "(Any Device)" activator is advanced against the first
+        /// slot device whose read is down. The port, assigned first, holds
+        /// its raw button 0, which is no south of its, so the pad's A is the
+        /// one that holds the layer.</summary>
+        [Fact]
+        public void AnAnyDeviceActivatorPicksThePadOverAPortWhoseRawButtonSharesTheNumber()
+        {
+            var port = Port(Placement());
+            var pad = Pad();
+            _set.ShiftActivators.Add(new ShiftActivator
+            {
+                DeviceGuid = "", Descriptor = "Gamepad ButtonA", Mode = "Hold", LayerMask = "Shift",
+            });
+            AddLayerRow("ButtonB", "Shift", Named(pad, "Button 9"));
+            pad.InputState.Buttons[9] = true;
+            port.InputState.Buttons[0] = true;
+            pad.InputState.Buttons[0] = true;
+            Pass(port);
+            Assert.True(Pass(pad).IsButtonPressed(Gamepad.B));
+        }
+
+        /// <summary>The menus and the postponed-mapping check call the engine's
+        /// readers straight, with the device they read, and those readers take
+        /// the port's placement from it.</summary>
+        [Fact]
+        public void TheEnginesReadersTakeThePlacementOfTheDeviceTheyRead()
+        {
+            var port = Port(Placement());
+            var s = port.InputState;
+            string guid = port.InstanceGuidString;
+            s.Buttons[0] = true;
+            s.Axis[0] = 65535;
+            Assert.False(SourceCoercion.EvaluateForButtonTarget(s, Any("Gamepad ButtonA"), 50, Slot, guid));
+            Assert.Equal(0f, SourceCoercion.EvaluateForBipolarAxisTarget(s, Any("Gamepad LeftStickX"), Slot, false, guid), 3);
+            Assert.Equal(0f, SourceCoercion.EvaluateForTriggerTarget(s, Any("Gamepad LeftTrigger"), Slot, guid), 3);
+            s.Buttons[3] = true;
+            s.Axis[6] = 65535;
+            s.Buttons[8] = true;
+            Assert.True(SourceCoercion.EvaluateForButtonTarget(s, Any("Gamepad ButtonA"), 50, Slot, guid));
+            Assert.Equal(1f, SourceCoercion.EvaluateForBipolarAxisTarget(s, Any("Gamepad LeftStickX"), Slot, false, guid), 3);
+            Assert.Equal(1f, SourceCoercion.EvaluateForTriggerTarget(s, Any("Gamepad LeftTrigger"), Slot, guid), 3);
+        }
+
+        /// <summary>The second gate leg keeps the name for the device it reads,
+        /// as the first does.</summary>
+        [Fact]
+        public void ASecondGateOnAGamepadNameReadsEachDevicesOwnButton()
+        {
+            var pad = Pad();
+            var port = Port(Placement());
+            AddRow("ButtonB", new MappingSource { DeviceGuid = "", Descriptor = "Button 9", Gate2Descriptor = "Gamepad ButtonA" });
+            pad.InputState.Buttons[9] = port.InputState.Buttons[9] = true;
+            pad.InputState.Buttons[0] = true;
+            Assert.True(Pass(pad).IsButtonPressed(Gamepad.B));
+            port.InputState.Buttons[0] = true;
+            Assert.False(Pass(port).IsButtonPressed(Gamepad.B));
+            port.InputState.Buttons[3] = true;
+            Assert.True(Pass(port).IsButtonPressed(Gamepad.B));
+        }
+
+        /// <summary>The names resolve on every read of every frame, so a name
+        /// written the usual way resolves without building a string.</summary>
+        [Fact]
+        public void AGamepadNameResolvesWithoutAllocating()
+        {
+            SourceCoercion.ResolveGamepadAlias("Gamepad ButtonA");
+            long before = GC.GetAllocatedBytesForCurrentThread();
+            for (int i = 0; i < 100; i++) SourceCoercion.ResolveGamepadAlias("Gamepad ButtonA");
+            Assert.Equal(before, GC.GetAllocatedBytesForCurrentThread());
+        }
+
+        /// <summary>An "(Any Device)" ring modifier checks the port's own stick,
+        /// raw axes 6 and 7, which the placement puts at SDL's left stick. The
+        /// port lacks axes 0 and 1, so checked by SDL's numbering it answered
+        /// nothing.</summary>
+        [Fact]
+        public void AnAnyDeviceRingModifierReadsThePortsPlacedStick()
+        {
+            var port = Port(Placement());
+            AddRow("RightTrigger", Named(port, "Button 9"), Modifier("Gamepad LeftStickRing"));
+            Assert.Equal(0, Pass(port).RightTrigger);
+            port.InputState.Axis[0] = 65535;
+            Assert.Equal(0, Pass(port).RightTrigger);
+            port.InputState.Axis[0] = 0;
+            port.InputState.Axis[6] = 65535;
+            Assert.Equal(ushort.MaxValue, Pass(port).RightTrigger);
         }
     }
 }

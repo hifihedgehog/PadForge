@@ -4532,12 +4532,12 @@
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
                                                         Visibility="{Binding IsRampedKind, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Ramp_Attack, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                                <Slider Value="{Binding ParamAttackTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="2" SmallChange="0.05" LargeChange="0.25" Width="80" VerticalAlignment="Center"
+                                                <Slider Value="{Binding ParamAttackTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="5" SmallChange="0.05" LargeChange="0.25" Width="80" VerticalAlignment="Center"
                                                         ToolTip="{Binding Pad_Mapping_Ramp_Attack_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                 <TextBox Text="{Binding ParamAttackTime, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}" Width="44" Margin="4,0,8,0" Padding="2,1" VerticalContentAlignment="Center"/>
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ParamAttackTime" SettingLabel="{Binding Pad_Mapping_Ramp_Attack, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamAttackTime_4288" Margin="4,0,8,0"/>
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Ramp_Release, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                                <Slider Value="{Binding ParamReleaseTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="2" SmallChange="0.05" LargeChange="0.25" Width="80" VerticalAlignment="Center"
+                                                <Slider Value="{Binding ParamReleaseTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="5" SmallChange="0.05" LargeChange="0.25" Width="80" VerticalAlignment="Center"
                                                         ToolTip="{Binding Pad_Mapping_Ramp_Release_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                 <TextBox Text="{Binding ParamReleaseTime, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}" Width="44" Margin="4,0,8,0" Padding="2,1" VerticalContentAlignment="Center"/>
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ParamReleaseTime" SettingLabel="{Binding Pad_Mapping_Ramp_Release, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamReleaseTime_4292" Margin="4,0,8,0"/>
@@ -4629,13 +4629,13 @@
                                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
                                                             Visibility="{Binding ShowMotionSpeedSettings, Converter={StaticResource BoolToVisibilityConverter}}">
                                                     <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_MotionTopSpeed, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                                    <Slider Value="{Binding MotionSpeed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="10" Maximum="1600" SmallChange="10" LargeChange="100" Width="90" VerticalAlignment="Center"
+                                                    <Slider Value="{Binding MotionSpeed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Maximum="1600" SmallChange="10" LargeChange="100" Width="90" VerticalAlignment="Center"
                                                             ToolTip="{Binding Pad_Mapping_MotionTopSpeed_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                     <TextBox Text="{Binding MotionSpeed, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="48" Margin="4,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
                                                     <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="°/s" VerticalAlignment="Center" Margin="2,0,2,0"/>
                                                     <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="MotionSpeed" SettingLabel="{Binding Pad_Mapping_MotionTopSpeed, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_MotionSpeed_4624" Margin="4,0,8,0"/>
                                                     <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_MotionStartSpeed, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                                    <Slider Value="{Binding MotionMinSpeed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="200" SmallChange="1" LargeChange="10" Width="80" VerticalAlignment="Center"
+                                                    <Slider Value="{Binding MotionMinSpeed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="1600" SmallChange="1" LargeChange="10" Width="80" VerticalAlignment="Center"
                                                             ToolTip="{Binding Pad_Mapping_MotionStartSpeed_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                     <TextBox Text="{Binding MotionMinSpeed, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="44" Margin="4,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
                                                     <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="°/s" VerticalAlignment="Center" Margin="2,0,2,0"/>
@@ -4719,7 +4719,7 @@
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%" VerticalAlignment="Center" Margin="1,0,2,0"/>
                                             <ui:Button Command="{Binding ResetTrimDeadzoneCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetTrimDeadzone, Source={x:Static strings:Strings.Instance}}" Margin="0,0,8,0"/>
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_TrimRate, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                            <Slider Value="{Binding TrimRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="10" Maximum="400" SmallChange="10" LargeChange="50" Width="80" VerticalAlignment="Center"
+                                            <Slider Value="{Binding TrimRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Maximum="1000" SmallChange="10" LargeChange="50" Width="80" VerticalAlignment="Center"
                                                     ToolTip="{Binding Pad_Mapping_TrimRate_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <TextBox Text="{Binding TrimRate, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="40" Margin="4,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%/s" VerticalAlignment="Center" Margin="1,0,2,0"/>
@@ -5734,7 +5734,7 @@
                                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Ramp_Attack, Source={x:Static strings:Strings.Instance}}"
                                                                        VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                             <Slider Value="{Binding ParamAttackTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                    Minimum="0" Maximum="2" SmallChange="0.05" LargeChange="0.25"
+                                                                    Minimum="0" Maximum="5" SmallChange="0.05" LargeChange="0.25"
                                                                     Width="80" VerticalAlignment="Center"
                                                                     ToolTip="{Binding Pad_Mapping_Ramp_Attack_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                             <TextBox Text="{Binding ParamAttackTime, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
@@ -5744,7 +5744,7 @@
                                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Ramp_Release, Source={x:Static strings:Strings.Instance}}"
                                                                        VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                             <Slider Value="{Binding ParamReleaseTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                    Minimum="0" Maximum="2" SmallChange="0.05" LargeChange="0.25"
+                                                                    Minimum="0" Maximum="5" SmallChange="0.05" LargeChange="0.25"
                                                                     Width="80" VerticalAlignment="Center"
                                                                     ToolTip="{Binding Pad_Mapping_Ramp_Release_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                             <TextBox Text="{Binding ParamReleaseTime, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"

@@ -134,8 +134,8 @@ namespace PadForge.Tests
             var button = new MappingItem("A", "ButtonA", MappingCategory.Buttons);
             var stickRow = new MappingItem("Left Stick X", "LeftThumbAxisX", MappingCategory.LeftStick);
             var pad = Device(InputDeviceType.Gamepad);
-            bool Half(MappingItem m, string d, object type, UserDevice dev, bool mouse, bool inv)
-                => (bool)method.Invoke(null, new object[] { m, d, type, dev, mouse, inv });
+            bool Half(MappingItem m, string d, object type, UserDevice dev, bool mouse, bool inv, string kind = null)
+                => (bool)method.Invoke(null, new object[] { m, d, type, dev, mouse, inv, kind });
 
             Assert.True(Half(button, "Axis 0", axis, pad, false, false));
             Assert.True(Half(button, "Axis 0", axis, pad, false, true));
@@ -144,6 +144,33 @@ namespace PadForge.Tests
             Assert.False(Half(stickRow, "Axis 0", axis, pad, false, false));
             Assert.False(Half(button, "Axis 0", axis, Device(InputDeviceType.Mouse), true, false));
             Assert.True(Half(button, "Axis 0", axis, Device(InputDeviceType.Mouse), true, true));
+
+            // A Toggle or Rapid Trigger source on a trigger row is a press: a
+            // stick recorded there takes the half, or its pull at rest sits on
+            // the 50 percent line and the trigger presses with nothing touched.
+            // A Direct trigger keeps the full axis it always had, a stick row
+            // never takes a half, and a gamepad trigger as the source still
+            // rests at 0.
+            var trigger = new MappingItem("LT", "LeftTrigger", MappingCategory.Triggers);
+            Assert.True(Half(trigger, "Axis 3", axis, pad, false, false, "RapidTrigger"));
+            Assert.True(Half(trigger, "Axis 3", axis, pad, false, true, "Toggle"));
+            Assert.False(Half(trigger, "Axis 3", axis, pad, false, false, "Direct"));
+            Assert.False(Half(trigger, "Axis 3", axis, pad, false, false));
+            Assert.False(Half(trigger, "Axis 2", axis, pad, false, false, "RapidTrigger"));
+            Assert.False(Half(stickRow, "Axis 3", axis, pad, false, false, "Toggle"));
+            var oneWay = new MappingItem("Throttle", "RawAxis2", MappingCategory.Triggers);
+            Assert.True(Half(oneWay, "Axis 3", axis, pad, false, false, "Toggle"));
+
+            // The ten button pressure rows (discussion #476) are read by the
+            // trigger lane too, so the same rule holds on each.
+            foreach (string target in PadForge.Engine.Data.MappingSetMigrator.PressureTargets)
+            {
+                var pressure = new MappingItem(target, target, MappingCategory.Buttons);
+                Assert.True(Half(pressure, "Axis 3", axis, pad, false, false, "Toggle"));
+                Assert.True(Half(pressure, "Axis 3", axis, pad, false, true, "RapidTrigger"));
+                Assert.False(Half(pressure, "Axis 3", axis, pad, false, false, "Direct"));
+                Assert.False(Half(pressure, "Axis 2", axis, pad, false, false, "Toggle"));
+            }
         }
 
         /// <summary>A raw joystick's axis 2 is not a trigger: it rests centered.</summary>

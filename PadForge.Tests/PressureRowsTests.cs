@@ -301,6 +301,41 @@ namespace PadForge.Tests
             Assert.True(InputManager.HasSourcedPressureRow(set));
         }
 
+        /// <summary>A pressure row whose result is positive but under one step
+        /// of the trigger scale still reads pressed, at the lightest pressure.
+        /// It truncated to released, and HIDMaestro sends a pressed button
+        /// with no pressure behind it as a full press. A zero result stays
+        /// released, and an ordinary trigger keeps its exact
+        /// quantization.</summary>
+        [Fact]
+        public void APositivePressureBelowOneStepStaysPressed()
+        {
+            var state = new CustomInputState();
+            state.Buttons[0] = true;
+            static MappingSet Set(string target, string expression)
+            {
+                var row = Row(target,
+                    new MappingSource { Kind = "Direct", Descriptor = "Button 0" },
+                    new MappingSource { Kind = "Direct", Descriptor = "Button 1" });
+                row.CombineMode = "Custom";
+                row.CombineExpression = expression;
+                var set = new MappingSet();
+                set.Rows.Add(row);
+                return set;
+            }
+
+            foreach (string target in MappingSetMigrator.PressureTargets)
+            {
+                Assert.True(InputManager.TryEvaluateMappingSetRawTrigger(state, Set(target, "a * 0.000001"), "", 6, target, out short v));
+                Assert.Equal(short.MinValue + 1, v);
+                Assert.Equal(1, InputManager.PressureByte(v));
+                Assert.True(InputManager.TryEvaluateMappingSetRawTrigger(state, Set(target, "a * 0"), "", 6, target, out v));
+                Assert.Equal(short.MinValue, v);
+            }
+            Assert.True(InputManager.TryEvaluateMappingSetRawTrigger(state, Set("RawAxis5", "a * 0.000001"), "", 6, "RawAxis5", out short t));
+            Assert.Equal(short.MinValue, t);
+        }
+
         [Fact]
         public void APressureByteRoundsFromTheTriggerScale()
         {
@@ -309,7 +344,13 @@ namespace PadForge.Tests
             Assert.Equal(128, InputManager.PressureByte((short)(128 * 257 + short.MinValue)));
             // Rounded, not truncated: 200 of 65535 is 0.78 of a step.
             Assert.Equal(1, InputManager.PressureByte((short)(200 + short.MinValue)));
-            Assert.Equal(0, InputManager.PressureByte((short)(100 + short.MinValue)));
+            // A press below half a step is still 1, never the 0 HIDMaestro
+            // sends as a full press on a pressed button.
+            Assert.Equal(1, InputManager.PressureByte((short)(100 + short.MinValue)));
+            Assert.Equal(1, InputManager.PressureByte((short)(1 + short.MinValue)));
+            // Every DualShock 3 byte still round-trips exactly.
+            for (int b = 0; b <= 255; b++)
+                Assert.Equal(b, InputManager.PressureByte((short)(b * 257 + short.MinValue)));
         }
 
         [Fact]
@@ -320,7 +361,7 @@ namespace PadForge.Tests
             var us = Setting(pad);
             us.PressureOutputState = new ButtonPressureState { ButtonA = 200, DPadLeft = 50 };
             typeof(InputManager).GetMethod("NeutralizeMappedOutputsFor",
-                BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new object[] { pad });
+                BindingFlags.Instance | BindingFlags.NonPublic).Invoke(rig.Manager, new object[] { pad });
             Assert.Equal(default(ButtonPressureState), us.PressureOutputState);
         }
 
@@ -469,11 +510,7 @@ namespace PadForge.Tests
         // ── The grid ──
 
         private static PadViewModel Grid(VirtualControllerType type, string profile)
-        {
-            var vm = new PadViewModel(0) { OutputType = type };
-            if (profile != null) Restore(vm, profile);
-            return vm;
-        }
+            => RestoredPad.Build(0, type, profile);
 
         /// <summary>Sets a preset the way a restore does, stamp first, so the
         /// change never reads as live whatever an earlier test left stamped
@@ -756,6 +793,35 @@ namespace PadForge.Tests
             Assert.Null(ButtonPressureSources.AxesFor(null));
         }
 
+        /// <summary>A DualShock 3 shared over Remote Link answers from the
+        /// owner's raw counts the link carries: SDL's PS3 driver (11 buttons)
+        /// and PadForge's reader (15) put the pressures on axes 6 to 15,
+        /// DsHidMini's SDF (17) does not, and an old peer sends no count.
+        /// The connected proxy fell to the default arm and got nothing,
+        /// while the same pad assigned offline mapped all ten.</summary>
+        [Theory]
+        [InlineData(11, true)]
+        [InlineData(15, true)]
+        [InlineData(17, false)]
+        [InlineData(0, false)]
+        public void ASharedDualShock3AnswersFromItsOwnersCounts(int rawButtons, bool answers)
+        {
+            var info = new PadForge.Engine.RemoteLink.RemotePeerDeviceInfo
+            {
+                VendorId = 0x054C, ProductId = 0x0268, NumAxes = 6, NumButtons = 22,
+                RawAxisCount = 16, RawButtonCount = rawButtons,
+            };
+            var shared = new UserDevice
+            {
+                InstanceGuid = Guid.NewGuid(), VendorId = 0x054C, ProdId = 0x0268,
+                Device = new PadForge.Engine.RemoteLink.RemotePeerDevice(info),
+                IsOnline = true, CapType = InputDeviceType.Gamepad,
+            };
+            var axes = ButtonPressureSources.AxesFor(shared);
+            if (answers) Assert.Equal(Enumerable.Range(6, 10), axes);
+            else Assert.Null(axes);
+        }
+
         [Fact]
         public void ChangingToTheFullPresetFillsACachedDualShock3()
         {
@@ -855,6 +921,55 @@ namespace PadForge.Tests
                 var row = SettingsManager.SlotMappingSets[0]?.Rows.Single(r => r.Target == "PressureButtonA");
                 Assert.NotNull(row);
                 Assert.Equal("Axis 6", row.Sources.Single().Descriptor);
+                Assert.Equal(Targets.Length, vm.Mappings.Count(m => MappingSetMigrator.IsPressureTarget(m.TargetSettingName)));
+            }
+            finally
+            {
+                SettingsManager.StampNintendoWire(0, stamp);
+                SettingsService.AfterMappingSetsRefreshed = hook;
+                SettingsManager.UserDevices = devices;
+                SettingsManager.UserSettings = settings;
+                SettingsManager.SlotMappingSets = sets;
+                SettingsManager.SlotCreated = created;
+                (ds3.Device as IDisposable)?.Dispose();
+            }
+        }
+
+        /// <summary>The same pick on a slot created this session, which has
+        /// no stamp of its own until the type step gives it one. The stamp
+        /// stayed unknown, the pick read as a restore, and the ten rows came
+        /// up empty.</summary>
+        [Fact]
+        public void PickingTheFullPresetOnASlotCreatedThisSessionFillsItsPressureRows()
+        {
+            var devices = SettingsManager.UserDevices;
+            var settings = SettingsManager.UserSettings;
+            var sets = SettingsManager.SlotMappingSets;
+            var created = SettingsManager.SlotCreated;
+            var hook = SettingsService.AfterMappingSetsRefreshed;
+            string stamp = SettingsManager.GetWireStamp(0);
+            var ds3 = Ds3();
+            try
+            {
+                SettingsManager.UserDevices = new DeviceCollection();
+                SettingsManager.UserSettings = new SettingsCollection();
+                SettingsManager.SlotMappingSets = new MappingSet[InputManager.MaxPads];
+                SettingsManager.SlotCreated = new bool[InputManager.MaxPads];
+                SettingsManager.SlotCreated[0] = true;
+                SettingsService.AfterMappingSetsRefreshed = null;
+                lock (SettingsManager.UserDevices.SyncRoot) SettingsManager.UserDevices.Items.Add(ds3);
+                var ps = new PadSetting { ButtonA = "Button 0" };
+                var us = new UserSetting { InstanceGuid = ds3.InstanceGuid, MapTo = 0 };
+                us.SetPadSetting(ps);
+                lock (SettingsManager.UserSettings.SyncRoot) SettingsManager.UserSettings.Items.Add(us);
+
+                // CreateSlot's two steps on a fresh index.
+                SettingsManager.StampNintendoWire(0, null);
+                var vm = new PadViewModel(0) { OutputType = PS };
+                vm.ProfileId = InputManager.GetDefaultProfileId(PS);
+                vm.ProfileId = Full;
+
+                Assert.Equal("Axis 6", ps.PressureButtonA);
                 Assert.Equal(Targets.Length, vm.Mappings.Count(m => MappingSetMigrator.IsPressureTarget(m.TargetSettingName)));
             }
             finally

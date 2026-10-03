@@ -1334,6 +1334,7 @@
   <data name="DevObj_Guide" xml:space="preserve"><value>指南</value></data>
   <data name="DevObj_Select" xml:space="preserve"><value>选择</value></data>
   <data name="DevObj_Mode" xml:space="preserve"><value>模式</value></data>
+  <data name="DevObj_Option" xml:space="preserve"><value>选项</value></data>
   <data name="DevObj_Run" xml:space="preserve"><value>RUN</value></data>
   <data name="DevObj_Reset" xml:space="preserve"><value>重置</value></data>
   <data name="DevObj_HomeButton" xml:space="preserve"><value>HOME 键</value></data>
@@ -3058,6 +3059,7 @@
   <data name="Pad_Mapping_MotionRowUnreadNote" xml:space="preserve"><value>此行不读取摇杆和按钮。请将它们映射到运动 俯仰、运动 偏航或运动 翻滚，然后从这里移除。</value></data>
   <data name="Pad_Mapping_MotionSourceElsewhereNote" xml:space="preserve"><value>运动 陀螺仪和运动 加速度计来源只在运动 陀螺仪和运动 加速度计行上起作用。</value></data>
   <data name="Pad_Mapping_MotionPresetNote" xml:space="preserve"><value>此预设的报告不携带运动数据。槽位 1 至 4 的体感服务器 (DSU) 仍会收到。</value></data>
+  <data name="Pad_Mapping_MotionPitchRollRateNote" xml:space="preserve"><value>此预设的报告不携带俯仰或翻滚角速度。在速度模式下，此行只能以倾斜的形式传到游戏，而且只在没有加速度计输入运动 加速度计行时如此。槽位 1 至 4 的体感服务器 (DSU) 仍会收到。</value></data>
   <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>松开时重置</value></data>
   <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>勾选时，松开扳机会让保持值回到 100%，下次按下从满值开始。取消勾选时，微调后的值在松开后保留，直到再次调整。</value></data>
   <data name="Pad_ResetGuideLed" xml:space="preserve"><value>重置指南键 LED</value></data>

@@ -110,6 +110,32 @@ namespace PadForge.Engine.Data
         public bool IsEnabled { get; set; } = true;
 
         // ─────────────────────────────────────────────
+        //  A Bliss-Box port's owed default
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// What a Bliss-Box port still owes this slot: a default built while
+        /// the port had nothing to place its controls through, an assignment's
+        /// or a live profile change's fill, or the button pressure rows of a
+        /// change to the DualShock 3 (SIXAXIS): Full. The port completes it
+        /// once it can be placed (DeviceService.AutoMapIdentifiedPort). Clear
+        /// All, a paste, Copy From and Force Raw Joystick Mode drop it. None
+        /// writes nothing.
+        /// </summary>
+        [XmlElement]
+        [DefaultValue(BlissBoxOwedMapping.None)]
+        public BlissBoxOwedMapping BlissBoxOwed { get; set; }
+
+        /// <summary>
+        /// The slot's targets the user bound, recorded or cleared while
+        /// <see cref="BlissBoxOwed"/> was pending. Its completion leaves them
+        /// as the user left them. Null when none.
+        /// </summary>
+        [XmlArray]
+        [XmlArrayItem("Target")]
+        public string[] BlissBoxKeptTargets { get; set; }
+
+        // ─────────────────────────────────────────────
         //  Metadata
         // ─────────────────────────────────────────────
 
@@ -246,5 +272,22 @@ namespace PadForge.Engine.Data
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+    }
+
+    /// <summary>What a Bliss-Box port still owes one of its slots
+    /// (<see cref="UserSetting.BlissBoxOwed"/>).</summary>
+    [Flags]
+    public enum BlissBoxOwedMapping
+    {
+        None = 0,
+
+        /// <summary>The port's default mapping, filled where the slot's
+        /// fields are empty: owed by an assignment, or by a live profile
+        /// change's fill.</summary>
+        Default = 1,
+
+        /// <summary>The ten button pressure rows of a change to the
+        /// DualShock 3 (SIXAXIS): Full, filled where empty.</summary>
+        Pressure = 2,
     }
 }

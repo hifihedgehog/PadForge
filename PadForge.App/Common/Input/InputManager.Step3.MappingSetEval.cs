@@ -171,7 +171,7 @@ namespace PadForge.Common.Input
                     {
                         float pv = SourceEvaluator.EvaluateForTriggerTarget(
                             phoneState, src, slotIndex, row.Target, i, slotRuntime, dt,
-                            evaluatedDeviceGuid: phoneGuid);
+                            evaluatedDeviceGuid: phoneGuid, layer: row.LayerMask);
                         if (pv > gate) gate = pv;
                         continue;
                     }
@@ -180,7 +180,7 @@ namespace PadForge.Common.Input
                         if (!HasAxesFor(trimSlotOwners[d], src, trimSlotStates[d])) continue;
                         float av = SourceEvaluator.EvaluateForTriggerTarget(
                             trimSlotStates[d], src, slotIndex, row.Target, i, slotRuntime, dt,
-                            evaluatedDeviceGuid: trimSlotOwners[d]);
+                            evaluatedDeviceGuid: trimSlotOwners[d], layer: row.LayerMask);
                         if (av > gate) gate = av;
                     }
                     continue;
@@ -189,7 +189,7 @@ namespace PadForge.Common.Input
                 if (devState == null) continue;
                 float v = SourceEvaluator.EvaluateForTriggerTarget(
                     devState, src, slotIndex, row.Target, i, slotRuntime, dt,
-                    evaluatedDeviceGuid: currentDeviceGuid);
+                    evaluatedDeviceGuid: currentDeviceGuid, layer: row.LayerMask);
                 if (v > gate) gate = v;
             }
 
@@ -220,20 +220,20 @@ namespace PadForge.Common.Input
                             if (!HasAxesFor(trimSlotOwners[d], trimSrc, trimSlotStates[d], stickRead: true)) continue;
                             float tv = SourceEvaluator.EvaluateForBipolarAxisTarget(
                                 trimSlotStates[d], trimSrc, slotIndex, row.Target, trimIdx, slotRuntime, dt,
-                                evaluatedDeviceGuid: trimSlotOwners[d]);
+                                evaluatedDeviceGuid: trimSlotOwners[d], layer: row.LayerMask);
                             if (System.Math.Abs(tv) > System.Math.Abs(v)) v = tv;
                         }
                         if (TryPhoneForEmptySpan(trimSlotStates, trimSrc, slotIndex, out var phoneState, out var phoneGuid, stickRead: true))
                             v = SourceEvaluator.EvaluateForBipolarAxisTarget(
                                 phoneState, trimSrc, slotIndex, row.Target, trimIdx, slotRuntime, dt,
-                                evaluatedDeviceGuid: phoneGuid);
+                                evaluatedDeviceGuid: phoneGuid, layer: row.LayerMask);
                     }
                     else
                     {
                         var trimState = LookupDeviceState(trimSrc.DeviceGuid);
                         v = trimState == null ? 0f : SourceEvaluator.EvaluateForBipolarAxisTarget(
                             trimState, trimSrc, slotIndex, row.Target, trimIdx, slotRuntime, dt,
-                            evaluatedDeviceGuid: currentDeviceGuid);
+                            evaluatedDeviceGuid: currentDeviceGuid, layer: row.LayerMask);
                     }
                     st.Level = AdvanceStickTrimLevel(
                         st.Level, v, row.TrimDeadzone, row.TrimRate, dt);
@@ -1544,7 +1544,7 @@ namespace PadForge.Common.Input
                 var st = slotStates[d];
                 string g = owners != null && d < owners.Count ? owners[d] : null;
                 if (g != null && !ActivatorHasAxes(LookupUserDevice(g), act, st)) continue;
-                if (st != null && ReadActivatorInput(act, st, slotIndex))
+                if (st != null && ReadActivatorInputOn(g, act, st, slotIndex))
                 {
                     owner = g;
                     return st;
@@ -1570,8 +1570,9 @@ namespace PadForge.Common.Input
                 {
                     string g = owners != null && d < owners.Count ? owners[d] : null;
                     if (g != null && !HasAxesFor(LookupUserDevice(g), desc, slotStates[d])) continue;
-                    if (slotStates[d] != null
-                        && SourceKindRuntimeReadButtonLikeBool(slotStates[d], desc, act.DeviceGuid, slotIndex)) return true;
+                    if (slotStates[d] == null) continue;
+                    using var placement = SourceCoercion.ReadingDevice(g);
+                    if (SourceKindRuntimeReadButtonLikeBool(slotStates[d], desc, act.DeviceGuid, slotIndex)) return true;
                 }
                 return false;
             }
@@ -1623,7 +1624,7 @@ namespace PadForge.Common.Input
             // button alone.
             bool inputDown = !inputOverrideReleased
                 && (wildcardReader == null || ActivatorHasAxes(wildcardReader, act, state))
-                && ReadActivatorInput(act, state, slotIndex);
+                && ReadActivatorInputOn(wildcardReader?.InstanceGuidString, act, state, slotIndex);
 
             // ── v9 host-layer condition (#370 follow-up): when
             //    HostLayerMask is set, the press only counts if that layer
@@ -1986,6 +1987,17 @@ namespace PadForge.Common.Input
                 engaged = string.IsNullOrEmpty(w?.LayerMask) ? "Base" : w.LayerMask;
             }
             return string.Equals(engaged, hostMask, System.StringComparison.Ordinal);
+        }
+
+        /// <summary><see cref="ReadActivatorInput"/> against the device behind
+        /// <paramref name="deviceGuid"/>, so an "(Any Device)" activator's
+        /// Gamepad names read a placed Bliss-Box port through its placement. An
+        /// empty guid keeps the device the read already follows.</summary>
+        private static bool ReadActivatorInputOn(string deviceGuid, ShiftActivator act, CustomInputState state,
+            int slotIndex)
+        {
+            using var placement = SourceCoercion.ReadingDevice(deviceGuid);
+            return ReadActivatorInput(act, state, slotIndex);
         }
 
         /// <summary>Reads the input for an activator according to its
@@ -2560,7 +2572,7 @@ namespace PadForge.Common.Input
                         boolContribs.Add(SourceEvaluator.EvaluateForButtonTarget(
                             state, src, globalAxisToButtonThreshold,
                             slotIndex, row.Target, i, runtime, dt,
-                            evaluatedDeviceGuid: thisDeviceGuid));
+                            evaluatedDeviceGuid: thisDeviceGuid, layer: row.LayerMask));
                     }
                     if (boolContribs.Count == 0) continue;
                     bool singlePressed = CombineHelper.CombineButton(row.CombineMode, boolContribs);
@@ -2576,7 +2588,7 @@ namespace PadForge.Common.Input
                         float combined = isCustom
                             ? ClampBipolar(EvaluateCustomFloat(row, positional))
                             : ClampBipolar(CombineHelper.CombineAxis(row.CombineMode, positional));
-                        if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = -combined;
+                        if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex, slotWide: true)) combined = -combined;
                         if (System.Math.Abs(combined) > 0.10f) StampLayerActivity(slotIndex, row);
                         WriteBipolarAxisTarget(row.Target, combined, ref gp);
                         multiDone?.Add(row.Target);
@@ -2590,11 +2602,11 @@ namespace PadForge.Common.Input
                         if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
                         axisContribs.Add(SourceEvaluator.EvaluateForBipolarAxisTarget(
                             state, src, slotIndex, row.Target, i, runtime, dt,
-                            evaluatedDeviceGuid: thisDeviceGuid));
+                            evaluatedDeviceGuid: thisDeviceGuid, layer: row.LayerMask));
                     }
                     if (axisContribs.Count == 0) continue;
                     float combinedSingle = ClampBipolar(CombineHelper.CombineAxis(row.CombineMode, axisContribs));
-                    if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combinedSingle = -combinedSingle;
+                    if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex, RowValueIgnoresThePass(row))) combinedSingle = -combinedSingle;
                     if (System.Math.Abs(combinedSingle) > 0.10f) StampLayerActivity(slotIndex, row);
                     WriteBipolarAxisTarget(row.Target, combinedSingle, ref gp);
                 }
@@ -2618,7 +2630,7 @@ namespace PadForge.Common.Input
                                 ? ClampUnipolar(EvaluateCustomFloat(row, positional))
                                 : ClampUnipolar(CombineHelper.CombineAxis(row.CombineMode, positional));
                         }
-                        if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = 1f - combined;
+                        if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex, slotWide: true)) combined = 1f - combined;
                         if (combined > 0.05f) StampLayerActivity(slotIndex, row);
                         WriteTriggerTarget(row.Target, combined, ref gp);
                         multiDone?.Add(row.Target);
@@ -2632,11 +2644,11 @@ namespace PadForge.Common.Input
                         if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
                         axisContribs.Add(SourceEvaluator.EvaluateForTriggerTarget(
                             state, src, slotIndex, row.Target, i, runtime, dt,
-                            evaluatedDeviceGuid: thisDeviceGuid));
+                            evaluatedDeviceGuid: thisDeviceGuid, layer: row.LayerMask));
                     }
                     if (axisContribs.Count == 0) continue;
                     float combinedTrig = ClampUnipolar(CombineHelper.CombineAxis(row.CombineMode, axisContribs));
-                    if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combinedTrig = 1f - combinedTrig;
+                    if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex, RowValueIgnoresThePass(row))) combinedTrig = 1f - combinedTrig;
                     if (combinedTrig > 0.05f) StampLayerActivity(slotIndex, row);
                     WriteTriggerTarget(row.Target, combinedTrig, ref gp);
                 }
@@ -2654,7 +2666,8 @@ namespace PadForge.Common.Input
         /// when set; otherwise against the device currently processing
         /// the row. Multiple InvertOnHold sources on one row OR together:
         /// any held modifier triggers the flip.</para></summary>
-        private static bool IsInvertOnHoldActive(MappingRow row, CustomInputState fallbackState, string fallbackDeviceGuid, int slotIndex)
+        private static bool IsInvertOnHoldActive(MappingRow row, CustomInputState fallbackState, string fallbackDeviceGuid, int slotIndex,
+            bool slotWide = false)
         {
             // Capture once: the save path publishes a rebuilt list by
             // reference assignment, so re-reading the property could pair
@@ -2668,6 +2681,15 @@ namespace PadForge.Common.Input
                 if (!string.Equals(src.Kind ?? "Direct", "InvertOnHold", System.StringComparison.Ordinal))
                     continue;
                 if (string.IsNullOrEmpty(src.ParamModifier)) continue;
+                // A row whose value is the same on every pass (slotWide) reads
+                // an "(Any Device)" modifier across the slot. Read on the pass
+                // device alone, it saw only whichever device's pass computed
+                // the row, so a press on another controller never inverted it.
+                if (slotWide && string.IsNullOrEmpty(src.DeviceGuid))
+                {
+                    if (AnyDeviceModifierHeld(src, fallbackState, fallbackDeviceGuid, slotIndex)) return true;
+                    continue;
+                }
                 // (#431) The pass device stands in for an empty guid only
                 // when it answers the wildcard at all. A menu cell modifier on
                 // a slot no device answers for is read by the slot's Web Menus
@@ -2677,6 +2699,14 @@ namespace PadForge.Common.Input
                 CustomInputState phoneModifierState = null;
                 if (string.IsNullOrEmpty(src.DeviceGuid) && !AnswersAnyDevice(fallbackDeviceGuid)
                     && !TryPhoneForMenuCell(src.ParamModifier, slotIndex, out phoneModifierState, out modifierDeviceGuid))
+                    continue;
+                // The modifier takes the full Direct read, so a stick ring or
+                // an axis reads a device's missing axes, held at 0, as pushed
+                // all the way: an "(Any Device)" ring modifier read a keyboard
+                // as held. The pass device answers only with the axes the
+                // modifier reads (#431).
+                if (phoneModifierState == null && string.IsNullOrEmpty(src.DeviceGuid)
+                    && !HasAxesFor(LookupUserDevice(fallbackDeviceGuid), src.ParamModifier, fallbackState))
                     continue;
                 // PostponeMapping suppression. When an activator with
                 // PostponeMapping=false names this same modifier descriptor,
@@ -2688,13 +2718,19 @@ namespace PadForge.Common.Input
                 // A pinned modifier whose device is offline reads RELEASED.
                 // Falling back to the pass device's state let an absent
                 // device borrow whatever button shared that descriptor on the
-                // device being processed, and silently invert the row. The
-                // cycle and chord companions above already use this sentinel;
-                // this was the twin that kept the old fallback.
-                CustomInputState s = phoneModifierState
-                    ?? (string.IsNullOrEmpty(src.DeviceGuid)
-                        ? fallbackState
-                        : (LookupDeviceState(src.DeviceGuid) ?? OfflinePinnedRestState));
+                // device being processed, and silently invert the row. It is
+                // skipped rather than read against the all-rest state, which
+                // is bool-like only: its zeroed axes read a ring or an
+                // inverted axis as held, so unplugging the device engaged the
+                // modifier.
+                CustomInputState s;
+                if (phoneModifierState != null) s = phoneModifierState;
+                else if (string.IsNullOrEmpty(src.DeviceGuid)) s = fallbackState;
+                else
+                {
+                    s = LookupDeviceState(src.DeviceGuid);
+                    if (s == null) continue;
+                }
                 // Both keys ride along, same as all five sibling call sites.
                 // Dropping them collapsed every stateful modifier family (IR
                 // Offscreen's debounce store, the IR EMA keys, menu fires,
@@ -2706,6 +2742,45 @@ namespace PadForge.Common.Input
                     return true;
             }
             return false;
+        }
+
+        /// <summary>An "(Any Device)" InvertOnHold modifier read across the
+        /// slot: held on any device that answers the wildcard and has the
+        /// axes it reads, or on the slot's Web Menus phone (#471) when it is
+        /// a menu cell. MotionRowInversionHeld's OR, for a row read once per
+        /// frame.</summary>
+        private static bool AnyDeviceModifierHeld(MappingSource src, CustomInputState passState, string passDeviceGuid, int slotIndex)
+        {
+            var states = GetSlotDeviceStates(slotIndex, passState, passDeviceGuid, out var owners);
+            for (int d = 0; d < states.Count; d++)
+            {
+                string owner = owners[d];
+                if (!HasAxesFor(LookupUserDevice(owner), src.ParamModifier, states[d])) continue;
+                if (IsSourceSuppressedPostpone(slotIndex, owner, src.ParamModifier)) continue;
+                if (SourceKindRuntimeReadButtonLikeBool(states[d], src.ParamModifier, owner, slotIndex)) return true;
+            }
+            return TryPhoneForMenuCell(src.ParamModifier, slotIndex, out var phoneState, out string phoneGuid)
+                && !IsSourceSuppressedPostpone(slotIndex, phoneGuid, src.ParamModifier)
+                && SourceKindRuntimeReadButtonLikeBool(phoneState, src.ParamModifier, phoneGuid, slotIndex);
+        }
+
+        /// <summary>True when a row reads the same sources whichever device's
+        /// pass evaluates it: every contributing source is pinned to a
+        /// device. Its InvertOnHold modifier is then read across the slot
+        /// (<see cref="IsInvertOnHoldActive"/>).</summary>
+        private static bool RowValueIgnoresThePass(MappingRow row)
+        {
+            var srcs = row?.Sources;
+            if (srcs == null) return false;
+            bool any = false;
+            for (int i = 0; i < srcs.Count; i++)
+            {
+                var s = srcs[i];
+                if (s == null || IsRowModifierSource(s) || SourceEvaluator.IsUnmappedDirect(s)) continue;
+                if (string.IsNullOrEmpty(s.DeviceGuid)) return false;
+                any = true;
+            }
+            return any;
         }
 
         /// <summary>True for sources that act as row-level modifiers
@@ -3217,10 +3292,14 @@ namespace PadForge.Common.Input
         /// device's state the read takes. An unknown guid has them all, as it
         /// answers the wildcard. <paramref name="stickRead"/> marks the
         /// bipolar lane, whose Steam Circle deadzone also reads the axis's
-        /// partner.</summary>
+        /// partner. A source that names the "Gamepad ..." family also needs a
+        /// device in SDL's gamepad layout (<see cref="SpeaksGamepadLayout"/>),
+        /// buttons included, so that test runs before the axis-free
+        /// shortcut.</summary>
         private static bool HasAxesFor(string deviceGuid, MappingSource src, CustomInputState state,
             bool stickRead = false)
-            => !ReadsNumberedAxis(src, stickRead) || HasAxesFor(LookupUserDevice(deviceGuid), src, state, stickRead);
+            => (!ReadsNumberedAxis(src, stickRead) && !ReadsGamepadFamily(src, stickRead))
+               || HasAxesFor(LookupUserDevice(deviceGuid), src, state, stickRead);
 
         /// <summary>The same test against a device in hand. The two gate legs
         /// read the same device (SourceEvaluator.GateHeld), so a button gated
@@ -3231,12 +3310,17 @@ namespace PadForge.Common.Input
         /// On the stick lane the steering kinds read Descriptor and
         /// ParamYDescriptor as one stick (SourceKindRuntime.ReadStick2D), each
         /// an "Axis N" or nothing, with no partner. On a button or trigger
-        /// target they fall to the Direct read of Descriptor. ParamUp,
-        /// ParamDown and ParamModifier read buttons, POV and hardware bools
-        /// only.</summary>
+        /// target they fall to the Direct read of Descriptor. ParamUp and
+        /// ParamDown read buttons, POV and hardware bools only. The row-level
+        /// InvertOnHold modifier takes the full Direct read and is gated where
+        /// it is read (IsInvertOnHoldActive).</summary>
         private static bool HasAxesFor(UserDevice dev, MappingSource src, CustomInputState state, bool stickRead = false)
         {
             if (dev == null || src == null) return true;
+            if (ReadsGamepadFamily(src, stickRead) && !SpeaksGamepadLayout(dev)) return false;
+            // The axis tests below take the axes the family resolves to on
+            // this device, a placed port's own included.
+            using var placement = SourceCoercion.UsePlacement(PlacementOf(dev));
             if (!HasAxesFor(dev, src.GateDescriptor, state) || !HasAxesFor(dev, src.Gate2Descriptor, state)) return false;
             if (stickRead && ReadsStickPair(src.Kind))
                 return HasSteeringAxis(dev, src.Descriptor, state) && HasSteeringAxis(dev, src.ParamYDescriptor, state);
@@ -3284,6 +3368,60 @@ namespace PadForge.Common.Input
                    || SourceCoercion.NumberedAxesRead(src.GateDescriptor, out _, out _) > 0
                    || SourceCoercion.NumberedAxesRead(src.Gate2Descriptor, out _, out _) > 0);
 
+        /// <summary>True when a descriptor <paramref name="src"/> reads names
+        /// the "Gamepad ..." family: its gates, the buttons an Incremental or
+        /// Ramped source steps with, a steering kind's axis aliases on the
+        /// stick lane (its reader takes a ring there as centered, reading
+        /// nothing), or else its input where its kind reads one. The same
+        /// reads <see cref="ReadsNumberedAxis"/> takes, plus the step
+        /// buttons.</summary>
+        private static bool ReadsGamepadFamily(MappingSource src, bool stickRead)
+        {
+            if (src == null) return false;
+            if (SourceCoercion.IsGamepadAliasDescriptor(src.GateDescriptor)
+                || SourceCoercion.IsGamepadAliasDescriptor(src.Gate2Descriptor))
+                return true;
+            if (src.Kind is "Incremental" or "Ramped")
+                return SourceCoercion.IsGamepadAliasDescriptor(src.ParamUp)
+                       || SourceCoercion.IsGamepadAliasDescriptor(src.ParamDown);
+            if (stickRead && ReadsStickPair(src.Kind))
+                return SourceCoercion.IsGamepadAxisAlias(src.Descriptor)
+                       || SourceCoercion.IsGamepadAxisAlias(src.ParamYDescriptor);
+            return KindReadsDescriptor(src.Kind, stickRead) && SourceCoercion.IsGamepadAliasDescriptor(src.Descriptor);
+        }
+
+        /// <summary>True when the "Gamepad ..." family can read the device in
+        /// SDL's gamepad layout. SDL gives a role only to a joystick with a
+        /// gamepad mapping, so an SDL device answers when it opened as SDL's
+        /// gamepad, an XInput arcade stick or wheel included, and not when it
+        /// is read raw (Force Raw Joystick Mode, a joystick SDL has no mapping
+        /// for). A Bliss-Box port read raw answers through the placement of
+        /// the controller identified in it (<see cref="PlacementOf"/>), which
+        /// the reads resolve the family through, and not before one is placed.
+        /// Any other device answers by its type: the web pad and a Remote Link
+        /// copy of a gamepad do, and a keyboard, a mouse and a touchpad do
+        /// not, so Tab no longer presses R3 through the family and a left
+        /// click no longer presses A.</summary>
+        private static bool SpeaksGamepadLayout(UserDevice dev)
+        {
+            if (dev.Device is { } device && device.GamepadHandle != IntPtr.Zero) return true;
+            if (PlacementOf(dev) != null) return true;
+            return dev.Device is not SdlDeviceWrapper && dev.CapType == InputDeviceType.Gamepad;
+        }
+
+        /// <summary>The placement the family reads <paramref name="dev"/>
+        /// through, or null for a device in SDL's layout already
+        /// (<see cref="SourceCoercion.GamepadPlacementProvider"/>).</summary>
+        private static Engine.Common.BlissBox.BlissBoxGamepadMap PlacementOf(UserDevice dev)
+            => SourceCoercion.GamepadPlacementProvider?.Invoke(dev.InstanceGuidString);
+
+        /// <summary>The app's <see cref="SourceCoercion.GamepadPlacementProvider"/>:
+        /// a Bliss-Box port read raw with a placed controller in it. The
+        /// Gamepad names ask it for every device they read, so a PC with no
+        /// port open raw answers before the device lookup.</summary>
+        internal static Engine.Common.BlissBox.BlissBoxGamepadMap GamepadPlacementFor(string deviceGuid)
+            => BlissBoxRuntime.Ports.Length == 0 ? null : BlissBoxRuntime.GamepadMapFor(LookupUserDevice(deviceGuid));
+
         /// <summary>The test for one descriptor against a device in hand.
         /// <paramref name="shaping"/> is the source whose deadzone geometry
         /// may read the axis's partner too.</summary>
@@ -3291,6 +3429,8 @@ namespace PadForge.Common.Input
             MappingSource shaping = null)
         {
             if (dev == null) return true;
+            if (SourceCoercion.IsGamepadAliasDescriptor(descriptor) && !SpeaksGamepadLayout(dev)) return false;
+            using var placement = SourceCoercion.UsePlacement(PlacementOf(dev));
             int n = SourceCoercion.NumberedAxesRead(descriptor, out int first, out int second);
             if (n == 0) return true;
             if (!DeviceHasAxis(dev, first, state) || (n > 1 && !DeviceHasAxis(dev, second, state))) return false;
@@ -3309,10 +3449,15 @@ namespace PadForge.Common.Input
         /// (SdlDeviceWrapper.GetGamepadState), a web pad starts every axis at
         /// rest, and a Remote Link copy starts at the codec's neutral. A
         /// wheel whose SDL mapping has leftx and no lefty steers through a
-        /// stick ring with its Axis 1 at center.</summary>
+        /// stick ring with its Axis 1 at center. A mouse's Axis 2 is its
+        /// wheel, resting at center (SdlMouseWrapper), and through the
+        /// wildcard index 2 is the gamepad's Left Trigger, so a mouse on the
+        /// slot held an "(Any Device)" Left Trigger at half pull. Its wheel
+        /// still reads through its own "Mouse Scroll" source.</summary>
         private static bool DeviceHasAxis(UserDevice dev, int axis, CustomInputState state)
-            => dev.HasAxis(axis) || BlissBoxRuntime.PressureAxis(dev, axis) || PeerStickAxis(dev, axis)
-               || HoldsValue(state, axis);
+            => !(axis == 2 && dev.CapType == InputDeviceType.Mouse)
+               && (dev.HasAxis(axis) || BlissBoxRuntime.PressureAxis(dev, axis) || PeerStickAxis(dev, axis)
+                   || HoldsValue(state, axis));
 
         /// <summary>A stick axis (0, 1, 3 or 4) of a Remote Link copy of a
         /// gamepad, below the owner's axis count. Every gamepad read fills
@@ -3670,12 +3815,12 @@ namespace PadForge.Common.Input
                             float pv = posPhone
                                 ? SourceEvaluator.EvaluateForBipolarAxisTarget(
                                     posState, src, slotIndex, row.Target, i, slotRuntime, dt,
-                                    evaluatedDeviceGuid: posGuid)
+                                    evaluatedDeviceGuid: posGuid, layer: row.LayerMask)
                                 : 0f;
                             if (negPhone)
                                 pv += SourceEvaluator.EvaluateForBipolarAxisTarget(
                                     negState, negSrc, slotIndex, row.Target, 1, slotRuntime, dt,
-                                    evaluatedDeviceGuid: negGuid);
+                                    evaluatedDeviceGuid: negGuid, layer: row.LayerMask);
                             list.Add(pv);
                             continue;
                         }
@@ -3694,7 +3839,7 @@ namespace PadForge.Common.Input
                         float v = !posAny || HasAxesFor(slotOwners[d], src, slotStates[d], stickRead: true)
                             ? SourceEvaluator.EvaluateForBipolarAxisTarget(
                                 pState, src, slotIndex, row.Target, i, slotRuntime, dt,
-                                evaluatedDeviceGuid: slotOwners[d])
+                                evaluatedDeviceGuid: slotOwners[d], layer: row.LayerMask)
                             : 0f;
                         if (useNeg)
                         {
@@ -3702,7 +3847,7 @@ namespace PadForge.Common.Input
                             if (nState != null && (!negAny || HasAxesFor(slotOwners[d], negSrc, slotStates[d], stickRead: true)))
                                 v += SourceEvaluator.EvaluateForBipolarAxisTarget(
                                     nState, negSrc, slotIndex, row.Target, 1, slotRuntime, dt,
-                                    evaluatedDeviceGuid: slotOwners[d]);
+                                    evaluatedDeviceGuid: slotOwners[d], layer: row.LayerMask);
                         }
                         if (System.Math.Abs(v) > System.Math.Abs(best)) best = v;
                     }
@@ -3715,14 +3860,14 @@ namespace PadForge.Common.Input
                 if (devState == null) { list.Add(0f); continue; }
                 float val = SourceEvaluator.EvaluateForBipolarAxisTarget(
                     devState, src, slotIndex, row.Target, i, slotRuntime, dt,
-                    evaluatedDeviceGuid: currentDeviceGuid);
+                    evaluatedDeviceGuid: currentDeviceGuid, layer: row.LayerMask);
                 if (useNeg)
                 {
                     var negState = LookupDeviceStateFast(negSrc.DeviceGuid, currentState, currentDeviceGuid);
                     if (negState != null)
                         val += SourceEvaluator.EvaluateForBipolarAxisTarget(
                             negState, negSrc, slotIndex, row.Target, 1, slotRuntime, dt,
-                            evaluatedDeviceGuid: currentDeviceGuid);
+                            evaluatedDeviceGuid: currentDeviceGuid, layer: row.LayerMask);
                 }
                 list.Add(val);
             }
@@ -3759,7 +3904,7 @@ namespace PadForge.Common.Input
                         // (#471) The slot's phone, whichever pass claimed the row.
                         list.Add(SourceEvaluator.EvaluateForTriggerTarget(
                             phoneState, src, slotIndex, row.Target, i, slotRuntime, dt,
-                            evaluatedDeviceGuid: phoneGuid));
+                            evaluatedDeviceGuid: phoneGuid, layer: row.LayerMask));
                         continue;
                     }
                     float mx = 0f;
@@ -3771,7 +3916,7 @@ namespace PadForge.Common.Input
                         if (!HasAxesFor(slotOwners[d], src, slotStates[d])) continue;
                         float t = SourceEvaluator.EvaluateForTriggerTarget(
                             slotStates[d], src, slotIndex, row.Target, i, slotRuntime, dt,
-                            evaluatedDeviceGuid: slotOwners[d]);
+                            evaluatedDeviceGuid: slotOwners[d], layer: row.LayerMask);
                         if (t > mx) mx = t;
                     }
                     list.Add(mx);
@@ -3781,7 +3926,7 @@ namespace PadForge.Common.Input
                 if (devState == null) { list.Add(0f); continue; }
                 list.Add(SourceEvaluator.EvaluateForTriggerTarget(
                     devState, src, slotIndex, row.Target, i, slotRuntime, dt,
-                    evaluatedDeviceGuid: currentDeviceGuid));
+                    evaluatedDeviceGuid: currentDeviceGuid, layer: row.LayerMask));
             }
             return list;
         }
@@ -3817,7 +3962,7 @@ namespace PadForge.Common.Input
                         list.Add(SourceEvaluator.EvaluateForButtonTarget(
                             phoneState, src, globalAxisToButtonThreshold,
                             slotIndex, row.Target, i, slotRuntime, dt,
-                            evaluatedDeviceGuid: phoneGuid) ? 1f : 0f);
+                            evaluatedDeviceGuid: phoneGuid, layer: row.LayerMask) ? 1f : 0f);
                         continue;
                     }
                     bool any = false;
@@ -3836,7 +3981,7 @@ namespace PadForge.Common.Input
                         if (SourceEvaluator.EvaluateForButtonTarget(
                             slotStates[d], src, globalAxisToButtonThreshold,
                             slotIndex, row.Target, i, slotRuntime, dt,
-                            evaluatedDeviceGuid: slotOwners[d]))
+                            evaluatedDeviceGuid: slotOwners[d], layer: row.LayerMask))
                         {
                             any = true;
                             if (!readAll) break;
@@ -3850,7 +3995,7 @@ namespace PadForge.Common.Input
                 list.Add(SourceEvaluator.EvaluateForButtonTarget(
                     devState, src, globalAxisToButtonThreshold,
                     slotIndex, row.Target, i, slotRuntime, dt,
-                    evaluatedDeviceGuid: currentDeviceGuid) ? 1f : 0f);
+                    evaluatedDeviceGuid: currentDeviceGuid, layer: row.LayerMask) ? 1f : 0f);
             }
             return list;
         }
@@ -4101,7 +4246,7 @@ namespace PadForge.Common.Input
             value = SourceEvaluator.EvaluateForButtonTarget(
                 devState, src, globalAxisToButtonThreshold,
                 slotIndex, targetName, 0, slotRuntime, dt,
-                evaluatedDeviceGuid: thisDeviceGuid);
+                evaluatedDeviceGuid: thisDeviceGuid, layer: row.LayerMask);
             if (value) StampLayerActivity(slotIndex, row);
             return true;
         }
@@ -4176,11 +4321,11 @@ namespace PadForge.Common.Input
                     }
                     combined = ClampBipolar(SourceEvaluator.EvaluateForBipolarAxisTarget(
                         devState, src, slotIndex, targetName, 0, slotRuntime, dt,
-                        evaluatedDeviceGuid: thisDeviceGuid));
+                        evaluatedDeviceGuid: thisDeviceGuid, layer: row.LayerMask));
                 }
             }
 
-            if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = -combined;
+            if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex, isMultiSource || RowValueIgnoresThePass(row))) combined = -combined;
             if (System.Math.Abs(combined) > 0.10f) StampLayerActivity(slotIndex, row);
 
             // Map [-1..+1] → signed short with the same convention legacy
@@ -4305,7 +4450,7 @@ namespace PadForge.Common.Input
 
                 float v = SourceEvaluator.EvaluateForBipolarAxisTarget(
                     devState ?? state, src, slotIndex, targetName, i, slotRuntime, dt,
-                    evaluatedDeviceGuid: thisDeviceGuid);
+                    evaluatedDeviceGuid: thisDeviceGuid, layer: row.LayerMask);
 
                 values.Add(v);
                 flags.Add(isActive ? 1f : 0f);
@@ -4343,7 +4488,7 @@ namespace PadForge.Common.Input
                 combined = ClampBipolar(values[0]);
             }
 
-            if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = -combined;
+            if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex, RowValueIgnoresThePass(row))) combined = -combined;
             if (fingerDown || System.Math.Abs(combined) > 0.10f) StampLayerActivity(slotIndex, row);
 
             if (combined <= -1f) value = short.MinValue;
@@ -4431,11 +4576,11 @@ namespace PadForge.Common.Input
                     }
                     combined = ClampUnipolar(SourceEvaluator.EvaluateForTriggerTarget(
                         devState, src, slotIndex, targetName, 0, slotRuntime, dt,
-                        evaluatedDeviceGuid: thisDeviceGuid));
+                        evaluatedDeviceGuid: thisDeviceGuid, layer: row.LayerMask));
                 }
             }
 
-            if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = 1f - combined;
+            if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex, isMultiSource || RowValueIgnoresThePass(row))) combined = 1f - combined;
             if (combined > 0.05f) StampLayerActivity(slotIndex, row);
 
             // [0..+1] → signed short with short.MinValue = 0% (matches the
@@ -4443,6 +4588,12 @@ namespace PadForge.Common.Input
             int ushortVal = (int)(combined * 65535f);
             if (ushortVal < 0) ushortVal = 0;
             if (ushortVal > 65535) ushortVal = 65535;
+            // A pressure row keeps a positive result off released. Below one
+            // step it truncated to 0, and HIDMaestro sends a pressed button
+            // with no pressure behind it as a full press.
+            if (ushortVal == 0 && combined > 0f
+                && PadForge.Engine.Data.MappingSetMigrator.IsPressureTarget(targetName))
+                ushortVal = 1;
             value = (short)(ushortVal + short.MinValue);
             return true;
         }

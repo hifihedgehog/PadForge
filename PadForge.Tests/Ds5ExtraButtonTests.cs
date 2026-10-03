@@ -70,11 +70,7 @@ namespace PadForge.Tests
         public void MappingRows_GateOnTheProfileFamily(
             string profileId, bool expectMute, bool expectEdge)
         {
-            var vm = new PadViewModel(0)
-            {
-                OutputType = VirtualControllerType.PlayStation,
-                ProfileId = profileId,
-            };
+            var vm = RestoredPad.Build(0, VirtualControllerType.PlayStation, profileId);
             var targets = vm.Mappings.Select(m => m.TargetSettingName).ToList();
             Assert.Equal(expectMute, targets.Contains("ButtonMute"));
             Assert.Equal(expectEdge, targets.Contains("LeftPaddle"));

@@ -430,8 +430,13 @@ namespace PadForge
             // This preserves DsHidMini and externally paired devices. A Wii
             // scan can defer enabling. PSM-off affects new connections only,
             // so this is exposure reduction, not a kernel teardown guarantee.
+            // An older BthPS3 install is replaced first, while no PlayStation
+            // controller is connected over Bluetooth, and the reconcile then
+            // arms the filter for whichever drivers are in place.
             System.Threading.Tasks.Task.Run(() =>
             {
+                try { PadForge.Services.Ds3PairingService.UpgradeDriversAtStartup(); }
+                catch { /* best effort. an update must never block launch */ }
                 try { PadForge.Services.Ds3PairingService.ReconcilePsmPatchForCrashSafety("startup"); }
                 catch { /* best effort. mitigation must never block launch */ }
             });

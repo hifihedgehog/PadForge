@@ -1245,7 +1245,7 @@ namespace PadForge.Common.Input
         /// so cannot call MarkDeviceOffline (it would double-dispose), which is
         /// exactly why they were silently skipping this step and freezing a
         /// held note or CC into the slot after the endpoint vanished.</para></summary>
-        private static void NeutralizeMappedOutputsFor(UserDevice ud)
+        private void NeutralizeMappedOutputsFor(UserDevice ud)
         {
             if (ud == null) return;
             ud.ClearRuntimeState();
@@ -1271,13 +1271,100 @@ namespace PadForge.Common.Input
                     foreach (var us in allSettings.Items)
                     {
                         if (us == null || us.InstanceGuid != ud.InstanceGuid) continue;
-                        us.OutputState = default;
-                        us.RawMappedState = default;
-                        us.MotionRowsOutputState = default;
-                        us.PressureOutputState = default;
+                        NeutralizeOutputStates(us);
                     }
                 }
             }
+        }
+
+        /// <summary>Publishes the released state of all nine outputs a
+        /// setting's device feeds its slot. Step 4 merges every setting on a
+        /// slot with no online check, so an output left out kept a dropped
+        /// device's last frame in the slot for as long as another device
+        /// kept the slot active: a mouse button held at the drop stayed
+        /// down, a gyro kept turning the cursor on every poll, a finger
+        /// stayed on the touchpad, an Extended button or a MIDI note stayed
+        /// held.
+        ///
+        /// <para>The raw HID and MIDI states keep their shape and go to rest
+        /// in fresh arrays. Published arrays are never written after publish
+        /// (Step 3's contract), the MIDI controller sends a note off only for
+        /// a note its state still indexes, and a trigger rests at
+        /// short.MinValue rather than zero (RawHidState.ClearToRest). A state
+        /// already at rest publishes nothing, so Step 3's per-frame call for
+        /// a removed device allocates once.</para></summary>
+        private void NeutralizeOutputStates(UserSetting us)
+        {
+            us.OutputState = default;
+            us.RawMappedState = default; // the preview must not freeze on a removed device
+            us.MotionRowsOutputState = default;
+            us.PressureOutputState = default;
+            us.KbmRawOutputState = default;
+            us.VrRawOutputState = default;
+            us.TouchpadOutputState = default;
+
+            int slot = us.MapTo;
+            CustomControllerLayout layout = slot >= 0 && slot < MaxPads ? SlotCustomLayouts[slot] : default;
+            var raw = us.RawHidOutputState;
+            if (!RawAtRest(in raw, in layout))
+            {
+                var rest = new RawHidState
+                {
+                    Axes = raw.Axes == null ? null : new short[raw.Axes.Length],
+                    Buttons = raw.Buttons == null ? null : new uint[raw.Buttons.Length],
+                    Povs = raw.Povs == null ? null : new int[raw.Povs.Length],
+                    HardwareAxes = raw.HardwareAxes == null ? null : new short[raw.HardwareAxes.Length],
+                };
+                rest.ClearToRest(in layout);
+                us.RawHidOutputState = rest;
+            }
+
+            var midi = us.MidiRawOutputState;
+            if (!MidiAtRest(in midi))
+            {
+                var rest = new MidiRawState
+                {
+                    CcValues = midi.CcValues == null ? null : new byte[midi.CcValues.Length],
+                    Notes = midi.Notes == null ? null : new bool[midi.Notes.Length],
+                };
+                rest.Clear();
+                us.MidiRawOutputState = rest;
+            }
+        }
+
+        /// <summary>True when <paramref name="s"/> holds what
+        /// RawHidState.ClearToRest leaves for <paramref name="layout"/>: sticks
+        /// at zero, triggers at short.MinValue, buttons up, hats centered. A
+        /// never-populated state (null arrays) is at rest.</summary>
+        private static bool RawAtRest(in RawHidState s, in CustomControllerLayout layout)
+        {
+            int axes = s.Axes?.Length ?? 0;
+            for (int i = 0; i < axes; i++)
+                if (s.Axes[i] != (layout.IsTriggerSlot(i) ? short.MinValue : (short)0)) return false;
+            if (s.HardwareAxes != null)
+                for (int i = 0; i < s.HardwareAxes.Length; i++)
+                    if (s.HardwareAxes[i] != (i < axes && layout.IsTriggerSlot(i) ? short.MinValue : (short)0)) return false;
+            if (s.Buttons != null)
+                for (int i = 0; i < s.Buttons.Length; i++)
+                    if (s.Buttons[i] != 0) return false;
+            if (s.Povs != null)
+                for (int i = 0; i < s.Povs.Length; i++)
+                    if (s.Povs[i] != -1) return false;
+            return true;
+        }
+
+        /// <summary>True when <paramref name="s"/> holds what
+        /// MidiRawState.Clear leaves: every CC at center (64), every note
+        /// off.</summary>
+        private static bool MidiAtRest(in MidiRawState s)
+        {
+            if (s.CcValues != null)
+                for (int i = 0; i < s.CcValues.Length; i++)
+                    if (s.CcValues[i] != 64) return false;
+            if (s.Notes != null)
+                for (int i = 0; i < s.Notes.Length; i++)
+                    if (s.Notes[i]) return false;
+            return true;
         }
 
         // ─────────────────────────────────────────────

@@ -105,9 +105,20 @@ namespace PadForge.Common.Input
         /// <summary>A raw-surface trigger value, short.MinValue released to
         /// short.MaxValue fully pressed, as a pressure byte, rounded. A
         /// DualShock 3 pressure axis round-trips exactly: its byte times 257
-        /// comes back as the byte.</summary>
+        /// comes back as the byte.
+        ///
+        /// <para>Any press above released is at least 1. HIDMaestro sends a
+        /// pressure of 0 on a pressed button as 255 (HMGamepadState's
+        /// pressure rule, for a press with no pressure behind it), so a
+        /// light press that rounded to 0 reached the game as a full one,
+        /// and pressing a little harder dropped it to 1.</para></summary>
         internal static byte PressureByte(short v)
-            => (byte)(((v + 32768) * 255 + 32767) / 65535);
+        {
+            int raw = v + 32768;
+            if (raw <= 0) return 0;
+            int b = (raw * 255 + 32767) / 65535;
+            return (byte)(b < 1 ? 1 : b);
+        }
 
         /// <summary>Step 4: the harder press per button across the slot's
         /// devices.</summary>

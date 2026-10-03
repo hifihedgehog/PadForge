@@ -1334,6 +1334,7 @@
   <data name="DevObj_Guide" xml:space="preserve"><value>ガイド</value></data>
   <data name="DevObj_Select" xml:space="preserve"><value>セレクト</value></data>
   <data name="DevObj_Mode" xml:space="preserve"><value>モード</value></data>
+  <data name="DevObj_Option" xml:space="preserve"><value>オプション</value></data>
   <data name="DevObj_Run" xml:space="preserve"><value>RUN</value></data>
   <data name="DevObj_Reset" xml:space="preserve"><value>リセット</value></data>
   <data name="DevObj_HomeButton" xml:space="preserve"><value>HOME ボタン</value></data>
@@ -3058,6 +3059,7 @@
   <data name="Pad_Mapping_MotionRowUnreadNote" xml:space="preserve"><value>この行ではスティックとボタンは読み取られません。モーション ピッチ、モーション ヨー、モーション ロールに割り当ててから、ここから削除してください。</value></data>
   <data name="Pad_Mapping_MotionSourceElsewhereNote" xml:space="preserve"><value>モーション ジャイロとモーション 加速度センサーのソースは、モーション ジャイロとモーション 加速度センサーの行でのみ機能します。</value></data>
   <data name="Pad_Mapping_MotionPresetNote" xml:space="preserve"><value>このプリセットのレポートはモーションを運びません。スロット 1 から 4 では、モーションサーバー (DSU) が引き続き受け取ります。</value></data>
+  <data name="Pad_Mapping_MotionPitchRollRateNote" xml:space="preserve"><value>このプリセットのレポートはピッチとロールの角速度を運びません。速度モードでは、この行は傾きとしてのみゲームに届き、それもモーション 加速度センサーの行に加速度センサーが入力されていない間だけです。スロット 1 から 4 では、モーションサーバー (DSU) が引き続き受け取ります。</value></data>
   <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>リリース時にリセット</value></data>
   <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>チェックすると、トリガーを離したときに保持レベルが 100% に戻り、次の押下は最大から始まります。チェックなしの場合、トリム済みレベルは再調整するまでリリース後も保持されます。</value></data>
   <data name="Pad_ResetGuideLed" xml:space="preserve"><value>ガイドボタン LED をリセット</value></data>

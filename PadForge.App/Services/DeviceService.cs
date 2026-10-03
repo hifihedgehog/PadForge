@@ -103,6 +103,10 @@ namespace PadForge.Services
                 // this file missed it.
                 _mainVm.Pads[slotIndex].ProfileId =
                     InputManager.GetDefaultProfileId(_mainVm.Pads[slotIndex].OutputType);
+                // The new slot's data is authored under that profile. When
+                // the pad already carried it, the setter did not run and the
+                // stamp a deleted slot left unknown would stay unknown.
+                SettingsManager.StampNintendoWire(slotIndex, _mainVm.Pads[slotIndex].ProfileId);
                 SettingsManager.SlotCreated[slotIndex] = true;
                 SettingsManager.SlotEnabled[slotIndex] = true;
                 SettingsManager.SlotOrders.Add(slotIndex, _mainVm.Pads[slotIndex].OutputType);
@@ -139,6 +143,10 @@ namespace PadForge.Services
                     _mainVm.Pads[slotIndex].ExtendedConfig);
                 us.SetPadSetting(ps);
                 us.PadSettingChecksum = ps.PadSettingChecksum;
+                // A Bliss-Box port with nothing to place its controls through
+                // owes the slot its default. A fresh default replaces whatever
+                // the assignment owed before.
+                PadForge.Common.Input.BlissBoxRuntime.NoteOwedDefault(us, udForGuid, fresh: true);
             }
             else
             {
@@ -149,6 +157,8 @@ namespace PadForge.Services
                 // device to a PlayStation slot so the user gets the
                 // auto-map they expect on first assign.
                 FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid, outputType, slotProfileId);
+                // A Bliss-Box port with no placement answered nothing here.
+                PadForge.Common.Input.BlissBoxRuntime.NoteOwedDefault(us, udForGuid, fresh: false);
             }
 
             // A Workshop import parks its device tuning on the slot because it
@@ -216,6 +226,10 @@ namespace PadForge.Services
                 // this file missed it.
                 _mainVm.Pads[slotIndex].ProfileId =
                     InputManager.GetDefaultProfileId(_mainVm.Pads[slotIndex].OutputType);
+                // The new slot's data is authored under that profile. When
+                // the pad already carried it, the setter did not run and the
+                // stamp a deleted slot left unknown would stay unknown.
+                SettingsManager.StampNintendoWire(slotIndex, _mainVm.Pads[slotIndex].ProfileId);
                 SettingsManager.SlotCreated[slotIndex] = true;
                 SettingsManager.SlotEnabled[slotIndex] = true;
                 SettingsManager.SlotOrders.Add(slotIndex, _mainVm.Pads[slotIndex].OutputType);
@@ -238,10 +252,16 @@ namespace PadForge.Services
                     _mainVm.Pads[slotIndex].ExtendedConfig);
                 us.SetPadSetting(ps);
                 us.PadSettingChecksum = ps.PadSettingChecksum;
+                // A Bliss-Box port with nothing to place its controls through
+                // owes the slot its default. A fresh default replaces whatever
+                // the assignment owed before.
+                PadForge.Common.Input.BlissBoxRuntime.NoteOwedDefault(us, udForGuid, fresh: true);
             }
             else
             {
                 FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid, outputType, slotProfileId);
+                // A Bliss-Box port with no placement answered nothing here.
+                PadForge.Common.Input.BlissBoxRuntime.NoteOwedDefault(us, udForGuid, fresh: false);
             }
 
             // A Workshop import parks its device tuning on the slot
@@ -386,6 +406,10 @@ namespace PadForge.Services
             {
                 ud.HidHideEnabled = row.HidHideEnabled;
                 ud.ConsumeInputEnabled = row.ConsumeInputEnabled;
+                // Force Raw Joystick Mode makes the device's mapping manual,
+                // so nothing its Bliss-Box port owed a slot is filled.
+                if (row.ForceRawJoystickMode && !ud.ForceRawJoystickMode)
+                    CancelOwedMappingForDevice(instanceGuid);
                 ud.ForceRawJoystickMode = row.ForceRawJoystickMode;
                 ud.IdleDisconnectSeconds = Math.Max(0, row.IdleDisconnectMinutes) * 60;
                 ud.QuickChargeEnabled = row.QuickChargeEnabled;
@@ -495,6 +519,13 @@ namespace PadForge.Services
                     // dropdown would show no selection until the user picks
                     // one manually.
                     _mainVm.Pads[i].ProfileId = InputManager.GetDefaultProfileId(controllerType);
+                    // The new slot's data is authored under that profile.
+                    // When the pad already carried the type and the profile
+                    // (a slot deleted and created again), neither setter ran
+                    // and the stamp the delete cleared would stay unknown,
+                    // so the first live preset change read as a restore: a
+                    // pick of the DualShock 3 Full filled no pressure rows.
+                    SettingsManager.StampNintendoWire(i, _mainVm.Pads[i].ProfileId);
 
                     SettingsManager.SlotCreated[i] = true;
                     SettingsManager.SlotEnabled[i] = true;
@@ -537,6 +568,9 @@ namespace PadForge.Services
             SettingsManager.SlotCreated[slotIndex] = false;
             SettingsManager.SlotEnabled[slotIndex] = true; // Reset to default.
             SettingsManager.SlotOrders.Remove(slotIndex, deletedType);
+            // The slot's mapping data goes with it, so no wire owns the
+            // index any more.
+            SettingsManager.StampNintendoWire(slotIndex, null);
 
             // Reset PadViewModel so stale settings (deadzone, sensitivity, etc.)
             // don't leak into the next controller created in this slot.
@@ -666,22 +700,58 @@ namespace PadForge.Services
                 FillEmptyAutoMappingsIfApplicable(ps, ud, outputType, profileId);
                 ps.UpdateChecksum();
                 us.PadSettingChecksum = ps.PadSettingChecksum;
+                // A Bliss-Box port with no placement answered nothing. Its
+                // default is owed until it can be placed.
+                if (PadForge.Common.Input.BlissBoxRuntime.DefaultOwed(ud))
+                    us.BlissBoxOwed |= BlissBoxOwedMapping.Default;
             }
         }
 
+        /// <summary>The PlayStation targets whose default mapping depends on
+        /// the preset (SettingsManager.CreateDefaultPadSetting): the DualSense
+        /// family's Mic Mute, the Edge's paddles and Fn buttons, the touchpad
+        /// on every preset whose report carries one, and the DualShock 3
+        /// Full's button pressure.</summary>
+        internal static readonly string[] PresetGatedPlayStationTargets =
+            new[]
+            {
+                nameof(PadSetting.ButtonMute),
+                nameof(PadSetting.RightPaddle), nameof(PadSetting.LeftPaddle),
+                nameof(PadSetting.RightFunction), nameof(PadSetting.LeftFunction),
+                nameof(PadSetting.TouchpadX1), nameof(PadSetting.TouchpadY1), nameof(PadSetting.TouchpadContact1),
+                nameof(PadSetting.TouchpadX2), nameof(PadSetting.TouchpadY2), nameof(PadSetting.TouchpadContact2),
+                nameof(PadSetting.TouchpadClick),
+            }.Concat(MappingSetMigrator.PressureTargets).ToArray();
+
         /// <summary>Fills the empty button pressure fields (discussion #476)
         /// of every device on a slot from that device's default mapping under
-        /// <paramref name="profileId"/>, for a live change to a preset whose
-        /// report carries pressure. Only those ten: a preset change within
-        /// PlayStation leaves every other binding as the user left it.
-        ///
-        /// <para>Snapshot under the UserSettings lock and resolve devices
-        /// outside it, the order <see cref="FillEmptyAutoMappingsForSlot"/>
-        /// gives for the same reason.</para>
+        /// <paramref name="profileId"/>. Only those ten.
         ///
         /// <returns>True when a field was filled, so the caller merges the
         /// slot's set only when there is something to merge.</returns></summary>
         public static bool FillEmptyPressureMappingsForSlot(int padIndex, string profileId)
+            => FillEmptyPlayStationMappingsForSlot(padIndex, null, profileId, MappingSetMigrator.PressureTargets);
+
+        /// <summary>Fills, for a live change from one PlayStation preset to
+        /// another, the empty fields of every device on a slot that the new
+        /// preset's default maps and the outgoing preset's default leaves
+        /// empty: the touchpad, Mic Mute and Edge rows a DualShock 3 preset
+        /// withheld at assign, and the DualShock 3 Full's pressure rows. A
+        /// field the outgoing default mapped and the user cleared on that
+        /// wire stays cleared, and every other binding stays as the user left
+        /// it.
+        ///
+        /// <returns>True when a field was filled, so the caller merges the
+        /// slot's set only when there is something to merge.</returns></summary>
+        public static bool FillEmptyPresetMappingsForSlot(int padIndex, string fromProfileId, string toProfileId)
+            => FillEmptyPlayStationMappingsForSlot(padIndex, fromProfileId, toProfileId, PresetGatedPlayStationTargets);
+
+        /// <summary>Snapshot under the UserSettings lock and resolve devices
+        /// outside it, the order <see cref="FillEmptyAutoMappingsForSlot"/>
+        /// gives for the same reason. A null <paramref name="fromProfileId"/>
+        /// excludes nothing.</summary>
+        private static bool FillEmptyPlayStationMappingsForSlot(int padIndex, string fromProfileId,
+            string toProfileId, System.Collections.Generic.IReadOnlyList<string> targets)
         {
             var settings = SettingsManager.UserSettings;
             if (settings == null) return false;
@@ -699,16 +769,25 @@ namespace PadForge.Services
                 var ud = SettingsManager.FindDeviceByInstanceGuid(us.InstanceGuid);
                 var ps = us.GetPadSetting();
                 if (ud == null || ps == null) continue;
+                // A Bliss-Box port with no placement answers no pressure yet,
+                // so the ten rows are owed until it can be placed, filled
+                // where empty then.
+                if (PadForge.Common.Input.BlissBoxRuntime.DefaultOwed(ud)
+                    && targets.Any(MappingSetMigrator.IsPressureTarget))
+                    us.BlissBoxOwed |= BlissBoxOwedMapping.Pressure;
                 var fresh = SettingsManager.CreateDefaultPadSetting(ud,
-                    Engine.VirtualControllerType.PlayStation, profileId);
+                    Engine.VirtualControllerType.PlayStation, toProfileId);
                 if (fresh == null) continue;
+                var outgoing = fromProfileId == null ? null
+                    : SettingsManager.CreateDefaultPadSetting(ud, Engine.VirtualControllerType.PlayStation, fromProfileId);
                 bool changed = false;
-                foreach (var target in MappingSetMigrator.PressureTargets)
+                foreach (var target in targets)
                 {
                     var prop = typeof(PadSetting).GetProperty(target);
                     if (prop == null || !string.IsNullOrEmpty(prop.GetValue(ps) as string)) continue;
                     string value = prop.GetValue(fresh) as string;
                     if (string.IsNullOrEmpty(value)) continue;
+                    if (outgoing != null && !string.IsNullOrEmpty(prop.GetValue(outgoing) as string)) continue;
                     prop.SetValue(ps, value);
                     changed = true;
                 }
@@ -721,59 +800,77 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Maps the controller a Bliss-Box port has identified on every slot
-        /// the port is assigned to that binds nothing from it yet: the default
-        /// mapping assigning the port builds once a controller is in it
-        /// (<paramref name="map"/>, BlissBoxRuntime.GamepadMapFor). A port
-        /// assigned while it searched, before a controller was plugged in,
-        /// got an empty one. A slot where the port binds anything keeps it,
-        /// whichever controller it was made for.
+        /// Completes what a Bliss-Box port owes each slot it is assigned to
+        /// (<see cref="UserSetting.BlissBoxOwed"/>), now that its controls can
+        /// be placed: through the controller identified in a port read raw
+        /// (<paramref name="map"/>), or through SDL's gamepad mapping once a
+        /// port read that way connects (<paramref name="map"/> null). The
+        /// default fills the slot's empty fields, the pressure request only
+        /// the ten pressure fields, and neither touches a target the user
+        /// bound, recorded or cleared while it was owed
+        /// (<see cref="UserSetting.BlissBoxKeptTargets"/>). The slot ends as
+        /// an assignment made with the controller in the port would have left
+        /// it, with the user's edits on top.
         ///
-        /// <para>Binding nothing means no mapping on the port's PadSetting
-        /// and no source of the port's own in the slot's set. The caller
-        /// flushes the grids' pending edits first, so a binding recorded a
-        /// moment ago counts.</para>
+        /// <para>The request ends either way. A default with nothing left to
+        /// fill, or a pressure request on a slot that no longer carries
+        /// pressure, is not asked again. The caller flushes the grids' pending
+        /// edits first, so a binding recorded a moment ago is in the
+        /// setting.</para>
         /// </summary>
         /// <param name="slotShape">A slot's output type, profile and Extended
         /// layout, from its view model.</param>
-        /// <returns>True when a slot was mapped, so the caller merges the
-        /// sets, reloads the grids and saves.</returns>
+        /// <param name="mapped">True when a slot's mapping changed, so the
+        /// caller merges the sets and reloads the grids.</param>
+        /// <returns>True when anything the port owed changed, so the caller
+        /// saves.</returns>
         public static bool AutoMapIdentifiedPort(UserDevice ud, PadForge.Engine.Common.BlissBox.BlissBoxGamepadMap map,
-            Func<int, (Engine.VirtualControllerType Type, string ProfileId, ViewModels.ExtendedSlotConfig Extended)> slotShape)
+            Func<int, (Engine.VirtualControllerType Type, string ProfileId, ViewModels.ExtendedSlotConfig Extended)> slotShape,
+            out bool mapped)
         {
-            if (ud == null || map == null || slotShape == null) return false;
+            mapped = false;
+            if (ud == null || slotShape == null) return false;
 
             bool any = false;
             foreach (var us in AssignedSettings(ud))
             {
-                if (!BindsNothing(us, ud.InstanceGuid)) continue;
-                var existing = us.GetPadSetting();
+                var owed = us.BlissBoxOwed;
+                if (owed == BlissBoxOwedMapping.None) continue;
+                var kept = us.BlissBoxKeptTargets;
+                us.BlissBoxOwed = BlissBoxOwedMapping.None;
+                us.BlissBoxKeptTargets = null;
+                any = true;
+
                 var (type, profileId, extended) = slotShape(us.MapTo);
                 var fresh = SettingsManager.CreateDefaultPadSetting(ud, type, profileId, extended, map);
-                if (!fresh.HasAnyMapping) continue;
+                if (fresh == null) continue;
+                var existing = us.GetPadSetting();
                 if (existing == null)
                 {
-                    us.SetPadSetting(fresh);
-                    us.PadSettingChecksum = fresh.PadSettingChecksum;
+                    // Every owed assignment carries one. An empty one keeps
+                    // the request to its own fields.
+                    existing = new PadSetting();
+                    existing.UpdateChecksum();
+                    us.SetPadSetting(existing);
                 }
-                else
-                {
-                    MergeEmptyFrom(existing, fresh);
-                    us.PadSettingChecksum = existing.PadSettingChecksum;
-                }
-                any = true;
+                bool changed = (owed & BlissBoxOwedMapping.Default) != 0
+                    ? MergeEmptyFrom(existing, fresh, kept)
+                    : FillEmptyTargets(existing, fresh, MappingSetMigrator.PressureTargets, kept);
+                us.PadSettingChecksum = existing.PadSettingChecksum;
+                mapped |= changed;
             }
             return any;
         }
 
-        /// <summary>True when the port is assigned to a slot where it binds
-        /// nothing yet, the slots <see cref="AutoMapIdentifiedPort"/> maps.
-        /// The caller asks before flushing the grids' edits.</summary>
-        public static bool PortHasUnboundSlot(UserDevice ud)
+        /// <summary>True when the port owes a slot it is assigned to anything
+        /// (<see cref="UserSetting.BlissBoxOwed"/>), the slots
+        /// <see cref="AutoMapIdentifiedPort"/> completes. The caller asks
+        /// before flushing the grids' edits.</summary>
+        public static bool PortHasOwedMapping(UserDevice ud)
         {
             if (ud == null) return false;
             foreach (var us in AssignedSettings(ud))
-                if (BindsNothing(us, ud.InstanceGuid)) return true;
+                if (us.BlissBoxOwed != BlissBoxOwedMapping.None) return true;
             return false;
         }
 
@@ -792,25 +889,96 @@ namespace PadForge.Services
             return slots;
         }
 
-        private static bool BindsNothing(UserSetting us, Guid instanceGuid)
-            => us.GetPadSetting()?.HasAnyMapping != true && !SlotBindsDevice(us.MapTo, instanceGuid);
-
-        /// <summary>True when a source of the device's own sits on a row of
-        /// the slot's set.</summary>
-        private static bool SlotBindsDevice(int slot, Guid instanceGuid)
+        /// <summary>The user bound, recorded or cleared a row of
+        /// <paramref name="slot"/>, so whatever a Bliss-Box port still owes
+        /// the slot leaves the row's targets as the user left them. Every port
+        /// on the slot keeps them, whichever device the row names: the user's
+        /// pick replaces the row's source, a port's default included. A shift
+        /// layer's rows carry no default, so an edit there keeps
+        /// nothing.</summary>
+        /// <returns>True when a port's kept targets changed, so the caller
+        /// saves.</returns>
+        public static bool KeepAuthoredRow(int slot, string layer, string target, string negTarget)
         {
-            var sets = SettingsManager.SlotMappingSets;
-            var rows = sets != null && slot >= 0 && slot < sets.Length ? sets[slot]?.Rows : null;
-            if (rows == null) return false;
-            string guid = instanceGuid.ToString();
-            for (int r = 0; r < rows.Count; r++)
+            var settings = SettingsManager.UserSettings;
+            if (settings == null || slot < 0) return false;
+            if (!string.IsNullOrEmpty(layer) && !string.Equals(layer, "Base", StringComparison.Ordinal)) return false;
+            bool changed = false;
+            lock (settings.SyncRoot)
             {
-                var sources = rows[r]?.Sources;
-                if (sources == null) continue;
-                for (int s = 0; s < sources.Count; s++)
-                    if (string.Equals(sources[s]?.DeviceGuid, guid, StringComparison.OrdinalIgnoreCase)) return true;
+                foreach (var us in settings.Items)
+                {
+                    if (us == null || us.MapTo != slot || us.BlissBoxOwed == BlissBoxOwedMapping.None) continue;
+                    var kept = new System.Collections.Generic.List<string>(us.BlissBoxKeptTargets ?? Array.Empty<string>());
+                    int before = kept.Count;
+                    foreach (var t in new[] { target, negTarget })
+                        if (!string.IsNullOrEmpty(t) && !kept.Contains(t)) kept.Add(t);
+                    if (kept.Count == before) continue;
+                    us.BlissBoxKeptTargets = kept.ToArray();
+                    changed = true;
+                }
             }
-            return false;
+            return changed;
+        }
+
+        /// <summary>The user replaced or cleared the slot's whole routing
+        /// (Clear All, a paste, Copy From), so no Bliss-Box port owes the slot
+        /// anything after.</summary>
+        /// <returns>True when anything owed was dropped, so the caller
+        /// saves.</returns>
+        public static bool CancelOwedMappingForSlot(int slot)
+            => CancelOwedMappings(us => us.MapTo == slot);
+
+        /// <summary>Force Raw Joystick Mode went on for the device. Its
+        /// mapping is manual from then on, so nothing its port owed a slot is
+        /// filled.</summary>
+        public static bool CancelOwedMappingForDevice(Guid instanceGuid)
+            => CancelOwedMappings(us => us.InstanceGuid == instanceGuid);
+
+        /// <summary>A paste or Copy From replaced one assignment's
+        /// setting.</summary>
+        public static bool CancelOwedMapping(UserSetting us)
+        {
+            if (us == null || (us.BlissBoxOwed == BlissBoxOwedMapping.None && us.BlissBoxKeptTargets == null))
+                return false;
+            us.BlissBoxOwed = BlissBoxOwedMapping.None;
+            us.BlissBoxKeptTargets = null;
+            return true;
+        }
+
+        private static bool CancelOwedMappings(Predicate<UserSetting> match)
+        {
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return false;
+            bool changed = false;
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                    if (us != null && match(us)) changed |= CancelOwedMapping(us);
+            }
+            return changed;
+        }
+
+        /// <summary>Fills each of <paramref name="targets"/> that
+        /// <paramref name="existingPs"/> leaves empty, outside
+        /// <paramref name="keep"/>, from <paramref name="freshPs"/>.</summary>
+        /// <returns>True when a field was filled.</returns>
+        private static bool FillEmptyTargets(PadSetting existingPs, PadSetting freshPs,
+            System.Collections.Generic.IEnumerable<string> targets, string[] keep)
+        {
+            bool changed = false;
+            foreach (var target in targets)
+            {
+                if (keep != null && Array.IndexOf(keep, target) >= 0) continue;
+                var prop = typeof(PadSetting).GetProperty(target);
+                if (prop == null || !string.IsNullOrEmpty(prop.GetValue(existingPs) as string)) continue;
+                string value = prop.GetValue(freshPs) as string;
+                if (string.IsNullOrEmpty(value)) continue;
+                prop.SetValue(existingPs, value);
+                changed = true;
+            }
+            if (changed) existingPs.UpdateChecksum();
+            return changed;
         }
 
         private static void FillEmptyAutoMappingsIfApplicable(PadSetting existingPs,
@@ -832,10 +1000,14 @@ namespace PadForge.Services
 
         /// <summary>Copies onto every field <paramref name="existingPs"/>
         /// leaves empty what <paramref name="freshPs"/> sets there, the
-        /// mapping dictionaries included, and leaves every field it already
-        /// sets alone.</summary>
-        private static void MergeEmptyFrom(PadSetting existingPs, PadSetting freshPs)
+        /// mapping dictionaries included. Every field it already sets stays,
+        /// and so does every target in <paramref name="keep"/>.</summary>
+        /// <returns>True when a field was filled.</returns>
+        private static bool MergeEmptyFrom(PadSetting existingPs, PadSetting freshPs, string[] keep = null)
         {
+            bool Kept(string target) => keep != null && Array.IndexOf(keep, target) >= 0;
+            bool changed = false;
+
             // Raw-surface automap (Nintendo): the positional defaults live
             // in the Extended mapping dictionary, which the string-property
             // reflection walk below cannot see. Merge missing keys first,
@@ -846,12 +1018,13 @@ namespace PadForge.Services
                 bool extChanged = false;
                 foreach (var entry in freshExt)
                 {
-                    if (entry == null || string.IsNullOrEmpty(entry.Key)) continue;
+                    if (entry == null || string.IsNullOrEmpty(entry.Key) || Kept(entry.Key)) continue;
                     if (!string.IsNullOrEmpty(existingPs.GetRawMapping(entry.Key))) continue;
                     existingPs.SetRawMapping(entry.Key, entry.Value);
                     extChanged = true;
                 }
                 if (extChanged) existingPs.FlushRawMappings();
+                changed |= extChanged;
             }
 
             // MIDI and KBM automap surfaces are dictionary siblings of the
@@ -863,12 +1036,13 @@ namespace PadForge.Services
                 bool midiChanged = false;
                 foreach (var entry in freshMidi)
                 {
-                    if (entry == null || string.IsNullOrEmpty(entry.Key)) continue;
+                    if (entry == null || string.IsNullOrEmpty(entry.Key) || Kept(entry.Key)) continue;
                     if (!string.IsNullOrEmpty(existingPs.GetMidiMapping(entry.Key))) continue;
                     existingPs.SetMidiMapping(entry.Key, entry.Value);
                     midiChanged = true;
                 }
                 if (midiChanged) existingPs.FlushMidiMappings();
+                changed |= midiChanged;
             }
             var freshKbm = freshPs.KbmMappingEntries;
             if (freshKbm != null)
@@ -876,12 +1050,13 @@ namespace PadForge.Services
                 bool kbmChanged = false;
                 foreach (var entry in freshKbm)
                 {
-                    if (entry == null || string.IsNullOrEmpty(entry.Key)) continue;
+                    if (entry == null || string.IsNullOrEmpty(entry.Key) || Kept(entry.Key)) continue;
                     if (!string.IsNullOrEmpty(existingPs.GetKbmMapping(entry.Key))) continue;
                     existingPs.SetKbmMapping(entry.Key, entry.Value);
                     kbmChanged = true;
                 }
                 if (kbmChanged) existingPs.FlushKbmMappings();
+                changed |= kbmChanged;
             }
             var freshVr = freshPs.VrMappingEntries;
             if (freshVr != null)
@@ -889,12 +1064,13 @@ namespace PadForge.Services
                 bool vrChanged = false;
                 foreach (var entry in freshVr)
                 {
-                    if (entry == null || string.IsNullOrEmpty(entry.Key)) continue;
+                    if (entry == null || string.IsNullOrEmpty(entry.Key) || Kept(entry.Key)) continue;
                     if (!string.IsNullOrEmpty(existingPs.GetVrMapping(entry.Key))) continue;
                     existingPs.SetVrMapping(entry.Key, entry.Value);
                     vrChanged = true;
                 }
                 if (vrChanged) existingPs.FlushVrMappings();
+                changed |= vrChanged;
             }
 
             // Walk every copyable string mapping property and fill empty
@@ -906,13 +1082,16 @@ namespace PadForge.Services
                 if (prop.PropertyType != typeof(string)) continue;
                 if (!prop.CanRead || !prop.CanWrite) continue;
                 if (prop.Name == nameof(PadSetting.PadSettingChecksum)) continue;
+                if (Kept(prop.Name)) continue;
                 string current = prop.GetValue(existingPs) as string;
                 if (!string.IsNullOrEmpty(current)) continue;        // user-authored or already set
                 string fresh = prop.GetValue(freshPs) as string;
                 if (string.IsNullOrEmpty(fresh)) continue;           // auto-map didn't set this field
                 prop.SetValue(existingPs, fresh);
+                changed = true;
             }
             existingPs.UpdateChecksum();
+            return changed;
         }
 
         /// <summary>The highest index+1 this device can legitimately carry on
@@ -967,6 +1146,11 @@ namespace PadForge.Services
         {
             if (existingPs == null || ud == null) return false;
             if (ud.CapType != InputDeviceType.Gamepad) return false;
+            // A port read raw here with no placement gets an empty default,
+            // and its cached CapType is the last session's, so there is
+            // nothing to judge the setting against.
+            if (PadForge.Common.Input.BlissBoxRuntime.ReadsRawHere(ud)
+                && PadForge.Common.Input.BlissBoxRuntime.GamepadMapFor(ud) == null) return false;
 
             var (buttons, axes, povs) = InventoryBounds(ud);
             if (buttons <= 0 && axes <= 0 && povs <= 0) return false; // unknown inventory — don't guess

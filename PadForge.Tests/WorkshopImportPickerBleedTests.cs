@@ -381,6 +381,91 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void APinnedAbstractName_ReadsAsTheDevicesOwnEntryOnItsRowAndItsParameterPickers()
+        {
+            // A source stored as "Gamepad ButtonA" with a controller selects
+            // that controller's own entry, so the row's text names that entry
+            // too, and a parameter picker on a pinned source names the
+            // controller's own entry for an abstract key with the controller's
+            // label. An unpinned source keeps the "(Any device)" entry.
+            var (mainVm, svc) = ArrangeDefaultProfileWithXboxPad();
+            var pad0 = mainVm.Pads[0];
+            string xbox = XboxGuid.ToString();
+            var ms = new MappingSet();
+            ms.Rows.Add(new MappingRow
+            {
+                Target = "ButtonA",
+                Sources =
+                {
+                    new MappingSource { Descriptor = "Gamepad ButtonA", DeviceGuid = xbox },
+                    new MappingSource { Descriptor = "Button 2", DeviceGuid = xbox, Kind = "InvertOnHold", ParamModifier = "Gamepad ButtonB" },
+                    new MappingSource { Descriptor = "Button 3", Kind = "InvertOnHold", ParamModifier = "Gamepad ButtonB" },
+                },
+            });
+            SettingsManager.SlotMappingSets[0] = ms;
+            InputService.RefreshMappingsToViewModel(pad0);
+            svc.RefreshAvailableInputsForSlot(pad0);
+
+            var row = pad0.Mappings.First(m => m.TargetSettingName == "ButtonA");
+            Assert.Equal("Button 0", row.SelectedInput.Descriptor);
+            Assert.Equal(row.SelectedInput.DisplayName, row.SourceDisplayText);
+            Assert.NotEqual(PadForge.Common.MappingDisplayResolver.ResolveGamepadText("Gamepad ButtonA"), row.SourceDisplayText);
+
+            var pinned = row.ExtraSources[0];
+            Assert.Equal("Gamepad ButtonB", pinned.ParamModifier);
+            Assert.Equal("Button 1", pinned.ParamModifierInputChoice.Descriptor);
+            Assert.Equal(xbox, pinned.ParamModifierInputChoice.DeviceGuid, ignoreCase: true);
+            Assert.NotEqual(PadForge.Resources.Strings.Strings.Instance.Mapping_AnyDevice, pinned.ParamModifierDeviceLabel);
+            Assert.Equal(pinned.ParamModifierInputChoice.DeviceLabel, pinned.ParamModifierDeviceLabel);
+
+            var free = row.ExtraSources[1];
+            Assert.Equal("Gamepad ButtonB", free.ParamModifierInputChoice.Descriptor);
+            Assert.True(string.IsNullOrEmpty(free.ParamModifierInputChoice.DeviceGuid));
+        }
+
+        [Fact]
+        public void AnInvertedOrHalfGamepadSource_ReadsByItsNameNotItsStoredForm()
+        {
+            // The load keeps Invert and Half as an I/H prefix on the row's
+            // descriptor, so an imported stick ring arrives as
+            // "HGamepad LeftStickRing". Its row text names the ring with the
+            // flag's label, the way every other family's prefixed row reads.
+            var (mainVm, svc) = ArrangeDefaultProfileWithXboxPad();
+            var pad0 = mainVm.Pads[0];
+            var si = PadForge.Resources.Strings.Strings.Instance;
+            var ms = new MappingSet();
+            ms.Rows.Add(new MappingRow
+            {
+                Target = "ButtonA",
+                Sources = { new MappingSource { Descriptor = "Gamepad LeftStickRing", HalfAxis = true } },
+            });
+            ms.Rows.Add(new MappingRow
+            {
+                Target = "DPadUp",
+                Sources = { new MappingSource { Descriptor = "Gamepad LeftStickY", HalfAxis = true, Invert = true } },
+            });
+            SettingsManager.SlotMappingSets[0] = ms;
+            InputService.RefreshMappingsToViewModel(pad0);
+
+            var ring = pad0.Mappings.First(m => m.TargetSettingName == "ButtonA");
+            Assert.Equal("HGamepad LeftStickRing", ring.SourceDescriptor);
+            Assert.Equal(si.Mapping_Half + " " + PadForge.Common.MappingDisplayResolver.ResolveGamepadText("Gamepad LeftStickRing"),
+                ring.SourceDisplayText);
+            var wedge = pad0.Mappings.First(m => m.TargetSettingName == "DPadUp");
+            Assert.Equal("IHGamepad LeftStickY", wedge.SourceDescriptor);
+            Assert.Equal(si.Mapping_InvHalf + " " + PadForge.Common.MappingDisplayResolver.ResolveGamepadText("Gamepad LeftStickY"),
+                wedge.SourceDisplayText);
+
+            // The same ring stored with a controller drops the Gamepad prefix
+            // and keeps the flag's label.
+            var bound = new MappingItem("A", "ButtonA", MappingCategory.Buttons);
+            bound.LoadDescriptor("HGamepad LeftStickRing");
+            PadForge.Common.MappingDisplayResolver.ResolveDisplayText(bound,
+                SettingsManager.UserDevices.Items.First(u => u.InstanceGuid == XboxGuid));
+            Assert.Equal(si.Mapping_Half + " " + si.Mapping_LeftStickRing, bound.SourceDisplayText);
+        }
+
+        [Fact]
         public void HidingAnyDevice_HidesEveryAbstractGamepadName()
         {
             // The picker's device filter hides a group by its key, "any" for

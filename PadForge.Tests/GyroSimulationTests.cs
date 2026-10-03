@@ -1420,12 +1420,13 @@ public class GyroSimulationTests
     public void SiblingSet_CarriesTheFields()
     {
         string ss = RepoText("PadForge.App", "Services", "SettingsService.cs");
-        Assert.Contains("padVm.GyroSimulation = ps.GyroSimulation == \"1\";", ss);
+        // Both loaders read the flag the engine's way (TryParseBoolPs).
+        Assert.Contains("padVm.GyroSimulation = InputService.TryParseBoolPs(ps.GyroSimulation, false);", ss);
         Assert.Contains("ps.GyroSimulation = padVm.GyroSimulation ? \"1\" : \"0\";", ss);
         Assert.Contains("ps.GyroSimulationSmoothingMs = padVm.GyroSimulationSmoothingMs.ToString(ic);", ss);
 
         string svc = RepoText("PadForge.App", "Services", "InputService.cs");
-        Assert.Contains("padVm.GyroSimulation = ps.GyroSimulation == \"1\";", svc);
+        Assert.Contains("padVm.GyroSimulation = TryParseBoolPs(ps.GyroSimulation, false);", svc);
         Assert.Contains("ps.GyroSimulation = padVm.GyroSimulation ? \"1\" : \"0\";", svc);
         Assert.Contains("SimulateGyro = TryParseBoolPs(ps.GyroSimulation, false),", svc);
         Assert.Contains("SourceCoercion.SimulatedGyroProvider =", svc);

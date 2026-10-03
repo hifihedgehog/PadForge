@@ -78,10 +78,7 @@ namespace PadForge.Common.Input
                     UserDevice ud = FindOnlineDeviceByInstanceGuid(us.InstanceGuid);
                     if (ud == null)
                     {
-                        us.OutputState = default;
-                        us.RawMappedState = default; // preview must not freeze on a removed device
-                        us.MotionRowsOutputState = default;
-                        us.PressureOutputState = default;
+                        NeutralizeOutputStates(us);
                         continue;
                     }
                     // Device exists but input temporarily unavailable — keep
@@ -947,15 +944,16 @@ namespace PadForge.Common.Input
                     if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
                         continue;
 
-                    // Offline-contributes-zero, as everywhere else.
-                    var devState = string.IsNullOrEmpty(src.DeviceGuid)
-                        ? state : LookupDeviceState(src.DeviceGuid);
+                    var devState = LaneDeviceState(src, state, thisDeviceGuid);
                     if (devState == null) continue;
 
                     var (cx, cy) = PadForge.Engine.Common.Mapping.SourceCoercion
                         .ReadGyroMouseCounts(devState, src, slotIndex,
                             string.IsNullOrEmpty(src.DeviceGuid) ? thisDeviceGuid : src.DeviceGuid,
                             dt, forX);
+                    // A layer row turning the cursor is that layer's output
+                    // (#206 auto-cancel), the mark the row evaluators stamp.
+                    if (cx != 0f || cy != 0f) StampLayerActivity(slotIndex, row);
                     gx += cx; gy += cy;
                 }
             }
@@ -994,18 +992,43 @@ namespace PadForge.Common.Input
                     if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
                         continue;
 
-                    var devState = string.IsNullOrEmpty(src.DeviceGuid)
-                        ? state : LookupDeviceState(src.DeviceGuid);
+                    var devState = LaneDeviceState(src, state, thisDeviceGuid);
                     if (devState == null) continue;
 
                     var (cx, cy) = PadForge.Engine.Common.Mapping.SourceCoercion
                         .ReadTouchpadMouseCounts(devState, src, slotIndex,
                             string.IsNullOrEmpty(src.DeviceGuid) ? thisDeviceGuid : src.DeviceGuid,
                             dt, forX, now, freq);
+                    // A finger down inside the source's window is output
+                    // whatever it does, the touchpad rows' own mark for #206
+                    // auto-cancel. Outside it the source reads nothing, so a
+                    // finger resting there keeps no layer on.
+                    if (cx != 0f || cy != 0f
+                        || PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadMouseFingerEngaged(devState, src.Descriptor))
+                        StampLayerActivity(slotIndex, row);
                     tx += cx; ty += cy;
                 }
             }
             return (tx, ty);
+        }
+
+        /// <summary>The state a mouse rate lane reads a source from on this
+        /// device's pass, or null when the pass takes nothing from it: the
+        /// row evaluators' rule (SourceMatchesDevice). An empty guid reads
+        /// this pass's device when it answers "(Any Device)" (#431), so a
+        /// pen tablet's touchpad 0 never drives an "(Any Device)" trackpad
+        /// row. A source pinned to a device reads on that device's own pass
+        /// only, since the lanes sum every pass and a pinned gyro read on a
+        /// keyboard's pass too turned the cursor twice. An offline device
+        /// contributes nothing.</summary>
+        private static CustomInputState LaneDeviceState(PadForge.Engine.Data.MappingSource src,
+            CustomInputState state, string thisDeviceGuid)
+        {
+            if (string.IsNullOrEmpty(src.DeviceGuid))
+                return AnswersAnyDeviceRead(thisDeviceGuid, src, state) ? state : null;
+            if (!string.Equals(src.DeviceGuid, thisDeviceGuid, StringComparison.OrdinalIgnoreCase))
+                return null;
+            return LookupDeviceState(src.DeviceGuid);
         }
 
         private static int TickFlickStickSources(
@@ -1050,8 +1073,14 @@ namespace PadForge.Common.Input
                     // from another device's axes.
                     if (devState == null) continue;
                 }
-                counts += runtime.TickFlickStick(slotIndex, "KbmMouseX", i, src, devState,
-                    dt, _stickTrimFrameSeq);
+                int flicked = runtime.TickFlickStick(slotIndex, "KbmMouseX", i, src, devState,
+                    dt, _stickTrimFrameSeq, row.LayerMask);
+                // A flick or a turn is the layer's output (#206 auto-cancel),
+                // and so is a stick held past the flick threshold between
+                // them, the way a touchpad row counts a resting finger.
+                if (flicked != 0 || runtime.IsFlickEngaged(slotIndex, "KbmMouseX", i, row.LayerMask))
+                    StampLayerActivity(slotIndex, row);
+                counts += flicked;
             }
             return counts;
         }
@@ -1069,6 +1098,10 @@ namespace PadForge.Common.Input
                     if (!src.Descriptor.StartsWith("IR Pointer ", StringComparison.Ordinal)) continue;
                     if (!string.IsNullOrEmpty(src.DeviceGuid)
                         && !string.Equals(src.DeviceGuid, thisDeviceGuid, StringComparison.OrdinalIgnoreCase))
+                        continue;
+                    // (#431) An "(Any Device)" source reads only a device
+                    // that answers the wildcard, as the row evaluators do.
+                    if (string.IsNullOrEmpty(src.DeviceGuid) && !AnswersAnyDevice(thisDeviceGuid))
                         continue;
                     // Consume/postpone parity with the row evaluators
                     // (2026-07-25 audit): a suppressed pointer source must
@@ -1120,8 +1153,9 @@ namespace PadForge.Common.Input
         /// contributes no delta, so the cursor freezes either way.</para>
         /// Same cross-device discipline as the IR finder: only sources
         /// owned by <paramref name="thisDeviceGuid"/> (or the empty "device
-        /// on this slot" guid) match, because the engagement gate reads
-        /// THIS device's touchpad state. No legacy per-key leg: the family
+        /// on this slot" guid, on a device that answers "(Any Device)")
+        /// match, because the engagement gate reads THIS device's touchpad
+        /// state. No legacy per-key leg: the family
         /// is newer than the MappingSet grid, so no pre-grid config can
         /// carry it.</summary>
         private static PadForge.Engine.Data.MappingSource FindEngagedTouchpadPointerSource(
@@ -1138,6 +1172,11 @@ namespace PadForge.Common.Input
                 if (!string.IsNullOrEmpty(src.DeviceGuid)
                     && !string.Equals(src.DeviceGuid, thisDeviceGuid, StringComparison.OrdinalIgnoreCase))
                     continue;
+                // (#431) An "(Any Device)" source reads only a device that
+                // answers the wildcard: a pen tablet publishes its pen as
+                // touchpad 0 and must not steer an "(Any Device)" pointer.
+                if (string.IsNullOrEmpty(src.DeviceGuid) && !AnswersAnyDevice(thisDeviceGuid))
+                    continue;
                 // Consume/postpone parity with the row evaluators
                 // (2026-07-25 audit): a suppressed pointer source reads
                 // disengaged, so the caller falls through to the delta
@@ -1146,6 +1185,8 @@ namespace PadForge.Common.Input
                     continue;
                 if (!PadForge.Engine.Common.Mapping.SourceCoercion
                         .IsTouchpadPointerEngaged(state, src.Descriptor)) continue;
+                // An engaged pointer is its layer's output (#206).
+                StampLayerActivity(slotIndex, row);
                 return src;
             }
             return null;

@@ -137,11 +137,14 @@ namespace PadForge.Tests
             Assert.True(IsUnipolar("Slider 0", id.ToString()));
         }
 
-        /// <summary>The invert-on-hold modifier now uses the same all-rest
-        /// sentinel its cycle and chord companions use for an offline pinned
-        /// device, rather than the state of the device being processed.</summary>
+        /// <summary>An invert-on-hold modifier pinned to an offline device
+        /// reads released. It never borrows the state of the device being
+        /// processed, and it is skipped rather than read against the all-rest
+        /// sentinel: that state is bool-like only, and its zeroed axes read a
+        /// stick ring or an inverted axis as held (AnyDeviceMissingAxisTests
+        /// runs the ring case).</summary>
         [Fact]
-        public void AnOfflinePinnedInvertModifierUsesTheRestSentinel()
+        public void AnOfflinePinnedInvertModifierReadsReleased()
         {
             string src = RepoText("PadForge.App", "Common", "Input", "InputManager.Step3.MappingSetEval.cs");
             int at = src.IndexOf("private static bool IsInvertOnHoldActive", StringComparison.Ordinal);
@@ -149,8 +152,9 @@ namespace PadForge.Tests
             int end = src.IndexOf("\n        private static", at + 40, StringComparison.Ordinal);
             Assert.True(end > at);
             string body = src.Substring(at, end - at);
-            Assert.Contains("LookupDeviceState(src.DeviceGuid) ?? OfflinePinnedRestState", body);
+            Assert.Matches(@"s = LookupDeviceState\(src\.DeviceGuid\);\s*if \(s == null\) continue;", body);
             Assert.DoesNotContain("LookupDeviceState(src.DeviceGuid) ?? fallbackState", body);
+            Assert.DoesNotContain("OfflinePinnedRestState", body);
         }
 
         private static string RepoText(params string[] parts)

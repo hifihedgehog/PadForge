@@ -197,31 +197,40 @@ namespace PadForge.Tests
             Assert.True(padA);
         }
 
+        /// <summary>The Gamepad names follow SDL's rule: a role exists only on
+        /// a device read in SDL's gamepad layout, so a keyboard's first key no
+        /// longer presses A and a joystick read raw answers none of them. A
+        /// numbered "(Any Device)" read is no Gamepad name, and every row that
+        /// answers the wildcard still answers it.</summary>
         [Theory]
-        [InlineData(InputDeviceType.HeadTracker, false)]
-        [InlineData(InputDeviceType.Nfc, false)]
-        [InlineData(InputDeviceType.Microphone, false)]
-        [InlineData(InputDeviceType.HandheldButtons, false)]
-        [InlineData(InputDeviceType.ConsumerControl, false)]
-        [InlineData(InputDeviceType.Tablet, false)]
-        [InlineData(InputDeviceType.Gamepad, true)]
-        [InlineData(InputDeviceType.Joystick, true)]
-        [InlineData(InputDeviceType.Supplemental, true)]
-        [InlineData(InputDeviceType.Keyboard, true)]
-        [InlineData(InputDeviceType.Mouse, true)]
-        [InlineData(InputDeviceType.Touchpad, true)]
-        public void OnlyRowsThatSpeakTheGamepadLayoutAnswerTheWildcard(int capType, bool answers)
+        [InlineData(InputDeviceType.HeadTracker, false, false)]
+        [InlineData(InputDeviceType.Nfc, false, false)]
+        [InlineData(InputDeviceType.Microphone, false, false)]
+        [InlineData(InputDeviceType.HandheldButtons, false, false)]
+        [InlineData(InputDeviceType.ConsumerControl, false, false)]
+        [InlineData(InputDeviceType.Tablet, false, false)]
+        [InlineData(InputDeviceType.Gamepad, true, true)]
+        [InlineData(InputDeviceType.Joystick, true, false)]
+        [InlineData(InputDeviceType.Supplemental, true, false)]
+        [InlineData(InputDeviceType.Keyboard, true, false)]
+        [InlineData(InputDeviceType.Mouse, true, false)]
+        [InlineData(InputDeviceType.Touchpad, true, false)]
+        public void OnlyRowsThatSpeakTheGamepadLayoutAnswerTheGamepadNames(int capType, bool answersWildcard,
+            bool answersGamepadNames)
         {
             var state = CenteredState();
             state.Buttons[0] = true;
+            state.Buttons[1] = true;
             AddDevice(RowGuid, capType, state);
             AddRow("ButtonA", Any("Gamepad ButtonA"));
             AddRow("LeftTrigger", Any("Gamepad LeftTrigger"));
+            AddRow("ButtonB", Any("Button 1"));
 
             var gp = Pass(state, RowGuid);
-            Assert.Equal(answers, gp.IsButtonPressed(Gamepad.A));
-            Assert.Equal(answers ? (ushort)32768 : (ushort)0, gp.LeftTrigger);
-            Assert.Equal(answers, InputDeviceType.AnswersAnyDeviceSources(capType));
+            Assert.Equal(answersGamepadNames, gp.IsButtonPressed(Gamepad.A));
+            Assert.Equal(answersGamepadNames ? (ushort)32768 : (ushort)0, gp.LeftTrigger);
+            Assert.Equal(answersWildcard, gp.IsButtonPressed(Gamepad.B));
+            Assert.Equal(answersWildcard, InputDeviceType.AnswersAnyDeviceSources(capType));
         }
 
         [Fact]

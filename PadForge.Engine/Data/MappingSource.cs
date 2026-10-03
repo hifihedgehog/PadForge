@@ -96,7 +96,8 @@ namespace PadForge.Engine.Data
 
         /// <summary>Incremental rate in units-per-second (full output range
         /// is 1.0 unit, so 0.5 means full sweep takes 2 s).</summary>
-        [XmlAttribute] public double ParamRate { get; set; } = 0.5;
+        [XmlAttribute] public double ParamRate { get => _paramRate; set => _paramRate = Finite(value, _paramRate); }
+        private double _paramRate = 0.5;
 
         /// <summary>Incremental sticky behavior. <c>true</c> = value holds
         /// when neither up nor down is held (cruise control). <c>false</c> =
@@ -104,10 +105,12 @@ namespace PadForge.Engine.Data
         [XmlAttribute] public bool ParamSticky { get; set; } = true;
 
         /// <summary>Incremental clamp lower bound.</summary>
-        [XmlAttribute] public double ParamMin { get; set; } = 0;
+        [XmlAttribute] public double ParamMin { get => _paramMin; set => _paramMin = Finite(value, _paramMin); }
+        private double _paramMin = 0;
 
         /// <summary>Incremental clamp upper bound.</summary>
-        [XmlAttribute] public double ParamMax { get; set; } = 1;
+        [XmlAttribute] public double ParamMax { get => _paramMax; set => _paramMax = Finite(value, _paramMax); }
+        private double _paramMax = 1;
 
         /// <summary>InvertOnHold modifier — descriptor of the button that
         /// inverts the inner source while held. Only read when
@@ -125,11 +128,13 @@ namespace PadForge.Engine.Data
         /// <summary>Ramped attack time in seconds: how long the axis takes to travel
         /// 0 to ±1 while the matching-direction key is held. 0 = instant. Only read
         /// when <c>Kind == "Ramped"</c>.</summary>
-        [XmlAttribute] public double ParamAttackTime { get; set; } = 0.30;
+        [XmlAttribute] public double ParamAttackTime { get => _paramAttackTime; set => _paramAttackTime = Finite(value, _paramAttackTime); }
+        private double _paramAttackTime = 0.30;
 
         /// <summary>Ramped release time in seconds: how long the axis takes to travel
         /// ±1 back to 0 after release (and the base rate when reversing). 0 = instant.</summary>
-        [XmlAttribute] public double ParamReleaseTime { get; set; } = 0.30;
+        [XmlAttribute] public double ParamReleaseTime { get => _paramReleaseTime; set => _paramReleaseTime = Finite(value, _paramReleaseTime); }
+        private double _paramReleaseTime = 0.30;
 
         /// <summary>Ramped autocenter. <c>true</c> = releasing both keys ramps the
         /// axis back toward zero at the release rate. <c>false</c> = the axis holds
@@ -140,7 +145,8 @@ namespace PadForge.Engine.Data
         /// the opposite-direction key is held and the axis is still on the original
         /// side, so a direction switch returns to zero faster before attacking the new
         /// side. 1.0 disables the speed-up. Gated on <see cref="ParamAutocenter"/>.</summary>
-        [XmlAttribute] public double ParamReverseMultiplier { get; set; } = 4.0;
+        [XmlAttribute] public double ParamReverseMultiplier { get => _paramReverseMultiplier; set => _paramReverseMultiplier = Finite(value, _paramReverseMultiplier); }
+        private double _paramReverseMultiplier = 4.0;
 
         // ─── Rapid Trigger (#482) ───
 
@@ -178,7 +184,8 @@ namespace PadForge.Engine.Data
         /// Values &gt; 1.0 are more sensitive (smaller rotations produce
         /// larger output); values &lt; 1.0 are less sensitive. Only
         /// affects sources whose descriptor starts with "Gyro ".</summary>
-        [XmlAttribute] public double GyroSensitivity { get; set; } = 1.0;
+        [XmlAttribute] public double GyroSensitivity { get => _gyroSensitivity; set => _gyroSensitivity = Finite(value, _gyroSensitivity); }
+        private double _gyroSensitivity = 1.0;
 
         /// <summary>v3.5 per-source mouse-cursor sensitivity multiplier (issue
         /// #107). Applied to the normalized absolute cursor offset during bipolar
@@ -187,7 +194,8 @@ namespace PadForge.Engine.Data
         /// of screen width from center. Values &gt; 1.0 reach full deflection with
         /// less cursor travel; values &lt; 1.0 need more. Only affects sources
         /// whose descriptor starts with "Mouse Position ".</summary>
-        [XmlAttribute] public double MouseCursorSensitivity { get; set; } = 1.0;
+        [XmlAttribute] public double MouseCursorSensitivity { get => _mouseCursorSensitivity; set => _mouseCursorSensitivity = Finite(value, _mouseCursorSensitivity); }
+        private double _mouseCursorSensitivity = 1.0;
 
         /// <summary>Per-source Wii IR-pointer sensitivity multiplier (issue #146).
         /// Applied to the normalized IR pointer offset during bipolar / unipolar /
@@ -196,7 +204,8 @@ namespace PadForge.Engine.Data
         /// field of view. Values &gt; 1.0 reach full deflection with less aim
         /// travel; values &lt; 1.0 need more. Only affects sources whose descriptor
         /// starts with "IR Pointer ".</summary>
-        [XmlAttribute] public double IrPointerSensitivity { get; set; } = 1.0;
+        [XmlAttribute] public double IrPointerSensitivity { get => _irPointerSensitivity; set => _irPointerSensitivity = Finite(value, _irPointerSensitivity); }
+        private double _irPointerSensitivity = 1.0;
 
         /// <summary>Generic per-source sensitivity multiplier (issue #9).
         /// Applied to the coerced value of a plain analog source (an
@@ -210,7 +219,8 @@ namespace PadForge.Engine.Data
         /// only ever exposes one sensitivity slider. Rides every copy leg the
         /// specialized sensitivities ride (memberwise <see cref="Clone"/> plus
         /// the hand-listed VM / push / reload mirrors).</summary>
-        [XmlAttribute] public double Sensitivity { get; set; } = 1.0;
+        [XmlAttribute] public double Sensitivity { get => _sensitivity; set => _sensitivity = Finite(value, _sensitivity); }
+        private double _sensitivity = 1.0;
 
         /// <summary>
         /// v3.3 per-source Do-not-inherit slot. Reserved in the schema for
@@ -238,31 +248,41 @@ namespace PadForge.Engine.Data
         /// <summary>Radial inner deadzone (0..1) applied to the 2D stick before the
         /// steering math, since the MappingSet raw-axis read applies none. Below it
         /// the stick reads as centered (no wind accrues, no angle output).</summary>
-        [XmlAttribute] public double ParamStickDeadzone { get; set; } = 0.15;
+        [XmlAttribute] public double ParamStickDeadzone { get => _paramStickDeadzone; set => _paramStickDeadzone = Finite(value, _paramStickDeadzone); }
+        private double _paramStickDeadzone = 0.15;
 
         // Winding (Kind = "WindingStick"). JSM WIND_STICK_RANGE / WIND_STICK_POWER /
         // UNWIND_RATE (post-d10b51a values).
-        [XmlAttribute] public double ParamWindRangeDeg   { get; set; } = 900;
-        [XmlAttribute] public double ParamWindPower      { get; set; } = 1;
-        [XmlAttribute] public double ParamWindUnwindRate { get; set; } = 1800;
+        [XmlAttribute] public double ParamWindRangeDeg   { get => _paramWindRangeDeg; set => _paramWindRangeDeg = Finite(value, _paramWindRangeDeg); }
+        private double _paramWindRangeDeg = 900;
+        [XmlAttribute] public double ParamWindPower      { get => _paramWindPower; set => _paramWindPower = Finite(value, _paramWindPower); }
+        private double _paramWindPower = 1;
+        [XmlAttribute] public double ParamWindUnwindRate { get => _paramWindUnwindRate; set => _paramWindUnwindRate = Finite(value, _paramWindUnwindRate); }
+        private double _paramWindUnwindRate = 1800;
 
         // Angle-to-Axis (Kind = "AngleToAxisX" | "AngleToAxisY"). JSM
         // ANGLE_TO_AXIS_DEADZONE_INNER / _OUTER (degrees from the on-axis / max).
-        [XmlAttribute] public double ParamAngleInnerDz   { get; set; } = 0;
-        [XmlAttribute] public double ParamAngleOuterDz   { get; set; } = 10;
+        [XmlAttribute] public double ParamAngleInnerDz   { get => _paramAngleInnerDz; set => _paramAngleInnerDz = Finite(value, _paramAngleInnerDz); }
+        private double _paramAngleInnerDz = 0;
+        [XmlAttribute] public double ParamAngleOuterDz   { get => _paramAngleOuterDz; set => _paramAngleOuterDz = Finite(value, _paramAngleOuterDz); }
+        private double _paramAngleOuterDz = 10;
 
         // Gravity-tilt envelope ("Gyro Tilt X/Y", #292): degrees of tilt
         // for full deflection (default via GyroTiltDefaultRangeDeg = 25,
         // the modal Steam-corpus deflection max) and a subtract-style
         // inner deadzone. Stamped from the Gyro tab's Tilt card per
         // (slot, device), the Motion Steering push pattern. 0 = unset.
-        [XmlAttribute] public double ParamTiltRangeDeg   { get; set; } = 0;
-        [XmlAttribute] public double ParamTiltInnerDz    { get; set; } = 0;
+        [XmlAttribute] public double ParamTiltRangeDeg   { get => _paramTiltRangeDeg; set => _paramTiltRangeDeg = Finite(value, _paramTiltRangeDeg); }
+        private double _paramTiltRangeDeg = 0;
+        [XmlAttribute] public double ParamTiltInnerDz    { get => _paramTiltInnerDz; set => _paramTiltInnerDz = Finite(value, _paramTiltInnerDz); }
+        private double _paramTiltInnerDz = 0;
 
         // Motion-Lean (Kind = "MotionLeanX"). JSM MOTION_DEADZONE_INNER / _OUTER
         // (degrees of tilt) and CONTROLLER_ORIENTATION (Forward/Left/Right/Backward).
-        [XmlAttribute] public double ParamMotionInnerDz  { get; set; } = 15;
-        [XmlAttribute] public double ParamMotionOuterDz  { get; set; } = 135;
+        [XmlAttribute] public double ParamMotionInnerDz  { get => _paramMotionInnerDz; set => _paramMotionInnerDz = Finite(value, _paramMotionInnerDz); }
+        private double _paramMotionInnerDz = 15;
+        [XmlAttribute] public double ParamMotionOuterDz  { get => _paramMotionOuterDz; set => _paramMotionOuterDz = Finite(value, _paramMotionOuterDz); }
+        private double _paramMotionOuterDz = 135;
         [XmlAttribute] public string ParamControllerOrientation { get; set; } = "Forward";
 
         // ─── Flick stick (#225, descriptor family "Flick Stick Right"/"Flick
@@ -277,14 +297,16 @@ namespace PadForge.Engine.Data
         /// <summary>Flick easing duration in seconds for a full 180° flick
         /// (shorter turns complete in the same time; JSM FLICK_TIME,
         /// main.cpp:2262 default 0.1).</summary>
-        [XmlAttribute] public double ParamFlickTime { get; set; } = 0.1;
+        [XmlAttribute] public double ParamFlickTime { get => _paramFlickTime; set => _paramFlickTime = Finite(value, _paramFlickTime); }
+        private double _paramFlickTime = 0.1;
 
         /// <summary>Mouse counts emitted per full 360° camera turn (Steam
         /// "Dots Per 360°"; the wild corpus stores it in the group's
         /// "sensitivity" key). JSM expresses the same scale as
         /// REAL_WORLD_CALIBRATION counts-per-degree (default 40,
         /// main.cpp:2190) → 40 × 360 = 14400 here.</summary>
-        [XmlAttribute] public double ParamFlickCountsPer360 { get; set; } = 14400;
+        [XmlAttribute] public double ParamFlickCountsPer360 { get => _paramFlickCountsPer360; set => _paramFlickCountsPer360 = Finite(value, _paramFlickCountsPer360); }
+        private double _paramFlickCountsPer360 = 14400;
 
         /// <summary>Stick deflection (raw magnitude, 0..1) at which a flick
         /// engages. JSM checks length ≥ 1.0 on a deadzone-remapped read
@@ -292,7 +314,8 @@ namespace PadForge.Engine.Data
         /// (main.cpp:2334), i.e. raw ≥ 0.9; the remap is folded into this
         /// knob directly. JSM's 0.9× release hysteresis is applied on top
         /// while flicking (JoyShock.cpp:865-868).</summary>
-        [XmlAttribute] public double ParamFlickThreshold { get; set; } = 0.9;
+        [XmlAttribute] public double ParamFlickThreshold { get => _paramFlickThreshold; set => _paramFlickThreshold = Finite(value, _paramFlickThreshold); }
+        private double _paramFlickThreshold = 0.9;
 
         /// <summary>Flick snap mode: "None" (default), "Forward", "Half",
         /// "Four", "Sixths", "Eight". JSM FLICK_SNAP_MODE ships
@@ -306,12 +329,14 @@ namespace PadForge.Engine.Data
 
         /// <summary>Snap lerp strength 0..1 (JSM FLICK_SNAP_STRENGTH,
         /// main.cpp:2420 default 1.0 = full snap).</summary>
-        [XmlAttribute] public double ParamFlickSnapStrength { get; set; } = 1.0;
+        [XmlAttribute] public double ParamFlickSnapStrength { get => _paramFlickSnapStrength; set => _paramFlickSnapStrength = Finite(value, _paramFlickSnapStrength); }
+        private double _paramFlickSnapStrength = 1.0;
 
         /// <summary>Forward angle deadzone in degrees: a flick whose angle is
         /// within this of dead-ahead reads as 0° (JSM FLICK_DEADZONE_ANGLE,
         /// main.cpp:2322 default 0; Steam "Front Angle Deadzone").</summary>
-        [XmlAttribute] public double ParamFlickDeadzoneAngle { get; set; } = 0;
+        [XmlAttribute] public double ParamFlickDeadzoneAngle { get => _paramFlickDeadzoneAngle; set => _paramFlickDeadzoneAngle = Finite(value, _paramFlickDeadzoneAngle); }
+        private double _paramFlickDeadzoneAngle = 0;
 
         /// <summary>Rotation smoothing threshold in radians-per-tick.
         /// Negative (default) = JSM's automatic tiered window (full
@@ -319,14 +344,16 @@ namespace PadForge.Engine.Data
         /// 0 disables smoothing; positive overrides the lower threshold
         /// (upper = 2×). JSM ROTATE_SMOOTH_OVERRIDE, main.cpp:2414
         /// default -1.</summary>
-        [XmlAttribute] public double ParamFlickSmooth { get; set; } = -1;
+        [XmlAttribute] public double ParamFlickSmooth { get => _paramFlickSmooth; set => _paramFlickSmooth = Finite(value, _paramFlickSmooth); }
+        private double _paramFlickSmooth = -1;
 
         /// <summary>Constant rotation added to the flick angle, in degrees
         /// (positive = clockwise / rightward). Steam's flickstick
         /// "rotation" group setting: the whole input map rotates, so the
         /// offset lands on the flick angle before snapping; rim-rotation
         /// deltas are invariant under a constant offset. Default 0.</summary>
-        [XmlAttribute] public double ParamFlickRotationOffsetDeg { get; set; } = 0;
+        [XmlAttribute] public double ParamFlickRotationOffsetDeg { get => _paramFlickRotationOffsetDeg; set => _paramFlickRotationOffsetDeg = Finite(value, _paramFlickRotationOffsetDeg); }
+        private double _paramFlickRotationOffsetDeg = 0;
 
         // ─── Absolute touchpad pointer region window (#9 B-15, descriptor
         // family "Touchpad N Pointer X/Y[ Left|Right]"). The translator's
@@ -341,13 +368,15 @@ namespace PadForge.Engine.Data
         /// <summary>Region center along this source's screen axis,
         /// normalized 0..1 (0.5 = screen center). Only read by the
         /// "Touchpad N Pointer ..." family.</summary>
-        [XmlAttribute] public double ParamPointerCenter { get; set; } = 0.5;
+        [XmlAttribute] public double ParamPointerCenter { get => _paramPointerCenter; set => _paramPointerCenter = Finite(value, _paramPointerCenter); }
+        private double _paramPointerCenter = 0.5;
 
         /// <summary>Region extent along this source's screen axis as a
         /// fraction of the full axis (1.0 = the whole screen, 0.1 = a
         /// minimap-sized band). The tuned pad position scales by this
         /// around the region center, then clamps to the screen.</summary>
-        [XmlAttribute] public double ParamPointerExtent { get; set; } = 1.0;
+        [XmlAttribute] public double ParamPointerExtent { get => _paramPointerExtent; set => _paramPointerExtent = Finite(value, _paramPointerExtent); }
+        private double _paramPointerExtent = 1.0;
 
         // ─── Response curve / outer range (translator v11). The Workshop
         // translator's per-source lane for Steam's stick response-curve
@@ -364,20 +393,23 @@ namespace PadForge.Engine.Data
         /// 1 mean off. The engine's named curve presets correspond to
         /// e = 0.5 (Relaxed), 1.5 (Wide), 2 (Aggressive), 2.5 (ExtraWide),
         /// the same shapes as SourceCoercion.ApplyOutputCurve.</summary>
-        [XmlAttribute] public double ParamCurveExponent { get; set; }
+        [XmlAttribute] public double ParamCurveExponent { get => _paramCurveExponent; set => _paramCurveExponent = Finite(value, _paramCurveExponent); }
+        private double _paramCurveExponent;
 
         /// <summary>Outer range as a 0..1 fraction of full deflection.
         /// The output magnitude rescales v = min(1, |v| / outer), so full
         /// deflection is reached AT this radius (Steam's
         /// deadzone_outer_radius / 32767). 0 (default) = off.</summary>
-        [XmlAttribute] public double ParamRangeOuter { get; set; }
+        [XmlAttribute] public double ParamRangeOuter { get => _paramRangeOuter; set => _paramRangeOuter = Finite(value, _paramRangeOuter); }
+        private double _paramRangeOuter;
 
         /// <summary>Output anti-deadzone floor as a 0..1 fraction (v18,
         /// Steam's anti_deadzone / 32767): a non-zero shaped magnitude is
         /// remapped to floor + (1 - floor) * mag, so the smallest real
         /// input starts at the floor. Applied inside the same
         /// curve/range shaping seam, after the exponent. 0 = off.</summary>
-        [XmlAttribute] public double ParamAntiDeadzone { get; set; }
+        [XmlAttribute] public double ParamAntiDeadzone { get => _paramAntiDeadzone; set => _paramAntiDeadzone = Finite(value, _paramAntiDeadzone); }
+        private double _paramAntiDeadzone;
 
         /// <summary>Stick-read deadzone geometry (translator v25, Steam's
         /// deadzone_shape on the stick-hosted analog pair modes): 0
@@ -407,13 +439,15 @@ namespace PadForge.Engine.Data
         /// "engine default threshold" sentinel, so reading it as an analog
         /// inner radius would put a silent 50 percent hole in every
         /// unauthored source. 0 (default) = no inner deadzone.</summary>
-        [XmlAttribute] public double ParamStickDeadZoneInner { get; set; }
+        [XmlAttribute] public double ParamStickDeadZoneInner { get => _paramStickDeadZoneInner; set => _paramStickDeadZoneInner = Finite(value, _paramStickDeadZoneInner); }
+        private double _paramStickDeadZoneInner;
 
         /// <summary>Rate-dependent gain (v18, Steam's acceleration on the
         /// mouse modes): the touchpad delta scales by 1 + accel * |v|,
         /// the ApplyGyroAcceleration formula on the cursor lane.
         /// 0 = off.</summary>
-        [XmlAttribute] public double ParamAccel { get; set; }
+        [XmlAttribute] public double ParamAccel { get => _paramAccel; set => _paramAccel = Finite(value, _paramAccel); }
+        private double _paramAccel;
 
         /// <summary>Optional per-source AND companion (v18): the source
         /// contributes only while this second descriptor reads true on
@@ -487,6 +521,14 @@ namespace PadForge.Engine.Data
         /// against the stale device, and the mouse-feel map is per-evaluated-
         /// device filter state the clone must rebuild cold. The menu parse cache
         /// stays: it is keyed by Descriptor reference, which the clone shares.</summary>
+        /// <summary>Every double here keeps its value when handed NaN or
+        /// infinity, from the settings file, a view model or a copy alike, so
+        /// a hand-edited "NaN" never reaches the engine. Every lane assigns
+        /// through these setters (XmlSerializer, ToDomain, deep clones, the
+        /// steering stamp), and a fresh source keeps its default.</summary>
+        private static double Finite(double value, double current)
+            => double.IsFinite(value) ? value : current;
+
         public MappingSource Clone()
         {
             var copy = (MappingSource)MemberwiseClone();

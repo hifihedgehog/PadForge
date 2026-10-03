@@ -97,10 +97,13 @@ namespace PadForge.Engine.Common.Mapping
                 var cached = src.GateSourceCache;
                 if (cached == null || !ReferenceEquals(src.GateSourceCacheKey, gate))
                 {
+                    // The gate keeps a Gamepad name as written: the read
+                    // resolves it for the device it reads, and a Bliss-Box
+                    // port read raw places it its own way (#469).
                     cached = new MappingSource
                     {
                         Kind = "Direct",
-                        Descriptor = SourceCoercion.CanonicalDescriptor(gate),
+                        Descriptor = gate.Trim(),
                         DeviceGuid = src.DeviceGuid,
                     };
                     src.GateSourceCache = cached;
@@ -122,7 +125,7 @@ namespace PadForge.Engine.Common.Mapping
                     cached2 = new MappingSource
                     {
                         Kind = "Direct",
-                        Descriptor = SourceCoercion.CanonicalDescriptor(gate2),
+                        Descriptor = gate2.Trim(),
                         DeviceGuid = src.DeviceGuid,
                     };
                     src.Gate2SourceCache = cached2;
@@ -140,9 +143,10 @@ namespace PadForge.Engine.Common.Mapping
             int globalThresholdPercent,
             int slotIndex, string target, int sourceIndex,
             SourceKindRuntime runtime, double frameDeltaSeconds,
-            string evaluatedDeviceGuid = null)
+            string evaluatedDeviceGuid = null, string layer = null)
         {
             if (src == null || IsUnmappedDirect(src)) return false;
+            using var placement = SourceCoercion.ReadingDevice(src, evaluatedDeviceGuid);
             if (!GateHeld(state, src, slotIndex, evaluatedDeviceGuid, globalThresholdPercent)) return false;
 
             switch (src.Kind ?? "Direct")
@@ -162,7 +166,7 @@ namespace PadForge.Engine.Common.Mapping
                     if (runtime == null) return false;
                     bool pressed = SourceCoercion.EvaluateForButtonTarget(state, src,
                         globalThresholdPercent, slotIndex, evaluatedDeviceGuid);
-                    return runtime.TickToggle(slotIndex, target, sourceIndex, pressed, 1.0) != 0;
+                    return runtime.TickToggle(slotIndex, target, sourceIndex, pressed, 1.0, layer) != 0;
                 }
                 case "RapidTrigger":
                 {
@@ -177,7 +181,7 @@ namespace PadForge.Engine.Common.Mapping
                     float depth = SourceCoercion.EvaluateForTriggerTarget(state, src,
                         slotIndex, evaluatedDeviceGuid);
                     return runtime.TickRapidTrigger(slotIndex, target, sourceIndex,
-                        past, depth, RapidTriggerDistance(src));
+                        past, depth, RapidTriggerDistance(src), layer);
                 }
                 case "Ramped":
                     // A ramped axis envelope has no defensible boolean reading; a
@@ -200,9 +204,10 @@ namespace PadForge.Engine.Common.Mapping
             CustomInputState state, MappingSource src,
             int slotIndex, string target, int sourceIndex,
             SourceKindRuntime runtime, double frameDeltaSeconds,
-            string evaluatedDeviceGuid = null)
+            string evaluatedDeviceGuid = null, string layer = null)
         {
             if (src == null || IsUnmappedDirect(src)) return 0f;
+            using var placement = SourceCoercion.ReadingDevice(src, evaluatedDeviceGuid);
             if (!GateHeld(state, src, slotIndex, evaluatedDeviceGuid)) return 0f;
 
             // The Motion Pitch, Yaw and Roll rows (#475) read a source that
@@ -229,7 +234,7 @@ namespace PadForge.Engine.Common.Mapping
             float direct = EvaluateBipolarKind("Direct", state, src, slotIndex, target, sourceIndex,
                 runtime, frameDeltaSeconds, evaluatedDeviceGuid, oneWay);
             return (float)runtime.TickToggle(slotIndex, target, sourceIndex,
-                Math.Abs(direct) >= TogglePressLevel(src), direct < 0 ? -1.0 : 1.0);
+                Math.Abs(direct) >= TogglePressLevel(src), direct < 0 ? -1.0 : 1.0, layer);
         }
 
         private static float EvaluateBipolarKind(string kind,
@@ -439,9 +444,10 @@ namespace PadForge.Engine.Common.Mapping
             CustomInputState state, MappingSource src,
             int slotIndex, string target, int sourceIndex,
             SourceKindRuntime runtime, double frameDeltaSeconds,
-            string evaluatedDeviceGuid = null)
+            string evaluatedDeviceGuid = null, string layer = null)
         {
             if (src == null || IsUnmappedDirect(src)) return 0f;
+            using var placement = SourceCoercion.ReadingDevice(src, evaluatedDeviceGuid);
             if (!GateHeld(state, src, slotIndex, evaluatedDeviceGuid)) return 0f;
 
             switch (src.Kind ?? "Direct")
@@ -462,7 +468,7 @@ namespace PadForge.Engine.Common.Mapping
                     float pull = SourceCoercion.EvaluateForTriggerTarget(state, src,
                         slotIndex, evaluatedDeviceGuid);
                     return (float)runtime.TickToggle(slotIndex, target, sourceIndex,
-                        pull >= TogglePressLevel(src), 1.0);
+                        pull >= TogglePressLevel(src), 1.0, layer);
                 }
                 case "RapidTrigger":
                 {
@@ -480,7 +486,7 @@ namespace PadForge.Engine.Common.Mapping
                     float depth = SourceCoercion.EvaluateForTriggerTarget(state, src,
                         slotIndex, evaluatedDeviceGuid);
                     return runtime.TickRapidTrigger(slotIndex, target, sourceIndex,
-                        past, depth, RapidTriggerDistance(src)) ? 1f : 0f;
+                        past, depth, RapidTriggerDistance(src), layer) ? 1f : 0f;
                 }
                 case "Ramped":
                 {

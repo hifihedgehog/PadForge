@@ -57,13 +57,27 @@ namespace PadForge.Common
 
             // Abstract "Gamepad ..." family (issue #9): device-agnostic
             // semantic names that resolve without device-object metadata, so
-            // they sit above the raw-numbered / DeviceObjects paths. A row
-            // bound to a controller names a stick ring without the prefix,
-            // as that controller's picker group does.
+            // they sit above the raw-numbered / DeviceObjects paths. The load
+            // keeps Invert and Half as the legacy I/H prefix on the descriptor
+            // (an imported stick ring arrives as "HGamepad LeftStickRing"), so
+            // the prefix comes off first and its label goes back on after, as
+            // in the family block below. A row bound to a controller reads as
+            // that controller's picker group does: a stick ring without the
+            // prefix, and an abstract name stored with the controller by the
+            // controller's own name for the same read.
             {
-                string gamepadText = ResolveGamepadText(mapping.SourceDescriptor, anyDevice: ud == null);
+                string gamepadDescriptor = mapping.SourceDescriptor;
+                string gamepadPrefix = SplitLegacyPrefix(ref gamepadDescriptor);
+                string gamepadText = (ud == null ? null : ResolvePinnedAliasText(gamepadDescriptor, ud))
+                    ?? ResolveGamepadText(gamepadDescriptor, anyDevice: ud == null);
                 if (gamepadText != null)
                 {
+                    if (gamepadPrefix.Length > 0)
+                    {
+                        string prefixLabel = ResolvePrefixLabel(gamepadPrefix);
+                        if (!string.IsNullOrEmpty(prefixLabel))
+                            gamepadText = $"{prefixLabel} {gamepadText}";
+                    }
                     mapping.SetResolvedSourceText(gamepadText);
                     return;
                 }
@@ -1037,6 +1051,42 @@ namespace PadForge.Common
         /// named like its sticks, without the Gamepad prefix ("Left Stick
         /// Ring"). The prefix marks the device-agnostic family of the
         /// "(Any device)" group.</summary>
+        /// <summary>Takes the legacy Invert/Half prefix ("IH", "I" or "H")
+        /// off a row descriptor and returns it, empty when there is none. The
+        /// same three-way split the family blocks inline, the IR exemption
+        /// included.</summary>
+        private static string SplitLegacyPrefix(ref string descriptor)
+        {
+            string s = descriptor ?? "";
+            string prefix = "";
+            if (s.StartsWith("IH", System.StringComparison.OrdinalIgnoreCase))
+                prefix = s.Substring(0, 2);
+            else if (s.StartsWith("I", System.StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1])
+                     && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(s))
+                prefix = s.Substring(0, 1);
+            else if (s.StartsWith("H", System.StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
+                prefix = s.Substring(0, 1);
+            descriptor = s.Substring(prefix.Length);
+            return prefix;
+        }
+
+        /// <summary>The device's own name for the read an abstract
+        /// "Gamepad ..." name stands for ("Gamepad ButtonA" is the
+        /// controller's "A"): the name of the entry its picker group selects
+        /// for that name (<see cref="FindChoiceOnDevice"/>), taken from the
+        /// same list builder so the two never disagree. Null for a stick
+        /// ring, a flick stick or any other name with no single canonical
+        /// read, and for a device that lists no such entry.</summary>
+        private static string ResolvePinnedAliasText(string descriptor, UserDevice ud)
+        {
+            string canonical = PadForge.Engine.Common.Mapping.SourceCoercion.ResolveGamepadAlias(descriptor);
+            if (canonical == null || ud == null) return null;
+            foreach (var choice in BuildInputChoices(ud))
+                if (string.Equals(choice.Descriptor, canonical, System.StringComparison.OrdinalIgnoreCase))
+                    return choice.DisplayName;
+            return null;
+        }
+
         internal static string ResolveGamepadText(string descriptor, bool anyDevice = true)
         {
             if (string.IsNullOrEmpty(descriptor)
@@ -1170,6 +1220,7 @@ namespace PadForge.Common
                 // legends (A, II, L1) pass through as printed.
                 "Select" => s.DevObj_Select,
                 "Mode" => s.DevObj_Mode,
+                "Option" => s.DevObj_Option,
                 "Run" => s.DevObj_Run,
                 "Reset" => s.DevObj_Reset,
                 "Home Button" => s.DevObj_HomeButton,

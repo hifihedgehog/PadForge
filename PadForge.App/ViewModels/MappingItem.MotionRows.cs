@@ -35,6 +35,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsMotionAngle));
                     OnPropertyChanged(nameof(ShowMotionSpeedSettings));
                     OnPropertyChanged(nameof(ShowMotionAngleSettings));
+                    RaiseMotionRowNote();
                 }
             }
         }
@@ -103,8 +104,15 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Set by the grid builder on the Motion rows of a preset
-        /// whose report carries no motion (DualShock 3, Switch 2 Pro).</summary>
+        /// whose report carries no motion (DualShock 3, Switch 2 Pro, plain
+        /// Steam Deck).</summary>
         public bool PresetCarriesNoMotion { get; init; }
+
+        /// <summary>Set by the grid builder on the Motion rows of a preset
+        /// whose report carries no pitch or roll rate (DualShock 3
+        /// (SIXAXIS): Full). The note shows on Motion Pitch and Roll in
+        /// Speed mode.</summary>
+        public bool PresetCarriesNoPitchRollRate { get; init; }
 
         /// <summary>The note under a Motion row, or a row holding a Motion
         /// source, when something on it does not reach the game. Null when
@@ -128,6 +136,8 @@ namespace PadForge.ViewModels
                 }
                 if (PresetCarriesNoMotion && (passthrough || IsMotionAxisRow))
                     return s.Pad_Mapping_MotionPresetNote;
+                if (PresetCarriesNoPitchRollRate && CanUseMotionAngle && !IsMotionAngle)
+                    return s.Pad_Mapping_MotionPitchRollRateNote;
                 return null;
             }
         }

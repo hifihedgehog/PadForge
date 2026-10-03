@@ -7297,6 +7297,16 @@ namespace PadForge
             // Mapping descriptor changes (inversion, half-axis, source) trigger autosave.
             mapping.PropertyChanged += (s, e) =>
             {
+                // The user's own binding of a row, picked, recorded or
+                // cleared, is the row as the user wants it, so whatever a
+                // Bliss-Box port still owes the slot leaves it alone. A
+                // reload sets these properties too, so only an edit counts.
+                if (e.PropertyName is nameof(MappingItem.SourceDescriptor)
+                        or nameof(MappingItem.NegSourceDescriptor)
+                        or nameof(MappingItem.PrimarySourceDeviceGuid)
+                    && !InputService.SuppressMappingEditPush && !InputService.VmMappingsStale)
+                    DeviceService.KeepAuthoredRow(capturedPad.PadIndex, capturedPad.ActiveLayerMask, mapping.TargetSettingName, mapping.NegSettingName);
+
                 if (e.PropertyName is nameof(MappingItem.SourceDescriptor)
                     or nameof(MappingItem.NegSourceDescriptor)
                     or nameof(MappingItem.IsInverted)
@@ -7396,6 +7406,18 @@ namespace PadForge
                 };
                 msi.PropertyChanged += (s, e) =>
                 {
+                    // Picking another source keeps the row, as the primary's
+                    // pick does, and so does a stateful kind or its keys,
+                    // which carry no descriptor of their own (Ramp,
+                    // Incremental, Invert on Hold).
+                    if (e.PropertyName is nameof(MappingSourceItem.DeviceGuid)
+                            or nameof(MappingSourceItem.Descriptor)
+                            or nameof(MappingSourceItem.Kind)
+                            or nameof(MappingSourceItem.ParamUp)
+                            or nameof(MappingSourceItem.ParamDown)
+                            or nameof(MappingSourceItem.ParamModifier)
+                        && !InputService.SuppressMappingEditPush && !InputService.VmMappingsStale)
+                        DeviceService.KeepAuthoredRow(capturedPad.PadIndex, capturedPad.ActiveLayerMask, mapping.TargetSettingName, mapping.NegSettingName);
                     if (e.PropertyName is nameof(MappingSourceItem.DeviceGuid)
                         or nameof(MappingSourceItem.Descriptor)
                         or nameof(MappingSourceItem.Invert)
@@ -7418,6 +7440,7 @@ namespace PadForge
                         or nameof(MappingSourceItem.ParamReleaseTime)
                         or nameof(MappingSourceItem.ParamAutocenter)
                         or nameof(MappingSourceItem.ParamReverseMultiplier)
+                        or nameof(MappingSourceItem.ParamRapidTriggerDistance)
                         or nameof(MappingSourceItem.InvertOutput)
                         or nameof(MappingSourceItem.ParamAccel))
                         _settingsService.MarkDirty();
@@ -7432,7 +7455,18 @@ namespace PadForge
                 if (e.NewItems != null)
                     foreach (MappingSourceItem msi in e.NewItems)
                         WireExtraSource(msi);
+                // Adding or removing a source binds the row too.
+                if (!InputService.SuppressMappingEditPush && !InputService.VmMappingsStale)
+                    DeviceService.KeepAuthoredRow(capturedPad.PadIndex, capturedPad.ActiveLayerMask, mapping.TargetSettingName, mapping.NegSettingName);
                 _settingsService.MarkDirty();
+            };
+            // Clear on a row that held nothing changes no property above, and
+            // is the user's word on the row all the same.
+            mapping.Cleared += (s, e) =>
+            {
+                if (!InputService.SuppressMappingEditPush && !InputService.VmMappingsStale
+                    && DeviceService.KeepAuthoredRow(capturedPad.PadIndex, capturedPad.ActiveLayerMask, mapping.TargetSettingName, mapping.NegSettingName))
+                    _settingsService.MarkDirty();
             };
         }
 

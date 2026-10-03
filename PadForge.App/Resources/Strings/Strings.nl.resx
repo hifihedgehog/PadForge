@@ -1354,6 +1354,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="DevObj_Guide" xml:space="preserve"><value>Guide</value></data>
   <data name="DevObj_Select" xml:space="preserve"><value>Select</value></data>
   <data name="DevObj_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="DevObj_Option" xml:space="preserve"><value>Optie</value></data>
   <data name="DevObj_Run" xml:space="preserve"><value>Run</value></data>
   <data name="DevObj_Reset" xml:space="preserve"><value>Reset</value></data>
   <data name="DevObj_HomeButton" xml:space="preserve"><value>HOME-knop</value></data>
@@ -3078,6 +3079,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Mapping_MotionRowUnreadNote" xml:space="preserve"><value>Sticks en knoppen worden op deze rij niet gelezen. Wijs ze toe aan Beweging Pitch, Beweging Yaw of Beweging Roll en verwijder ze hier.</value></data>
   <data name="Pad_Mapping_MotionSourceElsewhereNote" xml:space="preserve"><value>Bronnen voor Beweging Gyro en Beweging Versnellingsmeter werken alleen op de rijen Beweging Gyro en Beweging Versnellingsmeter.</value></data>
   <data name="Pad_Mapping_MotionPresetNote" xml:space="preserve"><value>Het rapport van deze preset bevat geen beweging. De bewegingsserver (DSU) ontvangt het voor slots 1 tot en met 4 toch.</value></data>
+  <data name="Pad_Mapping_MotionPitchRollRateNote" xml:space="preserve"><value>Het rapport van deze preset bevat geen pitch- of rolsnelheid. In de modus Snelheid bereikt deze rij het spel alleen als kanteling, en alleen zolang geen versnellingsmeter de rij Beweging Versnellingsmeter voedt. De bewegingsserver (DSU) ontvangt het voor slots 1 tot en met 4 toch.</value></data>
   <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>Resetten bij loslaten</value></data>
   <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>Als aangevinkt, springt het vastgehouden niveau bij het loslaten van de trigger terug naar 100%, zodat de volgende druk vol begint. Als uitgevinkt, blijft het getrimde niveau over loslatingen heen behouden totdat je het weer aanpast.</value></data>
   <data name="Pad_ResetGuideLed" xml:space="preserve"><value>Guide-knop-LED herstellen</value></data>

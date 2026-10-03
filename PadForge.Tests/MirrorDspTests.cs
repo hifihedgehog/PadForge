@@ -19,6 +19,52 @@ namespace PadForge.Tests
     /// </summary>
     public class MirrorDspTests
     {
+        /// <summary>One NaN sample latched the crossfeed's four IIR histories,
+        /// and SetParams keeps them for an unchanged level, so every later
+        /// block came out NaN after the bad value was gone. The history now
+        /// resets at the end of the block that went non-finite.</summary>
+        [Fact]
+        public void Crossfeed_RecoversFromANaNSample()
+        {
+            var cf = new CrossfeedStage();
+            cf.SetParams(CrossfeedStage.Bs2bDefault, Rate);
+            var bad = new float[64];
+            bad[10] = float.NaN;
+            cf.Process(bad, 32);
+
+            var clean = new float[64];
+            for (int i = 0; i < clean.Length; i++) clean[i] = 0.25f;
+            cf.Process(clean, 32);
+            Assert.All(clean, s => Assert.True(float.IsFinite(s)));
+        }
+
+        /// <summary>The limiter's envelope latched NaN the same way, which
+        /// left only the hard clamp in place. It now resets.</summary>
+        [Fact]
+        public void Limiter_RecoversFromANaNSample()
+        {
+            var lim = new LimiterStage();
+            lim.SetParams(true, 0.5f, Rate);
+            var bad = new float[8];
+            bad[2] = float.NaN;
+            lim.Process(bad, 4);
+
+            var env = typeof(LimiterStage).GetField("_env",
+                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            Assert.Equal(0f, (float)env.GetValue(lim));
+
+            var loud = new float[4800];
+            for (int i = 0; i < loud.Length; i++) loud[i] = 0.9f;
+            lim.Process(loud, loud.Length / 2);
+            Assert.All(loud, s => Assert.True(float.IsFinite(s)));
+            // The gain riding is back: right after the loud burst the
+            // envelope still attenuates a signal under the ceiling, where a
+            // NaN envelope passed it at full gain.
+            var quiet = new float[] { 0.4f, 0.4f };
+            lim.Process(quiet, 1);
+            Assert.True(quiet[0] < 0.3f);
+        }
+
         private const int Rate = 48000;
 
         private static float[] Interleave(float[] l, float[] r)

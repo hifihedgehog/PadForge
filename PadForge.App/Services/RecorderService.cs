@@ -398,8 +398,15 @@ namespace PadForge.Services
             if (ud == null || current == null) return null;
             if (kind == 1)
             {
-                float body = ud.HasGyro ? Magnitude(current.Gyro) : 0f;
-                float aux = ud.HasGyroAux ? Magnitude(current.GyroAux) : 0f;
+                // The change from the reading at the start, as the
+                // accelerometer below: a pad at rest reads its own offset,
+                // and a DualShock 3's yaw rests near 2.7 rad/s on PadForge's
+                // own path (Ds3DirectService.YawFromWord), past the
+                // threshold with nothing turning. Calibration subtracts the
+                // offset where the gyro is read, not in the state recorded
+                // here.
+                float body = ud.HasGyro ? Distance(current.Gyro, baseline?.Gyro) : 0f;
+                float aux = ud.HasGyroAux ? Distance(current.GyroAux, baseline?.GyroAux) : 0f;
                 if (MathF.Max(body, aux) < MotionRecordGyroRadPerSec) return null;
                 return aux > body
                     ? PadForge.Engine.Data.MappingSetMigrator.MotionGyroAuxSourceDescriptor
@@ -1251,7 +1258,7 @@ namespace PadForge.Services
                     extraSource.Invert = shouldInvert;
                     // Same half rule as the primary path.
                     extraSource.HalfAxis = RecordsAHalf(mapping, descriptor, type,
-                        winningUserDevice, winningIsMouse, shouldInvert);
+                        winningUserDevice, winningIsMouse, shouldInvert, extraSource.Kind);
                 }
                 else
                 {
@@ -1286,7 +1293,7 @@ namespace PadForge.Services
                     // the user pushed (H prefix, IH for the negative half),
                     // which is off at rest. See RecordsAHalf.
                     bool half = RecordsAHalf(mapping, descriptor, type,
-                        winningUserDevice, winningIsMouse, shouldInvert);
+                        winningUserDevice, winningIsMouse, shouldInvert, mapping.PrimaryKindSource?.Kind);
                     descriptor = (shouldInvert ? "I" : "") + (half ? "H" : "") + descriptor;
                 }
                 if (!string.IsNullOrEmpty(winningGuidStr))
@@ -1314,22 +1321,44 @@ namespace PadForge.Services
         }
 
         /// <summary>Whether an axis recorded onto <paramref name="mapping"/> is
-        /// stored as the half the user pushed. Only a button-like target reads
-        /// an axis as pressed or not, and only an axis that rests at the middle
-        /// needs the half: its full-axis threshold sits on the center line, so a
-        /// stick recorded that way read pressed at rest. A gamepad trigger or a
-        /// slider rests at 0 (InputManager.AxisRestsAtZero) and keeps the full
-        /// axis. A mouse's relative axis rests at the middle too, but its
-        /// positive direction keeps the full axis, which fires on any movement
-        /// and was never pressed at rest. Its negative direction takes the half,
-        /// the #200 fix.</summary>
+        /// stored as the half the user pushed. Only a press reads an axis as
+        /// pressed or not, and only an axis that rests at the middle needs the
+        /// half: its full-axis threshold sits on the center line, so a stick
+        /// recorded that way read pressed at rest. A press is a button-like
+        /// target, or a trigger whose source is a Toggle or Rapid Trigger
+        /// (<paramref name="sourceKind"/>), which read the trigger lane's pull
+        /// as pressed past a threshold. A gamepad trigger or a slider rests at
+        /// 0 (InputManager.AxisRestsAtZero) and keeps the full axis. A mouse's
+        /// relative axis rests at the middle too, but its positive direction
+        /// keeps the full axis, which fires on any movement and was never
+        /// pressed at rest. Its negative direction takes the half, the #200
+        /// fix.</summary>
         private static bool RecordsAHalf(MappingItem mapping, string descriptor, MapType type,
-            UserDevice device, bool isMouse, bool inverted)
+            UserDevice device, bool isMouse, bool inverted, string sourceKind)
         {
             if (type != MapType.Axis) return false;
-            if (!IsButtonLikeRecordingTarget(mapping.TargetSettingName)) return false;
+            if (!IsButtonLikeRecordingTarget(mapping.TargetSettingName)
+                && !(IsPressKind(sourceKind) && IsTriggerRecordingTarget(mapping)))
+                return false;
             if (isMouse) return inverted;
             return !InputManager.AxisRestsAtZero(descriptor, device);
+        }
+
+        /// <summary>The source kinds that read their input as a press (#461,
+        /// #482), on a trigger the same as on a button.</summary>
+        private static bool IsPressKind(string kind)
+            => kind is "Toggle" or "RapidTrigger";
+
+        /// <summary>A target the trigger lane reads, a pull from rest to full:
+        /// a gamepad trigger, a one-way Extended axis, or one of the ten
+        /// button pressure rows (discussion #476).</summary>
+        private static bool IsTriggerRecordingTarget(MappingItem mapping)
+        {
+            string target = mapping.TargetSettingName;
+            if (target == "LeftTrigger" || target == "RightTrigger") return true;
+            if (PadForge.Engine.Data.MappingSetMigrator.IsPressureTarget(target)) return true;
+            return target != null && target.StartsWith("RawAxis", StringComparison.Ordinal)
+                && !mapping.HasNegDirection;
         }
 
         private static UserDevice FindUserDevice(Guid g)

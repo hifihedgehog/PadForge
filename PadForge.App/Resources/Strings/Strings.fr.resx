@@ -1334,6 +1334,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="DevObj_Guide" xml:space="preserve"><value>Guide</value></data>
   <data name="DevObj_Select" xml:space="preserve"><value>Sélection</value></data>
   <data name="DevObj_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="DevObj_Option" xml:space="preserve"><value>Option</value></data>
   <data name="DevObj_Run" xml:space="preserve"><value>Run</value></data>
   <data name="DevObj_Reset" xml:space="preserve"><value>Reset</value></data>
   <data name="DevObj_HomeButton" xml:space="preserve"><value>Bouton HOME</value></data>
@@ -3058,6 +3059,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Mapping_MotionRowUnreadNote" xml:space="preserve"><value>Les sticks et les boutons ne sont pas lus sur cette ligne. Assignez-les à Mouvement tangage, Mouvement lacet ou Mouvement roulis, puis retirez-les ici.</value></data>
   <data name="Pad_Mapping_MotionSourceElsewhereNote" xml:space="preserve"><value>Les sources Mouvement gyroscope et Mouvement accéléromètre ne fonctionnent que sur les lignes Mouvement gyroscope et Mouvement accéléromètre.</value></data>
   <data name="Pad_Mapping_MotionPresetNote" xml:space="preserve"><value>Le rapport de ce préréglage ne transporte aucun mouvement. Le serveur de mouvement (DSU) le reçoit quand même pour les emplacements 1 à 4.</value></data>
+  <data name="Pad_Mapping_MotionPitchRollRateNote" xml:space="preserve"><value>Le rapport de ce préréglage ne transporte aucune vitesse de tangage ni de roulis. En mode Vitesse, cette ligne n'atteint le jeu que sous forme d'inclinaison, et seulement tant qu'aucun accéléromètre n'alimente la ligne Mouvement accéléromètre. Le serveur de mouvement (DSU) la reçoit quand même pour les emplacements 1 à 4.</value></data>
   <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>Réinitialiser au relâchement</value></data>
   <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>Lorsque coché, relâcher la gâchette ramène le niveau retenu à 100%, la prochaine pression repart donc à plein. Décoché, le niveau ajusté est conservé d'un relâchement à l'autre jusqu'au prochain ajustement.</value></data>
   <data name="Pad_ResetGuideLed" xml:space="preserve"><value>Réinitialiser la LED du bouton Guide</value></data>

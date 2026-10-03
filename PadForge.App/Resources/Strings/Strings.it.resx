@@ -1354,6 +1354,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="DevObj_Guide" xml:space="preserve"><value>Guida</value></data>
   <data name="DevObj_Select" xml:space="preserve"><value>Seleziona</value></data>
   <data name="DevObj_Mode" xml:space="preserve"><value>Modalità</value></data>
+  <data name="DevObj_Option" xml:space="preserve"><value>Opzione</value></data>
   <data name="DevObj_Run" xml:space="preserve"><value>Run</value></data>
   <data name="DevObj_Reset" xml:space="preserve"><value>Reset</value></data>
   <data name="DevObj_HomeButton" xml:space="preserve"><value>Pulsante HOME</value></data>
@@ -3080,6 +3081,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_Mapping_MotionRowUnreadNote" xml:space="preserve"><value>Levette e pulsanti non vengono letti su questa riga. Assegnali a Movimento beccheggio, Movimento imbardata o Movimento rollio, poi rimuovili da qui.</value></data>
   <data name="Pad_Mapping_MotionSourceElsewhereNote" xml:space="preserve"><value>Le sorgenti Movimento giroscopio e Movimento accelerometro funzionano solo sulle righe Movimento giroscopio e Movimento accelerometro.</value></data>
   <data name="Pad_Mapping_MotionPresetNote" xml:space="preserve"><value>Il report di questo preset non trasporta movimento. Il server di movimento (DSU) lo riceve comunque per gli slot da 1 a 4.</value></data>
+  <data name="Pad_Mapping_MotionPitchRollRateNote" xml:space="preserve"><value>Il report di questo preset non trasporta la velocità di beccheggio né di rollio. In modalità Velocità questa riga raggiunge il gioco solo come inclinazione, e solo finché nessun accelerometro alimenta la riga Movimento accelerometro. Il server di movimento (DSU) la riceve comunque per gli slot da 1 a 4.</value></data>
   <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>Ripristina al rilascio</value></data>
   <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>Se selezionato, rilasciare il grilletto riporta il livello mantenuto al 100%, così la prossima pressione parte piena. Se deselezionato, il livello regolato resta tra un rilascio e l'altro finché non lo regoli di nuovo.</value></data>
   <data name="Pad_ResetGuideLed" xml:space="preserve"><value>Ripristina LED del pulsante Guida</value></data>

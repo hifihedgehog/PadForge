@@ -1334,6 +1334,7 @@
   <data name="DevObj_Guide" xml:space="preserve"><value>가이드</value></data>
   <data name="DevObj_Select" xml:space="preserve"><value>선택</value></data>
   <data name="DevObj_Mode" xml:space="preserve"><value>모드</value></data>
+  <data name="DevObj_Option" xml:space="preserve"><value>옵션</value></data>
   <data name="DevObj_Run" xml:space="preserve"><value>RUN</value></data>
   <data name="DevObj_Reset" xml:space="preserve"><value>리셋</value></data>
   <data name="DevObj_HomeButton" xml:space="preserve"><value>HOME 버튼</value></data>
@@ -3058,6 +3059,7 @@
   <data name="Pad_Mapping_MotionRowUnreadNote" xml:space="preserve"><value>이 행에서는 스틱과 버튼을 읽지 않습니다. 모션 피치, 모션 요 또는 모션 롤에 매핑한 뒤 여기서 제거하세요.</value></data>
   <data name="Pad_Mapping_MotionSourceElsewhereNote" xml:space="preserve"><value>모션 자이로와 모션 가속도 센서 소스는 모션 자이로와 모션 가속도 센서 행에서만 작동합니다.</value></data>
   <data name="Pad_Mapping_MotionPresetNote" xml:space="preserve"><value>이 프리셋의 리포트에는 모션이 없습니다. 슬롯 1~4에서는 모션 서버(DSU)가 계속 받습니다.</value></data>
+  <data name="Pad_Mapping_MotionPitchRollRateNote" xml:space="preserve"><value>이 프리셋의 리포트에는 피치와 롤 회전 속도가 없습니다. 속도 모드에서 이 행은 기울기로만 게임에 전달되며, 그것도 모션 가속도 센서 행에 가속도 센서가 입력되지 않는 동안에만 전달됩니다. 슬롯 1~4에서는 모션 서버(DSU)가 계속 받습니다.</value></data>
   <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>놓을 때 재설정</value></data>
   <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>체크하면 트리거를 놓을 때 유지 레벨이 100%로 돌아가 다음 누름이 최대에서 시작됩니다. 체크 해제하면 다시 조정할 때까지 트림된 레벨이 놓은 뒤에도 유지됩니다.</value></data>
   <data name="Pad_ResetGuideLed" xml:space="preserve"><value>가이드 버튼 LED 재설정</value></data>

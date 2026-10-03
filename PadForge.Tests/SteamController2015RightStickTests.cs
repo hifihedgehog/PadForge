@@ -16,6 +16,7 @@ namespace PadForge.Tests
     /// map, so hovering still finds the pad's four direction quarters and
     /// its click underneath.</para>
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class SteamController2015RightStickTests
     {
         [Fact]
@@ -108,11 +109,7 @@ namespace PadForge.Tests
             Assert.Contains(m.RightThumb, m.ButtonMap["RightThumbButton"]);
 
             // And the grid lists that slot ONCE, under the pad's own name.
-            var vm = new PadForge.ViewModels.PadViewModel(0)
-            {
-                OutputType = PadForge.Engine.VirtualControllerType.Extended,
-                ProfileId = "steam-controller",
-            };
+            var vm = RestoredPad.Build(0, PadForge.Engine.VirtualControllerType.Extended, "steam-controller");
             Assert.Single(vm.Mappings, x => x.TargetSettingName == "RawBtn13");
             Assert.Equal(profile, profile);
         }

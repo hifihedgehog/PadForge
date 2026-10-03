@@ -1,5 +1,6 @@
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Engine.RemoteLink;
 
 namespace PadForge.Common.Input
 {
@@ -59,6 +60,13 @@ namespace PadForge.Common.Input
             bool sdlOrder = ud?.Device switch
             {
                 SdlDeviceWrapper w => IsSdlOrderDualShock3(w.VendorId, w.ProductId, w.RawAxisCount, w.RawButtonCount),
+                // A pad shared over Remote Link answers from the owner's
+                // counts the link carries. The proxy's own RawButtonCount
+                // folds the driver's 11 or 15 into the 22 gamepad positions,
+                // so the owner's count comes from Info. An old peer that
+                // sends no raw counts gets no answer.
+                RemotePeerDevice r => IsSdlOrderDualShock3(r.Info.VendorId, r.Info.ProductId,
+                    r.Info.RawAxisCount, r.Info.RawButtonCount),
                 null => ud != null && CachedRawButtons(ud.SdlGuid) is int buttons
                     && IsSdlOrderDualShock3(ud.VendorId, ud.ProdId, ud.RawAxisCount, buttons),
                 _ => false,

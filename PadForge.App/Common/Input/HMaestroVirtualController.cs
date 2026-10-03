@@ -1431,6 +1431,17 @@ namespace PadForge.Common.Input
                                 (ushort)(left * 257), (ushort)(right * 257), 0, 0));
                     }
                 }
+                // The DualShock 3 (SIXAXIS): Full persona decodes its own
+                // motor fields (TryDualShock3Motors), and the pair above
+                // never appears on it, so game rumble reached no consumer.
+                else if (TryDualShock3Motors(e.Fields, e.RawBytes.Length, declaredSize,
+                             out ushort ds3Large, out ushort ds3Small))
+                {
+                    vibrationStates[idx].LeftMotorSpeed = ds3Large;
+                    vibrationStates[idx].RightMotorSpeed = ds3Small;
+                    System.Threading.Volatile.Write(ref _inboundRumblePack,
+                        Engine.Common.LfeOutputState.Pack(ds3Large, ds3Small, 0, 0));
+                }
             };
 
             _controller.OutputReceived += (ctrl, pkt) =>
@@ -1825,6 +1836,29 @@ namespace PadForge.Common.Input
         internal static bool SonyRumbleClaimed(object validFlag0, byte motorMask, object validFlag2)
             => (validFlag0 is byte vf && (vf & motorMask) != 0)
             || (validFlag2 is byte vf2 && (vf2 & 0x04) != 0);
+
+        /// <summary>The motors a DualShock 3 output report sets, decoded by
+        /// the DualShock 3 (SIXAXIS): Full profile at the bytes hid-sony's
+        /// struct sixaxis_rumble names: rightMotorOn is the small
+        /// (high-frequency) motor, on or off, and leftMotorForce the large
+        /// (low-frequency) motor, 0 to 255. SDL's PS3 driver writes the same
+        /// two bytes (SDL_hidapi_ps3.c HIDAPI_DriverPS3_UpdateEffects:
+        /// rumble_right ? 1 : 0, then rumble_left). The report has no
+        /// validity flags. Both hosts send the whole report, motors
+        /// included, with every LED change, so a full-length frame is the
+        /// current motor state, and a stop is a frame with both motors
+        /// off.</summary>
+        internal static bool TryDualShock3Motors(IReadOnlyDictionary<string, object> fields,
+            int rawLength, int declaredSize, out ushort large, out ushort small)
+        {
+            large = small = 0;
+            if (fields == null || declaredSize <= 0 || rawLength < declaredSize) return false;
+            if (!fields.TryGetValue("leftMotorForce", out var forceObj) || forceObj is not byte force) return false;
+            if (!fields.TryGetValue("rightMotorOn", out var onObj) || onObj is not byte on) return false;
+            large = (ushort)(force * 257);
+            small = on != 0 ? ushort.MaxValue : (ushort)0;
+            return true;
+        }
 
         /// <summary>Whether a decoded motor pair may land in
         /// VibrationStates: Sony profiles require the full trust gate; any

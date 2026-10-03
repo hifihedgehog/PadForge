@@ -284,7 +284,7 @@ namespace PadForge.ViewModels
     ///
     /// <para>Clamps match the engine's. A band the UI accepts but the DSP
     /// silently rejects is a worse experience than one the UI refuses.</para></summary>
-    public partial class EqBandVm : ObservableObject
+    public partial class EqBandVm : FiniteObservableObject
     {
         internal PadViewModel Owner;
 

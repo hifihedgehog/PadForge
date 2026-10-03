@@ -59,9 +59,12 @@ namespace PadForge.Tests
             Assert.Equal("Cross", BlissBoxControllers.ButtonName(121, 4, 0));
             Assert.Equal("Z Trigger", BlissBoxControllers.ButtonName(19, 3, 4));
             Assert.Equal("C-Up", BlissBoxControllers.ButtonName(19, 4, 8));
-            // Nothing settles the Jaguar on 3.x, so it keeps its own names.
-            Assert.Null(BlissBoxControllers.ButtonName(11, 3, 7));
+            // The 3.0 firmware's own scan settles the Jaguar on 3.x, in the
+            // GPA's numbering.
+            Assert.Equal("A", BlissBoxControllers.ButtonName(11, 3, 7));
             Assert.Equal("A", BlissBoxControllers.ButtonName(11, 4, 7));
+            Assert.Equal("Pause", BlissBoxControllers.ButtonName(11, 3, 5));
+            Assert.Equal("Option", BlissBoxControllers.ButtonName(11, 4, 4));
             // 2.x has no source, and an unknown type keeps its numbers.
             Assert.False(BlissBoxControllers.HasLayout(121, 2));
             Assert.Null(BlissBoxControllers.ButtonName(200, 4, 0));
@@ -178,7 +181,7 @@ namespace PadForge.Tests
             Assert.Equal(-1, BlissBoxControllers.FirstArrowButton(28, 4));
             Assert.Equal(-1, BlissBoxControllers.FirstArrowButton(1, 3));
             var jaguar = BlissBoxRuntime.NameObjects(new BlissBoxInfo(11, 0, 3, 34, 1), 8, RawJoystick(8, 24));
-            Assert.Equal("Button 10", jaguar.Single(o => o.IsButton && o.InputIndex == 10).Name);
+            Assert.Equal("Keypad 3", jaguar.Single(o => o.IsButton && o.InputIndex == 10).Name);
 
             var ds2 = BlissBoxRuntime.NameObjects(new BlissBoxInfo(BlissBoxControllers.TypeDualShock2, 0, 3, 34, 1), 8, RawJoystick(8, 24));
             Assert.Equal("Up Arrow", ds2.Single(o => o.IsButton && o.InputIndex == 10).Name);

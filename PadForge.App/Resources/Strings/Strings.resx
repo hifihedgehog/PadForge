@@ -2024,6 +2024,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="DevObj_Guide" xml:space="preserve"><value>Guide</value></data>
   <data name="DevObj_Select" xml:space="preserve"><value>Select</value></data>
   <data name="DevObj_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="DevObj_Option" xml:space="preserve"><value>Option</value></data>
   <data name="DevObj_Run" xml:space="preserve"><value>Run</value></data>
   <data name="DevObj_Reset" xml:space="preserve"><value>Reset</value></data>
   <data name="DevObj_HomeButton" xml:space="preserve"><value>Home Button</value></data>
@@ -3243,6 +3244,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Mapping_MotionRowUnreadNote" xml:space="preserve"><value>Sticks and buttons are not read on this row. Map them to Motion Pitch, Motion Yaw or Motion Roll, then remove them here.</value></data>
   <data name="Pad_Mapping_MotionSourceElsewhereNote" xml:space="preserve"><value>Motion Gyro and Motion Accelerometer sources work only on the Motion Gyro and Motion Accelerometer rows.</value></data>
   <data name="Pad_Mapping_MotionPresetNote" xml:space="preserve"><value>This preset's report carries no motion. The motion server (DSU) still receives it for slots 1 to 4.</value></data>
+  <data name="Pad_Mapping_MotionPitchRollRateNote" xml:space="preserve"><value>This preset's report carries no pitch or roll rate. In Speed mode this row reaches the game only as tilt, and only while no accelerometer feeds the Motion Accelerometer row. The motion server (DSU) still receives it for slots 1 to 4.</value></data>
   <data name="Pad_Mapping_TrimReset" xml:space="preserve">
     <value>Reset on Release</value>
   </data>

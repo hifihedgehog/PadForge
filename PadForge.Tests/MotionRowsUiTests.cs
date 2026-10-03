@@ -39,11 +39,7 @@ namespace PadForge.Tests
         };
 
         private static PadViewModel Grid(VirtualControllerType type, string profile)
-        {
-            var vm = new PadViewModel(0) { OutputType = type };
-            if (profile != null) vm.ProfileId = profile;
-            return vm;
-        }
+            => RestoredPad.Build(0, type, profile);
 
         private static MappingItem Row(string target)
             => new(target, target, MappingCategory.Motion,
@@ -97,6 +93,7 @@ namespace PadForge.Tests
         [InlineData(VirtualControllerType.PlayStation, "dualshock-4-v1", false)]
         [InlineData(VirtualControllerType.Nintendo, "switch-pro", false)]
         [InlineData(VirtualControllerType.Extended, "steam-deck-composite", false)]
+        [InlineData(VirtualControllerType.Extended, "steam-deck", true)]
         public void APresetWithoutMotionNotesItOnTheMotionRows(VirtualControllerType type, string profile, bool noMotion)
         {
             var vm = Grid(type, profile);
@@ -108,6 +105,33 @@ namespace PadForge.Tests
                 Assert.Equal(noMotion ? Strings.Instance.Pad_Mapping_MotionPresetNote : null, m.MotionRowNote);
                 Assert.Equal(noMotion, m.ShowMotionRowNote);
             }
+        }
+
+        /// <summary>The DualShock 3 (SIXAXIS): Full's report carries the
+        /// accelerometer and the yaw rate but no pitch or roll rate, so a
+        /// Speed turn on Motion Pitch or Roll reaches the game only as tilt.
+        /// The note sits on those two rows in Speed mode and leaves with
+        /// Angle mode, which leans the accelerometer the report carries.</summary>
+        [Fact]
+        public void TheFullPresetNotesASpeedPitchOrRollTurn()
+        {
+            var vm = Grid(VirtualControllerType.PlayStation, "dualshock-3-full");
+            MappingItem RowOf(string target) => vm.Mappings.Single(m => m.TargetSettingName == target);
+            string note = Strings.Instance.Pad_Mapping_MotionPitchRollRateNote;
+            var pitch = RowOf(MappingSetMigrator.MotionPitchTarget);
+            Assert.Equal(note, pitch.MotionRowNote);
+            Assert.Equal(note, RowOf(MappingSetMigrator.MotionRollTarget).MotionRowNote);
+            Assert.Null(RowOf(MappingSetMigrator.MotionYawTarget).MotionRowNote);
+            Assert.Null(RowOf("MotionGyro").MotionRowNote);
+
+            var raised = new List<string>();
+            pitch.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
+            pitch.MotionResponse = MappingRow.MotionResponseAngle;
+            Assert.Null(pitch.MotionRowNote);
+            Assert.Contains(nameof(MappingItem.MotionRowNote), raised);
+
+            Assert.All(Grid(VirtualControllerType.PlayStation, "dualsense-composite").Mappings,
+                m => Assert.False(m.PresetCarriesNoPitchRollRate));
         }
 
         [Fact]
@@ -476,6 +500,21 @@ namespace PadForge.Tests
             Assert.Null(RecorderService.DetectMotion(1, noAux, State(gyro: new[] { 0f, 2f, 0f }), rest));
             // Not a Motion recording.
             Assert.Null(RecorderService.DetectMotion(0, ud, State(gyro: new[] { 0f, 9f, 0f }), rest));
+        }
+
+        /// <summary>A pad whose gyro rests off zero records only when it
+        /// turns. A DualShock 3 on PadForge's own path rests near 2.7 rad/s on
+        /// its yaw (Ds3DirectService.YawFromWord, word 727), past the
+        /// threshold, and the recording took it at once.</summary>
+        [Fact]
+        public void AGyroRestingOffZeroRecordsOnlyWhenItTurns()
+        {
+            var ud = Sensors(aux: false);
+            float offset = (727 - 512) * PadForge.Engine.DualShock3Motion.GyroRadPerCount;
+            var rest = State(gyro: new[] { 0f, offset, 0f });
+            Assert.Null(RecorderService.DetectMotion(1, ud, State(gyro: new[] { 0f, offset, 0f }), rest));
+            Assert.Null(RecorderService.DetectMotion(1, ud, State(gyro: new[] { 0.3f, offset + 0.4f, 0f }), rest));
+            Assert.Equal("Motion Gyro", RecorderService.DetectMotion(1, ud, State(gyro: new[] { 0f, offset + 2f, 0f }), rest));
         }
 
         [Fact]

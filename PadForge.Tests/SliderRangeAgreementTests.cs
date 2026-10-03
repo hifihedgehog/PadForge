@@ -7,14 +7,17 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>
-    /// A slider's ceiling and the value its model accepts have to agree.
+    /// A slider's range and the range its model accepts have to agree.
     ///
-    /// <para>A slider coerces its value into its own range, and these bind two
-    /// way with the default update trigger, so a stored or imported value
-    /// above the slider's ceiling was clamped the moment the card realized and
-    /// the clamped number was written back to the model. The text box beside
-    /// each slider accepts the model's full range, so a user could type a
-    /// value, see it accepted, and lose it on the next visit to the card.</para>
+    /// <para>A slider coerces only its own displayed value. WPF keeps the
+    /// coerced number on the slider and never writes it to the bound
+    /// property (RangeBase's coercion is stored with SetCoercedValue, and a
+    /// TwoWay source is written only through SetValue or SetCurrentValue),
+    /// so a value outside the slider's range stays in the model. The slider
+    /// pegs at its end beside a text box that shows the real number, the
+    /// first touch of the slider replaces it with one inside the slider's
+    /// range, and the slider can never set the rest of the model's
+    /// range.</para>
     /// </summary>
     public class SliderRangeAgreementTests
     {
@@ -87,6 +90,65 @@ namespace PadForge.Tests
             double ceiling = ModelCeiling((vm, v) => vm.GyroSimulationSmoothingMs = v, vm => vm.GyroSimulationSmoothingMs);
             Assert.Equal(250, ceiling);
             Assert.Equal(ceiling, SliderMaximum("GyroSimulationSmoothingMs"));
+        }
+
+        /// <summary>Every slider bound to <paramref name="boundProperty"/> on
+        /// the Pad page, with its Minimum and Maximum.</summary>
+        private static System.Collections.Generic.List<(double Min, double Max)> Sliders(string boundProperty)
+        {
+            string xaml = File.ReadAllText(Path.Combine(RepoRoot(),
+                "PadForge.App", "Views", "PadPage.xaml"));
+            var found = new System.Collections.Generic.List<(double, double)>();
+            foreach (Match m in Regex.Matches(xaml, @"<Slider\b[^>]*>", RegexOptions.Singleline))
+            {
+                if (!Regex.IsMatch(m.Value, @"Value=""\{Binding " + Regex.Escape(boundProperty) + @"[,}]")) continue;
+                string tag = m.Value;
+                double Read(string attr) => double.Parse(
+                    Regex.Match(tag, attr + "=\"(?<v>[0-9.]+)\"").Groups["v"].Value,
+                    System.Globalization.CultureInfo.InvariantCulture);
+                found.Add((Read("Minimum"), Read("Maximum")));
+            }
+            Assert.NotEmpty(found);
+            return found;
+        }
+
+        /// <summary>The model's floor and ceiling: what it keeps when handed a
+        /// very small and a very large value.</summary>
+        private static (double Min, double Max) ModelRange(Action<double> set, Func<double> get)
+        {
+            set(-1e6);
+            double min = get();
+            set(1e6);
+            return (min, get());
+        }
+
+        /// <summary>The Motion Pitch, Yaw and Roll rows' speeds (#475), the
+        /// stick trim rate (#155) and the Ramped attack and release times
+        /// (#111), at every site that binds them: each slider covers the
+        /// range its model accepts. Top Speed stopped at 10 where the model
+        /// takes 1, Start Speed at 200 where it takes 1,600, the trim rate at
+        /// 10 to 400 against 1 to 1,000, and the ramp times at 2 against
+        /// 5.</summary>
+        [Theory]
+        [InlineData("MotionSpeed")]
+        [InlineData("MotionMinSpeed")]
+        [InlineData("TrimRate")]
+        [InlineData("ParamAttackTime")]
+        [InlineData("ParamReleaseTime")]
+        public void EveryRowSliderCoversItsModelsRange(string property)
+        {
+            var row = new MappingItem("Motion Pitch", PadForge.Engine.Data.MappingSetMigrator.MotionPitchTarget,
+                MappingCategory.Motion, null, includeInMapAll: false);
+            var source = new MappingSourceItem();
+            var range = property switch
+            {
+                "MotionSpeed" => ModelRange(v => row.MotionSpeed = (int)v, () => row.MotionSpeed),
+                "MotionMinSpeed" => ModelRange(v => row.MotionMinSpeed = (int)v, () => row.MotionMinSpeed),
+                "TrimRate" => ModelRange(v => row.TrimRate = (int)v, () => row.TrimRate),
+                "ParamAttackTime" => ModelRange(v => source.ParamAttackTime = v, () => source.ParamAttackTime),
+                _ => ModelRange(v => source.ParamReleaseTime = v, () => source.ParamReleaseTime),
+            };
+            Assert.All(Sliders(property), s => Assert.Equal(range, s));
         }
 
         /// <summary>The model really does clamp, so the comparisons above are

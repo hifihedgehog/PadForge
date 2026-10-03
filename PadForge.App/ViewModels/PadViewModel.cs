@@ -207,6 +207,24 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _outputType, value))
                 {
+                    // The new category's default owns the slot's wire from
+                    // here, stamped before anything below can run the
+                    // ProfileId setter (the default assignment, or the
+                    // profile picker's binding as its list changes). A type
+                    // change never carries mapping data onto a new wire: a
+                    // user's change re-authors the slot for the new type
+                    // first (ReAutoMapSlot), and load, profile apply and slot
+                    // compaction install the incoming sets and stamp their
+                    // own profile right after. Left on the outgoing profile's
+                    // stamp, the default assignment read as a live re-target
+                    // and translated, filled and merged the incoming sets
+                    // from the outgoing wire: a profile switch or a slot
+                    // compaction that turned an Xbox slot into a Nintendo one
+                    // pruned the Switch 2 Pro rows and stripped every source
+                    // of a device not yet assigned.
+                    string defaultProfileId = PadForge.Common.Input.InputManager.GetDefaultProfileId(value);
+                    SettingsManager.StampNintendoWire(PadIndex, defaultProfileId);
+
                     // Raise AvailableProfiles FIRST so the dropdown's
                     // ItemsSource refreshes to the new category's profile
                     // list BEFORE the ProfileId assignment below triggers
@@ -238,7 +256,7 @@ namespace PadForge.ViewModels
                     // dropdown lands on a valid selection immediately. The
                     // engine-side fallback still catches null, but the UI
                     // binds to ProfileId directly.
-                    ProfileId = PadForge.Common.Input.InputManager.GetDefaultProfileId(value);
+                    ProfileId = defaultProfileId;
                     ResetDeadZoneSettings();
                     RebuildMappings();
                     RebuildStickConfigs();
@@ -284,6 +302,12 @@ namespace PadForge.ViewModels
                     string fromWire = SettingsManager.GetWireStamp(PadIndex);
                     bool liveRetarget = !string.IsNullOrEmpty(fromWire)
                         && !string.Equals(fromWire, value, System.StringComparison.OrdinalIgnoreCase);
+                    // An unknown stamp adopts this profile and moves nothing,
+                    // the contract SettingsManager documents for it. Without
+                    // the adopt a null stamp stayed null, and every later
+                    // change on the slot read as a restore.
+                    if (string.IsNullOrEmpty(fromWire))
+                        SettingsManager.StampNintendoWire(PadIndex, value);
 
                     // Extended carries the three VALVE wires, which need the
                     // same move Nintendo has always had and never got: a
@@ -377,14 +401,16 @@ namespace PadForge.ViewModels
                         // dualsense-default slot would keep a Mic Mute
                         // row after switching to a DualShock 4).
                         //
-                        // A live change to the DualShock 3 (SIXAXIS): Full
-                        // fills its pressure rows from the slot's pads
-                        // (discussion #476), merged into the set before the
-                        // rebuild for the reason the Extended branch gives.
-                        // A restore stamps first, so it fills nothing.
+                        // A live change fills, from the slot's pads, what the
+                        // new preset's default maps and the outgoing one's
+                        // does not: the DualShock 3 (SIXAXIS): Full's
+                        // pressure rows (discussion #476), and the touchpad,
+                        // Mic Mute and Edge rows a DualShock 3 preset withheld
+                        // at assign. Merged into the set before the rebuild
+                        // for the reason the Extended branch gives. A restore
+                        // stamps first, so it fills nothing.
                         if (liveRetarget && _outputType == VirtualControllerType.PlayStation
-                            && HMaestroProfileCatalog.ReportCarriesPressure(value)
-                            && DeviceService.FillEmptyPressureMappingsForSlot(PadIndex, value))
+                            && DeviceService.FillEmptyPresetMappingsForSlot(PadIndex, fromWire, value))
                             SettingsService.RefreshMappingSetsFromLegacy();
                         RebuildMappings();
                         // The DualShock 3 presets letter the macro and menu
@@ -2673,8 +2699,8 @@ namespace PadForge.ViewModels
                 Mappings.Add(new MappingItem("\u25B3", "ButtonY", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("L1", "LeftShoulder", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("R1", "RightShoulder", MappingCategory.Buttons));
-                Mappings.Add(new MappingItem(isDualShock3 ? "Select" : "Share", "ButtonBack", MappingCategory.Buttons));
-                Mappings.Add(new MappingItem(isDualShock3 ? "Start" : "Options", "ButtonStart", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(MacroButtonNames.PlayStationBack(isDualShock3), "ButtonBack", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(MacroButtonNames.PlayStationStart(isDualShock3), "ButtonStart", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("PS", "ButtonGuide", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("L3", "LeftThumbButton", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("R3", "RightThumbButton", MappingCategory.Buttons));
@@ -2727,7 +2753,7 @@ namespace PadForge.ViewModels
                 if (!string.IsNullOrEmpty(ProfileId) &&
                     ProfileId.StartsWith("xbox-series-", StringComparison.OrdinalIgnoreCase))
                 {
-                    Mappings.Add(new MappingItem("Share", "ButtonShare", MappingCategory.Buttons,
+                    Mappings.Add(new MappingItem(Strings.Instance.Btn_Share, "ButtonShare", MappingCategory.Buttons,
                         includeInMapAll: false));
                 }
 
@@ -2819,8 +2845,13 @@ namespace PadForge.ViewModels
         private void AddMotionRows()
         {
             bool noMotion = PadForge.Common.Input.HMaestroProfileCatalog.ReportCarriesNoMotion(ProfileId);
+            bool noPitchRollRate = PadForge.Common.Input.HMaestroProfileCatalog.ReportCarriesNoPitchRollRate(ProfileId);
             MappingItem Row(string label, string target, string neg = null)
-                => new(label, target, MappingCategory.Motion, neg, includeInMapAll: false) { PresetCarriesNoMotion = noMotion };
+                => new(label, target, MappingCategory.Motion, neg, includeInMapAll: false)
+                {
+                    PresetCarriesNoMotion = noMotion,
+                    PresetCarriesNoPitchRollRate = noPitchRollRate,
+                };
             Mappings.Add(Row(Strings.Instance.Mapping_MotionGyro,  "MotionGyro"));
             Mappings.Add(Row(Strings.Instance.Mapping_MotionAccel, "MotionAccel"));
             Mappings.Add(Row(Strings.Instance.Mapping_MotionPitch, MappingSetMigrator.MotionPitchTarget, MappingSetMigrator.MotionPitchTarget + "Neg"));
@@ -7317,8 +7348,8 @@ namespace PadForge.ViewModels
                     new GyroLabeledOption(() => ps ? "△" : "Y", "ButtonY"),
                     new GyroLabeledOption(() => ps ? "L1" : s.Btn_LeftShoulder, "LeftShoulder"),
                     new GyroLabeledOption(() => ps ? "R1" : s.Btn_RightShoulder, "RightShoulder"),
-                    new GyroLabeledOption(() => ds3 ? s.DevObj_Select : ps ? s.Btn_Share : s.Btn_Back, "ButtonBack"),
-                    new GyroLabeledOption(() => ps && !ds3 ? s.Btn_Options : s.Btn_Start, "ButtonStart"),
+                    new GyroLabeledOption(() => ps ? MacroButtonNames.PlayStationBack(ds3) : s.Btn_Back, "ButtonBack"),
+                    new GyroLabeledOption(() => ps ? MacroButtonNames.PlayStationStart(ds3) : s.Btn_Start, "ButtonStart"),
                     new GyroLabeledOption(() => ps ? s.Btn_PS : s.Btn_Guide, "ButtonGuide"),
                     new GyroLabeledOption(() => ps ? "L3" : s.Btn_LeftStickButton, "LeftThumbButton"),
                     new GyroLabeledOption(() => ps ? "R3" : s.Btn_RightStickButton, "RightThumbButton"),

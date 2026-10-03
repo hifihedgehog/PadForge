@@ -3331,31 +3331,40 @@ namespace PadForge.Services
                     cfg.NoteCount = cfgData.NoteCount;
                     _mainVm.Pads[idx].RebuildMappings();
 
-                    lock (SettingsManager.UserSettings.SyncRoot)
+                    // A load, under the reload guard, so the grid's edit hooks
+                    // never read the saved descriptors as the user's binding.
+                    // Set after the rebuild, whose own refresh clears it.
+                    bool suppressed = InputService.SuppressMappingEditPush;
+                    InputService.SuppressMappingEditPush = true;
+                    try
                     {
-                        foreach (var us in SettingsManager.UserSettings.Items)
+                        lock (SettingsManager.UserSettings.SyncRoot)
                         {
-                            if (us.MapTo != idx) continue;
-                            var ps = us.GetPadSetting();
-                            if (ps == null) continue;
-                            foreach (var mapping in _mainVm.Pads[idx].Mappings)
+                            foreach (var us in SettingsManager.UserSettings.Items)
                             {
-                                string target = mapping.TargetSettingName;
-                                string value = target.StartsWith("Midi", StringComparison.Ordinal)
-                                    ? ps.GetMidiMapping(target) : string.Empty;
-                                if (!string.IsNullOrEmpty(value))
-                                    mapping.LoadDescriptor(value);
-                                if (mapping.NegSettingName != null)
+                                if (us.MapTo != idx) continue;
+                                var ps = us.GetPadSetting();
+                                if (ps == null) continue;
+                                foreach (var mapping in _mainVm.Pads[idx].Mappings)
                                 {
-                                    string negValue = mapping.NegSettingName.StartsWith("Midi", StringComparison.Ordinal)
-                                        ? ps.GetMidiMapping(mapping.NegSettingName) : string.Empty;
-                                    if (!string.IsNullOrEmpty(negValue))
-                                        mapping.LoadNegDescriptor(negValue);
+                                    string target = mapping.TargetSettingName;
+                                    string value = target.StartsWith("Midi", StringComparison.Ordinal)
+                                        ? ps.GetMidiMapping(target) : string.Empty;
+                                    if (!string.IsNullOrEmpty(value))
+                                        mapping.LoadDescriptor(value);
+                                    if (mapping.NegSettingName != null)
+                                    {
+                                        string negValue = mapping.NegSettingName.StartsWith("Midi", StringComparison.Ordinal)
+                                            ? ps.GetMidiMapping(mapping.NegSettingName) : string.Empty;
+                                        if (!string.IsNullOrEmpty(negValue))
+                                            mapping.LoadNegDescriptor(negValue);
+                                    }
                                 }
+                                break;
                             }
-                            break;
                         }
                     }
+                    finally { InputService.SuppressMappingEditPush = suppressed; }
                 }
             }
         }
@@ -3505,13 +3514,15 @@ namespace PadForge.Services
                 padVm.GyroAimEngageButton = ps.GyroAimEngageButton ?? "";
                 padVm.GyroAimEngageDeviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
                 padVm.GyroAimEngageMode = string.IsNullOrEmpty(ps.GyroAimEngageMode) ? "Hold" : ps.GyroAimEngageMode;
-                padVm.GyroInvertPitch = ps.GyroInvertPitch == "1";
-                padVm.GyroCompassYaw = ps.GyroCompassYaw == "1";
-                padVm.GyroSimulation = ps.GyroSimulation == "1";
+                // The engine's reader (InputService.TryParseBoolPs), so a stored
+                // "true" shows checked where the engine runs it.
+                padVm.GyroInvertPitch = InputService.TryParseBoolPs(ps.GyroInvertPitch, false);
+                padVm.GyroCompassYaw = InputService.TryParseBoolPs(ps.GyroCompassYaw, false);
+                padVm.GyroSimulation = InputService.TryParseBoolPs(ps.GyroSimulation, false);
                 padVm.GyroSimulationSmoothingMs = TryParseDouble(ps.GyroSimulationSmoothingMs, PadForge.Engine.SimulatedGyro.DefaultSmoothingMs);
-                padVm.GyroInvertYaw = ps.GyroInvertYaw == "1";
-                padVm.GyroInvertRoll = ps.GyroInvertRollEffective == "1";
-                padVm.GyroApplyTuningToPassthrough = ps.GyroApplyTuningToPassthrough == "1";
+                padVm.GyroInvertYaw = InputService.TryParseBoolPs(ps.GyroInvertYaw, false);
+                padVm.GyroInvertRoll = InputService.TryParseBoolPs(ps.GyroInvertRollEffective, false);
+                padVm.GyroApplyTuningToPassthrough = InputService.TryParseBoolPs(ps.GyroApplyTuningToPassthrough, false);
 
                 // Load Motion Steering tuning (per-(device, slot)) — settings for the
                 // "Motion Lean" input descriptor. The old Enabled/Target keys are gone
@@ -4221,7 +4232,9 @@ namespace PadForge.Services
                         InstanceGuid = us.InstanceGuid,
                         ProductGuid = us.ProductGuid,
                         MapTo = us.MapTo,
-                        PadSettingChecksum = ps.PadSettingChecksum
+                        PadSettingChecksum = ps.PadSettingChecksum,
+                        BlissBoxOwed = us.BlissBoxOwed,
+                        BlissBoxKeptTargets = us.BlissBoxKeptTargets,
                     });
 
                     if (seen.Add(ps.PadSettingChecksum))
@@ -7652,6 +7665,18 @@ namespace PadForge.Services
 
         [XmlElement]
         public string PadSettingChecksum { get; set; }
+
+        /// <summary>What a Bliss-Box port still owes this assignment
+        /// (<see cref="UserSetting.BlissBoxOwed"/>).</summary>
+        [XmlElement]
+        [System.ComponentModel.DefaultValue(BlissBoxOwedMapping.None)]
+        public BlissBoxOwedMapping BlissBoxOwed { get; set; }
+
+        /// <summary>The targets that request leaves as the user left them
+        /// (<see cref="UserSetting.BlissBoxKeptTargets"/>).</summary>
+        [XmlArray]
+        [XmlArrayItem("Target")]
+        public string[] BlissBoxKeptTargets { get; set; }
     }
 
     /// <summary>

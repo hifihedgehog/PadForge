@@ -20,11 +20,12 @@ namespace PadForge.Tests
     /// and went out. The 2015 pad showed it plainest: its d-pad is the left
     /// trackpad, so pressing a direction lit nothing the player could see
     /// (owner report 2026-08-29).</para></summary>
+    [Collection("SettingsManagerStatics")]
     public class ValvePreviewBridgeTests
     {
         private static PadViewModel Slot(string profileId,
             VirtualControllerType type = VirtualControllerType.Extended)
-            => new(0) { OutputType = type, ProfileId = profileId };
+            => RestoredPad.Build(0, type, profileId);
 
         private static RawHidState Rest(string profileId)
         {

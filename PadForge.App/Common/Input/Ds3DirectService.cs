@@ -1362,7 +1362,9 @@ namespace PadForge.Common.Input
                 // above as positive. The negation this path first carried was
                 // measured on a pad that fails DsHidMini's genuineness check,
                 // and it made one genuine pad turn opposite ways here and on the
-                // SXS path under DsHidMini 3.15.0 and later.
+                // SXS path under DsHidMini 3.15.0 and later, the first published
+                // setup whose driver zeroes the word (3.7.0 over USB, 3.9.0 for
+                // Bluetooth).
                 if (!_nav && len >= DS3_BT_INPUT_REPORT_SIZE)
                 {
                     int ax = (b[42] << 8) | b[43];
@@ -1466,9 +1468,13 @@ namespace PadForge.Common.Input
                 note = " AT-RAIL: resting against the end of its range, so one "
                      + "direction cannot register. Calibration will not recover this.";
             else if (Math.Abs(YawFromWord(gz)) > PadForge.Services.GyroCalibratorService.MaxPlausibleBias)
+                // A press takes this offset only for a pad PadForge can name
+                // by its address (GyroCalibratorService's large allowance).
                 note = $" OFFSET: reads ~{YawFromWord(gz):F2} rad/s while still. "
-                     + $"Pressing Calibrate Gyro with the pad still removes it. Headroom is uneven: "
-                     + $"up={1023 - gz} down={gz}.";
+                     + (_padAddress != null
+                         ? "Pressing Calibrate Gyro with the pad still removes it. "
+                         : "Pressing Calibrate Gyro with the pad still removes it once PadForge reads the pad's address. ")
+                     + $"Headroom is uneven: up={1023 - gz} down={gz}.";
             else
                 note = " within normal range of the 10-bit midpoint.";
             return $"DS3MOTION gyro resting baseline={gz} (nominal center 512, delta={delta}).{note}";

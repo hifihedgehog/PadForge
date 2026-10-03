@@ -16,7 +16,7 @@ namespace PadForge.ViewModels
     /// For gamepad presets (Xbox / PlayStation): index 0 = Left, index 1 = Right.
     /// For custom Extended: index 0..N based on ThumbstickCount.
     /// </summary>
-    public class StickConfigItem : ObservableObject
+    public class StickConfigItem : FiniteObservableObject
     {
         public static string[] CurvePresetNames { get; private set; } =
             Common.CurveLut.BuildPresetDisplayNames();

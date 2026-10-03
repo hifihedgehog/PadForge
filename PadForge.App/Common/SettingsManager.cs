@@ -771,7 +771,17 @@ namespace PadForge.Common.Input
             // its placement, as SDL would map the console's pad.
             // Skip auto-mapping when Force Raw Joystick Mode is enabled. The
             // user wants to record raw mappings manually.
-            if ((ud.CapType == InputDeviceType.Gamepad || blissBox != null) && !ud.ForceRawJoystickMode)
+            //
+            // A Bliss-Box port this PC reads raw maps only through the
+            // controller's placement. A cached port's CapType records the
+            // switch as its last session left it, so with the reader on, a
+            // port cached as SDL's gamepad built SDL's positions, which the
+            // raw read gives other meanings: LB read Select and Back read L1.
+            // With no placement it gets an empty default, and the port owes
+            // the slot its default (BlissBoxRuntime.DefaultOwed).
+            bool sdlLayout = ud.CapType == InputDeviceType.Gamepad
+                && !(blissBox == null && Common.Input.BlissBoxRuntime.ReadsRawHere(ud));
+            if ((sdlLayout || blissBox != null) && !ud.ForceRawJoystickMode)
             {
                 // Only auto-map inputs the device actually exposes. Binding an
                 // output to a source the device lacks is NOT harmless: a missing
@@ -1317,6 +1327,16 @@ namespace PadForge.Common.Input
 
             foreach (var us in GetSettingsForSlot(padIndex))
             {
+                // The rows a Bliss-Box port's owed default leaves alone are
+                // named on the same wire, so they move with it. A row the new
+                // pad lacks is gone.
+                if (us?.BlissBoxKeptTargets is { } keptTargets)
+                    us.BlissBoxKeptTargets = keptTargets
+                        .Select(k => Models2D.NintendoPreviewMap.TranslateRawTarget(k, fromProfileId, toProfileId))
+                        .Where(k => k != null)
+                        .Distinct(StringComparer.Ordinal)
+                        .ToArray();
+
                 var ps = us?.GetPadSetting();
                 var entries = ps?.RawMappingEntries;
                 if (entries == null || entries.Length == 0) continue;
@@ -1392,8 +1412,9 @@ namespace PadForge.Common.Input
         /// Every path that installs mapping data and profile id together
         /// (launch restore, profile apply, workshop import) calls this
         /// before assigning the VM's ProfileId, so the setter's translation
-        /// sees from == to and stands down. Slot delete / type switch call
-        /// it with the new surface's profile for the same reason.</summary>
+        /// sees from == to and stands down. A type switch stamps the new
+        /// category's default and slot create stamps its profile for the same
+        /// reason. Slot delete clears it.</summary>
         public static void StampNintendoWire(int padIndex, string profileId)
         {
             if (padIndex < 0 || padIndex >= _nintendoWireStamp.Length) return;
@@ -1449,6 +1470,7 @@ namespace PadForge.Common.Input
                 var ps = CreateDefaultPadSetting(ud, outputType, profileId, extended);
                 us.SetPadSetting(ps);
                 us.PadSettingChecksum = ps.PadSettingChecksum;
+                Common.Input.BlissBoxRuntime.NoteOwedDefault(us, ud, fresh: true);
                 // Permanent automap-decision diagnostics (2026-07-22): a
                 // type switch that authors an EMPTY PadSetting is silent
                 // and latent until the user notices dead inputs. Name the

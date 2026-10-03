@@ -1487,6 +1487,9 @@ namespace PadForge.Services
                     return _shakeStateAux.TryGetValue(g, out var v) ? v.env : 0f;
                 }
             };
+            // The "Gamepad ..." names read a Bliss-Box port read raw through
+            // the placement of the controller identified in it (#469).
+            PadForge.Engine.Common.Mapping.SourceCoercion.GamepadPlacementProvider = InputManager.GamepadPlacementFor;
 
             PadForge.Engine.Common.Mapping.SourceCoercion.GyroTiltGravityProvider =
                 _inputManager.ReadGyroTiltGravity;
@@ -4320,12 +4323,14 @@ namespace PadForge.Services
                 && !string.Equals(ps.MotionGrip, "Pointing", StringComparison.Ordinal))
                 AddToken(parts, "GRIP " + ps.MotionGrip);
             if (!string.IsNullOrEmpty(ps.GyroAimEngageButton)) AddToken(parts, "ENGAGE");
-            if (PsFlagSet(ps.GyroInvertPitch)) AddToken(parts, "INV P");
-            if (PsFlagSet(ps.GyroInvertYaw)) AddToken(parts, "INV Y");
-            if (PsFlagSet(ps.GyroInvertRollEffective)) AddToken(parts, "INV R");
-            if (PsFlagSet(ps.GyroApplyTuningToPassthrough)) AddToken(parts, "PASSTHRU");
+            // The gyro flags read the engine's way (TryParseBoolPs), so the
+            // summary names what runs.
+            if (TryParseBoolPs(ps.GyroInvertPitch, false)) AddToken(parts, "INV P");
+            if (TryParseBoolPs(ps.GyroInvertYaw, false)) AddToken(parts, "INV Y");
+            if (TryParseBoolPs(ps.GyroInvertRollEffective, false)) AddToken(parts, "INV R");
+            if (TryParseBoolPs(ps.GyroApplyTuningToPassthrough, false)) AddToken(parts, "PASSTHRU");
             // Simulated pitch and roll (#472), only where the card shows.
-            if (simulates && PsFlagSet(ps.GyroSimulation))
+            if (simulates && TryParseBoolPs(ps.GyroSimulation, false))
             {
                 // The value the filter runs at: clamped, and the default for
                 // anything unreadable.
@@ -6937,13 +6942,15 @@ namespace PadForge.Services
             padVm.RightTriggerRouteActivatorDeviceGuid = ps.RightTriggerRouteActivatorDeviceGuid ?? "";
             padVm.LeftTriggerRouteActivatorMode = string.IsNullOrEmpty(ps.LeftTriggerRouteActivatorMode) ? "Hold" : ps.LeftTriggerRouteActivatorMode;
             padVm.RightTriggerRouteActivatorMode = string.IsNullOrEmpty(ps.RightTriggerRouteActivatorMode) ? "Hold" : ps.RightTriggerRouteActivatorMode;
-            padVm.GyroInvertPitch = ps.GyroInvertPitch == "1";
-            padVm.GyroCompassYaw = ps.GyroCompassYaw == "1";
-            padVm.GyroSimulation = ps.GyroSimulation == "1";
+            // The engine's reader (InputService.TryParseBoolPs), so a stored
+            // "true" shows checked where the engine runs it.
+            padVm.GyroInvertPitch = TryParseBoolPs(ps.GyroInvertPitch, false);
+            padVm.GyroCompassYaw = TryParseBoolPs(ps.GyroCompassYaw, false);
+            padVm.GyroSimulation = TryParseBoolPs(ps.GyroSimulation, false);
             padVm.GyroSimulationSmoothingMs = TryParseDouble(ps.GyroSimulationSmoothingMs, PadForge.Engine.SimulatedGyro.DefaultSmoothingMs);
-            padVm.GyroInvertYaw = ps.GyroInvertYaw == "1";
-            padVm.GyroInvertRoll = ps.GyroInvertRollEffective == "1";
-            padVm.GyroApplyTuningToPassthrough = ps.GyroApplyTuningToPassthrough == "1";
+            padVm.GyroInvertYaw = TryParseBoolPs(ps.GyroInvertYaw, false);
+            padVm.GyroInvertRoll = TryParseBoolPs(ps.GyroInvertRollEffective, false);
+            padVm.GyroApplyTuningToPassthrough = TryParseBoolPs(ps.GyroApplyTuningToPassthrough, false);
 
             // Constant force.
             padVm.ConstantForceEnabled = ps.ConstantForceEnabled == "1";
@@ -7345,7 +7352,11 @@ namespace PadForge.Services
                 && float.IsFinite(result) ? result : defaultValue;
         }
 
-        private static bool TryParseBoolPs(string value, bool defaultValue)
+        /// <summary>A PadSetting flag: "1", "0", or a .NET boolean ("true",
+        /// "False"), else <paramref name="defaultValue"/>. The engine's rule,
+        /// and the one every reader of a flag uses, so the view, the summary
+        /// and the engine agree on a hand-edited value.</summary>
+        internal static bool TryParseBoolPs(string value, bool defaultValue)
         {
             if (string.IsNullOrEmpty(value)) return defaultValue;
             if (value == "1") return true;
@@ -7936,6 +7947,9 @@ namespace PadForge.Services
 
             // Copy all settings from the source.
             ps.CopyFrom(source);
+            // The copy replaces the device's routing on the slot, so nothing
+            // its Bliss-Box port owed the slot is filled after.
+            DeviceService.CancelOwedMapping(us);
 
             // The copy carries the donor's guid on every per-device Touchpad and
             // Mouse entry. Address them to the device receiving the copy, or the
@@ -8002,6 +8016,9 @@ namespace PadForge.Services
 
             // Copy with cross-layout translation.
             ps.CopyFromTranslated(source, sourceType, sourceIsExtended, targetType, targetIsExtended);
+            // The copy replaces the device's routing on the slot, so nothing
+            // its Bliss-Box port owed the slot is filled after.
+            DeviceService.CancelOwedMapping(us);
 
             // The copy carries the donor's guid on every per-device Touchpad and
             // Mouse entry. Address them to the device receiving the copy, or the
@@ -8683,6 +8700,9 @@ namespace PadForge.Services
         {
             if (padIndex < 0 || padIndex >= SettingsManager.SlotMappingSets.Length) return;
             if (rows == null) return;
+            // A paste replaces the slot's routing, so nothing a Bliss-Box
+            // port owed the slot is filled after.
+            DeviceService.CancelOwedMappingForSlot(padIndex);
 
             // Authoritative deliberately NOT carried: the clipboard snapshot
             // holds rows only, and a pasted set is user-recomposed authoring,
@@ -8918,6 +8938,10 @@ namespace PadForge.Services
             if (targetSlot < 0 || targetSlot >= sets.Length) return;
             if (sourceSlot < 0 || sourceSlot >= sets.Length) return;
             if (targetSlot == sourceSlot) return;
+            // Copy From replaces the slot's routing, an empty source's
+            // included, so nothing a Bliss-Box port owed the slot is filled
+            // after.
+            DeviceService.CancelOwedMappingForSlot(targetSlot);
 
             var src = sets[sourceSlot];
             if (src == null) { sets[targetSlot] = new Engine.Data.MappingSet(); return; }
@@ -9317,17 +9341,15 @@ namespace PadForge.Services
 
         /// <summary>A Bliss-Box port opened, closed or identified another
         /// controller (#469): its row's objects take the new names, a port
-        /// assigned before a controller was in it gets the controller's
-        /// default mapping, and the pickers follow. The Devices page line
-        /// follows on its own tick. Changes that land together are refreshed
-        /// once.</summary>
+        /// assigned before a controller was in it gets what it owes its slots,
+        /// and the pickers follow. The Devices page line follows on its own
+        /// tick. Changes that land together are refreshed once.</summary>
         private void OnBlissBoxPortChanged(PadForge.Common.Input.BlissBoxPort port)
         {
             if (System.Threading.Interlocked.Exchange(ref _blissBoxRefreshQueued, 1) == 1) return;
             _dispatcher.BeginInvoke(new Action(() =>
             {
                 System.Threading.Interlocked.Exchange(ref _blissBoxRefreshQueued, 0);
-                var placed = new List<(UserDevice Device, PadForge.Engine.Common.BlissBox.BlissBoxGamepadMap Map)>();
                 try
                 {
                     lock (SettingsManager.UserDevices.SyncRoot)
@@ -9335,24 +9357,12 @@ namespace PadForge.Services
                         foreach (var ud in SettingsManager.UserDevices.Items)
                             if (ud?.Device is PadForge.Engine.SdlDeviceWrapper wrapper
                                 && PadForge.Engine.Common.BlissBox.BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId))
-                            {
                                 ud.DeviceObjects = wrapper.GetDeviceObjects();
-                                if (PadForge.Common.Input.BlissBoxRuntime.GamepadMapFor(ud) is { } map)
-                                    placed.Add((ud, map));
-                            }
                     }
                 }
                 catch { /* refresh is best-effort */ }
 
-                try
-                {
-                    if (placed.Count > 0 && AutoMapIdentifiedPorts(placed))
-                    {
-                        _settingsService?.MarkDirty();
-                        RefreshAfterDeviceAssignmentChange();
-                    }
-                }
-                catch { /* the port keeps whatever it had */ }
+                CompleteOwedBlissBoxMappings();
 
                 try
                 {
@@ -9363,21 +9373,59 @@ namespace PadForge.Services
             }));
         }
 
-        /// <summary>Gives each placed port's slots that bind nothing from it
-        /// the controller's default mapping
-        /// (<see cref="DeviceService.AutoMapIdentifiedPort"/>), with the
-        /// grids' pending edits flushed first, as an assignment does.</summary>
-        private bool AutoMapIdentifiedPorts(List<(UserDevice Device, PadForge.Engine.Common.BlissBox.BlissBoxGamepadMap Map)> placed)
+        /// <summary>Completes what each Bliss-Box port that can be placed now
+        /// still owes its slots (<see cref="DeviceService.AutoMapIdentifiedPort"/>):
+        /// a port read raw once a controller is identified in it, a port read
+        /// through SDL's gamepad mapping once it connects. A port change, a
+        /// device arrival and a profile switch each ask, so a request is
+        /// completed whichever way the switch stands when the port comes
+        /// back.</summary>
+        private void CompleteOwedBlissBoxMappings()
         {
-            if (!placed.Exists(p => DeviceService.PortHasUnboundSlot(p.Device))) return false;
+            var placed = new List<(UserDevice Device, PadForge.Engine.Common.BlissBox.BlissBoxGamepadMap Map)>();
+            try
+            {
+                lock (SettingsManager.UserDevices.SyncRoot)
+                {
+                    foreach (var ud in SettingsManager.UserDevices.Items)
+                        if (PadForge.Common.Input.BlissBoxRuntime.OwedDefaultReady(ud, out var map))
+                            placed.Add((ud, map));
+                }
+            }
+            catch { /* the next port change or arrival asks again */ }
+
+            try
+            {
+                if (placed.Count > 0 && AutoMapIdentifiedPorts(placed, out bool mapped))
+                {
+                    _settingsService?.MarkDirty();
+                    if (mapped) RefreshAfterDeviceAssignmentChange();
+                }
+            }
+            catch { /* the port keeps whatever it had */ }
+        }
+
+        /// <summary>Completes what each placed port owes its slots
+        /// (<see cref="DeviceService.AutoMapIdentifiedPort"/>), with the grids'
+        /// pending edits flushed first, as an assignment does.</summary>
+        /// <param name="mapped">True when a slot's mapping changed.</param>
+        /// <returns>True when anything a port owed changed.</returns>
+        private bool AutoMapIdentifiedPorts(List<(UserDevice Device, PadForge.Engine.Common.BlissBox.BlissBoxGamepadMap Map)> placed,
+            out bool mapped)
+        {
+            mapped = false;
+            if (!placed.Exists(p => DeviceService.PortHasOwedMapping(p.Device))) return false;
             _settingsService?.FlushPendingDeviceEdits();
             bool any = false;
             foreach (var (ud, map) in placed)
+            {
                 any |= DeviceService.AutoMapIdentifiedPort(ud, map, slot =>
                 {
                     var pad = _mainVm.Pads[slot];
                     return (pad.OutputType, pad.ProfileId, pad.ExtendedConfig);
-                });
+                }, out bool portMapped);
+                mapped |= portMapped;
+            }
             return any;
         }
 
@@ -9543,6 +9591,9 @@ namespace PadForge.Services
                 // After the rosters, so "slot has devices" and "already on
                 // the slot" read this walk's truth.
                 EvaluateAssignOffers();
+                // A Bliss-Box port read through SDL's gamepad mapping can be
+                // placed once it connects.
+                CompleteOwedBlissBoxMappings();
 
                 // Persist only when the device registry ACTUALLY changed.
                 //
@@ -11675,6 +11726,11 @@ namespace PadForge.Services
                                     ? PadForge.Common.Input.AnalogKeyboardRuntime.KeysFor(ud)
                                     : null,
                                 BlissBoxRestMask = PadForge.Common.Input.BlissBoxRuntime.NativeRestMask(ud),
+                                // And which DualShock 3 this is, which a gyro
+                                // calibration on the peer keys on (#474).
+                                Ds3Identity = PadForge.Engine.DualShock3Motion.Is(ud.VendorId, ud.ProdId)
+                                    ? PadForge.Common.Input.Ds3UnitIdentity.Identity(ud)
+                                    : null,
                             };
                             list.Add(info);
                             // Reuse the device's delta accumulator across
@@ -17035,7 +17091,9 @@ namespace PadForge.Services
                         InstanceGuid = us.InstanceGuid,
                         ProductGuid = us.ProductGuid,
                         MapTo = us.MapTo,
-                        PadSettingChecksum = ps.PadSettingChecksum
+                        PadSettingChecksum = ps.PadSettingChecksum,
+                        BlissBoxOwed = us.BlissBoxOwed,
+                        BlissBoxKeptTargets = us.BlissBoxKeptTargets,
                     });
 
                     if (seen.Add(ps.PadSettingChecksum))
@@ -17783,7 +17841,8 @@ namespace PadForge.Services
 
             lock (SettingsManager.UserSettings.SyncRoot)
             {
-                var assignments = new System.Collections.Generic.Dictionary<UserSetting, (int MapTo, PadSetting Ps)>();
+                var assignments = new System.Collections.Generic.Dictionary<UserSetting,
+                    (int MapTo, PadSetting Ps, BlissBoxOwedMapping Owed, string[] Kept)>();
                 var consumed = new System.Collections.Generic.HashSet<UserSetting>();
 
                 if (profile.Entries != null && profile.Entries.Length > 0 &&
@@ -17864,7 +17923,7 @@ namespace PadForge.Services
                         }
 
                         consumed.Add(us);
-                        assignments[us] = (entry.MapTo, template.CloneDeep());
+                        assignments[us] = (entry.MapTo, template.CloneDeep(), entry.BlissBoxOwed, entry.BlissBoxKeptTargets);
                     }
                 }
 
@@ -17886,6 +17945,10 @@ namespace PadForge.Services
                                 + (assign.Ps?.KbmMappingEntries?.Length ?? 0)}");
                         us.SetPadSetting(assign.Ps);
                         us.MapTo = assign.MapTo;
+                        // The incoming profile's own, None included, so a
+                        // reused row never keeps the outgoing profile's.
+                        us.BlissBoxOwed = assign.Owed;
+                        us.BlissBoxKeptTargets = assign.Kept;
                     }
                     else if (us.MapTo >= 0)
                     {
@@ -18226,6 +18289,11 @@ namespace PadForge.Services
                 else
                     AudioPassthroughService.RequestReconcile();
                 PadForge.Common.Input.RumbleAudioService.RequestReconcile();
+
+                // A profile can bring an owed Bliss-Box default for a port
+                // already placed, which no port change would complete until
+                // the next one.
+                _dispatcher?.BeginInvoke(new Action(CompleteOwedBlissBoxMappings));
             }
         }
 

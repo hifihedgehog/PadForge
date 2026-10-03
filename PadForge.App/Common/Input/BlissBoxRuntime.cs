@@ -516,6 +516,66 @@ namespace PadForge.Common.Input
                 : null;
         }
 
+        /// <summary>True for a Bliss-Box port on this PC, connected or cached.
+        /// A Remote Link copy, live or cached (a peer:// path), follows its
+        /// owner's switch and shape instead.</summary>
+        internal static bool IsLocalPort(UserDevice ud)
+            => ud != null && BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId)
+               && ud.Device is not RemotePeerDevice
+               && !(ud.DevicePath?.StartsWith("peer://", StringComparison.OrdinalIgnoreCase) ?? false);
+
+        /// <summary>True for a local port this PC reads raw now, Read
+        /// Bliss-Box Adapters on, whatever shape its row last had.</summary>
+        internal static bool ReadsRawHere(UserDevice ud)
+            => IsLocalPort(ud) && BlissBoxApi.ReadsRaw(ud.VendorId, ud.ProdId);
+
+        /// <summary>True when a default mapping built for this row leaves the
+        /// port its own default owed (<see cref="UserSetting.BlissBoxOwed"/>):
+        /// a local port, not in Force Raw Joystick Mode, with nothing to place
+        /// its controls through yet. Read raw, that is a port with no
+        /// controller identified in it, searching or not connected. Read
+        /// through SDL's gamepad mapping, it is a port whose row is cached in
+        /// the raw shape, which lists none of SDL's controls.
+        /// <see cref="OwedDefaultReady"/> says when the default can be
+        /// built.</summary>
+        internal static bool DefaultOwed(UserDevice ud)
+        {
+            if (!IsLocalPort(ud) || ud.ForceRawJoystickMode || GamepadMapFor(ud) != null) return false;
+            return BlissBoxApi.ReadsRaw(ud.VendorId, ud.ProdId) || ud.CapType != InputDeviceType.Gamepad;
+        }
+
+        /// <summary>True when a port's owed default can be built now, through
+        /// <paramref name="map"/>. Read raw, that is the placement of the
+        /// controller identified in the port. Read through SDL's gamepad
+        /// mapping, it is null, once the port is connected as SDL's
+        /// gamepad.</summary>
+        internal static bool OwedDefaultReady(UserDevice ud, out BlissBoxGamepadMap map)
+        {
+            map = null;
+            if (!IsLocalPort(ud) || ud.ForceRawJoystickMode) return false;
+            if (BlissBoxApi.ReadsRaw(ud.VendorId, ud.ProdId)) return (map = GamepadMapFor(ud)) != null;
+            return ud.Device is SdlDeviceWrapper wrapper && wrapper.GameController != IntPtr.Zero
+                && ud.CapType == InputDeviceType.Gamepad;
+        }
+
+        /// <summary>Records what a default built for <paramref name="ud"/> on
+        /// assignment <paramref name="us"/> leaves its port owed. A fresh
+        /// default replaces whatever the assignment owed, kept targets
+        /// included. A fill of an existing setting adds the default to
+        /// it.</summary>
+        internal static void NoteOwedDefault(UserSetting us, UserDevice ud, bool fresh)
+        {
+            if (us == null) return;
+            bool owed = DefaultOwed(ud);
+            if (fresh)
+            {
+                us.BlissBoxOwed = owed ? BlissBoxOwedMapping.Default : BlissBoxOwedMapping.None;
+                us.BlissBoxKeptTargets = null;
+            }
+            else if (owed)
+                us.BlissBoxOwed |= BlissBoxOwedMapping.Default;
+        }
+
         /// <summary>True for a port's axes that rest at 0 and travel one way,
         /// a trigger's shape (the #443 rule): the pressure axes, which the
         /// merge leaves at 0 whenever no DualShock 2 is in the port, and the

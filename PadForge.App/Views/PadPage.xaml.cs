@@ -2647,7 +2647,15 @@ namespace PadForge.Views
                 Strings.Instance.Pad_ClearMappingsConfirm,
                 Strings.Instance.Pad_ClearAll);
             if (confirmed)
+            {
                 vm.ClearMappingsCommand.Execute(null);
+                // Clear All on the Base layer is the user's word on every
+                // row, empty ones included, so no Bliss-Box port owes the slot
+                // its default after. A shift layer's rows carry no default.
+                if ((string.IsNullOrEmpty(vm.ActiveLayerMask) || vm.ActiveLayerMask == "Base")
+                    && PadForge.Services.DeviceService.CancelOwedMappingForSlot(vm.PadIndex))
+                    (Application.Current.MainWindow as MainWindow)?.SettingsService?.MarkDirty();
+            }
         }
 
         private void CalibrateCenter_Click(object sender, RoutedEventArgs e)

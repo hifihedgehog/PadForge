@@ -132,6 +132,15 @@ namespace PadForge.Engine.RemoteLink
         /// port's native axes count as centered.</summary>
         public byte? BlissBoxRestMask { get; set; }
 
+        /// <summary>A DualShock 3's identity as the owner names it
+        /// ("address/source", Ds3UnitIdentity on the owner's PC), so a gyro
+        /// calibration taken on this PC knows the pad and what serves its yaw,
+        /// and a press may take the pad's large resting offset. This PC has no
+        /// address of its own to read for a shared pad. Null for every other
+        /// device and from a peer that predates the v11 tail, where the row's
+        /// 0.15 rad/s rule stands.</summary>
+        public string Ds3Identity { get; set; }
+
         internal RemotePeerDeviceInfo CloneForSlot(byte slot)
         {
             var copy = (RemotePeerDeviceInfo)MemberwiseClone();

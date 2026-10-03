@@ -19,6 +19,7 @@ namespace PadForge.Tests
     /// first now, the slot carries a surface mode, and the table carries a
     /// keyboard or mouse scope.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class KbmSurfacesTests
     {
         private static string RepoRoot()
@@ -99,7 +100,7 @@ namespace PadForge.Tests
         [Fact]
         public void KeyboardMouseTable_PutsEveryMouseRowBeforeEveryKeyboardRow()
         {
-            var vm = new PadViewModel(0) { OutputType = VirtualControllerType.KeyboardMouse };
+            var vm = RestoredPad.Build(0, VirtualControllerType.KeyboardMouse);
 
             int lastMouse = -1, firstKeyboard = int.MaxValue;
             for (int i = 0; i < vm.Mappings.Count; i++)
@@ -121,7 +122,7 @@ namespace PadForge.Tests
         [Fact]
         public void KeyboardMouseTable_LeavesNoRowUnclassified()
         {
-            var vm = new PadViewModel(0) { OutputType = VirtualControllerType.KeyboardMouse };
+            var vm = RestoredPad.Build(0, VirtualControllerType.KeyboardMouse);
 
             var orphans = vm.Mappings
                 .Where(m => PadViewModel.KbmSurfaceOf(m.TargetSettingName) == null)
@@ -216,7 +217,7 @@ namespace PadForge.Tests
         [InlineData("")]
         public void KbmSurfaces_IgnoresTheSelectorsEmptyWriteBack(string writeBack)
         {
-            var vm = new PadViewModel(0) { OutputType = VirtualControllerType.KeyboardMouse };
+            var vm = RestoredPad.Build(0, VirtualControllerType.KeyboardMouse);
             vm.KbmSurfaces = "MouseOnly";
             Assert.Equal("MouseOnly", vm.KbmSurfaces);
 
@@ -232,7 +233,7 @@ namespace PadForge.Tests
         [Fact]
         public void KbmSurfaces_StillAcceptsARealPick()
         {
-            var vm = new PadViewModel(0) { OutputType = VirtualControllerType.KeyboardMouse };
+            var vm = RestoredPad.Build(0, VirtualControllerType.KeyboardMouse);
             vm.KbmSurfaces = "MouseOnly";
             Assert.Equal("MouseOnly", vm.KbmConfig.Surfaces);
             vm.KbmSurfaces = "KeyboardOnly";

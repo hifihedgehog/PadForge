@@ -1334,6 +1334,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="DevObj_Guide" xml:space="preserve"><value>Guide</value></data>
   <data name="DevObj_Select" xml:space="preserve"><value>Select</value></data>
   <data name="DevObj_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="DevObj_Option" xml:space="preserve"><value>Option</value></data>
   <data name="DevObj_Run" xml:space="preserve"><value>Run</value></data>
   <data name="DevObj_Reset" xml:space="preserve"><value>Reset</value></data>
   <data name="DevObj_HomeButton" xml:space="preserve"><value>HOME-Taste</value></data>
@@ -3058,6 +3059,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Mapping_MotionRowUnreadNote" xml:space="preserve"><value>Sticks und Tasten werden in dieser Zeile nicht gelesen. Ordnen Sie sie Bewegung Nicken, Bewegung Gieren oder Bewegung Rollen zu und entfernen Sie sie hier.</value></data>
   <data name="Pad_Mapping_MotionSourceElsewhereNote" xml:space="preserve"><value>Quellen für Bewegung Gyro und Bewegung Beschleunigungssensor funktionieren nur in den Zeilen Bewegung Gyro und Bewegung Beschleunigungssensor.</value></data>
   <data name="Pad_Mapping_MotionPresetNote" xml:space="preserve"><value>Der Bericht dieses Presets enthält keine Bewegung. Der Bewegungsserver (DSU) erhält sie für die Slots 1 bis 4 trotzdem.</value></data>
+  <data name="Pad_Mapping_MotionPitchRollRateNote" xml:space="preserve"><value>Der Bericht dieses Presets enthält keine Nick- oder Rollrate. Im Modus Geschwindigkeit erreicht diese Zeile das Spiel nur als Neigung, und nur, solange kein Beschleunigungssensor die Zeile Bewegung Beschleunigungssensor speist. Der Bewegungsserver (DSU) erhält sie für die Slots 1 bis 4 trotzdem.</value></data>
   <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>Beim Loslassen zurücksetzen</value></data>
   <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>Wenn aktiviert, springt der gehaltene Wert beim Loslassen des Triggers auf 100% zurück, sodass der nächste Druck voll beginnt. Wenn deaktiviert, bleibt der getrimmte Wert über das Loslassen hinaus erhalten, bis du ihn wieder anpasst.</value></data>
   <data name="Pad_ResetGuideLed" xml:space="preserve"><value>Guide-Tasten-LED zurücksetzen</value></data>

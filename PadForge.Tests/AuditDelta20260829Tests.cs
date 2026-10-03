@@ -24,11 +24,8 @@ namespace PadForge.Tests
 
         // ── K4: the preview bridge's trigger scale ──────────────────────
 
-        private static PadViewModel ValveSlot() => new(0)
-        {
-            OutputType = VirtualControllerType.Extended,
-            ProfileId = "steam-deck-composite",
-        };
+        private static PadViewModel ValveSlot()
+            => RestoredPad.Build(0, VirtualControllerType.Extended, "steam-deck-composite");
 
         private static RawHidState Rest()
         {
@@ -96,11 +93,7 @@ namespace PadForge.Tests
         [Fact]
         public void NintendoDigitalTriggersKeepTheirTwoStates()
         {
-            var vm = new PadViewModel(0)
-            {
-                OutputType = VirtualControllerType.Nintendo,
-                ProfileId = "switch-pro",
-            };
+            var vm = RestoredPad.Build(0, VirtualControllerType.Nintendo, "switch-pro");
             var raw = RawHidState.Create(14, 32, 1);
             raw.Povs[0] = -1;
             raw.Buttons[0] = 1u << 6;           // ZL on the switch-pro wire

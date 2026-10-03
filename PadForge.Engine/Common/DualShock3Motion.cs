@@ -38,9 +38,10 @@ namespace PadForge.Engine
 
         /// <summary><see cref="MaxRestingYawCounts"/> in rad/s, about 6.2.
         /// The pad keeps a factory zero in EEPROM page 0xA0, which
-        /// sixaxis.sys and DsHidMini 3.15.0 and later apply and
-        /// Ds3DirectService does not, and units on record rest at words 724
-        /// and 727, 2.7 rad/s while still.</summary>
+        /// sixaxis.sys applies, as does DsHidMini from driver 3.7.0 over USB
+        /// and 3.9.0 for a Bluetooth pad it has cached (first published in
+        /// setup 3.15.0), and Ds3DirectService does not. Units on record rest
+        /// at words 724 and 727, 2.7 rad/s while still.</summary>
         public const float MaxRestingYawBias = MaxRestingYawCounts * GyroRadPerCount;
     }
 }

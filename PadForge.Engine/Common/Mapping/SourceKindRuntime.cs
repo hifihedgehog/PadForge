@@ -33,8 +33,13 @@ namespace PadForge.Engine.Common.Mapping
         private Dictionary<(int slot, string target, int srcIdx), double> _rampedAccum
             = new();
 
-        // Toggle latch (#461), same (slot, target, srcIdx) key, so two
-        // toggles on one row keep their own state.
+        // Toggle latch (#461), keyed by (slot, target, layer, srcIdx): two
+        // toggles on one row keep their own state, and so do a Base row and a
+        // shift layer's row on the same target. With the layer left out the
+        // layer's row took over the Base row's state in the very frame the
+        // layer engaged, so no frame without a read ever released it, the
+        // reset the latch's own contract promises (TickToggle). StickTrim
+        // keys on the layer for the same reason (MappingSetEval).
         private sealed class ToggleState
         {
             public long Seq = -1;            // frame of the last read
@@ -44,12 +49,13 @@ namespace PadForge.Engine.Common.Mapping
             public bool Latched;
             public double Level;             // output while latched, signed on an axis
         }
-        private Dictionary<(int slot, string target, int srcIdx), ToggleState> _toggleState
+        private Dictionary<(int slot, string target, string layer, int srcIdx), ToggleState> _toggleState
             = new();
 
-        // Rapid Trigger (#482), same (slot, target, srcIdx) key. The three
-        // modes are libhmk's key_dir: outside the zone (INACTIVE), pressed
-        // (DOWN), and released inside the zone (UP).
+        // Rapid Trigger (#482), the Toggle latch's (slot, target, layer,
+        // srcIdx) key, for the same reason. The three modes are libhmk's
+        // key_dir: outside the zone (INACTIVE), pressed (DOWN), and released
+        // inside the zone (UP).
         private const byte RapidOutside = 0, RapidPressed = 1, RapidReleased = 2;
         private sealed class RapidTriggerState
         {
@@ -61,8 +67,13 @@ namespace PadForge.Engine.Common.Mapping
             public byte Mode;                // the step from the base on this frame's reads so far
             public double Extremum;          // deepest point while pressed, shallowest while released
         }
-        private Dictionary<(int slot, string target, int srcIdx), RapidTriggerState> _rapidTriggerState
+        private Dictionary<(int slot, string target, string layer, int srcIdx), RapidTriggerState> _rapidTriggerState
             = new();
+
+        /// <summary>The layer part of a per-row state key: the row's shift
+        /// layer, with an unset one read as Base, the way the evaluator reads
+        /// a row's layer.</summary>
+        private static string LayerKey(string layer) => string.IsNullOrEmpty(layer) ? "Base" : layer;
 
         // ── Steering kinds (v3.4 #94) ──
         /// <summary>Lock-edge transition reported to the lock-feedback layer.</summary>
@@ -91,6 +102,9 @@ namespace PadForge.Engine.Common.Mapping
         // plus the frame-sequence guards the StickTrim state uses (the KBM
         // evaluator runs once per assigned DEVICE per frame, and a shift
         // layer's row simply stops being evaluated while its layer is off).
+        // Keyed by the row's layer as the Toggle latch is, so the gap that
+        // re-arms a layer's flick is not skipped by a Base row on the same
+        // target handing it a different stick's flick in progress.
         private sealed class FlickState
         {
             public bool IsFlicking;                     // JSM Stick.is_flicking
@@ -110,7 +124,7 @@ namespace PadForge.Engine.Common.Mapping
         // 1000 Hz-poll ceiling, same as JSM's.
         private const int FlickNumSamples = 256;
 
-        private Dictionary<(int slot, string target, int srcIdx), FlickState> _flickState = new();
+        private Dictionary<(int slot, string target, string layer, int srcIdx), FlickState> _flickState = new();
 
         /// <summary>Frame counter, stamped by the caller once per polling
         /// frame. The Extended/KBM/MIDI evaluators run once per assigned
@@ -221,6 +235,24 @@ namespace PadForge.Engine.Common.Mapping
             if (!any) return dict;
 
             var copy = new Dictionary<(int slot, string target, int srcIdx), TVal>(dict.Count);
+            foreach (var kv in dict)
+                if (!(kv.Key.slot == slot && (target == null || kv.Key.target == target)))
+                    copy.Add(kv.Key, kv.Value);
+            return copy;
+        }
+
+        /// <summary>The overload above for the stores keyed by the row's layer
+        /// too: a target's entries go on every layer.</summary>
+        private static Dictionary<(int slot, string target, string layer, int srcIdx), TVal> Without<TVal>(
+            Dictionary<(int slot, string target, string layer, int srcIdx), TVal> dict, int slot, string target)
+        {
+            if (dict == null || dict.Count == 0) return dict;
+            bool any = false;
+            foreach (var k in dict.Keys)
+                if (k.slot == slot && (target == null || k.target == target)) { any = true; break; }
+            if (!any) return dict;
+
+            var copy = new Dictionary<(int slot, string target, string layer, int srcIdx), TVal>(dict.Count);
             foreach (var kv in dict)
                 if (!(kv.Key.slot == slot && (target == null || kv.Key.target == target)))
                     copy.Add(kv.Key, kv.Value);
@@ -396,12 +428,14 @@ namespace PadForge.Engine.Common.Mapping
         /// read at all (the row's shift layer closed, its input suppressed,
         /// its device offline) releases the latch, the way a macro Toggle
         /// releases when its layer closes, and a press already down when
-        /// reads resume does not flip it back on.
+        /// reads resume does not flip it back on. <paramref name="layer"/> is
+        /// the row's shift layer, so another layer's row on the same target
+        /// never continues this one's latch.
         /// </summary>
         public double TickToggle(int slotIndex, string target, int sourceIndex,
-            bool pressed, double level)
+            bool pressed, double level, string layer = null)
         {
-            var key = (slotIndex, target ?? "", sourceIndex);
+            var key = (slotIndex, target ?? "", LayerKey(layer), sourceIndex);
             if (!_toggleState.TryGetValue(key, out var st))
                 _toggleState[key] = st = new ToggleState();
             if (st.Seq != FrameSeq)
@@ -449,12 +483,14 @@ namespace PadForge.Engine.Common.Mapping
         /// released, its input suppressed, its device offline) puts the input back
         /// outside the zone, the way Toggle's latch releases, and the first
         /// read afterward presses at once if the input is past the deadzone,
-        /// as a Direct row would.</para>
+        /// as a Direct row would. <paramref name="layer"/> is the row's shift
+        /// layer, so another layer's row on the same target never steps from
+        /// this one's zone.</para>
         /// </summary>
         public bool TickRapidTrigger(int slotIndex, string target, int sourceIndex,
-            bool pastActuation, double depth, double distance)
+            bool pastActuation, double depth, double distance, string layer = null)
         {
-            var key = (slotIndex, target ?? "", sourceIndex);
+            var key = (slotIndex, target ?? "", LayerKey(layer), sourceIndex);
             if (!_rapidTriggerState.TryGetValue(key, out var st))
                 _rapidTriggerState[key] = st = new RapidTriggerState();
             if (st.Seq != FrameSeq)
@@ -700,6 +736,15 @@ namespace PadForge.Engine.Common.Mapping
         // fractional residual carried in state, so the caller feeds it to
         // the injector unscaled.
 
+        /// <summary>True while a flick stick source's stick sits past its
+        /// flick threshold (JSM's is_flicking), whether or not this frame
+        /// turned: the stick is held, as a touchpad finger resting in place
+        /// is down. <paramref name="layer"/> is the row's shift layer, the
+        /// key <see cref="TickFlickStick"/> keeps the state under.</summary>
+        public bool IsFlickEngaged(int slotIndex, string target, int sourceIndex, string layer = null)
+            => _flickState.TryGetValue((slotIndex, target ?? "", LayerKey(layer), sourceIndex), out var st)
+               && st.IsFlicking;
+
         /// <summary>
         /// Advances one flick stick source and returns the mouse X counts to
         /// emit this tick. <paramref name="frameSeq"/> is the caller's
@@ -717,10 +762,13 @@ namespace PadForge.Engine.Common.Mapping
         /// the layer. That is a named divergence from JSM, which forces
         /// FLICK_ONLY until an in-flight flick completes on a chord change
         /// (JoyShock.h:168-190); #225 requires no residual camera motion
-        /// after layer exit.
+        /// after layer exit. <paramref name="layer"/> is the row's shift
+        /// layer, so a Base row's flick on the same target is never the
+        /// engaging layer row's starting state.
         /// </summary>
         public int TickFlickStick(int slotIndex, string target, int sourceIndex,
-            MappingSource src, CustomInputState state, double deltaSeconds, long frameSeq)
+            MappingSource src, CustomInputState state, double deltaSeconds, long frameSeq,
+            string layer = null)
         {
             if (src == null || state == null) return 0;
             // Touch-surface flick (v26): the finger's centered vector plays
@@ -733,7 +781,7 @@ namespace PadForge.Engine.Common.Mapping
                 && !SourceCoercion.TryGetFlickStickAxes(src.Descriptor, out xDesc, out yDesc))
                 return 0;
 
-            var key = (slotIndex, target ?? "", sourceIndex);
+            var key = (slotIndex, target ?? "", LayerKey(layer), sourceIndex);
             if (!_flickState.TryGetValue(key, out var st))
                 _flickState[key] = st = new FlickState();
 
@@ -1078,6 +1126,10 @@ namespace PadForge.Engine.Common.Mapping
         public static int SteeringAxisRead(string descriptor)
         {
             if (string.IsNullOrWhiteSpace(descriptor)) return -1;
+            // A family member under a device's own placement reads that
+            // device's axis, so it bypasses the memo of the SDL layout's.
+            if (SourceCoercion.ActivePlacement != null && SourceCoercion.IsGamepadAliasDescriptor(descriptor))
+                return SteeringAxisReadUncached(descriptor);
             // Memoized, as SourceCoercion.NumberedAxesRead is: the alias fold
             // and the parse ran on every steering read of every frame.
             if (s_steeringAxisCache.TryGetValue(descriptor, out int hit)) return hit;

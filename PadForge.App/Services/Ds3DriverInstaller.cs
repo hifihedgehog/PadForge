@@ -1753,6 +1753,53 @@ namespace PadForge.Services
         internal static bool ShouldUpgrade(Version installed, Version bundled)
             => installed != null && bundled != null && bundled > installed;
 
+        /// <summary>True when launch replaces the installed BthPS3 with the
+        /// bundle: installed, older than the bundle, and not under DsHidMini,
+        /// whose own setup installs and updates the stack it shares.</summary>
+        internal static bool ShouldUpgradeAtStartup(bool installedService, bool dsHidMini, Version installed, Version bundled)
+            => installedService && !dsHidMini && ShouldUpgrade(installed, bundled);
+
+        /// <summary>True when the stack may be replaced now: the probe of
+        /// BthPS3's children ran and found no PlayStation controller connected
+        /// over Bluetooth. Replacing it cycles the radio, and under BthPS3
+        /// 2.12.0 to 3.2.0 a PlayStation controller torn down on Bluetooth is
+        /// the 0x10D bugcheck (nefarius/BthPS3#182).</summary>
+        internal static bool MayReplaceDriversNow(bool probed, int children) => probed && children == 0;
+
+        /// <summary>DriverVer of the bundled BthPS3.inf, read from the embedded
+        /// resource, so launch compares versions without extracting the
+        /// bundle.</summary>
+        internal static Version BundledBthPs3Version()
+        {
+            // The LogicalName carries MSBuild's RecursiveDir, whose separator
+            // is the build machine's, so the name is matched either way.
+            var asm = Assembly.GetExecutingAssembly();
+            string name = asm.GetManifestResourceNames().FirstOrDefault(n =>
+                n.Replace('\\', '/').Equals("BthPS3.BthPS3/BthPS3.inf", StringComparison.OrdinalIgnoreCase));
+            if (name == null) return null;
+            using Stream s = asm.GetManifestResourceStream(name);
+            if (s == null) return null;
+            using var reader = new StreamReader(s);
+            return ParseInfDriverVersion(reader.ReadToEnd());
+        }
+
+        /// <summary>Launch: a machine that paired a pad under an older bundle
+        /// keeps that driver until the next pairing, and a pad already paired
+        /// is rarely paired again, so the fix a newer bundle carries never
+        /// arrived. Replaces an older install while no PlayStation controller
+        /// is connected over Bluetooth, the HIDMaestro driver's launch-time
+        /// install being the precedent. New PlayStation links are refused first,
+        /// so none forms between the check and the radio cycle, and the
+        /// startup reconcile that follows arms the filter again.</summary>
+        internal static void UpgradeAtStartupIfOlder(Action<string> log)
+        {
+            if (!ShouldUpgradeAtStartup(IsServiceInstalled("BthPS3"), IsDsHidMiniInstalled(),
+                    InstalledBthPs3Version(), BundledBthPs3Version()))
+                return;
+            RequestPsmPatching(false, log);
+            UpgradeInstalledDriversIfOlder(log);
+        }
+
         /// <summary>File version of the BthPS3.sys the installed service points
         /// at through its ImagePath, or null.</summary>
         private static Version InstalledBthPs3Version()
@@ -1792,6 +1839,14 @@ namespace PadForge.Services
                 Version bundled = File.Exists(inf) ? ParseInfDriverVersion(File.ReadAllText(inf)) : null;
                 Version installed = InstalledBthPs3Version();
                 if (!ShouldUpgrade(installed, bundled)) return;
+                bool probed = TryProbeBthPs3Children(out int children, out _, out _);
+                if (!MayReplaceDriversNow(probed, children))
+                {
+                    log(probed
+                        ? $"PlayStation Bluetooth drivers stay at {installed} while a PlayStation controller is connected over Bluetooth. They update at the next start or pairing with none connected."
+                        : $"PlayStation Bluetooth drivers stay at {installed}: PadForge could not check for a PlayStation controller connected over Bluetooth.");
+                    return;
+                }
                 log($"Updating PlayStation Bluetooth drivers from {installed} to {bundled}...");
                 InstallInf(Path.Combine(dir, "BthPS3PSM", "BthPS3PSM.inf"), log);
                 InstallInf(inf, log);

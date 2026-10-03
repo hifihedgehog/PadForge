@@ -673,13 +673,16 @@ namespace PadForge.Engine.Data
         /// Longer is steadier and slower to follow the pad.</summary>
         [XmlElement] public string GyroSimulationSmoothingMs { get; set; } = "100";
 
-        /// <summary>The InstanceGuid of the device the stored gyro bias was
-        /// measured on (#474), written with every calibration. A DualShock 3
-        /// subtracts a stored bias only when it is its own: its yaw sign
-        /// changed in #474, and units rest hundreds of counts apart, so a
-        /// calibration from before that change or from another unit would
-        /// add drift instead of removing it. Empty on calibrations taken
-        /// before the field existed.</summary>
+        /// <summary>Whom the stored gyro bias belongs to (#474), written with
+        /// every calibration (GyroCalibratorService.CalibrationOwner): the
+        /// device row's InstanceGuid, or on a DualShock 3 whose Bluetooth
+        /// address PadForge knows, the pad itself as "address/source", such as
+        /// "0123456789ab/direct" or "0123456789ab/node:3.15.0.0/cal". A
+        /// DualShock 3 subtracts a stored bias only when it is its own: its yaw
+        /// sign changed in #474, and units rest hundreds of counts apart, so a
+        /// calibration from before that change or from another unit would add
+        /// drift instead of removing it. Empty on calibrations taken before the
+        /// field existed.</summary>
         [XmlElement] public string GyroCalibratedDevice { get; set; } = "";
 
         /// <summary>Magnetometer hard-iron bias, raw wire units, captured

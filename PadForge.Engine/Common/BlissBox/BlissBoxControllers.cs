@@ -36,8 +36,11 @@ namespace PadForge.Engine.Common.BlissBox
     /// the PlayStation, Nintendo 64, Saturn, TurboGrafx-16, 3DO and Wii
     /// Classic, and differ on the NES's A and B, the SNES's X and Y, the
     /// Genesis's C and Z, the Dreamcast's and GameCube's shoulders, and the
-    /// Jaguar's A and C. The Jaguar keeps the joystick's names on 3.x, since
-    /// nothing else settles which of its sources is right there. Only
+    /// Jaguar's A and C. The Jaguar takes DeviceBuddy's numbering on both
+    /// generations: the 3.0 firmware's own scan of its matrix (0x2045 to
+    /// 0x20DB) puts C on 0, B on 1, Option on 4, Pause on 5, A on 7 and the
+    /// keypad on 8 to 19, as the GPA layout does, where RetroArch's 3.24 file
+    /// swaps A with C and Option with Pause. Only
     /// DeviceBuddy's layouts for the adapter's stream count (hat at byte 11),
     /// matched to a type by its name in BlissBox_lookUpName. That function
     /// names 27, 49 and 54 "SNES", "NEO" and "PCEngine", which no layout file
@@ -110,7 +113,7 @@ namespace PadForge.Engine.Common.BlissBox
         public static int FirstArrowButton(byte type, byte major)
         {
             if (HatName(type, major) == null) return -1;
-            if (major == 3) return type == 28 ? -1 : 10;
+            if (major == 3) return type is 28 or 11 ? -1 : 10;
             if (major >= 4) return type is 20 or 26 or 66 ? -1 : 20;
             return -1;
         }
@@ -368,6 +371,16 @@ namespace PadForge.Engine.Common.BlissBox
             [16] = "Keypad 9", [17] = "Keypad *", [18] = "Keypad 0", [19] = "Keypad #",
         };
 
+        /// <summary>The Jaguar pad on either generation. Option and Pause are
+        /// the pair of unlabeled ids DeviceBuddy's jaguar.layout draws at bits
+        /// 4 and 5 (BTN_SELECT and BTN_START), where the GPA's XInput mode
+        /// sends Back and Start for every controller (0x297C to 0x297F), and
+        /// MAME names them "P1 Option" and "P1 Pause".</summary>
+        private static readonly Layout Jaguar = new()
+        {
+            Buttons = new(JaguarKeypad) { [7] = "A", [1] = "B", [0] = "C", [4] = "Option", [5] = "Pause" },
+        };
+
         private static readonly Layout PlayStation = new() { Buttons = PlayStationButtons, Axes = TwoSticks };
         private static readonly Layout PlayStationDigital = new() { Buttons = PlayStationButtons };
 
@@ -460,6 +473,7 @@ namespace PadForge.Engine.Common.BlissBox
             [23] = new() { Buttons = TurboGrafxButtons },
             [25] = new() { Buttons = ThreeDoButtons },
             [31] = new() { Buttons = WiiClassicButtons, Axes = TwoSticks },
+            [11] = Jaguar,
         };
 
         /// <summary>Firmware 4 and up: DeviceBuddy's controllers/*.layout.
@@ -531,10 +545,7 @@ namespace PadForge.Engine.Common.BlissBox
                     [0] = "A", [1] = "B", [6] = "C", [2] = "X", [3] = "Y", [7] = "Z", [5] = "Start", [4] = "Mode",
                 },
             },
-            [11] = new()
-            {
-                Buttons = new(JaguarKeypad) { [7] = "A", [1] = "B", [0] = "C" },
-            },
+            [11] = Jaguar,
             [49] = new() { Buttons = new() { [4] = "Select", [5] = "Start" } },
             [17] = new() { Buttons = new() { [0] = "A", [1] = "B", [4] = "Select", [5] = "Start" } },
             [19] = new() { Buttons = Nintendo64Buttons, Axes = OneStick },
@@ -840,11 +851,15 @@ namespace PadForge.Engine.Common.BlissBox
             },
         };
 
-        /// <summary>The Jaguar pad: B south, A west, C east. The keypad stays
-        /// unbound.</summary>
+        /// <summary>The Jaguar pad: B south, A west, C east, Pause on Start
+        /// and Option on Back. The keypad stays unbound.</summary>
         private static readonly Placement JaguarPlacement = new()
         {
-            Inputs = new() { ["B"] = Role.South, ["A"] = Role.West, ["C"] = Role.East },
+            Inputs = new()
+            {
+                ["B"] = Role.South, ["A"] = Role.West, ["C"] = Role.East,
+                ["Pause"] = Role.Start, ["Option"] = Role.Back,
+            },
         };
 
         /// <summary>The Atari joystick: its fire button south.</summary>
@@ -908,9 +923,18 @@ namespace PadForge.Engine.Common.BlissBox
         /// RetroArch's Bliss-Box files. An input named as an analog trigger
         /// takes its role before a digital button that shares it.
         /// <paramref name="firstPressureAxis"/> is the port's first pressure
-        /// axis, -1 when twelve do not fit after its own.
+        /// axis, -1 when twelve do not fit after its own. One map serves every
+        /// caller with the same three values, because the Gamepad names read
+        /// a port through it on every poll.
         /// </summary>
         public static BlissBoxGamepadMap GamepadMap(byte type, byte major, int firstPressureAxis = -1)
+            => s_gamepadMaps.GetOrAdd((type, major, firstPressureAxis),
+                key => BuildGamepadMap(key.Type, key.Major, key.FirstPressureAxis));
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<(byte Type, byte Major, int FirstPressureAxis), BlissBoxGamepadMap>
+            s_gamepadMaps = new();
+
+        private static BlissBoxGamepadMap BuildGamepadMap(byte type, byte major, int firstPressureAxis)
         {
             if (LayoutFor(type, major) is not { } layout || !Placements.TryGetValue(type, out var placement))
                 return null;

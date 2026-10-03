@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
+using PadForge.Engine.Common.BlissBox;
 using PadForge.Engine.Data;
 
 namespace PadForge.Engine.Common.Mapping
@@ -1411,12 +1413,95 @@ namespace PadForge.Engine.Common.Mapping
 
         private static readonly Dictionary<string, string> _gamepadAliasLookup = BuildGamepadAliasLookup();
 
+        /// <summary>The table by full name ("Gamepad ButtonA"), so a read of a
+        /// name written the usual way resolves without building a string.</summary>
+        private static readonly Dictionary<string, string> _gamepadAliasByName = BuildGamepadAliasByName();
+
+        private static Dictionary<string, string> BuildGamepadAliasByName()
+        {
+            var d = new Dictionary<string, string>(StringComparer.Ordinal);
+            foreach (var (member, canonical) in GamepadAliasTable)
+                d["Gamepad " + member] = canonical;
+            return d;
+        }
+
         private static Dictionary<string, string> BuildGamepadAliasLookup()
         {
             var d = new Dictionary<string, string>(StringComparer.Ordinal);
             foreach (var (member, canonical) in GamepadAliasTable)
                 d[member] = canonical;
             return d;
+        }
+
+        // ─── The family on a device that places it itself (#469) ──────────
+        //
+        // A Bliss-Box port read raw is a game controller whose report numbers
+        // its inputs its own way: "Button 0" there is whatever the adapter
+        // lists first, not SDL's south button. The controller identified in
+        // the port has a placement (BlissBoxGamepadMap), and the default
+        // mapping binds the port through it. While a read runs against such a
+        // device, the family resolves through that placement instead of the
+        // table above, so an "(Any Device)" "Gamepad A" reads the input the
+        // port's own default A row reads. A position the placement leaves
+        // empty reads nothing, as SDL's gamepad read does for a button its
+        // mapping lacks.
+
+        /// <summary>The placement of the device behind a device guid, or null
+        /// for a device read in SDL's layout already. Set by the app.</summary>
+        public static Func<string, BlissBoxGamepadMap> GamepadPlacementProvider { get; set; }
+
+        [ThreadStatic] private static BlissBoxGamepadMap t_placement;
+
+        /// <summary>The placement the family resolves through on this thread,
+        /// or null.</summary>
+        internal static BlissBoxGamepadMap ActivePlacement => t_placement;
+
+        /// <summary>Resolves the family through <paramref name="placement"/>
+        /// until the scope is disposed, which restores the one before it.</summary>
+        public static PlacementScope UsePlacement(BlissBoxGamepadMap placement)
+        {
+            var previous = t_placement;
+            t_placement = placement;
+            return new PlacementScope(previous);
+        }
+
+        /// <summary><see cref="UsePlacement"/> for the device behind
+        /// <paramref name="deviceGuid"/>. An empty guid names no device and
+        /// keeps the placement already in force, so a read that carries no
+        /// device of its own follows the device pass around it.</summary>
+        public static PlacementScope ReadingDevice(string deviceGuid)
+        {
+            if (string.IsNullOrEmpty(deviceGuid)) return new PlacementScope(t_placement);
+            return UsePlacement(GamepadPlacementProvider?.Invoke(deviceGuid));
+        }
+
+        /// <summary><see cref="ReadingDevice(string)"/> for the device whose
+        /// state a read of <paramref name="src"/> takes: the source's own
+        /// device when it names one, else <paramref name="evaluatedDeviceGuid"/>.</summary>
+        public static PlacementScope ReadingDevice(MappingSource src, string evaluatedDeviceGuid)
+            => ReadingDevice(string.IsNullOrEmpty(src?.DeviceGuid) ? evaluatedDeviceGuid : src.DeviceGuid);
+
+        /// <summary>Restores the placement that was in force when the scope
+        /// began.</summary>
+        public readonly struct PlacementScope : IDisposable
+        {
+            private readonly BlissBoxGamepadMap _previous;
+            internal PlacementScope(BlissBoxGamepadMap previous) => _previous = previous;
+            public void Dispose() => t_placement = _previous;
+        }
+
+        /// <summary>The input <paramref name="placement"/> puts at the
+        /// position the canonical descriptor names ("Button 0" is SDL's south
+        /// button), or null where it puts nothing.</summary>
+        private static string Placed(BlissBoxGamepadMap placement, string canonical)
+        {
+            if (canonical.StartsWith("Button ", StringComparison.Ordinal))
+                return int.TryParse(canonical.AsSpan(7), NumberStyles.None, CultureInfo.InvariantCulture, out int b)
+                    ? placement.Button(b) : null;
+            if (canonical.StartsWith("Axis ", StringComparison.Ordinal))
+                return int.TryParse(canonical.AsSpan(5), NumberStyles.None, CultureInfo.InvariantCulture, out int a)
+                    ? placement.Axis(a) : null;
+            return placement.DPad ? canonical : null;
         }
 
         /// <summary>True for any descriptor in the abstract gamepad family
@@ -1429,16 +1514,40 @@ namespace PadForge.Engine.Common.Mapping
 
         /// <summary>Translates a <c>"Gamepad &lt;Name&gt;"</c> alias into the
         /// canonical per-device descriptor it resolves to
-        /// (<c>"Gamepad LeftStickX"</c> → <c>"Axis 0"</c>). Returns
+        /// (<c>"Gamepad LeftStickX"</c> → <c>"Axis 0"</c>), or through the
+        /// active placement into the input the device puts there. Returns
         /// <c>null</c> for anything that is not a recognized gamepad alias,
-        /// so callers can fall through to the raw descriptor.</summary>
+        /// and for a position the active placement leaves empty.</summary>
         public static string ResolveGamepadAlias(string descriptor)
         {
             if (string.IsNullOrEmpty(descriptor)) return null;
             string s = descriptor.Trim();
-            if (!s.StartsWith("Gamepad ", StringComparison.Ordinal)) return null;
-            string member = s.Substring("Gamepad ".Length).Trim();
-            return _gamepadAliasLookup.TryGetValue(member, out string canonical) ? canonical : null;
+            if (!TryGetAliasCanonical(s, out string canonical)) return null;
+            var placement = t_placement;
+            return placement == null ? canonical : Placed(placement, canonical);
+        }
+
+        /// <summary>The SDL-layout descriptor of the alias <paramref name="trimmed"/>
+        /// names, from the table alone.</summary>
+        private static bool TryGetAliasCanonical(string trimmed, out string canonical)
+        {
+            if (_gamepadAliasByName.TryGetValue(trimmed, out canonical)) return true;
+            canonical = null;
+            return trimmed.StartsWith("Gamepad ", StringComparison.Ordinal)
+                   && _gamepadAliasLookup.TryGetValue(trimmed.Substring("Gamepad ".Length).Trim(), out canonical);
+        }
+
+        /// <summary>True for a member of <see cref="GamepadAliasTable"/>.</summary>
+        private static bool IsGamepadAliasMember(string trimmed) => TryGetAliasCanonical(trimmed, out _);
+
+        /// <summary>True for a stick or trigger alias, one whose position in
+        /// SDL's layout is an axis ("Gamepad LeftStickX" is Axis 0), whatever
+        /// placement is in force.</summary>
+        public static bool IsGamepadAxisAlias(string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            return TryGetAliasCanonical(descriptor.Trim(), out string canonical)
+                   && canonical.StartsWith("Axis ", StringComparison.Ordinal);
         }
 
         /// <summary>Returns the descriptor the coercion pipeline should read:
@@ -1458,6 +1567,9 @@ namespace PadForge.Engine.Common.Mapping
             {
                 string canonical = ResolveGamepadAlias(s);
                 if (!string.IsNullOrEmpty(canonical)) return canonical;
+                // An alias the active placement leaves empty reads nothing,
+                // never the raw input that shares its number.
+                if (t_placement != null && IsGamepadAliasMember(s)) return "";
             }
             return s;
         }
@@ -2465,6 +2577,16 @@ namespace PadForge.Engine.Common.Mapping
         {
             first = second = -1;
             if (string.IsNullOrEmpty(descriptor)) return 0;
+            // A family member under a device's own placement reads that
+            // device's inputs, so it never enters or reads the memo, which
+            // holds the SDL layout's answer.
+            if (t_placement != null && IsGamepadAliasDescriptor(descriptor))
+            {
+                var placed = NumberedAxesReadUncached(descriptor);
+                first = placed.First;
+                second = placed.Second;
+                return placed.Count;
+            }
             // Full-result memo, as for the flick touchpad parse: the alias
             // fold and the ring and flick resolves build strings, and the
             // gate asks once per wildcard source per device per poll.
@@ -2572,15 +2694,29 @@ namespace PadForge.Engine.Common.Mapping
         internal static float ReadStickRingMagnitude(CustomInputState state, string canonical)
         {
             if (state == null || !IsStickRingDescriptor(canonical)) return 0f;
-            var (xi, yi) = canonical.Trim().StartsWith("Gamepad Left", StringComparison.OrdinalIgnoreCase)
-                ? _leftRingAxisIndices
-                : _rightRingAxisIndices;
+            bool left = canonical.Trim().StartsWith("Gamepad Left", StringComparison.OrdinalIgnoreCase);
+            var (xi, yi) = left ? _leftRingAxisIndices : _rightRingAxisIndices;
+            // A device that places the family itself puts the stick on its
+            // own axes (a Bliss-Box port read raw, #469).
+            var placement = t_placement;
+            if (placement != null)
+            {
+                xi = PlacedAxisIndex(placement, left ? 0 : 3);
+                yi = PlacedAxisIndex(placement, left ? 1 : 4);
+            }
             if (xi < 0 || yi < 0) return 0f;
             float x = ReadRingNormAxis(state, xi);
             float y = ReadRingNormAxis(state, yi);
             float mag = (float)Math.Sqrt(x * x + y * y);
             return mag > 1f ? 1f : mag;
         }
+
+        /// <summary>The numbered axis <paramref name="placement"/> puts at
+        /// SDL's axis position <paramref name="position"/>, or -1 where it
+        /// puts none or a button. A placement holds "Axis N" and "Button N"
+        /// alone (BlissBoxControllers.GamepadMap).</summary>
+        private static int PlacedAxisIndex(BlissBoxGamepadMap placement, int position)
+            => NumberedAxisOf(placement.Axis(position));
 
         private static float ReadRingNormAxis(CustomInputState state, int idx)
         {
@@ -4047,6 +4183,7 @@ namespace PadForge.Engine.Common.Mapping
             string evaluatedDeviceGuid = null)
         {
             if (state == null || src == null) return false;
+            using var placement = ReadingDevice(src, evaluatedDeviceGuid);
 
             bool raw = ReadAsBool(state, src, globalThresholdPercent, slotIndex,
                 EffectiveDeviceGuid(src, evaluatedDeviceGuid));
@@ -5009,6 +5146,7 @@ namespace PadForge.Engine.Common.Mapping
             bool relativeTouchpad = false, string evaluatedDeviceGuid = null)
         {
             if (state == null || src == null) return 0f;
+            using var placement = ReadingDevice(src, evaluatedDeviceGuid);
 
             float raw = ReadAsBipolar(state, src, slotIndex, relativeTouchpad,
                 EffectiveDeviceGuid(src, evaluatedDeviceGuid));
@@ -5032,6 +5170,7 @@ namespace PadForge.Engine.Common.Mapping
             string evaluatedDeviceGuid = null)
         {
             if (state == null || src == null) return 0f;
+            using var placement = ReadingDevice(src, evaluatedDeviceGuid);
 
             float raw = ReadAsUnipolar(state, src, slotIndex,
                 EffectiveDeviceGuid(src, evaluatedDeviceGuid));
@@ -6847,6 +6986,23 @@ namespace PadForge.Engine.Common.Mapping
                     }
                     return true;
             }
+        }
+
+        /// <summary>True when the finger a touchpad finger X or Y source reads
+        /// is down inside the source's window, the gate
+        /// <see cref="ReadTouchpadMouseCounts"/> applies before it moves the
+        /// cursor. A finger resting outside an "X Left" source's half is no
+        /// contact for that source.</summary>
+        public static bool TouchpadMouseFingerEngaged(CustomInputState state, string descriptor)
+        {
+            if (state == null || !TryParseTouchpadAxis(CanonicalDescriptor(descriptor),
+                    out int padIdx, out int fingerIdx, out int axisOffset, out int half))
+                return false;
+            if (axisOffset != 0 && axisOffset != 1) return false;
+            var pad = GetTouchpad(state, padIdx);
+            if (pad?.FingerDown == null || fingerIdx < 0 || fingerIdx >= pad.FingerDown.Length)
+                return false;
+            return pad.FingerDown[fingerIdx] && FingerInTouchpadWindowForAxis(pad, fingerIdx, half, axisOffset);
         }
 
         /// <summary>Window membership for AXIS reads (#239 refinement of

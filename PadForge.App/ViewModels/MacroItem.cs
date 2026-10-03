@@ -2799,7 +2799,7 @@ namespace PadForge.ViewModels
     /// <summary>
     /// A single action within a macro's action sequence.
     /// </summary>
-    public partial class MacroAction : ObservableObject
+    public partial class MacroAction : FiniteObservableObject
     {
         static MacroAction()
         {
@@ -7272,8 +7272,8 @@ namespace PadForge.ViewModels
                         MacroOutputChannel.RB => "R1",
                         MacroOutputChannel.LS => "L3",
                         MacroOutputChannel.RS => "R3",
-                        MacroOutputChannel.Back => style == MacroButtonStyle.DualShock3 ? s.DevObj_Select : s.Btn_Share,
-                        MacroOutputChannel.Start => style == MacroButtonStyle.DualShock3 ? s.Btn_Start : s.Btn_Options,
+                        MacroOutputChannel.Back => MacroButtonNames.PlayStationBack(style == MacroButtonStyle.DualShock3),
+                        MacroOutputChannel.Start => MacroButtonNames.PlayStationStart(style == MacroButtonStyle.DualShock3),
                         MacroOutputChannel.Guide => s.Btn_PS,
                         MacroOutputChannel.LT => "L2",
                         MacroOutputChannel.RT => "R2",
@@ -7343,6 +7343,20 @@ namespace PadForge.ViewModels
 
     public static class MacroButtonNames
     {
+        /// <summary>The PlayStation Back button's name: Select on the
+        /// DualShock 3 presets, Share on the others. The mapping grid, the
+        /// macro output list, the macro and menu button lists and the SOCD
+        /// pairs all read it, so the four name the button alike in every
+        /// language.</summary>
+        public static string PlayStationBack(bool dualShock3)
+            => dualShock3 ? Strings.Instance.DevObj_Select : Strings.Instance.Btn_Share;
+
+        /// <summary>The PlayStation Start button's name: Start on the
+        /// DualShock 3 presets, Options on the others. See
+        /// <see cref="PlayStationBack"/>.</summary>
+        public static string PlayStationStart(bool dualShock3)
+            => dualShock3 ? Strings.Instance.Btn_Start : Strings.Instance.Btn_Options;
+
         /// <summary>The Numbered convention's mask order: numbered button N
         /// (1-based) corresponds to NumberedMaskOrder[N-1]. This is exactly
         /// the mapping BuildNumberedDefs labels (A = Button 1 ... Guide =
@@ -7625,7 +7639,7 @@ namespace PadForge.ViewModels
             (Strings.Instance.Btn_Cross, 0x1000), (Strings.Instance.Btn_Circle, 0x2000),
             (Strings.Instance.Btn_Square, 0x4000), (Strings.Instance.Btn_Triangle, 0x8000),
             (Strings.Instance.Btn_L1, 0x0100), (Strings.Instance.Btn_R1, 0x0200),
-            (Strings.Instance.Btn_Share, 0x0020), (Strings.Instance.Btn_Options, 0x0010),
+            (MacroButtonNames.PlayStationBack(false), 0x0020), (MacroButtonNames.PlayStationStart(false), 0x0010),
             (Strings.Instance.Btn_L3, 0x0040), (Strings.Instance.Btn_R3, 0x0080),
             (Strings.Instance.Btn_PS, 0x0400), (Strings.Instance.Btn_Touchpad, 0x0800),
             (Strings.Instance.Btn_Up, 0x0001), (Strings.Instance.Btn_Down, 0x0002),
@@ -7639,7 +7653,7 @@ namespace PadForge.ViewModels
             (Strings.Instance.Btn_Cross, 0x1000), (Strings.Instance.Btn_Circle, 0x2000),
             (Strings.Instance.Btn_Square, 0x4000), (Strings.Instance.Btn_Triangle, 0x8000),
             (Strings.Instance.Btn_L1, 0x0100), (Strings.Instance.Btn_R1, 0x0200),
-            (Strings.Instance.DevObj_Select, 0x0020), (Strings.Instance.Btn_Start, 0x0010),
+            (MacroButtonNames.PlayStationBack(true), 0x0020), (MacroButtonNames.PlayStationStart(true), 0x0010),
             (Strings.Instance.Btn_L3, 0x0040), (Strings.Instance.Btn_R3, 0x0080),
             (Strings.Instance.Btn_PS, 0x0400),
             (Strings.Instance.Btn_Up, 0x0001), (Strings.Instance.Btn_Down, 0x0002),

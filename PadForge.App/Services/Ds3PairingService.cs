@@ -213,6 +213,15 @@ namespace PadForge.Services
             catch (Exception ex) { LogLine("PSM patch reconcile failed: " + ex.Message); return false; }
         }
 
+        /// <summary>Launch: replaces an older BthPS3 install with the bundle
+        /// while no PlayStation controller is connected over Bluetooth
+        /// (<see cref="Ds3DriverInstaller.UpgradeAtStartupIfOlder"/>), under the
+        /// radio gate the ceremonies' radio cycles take.</summary>
+        public static void UpgradeDriversAtStartup()
+        {
+            lock (_radioGate) Ds3DriverInstaller.UpgradeAtStartupIfOlder(LogLine);
+        }
+
         public sealed class PairResult
         {
             /// <summary>The pad's own BT MAC (from 0xF2), lowercase hex no separators.</summary>
@@ -1798,7 +1807,15 @@ namespace PadForge.Services
 
         // ── driver install + radio cycle + node removal (filled from grounding) ──
 
-        private bool EnsureBthPs3Installed() => Ds3DriverInstaller.EnsureInstalled(_log);
+        /// <summary>The install step upgrades an older stack and cycles the
+        /// radio, so it takes the radio gate as the launch-time upgrade
+        /// (<see cref="UpgradeDriversAtStartup"/>) and the ceremonies' own
+        /// cycles do, and a pairing opened right after launch never runs the
+        /// installer beside it.</summary>
+        private bool EnsureBthPs3Installed()
+        {
+            lock (_radioGate) return Ds3DriverInstaller.EnsureInstalled(_log);
+        }
         private bool EnsureWinUsbBound(CancellationToken ct) => Ds3DriverInstaller.EnsureWinUsbBound(_log, ct);
         private void CycleRadio() => Ds3DriverInstaller.CycleBluetoothRadio(_log);
 

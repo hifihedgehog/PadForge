@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Concurrent;
+using System.Threading;
 using System.Threading.Tasks;
 using Nefarius.Utilities.DeviceManagement.PnP;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Engine.RemoteLink;
 
 namespace PadForge.Common.Input
 {
@@ -16,9 +18,13 @@ namespace PadForge.Common.Input
     /// ("direct"). A pad under DsHidMini carries it on its device node, where
     /// BthPS3 (Bluetooth) or DsHidMini (USB, driver/Ds3.c) publishes
     /// DEVPKEY_Bluetooth_DeviceAddress, and the source is that node's driver
-    /// release ("node:3.15.0.0"): PadForge's own path reads the word against
-    /// 512, DsHidMini 3.15.0 and later zero it, and earlier releases don't,
-    /// so a calibration taken under one is wrong under another.
+    /// release, with "/cal" when DsHidMini holds the pad's EEPROM calibration
+    /// ("node:3.15.0.0/cal"). PadForge's own path reads the word against 512.
+    /// DsHidMini zeroes it against the calibration when it has one, from a
+    /// live USB read (driver 3.7.0 and later) or a USB read cached for
+    /// Bluetooth (3.9.0 and later, first in the public 3.15.0 setup), and
+    /// serves it unzeroed when it has none, within one release. A
+    /// calibration taken in one of these states is wrong in another.
     /// </summary>
     internal static class Ds3UnitIdentity
     {
@@ -30,6 +36,23 @@ namespace PadForge.Common.Input
         // DEVPKEY_Device_DriverVersion (devpkey.h).
         private static readonly DevicePropertyKey DriverVersionKey = CustomDeviceProperty.CreateCustomDeviceProperty(
             new Guid("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), 3, typeof(string));
+
+        // DEVPKEY_DsHidMini_RO_MotionCalibrationSource (dshmguid.h), a BYTE:
+        // 0 none, 1 a live USB read, 2 a USB read cached for Bluetooth.
+        private static readonly DevicePropertyKey CalibrationSourceKey = CustomDeviceProperty.CreateCustomDeviceProperty(
+            new Guid("3FECF510-CC94-4FBE-8839-738201F84D59"), 14, typeof(byte));
+
+        /// <summary>How long after a node read it is read once more.
+        /// DsHidMini writes a Bluetooth connection's calibration source a
+        /// second after the link starts (DsBth_SelfManagedIoInit starts the
+        /// one-second StartupDelay timer, whose callback in DsBth.Timers.c
+        /// sets it), and the property persists across connections, so a read
+        /// at arrival can still show the last connection's state.</summary>
+        internal static int SettleDelayMs = 2000;
+
+        // Bumped by ResetForTests, so a re-read scheduled by one test never
+        // lands in the next.
+        private static int _generation;
 
         /// <summary>Reads a node path's identity. Tests replace it.</summary>
         internal static Func<string, string> NodeReader = ReadNodeIdentity;
@@ -52,6 +75,12 @@ namespace PadForge.Common.Input
         {
             var device = ud?.Device;
             if (device == null) return null;
+            // A pad shared over Remote Link is named by its owner, who can
+            // read its address (the v11 device-list tail). Its synthetic
+            // instance id is stable across reconnects, so the node cache's
+            // premise below does not hold for it either.
+            if (device is RemotePeerDevice peer)
+                return string.IsNullOrEmpty(peer.Info.Ds3Identity) ? null : peer.Info.Ds3Identity;
             uint id = device.SdlInstanceId;
             if (id == 0) return null;
             string direct = Ds3DirectService.GetPadAddress(id);
@@ -73,14 +102,14 @@ namespace PadForge.Common.Input
         internal static void Prime(UserDevice ud)
         {
             var device = ud?.Device;
-            if (device == null || !DualShock3Motion.Is(ud.VendorId, ud.ProdId)) return;
+            if (device == null || device is RemotePeerDevice || !DualShock3Motion.Is(ud.VendorId, ud.ProdId)) return;
             uint id = device.SdlInstanceId;
             if (id == 0 || Ds3DirectService.GetDevicePath(id) != null) return;
             if (NodeIdentities.ContainsKey(id) || !Reading.TryAdd(id, 0)) return;
             Resolve(id, ud.InstanceGuid, ud.DevicePath);
         }
 
-        private static void Resolve(uint id, Guid row, string path)
+        private static void Resolve(uint id, Guid row, string path, bool settle = true)
         {
             string identity = null;
             try { identity = NodeReader(path); }
@@ -89,6 +118,18 @@ namespace PadForge.Common.Input
             NodeIdentities[id] = identity;
             if (identity != null) LastByRow[row] = identity;
             Reading.TryRemove(id, out _);
+            // Once more after DsHidMini has written this connection's
+            // calibration source (SettleDelayMs). The arrival read must not
+            // pin a state the driver is about to replace.
+            if (settle && identity != null)
+            {
+                int generation = Volatile.Read(ref _generation);
+                Task.Delay(SettleDelayMs).ContinueWith(_ =>
+                {
+                    if (Volatile.Read(ref _generation) == generation)
+                        Resolve(id, row, path, settle: false);
+                }, TaskScheduler.Default);
+            }
         }
 
         private static string ReadNodeIdentity(string interfacePath)
@@ -102,9 +143,23 @@ namespace PadForge.Common.Input
                 string address = Normalize(node.GetProperty<string>(AddressKey));
                 if (address == null) continue;
                 string release = node.GetProperty<string>(DriverVersionKey);
-                return address + "/node:" + (string.IsNullOrWhiteSpace(release) ? "?" : release.Trim());
+                byte source = 0;
+                try { source = node.GetProperty<byte>(CalibrationSourceKey); }
+                catch { }
+                return NodeOwner(address, release, source);
             }
             return null;
+        }
+
+        /// <summary>A DsHidMini node's identity: the address, the driver
+        /// release, and "/cal" when the driver holds the pad's EEPROM
+        /// calibration (source 1 or 2), which is when it zeroes the yaw. A
+        /// missing property reads 0, as an older release or another driver
+        /// serves the word unzeroed.</summary>
+        internal static string NodeOwner(string address, string release, byte calibrationSource)
+        {
+            string owner = address + "/node:" + (string.IsNullOrWhiteSpace(release) ? "?" : release.Trim());
+            return calibrationSource is 1 or 2 ? owner + "/cal" : owner;
         }
 
         /// <summary>Twelve lowercase hex digits, or null for anything that
@@ -132,6 +187,8 @@ namespace PadForge.Common.Input
         /// <summary>Forgets every connection and row. Tests only.</summary>
         internal static void ResetForTests()
         {
+            Interlocked.Increment(ref _generation);
+            SettleDelayMs = 2000;
             NodeIdentities.Clear();
             Reading.Clear();
             LastByRow.Clear();

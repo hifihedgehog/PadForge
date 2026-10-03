@@ -26,8 +26,7 @@ namespace PadForge.Tests
 
         private static List<(string Target, MappingCategory Cat)> Rows(string profileId)
         {
-            var vm = new PadViewModel(0) { OutputType = VirtualControllerType.Nintendo };
-            vm.ProfileId = profileId;
+            var vm = RestoredPad.Build(0, VirtualControllerType.Nintendo, profileId);
             return vm.Mappings
                 .Select(m => (m.TargetSettingName, m.Category))
                 .ToList();
@@ -117,7 +116,7 @@ namespace PadForge.Tests
         public void BothGenerations_ShareTheSameRowOrderForSharedControls()
         {
             static List<string> Labels(string p) =>
-                new PadViewModel(0) { OutputType = VirtualControllerType.Nintendo, ProfileId = p }
+                RestoredPad.Build(0, VirtualControllerType.Nintendo, p)
                     .Mappings.Where(m => m.Category == MappingCategory.Buttons)
                     .Select(m => m.TargetLabel).ToList();
 

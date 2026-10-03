@@ -1334,6 +1334,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="DevObj_Guide" xml:space="preserve"><value>Guia</value></data>
   <data name="DevObj_Select" xml:space="preserve"><value>Selecionar</value></data>
   <data name="DevObj_Mode" xml:space="preserve"><value>Modo</value></data>
+  <data name="DevObj_Option" xml:space="preserve"><value>Opção</value></data>
   <data name="DevObj_Run" xml:space="preserve"><value>Run</value></data>
   <data name="DevObj_Reset" xml:space="preserve"><value>Reset</value></data>
   <data name="DevObj_HomeButton" xml:space="preserve"><value>Botão HOME</value></data>
@@ -3052,6 +3053,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Mapping_MotionRowUnreadNote" xml:space="preserve"><value>Analógicos e botões não são lidos nesta linha. Atribua-os a Movimento Pitch, Movimento Yaw ou Movimento Roll e remova-os daqui.</value></data>
   <data name="Pad_Mapping_MotionSourceElsewhereNote" xml:space="preserve"><value>As fontes Movimento Giroscópio e Movimento Acelerômetro só funcionam nas linhas Movimento Giroscópio e Movimento Acelerômetro.</value></data>
   <data name="Pad_Mapping_MotionPresetNote" xml:space="preserve"><value>O relatório desta predefinição não carrega movimento. O Servidor de Movimento (DSU) ainda o recebe nos slots 1 a 4.</value></data>
+  <data name="Pad_Mapping_MotionPitchRollRateNote" xml:space="preserve"><value>O relatório desta predefinição não carrega velocidade de pitch nem de roll. No modo Velocidade, esta linha chega ao jogo apenas como inclinação, e apenas enquanto nenhum acelerômetro alimenta a linha Movimento Acelerômetro. O Servidor de Movimento (DSU) ainda a recebe nos slots 1 a 4.</value></data>
   <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>Redefinir ao Soltar</value></data>
   <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>Quando marcado, soltar o gatilho faz o nível retido voltar a 100%, então a próxima pressão começa cheia. Desmarcado, o nível ajustado é mantido entre as soltadas até você ajustá-lo de novo.</value></data>
   <data name="Pad_ResetGuideLed" xml:space="preserve"><value>Redefinir LED do Botão Guia</value></data>

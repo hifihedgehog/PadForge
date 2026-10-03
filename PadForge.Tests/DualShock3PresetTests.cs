@@ -66,11 +66,7 @@ namespace PadForge.Tests
         // ── The grid ──
 
         private static PadViewModel Grid(string profile)
-        {
-            var vm = new PadViewModel(0) { OutputType = PS };
-            if (profile != null) Restore(vm, profile);
-            return vm;
-        }
+            => RestoredPad.Build(0, PS, profile);
 
         /// <summary>Sets a preset the way a restore does, stamp first, so the
         /// change never reads as live whatever an earlier test left stamped

@@ -1647,6 +1647,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Mapping_MotionRowUnreadNote => Get("Pad_Mapping_MotionRowUnreadNote");
     public string Pad_Mapping_MotionSourceElsewhereNote => Get("Pad_Mapping_MotionSourceElsewhereNote");
     public string Pad_Mapping_MotionPresetNote => Get("Pad_Mapping_MotionPresetNote");
+    public string Pad_Mapping_MotionPitchRollRateNote => Get("Pad_Mapping_MotionPitchRollRateNote");
     public string Pad_Mapping_TrimReset => Get("Pad_Mapping_TrimReset");
     public string Pad_Mapping_TrimReset_Tooltip => Get("Pad_Mapping_TrimReset_Tooltip");
     public string Pad_Formula_TextBox_Tooltip => Get("Pad_Formula_TextBox_Tooltip");
@@ -2870,6 +2871,7 @@ public class Strings : INotifyPropertyChanged
     public string DevObj_Guide => Get("DevObj_Guide");
     public string DevObj_Select => Get("DevObj_Select");
     public string DevObj_Mode => Get("DevObj_Mode");
+    public string DevObj_Option => Get("DevObj_Option");
     public string DevObj_Run => Get("DevObj_Run");
     public string DevObj_Reset => Get("DevObj_Reset");
     public string DevObj_HomeButton => Get("DevObj_HomeButton");

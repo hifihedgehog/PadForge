@@ -216,8 +216,11 @@ namespace PadForge.Common.Input
 
         /// <summary>Denormals in a decaying IIR are a real penalty on the
         /// Atom x5-Z8350 in the perf floor, so history is flushed to zero
-        /// rather than allowed to drift into the denormal range.</summary>
-        private static float Flush(float v) => Math.Abs(v) < 1e-20f ? 0f : v;
+        /// rather than allowed to drift into the denormal range. A non-finite
+        /// history resets to zero too: one NaN sample latched all four, and
+        /// SetParams keeps them for an unchanged level, so the audio stayed
+        /// silent after the bad value was corrected.</summary>
+        private static float Flush(float v) => !float.IsFinite(v) || Math.Abs(v) < 1e-20f ? 0f : v;
     }
 
     /// <summary>One parametric EQ band. Types match what AutoEq emits and what
@@ -409,7 +412,9 @@ namespace PadForge.Common.Input
                 buf[i] = Math.Clamp(l, -ceil, ceil);
                 buf[i + 1] = Math.Clamp(r, -ceil, ceil);
             }
-            _env = env < 1e-20f ? 0f : env;
+            // A non-finite envelope resets, so one NaN sample does not hold
+            // the gain riding off after its cause is gone.
+            _env = !float.IsFinite(env) || env < 1e-20f ? 0f : env;
         }
     }
 

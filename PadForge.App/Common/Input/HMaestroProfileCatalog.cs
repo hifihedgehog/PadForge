@@ -453,16 +453,30 @@ namespace PadForge.Common.Input
             || string.Equals(p.Id, "switch2-pro-controller", StringComparison.OrdinalIgnoreCase);
 
         /// <summary>
-        /// True for the two presets in the motion-carrying families whose
+        /// True for the three presets in the motion-carrying families whose
         /// input report has no motion field: the DualShock 3 (its HM profile
-        /// declares no extended report, and PadForge has no packer for it)
-        /// and the Switch 2 Pro (its report carries no IMU data, the
-        /// controller-slots page says the same). Their Motion rows still feed
-        /// the motion server.
+        /// declares no extended report, and PadForge has no packer for it),
+        /// the Switch 2 Pro (its report carries no IMU data, the
+        /// controller-slots page says the same), and the plain Steam Deck
+        /// (its standard 10-byte report has no motion field, its HM profile
+        /// declares no extended report, and PadForge packs only the
+        /// composite). Their Motion rows still feed the motion server.
         /// </summary>
         internal static bool ReportCarriesNoMotion(string profileId) =>
             string.Equals(profileId, "dualshock-3", StringComparison.OrdinalIgnoreCase)
-            || string.Equals(profileId, "switch2-pro-controller", StringComparison.OrdinalIgnoreCase);
+            || string.Equals(profileId, "switch2-pro-controller", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(profileId, "steam-deck", StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// True for the preset whose report carries motion but no pitch or
+        /// roll rate: the DualShock 3 (SIXAXIS): Full, whose extended report
+        /// carries the accelerometer and the yaw rate only, as the pad does.
+        /// A Speed turn on its Motion Pitch or Roll row reaches the game only
+        /// as tilt, which the slot's motion composes into the accelerometer
+        /// only while no real accelerometer is mapped.
+        /// </summary>
+        internal static bool ReportCarriesNoPitchRollRate(string profileId) =>
+            string.Equals(profileId, "dualshock-3-full", StringComparison.OrdinalIgnoreCase);
 
         /// <summary>
         /// True for the preset whose report carries button pressure: the

@@ -2935,7 +2935,7 @@
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>切换层</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>设置 Chroma 颜色</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>在动作运行期间，将所有 Razer Chroma 设备点亮为同一种颜色。</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>在上方设定的时长内将所有 Razer Chroma 设备点亮为此颜色，之后将灯效交还给 Razer Synapse。若要在按住触发器期间一直保持该颜色，请将“按住时”与“直到释放”一起使用。两个宏同时着色时，列表中靠下的宏优先，因此请把完全按下的宏放在轻按宏的下方。需要运行 Razer Synapse。</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>在上方设定的时长内将所有 Razer Chroma 设备点亮为此颜色，之后将灯效交还给 Razer Synapse。若“将灯条镜像到Razer Chroma”已开启且游戏设置了颜色，则恢复为镜像的灯条颜色。若要在按住触发器期间一直保持该颜色，请将“按住时”与“直到释放”一起使用。两个宏同时着色时，列表中靠下的宏优先，因此请把完全按下的宏放在轻按宏的下方。需要运行 Razer Synapse。</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>显示 Dreamcast 屏幕</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>在为此槽位提供输入的 Bliss-Box 端口中，每个 Dreamcast 手柄的 VMU 上播放图片，然后将各端口恢复为其自己的屏幕设置。</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>显示 {0} 张 Dreamcast 图片，每张 {1} 毫秒，共 {2} 次</value></data>

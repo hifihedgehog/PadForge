@@ -233,6 +233,39 @@ namespace PadForge.Tests
             Assert.Equal(answersWildcard, InputDeviceType.AnswersAnyDeviceSources(capType));
         }
 
+        /// <summary>A pad SDL opened as its gamepad, the handle a Force Raw
+        /// pad keeps, since the flag changes the read and not the open.</summary>
+        private sealed class OpenedPad : WebControllerDevice, ISdlInputDevice
+        {
+            public OpenedPad() : base(Guid.NewGuid().ToString(), "Opened Pad") { }
+            public new IntPtr GamepadHandle => new(1);
+        }
+
+        /// <summary>Force Raw Joystick Mode reads the pad's own button
+        /// numbers, so "Gamepad A" must not read raw button 0, whatever that
+        /// button is on the pad. The numbered "(Any Device)" read still
+        /// reaches it. The same pad without the flag answers both, the
+        /// control that shows the handle alone made it answer.</summary>
+        [Theory]
+        [InlineData(false, true)]
+        [InlineData(true, false)]
+        public void ForceRawPadAnswersNoGamepadNamesButStillAnswersTheWildcard(bool forceRaw, bool answersGamepadNames)
+        {
+            var state = CenteredState();
+            state.Buttons[0] = true;
+            state.Buttons[1] = true;
+            AddDevice(RowGuid, InputDeviceType.Gamepad, state);
+            var row = SettingsManager.UserDevices.Items.First(d => d.InstanceGuid == RowGuid);
+            row.Device = new OpenedPad();
+            row.ForceRawJoystickMode = forceRaw;
+            AddRow("ButtonA", Any("Gamepad ButtonA"));
+            AddRow("ButtonB", Any("Button 1"));
+
+            var gp = Pass(state, RowGuid);
+            Assert.Equal(answersGamepadNames, gp.IsButtonPressed(Gamepad.A));
+            Assert.True(gp.IsButtonPressed(Gamepad.B));
+        }
+
         [Fact]
         public void AnyDeviceActivatorIgnoresPassesOfRowsThatDoNotAnswerIt()
         {

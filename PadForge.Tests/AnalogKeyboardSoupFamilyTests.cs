@@ -725,6 +725,18 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void KeyAxis_StartsWithNoKeys_SoThePickerListsOnlyPositionsItReported()
+        {
+            // The board names keys only by matrix position, so the row's list
+            // starts empty and grows as keys are pressed. A null list would
+            // fall back to the full named keyboard, none of which it reports.
+            var session = new KeyAxisSession();
+            Assert.Null(session.KeyOrder);
+            Assert.NotNull(KeyAxisRoute.Route.Keys);
+            Assert.Empty(KeyAxisRoute.Route.Keys(M484Collection()));
+        }
+
+        [Fact]
         public void KeyAxis_ArmsAndDisarms_WithItsExactBytes()
         {
             // PROTOCOL.md:90-111, app.py:116-121.

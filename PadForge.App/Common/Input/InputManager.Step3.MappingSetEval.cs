@@ -3419,9 +3419,13 @@ namespace PadForge.Common.Input
         /// Any other device answers by its type: the web pad and a Remote Link
         /// copy of a gamepad do, and a keyboard, a mouse and a touchpad do
         /// not, so Tab no longer presses R3 through the family and a left
-        /// click no longer presses A.</summary>
+        /// click no longer presses A. Force Raw Joystick Mode is tested
+        /// first: SDL still opens such a pad as its gamepad (the flag changes
+        /// the read, not the open), so the handle alone let "Gamepad A" read
+        /// raw button 0, whatever that button is on the pad.</summary>
         private static bool SpeaksGamepadLayout(UserDevice dev)
         {
+            if (dev.ForceRawJoystickMode) return false;
             if (dev.Device is { } device && device.GamepadHandle != IntPtr.Zero) return true;
             if (PlacementOf(dev) != null) return true;
             return dev.Device is not SdlDeviceWrapper && dev.CapType == InputDeviceType.Gamepad;

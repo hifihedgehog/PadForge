@@ -2935,7 +2935,7 @@
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>레이어 전환</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Chroma 색상 설정</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>액션이 실행되는 동안 모든 Razer Chroma 장치를 한 가지 색으로 켭니다.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>위에서 정한 시간 동안 모든 Razer Chroma 장치를 이 색으로 켠 뒤 조명을 Razer Synapse에 되돌려 줍니다. 트리거를 누르고 있는 동안 계속 색을 유지하려면 ‘누르고 있는 동안’과 ‘놓을 때까지’를 함께 사용하세요. 두 매크로가 동시에 색을 칠하면 목록에서 아래에 있는 매크로가 우선하므로, 깊게 누르기 매크로를 얕게 누르기 매크로 아래에 두세요. Razer Synapse가 실행 중이어야 합니다.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>위에서 정한 시간 동안 모든 Razer Chroma 장치를 이 색으로 켠 뒤 조명을 Razer Synapse에 되돌려 줍니다. ‘라이트바를 Razer Chroma에 미러링’ 옵션이 켜져 있고 게임이 색을 지정했다면 미러링된 라이트바 색으로 돌아갑니다. 트리거를 누르고 있는 동안 계속 색을 유지하려면 ‘누르고 있는 동안’과 ‘놓을 때까지’를 함께 사용하세요. 두 매크로가 동시에 색을 칠하면 목록에서 아래에 있는 매크로가 우선하므로, 깊게 누르기 매크로를 얕게 누르기 매크로 아래에 두세요. Razer Synapse가 실행 중이어야 합니다.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast 화면 표시</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>이 슬롯에 입력되는 Bliss-Box 포트의 각 Dreamcast 컨트롤러 VMU에서 그림을 재생한 뒤, 각 포트를 원래 화면 설정으로 되돌립니다.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast 그림 {0}장을 각 {1}ms씩 {2}회 표시</value></data>

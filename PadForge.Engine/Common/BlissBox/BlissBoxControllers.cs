@@ -91,17 +91,18 @@ namespace PadForge.Engine.Common.BlissBox
         /// EEPROM 0x3D (0x373A), which a settings command writes (0x2CFB to
         /// 0x2D02), and is never set by the Genesis 3-button pad or the FM
         /// Towns pad (0x349B to 0x34A0). Once it is on, the arrows go out on
-        /// every poll (0x34BC), those two pads included, until power-off or
-        /// until something clears it. Every poll of a ColecoVision
-        /// controller, Super Action Controller or ColecoVision wheel (types 1,
-        /// 34 and 79) clears it (0x23DD), and that path writes the third byte
-        /// itself (0x23E5). The Atari driver clears it when it retypes a
-        /// joystick as a Trak-Ball (0x2408 to 0x241B), and the two routines
-        /// that restore the defaults clear it and store 0 at EEPROM 0x3D
-        /// (0x2C6A and 0x2C6F, 0x36A0 and 0x36A5). The PC-FX pad's own inputs
-        /// share two of those bits (0x16AA to 0x16BD). None of those six gets
-        /// the names, and no GPA layout exists for the ColecoVision
-        /// three.</item>
+        /// every poll of the Genesis 3-button pad too (0x34BC), until
+        /// something clears it. A port's search clears it (0x30B3 to 0x30BA
+        /// call 0x31B5, which zeroes it at 0x31BD), and so does every poll of the
+        /// FM Towns pad (0x24DE to 0x24FA, then 0x241B). Every poll of a
+        /// ColecoVision controller, Super Action Controller or ColecoVision wheel
+        /// (types 1, 34 and 79) clears it (0x23DD), and that path writes the
+        /// third byte itself (0x23E5). The Atari driver clears it when it retypes
+        /// a joystick as a Trak-Ball (0x2408 to 0x241B), and the two routines
+        /// that restore the defaults clear it and store 0 at EEPROM 0x3D (0x2C6A
+        /// and 0x2C6F, 0x36A0 and 0x36A5). The PC-FX pad's own inputs share two
+        /// of those bits (0x16AA to 0x16BD). None of those six gets the names,
+        /// and no GPA layout exists for the ColecoVision three.</item>
         /// </list>
         /// Only a controller whose layout names a D-pad gets them. One
         /// without a D-pad cannot press opposite directions, and the keypads
@@ -160,8 +161,10 @@ namespace PadForge.Engine.Common.BlissBox
         /// (0x2313 to 0x231C), and 3.0 does the same (0x2646 to 0x2651). The
         /// API Tool draws them this way for firmware 3 and up (Form1.cs:
         /// Cross from pressure 6, Circle 5, Square 7, Triangle 4). Its branch
-        /// for 2.x takes the face buttons from other bytes, which the 2.0
-        /// firmware's straight copy does not bear out.</summary>
+        /// for 2.x reads other pressure bytes for buttons 0 to 3 because the
+        /// 2.0 firmware sends the face buttons as Square, Cross, Triangle and
+        /// Circle (0x22B7 to 0x22C6), where 3.0 sends Cross, Circle, Square
+        /// and Triangle (0x25FC to 0x2614).</summary>
         public static readonly IReadOnlyList<string> PressureNames = new[]
         {
             "D-Pad Right Pressure", "D-Pad Left Pressure", "D-Pad Up Pressure", "D-Pad Down Pressure",
@@ -388,12 +391,15 @@ namespace PadForge.Engine.Common.BlissBox
         /// arms GPA 4.86's hotkey once its timer runs out (0x32C8 to 0x3340,
         /// "holding start for 2 seconds" in the API document), and with
         /// Select held as well the firmware drops both and sends button 18
-        /// alone (0x33FA to 0x3405), unless a port setting skips those
-        /// routines (0x06AC, 0x3613 to 0x362A). DeviceBuddy draws that button
+        /// alone (0x33FA to 0x3405). A port setting skips the routine that
+        /// makes the swap (0x06AC, 0x3626 to 0x362A), and the arming routine
+        /// runs either way (0x361F). DeviceBuddy draws that button
         /// on the pad, unlabeled (playstation.layout BTN_HOME). It takes
         /// SDL's name for the role, the guide, as PadForge names an SDL
         /// gamepad's (<see cref="GamepadObjectNames.Button"/>). The 3.0
-        /// firmware has no such swap.</summary>
+        /// firmware makes the same swap only while a hotkey combo is stored
+        /// (RAM 0x016A, 0x3531 to 0x353E), and it adds button 18 to the third
+        /// button byte rather than replacing that byte.</summary>
         private static readonly Dictionary<int, string> PlayStationGpaButtons = new(PlayStationButtons)
         {
             [18] = "Guide",

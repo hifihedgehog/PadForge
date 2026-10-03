@@ -70,6 +70,10 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             ReconnectTries = 6,
             // KeyAxis's name for the board when its product string is empty.
             Name = info => string.IsNullOrWhiteSpace(info.ProductString) ? "Redragon M68 / E-YOOSO HZ-68" : null,
+            // An empty list, not null: null makes the row list the full named
+            // keyboard, and this board reports positions only. The row adds
+            // each position the first time the board reports it.
+            Keys = _ => Array.Empty<int>(),
         };
 
         /// <summary>0416:7372 on usage page FF1B with 64-byte output reports

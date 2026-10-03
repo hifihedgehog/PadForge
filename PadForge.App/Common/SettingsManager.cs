@@ -1159,16 +1159,19 @@ namespace PadForge.Common.Input
                 }
 
                 // Button pressure (discussion #476): a DualShock 3 that
-                // reports it in SDL's order, or a DualShock 2 in a
-                // Bliss-Box port, on the preset whose report carries it.
+                // reports it in SDL's order, an original Xbox controller
+                // (#483), or a DualShock 2 in a Bliss-Box port, on the preset
+                // whose report carries it.
                 if (outputType == Engine.VirtualControllerType.PlayStation
                     && HMaestroProfileCatalog.ReportCarriesPressure(profileId)
                     && (blissBox != null ? blissBox.PressureAxes : ButtonPressureSources.AxesFor(ud)) is { } pressureAxes)
                 {
-                    // A port's pressure axis its object list lacks keeps the
-                    // field's empty default.
+                    // A target the pad has no pressure for (-1, an original
+                    // Xbox controller's D-pad), or a port's pressure axis its
+                    // object list lacks, keeps the field's empty default.
                     string Axis(int i, string unset)
                     {
+                        if (pressureAxes[i] < 0) return unset;
                         string source = "Axis " + pressureAxes[i].ToString(System.Globalization.CultureInfo.InvariantCulture);
                         return (blissBox != null ? OnDevice(source) : source) ?? unset;
                     }

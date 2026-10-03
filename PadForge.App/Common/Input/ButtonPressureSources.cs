@@ -51,31 +51,92 @@ namespace PadForge.Common.Input
             && rawAxes >= Ds3FirstPressureAxis + PadForge.Engine.Common.ButtonPressureState.Count
             && (rawButtons == SdlPs3DriverButtons || rawButtons == Ds3DirectService.VirtualJoystickButtons);
 
+        /// <summary>An original Xbox controller's first pressure axis
+        /// (discussion #483). The fork's XID driver posts the report's six
+        /// analog buttons on joystick axes 6 to 11 in the order A, B, X, Y,
+        /// White, Black (SDL_hidapi_xid_proto.c SDL_XID_DecodeGamepad), at the
+        /// DualShock 3's scale, rest at the axis minimum. Its mapping puts
+        /// White on the left shoulder and Black on the right
+        /// (SDL_XID_MAPPING_GAMEPAD), so the six are the targets' cross,
+        /// circle, square, triangle, L1 and R1. The pad's D-pad is digital,
+        /// as in every XID report, so the D-pad targets get no axis.</summary>
+        internal const int XidFirstPressureAxis = 6;
+
+        /// <summary>The XID targets with a pressure: cross through R1.</summary>
+        private const int XidPressureTargets = 6;
+
+        /// <summary>The axes the fork's XID driver opens every device of the
+        /// gamepad family with (SDL_hidapi_xid_proto.h SDL_XID_GAMEPAD_AXES).</summary>
+        private const int XidGamepadAxes = 12;
+
+        /// <summary>
+        /// True for an original Xbox controller of the gamepad family as the
+        /// fork's XID driver opens it: an ID of the fork's XID table
+        /// (<see cref="PadForge.Services.VendorUsbDriverInstaller.XidIdentities"/>),
+        /// 12 axes, and 11 buttons for a pad, wheel or stick, 12 for a light
+        /// gun or 15 for a dance pad (SDL_hidapi_xid_proto.h). The Steel
+        /// Battalion's 9 axes leave it out. <paramref name="rawButtons"/> is
+        /// null for a cached entry, which keeps no button count.
+        /// </summary>
+        internal static bool IsXidGamepad(ushort vendorId, ushort productId, int rawAxes, int? rawButtons)
+            => rawAxes == XidGamepadAxes
+            && rawButtons is null or 11 or 12 or 15
+            && System.Array.IndexOf(PadForge.Services.VendorUsbDriverInstaller.XidIdentities, (vendorId, productId)) >= 0;
+
+        /// <summary>The pressure layouts PadForge knows.</summary>
+        private enum Layout { None, Ds3, Xid }
+
         /// <summary>The axis each pressure target reads on
-        /// <paramref name="ud"/>, or null. A pad that is not connected answers
-        /// from its cached entry, so assigning a cached DualShock 3 maps its
-        /// pressure the way assigning a connected one does.</summary>
+        /// <paramref name="ud"/>, -1 for a target the pad has no pressure
+        /// for, or null. A pad that is not connected answers from its cached
+        /// entry, so assigning a cached DualShock 3 or original Xbox controller
+        /// maps its pressure the way assigning a connected one does.</summary>
         internal static int[] AxesFor(UserDevice ud)
         {
-            bool sdlOrder = ud?.Device switch
+            Layout layout = ud?.Device switch
             {
-                SdlDeviceWrapper w => IsSdlOrderDualShock3(w.VendorId, w.ProductId, w.RawAxisCount, w.RawButtonCount),
+                SdlDeviceWrapper w => IsSdlOrderDualShock3(w.VendorId, w.ProductId, w.RawAxisCount, w.RawButtonCount) ? Layout.Ds3
+                    : IsHidapi(w.SdlGuid) && IsXidGamepad(w.VendorId, w.ProductId, w.RawAxisCount, w.RawButtonCount) ? Layout.Xid
+                    : Layout.None,
                 // A pad shared over Remote Link answers from the owner's
                 // counts the link carries. The proxy's own RawButtonCount
                 // folds the driver's 11 or 15 into the 22 gamepad positions,
                 // so the owner's count comes from Info. An old peer that
                 // sends no raw counts gets no answer.
                 RemotePeerDevice r => IsSdlOrderDualShock3(r.Info.VendorId, r.Info.ProductId,
-                    r.Info.RawAxisCount, r.Info.RawButtonCount),
-                null => ud != null && CachedRawButtons(ud.SdlGuid) is int buttons
-                    && IsSdlOrderDualShock3(ud.VendorId, ud.ProdId, ud.RawAxisCount, buttons),
-                _ => false,
+                        r.Info.RawAxisCount, r.Info.RawButtonCount) ? Layout.Ds3
+                    : IsXidGamepad(r.Info.VendorId, r.Info.ProductId, r.Info.RawAxisCount, r.Info.RawButtonCount) ? Layout.Xid
+                    : Layout.None,
+                null => CachedLayout(ud),
+                _ => Layout.None,
             };
-            if (!sdlOrder) return null;
+            if (layout == Layout.None) return null;
             var axes = new int[PadForge.Engine.Common.ButtonPressureState.Count];
-            for (int i = 0; i < axes.Length; i++) axes[i] = Ds3FirstPressureAxis + i;
+            for (int i = 0; i < axes.Length; i++)
+                axes[i] = layout == Layout.Ds3 ? Ds3FirstPressureAxis + i
+                    : i < XidPressureTargets ? XidFirstPressureAxis + i
+                    : -1;
             return axes;
         }
+
+        /// <summary>The layout of a cached pad. A DualShock 3 answers by the
+        /// raw button count its driver implies. An original Xbox controller
+        /// answers by its ID and axes, through HIDAPI, the backend the fork's
+        /// XID driver runs on.</summary>
+        private static Layout CachedLayout(UserDevice ud)
+        {
+            if (ud == null) return Layout.None;
+            if (CachedRawButtons(ud.SdlGuid) is int buttons
+                && IsSdlOrderDualShock3(ud.VendorId, ud.ProdId, ud.RawAxisCount, buttons))
+                return Layout.Ds3;
+            return IsHidapi(ud.SdlGuid) && IsXidGamepad(ud.VendorId, ud.ProdId, ud.RawAxisCount, rawButtons: null)
+                ? Layout.Xid
+                : Layout.None;
+        }
+
+        /// <summary>True when the SDL GUID names HIDAPI as the driver
+        /// (SDL_CreateJoystickGUID data[14] 'h').</summary>
+        private static bool IsHidapi(string sdlGuid) => SdlDeviceWrapper.BackendFromGuid(sdlGuid) == "hidapi";
 
         /// <summary>The raw button count of the driver that last opened a
         /// cached pad. The entry itself keeps the larger of that count and the

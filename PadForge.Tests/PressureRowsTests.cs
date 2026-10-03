@@ -849,6 +849,184 @@ namespace PadForge.Tests
             }
         }
 
+        // ── An original Xbox controller (discussion #483) ──
+
+        /// <summary>The targets an original Xbox controller has a pressure
+        /// for: its A, B, X, Y, White and Black on the fork's axes 6 to 11.
+        /// The D-pad targets stay empty.</summary>
+        private static readonly string[] XidTargets = Targets.Take(6).ToArray();
+
+        [Theory]
+        [InlineData(0x045E, 0x0202, 12, 11, true)]   // the Duke
+        [InlineData(0x045E, 0x0285, 12, 11, true)]   // the Japanese Duke
+        [InlineData(0x045E, 0x0287, 12, 11, true)]   // the Controller S
+        [InlineData(0x0738, 0x4540, 12, 15, true)]   // a dance pad's 15 buttons (Mad Catz Beat Pad)
+        [InlineData(0x045E, 0x0202, 12, 12, true)]   // a light gun's 12 buttons
+        [InlineData(0x0A7B, 0xD000, 9, 46, false)]   // the Steel Battalion: another report
+        [InlineData(0x045E, 0x0202, 6, 11, false)]   // no pressure axes
+        [InlineData(0x045E, 0x0202, 12, 17, false)]  // a button count the XID driver never opens with
+        [InlineData(0x045E, 0x028E, 12, 11, false)]  // an Xbox 360 pad: not in the XID table
+        [InlineData(0x054C, 0x0268, 12, 11, false)]  // a DualShock 3's ids
+        public void TheDefaultMappingKnowsAnOriginalXboxControllerByItsShape(int vid, int pid, int axes, int buttons, bool expected)
+            => Assert.Equal(expected, ButtonPressureSources.IsXidGamepad((ushort)vid, (ushort)pid, axes, buttons));
+
+        /// <summary>An SDL GUID for a USB device: the bus, the ids, the
+        /// driver signature byte (data[14]) and the fork's XID GUID byte
+        /// (data[15], 0x01 for the Duke).</summary>
+        private static string XidGuid(string signature = "68", ushort vid = 0x045E, ushort pid = 0x0202)
+            => "03000000" + $"{vid & 0xFF:x2}{vid >> 8:x2}0000" + $"{pid & 0xFF:x2}{pid >> 8:x2}0000" + "0000" + signature + "01";
+
+        /// <summary>An original Xbox controller as the fork's XID driver
+        /// opens it: 12 axes, 11 buttons, through HIDAPI.</summary>
+        private static UserDevice Xid(string signature = "68", ushort vid = 0x045E, ushort pid = 0x0202)
+        {
+            var w = new SdlDeviceWrapper();
+            void Set(string name, object value) => typeof(SdlDeviceWrapper).GetProperty(name).SetValue(w, value);
+            Set(nameof(SdlDeviceWrapper.VendorId), vid);
+            Set(nameof(SdlDeviceWrapper.ProductId), pid);
+            Set(nameof(SdlDeviceWrapper.RawAxisCount), 12);
+            Set(nameof(SdlDeviceWrapper.RawButtonCount), 11);
+            Set(nameof(SdlDeviceWrapper.SdlGuid), XidGuid(signature, vid, pid));
+            return new UserDevice
+            {
+                InstanceGuid = Guid.NewGuid(), VendorId = vid, ProdId = pid,
+                Device = w, IsOnline = true, CapType = InputDeviceType.Gamepad,
+            };
+        }
+
+        [Fact]
+        public void AnOriginalXboxControllerOnTheFullPresetGetsSixPressureAxes()
+        {
+            var xid = Xid();
+            var rawInput = Xid(signature: "72");
+            try
+            {
+                Assert.Equal(new[] { 6, 7, 8, 9, 10, 11, -1, -1, -1, -1 }, ButtonPressureSources.AxesFor(xid));
+                var ps = SettingsManager.CreateDefaultPadSetting(xid, PS, Full);
+                Assert.Equal(Enumerable.Range(6, 6).Select(i => $"Axis {i}"), XidTargets.Select(t => Field(ps, t)));
+                Assert.All(Targets.Skip(6), t => Assert.Equal("", Field(ps, t)));
+
+                // Presets without pressure, and the same ids through another
+                // driver, get none.
+                foreach (var other in new[]
+                {
+                    SettingsManager.CreateDefaultPadSetting(xid, PS, "dualshock-3"),
+                    SettingsManager.CreateDefaultPadSetting(xid, VirtualControllerType.Xbox, "xbox-360-wired"),
+                    SettingsManager.CreateDefaultPadSetting(rawInput, PS, Full),
+                })
+                    Assert.All(Targets, t => Assert.Equal("", Field(other, t)));
+            }
+            finally
+            {
+                (xid.Device as IDisposable)?.Dispose();
+                (rawInput.Device as IDisposable)?.Dispose();
+            }
+        }
+
+        /// <summary>An original Xbox controller as its cached entry keeps it:
+        /// no device object, the raw button count folded into the 22 gamepad
+        /// positions, the 12 raw axes, and the SDL GUID of the driver that
+        /// last opened it.</summary>
+        private static UserDevice CachedXid(string signature = "68", int rawAxes = 12, ushort vid = 0x045E, ushort pid = 0x0202)
+        {
+            var objects = new List<DeviceObjectItem>();
+            for (int a = 0; a < rawAxes; a++)
+                objects.Add(new DeviceObjectItem { InputIndex = a, ObjectType = DeviceObjectTypeFlags.AbsoluteAxis });
+            objects.Add(new DeviceObjectItem { InputIndex = 0, ObjectType = DeviceObjectTypeFlags.PointOfViewController });
+            for (int b = 0; b < 11; b++)
+                objects.Add(new DeviceObjectItem { InputIndex = b, ObjectType = DeviceObjectTypeFlags.PushButton });
+            return new UserDevice
+            {
+                InstanceGuid = Guid.NewGuid(), VendorId = vid, ProdId = pid,
+                SdlGuid = XidGuid(signature, vid, pid), RawAxisCount = rawAxes, RawButtonCount = 22,
+                CapType = InputDeviceType.Gamepad,
+                DeviceObjects = objects.ToArray(),
+            };
+        }
+
+        [Fact]
+        public void ACachedOriginalXboxControllerMapsItsPressureLikeAConnectedOne()
+        {
+            var cached = CachedXid();
+            Assert.Null(cached.Device);
+            Assert.Equal("hidapi", SdlDeviceWrapper.BackendFromGuid(cached.SdlGuid));
+
+            var ps = SettingsManager.CreateDefaultPadSetting(cached, PS, Full);
+            Assert.Equal(Enumerable.Range(6, 6).Select(i => $"Axis {i}"), XidTargets.Select(t => Field(ps, t)));
+            Assert.All(Targets.Skip(6), t => Assert.Equal("", Field(ps, t)));
+            // The rest of the pad maps one to one as before: White, the
+            // left shoulder, is L1, and the D-pad is the hat.
+            Assert.Equal("Button 0", ps.ButtonA);
+            Assert.Equal("Button 4", ps.LeftShoulder);
+            Assert.Equal("Axis 2", ps.LeftTrigger);
+            Assert.Equal("POV 0 Up", ps.DPadUp);
+        }
+
+        [Theory]
+        [InlineData("68", 12, 0x045E, 0x0202, true)]   // the XID driver
+        [InlineData("72", 12, 0x045E, 0x0202, false)]  // RawInput
+        [InlineData("00", 12, 0x045E, 0x0202, false)]  // DirectInput
+        [InlineData("68", 6, 0x045E, 0x0202, false)]   // no pressure axes
+        [InlineData("68", 9, 0x0A7B, 0xD000, false)]   // the Steel Battalion
+        [InlineData("68", 12, 0x045E, 0x028E, false)]  // an Xbox 360 pad
+        public void ACachedOriginalXboxControllerAnswersByItsDriverAndShape(string signature, int rawAxes, int vid, int pid, bool expected)
+            => Assert.Equal(expected, ButtonPressureSources.AxesFor(CachedXid(signature, rawAxes, (ushort)vid, (ushort)pid)) != null);
+
+        /// <summary>An original Xbox controller shared over Remote Link
+        /// answers from the owner's raw counts the link carries, and an old
+        /// peer that sends none gets no answer.</summary>
+        [Theory]
+        [InlineData(11, true)]
+        [InlineData(15, true)]
+        [InlineData(17, false)]
+        [InlineData(0, false)]
+        public void ASharedOriginalXboxControllerAnswersFromItsOwnersCounts(int rawButtons, bool answers)
+        {
+            var info = new PadForge.Engine.RemoteLink.RemotePeerDeviceInfo
+            {
+                VendorId = 0x045E, ProductId = 0x0202, NumAxes = 6, NumButtons = 22,
+                RawAxisCount = 12, RawButtonCount = rawButtons,
+            };
+            var shared = new UserDevice
+            {
+                InstanceGuid = Guid.NewGuid(), VendorId = 0x045E, ProdId = 0x0202,
+                Device = new PadForge.Engine.RemoteLink.RemotePeerDevice(info),
+                IsOnline = true, CapType = InputDeviceType.Gamepad,
+            };
+            var axes = ButtonPressureSources.AxesFor(shared);
+            if (answers) Assert.Equal(new[] { 6, 7, 8, 9, 10, 11, -1, -1, -1, -1 }, axes);
+            else Assert.Null(axes);
+        }
+
+        [Fact]
+        public void ChangingToTheFullPresetFillsAnOriginalXboxControllersSixRows()
+        {
+            var devices = SettingsManager.UserDevices;
+            var settings = SettingsManager.UserSettings;
+            var cached = CachedXid();
+            try
+            {
+                SettingsManager.UserDevices = new DeviceCollection();
+                SettingsManager.UserSettings = new SettingsCollection();
+                lock (SettingsManager.UserDevices.SyncRoot) SettingsManager.UserDevices.Items.Add(cached);
+                var ps = new PadSetting { ButtonA = "Button 0" };
+                var us = new UserSetting { InstanceGuid = cached.InstanceGuid, MapTo = 0 };
+                us.SetPadSetting(ps);
+                lock (SettingsManager.UserSettings.SyncRoot) SettingsManager.UserSettings.Items.Add(us);
+
+                Assert.True(DeviceService.FillEmptyPressureMappingsForSlot(0, Full));
+                Assert.Equal("Axis 6", ps.PressureButtonA);
+                Assert.Equal("Axis 11", ps.PressureRightShoulder);
+                Assert.Equal("", ps.PressureDPadUp);
+                Assert.Equal("", ps.PressureDPadRight);
+            }
+            finally
+            {
+                SettingsManager.UserDevices = devices;
+                SettingsManager.UserSettings = settings;
+            }
+        }
+
         [Fact]
         public void ChangingToTheFullPresetFillsOnlyThePressureFields()
         {

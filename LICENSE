@@ -499,7 +499,7 @@ Protocol documentation references (no code from these projects ships)
   files in SteveFox1620's retroarch-joypad-autoconfig fork
   (https://github.com/SteveFox1620/retroarch-joypad-autoconfig, no license
   published), Controller Pak checksums checked against libdragon
-  (https://github.com/DragonMinded/libdragon, public domain), and the
+  (https://github.com/DragonMinded/libdragon, Unlicense), and the
   PlayStation pad reply from psx-spx (https://psx-spx.consoledev.net, no
   license published) and Linux's psxpad-spi driver
   (https://github.com/torvalds/linux, GPL-2.0-or-later). Controller names

@@ -3803,6 +3803,8 @@ public class Strings : INotifyPropertyChanged
     public string About_GamepadBatteryMonitorDesc => Get("About_GamepadBatteryMonitorDesc");
     public string About_Hado => Get("About_Hado");
     public string About_HadoDesc => Get("About_HadoDesc");
+    public string About_3doverstock => Get("About_3doverstock");
+    public string About_3doverstockDesc => Get("About_3doverstockDesc");
     public string About_Hidapi => Get("About_Hidapi");
     public string About_HidapiDesc => Get("About_HidapiDesc");
     public string About_IconSources => Get("About_IconSources");

@@ -137,6 +137,20 @@ $map = @{
     "pad-bass-shakers"              = "bass-shakers"
     "settings-diagnostics"          = "settings-diagnostics"
     "settings-updates"              = "settings-updates"
+    # v5.0.0 additions
+    "dashboard-web-plain"           = "dashboard-web-plain"
+    "settings-input-engine"         = "settings-input-engine"
+    "devices-analog-keyboard"       = "devices-analog-keyboard"
+    "devices-light-gun"             = "devices-light-gun"
+    "move-pair"                     = "move-pair"
+    "serial-pair"                   = "serial-pair"
+    "dji-pair"                      = "dji-pair"
+    "mapping-rapid-trigger"         = "mapping-rapid-trigger"
+    "mapping-motion-rows"           = "mapping-motion-rows"
+    "macro-set-chroma-color"        = "macro-set-chroma-color"
+    "pad-playstation-ds3"           = "playstation-ds3"
+    "pad-menus"                     = "menus"
+    "icon-picker"                   = "icon-picker"
 }
 
 $jpgEncoder = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object { $_.MimeType -eq "image/jpeg" }

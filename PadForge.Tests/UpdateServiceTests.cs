@@ -1026,26 +1026,26 @@ public class UpdateServiceTests
             : null, label);
 
     [Theory]
-    [InlineData((int)UpdateCheckOutcome.Available, (int)UpdateCheckOutcome.Available, 4, true)]
-    [InlineData((int)UpdateCheckOutcome.Available, (int)UpdateCheckOutcome.Available, 5, false)]
-    [InlineData((int)UpdateCheckOutcome.UpToDate, (int)UpdateCheckOutcome.Available, 4, false)]
-    [InlineData((int)UpdateCheckOutcome.NoBuildForThisPc, (int)UpdateCheckOutcome.Available, 4, false)]
-    [InlineData((int)UpdateCheckOutcome.Failed, (int)UpdateCheckOutcome.Available, 4, false)]
-    [InlineData((int)UpdateCheckOutcome.Failed, (int)UpdateCheckOutcome.UpToDate, 4, true)]
-    [InlineData((int)UpdateCheckOutcome.NoBuildForThisPc, (int)UpdateCheckOutcome.UpToDate, 4, true)]
-    [InlineData((int)UpdateCheckOutcome.Available, (int)UpdateCheckOutcome.Failed, 4, true)]
-    [InlineData((int)UpdateCheckOutcome.Available, (int)UpdateCheckOutcome.RateLimited, 4, true)]
+    [InlineData((int)UpdateCheckOutcome.Available, (int)UpdateCheckOutcome.Available, 0, true)]
+    [InlineData((int)UpdateCheckOutcome.Available, (int)UpdateCheckOutcome.Available, 1, false)]
+    [InlineData((int)UpdateCheckOutcome.UpToDate, (int)UpdateCheckOutcome.Available, 0, false)]
+    [InlineData((int)UpdateCheckOutcome.NoBuildForThisPc, (int)UpdateCheckOutcome.Available, 0, false)]
+    [InlineData((int)UpdateCheckOutcome.Failed, (int)UpdateCheckOutcome.Available, 0, false)]
+    [InlineData((int)UpdateCheckOutcome.Failed, (int)UpdateCheckOutcome.UpToDate, 0, true)]
+    [InlineData((int)UpdateCheckOutcome.NoBuildForThisPc, (int)UpdateCheckOutcome.UpToDate, 0, true)]
+    [InlineData((int)UpdateCheckOutcome.Available, (int)UpdateCheckOutcome.Failed, 0, true)]
+    [InlineData((int)UpdateCheckOutcome.Available, (int)UpdateCheckOutcome.RateLimited, 0, true)]
     // Up to date on the feed says nothing of a release the other check could not see.
-    [InlineData((int)UpdateCheckOutcome.UpToDate, (int)UpdateCheckOutcome.UpToDate, 4, false)]
-    [InlineData((int)UpdateCheckOutcome.UpToDate, (int)UpdateCheckOutcome.Failed, 4, false)]
-    [InlineData((int)UpdateCheckOutcome.UpToDate, (int)UpdateCheckOutcome.RateLimited, 4, false)]
-    [InlineData((int)UpdateCheckOutcome.UpToDate, (int)UpdateCheckOutcome.NoBuildForThisPc, 4, false)]
-    public async Task TheDevChannelAlsoHearsOfNewerReleases(int devResult, int releaseResult, int releaseMajor, bool devWins)
+    [InlineData((int)UpdateCheckOutcome.UpToDate, (int)UpdateCheckOutcome.UpToDate, 0, false)]
+    [InlineData((int)UpdateCheckOutcome.UpToDate, (int)UpdateCheckOutcome.Failed, 0, false)]
+    [InlineData((int)UpdateCheckOutcome.UpToDate, (int)UpdateCheckOutcome.RateLimited, 0, false)]
+    [InlineData((int)UpdateCheckOutcome.UpToDate, (int)UpdateCheckOutcome.NoBuildForThisPc, 0, false)]
+    public async Task TheDevChannelAlsoHearsOfNewerReleases(int devResult, int releaseResult, int releaseMajorsAhead, bool devWins)
     {
         var dev = (UpdateCheckOutcome)devResult;
         var release = (UpdateCheckOutcome)releaseResult;
         var result = await UpdateService.CheckAsync(true, CancellationToken.None,
-            (pre, _) => Task.FromResult(pre ? Result(dev, "dev") : Result(release, "release", releaseMajor)));
+            (pre, _) => Task.FromResult(pre ? Result(dev, "dev") : Result(release, "release", BuildIdentity.Version.Major + releaseMajorsAhead)));
         Assert.Equal(devWins ? "dev" : "release", result.Error);
         Assert.Equal(devWins ? dev : release, result.Outcome);
     }

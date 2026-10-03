@@ -681,7 +681,8 @@ namespace PadForge.Tests
     }
 
     /// <summary>Delta-audit 2026-10-02: game rumble on the DualShock 3
-    /// (SIXAXIS): Full preset.</summary>
+    /// (SIXAXIS): Full preset, and on the plain preset since HIDMaestro
+    /// 1.10.1.</summary>
     public class AuditDelta20261002Ds3RumbleTests
     {
         private static System.Collections.Generic.Dictionary<string, object> Fields(byte rightOn, byte leftForce) => new()
@@ -727,6 +728,19 @@ namespace PadForge.Tests
         public void TheFullProfileDecodesBothMotorBytes()
         {
             var spec = HMaestroProfileCatalog.GetProfileById("dualshock-3-full")?.ExtendedOutputReport;
+            Assert.NotNull(spec);
+            Assert.Contains(spec.Fields, f => f.Semantic == "rightMotorOn" && f.Byte == 3);
+            Assert.Contains(spec.Fields, f => f.Semantic == "leftMotorForce" && f.Byte == 5);
+            Assert.True(spec.Size > 5);
+        }
+
+        /// <summary>HIDMaestro 1.10.1 gives the plain DualShock 3 (SIXAXIS)
+        /// profile the same decode (HIDMaestro#65), so a game's rumble on
+        /// that preset reaches the controller through the same branch.</summary>
+        [Fact]
+        public void ThePlainProfileDecodesBothMotorBytesToo()
+        {
+            var spec = HMaestroProfileCatalog.GetProfileById("dualshock-3")?.ExtendedOutputReport;
             Assert.NotNull(spec);
             Assert.Contains(spec.Fields, f => f.Semantic == "rightMotorOn" && f.Byte == 3);
             Assert.Contains(spec.Fields, f => f.Semantic == "leftMotorForce" && f.Byte == 5);

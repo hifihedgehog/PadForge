@@ -1431,9 +1431,10 @@ namespace PadForge.Common.Input
                                 (ushort)(left * 257), (ushort)(right * 257), 0, 0));
                     }
                 }
-                // The DualShock 3 (SIXAXIS): Full persona decodes its own
-                // motor fields (TryDualShock3Motors), and the pair above
-                // never appears on it, so game rumble reached no consumer.
+                // Both DualShock 3 (SIXAXIS) personas decode their own
+                // motor fields (TryDualShock3Motors), the plain one since
+                // HIDMaestro 1.10.1 (HIDMaestro#65), and the pair above
+                // never appears on them, so game rumble reached no consumer.
                 else if (TryDualShock3Motors(e.Fields, e.RawBytes.Length, declaredSize,
                              out ushort ds3Large, out ushort ds3Small))
                 {
@@ -1838,7 +1839,7 @@ namespace PadForge.Common.Input
             || (validFlag2 is byte vf2 && (vf2 & 0x04) != 0);
 
         /// <summary>The motors a DualShock 3 output report sets, decoded by
-        /// the DualShock 3 (SIXAXIS): Full profile at the bytes hid-sony's
+        /// both DualShock 3 (SIXAXIS) profiles at the bytes hid-sony's
         /// struct sixaxis_rumble names: rightMotorOn is the small
         /// (high-frequency) motor, on or off, and leftMotorForce the large
         /// (low-frequency) motor, 0 to 255. SDL's PS3 driver writes the same

@@ -28,7 +28,7 @@ Free Windows app. No subscription. No paywall. No nag screens. Built on HelixToo
 
 PadForge is for sim racers running wheels in games that only understand Xbox controllers. For DualSense owners who want adaptive triggers and lightbar effects in Steam games that ignore them. For accessibility users mapping whatever hardware they can use. For anyone whose controller doesn't match what their game expects.
 
-<p align="center"><b>16</b> virtual controllers at once · <b>758</b> devices known by USB identity · <b>231</b> device profiles · <b>1000 Hz</b> polling · <b>$0</b> forever</p>
+<p align="center"><b>16</b> virtual controllers at once · <b>1,108</b> devices known by USB identity · <b>232</b> device profiles · <b>1000 Hz</b> polling · <b>$0</b> forever</p>
 
 ![Dashboard](screenshots/dashboard.jpg)
 
@@ -49,8 +49,24 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
     </picture>
   </a>
   <br>
-  <em>Powered by HIDMaestro. One driver, 231 device profiles.</em>
+  <em>Powered by HIDMaestro. One driver, 232 device profiles.</em>
 </p>
+
+<details>
+<summary><b>New in 5.0.0:</b> analog keyboards with Rapid Trigger, Bliss-Box adapters, a Wii Remote light gun, motion from a stick, and 350 more devices known by USB identity</summary>
+
+- **Analog keyboards.** Turn on Read Analog Keyboards in Settings and a Hall effect or analog keyboard reports how far each key is pressed, as its own row on the Devices page: more than 370 models from 101 brands, Wooting, Razer, Keychron and NuPhy among them. A key maps to a button, a trigger or a stick axis, and two macros on one key, each with its own depth, make a soft press and a full press. Your typing is untouched. A Set Chroma Color macro action paints every Razer Chroma device while it runs.
+- **Rapid Trigger and Toggle.** Two new Primary Modes on a mapping row. Rapid Trigger releases and presses again on short moves of any input with depth: analog keys, triggers, sticks, MIDI controls. Toggle latches: one press holds the output, the next lets go.
+- **Bliss-Box adapters.** Read Bliss-Box Adapters names each port for the retro controller plugged in and maps it the way SDL maps that console's pad, or the way RetroArch's Bliss-Box files do where SDL has no mapping. It reads a DualShock 2's pressure-sensitive buttons, drives rumble, shows pictures on a Dreamcast pad's VMU, and backs up and restores an N64 Controller Pak.
+- **Motion from a stick or buttons.** Motion Pitch, Yaw and Roll rows give a PlayStation, Nintendo or Valve virtual controller motion from any input. Speed turns the controller while the stick is held. Angle leans it and levels it when you let go.
+- **A Wii Remote is a light gun.** Calibrate it to your screen from its Light Gun section on the Devices page, four targets and a press of B each, and the crosshair lands where the remote points. The aim corrects for twist. A Namco GunCon 2 calibrates the same way.
+- **DualShock 3.** Its gyro measures yaw only, so Pitch and Roll Simulation fills pitch and roll from the accelerometer. The pad gets its own 3D model and 2D art, and the DualShock 3 (SIXAXIS): Full preset presents it the way PCSX2 and RPCS3 read it, pressure on ten buttons included. An original Xbox controller with one of the 63 listed IDs fills its pressure rows on its own.
+- **Controllers Windows leaves unusable.** Bluetooth LE pads, the iCade, serial I-Force wheels with their force feedback, DJI RC remotes over the network, clone Xbox 360 receivers, the Xbox 360 chatpad and uDraw, the Ring-Con, the PS Move Sharp Shooter and Racing Wheel, Namco USIO boards and more. PadForge now knows 1,108 devices by USB identity, up from 758, 289 of them pads the community SDL_GameControllerDB maps.
+- **The web controller on plain HTTP, and menus on the phone.** Also Serve Plain HTTP adds a second address behind a ten-character access code, for browsers that refuse a self-signed certificate and for tunnels. Web Menus shows a slot's Touch Grid menus on the phone as pages of tiles, and menu cells and layers take emoji and pictures as icons.
+- **Fixes.** A new profile's macros survive a restart ([#487](https://github.com/hifihedgehog/PadForge/discussions/487)). A mapped Numpad Enter is consumed ([#486](https://github.com/hifihedgehog/PadForge/discussions/486)). Player and World gyro space turn the same way as Local. The abstract Gamepad names appear only under (Any Device).
+- **Bundled:** HIDMaestro 1.10.1 with 232 device profiles, and BthPS3 3.2.1, which carries the fix for the Windows stop error a DualShock 3 could cause when it disconnected over Bluetooth. PadForge updates an older BthPS3 at launch.
+
+</details>
 
 <details>
 <summary><b>New in 4.5.3:</b> updates from inside PadForge, motion that survives an early save or a copy, and 2D labels on the first click</summary>
@@ -245,11 +261,23 @@ PadForge translates a PS5 DualSense into the Xbox pad a Steam game expects. A Lo
 
 ### Pedals, wheel, and HOTAS throttle. One virtual stick.
 
-One mapping row can read from any number of physical inputs across any number of physical devices. Six combine modes (Strongest, Combined, Average, Either, Both, Only One) plus a drag-and-drop custom formula editor. Cross-device chords so a button on the wheel and a button on the shifter trigger one virtual press. A Primary Mode dropdown sets how the main source reads: Direct, Incremental, Invert On Hold, or Ramp. Ramp builds a stick axis from two keyboard keys. The Up key drives toward +1 and the Down key toward -1, each over an Attack time. Release ramps back to center over a Release time when Autocenter is on, or holds where you left it when off. A Reverse multiplier sets how fast it returns when you press the opposite key.
+One mapping row can read from any number of physical inputs across any number of physical devices. Six combine modes (Strongest, Combined, Average, Either, Both, Only One) plus a drag-and-drop custom formula editor. Cross-device chords so a button on the wheel and a button on the shifter trigger one virtual press. A Primary Mode dropdown sets how the main source reads: Direct, Incremental, Ramp, Toggle, Rapid Trigger, or Invert On Hold. Ramp builds a stick axis from two keyboard keys. The Up key drives toward +1 and the Down key toward -1, each over an Attack time. Release ramps back to center over a Release time when Autocenter is on, or holds where you left it when off. A Reverse multiplier sets how fast it returns when you press the opposite key.
 
 ### Squeeze a digital trigger like it's analog.
 
 Stick Trim is a combine mode on the mapping row. Hold a digital trigger to arm it, then a stick sets how hard it presses, from a feather to full. Each row gets its own deadzone and ramp rate, and you choose whether that level snaps back to full the moment you let go. A keyboard bumper becomes a trigger you can modulate.
+
+### Every key on an analog keyboard is an axis.
+
+Turn on Read Analog Keyboards in Settings and a Hall effect or analog keyboard gets its own row on the Devices page, with a bar for how far each key is down: more than 370 models from 101 brands, Wooting, Razer, Keychron and NuPhy among them. A key maps to a button, a trigger or a stick axis, at whatever depth it is pressed, and Windows keeps receiving your typing as usual.
+
+![An analog keyboard on the Devices page](screenshots/devices-analog-keyboard.jpg)
+
+### Rapid Trigger, and a Toggle that latches.
+
+Rapid Trigger presses and releases on movement instead of at one fixed point: lift a key a little and it lets go, push it a little and it presses again, the way analog keyboards do it in their firmware. PadForge offers it as a Primary Mode on any input with depth, analog keys, triggers, sticks and MIDI controls among them. Toggle turns any button into a latch: one press holds the output, the next lets go.
+
+![A trigger row in Rapid Trigger mode](screenshots/mapping-rapid-trigger.jpg)
 
 ### Copy a controller onto a slot, one to one.
 
@@ -430,6 +458,18 @@ When neither motion row exists, DSU applies the default Strongest combine to eve
 
 A Nintendo Switch 2 Joy-Con has an optical sensor on its face. Set it on a desk and slide it. Two new sources, Mouse Motion X and Mouse Motion Y, drive a stick for mouse-look, a button, or the scroll wheel, each with its own Sensitivity from 0.1 to 5.0. The first-generation right Joy-Con's IR camera reports a brightness value you can map, so covering the sensor works like a button.
 
+### Motion from a stick, a trigger or a key.
+
+Motion Pitch, Motion Yaw and Motion Roll rows give a PlayStation, Nintendo or Valve virtual controller motion from any input. Push a stick and the game sees the controller turn or lean. Speed turns it for as long as the stick is held. Angle, on pitch and roll, leans it as far as the stick is pushed and levels it when you let go.
+
+![The Motion Roll row in the mapping grid](screenshots/mapping-motion-rows.jpg)
+
+### A Wii Remote becomes a light gun.
+
+Calibrate a Wii Remote to your screen from its Light Gun section on the Devices page: point at four targets in turn and press B on each. The crosshair then lands where the remote points, corrected for twist, and holds through a moment out of the sensor bar's sight. A Namco GunCon 2 calibrates the same way.
+
+![The Light Gun section on the Devices page](screenshots/devices-light-gun.jpg)
+
 ---
 
 ## Anywhere: open a browser. Press buttons.
@@ -472,6 +512,12 @@ Handheld gaming PCs (Legion Go, ROG Ally, GPD Win, OneXPlayer, AYANEO, AYN, Zota
 
 Turn on Allow External Control by Launchers and Scripts on the Profiles page and PadForge serves a local named pipe. Playnite, LaunchBox, or a one-line script activates a profile by name, and that profile is held, so the foreground-window watcher stands down until the script releases it or you switch profiles yourself. Local machine only, and the pipe stays closed until you open it. A profile can also carry its own polling rate, from 1000 Hz down to 62.5 Hz, overriding the Settings interval while it is active.
 
+### The web controller over plain HTTP, and your menus on the phone.
+
+Some browsers refuse PadForge's self-signed certificate, and a tunnel brings a certificate of its own. Also Serve Plain HTTP adds a second address for both, guarded by a ten-character access code that its link and QR code carry. Web Menus turns a phone into a panel of tiles for a slot's Touch Grid menus, and menu cells and shift layers take emoji and pictures as icons.
+
+![The Plain HTTP Address section on the Dashboard](screenshots/dashboard-web-plain.jpg)
+
 ---
 
 ## Every device: local co-op without limits.
@@ -482,7 +528,7 @@ Two sim racers on two wheels at once. A flight stick plus throttle plus rudder p
 
 ### The PlayStation 3 pad, wired or wireless.
 
-Plug a DualShock 3 in over USB and PadForge binds it with WinUSB on the spot, no manual driver dance. To go wireless, open the Devices page and pair it over Bluetooth. PadForge installs a signed BthPS3 driver on demand, and the radio keeps working for everything else. Sixaxis motion runs through the gyro pipeline, and the ten pressure axes, rumble, the player LED, and battery all report. Remove the pad from the Devices page and PadForge tears the pairing down behind it.
+Plug a DualShock 3 in over USB and PadForge binds it with WinUSB on the spot, no manual driver dance. To go wireless, open the Devices page and pair it over Bluetooth. PadForge installs a signed BthPS3 driver on demand, and the radio keeps working for everything else. Sixaxis motion runs through the gyro pipeline, and the ten pressure axes, rumble, the player LED, and battery all report. Remove the pad from the Devices page and PadForge tears the pairing down behind it. It has its own 3D model and 2D art, and since its gyro measures yaw only, Pitch and Roll Simulation fills pitch and roll from the accelerometer. The DualShock 3 (SIXAXIS): Full preset hands its pressure to games the way PCSX2 and RPCS3 read it.
 
 ![Pair a DualShock 3](screenshots/ds3-pair.jpg)
 
@@ -505,6 +551,16 @@ Every wireless pad that reports a battery shows its charge on the Devices page, 
 ### Plug it in, and the radio lets go.
 
 Turn on Disconnect Bluetooth When Plugged In over USB and a controller that reports it is charging drops its Bluetooth link, so it charges without powering the radio. It reads the pad's own charging report rather than a vendor table, so any controller that reports its radio address as its serial on both transports qualifies. Any USB power source counts, wall chargers included. It fires once per plug cycle, and if you turn Bluetooth back on with the cable still in, PadForge leaves it alone until the next unplug.
+
+### Retro controllers through a Bliss-Box.
+
+Turn on Read Bliss-Box Adapters and each port of a Bliss-Box adapter names the console controller plugged into it and maps it the way SDL maps that console's pad. A DualShock 2's pressure-sensitive buttons read as analog, rumble reaches the pads that have motors, a Dreamcast pad's VMU shows your pictures, and an N64 Controller Pak backs up to a file and restores from one.
+
+### 1,108 devices by name, and the ones Windows can't read.
+
+PadForge's SDL3 build adds 289 pads from the community SDL_GameControllerDB to the pads SDL knows on its own, and it reads controllers Windows gives no usable input: Bluetooth LE pads, the iCade, serial I-Force wheels with their force feedback, DJI RC remotes, clone Xbox 360 receivers, the Ring-Con, the PS Move Sharp Shooter and Racing Wheel, Namco USIO arcade boards and more. The [Supported Devices](https://padforge.org/docs/devices/supported/) page names every one.
+
+![Pair a serial controller](screenshots/serial-pair.jpg)
 
 ---
 
@@ -587,9 +643,17 @@ Flat schematic of the same controller, same live state. Useful on small monitors
 
 ### Button and axis mappings
 ![Mappings](screenshots/mappings.jpg)
-Record a binding by pressing a button. Pick from a dropdown of every available input (including raw HID buttons past the standard 11). Set Invert, Half-axis, or a per-mapping threshold for axis-to-button activation. A Primary Mode dropdown picks how the source reads: Direct, Incremental, Invert On Hold, or Ramp. Ramp turns an Up key and a Down key into a smooth axis, tuned by Attack, Release, Reverse, and Autocenter.
+Record a binding by pressing a button. Pick from a dropdown of every available input (including raw HID buttons past the standard 11). Set Invert, Half-axis, or a per-mapping threshold for axis-to-button activation. A Primary Mode dropdown picks how the source reads: Direct, Incremental, Ramp, Toggle, Rapid Trigger, or Invert On Hold. Ramp turns an Up key and a Down key into a smooth axis, tuned by Attack, Release, Reverse, and Autocenter.
 
 PadForge reads the four Xbox Elite paddles as buttons of their own, beside the XInput state that carries the rest of the pad. Detected paddles use the same mappings, macros, and shift layers as other button sources. Over Bluetooth they come from the controller's own Bluetooth LE service. Over USB and the Xbox Wireless Adapter they come from the Windows GameInput service, which takes Windows 11 24H2 or 25H2 at build 26100.8973 or 26200.8973 (July 28, 2026) or later. The GameInput redistributable is not required. On Windows 10 and older Windows 11, paddles are read over Bluetooth only.
+
+### Rapid Trigger
+![A trigger row in Rapid Trigger mode](screenshots/mapping-rapid-trigger.jpg)
+Presses and releases on movement, on any input with depth: analog keys, triggers, sticks, MIDI controls. Lifting past the Distance releases, and pushing back past it presses again.
+
+### Motion rows
+![The Motion Roll row](screenshots/mapping-motion-rows.jpg)
+Motion Pitch, Yaw and Roll give a PlayStation, Nintendo or Valve virtual controller motion from a stick, a trigger or a key.
 
 ### Stick deadzones
 ![Sticks](screenshots/sticks.jpg)
@@ -636,20 +700,28 @@ Per-slot touchpad tuning on any source with a touchpad surface (DualSense, DualS
 The Wii Remote's IR camera as an on-screen pointer. FPS-mouse mode, aspect-corrected border modes, and an off-screen freeze that holds position instead of snapping to a corner.
 
 ### Wii Remote grip
-<!-- pending capture: ![The Grip card on the Gyro tab](screenshots/pad-gyro-grip.jpg) -->
+![The Grip card on the Gyro tab](screenshots/pad-gyro-grip.jpg)
 How the controller is held: Pointing, Sideways (Face Up), Wii Wheel (Face Toward You), or Upright. The gyro, the accelerometer, gravity, and the D-pad all rotate into the game's frame together.
 
 ### Macros
 ![Macros](screenshots/macros.jpg)
 Combo triggers from buttons, axes, and POV directions. Action sequences with key presses, mouse moves, scroll, delays, system volume, app volume, lightbar overrides, rumble overrides, and axis actions that latch, release, and scale virtual axes. Twelve fire modes: On Press, On Single / Double / Triple Press, On Long Press, On Short Press, On Release, While Held, Toggle, Turbo, Always, and a custom formula. A Switch Layer action jumps the slot to Base or any authored layer, and a per-macro layer scope limits a macro to chosen shift layers. A macro toolbar duplicates a macro, copies and pastes it into another virtual controller, and pulls every macro from another controller in one step. Mouse-cursor actions snap the pointer to center (Recenter Mouse), pin it at a coordinate (Fix Mouse Position), or fence it inside a rectangle (Limit Mouse Region).
 
+### Set Chroma Color
+![A Set Chroma Color action in the macro editor](screenshots/macro-set-chroma-color.jpg)
+Paints every Razer Chroma device one color while the action runs. Needs Razer Synapse.
+
 ### Menu macro cells
-<!-- pending capture: ![A radial menu cell bound to a macro](screenshots/menu-macro-cell.jpg) -->
+![A radial menu cell bound to a macro](screenshots/menu-macro-cell.jpg)
 A cell in a radial or grid menu can run a macro instead of pressing a button.
 
 ### Menu icon packages
-<!-- pending capture: ![The Icon Packages card on the Menus tab](screenshots/menu-icon-packs.jpg) -->
+![The Icon Packages card on the Menus tab](screenshots/menu-icon-packs.jpg)
 An icon package is one zip of images with a .pficons extension. Add one and its icons are available on any menu cell. PadForge reads straight from the file and never unpacks it.
+
+### Icon picker
+![The icon picker on its Emoji tab](screenshots/icon-picker.jpg)
+Emoji by category, pictures from your icon packages, or an image file, for a menu cell or a shift layer.
 
 ### Per-app profiles
 ![Profiles](screenshots/profiles.jpg)
@@ -681,14 +753,14 @@ Hold a mouse button and flick up, down, left, or right. Each direction, plus a c
 
 ### Extended virtual controller
 ![Extended](screenshots/extended.jpg)
-Flight sticks, racing wheels, HOTAS, third-party gamepads. HIDMaestro ships 231 profiles, and PadForge offers the 133 that carry a captured HID descriptor, across the Xbox, PlayStation, Nintendo and Extended types, plus a Custom mode that builds a HID descriptor from scratch. Up to 8 axes, 128 buttons, 4 POV hats. Configurable VID, PID, and product string.
+Flight sticks, racing wheels, HOTAS, third-party gamepads. HIDMaestro ships 232 profiles, and PadForge offers the 134 that carry a captured HID descriptor, across the Xbox, PlayStation, Nintendo and Extended types, plus a Custom mode that builds a HID descriptor from scratch. Up to 8 axes, 128 buttons, 4 POV hats. Configurable VID, PID, and product string.
 
 ### Steam Deck virtual controller
-<!-- pending capture: ![An Extended slot presenting a Steam Deck](screenshots/pad-extended-steam-deck.jpg) -->
+![An Extended slot presenting a Steam Deck](screenshots/pad-extended-steam-deck.jpg)
 An Extended slot on a Steam Deck profile: Valve's own vendor and product IDs, both trackpads, and the rear buttons, with a one-to-one automap from a real Deck.
 
 ### Steam Controller virtual controller
-<!-- pending capture: ![An Extended slot presenting a Steam Controller 2026](screenshots/pad-extended-steam-controller.jpg) -->
+![An Extended slot presenting a Steam Controller 2026](screenshots/pad-extended-steam-controller.jpg)
 The Steam Controller (Wired) and the Steam Controller (2026) present the same way, each with its own input frame, its own automap, and a 3D body meshed from Valve's published CAD.
 
 ### PlayStation virtual controller
@@ -711,6 +783,14 @@ Pick the virtual controller type. Buttons dim when you hit the per-type limit.
 ![Devices](screenshots/devices.jpg)
 Every detected gamepad, joystick, keyboard, mouse, and touchpad as a card. Live raw axes, buttons, POV compass, gyro / accelerometer values, and touchpad finger positions for the selected device. Per-device HidHide toggle and Force Raw Joystick mode for when SDL3 guesses the gamepad layout wrong.
 
+### Analog keyboard
+![An analog keyboard on the Devices page](screenshots/devices-analog-keyboard.jpg)
+A Hall effect or analog keyboard as its own row, every key a source with its depth.
+
+### Light gun
+![The Light Gun section on the Devices page](screenshots/devices-light-gun.jpg)
+Calibrate a Wii Remote or a GunCon 2 to your screen: four targets, one press each.
+
 ### Quick Charge
 ![The Power section on a DualSense device card](screenshots/devices-quick-charge.jpg)
 Disconnect Bluetooth When Plugged In over USB drops the radio link when the pad reports it is charging, so it charges without powering the radio. Any USB power source counts.
@@ -723,13 +803,33 @@ A PlayStation 3 pad over USB (WinUSB) or Bluetooth. Sixaxis motion, ten pressure
 ![Pair a DualShock 3](screenshots/ds3-pair.jpg)
 Pair over Bluetooth from the Devices page. PadForge installs a signed BthPS3 driver on demand and cleans the pairing up when the pad is removed.
 
+### Pair a PS Move
+![Pair a PlayStation Move](screenshots/move-pair.jpg)
+Pair a PlayStation Move or Navigation controller over USB, the same way as a DualShock 3.
+
+### Pair a serial controller
+![Pair a serial controller](screenshots/serial-pair.jpg)
+Pick the COM port and the controller behind it, and PadForge opens that port from then on.
+
+### Pair a DJI remote
+![Pair a DJI remote](screenshots/dji-pair.jpg)
+Read a DJI RC or RC 2 over the network by its IPv4 address.
+
 ### DualShock 3 motion
 ![DualShock 3 motion](screenshots/ds3-gyro.jpg)
 Sixaxis accelerometer and gyro through the gyro pipeline: gyro-to-mouse, gyro-to-stick, and the DSU motion server.
 
+### DualShock 3 virtual controller
+![A PlayStation slot on the DualShock 3 preset](screenshots/playstation-ds3.jpg)
+The DualShock 3 (SIXAXIS) presets, with the pad's own 3D model in the Preview tab.
+
 ### Web controller
 ![Web Controller](screenshots/web-controller.jpg)
 Connect a phone or tablet over Wi-Fi or scan the Dashboard QR code. Ten controller layouts, a multi-touch touchpad, and a blank-surface builder, with virtual sticks, D-pad, analog trigger sliders, and rumble. Touch the sticks to push them. Tap to click. Served over HTTPS so the browser will hand over the handset's motion sensors.
+
+### Plain HTTP address
+![The Plain HTTP Address section on the Dashboard](screenshots/dashboard-web-plain.jpg)
+A second address over plain HTTP, behind a ten-character access code, for browsers that refuse the certificate and for tunnels.
 
 ### Remote Link
 ![Remote Link](screenshots/remote-link.jpg)
@@ -760,6 +860,10 @@ Learn a handheld's rear paddles, menu keys, and vendor hotkeys by pressing each 
 ### Settings
 ![Settings](screenshots/settings.jpg)
 Language (10 locales, live-switch with no restart). Theme (System Default / Light / Dark). Updates. Polling interval (1-16 ms). Auto-start at login, minimize to tray, master input-hiding toggle. Driver status for HidHide, HIDMaestro, Windows MIDI Services, and SteamVR.
+
+### Input Engine
+![The Input Engine card in Settings](screenshots/settings-input-engine.jpg)
+Read Analog Keyboards and Read Bliss-Box Adapters, each with a line that says what it found.
 
 ### Updates
 ![Updates](screenshots/settings-updates.jpg)

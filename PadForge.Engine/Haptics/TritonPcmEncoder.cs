@@ -98,8 +98,9 @@ namespace PadForge.Engine.Haptics
         /// short on the final packet of a burst: the tail of each channel
         /// area is filled with the mode's TRUE silence value, 0x00 for
         /// 16-bit and 0xFF for mu-law. TritonLib pads mu-law tails with
-        /// zero, which decodes to near-full-scale negative (-8031) and
-        /// clicks at every track end (TritonController.cpp:109, their
+        /// zero, which decodes to near-full-scale negative (-32124 in s16,
+        /// -8031 on G.711's 14-bit scale) and clicks at every track end
+        /// (TritonController.cpp:109, their
         /// bug); G.711 silence is the encoding of sample 0, which is 0xFF.
         /// The length byte stays the mode's full per-channel byte count so
         /// the packet always represents a whole period, silence included:

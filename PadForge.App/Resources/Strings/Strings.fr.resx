@@ -3492,7 +3492,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Route la vibration et le retour de force de jeu reçus par cette manette virtuelle vers une sortie audio sous forme de sons basse fréquence pour bass shakers et caissons de basses.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibration vers audio</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Fonctionne avec les manettes virtuelles Xbox, DualShock 4 / DualSense et Nintendo Switch Pro, ainsi que les manettes virtuelles Étendu à retour de force, comme les volants de course. Le retour du jeu et la vibration de test passent par la sortie audio. La vibration de macro reste sur la manette.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Fonctionne avec les manettes virtuelles Xbox, DualShock 3, DualShock 4 / DualSense et Nintendo Switch Pro, ainsi que les manettes virtuelles Étendu à retour de force, comme les volants de course, et le Steam Deck Controller (Composite). Le retour du jeu et la vibration de test passent par la sortie audio. La vibration de macro reste sur la manette.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Réinitialiser la vibration vers audio</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Router la vibration vers une sortie audio</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Joue la vibration et le retour de force de jeu de cette manette virtuelle sous forme de sons basse fréquence sur la sortie audio choisie. La désactivation conserve tous les réglages.</value></data>
@@ -3632,10 +3632,10 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Personnalisé</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Fréquence de coupure</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Fréquence de croisement. En dessous, les canaux se rapprochent du mono, au-dessus ils restent séparés, donc une coupure plus basse mélange moins.</value></data>
-  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Dosage</value></data>
-  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>Quantité du canal opposé qui arrive sous la coupure. Plus de dosage resserre l'image et élargit la sensation de salle.</value></data>
+  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Écart de niveau</value></data>
+  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>De combien de dB le canal opposé arrive plus bas que le son direct sous la coupure. Un écart plus faible mélange davantage, donc l'image se resserre et sonne davantage comme des enceintes dans une pièce.</value></data>
   <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>Réinitialiser la fréquence de coupure</value></data>
-  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Réinitialiser le dosage</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Réinitialiser l'écart de niveau</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Égaliseur paramétrique</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filtres par bande sur l'audio de la manette. Appliqué avant l'encodage, donc le limiteur ci-dessous empêche une bande accentuée de saturer.</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Préampli</value></data>

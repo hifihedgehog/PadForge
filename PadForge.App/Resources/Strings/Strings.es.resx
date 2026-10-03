@@ -3492,7 +3492,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Envía la vibración y la retroalimentación de fuerza del juego que recibe este mando virtual a una salida de audio como tonos de baja frecuencia para bass shakers y subwoofers.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibración a audio</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funciona con mandos virtuales Xbox, DualShock 4 / DualSense y Nintendo Switch Pro, además de mandos virtuales Extendido con retroalimentación de fuerza, como volantes de carreras. La respuesta del juego y la vibración de prueba pasan a la salida de audio. La vibración de macros se queda en el mando.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funciona con mandos virtuales Xbox, DualShock 3, DualShock 4 / DualSense y Nintendo Switch Pro, además de mandos virtuales Extendido con retroalimentación de fuerza, como volantes de carreras, y el Steam Deck Controller (Composite). La respuesta del juego y la vibración de prueba pasan a la salida de audio. La vibración de macros se queda en el mando.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Restablecer vibración a audio</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Enviar la vibración a una salida de audio</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Reproduce la vibración y la retroalimentación de fuerza del juego de este mando virtual como tonos de baja frecuencia en la salida de audio elegida. Al desactivarlo se conservan todos los ajustes.</value></data>
@@ -3632,10 +3632,10 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Personalizado</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Frecuencia de corte</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Frecuencia de cruce. Por debajo los canales se acercan al mono y por encima siguen separados, así que un corte más bajo mezcla menos.</value></data>
-  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Mezcla</value></data>
-  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>Cuánto del canal opuesto llega por debajo del corte. Más mezcla estrecha la imagen y ensancha la sensación de sala.</value></data>
+  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Diferencia de nivel</value></data>
+  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>Cuántos dB más bajo que el sonido directo llega el canal opuesto por debajo del corte. Una diferencia menor mezcla más, así que la imagen se estrecha y suena más como altavoces en una sala.</value></data>
   <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>Restablecer la frecuencia de corte</value></data>
-  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Restablecer la mezcla</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Restablecer la diferencia de nivel</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Ecualizador paramétrico</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filtros por banda sobre el audio del mando. Se aplica antes de codificar, por lo que el limitador de abajo evita que una banda realzada sature.</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Preamplificación</value></data>

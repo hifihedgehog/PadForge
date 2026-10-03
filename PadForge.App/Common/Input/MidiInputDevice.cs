@@ -38,10 +38,13 @@ namespace PadForge.Common.Input
         // for PulseOnMs, releases for PulseGapMs, then the next queued detent
         // fires — long enough for a 60 Hz poll to catch every step.
         //
-        // Only binary-offset is decoded. Two's-complement ("Relative 1" /
-        // Mackie: 0x01 = +1, 0x7F = −1) and signed-bit ("Relative 3") modes
-        // are NOT handled — an encoder in those modes reads as absolute
-        // jumps. Most controllers default to binary-offset or are switchable.
+        // Only binary-offset is decoded. A two's-complement encoder
+        // ("Relative 1" / Mackie: 0x01 = +1, 0x7F = -1) sends values outside
+        // the band, so it reads as absolute jumps. A signed-bit encoder
+        // ("Relative 3") is misread: a turn one way sends 0x41 and up, which
+        // lands inside the band and pulses Up, and a turn the other way sends
+        // 0x01 and up, which reads as an absolute fader. Most controllers
+        // default to binary-offset or are switchable.
         private const int RelativeCenter = 0x40; // 64
         private const int RelativeMax = 16;
         // 24 ms pressed guarantees overlap with at least one frame of a 60 Hz

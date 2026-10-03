@@ -3512,7 +3512,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Stuurt de speltrilling en force feedback die deze virtuele controller ontvangt als laagfrequente tonen naar een audio-uitgang voor bass shakers en subwoofers.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Trilling naar audio</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Werkt met virtuele Xbox-, DualShock 4- / DualSense- en Nintendo Switch Pro-controllers en met virtuele Uitgebreid-controllers met force feedback, zoals racesturen. Spelfeedback en testtrilling gaan naar de audio-uitgang. Macrotrilling blijft op de controller.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Werkt met virtuele Xbox-, DualShock 3-, DualShock 4- / DualSense- en Nintendo Switch Pro-controllers, met virtuele Uitgebreid-controllers met force feedback, zoals racesturen, en met de Steam Deck Controller (Composite). Spelfeedback en testtrilling gaan naar de audio-uitgang. Macrotrilling blijft op de controller.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Trilling naar audio resetten</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Trilling naar een audio-uitgang sturen</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Speelt de speltrilling en force feedback van deze virtuele controller als laagfrequente tonen af op de gekozen audio-uitgang. Uitschakelen bewaart alle instellingen.</value></data>
@@ -3652,10 +3652,10 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Aangepast</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Kantelfrequentie</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Overgangsfrequentie. Eronder lopen de kanalen naar mono toe, erboven blijven ze gescheiden, dus een lagere frequentie mengt minder.</value></data>
-  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Aandeel</value></data>
-  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>Hoeveel van het tegenoverliggende kanaal onder de kantelfrequentie aankomt. Meer aandeel maakt het beeld smaller en de ruimte breder.</value></data>
+  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Niveauverschil</value></data>
+  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>Hoeveel dB zachter dan het directe geluid het tegenoverliggende kanaal onder de kantelfrequentie binnenkomt. Een kleiner niveauverschil mengt meer, dus het beeld wordt smaller en klinkt meer als luidsprekers in een kamer.</value></data>
   <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>Kantelfrequentie herstellen</value></data>
-  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Aandeel herstellen</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Niveauverschil herstellen</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Parametrische EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filters per band over de controlleraudio. Toegepast vóór het coderen, dus de limiter hieronder voorkomt dat een versterkte band vervormt.</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Voorversterking</value></data>

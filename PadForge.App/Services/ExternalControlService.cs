@@ -74,10 +74,10 @@ namespace PadForge.Services
         {
             if (_cts == null) return;
             try { _cts.Cancel(); } catch { }
-            // A server stream parked in WaitForConnectionAsync does not observe
-            // the token until a connection arrives, so nudge it with a
-            // throwaway client. Best-effort: the loop also exits on the next
-            // iteration's token check.
+            // Canceling the token ends a pending WaitForConnectionAsync on this
+            // asynchronous pipe (a .NET 10 probe ended one in under 2 ms). The
+            // throwaway client is a best-effort second nudge, and the loop also
+            // exits on the next iteration's token check.
             try
             {
                 using var nudge = new NamedPipeClientStream(".", _pipeName, PipeDirection.Out);

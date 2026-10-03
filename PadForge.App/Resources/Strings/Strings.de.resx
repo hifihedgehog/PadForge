@@ -3492,7 +3492,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass-Shaker</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Leitet die Spiel-Vibration und das Force Feedback, die dieser virtuelle Controller empfängt, als tieffrequente Töne an einen Audioausgang für Bass-Shaker und Subwoofer.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibration zu Audio</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funktioniert mit virtuellen Xbox-, DualShock-4- / DualSense- und Nintendo-Switch-Pro-Controllern sowie virtuellen Erweitert-Controllern mit Force Feedback, etwa Rennlenkrädern. Spiel-Feedback und Test-Vibration laufen über den Audioausgang. Makro-Vibration bleibt auf dem Controller.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funktioniert mit virtuellen Xbox-, DualShock-3-, DualShock-4- / DualSense- und Nintendo-Switch-Pro-Controllern sowie virtuellen Erweitert-Controllern mit Force Feedback, etwa Rennlenkrädern, und dem Steam Deck Controller (Composite). Spiel-Feedback und Test-Vibration laufen über den Audioausgang. Makro-Vibration bleibt auf dem Controller.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Vibration zu Audio zurücksetzen</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Vibration an einen Audioausgang leiten</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Spielt die Spiel-Vibration und das Force Feedback dieses virtuellen Controllers als tieffrequente Töne auf dem gewählten Audioausgang. Beim Ausschalten bleiben alle Einstellungen erhalten.</value></data>
@@ -3632,10 +3632,10 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Benutzerdefiniert</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Trennfrequenz</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Übergangsfrequenz. Darunter verschmelzen die Kanäle in Richtung Mono, darüber bleiben sie getrennt, eine niedrigere Trennfrequenz überblendet also weniger.</value></data>
-  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Anteil</value></data>
-  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>Wie viel des Gegenkanals unterhalb der Trennfrequenz ankommt. Mehr Anteil verengt das Stereobild und lässt den Raum breiter wirken.</value></data>
+  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Pegelabstand</value></data>
+  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>Um wie viele dB der Gegenkanal unterhalb der Trennfrequenz leiser ankommt als der direkte Klang. Ein kleinerer Pegelabstand überblendet stärker, das Stereobild wird schmaler und klingt eher wie Lautsprecher im Raum.</value></data>
   <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>Trennfrequenz zurücksetzen</value></data>
-  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Anteil zurücksetzen</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Pegelabstand zurücksetzen</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Parametrischer EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filter pro Band über dem Controller-Audio. Wird vor der Kodierung angewendet, daher verhindert der Limiter unten, dass ein angehobenes Band übersteuert.</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Vorverstärkung</value></data>

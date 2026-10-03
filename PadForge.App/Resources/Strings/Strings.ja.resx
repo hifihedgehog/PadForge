@@ -3492,7 +3492,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>バスシェイカー</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>この仮想コントローラーが受け取るゲームの振動とフォースフィードバックを、バスシェイカーやサブウーファー向けの低周波トーンとしてオーディオ出力へ送ります。</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>振動をオーディオへ</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox、DualShock 4 / DualSense、Nintendo Switch Pro、およびレーシングホイールなどフォースフィードバック対応の Extended 仮想コントローラーで動作します。ゲームのフィードバックとテストの振動がオーディオ出力に流れます。マクロの振動はコントローラー側に残ります。</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox、DualShock 3、DualShock 4 / DualSense、Nintendo Switch Pro、レーシングホイールなどフォースフィードバック対応の Extended 仮想コントローラー、および Steam Deck Controller (Composite) で動作します。ゲームのフィードバックとテストの振動がオーディオ出力に流れます。マクロの振動はコントローラー側に残ります。</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>「振動をオーディオへ」をリセット</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>振動をオーディオ出力へ送る</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>この仮想コントローラーのゲーム振動とフォースフィードバックを、選んだオーディオ出力で低周波トーンとして再生します。オフにしても設定はすべて保持されます。</value></data>
@@ -3632,10 +3632,10 @@
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>カスタム</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>カットオフ</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>クロスオーバー周波数。これより下では左右がモノラルに近づき、上では分離したままです。カットオフが低いほど混ぜる量が減ります。</value></data>
-  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>混合量</value></data>
-  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>カットオフより下で反対チャンネルがどれだけ届くか。混合量を増やすと音像が狭まり、空間の広がりが増します。</value></data>
+  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>レベル差</value></data>
+  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>カットオフより下で、反対チャンネルが直接音より何 dB 低く届くか。レベル差が小さいほど多く混ざり、音像が狭まって、部屋でスピーカーを聴くような響きに近づきます。</value></data>
   <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>カットオフをリセット</value></data>
-  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>混合量をリセット</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>レベル差をリセット</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>パラメトリック EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>コントローラー音声に対する帯域ごとのフィルターです。エンコード前に適用されるため、下のリミッターがブーストした帯域のクリップを防ぎます。</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>プリアンプ</value></data>

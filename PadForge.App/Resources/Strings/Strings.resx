@@ -3554,7 +3554,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Routes the game rumble and force feedback this virtual controller receives to an audio output as low-frequency tones for bass shakers and subwoofers.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Rumble to Audio</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Works with Xbox, DualShock 4 / DualSense, and Nintendo Switch Pro virtual controllers, plus Extended virtual controllers with force feedback, such as racing wheels. Game feedback and Test Rumble play through the audio output. Macro rumble stays on the controller.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Works with Xbox, DualShock 3, DualShock 4 / DualSense, and Nintendo Switch Pro virtual controllers, plus Extended virtual controllers with force feedback, such as racing wheels, and the Steam Deck Controller (Composite). Game feedback and Test Rumble play through the audio output. Macro rumble stays on the controller.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Reset Rumble to Audio</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Route Rumble to an Audio Output</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Plays the game rumble and force feedback this virtual controller receives as low-frequency tones on the selected audio output. Turning it off keeps every setting.</value></data>
@@ -3695,7 +3695,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Cutoff</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Crossover frequency. Below it the channels blend toward mono, above it they stay separated, so a lower cutoff crossfeeds less.</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Feed</value></data>
-  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>How much of the opposite channel arrives below the cutoff. More feed narrows the image and widens the sense of a room.</value></data>
+  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>How many dB below the direct sound the opposite channel arrives under the cutoff. A lower feed crossfeeds more, so the image narrows and sounds more like speakers in a room.</value></data>
   <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>Reset Cutoff</value></data>
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Reset Feed</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Parametric EQ</value></data>

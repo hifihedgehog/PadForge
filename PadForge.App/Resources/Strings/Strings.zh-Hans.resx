@@ -3492,7 +3492,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>低音振动器</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>将此虚拟手柄收到的游戏振动和力反馈转换为低频音，输出到音频设备，用于低音振动器和低音炮。</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>振动转音频</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>适用于 Xbox、DualShock 4 / DualSense、Nintendo Switch Pro 以及支持力反馈的扩展虚拟手柄（例如赛车方向盘）。游戏反馈和测试振动会进入音频输出。宏振动仍留在手柄上。</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>适用于 Xbox、DualShock 3、DualShock 4 / DualSense、Nintendo Switch Pro、支持力反馈的扩展虚拟手柄（例如赛车方向盘）以及 Steam Deck Controller (Composite)。游戏反馈和测试振动会进入音频输出。宏振动仍留在手柄上。</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>重置振动转音频</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>将振动发送到音频输出</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>把此虚拟手柄的游戏振动和力反馈在所选音频输出上以低频音播放。关闭后所有设置保持不变。</value></data>
@@ -3632,10 +3632,10 @@
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>自定义</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>截止频率</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>分频点。低于该频率时左右声道趋于单声道，高于时保持分离，因此截止频率越低混合越少。</value></data>
-  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>混合量</value></data>
-  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>截止频率以下有多少对侧声道到达。混合量越大，声像越窄，空间感越宽。</value></data>
+  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>电平差</value></data>
+  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>截止频率以下，对侧声道比直达声低多少 dB。电平差越小，混合越多，声像越窄，越像在房间里用扬声器聆听。</value></data>
   <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>重置截止频率</value></data>
-  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>重置混合量</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>重置电平差</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>参数均衡器</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>作用于手柄音频的分频段滤波器。在编码前应用，因此下方的限制器可防止提升的频段削波。</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>前置增益</value></data>

@@ -44,7 +44,8 @@ namespace PadForge.Engine.Common.Logitech
         /// reserved2 shift of 16 can only ever yield zero. It also reads
         /// <c>mouse</c> as <c>(complete &gt;&gt; 11) &amp; 15</c> where the
         /// field is one bit wide, which folds three reserved bits into the
-        /// answer and can read a keyboard event as a mouse event. The header
+        /// answer, so its own <c>mouse == 1</c> test reads a mouse event with
+        /// any of them set as a keyboard event. The header
         /// is what the DLL was compiled against, so the header wins.</para>
         /// </summary>
         [StructLayout(LayoutKind.Sequential, Pack = 1)]

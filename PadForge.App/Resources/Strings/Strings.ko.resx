@@ -3492,7 +3492,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>베이스 셰이커</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>이 가상 컨트롤러가 받는 게임 진동과 포스 피드백을 저주파 톤으로 바꿔 베이스 셰이커와 서브우퍼용 오디오 출력으로 보냅니다.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>진동을 오디오로</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 4 / DualSense, Nintendo Switch Pro 및 레이싱 휠 같은 포스 피드백 지원 Extended 가상 컨트롤러에서 동작합니다. 게임 피드백과 테스트 진동이 오디오 출력으로 전달됩니다. 매크로 진동은 컨트롤러에 남습니다.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense, Nintendo Switch Pro, 레이싱 휠 같은 포스 피드백 지원 Extended 가상 컨트롤러, 그리고 Steam Deck Controller (Composite)에서 동작합니다. 게임 피드백과 테스트 진동이 오디오 출력으로 전달됩니다. 매크로 진동은 컨트롤러에 남습니다.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>진동을 오디오로 재설정</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>진동을 오디오 출력으로 보내기</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>이 가상 컨트롤러의 게임 진동과 포스 피드백을 선택한 오디오 출력에서 저주파 톤으로 재생합니다. 꺼도 모든 설정은 유지됩니다.</value></data>
@@ -3632,10 +3632,10 @@
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>사용자 지정</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>차단 주파수</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>크로스오버 주파수입니다. 이보다 낮으면 좌우가 모노에 가까워지고 높으면 분리된 상태로 남습니다. 차단 주파수가 낮을수록 덜 섞입니다.</value></data>
-  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>혼합량</value></data>
-  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>차단 주파수 아래에서 반대 채널이 얼마나 도달하는지입니다. 혼합량이 클수록 음상이 좀아지고 공간감은 넓어집니다.</value></data>
+  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>레벨 차이</value></data>
+  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>차단 주파수 아래에서 반대 채널이 직접음보다 몇 dB 낮게 도달하는지입니다. 레벨 차이가 작을수록 더 많이 섞이므로 음상이 좁아지고 방에서 스피커로 듣는 소리에 가까워집니다.</value></data>
   <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>차단 주파수 재설정</value></data>
-  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>혼합량 재설정</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>레벨 차이 재설정</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>파라메트릭 EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>컨트롤러 오디오에 적용되는 대역별 필터입니다. 인코딩 전에 적용되므로 아래 리미터가 부스트된 대역의 클리핑을 막습니다.</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>프리앰프</value></data>

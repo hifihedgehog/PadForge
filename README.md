@@ -1134,3 +1134,13 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **Zacksly Icon Pack** is licensed under CC BY 3.0. By Zacksly ([zacksly.itch.io](https://zacksly.itch.io/)). PadForge's stick and trigger tab icon geometry derives from it.
 - **ZstdSharp** is licensed under the MIT License. Copyright (c) 2021 Oleg Stepanischev. Zstandard decompression SteamKit2 uses for Steam depot chunks, a C# port of the zstd compression library.
 See [LICENSE](LICENSE) for the full license text.
+
+---
+
+## Trademark
+
+PadForge™ is a trademark of its developer, hifihedgehog. A U.S. trademark application is pending.
+
+The project's CC BY-NC-SA 4.0 license covers its code and content. It does not cover the PadForge name or logo. A modified version distributed to others must use a different name, and it may say it is based on PadForge. Forks made to contribute changes back to this repository need no new name.
+
+PadForge is not affiliated with any other app, website or GitHub account that uses the name. Official builds come only from this repository's [Releases page](https://github.com/hifihedgehog/PadForge/releases), which padforge.org links to.

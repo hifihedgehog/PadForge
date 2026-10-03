@@ -24,6 +24,8 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(CapabilitiesSummary));
             OnPropertyChanged(nameof(FlydigiServiceWarning));
             OnPropertyChanged(nameof(TabletInputStatus));
+            OnPropertyChanged(nameof(GunCalibrationStatus));
+            OnPropertyChanged(nameof(GunCalibrateTooltip));
         }
 
         // ─────────────────────────────────────────────
@@ -856,7 +858,8 @@ namespace PadForge.ViewModels
 
         /// <summary>Whether the Light Gun section draws: the row is a GunCon 2
         /// (hifihedgehog/SDL#33 Part 9) or a Wii Remote with an IR camera
-        /// (#485).</summary>
+        /// (#485), on this PC. A peer row has none: the gun is calibrated on
+        /// the PC it is connected to (#248).</summary>
         public bool ShowGunCalibration
         {
             get => _showGunCalibration;
@@ -869,6 +872,13 @@ namespace PadForge.ViewModels
                 }
             }
         }
+
+        /// <summary>The Light Gun section's visibility rule, static so the
+        /// tests need no view model, as <see cref="ComputeShowQuickCharge"/>
+        /// is: a gun, online or offline, on a record that is not a Remote
+        /// Link peer's.</summary>
+        internal static bool ComputeShowGunCalibration(bool isGun, string devicePath)
+            => isGun && !PadForge.Common.Input.RemoteLinkOutputRouter.IsPeerPath(devicePath);
 
         private bool _gunConnectedHere;
 

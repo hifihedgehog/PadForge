@@ -679,9 +679,27 @@ namespace PadForge.Engine.Common.Mapping
         // fork skips its IR stick update, so the stick keeps its value
         // (ViGEmHandler.cs 340). That fork's light-gun stick pins to the
         // border instead (376-470), and the cursor here freezes (#203), so
-        // the stick holds. Dropped with the device (ForgetIrPointerForDevice).
+        // the stick holds. Dropped on the touch-momentum tiers: with the
+        // device (ForgetIrPointerForDevice, also on a new connection), on a
+        // profile switch (ForgetIrPointer) and with a slot's rows
+        // (ForgetIrPointerForSlot).
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<
             (string Dev, int Slot, char Axis), float> _irHeld = new();
+
+        /// <summary>Set on a thread that reads sources for a display off the
+        /// poll thread. The IR pointer read then writes neither its held aim
+        /// nor its smoothing, which the poll thread owns: the Triggers tab's
+        /// live preview reads its rows on the UI thread.</summary>
+        [ThreadStatic] private static bool _irReadOnly;
+
+        /// <summary>Scopes <see cref="_irReadOnly"/> around a preview read, the
+        /// <see cref="GyroMouseLaneScope"/> pattern.</summary>
+        public readonly struct IrReadOnlyScope : IDisposable
+        {
+            private readonly bool _prev;
+            public IrReadOnlyScope(bool readOnly) { _prev = _irReadOnly; _irReadOnly = readOnly; }
+            public void Dispose() => _irReadOnly = _prev;
+        }
 
         /// <summary>Full-scale weight (kg) that maps Total Weight to 1.0. A normal
         /// adult stays well under this, so the normalized source keeps useful
@@ -717,7 +735,60 @@ namespace PadForge.Engine.Common.Mapping
         // second relative-touchpad row consumed the first one's delta.
         // Polling thread only, like the caches it gates.
         private static ulong _pollFrameSeq = 1; // starts at 1 so "seq 0" means never-seen
-        public static void BeginPollFrame() => _pollFrameSeq++;
+
+        // The poll run that owns the frame bookkeeping below. Stop retires a
+        // poll loop that outlives its join by generation, but the retired
+        // loop runs on to its next check, and a check made before the
+        // retirement can be stale by the time the bookkeeping runs: drained
+        // by a retired loop, an IR forget landed between the current run's
+        // X and Y reads. So InputManager.Start registers each run here before
+        // it starts the run's thread (BeginPollRun), and BeginPollFrame checks
+        // the run under the same lock. Static, as the caches are, so a newer
+        // InputManager's run replaces an older one's too.
+        private static readonly object _pollRunLock = new();
+        private static int _pollRun;
+        private static int _pollRunCount;
+
+        /// <summary>Registers a new poll run as the owner of the frame
+        /// bookkeeping and returns its token for
+        /// <see cref="BeginPollFrame(int)"/>. InputManager.Start calls it
+        /// before it starts the poll thread, so runs register in the order
+        /// they start. From then on, an older run's frames change nothing
+        /// here, and the old loop's thread no longer counts as the poll
+        /// thread: no thread does until the new run begins its first
+        /// frame.</summary>
+        public static int BeginPollRun()
+        {
+            lock (_pollRunLock)
+            {
+                _pollRun = ++_pollRunCount;
+                System.Threading.Volatile.Write(ref _pollThreadId, 0);
+                return _pollRun;
+            }
+        }
+
+        /// <summary>Begins a frame outside a poll run: the tests and tools,
+        /// which own the bookkeeping outright.</summary>
+        public static void BeginPollFrame() => BeginPollFrame(0);
+
+        /// <summary>Begins a poll frame for the run holding
+        /// <paramref name="run"/>, or for any caller with 0. A run a newer one
+        /// replaced advances no frame, claims no poll thread and applies no
+        /// IR forgets.</summary>
+        public static void BeginPollFrame(int run)
+        {
+            lock (_pollRunLock)
+            {
+                if (run != 0 && run != _pollRun) return;
+                _pollFrameSeq++;
+                System.Threading.Volatile.Write(ref _pollThreadId, Environment.CurrentManagedThreadId);
+                // The IR pointer forgets other threads asked for (PostIrForget),
+                // at the boundary, after this thread's reads of the frame they
+                // were asked in.
+                while (_irForgetsPending.TryDequeue(out var forget))
+                    ApplyIrForget(forget.Kind, forget.Dev, forget.Slot);
+            }
+        }
 
         // dual-threshold gyro smoothing buffer. Keyed by
         // (deviceGuid, slotIndex). Single-threaded (polling thread only).
@@ -2086,7 +2157,8 @@ namespace PadForge.Engine.Common.Mapping
         /// aim it read for this device, slot and axis (#485): a light gun on a
         /// stick otherwise jumped to the middle of the screen whenever an LED
         /// left the camera's view near an edge. A remote that has not seen the
-        /// bar since it connected reads center. Invert is applied by the public
+        /// bar since it connected, since a profile switch or since its slot's
+        /// rows were replaced reads center. Invert is applied by the public
         /// Evaluate* wrappers, matching the cursor and gyro paths.</summary>
         private static float ReadTunedIrPointer(CustomInputState state, MappingSource src, int slotIndex, string deviceGuid)
         {
@@ -2099,11 +2171,13 @@ namespace PadForge.Engine.Common.Mapping
             else return 0f;
 
             string dev = deviceGuid ?? "";
+            // A preview off the poll thread reads without writing (IrReadOnlyScope).
+            bool readOnly = _irReadOnly;
             if (!state.Ir.Detected)
             {
                 // Sight lost: hold the last aim, and drop the smoothing state
                 // so a re-acquire snaps instead of sliding in from stale.
-                _irEmaPrev.TryRemove((dev, slotIndex, axis), out _);
+                if (!readOnly) _irEmaPrev.TryRemove((dev, slotIndex, axis), out _);
                 return _irHeld.TryGetValue((dev, slotIndex, axis), out float held)
                     ? ScaleIrAim(held, src)
                     : 0f;
@@ -2122,7 +2196,8 @@ namespace PadForge.Engine.Common.Mapping
             // controller keeps its own pointer feel. Same order the wrapper
             // used: offset -> smoothing -> sensitivity -> clamp.
             // A calibrated remote's window already measured where the bar
-            // sits (#485), so the offset would shift its aim twice.
+            // sits (#485), and a GunCon 2's beam window has no bar at all,
+            // so the offset would shift either aim off its window.
             var tuning = IrTuningProvider?.Invoke(dev, slotIndex);
             if (tuning.HasValue)
             {
@@ -2140,17 +2215,17 @@ namespace PadForge.Engine.Common.Mapping
                         else
                         {
                             baseVal = prev.Value + (baseVal - prev.Value) * (1f - sm);
-                            _irEmaPrev[key] = (baseVal, _pollFrameSeq);
+                            if (!readOnly) _irEmaPrev[key] = (baseVal, _pollFrameSeq);
                         }
                     }
-                    else
+                    else if (!readOnly)
                     {
                         _irEmaPrev[key] = (baseVal, _pollFrameSeq); // seed unsmoothed
                     }
                 }
             }
 
-            _irHeld[(dev, slotIndex, axis)] = baseVal;
+            if (!readOnly) _irHeld[(dev, slotIndex, axis)] = baseVal;
             return ScaleIrAim(baseVal, src);
         }
 
@@ -2165,19 +2240,82 @@ namespace PadForge.Engine.Common.Mapping
 
         /// <summary>Drops one device's IR pointer memory across every slot: the
         /// held aim (#485) and the smoothing state. Called from the device
-        /// removal path beside <see cref="ResetTouchMomentumForDevice"/>, so a
-        /// remote that reconnects starts from center rather than from the aim
-        /// it held when it left.</summary>
+        /// removal path beside <see cref="ResetTouchMomentumForDevice"/>, and
+        /// when a new connection binds (UserDevice.LoadFromDevice), so a remote
+        /// that reconnects starts from center rather than from the aim it held
+        /// when it left.</summary>
         public static void ForgetIrPointerForDevice(string deviceGuid)
         {
             if (string.IsNullOrEmpty(deviceGuid)) return;
-            foreach (var k in _irHeld.Keys)
-                if (string.Equals(k.Dev, deviceGuid, StringComparison.OrdinalIgnoreCase))
-                    _irHeld.TryRemove(k, out _);
-            foreach (var k in _irEmaPrev.Keys)
-                if (string.Equals(k.Dev, deviceGuid, StringComparison.OrdinalIgnoreCase))
-                    _irEmaPrev.TryRemove(k, out _);
+            PostIrForget(IrForgetDevice, deviceGuid, -1);
         }
+
+        /// <summary>Drops every device's IR pointer memory on every slot, the
+        /// <see cref="ResetTouchMomentum"/> twin that a profile switch runs
+        /// beside it (ClearSourceKindRuntime). The held aim carries the
+        /// outgoing profile's bar offset and smoothing, so the incoming
+        /// profile's rows start from center.</summary>
+        public static void ForgetIrPointer() => PostIrForget(IrForgetAll, null, -1);
+
+        /// <summary>Drops one slot's IR pointer memory for every device, the
+        /// <see cref="ResetTouchMomentumForSlot"/> twin wired beside
+        /// ResetSourceKindRuntimeForSlot: rows replaced wholesale (a paste, a
+        /// Copy From, a slot deleted and reused) do not serve the old rows'
+        /// held aim.</summary>
+        public static void ForgetIrPointerForSlot(int slotIndex) => PostIrForget(IrForgetSlot, null, slotIndex);
+
+        private const int IrForgetAll = 0, IrForgetSlot = 1, IrForgetDevice = 2;
+
+        /// <summary>IR pointer forgets asked for on a thread other than the
+        /// poll thread, applied by the poll thread at its next frame boundary
+        /// (<see cref="BeginPollFrame"/>), so the forget takes effect between
+        /// two frames. A paste on the UI thread or a Remote Link registration
+        /// on the link thread can land while the poll thread is between a
+        /// remote's X and Y reads: cleared there and then, the read finishing
+        /// after it wrote its axis of the old aim back, and the new rows or the
+        /// new connection served X from center and Y from before.</summary>
+        private static readonly ConcurrentQueue<(int Kind, string Dev, int Slot)> _irForgetsPending = new();
+
+        /// <summary>The thread that last began a frame of the registered run,
+        /// 0 from a registration until that run's first frame. A forget it
+        /// asks for takes effect at once, since none of its own reads is in
+        /// flight: Step 1 binds a new connection before the frame's reads.</summary>
+        private static int _pollThreadId;
+
+        private static void PostIrForget(int kind, string dev, int slot)
+        {
+            // The check and the clear under the lock a registration takes. An
+            // old loop that passed the check just before a new run registered
+            // cleared between the new run's X and Y reads. Under the lock, its
+            // clear finishes before the registration, or it finds itself no
+            // longer the poll thread and queues.
+            lock (_pollRunLock)
+            {
+                if (Environment.CurrentManagedThreadId == System.Threading.Volatile.Read(ref _pollThreadId))
+                    ApplyIrForget(kind, dev, slot);
+                else
+                    _irForgetsPending.Enqueue((kind, dev, slot));
+            }
+        }
+
+        private static void ApplyIrForget(int kind, string dev, int slot)
+        {
+            if (kind == IrForgetAll)
+            {
+                _irHeld.Clear();
+                _irEmaPrev.Clear();
+                return;
+            }
+            foreach (var k in _irHeld.Keys)
+                if (IrForgetMatches(kind, dev, slot, k.Dev, k.Slot)) _irHeld.TryRemove(k, out _);
+            foreach (var k in _irEmaPrev.Keys)
+                if (IrForgetMatches(kind, dev, slot, k.Dev, k.Slot)) _irEmaPrev.TryRemove(k, out _);
+        }
+
+        private static bool IrForgetMatches(int kind, string dev, int slot, string keyDev, int keySlot)
+            => kind == IrForgetSlot
+                ? keySlot == slot
+                : string.Equals(keyDev, dev, StringComparison.OrdinalIgnoreCase);
 
         /// <summary>Sensor counts per SECOND that map to full deflection for
         /// the Joy-Con 2 mouse sources (issue #154). Chosen for parity with a
@@ -4398,7 +4536,7 @@ namespace PadForge.Engine.Common.Mapping
         /// (#291): the third reset site the issue named, beside the profile
         /// switch and the per-slot eviction. Both tables key on the device
         /// guid, so an unplugged pad's entries otherwise sat there until the
-        /// process ended. The stale velocity itself is already neutralised by
+        /// process ended. The stale velocity itself is already neutralized by
         /// the report-gap guard on re-arrival, so this is about not retaining
         /// per-device state for hardware that is gone, which is the same
         /// hygiene every comparable runtime table keeps.</summary>
@@ -4684,7 +4822,7 @@ namespace PadForge.Engine.Common.Mapping
         /// whole movement. That burst was then clamped to +/-1 (any delta
         /// past 1/128 of the pad saturated) and spent at the KBM
         /// controller's fixed 15 px per poll, so even the poll holding the
-        /// motion could not deliver it. Quantised, clipped, and rationed.
+        /// motion could not deliver it. Quantized, clipped, and rationed.
         /// </para>
         /// <para>DS4Windows never has this problem because it is event
         /// driven: TouchesMoved runs on the report itself and uses the

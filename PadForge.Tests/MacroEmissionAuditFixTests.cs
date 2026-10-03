@@ -166,14 +166,15 @@ namespace PadForge.Tests
             Assert.False(PadForge.Engine.Common.InputHookManager.IsExtendedKey(vk));
         }
 
-        /// <summary>The macro key emitter consults that table rather than
-        /// carrying a second copy that could drift from it.</summary>
+        /// <summary>The macro key emitter consults that table, through the
+        /// output key that also sends Numpad Enter's index as VK_RETURN,
+        /// rather than carrying a second copy that could drift from it.</summary>
         [Fact]
         public void TheMacroKeyEmitterAppliesTheExtendedFlag()
         {
             string src = EvaluatorSource();
             Assert.Contains("KEYEVENTF_EXTENDEDKEY", src);
-            Assert.Contains("InputHookManager.IsExtendedKey(virtualKeyCode)", src);
+            Assert.Contains("InputHookManager.OutputKey(virtualKeyCode);", src);
         }
 
         // C168: a gamepad-only peer may not drive the desktop cursor.

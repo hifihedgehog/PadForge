@@ -26,6 +26,11 @@ namespace PadForge.Views
         public Func<(bool Any, short X, short Y, bool OnScreen, int Shot)> LatestShot { get; init; }
 
         public Func<bool> CancelHeld { get; init; }
+
+        /// <summary>The wrapper the shot read closes over. The screen ends
+        /// when the device stops using it.</summary>
+        public SdlDeviceWrapper Wrapper { get; init; }
+
         public string Instruction { get; init; }
         public string OffScreen { get; init; }
         public string Cancel { get; init; }
@@ -36,6 +41,7 @@ namespace PadForge.Views
         /// 2) cancel, as they end psakhis's calibration.</summary>
         public static CalibrationGun ForGunCon2(UserDevice device, SdlDeviceWrapper gun) => new()
         {
+            Wrapper = gun,
             LatestShot = () =>
             {
                 bool any = gun.TryGetGunCon2Pull(out short x, out short y, out int pull);
@@ -58,6 +64,7 @@ namespace PadForge.Views
         /// remote saw the sensor bar, and Home cancels, since B shoots.</summary>
         public static CalibrationGun ForWiiRemote(SdlDeviceWrapper remote) => new()
         {
+            Wrapper = remote,
             LatestShot = () =>
             {
                 bool any = remote.TryGetWiiPointerShot(out short x, out short y, out bool onScreen, out int shot);
@@ -147,7 +154,7 @@ namespace PadForge.Views
         private void Poll()
         {
             if (_finished) return;
-            if (!_device.IsOnline)
+            if (ShotSourceGone(_device, _gun))
             {
                 Finish(null);
                 return;
@@ -192,6 +199,15 @@ namespace PadForge.Views
             _target = 0;
             ShowTarget(Strings.Instance.GunCalibration_TooClose);
         }
+
+        /// <summary>The gun left: its device went offline, or a reconnect gave
+        /// the device a new wrapper while the screen still reads the old one.
+        /// A Wii Remote reopens in place when an extension is plugged in, and
+        /// a replug inside the disconnect debounce rebinds without going
+        /// offline (UserDevice.LoadFromDevice), so the old wrapper's shot would
+        /// never move again.</summary>
+        internal static bool ShotSourceGone(UserDevice device, CalibrationGun gun)
+            => !device.IsOnline || !ReferenceEquals(device.Device, gun.Wrapper);
 
         private void ShowTarget(string message)
         {

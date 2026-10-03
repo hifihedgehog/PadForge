@@ -128,19 +128,27 @@ namespace PadForge.Engine
             return state;
         }
 
-        public DeviceObjectItem[] GetDeviceObjects()
+        public DeviceObjectItem[] GetDeviceObjects() => KeyObjects(SupportedButtonIndices);
+
+        /// <summary>A keyboard's key objects for the given key indices, named
+        /// by the keyboard name table. Shared with a keyboard shared over
+        /// Remote Link (RemotePeerDevice), so its keys carry the same names
+        /// as a local keyboard's.</summary>
+        internal static DeviceObjectItem[] KeyObjects(int[] indices)
         {
-            var items = new DeviceObjectItem[_numKeys];
-            for (int i = 0; i < _numKeys; i++)
+            indices ??= System.Array.Empty<int>();
+            var items = new DeviceObjectItem[indices.Length];
+            for (int b = 0; b < indices.Length; b++)
             {
-                string name = (i < VirtualKeyName.Length) ? VirtualKeyName[i] : $"Key {i}";
-                items[i] = new DeviceObjectItem
+                int i = indices[b];
+                string name = (i >= 0 && i < VirtualKeyName.Length) ? VirtualKeyName[i] : $"Key {i}";
+                items[b] = new DeviceObjectItem
                 {
                     InputIndex = i,
                     ObjectTypeGuid = ObjectGuid.Key,
                     Name = name,
                     ObjectType = DeviceObjectTypeFlags.PushButton,
-                    Offset = i * 4
+                    Offset = b * 4
                 };
             }
             return items;

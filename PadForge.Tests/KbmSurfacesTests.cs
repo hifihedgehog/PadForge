@@ -133,9 +133,10 @@ namespace PadForge.Tests
                 "rows in neither bucket: " + string.Join(", ", orphans));
 
             // Same-window positive control, and the exact shape of the
-            // complaint: 103 keyboard rows (26 letters, 10 digits, 12
+            // complaint: 104 keyboard rows (26 letters, 10 digits, 12
             // function keys, 6 modifiers, 3 system keys, 10 special, 10
-            // navigation, 11 punctuation, 15 numpad) in front of 9 mouse rows.
+            // navigation, 11 punctuation, 16 numpad with Numpad Enter) in
+            // front of 9 mouse rows.
             // The three system keys are the two Windows keys and Menu, which
             // the preview keyboard has always drawn and offered to record while
             // the grid had no row to receive the click.
@@ -144,7 +145,7 @@ namespace PadForge.Tests
             int keys = vm.Mappings.Count(m =>
                 PadViewModel.KbmSurfaceOf(m.TargetSettingName) == KbmSurfaceKind.Keyboard);
             Assert.Equal(9, mouse);
-            Assert.Equal(103, keys);
+            Assert.Equal(104, keys);
         }
 
         // ── The surface mode ─────────────────────────────────────────────

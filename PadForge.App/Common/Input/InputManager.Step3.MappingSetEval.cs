@@ -36,6 +36,9 @@ namespace PadForge.Common.Input
             // a coast could survive a profile switch and resume under the
             // new profile. Same hygiene tier as the lean neutrals.
             SourceCoercion.ResetTouchMomentum();
+            // The IR pointer's held aim (#485) rides the same tier: it carries
+            // the outgoing profile's bar offset and smoothing.
+            SourceCoercion.ForgetIrPointer();
             // The Motion Pitch, Yaw and Roll rows' simulated pose (#475).
             RequestMotionRowsReset(-1);
         }
@@ -57,6 +60,8 @@ namespace PadForge.Common.Input
             // (#291), the same reasoning as the steering accumulators: a
             // re-authored mapping must not inherit a mid-flight ball.
             SourceCoercion.ResetTouchMomentumForSlot(slotIndex);
+            // Nor the old rows' held IR aim (#485).
+            SourceCoercion.ForgetIrPointerForSlot(slotIndex);
             // And the Base-row index built from the rows being replaced. An
             // in-place edit that keeps the row count would otherwise keep
             // resolving the old rows, because the list reference is unchanged.
@@ -887,13 +892,6 @@ namespace PadForge.Common.Input
             return descriptor ?? "";
         }
 
-        /// <summary>Adds an activator's suppression key in BOTH shapes,
-        /// mirroring the consume set's population (2026-07-25 audit): the
-        /// authored key, plus the empty-guid twin when the activator pins
-        /// a device, so an any-device row spelling the same control is
-        /// suppressed too. The inverse direction (any-device activator vs
-        /// a device-pinned row) is covered at lookup, which falls back to
-        /// the empty key.</summary>
         /// <summary>Sentinel guid for the twin an activator authors so it can
         /// also reach an "(Any device)" ROW. It must not be the empty string:
         /// the empty string is a real authored value meaning "this activator
@@ -905,6 +903,13 @@ namespace PadForge.Common.Input
         /// dashes only.</summary>
         internal const string AnyRowTwinGuid = "(any-row-twin)";
 
+        /// <summary>Adds an activator's suppression key in BOTH shapes,
+        /// mirroring the consume set's population (2026-07-25 audit): the
+        /// authored key, plus the <see cref="AnyRowTwinGuid"/> twin when the
+        /// activator pins a device, so an any-device row spelling the same
+        /// control is suppressed too. The inverse direction (any-device
+        /// activator vs a device-pinned row) is covered at lookup, which
+        /// falls back to the empty key.</summary>
         internal static void AddPostponeKey(
             System.Collections.Generic.HashSet<(string Guid, string Desc)> set,
             string deviceGuid, string descriptor)
@@ -1461,11 +1466,12 @@ namespace PadForge.Common.Input
 
             // v2 Postpone-the-mapping: rebuild the per-slot suppression
             // set from the just-updated activator exertion state. An
-            // activator is "exerting" when its input read (after Delay
-            // gating) was true this frame, captured into WasDown[i] at
-            // the tail of UpdateActivatorState. PostponeMapping=true on
-            // an activator opts OUT of suppression — its own source row
-            // fires alongside the layer change.
+            // activator is "exerting" when its input read (after the
+            // host-layer and double-press gates, not DelayMs) was true
+            // this frame, captured into WasDown[i] at the tail of
+            // UpdateActivatorState. PostponeMapping=true on an activator
+            // opts OUT of suppression, and its own source row fires
+            // alongside the layer change.
             var suppressed = _suppressedScratchBySlot[slotIndex];
             if (suppressed == null)
                 _suppressedScratchBySlot[slotIndex] = suppressed =
@@ -1479,28 +1485,33 @@ namespace PadForge.Common.Input
                 // Cycle suppresses each of its two buttons by its own latch
                 // (Next via WasDown, Previous via CyclePrevWasDown), so a press
                 // that steps the queue doesn't also fire the button's mapping.
-                if (string.Equals(a.Mode, "Cycle", System.StringComparison.Ordinal))
-                {
-                    if (rt.WasDown[i] && !string.IsNullOrEmpty(a.Descriptor))
-                        AddPostponeKey(suppressed, a.DeviceGuid, a.Descriptor);
-                    if (rt.CyclePrevWasDown[i] && !string.IsNullOrEmpty(a.CyclePrevDescriptor))
-                        AddPostponeKey(suppressed, a.CyclePrevDeviceGuid, a.CyclePrevDescriptor);
-                    continue;
-                }
+                // Next is the activator's own input, suppressed below with the
+                // legs it reads, as in every other mode. The Cycle branch once
+                // suppressed the input alone, and an imported Axis Cycle let
+                // its held gate and third leg fire the layer's mappings.
+                if (string.Equals(a.Mode, "Cycle", System.StringComparison.Ordinal)
+                    && rt.CyclePrevWasDown[i] && !string.IsNullOrEmpty(a.CyclePrevDescriptor))
+                    AddPostponeKey(suppressed, CompanionDevice(a, a.CyclePrevDeviceGuid), a.CyclePrevDescriptor);
                 if (!rt.WasDown[i]) continue;
                 if (!string.IsNullOrEmpty(a.Descriptor))
                     AddPostponeKey(suppressed, a.DeviceGuid, a.Descriptor);
                 if (string.Equals(a.Kind, "Chord", System.StringComparison.Ordinal)
                     && !string.IsNullOrEmpty(a.ChordSecondDescriptor))
                 {
-                    AddPostponeKey(suppressed, a.ChordSecondDeviceGuid, a.ChordSecondDescriptor);
+                    AddPostponeKey(suppressed, CompanionDevice(a, a.ChordSecondDeviceGuid), a.ChordSecondDescriptor);
                 }
                 // The other two legs read against the activator's own device.
                 // The Axis kind's gate was never suppressed, so a wedge layer
-                // held down leaked its own contact key to the foreground app;
-                // the third leg would have done the same.
-                if (!string.IsNullOrEmpty(a.GateDescriptor))
+                // held down leaked its own contact key to the foreground app,
+                // and the third leg would have done the same. Only the Axis
+                // kind reads the gate (ReadActivatorInput). One kept from an
+                // Axis activator changed to another kind is no leg, and
+                // suppressing it swallowed a key the layer's rows map.
+                if (string.Equals(a.Kind, "Axis", System.StringComparison.Ordinal)
+                    && !string.IsNullOrEmpty(a.GateDescriptor))
+                {
                     AddPostponeKey(suppressed, a.DeviceGuid, a.GateDescriptor);
+                }
                 if (!string.IsNullOrEmpty(a.Gate2Descriptor))
                     AddPostponeKey(suppressed, a.DeviceGuid, a.Gate2Descriptor);
             }
@@ -2012,7 +2023,11 @@ namespace PadForge.Common.Input
         {
             // Input-less layers (#119) are passive targets: no own button, so
             // they never self-engage and are reached only via Cycle / Custom jump.
-            if (string.IsNullOrEmpty(act.Descriptor)) return false;
+            // A layer switched to Passive (No Button) keeps the input it had,
+            // which reads nothing. Read, it fed the postpone suppression and
+            // swallowed a key no activator used.
+            if (string.IsNullOrEmpty(act.Descriptor)
+                || string.Equals(act.Mode, "Passive", System.StringComparison.Ordinal)) return false;
 
             // The third leg, ahead of the kind switch because it belongs to no
             // kind. A gated wedge spends both of the kind's own legs on the
@@ -2969,12 +2984,15 @@ namespace PadForge.Common.Input
         /// mutation-guarded, and the two suppression key sets this consults are
         /// published as immutable snapshots (see PublishKeySetIfChanged) rather
         /// than cleared and refilled in place, so reading them here cannot race
-        /// the poll thread's rebuild. Safe to call off the polling thread.</para>
+        /// the poll thread's rebuild. An IR Pointer source reads without writing
+        /// its held aim or smoothing (SourceCoercion.IrReadOnlyScope), which the
+        /// polling thread owns. Safe to call off the polling thread.</para>
         /// </summary>
         internal static ushort EvaluatePerDeviceTriggerPreview(
             CustomInputState state, MappingSet mappingSet, string deviceGuid, string target, int slotIndex)
         {
             if (state == null || mappingSet == null) return 0;
+            using var irReadOnly = new SourceCoercion.IrReadOnlyScope(true);
             try
             {
                 var rows = mappingSet.Rows;
@@ -3499,6 +3517,15 @@ namespace PadForge.Common.Input
             if (kind == "Chord" && ChordSecondOnOwnDevice(act)) return HasAxesFor(dev, act.ChordSecondDescriptor, state);
             return true;
         }
+
+        /// <summary>The device a companion input (a chord's second input, a
+        /// Cycle's Previous button) is read from: its own when it names one,
+        /// else the activator's, as <see cref="ChordSecondOnOwnDevice"/> and
+        /// <see cref="CyclePrevOnOwnDevice"/> read it. Suppressed under its own
+        /// empty guid, a pinned activator's companion suppressed the same key
+        /// on every device.</summary>
+        private static string CompanionDevice(ShiftActivator act, string companionGuid)
+            => string.IsNullOrEmpty(companionGuid) ? act.DeviceGuid : companionGuid;
 
         /// <summary>A chord's second half reads the activator's own state
         /// when it names no other device.</summary>
@@ -4674,6 +4701,9 @@ namespace PadForge.Common.Input
             if (dpadSources == null) return;
             foreach (var src in dpadSources)
             {
+                // A row modifier (Invert on Hold) is no source, whatever
+                // descriptor it kept, the row evaluators' rule.
+                if (IsRowModifierSource(src)) continue;
                 if (!SourceMatchesDevice(src, thisDeviceGuid, slotIndex, state)) continue;
                 if (string.IsNullOrEmpty(src.Descriptor)) continue;
                 // Suppression parity (audit 2026-07-25, C11): this was the

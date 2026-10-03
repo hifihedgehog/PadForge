@@ -727,8 +727,12 @@ namespace PadForge.ViewModels
         {
             get
             {
-                if (IsMapped) return true;
-                if (!IsPrimaryDescriptor && PrimaryKindSource != null && PrimaryKindSource.HasAnyBoundFeed)
+                // The row's descriptor feeds the primary only for a descriptor
+                // kind. Incremental, Ramp and Invert On Hold keep it from an
+                // earlier kind and read their own keys.
+                if (IsPrimaryDescriptor
+                        ? IsMapped
+                        : PrimaryKindSource != null && PrimaryKindSource.HasAnyBoundFeed)
                     return true;
                 foreach (var s in ExtraSources)
                     if (s != null && s.HasAnyBoundFeed)

@@ -1280,6 +1280,10 @@ namespace SDL3
             names[0x6E] = "Numpad .";
             names[0x6F] = "Numpad /";
 
+            // Numpad Enter, which the keyboard state keeps apart from Enter at
+            // a code Windows leaves unassigned (RawInputListener.NumpadEnterKey).
+            names[0x88] = "Numpad Enter";
+
             // F1-F24
             for (int i = 0; i < 24; i++)
                 names[0x70 + i] = $"F{i + 1}";

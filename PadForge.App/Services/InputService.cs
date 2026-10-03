@@ -11471,7 +11471,7 @@ namespace PadForge.Services
                 });
                 if (!done.Wait(TimeSpan.FromMinutes(2)))
                     return false;   // do NOT dispose: the queued delegate still holds it
-                done.Dispose();     // delegate has signalled and completed; safe now
+                done.Dispose();     // ManualResetEventSlim supports Dispose right after Wait, while Set finishes
                 r = captured;
             }
             // Persistence happens in DeviceConnected, after the grant lands in the trust store.
@@ -13734,6 +13734,17 @@ namespace PadForge.Services
                                     !string.Equals(src.DeviceGuid, deviceGuidStr, StringComparison.OrdinalIgnoreCase))
                                     continue;
 
+                                // A row modifier (Invert on Hold) reads only its
+                                // modifier input (IsInvertOnHoldActive). The
+                                // descriptor and gates it kept from its source
+                                // are no input, and consuming them swallowed
+                                // keys no mapping used.
+                                if (string.Equals(src.Kind, "InvertOnHold", StringComparison.Ordinal))
+                                {
+                                    AddDescriptor(src.ParamModifier);
+                                    continue;
+                                }
+
                                 // The gate legs first. They are read as input on
                                 // this same device, whatever the kind, and were
                                 // never collected, so a key used to gate a
@@ -13751,10 +13762,6 @@ namespace PadForge.Services
                                     case "Ramped":
                                         AddDescriptor(src.ParamUp);
                                         AddDescriptor(src.ParamDown);
-                                        break;
-                                    case "InvertOnHold":
-                                        AddDescriptor(src.Descriptor);
-                                        AddDescriptor(src.ParamModifier);
                                         break;
                                     case "WindingStick":
                                     case "AngleToAxisX":
@@ -14134,10 +14141,15 @@ namespace PadForge.Services
             // GunCon 2 calibration (hifihedgehog/SDL#33 Part 9): shown for the
             // gun online or off, and the screen runs only while the gun is
             // connected to this PC. A Wii Remote with an IR camera gets the
-            // same section as a light gun (#485).
+            // same section as a light gun (#485). A gun shared over Remote
+            // Link is calibrated on the PC it is connected to, which applies
+            // any calibration before it sends the aim, so its row here has no
+            // section, the rule the other owner-only device controls follow
+            // (#248).
             row.GunCalibration = ud.GunCalibration ?? string.Empty;
             row.GunIsWiiRemote = !ud.IsGunCon2 && ud.HasIrCamera;
-            row.ShowGunCalibration = ud.IsGunCon2 || ud.HasIrCamera;
+            row.ShowGunCalibration = DeviceRowViewModel.ComputeShowGunCalibration(
+                ud.IsGunCon2 || ud.HasIrCamera, ud.DevicePath);
             row.GunConnectedHere = ud.Device is PadForge.Engine.SdlDeviceWrapper w
                 && (w.IsGunCon2 || w.HasIrCamera);
 
@@ -19172,7 +19184,9 @@ namespace PadForge.Services
                 for (int s = 0; s < row.Sources.Count; s++)
                 {
                     var src = row.Sources[s];
-                    if (src == null) continue;
+                    // A row modifier (Invert on Hold) is no source, whatever
+                    // descriptor it kept, the row evaluators' rule.
+                    if (src == null || string.Equals(src.Kind, "InvertOnHold", StringComparison.Ordinal)) continue;
                     // Device match is the RUNTIME rule, not an exact compare:
                     // an empty DeviceGuid is (Any Device), which a mouse answers
                     // (#431). The old compare skipped it, so a wildcard Mouse

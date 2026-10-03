@@ -6140,7 +6140,7 @@ namespace PadForge.Common.Input
                 _mouseInjectBuf[0] = new INPUT
                 {
                     type = INPUT_MOUSE,
-                    u = new InputUnion { mi = new MOUSEINPUT { dx = dx, dy = dy, dwFlags = MOUSEEVENTF_MOVE } }
+                    u = new InputUnion { mi = new MOUSEINPUT { dx = dx, dy = dy, dwFlags = MOUSEEVENTF_MOVE, dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag } }
                 };
                 SendInput(1, _mouseInjectBuf, Marshal.SizeOf<INPUT>());
                 injectedAny = true;
@@ -6152,7 +6152,7 @@ namespace PadForge.Common.Input
                 _mouseInjectBuf[0] = new INPUT
                 {
                     type = INPUT_MOUSE,
-                    u = new InputUnion { mi = new MOUSEINPUT { mouseData = (uint)scroll, dwFlags = MOUSEEVENTF_WHEEL } }
+                    u = new InputUnion { mi = new MOUSEINPUT { mouseData = (uint)scroll, dwFlags = MOUSEEVENTF_WHEEL, dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag } }
                 };
                 SendInput(1, _mouseInjectBuf, Marshal.SizeOf<INPUT>());
                 injectedAny = true;
@@ -6164,7 +6164,7 @@ namespace PadForge.Common.Input
                 _mouseInjectBuf[0] = new INPUT
                 {
                     type = INPUT_MOUSE,
-                    u = new InputUnion { mi = new MOUSEINPUT { mouseData = (uint)scrollH, dwFlags = MOUSEEVENTF_HWHEEL } }
+                    u = new InputUnion { mi = new MOUSEINPUT { mouseData = (uint)scrollH, dwFlags = MOUSEEVENTF_HWHEEL, dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag } }
                 };
                 SendInput(1, _mouseInjectBuf, Marshal.SizeOf<INPUT>());
                 injectedAny = true;
@@ -6189,7 +6189,7 @@ namespace PadForge.Common.Input
             var input = new INPUT
             {
                 type = INPUT_MOUSE,
-                u = new InputUnion { mi = new MOUSEINPUT { dwFlags = flags, mouseData = mouseData } }
+                u = new InputUnion { mi = new MOUSEINPUT { dwFlags = flags, mouseData = mouseData, dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag } }
             };
             SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
         }
@@ -6281,10 +6281,25 @@ namespace PadForge.Common.Input
         //  Win32 SendInput for keyboard macro actions
         // ─────────────────────────────────────────────
 
+        /// <summary>The key, scan code and flags a macro key event goes out
+        /// with. The E0 keys need the extended flag or SendInput types their
+        /// numpad twin: an authored Insert arrives as Numpad 0, Delete as
+        /// Numpad period, and the arrows as the numpad digits. The keyboard
+        /// hook carries the table this consults (InputHookManager.OutputKey),
+        /// which also sends Numpad Enter's index as VK_RETURN with the flag.
+        /// Split from <see cref="SendKeyInput"/> so it runs without
+        /// SendInput.</summary>
+        internal static (ushort Vk, ushort Scan, uint Flags) MacroKeyEvent(ushort virtualKeyCode, bool keyUp)
+        {
+            var (vk, extended) = PadForge.Engine.Common.InputHookManager.OutputKey(virtualKeyCode);
+            return (vk, (ushort)MapVirtualKey(vk, MAPVK_VK_TO_VSC),
+                (keyUp ? KEYEVENTF_KEYUP : 0u) | (extended ? KEYEVENTF_EXTENDEDKEY : 0u));
+        }
+
         private static void SendKeyInput(ushort virtualKeyCode, bool keyUp)
         {
             if (_currentMacroSlotRestricted) return; // gamepad-only peer: no keystrokes
-            ushort scanCode = (ushort)MapVirtualKey(virtualKeyCode, MAPVK_VK_TO_VSC);
+            var (vk, scanCode, flags) = MacroKeyEvent(virtualKeyCode, keyUp);
 
             var input = new INPUT
             {
@@ -6293,19 +6308,13 @@ namespace PadForge.Common.Input
                 {
                     ki = new KEYBDINPUT
                     {
-                        wVk = virtualKeyCode,
+                        wVk = vk,
                         wScan = scanCode,
-                        // The E0 keys need the extended flag or SendInput
-                        // types their numpad twin: an authored Insert arrives
-                        // as Numpad 0, Delete as Numpad period, and the arrows
-                        // as the numpad digits. The keyboard hook already
-                        // carries the table this consults; a second copy here
-                        // would be one more thing to keep in step.
-                        dwFlags = (keyUp ? KEYEVENTF_KEYUP : 0u)
-                            | (PadForge.Engine.Common.InputHookManager.IsExtendedKey(virtualKeyCode)
-                                ? KEYEVENTF_EXTENDEDKEY : 0u),
+                        dwFlags = flags,
                         time = 0,
-                        dwExtraInfo = IntPtr.Zero
+                        // PadForge's own output: the hooks and the Raw
+                        // Input reader pass it by (OutputTag).
+                        dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag
                     }
                 }
             };
@@ -6390,12 +6399,12 @@ namespace PadForge.Common.Input
             inputs.Add(new INPUT
             {
                 type = INPUT_KEYBOARD,
-                u = new InputUnion { ki = new KEYBDINPUT { wVk = 0, wScan = codeUnit, dwFlags = KEYEVENTF_UNICODE } }
+                u = new InputUnion { ki = new KEYBDINPUT { wVk = 0, wScan = codeUnit, dwFlags = KEYEVENTF_UNICODE, dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag } }
             });
             inputs.Add(new INPUT
             {
                 type = INPUT_KEYBOARD,
-                u = new InputUnion { ki = new KEYBDINPUT { wVk = 0, wScan = codeUnit, dwFlags = KEYEVENTF_UNICODE | KEYEVENTF_KEYUP } }
+                u = new InputUnion { ki = new KEYBDINPUT { wVk = 0, wScan = codeUnit, dwFlags = KEYEVENTF_UNICODE | KEYEVENTF_KEYUP, dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag } }
             });
         }
 
@@ -6405,12 +6414,12 @@ namespace PadForge.Common.Input
             inputs.Add(new INPUT
             {
                 type = INPUT_KEYBOARD,
-                u = new InputUnion { ki = new KEYBDINPUT { wVk = vk, wScan = scan, dwFlags = 0 } }
+                u = new InputUnion { ki = new KEYBDINPUT { wVk = vk, wScan = scan, dwFlags = 0, dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag } }
             });
             inputs.Add(new INPUT
             {
                 type = INPUT_KEYBOARD,
-                u = new InputUnion { ki = new KEYBDINPUT { wVk = vk, wScan = scan, dwFlags = KEYEVENTF_KEYUP } }
+                u = new InputUnion { ki = new KEYBDINPUT { wVk = vk, wScan = scan, dwFlags = KEYEVENTF_KEYUP, dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag } }
             });
         }
 

@@ -35,7 +35,7 @@ namespace PadForge.Tests
             => head.Contains("_runGeneration) == generation", StringComparison.Ordinal);
 
         [Theory]
-        [InlineData("private void PollingLoop(int generation)")]
+        [InlineData("private void PollingLoop(int generation, int pollRun)")]
         [InlineData("private void MouseInjectorLoop(int generation)")]
         public void EveryEngineLoopRetiresOnAStaleGeneration(string method)
         {

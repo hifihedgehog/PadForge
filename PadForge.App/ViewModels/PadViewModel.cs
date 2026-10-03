@@ -3028,6 +3028,9 @@ namespace PadForge.ViewModels
             AddKey("Num -", 0x6D);
             AddKey("Num .", 0x6E);
             AddKey("Num /", 0x6F);
+            // Numpad Enter's own index (RawInputListener.NumpadEnterKey). It
+            // goes out as VK_RETURN with the extended flag (OutputKey).
+            AddKey(string.Format(Strings.Instance.Key_Numpad, Strings.Instance.Key_Enter), 0x88);
         }
 
         /// <summary>Which half of a Keyboard + Mouse slot a mapping row

@@ -113,15 +113,63 @@ namespace PadForge.Engine.Touchpad
                 foreach (var row in set.Rows)
                 {
                     if (row?.Sources == null) continue;
+                    // The combined D-pad row reads "POV N" descriptors alone,
+                    // and no gates (EvaluateCombinedDpad).
+                    if (string.Equals(row.Target, "DPad", StringComparison.Ordinal)) continue;
+                    bool stickRow = TargetKindResolver.Resolve(row.Target) == TargetKind.BipolarAxis;
                     foreach (var src in row.Sources)
                     {
-                        any |= Classify(src?.Descriptor, ref need);
+                        if (src == null) continue;
+                        // A field arms its family only where the engine reads
+                        // it as a gesture (SourceEvaluator's dispatch). A row
+                        // modifier (Invert on Hold) reads only its modifier
+                        // input, through the full button read: the descriptor
+                        // and gates it kept from its source arm nothing. The
+                        // input arms on every row. Button rows ignore a
+                        // modifier, but the Keyboard + Mouse, Extended, MIDI
+                        // and touchpad output lanes apply it on rows the
+                        // target resolver files as buttons, and nothing lists
+                        // those rows to tell the two apart.
+                        if (string.Equals(src.Kind, "InvertOnHold", StringComparison.Ordinal))
+                        {
+                            any |= Classify(src.ParamModifier, ref need);
+                            continue;
+                        }
+                        switch (src.Kind ?? "Direct")
+                        {
+                            // Incremental and Ramped read no descriptor, and
+                            // read their up and down keys through a button,
+                            // hat and hardware-bool reader with no gesture
+                            // read (SourceKindRuntime.ReadButtonLikeBool).
+                            case "Incremental":
+                            case "Ramped":
+                                break;
+                            // On a stick row the steering kinds read axes
+                            // (SourceKindRuntime.SteeringAxisRead) and the
+                            // motion kinds read gravity or the shake envelope.
+                            // On any other row they fall to the Direct read of
+                            // the descriptor.
+                            case "WindingStick":
+                            case "AngleToAxisX":
+                            case "AngleToAxisY":
+                            case "MotionLeanX":
+                            case "MotionLeanAuxX":
+                            case "MotionShake":
+                            case "MotionShakeAux":
+                                if (!stickRow) any |= Classify(src.Descriptor, ref need);
+                                break;
+                            default:
+                                any |= Classify(src.Descriptor, ref need);
+                                break;
+                        }
                         // v18: the per-source AND gate reads through the
                         // same gated families (a click gated on a touch
                         // spot), so it arms exactly like a descriptor.
-                        // v26's second AND companion arms identically.
-                        any |= Classify(src?.GateDescriptor, ref need);
-                        any |= Classify(src?.Gate2Descriptor, ref need);
+                        // v26's second AND companion arms identically. A
+                        // blank Direct source reads neither.
+                        if (SourceEvaluator.IsUnmappedDirect(src)) continue;
+                        any |= Classify(src.GateDescriptor, ref need);
+                        any |= Classify(src.Gate2Descriptor, ref need);
                     }
                 }
             }
@@ -130,15 +178,31 @@ namespace PadForge.Engine.Touchpad
                 foreach (var act in set.ShiftActivators)
                 {
                     if (act == null) continue;
-                    any |= Classify(act.Descriptor, ref need);
-                    any |= Classify(act.ChordSecondDescriptor, ref need);
-                    // An activator's own AND gate reads through the gated
-                    // families too, the row-source rationale above. The
-                    // cycle-backward button is read through the same
-                    // runtime lane, so it arms identically.
-                    any |= Classify(act.GateDescriptor, ref need);
-                    any |= Classify(act.Gate2Descriptor, ref need);
-                    any |= Classify(act.CyclePrevDescriptor, ref need);
+                    // What the activator read takes (ReadActivatorInput in
+                    // Step 3): nothing for a Passive layer or one without an
+                    // input of its own, else the input and its second AND
+                    // companion, plus the second input for a Chord and the
+                    // AND gate for an Axis activator. A kind or mode change
+                    // keeps the old fields, which arm nothing.
+                    if (!string.IsNullOrEmpty(act.Descriptor)
+                        && !string.Equals(act.Mode, "Passive", StringComparison.Ordinal))
+                    {
+                        any |= Classify(act.Descriptor, ref need);
+                        any |= Classify(act.Gate2Descriptor, ref need);
+                        switch (act.Kind ?? "Button")
+                        {
+                            case "Chord":
+                                any |= Classify(act.ChordSecondDescriptor, ref need);
+                                break;
+                            case "Axis":
+                                any |= Classify(act.GateDescriptor, ref need);
+                                break;
+                        }
+                    }
+                    // The Cycle mode's Previous button, read through the
+                    // same button read on its own.
+                    if (string.Equals(act.Mode, "Cycle", StringComparison.Ordinal))
+                        any |= Classify(act.CyclePrevDescriptor, ref need);
                 }
             }
             if (extraDescriptors != null)

@@ -86,10 +86,11 @@ namespace PadForge.ViewModels
         public bool IsKindDescriptorless => IsIncrementalKind || IsInvertOnHoldKind || IsRampedKind;
 
         /// <summary>Whether any input actually feeds this source, per kind.
-        /// Mirrors the engine's SourceEvaluator dispatch (the
-        /// collect-descriptors switch in InputService): Incremental and
-        /// Ramped read the Up/Down keys, InvertOnHold reads its Descriptor
-        /// plus the modifier key, every other kind reads the Descriptor.</summary>
+        /// Mirrors the engine's dispatch (the collect-descriptors switch in
+        /// InputService): Incremental and Ramped read the Up/Down keys,
+        /// InvertOnHold reads only its modifier key, since the Descriptor it
+        /// kept from its source is no input, and every other kind reads the
+        /// Descriptor.</summary>
         public bool HasAnyBoundFeed
         {
             get
@@ -97,7 +98,7 @@ namespace PadForge.ViewModels
                 if (UsesUpDownKeys)
                     return !string.IsNullOrEmpty(ParamUp) || !string.IsNullOrEmpty(ParamDown);
                 if (IsInvertOnHoldKind)
-                    return !string.IsNullOrEmpty(Descriptor) || !string.IsNullOrEmpty(ParamModifier);
+                    return !string.IsNullOrEmpty(ParamModifier);
                 return !string.IsNullOrEmpty(Descriptor);
             }
         }

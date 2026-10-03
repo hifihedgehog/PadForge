@@ -229,6 +229,67 @@ namespace PadForge.Tests
                 () => find.Invoke(null, new object[] { state, ms, "KbmMouseX", 12, "" }));
         }
 
+        /// <summary>An Invert on Hold modifier is no source on the mouse rate
+        /// lanes, whatever its descriptor names, the row evaluators' rule. A
+        /// layer whose row holds only a modifier naming the gyro, a trackpad
+        /// finger, a flick stick or the touchpad pointer produces no output,
+        /// so it auto-cancels while that input moves. A modifier read as a
+        /// lane source turned the cursor and kept the layer on.</summary>
+        [Fact]
+        public void AModifierOnAMouseRateLaneIsNoOutput()
+        {
+            MappingSource Modifier(string d) => new() { Descriptor = d, Kind = "InvertOnHold" };
+            var pad = new TouchpadInputState(2);
+            pad.FingerDown[0] = true;
+            pad.FingerX[0] = pad.FingerY[0] = 0.5f;
+            var state = new CustomInputState { Touchpads = new[] { pad } };
+            state.Gyro[0] = state.Gyro[1] = state.Gyro[2] = 3f;
+            state.Axis[3] = 65535;
+            state.Axis[4] = 32768;
+            var findTouch = typeof(InputManager).GetMethod("FindEngagedTouchpadPointerSource",
+                BindingFlags.Static | BindingFlags.NonPublic);
+            Assert.NotNull(findTouch);
+
+            foreach (var (descriptor, lane) in new (string, string)[]
+            {
+                ("Gyro Yaw", "TickGyroMouseSources"),
+                ("Touchpad 0 Finger 0 X", "TickTouchpadMouseSources"),
+                ("Flick Stick Right", "TickFlickStickSources"),
+                ("Touchpad 0 Pointer X", null),
+            })
+            {
+                var ms = LayerSet("KbmMouseX", Modifier(descriptor));
+                Action evaluate = lane != null
+                    ? Lane(lane, state, ms, 14)
+                    : () => findTouch.Invoke(null, new object[] { state, ms, "KbmMouseX", 14, "" });
+                InputManager.ClearAllShiftRuntime();
+                try
+                {
+                    Assert.Equal("Base", Run(14, ms, state, evaluate, engage: true));
+                }
+                finally
+                {
+                    InputManager.ClearAllShiftRuntime();
+                }
+            }
+        }
+
+        /// <summary>A Wii Remote aiming at the bar through a layer's IR
+        /// pointer row is output, as an engaged touchpad pointer is, though
+        /// the cursor may hold still. A remote that cannot see the bar is
+        /// not.</summary>
+        [Fact]
+        public void AnAimingIrPointerKeepsItsLayerOn()
+        {
+            var ms = LayerSet("KbmMouseX", Src("IR Pointer X"));
+            var state = new CustomInputState();
+            var find = typeof(InputManager).GetMethod("FindIrPointerSource", BindingFlags.Static | BindingFlags.NonPublic);
+            Assert.NotNull(find);
+            HeldThenRested(13, ms, state,
+                () => state.Ir.Detected = true, () => state.Ir.Detected = false,
+                () => find.Invoke(null, new object[] { state, ms, "KbmMouseX", null, "", 13 }));
+        }
+
         [Fact]
         public void ATouchpadRowKeepsItsLayerOnWithAFingerAtTheCenter()
         {

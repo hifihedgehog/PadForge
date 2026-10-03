@@ -1742,7 +1742,13 @@ namespace PadForge.Common.Input
             _frequencyCounter = 0;
 
             int generation = StampRun();
-            _pollingThread = new Thread(() => PollingLoop(generation))
+            // The run owns the evaluator's frame bookkeeping
+            // (SourceCoercion.BeginPollRun) from here, registered in Start's
+            // order before its thread exists. A loop that registered itself
+            // could do it late: one Stop retired before it reached its first
+            // frame registered after its replacement and locked it out.
+            int pollRun = Engine.Common.Mapping.SourceCoercion.BeginPollRun();
+            _pollingThread = new Thread(() => PollingLoop(generation, pollRun))
             {
                 Name = "PadForge.InputManager",
                 IsBackground = true,
@@ -1907,8 +1913,12 @@ namespace PadForge.Common.Input
         /// CPU impact is minimal: spin-waiting burns one core at ~1-3% utilization
         /// for sub-millisecond waits, and the thread priority is AboveNormal so it
         /// doesn't starve other work.
+        ///
+        /// <paramref name="generation"/> retires the loop when Stop moves the
+        /// stamp. <paramref name="pollRun"/> is the frame bookkeeping run Start
+        /// registered for it (SourceCoercion.BeginPollRun).
         /// </summary>
-        private void PollingLoop(int generation)
+        private void PollingLoop(int generation, int pollRun)
         {
             // Keep timeBeginPeriod(1). It still helps multimedia timers and
             // other system timing used by SDL, HIDMaestro, and the UI dispatcher.
@@ -2083,7 +2093,7 @@ namespace PadForge.Common.Input
                         // step once per poll no matter how many mapping rows
                         // read the same source (the Gyro tab's smoothing is
                         // per-device-per-slot, not per-row).
-                        Engine.Common.Mapping.SourceCoercion.BeginPollFrame();
+                        Engine.Common.Mapping.SourceCoercion.BeginPollFrame(pollRun);
 
                         long enumMs = 0;
                         // A change of the Bliss-Box switch runs the sweep now,

@@ -96,8 +96,10 @@ namespace PadForge.Engine.Common
         // order, so D alone is never held for a Win+D chord.
         private readonly HashSet<int> _down = new();
         private readonly List<int> _downOrder = new();
-        // Keys whose DOWN we swallowed and have not yet replayed or consumed.
-        private readonly List<(int Code, long AtMs)> _held = new();
+        // Keys whose DOWN we swallowed and have not yet replayed or consumed,
+        // each with the physical key it came from, so its replay types that
+        // key (InputHookManager.ReplayIdentity).
+        private readonly List<(int Code, long AtMs, int Ident)> _held = new();
         // Keys whose DOWN we swallowed as part of a completed chord, so their UP
         // is swallowed as well.
         private readonly HashSet<int> _consumed = new();
@@ -114,9 +116,10 @@ namespace PadForge.Engine.Common
         private bool _captureSawKey;
 
         /// <summary>Replays the engine wants the hook to inject, in order.
-        /// Each entry is a code and whether it is a down. Drained by the hook
+        /// Each entry is a code, whether it is a down, and the physical key
+        /// the event came from (0 when none was given). Drained by the hook
         /// after every call that can queue one.</summary>
-        public List<(int Code, bool Down)> PendingReplays { get; } = new();
+        public List<(int Code, bool Down, int Ident)> PendingReplays { get; } = new();
 
         /// <summary>Set when a completed chord contained a Win key. The hook
         /// injects the mask key and clears it.</summary>
@@ -256,8 +259,10 @@ namespace PadForge.Engine.Common
 
         /// <summary>Feeds one key or mouse-button event. <paramref name="code"/>
         /// is a VK code or <see cref="HandheldChordDefinition.MouseCode"/> +
-        /// button id. Returns whether the hook must swallow it.</summary>
-        public ChordDecision OnEvent(int code, bool down, long nowMs)
+        /// button id. <paramref name="ident"/> is the physical key the event
+        /// came from, which a replay of it carries. Chords match on the code
+        /// alone. Returns whether the hook must swallow it.</summary>
+        public ChordDecision OnEvent(int code, bool down, long nowMs, int ident = 0)
         {
             Action<int[]> captureDone = null;
             int[] captureResult = null;
@@ -272,7 +277,7 @@ namespace PadForge.Engine.Common
                 }
                 else
                 {
-                    decision = MatchEvent(code, down, nowMs, ref changes);
+                    decision = MatchEvent(code, down, nowMs, ident, ref changes);
                 }
             }
             if (changes != null)
@@ -315,7 +320,7 @@ namespace PadForge.Engine.Common
         /// <summary>Moves the queued replays into <paramref name="dest"/>
         /// under the engine lock. The hook thread queues while the replay
         /// thread drains, so the list is never read bare.</summary>
-        public void DrainReplays(List<(int Code, bool Down)> dest)
+        public void DrainReplays(List<(int Code, bool Down, int Ident)> dest)
         {
             lock (_lock)
             {
@@ -383,7 +388,7 @@ namespace PadForge.Engine.Common
             return ChordDecision.Swallow;
         }
 
-        private ChordDecision MatchEvent(int code, bool down, long nowMs, ref List<(int, bool)> changes)
+        private ChordDecision MatchEvent(int code, bool down, long nowMs, int ident, ref List<(int, bool)> changes)
         {
             var chords = _chords;
             if (down)
@@ -440,7 +445,7 @@ namespace PadForge.Engine.Common
                 }
                 if (HandheldChordDefinition.IsModifier(code))
                     return ChordDecision.Pass; // modifiers are never held back
-                _held.Add((code, nowMs));
+                _held.Add((code, nowMs, ident));
                 return ChordDecision.Swallow;
             }
             else
@@ -468,7 +473,7 @@ namespace PadForge.Engine.Common
                 if (IsHeld(code))
                 {
                     ReplayHeld();
-                    PendingReplays.Add((code, false));
+                    PendingReplays.Add((code, false, ident));
                     return ChordDecision.Swallow;
                 }
                 return ChordDecision.Pass;
@@ -514,7 +519,7 @@ namespace PadForge.Engine.Common
         private void ReplayHeld()
         {
             foreach (var h in _held)
-                PendingReplays.Add((h.Code, true));
+                PendingReplays.Add((h.Code, true, h.Ident));
             _held.Clear();
         }
     }

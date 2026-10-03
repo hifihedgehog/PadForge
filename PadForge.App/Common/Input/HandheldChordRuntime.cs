@@ -85,7 +85,7 @@ namespace PadForge.Common.Input
 
         private static void Loop()
         {
-            var replays = new List<(int Code, bool Down)>();
+            var replays = new List<(int Code, bool Down, int Ident)>();
             var wake = _wake;
             while (_running)
             {
@@ -100,8 +100,8 @@ namespace PadForge.Common.Input
                     if (Engine.TakeWinMask())
                         InputHookManager.InjectWinMask();
                     Engine.DrainReplays(replays);
-                    foreach (var (code, down) in replays)
-                        InputHookManager.InjectReplay(code, down);
+                    foreach (var (code, down, ident) in replays)
+                        InputHookManager.InjectReplay(code, down, ident);
                     replays.Clear();
                 }
                 catch (Exception ex)

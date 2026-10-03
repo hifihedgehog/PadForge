@@ -413,13 +413,6 @@ namespace PadForge.Engine
 
     }
 
-    /// <summary>Wii Remote IR-camera pointer for one frame (issue #146). A value
-    /// type so <see cref="CustomInputState.Ir"/> needs no per-frame allocation.
-    /// <see cref="X"/> / <see cref="Y"/> are the normalized screen position in the
-    /// [-1..+1] stick range (the two-dot midpoint), valid only when
-    /// <see cref="Detected"/> is true. When no dot is seen this frame the producer
-    /// clears <see cref="Detected"/> and every consumer reads the source as centered
-    /// for that frame (X/Y are not carried over; the state is rebuilt each tick).</summary>
     /// <summary>Two-instance CustomInputState pool for per-tick device
     /// reads (single reader thread per wrapper by contract). Two buffers
     /// because the published instance must survive exactly one tick
@@ -441,15 +434,28 @@ namespace PadForge.Engine
         }
     }
 
+    /// <summary>The IR pointer's aim for one frame (issue #146): a Wii
+    /// Remote's camera aim, or a GunCon 2's beam aim, which the wrapper writes
+    /// here so the same IR Pointer sources carry it. A value type so
+    /// <see cref="CustomInputState.Ir"/> needs no per-frame allocation.
+    /// <see cref="X"/> and <see cref="Y"/> are in the [-1..+1] stick range and
+    /// hold this frame's aim only while <see cref="Detected"/> is true. An
+    /// uncalibrated remote's aim is its camera position, which the IR read
+    /// stretches by its margin to reach the screen's edges. An aim through a
+    /// light-gun window, a calibrated remote's or a GunCon 2's, is the screen
+    /// position divided by that stretch, which the read restores. The state is
+    /// rebuilt each tick, so a frame with no aim carries none. The IR Pointer
+    /// read then serves the last aim it read (#485).</summary>
     public struct WiiIrState
     {
         public float X;
         public float Y;
         public bool Detected;
 
-        /// <summary>The aim went through the remote's light-gun calibration
-        /// (#485). The calibration measured where the sensor bar sits, so
-        /// the IR Pointer read adds no Pointer-tab bar offset to it.</summary>
+        /// <summary>The aim went through a light-gun window that already
+        /// places it on the screen: a Wii Remote's calibration (#485) or a
+        /// GunCon 2's beam window. The IR Pointer read adds no Pointer-tab
+        /// bar offset to it.</summary>
         public bool Calibrated;
     }
 }

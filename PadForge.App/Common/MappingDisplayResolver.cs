@@ -1276,6 +1276,7 @@ namespace PadForge.Common
                 "Numpad -" => s.Key_NumpadSubtract,
                 "Numpad ." => s.Key_NumpadDecimal,
                 "Numpad /" => s.Key_NumpadDivide,
+                "Numpad Enter" => string.Format(s.Key_Numpad, s.Key_Enter),
                 "NumLock" => s.Key_NumLock,
                 "ScrollLock" => s.Key_ScrollLock,
                 "LShift" => s.Key_LeftShift,

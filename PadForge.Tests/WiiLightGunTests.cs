@@ -184,12 +184,16 @@ namespace PadForge.Tests
             Assert.Equal(0f, SdlDeviceWrapper.IrPairAngle(0, 500, 300, 500, 300));
         }
 
+        /// <summary>The turn runs in camera pixels, which are square: a
+        /// quarter turn carries an aim at the edge of the picture's width the
+        /// same number of pixels below its center, past the bottom edge of the
+        /// shorter height. A turn and its inverse cancel.</summary>
         [Fact]
-        public void Rotation_IsTouchmotesRotatePoint()
+        public void Rotation_TurnsTheAimInCameraPixels()
         {
             var (x, y) = SdlDeviceWrapper.RotateIrAim(1f, 0f, (float)(Math.PI / 2));
             Assert.Equal(0f, x, precision: 5);
-            Assert.Equal(1f, y, precision: 5);
+            Assert.Equal(1023.5f / 767.5f, y, precision: 4);
             var (bx, by) = SdlDeviceWrapper.RotateIrAim(0.3f, -0.2f, 0.7f);
             var (rx, ry) = SdlDeviceWrapper.RotateIrAim(bx, by, -0.7f);
             Assert.Equal(0.3f, rx, precision: 5);
@@ -197,6 +201,47 @@ namespace PadForge.Tests
         }
 
         private static long Ms(int ms) => ms * System.Diagnostics.Stopwatch.Frequency / 1000;
+
+        /// <summary>A rolled remote aims where the same remote held level aims.
+        /// Rolling the remote turns the camera's picture about its center, so
+        /// the rolled dots are the level dots turned about the center in
+        /// pixels, and the compensated aim must land on the level aim. The
+        /// model here shares no code with the compensation. A turn in the
+        /// aim's unevenly scaled units misses the level aim at every one of
+        /// these angles.</summary>
+        [Theory]
+        [InlineData(15)]
+        [InlineData(-15)]
+        [InlineData(30)]
+        [InlineData(-30)]
+        [InlineData(45)]
+        [InlineData(-45)]
+        public void ARolledRemote_AimsWhereTheLevelRemoteAims(int degrees)
+        {
+            const double cx = 1023.5 / 2, cy = 767.5 / 2;
+            double t = degrees * Math.PI / 180, c = Math.Cos(t), s = Math.Sin(t);
+            short Px(int x, int y) => (short)Math.Round(cx + (x - cx) * c - (y - cy) * s);
+            short Py(int x, int y) => (short)Math.Round(cy + (x - cx) * s + (y - cy) * c);
+
+            // Level pairs 300 pixels apart: a quarter of the picture's width
+            // out, a quarter of its height up, and off toward a lower corner.
+            foreach (var (mx, my) in new[] { (768, 384), (512, 192), (312, 534) })
+            {
+                int lx = mx - 150, rx = mx + 150;
+                short d0x = Px(lx, my), d0y = Py(lx, my), d1x = Px(rx, my), d1y = Py(rx, my);
+                Assert.InRange(d0x, (short)0, (short)1023);
+                Assert.InRange(d1x, (short)0, (short)1023);
+                Assert.InRange(d0y, (short)0, (short)767);
+                Assert.InRange(d1y, (short)0, (short)767);
+
+                var w = new SdlDeviceWrapper();
+                var (x, y, det, _) = w.StepIrPointer(d0x, d0y, d1x, d1y, 0f, G, Ms(0), trigger: false);
+                var (ex, ey, _) = SdlDeviceWrapper.ComputeIrAim((short)lx, (short)my, (short)rx, (short)my);
+                Assert.True(det);
+                Assert.Equal(ex, x, 0.005f);
+                Assert.Equal(ey, y, 0.005f);
+            }
+        }
 
         [Fact]
         public void ALevelPair_KeepsThePlainMidpoint()
@@ -285,8 +330,10 @@ namespace PadForge.Tests
             Assert.Equal(-mx, ux, precision: 4);
         }
 
-        /// <summary>Every Touchmote variant smooths only frames with a pair,
-        /// so a lost bar's gap, however long, counts as one report.</summary>
+        /// <summary>A stretch with no polls, however long, counts as one
+        /// report: one smoothing step moves the reading at most a tenth of the
+        /// way, as one report would, however long the poll loop
+        /// stalled.</summary>
         [Fact]
         public void ALongGap_CountsAsOneReport()
         {
@@ -298,6 +345,44 @@ namespace PadForge.Tests
             var (x, _, _, _) = w.StepIrPointer(400, 384, 600, 384, 0f, -G, Ms(1000), false);
             var (mx, _, _) = SdlDeviceWrapper.ComputeIrAim(400, 384, 600, 384);
             Assert.Equal(mx, x, precision: 5);
+        }
+
+        /// <summary>The accelerometer is smoothed while the bar is out of view
+        /// too, since both IR reports the fork asks for carry it
+        /// (SDL_hidapi_wii.c HandleWiiRemoteAccelData). A remote turned over while it could not
+        /// see the bar starts its next track upside down. Smoothing only the
+        /// tracked polls, as Touchmote does, kept the orientation of before
+        /// the turn and flipped the aim.</summary>
+        [Fact]
+        public void TurningOverOutOfSight_CountsForTheNextTrack()
+        {
+            var w = new SdlDeviceWrapper();
+            w.StepIrPointer(200, 384, 400, 384, 0f, G, Ms(0), false); // tracked upright
+            for (int t = 1; t <= 2000; t++)
+                w.StepIrPointer(-1, -1, -1, -1, 0f, -G, Ms(t), false);
+            var (x, _, det, _) = w.StepIrPointer(200, 384, 400, 384, 0f, -G, Ms(2001), false);
+            var (mx, _, _) = SdlDeviceWrapper.ComputeIrAim(200, 384, 400, 384);
+            Assert.True(det);
+            Assert.Equal(-mx, x, precision: 4);
+        }
+
+        /// <summary>SDL reads 0 on both axes before the accelerometer's first
+        /// report, which is no sample, and the first real sample seeds the
+        /// reading. Seeded with the zeros, a remote that found the bar in its
+        /// first reports took the upright pick even held upside down, and the
+        /// pick holds for the whole track.</summary>
+        [Fact]
+        public void TheZerosBeforeTheFirstSample_SeedNothing()
+        {
+            var w = new SdlDeviceWrapper();
+            // Tracked before any accelerometer report: upright.
+            var (ux, _, _, _) = w.StepIrPointer(200, 384, 400, 384, 0f, 0f, Ms(0), false);
+            var (mx, _, _) = SdlDeviceWrapper.ComputeIrAim(200, 384, 400, 384);
+            Assert.Equal(mx, ux, precision: 4);
+            w.StepIrPointer(-1, -1, -1, -1, 0f, 0f, Ms(1), false);
+            // The first report says upside down, and the next track is.
+            var (x, _, _, _) = w.StepIrPointer(200, 384, 400, 384, 0f, -G, Ms(2), false);
+            Assert.Equal(-mx, x, precision: 4);
         }
 
         // ── The calibration shot and window ──
@@ -422,14 +507,20 @@ namespace PadForge.Tests
                 SourceCoercion.BeginPollFrame();
                 Assert.Equal(0.2f, Read(state, src, 0), precision: 5);
 
-                // A GunCon 2's aim is its beam window, never marked calibrated,
-                // so the offset applies as it did.
+                // A GunCon 2's beam window places its aim on the picture with
+                // no bar, so it is marked calibrated, and the offset a Copy From
+                // of a remote's settings carries onto the gun leaves it alone.
                 var gun = new CustomInputState();
                 SdlDeviceWrapper.ApplyGunCon2(gun, 300, 130, GunCon2Calibration.Default);
-                Assert.False(gun.Ir.Calibrated);
+                Assert.True(gun.Ir.Calibrated);
                 var gunSrc = new MappingSource { Descriptor = "IR Pointer Y", DeviceGuid = "bar-gun" };
                 SourceCoercion.BeginPollFrame();
-                Assert.Equal(-0.3f, Read(gun, gunSrc, 0), precision: 5);
+                Assert.Equal(0f, Read(gun, gunSrc, 0), precision: 5);
+
+                // Off the screen it aims nowhere, and nothing is marked.
+                SdlDeviceWrapper.ApplyGunCon2(gun, 5, 130, GunCon2Calibration.Default);
+                Assert.False(gun.Ir.Detected);
+                Assert.False(gun.Ir.Calibrated);
             }
             finally
             {
@@ -544,7 +635,9 @@ namespace PadForge.Tests
         {
             string svc = RepoText("PadForge.App/Services/InputService.cs");
             Assert.Contains("row.GunIsWiiRemote = !ud.IsGunCon2 && ud.HasIrCamera;", svc);
-            Assert.Contains("row.ShowGunCalibration = ud.IsGunCon2 || ud.HasIrCamera;", svc);
+            // A gun shared over Remote Link is calibrated where it is plugged
+            // in, so its row here has no section (#248).
+            Assert.Contains("row.ShowGunCalibration = DeviceRowViewModel.ComputeShowGunCalibration(\n                ud.IsGunCon2 || ud.HasIrCamera, ud.DevicePath);", svc);
             Assert.Contains("&& (w.IsGunCon2 || w.HasIrCamera);", svc);
             string wrapper = RepoText("PadForge.Engine/Common/SdlDeviceWrapper.cs");
             Assert.Contains("var (x, y, detected, calibrated) = StepIrPointer(", wrapper);

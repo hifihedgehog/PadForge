@@ -411,8 +411,8 @@ namespace PadForge.Views
         /// <summary>Appends one wire row per input this source actually
         /// reads, mirroring the engine's per-kind dispatch (the
         /// collect-descriptors switch in InputService): Incremental and
-        /// Ramped read the Up/Down keys, InvertOnHold reads its input plus
-        /// the modifier key, everything else reads the descriptor. Inv/Half
+        /// Ramped read the Up/Down keys, InvertOnHold reads only its modifier
+        /// key, everything else reads the descriptor. Inv/Half
         /// prefixes only apply to the descriptor feed; the param feeds are
         /// bare keys.</summary>
         private void AppendAnnotationSourceWires(List<AnnotationWireRow> rows, MappingSourceItem src)
@@ -423,6 +423,12 @@ namespace PadForge.Views
             {
                 AppendAnnotationParamWire(rows, src, src.ParamUp, src.ParamUpInputChoice);
                 AppendAnnotationParamWire(rows, src, src.ParamDown, src.ParamDownInputChoice);
+                return;
+            }
+            if (src.IsInvertOnHoldKind)
+            {
+                // The descriptor a modifier kept from its source is no input.
+                AppendAnnotationParamWire(rows, src, src.ParamModifier, src.ParamModifierInputChoice);
                 return;
             }
 
@@ -438,8 +444,6 @@ namespace PadForge.Views
                 AppendAnnotationWire(rows, src.DeviceGuid,
                     src.DisplayDeviceLabel, name);
             }
-            if (src.IsInvertOnHoldKind)
-                AppendAnnotationParamWire(rows, src, src.ParamModifier, src.ParamModifierInputChoice);
         }
 
         private void AppendAnnotationParamWire(List<AnnotationWireRow> rows,

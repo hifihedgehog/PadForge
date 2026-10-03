@@ -124,12 +124,14 @@ namespace PadForge.Tests
         }
 
         /// <summary>The hook callback runs only under Windows' hook, so pin
-        /// that it decides through the event's scan code and flags.</summary>
+        /// that it hands the event's scan code and flags to the decision, and
+        /// that the decision consumes through them.</summary>
         [Fact]
         public void TheHookCallback_DecidesWithTheScanCodeAndFlags()
         {
             string src = RepoText("PadForge.Engine/Common/InputHookManager.cs");
-            Assert.Contains("if (ConsumeKey(vk, kb.scanCode, kb.flags, isDown))", src);
+            Assert.Contains("if (HandleKeyboardEvent((int)kb.vkCode, kb.scanCode, kb.flags, kb.dwExtraInfo, isDown))", src);
+            Assert.Contains("return ConsumeKey(vk, scanCode, flags, isDown);", src);
             Assert.DoesNotContain("_suppressedVKeys.Contains(vk)", src);
         }
     }

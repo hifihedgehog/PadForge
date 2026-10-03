@@ -1300,7 +1300,11 @@ namespace PadForge.Engine
         /// read. The IR pointer read stretches its input by IrMarginStretch,
         /// because a Wii Remote's tracked aim cannot reach the screen edge. The
         /// gun's aim already spans the screen, so it is stored divided by the
-        /// stretch and the read restores it.</summary>
+        /// stretch and the read restores it. Its window already places it on
+        /// the picture, so it is marked calibrated and the read adds no
+        /// Pointer-tab bar offset, which a Copy From of a Wii Remote's settings
+        /// would otherwise carry onto a gun that has no Pointer tab to clear
+        /// it.</summary>
         internal static void ApplyGunCon2(CustomInputState state, short rawX, short rawY,
             GunCon2Calibration calibration = null)
         {
@@ -1312,6 +1316,7 @@ namespace PadForge.Engine
             state.Ir.X = x / PadForge.Engine.Common.Mapping.SourceCoercion.IrMarginStretchX;
             state.Ir.Y = y / PadForge.Engine.Common.Mapping.SourceCoercion.IrMarginStretchY;
             state.Ir.Detected = onScreen;
+            state.Ir.Calibrated = onScreen;
         }
 
         // The SDL hidapi_wii driver posts the two IR dots on DEDICATED joystick
@@ -1364,6 +1369,11 @@ namespace PadForge.Engine
         internal (float X, float Y, bool Detected, bool Calibrated) StepIrPointer(short d0x, short d0y, short d1x, short d1y,
             float accelX, float accelZ, long timestamp, bool trigger)
         {
+            // The accelerometer is smoothed on every poll, seen or not, so a
+            // remote turned over while it cannot see the bar starts its next
+            // track the right way up.
+            StepIrAccel(accelX, accelZ, timestamp);
+
             var (x, y, detected) = ComputeIrAim(d0x, d0y, d1x, d1y);
             if (!detected)
             {
@@ -1378,7 +1388,6 @@ namespace PadForge.Engine
             // orientation, read when tracking starts, picks the left LED,
             // which holds while tracking lasts, and the aim turns about the
             // camera's center by the dot pair's angle.
-            StepIrAccel(accelX, accelZ, timestamp);
             if (_irLeftDot < 0)
             {
                 _irOrientation = UpdateIrOrientation(_irOrientation, _irAccelX, _irAccelZ);
@@ -1411,8 +1420,8 @@ namespace PadForge.Engine
         // caller of ReadIrPointer.
 
         /// <summary>The remote's own X (across its face) and Z (out of its
-        /// face), m/s², smoothed while the pair is tracked. The fork posts
-        /// SDL's X as the remote's X negated and SDL's Y as the remote's Z
+        /// face), m/s², smoothed on every poll. The fork posts SDL's X as the
+        /// remote's X negated and SDL's Y as the remote's Z
         /// (SDL_hidapi_wii.c HandleWiiRemoteAccelData).</summary>
         private float _irAccelX, _irAccelZ;
         private bool _irAccelSeeded;
@@ -1436,14 +1445,28 @@ namespace PadForge.Engine
 
         /// <summary>Touchmote's accelerometer smoothing, 0.9 to 0.1 per report,
         /// spread over the polls between reports so the poll rate does not
-        /// change it. A gap longer than a report counts as one report, as
-        /// Touchmote smooths only frames with a pair. Seeded with the first
-        /// sample: Touchmote's fields start at 0, which reads upside down on
-        /// the first acquisition and flips the first track's aim.</summary>
+        /// change it. It runs on every poll, with the bar seen or not, because
+        /// the fork posts the accelerometer with every report that carries it
+        /// (SDL_hidapi_wii.c HandleWiiRemoteAccelData), and both IR reports it
+        /// asks for, 0x33 and 0x37, carry it.
+        /// Touchmote smooths only frames with a pair, so a remote turned over
+        /// while it cannot see the bar starts its next track with the
+        /// orientation of before the turn.
+        /// A gap with no polls counts as one report. Seeded with the first
+        /// sample that carries data: Touchmote's fields start at 0, which reads
+        /// upside down on the first acquisition and flips the first track's
+        /// aim, and the zeros before the sensor's first report are no sample.
+        /// A remote whose accelerometer the fork does not report never seeds
+        /// and stays upright.</summary>
         private void StepIrAccel(float ax, float az, long now)
         {
             if (!_irAccelSeeded)
             {
+                if (ax == 0f && az == 0f)
+                {
+                    _irAccelTicks = now;
+                    return;
+                }
                 _irAccelX = ax;
                 _irAccelZ = az;
                 _irAccelSeeded = true;
@@ -1503,16 +1526,26 @@ namespace PadForge.Engine
             return (float)Math.Atan2(ry - ly, rx - lx);
         }
 
-        /// <summary>Turns the screen-aligned aim about the camera's center,
-        /// Touchmote's rotatePoint (x cos - y sin, x sin + y cos). Touchmote
-        /// rotates the mirrored point less 0.5, half of this aim, and the
-        /// rotation is linear, so the two agree. The light-gun and 4IR forks
-        /// rotate the point before mirroring it and negate the angle in their
-        /// rotatePoint, which comes to the same turn.</summary>
+        /// <summary>Turns the screen-aligned aim about the camera's center by
+        /// the dot pair's angle: Touchmote's rotatePoint (x cos - y sin,
+        /// x sin + y cos) on the mirrored point, which the light-gun and 4IR
+        /// forks reach by negating the angle on the unmirrored point. The turn
+        /// runs in camera pixels. A twist turns the picture about its center in
+        /// pixels, which are square, 1024 by 768 over a 4:3 picture (Dolphin's
+        /// camera, Camera.h 109-116), and the pair's angle is measured in
+        /// pixels, but the aim divides X by half the camera's width and Y by
+        /// half its height. Every Touchmote variant turns that unevenly scaled
+        /// point, which moves an off-center aim as the remote twists: an aim
+        /// halfway to the screen's edge drifts 4 percent of the screen's height
+        /// at a 30-degree twist, and 8 percent of its width on a remote held on
+        /// its side. So the aim goes to pixel units, turns, and comes
+        /// back.</summary>
         internal static (float X, float Y) RotateIrAim(float x, float y, float angle)
         {
+            const double HalfWidth = 1023.5 / 2, HalfHeight = 767.5 / 2;
             double s = Math.Sin(angle), c = Math.Cos(angle);
-            return ((float)(x * c - y * s), (float)(x * s + y * c));
+            double px = x * HalfWidth, py = y * HalfHeight;
+            return ((float)((px * c - py * s) / HalfWidth), (float)((px * s + py * c) / HalfHeight));
         }
 
         // ── Light-gun calibration (#485), the GunCon 2's flow ──

@@ -406,7 +406,16 @@ namespace PadForge.Engine.RemoteLink
         {
             if (Info.DeviceObjects != null && Info.DeviceObjects.Length > 0)
                 return Info.DeviceObjects;
-            return SynthesizeGamepadObjects();
+            // The owner ships no objects for a keyboard or a mouse, because the
+            // receiver builds them the way the owner's own wrapper does: the
+            // same builders, so a key keeps its key name and a mouse button its
+            // button name, never a gamepad label.
+            return Info.InputDeviceType switch
+            {
+                PadForge.Engine.InputDeviceType.Keyboard => PadForge.Engine.SdlKeyboardWrapper.KeyObjects(_supportedButtonIndices),
+                PadForge.Engine.InputDeviceType.Mouse => PadForge.Engine.SdlMouseWrapper.MouseObjects(),
+                _ => SynthesizeGamepadObjects(),
+            };
         }
 
         private DeviceObjectItem[] SynthesizeGamepadObjects()

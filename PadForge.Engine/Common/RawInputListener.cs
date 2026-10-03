@@ -1326,69 +1326,13 @@ namespace PadForge.Engine
                 if (header.dwType == RIM_TYPEKEYBOARD)
                 {
                     var kb = Marshal.PtrToStructure<RAWKEYBOARD>(dataPtr);
-                    ApplyKeyboardRecord(hDevice, kb.MakeCode, kb.Flags, kb.VKey);
+                    ApplyKeyboardRecord(hDevice, kb.MakeCode, kb.Flags, kb.VKey, kb.ExtraInformation);
                 }
                 else if (header.dwType == RIM_TYPEMOUSE)
                 {
                     var mouse = Marshal.PtrToStructure<RAWMOUSE>(dataPtr);
-
-                    // Skip absolute-mode events. Per the Raw Input
-                    // spec, MOUSE_MOVE_ABSOLUTE (usFlags bit 0) means
-                    // lLastX/lLastY are absolute coordinates in
-                    // 0..65535 over the active region, not relative
-                    // deltas. RDP's virtual mouse, Wacom tablets in
-                    // absolute mode, and some KVMs send these.
-                    // PadForge uses RawInput as a delta source for
-                    // gamepad-mapping aim and scroll; adding a
-                    // 0..65535 jump as a delta produces wild spurious
-                    // motion. Match SDL3 / XInput behavior and
-                    // ignore these events.
-                    // Skip only the DELTA, not the whole packet. This used to
-                    // `return` outright, which also threw away the button and
-                    // wheel state carried in the SAME report, so an
-                    // absolute-mode pointer (RDP's virtual mouse, a VM's guest
-                    // additions, a tablet, some KVMs) lost its clicks and its
-                    // scroll entirely rather than just its bogus jump. The
-                    // reasoning above applies to lLastX/lLastY and to nothing
-                    // else in this structure.
-                    bool absoluteMove = (mouse.usFlags & 1) != 0;
-
-                    MouseDeviceState state = _mouseStates.GetOrAdd(hDevice, _ => new MouseDeviceState());
-                    if (_mouseStatesValues.Length != _mouseStates.Count)
-                        _mouseStatesValues = System.Linq.Enumerable.ToArray(_mouseStates.Values);
-
-                    if (!absoluteMove)
-                    {
-                        if (mouse.lLastX != 0)
-                        {
-                            Interlocked.Add(ref state.DeltaX, mouse.lLastX);
-                            Interlocked.Add(ref _aggregateMouseState.DeltaX, mouse.lLastX);
-                        }
-                        if (mouse.lLastY != 0)
-                        {
-                            Interlocked.Add(ref state.DeltaY, mouse.lLastY);
-                            Interlocked.Add(ref _aggregateMouseState.DeltaY, mouse.lLastY);
-                        }
-                    }
-
-                    ushort flags = mouse.usButtonFlags;
-                    if ((flags & RI_MOUSE_LEFT_BUTTON_DOWN) != 0) { state.Buttons[0] = true; _aggregateMouseState.Buttons[0] = true; }
-                    if ((flags & RI_MOUSE_LEFT_BUTTON_UP) != 0) { state.Buttons[0] = false; _aggregateMouseState.Buttons[0] = false; }
-                    if ((flags & RI_MOUSE_MIDDLE_BUTTON_DOWN) != 0) { state.Buttons[1] = true; _aggregateMouseState.Buttons[1] = true; }
-                    if ((flags & RI_MOUSE_MIDDLE_BUTTON_UP) != 0) { state.Buttons[1] = false; _aggregateMouseState.Buttons[1] = false; }
-                    if ((flags & RI_MOUSE_RIGHT_BUTTON_DOWN) != 0) { state.Buttons[2] = true; _aggregateMouseState.Buttons[2] = true; }
-                    if ((flags & RI_MOUSE_RIGHT_BUTTON_UP) != 0) { state.Buttons[2] = false; _aggregateMouseState.Buttons[2] = false; }
-                    if ((flags & RI_MOUSE_BUTTON_4_DOWN) != 0) { state.Buttons[3] = true; _aggregateMouseState.Buttons[3] = true; }
-                    if ((flags & RI_MOUSE_BUTTON_4_UP) != 0) { state.Buttons[3] = false; _aggregateMouseState.Buttons[3] = false; }
-                    if ((flags & RI_MOUSE_BUTTON_5_DOWN) != 0) { state.Buttons[4] = true; _aggregateMouseState.Buttons[4] = true; }
-                    if ((flags & RI_MOUSE_BUTTON_5_UP) != 0) { state.Buttons[4] = false; _aggregateMouseState.Buttons[4] = false; }
-
-                    if ((flags & RI_MOUSE_WHEEL) != 0)
-                    {
-                        short delta = (short)mouse.usButtonData;
-                        Interlocked.Add(ref state.ScrollDelta, delta);
-                        Interlocked.Add(ref _aggregateMouseState.ScrollDelta, delta);
-                    }
+                    ApplyMouseRecord(hDevice, mouse.usFlags, mouse.usButtonFlags, mouse.usButtonData,
+                        mouse.lLastX, mouse.lLastY, mouse.ulExtraInformation);
                 }
                 else if (header.dwType == RIM_TYPEHID)
                 {
@@ -1401,24 +1345,107 @@ namespace PadForge.Engine
             }
         }
 
-        /// <summary>One keyboard record into its device's key state, unless the
-        /// record belongs to an iCade. Pump thread only.</summary>
-        internal static void ApplyKeyboardRecord(IntPtr hDevice, ushort makeCode, ushort flags, ushort vKey)
+        /// <summary>One mouse record into its device's state and the merged
+        /// mouse's. Pump thread only. Split from the dispatch so it runs
+        /// without Raw Input.</summary>
+        internal static void ApplyMouseRecord(IntPtr hDevice, ushort usFlags, ushort buttonFlags,
+            ushort buttonData, int lastX, int lastY, uint extraInformation)
         {
+            // PadForge's own mouse output (InputHookManager.OutputTag) is no
+            // input: the merged mouse must not read it back.
+            if (extraInformation == PadForge.Engine.Common.InputHookManager.OutputTagValue)
+                return;
+
+            // Skip the motion of absolute-mode reports. Per the
+            // Raw Input spec, MOUSE_MOVE_ABSOLUTE (usFlags bit 0)
+            // means lLastX/lLastY are absolute coordinates in
+            // 0..65535 over the active region, not relative
+            // deltas. RDP's virtual mouse, Wacom tablets in
+            // absolute mode, and some KVMs send these.
+            // PadForge uses RawInput as a delta source for
+            // gamepad-mapping aim and scroll. Added as a delta,
+            // a 0..65535 jump produces wild spurious motion.
+            // Skip only the DELTA, not the whole packet. This used to
+            // `return` outright, which also threw away the button and
+            // wheel state carried in the SAME report, so an
+            // absolute-mode pointer (RDP's virtual mouse, a VM's guest
+            // additions, a tablet, some KVMs) lost its clicks and its
+            // scroll entirely rather than just its bogus jump. The
+            // reasoning above applies to lLastX/lLastY and to nothing
+            // else in this structure.
+            bool absoluteMove = (usFlags & 1) != 0;
+
+            MouseDeviceState state = _mouseStates.GetOrAdd(hDevice, _ => new MouseDeviceState());
+            if (_mouseStatesValues.Length != _mouseStates.Count)
+                _mouseStatesValues = System.Linq.Enumerable.ToArray(_mouseStates.Values);
+
+            if (!absoluteMove)
+            {
+                if (lastX != 0)
+                {
+                    Interlocked.Add(ref state.DeltaX, lastX);
+                    Interlocked.Add(ref _aggregateMouseState.DeltaX, lastX);
+                }
+                if (lastY != 0)
+                {
+                    Interlocked.Add(ref state.DeltaY, lastY);
+                    Interlocked.Add(ref _aggregateMouseState.DeltaY, lastY);
+                }
+            }
+
+            ushort flags = buttonFlags;
+            if ((flags & RI_MOUSE_LEFT_BUTTON_DOWN) != 0) { state.Buttons[0] = true; _aggregateMouseState.Buttons[0] = true; }
+            if ((flags & RI_MOUSE_LEFT_BUTTON_UP) != 0) { state.Buttons[0] = false; _aggregateMouseState.Buttons[0] = false; }
+            if ((flags & RI_MOUSE_MIDDLE_BUTTON_DOWN) != 0) { state.Buttons[1] = true; _aggregateMouseState.Buttons[1] = true; }
+            if ((flags & RI_MOUSE_MIDDLE_BUTTON_UP) != 0) { state.Buttons[1] = false; _aggregateMouseState.Buttons[1] = false; }
+            if ((flags & RI_MOUSE_RIGHT_BUTTON_DOWN) != 0) { state.Buttons[2] = true; _aggregateMouseState.Buttons[2] = true; }
+            if ((flags & RI_MOUSE_RIGHT_BUTTON_UP) != 0) { state.Buttons[2] = false; _aggregateMouseState.Buttons[2] = false; }
+            if ((flags & RI_MOUSE_BUTTON_4_DOWN) != 0) { state.Buttons[3] = true; _aggregateMouseState.Buttons[3] = true; }
+            if ((flags & RI_MOUSE_BUTTON_4_UP) != 0) { state.Buttons[3] = false; _aggregateMouseState.Buttons[3] = false; }
+            if ((flags & RI_MOUSE_BUTTON_5_DOWN) != 0) { state.Buttons[4] = true; _aggregateMouseState.Buttons[4] = true; }
+            if ((flags & RI_MOUSE_BUTTON_5_UP) != 0) { state.Buttons[4] = false; _aggregateMouseState.Buttons[4] = false; }
+
+            if ((flags & RI_MOUSE_WHEEL) != 0)
+            {
+                short delta = (short)buttonData;
+                Interlocked.Add(ref state.ScrollDelta, delta);
+                Interlocked.Add(ref _aggregateMouseState.ScrollDelta, delta);
+            }
+        }
+
+        /// <summary>The make code of a keyboard overrun record (RAWKEYBOARD).</summary>
+        private const ushort KeyboardOverrunMakeCode = 0xFF;
+
+        /// <summary>One keyboard record into its device's key state, unless the
+        /// record belongs to an iCade or is no key. Pump thread only.</summary>
+        internal static void ApplyKeyboardRecord(IntPtr hDevice, ushort makeCode, ushort flags, ushort vKey,
+            uint extraInformation = 0)
+        {
+            // The iCade driver sees every record first, as the fork's driver
+            // does (SDL_windowsevents.c, WIN_HandleRawKeyboardInput).
             if (ClaimedByICade(hDevice, makeCode, flags))
                 return;
 
-            int vk = vKey;
-            if (vk >= 0 && vk < 256)
-            {
-                bool isDown = (flags & RI_KEY_BREAK) == 0;
-                bool isE0 = (flags & RI_KEY_E0) != 0;
-                bool[] state = _keyboardStates.GetOrAdd(hDevice, _ => new bool[256]);
-                if (_keyboardStatesValues.Length != _keyboardStates.Count)
-                    _keyboardStatesValues = System.Linq.Enumerable.ToArray(_keyboardStates.Values);
+            // No key: PadForge's own output (InputHookManager.OutputTag), an
+            // overrun, or a record with no VKey, which is half of an escaped
+            // sequence, such as the fake Shift around PrintScreen. Microsoft's
+            // RAWKEYBOARD sample and RawInputDemo's keyboard handler drop the
+            // last two (RawInputDeviceKeyboard.cpp 228-235).
+            if (extraInformation == PadForge.Engine.Common.InputHookManager.OutputTagValue
+                || makeCode == KeyboardOverrunMakeCode || vKey >= 0xFF)
+                return;
 
-                state[KeyIndex(vk, makeCode, isE0)] = isDown;
-            }
+            int vk = vKey;
+            bool isDown = (flags & RI_KEY_BREAK) == 0;
+            bool isE0 = (flags & RI_KEY_E0) != 0;
+            bool[] state = _keyboardStates.GetOrAdd(hDevice, _ => new bool[256]);
+            if (_keyboardStatesValues.Length != _keyboardStates.Count)
+                _keyboardStatesValues = System.Linq.Enumerable.ToArray(_keyboardStates.Values);
+
+            // The make code without its break bit, which the On-Screen
+            // Keyboard sets on its records (RawInputDeviceKeyboard.cpp
+            // 239-244), so its Shift lands on a side.
+            state[KeyIndex(vk, makeCode & 0x7F, isE0)] = isDown;
         }
 
         /// <summary>The keyboard state index of Numpad Enter. Windows reports

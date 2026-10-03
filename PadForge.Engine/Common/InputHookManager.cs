@@ -195,7 +195,7 @@ namespace PadForge.Engine.Common
         // the polling loop still sees the input.
         private static readonly bool[] _hookedKeyState = new bool[256];
         private static volatile bool _hasHookedKeys;
-        private static readonly bool[] _hookedMouseState = new bool[5]; // L, R, M, X1, X2
+        private static readonly bool[] _hookedMouseState = new bool[5]; // L, M, R, X1, X2 (MouseMessageToButtonId)
         private static volatile bool _hasHookedMouse;
 
         // ─────────────────────────────────────────────
@@ -221,6 +221,23 @@ namespace PadForge.Engine.Common
         /// cannot be held a second time.</summary>
         public static readonly IntPtr ReplayTag = new IntPtr(0x50464843); // "PFHC"
 
+        /// <summary>Stamp carried in dwExtraInfo by every key and mouse event
+        /// PadForge sends through SendInput as mapping or macro output (the
+        /// Keyboard + Mouse virtual controller and the macro emitters).
+        /// Absolute cursor positioning uses SetCursorPos, outside this
+        /// SendInput tagging path. It is no physical
+        /// input, so the hooks pass it straight on: never consumed, never
+        /// recorded as a hooked key, never fed to the chords or the hotkeys.
+        /// The Raw Input reader drops it too, so the merged keyboard and mouse
+        /// devices never read PadForge's own output back as input. It fits in
+        /// 32 bits, the width of a Raw Input record's ExtraInformation.
+        /// <see cref="ReplayTag"/> differs: a replayed prefix is a physical
+        /// key, and it still takes consumption.</summary>
+        public static readonly IntPtr OutputTag = new IntPtr(OutputTagValue);
+
+        /// <summary><see cref="OutputTag"/> as a Raw Input record carries it.</summary>
+        internal const uint OutputTagValue = 0x50464F55; // "PFOU"
+
         /// <summary>The engine queued a replay, a mask, or a timed hold.
         /// Raised on the hook thread; the listener must do the SendInput on
         /// its own thread, never inside the hook callback.</summary>
@@ -228,20 +245,22 @@ namespace PadForge.Engine.Common
 
         // Replays drained inside the hook callback. The hook thread is the
         // only caller, so one list serves without a lock.
-        private static readonly List<(int Code, bool Down)> _hookReplays = new();
+        private static readonly List<(int Code, bool Down, int Ident)> _hookReplays = new();
 
         /// <summary>Feeds one event to the chord engine. Returns true when
         /// the hook must swallow it. Our own tagged injections and other
         /// software's injected events (LLKHF_INJECTED / LLMHF_INJECTED)
         /// pass straight through: a firmware chord is physical, and a macro
-        /// tool's Win+D is that tool's business.</summary>
-        private static bool ChordSwallows(int code, bool isDown, IntPtr extraInfo, bool injected)
+        /// tool's Win+D is that tool's business. <paramref name="ident"/> is
+        /// the physical key a held event replays as
+        /// (<see cref="ReplayIdentity"/>), 0 for a mouse button.</summary>
+        private static bool ChordSwallows(int code, bool isDown, IntPtr extraInfo, bool injected, int ident = 0)
         {
             var engine = _chordEngine;
             if (engine == null) return false;
             if (!engine.HasChords && !engine.IsCapturing) return false;
             if (injected || extraInfo == ReplayTag) return false;
-            var decision = engine.OnEvent(code, isDown, Environment.TickCount64);
+            var decision = engine.OnEvent(code, isDown, Environment.TickCount64, ident);
 
             // Event-driven injections happen HERE, before this callback
             // returns, so a held prefix replays ahead of the foreign key
@@ -254,7 +273,7 @@ namespace PadForge.Engine.Common
             {
                 if (engine.TakeWinMask()) InjectWinMask();
                 engine.DrainReplays(_hookReplays);
-                foreach (var (c, d) in _hookReplays) InjectReplay(c, d);
+                foreach (var (c, d, id) in _hookReplays) InjectReplay(c, d, id);
             }
             catch { }
             finally { _hookReplays.Clear(); }
@@ -273,8 +292,12 @@ namespace PadForge.Engine.Common
         /// <summary>Injects one key or mouse-button event with the replay
         /// tag. <paramref name="code"/> is a VK code, or
         /// <see cref="HandheldChordDefinition.MouseCode"/> + button id.
-        /// Call from a worker thread, never from a hook callback.</summary>
-        public static void InjectReplay(int code, bool down)
+        /// <paramref name="ident"/> is the physical key the event replays
+        /// (<see cref="ReplayIdentity"/>), 0 when none was captured. Called
+        /// from the hook callback for a replay an event ends, which must land
+        /// before that event goes on (<see cref="ChordSwallows"/>), and from
+        /// the replay worker for the timed ones.</summary>
+        public static void InjectReplay(int code, bool down, int ident = 0)
         {
             var input = new INPUT[1];
             if (HandheldChordDefinition.IsMouse(code))
@@ -297,18 +320,49 @@ namespace PadForge.Engine.Common
             else
             {
                 if (code < 0 || code > 0xFF) return;
-                uint flags = down ? 0 : KEYEVENTF_KEYUP;
-                if (IsExtendedKey(code)) flags |= KEYEVENTF_EXTENDEDKEY;
+                var (scan, flags) = ReplayKey(code, down, ident);
                 input[0].type = INPUT_KEYBOARD;
                 input[0].ki = new KEYBDINPUT
                 {
                     wVk = (ushort)code,
-                    wScan = code == 0xFF ? (ushort)0 : (ushort)MapVirtualKeyW((uint)code, MAPVK_VK_TO_VSC),
+                    wScan = scan,
                     dwFlags = flags,
                     dwExtraInfo = ReplayTag,
                 };
             }
             SendInput(1, input, Marshal.SizeOf<INPUT>());
+        }
+
+        /// <summary>The physical key a hook event names: its scan code, with
+        /// 0x100 when LLKHF_EXTENDED is set, AutoHotkey's form (hook.cpp
+        /// 196-214). A replay types this key, not the one its VK suggests:
+        /// Numpad Enter shares VK_RETURN with Enter, the numpad's navigation
+        /// keys with NumLock off share the cluster's VKs, and only the scan
+        /// code and the flag tell them apart.</summary>
+        internal static int ReplayIdentity(uint scanCode, uint flags)
+            => (int)(scanCode & 0xFF) | ((flags & LLKHF_EXTENDED) != 0 ? 0x100 : 0);
+
+        /// <summary>The scan code and flags a replayed key goes out with: the
+        /// captured physical key when there is one, the way AutoHotkey's
+        /// KeyEvent sends a VK with its scan code and takes the extended flag
+        /// from the scan code's high byte (keyboard_mouse.cpp 1619-1620), else
+        /// the VK's own scan code and the extended-key table (the Win mask's
+        /// reserved 0xFF has neither).</summary>
+        internal static (ushort Scan, uint Flags) ReplayKey(int code, bool down, int ident)
+        {
+            uint flags = down ? 0 : KEYEVENTF_KEYUP;
+            ushort scan;
+            if (ident != 0)
+            {
+                scan = (ushort)(ident & 0xFF);
+                if ((ident & 0x100) != 0) flags |= KEYEVENTF_EXTENDEDKEY;
+            }
+            else
+            {
+                scan = code == 0xFF ? (ushort)0 : (ushort)MapVirtualKeyW((uint)code, MAPVK_VK_TO_VSC);
+                if (IsExtendedKey(code)) flags |= KEYEVENTF_EXTENDEDKEY;
+            }
+            return (scan, flags);
         }
 
         /// <summary>Taps the reserved VK 0xFF while a Win key is down, so the
@@ -334,6 +388,18 @@ namespace PadForge.Engine.Common
             0x2C => true,                   // Snapshot
             _ => false
         };
+
+        /// <summary>The key an authored output index sends: the VK and
+        /// whether it is extended. Every index is its own VK except Numpad
+        /// Enter, which the keyboard state keeps at
+        /// <see cref="RawInputListener.NumpadEnterKey"/>, a code Windows
+        /// leaves unassigned, and which goes out as VK_RETURN with the
+        /// extended flag. The Keyboard + Mouse virtual controller and the
+        /// macro emitter send through this.</summary>
+        public static (ushort Vk, bool Extended) OutputKey(int index)
+            => index == RawInputListener.NumpadEnterKey
+                ? ((ushort)0x0D, true)
+                : ((ushort)index, IsExtendedKey(index));
 
         // ─────────────────────────────────────────────
         //  Public API
@@ -585,39 +651,50 @@ namespace PadForge.Engine.Common
                 if (msg == WM_KEYDOWN || msg == WM_KEYUP || msg == WM_SYSKEYDOWN || msg == WM_SYSKEYUP)
                 {
                     var kb = Marshal.PtrToStructure<KBDLLHOOKSTRUCT>(lParam);
-                    int vk = (int)kb.vkCode;
                     bool isDown = (msg == WM_KEYDOWN || msg == WM_SYSKEYDOWN);
-
-                    // Track physical key state for global-hotkey combo
-                    // matching. Updated unconditionally (including for
-                    // non-suppressed keys) so hotkeys composed entirely of
-                    // pass-through keys still fire.
-                    if (vk >= 0 && vk < 256) _physKeyDown[vk] = isDown;
-
-                    // Edge-triggered global-hotkey check: only on key-down
-                    // events (chord completion happens on the last key
-                    // pressed). Released keys clear the satisfied snapshot
-                    // for any combo they belong to, re-arming the trigger.
-                    var hotkeys = _globalHotkeys;
-                    if (hotkeys.Count > 0)
-                    {
-                        if (isDown) CheckHotkeyTriggers(hotkeys);
-                        else ReleaseHotkeyArming(hotkeys, vk);
-                    }
-
-                    // Handheld chords (#343) decide before consumption: a
-                    // swallowed chord key never reaches the shell, and a held
-                    // prefix key is replayed later with the tag above, at
-                    // which point it re-enters here and takes the normal
-                    // consumption path below.
-                    if (ChordSwallows(vk, isDown, kb.dwExtraInfo, (kb.flags & LLKHF_INJECTED) != 0))
-                        return (IntPtr)1;
-
-                    if (ConsumeKey(vk, kb.scanCode, kb.flags, isDown))
+                    if (HandleKeyboardEvent((int)kb.vkCode, kb.scanCode, kb.flags, kb.dwExtraInfo, isDown))
                         return (IntPtr)1; // Suppress
                 }
             }
             return CallNextHookEx(_keyboardHook, nCode, wParam, lParam);
+        }
+
+        /// <summary>The keyboard hook's whole decision for one event: true
+        /// when the hook swallows it. Split from the callback so it runs
+        /// without a hook.</summary>
+        internal static bool HandleKeyboardEvent(int vk, uint scanCode, uint flags, IntPtr extraInfo, bool isDown)
+        {
+            // PadForge's own output is no physical key (OutputTag): it passes
+            // before anything below can count it as one.
+            if (extraInfo == OutputTag) return false;
+
+            // Track physical key state for global-hotkey combo
+            // matching. Updated unconditionally (including for
+            // non-suppressed keys) so hotkeys composed entirely of
+            // pass-through keys still fire.
+            if (vk >= 0 && vk < 256) _physKeyDown[vk] = isDown;
+
+            // Edge-triggered global-hotkey check: only on key-down
+            // events (chord completion happens on the last key
+            // pressed). Released keys clear the satisfied snapshot
+            // for any combo they belong to, re-arming the trigger.
+            var hotkeys = _globalHotkeys;
+            if (hotkeys.Count > 0)
+            {
+                if (isDown) CheckHotkeyTriggers(hotkeys);
+                else ReleaseHotkeyArming(hotkeys, vk);
+            }
+
+            // Handheld chords (#343) decide before consumption: a
+            // swallowed chord key never reaches the shell, and a held
+            // prefix key is replayed later with the tag above, as the
+            // physical key it was, at which point it re-enters here and
+            // takes the normal consumption path below.
+            if (ChordSwallows(vk, isDown, extraInfo, (flags & LLKHF_INJECTED) != 0,
+                    ReplayIdentity(scanCode, flags)))
+                return true;
+
+            return ConsumeKey(vk, scanCode, flags, isDown);
         }
 
         /// <summary>Whether the hook swallows a key event: its index in
@@ -708,25 +785,34 @@ namespace PadForge.Engine.Common
             {
                 int msg = (int)wParam;
                 int buttonId = MouseMessageToButtonId(msg, lParam);
-                if (buttonId >= 0 && _chordEngine != null)
+                if (buttonId >= 0)
                 {
                     var ms = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam);
-                    if (ChordSwallows(HandheldChordDefinition.MouseCode + buttonId, IsMouseDown(msg), ms.dwExtraInfo, (ms.flags & LLMHF_INJECTED) != 0))
-                        return (IntPtr)1;
-                }
-                if (buttonId >= 0 && _suppressedMouseButtons.Contains(buttonId))
-                {
-                    // Capture button state before suppressing (same reason as keyboard).
-                    if (buttonId < 5)
-                    {
-                        bool isDown = IsMouseDown(msg);
-                        _hookedMouseState[buttonId] = isDown;
-                        _hasHookedMouse = true;
-                    }
-                    return (IntPtr)1; // Suppress
+                    if (HandleMouseButton(buttonId, IsMouseDown(msg), ms.dwExtraInfo, ms.flags))
+                        return (IntPtr)1; // Suppress
                 }
             }
             return CallNextHookEx(_mouseHook, nCode, wParam, lParam);
+        }
+
+        /// <summary>The mouse hook's decision for one button event: true when
+        /// the hook swallows it. Split from the callback so it runs without a
+        /// hook.</summary>
+        internal static bool HandleMouseButton(int buttonId, bool isDown, IntPtr extraInfo, uint flags)
+        {
+            // PadForge's own output is no physical button (OutputTag).
+            if (extraInfo == OutputTag) return false;
+            if (_chordEngine != null
+                && ChordSwallows(HandheldChordDefinition.MouseCode + buttonId, isDown, extraInfo, (flags & LLMHF_INJECTED) != 0))
+                return true;
+            if (!_suppressedMouseButtons.Contains(buttonId)) return false;
+            // Capture button state before suppressing (same reason as keyboard).
+            if (buttonId < 5)
+            {
+                _hookedMouseState[buttonId] = isDown;
+                _hasHookedMouse = true;
+            }
+            return true;
         }
 
         private static bool IsMouseDown(int msg)

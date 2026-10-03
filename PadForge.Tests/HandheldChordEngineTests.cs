@@ -102,7 +102,7 @@ namespace PadForge.Tests
             e.Tick(HandheldChordEngine.HoldMs - 1);
             Assert.Empty(e.PendingReplays);
             e.Tick(HandheldChordEngine.HoldMs);
-            Assert.Equal(new[] { (F11, true) }, e.PendingReplays);
+            Assert.Equal(new[] { (F11, true, 0) }, e.PendingReplays);
             Assert.False(e.HasHeldKeys);
             // The later up passes normally: the down was replayed, so the OS
             // has a matching down to pair it with.
@@ -115,7 +115,7 @@ namespace PadForge.Tests
             var e = Engine(Chord("Bottom button left", 3, F11, L));
             Assert.Equal(ChordDecision.Swallow, e.OnEvent(F11, true, 0));
             Assert.Equal(ChordDecision.Swallow, e.OnEvent(F11, false, 20));
-            Assert.Equal(new[] { (F11, true), (F11, false) }, e.PendingReplays);
+            Assert.Equal(new[] { (F11, true, 0), (F11, false, 0) }, e.PendingReplays);
         }
 
         [Fact]
@@ -124,7 +124,7 @@ namespace PadForge.Tests
             var e = Engine(Chord("Bottom button left", 3, F11, L));
             Assert.Equal(ChordDecision.Swallow, e.OnEvent(F11, true, 0));
             Assert.Equal(ChordDecision.Pass, e.OnEvent(A, true, 5));
-            Assert.Equal(new[] { (F11, true) }, e.PendingReplays);
+            Assert.Equal(new[] { (F11, true, 0) }, e.PendingReplays);
             Assert.False(e.IsButtonDown(3));
         }
 

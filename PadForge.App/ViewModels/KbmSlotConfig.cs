@@ -396,6 +396,7 @@ namespace PadForge.ViewModels
             Add("Num -", 0x6D);
             Add("Num .", 0x6E);
             Add("Num /", 0x6F);
+            Add(string.Format(s.Key_Numpad, s.Key_Enter), 0x88);
 
             var arr = list.ToArray();
             _keyOptionsCache = arr;

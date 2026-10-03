@@ -101,10 +101,11 @@ namespace PadForge.Engine.RemoteLink
             /// the neutral the encoder skipped. Written after RingCon under
             /// the same tail rule.</summary>
             AnalogKeys = 1 << 2,
-            /// <summary>The Wii IR aim went through the remote's light-gun
-            /// calibration (#485), so the receiving read adds no Pointer-tab
-            /// bar offset. The bit alone carries it, with no payload, and it
-            /// means nothing without the Ir block.</summary>
+            /// <summary>The IR aim went through a light-gun window, a Wii
+            /// Remote's calibration (#485) or a GunCon 2's beam window, so the
+            /// receiving read adds no Pointer-tab bar offset. The bit alone
+            /// carries it, with no payload, and it means nothing without the
+            /// Ir block.</summary>
             IrCalibrated = 1 << 3,
         }
 

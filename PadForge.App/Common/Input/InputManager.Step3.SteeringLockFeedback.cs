@@ -114,9 +114,11 @@ namespace PadForge.Common.Input
                 {
                     var src = row.Sources[si];
                     // Steering Kinds (winding / angle) plus the descriptor-driven
-                    // "Motion Lean" input, which steers with Kind=Direct — its
+                    // "Motion Lean" input, which steers with Kind=Direct. Its
                     // lock state lives in the same SourceKindRuntime machine.
-                    if (src == null
+                    // A row modifier keeps the descriptor its source had and
+                    // steers nothing, so its stale lock state is no feedback.
+                    if (src == null || IsRowModifierSource(src)
                         || !(IsSteeringKind(src.Kind)
                              || SourceCoercion.IsMotionLeanDescriptor(src.Descriptor)
                              || SourceCoercion.IsMotionLeanAuxDescriptor(src.Descriptor)))

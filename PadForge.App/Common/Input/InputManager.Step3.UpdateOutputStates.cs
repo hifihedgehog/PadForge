@@ -873,27 +873,6 @@ namespace PadForge.Common.Input
             raw.MouseAbsValid = true;
         }
 
-        /// <summary>Finds the "IR Pointer" source feeding a KBM mouse target, so
-        /// the Wii pointer can be routed as an ABSOLUTE cursor position
-        /// (Touchmote-style) instead of a velocity delta (issue #146). Checks
-        /// the mapping-set row's sources first (only ones owned by
-        /// <paramref name="thisDeviceGuid"/>, since Step 3 runs per assigned
-        /// device and state.Ir belongs to that device), then the legacy per-key
-        /// descriptor. Returns null when the target is not IR-driven, which
-        /// keeps the existing delta path untouched for every other source.</summary>
-        /// <summary>
-        /// Flick stick (#225): ticks every "Flick Stick ..." source on the
-        /// ACTIVE KbmMouseX row and returns the summed mouse X counts for
-        /// this frame. Layer-aware on purpose, unlike
-        /// <see cref="FindIrPointerSource"/>'s Base-only walk: #225's
-        /// headline is flick stick hosted on a shift layer, so the row
-        /// resolution must ride <see cref="FindActiveRowForTarget"/>. While
-        /// the hosting layer is off the row never evaluates, the tick's
-        /// frame-sequence gap detection re-arms on the next engage, and no
-        /// residual counts are emitted. No legacy per-key descriptor leg:
-        /// the family is newer than the MappingSet grid, so no pre-grid
-        /// config can carry it.
-        /// </summary>
         /// <summary>The mouse target's deflection combine, with gyro sources
         /// reading zero. They are counted once, on the rate lane, and a row
         /// mixing gyro with a stick still sums the stick here exactly as
@@ -934,7 +913,9 @@ namespace PadForge.Common.Input
                 for (int i = 0; i < sources.Count; i++)
                 {
                     var src = sources[i];
-                    if (src == null) continue;
+                    // A row modifier (Invert on Hold) is no source, whatever
+                    // its descriptor names, the row evaluators' rule.
+                    if (src == null || IsRowModifierSource(src)) continue;
                     var d = src.Descriptor;
                     if (string.IsNullOrEmpty(d) || !d.StartsWith("Gyro ", StringComparison.Ordinal))
                         continue;
@@ -985,7 +966,7 @@ namespace PadForge.Common.Input
                 for (int i = 0; i < sources.Count; i++)
                 {
                     var src = sources[i];
-                    if (src == null) continue;
+                    if (src == null || IsRowModifierSource(src)) continue;
                     if (!PadForge.Engine.Common.Mapping.SourceCoercion
                             .IsTouchpadFingerAxisDescriptor(src.Descriptor))
                         continue;
@@ -1031,6 +1012,18 @@ namespace PadForge.Common.Input
             return LookupDeviceState(src.DeviceGuid);
         }
 
+        /// <summary>
+        /// Flick stick (#225): ticks every "Flick Stick ..." source on the
+        /// ACTIVE KbmMouseX row and returns the summed mouse X counts for
+        /// this frame. Layer-aware, as <see cref="FindIrPointerSource"/> is:
+        /// #225's headline is flick stick hosted on a shift layer, so the row
+        /// resolution must ride <see cref="FindActiveRowForTarget"/>. While
+        /// the hosting layer is off the row never evaluates, the tick's
+        /// frame-sequence gap detection re-arms on the next engage, and no
+        /// residual counts are emitted. No legacy per-key descriptor leg:
+        /// the family is newer than the MappingSet grid, so no pre-grid
+        /// config can carry it.
+        /// </summary>
         private static int TickFlickStickSources(
             CustomInputState state, MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
         {
@@ -1047,7 +1040,7 @@ namespace PadForge.Common.Input
             for (int i = 0; i < sources.Count; i++)
             {
                 var src = sources[i];
-                if (src == null
+                if (src == null || IsRowModifierSource(src)
                     || !PadForge.Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(src.Descriptor))
                     continue;
                 // Consume/postpone parity with the row evaluators
@@ -1085,16 +1078,36 @@ namespace PadForge.Common.Input
             return counts;
         }
 
+        /// <summary>Finds the "IR Pointer" source feeding a KBM mouse target, so
+        /// the Wii pointer can be routed as an ABSOLUTE cursor position
+        /// (Touchmote-style) instead of a velocity delta (issue #146). Reads
+        /// the slot's ACTIVE row, as the touchpad-pointer finder and flick
+        /// stick do: an IR source on a shift layer's row is that layer's
+        /// cursor. A Base-only walk missed it, and the velocity lane below
+        /// read it as a speed, which the held aim (#485) kept above zero after
+        /// the remote lost the bar, so the cursor drifted on. Only sources
+        /// owned by <paramref name="thisDeviceGuid"/> count, since Step 3 runs
+        /// per assigned device and state.Ir belongs to that device. The legacy
+        /// per-key descriptor counts only when the row leaves the target to
+        /// it, the row evaluators' rule. Returns null when the target is not
+        /// IR-driven, which keeps the existing delta path untouched for every
+        /// other source.</summary>
         private static PadForge.Engine.Data.MappingSource FindIrPointerSource(
-            MappingSet mappingSet, string targetName, string legacyDesc, string thisDeviceGuid,
-            int slotIndex)
+            CustomInputState state, MappingSet mappingSet, string targetName, string legacyDesc,
+            string thisDeviceGuid, int slotIndex)
         {
-            var row = FindBaseRowForTarget(mappingSet, targetName);
-            if (row?.Sources != null)
+            var row = FindActiveRowForTarget(mappingSet, targetName, slotIndex, out bool suppressed);
+            // A layer forcing the target off owns it: the evaluator below
+            // holds it at rest, and no legacy descriptor may route around it.
+            if (suppressed) return null;
+            if (CountContributingSources(row) > 0)
             {
                 foreach (var src in row.Sources)
                 {
                     if (src?.Descriptor == null) continue;
+                    // A row modifier (Invert on Hold) is no source, whatever
+                    // its descriptor names, the row evaluators' rule.
+                    if (IsRowModifierSource(src)) continue;
                     if (!src.Descriptor.StartsWith("IR Pointer ", StringComparison.Ordinal)) continue;
                     if (!string.IsNullOrEmpty(src.DeviceGuid)
                         && !string.Equals(src.DeviceGuid, thisDeviceGuid, StringComparison.OrdinalIgnoreCase))
@@ -1108,10 +1121,17 @@ namespace PadForge.Common.Input
                     // not keep steering the absolute cursor lane.
                     if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
                         continue;
+                    // An aiming pointer is its layer's output (#206), as an
+                    // engaged touchpad pointer is.
+                    if (state != null && state.Ir.Detected) StampLayerActivity(slotIndex, row);
                     return src;
                 }
+                // The row owns the target with its other sources.
+                return null;
             }
-            // Legacy per-key descriptor: parse through the engine-owned
+            // No row, or one of only modifiers, leaves the target to the
+            // legacy per-key descriptor, as TryEvaluateMappingSetBipolarAxis
+            // falls back. Parse it through the engine-owned
             // grammar so the I/IH/H prefix forms a legacy invert toggle
             // persists ("IIR Pointer X") still route to the absolute-aim
             // lane instead of diverging onto the velocity path. DeviceGuid
@@ -1135,7 +1155,7 @@ namespace PadForge.Common.Input
         /// a KBM mouse target (#9 B-15), so the absolute touchpad pointer
         /// routes to the absolute cursor channel (KbmRawState.MouseAbs*)
         /// exactly like the Wii IR pointer above. LAYER-AWARE on purpose,
-        /// unlike FindIrPointerSource's Base-only walk: the Workshop
+        /// as FindIrPointerSource is: the Workshop
         /// translator hosts mouse_region groups on action-set and
         /// mode-shift layers, so the row resolution must ride
         /// FindActiveRowForTarget (the flick-stick precedent).
@@ -1166,7 +1186,7 @@ namespace PadForge.Common.Input
             if (row?.Sources == null) return null;
             foreach (var src in row.Sources)
             {
-                if (src?.Descriptor == null) continue;
+                if (src?.Descriptor == null || IsRowModifierSource(src)) continue;
                 if (!PadForge.Engine.Common.Mapping.SourceCoercion
                         .IsTouchpadPointerDescriptor(src.Descriptor)) continue;
                 if (!string.IsNullOrEmpty(src.DeviceGuid)
@@ -2882,6 +2902,9 @@ namespace PadForge.Common.Input
             for (int i = 0; i <= 9; i++) vks.Add((byte)(0x60 + i));
             // Numpad operators
             vks.Add(0x6A); vks.Add(0x6B); vks.Add(0x6D); vks.Add(0x6E); vks.Add(0x6F);
+            // Numpad Enter, kept at its own index (RawInputListener.NumpadEnterKey).
+            // The preview keyboard draws it, so leaving it out made that key dead.
+            vks.Add(0x88);
 
             KbmKeyVkCodes = vks.ToArray();
             KbmKeyCount = KbmKeyVkCodes.Length;
@@ -2973,7 +2996,7 @@ namespace PadForge.Common.Input
             {
                 string posDesc = ps.GetKbmMapping("KbmMouseX");
                 string negDesc = ps.GetKbmMapping("KbmMouseXNeg");
-                var irSrcX = FindIrPointerSource(mappingSet, "KbmMouseX", posDesc, thisDeviceGuid, slotIndex);
+                var irSrcX = FindIrPointerSource(state, mappingSet, "KbmMouseX", posDesc, thisDeviceGuid, slotIndex);
                 if (irSrcX != null)
                 {
                     // Wii IR pointing is ABSOLUTE aim (Touchmote-style): the
@@ -3021,7 +3044,7 @@ namespace PadForge.Common.Input
             {
                 string posDesc = ps.GetKbmMapping("KbmMouseY");
                 string negDesc = ps.GetKbmMapping("KbmMouseYNeg");
-                var irSrcY = FindIrPointerSource(mappingSet, "KbmMouseY", posDesc, thisDeviceGuid, slotIndex);
+                var irSrcY = FindIrPointerSource(state, mappingSet, "KbmMouseY", posDesc, thisDeviceGuid, slotIndex);
                 if (irSrcY != null)
                 {
                     // Absolute aim, same as the X block. state.Ir.Y is already

@@ -935,6 +935,20 @@ namespace PadForge.Engine.Data
                     ForceFeedbackState = new ForceFeedbackState();
             }
 
+            // A new connection's IR pointer starts from center and its
+            // trackballs from rest (#485, #291), the same new-connection rule.
+            // The teardown drops both on a confirmed disconnect, but a removal
+            // it never sees, a disconnect that arrives after a stale read took
+            // the row offline, or an evaluation finishing on another thread as
+            // the teardown runs can leave them, and the new connection would
+            // serve the old aim while it cannot see the bar.
+            if (!SameConnection(Device, wrapper))
+            {
+                string guid = InstanceGuid.ToString();
+                PadForge.Engine.Common.Mapping.SourceCoercion.ForgetIrPointerForDevice(guid);
+                PadForge.Engine.Common.Mapping.SourceCoercion.ResetTouchMomentumForDevice(guid);
+            }
+
             // Store the device wrapper for state reading in the polling loop.
             // A replug can reach here while the previous connection's wrapper
             // is still attached (exact-InstanceGuid rebind inside the Step 1

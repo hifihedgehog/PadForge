@@ -176,7 +176,13 @@ namespace PadForge.Engine
             return state;
         }
 
-        public DeviceObjectItem[] GetDeviceObjects()
+        public DeviceObjectItem[] GetDeviceObjects() => MouseObjects();
+
+        /// <summary>A mouse's objects: the two motion axes, the wheel and the
+        /// five buttons. Shared with a mouse shared over Remote Link
+        /// (RemotePeerDevice), so its objects carry the same names and types
+        /// as a local mouse's.</summary>
+        internal static DeviceObjectItem[] MouseObjects()
         {
             var items = new DeviceObjectItem[MouseAxes + MouseButtons];
             int index = 0;

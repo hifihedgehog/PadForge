@@ -72,9 +72,9 @@ namespace PadForge.Engine.Common.OpenXr
                      "/user/hand/right/input/thumbstick/click", "/user/hand/right/input/a/click",
                      "/user/hand/right/input/b/click", "/user/hand/right/input/system/click" }),
 
-            // The simple controller every runtime must support. It carries a
-            // pose, one button and a menu button, so it keeps a pose usable
-            // on hardware none of the profiles above describe.
+            // The Khronos simple controller, the generic fallback profile. It
+            // carries a pose, one button and a menu button, so it keeps a pose
+            // usable on hardware none of the profiles above describe.
             ("/interaction_profiles/khr/simple_controller",
              new[] { "/user/hand/left/input/grip/pose", null, null, null, null,
                      "/user/hand/left/input/select/click", null,
@@ -112,10 +112,12 @@ namespace PadForge.Engine.Common.OpenXr
             // Require exactly the entry points this actually calls. An
             // earlier version required xrGetActionStatePose, which nothing
             // here invokes (pose validity comes from xrLocateSpace's flags),
-            // and did not require the two state readers it does invoke.
+            // and did not require the state readers it does invoke. The
+            // vector2 reader then had no case in OpenXrSession.ResolveRaw,
+            // and the thumbsticks sat at center on every runtime.
             if (createActionSet == null || createAction == null || stringToPath == null
                 || suggest == null || attach == null || createActionSpace == null
-                || _getFloat == null || _getBoolean == null
+                || _getFloat == null || _getBoolean == null || _getVector2f == null
                 || _sync == null || _locate == null)
                 return false;
 

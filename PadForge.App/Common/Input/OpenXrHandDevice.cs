@@ -159,6 +159,10 @@ namespace PadForge.Common.Input
                 {
                     Name = s_buttonNames[i],
                     ObjectType = DeviceObjectTypeFlags.PushButton,
+                    // The Devices page lists a row's named buttons by this
+                    // type, as it does the G-Keys'. Without it the row showed
+                    // an empty chip panel.
+                    ObjectTypeGuid = ObjectGuid.Button,
                     InputIndex = i,
                     Offset = (AxisCount + i) * 4,
                 };

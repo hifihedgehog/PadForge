@@ -65,6 +65,10 @@ namespace PadForge.Tests
             Assert.Equal("Thumbstick X", objects[OpenXrHandDevice.AxisStickX].Name);
             Assert.Equal("Menu Button",
                 objects[OpenXrHandDevice.AxisCount + OpenXrHandDevice.ButtonMenu].Name);
+            // Typed as buttons, which is how the Devices page finds a row's
+            // named buttons (DevicesViewModel.RebuildNamedButtons).
+            for (int i = 0; i < OpenXrHandDevice.ButtonCount; i++)
+                Assert.Equal(ObjectGuid.Button, objects[OpenXrHandDevice.AxisCount + i].ObjectTypeGuid);
         }
 
         /// <summary>A trigger rests at zero and a stick rests at center. The
@@ -245,6 +249,21 @@ namespace PadForge.Tests
             string interop = RepoSource("PadForge.Engine", "Common", "OpenXr", "OpenXrInterop.cs");
             Assert.Contains("XrActionStateVector2f", interop);
             Assert.Contains("XR_TYPE_ACTION_STATE_VECTOR2F = 25", interop);
+        }
+
+        /// <summary>Every entry point the action layer asks for has a case in
+        /// the session's resolver. The resolver answers null for a name it
+        /// does not list, and the thumbstick reader went unresolved that way,
+        /// so the sticks sat at center while the test above passed.</summary>
+        [Fact]
+        public void TheResolverAnswersEveryEntryPointTheActionsResolve()
+        {
+            string actions = RepoSource("PadForge.Engine", "Common", "OpenXr", "OpenXrActions.cs");
+            string session = RepoSource("PadForge.Engine", "Common", "OpenXr", "OpenXrSession.cs");
+            var names = System.Text.RegularExpressions.Regex.Matches(actions, @"resolve\(""(xr[A-Za-z0-9]+)""\)");
+            Assert.True(names.Count >= 10, "the resolve calls were not found");
+            foreach (System.Text.RegularExpressions.Match m in names)
+                Assert.Contains("\"" + m.Groups[1].Value + "\" =>", session);
         }
 
         private static string RepoSource(params string[] parts)

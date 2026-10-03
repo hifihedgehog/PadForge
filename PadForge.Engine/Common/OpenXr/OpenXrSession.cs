@@ -341,6 +341,7 @@ namespace PadForge.Engine.Common.OpenXr
                 "xrGetActionStatePose" => Marshal.GetDelegateForFunctionPointer<PFN_xrGetActionStatePose>(fn),
                 "xrGetActionStateFloat" => Marshal.GetDelegateForFunctionPointer<PFN_xrGetActionStateFloat>(fn),
                 "xrGetActionStateBoolean" => Marshal.GetDelegateForFunctionPointer<PFN_xrGetActionStateBoolean>(fn),
+                "xrGetActionStateVector2f" => Marshal.GetDelegateForFunctionPointer<PFN_xrGetActionStateVector2f>(fn),
                 "xrCreateActionSpace" => Marshal.GetDelegateForFunctionPointer<PFN_xrCreateActionSpace>(fn),
                 "xrLocateSpace" => Marshal.GetDelegateForFunctionPointer<PFN_xrLocateSpace>(fn),
                 "xrDestroySpace" => Marshal.GetDelegateForFunctionPointer<PFN_xrDestroySpace>(fn),

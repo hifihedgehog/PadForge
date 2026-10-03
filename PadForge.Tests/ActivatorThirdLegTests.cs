@@ -33,7 +33,8 @@ namespace PadForge.Tests
             var m = typeof(InputManager).GetMethod("ReadActivatorInput",
                 BindingFlags.NonPublic | BindingFlags.Static);
             Assert.NotNull(m);
-            return (bool)m.Invoke(null, new object[] { act, state, 0 });
+            // The device the state belongs to: the activator's own here.
+            return (bool)m.Invoke(null, new object[] { act, state, 0, act.DeviceGuid });
         }
 
         /// <summary>The Chord kind's own two legs plus the third. All three

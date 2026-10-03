@@ -1583,12 +1583,13 @@ namespace PadForge.Common.Input
                     if (g != null && !HasAxesFor(LookupUserDevice(g), desc, slotStates[d])) continue;
                     if (slotStates[d] == null) continue;
                     using var placement = SourceCoercion.ReadingDevice(g);
-                    if (SourceKindRuntimeReadButtonLikeBool(slotStates[d], desc, act.DeviceGuid, slotIndex)) return true;
+                    if (SourceKindRuntimeReadButtonLikeBool(slotStates[d], desc, ActivatorLegGuid(act, g, desc), slotIndex))
+                        return true;
                 }
                 return false;
             }
             return fallback != null && HasAxesFor(LookupUserDevice(fallbackOwner), desc, fallback)
-                   && SourceKindRuntimeReadButtonLikeBool(fallback, desc, act.DeviceGuid, slotIndex);
+                   && SourceKindRuntimeReadButtonLikeBool(fallback, desc, ActivatorLegGuid(act, fallbackOwner, desc), slotIndex);
         }
 
         /// <summary>True when some device on the slot reads an "(Any Device)"
@@ -2003,13 +2004,33 @@ namespace PadForge.Common.Input
         /// <summary><see cref="ReadActivatorInput"/> against the device behind
         /// <paramref name="deviceGuid"/>, so an "(Any Device)" activator's
         /// Gamepad names read a placed Bliss-Box port through its placement. An
-        /// empty guid keeps the device the read already follows.</summary>
+        /// empty guid keeps the device the read already follows. An activator
+        /// with no device of its own reads its legs as that device's, the
+        /// rows' rule (SourceCoercion.EffectiveDeviceGuid): the touchpad and
+        /// mouse gesture lookups are keyed by a concrete device, so read under
+        /// the activator's empty guid an "(Any Device)" gesture never
+        /// engaged its layer. A menu cell is the exception
+        /// (<see cref="ActivatorLegGuid"/>).</summary>
         private static bool ReadActivatorInputOn(string deviceGuid, ShiftActivator act, CustomInputState state,
             int slotIndex)
         {
             using var placement = SourceCoercion.ReadingDevice(deviceGuid);
-            return ReadActivatorInput(act, state, slotIndex);
+            string readGuid = string.IsNullOrEmpty(act.DeviceGuid) ? deviceGuid : act.DeviceGuid;
+            return ReadActivatorInput(act, state, slotIndex, readGuid);
         }
+
+        /// <summary>The device an activator leg that reads
+        /// <paramref name="descriptor"/> is read as: <paramref name="readGuid"/>,
+        /// the device the state belongs to, except a menu cell under an "(Any
+        /// Device)" activator. A cell is the slot's, and the menu runtime
+        /// answers an empty guid for whichever device drives its menu
+        /// (IsMenuItemFired), one scoped to a device that does not answer the
+        /// wildcard included. Read as the picked device, the cell of a menu
+        /// scoped to a VR controller never engaged a layer on a slot shared
+        /// with a gamepad.</summary>
+        private static string ActivatorLegGuid(ShiftActivator act, string readGuid, string descriptor)
+            => string.IsNullOrEmpty(act.DeviceGuid) && SourceCoercion.IsMenuItemDescriptor(descriptor)
+                ? "" : readGuid;
 
         /// <summary>Reads the input for an activator according to its
         /// <see cref="ShiftActivator.Kind"/>. Returns <c>true</c> when the
@@ -2017,9 +2038,11 @@ namespace PadForge.Common.Input
         /// <paramref name="slotIndex"/> keys the slot-scoped source
         /// families (menu-item fires, per-(device, slot) tuning) so an
         /// activator descriptor reads the same state a mapping row on the
-        /// same slot would (#9 B-17).</summary>
+        /// same slot would (#9 B-17). <paramref name="readGuid"/> is the
+        /// device <paramref name="state"/> belongs to, which keys the
+        /// per-device families the same way.</summary>
         private static bool ReadActivatorInput(ShiftActivator act, CustomInputState state,
-            int slotIndex)
+            int slotIndex, string readGuid)
         {
             // Input-less layers (#119) are passive targets: no own button, so
             // they never self-engage and are reached only via Cycle / Custom jump.
@@ -2034,7 +2057,8 @@ namespace PadForge.Common.Input
             // wedge and its contact window, and the chord partner rides here.
             // Same shape as the row side's second gate companion.
             if (!string.IsNullOrEmpty(act.Gate2Descriptor)
-                && !SourceKindRuntimeReadButtonLikeBool(state, act.Gate2Descriptor, act.DeviceGuid, slotIndex))
+                && !SourceKindRuntimeReadButtonLikeBool(state, act.Gate2Descriptor,
+                    ActivatorLegGuid(act, readGuid, act.Gate2Descriptor), slotIndex))
                 return false;
 
             string kind = act.Kind ?? "Button";
@@ -2049,9 +2073,10 @@ namespace PadForge.Common.Input
                     // set and points to a different device. Falls back to
                     // the activator's own state when no second-device GUID is
                     // recorded (same-device chord, the legacy / common case).
-                    bool a = SourceKindRuntimeReadButtonLikeBool(state, act.Descriptor, act.DeviceGuid, slotIndex);
+                    bool a = SourceKindRuntimeReadButtonLikeBool(state, act.Descriptor,
+                        ActivatorLegGuid(act, readGuid, act.Descriptor), slotIndex);
                     CustomInputState secondState = state;
-                    string secondGuid = act.DeviceGuid;
+                    string secondGuid = ActivatorLegGuid(act, readGuid, act.ChordSecondDescriptor);
                     if (!ChordSecondOnOwnDevice(act))
                     {
                         // Offline second device reads rest (false), never
@@ -2071,7 +2096,8 @@ namespace PadForge.Common.Input
                     // wedge is an axis half PLUS its contact / click gate;
                     // the gate must hold or the wedge never engages.
                     if (!string.IsNullOrEmpty(act.GateDescriptor)
-                        && !SourceKindRuntimeReadButtonLikeBool(state, act.GateDescriptor, act.DeviceGuid, slotIndex))
+                        && !SourceKindRuntimeReadButtonLikeBool(state, act.GateDescriptor,
+                            ActivatorLegGuid(act, readGuid, act.GateDescriptor), slotIndex))
                         return false;
                     // A trigger rests at 0 on the shared axis array (the
                     // wrapper fills a gamepad's Axis 2 / Axis 5 as 0..65535,
@@ -2083,13 +2109,14 @@ namespace PadForge.Common.Input
                     // instead, 0 at rest and 1 fully pulled, and engage past
                     // the threshold in that one direction. The half selector
                     // has no meaning on a unipolar source and is not applied.
-                    if (IsUnipolarActivatorSource(act.Descriptor, act.DeviceGuid))
+                    if (IsUnipolarActivatorSource(act.Descriptor, readGuid))
                     {
-                        float pull = SourceKindRuntimeReadTriggerLikeFloat(state, act.Descriptor, act.DeviceGuid, slotIndex);
+                        float pull = SourceKindRuntimeReadTriggerLikeFloat(state, act.Descriptor, readGuid, slotIndex);
                         return pull >= act.AxisThreshold;
                     }
                     // v2: axis past threshold. ReadAxisLike returns [-1..+1].
-                    float axisVal = SourceKindRuntimeReadAxisLikeFloat(state, act.Descriptor, act.DeviceGuid, slotIndex);
+                    float axisVal = SourceKindRuntimeReadAxisLikeFloat(state, act.Descriptor,
+                        ActivatorLegGuid(act, readGuid, act.Descriptor), slotIndex);
                     // v5 half stamp (translator v15): one signed direction
                     // engages instead of the direction-blind |axis| test, so
                     // a wedge- or gyro-hosted flick drives only its own layer.
@@ -2103,7 +2130,8 @@ namespace PadForge.Common.Input
                 }
                 case "Button":
                 default:
-                    return SourceKindRuntimeReadButtonLikeBool(state, act.Descriptor, act.DeviceGuid, slotIndex);
+                    return SourceKindRuntimeReadButtonLikeBool(state, act.Descriptor,
+                        ActivatorLegGuid(act, readGuid, act.Descriptor), slotIndex);
             }
         }
 
@@ -2264,8 +2292,9 @@ namespace PadForge.Common.Input
         /// Axis 5) named through the gamepad alias or read from a
         /// gamepad-MAPPED device, whose SDL layout pins those two indices to
         /// the triggers. A joystick's Axis 2 is a centered axis and stays on
-        /// the bipolar test. An "(Any Device)" activator naming a bare
-        /// "Axis 2" has no device to ask and stays bipolar too (#443).
+        /// the bipolar test. An "(Any Device)" activator asks the device it
+        /// reads, as a Motion row does through SourceRestsAtZeroProvider, so
+        /// a bare "Axis 2" read from a gamepad is its trigger (#443).
         ///
         /// <para>Force Raw Joystick Mode bypasses SDL's gamepad remapping and
         /// reads raw joystick indices, so a gamepad in that mode is not

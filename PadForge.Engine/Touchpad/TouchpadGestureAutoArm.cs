@@ -137,12 +137,13 @@ namespace PadForge.Engine.Touchpad
                         }
                         switch (src.Kind ?? "Direct")
                         {
-                            // Incremental and Ramped read no descriptor, and
-                            // read their up and down keys through a button,
-                            // hat and hardware-bool reader with no gesture
-                            // read (SourceKindRuntime.ReadButtonLikeBool).
+                            // Incremental and Ramped read no descriptor. Their
+                            // up and down keys read the gesture families
+                            // (SourceKindRuntime.ReadButtonLikeBool).
                             case "Incremental":
                             case "Ramped":
+                                any |= Classify(src.ParamUp, ref need);
+                                any |= Classify(src.ParamDown, ref need);
                                 break;
                             // On a stick row the steering kinds read axes
                             // (SourceKindRuntime.SteeringAxisRead) and the

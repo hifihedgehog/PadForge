@@ -571,9 +571,10 @@ namespace PadForge.Engine.Common.Mapping
                 return false;
             }
 
-            // Not Button/POV: hardware-bool families (capsense, NFC tag,
-            // touchpad contact) are pickable as Invert-on-Hold modifiers
-            // too. Same fallback as SourceKindRuntime's reader (#248 audit).
+            // The slot event families and the hardware-bool families, the
+            // order SourceKindRuntime's reader takes them in (#248 audit).
+            if (SourceCoercion.IsSlotEventDescriptor(s))
+                return SourceCoercion.ReadSlotEventBool(state, s, slotIndex, deviceGuid);
             return SourceCoercion.ReadHardwareBoolDescriptor(state, s);
         }
     }

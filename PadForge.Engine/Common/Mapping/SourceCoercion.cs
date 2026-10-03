@@ -3601,6 +3601,39 @@ namespace PadForge.Engine.Common.Mapping
             return ReadTouchpadBool(state, canonical);
         }
 
+        /// <summary>True for the input families a descriptor alone cannot
+        /// read, because each answers for one slot and one device: touchpad
+        /// gestures, mouse gestures and menu cells. The Up and Down keys of an
+        /// Incremental or Ramped source and an Invert on Hold modifier read
+        /// them through <see cref="ReadSlotEventBool"/>.</summary>
+        public static bool IsSlotEventDescriptor(string canonical)
+            => IsTouchpadGestureDescriptor(canonical) || IsMouseGestureDescriptor(canonical)
+               || IsMenuItemDescriptor(canonical);
+
+        /// <summary>Per-thread source for <see cref="ReadSlotEventBool"/>, the
+        /// scratch InputManager's activator reads use. Only Kind, Descriptor
+        /// and DeviceGuid change between calls. The one cache the read writes
+        /// on it, the menu-cell parse, is keyed by the descriptor instance and
+        /// parses again when the descriptor changes.</summary>
+        [ThreadStatic] private static MappingSource t_slotEventScratch;
+
+        /// <summary>A slot event family read as a key: the read a Button row
+        /// on <paramref name="slotIndex"/> takes from the device behind
+        /// <paramref name="deviceGuid"/>, at the fixed half the param surfaces
+        /// use. A tap or swipe holds the key for as long as its gesture stays
+        /// fired, the gesture cooldown. A long press, a touch spot or a radial
+        /// zone holds it while the finger stays, and a gesture axis past
+        /// half.</summary>
+        public static bool ReadSlotEventBool(CustomInputState state, string canonical, int slotIndex,
+            string deviceGuid)
+        {
+            var src = t_slotEventScratch ??= new MappingSource();
+            src.Kind = "Direct";
+            src.Descriptor = canonical ?? "";
+            src.DeviceGuid = deviceGuid ?? "";
+            return EvaluateForButtonTarget(state, src, 50, slotIndex, deviceGuid);
+        }
+
         private static bool ReadNfcTagBool(CustomInputState state, string canonical)
         {
             NoteNfcReadRequest();

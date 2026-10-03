@@ -1196,6 +1196,13 @@ namespace PadForge.Engine.Common.Mapping
                 return false;
             }
 
+            // A touchpad gesture, a mouse gesture or a menu cell answers for
+            // one slot and one device, so it reads as a Button row reads it.
+            // The hardware-bool read below takes the descriptor alone, and a
+            // gesture picked as the Up or Down key read nothing.
+            if (SourceCoercion.IsSlotEventDescriptor(s))
+                return SourceCoercion.ReadSlotEventBool(state, s, slotIndex, deviceGuid);
+
             // Not Button/POV: the pickers offer the full input list, so a
             // gate or Incremental/Ramped param can name a hardware-bool
             // family (capsense, NFC tag, touchpad contact). Route those

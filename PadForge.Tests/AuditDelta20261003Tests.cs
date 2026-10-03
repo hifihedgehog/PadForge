@@ -1447,13 +1447,13 @@ namespace PadForge.Tests
 
         /// <summary>A modifier arms the family its modifier input names, and
         /// the descriptor and gates it kept from its source arm nothing.
-        /// Incremental and Ramp sources read their up and down keys through a
-        /// reader with no gesture read, so neither those keys nor a kept
-        /// descriptor arm anything. A steering or motion kind reads no
-        /// gesture on a stick row and reads its descriptor as Direct
-        /// elsewhere. A Direct source arms from its descriptor and its gate,
-        /// and a blank one from neither. The combined D-pad row reads POV
-        /// descriptors alone and no gates, so it arms nothing.</summary>
+        /// Incremental and Ramp sources arm from their up and down keys, which
+        /// read gestures, and a descriptor they kept arms nothing. A steering
+        /// or motion kind reads no gesture on a stick row and reads its
+        /// descriptor as Direct elsewhere. A Direct source arms from its
+        /// descriptor and its gate, and a blank one from neither. The combined
+        /// D-pad row reads POV descriptors alone and no gates, so it arms
+        /// nothing.</summary>
         [Fact]
         public void TheGestureAutoArm_ReadsWhatEachKindReads()
         {
@@ -1475,8 +1475,8 @@ namespace PadForge.Tests
                     Kind = kind, Descriptor = "Touchpad 0 DoubleTap",
                     ParamUp = "Touchpad 0 SwipeUp", ParamDown = "Touchpad 0 TouchLeft",
                 }, "LeftThumbAxisX");
-                Assert.False(keyed.EnableFourWaySwipes, kind);
-                Assert.False(keyed.EnableTouchSpots, kind);
+                Assert.True(keyed.EnableFourWaySwipes, kind);
+                Assert.True(keyed.EnableTouchSpots, kind);
                 Assert.False(keyed.EnableTaps, kind);
             }
 

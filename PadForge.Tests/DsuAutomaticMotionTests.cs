@@ -180,8 +180,12 @@ namespace PadForge.Tests
             Assert.Equal(0f, ReadFloat(packet, 88));
         }
 
+        /// <summary>The engaged layer's own row wins, an emptied Do Not
+        /// Inherit row on it switches motion off (DC34: this test once pinned
+        /// a fallback to Base there, against mappings.md and shift-layers.md),
+        /// and a layer with no motion row of its own keeps Base motion.</summary>
         [Fact]
-        public async Task MotionLayers_KeepTheirExistingPriorityAndBaseFallback()
+        public async Task MotionLayers_KeepTheirPriority_AnEmptiedLayerRowMutes_AndARowlessLayerFallsBack()
         {
             InputManager.ClearAllShiftRuntime();
             try
@@ -212,8 +216,11 @@ namespace PadForge.Tests
                 Assert.Equal("View", InputManager.ResolveActiveLayerMask(0, set, first.InputState, ""));
                 Assert.Equal(0.6f * 180f / MathF.PI, ReadFloat((await rig.TickAndReceive())[0], 88), 4);
                 layer.Sources.Clear();
-                // Motion retains the established Base fallback even when a
-                // replace layer has no usable motion source.
+                // The layer's emptied Do Not Inherit row is motion switched
+                // off on that layer: nothing falls through from Base.
+                Assert.Equal(0f, ReadFloat((await rig.TickAndReceive())[0], 88));
+                set.Rows.Remove(layer);
+                // With no motion row of its own, the layer keeps Base motion.
                 Assert.Equal(0.2f * 180f / MathF.PI, ReadFloat((await rig.TickAndReceive())[0], 88), 4);
             }
             finally

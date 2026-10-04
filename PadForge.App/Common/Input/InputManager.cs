@@ -3663,20 +3663,27 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Motion row candidates for the slot's engaged layer, in
-        /// preference order: the layer's own row, then Base, then any other
+        /// preference order: the row that applies, then Base, then any other
         /// row naming the target.
         ///
-        /// <para>Layer resolution is delegated ENTIRELY to the #221 resolver;
-        /// this only decides fallback ORDER, so there is no second
-        /// layer-resolution path to drift.</para>
+        /// <para>The row that applies is the engaged layer's own row when the
+        /// layer has one, and Base's row otherwise. A layer with no motion row
+        /// of its own therefore leaves Base driving whatever the layer's
+        /// replace or overlay mode, so motion never goes dark merely because a
+        /// layer engaged (owner decision, 2026-07-26). That is why the #221
+        /// resolver's <c>suppressed</c> flag cannot decide motion: replace
+        /// mode suppresses every target the layer has no row for.</para>
         ///
-        /// <para>The resolver's <c>suppressed</c> flag is deliberately
-        /// discarded here. Layers default to REPLACE semantics
-        /// (ShiftActivator.InheritUnmapped is false), so honoring suppression
-        /// would silence gyro and accel the moment a layer without a motion
-        /// row engaged. Motion never goes dark because of a layer: that is a
-        /// product decision, and it makes this change a strict preference
-        /// re-ordering, so nothing that resolves today stops resolving.</para></summary>
+        /// <para>When the row that applies has no motion input, an emptied
+        /// row or a Do Not Inherit row with no source, the channel is
+        /// switched off and the list stays empty (DC34). Walking on to Base or
+        /// to another layer's row filled a channel the user had turned off:
+        /// an emptied Base row read an inactive layer's row, and an emptied or
+        /// Do Not Inherit layer row read Base.</para>
+        ///
+        /// <para>A row that applies but whose devices are offline still hands
+        /// off down the list to a row with a live device, the walk's other
+        /// recorded decision.</para></summary>
         private static void BuildMotionRowCandidates(
             MappingSet ms, string targetName, int slotIndex, ref MappingRow[] buf, out int count)
         {
@@ -3693,11 +3700,26 @@ namespace PadForge.Common.Input
             int needed = ms.Rows.Count + 2;
             if (buf == null || buf.Length < needed) buf = new MappingRow[needed];
 
-            var activeRow = FindActiveRowForTarget(ms, targetName, slotIndex, out _);
-            if (activeRow != null) buf[count++] = activeRow;
+            // Both rows come from a walk of the live list, not from
+            // FindBaseRowForTarget's cache: that cache rebuilds only when the
+            // row count or the list changes, so rows removed and re-added at
+            // the same count hand back the removed row. The old walk hid that
+            // by scanning every row afterward, but a stale emptied row would
+            // now switch the channel off.
+            string engaged = GetEngagedLayerMask(slotIndex, ms);
+            bool layerEngaged = !string.IsNullOrEmpty(engaged)
+                && !string.Equals(engaged, "Base", StringComparison.Ordinal);
+            var baseRow = FindLayerRowForTarget(ms, targetName, "Base");
+            var applying = baseRow;
+            if (layerEngaged)
+            {
+                var layerRow = FindLayerRowForTarget(ms, targetName, engaged);
+                if (layerRow != null) applying = layerRow;
+            }
+            if (applying != null && MappingSetMigrator.IsEmptyMotionRow(applying)) return;
 
-            var baseRow = FindBaseRowForTarget(ms, targetName);
-            if (baseRow != null && !ReferenceEquals(baseRow, activeRow)) buf[count++] = baseRow;
+            if (applying != null) buf[count++] = applying;
+            if (baseRow != null && !ReferenceEquals(baseRow, applying)) buf[count++] = baseRow;
 
             var rows = ms.Rows;
             for (int r = 0; r < rows.Count && count < buf.Length; r++)
@@ -3705,9 +3727,29 @@ namespace PadForge.Common.Input
                 var row = rows[r];
                 if (row == null) continue;
                 if (!string.Equals(row.Target, targetName, StringComparison.Ordinal)) continue;
-                if (ReferenceEquals(row, activeRow) || ReferenceEquals(row, baseRow)) continue;
+                if (ReferenceEquals(row, applying) || ReferenceEquals(row, baseRow)) continue;
                 buf[count++] = row;
             }
+        }
+
+        /// <summary>The row <paramref name="layerMask"/> itself carries for
+        /// the target, or null when the layer has none. Bound by the captured
+        /// count and re-checked each step, like FindActiveRowForTarget's walk,
+        /// because the UI thread edits the list.</summary>
+        private static MappingRow FindLayerRowForTarget(MappingSet ms, string targetName, string layerMask)
+        {
+            var rows = ms?.Rows;
+            if (rows == null) return null;
+            MappingRow found = null;
+            int n = rows.Count;
+            for (int i = 0; i < n && i < rows.Count; i++)
+            {
+                var r = rows[i];
+                if (r == null) continue;
+                if (!string.Equals(r.Target, targetName, StringComparison.Ordinal)) continue;
+                if (string.Equals(r.LayerMask ?? "Base", layerMask, StringComparison.Ordinal)) found = r;
+            }
+            return found;
         }
 
         /// <summary>Checks the idle gate and publishes neutral DSU data before

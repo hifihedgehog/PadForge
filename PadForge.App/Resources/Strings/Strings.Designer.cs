@@ -2973,6 +2973,7 @@ public class Strings : INotifyPropertyChanged
     public string HeadTracker_StatusOpenXrNoHeadset => Get("HeadTracker_StatusOpenXrNoHeadset");
     public string HeadTracker_StatusOpenXrNotSupported => Get("HeadTracker_StatusOpenXrNotSupported");
     public string HeadTracker_StatusOpenXrFailed => Get("HeadTracker_StatusOpenXrFailed");
+    public string HeadTracker_StatusOpenXrEnded => Get("HeadTracker_StatusOpenXrEnded");
     public string Dashboard_HeadTrackingPort => Get("Dashboard_HeadTrackingPort");
     public string Dashboard_HeadTrackingPort_Tooltip => Get("Dashboard_HeadTrackingPort_Tooltip");
     public string Dashboard_HeadTrackingRotationRange => Get("Dashboard_HeadTrackingRotationRange");

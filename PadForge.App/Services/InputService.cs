@@ -5153,6 +5153,8 @@ namespace PadForge.Services
                     return s.HeadTracker_StatusOpenXrNotSupported;
                 case PadForge.Engine.Common.OpenXr.OpenXrSourceState.Failed:
                     return s.HeadTracker_StatusOpenXrFailed;
+                case PadForge.Engine.Common.OpenXr.OpenXrSourceState.Ended:
+                    return s.HeadTracker_StatusOpenXrEnded;
                 case PadForge.Engine.Common.OpenXr.OpenXrSourceState.Running:
                     // Running with no pose yet: the session is up and the
                     // headset has not reported a tracked pose, which is what

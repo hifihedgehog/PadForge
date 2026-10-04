@@ -2573,6 +2573,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="HeadTracker_StatusOpenXrNoHeadset" xml:space="preserve"><value>O runtime do OpenXR não relata nenhum headset</value></data>
   <data name="HeadTracker_StatusOpenXrNotSupported" xml:space="preserve"><value>Este runtime não pode fornecer uma sessão em segundo plano</value></data>
   <data name="HeadTracker_StatusOpenXrFailed" xml:space="preserve"><value>A sessão do OpenXR falhou. Consulte o log de diagnóstico.</value></data>
+  <data name="HeadTracker_StatusOpenXrEnded" xml:space="preserve"><value>O runtime do OpenXR encerrou a sessão. Desative e reative a entrada de headset do OpenXR para reconectar.</value></data>
   <data name="Dashboard_HeadTrackingPort" xml:space="preserve"><value>Porta UDP</value></data>
   <data name="Dashboard_HeadTrackingPort_Tooltip" xml:space="preserve"><value>A porta para a qual a saída "UDP over network" do OpenTrack envia. O padrão do OpenTrack é 4242.</value></data>
   <data name="Dashboard_HeadTrackingRotationRange" xml:space="preserve"><value>Faixa de Rotação (Graus)</value></data>

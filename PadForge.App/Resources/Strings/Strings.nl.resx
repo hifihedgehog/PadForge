@@ -2599,6 +2599,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="HeadTracker_StatusOpenXrNoHeadset" xml:space="preserve"><value>De OpenXR-runtime meldt geen headset</value></data>
   <data name="HeadTracker_StatusOpenXrNotSupported" xml:space="preserve"><value>Deze runtime kan geen achtergrondsessie leveren</value></data>
   <data name="HeadTracker_StatusOpenXrFailed" xml:space="preserve"><value>De OpenXR-sessie is mislukt. Zie het diagnoselogboek.</value></data>
+  <data name="HeadTracker_StatusOpenXrEnded" xml:space="preserve"><value>De OpenXR-runtime heeft de sessie beëindigd. Zet OpenXR-headsetinvoer uit en weer aan om opnieuw te verbinden.</value></data>
   <data name="Dashboard_HeadTrackingPort" xml:space="preserve"><value>UDP-poort</value></data>
   <data name="Dashboard_HeadTrackingPort_Tooltip" xml:space="preserve"><value>De poort waarnaar de uitvoer "UDP over network" van OpenTrack verstuurt. De standaardwaarde van OpenTrack is 4242.</value></data>
   <data name="Dashboard_HeadTrackingRotationRange" xml:space="preserve"><value>Rotatiebereik (graden)</value></data>

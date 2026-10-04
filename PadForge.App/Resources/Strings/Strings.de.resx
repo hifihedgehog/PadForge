@@ -2579,6 +2579,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="HeadTracker_StatusOpenXrNoHeadset" xml:space="preserve"><value>Die OpenXR-Laufzeit meldet kein Headset</value></data>
   <data name="HeadTracker_StatusOpenXrNotSupported" xml:space="preserve"><value>Diese Laufzeit kann keine Hintergrundsitzung bereitstellen</value></data>
   <data name="HeadTracker_StatusOpenXrFailed" xml:space="preserve"><value>Die OpenXR-Sitzung ist fehlgeschlagen. Siehe Diagnoseprotokoll.</value></data>
+  <data name="HeadTracker_StatusOpenXrEnded" xml:space="preserve"><value>Die OpenXR-Laufzeit hat die Sitzung beendet. Schalten Sie die OpenXR-Headset-Eingabe aus und wieder ein, um die Verbindung wiederherzustellen.</value></data>
   <data name="Dashboard_HeadTrackingPort" xml:space="preserve"><value>UDP-Port</value></data>
   <data name="Dashboard_HeadTrackingPort_Tooltip" xml:space="preserve"><value>Der Port, an den die Ausgabe "UDP over network" von OpenTrack sendet. Der Standardwert von OpenTrack ist 4242.</value></data>
   <data name="Dashboard_HeadTrackingRotationRange" xml:space="preserve"><value>Drehbereich (Grad)</value></data>

@@ -2579,6 +2579,7 @@
   <data name="HeadTracker_StatusOpenXrNoHeadset" xml:space="preserve"><value>OpenXR ランタイムはヘッドセットを報告していません</value></data>
   <data name="HeadTracker_StatusOpenXrNotSupported" xml:space="preserve"><value>このランタイムはバックグラウンドセッションを提供できません</value></data>
   <data name="HeadTracker_StatusOpenXrFailed" xml:space="preserve"><value>OpenXR セッションに失敗しました。診断ログを参照してください。</value></data>
+  <data name="HeadTracker_StatusOpenXrEnded" xml:space="preserve"><value>OpenXR ランタイムがセッションを終了しました。再接続するには、OpenXR ヘッドセット入力をオフにしてから再びオンにしてください。</value></data>
   <data name="Dashboard_HeadTrackingPort" xml:space="preserve"><value>UDP ポート</value></data>
   <data name="Dashboard_HeadTrackingPort_Tooltip" xml:space="preserve"><value>OpenTrack の「UDP over network」出力の送信先ポート。OpenTrack の既定値は 4242 です。</value></data>
   <data name="Dashboard_HeadTrackingRotationRange" xml:space="preserve"><value>回転範囲（度）</value></data>

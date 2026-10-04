@@ -15,6 +15,7 @@ namespace PadForge.Engine.Common.OpenXr
         Connecting,
         Running,
         Failed,
+        Ended,              // the runtime ended or lost the session, and it is not restarted
     }
 
     /// <summary>
@@ -154,9 +155,20 @@ namespace PadForge.Engine.Common.OpenXr
 
                 while (_running)
                 {
-                    if (!session.PumpEvents(out bool lost, out bool spaceChanged))
+                    // The runtime ended or lost the session. The OpenXR
+                    // specification asks an application in
+                    // XR_SESSION_STATE_EXITING to end its XR experience and
+                    // not restart it automatically, and a new instance can
+                    // start the runtime's processes again, which would reopen
+                    // a runtime the user just closed. So the source stops and
+                    // says so, and turning the input off and on reconnects.
+                    // The status line used to read "Starting the OpenXR
+                    // session" from here on.
+                    if (!session.PumpEvents(out bool lost, out bool spaceChanged) || lost)
+                    {
+                        if (!_canceled) _state = OpenXrSourceState.Ended;
                         break;
-                    if (lost) break;
+                    }
 
                     // A reference space change moves the origin under us, so
                     // the captured neutral no longer describes where the user

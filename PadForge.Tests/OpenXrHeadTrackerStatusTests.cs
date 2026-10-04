@@ -49,6 +49,7 @@ namespace PadForge.Tests
         [InlineData(OpenXrSourceState.NotSupported, "HeadTracker_StatusOpenXrNotSupported")]
         [InlineData(OpenXrSourceState.Failed, "HeadTracker_StatusOpenXrFailed")]
         [InlineData(OpenXrSourceState.Connecting, "HeadTracker_StatusOpenXrConnecting")]
+        [InlineData(OpenXrSourceState.Ended, "HeadTracker_StatusOpenXrEnded")]
         public void EveryFailureStateGetsItsOwnLine(OpenXrSourceState state, string key)
         {
             using var device = RowInState(state);
@@ -57,6 +58,18 @@ namespace PadForge.Tests
             string expected = (string)typeof(Strings).GetProperty(key).GetValue(Strings.Instance);
             Assert.False(string.IsNullOrWhiteSpace(expected), key + " has no text");
             Assert.Equal(expected, Status(device));
+        }
+
+        /// <summary>A session the runtime ended reads as ended, not as one
+        /// still starting, and the state is appended so every earlier value
+        /// keeps its number.</summary>
+        [Fact]
+        public void AnEndedSessionIsAppendedAndNamed()
+        {
+            Assert.Equal(7, (int)OpenXrSourceState.Ended);
+            Assert.Equal(OpenXrSourceState.Ended, Enum.GetValues<OpenXrSourceState>()[^1]);
+            Assert.NotEqual(Strings.Instance.HeadTracker_StatusOpenXrConnecting,
+                Strings.Instance.HeadTracker_StatusOpenXrEnded);
         }
 
         /// <summary>Each message is distinct. Four states collapsing onto one
@@ -72,6 +85,7 @@ namespace PadForge.Tests
                 s.HeadTracker_StatusOpenXrNotSupported,
                 s.HeadTracker_StatusOpenXrFailed,
                 s.HeadTracker_StatusOpenXrConnecting,
+                s.HeadTracker_StatusOpenXrEnded,
             };
             foreach (var line in lines) Assert.False(string.IsNullOrWhiteSpace(line));
             Assert.Equal(lines.Count, new HashSet<string>(lines).Count);

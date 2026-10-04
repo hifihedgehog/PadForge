@@ -262,9 +262,10 @@ namespace PadForge.Tests
         public void Compaction_LeavesLegacyNullMappingSetsNull()
         {
             // Null SlotMappingSets is the pre-multi-source sentinel meaning
-            // "leave the live sets alone". Handing back a fresh all-null array
-            // reads as "this profile has no mappings", and ApplyProfile then
-            // clones null over every live slot, wiping the lot.
+            // "rebuild the sets from this profile's PadSettings". Handing back
+            // a fresh all-null array reads as "this profile has no mappings",
+            // and ApplyProfile then clones null over every live slot, wiping
+            // the lot.
             var (p, map) = ArrangeGappyProfile();
             p.SlotMappingSets = null;
 

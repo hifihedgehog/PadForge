@@ -17393,10 +17393,11 @@ namespace PadForge.Services
             p.SlotCreated = newCreated;
             p.SlotEnabled = newEnabled;
             // Null-guarded like the two below: on a profile captured before
-            // multi-source rows landed, null MEANS "leave the live sets
-            // alone" (ApplyProfile keys on exactly that). Handing back a
-            // fresh all-null array reads as "this profile has no mappings",
-            // and the apply then clones null over every live slot.
+            // multi-source rows landed, null MEANS "rebuild the sets from
+            // this profile's PadSettings" (ApplyProfile keys on exactly
+            // that). Handing back a fresh all-null array reads as "this
+            // profile has no mappings", and the apply then clones null over
+            // every live slot.
             if (p.SlotMappingSets != null) p.SlotMappingSets = newMappingSets;
             if (p.SlotControllerTypes != null) p.SlotControllerTypes = newControllerTypes;
             if (p.SlotProfileIds != null) p.SlotProfileIds = newProfileIds;
@@ -17747,9 +17748,9 @@ namespace PadForge.Services
             // (Issue #61). Multi-source rows + per-row CombineMode +
             // ShiftActivator round-trip with the profile. Profiles
             // captured before multi-source landed have null
-            // SlotMappingSets — leave the live array untouched in that
-            // case so it falls back to whatever the loader (legacy
-            // migration or persisted-XML state) set up.
+            // SlotMappingSets. Their mappings live in the per-device
+            // PadSettings, so the live sets are rebuilt from those once
+            // the assignments below have applied them.
             // DEEP CLONE on apply so live mutations (auto-map on device
             // reassignment, in-tab edits) don't poison the profile's
             // stored snapshot.
@@ -17972,6 +17973,24 @@ namespace PadForge.Services
                         us.MapTo = -1;
                     }
                 }
+            }
+
+            // A profile saved before mapping sets existed keeps its mappings
+            // in the PadSettings the loop above just applied. Rebuild the
+            // live sets from them through the legacy migrator, as the
+            // ProfileData.SlotMappingSets contract says. Leaving the sets
+            // alone ran the OUTGOING profile's rows, activators and menus
+            // under this profile, and the next switch away saved them into
+            // it. The merge keeps a slot's current activators, menus and rows
+            // whenever the slot already has a set, so every set is nulled
+            // first, the way ApplyDefaultProfile's no-snapshot branch does.
+            if (profile.SlotMappingSets == null)
+            {
+                var liveSets = SettingsManager.SlotMappingSets;
+                if (liveSets != null)
+                    for (int s = 0; s < liveSets.Length; s++)
+                        liveSets[s] = null;
+                SettingsService.RefreshMappingSetsFromLegacy();
             }
 
             // Point the just-cloned mapping sets at the instances the
@@ -18682,14 +18701,15 @@ namespace PadForge.Services
                 SlotControllerTypes = new int[InputManager.MaxPads],
                 SlotModel3DAppearances = SlotAppearancePersistence.Empty(),
                 // Empty, NOT null. On ProfileData both of these use null as the
-                // legacy sentinel for "saved before this rode profiles, leave
-                // the live state alone" (ApplyProfile keys on exactly that), so
-                // leaving them unset made a brand-new empty profile INHERIT the
-                // outgoing profile's mappings and macros, then persist them as
-                // its own on the next switch-away. An authored-empty profile
-                // owns zero of each and must say so. Null elements are the
-                // established no-mappings shape: Reset to Defaults assigns the
-                // live array exactly this way.
+                // legacy sentinel for "saved before this rode profiles". For
+                // Macros, ApplyProfile then leaves the live macros alone, so
+                // leaving it unset made a brand-new empty profile INHERIT the
+                // outgoing profile's macros and persist them as its own on the
+                // next switch-away. For SlotMappingSets it rebuilds the sets
+                // from the profile's PadSettings, which an empty profile has
+                // none of. An authored-empty profile owns zero of each and must
+                // say so. Null elements are the established no-mappings shape:
+                // Reset to Defaults assigns the live array exactly this way.
                 SlotMappingSets = new Engine.Data.MappingSet[InputManager.MaxPads],
                 Macros = Array.Empty<MacroData>(),
             };

@@ -648,9 +648,10 @@ namespace PadForge.Tests
         [Fact]
         public void CreateEmptyProfile_StampsAuthoredEmpty_NotTheLegacyNullSentinel()
         {
-            // null Macros / SlotMappingSets mean "legacy, leave live state
-            // alone", so an unset empty profile INHERITED the outgoing
-            // profile's mappings and macros and then persisted them as its own.
+            // null Macros / SlotMappingSets mean "legacy": the live macros
+            // stay, and the sets rebuild from the profile's PadSettings. An
+            // unset empty profile once INHERITED the outgoing profile's
+            // mappings and macros and then persisted them as its own.
             var (_, svc, _) = Arrange();
 
             var p = svc.CreateEmptyProfile("Empty", null);
@@ -951,6 +952,156 @@ namespace PadForge.Tests
             Assert.True(string.Equals(guid, SteamGuid.ToString(), StringComparison.OrdinalIgnoreCase),
                 $"back on the default profile, ButtonA reads device {guid ?? "<none>"}; "
                 + $"the default's own device is {SteamGuid}.");
+        }
+
+        // ── DC08: a profile saved before mapping sets existed ──
+
+        /// <summary>One line per row plus the set's activator and menu
+        /// counts, so two sets compare by content. A save writes a
+        /// zero-source row for every grid target, so
+        /// <paramref name="mappedOnly"/> compares the rows that carry
+        /// sources.</summary>
+        private static string Describe(MappingSet ms, bool mappedOnly = false)
+        {
+            if (ms == null) return "<null>";
+            var lines = ms.Rows
+                .Where(r => r != null && (!mappedOnly || r.Sources.Count > 0))
+                .Select(r => $"{r.Target}|{r.LayerMask}|{r.NoInherit}|{r.CombineMode}|"
+                    + string.Join(",", r.Sources.Select(s =>
+                        $"{s.Kind}:{s.Descriptor}@{(s.DeviceGuid ?? "").ToLowerInvariant()}:{s.Invert}:{s.HalfAxis}")))
+                .OrderBy(l => l, StringComparer.Ordinal);
+            return string.Join("\n", lines)
+                + $"\nactivators={ms.ShiftActivators?.Count ?? 0} menus={ms.Menus?.Count ?? 0}";
+        }
+
+        /// <summary>What the legacy migrator builds for slot 0 from the
+        /// UserSettings as they stand, through the same entry point
+        /// ApplyDefaultProfile's no-snapshot branch uses.</summary>
+        private static MappingSet MigratorOutputForSlot0()
+        {
+            var live = SettingsManager.SlotMappingSets;
+            try
+            {
+                SettingsManager.SlotMappingSets = new MappingSet[InputManager.MaxPads];
+                SettingsService.RefreshMappingSetsFromLegacy();
+                return SettingsManager.SlotMappingSets[0];
+            }
+            finally { SettingsManager.SlotMappingSets = live; }
+        }
+
+        private static ProfileData ProfileWithSets()
+        {
+            var p = IncomingProfile();
+            p.Id = "pA";
+            p.Name = "Game A";
+            var sets = new MappingSet[InputManager.MaxPads];
+            sets[0] = new MappingSet();
+            sets[0].Rows.Add(new MappingRow
+            {
+                Target = "ButtonA",
+                LayerMask = "Base",
+                Sources = { new MappingSource
+                    { Kind = "Direct", Descriptor = "Button 0", DeviceGuid = SteamGuid.ToString() } },
+            });
+            sets[0].ShiftActivators.Add(new ShiftActivator
+            {
+                LayerMask = "L1", LayerName = "Aim", Descriptor = "Button 4", Mode = "Hold",
+            });
+            sets[0].Menus.Add(new PadForge.Engine.Menus.MenuDefinitionEntry { MenuId = 7, CellCount = 4 });
+            p.SlotMappingSets = sets;
+            p.Entries = new[] { new ProfileEntry
+                { InstanceGuid = SteamGuid, ProductGuid = SteamGuid, MapTo = 0, PadSettingChecksum = "a" } };
+            p.PadSettings = new[] { new PadSetting { PadSettingChecksum = "a" } };
+            return p;
+        }
+
+        /// <summary>A profile saved before mapping sets existed: null
+        /// SlotMappingSets, its mappings held in the per-device PadSetting.</summary>
+        private static ProfileData LegacyProfile()
+        {
+            var p = IncomingProfile();
+            p.Id = "pB";
+            p.Name = "Game B";
+            p.SlotMappingSets = null;
+            p.Entries = new[] { new ProfileEntry
+                { InstanceGuid = XboxPadGuid, ProductGuid = XboxPadGuid, MapTo = 0, PadSettingChecksum = "b" } };
+            p.PadSettings = new[] { new PadSetting { PadSettingChecksum = "b", ButtonA = "Button 1" } };
+            return p;
+        }
+
+        /// <summary>DC08. ProfileData.SlotMappingSets documents that a null
+        /// array makes ApplyProfile fall back to the profile's own per-device
+        /// PadSetting through the legacy migrator. ApplyProfile instead left
+        /// the live sets untouched, so a legacy profile came up running the
+        /// OUTGOING profile's rows, activators and menus. The live sets must
+        /// equal the migrator's output for the incoming profile alone.</summary>
+        [Fact]
+        public void ApplyingALegacyProfile_RebuildsItsOwnRows_NotTheOutgoingProfiles()
+        {
+            var (_, svc, _) = Arrange();
+            AddPad(SteamGuid, "Steam Controller");
+            AddPad(XboxPadGuid, "Xbox pad");
+
+            var a = ProfileWithSets();
+            var b = LegacyProfile();
+            SettingsManager.Profiles.Add(a);
+            SettingsManager.Profiles.Add(b);
+
+            svc.LoadProfile(a.Id);
+            // Positive control: profile A's row, activator and menu are live.
+            var liveA = SettingsManager.SlotMappingSets[0];
+            Assert.Contains(liveA.Rows, r => r.Sources.Any(s =>
+                string.Equals(s.DeviceGuid, SteamGuid.ToString(), StringComparison.OrdinalIgnoreCase)));
+            Assert.Single(liveA.ShiftActivators);
+            Assert.Single(liveA.Menus);
+
+            svc.LoadProfile(b.Id);
+
+            var live = SettingsManager.SlotMappingSets[0];
+            Assert.NotNull(live);
+            Assert.DoesNotContain(live.Rows, r => r.Sources.Any(s =>
+                string.Equals(s.DeviceGuid, SteamGuid.ToString(), StringComparison.OrdinalIgnoreCase)));
+            Assert.Empty(live.ShiftActivators);
+            Assert.Empty(live.Menus);
+            Assert.Contains(live.Rows, r => r.Target == "ButtonA" && r.Sources.Any(s =>
+                s.Descriptor == "Button 1"
+                && string.Equals(s.DeviceGuid, XboxPadGuid.ToString(), StringComparison.OrdinalIgnoreCase)));
+            Assert.Equal(Describe(MigratorOutputForSlot0()), Describe(live));
+        }
+
+        /// <summary>DC08, the persistence half. Switching away from the
+        /// legacy profile stores the live sets into it, so it has to store
+        /// its OWN rebuilt rows. Before the fix it stored the outgoing
+        /// profile's rows in place of its own.</summary>
+        [Fact]
+        public void SwitchingAwayFromALegacyProfile_StoresItsOwnRebuiltRows()
+        {
+            var (_, svc, _) = Arrange();
+            AddPad(SteamGuid, "Steam Controller");
+            AddPad(XboxPadGuid, "Xbox pad");
+
+            var a = ProfileWithSets();
+            var b = LegacyProfile();
+            SettingsManager.Profiles.Add(a);
+            SettingsManager.Profiles.Add(b);
+
+            svc.LoadProfile(a.Id);
+            svc.LoadProfile(b.Id);
+            string rebuilt = Describe(SettingsManager.SlotMappingSets[0], mappedOnly: true);
+
+            svc.LoadProfile(a.Id);
+
+            Assert.NotNull(b.SlotMappingSets);
+            var stored = b.SlotMappingSets[0];
+            Assert.NotNull(stored);
+            Assert.DoesNotContain(stored.Rows, r => r.Sources.Any(s =>
+                string.Equals(s.DeviceGuid, SteamGuid.ToString(), StringComparison.OrdinalIgnoreCase)));
+            Assert.Empty(stored.ShiftActivators);
+            Assert.Empty(stored.Menus);
+            Assert.Contains(stored.Rows, r => r.Target == "ButtonA" && r.Sources.Any(s =>
+                s.Descriptor == "Button 1"
+                && string.Equals(s.DeviceGuid, XboxPadGuid.ToString(), StringComparison.OrdinalIgnoreCase)));
+            Assert.Equal(rebuilt, Describe(stored, mappedOnly: true));
         }
     }
 }

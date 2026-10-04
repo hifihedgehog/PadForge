@@ -34,6 +34,12 @@ param(
     # file is lying around, so a targeted refresh is a single command from
     # a clean machine.
     [string[]]$Only = @(),
+    # With -Only, run the full run's device staging before the focused pass.
+    # A focused pass skips it to save minutes, so its frames show idle slots
+    # and a 0 Hz engine where the full run's show lit slots and 1000 Hz. A
+    # retake of shots the full run took needs the full run's state, or the
+    # new frames do not match the ones beside them.
+    [switch]$StageAll,
     # UI-settle scale. Every Start-Sleep -Milliseconds in this script is a
     # guess at how long WPF needs to finish a transition, and the guesses were
     # made one at a time and always upward: 225 call sites totalling 145
@@ -2226,6 +2232,35 @@ if ($SkipToTail) {
         Write-Host "  Tail mode: nothing staged, so STEP 0 runs first and the per-page passes are skipped" -ForegroundColor Cyan
     }
 }
+
+# A targeted run goes straight to its shots. Staging saves the settings file
+# it built (the seven slots, the devices and their assignments, the
+# auto-mapped rows, the macros and layers) as a snapshot, and an -Only run
+# loads that file instead of rebuilding it through the UI. The 5.0.0 retakes
+# spent their first minutes deleting and re-creating seven slots and assigning
+# devices card by card before taking a single shot. -StageAll still rebuilds,
+# and so does a run with no snapshot yet.
+$script:SnapshotXml = Join-Path $logDir "capture-configured.xml"
+$script:Direct = $false
+$xmlBak = "$PadForgeXml.bak"
+if ($Only.Count -gt 0 -and -not $StageAll -and -not $SkipToTail -and (Test-Path $script:SnapshotXml)) {
+    Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 3
+    Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 1
+    if (Test-Path $xmlBak) {
+        # The same guard STEP 0 keeps: a leftover backup holds the owner's
+        # real settings, so it goes back first and is never overwritten.
+        Write-Host "  !! Leftover backup from an interrupted run; restoring it before re-backup" -ForegroundColor Yellow
+        Copy-Item $xmlBak $PadForgeXml -Force
+    }
+    Copy-Item $PadForgeXml $xmlBak -Force
+    Copy-Item $script:SnapshotXml $PadForgeXml -Force
+    $script:doSetup = $false
+    $script:Direct = $true
+    $snapAge = [math]::Round(((Get-Date) - (Get-Item $script:SnapshotXml).LastWriteTime).TotalHours, 1)
+    Write-Host "  Direct: loaded the staged settings snapshot ($snapAge h old), no slot or device setup" -ForegroundColor Cyan
+}
+# The recipes skip their own staging when the full run's is in place.
+$script:Staged = $StageAll -or $script:Direct
 if ($script:doSetup) {
 if (-not (Test-Path $OutputDir)) { New-Item -ItemType Directory -Path $OutputDir | Out-Null }
 
@@ -3024,6 +3059,28 @@ Write-Host "=== STEP 2b: Create controller slots via UI ===" -ForegroundColor Cy
 $popupCaptured = $false
 function Add-SlotViaPopup {
     param([string]$TypeBtnAid, [string]$TypeLabel)
+    # A popup that opens without its buttons, or an Add Controller item one
+    # UIA search misses, is transient. The 5.0.0 retake of 2026-10-03 lost
+    # Extended to the first and MIDI and VR to the second, and the guard
+    # below then refused the whole run. Each try starts from a closed popup
+    # and a foreground window, and the slot list still has to grow.
+    for ($try = 1; $try -le 3; $try++) {
+        if ($try -gt 1) {
+            Write-Host "  retrying $TypeLabel (try $try of 3)" -ForegroundColor Yellow
+            [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
+            Start-Sleep -Milliseconds 800
+        }
+        [Win32]::ForceFG($script:hwnd)
+        Start-Sleep -Milliseconds 200
+        $r = @(Add-SlotViaPopupOnce -TypeBtnAid $TypeBtnAid -TypeLabel $TypeLabel)[-1]
+        if ($r -eq $true) { return $true }
+        if ($r -eq "disabled") { return $false }
+    }
+    return $false
+}
+
+function Add-SlotViaPopupOnce {
+    param([string]$TypeBtnAid, [string]$TypeLabel)
     # Click "Add Controller" in sidebar
     $addNav = Find-UIARetry -Name "Add Controller"
     if (-not $addNav) { Write-Host "  !! Add Controller nav not found" -ForegroundColor Red; return $false }
@@ -3056,7 +3113,7 @@ function Add-SlotViaPopup {
             Write-Host "  !! Type button '$TypeBtnAid' is DISABLED (prerequisite missing)" -ForegroundColor Red
             [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
             Start-Sleep -Milliseconds 300
-            return $false
+            return "disabled"
         }
     } catch {}
     $before = Get-Count @(Find-AllSlots)
@@ -3548,7 +3605,7 @@ function Assign-DeviceToSlot {
 # already in the list from STEP 0's XML injection, which is all a Devices-page
 # shot needs. A focused target that DOES need an assignment adds it beside its
 # own recipe in the focused pass.
-if ($script:doSetup -and $Only.Count -eq 0) {
+if ($script:doSetup -and ($Only.Count -eq 0 -or $StageAll)) {
 # The full name: a bare "DualSense" also matches the web-controller lane's
 # "DualSense Web Controller 1" rows, which sort ahead of the pad.
 Assert-Staged (Assign-DeviceToSlot -DeviceNamePart "DualSense Wireless Controller" -SlotNumberLabel "1") "assigning DualSense Wireless Controller to slot 1" | Out-Null
@@ -3643,8 +3700,12 @@ Assert-Staged (Ensure-DeviceAssigned -DeviceNamePart "Wii Remote" -PadIndex 4 -S
     -XmlPath $PadForgeXml -ExePath $PadForgeExe) "writing the Wii Remote assignment" | Out-Null
 
 # PlayStation is pad index 1 in creation order (Xbox 0, PlayStation 1).
-Seed-AudioDsp -DeviceGuid "bbbb2222-3333-4444-5555-666677778888" -DeviceNamePart "DualSense Wireless Controller" -PadIndex 1 `
-    -XmlPath $PadForgeXml -ExePath $PadForgeExe | Out-Null
+# A focused run's PlayStation recipe seeds it for the audio shots, and the
+# seed restarts the app, so -StageAll leaves it to that recipe.
+if ($Only.Count -eq 0) {
+    Seed-AudioDsp -DeviceGuid "bbbb2222-3333-4444-5555-666677778888" -DeviceNamePart "DualSense Wireless Controller" -PadIndex 1 `
+        -XmlPath $PadForgeXml -ExePath $PadForgeExe | Out-Null
+}
 
 # Macros, written AFTER the slots exist. STEP 0 clears SlotCreated to all-false
 # and saves, and LoadMacros skips any macro whose slot is not created, so five
@@ -3655,6 +3716,12 @@ Seed-AudioDsp -DeviceGuid "bbbb2222-3333-4444-5555-666677778888" -DeviceNamePart
 # cheerfully logged success. Writing them here, with the topology already
 # persisted, is the same state that loads them correctly by hand.
 Ensure-MacrosLoaded -XmlPath $PadForgeXml -ExePath $PadForgeExe | Out-Null
+
+# Keep what this staging built, so a later -Only run loads it directly. The
+# app saves 2 s after its last change, so let it go quiet first.
+Start-Sleep -Seconds 3
+Copy-Item $PadForgeXml $script:SnapshotXml -Force
+Write-Host "  Saved the staged settings for later targeted runs: $script:SnapshotXml"
 
 # Web controller server is enabled via XML injection in Step 0. No UI click needed.
 }
@@ -4557,6 +4624,35 @@ function Capture-Ds3Preset {
 # a targeted refresh cannot be corrupted by a page it never had to visit.
 # Adding a target here is the cost of admission for a name that needs to be
 # refreshable on its own.
+# The Disconnect action's Target dropdown, expanded so all four target modes
+# show. It is a ComboBox in the action editor, found by its "Triggering
+# Device" item. Returns the combo, or $null when UIA cannot see it, in which
+# case the editor is photographed with the field as it is.
+function Expand-DisconnectTarget {
+    $cbCondM = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::ComboBox)
+    $liCondM = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::ListItem)
+    $padPageM = Find-UIA -Aid "PadPageView"
+    $searchM = if ($padPageM) { $padPageM } else { $script:uiaWin }
+    foreach ($cb in $searchM.FindAll($TD, $cbCondM)) {
+        $expM = $null
+        try { $expM = $cb.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern) } catch { continue }
+        try { $expM.Expand(); Start-Sleep -Milliseconds 350 } catch { continue }
+        foreach ($ci in $cb.FindAll($TD, $liCondM)) {
+            if ($ci.Current.Name -like "*Triggering Device*") {
+                Write-Host "  Expanded Disconnect Target dropdown" -ForegroundColor Green
+                return $cb
+            }
+        }
+        try { $expM.Collapse(); Start-Sleep -Milliseconds 150 } catch {}
+    }
+    Write-Host "  Target combo not UIA-visible; capturing editor with Target field as-is" -ForegroundColor Yellow
+    return $null
+}
+
 if ($Only.Count -gt 0) {
     Write-Host ""
     Write-Host "=== FOCUSED PASS ($($Only.Count) target(s)) ===" -ForegroundColor Cyan
@@ -4779,6 +4875,14 @@ if ($Only.Count -gt 0) {
     $twoDWanted = @($script:TwoDShots | Where-Object { Want $_ })
     if ($twoDWanted.Count -gt 0) {
         Write-Host "[focused] 2D controller preview: $($twoDWanted -join ', ')"
+        # Under -StageAll the full pass's staging already made these
+        # assignments, the settings-file writes for the Xbox pad and the
+        # mouse included. Repeating them toggled the Xbox pad off and on a
+        # second time and restarted the app twice, so the two blocks below
+        # run only without it.
+        $staged = $true
+    }
+    if ($twoDWanted.Count -gt 0 -and -not $script:Staged) {
         # The full pass's own staging for slots 1 and 2. Assigning through the
         # Devices page runs auto-map, which gives the Xbox slot the mapped rows
         # the annotation chips draw from. Writing MapTo alone leaves every row
@@ -4807,7 +4911,7 @@ if ($Only.Count -gt 0) {
     if ($twoDWanted.Count -gt 0 -and -not $staged) {
         Refuse-Shots $twoDWanted "the slots were not staged"
     }
-    if ($twoDWanted.Count -gt 0 -and $staged) {
+    if ($twoDWanted.Count -gt 0 -and $staged -and -not $script:Staged) {
         $x = Ensure-DeviceAssigned -DeviceNamePart "Xbox Series X GIP" -PadIndex 0 -SlotType 0 `
             -XmlPath $PadForgeXml -ExePath $PadForgeExe | Select-Object -Last 1
         # Every synthetic device is offline, so nothing above starts the
@@ -4914,8 +5018,11 @@ if ($Only.Count -gt 0) {
     $pickWanted = @($script:SourcePickerTargets | Where-Object { Want $_.Shot })
     if ($pickWanted.Count -gt 0) {
         Write-Host "[focused] Xbox slot: DualSense and the Aim layer for the source pickers"
-        Nav "Devices"; Start-Sleep -Milliseconds 1200
-        $dsOk = Assign-DeviceToSlot -DeviceNamePart "DualSense Wireless Controller" -SlotNumberLabel "1"
+        $dsOk = $true
+        if (-not $script:Staged) {
+            Nav "Devices"; Start-Sleep -Milliseconds 1200
+            $dsOk = Assign-DeviceToSlot -DeviceNamePart "DualSense Wireless Controller" -SlotNumberLabel "1"
+        }
         if (Assert-Staged $dsOk "assigning DualSense Wireless Controller to slot 1") {
             # The leading comma keeps a one-pair list a list of pairs. @(@(a, b))
             # flattens to a and b, and indexing the 0 threw under StrictMode,
@@ -4938,7 +5045,7 @@ if ($Only.Count -gt 0) {
     # controller-type strip, and on a slot with no device mapped, which is
     # every focused run, a click there changes the slot's type: the 4.5.3
     # menu-icon-packs came from a slot 1 turned into a PlayStation slot.
-    $xboxSlotTargets = @("macro-switch-layer", "macro-set-chroma-color", "macro-add-from-list", "pad-menus", "menu-macro-cell", "menu-icon-packs")
+    $xboxSlotTargets = @("macro-disconnect", "macro-switch-layer", "macro-set-chroma-color", "macro-add-from-list", "pad-menus", "menu-macro-cell", "menu-icon-packs")
     $xboxWanted = @($xboxSlotTargets | Where-Object { Want $_ })
     if ($xboxWanted.Count -gt 0) {
         Write-Host "[focused] Xbox slot: $($xboxWanted -join ', ')"
@@ -4946,7 +5053,7 @@ if ($Only.Count -gt 0) {
         Start-Sleep -Milliseconds 2000
         $script:uiaWin = [System.Windows.Automation.AutomationElement]::FromHandle([IntPtr]$script:hwnd)
         # Macro row index on the 0.241 + n * 0.0441 ladder, per shot.
-        $macroRows = @{ "macro-switch-layer" = 5; "macro-set-chroma-color" = 6 }
+        $macroRows = @{ "macro-disconnect" = 2; "macro-switch-layer" = 5; "macro-set-chroma-color" = 6 }
         $macroWanted = @($macroRows.Keys | Where-Object { Want $_ } | Sort-Object { $macroRows[$_] })
         if ($macroWanted.Count -gt 0) {
             Nav "Dashboard"; Start-Sleep -Milliseconds 1500
@@ -4963,7 +5070,11 @@ if ($Only.Count -gt 0) {
                     [Win32]::ForceFG($script:hwnd)
                     [Win32]::ClickAt([int]($wrF.Left + 0.215 * $fw), [int]($wrF.Top + (0.241 + $macroRows[$shot] * 0.0441) * $fh)); Start-Sleep -Milliseconds 800
                     [Win32]::ClickAt([int]($wrF.Left + 0.383 * $fw), [int]($wrF.Top + 0.6897 * $fh)); Start-Sleep -Milliseconds 900
+                    # The full run photographs the Disconnect editor with its
+                    # Target dropdown open.
+                    $openCombo = if ($shot -eq "macro-disconnect") { Expand-DisconnectTarget } else { $null }
                     Cap $shot
+                    if ($openCombo) { try { $openCombo.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern).Collapse() } catch {} }
                 }
             } else { Write-Host "  !! the Xbox slot's Macros tab did not open -- SKIPPED $($macroWanted -join ', ')" -ForegroundColor Red }
         }
@@ -5002,6 +5113,51 @@ if ($Only.Count -gt 0) {
                 else { Write-Host "  !! SKIPPED $($menuWanted -join ', ')" -ForegroundColor Red }
             } else { Write-Host "  !! the Xbox slot's Menus tab did not open -- SKIPPED $($menuWanted -join ', ')" -ForegroundColor Red }
         }
+    }
+
+    # ── Xbox slot: the 3D view, the Guide Button LED and Bass Shakers ──
+    # The full run takes these on its Xbox slot tour: the 3D view on the slot's
+    # first tab with the default device selected, then the Guide LED card with
+    # the Xbox pad selected, and Bass Shakers right after it, the pad still
+    # selected. Without -StageAll the Xbox pad is written onto the slot here.
+    $xboxTourShots = @("pad-controller-3d", "pad-lighting-guide-led", "pad-bass-shakers")
+    $xboxTourWanted = @($xboxTourShots | Where-Object { Want $_ })
+    if ($xboxTourWanted.Count -gt 0) {
+        Write-Host "[focused] Xbox slot tour: $($xboxTourWanted -join ', ')"
+        $needXboxPad = (Want "pad-lighting-guide-led") -or (Want "pad-bass-shakers")
+        if ($needXboxPad -and -not $script:Staged) {
+            Ensure-DeviceAssigned -DeviceNamePart "Xbox Series X GIP" -PadIndex 0 -SlotType 0 `
+                -XmlPath $PadForgeXml -ExePath $PadForgeExe | Out-Null
+            Start-Sleep -Milliseconds 2000
+            $script:uiaWin = [System.Windows.Automation.AutomationElement]::FromHandle([IntPtr]$script:hwnd)
+        }
+        Nav "Dashboard"; Start-Sleep -Milliseconds 1500
+        $shT = Find-UIA -Aid "SlotsItemsControl"
+        $cdT = @()
+        if ($shT) { try { $cdT = @($shT.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)) } catch { $cdT = @() } }
+        $ppT = if ((Get-Count $cdT) -ge 1) { Open-SlotCard $cdT[0] "Xbox slot card (tour)" } else { $null }
+        if ($ppT) {
+            if (Want "pad-controller-3d") {
+                $rbCondT = New-Object System.Windows.Automation.PropertyCondition(
+                    [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+                    [System.Windows.Automation.ControlType]::RadioButton)
+                $tabsT = $ppT.FindAll($TC, $rbCondT)
+                if ((Get-Count $tabsT) -gt 0) { Click-El $tabsT[0] -Label "3D View Tab" -Delay 1000 }
+                Cap "pad-controller-3d"
+            }
+            if ($needXboxPad) {
+                if (Select-MappedDevice "Xbox Series X GIP") {
+                    if (Want "pad-lighting-guide-led") {
+                        if (Tab "Lighting") { Start-Sleep -Milliseconds 700; Cap "pad-lighting-guide-led" }
+                        else { Write-Host "  !! Lighting tab not found for the Xbox pad" -ForegroundColor Yellow }
+                    }
+                    if (Want "pad-bass-shakers") {
+                        if (Tab "Bass Shakers") { Start-Sleep -Milliseconds 800; Cap "pad-bass-shakers" }
+                        else { Write-Host "  !! Bass Shakers tab not found" -ForegroundColor Yellow }
+                    }
+                } else { Write-Host "  !! the Xbox pad is not in the DEVICE dropdown -- SKIPPED the Guide LED and Bass Shakers" -ForegroundColor Red }
+            }
+        } else { Write-Host "  !! the Xbox slot did not open -- SKIPPED $($xboxTourWanted -join ', ')" -ForegroundColor Red }
     }
 
     # ── KBM slot: the Mouse tab's gesture card ──
@@ -5206,10 +5362,12 @@ if ($Only.Count -gt 0) {
     $motionWanted = Want "mapping-motion-rows"
     if ($gridWanted.Count -gt 0 -or $motionWanted) {
         Write-Host "[focused] Mapping grid: $((@($gridWanted) + @(if ($motionWanted) { 'mapping-motion-rows' })) -join ', ')"
-        Nav "Devices"; Start-Sleep -Milliseconds 1500
         $gridStaged = $true
         $pairs = @()
-        if ($gridWanted.Count -gt 0) {
+        # -StageAll made these assignments already, through the same Devices
+        # page clicks, so the wait below only confirms they are saved.
+        if (-not $script:Staged) { Nav "Devices"; Start-Sleep -Milliseconds 1500 }
+        if ($gridWanted.Count -gt 0 -and -not $script:Staged) {
             foreach ($a in @(@("DualSense Wireless Controller", "1", $false), @("Xbox Series X GIP", "1", $true))) {
                 $ok = if ($a[2]) { Assign-DeviceToSlot -DeviceNamePart $a[0] -SlotNumberLabel $a[1] -Reassert | Select-Object -Last 1 }
                       else { Assign-DeviceToSlot -DeviceNamePart $a[0] -SlotNumberLabel $a[1] | Select-Object -Last 1 }
@@ -5218,9 +5376,15 @@ if ($Only.Count -gt 0) {
             $pairs += , @("DualSense Wireless Controller", 0)
             $pairs += , @("Xbox Series X GIP", 0)
         }
+        if ($gridWanted.Count -gt 0 -and $script:Staged) {
+            $pairs += , @("DualSense Wireless Controller", 0)
+            $pairs += , @("Xbox Series X GIP", 0)
+        }
         if ($motionWanted) {
-            $ok = Assign-DeviceToSlot -DeviceNamePart "DualSense Wireless Controller" -SlotNumberLabel "2" | Select-Object -Last 1
-            if ($ok -ne $true) { $gridStaged = $false }
+            if (-not $script:Staged) {
+                $ok = Assign-DeviceToSlot -DeviceNamePart "DualSense Wireless Controller" -SlotNumberLabel "2" | Select-Object -Last 1
+                if ($ok -ne $true) { $gridStaged = $false }
+            }
             $pairs += , @("DualSense Wireless Controller", 1)
         }
         if ($gridStaged) { $gridStaged = Wait-SavedAssignments -LastClick (Get-Date) -Pairs $pairs }
@@ -5240,10 +5404,11 @@ if ($Only.Count -gt 0) {
                     Dismiss-AssignBanner | Out-Null
                     Start-Sleep -Milliseconds 800
                     Cap "pad-mappings"
-                    Open-MappingRow 18 "Left Stick X"; Cap "mapping-sensitivity"
-                    Open-MappingRow 17 "Right Trigger"; Cap "mapping-rapid-trigger"
-                    Open-MappingRow 16 "Left Trigger"; Cap "pad-stick-trim"
-                    Capture-IconPicker
+                    # Each editor opens only for a shot that was asked for.
+                    if (Want "mapping-sensitivity") { Open-MappingRow 18 "Left Stick X"; Cap "mapping-sensitivity" }
+                    if (Want "mapping-rapid-trigger") { Open-MappingRow 17 "Right Trigger"; Cap "mapping-rapid-trigger" }
+                    if (Want "pad-stick-trim") { Open-MappingRow 16 "Left Trigger"; Cap "pad-stick-trim" }
+                    if (Want "icon-picker") { Capture-IconPicker }
                 } else { Refuse-Shots $gridWanted "the Xbox slot's Mappings tab did not open" }
             }
             if ($motionWanted) {
@@ -5804,26 +5969,7 @@ if ((Get-Count $slots) -ge 1) {
     [Win32]::ClickAt([int]($wrMc.Left + 0.383 * $mw), [int]($wrMc.Top + 0.6897 * $mh)); Start-Sleep -Milliseconds 800  # its Disconnect action chip
     # Best effort: expand the Target combo (a StackPanel ComboBox in the editor,
     # not an opaque grid cell) so all four target modes show. Capture either way.
-    $cbCondM = New-Object System.Windows.Automation.PropertyCondition(
-        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-        [System.Windows.Automation.ControlType]::ComboBox)
-    $liCondM = New-Object System.Windows.Automation.PropertyCondition(
-        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-        [System.Windows.Automation.ControlType]::ListItem)
-    $padPageM = Find-UIA -Aid "PadPageView"
-    $searchM = if ($padPageM) { $padPageM } else { $script:uiaWin }
-    $targetCombo = $null
-    foreach ($cb in $searchM.FindAll($TD, $cbCondM)) {
-        $expM = $null
-        try { $expM = $cb.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern) } catch { continue }
-        try { $expM.Expand(); Start-Sleep -Milliseconds 350 } catch { continue }
-        $hasTrig = $false
-        foreach ($ci in $cb.FindAll($TD, $liCondM)) { if ($ci.Current.Name -like "*Triggering Device*") { $hasTrig = $true; break } }
-        if ($hasTrig) { $targetCombo = $cb; break }
-        try { $expM.Collapse(); Start-Sleep -Milliseconds 150 } catch {}
-    }
-    if ($targetCombo) { Write-Host "  Expanded Disconnect Target dropdown" -ForegroundColor Green }
-    else { Write-Host "  Target combo not UIA-visible; capturing editor with Target field as-is" -ForegroundColor Yellow }
+    $targetCombo = Expand-DisconnectTarget
     if ($script:MacrosPresent) { Cap "macro-disconnect" } else { Write-Host "  skipped macro-disconnect (no macros)" -ForegroundColor Yellow }
     if ($targetCombo) { try { $targetCombo.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern).Collapse() } catch {} }
 

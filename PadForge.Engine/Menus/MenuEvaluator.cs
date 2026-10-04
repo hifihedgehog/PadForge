@@ -36,6 +36,11 @@ namespace PadForge.Engine.Menus
 
         public long PulseUntilMs;
 
+        /// <summary>Counts every commit pulse, so a reader can tell a pulse
+        /// armed this frame from one still running, even when two land in
+        /// the same millisecond. Never reset.</summary>
+        public int PulseSeq;
+
         /// <summary>Button-pair grid (hotbar) stepped selection, -1 =
         /// nothing selected yet. Persists across presses so each press
         /// moves one cell, the hotbar contract.</summary>
@@ -339,6 +344,7 @@ namespace PadForge.Engine.Menus
         {
             st.PulsedIndex = index;
             st.PulseUntilMs = nowMs + CommitPulseMs;
+            st.PulseSeq++;
         }
     }
 }

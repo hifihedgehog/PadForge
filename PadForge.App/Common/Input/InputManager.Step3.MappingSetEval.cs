@@ -1175,6 +1175,9 @@ namespace PadForge.Common.Input
                 _suppressedSourcesBySlot[i] = null;
                 _suppressedScratchBySlot[i]?.Clear();
             }
+            // A commit recorded against a layer (DC20) belongs to the
+            // engagement this transition just cleared.
+            ClearLayerExitCommits();
         }
 
         /// <summary>Clears one slot's shift runtime state. Use when a single
@@ -2697,6 +2700,12 @@ namespace PadForge.Common.Input
                     WriteTriggerTarget(row.Target, combinedTrig, ref gp);
                 }
             }
+
+            // DC20: a menu commit made by leaving a layer reads the rows that
+            // layer reads, for the committed cell alone. After the loop, so it
+            // merges into whatever the engaged layer's rows wrote.
+            ApplyLayerExitCommitRows(state, mappingSet, rowsSnapshot, rowsSnapshotCount, activeMask,
+                thisDeviceGuid, globalAxisToButtonThreshold, slotIndex, ref gp);
         }
 
         /// <summary>True when any source on this row has Kind=InvertOnHold
@@ -4167,7 +4176,20 @@ namespace PadForge.Common.Input
             if (string.IsNullOrEmpty(activeMask)
                 || string.Equals(activeMask, "Base", System.StringComparison.Ordinal))
                 return FindBaseRowForTarget(mappingSet, targetName);
+            return FindRowUnderLayer(mappingSet, targetName, activeMask, out suppressed);
+        }
 
+        /// <summary>The row <paramref name="targetName"/> reads with the
+        /// non-Base <paramref name="layerMask"/> engaged, the lookup
+        /// <see cref="FindActiveRowForTarget"/> makes for the layer engaged
+        /// now. A layer-exit commit (DC20) makes the same lookup for the layer
+        /// it was made in.</summary>
+        private static MappingRow FindRowUnderLayer(
+            MappingSet mappingSet, string targetName, string layerMask, out bool suppressed)
+        {
+            suppressed = false;
+            if (mappingSet == null || string.IsNullOrEmpty(targetName)) return null;
+            string activeMask = layerMask;
             // A non-Base layer is engaged. Weigh the same two candidates
             // ApplyMappingSetToGamepad does: the layer's own row for the
             // target and the Base row. One walk, race-guarded the same way
@@ -4224,6 +4246,287 @@ namespace PadForge.Common.Input
             return false;
         }
 
+        // ── DC20: menu commits made by leaving a layer ──
+        //
+        // A layered menu sees its layer end one frame late, once
+        // GetEngagedLayerMask names another layer, and Touch Release commits
+        // on that disengage: Steam's mode-shift-end commit. Every row lookup
+        // here reads the layer engaged NOW, so the rows the departed layer
+        // reads, where an imported menu's cell bindings live, never saw the
+        // commit. The passes below evaluate that one commit on the layer it
+        // was made in: the row each target reads under that layer, through
+        // the same row evaluators, with every source but the committed cell
+        // at rest. The rest of the frame keeps the new layer.
+
+        [ThreadStatic] private static MappingRow t_exitCommitRow;
+        [ThreadStatic] private static List<MappingSource> t_exitCommitRest;
+        [ThreadStatic] private static string[] t_exitCommitLayers;
+        [ThreadStatic] private static MappingRow[] t_exitCommitTargetRows;
+        [ThreadStatic] private static string[] t_exitCommitTargetLayers;
+
+        /// <summary>True when <paramref name="src"/> reads a cell whose live
+        /// commit leaving <paramref name="layer"/> made, as its input or, on
+        /// an Invert on Hold modifier, as the button that inverts the row.</summary>
+        private static bool ReadsLayerExitCommit(MappingSource src, string layer, int slotIndex, long nowMs)
+        {
+            if (src == null) return false;
+            string descriptor = IsRowModifierSource(src) ? src.ParamModifier : src.Descriptor;
+            if (!SourceCoercion.TryParseMenuItem(descriptor, out int menuId, out int itemIndex)) return false;
+            return string.Equals(LayerExitCommitLayer(slotIndex, menuId, itemIndex, nowMs), layer,
+                System.StringComparison.Ordinal);
+        }
+
+        /// <summary>True when the commit of <paramref name="layer"/> reaches
+        /// <paramref name="row"/>: the row reads the committed cell, it is the
+        /// row its target reads under that layer (the lookup
+        /// <see cref="FindRowUnderLayer"/> makes), and the engaged layer does
+        /// not read it already. That is the departed layer's own row, or a
+        /// Base row the layer let through and the engaged layer does not.
+        /// <paramref name="activeMask"/> is never <paramref name="layer"/>.</summary>
+        private static bool LayerExitCommitReaches(MappingSet mappingSet, MappingRow row, string layer,
+            string activeMask, int slotIndex, long nowMs)
+        {
+            if (row == null || string.IsNullOrEmpty(row.Target)) return false;
+            bool isBase = string.Equals(row.LayerMask ?? "Base", "Base", System.StringComparison.Ordinal);
+            if (!isBase && !string.Equals(row.LayerMask, layer, System.StringComparison.Ordinal)) return false;
+            bool baseEngaged = string.IsNullOrEmpty(activeMask)
+                || string.Equals(activeMask, "Base", System.StringComparison.Ordinal);
+            if (isBase && baseEngaged) return false;
+
+            var sources = row.Sources;
+            if (sources == null) return false;
+            bool reads = false;
+            for (int i = 0; i < sources.Count && !reads; i++)
+                reads = ReadsLayerExitCommit(sources[i], layer, slotIndex, nowMs);
+            if (!reads) return false;
+
+            if (!ReferenceEquals(FindRowUnderLayer(mappingSet, row.Target, layer, out _), row)) return false;
+            if (isBase)
+            {
+                var readNow = FindRowUnderLayer(mappingSet, row.Target, activeMask, out _);
+                if (readNow != null
+                    && string.Equals(readNow.LayerMask ?? "Base", "Base", System.StringComparison.Ordinal))
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>The row as its layer-exit commit reads it: each source
+        /// that reads the committed cell as it is, every other source a
+        /// stand-in at rest. A stand-in keeps its source's place, its input or
+        /// modifier class, its device and its Invert, so Custom positions,
+        /// per-source runtime state and the bipolar pair line up with the real
+        /// row. It reads nothing: a Direct source with no descriptor reads
+        /// rest, and an Invert on Hold with no modifier never inverts. One per
+        /// thread, rebuilt on every use.</summary>
+        private static MappingRow LayerExitCommitStandIn(MappingRow row, string layer, int slotIndex, long nowMs)
+        {
+            var standIn = t_exitCommitRow ??= new MappingRow();
+            var pool = t_exitCommitRest ??= new List<MappingSource>(8);
+            standIn.Target = row.Target;
+            standIn.LayerMask = row.LayerMask;
+            standIn.CombineMode = row.CombineMode;
+            standIn.CombineExpression = row.CombineExpression;
+            standIn.SuppressBipolarPair = row.SuppressBipolarPair;
+            standIn.NoInherit = row.NoInherit;
+            standIn.TrimDeadzone = row.TrimDeadzone;
+            standIn.TrimRate = row.TrimRate;
+            standIn.TrimResetOnRelease = row.TrimResetOnRelease;
+            var list = standIn.Sources;
+            list.Clear();
+            var srcs = SnapshotSources(row, out int count);
+            for (int i = 0; i < count; i++)
+            {
+                var src = srcs[i];
+                if (src == null || ReadsLayerExitCommit(src, layer, slotIndex, nowMs))
+                {
+                    list.Add(src);
+                    continue;
+                }
+                while (pool.Count <= i) pool.Add(new MappingSource());
+                var rest = pool[i];
+                rest.Kind = IsRowModifierSource(src) ? "InvertOnHold" : "Direct";
+                rest.DeviceGuid = src.DeviceGuid;
+                rest.Invert = src.Invert;
+                list.Add(rest);
+            }
+            return standIn;
+        }
+
+        /// <summary>The gamepad row loop's layer-exit pass. Each row a live
+        /// commit reaches runs through the per-target row evaluator on its
+        /// stand-in and merges into its target the way a second contributor
+        /// does: a button ORs in, an axis or trigger keeps the larger value.
+        /// The row evaluators read each source on its own device, so every
+        /// device pass computes the same value, and Step 4's merge across the
+        /// passes keeps it once.</summary>
+        private static void ApplyLayerExitCommitRows(CustomInputState state, MappingSet mappingSet,
+            MappingRow[] rows, int count, string activeMask, string thisDeviceGuid, int threshold,
+            int slotIndex, ref Gamepad gp)
+        {
+            long nowMs = System.Environment.TickCount64;
+            if (!HasLayerExitCommit(slotIndex, nowMs)) return;
+            int layerCount = LayerExitCommitLayers(slotIndex, activeMask, nowMs, ref t_exitCommitLayers);
+            var layers = t_exitCommitLayers;
+            for (int r = 0; r < count; r++)
+            {
+                var row = rows[r];
+                if (row == null || string.IsNullOrEmpty(row.Target)) continue;
+                if (MappingSetMigrator.IsMotionAxisTarget(row.Target)
+                    || MappingSetMigrator.IsPressureTarget(row.Target)
+                    || string.Equals(row.Target, "DPad", System.StringComparison.Ordinal))
+                    continue;
+                for (int l = 0; l < layerCount; l++)
+                {
+                    string layer = layers[l];
+                    if (!LayerExitCommitReaches(mappingSet, row, layer, activeMask, slotIndex, nowMs)) continue;
+                    var standIn = LayerExitCommitStandIn(row, layer, slotIndex, nowMs);
+                    switch (TargetKindResolver.Resolve(row.Target))
+                    {
+                        case TargetKind.Button:
+                        case TargetKind.PovDirection:
+                            if (EvaluateButtonRow(state, standIn, thisDeviceGuid, slotIndex, row.Target,
+                                    threshold, out bool pressed) && pressed)
+                                WriteBoolTarget(row.Target, true, ref gp);
+                            break;
+                        case TargetKind.BipolarAxis:
+                            if (EvaluateBipolarAxisRow(state, standIn, thisDeviceGuid, slotIndex, row.Target,
+                                    out short axis))
+                            {
+                                float v = System.Math.Max(-1f, axis / 32767f);
+                                if (System.Math.Abs(v) > System.Math.Abs(ReadBipolarAxisTarget(row.Target, gp)))
+                                    WriteBipolarAxisTarget(row.Target, v, ref gp);
+                            }
+                            break;
+                        case TargetKind.Trigger:
+                            if (EvaluateRawTriggerRow(state, standIn, thisDeviceGuid, slotIndex, row.Target,
+                                    out short pull))
+                            {
+                                float v = (pull - short.MinValue) / 65535f;
+                                if (v > ReadTriggerTarget(row.Target, gp))
+                                    WriteTriggerTarget(row.Target, v, ref gp);
+                            }
+                            break;
+                    }
+                    break;
+                }
+            }
+        }
+
+        /// <summary>The rows live layer-exit commits reach for
+        /// <paramref name="targetName"/>, at most one per commit layer, in
+        /// <c>t_exitCommitTargetRows</c> with each layer beside it in
+        /// <c>t_exitCommitTargetLayers</c>. Returns how many.</summary>
+        private static int LayerExitCommitRowsForTarget(MappingSet mappingSet, string targetName,
+            int slotIndex, long nowMs)
+        {
+            if (mappingSet == null || string.IsNullOrEmpty(targetName)
+                || !HasLayerExitCommit(slotIndex, nowMs))
+                return 0;
+            string activeMask = GetEngagedLayerMask(slotIndex, mappingSet);
+            int layerCount = LayerExitCommitLayers(slotIndex, activeMask, nowMs, ref t_exitCommitLayers);
+            if (layerCount == 0) return 0;
+            var layers = t_exitCommitLayers;
+            var rows = t_exitCommitTargetRows;
+            var rowLayers = t_exitCommitTargetLayers;
+            if (rows == null || rows.Length < layerCount)
+            {
+                rows = t_exitCommitTargetRows = new MappingRow[System.Math.Max(2, layerCount)];
+                rowLayers = t_exitCommitTargetLayers = new string[rows.Length];
+            }
+            int n = 0;
+            for (int l = 0; l < layerCount; l++)
+            {
+                var row = FindRowUnderLayer(mappingSet, targetName, layers[l], out _);
+                if (!LayerExitCommitReaches(mappingSet, row, layers[l], activeMask, slotIndex, nowMs)) continue;
+                rows[n] = row;
+                rowLayers[n] = layers[l];
+                n++;
+            }
+            return n;
+        }
+
+        /// <summary>True when a live layer-exit commit presses the button
+        /// target <paramref name="targetName"/>.</summary>
+        private static bool LayerExitCommitPressesButton(CustomInputState state, MappingSet mappingSet,
+            string thisDeviceGuid, int slotIndex, string targetName, int threshold)
+        {
+            long nowMs = System.Environment.TickCount64;
+            int n = LayerExitCommitRowsForTarget(mappingSet, targetName, slotIndex, nowMs);
+            for (int i = 0; i < n; i++)
+            {
+                var standIn = LayerExitCommitStandIn(t_exitCommitTargetRows[i], t_exitCommitTargetLayers[i],
+                    slotIndex, nowMs);
+                if (EvaluateButtonRow(state, standIn, thisDeviceGuid, slotIndex, targetName, threshold,
+                        out bool pressed) && pressed)
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>The largest deflection live layer-exit commits give the
+        /// bipolar-axis target <paramref name="targetName"/>, in the
+        /// evaluator's signed-short form. False when no commit reaches it.</summary>
+        private static bool TryLayerExitCommitAxis(CustomInputState state, MappingSet mappingSet,
+            string thisDeviceGuid, int slotIndex, string targetName, out short value)
+        {
+            value = 0;
+            long nowMs = System.Environment.TickCount64;
+            int n = LayerExitCommitRowsForTarget(mappingSet, targetName, slotIndex, nowMs);
+            bool found = false;
+            for (int i = 0; i < n; i++)
+            {
+                var standIn = LayerExitCommitStandIn(t_exitCommitTargetRows[i], t_exitCommitTargetLayers[i],
+                    slotIndex, nowMs);
+                if (!EvaluateBipolarAxisRow(state, standIn, thisDeviceGuid, slotIndex, targetName, out short v))
+                    continue;
+                if (!found || System.Math.Abs((int)v) > System.Math.Abs((int)value)) value = v;
+                found = true;
+            }
+            return found;
+        }
+
+        /// <summary>The deepest pull live layer-exit commits give the trigger
+        /// target <paramref name="targetName"/>, in the Extended signed-short
+        /// form. False when no commit reaches it.</summary>
+        private static bool TryLayerExitCommitTrigger(CustomInputState state, MappingSet mappingSet,
+            string thisDeviceGuid, int slotIndex, string targetName, out short value)
+        {
+            value = short.MinValue;
+            long nowMs = System.Environment.TickCount64;
+            int n = LayerExitCommitRowsForTarget(mappingSet, targetName, slotIndex, nowMs);
+            bool found = false;
+            for (int i = 0; i < n; i++)
+            {
+                var standIn = LayerExitCommitStandIn(t_exitCommitTargetRows[i], t_exitCommitTargetLayers[i],
+                    slotIndex, nowMs);
+                if (!EvaluateRawTriggerRow(state, standIn, thisDeviceGuid, slotIndex, targetName, out short v))
+                    continue;
+                if (!found || v > value) value = v;
+                found = true;
+            }
+            return found;
+        }
+
+        /// <summary>The value <see cref="WriteBipolarAxisTarget"/> last wrote,
+        /// in the same [-1, +1] frame, Y included.</summary>
+        private static float ReadBipolarAxisTarget(string target, in Gamepad gp) => target switch
+        {
+            "LeftThumbAxisX" => gp.ThumbLX / 32767f,
+            "LeftThumbAxisY" => -gp.ThumbLY / 32767f,
+            "RightThumbAxisX" => gp.ThumbRX / 32767f,
+            "RightThumbAxisY" => -gp.ThumbRY / 32767f,
+            _ => 0f,
+        };
+
+        /// <summary>The value <see cref="WriteTriggerTarget"/> last wrote, 0 to 1.</summary>
+        private static float ReadTriggerTarget(string target, in Gamepad gp) => target switch
+        {
+            "LeftTrigger" => gp.LeftTrigger / 65535f,
+            "RightTrigger" => gp.RightTrigger / 65535f,
+            _ => 0f,
+        };
+
         /// <summary>Evaluates a button-class target through the per-VC
         /// MappingSet. <paramref name="value"/> = final combined bool;
         /// returns <c>false</c> when no row exists for the target (caller
@@ -4233,9 +4536,41 @@ namespace PadForge.Common.Input
             int slotIndex, string targetName, int globalAxisToButtonThreshold,
             out bool value)
         {
+            bool owned = TryEvaluateMappingSetButtonCore(state, mappingSet, thisDeviceGuid,
+                slotIndex, targetName, globalAxisToButtonThreshold, out value);
+            // DC20: a menu commit made by leaving a layer presses the target
+            // its row has under that layer too. A press only: one that reads
+            // nothing leaves the target to the row above, legacy fallback
+            // included.
+            if (LayerExitCommitPressesButton(state, mappingSet, thisDeviceGuid, slotIndex,
+                    targetName, globalAxisToButtonThreshold))
+            {
+                value = true;
+                return true;
+            }
+            return owned;
+        }
+
+        private static bool TryEvaluateMappingSetButtonCore(
+            CustomInputState state, MappingSet mappingSet, string thisDeviceGuid,
+            int slotIndex, string targetName, int globalAxisToButtonThreshold,
+            out bool value)
+        {
             value = false;
             var row = FindActiveRowForTarget(mappingSet, targetName, slotIndex, out bool shiftSuppressed);
             if (shiftSuppressed) return true; // shift layer forces this target off; skip legacy fallback
+            return EvaluateButtonRow(state, row, thisDeviceGuid, slotIndex, targetName,
+                globalAxisToButtonThreshold, out value);
+        }
+
+        /// <summary>The button evaluation of the row the lookup picked. A
+        /// layer-exit commit's stand-in row (DC20) runs through it too.</summary>
+        private static bool EvaluateButtonRow(
+            CustomInputState state, MappingRow row, string thisDeviceGuid,
+            int slotIndex, string targetName, int globalAxisToButtonThreshold,
+            out bool value)
+        {
+            value = false;
             if (row == null || row.Sources == null || row.Sources.Count == 0)
                 return false;
 
@@ -4320,9 +4655,39 @@ namespace PadForge.Common.Input
             int slotIndex, string targetName,
             out short value)
         {
+            bool owned = TryEvaluateMappingSetBipolarAxisCore(state, mappingSet, thisDeviceGuid,
+                slotIndex, targetName, out value);
+            // DC20: a layer-exit commit's row merges in like a second
+            // contributor, the larger deflection winning.
+            if (TryLayerExitCommitAxis(state, mappingSet, thisDeviceGuid, slotIndex, targetName,
+                    out short commit)
+                && System.Math.Abs((int)commit) > System.Math.Abs((int)value))
+            {
+                value = commit;
+                return true;
+            }
+            return owned;
+        }
+
+        private static bool TryEvaluateMappingSetBipolarAxisCore(
+            CustomInputState state, MappingSet mappingSet, string thisDeviceGuid,
+            int slotIndex, string targetName,
+            out short value)
+        {
             value = 0;
             var row = FindActiveRowForTarget(mappingSet, targetName, slotIndex, out bool shiftSuppressed);
             if (shiftSuppressed) return true; // shift layer forces this target off; skip legacy fallback
+            return EvaluateBipolarAxisRow(state, row, thisDeviceGuid, slotIndex, targetName, out value);
+        }
+
+        /// <summary>The bipolar-axis evaluation of the row the lookup picked.
+        /// A layer-exit commit's stand-in row (DC20) runs through it too.</summary>
+        private static bool EvaluateBipolarAxisRow(
+            CustomInputState state, MappingRow row, string thisDeviceGuid,
+            int slotIndex, string targetName,
+            out short value)
+        {
+            value = 0;
             if (row == null || row.Sources == null || row.Sources.Count == 0)
                 return false;
 
@@ -4567,9 +4932,39 @@ namespace PadForge.Common.Input
             int slotIndex, string targetName,
             out short value)
         {
+            bool owned = TryEvaluateMappingSetRawTriggerCore(state, mappingSet, thisDeviceGuid,
+                slotIndex, targetName, out value);
+            // DC20: a layer-exit commit's row merges in, the deeper pull winning.
+            if (TryLayerExitCommitTrigger(state, mappingSet, thisDeviceGuid, slotIndex, targetName,
+                    out short commit)
+                && commit > value)
+            {
+                value = commit;
+                return true;
+            }
+            return owned;
+        }
+
+        private static bool TryEvaluateMappingSetRawTriggerCore(
+            CustomInputState state, MappingSet mappingSet, string thisDeviceGuid,
+            int slotIndex, string targetName,
+            out short value)
+        {
             value = short.MinValue;
             var row = FindActiveRowForTarget(mappingSet, targetName, slotIndex, out bool shiftSuppressed);
             if (shiftSuppressed) return true; // shift layer forces this target off; skip legacy fallback
+            return EvaluateRawTriggerRow(state, row, thisDeviceGuid, slotIndex, targetName, out value);
+        }
+
+        /// <summary>The trigger evaluation of the row the lookup picked, in
+        /// the Extended signed-short form. A layer-exit commit's stand-in row
+        /// (DC20) runs through it too.</summary>
+        private static bool EvaluateRawTriggerRow(
+            CustomInputState state, MappingRow row, string thisDeviceGuid,
+            int slotIndex, string targetName,
+            out short value)
+        {
+            value = short.MinValue;
             if (row == null || row.Sources == null || row.Sources.Count == 0)
                 return false;
 

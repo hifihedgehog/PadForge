@@ -192,6 +192,7 @@ namespace PadForge.Common.Input
             InvalidateMenuContextsSnapshot();
             RemoveMenuDirectPresses(_ => true);
             _activeMenuOverlay = null;
+            ClearLayerExitCommits();
         }
 
         /// <summary>Drops one slot's menu contexts, driver records and
@@ -214,6 +215,8 @@ namespace PadForge.Common.Input
             var cur = _activeMenuOverlay;
             if (cur != null && cur.Slot == slot)
                 _activeMenuOverlay = null;
+            if ((uint)slot < (uint)s_layerExitCommits.Length)
+                System.Threading.Volatile.Write(ref s_layerExitCommits[slot], null);
         }
 
         internal void ClearMenuRuntimeForMenu(int slot, int menuId)
@@ -228,6 +231,138 @@ namespace PadForge.Common.Input
             var overlay = _activeMenuOverlay;
             if (overlay != null && overlay.Slot == slot && overlay.Menu?.MenuId == menuId)
                 _activeMenuOverlay = null;
+            if ((uint)slot < (uint)s_layerExitCommits.Length)
+            {
+                var commits = System.Threading.Volatile.Read(ref s_layerExitCommits[slot]);
+                if (commits != null && Array.Exists(commits, c => c.MenuId == menuId))
+                {
+                    var kept = Array.FindAll(commits, c => c.MenuId != menuId);
+                    System.Threading.Volatile.Write(ref s_layerExitCommits[slot], kept.Length == 0 ? null : kept);
+                }
+            }
+        }
+
+        // ── DC20: menu commits made by leaving a layer ──
+
+        /// <summary>One live commit a menu made when its layer ended.</summary>
+        private readonly struct LayerExitCommit
+        {
+            public readonly int MenuId;
+            public readonly int ItemIndex;
+            public readonly string Layer;
+            public readonly long UntilMs;
+
+            public LayerExitCommit(int menuId, int itemIndex, string layer, long untilMs)
+            {
+                MenuId = menuId;
+                ItemIndex = itemIndex;
+                Layer = layer;
+                UntilMs = untilMs;
+            }
+        }
+
+        /// <summary>Per slot, the live menu commits that leaving a layer made
+        /// (DC20). Such a commit lands in a frame where its layer has already
+        /// ended, so the row lookup and the macro gate, which read the layer
+        /// engaged now, never ran the departed layer's rows and macros for it.
+        /// They read this record to evaluate that one commit on its own layer.
+        /// The menu tick publishes a new array on every change, so readers,
+        /// the UI's previews among them, iterate an immutable snapshot. An
+        /// entry lives exactly as long as its commit pulse.</summary>
+        private static readonly LayerExitCommit[][] s_layerExitCommits = new LayerExitCommit[MaxPads][];
+
+        private static void ClearLayerExitCommits()
+        {
+            for (int i = 0; i < s_layerExitCommits.Length; i++)
+                System.Threading.Volatile.Write(ref s_layerExitCommits[i], null);
+        }
+
+        /// <summary>Called after each menu evaluator step. A commit armed this
+        /// step (the pulse count moved) while the menu's own named layer gate
+        /// is closed was made by leaving that layer, Steam's mode-shift-end
+        /// commit, and is recorded with that layer. Any new commit of the same
+        /// cell replaces its record, and expired records drop out.</summary>
+        private static void NoteMenuCommitLayer(int slot, MenuDefinitionEntry def, MenuRuntimeState st,
+            string mask, bool layerOk, int pulseSeqBefore, long nowMs)
+        {
+            if ((uint)slot >= (uint)s_layerExitCommits.Length || def == null || st == null) return;
+            var cur = System.Threading.Volatile.Read(ref s_layerExitCommits[slot]);
+            bool newPulse = st.PulseSeq != pulseSeqBefore && st.PulsedIndex >= 0;
+            bool expired = false;
+            if (cur != null)
+                for (int i = 0; i < cur.Length; i++)
+                    if (nowMs >= cur[i].UntilMs) { expired = true; break; }
+            if (!newPulse && !expired) return;
+
+            bool leftTheLayer = newPulse && !layerOk && mask.Length > 0
+                && !string.Equals(mask, "Base", StringComparison.Ordinal);
+            var next = new System.Collections.Generic.List<LayerExitCommit>(2);
+            if (cur != null)
+            {
+                foreach (var c in cur)
+                {
+                    if (nowMs >= c.UntilMs) continue;
+                    if (newPulse && c.MenuId == def.MenuId && c.ItemIndex == st.PulsedIndex) continue;
+                    next.Add(c);
+                }
+            }
+            if (leftTheLayer)
+                next.Add(new LayerExitCommit(def.MenuId, st.PulsedIndex, mask, st.PulseUntilMs));
+            System.Threading.Volatile.Write(ref s_layerExitCommits[slot], next.Count == 0 ? null : next.ToArray());
+        }
+
+        /// <summary>The layer whose ending made the live commit of this menu
+        /// cell on the slot, or null when no such commit is live (DC20).</summary>
+        internal static string LayerExitCommitLayer(int slot, int menuId, int itemIndex, long nowMs)
+        {
+            if ((uint)slot >= (uint)s_layerExitCommits.Length) return null;
+            var cur = System.Threading.Volatile.Read(ref s_layerExitCommits[slot]);
+            if (cur == null) return null;
+            for (int i = 0; i < cur.Length; i++)
+            {
+                var c = cur[i];
+                if (c.MenuId == menuId && c.ItemIndex == itemIndex && nowMs < c.UntilMs)
+                    return c.Layer;
+            }
+            return null;
+        }
+
+        /// <summary>True while a layer-exit commit is live on the slot, the
+        /// cheap test every row pass makes before walking anything.</summary>
+        internal static bool HasLayerExitCommit(int slot, long nowMs)
+        {
+            if ((uint)slot >= (uint)s_layerExitCommits.Length) return false;
+            var cur = System.Threading.Volatile.Read(ref s_layerExitCommits[slot]);
+            if (cur == null) return false;
+            for (int i = 0; i < cur.Length; i++)
+                if (nowMs < cur[i].UntilMs) return true;
+            return false;
+        }
+
+        /// <summary>Writes each distinct layer whose ending made a commit still
+        /// live on the slot into <paramref name="layers"/>, growing it as
+        /// needed, and returns how many. <paramref name="except"/>, the layer
+        /// engaged now, is left out: its rows read the cell in the ordinary
+        /// pass.</summary>
+        internal static int LayerExitCommitLayers(int slot, string except, long nowMs, ref string[] layers)
+        {
+            if ((uint)slot >= (uint)s_layerExitCommits.Length) return 0;
+            var cur = System.Threading.Volatile.Read(ref s_layerExitCommits[slot]);
+            if (cur == null) return 0;
+            int n = 0;
+            for (int i = 0; i < cur.Length; i++)
+            {
+                var c = cur[i];
+                if (nowMs >= c.UntilMs || string.Equals(c.Layer, except, StringComparison.Ordinal)) continue;
+                bool seen = false;
+                for (int j = 0; j < n && !seen; j++)
+                    seen = string.Equals(layers[j], c.Layer, StringComparison.Ordinal);
+                if (seen) continue;
+                if (layers == null || n == layers.Length)
+                    Array.Resize(ref layers, Math.Max(2, n * 2));
+                layers[n++] = c.Layer;
+            }
+            return n;
         }
 
         /// <summary>Drops one device's menu contexts (and its overlay
@@ -423,6 +558,10 @@ namespace PadForge.Common.Input
                     double dx = 0, dy = 0;
                     bool physical;
                     bool clicked = false;
+                    // DC20: each evaluator step below is followed by
+                    // NoteMenuCommitLayer, which records a commit the layer
+                    // ending made so its rows and macros can read it.
+                    int pulseSeqBefore = ctx.State.PulseSeq;
                     if (ctx.IsButtonPair)
                     {
                         // Button-pair host (v25): the hover vector composes
@@ -449,6 +588,7 @@ namespace PadForge.Common.Input
                         {
                             MenuEvaluator.StepButtonPairGrid(ctx.State, def, layerOk,
                                 up, down, left, right, nowMs);
+                            NoteMenuCommitLayer(slot, def, ctx.State, mask, layerOk, pulseSeqBefore, nowMs);
                             // Hotbars keep their step-and-pulse contract in
                             // every mode; only the overlay's lifetime follows
                             // the stay-open flag (#413), so a layer-held
@@ -571,6 +711,7 @@ namespace PadForge.Common.Input
                         MenuEvaluator.Update(ctx.State, def, surfaceActive, clicked,
                             dx, dy, (dx + 1.0) / 2.0, (dy + 1.0) / 2.0, nowMs);
                     }
+                    NoteMenuCommitLayer(slot, def, ctx.State, mask, layerOk, pulseSeqBefore, nowMs);
 
                     PublishMenuOverlay(slot, ud.InstanceGuid, def, ctx.State, publishActive, nowMs, engagedLayer);
                 }
@@ -1067,6 +1208,7 @@ namespace PadForge.Common.Input
             // cells merely because a restricted peer shared the slot,
             // breaking many-device independence (audit 2026-07-16).
             Guid[] restrictedDevices = RestrictedSnapshot();
+            long nowMs = Environment.TickCount64;
 
             for (int slot = 0; slot < MaxPads && slot < sets.Length; slot++)
             {
@@ -1108,6 +1250,12 @@ namespace PadForge.Common.Input
                                     if (mac != null && string.Equals(
                                         mac.Name, item.MacroName, StringComparison.OrdinalIgnoreCase))
                                     {
+                                        // DC20: a commit the layer ending made
+                                        // carries that layer to the macro gate.
+                                        // A second cell this pass keeps it.
+                                        string exitLayer = LayerExitCommitLayer(slot, def.MenuId, item.Index, nowMs);
+                                        if (mac.MenuTriggerTick != MacroPassTick || exitLayer != null)
+                                            mac.MenuTriggerExitLayer = exitLayer;
                                         mac.MenuTriggerTick = MacroPassTick;
                                         break;
                                     }

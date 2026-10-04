@@ -657,7 +657,9 @@ namespace PadForge.Common.Input
                 // stop on disengage. Applied before the WasTriggerActive
                 // latch so re-engaging the layer is a fresh rising edge.
                 bool layerOpen = MacroLayerGateOpen(macro);
-                if (!layerOpen) triggerActive = false;
+                // DC20: a menu commit made by leaving a layer is gated by
+                // that layer, for that commit's trigger alone.
+                if (!layerOpen) triggerActive = triggerActive && LayerExitCommitOpensMacro(macro, menuCellHeld);
 
                 // Toggle mode (#238): a trigger-level latch. Each raw
                 // rising edge flips it, and downstream sees the LATCH as
@@ -1000,6 +1002,62 @@ namespace PadForge.Common.Input
             if (!SlotDeclaresMask(ownSet, mask))
                 return AnySlotEngages(sets, mask);
             return false;
+        }
+
+        /// <summary>DC20. With the macro's layer gate closed on the layer
+        /// engaged now, true when what fired the macro is a live menu commit
+        /// that a layer's ending made, and the gate opens on that layer. Two
+        /// shapes carry one: a macro cell's stamp, which records the layer,
+        /// and an imported cell binding, whose macro triggers on the cell's
+        /// own descriptor. A trigger with any other part (a button, a POV, a
+        /// gesture, an axis, another descriptor, Always or a custom
+        /// expression) keeps the gate closed: those parts are the departed
+        /// layer's other sources, inactive after the exit.</summary>
+        private static bool LayerExitCommitOpensMacro(MacroItem macro, bool menuCellHeld)
+        {
+            if (menuCellHeld && macro.MenuTriggerExitLayer != null
+                && MacroLayerGateOpenOn(macro, macro.MenuTriggerExitLayer))
+                return true;
+
+            if (macro.TriggerMode == MacroTriggerMode.Always
+                || macro.TriggerMode == MacroTriggerMode.CustomExpression
+                || macro.UsesRawTrigger || macro.TriggerButtons != 0
+                || macro.UsesPovTrigger || macro.UsesGestureTrigger || macro.UsesAxisTrigger)
+                return false;
+            var entries = macro.GetTriggerInputEntries();
+            long nowMs = Environment.TickCount64;
+            bool any = false;
+            for (int i = 0; i < entries.Count; i++)
+            {
+                var e = entries[i];
+                if (e.AxisTarget != MacroAxisTarget.None || e.RawButton >= 0
+                    || !string.IsNullOrEmpty(e.Pov) || !string.IsNullOrEmpty(e.GestureDescriptor))
+                    return false;
+                if (string.IsNullOrEmpty(e.SourceDescriptor)) continue;
+                if (!PadForge.Engine.Common.Mapping.SourceCoercion.TryParseMenuItem(
+                        e.SourceDescriptor, out int menuId, out int itemIndex))
+                    return false;
+                string layer = LayerExitCommitLayer(macro.PadIndex, menuId, itemIndex, nowMs);
+                if (layer == null || !MacroLayerGateOpenOn(macro, layer)) return false;
+                any = true;
+            }
+            return any;
+        }
+
+        /// <summary>The layer gate as it reads with <paramref name="engaged"/>
+        /// engaged on the macro's own slot, the departed layer of a commit
+        /// its ending made (DC20). Base follows the Base-row contract the
+        /// live gate uses: open under a layer that inherits unmapped targets.</summary>
+        private static bool MacroLayerGateOpenOn(MacroItem macro, string engaged)
+        {
+            string mask = macro.LayerMask;
+            if (string.IsNullOrEmpty(mask)) return true;
+            if (string.Equals(mask, engaged, StringComparison.Ordinal)) return true;
+            if (!string.Equals(mask, "Base", StringComparison.Ordinal)) return false;
+            var sets = SettingsManager.SlotMappingSets;
+            int slot = macro.PadIndex;
+            var ownSet = sets != null && slot >= 0 && slot < sets.Length ? sets[slot] : null;
+            return ownSet != null && LayerInheritsUnmapped(ownSet, engaged);
         }
 
         /// <summary>True when any slot's set currently engages the mask
@@ -4595,7 +4653,9 @@ namespace PadForge.Common.Input
                 // path: applied before the latch so re-engage is a fresh
                 // rising edge.
                 bool layerOpen = MacroLayerGateOpen(macro);
-                if (!layerOpen) triggerActive = false;
+                // DC20: a menu commit made by leaving a layer is gated by
+                // that layer, for that commit's trigger alone.
+                if (!layerOpen) triggerActive = triggerActive && LayerExitCommitOpensMacro(macro, menuCellHeld);
 
                 // Toggle mode (#238): a trigger-level latch. Each raw
                 // rising edge flips it, and downstream sees the LATCH as

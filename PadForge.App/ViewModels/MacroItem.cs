@@ -2646,6 +2646,14 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public long MenuTriggerTick { get; set; } = -1;
 
+        /// <summary>The layer a cell's commit was made in, when leaving that
+        /// layer made it (DC20), stamped beside <see cref="MenuTriggerTick"/>.
+        /// The macro's Layer scope reads that commit against this layer, not
+        /// the one engaged after the exit. Null for every other fire. Poll
+        /// thread only.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string MenuTriggerExitLayer { get; set; }
+
         /// <summary>Raw trigger state on the previous frame for the Toggle
         /// mode's edge detector (#238). Separate from
         /// <see cref="WasTriggerActive"/>, which stores the LATCH the

@@ -48,7 +48,7 @@ PadForge.sln
 │   ├── Common/
 │   │   ├── SettingsManager.cs     Static: device/setting collections, assignment, defaults
 │   │   ├── ControllerIcons.cs     SVG path data for controller type icons
-│   │   ├── DriverInstaller.cs     HidHide, MIDI Services and SteamVR install/uninstall, legacy
+│   │   ├── DriverInstaller.cs     HidHide and SteamVR install/uninstall, older MIDI runtime uninstall, legacy
 │   │   │                          ViGEmBus/vJoy removal (HIDMaestro installs its own driver)
 │   │   ├── HidHideController.cs   HidHide IOCTL API (blacklist, whitelist, cloaking)
 │   │   ├── StartupHelper.cs       Launch-at-logon Task Scheduler task
@@ -64,7 +64,9 @@ PadForge.sln
 │   │       ├── InputManager.Step6.RetrieveOutputStates.cs  Copy combined output for UI
 │   │       ├── HMaestroVirtualController.cs   HIDMaestro VC for Xbox / PlayStation / Nintendo / Extended types
 │   │       ├── KeyboardMouseVirtualController.cs  Virtual keyboard + mouse output
-│   │       └── MidiVirtualController.cs       Virtual MIDI device output
+│   │       ├── MidiVirtualController.cs       Virtual MIDI device output
+│   │       ├── MidiApiSelection.cs            Picks the in-box Windows.Devices.Midi2 or the older App SDK runtime
+│   │       └── MidiBackend*.cs                The two MIDI APIs behind one interface
 │   │
 │   ├── Views/
 │   │   ├── DashboardPage.xaml / .cs         Slot cards, engine stats, driver status
@@ -175,7 +177,8 @@ All native DLLs, driver installers, and model assets are included in the reposit
 CommunityToolkit.Mvvm 8.2.2                        MVVM data binding
 Concentus 2.2.2                                    Opus codec for DualSense Bluetooth speaker and microphone audio
 HelixToolkit.Core.Wpf 2.27.3                       3D viewport rendering
-Microsoft.Windows.Devices.Midi2 1.0.16-rc.3.7      Virtual MIDI device output (from nuget-local/)
+Microsoft.Windows.CsWinRT 2.2.0                    Projection of the in-box Windows.Devices.Midi2 (metadata in Resources/WinMD)
+Microsoft.Windows.Devices.Midi2 1.0.16-rc.3.7      Older MIDI runtime, for PCs that still have it (from nuget-local/)
 NAudio.Wasapi 2.2.1                                WASAPI loopback capture and output
 Nefarius.Utilities.DeviceManagement 5.2.0          Driver-store installs for the DualShock 3 Bluetooth stack
 System.Management 10.0.11                          WMI queries for the handheld hidden-button learner
@@ -241,7 +244,7 @@ Four more features load a library the vendor's own software installs, and PadFor
 
 One more ARM64 piece lives in the SDL fork, not in PadForge. The fork's Xbox Elite paddle reader (`SDL_XINPUT_PADDLES`) builds for x64 and, since fork commit a1416320e2, for ARM64. It has two routes. The Bluetooth route uses public WinRT calls. The USB and Xbox Wireless Adapter route reads an undocumented format from the Windows GameInput service, so the fork switches it on only where the files behind that format belong to a version family it has read, by product version: `GameInputSvc.exe` and `GameInput.dll` 0.2309.26100 from revision 8875, `Windows.Gaming.Input.dll` 10.0.26100 from 8737 and `drivers\xboxgip.sys` 10.0.26100 from 8972. `GameInputRedist.dll` is optional, and must be major version 3 when it is there. That is Windows 11 24H2 or 25H2 at build 26100.8973 or 26200.8973 (July 28, 2026) or later. On Windows 10 and older Windows 11 the route stays off, and paddles are read over Bluetooth only. The version resource carries no architecture, so one table serves x64 and ARM64. Until fork commit 5df5eff539 the check was five exact file hashes. They matched the Windows updates dated 2026-08-27 to 2026-09-14 with GameInput redistributable 3.3.221.0, and no ARM64 installation (hifihedgehog/SDL#32). When the route stays off, the joystick's `SDL.joystick.xinput.paddle.error` property holds the reason. PadForge does not read it yet.
 
-Drivers that install into Windows follow the machine. HIDMaestro 1.10.0 and BthPS3 3.2.1 each carry an x64 and an ARM64 payload and install the one that matches, the DualShock 3 WinUSB package is signed with the matching catalog OS, and the Windows MIDI Services download picks the `-arm64` installer on an ARM64 machine.
+Drivers that install into Windows follow the machine. HIDMaestro 1.10.0 and BthPS3 3.2.1 each carry an x64 and an ARM64 payload and install the one that matches, and the DualShock 3 WinUSB package is signed with the matching catalog OS. Windows MIDI Services needs no download. The in-box API is part of Windows on both architectures, and the C#/WinRT projection PadForge builds is managed code.
 
 Of the Visual C++ runtime, both builds bundle `vcruntime140.dll` and `msvcp140.dll`. `SDL3.dll` imports `msvcp140.dll` for the Elite paddle reader, which is C++. Neither item carries an `Exists` condition, so a missing file stops the build and names it. `vcruntime140_1.dll` is x64 only. It holds an exception handler that exists for the x64 ABI alone, and the copy in Microsoft's ARM64 redist folder is an x64 image. `BundledSdlRuntimeImportsTests` reads each bundled `SDL3.dll` for the runtime DLLs it names and fails when one is not in that architecture's `Resources/VisualCpp` folder. It did exactly that when the ARM64 `SDL3.dll` first arrived with the paddle reader in it.
 
@@ -298,7 +301,7 @@ HIDMaestro ships 231 profiles. PadForge offers the 133 that carry a captured HID
 
 Non-gamepad virtuals:
 - **KeyboardMouse**: `KeyboardMouseVirtualController.cs`, up to 16 simultaneous
-- **MIDI**: `MidiVirtualController.cs` via Windows MIDI Services 2, up to 16 simultaneous
+- **MIDI**: `MidiVirtualController.cs` via Windows MIDI Services, up to 16 simultaneous. The in-box Windows.Devices.Midi2 (Windows 11 25H2 from the late-November 2026 update) is tried first, and the older App SDK runtime serves PCs that still have it
 - **VR**: `HMaestroVRController.cs`, one SteamVR left and right hand pair through HIDMaestro's OpenVR driver, one slot at most
 
 ### Mapping Descriptors

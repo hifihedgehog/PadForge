@@ -106,6 +106,7 @@ namespace PadForge.ViewModels
             Title = Strings.Instance.Settings_Title;
             OnPropertyChanged(nameof(HidHideStatusText));
             OnPropertyChanged(nameof(MidiServicesStatusText));
+            OnPropertyChanged(nameof(MidiServicesDetailText));
             OnPropertyChanged(nameof(SteamVrStatusText));
             // Both build their text from Strings.Instance, so they are exactly
             // as culture-dependent as the two above and were the pair this
@@ -481,66 +482,122 @@ namespace PadForge.ViewModels
         //  Windows MIDI Services
         // ─────────────────────────────────────────────
 
-        private bool _isMidiServicesInstalled;
+        // Microsoft deleted the Windows MIDI Services runtime installers on
+        // 2026-10-01, so there is nothing left to install. The card says
+        // which API PadForge drives, or what the PC lacks, and offers to
+        // uninstall the older runtime where one is still installed.
 
-        /// <summary>Whether Windows MIDI Services is available.</summary>
-        public bool IsMidiServicesInstalled
+        private Common.Input.MidiApiKind _activeMidiApi;
+
+        /// <summary>The API PadForge drives on this PC
+        /// (<see cref="Common.Input.MidiApiSelection"/>).</summary>
+        internal Common.Input.MidiApiKind ActiveMidiApi
         {
-            get => _isMidiServicesInstalled;
+            get => _activeMidiApi;
             set
             {
-                if (SetProperty(ref _isMidiServicesInstalled, value))
-                {
-                    OnPropertyChanged(nameof(MidiServicesStatusText));
-                    _installMidiServicesCommand?.NotifyCanExecuteChanged();
-                    _uninstallMidiServicesCommand?.NotifyCanExecuteChanged();
-                }
+                if (_activeMidiApi == value) return;
+                _activeMidiApi = value;
+                OnPropertyChanged(nameof(IsMidiAvailable));
+                OnMidiCardChanged();
             }
         }
 
-        /// <summary>MIDI Services status display text.</summary>
-        public string MidiServicesStatusText => _isMidiServicesInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
+        private bool _isMidiRuntimeInstalled;
 
-        private string _midiServicesVersion = string.Empty;
-
-        /// <summary>MIDI Services version string.</summary>
-        public string MidiServicesVersion
+        /// <summary>Whether the older Windows MIDI Services runtime is
+        /// installed. It can be, beside the in-box API, after the November
+        /// update.</summary>
+        public bool IsMidiRuntimeInstalled
         {
-            get => _midiServicesVersion;
-            set => SetProperty(ref _midiServicesVersion, value);
+            get => _isMidiRuntimeInstalled;
+            set
+            {
+                if (SetProperty(ref _isMidiRuntimeInstalled, value))
+                    OnMidiCardChanged();
+            }
         }
 
-        private RelayCommand _installMidiServicesCommand;
+        private string _midiRuntimeVersion = string.Empty;
 
-        /// <summary>True if the OS meets the minimum version for Windows MIDI Services (Win11 24H2, build 26100).</summary>
-        public static bool IsMidiOsSupported => Environment.OSVersion.Version.Build >= 26100;
+        /// <summary>The older runtime's version, from its uninstall entry.</summary>
+        public string MidiRuntimeVersion
+        {
+            get => _midiRuntimeVersion;
+            set
+            {
+                if (SetProperty(ref _midiRuntimeVersion, value ?? string.Empty))
+                    OnPropertyChanged(nameof(MidiServicesDetailText));
+            }
+        }
 
-        /// <summary>Instance forwarder for XAML. A Binding path resolves
-        /// against the DataContext INSTANCE and cannot reach a static member,
-        /// so SettingsPage's `{Binding IsMidiOsSupported}` DataTrigger never
-        /// evaluated and the Win11-24H2-required tooltip was never set. Bind
-        /// this instead. Never raises PropertyChanged because the OS build
-        /// cannot change while the app runs.</summary>
-        public bool MidiOsSupported => IsMidiOsSupported;
+        private bool _midiApiNotStarted;
 
-        /// <summary>Command to download and install Windows MIDI Services.</summary>
-        public RelayCommand InstallMidiServicesCommand =>
-            _installMidiServicesCommand ??= new RelayCommand(
-                () => InstallMidiServicesRequested?.Invoke(this, EventArgs.Empty),
-                () => !_isMidiServicesInstalled && IsMidiOsSupported);
+        /// <summary>True when an API is present but its service did not
+        /// start: Legacy API mode, or a stopped or wedged service
+        /// (<see cref="Common.Input.MidiApiSelection.ForCard"/>).</summary>
+        public bool MidiApiNotStarted
+        {
+            get => _midiApiNotStarted;
+            set
+            {
+                if (SetProperty(ref _midiApiNotStarted, value))
+                    OnMidiCardChanged();
+            }
+        }
+
+        /// <summary>Whether either API can run MIDI slots and MIDI input.</summary>
+        public bool IsMidiAvailable => _activeMidiApi != Common.Input.MidiApiKind.None;
+
+        /// <summary>The card's status line: which API, or that none is.</summary>
+        public string MidiServicesStatusText => _activeMidiApi switch
+        {
+            Common.Input.MidiApiKind.InBox => Strings.Instance.Settings_MidiStatusInBox,
+            Common.Input.MidiApiKind.AppSdk => Strings.Instance.Settings_MidiStatusRuntime,
+            _ => _midiApiNotStarted
+                ? Strings.Instance.Settings_MidiStatusNotRunning
+                : Strings.Instance.Settings_MidiStatusUnavailable,
+        };
+
+        /// <summary>The line under the status: the older runtime's version
+        /// while PadForge uses it, a note that a leftover copy is no longer
+        /// needed once Windows has the API, that the service did not start,
+        /// or what the PC lacks.</summary>
+        public string MidiServicesDetailText => _activeMidiApi switch
+        {
+            Common.Input.MidiApiKind.InBox => _isMidiRuntimeInstalled
+                ? string.Format(Strings.Instance.Settings_MidiOlderRuntime_Format, _midiRuntimeVersion)
+                : string.Empty,
+            Common.Input.MidiApiKind.AppSdk => _midiRuntimeVersion,
+            _ => _midiApiNotStarted
+                ? Strings.Instance.Settings_MidiNotRunning
+                : Strings.Instance.Settings_MidiNeedsUpdate,
+        };
+
+        /// <summary>True when the detail line is the older runtime's
+        /// version, which the card sets in the telemetry face.</summary>
+        public bool MidiDetailIsVersion => _activeMidiApi == Common.Input.MidiApiKind.AppSdk;
+
+        private void OnMidiCardChanged()
+        {
+            OnPropertyChanged(nameof(MidiServicesStatusText));
+            OnPropertyChanged(nameof(MidiServicesDetailText));
+            OnPropertyChanged(nameof(MidiDetailIsVersion));
+            _uninstallMidiServicesCommand?.NotifyCanExecuteChanged();
+        }
 
         private RelayCommand _uninstallMidiServicesCommand;
 
-        /// <summary>Command to uninstall Windows MIDI Services.</summary>
+        /// <summary>Uninstalls the older runtime. A MIDI slot running on it
+        /// keeps it installed. When Windows has the API, the slots run on
+        /// that, and the older runtime can go while they run.</summary>
         public RelayCommand UninstallMidiServicesCommand =>
             _uninstallMidiServicesCommand ??= new RelayCommand(
                 () => UninstallMidiServicesRequested?.Invoke(this, EventArgs.Empty),
-                () => _isMidiServicesInstalled && !HasAnyMidiSlots());
+                () => _isMidiRuntimeInstalled
+                      && !(_activeMidiApi == Common.Input.MidiApiKind.AppSdk && HasAnyMidiSlots()));
 
-        /// <summary>Raised when the user requests MIDI Services installation.</summary>
-        public event EventHandler InstallMidiServicesRequested;
-
-        /// <summary>Raised when the user requests MIDI Services uninstallation.</summary>
+        /// <summary>Raised when the user requests uninstalling the older runtime.</summary>
         public event EventHandler UninstallMidiServicesRequested;
 
         // ─────────────────────────────────────────────

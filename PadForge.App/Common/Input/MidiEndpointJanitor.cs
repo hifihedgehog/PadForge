@@ -78,6 +78,13 @@ namespace PadForge.Common.Input
         private static long _sweepDueTick = long.MaxValue;
         private static bool _sweepWorkerRunning;
 
+        /// <summary>Test seam (InternalsVisibleTo PadForge.Tests): tests that
+        /// drive MidiVirtualController against a fake backend set this so no
+        /// sweep runs. A test process knows none of a running PadForge's live
+        /// endpoints, so a real sweep from it would remove them as
+        /// corpses.</summary>
+        internal static volatile bool SweepDisabledForTest;
+
         /// <summary>Coalesced background sweep. Safe from any thread; CM
         /// calls talk to PnP, not to the (possibly wedged) MIDI service.
         /// Requests coalesce on the EARLIEST due time, so a short-delay
@@ -86,6 +93,7 @@ namespace PadForge.Common.Input
         /// own pass afterward.</summary>
         public static void ScheduleSweep(int delayMs)
         {
+            if (SweepDisabledForTest) return;
             long due = Environment.TickCount64 + Math.Max(0, delayMs);
             lock (_sweepLock)
             {
@@ -119,6 +127,7 @@ namespace PadForge.Common.Input
         internal static int Sweep()
         {
             int removed = 0;
+            if (SweepDisabledForTest) return removed;
             try
             {
                 // Expired abandoned claims stop protecting their devnodes.

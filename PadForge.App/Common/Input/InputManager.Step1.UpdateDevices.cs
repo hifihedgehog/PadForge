@@ -1745,9 +1745,10 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Tears down every open MIDI input connection and the shared input
-        /// session, and suppresses Phase 1e until app restart. Called before
-        /// uninstalling Windows MIDI Services so no in-process runtime
-        /// objects are alive during the uninstall.
+        /// session, and suppresses Phase 1e until <see cref="ResumeMidiInputs"/>
+        /// or app restart. Called before uninstalling the older Windows MIDI
+        /// Services runtime so no in-process runtime objects are alive during
+        /// the uninstall.
         /// </summary>
         public void ShutdownMidiInputs()
         {
@@ -1775,6 +1776,19 @@ namespace PadForge.Common.Input
                 _openedMidiInputs.Clear();
             }
             MidiInputRuntime.Shutdown();
+        }
+
+        /// <summary>
+        /// Lifts <see cref="ShutdownMidiInputs"/> once the older runtime's
+        /// uninstall has ended. The next Phase 1e sweep enumerates through
+        /// whichever API the next availability probe picks: the in-box API
+        /// where Windows has it, the older runtime if its uninstall failed or
+        /// was canceled, else none, which opens nothing.
+        /// </summary>
+        public void ResumeMidiInputs()
+        {
+            _cachedMidiEndpoints = null;
+            _midiInputsSuppressed = false;
         }
 
         /// <summary>

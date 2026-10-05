@@ -1067,7 +1067,7 @@
                                                             <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
                                                             <Setter Property="Effect" Value="{x:Null}"/>
                                                         </MultiDataTrigger>
-                                                        <DataTrigger Binding="{Binding DataContext.IsMidiServicesInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
+                                                        <DataTrigger Binding="{Binding DataContext.IsMidiAvailable, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
                                                             <Setter Property="Cursor" Value="No"/>
                                                             <Setter Property="ToolTip" Value="{Binding Main_MIDI_RequiresMidiServices, Source={x:Static strings:Strings.Instance}}"/>
                                                         </DataTrigger>

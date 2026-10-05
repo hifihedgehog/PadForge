@@ -144,11 +144,8 @@
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>HidHide wird installiert…</value></data>
   <data name="Status_UninstallingHidHide" xml:space="preserve"><value>HidHide wird deinstalliert…</value></data>
-  <data name="Status_DownloadingMidi" xml:space="preserve"><value>Windows MIDI Services wird heruntergeladen…</value></data>
-  <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Windows MIDI Services wird heruntergeladen und installiert…</value></data>
-  <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services wird deinstalliert…</value></data>
+  <data name="Status_UninstallingMidi" xml:space="preserve"><value>Ältere Laufzeit von Windows MIDI Services wird deinstalliert…</value></data>
   <data name="Status_OperationCanceled" xml:space="preserve"><value>Vorgang vom Benutzer abgebrochen.</value></data>
-  <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>MIDI Services-Installation fehlgeschlagen: {0}</value></data>
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>SteamVR wird heruntergeladen…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>SteamVR wird von Valve-Servern heruntergeladen und installiert… Mehrere GB, das kann dauern.</value></data>
   <data name="Status_SteamVRInstallFailed_Format" xml:space="preserve"><value>SteamVR-Installation fehlgeschlagen: {0}</value></data>
@@ -365,13 +362,19 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro-Treiber</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Virtuelle HID-Controller-Engine im Benutzermodus. In PadForge.App eingebettet. Wird beim ersten Erstellen eines virtuellen Controllers automatisch installiert. Ersetzt ViGEmBus und vJoy in v3.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
-  <data name="Settings_MidiDesc" xml:space="preserve"><value>SDK-Laufzeit für virtuelle MIDI-Geräteausgabe. Wird von GitHub heruntergeladen (~210 MB).</value></data>
+  <data name="Settings_MidiDesc" xml:space="preserve"><value>Virtuelle MIDI-Ausgabe und MIDI-Eingabe. Ab dem Update von Ende November 2026 in Windows 11 25H2 integriert. Bis dahin läuft es über die ältere Laufzeit, wo diese installiert ist.</value></data>
+  <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>In Windows integriert</value></data>
+  <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>Ältere Laufzeit</value></data>
+  <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>Nicht verfügbar</value></data>
+  <data name="Settings_MidiNeedsUpdate" xml:space="preserve"><value>Erfordert Windows 11 25H2 mit dem Update von Ende November 2026</value></data>
+  <data name="Settings_MidiOlderRuntime_Format" xml:space="preserve"><value>Die ältere Laufzeit {0} ist ebenfalls installiert und wird nicht mehr benötigt</value></data>
+  <data name="Settings_MidiStatusNotRunning" xml:space="preserve"><value>Läuft nicht</value></data>
+  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services wurde nicht gestartet. Im Legacy-API-Modus bleibt es ausgeschaltet.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>VR-Laufzeitumgebung für virtuelle VR-Controller. Installation direkt von Valve-Servern, ohne Steam-Konto und ohne Steam-Client (mehrere GB).</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Installationsort</value></data>
   <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>SteamVR deinstallieren</value></data>
   <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>Entfernt die Steam-freie SteamVR-Installation unter {0} und gibt mehrere GB frei. Virtuelle VR-Controller funktionieren erst wieder, wenn SteamVR erneut installiert wird.</value></data>
-  <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Erfordert Windows 11 24H2 (Build 26100) oder höher</value></data>
   <data name="Settings_SettingsFile" xml:space="preserve"><value>Einstellungsdatei</value></data>
   <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>Konfiguration speichern, neu laden oder zurücksetzen.</value></data>
   <data name="Settings_Reload" xml:space="preserve"><value>Neu laden</value></data>

@@ -200,22 +200,23 @@ namespace PadForge.ViewModels
         //  Windows MIDI Services status
         // ─────────────────────────────────────────────
 
-        private bool _isMidiServicesInstalled;
+        private bool _isMidiAvailable;
 
-        /// <summary>Whether Windows MIDI Services is installed. Gates the
-        /// MIDI slot type button in the code-behind. The status text lives
-        /// on the Settings card.</summary>
-        public bool IsMidiServicesInstalled
+        /// <summary>Whether a Windows MIDI Services API is available: the
+        /// in-box API, or the older runtime where that is installed. Gates
+        /// the MIDI slot type button in the code-behind. The status text
+        /// lives on the Settings card.</summary>
+        public bool IsMidiAvailable
         {
-            get => _isMidiServicesInstalled;
-            set => SetProperty(ref _isMidiServicesInstalled, value);
+            get => _isMidiAvailable;
+            set => SetProperty(ref _isMidiAvailable, value);
         }
 
         private bool _isSteamVrInstalled;
 
         /// <summary>Whether SteamVR is installed (gates the VR slot type,
         /// issue #49). Kept current by MainWindow's periodic status refresh
-        /// alongside the MIDI Services flag. The tiered SteamVR status row
+        /// alongside the MIDI availability flag. The tiered SteamVR status row
         /// (#287) lives on the Settings card, which reads the live statics
         /// itself.</summary>
         public bool IsSteamVrInstalled

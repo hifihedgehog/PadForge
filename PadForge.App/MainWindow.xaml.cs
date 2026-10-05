@@ -743,35 +743,10 @@ namespace PadForge
                 _settingsService?.MarkDirty();
             };
 
-            // Wire MIDI Services install/uninstall commands.
-            _viewModel.Settings.InstallMidiServicesRequested += async (s, e) =>
-            {
-                _viewModel.SetStatus(Strings.Instance.Status_DownloadingMidi, persist: true);
-                DriverOverlayText.Text = Strings.Instance.Status_DownloadingInstallingMidi;
-                DriverOverlay.Visibility = Visibility.Visible;
-                try
-                {
-                    await DriverInstaller.InstallMidiServicesAsync();
-                    _viewModel.StatusText = Strings.Instance.Common_Ready;
-                }
-                catch (System.ComponentModel.Win32Exception)
-                {
-                    _viewModel.StatusText = Strings.Instance.Status_OperationCanceled;
-                }
-                catch (Exception ex)
-                {
-                    _viewModel.SetStatus(string.Format(Strings.Instance.Status_MidiInstallFailed_Format, ex.Message), persist: true);
-                }
-                finally
-                {
-                    DriverOverlay.Visibility = Visibility.Collapsed;
-                    RefreshMidiServicesStatus();
-                }
-            };
             // Wire the Steam-free SteamVR install (#49): steamcmd anonymous
-            // app_update 250820 into C:\SteamVR + HIDMaestro path hint. Same
-            // overlay treatment as the MIDI install; the payload is several
-            // GB, so the overlay text warns about the wait.
+            // app_update 250820 into C:\SteamVR + HIDMaestro path hint. The
+            // payload is several GB, so the overlay text warns about the
+            // wait.
             _viewModel.Settings.InstallSteamVrRequested += async (s, e) =>
             {
                 _viewModel.SetStatus(Strings.Instance.Status_DownloadingSteamVR, persist: true);
@@ -821,15 +796,46 @@ namespace PadForge
 
             _viewModel.Settings.UninstallMidiServicesRequested += async (s, e) =>
             {
-                // The uninstall guard prevents this when MIDI slots are active, but
-                // MIDI *input* enumeration (issue #128) loads the SDK runtime whenever
-                // services are installed — tear those connections down first.
-                _inputService?.ShutdownMidiInputs();
-                // Release the SDK runtime and keep it released, so the
-                // uninstaller never has to close PadForge to reach its files.
-                Common.Input.MidiVirtualController.SuppressForUninstall();
+                // This removes the older runtime only. When Windows runs
+                // PadForge's MIDI through the in-box API, nothing in this
+                // process touches the runtime's files, so MIDI keeps running
+                // through the uninstall. Otherwise the runtime may be loaded.
+                // The uninstall guard prevents this when MIDI slots are
+                // active, but MIDI *input* enumeration (issue #128) loads the
+                // runtime whenever it is the API in use, so tear those
+                // connections down first, then release the runtime and keep
+                // it released, so the uninstaller never has to close
+                // PadForge to reach its files.
+                bool release = Common.Input.MidiVirtualController.ActiveApi != Common.Input.MidiApiKind.InBox;
+                if (release)
+                {
+                    _inputService?.ShutdownMidiInputs();
+                    Common.Input.MidiVirtualController.SuppressForUninstall();
+                }
                 await RunDriverOperationAsync(
-                    Strings.Instance.Status_UninstallingMidi, DriverInstaller.UninstallMidiServices, RefreshMidiServicesStatus);
+                    Strings.Instance.Status_UninstallingMidi,
+                    () =>
+                    {
+                        bool stillRunning = false;
+                        try { stillRunning = !DriverInstaller.UninstallMidiRuntime(); }
+                        finally
+                        {
+                            // Once the uninstaller has exited (done, failed or
+                            // canceled) or never started, the latch lifts here,
+                            // off the UI thread: the next probe takes the
+                            // in-box API where Windows has it, the runtime
+                            // again if it is still installed, else nothing. An
+                            // uninstaller still running after its wait keeps
+                            // the latch down until restart, as before, since a
+                            // probe now could load the files it is deleting.
+                            if (release && !stillRunning)
+                            {
+                                Common.Input.MidiVirtualController.ResetAvailability();
+                                _inputService?.ResumeMidiInputs();
+                            }
+                        }
+                    },
+                    RefreshMidiServicesStatus);
             };
 
             // Wire device service events (assign to slot, hide, etc.).
@@ -2152,11 +2158,11 @@ namespace PadForge
             }
 
             // MIDI availability must be probed BEFORE the rail is built. The
-            // rail's type-switcher reads the cached
-            // Settings.IsMidiServicesInstalled rather than probing the registry
-            // per card, and that property starts false, so building first meant
-            // a machine WITH Windows MIDI Services installed painted its first
-            // rail without the MIDI segment. The 5 s driver timer then updates
+            // rail's type-switcher reads the cached Settings.IsMidiAvailable
+            // rather than probing the registry per card, and that property
+            // starts false, so building first meant a machine WITH Windows
+            // MIDI Services painted its first rail without the MIDI segment.
+            // The 5 s driver timer then updates
             // the property but deliberately does not rebuild on its baseline
             // sweep, so the segment stayed missing until an unrelated rebuild.
             // Safe this early: the method only writes the two view-models and
@@ -3514,14 +3520,14 @@ namespace PadForge
             // the dashboard segment in mini form. Active type is ember-filled;
             // the card rebuilds on OutputType change via RefreshNavControllerItems.
             // Read the cached status, not the live probe. This method runs once
-            // per rail card, and DriverInstaller.IsMidiServicesInstalled()
+            // per rail card, and DriverInstaller.IsMidiRuntimeInstalled()
             // enumerates the whole HKLM uninstall key under BOTH the 64-bit and
             // 32-bit registry views, so a 16-slot rail rebuild paid 32 hive
             // walks on the UI thread. RefreshMidiServicesStatus() keeps this
             // property current on a 5 s timer, and the constructor calls it
             // immediately before the rail's first build, so the value here is
             // the same answer at worst five seconds older.
-            bool hasMidi = _viewModel.Settings.IsMidiServicesInstalled;
+            bool hasMidi = _viewModel.Settings.IsMidiAvailable;
             var segRow = new System.Windows.Controls.StackPanel
             {
                 Orientation = System.Windows.Controls.Orientation.Horizontal,
@@ -4699,7 +4705,7 @@ namespace PadForge
         private void OnSidebarTypeMidi(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
-            if (!DriverInstaller.IsMidiServicesInstalled()) return;
+            if (!_viewModel.Settings.IsMidiAvailable) return;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
                 // Merge BEFORE the type set: see the dashboard
@@ -5728,7 +5734,7 @@ namespace PadForge
                 VerticalAlignment = VerticalAlignment.Center
             };
             midiPopupIcon.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorPrimaryBrush");
-            bool midiAvailable = DriverInstaller.IsMidiServicesInstalled();
+            bool midiAvailable = _viewModel.Settings.IsMidiAvailable;
             bool midiAtCapacity = midiCount >= SettingsManager.MaxMidiSlots;
             bool midiDisabled = !midiAvailable || globalAtCapacity || midiAtCapacity;
             if (midiDisabled) midiPopupIcon.Opacity = 0.35;
@@ -8904,9 +8910,9 @@ namespace PadForge
             }
         }
 
-        // Last MIDI-installed state the drawer cards were rendered against.
+        // Last MIDI availability the drawer cards were rendered against.
         // null until the first status sweep records the baseline.
-        private bool? _lastMidiInstalledForNav;
+        private bool? _lastMidiAvailableForNav;
 
         // SteamVR twin of the above: the VR type tile's enabled state is
         // baked at card build, so an install/uninstall must rebuild once.
@@ -8919,24 +8925,35 @@ namespace PadForge
 
         private void RefreshMidiServicesStatus()
         {
-            bool installed = false;
+            bool midiAvailable = false;
             try
             {
-                installed = DriverInstaller.IsMidiServicesInstalled();
-                _viewModel.Settings.IsMidiServicesInstalled = installed;
-                _viewModel.Dashboard.IsMidiServicesInstalled = installed;
-                // The card is already titled "Windows MIDI Services" and the
-                // line above already says Installed, so printing the product
-                // name a third time said nothing. This is the version line,
-                // the same one HidHide and ViGEm fill.
-                _viewModel.Settings.MidiServicesVersion =
-                    installed ? (DriverInstaller.GetMidiServicesVersion() ?? string.Empty) : string.Empty;
+                // One uninstall-key walk per refresh. Whether the older
+                // runtime is installed feeds the API prediction, the card's
+                // version line and its Uninstall button.
+                bool runtimeInstalled = DriverInstaller.IsMidiRuntimeInstalled();
+                // The registry's answer until the engine's probe has run,
+                // then the probe's. A present API whose service did not start
+                // (Legacy API mode, a stopped service) reads as not running.
+                // Reading the probe's cached answer never blocks.
+                var (api, notStarted) = Common.Input.MidiApiSelection.ForCard(
+                    Common.Input.MidiApiSelection.PredictForUi(runtimeInstalled),
+                    Common.Input.MidiVirtualController.ActiveApi,
+                    Common.Input.MidiVirtualController.ProbeFailed);
+                _viewModel.Settings.IsMidiRuntimeInstalled = runtimeInstalled;
+                _viewModel.Settings.MidiRuntimeVersion =
+                    runtimeInstalled ? (DriverInstaller.GetMidiRuntimeVersion() ?? string.Empty) : string.Empty;
+                _viewModel.Settings.MidiApiNotStarted = notStarted;
+                _viewModel.Settings.ActiveMidiApi = api;
+                midiAvailable = api != Common.Input.MidiApiKind.None;
+                _viewModel.Dashboard.IsMidiAvailable = midiAvailable;
             }
             catch
             {
-                installed = false;
-                _viewModel.Settings.IsMidiServicesInstalled = false;
-                _viewModel.Dashboard.IsMidiServicesInstalled = false;
+                midiAvailable = false;
+                _viewModel.Settings.MidiApiNotStarted = false;
+                _viewModel.Settings.ActiveMidiApi = Common.Input.MidiApiKind.None;
+                _viewModel.Dashboard.IsMidiAvailable = false;
             }
 
             // SteamVR presence rides the same refresh cadence (VR slot
@@ -8975,13 +8992,13 @@ namespace PadForge
             // down and rebuilds every pill's whole Content subtree (restarting
             // the breathing heat ring and hover transforms), so calling it on
             // the always-on 5 s lane produced a visible ~5 s "bounce". Rebuild
-            // only when the installed state actually flips. The first sweep
-            // just records the baseline: the cards were already built against
-            // the current state at startup, so no rebuild is needed for it.
-            if (_navDashboard != null && _lastMidiInstalledForNav != installed)
+            // only when availability actually flips. The first sweep just
+            // records the baseline: the cards were already built against the
+            // current state at startup, so no rebuild is needed for it.
+            if (_navDashboard != null && _lastMidiAvailableForNav != midiAvailable)
             {
-                bool firstSweep = _lastMidiInstalledForNav == null;
-                _lastMidiInstalledForNav = installed;
+                bool firstSweep = _lastMidiAvailableForNav == null;
+                _lastMidiAvailableForNav = midiAvailable;
                 if (!firstSweep) RefreshControllerNavItemsInPlace();
             }
 

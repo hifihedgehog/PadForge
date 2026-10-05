@@ -129,7 +129,7 @@ namespace PadForge.Views
         {
             if (sender is Button btn && btn.Tag is int slotIndex)
             {
-                if (DataContext is ViewModels.DashboardViewModel vm && !vm.IsMidiServicesInstalled) return;
+                if (DataContext is ViewModels.DashboardViewModel vm && !vm.IsMidiAvailable) return;
                 SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Midi));
             }
         }

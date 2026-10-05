@@ -147,11 +147,8 @@
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>Installing HidHide…</value></data>
   <data name="Status_UninstallingHidHide" xml:space="preserve"><value>Uninstalling HidHide…</value></data>
-  <data name="Status_DownloadingMidi" xml:space="preserve"><value>Downloading Windows MIDI Services…</value></data>
-  <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Downloading and installing Windows MIDI Services…</value></data>
-  <data name="Status_UninstallingMidi" xml:space="preserve"><value>Uninstalling Windows MIDI Services…</value></data>
+  <data name="Status_UninstallingMidi" xml:space="preserve"><value>Uninstalling the older Windows MIDI Services runtime…</value></data>
   <data name="Status_OperationCanceled" xml:space="preserve"><value>Operation canceled by user.</value></data>
-  <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>MIDI Services install failed: {0}</value></data>
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>Downloading SteamVR…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Downloading and installing SteamVR from Valve's servers… This is several GB and can take a while.</value></data>
   <data name="Status_SteamVRInstallFailed_Format" xml:space="preserve"><value>SteamVR install failed: {0}</value></data>
@@ -435,13 +432,19 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro Driver</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>User-mode virtual HID controller engine. Embedded in PadForge.App. Installed automatically on first virtual controller creation. Replaces ViGEmBus and vJoy in v3.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
-  <data name="Settings_MidiDesc" xml:space="preserve"><value>SDK runtime for virtual MIDI device output. Downloaded from GitHub (~210 MB).</value></data>
+  <data name="Settings_MidiDesc" xml:space="preserve"><value>Virtual MIDI output and MIDI input. Built into Windows 11 25H2 from the late-November 2026 update. Until then it runs on the older runtime where that is installed.</value></data>
+  <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>Built into Windows</value></data>
+  <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>Older Runtime</value></data>
+  <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>Not Available</value></data>
+  <data name="Settings_MidiNeedsUpdate" xml:space="preserve"><value>Needs Windows 11 25H2 with the late-November 2026 update</value></data>
+  <data name="Settings_MidiOlderRuntime_Format" xml:space="preserve"><value>Older runtime {0} is also installed and is no longer needed</value></data>
+  <data name="Settings_MidiStatusNotRunning" xml:space="preserve"><value>Not Running</value></data>
+  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services did not start. It stays off in Legacy API mode.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>VR runtime for virtual VR controllers. Installs from Valve's servers with no Steam account or Steam client needed (several GB).</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Install Location</value></data>
   <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>Uninstall SteamVR</value></data>
   <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>This removes the Steam-free SteamVR install at {0} and frees several GB. VR virtual controllers will not work until SteamVR is installed again.</value></data>
-  <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Requires Windows 11 24H2 (build 26100) or later</value></data>
   <data name="Settings_SettingsFile" xml:space="preserve"><value>Settings File</value></data>
   <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>Save, reload, or reset your configuration.</value></data>
   <data name="Settings_Reload" xml:space="preserve"><value>Reload</value></data>

@@ -14227,9 +14227,14 @@ namespace PadForge.Services
         /// </summary>
         /// <summary>
         /// Tears down all MIDI input connections and suppresses their
-        /// re-enumeration. Called before uninstalling Windows MIDI Services.
+        /// re-enumeration. Called before uninstalling the older Windows MIDI
+        /// Services runtime.
         /// </summary>
         public void ShutdownMidiInputs() => _inputManager?.ShutdownMidiInputs();
+
+        /// <summary>Lifts <see cref="ShutdownMidiInputs"/> when that
+        /// uninstall ends, whatever its outcome.</summary>
+        public void ResumeMidiInputs() => _inputManager?.ResumeMidiInputs();
 
         /// <summary>Refreshes device lists and mapping grids after a topology change.
         /// DeviceService flushes hydrated edits before changing the topology.</summary>

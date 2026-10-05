@@ -301,7 +301,7 @@ namespace PadForge.Services
             $"https://api.github.com/repos/{Repo}/commits?sha={sha}&per_page={HistoryDepth.ToString(CultureInfo.InvariantCulture)}";
 
         /// <summary>Beside the other download folders PadForge uses
-        /// (PadForge_MidiServices), never beside the exe.</summary>
+        /// (PadForge_HidHide, PadForge_SteamCmd), never beside the exe.</summary>
         internal static string StagingRoot => Path.Combine(Path.GetTempPath(), "PadForge_Update");
 
         /// <summary>

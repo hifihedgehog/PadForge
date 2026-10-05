@@ -207,6 +207,12 @@
     <PackageReference Include="HelixToolkit.Core.Wpf" Version="2.27.3" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="Microsoft.Windows.Devices.Midi2" Version="1.0.16-rc.3.7" />
+    <!-- C#/WinRT generates the projection for the in-box Windows MIDI
+         Services API (Windows.Devices.Midi2) from the metadata in
+         Resources\WinMD, the way Microsoft's own C# samples build it. 2.2.0
+         matches the WinRT.Runtime the Windows SDK projection already ships
+         (2.2.0.0), which the rc.3.7 projection also references. -->
+    <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.2.0" />
     <PackageReference Include="NAudio.Wasapi" Version="2.2.1" />
     <PackageReference Include="System.Speech" Version="10.0.0" />
     <!-- Vosk (Apache-2.0, Alpha Cephei): modern offline recognizer for voice
@@ -218,6 +224,24 @@
     <!-- Driver-store install, class filters, and USB CyclePort for the BthPS3
          DualShock 3 Bluetooth stack (nefarius, same lib BthPS3's own installer uses) -->
     <PackageReference Include="Nefarius.Utilities.DeviceManagement" Version="5.2.0" />
+  </ItemGroup>
+
+  <!-- The in-box Windows MIDI Services API ships in Windows 11 25H2 (build
+       26200) from the late-November 2026 update, and the Windows SDK does not
+       carry its metadata yet. Resources\WinMD\Windows.Devices.Midi2.winmd is
+       the metadata from Microsoft's Windows.Devices.Midi2 0.99.88-preview.10
+       package (microsoft/MIDI release inbox-preview-10, MIT): package SHA-256
+       6daf121a3f76a4a1e0d46521c5072ac576477448c9332048383bb58960a4ce69, this
+       file SHA-256 497d9e7c2fb219388f748c585d7aad537d3a6a576de854bd16bfe1bc73f8d9a9.
+       Only the metadata is taken. The package's own implementation DLLs are
+       never referenced: at run time PadForge uses the copy Windows installs
+       in System32, or none. Replace this with the Windows SDK's metadata once
+       an SDK carries it. -->
+  <PropertyGroup>
+    <CsWinRTIncludes>Windows.Devices.Midi2</CsWinRTIncludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <CsWinRTInputs Include="Resources\WinMD\Windows.Devices.Midi2.winmd" />
   </ItemGroup>
 
   <!-- Microsoft-signed BthPS3 + BthPS3PSM drivers (nefarius release) and the DS3
@@ -756,6 +780,21 @@
           Condition="!Exists('Resources\SDL3\$(NativeArch)\SDL3.dll') Or !Exists('Resources\SDL3\$(NativeArch)\libusb-1.0.dll') Or !Exists('Resources\OpenXInput\$(NativeArch)\xinput1_4.dll')">
     <Message Importance="high"
              Text="$(NativeArch): SDL3.dll, libusb-1.0.dll and/or xinput1_4.dll are not in Resources\...\$(NativeArch) yet. This build compiles, and a publish will be refused until all three are there." />
+  </Target>
+
+  <!-- PadForge ships none of Microsoft's in-box Windows MIDI Services
+       binaries. Windows installs that API in System32, and this project takes
+       only its metadata (Resources\WinMD). Nothing here brings the binaries
+       in, so this refuses a publish that would carry one anyway: for example
+       after a PackageReference to Microsoft's Windows.Devices.Midi2 preview
+       package, whose runtimes\win-*\native DLL and .pri NuGet copies by
+       itself. -->
+  <Target Name="RefuseInBoxMidiBinaries" AfterTargets="ComputeResolvedFilesToPublishList">
+    <ItemGroup>
+      <_InBoxMidiBinary Include="@(ResolvedFileToPublish)" Condition="'%(Filename)' == 'Windows.Devices.Midi2'" />
+    </ItemGroup>
+    <Error Condition="'@(_InBoxMidiBinary)' != ''"
+           Text="Publish refused: @(_InBoxMidiBinary->'%(Filename)%(Extension)') would ship. PadForge uses the Windows MIDI Services implementation Windows installs in System32 and ships none of its own." />
   </Target>
 
   <!-- Build identity for in-app updates (#457). Every build between two

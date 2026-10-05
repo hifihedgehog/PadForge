@@ -237,11 +237,8 @@ public class Strings : INotifyPropertyChanged
     public string Status_SteamVRRunningCloseFirst => Get("Status_SteamVRRunningCloseFirst");
     public string Status_InstallingHidHide => Get("Status_InstallingHidHide");
     public string Status_UninstallingHidHide => Get("Status_UninstallingHidHide");
-    public string Status_DownloadingMidi => Get("Status_DownloadingMidi");
-    public string Status_DownloadingInstallingMidi => Get("Status_DownloadingInstallingMidi");
     public string Status_UninstallingMidi => Get("Status_UninstallingMidi");
     public string Status_OperationCanceled => Get("Status_OperationCanceled");
-    public string Status_MidiInstallFailed_Format => Get("Status_MidiInstallFailed_Format");
     public string Status_DeviceListRefreshed => Get("Status_DeviceListRefreshed");
     public string Status_Recorded_Format => Get("Status_Recorded_Format");
     public string Status_NowMap_Format => Get("Status_NowMap_Format");
@@ -578,7 +575,13 @@ public class Strings : INotifyPropertyChanged
     public string Settings_HIDMaestroDesc => Get("Settings_HIDMaestroDesc");
     public string Settings_MidiServices => Get("Settings_MidiServices");
     public string Settings_MidiDesc => Get("Settings_MidiDesc");
-    public string Settings_MidiOsRequired => Get("Settings_MidiOsRequired");
+    public string Settings_MidiStatusInBox => Get("Settings_MidiStatusInBox");
+    public string Settings_MidiStatusRuntime => Get("Settings_MidiStatusRuntime");
+    public string Settings_MidiStatusUnavailable => Get("Settings_MidiStatusUnavailable");
+    public string Settings_MidiNeedsUpdate => Get("Settings_MidiNeedsUpdate");
+    public string Settings_MidiOlderRuntime_Format => Get("Settings_MidiOlderRuntime_Format");
+    public string Settings_MidiStatusNotRunning => Get("Settings_MidiStatusNotRunning");
+    public string Settings_MidiNotRunning => Get("Settings_MidiNotRunning");
     public string Settings_SettingsFile => Get("Settings_SettingsFile");
     public string Settings_SettingsFileDesc => Get("Settings_SettingsFileDesc");
     public string Settings_Reload => Get("Settings_Reload");

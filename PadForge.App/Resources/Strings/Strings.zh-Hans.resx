@@ -144,11 +144,8 @@
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>正在安装 HidHide…</value></data>
   <data name="Status_UninstallingHidHide" xml:space="preserve"><value>正在卸载 HidHide…</value></data>
-  <data name="Status_DownloadingMidi" xml:space="preserve"><value>正在下载 Windows MIDI Services…</value></data>
-  <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>正在下载并安装 Windows MIDI Services…</value></data>
-  <data name="Status_UninstallingMidi" xml:space="preserve"><value>正在卸载 Windows MIDI Services…</value></data>
+  <data name="Status_UninstallingMidi" xml:space="preserve"><value>正在卸载旧版 Windows MIDI Services 运行时…</value></data>
   <data name="Status_OperationCanceled" xml:space="preserve"><value>操作已被用户取消。</value></data>
-  <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>MIDI Services 安装失败：{0}</value></data>
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>正在下载 SteamVR…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>正在从 Valve 服务器下载并安装 SteamVR… 共数 GB，可能需要一段时间。</value></data>
   <data name="Status_SteamVRInstallFailed_Format" xml:space="preserve"><value>SteamVR 安装失败：{0}</value></data>
@@ -365,13 +362,19 @@
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro 驱动程序</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>用户模式虚拟 HID 控制器引擎。嵌入到 PadForge.App 中，在首次创建虚拟控制器时自动安装。在 v3 中替代 ViGEmBus 和 vJoy。</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
-  <data name="Settings_MidiDesc" xml:space="preserve"><value>用于虚拟 MIDI 设备输出的 SDK 运行时。从 GitHub 下载（约 210 MB）。</value></data>
+  <data name="Settings_MidiDesc" xml:space="preserve"><value>虚拟 MIDI 输出和 MIDI 输入。自 2026 年 11 月下旬的更新起内置于 Windows 11 25H2。在此之前，如已安装旧版运行时，则通过该运行时运行。</value></data>
+  <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>Windows 内置</value></data>
+  <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>旧版运行时</value></data>
+  <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>不可用</value></data>
+  <data name="Settings_MidiNeedsUpdate" xml:space="preserve"><value>需要安装了 2026 年 11 月下旬更新的 Windows 11 25H2</value></data>
+  <data name="Settings_MidiOlderRuntime_Format" xml:space="preserve"><value>旧版运行时 {0} 也已安装，现已不再需要</value></data>
+  <data name="Settings_MidiStatusNotRunning" xml:space="preserve"><value>未运行</value></data>
+  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services 未启动。在 Legacy API 模式下它保持关闭。</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>用于虚拟 VR 控制器的 VR 运行时。直接从 Valve 服务器安装，无需 Steam 账户或 Steam 客户端（数 GB）。</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>安装位置</value></data>
   <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>卸载 SteamVR</value></data>
   <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>移除位于 {0} 的免 Steam 版 SteamVR 安装并释放数 GB 空间。在重新安装 SteamVR 之前，虚拟 VR 控制器将无法工作。</value></data>
-  <data name="Settings_MidiOsRequired" xml:space="preserve"><value>需要 Windows 11 24H2（内部版本 26100）或更高版本</value></data>
   <data name="Settings_SettingsFile" xml:space="preserve"><value>设置文件</value></data>
   <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>保存、重新加载或重置您的配置。</value></data>
   <data name="Settings_Reload" xml:space="preserve"><value>重新加载</value></data>

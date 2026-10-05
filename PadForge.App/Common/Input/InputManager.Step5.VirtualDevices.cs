@@ -2787,7 +2787,7 @@ namespace PadForge.Common.Input
 
             if (!MidiVirtualController.IsAvailable())
             {
-                RaiseError("Windows MIDI Services is not available. MIDI output requires Windows 11 with MIDI Services enabled.", null);
+                RaiseError("Windows MIDI Services is not available. The Windows MIDI Services card in Settings says why.", null);
                 return null;
             }
 

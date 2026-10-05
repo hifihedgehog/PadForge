@@ -1,10 +1,6 @@
 ﻿using System;
 using PadForge.Engine;
 
-using Microsoft.Windows.Devices.Midi2;
-using Microsoft.Windows.Devices.Midi2.Endpoints.Virtual;
-using Microsoft.Windows.Devices.Midi2.Messages;
-
 namespace PadForge.Common.Input
 {
     /// <summary>
@@ -12,17 +8,21 @@ namespace PadForge.Common.Input
     /// and sends MIDI 1.0 messages (CC for axes, Note On/Off for buttons).
     /// The device appears system-wide as a MIDI endpoint that DAWs and synths can connect to.
     /// Falls back gracefully on systems without Windows MIDI Services.
+    ///
+    /// <para>The availability probe picks the API (<see cref="MidiApiSelection"/>):
+    /// the in-box Windows.Devices.Midi2 where Windows registers it, else the
+    /// older App SDK runtime where that is installed. Everything after the
+    /// probe goes through the chosen <see cref="IMidiBackend"/>.</para>
     /// </summary>
     internal sealed class MidiVirtualController : IVirtualController
     {
         private static bool? _isAvailable;
         private static volatile bool _probeTimedOut;
         private static readonly object _availLock = new();
-        private static Microsoft.Windows.Devices.Midi2.Initialization.MidiDesktopAppSdkInitializer _initializer;
+        private static volatile IMidiBackend _backend;
+        private static Func<IMidiBackend> s_backendFactory = CreateBackend;
 
-        private MidiSession _session;
-        private MidiEndpointConnection _connection;
-        private MidiVirtualDevice _virtualDevice;
+        private IMidiVirtualEndpoint _endpoint;
         private bool _connected;
         private bool _disposed;
 
@@ -247,82 +247,25 @@ namespace PadForge.Common.Input
             s_liveEndpoints[uid] = EndpointCreating;
             _uniqueEndpointId = uid;
 
-            // Define the virtual device.
-            var declaredEndpointInfo = new MidiDeclaredEndpointInfo();
-            declaredEndpointInfo.Name = deviceName;
-            declaredEndpointInfo.ProductInstanceId = _uniqueEndpointId;
-            declaredEndpointInfo.SpecificationVersionMajor = 1;
-            declaredEndpointInfo.SpecificationVersionMinor = 1;
-            declaredEndpointInfo.SupportsMidi10Protocol = true;
-            declaredEndpointInfo.SupportsMidi20Protocol = false;
-            declaredEndpointInfo.SupportsReceivingJitterReductionTimestamps = false;
-            declaredEndpointInfo.SupportsSendingJitterReductionTimestamps = false;
-            declaredEndpointInfo.HasStaticFunctionBlocks = true;
-
-            var declaredDeviceIdentity = new MidiDeclaredDeviceIdentity();
-
-            var userSuppliedInfo = new MidiEndpointUserSuppliedInfo();
-            userSuppliedInfo.Name = deviceName;
-            userSuppliedInfo.Description = $"PadForge virtual MIDI controller (slot {_padIndex + 1})";
-
-            var config = new MidiVirtualDeviceCreationConfig(
-                deviceName,
-                "Virtual MIDI controller from PadForge",
-                "PadForge",
-                declaredEndpointInfo,
-                declaredDeviceIdentity,
-                userSuppliedInfo
-            );
-
-            // Single function block for MIDI 1.0 output.
-            var block = new MidiFunctionBlock();
-            block.Number = 0;
-            block.Name = "Controller Output";
-            block.IsActive = true;
-            block.UIHint = MidiFunctionBlockUIHint.Sender;
-            block.FirstGroup = new MidiGroup(0);
-            block.GroupCount = 1;
-            block.Direction = MidiFunctionBlockDirection.Bidirectional;
-            block.RepresentsMidi10Connection = MidiFunctionBlockRepresentsMidi10Connection.YesBandwidthUnrestricted;
-            block.MaxSystemExclusive8Streams = 0;
-            block.MidiCIMessageVersionFormat = 0;
-            config.FunctionBlocks.Add(block);
-
             // Everything is built in LOCALS and committed to the instance
             // fields only while this attempt is still the current
             // generation. A superseded attempt (Connect timed out, maybe
             // already retrying) tears down what it built and touches
             // nothing shared.
-            MidiSession session = null;
-            MidiVirtualDevice virtualDevice = null;
-            MidiEndpointConnection connection = null;
+            IMidiVirtualEndpoint endpoint;
             try
             {
-                session = MidiSession.Create(deviceName);
-                if (session == null)
-                    throw new InvalidOperationException("Failed to create MIDI session.");
-
-                virtualDevice = MidiVirtualDeviceManager.CreateVirtualDevice(config);
-                if (virtualDevice == null)
-                    throw new InvalidOperationException("Failed to create virtual MIDI device.");
-
-                virtualDevice.SuppressHandledMessages = true;
-
-                connection = session.CreateEndpointConnection(virtualDevice.DeviceEndpointDeviceId);
-                if (connection == null)
-                    throw new InvalidOperationException("Failed to create MIDI endpoint connection.");
-
-                connection.AddMessageProcessingPlugin(virtualDevice);
-
-                if (!connection.Open())
-                    throw new InvalidOperationException("Failed to open MIDI endpoint connection.");
+                var backend = _backend
+                    ?? throw new InvalidOperationException("Windows MIDI Services is not available.");
+                endpoint = backend.CreateVirtualEndpoint(deviceName, uid, _padIndex);
             }
             catch
             {
                 // Creation failed partway: the service may have stranded
-                // the half-made endpoint. Tear down the locals, unregister,
-                // and let the janitor remove whatever the service left.
-                TeardownLocalCreation(session, connection, uid);
+                // the half-made endpoint. The backend already tore down what
+                // it built. Unregister, and let the janitor remove whatever
+                // the service left.
+                ReleaseEndpointClaim(uid);
                 throw;
             }
 
@@ -332,13 +275,11 @@ namespace PadForge.Common.Input
                 {
                     // Superseded while creating: this endpoint belongs to
                     // no one. Dispose it without touching instance fields.
-                    TeardownLocalCreation(session, connection, uid);
+                    TeardownLocalCreation(endpoint, uid);
                     return;
                 }
 
-                _session = session;
-                _virtualDevice = virtualDevice;
-                _connection = connection;
+                _endpoint = endpoint;
                 _connected = true;
                 s_liveEndpoints[uid] = EndpointReady;
 
@@ -350,15 +291,15 @@ namespace PadForge.Common.Input
             }
         }
 
-        private static void TeardownLocalCreation(MidiSession session, MidiEndpointConnection connection, string uid)
+        private static void TeardownLocalCreation(IMidiVirtualEndpoint endpoint, string uid)
         {
-            try
-            {
-                if (connection != null && session != null)
-                    session.DisconnectEndpointConnection(connection.ConnectionId);
-            }
-            catch { /* best effort */ }
-            try { session?.Dispose(); } catch { /* best effort */ }
+            try { endpoint.DisconnectConnection(); } catch { /* best effort */ }
+            try { endpoint.CloseSession(); } catch { /* best effort */ }
+            ReleaseEndpointClaim(uid);
+        }
+
+        private static void ReleaseEndpointClaim(string uid)
+        {
             s_liveEndpoints.TryRemove(uid, out _);
             MidiEndpointJanitor.ScheduleSweep(2_500);
         }
@@ -400,7 +341,7 @@ namespace PadForge.Common.Input
             try
             {
                 // Send Note Off for any held notes.
-                if (_connection != null && _lastNotes != null)
+                if (_endpoint != null && _lastNotes != null)
                 {
                     for (int i = 0; i < _lastNotes.Length && i < NoteNumbers.Length; i++)
                     {
@@ -410,15 +351,13 @@ namespace PadForge.Common.Input
                 }
                 _lastNotes = null;
 
-                if (_connection != null && _session != null)
+                var endpoint = _endpoint;
+                if (endpoint != null)
                 {
-                    _session.DisconnectEndpointConnection(_connection.ConnectionId);
-                    _connection = null;
+                    endpoint.DisconnectConnection();
+                    _endpoint = null;
+                    endpoint.CloseSession();
                 }
-
-                _virtualDevice = null;
-                _session?.Dispose();
-                _session = null;
             }
             finally
             {
@@ -445,7 +384,7 @@ namespace PadForge.Common.Input
         /// </summary>
         public void SubmitMidiRawState(MidiRawState state)
         {
-            if (!_connected || _connection == null) return;
+            if (!_connected || _endpoint == null) return;
 
             // CCs
             if (state.CcValues != null && _lastCcValues != null)
@@ -496,47 +435,21 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         private void SendCC(int ccNumber, byte value)
-        {
-            var conn = _connection;
-            if (conn == null) return;
-            var msg = MidiMessageBuilder.BuildMidi1ChannelVoiceMessage(
-                0,
-                new MidiGroup(0),
-                Midi1ChannelVoiceMessageStatus.ControlChange,
-                new MidiChannel((byte)_channel),
-                (byte)ccNumber,
-                value);
-            // The send is service RPC; a dying/restarting midisrv must
-            // fail a message, never the polling thread.
-            try { conn.SendSingleMessagePacket(msg); } catch { /* dropped */ }
-        }
+            => Send(Midi1Status.ControlChange, ccNumber, value);
 
         private void SendNoteOn(int note, byte velocity)
-        {
-            var conn = _connection;
-            if (conn == null) return;
-            var msg = MidiMessageBuilder.BuildMidi1ChannelVoiceMessage(
-                0,
-                new MidiGroup(0),
-                Midi1ChannelVoiceMessageStatus.NoteOn,
-                new MidiChannel((byte)_channel),
-                (byte)note,
-                velocity);
-            try { conn.SendSingleMessagePacket(msg); } catch { /* dropped */ }
-        }
+            => Send(Midi1Status.NoteOn, note, velocity);
 
         private void SendNoteOff(int note)
+            => Send(Midi1Status.NoteOff, note, 0);
+
+        private void Send(Midi1Status status, int data1, int data2)
         {
-            var conn = _connection;
-            if (conn == null) return;
-            var msg = MidiMessageBuilder.BuildMidi1ChannelVoiceMessage(
-                0,
-                new MidiGroup(0),
-                Midi1ChannelVoiceMessageStatus.NoteOff,
-                new MidiChannel((byte)_channel),
-                (byte)note,
-                0);
-            try { conn.SendSingleMessagePacket(msg); } catch { /* dropped */ }
+            var endpoint = _endpoint;
+            if (endpoint == null) return;
+            // The send is service RPC. A dying or restarting midisrv
+            // must fail a message, never the polling thread.
+            try { endpoint.Send(status, _channel, data1, data2); } catch { /* dropped */ }
         }
 
         // ─────────────────────────────────────────────
@@ -549,18 +462,19 @@ namespace PadForge.Common.Input
         /// </summary>
         public static bool IsAvailable()
         {
-            // Latched down for an uninstall in flight. Without this the next
-            // device sweep re-probes (Shutdown clears the cached answer),
-            // recreates the initializer, and reloads the very dlls the
-            // uninstaller is trying to delete. #128's input enumeration runs
-            // that sweep on a timer, so the window is about a second wide.
+            // Latched down for an uninstall of the older runtime in flight.
+            // Without this the next device sweep re-probes (Shutdown clears
+            // the cached answer), recreates the initializer, and reloads the
+            // very dlls the uninstaller is trying to delete. #128's input
+            // enumeration runs that sweep on a timer, so the window is about
+            // a second wide.
             if (_runtimeSuppressed) return false;
             if (_isAvailable.HasValue) return _isAvailable.Value;
 
-            // Same bounded contract as Connect/Disconnect: the SDK probe
-            // and EnsureServiceAvailable are WinRT RPC and can hang on a
-            // broken service. A timed-out probe reads as unavailable for
-            // this session (ResetAvailability re-probes after an install).
+            // Same bounded contract as Connect/Disconnect: activating the
+            // API and EnsureServiceAvailable are WinRT calls and can hang on
+            // a broken service. A timed-out probe reads as unavailable for
+            // this session (ResetAvailability re-probes).
             if (_probeTimedOut) return false;
             bool result = false;
             var done = new System.Threading.ManualResetEventSlim(false);
@@ -574,7 +488,7 @@ namespace PadForge.Common.Input
             {
                 // Hung service: remember for the session so every later
                 // create fails fast instead of re-paying the 10 s wait.
-                // ResetAvailability clears this after a service install.
+                // ResetAvailability clears this.
                 _probeTimedOut = true;
                 return false;
             }
@@ -587,51 +501,89 @@ namespace PadForge.Common.Input
             {
                 if (_isAvailable.HasValue) return _isAvailable.Value;
 
+                IMidiBackend backend = null;
                 try
                 {
-                    _initializer = Microsoft.Windows.Devices.Midi2.Initialization.MidiDesktopAppSdkInitializer.Create();
-                    if (!_initializer.InitializeSdkRuntime())
+                    backend = s_backendFactory();
+                    if (backend == null || !backend.Start())
                     {
-                        _initializer.Dispose();
-                        _initializer = null;
                         _isAvailable = false;
                         return false;
                     }
-                    if (!_initializer.EnsureServiceAvailable())
-                    {
-                        _initializer.Dispose();
-                        _initializer = null;
-                        _isAvailable = false;
-                        return false;
-                    }
+                    _backend = backend;
                     _isAvailable = true;
                     return true;
                 }
                 catch
                 {
+                    // A start that threw partway may hold the older
+                    // runtime's initializer. Release it now rather than
+                    // abandon it.
+                    try { backend?.Stop(skipDispose: false); } catch { }
                     _isAvailable = false;
                     return false;
                 }
             }
         }
 
+        /// <summary>The production backend: the API
+        /// <see cref="MidiApiSelection.Choose"/> picks for this PC, or null
+        /// when neither is available. Runs inside the bounded probe, since
+        /// activating the in-box API loads its DLL.</summary>
+        private static IMidiBackend CreateBackend()
+        {
+            switch (MidiApiSelection.Choose(
+                MidiApiSelection.OsBuild,
+                MidiApiSelection.ProbeInBoxActivation,
+                MidiApiSelection.IsAppSdkRuntimeInstalled))
+            {
+                case MidiApiKind.InBox: return new MidiBackendInBox();
+                case MidiApiKind.AppSdk: return new MidiBackendAppSdk();
+                default: return null;
+            }
+        }
+
+        /// <summary>The backend the last successful probe started, or null.
+        /// MIDI input rides the same one.</summary>
+        internal static IMidiBackend Backend => _backend;
+
+        /// <summary>The API in use: the last successful probe's, else
+        /// None.</summary>
+        internal static MidiApiKind ActiveApi
+            => _isAvailable == true ? (_backend?.Kind ?? MidiApiKind.None) : MidiApiKind.None;
+
+        /// <summary>True when a probe ran and found no working API, or timed
+        /// out, and nothing has reset it since. The Settings card uses it to
+        /// tell an API that is present but did not start from one that is
+        /// missing.</summary>
+        internal static bool ProbeFailed
+            => _isAvailable == false || (_probeTimedOut && _isAvailable == null);
+
+        /// <summary>Test seam (InternalsVisibleTo PadForge.Tests): replaces
+        /// the backend factory and clears the cached probe. Null restores
+        /// the production factory.</summary>
+        internal static void UseBackendFactoryForTest(Func<IMidiBackend> factory)
+        {
+            s_backendFactory = factory ?? CreateBackend;
+            ResetAvailability();
+        }
+
         /// <summary>
         /// Resets the cached availability check so the next call to IsAvailable()
-        /// re-evaluates. Call after installing MIDI Services.
+        /// re-evaluates. Call after the older runtime is uninstalled, and
+        /// after a service restart.
         /// </summary>
         public static void ResetAvailability()
         {
             _probeTimedOut = false;
-            // An install (or a manual refresh) is the event that makes the
-            // runtime worth loading again, so it is what lifts the latch.
+            // An uninstall finishing (or a manual refresh) is the event that
+            // makes MIDI worth probing again, so it is what lifts the latch.
             _runtimeSuppressed = false;
             lock (_availLock)
             {
-                if (_initializer != null)
-                {
-                    _initializer.Dispose();
-                    _initializer = null;
-                }
+                var backend = _backend;
+                _backend = null;
+                backend?.Stop(skipDispose: false);
                 _isAvailable = null;
             }
         }
@@ -639,7 +591,9 @@ namespace PadForge.Common.Input
         private static volatile bool _runtimeSuppressed;
 
         /// <summary>
-        /// Releases the SDK runtime and keeps it released, for an uninstall.
+        /// Releases the older runtime and keeps it released, for its
+        /// uninstall. Only the older runtime needs this: the in-box API is
+        /// part of Windows and its uninstaller never touches it.
         ///
         /// <para>Dispose is what calls ShutdownSdkRuntime and lets go of the
         /// SDK's native dlls. Abandoning the initializer instead left them
@@ -652,7 +606,7 @@ namespace PadForge.Common.Input
         /// availability answer, so the next enumeration sweep would re-probe
         /// and load the runtime straight back in while the uninstaller was
         /// working. Availability stays false until <see cref="ResetAvailability"/>
-        /// lifts it, which is what an install already calls.</para>
+        /// lifts it, which the uninstall calls when it finishes.</para>
         /// </summary>
         public static void SuppressForUninstall()
         {
@@ -661,25 +615,22 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Shuts down the MIDI Services SDK initializer. Call on app exit.
+        /// Releases the MIDI API. Call on app exit.
         /// </summary>
         /// <param name="skipDispose">
-        /// When true, abandons the initializer without calling Dispose(),
-        /// for teardown while the service may ALREADY be mid-removal (app
-        /// exit racing an external uninstall): Dispose() calls into the
-        /// runtime and crashes if the service is going away under it. The
-        /// in-app uninstall does NOT use this: it goes through
+        /// When true, abandons the older runtime's initializer without
+        /// calling Dispose(), for teardown while the service may ALREADY be
+        /// mid-removal (app exit racing an external uninstall): Dispose()
+        /// calls into the runtime and crashes if the service is going away
+        /// under it. The in-app uninstall does NOT use this: it goes through
         /// SuppressForUninstall, which disposes while the service still
         /// exists so the SDK's dlls are actually released.
         /// </param>
         public static void Shutdown(bool skipDispose = false)
         {
-            if (_initializer != null)
-            {
-                if (!skipDispose)
-                    try { _initializer.Dispose(); } catch { }
-                _initializer = null;
-            }
+            var backend = _backend;
+            _backend = null;
+            backend?.Stop(skipDispose);
             lock (_availLock) { _isAvailable = null; }
         }
     }

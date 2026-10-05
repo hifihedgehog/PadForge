@@ -610,7 +610,7 @@
                                     <Path.Style>
                                         <Style TargetType="Path" BasedOn="{StaticResource LivenessFlameBase}">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsMidiServicesInstalled}" Value="True">
+                                                <DataTrigger Binding="{Binding IsMidiAvailable}" Value="True">
                                                     <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                                     <Setter Property="Stroke" Value="{x:Null}"/>
                                                     <Setter Property="Effect">
@@ -625,33 +625,36 @@
                                 </Path>
                                 <TextBlock Text="{Binding MidiServicesStatusText}" FontWeight="SemiBold"/>
                             </StackPanel>
-                            <TextBlock Text="{Binding MidiServicesVersion}" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
-                        </StackPanel>
-
-                        <!-- Verb classes (#175 dialog language): same split as
-                             the HidHide card. Install accent, Uninstall
-                             destructive (removes the service, no confirm). -->
-                        <StackPanel Grid.Column="1" Orientation="Horizontal"
-                                    VerticalAlignment="Center">
-                            <Button Content="{Binding Common_Install, Source={x:Static strings:Strings.Instance}}"
-                                    Command="{Binding InstallMidiServicesCommand}"
-                                    Visibility="{Binding IsMidiServicesInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
-                                    ToolTipService.ShowOnDisabled="True"
-                                    Margin="0,0,8,0">
-                                <Button.Style>
-                                    <Style TargetType="Button" BasedOn="{StaticResource EmberAccentButton}">
+                            <!-- The older runtime's version reads in the telemetry
+                                 face like the other cards' versions. The notes
+                                 (a leftover runtime, a service that did not
+                                 start, what the PC lacks) read as text. -->
+                            <TextBlock Text="{Binding MidiServicesDetailText}" FontSize="12" TextWrapping="Wrap"
+                                       Visibility="{Binding MidiServicesDetailText, Converter={StaticResource StringToVisibility}}"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,12,0">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding MidiOsSupported}" Value="False">
-                                                <Setter Property="ToolTip" Value="{Binding Settings_MidiOsRequired, Source={x:Static strings:Strings.Instance}}"/>
+                                            <DataTrigger Binding="{Binding MidiDetailIsVersion}" Value="True">
+                                                <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </Button.Style>
-                            </Button>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+
+                        <!-- No Install button: Microsoft withdrew the runtime's
+                             installers on 2026-10-01, and Windows carries the
+                             API from the late-November 2026 update. Uninstall
+                             (#175 destructive verb, no confirm) removes the
+                             older runtime only, where one is installed. -->
+                        <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                    VerticalAlignment="Center">
                             <Button Content="{Binding Common_Uninstall, Source={x:Static strings:Strings.Instance}}"
                                     Command="{Binding UninstallMidiServicesCommand}"
                                     Style="{StaticResource EmberDestructiveButton}"
-                                    Visibility="{Binding IsMidiServicesInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    Visibility="{Binding IsMidiRuntimeInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </StackPanel>
                     </Grid>
                 </StackPanel>

@@ -504,117 +504,21 @@ namespace PadForge.Common
         //  Windows MIDI Services
         // ─────────────────────────────────────────────
 
-        // Note: /releases/latest returns 404 because microsoft/MIDI only publishes
-        // pre-releases. Use /releases, which returns the newest releases
-        // first (one page of them), and take the first installer asset
-        // anywhere in it. A release that carries no installer for this
-        // machine is passed over that way.
-        private const string MidiServicesGitHubApi =
-            "https://api.github.com/repos/microsoft/MIDI/releases";
-
-        private static string GetMidiServicesTempDir()
-            => Path.Combine(Path.GetTempPath(), "PadForge_MidiServices");
+        // There is nothing to install any more. Microsoft deleted the Windows
+        // MIDI Services SDK Runtime and Tools installers from every microsoft/MIDI
+        // release on 2026-10-01, and the API moves into Windows 11 25H2 with the
+        // late-November 2026 update (MidiApiSelection). What remains here serves
+        // PCs that still have the older runtime: finding it and uninstalling it.
 
         /// <summary>
-        /// Downloads and runs the latest Windows MIDI Services SDK Runtime installer.
-        /// Uses the GitHub API to find the latest release asset dynamically.
-        /// The installer is ~210MB so it must be downloaded rather than embedded.
+        /// Uninstalls the older Windows MIDI Services runtime by finding the cached WiX
+        /// Burn bootstrapper via the registry UninstallString and running it with
+        /// /uninstall /quiet. The in-box API is part of Windows and is never touched.
+        /// The caller releases the runtime first
+        /// (MidiVirtualController.SuppressForUninstall). Waits up to five minutes and
+        /// returns false when the uninstaller is still running then.
         /// </summary>
-        public static async Task InstallMidiServicesAsync()
-        {
-            var tempDir = GetMidiServicesTempDir();
-            Directory.CreateDirectory(tempDir);
-
-            var installerPath = Path.Combine(tempDir, "MidiServicesSdkRuntime.exe");
-            try
-            {
-                using var http = new HttpClient();
-                http.DefaultRequestHeaders.UserAgent.ParseAdd("PadForge");
-                http.Timeout = TimeSpan.FromMinutes(10);
-
-                // Query GitHub API for the latest release and find the SDK Runtime installer asset.
-                var downloadUrl = await FindMidiServicesDownloadUrl(http);
-
-                using var response = await http.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead);
-                response.EnsureSuccessStatusCode();
-
-                using var stream = await response.Content.ReadAsStreamAsync();
-                using var fs = new FileStream(installerPath, FileMode.Create, FileAccess.Write);
-                await stream.CopyToAsync(fs);
-
-                // Run the WiX Burn bootstrapper. PadForge is already elevated,
-                // so run directly (no runas) to avoid Win32Exception on some systems.
-                // Close the file stream before launching the installer.
-                fs.Close();
-                var psi = new ProcessStartInfo
-                {
-                    FileName = installerPath,
-                    Arguments = "/install /quiet /norestart",
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                };
-                using var proc = Process.Start(psi);
-                proc?.WaitForExit(300_000); // 5 minutes — Burn bundles can take a while
-
-                // Reset the cached availability check so IsAvailable() re-evaluates.
-                MidiVirtualController.ResetAvailability();
-            }
-            finally
-            {
-                CleanupTempDir(tempDir);
-            }
-        }
-
-        /// <summary>
-        /// Queries the GitHub API for microsoft/MIDI's releases and returns the
-        /// download URL of the newest SDK Runtime installer built for this
-        /// machine, x64 or arm64.
-        /// </summary>
-        private static async Task<string> FindMidiServicesDownloadUrl(HttpClient http)
-        {
-            var json = await http.GetStringAsync(MidiServicesGitHubApi);
-
-            // Find the browser_download_url for the SDK Runtime exe by scanning
-            // the release JSON for the key.
-            // Asset name pattern: "Windows.MIDI.Services.SDK.Runtime.and.Tools.*-<arch>.exe"
-            // Microsoft publishes an -arm64.exe beside every -x64.exe. This
-            // installs a Windows service, so the MACHINE picks the asset, not
-            // the architecture this process was built for.
-            string archToken = PadForge.Engine.PlatformSupport.IsArm64Machine ? "arm64" : "x64";
-            const string needle = "browser_download_url";
-            int pos = 0;
-            while ((pos = json.IndexOf(needle, pos, StringComparison.Ordinal)) >= 0)
-            {
-                // Find the URL value after the key.
-                int urlStart = json.IndexOf("\"http", pos, StringComparison.Ordinal);
-                if (urlStart < 0) break;
-                urlStart++; // skip opening quote
-                int urlEnd = json.IndexOf('"', urlStart);
-                if (urlEnd < 0) break;
-
-                string url = json.Substring(urlStart, urlEnd - urlStart);
-                if (url.Contains("SDK.Runtime", StringComparison.OrdinalIgnoreCase) &&
-                    url.Contains("-" + archToken + ".", StringComparison.OrdinalIgnoreCase) &&
-                    url.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
-                {
-                    return url;
-                }
-
-                pos = urlEnd;
-            }
-
-            throw new InvalidOperationException(
-                "Could not find Windows MIDI Services SDK Runtime installer in the latest GitHub release.");
-        }
-
-        /// <summary>
-        /// Uninstalls Windows MIDI Services by finding the cached WiX Burn bootstrapper
-        /// via the registry UninstallString and launching it with /uninstall /quiet.
-        /// The uninstaller is launched fire-and-forget because the MIDI Services SDK
-        /// DLLs are loaded in-process — waiting for the uninstaller to finish would
-        /// cause a native crash when the backing service is removed mid-session.
-        /// </summary>
-        public static void UninstallMidiServices()
+        public static bool UninstallMidiRuntime()
         {
             string uninstallCmd = FindMidiServicesUninstallString();
             if (string.IsNullOrEmpty(uninstallCmd))
@@ -652,7 +556,7 @@ namespace PadForge.Common
                 CreateNoWindow = true
             };
             using var proc = Process.Start(psi);
-            proc?.WaitForExit(300_000);
+            return proc == null || proc.WaitForExit(300_000);
         }
 
         /// <summary>
@@ -699,21 +603,22 @@ namespace PadForge.Common
         }
 
         /// <summary>
-        /// Checks whether Windows MIDI Services is installed by looking for the
-        /// registry uninstall entry. Does NOT load the SDK runtime — that would
-        /// lock native DLLs in-process and prevent clean uninstallation.
+        /// Whether the older Windows MIDI Services runtime is installed, read from
+        /// its "Windows MIDI Services Runtime and Tools" uninstall entry, which the
+        /// in-box API never creates. Does NOT load the runtime: that would lock its
+        /// native DLLs in-process and block a clean uninstall.
         /// </summary>
-        public static bool IsMidiServicesInstalled()
+        public static bool IsMidiRuntimeInstalled()
         {
             return FindMidiServicesUninstallString() != null;
         }
 
-        /// <summary>The installed Windows MIDI Services version, or null.
+        /// <summary>The older Windows MIDI Services runtime's version, or null.
         /// Read from DisplayVersion on the same bundle entry the uninstall
         /// string comes from, the way the HidHide and ViGEm cards read
         /// theirs. The card's second line used to print the product name
         /// again under a card already titled with it.</summary>
-        public static string GetMidiServicesVersion()
+        public static string GetMidiRuntimeVersion()
         {
             foreach (var view in new[] { RegistryView.Registry64, RegistryView.Registry32 })
             {

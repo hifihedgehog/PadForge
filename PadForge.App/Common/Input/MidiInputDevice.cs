@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.Windows.Devices.Midi2;
 using PadForge.Engine;
 
 namespace PadForge.Common.Input
@@ -70,7 +69,7 @@ namespace PadForge.Common.Input
         private readonly long[] _pulsePhaseUntil = new long[MidiInputState.CcCount * 2];
 
         private readonly string _endpointId;
-        private MidiEndpointConnection _connection;
+        private IMidiInputConnection _connection;
 
         public MidiInputDevice(string endpointId, string name)
         {
@@ -145,7 +144,7 @@ namespace PadForge.Common.Input
             // UpdateMidiInputDevices under PollingLoop). Same event-bounded
             // contract as the virtual-controller side; an event wait cannot
             // inline the worker body.
-            MidiEndpointConnection conn = null;
+            IMidiInputConnection conn = null;
             bool ok = false;
             var done = new System.Threading.ManualResetEventSlim(false);
             var work = System.Threading.Tasks.Task.Run(() =>
@@ -155,13 +154,14 @@ namespace PadForge.Common.Input
                     var session = MidiInputRuntime.Session;
                     if (session == null) return;
 
-                    conn = session.CreateEndpointConnection(_endpointId);
+                    // Subscribes OnUmp before the open, as the direct
+                    // MessageReceived subscription did.
+                    conn = session.CreateConnection(_endpointId, OnUmp);
                     if (conn == null) return;
 
-                    conn.MessageReceived += OnMessageReceived;
                     if (!conn.Open())
                     {
-                        conn.MessageReceived -= OnMessageReceived;
+                        conn.Detach();
                         // CreateEndpointConnection already registered this
                         // connection in the session; undo that on the
                         // failure path too (the success path does it in
@@ -184,7 +184,7 @@ namespace PadForge.Common.Input
                     var stray = conn;
                     if (stray != null)
                     {
-                        try { stray.MessageReceived -= OnMessageReceived; } catch { }
+                        try { stray.Detach(); } catch { }
                         MidiInputRuntime.Disconnect(stray);
                     }
                 }, System.Threading.Tasks.TaskScheduler.Default);
@@ -205,7 +205,7 @@ namespace PadForge.Common.Input
             _connection = null;
             if (conn != null)
             {
-                try { conn.MessageReceived -= OnMessageReceived; } catch { }
+                try { conn.Detach(); } catch { }
                 MidiInputRuntime.Disconnect(conn);
             }
         }
@@ -214,11 +214,14 @@ namespace PadForge.Common.Input
         //  Message parsing (UMP) — full namespace, omni
         // ─────────────────────────────────────────────
 
-        private void OnMessageReceived(IMidiMessageReceivedEventSource sender, MidiMessageReceivedEventArgs args)
+        /// <summary>One received message as its first two UMP words. The
+        /// backend passes the second word for a 64-bit message (type 0x4)
+        /// and 0 otherwise. Internal for the test seam: the WinRT callback
+        /// is not constructible in tests.</summary>
+        internal void OnUmp(uint w0, uint w1)
         {
             try
             {
-                uint w0 = args.PeekFirstWord();
                 uint mt = w0 >> 28;
 
                 if (mt == 0x2)
@@ -238,26 +241,22 @@ namespace PadForge.Common.Input
                 else if (mt == 0x4)
                 {
                     // MIDI 2.0 channel voice (64-bit UMP).
-                    var packet = args.GetMessagePacket();
-                    if (packet is not MidiMessage64 m64) return;
-                    uint word0 = m64.Word0;
-                    uint word1 = m64.Word1;
-                    int opcode = (int)((word0 >> 20) & 0xF);
-                    int index = (int)((word0 >> 8) & 0x7F);
+                    int opcode = (int)((w0 >> 20) & 0xF);
+                    int index = (int)((w0 >> 8) & 0x7F);
                     switch (opcode)
                     {
                         // MIDI 2.0 NoteOn velocity 0 is a valid note-on.
                         case 0x9: SetNote(index, true); break;
                         case 0x8: SetNote(index, false); break;
-                        case 0xB: SetCc(index, (int)(word1 >> 25)); break; // 32-bit CC -> 7-bit
-                        case 0xE: SetPitchBend((int)(word1 >> 16)); break; // 32-bit -> 16-bit
+                        case 0xB: SetCc(index, (int)(w1 >> 25)); break; // 32-bit CC -> 7-bit
+                        case 0xE: SetPitchBend((int)(w1 >> 16)); break; // 32-bit -> 16-bit
                     }
                 }
             }
             catch
             {
                 // A malformed packet must never take down the WinRT
-                // callback thread; drop it.
+                // callback thread. Drop it.
             }
         }
 
@@ -412,35 +411,36 @@ namespace PadForge.Common.Input
 
     /// <summary>
     /// Shared Windows MIDI Services session for input endpoints, plus the
-    /// endpoint enumeration the device thread consumes. Rides the SDK
-    /// runtime that <see cref="MidiVirtualController.IsAvailable"/>
-    /// initializes; never initializes anything when MIDI services are
-    /// absent.
+    /// endpoint enumeration the device thread consumes. Rides the API that
+    /// <see cref="MidiVirtualController.IsAvailable"/> selects and starts,
+    /// and never starts anything when no MIDI API is available.
     /// </summary>
     internal static class MidiInputRuntime
     {
         private static readonly object _lock = new();
-        private static volatile MidiSession _session;
+        private static volatile IMidiInputSession _session;
 
         /// <summary>The shared input session, or null when Windows MIDI
         /// Services is unavailable.</summary>
-        public static MidiSession Session
+        public static IMidiInputSession Session
         {
             get
             {
                 if (_session != null) return _session;
                 if (!MidiVirtualController.IsAvailable()) return null;
+                var backend = MidiVirtualController.Backend;
+                if (backend == null) return null;
                 lock (_lock)
                 {
                     if (_session != null) return _session;
                     // Bounded like every other service touch; a hung
                     // Create must not strand whichever thread first asks
                     // for the session.
-                    MidiSession created = null;
+                    IMidiInputSession created = null;
                     var done = new System.Threading.ManualResetEventSlim(false);
                     System.Threading.Tasks.Task.Run(() =>
                     {
-                        try { created = MidiSession.Create("PadForge MIDI Input"); }
+                        try { created = backend.CreateInputSession("PadForge MIDI Input"); }
                         catch { }
                         finally { done.Set(); }
                     });
@@ -456,17 +456,18 @@ namespace PadForge.Common.Input
         /// caller (the connection object is discarded either way), and a
         /// hung service must never hold the polling thread again (live
         /// stack 2026-07-23). At worst a hung RPC parks one thread-pool
-        /// thread until the service answers or the process exits.</summary>
-        public static void Disconnect(MidiEndpointConnection connection)
+        /// thread until the service answers or the process exits. Skipped
+        /// once <see cref="Shutdown"/> has run: the connection closed with
+        /// its session, and the older runtime may be released by then.</summary>
+        public static void Disconnect(IMidiInputConnection connection)
         {
             if (connection == null) return;
             System.Threading.Tasks.Task.Run(() =>
             {
                 try
                 {
-                    var session = _session;
-                    if (session != null)
-                        session.DisconnectEndpointConnection(connection.ConnectionId);
+                    if (_session != null)
+                        connection.Disconnect();
                 }
                 catch { }
             });
@@ -483,27 +484,14 @@ namespace PadForge.Common.Input
         /// used to poke stranded responder corpses every sweep.</summary>
         public static List<(string Id, string Name)> EnumerateEndpoints()
         {
-            var result = new List<(string Id, string Name)>();
-            if (!MidiVirtualController.IsAvailable()) return result;
+            if (!MidiVirtualController.IsAvailable()) return new List<(string Id, string Name)>();
             try
             {
-                var endpoints = MidiEndpointDeviceInformation.FindAll();
-                if (endpoints == null) return result;
-                foreach (var ep in endpoints)
-                {
-                    if (ep == null) continue;
-                    var purpose = ep.EndpointPurpose;
-                    if (purpose != MidiEndpointDevicePurpose.NormalMessageEndpoint)
-                        continue;
-                    string id = ep.EndpointDeviceId;
-                    if (string.IsNullOrEmpty(id)) continue;
-                    string name = ep.Name;
-                    if (string.IsNullOrWhiteSpace(name)) name = "MIDI Endpoint";
-                    result.Add((id, name));
-                }
+                var backend = MidiVirtualController.Backend;
+                if (backend != null) return backend.EnumerateNormalEndpoints();
             }
             catch { }
-            return result;
+            return new List<(string Id, string Name)>();
         }
 
         /// <summary>Tears down the shared session. Call on app exit, before

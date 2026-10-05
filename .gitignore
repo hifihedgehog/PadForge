@@ -72,12 +72,9 @@ PadForge-*.zip
 .idea/
 *.sln.iml
 
-# VS Code
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+# VS Code. No workspace settings are shared, and C# Dev Kit writes its
+# solution choice to .vscode/settings.json.
+.vscode/
 
 # Windows
 Thumbs.db

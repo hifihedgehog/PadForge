@@ -627,6 +627,18 @@ namespace PadForge.Tests
     /// <summary>The runtime install's checks, off the network.</summary>
     public class MidiRuntimeInstallTests
     {
+        /// <summary>Only Microsoft's bundle takes tools Microsoft no
+        /// longer offers with it, so only its uninstall asks first.</summary>
+        [Theory]
+        [InlineData((int)DriverInstaller.MidiRuntimeOwner.MicrosoftBundle, true)]
+        [InlineData((int)DriverInstaller.MidiRuntimeOwner.MicrosoftPackage, false)]
+        [InlineData((int)DriverInstaller.MidiRuntimeOwner.PadForgePackage, false)]
+        [InlineData((int)DriverInstaller.MidiRuntimeOwner.None, false)]
+        public void OnlyMicrosoftsBundle_AsksBeforeItsUninstall(int owner, bool asks)
+        {
+            Assert.Equal(asks, DriverInstaller.MidiUninstallIsIrreversible((DriverInstaller.MidiRuntimeOwner)owner));
+        }
+
         [Theory]
         [InlineData(14, 51, true)]
         [InlineData(14, 52, true)]

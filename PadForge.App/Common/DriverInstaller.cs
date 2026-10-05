@@ -566,6 +566,14 @@ namespace PadForge.Common
             return (MidiRuntimeOwner.None, null);
         }
 
+        /// <summary>Whether uninstalling takes more than a runtime with it.
+        /// Microsoft's bundle also removes its MIDI Settings app, console
+        /// and PowerShell module, none of which Microsoft offers any more,
+        /// so the card asks first. A runtime package holds the runtime
+        /// alone, and the card can install a runtime again.</summary>
+        internal static bool MidiUninstallIsIrreversible(MidiRuntimeOwner owner)
+            => owner == MidiRuntimeOwner.MicrosoftBundle;
+
         /// <summary>
         /// Whether the App SDK runtime is installed, Microsoft's or
         /// PadForge's, read from Windows Installer and the uninstall entries,

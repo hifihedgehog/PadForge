@@ -585,6 +585,8 @@ public class Strings : INotifyPropertyChanged
     public string Settings_MidiStatusLegacy => Get("Settings_MidiStatusLegacy");
     public string Settings_MidiLegacy => Get("Settings_MidiLegacy");
     public string Settings_MidiInstallTooltip => Get("Settings_MidiInstallTooltip");
+    public string Settings_MidiUninstallBundle_Title => Get("Settings_MidiUninstallBundle_Title");
+    public string Settings_MidiUninstallBundleConfirm_Message => Get("Settings_MidiUninstallBundleConfirm_Message");
     public string Settings_SettingsFile => Get("Settings_SettingsFile");
     public string Settings_SettingsFileDesc => Get("Settings_SettingsFileDesc");
     public string Settings_Reload => Get("Settings_Reload");

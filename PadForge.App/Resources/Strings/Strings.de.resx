@@ -373,6 +373,8 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Settings_MidiStatusLegacy" xml:space="preserve"><value>Legacy-MIDI-API</value></data>
   <data name="Settings_MidiLegacy" xml:space="preserve"><value>Jeder MIDI-Slot sendet an einen Port, der auf der Seite des Slots gewählt wird. Die MIDI-Eingabe öffnet nur Geräte, die einem Slot zugewiesen sind.</value></data>
   <data name="Settings_MidiInstallTooltip" xml:space="preserve"><value>Lädt die Laufzeit von Windows MIDI Services herunter und installiert sie. Damit erhält jeder MIDI-Slot einen eigenen Port.</value></data>
+  <data name="Settings_MidiUninstallBundle_Title" xml:space="preserve"><value>Windows MIDI Services Runtime and Tools deinstallieren</value></data>
+  <data name="Settings_MidiUninstallBundleConfirm_Message" xml:space="preserve"><value>Entfernt Microsofts Windows MIDI Services Runtime and Tools samt der App MIDI Settings, der MIDI-Konsole und dem PowerShell-Modul. Microsoft bietet sie nicht mehr zum Download an, daher lassen sie sich nicht erneut installieren.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>VR-Laufzeitumgebung für virtuelle VR-Controller. Installation direkt von Valve-Servern, ohne Steam-Konto und ohne Steam-Client (mehrere GB).</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Installationsort</value></data>

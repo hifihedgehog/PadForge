@@ -443,6 +443,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Settings_MidiStatusLegacy" xml:space="preserve"><value>Legacy MIDI API</value></data>
   <data name="Settings_MidiLegacy" xml:space="preserve"><value>Each MIDI slot sends to a port picked on the slot's page. MIDI input opens only devices assigned to a slot.</value></data>
   <data name="Settings_MidiInstallTooltip" xml:space="preserve"><value>Downloads and installs the Windows MIDI Services runtime, which gives each MIDI slot a port of its own.</value></data>
+  <data name="Settings_MidiUninstallBundle_Title" xml:space="preserve"><value>Uninstall Windows MIDI Services Runtime and Tools</value></data>
+  <data name="Settings_MidiUninstallBundleConfirm_Message" xml:space="preserve"><value>This removes Microsoft's Windows MIDI Services Runtime and Tools, with the MIDI Settings app, the MIDI console and the PowerShell module. Microsoft no longer offers them for download, so they cannot be installed again.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>VR runtime for virtual VR controllers. Installs from Valve's servers with no Steam account or Steam client needed (several GB).</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Install Location</value></data>

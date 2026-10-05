@@ -647,9 +647,10 @@
                         <!-- Install fetches PadForge's build of the runtime
                              (Microsoft withdrew its installers on 2026-10-01)
                              where the PC has no in-box API and is not in
-                             Legacy API mode. Uninstall (#175 destructive verb,
-                             no confirm) removes whichever runtime is
-                             installed, Microsoft's or PadForge's. -->
+                             Legacy API mode. Uninstall (#175 destructive verb)
+                             removes whichever runtime is installed, Microsoft's
+                             or PadForge's, and asks first when it is Microsoft's
+                             bundle, whose tools Microsoft no longer offers. -->
                         <StackPanel Grid.Column="1" Orientation="Horizontal"
                                     VerticalAlignment="Center">
                             <Button Content="{Binding Common_Install, Source={x:Static strings:Strings.Instance}}"

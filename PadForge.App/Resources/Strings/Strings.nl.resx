@@ -373,6 +373,8 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Settings_MidiStatusLegacy" xml:space="preserve"><value>Verouderde MIDI-API</value></data>
   <data name="Settings_MidiLegacy" xml:space="preserve"><value>Elk MIDI-slot verstuurt naar een poort die op de pagina van het slot is gekozen. MIDI-invoer opent alleen apparaten die aan een slot zijn toegewezen.</value></data>
   <data name="Settings_MidiInstallTooltip" xml:space="preserve"><value>Downloadt en installeert de Windows MIDI Services-runtime, waarmee elk MIDI-slot een eigen poort krijgt.</value></data>
+  <data name="Settings_MidiUninstallBundle_Title" xml:space="preserve"><value>Windows MIDI Services Runtime and Tools verwijderen</value></data>
+  <data name="Settings_MidiUninstallBundleConfirm_Message" xml:space="preserve"><value>Dit verwijdert Windows MIDI Services Runtime and Tools van Microsoft, samen met de app MIDI Settings, de MIDI-console en de PowerShell-module. Microsoft biedt ze niet meer aan om te downloaden, dus ze kunnen niet opnieuw worden geïnstalleerd.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>VR-runtime voor virtuele VR-controllers. Wordt vanaf de servers van Valve geïnstalleerd, zonder Steam-account of Steam-client (meerdere GB).</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Installatielocatie</value></data>

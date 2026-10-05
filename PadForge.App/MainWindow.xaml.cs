@@ -816,6 +816,17 @@ namespace PadForge
 
             _viewModel.Settings.UninstallMidiServicesRequested += async (s, e) =>
             {
+                // Microsoft's bundle takes its MIDI Settings app, console
+                // and PowerShell module with it, and Microsoft no longer
+                // offers any of them, so that removal asks first, as a
+                // profile delete and the SteamVR uninstall do (#175).
+                if (DriverInstaller.MidiUninstallIsIrreversible(DriverInstaller.FindMidiRuntime().Owner)
+                    && !Views.ConfirmDialog.Show(this,
+                        Strings.Instance.Settings_MidiUninstallBundle_Title,
+                        Strings.Instance.Settings_MidiUninstallBundleConfirm_Message,
+                        Strings.Instance.Common_Uninstall))
+                    return;
+
                 // This removes the App SDK runtime only. When Windows runs
                 // PadForge's MIDI through the in-box API or the legacy API,
                 // nothing in this process touches the runtime's files, so

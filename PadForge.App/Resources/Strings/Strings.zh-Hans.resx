@@ -373,6 +373,8 @@
   <data name="Settings_MidiStatusLegacy" xml:space="preserve"><value>旧版 MIDI API</value></data>
   <data name="Settings_MidiLegacy" xml:space="preserve"><value>每个 MIDI 插槽发送到在该插槽页面上选择的端口。MIDI 输入只打开分配给插槽的设备。</value></data>
   <data name="Settings_MidiInstallTooltip" xml:space="preserve"><value>下载并安装 Windows MIDI Services 运行时，使每个 MIDI 插槽都有自己的端口。</value></data>
+  <data name="Settings_MidiUninstallBundle_Title" xml:space="preserve"><value>卸载 Windows MIDI Services Runtime and Tools</value></data>
+  <data name="Settings_MidiUninstallBundleConfirm_Message" xml:space="preserve"><value>这将删除 Microsoft 的 Windows MIDI Services Runtime and Tools，以及 MIDI Settings 应用、MIDI 控制台和 PowerShell 模块。Microsoft 已不再提供下载，因此无法重新安装。</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>用于虚拟 VR 控制器的 VR 运行时。直接从 Valve 服务器安装，无需 Steam 账户或 Steam 客户端（数 GB）。</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>安装位置</value></data>

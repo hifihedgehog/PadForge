@@ -2966,8 +2966,9 @@ namespace PadForge.Common.Input
         // Pooled snapshot buffers + cached Base-row index. The KBM eval
         // calls FindBaseRowForTarget ~104×/slot/cycle; before caching, each
         // call allocated a MappingRow[] and linearly scanned. The dict
-        // cache rebuilds on (mappingSet, Count) change — same race
-        // tolerance as the prior SnapshotRows + scan.
+        // cache rebuilds when the set's row list, count or last row changes,
+        // and every 250 ms. Same race tolerance as the prior SnapshotRows
+        // and scan.
         [System.ThreadStatic] private static MappingRow[] _rowsSnapshotBuf;
         [System.ThreadStatic] private static MappingSource[] _sourcesSnapshotBuf;
         /// <summary>Per-MappingSet base-row index (weak-keyed so replaced
@@ -2982,8 +2983,32 @@ namespace PadForge.Common.Input
             /// an equal-length republication changes this even when the count
             /// does not. Counting alone left the old rows cached forever.</summary>
             public List<MappingRow> BuiltFrom;
+            /// <summary>The list's last row when the index was built. Rows are
+            /// removed in place (device cleanup) and appended in place (the
+            /// motion backfill, the grid push), and a removal plus an append
+            /// keeps the count and the list while it changes the last row.
+            /// Without this the index handed back the removed row.</summary>
+            public MappingRow Last;
+            /// <summary>When the index was last built, in TickCount64 ms. An
+            /// in-place edit that changes none of the three keys, a retarget
+            /// with no per-slot reset, is picked up within
+            /// <see cref="BaseRowCacheRebuildMs"/>, the bound the pressure rows'
+            /// rescan keeps.</summary>
+            public long BuiltAtMs;
             public readonly Dictionary<string, MappingRow> Rows =
                 new(64, System.StringComparer.Ordinal);
+        }
+
+        private const long BaseRowCacheRebuildMs = 250;
+
+        /// <summary>The list's last row, or null when it is empty or shrinks
+        /// under the read. The UI thread edits the list, so a removal between
+        /// the count and the indexer reads as a change.</summary>
+        private static MappingRow LastRowOrNull(List<MappingRow> rows, int count)
+        {
+            if (count <= 0) return null;
+            try { return count <= rows.Count ? rows[count - 1] : null; }
+            catch (ArgumentOutOfRangeException) { return null; }
         }
         private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<MappingSet, BaseRowCache>
             s_baseRowCaches = new();
@@ -4098,12 +4123,15 @@ namespace PadForge.Common.Input
         /// allocation.
         ///
         /// <para>The index rebuilds when the MappingSet's row LIST is
-        /// republished or its length changes. Length alone was not enough: the
-        /// save and merge paths assign a rebuilt list of the same length, and
-        /// a slot whose rows are replaced wholesale also drops its entry
-        /// through <see cref="ResetSourceKindRuntimeForSlot"/>, so an edit that
-        /// keeps the count cannot leave obsolete Base rows resolving
-        /// forever.</para></summary>
+        /// republished, its length changes, or its last row changes. Length
+        /// alone was not enough: the save and merge paths assign a rebuilt list
+        /// of the same length, and rows are removed and appended in place, so a
+        /// removal plus an append kept the count and the list and handed back
+        /// the removed row. The last row catches that edit. A slot whose rows
+        /// are replaced wholesale also drops its entry through
+        /// <see cref="ResetSourceKindRuntimeForSlot"/>, and any other in-place
+        /// edit, a retarget with no reset, is picked up by the rebuild every
+        /// <see cref="BaseRowCacheRebuildMs"/>.</para></summary>
         private static MappingRow FindBaseRowForTarget(MappingSet mappingSet, string targetName)
         {
             if (mappingSet == null || string.IsNullOrEmpty(targetName)) return null;
@@ -4112,7 +4140,10 @@ namespace PadForge.Common.Input
 
             int currentCount = rows.Count;
             var cache = s_baseRowCaches.GetOrCreateValue(mappingSet);
-            if (cache.Count != currentCount || !ReferenceEquals(cache.BuiltFrom, rows))
+            long nowMs = System.Environment.TickCount64;
+            var last = LastRowOrNull(rows, currentCount);
+            if (cache.Count != currentCount || !ReferenceEquals(cache.BuiltFrom, rows)
+                || !ReferenceEquals(cache.Last, last) || nowMs - cache.BuiltAtMs >= BaseRowCacheRebuildMs)
             {
                 var baseRows = cache.Rows;
                 baseRows.Clear();
@@ -4133,6 +4164,8 @@ namespace PadForge.Common.Input
 
                 cache.Count = currentCount;
                 cache.BuiltFrom = rows;
+                cache.Last = last;
+                cache.BuiltAtMs = nowMs;
             }
 
             return cache.Rows.TryGetValue(targetName, out var row) ? row : null;

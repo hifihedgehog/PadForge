@@ -70,5 +70,59 @@ namespace PadForge.Tests
             Assert.Null(Find(set, "ButtonA"));
             Assert.NotNull(Find(set, "ButtonB"));
         }
+
+        /// <summary>A row removed and another appended on the same list keeps
+        /// the count and the reference. The index handed back the removed row.
+        /// Removing rows in place (device cleanup) and appending in place (the
+        /// motion backfill, the grid push) are both live edits.</summary>
+        [Fact]
+        public void AnInPlaceRemoveAndAppendAtTheSameCountInvalidatesTheIndex()
+        {
+            var set = new MappingSet
+            {
+                Rows = new List<MappingRow> { Row("ButtonA", "Button 1"), Row("ButtonB", "Button 2") },
+            };
+            Assert.Equal("Button 1", Find(set, "ButtonA").Sources[0].Descriptor);
+
+            set.Rows.RemoveAll(r => r.Target == "ButtonA");
+            set.Rows.Add(Row("ButtonA", "Button 7"));
+
+            Assert.Equal("Button 7", Find(set, "ButtonA").Sources[0].Descriptor);
+        }
+
+        /// <summary>The same edit must also end a cached miss: a target that
+        /// had no row gains one while another row leaves.</summary>
+        [Fact]
+        public void AnInPlaceRemoveAndAppendAtTheSameCountEndsACachedMiss()
+        {
+            var set = new MappingSet
+            {
+                Rows = new List<MappingRow> { Row("ButtonA", "Button 1"), Row("ButtonB", "Button 2") },
+            };
+            Assert.Null(Find(set, "ButtonX"));
+
+            set.Rows.RemoveAll(r => r.Target == "ButtonB");
+            set.Rows.Add(Row("ButtonX", "Button 3"));
+
+            Assert.Equal("Button 3", Find(set, "ButtonX")?.Sources[0].Descriptor);
+            Assert.Null(Find(set, "ButtonB"));
+        }
+
+        /// <summary>An edit that changes neither the count, the list nor its
+        /// last row, here a retarget in place with no per-slot reset, is picked
+        /// up by the periodic rebuild, the bound the pressure rows' rescan
+        /// keeps too.</summary>
+        [Fact]
+        public void AnEditNoCheckSees_IsPickedUpByThePeriodicRebuild()
+        {
+            var set = new MappingSet { Rows = new List<MappingRow> { Row("ButtonA", "Button 1") } };
+            Assert.NotNull(Find(set, "ButtonA"));
+
+            set.Rows[0].Target = "ButtonB";
+            System.Threading.Thread.Sleep(300);
+
+            Assert.Null(Find(set, "ButtonA"));
+            Assert.NotNull(Find(set, "ButtonB"));
+        }
     }
 }

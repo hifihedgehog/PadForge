@@ -70,8 +70,10 @@ namespace PadForge.Common.Input
         private const ushort DualSensePid = 0x0CE6;
         private const ushort DualSenseEdgePid = 0x0DF2;
         // Nintendo family: the virtual Switch Pro (HM v1.3.18, HM#33)
-        // decodes its rumble outputs onto OutputDecoded like Sony.
+        // decodes its rumble outputs onto OutputDecoded like Sony, and
+        // so does the Switch 2 Pro composite (HM v1.11.0, HM#66).
         private const ushort NintendoVid = 0x057E;
+        private const ushort Switch2ProPid = 0x2069;
 
         private bool IsDualSenseVirtual =>
             _profile.VendorId == SonyVid
@@ -156,6 +158,23 @@ namespace PadForge.Common.Input
         public static bool DecodesFeedbackWithoutPidBlock(string profileId) =>
             string.Equals(profileId, "steam-deck-composite", StringComparison.OrdinalIgnoreCase);
 
+        /// <summary>True for a persona whose device side builds every input
+        /// report. It takes state and no finished frame: on it
+        /// HMController.SubmitRawReport and SubmitRawExtendedReport throw
+        /// NotSupportedException. That is the Switch 2 Pro composite
+        /// (HIDMaestro 1.11.0, HIDMaestro#66), which picks report 0x09 or
+        /// 0x05 and stamps its counters itself. The test is HIDMaestro's
+        /// own: a USB/IP controller on 057E:2069 (HMController's
+        /// _switch2Protocol).</summary>
+        internal static bool DeviceBuildsReports(HMProfile profile) =>
+            profile != null
+            && profile.RequiresUsbipBackend
+            && profile.VendorId == NintendoVid
+            && profile.ProductId == Switch2ProPid;
+
+        /// <summary>See <see cref="DeviceBuildsReports"/>.</summary>
+        internal bool BuildsItsOwnReports { get; }
+
         /// <summary>The identity key handed to HIDMaestro for a virtual
         /// controller (HIDMaestro 1.8.0, HM#60). Every device path, the
         /// container id and, for USB/IP personas, the USB serial derive from
@@ -211,6 +230,10 @@ namespace PadForge.Common.Input
 
         private readonly string _identityKey;
 
+        /// <summary>The Switch 2 Pro family's row map, null on every other
+        /// profile. See <see cref="Switch2ProStateMap"/>.</summary>
+        private readonly Switch2ProStateMap _switch2Map;
+
         public HMaestroVirtualController(HMContext ctx, HMProfile profile, VirtualControllerType type,
             string identityKey = null)
         {
@@ -218,6 +241,8 @@ namespace PadForge.Common.Input
             _profile = profile ?? throw new ArgumentNullException(nameof(profile));
             _type = type;
             _identityKey = string.IsNullOrWhiteSpace(identityKey) ? null : identityKey;
+            BuildsItsOwnReports = DeviceBuildsReports(_profile);
+            _switch2Map = Switch2ProStateMap.ForProfile(_profile.Id);
 
             // Resolve the 6-slot canonical axis keys via the profile's
             // AxisMap, which maps wire HMAxis → semantic role string
@@ -1003,6 +1028,14 @@ namespace PadForge.Common.Input
                 StoreRawFrame(in raw, hadMotion: false, nowRawTick);
             }
 
+            _controller.SubmitState(BuildRawHidState(raw, sticks, triggers, in motion));
+        }
+
+        /// <summary>The state one raw-surface frame submits. It needs no
+        /// device, so a test can hand it to HIDMaestro's own encoders.</summary>
+        internal HMGamepadState BuildRawHidState(RawHidState raw, int sticks, int triggers,
+            in PadForge.Services.MotionSnapshot motion)
+        {
             short Ax(int i) => (raw.Axes != null && i >= 0 && i < raw.Axes.Length) ? raw.Axes[i] : (short)0;
 
             // Convert raw signed short (-32768..+32767) to HM v1.3.9's
@@ -1071,6 +1104,17 @@ namespace PadForge.Common.Input
                 }
             }
 
+            // A Switch 2 Pro profile reads neither of those. HIDMaestro
+            // takes its buttons by name, its D-pad from the hat and ZL /
+            // ZR from the trigger axes, so the rows go through the family's
+            // map and replace the mask and the hat built above.
+            bool zl = false, zr = false;
+            if (_switch2Map != null)
+            {
+                _switch2Map.Read(in raw, out buttons, out ushort dpad, out zl, out zr);
+                hat = MapHat(dpad);
+            }
+
             // HM v1.3.9: address every analog axis the profile exposes
             // by HMAxis key. Drive _profile.Sticks / _profile.Triggers
             // directly — those are the SDK's authoritative per-row
@@ -1107,6 +1151,15 @@ namespace PadForge.Common.Input
                     _axesScratch[axis] = ToHmRange(Ax(ti));
             }
 
+            if (_switch2Map != null)
+            {
+                // Written every frame, held or not. A trigger axis the
+                // state lacks is HIDMaestro's to guess, and 1.10.1 read
+                // the right stick's Y for it: a resting slot held ZR.
+                if (_axLeftTrigger != HMAxis.None) _axesScratch[_axLeftTrigger] = zl ? 1f : 0f;
+                if (_axRightTrigger != HMAxis.None) _axesScratch[_axRightTrigger] = zr ? 1f : 0f;
+            }
+
             var state = new HMGamepadState
             {
                 Axes = _axesScratch,
@@ -1130,7 +1183,7 @@ namespace PadForge.Common.Input
                 state.GyroDpsZ = motion.GyroRoll;
             }
 
-            _controller.SubmitState(state);
+            return state;
         }
 
         /// <summary>The usage the descriptor gave trigger <paramref name="t"/>,
@@ -1425,7 +1478,10 @@ namespace PadForge.Common.Input
                         // the motor fields for genuine rumble frames, and
                         // this wire has no validFlag/CRC to gate on. Same
                         // provenance as the motors above: game-authored
-                        // only, so the #236 pack rides directly.
+                        // only, so the #236 pack rides directly. The
+                        // Switch 2 Pro composite (HM v1.11.0) rides here
+                        // too: the SDK decodes its output report 0x02
+                        // into the same pair, and a stop arrives as 0, 0.
                         System.Threading.Volatile.Write(ref _inboundRumblePack,
                             Engine.Common.LfeOutputState.Pack(
                                 (ushort)(left * 257), (ushort)(right * 257), 0, 0));

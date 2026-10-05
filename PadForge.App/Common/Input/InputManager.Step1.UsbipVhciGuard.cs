@@ -33,10 +33,18 @@ namespace PadForge.Common.Input
         // is the user-mode mirror of the driver's own is_abobe_vhci()
         // check (usbip-win2 drivers/ude_filter/device.cpp).
         //
-        // Scope: only consulted for Sony-VID devices, the only vendor
-        // with composite personas today. Suppressing a real remote pad is
+        // The Switch 2 Pro persona (HIDMaestro 1.11.0, HM#66) is the same
+        // shape under Nintendo's identifiers.
+        //
+        // Scope: consulted for Sony and Nintendo devices
+        // (ChecksUsbipAncestry). Suppressing a real remote pad is
         // the safe failure (a log line) versus the unsafe one (PadForge
         // ingesting its own virtual pad and feeding it back to itself).
+
+        /// <summary>The vendors the ancestry check is run for: Sony, and
+        /// Nintendo since the Switch 2 Pro persona. A device of any other
+        /// vendor skips the walk.</summary>
+        internal static bool ChecksUsbipAncestry(ushort vendorId) => vendorId is 0x054C or 0x057E;
 
         /// <summary>True when the HID device behind
         /// <paramref name="hidDevicePath"/> sits under the usbip-win2

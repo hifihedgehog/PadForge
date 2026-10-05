@@ -28,7 +28,7 @@ Free Windows app. No subscription. No paywall. No nag screens. Built on HelixToo
 
 PadForge is for sim racers running wheels in games that only understand Xbox controllers. For DualSense owners who want adaptive triggers and lightbar effects in Steam games that ignore them. For accessibility users mapping whatever hardware they can use. For anyone whose controller doesn't match what their game expects.
 
-<p align="center"><b>16</b> virtual controllers at once · <b>1,108</b> devices known by USB identity · <b>232</b> device profiles · <b>1000 Hz</b> polling · <b>$0</b> forever</p>
+<p align="center"><b>16</b> virtual controllers at once · <b>1,108</b> devices known by USB identity · <b>233</b> device profiles · <b>1000 Hz</b> polling · <b>$0</b> forever</p>
 
 ![Dashboard](screenshots/dashboard.jpg)
 
@@ -49,7 +49,7 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
     </picture>
   </a>
   <br>
-  <em>Powered by HIDMaestro. One driver, 232 device profiles.</em>
+  <em>Powered by HIDMaestro. One driver, 233 device profiles.</em>
 </p>
 
 <details>
@@ -288,6 +288,8 @@ Assign a device to an Extended slot and click Clone Device 1:1. Every button and
 ### A virtual Switch Pro Controller.
 
 The Nintendo slot type creates a virtual Switch Pro Controller through HIDMaestro. Games and emulators that speak Switch see the real thing: sticks, triggers, the full button set, gyro passed through from your physical pad, and the HOME button LED under your control. It sits in the Add Controller popup between PlayStation and Extended.
+
+The slot's preset dropdown also holds the Switch 2 Pro Controller, in two forms. **Nintendo Switch 2 Pro Controller** is a HID gamepad any program reads, with no motion in its report. **Nintendo Switch 2 Pro Controller: Full** is the pad as it appears over USB, with the gyro, the accelerometer and rumble. Steam reads it, and so does a program whose SDL is built with libusb. Every other program sees a gamepad that never reports, as it does with the real pad on Windows.
 
 ![Nintendo virtual controller with the Switch Pro preset](screenshots/nintendo.jpg)
 
@@ -753,7 +755,7 @@ Hold a mouse button and flick up, down, left, or right. Each direction, plus a c
 
 ### Extended virtual controller
 ![Extended](screenshots/extended.jpg)
-Flight sticks, racing wheels, HOTAS, third-party gamepads. HIDMaestro ships 232 profiles, and PadForge offers the 134 that carry a captured HID descriptor, across the Xbox, PlayStation, Nintendo and Extended types, plus a Custom mode that builds a HID descriptor from scratch. Up to 8 axes, 128 buttons, 4 POV hats. Configurable VID, PID, and product string.
+Flight sticks, racing wheels, HOTAS, third-party gamepads. HIDMaestro ships 233 profiles, and PadForge offers the 135 that carry a captured HID descriptor, across the Xbox, PlayStation, Nintendo and Extended types, plus a Custom mode that builds a HID descriptor from scratch. Up to 8 axes, 128 buttons, 4 POV hats. Configurable VID, PID, and product string.
 
 ### Steam Deck virtual controller
 ![An Extended slot presenting a Steam Deck](screenshots/pad-extended-steam-deck.jpg)

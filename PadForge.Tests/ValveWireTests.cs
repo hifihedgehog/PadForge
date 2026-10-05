@@ -49,6 +49,7 @@ namespace PadForge.Tests
         [InlineData("steam-controller-2", NintendoPreviewMap.Family.SteamController2)]
         [InlineData("switch-pro", NintendoPreviewMap.Family.SwitchPro)]
         [InlineData("switch2-pro-controller", NintendoPreviewMap.Family.Switch2Pro)]
+        [InlineData("switch2-pro-controller-composite", NintendoPreviewMap.Family.Switch2Pro)]
         [InlineData("padforge-custom", NintendoPreviewMap.Family.None)]
         [InlineData("dualsense-composite", NintendoPreviewMap.Family.None)]
         [InlineData(null, NintendoPreviewMap.Family.None)]

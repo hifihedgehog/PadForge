@@ -9,7 +9,7 @@ namespace PadForge.Common.Input
     /// Read-only catalog of HIDMaestro profiles, partitioned by the v3
     /// category dropdown (Xbox / PlayStation / Extended). Owns its own
     /// metadata-only HMContext: it calls LoadDefaultProfiles to enumerate
-    /// the embedded profile JSONs (232 in the shipped SDK) but never instantiates HMController
+    /// the embedded profile JSONs (233 in the shipped SDK) but never instantiates HMController
     /// or installs the driver. The engine's separate HMContext in
     /// InputManager.Step5 owns the live device lifecycle.
     ///
@@ -79,9 +79,9 @@ namespace PadForge.Common.Input
             get { EnsureInitialized(); return _playStationProfiles; }
         }
 
-        /// <summary>Nintendo-family controller profiles: switch-pro and
-        /// switch2-pro-controller (see IsNintendoProfile). Mutually exclusive
-        /// with the other buckets.</summary>
+        /// <summary>Nintendo-family controller profiles: switch-pro,
+        /// switch2-pro-controller and switch2-pro-controller-composite (see
+        /// IsNintendoProfile). Mutually exclusive with the other buckets.</summary>
         public static IReadOnlyList<HMProfile> NintendoProfiles
         {
             get { EnsureInitialized(); return _nintendoProfiles; }
@@ -443,21 +443,29 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// True for the profiles the Nintendo category offers: the original
-        /// Switch Pro Controller and the Switch 2 Pro Controller. Joy-Cons,
+        /// Switch Pro Controller, and the Switch 2 Pro Controller in its two
+        /// forms. switch2-pro-controller is the HID gamepad every reader
+        /// sees. switch2-pro-controller-composite (HIDMaestro 1.11.0,
+        /// HIDMaestro#66) is the pad's two-interface USB form, which Steam
+        /// and SDL built with libusb start and read motion from. No other
+        /// reader gets input from it, as with the real pad on Windows, so
+        /// it is offered beside the plain one and replaces nothing. Joy-Cons,
         /// the NSO retro pads, and the GameCube adapter stay in Extended
         /// until the category is widened further. Widening is an id-list
         /// edit here, nothing else.
         /// </summary>
         private static bool IsNintendoProfile(HMProfile p) =>
             string.Equals(p.Id, "switch-pro", StringComparison.OrdinalIgnoreCase)
-            || string.Equals(p.Id, "switch2-pro-controller", StringComparison.OrdinalIgnoreCase);
+            || string.Equals(p.Id, "switch2-pro-controller", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(p.Id, "switch2-pro-controller-composite", StringComparison.OrdinalIgnoreCase);
 
         /// <summary>
         /// True for the three presets in the motion-carrying families whose
         /// input report has no motion field: the DualShock 3 (its HM profile
         /// declares no extended report, and PadForge has no packer for it),
-        /// the Switch 2 Pro (its report carries no IMU data, the
-        /// controller-slots page says the same), and the plain Steam Deck
+        /// the plain Switch 2 Pro (its report 0x09 carries no IMU data, the
+        /// controller-slots page says the same, and its composite persona's
+        /// report 0x05 carries both sensors), and the plain Steam Deck
         /// (its standard 10-byte report has no motion field, its HM profile
         /// declares no extended report, and PadForge packs only the
         /// composite). Their Motion rows still feed the motion server.

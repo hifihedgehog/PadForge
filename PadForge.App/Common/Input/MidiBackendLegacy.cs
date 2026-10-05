@@ -5,6 +5,15 @@ using System.Threading;
 
 namespace PadForge.Common.Input
 {
+    /// <summary>The legacy API's output port is not among WinMM's ports:
+    /// its device is unplugged or switched off. Step 5 retries the slot
+    /// once a port listing shows the port again.</summary>
+    internal sealed class MidiPortNotConnectedException : InvalidOperationException
+    {
+        internal MidiPortNotConnectedException(string portKey)
+            : base($"MIDI output port '{portKey}' is not connected.") { }
+    }
+
     /// <summary>The WinMM calls <see cref="MidiBackendLegacy"/> makes. A seam,
     /// so tests can stand in for the driver.</summary>
     internal interface IWinMmMidi
@@ -198,7 +207,7 @@ namespace PadForge.Common.Input
                     "Pick an output port on this MIDI slot. The legacy MIDI API cannot create a port.");
             int id = Resolve(portKey, _api.OutputCount(), _api.OutputName);
             if (id < 0)
-                throw new InvalidOperationException($"MIDI output port '{portKey}' is not connected.");
+                throw new MidiPortNotConnectedException(portKey);
             int r = _api.OpenOutput(id, out IntPtr handle);
             if (r == WinMmMidi.MMSYSERR_ALLOCATED)
                 throw new InvalidOperationException($"MIDI output port '{portKey}' is in use by another program.");

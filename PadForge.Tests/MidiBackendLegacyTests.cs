@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Serialization;
 using PadForge.Common;
 using PadForge.Common.Input;
 using PadForge.Engine;
+using PadForge.Engine.Data;
 using PadForge.ViewModels;
 using Xunit;
 
@@ -184,7 +186,9 @@ namespace PadForge.Tests
         public void APortThatIsGone_FailsTheSlotWithTheReason()
         {
             var fake = new FakeWinMm { Outputs = { "Synth" } };
-            var ex = Assert.Throws<InvalidOperationException>(() => new MidiBackendLegacy(fake).OpenOutputPort("loopMIDI Port"));
+            // Its own type: Step 5 retries a slot that failed this way once a
+            // port listing shows the port again.
+            var ex = Assert.Throws<MidiPortNotConnectedException>(() => new MidiBackendLegacy(fake).OpenOutputPort("loopMIDI Port"));
             Assert.Contains("is not connected", ex.Message);
             Assert.Empty(fake.Calls);
         }
@@ -429,6 +433,153 @@ namespace PadForge.Tests
 
         private static bool SpinWaitFor(Func<bool> condition)
             => System.Threading.SpinWait.SpinUntil(condition, 3_000);
+
+        // ── A port that comes and goes (Step 5) ──
+
+        private const int WatchPad = 2;
+        private static readonly Guid WatchDevice = new("3c6f1b2a-8d4e-4f51-9a7b-2e0d5c6b7a81");
+
+        /// <summary>Runs <paramref name="body"/> against an InputManager with
+        /// one created, enabled MIDI slot whose device is online and whose
+        /// bar names <paramref name="port"/>, on the legacy API over
+        /// <paramref name="fake"/>. This collection runs with nothing beside
+        /// it, so the settings statics are borrowed and put back.</summary>
+        private static void WithLegacyMidiSlot(FakeWinMm fake, string port, Action<InputManager> body)
+        {
+            var savedSettings = SettingsManager.UserSettings;
+            var savedDevices = SettingsManager.UserDevices;
+            var savedCreated = (bool[])SettingsManager.SlotCreated.Clone();
+            var savedEnabled = (bool[])SettingsManager.SlotEnabled.Clone();
+            InputManager im = null;
+            try
+            {
+                MidiVirtualController.UseBackendFactoryForTest(() => null, () => new MidiBackendLegacy(fake));
+                Assert.True(MidiVirtualController.IsAvailable());
+
+                SettingsManager.UserDevices = new DeviceCollection();
+                SettingsManager.UserSettings = new SettingsCollection();
+                Array.Clear(SettingsManager.SlotCreated, 0, SettingsManager.SlotCreated.Length);
+                for (int i = 0; i < SettingsManager.SlotEnabled.Length; i++) SettingsManager.SlotEnabled[i] = true;
+                SettingsManager.SlotCreated[WatchPad] = true;
+                var ud = new UserDevice { InstanceGuid = WatchDevice, ProductName = "Port Watch Pad", IsOnline = true, InputState = new CustomInputState() };
+                lock (SettingsManager.UserDevices.SyncRoot) SettingsManager.UserDevices.Items.Add(ud);
+                lock (SettingsManager.UserSettings.SyncRoot) SettingsManager.UserSettings.Items.Add(new UserSetting { InstanceGuid = WatchDevice, MapTo = WatchPad });
+
+                im = new InputManager { LegacyPortListingIntervalMs = 0 };
+                im.SlotControllerTypes[WatchPad] = VirtualControllerType.Midi;
+                im._midiConfigs[WatchPad] = new MidiSlotConfig { OutputPort = port };
+                body(im);
+            }
+            finally
+            {
+                if (im != null)
+                {
+                    WaitForWork(im);
+                    Slots(im)[WatchPad]?.Dispose();
+                }
+                SettingsManager.UserSettings = savedSettings;
+                SettingsManager.UserDevices = savedDevices;
+                Array.Copy(savedCreated, SettingsManager.SlotCreated, savedCreated.Length);
+                Array.Copy(savedEnabled, SettingsManager.SlotEnabled, savedEnabled.Length);
+            }
+        }
+
+        private static T PrivateField<T>(InputManager im, string name)
+            => (T)typeof(InputManager).GetField(name, BindingFlags.Instance | BindingFlags.NonPublic).GetValue(im);
+
+        private static IVirtualController[] Slots(InputManager im) => PrivateField<IVirtualController[]>(im, "_virtualControllers");
+
+        private static bool Failed(InputManager im) => PrivateField<bool[]>(im, "_createFailed")[WatchPad];
+
+        private static bool Running(InputManager im) => Slots(im)[WatchPad] is MidiVirtualController { IsConnected: true };
+
+        /// <summary>Waits for every worker Step 5 starts for the slot: its
+        /// create or dispose, and the port listing.</summary>
+        private static void WaitForWork(InputManager im)
+        {
+            Assert.True(System.Threading.SpinWait.SpinUntil(() =>
+            {
+                var connect = PrivateField<System.Threading.Tasks.Task[]>(im, "_pendingConnectTask")[WatchPad];
+                var dispose = PrivateField<System.Threading.Tasks.Task[]>(im, "_pendingDisposeTask")[WatchPad];
+                return (connect == null || connect.IsCompleted)
+                    && (dispose == null || dispose.IsCompleted)
+                    && !PrivateField<bool>(im, "_legacyPortListingRunning");
+            }, 10_000), "a Step 5 worker did not finish");
+        }
+
+        private static void Step(InputManager im)
+        {
+            typeof(InputManager).GetMethod("UpdateVirtualDevices", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(im, null);
+            WaitForWork(im);
+        }
+
+        private static bool StepUntil(InputManager im, Func<bool> done)
+        {
+            for (int i = 0; i < 20 && !done(); i++) Step(im);
+            return done();
+        }
+
+        /// <summary>A slot whose port is missing fails, then starts once the
+        /// port appears, as when a synth is switched on after PadForge. The
+        /// port has to show missing first, so a port another program holds
+        /// does not retry in a loop.</summary>
+        [Fact]
+        public void ALegacySlot_StartsOnceItsPortAppears()
+        {
+            var fake = new FakeWinMm();
+            WithLegacyMidiSlot(fake, "Synth", im =>
+            {
+                Assert.True(StepUntil(im, () => Failed(im)));
+                for (int i = 0; i < 3; i++) Step(im);
+                Assert.True(Failed(im));
+                Assert.Null(Slots(im)[WatchPad]);
+
+                fake.Outputs.Add("Synth");
+                Assert.True(StepUntil(im, () => Running(im)));
+                Assert.False(Failed(im));
+                Assert.True(fake.Has("OpenOutput 0"));
+            });
+        }
+
+        /// <summary>A port that was there all along but would not open stays
+        /// failed until the slot is reconfigured, with no retry loop.</summary>
+        [Fact]
+        public void ALegacySlotWhosePortIsHeld_DoesNotRetry()
+        {
+            var fake = new FakeWinMm { Outputs = { "Synth" }, OpenResult = WinMmMidi.MMSYSERR_ALLOCATED };
+            WithLegacyMidiSlot(fake, "Synth", im =>
+            {
+                Assert.True(StepUntil(im, () => Failed(im)));
+                for (int i = 0; i < 5; i++) Step(im);
+                Assert.True(Failed(im));
+                lock (fake.Calls) Assert.Single(fake.Calls, c => c.StartsWith("OpenOutput", StringComparison.Ordinal));
+            });
+        }
+
+        /// <summary>A running slot whose port goes away closes it and fails,
+        /// then reopens it by name once it is back, as with a replugged
+        /// interface.</summary>
+        [Fact]
+        public void ALegacySlot_ReopensItsPortAfterAReplug()
+        {
+            var fake = new FakeWinMm { Outputs = { "Synth" } };
+            WithLegacyMidiSlot(fake, "Synth", im =>
+            {
+                Assert.True(StepUntil(im, () => Running(im)));
+                var first = Slots(im)[WatchPad];
+                for (int i = 0; i < 3; i++) Step(im);
+                Assert.Same(first, Slots(im)[WatchPad]);
+
+                fake.Outputs.Remove("Synth");
+                Assert.True(StepUntil(im, () => Failed(im)));
+                Assert.False(first.IsConnected);
+                lock (fake.Calls) Assert.Contains(fake.Calls, c => c.StartsWith("CloseOutput", StringComparison.Ordinal));
+
+                fake.Outputs.Add("Synth");
+                Assert.True(StepUntil(im, () => Running(im)));
+                Assert.NotSame(first, Slots(im)[WatchPad]);
+            });
+        }
 
         // ── The saved port ──
 

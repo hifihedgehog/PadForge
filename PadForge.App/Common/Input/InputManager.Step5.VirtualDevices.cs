@@ -869,6 +869,109 @@ namespace PadForge.Common.Input
         /// now.</summary>
         private string MidiOutputPortOf(int padIndex) => _midiConfigs[padIndex]?.OutputPort ?? string.Empty;
 
+        /// <summary>The legacy MIDI output ports, listed on a worker while a
+        /// legacy MIDI slot needs them: one listing in flight, the polling
+        /// thread reading the newest, as the MIDI input sweep does (Phase
+        /// 1e). WinMM numbers a port by an index that shifts when a device
+        /// comes or goes, and a handle opened with CALLBACK_NULL hears
+        /// nothing when its device leaves, so the listing is how a slot
+        /// learns its port went away or came back.</summary>
+        private sealed class LegacyPortListing
+        {
+            public List<string> Ports;
+            public long Generation;
+        }
+
+        private volatile LegacyPortListing _legacyPortListing;
+        private volatile bool _legacyPortListingRunning;
+        private long _legacyPortListingKicks;
+        private long _legacyPortListingKickMs;
+
+        /// <summary>The least time between two listings. Tests set 0.</summary>
+        internal int LegacyPortListingIntervalMs = 1_000;
+
+        /// <summary>The listing generation a failed MIDI create latched at,
+        /// and whether its port was missing: the create found it unlisted,
+        /// or a listing started since then left it out.</summary>
+        private readonly long[] _createFailedListingGen = new long[MaxPads];
+        private readonly bool[] _createFailedPortMissing = new bool[MaxPads];
+
+        /// <summary>Set by the create when its legacy port was not listed
+        /// (<see cref="MidiPortNotConnectedException"/>), for the latch
+        /// that follows on the same worker.</summary>
+        private readonly bool[] _createPortMissing = new bool[MaxPads];
+
+        /// <summary>The legacy MIDI controller Pass 1 last saw on each slot,
+        /// with the listing generation at that sighting, so only a listing
+        /// started after the controller connected can call its port
+        /// missing.</summary>
+        private readonly MidiVirtualController[] _legacyWatchedVc = new MidiVirtualController[MaxPads];
+        private readonly long[] _legacyWatchedGen = new long[MaxPads];
+
+        /// <summary>Starts a listing on a worker when none is running, the
+        /// interval has passed and the legacy API is the one in use. Polling
+        /// thread only.</summary>
+        private void KickLegacyPortListing()
+        {
+            if (_legacyPortListingRunning) return;
+            long now = Environment.TickCount64;
+            if (now - _legacyPortListingKickMs < LegacyPortListingIntervalMs) return;
+            if (MidiVirtualController.Backend is not MidiBackendLegacy legacy) return;
+            _legacyPortListingKickMs = now;
+            long generation = Interlocked.Increment(ref _legacyPortListingKicks);
+            _legacyPortListingRunning = true;
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                try { _legacyPortListing = new LegacyPortListing { Ports = legacy.EnumerateOutputPorts(), Generation = generation }; }
+                catch { /* the next kick lists again */ }
+                finally { _legacyPortListingRunning = false; }
+            });
+        }
+
+        /// <summary>Whether the newest listing started after
+        /// <paramref name="afterGeneration"/> names the port: true or false,
+        /// or null while there is no such listing yet.</summary>
+        private bool? LegacyPortListed(string port, long afterGeneration)
+        {
+            KickLegacyPortListing();
+            var listing = _legacyPortListing;
+            if (listing == null || listing.Generation <= afterGeneration) return null;
+            return listing.Ports.Contains(port);
+        }
+
+        /// <summary>Whether a legacy MIDI slot that failed for want of its
+        /// output port may try again: the port was missing, at the create or
+        /// in a listing since, and a listing started after the failure shows
+        /// it back, as when a synth or interface is switched on after
+        /// PadForge starts. A port that never went missing (another program
+        /// holds it) keeps the slot failed until it is reconfigured, as
+        /// before.</summary>
+        private bool LegacyMidiPortCameBack(int padIndex)
+        {
+            if (MidiVirtualController.ActiveApi != MidiApiKind.Legacy) return false;
+            string port = MidiOutputPortOf(padIndex);
+            if (port.Length == 0) return false;
+            bool? listed = LegacyPortListed(port, Volatile.Read(ref _createFailedListingGen[padIndex]));
+            if (listed == false) _createFailedPortMissing[padIndex] = true;
+            return listed == true && _createFailedPortMissing[padIndex];
+        }
+
+        /// <summary>Whether a running legacy MIDI slot's port is gone: a
+        /// listing started after Pass 1 first saw the controller leaves it
+        /// out. The slot then rebuilds, its create fails until the port
+        /// returns, and <see cref="LegacyMidiPortCameBack"/> lets it try
+        /// again.</summary>
+        private bool LegacyMidiPortGone(int padIndex, MidiVirtualController midi)
+        {
+            if (!ReferenceEquals(_legacyWatchedVc[padIndex], midi))
+            {
+                _legacyWatchedVc[padIndex] = midi;
+                _legacyWatchedGen[padIndex] = Interlocked.Read(ref _legacyPortListingKicks);
+            }
+            return midi.OutputPort.Length > 0
+                && LegacyPortListed(midi.OutputPort, _legacyWatchedGen[padIndex]) == false;
+        }
+
         private void LatchCreateFailed(int padIndex)
             => LatchCreateFailed(padIndex, SlotControllerTypes[padIndex], SlotProfileIds[padIndex], MidiOutputPortOf(padIndex));
 
@@ -883,6 +986,9 @@ namespace PadForge.Common.Input
             _createFailedProfile[padIndex] = failedProfile;
             _createFailedMidiPort[padIndex] = failedMidiPort ?? string.Empty;
             _createFailedMidiApi[padIndex] = MidiVirtualController.ActiveApi;
+            _createFailedListingGen[padIndex] = Interlocked.Read(ref _legacyPortListingKicks);
+            _createFailedPortMissing[padIndex] = _createPortMissing[padIndex];
+            _createPortMissing[padIndex] = false;
             _createFailed[padIndex] = true;
             PadForge.Engine.SdlDiagLog.WriteLine(
                 $"VCTRACE slot={padIndex} createFailed LATCH type={failedType} profile={failedProfile ?? "<null>"}");
@@ -1122,7 +1228,8 @@ namespace PadForge.Common.Input
                         || (SlotControllerTypes[padIndex] == VirtualControllerType.Midi
                             && (!string.Equals(_createFailedMidiPort[padIndex], MidiOutputPortOf(padIndex), StringComparison.Ordinal)
                                 || (MidiVirtualController.ActiveApi != MidiApiKind.None
-                                    && _createFailedMidiApi[padIndex] != MidiVirtualController.ActiveApi)))))
+                                    && _createFailedMidiApi[padIndex] != MidiVirtualController.ActiveApi)
+                                || LegacyMidiPortCameBack(padIndex)))))
                 {
                     _createFailed[padIndex] = false;
                     PadForge.Engine.SdlDiagLog.WriteLine(
@@ -1193,12 +1300,15 @@ namespace PadForge.Common.Input
 
                 // Under the legacy API a MIDI slot sends to the port its bar
                 // names. A new pick closes the old port and the next pass
-                // opens the new one. A slot built on one API also rebuilds
-                // once the probe settles on another: installing the runtime
-                // moves legacy slots onto ports of their own.
+                // opens the new one, and a port whose device went away
+                // closes the same way, so the slot reopens it once it is
+                // back. A slot built on one API also rebuilds once the
+                // probe settles on another: installing the runtime moves
+                // legacy slots onto ports of their own.
                 if (vc is MidiVirtualController midiOnPort
                     && ((MidiVirtualController.ActiveApi == MidiApiKind.Legacy
-                         && !string.Equals(midiOnPort.OutputPort, MidiOutputPortOf(padIndex), StringComparison.Ordinal))
+                         && (!string.Equals(midiOnPort.OutputPort, MidiOutputPortOf(padIndex), StringComparison.Ordinal)
+                             || LegacyMidiPortGone(padIndex, midiOnPort)))
                         || (MidiVirtualController.ActiveApi != MidiApiKind.None
                             && midiOnPort.ApiKind != MidiVirtualController.ActiveApi)))
                 {
@@ -2470,6 +2580,8 @@ namespace PadForge.Common.Input
         private IVirtualController CreateVirtualController(int padIndex, VirtualControllerType controllerType,
             string capturedProfileId, in ExtendedBuild build)
         {
+            _createPortMissing[padIndex] = false;
+
             // MIDI and KeyboardMouse stay on their dedicated implementations.
             // Xbox / PlayStation / Nintendo / Extended route through HIDMaestro.
             if (controllerType == VirtualControllerType.Xbox
@@ -2533,6 +2645,7 @@ namespace PadForge.Common.Input
             catch (Exception ex)
             {
                 vc?.Dispose();
+                _createPortMissing[padIndex] = ex is MidiPortNotConnectedException;
                 RaiseError($"Failed to create {SlotControllerTypes[padIndex]} virtual controller for pad {padIndex}", ex);
                 return null;
             }

@@ -202,8 +202,8 @@ namespace PadForge.ViewModels
 
         private bool _isMidiAvailable;
 
-        /// <summary>Whether a Windows MIDI Services API is available: the
-        /// in-box API, or the older runtime where that is installed. Gates
+        /// <summary>Whether a MIDI API is available: the in-box API, the
+        /// App SDK runtime where that is installed, else the legacy API. Gates
         /// the MIDI slot type button in the code-behind. The status text
         /// lives on the Settings card.</summary>
         public bool IsMidiAvailable

@@ -478,8 +478,9 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Returns true if Windows MIDI Services is available on this system.
-        /// Caches the result after first check.
+        /// Returns true if a MIDI API started on this system: a Windows MIDI
+        /// Services API, else the legacy one. Caches the result after first
+        /// check.
         /// </summary>
         public static bool IsAvailable()
         {

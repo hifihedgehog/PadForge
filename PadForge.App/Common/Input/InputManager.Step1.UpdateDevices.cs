@@ -1783,7 +1783,7 @@ namespace PadForge.Common.Input
         /// uninstall has ended. The next Phase 1e sweep enumerates through
         /// whichever API the next availability probe picks: the in-box API
         /// where Windows has it, the older runtime if its uninstall failed or
-        /// was canceled, else none, which opens nothing.
+        /// was canceled, else the legacy API.
         /// </summary>
         public void ResumeMidiInputs()
         {

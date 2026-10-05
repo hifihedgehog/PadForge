@@ -76,13 +76,18 @@ namespace PadForge.Common.Input
             _endpointId = endpointId;
             Name = name;
             DevicePath = $"midi://{endpointId}";
-            InstanceGuid = Md5Guid("pfmidi-in:" + endpointId);
+            InstanceGuid = InstanceGuidFor(endpointId);
             ProductGuid = Md5Guid("pfmidi-in-product:" + name);
             SdlInstanceId = SyntheticInstanceId.From(endpointId);
 
             var state = new CustomInputState { Midi = new MidiInputState() };
             _state = state;
         }
+
+        /// <summary>The device identity an endpoint gets, known before the
+        /// device exists, so the legacy sweep can ask whether a port is
+        /// assigned to a slot before opening it.</summary>
+        internal static Guid InstanceGuidFor(string endpointId) => Md5Guid("pfmidi-in:" + endpointId);
 
         // ─────────────────────────────────────────────
         //  ISdlInputDevice identity / capabilities
@@ -198,7 +203,30 @@ namespace PadForge.Common.Input
 
         private const int OpenTimeoutMs = 3_000;
 
-        public void Dispose()
+        /// <summary>Whether the endpoint connection is open. The legacy API
+        /// lists a port it has not opened (InputManager Phase 1e).</summary>
+        internal bool IsOpen => _connection != null;
+
+        public void Dispose() => CloseConnection();
+
+        /// <summary>Closes the connection and keeps the device, for the
+        /// legacy API, which opens a port while it is assigned to a slot and
+        /// closes it when the assignment goes. The state returns to rest so a
+        /// note held at the close is not still held at the next
+        /// open.</summary>
+        internal void Close()
+        {
+            CloseConnection();
+            lock (_stateLock)
+            {
+                _state = new CustomInputState { Midi = new MidiInputState() };
+                Array.Clear(_pulsePending);
+                Array.Clear(_pulsePhase);
+                Array.Clear(_pulsePhaseUntil);
+            }
+        }
+
+        private void CloseConnection()
         {
             _attached = false;
             var conn = _connection;

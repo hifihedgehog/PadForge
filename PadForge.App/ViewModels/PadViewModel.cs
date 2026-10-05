@@ -883,6 +883,18 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _midiConfig, value ?? new());
         }
 
+        private bool _isLegacyMidi;
+
+        /// <summary>True while the legacy MIDI API runs MIDI slots. The MIDI
+        /// bar then shows its output-port picker, since that API sends to an
+        /// existing port instead of creating one. MainWindow sets it from
+        /// the Settings card's refresh.</summary>
+        public bool IsLegacyMidi
+        {
+            get => _isLegacyMidi;
+            set => SetProperty(ref _isLegacyMidi, value);
+        }
+
         // ═══════════════════════════════════════════════
         //  KBM per-slot configuration (discussion #205)
         // ═══════════════════════════════════════════════

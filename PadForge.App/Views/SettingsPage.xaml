@@ -644,16 +644,24 @@
                             </TextBlock>
                         </StackPanel>
 
-                        <!-- No Install button: Microsoft withdrew the runtime's
-                             installers on 2026-10-01, and Windows carries the
-                             API from the late-November 2026 update. Uninstall
-                             (#175 destructive verb, no confirm) removes the
-                             older runtime only, where one is installed. -->
+                        <!-- Install fetches PadForge's build of the runtime
+                             (Microsoft withdrew its installers on 2026-10-01)
+                             where the PC has no in-box API and is not in
+                             Legacy API mode. Uninstall (#175 destructive verb,
+                             no confirm) removes whichever runtime is
+                             installed, Microsoft's or PadForge's. -->
                         <StackPanel Grid.Column="1" Orientation="Horizontal"
                                     VerticalAlignment="Center">
+                            <Button Content="{Binding Common_Install, Source={x:Static strings:Strings.Instance}}"
+                                    Command="{Binding InstallMidiRuntimeCommand}"
+                                    Style="{StaticResource EmberAccentButton}"
+                                    ToolTip="{Binding Settings_MidiInstallTooltip, Source={x:Static strings:Strings.Instance}}"
+                                    AutomationProperties.AutomationId="MidiRuntimeInstallButton"
+                                    Visibility="{Binding CanInstallMidiRuntime, Converter={StaticResource BoolToVisibilityConverter}}"/>
                             <Button Content="{Binding Common_Uninstall, Source={x:Static strings:Strings.Instance}}"
                                     Command="{Binding UninstallMidiServicesCommand}"
                                     Style="{StaticResource EmberDestructiveButton}"
+                                    AutomationProperties.AutomationId="MidiRuntimeUninstallButton"
                                     Visibility="{Binding IsMidiRuntimeInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </StackPanel>
                     </Grid>

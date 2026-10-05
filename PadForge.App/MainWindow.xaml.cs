@@ -794,19 +794,40 @@ namespace PadForge
                     RefreshMidiServicesStatus);
             };
 
+            _viewModel.Settings.InstallMidiRuntimeRequested += async (s, e) =>
+            {
+                bool installed = false;
+                await RunDriverOperationAsync(
+                    Strings.Instance.Status_DownloadingInstallingMidi,
+                    () =>
+                    {
+                        DriverInstaller.InstallMidiRuntime();
+                        installed = true;
+                    },
+                    () =>
+                    {
+                        // The runtime takes over from the legacy API: the next
+                        // probe picks it, MIDI input reopens through it, and
+                        // Step 5 rebuilds the MIDI slots on ports of their own.
+                        if (installed) _inputService?.SwitchMidiApi();
+                        RefreshMidiServicesStatus();
+                    });
+            };
+
             _viewModel.Settings.UninstallMidiServicesRequested += async (s, e) =>
             {
-                // This removes the older runtime only. When Windows runs
-                // PadForge's MIDI through the in-box API, nothing in this
-                // process touches the runtime's files, so MIDI keeps running
-                // through the uninstall. Otherwise the runtime may be loaded.
-                // The uninstall guard prevents this when MIDI slots are
-                // active, but MIDI *input* enumeration (issue #128) loads the
-                // runtime whenever it is the API in use, so tear those
-                // connections down first, then release the runtime and keep
-                // it released, so the uninstaller never has to close
-                // PadForge to reach its files.
-                bool release = Common.Input.MidiVirtualController.ActiveApi != Common.Input.MidiApiKind.InBox;
+                // This removes the App SDK runtime only. When Windows runs
+                // PadForge's MIDI through the in-box API or the legacy API,
+                // nothing in this process touches the runtime's files, so
+                // MIDI keeps running through the uninstall. Otherwise the
+                // runtime may be loaded. The uninstall guard prevents this
+                // when MIDI slots are active, but MIDI *input* enumeration
+                // (issue #128) loads the runtime whenever it is the API in
+                // use, so tear those connections down first, then release the
+                // runtime and keep it released, so the uninstaller never has
+                // to close PadForge to reach its files.
+                bool release = Common.Input.MidiVirtualController.ActiveApi
+                    is not (Common.Input.MidiApiKind.InBox or Common.Input.MidiApiKind.Legacy);
                 if (release)
                 {
                     _inputService?.ShutdownMidiInputs();
@@ -824,7 +845,8 @@ namespace PadForge
                             // canceled) or never started, the latch lifts here,
                             // off the UI thread: the next probe takes the
                             // in-box API where Windows has it, the runtime
-                            // again if it is still installed, else nothing. An
+                            // again if it is still installed, else the legacy
+                            // API. An
                             // uninstaller still running after its wait keeps
                             // the latch down until restart, as before, since a
                             // probe now could load the files it is deleting.
@@ -8923,6 +8945,14 @@ namespace PadForge
         /// them at install time, which does its own containment.</summary>
         private bool _steamVrPathsChecked;
 
+        /// <summary>Shows or hides the output-port picker on every MIDI bar.
+        /// Only the legacy API reads the port.</summary>
+        private void SetPadsLegacyMidi(bool legacy)
+        {
+            foreach (var pad in _viewModel.Pads)
+                pad.IsLegacyMidi = legacy;
+        }
+
         private void RefreshMidiServicesStatus()
         {
             bool midiAvailable = false;
@@ -8933,9 +8963,10 @@ namespace PadForge
                 // version line and its Uninstall button.
                 bool runtimeInstalled = DriverInstaller.IsMidiRuntimeInstalled();
                 // The registry's answer until the engine's probe has run,
-                // then the probe's. A present API whose service did not start
-                // (Legacy API mode, a stopped service) reads as not running.
-                // Reading the probe's cached answer never blocks.
+                // then the probe's. Where neither Windows MIDI Services API
+                // starts, the engine takes the legacy API. A probe that found
+                // nothing it could start reads as not running. Reading the
+                // probe's cached answer never blocks.
                 var (api, notStarted) = Common.Input.MidiApiSelection.ForCard(
                     Common.Input.MidiApiSelection.PredictForUi(runtimeInstalled),
                     Common.Input.MidiVirtualController.ActiveApi,
@@ -8943,17 +8974,22 @@ namespace PadForge
                 _viewModel.Settings.IsMidiRuntimeInstalled = runtimeInstalled;
                 _viewModel.Settings.MidiRuntimeVersion =
                     runtimeInstalled ? (DriverInstaller.GetMidiRuntimeVersion() ?? string.Empty) : string.Empty;
+                _viewModel.Settings.CanInstallMidiRuntime =
+                    Common.Input.MidiApiSelection.CanOfferRuntimeInstall(runtimeInstalled);
                 _viewModel.Settings.MidiApiNotStarted = notStarted;
                 _viewModel.Settings.ActiveMidiApi = api;
                 midiAvailable = api != Common.Input.MidiApiKind.None;
                 _viewModel.Dashboard.IsMidiAvailable = midiAvailable;
+                SetPadsLegacyMidi(api == Common.Input.MidiApiKind.Legacy);
             }
             catch
             {
                 midiAvailable = false;
                 _viewModel.Settings.MidiApiNotStarted = false;
+                _viewModel.Settings.CanInstallMidiRuntime = false;
                 _viewModel.Settings.ActiveMidiApi = Common.Input.MidiApiKind.None;
                 _viewModel.Dashboard.IsMidiAvailable = false;
+                SetPadsLegacyMidi(false);
             }
 
             // SteamVR presence rides the same refresh cadence (VR slot

@@ -144,7 +144,8 @@
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>HidHide wordt geïnstalleerd…</value></data>
   <data name="Status_UninstallingHidHide" xml:space="preserve"><value>HidHide wordt verwijderd…</value></data>
-  <data name="Status_UninstallingMidi" xml:space="preserve"><value>Oudere Windows MIDI Services-runtime wordt verwijderd…</value></data>
+  <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services-runtime wordt verwijderd…</value></data>
+  <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Windows MIDI Services-runtime wordt gedownload en geïnstalleerd…</value></data>
   <data name="Status_OperationCanceled" xml:space="preserve"><value>Bewerking geannuleerd door gebruiker.</value></data>
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>SteamVR downloaden…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>SteamVR wordt gedownload en geïnstalleerd vanaf de servers van Valve… Meerdere GB, dit kan even duren.</value></data>
@@ -362,14 +363,16 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro-stuurprogramma</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Virtuele HID-controllerengine in gebruikersmodus. Ingebed in PadForge.App. Wordt automatisch geïnstalleerd bij het eerste aanmaken van een virtuele controller. Vervangt ViGEmBus en vJoy in v3.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
-  <data name="Settings_MidiDesc" xml:space="preserve"><value>Virtuele MIDI-uitvoer en MIDI-invoer. Ingebouwd in Windows 11 25H2 vanaf de update van eind november 2026. Tot die tijd draait het op de oudere runtime, waar die is geïnstalleerd.</value></data>
+  <data name="Settings_MidiDesc" xml:space="preserve"><value>Virtuele MIDI-poorten en MIDI-invoer. Windows 11 25H2 bevat de API vanaf de update van eind november 2026. Andere pc's gebruiken de Windows MIDI Services-runtime, die PadForge kan installeren, of de verouderde MIDI-API.</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>Ingebouwd in Windows</value></data>
-  <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>Oudere runtime</value></data>
+  <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>App SDK-runtime</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>Niet beschikbaar</value></data>
-  <data name="Settings_MidiNeedsUpdate" xml:space="preserve"><value>Vereist Windows 11 25H2 met de update van eind november 2026</value></data>
   <data name="Settings_MidiOlderRuntime_Format" xml:space="preserve"><value>De oudere runtime {0} is ook geïnstalleerd en is niet meer nodig</value></data>
   <data name="Settings_MidiStatusNotRunning" xml:space="preserve"><value>Niet actief</value></data>
-  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services is niet gestart. In de Legacy API-modus blijft het uitgeschakeld.</value></data>
+  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>De MIDI-service van Windows reageerde niet. Windows opnieuw opstarten maakt een vastgelopen service weer vrij.</value></data>
+  <data name="Settings_MidiStatusLegacy" xml:space="preserve"><value>Verouderde MIDI-API</value></data>
+  <data name="Settings_MidiLegacy" xml:space="preserve"><value>Elk MIDI-slot verstuurt naar een poort die op de pagina van het slot is gekozen. MIDI-invoer opent alleen apparaten die aan een slot zijn toegewezen.</value></data>
+  <data name="Settings_MidiInstallTooltip" xml:space="preserve"><value>Downloadt en installeert de Windows MIDI Services-runtime, waarmee elk MIDI-slot een eigen poort krijgt.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>VR-runtime voor virtuele VR-controllers. Wordt vanaf de servers van Valve geïnstalleerd, zonder Steam-account of Steam-client (meerdere GB).</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Installatielocatie</value></data>
@@ -564,6 +567,9 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_MidiStartNoteTooltip" xml:space="preserve"><value>Eerste MIDI-nootnummer (0-127, 60 = Midden C). Hogere waarden verlagen het maximale nootaantal.</value></data>
   <data name="Pad_MidiVelocity" xml:space="preserve"><value>Aanslagsterkte</value></data>
   <data name="Pad_MidiVelocityTooltip" xml:space="preserve"><value>Note-on aanslagsterkte (0-127). Hoe hard de virtuele toetsen worden ingedrukt.</value></data>
+  <data name="Pad_MidiOutputPort" xml:space="preserve"><value>Uitvoerpoort</value></data>
+  <data name="Pad_MidiOutputPortTooltip" xml:space="preserve"><value>De MIDI-poort waar dit slot naar verstuurt. De verouderde MIDI-API kan geen poort voor het slot maken.</value></data>
+  <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>Geen</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Wisselen naar 2D-weergave</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Wisselen naar 3D-weergave</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Klik om de linkermotor te testen</value></data>

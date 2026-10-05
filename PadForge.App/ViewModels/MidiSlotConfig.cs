@@ -67,6 +67,17 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _velocity, Math.Clamp(value, (byte)0, (byte)127));
         }
 
+        private string _outputPort = string.Empty;
+        /// <summary>The port this slot sends to under the legacy MIDI API, by
+        /// the name the slot's port picker shows. Empty until the user picks
+        /// one. The Windows MIDI Services APIs create the slot's own port and
+        /// ignore it.</summary>
+        public string OutputPort
+        {
+            get => _outputPort;
+            set => SetProperty(ref _outputPort, value ?? string.Empty);
+        }
+
         /// <summary>Returns CC numbers array: sequential from StartCc for CcCount entries.</summary>
         /// <summary>Resets every field to its fresh-install default IN
         /// PLACE, preserving the instance (external PropertyChanged
@@ -81,6 +92,7 @@ namespace PadForge.ViewModels
             StartNote = 60;
             NoteCount = 11;
             Velocity = 127;
+            OutputPort = string.Empty;
         }
 
         public int[] GetCcNumbers()
@@ -111,5 +123,20 @@ namespace PadForge.ViewModels
         [XmlAttribute] public int NoteCount { get; set; } = 11;
         [XmlAttribute] public int StartNote { get; set; } = 60;
         [XmlAttribute] public byte Velocity { get; set; } = 127;
+        /// <summary>The legacy API's output port. Left out of the file while
+        /// empty. Applying a snapshot that has none keeps the slot's current
+        /// port (<see cref="ApplyOutputPortTo"/>), so a profile saved before
+        /// a port was picked does not clear it.</summary>
+        [XmlAttribute] public string OutputPort { get; set; }
+
+        public bool ShouldSerializeOutputPort() => !string.IsNullOrEmpty(OutputPort);
+
+        /// <summary>Applies <see cref="OutputPort"/> when this snapshot has
+        /// one.</summary>
+        public void ApplyOutputPortTo(MidiSlotConfig config)
+        {
+            if (config != null && !string.IsNullOrEmpty(OutputPort))
+                config.OutputPort = OutputPort;
+        }
     }
 }

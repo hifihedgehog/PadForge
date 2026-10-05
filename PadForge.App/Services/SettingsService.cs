@@ -2623,6 +2623,9 @@ namespace PadForge.Services
 
             // MIDI port layout (channel / velocity / CC + note ranges) is
             // also slot-output-shape data, only meaningful across MIDI slots.
+            // The legacy API's output port stays with the destination: two
+            // slots sending to one port collide on the classic MIDI stack,
+            // where a port serves one client.
             if (src.OutputType == Engine.VirtualControllerType.Midi
                 && dst.OutputType == Engine.VirtualControllerType.Midi)
             {
@@ -2902,7 +2905,8 @@ namespace PadForge.Services
         }
 
         /// <summary>Snapshots the MIDI port layout for a single slot.
-        /// Returns null when the slot isn't MIDI.</summary>
+        /// Returns null when the slot isn't MIDI. The legacy API's output
+        /// port is left out, as in the slot copy above.</summary>
         public ViewModels.MidiSlotConfigData BuildMidiConfigSnapshotForSlot(int slotIndex)
         {
             if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count) return null;
@@ -3329,6 +3333,7 @@ namespace PadForge.Services
                     cfg.CcCount = cfgData.CcCount;
                     cfg.StartNote = cfgData.StartNote;
                     cfg.NoteCount = cfgData.NoteCount;
+                    cfgData.ApplyOutputPortTo(cfg);
                     _mainVm.Pads[idx].RebuildMappings();
 
                     // A load, under the reload guard, so the grid's edit hooks
@@ -5028,7 +5033,8 @@ namespace PadForge.Services
                     CcCount = cfg.CcCount,
                     StartCc = cfg.StartCc,
                     NoteCount = cfg.NoteCount,
-                    StartNote = cfg.StartNote
+                    StartNote = cfg.StartNote,
+                    OutputPort = cfg.OutputPort
                 });
             }
             return list.Count > 0 ? list.ToArray() : null;
@@ -5048,7 +5054,8 @@ namespace PadForge.Services
                     CcCount = cfg.CcCount,
                     StartCc = cfg.StartCc,
                     NoteCount = cfg.NoteCount,
-                    StartNote = cfg.StartNote
+                    StartNote = cfg.StartNote,
+                    OutputPort = cfg.OutputPort
                 });
             }
             return list.ToArray();

@@ -4131,7 +4131,53 @@ namespace PadForge.Views
                 Set(MidiStartNoteBox, vm.MidiConfig.StartNote.ToString());
                 Set(MidiVelocityBox, vm.MidiConfig.Velocity.ToString());
                 _syncingMidiConfig = false;
+                SyncMidiOutputPortBox(vm, refreshPorts: false);
             }
+        }
+
+        // ── Legacy MIDI output port ──
+        // The picker lists "None" first, then every output port by the name
+        // it is saved under, then the saved port when it is not connected
+        // now, so the pick stays visible. The port list is read when the
+        // picker opens, never on a config change.
+
+        private List<string> _midiOutputPorts = new();
+        private bool _syncingMidiPort;
+
+        private void SyncMidiOutputPortBox(PadViewModel vm, bool refreshPorts)
+        {
+            if (MidiOutputPortBox == null) return;
+            if (refreshPorts)
+                _midiOutputPorts = Common.Input.MidiBackendLegacy.ListOutputPortsBounded();
+            string saved = vm.MidiConfig.OutputPort ?? string.Empty;
+            var items = new List<string> { Strings.Instance.Pad_MidiOutputPortNone };
+            items.AddRange(_midiOutputPorts);
+            if (saved.Length > 0 && !_midiOutputPorts.Contains(saved)) items.Add(saved);
+            // Index 0 is "None" whatever a port happens to be called.
+            int selected = saved.Length == 0 ? 0 : items.IndexOf(saved, 1);
+            if (!refreshPorts && MidiOutputPortBox.ItemsSource is List<string> shown
+                && shown.SequenceEqual(items) && MidiOutputPortBox.SelectedIndex == selected)
+                return;
+            _syncingMidiPort = true;
+            try
+            {
+                MidiOutputPortBox.ItemsSource = items;
+                MidiOutputPortBox.SelectedIndex = selected;
+            }
+            finally { _syncingMidiPort = false; }
+        }
+
+        private void MidiOutputPortBox_DropDownOpened(object sender, EventArgs e)
+        {
+            if (DataContext is PadViewModel vm) SyncMidiOutputPortBox(vm, refreshPorts: true);
+        }
+
+        private void MidiOutputPortBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_syncingMidiPort || DataContext is not PadViewModel vm) return;
+            int index = MidiOutputPortBox.SelectedIndex;
+            if (index < 0) return;
+            vm.MidiConfig.OutputPort = index == 0 ? string.Empty : MidiOutputPortBox.SelectedItem as string ?? string.Empty;
         }
 
         private void MidiConfig_Changed(object sender, RoutedEventArgs e) => ApplyMidiConfigValues();

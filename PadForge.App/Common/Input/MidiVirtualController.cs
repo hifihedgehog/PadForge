@@ -11,8 +11,11 @@ namespace PadForge.Common.Input
     ///
     /// <para>The availability probe picks the API (<see cref="MidiApiSelection"/>):
     /// the in-box Windows.Devices.Midi2 where Windows registers it, else the
-    /// older App SDK runtime where that is installed. Everything after the
-    /// probe goes through the chosen <see cref="IMidiBackend"/>.</para>
+    /// App SDK runtime where that is installed, else the legacy WinMM API
+    /// (<see cref="MidiBackendLegacy"/>), which cannot create a port and
+    /// opens the port the slot's <see cref="OutputPort"/> names instead.
+    /// Everything after the probe goes through the chosen
+    /// <see cref="IMidiBackend"/>.</para>
     /// </summary>
     internal sealed class MidiVirtualController : IVirtualController
     {
@@ -21,6 +24,7 @@ namespace PadForge.Common.Input
         private static readonly object _availLock = new();
         private static volatile IMidiBackend _backend;
         private static Func<IMidiBackend> s_backendFactory = CreateBackend;
+        private static Func<IMidiBackend> s_legacyFactory = CreateLegacyBackend;
 
         private IMidiVirtualEndpoint _endpoint;
         private bool _connected;
@@ -148,6 +152,18 @@ namespace PadForge.Common.Input
         // Note velocity for button presses.
         internal byte Velocity { get; set; } = 127;
 
+        /// <summary>The output port this slot sends to under the legacy API,
+        /// by the name the slot's port picker saved
+        /// (<see cref="MidiBackendLegacy.OpenOutputPort"/>). Unused by the
+        /// Windows MIDI Services APIs, which create the slot's own
+        /// port.</summary>
+        internal string OutputPort { get; set; } = string.Empty;
+
+        /// <summary>The API this controller's endpoint was made with. Step 5
+        /// rebuilds the slot when the probe settles on another one, as when
+        /// the runtime is installed under the legacy API.</summary>
+        internal MidiApiKind ApiKind { get; private set; }
+
         public VirtualControllerType Type => VirtualControllerType.Midi;
         public bool IsConnected => _connected;
         public int FeedbackPadIndex { get; set; }
@@ -253,11 +269,15 @@ namespace PadForge.Common.Input
             // already retrying) tears down what it built and touches
             // nothing shared.
             IMidiVirtualEndpoint endpoint;
+            MidiApiKind kind;
             try
             {
                 var backend = _backend
                     ?? throw new InvalidOperationException("Windows MIDI Services is not available.");
-                endpoint = backend.CreateVirtualEndpoint(deviceName, uid, _padIndex);
+                kind = backend.Kind;
+                endpoint = backend is MidiBackendLegacy legacy
+                    ? legacy.OpenOutputPort(OutputPort)
+                    : backend.CreateVirtualEndpoint(deviceName, uid, _padIndex);
             }
             catch
             {
@@ -280,6 +300,7 @@ namespace PadForge.Common.Input
                 }
 
                 _endpoint = endpoint;
+                ApiKind = kind;
                 _connected = true;
                 s_liveEndpoints[uid] = EndpointReady;
 
@@ -501,29 +522,34 @@ namespace PadForge.Common.Input
             {
                 if (_isAvailable.HasValue) return _isAvailable.Value;
 
-                IMidiBackend backend = null;
-                try
-                {
-                    backend = s_backendFactory();
-                    if (backend == null || !backend.Start())
-                    {
-                        _isAvailable = false;
-                        return false;
-                    }
-                    _backend = backend;
-                    _isAvailable = true;
-                    return true;
-                }
-                catch
-                {
-                    // A start that threw partway may hold the older
-                    // runtime's initializer. Release it now rather than
-                    // abandon it.
-                    try { backend?.Stop(skipDispose: false); } catch { }
-                    _isAvailable = false;
-                    return false;
-                }
+                // Windows MIDI Services first. Where neither of its APIs
+                // starts (none present, Legacy API mode, a service that
+                // refuses), the legacy API, which every Windows has. A probe
+                // that hangs in the first never reaches the second: the
+                // bound in IsAvailable gives up on both, and WinMM routes
+                // through the same service on the new MIDI stack anyway.
+                var backend = TryStart(s_backendFactory) ?? TryStart(s_legacyFactory);
+                _backend = backend;
+                _isAvailable = backend != null;
+                return backend != null;
             }
+        }
+
+        /// <summary>Creates and starts one backend, or returns null. A start
+        /// that failed or threw partway may hold the App SDK runtime's
+        /// initializer, so it is released here rather than
+        /// abandoned.</summary>
+        private static IMidiBackend TryStart(Func<IMidiBackend> factory)
+        {
+            IMidiBackend backend = null;
+            try
+            {
+                backend = factory?.Invoke();
+                if (backend != null && backend.Start()) return backend;
+            }
+            catch { }
+            try { backend?.Stop(skipDispose: false); } catch { }
+            return null;
         }
 
         /// <summary>The production backend: the API
@@ -543,6 +569,8 @@ namespace PadForge.Common.Input
             }
         }
 
+        private static IMidiBackend CreateLegacyBackend() => new MidiBackendLegacy();
+
         /// <summary>The backend the last successful probe started, or null.
         /// MIDI input rides the same one.</summary>
         internal static IMidiBackend Backend => _backend;
@@ -560,11 +588,15 @@ namespace PadForge.Common.Input
             => _isAvailable == false || (_probeTimedOut && _isAvailable == null);
 
         /// <summary>Test seam (InternalsVisibleTo PadForge.Tests): replaces
-        /// the backend factory and clears the cached probe. Null restores
-        /// the production factory.</summary>
-        internal static void UseBackendFactoryForTest(Func<IMidiBackend> factory)
+        /// the backend factories and clears the cached probe. A test that
+        /// names no legacy factory gets no fallback, so a fake that refuses
+        /// to start never reaches the real WinMM. A null
+        /// <paramref name="factory"/> restores both production
+        /// factories.</summary>
+        internal static void UseBackendFactoryForTest(Func<IMidiBackend> factory, Func<IMidiBackend> legacyFactory = null)
         {
             s_backendFactory = factory ?? CreateBackend;
+            s_legacyFactory = factory == null ? CreateLegacyBackend : legacyFactory;
             ResetAvailability();
         }
 

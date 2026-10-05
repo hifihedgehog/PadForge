@@ -483,9 +483,11 @@ namespace PadForge.ViewModels
         // ─────────────────────────────────────────────
 
         // Microsoft deleted the Windows MIDI Services runtime installers on
-        // 2026-10-01, so there is nothing left to install. The card says
-        // which API PadForge drives, or what the PC lacks, and offers to
-        // uninstall the older runtime where one is still installed.
+        // 2026-10-01. The card says which API PadForge drives, offers
+        // PadForge's build of the runtime where it would give MIDI slots
+        // their own ports (MidiApiSelection.CanOfferRuntimeInstall), and
+        // offers to uninstall an installed runtime, Microsoft's or
+        // PadForge's.
 
         private Common.Input.MidiApiKind _activeMidiApi;
 
@@ -503,10 +505,35 @@ namespace PadForge.ViewModels
             }
         }
 
+        private bool _canInstallMidiRuntime;
+
+        /// <summary>Whether the card offers to install the App SDK
+        /// runtime.</summary>
+        public bool CanInstallMidiRuntime
+        {
+            get => _canInstallMidiRuntime;
+            set
+            {
+                if (SetProperty(ref _canInstallMidiRuntime, value))
+                    _installMidiRuntimeCommand?.NotifyCanExecuteChanged();
+            }
+        }
+
+        private RelayCommand _installMidiRuntimeCommand;
+
+        /// <summary>Installs PadForge's build of the App SDK runtime.</summary>
+        public RelayCommand InstallMidiRuntimeCommand =>
+            _installMidiRuntimeCommand ??= new RelayCommand(
+                () => InstallMidiRuntimeRequested?.Invoke(this, EventArgs.Empty),
+                () => _canInstallMidiRuntime);
+
+        /// <summary>Raised when the user requests installing the runtime.</summary>
+        public event EventHandler InstallMidiRuntimeRequested;
+
         private bool _isMidiRuntimeInstalled;
 
-        /// <summary>Whether the older Windows MIDI Services runtime is
-        /// installed. It can be, beside the in-box API, after the November
+        /// <summary>Whether the App SDK runtime is installed, Microsoft's or
+        /// PadForge's. It can be, beside the in-box API, after the November
         /// update.</summary>
         public bool IsMidiRuntimeInstalled
         {
@@ -520,7 +547,7 @@ namespace PadForge.ViewModels
 
         private string _midiRuntimeVersion = string.Empty;
 
-        /// <summary>The older runtime's version, from its uninstall entry.</summary>
+        /// <summary>The runtime's version, from its DLL.</summary>
         public string MidiRuntimeVersion
         {
             get => _midiRuntimeVersion;
@@ -533,8 +560,8 @@ namespace PadForge.ViewModels
 
         private bool _midiApiNotStarted;
 
-        /// <summary>True when an API is present but its service did not
-        /// start: Legacy API mode, or a stopped or wedged service
+        /// <summary>True when the probe found no API it could start, the
+        /// legacy one included, or timed out on a stuck service
         /// (<see cref="Common.Input.MidiApiSelection.ForCard"/>).</summary>
         public bool MidiApiNotStarted
         {
@@ -546,32 +573,35 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>Whether either API can run MIDI slots and MIDI input.</summary>
+        /// <summary>Whether any MIDI API can run MIDI slots and MIDI input.</summary>
         public bool IsMidiAvailable => _activeMidiApi != Common.Input.MidiApiKind.None;
 
-        /// <summary>The card's status line: which API, or that none is.</summary>
+        /// <summary>The card's status line: which API, or that none
+        /// started.</summary>
         public string MidiServicesStatusText => _activeMidiApi switch
         {
             Common.Input.MidiApiKind.InBox => Strings.Instance.Settings_MidiStatusInBox,
             Common.Input.MidiApiKind.AppSdk => Strings.Instance.Settings_MidiStatusRuntime,
+            Common.Input.MidiApiKind.Legacy => Strings.Instance.Settings_MidiStatusLegacy,
             _ => _midiApiNotStarted
                 ? Strings.Instance.Settings_MidiStatusNotRunning
                 : Strings.Instance.Settings_MidiStatusUnavailable,
         };
 
-        /// <summary>The line under the status: the older runtime's version
-        /// while PadForge uses it, a note that a leftover copy is no longer
-        /// needed once Windows has the API, that the service did not start,
-        /// or what the PC lacks.</summary>
+        /// <summary>The line under the status: the runtime's version while
+        /// PadForge uses it, a note that a leftover runtime is no longer
+        /// needed once Windows has the API, how the legacy API sends and
+        /// listens, or that the service did not respond.</summary>
         public string MidiServicesDetailText => _activeMidiApi switch
         {
             Common.Input.MidiApiKind.InBox => _isMidiRuntimeInstalled
                 ? string.Format(Strings.Instance.Settings_MidiOlderRuntime_Format, _midiRuntimeVersion)
                 : string.Empty,
             Common.Input.MidiApiKind.AppSdk => _midiRuntimeVersion,
+            Common.Input.MidiApiKind.Legacy => Strings.Instance.Settings_MidiLegacy,
             _ => _midiApiNotStarted
                 ? Strings.Instance.Settings_MidiNotRunning
-                : Strings.Instance.Settings_MidiNeedsUpdate,
+                : string.Empty,
         };
 
         /// <summary>True when the detail line is the older runtime's
@@ -588,16 +618,16 @@ namespace PadForge.ViewModels
 
         private RelayCommand _uninstallMidiServicesCommand;
 
-        /// <summary>Uninstalls the older runtime. A MIDI slot running on it
-        /// keeps it installed. When Windows has the API, the slots run on
-        /// that, and the older runtime can go while they run.</summary>
+        /// <summary>Uninstalls the runtime. A MIDI slot running on it keeps
+        /// it installed. When Windows has the API, or the legacy API runs
+        /// the slots, the runtime can go while they run.</summary>
         public RelayCommand UninstallMidiServicesCommand =>
             _uninstallMidiServicesCommand ??= new RelayCommand(
                 () => UninstallMidiServicesRequested?.Invoke(this, EventArgs.Empty),
                 () => _isMidiRuntimeInstalled
                       && !(_activeMidiApi == Common.Input.MidiApiKind.AppSdk && HasAnyMidiSlots()));
 
-        /// <summary>Raised when the user requests uninstalling the older runtime.</summary>
+        /// <summary>Raised when the user requests uninstalling the runtime.</summary>
         public event EventHandler UninstallMidiServicesRequested;
 
         // ─────────────────────────────────────────────

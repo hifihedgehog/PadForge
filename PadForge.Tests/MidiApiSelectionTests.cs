@@ -7,13 +7,14 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>
-    /// Which Windows MIDI Services API PadForge drives. Microsoft deleted the
-    /// App SDK runtime installers on 2026-10-01, and the API moves into
-    /// Windows as Windows.Devices.Midi2 for Windows 11 25H2 (build 26200)
-    /// from the late-November 2026 update. PadForge tries the in-box API
-    /// first and falls back to the older runtime only when the in-box classes
-    /// are not registered (REGDB_E_CLASSNOTREG) and the runtime is installed.
-    /// Activation is faked here: the rule takes the activation HRESULT.
+    /// Which MIDI API PadForge drives. Microsoft deleted the App SDK runtime
+    /// installers on 2026-10-01, and the API moves into Windows as
+    /// Windows.Devices.Midi2 for Windows 11 25H2 (build 26200) from the
+    /// late-November 2026 update. PadForge tries the in-box API first, falls
+    /// back to the App SDK runtime only when the in-box classes are not
+    /// registered (REGDB_E_CLASSNOTREG) and the runtime is installed, and
+    /// takes the legacy WinMM API where neither starts. Activation is faked
+    /// here: the rule takes the activation HRESULT.
     /// </summary>
     public class MidiApiSelectionTests
     {
@@ -25,7 +26,7 @@ namespace PadForge.Tests
         private const int Build23H2 = 22631;
 
         [Fact]
-        public void TheInBoxApi_WinsOn25H2_EvenWithTheOlderRuntimeInstalled()
+        public void TheInBoxApi_WinsOn25H2_EvenWithTheRuntimeInstalled()
         {
             Assert.Equal(MidiApiKind.InBox,
                 MidiApiSelection.Choose(Build25H2, () => S_OK, () => true));
@@ -34,14 +35,14 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void ClassNotRegistered_FallsBackToTheOlderRuntime_WhenItIsInstalled()
+        public void ClassNotRegistered_FallsBackToTheRuntime_WhenItIsInstalled()
         {
             Assert.Equal(MidiApiKind.AppSdk,
                 MidiApiSelection.Choose(Build25H2, () => ClassNotRegistered, () => true));
         }
 
         [Fact]
-        public void ClassNotRegistered_WithNoOlderRuntime_LeavesNoApi()
+        public void ClassNotRegistered_WithNoRuntime_LeavesNoWindowsMidiServicesApi()
         {
             Assert.Equal(MidiApiKind.None,
                 MidiApiSelection.Choose(Build25H2, () => ClassNotRegistered, () => false));
@@ -49,7 +50,7 @@ namespace PadForge.Tests
 
         /// <summary>Only an unregistered class means "not in Windows". A
         /// registered in-box API that fails to activate for another reason is
-        /// not swapped for the older runtime behind the owner's back.</summary>
+        /// not swapped for the runtime behind the owner's back.</summary>
         [Fact]
         public void AnotherActivationFailure_DoesNotFallBack()
         {
@@ -58,7 +59,8 @@ namespace PadForge.Tests
         }
 
         /// <summary>24H2 is not covered by the in-box API, so it is never
-        /// tried there, and the older runtime is the only path.</summary>
+        /// tried there, and the runtime is the only Windows MIDI Services
+        /// path.</summary>
         [Fact]
         public void On24H2_TheInBoxApiIsNeverTried()
         {
@@ -72,7 +74,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void BelowTheOlderRuntimesGate_NothingIsTried()
+        public void BelowTheRuntimesGate_NothingIsTried()
         {
             bool probed = false, asked = false;
             Assert.Equal(MidiApiKind.None,
@@ -83,24 +85,48 @@ namespace PadForge.Tests
 
         /// <summary>The Settings card and the type pickers read registration
         /// from the registry on the UI thread, and must agree with the
-        /// engine's activation rule case for case.</summary>
+        /// engine's rule case for case. Where neither Windows MIDI Services
+        /// API is present, and in Legacy API mode, which stops the service,
+        /// the engine takes the legacy API.</summary>
         [Theory]
-        [InlineData(Build25H2, true, true, (int)MidiApiKind.InBox)]
-        [InlineData(Build25H2, true, false, (int)MidiApiKind.InBox)]
-        [InlineData(Build25H2, false, true, (int)MidiApiKind.AppSdk)]
-        [InlineData(Build25H2, false, false, (int)MidiApiKind.None)]
-        [InlineData(Build24H2, true, true, (int)MidiApiKind.AppSdk)]
-        [InlineData(Build24H2, false, false, (int)MidiApiKind.None)]
-        [InlineData(Build23H2, true, true, (int)MidiApiKind.None)]
-        public void TheUiPrediction_FollowsTheSameRule(int build, bool inBoxRegistered, bool runtimeInstalled, int expected)
+        [InlineData(Build25H2, true, true, false, (int)MidiApiKind.InBox)]
+        [InlineData(Build25H2, true, false, false, (int)MidiApiKind.InBox)]
+        [InlineData(Build25H2, false, true, false, (int)MidiApiKind.AppSdk)]
+        [InlineData(Build25H2, false, false, false, (int)MidiApiKind.Legacy)]
+        [InlineData(Build24H2, true, true, false, (int)MidiApiKind.AppSdk)]
+        [InlineData(Build24H2, false, false, false, (int)MidiApiKind.Legacy)]
+        [InlineData(Build23H2, true, true, false, (int)MidiApiKind.Legacy)]
+        [InlineData(Build25H2, true, true, true, (int)MidiApiKind.Legacy)]
+        [InlineData(Build24H2, false, true, true, (int)MidiApiKind.Legacy)]
+        [InlineData(Build23H2, false, false, true, (int)MidiApiKind.Legacy)]
+        public void TheUiPrediction_FollowsTheSameRule(int build, bool inBoxRegistered, bool runtimeInstalled,
+            bool legacyApiMode, int expected)
         {
-            Assert.Equal((MidiApiKind)expected, MidiApiSelection.PredictForUi(build, inBoxRegistered, runtimeInstalled));
+            Assert.Equal((MidiApiKind)expected,
+                MidiApiSelection.PredictForUi(build, inBoxRegistered, runtimeInstalled, legacyApiMode));
+        }
+
+        /// <summary>Install is offered only where the runtime would run and
+        /// is missing: 24H2 or later, no in-box API, not in Legacy API mode
+        /// (the service does not run there), nothing installed yet.</summary>
+        [Theory]
+        [InlineData(Build25H2, false, false, false, true)]
+        [InlineData(Build24H2, false, false, false, true)]
+        [InlineData(Build25H2, true, false, false, false)]
+        [InlineData(Build25H2, false, true, false, false)]
+        [InlineData(Build24H2, false, false, true, false)]
+        [InlineData(Build23H2, false, false, false, false)]
+        public void InstallIsOffered_OnlyWhereTheRuntimeWouldRun(int build, bool inBoxRegistered, bool legacyApiMode,
+            bool runtimeInstalled, bool expected)
+        {
+            Assert.Equal(expected,
+                MidiApiSelection.CanOfferRuntimeInstall(build, inBoxRegistered, legacyApiMode, runtimeInstalled));
         }
 
         /// <summary>The real probe, through combase: a class every Windows
         /// registers activates (the positive control), and a class no
         /// Windows registers reads as REGDB_E_CLASSNOTREG, the one result
-        /// that lets the older runtime take over.</summary>
+        /// that lets the runtime take over.</summary>
         [Fact]
         public void TheActivationProbe_TellsARegisteredClassFromAMissingOne()
         {
@@ -135,7 +161,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void TheCard_NamesTheOlderRuntime_WithItsVersion_AndOffersUninstall()
+        public void TheCard_NamesTheRuntime_WithItsVersion_AndOffersUninstall()
         {
             var vm = Card(MidiApiKind.AppSdk, runtimeInstalled: true, version: "1.0.17-rc.4.25");
             Assert.True(vm.IsMidiAvailable);
@@ -144,18 +170,18 @@ namespace PadForge.Tests
             Assert.True(vm.UninstallMidiServicesCommand.CanExecute(null));
         }
 
-        /// <summary>The uninstall guard: a MIDI slot running on the older
-        /// runtime keeps it installed.</summary>
+        /// <summary>The uninstall guard: a MIDI slot running on the runtime
+        /// keeps it installed.</summary>
         [Fact]
-        public void TheCard_KeepsTheOlderRuntime_WhileAMidiSlotRunsOnIt()
+        public void TheCard_KeepsTheRuntime_WhileAMidiSlotRunsOnIt()
         {
             var vm = Card(MidiApiKind.AppSdk, runtimeInstalled: true, version: "1.0.17-rc.4.25", midiSlots: true);
             Assert.False(vm.UninstallMidiServicesCommand.CanExecute(null));
         }
 
         /// <summary>After the November update a PC can carry both. Windows
-        /// runs the MIDI slots, so the older runtime can go even while they
-        /// run, and the card says it is no longer needed.</summary>
+        /// runs the MIDI slots, so the runtime can go even while they run,
+        /// and the card says it is no longer needed.</summary>
         [Fact]
         public void TheCard_OffersToRemoveALeftoverRuntime_WhenWindowsHasTheApi()
         {
@@ -166,23 +192,46 @@ namespace PadForge.Tests
             Assert.True(vm.UninstallMidiServicesCommand.CanExecute(null));
         }
 
+        /// <summary>The legacy API runs MIDI on every Windows, so the card
+        /// names it and says how it sends and listens.</summary>
         [Fact]
-        public void TheCard_SaysWhatThePcLacks_WhenNeitherApiIsThere()
+        public void TheCard_NamesTheLegacyApi_AndHowItSendsAndListens()
+        {
+            var vm = Card(MidiApiKind.Legacy, runtimeInstalled: false);
+            Assert.True(vm.IsMidiAvailable);
+            Assert.Equal(Strings.Instance.Settings_MidiStatusLegacy, vm.MidiServicesStatusText);
+            Assert.Equal(Strings.Instance.Settings_MidiLegacy, vm.MidiServicesDetailText);
+            Assert.False(vm.UninstallMidiServicesCommand.CanExecute(null));
+        }
+
+        [Fact]
+        public void TheCard_OffersInstall_ExactlyWhenTheRuleAllowsIt()
+        {
+            var vm = Card(MidiApiKind.Legacy, runtimeInstalled: false);
+            Assert.False(vm.InstallMidiRuntimeCommand.CanExecute(null));
+            vm.CanInstallMidiRuntime = true;
+            Assert.True(vm.InstallMidiRuntimeCommand.CanExecute(null));
+            vm.CanInstallMidiRuntime = false;
+            Assert.False(vm.InstallMidiRuntimeCommand.CanExecute(null));
+        }
+
+        /// <summary>No API at all reaches the card only through its own
+        /// failure path. It says nothing is available and claims no
+        /// reason.</summary>
+        [Fact]
+        public void TheCard_WithNoApi_SaysNothingIsAvailable()
         {
             var vm = Card(MidiApiKind.None, runtimeInstalled: false);
             Assert.False(vm.IsMidiAvailable);
             Assert.Equal(Strings.Instance.Settings_MidiStatusUnavailable, vm.MidiServicesStatusText);
-            Assert.Equal(Strings.Instance.Settings_MidiNeedsUpdate, vm.MidiServicesDetailText);
+            Assert.Equal(string.Empty, vm.MidiServicesDetailText);
             Assert.False(vm.UninstallMidiServicesCommand.CanExecute(null));
         }
 
-        /// <summary>MidiApi.EnsureServiceAvailable returns false in Legacy
-        /// API mode (Microsoft's MidiApi reference). A PC whose API is
-        /// present but whose service did not start says so, instead of
-        /// naming an API that nothing can use or asking for an update it
-        /// already has.</summary>
+        /// <summary>A probe that started nothing, the legacy API included,
+        /// or that timed out on a stuck service, reads as not running.</summary>
         [Fact]
-        public void TheCard_SaysTheServiceDidNotStart_WhenTheApiIsThereButStopped()
+        public void TheCard_SaysTheServiceDidNotRespond_WhenTheProbeStartedNothing()
         {
             var vm = Card(MidiApiKind.None, runtimeInstalled: false);
             vm.MidiApiNotStarted = true;
@@ -192,18 +241,19 @@ namespace PadForge.Tests
         }
 
         /// <summary>The card shows the registry's prediction until the
-        /// engine's probe has run, then the probe's answer. A failed probe
-        /// for an API the registry says is present reads as not started. A
-        /// failed probe with no API present still says what the PC
-        /// lacks.</summary>
+        /// engine's probe has run, then the probe's answer, the legacy
+        /// fallback included. A failed probe for an API the registry says
+        /// is present reads as not started.</summary>
         [Theory]
         [InlineData((int)MidiApiKind.InBox, (int)MidiApiKind.None, false, (int)MidiApiKind.InBox, false)]
         [InlineData((int)MidiApiKind.AppSdk, (int)MidiApiKind.None, false, (int)MidiApiKind.AppSdk, false)]
+        [InlineData((int)MidiApiKind.Legacy, (int)MidiApiKind.None, false, (int)MidiApiKind.Legacy, false)]
         [InlineData((int)MidiApiKind.None, (int)MidiApiKind.None, false, (int)MidiApiKind.None, false)]
         [InlineData((int)MidiApiKind.InBox, (int)MidiApiKind.InBox, false, (int)MidiApiKind.InBox, false)]
         [InlineData((int)MidiApiKind.AppSdk, (int)MidiApiKind.AppSdk, false, (int)MidiApiKind.AppSdk, false)]
+        [InlineData((int)MidiApiKind.AppSdk, (int)MidiApiKind.Legacy, false, (int)MidiApiKind.Legacy, false)]
         [InlineData((int)MidiApiKind.InBox, (int)MidiApiKind.None, true, (int)MidiApiKind.None, true)]
-        [InlineData((int)MidiApiKind.AppSdk, (int)MidiApiKind.None, true, (int)MidiApiKind.None, true)]
+        [InlineData((int)MidiApiKind.Legacy, (int)MidiApiKind.None, true, (int)MidiApiKind.None, true)]
         [InlineData((int)MidiApiKind.None, (int)MidiApiKind.None, true, (int)MidiApiKind.None, false)]
         public void TheCard_TakesTheEnginesAnswer_OnceItHasProbed(int predicted, int engineActive, bool probeFailed,
             int expectedApi, bool expectedNotStarted)

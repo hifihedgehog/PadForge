@@ -4,6 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 using PadForge.Common.Input;
@@ -501,29 +504,194 @@ namespace PadForge.Common
         }
 
         // ─────────────────────────────────────────────
-        //  Windows MIDI Services
+        //  Windows MIDI Services runtime
         // ─────────────────────────────────────────────
 
-        // There is nothing to install any more. Microsoft deleted the Windows
-        // MIDI Services SDK Runtime and Tools installers from every microsoft/MIDI
-        // release on 2026-10-01, and the API moves into Windows 11 25H2 with the
-        // late-November 2026 update (MidiApiSelection). What remains here serves
-        // PCs that still have the older runtime: finding it and uninstalling it.
+        // Microsoft deleted the Windows MIDI Services runtime installers from
+        // every microsoft/MIDI release on 2026-10-01, and the API moves into
+        // Windows 11 25H2 with the late-November 2026 update
+        // (MidiApiSelection). Until a PC has the in-box API, PadForge installs
+        // its own build of the same runtime, 1.0.17-rc.4.25 from microsoft/MIDI
+        // rc-4 under the MIT License, published at
+        // hifihedgehog/PadForge-MIDI-Runtime. None of it ships inside PadForge,
+        // and a download runs only when it matches the SHA-256 below.
+        // Microsoft's own install, where a PC still has one, is found and
+        // uninstalled here too.
+
+        internal const string MidiRuntimeReleaseUrl =
+            "https://github.com/hifihedgehog/PadForge-MIDI-Runtime/releases/download/v1.0.17-rc.4.25/";
+        internal const string MidiRuntimeMsiX64 = "PadForge-MIDI-Runtime-1.0.17-rc.4.25-x64.msi";
+        internal const string MidiRuntimeMsiArm64 = "PadForge-MIDI-Runtime-1.0.17-rc.4.25-arm64.msi";
+        internal const string MidiRuntimeSha256X64 = "8d3cdaf9337af355d15ac48716d333818185c40d9d43a54f75016de12a55aec7";
+        internal const string MidiRuntimeSha256Arm64 = "5f9b6e4a613c06df29eaecd9cddbb5439f6933ae200f758b1d0714ef57b26637";
+
+        /// <summary>PadForge's runtime package and Microsoft's
+        /// (src/app-sdk/sdk-runtime-installer/sdk-package in microsoft/MIDI),
+        /// by upgrade code.</summary>
+        internal const string PadForgeMidiRuntimeUpgradeCode = "{5C4B95B9-C1D9-4C00-8454-71560DDA7106}";
+        internal const string MicrosoftMidiRuntimeUpgradeCode = "{297714BB-DD77-4748-A4C1-553AD66DA5D0}";
+
+        /// <summary>Microsoft's bundle, which installed its runtime package
+        /// with the MIDI Settings app and tools.</summary>
+        private const string MicrosoftMidiBundleName = "Windows MIDI Services Runtime and Tools";
+
+        /// <summary>Where the runtime finds its folder
+        /// (MIDI_ROOT_APP_SDK_REG_KEY in microsoft/MIDI
+        /// src/api/inc/MidiDefs.h). Both packages write it.</summary>
+        private const string MidiRuntimeRegKey = @"SOFTWARE\Microsoft\Windows MIDI Services\Desktop App SDK Runtime";
+
+        /// <summary>The runtime DLL was linked by MSVC 14.51, and the Visual
+        /// C++ runtime a PC has must be at least as new as the tools that
+        /// built a binary (Microsoft's "Latest supported Visual C++
+        /// Redistributable downloads"). The x64 package carries the ARM64
+        /// files as well, and Microsoft's own MIDI bundle installed that one
+        /// on both architectures.</summary>
+        internal static readonly Version MidiRuntimeVcMinimum = new(14, 51);
+        private const string VcRedistUrl = "https://aka.ms/vc14/vc_redist.x64.exe";
+
+        internal enum MidiRuntimeOwner { None, MicrosoftBundle, PadForgePackage, MicrosoftPackage }
+
+        /// <summary>Which install provides the runtime, and what removes it:
+        /// the bundle's UninstallString, or the package's ProductCode.
+        /// Microsoft's bundle is checked first, since its uninstall removes
+        /// its runtime package with everything else it installed.</summary>
+        internal static (MidiRuntimeOwner Owner, string Target) FindMidiRuntime()
+        {
+            string bundle = FindMidiServicesUninstallString();
+            if (bundle != null) return (MidiRuntimeOwner.MicrosoftBundle, bundle);
+            string code = FindRelatedProduct(PadForgeMidiRuntimeUpgradeCode);
+            if (code != null) return (MidiRuntimeOwner.PadForgePackage, code);
+            code = FindRelatedProduct(MicrosoftMidiRuntimeUpgradeCode);
+            if (code != null) return (MidiRuntimeOwner.MicrosoftPackage, code);
+            return (MidiRuntimeOwner.None, null);
+        }
 
         /// <summary>
-        /// Uninstalls the older Windows MIDI Services runtime by finding the cached WiX
-        /// Burn bootstrapper via the registry UninstallString and running it with
-        /// /uninstall /quiet. The in-box API is part of Windows and is never touched.
-        /// The caller releases the runtime first
-        /// (MidiVirtualController.SuppressForUninstall). Waits up to five minutes and
-        /// returns false when the uninstaller is still running then.
+        /// Whether the App SDK runtime is installed, Microsoft's or
+        /// PadForge's, read from Windows Installer and the uninstall entries,
+        /// which the in-box API never creates. Does NOT load the runtime:
+        /// that would lock its native DLLs in-process and block a clean
+        /// uninstall.
+        /// </summary>
+        public static bool IsMidiRuntimeInstalled() => FindMidiRuntime().Owner != MidiRuntimeOwner.None;
+
+        /// <summary>The installed runtime's version: the product version of
+        /// the DLL the runtime's own registry value points at, such as
+        /// 1.0.17-rc.4.25, else the bundle's DisplayVersion, else null. The
+        /// card's second line used to print the product name again under a
+        /// card already titled with it.</summary>
+        public static string GetMidiRuntimeVersion()
+        {
+            try
+            {
+                using var key = Registry.LocalMachine.OpenSubKey(MidiRuntimeRegKey, false);
+                if (key?.GetValue("Installed") is string folder)
+                {
+                    string dll = Path.Combine(folder, "Microsoft.Windows.Devices.Midi2.dll");
+                    if (File.Exists(dll))
+                    {
+                        string version = FileVersionInfo.GetVersionInfo(dll).ProductVersion;
+                        if (!string.IsNullOrEmpty(version)) return version;
+                    }
+                }
+            }
+            catch { }
+            return GetMidiBundleVersion();
+        }
+
+        /// <summary>
+        /// Downloads PadForge's build of the runtime for this machine's
+        /// architecture, checks it against its published SHA-256 and installs
+        /// it. When this PC's Visual C++ runtime is missing or older than
+        /// <see cref="MidiRuntimeVcMinimum"/>, Microsoft's redistributable
+        /// goes in first, and only once its Microsoft signature checks out.
+        /// Runs on a worker thread. PadForge is always elevated, so neither
+        /// installer prompts.
+        /// </summary>
+        public static void InstallMidiRuntime()
+        {
+            bool installerMayStillRun = false;
+            string staging = Path.Combine(Path.GetTempPath(), "PadForge_MidiRuntime", Guid.NewGuid().ToString("N"));
+            try
+            {
+                Directory.CreateDirectory(staging);
+                using var http = new HttpClient();
+                http.DefaultRequestHeaders.UserAgent.ParseAdd("PadForge");
+                http.Timeout = TimeSpan.FromMinutes(10);
+
+                if (!IsVcRuntimeAtLeast(MidiRuntimeVcMinimum))
+                {
+                    string redist = Path.Combine(staging, "vc_redist.x64.exe");
+                    Download(http, VcRedistUrl, redist);
+                    if (!IsSignedByMicrosoft(redist))
+                        throw new InvalidOperationException("The Visual C++ Redistributable download is not signed by Microsoft.");
+                    int? redistExit = RunElevated(redist, "/install /quiet /norestart");
+                    if (redistExit == null)
+                    {
+                        installerMayStillRun = true;
+                        throw new InstallerFailedException();
+                    }
+                    if (!IsVcRedistSuccess(redistExit.Value))
+                        throw new InstallerFailedException(redistExit.Value);
+                    if (!IsVcRuntimeAtLeast(MidiRuntimeVcMinimum))
+                        throw new InvalidOperationException(redistExit.Value is 3010 or 1641
+                            ? "Restart Windows to finish installing the Visual C++ Redistributable, then select Install again."
+                            : $"The Visual C++ runtime is still older than {MidiRuntimeVcMinimum} after its installer ran.");
+                }
+
+                bool arm64 = PadForge.Engine.PlatformSupport.IsArm64Machine;
+                string name = arm64 ? MidiRuntimeMsiArm64 : MidiRuntimeMsiX64;
+                string msi = Path.Combine(staging, name);
+                Download(http, MidiRuntimeReleaseUrl + name, msi);
+                if (!string.Equals(Sha256Hex(msi), arm64 ? MidiRuntimeSha256Arm64 : MidiRuntimeSha256X64,
+                        StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidOperationException("The downloaded MIDI runtime does not match its published SHA-256.");
+                try
+                {
+                    RunMsiElevated($"/i \"{msi}\" /qn /norestart MSIRESTARTMANAGERCONTROL=Disable", absentIsSuccess: false);
+                }
+                catch (InstallerFailedException ex) when (ex.TimedOut)
+                {
+                    installerMayStillRun = true;
+                    throw;
+                }
+            }
+            finally
+            {
+                // An installer that outlived its wait is still reading what
+                // it was handed, so that stays where it is.
+                if (!installerMayStillRun) CleanupTempDir(staging);
+            }
+        }
+
+        /// <summary>
+        /// Uninstalls the App SDK runtime through whichever install provides
+        /// it (<see cref="FindMidiRuntime"/>): Microsoft's bundle through its
+        /// cached bootstrapper, a package through msiexec. The in-box API is
+        /// part of Windows and is never touched. The caller releases the
+        /// runtime first (MidiVirtualController.SuppressForUninstall). Waits
+        /// up to five minutes and returns false when the uninstaller is still
+        /// running then.
         /// </summary>
         public static bool UninstallMidiRuntime()
         {
-            string uninstallCmd = FindMidiServicesUninstallString();
-            if (string.IsNullOrEmpty(uninstallCmd))
-                throw new InvalidOperationException("Could not find Windows MIDI Services uninstall entry in registry.");
+            var (owner, target) = FindMidiRuntime();
+            switch (owner)
+            {
+                case MidiRuntimeOwner.MicrosoftBundle:
+                    return UninstallMidiBundle(target);
+                case MidiRuntimeOwner.PadForgePackage:
+                case MidiRuntimeOwner.MicrosoftPackage:
+                    return UninstallMidiPackage(target);
+                default:
+                    throw new InvalidOperationException("No Windows MIDI Services runtime is installed.");
+            }
+        }
 
+        /// <summary>Runs the bundle's cached WiX Burn bootstrapper from its
+        /// UninstallString with /quiet added.</summary>
+        private static bool UninstallMidiBundle(string uninstallCmd)
+        {
             // UninstallString is e.g.: "C:\...\Setup.exe"  /uninstall
             // Parse the quoted exe path and any existing arguments, then append /quiet.
             string exePath;
@@ -559,10 +727,26 @@ namespace PadForge.Common
             return proc == null || proc.WaitForExit(300_000);
         }
 
-        /// <summary>
-        /// Searches the registry Uninstall keys for the Windows MIDI Services entry
-        /// and returns its UninstallString value.
-        /// </summary>
+        /// <summary>Removes a runtime package by ProductCode, with the same
+        /// Restart Manager and reboot suppression as the bundle. A package
+        /// that is already gone (1605) counts as removed.</summary>
+        private static bool UninstallMidiPackage(string productCode)
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = "msiexec.exe",
+                Arguments = $"/x {productCode} /qn /norestart MSIRESTARTMANAGERCONTROL=Disable REBOOT=ReallySuppress",
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+            using var proc = Process.Start(psi);
+            if (proc == null) return true;
+            if (!proc.WaitForExit(300_000)) return false;
+            if (!IsMsiSuccess(proc.ExitCode, absentIsSuccess: true))
+                throw new InstallerFailedException(proc.ExitCode);
+            return true;
+        }
+
         /// <summary>The pnputil "Published Name" value, oemNN.inf,
         /// locale-independent. A named constant so a test can pin it: the
         /// shipped version of this pattern carried literal backspace bytes
@@ -570,55 +754,19 @@ namespace PadForge.Common
         /// invisibly, for two months.</summary>
         internal const string OemInfPattern = @"\boem\d+\.inf\b";
 
-        private static string FindMidiServicesUninstallString()
-        {
-            var views = new[] { RegistryView.Registry64, RegistryView.Registry32 };
-
-            foreach (var view in views)
-            {
-                try
-                {
-                    using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
-                    using var uninstallKey = baseKey.OpenSubKey(
-                        @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", false);
-                    if (uninstallKey == null) continue;
-
-                    foreach (var subName in uninstallKey.GetSubKeyNames())
-                    {
-                        using var sub = uninstallKey.OpenSubKey(subName, false);
-                        var name = sub?.GetValue("DisplayName") as string;
-                        if (string.IsNullOrEmpty(name)) continue;
-
-                        // Match the WiX Burn bootstrapper bundle entry, not the individual MSI components.
-                        if (name.Equals("Windows MIDI Services Runtime and Tools", StringComparison.OrdinalIgnoreCase))
-                        {
-                            return sub.GetValue("UninstallString") as string;
-                        }
-                    }
-                }
-                catch { }
-            }
-
-            return null;
-        }
-
         /// <summary>
-        /// Whether the older Windows MIDI Services runtime is installed, read from
-        /// its "Windows MIDI Services Runtime and Tools" uninstall entry, which the
-        /// in-box API never creates. Does NOT load the runtime: that would lock its
-        /// native DLLs in-process and block a clean uninstall.
+        /// Searches the registry Uninstall keys for Microsoft's Windows MIDI
+        /// Services bundle and returns its UninstallString value.
         /// </summary>
-        public static bool IsMidiRuntimeInstalled()
-        {
-            return FindMidiServicesUninstallString() != null;
-        }
+        private static string FindMidiServicesUninstallString()
+            => FindMidiBundleValue("UninstallString");
 
-        /// <summary>The older Windows MIDI Services runtime's version, or null.
-        /// Read from DisplayVersion on the same bundle entry the uninstall
-        /// string comes from, the way the HidHide and ViGEm cards read
-        /// theirs. The card's second line used to print the product name
-        /// again under a card already titled with it.</summary>
-        public static string GetMidiRuntimeVersion()
+        /// <summary>The bundle's DisplayVersion, the way the HidHide and ViGEm
+        /// cards read theirs.</summary>
+        private static string GetMidiBundleVersion()
+            => FindMidiBundleValue("DisplayVersion");
+
+        private static string FindMidiBundleValue(string valueName)
         {
             foreach (var view in new[] { RegistryView.Registry64, RegistryView.Registry32 })
             {
@@ -631,16 +779,181 @@ namespace PadForge.Common
                     foreach (var subName in uninstallKey.GetSubKeyNames())
                     {
                         using var sub = uninstallKey.OpenSubKey(subName, false);
+                        // The WiX Burn bootstrapper's entry, not the MSI packages it installed.
                         if (sub?.GetValue("DisplayName") as string is string name
-                            && name.Equals("Windows MIDI Services Runtime and Tools",
-                                           StringComparison.OrdinalIgnoreCase))
-                            return sub.GetValue("DisplayVersion") as string;
+                            && name.Equals(MicrosoftMidiBundleName, StringComparison.OrdinalIgnoreCase))
+                            return sub.GetValue(valueName) as string;
                     }
                 }
                 catch { }
             }
             return null;
         }
+
+        /// <summary>The ProductCode of an installed product with this
+        /// upgrade code, or null.</summary>
+        private static string FindRelatedProduct(string upgradeCode)
+        {
+            try
+            {
+                var product = new StringBuilder(39);
+                return MsiEnumRelatedProducts(upgradeCode, 0, 0, product) == 0 ? product.ToString() : null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>Whether this PC's Visual C++ runtime, the System32 copy
+        /// every process loads, is at least <paramref name="minimum"/>, with
+        /// every DLL the runtime imports present.</summary>
+        internal static bool IsVcRuntimeAtLeast(Version minimum)
+        {
+            try
+            {
+                string system = Environment.SystemDirectory;
+                var needed = new System.Collections.Generic.List<string> { "msvcp140.dll", "msvcp140_atomic_wait.dll", "vcruntime140.dll" };
+                // The x64 DLL also imports the x64-only exception-handling half.
+                if (!PadForge.Engine.PlatformSupport.IsArm64Machine) needed.Add("vcruntime140_1.dll");
+                foreach (string dll in needed)
+                    if (!File.Exists(Path.Combine(system, dll))) return false;
+                var info = FileVersionInfo.GetVersionInfo(Path.Combine(system, "msvcp140.dll"));
+                return VcVersionAtLeast(info.FileMajorPart, info.FileMinorPart, minimum);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        internal static bool VcVersionAtLeast(int major, int minor, Version minimum)
+            => major > minimum.Major || (major == minimum.Major && minor >= minimum.Minor);
+
+        /// <summary>Exit codes from Microsoft's redistributable that leave
+        /// the runtime installed: done, a restart owed (3010) or started
+        /// (1641), or a newer version already there (1638).</summary>
+        internal static bool IsVcRedistSuccess(int exitCode) => exitCode is 0 or 3010 or 1641 or 1638;
+
+        /// <summary>Streams <paramref name="url"/> to <paramref name="path"/>.
+        /// HttpClient follows the GitHub and aka.ms redirects.</summary>
+        private static void Download(HttpClient http, string url, string path)
+        {
+            using var response = http.Send(new HttpRequestMessage(HttpMethod.Get, url), HttpCompletionOption.ResponseHeadersRead);
+            response.EnsureSuccessStatusCode();
+            using var stream = response.Content.ReadAsStream();
+            using var file = new FileStream(path, FileMode.Create, FileAccess.Write);
+            stream.CopyTo(file);
+        }
+
+        internal static string Sha256Hex(string path)
+        {
+            using var stream = File.OpenRead(path);
+            return Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(stream));
+        }
+
+        /// <summary>Whether the file's Authenticode signature is valid, by
+        /// the check Windows runs before it trusts a download
+        /// (WinVerifyTrust, WINTRUST_ACTION_GENERIC_VERIFY_V2), and was made
+        /// by Microsoft Corporation.</summary>
+        internal static bool IsSignedByMicrosoft(string path)
+        {
+            if (VerifyAuthenticode(path) != 0) return false;
+            try
+            {
+                // CreateFromSignedFile is still the only managed API that
+                // reads the signer out of a signed file (Ds3DriverInstaller
+                // uses it the same way).
+#pragma warning disable SYSLIB0057
+                using var signed = X509Certificate2.CreateFromSignedFile(path);
+#pragma warning restore SYSLIB0057
+                using var cert = new X509Certificate2(signed);
+                return cert.Subject.Contains("O=Microsoft Corporation", StringComparison.Ordinal);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static int VerifyAuthenticode(string path)
+        {
+            var action = WINTRUST_ACTION_GENERIC_VERIFY_V2;
+            IntPtr fileInfo = Marshal.AllocHGlobal(Marshal.SizeOf<WINTRUST_FILE_INFO>());
+            IntPtr data = Marshal.AllocHGlobal(Marshal.SizeOf<WINTRUST_DATA>());
+            try
+            {
+                Marshal.StructureToPtr(new WINTRUST_FILE_INFO
+                {
+                    cbStruct = (uint)Marshal.SizeOf<WINTRUST_FILE_INFO>(),
+                    pcwszFilePath = path,
+                }, fileInfo, false);
+                var trust = new WINTRUST_DATA
+                {
+                    cbStruct = (uint)Marshal.SizeOf<WINTRUST_DATA>(),
+                    dwUIChoice = WTD_UI_NONE,
+                    fdwRevocationChecks = WTD_REVOKE_NONE,
+                    dwUnionChoice = WTD_CHOICE_FILE,
+                    pFile = fileInfo,
+                    dwStateAction = WTD_STATEACTION_VERIFY,
+                };
+                Marshal.StructureToPtr(trust, data, false);
+                int result = WinVerifyTrust(IntPtr.Zero, ref action, data);
+
+                // The verify leaves state behind, and a close action frees it.
+                trust = Marshal.PtrToStructure<WINTRUST_DATA>(data);
+                trust.dwStateAction = WTD_STATEACTION_CLOSE;
+                Marshal.StructureToPtr(trust, data, false);
+                WinVerifyTrust(IntPtr.Zero, ref action, data);
+                return result;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(data);
+                Marshal.DestroyStructure<WINTRUST_FILE_INFO>(fileInfo);
+                Marshal.FreeHGlobal(fileInfo);
+            }
+        }
+
+        private const uint WTD_UI_NONE = 2;
+        private const uint WTD_REVOKE_NONE = 0;
+        private const uint WTD_CHOICE_FILE = 1;
+        private const uint WTD_STATEACTION_VERIFY = 1;
+        private const uint WTD_STATEACTION_CLOSE = 2;
+        private static readonly Guid WINTRUST_ACTION_GENERIC_VERIFY_V2 = new("00AAC56B-CD44-11d0-8CC2-00C04FC295EE");
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        private struct WINTRUST_FILE_INFO
+        {
+            public uint cbStruct;
+            [MarshalAs(UnmanagedType.LPWStr)] public string pcwszFilePath;
+            public IntPtr hFile;
+            public IntPtr pgKnownSubject;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct WINTRUST_DATA
+        {
+            public uint cbStruct;
+            public IntPtr pPolicyCallbackData;
+            public IntPtr pSIPClientData;
+            public uint dwUIChoice;
+            public uint fdwRevocationChecks;
+            public uint dwUnionChoice;
+            public IntPtr pFile;
+            public uint dwStateAction;
+            public IntPtr hWVTStateData;
+            public IntPtr pwszURLReference;
+            public uint dwProvFlags;
+            public uint dwUIContext;
+            public IntPtr pSignatureSettings;
+        }
+
+        [DllImport("wintrust.dll", ExactSpelling = true)]
+        private static extern int WinVerifyTrust(IntPtr hwnd, ref Guid pgActionID, IntPtr pWVTData);
+
+        [DllImport("msi.dll", CharSet = CharSet.Unicode, ExactSpelling = true, EntryPoint = "MsiEnumRelatedProductsW")]
+        private static extern uint MsiEnumRelatedProducts(string lpUpgradeCode, uint dwReserved, uint iProductIndex, StringBuilder lpProductBuf);
 
         // ─────────────────────────────────────────────
         //  SteamVR (Steam-free install, issue #49)

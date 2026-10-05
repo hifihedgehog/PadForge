@@ -853,18 +853,36 @@ namespace PadForge.Common.Input
         private readonly VirtualControllerType[] _createFailedType = new VirtualControllerType[MaxPads];
         private readonly string[] _createFailedProfile = new string[MaxPads];
 
+        /// <summary>The legacy MIDI output port a failed MIDI create was
+        /// started with. Under the legacy API the commonest failure is a
+        /// slot with no port picked yet, and picking one is the
+        /// reconfigure that must clear the latch.</summary>
+        private readonly string[] _createFailedMidiPort = new string[MaxPads];
+
+        /// <summary>The MIDI API in use when a MIDI create failed. A slot that
+        /// failed under one API gets a fresh attempt once the probe settles
+        /// on another, as when the runtime goes in under the legacy
+        /// API.</summary>
+        private readonly MidiApiKind[] _createFailedMidiApi = new MidiApiKind[MaxPads];
+
+        /// <summary>The legacy MIDI output port the slot's MIDI bar names
+        /// now.</summary>
+        private string MidiOutputPortOf(int padIndex) => _midiConfigs[padIndex]?.OutputPort ?? string.Empty;
+
         private void LatchCreateFailed(int padIndex)
-            => LatchCreateFailed(padIndex, SlotControllerTypes[padIndex], SlotProfileIds[padIndex]);
+            => LatchCreateFailed(padIndex, SlotControllerTypes[padIndex], SlotProfileIds[padIndex], MidiOutputPortOf(padIndex));
 
         /// <summary>The async overload records the configuration the create
         /// was STARTED for, not the slot's current one: a retype during the
         /// create window (the MIDI probe alone can run 10 s) would otherwise
         /// stamp the failure onto the NEW type and permanently block it
         /// (owner race, 2026-07-23).</summary>
-        private void LatchCreateFailed(int padIndex, VirtualControllerType failedType, string failedProfile)
+        private void LatchCreateFailed(int padIndex, VirtualControllerType failedType, string failedProfile, string failedMidiPort)
         {
             _createFailedType[padIndex] = failedType;
             _createFailedProfile[padIndex] = failedProfile;
+            _createFailedMidiPort[padIndex] = failedMidiPort ?? string.Empty;
+            _createFailedMidiApi[padIndex] = MidiVirtualController.ActiveApi;
             _createFailed[padIndex] = true;
             PadForge.Engine.SdlDiagLog.WriteLine(
                 $"VCTRACE slot={padIndex} createFailed LATCH type={failedType} profile={failedProfile ?? "<null>"}");
@@ -1100,7 +1118,11 @@ namespace PadForge.Common.Input
                 // its create attempt.
                 if (_createFailed[padIndex]
                     && (_createFailedType[padIndex] != SlotControllerTypes[padIndex]
-                        || !string.Equals(_createFailedProfile[padIndex], SlotProfileIds[padIndex], StringComparison.Ordinal)))
+                        || !string.Equals(_createFailedProfile[padIndex], SlotProfileIds[padIndex], StringComparison.Ordinal)
+                        || (SlotControllerTypes[padIndex] == VirtualControllerType.Midi
+                            && (!string.Equals(_createFailedMidiPort[padIndex], MidiOutputPortOf(padIndex), StringComparison.Ordinal)
+                                || (MidiVirtualController.ActiveApi != MidiApiKind.None
+                                    && _createFailedMidiApi[padIndex] != MidiVirtualController.ActiveApi)))))
                 {
                     _createFailed[padIndex] = false;
                     PadForge.Engine.SdlDiagLog.WriteLine(
@@ -1160,6 +1182,25 @@ namespace PadForge.Common.Input
                 if (vc is HMaestroVirtualController
                     && SlotControllerTypes[padIndex] == VirtualControllerType.Extended
                     && ExtendedConfigurationChanged(padIndex))
+                {
+                    if (IsSlotActive(padIndex)) BeginInitializing(padIndex);
+                    else _slotInitializing[padIndex] = false;
+                    DestroyVirtualController(padIndex, asyncDispose: true);
+                    _virtualControllers[padIndex] = null;
+                    _createFailed[padIndex] = false;
+                    vc = null;
+                }
+
+                // Under the legacy API a MIDI slot sends to the port its bar
+                // names. A new pick closes the old port and the next pass
+                // opens the new one. A slot built on one API also rebuilds
+                // once the probe settles on another: installing the runtime
+                // moves legacy slots onto ports of their own.
+                if (vc is MidiVirtualController midiOnPort
+                    && ((MidiVirtualController.ActiveApi == MidiApiKind.Legacy
+                         && !string.Equals(midiOnPort.OutputPort, MidiOutputPortOf(padIndex), StringComparison.Ordinal))
+                        || (MidiVirtualController.ActiveApi != MidiApiKind.None
+                            && midiOnPort.ApiKind != MidiVirtualController.ActiveApi)))
                 {
                     if (IsSlotActive(padIndex)) BeginInitializing(padIndex);
                     else _slotInitializing[padIndex] = false;
@@ -1681,6 +1722,7 @@ namespace PadForge.Common.Input
                             int capturedIndex = padIndex;
                             var capturedType = slotType;
                             var capturedProfile = SlotProfileIds[padIndex];
+                            var capturedMidiPort = MidiOutputPortOf(padIndex);
                             var capturedBuild = CaptureExtendedBuild(padIndex);
                             var capturedPersonaOwner = _personaAudioOwner;
                             PadForge.Engine.SdlDiagLog.WriteLine(
@@ -1788,7 +1830,7 @@ namespace PadForge.Common.Input
                                             && SlotControllerTypes[capturedIndex] == capturedType
                                             && IsSlotActive(capturedIndex, new Engine.Data.UserSetting[64]);
                                         if (stillEligible)
-                                            LatchCreateFailed(capturedIndex, capturedType, capturedProfile);
+                                            LatchCreateFailed(capturedIndex, capturedType, capturedProfile, capturedMidiPort);
                                         else
                                             PadForge.Engine.SdlDiagLog.WriteLine(
                                                 $"VCTRACE slot={capturedIndex} async create ABANDONED (slot no longer eligible, no latch)");
@@ -1803,7 +1845,7 @@ namespace PadForge.Common.Input
                                         // as eligible-but-unbuilt and kicks off another
                                         // connect, accumulating leaked VCs.
                                         try { vcAsync.Dispose(); } catch { /* best effort */ }
-                                        LatchCreateFailed(capturedIndex, capturedType, capturedProfile);
+                                        LatchCreateFailed(capturedIndex, capturedType, capturedProfile, capturedMidiPort);
                                     }
                                 }
                                 catch (Exception ex)
@@ -1815,7 +1857,7 @@ namespace PadForge.Common.Input
                                     PadForge.Engine.SdlDiagLog.WriteLine(
                                         $"VCTRACE slot={capturedIndex} async create THREW {ex.GetType().Name}: {ex.Message}");
                                     RaiseError($"Failed to create virtual controller for pad {capturedIndex}", ex);
-                                    LatchCreateFailed(capturedIndex, capturedType, capturedProfile);
+                                    LatchCreateFailed(capturedIndex, capturedType, capturedProfile, capturedMidiPort);
                                 }
                                 finally
                                 {
@@ -2776,9 +2818,10 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Creates a MIDI virtual controller for the given pad slot.
-        /// Reads port name and config from the PadViewModel's MidiConfig.
-        /// Returns null if the configured port is not found.
+        /// Creates a MIDI virtual controller for the given pad slot from the
+        /// slot's MidiConfig: channel, CC and note numbers, velocity, and the
+        /// output port the legacy API sends to. Returns null when the slot has
+        /// no config or no MIDI API started.
         /// </summary>
         private IVirtualController CreateMidiController(int padIndex)
         {
@@ -2801,6 +2844,7 @@ namespace PadForge.Common.Input
             vc.CcNumbers = midiConfig.GetCcNumbers();
             vc.NoteNumbers = midiConfig.GetNoteNumbers();
             vc.Velocity = midiConfig.Velocity;
+            vc.OutputPort = midiConfig.OutputPort ?? string.Empty;
             return vc;
         }
 

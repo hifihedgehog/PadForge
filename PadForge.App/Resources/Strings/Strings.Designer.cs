@@ -238,6 +238,7 @@ public class Strings : INotifyPropertyChanged
     public string Status_InstallingHidHide => Get("Status_InstallingHidHide");
     public string Status_UninstallingHidHide => Get("Status_UninstallingHidHide");
     public string Status_UninstallingMidi => Get("Status_UninstallingMidi");
+    public string Status_DownloadingInstallingMidi => Get("Status_DownloadingInstallingMidi");
     public string Status_OperationCanceled => Get("Status_OperationCanceled");
     public string Status_DeviceListRefreshed => Get("Status_DeviceListRefreshed");
     public string Status_Recorded_Format => Get("Status_Recorded_Format");
@@ -578,10 +579,12 @@ public class Strings : INotifyPropertyChanged
     public string Settings_MidiStatusInBox => Get("Settings_MidiStatusInBox");
     public string Settings_MidiStatusRuntime => Get("Settings_MidiStatusRuntime");
     public string Settings_MidiStatusUnavailable => Get("Settings_MidiStatusUnavailable");
-    public string Settings_MidiNeedsUpdate => Get("Settings_MidiNeedsUpdate");
     public string Settings_MidiOlderRuntime_Format => Get("Settings_MidiOlderRuntime_Format");
     public string Settings_MidiStatusNotRunning => Get("Settings_MidiStatusNotRunning");
     public string Settings_MidiNotRunning => Get("Settings_MidiNotRunning");
+    public string Settings_MidiStatusLegacy => Get("Settings_MidiStatusLegacy");
+    public string Settings_MidiLegacy => Get("Settings_MidiLegacy");
+    public string Settings_MidiInstallTooltip => Get("Settings_MidiInstallTooltip");
     public string Settings_SettingsFile => Get("Settings_SettingsFile");
     public string Settings_SettingsFileDesc => Get("Settings_SettingsFileDesc");
     public string Settings_Reload => Get("Settings_Reload");
@@ -1448,6 +1451,9 @@ public class Strings : INotifyPropertyChanged
     public string Pad_MidiStartNoteTooltip => Get("Pad_MidiStartNoteTooltip");
     public string Pad_MidiVelocity => Get("Pad_MidiVelocity");
     public string Pad_MidiVelocityTooltip => Get("Pad_MidiVelocityTooltip");
+    public string Pad_MidiOutputPort => Get("Pad_MidiOutputPort");
+    public string Pad_MidiOutputPortTooltip => Get("Pad_MidiOutputPortTooltip");
+    public string Pad_MidiOutputPortNone => Get("Pad_MidiOutputPortNone");
     public string Pad_Kbm_Socd_Tooltip => Get("Pad_Kbm_Socd_Tooltip");
     public string Pad_Kbm_Surfaces_Tooltip => Get("Pad_Kbm_Surfaces_Tooltip");
     public string Pad_Kbm_Surfaces_Both_Name => Get("Pad_Kbm_Surfaces_Both_Name");

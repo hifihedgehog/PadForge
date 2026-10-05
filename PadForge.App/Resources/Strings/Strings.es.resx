@@ -144,7 +144,8 @@
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>Instalando HidHide…</value></data>
   <data name="Status_UninstallingHidHide" xml:space="preserve"><value>Desinstalando HidHide…</value></data>
-  <data name="Status_UninstallingMidi" xml:space="preserve"><value>Desinstalando el entorno de ejecución anterior de Windows MIDI Services…</value></data>
+  <data name="Status_UninstallingMidi" xml:space="preserve"><value>Desinstalando el entorno de ejecución de Windows MIDI Services…</value></data>
+  <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Descargando e instalando el entorno de ejecución de Windows MIDI Services…</value></data>
   <data name="Status_OperationCanceled" xml:space="preserve"><value>Operación cancelada por el usuario.</value></data>
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>Descargando SteamVR…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Descargando e instalando SteamVR desde los servidores de Valve… Son varios GB y puede tardar.</value></data>
@@ -362,14 +363,16 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>Controlador HIDMaestro</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Motor de control HID virtual en modo usuario. Integrado en PadForge.App: se instala automáticamente al crear el primer control virtual. Reemplaza ViGEmBus y vJoy en v3.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
-  <data name="Settings_MidiDesc" xml:space="preserve"><value>Salida MIDI virtual y entrada MIDI. Integrado en Windows 11 25H2 desde la actualización de finales de noviembre de 2026. Hasta entonces funciona con el entorno de ejecución anterior donde esté instalado.</value></data>
+  <data name="Settings_MidiDesc" xml:space="preserve"><value>Puertos MIDI virtuales y entrada MIDI. Windows 11 25H2 incluye la API desde la actualización de finales de noviembre de 2026. Los demás PC usan el entorno de ejecución de Windows MIDI Services, que PadForge puede instalar, o la API MIDI heredada.</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>Integrado en Windows</value></data>
-  <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>Entorno de ejecución anterior</value></data>
+  <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>Entorno de ejecución del App SDK</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>No disponible</value></data>
-  <data name="Settings_MidiNeedsUpdate" xml:space="preserve"><value>Requiere Windows 11 25H2 con la actualización de finales de noviembre de 2026</value></data>
   <data name="Settings_MidiOlderRuntime_Format" xml:space="preserve"><value>El entorno de ejecución anterior {0} también está instalado y ya no es necesario</value></data>
   <data name="Settings_MidiStatusNotRunning" xml:space="preserve"><value>No está en ejecución</value></data>
-  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services no se inició. Permanece desactivado en el modo Legacy API.</value></data>
+  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>El servicio MIDI de Windows no respondió. Reiniciar Windows libera un servicio bloqueado.</value></data>
+  <data name="Settings_MidiStatusLegacy" xml:space="preserve"><value>API MIDI heredada</value></data>
+  <data name="Settings_MidiLegacy" xml:space="preserve"><value>Cada ranura MIDI envía a un puerto elegido en la página de la ranura. La entrada MIDI abre solo los dispositivos asignados a una ranura.</value></data>
+  <data name="Settings_MidiInstallTooltip" xml:space="preserve"><value>Descarga e instala el entorno de ejecución de Windows MIDI Services, que da a cada ranura MIDI un puerto propio.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>Entorno de ejecución de VR para mandos de VR virtuales. Se instala desde los servidores de Valve sin cuenta de Steam ni cliente de Steam (varios GB).</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Ubicación de instalación</value></data>
@@ -564,6 +567,9 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_MidiStartNoteTooltip" xml:space="preserve"><value>Primer número de nota MIDI (0-127, 60 = Do central). Valores más altos reducen la cantidad máxima de notas.</value></data>
   <data name="Pad_MidiVelocity" xml:space="preserve"><value>Velocidad</value></data>
   <data name="Pad_MidiVelocityTooltip" xml:space="preserve"><value>Velocidad de nota (0-127). Qué tan fuerte se presionan las teclas virtuales.</value></data>
+  <data name="Pad_MidiOutputPort" xml:space="preserve"><value>Puerto de salida</value></data>
+  <data name="Pad_MidiOutputPortTooltip" xml:space="preserve"><value>El puerto MIDI al que envía esta ranura. La API MIDI heredada no puede crear un puerto para la ranura.</value></data>
+  <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>Ninguno</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Cambiar a vista 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Cambiar a vista 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Haga clic para probar el motor izquierdo</value></data>

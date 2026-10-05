@@ -1838,6 +1838,33 @@ namespace PadForge.Common.Input
             }
         }
 
+        private readonly UserSetting[] _midiAssignedProbe = new UserSetting[1];
+
+        /// <summary>Whether any slot has the MIDI input device assigned.
+        /// Polling thread only (the probe buffer is shared).</summary>
+        private bool IsMidiInputAssigned(Guid instanceGuid)
+        {
+            var settings = SettingsManager.UserSettings;
+            return settings != null && settings.FindByInstanceGuid(instanceGuid, _midiAssignedProbe) > 0;
+        }
+
+        /// <summary>The legacy API's open rule for a port already listed:
+        /// open it once a slot has it, close it once none does. A failed open
+        /// keeps the port listed and backs off like a first open.</summary>
+        private void SyncAssignedMidiInput(MidiInputDevice dev, string id, long now)
+        {
+            bool assigned = IsMidiInputAssigned(dev.InstanceGuid);
+            if (assigned && !dev.IsOpen)
+            {
+                if (dev.Open()) _midiOpenFailedAt.Remove(id);
+                else _midiOpenFailedAt[id] = now;
+            }
+            else if (!assigned && dev.IsOpen)
+            {
+                dev.Close();
+            }
+        }
+
         private bool UpdateMidiInputDevices()
         {
             if (_midiInputsSuppressed)
@@ -1860,6 +1887,14 @@ namespace PadForge.Common.Input
 
             bool changed = false;
             var current = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            // The legacy API opens only ports assigned to a slot and lists
+            // the rest unopened. On the classic MIDI stack (Windows before
+            // 24H2, Legacy API mode) a port serves one program at a time, so
+            // opening every port would lock the user's other MIDI programs
+            // out of all of them. Windows MIDI Services endpoints take any
+            // number of clients and all open.
+            bool assignedOnly = MidiVirtualController.ActiveApi == MidiApiKind.Legacy;
 
             // The lock guards against ShutdownMidiInputs (UI thread, MIDI
             // services uninstall) racing this polling-thread sweep.
@@ -1907,7 +1942,11 @@ namespace PadForge.Common.Input
                         // gone. Reset tracking so it gets recreated. (Same
                         // pattern as the PTP phase above.)
                         if (FindOnlineDeviceByInstanceGuid(existing.InstanceGuid) != null)
+                        {
+                            if (assignedOnly)
+                                SyncAssignedMidiInput(existing, id, midiNow);
                             continue;
+                        }
                         existing.Dispose();
                         _openedMidiInputs.Remove(id);
                     }
@@ -1915,7 +1954,7 @@ namespace PadForge.Common.Input
                     try
                     {
                         var dev = new MidiInputDevice(id, name);
-                        if (!dev.Open())
+                        if ((!assignedOnly || IsMidiInputAssigned(dev.InstanceGuid)) && !dev.Open())
                         {
                             dev.Dispose();
                             _midiOpenFailedAt[id] = midiNow;

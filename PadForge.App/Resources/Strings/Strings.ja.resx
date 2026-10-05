@@ -144,7 +144,8 @@
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>HidHide をインストールしています…</value></data>
   <data name="Status_UninstallingHidHide" xml:space="preserve"><value>HidHide をアンインストールしています…</value></data>
-  <data name="Status_UninstallingMidi" xml:space="preserve"><value>旧 Windows MIDI Services ランタイムをアンインストールしています…</value></data>
+  <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services ランタイムをアンインストールしています…</value></data>
+  <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Windows MIDI Services ランタイムをダウンロードしてインストールしています…</value></data>
   <data name="Status_OperationCanceled" xml:space="preserve"><value>操作がユーザーによりキャンセルされました。</value></data>
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>SteamVR をダウンロード中…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Valve のサーバーから SteamVR をダウンロードしてインストール中… 数 GB あるため時間がかかることがあります。</value></data>
@@ -362,14 +363,16 @@
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro ドライバー</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>ユーザーモード仮想 HID コントローラーエンジン。PadForge.App に組み込まれており、最初の仮想コントローラー作成時に自動的にインストールされます。v3 で ViGEmBus と vJoy を置き換えます。</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
-  <data name="Settings_MidiDesc" xml:space="preserve"><value>仮想 MIDI 出力と MIDI 入力です。2026 年 11 月下旬の更新プログラムから Windows 11 25H2 に組み込まれます。それまでは、旧ランタイムがインストールされている PC ではそのランタイムで動作します。</value></data>
+  <data name="Settings_MidiDesc" xml:space="preserve"><value>仮想 MIDI ポートと MIDI 入力です。2026 年 11 月下旬の更新プログラムから Windows 11 25H2 に API が組み込まれます。その他の PC では、PadForge がインストールできる Windows MIDI Services ランタイム、または従来の MIDI API を使用します。</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>Windows に組み込み</value></data>
-  <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>旧ランタイム</value></data>
+  <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>App SDK ランタイム</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>利用不可</value></data>
-  <data name="Settings_MidiNeedsUpdate" xml:space="preserve"><value>2026 年 11 月下旬の更新プログラムを適用した Windows 11 25H2 が必要です</value></data>
   <data name="Settings_MidiOlderRuntime_Format" xml:space="preserve"><value>旧ランタイム {0} もインストールされていますが、不要になりました</value></data>
   <data name="Settings_MidiStatusNotRunning" xml:space="preserve"><value>停止中</value></data>
-  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services が起動しませんでした。Legacy API モードではオフのままです。</value></data>
+  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>Windows MIDI サービスが応答しませんでした。Windows を再起動すると、停止したサービスが回復します。</value></data>
+  <data name="Settings_MidiStatusLegacy" xml:space="preserve"><value>従来の MIDI API</value></data>
+  <data name="Settings_MidiLegacy" xml:space="preserve"><value>各 MIDI スロットは、スロットのページで選んだポートに送信します。MIDI 入力は、スロットに割り当てられたデバイスだけを開きます。</value></data>
+  <data name="Settings_MidiInstallTooltip" xml:space="preserve"><value>Windows MIDI Services ランタイムをダウンロードしてインストールします。各 MIDI スロットに専用のポートができます。</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>仮想 VR コントローラー用の VR ランタイム。Steam アカウントも Steam クライアントも不要で、Valve のサーバーからインストールされます（数 GB）。</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>インストール先</value></data>
@@ -564,6 +567,9 @@
   <data name="Pad_MidiStartNoteTooltip" xml:space="preserve"><value>最初の MIDI ノート番号 (0-127、60 = 中央 C)。値が大きいほど最大ノート数が減少します。</value></data>
   <data name="Pad_MidiVelocity" xml:space="preserve"><value>ベロシティ</value></data>
   <data name="Pad_MidiVelocityTooltip" xml:space="preserve"><value>ノートオンベロシティ (0-127)。仮想キーが押される強さです。</value></data>
+  <data name="Pad_MidiOutputPort" xml:space="preserve"><value>出力ポート</value></data>
+  <data name="Pad_MidiOutputPortTooltip" xml:space="preserve"><value>このスロットの送信先の MIDI ポートです。従来の MIDI API では、スロット用のポートを作成できません。</value></data>
+  <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>なし</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>2D ビューに切り替え</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>3D ビューに切り替え</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>クリックして左モーターをテスト</value></data>

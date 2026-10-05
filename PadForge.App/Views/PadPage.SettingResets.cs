@@ -57,6 +57,7 @@ namespace PadForge.Views
                 case nameof(MidiSlotConfig.NoteCount): config.NoteCount = 11; break;
                 case nameof(MidiSlotConfig.StartNote): config.StartNote = 60; break;
                 case nameof(MidiSlotConfig.Velocity): config.Velocity = 127; break;
+                case nameof(MidiSlotConfig.OutputPort): config.OutputPort = string.Empty; break;
                 default: return;
             }
             if (before != (config.CcCount, config.StartCc, config.NoteCount, config.StartNote)) vm.RebuildMappings();

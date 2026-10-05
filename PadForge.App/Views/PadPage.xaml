@@ -1019,6 +1019,22 @@
                          TextAlignment="Center" Text="127"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
                 <reset:SettingResetButton Click="ResetMidiSetting_Click" Tag="Velocity" Visibility="{Binding Visibility, ElementName=MidiVelocityBox}" SettingLabel="{Binding Pad_MidiVelocity, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MidiVelocityBox_996"/>
+
+                <!-- The legacy MIDI API cannot create the slot's own port, so
+                     the slot sends to an existing one picked here. Hidden
+                     under Windows MIDI Services, which ignores the pick. -->
+                <StackPanel Orientation="Horizontal"
+                            Visibility="{Binding IsLegacyMidi, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Text="{Binding Pad_MidiOutputPort, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               ToolTip="{Binding Pad_MidiOutputPortTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                    <ComboBox x:Name="MidiOutputPortBox" MinWidth="180" MaxWidth="260" VerticalAlignment="Center"
+                              ToolTip="{Binding Pad_MidiOutputPortTooltip, Source={x:Static strings:Strings.Instance}}"
+                              DropDownOpened="MidiOutputPortBox_DropDownOpened"
+                              SelectionChanged="MidiOutputPortBox_SelectionChanged"
+                              AutomationProperties.AutomationId="MidiOutputPortBox"/>
+                    <reset:SettingResetButton Click="ResetMidiSetting_Click" Tag="OutputPort" SettingLabel="{Binding Pad_MidiOutputPort, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MidiOutputPortBox" Margin="4,0,0,0"/>
+                </StackPanel>
             </StackPanel>
         </Border>
 

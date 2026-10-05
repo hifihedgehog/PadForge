@@ -147,7 +147,8 @@
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>Installing HidHide…</value></data>
   <data name="Status_UninstallingHidHide" xml:space="preserve"><value>Uninstalling HidHide…</value></data>
-  <data name="Status_UninstallingMidi" xml:space="preserve"><value>Uninstalling the older Windows MIDI Services runtime…</value></data>
+  <data name="Status_UninstallingMidi" xml:space="preserve"><value>Uninstalling the Windows MIDI Services runtime…</value></data>
+  <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Downloading and installing the Windows MIDI Services runtime…</value></data>
   <data name="Status_OperationCanceled" xml:space="preserve"><value>Operation canceled by user.</value></data>
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>Downloading SteamVR…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Downloading and installing SteamVR from Valve's servers… This is several GB and can take a while.</value></data>
@@ -432,14 +433,16 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro Driver</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>User-mode virtual HID controller engine. Embedded in PadForge.App. Installed automatically on first virtual controller creation. Replaces ViGEmBus and vJoy in v3.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
-  <data name="Settings_MidiDesc" xml:space="preserve"><value>Virtual MIDI output and MIDI input. Built into Windows 11 25H2 from the late-November 2026 update. Until then it runs on the older runtime where that is installed.</value></data>
+  <data name="Settings_MidiDesc" xml:space="preserve"><value>Virtual MIDI ports and MIDI input. Windows 11 25H2 includes the API from the late-November 2026 update. Other PCs use the Windows MIDI Services runtime, which PadForge can install, or the legacy MIDI API.</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>Built into Windows</value></data>
-  <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>Older Runtime</value></data>
+  <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>App SDK Runtime</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>Not Available</value></data>
-  <data name="Settings_MidiNeedsUpdate" xml:space="preserve"><value>Needs Windows 11 25H2 with the late-November 2026 update</value></data>
   <data name="Settings_MidiOlderRuntime_Format" xml:space="preserve"><value>Older runtime {0} is also installed and is no longer needed</value></data>
   <data name="Settings_MidiStatusNotRunning" xml:space="preserve"><value>Not Running</value></data>
-  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services did not start. It stays off in Legacy API mode.</value></data>
+  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>The Windows MIDI service did not respond. Restarting Windows clears a stuck service.</value></data>
+  <data name="Settings_MidiStatusLegacy" xml:space="preserve"><value>Legacy MIDI API</value></data>
+  <data name="Settings_MidiLegacy" xml:space="preserve"><value>Each MIDI slot sends to a port picked on the slot's page. MIDI input opens only devices assigned to a slot.</value></data>
+  <data name="Settings_MidiInstallTooltip" xml:space="preserve"><value>Downloads and installs the Windows MIDI Services runtime, which gives each MIDI slot a port of its own.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>VR runtime for virtual VR controllers. Installs from Valve's servers with no Steam account or Steam client needed (several GB).</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Install Location</value></data>
@@ -1001,6 +1004,9 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_MidiStartNoteTooltip" xml:space="preserve"><value>First MIDI note number (0-127, 60 = Middle C). Higher values reduce max Note Count.</value></data>
   <data name="Pad_MidiVelocity" xml:space="preserve"><value>Velocity</value></data>
   <data name="Pad_MidiVelocityTooltip" xml:space="preserve"><value>Note-on velocity (0-127). How hard virtual keys are pressed.</value></data>
+  <data name="Pad_MidiOutputPort" xml:space="preserve"><value>Output Port</value></data>
+  <data name="Pad_MidiOutputPortTooltip" xml:space="preserve"><value>The MIDI port this slot sends to. The legacy MIDI API cannot create a port for the slot.</value></data>
+  <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>None</value></data>
   <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>Resolves both keys of an opposing pair being held at once, like Snap Tap. Applies to this slot's virtual keyboard output.</value></data>
   <data name="Pad_Kbm_Socd_Card_Desc" xml:space="preserve"><value>Resolves paired keys held at the same time on this slot's virtual keyboard output, like Snap Tap. When both keys of a pair are down, the chosen rule decides which press the game sees.</value></data>
   <data name="Pad_Kbm_Socd_Pairs_Label" xml:space="preserve"><value>Key Pairs</value></data>

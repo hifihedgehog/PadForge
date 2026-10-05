@@ -64,8 +64,8 @@ namespace PadForge.Tests
         }
 
         /// <summary>The in-box EnsureServiceAvailable returns false in Legacy
-        /// API mode. The probe then reads as failed, so the Settings card
-        /// can say the service did not start.</summary>
+        /// API mode. With no legacy fallback named (production has one, see
+        /// MidiBackendLegacyTests), the probe then reads as failed.</summary>
         [Fact]
         public void AnApiWhoseServiceDoesNotStart_ReadsAsAFailedProbe()
         {

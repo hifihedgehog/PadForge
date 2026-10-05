@@ -14236,6 +14236,17 @@ namespace PadForge.Services
         /// uninstall ends, whatever its outcome.</summary>
         public void ResumeMidiInputs() => _inputManager?.ResumeMidiInputs();
 
+        /// <summary>Moves MIDI onto the API the next probe picks, after the
+        /// runtime is installed: MIDI input and its session close, the probe
+        /// resets, and input enumerates again through the new API. Step 5
+        /// rebuilds each MIDI slot on it once the probe settles.</summary>
+        public void SwitchMidiApi()
+        {
+            ShutdownMidiInputs();
+            PadForge.Common.Input.MidiVirtualController.ResetAvailability();
+            ResumeMidiInputs();
+        }
+
         /// <summary>Refreshes device lists and mapping grids after a topology change.
         /// DeviceService flushes hydrated edits before changing the topology.</summary>
         public void RefreshAfterDeviceAssignmentChange()
@@ -17231,7 +17242,8 @@ namespace PadForge.Services
                     CcCount = cfg.CcCount,
                     StartCc = cfg.StartCc,
                     NoteCount = cfg.NoteCount,
-                    StartNote = cfg.StartNote
+                    StartNote = cfg.StartNote,
+                    OutputPort = cfg.OutputPort
                 });
             }
             return list.Count > 0 ? list.ToArray() : null;
@@ -18088,6 +18100,7 @@ namespace PadForge.Services
                         cfg.CcCount = cfgData.CcCount;
                         cfg.StartNote = cfgData.StartNote;
                         cfg.NoteCount = cfgData.NoteCount;
+                        cfgData.ApplyOutputPortTo(cfg);
                         _mainVm.Pads[idx].RebuildMappings();
                     }
                 }

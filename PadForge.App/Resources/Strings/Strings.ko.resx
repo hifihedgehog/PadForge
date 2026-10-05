@@ -144,7 +144,8 @@
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>HidHide 설치 중…</value></data>
   <data name="Status_UninstallingHidHide" xml:space="preserve"><value>HidHide 제거 중…</value></data>
-  <data name="Status_UninstallingMidi" xml:space="preserve"><value>이전 Windows MIDI Services 런타임 제거 중…</value></data>
+  <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services 런타임 제거 중…</value></data>
+  <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Windows MIDI Services 런타임을 다운로드하여 설치하는 중…</value></data>
   <data name="Status_OperationCanceled" xml:space="preserve"><value>사용자가 작업을 취소했습니다.</value></data>
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>SteamVR 다운로드 중…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Valve 서버에서 SteamVR을 다운로드하여 설치하는 중… 수 GB라 시간이 걸릴 수 있습니다.</value></data>
@@ -362,14 +363,16 @@
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro 드라이버</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>사용자 모드 가상 HID 컨트롤러 엔진. PadForge.App에 내장되어 있으며 첫 가상 컨트롤러 생성 시 자동으로 설치됩니다. v3에서 ViGEmBus와 vJoy를 대체합니다.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
-  <data name="Settings_MidiDesc" xml:space="preserve"><value>가상 MIDI 출력과 MIDI 입력입니다. 2026년 11월 말 업데이트부터 Windows 11 25H2에 기본 제공됩니다. 그때까지는 이전 런타임이 설치된 PC에서 해당 런타임으로 작동합니다.</value></data>
+  <data name="Settings_MidiDesc" xml:space="preserve"><value>가상 MIDI 포트와 MIDI 입력입니다. 2026년 11월 말 업데이트부터 Windows 11 25H2에 API가 기본 제공됩니다. 다른 PC는 PadForge가 설치할 수 있는 Windows MIDI Services 런타임이나 레거시 MIDI API를 사용합니다.</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>Windows에 기본 제공</value></data>
-  <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>이전 런타임</value></data>
+  <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>App SDK 런타임</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>사용할 수 없음</value></data>
-  <data name="Settings_MidiNeedsUpdate" xml:space="preserve"><value>2026년 11월 말 업데이트가 적용된 Windows 11 25H2가 필요합니다</value></data>
   <data name="Settings_MidiOlderRuntime_Format" xml:space="preserve"><value>이전 런타임 {0}도 설치되어 있지만 더 이상 필요하지 않습니다</value></data>
   <data name="Settings_MidiStatusNotRunning" xml:space="preserve"><value>실행되지 않음</value></data>
-  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services가 시작되지 않았습니다. Legacy API 모드에서는 꺼진 상태로 유지됩니다.</value></data>
+  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>Windows MIDI 서비스가 응답하지 않았습니다. Windows를 다시 시작하면 멈춘 서비스가 복구됩니다.</value></data>
+  <data name="Settings_MidiStatusLegacy" xml:space="preserve"><value>레거시 MIDI API</value></data>
+  <data name="Settings_MidiLegacy" xml:space="preserve"><value>각 MIDI 슬롯은 슬롯 페이지에서 고른 포트로 보냅니다. MIDI 입력은 슬롯에 할당된 장치만 엽니다.</value></data>
+  <data name="Settings_MidiInstallTooltip" xml:space="preserve"><value>Windows MIDI Services 런타임을 다운로드하여 설치합니다. 각 MIDI 슬롯에 전용 포트가 생깁니다.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>가상 VR 컨트롤러용 VR 런타임입니다. Steam 계정이나 Steam 클라이언트 없이 Valve 서버에서 설치됩니다(수 GB).</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>설치 위치</value></data>
@@ -564,6 +567,9 @@
   <data name="Pad_MidiStartNoteTooltip" xml:space="preserve"><value>첫 번째 MIDI 노트 번호 (0-127, 60 = 가온다). 값이 높을수록 최대 노트 개수가 줄어듭니다.</value></data>
   <data name="Pad_MidiVelocity" xml:space="preserve"><value>벨로시티</value></data>
   <data name="Pad_MidiVelocityTooltip" xml:space="preserve"><value>노트 온 벨로시티 (0-127). 가상 건반을 누르는 강도입니다.</value></data>
+  <data name="Pad_MidiOutputPort" xml:space="preserve"><value>출력 포트</value></data>
+  <data name="Pad_MidiOutputPortTooltip" xml:space="preserve"><value>이 슬롯이 보내는 MIDI 포트입니다. 레거시 MIDI API는 슬롯용 포트를 만들 수 없습니다.</value></data>
+  <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>없음</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>2D 보기로 전환</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>3D 보기로 전환</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>클릭하여 왼쪽 모터 테스트</value></data>

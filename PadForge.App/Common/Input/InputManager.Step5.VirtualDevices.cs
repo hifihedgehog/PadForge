@@ -1933,7 +1933,16 @@ namespace PadForge.Common.Input
                         // HMGamepadState can't carry. Other Xbox / PlayStation /
                         // Extended-non-custom slots use plain SubmitGamepadState.
                         if (vc is MidiVirtualController midiVc)
+                        {
+                            // The slot's MIDI bar, live: a channel, number
+                            // or velocity edit reaches the running
+                            // controller without closing its port.
+                            var midiCfg = _midiConfigs[padIndex];
+                            if (midiCfg != null)
+                                midiVc.ApplyLayout(midiCfg.Channel - 1, midiCfg.StartCc, midiCfg.CcCount,
+                                    midiCfg.StartNote, midiCfg.NoteCount, midiCfg.Velocity);
                             midiVc.SubmitMidiRawState(CombinedMidiRawStates[padIndex]);
+                        }
                         else if (vc is KeyboardMouseVirtualController kbmVc)
                         {
                             // SOCD config (discussion #205): live reference from
@@ -2841,9 +2850,8 @@ namespace PadForge.Common.Input
                     midiInstanceNum++;
 
             var vc = new MidiVirtualController(padIndex, midiConfig.Channel - 1, midiInstanceNum);
-            vc.CcNumbers = midiConfig.GetCcNumbers();
-            vc.NoteNumbers = midiConfig.GetNoteNumbers();
-            vc.Velocity = midiConfig.Velocity;
+            vc.ApplyLayout(midiConfig.Channel - 1, midiConfig.StartCc, midiConfig.CcCount,
+                midiConfig.StartNote, midiConfig.NoteCount, midiConfig.Velocity);
             vc.OutputPort = midiConfig.OutputPort ?? string.Empty;
             return vc;
         }

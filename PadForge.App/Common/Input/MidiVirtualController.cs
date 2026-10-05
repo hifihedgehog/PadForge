@@ -136,7 +136,7 @@ namespace PadForge.Common.Input
         }
 
         private readonly int _padIndex;
-        private readonly int _channel; // 0-15
+        private int _channel; // 0-15, from the constructor, then ApplyLayout
         private readonly int _instanceNum; // 1-based MIDI-type instance number
 
         // Change detection — only send messages when values actually change.
@@ -397,6 +397,101 @@ namespace PadForge.Common.Input
         public void SubmitGamepadState(Gamepad gp)
         {
             // Legacy path — not used for dynamic MIDI. Kept for IVirtualController interface.
+        }
+
+        // The MIDI bar settings CcNumbers and NoteNumbers were last built
+        // from, for ApplyLayout's change test. One thread at a time touches
+        // them, as with the submit: the creating task before Connect, then
+        // the polling thread.
+        private bool _layoutApplied;
+        private int _layoutStartCc, _layoutCcCount, _layoutStartNote, _layoutNoteCount;
+
+        /// <summary>
+        /// Takes the slot's MIDI bar settings: channel (0-15), the first CC
+        /// and note numbers with their counts, and the velocity. The creating
+        /// task calls it before Connect, and Step 5 calls it before every
+        /// submit, the way the keyboard and mouse slot takes its SOCD
+        /// settings, so an edit reaches a running slot without closing its
+        /// port. Unchanged settings return after the compares, with nothing
+        /// allocated.
+        ///
+        /// <para>A held note whose channel and number survive the edit stays
+        /// held. Every other held note is released on the channel and number
+        /// it went out on, since a Note Off ends only the Note On with the
+        /// same channel and key (keyboardmania-input-to-virtual-midi keeps
+        /// each pressed note for its release for that reason). A CC whose
+        /// channel and number survive keeps its last value. The rest start
+        /// over as at connect, so the next submit presses held buttons on
+        /// their new notes and sends each moved CC that is off center. A new
+        /// velocity applies from the next Note On.</para>
+        /// </summary>
+        internal void ApplyLayout(int channel, int startCc, int ccCount, int startNote, int noteCount, byte velocity)
+        {
+            Velocity = velocity;
+
+            // The bar clamps each field as it is set, but a start and its
+            // count change in two steps, so a reader between them sees the
+            // new start with the old count. Clamping again keeps every
+            // number inside 0-127.
+            channel = Math.Clamp(channel, 0, 15);
+            startCc = Math.Clamp(startCc, 0, 127);
+            ccCount = Math.Clamp(ccCount, 0, 128 - startCc);
+            startNote = Math.Clamp(startNote, 0, 127);
+            noteCount = Math.Clamp(noteCount, 0, 128 - startNote);
+            if (_layoutApplied && channel == _channel
+                && startCc == _layoutStartCc && ccCount == _layoutCcCount
+                && startNote == _layoutStartNote && noteCount == _layoutNoteCount)
+                return;
+
+            var ccNumbers = new int[ccCount];
+            for (int i = 0; i < ccCount; i++) ccNumbers[i] = startCc + i;
+            var noteNumbers = new int[noteCount];
+            for (int i = 0; i < noteCount; i++) noteNumbers[i] = startNote + i;
+            bool sameChannel = channel == _channel;
+
+            // Released before the channel moves, since Send reads _channel.
+            // Before Connect there is no change state yet: ConnectCore sizes
+            // it from the numbers set below.
+            var heldNotes = _lastNotes;
+            var oldNotes = NoteNumbers;
+            bool[] keptNotes = null;
+            if (heldNotes != null)
+            {
+                keptNotes = new bool[noteCount];
+                for (int i = 0; i < heldNotes.Length && i < oldNotes.Length; i++)
+                {
+                    if (!heldNotes[i]) continue;
+                    if (sameChannel && i < noteCount && noteNumbers[i] == oldNotes[i])
+                        keptNotes[i] = true;
+                    else
+                        SendNoteOff(oldNotes[i]);
+                }
+            }
+
+            var sentCcs = _lastCcValues;
+            var oldCcs = CcNumbers;
+            byte[] keptCcs = null;
+            if (sentCcs != null)
+            {
+                keptCcs = new byte[ccCount];
+                for (int i = 0; i < ccCount; i++)
+                {
+                    keptCcs[i] = sameChannel && i < sentCcs.Length && i < oldCcs.Length && ccNumbers[i] == oldCcs[i]
+                        ? sentCcs[i]
+                        : (byte)64; // center for axes, as at connect
+                }
+            }
+
+            _channel = channel;
+            CcNumbers = ccNumbers;
+            NoteNumbers = noteNumbers;
+            if (keptNotes != null) _lastNotes = keptNotes;
+            if (keptCcs != null) _lastCcValues = keptCcs;
+            _layoutStartCc = startCc;
+            _layoutCcCount = ccCount;
+            _layoutStartNote = startNote;
+            _layoutNoteCount = noteCount;
+            _layoutApplied = true;
         }
 
         /// <summary>

@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading;
+using PadForge.Common;
 using PadForge.Common.Input;
 using PadForge.Engine;
+using PadForge.Engine.Data;
+using PadForge.ViewModels;
 using Xunit;
 
 namespace PadForge.Tests
@@ -189,6 +193,208 @@ namespace PadForge.Tests
             Assert.True(ep.Disconnected);
             Assert.True(ep.Closed);
             Assert.False(MidiVirtualController.IsLiveEndpointInstance($@"SWD\MIDISRV\MIDIU_APPDEV_{ep.UniqueId}"));
+        }
+
+        // ── Live MIDI bar edits (ApplyLayout) ──
+
+        private static (MidiVirtualController Vc, FakeEndpoint Ep) ConnectedController(FakeBackend backend,
+            int channel, int startCc, int ccCount, int startNote, int noteCount, byte velocity)
+        {
+            Assert.True(MidiVirtualController.IsAvailable());
+            var vc = new MidiVirtualController(0, channel, 1);
+            vc.ApplyLayout(channel, startCc, ccCount, startNote, noteCount, velocity);
+            vc.Connect();
+            return (vc, Assert.Single(backend.Endpoints));
+        }
+
+        /// <summary>A channel and number edit reaches a running slot on the
+        /// same port. The held note ends on the channel and number it started
+        /// on, and the next submit presses it on the new ones.</summary>
+        [Theory]
+        [InlineData((int)MidiApiKind.InBox)]
+        [InlineData((int)MidiApiKind.AppSdk)]
+        public void AMidiBarEdit_ReachesTheRunningController_OnTheSamePort(int kind)
+        {
+            var backend = Use(new FakeBackend((MidiApiKind)kind));
+            var (vc, ep) = ConnectedController(backend, channel: 0, startCc: 1, ccCount: 2, startNote: 60, noteCount: 2, velocity: 100);
+            var state = new MidiRawState { CcValues = new byte[] { 100, 64 }, Notes = new[] { true, false } };
+            vc.SubmitMidiRawState(state);
+
+            vc.ApplyLayout(channel: 1, startCc: 20, ccCount: 2, startNote: 72, noteCount: 2, velocity: 90);
+            vc.SubmitMidiRawState(state);
+
+            Assert.Equal(new[]
+            {
+                (Midi1Status.ControlChange, 0, 1, 100),
+                (Midi1Status.NoteOn, 0, 60, 100),
+                (Midi1Status.NoteOff, 0, 60, 0),
+                (Midi1Status.ControlChange, 1, 20, 100),
+                (Midi1Status.NoteOn, 1, 72, 90),
+            }, ep.Sent);
+            Assert.Single(backend.Endpoints);
+            Assert.False(ep.Disconnected);
+
+            vc.Dispose();
+            Assert.Equal((Midi1Status.NoteOff, 1, 72, 0), ep.Sent[^1]);
+        }
+
+        /// <summary>More CCs and notes from the same starts: the held note
+        /// stays held and the CC keeps its value, so only the new entries go
+        /// out.</summary>
+        [Fact]
+        public void ALargerCount_SendsOnlyTheNewEntries()
+        {
+            var backend = Use(new FakeBackend(MidiApiKind.InBox));
+            var (vc, ep) = ConnectedController(backend, 0, 1, 1, 60, 1, 100);
+            vc.SubmitMidiRawState(new MidiRawState { CcValues = new byte[] { 100 }, Notes = new[] { true } });
+
+            vc.ApplyLayout(0, 1, 3, 60, 2, 100);
+            vc.SubmitMidiRawState(new MidiRawState { CcValues = new byte[] { 100, 64, 30 }, Notes = new[] { true, true } });
+
+            Assert.Equal(new[]
+            {
+                (Midi1Status.ControlChange, 0, 1, 100),
+                (Midi1Status.NoteOn, 0, 60, 100),
+                (Midi1Status.ControlChange, 0, 3, 30),
+                (Midi1Status.NoteOn, 0, 61, 100),
+            }, ep.Sent);
+            vc.Dispose();
+        }
+
+        /// <summary>A velocity edit releases nothing and applies from the
+        /// next Note On.</summary>
+        [Fact]
+        public void AVelocityEdit_AppliesFromTheNextNoteOn()
+        {
+            var backend = Use(new FakeBackend(MidiApiKind.InBox));
+            var (vc, ep) = ConnectedController(backend, 0, 1, 0, 60, 1, 100);
+            vc.SubmitMidiRawState(new MidiRawState { CcValues = Array.Empty<byte>(), Notes = new[] { true } });
+
+            vc.ApplyLayout(0, 1, 0, 60, 1, 50);
+            Assert.Single(ep.Sent);
+            vc.SubmitMidiRawState(new MidiRawState { CcValues = Array.Empty<byte>(), Notes = new[] { false } });
+            vc.SubmitMidiRawState(new MidiRawState { CcValues = Array.Empty<byte>(), Notes = new[] { true } });
+
+            Assert.Equal(new[]
+            {
+                (Midi1Status.NoteOn, 0, 60, 100),
+                (Midi1Status.NoteOff, 0, 60, 0),
+                (Midi1Status.NoteOn, 0, 60, 50),
+            }, ep.Sent);
+            vc.Dispose();
+        }
+
+        /// <summary>Step 5 calls ApplyLayout every frame. With nothing
+        /// changed, the change state stays, so nothing goes out twice.</summary>
+        [Fact]
+        public void UnchangedSettings_SendNothingAgain()
+        {
+            var backend = Use(new FakeBackend(MidiApiKind.InBox));
+            var (vc, ep) = ConnectedController(backend, 3, 10, 1, 40, 1, 127);
+            var state = new MidiRawState { CcValues = new byte[] { 5 }, Notes = new[] { true } };
+            vc.SubmitMidiRawState(state);
+            for (int i = 0; i < 3; i++)
+            {
+                vc.ApplyLayout(3, 10, 1, 40, 1, 127);
+                vc.SubmitMidiRawState(state);
+            }
+
+            Assert.Equal(new[]
+            {
+                (Midi1Status.ControlChange, 3, 10, 5),
+                (Midi1Status.NoteOn, 3, 40, 127),
+            }, ep.Sent);
+            vc.Dispose();
+        }
+
+        /// <summary>The bar sets a start and then re-clamps its count, so a
+        /// read between the two can run past 127. The layout clamps again,
+        /// and the channel too.</summary>
+        [Fact]
+        public void ARunPast127_StopsAt127()
+        {
+            var backend = Use(new FakeBackend(MidiApiKind.InBox));
+            var (vc, ep) = ConnectedController(backend, channel: 20, startCc: 125, ccCount: 6, startNote: 126, noteCount: 5, velocity: 127);
+            Assert.Equal(new[] { 125, 126, 127 }, vc.CcNumbers);
+            Assert.Equal(new[] { 126, 127 }, vc.NoteNumbers);
+
+            vc.SubmitMidiRawState(new MidiRawState
+            {
+                CcValues = new byte[] { 1, 2, 3, 4, 5, 6 },
+                Notes = new[] { true, true, true, true, true },
+            });
+            Assert.Equal(5, ep.Sent.Count);
+            Assert.All(ep.Sent, m => Assert.Equal(15, m.Item2));
+            vc.Dispose();
+        }
+
+        /// <summary>Step 5 hands the slot's MIDI bar to the running
+        /// controller before each submit, so a channel edit made while the
+        /// slot runs reaches it on the same port. This collection runs with
+        /// nothing beside it, so the test may borrow the settings statics,
+        /// and it puts them back.</summary>
+        [Fact]
+        public void Step5_HandsAMidiBarEditToTheRunningController()
+        {
+            const int pad = 3;
+            var deviceGuid = new Guid("7b1d7e55-3c2a-4f6e-9d41-0a6b5c4d3e21");
+            var savedSettings = SettingsManager.UserSettings;
+            var savedDevices = SettingsManager.UserDevices;
+            var savedCreated = (bool[])SettingsManager.SlotCreated.Clone();
+            var savedEnabled = (bool[])SettingsManager.SlotEnabled.Clone();
+            MidiVirtualController vc = null;
+            try
+            {
+                var backend = Use(new FakeBackend(MidiApiKind.InBox));
+                Assert.True(MidiVirtualController.IsAvailable());
+                vc = new MidiVirtualController(pad, 0, 1);
+                vc.ApplyLayout(0, 1, 1, 60, 1, 100);
+                vc.Connect();
+                var ep = Assert.Single(backend.Endpoints);
+
+                // A created, enabled MIDI slot with its one device online, so
+                // Step 5 submits for it.
+                SettingsManager.UserDevices = new DeviceCollection();
+                SettingsManager.UserSettings = new SettingsCollection();
+                Array.Clear(SettingsManager.SlotCreated, 0, SettingsManager.SlotCreated.Length);
+                for (int i = 0; i < SettingsManager.SlotEnabled.Length; i++) SettingsManager.SlotEnabled[i] = true;
+                SettingsManager.SlotCreated[pad] = true;
+                var ud = new UserDevice { InstanceGuid = deviceGuid, ProductName = "MIDI Bar Pad", IsOnline = true, InputState = new CustomInputState() };
+                lock (SettingsManager.UserDevices.SyncRoot) SettingsManager.UserDevices.Items.Add(ud);
+                lock (SettingsManager.UserSettings.SyncRoot) SettingsManager.UserSettings.Items.Add(new UserSetting { InstanceGuid = deviceGuid, MapTo = pad });
+
+                var im = new InputManager();
+                var config = new MidiSlotConfig { Channel = 1, StartCc = 1, CcCount = 1, StartNote = 60, NoteCount = 1, Velocity = 100 };
+                im.SlotControllerTypes[pad] = VirtualControllerType.Midi;
+                im._midiConfigs[pad] = config;
+                ((IVirtualController[])typeof(InputManager)
+                    .GetField("_virtualControllers", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .GetValue(im))[pad] = vc;
+                im.CombinedMidiRawStates[pad] = new MidiRawState { CcValues = new byte[] { 64 }, Notes = new[] { true } };
+                var step5 = typeof(InputManager).GetMethod("UpdateVirtualDevices", BindingFlags.Instance | BindingFlags.NonPublic);
+                Assert.NotNull(step5);
+
+                step5.Invoke(im, null);
+                config.Channel = 5;
+                step5.Invoke(im, null);
+
+                Assert.Equal(new[]
+                {
+                    (Midi1Status.NoteOn, 0, 60, 100),
+                    (Midi1Status.NoteOff, 0, 60, 0),
+                    (Midi1Status.NoteOn, 4, 60, 100),
+                }, ep.Sent);
+                Assert.Single(backend.Endpoints);
+                Assert.False(ep.Disconnected);
+            }
+            finally
+            {
+                vc?.Dispose();
+                SettingsManager.UserSettings = savedSettings;
+                SettingsManager.UserDevices = savedDevices;
+                Array.Copy(savedCreated, SettingsManager.SlotCreated, savedCreated.Length);
+                Array.Copy(savedEnabled, SettingsManager.SlotEnabled, savedEnabled.Length);
+            }
         }
 
         /// <summary>A send the service fails drops that message, never the

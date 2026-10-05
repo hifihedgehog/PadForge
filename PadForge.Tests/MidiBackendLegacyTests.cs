@@ -362,6 +362,32 @@ namespace PadForge.Tests
             Assert.Contains(fake.Calls, c => c.StartsWith("CloseOutput", StringComparison.Ordinal));
         }
 
+        /// <summary>A channel edit on a running legacy slot keeps its port
+        /// open. The held note ends on the old channel, and the next submit
+        /// presses it on the new one.</summary>
+        [Fact]
+        public void ALegacyMidiSlot_TakesAChannelEdit_OnTheSamePort()
+        {
+            var fake = new FakeWinMm { Outputs = { "Synth" } };
+            MidiVirtualController.UseBackendFactoryForTest(() => null, () => new MidiBackendLegacy(fake));
+            Assert.True(MidiVirtualController.IsAvailable());
+
+            var vc = new MidiVirtualController(0, 0, 1) { OutputPort = "Synth" };
+            vc.ApplyLayout(channel: 0, startCc: 1, ccCount: 0, startNote: 60, noteCount: 1, velocity: 127);
+            vc.Connect();
+            var held = new MidiRawState { CcValues = Array.Empty<byte>(), Notes = new[] { true } };
+            vc.SubmitMidiRawState(held);
+
+            vc.ApplyLayout(channel: 9, startCc: 1, ccCount: 0, startNote: 60, noteCount: 1, velocity: 127);
+            vc.SubmitMidiRawState(held);
+
+            // Status byte low: note on and off on channel 1, then note on on channel 10.
+            Assert.Equal(new[] { 0x007F3C90u, 0x00003C80u, 0x007F3C99u }, fake.Sent);
+            Assert.Equal(1, fake.Calls.Count(c => c.StartsWith("OpenOutput", StringComparison.Ordinal)));
+            Assert.DoesNotContain(fake.Calls, c => c.StartsWith("CloseOutput", StringComparison.Ordinal));
+            vc.Dispose();
+        }
+
         [Fact]
         public void ALegacyMidiSlotWithNoPort_FailsToConnect()
         {

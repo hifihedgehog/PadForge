@@ -78,7 +78,6 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _outputPort, value ?? string.Empty);
         }
 
-        /// <summary>Returns CC numbers array: sequential from StartCc for CcCount entries.</summary>
         /// <summary>Resets every field to its fresh-install default IN
         /// PLACE, preserving the instance (external PropertyChanged
         /// subscribers survive; same invariant as ExtendedSlotConfig).
@@ -95,6 +94,7 @@ namespace PadForge.ViewModels
             OutputPort = string.Empty;
         }
 
+        /// <summary>Returns CC numbers array: sequential from StartCc for CcCount entries.</summary>
         public int[] GetCcNumbers()
         {
             var arr = new int[_ccCount];

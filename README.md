@@ -843,7 +843,7 @@ OpenTrack over UDP, the FreeTrack 2.0 shared memory, and a VR headset through an
 With OpenXR headset input on, each hand controller is its own device row: six pose axes in the same order as the head's, named Controller rather than Head, plus the thumbstick, trigger, grip, and four buttons. PadForge suggests bindings for Oculus Touch, Valve Index, and the Khronos simple profile, and the runtime picks the match. Not to be confused with a VR virtual controller slot, which is the opposite direction.
 
 ### Logitech G-keys
-Read the G-keys on a Logitech keyboard, and a Logitech mouse's buttons 6 through 20, straight through the G-key SDK as their own device row. 29 keys in each of M1, M2 and M3. Needs Logitech Gaming Software 8.55 or later with the PadForge profile set to Persistent.
+Read the G-keys on a Logitech keyboard, and a Logitech mouse's buttons 6 through 20, straight through the G-key SDK as their own device row. 29 keys in each of M1, M2 and M3. Needs Logitech Gaming Software 8.55 or later, with the G-key command dragged onto each key in the PadForge profile and that profile set to Persistent.
 
 ### Lightbar mirrors
 ![Lightbar Mirrors and Razer Sensa HD Haptics on the Dashboard](screenshots/dashboard-lightbar-mirrors.jpg)

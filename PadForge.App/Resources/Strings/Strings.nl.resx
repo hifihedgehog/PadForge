@@ -238,7 +238,7 @@
   <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>Verbonden met Razer Chroma</value></data>
   <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>Vereist Razer Synapse met Chroma Connect. Werkt met elke fysieke controller: de kleur komt van de virtuele pad die de game inkleurt.</value></data>
   <data name="Dashboard_Sensa" xml:space="preserve"><value>Razer Sensa HD Haptics</value></data>
-  <data name="Dashboard_SensaDescription" xml:space="preserve"><value>Vertaalt controller-rumble naar Razer Sensa HD-haptiek, zodat Sensa-apparaten zoals de Wolverine V3-lijn, de Kraken V4 Pro en de Freyja meetrillen met je games.</value></data>
+  <data name="Dashboard_SensaDescription" xml:space="preserve"><value>Vertaalt controller-rumble naar Razer Sensa HD-haptiek, zodat Sensa-apparaten zoals de Wolverine V3 Pro, de Kraken V4 Pro en de Freyja meetrillen met je games.</value></data>
   <data name="Dashboard_EnableSensa" xml:space="preserve"><value>Rumble naar Sensa HD-haptiek sturen</value></data>
   <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>Razer Sensa-runtime niet gevonden. Opnieuw proberen.</value></data>
   <data name="Dashboard_SensaActive" xml:space="preserve"><value>Rumble wordt naar Sensa HD-haptiek gestreamd</value></data>
@@ -258,13 +258,13 @@
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Levert gyroscoop- en versnellingsmetergegevens voor Cemu, Dolphin, Yuzu, enz.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Werkt met OpenTrack en met elke tracker die zijn UDP-uitvoer verstuurt of naar het gedeelde geheugen van FreeTrack 2.0 schrijft, en met een OpenXR-runtime op deze machine die een sessie op de achtergrond kan uitvoeren.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-toetsen lezen</value></data>
-  <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Leest G-toetsen via de Logitech G-key SDK. Vereist dat Logitech Gaming Software 8.55 of nieuwer draait. Maak PadForge daarin het permanente profiel, anders bereiken de toetsen PadForge alleen terwijl het venster op de voorgrond is.</value></data>
+  <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Leest G-toetsen via de Logitech G-key SDK. Vereist dat Logitech Gaming Software 8.55 of nieuwer draait. Sleep daarin de opdracht G-key naar elke toets in het PadForge-profiel. Maak dat profiel permanent, anders bereiken de toetsen PadForge alleen terwijl het venster op de voorgrond is.</value></data>
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Geen Logitech G-key SDK op deze pc. Die wordt met Logitech Gaming Software 8.55 of nieuwer geïnstalleerd.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>De G-key SDK is geregistreerd maar het bestand ontbreekt. Installeer Logitech Gaming Software opnieuw.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK gevonden, laden mislukt.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Die bibliotheek is niet de verwachte G-key SDK.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>De G-key SDK startte niet. Meestal draait Logitech Gaming Software niet.</value></data>
-  <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Verbonden, nog geen toets gezien. Maak PadForge in Logitech Gaming Software het permanente profiel.</value></data>
+  <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Verbonden, nog geen toets gezien. Sleep in Logitech Gaming Software de opdracht G-key naar elke toets in het PadForge-profiel en maak dat profiel permanent.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Actief, {0} toetsgebeurtenissen</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Analoge toetsenborden lezen</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Leest hoe ver elke toets is ingedrukt op analoge toetsenborden van Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA en andere fabrikanten, elk als eigen apparaatregel. De documentatie noemt elk ondersteund model. Razer-toetsenborden vereisen dat Razer Synapse draait. De meeste andere worden uitgelezen via het kanaal dat hun eigen configuratiesoftware gebruikt, dus sluit die software zolang dit aan staat.</value></data>

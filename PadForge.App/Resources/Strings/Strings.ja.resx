@@ -238,7 +238,7 @@
   <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>Razer Chromaに接続済み</value></data>
   <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>Chroma Connect対応のRazer Synapseが必要です。物理コントローラーの種類を問わず動作します。色はゲームが描く仮想パッドに由来します。</value></data>
   <data name="Dashboard_Sensa" xml:space="preserve"><value>Razer Sensa HD Haptics</value></data>
-  <data name="Dashboard_SensaDescription" xml:space="preserve"><value>コントローラーの振動をRazer Sensa HDハプティクスに変換し、Wolverine V3シリーズやKraken V4 Pro、FreyjaなどのSensaデバイスをゲームに合わせて振動させます。</value></data>
+  <data name="Dashboard_SensaDescription" xml:space="preserve"><value>コントローラーの振動をRazer Sensa HDハプティクスに変換し、Wolverine V3 ProやKraken V4 Pro、FreyjaなどのSensaデバイスをゲームに合わせて振動させます。</value></data>
   <data name="Dashboard_EnableSensa" xml:space="preserve"><value>振動をSensa HDハプティクスに送信</value></data>
   <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>Razer Sensaランタイムが見つかりません。再試行中。</value></data>
   <data name="Dashboard_SensaActive" xml:space="preserve"><value>振動をSensa HDハプティクスに送信中</value></data>
@@ -258,13 +258,13 @@
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu、Dolphin、Yuzu などにジャイロおよび加速度センサーのデータを提供します。</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack や、UDP 出力を送信するまたは FreeTrack 2.0 の共有メモリに書き込むあらゆるトラッカー、およびこのマシンにインストールされた、バックグラウンドでセッションを実行できる OpenXR ランタイムで動作します。</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G キーを読み取る</value></data>
-  <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Logitech G-key SDK で G キーを読み取ります。Logitech Gaming Software 8.55 以降が実行されている必要があります。そのソフトで PadForge を常設プロファイルに設定してください。設定しない場合、キーは PadForge のウィンドウが前面にあるときだけ届きます。</value></data>
+  <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Logitech G-key SDK で G キーを読み取ります。Logitech Gaming Software 8.55 以降が実行されている必要があります。そのソフトで、PadForge プロファイルの各キーに G-key コマンドをドラッグしてください。そのプロファイルを常設に設定しない場合、キーは PadForge のウィンドウが前面にあるときだけ届きます。</value></data>
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>この PC に Logitech G-key SDK がありません。Logitech Gaming Software 8.55 以降と一緒にインストールされます。</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK は登録されていますがファイルがありません。Logitech Gaming Software を再インストールしてください。</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK は見つかりましたが読み込めませんでした。</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>そのライブラリは想定している G-key SDK ではありません。</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK を開始できませんでした。通常は Logitech Gaming Software が実行されていません。</value></data>
-  <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>接続済み、キーはまだ検出されていません。Logitech Gaming Software で PadForge を常設プロファイルに設定してください。</value></data>
+  <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>接続済み、キーはまだ検出されていません。Logitech Gaming Software で、PadForge プロファイルの各キーに G-key コマンドをドラッグし、そのプロファイルを常設に設定してください。</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>実行中、キーイベント {0} 件</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>アナログキーボードを読み取る</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Wooting、Razer、SteelSeries、Keychron、NuPhy、DrunkDeer、AULA などのアナログキーボードで、各キーの押し込み量を読み取り、それぞれを独立したデバイス行にします。対応モデルの一覧はドキュメントにあります。Razer 製キーボードには Razer Synapse の実行が必要です。その他の多くは各社の設定ソフトが使う経路で問い合わせて読み取るため、この設定がオンの間は設定ソフトを閉じてください。</value></data>

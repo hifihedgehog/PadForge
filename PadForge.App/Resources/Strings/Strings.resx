@@ -274,7 +274,7 @@
   <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>Connected to Razer Chroma</value></data>
   <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>Requires Razer Synapse with Chroma Connect. Works with any physical controller: the color comes from the virtual pad the game paints.</value></data>
   <data name="Dashboard_Sensa" xml:space="preserve"><value>Razer Sensa HD Haptics</value></data>
-  <data name="Dashboard_SensaDescription" xml:space="preserve"><value>Translates controller rumble into Razer Sensa HD haptics, so Sensa devices like the Wolverine V3 line, the Kraken V4 Pro, and the Freyja shake with your games.</value></data>
+  <data name="Dashboard_SensaDescription" xml:space="preserve"><value>Translates controller rumble into Razer Sensa HD haptics, so Sensa devices like the Wolverine V3 Pro, the Kraken V4 Pro, and the Freyja shake with your games.</value></data>
   <data name="Dashboard_EnableSensa" xml:space="preserve"><value>Send Rumble to Sensa HD Haptics</value></data>
   <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>Razer Sensa runtime not found. Retrying.</value></data>
   <data name="Dashboard_SensaActive" xml:space="preserve"><value>Streaming rumble to Sensa HD Haptics</value></data>
@@ -294,13 +294,13 @@
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Provides gyro and accelerometer data to Cemu, Dolphin, Yuzu, etc.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Works with OpenTrack and any tracker that sends its UDP output or writes FreeTrack 2.0 shared memory, and with an OpenXR runtime on this machine that can run a session in the background.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Read Logitech G-Keys</value></data>
-  <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Reads G-keys through the Logitech G-key SDK. Needs Logitech Gaming Software 8.55 or later running. In that software, make PadForge the persistent profile, or the keys only reach PadForge while its window is in front.</value></data>
+  <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Reads G-keys through the Logitech G-key SDK. Needs Logitech Gaming Software 8.55 or later running. In that software, drag the G-key command onto each key in the PadForge profile. Make that profile persistent, or the keys only reach PadForge while its window is in front.</value></data>
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>No Logitech G-key SDK on this machine. It installs with Logitech Gaming Software 8.55 or later.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>The G-key SDK is registered but its file is gone. Reinstall Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>Found the G-key SDK and could not load it.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>That library is not the G-key SDK this expects.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>The G-key SDK refused to start. Logitech Gaming Software is usually not running.</value></data>
-  <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Connected, no key seen yet. In Logitech Gaming Software, make PadForge the persistent profile.</value></data>
+  <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Connected, no key seen yet. In Logitech Gaming Software, drag the G-key command onto each key in the PadForge profile, and make that profile persistent.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Running, {0} key events</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Read Analog Keyboards</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Reads how far every key is pressed on analog keyboards from Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA and other makers, each as its own device row. The documentation lists every supported model. Razer keyboards need Razer Synapse running. Most of the others are read over the channel their own configurator uses, so close the configurator while this is on.</value></data>

@@ -5211,9 +5211,9 @@ namespace PadForge.Services
         /// them are the source's failure states (no SDK, a registered path
         /// whose file is gone, a load failure, a library that is not this SDK,
         /// and an init the SDK refused). The sixth is running but hearing
-        /// nothing, which is the persistent-profile trap and is why the event
-        /// count is in the line at all. The seventh is running with keys
-        /// arriving.</para>
+        /// nothing, which a key without the G-key command or a profile that is
+        /// not persistent both produce, and is why the event count is in the
+        /// line at all. The seventh is running with keys arriving.</para>
         /// </summary>
         private void UpdateGKeysStatus()
         {
@@ -5234,8 +5234,8 @@ namespace PadForge.Services
                     PadForge.Engine.Common.Logitech.LogitechGKeyState.LoadFailed => s.Settings_GKeysStatus_LoadFailed,
                     PadForge.Engine.Common.Logitech.LogitechGKeyState.MissingExports => s.Settings_GKeysStatus_WrongLibrary,
                     PadForge.Engine.Common.Logitech.LogitechGKeyState.InitRefused => s.Settings_GKeysStatus_InitRefused,
-                    // Connected and silent is the persistent-profile trap, so
-                    // it gets its own line instead of a count of zero.
+                    // Connected and silent: no G-key command on the key, or the
+                    // profile is not persistent. It gets its own line, not a zero.
                     PadForge.Engine.Common.Logitech.LogitechGKeyState.Running when row.EventCount == 0 =>
                         s.Settings_GKeysStatus_NoKeysYet,
                     PadForge.Engine.Common.Logitech.LogitechGKeyState.Running =>

@@ -410,6 +410,45 @@ namespace PadForge.Tests
             Assert.Contains("Binding SensaStatus", page);
         }
 
+        /// <summary>
+        /// The card names a device Razer lists as Sensa, in every locale.
+        ///
+        /// <para>Razer's Sensa page lists one Wolverine, the V3 Pro. The
+        /// description said "the Wolverine V3 line", which takes in the
+        /// Tournament Edition and the 8K models, and Razer lists none of
+        /// those.</para>
+        /// </summary>
+        [Fact]
+        public void TheDescriptionNamesTheWolverineV3ProInEveryLocale()
+        {
+            foreach (string locale in new[]
+                     {
+                         "Strings.resx", "Strings.de.resx", "Strings.es.resx", "Strings.fr.resx",
+                         "Strings.it.resx", "Strings.ja.resx", "Strings.ko.resx", "Strings.nl.resx",
+                         "Strings.pt-BR.resx", "Strings.zh-Hans.resx",
+                     })
+            {
+                string text = RepoText("PadForge.App", "Resources", "Strings", locale);
+                int at = text.IndexOf("<data name=\"Dashboard_SensaDescription\"", StringComparison.Ordinal);
+                Assert.True(at >= 0, $"{locale} is missing Dashboard_SensaDescription");
+                int end = text.IndexOf("</value>", at, StringComparison.Ordinal);
+                string value = text.Substring(at, end - at);
+                Assert.True(value.Contains("Wolverine V3 Pro", StringComparison.Ordinal),
+                            $"{locale} names a Wolverine other than the V3 Pro");
+            }
+        }
+
+        /// <summary>The Korean Sensa strings spell haptic the way every
+        /// other Korean string does. Four of them carried a wrong first
+        /// syllable (U+D581 where U+D585 belongs).</summary>
+        [Fact]
+        public void TheKoreanStringsSpellHaptic()
+        {
+            string text = RepoText("PadForge.App", "Resources", "Strings", "Strings.ko.resx");
+            Assert.DoesNotContain("\uD581\uD2F1", text);
+            Assert.Contains("Sensa HD \uD585\uD2F1", text);
+        }
+
         private static string RepoText(params string[] parts)
         {
             var dir = new DirectoryInfo(AppContext.BaseDirectory);

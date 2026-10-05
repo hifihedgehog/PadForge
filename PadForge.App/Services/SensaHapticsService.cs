@@ -25,7 +25,7 @@ namespace PadForge.Services
     /// <summary>
     /// Razer Sensa HD haptics translation (#374, asked in discussion #369):
     /// streams PadForge's rumble into the Interhaptics engine, whose Razer
-    /// provider renders on Sensa HD devices (Wolverine V3 line, Kraken V4
+    /// provider renders on Sensa HD devices (Wolverine V3 Pro, Kraken V4
     /// Pro, Freyja). The WYVRN app API plays only pre-authored named clips
     /// and carries no amplitude channel, so this rides the engine layer
     /// underneath: Razer's public Interhaptics Core SDK, whose parametric

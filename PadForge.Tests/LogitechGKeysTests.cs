@@ -503,6 +503,37 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>
+        /// The setup text names both steps Logitech Gaming Software needs.
+        ///
+        /// <para>Logitech's G-key SDK manual ("User experience") says a key
+        /// reports to an application only after the user drags the "G-key"
+        /// command onto it in that application's profile. The hint and the
+        /// tooltip named the persistent profile alone, so a user who did
+        /// what they said still saw no key.</para>
+        /// </summary>
+        [Fact]
+        public void TheSetupTextNamesTheGKeyCommandInEveryLocale()
+        {
+            foreach (string locale in new[]
+                     {
+                         "Strings.resx", "Strings.de.resx", "Strings.es.resx", "Strings.fr.resx",
+                         "Strings.it.resx", "Strings.ja.resx", "Strings.ko.resx", "Strings.nl.resx",
+                         "Strings.pt-BR.resx", "Strings.zh-Hans.resx",
+                     })
+            {
+                string text = RepoFile("PadForge.App", "Resources", "Strings", locale);
+
+                // The hint has no other reason to say "G-key".
+                Assert.True(CommandMentions(ResxValue(text, "Settings_GKeysStatus_NoKeysYet")) >= 1,
+                            $"{locale}: the no-key hint leaves out the G-key command");
+                // The tooltip already names the G-key SDK, so the command is
+                // its second mention.
+                Assert.True(CommandMentions(ResxValue(text, "Settings_GKeysTooltip")) >= 2,
+                            $"{locale}: the tooltip leaves out the G-key command");
+            }
+        }
+
 
         /// <summary>
         /// A held key whose release never arrives is closed by the resync.
@@ -556,6 +587,29 @@ namespace PadForge.Tests
             string src = RepoFile("PadForge.Engine", "Common", "Logitech", "LogitechGKeySource.cs");
             Assert.Contains("foreach (string candidate in candidates)", src);
         }
+        /// <summary>How often a string says "G-key" as a name. The English
+        /// plural "G-keys" names the hardware and does not count.</summary>
+        private static int CommandMentions(string value)
+        {
+            int count = 0;
+            for (int at = value.IndexOf("G-key", StringComparison.Ordinal); at >= 0;
+                 at = value.IndexOf("G-key", at + 5, StringComparison.Ordinal))
+            {
+                int after = at + 5;
+                if (after >= value.Length || value[after] != 's') count++;
+            }
+            return count;
+        }
+
+        private static string ResxValue(string resx, string key)
+        {
+            int at = resx.IndexOf("<data name=\"" + key + "\"", StringComparison.Ordinal);
+            Assert.True(at >= 0, key + " is missing");
+            int open = resx.IndexOf("<value>", at, StringComparison.Ordinal) + "<value>".Length;
+            int close = resx.IndexOf("</value>", open, StringComparison.Ordinal);
+            return resx.Substring(open, close - open);
+        }
+
         private static string RepoFile(params string[] parts)
         {
             var dir = new DirectoryInfo(AppContext.BaseDirectory);

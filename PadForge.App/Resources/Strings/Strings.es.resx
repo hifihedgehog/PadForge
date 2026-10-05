@@ -238,7 +238,7 @@
   <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>Conectado a Razer Chroma</value></data>
   <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>Requiere Razer Synapse con Chroma Connect. Funciona con cualquier mando físico: el color proviene del mando virtual que pinta el juego.</value></data>
   <data name="Dashboard_Sensa" xml:space="preserve"><value>Razer Sensa HD Haptics</value></data>
-  <data name="Dashboard_SensaDescription" xml:space="preserve"><value>Traduce la vibración del mando a hápticos Razer Sensa HD, para que dispositivos Sensa como la línea Wolverine V3, el Kraken V4 Pro y el Freyja vibren con tus juegos.</value></data>
+  <data name="Dashboard_SensaDescription" xml:space="preserve"><value>Traduce la vibración del mando a hápticos Razer Sensa HD, para que dispositivos Sensa como el Wolverine V3 Pro, el Kraken V4 Pro y el Freyja vibren con tus juegos.</value></data>
   <data name="Dashboard_EnableSensa" xml:space="preserve"><value>Enviar la vibración a Sensa HD Haptics</value></data>
   <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>Runtime de Razer Sensa no encontrado. Reintentando.</value></data>
   <data name="Dashboard_SensaActive" xml:space="preserve"><value>Enviando vibración a Sensa HD Haptics</value></data>
@@ -258,13 +258,13 @@
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Proporciona datos de giroscopio y acelerómetro a Cemu, Dolphin, Yuzu, etc.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Funciona con OpenTrack y con cualquier rastreador que envíe su salida UDP o escriba en la memoria compartida de FreeTrack 2.0, y con un tiempo de ejecución OpenXR instalado en este equipo que pueda ejecutar una sesión en segundo plano.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Leer las teclas G de Logitech</value></data>
-  <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Lee las teclas G mediante el SDK G-key de Logitech. Requiere Logitech Gaming Software 8.55 o posterior en ejecución. En ese programa, haz de PadForge el perfil persistente; si no, las teclas solo llegan a PadForge mientras su ventana está en primer plano.</value></data>
+  <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Lee las teclas G mediante el SDK G-key de Logitech. Requiere Logitech Gaming Software 8.55 o posterior en ejecución. En ese programa, arrastra el comando G-key a cada tecla del perfil de PadForge. Haz que ese perfil sea persistente o las teclas solo llegarán a PadForge mientras su ventana esté en primer plano.</value></data>
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>No hay SDK G-key de Logitech en este equipo. Se instala con Logitech Gaming Software 8.55 o posterior.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>El SDK G-key está registrado pero falta su archivo. Reinstala Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>Se encontró el SDK G-key y no se pudo cargar.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Esa biblioteca no es el SDK G-key esperado.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>El SDK G-key no arrancó. Normalmente Logitech Gaming Software no está en ejecución.</value></data>
-  <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Conectado, aún sin teclas detectadas. En Logitech Gaming Software, haz de PadForge el perfil persistente.</value></data>
+  <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Conectado, aún sin teclas detectadas. En Logitech Gaming Software, arrastra el comando G-key a cada tecla del perfil de PadForge y haz que ese perfil sea persistente.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>En ejecución, {0} eventos de tecla</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Leer teclados analógicos</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Lee cuánto se presiona cada tecla en los teclados analógicos de Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA y otros fabricantes, cada uno como su propia fila de dispositivo. La documentación enumera todos los modelos compatibles. Los teclados Razer requieren Razer Synapse en ejecución. La mayoría de los demás se leen por el canal que usa su propio configurador, así que cierra el configurador mientras esto esté activado.</value></data>

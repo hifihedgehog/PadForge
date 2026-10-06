@@ -1203,28 +1203,14 @@ namespace PadForge.Services
             if (extraSource != null && paramTarget != ParamTarget.None)
             {
                 // ── Recording targeted a Param button on an ExtraSource ──
-                // Write the captured descriptor into the kind-specific
-                // field (ParamUp / ParamDown / ParamModifier). Don't touch
-                // the source's main DeviceGuid / Descriptor / Invert — the
-                // Param field is the only thing this record button is
-                // supposed to change.
-                switch (paramTarget)
-                {
-                    case ParamTarget.Up:       extraSource.ParamUp       = descriptor; break;
-                    case ParamTarget.Down:     extraSource.ParamDown     = descriptor; break;
-                    case ParamTarget.Modifier: extraSource.ParamModifier = descriptor; break;
-                }
-                // Stamp the winning device on the source so the engine knows
-                // which device's state to read the Param button from. Without
-                // this, an InvertOnHold modifier recorded on a SECONDARY
-                // device (e.g. Button 65 on a web/touchpad device) would be
-                // looked up against the row's primary device, which has no
-                // such index, and IsInvertOnHoldActive silently returns false.
-                if (!string.IsNullOrEmpty(winningGuidStr))
-                {
-                    extraSource.DeviceGuid = winningGuidStr;
-                    extraSource.DeviceLabel = ResolveDeviceLabel(winningDevice);
-                }
+                // The key lands with the device it fired on, which is the
+                // controller it reads. The source's Descriptor and Invert
+                // stay as they are. Stamping the winning device on the
+                // source itself moved its other keys to that device, so a
+                // Down key recorded on a second controller made the Up key
+                // read there too. An Incremental or Ramp source follows its
+                // keys (MappingSourceItem.FollowKeysDevice).
+                extraSource.SetParamKey(ToRecordTarget(paramTarget), descriptor, winningGuidStr);
                 finalDescriptor = descriptor;
                 _mainVm.StatusText = string.Format(
                     Strings.Instance.Status_Recorded_Format, mapping.TargetLabel, finalDescriptor);
@@ -1375,6 +1361,14 @@ namespace PadForge.Services
             return null;
         }
 
+        /// <summary>The key field a param recording fills.</summary>
+        private static MappingSourceItem.ParamRecordTarget ToRecordTarget(ParamTarget target) => target switch
+        {
+            ParamTarget.Down => MappingSourceItem.ParamRecordTarget.Down,
+            ParamTarget.Modifier => MappingSourceItem.ParamRecordTarget.Modifier,
+            _ => MappingSourceItem.ParamRecordTarget.Up,
+        };
+
         private static string ResolveDeviceLabel(Guid g)
         {
             if (g == Guid.Empty) return "";
@@ -1449,17 +1443,10 @@ namespace PadForge.Services
 
             if (extraSource != null && paramTarget != ParamTarget.None)
             {
-                // Param recording (Incremental Up/Down or InvertOnHold Modifier).
-                // Touchpad-click is technically not button-class for the
-                // engine's ReadButtonLikeBool, but the source-of-truth field
-                // is still the Param* descriptor — write it and let the
-                // engine ignore unknown forms.
-                switch (paramTarget)
-                {
-                    case ParamTarget.Up:       extraSource.ParamUp       = descriptor; break;
-                    case ParamTarget.Down:     extraSource.ParamDown     = descriptor; break;
-                    case ParamTarget.Modifier: extraSource.ParamModifier = descriptor; break;
-                }
+                // Param recording (Incremental Up/Down or InvertOnHold
+                // Modifier): the key and the device it fired on, as
+                // CompleteRecording writes them.
+                extraSource.SetParamKey(ToRecordTarget(paramTarget), descriptor, winningGuidStr);
                 finalDescriptor = descriptor;
                 _mainVm.StatusText = string.Format(
                     Strings.Instance.Status_Recorded_Format, mapping.TargetLabel, finalDescriptor);

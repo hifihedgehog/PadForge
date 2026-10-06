@@ -748,7 +748,8 @@ namespace PadForge.Services
             {
                 // Custom source positions are significant, including duplicates.
                 if (row?.Sources == null || row.CombineMode == "Custom") continue;
-                var seen = new HashSet<(string, string, bool, bool, bool, string, string, string, string, string, string)>();
+                var seen = new HashSet<(string, string, bool, bool, bool, string, string, string, string, string, string,
+                    string, string, string)>();
                 int writeIdx = 0;
                 for (int i = 0; i < row.Sources.Count; i++)
                 {
@@ -763,10 +764,15 @@ namespace PadForge.Services
                     // the descriptor, which they leave empty on purpose. Two
                     // incremental sources on one device therefore keyed
                     // identically, and the second was deleted on every load.
+                    // Each key's controller joins it for the same reason: two
+                    // sources stepping on the same keys of two controllers
+                    // are two reads.
                     var key = ((s.DeviceGuid ?? "").ToLowerInvariant(), s.Descriptor ?? "",
                         s.Invert, s.HalfAxis, s.InvertOutput, s.Kind ?? "", s.GateDescriptor ?? "",
                         s.Gate2Descriptor ?? "", s.ParamUp ?? "", s.ParamDown ?? "",
-                        s.ParamModifier ?? "");
+                        s.ParamModifier ?? "", s.ParamUpDeviceGuid?.ToLowerInvariant(),
+                        s.ParamDownDeviceGuid?.ToLowerInvariant(),
+                        s.ParamModifierDeviceGuid?.ToLowerInvariant());
                     if (!seen.Add(key)) continue;
                     row.Sources[writeIdx++] = s;
                 }
@@ -1892,9 +1898,13 @@ namespace PadForge.Services
                     if (slot != slotIndex) continue;
                     var ms = sets[slot];
                     if (ms?.Rows == null) continue;
+                    // A key that reads the device goes too, and a key source
+                    // left with no key goes the way of the device's sources.
+                    var keyless = DropKeysOn(ms.Rows, g => !string.Equals(g, guidStr, StringComparison.OrdinalIgnoreCase));
                     ms.Rows.RemoveAll(row => RemoveRowSources(row, s =>
-                            !string.IsNullOrEmpty(s?.DeviceGuid)
-                            && string.Equals(s.DeviceGuid.ToLowerInvariant(), guidStr, StringComparison.Ordinal)));
+                            (!string.IsNullOrEmpty(s?.DeviceGuid)
+                             && string.Equals(s.DeviceGuid.ToLowerInvariant(), guidStr, StringComparison.Ordinal))
+                            || (keyless != null && keyless.Contains(s))));
                     // Keep rows that were already empty and explicit NoInherit rows.
                     // RemoveRowSources dropped ordinary rows emptied by device cleanup.
                     ms.Rows.RemoveAll(r => r == null
@@ -1902,6 +1912,23 @@ namespace PadForge.Services
                             && !MappingSetMigrator.IsMotionTarget(r.Target)));
                 }
             }
+        }
+
+        /// <summary>Drops every key in <paramref name="rows"/> whose controller
+        /// <paramref name="stays"/> rejects (MappingSource.RetargetKeyDevices).
+        /// Returns the sources left with no key they read, or null when there
+        /// is none.</summary>
+        private static HashSet<MappingSource> DropKeysOn(IEnumerable<MappingRow> rows, Func<string, bool> stays)
+        {
+            HashSet<MappingSource> keyless = null;
+            foreach (var row in rows)
+            {
+                if (row?.Sources == null) continue;
+                foreach (var s in row.Sources)
+                    if (s != null && s.RetargetKeyDevices(g => stays(g) ? g : null))
+                        (keyless ??= new HashSet<MappingSource>()).Add(s);
+            }
+            return keyless;
         }
 
         private static bool RemoveRowSources(MappingRow row, Predicate<MappingSource> remove)
@@ -1928,6 +1955,27 @@ namespace PadForge.Services
                     kept.Add(new MappingSource());
             }
             row.Sources = kept;
+            return false;
+        }
+
+        /// <summary>The controllers the Up and Down keys of an Incremental or
+        /// Ramp source read (SourceKindRuntime.KeyDevice), empty for any
+        /// controller.</summary>
+        private static IEnumerable<string> UpDownKeyDevices(MappingSource s)
+        {
+            if (!PadForge.Engine.Common.Mapping.SourceEvaluator.UsesUpDownKeys(s)) yield break;
+            if (!string.IsNullOrEmpty(s.ParamUp))
+                yield return PadForge.Engine.Common.Mapping.SourceKindRuntime.KeyDevice(s.ParamUpDeviceGuid, s);
+            if (!string.IsNullOrEmpty(s.ParamDown))
+                yield return PadForge.Engine.Common.Mapping.SourceKindRuntime.KeyDevice(s.ParamDownDeviceGuid, s);
+        }
+
+        /// <summary>True for an Incremental or Ramp source with a key that
+        /// reads any controller on the slot.</summary>
+        private static bool ReadsAnyControllerKey(MappingSource s)
+        {
+            foreach (string k in UpDownKeyDevices(s))
+                if (k.Length == 0) return true;
             return false;
         }
 
@@ -2049,10 +2097,14 @@ namespace PadForge.Services
                 {
                     if (er == null) continue;
 
-                    // Drop sources for devices that left the slot.
+                    // Drop sources for devices that left the slot, and the
+                    // keys that read one. A key source left with no key goes
+                    // the way of the departed device's sources.
+                    var keyless = DropKeysOn(new[] { er }, devGuidsInSlot.Contains);
                     if (RemoveRowSources(er, s =>
-                            !string.IsNullOrEmpty(s?.DeviceGuid)
-                            && !devGuidsInSlot.Contains(s.DeviceGuid.ToLowerInvariant())))
+                            (!string.IsNullOrEmpty(s?.DeviceGuid)
+                             && !devGuidsInSlot.Contains(s.DeviceGuid.ToLowerInvariant()))
+                            || (keyless != null && keyless.Contains(s))))
                         continue;
 
                     var key = (er.Target ?? "", er.LayerMask ?? "Base");
@@ -2060,10 +2112,12 @@ namespace PadForge.Services
                     // A Toggle or Rapid Trigger reads its own input on every
                     // device just as Direct does, so an any-device one covers
                     // them too.
+                    // A key that reads any controller covers them the same way.
                     bool preserveAnyDeviceSources = er.Sources?.Any(source => source != null
-                        && PadForge.Engine.Common.Mapping.SourceEvaluator.IsDescriptorKind(source.Kind)
-                        && string.IsNullOrEmpty(source.DeviceGuid)
-                        && !string.IsNullOrWhiteSpace(source.Descriptor)) == true;
+                        && ((PadForge.Engine.Common.Mapping.SourceEvaluator.IsDescriptorKind(source.Kind)
+                             && string.IsNullOrEmpty(source.DeviceGuid)
+                             && !string.IsNullOrWhiteSpace(source.Descriptor))
+                            || ReadsAnyControllerKey(source))) == true;
                     // Any Device already covers newly assigned devices. Keep the
                     // authored row instead of adding their legacy default sources.
                     if (preserveMotionSources || preserveAnyDeviceSources) consumedRebuilt.Add(key);
@@ -2097,6 +2151,10 @@ namespace PadForge.Services
                         {
                             if (s == null) continue;
                             devicesPresent.Add((s.DeviceGuid ?? "").ToLowerInvariant());
+                            // An Incremental or Ramp source authors the row on
+                            // the controllers its keys read.
+                            foreach (string k in UpDownKeyDevices(s))
+                                devicesPresent.Add(k.ToLowerInvariant());
                         }
                         if (rrow.Sources != null)
                         {

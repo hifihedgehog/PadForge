@@ -1405,7 +1405,7 @@ namespace PadForge.Tests
             foreach (var view in new[] { "ControllerModelView", "ControllerModel2DView" })
             {
                 string src = AuditDelta20261003EngineTests.RepoText("PadForge.App/Views/" + view + ".Annotations.cs");
-                Assert.Contains("            if (src.IsInvertOnHoldKind)\n            {\n                // The descriptor a modifier kept from its source is no input.\n                AppendAnnotationParamWire(rows, src, src.ParamModifier, src.ParamModifierInputChoice);\n                return;\n            }", src);
+                Assert.Contains("            if (src.IsInvertOnHoldKind)\n            {\n                // The descriptor a modifier kept from its source is no input.\n                AppendAnnotationParamWire(rows, src.ParamModifier, src.ParamModifierReadDevice,\n                    src.ParamModifierInputChoice);\n                return;\n            }", src);
             }
         }
 

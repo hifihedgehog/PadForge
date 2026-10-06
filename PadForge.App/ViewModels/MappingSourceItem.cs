@@ -28,6 +28,12 @@ namespace PadForge.ViewModels
         private double _paramMin;
         private double _paramMax = 1;
         private string _paramModifier = "";
+        // The controller each key reads (MappingSource.ParamUpDeviceGuid and
+        // its siblings): a device guid, empty for any controller, null for a
+        // key saved before keys carried one.
+        private string _paramUpDeviceGuid;
+        private string _paramDownDeviceGuid;
+        private string _paramModifierDeviceGuid;
         private double _gyroSensitivity = 1.0;
         private double _paramAccel;
         private double _mouseCursorSensitivity = 1.0;
@@ -206,21 +212,29 @@ namespace PadForge.ViewModels
 
         internal MappingItem ParentMappingItem { get; set; }
 
-        private InputChoice ResolveParamChoice(string descriptor)
+        /// <summary>The picker entry a key shows. A key that carries its
+        /// controller shows the entry for that pair, its controller's own
+        /// entry for an abstract "Gamepad ..." name included
+        /// (MappingDisplayResolver.FindChoiceOnDevice, the rule every
+        /// input-and-controller picker follows). A key saved before keys
+        /// carried a controller shows <see cref="ResolveLegacyParamChoice"/>.</summary>
+        private InputChoice ResolveParamChoice(string descriptor, string keyDeviceGuid)
         {
             if (ParentMappingItem == null || string.IsNullOrEmpty(descriptor)) return null;
-            // Match on device and descriptor with a descriptor-only fallback,
-            // the rule the state sync below already applies. The parameter
-            // fields carry NO device of their own: the runtime reads them on
-            // THIS source's device. Matching on descriptor alone returned
-            // whichever group listed it first, so a source pinned to the second
-            // controller showed the first one's name under a key the engine
-            // reads on the second, and re-picking the same descriptor from
-            // another device's group looked like no change at all. An abstract
-            // "Gamepad ..." name on a source pinned to a device selects that
-            // device's own entry for the same read, as the source's own picker
-            // does (SyncSelectedInputFromState), since a device group no
-            // longer lists the abstract names.
+            return keyDeviceGuid != null
+                ? PadForge.Common.MappingDisplayResolver.FindChoiceOnDevice(
+                    ParentMappingItem.ParamInputs, descriptor, keyDeviceGuid)
+                : ResolveLegacyParamChoice(descriptor);
+        }
+
+        /// <summary>The entry a key saved before keys carried a controller
+        /// shows: the one on this source's device, that device's own entry
+        /// for an abstract "Gamepad ..." name, else the first entry with the
+        /// descriptor. <see cref="AdoptLegacyKeyDevices"/> gives the key that
+        /// entry's controller, so it reads the device shown under it.</summary>
+        private InputChoice ResolveLegacyParamChoice(string descriptor)
+        {
+            if (ParentMappingItem == null || string.IsNullOrEmpty(descriptor)) return null;
             string wantGuid = (_deviceGuid ?? "").ToLowerInvariant();
             string pinnedCanonical = PadForge.Common.MappingDisplayResolver.PinnedAliasCanonical(descriptor, wantGuid);
             InputChoice canonicalMatch = null;
@@ -237,30 +251,129 @@ namespace PadForge.ViewModels
                 descriptorOnlyMatch ??= c;
                 if (onDevice) return c;
             }
-            // A keyboard key on a gamepad source is the normal case for the
-            // descriptor-only fallback: no entry carries the source's guid and
-            // the engine still reads the key off the state the grip resolves to.
             return canonicalMatch ?? descriptorOnlyMatch;
         }
 
-        // #111 audit fix A. A stateful kind (Ramp / Incremental) is keyed only by
-        // (slot, target, srcIdx), so it needs a concrete DeviceGuid. With none, the
-        // per-device eval treats it as "any device" and ticks the accumulator once
-        // per assigned device (N-times-too-fast on a multi-device slot). Stamp the
-        // device from the picked input when the source has none yet, mirroring the
-        // SelectedInput setter. Recording already stamps it.
-        private void StampDeviceFromParamChoice(InputChoice value)
+        /// <summary>Sets a key and the controller it reads, the pair a pick or
+        /// a recording lands. A cleared key keeps no controller. Both fields
+        /// land before anything is raised, so no listener reads the new input
+        /// on the old controller. An Incremental or Ramp source then follows
+        /// its keys (<see cref="FollowKeysDevice"/>).</summary>
+        internal void SetParamKey(ParamRecordTarget which, string descriptor, string deviceGuid)
         {
-            if (string.IsNullOrEmpty(_deviceGuid) && !string.IsNullOrEmpty(value?.DeviceGuid))
+            descriptor ??= "";
+            if (descriptor.Length == 0) deviceGuid = null;
+            switch (which)
             {
-                DeviceGuid = value.DeviceGuid;
-                DeviceLabel = value.DeviceLabel ?? "";
+                case ParamRecordTarget.Up:
+                    if (StoreKey(ref _paramUp, ref _paramUpDeviceGuid, descriptor, deviceGuid))
+                        RaiseKeyChanged(nameof(ParamUp), nameof(ParamUpDeviceGuid),
+                            nameof(ParamUpInputChoice), nameof(ParamUpDeviceLabel));
+                    break;
+                case ParamRecordTarget.Down:
+                    if (StoreKey(ref _paramDown, ref _paramDownDeviceGuid, descriptor, deviceGuid))
+                        RaiseKeyChanged(nameof(ParamDown), nameof(ParamDownDeviceGuid),
+                            nameof(ParamDownInputChoice), nameof(ParamDownDeviceLabel));
+                    break;
+                case ParamRecordTarget.Modifier:
+                    if (StoreKey(ref _paramModifier, ref _paramModifierDeviceGuid, descriptor, deviceGuid))
+                        RaiseKeyChanged(nameof(ParamModifier), nameof(ParamModifierDeviceGuid),
+                            nameof(ParamModifierInputChoice), nameof(ParamModifierDeviceLabel));
+                    break;
             }
+            FollowKeysDevice();
         }
+
+        private static bool StoreKey(ref string key, ref string device, string newKey, string newDevice)
+        {
+            if (string.Equals(key, newKey, StringComparison.Ordinal)
+                && string.Equals(device, newDevice, StringComparison.Ordinal))
+                return false;
+            key = newKey;
+            device = newDevice;
+            return true;
+        }
+
+        private void RaiseKeyChanged(params string[] names)
+        {
+            foreach (string name in names) OnPropertyChanged(name);
+        }
+
+        /// <summary>An Incremental or Ramp source belongs to the controller
+        /// its keys share, and to none (empty) when they read different
+        /// controllers or any controller. Step 3 reads a source on its own
+        /// device's pass, or on the slot's passes when it names none, and each
+        /// key reads its own controller wherever the source is read
+        /// (SourceKindRuntime.ReadKey), so one key still works while the other
+        /// key's controller is off. A key saved before keys carried a
+        /// controller is first given the source's, so it keeps reading
+        /// there.</summary>
+        private void FollowKeysDevice()
+        {
+            if (!UsesUpDownKeys) return;
+            bool up = !string.IsNullOrEmpty(_paramUp);
+            bool down = !string.IsNullOrEmpty(_paramDown);
+            if (!up && !down) return;
+            string upDevice = up ? _paramUpDeviceGuid ?? _deviceGuid ?? "" : null;
+            string downDevice = down ? _paramDownDeviceGuid ?? _deviceGuid ?? "" : null;
+            string shared = upDevice == null ? downDevice
+                : downDevice == null || string.Equals(upDevice, downDevice, StringComparison.OrdinalIgnoreCase) ? upDevice
+                : "";
+            if (string.Equals(shared, _deviceGuid ?? "", StringComparison.OrdinalIgnoreCase)) return;
+            if (up && _paramUpDeviceGuid == null) ParamUpDeviceGuid = _deviceGuid ?? "";
+            if (down && _paramDownDeviceGuid == null) ParamDownDeviceGuid = _deviceGuid ?? "";
+            DeviceGuid = shared;
+            DeviceLabel = shared.Length == 0
+                ? Strings.Instance.Mapping_AnyDevice
+                : ResolveParamChoice(up ? _paramUp : _paramDown, shared)?.DeviceLabel ?? DeviceLabel;
+        }
+
+        /// <summary>Gives each key saved before keys carried a controller the
+        /// controller of the entry its picker shows
+        /// (<see cref="ResolveLegacyParamChoice"/>), so the key reads the
+        /// device named under it. The row calls this once its input list is
+        /// in (MappingItem.RefreshExtraSourceInputs). A key no listed
+        /// controller offers keeps reading on the source's controller.</summary>
+        internal void AdoptLegacyKeyDevices()
+        {
+            if (ParentMappingItem == null || LoadingKeys) return;
+            bool adopted = false;
+            if (_paramUpDeviceGuid == null && ResolveLegacyParamChoice(_paramUp) is { } up)
+            {
+                ParamUpDeviceGuid = up.DeviceGuid ?? "";
+                adopted = true;
+            }
+            if (_paramDownDeviceGuid == null && ResolveLegacyParamChoice(_paramDown) is { } down)
+            {
+                ParamDownDeviceGuid = down.DeviceGuid ?? "";
+                adopted = true;
+            }
+            if (_paramModifierDeviceGuid == null && ResolveLegacyParamChoice(_paramModifier) is { } modifier)
+            {
+                ParamModifierDeviceGuid = modifier.DeviceGuid ?? "";
+                adopted = true;
+            }
+            if (adopted) FollowKeysDevice();
+        }
+
+        /// <summary>True while a load fills this source one field at a time
+        /// (MappingItem.LoadPrimaryKind). Its device lands before its keys, and
+        /// a key adopted then took a controller from the keys of the row
+        /// loaded before. The load adopts once, at the end.</summary>
+        internal bool LoadingKeys { get; set; }
+
+        /// <summary>True when <paramref name="choice"/> is the key already
+        /// stored: the same input on the same controller. A key saved before
+        /// keys carried a controller is never current, so the entry its picker
+        /// writes back lands as a pick.</summary>
+        private static bool IsStoredKey(InputChoice choice, string descriptor, string deviceGuid)
+            => deviceGuid != null
+               && string.Equals(descriptor, choice.Descriptor ?? "", StringComparison.Ordinal)
+               && string.Equals(deviceGuid, choice.DeviceGuid ?? "", StringComparison.OrdinalIgnoreCase);
 
         public InputChoice ParamUpInputChoice
         {
-            get => ResolveParamChoice(_paramUp);
+            get => ResolveParamChoice(_paramUp, _paramUpDeviceGuid);
             set
             {
                 // A null write means the picker's current InputChoice could not be
@@ -270,49 +383,30 @@ namespace PadForge.ViewModels
                 // ItemsSource -- treating that as a clear silently wiped the stored
                 // Up/Down key on every refresh (#160). Preserve the descriptor; only
                 // a real choice (incl. an explicit empty-descriptor "none") changes it.
-                if (value == null) return;
-                var d = value.Descriptor ?? "";
-                if (!string.Equals(_paramUp, d, StringComparison.Ordinal))
-                {
-                    _paramUp = d;
-                    StampDeviceFromParamChoice(value);
-                    OnPropertyChanged(nameof(ParamUp));
-                    OnPropertyChanged(nameof(ParamUpInputChoice));
-                }
+                if (value == null || IsStoredKey(value, _paramUp, _paramUpDeviceGuid)) return;
+                SetParamKey(ParamRecordTarget.Up, value.Descriptor, value.DeviceGuid ?? "");
             }
         }
 
         public InputChoice ParamDownInputChoice
         {
-            get => ResolveParamChoice(_paramDown);
+            get => ResolveParamChoice(_paramDown, _paramDownDeviceGuid);
             set
             {
-                if (value == null) return; // see ParamUpInputChoice: don't let an unresolved picker wipe the key (#160)
-                var d = value.Descriptor ?? "";
-                if (!string.Equals(_paramDown, d, StringComparison.Ordinal))
-                {
-                    _paramDown = d;
-                    StampDeviceFromParamChoice(value);
-                    OnPropertyChanged(nameof(ParamDown));
-                    OnPropertyChanged(nameof(ParamDownInputChoice));
-                }
+                // See ParamUpInputChoice: don't let an unresolved picker wipe the key (#160).
+                if (value == null || IsStoredKey(value, _paramDown, _paramDownDeviceGuid)) return;
+                SetParamKey(ParamRecordTarget.Down, value.Descriptor, value.DeviceGuid ?? "");
             }
         }
 
         public InputChoice ParamModifierInputChoice
         {
-            get => ResolveParamChoice(_paramModifier);
+            get => ResolveParamChoice(_paramModifier, _paramModifierDeviceGuid);
             set
             {
-                if (value == null) return; // see ParamUpInputChoice: don't let an unresolved picker wipe the key (#160)
-                var d = value.Descriptor ?? "";
-                if (!string.Equals(_paramModifier, d, StringComparison.Ordinal))
-                {
-                    _paramModifier = d;
-                    StampDeviceFromParamChoice(value);
-                    OnPropertyChanged(nameof(ParamModifier));
-                    OnPropertyChanged(nameof(ParamModifierInputChoice));
-                }
+                // See ParamUpInputChoice: don't let an unresolved picker wipe the key (#160).
+                if (value == null || IsStoredKey(value, _paramModifier, _paramModifierDeviceGuid)) return;
+                SetParamKey(ParamRecordTarget.Modifier, value.Descriptor, value.DeviceGuid ?? "");
             }
         }
 
@@ -334,6 +428,13 @@ namespace PadForge.ViewModels
         public string ParamUpDeviceLabel       => ParamUpInputChoice?.DeviceLabel ?? "";
         public string ParamDownDeviceLabel     => ParamDownInputChoice?.DeviceLabel ?? "";
         public string ParamModifierDeviceLabel => ParamModifierInputChoice?.DeviceLabel ?? "";
+
+        /// <summary>The controller each key reads, the engine's rule
+        /// (SourceKindRuntime.KeyDevice): its own, else this source's, empty
+        /// for any controller.</summary>
+        public string ParamUpReadDevice       => _paramUpDeviceGuid ?? _deviceGuid ?? "";
+        public string ParamDownReadDevice     => _paramDownDeviceGuid ?? _deviceGuid ?? "";
+        public string ParamModifierReadDevice => _paramModifierDeviceGuid ?? _deviceGuid ?? "";
         public string DeviceGuid
         {
             get => _deviceGuid;
@@ -924,6 +1025,52 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>The controller <see cref="ParamUp"/> reads
+        /// (MappingSource.ParamUpDeviceGuid): a device guid, empty for any
+        /// controller, null for a key saved before keys carried one.</summary>
+        public string ParamUpDeviceGuid
+        {
+            get => _paramUpDeviceGuid;
+            set
+            {
+                if (SetProperty(ref _paramUpDeviceGuid, value))
+                {
+                    OnPropertyChanged(nameof(ParamUpInputChoice));
+                    OnPropertyChanged(nameof(ParamUpDeviceLabel));
+                }
+            }
+        }
+
+        /// <summary>The controller <see cref="ParamDown"/> reads, as
+        /// <see cref="ParamUpDeviceGuid"/>.</summary>
+        public string ParamDownDeviceGuid
+        {
+            get => _paramDownDeviceGuid;
+            set
+            {
+                if (SetProperty(ref _paramDownDeviceGuid, value))
+                {
+                    OnPropertyChanged(nameof(ParamDownInputChoice));
+                    OnPropertyChanged(nameof(ParamDownDeviceLabel));
+                }
+            }
+        }
+
+        /// <summary>The controller <see cref="ParamModifier"/> reads, as
+        /// <see cref="ParamUpDeviceGuid"/>.</summary>
+        public string ParamModifierDeviceGuid
+        {
+            get => _paramModifierDeviceGuid;
+            set
+            {
+                if (SetProperty(ref _paramModifierDeviceGuid, value))
+                {
+                    OnPropertyChanged(nameof(ParamModifierInputChoice));
+                    OnPropertyChanged(nameof(ParamModifierDeviceLabel));
+                }
+            }
+        }
+
         // ─────────────────────────────────────────────
         //  Cross-device picker bridge
         // ─────────────────────────────────────────────
@@ -1202,11 +1349,14 @@ namespace PadForge.ViewModels
             DeadZone = _deadZone,
             ParamUp = _paramUp ?? "",
             ParamDown = _paramDown ?? "",
+            ParamUpDeviceGuid = string.IsNullOrEmpty(_paramUp) ? null : _paramUpDeviceGuid,
+            ParamDownDeviceGuid = string.IsNullOrEmpty(_paramDown) ? null : _paramDownDeviceGuid,
             ParamRate = _paramRate,
             ParamSticky = _paramSticky,
             ParamMin = _paramMin,
             ParamMax = _paramMax,
             ParamModifier = _paramModifier ?? "",
+            ParamModifierDeviceGuid = string.IsNullOrEmpty(_paramModifier) ? null : _paramModifierDeviceGuid,
             GyroSensitivity = _gyroSensitivity,
             MouseCursorSensitivity = _mouseCursorSensitivity,
             IrPointerSensitivity = _irPointerSensitivity,
@@ -1242,11 +1392,14 @@ namespace PadForge.ViewModels
                 DeadZone = src.DeadZone > 0 ? src.DeadZone : 50,
                 ParamUp = src.ParamUp ?? "",
                 ParamDown = src.ParamDown ?? "",
+                ParamUpDeviceGuid = src.ParamUpDeviceGuid,
+                ParamDownDeviceGuid = src.ParamDownDeviceGuid,
                 ParamRate = src.ParamRate,
                 ParamSticky = src.ParamSticky,
                 ParamMin = src.ParamMin,
                 ParamMax = src.ParamMax,
                 ParamModifier = src.ParamModifier ?? "",
+                ParamModifierDeviceGuid = src.ParamModifierDeviceGuid,
                 GyroSensitivity = src.GyroSensitivity > 0 ? src.GyroSensitivity : 1.0,
                 MouseCursorSensitivity = src.MouseCursorSensitivity > 0 ? src.MouseCursorSensitivity : 1.0,
                 IrPointerSensitivity = src.IrPointerSensitivity > 0 ? src.IrPointerSensitivity : 1.0,

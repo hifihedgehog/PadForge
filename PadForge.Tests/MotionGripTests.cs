@@ -315,19 +315,24 @@ namespace PadForge.Tests
             Assert.Contains("SourceCoercion.GripPov(", rec);
             Assert.Contains("dg.ToString(), _activePadIndex, current.Povs[i]", rec);
 
-            // The param readers: one rotation each, keyed by the evaluated
-            // device with the source guid winning, and no raw hat read left.
+            // The param reader: one rotation, keyed by the device whose state
+            // is in hand (the source guid winning over the evaluated one) or
+            // by the key's own controller, and no raw hat read left. The
+            // evaluator keeps no reader of its own: its Invert on Hold mirror
+            // reads the modifier through the runtime's.
             string skr = RepoText("PadForge.Engine", "Common", "Mapping", "SourceKindRuntime.cs");
             Assert.Equal(1, CountOf(skr, "int v = SourceCoercion.GripPov(deviceGuid, slotIndex, state.Povs[povIdx]);"));
             Assert.DoesNotContain("int v = state.Povs[povIdx];", skr);
-            Assert.Equal(2, CountOf(skr, "string gripGuid = SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid);"));
+            Assert.Equal(1, CountOf(skr, "string hand = SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid);"));
+            Assert.Equal(1, CountOf(skr, "? ReadButtonLikeBool(state, descriptor, hand, slotIndex)"));
+            Assert.Equal(4, CountOf(skr, "src, evaluatedDeviceGuid, slotIndex, anyDeviceSpansSlot: true);"));
             string sev = RepoText("PadForge.Engine", "Common", "Mapping", "SourceEvaluator.cs");
-            Assert.Equal(1, CountOf(sev, "int v = SourceCoercion.GripPov(deviceGuid, slotIndex, state.Povs[povIdx]);"));
+            Assert.DoesNotContain("GripPov(", sev);
             Assert.DoesNotContain("int v = state.Povs[povIdx];", sev);
             // Three Incremental and two Ramped call sites thread the guid.
             Assert.Equal(5, CountOf(sev, "src, state, frameDeltaSeconds, evaluatedDeviceGuid);"));
             Assert.Equal(5, CountOf(sev, "runtime.TickIncremental(") + CountOf(sev, "runtime.TickRamped("));
-            Assert.Equal(3, CountOf(sev, "SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid), slotIndex);"));
+            Assert.Equal(3, CountOf(sev, "src.ParamModifierDeviceGuid, src, evaluatedDeviceGuid, slotIndex,"));
 
             // Macro triggers: the device-bound entry, the device-free entry,
             // the legacy list, and both expression-variable reads.

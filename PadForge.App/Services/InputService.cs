@@ -1490,6 +1490,9 @@ namespace PadForge.Services
             // The "Gamepad ..." names read a Bliss-Box port read raw through
             // the placement of the controller identified in it (#469).
             PadForge.Engine.Common.Mapping.SourceCoercion.GamepadPlacementProvider = InputManager.GamepadPlacementFor;
+            // A key of an Incremental, Ramp or Invert on Hold source reads the
+            // controller it names, wherever the source is read.
+            PadForge.Engine.Common.Mapping.SourceCoercion.KeyHeldProvider = InputManager.KeyHeld;
 
             PadForge.Engine.Common.Mapping.SourceCoercion.GyroTiltGravityProvider =
                 _inputManager.ReadGyroTiltGravity;
@@ -2613,6 +2616,7 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.HasGyroAuxProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.CompassYawCorrectionProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.ButtonHeldProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.KeyHeldProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.BalanceCalibrationProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.BalanceTareKgProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.IrTuningProvider = null;
@@ -8328,6 +8332,11 @@ namespace PadForge.Services
                     {
                         if (s == null) continue;
                         var clonedSrc = s.Clone();
+                        // A key on the copied device moves with it, and a key
+                        // on another controller stays there.
+                        string copiedFrom = s.DeviceGuid ?? "";
+                        clonedSrc.RetargetKeyDevices(g =>
+                            string.Equals(g, copiedFrom, StringComparison.OrdinalIgnoreCase) ? targetGuid : g);
                         clonedSrc.DeviceGuid = targetGuid;   // Clone() carries every Param* field
                         targetRow.Sources.Add(clonedSrc);
                     }
@@ -8397,7 +8406,7 @@ namespace PadForge.Services
                         LayerMask = r.LayerMask ?? "Base",
                     };
                     r.CopySettingsTo(rc);
-                    rc.Sources = CopyRowSources(r, s => s.DeviceGuid ?? "", out bool suppressPair);
+                    rc.Sources = CopyRowSources(r, g => g ?? "", out bool suppressPair);
                     rc.SuppressBipolarPair = suppressPair;
                     copy.Rows.Add(rc);
                 }
@@ -8681,7 +8690,7 @@ namespace PadForge.Services
             foreach (var row in ms.Rows)
             {
                 if (row == null) continue;
-                var clonedSources = CopyRowSources(row, s => s.DeviceGuid ?? "", out bool suppressPair);
+                var clonedSources = CopyRowSources(row, g => g ?? "", out bool suppressPair);
                 var copy = new Engine.Data.MappingRow
                 {
                     Target = row.Target,
@@ -8758,7 +8767,7 @@ namespace PadForge.Services
                 };
                 r.CopySettingsTo(rc);
                 rc.Sources = CopyRowSources(r,
-                    s => RetargetDeviceGuidForSlot(s.DeviceGuid, padIndex), out bool suppressPair);
+                    g => RetargetDeviceGuidForSlot(g, padIndex), out bool suppressPair);
                 rc.SuppressBipolarPair = suppressPair;
                 if (LostEveryMotionInput(r, rc)) continue;
                 copy.Rows.Add(rc);
@@ -8789,8 +8798,13 @@ namespace PadForge.Services
             && !MappingSetMigrator.IsEmptyMotionRow(original)
             && !copy.NoInherit;
 
+        /// <summary>Copies a row's sources, each source's device and each
+        /// key's controller moved through <paramref name="retarget"/> (a device
+        /// guid to the copy's, null where the copy has none). A source whose
+        /// device has none, or whose every key lost its controller, is dropped,
+        /// and a Custom row keeps a blank in its place.</summary>
         internal static List<MappingSource> CopyRowSources(MappingRow row,
-            Func<MappingSource, string> retarget, out bool suppressBipolarPair)
+            Func<string, string> retarget, out bool suppressBipolarPair)
         {
             bool custom = row.CombineMode == "Custom";
             suppressBipolarPair = row.SuppressBipolarPair;
@@ -8809,8 +8823,9 @@ namespace PadForge.Services
                     result.Add(new MappingSource());
                     continue;
                 }
-                string guid = retarget(source);
-                if (guid == null)
+                string guid = retarget(source.DeviceGuid);
+                var clone = guid == null ? null : source.Clone();
+                if (clone == null || clone.RetargetKeyDevices(retarget))
                 {
                     if (custom)
                         result.Add(source.Kind == "InvertOnHold"
@@ -8818,7 +8833,6 @@ namespace PadForge.Services
                             : new MappingSource());
                     continue;
                 }
-                var clone = source.Clone();
                 clone.DeviceGuid = guid;
                 result.Add(clone);
             }
@@ -9023,7 +9037,7 @@ namespace PadForge.Services
                     };
                     r.CopySettingsTo(rc);
                     rc.Sources = CopyRowSources(r,
-                        s => RetargetDeviceGuidForSlot(s.DeviceGuid, targetSlot), out bool suppressPair);
+                        g => RetargetDeviceGuidForSlot(g, targetSlot), out bool suppressPair);
                     rc.SuppressBipolarPair = suppressPair;
                     if (LostEveryMotionInput(r, rc)) continue;
                     copy.Rows.Add(rc);
@@ -13712,6 +13726,16 @@ namespace PadForge.Services
                 }
             }
 
+            // A key reads the controller it names, or any controller when it
+            // names none (SourceKindRuntime.KeyDevice), so it is consumed
+            // there, whatever device its source names.
+            void AddKey(string descriptor, string keyDeviceGuid, MappingSource src)
+            {
+                string dev = PadForge.Engine.Common.Mapping.SourceKindRuntime.KeyDevice(keyDeviceGuid, src);
+                if (dev.Length == 0 || string.Equals(dev, deviceGuidStr, StringComparison.OrdinalIgnoreCase))
+                    AddDescriptor(descriptor);
+            }
+
             foreach (int slotIndex in assignedSlots)
             {
                 // Legacy single-source PadSetting descriptors. These hold the
@@ -13745,13 +13769,6 @@ namespace PadForge.Services
                             {
                                 if (src == null) continue;
 
-                                // Same device scoping the engine uses for a
-                                // per-device pass: empty DeviceGuid means "any
-                                // device" (it resolves to this one at runtime).
-                                if (!string.IsNullOrEmpty(src.DeviceGuid) &&
-                                    !string.Equals(src.DeviceGuid, deviceGuidStr, StringComparison.OrdinalIgnoreCase))
-                                    continue;
-
                                 // A row modifier (Invert on Hold) reads only its
                                 // modifier input (IsInvertOnHoldActive). The
                                 // descriptor and gates it kept from its source
@@ -13759,9 +13776,21 @@ namespace PadForge.Services
                                 // keys no mapping used.
                                 if (string.Equals(src.Kind, "InvertOnHold", StringComparison.Ordinal))
                                 {
-                                    AddDescriptor(src.ParamModifier);
+                                    AddKey(src.ParamModifier, src.ParamModifierDeviceGuid, src);
                                     continue;
                                 }
+                                if (PadForge.Engine.Common.Mapping.SourceEvaluator.UsesUpDownKeys(src))
+                                {
+                                    AddKey(src.ParamUp, src.ParamUpDeviceGuid, src);
+                                    AddKey(src.ParamDown, src.ParamDownDeviceGuid, src);
+                                }
+
+                                // Same device scoping the engine uses for a
+                                // per-device pass: empty DeviceGuid means "any
+                                // device" (it resolves to this one at runtime).
+                                if (!string.IsNullOrEmpty(src.DeviceGuid) &&
+                                    !string.Equals(src.DeviceGuid, deviceGuidStr, StringComparison.OrdinalIgnoreCase))
+                                    continue;
 
                                 // The gate legs first. They are read as input on
                                 // this same device, whatever the kind, and were
@@ -13778,9 +13807,7 @@ namespace PadForge.Services
                                 {
                                     case "Incremental":
                                     case "Ramped":
-                                        AddDescriptor(src.ParamUp);
-                                        AddDescriptor(src.ParamDown);
-                                        break;
+                                        break; // its keys, above
                                     case "WindingStick":
                                     case "AngleToAxisX":
                                     case "AngleToAxisY":
@@ -17702,9 +17729,9 @@ namespace PadForge.Services
         /// still name the old instance, and every runtime consumer matches the
         /// guid exactly (empty = "any device on the slot"), so the rebound pad
         /// would produce no output, engage no shift layer, and open no menu.
-        /// This is the whole set of guid-bearing fields: sources, all three
-        /// activator legs, and menu entries. A new guid-carrying field on any
-        /// of them needs a leg here.</para></summary>
+        /// This is the whole set of guid-bearing fields: sources and their
+        /// keys, all three activator legs, and menu entries. A new
+        /// guid-carrying field on any of them needs a leg here.</para></summary>
         // Internal so the round-eight adoption-drain wiring is testable
         // against a live mapping set.
         internal static void RemapDeviceGuidsInSlotMappingSets(
@@ -17727,7 +17754,11 @@ namespace PadForge.Services
                     {
                         if (row?.Sources == null) continue;
                         foreach (var s in row.Sources)
-                            if (s != null) s.DeviceGuid = Map(s.DeviceGuid);
+                        {
+                            if (s == null) continue;
+                            s.DeviceGuid = Map(s.DeviceGuid);
+                            s.RetargetKeyDevices(Map);
+                        }
                     }
                 }
 

@@ -205,9 +205,12 @@ namespace PadForge.ViewModels
             if (!ReferenceEquals(msi, _primaryKindSource)) msi.EnforceRapidTriggerGate();
             msi.SyncSelectedInputFromState(AvailableInputs);
             // ParamUp/Down/Modifier picker bridges resolve their
-            // InputChoice against this row's AvailableInputs — re-fire
-            // the picker getters whenever the input list is rebuilt.
+            // InputChoice against this row's AvailableInputs, so the
+            // picker getters re-fire whenever the input list is rebuilt.
             msi.RefreshParamPickerChoices();
+            // With the list in, a key saved before keys carried a controller
+            // takes the one its picker shows.
+            msi.AdoptLegacyKeyDevices();
         }
 
         /// <summary>True when the row's target is a discrete
@@ -464,23 +467,36 @@ namespace PadForge.ViewModels
                 p.ParamUp = "";
                 p.ParamDown = "";
                 p.ParamModifier = "";
+                p.ParamUpDeviceGuid = null;
+                p.ParamDownDeviceGuid = null;
+                p.ParamModifierDeviceGuid = null;
                 p.Kind = src?.Kind is "Toggle" or "RapidTrigger" ? src.Kind : "Direct";
                 return;
             }
-            p.DeviceGuid = src.DeviceGuid ?? "";
-            p.Invert = src.Invert;
-            p.ParamUp = src.ParamUp ?? "";
-            p.ParamDown = src.ParamDown ?? "";
-            p.ParamRate = src.ParamRate;
-            p.ParamSticky = src.ParamSticky;
-            p.ParamMin = src.ParamMin;
-            p.ParamMax = src.ParamMax;
-            p.ParamModifier = src.ParamModifier ?? "";
-            p.ParamAttackTime = src.ParamAttackTime;
-            p.ParamReleaseTime = src.ParamReleaseTime;
-            p.ParamAutocenter = src.ParamAutocenter;
-            p.ParamReverseMultiplier = src.ParamReverseMultiplier >= 1 ? src.ParamReverseMultiplier : 4.0;
-            p.Kind = src.Kind; // set Kind last so card visibility settles after params load
+            // The device lands before the keys, so no key takes a controller
+            // until the whole source is in (MappingSourceItem.LoadingKeys).
+            p.LoadingKeys = true;
+            try
+            {
+                p.DeviceGuid = src.DeviceGuid ?? "";
+                p.Invert = src.Invert;
+                p.ParamUp = src.ParamUp ?? "";
+                p.ParamDown = src.ParamDown ?? "";
+                p.ParamUpDeviceGuid = src.ParamUpDeviceGuid;
+                p.ParamDownDeviceGuid = src.ParamDownDeviceGuid;
+                p.ParamRate = src.ParamRate;
+                p.ParamSticky = src.ParamSticky;
+                p.ParamMin = src.ParamMin;
+                p.ParamMax = src.ParamMax;
+                p.ParamModifier = src.ParamModifier ?? "";
+                p.ParamModifierDeviceGuid = src.ParamModifierDeviceGuid;
+                p.ParamAttackTime = src.ParamAttackTime;
+                p.ParamReleaseTime = src.ParamReleaseTime;
+                p.ParamAutocenter = src.ParamAutocenter;
+                p.ParamReverseMultiplier = src.ParamReverseMultiplier >= 1 ? src.ParamReverseMultiplier : 4.0;
+                p.Kind = src.Kind; // set Kind last so card visibility settles after params load
+            }
+            finally { p.LoadingKeys = false; }
             RefreshExtraSourceInputs(p);
         }
 
@@ -1790,6 +1806,9 @@ namespace PadForge.ViewModels
                     p.ParamUp = "";
                     p.ParamDown = "";
                     p.ParamModifier = "";
+                    p.ParamUpDeviceGuid = null;
+                    p.ParamDownDeviceGuid = null;
+                    p.ParamModifierDeviceGuid = null;
                     p.ParamRapidTriggerDistance = Engine.Data.MappingSource.DefaultRapidTriggerDistance;
                     p.Kind = "Direct";
                 }

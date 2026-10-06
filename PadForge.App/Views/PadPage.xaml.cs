@@ -1996,7 +1996,7 @@ namespace PadForge.Views
             };
             source.CopySettingsTo(copy);
             copy.Sources = PadForge.Services.InputService.CopyRowSources(source,
-                s => s.DeviceGuid ?? "", out bool suppressPair);
+                g => g ?? "", out bool suppressPair);
             copy.SuppressBipolarPair = suppressPair;
             return copy;
         }

@@ -159,6 +159,16 @@ namespace PadForge.Common.Input
                 var src = srcs[i];
                 if (src == null || IsRowModifierSource(src)) continue;
                 if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
+                if (string.IsNullOrEmpty(src.DeviceGuid) && SourceEvaluator.UsesUpDownKeys(src))
+                {
+                    // Its keys read the controllers they name (KeyHeld), so the
+                    // pass in hand reads it once.
+                    float kv = SourceEvaluator.EvaluateForTriggerTarget(
+                        currentState, src, slotIndex, row.Target, i, slotRuntime, dt,
+                        evaluatedDeviceGuid: currentDeviceGuid, layer: row.LayerMask);
+                    if (kv > gate) gate = kv;
+                    continue;
+                }
                 // Empty DeviceGuid = "the device currently being evaluated"
                 // (the documented MappingSource.DeviceGuid contract, same
                 // resolution the single-source per-target evaluators use).
@@ -213,7 +223,14 @@ namespace PadForge.Common.Input
                 if (!IsSourceSuppressedPostpone(slotIndex, trimSrc.DeviceGuid, trimSrc.Descriptor))
                 {
                     float v = 0f;
-                    if (string.IsNullOrEmpty(trimSrc.DeviceGuid))
+                    if (string.IsNullOrEmpty(trimSrc.DeviceGuid) && SourceEvaluator.UsesUpDownKeys(trimSrc))
+                    {
+                        // Its keys read the controllers they name (KeyHeld).
+                        v = SourceEvaluator.EvaluateForBipolarAxisTarget(
+                            currentState, trimSrc, slotIndex, row.Target, trimIdx, slotRuntime, dt,
+                            evaluatedDeviceGuid: currentDeviceGuid, layer: row.LayerMask);
+                    }
+                    else if (string.IsNullOrEmpty(trimSrc.DeviceGuid))
                     {
                         // Signed read, so the strongest deflection wins by
                         // magnitude rather than by max, the same selection the
@@ -2715,10 +2732,13 @@ namespace PadForge.Common.Input
         /// <see cref="IsRowModifierSource"/>); only its ParamModifier
         /// affects the row by sign-flipping the post-combine output.
         ///
-        /// <para>The modifier is read against each source's own DeviceGuid
-        /// when set; otherwise against the device currently processing
-        /// the row. Multiple InvertOnHold sources on one row OR together:
-        /// any held modifier triggers the flip.</para></summary>
+        /// <para>The modifier is read on the controller it names
+        /// (SourceKindRuntime.KeyDevice: its own, or the source's for a key
+        /// saved before keys carried one). An "(Any Device)" modifier reads
+        /// the device currently processing the row, or the whole slot on a
+        /// row whose value is the same on every pass. Multiple InvertOnHold
+        /// sources on one row OR together: any held modifier triggers the
+        /// flip.</para></summary>
         private static bool IsInvertOnHoldActive(MappingRow row, CustomInputState fallbackState, string fallbackDeviceGuid, int slotIndex,
             bool slotWide = false)
         {
@@ -2734,11 +2754,12 @@ namespace PadForge.Common.Input
                 if (!string.Equals(src.Kind ?? "Direct", "InvertOnHold", System.StringComparison.Ordinal))
                     continue;
                 if (string.IsNullOrEmpty(src.ParamModifier)) continue;
+                string modDev = SourceKindRuntime.KeyDevice(src.ParamModifierDeviceGuid, src);
                 // A row whose value is the same on every pass (slotWide) reads
                 // an "(Any Device)" modifier across the slot. Read on the pass
                 // device alone, it saw only whichever device's pass computed
                 // the row, so a press on another controller never inverted it.
-                if (slotWide && string.IsNullOrEmpty(src.DeviceGuid))
+                if (slotWide && modDev.Length == 0)
                 {
                     if (AnyDeviceModifierHeld(src, fallbackState, fallbackDeviceGuid, slotIndex)) return true;
                     continue;
@@ -2748,9 +2769,9 @@ namespace PadForge.Common.Input
                 // a slot no device answers for is read by the slot's Web Menus
                 // phone (#471), whichever pass is running, since a row read
                 // once per frame runs on one pass only.
-                string modifierDeviceGuid = string.IsNullOrEmpty(src.DeviceGuid) ? fallbackDeviceGuid : src.DeviceGuid;
+                string modifierDeviceGuid = modDev.Length == 0 ? fallbackDeviceGuid : modDev;
                 CustomInputState phoneModifierState = null;
-                if (string.IsNullOrEmpty(src.DeviceGuid) && !AnswersAnyDevice(fallbackDeviceGuid)
+                if (modDev.Length == 0 && !AnswersAnyDevice(fallbackDeviceGuid)
                     && !TryPhoneForMenuCell(src.ParamModifier, slotIndex, out phoneModifierState, out modifierDeviceGuid))
                     continue;
                 // The modifier takes the full Direct read, so a stick ring or
@@ -2758,7 +2779,7 @@ namespace PadForge.Common.Input
                 // all the way: an "(Any Device)" ring modifier read a keyboard
                 // as held. The pass device answers only with the axes the
                 // modifier reads (#431).
-                if (phoneModifierState == null && string.IsNullOrEmpty(src.DeviceGuid)
+                if (phoneModifierState == null && modDev.Length == 0
                     && !HasAxesFor(LookupUserDevice(fallbackDeviceGuid), src.ParamModifier, fallbackState))
                     continue;
                 // PostponeMapping suppression. When an activator with
@@ -2778,10 +2799,10 @@ namespace PadForge.Common.Input
                 // modifier.
                 CustomInputState s;
                 if (phoneModifierState != null) s = phoneModifierState;
-                else if (string.IsNullOrEmpty(src.DeviceGuid)) s = fallbackState;
+                else if (modDev.Length == 0) s = fallbackState;
                 else
                 {
-                    s = LookupDeviceState(src.DeviceGuid);
+                    s = LookupDeviceState(modDev);
                     if (s == null) continue;
                 }
                 // Both keys ride along, same as all five sibling call sites.
@@ -2817,9 +2838,69 @@ namespace PadForge.Common.Input
                 && SourceKindRuntimeReadButtonLikeBool(phoneState, src.ParamModifier, phoneGuid, slotIndex);
         }
 
+        // The slot's devices for an "(Any Device)" key. A buffer of its own:
+        // KeyHeld runs inside the multi-source builders' walks over the one
+        // GetSlotDeviceStates hands out.
+        [System.ThreadStatic] private static List<string> _keySpanGuidsBuf;
+
+        /// <summary>The app's <see cref="SourceCoercion.KeyHeldProvider"/>: a
+        /// key of an Incremental, Ramp or Invert on Hold source read on the
+        /// controller it names. A device guid reads that device while it is
+        /// online, through its placement. An empty guid reads every device on
+        /// the slot that answers "(Any Device)" and has the inputs the key
+        /// reads, the span <see cref="AnyDeviceModifierHeld"/> reads. A menu
+        /// cell there reads as the slot's, the empty guid
+        /// <see cref="ActivatorLegGuid"/> gives an "(Any Device)" activator's
+        /// cell, so a menu scoped to any controller answers, a Web Menus
+        /// phone's included.</summary>
+        internal static bool KeyHeld(string keyDeviceGuid, string descriptor, int slotIndex)
+        {
+            if (string.IsNullOrWhiteSpace(descriptor)) return false;
+            if (!string.IsNullOrEmpty(keyDeviceGuid))
+            {
+                var dev = LookupUserDevice(keyDeviceGuid);
+                // Online only, the rule LookupDeviceState keeps: a failed read
+                // marks a device offline without clearing its state.
+                var state = dev != null && dev.IsOnline ? dev.InputState : null;
+                if (state == null) return false;
+                using var placement = SourceCoercion.UsePlacement(PlacementOf(dev));
+                return SourceKindRuntime.ReadKeyOn(state, descriptor, keyDeviceGuid, slotIndex);
+            }
+            if (SourceCoercion.IsMenuItemDescriptor(descriptor))
+                return SourceKindRuntime.ReadKeyOn(OfflinePinnedRestState, descriptor, "", slotIndex);
+            var settings = SettingsManager.UserSettings;
+            if (slotIndex < 0 || settings?.Items == null) return false;
+            var guids = _keySpanGuidsBuf ??= new List<string>(4);
+            guids.Clear();
+            // GetSlotDeviceStates's lock order: the guids under
+            // UserSettings.SyncRoot, the devices after it is released.
+            lock (settings.SyncRoot)
+            {
+                for (int i = 0; i < settings.Items.Count; i++)
+                {
+                    var us = settings.Items[i];
+                    if (us != null && us.MapTo == slotIndex) guids.Add(us.InstanceGuidString);
+                }
+            }
+            for (int i = 0; i < guids.Count; i++)
+            {
+                string g = guids[i];
+                // (#431) A device that never answers the wildcard stays out.
+                if (!AnswersAnyDevice(g)) continue;
+                var dev = LookupUserDevice(g);
+                var state = dev != null && dev.IsOnline ? dev.InputState : null;
+                if (state == null || !HasAxesFor(dev, descriptor, state)) continue;
+                using var placement = SourceCoercion.UsePlacement(PlacementOf(dev));
+                if (SourceKindRuntime.ReadKeyOn(state, descriptor, g, slotIndex)) return true;
+            }
+            return false;
+        }
+
         /// <summary>True when a row reads the same sources whichever device's
         /// pass evaluates it: every contributing source is pinned to a
-        /// device. Its InvertOnHold modifier is then read across the slot
+        /// device, or reads only keys, which read the controllers they name
+        /// (<see cref="SourceEvaluator.UsesUpDownKeys"/>). Its InvertOnHold
+        /// modifier is then read across the slot
         /// (<see cref="IsInvertOnHoldActive"/>).</summary>
         private static bool RowValueIgnoresThePass(MappingRow row)
         {
@@ -2830,7 +2911,7 @@ namespace PadForge.Common.Input
             {
                 var s = srcs[i];
                 if (s == null || IsRowModifierSource(s) || SourceEvaluator.IsUnmappedDirect(s)) continue;
-                if (string.IsNullOrEmpty(s.DeviceGuid)) return false;
+                if (string.IsNullOrEmpty(s.DeviceGuid) && !SourceEvaluator.UsesUpDownKeys(s)) return false;
                 any = true;
             }
             return any;
@@ -3017,9 +3098,10 @@ namespace PadForge.Common.Input
             CustomInputState state, bool stickRead = false)
         {
             if (src == null) return false;
-            // "any device" (#431), and a phone's own menu cells (#471).
+            // "any device" (#431), a phone's own menu cells (#471), and a key
+            // source on a slot no device answers for (KeysStandIn).
             if (string.IsNullOrEmpty(src.DeviceGuid))
-                return AnswersAnyDeviceRead(thisDeviceGuid, src, state, stickRead) || PhoneStandsIn(src, thisDeviceGuid, slotIndex, state, stickRead);
+                return AnswersAnyDeviceRead(thisDeviceGuid, src, state, stickRead) || StandsInForAnyDevice(src, thisDeviceGuid, slotIndex, state, stickRead);
             return string.Equals(src.DeviceGuid, thisDeviceGuid, System.StringComparison.OrdinalIgnoreCase);
         }
 
@@ -3449,22 +3531,21 @@ namespace PadForge.Common.Input
                    || SourceCoercion.NumberedAxesRead(src.GateDescriptor, out _, out _) > 0
                    || SourceCoercion.NumberedAxesRead(src.Gate2Descriptor, out _, out _) > 0);
 
-        /// <summary>True when a descriptor <paramref name="src"/> reads names
-        /// the "Gamepad ..." family: its gates, the buttons an Incremental or
-        /// Ramped source steps with, a steering kind's axis aliases on the
-        /// stick lane (its reader takes a ring there as centered, reading
-        /// nothing), or else its input where its kind reads one. The same
-        /// reads <see cref="ReadsNumberedAxis"/> takes, plus the step
-        /// buttons.</summary>
+        /// <summary>True when a descriptor <paramref name="src"/> reads on the
+        /// pass device names the "Gamepad ..." family: its gates, a steering
+        /// kind's axis aliases on the stick lane (its reader takes a ring
+        /// there as centered, reading nothing), or else its input where its
+        /// kind reads one. The same reads <see cref="ReadsNumberedAxis"/>
+        /// takes. The keys of an Incremental or Ramp source read the
+        /// controllers they name (<see cref="KeyHeld"/>), which tests the
+        /// family on each device it reads.</summary>
         private static bool ReadsGamepadFamily(MappingSource src, bool stickRead)
         {
             if (src == null) return false;
             if (SourceCoercion.IsGamepadAliasDescriptor(src.GateDescriptor)
                 || SourceCoercion.IsGamepadAliasDescriptor(src.Gate2Descriptor))
                 return true;
-            if (src.Kind is "Incremental" or "Ramped")
-                return SourceCoercion.IsGamepadAliasDescriptor(src.ParamUp)
-                       || SourceCoercion.IsGamepadAliasDescriptor(src.ParamDown);
+            if (SourceEvaluator.UsesUpDownKeys(src)) return false;
             if (stickRead && ReadsStickPair(src.Kind))
                 return SourceCoercion.IsGamepadAxisAlias(src.Descriptor)
                        || SourceCoercion.IsGamepadAxisAlias(src.ParamYDescriptor);
@@ -3623,6 +3704,24 @@ namespace PadForge.Common.Input
         private static bool PhoneStandsIn(MappingSource src, string deviceGuid, int slotIndex, CustomInputState state,
             bool stickRead = false)
             => PhoneStandsIn(src.Descriptor, deviceGuid, slotIndex) && HasAxesFor(deviceGuid, src, state, stickRead);
+
+        /// <summary>True when a pass device that does not answer "(Any
+        /// Device)" reads <paramref name="src"/> anyway: a Web Menus phone
+        /// reading its menu cells (<see cref="PhoneStandsIn(MappingSource, string, int, CustomInputState, bool)"/>),
+        /// or a key source on a slot no online device answers for
+        /// (<see cref="KeysStandIn"/>).</summary>
+        private static bool StandsInForAnyDevice(MappingSource src, string deviceGuid, int slotIndex,
+            CustomInputState state, bool stickRead = false)
+            => PhoneStandsIn(src, deviceGuid, slotIndex, state, stickRead) || KeysStandIn(src, slotIndex);
+
+        /// <summary>True for an Incremental or Ramp source on a slot where no
+        /// online device answers "(Any Device)". Its keys read the controllers
+        /// they name (<see cref="KeyHeld"/>), nothing of the pass device, so
+        /// every pass reads it there. A source whose keys are on two such
+        /// controllers, like a pair of VR controllers, has no controller of
+        /// its own, and no pass would read it otherwise.</summary>
+        private static bool KeysStandIn(MappingSource src, int slotIndex)
+            => SourceEvaluator.UsesUpDownKeys(src) && slotIndex >= 0 && !SlotHasAnsweringDevice(slotIndex);
 
         // ── Web Menus phones (#471) ──────────────────────────────────────
         // A phone never answers "(Any Device)", because its input arrays
@@ -3885,6 +3984,16 @@ namespace PadForge.Common.Input
                 bool posAny = string.IsNullOrEmpty(src.DeviceGuid);
                 bool negAny = useNeg && string.IsNullOrEmpty(negSrc.DeviceGuid);
 
+                if (posAny && !hasNegPair && SourceEvaluator.UsesUpDownKeys(src))
+                {
+                    // Its keys read the controllers they name (KeyHeld), so the
+                    // pass in hand reads it once, on a slot no device answers
+                    // "(Any Device)" for too.
+                    list.Add(SourceEvaluator.EvaluateForBipolarAxisTarget(
+                        currentState, src, slotIndex, row.Target, i, slotRuntime, dt,
+                        evaluatedDeviceGuid: currentDeviceGuid, layer: row.LayerMask));
+                    continue;
+                }
                 if (posAny || negAny)
                 {
                     // Any "any device" side spans the slot's devices (the row is
@@ -3988,6 +4097,16 @@ namespace PadForge.Common.Input
                 { list.Add(0f); continue; }
                 if (string.IsNullOrEmpty(src.DeviceGuid))
                 {
+                    // Its keys read the controllers they name (KeyHeld), so the
+                    // pass in hand reads it once, on a slot no device answers
+                    // "(Any Device)" for too.
+                    if (SourceEvaluator.UsesUpDownKeys(src))
+                    {
+                        list.Add(SourceEvaluator.EvaluateForTriggerTarget(
+                            currentState, src, slotIndex, row.Target, i, slotRuntime, dt,
+                            evaluatedDeviceGuid: currentDeviceGuid, layer: row.LayerMask));
+                        continue;
+                    }
                     // "any device": take the strongest pull across the slot's
                     // devices (this row is evaluated once, so it must span all
                     // devices, not just the first-evaluated one).
@@ -4045,6 +4164,17 @@ namespace PadForge.Common.Input
                 { list.Add(0f); continue; }
                 if (string.IsNullOrEmpty(src.DeviceGuid))
                 {
+                    // Its keys read the controllers they name (KeyHeld), so the
+                    // pass in hand reads it once, on a slot no device answers
+                    // "(Any Device)" for too.
+                    if (SourceEvaluator.UsesUpDownKeys(src))
+                    {
+                        list.Add(SourceEvaluator.EvaluateForButtonTarget(
+                            currentState, src, globalAxisToButtonThreshold,
+                            slotIndex, row.Target, i, slotRuntime, dt,
+                            evaluatedDeviceGuid: currentDeviceGuid, layer: row.LayerMask) ? 1f : 0f);
+                        continue;
+                    }
                     // "any device": OR the button read across every device on
                     // the slot (this row is evaluated once, so it must span all
                     // devices, not just the first-evaluated one).
@@ -4654,9 +4784,10 @@ namespace PadForge.Common.Input
                 // (#431) A pass device that never answers "(Any Device)",
                 // or lacks an axis the source reads, reads rest, the
                 // offline-pinned shape below. A Web Menus phone alone on
-                // the slot still reads its menu cells (#471).
+                // the slot still reads its menu cells (#471), and any pass
+                // reads a key source on a slot no device answers for.
                 if (!AnswersAnyDeviceRead(thisDeviceGuid, src, state)
-                    && !PhoneStandsIn(src, thisDeviceGuid, slotIndex, state)) return true;
+                    && !StandsInForAnyDevice(src, thisDeviceGuid, slotIndex, state)) return true;
                 devState = state;
             }
             else
@@ -4764,9 +4895,10 @@ namespace PadForge.Common.Input
                         // (#431) A pass device that never answers "(Any Device)",
                         // or lacks an axis the source reads, reads rest, the
                         // offline-pinned shape below. A Web Menus phone alone on
-                        // the slot still reads its menu cells (#471).
+                        // the slot still reads its menu cells (#471), and any pass
+                        // reads a key source on a slot no device answers for.
                         if (!AnswersAnyDeviceRead(thisDeviceGuid, src, state, stickRead: true)
-                            && !PhoneStandsIn(src, thisDeviceGuid, slotIndex, state, stickRead: true)) return true;
+                            && !StandsInForAnyDevice(src, thisDeviceGuid, slotIndex, state, stickRead: true)) return true;
                         devState = state;
                     }
                     else
@@ -4865,9 +4997,10 @@ namespace PadForge.Common.Input
                     // (#431) A pass device that never answers "(Any Device)",
                     // or lacks an axis the source reads, reads rest, the
                     // offline-pinned shape below. A Web Menus phone alone on
-                    // the slot still reads its menu cells (#471).
+                    // the slot still reads its menu cells (#471), and any pass
+                    // reads a key source on a slot no device answers for.
                     if (!AnswersAnyDeviceRead(thisDeviceGuid, src, state, stickRead: true)
-                        && !PhoneStandsIn(src, thisDeviceGuid, slotIndex, state, stickRead: true))
+                        && !StandsInForAnyDevice(src, thisDeviceGuid, slotIndex, state, stickRead: true))
                     { values.Add(0f); flags.Add(0f); continue; }
                     devState = state;
                 }
@@ -5050,9 +5183,10 @@ namespace PadForge.Common.Input
                         // (#431) A pass device that never answers "(Any Device)",
                         // or lacks an axis the source reads, reads rest, the
                         // offline-pinned shape below. A Web Menus phone alone on
-                        // the slot still reads its menu cells (#471).
+                        // the slot still reads its menu cells (#471), and any pass
+                        // reads a key source on a slot no device answers for.
                         if (!AnswersAnyDeviceRead(thisDeviceGuid, src, state)
-                            && !PhoneStandsIn(src, thisDeviceGuid, slotIndex, state)) return true;
+                            && !StandsInForAnyDevice(src, thisDeviceGuid, slotIndex, state)) return true;
                         devState = state;
                     }
                     else

@@ -430,14 +430,15 @@ namespace PadForge.Views
                 return;
             if (src.UsesUpDownKeys)
             {
-                AppendAnnotationParamWire(rows, src, src.ParamUp, src.ParamUpInputChoice);
-                AppendAnnotationParamWire(rows, src, src.ParamDown, src.ParamDownInputChoice);
+                AppendAnnotationParamWire(rows, src.ParamUp, src.ParamUpReadDevice, src.ParamUpInputChoice);
+                AppendAnnotationParamWire(rows, src.ParamDown, src.ParamDownReadDevice, src.ParamDownInputChoice);
                 return;
             }
             if (src.IsInvertOnHoldKind)
             {
                 // The descriptor a modifier kept from its source is no input.
-                AppendAnnotationParamWire(rows, src, src.ParamModifier, src.ParamModifierInputChoice);
+                AppendAnnotationParamWire(rows, src.ParamModifier, src.ParamModifierReadDevice,
+                    src.ParamModifierInputChoice);
                 return;
             }
 
@@ -455,15 +456,15 @@ namespace PadForge.Views
             }
         }
 
+        /// <summary>A key's wire, under the controller the key reads
+        /// (<paramref name="readDevice"/>, empty for any controller).</summary>
         private void AppendAnnotationParamWire(List<AnnotationWireRow> rows,
-            MappingSourceItem src, string descriptor, InputChoice choice)
+            string descriptor, string readDevice, InputChoice choice)
         {
             string name = (choice?.DisplayName ?? descriptor ?? string.Empty).Trim();
             if (name.Length == 0)
                 return;
-            AppendAnnotationWire(rows,
-                string.IsNullOrEmpty(choice?.DeviceGuid) ? src.DeviceGuid : choice.DeviceGuid,
-                choice?.DeviceLabel, name);
+            AppendAnnotationWire(rows, readDevice, choice?.DeviceLabel, name);
         }
 
         private void AppendAnnotationWire(List<AnnotationWireRow> rows,

@@ -262,11 +262,11 @@ namespace PadForge.Engine.Common.Mapping
         /// <summary>
         /// Updates the Incremental accumulator for this source and returns
         /// the per-frame contribution (already in the source kind's
-        /// configured range, unipolar [ParamMin, ParamMax]).
-        /// <paramref name="evaluatedDeviceGuid"/> is the device the
-        /// evaluator is reading, the grip key for a hat-named up or down
-        /// input (#392). A non-empty source guid wins over it, the same
-        /// fallback SourceEvaluator's gate uses.
+        /// configured range, unipolar [ParamMin, ParamMax]). Each key reads
+        /// the controller it names (<see cref="ReadKey"/>).
+        /// <paramref name="evaluatedDeviceGuid"/> is the device the evaluator
+        /// reads <paramref name="state"/> from when the source names none,
+        /// which keys the grip of a hat-named key read there (#392).
         /// </summary>
         public double TickIncremental(
             int slotIndex,
@@ -292,9 +292,10 @@ namespace PadForge.Engine.Common.Mapping
             if (current < src.ParamMin) current = src.ParamMin;
             if (current > src.ParamMax) current = src.ParamMax;
 
-            string gripGuid = SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid);
-            bool up = ReadButtonLikeBool(state, src.ParamUp, gripGuid, slotIndex);
-            bool down = ReadButtonLikeBool(state, src.ParamDown, gripGuid, slotIndex);
+            bool up = ReadKey(state, src.ParamUp, src.ParamUpDeviceGuid,
+                src, evaluatedDeviceGuid, slotIndex, anyDeviceSpansSlot: true);
+            bool down = ReadKey(state, src.ParamDown, src.ParamDownDeviceGuid,
+                src, evaluatedDeviceGuid, slotIndex, anyDeviceSpansSlot: true);
 
             double rate = src.ParamRate;
             if (rate < 0) rate = 0;
@@ -341,8 +342,9 @@ namespace PadForge.Engine.Common.Mapping
         /// <see cref="MappingSource.ParamReverseMultiplier"/> when autocenter is on,
         /// then attacks the new side once it crosses zero. Linear ramps only. The
         /// FreePIE center_reduction shaping is out of scope per the recipe.
-        /// <paramref name="evaluatedDeviceGuid"/> keys the grip for a hat-named
-        /// key (#392), with a non-empty source guid winning over it.
+        /// Each key reads the controller it names (<see cref="ReadKey"/>), and
+        /// <paramref name="evaluatedDeviceGuid"/> keys the grip of a hat-named
+        /// key read on the evaluated device (#392).
         /// </summary>
         public double TickRamped(
             int slotIndex,
@@ -362,9 +364,10 @@ namespace PadForge.Engine.Common.Mapping
             replay.Seq = FrameSeq;
             _rampedAccum.TryGetValue(key, out double v);
 
-            string gripGuid = SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid);
-            bool up = ReadButtonLikeBool(state, src.ParamUp, gripGuid, slotIndex);     // positive direction
-            bool down = ReadButtonLikeBool(state, src.ParamDown, gripGuid, slotIndex); // negative direction
+            bool up = ReadKey(state, src.ParamUp, src.ParamUpDeviceGuid,
+                src, evaluatedDeviceGuid, slotIndex, anyDeviceSpansSlot: true);     // positive direction
+            bool down = ReadKey(state, src.ParamDown, src.ParamDownDeviceGuid,
+                src, evaluatedDeviceGuid, slotIndex, anyDeviceSpansSlot: true);     // negative direction
 
             double attack = src.ParamAttackTime;   if (attack < 0) attack = 0;
             double release = src.ParamReleaseTime; if (release < 0) release = 0;
@@ -1182,6 +1185,52 @@ namespace PadForge.Engine.Common.Mapping
                 || SourceCoercion.IsIrOffscreenDescriptor(s)
                 || SourceCoercion.IsHardwareBoolDescriptor(s);
         }
+
+        /// <summary>The controller a key of <paramref name="src"/> reads: the
+        /// one it carries (<see cref="MappingSource.ParamUpDeviceGuid"/> and
+        /// its siblings), or empty for any controller on the slot. A key saved
+        /// before keys carried a controller has none (null) and reads where it
+        /// always did, on the source's own controller, or on any controller
+        /// when the source names none.</summary>
+        public static string KeyDevice(string keyDeviceGuid, MappingSource src)
+            => keyDeviceGuid ?? src?.DeviceGuid ?? "";
+
+        /// <summary>Reads a key of <paramref name="src"/> on the controller it
+        /// names (<see cref="KeyDevice"/>). <paramref name="state"/> belongs to
+        /// the device the evaluator reads the source on, the one
+        /// SourceCoercion.EffectiveDeviceGuid names, so a key on that device
+        /// reads it straight. A key on another controller reads through
+        /// SourceCoercion.KeyHeldProvider. So does an "(Any Device)" key when
+        /// <paramref name="anyDeviceSpansSlot"/>: an Incremental or Ramp key is
+        /// read once a frame (the replay guard), so it has to see every
+        /// controller on the slot, not the one whose pass came first. The
+        /// Invert on Hold mirror passes false and reads such a key on the pass
+        /// device, as Step 3 reads the modifier of a row each pass reads apart
+        /// (InputManager.IsInvertOnHoldActive). Without the provider, an
+        /// engine-only caller, every key reads the state in hand.</summary>
+        internal static bool ReadKey(CustomInputState state, string descriptor, string keyDeviceGuid,
+            MappingSource src, string evaluatedDeviceGuid, int slotIndex, bool anyDeviceSpansSlot)
+        {
+            if (string.IsNullOrWhiteSpace(descriptor)) return false;
+            string hand = SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid);
+            string key = KeyDevice(keyDeviceGuid, src);
+            bool inHand = key.Length == 0
+                ? !anyDeviceSpansSlot
+                : string.Equals(key, hand, StringComparison.OrdinalIgnoreCase);
+            var provider = SourceCoercion.KeyHeldProvider;
+            // A caller with no slot (slotIndex below zero) has no controllers
+            // to span, so an "(Any Device)" key reads the state in hand there.
+            return inHand || provider == null || (key.Length == 0 && slotIndex < 0)
+                ? ReadButtonLikeBool(state, descriptor, hand, slotIndex)
+                : provider(key, descriptor, slotIndex);
+        }
+
+        /// <summary>A key read on one device's own state, the read behind the
+        /// app's SourceCoercion.KeyHeldProvider. <paramref name="deviceGuid"/>
+        /// owns <paramref name="state"/> and keys the grip of a hat and the
+        /// per-device families.</summary>
+        public static bool ReadKeyOn(CustomInputState state, string descriptor, string deviceGuid, int slotIndex)
+            => ReadButtonLikeBool(state, descriptor, deviceGuid, slotIndex);
 
         // Reads a button-like descriptor (Button N or POV N Dir) from a
         // CustomInputState. No deadzone handling here. Incremental's up

@@ -86,13 +86,26 @@ namespace PadForge.Engine.Data
 
         // ─── Kind-specific parameters (only the relevant subset is read per Kind) ───
 
-        /// <summary>Incremental.up — descriptor of the button that ramps the
-        /// accumulator upward while held. Only read when <c>Kind == "Incremental"</c>.</summary>
+        /// <summary>The Up key of an Incremental or Ramp source: the input that
+        /// moves the value up while held.</summary>
         [XmlAttribute] public string ParamUp { get; set; } = "";
 
-        /// <summary>Incremental.down — descriptor of the button that ramps the
-        /// accumulator downward while held.</summary>
+        /// <summary>The Down key of an Incremental or Ramp source: the input
+        /// that moves the value down while held.</summary>
         [XmlAttribute] public string ParamDown { get; set; } = "";
+
+        /// <summary>The controller <see cref="ParamUp"/> reads: the device the
+        /// key was picked or recorded from, or empty for any controller on the
+        /// slot. Null for a key saved before keys carried a controller, which
+        /// reads where every key used to, on this source's
+        /// <see cref="DeviceGuid"/> (SourceKindRuntime.KeyDevice). No
+        /// initializer, so the serializer leaves a null out and an absent
+        /// attribute loads as null.</summary>
+        [XmlAttribute] public string ParamUpDeviceGuid { get; set; }
+
+        /// <summary>The controller <see cref="ParamDown"/> reads, by the rules
+        /// of <see cref="ParamUpDeviceGuid"/>.</summary>
+        [XmlAttribute] public string ParamDownDeviceGuid { get; set; }
 
         /// <summary>Incremental rate in units-per-second (full output range
         /// is 1.0 unit, so 0.5 means full sweep takes 2 s).</summary>
@@ -112,10 +125,14 @@ namespace PadForge.Engine.Data
         [XmlAttribute] public double ParamMax { get => _paramMax; set => _paramMax = Finite(value, _paramMax); }
         private double _paramMax = 1;
 
-        /// <summary>InvertOnHold modifier — descriptor of the button that
-        /// inverts the inner source while held. Only read when
+        /// <summary>The modifier key of an Invert on Hold source: the input
+        /// that inverts the row while held. Only read when
         /// <c>Kind == "InvertOnHold"</c>.</summary>
         [XmlAttribute] public string ParamModifier { get; set; } = "";
+
+        /// <summary>The controller <see cref="ParamModifier"/> reads, by the
+        /// rules of <see cref="ParamUpDeviceGuid"/>.</summary>
+        [XmlAttribute] public string ParamModifierDeviceGuid { get; set; }
 
         // ─── Ramped axis envelope (v3.5 #111) ───
         // A keyboard-to-axis time-based ramp. The positive-direction key (ParamUp)
@@ -528,6 +545,36 @@ namespace PadForge.Engine.Data
         /// steering stamp), and a fresh source keeps its default.</summary>
         private static double Finite(double value, double current)
             => double.IsFinite(value) ? value : current;
+
+        /// <summary>Moves each key's controller through
+        /// <paramref name="retarget"/>, an old device guid to its new one, or
+        /// to null where there is none, and drops a key that has none. A key
+        /// that reads any controller, or carries none of its own, stays as it
+        /// is. True when every key the kind reads was dropped, so the source
+        /// reads nothing any more.</summary>
+        public bool RetargetKeyDevices(System.Func<string, string> retarget)
+        {
+            bool upDown = Kind is "Incremental" or "Ramped";
+            bool modifier = Kind == "InvertOnHold";
+            int read = (upDown && !string.IsNullOrEmpty(ParamUp) ? 1 : 0)
+                + (upDown && !string.IsNullOrEmpty(ParamDown) ? 1 : 0)
+                + (modifier && !string.IsNullOrEmpty(ParamModifier) ? 1 : 0);
+            (ParamUp, ParamUpDeviceGuid, bool upGone) = RetargetKey(ParamUp, ParamUpDeviceGuid, retarget);
+            (ParamDown, ParamDownDeviceGuid, bool downGone) = RetargetKey(ParamDown, ParamDownDeviceGuid, retarget);
+            (ParamModifier, ParamModifierDeviceGuid, bool modifierGone) =
+                RetargetKey(ParamModifier, ParamModifierDeviceGuid, retarget);
+            int dropped = (upDown && upGone ? 1 : 0) + (upDown && downGone ? 1 : 0)
+                + (modifier && modifierGone ? 1 : 0);
+            return read > 0 && dropped == read;
+        }
+
+        private static (string key, string device, bool dropped) RetargetKey(
+            string key, string device, System.Func<string, string> retarget)
+        {
+            if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(device)) return (key, device, false);
+            string to = retarget(device);
+            return to == null ? ("", null, true) : (key, to, false);
+        }
 
         public MappingSource Clone()
         {

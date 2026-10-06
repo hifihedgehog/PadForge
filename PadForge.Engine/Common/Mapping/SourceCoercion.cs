@@ -551,6 +551,13 @@ namespace PadForge.Engine.Common.Mapping
         /// against the per-device InputState bool reader.</summary>
         public static Func<string, string, int, bool> ButtonHeldProvider { get; set; }
 
+        /// <summary>Reads a key of an Incremental, Ramp or Invert on Hold source
+        /// on the controller the key names (SourceKindRuntime.ReadKey), given
+        /// the key's device guid, its descriptor and the slot. An empty guid
+        /// reads any controller on the slot. The app wires it. An engine-only
+        /// caller without it reads every key on the state in hand.</summary>
+        public static Func<string, string, int, bool> KeyHeldProvider { get; set; }
+
         /// <summary>— resolved Aim-Engage state for the slot. App
         /// runs the per-tick Hold/Toggle logic in
         /// <c>InputManager.UpdateGyroEngageStates</c> against the

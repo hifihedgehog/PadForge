@@ -709,17 +709,17 @@ namespace PadForge.ViewModels
                 }
                 case nameof(ParamUpInputChoice):
                 {
-                    ParamUp = "";
+                    SetParamKey(ParamRecordTarget.Up, "", null);
                     break;
                 }
                 case nameof(ParamDownInputChoice):
                 {
-                    ParamDown = "";
+                    SetParamKey(ParamRecordTarget.Down, "", null);
                     break;
                 }
                 case nameof(ParamModifierInputChoice):
                 {
-                    ParamModifier = "";
+                    SetParamKey(ParamRecordTarget.Modifier, "", null);
                     break;
                 }
                 default: return;

@@ -152,8 +152,11 @@ namespace PadForge.Tests
             int end = src.IndexOf("\n        private static", at + 40, StringComparison.Ordinal);
             Assert.True(end > at);
             string body = src.Substring(at, end - at);
-            Assert.Matches(@"s = LookupDeviceState\(src\.DeviceGuid\);\s*if \(s == null\) continue;", body);
+            // The modifier's controller (KeyDevice): its own, else its source's.
+            Assert.Matches(@"s = LookupDeviceState\(modDev\);\s*if \(s == null\) continue;", body);
+            Assert.Contains("string modDev = SourceKindRuntime.KeyDevice(src.ParamModifierDeviceGuid, src);", body);
             Assert.DoesNotContain("LookupDeviceState(src.DeviceGuid) ?? fallbackState", body);
+            Assert.DoesNotContain("LookupDeviceState(modDev) ?? fallbackState", body);
             Assert.DoesNotContain("OfflinePinnedRestState", body);
         }
 

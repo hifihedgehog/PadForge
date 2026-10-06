@@ -60,6 +60,13 @@ namespace PadForge.Engine.Common.Mapping
         public static bool ReadsEveryDevice(MappingSource source)
             => IsToggleKind(source) || IsRapidTriggerKind(source);
 
+        /// <summary>True for the kinds read through an Up and a Down key,
+        /// Incremental and Ramp. Each key reads the controller it names
+        /// (SourceKindRuntime.ReadKey), so nothing they read comes from the
+        /// device the source is evaluated on.</summary>
+        public static bool UsesUpDownKeys(MappingSource source)
+            => source != null && source.Kind is "Incremental" or "Ramped";
+
         /// <summary>The Rapid Trigger distance as a fraction of full travel.</summary>
         private static double RapidTriggerDistance(MappingSource src)
             => MappingSource.EffectiveRapidTriggerDistance(src.ParamRapidTriggerDistance) / 100.0;
@@ -190,8 +197,9 @@ namespace PadForge.Engine.Common.Mapping
                     return false;
                 case "InvertOnHold":
                 {
-                    bool modifier = ReadButtonLikeBool(state, src.ParamModifier,
-                        SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid), slotIndex);
+                    bool modifier = SourceKindRuntime.ReadKey(state, src.ParamModifier,
+                        src.ParamModifierDeviceGuid, src, evaluatedDeviceGuid, slotIndex,
+                        anyDeviceSpansSlot: false);
                     var inner = CloneAsDirect(src, invertOverride: src.Invert ^ modifier);
                     return SourceCoercion.EvaluateForButtonTarget(state, inner, globalThresholdPercent, slotIndex, evaluatedDeviceGuid);
                 }
@@ -296,8 +304,9 @@ namespace PadForge.Engine.Common.Mapping
                 }
                 case "InvertOnHold":
                 {
-                    bool modifier = ReadButtonLikeBool(state, src.ParamModifier,
-                        SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid), slotIndex);
+                    bool modifier = SourceKindRuntime.ReadKey(state, src.ParamModifier,
+                        src.ParamModifierDeviceGuid, src, evaluatedDeviceGuid, slotIndex,
+                        anyDeviceSpansSlot: false);
                     var inner = CloneAsDirect(src, invertOverride: src.Invert ^ modifier);
                     return SourceCoercion.EvaluateForBipolarAxisTarget(state, inner, slotIndex, relativeTouchpad, evaluatedDeviceGuid);
                 }
@@ -502,8 +511,9 @@ namespace PadForge.Engine.Common.Mapping
                 }
                 case "InvertOnHold":
                 {
-                    bool modifier = ReadButtonLikeBool(state, src.ParamModifier,
-                        SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid), slotIndex);
+                    bool modifier = SourceKindRuntime.ReadKey(state, src.ParamModifier,
+                        src.ParamModifierDeviceGuid, src, evaluatedDeviceGuid, slotIndex,
+                        anyDeviceSpansSlot: false);
                     var inner = CloneAsDirect(src, invertOverride: src.Invert ^ modifier);
                     return SourceCoercion.EvaluateForTriggerTarget(state, inner, slotIndex, evaluatedDeviceGuid);
                 }
@@ -525,58 +535,6 @@ namespace PadForge.Engine.Common.Mapping
             clone.Kind = "Direct";
             clone.Invert = invertOverride;
             return clone;
-        }
-
-        // Mirrors SourceKindRuntime's button-like reader so the
-        // InvertOnHold modifier-button check stays consistent with
-        // Incremental's up/down inputs. The hat reads in the held frame
-        // (#392): deviceGuid and slotIndex select the grip, the same
-        // rotation the Direct path applies, so a "POV 0 Up" modifier on a
-        // sideways remote is the press that points up.
-        private static bool ReadButtonLikeBool(CustomInputState state, string descriptor,
-            string deviceGuid, int slotIndex)
-        {
-            if (state == null || string.IsNullOrWhiteSpace(descriptor)) return false;
-            // Fold "Gamepad ButtonA" / "Gamepad DPadUp" aliases (#9) to
-            // their canonical "Button N" / "POV 0 Dir" form, mirroring
-            // SourceKindRuntime's reader.
-            string s = SourceCoercion.CanonicalDescriptor(descriptor);
-
-            if (s.StartsWith("Button ", StringComparison.Ordinal))
-            {
-                if (int.TryParse(s.Substring(7), out int idx) &&
-                    idx >= 0 && idx < state.Buttons.Length)
-                    return state.Buttons[idx];
-                return false;
-            }
-
-            if (s.StartsWith("POV ", StringComparison.Ordinal))
-            {
-                var parts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length >= 3 && int.TryParse(parts[1], out int povIdx) &&
-                    povIdx >= 0 && povIdx < state.Povs.Length)
-                {
-                    int v = SourceCoercion.GripPov(deviceGuid, slotIndex, state.Povs[povIdx]);
-                    if (v < 0) return false;
-                    int n = ((v % 36000) + 36000) % 36000;
-                    return parts[2].ToLowerInvariant() switch
-                    {
-                        "up"    => n >= 31500 || n <= 4500,
-                        "right" => n >= 4500 && n <= 13500,
-                        "down"  => n >= 13500 && n <= 22500,
-                        "left"  => n >= 22500 && n <= 31500,
-                        _       => false,
-                    };
-                }
-                return false;
-            }
-
-            // The slot event families, IR Offscreen and the hardware-bool
-            // families, the order SourceKindRuntime's reader takes them in
-            // (#248 audit).
-            if (SourceCoercion.IsSlotEventDescriptor(s) || SourceCoercion.IsIrOffscreenDescriptor(s))
-                return SourceCoercion.ReadSlotEventBool(state, s, slotIndex, deviceGuid);
-            return SourceCoercion.ReadHardwareBoolDescriptor(state, s);
         }
     }
 }

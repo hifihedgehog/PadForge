@@ -237,6 +237,8 @@ public class Strings : INotifyPropertyChanged
     public string Status_SteamVRRunningCloseFirst => Get("Status_SteamVRRunningCloseFirst");
     public string Status_InstallingHidHide => Get("Status_InstallingHidHide");
     public string Status_UninstallingHidHide => Get("Status_UninstallingHidHide");
+    public string Status_HidHideRefusedPadForge => Get("Status_HidHideRefusedPadForge");
+    public string Status_HidHideInverse => Get("Status_HidHideInverse");
     public string Status_UninstallingMidi => Get("Status_UninstallingMidi");
     public string Status_DownloadingInstallingMidi => Get("Status_DownloadingInstallingMidi");
     public string Status_OperationCanceled => Get("Status_OperationCanceled");

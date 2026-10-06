@@ -25,7 +25,12 @@ namespace PadForge.Tests
     /// than that fails, a read into a buffer over 32767 characters fails
     /// the way RtlStringCchCopyUnicodeStringEx's validator does, and a
     /// SET replaces the whole list.</para>
+    ///
+    /// <para>The fake driver replaces a static seam that HidHideSelfAccessTests
+    /// and AuditDelta20260903Tests replace too, so the class runs in their
+    /// collection and never beside them.</para>
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class HidHideDiagnosticsTests
     {
         private const uint IOCTL_GET_BLACKLIST = 0x80016008;
@@ -541,8 +546,9 @@ namespace PadForge.Tests
         /// error, the per-device resolution and expansion, the sync diff
         /// with activation, and the read-back with any missing ids. Both
         /// branches sit behind the sole-record gate and say which way it
-        /// went, and the block prints only when the desired set moved or
-        /// the sync misbehaved, with a once-a-minute heartbeat otherwise.</summary>
+        /// went, and the block prints when the desired set moved, when
+        /// HidHide refused PadForge, or once a minute while the sync or the
+        /// whitelist misbehaves, with a heartbeat otherwise.</summary>
         [Fact]
         public void ApplyDeviceHiding_IsObservable()
         {
@@ -579,7 +585,8 @@ namespace PadForge.Tests
             Assert.Contains("write=REFUSED", body);
             // Print on movement or trouble, else the heartbeat.
             Assert.Contains("bool desiredMoved = _lastHidHideDesired == null || !_lastHidHideDesired.SetEquals(desiredIds);", body);
-            Assert.Contains("bool trouble = !synced || missing == null || missing.Count > 0;", body);
+            Assert.Contains("bool trouble = whitelistTrouble || !synced || missing == null || missing.Count > 0;", body);
+            Assert.Contains("if (desiredMoved || refusedNow || (trouble && tick - _lastHidHideTroubleLogTick >= 60_000))", body);
             Assert.Contains("HIDHIDE apply unchanged (n={desiredIds.Count})", body);
             Assert.Contains(">= 60_000", body);
             // The unavailable branch fires only when hiding was wanted.

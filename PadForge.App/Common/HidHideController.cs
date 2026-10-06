@@ -26,6 +26,8 @@ namespace PadForge.Common
         private const uint IOCTL_SET_BLACKLIST = 0x8001600C;
         private const uint IOCTL_GET_ACTIVE    = 0x80016010;
         private const uint IOCTL_SET_ACTIVE    = 0x80016014;
+        // HidHide 1.2 and later (Logic.h, CTL_CODE function 2054).
+        private const uint IOCTL_GET_WLINVERSE = 0x80016018;
 
         private const string DevicePath = @"\\.\HidHide";
 
@@ -60,6 +62,17 @@ namespace PadForge.Common
             string lpDeviceName,
             [Out] char[] lpTargetPath,
             uint ucchMax);
+
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool QueryFullProcessImageNameW(
+            IntPtr hProcess, uint dwFlags, [Out] char[] lpExeName, ref uint lpdwSize);
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr GetCurrentProcess();
+
+        private const uint PROCESS_NAME_NATIVE = 0x00000001;
+        private const uint FILE_FLAG_OVERLAPPED = 0x40000000;
 
         // SetupAPI for enumerating HID devices by VID/PID.
         [DllImport("setupapi.dll", SetLastError = true)]
@@ -198,6 +211,16 @@ namespace PadForge.Common
         /// sweep selection be proven without a pad on the bench.</summary>
         internal static Func<string, string> SerialReader;
 
+        /// <summary>Test seam for <see cref="TryOpenAsThisProcess"/>: a HID
+        /// interface path to (opened, Win32 error). Null in production, where
+        /// the probe opens the interface itself.</summary>
+        internal static Func<string, (bool opened, int error)> OpenSeam;
+
+        /// <summary>Test seam for <see cref="HidInterfaceOf"/>: an instance
+        /// id to its HID interface path, or null. Null in production, where
+        /// cfgmgr32 answers.</summary>
+        internal static Func<string, string> InterfaceSeam;
+
         /// <summary>Drops the in-process managed set, for tests that
         /// drive the sync through <see cref="IoSeam"/> from a clean
         /// slate. Production never calls it: the managed set is what
@@ -238,6 +261,9 @@ namespace PadForge.Common
         public static bool TryProbe(out int win32Error)
         {
             win32Error = 0;
+            // A fake driver installed through IoSeam stands in for the
+            // control device, so a test can run the apply without the real one.
+            if (IoSeam != null) return true;
             try
             {
                 var handle = CreateFileW(DevicePath, GENERIC_READ | GENERIC_WRITE, 0,
@@ -371,6 +397,21 @@ namespace PadForge.Common
             return SetMultiSzList(IOCTL_SET_WHITELIST, paths);
         }
 
+        /// <summary>Takes the named entries off the application list and
+        /// leaves every other entry. True when none was there or the write
+        /// landed, false when the list could not be read or the write was
+        /// refused.</summary>
+        public static bool RemoveWhitelistEntries(IEnumerable<string> paths)
+        {
+            var list = GetWhitelist();
+            if (list == null) return false;
+            int removed = 0;
+            foreach (var path in paths ?? Array.Empty<string>())
+                if (!string.IsNullOrEmpty(path))
+                    removed += list.RemoveAll(p => string.Equals(p, path, StringComparison.OrdinalIgnoreCase));
+            return removed == 0 || SetWhitelist(list);
+        }
+
         /// <summary>
         /// Gets whether cloaking (device hiding) is currently active.
         /// </summary>
@@ -392,6 +433,50 @@ namespace PadForge.Common
             if (!TryIo(IOCTL_GET_ACTIVE, null, outBuffer, out _))
                 return false;
             active = outBuffer[0] != 0;
+            return true;
+        }
+
+        /// <summary>Whether HidHide's application list is inverted (#484).
+        /// With Inverse application cloak on, the driver hides a blacklisted
+        /// device from the applications ON the list and shows it to every
+        /// other one (Logic.c Whitelisted returns the negation), so an
+        /// application that lists itself hides the device from itself. False
+        /// means the flag could not be read, which a driver older than the
+        /// flag answers by rejecting the IOCTL.</summary>
+        public static bool TryGetInverse(out bool inverse)
+        {
+            byte[] outBuffer = new byte[1];
+            inverse = false;
+            if (!TryIo(IOCTL_GET_WLINVERSE, null, outBuffer, out _))
+                return false;
+            inverse = outBuffer[0] != 0;
+            return true;
+        }
+
+        /// <summary>Opens a HID interface with no access rights and closes it
+        /// again (#484). It is the open SDL's enumeration makes for every
+        /// device (hidapi windows/hid.c, open_device(path, FALSE)), and a
+        /// device that fails it drops out of SDL's next enumeration. HidHide
+        /// refuses it with ERROR_ACCESS_DENIED for a process it does not count
+        /// as whitelisted (Logic.c OnDeviceFileCreate). True when the open
+        /// worked, else false with the Win32 error.</summary>
+        internal static bool TryOpenAsThisProcess(string devicePath, out int error)
+        {
+            var seam = OpenSeam;
+            if (seam != null)
+            {
+                var r = seam(devicePath);
+                error = r.error;
+                return r.opened;
+            }
+            error = 0;
+            using var handle = CreateFileW(devicePath, 0, FILE_SHARE_READ | FILE_SHARE_WRITE,
+                IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, IntPtr.Zero);
+            if (handle == null || handle.IsInvalid)
+            {
+                error = Marshal.GetLastWin32Error();
+                return false;
+            }
             return true;
         }
 
@@ -1479,6 +1564,32 @@ namespace PadForge.Common
             return null;
         }
 
+        /// <summary>The first present HID interface path of a devnode, or
+        /// null when it has none (#484).</summary>
+        internal static string HidInterfaceOf(string instanceId)
+        {
+            if (string.IsNullOrEmpty(instanceId)) return null;
+            var seam = InterfaceSeam;
+            if (seam != null) return seam(instanceId);
+            try
+            {
+                var guid = GUID_DEVINTERFACE_HID;
+                if (CM_Get_Device_Interface_List_SizeW(out uint len, ref guid, instanceId,
+                        CM_GET_DEVICE_INTERFACE_LIST_PRESENT) != CR_SUCCESS || len <= 1)
+                    return null;
+                var buffer = new char[len];
+                if (CM_Get_Device_Interface_ListW(ref guid, instanceId, buffer, len,
+                        CM_GET_DEVICE_INTERFACE_LIST_PRESENT) != CR_SUCCESS)
+                    return null;
+                int nul = Array.IndexOf(buffer, '\0');
+                return nul <= 0 ? null : new string(buffer, 0, nul);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         private static string ReadHidSerialFromInterface(string interfacePath)
         {
             using var handle = CreateFileW(interfacePath, 0, FILE_SHARE_READ | FILE_SHARE_WRITE,
@@ -1649,6 +1760,32 @@ namespace PadForge.Common
         /// Converts a Windows file path to a DOS device path (\Device\HarddiskVolumeN\...).
         /// </summary>
         public static string ToDosDevicePathPublic(string filePath) => ToDosDevicePath(filePath);
+
+        /// <summary>This process's image path in the form the driver compares
+        /// (#484): the native path of the image file the kernel loaded.
+        /// HidHide records a process by the name its first load-image
+        /// notification carries (Logic.c OnSystemLoadImage) and matches that
+        /// name against the list (Config.c
+        /// HidHideProcessIdCheckFullImageNameAgainstWhitelist). The
+        /// drive-letter conversion of the module path names a different path
+        /// for the same file when the folder sits on a volume mounted inside
+        /// another drive, on a SUBST drive, or behind a junction. Null when
+        /// Windows does not answer.</summary>
+        public static string CurrentProcessNativeImagePath()
+        {
+            try
+            {
+                var buffer = new char[32768];
+                uint size = (uint)buffer.Length;
+                if (!QueryFullProcessImageNameW(GetCurrentProcess(), PROCESS_NAME_NATIVE, buffer, ref size))
+                    return null;
+                return size == 0 ? null : new string(buffer, 0, (int)size);
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
         private static string ToDosDevicePath(string filePath)
         {

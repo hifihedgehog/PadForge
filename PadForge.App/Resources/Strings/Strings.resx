@@ -147,6 +147,8 @@
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>Installing HidHide…</value></data>
   <data name="Status_UninstallingHidHide" xml:space="preserve"><value>Uninstalling HidHide…</value></data>
+  <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide blocked PadForge from a device PadForge had hidden, so PadForge hides no devices until it restarts.</value></data>
+  <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide's Inverse application cloak is on, so PadForge hides no devices.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Uninstalling the Windows MIDI Services runtime…</value></data>
   <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Downloading and installing the Windows MIDI Services runtime…</value></data>
   <data name="Status_OperationCanceled" xml:space="preserve"><value>Operation canceled by user.</value></data>

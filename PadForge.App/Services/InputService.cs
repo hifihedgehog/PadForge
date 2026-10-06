@@ -13096,6 +13096,19 @@ namespace PadForge.Services
         /// after it, the managed set tracks what we wrote.</summary>
         private bool _hidHideCloaksAdopted;
 
+        /// <summary>HidHide refused this process its own open of a device it
+        /// had just hidden (#484), so hiding stays off for the rest of the
+        /// process. The causes that reach here hold for its life: a launch
+        /// the driver never recorded (HidHide installed or reloaded while
+        /// PadForge ran) or an image path the list does not match.</summary>
+        private bool _hidHideRefusedPadForge;
+
+        /// <summary>A probe has shown that this process passes HidHide's
+        /// gate, so an apply that hides nothing new need not probe.</summary>
+        private bool _hidHideReachConfirmed;
+
+        private bool _hidHideInverseNoticeShown;
+
         /// <summary>Takes ownership of blacklist entries this process did not
         /// write, so the sync can retire them. Runs once, and only while
         /// Keep devices cloaked between launches is on, which is the setting
@@ -13188,7 +13201,6 @@ namespace PadForge.Services
             }
             if (hidHideUp)
             {
-                PrepareTabletVisibilityChanges(snapshot);
                 // Adoption belongs to the OPERATION, not to Start(). Kept
                 // cloaks mean this session inherits entries it did not write,
                 // and the sync's removal set is computed from _managedDeviceIds,
@@ -13204,17 +13216,46 @@ namespace PadForge.Services
                 // moved or the sync misbehaved (see _lastHidHideDesired).
                 var hidLog = new List<string>();
                 hidLog.Add($"HIDHIDE apply devices={snapshot.Length} wantHiding={wantHiding}");
-                // Build the set of desired whitelist paths (PadForge + user list).
-                var desiredPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 string exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
-                if (!string.IsNullOrEmpty(exePath))
-                    desiredPaths.Add(exePath);
-                foreach (var path in _mainVm.Settings.HidHideWhitelistPaths)
+                string nativeSelf = HidHideController.CurrentProcessNativeImagePath();
+                bool whitelistTrouble = false;
+
+                // #484: with Inverse application cloak on, the list names the
+                // applications HidHide hides devices FROM. With PadForge on it,
+                // every device PadForge hid was hidden from PadForge and from
+                // no game. PadForge's own entries come off, nothing is hidden,
+                // and the user is told once.
+                bool inverse = HidHideController.TryGetInverse(out bool inverted) && inverted;
+                if (inverse)
                 {
-                    if (!string.IsNullOrWhiteSpace(path))
-                        desiredPaths.Add(path);
+                    var own = new List<string> { nativeSelf };
+                    if (!string.IsNullOrEmpty(exePath))
+                        own.Add(HidHideController.ToDosDevicePathPublic(exePath));
+                    bool cleared = HidHideController.RemoveWhitelistEntries(own);
+                    hidLog.Add($"HIDHIDE inverse application cloak is on: PadForge hides nothing and keeps itself off the list (cleared={cleared})");
+                    if (wantHiding > 0 && !_hidHideInverseNoticeShown)
+                    {
+                        _hidHideInverseNoticeShown = true;
+                        _mainVm.SetStatus(Strings.Instance.Status_HidHideInverse, persist: true);
+                    }
                 }
-                SyncWhitelist(desiredPaths);
+                else
+                {
+                    // Build the set of desired whitelist paths (PadForge + user list).
+                    var desiredPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                    if (!string.IsNullOrEmpty(exePath))
+                        desiredPaths.Add(exePath);
+                    foreach (var path in _mainVm.Settings.HidHideWhitelistPaths)
+                    {
+                        if (!string.IsNullOrWhiteSpace(path))
+                            desiredPaths.Add(path);
+                    }
+                    whitelistTrouble = !SyncWhitelist(desiredPaths, nativeSelf);
+                    if (whitelistTrouble)
+                        hidLog.Add("HIDHIDE whitelist could not be read or written, so PadForge may be missing from it");
+                }
+                bool standDown = inverse || _hidHideRefusedPadForge;
+                PrepareTabletVisibilityChanges(snapshot, standDown);
 
                 // Collect all desired blacklist IDs first, then sync atomically
                 // to avoid a window where devices briefly become visible.
@@ -13229,7 +13270,9 @@ namespace PadForge.Services
                 if (keepOutSet.Count > 0)
                     hidLog.Add($"HIDHIDE keepout n={keepOutSet.Count} [{string.Join(" | ", keepOutSet)}]");
 
-                foreach (var ud in snapshot)
+                // Stood down, no device is hidden, and the sync below takes
+                // back every entry PadForge wrote.
+                foreach (var ud in standDown ? Array.Empty<UserDevice>() : snapshot)
                 {
                     if (ud.HidHideEnabled && !string.IsNullOrEmpty(ud.DevicePath))
                     {
@@ -13471,6 +13514,48 @@ namespace PadForge.Services
                 if (desiredIds.Count > 0)
                     HidHideController.SetActive(true);
 
+                // #484: PadForge reads every device it hides, and SDL opens each
+                // HID device again on every enumeration and drops one it cannot
+                // open. A device HidHide hides from PadForge itself is dead at
+                // the next device arrival: in the reporter's trace the Wii
+                // Remote was hidden at 22:13:30.242 and SDL removed it at
+                // 30.982, while the virtual pad was being created. So after a
+                // write, PadForge opens one hidden device itself. Refused, it
+                // takes every entry back, stops hiding, and says so.
+                bool refusedNow = false;
+                if (synced && desiredIds.Count > 0 && (added.Count > 0 || !_hidHideReachConfirmed))
+                {
+                    bool? reach = ProbeOwnHidHideReach(desiredIds, HidHideController.HidInterfaceOf,
+                        HidHideController.TryOpenAsThisProcess, out string probed, out int probeError);
+                    if (reach == true)
+                    {
+                        _hidHideReachConfirmed = true;
+                        hidLog.Add($"HIDHIDE reach ok: PadForge opened {probed}");
+                    }
+                    else if (reach == false)
+                    {
+                        _hidHideRefusedPadForge = true;
+                        refusedNow = true;
+                        // Listed and still refused means the driver does not
+                        // know this process by that path. Not listed means
+                        // the entry never landed.
+                        var listNow = HidHideController.GetWhitelist();
+                        string listed = listNow == null ? "unreadable"
+                            : !string.IsNullOrEmpty(nativeSelf) && listNow.Contains(nativeSelf, StringComparer.OrdinalIgnoreCase) ? "yes" : "no";
+                        PrepareTabletVisibilityChanges(snapshot, hideNone: true);
+                        desiredIds.Clear();
+                        synced = HidHideController.SyncManagedDevices(desiredIds, out _, out var undone);
+                        hidLog.Add($"HIDHIDE REFUSED: HidHide would not let PadForge open {probed} (err={probeError}) after hiding it. "
+                            + $"PadForge took back {undone.Count} entr{(undone.Count == 1 ? "y" : "ies")} (write={(synced ? "ok" : "REFUSED")}) and hides nothing until it restarts. "
+                            + $"native={nativeSelf ?? "unknown"} listed={listed}");
+                        _mainVm.SetStatus(Strings.Instance.Status_HidHideRefusedPadForge, persist: true);
+                    }
+                    else
+                    {
+                        hidLog.Add("HIDHIDE reach unknown: no hidden HID interface answered the probe");
+                    }
+                }
+
                 // #391: read the driver's list back. A write the caller
                 // believes landed but the driver dropped is the one failure
                 // no other signal catches.
@@ -13484,14 +13569,19 @@ namespace PadForge.Services
                         : missing.Count == 0 ? " readback=ok"
                         : $" readback=MISSING {missing.Count} [{string.Join(" | ", missing)}]"));
 
-                // Print the block when the desired set moved, or once a
-                // minute while something is wrong (a persistent MISSING was
-                // the flood itself, so trouble repeats at the heartbeat's
-                // rate, not the enumeration's). Else the heartbeat line.
+                // Print the block when the desired set moved, when HidHide
+                // refused PadForge in this apply, or once a minute while
+                // something is wrong (a persistent MISSING was the flood
+                // itself, so trouble repeats at the heartbeat's rate, not the
+                // enumeration's). Else the heartbeat line. A refusal takes
+                // the hide back, so the set it leaves can equal the last one
+                // printed, and the move test alone would drop the REFUSED
+                // line in the report's order: nothing hidden at launch, the
+                // remote hidden on a later drag.
                 long tick = Environment.TickCount64;
                 bool desiredMoved = _lastHidHideDesired == null || !_lastHidHideDesired.SetEquals(desiredIds);
-                bool trouble = !synced || missing == null || missing.Count > 0;
-                if (desiredMoved || (trouble && tick - _lastHidHideTroubleLogTick >= 60_000))
+                bool trouble = whitelistTrouble || !synced || missing == null || missing.Count > 0;
+                if (desiredMoved || refusedNow || (trouble && tick - _lastHidHideTroubleLogTick >= 60_000))
                 {
                     foreach (var line in hidLog)
                         PadForge.Engine.SdlDiagLog.WriteLine(line);
@@ -13572,23 +13662,19 @@ namespace PadForge.Services
         /// Only adds/removes entries that PadForge manages — entries added by HidHide Client
         /// or other tools are left untouched.
         /// </summary>
-        private void SyncWhitelist(HashSet<string> desiredWinPaths)
+        /// <returns>False when the driver's list could not be read or the
+        /// write was refused, which can leave PadForge off it (#484).</returns>
+        private bool SyncWhitelist(HashSet<string> desiredWinPaths, string nativeSelfPath)
         {
-            // Convert desired Windows paths to DOS device paths.
-            var desiredDosPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            foreach (var winPath in desiredWinPaths)
-            {
-                string dosPath = HidHideController.ToDosDevicePathPublic(winPath);
-                if (dosPath != null)
-                    desiredDosPaths.Add(dosPath);
-            }
+            var desiredDosPaths = DesiredWhitelistEntries(desiredWinPaths, nativeSelfPath,
+                HidHideController.ToDosDevicePathPublic);
 
             var currentWhitelist = HidHideController.GetWhitelist();
             // Null means the driver could not be read, which is not the same as
             // an empty whitelist. This method edits the list and writes it back,
             // so proceeding on a failed read would push an empty whitelist and
             // strip every entry, including paths PadForge never added.
-            if (currentWhitelist == null) return;
+            if (currentWhitelist == null) return false;
             bool changed = false;
 
             // Remove PadForge-managed entries that are no longer desired.
@@ -13646,10 +13732,71 @@ namespace PadForge.Services
             // A refused write leaves the driver's list as it was, so the managed
             // set stays as it was too and the next sync diffs and retries.
             if (changed && !HidHideController.SetWhitelist(currentWhitelist))
-                return;
+                return false;
 
             foreach (var path in toRemove)
                 _managedWhitelistDosPaths.Remove(path);
+            return true;
+        }
+
+        /// <summary>The whitelist entries PadForge asks for, in the driver's
+        /// form: each path converted from its drive letter, plus this
+        /// process's native image path (#484). The driver matches a process
+        /// by the native path of its image, which the drive-letter conversion
+        /// can miss, and that path needs no conversion.</summary>
+        internal static HashSet<string> DesiredWhitelistEntries(IEnumerable<string> winPaths,
+            string nativeSelfPath, Func<string, string> toDriverForm)
+        {
+            var desired = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var winPath in winPaths ?? Array.Empty<string>())
+            {
+                string dosPath = toDriverForm(winPath);
+                if (dosPath != null)
+                    desired.Add(dosPath);
+            }
+            if (!string.IsNullOrEmpty(nativeSelfPath))
+                desired.Add(nativeSelfPath);
+            return desired;
+        }
+
+        internal delegate bool HidOpenProbe(string devicePath, out int error);
+
+        private const int ERROR_ACCESS_DENIED = 5;
+
+        /// <summary>Whether this process can open a device it has hidden
+        /// (#484). HidHide refuses the open of a blacklisted HID node to any
+        /// process it does not find on its list (Logic.c OnDeviceFileCreate),
+        /// and the verdict belongs to the process, not to the device, so the
+        /// first hidden HID interface that answers settles it. True: the open
+        /// worked. False: it was refused with ERROR_ACCESS_DENIED. Null: no
+        /// hidden id has a present HID interface, or every open failed for
+        /// another reason.</summary>
+        internal static bool? ProbeOwnHidHideReach(IEnumerable<string> hiddenIds,
+            Func<string, string> interfaceOf, HidOpenProbe open, out string probedPath, out int error)
+        {
+            probedPath = null;
+            error = 0;
+            foreach (var id in hiddenIds ?? Array.Empty<string>())
+            {
+                // Only HID collections carry the interface SDL opens. A
+                // Bluetooth or USB parent on the list has none.
+                if (string.IsNullOrEmpty(id) || !id.StartsWith(@"HID\", StringComparison.OrdinalIgnoreCase))
+                    continue;
+                string path = interfaceOf(id);
+                if (string.IsNullOrEmpty(path)) continue;
+                if (open(path, out int err))
+                {
+                    probedPath = path;
+                    return true;
+                }
+                if (err == ERROR_ACCESS_DENIED)
+                {
+                    probedPath = path;
+                    error = err;
+                    return false;
+                }
+            }
+            return null;
         }
 
         /// <summary>

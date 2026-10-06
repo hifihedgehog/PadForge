@@ -13,12 +13,16 @@ public partial class InputService
 {
     private readonly HashSet<Guid> _requestedTabletHides = new();
 
-    private void PrepareTabletVisibilityChanges(UserDevice[] snapshot)
+    /// <summary>Releases the capture of every tablet the next blacklist
+    /// write unhides, before that write. With <paramref name="hideNone"/>
+    /// the write takes back every hide (#484: HidHide refused PadForge, or
+    /// its inverse application cloak is on), whatever the rows ask.</summary>
+    private void PrepareTabletVisibilityChanges(UserDevice[] snapshot, bool hideNone = false)
     {
         foreach (var device in _inputManager?.GetTabletDevices() ?? Array.Empty<WindowsTabletDevice>())
         {
             var row = snapshot.FirstOrDefault(d => d.InstanceGuid == device.InstanceGuid);
-            if (_requestedTabletHides.Contains(device.InstanceGuid) && row?.HidHideEnabled != true)
+            if (_requestedTabletHides.Contains(device.InstanceGuid) && (hideNone || row?.HidHideEnabled != true))
                 device.PrepareForUnhide();
         }
     }

@@ -152,6 +152,29 @@ public partial class ProfileServiceToggleTests
         => typeof(SettingsService).GetMethod("LoadAppSettings", BindingFlags.Instance | BindingFlags.NonPublic)
             .Invoke(settings, new object[] { data });
 
+    /// <summary>
+    /// The Dashboard has its data before the startup load runs, so the
+    /// OpenXR runtime picker can be built before the saved runtime is known.
+    /// A saved runtime the registry no longer names must be listed and
+    /// selected once the load sets it, under its manifest's file name.
+    /// </summary>
+    [Fact]
+    public void ALoadListsAndSelectsASavedOpenXrRuntimeTheRegistryNoLongerNames()
+    {
+        const string steamVr = @"C:\SteamVR\steamxr_win64.json";
+        var (vm, settings) = Arrange();
+        vm.Dashboard.DiscoverOpenXrRuntimes =
+            () => Array.Empty<PadForge.Engine.Common.OpenXr.OpenXrRuntimeEntry>();
+        HeadTrackingRuntime.OpenXrRuntimeManifest = string.Empty;
+        Assert.Single(vm.Dashboard.OpenXrRuntimes);
+
+        LoadHeadGlobals(settings, new AppSettingsData { HeadTrackingOpenXrRuntime = steamVr });
+
+        Assert.Equal(steamVr, HeadTrackingRuntime.OpenXrRuntimeManifest);
+        Assert.Equal(steamVr, vm.Dashboard.SelectedOpenXrRuntime.ManifestPath);
+        Assert.Equal("steamxr_win64", vm.Dashboard.SelectedOpenXrRuntime.Display);
+    }
+
     [Theory]
     [InlineData(null, null)]
     [InlineData(false, true)]

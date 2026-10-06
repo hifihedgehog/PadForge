@@ -27,10 +27,13 @@ namespace PadForge.Tests
     [Collection("SettingsManagerStatics")]
     public partial class ProfileServiceToggleTests : IDisposable
     {
-        // The head tracking setter mirrors into the static runtime flag the
-        // engine sweep reads, so the fixture puts it back.
+        // The head tracking setters mirror into the static runtime flags the
+        // engine sweep reads, and a load writes the saved OpenXR runtime, so
+        // the fixture puts them back.
         private readonly bool _savedHeadTrackingEnabled = HeadTrackingRuntime.Enabled;
         private readonly bool _savedHeadTrackingFreeTrack = HeadTrackingRuntime.FreeTrackEnabled;
+        private readonly bool _savedHeadTrackingOpenXr = HeadTrackingRuntime.OpenXrEnabled;
+        private readonly string _savedOpenXrRuntime = HeadTrackingRuntime.OpenXrRuntimeManifest;
         private readonly SettingsCollection _savedSettings;
         private readonly DeviceCollection _savedDevices;
         private readonly List<ProfileData> _savedProfiles;
@@ -82,6 +85,8 @@ namespace PadForge.Tests
             SettingsService.AfterMappingSetsRefreshed = _savedAfterRefresh;
             HeadTrackingRuntime.Enabled = _savedHeadTrackingEnabled;
             HeadTrackingRuntime.FreeTrackEnabled = _savedHeadTrackingFreeTrack;
+            HeadTrackingRuntime.OpenXrEnabled = _savedHeadTrackingOpenXr;
+            HeadTrackingRuntime.OpenXrRuntimeManifest = _savedOpenXrRuntime;
         }
 
         private static string RepoText(params string[] parts)

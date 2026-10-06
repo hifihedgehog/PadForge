@@ -25,6 +25,10 @@ namespace PadForge.ViewModels
             Title = Strings.Instance.Dashboard_Title;
             OnPropertyChanged(nameof(PollingFrequencyText));
             OnPropertyChanged(nameof(TouchpadOverlayStatus));
+            // The runtime picker's System Default row kept the previous
+            // language's word, the audio mirror picker's old defect. A list
+            // nobody has read yet is built in the new language anyway.
+            if (_openXrRuntimes != null) RefreshOpenXrRuntimes();
         }
 
         // ─────────────────────────────────────────────
@@ -347,8 +351,14 @@ namespace PadForge.ViewModels
             get => _headTrackingOpenXr;
             set
             {
-                if (SetProperty(ref _headTrackingOpenXr, value))
-                    PadForge.Common.Input.HeadTrackingRuntime.OpenXrEnabled = value;
+                if (!SetProperty(ref _headTrackingOpenXr, value)) return;
+                PadForge.Common.Input.HeadTrackingRuntime.OpenXrEnabled = value;
+                // Turning the input on reads the registry again, so a runtime
+                // registered or made the default since the list was built
+                // shows up. The source reads the system runtime only when the
+                // input starts, which is why the user page's step for SteamVR
+                // is to turn the input off and back on.
+                if (value) RefreshOpenXrRuntimes();
             }
         }
 
@@ -357,11 +367,23 @@ namespace PadForge.ViewModels
             _resetHeadTrackingOpenXrCommand ??= new RelayCommand(() => HeadTrackingOpenXr = false);
 
         /// <summary>One entry in the runtime picker. Empty
-        /// <see cref="ManifestPath"/> is the machine's default.</summary>
-        public sealed class OpenXrRuntimeChoice
+        /// <see cref="ManifestPath"/> is the machine's default.
+        ///
+        /// <para>Observable because a refresh keeps the instance, as the
+        /// audio mirror picker's does: removing the selected entry makes WPF
+        /// clear the selection, so a new caption reaches the box through the
+        /// object rather than through the list.</para></summary>
+        public sealed class OpenXrRuntimeChoice : ObservableObject
         {
             public string ManifestPath { get; init; } = string.Empty;
-            public string Display { get; init; } = string.Empty;
+
+            private string _display = string.Empty;
+            public string Display
+            {
+                get => _display;
+                set => SetProperty(ref _display, value);
+            }
+
             public override string ToString() => Display;
         }
 
@@ -375,7 +397,7 @@ namespace PadForge.ViewModels
         /// mid-session would want, but the notification that made the picker
         /// see the rebuild recursed through the selection's getter and took
         /// the process down at launch. <see cref="RefreshOpenXrRuntimes"/> is
-        /// the explicit path, and it does not run from here.</para></summary>
+        /// the explicit path, and it never runs from here.</para></summary>
         public System.Collections.ObjectModel.ObservableCollection<OpenXrRuntimeChoice> OpenXrRuntimes
         {
             get
@@ -396,32 +418,54 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>Reloads the picker from the registry, keeping the current
-        /// selection when it is still installed. Safe to call from a command
-        /// or a toggle, never from a property getter.</summary>
+        private bool _refreshingOpenXrRuntimes;
+
+        /// <summary>Test seam (InternalsVisibleTo PadForge.Tests): where the
+        /// picker reads the installed runtimes, the registry in production. A
+        /// fake list is how a runtime registered while PadForge runs is shown
+        /// reaching the picker without writing HKLM.</summary>
+        internal Func<System.Collections.Generic.IEnumerable<PadForge.Engine.Common.OpenXr.OpenXrRuntimeEntry>>
+            DiscoverOpenXrRuntimes { get; set; } = PadForge.Engine.Common.OpenXr.OpenXrRuntimeCatalog.Discover;
+
+        /// <summary>Reloads the picker from the registry. The saved choice
+        /// stays listed and selected whether or not the registry still names
+        /// it. Runs when the input is turned on, after a settings load and
+        /// after a language switch, never from a property getter.
+        ///
+        /// <para>Guarded the way the audio mirror picker's refresh is: a
+        /// rebuild that drops the selected entry makes WPF write an empty
+        /// selection back, and the setter turned an empty selection into the
+        /// system default.</para></summary>
         public void RefreshOpenXrRuntimes()
         {
-            _openXrRuntimes ??=
-                new System.Collections.ObjectModel.ObservableCollection<OpenXrRuntimeChoice>();
-            Repopulate();
-            OnPropertyChanged(nameof(SelectedOpenXrRuntime));
+            _refreshingOpenXrRuntimes = true;
+            try
+            {
+                _openXrRuntimes ??=
+                    new System.Collections.ObjectModel.ObservableCollection<OpenXrRuntimeChoice>();
+                Repopulate();
+                OnPropertyChanged(nameof(SelectedOpenXrRuntime));
+            }
+            finally { _refreshingOpenXrRuntimes = false; }
         }
 
         private void Repopulate()
         {
             string chosen = PadForge.Common.Input.HeadTrackingRuntime.OpenXrRuntimeManifest;
-            _openXrRuntimes.Clear();
-            _openXrRuntimes.Add(new OpenXrRuntimeChoice
+            var desired = new System.Collections.Generic.List<OpenXrRuntimeChoice>
             {
-                ManifestPath = string.Empty,
-                Display = Strings.Instance.Dashboard_HeadTrackingOpenXrSystemDefault,
-            });
+                new OpenXrRuntimeChoice
+                {
+                    ManifestPath = string.Empty,
+                    Display = Strings.Instance.Dashboard_HeadTrackingOpenXrSystemDefault,
+                },
+            };
             try
             {
-                foreach (var entry in PadForge.Engine.Common.OpenXr.OpenXrRuntimeCatalog.Discover())
+                foreach (var entry in DiscoverOpenXrRuntimes())
                 {
                     if (!entry.LibraryExists) continue;
-                    _openXrRuntimes.Add(new OpenXrRuntimeChoice
+                    desired.Add(new OpenXrRuntimeChoice
                     {
                         ManifestPath = entry.ManifestPath,
                         Display = entry.Name,
@@ -434,15 +478,35 @@ namespace PadForge.ViewModels
             // or the box would silently read as the default while the saved
             // setting still names the missing one.
             if (!string.IsNullOrEmpty(chosen)
-                && !_openXrRuntimes.Any(r => string.Equals(r.ManifestPath, chosen,
-                                                           StringComparison.OrdinalIgnoreCase)))
+                && !desired.Any(r => string.Equals(r.ManifestPath, chosen,
+                                                   StringComparison.OrdinalIgnoreCase)))
             {
-                _openXrRuntimes.Add(new OpenXrRuntimeChoice
+                desired.Add(new OpenXrRuntimeChoice
                 {
                     ManifestPath = chosen,
                     Display = System.IO.Path.GetFileNameWithoutExtension(chosen),
                 });
             }
+
+            // Synced in place and never cleared, the audio mirror picker's
+            // rule. An entry whose manifest is still wanted keeps its
+            // instance, so the box's selection rides through, and takes the
+            // fresh caption.
+            for (int i = 0; i < desired.Count; i++)
+            {
+                int j = -1;
+                for (int k = i; k < _openXrRuntimes.Count; k++)
+                    if (string.Equals(_openXrRuntimes[k].ManifestPath, desired[i].ManifestPath,
+                                      StringComparison.OrdinalIgnoreCase)) { j = k; break; }
+                if (j < 0) _openXrRuntimes.Insert(i, desired[i]);
+                else
+                {
+                    _openXrRuntimes[j].Display = desired[i].Display;
+                    if (j != i) _openXrRuntimes.Move(j, i);
+                }
+            }
+            while (_openXrRuntimes.Count > desired.Count)
+                _openXrRuntimes.RemoveAt(_openXrRuntimes.Count - 1);
         }
 
         /// <summary>Which runtime this process negotiates with. Changing it
@@ -458,7 +522,11 @@ namespace PadForge.ViewModels
             }
             set
             {
-                string path = value?.ManifestPath ?? string.Empty;
+                // A null is WPF clearing the box when its entry leaves the
+                // list, never a pick, and reading it as the system default
+                // would replace the saved runtime.
+                if (_refreshingOpenXrRuntimes || value == null) return;
+                string path = value.ManifestPath ?? string.Empty;
                 if (string.Equals(PadForge.Common.Input.HeadTrackingRuntime.OpenXrRuntimeManifest, path,
                                   StringComparison.OrdinalIgnoreCase))
                     return;
@@ -571,9 +639,14 @@ namespace PadForge.ViewModels
                          nameof(HeadTrackingRangeYaw), nameof(HeadTrackingRangePitch),
                          nameof(HeadTrackingRangeRoll), nameof(HeadTrackingRangeX),
                          nameof(HeadTrackingRangeY), nameof(HeadTrackingRangeZ),
-                         nameof(SelectedOpenXrRuntime),
                      })
                 OnPropertyChanged(name);
+            // A load rebuilds the picker. The list can be built before the
+            // startup load sets the runtime, since the Dashboard has its data
+            // first, and a saved runtime the registry no longer names is
+            // listed only by a rebuild made after the runtime is known. The
+            // refresh re-reads the selection too.
+            RefreshOpenXrRuntimes();
         }
 
         private static int AxisRange(int axis)

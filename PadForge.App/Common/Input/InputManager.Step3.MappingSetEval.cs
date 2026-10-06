@@ -3392,7 +3392,7 @@ namespace PadForge.Common.Input
         /// ParamYDescriptor as one stick (SourceKindRuntime.ReadStick2D), each
         /// an "Axis N" or nothing, with no partner. On a button or trigger
         /// target they fall to the Direct read of Descriptor. ParamUp and
-        /// ParamDown read buttons, POV and hardware bools only. The row-level
+        /// ParamDown read on/off inputs only, never an axis. The row-level
         /// InvertOnHold modifier takes the full Direct read and is gated where
         /// it is read (IsInvertOnHoldActive).</summary>
         private static bool HasAxesFor(UserDevice dev, MappingSource src, CustomInputState state, bool stickRead = false)

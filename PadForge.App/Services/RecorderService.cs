@@ -924,27 +924,11 @@ namespace PadForge.Services
                     }
                 }
 
-                // Param recording (Incremental Up/Down, InvertOnHold Modifier)
-                // captures what ReadButtonLikeBool can actually read, which is
-                // Button and POV descriptors plus the hardware-bool families
-                // it forwards to (capsense, NFC tag, touchpad contact). Nothing
-                // else. An axis capture would land in ParamUp / ParamDown /
-                // ParamModifier as "Axis N" and silently do nothing, which is
-                // the "I have to record 3-4 times before it works" symptom
-                // (early tries get captured by stick drift on whichever axis
-                // crosses the detection threshold first; later tries hit the
-                // real button).
-                //
-                // The gate sits ABOVE the MIDI blocks, not below them. There
-                // is no MIDI branch anywhere in ReadButtonLikeBool or in the
-                // ReadHardwareBoolDescriptor it falls through to, so a MIDI
-                // note or encoder pulse captured into a param wrote a
-                // descriptor that reads false forever while the UI reported
-                // success. Same dead capture the axis case describes, minus
-                // the ambiguity, so it gets the same treatment.
-                if (_paramTarget != ParamTarget.None) continue;
-
                 // ── MIDI notes (button-class, instant rising edge) ──
+                // Above the param gate below: a note, an encoder detent and a
+                // CC are on/off inputs ReadButtonLikeBool reads
+                // (SourceCoercion.ReadHardwareBoolDescriptor), so an Up, Down
+                // or modifier recording takes them.
                 // MIDI input lives in the Midi sub-state, not Buttons[]/Axis[],
                 // so the sweeps above never see it. A MIDI device that hadn't
                 // sent anything at record start has a null baseline.Midi; adopt
@@ -1005,9 +989,12 @@ namespace PadForge.Services
                 }
 
                 // ── MIDI CC / pitch bend (axis-class, threshold) ──
-                // After the param gate (these are continuous, not button-class)
-                // and before the generic axis sweep. baseline.Midi is non-null
-                // here (established in the notes block above).
+                // Before the param gate and the generic axis sweep. A CC is an
+                // on/off input as well: pedals and control-surface buttons send
+                // one, and a key reads it as held from 64. Pitch bend is a wheel
+                // with no off position, so a param never records it.
+                // baseline.Midi is non-null here (established in the notes
+                // block above).
                 if (current.Midi != null && baseline.Midi != null)
                 {
                     int bestCc = -1, bestCcDelta = MidiCcThreshold;
@@ -1026,12 +1013,23 @@ namespace PadForge.Services
                         CompleteRecordingWithDescriptor($"Midi CC {bestCc}", dg);
                         return;
                     }
-                    if (Math.Abs(current.Midi.PitchBend - baseline.Midi.PitchBend) > MidiPitchThreshold)
+                    if (_paramTarget == ParamTarget.None
+                        && Math.Abs(current.Midi.PitchBend - baseline.Midi.PitchBend) > MidiPitchThreshold)
                     {
                         CompleteRecordingWithDescriptor("Midi Pitch Bend", dg);
                         return;
                     }
                 }
+
+                // Param recording (Incremental Up/Down, InvertOnHold Modifier)
+                // captures what ReadButtonLikeBool can actually read: every
+                // on/off input, and nothing analog. An axis capture would land
+                // in ParamUp / ParamDown / ParamModifier as "Axis N" and
+                // silently do nothing, which is the "I have to record 3-4
+                // times before it works" symptom (early tries get captured by
+                // stick drift on whichever axis crosses the detection threshold
+                // first, and later tries hit the real button).
+                if (_paramTarget != ParamTarget.None) continue;
 
                 // ── Check axes (requires hold confirmation) ──
                 int bestAxisIndex = -1;

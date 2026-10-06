@@ -24,7 +24,8 @@ namespace PadForge.Tests
     /// inputs their reader takes as a key. Both kinds read discrete inputs by
     /// design, and the Record button already refused a stick for them, but
     /// the two dropdowns showed the slot's whole input list. A stick, a
-    /// trigger or another axis picked there read released forever.
+    /// trigger or another axis picked there read released forever. Every
+    /// on/off input is a key, MIDI and IR Offscreen included.
     ///
     /// <para>The list is tested against the reader itself: every entry the
     /// pickers offer moves an Incremental value under some input state, and
@@ -95,7 +96,10 @@ namespace PadForge.Tests
                 s.JoyConIrIntensity = 1f;
                 s.RingConStrain = (i & 1) == 0 ? 1f : -1f;
                 s.JoyCon2MouseDX = s.JoyCon2MouseDY = 50f;
-                s.Ir = new WiiIrState { X = 1f, Y = 1f, Detected = (i & 1) == 0 };
+                // The first state has never seen the sensor bar, so IR
+                // Offscreen reads offscreen at once, as it does for a remote
+                // that has not found the screen yet. Later states alternate.
+                s.Ir = new WiiIrState { X = 1f, Y = 1f, Detected = (i & 1) == 1 };
 
                 s.Touchpads = new TouchpadInputState[3];
                 for (int p = 0; p < s.Touchpads.Length; p++)
@@ -187,6 +191,17 @@ namespace PadForge.Tests
         [InlineData("Ring-Con Squeeze", true)]
         [InlineData("Ring-Con Pull", true)]
         [InlineData("Analog Key 30", true)]
+        // MIDI and IR Offscreen, on/off inputs as well.
+        [InlineData("Midi Note 60", true)]
+        [InlineData("Midi Note 127", true)]
+        [InlineData("Midi CC 64", true)]
+        [InlineData("Midi CC 7", true)]
+        [InlineData("Midi CC 7 Up", true)]
+        [InlineData("Midi CC 7 Down", true)]
+        [InlineData("IR Offscreen", true)]
+        [InlineData("Midi Note 128", false)]
+        [InlineData("Midi CC 128", false)]
+        [InlineData("Midi Clock", false)]
         // What a key never reads: the analog inputs.
         [InlineData("Axis 0", false)]
         [InlineData("Axis 5", false)]
@@ -206,13 +221,7 @@ namespace PadForge.Tests
         [InlineData("Touchpad 0 Finger 0 Ring", false)]
         [InlineData("Touchpad 0 Pointer X", false)]
         [InlineData("Flick Stick Touchpad 0", false)]
-        [InlineData("Midi CC 7", false)]
         [InlineData("Midi Pitch Bend", false)]
-        // Discrete inputs the reader has no branch for. They are left out
-        // with the axes, since a key picked from them would never read.
-        [InlineData("Midi Note 60", false)]
-        [InlineData("Midi CC 7 Up", false)]
-        [InlineData("IR Offscreen", false)]
         // Windows and forms outside the touchpad grammar.
         [InlineData("Touchpad 0 Click Sideways", false)]
         [InlineData("Touchpad 0 Click Left Right", false)]
@@ -229,7 +238,9 @@ namespace PadForge.Tests
         public void TheCheckAgreesWithTheReader(string descriptor, bool readsAsKey)
         {
             Assert.Equal(readsAsKey, SourceKindRuntime.ReadsAsKey(descriptor));
-            Assert.Equal(readsAsKey, CanMoveTheValue(descriptor, AnyPad));
+            // A device of its own each time: IR Offscreen keeps its debounce
+            // per device.
+            Assert.Equal(readsAsKey, CanMoveTheValue(descriptor, Guid.NewGuid().ToString()));
         }
 
         // ── The slot's list ──
@@ -389,6 +400,35 @@ namespace PadForge.Tests
             // So are the device-agnostic names for them.
             Assert.Contains(pad.Pad.SlotKeyInputs, c => c.Descriptor == "Gamepad ButtonA" && c.DeviceGuid == "");
             Assert.DoesNotContain(pad.Pad.SlotKeyInputs, c => c.Descriptor == "Gamepad LeftTrigger");
+        });
+
+        /// <summary>Every on/off input is a key and a macro trigger: MIDI
+        /// notes, CCs and encoder detents, and IR Offscreen on the remote and
+        /// on the GunCon 2. Pitch bend is a wheel and is neither.</summary>
+        [Fact]
+        public void EveryOnOffInputIsAKeyAndAMacroTrigger() => WithCleanSettings(() =>
+        {
+            var all = PopulateEachDevice();
+            Populated Of(string name) => all.Single(p => p.Device.ProductName == name);
+            static string Key(Populated p) => p.Device.InstanceGuid.ToString().ToLowerInvariant();
+
+            var midi = Of("MIDI Keys");
+            foreach (string d in new[] { "Midi Note 0", "Midi Note 127", "Midi CC 64", "Midi CC 7 Up", "Midi CC 7 Down" })
+            {
+                Assert.Contains(midi.Pad.SlotKeyInputs, c => c.Descriptor == d && c.DeviceGuid == Key(midi));
+                Assert.Contains(midi.Pad.SlotMacroTriggerChoices, c => c.Descriptor == d && c.DeviceGuid == Key(midi));
+            }
+            Assert.Contains(midi.Pad.SlotAvailableInputs, c => c.Descriptor == "Midi Pitch Bend");
+            Assert.DoesNotContain(midi.Pad.SlotKeyInputs, c => c.Descriptor == "Midi Pitch Bend");
+            Assert.DoesNotContain(midi.Pad.SlotMacroTriggerChoices, c => c.Descriptor == "Midi Pitch Bend");
+
+            foreach (string name in new[] { "Nintendo Wii Remote", "GunCon 2" })
+            {
+                var p = Of(name);
+                Assert.Contains(p.Pad.SlotKeyInputs, c => c.Descriptor == "IR Offscreen" && c.DeviceGuid == Key(p));
+                Assert.Contains(p.Pad.SlotMacroTriggerChoices, c => c.Descriptor == "IR Offscreen" && c.DeviceGuid == Key(p));
+                Assert.DoesNotContain(p.Pad.SlotKeyInputs, c => c.Descriptor == "IR Pointer X");
+            }
         });
 
         /// <summary>The key list holds the full list's own entries, in its

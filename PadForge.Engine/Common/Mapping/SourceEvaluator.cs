@@ -571,9 +571,10 @@ namespace PadForge.Engine.Common.Mapping
                 return false;
             }
 
-            // The slot event families and the hardware-bool families, the
-            // order SourceKindRuntime's reader takes them in (#248 audit).
-            if (SourceCoercion.IsSlotEventDescriptor(s))
+            // The slot event families, IR Offscreen and the hardware-bool
+            // families, the order SourceKindRuntime's reader takes them in
+            // (#248 audit).
+            if (SourceCoercion.IsSlotEventDescriptor(s) || SourceCoercion.IsIrOffscreenDescriptor(s))
                 return SourceCoercion.ReadSlotEventBool(state, s, slotIndex, deviceGuid);
             return SourceCoercion.ReadHardwareBoolDescriptor(state, s);
         }

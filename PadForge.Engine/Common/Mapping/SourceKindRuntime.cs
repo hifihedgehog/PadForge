@@ -1153,11 +1153,13 @@ namespace PadForge.Engine.Common.Mapping
 
         /// <summary>True when <see cref="ReadButtonLikeBool"/> can read
         /// <paramref name="descriptor"/> as held: a button, a hat direction,
-        /// a slot event (a touchpad gesture, a mouse gesture or a menu cell)
-        /// or a plain hardware-bool family. The branches are the reader's
-        /// own, in its order. The Up and Down pickers of an Incremental or
-        /// Ramped source list only these, so a stick, a trigger or another
-        /// axis is never offered as a key that reads released forever.</summary>
+        /// a slot event (a touchpad gesture, a mouse gesture or a menu cell),
+        /// IR Offscreen, or a plain hardware-bool family, MIDI notes, CCs and
+        /// encoder detents among them. Every on/off input is one of these, and
+        /// no analog input is. The branches are the reader's own, in its
+        /// order. The Up and Down pickers of an Incremental or Ramped source
+        /// list only these, so a stick, a trigger or another axis is never
+        /// offered as a key that reads released forever.</summary>
         public static bool ReadsAsKey(string descriptor)
         {
             if (string.IsNullOrWhiteSpace(descriptor)) return false;
@@ -1177,13 +1179,15 @@ namespace PadForge.Engine.Common.Mapping
             }
 
             return SourceCoercion.IsSlotEventDescriptor(s)
+                || SourceCoercion.IsIrOffscreenDescriptor(s)
                 || SourceCoercion.IsHardwareBoolDescriptor(s);
         }
 
         // Reads a button-like descriptor (Button N or POV N Dir) from a
         // CustomInputState. No deadzone handling here. Incremental's up
-        // and down inputs are bool intent buttons, and analog inputs aren't
-        // a sensible up/down trigger for an accumulator. The hat reads in
+        // and down inputs are bool intent buttons: every on/off input
+        // reads, and analog inputs aren't a sensible up/down trigger for
+        // an accumulator. The hat reads in
         // the held frame (#392): deviceGuid and slotIndex select the grip,
         // the same rotation the Direct path and Step 3 apply, so an
         // Incremental or Ramped param naming "POV 0 Up" counts the press
@@ -1226,14 +1230,15 @@ namespace PadForge.Engine.Common.Mapping
             }
 
             // A touchpad gesture, a mouse gesture or a menu cell answers for
-            // one slot and one device, so it reads as a Button row reads it.
-            // The hardware-bool read below takes the descriptor alone, and a
+            // one slot and one device, and IR Offscreen keeps a debounce per
+            // device, so each reads as a Button row reads it. The
+            // hardware-bool read below takes the descriptor alone, and a
             // gesture picked as the Up or Down key read nothing.
-            if (SourceCoercion.IsSlotEventDescriptor(s))
+            if (SourceCoercion.IsSlotEventDescriptor(s) || SourceCoercion.IsIrOffscreenDescriptor(s))
                 return SourceCoercion.ReadSlotEventBool(state, s, slotIndex, deviceGuid);
 
             // Not Button/POV: a gate or an Incremental/Ramped param can
-            // name a hardware-bool family (capsense, NFC tag, touchpad
+            // name a hardware-bool family (capsense, NFC tag, MIDI, touchpad
             // contact), and the Up and Down pickers list them (ReadsAsKey).
             // Route those through the shared descriptor read. Path A NFC
             // tags never hit this (the PC/SC reader exposes them as raw

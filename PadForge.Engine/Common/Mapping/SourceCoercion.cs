@@ -3572,8 +3572,8 @@ namespace PadForge.Engine.Common.Mapping
         }
 
         /// <summary>Descriptor-only read for the plain hardware-bool
-        /// families (capsense touch, NFC tag, touchpad contact): the
-        /// param/gate reader's fallback (#248 audit). These carry no
+        /// families (capsense touch, NFC tag, voice phrase, MIDI, touchpad
+        /// contact): the param/gate reader's fallback (#248 audit). These carry no
         /// threshold or direction, so a bare descriptor fully determines
         /// the read; families that need a MappingSource (axes, rings,
         /// mouse motion) stay out and read false here.</summary>
@@ -3598,7 +3598,38 @@ namespace PadForge.Engine.Common.Mapping
             // An analog key (#468) at the same fixed half press.
             if (canonical.StartsWith(AnalogKeyPrefix, StringComparison.Ordinal))
                 return AnalogKeyPressed(ReadAnalogKey(state, canonical), 50);
+            // MIDI: a note held, an encoder detent's pulse (MidiInputDevice
+            // holds each one for 24 ms), or a CC at 64 or more. Pedals and
+            // control-surface buttons send a CC, and 64 is where MIDI's own
+            // on/off controllers turn on (the MIDI Association's control
+            // change table: Damper Pedal, CC 64, reads "<=63 off, >=64 on").
+            // The Button row's default threshold lands on the same value.
+            // Pitch bend is a wheel with no off position and reads false.
+            if (canonical.StartsWith("Midi ", StringComparison.Ordinal))
+                return ReadMidiBool(state, canonical);
             return ReadTouchpadBool(state, canonical);
+        }
+
+        /// <summary>The CC value at which a MIDI CC reads as held. MIDI's
+        /// on/off controllers are off at 63 and below and on from 64, and
+        /// the Button row's default threshold (more than half of 127)
+        /// lands on the same value.</summary>
+        internal const int MidiCcOnValue = 64;
+
+        /// <summary>A MIDI descriptor read as on or off: a note held, an
+        /// encoder detent's pulse, or a CC at <see cref="MidiCcOnValue"/>
+        /// or more. Pitch bend and anything unparsed read false.</summary>
+        private static bool ReadMidiBool(CustomInputState state, string canonical)
+        {
+            if (state.Midi == null || !TryParseMidi(canonical, out char kind, out int index)) return false;
+            return kind switch
+            {
+                'N' => state.Midi.Notes[index],
+                'C' => state.Midi.Cc[index] >= MidiCcOnValue,
+                'U' => state.Midi.CcUp[index],
+                'D' => state.Midi.CcDown[index],
+                _ => false,
+            };
         }
 
         /// <summary>True for the descriptors
@@ -3616,8 +3647,24 @@ namespace PadForge.Engine.Common.Mapping
                 || canonical.Equals("IR Brightness", StringComparison.Ordinal)
                 || IsRingConDescriptor(canonical)
                 || IsAnalogKeyDescriptor(canonical)
+                || IsMidiKeyDescriptor(canonical)
                 || IsTouchpadBoolDescriptor(canonical);
         }
+
+        /// <summary>True for the MIDI descriptors that read as on or off: a
+        /// note, a CC, or an encoder detent. Pitch bend is a wheel with no
+        /// off position and stays out.</summary>
+        public static bool IsMidiKeyDescriptor(string canonical)
+            => TryParseMidi(canonical, out char kind, out _) && kind != 'P';
+
+        /// <summary>True for "IR Offscreen" (#203): a Wii Remote or a GunCon 2
+        /// aimed off the screen. Its read keeps a debounce per device, so a
+        /// descriptor alone cannot read it, and the Up and Down keys of an
+        /// Incremental or Ramped source and an Invert on Hold modifier read
+        /// it through <see cref="ReadSlotEventBool"/>, as a Button row
+        /// reads it.</summary>
+        public static bool IsIrOffscreenDescriptor(string canonical)
+            => string.Equals(canonical, "IR Offscreen", StringComparison.Ordinal);
 
         /// <summary>True for the input families a descriptor alone cannot
         /// read, because each answers for one slot and one device: touchpad
@@ -3635,13 +3682,14 @@ namespace PadForge.Engine.Common.Mapping
         /// parses again when the descriptor changes.</summary>
         [ThreadStatic] private static MappingSource t_slotEventScratch;
 
-        /// <summary>A slot event family read as a key: the read a Button row
-        /// on <paramref name="slotIndex"/> takes from the device behind
-        /// <paramref name="deviceGuid"/>, at the fixed half the param surfaces
-        /// use. A tap or swipe holds the key for as long as its gesture stays
-        /// fired, the gesture cooldown. A long press, a touch spot or a radial
-        /// zone holds it while the finger stays, and a gesture axis past
-        /// half.</summary>
+        /// <summary>A slot event family, or IR Offscreen, read as a key: the
+        /// read a Button row on <paramref name="slotIndex"/> takes from the
+        /// device behind <paramref name="deviceGuid"/>, at the fixed half the
+        /// param surfaces use. A tap or swipe holds the key for as long as
+        /// its gesture stays fired, the gesture cooldown. A long press, a
+        /// touch spot or a radial zone holds it while the finger stays, and
+        /// a gesture axis past half. IR Offscreen holds it from 150 ms after
+        /// the remote loses the screen until it finds it again.</summary>
         public static bool ReadSlotEventBool(CustomInputState state, string canonical, int slotIndex,
             string deviceGuid)
         {
@@ -6652,13 +6700,11 @@ namespace PadForge.Engine.Common.Mapping
         /// <summary>True for the descriptors <see cref="ReadTouchpadBool"/>
         /// can read as held: a click, a windowed click, or a finger's
         /// contact with or without a window. These are the read's own token
-        /// tests, taken without a state. The split is not the cached one:
-        /// a picker list passes every descriptor it holds through here, and
-        /// the cache is the poll thread's.</summary>
+        /// tests on the read's own split, taken without a state.</summary>
         public static bool IsTouchpadBoolDescriptor(string descriptor)
         {
             if (string.IsNullOrEmpty(descriptor)) return false;
-            string[] parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] parts = SplitTokensCached(descriptor);
             if (parts.Length < 3) return false;
             if (!int.TryParse(parts[1], out int padIdx) || padIdx < 0) return false;
 

@@ -1065,7 +1065,8 @@ namespace PadForge.ViewModels
         /// no entry shape for (finger position axes, sliders, continuous
         /// gesture axes). Buttons, POV directions, gamepad-layout axes 0-5,
         /// the touchpad click (raw button 16), bool-valued touchpad
-        /// gestures, gyro axes, and "Finger M Down" all convert.
+        /// gestures, gyro axes, "Finger M Down", MIDI notes, CCs and
+        /// encoder detents, and IR Offscreen all convert.
         /// An empty <see cref="InputChoice.DeviceGuid"/> converts too
         /// (#9 B-9): it is the picker's "(Any device)" group and stores
         /// <see cref="Guid.Empty"/>, the persisted "the device on the
@@ -1320,6 +1321,18 @@ namespace PadForge.ViewModels
             // imported Workshop menu cells whose bindings are macro-shaped
             // (cursor warps, latches).
             if (PadForge.Engine.Common.Mapping.SourceCoercion.IsMenuItemDescriptor(d))
+            {
+                entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                return true;
+            }
+
+            // MIDI notes, CCs and encoder detents, and IR Offscreen (#203):
+            // on/off inputs the engine's button read answers, so each rides a
+            // descriptor entry like the NFC family. A CC fires at the
+            // entry's threshold, from 64 by default, MIDI's own on point for
+            // its on/off controllers. Pitch bend is a wheel and stays out.
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.IsMidiKeyDescriptor(d)
+                || PadForge.Engine.Common.Mapping.SourceCoercion.IsIrOffscreenDescriptor(d))
             {
                 entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
                 return true;

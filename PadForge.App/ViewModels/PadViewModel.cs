@@ -1146,6 +1146,14 @@ namespace PadForge.ViewModels
         /// accelerometer sources.</summary>
         public ObservableCollection<InputChoice> SlotMotionAccelInputs { get; } = new();
 
+        /// <summary>The Up and Down pickers' list: the entries of
+        /// <see cref="SlotAvailableInputs"/> an Incremental or Ramp source
+        /// reads as a key (<c>SourceKindRuntime.ReadsAsKey</c>). They are
+        /// the same <see cref="InputChoice"/> instances, so a row's stored
+        /// key selects by reference in either list. A stick, a trigger or
+        /// another axis is in the full list and not in this one.</summary>
+        public ObservableCollection<InputChoice> SlotKeyInputs { get; } = new();
+
         private ICollectionView _slotAvailableInputsView;
         /// <summary>Grouped CollectionView over <see cref="SlotAvailableInputs"/>
         /// keyed on <c>DeviceLabel</c> for the picker's GroupStyle header.</summary>
@@ -1285,9 +1293,10 @@ namespace PadForge.ViewModels
         internal void ApplyMappingPickerFilter()
         {
             // The dropdown side: what every picker OFFERS. The Motion rows'
-            // two lists (#475) take the same filter as the shared one.
+            // two lists (#475) and the Up and Down pickers' list take the
+            // same filter as the shared one.
             int shown = -1;
-            foreach (var list in new[] { SlotAvailableInputs, SlotMotionGyroInputs, SlotMotionAccelInputs })
+            foreach (var list in new[] { SlotAvailableInputs, SlotMotionGyroInputs, SlotMotionAccelInputs, SlotKeyInputs })
             {
                 var view = ReferenceEquals(list, SlotAvailableInputs)
                     ? SlotAvailableInputsView : CollectionViewSource.GetDefaultView(list);

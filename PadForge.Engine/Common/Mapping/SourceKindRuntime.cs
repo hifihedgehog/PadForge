@@ -1151,6 +1151,35 @@ namespace PadForge.Engine.Common.Mapping
             return idx >= 0 && idx < CustomInputState.MaxAxis ? idx : -1;
         }
 
+        /// <summary>True when <see cref="ReadButtonLikeBool"/> can read
+        /// <paramref name="descriptor"/> as held: a button, a hat direction,
+        /// a slot event (a touchpad gesture, a mouse gesture or a menu cell)
+        /// or a plain hardware-bool family. The branches are the reader's
+        /// own, in its order. The Up and Down pickers of an Incremental or
+        /// Ramped source list only these, so a stick, a trigger or another
+        /// axis is never offered as a key that reads released forever.</summary>
+        public static bool ReadsAsKey(string descriptor)
+        {
+            if (string.IsNullOrWhiteSpace(descriptor)) return false;
+            string s = SourceCoercion.CanonicalDescriptor(descriptor);
+
+            if (s.StartsWith("Button ", StringComparison.Ordinal))
+                return int.TryParse(s.Substring(7), out int idx)
+                    && idx >= 0 && idx < CustomInputState.MaxButtons;
+
+            if (s.StartsWith("POV ", StringComparison.Ordinal))
+            {
+                var parts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length < 3 || !int.TryParse(parts[1], out int povIdx)
+                    || povIdx < 0 || povIdx >= CustomInputState.MaxPovs)
+                    return false;
+                return parts[2].ToLowerInvariant() is "up" or "right" or "down" or "left";
+            }
+
+            return SourceCoercion.IsSlotEventDescriptor(s)
+                || SourceCoercion.IsHardwareBoolDescriptor(s);
+        }
+
         // Reads a button-like descriptor (Button N or POV N Dir) from a
         // CustomInputState. No deadzone handling here. Incremental's up
         // and down inputs are bool intent buttons, and analog inputs aren't
@@ -1203,12 +1232,12 @@ namespace PadForge.Engine.Common.Mapping
             if (SourceCoercion.IsSlotEventDescriptor(s))
                 return SourceCoercion.ReadSlotEventBool(state, s, slotIndex, deviceGuid);
 
-            // Not Button/POV: the pickers offer the full input list, so a
-            // gate or Incremental/Ramped param can name a hardware-bool
-            // family (capsense, NFC tag, touchpad contact). Route those
-            // through the shared descriptor read; Path A NFC tags never hit
-            // this (the PC/SC reader exposes them as raw buttons), which is
-            // how the gap shipped unnoticed (#248 audit).
+            // Not Button/POV: a gate or an Incremental/Ramped param can
+            // name a hardware-bool family (capsense, NFC tag, touchpad
+            // contact), and the Up and Down pickers list them (ReadsAsKey).
+            // Route those through the shared descriptor read. Path A NFC
+            // tags never hit this (the PC/SC reader exposes them as raw
+            // buttons), which is how the gap shipped unnoticed (#248 audit).
             return SourceCoercion.ReadHardwareBoolDescriptor(state, s);
         }
     }

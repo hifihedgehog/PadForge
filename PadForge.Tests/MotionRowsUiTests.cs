@@ -387,9 +387,13 @@ namespace PadForge.Tests
                 Assert.Same(pad.SlotMotionGyroInputs, gyroRow.AvailableInputs);
                 Assert.Same(pad.SlotMotionAccelInputs, accelRow.AvailableInputs);
                 Assert.Same(pad.SlotAvailableInputs, yawRow.AvailableInputs);
-                // The modifier and Up and Down pickers keep the full list.
+                // The modifier picker keeps the full list, and the Up and
+                // Down pickers take the slot's keys from it.
                 Assert.Same(pad.SlotAvailableInputs, gyroRow.ParamInputs);
                 Assert.Same(pad.SlotAvailableInputs, yawRow.ParamInputs);
+                Assert.Same(pad.SlotKeyInputs, gyroRow.KeyInputs);
+                Assert.Contains(pad.SlotKeyInputs, c => c.Descriptor == "Button 0" && c.DeviceGuid == key);
+                Assert.DoesNotContain(pad.SlotKeyInputs, c => c.Descriptor == "Gyro Pitch");
                 Assert.Same(yawRow.AvailableInputsView, yawRow.ParamInputsView);
                 Assert.NotSame(gyroRow.AvailableInputsView, gyroRow.ParamInputsView);
 

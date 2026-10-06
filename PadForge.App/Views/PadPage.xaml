@@ -5468,7 +5468,7 @@
                                                             <StackPanel Orientation="Vertical" Margin="0,0,2,0">
                                                                 <DockPanel LastChildFill="True">
                                                                     <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="ParamUpInputChoice" SettingLabel="{Binding ResetLabel_UpInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamUpInputChoice_5090"/>
-                                                                    <ComboBox ItemsSource="{Binding DataContext.ParamInputsView,
+                                                                    <ComboBox ItemsSource="{Binding DataContext.KeyInputsView,
                                                                                 RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                               SelectedItem="{Binding ParamUpInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                               DisplayMemberPath="DisplayName"
@@ -5530,7 +5530,7 @@
                                                             <StackPanel Orientation="Vertical" Margin="0,0,2,0">
                                                                 <DockPanel LastChildFill="True">
                                                                     <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="ParamDownInputChoice" SettingLabel="{Binding ResetLabel_DownInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamDownInputChoice_5149"/>
-                                                                    <ComboBox ItemsSource="{Binding DataContext.ParamInputsView,
+                                                                    <ComboBox ItemsSource="{Binding DataContext.KeyInputsView,
                                                                                 RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                               SelectedItem="{Binding ParamDownInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                               DisplayMemberPath="DisplayName"
@@ -5628,7 +5628,7 @@
                                                             <StackPanel Orientation="Vertical" Margin="0,0,2,0">
                                                                 <DockPanel LastChildFill="True">
                                                                     <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="ParamUpInputChoice" SettingLabel="{Binding ResetLabel_UpInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamUpInputChoice_5240"/>
-                                                                    <ComboBox ItemsSource="{Binding DataContext.ParamInputsView,
+                                                                    <ComboBox ItemsSource="{Binding DataContext.KeyInputsView,
                                                                                 RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                               SelectedItem="{Binding ParamUpInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                               DisplayMemberPath="DisplayName"
@@ -5690,7 +5690,7 @@
                                                             <StackPanel Orientation="Vertical" Margin="0,0,2,0">
                                                                 <DockPanel LastChildFill="True">
                                                                     <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="ParamDownInputChoice" SettingLabel="{Binding ResetLabel_DownInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamDownInputChoice_5299"/>
-                                                                    <ComboBox ItemsSource="{Binding DataContext.ParamInputsView,
+                                                                    <ComboBox ItemsSource="{Binding DataContext.KeyInputsView,
                                                                                 RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                               SelectedItem="{Binding ParamDownInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                               DisplayMemberPath="DisplayName"
@@ -5980,7 +5980,7 @@
                                                     <StackPanel Orientation="Vertical">
                                                         <DockPanel LastChildFill="True" VerticalAlignment="Center">
                                                             <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="ParamUpInputChoice" SettingLabel="{Binding ResetLabel_UpInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamUpInputChoice_5577"/>
-                                                            <ComboBox ItemsSource="{Binding DataContext.ParamInputsView, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                            <ComboBox ItemsSource="{Binding DataContext.KeyInputsView, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                       SelectedItem="{Binding ParamUpInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                       DisplayMemberPath="DisplayName" MinWidth="150" MinHeight="28" Padding="4,2"
                                                                       ToolTip="{Binding Pad_Mapping_Up_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
@@ -6024,7 +6024,7 @@
                                                     <StackPanel Orientation="Vertical">
                                                         <DockPanel LastChildFill="True" VerticalAlignment="Center">
                                                             <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="ParamDownInputChoice" SettingLabel="{Binding ResetLabel_DownInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamDownInputChoice_5618"/>
-                                                            <ComboBox ItemsSource="{Binding DataContext.ParamInputsView, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                            <ComboBox ItemsSource="{Binding DataContext.KeyInputsView, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                       SelectedItem="{Binding ParamDownInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                       DisplayMemberPath="DisplayName" MinWidth="150" MinHeight="28" Padding="4,2"
                                                                       ToolTip="{Binding Pad_Mapping_Down_PickerTooltip, Source={x:Static strings:Strings.Instance}}"

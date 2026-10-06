@@ -795,8 +795,9 @@ namespace PadForge.ViewModels
         internal void BeginSharedListRebuild() => _suppressSelectionSync = true;
 
         private ObservableCollection<InputChoice> _paramInputs;
-        /// <summary>The slot's full list, for the modifier and Up and Down
-        /// pickers and their lookups. It differs from
+        /// <summary>The slot's full list, for the modifier picker and for
+        /// the lookups of the modifier and the Up and Down keys. The Up and
+        /// Down pickers offer <see cref="KeyInputs"/>, a part of it. It differs from
         /// <see cref="AvailableInputs"/> only on the Motion rows (#475),
         /// whose source pickers offer the bundled motion sources alone while
         /// an InvertOnHold modifier still needs a button.</summary>
@@ -824,8 +825,8 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>Points the modifier and Up and Down pickers at the slot's
-        /// full list. Call after <see cref="UseSharedAvailableInputs"/>: the
+        /// <summary>Points the modifier picker and the parameter lookups at
+        /// the slot's full list. Call after <see cref="UseSharedAvailableInputs"/>: the
         /// same list as the row's own collapses back to it.</summary>
         internal void UseSharedParamInputs(ObservableCollection<InputChoice> full)
         {
@@ -835,6 +836,48 @@ namespace PadForge.ViewModels
             _paramInputsView = null;
             OnPropertyChanged(nameof(ParamInputs));
             OnPropertyChanged(nameof(ParamInputsView));
+        }
+
+        private ObservableCollection<InputChoice> _keyInputs = new();
+        /// <summary>What the Up and Down pickers of an Incremental or Ramp
+        /// source offer: the slot's inputs that read as a key
+        /// (<c>PadViewModel.SlotKeyInputs</c>). A key saved from the full
+        /// list before the pickers were narrowed, a stick or a trigger, is
+        /// not in it, so its picker shows no selection. The saved value
+        /// stays until the user picks a key or resets the field.</summary>
+        public ObservableCollection<InputChoice> KeyInputs => _keyInputs;
+
+        private ICollectionView _keyInputsView;
+        /// <summary>The grouped view of <see cref="KeyInputs"/>. One
+        /// default view per collection, so every row of the slot shares it
+        /// and the grouping is set once.</summary>
+        public ICollectionView KeyInputsView
+        {
+            get
+            {
+                if (_keyInputsView == null)
+                {
+                    _keyInputsView = CollectionViewSource.GetDefaultView(_keyInputs);
+                    if (_keyInputsView != null
+                        && _keyInputsView.GroupDescriptions != null
+                        && _keyInputsView.GroupDescriptions.Count == 0)
+                    {
+                        _keyInputsView.GroupDescriptions.Add(
+                            new PropertyGroupDescription(nameof(InputChoice.DeviceLabel)));
+                    }
+                }
+                return _keyInputsView;
+            }
+        }
+
+        /// <summary>Points the Up and Down pickers at the slot's key list.</summary>
+        internal void UseSharedKeyInputs(ObservableCollection<InputChoice> shared)
+        {
+            if (shared == null || ReferenceEquals(_keyInputs, shared)) return;
+            _keyInputs = shared;
+            _keyInputsView = null;
+            OnPropertyChanged(nameof(KeyInputs));
+            OnPropertyChanged(nameof(KeyInputsView));
         }
 
         internal void EndSharedListRebuild()

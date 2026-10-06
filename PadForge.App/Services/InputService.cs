@@ -7814,6 +7814,7 @@ namespace PadForge.Services
                 mapping.InputSelectedFromDropdown += OnInputSelectedFromDropdown;
                 mapping.UseSharedAvailableInputs(PickerListForRow(padVm, mapping.TargetSettingName));
                 mapping.UseSharedParamInputs(padVm.SlotAvailableInputs);
+                mapping.UseSharedKeyInputs(padVm.SlotKeyInputs);
                 mapping.BeginSharedListRebuild();
             }
             try
@@ -7821,8 +7822,15 @@ namespace PadForge.Services
                 padVm.SlotAvailableInputs.Clear();
                 padVm.SlotMotionGyroInputs.Clear();
                 padVm.SlotMotionAccelInputs.Clear();
+                padVm.SlotKeyInputs.Clear();
                 foreach (var c in flat)
                     PickerListForChoice(padVm, c.Descriptor).Add(c);
+                // The Up and Down pickers of an Incremental or Ramp source
+                // offer only what their reader takes as a key. Each entry is
+                // the full list's own instance, so the stored key a row
+                // resolves from the full list is the item its picker holds.
+                foreach (var c in padVm.SlotAvailableInputs)
+                    if (IsUpDownKeyChoice(c)) padVm.SlotKeyInputs.Add(c);
             }
             finally
             {
@@ -7862,6 +7870,14 @@ namespace PadForge.Services
             PadForge.Engine.Data.MappingSetMigrator.MotionAccelTarget => padVm.SlotMotionAccelInputs,
             _ => padVm.SlotAvailableInputs,
         };
+
+        /// <summary>True for a choice the Up and Down pickers offer: an input
+        /// the key reader of an Incremental or Ramp source can read as held
+        /// (<see cref="PadForge.Engine.Common.Mapping.SourceKindRuntime.ReadsAsKey"/>).
+        /// Incremental and Ramp take discrete inputs by design, and the Record
+        /// button already refuses a stick for them (RecorderService).</summary>
+        internal static bool IsUpDownKeyChoice(PadForge.ViewModels.InputChoice c)
+            => c != null && PadForge.Engine.Common.Mapping.SourceKindRuntime.ReadsAsKey(c.Descriptor);
 
         /// <summary>The list a choice belongs in: a bundled gyro source in the
         /// Motion Gyro row's, a bundled accelerometer source in the Motion

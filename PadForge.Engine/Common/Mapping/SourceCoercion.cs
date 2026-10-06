@@ -3601,6 +3601,24 @@ namespace PadForge.Engine.Common.Mapping
             return ReadTouchpadBool(state, canonical);
         }
 
+        /// <summary>True for the descriptors
+        /// <see cref="ReadHardwareBoolDescriptor"/> can read as held: its
+        /// families, one for one. It reads no state, so it wakes no Joy-Con
+        /// MCU and marks no analog key as mapped. A family added to the read
+        /// is added here (UpDownKeyPickerTests runs the two against each
+        /// other).</summary>
+        public static bool IsHardwareBoolDescriptor(string canonical)
+        {
+            if (string.IsNullOrEmpty(canonical)) return false;
+            return IsCapSenseDescriptor(canonical)
+                || IsNfcTagDescriptor(canonical)
+                || IsVoicePhraseDescriptor(canonical)
+                || canonical.Equals("IR Brightness", StringComparison.Ordinal)
+                || IsRingConDescriptor(canonical)
+                || IsAnalogKeyDescriptor(canonical)
+                || IsTouchpadBoolDescriptor(canonical);
+        }
+
         /// <summary>True for the input families a descriptor alone cannot
         /// read, because each answers for one slot and one device: touchpad
         /// gestures, mouse gestures and menu cells. The Up and Down keys of an
@@ -6628,6 +6646,36 @@ namespace PadForge.Engine.Common.Mapping
                     && FingerInTouchpadHalf(pad, fingerIdx, half);
             }
 
+            return false;
+        }
+
+        /// <summary>True for the descriptors <see cref="ReadTouchpadBool"/>
+        /// can read as held: a click, a windowed click, or a finger's
+        /// contact with or without a window. These are the read's own token
+        /// tests, taken without a state. The split is not the cached one:
+        /// a picker list passes every descriptor it holds through here, and
+        /// the cache is the poll thread's.</summary>
+        public static bool IsTouchpadBoolDescriptor(string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            string[] parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 3) return false;
+            if (!int.TryParse(parts[1], out int padIdx) || padIdx < 0) return false;
+
+            if (parts[2].Equals("Click", StringComparison.Ordinal))
+                return parts.Length == 3
+                    || (parts.Length == 4 && ParseTouchpadHalf(parts[3]) != TouchpadHalfNone);
+
+            if ((parts.Length == 5 || parts.Length == 6 || parts.Length == 7)
+                && parts[2].Equals("Finger", StringComparison.Ordinal)
+                && parts[4].Equals("Down", StringComparison.Ordinal))
+            {
+                if (parts.Length == 6 && ParseTouchpadHalf(parts[5]) == TouchpadHalfNone) return false;
+                if (parts.Length == 7
+                    && ComposeTouchpadWindow(ParseTouchpadHalf(parts[5]), ParseTouchpadHalf(parts[6])) == TouchpadHalfNone)
+                    return false;
+                return int.TryParse(parts[3], out int fingerIdx) && fingerIdx >= 0;
+            }
             return false;
         }
 

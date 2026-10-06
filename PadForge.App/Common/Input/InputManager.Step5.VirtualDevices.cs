@@ -99,8 +99,27 @@ namespace PadForge.Common.Input
         /// </summary>
         private static HMContext _hmaestroContext;
         private static readonly object _hmaestroContextLock = new object();
-        private static bool _hmaestroContextFailed;
         private static bool _processExitHookRegistered;
+
+        /// <summary>When the last HIDMaestro setup failed, as
+        /// Environment.TickCount64, or 0. A failed setup used to stay failed
+        /// until the engine stopped, so no slot could get a virtual controller
+        /// again without an engine restart. Now the next create after
+        /// <see cref="HmSetupRetryHoldMs"/> runs the setup again. A slot whose
+        /// create failed keeps its own latch, which only a change to that slot
+        /// clears, so a retry follows the user's next change to a slot, or a
+        /// slot created later, and never loops on its own. Inside the hold the
+        /// other slots of the same burst fail fast instead of each running
+        /// the setup again, since creates run one at a time.</summary>
+        private static long _hmaestroSetupFailedTick;
+        private const long HmSetupRetryHoldMs = 5_000;
+        private const string HmSetupFailedMessage = "Failed to initialize HIDMaestro.";
+
+        internal static bool HmSetupHeldAt(long failedTick, long nowTick)
+            => failedTick != 0 && nowTick - failedTick < HmSetupRetryHoldMs;
+
+        private static bool HmSetupHeld()
+            => HmSetupHeldAt(Volatile.Read(ref _hmaestroSetupFailedTick), Environment.TickCount64);
 
         /// <summary>
         /// Set once <see cref="DisposeHMaestroContextOnShutdown"/> has run a
@@ -2302,14 +2321,15 @@ namespace PadForge.Common.Input
         /// </summary>
         private void EnsureHMaestroContext()
         {
-            if (_hmaestroContext != null || _hmaestroContextFailed)
+            if (_hmaestroContext != null || HmSetupHeld())
                 return;
 
             lock (_hmaestroContextLock)
             {
-                if (_hmaestroContext != null || _hmaestroContextFailed)
+                if (_hmaestroContext != null || HmSetupHeld())
                     return;
 
+                HMContext ctx = null;
                 try
                 {
                     // Preflight: sweep any leftover HIDMaestro virtual devices
@@ -2339,10 +2359,17 @@ namespace PadForge.Common.Input
                     {
                     }
 
-                    var ctx = new HMContext();
+                    ctx = new HMContext();
                     int n = ctx.LoadDefaultProfiles();
                     ctx.InstallDriver();
                     _hmaestroContext = ctx;
+                    bool recovered = _hmaestroSetupFailedTick != 0;
+                    Volatile.Write(ref _hmaestroSetupFailedTick, 0);
+                    // A clean shutdown covered the context it disposed. This
+                    // one still needs the exit sweep below if the process
+                    // ends without one.
+                    _cleanShutdownPerformed = false;
+                    if (recovered) RaiseErrorResolved(HmSetupFailedMessage);
 
                     // Safety net: purge any devices we created if the process
                     // exits ungracefully without disposing HMController instances.
@@ -2365,8 +2392,11 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex)
                 {
-                    _hmaestroContextFailed = true;
-                    RaiseError("Failed to initialize HIDMaestro.", ex);
+                    // A context that never installed holds no controllers, and
+                    // its Dispose returns at once (HMContext.Dispose).
+                    try { ctx?.Dispose(); } catch { }
+                    Volatile.Write(ref _hmaestroSetupFailedTick, Math.Max(1, Environment.TickCount64));
+                    RaiseError(HmSetupFailedMessage, ex);
                 }
             }
         }
@@ -3629,7 +3659,7 @@ namespace PadForge.Common.Input
             {
                 ctx = _hmaestroContext;
                 _hmaestroContext = null;
-                _hmaestroContextFailed = false;
+                Volatile.Write(ref _hmaestroSetupFailedTick, 0);
             }
             if (ctx != null)
             {

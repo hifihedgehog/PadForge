@@ -773,6 +773,13 @@ namespace PadForge.Common.Input
         /// </summary>
         public event EventHandler<InputExceptionEventArgs> ErrorOccurred;
 
+        /// <summary>
+        /// Raised when a failure reported through <see cref="ErrorOccurred"/>
+        /// has recovered, with the message it was reported under, so a status
+        /// line that still shows it can be cleared.
+        /// </summary>
+        public event EventHandler<string> ErrorResolved;
+
         // ─────────────────────────────────────────────
         //  Constructor
         // ─────────────────────────────────────────────
@@ -4052,6 +4059,12 @@ namespace PadForge.Common.Input
             // virtual controller" with the sharing-violation detail dropped).
             PadForge.Engine.SdlDiagLog.WriteLine($"ERROR {message}: {ex}");
             ErrorOccurred?.Invoke(this, new InputExceptionEventArgs(message, ex));
+        }
+
+        private void RaiseErrorResolved(string message)
+        {
+            PadForge.Engine.SdlDiagLog.WriteLine($"RECOVERED {message}");
+            ErrorResolved?.Invoke(this, message);
         }
 
         // ─────────────────────────────────────────────

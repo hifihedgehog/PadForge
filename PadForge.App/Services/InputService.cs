@@ -934,6 +934,7 @@ namespace PadForge.Services
             _inputManager.TabletCaptureChanged += OnTabletCaptureChanged;
             _inputManager.FrequencyUpdated += OnFrequencyUpdated;
             _inputManager.ErrorOccurred += OnErrorOccurred;
+            _inputManager.ErrorResolved += OnErrorResolved;
             _inputManager.HmVcInactivityDestroyed += OnHmVcInactivityDestroyed;
             _inputManager.HmVcWentNonActive += OnHmVcWentNonActive;
 
@@ -2564,6 +2565,7 @@ namespace PadForge.Services
                 _inputManager.TabletCaptureChanged -= OnTabletCaptureChanged;
                 _inputManager.FrequencyUpdated -= OnFrequencyUpdated;
                 _inputManager.ErrorOccurred -= OnErrorOccurred;
+                _inputManager.ErrorResolved -= OnErrorResolved;
                 _inputManager.HmVcInactivityDestroyed -= OnHmVcInactivityDestroyed;
                 _inputManager.HmVcWentNonActive -= OnHmVcWentNonActive;
                 foreach (var pad in _mainVm.Pads)
@@ -9778,6 +9780,23 @@ namespace PadForge.Services
             {
                 _mainVm.SetStatus(string.Format(Strings.Instance.Status_Error_Format, e.Message), persist: true);
             }));
+        }
+
+        /// <summary>
+        /// Called on the background thread when a reported failure recovered,
+        /// such as a HIDMaestro setup that a later retry completed.
+        /// </summary>
+        private void OnErrorResolved(object sender, string message)
+        {
+            _dispatcher.BeginInvoke(new Action(() => ClearResolvedError(message)));
+        }
+
+        /// <summary>Clears the status line when it still shows the error that
+        /// recovered, and leaves any later message alone.</summary>
+        internal void ClearResolvedError(string message)
+        {
+            if (_mainVm.StatusText == string.Format(Strings.Instance.Status_Error_Format, message))
+                _mainVm.SetStatus(string.Empty);
         }
 
         /// <summary>

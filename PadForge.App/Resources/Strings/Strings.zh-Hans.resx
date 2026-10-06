@@ -144,7 +144,7 @@
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>正在安装 HidHide…</value></data>
   <data name="Status_UninstallingHidHide" xml:space="preserve"><value>正在卸载 HidHide…</value></data>
-  <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide 阻止了 PadForge 访问 PadForge 已隐藏的设备，因此 PadForge 在重新启动前不会隐藏任何设备。</value></data>
+  <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide 阻止了 PadForge 访问 PadForge 已隐藏的设备，因此 PadForge 已停止隐藏设备。</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide 的“Inverse application cloak”已开启，因此 PadForge 不会隐藏任何设备。</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>正在卸载 Windows MIDI Services 运行时…</value></data>
   <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>正在下载并安装 Windows MIDI Services 运行时…</value></data>

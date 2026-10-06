@@ -22,10 +22,10 @@ namespace PadForge.Tests
     /// from Windows and paired again.
     ///
     /// <para>These run the real ApplyDeviceHiding against a fake driver.
-    /// Refused, PadForge takes the hide back, says so and stops hiding.
-    /// Allowed, the hide stays and the probe runs once. With HidHide's
-    /// inverse application cloak on, PadForge keeps itself off the list and
-    /// hides nothing.</para>
+    /// Refused, PadForge takes the hide back, says so and stops hiding until
+    /// HidHide's whitelist changes. Allowed, the hide stays and the probe
+    /// runs once. With HidHide's inverse application cloak on, PadForge keeps
+    /// itself off the list and hides nothing.</para>
     /// </summary>
     [Collection("SettingsManagerStatics")]
     public class HidHideSelfAccessTests : IDisposable
@@ -196,8 +196,8 @@ namespace PadForge.Tests
         /// <summary>The report's case. HidHide refuses PadForge's own open
         /// of the remote it just hid, the answer it gives a process it does
         /// not count as whitelisted (Logic.c OnDeviceFileCreate). PadForge
-        /// takes the hide back, says why, and hides nothing again in this
-        /// process.</summary>
+        /// takes the hide back, says why, and hides nothing again while the
+        /// whitelist stays as it was.</summary>
         [Fact]
         public void ARefusedOpenTakesTheHideBackAndStopsHiding()
         {
@@ -239,24 +239,124 @@ namespace PadForge.Tests
             Assert.EndsWith($"native={native} listed=yes", line);
         }
 
-        /// <summary>A whitelist the driver will not write or read is logged,
-        /// and the refusal that follows says what the list held. No entry for
-        /// PadForge means the write never landed, a different fault from a
-        /// driver that does not know this process by its path.</summary>
+        /// <summary>A whitelist the driver will not write or read is logged
+        /// and holds new hides back, since a device hidden then can be hidden
+        /// from PadForge itself. Nothing is probed and nothing is held over,
+        /// and the apply after the list takes PadForge's entry hides the
+        /// remote.</summary>
         [Theory]
-        [InlineData(false, "no")]
-        [InlineData(true, "unreadable")]
-        public void AWhitelistTheDriverWillNotTakeIsLoggedAndTheRefusalSaysWhatItHeld(bool unreadable, string listed)
+        [InlineData(false)]
+        [InlineData(true)]
+        public void AWhitelistTheDriverWillNotTakeHoldsNewHidesBack(bool unreadable)
         {
             _driver.RefuseWhitelistWrites = !unreadable;
             _driver.RefuseWhitelistReads = unreadable;
-            _openAnswer = (false, ERROR_ACCESS_DENIED);
             string mark = Mark();
 
             _svc.ApplyDeviceHiding();
 
             Assert.Single(LogLinesAfter(mark, "HIDHIDE whitelist could not be read or written"));
+            Assert.DoesNotContain(_driver.BlacklistWrites, w => Names(w, RemoteId));
+            Assert.Empty(_opened);
+            Assert.NotEqual(Strings.Instance.Status_HidHideRefusedPadForge, _vm.StatusText);
+
+            _driver.RefuseWhitelistWrites = false;
+            _driver.RefuseWhitelistReads = false;
+            _svc.ApplyDeviceHiding();
+
+            Assert.True(Names(_driver.Whitelist, HidHideController.CurrentProcessNativeImagePath()));
+            Assert.True(Names(_driver.Blacklist, RemoteId));
+            Assert.Single(_opened);
+        }
+
+        /// <summary>The refusal says what the list held when it came. Gone
+        /// from the list means another program rewrote it after PadForge's
+        /// write. Listed and refused means the driver does not know this
+        /// process by that path.</summary>
+        [Theory]
+        [InlineData(false, "no")]
+        [InlineData(true, "unreadable")]
+        public void ARefusalSaysWhatTheListHeld(bool unreadable, string listed)
+        {
+            HidHideController.OpenSeam = path =>
+            {
+                _opened.Add(path);
+                if (unreadable) _driver.RefuseWhitelistReads = true;
+                else _driver.Whitelist.Clear();
+                return (false, ERROR_ACCESS_DENIED);
+            };
+            string mark = Mark();
+
+            _svc.ApplyDeviceHiding();
+
             Assert.EndsWith(" listed=" + listed, Assert.Single(LogLinesAfter(mark, "HIDHIDE REFUSED")));
+        }
+
+        /// <summary>HidHide keeps its verdict on a process until a whitelist
+        /// write clears it (Config.c evaluationCache, Logic.c SetWhitelist).
+        /// A list that changed after the refusal, here by another program
+        /// adding an entry, lets PadForge hide again and probe again, and the
+        /// refusal message goes away.</summary>
+        [Fact]
+        public void AChangedWhitelistLetsPadForgeHideAgain()
+        {
+            _openAnswer = (false, ERROR_ACCESS_DENIED);
+            _svc.ApplyDeviceHiding();
+            Assert.False(Names(_driver.Blacklist, RemoteId));
+            Assert.Equal(Strings.Instance.Status_HidHideRefusedPadForge, _vm.StatusText);
+
+            _openAnswer = (true, 0);
+            _svc.ApplyDeviceHiding();
+            Assert.False(Names(_driver.Blacklist, RemoteId));
+            Assert.Single(_opened);
+
+            _driver.Whitelist.Add(@"\Device\HarddiskVolume9\Games\other.exe");
+            string mark = Mark();
+            _svc.ApplyDeviceHiding();
+
+            Assert.Single(LogLinesAfter(mark, "HIDHIDE whitelist changed since HidHide refused PadForge"));
+            Assert.True(Names(_driver.Blacklist, RemoteId));
+            Assert.Equal(2, _opened.Count);
+            Assert.Equal(string.Empty, _vm.StatusText);
+        }
+
+        /// <summary>A sync that holds new hides back adds nothing and still
+        /// removes what PadForge no longer wants, leaves other programs'
+        /// entries alone, and claims only the ids the driver carries, so an
+        /// id another program hides later stays that program's.</summary>
+        [Fact]
+        public void AHeldBackSyncAddsNothingAndStillRemoves()
+        {
+            const string kept = @"HID\VID_F00D&PID_0001\1";
+            const string dropped = @"HID\VID_F00D&PID_0002\1";
+            const string heldBack = @"HID\VID_F00D&PID_0003\1";
+            const string other = @"HID\VID_F00D&PID_0004\1";
+            _driver.Blacklist.Add(other);
+            Assert.True(HidHideController.SyncManagedDevices(new HashSet<string> { kept, dropped }, out _, out _));
+
+            Assert.True(HidHideController.SyncManagedDevices(new HashSet<string> { kept, heldBack },
+                out var added, out var removed, allowAdditions: false));
+            Assert.Empty(added);
+            Assert.Equal(new[] { dropped }, removed);
+            Assert.Equal(new[] { other, kept }, _driver.Blacklist);
+
+            _driver.Blacklist.Add(heldBack);
+            Assert.True(HidHideController.SyncManagedDevices(new HashSet<string>(), out _, out removed));
+            Assert.Equal(new[] { kept }, removed);
+            Assert.Equal(new[] { other, heldBack }, _driver.Blacklist);
+        }
+
+        /// <summary>Two reads of the list match when they hold the same
+        /// entries in any order and case, and a failed read matches
+        /// nothing.</summary>
+        [Fact]
+        public void TwoReadsOfTheWhitelistMatchByTheirEntries()
+        {
+            var a = new List<string> { @"\Device\HarddiskVolume3\A.exe", @"\Device\HarddiskVolume3\B.exe" };
+            Assert.True(InputService.SameWhitelist(a, new List<string> { @"\DEVICE\HARDDISKVOLUME3\b.EXE", @"\Device\HarddiskVolume3\A.exe" }));
+            Assert.False(InputService.SameWhitelist(a, new List<string> { @"\Device\HarddiskVolume3\A.exe" }));
+            Assert.False(InputService.SameWhitelist(a, null));
+            Assert.False(InputService.SameWhitelist(null, null));
         }
 
         /// <summary>A whitelist fault counts as trouble, so it reaches the
@@ -487,7 +587,7 @@ namespace PadForge.Tests
 
             int standDown = svc.IndexOf("bool standDown = inverse || _hidHideRefusedPadForge;", apply, StringComparison.Ordinal);
             int prepare = svc.IndexOf("PrepareTabletVisibilityChanges(snapshot, standDown);", apply, StringComparison.Ordinal);
-            int write = svc.IndexOf("bool synced = HidHideController.SyncManagedDevices(desiredIds, out var added, out var removed);", apply, StringComparison.Ordinal);
+            int write = svc.IndexOf("bool synced = HidHideController.SyncManagedDevices(desiredIds, out var added, out var removed, allowAdditions: !whitelistTrouble);", apply, StringComparison.Ordinal);
             Assert.True(standDown > apply && prepare > standDown && write > prepare);
 
             int refused = svc.IndexOf("_hidHideRefusedPadForge = true;", write, StringComparison.Ordinal);

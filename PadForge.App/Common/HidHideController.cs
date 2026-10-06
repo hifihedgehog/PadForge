@@ -537,8 +537,15 @@ namespace PadForge.Common
         /// it. Now: an id is added when the driver lacks it, removed when
         /// it left the desired set and the driver still carries it, and
         /// the managed set moves to the desired set only after a write
-        /// the driver accepted (or when there was nothing to write).</para></summary>
-        public static bool SyncManagedDevices(HashSet<string> desiredIds, out List<string> added, out List<string> removed)
+        /// the driver accepted (or when there was nothing to write).</para>
+        ///
+        /// <para>With <paramref name="allowAdditions"/> false nothing new is
+        /// hidden and removals run as usual (#484). PadForge holds new hides
+        /// back while its own whitelist entry is unconfirmed, since a device
+        /// hidden then can be hidden from PadForge itself. The managed set
+        /// then keeps only the desired ids the driver already carries, so a
+        /// held-back id is added by the next sync that allows it.</para></summary>
+        public static bool SyncManagedDevices(HashSet<string> desiredIds, out List<string> added, out List<string> removed, bool allowAdditions = true)
         {
             added = new List<string>();
             removed = new List<string>();
@@ -553,7 +560,7 @@ namespace PadForge.Common
 
                 foreach (var id in desiredIds)
                 {
-                    if (!string.IsNullOrEmpty(id) && !present.Contains(id))
+                    if (allowAdditions && !string.IsNullOrEmpty(id) && !present.Contains(id))
                         added.Add(id);
                 }
                 foreach (var id in _managedDeviceIds)
@@ -575,7 +582,8 @@ namespace PadForge.Common
 
                 _managedDeviceIds.Clear();
                 foreach (var id in desiredIds)
-                    _managedDeviceIds.Add(id);
+                    if (allowAdditions || present.Contains(id))
+                        _managedDeviceIds.Add(id);
                 return true;
             }
         }

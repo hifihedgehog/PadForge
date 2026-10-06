@@ -520,7 +520,7 @@ namespace PadForge.Tests
             Assert.Contains("public static bool TryProbe(out int win32Error)", ctl);
             Assert.Contains("win32Error = Marshal.GetLastWin32Error();", ctl);
             Assert.Contains("public static List<string> MissingFromBlacklist(", ctl);
-            Assert.Contains("public static bool SyncManagedDevices(HashSet<string> desiredIds, out List<string> added, out List<string> removed)", ctl);
+            Assert.Contains("public static bool SyncManagedDevices(HashSet<string> desiredIds, out List<string> added, out List<string> removed, bool allowAdditions = true)", ctl);
             Assert.Contains("internal static bool IsInstancePresent(string instanceId)", ctl);
             // Present means present: no phantom flag on the probe.
             Assert.Contains("CM_Locate_DevNodeW(out _, instanceId, 0) == CR_SUCCESS", ctl);
@@ -579,7 +579,7 @@ namespace PadForge.Tests
             Assert.Contains("synthetic twin present: not hidden (same={syntheticSame}) {decision}", body);
             Assert.Contains("HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} synthetic path=", body);
             Assert.Contains("cached={ud.HidHideInstanceIds.Count} {decision}", body);
-            Assert.Contains("bool synced = HidHideController.SyncManagedDevices(desiredIds, out var added, out var removed);", body);
+            Assert.Contains("bool synced = HidHideController.SyncManagedDevices(desiredIds, out var added, out var removed, allowAdditions: !whitelistTrouble);", body);
             Assert.Contains("MissingFromBlacklist(desiredIds)", body);
             Assert.Contains("readback=MISSING", body);
             Assert.Contains("write=REFUSED", body);

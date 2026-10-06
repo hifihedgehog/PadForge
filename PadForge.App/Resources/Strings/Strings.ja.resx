@@ -144,7 +144,7 @@
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>HidHide をインストールしています…</value></data>
   <data name="Status_UninstallingHidHide" xml:space="preserve"><value>HidHide をアンインストールしています…</value></data>
-  <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>PadForge が隠したデバイスへのアクセスを HidHide が拒否したため、PadForge は次に起動するまでデバイスを隠しません。</value></data>
+  <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>PadForge が隠したデバイスへのアクセスを HidHide が拒否したため、PadForge はデバイスを隠すのをやめました。</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide の「Inverse application cloak」がオンのため、PadForge はデバイスを隠しません。</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services ランタイムをアンインストールしています…</value></data>
   <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Windows MIDI Services ランタイムをダウンロードしてインストールしています…</value></data>

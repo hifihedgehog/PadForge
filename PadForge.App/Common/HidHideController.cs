@@ -1381,6 +1381,165 @@ namespace PadForge.Common
             return new Guid(buf);
         }
 
+        // ─────────────────────────────────────────────
+        //  Releasing a controller opened before its hide
+        // ─────────────────────────────────────────────
+
+        // DEVPKEY_Device_LastArrivalDate {83da6326-97a6-4088-9453-a1923f573b29}, 102 (devpkey.h)
+        private static readonly DEVPROPKEY DEVPKEY_Device_LastArrivalDate =
+            new() { fmtid = new Guid("83da6326-97a6-4088-9453-a1923f573b29"), pid = 102 };
+        private const uint DEVPROP_TYPE_FILETIME = 0x00000010;
+
+        /// <summary>One devnode on the walk from a hidden node up to its USB
+        /// hub, as the release decision sees it.</summary>
+        internal readonly record struct ReleaseHop(string InstanceId, Guid ClassGuid, Guid ContainerId, string Service);
+
+        /// <summary>How recently a controller may have connected and still be
+        /// left alone. A hide that lands this soon after the device arrived
+        /// came from the arrival itself, before any program could open it, and
+        /// cycling it would only make it connect twice.</summary>
+        internal static readonly TimeSpan ReleaseArrivalGrace = TimeSpan.FromSeconds(5);
+
+        /// <summary>The USB device whose hub port PadForge cycles so that a
+        /// program which opened a controller before it was hidden loses it, or
+        /// null with the reason (#484 follow-up).
+        ///
+        /// <para>HidHide decides access only when a handle is opened (Logic.c
+        /// OnDeviceFileCreate), so a handle opened before the hide keeps
+        /// working. Windows will not remove a device while any handle stays
+        /// open, its own documentation says so, and PadForge's SDL holds one
+        /// on every controller it reads, so disabling the device is refused.
+        /// A hub port cycle is a surprise removal that no handle can veto,
+        /// which is how HandheldCompanion releases a hidden USB pad
+        /// (IController.CyclePort, through Nefarius UsbPnPDevice.CyclePort).
+        /// The device then comes back through HidHide, where only whitelisted
+        /// programs can open it.</para>
+        ///
+        /// <para>The chain runs from the hidden node up to and including the
+        /// first node whose service is a USB hub. Bluetooth is never cycled:
+        /// that would mean dropping the link, and a controller turns itself
+        /// off when its link drops. The USB device must be the controller
+        /// itself (same container, or inside the SYSTEM container the same
+        /// VID and PID, as <see cref="SameDeviceScope"/> judges it), must
+        /// carry no second controller (a receiver would drop every pad on
+        /// it), and must have been connected longer than
+        /// <see cref="ReleaseArrivalGrace"/>.</para></summary>
+        internal static string PickUsbDeviceToCycle(IReadOnlyList<ReleaseHop> chain, int controllerFunctions,
+            TimeSpan? sinceArrival, out string reason)
+        {
+            reason = null;
+            if (chain == null || chain.Count == 0) { reason = "not present"; return null; }
+            int hub = -1;
+            for (int i = 0; i < chain.Count; i++)
+            {
+                string id = chain[i].InstanceId ?? string.Empty;
+                if (id.StartsWith(@"BTHENUM\", StringComparison.OrdinalIgnoreCase)
+                    || id.StartsWith(@"BTHLEDEVICE\", StringComparison.OrdinalIgnoreCase)
+                    || id.StartsWith(@"BTHPS3BUS\", StringComparison.OrdinalIgnoreCase)
+                    || id.StartsWith(@"BTH\", StringComparison.OrdinalIgnoreCase))
+                {
+                    reason = "Bluetooth";
+                    return null;
+                }
+                if (i > 0 && chain[i].Service != null
+                    && chain[i].Service.StartsWith("USBHUB", StringComparison.OrdinalIgnoreCase))
+                {
+                    hub = i;
+                    break;
+                }
+            }
+            if (hub < 1) { reason = "not on a USB port"; return null; }
+            var top = chain[hub - 1];
+            if (top.InstanceId == null || !top.InstanceId.StartsWith(@"USB\", StringComparison.OrdinalIgnoreCase))
+            {
+                reason = "not on a USB port";
+                return null;
+            }
+            var target = chain[0];
+            bool systemScoped = target.ContainerId == Guid.Empty || target.ContainerId == GUID_CONTAINER_ID_SYSTEM;
+            bool sameDevice = systemScoped
+                ? VidPidToken(target.InstanceId) is string token
+                    && string.Equals(token, VidPidToken(top.InstanceId), StringComparison.OrdinalIgnoreCase)
+                : top.ContainerId == target.ContainerId;
+            if (!sameDevice) { reason = "the USB device is not the controller"; return null; }
+            if (controllerFunctions > 1) { reason = "the USB device carries more than one controller"; return null; }
+            if (sinceArrival is TimeSpan age && age < ReleaseArrivalGrace) { reason = "connected moments ago"; return null; }
+            return top.InstanceId;
+        }
+
+        /// <summary>The live walk behind <see cref="PickUsbDeviceToCycle"/>
+        /// for one hidden instance id.</summary>
+        internal static string FindUsbDeviceToCycle(string hiddenInstanceId, out string reason)
+        {
+            reason = "not present";
+            if (string.IsNullOrEmpty(hiddenInstanceId)) return null;
+            try
+            {
+                if (CM_Locate_DevNodeW(out uint node, hiddenInstanceId, 0) != CR_SUCCESS) return null;
+                var chain = new List<ReleaseHop>();
+                var nodes = new List<uint>();
+                uint cur = node;
+                for (int depth = 0; depth < MaxDevnodeDepth; depth++)
+                {
+                    var hop = new ReleaseHop(GetInstanceId(cur), GetClassGuid(cur), GetContainerId(cur), GetDevNodeService(cur));
+                    chain.Add(hop);
+                    nodes.Add(cur);
+                    if (depth > 0 && hop.Service != null
+                        && hop.Service.StartsWith("USBHUB", StringComparison.OrdinalIgnoreCase)) break;
+                    if (!TryParent(cur, out uint parent)) break;
+                    cur = parent;
+                }
+                int top = chain.FindIndex(1, h => h.Service != null
+                    && h.Service.StartsWith("USBHUB", StringComparison.OrdinalIgnoreCase)) - 1;
+                int functions = top >= 0 ? CountControllerFunctions(nodes[top]) : 0;
+                TimeSpan? age = top >= 0 ? SinceLastArrival(nodes[top]) : null;
+                return PickUsbDeviceToCycle(chain, functions, age, out reason);
+            }
+            catch (Exception ex)
+            {
+                reason = "the device tree could not be read (" + ex.GetType().Name + ")";
+                return null;
+            }
+        }
+
+        /// <summary>The XUSB and XboxComposite nodes in a USB device's subtree,
+        /// itself included. Each is one game controller, so more than one means
+        /// a receiver.</summary>
+        private static int CountControllerFunctions(uint usbDevice)
+        {
+            int count = 0;
+            var pending = new Stack<(uint node, int depth)>();
+            pending.Push((usbDevice, 0));
+            while (pending.Count > 0)
+            {
+                var (n, depth) = pending.Pop();
+                Guid cls = GetClassGuid(n);
+                if (cls == GUID_DEVCLASS_XUSBCLASS || cls == GUID_DEVCLASS_XBOXCOMPOSITE) count++;
+                if (depth >= MaxDevnodeDepth) continue;
+                if (CM_Get_Child(out uint child, n, 0) != CR_SUCCESS) continue;
+                for (int guard = 0; guard < 256; guard++)
+                {
+                    pending.Push((child, depth + 1));
+                    if (CM_Get_Sibling(out uint next, child, 0) != CR_SUCCESS || next == child) break;
+                    child = next;
+                }
+            }
+            return count;
+        }
+
+        private static TimeSpan? SinceLastArrival(uint devInst)
+        {
+            byte[] buf = new byte[8];
+            uint size = (uint)buf.Length;
+            int rc = CM_Get_DevNode_PropertyW(devInst, DEVPKEY_Device_LastArrivalDate,
+                out uint type, buf, ref size, 0);
+            if (rc != CR_SUCCESS || type != DEVPROP_TYPE_FILETIME || size != 8) return null;
+            long fileTime = BitConverter.ToInt64(buf, 0);
+            if (fileTime <= 0) return null;
+            var age = DateTime.UtcNow - DateTime.FromFileTimeUtc(fileTime);
+            return age < TimeSpan.Zero ? TimeSpan.Zero : age;
+        }
+
         private static Guid GetClassGuid(uint devInst)
         {
             byte[] buf = new byte[16];

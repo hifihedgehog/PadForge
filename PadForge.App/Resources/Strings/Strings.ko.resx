@@ -474,7 +474,7 @@
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>SDL의 게임패드 매핑 대신 원시 HID 인덱스를 읽습니다. SDL이 버튼/축 레이아웃을 잘못 인식할 때 사용하십시오</value></data>
   <data name="Devices_InputHiding" xml:space="preserve"><value>입력 숨기기</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>게임에서 숨기기 (HidHide)</value></data>
-  <data name="Devices_HideTooltip" xml:space="preserve"><value>HidHide 드라이버를 통해 이 장치를 다른 애플리케이션에서 완전히 숨깁니다. 켠 뒤에는 컨트롤러를 다시 연결하세요. Windows를 포함해 이미 열어 둔 것은 다시 나타날 때까지 계속 붙잡고 있습니다.</value></data>
+  <data name="Devices_HideTooltip" xml:space="preserve"><value>HidHide 드라이버를 통해 이 장치를 다른 애플리케이션에서 완전히 숨깁니다. 이미 연결되어 있던 USB 컨트롤러를 숨기면 PadForge가 Windows에서 다시 연결하므로 열어 둔 것은 컨트롤러를 잃습니다. 숨기기 전에 Bluetooth 컨트롤러를 열어 둔 것은 컨트롤러가 다음에 연결될 때까지 계속 붙잡고 있습니다.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>이 옵션을 활성화하려면 HidHide 드라이버를 설치하십시오</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>매핑된 입력 소비 (후킹)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>매핑된 특정 키/버튼만 차단하고 매핑되지 않은 입력은 통과시킵니다</value></data>
@@ -2802,7 +2802,7 @@
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
   <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer의 DualShock 3 프로토콜 참조 자료: sixpair 기능 리포트, Bluetooth 출력 리포트 템플릿, 활성화 순서, 배터리 맵. PadForge의 구현은 독자적인 C#입니다. HIDMaestro의 DualShock 3 (SIXAXIS): Full 컨트롤러는 DsHidMini SXS 모드의 리포트 디스크립터를 사용합니다. BSD 3-Clause.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
-  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>앱 내 BthPS3 설정을 위한 드라이버 저장소 설치, Bluetooth 클래스 필터 등록, USB 포트 순환. nefarius 제작. MIT.</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>앱 내 BthPS3 설정과 숨긴 USB 컨트롤러 해제를 위한 드라이버 저장소 설치, Bluetooth 클래스 필터 등록, USB 포트 순환. nefarius 제작. MIT.</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
   <data name="About_LibusbDesc" xml:space="preserve"><value>Switch 2 Pro 유선 드라이버와 PadForge가 WinUSB에 연결하는 컨트롤러를 위한 USB 액세스, libusb-1.0.dll로 제공. LGPL-2.1-or-later.</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>

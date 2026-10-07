@@ -474,7 +474,7 @@
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>读取原始 HID 索引而非 SDL 的手柄映射，适用于 SDL 错误识别按钮/轴布局的情况</value></data>
   <data name="Devices_InputHiding" xml:space="preserve"><value>输入隐藏</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>对游戏隐藏（HidHide）</value></data>
-  <data name="Devices_HideTooltip" xml:space="preserve"><value>通过 HidHide 驱动将此设备完全对其他应用程序隐藏。开启后请重新连接手柄：已经打开它的程序（包括 Windows 本身）会一直占用，直到它重新出现。</value></data>
+  <data name="Devices_HideTooltip" xml:space="preserve"><value>通过 HidHide 驱动将此设备完全对其他应用程序隐藏。PadForge 隐藏一个已连接的 USB 手柄时，会在 Windows 中将它重新连接，已经打开它的程序会失去它。在隐藏之前打开了蓝牙手柄的程序会一直占用，直到手柄下次连接。</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>请安装 HidHide 驱动以启用此选项</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>拦截已映射的输入（钩子）</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>仅屏蔽已映射的特定按键/按钮，未映射的输入仍然正常传递</value></data>
@@ -2802,7 +2802,7 @@
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
   <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer 编写的 DualShock 3 协议参考：sixpair 特性报告、蓝牙输出报告模板、启用顺序、电量映射。PadForge 的实现为原创 C# 代码。HIDMaestro 的 DualShock 3 (SIXAXIS): Full 控制器使用 DsHidMini SXS 模式的报告描述符。BSD 3-Clause。</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
-  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>由 nefarius 提供，用于应用内 BthPS3 设置的驱动库安装、蓝牙类过滤器注册和 USB 端口重连。MIT。</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>由 nefarius 提供，用于应用内 BthPS3 设置和释放已隐藏的 USB 手柄的驱动库安装、蓝牙类过滤器注册和 USB 端口重连。MIT。</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
   <data name="About_LibusbDesc" xml:space="preserve"><value>用于 Switch 2 Pro 有线驱动以及 PadForge 绑定到 WinUSB 的控制器的 USB 访问，以 libusb-1.0.dll 形式随附。LGPL-2.1-or-later。</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>

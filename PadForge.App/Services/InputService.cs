@@ -13125,6 +13125,11 @@ namespace PadForge.Services
         private bool _hidHideRefusedPadForge;
         private List<string> _hidHideRefusalWhitelist;
 
+        private readonly HiddenControllerRelease _controllerRelease = new();
+
+        /// <summary>The release worker, so tests can replace its device seams.</summary>
+        internal HiddenControllerRelease ControllerRelease => _controllerRelease;
+
         /// <summary>A probe has shown that this process passes HidHide's
         /// gate, so an apply that hides nothing new need not probe.</summary>
         private bool _hidHideReachConfirmed;
@@ -13302,6 +13307,10 @@ namespace PadForge.Services
                 if (keepOutSet.Count > 0)
                     hidLog.Add($"HIDHIDE keepout n={keepOutSet.Count} [{string.Join(" | ", keepOutSet)}]");
 
+                // A tablet's collection has its own capture and restart path
+                // (RefreshTabletCapture), so the release below leaves it alone.
+                var tabletIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
                 // Stood down, no device is hidden, and the sync below takes
                 // back every entry PadForge wrote.
                 foreach (var ud in standDown ? Array.Empty<UserDevice>() : snapshot)
@@ -13318,6 +13327,7 @@ namespace PadForge.Services
                                 && !keepOut(instanceId) && !HidHideController.IsHidMaestroDeviceInstance(instanceId))
                             {
                                 desiredIds.Add(instanceId);
+                                tabletIds.Add(instanceId);
                                 if (!ud.HidHideInstanceIds.Contains(instanceId))
                                 {
                                     ud.HidHideInstanceIds.Add(instanceId);
@@ -13591,6 +13601,15 @@ namespace PadForge.Services
                         hidLog.Add("HIDHIDE reach unknown: no hidden HID interface answered the probe");
                     }
                 }
+
+                // HidHide decides access only at open (Logic.c
+                // OnDeviceFileCreate), so a program that opened a controller
+                // before this hide keeps it. Once PadForge knows it can still
+                // open what it hides, a USB controller that was already
+                // connected has its port cycled and comes back where only
+                // whitelisted programs open it (HiddenControllerRelease).
+                if (synced && !refusedNow && _hidHideReachConfirmed && added.Count > 0)
+                    _controllerRelease.Release(added.Where(id => !tabletIds.Contains(id)));
 
                 // #391: read the driver's list back. A write the caller
                 // believes landed but the driver dropped is the one failure
@@ -19335,6 +19354,7 @@ namespace PadForge.Services
             // already halted. Doing it here, after Stop() disposed the manager,
             // risked a use-after-dispose (round-4 finding), so it lives there.
             try { Stop(); } catch { /* Best effort on shutdown */ }
+            _controllerRelease.Dispose();
 
             // The adoption-migration queue is STATIC on InputManager, so
             // anything queued while the poll loop was still winding down

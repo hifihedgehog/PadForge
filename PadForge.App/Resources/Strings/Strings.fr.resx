@@ -474,7 +474,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Lire les indices HID bruts au lieu du mapping manette SDL. À utiliser lorsque SDL identifie mal la disposition des boutons/axes.</value></data>
   <data name="Devices_InputHiding" xml:space="preserve"><value>Masquage des entrées</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Masquer des jeux (HidHide)</value></data>
-  <data name="Devices_HideTooltip" xml:space="preserve"><value>Masque complètement cet appareil aux autres applications via le pilote HidHide. Rebranchez la manette après l’activation : tout ce qui l’avait déjà ouverte, Windows compris, la garde jusqu’à ce qu’elle réapparaisse.</value></data>
+  <data name="Devices_HideTooltip" xml:space="preserve"><value>Masque complètement cet appareil aux autres applications via le pilote HidHide. Quand PadForge masque une manette USB déjà connectée, il la reconnecte dans Windows, si bien que tout ce qui l’avait ouverte la perd. Ce qui avait ouvert une manette Bluetooth avant qu’elle soit masquée la garde jusqu’à sa prochaine connexion.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Installez le pilote HidHide pour activer cette option</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Consommer les entrées assignées (hooks)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Supprime uniquement les touches/boutons spécifiquement assignés, laissant passer les entrées non assignées</value></data>
@@ -2802,7 +2802,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
   <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Référence du protocole DualShock 3 par Benjamin Höglinger-Stelzer : rapports de fonctionnalité sixpair, modèle de rapport de sortie Bluetooth, ordre d'activation, correspondance de la batterie. L'implémentation de PadForge est en C# original. Le contrôleur DualShock 3 (SIXAXIS): Full de HIDMaestro utilise le descripteur de rapport du mode SXS de DsHidMini. BSD 3-Clause.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
-  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Installation dans le magasin de pilotes, enregistrement du filtre de classe Bluetooth et cycle du port USB pour la configuration BthPS3 intégrée, par nefarius. MIT.</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Installation dans le magasin de pilotes, enregistrement du filtre de classe Bluetooth et cycle du port USB pour la configuration BthPS3 intégrée et pour libérer une manette USB masquée, par nefarius. MIT.</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
   <data name="About_LibusbDesc" xml:space="preserve"><value>Accès USB pour le pilote filaire de la Switch 2 Pro et les contrôleurs que PadForge associe à WinUSB, fourni sous la forme libusb-1.0.dll. LGPL-2.1-or-later.</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>

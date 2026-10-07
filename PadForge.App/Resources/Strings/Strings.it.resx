@@ -474,7 +474,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Legge gli indici HID grezzi invece della mappatura gamepad di SDL. Usare quando SDL identifica erroneamente il layout di pulsanti/assi.</value></data>
   <data name="Devices_InputHiding" xml:space="preserve"><value>Nascondimento input</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Nascondi ai giochi (HidHide)</value></data>
-  <data name="Devices_HideTooltip" xml:space="preserve"><value>Nasconde completamente questo dispositivo alle altre applicazioni tramite il driver HidHide. Ricollega il controller dopo l’attivazione: tutto ciò che lo aveva già aperto, Windows compreso, lo mantiene finché non ricompare.</value></data>
+  <data name="Devices_HideTooltip" xml:space="preserve"><value>Nasconde completamente questo dispositivo alle altre applicazioni tramite il driver HidHide. Quando PadForge nasconde un controller USB già collegato, lo ricollega in Windows, così tutto ciò che lo aveva aperto lo perde. Ciò che aveva aperto un controller Bluetooth prima che venisse nascosto lo mantiene fino alla sua prossima connessione.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Installa il driver HidHide per abilitare questa opzione</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Consuma input mappati (hook)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Sopprime solo i tasti/pulsanti specifici che sono mappati, lasciando passare gli input non mappati</value></data>
@@ -2824,7 +2824,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
   <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Riferimento del protocollo DualShock 3 di Benjamin Höglinger-Stelzer: feature report sixpair, modello di output-report Bluetooth, sequenza di abilitazione, mappa della batteria. L'implementazione di PadForge è in C# originale. Il controller DualShock 3 (SIXAXIS): Full di HIDMaestro usa il descrittore dei report della modalità SXS di DsHidMini. BSD 3-Clause.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
-  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Installazione nel driver store, registrazione del filtro di classe Bluetooth e ciclo della porta USB per la configurazione di BthPS3 nell'app, di nefarius. MIT.</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Installazione nel driver store, registrazione del filtro di classe Bluetooth e ciclo della porta USB per la configurazione di BthPS3 nell'app e per liberare un controller USB nascosto, di nefarius. MIT.</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
   <data name="About_LibusbDesc" xml:space="preserve"><value>Accesso USB per il driver cablato dello Switch 2 Pro e i controller che PadForge associa a WinUSB, distribuito come libusb-1.0.dll. LGPL-2.1-or-later.</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>

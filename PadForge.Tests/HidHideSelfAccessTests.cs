@@ -157,6 +157,20 @@ namespace PadForge.Tests
             _vm = new MainViewModel();
             _vm.Settings.EnableInputHiding = true;
             _svc = new InputService(_vm);
+            _svc.ControllerRelease.Resolve = id =>
+            {
+                lock (_released) _released.Add(id);
+                return (null, "test");
+            };
+            _svc.ControllerRelease.Log = _ => { };
+        }
+
+        private readonly List<string> _released = new();
+
+        private string[] Released()
+        {
+            _svc.ControllerRelease.Pending.Wait(TimeSpan.FromSeconds(10));
+            lock (_released) return _released.ToArray();
         }
 
         public void Dispose()
@@ -318,6 +332,94 @@ namespace PadForge.Tests
             Assert.True(Names(_driver.Blacklist, RemoteId));
             Assert.Equal(2, _opened.Count);
             Assert.Equal(string.Empty, _vm.StatusText);
+        }
+
+        /// <summary>A hide PadForge can still reach hands what it added to
+        /// the release, which takes a USB controller from programs that
+        /// opened it before the hide. An apply that adds nothing hands over
+        /// nothing.</summary>
+        [Fact]
+        public void AReachableHideReleasesWhatItAdded()
+        {
+            _svc.ApplyDeviceHiding();
+            Assert.Contains(RemoteId, Released(), StringComparer.OrdinalIgnoreCase);
+
+            int before = Released().Length;
+            _svc.ApplyDeviceHiding();
+            Assert.Equal(before, Released().Length);
+        }
+
+        /// <summary>A probe nothing answered has not shown that PadForge can
+        /// reopen what it hid, so nothing is released yet.</summary>
+        [Fact]
+        public void AnUnconfirmedHideReleasesNothing()
+        {
+            _interface = null;
+            _svc.ApplyDeviceHiding();
+            Assert.True(Names(_driver.Blacklist, RemoteId));
+            Assert.Empty(Released());
+        }
+
+        /// <summary>A tablet's collection has its own capture path, so the
+        /// release leaves it out while it takes the controller hidden in the
+        /// same apply.</summary>
+        [Fact]
+        public void ATabletIsLeftToItsOwnCapture()
+        {
+            const string tabletPath = @"\\?\HID#VID_F00D&PID_7AB1#9&1&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}";
+            string tabletId = HidHideController.DevicePathToInstanceId(tabletPath);
+            SettingsManager.UserDevices.Items.Add(new UserDevice
+            {
+                InstanceGuid = Guid.NewGuid(),
+                InstanceName = "Pen Tablet",
+                DevicePath = tabletPath,
+                CapType = InputDeviceType.Tablet,
+                HidHideEnabled = true,
+                IsOnline = true,
+            });
+
+            _svc.ApplyDeviceHiding();
+
+            Assert.True(Names(_driver.Blacklist, tabletId));
+            Assert.Contains(RemoteId, Released(), StringComparer.OrdinalIgnoreCase);
+            Assert.DoesNotContain(tabletId, Released(), StringComparer.OrdinalIgnoreCase);
+        }
+
+        /// <summary>A refused hide was taken back, so it releases
+        /// nothing.</summary>
+        [Fact]
+        public void ARefusedHideReleasesNothing()
+        {
+            _openAnswer = (false, ERROR_ACCESS_DENIED);
+            _svc.ApplyDeviceHiding();
+            Assert.Empty(Released());
+        }
+
+        /// <summary>Reach confirmed by an earlier pass does not carry a later
+        /// refusal through: the ids that apply took back are not
+        /// released.</summary>
+        [Fact]
+        public void ARefusalAfterAnEarlierPassReleasesNothing()
+        {
+            _svc.ApplyDeviceHiding();
+            int before = Released().Length;
+
+            _driver.Blacklist.Clear();
+            _openAnswer = (false, ERROR_ACCESS_DENIED);
+            _svc.ApplyDeviceHiding();
+
+            Assert.False(Names(_driver.Blacklist, RemoteId));
+            Assert.Equal(before, Released().Length);
+        }
+
+        /// <summary>A hide held back for an unconfirmed whitelist added
+        /// nothing, so it releases nothing.</summary>
+        [Fact]
+        public void AHeldBackHideReleasesNothing()
+        {
+            _driver.RefuseWhitelistReads = true;
+            _svc.ApplyDeviceHiding();
+            Assert.Empty(Released());
         }
 
         /// <summary>A sync that holds new hides back adds nothing and still

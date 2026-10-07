@@ -363,7 +363,8 @@ NAudio
 Nefarius.Utilities.DeviceManagement
   https://github.com/nefarius/Nefarius.Utilities.DeviceManagement
   Driver-store installation, device class filters, and USB hub port
-  cycling for the in-app DualShock 3 driver setup.
+  cycling for the in-app DualShock 3 driver setup and for releasing a
+  hidden USB controller.
   Licensed under MIT License
 
 nefcon

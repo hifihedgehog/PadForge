@@ -658,18 +658,23 @@ namespace PadForge.Common
                     Download(http, VcRedistUrl, redist);
                     if (!IsSignedByMicrosoft(redist))
                         throw new InvalidOperationException("The Visual C++ Redistributable download is not signed by Microsoft.");
-                    int? redistExit = RunElevated(redist, "/install /quiet /norestart", out bool redistUntracked);
-                    if (redistExit == null)
+                    try
+                    {
+                        InstallVcRuntime(
+                            arguments =>
+                            {
+                                int? exit = RunElevated(redist, arguments, out bool untracked);
+                                return (exit, untracked);
+                            },
+                            () => IsVcRuntimeAtLeast(MidiRuntimeVcMinimum),
+                            () => System.Threading.Thread.Sleep(VcRepairPauseMs),
+                            VcRuntimeReplacementQueued);
+                    }
+                    catch (InstallerFailedException ex) when (ex.OutcomeUnknown)
                     {
                         installerMayStillRun = true;
-                        throw InstallerFailedException.NoExitCode(redistUntracked);
+                        throw;
                     }
-                    if (!IsVcRedistSuccess(redistExit.Value))
-                        throw new InstallerFailedException(redistExit.Value);
-                    if (!IsVcRuntimeAtLeast(MidiRuntimeVcMinimum))
-                        throw new InvalidOperationException(redistExit.Value is 3010 or 1641
-                            ? "Restart Windows to finish installing the Visual C++ Redistributable, then select Install again."
-                            : $"The Visual C++ runtime is still older than {MidiRuntimeVcMinimum} after its installer ran.");
                 }
 
                 bool arm64 = PadForge.Engine.PlatformSupport.IsArm64Machine;
@@ -867,6 +872,101 @@ namespace PadForge.Common
         /// the runtime installed: done, a restart owed (3010) or started
         /// (1641), or a newer version already there (1638).</summary>
         internal static bool IsVcRedistSuccess(int exitCode) => exitCode is 0 or 3010 or 1641 or 1638;
+
+        /// <summary>The redistributable's runs, in order. The first installs.
+        /// The later ones repair: an install of the version already
+        /// registered plans nothing for its packages, while a repair
+        /// reinstalls every file of an equal or older version (WiX 3.14 Burn,
+        /// engine/msiengine.cpp, the bundle engine Microsoft's redistributable
+        /// runs on).</summary>
+        internal static readonly string[] VcRedistRuns =
+        {
+            "/install /quiet /norestart",
+            "/repair /quiet /norestart",
+            "/repair /quiet /norestart",
+        };
+
+        /// <summary>The pause before each repair run, for the program holding
+        /// the old runtime to let go of it.</summary>
+        internal const int VcRepairPauseMs = 5_000;
+
+        /// <summary>
+        /// Runs Microsoft's redistributable until this PC's Visual C++ runtime
+        /// is at least <see cref="MidiRuntimeVcMinimum"/>. Windows Installer
+        /// renames a DLL that programs have loaded and puts the new copy in
+        /// its place, so the update lands at once even when the
+        /// redistributable answers 3010. Only a program that holds the old file
+        /// open without letting it be renamed makes Windows queue the new copy
+        /// for the next startup (the Windows Installer team's notes on its
+        /// reboot behavior), and the repair runs try again once that program
+        /// lets go. Burn refuses a run after an earlier one only when
+        /// that one started a restart itself (engine/apply.cpp and
+        /// engine/core.cpp), which /norestart rules out.
+        /// </summary>
+        /// <param name="run">Runs the redistributable with the given arguments
+        /// and returns its exit code, or null with whether Windows handed back
+        /// a process to follow.</param>
+        /// <param name="runtimeCurrent">Whether the runtime is new enough
+        /// now.</param>
+        /// <param name="pause">Waits before a repair run.</param>
+        /// <param name="replacementQueued">Whether Windows queued a runtime
+        /// DLL for the next startup.</param>
+        internal static void InstallVcRuntime(Func<string, (int? Exit, bool Untracked)> run,
+            Func<bool> runtimeCurrent, Action pause, Func<bool> replacementQueued)
+        {
+            for (int i = 0; i < VcRedistRuns.Length; i++)
+            {
+                if (i > 0) pause();
+                var (exit, untracked) = run(VcRedistRuns[i]);
+                if (exit == null) throw InstallerFailedException.NoExitCode(untracked);
+                if (!IsVcRedistSuccess(exit.Value)) throw new InstallerFailedException(exit.Value);
+                if (runtimeCurrent()) return;
+            }
+            throw new InvalidOperationException(replacementQueued()
+                ? "A program holds the old Visual C++ runtime open, so Windows could not replace it. Close other programs and select Install again."
+                : $"The Visual C++ runtime is still older than {MidiRuntimeVcMinimum} after its installer ran.");
+        }
+
+        private const string SessionManagerKey = @"SYSTEM\CurrentControlSet\Control\Session Manager";
+
+        /// <summary>Whether Windows holds a copy of one of the runtime's DLLs
+        /// for the next startup, read from PendingFileRenameOperations.</summary>
+        private static bool VcRuntimeReplacementQueued()
+        {
+            try
+            {
+                using var key = Registry.LocalMachine.OpenSubKey(SessionManagerKey, false);
+                return VcRuntimeReplacementQueued(key?.GetValue("PendingFileRenameOperations") as string[],
+                    Environment.SystemDirectory);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>Whether a PendingFileRenameOperations list queues a new
+        /// copy of a Visual C++ runtime DLL in <paramref name="systemFolder"/>.
+        /// The list holds pairs: the queued file, then the file it replaces.
+        /// A target carries the \??\ prefix, and a leading ! when it replaces
+        /// an existing file. An empty target is a delete.</summary>
+        internal static bool VcRuntimeReplacementQueued(string[] pendingRenames, string systemFolder)
+        {
+            if (pendingRenames == null || string.IsNullOrEmpty(systemFolder)) return false;
+            string folder = systemFolder.TrimEnd('\\');
+            for (int i = 1; i < pendingRenames.Length; i += 2)
+            {
+                string target = (pendingRenames[i] ?? string.Empty).TrimStart('!');
+                if (target.StartsWith(@"\??\", StringComparison.Ordinal)) target = target.Substring(4);
+                if (target.Length == 0) continue;
+                if (!string.Equals(Path.GetDirectoryName(target), folder, StringComparison.OrdinalIgnoreCase)) continue;
+                string name = Path.GetFileName(target);
+                if (name.StartsWith("msvcp140", StringComparison.OrdinalIgnoreCase)
+                    || name.StartsWith("vcruntime140", StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+            return false;
+        }
 
         /// <summary>Streams <paramref name="url"/> to <paramref name="path"/>.
         /// HttpClient follows the GitHub and aka.ms redirects.</summary>

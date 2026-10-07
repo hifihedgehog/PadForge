@@ -105,7 +105,9 @@ namespace PadForge.Tests
             string di = System.IO.File.ReadAllText(System.IO.Path.Combine(dir.FullName, "PadForge.App", "Common", "DriverInstaller.cs"));
             Assert.Contains("if (proc == null)\n            {\n                notTracked = true;", di.Replace("\r\n", "\n"));
             Assert.DoesNotContain("when (ex.TimedOut)", di);
-            Assert.Equal(3, System.Text.RegularExpressions.Regex.Matches(di, @"when \(ex\.OutcomeUnknown\)").Count);
+            // HidHide's install and uninstall, the Visual C++ redistributable's
+            // runs, and the MIDI runtime's install.
+            Assert.Equal(4, System.Text.RegularExpressions.Regex.Matches(di, @"when \(ex\.OutcomeUnknown\)").Count);
             Assert.DoesNotContain("throw new InstallerFailedException();", di);
 
             string window = System.IO.File.ReadAllText(System.IO.Path.Combine(dir.FullName, "PadForge.App", "MainWindow.xaml.cs"));

@@ -663,6 +663,114 @@ namespace PadForge.Tests
             Assert.Equal(expected, DriverInstaller.IsVcRedistSuccess(exitCode));
         }
 
+        /// <summary>Drives <see cref="DriverInstaller.InstallVcRuntime"/> with
+        /// scripted answers and records each run and pause.</summary>
+        private sealed class VcRedistScript
+        {
+            public readonly List<string> Runs = new();
+            public int Pauses;
+            public (int? Exit, bool Untracked)[] Answers = { (3010, false) };
+            public int LandsAfterRun = 1;
+            public bool Queued;
+
+            public void Install() => DriverInstaller.InstallVcRuntime(
+                arguments =>
+                {
+                    Runs.Add(arguments);
+                    return Answers[Math.Min(Runs.Count, Answers.Length) - 1];
+                },
+                () => LandsAfterRun > 0 && Runs.Count >= LandsAfterRun,
+                () => Pauses++,
+                () => Queued);
+        }
+
+        /// <summary>A 3010 usually leaves the new runtime in place already,
+        /// since Windows Installer renames a loaded DLL and copies the new one
+        /// in. One install then does it.</summary>
+        [Fact]
+        public void TheRedistributable_RunsOnce_WhenTheRuntimeLands()
+        {
+            var script = new VcRedistScript();
+            script.Install();
+            Assert.Equal(new[] { "/install /quiet /norestart" }, script.Runs);
+            Assert.Equal(0, script.Pauses);
+        }
+
+        /// <summary>A program holding the old file open makes Windows queue
+        /// the new copy for the next startup. The install used to say restart
+        /// Windows there. It runs again as a repair, since another install of
+        /// the registered version plans nothing.</summary>
+        [Fact]
+        public void AHeldRuntime_IsRepaired_UntilItLands()
+        {
+            var script = new VcRedistScript { LandsAfterRun = 2 };
+            script.Install();
+            Assert.Equal(new[] { "/install /quiet /norestart", "/repair /quiet /norestart" }, script.Runs);
+            Assert.Equal(1, script.Pauses);
+        }
+
+        /// <summary>Nothing PadForge says about the runtime tells anyone to
+        /// restart. A copy Windows queued behind a held file names the
+        /// hold.</summary>
+        [Theory]
+        [InlineData(true, "A program holds the old Visual C++ runtime open")]
+        [InlineData(false, "still older than 14.51")]
+        public void ARuntimeThatNeverLands_FailsWithoutARestartLine(bool queued, string expected)
+        {
+            var script = new VcRedistScript { LandsAfterRun = 0, Queued = queued };
+            var ex = Assert.Throws<InvalidOperationException>(script.Install);
+            Assert.Contains(expected, ex.Message);
+            Assert.DoesNotContain("restart", ex.Message, StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("reboot", ex.Message, StringComparison.OrdinalIgnoreCase);
+            Assert.Equal(DriverInstaller.VcRedistRuns, script.Runs);
+            Assert.Equal(DriverInstaller.VcRedistRuns.Length - 1, script.Pauses);
+        }
+
+        [Fact]
+        public void AFailedRun_StopsTheRepairs()
+        {
+            var script = new VcRedistScript { LandsAfterRun = 0, Answers = new (int?, bool)[] { (3010, false), (1603, false) } };
+            var ex = Assert.Throws<InstallerFailedException>(script.Install);
+            Assert.Equal(1603, ex.ExitCode);
+            Assert.Equal(2, script.Runs.Count);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ARunWithNoExitCode_LeavesTheOutcomeUnknown(bool untracked)
+        {
+            var script = new VcRedistScript { Answers = new (int?, bool)[] { (null, untracked) } };
+            var ex = Assert.Throws<InstallerFailedException>(script.Install);
+            Assert.True(ex.OutcomeUnknown);
+            Assert.Equal(untracked, ex.NotTracked);
+            Assert.Single(script.Runs);
+        }
+
+        /// <summary>The list holds pairs, the queued file and the file it
+        /// replaces. Only a target in the system folder counts, and a delete
+        /// of an old runtime copy is not a queued replacement.</summary>
+        [Theory]
+        [InlineData(new[] { @"\??\C:\Config.Msi\3f2a1.tmp", @"!\??\C:\WINDOWS\system32\msvcp140.dll" }, true)]
+        [InlineData(new[] { @"\??\C:\Config.Msi\3f2a1.tmp", @"\??\C:\Windows\System32\VCRUNTIME140_1.dll" }, true)]
+        [InlineData(new[] { @"\??\C:\Config.Msi\9c.rbf", "", @"\??\C:\Config.Msi\3f2a1.tmp", @"!\??\C:\WINDOWS\system32\msvcp140_atomic_wait.dll" }, true)]
+        [InlineData(new[] { @"\??\C:\WINDOWS\system32\msvcp140.dll", "" }, false)]
+        [InlineData(new[] { @"\??\C:\Config.Msi\3f2a1.tmp", @"!\??\C:\WINDOWS\SysWOW64\msvcp140.dll" }, false)]
+        [InlineData(new[] { @"\??\C:\Config.Msi\3f2a1.tmp", @"!\??\C:\WINDOWS\system32\drivers\msvcp140.dll" }, false)]
+        [InlineData(new[] { @"\??\C:\Config.Msi\3f2a1.tmp", @"!\??\C:\WINDOWS\system32\ucrtbase.dll" }, false)]
+        [InlineData(new string[0], false)]
+        public void ThePendingRenameList_FindsAQueuedRuntimeDll(string[] pending, bool expected)
+        {
+            Assert.Equal(expected, DriverInstaller.VcRuntimeReplacementQueued(pending, @"C:\WINDOWS\system32"));
+        }
+
+        [Fact]
+        public void NoPendingRenameList_QueuesNothing()
+        {
+            Assert.False(DriverInstaller.VcRuntimeReplacementQueued(null, @"C:\WINDOWS\system32"));
+            Assert.False(DriverInstaller.VcRuntimeReplacementQueued(new[] { "a", null }, @"C:\WINDOWS\system32"));
+        }
+
         [Fact]
         public void TheHash_IsSha256InHex()
         {

@@ -223,7 +223,7 @@
     <PackageReference Include="Concentus" Version="2.2.2" />
     <!-- Driver-store install, class filters, and USB CyclePort for the BthPS3
          DualShock 3 Bluetooth stack (nefarius, same lib BthPS3's own installer uses) -->
-    <PackageReference Include="Nefarius.Utilities.DeviceManagement" Version="5.2.0" />
+    <PackageReference Include="Nefarius.Utilities.DeviceManagement" Version="6.1.0" />
   </ItemGroup>
 
   <!-- The in-box Windows MIDI Services API ships in Windows 11 25H2 (build

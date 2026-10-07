@@ -522,6 +522,26 @@ namespace PadForge.Common.Input
             return new List<(string Id, string Name)>();
         }
 
+        /// <summary>Drops the shared session after its backend was torn down,
+        /// without waiting on it. The service behind it may be gone, and the
+        /// polling thread must never wait on a dead call. The next asker gets
+        /// a session from the current backend.</summary>
+        public static void ResetSession()
+        {
+            IMidiInputSession old;
+            lock (_lock)
+            {
+                old = _session;
+                _session = null;
+            }
+            if (old != null)
+                System.Threading.Tasks.Task.Run(() =>
+                {
+                    try { old.Dispose(); }
+                    catch { }
+                });
+        }
+
         /// <summary>Tears down the shared session. Call on app exit, before
         /// <see cref="MidiVirtualController.Shutdown"/>.</summary>
         public static void Shutdown()

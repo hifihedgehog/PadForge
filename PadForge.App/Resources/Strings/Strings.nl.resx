@@ -371,7 +371,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>Niet beschikbaar</value></data>
   <data name="Settings_MidiOlderRuntime_Format" xml:space="preserve"><value>De oudere runtime {0} is ook geïnstalleerd en is niet meer nodig</value></data>
   <data name="Settings_MidiStatusNotRunning" xml:space="preserve"><value>Niet actief</value></data>
-  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>De MIDI-service van Windows reageerde niet. Windows opnieuw opstarten maakt een vastgelopen service weer vrij.</value></data>
+  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>De MIDI-service van Windows reageerde niet. PadForge herstart de service en controleert opnieuw.</value></data>
   <data name="Settings_MidiStatusLegacy" xml:space="preserve"><value>Verouderde MIDI-API</value></data>
   <data name="Settings_MidiLegacy" xml:space="preserve"><value>Elk MIDI-slot verstuurt naar een poort die op de pagina van het slot is gekozen. MIDI-invoer opent alleen apparaten die aan een slot zijn toegewezen.</value></data>
   <data name="Settings_MidiInstallTooltip" xml:space="preserve"><value>Downloadt en installeert de Windows MIDI Services-runtime, waarmee elk MIDI-slot een eigen poort krijgt.</value></data>

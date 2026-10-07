@@ -371,7 +371,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>Nicht verfügbar</value></data>
   <data name="Settings_MidiOlderRuntime_Format" xml:space="preserve"><value>Die ältere Laufzeit {0} ist ebenfalls installiert und wird nicht mehr benötigt</value></data>
   <data name="Settings_MidiStatusNotRunning" xml:space="preserve"><value>Läuft nicht</value></data>
-  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>Der Windows-MIDI-Dienst hat nicht geantwortet. Ein Neustart von Windows behebt einen hängenden Dienst.</value></data>
+  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>Der Windows-MIDI-Dienst hat nicht geantwortet. PadForge startet den Dienst neu und prüft erneut.</value></data>
   <data name="Settings_MidiStatusLegacy" xml:space="preserve"><value>Legacy-MIDI-API</value></data>
   <data name="Settings_MidiLegacy" xml:space="preserve"><value>Jeder MIDI-Slot sendet an einen Port, der auf der Seite des Slots gewählt wird. Die MIDI-Eingabe öffnet nur Geräte, die einem Slot zugewiesen sind.</value></data>
   <data name="Settings_MidiInstallTooltip" xml:space="preserve"><value>Lädt die Laufzeit von Windows MIDI Services herunter und installiert sie. Damit erhält jeder MIDI-Slot einen eigenen Port.</value></data>

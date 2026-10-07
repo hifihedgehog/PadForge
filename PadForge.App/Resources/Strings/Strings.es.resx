@@ -371,7 +371,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>No disponible</value></data>
   <data name="Settings_MidiOlderRuntime_Format" xml:space="preserve"><value>El entorno de ejecución anterior {0} también está instalado y ya no es necesario</value></data>
   <data name="Settings_MidiStatusNotRunning" xml:space="preserve"><value>No está en ejecución</value></data>
-  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>El servicio MIDI de Windows no respondió. Reiniciar Windows libera un servicio bloqueado.</value></data>
+  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>El servicio MIDI de Windows no respondió. PadForge reinicia el servicio y vuelve a comprobarlo.</value></data>
   <data name="Settings_MidiStatusLegacy" xml:space="preserve"><value>API MIDI heredada</value></data>
   <data name="Settings_MidiLegacy" xml:space="preserve"><value>Cada ranura MIDI envía a un puerto elegido en la página de la ranura. La entrada MIDI abre solo los dispositivos asignados a una ranura.</value></data>
   <data name="Settings_MidiInstallTooltip" xml:space="preserve"><value>Descarga e instala el entorno de ejecución de Windows MIDI Services, que da a cada ranura MIDI un puerto propio.</value></data>

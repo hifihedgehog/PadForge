@@ -164,6 +164,12 @@ namespace PadForge.Common.Input
         /// the runtime is installed under the legacy API.</summary>
         internal MidiApiKind ApiKind { get; private set; }
 
+        /// <summary>The backend generation this controller's endpoint was
+        /// made in. Step 5 rebuilds the slot once it differs from
+        /// <see cref="Generation"/>, since the backend or service the endpoint
+        /// talks to is gone.</summary>
+        internal int CreatedGeneration { get; private set; }
+
         public VirtualControllerType Type => VirtualControllerType.Midi;
         public bool IsConnected => _connected;
         public int FeedbackPadIndex { get; set; }
@@ -217,8 +223,20 @@ namespace PadForge.Common.Input
                 });
                 if (done.Wait(ConnectTimeoutMs))
                 {
-                    if (fault != null) throw fault;
-                    return;
+                    if (fault == null) return;
+                    // A refused session is what a stopped or broken service
+                    // answers, so it gets the restart a hung create gets.
+                    // The failed attempt already released its endpoint claim.
+                    if (fault is MidiSessionUnavailableException && attempt == 1
+                        && MidiServiceRecovery.TryRecoverOnce("the service refused a MIDI session"))
+                    {
+                        ResetAvailability();
+                        if (!IsAvailable())
+                            throw new TimeoutException(
+                                $"Windows MIDI Services stayed unavailable after a service restart while creating '{"PadForge MIDI " + _instanceNum}'.");
+                        continue;
+                    }
+                    throw fault;
                 }
 
                 // Timeout. Invalidate the attempt (a late completion now
@@ -270,8 +288,13 @@ namespace PadForge.Common.Input
             // nothing shared.
             IMidiVirtualEndpoint endpoint;
             MidiApiKind kind;
+            int generation;
             try
             {
+                // The generation is read before the backend, so a reset
+                // between the two reads costs a rebuild instead of stamping a
+                // torn-down backend's endpoint as current.
+                generation = Generation;
                 var backend = _backend
                     ?? throw new InvalidOperationException("Windows MIDI Services is not available.");
                 kind = backend.Kind;
@@ -301,6 +324,7 @@ namespace PadForge.Common.Input
 
                 _endpoint = endpoint;
                 ApiKind = kind;
+                CreatedGeneration = generation;
                 _connected = true;
                 s_liveEndpoints[uid] = EndpointReady;
 
@@ -593,23 +617,94 @@ namespace PadForge.Common.Input
             // a broken service. A timed-out probe reads as unavailable for
             // this session (ResetAvailability re-probes).
             if (_probeTimedOut) return false;
-            bool result = false;
-            var done = new System.Threading.ManualResetEventSlim(false);
-            System.Threading.Tasks.Task.Run(() =>
+            var probe = StartProbe();
+            if (!probe.Done.Wait(ProbeTimeoutMs))
             {
-                try { result = IsAvailableCore(); }
-                catch { /* unavailable */ }
-                finally { done.Set(); }
-            });
-            if (!done.Wait(10_000))
-            {
-                // Hung service: remember for the session so every later
-                // create fails fast instead of re-paying the 10 s wait.
-                // ResetAvailability clears this.
+                // Hung service: every later ask fails fast instead of
+                // re-paying the wait, and the service is restarted off this
+                // thread so MIDI comes back without anything else restarting.
                 _probeTimedOut = true;
+                RecoverFromHungProbe(probe);
                 return false;
             }
-            return result;
+            return probe.Result;
+        }
+
+        /// <summary>How long one availability probe may take. Tests shorten
+        /// it.</summary>
+        internal static int ProbeTimeoutMs = 10_000;
+
+        /// <summary>How long the recovery waits for a hung probe to return
+        /// once the service under it was restarted. Tests shorten it.</summary>
+        internal static int HungProbeReturnMs = 30_000;
+
+        private sealed class Probe
+        {
+            public readonly System.Threading.ManualResetEventSlim Done = new(false);
+            public volatile bool Result;
+        }
+
+        private static Probe StartProbe()
+        {
+            var probe = new Probe();
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                try { probe.Result = IsAvailableCore(); }
+                catch { /* unavailable */ }
+                finally { probe.Done.Set(); }
+            });
+            return probe;
+        }
+
+        private static int s_probeRecoveryRunning;
+
+        /// <summary>The recovery the create path already runs for a hung
+        /// create, here for a hung probe. A hung probe left the Settings card
+        /// reading Not Running and every MIDI slot failing until a runtime was
+        /// installed or removed, and the card told the user to restart
+        /// Windows. The service is restarted (cooldown-gated), the hung probe
+        /// is let finish against the restarted service, since it holds the
+        /// lock ResetAvailability takes, and the probe runs again. A second
+        /// attempt follows after the cooldown when the first could not restart
+        /// the service, as when another restart's cooldown was still running,
+        /// or left it still hung. The slots that failed for want of an API
+        /// retry once the API settles (Step 5), and MIDI input reopens on the
+        /// new backend.</summary>
+        private static void RecoverFromHungProbe(Probe hung)
+        {
+            if (System.Threading.Interlocked.Exchange(ref s_probeRecoveryRunning, 1) != 0) return;
+            System.Threading.Tasks.Task.Run(async () =>
+            {
+                try
+                {
+                    for (int attempt = 1; attempt <= 2; attempt++)
+                    {
+                        if (attempt > 1) await System.Threading.Tasks.Task.Delay(MidiServiceRecovery.CooldownMs);
+                        if (_runtimeSuppressed || _isAvailable.HasValue || !_probeTimedOut) return;
+                        // Refused inside another restart's cooldown, or the
+                        // restart failed: the next attempt waits it out.
+                        if (!MidiServiceRecovery.TryRecoverOnce("the availability probe hung")) continue;
+                        if (!hung.Done.Wait(HungProbeReturnMs))
+                        {
+                            PadForge.Engine.SdlDiagLog.WriteLine("MIDIRECOVER the hung probe did not return after the service restart");
+                            return;
+                        }
+                        ResetAvailability();
+                        var again = StartProbe();
+                        if (again.Done.Wait(ProbeTimeoutMs))
+                        {
+                            PadForge.Engine.SdlDiagLog.WriteLine(again.Result
+                                ? $"MIDIRECOVER MIDI available again on {ActiveApi}"
+                                : "MIDIRECOVER no MIDI API started after the service restart");
+                            return;
+                        }
+                        _probeTimedOut = true;
+                        hung = again;
+                    }
+                }
+                catch { /* best effort, like the create path's recovery */ }
+                finally { System.Threading.Interlocked.Exchange(ref s_probeRecoveryRunning, 0); }
+            });
         }
 
         private static bool IsAvailableCore()
@@ -714,7 +809,18 @@ namespace PadForge.Common.Input
                 backend?.Stop(skipDispose: false);
                 _isAvailable = null;
             }
+            System.Threading.Interlocked.Increment(ref s_generation);
         }
+
+        private static int s_generation;
+
+        /// <summary>Bumped by every <see cref="ResetAvailability"/>: a runtime
+        /// install or uninstall, and every service restart PadForge performs,
+        /// since each ends in one. A controller or input session made in an
+        /// older generation talks to a backend or a service that is gone, so
+        /// Step 5 rebuilds the slot and the input sweep reopens its
+        /// connections.</summary>
+        internal static int Generation => System.Threading.Volatile.Read(ref s_generation);
 
         private static volatile bool _runtimeSuppressed;
 

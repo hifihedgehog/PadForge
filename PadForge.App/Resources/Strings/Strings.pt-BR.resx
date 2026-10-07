@@ -371,7 +371,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>Não Disponível</value></data>
   <data name="Settings_MidiOlderRuntime_Format" xml:space="preserve"><value>O runtime antigo {0} também está instalado e não é mais necessário</value></data>
   <data name="Settings_MidiStatusNotRunning" xml:space="preserve"><value>Não Iniciado</value></data>
-  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>O serviço MIDI do Windows não respondeu. Reiniciar o Windows libera um serviço travado.</value></data>
+  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>O serviço MIDI do Windows não respondeu. O PadForge reinicia o serviço e verifica de novo.</value></data>
   <data name="Settings_MidiStatusLegacy" xml:space="preserve"><value>API MIDI Legada</value></data>
   <data name="Settings_MidiLegacy" xml:space="preserve"><value>Cada slot MIDI envia para uma porta escolhida na página do slot. A entrada MIDI abre apenas os dispositivos atribuídos a um slot.</value></data>
   <data name="Settings_MidiInstallTooltip" xml:space="preserve"><value>Baixa e instala o runtime do Windows MIDI Services, que dá a cada slot MIDI uma porta própria.</value></data>

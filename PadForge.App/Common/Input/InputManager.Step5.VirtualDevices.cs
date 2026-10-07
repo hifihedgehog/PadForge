@@ -1323,13 +1323,17 @@ namespace PadForge.Common.Input
                 // closes the same way, so the slot reopens it once it is
                 // back. A slot built on one API also rebuilds once the
                 // probe settles on another: installing the runtime moves
-                // legacy slots onto ports of their own.
+                // legacy slots onto ports of their own. So does a slot built
+                // before the backend was last torn down, as every service
+                // restart PadForge performs ends: its endpoint talks to a
+                // backend or a service that is gone, and it went silent.
                 if (vc is MidiVirtualController midiOnPort
                     && ((MidiVirtualController.ActiveApi == MidiApiKind.Legacy
                          && (!string.Equals(midiOnPort.OutputPort, MidiOutputPortOf(padIndex), StringComparison.Ordinal)
                              || LegacyMidiPortGone(padIndex, midiOnPort)))
                         || (MidiVirtualController.ActiveApi != MidiApiKind.None
-                            && midiOnPort.ApiKind != MidiVirtualController.ActiveApi)))
+                            && (midiOnPort.ApiKind != MidiVirtualController.ActiveApi
+                                || midiOnPort.CreatedGeneration != MidiVirtualController.Generation))))
                 {
                     if (IsSlotActive(padIndex)) BeginInitializing(padIndex);
                     else _slotInitializing[padIndex] = false;

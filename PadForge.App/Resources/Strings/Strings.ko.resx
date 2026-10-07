@@ -371,7 +371,7 @@
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>사용할 수 없음</value></data>
   <data name="Settings_MidiOlderRuntime_Format" xml:space="preserve"><value>이전 런타임 {0}도 설치되어 있지만 더 이상 필요하지 않습니다</value></data>
   <data name="Settings_MidiStatusNotRunning" xml:space="preserve"><value>실행되지 않음</value></data>
-  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>Windows MIDI 서비스가 응답하지 않았습니다. Windows를 다시 시작하면 멈춘 서비스가 복구됩니다.</value></data>
+  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>Windows MIDI 서비스가 응답하지 않았습니다. PadForge가 서비스를 다시 시작하고 다시 확인합니다.</value></data>
   <data name="Settings_MidiStatusLegacy" xml:space="preserve"><value>레거시 MIDI API</value></data>
   <data name="Settings_MidiLegacy" xml:space="preserve"><value>각 MIDI 슬롯은 슬롯 페이지에서 고른 포트로 보냅니다. MIDI 입력은 슬롯에 할당된 장치만 엽니다.</value></data>
   <data name="Settings_MidiInstallTooltip" xml:space="preserve"><value>Windows MIDI Services 런타임을 다운로드하여 설치합니다. 각 MIDI 슬롯에 전용 포트가 생깁니다.</value></data>

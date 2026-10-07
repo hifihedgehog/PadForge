@@ -5,6 +5,14 @@ using System.Threading;
 
 namespace PadForge.Common.Input
 {
+    /// <summary>The service refused a MIDI session outright, which is what a
+    /// stopped or broken MIDI service answers. The create path restarts the
+    /// service once on it, the same as for a hung create.</summary>
+    internal sealed class MidiSessionUnavailableException : InvalidOperationException
+    {
+        internal MidiSessionUnavailableException() : base("Failed to create MIDI session.") { }
+    }
+
     /// <summary>
     /// One-shot recovery for a wedged Windows MIDI service. Bench-proven
     /// sequence (2026-07-23): midisrv sat in StopPending forever (SCM
@@ -74,25 +82,35 @@ namespace PadForge.Common.Input
         // wedge the service again later in the same session (observed
         // twice in one run, 2026-07-23), and a once-only gate left the
         // second wedge with no rescue. The cooldown still prevents
-        // restart storms if the service is truly unrecoverable.
-        private const int CooldownMs = 120_000;
+        // restart storms if the service is truly unrecoverable. Tests
+        // shorten it.
+        internal static int CooldownMs = 120_000;
         private static long _lastAttemptTick = -CooldownMs;
+
+        /// <summary>Test seam: stands in for the restart. Null in
+        /// production.</summary>
+        internal static Func<bool> RecoverSeam;
+
+        /// <summary>Lets a test attempt a restart again at once.</summary>
+        internal static void ResetCooldownForTest() => Interlocked.Exchange(ref _lastAttemptTick, -CooldownMs);
 
         /// <summary>Attempts the restart, at most once per cooldown
         /// window. Returns true when midisrv is Running afterward.</summary>
-        public static bool TryRecoverOnce()
+        /// <param name="trigger">What showed the service wedged, for the
+        /// diagnostics log.</param>
+        public static bool TryRecoverOnce(string trigger = "create hung")
         {
             long now = Environment.TickCount64;
             long last = Interlocked.Read(ref _lastAttemptTick);
             if (now - last < CooldownMs) return false;
             if (Interlocked.CompareExchange(ref _lastAttemptTick, now, last) != last) return false;
-            try { return Recover(); }
+            try { return RecoverSeam != null ? RecoverSeam() : Recover(trigger); }
             catch { return false; }
         }
 
-        private static bool Recover()
+        private static bool Recover(string trigger)
         {
-            PadForge.Engine.SdlDiagLog.WriteLine("MIDIRECOVER create hung; one-shot midisrv restart");
+            PadForge.Engine.SdlDiagLog.WriteLine($"MIDIRECOVER {trigger}; one-shot midisrv restart");
             IntPtr scm = OpenSCManagerW(null, null, SC_MANAGER_CONNECT);
             if (scm == IntPtr.Zero) return false;
             try

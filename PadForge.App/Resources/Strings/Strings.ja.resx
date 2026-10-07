@@ -371,7 +371,7 @@
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>利用不可</value></data>
   <data name="Settings_MidiOlderRuntime_Format" xml:space="preserve"><value>旧ランタイム {0} もインストールされていますが、不要になりました</value></data>
   <data name="Settings_MidiStatusNotRunning" xml:space="preserve"><value>停止中</value></data>
-  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>Windows MIDI サービスが応答しませんでした。Windows を再起動すると、停止したサービスが回復します。</value></data>
+  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>Windows MIDI サービスが応答しませんでした。PadForge がサービスを再起動して、もう一度確認します。</value></data>
   <data name="Settings_MidiStatusLegacy" xml:space="preserve"><value>従来の MIDI API</value></data>
   <data name="Settings_MidiLegacy" xml:space="preserve"><value>各 MIDI スロットは、スロットのページで選んだポートに送信します。MIDI 入力は、スロットに割り当てられたデバイスだけを開きます。</value></data>
   <data name="Settings_MidiInstallTooltip" xml:space="preserve"><value>Windows MIDI Services ランタイムをダウンロードしてインストールします。各 MIDI スロットに専用のポートができます。</value></data>

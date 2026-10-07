@@ -1799,6 +1799,36 @@ namespace PadForge.Common.Input
         /// </summary>
         private readonly Dictionary<string, long> _midiOpenFailedAt = new(StringComparer.OrdinalIgnoreCase);
 
+        /// <summary>The backend generation the open MIDI inputs belong to
+        /// (<see cref="MidiVirtualController.Generation"/>).</summary>
+        private int _midiInputGeneration = MidiVirtualController.Generation;
+
+        /// <summary>Closes every open MIDI input and the shared session after
+        /// the backend they came from was torn down. Mirrors
+        /// <see cref="ShutdownMidiInputs"/> without the suppression, and drops
+        /// the session without waiting on it.</summary>
+        private void DropMidiInputsForNewBackend()
+        {
+            _cachedMidiEndpoints = null;
+            lock (_midiInputsLock)
+            {
+                foreach (var kvp in _openedMidiInputs)
+                {
+                    var ud = FindOnlineDeviceByInstanceGuid(kvp.Value.InstanceGuid);
+                    if (ud != null)
+                    {
+                        ud.IsOnline = false;
+                        ud.Device = null;
+                        NeutralizeMappedOutputsFor(ud);
+                    }
+                    kvp.Value.Dispose();
+                }
+                _openedMidiInputs.Clear();
+                _midiOpenFailedAt.Clear();
+            }
+            MidiInputRuntime.ResetSession();
+        }
+
         /// <summary>Closes any open loopback input connections to the
         /// given PadForge MIDI endpoint. MUST run before that endpoint's
         /// device-side teardown: tearing down a virtual endpoint while
@@ -1869,6 +1899,19 @@ namespace PadForge.Common.Input
         {
             if (_midiInputsSuppressed)
                 return false;
+
+            // A backend torn down since these inputs opened (a runtime
+            // install, or a service restart PadForge performed) left their
+            // connections and the shared session talking to nothing, and an
+            // endpoint that comes back under the same id was never reopened.
+            // Close them all without waiting, forget the open failures, and
+            // let this sweep open everything again on the current backend.
+            int generation = MidiVirtualController.Generation;
+            if (generation != _midiInputGeneration)
+            {
+                _midiInputGeneration = generation;
+                DropMidiInputsForNewBackend();
+            }
 
             if (!_midiEnumRunning)
             {

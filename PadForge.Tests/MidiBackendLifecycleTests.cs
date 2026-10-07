@@ -41,6 +41,11 @@ namespace PadForge.Tests
             MidiInputRuntime.Shutdown();
             MidiVirtualController.UseBackendFactoryForTest(null);
             MidiEndpointJanitor.SweepDisabledForTest = false;
+            MidiServiceRecovery.RecoverSeam = null;
+            MidiServiceRecovery.CooldownMs = 120_000;
+            MidiServiceRecovery.ResetCooldownForTest();
+            MidiVirtualController.ProbeTimeoutMs = 10_000;
+            MidiVirtualController.HungProbeReturnMs = 30_000;
         }
 
         private static FakeBackend Use(FakeBackend backend)
@@ -146,6 +151,271 @@ namespace PadForge.Tests
             MidiVirtualController.Shutdown(skipDispose: true);
             Assert.True(backend.LastStopSkippedDispose);
             Assert.Null(MidiVirtualController.Backend);
+        }
+
+        // ── Recovery from a wedged service ──
+
+        /// <summary>A probe that hangs left the card reading Not Running for
+        /// the session, and the card told the user to restart Windows. The
+        /// service is restarted, the hung probe finishes against it, and the
+        /// probe runs again on a fresh backend.</summary>
+        [Fact]
+        public void AHungProbe_RestartsTheService_AndProbesAgain()
+        {
+            var gate = new ManualResetEventSlim(false);
+            var looked = new ManualResetEventSlim(false);
+            try
+            {
+                var backend = Use(new FakeBackend(MidiApiKind.InBox) { StartGate = gate });
+                int restarts = 0;
+                MidiServiceRecovery.ResetCooldownForTest();
+                // The restart waits until the test has seen the hung state, so
+                // the recovery cannot finish before the first look.
+                MidiServiceRecovery.RecoverSeam = () =>
+                {
+                    looked.Wait(5_000);
+                    Interlocked.Increment(ref restarts);
+                    gate.Set();
+                    return true;
+                };
+                MidiVirtualController.ProbeTimeoutMs = 200;
+                MidiVirtualController.HungProbeReturnMs = 5_000;
+                int generation = MidiVirtualController.Generation;
+
+                Assert.False(MidiVirtualController.IsAvailable());
+                Assert.True(MidiVirtualController.ProbeFailed);
+                Assert.False(MidiVirtualController.IsAvailable());
+                Assert.Equal(1, Volatile.Read(ref backend.Starts));
+                looked.Set();
+
+                Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref backend.Starts) >= 2
+                    && MidiVirtualController.ActiveApi == MidiApiKind.InBox, 5_000));
+                Assert.Equal(1, restarts);
+                Assert.False(MidiVirtualController.ProbeFailed);
+                Assert.True(MidiVirtualController.IsAvailable());
+                Assert.Equal(2, backend.Starts);
+                Assert.Equal(1, backend.Stops);
+                Assert.True(MidiVirtualController.Generation > generation);
+            }
+            finally
+            {
+                // A probe still held at the gate keeps the availability lock,
+                // and every later test would wait on it.
+                looked.Set();
+                gate.Set();
+            }
+        }
+
+        /// <summary>A probe that hangs inside the cooldown of a restart that
+        /// already ran waits the cooldown out and restarts the service
+        /// then.</summary>
+        [Fact]
+        public void AHungProbeInsideARestartsCooldown_RestartsWhenTheCooldownEnds()
+        {
+            var gate = new ManualResetEventSlim(false);
+            try
+            {
+                var backend = Use(new FakeBackend(MidiApiKind.InBox) { StartGate = gate });
+                int restarts = 0;
+                MidiServiceRecovery.CooldownMs = 2_000;
+                MidiServiceRecovery.ResetCooldownForTest();
+                // The restart that opens the cooldown leaves the service
+                // wedged. The one after the cooldown clears it.
+                MidiServiceRecovery.RecoverSeam = () =>
+                {
+                    if (Interlocked.Increment(ref restarts) >= 2) gate.Set();
+                    return true;
+                };
+                Assert.True(MidiServiceRecovery.TryRecoverOnce("an earlier create"));
+                MidiVirtualController.ProbeTimeoutMs = 200;
+                MidiVirtualController.HungProbeReturnMs = 5_000;
+
+                Assert.False(MidiVirtualController.IsAvailable());
+                Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref backend.Starts) >= 2
+                    && MidiVirtualController.ActiveApi == MidiApiKind.InBox, 10_000));
+                Assert.Equal(2, Volatile.Read(ref restarts));
+                Assert.Equal(2, backend.Starts);
+                Assert.Equal(1, backend.Stops);
+            }
+            finally
+            {
+                gate.Set();
+            }
+        }
+
+        /// <summary>A refused session is what a stopped or broken service
+        /// answers. It gets the restart a hung create gets, and the create
+        /// runs once more.</summary>
+        [Fact]
+        public void ARefusedSession_RestartsTheService_AndTheCreateRetries()
+        {
+            var backend = Use(new FakeBackend(MidiApiKind.AppSdk));
+            int creates = 0, restarts = 0;
+            backend.OnCreate = (name, uid, pad) =>
+            {
+                if (Interlocked.Increment(ref creates) == 1) throw new MidiSessionUnavailableException();
+                var ep = new FakeEndpoint(name, uid, pad);
+                lock (backend.Endpoints) backend.Endpoints.Add(ep);
+                return ep;
+            };
+            MidiServiceRecovery.ResetCooldownForTest();
+            MidiServiceRecovery.RecoverSeam = () => { Interlocked.Increment(ref restarts); return true; };
+            Assert.True(MidiVirtualController.IsAvailable());
+
+            var vc = new MidiVirtualController(0, 0, 1);
+            vc.Connect();
+
+            Assert.True(vc.IsConnected);
+            Assert.Equal(1, restarts);
+            Assert.Equal(2, creates);
+            Assert.Single(backend.Endpoints);
+            Assert.Equal(1, backend.Stops);
+            Assert.Equal(MidiVirtualController.Generation, vc.CreatedGeneration);
+            vc.Dispose();
+        }
+
+        /// <summary>Inside the restart's cooldown a refused session fails as
+        /// it did, with no second restart.</summary>
+        [Fact]
+        public void ARefusedSessionInsideTheCooldown_Fails()
+        {
+            var backend = Use(new FakeBackend(MidiApiKind.AppSdk));
+            backend.OnCreate = (_, _, _) => throw new MidiSessionUnavailableException();
+            int restarts = 0;
+            MidiServiceRecovery.ResetCooldownForTest();
+            MidiServiceRecovery.RecoverSeam = () => { Interlocked.Increment(ref restarts); return true; };
+            Assert.True(MidiServiceRecovery.TryRecoverOnce("test"));
+            Assert.True(MidiVirtualController.IsAvailable());
+
+            var vc = new MidiVirtualController(0, 0, 1);
+            Assert.Throws<MidiSessionUnavailableException>(() => vc.Connect());
+            Assert.False(vc.IsConnected);
+            Assert.Equal(1, restarts);
+            Assert.Equal(0, backend.Stops);
+        }
+
+        /// <summary>Every backend teardown starts a new generation, and a
+        /// controller keeps the one it was made in, so Step 5 can tell it
+        /// stale.</summary>
+        [Fact]
+        public void EveryReset_StartsANewGeneration_AndAControllerKeepsItsOwn()
+        {
+            Use(new FakeBackend(MidiApiKind.InBox));
+            Assert.True(MidiVirtualController.IsAvailable());
+            var vc = new MidiVirtualController(0, 0, 1);
+            vc.Connect();
+            int made = vc.CreatedGeneration;
+            Assert.Equal(MidiVirtualController.Generation, made);
+
+            MidiVirtualController.ResetAvailability();
+            Assert.Equal(made + 1, MidiVirtualController.Generation);
+            Assert.Equal(made, vc.CreatedGeneration);
+            vc.Dispose();
+        }
+
+        /// <summary>The shared input session is dropped without waiting on
+        /// it, and the next asker gets one from the current backend.</summary>
+        [Fact]
+        public void AResetInputSession_IsReplacedByTheNextAsk()
+        {
+            var backend = Use(new FakeBackend(MidiApiKind.InBox));
+            Assert.NotNull(MidiInputRuntime.Session);
+            var first = backend.InputSession;
+            Assert.NotNull(first);
+
+            MidiInputRuntime.ResetSession();
+            Assert.True(SpinWait.SpinUntil(() => first.Disposed, 5_000));
+            Assert.NotNull(MidiInputRuntime.Session);
+            Assert.NotSame(first, backend.InputSession);
+            Assert.False(backend.InputSession.Disposed);
+        }
+
+        /// <summary>A backend torn down under open MIDI inputs left them
+        /// talking to nothing, and an endpoint that came back under the same
+        /// id was never reopened. The input sweep drops them with the old
+        /// session and opens them again on a session from the new
+        /// backend.</summary>
+        [Fact]
+        public void TheInputSweep_ReopensItsInputsOnANewBackend()
+        {
+            var savedSettings = SettingsManager.UserSettings;
+            var savedDevices = SettingsManager.UserDevices;
+            try
+            {
+                SettingsManager.UserDevices = new DeviceCollection();
+                SettingsManager.UserSettings = new SettingsCollection();
+                var backend = Use(new FakeBackend(MidiApiKind.InBox));
+                backend.NormalEndpoints.Add((KeysId, "Test Keys"));
+                var im = new InputManager();
+                var sweep = typeof(InputManager).GetMethod("UpdateMidiInputDevices", BindingFlags.Instance | BindingFlags.NonPublic);
+                Assert.NotNull(sweep);
+                bool Sweep() => (bool)sweep.Invoke(im, null);
+
+                // A sweep starts the enumeration, and a later one opens what
+                // it found.
+                Assert.True(SpinWait.SpinUntil(Sweep, 5_000));
+                var first = backend.InputSession;
+                var conn = Assert.Single(first.Connections);
+                Assert.True(conn.Opened);
+
+                MidiVirtualController.ResetAvailability();
+                Assert.True(MidiVirtualController.IsAvailable());
+                Assert.True(SpinWait.SpinUntil(Sweep, 5_000));
+
+                Assert.True(conn.Detached);
+                Assert.True(SpinWait.SpinUntil(() => first.Disposed, 5_000));
+                Assert.NotSame(first, backend.InputSession);
+                var again = Assert.Single(backend.InputSession.Connections);
+                Assert.Equal(KeysId, again.EndpointId);
+                Assert.True(again.Opened);
+                Assert.False(again.Detached);
+            }
+            finally
+            {
+                SettingsManager.UserSettings = savedSettings;
+                SettingsManager.UserDevices = savedDevices;
+            }
+        }
+
+        /// <summary>An input that failed to open on the old backend is not
+        /// held to the minute-long backoff on the new one. The sweep tries it
+        /// again at once.</summary>
+        [Fact]
+        public void TheInputSweep_RetriesAFailedOpenAtOnceOnANewBackend()
+        {
+            var savedSettings = SettingsManager.UserSettings;
+            var savedDevices = SettingsManager.UserDevices;
+            try
+            {
+                SettingsManager.UserDevices = new DeviceCollection();
+                SettingsManager.UserSettings = new SettingsCollection();
+                var refusing = Use(new FakeBackend(MidiApiKind.InBox) { InputOpens = false });
+                refusing.NormalEndpoints.Add((KeysId, "Test Keys"));
+                var im = new InputManager();
+                var sweep = typeof(InputManager).GetMethod("UpdateMidiInputDevices", BindingFlags.Instance | BindingFlags.NonPublic);
+                Assert.NotNull(sweep);
+                bool Sweep() => (bool)sweep.Invoke(im, null);
+
+                Assert.True(SpinWait.SpinUntil(() =>
+                {
+                    Sweep();
+                    return refusing.InputSession?.Connections.Count > 0;
+                }, 5_000));
+                Assert.False(Assert.Single(refusing.InputSession.Connections).Opened);
+
+                var working = Use(new FakeBackend(MidiApiKind.InBox));
+                working.NormalEndpoints.Add((KeysId, "Test Keys"));
+                Assert.True(SpinWait.SpinUntil(Sweep, 5_000));
+
+                var conn = Assert.Single(working.InputSession.Connections);
+                Assert.Equal(KeysId, conn.EndpointId);
+                Assert.True(conn.Opened);
+            }
+            finally
+            {
+                SettingsManager.UserSettings = savedSettings;
+                SettingsManager.UserDevices = savedDevices;
+            }
         }
 
         // ── The virtual controller ──
@@ -397,6 +667,72 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>A slot running when the backend is torn down talks to a
+        /// backend or a service that is gone. Step 5 rebuilds it, the way it
+        /// rebuilds one built on another API, and keeps it while the
+        /// generation holds.</summary>
+        [Fact]
+        public void Step5_RebuildsASlotMadeBeforeTheBackendWasTornDown()
+        {
+            const int pad = 3;
+            var deviceGuid = new Guid("5f2c8a91-0b7d-4e33-a6c4-91d27e0f4b18");
+            var savedSettings = SettingsManager.UserSettings;
+            var savedDevices = SettingsManager.UserDevices;
+            var savedCreated = (bool[])SettingsManager.SlotCreated.Clone();
+            var savedEnabled = (bool[])SettingsManager.SlotEnabled.Clone();
+            MidiVirtualController vc = null;
+            IVirtualController[] vcs = null;
+            try
+            {
+                var backend = Use(new FakeBackend(MidiApiKind.InBox));
+                Assert.True(MidiVirtualController.IsAvailable());
+                vc = new MidiVirtualController(pad, 0, 1);
+                vc.ApplyLayout(0, 1, 1, 60, 1, 100);
+                vc.Connect();
+                var ep = Assert.Single(backend.Endpoints);
+
+                SettingsManager.UserDevices = new DeviceCollection();
+                SettingsManager.UserSettings = new SettingsCollection();
+                Array.Clear(SettingsManager.SlotCreated, 0, SettingsManager.SlotCreated.Length);
+                for (int i = 0; i < SettingsManager.SlotEnabled.Length; i++) SettingsManager.SlotEnabled[i] = true;
+                SettingsManager.SlotCreated[pad] = true;
+                var ud = new UserDevice { InstanceGuid = deviceGuid, ProductName = "MIDI Pad", IsOnline = true, InputState = new CustomInputState() };
+                lock (SettingsManager.UserDevices.SyncRoot) SettingsManager.UserDevices.Items.Add(ud);
+                lock (SettingsManager.UserSettings.SyncRoot) SettingsManager.UserSettings.Items.Add(new UserSetting { InstanceGuid = deviceGuid, MapTo = pad });
+
+                var im = new InputManager();
+                im.SlotControllerTypes[pad] = VirtualControllerType.Midi;
+                im._midiConfigs[pad] = new MidiSlotConfig { Channel = 1, StartCc = 1, CcCount = 1, StartNote = 60, NoteCount = 1, Velocity = 100 };
+                vcs = (IVirtualController[])typeof(InputManager)
+                    .GetField("_virtualControllers", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .GetValue(im);
+                vcs[pad] = vc;
+                im.CombinedMidiRawStates[pad] = new MidiRawState { CcValues = new byte[] { 64 }, Notes = new[] { false } };
+                var step5 = typeof(InputManager).GetMethod("UpdateVirtualDevices", BindingFlags.Instance | BindingFlags.NonPublic);
+                Assert.NotNull(step5);
+
+                step5.Invoke(im, null);
+                Assert.Same(vc, vcs[pad]);
+
+                MidiVirtualController.ResetAvailability();
+                Assert.True(MidiVirtualController.IsAvailable());
+                step5.Invoke(im, null);
+
+                Assert.NotSame(vc, vcs[pad]);
+                Assert.True(SpinWait.SpinUntil(() => ep.Closed, 10_000));
+            }
+            finally
+            {
+                vc?.Dispose();
+                if (vcs?[pad] is IVirtualController made && !ReferenceEquals(made, vc))
+                    made.Dispose();
+                SettingsManager.UserSettings = savedSettings;
+                SettingsManager.UserDevices = savedDevices;
+                Array.Copy(savedCreated, SettingsManager.SlotCreated, savedCreated.Length);
+                Array.Copy(savedEnabled, SettingsManager.SlotEnabled, savedEnabled.Length);
+            }
+        }
+
         /// <summary>A send the service fails drops that message, never the
         /// polling thread.</summary>
         [Fact]
@@ -579,9 +915,14 @@ namespace PadForge.Tests
             public readonly List<(string Id, string Name)> NormalEndpoints = new();
             public FakeInputSession InputSession;
 
+            /// <summary>Holds Start until set, the way a wedged service holds
+            /// the probe's first call.</summary>
+            public ManualResetEventSlim StartGate { get; init; }
+
             public bool Start()
             {
-                Starts++;
+                Interlocked.Increment(ref Starts);
+                StartGate?.Wait();
                 if (ThrowOnStart) throw new TypeInitializationException("Midi2", null);
                 return StartResult;
             }
@@ -644,6 +985,7 @@ namespace PadForge.Tests
 
             public readonly string Name;
             public readonly List<FakeInputConnection> Connections = new();
+            public volatile bool Disposed;
 
             public IMidiInputConnection CreateConnection(string endpointId, Action<uint, uint> onWords)
             {
@@ -652,7 +994,7 @@ namespace PadForge.Tests
                 return c;
             }
 
-            public void Dispose() { }
+            public void Dispose() => Disposed = true;
         }
 
         private sealed class FakeInputConnection : IMidiInputConnection

@@ -371,7 +371,7 @@
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>不可用</value></data>
   <data name="Settings_MidiOlderRuntime_Format" xml:space="preserve"><value>旧版运行时 {0} 也已安装，现已不再需要</value></data>
   <data name="Settings_MidiStatusNotRunning" xml:space="preserve"><value>未运行</value></data>
-  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>Windows MIDI 服务没有响应。重新启动 Windows 可解除卡住的服务。</value></data>
+  <data name="Settings_MidiNotRunning" xml:space="preserve"><value>Windows MIDI 服务没有响应。PadForge 会重新启动该服务并再次检查。</value></data>
   <data name="Settings_MidiStatusLegacy" xml:space="preserve"><value>旧版 MIDI API</value></data>
   <data name="Settings_MidiLegacy" xml:space="preserve"><value>每个 MIDI 插槽发送到在该插槽页面上选择的端口。MIDI 输入只打开分配给插槽的设备。</value></data>
   <data name="Settings_MidiInstallTooltip" xml:space="preserve"><value>下载并安装 Windows MIDI Services 运行时，使每个 MIDI 插槽都有自己的端口。</value></data>

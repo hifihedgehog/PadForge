@@ -109,7 +109,7 @@ namespace PadForge.Common.Input
             {
                 session = MidiSession.Create(deviceName);
                 if (session == null)
-                    throw new InvalidOperationException("Failed to create MIDI session.");
+                    throw new MidiSessionUnavailableException();
 
                 var virtualDevice = MidiVirtualDeviceManager.CreateVirtualDevice(config);
                 if (virtualDevice == null)

@@ -69,6 +69,52 @@ namespace PadForge.Tests
             Assert.False(timedOut.UserCanceled);
         }
 
+        /// <summary>An installer Windows started without a process to follow
+        /// is not a timeout. It used to read as one, and the user was told the
+        /// installer was still running after three minutes when nothing had
+        /// been waited on. Either way the outcome is unknown, so the staging
+        /// folder stays.</summary>
+        [Fact]
+        public void AnUntrackedInstallerIsNotATimeout()
+        {
+            var untracked = InstallerFailedException.Untracked();
+            Assert.True(untracked.NotTracked);
+            Assert.False(untracked.TimedOut);
+            Assert.True(untracked.OutcomeUnknown);
+            Assert.False(untracked.UserCanceled);
+
+            Assert.True(InstallerFailedException.NoExitCode(true).NotTracked);
+            var waited = InstallerFailedException.NoExitCode(false);
+            Assert.True(waited.TimedOut);
+            Assert.False(waited.NotTracked);
+            Assert.True(waited.OutcomeUnknown);
+            Assert.False(new InstallerFailedException(1603).OutcomeUnknown);
+        }
+
+        /// <summary>The runner reports a missing process, every caller turns
+        /// that into the untracked failure, every staging cleanup holds for
+        /// either unknown outcome, and the status line has words for
+        /// it.</summary>
+        [Fact]
+        public void EveryRunnerCallerKeepsTheUntrackedCaseApart()
+        {
+            var dir = new System.IO.DirectoryInfo(System.AppContext.BaseDirectory);
+            while (dir != null && !System.IO.File.Exists(System.IO.Path.Combine(dir.FullName, "PadForge.sln")))
+                dir = dir.Parent;
+            Assert.NotNull(dir);
+            string di = System.IO.File.ReadAllText(System.IO.Path.Combine(dir.FullName, "PadForge.App", "Common", "DriverInstaller.cs"));
+            Assert.Contains("if (proc == null)\n            {\n                notTracked = true;", di.Replace("\r\n", "\n"));
+            Assert.DoesNotContain("when (ex.TimedOut)", di);
+            Assert.Equal(3, System.Text.RegularExpressions.Regex.Matches(di, @"when \(ex\.OutcomeUnknown\)").Count);
+            Assert.DoesNotContain("throw new InstallerFailedException();", di);
+
+            string window = System.IO.File.ReadAllText(System.IO.Path.Combine(dir.FullName, "PadForge.App", "MainWindow.xaml.cs"));
+            Assert.Contains("? (failed.NotTracked\n                    ? Strings.Instance.Status_InstallerNotTracked", window.Replace("\r\n", "\n"));
+
+            string resx = System.IO.File.ReadAllText(System.IO.Path.Combine(dir.FullName, "PadForge.App", "Resources", "Strings", "Strings.resx"));
+            Assert.Matches("name=\"Status_InstallerNotTracked\"[^>]*><value>Windows started the installer", resx);
+        }
+
         // ── Which registry entry names a product msiexec can act on ──
 
         private const string Code = "{01E0AB21-D1CC-42B4-9DFF-84FFE4F26DAF}";

@@ -3969,6 +3969,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Devices_AllConsumerControlsMerged" xml:space="preserve"><value>Todos os Controles de Consumidor (Combinados)</value></data>
   <data name="Status_InstallerExitCode_Format" xml:space="preserve"><value>O instalador terminou com o código {0}.</value></data>
   <data name="Status_InstallerTimedOut" xml:space="preserve"><value>O instalador ainda estava em execução após três minutos.</value></data>
+  <data name="Status_InstallerNotTracked" xml:space="preserve"><value>O Windows iniciou o instalador sem permitir que o PadForge o acompanhasse. O cartão mostra o resultado assim que a instalação terminar.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Removendo drivers antigos…</value></data>
   <data name="About_Nefcon" xml:space="preserve"><value>nefcon</value></data>
   <data name="About_NefconDesc" xml:space="preserve"><value>Ferramenta de instalação do HidHide, por Nefarius. A versão ARM64 instala o driver HidHide no Windows em ARM. MIT.</value></data>

@@ -3995,6 +3995,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Devices_AllConsumerControlsMerged" xml:space="preserve"><value>Alle multimediabedieningen (samengevoegd)</value></data>
   <data name="Status_InstallerExitCode_Format" xml:space="preserve"><value>Het installatieprogramma is gestopt met code {0}.</value></data>
   <data name="Status_InstallerTimedOut" xml:space="preserve"><value>Het installatieprogramma was na drie minuten nog bezig.</value></data>
+  <data name="Status_InstallerNotTracked" xml:space="preserve"><value>Windows heeft het installatieprogramma gestart zonder dat PadForge het kan volgen. De kaart toont het resultaat zodra de installatie klaar is.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Oude stuurprogramma's worden verwijderd…</value></data>
   <data name="About_Nefcon" xml:space="preserve"><value>nefcon</value></data>
   <data name="About_NefconDesc" xml:space="preserve"><value>Het installatiehulpmiddel van HidHide, door Nefarius. De ARM64-versie installeert het HidHide-stuurprogramma op Windows op ARM. MIT.</value></data>

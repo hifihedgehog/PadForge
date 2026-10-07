@@ -3975,6 +3975,7 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Devices_AllConsumerControlsMerged" xml:space="preserve"><value>Tous les contrôles multimédias (fusionnés)</value></data>
   <data name="Status_InstallerExitCode_Format" xml:space="preserve"><value>Le programme d'installation s'est terminé avec le code {0}.</value></data>
   <data name="Status_InstallerTimedOut" xml:space="preserve"><value>Le programme d'installation était toujours en cours après trois minutes.</value></data>
+  <data name="Status_InstallerNotTracked" xml:space="preserve"><value>Windows a lancé le programme d'installation sans permettre à PadForge de le suivre. La carte affiche le résultat dès la fin de l'installation.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Suppression des anciens pilotes…</value></data>
   <data name="About_Nefcon" xml:space="preserve"><value>nefcon</value></data>
   <data name="About_NefconDesc" xml:space="preserve"><value>Outil d'installation de HidHide, par Nefarius. Sa version ARM64 installe le pilote HidHide sous Windows sur ARM. MIT.</value></data>

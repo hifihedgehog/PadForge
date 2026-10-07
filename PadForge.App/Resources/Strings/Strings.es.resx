@@ -3975,6 +3975,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Devices_AllConsumerControlsMerged" xml:space="preserve"><value>Todos los controles multimedia (combinados)</value></data>
   <data name="Status_InstallerExitCode_Format" xml:space="preserve"><value>El instalador terminó con el código {0}.</value></data>
   <data name="Status_InstallerTimedOut" xml:space="preserve"><value>El instalador seguía en ejecución después de tres minutos.</value></data>
+  <data name="Status_InstallerNotTracked" xml:space="preserve"><value>Windows inició el instalador sin dejar que PadForge lo siguiera. La tarjeta muestra el resultado en cuanto termina la instalación.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Eliminando controladores antiguos…</value></data>
   <data name="About_Nefcon" xml:space="preserve"><value>nefcon</value></data>
   <data name="About_NefconDesc" xml:space="preserve"><value>Herramienta de instalación de HidHide, de Nefarius. Su versión ARM64 instala el controlador HidHide en Windows en ARM. MIT.</value></data>

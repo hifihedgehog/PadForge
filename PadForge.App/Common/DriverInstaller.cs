@@ -28,9 +28,19 @@ namespace PadForge.Common
         /// nothing is known about how it finished.</summary>
         public bool TimedOut { get; }
 
+        /// <summary>Windows started the installer without handing back a
+        /// process, so there was nothing to wait on. This used to read as a
+        /// timeout and told the user the installer was still running after
+        /// three minutes, when nothing had been waited on at all.</summary>
+        public bool NotTracked { get; }
+
+        /// <summary>The installer may still be running, either way, so its
+        /// staging folder stays.</summary>
+        public bool OutcomeUnknown => TimedOut || NotTracked;
+
         /// <summary>ERROR_INSTALL_USEREXIT: the user pressed Cancel on the
         /// installer's own progress window.</summary>
-        public bool UserCanceled => !TimedOut && ExitCode == 1602;
+        public bool UserCanceled => !OutcomeUnknown && ExitCode == 1602;
 
         public InstallerFailedException(int exitCode)
             : base("The installer exited with code " + exitCode + ".")
@@ -43,6 +53,21 @@ namespace PadForge.Common
         {
             TimedOut = true;
         }
+
+        private InstallerFailedException(string message, bool notTracked)
+            : base(message)
+        {
+            NotTracked = notTracked;
+        }
+
+        /// <summary>The failure for an installer Windows started without a
+        /// process to follow.</summary>
+        public static InstallerFailedException Untracked()
+            => new("Windows started the installer without a process to follow.", true);
+
+        /// <summary>The failure for a run that left no exit code.</summary>
+        internal static InstallerFailedException NoExitCode(bool notTracked)
+            => notTracked ? Untracked() : new InstallerFailedException();
     }
 
     /// <summary>
@@ -165,7 +190,7 @@ namespace PadForge.Common
 
                 RunMsiElevated($"/i \"{msiPath}\" /qb /norestart", absentIsSuccess: false);
             }
-            catch (InstallerFailedException ex) when (ex.TimedOut)
+            catch (InstallerFailedException ex) when (ex.OutcomeUnknown)
             {
                 installerMayStillRun = true;
                 throw;
@@ -223,7 +248,7 @@ namespace PadForge.Common
 
                 RunMsiElevated($"/x \"{msiPath}\" /qb /norestart", absentIsSuccess: false);
             }
-            catch (InstallerFailedException ex) when (ex.TimedOut)
+            catch (InstallerFailedException ex) when (ex.OutcomeUnknown)
             {
                 installerMayStillRun = true;
                 throw;
@@ -289,7 +314,7 @@ namespace PadForge.Common
                 sw.WriteLine("powershell -NoProfile -Command \"Get-ChildItem 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall','HKLM:\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall' -EA SilentlyContinue | Where-Object { (Get-ItemProperty $_.PSPath -EA SilentlyContinue).DisplayName -like '*vJoy*' } | Remove-Item -Recurse -Force -EA SilentlyContinue\" >nul 2>&1");
             }
 
-            RunElevated("cmd.exe", $"/c \"{scriptPath}\"");
+            RunElevated("cmd.exe", $"/c \"{scriptPath}\"", out _);
             try { File.Delete(scriptPath); } catch { }
 
             CleanExtendedRegistryArtifacts();
@@ -633,11 +658,11 @@ namespace PadForge.Common
                     Download(http, VcRedistUrl, redist);
                     if (!IsSignedByMicrosoft(redist))
                         throw new InvalidOperationException("The Visual C++ Redistributable download is not signed by Microsoft.");
-                    int? redistExit = RunElevated(redist, "/install /quiet /norestart");
+                    int? redistExit = RunElevated(redist, "/install /quiet /norestart", out bool redistUntracked);
                     if (redistExit == null)
                     {
                         installerMayStillRun = true;
-                        throw new InstallerFailedException();
+                        throw InstallerFailedException.NoExitCode(redistUntracked);
                     }
                     if (!IsVcRedistSuccess(redistExit.Value))
                         throw new InstallerFailedException(redistExit.Value);
@@ -658,7 +683,7 @@ namespace PadForge.Common
                 {
                     RunMsiElevated($"/i \"{msi}\" /qn /norestart MSIRESTARTMANAGERCONTROL=Disable", absentIsSuccess: false);
                 }
-                catch (InstallerFailedException ex) when (ex.TimedOut)
+                catch (InstallerFailedException ex) when (ex.OutcomeUnknown)
                 {
                     installerMayStillRun = true;
                     throw;
@@ -1595,20 +1620,23 @@ namespace PadForge.Common
         /// canceled from its own window, or outlived the wait.</exception>
         private static void RunMsiElevated(string arguments, bool absentIsSuccess)
         {
-            int? exitCode = RunElevated("msiexec.exe", arguments);
-            if (exitCode == null) throw new InstallerFailedException();
+            int? exitCode = RunElevated("msiexec.exe", arguments, out bool untracked);
+            if (exitCode == null) throw InstallerFailedException.NoExitCode(untracked);
             if (!IsMsiSuccess(exitCode.Value, absentIsSuccess))
                 throw new InstallerFailedException(exitCode.Value);
         }
 
         /// <summary>
         /// Run an executable with elevation (UAC prompt). Returns its exit
-        /// code, or null when it was still running after three minutes.
-        /// What an exit code means belongs to the caller: msiexec's are
-        /// documented, a cleanup script's are not.
+        /// code, or null when there is none to read: it was still running
+        /// after three minutes, or Windows started it without handing back a
+        /// process (<paramref name="notTracked"/>). What an exit code means
+        /// belongs to the caller: msiexec's are documented, a cleanup
+        /// script's are not.
         /// </summary>
-        private static int? RunElevated(string fileName, string arguments)
+        private static int? RunElevated(string fileName, string arguments, out bool notTracked)
         {
+            notTracked = false;
             var psi = new ProcessStartInfo
             {
                 FileName = fileName,
@@ -1621,7 +1649,11 @@ namespace PadForge.Common
             using var proc = Process.Start(psi);
             // ShellExecute can start the work without handing a process back.
             // Nothing can be waited on then, and nothing is known.
-            if (proc == null) return null;
+            if (proc == null)
+            {
+                notTracked = true;
+                return null;
+            }
             return proc.WaitForExit(180_000) ? proc.ExitCode : (int?)null;
         }
 

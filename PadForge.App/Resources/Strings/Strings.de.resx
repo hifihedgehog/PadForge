@@ -3975,6 +3975,7 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="Devices_AllConsumerControlsMerged" xml:space="preserve"><value>Alle Multimediasteuerungen (zusammengeführt)</value></data>
   <data name="Status_InstallerExitCode_Format" xml:space="preserve"><value>Das Installationsprogramm wurde mit Code {0} beendet.</value></data>
   <data name="Status_InstallerTimedOut" xml:space="preserve"><value>Das Installationsprogramm lief nach drei Minuten noch.</value></data>
+  <data name="Status_InstallerNotTracked" xml:space="preserve"><value>Windows hat das Installationsprogramm gestartet, ohne dass PadForge es verfolgen kann. Die Karte zeigt das Ergebnis, sobald die Installation abgeschlossen ist.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Alte Treiber werden entfernt…</value></data>
   <data name="About_Nefcon" xml:space="preserve"><value>nefcon</value></data>
   <data name="About_NefconDesc" xml:space="preserve"><value>Das Installationswerkzeug von HidHide, von Nefarius. Die ARM64-Version installiert den HidHide-Treiber unter Windows auf ARM. MIT.</value></data>

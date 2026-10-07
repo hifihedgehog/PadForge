@@ -3997,6 +3997,7 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Devices_AllConsumerControlsMerged" xml:space="preserve"><value>Tutti i controlli multimediali (uniti)</value></data>
   <data name="Status_InstallerExitCode_Format" xml:space="preserve"><value>Il programma di installazione è terminato con il codice {0}.</value></data>
   <data name="Status_InstallerTimedOut" xml:space="preserve"><value>Il programma di installazione era ancora in esecuzione dopo tre minuti.</value></data>
+  <data name="Status_InstallerNotTracked" xml:space="preserve"><value>Windows ha avviato il programma di installazione senza permettere a PadForge di seguirlo. La scheda mostra il risultato appena l'installazione termina.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Rimozione dei driver legacy in corso…</value></data>
   <data name="About_Nefcon" xml:space="preserve"><value>nefcon</value></data>
   <data name="About_NefconDesc" xml:space="preserve"><value>Strumento di installazione di HidHide, di Nefarius. La versione ARM64 installa il driver HidHide su Windows su ARM. MIT.</value></data>

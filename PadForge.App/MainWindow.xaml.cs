@@ -8862,9 +8862,11 @@ namespace PadForge
         /// </summary>
         private static string DescribeDriverFailure(Exception ex)
             => ex is InstallerFailedException failed
-                ? (failed.TimedOut
-                    ? Strings.Instance.Status_InstallerTimedOut
-                    : string.Format(Strings.Instance.Status_InstallerExitCode_Format, failed.ExitCode))
+                ? (failed.NotTracked
+                    ? Strings.Instance.Status_InstallerNotTracked
+                    : failed.TimedOut
+                        ? Strings.Instance.Status_InstallerTimedOut
+                        : string.Format(Strings.Instance.Status_InstallerExitCode_Format, failed.ExitCode))
                 : ex.Message;
 
         /// <summary>

@@ -3975,6 +3975,7 @@
   <data name="Devices_AllConsumerControlsMerged" xml:space="preserve"><value>所有消费者控制（合并）</value></data>
   <data name="Status_InstallerExitCode_Format" xml:space="preserve"><value>安装程序以代码 {0} 退出。</value></data>
   <data name="Status_InstallerTimedOut" xml:space="preserve"><value>安装程序在三分钟后仍在运行。</value></data>
+  <data name="Status_InstallerNotTracked" xml:space="preserve"><value>Windows 已启动安装程序，但 PadForge 无法跟踪它。安装完成后，卡片会显示结果。</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>正在移除旧驱动程序…</value></data>
   <data name="About_Nefcon" xml:space="preserve"><value>nefcon</value></data>
   <data name="About_NefconDesc" xml:space="preserve"><value>Nefarius 的 HidHide 安装工具。其 ARM64 版本在 Windows on ARM 上安装 HidHide 驱动。MIT。</value></data>

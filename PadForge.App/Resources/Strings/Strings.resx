@@ -4024,6 +4024,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Devices_AllConsumerControlsMerged" xml:space="preserve"><value>All Consumer Controls (Merged)</value></data>
   <data name="Status_InstallerExitCode_Format" xml:space="preserve"><value>The installer exited with code {0}.</value></data>
   <data name="Status_InstallerTimedOut" xml:space="preserve"><value>The installer was still running after three minutes.</value></data>
+  <data name="Status_InstallerNotTracked" xml:space="preserve"><value>Windows started the installer without letting PadForge follow it. The card shows the result once the install finishes.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Removing legacy drivers…</value></data>
   <data name="About_Nefcon" xml:space="preserve"><value>nefcon</value></data>
   <data name="About_NefconDesc" xml:space="preserve"><value>HidHide's install tool, by Nefarius. Its ARM64 build installs the HidHide driver on Windows on ARM. MIT.</value></data>

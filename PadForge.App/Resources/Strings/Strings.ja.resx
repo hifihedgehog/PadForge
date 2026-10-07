@@ -3975,6 +3975,7 @@
   <data name="Devices_AllConsumerControlsMerged" xml:space="preserve"><value>すべてのコンシューマーコントロール (統合)</value></data>
   <data name="Status_InstallerExitCode_Format" xml:space="preserve"><value>インストーラーがコード {0} で終了しました。</value></data>
   <data name="Status_InstallerTimedOut" xml:space="preserve"><value>インストーラーは 3 分経過しても実行中でした。</value></data>
+  <data name="Status_InstallerNotTracked" xml:space="preserve"><value>Windows はインストーラーを起動しましたが、PadForge はその進行を追跡できません。インストールが完了すると、カードに結果が表示されます。</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>以前のドライバーを削除しています…</value></data>
   <data name="About_Nefcon" xml:space="preserve"><value>nefcon</value></data>
   <data name="About_NefconDesc" xml:space="preserve"><value>Nefarius による HidHide のインストール ツール。ARM64 版が Windows on ARM に HidHide ドライバーをインストールします。MIT。</value></data>

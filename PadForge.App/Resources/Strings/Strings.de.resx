@@ -245,6 +245,14 @@
   <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>Razer Sensa-Laufzeit nicht gefunden. Neuer Versuch folgt.</value></data>
   <data name="Dashboard_SensaActive" xml:space="preserve"><value>Rumble wird an Sensa HD-Haptik gestreamt</value></data>
   <data name="Dashboard_SensaFooter" xml:space="preserve"><value>Erfordert Razer Synapse 4 mit Sensa HD-Haptik. Stellen Sie die Haptikquelle des Geräts in Synapse auf „Sensa HD Games“.</value></data>
+  <data name="Dashboard_MouseHaptics" xml:space="preserve"><value>Haptische Mäuse</value></data>
+  <data name="Dashboard_MouseHapticsDescription" xml:space="preserve"><value>Übersetzt Controller-Rumble in Impulse auf Mäusen mit Vibrationsmotor: die Logitech MX Master 4 und die SteelSeries Rival 500, 700 und 710.</value></data>
+  <data name="Dashboard_EnableMouseHaptics" xml:space="preserve"><value>Rumble an haptische Mäuse senden</value></data>
+  <data name="Dashboard_MouseHapticsActive" xml:space="preserve"><value>Rumble wird an {0} gesendet</value></data>
+  <data name="Dashboard_MouseHapticsSearching" xml:space="preserve"><value>Keine haptische Maus gefunden. Neuer Versuch folgt.</value></data>
+  <data name="Dashboard_MouseHapticsFeedbackOff" xml:space="preserve"><value>{0} (haptisches Feedback ist in Logi Options+ ausgeschaltet)</value></data>
+  <data name="Dashboard_MouseHapticsLogitechMouse" xml:space="preserve"><value>Logitech-Maus</value></data>
+  <data name="Dashboard_MouseHapticsFooter" xml:space="preserve"><value>Die MX Master 4 funktioniert über ihren Logi Bolt-Empfänger oder Bluetooth. Rival-Mäuse benötigen ein laufendes SteelSeries GG.</value></data>
   <data name="Dashboard_Lightsync" xml:space="preserve"><value>Logitech LIGHTSYNC</value></data>
   <data name="Dashboard_LightsyncDescription" xml:space="preserve"><value>Leitet die Lightbar-Farbe, die ein Spiel auf einem virtuellen PlayStation-Controller setzt, über Logitech G HUB an Ihre Logitech-LIGHTSYNC-Geräte weiter.</value></data>
   <data name="Dashboard_EnableLightsync" xml:space="preserve"><value>Lightbar auf Logitech LIGHTSYNC spiegeln</value></data>

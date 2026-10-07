@@ -245,6 +245,14 @@
   <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>Runtime de Razer Sensa no encontrado. Reintentando.</value></data>
   <data name="Dashboard_SensaActive" xml:space="preserve"><value>Enviando vibración a Sensa HD Haptics</value></data>
   <data name="Dashboard_SensaFooter" xml:space="preserve"><value>Requiere Razer Synapse 4 con Sensa HD Haptics. En Synapse, pon la fuente háptica del dispositivo en Sensa HD Games.</value></data>
+  <data name="Dashboard_MouseHaptics" xml:space="preserve"><value>Ratones hápticos</value></data>
+  <data name="Dashboard_MouseHapticsDescription" xml:space="preserve"><value>Traduce la vibración del mando en pulsos en ratones con motor de vibración: el Logitech MX Master 4 y los SteelSeries Rival 500, 700 y 710.</value></data>
+  <data name="Dashboard_EnableMouseHaptics" xml:space="preserve"><value>Enviar la vibración a ratones hápticos</value></data>
+  <data name="Dashboard_MouseHapticsActive" xml:space="preserve"><value>Enviando vibración a {0}</value></data>
+  <data name="Dashboard_MouseHapticsSearching" xml:space="preserve"><value>No se encontró ningún ratón háptico. Reintentando.</value></data>
+  <data name="Dashboard_MouseHapticsFeedbackOff" xml:space="preserve"><value>{0} (la respuesta háptica está desactivada en Logi Options+)</value></data>
+  <data name="Dashboard_MouseHapticsLogitechMouse" xml:space="preserve"><value>Ratón Logitech</value></data>
+  <data name="Dashboard_MouseHapticsFooter" xml:space="preserve"><value>El MX Master 4 funciona con su receptor Logi Bolt o por Bluetooth. Los ratones Rival necesitan SteelSeries GG en ejecución.</value></data>
   <data name="Dashboard_Lightsync" xml:space="preserve"><value>Logitech LIGHTSYNC</value></data>
   <data name="Dashboard_LightsyncDescription" xml:space="preserve"><value>Reenvía el color de la barra de luz que un juego establece en un mando PlayStation virtual a tus dispositivos Logitech LIGHTSYNC a través de Logitech G HUB.</value></data>
   <data name="Dashboard_EnableLightsync" xml:space="preserve"><value>Reflejar la barra de luz en Logitech LIGHTSYNC</value></data>

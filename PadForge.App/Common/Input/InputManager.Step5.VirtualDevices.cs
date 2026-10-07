@@ -329,6 +329,32 @@ namespace PadForge.Common.Input
             PadForge.Services.SensaHapticsService.PublishAmplitude(best);
         }
 
+        /// <summary>Haptic mouse feed (#494): the same reduction as
+        /// <see cref="UpdateSensaLane"/>, its declared sibling, published for
+        /// the MouseHapticsService worker. A fix to one lane's rumble
+        /// authority belongs in both. The engine's stop, idle and suspend
+        /// paths silence it, where this lane does not run.</summary>
+        private void UpdateMouseHapticsLane()
+        {
+            if (!PadForge.Services.MouseHapticsService.PublisherArmed) return;
+            float best = 0f;
+            int n = System.Math.Min(SettingsManager.SlotMappingSets?.Length ?? 0, MaxPads);
+            for (int slot = 0; slot < n; slot++)
+            {
+                long pack = GetInboundRumblePack(slot);
+                var vibe = VibrationStates[slot];
+                if (vibe != null)
+                {
+                    pack = Engine.Common.LfeOutputState.MaxMerge(pack,
+                        vibe.LeftMotorSpeed, vibe.RightMotorSpeed,
+                        vibe.LeftTriggerMotorSpeed, vibe.RightTriggerMotorSpeed);
+                }
+                float amp = PadForge.Services.MouseHapticsService.PackToAmplitude(pack);
+                if (amp > best) best = amp;
+            }
+            PadForge.Services.MouseHapticsService.PublishAmplitude(best);
+        }
+
         private void UpdateRumbleAudioLane()
         {
             var sets = SettingsManager.SlotMappingSets;

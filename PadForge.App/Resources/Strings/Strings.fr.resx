@@ -245,6 +245,14 @@
   <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>Runtime Razer Sensa introuvable. Nouvelle tentative en cours.</value></data>
   <data name="Dashboard_SensaActive" xml:space="preserve"><value>Vibrations diffusées vers Sensa HD Haptics</value></data>
   <data name="Dashboard_SensaFooter" xml:space="preserve"><value>Nécessite Razer Synapse 4 avec Sensa HD Haptics. Dans Synapse, réglez la source haptique de l’appareil sur Sensa HD Games.</value></data>
+  <data name="Dashboard_MouseHaptics" xml:space="preserve"><value>Souris haptiques</value></data>
+  <data name="Dashboard_MouseHapticsDescription" xml:space="preserve"><value>Traduit les vibrations de la manette en impulsions sur les souris équipées d’un moteur de vibration : la Logitech MX Master 4 et les SteelSeries Rival 500, 700 et 710.</value></data>
+  <data name="Dashboard_EnableMouseHaptics" xml:space="preserve"><value>Envoyer les vibrations vers les souris haptiques</value></data>
+  <data name="Dashboard_MouseHapticsActive" xml:space="preserve"><value>Vibrations envoyées vers {0}</value></data>
+  <data name="Dashboard_MouseHapticsSearching" xml:space="preserve"><value>Aucune souris haptique trouvée. Nouvelle tentative en cours.</value></data>
+  <data name="Dashboard_MouseHapticsFeedbackOff" xml:space="preserve"><value>{0} (retour haptique désactivé dans Logi Options+)</value></data>
+  <data name="Dashboard_MouseHapticsLogitechMouse" xml:space="preserve"><value>Souris Logitech</value></data>
+  <data name="Dashboard_MouseHapticsFooter" xml:space="preserve"><value>La MX Master 4 fonctionne avec son récepteur Logi Bolt ou en Bluetooth. Les souris Rival nécessitent que SteelSeries GG soit lancé.</value></data>
   <data name="Dashboard_Lightsync" xml:space="preserve"><value>Logitech LIGHTSYNC</value></data>
   <data name="Dashboard_LightsyncDescription" xml:space="preserve"><value>Transmet la couleur de la barre lumineuse qu’un jeu définit sur une manette PlayStation virtuelle à vos appareils Logitech LIGHTSYNC via Logitech G HUB.</value></data>
   <data name="Dashboard_EnableLightsync" xml:space="preserve"><value>Refléter la barre lumineuse sur Logitech LIGHTSYNC</value></data>

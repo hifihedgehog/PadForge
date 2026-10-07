@@ -364,6 +364,14 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_SensaWaiting => Get("Dashboard_SensaWaiting");
     public string Dashboard_SensaActive => Get("Dashboard_SensaActive");
     public string Dashboard_SensaFooter => Get("Dashboard_SensaFooter");
+    public string Dashboard_MouseHaptics => Get("Dashboard_MouseHaptics");
+    public string Dashboard_MouseHapticsDescription => Get("Dashboard_MouseHapticsDescription");
+    public string Dashboard_EnableMouseHaptics => Get("Dashboard_EnableMouseHaptics");
+    public string Dashboard_MouseHapticsActive => Get("Dashboard_MouseHapticsActive");
+    public string Dashboard_MouseHapticsSearching => Get("Dashboard_MouseHapticsSearching");
+    public string Dashboard_MouseHapticsFeedbackOff => Get("Dashboard_MouseHapticsFeedbackOff");
+    public string Dashboard_MouseHapticsLogitechMouse => Get("Dashboard_MouseHapticsLogitechMouse");
+    public string Dashboard_MouseHapticsFooter => Get("Dashboard_MouseHapticsFooter");
     public string Dashboard_Lightsync => Get("Dashboard_Lightsync");
     public string Dashboard_LightsyncDescription => Get("Dashboard_LightsyncDescription");
     public string Dashboard_EnableLightsync => Get("Dashboard_EnableLightsync");

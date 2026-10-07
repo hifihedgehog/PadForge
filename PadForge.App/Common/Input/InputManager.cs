@@ -1838,6 +1838,8 @@ namespace PadForge.Common.Input
             // EnsureStarted re-arms on the next engine start.
             RumbleAudioService.SilenceAll();
             RumbleAudioService.StopAll();
+            // #494: the haptic mouse lane takes the same three silence edges.
+            PadForge.Services.MouseHapticsService.Silence();
 
             // Retire this run before the joins. The join stays bounded so the
             // interface never hangs on shutdown, but a thread that outlives it
@@ -2005,6 +2007,7 @@ namespace PadForge.Common.Input
                             // (16 volatile writes at 20 Hz); without this
                             // the last nonzero pack would sound forever.
                             RumbleAudioService.SilenceAll();
+                            PadForge.Services.MouseHapticsService.Silence();
                             if (System.Threading.Volatile.Read(ref _runGeneration) == generation) AdvanceUsioReopen(usioOwner);
                             long tsIdleSdl = Stopwatch.GetTimestamp();
                             SDL_UpdateJoysticks();
@@ -2150,6 +2153,7 @@ namespace PadForge.Common.Input
                         // tick publishes zeros the same tick.
                         UpdateRumbleAudioLane();
                         UpdateSensaLane();
+                        UpdateMouseHapticsLane();
 
                         // Stall watchdog report: only outliers write anything.
                         long cycleMs = cycleTimer.ElapsedMilliseconds;
@@ -3859,6 +3863,7 @@ namespace PadForge.Common.Input
             }
 
             RumbleAudioService.SilenceAll();
+            PadForge.Services.MouseHapticsService.Silence();
             try
             {
                 if (submitControllers == null) UpdateVirtualDevices();

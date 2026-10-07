@@ -147,6 +147,7 @@ namespace PadForge.Tests
                 Assert.Null(old.EnableChromaLightbar);
                 Assert.Null(old.EnableLightsyncLightbar);
                 Assert.Null(old.EnableSensaHaptics);
+                Assert.Null(old.EnableMouseHaptics);
                 Assert.Null(old.EnableHeadTracking);
                 Assert.Null(old.EnableHeadTrackingFreeTrack);
                 Assert.True(old.EnableWebController);   // the plain-bool sibling still reads
@@ -158,6 +159,7 @@ namespace PadForge.Tests
                 EnableChromaLightbar = true,
                 EnableLightsyncLightbar = false,
                 EnableSensaHaptics = null,
+                EnableMouseHaptics = true,
                 EnableHeadTracking = false,
             };
             using var w = new StringWriter();
@@ -167,6 +169,7 @@ namespace PadForge.Tests
             Assert.True(back.EnableChromaLightbar);
             Assert.False(back.EnableLightsyncLightbar);
             Assert.Null(back.EnableSensaHaptics);
+            Assert.True(back.EnableMouseHaptics);
             Assert.False(back.EnableHeadTracking);
 
             // And the other authored value for the new leg, so both
@@ -190,11 +193,13 @@ namespace PadForge.Tests
             d.EnableChromaLightbar = true;
             d.EnableLightsyncLightbar = true;
             d.EnableSensaHaptics = true;
+            d.EnableMouseHaptics = true;
             d.HeadTrackingEnabled = true;
             ss.ApplyProfileServiceToggles(new ProfileData { Id = "x" });
             Assert.True(d.EnableChromaLightbar);
             Assert.True(d.EnableLightsyncLightbar);
             Assert.True(d.EnableSensaHaptics);
+            Assert.True(d.EnableMouseHaptics);
             Assert.True(d.HeadTrackingEnabled);
             Assert.True(HeadTrackingRuntime.Enabled);   // the engine's flag follows the toggle
 
@@ -202,11 +207,13 @@ namespace PadForge.Tests
             d.EnableChromaLightbar = false;
             d.EnableLightsyncLightbar = false;
             d.EnableSensaHaptics = false;
+            d.EnableMouseHaptics = false;
             d.HeadTrackingEnabled = false;
             ss.ApplyProfileServiceToggles(new ProfileData { Id = "x" });
             Assert.False(d.EnableChromaLightbar);
             Assert.False(d.EnableLightsyncLightbar);
             Assert.False(d.EnableSensaHaptics);
+            Assert.False(d.EnableMouseHaptics);
             Assert.False(d.HeadTrackingEnabled);
             Assert.False(HeadTrackingRuntime.Enabled);
 
@@ -214,22 +221,26 @@ namespace PadForge.Tests
             ss.ApplyProfileServiceToggles(new ProfileData
             {
                 Id = "x", EnableChromaLightbar = true, EnableLightsyncLightbar = null, EnableSensaHaptics = true,
+                EnableMouseHaptics = true,
                 EnableHeadTracking = true,
             });
             Assert.True(d.EnableChromaLightbar);
             Assert.False(d.EnableLightsyncLightbar);   // null leg: untouched
             Assert.True(d.EnableSensaHaptics);
+            Assert.True(d.EnableMouseHaptics);
             Assert.True(d.HeadTrackingEnabled);
             Assert.True(HeadTrackingRuntime.Enabled);
 
             ss.ApplyProfileServiceToggles(new ProfileData
             {
                 Id = "x", EnableChromaLightbar = false, EnableLightsyncLightbar = true, EnableSensaHaptics = false,
+                EnableMouseHaptics = null,
                 EnableHeadTracking = null,
             });
             Assert.False(d.EnableChromaLightbar);
             Assert.True(d.EnableLightsyncLightbar);
             Assert.False(d.EnableSensaHaptics);
+            Assert.True(d.EnableMouseHaptics);        // null leg: untouched
             Assert.True(d.HeadTrackingEnabled);        // null leg: untouched
 
             ss.ApplyProfileServiceToggles(new ProfileData { Id = "x", EnableHeadTracking = false });
@@ -260,6 +271,11 @@ namespace PadForge.Tests
             vm.Dashboard.EnableSensaHaptics = false;
             Assert.False(p1.EnableSensaHaptics);
 
+            vm.Dashboard.EnableMouseHaptics = true;
+            Assert.True(p1.EnableMouseHaptics);
+            vm.Dashboard.EnableMouseHaptics = false;
+            Assert.False(p1.EnableMouseHaptics);
+
             Assert.Null(p1.EnableHeadTracking);
             Assert.Null(p1.EnableHeadTrackingFreeTrack);
             vm.Dashboard.HeadTrackingEnabled = true;
@@ -281,11 +297,13 @@ namespace PadForge.Tests
             vm.Dashboard.EnableChromaLightbar = true;
             vm.Dashboard.EnableLightsyncLightbar = true;
             vm.Dashboard.EnableSensaHaptics = true;
+            vm.Dashboard.EnableMouseHaptics = true;
             vm.Dashboard.HeadTrackingEnabled = true;
 
             Assert.Null(p1.EnableChromaLightbar);
             Assert.Null(p1.EnableLightsyncLightbar);
             Assert.Null(p1.EnableSensaHaptics);
+            Assert.Null(p1.EnableMouseHaptics);
             Assert.Null(p1.EnableHeadTracking);
             Assert.Null(p1.EnableHeadTrackingFreeTrack);
         }
@@ -307,13 +325,15 @@ namespace PadForge.Tests
 
             // All three applies change the VM (true to false, false to
             // true), so PropertyChanged fires under the guard each time.
-            ss.ApplyProfileServiceToggles(new ProfileData { Id = "other", EnableChromaLightbar = false, EnableSensaHaptics = true, EnableHeadTracking = true });
+            ss.ApplyProfileServiceToggles(new ProfileData { Id = "other", EnableChromaLightbar = false, EnableSensaHaptics = true, EnableMouseHaptics = true, EnableHeadTracking = true });
 
             Assert.False(vm.Dashboard.EnableChromaLightbar);   // the apply landed
             Assert.True(vm.Dashboard.EnableSensaHaptics);
+            Assert.True(vm.Dashboard.EnableMouseHaptics);
             Assert.True(vm.Dashboard.HeadTrackingEnabled);
             Assert.Null(p1.EnableChromaLightbar);               // and authored nothing
             Assert.Null(p1.EnableSensaHaptics);
+            Assert.Null(p1.EnableMouseHaptics);
             Assert.Null(p1.EnableHeadTracking);
             Assert.Null(p1.EnableHeadTrackingFreeTrack);
 
@@ -345,6 +365,7 @@ namespace PadForge.Tests
             vm.Dashboard.EnableChromaLightbar = true;
             vm.Dashboard.EnableLightsyncLightbar = true;
             vm.Dashboard.EnableSensaHaptics = true;
+            vm.Dashboard.EnableMouseHaptics = true;
             vm.Dashboard.HeadTrackingEnabled = true;
             var p1 = ArrangeActiveProfile();
 
@@ -352,17 +373,20 @@ namespace PadForge.Tests
             Assert.Null(p1.EnableChromaLightbar);
             Assert.Null(p1.EnableLightsyncLightbar);
             Assert.Null(p1.EnableSensaHaptics);
+            Assert.Null(p1.EnableMouseHaptics);
             Assert.Null(p1.EnableHeadTracking);
             Assert.Null(p1.EnableHeadTrackingFreeTrack);
 
             // A stale opinion is refreshed from the live value.
             p1.EnableChromaLightbar = false;
             p1.EnableSensaHaptics = false;
+            p1.EnableMouseHaptics = false;
             p1.EnableHeadTracking = false;
             ss.UpdateActiveProfileSnapshot();
             Assert.True(p1.EnableChromaLightbar);
             Assert.Null(p1.EnableLightsyncLightbar);
             Assert.True(p1.EnableSensaHaptics);
+            Assert.True(p1.EnableMouseHaptics);
             Assert.True(p1.EnableHeadTracking);
         }
 
@@ -384,6 +408,7 @@ namespace PadForge.Tests
                 Assert.DoesNotContain("EnableChromaLightbar", body);
                 Assert.DoesNotContain("EnableLightsyncLightbar", body);
                 Assert.DoesNotContain("EnableSensaHaptics", body);
+                Assert.DoesNotContain("EnableMouseHaptics", body);
                 Assert.DoesNotContain("EnableHeadTracking", body);
                 Assert.DoesNotContain("HeadTrackingEnabled", body);
             }

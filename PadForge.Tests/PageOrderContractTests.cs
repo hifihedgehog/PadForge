@@ -60,6 +60,7 @@ namespace PadForge.Tests
                     "Dashboard_MotionServer",
                     "Dashboard_LightbarMirrors",
                     "Dashboard_Sensa",
+                    "Dashboard_MouseHaptics",
                     "Dashboard_Overlays",
                     "Dashboard_TouchpadOverlay",
                 });

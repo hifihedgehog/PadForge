@@ -245,6 +245,14 @@
   <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>Razer Sensaランタイムが見つかりません。再試行中。</value></data>
   <data name="Dashboard_SensaActive" xml:space="preserve"><value>振動をSensa HDハプティクスに送信中</value></data>
   <data name="Dashboard_SensaFooter" xml:space="preserve"><value>Sensa HDハプティクス対応のRazer Synapse 4が必要です。SynapseでデバイスのハプティックソースをSensa HD Gamesに設定してください。</value></data>
+  <data name="Dashboard_MouseHaptics" xml:space="preserve"><value>ハプティクスマウス</value></data>
+  <data name="Dashboard_MouseHapticsDescription" xml:space="preserve"><value>コントローラーの振動を、Logitech MX Master 4やSteelSeries Rival 500、700、710など振動モーターを備えたマウスのパルスに変換します。</value></data>
+  <data name="Dashboard_EnableMouseHaptics" xml:space="preserve"><value>振動をハプティクスマウスに送信</value></data>
+  <data name="Dashboard_MouseHapticsActive" xml:space="preserve"><value>{0}に振動を送信中</value></data>
+  <data name="Dashboard_MouseHapticsSearching" xml:space="preserve"><value>ハプティクスマウスが見つかりません。再試行中。</value></data>
+  <data name="Dashboard_MouseHapticsFeedbackOff" xml:space="preserve"><value>{0} (Logi Options+でハプティックフィードバックがオフ)</value></data>
+  <data name="Dashboard_MouseHapticsLogitechMouse" xml:space="preserve"><value>Logitechマウス</value></data>
+  <data name="Dashboard_MouseHapticsFooter" xml:space="preserve"><value>MX Master 4はLogi BoltレシーバーまたはBluetoothで動作します。RivalマウスにはSteelSeries GGの起動が必要です。</value></data>
   <data name="Dashboard_Lightsync" xml:space="preserve"><value>Logitech LIGHTSYNC</value></data>
   <data name="Dashboard_LightsyncDescription" xml:space="preserve"><value>ゲームが仮想PlayStationコントローラーに設定したライトバーの色を、Logitech G HUB経由でLogitech LIGHTSYNCデバイスに転送します。</value></data>
   <data name="Dashboard_EnableLightsync" xml:space="preserve"><value>ライトバーをLogitech LIGHTSYNCにミラー</value></data>

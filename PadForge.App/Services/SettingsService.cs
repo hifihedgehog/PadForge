@@ -2516,6 +2516,7 @@ namespace PadForge.Services
                 _mainVm.Dashboard.EnableChromaLightbar = appSettings.EnableChromaLightbar;
                 _mainVm.Dashboard.EnableLightsyncLightbar = appSettings.EnableLightsyncLightbar;
                 _mainVm.Dashboard.EnableSensaHaptics = appSettings.EnableSensaHaptics;
+                _mainVm.Dashboard.EnableMouseHaptics = appSettings.EnableMouseHaptics;
                 _mainVm.Dashboard.HeadTrackingEnabled = appSettings.HeadTrackingEnabled;
                 _mainVm.Dashboard.HeadTrackingFreeTrack = appSettings.HeadTrackingIndependentInputs
                     ? appSettings.HeadTrackingFreeTrack
@@ -4185,7 +4186,7 @@ namespace PadForge.Services
 
         /// <summary>Applies a profile's opinion on the service toggles
         /// (Razer Chroma #373, Logitech LIGHTSYNC #382, Razer Sensa #374,
-        /// head tracking #355) to the Dashboard VM, whose PropertyChanged
+        /// haptic mice #494, head tracking #355) to the Dashboard VM, whose PropertyChanged
         /// starts or stops the service (the head tracking setter writes the
         /// runtime flag the engine sweep reads). A null leg leaves the
         /// toggle where it is: the global AppSettings value, or whatever the
@@ -4213,6 +4214,8 @@ namespace PadForge.Services
                     _mainVm.Dashboard.EnableLightsyncLightbar = lightsync;
                 if (profile.EnableSensaHaptics is bool sensa)
                     _mainVm.Dashboard.EnableSensaHaptics = sensa;
+                if (profile.EnableMouseHaptics is bool mouseHaptics)
+                    _mainVm.Dashboard.EnableMouseHaptics = mouseHaptics;
                 if (profile.EnableHeadTracking is bool headTracking)
                     _mainVm.Dashboard.HeadTrackingEnabled = headTracking;
                 if (profile.EnableHeadTrackingFreeTrack is bool freeTrack)
@@ -4247,6 +4250,9 @@ namespace PadForge.Services
                     break;
                 case nameof(DashboardViewModel.EnableSensaHaptics):
                     profile.EnableSensaHaptics = _mainVm.Dashboard.EnableSensaHaptics;
+                    break;
+                case nameof(DashboardViewModel.EnableMouseHaptics):
+                    profile.EnableMouseHaptics = _mainVm.Dashboard.EnableMouseHaptics;
                     break;
                 case nameof(DashboardViewModel.HeadTrackingEnabled):
                     profile.HeadTrackingIndependentInputs = true;
@@ -4360,6 +4366,8 @@ namespace PadForge.Services
                 profile.EnableLightsyncLightbar = _mainVm.Dashboard.EnableLightsyncLightbar;
             if (profile.EnableSensaHaptics != null)
                 profile.EnableSensaHaptics = _mainVm.Dashboard.EnableSensaHaptics;
+            if (profile.EnableMouseHaptics != null)
+                profile.EnableMouseHaptics = _mainVm.Dashboard.EnableMouseHaptics;
             if (profile.EnableHeadTracking != null)
                 profile.EnableHeadTracking = _mainVm.Dashboard.HeadTrackingEnabled;
             if (profile.EnableHeadTrackingFreeTrack != null)
@@ -4814,6 +4822,7 @@ namespace PadForge.Services
                 EnableChromaLightbar = _mainVm.Dashboard.EnableChromaLightbar,
                 EnableLightsyncLightbar = _mainVm.Dashboard.EnableLightsyncLightbar,
                 EnableSensaHaptics = _mainVm.Dashboard.EnableSensaHaptics,
+                EnableMouseHaptics = _mainVm.Dashboard.EnableMouseHaptics,
                 HeadTrackingEnabled = _mainVm.Dashboard.HeadTrackingEnabled,
                 HeadTrackingIndependentInputs = true,
                 HeadTrackingUdpPort = _mainVm.Dashboard.HeadTrackingUdpPort,
@@ -6688,6 +6697,12 @@ namespace PadForge.Services
         [XmlElement]
         public bool EnableSensaHaptics { get; set; }
 
+        /// <summary>Rumble on haptic mice opt-in (#494), the GLOBAL leg.
+        /// Default false. Per-profile leg:
+        /// <see cref="ProfileData.EnableMouseHaptics"/>.</summary>
+        [XmlElement]
+        public bool EnableMouseHaptics { get; set; }
+
         /// <summary>Logitech LIGHTSYNC lightbar mirror opt-in (#382), the
         /// GLOBAL leg. Default false. Per-profile leg:
         /// <see cref="ProfileData.EnableLightsyncLightbar"/>.</summary>
@@ -7662,6 +7677,12 @@ namespace PadForge.Services
         /// <see cref="EnableChromaLightbar"/>.</summary>
         [XmlElement]
         public bool? EnableSensaHaptics { get; set; }
+
+        /// <summary>Rumble on haptic mice (#494), the profile's leg. Same
+        /// nullable, authored contract as
+        /// <see cref="EnableChromaLightbar"/>.</summary>
+        [XmlElement]
+        public bool? EnableMouseHaptics { get; set; }
 
         /// <summary>The authored UDP input opinion. Null leaves the current value alone.
         /// Older profiles used this as a master switch and are converted once.</summary>

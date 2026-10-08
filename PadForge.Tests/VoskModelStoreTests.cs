@@ -40,6 +40,18 @@ namespace PadForge.Tests
             try { Directory.Delete(_root, true); } catch { }
         }
 
+        /// <summary>The diagnostics ring's latest voice lines, for a failure
+        /// message.</summary>
+        private static string VoiceLines()
+        {
+            var lines = SdlDiagLog.Snapshot().Split('\n');
+            var voice = new System.Collections.Generic.List<string>();
+            foreach (var line in lines)
+                if (line.Contains("VOICE vosk")) voice.Add(line.TrimEnd('\r'));
+            int skip = Math.Max(0, voice.Count - 6);
+            return voice.Count == 0 ? "The ring has no voice lines." : string.Join(" | ", voice.GetRange(skip, voice.Count - skip));
+        }
+
         /// <summary>A Model over a null native pointer, made the way the
         /// binding makes one, with no call into libvosk. Disposing it is
         /// safe: the binding skips the native free when the handle is zero.</summary>
@@ -336,7 +348,9 @@ namespace PadForge.Tests
             Assert.True(unpackAskedFor, "a store with no cache did not ask for the unpack");
             VoskModelStore.UnpackNow();
 
-            Assert.True(VoskModelStore.IsReady, "the unpack did not end with a ready model");
+            // The unpack reports why it failed only to the diagnostics ring,
+            // so a failure carries the ring's voice lines with it.
+            Assert.True(VoskModelStore.IsReady, "the unpack did not end with a ready model. " + VoiceLines());
             Assert.Same(made, VoskModelStore.Model);
             string final = Path.Combine(_root, VoskModelStore.ModelName);
             Assert.Equal(final, asked);

@@ -239,12 +239,6 @@
   <data name="Dashboard_ChromaWaiting" xml:space="preserve"><value>Razer Synapse niet gevonden. Opnieuw proberen.</value></data>
   <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>Verbonden met Razer Chroma</value></data>
   <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>Vereist Razer Synapse met Chroma Connect. Werkt met elke fysieke controller: de kleur komt van de virtuele pad die de game inkleurt.</value></data>
-  <data name="Dashboard_Sensa" xml:space="preserve"><value>Razer Sensa HD Haptics</value></data>
-  <data name="Dashboard_SensaDescription" xml:space="preserve"><value>Vertaalt controller-rumble naar Razer Sensa HD-haptiek, zodat Sensa-apparaten zoals de Wolverine V3 Pro, de Kraken V4 Pro en de Freyja meetrillen met je games.</value></data>
-  <data name="Dashboard_EnableSensa" xml:space="preserve"><value>Rumble naar Sensa HD-haptiek sturen</value></data>
-  <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>Razer Sensa-runtime niet gevonden. Opnieuw proberen.</value></data>
-  <data name="Dashboard_SensaActive" xml:space="preserve"><value>Rumble wordt naar Sensa HD-haptiek gestreamd</value></data>
-  <data name="Dashboard_SensaFooter" xml:space="preserve"><value>Vereist Razer Synapse 4 met Sensa HD-haptiek. Zet in Synapse de haptische bron van het apparaat op Sensa HD Games.</value></data>
   <data name="Dashboard_Lightsync" xml:space="preserve"><value>Logitech LIGHTSYNC</value></data>
   <data name="Dashboard_LightsyncDescription" xml:space="preserve"><value>Stuurt de lightbar-kleur die een game op een virtuele PlayStation-controller instelt via Logitech G HUB door naar je Logitech LIGHTSYNC-apparaten.</value></data>
   <data name="Dashboard_EnableLightsync" xml:space="preserve"><value>Lightbar spiegelen naar Logitech LIGHTSYNC</value></data>
@@ -1685,6 +1679,14 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Per trigger: deadzones, anti-deadzones, schaling van het maximale bereik en gevoeligheidskrommen. Elke sectie hieronder geldt voor één trigger-as op de actieve uitvoer. Uitgebreide profielen kunnen tot acht assen blootstellen, gedeeld met het Sticks-tabblad.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Force Feedback</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Regelt hoe PadForge force feedback-gebeurtenissen vanuit het spel schaalt en routeert naar de rumble-motoren of haptische actuatoren van de fysieke controller. Audio-rumble voegt daar een door systeemaudio aangestuurde laag bovenop toe.</value></data>
+  <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Rumble speelt op {0} als haptische pulsen die rechtstreeks naar het apparaat gaan. Sterkere rumble kiest een sterkere puls en herhaalt die sneller.</value></data>
+  <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Haptische feedback staat voor {0} uit in Logi Options+, dus het speelt niets af totdat je het daar weer aanzet.</value></data>
+  <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Dit apparaat heeft nog niet geantwoord. De rumble speelt zodra het wakker wordt.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>Rumble loopt via de tactiele handler in SteelSeries GG.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG stuurt alle tactiele Rivals tegelijk aan, dus die op virtuele controller {0} bepaalt hun rumble.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>Wachten op SteelSeries GG. Rumble speelt zodra GG draait.</value></data>
+  <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>Rumble speelt via Razer Synapse op je Razer Sensa HD-apparaten.</value></data>
+  <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Wachten op Sensa HD-haptiek in Razer Synapse 4. Zet in Synapse de haptische bron van het apparaat op Sensa HD Games.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Linker trigger</value></data>
   <data name="Pad_RightTrigger" xml:space="preserve"><value>Rechter trigger</value></data>
   <data name="Pad_TriggerMode" xml:space="preserve"><value>Modus</value></data>
@@ -2574,6 +2576,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>Logitech G-toetsen</value></data>
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>Analoog toetsenbord</value></data>
   <data name="DeviceType_WebMenus" xml:space="preserve"><value>Webmenu's</value></data>
+  <data name="DeviceType_PeripheralHaptics" xml:space="preserve"><value>Haptiek</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>Hoofd gieren</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>Hoofd stampen</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>Hoofd rollen</value></data>

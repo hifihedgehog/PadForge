@@ -146,7 +146,7 @@ namespace PadForge.Services
         private ExternalControlService _externalControl;
         private ChromaLightbarService _chromaService;
         private LightsyncLightbarService _lightsyncService;
-        private SensaHapticsService _sensaService;
+        private PadForge.Common.Input.Peripherals.PeripheralOutputHost _peripheralHost;
         private ProfileData _defaultProfileSnapshot;
 
         // Active profile's touchpad custom-gesture working list. Mirrors
@@ -2326,8 +2326,11 @@ namespace PadForge.Services
             // Logitech LIGHTSYNC lightbar mirror (#382), opt-in.
             StartLightsyncIfEnabled();
 
-            // Razer Sensa HD haptics translation (#374), opt-in.
-            StartSensaIfEnabled();
+            // Haptic and RGB peripherals (#494): the host links mice,
+            // keyboards and vendor rows to their outputs and runs the
+            // backends, which reach a vendor only while something assigned
+            // uses it.
+            StartPeripheralOutputs();
 
             // Capture default profile snapshot before any profile switches.
             // If the app restarted with a named profile active, LoadProfiles
@@ -2535,7 +2538,7 @@ namespace PadForge.Services
             StopExternalControl();
             StopChromaService();
             StopLightsyncService();
-            StopSensaService();
+            StopPeripheralOutputs();
             StopDsuServer();
             StopWebServer();
             StopRemoteLink();
@@ -9619,6 +9622,8 @@ namespace PadForge.Services
             _dispatcher.BeginInvoke(new Action(() =>
             {
                 if (!ReferenceEquals(sender, _inputManager)) return;
+                // A device that came or went may carry outputs (#494).
+                _peripheralHost?.Nudge();
                 SyncDevicesList();
                 RefreshVoiceObjects();
                 UpdatePadDeviceInfo();
@@ -10049,13 +10054,6 @@ namespace PadForge.Services
                 else
                     StopLightsyncService();
             }
-            else if (e.PropertyName == nameof(DashboardViewModel.EnableSensaHaptics))
-            {
-                if (_mainVm.Dashboard.EnableSensaHaptics)
-                    StartSensaIfEnabled();
-                else
-                    StopSensaService();
-            }
             else if (e.PropertyName == nameof(DashboardViewModel.EnableWebController))
             {
                 if (_mainVm.Dashboard.EnableWebController)
@@ -10334,41 +10332,40 @@ namespace PadForge.Services
                 _mainVm.Dashboard.LightsyncStatus = Strings.Instance.Common_Stopped);
         }
 
-        // ── Razer Sensa HD haptics translation (#374) ──
+        // ── Haptic and RGB peripherals (#494) ──
 
-        private void StartSensaIfEnabled()
+        /// <summary>Starts the peripheral host with the engine. Every output
+        /// follows assignment, so there is no switch: the host costs a link
+        /// pass every half second and an idle worker per backend until a
+        /// device that uses one is assigned.</summary>
+        private void StartPeripheralOutputs()
         {
-            PadForge.Engine.SdlDiagLog.WriteLine(
-                $"SENSA start? enabled={_mainVm.Dashboard.EnableSensaHaptics} engine={_inputManager != null} live={_sensaService != null}");
-            if (!_mainVm.Dashboard.EnableSensaHaptics || _inputManager == null)
-                return;
-            if (_sensaService != null)
-                return; // Already running.
-
-            _sensaService = new SensaHapticsService();
-            _sensaService.StateChanged += state =>
-            {
-                _dispatcher.BeginInvoke(() =>
-                {
-                    _mainVm.Dashboard.SensaStatus = state switch
-                    {
-                        SensaServiceState.Active => Strings.Instance.Dashboard_SensaActive,
-                        SensaServiceState.WaitingForRuntime => Strings.Instance.Dashboard_SensaWaiting,
-                        SensaServiceState.Unsupported => Strings.Instance.Common_NotAvailableOnArm64,
-                        _ => Strings.Instance.Common_Stopped,
-                    };
-                });
-            };
-            _sensaService.Start();
+            if (_inputManager == null || _peripheralHost != null) return;
+            var host = new PadForge.Common.Input.Peripherals.PeripheralOutputHost();
+            host.CapabilitiesChanged += OnPeripheralCapabilitiesChanged;
+            _peripheralHost = host;
+            host.Start();
         }
 
-        private void StopSensaService()
+        private void StopPeripheralOutputs()
         {
-            if (_sensaService == null) return;
-            _sensaService.Dispose();
-            _sensaService = null;
-            _dispatcher.BeginInvoke(() =>
-                _mainVm.Dashboard.SensaStatus = Strings.Instance.Common_Stopped);
+            var host = _peripheralHost;
+            _peripheralHost = null;
+            if (host == null) return;
+            host.CapabilitiesChanged -= OnPeripheralCapabilitiesChanged;
+            host.Dispose();
+        }
+
+        /// <summary>A row found or lost an output. The record is persisted
+        /// so the row's tabs stay up while it sleeps, and the device list
+        /// shows its rumble chip by it.</summary>
+        private void OnPeripheralCapabilitiesChanged()
+        {
+            _dispatcher.BeginInvoke(new Action(() =>
+            {
+                _settingsService?.MarkDirty();
+                SyncDevicesList();
+            }));
         }
 
         private void StartDsuServerIfEnabled()
@@ -11735,7 +11732,12 @@ namespace PadForge.Services
                                 RawAxisCount = dev.RawAxisCount,
                                 HasExtraGenericAxes = dev.HasExtraGenericAxes,
                                 NumHats = dev.NumHats,
-                                HasRumble = dev.HasRumble,
+                                // A haptic mouse or keyboard (#494) has no SDL
+                                // rumble, and its level reaches the device
+                                // through the apply below. Its saved record
+                                // holds while it sleeps, so the consumer's
+                                // capability does not flap with it.
+                                HasRumble = dev.HasRumble || ud.HasPeripheralHaptics,
                                 HasRumbleTriggers = dev.HasRumbleTriggers,
                                 HasHaptic = dev.HasHaptic,
                                 HasGyro = dev.HasGyro,
@@ -11833,6 +11835,9 @@ namespace PadForge.Services
             // A Web Menus phone (#471) fires only this PC's menus, so another
             // PC would get a device that does nothing.
             if (dev is WebControllerDevice web && web.IsMenuSurface) return false;
+            // A vendor row (#494) stands for this PC's vendor software and
+            // has no input, the same case.
+            if (dev is PadForge.Common.Input.Peripherals.PeripheralOutputRow) return false;
             string path = dev.DevicePath ?? "";
             return !path.StartsWith("peer://", StringComparison.Ordinal);
         }
@@ -12098,6 +12103,31 @@ namespace PadForge.Services
                             {
                                 PadForge.Common.Input.BlissBoxRuntime.SetRumble(
                                     ud.DevicePath, bvib.LeftMotorSpeed, bvib.RightMotorSpeed);
+                            }
+                        }
+                        else if (ud != null
+                            && PadForge.Common.Input.Peripherals.PeripheralOutputs.TakesHaptics(ud))
+                        {
+                            // Haptic mouse or keyboard sole-writer path (#494,
+                            // mirrors InputManager.Step2's isPeripheralHaptic
+                            // gate): the relayed level goes to the device's
+                            // backend worker, and is kept while the device
+                            // sleeps, since the peer sends only changes. The
+                            // consumer folded trigger rumble before it shipped
+                            // the frame.
+                            var hvib = effect.Vibration;
+                            // A silence edge zeroed a level the snapshot still
+                            // holds, so a peer's equal level is owed a write,
+                            // as Step 2 pays it.
+                            if (ud.ForceFeedbackState != null
+                                && PadForge.Common.Input.Peripherals.PeripheralOutputs.ConsumeResend(ud.InstanceGuid))
+                                ud.ForceFeedbackState.MarkDirectWriteFailed();
+                            if (ud.ForceFeedbackState != null
+                                && ud.ForceFeedbackState.TryRecordMotorSnapshot(
+                                    hvib.LeftMotorSpeed, hvib.RightMotorSpeed))
+                            {
+                                PadForge.Common.Input.Peripherals.PeripheralOutputs.SetMotors(
+                                    ud.InstanceGuid, hvib.LeftMotorSpeed, hvib.RightMotorSpeed, relayed: true);
                             }
                         }
                         else if (ud != null
@@ -13072,6 +13102,9 @@ namespace PadForge.Services
         public void PanicQuiesceOutputs()
         {
             try { _inputManager?.QuiesceOutputs(); } catch { }
+            // A tactile Rival (#494) plays until GG hears a zero, which only
+            // the GameSense worker sends.
+            try { _peripheralHost?.WaitForSilence(250); } catch { }
             try { PadForge.Common.Input.HapticToneService.Shutdown(); } catch { }
             // #236: quiesce is an explicit silence edge; the shaker tone
             // must die with the other outputs.
@@ -14310,10 +14343,13 @@ namespace PadForge.Services
                 || ud.CapType == InputDeviceType.Flight
                 || ud.CapType == InputDeviceType.FirstPerson
                 || ud.CapType == InputDeviceType.Supplemental;
-            row.HasRumble = rumbleClass
+            // A haptic mouse, keyboard or vendor row (#494) rumbles through
+            // its own Force Feedback tab, the Pad page's peripheral gate.
+            row.HasRumble = (rumbleClass
                 && (ud.HasForceFeedback || ud.HasRumbleTriggers || sonyLightbarPad
                     || switch2Pad
-                    || PadForge.Common.Input.HapticToneService.DeviceHasHaptics(ud));
+                    || PadForge.Common.Input.HapticToneService.DeviceHasHaptics(ud)))
+                || PadForge.Common.Input.Peripherals.PeripheralOutputs.IsHapticPeripheral(ud);
             row.HasGyro = ud.HasGyro;
             row.HasAccel = ud.HasAccel;
             row.HasTouchpad = ud.HasTouchpad;
@@ -14461,6 +14497,8 @@ namespace PadForge.Services
                 InputDeviceType.LogitechGKeys => "LogitechGKeys",
                 InputDeviceType.AnalogKeyboard => "AnalogKeyboard",
                 InputDeviceType.WebMenus => "WebMenus",
+                InputDeviceType.PeripheralLighting => "PeripheralLighting",
+                InputDeviceType.PeripheralHaptics => "PeripheralHaptics",
                 _ => "Device"
             };
             // Vendor daemon notice (#343): the sweep scans on its cadence;
@@ -16126,6 +16164,11 @@ namespace PadForge.Services
                         // through.
                         bool impulse = !peer && !padix && !blissBox
                             && PadForge.Engine.XboxControllerIdentity.IsImpulseTriggerDevice(ud.VendorId, ud.ProdId);
+                        // A haptic mouse or keyboard (#494) plays through its
+                        // backend worker, which takes the level the same way
+                        // Step 2's peripheral branch hands it over.
+                        bool peripheral = !peer && !padix && !blissBox && !impulse
+                            && PadForge.Common.Input.Peripherals.PeripheralOutputs.TakesHaptics(ud);
                         void Buzz(ushort left, ushort right)
                         {
                             // The crash path's quiesce ends every level, a
@@ -16158,6 +16201,21 @@ namespace PadForge.Services
                             else if (blissBox)
                             {
                                 PadForge.Common.Input.BlissBoxRuntime.SetRumble(ud.DevicePath, left, right);
+                            }
+                            else if (peripheral)
+                            {
+                                // Under the row's gate, which the crash quiesce
+                                // takes for its stop, so a pulse decided before
+                                // the quiesce cannot land after it.
+                                lock (ud.OutputSync)
+                                {
+                                    if (_inputManager?.OutputsQuiesced == true && (left != 0 || right != 0)) return;
+                                    // A level a peer drives stays the peer's, so
+                                    // the restore at the end of the train keeps
+                                    // it through the focus edge.
+                                    PadForge.Common.Input.Peripherals.PeripheralOutputs.SetMotors(ud.InstanceGuid, left, right,
+                                        relayed: PadForge.Common.Input.RemoteLinkOutputRouter.PeerWroteLast(ud.DevicePath));
+                                }
                             }
                             else
                             {

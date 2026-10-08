@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using PadForge.Common.Input;
+using PadForge.Common.Input.Peripherals;
 using PadForge.Services;
 using Xunit;
 using Xunit.Abstractions;
@@ -35,7 +36,7 @@ namespace PadForge.Tests
 
         // ── Scripted HID++ channel ──
 
-        private sealed class FakeChannel : IHidppChannel
+        internal sealed class FakeChannel : IHidppChannel
         {
             public string Path { get; init; } = @"\\?\hid#vid_046d&pid_c548&mi_02&col02#fake";
             public bool Bluetooth { get; init; }
@@ -53,21 +54,38 @@ namespace PadForge.Tests
                 return true;
             }
 
+            /// <summary>The feature ID of every Root.getFeature asked.</summary>
+            public readonly ConcurrentQueue<ushort> RootLookups = new();
+
             public HidppReply Request(byte deviceIndex, byte featureIndex, byte function, byte[] parameters, int timeoutMs)
             {
                 if (FailWrites) return new HidppReply(HidppReplyKind.WriteFailed);
                 Asked.Enqueue((deviceIndex, featureIndex, function));
+                if (featureIndex == 0 && function == 0 && parameters != null && parameters.Length >= 2)
+                    RootLookups.Enqueue((ushort)((parameters[0] << 8) | parameters[1]));
                 return Answer(deviceIndex, featureIndex, function, parameters ?? Array.Empty<byte>());
+            }
+
+            /// <summary>The receiver's register records, by register and
+            /// sub-register. Unanswered unless a test scripts them.</summary>
+            public Func<byte, byte, HidppReply> Register = (r, s) => NoAnswer();
+            public readonly ConcurrentQueue<(byte Register, byte Sub)> RegistersAsked = new();
+
+            public HidppReply ReadReceiverRegister(byte register, byte sub, int timeoutMs)
+            {
+                if (FailWrites) return new HidppReply(HidppReplyKind.WriteFailed);
+                RegistersAsked.Enqueue((register, sub));
+                return Register(register, sub);
             }
 
             public void Dispose() => Disposed = true;
         }
 
-        private static HidppReply NoAnswer() => new(HidppReplyKind.Timeout);
+        internal static HidppReply NoAnswer() => new(HidppReplyKind.Timeout);
 
         /// <summary>An answer report: the long header with PadForge's
         /// software ID, then the payload.</summary>
-        private static HidppReply Ans(byte device, byte feature, byte function, params byte[] payload)
+        internal static HidppReply Ans(byte device, byte feature, byte function, params byte[] payload)
         {
             var report = new byte[20];
             report[0] = 0x11;
@@ -81,14 +99,17 @@ namespace PadForge.Tests
         /// <summary>A haptic mouse at one device index, answering the way the
         /// references describe: 0x19B0 at feature index 0x0B, the mask
         /// big-endian in payload bytes 4 to 7, the enable flag in bit 0, and
-        /// its name through feature 0x0005 at index 0x03.</summary>
-        private static Func<byte, byte, byte, byte[], HidppReply> Mouse(byte deviceIndex,
-            string name = "MX Master 4", uint mask = 0x7FFF, bool enabled = true)
+        /// its name and type through feature 0x0005 at index 0x03 (Solaar's
+        /// table: 3 is a mouse).</summary>
+        internal static Func<byte, byte, byte, byte[], HidppReply> Mouse(byte deviceIndex,
+            string name = "MX Master 4", uint mask = 0x7FFF, bool enabled = true, byte type = 3)
         {
             const byte haptic = 0x0B, nameFeature = 0x03;
             return (d, f, fn, p) =>
             {
                 if (d != deviceIndex) return NoAnswer();
+                if (f == nameFeature && fn == 2)
+                    return Ans(d, f, 2, type);
                 if (f == 0 && fn == 0)
                 {
                     int id = (p[0] << 8) | p[1];
@@ -106,7 +127,7 @@ namespace PadForge.Tests
             };
         }
 
-        private static string MissingCoreProps()
+        internal static string MissingCoreProps()
             => Path.Combine(Path.GetTempPath(), "padforge-no-gg-" + Guid.NewGuid().ToString("N"), "coreProps.json");
 
         // ── The shaper ──
@@ -240,7 +261,7 @@ namespace PadForge.Tests
             };
             var state = new HidppPathState();
 
-            var found = HidppHapticProbe.Probe(channel, state, now: 1000);
+            var found = HidppUnitProbe.Probe(channel, state, Guid.Empty, now: 1000);
 
             var mouse = Assert.Single(found);
             Assert.Equal(0x02, mouse.DeviceIndex);
@@ -257,13 +278,13 @@ namespace PadForge.Tests
 
             // Inside the backoff nothing is asked again.
             int asked = channel.Asked.Count;
-            Assert.Empty(HidppHapticProbe.Probe(channel, state, now: 2000));
+            Assert.Empty(HidppUnitProbe.Probe(channel, state, Guid.Empty, now: 2000));
             Assert.Equal(asked, channel.Asked.Count);
 
             // After it, only the open slots are asked, and 0xFF no longer is:
             // the receiver answered on a slot.
             while (channel.Asked.TryDequeue(out _)) { }
-            HidppHapticProbe.Probe(channel, state, now: 1000 + HidppHapticProbe.FirstRetryMs);
+            HidppUnitProbe.Probe(channel, state, Guid.Empty, now: 1000 + HidppHapticProbe.FirstRetryMs);
             var again = channel.Asked.Select(a => a.Device).Distinct().OrderBy(x => x).ToArray();
             Assert.Equal(new byte[] { 3, 4, 5, 6 }, again);
         }
@@ -274,7 +295,7 @@ namespace PadForge.Tests
             var channel = new FakeChannel { Bluetooth = true, Answer = Mouse(0xFF, "MX Master 4 Mac") };
             var state = new HidppPathState();
 
-            var mouse = Assert.Single(HidppHapticProbe.Probe(channel, state, now: 0));
+            var mouse = Assert.Single(HidppUnitProbe.Probe(channel, state, Guid.Empty, now: 0));
 
             Assert.Equal(0xFF, mouse.DeviceIndex);
             Assert.Equal("MX Master 4 Mac", mouse.Name);
@@ -287,7 +308,7 @@ namespace PadForge.Tests
         {
             var channel = new FakeChannel { Bluetooth = true };
             var state = new HidppPathState();
-            Assert.Empty(HidppHapticProbe.Probe(channel, state, now: 0));
+            Assert.Empty(HidppUnitProbe.Probe(channel, state, Guid.Empty, now: 0));
             Assert.All(channel.Asked, a => Assert.Equal(0xFF, a.Device));
             Assert.True(state.RetryAt[0] > 0);
         }
@@ -304,7 +325,7 @@ namespace PadForge.Tests
             var waits = new List<long>();
             for (int i = 0; i < 6; i++)
             {
-                HidppHapticProbe.Probe(channel, state, now);
+                HidppUnitProbe.Probe(channel, state, Guid.Empty, now);
                 waits.Add(state.RetryAt[0] - now);
                 now = state.RetryAt[0];
             }
@@ -316,7 +337,7 @@ namespace PadForge.Tests
         {
             var channel = new FakeChannel { Answer = (d, f, fn, p) => d == 0xFF ? Ans(d, 0, 0, 0) : NoAnswer() };
             var state = new HidppPathState();
-            Assert.Empty(HidppHapticProbe.Probe(channel, state, now: 0));
+            Assert.Empty(HidppUnitProbe.Probe(channel, state, Guid.Empty, now: 0));
             Assert.True(state.Direct);
             Assert.True(state.Settled[0]);
             Assert.DoesNotContain(channel.Asked, a => a.Device != 0xFF);
@@ -327,7 +348,7 @@ namespace PadForge.Tests
         {
             var channel = new FakeChannel { FailWrites = true };
             var state = new HidppPathState();
-            Assert.Empty(HidppHapticProbe.Probe(channel, state, now: 0));
+            Assert.Empty(HidppUnitProbe.Probe(channel, state, Guid.Empty, now: 0));
             Assert.True(state.Dead);
         }
 
@@ -337,7 +358,7 @@ namespace PadForge.Tests
             var mouse = Mouse(0xFF);
             var channel = new FakeChannel { Answer = (d, f, fn, p) => f == 0x0B && fn == 0 ? NoAnswer() : mouse(d, f, fn, p) };
             var state = new HidppPathState();
-            Assert.Empty(HidppHapticProbe.Probe(channel, state, now: 0));
+            Assert.Empty(HidppUnitProbe.Probe(channel, state, Guid.Empty, now: 0));
             Assert.False(state.Settled[0]);
             Assert.True(state.RetryAt[0] > 0);
         }
@@ -354,15 +375,14 @@ namespace PadForge.Tests
         [Fact]
         public void ReadFeedbackEnabled_IsNullForASilentDevice()
         {
-            var device = new HidppHapticDevice(0x01, 0x0B, 0x1C, true, "MX Master 4");
-            Assert.False(HidppHapticProbe.ReadFeedbackEnabled(new FakeChannel { Answer = Mouse(0x01, enabled: false) }, device));
-            Assert.True(HidppHapticProbe.ReadFeedbackEnabled(new FakeChannel { Answer = Mouse(0x01) }, device));
-            Assert.Null(HidppHapticProbe.ReadFeedbackEnabled(new FakeChannel(), device));
+            Assert.False(HidppHapticProbe.ReadFeedbackEnabled(new FakeChannel { Answer = Mouse(0x01, enabled: false) }, 0x01, 0x0B));
+            Assert.True(HidppHapticProbe.ReadFeedbackEnabled(new FakeChannel { Answer = Mouse(0x01) }, 0x01, 0x0B));
+            Assert.Null(HidppHapticProbe.ReadFeedbackEnabled(new FakeChannel(), 0x01, 0x0B));
         }
 
         // ── GameSense ──
 
-        private sealed class FakeGameSense : IDisposable
+        internal sealed class FakeGameSense : IDisposable
         {
             private readonly HttpListener _listener;
             private readonly Thread _thread;

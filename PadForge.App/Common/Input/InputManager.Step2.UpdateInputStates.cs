@@ -670,8 +670,24 @@ namespace PadForge.Common.Input
         /// </summary>
         private void ApplyForceFeedback(UserDevice ud)
         {
-            if (ud == null || ud.ForceFeedbackState == null)
+            if (ud == null)
                 return;
+            if (ud.ForceFeedbackState == null)
+            {
+                // A haptic mouse, keyboard or the Razer Sensa row (#494)
+                // reports no SDL rumble, so loading the device never made its
+                // cache. It is made here, on the poll thread, which alone
+                // writes it in this pass, the way Bliss-Box makes it at its
+                // hand-off. A new cache starts from zero, so the row's stored
+                // level does too: one kept from before the row was removed
+                // and found again would otherwise play on, since a zero
+                // against a zero cache reads as no change (the #402 rule in
+                // UserDevice.LoadFromDevice).
+                if (ud.Device == null || !PadForge.Common.Input.Peripherals.PeripheralOutputs.TakesHaptics(ud))
+                    return;
+                PadForge.Common.Input.Peripherals.PeripheralOutputs.StopHaptics(ud.InstanceGuid);
+                ud.ForceFeedbackState = new ForceFeedbackState();
+            }
 
             // Abnormal-exit quiesce (crash handler / ProcessExit): the
             // panic sweep zeroed the hardware once; without this gate
@@ -711,12 +727,18 @@ namespace PadForge.Common.Input
             // Read Bliss-Box Adapters is on (#469), the converter's shape: SDL's
             // DirectInput path averages both motors into one sine effect.
             bool isBlissBox = PadForge.Engine.Common.BlissBox.BlissBoxApi.OwnsRumble(ud.VendorId, ud.ProdId);
-            if (!isXboxImpulse && !isVendorFfb && !isPadixConverter && !isBlissBox)
+            // A haptic mouse or keyboard, or the Razer Sensa row (#494): its
+            // level goes to the peripheral backends, the converter's shape.
+            // The mouse wrapper reports no SDL rumble, so this skips that
+            // gate too. A row whose device sleeps keeps taking its level, so
+            // the device plays the current one when it wakes.
+            bool isPeripheralHaptic = PadForge.Common.Input.Peripherals.PeripheralOutputs.TakesHaptics(ud);
+            if (!isXboxImpulse && !isVendorFfb && !isPadixConverter && !isBlissBox && !isPeripheralHaptic)
             {
                 if (ud.Device == null || (!ud.Device.HasRumble && !ud.Device.HasHaptic))
                     return;
             }
-            else if ((isXboxImpulse || isPadixConverter || isBlissBox) && ud.Device == null)
+            else if ((isXboxImpulse || isPadixConverter || isBlissBox || isPeripheralHaptic) && ud.Device == null)
             {
                 return;
             }
@@ -821,6 +843,11 @@ namespace PadForge.Common.Input
                             else if (isBlissBox)
                             {
                                 BlissBoxRuntime.SetRumble(ud.DevicePath, 0, 0);
+                                ud.ForceFeedbackState.TryRecordMotorSnapshot(0, 0);
+                            }
+                            else if (isPeripheralHaptic)
+                            {
+                                PadForge.Common.Input.Peripherals.PeripheralOutputs.SetMotors(ud.InstanceGuid, 0, 0);
                                 ud.ForceFeedbackState.TryRecordMotorSnapshot(0, 0);
                             }
                             else ud.ForceFeedbackState.StopDeviceForces(ud.Device);
@@ -1201,6 +1228,27 @@ namespace PadForge.Common.Input
                     if (!BlissBoxRuntime.SetRumble(ud.DevicePath, blissL, blissR))
                         ud.ForceFeedbackState.MarkDirectWriteFailed();
                 }
+                return;
+            }
+
+            if (isPeripheralHaptic)
+            {
+                // Haptic mice, keyboards and the Razer Sensa row (#494), the
+                // Bliss-Box shape: the level is recorded here and a backend
+                // worker plays it, a HID++ waveform train, the GameSense
+                // tactile handler or the Interhaptics engine. Trigger Rumble
+                // Fold applies as on SDL's path, since none of them has
+                // trigger motors. An engine silence edge (stop, focus suspend,
+                // the crash quiesce) zeroed the level without this pass, so
+                // the level a game still asks for is owed again. The level is
+                // kept whether or not the path is up, so nothing needs sending
+                // twice.
+                ushort hapticL = combinedL, hapticR = combinedR;
+                ForceFeedbackState.FoldTriggersForDirectWriter(firstPadSetting, combinedLT, combinedRT, ref hapticL, ref hapticR);
+                if (PadForge.Common.Input.Peripherals.PeripheralOutputs.ConsumeResend(ud.InstanceGuid))
+                    ud.ForceFeedbackState.MarkDirectWriteFailed();
+                if (ud.ForceFeedbackState.TryRecordMotorSnapshot(hapticL, hapticR))
+                    PadForge.Common.Input.Peripherals.PeripheralOutputs.SetMotors(ud.InstanceGuid, hapticL, hapticR);
                 return;
             }
 

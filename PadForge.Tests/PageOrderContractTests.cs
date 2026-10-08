@@ -59,7 +59,6 @@ namespace PadForge.Tests
                     "Dashboard_HeadTracking",
                     "Dashboard_MotionServer",
                     "Dashboard_LightbarMirrors",
-                    "Dashboard_Sensa",
                     "Dashboard_Overlays",
                     "Dashboard_TouchpadOverlay",
                 });

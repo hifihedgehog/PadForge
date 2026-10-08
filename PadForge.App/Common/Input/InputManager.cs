@@ -1837,6 +1837,8 @@ namespace PadForge.Common.Input
             // riding it silenced the shakers on every profile switch.
             // EnsureStarted re-arms on the next engine start.
             RumbleAudioService.SilenceAll();
+            // #494: haptic mice, keyboards and the Sensa row take the same edges.
+            PadForge.Common.Input.Peripherals.PeripheralOutputs.SilenceHaptics();
             RumbleAudioService.StopAll();
 
             // Retire this run before the joins. The join stays bounded so the
@@ -2005,6 +2007,9 @@ namespace PadForge.Common.Input
                             // (16 volatile writes at 20 Hz); without this
                             // the last nonzero pack would sound forever.
                             RumbleAudioService.SilenceAll();
+                            // Haptic peripherals (#494) take no such edge here:
+                            // Step 2 runs in idle and writes their level as it
+                            // writes SDL rumble.
                             if (System.Threading.Volatile.Read(ref _runGeneration) == generation) AdvanceUsioReopen(usioOwner);
                             long tsIdleSdl = Stopwatch.GetTimestamp();
                             SDL_UpdateJoysticks();
@@ -2149,7 +2154,6 @@ namespace PadForge.Common.Input
                         // UpdateVirtualDevices so a slot destroyed this
                         // tick publishes zeros the same tick.
                         UpdateRumbleAudioLane();
-                        UpdateSensaLane();
 
                         // Stall watchdog report: only outliers write anything.
                         long cycleMs = cycleTimer.ElapsedMilliseconds;
@@ -2320,6 +2324,9 @@ namespace PadForge.Common.Input
 
         private void StopAllForceFeedback()
         {
+            // Peripheral haptics (#494) stop with every level at zero: their
+            // workers play nothing from the next tick on.
+            PadForge.Common.Input.Peripherals.PeripheralOutputs.SilenceHaptics();
             var devices = SettingsManager.UserDevices?.Items;
             if (devices == null) return;
 
@@ -2384,6 +2391,11 @@ namespace PadForge.Common.Input
                                     BlissBoxRuntime.ResendMotors(ud.DevicePath);
                                 }
                             }
+                            // A haptic peripheral's level (#494) stops under the
+                            // gate as well. The silence above runs before any
+                            // gate, so a level the poll thread or Identify had
+                            // already decided under it would land after it.
+                            PadForge.Common.Input.Peripherals.PeripheralOutputs.StopHaptics(ud.InstanceGuid);
                             try { ud.ForceFeedbackState.StopDeviceForces(ud.Device); }
                             catch { /* best effort */ }
                         }
@@ -3859,6 +3871,10 @@ namespace PadForge.Common.Input
             }
 
             RumbleAudioService.SilenceAll();
+            // #494: haptic mice, keyboards and the Sensa row take the same
+            // edge, except a level a Remote Link peer drives, which keeps
+            // playing like a peer-driven SDL rumble.
+            PadForge.Common.Input.Peripherals.PeripheralOutputs.SilenceHaptics(keepRelayed: true);
             try
             {
                 if (submitControllers == null) UpdateVirtualDevices();
@@ -4141,6 +4157,7 @@ namespace PadForge.Common.Input
             ShutdownHandheldInputs();
             ShutdownHeadTrackerInputs();
             ShutdownLogitechGKeysInputs();
+            ShutdownPeripheralRows();
             ShutdownAnalogKeyboardInputs();
             ShutdownSdl();
             _gyroTiltStates.Clear();

@@ -240,7 +240,6 @@ namespace PadForge.ViewModels
             nameof(EnableTouchpadOverlay) or
             nameof(EnableChromaLightbar) or
             nameof(EnableLightsyncLightbar) or
-            nameof(EnableSensaHaptics) or
             nameof(EnableMenuOverlay) or
             nameof(EnableShiftLayerFlyout) or
             nameof(EnableProfileOverlay);
@@ -292,11 +291,6 @@ namespace PadForge.ViewModels
                 case nameof(EnableLightsyncLightbar):
                 {
                     EnableLightsyncLightbar = false;
-                    break;
-                }
-                case nameof(EnableSensaHaptics):
-                {
-                    EnableSensaHaptics = false;
                     break;
                 }
                 case nameof(EnableMenuOverlay):

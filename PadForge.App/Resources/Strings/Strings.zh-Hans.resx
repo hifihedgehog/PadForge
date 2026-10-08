@@ -239,12 +239,6 @@
   <data name="Dashboard_ChromaWaiting" xml:space="preserve"><value>未检测到Razer Synapse，正在重试。</value></data>
   <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>已连接到Razer Chroma</value></data>
   <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>需要带Chroma Connect的Razer Synapse。适用于任何物理手柄：颜色来自游戏绘制的虚拟手柄。</value></data>
-  <data name="Dashboard_Sensa" xml:space="preserve"><value>Razer Sensa HD Haptics</value></data>
-  <data name="Dashboard_SensaDescription" xml:space="preserve"><value>将手柄震动转换为Razer Sensa HD触感反馈，让Wolverine V3 Pro、Kraken V4 Pro和Freyja等Sensa设备随游戏震动。</value></data>
-  <data name="Dashboard_EnableSensa" xml:space="preserve"><value>将震动发送到Sensa HD触感</value></data>
-  <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>未找到Razer Sensa运行时，正在重试。</value></data>
-  <data name="Dashboard_SensaActive" xml:space="preserve"><value>正在向Sensa HD触感传输震动</value></data>
-  <data name="Dashboard_SensaFooter" xml:space="preserve"><value>需要带Sensa HD触感的Razer Synapse 4。请在Synapse中将设备的触感源设为Sensa HD Games。</value></data>
   <data name="Dashboard_Lightsync" xml:space="preserve"><value>Logitech LIGHTSYNC</value></data>
   <data name="Dashboard_LightsyncDescription" xml:space="preserve"><value>将游戏在虚拟PlayStation手柄上设置的灯条颜色，通过Logitech G HUB转发到您的罗技LIGHTSYNC设备。</value></data>
   <data name="Dashboard_EnableLightsync" xml:space="preserve"><value>将灯条镜像到罗技LIGHTSYNC</value></data>
@@ -1664,6 +1658,14 @@
   <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>每个扳机的死区、反死区、最大行程缩放和灵敏度曲线。下方每个分区针对当前输出的一个扳机轴。扩展配置最多可暴露八个轴,与摇杆选项卡共享。</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>力反馈</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>调整 PadForge 如何缩放来自游戏的力反馈事件,以及如何将它们路由到物理手柄的振动马达或触觉执行器。音频震动在此之上叠加由系统音频驱动的层。</value></data>
+  <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>震动以触感脉冲直接发送到 {0}。震动越强，选用的脉冲越强，重复也越快。</value></data>
+  <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>{0} 的触感反馈已在 Logi Options+ 中关闭，在那里重新打开之前不会播放任何内容。</value></data>
+  <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>此设备尚未响应。设备唤醒后即播放震动。</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>震动通过 SteelSeries GG 的触觉处理程序播放。</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG 会同时驱动所有触觉 Rival，因此由虚拟控制器 {0} 上的那只决定它们的震动。</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>正在等待 SteelSeries GG。GG 运行后即播放震动。</value></data>
+  <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>震动通过 Razer Synapse 在你的 Razer Sensa HD 设备上播放。</value></data>
+  <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>正在等待 Razer Synapse 4 中的 Sensa HD 触感。请在 Synapse 中将设备的触感源设为 Sensa HD Games。</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>左扳机</value></data>
   <data name="Pad_RightTrigger" xml:space="preserve"><value>右扳机</value></data>
   <data name="Pad_TriggerMode" xml:space="preserve"><value>模式</value></data>
@@ -2554,6 +2556,7 @@
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>罗技 G 键</value></data>
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>模拟键盘</value></data>
   <data name="DeviceType_WebMenus" xml:space="preserve"><value>网页菜单</value></data>
+  <data name="DeviceType_PeripheralHaptics" xml:space="preserve"><value>触感</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>头部偏航</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>头部俯仰</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>头部翻滚</value></data>

@@ -2199,6 +2199,13 @@ namespace PadForge.Engine.RemoteLink
                         || !SameKeys(existing.Info.SupportedAxisIndices, info.SupportedAxisIndices)
                         || (info.DeviceObjects != null && info.DeviceObjects.Length > 0
                             && !SameAxisObjects(existing.Info.DeviceObjects, info.DeviceObjects));
+                    // Rumble is registration state as well: the row's
+                    // force-feedback cache is made when the device registers
+                    // with rumble, so a device that gained it afterward (a
+                    // haptic mouse found after connect, #494) took no level
+                    // until it registered again.
+                    bool rumbleChanged = existing.Info.HasRumble != info.HasRumble
+                        || existing.Info.HasHaptic != info.HasHaptic;
                     existing.LinkSlot = info.Slot;
                     existing.SetConnected(info.Online); // same device, just active/inactive (+ maybe a new slot)
                     // Refresh relayed metadata in place: the owner's named
@@ -2263,7 +2270,7 @@ namespace PadForge.Engine.RemoteLink
                     next[info.Slot] = existing;
                     // Re-register only when the slot moved, so the slot-stamped output route refreshes,
                     // or when what registration recorded changed.
-                    if (slotChanged || typeChanged || touchCapabilitiesChanged || axesChanged)
+                    if (slotChanged || typeChanged || touchCapabilitiesChanged || axesChanged || rumbleChanged)
                         notifications.Add(() => DeviceConnected?.Invoke(existing));
                 }
                 else

@@ -323,8 +323,8 @@ namespace PadForge.Tests
         {
             string step2 = Repo("PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs");
             Assert.Contains("bool isBlissBox = PadForge.Engine.Common.BlissBox.BlissBoxApi.OwnsRumble(ud.VendorId, ud.ProdId);", step2);
-            Assert.Contains("if (!isXboxImpulse && !isVendorFfb && !isPadixConverter && !isBlissBox)", step2);
-            Assert.Contains("else if ((isXboxImpulse || isPadixConverter || isBlissBox) && ud.Device == null)", step2);
+            Assert.Contains("if (!isXboxImpulse && !isVendorFfb && !isPadixConverter && !isBlissBox && !isPeripheralHaptic)", step2);
+            Assert.Contains("else if ((isXboxImpulse || isPadixConverter || isBlissBox || isPeripheralHaptic) && ud.Device == null)", step2);
             Assert.Contains("BlissBoxRuntime.SetRumble(ud.DevicePath, 0, 0);", step2);
             Assert.Contains("if (!BlissBoxRuntime.SetRumble(ud.DevicePath, blissL, blissR))", step2);
             int dispatch = step2.IndexOf("if (!BlissBoxRuntime.SetRumble(ud.DevicePath, blissL, blissR))", StringComparison.Ordinal);

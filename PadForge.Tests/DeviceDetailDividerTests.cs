@@ -219,6 +219,8 @@ namespace PadForge.Tests
         [InlineData("LogitechGKeys")]
         [InlineData("AnalogKeyboard")]
         [InlineData("WebMenus")]
+        [InlineData("PeripheralLighting")]
+        [InlineData("PeripheralHaptics")]
         public void RowsWithNoHardwareToDescribe_DoNotOfferSubmitMapping(string typeKey)
         {
             var vm = new DeviceRowViewModel { DeviceTypeKey = typeKey };

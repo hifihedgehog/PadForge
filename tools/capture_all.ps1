@@ -3762,8 +3762,8 @@ function Scroll-ToAnchor {
 # Scroll-ToAnchor answers "has this card reached the screen", which is the
 # wrong question for a shot that frames two neighboring sections: stopping at
 # the first anchor ships the pair with its second half below the fold. The
-# 4.4.0 Dashboard puts Lightbar Mirrors and Razer Sensa HD Haptics next to
-# each other and one docs page shows both, so the gate has to be "all of
+# 4.4.0 Dashboard put Lightbar Mirrors and Razer Sensa HD Haptics next to
+# each other and one docs page showed both, so the gate has to be "all of
 # them", and a run that cannot get there says so by name instead of
 # photographing whatever it reached.
 function Scroll-ToAnchors {
@@ -4703,7 +4703,7 @@ if ($Only.Count -gt 0) {
     # Dashboard sections whose shot needs SEVERAL anchors in one frame.
     $multiAnchorTargets = @(
         @{ Shot = "dashboard-lightbar-mirrors"; Page = "Dashboard";
-           Anchors = @("LIGHTBAR MIRRORS", "Send Rumble to Sensa HD Haptics") },
+           Anchors = @("LIGHTBAR MIRRORS", "Mirror Lightbar to Logitech LIGHTSYNC") },
         @{ Shot = "dashboard-head-tracking";    Page = "Dashboard";
            Anchors = @("HEAD TRACKING", "Set Neutral") },
         @{ Shot = "remote-link";                Page = "Dashboard";
@@ -7114,12 +7114,13 @@ if (Select-DeviceByName36 "MIDI Keyboard") {
 # Dashboard sections, by ANCHOR rather than by click count, for the same
 # reason the Settings block above changed: the page was reordered this cycle.
 # Head Tracking moved onto the Dashboard, Lightbar Mirrors and Razer Sensa HD
-# Haptics are new, and the Drivers status strip left for Settings, so every
-# fixed count below the Services header now lands a section early or late.
+# Haptics were new, and the Drivers status strip left for Settings, so every
+# fixed count below the Services header landed a section early or late. The
+# Razer Sensa section left again with #494 for the Razer Sensa device row.
 #
 # Section order (PageOrderContractTests): Input Engine, Virtual Controllers,
 # then Services: Web Controller, Remote Link, Head Tracking, Motion Server,
-# Lightbar Mirrors, Razer Sensa HD Haptics, Overlays, Touchpad Overlay.
+# Lightbar Mirrors, Overlays, Touchpad Overlay.
 #
 # THE SECTION TITLES ARE UPPERCASED IN THE VIEW. DashboardPage.xaml runs
 # every SectionTitle through UpperConverter, and a TextBlock's UIA Name is
@@ -7138,17 +7139,10 @@ $dashSections = @(
     @{ Shot = "remote-link";               Anchors = @("REMOTE LINK", "Or Connect by Address (Advanced)");  After = 0 },
     @{ Shot = "dashboard-head-tracking";   Anchors = @("HEAD TRACKING", "Set Neutral");                     After = 0 },
     @{ Shot = "dsu-port-box";              Anchors = @("MOTION SERVER", "Enable DSU Motion Server (CemuHook Motion Provider Protocol)"); After = -4 },
-    # One frame carrying both mirror families and the haptics section beside
-    # them, which is what features/lightbar-mirrors.md shows. The second
-    # anchor is the Sensa section's own checkbox rather than its heading, so
-    # the haptics controls are in the picture and not just its title.
-    # SKIPS on this machine at 1033px of client height: the span from the
-    # LIGHTBAR MIRRORS heading to the Sensa checkbox (measured at y=4252)
-    # is taller than one frame, so the two anchors never share a picture.
-    # The section content has not changed since the shot was last taken,
-    # so the skip costs nothing today. Framing it again needs either a
-    # taller capture window or a composition that does not demand both.
-    @{ Shot = "dashboard-lightbar-mirrors"; Anchors = @("LIGHTBAR MIRRORS", "Send Rumble to Sensa HD Haptics"); After = 0 }
+    # One frame carrying both mirror families, which is what
+    # features/lightbar-mirrors.md shows. The second anchor is the section's
+    # last control, the LIGHTSYNC checkbox, so both cards are in the picture.
+    @{ Shot = "dashboard-lightbar-mirrors"; Anchors = @("LIGHTBAR MIRRORS", "Mirror Lightbar to Logitech LIGHTSYNC"); After = 0 }
 )
 foreach ($ds in $dashSections) {
     Nav "Dashboard"; Start-Sleep -Milliseconds 800

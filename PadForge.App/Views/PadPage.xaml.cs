@@ -110,6 +110,13 @@ namespace PadForge.Views
             PadForge.Common.IconPackageManager.RegistryChanged += OnIconPackageRegistryChanged;
             RefreshIconPackages();
             SyncBassShakerMeterTimer();
+            // Peripheral outputs (#494): a mouse found to have haptics gains
+            // its Force Feedback tab, and a path that starts answering
+            // changes the tab's line.
+            PadForge.Common.Input.Peripherals.PeripheralOutputs.LinksChanged -= OnPeripheralOutputsChanged;
+            PadForge.Common.Input.Peripherals.PeripheralOutputs.LinksChanged += OnPeripheralOutputsChanged;
+            PadForge.Common.Input.Peripherals.PeripheralOutputs.StatusChanged -= OnPeripheralOutputsChanged;
+            PadForge.Common.Input.Peripherals.PeripheralOutputs.StatusChanged += OnPeripheralOutputsChanged;
         }
 
         private void PadPage_Unloaded(object sender, RoutedEventArgs e)
@@ -117,6 +124,22 @@ namespace PadForge.Views
             PadForge.Common.SoundPackageManager.RegistryChanged -= OnSoundPackageRegistryChanged;
             _bassShakerMeterTimer?.Stop();
             PadForge.Common.IconPackageManager.RegistryChanged -= OnIconPackageRegistryChanged;
+            PadForge.Common.Input.Peripherals.PeripheralOutputs.LinksChanged -= OnPeripheralOutputsChanged;
+            PadForge.Common.Input.Peripherals.PeripheralOutputs.StatusChanged -= OnPeripheralOutputsChanged;
+        }
+
+        /// <summary>Raised on the peripheral host's thread. One refresh per
+        /// burst: a link pass and a status change in the same moment queue a
+        /// single tab sync.</summary>
+        private int _peripheralSyncQueued;
+        private void OnPeripheralOutputsChanged()
+        {
+            if (System.Threading.Interlocked.Exchange(ref _peripheralSyncQueued, 1) != 0) return;
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                System.Threading.Interlocked.Exchange(ref _peripheralSyncQueued, 0);
+                SyncTabVisibility();
+            }));
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -389,9 +412,10 @@ namespace PadForge.Views
             //   DualSense Edge (Sony VID 0x054C, PID 0x0CE6 or 0x0DF2).
             // Lighting: above plus DS4 (PIDs 0x05C4, 0x09CC, 0x0BA0).
             // Force Feedback: selected device's CapType is a stick-class
-            //   input (Gamepad / Joystick / Driving / Flight / FirstPerson).
-            //   Keyboards / mice / touchpads / MIDI controllers don't
-            //   have FFB endpoints, so the tab would be a no-op there.
+            //   input (Gamepad / Joystick / Driving / Flight / FirstPerson),
+            //   or a haptic mouse, keyboard or the Razer Sensa row (#494).
+            //   Other keyboards, mice, touchpads and MIDI controllers have
+            //   nothing to play rumble on, so the tab would be a no-op.
             bool hasAdaptiveTriggers = false;
             bool hasLightbar = false;
             bool lightbarIsDs4 = false;
@@ -421,6 +445,9 @@ namespace PadForge.Views
             // family and the DualShock 4 have a speaker. Same gating shape as
             // adaptive triggers (DualSense) or impulse triggers (Xbox One+).
             bool hasAudio = false;
+            // A haptic mouse, keyboard or the Razer Sensa row (#494).
+            bool hasPeripheralHaptics = false;
+            PadForge.Engine.Data.UserDevice peripheralRow = null;
             int numTouchpads = 0;
             if (DataContext is PadViewModel vmProfile
                 && vmProfile.SelectedMappedDevice != null
@@ -550,11 +577,30 @@ namespace PadForge.Views
                         hasRumble = hasImpulseTriggers
                                  || hasLightbar
                                  || (ud.Device != null && ud.Device.HasRumble);
+                        // A haptic mouse, keyboard or the Razer Sensa row
+                        // (#494) gets the tab a gamepad gets: this slot's
+                        // rumble reaches it through its own settings. The
+                        // record keeps the tab up while the device sleeps.
+                        hasPeripheralHaptics = PadForge.Common.Input.Peripherals.PeripheralOutputs.IsHapticPeripheral(ud);
+                        if (hasPeripheralHaptics)
+                        {
+                            hasForceFeedback = true;
+                            hasRumble = true;
+                            peripheralRow = ud;
+                        }
                         break;
                     }
                 }
             }
             TabForceFeedback.Visibility = hasForceFeedback ? Visibility.Visible : Visibility.Collapsed;
+            if (PeripheralHapticsRoute != null)
+            {
+                string route = hasPeripheralHaptics
+                    ? PadForge.Common.Input.Peripherals.PeripheralRouteText.Haptics(peripheralRow)
+                    : null;
+                PeripheralHapticsRoute.Text = route ?? string.Empty;
+                PeripheralHapticsRoute.Visibility = string.IsNullOrEmpty(route) ? Visibility.Collapsed : Visibility.Visible;
+            }
             if (TabAdaptiveTriggers != null)
                 TabAdaptiveTriggers.Visibility = hasAdaptiveTriggers ? Visibility.Visible : Visibility.Collapsed;
             if (TabLighting != null)

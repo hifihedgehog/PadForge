@@ -60,7 +60,8 @@ namespace PadForge.Common.Input
                 || (device.Device.HasHaptic && (device.Device.HapticFeatures & SDL_HAPTIC_CONSTANT) != 0))
                 return false;
             return device.Device.HasRumble || device.Device.HasHaptic
-                || XboxControllerIdentity.IsImpulseTriggerDevice(device.VendorId, device.ProdId);
+                || XboxControllerIdentity.IsImpulseTriggerDevice(device.VendorId, device.ProdId)
+                || PadForge.Common.Input.Peripherals.PeripheralOutputs.TakesHaptics(device);
         }
 
         internal Vibration ResolveUserRumble(int slot, PadSetting ps, Vibration raw,

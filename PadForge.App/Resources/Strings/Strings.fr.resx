@@ -239,12 +239,6 @@
   <data name="Dashboard_ChromaWaiting" xml:space="preserve"><value>Razer Synapse introuvable. Nouvelle tentative en cours.</value></data>
   <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>Connecté à Razer Chroma</value></data>
   <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>Nécessite Razer Synapse avec Chroma Connect. Fonctionne avec toute manette physique : la couleur vient de la manette virtuelle que le jeu colore.</value></data>
-  <data name="Dashboard_Sensa" xml:space="preserve"><value>Razer Sensa HD Haptics</value></data>
-  <data name="Dashboard_SensaDescription" xml:space="preserve"><value>Traduit les vibrations de la manette en haptique Razer Sensa HD, pour que les périphériques Sensa comme la Wolverine V3 Pro, le Kraken V4 Pro et le Freyja vibrent avec vos jeux.</value></data>
-  <data name="Dashboard_EnableSensa" xml:space="preserve"><value>Envoyer les vibrations vers Sensa HD Haptics</value></data>
-  <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>Runtime Razer Sensa introuvable. Nouvelle tentative en cours.</value></data>
-  <data name="Dashboard_SensaActive" xml:space="preserve"><value>Vibrations diffusées vers Sensa HD Haptics</value></data>
-  <data name="Dashboard_SensaFooter" xml:space="preserve"><value>Nécessite Razer Synapse 4 avec Sensa HD Haptics. Dans Synapse, réglez la source haptique de l’appareil sur Sensa HD Games.</value></data>
   <data name="Dashboard_Lightsync" xml:space="preserve"><value>Logitech LIGHTSYNC</value></data>
   <data name="Dashboard_LightsyncDescription" xml:space="preserve"><value>Transmet la couleur de la barre lumineuse qu’un jeu définit sur une manette PlayStation virtuelle à vos appareils Logitech LIGHTSYNC via Logitech G HUB.</value></data>
   <data name="Dashboard_EnableLightsync" xml:space="preserve"><value>Refléter la barre lumineuse sur Logitech LIGHTSYNC</value></data>
@@ -1665,6 +1659,14 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Par gâchette : zones mortes, anti-zones mortes, mise à l'échelle de la plage maximale et courbes de sensibilité. Chaque section ci-dessous cible un axe de gâchette de la sortie active. Les profils étendus peuvent exposer jusqu'à huit axes partagés avec l'onglet Sticks.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Retour de force</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Règle la façon dont PadForge met à l'échelle les événements de retour de force du jeu et les achemine vers les moteurs de vibration ou les actionneurs haptiques du contrôleur. La vibration audio ajoute une couche pilotée par le son du système.</value></data>
+  <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Les vibrations sont jouées sur {0} sous forme d’impulsions haptiques envoyées directement à l’appareil. Une vibration plus forte choisit une impulsion plus forte et la répète plus vite.</value></data>
+  <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Le retour haptique de {0} est désactivé dans Logi Options+. Il ne joue rien tant que vous ne l’y réactivez pas.</value></data>
+  <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Cet appareil n’a pas encore répondu. Ses vibrations seront jouées dès son réveil.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>Les vibrations passent par le gestionnaire tactile de SteelSeries GG.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG pilote toutes les souris Rival tactiles à la fois, donc celle du contrôleur virtuel {0} décide de leurs vibrations.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>En attente de SteelSeries GG. Les vibrations seront jouées dès que GG sera lancé.</value></data>
+  <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>Les vibrations sont jouées sur vos périphériques Razer Sensa HD via Razer Synapse.</value></data>
+  <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>En attente de Sensa HD Haptics dans Razer Synapse 4. Dans Synapse, réglez la source haptique de l’appareil sur Sensa HD Games.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Gâchette gauche</value></data>
   <data name="Pad_RightTrigger" xml:space="preserve"><value>Gâchette droite</value></data>
   <data name="Pad_TriggerMode" xml:space="preserve"><value>Mode</value></data>
@@ -2554,6 +2556,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>Touches G Logitech</value></data>
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>Clavier analogique</value></data>
   <data name="DeviceType_WebMenus" xml:space="preserve"><value>Menus Web</value></data>
+  <data name="DeviceType_PeripheralHaptics" xml:space="preserve"><value>Haptique</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>Lacet de la tête</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>Tangage de la tête</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>Roulis de la tête</value></data>

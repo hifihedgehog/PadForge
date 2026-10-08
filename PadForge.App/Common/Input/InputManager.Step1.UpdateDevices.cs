@@ -443,6 +443,9 @@ namespace PadForge.Common.Input
             changed |= UpdateHeadTrackerDevice();
             changed |= UpdateLogitechGKeysDevice();
 
+            // --- Phase 1m: vendor rows for peripheral outputs (issue #494) ---
+            changed |= UpdatePeripheralRows();
+
             // --- Phase 1k: analog keyboards (issue #468) ---
             changed |= UpdateAnalogKeyboardDevices();
 
@@ -1184,6 +1187,9 @@ namespace PadForge.Common.Input
                 try { BlissBoxRuntime.StopRumble(ud.DevicePath); }
                 catch { /* best effort */ }
             }
+            // A haptic mouse or keyboard (#494) plays through a backend worker
+            // the SDL stop above never reaches, so its level drops here.
+            PadForge.Common.Input.Peripherals.PeripheralOutputs.StopHaptics(ud.InstanceGuid);
 
             // Dispose SDL handle.
             if (ud.Device != null)

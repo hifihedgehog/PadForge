@@ -239,12 +239,6 @@
   <data name="Dashboard_ChromaWaiting" xml:space="preserve"><value>Razer Synapseが見つかりません。再試行中。</value></data>
   <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>Razer Chromaに接続済み</value></data>
   <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>Chroma Connect対応のRazer Synapseが必要です。物理コントローラーの種類を問わず動作します。色はゲームが描く仮想パッドに由来します。</value></data>
-  <data name="Dashboard_Sensa" xml:space="preserve"><value>Razer Sensa HD Haptics</value></data>
-  <data name="Dashboard_SensaDescription" xml:space="preserve"><value>コントローラーの振動をRazer Sensa HDハプティクスに変換し、Wolverine V3 ProやKraken V4 Pro、FreyjaなどのSensaデバイスをゲームに合わせて振動させます。</value></data>
-  <data name="Dashboard_EnableSensa" xml:space="preserve"><value>振動をSensa HDハプティクスに送信</value></data>
-  <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>Razer Sensaランタイムが見つかりません。再試行中。</value></data>
-  <data name="Dashboard_SensaActive" xml:space="preserve"><value>振動をSensa HDハプティクスに送信中</value></data>
-  <data name="Dashboard_SensaFooter" xml:space="preserve"><value>Sensa HDハプティクス対応のRazer Synapse 4が必要です。SynapseでデバイスのハプティックソースをSensa HD Gamesに設定してください。</value></data>
   <data name="Dashboard_Lightsync" xml:space="preserve"><value>Logitech LIGHTSYNC</value></data>
   <data name="Dashboard_LightsyncDescription" xml:space="preserve"><value>ゲームが仮想PlayStationコントローラーに設定したライトバーの色を、Logitech G HUB経由でLogitech LIGHTSYNCデバイスに転送します。</value></data>
   <data name="Dashboard_EnableLightsync" xml:space="preserve"><value>ライトバーをLogitech LIGHTSYNCにミラー</value></data>
@@ -1665,6 +1659,14 @@
   <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>トリガーごとのデッドゾーン、アンチデッドゾーン、最大レンジのスケーリング、感度カーブ。下記の各セクションはアクティブな出力上の 1 本のトリガー軸を対象とします。拡張プロファイルは最大 8 軸を公開でき、これらはスティックタブと共有されます。</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>フォースフィードバック</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>PadForge がゲームからのフォースフィードバックイベントをどのようにスケーリングし、物理コントローラーの振動モーターやハプティックアクチュエーターにルーティングするかを調整します。オーディオラブルは、その上にシステムオーディオ駆動のレイヤーを追加します。</value></data>
+  <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>振動は {0} にハプティックパルスとして直接送られます。振動が強いほど強いパルスを選び、より速く繰り返します。</value></data>
+  <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Logi Options+ で {0} のハプティックフィードバックがオフになっています。そこでオンに戻すまで何も再生されません。</value></data>
+  <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>このデバイスはまだ応答していません。スリープから復帰すると振動が再生されます。</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>振動は SteelSeries GG のタクタイルハンドラーを通じて再生されます。</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG はすべての触覚 Rival を同時に駆動するため、仮想コントローラー {0} の Rival が振動を決めます。</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>SteelSeries GG を待っています。GG が起動すると振動が再生されます。</value></data>
+  <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>振動は Razer Synapse を通じて Razer Sensa HD デバイスで再生されます。</value></data>
+  <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Razer Synapse 4 の Sensa HD ハプティクスを待っています。Synapse でデバイスのハプティックソースを Sensa HD Games に設定してください。</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>左トリガー</value></data>
   <data name="Pad_RightTrigger" xml:space="preserve"><value>右トリガー</value></data>
   <data name="Pad_TriggerMode" xml:space="preserve"><value>モード</value></data>
@@ -2554,6 +2556,7 @@
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>Logitech G キー</value></data>
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>アナログキーボード</value></data>
   <data name="DeviceType_WebMenus" xml:space="preserve"><value>Web メニュー</value></data>
+  <data name="DeviceType_PeripheralHaptics" xml:space="preserve"><value>ハプティクス</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>頭のヨー</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>頭のピッチ</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>頭のロール</value></data>

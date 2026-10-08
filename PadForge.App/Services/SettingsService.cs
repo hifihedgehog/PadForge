@@ -204,6 +204,7 @@ namespace PadForge.Services
             // actually reaches disk (round 34).
             if (_profilesCompactedOnLoad) { _profilesCompactedOnLoad = false; MarkDirty(); }
             if (_accessCodeUnsavedOnLoad) { _accessCodeUnsavedOnLoad = false; MarkDirty(); }
+            if (_peripheralSwitchesMigratedOnLoad) { _peripheralSwitchesMigratedOnLoad = false; MarkDirty(); }
         }
 
         // ─────────────────────────────────────────────
@@ -522,6 +523,24 @@ namespace PadForge.Services
                 // — a device already represented in the slot's motion
                 // row is not re-added.
                 EnsureMotionRowsForAllSlots();
+
+                // #494: the shipped global switches become vendor-row
+                // assignments. After LoadProfiles, for the reason the ghost
+                // guard above gives: the live topology is the active
+                // profile's only from there on. The default's stored state
+                // is the pending snapshot only while a named profile is
+                // active, LoadProfiles' own rule.
+                if (data.AppSettings != null)
+                {
+                    var activeProfile = string.IsNullOrEmpty(SettingsManager.ActiveProfileId)
+                        ? null
+                        : SettingsManager.Profiles?.Find(p => p.Id == SettingsManager.ActiveProfileId);
+                    if (PeripheralSwitchMigration.Run(
+                            PeripheralSwitchMigration.Switches(data.AppSettings), SettingsManager.Profiles, activeProfile,
+                            activeProfile != null ? SettingsManager.PendingDefaultSnapshot : null,
+                            LiveRulingSlot, DefaultPadSettingForSlot))
+                        _peripheralSwitchesMigratedOnLoad = true;
+                }
             }
             catch (Exception ex)
             {
@@ -543,6 +562,17 @@ namespace PadForge.Services
                 _mainVm.SetStatus(string.Format(Strings.Instance.Status_ErrorLoadingSettings_Format, ex.Message), persist: true);
             }
         }
+
+        /// <summary>The live slot that shows the smallest player number.</summary>
+        private static int LiveRulingSlot()
+            => PeripheralSwitchMigration.FirstDisplayedSlot(SettingsManager.SlotCreated,
+                type => SettingsManager.SlotOrders.GetOrderSnapshotFor(type));
+
+        /// <summary>The setting a device gets on a fresh assignment to a live
+        /// slot, as drag-and-drop gives it (DeviceService.AssignDeviceToSlot).</summary>
+        private PadSetting DefaultPadSettingForSlot(UserDevice ud, int slot)
+            => SettingsManager.CreateDefaultPadSetting(ud, _mainVm.Pads[slot].OutputType,
+                _mainVm.Pads[slot].ProfileId, _mainVm.Pads[slot].ExtendedConfig);
 
         /// <summary>
         /// Post-load backfill: for every slot, ensure the slot's
@@ -2515,7 +2545,6 @@ namespace PadForge.Services
             {
                 _mainVm.Dashboard.EnableChromaLightbar = appSettings.EnableChromaLightbar;
                 _mainVm.Dashboard.EnableLightsyncLightbar = appSettings.EnableLightsyncLightbar;
-                _mainVm.Dashboard.EnableSensaHaptics = appSettings.EnableSensaHaptics;
                 _mainVm.Dashboard.HeadTrackingEnabled = appSettings.HeadTrackingEnabled;
                 _mainVm.Dashboard.HeadTrackingFreeTrack = appSettings.HeadTrackingIndependentInputs
                     ? appSettings.HeadTrackingFreeTrack
@@ -4184,8 +4213,8 @@ namespace PadForge.Services
         private bool _applyingServiceToggles;
 
         /// <summary>Applies a profile's opinion on the service toggles
-        /// (Razer Chroma #373, Logitech LIGHTSYNC #382, Razer Sensa #374,
-        /// head tracking #355) to the Dashboard VM, whose PropertyChanged
+        /// (Razer Chroma #373, Logitech LIGHTSYNC #382, head tracking #355)
+        /// to the Dashboard VM, whose PropertyChanged
         /// starts or stops the service (the head tracking setter writes the
         /// runtime flag the engine sweep reads). A null leg leaves the
         /// toggle where it is: the global AppSettings value, or whatever the
@@ -4211,8 +4240,6 @@ namespace PadForge.Services
                     _mainVm.Dashboard.EnableChromaLightbar = chroma;
                 if (profile.EnableLightsyncLightbar is bool lightsync)
                     _mainVm.Dashboard.EnableLightsyncLightbar = lightsync;
-                if (profile.EnableSensaHaptics is bool sensa)
-                    _mainVm.Dashboard.EnableSensaHaptics = sensa;
                 if (profile.EnableHeadTracking is bool headTracking)
                     _mainVm.Dashboard.HeadTrackingEnabled = headTracking;
                 if (profile.EnableHeadTrackingFreeTrack is bool freeTrack)
@@ -4244,9 +4271,6 @@ namespace PadForge.Services
                     break;
                 case nameof(DashboardViewModel.EnableLightsyncLightbar):
                     profile.EnableLightsyncLightbar = _mainVm.Dashboard.EnableLightsyncLightbar;
-                    break;
-                case nameof(DashboardViewModel.EnableSensaHaptics):
-                    profile.EnableSensaHaptics = _mainVm.Dashboard.EnableSensaHaptics;
                     break;
                 case nameof(DashboardViewModel.HeadTrackingEnabled):
                     profile.HeadTrackingIndependentInputs = true;
@@ -4358,8 +4382,6 @@ namespace PadForge.Services
                 profile.EnableChromaLightbar = _mainVm.Dashboard.EnableChromaLightbar;
             if (profile.EnableLightsyncLightbar != null)
                 profile.EnableLightsyncLightbar = _mainVm.Dashboard.EnableLightsyncLightbar;
-            if (profile.EnableSensaHaptics != null)
-                profile.EnableSensaHaptics = _mainVm.Dashboard.EnableSensaHaptics;
             if (profile.EnableHeadTracking != null)
                 profile.EnableHeadTracking = _mainVm.Dashboard.HeadTrackingEnabled;
             if (profile.EnableHeadTrackingFreeTrack != null)
@@ -4456,6 +4478,11 @@ namespace PadForge.Services
         /// in memory. The post-load IsDirty clear would otherwise discard the
         /// intent to write the repaired data back.</summary>
         private bool _profilesCompactedOnLoad;
+
+        /// <summary>Set when the load turned the shipped vendor switches into
+        /// assignments (#494), re-armed after the same post-load clear so the
+        /// migration reaches disk once instead of running at every launch.</summary>
+        private bool _peripheralSwitchesMigratedOnLoad;
 
         /// <summary>Set when the loaded file had no usable web access code,
         /// so the one in use is not on disk. Re-armed after the same post-load
@@ -4813,7 +4840,6 @@ namespace PadForge.Services
                 EnableWebController = _mainVm.Dashboard.EnableWebController,
                 EnableChromaLightbar = _mainVm.Dashboard.EnableChromaLightbar,
                 EnableLightsyncLightbar = _mainVm.Dashboard.EnableLightsyncLightbar,
-                EnableSensaHaptics = _mainVm.Dashboard.EnableSensaHaptics,
                 HeadTrackingEnabled = _mainVm.Dashboard.HeadTrackingEnabled,
                 HeadTrackingIndependentInputs = true,
                 HeadTrackingUdpPort = _mainVm.Dashboard.HeadTrackingUdpPort,
@@ -5786,6 +5812,7 @@ namespace PadForge.Services
             _mainVm.Settings.HasUnsavedChanges = false;
             if (_profilesCompactedOnLoad) { _profilesCompactedOnLoad = false; MarkDirty(); }
             if (_accessCodeUnsavedOnLoad) { _accessCodeUnsavedOnLoad = false; MarkDirty(); }
+            if (_peripheralSwitchesMigratedOnLoad) { _peripheralSwitchesMigratedOnLoad = false; MarkDirty(); }
         }
 
         /// <summary>
@@ -6682,11 +6709,13 @@ namespace PadForge.Services
         [XmlElement]
         public bool EnableChromaLightbar { get; set; }
 
-        /// <summary>Razer Sensa HD haptics translation opt-in (#374), the
-        /// GLOBAL leg. Default false. Per-profile leg:
-        /// <see cref="ProfileData.EnableSensaHaptics"/>.</summary>
+        /// <summary>The Razer Sensa switch (#374) as files before #494 saved
+        /// it. Read once by <see cref="PeripheralSwitchMigration"/>, which
+        /// assigns the Razer Sensa row where it was on, and never written
+        /// again.</summary>
         [XmlElement]
         public bool EnableSensaHaptics { get; set; }
+        public bool ShouldSerializeEnableSensaHaptics() => false;
 
         /// <summary>Logitech LIGHTSYNC lightbar mirror opt-in (#382), the
         /// GLOBAL leg. Default false. Per-profile leg:
@@ -7657,11 +7686,12 @@ namespace PadForge.Services
         [XmlElement]
         public bool? EnableLightsyncLightbar { get; set; }
 
-        /// <summary>Razer Sensa HD haptics translation (#374), the profile's
-        /// leg. Same nullable, authored contract as
-        /// <see cref="EnableChromaLightbar"/>.</summary>
+        /// <summary>The profile's Razer Sensa opinion (#374) as files before
+        /// #494 saved it. Read once by <see cref="PeripheralSwitchMigration"/>,
+        /// cleared, and never written again.</summary>
         [XmlElement]
         public bool? EnableSensaHaptics { get; set; }
+        public bool ShouldSerializeEnableSensaHaptics() => false;
 
         /// <summary>The authored UDP input opinion. Null leaves the current value alone.
         /// Older profiles used this as a master switch and are converted once.</summary>

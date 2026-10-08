@@ -7641,6 +7641,13 @@
                         <TextBlock Text="{Binding Pad_ForceFeedback_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,16"/>
+                        <!-- A haptic mouse, keyboard or the Razer Sensa row (#494):
+                             where this rumble goes and whether that path answers.
+                             Filled and shown by SyncTabVisibility for those rows,
+                             the G-key status line's ember. -->
+                        <TextBlock x:Name="PeripheralHapticsRoute" Visibility="Collapsed"
+                                   Foreground="{DynamicResource EmberBrush}"
+                                   TextWrapping="Wrap" Margin="0,-8,0,16"/>
 
                         <!-- Force Feedback / Rumble / Haptics section -->
                         <Border Style="{StaticResource CardBorder}">

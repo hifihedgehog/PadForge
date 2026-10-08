@@ -275,12 +275,6 @@
   <data name="Dashboard_ChromaWaiting" xml:space="preserve"><value>Razer Synapse not detected. Retrying.</value></data>
   <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>Connected to Razer Chroma</value></data>
   <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>Requires Razer Synapse with Chroma Connect. Works with any physical controller: the color comes from the virtual pad the game paints.</value></data>
-  <data name="Dashboard_Sensa" xml:space="preserve"><value>Razer Sensa HD Haptics</value></data>
-  <data name="Dashboard_SensaDescription" xml:space="preserve"><value>Translates controller rumble into Razer Sensa HD haptics, so Sensa devices like the Wolverine V3 Pro, the Kraken V4 Pro, and the Freyja shake with your games.</value></data>
-  <data name="Dashboard_EnableSensa" xml:space="preserve"><value>Send Rumble to Sensa HD Haptics</value></data>
-  <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>Razer Sensa runtime not found. Retrying.</value></data>
-  <data name="Dashboard_SensaActive" xml:space="preserve"><value>Streaming rumble to Sensa HD Haptics</value></data>
-  <data name="Dashboard_SensaFooter" xml:space="preserve"><value>Requires Razer Synapse 4 with Sensa HD Haptics. Set the device’s Haptic Source to Sensa HD Games in Synapse.</value></data>
   <data name="Dashboard_Lightsync" xml:space="preserve"><value>Logitech LIGHTSYNC</value></data>
   <data name="Dashboard_LightsyncDescription" xml:space="preserve"><value>Forwards the lightbar color a game sets on a virtual PlayStation controller to your Logitech LIGHTSYNC devices through Logitech G HUB.</value></data>
   <data name="Dashboard_EnableLightsync" xml:space="preserve"><value>Mirror Lightbar to Logitech LIGHTSYNC</value></data>
@@ -844,6 +838,14 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Per-trigger deadzones, anti-deadzones, max-range scaling, and sensitivity curves. Each section below targets one trigger axis on the active output. Extended profiles can expose up to eight axes shared with the Sticks tab.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Force Feedback</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Tunes how PadForge scales force feedback events from the game and how it routes them to the physical controller's rumble motors or haptic actuators. Audio Rumble adds a system audio-driven layer on top.</value></data>
+  <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Rumble plays on {0} as haptic pulses, sent straight to the device. Stronger rumble picks a stronger pulse and repeats it faster.</value></data>
+  <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Haptic feedback is turned off for {0} in Logi Options+, so it plays nothing until you turn it back on there.</value></data>
+  <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>This device has not answered yet. Its rumble plays once it wakes up.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>Rumble plays through the tactile handler in SteelSeries GG.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG drives every tactile Rival at once, so the one on Virtual Controller {0} sets their rumble.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>Waiting for SteelSeries GG. Rumble plays once GG runs.</value></data>
+  <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>Rumble plays on your Razer Sensa HD devices through Razer Synapse.</value></data>
+  <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Waiting for Sensa HD Haptics in Razer Synapse 4. Set the device’s Haptic Source to Sensa HD Games in Synapse.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Left Trigger</value></data>
   <data name="Pad_RightTrigger" xml:space="preserve"><value>Right Trigger</value></data>
   <data name="Pad_TriggerMode" xml:space="preserve"><value>Mode</value></data>
@@ -3067,6 +3069,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>Logitech G-Keys</value></data>
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>Analog Keyboard</value></data>
   <data name="DeviceType_WebMenus" xml:space="preserve"><value>Web Menus</value></data>
+  <data name="DeviceType_PeripheralHaptics" xml:space="preserve"><value>Haptics</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>Head Yaw</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>Head Pitch</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>Head Roll</value></data>

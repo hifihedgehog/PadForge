@@ -172,49 +172,25 @@ namespace PadForge.Tests
             finally { if (second) Har.Quit(); }
         }
 
-        /// <summary>Amplitude conversion: the max of the four packed voices
-        /// normalized to 0..1, matching LfeOutputState's packing order.</summary>
-        [Theory]
-        [InlineData(0UL, 0f)]
-        [InlineData(0xFFFFUL, 1f)]                       // low voice full
-        [InlineData(0xFFFF_0000UL, 1f)]                  // high voice full
-        [InlineData(0xFFFF_0000_0000_0000UL, 1f)]        // right trigger full
-        [InlineData(0x8000UL, 32768f / 65535f)]
-        public void PackToAmplitude_TakesTheLoudestVoice(ulong pack, float expected)
-        {
-            Assert.Equal(expected, SensaHapticsService.PackToAmplitude(unchecked((long)pack)), 5);
-        }
-
-        /// <summary>Publish clamps and round-trips through the volatile
-        /// store the worker reads.</summary>
-        [Fact]
-        public void PublishAmplitude_Clamps()
-        {
-            SensaHapticsService.PublishAmplitude(2f);
-            SensaHapticsService.PublishAmplitude(-1f);
-            SensaHapticsService.PublishAmplitude(0.5f);
-            // No public getter by design (the worker owns the read); this
-            // pins that publishing never throws and the clamp compiles the
-            // boundary contract into the test's own calls.
-        }
-
         /// <summary>The full-lifecycle service against the missing-runtime
-        /// path: Start with tiny intervals, confirm the publisher arms and
+        /// path: Start with tiny intervals, confirm the engine comes up and
         /// the state lands on WaitingForRuntime (this bench has no Synapse),
-        /// then Stop disarms the publisher and reports Stopped.</summary>
+        /// then Stop ends the worker and reports Stopped. The level comes from
+        /// the injected source, the Razer Sensa row's in production (#494).</summary>
         [Fact]
-        public void Service_ArmsPublisherAndDegradesWithoutRuntime()
+        public void Service_StartsTheEngineAndDegradesWithoutRuntime()
         {
             if (!NativeEngineLoadsHere) return;
             var states = new System.Collections.Concurrent.ConcurrentQueue<SensaServiceState>();
-            using var svc = new SensaHapticsService(retryMs: 100, tickMs: 5);
+            float level = 0.5f;
+            using var svc = new SensaHapticsService(100, 5, SensaHapticsService.DefaultPredecessorJoinMs, () => level);
             svc.StateChanged += s => states.Enqueue(s);
             svc.Start();
 
             long start = Environment.TickCount64;
-            while (Environment.TickCount64 - start < 5000 && !SensaHapticsService.PublisherArmed)
+            while (Environment.TickCount64 - start < 5000 && !svc.EngineStarted)
                 System.Threading.Thread.Sleep(10);
-            Assert.True(SensaHapticsService.PublisherArmed);
+            Assert.True(svc.EngineStarted);
 
             start = Environment.TickCount64;
             while (Environment.TickCount64 - start < 5000 && states.IsEmpty)
@@ -231,8 +207,10 @@ namespace PadForge.Tests
                 System.Threading.Thread.Sleep(10);
             Assert.True(svc.ProviderInitAttempts >= 1);
 
+            // Stopped comes from the worker's finally, so it shows the worker
+            // ran its teardown. WorkerAlive reads false after any Stop, since
+            // Stop drops the thread whether or not the join finished.
             svc.Stop();
-            Assert.False(SensaHapticsService.PublisherArmed);
             Assert.Contains(SensaServiceState.Stopped, states);
             // On a Synapse-less bench the pre-stop state is WaitingForRuntime;
             // a bench WITH the runtime may report Active instead. Either way
@@ -242,19 +220,24 @@ namespace PadForge.Tests
 
         /// <summary>F10: a worker still inside ProviderInit outlives its
         /// service's Stop (3 s join, then _thread nulled regardless). Its
-        /// finally used to disarm the publisher and Har.Quit under the
-        /// NEXT instance's engine. The next worker now joins its
-        /// predecessor before arming, so once the old worker is released
-        /// the new one is still armed and still running. The hook holds
-        /// worker A inside the bring-up window. A's Dispose returns after
-        /// the timed-out join, B starts and waits on A, the hook is
-        /// released, and B must survive A's teardown.</summary>
+        /// finally used to Har.Quit under the NEXT instance's engine. The
+        /// next worker now joins its predecessor before it brings the engine
+        /// up, so the engine B starts is never quit by A. The hook holds
+        /// worker A inside the bring-up window. A's Dispose returns after the
+        /// timed-out join, B starts and waits on A, the hook is released, and
+        /// B starts its engine only once A's thread is gone, then survives
+        /// A's teardown.</summary>
         [Fact]
         public void Service_NextWorkerWaitsForAStragglingPredecessor()
         {
             if (!NativeEngineLoadsHere) return;
             using var hold = new System.Threading.ManualResetEventSlim(false);
-            SensaHapticsService.BeforeProviderInit = () => hold.Wait(10000);
+            System.Threading.Thread aThread = null;
+            SensaHapticsService.BeforeProviderInit = () =>
+            {
+                aThread ??= System.Threading.Thread.CurrentThread;
+                hold.Wait(10000);
+            };
             SensaHapticsService a = null, b = null;
             try
             {
@@ -263,46 +246,40 @@ namespace PadForge.Tests
                 long t0 = Environment.TickCount64;
                 while (Environment.TickCount64 - t0 < 3000 && a.ProviderInitAttempts < 1)
                     System.Threading.Thread.Sleep(5);
-                Assert.True(SensaHapticsService.PublisherArmed);
+                Assert.True(a.EngineStarted);
                 Assert.True(a.ProviderInitAttempts >= 1, "worker A never reached the bring-up window");
+                Assert.NotNull(aThread);
 
                 // Stop joins 3 s while A sits in the hook, then gives up
-                // with A's worker still parked there and still armed.
+                // with A's worker still parked there.
                 a.Dispose();
-                Assert.True(SensaHapticsService.PublisherArmed,
-                    "A's Dispose must return with A's worker still armed and parked in the hook");
+                Assert.True(aThread.IsAlive, "A's Dispose must return with A's worker parked in the hook");
 
                 b = new SensaHapticsService(retryMs: 50, tickMs: 5);
                 b.Start();
                 System.Threading.Thread.Sleep(100);
-                // B is parked on A's join and has not armed on its own yet:
-                // the armed flag still belongs to A.
+                // B is parked on A's join and has not started its engine.
                 Assert.True(b.WorkerAlive);
+                Assert.False(b.EngineStarted);
                 Assert.Equal(0, b.ProviderInitAttempts);
 
                 hold.Set();
+                // A leaves the hook, sees its stop, quits its engine, and only
+                // then may B start one. B's start is the discriminating fact.
+                Assert.True(aThread.Join(10000), "A's worker never exited after the hook released");
                 t0 = Environment.TickCount64;
-                while (Environment.TickCount64 - t0 < 2000 && b.ProviderInitAttempts < 1)
+                while (Environment.TickCount64 - t0 < 3000 && b.ProviderInitAttempts < 1)
                     System.Threading.Thread.Sleep(5);
-                // The discriminating observation is A's finally, which runs
-                // only after A's provider init returns and its loop sees the
-                // stop. That native call can outlast any fixed settle, so
-                // wait for A's worker to be gone before asserting. With the
-                // join, A was already gone before B armed. Without it, A's
-                // finally lands here and clears the flag under B.
-                t0 = Environment.TickCount64;
-                while (Environment.TickCount64 - t0 < 8000 && a.WorkerAlive)
-                    System.Threading.Thread.Sleep(10);
-                Assert.False(a.WorkerAlive, "A's worker never exited after the hook released");
+                Assert.True(b.EngineStarted, "B never started its engine after A left");
                 System.Threading.Thread.Sleep(100);
                 Assert.True(b.WorkerAlive, "B's worker died after A's teardown");
-                Assert.True(SensaHapticsService.PublisherArmed, "A's finally disarmed the publisher under B");
                 Assert.True(b.ProviderInitAttempts >= 1, "B never reached its own bring-up");
             }
             finally
             {
                 hold.Set();
                 SensaHapticsService.BeforeProviderInit = null;
+                aThread?.Join(10000);
                 b?.Dispose();
                 a?.Dispose();
             }
@@ -312,8 +289,9 @@ namespace PadForge.Tests
         /// inside ProviderInit used to block every later worker on an
         /// unbounded Join, so each enable added one parked thread and the
         /// feature never came back. The successor now waits its deadline and
-        /// quits without arming, because arming over a live predecessor is
-        /// the very handoff fault the join exists to prevent, and it reports
+        /// quits without starting its engine, because starting over a live
+        /// predecessor is the very handoff fault the join exists to prevent,
+        /// and it reports
         /// Stopped through its normal teardown. The hook here stays closed
         /// until the cleanup, so worker A cannot have left it.</summary>
         [Fact]
@@ -339,9 +317,8 @@ namespace PadForge.Tests
 
                 // Stop joins 3 s and gives up with A still parked in the hook.
                 a.Dispose();
-                Assert.True(SensaHapticsService.PublisherArmed,
-                    "A's Dispose must return with A's worker still armed and parked in the hook");
                 Assert.NotNull(aThread);
+                Assert.True(aThread.IsAlive, "A's Dispose must return with A's worker parked in the hook");
 
                 var states = new System.Collections.Concurrent.ConcurrentQueue<SensaServiceState>();
                 b = new SensaHapticsService(retryMs: 50, tickMs: 5, predecessorJoinMs: 250);
@@ -356,6 +333,7 @@ namespace PadForge.Tests
                 // its deadline and not because A finished.
                 Assert.True(aThread.IsAlive, "A was not wedged, so the give-up path never ran");
                 Assert.Equal(0, b.ProviderInitAttempts);
+                Assert.False(b.EngineStarted);
                 Assert.Contains(SensaServiceState.Stopped, states);
             }
             finally
@@ -370,72 +348,42 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary>Source contracts: the poll-lane publisher exists behind
-        /// the armed gate with the same rumble authority as the audio lane,
-        /// the setting has a global leg, a nullable per-profile leg and the
-        /// autosave allowlist entry (the #373 lessons, applied from
-        /// birth), and the Dashboard card
-        /// binds the toggle and status.</summary>
+        /// <summary>Source contracts for the Razer Sensa row (#494). The
+        /// worker streams the row's level, which Step 2 sets per virtual
+        /// controller through the row's Force Feedback settings. The global
+        /// Step 5 lane, the Dashboard card and the switch are gone, and the
+        /// switch's two legs are read once by the migration and never
+        /// written. The peripheral host runs the worker while the row is
+        /// assigned.</summary>
         [Fact]
-        public void FeedAndSiblingContracts()
+        public void TheWorkerStreamsTheRowsLevel_AndTheGlobalSwitchIsGone()
         {
-            string step5 = RepoText("PadForge.App", "Common", "Input", "InputManager.Step5.VirtualDevices.cs");
-            int at = step5.IndexOf("private void UpdateSensaLane()", StringComparison.Ordinal);
-            Assert.True(at > 0);
-            string body = step5.Substring(at, 1300);
-            Assert.Contains("SensaHapticsService.PublisherArmed) return;", body);
-            Assert.Contains("LfeOutputState.MaxMerge", body);
-            Assert.Contains("PublishAmplitude(best)", body);
+            string service = RepoText("PadForge.App", "Services", "SensaHapticsService.cs");
+            Assert.Contains("PeripheralOutputs.AmplitudeOf(", service);
+            Assert.Contains("PeripheralOutputRow.IdentityFor(", service);
+            Assert.Contains("float amp = Math.Clamp(_amplitude(), 0f, 1f);", service);
+            Assert.DoesNotContain("PublishAmplitude", service);
+            Assert.DoesNotContain("PublisherArmed", service);
 
+            string step5 = RepoText("PadForge.App", "Common", "Input", "InputManager.Step5.VirtualDevices.cs");
+            Assert.DoesNotContain("UpdateSensaLane", step5);
             string im = RepoText("PadForge.App", "Common", "Input", "InputManager.cs");
-            Assert.Contains("UpdateSensaLane();", im);
+            Assert.DoesNotContain("UpdateSensaLane", im);
 
             string ss = RepoText("PadForge.App", "Services", "SettingsService.cs");
-            Assert.Contains("_mainVm.Dashboard.EnableSensaHaptics = appSettings.EnableSensaHaptics;", ss);
-            Assert.Contains("EnableSensaHaptics = _mainVm.Dashboard.EnableSensaHaptics,", ss);
-            // Rides profiles as a NULLABLE leg (null = no opinion, the
-            // #365 polling-override shape), so a pre-existing profile
-            // never stomps the global. Behavioral half:
-            // ProfileServiceToggleTests.
-            Assert.Contains("public bool? EnableSensaHaptics { get; set; }", ss);
-            Assert.Contains("if (profile.EnableSensaHaptics is bool sensa)", ss);
-            Assert.Contains("if (profile.EnableSensaHaptics != null)", ss);
-            Assert.Contains("case nameof(DashboardViewModel.EnableSensaHaptics):", ss);
-
-            string mw = RepoText("PadForge.App", "MainWindow.xaml.cs");
-            Assert.Contains("nameof(DashboardViewModel.EnableSensaHaptics)", mw);
+            Assert.Contains("public bool EnableSensaHaptics { get; set; }\r\n        public bool ShouldSerializeEnableSensaHaptics() => false;", ss);
+            Assert.Contains("public bool? EnableSensaHaptics { get; set; }\r\n        public bool ShouldSerializeEnableSensaHaptics() => false;", ss);
+            Assert.Contains("PeripheralSwitchMigration.Switches(data.AppSettings)", ss);
+            Assert.DoesNotContain("_mainVm.Dashboard.EnableSensaHaptics", ss);
+            string migration = RepoText("PadForge.App", "Services", "PeripheralSwitchMigration.cs");
+            Assert.Contains("new LegacySwitch(PeripheralRowKind.RazerSensa, app?.EnableSensaHaptics ?? false,", migration);
 
             string page = RepoText("PadForge.App", "Views", "DashboardPage.xaml");
-            Assert.Contains("Binding EnableSensaHaptics", page);
-            Assert.Contains("Binding SensaStatus", page);
-        }
+            Assert.DoesNotContain("EnableSensaHaptics", page);
+            Assert.DoesNotContain("SensaStatus", page);
 
-        /// <summary>
-        /// The card names a device Razer lists as Sensa, in every locale.
-        ///
-        /// <para>Razer's Sensa page lists one Wolverine, the V3 Pro. The
-        /// description said "the Wolverine V3 line", which takes in the
-        /// Tournament Edition and the 8K models, and Razer lists none of
-        /// those.</para>
-        /// </summary>
-        [Fact]
-        public void TheDescriptionNamesTheWolverineV3ProInEveryLocale()
-        {
-            foreach (string locale in new[]
-                     {
-                         "Strings.resx", "Strings.de.resx", "Strings.es.resx", "Strings.fr.resx",
-                         "Strings.it.resx", "Strings.ja.resx", "Strings.ko.resx", "Strings.nl.resx",
-                         "Strings.pt-BR.resx", "Strings.zh-Hans.resx",
-                     })
-            {
-                string text = RepoText("PadForge.App", "Resources", "Strings", locale);
-                int at = text.IndexOf("<data name=\"Dashboard_SensaDescription\"", StringComparison.Ordinal);
-                Assert.True(at >= 0, $"{locale} is missing Dashboard_SensaDescription");
-                int end = text.IndexOf("</value>", at, StringComparison.Ordinal);
-                string value = text.Substring(at, end - at);
-                Assert.True(value.Contains("Wolverine V3 Pro", StringComparison.Ordinal),
-                            $"{locale} names a Wolverine other than the V3 Pro");
-            }
+            string host = RepoText("PadForge.App", "Common", "Input", "Peripherals", "PeripheralOutputHost.cs");
+            Assert.Contains("bool assigned = linked && SettingsManager.SlotOrders.GetIdentityPlayerNumber(sensaGuid) > 0;", host);
         }
 
         /// <summary>The Korean Sensa strings spell haptic the way every

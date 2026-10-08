@@ -358,12 +358,6 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_ChromaWaiting => Get("Dashboard_ChromaWaiting");
     public string Dashboard_ChromaConnected => Get("Dashboard_ChromaConnected");
     public string Dashboard_ChromaFooter => Get("Dashboard_ChromaFooter");
-    public string Dashboard_Sensa => Get("Dashboard_Sensa");
-    public string Dashboard_SensaDescription => Get("Dashboard_SensaDescription");
-    public string Dashboard_EnableSensa => Get("Dashboard_EnableSensa");
-    public string Dashboard_SensaWaiting => Get("Dashboard_SensaWaiting");
-    public string Dashboard_SensaActive => Get("Dashboard_SensaActive");
-    public string Dashboard_SensaFooter => Get("Dashboard_SensaFooter");
     public string Dashboard_Lightsync => Get("Dashboard_Lightsync");
     public string Dashboard_LightsyncDescription => Get("Dashboard_LightsyncDescription");
     public string Dashboard_EnableLightsync => Get("Dashboard_EnableLightsync");
@@ -1183,6 +1177,14 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Triggers_Subtitle => Get("Pad_Triggers_Subtitle");
     public string Pad_ForceFeedback_Header => Get("Pad_ForceFeedback_Header");
     public string Pad_ForceFeedback_Subtitle => Get("Pad_ForceFeedback_Subtitle");
+    public string Pad_ForceFeedback_RouteHidpp => Get("Pad_ForceFeedback_RouteHidpp");
+    public string Pad_ForceFeedback_RouteHidppFeedbackOff => Get("Pad_ForceFeedback_RouteHidppFeedbackOff");
+    public string Pad_ForceFeedback_RouteHidppAsleep => Get("Pad_ForceFeedback_RouteHidppAsleep");
+    public string Pad_ForceFeedback_RouteGameSense => Get("Pad_ForceFeedback_RouteGameSense");
+    public string Pad_ForceFeedback_RouteGameSenseShared => Get("Pad_ForceFeedback_RouteGameSenseShared");
+    public string Pad_ForceFeedback_RouteGameSenseWaiting => Get("Pad_ForceFeedback_RouteGameSenseWaiting");
+    public string Pad_ForceFeedback_RouteSensa => Get("Pad_ForceFeedback_RouteSensa");
+    public string Pad_ForceFeedback_RouteSensaWaiting => Get("Pad_ForceFeedback_RouteSensaWaiting");
     public string Pad_AdaptiveTriggers_Subtitle => Get("Pad_AdaptiveTriggers_Subtitle");
     public string Pad_LeftTrigger => Get("Pad_LeftTrigger");
     public string Pad_RightTrigger => Get("Pad_RightTrigger");
@@ -2946,6 +2948,7 @@ public class Strings : INotifyPropertyChanged
     public string DeviceType_LogitechGKeys => Get("DeviceType_LogitechGKeys");
     public string DeviceType_AnalogKeyboard => Get("DeviceType_AnalogKeyboard");
     public string DeviceType_WebMenus => Get("DeviceType_WebMenus");
+    public string DeviceType_PeripheralHaptics => Get("DeviceType_PeripheralHaptics");
     public string HeadTracker_Yaw => Get("HeadTracker_Yaw");
     public string HeadTracker_Pitch => Get("HeadTracker_Pitch");
     public string HeadTracker_Roll => Get("HeadTracker_Roll");

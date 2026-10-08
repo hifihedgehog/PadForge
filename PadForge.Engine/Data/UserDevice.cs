@@ -480,6 +480,22 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public bool HasRumbleTriggers { get; set; }
 
+        /// <summary>The haptic (bit 0) and lighting (bit 1) outputs found for
+        /// a mouse, keyboard or vendor row through its vendor's channel
+        /// (#494). Persisted so the row's Force Feedback and Lighting tabs
+        /// stay up while the device sleeps or is unplugged, as a gamepad's
+        /// tabs do. Zero on configs predating it and on every other row.</summary>
+        [XmlElement]
+        public int PeripheralOutputs { get; set; }
+
+        /// <summary>The row has a haptic output (#494).</summary>
+        [XmlIgnore]
+        public bool HasPeripheralHaptics => (PeripheralOutputs & 1) != 0;
+
+        /// <summary>The row has a lighting output (#494).</summary>
+        [XmlIgnore]
+        public bool HasPeripheralLighting => (PeripheralOutputs & 2) != 0;
+
         // Gyro bias, calibration timestamp, and tuning (H/V sensitivity,
         // deadzone, smoothing, acceleration, output curve, units) all
         // moved to PadSetting in v3.3 so each (device, slot) pair gets

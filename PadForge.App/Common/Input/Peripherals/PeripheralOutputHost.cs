@@ -136,6 +136,12 @@ namespace PadForge.Common.Input.Peripherals
             }
         }
 
+        /// <summary>The interface path whose container a row's vendor channel
+        /// shares. An analog keyboard row's own path is synthetic, so it gives
+        /// the HID collection it reads.</summary>
+        internal static string ContainerPath(Engine.Data.UserDevice ud)
+            => ud.Device is AnalogKeyboardDevice analog ? analog.HidPath : ud.DevicePath;
+
         /// <summary>One pass: snapshot the rows, link them, publish a change,
         /// and keep each row's recorded outputs current.</summary>
         private void Link()
@@ -149,6 +155,7 @@ namespace PadForge.Common.Input.Peripherals
             var devices = SettingsManager.UserDevices;
             if (devices == null) return;
             var users = new List<Engine.Data.UserDevice>();
+            var paths = new List<string>();
             lock (devices.SyncRoot)
             {
                 foreach (var ud in devices.Items)
@@ -158,6 +165,7 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         rows.Add(new LinkRow(ud.InstanceGuid, ud.CapType, ud.VendorId, ud.ProdId, Guid.Empty, vendorRow.Kind));
                         users.Add(ud);
+                        paths.Add(null);
                         continue;
                     }
                     if (!PeripheralLinker.IsLinkable(ud.CapType)) continue;
@@ -169,6 +177,7 @@ namespace PadForge.Common.Input.Peripherals
                     rows.Add(new LinkRow(ud.InstanceGuid, ud.CapType, ud.VendorId, ud.ProdId,
                         Guid.Empty, null));
                     users.Add(ud);
+                    paths.Add(ContainerPath(ud));
                 }
             }
             // Container IDs outside the device lock: a configuration manager
@@ -176,7 +185,7 @@ namespace PadForge.Common.Input.Peripherals
             for (int i = 0; i < rows.Count; i++)
             {
                 if (rows[i].VendorRow != null) continue;
-                string path = users[i].DevicePath;
+                string path = paths[i];
                 if (string.IsNullOrEmpty(path)) continue;
                 if (!_containers.TryGetValue(path, out var container))
                 {

@@ -298,6 +298,12 @@ namespace PadForge.Common.Input.Peripherals
             PeripheralOutputs.LedSdkPaintable = paintable.ToArray();
         }
 
+        private static void PublishNone(int generation)
+        {
+            if (Superseded(generation)) return;
+            PeripheralOutputs.LedSdkPaintable = Array.Empty<string>();
+        }
+
         private static void ForgetPaintable(int generation)
         {
             if (Superseded(generation)) return;
@@ -429,6 +435,7 @@ namespace PadForge.Common.Input.Peripherals
                     if (!present)
                     {
                         wasAbsent = true;
+                        ForgetPaintable(generation);
                         Report(BackendState.Waiting, generation);
                         await WaitWhileWantedAsync(_retryMs, ct).ConfigureAwait(false);
                         continue;
@@ -447,6 +454,11 @@ namespace PadForge.Common.Input.Peripherals
                     if (!_native.TryLoad(out string detail))
                     {
                         PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL LED SDK load failed: {detail}");
+                        // The software runs and its engine cannot be loaded
+                        // here, an x64 engine in the ARM64 build among the
+                        // causes, so no type can be painted until a load
+                        // succeeds.
+                        PublishNone(generation);
                         Report(BackendState.Waiting, generation);
                         await WaitWhileWantedAsync(_retryMs, ct).ConfigureAwait(false);
                         continue;

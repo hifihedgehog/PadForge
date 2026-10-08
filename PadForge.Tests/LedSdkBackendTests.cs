@@ -32,6 +32,7 @@ namespace PadForge.Tests
             public volatile bool Present = true;
             public volatile bool SetOk = true;
             public volatile bool InitOk = true;
+            public volatile bool LoadOk = true;
             /// <summary>False for an engine without the zone export.</summary>
             public volatile bool ZoneOk = true;
             public bool ZoneCallsAvailable => ZoneOk;
@@ -50,7 +51,7 @@ namespace PadForge.Tests
             public int LastIndexOf(string call) => Array.LastIndexOf(Calls, call);
 
             public bool SoftwarePresent() { Log("present"); return Present; }
-            public bool TryLoad(out string detail) { Log("load"); detail = "fake"; return true; }
+            public bool TryLoad(out string detail) { Log("load"); detail = "fake"; return LoadOk; }
             public bool Init()
             {
                 Log("init");
@@ -348,6 +349,28 @@ namespace PadForge.Tests
             Assert.True(WaitFor(() => native.Count("set:0,0,100") >= 1), "the per-key keyboard was painted");
             Assert.Equal(1, native.Count("init"));
             Assert.DoesNotContain(native.Calls, c => c.StartsWith("zone:3:"));
+        }
+
+        /// <summary>An engine that will not load while Logitech's software
+        /// runs, an x64 engine in the ARM64 build among the causes, can paint
+        /// nothing, and the Lighting tab learns that instead of a wait for
+        /// software already running. Once the software leaves, the tab waits
+        /// for it again.</summary>
+        [Fact]
+        public void AnEngineThatWillNotLoad_PublishesNothingPaintable_UntilTheSoftwareLeaves()
+        {
+            var native = new FakeNative { LoadOk = false };
+            Link(new DeviceLinks { Device = Mouse, Lighting = new[] { Type("mouse") } });
+            using var backend = Backend(native);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Mouse, slot: 0, player: 1, 1, 2, 3);
+
+            Assert.True(WaitFor(() => PeripheralOutputs.LedSdkPaintable is { Length: 0 }), "nothing paintable");
+            Assert.Equal(BackendState.Waiting, PeripheralOutputs.StateOf(OutputFamily.LedSdkType));
+            Assert.Equal(0, native.Count("init"));
+
+            native.Present = false;
+            Assert.True(WaitFor(() => PeripheralOutputs.LedSdkPaintable == null), "the tab waits for the software again");
         }
 
         /// <summary>A worker whose Stop timed out and whose backend was then

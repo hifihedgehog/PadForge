@@ -16,6 +16,11 @@ namespace PadForge.Common.Input.Peripherals
     {
         public static readonly PeripheralPresence None = new(false, false, false, false, false);
 
+        /// <summary>Logitech Gaming Software runs and G HUB does not, so the
+        /// Lighting tab names it as the program lighting Logitech
+        /// devices.</summary>
+        public bool LogitechGamingSoftware { get; init; }
+
         /// <summary>The Chroma SDK runtime Synapse installs, which Colore's
         /// native layer loads by this name.</summary>
         internal const string ChromaRuntimeDll = "RzChromaSDK64.dll";
@@ -32,9 +37,10 @@ namespace PadForge.Common.Input.Peripherals
             }
             catch { }
 
-            bool gHub = false;
-            try { gHub = new LogiLedEngineNative().SoftwarePresent(); }
+            string host = null;
+            try { host = LogiLedEngineNative.RunningHost(); }
             catch { }
+            bool gHub = host != null;
 
             bool synapse = false;
             try
@@ -57,7 +63,10 @@ namespace PadForge.Common.Input.Peripherals
             }
             catch { }
 
-            return new PeripheralPresence(ledSdk, gHub, synapse, gg, PlatformSupport.SensaAvailable);
+            return new PeripheralPresence(ledSdk, gHub, synapse, gg, PlatformSupport.SensaAvailable)
+            {
+                LogitechGamingSoftware = gHub && host != LogiLedEngineNative.HostProcesses[0],
+            };
         }
     }
 

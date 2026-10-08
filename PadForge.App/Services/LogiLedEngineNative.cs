@@ -77,19 +77,25 @@ namespace PadForge.Services
         private SetZoneFn _setZone;
         private VoidFn _shutdown;
 
-        public bool SoftwarePresent()
+        /// <summary>The process names every reference gates on: G HUB's
+        /// agent, then both LGS-era hosts.</summary>
+        internal static readonly string[] HostProcesses = { "lghub_agent", "lgs", "LCore" };
+
+        /// <summary>The first of <see cref="HostProcesses"/> running, or
+        /// null.</summary>
+        internal static string RunningHost()
         {
-            // The process names every reference gates on: G HUB's agent,
-            // and both LGS-era hosts.
-            foreach (string name in new[] { "lghub_agent", "lgs", "LCore" })
+            foreach (string name in HostProcesses)
             {
                 var procs = Process.GetProcessesByName(name);
                 bool any = procs.Length > 0;
                 foreach (var p in procs) p.Dispose();
-                if (any) return true;
+                if (any) return name;
             }
-            return false;
+            return null;
         }
+
+        public bool SoftwarePresent() => RunningHost() != null;
 
         public bool TryLoad(out string detail)
         {

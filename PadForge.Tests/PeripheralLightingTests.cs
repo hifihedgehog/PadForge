@@ -504,6 +504,76 @@ namespace PadForge.Tests
                 "Pad_Lighting_VendorRowExamples_GameSense", System.Globalization.CultureInfo.InvariantCulture));
         }
 
+        /// <summary>An analog keyboard row's own path is synthetic, so its
+        /// container comes from the HID collection it reads, and a Logitech
+        /// analog keyboard finds its HID++ unit like any keyboard row.</summary>
+        [Fact]
+        public void AnAnalogKeyboardRow_FindsItsContainerThroughItsHidCollection()
+        {
+            var info = new PadForge.Engine.Common.AnalogKeyboard.AnalogKeyboardDeviceInfo
+            {
+                Path = @"\\?\hid#vid_31e3&pid_1232&mi_03#test",
+                VendorId = 0x31E3,
+                ProductId = 0x1232,
+                UsagePage = 0xFF53,
+                InputReportLength = 65,
+                ProductString = "Wooting 60HE",
+                SerialNumber = "A1B2C3",
+            };
+            using var analog = new AnalogKeyboardDevice(new AnalogKeyboardCandidate
+            {
+                Info = info,
+                Routes = PadForge.Engine.Common.AnalogKeyboard.AnalogKeyboardRoutes.Candidates(info),
+                Name = "Wooting 60HE",
+                IdentityKey = AnalogKeyboardHidRuntime.IdentityKeyFor(info),
+            });
+            var row = new UserDevice { InstanceGuid = analog.InstanceGuid, DevicePath = analog.DevicePath, Device = analog };
+            Assert.StartsWith("analogkb://", row.DevicePath);
+            Assert.Equal(info.Path, PeripheralOutputHost.ContainerPath(row));
+
+            var keyboard = new UserDevice { InstanceGuid = A, DevicePath = @"\\?\hid#vid_046d&pid_c33e&mi_00#kbd" };
+            Assert.Equal(keyboard.DevicePath, PeripheralOutputHost.ContainerPath(keyboard));
+        }
+
+        /// <summary>The tab names the Logitech program that runs, and an engine
+        /// that will not load reads as one that can light nothing, for a
+        /// device and for the LIGHTSYNC row alike, never as a wait for
+        /// software already running.</summary>
+        [Fact]
+        public void TheRouteLine_NamesTheLogitechProgramThatRuns_AndAnEngineThatWillNotLoad()
+        {
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            var logi = Device(A, PeripheralLinker.LogitechVid);
+            Link(new DeviceLinks { Device = A, Lighting = new[] { new OutputPath(OutputFamily.LedSdkType, "mouse") } });
+            PeripheralOutputs.SetLighting(A, slot: 1, player: 2, 3, 3, 3);
+
+            PeripheralOutputs.Presence = Presence(ledSdk: true, gHub: true);
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteThrough, "Logitech G HUB"), PeripheralRouteText.Lighting(logi, 1));
+            PeripheralOutputs.Presence = Presence(ledSdk: true, gHub: true) with { LogitechGamingSoftware = true };
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteThrough, "Logitech Gaming Software"), PeripheralRouteText.Lighting(logi, 1));
+
+            string cannot = System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture
+                == System.Runtime.InteropServices.Architecture.Arm64
+                ? s.Common_NotAvailableOnArm64 : s.Pad_Lighting_RouteCannotLight;
+            PeripheralOutputs.SetBackendState(OutputFamily.LedSdkType, BackendState.Waiting);
+            PeripheralOutputs.LedSdkPaintable = Array.Empty<string>();
+            Assert.Equal(cannot, PeripheralRouteText.Lighting(logi, 1));
+            Assert.Null(PeripheralRouteText.Lighting(logi, 1, lightsHere: false));
+
+            var lightsync = PeripheralOutputRow.IdentityFor(PeripheralRowKind.LogitechLightsync);
+            Link(new DeviceLinks
+            {
+                Device = lightsync, CatchAll = true,
+                Lighting = PeripheralLinker.LedSdkTypes.Select(t => new OutputPath(OutputFamily.LedSdkType, t)).ToArray(),
+            });
+            PeripheralOutputs.SetLighting(lightsync, slot: 0, player: 1, 4, 4, 4);
+            Assert.Equal(cannot, PeripheralRouteText.Lighting(Device(lightsync, PeripheralLinker.LogitechVid), 0));
+
+            PeripheralOutputs.LedSdkPaintable = null;
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteVendorRowWaiting, "Logitech Gaming Software",
+                s.Pad_Lighting_VendorRowExamples_LedSdk), PeripheralRouteText.Lighting(Device(lightsync, PeripheralLinker.LogitechVid), 0));
+        }
+
         /// <summary>A device type the Logitech LED engine on this PC cannot
         /// paint reads that instead of a route, on the tab that would light it
         /// only. A vendor row whose software is down reads the waiting line on

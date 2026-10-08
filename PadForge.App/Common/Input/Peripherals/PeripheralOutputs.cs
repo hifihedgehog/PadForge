@@ -234,7 +234,8 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>The LED SDK paths the engine the worker last loaded can
-        /// paint, or null before any load and once nothing is claimed. The
+        /// paint, empty while the running software's engine cannot be loaded,
+        /// and null while nothing is claimed or no Logitech software runs. The
         /// Lighting tab names a device type that engine cannot paint instead
         /// of a route.</summary>
         public static string[] LedSdkPaintable

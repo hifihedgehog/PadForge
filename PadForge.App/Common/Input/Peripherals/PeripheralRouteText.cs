@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using PadForge.Engine;
 using PadForge.Engine.Data;
 using PadForge.Resources.Strings;
@@ -73,7 +74,8 @@ namespace PadForge.Common.Input.Peripherals
         internal static string LightingApp(OutputFamily family) => family switch
         {
             OutputFamily.ChromaCategory => "Razer Synapse",
-            OutputFamily.LedSdkType => "Logitech G HUB",
+            OutputFamily.LedSdkType => PeripheralOutputs.Presence.LogitechGamingSoftware
+                ? "Logitech Gaming Software" : "Logitech G HUB",
             OutputFamily.GameSenseColor => "SteelSeries GG",
             _ => null,
         };
@@ -123,6 +125,10 @@ namespace PadForge.Common.Input.Peripherals
             {
                 string examples = VendorRowExamples(path.Family);
                 if (app == null || examples == null) return null;
+                // An engine that cannot be loaded here lights nothing from any
+                // controller.
+                if (path.Family == OutputFamily.LedSdkType && PeripheralOutputs.LedSdkPaintable is { Length: 0 } none)
+                    return CannotLight(none);
                 // While the vendor's software is down, nothing shows from any
                 // controller.
                 if (waiting) return string.Format(s.Pad_Lighting_RouteVendorRowWaiting, app, examples);
@@ -135,7 +141,7 @@ namespace PadForge.Common.Input.Peripherals
             // The Logitech LED engine on this PC cannot paint this type.
             if (path.Family == OutputFamily.LedSdkType && PeripheralOutputs.LedSdkPaintable is string[] paintable
                 && Array.IndexOf(paintable, path.Key) < 0)
-                return lightsHere ? s.Pad_Lighting_RouteCannotLight : null;
+                return lightsHere ? CannotLight(paintable) : null;
             if (waiting) return lightsHere ? string.Format(s.Pad_Lighting_RouteWaiting, app) : null;
 
             // Another claim rules the path: name the controller whose color
@@ -172,6 +178,14 @@ namespace PadForge.Common.Input.Peripherals
             }
             return app == null ? null : string.Format(s.Pad_Lighting_RouteThrough, app);
         }
+
+        /// <summary>The line for an LED SDK path the Logitech engine on this
+        /// PC cannot paint. An engine the ARM64 build cannot load at all is
+        /// that platform's limit.</summary>
+        private static string CannotLight(string[] paintable)
+            => paintable.Length == 0 && RuntimeInformation.ProcessArchitecture == Architecture.Arm64
+                ? Strings.Instance.Common_NotAvailableOnArm64
+                : Strings.Instance.Pad_Lighting_RouteCannotLight;
 
         /// <summary>Whether a vendor row on this slot rules none of its paths
         /// while the same row on another slot rules one, and that slot's

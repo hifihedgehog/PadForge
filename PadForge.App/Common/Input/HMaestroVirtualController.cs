@@ -50,6 +50,11 @@ namespace PadForge.Common.Input
         // rumble-to-audio path read it without feedback loops.
         private long _inboundRumblePack;
 
+        /// <summary>The lightbar color a game writes to this Sony virtual,
+        /// for the slot's mice and keyboards (#494). Owned here so it moves
+        /// with the controller through a reorder, like the rumble pack.</summary>
+        private readonly Peripherals.GameLightbar _gameLightbar = new();
+
         /// <summary>Last logged XUSB SET_STATE shape (length + leading
         /// bytes), so the FFBXIN evidence line fires per dialect change
         /// rather than per packet.</summary>
@@ -437,6 +442,11 @@ namespace PadForge.Common.Input
                 }
             }
 
+            // The slot no longer shows this controller's game color (#494),
+            // whichever pad it last fed: a teardown can run after the
+            // feedback detach parked the index.
+            Peripherals.GameLightbarCapture.WithdrawEverywhere(_gameLightbar);
+
             _controller?.Dispose();
             _controller = null;
             IsConnected = false;
@@ -445,6 +455,11 @@ namespace PadForge.Common.Input
         /// <summary>Registers a new controller's effects without starting output.</summary>
         internal UserEffectsDispatcher PrepareDeviceEffectsForPublication(PadForge.ViewModels.DeviceSlotConfig config)
         {
+            // The slot's game color comes from the controller that won it
+            // (#494), never from a spare that loses and is torn down. Only a
+            // Sony profile decodes a lightbar.
+            if (_profile.VendorId == SonyVid && FeedbackPadIndex >= 0)
+                Peripherals.GameLightbarCapture.Publish(FeedbackPadIndex, _gameLightbar);
             if (config == null) return null;
             lock (_dispatcherLock)
             {
@@ -518,7 +533,15 @@ namespace PadForge.Common.Input
         /// entry.</para></summary>
         internal void RetargetToPad(int newPadIndex, PadForge.ViewModels.DeviceSlotConfig config)
         {
+            int oldPadIndex = FeedbackPadIndex;
             FeedbackPadIndex = newPadIndex;
+            // The game color moves with the controller. In a two-pad swap the
+            // second move finds its old pad already taken and leaves it.
+            if (_profile.VendorId == SonyVid)
+            {
+                Peripherals.GameLightbarCapture.Withdraw(oldPadIndex, _gameLightbar);
+                Peripherals.GameLightbarCapture.Publish(newPadIndex, _gameLightbar);
+            }
 
             // DS5 pass-through: rebuild against the new pad. Recreated here
             // rather than deferred, because RegisterFeedbackCallback (its only
@@ -1265,8 +1288,10 @@ namespace PadForge.Common.Input
         /// repopulating a slot this VC no longer owns.</summary>
         public void UnregisterFeedback()
         {
+            int pad = FeedbackPadIndex;
             FeedbackPadIndex = -1;
             _fbVibrationStates = null;
+            Peripherals.GameLightbarCapture.Withdraw(pad, _gameLightbar);
         }
 
         public void RegisterFeedbackCallback(int padIndex, Vibration[] vibrationStates)
@@ -1328,36 +1353,41 @@ namespace PadForge.Common.Input
                 int idx = FeedbackPadIndex;
                 if (idx < 0 || idx >= vibrationStates.Length) return;
 
-                // Chroma lightbar mirror (#373): every Sony profile's codec
-                // decodes a 'lightbar' rgb24 field (byte[3] R,G,B) with the
-                // per-transport offsets handled by the profile declaration,
-                // so no parser lives here. The family's validity bit says
-                // whether THIS write carries the lightbar: DualSense/Edge
-                // assert validFlag1 bit 2 (the NotifyExternalSubsystems
-                // gate), DualShock 4 asserts validFlag0 bit 1 (SDL
-                // k_EPS4EffectLED = 1 << 1). Publish is one volatile write,
-                // so an idle mirror costs nothing on this callback.
-                if (e.Fields.TryGetValue("lightbar", out var lbObj)
-                    && lbObj is byte[] lbRgb && lbRgb.Length >= 3)
-                {
-                    bool lbValid;
-                    if (IsDualSenseVirtual)
-                        lbValid = e.Fields.TryGetValue("validFlag1", out var vf1Obj)
-                            && vf1Obj is byte lbVf1 && (lbVf1 & 0x04) != 0;
-                    else
-                        lbValid = e.Fields.TryGetValue("validFlag0", out var vf0Obj)
-                            && vf0Obj is byte lbVf0 && (lbVf0 & 0x02) != 0;
-                    if (lbValid)
-                    {
-                        PadForge.Services.ChromaLightbarService.Publish(lbRgb[0], lbRgb[1], lbRgb[2]);
-                        // Lightsync lightbar mirror (#382): the Logitech
-                        // sibling rides the exact same decoded field and
-                        // validity gate, one more volatile write.
-                        PadForge.Services.LightsyncLightbarService.Publish(lbRgb[0], lbRgb[1], lbRgb[2]);
-                    }
-                }
-
                 int declaredSize = _profile.ExtendedOutputReport?.Size ?? -1;
+
+                // The game's lightbar for the slot's mice and keyboards (#494).
+                // Every Sony profile's codec decodes a 'lightbar' rgb24 field
+                // (byte[3] R,G,B) with the per-transport offsets handled by
+                // the profile declaration, so no parser lives here. The
+                // family's validity bit says whether THIS write carries the
+                // lightbar: DualSense/Edge assert validFlag1 bit 2 (the
+                // NotifyExternalSubsystems gate), DualShock 4 asserts
+                // validFlag0 bit 1 (SDL k_EPS4EffectLED = 1 << 1). Only a
+                // frame the trust gate accepts counts, the declared length and
+                // a valid checksum (SonyFrameValid): the Chroma and LIGHTSYNC
+                // mirrors this replaced read the field before that gate, so a
+                // corrupt Bluetooth frame could paint a keyboard. Any trusted
+                // frame also says the game is still there, which keeps the
+                // color it set earlier.
+                if (_profile.VendorId == SonyVid
+                    && SonyFrameValid(e.RawBytes.Length, declaredSize, e.CrcValid))
+                {
+                    long lbNow = Environment.TickCount64;
+                    bool lbValid = false;
+                    if (e.Fields.TryGetValue("lightbar", out var lbObj)
+                        && lbObj is byte[] lbRgb && lbRgb.Length >= 3)
+                    {
+                        if (IsDualSenseVirtual)
+                            lbValid = e.Fields.TryGetValue("validFlag1", out var vf1Obj)
+                                && vf1Obj is byte lbVf1 && (lbVf1 & 0x04) != 0;
+                        else
+                            lbValid = e.Fields.TryGetValue("validFlag0", out var vf0Obj)
+                                && vf0Obj is byte lbVf0 && (lbVf0 & 0x02) != 0;
+                        if (lbValid && _gameLightbar.Capture(lbRgb[0], lbRgb[1], lbRgb[2], lbNow))
+                            Peripherals.GameLightbarCapture.NotifyChanged(idx);
+                    }
+                    if (!lbValid) _gameLightbar.NoteFrame(lbNow);
+                }
 
                 // Order (#434): the pass-through forward and the
                 // per-subsystem mirror run BEFORE the motor gate below

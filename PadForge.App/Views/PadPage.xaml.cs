@@ -117,6 +117,8 @@ namespace PadForge.Views
             PadForge.Common.Input.Peripherals.PeripheralOutputs.LinksChanged += OnPeripheralOutputsChanged;
             PadForge.Common.Input.Peripherals.PeripheralOutputs.StatusChanged -= OnPeripheralOutputsChanged;
             PadForge.Common.Input.Peripherals.PeripheralOutputs.StatusChanged += OnPeripheralOutputsChanged;
+            PadForge.Common.Input.Peripherals.PeripheralOutputs.ClaimsChanged -= OnPeripheralOutputsChanged;
+            PadForge.Common.Input.Peripherals.PeripheralOutputs.ClaimsChanged += OnPeripheralOutputsChanged;
         }
 
         private void PadPage_Unloaded(object sender, RoutedEventArgs e)
@@ -126,6 +128,7 @@ namespace PadForge.Views
             PadForge.Common.IconPackageManager.RegistryChanged -= OnIconPackageRegistryChanged;
             PadForge.Common.Input.Peripherals.PeripheralOutputs.LinksChanged -= OnPeripheralOutputsChanged;
             PadForge.Common.Input.Peripherals.PeripheralOutputs.StatusChanged -= OnPeripheralOutputsChanged;
+            PadForge.Common.Input.Peripherals.PeripheralOutputs.ClaimsChanged -= OnPeripheralOutputsChanged;
         }
 
         /// <summary>Raised on the peripheral host's thread. One refresh per
@@ -448,6 +451,11 @@ namespace PadForge.Views
             // A haptic mouse, keyboard or the Razer Sensa row (#494).
             bool hasPeripheralHaptics = false;
             PadForge.Engine.Data.UserDevice peripheralRow = null;
+            // A lit mouse, keyboard or vendor lighting row (#494), and
+            // whether it is a vendor row, which lighting is all it carries.
+            bool hasPeripheralLighting = false;
+            bool vendorLightingRow = false;
+            PadForge.Engine.Data.UserDevice lightingRow = null;
             int numTouchpads = 0;
             if (DataContext is PadViewModel vmProfile
                 && vmProfile.SelectedMappedDevice != null
@@ -588,6 +596,18 @@ namespace PadForge.Views
                             hasRumble = true;
                             peripheralRow = ud;
                         }
+                        // A lit mouse, keyboard or vendor row (#494) gets the
+                        // lightbar's mode card, this slot's lighting reaching
+                        // it through its own settings. The record keeps the
+                        // tab up while the device sleeps.
+                        hasPeripheralLighting = !hasLightbar
+                            && (ud.HasPeripheralLighting
+                                || PadForge.Common.Input.Peripherals.PeripheralOutputs.HasLighting(ud.InstanceGuid));
+                        if (hasPeripheralLighting)
+                        {
+                            lightingRow = ud;
+                            vendorLightingRow = ud.CapType == InputDeviceType.PeripheralLighting;
+                        }
                         break;
                     }
                 }
@@ -604,12 +624,34 @@ namespace PadForge.Views
             if (TabAdaptiveTriggers != null)
                 TabAdaptiveTriggers.Visibility = hasAdaptiveTriggers ? Visibility.Visible : Visibility.Collapsed;
             if (TabLighting != null)
-                TabLighting.Visibility = (hasLightbar || hasGuideLed) ? Visibility.Visible : Visibility.Collapsed;
+                TabLighting.Visibility = (hasLightbar || hasGuideLed || hasPeripheralLighting)
+                    ? Visibility.Visible : Visibility.Collapsed;
             // Lightbar-specific content hides when the tab is up for a
             // guide-LED-only device (Xbox / 2015 Steam Controller / Switch
-            // home-LED devices, #226).
+            // home-LED devices, #226). A lit mouse, keyboard or vendor row
+            // (#494) keeps the mode card and its own panel, without the
+            // DualShock 4 or DualSense art or the Sony prose.
             if (LightbarModeCard != null)
-                LightbarModeCard.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
+                LightbarModeCard.Visibility = (hasLightbar || hasPeripheralLighting)
+                    ? Visibility.Visible : Visibility.Collapsed;
+            if (LightbarPreviewPanel != null)
+                LightbarPreviewPanel.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
+            if (PeripheralLightingPanel != null)
+                PeripheralLightingPanel.Visibility = hasPeripheralLighting ? Visibility.Visible : Visibility.Collapsed;
+            if (PeripheralLightingControlRow != null)
+                PeripheralLightingControlRow.Visibility = hasPeripheralLighting && !vendorLightingRow
+                    ? Visibility.Visible : Visibility.Collapsed;
+            if (PeripheralLightingRoute != null)
+            {
+                var routeVm = DataContext as PadViewModel;
+                string route = hasPeripheralLighting
+                    ? PadForge.Common.Input.Peripherals.PeripheralRouteText.Lighting(lightingRow,
+                        routeVm?.PadIndex ?? -1,
+                        vendorLightingRow || routeVm?.DeviceConfig?.PeripheralLightingEnabled == true)
+                    : null;
+                PeripheralLightingRoute.Text = route ?? string.Empty;
+                PeripheralLightingRoute.Visibility = string.IsNullOrEmpty(route) ? Visibility.Collapsed : Visibility.Visible;
+            }
             if (LightingLightbarSubtitle != null)
                 LightingLightbarSubtitle.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
             if (LightingPlayerIdleHint != null)
@@ -759,11 +801,11 @@ namespace PadForge.Views
                 else if (vm.SelectedConfigTab == 6 && !hasAdaptiveTriggers)
                     vm.SelectedConfigTab = 0;
                 // Must match TabLighting's visibility predicate exactly
-                // (hasLightbar || hasGuideLed). Testing only hasLightbar
-                // bounced guide-LED-only devices (Xbox pads, the 2015 Steam
-                // Controller, Switch) straight off a tab that was visible and
-                // populated for them.
-                else if (vm.SelectedConfigTab == 7 && !(hasLightbar || hasGuideLed))
+                // (hasLightbar || hasGuideLed || hasPeripheralLighting).
+                // Testing only hasLightbar bounced guide-LED-only devices
+                // (Xbox pads, the 2015 Steam Controller, Switch) straight off
+                // a tab that was visible and populated for them.
+                else if (vm.SelectedConfigTab == 7 && !(hasLightbar || hasGuideLed || hasPeripheralLighting))
                     vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 8 && !hasGyro)
                     vm.SelectedConfigTab = 0;
@@ -2749,6 +2791,9 @@ namespace PadForge.Views
                 SyncLightbarHexBox();
                 SyncLightbarPreview();
                 SyncAudioHexBoxes();
+                // The route line reads the selected device's Control This
+                // Device's Lighting switch, which the anchor now carries.
+                SyncTabVisibility();
             }
             else if (e.PropertyName == nameof(PadViewModel.ProfileId))
             {
@@ -3075,6 +3120,11 @@ namespace PadForge.Views
                 case nameof(ViewModels.DeviceSlotConfig.AudioHighB):
                     if (AudioHighHexBox != null && !AudioHighHexBox.IsKeyboardFocusWithin)
                         SyncOneAudioHex(AudioHighHexBox, "High");
+                    break;
+                // The route line follows the switch even where no claim
+                // changes, a device offline or asleep.
+                case nameof(ViewModels.DeviceSlotConfig.PeripheralLightingEnabled):
+                    SyncTabVisibility();
                     break;
                 // Palette items (LightbarPaletteEntry) carry their own
                 // PropertyChanged via the ObservableCollection wiring in

@@ -44,6 +44,9 @@ namespace PadForge.Common.Input.Peripherals
         public ushort BatteryFeatureId { get; init; }
         public byte BatteryIndex { get; init; }
 
+        /// <summary>The charge last read, 0..100, or -1 when unknown.</summary>
+        public int BatteryPercent { get; init; } = -1;
+
         /// <summary>The path key: the collection plus the device index.</summary>
         public string Key => ChannelPath + "|" + DeviceIndex.ToString("X2");
 
@@ -477,13 +480,15 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Every output of a live unit. Null only when a write
         /// failed, which means the collection is gone. <paramref name="incomplete"/>
         /// is set when a request that decides an output went unanswered: the
-        /// feature lookups, the haptic capabilities and the zone walk. The
-        /// unit then comes back as far as it got, and the caller drops it and
-        /// asks again in full, so nothing more is asked of a device that
-        /// stopped answering, where each request would wait out its own
-        /// timeout on the one worker thread. The name, the type and the
-        /// haptic configuration are extras a missing answer only leaves
-        /// unknown.</summary>
+        /// device type, the feature lookups, the haptic capabilities and the
+        /// zone walk. The unit then comes back as far as it got, and the caller
+        /// drops it and asks again in full, so nothing more is asked of a
+        /// device that stopped answering, where each request would wait out
+        /// its own timeout on the one worker thread. The type decides which
+        /// rows a receiver's unit lights and rumbles, so a missed answer is
+        /// asked again, while a device that refuses the request keeps an
+        /// unknown type. The name and the haptic configuration are extras a
+        /// missing answer only leaves unknown.</summary>
         internal static HidppUnit Describe(IHidppChannel channel, byte deviceIndex, byte nameIndex,
             Guid containerId, int timeout, out bool incomplete)
         {
@@ -494,6 +499,11 @@ namespace PadForge.Common.Input.Peripherals
             {
                 var typeReply = channel.Request(deviceIndex, nameIndex, 2, Array.Empty<byte>(), timeout);
                 if (typeReply.Kind == HidppReplyKind.WriteFailed) return null;
+                if (Missed(typeReply))
+                {
+                    incomplete = true;
+                    return new HidppUnit { ChannelPath = channel.Path, ContainerId = containerId, DeviceIndex = deviceIndex };
+                }
                 if (typeReply.Kind == HidppReplyKind.Answer) type = typeReply.Param(0);
                 name = HidppHapticProbe.ReadName(channel, deviceIndex, nameIndex, timeout);
             }

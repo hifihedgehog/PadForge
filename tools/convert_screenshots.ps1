@@ -117,7 +117,6 @@ $map = @{
     # membership in this table decides whether a picture updates, and a stale
     # one looks exactly like a fresh one until somebody opens it. jpg names
     # drop the pad- prefix, like the rest of the map.
-    "dashboard-lightbar-mirrors"    = "dashboard-lightbar-mirrors"
     "dashboard-head-tracking"       = "dashboard-head-tracking"
     "settings-handheld-buttons"     = "settings-handheld-buttons"
     "settings-assignment-prompts"   = "settings-assignment-prompts"

@@ -233,19 +233,6 @@
   <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>이 컨트롤러 구성</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>모션 서버</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>자이로 및 가속도계 데이터를 위한 DSU/CemuHook Motion Provider protocol 서버.</value></data>
-  <data name="Dashboard_Chroma" xml:space="preserve"><value>Razer Chroma</value></data>
-  <data name="Dashboard_ChromaDescription" xml:space="preserve"><value>게임이 가상 PlayStation 컨트롤러에 설정한 라이트바 색상을 Razer Chroma 장치로 전달합니다. PadForge는 Razer Synapse에 Chroma 앱으로 표시되며 그곳에서 범위를 설정하거나 비활성화할 수 있습니다.</value></data>
-  <data name="Dashboard_EnableChroma" xml:space="preserve"><value>라이트바를 Razer Chroma에 미러링</value></data>
-  <data name="Dashboard_ChromaWaiting" xml:space="preserve"><value>Razer Synapse를 찾지 못했습니다. 재시도 중.</value></data>
-  <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>Razer Chroma에 연결됨</value></data>
-  <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>Chroma Connect가 있는 Razer Synapse가 필요합니다. 어떤 물리 컨트롤러와도 작동하며, 색상은 게임이 그리는 가상 패드에서 옵니다.</value></data>
-  <data name="Dashboard_Lightsync" xml:space="preserve"><value>Logitech LIGHTSYNC</value></data>
-  <data name="Dashboard_LightsyncDescription" xml:space="preserve"><value>게임이 가상 PlayStation 컨트롤러에 설정한 라이트바 색상을 Logitech G HUB를 통해 Logitech LIGHTSYNC 장치로 전달합니다.</value></data>
-  <data name="Dashboard_EnableLightsync" xml:space="preserve"><value>라이트바를 Logitech LIGHTSYNC에 미러링</value></data>
-  <data name="Dashboard_LightsyncWaiting" xml:space="preserve"><value>Logitech G HUB를 찾을 수 없습니다. 재시도 중.</value></data>
-  <data name="Dashboard_LightsyncConnected" xml:space="preserve"><value>Logitech LIGHTSYNC에 연결됨</value></data>
-  <data name="Dashboard_LightsyncFooter" xml:space="preserve"><value>Logitech G HUB(또는 Logitech Gaming Software)가 필요합니다. 모든 물리 컨트롤러와 작동합니다. 색상은 게임이 칠하는 가상 패드에서 나옵니다.</value></data>
-  <data name="Dashboard_LightbarMirrors" xml:space="preserve"><value>라이트바 미러링</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU 모션 서버 활성화 (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>포트</value></data>
   <data name="Dashboard_WebControllerPort" xml:space="preserve"><value>웹 컨트롤러 포트</value></data>
@@ -1691,6 +1678,25 @@
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>조명</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>할당된 물리 컨트롤러의 라이트바 기본 색상과 오디오 동작을 설정합니다. 게임 쓰기가 항상 우선합니다. 사용자 설정은 게임이 라이트바를 구동하지 않을 때 적용됩니다.</value></data>
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>플레이어 번호가 선택된 동안 패드는 대기 상태에서 가상 컨트롤러의 플레이어 식별을 표시합니다. 라이트바에는 소니 플레이어 색상(1 파랑, 2 빨강, 3 초록, 4 분홍)이, DualSense에서는 해당 플레이어 LED가 켜집니다. 같은 가상 컨트롤러의 모든 장치가 같은 번호를 표시합니다. 게임이 조명을 쓰면 게임이 우선하고 여기서 설정한 내용은 항상 우선하며, 끔을 선택하면 해당 조명이 완전히 꺼집니다.</value></data>
+  <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>이 가상 컨트롤러는 DualSense 라이트바와 같은 모드로 장치를 켜며, 여기서 정한 설정은 이 컨트롤러에만 적용됩니다. PlayStation 가상 컨트롤러에서는 게임이 라이트바를 쓰면 DualSense에서처럼 게임이 우선합니다.</value></data>
+  <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>이 장치의 조명 제어</value></data>
+  <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>끄면 이 가상 컨트롤러가 장치를 켜지 않습니다. 제조사 행이나 같은 소프트웨어로 켜지는 같은 종류의 다른 장치는 여전히 색상을 정할 수 있습니다. 이 가상 컨트롤러의 ‘Chroma 색상 설정’ 매크로는 Razer 장치를 계속 칠합니다.</value></data>
+  <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>색상이 {0}에 직접 전달됩니다.</value></data>
+  <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>이 장치가 아직 응답하지 않았습니다. 깨어나면 색상이 표시됩니다.</value></data>
+  <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>색상이 {0}을(를) 거쳐 전달됩니다.</value></data>
+  <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0}은(는) 이 종류의 장치를 모두 한꺼번에 켜므로, 가상 컨트롤러 {1}의 장치가 색상을 정합니다.</value></data>
+  <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0}은(는) 이 종류의 장치를 모두 한꺼번에 켜므로, 가상 컨트롤러 {2}의 {1} 행이 색상을 정합니다.</value></data>
+  <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>가상 컨트롤러 {0}도 이 장치를 켜고 있으며 그 색상이 표시됩니다.</value></data>
+  <data name="Pad_Lighting_RouteOtherControllerOnly" xml:space="preserve"><value>가상 컨트롤러 {0}이(가) 이 장치를 켜고 있습니다.</value></data>
+  <data name="Pad_Lighting_RouteOtherRow" xml:space="preserve"><value>이 가상 컨트롤러에 있는 이 장치의 다른 행이 색상을 정합니다.</value></data>
+  <data name="Pad_Lighting_RouteOtherRowOnly" xml:space="preserve"><value>이 가상 컨트롤러에 있는 이 장치의 다른 행이 이 장치를 켜고 있습니다.</value></data>
+  <data name="Pad_Lighting_RouteWaiting" xml:space="preserve"><value>{0}을(를) 기다리는 중입니다. 실행되면 색상이 표시됩니다.</value></data>
+  <data name="Pad_Lighting_RouteCannotLight" xml:space="preserve"><value>이 PC의 Logitech LED 엔진은 이 종류의 장치를 켤 수 없습니다.</value></data>
+  <data name="Pad_Lighting_RouteVendorRow" xml:space="preserve"><value>{0}이(가) 닿는 장치 중 할당된 장치가 직접 켜지 않는 장치({1} 등)를 켭니다.</value></data>
+  <data name="Pad_Lighting_RouteVendorRowWaiting" xml:space="preserve"><value>{0}을(를) 기다리는 중입니다. 실행되면 이 행이 {0}이(가) 닿는 장치 중 할당된 장치가 직접 켜지 않는 장치({1} 등)를 켭니다.</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>헤드셋, 마우스패드, Chroma Link 스트립</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>헤드셋, 마우스패드, 스피커</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>헤드셋</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>라이트바</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>여섯 자리 16진수 색상(RRGGBB 또는 #RRGGBB)을 입력하고 Enter 키를 누르거나 다른 곳을 클릭하면 적용됩니다.</value></data>
@@ -2557,6 +2563,7 @@
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>아날로그 키보드</value></data>
   <data name="DeviceType_WebMenus" xml:space="preserve"><value>웹 메뉴</value></data>
   <data name="DeviceType_PeripheralHaptics" xml:space="preserve"><value>햅틱</value></data>
+  <data name="DeviceType_PeripheralLighting" xml:space="preserve"><value>조명</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>머리 요</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>머리 피치</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>머리 롤</value></data>
@@ -2951,8 +2958,8 @@
   <data name="Macro_GuideLedBrightnessName" xml:space="preserve"><value>Guide LED 밝기</value></data>
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>레이어 전환</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Chroma 색상 설정</value></data>
-  <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>액션이 실행되는 동안 모든 Razer Chroma 장치를 한 가지 색으로 켭니다.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>위에서 정한 시간 동안 모든 Razer Chroma 장치를 이 색으로 켠 뒤 조명을 Razer Synapse에 되돌려 줍니다. ‘라이트바를 Razer Chroma에 미러링’ 옵션이 켜져 있고 게임이 색을 지정했다면 미러링된 라이트바 색으로 돌아갑니다. 트리거를 누르고 있는 동안 계속 색을 유지하려면 ‘누르고 있는 동안’과 ‘놓을 때까지’를 함께 사용하세요. 두 매크로가 동시에 색을 칠하면 목록에서 아래에 있는 매크로가 우선하므로, 깊게 누르기 매크로를 얕게 누르기 매크로 아래에 두세요. Razer Synapse가 실행 중이어야 합니다.</value></data>
+  <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>액션이 실행되는 동안 이 가상 컨트롤러에 할당된 Razer 장치와, 그와 같은 종류의 다른 모든 Razer 장치를 한 가지 색으로 켭니다.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>위에서 정한 시간 동안 이 가상 컨트롤러에 할당된 Razer 장치와, 그와 같은 종류의 다른 모든 Razer 장치를 이 색으로 켭니다. Razer Chroma 행이 할당되어 있으면 모든 Razer 장치가 대상입니다. 어느 가상 컨트롤러의 조명 탭보다도 우선하며, 그 뒤 조명을 되돌려 줍니다. 트리거를 누르고 있는 동안 계속 색을 유지하려면 ‘누르고 있는 동안’과 ‘놓을 때까지’를 함께 사용하세요. 두 매크로가 동시에 색을 칠하면 목록에서 아래에 있는 매크로가 우선하므로, 깊게 누르기 매크로를 얕게 누르기 매크로 아래에 두세요. 두 가상 컨트롤러의 매크로가 같은 종류의 Razer 장치를 칠하면 플레이어 번호가 작은 쪽이 우선합니다. Razer Synapse가 실행 중이어야 합니다.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast 화면 표시</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>이 슬롯에 입력되는 Bliss-Box 포트의 각 Dreamcast 컨트롤러 VMU에서 그림을 재생한 뒤, 각 포트를 원래 화면 설정으로 되돌립니다.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast 그림 {0}장을 각 {1}ms씩 {2}회 표시</value></data>
@@ -3781,9 +3788,7 @@
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
-  <data name="About_InterhapticsDesc" xml:space="preserve">
-    <value>Razer Sensa HD 햅틱 미러를 뒷받침하는 햅틱 엔진과 Razer 프로바이더입니다. HAR.dll과 Interhaptics.RazerProvider.dll은 공개 Core SDK에서 수정 없이 PadForge에 포함됩니다. Wyvrn 제작. Wyvrn EULA.</value>
-  </data>
+  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Razer Sensa 행의 진동을 뒷받침하는 햅틱 엔진과 Razer 프로바이더입니다. HAR.dll과 Interhaptics.RazerProvider.dll은 공개 Core SDK에서 수정 없이 PadForge에 포함됩니다. Wyvrn 제작. Wyvrn EULA.</value></data>
   <data name="About_ValveCad" xml:space="preserve">
     <value>Valve Steam Controller CAD</value>
   </data>
@@ -3805,15 +3810,11 @@
   <data name="About_Colore" xml:space="preserve">
     <value>Colore</value>
   </data>
-  <data name="About_ColoreDesc" xml:space="preserve">
-    <value>라이트바 미러를 위한 Razer Chroma REST API 프레이밍 검증. Adam Hellberg와 Brandon Scott 제작. MIT. 문서로만 참고했으며 코드는 포함하지 않습니다.</value>
-  </data>
+  <data name="About_ColoreDesc" xml:space="preserve"><value>Razer 조명을 위한 Razer Chroma REST API 프레이밍 검증. Adam Hellberg와 Brandon Scott 제작. MIT. 문서로만 참고했으며 코드는 포함하지 않습니다.</value></data>
   <data name="About_LogitechLedRefs" xml:space="preserve">
     <value>Logitech LED SDK references</value>
   </data>
-  <data name="About_LogitechLedRefsDesc" xml:space="preserve">
-    <value>LIGHTSYNC 라이트바 미러를 뒷받침하는 엔진 진입점과 호출 규약으로, Artemis.Plugins(PolyForm Noncommercial), Aurora(MIT), LogiLed2Corsair(MIT), Logitech-LED(GPL-2.0), logitech-led-sdk-rs(MIT OR Apache-2.0), RGB.NET(LGPL-2.1)에서 읽었습니다. PadForge는 G HUB 자체 엔진을 불러오며 Logitech 코드를 포함하지 않습니다.</value>
-  </data>
+  <data name="About_LogitechLedRefsDesc" xml:space="preserve"><value>G HUB를 통한 Logitech 조명을 뒷받침하는 엔진 진입점, 호출 규약, 영역 구성으로, Artemis.Plugins(PolyForm Noncommercial), Aurora(MIT), LogiLed2Corsair(MIT), Logitech-LED(GPL-2.0), logitech-led-sdk-rs(MIT OR Apache-2.0), RGB.NET(LGPL-2.1)에서 읽었습니다. PadForge는 G HUB 자체 엔진을 불러오며 Logitech 코드를 포함하지 않습니다.</value></data>
   <data name="About_Opentrack" xml:space="preserve">
     <value>opentrack</value>
   </data>
@@ -3840,6 +3841,8 @@
   </data>
   <data name="About_OpenXrRefs" xml:space="preserve"><value>OpenXR 참조</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>헤드셋과 모션 컨트롤러 입력을 뒷받침하는 런타임 인터페이스, 구조체 레이아웃, 레지스트리 키는 Khronos OpenXR-SDK 헤더(Apache-2.0)에서 읽었고 VirtualDesktop-OpenXR(MIT)와 대조했습니다. PadForge는 사용자 시스템에 설치된 런타임과 통신하며 Khronos 코드를 포함하지 않습니다.</value></data>
+  <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>주변기기 출력 참조</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>HID++ 햅틱, 조명, 페어링, 배터리 프레임은 Solaar(GPL-2.0), libratbag(MIT), LiveHaptics, OpenLogi 문서에서, Razer 제품 ID는 OpenRazer(GPL-2.0)에서, SteelSeries 제품 ID는 OpenRGB(GPL-2.0)와 rivalcfg(WTFPL)에서, 촉각 및 색상 핸들러는 GameSense SDK에서 읽었습니다. 문서로만 참고했으며 코드는 포함하지 않습니다.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK 참조</value></data>
   <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G 키 입력을 뒷받침하는 이벤트 워드 레이아웃은 SDK의 LogitechGkeyLib.h를 따릅니다. 라이브러리 검색 순서와 종료 처리는 Mumble의 GKey.cpp(BSD 3-Clause)를 따릅니다. PadForge는 시스템에 있는 라이브러리를 로드하며 Logitech 코드를 포함하지 않습니다.</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup 및 AnalogSense</value></data>
@@ -4035,7 +4038,7 @@
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con과 Pro 컨트롤러의 HID, HD 진동, 홈 LED 노트. dekuNukem 제작. Switch 2는 ndeadly의 switch2_controller_research. 프로토콜 사실 확인용으로만 참조.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense 및 DualShock 4 라이트바 출력 리포트의 바이트 용도. GPL-2.0, 문서로만 참고했으며 GPL 코드는 포함하지 않습니다.</value></data>
+  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense 및 DualShock 4 라이트바 출력 리포트의 바이트 용도와 Logitech HID++ 0x8070 조명 프레임 및 컬렉션 구성. GPL-2.0, 문서로만 참고했으며 GPL 코드는 포함하지 않습니다.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>앱 내 업데이터 도우미를 뒷받침하는 상승된 업데이트 동사 패턴. LGPL-3.0, 문서로만 참고했으며 LGPL 코드는 포함하지 않습니다.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

@@ -233,19 +233,6 @@
   <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>配置此控制器</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>体感服务器</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>用于陀螺仪和加速度计数据的 DSU / CemuHook Motion Provider 协议服务器。</value></data>
-  <data name="Dashboard_Chroma" xml:space="preserve"><value>Razer Chroma</value></data>
-  <data name="Dashboard_ChromaDescription" xml:space="preserve"><value>将游戏在虚拟PlayStation手柄上设置的灯条颜色转发到您的Razer Chroma设备。PadForge会作为Chroma应用显示在Razer Synapse中，可在那里限制范围或禁用。</value></data>
-  <data name="Dashboard_EnableChroma" xml:space="preserve"><value>将灯条镜像到Razer Chroma</value></data>
-  <data name="Dashboard_ChromaWaiting" xml:space="preserve"><value>未检测到Razer Synapse，正在重试。</value></data>
-  <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>已连接到Razer Chroma</value></data>
-  <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>需要带Chroma Connect的Razer Synapse。适用于任何物理手柄：颜色来自游戏绘制的虚拟手柄。</value></data>
-  <data name="Dashboard_Lightsync" xml:space="preserve"><value>Logitech LIGHTSYNC</value></data>
-  <data name="Dashboard_LightsyncDescription" xml:space="preserve"><value>将游戏在虚拟PlayStation手柄上设置的灯条颜色，通过Logitech G HUB转发到您的罗技LIGHTSYNC设备。</value></data>
-  <data name="Dashboard_EnableLightsync" xml:space="preserve"><value>将灯条镜像到罗技LIGHTSYNC</value></data>
-  <data name="Dashboard_LightsyncWaiting" xml:space="preserve"><value>未检测到Logitech G HUB。正在重试。</value></data>
-  <data name="Dashboard_LightsyncConnected" xml:space="preserve"><value>已连接到罗技LIGHTSYNC</value></data>
-  <data name="Dashboard_LightsyncFooter" xml:space="preserve"><value>需要Logitech G HUB（或Logitech Gaming Software）。适用于任何物理手柄：颜色来自游戏所绘制的虚拟手柄。</value></data>
-  <data name="Dashboard_LightbarMirrors" xml:space="preserve"><value>灯条镜像</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>启用 DSU 体感服务器（CemuHook Motion Provider 协议）</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>端口</value></data>
   <data name="Dashboard_WebControllerPort" xml:space="preserve"><value>网页手柄端口</value></data>
@@ -1690,6 +1677,25 @@
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>灯光</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>设置已分配的物理手柄的灯条基础颜色和音频行为。游戏写入始终优先。当无游戏驱动灯条时,用户设置生效。</value></data>
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>选择玩家编号时，手柄空闲状态会显示其虚拟控制器的玩家身份：灯条显示索尼玩家颜色（1 蓝、2 红、3 绿、4 粉），DualSense 还会点亮对应的玩家指示灯。同一虚拟控制器下的所有设备显示相同编号。游戏写入灯光时由游戏接管，此处的设置始终优先，选择关闭则该灯完全熄灭。</value></data>
+  <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>此虚拟控制器以与 DualSense 灯条相同的模式点亮该设备，此处的设置仅作用于这个控制器。在 PlayStation 虚拟控制器上，游戏写入灯条时会像在 DualSense 上一样接管灯光。</value></data>
+  <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>控制此设备的灯光</value></data>
+  <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>关闭后，此虚拟控制器不再点亮该设备。厂商行，或通过同一软件点亮的同类其他设备，仍可设置它的颜色。此虚拟控制器上的“设置 Chroma 颜色”宏仍会为 Razer 设备着色。</value></data>
+  <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>颜色直接发送到 {0}。</value></data>
+  <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>此设备尚未响应。设备唤醒后即显示颜色。</value></data>
+  <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>颜色通过 {0} 发送。</value></data>
+  <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} 会同时点亮所有此类设备，因此由虚拟控制器 {1} 上的那一台决定它们的颜色。</value></data>
+  <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} 会同时点亮所有此类设备，因此由虚拟控制器 {2} 上的 {1} 行决定它们的颜色。</value></data>
+  <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>虚拟控制器 {0} 也在点亮此设备，显示的是它的颜色。</value></data>
+  <data name="Pad_Lighting_RouteOtherControllerOnly" xml:space="preserve"><value>虚拟控制器 {0} 正在点亮此设备。</value></data>
+  <data name="Pad_Lighting_RouteOtherRow" xml:space="preserve"><value>此虚拟控制器上此设备的另一行决定它的颜色。</value></data>
+  <data name="Pad_Lighting_RouteOtherRowOnly" xml:space="preserve"><value>此虚拟控制器上此设备的另一行正在点亮它。</value></data>
+  <data name="Pad_Lighting_RouteWaiting" xml:space="preserve"><value>正在等待 {0}。它运行后即显示颜色。</value></data>
+  <data name="Pad_Lighting_RouteCannotLight" xml:space="preserve"><value>此电脑上的 Logitech LED 引擎无法点亮此类设备。</value></data>
+  <data name="Pad_Lighting_RouteVendorRow" xml:space="preserve"><value>点亮 {0} 能控制、但没有已分配设备自行点亮的设备，例如{1}。</value></data>
+  <data name="Pad_Lighting_RouteVendorRowWaiting" xml:space="preserve"><value>正在等待 {0}。它运行后，此行会点亮 {0} 能控制、但没有已分配设备自行点亮的设备，例如{1}。</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>耳机、鼠标垫和 Chroma Link 灯带</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>耳机、鼠标垫和音箱</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>耳机</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>灯条</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>输入六位十六进制颜色 (RRGGBB 或 #RRGGBB),按 Enter 或移开焦点应用。</value></data>
@@ -2557,6 +2563,7 @@
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>模拟键盘</value></data>
   <data name="DeviceType_WebMenus" xml:space="preserve"><value>网页菜单</value></data>
   <data name="DeviceType_PeripheralHaptics" xml:space="preserve"><value>触感</value></data>
+  <data name="DeviceType_PeripheralLighting" xml:space="preserve"><value>灯光</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>头部偏航</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>头部俯仰</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>头部翻滚</value></data>
@@ -2951,8 +2958,8 @@
   <data name="Macro_GuideLedBrightnessName" xml:space="preserve"><value>Guide 指示灯亮度</value></data>
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>切换层</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>设置 Chroma 颜色</value></data>
-  <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>在动作运行期间，将所有 Razer Chroma 设备点亮为同一种颜色。</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>在上方设定的时长内将所有 Razer Chroma 设备点亮为此颜色，之后将灯效交还给 Razer Synapse。若“将灯条镜像到Razer Chroma”已开启且游戏设置了颜色，则恢复为镜像的灯条颜色。若要在按住触发器期间一直保持该颜色，请将“按住时”与“直到释放”一起使用。两个宏同时着色时，列表中靠下的宏优先，因此请把完全按下的宏放在轻按宏的下方。需要运行 Razer Synapse。</value></data>
+  <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>在动作运行期间，将分配给此虚拟控制器的 Razer 设备，以及与它们同类的其他所有 Razer 设备，点亮为同一种颜色。</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>在上方设定的时长内，将分配给此虚拟控制器的 Razer 设备，以及与它们同类的其他所有 Razer 设备，点亮为此颜色。分配了 Razer Chroma 行时，则点亮所有 Razer 设备。此颜色优先于任何虚拟控制器的灯光选项卡，之后再交还灯光。若要在按住触发器期间一直保持该颜色，请将“按住时”与“直到释放”一起使用。两个宏同时着色时，列表中靠下的宏优先，因此请把完全按下的宏放在轻按宏的下方。两个虚拟控制器上的宏为同一类 Razer 设备着色时，玩家编号较小的一方优先。需要运行 Razer Synapse。</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>显示 Dreamcast 屏幕</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>在为此槽位提供输入的 Bliss-Box 端口中，每个 Dreamcast 手柄的 VMU 上播放图片，然后将各端口恢复为其自己的屏幕设置。</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>显示 {0} 张 Dreamcast 图片，每张 {1} 毫秒，共 {2} 次</value></data>
@@ -3781,9 +3788,7 @@
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
-  <data name="About_InterhapticsDesc" xml:space="preserve">
-    <value>Razer Sensa HD 触觉镜像背后的触觉引擎与 Razer 提供程序。HAR.dll 和 Interhaptics.RazerProvider.dll 未经修改地从公开的 Core SDK 随 PadForge 一起提供。由 Wyvrn 出品。Wyvrn EULA。</value>
-  </data>
+  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Razer Sensa 行振动背后的触觉引擎与 Razer 提供程序。HAR.dll 和 Interhaptics.RazerProvider.dll 未经修改地从公开的 Core SDK 随 PadForge 一起提供。由 Wyvrn 出品。Wyvrn EULA。</value></data>
   <data name="About_ValveCad" xml:space="preserve">
     <value>Valve Steam Controller CAD</value>
   </data>
@@ -3805,15 +3810,11 @@
   <data name="About_Colore" xml:space="preserve">
     <value>Colore</value>
   </data>
-  <data name="About_ColoreDesc" xml:space="preserve">
-    <value>用于灯条镜像的 Razer Chroma REST API 帧格式佐证，由 Adam Hellberg 和 Brandon Scott 提供。MIT。仅作文档参考，不随附任何代码。</value>
-  </data>
+  <data name="About_ColoreDesc" xml:space="preserve"><value>用于 Razer 灯光的 Razer Chroma REST API 帧格式佐证，由 Adam Hellberg 和 Brandon Scott 提供。MIT。仅作文档参考，不随附任何代码。</value></data>
   <data name="About_LogitechLedRefs" xml:space="preserve">
     <value>Logitech LED SDK references</value>
   </data>
-  <data name="About_LogitechLedRefsDesc" xml:space="preserve">
-    <value>LIGHTSYNC 灯条镜像背后的引擎入口点与调用约定，取自 Artemis.Plugins (PolyForm Noncommercial)、Aurora (MIT)、LogiLed2Corsair (MIT)、Logitech-LED (GPL-2.0)、logitech-led-sdk-rs (MIT OR Apache-2.0) 和 RGB.NET (LGPL-2.1)。PadForge 加载 G HUB 自身的引擎，不随附任何 Logitech 代码。</value>
-  </data>
+  <data name="About_LogitechLedRefsDesc" xml:space="preserve"><value>通过 G HUB 实现 Logitech 灯光背后的引擎入口点、调用约定与区域布局，取自 Artemis.Plugins (PolyForm Noncommercial)、Aurora (MIT)、LogiLed2Corsair (MIT)、Logitech-LED (GPL-2.0)、logitech-led-sdk-rs (MIT OR Apache-2.0) 和 RGB.NET (LGPL-2.1)。PadForge 加载 G HUB 自身的引擎，不随附任何 Logitech 代码。</value></data>
   <data name="About_Opentrack" xml:space="preserve">
     <value>opentrack</value>
   </data>
@@ -3840,6 +3841,8 @@
   </data>
   <data name="About_OpenXrRefs" xml:space="preserve"><value>OpenXR 参考来源</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>头显和体感手柄输入背后的运行时接口、结构布局和注册表项，读自 Khronos OpenXR-SDK 头文件（Apache-2.0），并与 VirtualDesktop-OpenXR（MIT）比对。PadForge 与你自己安装的运行时通信，不随附 Khronos 代码。</value></data>
+  <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>外设输出参考来源</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>HID++ 触觉、灯光、配对和电池帧取自 Solaar (GPL-2.0)、libratbag (MIT)、LiveHaptics 和 OpenLogi 文档，Razer 产品 ID 取自 OpenRazer (GPL-2.0)，SteelSeries 产品 ID 取自 OpenRGB (GPL-2.0) 和 rivalcfg (WTFPL)，触感与颜色处理程序取自 GameSense SDK。仅作文档参考，不随附任何代码。</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK 参考来源</value></data>
   <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G 键输入背后的事件字布局来自 SDK 中的 LogitechGkeyLib.h。库的搜索顺序和关闭流程遵循 Mumble 的 GKey.cpp（BSD 3-Clause）。PadForge 加载本机上的库，不随附 Logitech 代码。</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy、Soup 和 AnalogSense</value></data>
@@ -4035,7 +4038,7 @@
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con 和 Pro 手柄的 HID、HD 振动与 HOME 键 LED 笔记，由 dekuNukem 整理。Switch 2 部分参考 ndeadly 的 switch2_controller_research。仅用于协议事实参考。</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense 与 DualShock 4 灯条输出报告的字节用法。GPL-2.0，仅作文档参考，不随附任何 GPL 代码。</value></data>
+  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense 与 DualShock 4 灯条输出报告的字节用法，以及 Logitech HID++ 0x8070 灯光帧与集合布局。GPL-2.0，仅作文档参考，不随附任何 GPL 代码。</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>应用内更新程序辅助进程背后的提权更新动词模式。LGPL-3.0，仅作文档参考，不随附任何 LGPL 代码。</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

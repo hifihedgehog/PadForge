@@ -20,12 +20,17 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Razer Sensa HD devices through the Interhaptics engine
         /// (#374).</summary>
         RazerSensa,
+        /// <summary>The SteelSeries mice, keyboards and headsets GG lights
+        /// through GameSense's general device types. GameSense has no
+        /// mousepad type: the QcK Prism pads answer only its zone-count types
+        /// (gamesense-sdk standard-zones.md:29 and 37), which no row binds.</summary>
+        SteelSeriesGG,
     }
 
     /// <summary>
     /// A device row for output a vendor's software delivers to devices
     /// PadForge does not read: a Razer headset or mousepad, a Logitech
-    /// speaker, a Sensa HD controller (#494). It has no inputs. Assigned to a
+    /// speaker, a SteelSeries headset, a Sensa HD controller (#494). It has no inputs. Assigned to a
     /// virtual controller, it takes that controller's lighting through its
     /// Lighting tab or its rumble through its Force Feedback tab, like any
     /// other device.
@@ -50,15 +55,35 @@ namespace PadForge.Common.Input.Peripherals
         public PeripheralOutputRow(PeripheralRowKind kind)
         {
             Kind = kind;
-            (Name, DevicePath, ProductId, string identity) = kind switch
+            Name = NameFor(kind);
+            (DevicePath, ProductId, string identity) = kind switch
             {
-                PeripheralRowKind.RazerChroma => ("Razer Chroma", "razerchroma://local", (ushort)0x4348, "pfrazerchroma"),
-                PeripheralRowKind.LogitechLightsync => ("Logitech LIGHTSYNC", "logilightsync://local", (ushort)0x4C53, "pflogilightsync"),
-                _ => ("Razer Sensa", "razersensa://local", (ushort)0x5345, "pfrazersensa"),
+                PeripheralRowKind.RazerChroma => ("razerchroma://local", (ushort)0x4348, "pfrazerchroma"),
+                PeripheralRowKind.LogitechLightsync => ("logilightsync://local", (ushort)0x4C53, "pflogilightsync"),
+                PeripheralRowKind.SteelSeriesGG => ("steelseriesgg://local", (ushort)0x5347, "pfsteelseriesgg"),
+                _ => ("razersensa://local", (ushort)0x5345, "pfrazersensa"),
             };
             InstanceGuid = IdentityFor(kind);
             ProductGuid = Md5Guid(identity + "-product");
             SdlInstanceId = SyntheticInstanceId.From(DevicePath);
+        }
+
+        /// <summary>The row's name, a product name no locale translates.</summary>
+        public static string NameFor(PeripheralRowKind kind) => kind switch
+        {
+            PeripheralRowKind.RazerChroma => "Razer Chroma",
+            PeripheralRowKind.LogitechLightsync => "Logitech LIGHTSYNC",
+            PeripheralRowKind.SteelSeriesGG => "SteelSeries GG",
+            _ => "Razer Sensa",
+        };
+
+        /// <summary>The kind of the row with this id, or null for any other
+        /// device.</summary>
+        public static PeripheralRowKind? KindOf(Guid id)
+        {
+            foreach (PeripheralRowKind kind in Enum.GetValues(typeof(PeripheralRowKind)))
+                if (IdentityFor(kind) == id) return kind;
+            return null;
         }
 
         /// <summary>The row's id, stable across sessions: the migration of
@@ -67,6 +92,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             PeripheralRowKind.RazerChroma => "pfrazerchroma",
             PeripheralRowKind.LogitechLightsync => "pflogilightsync",
+            PeripheralRowKind.SteelSeriesGG => "pfsteelseriesgg",
             _ => "pfrazersensa",
         });
 

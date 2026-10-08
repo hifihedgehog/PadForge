@@ -238,8 +238,6 @@ namespace PadForge.ViewModels
             nameof(EnableRemoteLink) or
             nameof(AutoReconnect) or
             nameof(EnableTouchpadOverlay) or
-            nameof(EnableChromaLightbar) or
-            nameof(EnableLightsyncLightbar) or
             nameof(EnableMenuOverlay) or
             nameof(EnableShiftLayerFlyout) or
             nameof(EnableProfileOverlay);
@@ -281,16 +279,6 @@ namespace PadForge.ViewModels
                 case nameof(EnableTouchpadOverlay):
                 {
                     EnableTouchpadOverlay = false;
-                    break;
-                }
-                case nameof(EnableChromaLightbar):
-                {
-                    EnableChromaLightbar = false;
-                    break;
-                }
-                case nameof(EnableLightsyncLightbar):
-                {
-                    EnableLightsyncLightbar = false;
                     break;
                 }
                 case nameof(EnableMenuOverlay):

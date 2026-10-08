@@ -55,18 +55,6 @@
   },
   {
     "File": "PadForge.App/Views/DashboardPage.xaml",
-    "Id": "Reset_DashboardViewModel_EnableChromaLightbar_1964",
-    "Owner": "PadForge.ViewModels.DashboardViewModel",
-    "Property": "EnableChromaLightbar"
-  },
-  {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
-    "Id": "Reset_DashboardViewModel_EnableLightsyncLightbar_1979",
-    "Owner": "PadForge.ViewModels.DashboardViewModel",
-    "Property": "EnableLightsyncLightbar"
-  },
-  {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
     "Id": "Reset_DashboardViewModel_EnableMenuOverlay_2023",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "EnableMenuOverlay"

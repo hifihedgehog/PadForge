@@ -2577,7 +2577,8 @@
                                     </StackPanel>
 
                                     <!-- Set Chroma Color card (#468): the color, painted on
-                                         every Razer Chroma device while the action runs. The
+                                         the Chroma categories of the Razer devices assigned to
+                                         this virtual controller while the action runs. The
                                          hold is the Duration row above. -->
                                     <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
                                             Visibility="{Binding IsSetChromaColorType, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -8704,6 +8705,30 @@
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,16"/>
 
+                        <!-- A mouse, keyboard or vendor lighting row (#494):
+                             this slot's lighting reaches it through the card
+                             below, the way it reaches a DualSense. The switch
+                             is per (slot, device) and starts off, so assigning
+                             a keyboard for its keys never repaints it. The
+                             vendor rows hide it: lighting is all they carry.
+                             The route line names the path and who rules a
+                             shared one, the Force Feedback tab's ember line.
+                             Shown and filled by SyncTabVisibility. -->
+                        <StackPanel x:Name="PeripheralLightingPanel" Visibility="Collapsed" Margin="0,0,0,16">
+                            <TextBlock Text="{Binding Pad_Lighting_PeripheralSubtitle, Source={x:Static strings:Strings.Instance}}"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,8"/>
+                            <StackPanel x:Name="PeripheralLightingControlRow" Orientation="Horizontal" Margin="0,0,0,8">
+                                <CheckBox VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                          IsChecked="{Binding DeviceConfig.PeripheralLightingEnabled, Mode=TwoWay}"
+                                          Content="{Binding Pad_Lighting_ControlDevice, Source={x:Static strings:Strings.Instance}}"
+                                          ToolTip="{Binding Pad_Lighting_ControlDevice_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <reset:SettingResetButton Command="{Binding DeviceConfig.ResetPeripheralLightingEnabledCommand}" SettingLabel="{Binding Pad_Lighting_ControlDevice, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_PeripheralLightingEnabled"/>
+                            </StackPanel>
+                            <TextBlock x:Name="PeripheralLightingRoute" Visibility="Collapsed"
+                                       Foreground="{DynamicResource EmberBrush}" TextWrapping="Wrap"/>
+                        </StackPanel>
+
                         <!-- Unified lightbar mode picker. Replaces the
                              v3.0 BaseColor + AudioLightbar split. The
                              single-color RGB sub-block is shared by
@@ -8766,7 +8791,9 @@
                                      presentations. Palette and audio modes still preview
                                      the base trio because it is the only single-color
                                      truth the config holds. -->
-                                <StackPanel Margin="0,0,0,12" HorizontalAlignment="Left">
+                                <!-- Hidden for a mouse, keyboard or vendor row
+                                     (#494): the art is a DualShock 4 or a DualSense. -->
+                                <StackPanel x:Name="LightbarPreviewPanel" Margin="0,0,0,12" HorizontalAlignment="Left">
                                     <Viewbox Width="260" HorizontalAlignment="Left">
                                         <Grid x:Name="LightbarPreviewHost"/>
                                     </Viewbox>

@@ -444,9 +444,31 @@ namespace PadForge.Tests
 
             public List<string> Paths() => Posts.Select(p => p.Path).ToList();
 
-            public List<int> EventValues() => Posts.Where(p => p.Path == "/game_event")
+            /// <summary>The rumble levels posted, in order.</summary>
+            public List<int> EventValues() => Posts.Where(p => p.Path == "/game_event" && EventOf(p.Body) == "RUMBLE")
                 .Select(p => JsonDocument.Parse(p.Body).RootElement.GetProperty("data").GetProperty("value").GetInt32())
                 .ToList();
+
+            /// <summary>The colors posted to one color event, in order, as
+            /// 0x00RRGGBB.</summary>
+            public List<int> ColorValues(string evt) => Posts
+                .Where(p => p.Path == "/game_event" && EventOf(p.Body) == evt)
+                .Select(p =>
+                {
+                    var c = JsonDocument.Parse(p.Body).RootElement.GetProperty("data").GetProperty("frame").GetProperty("color");
+                    return (c.GetProperty("red").GetInt32() << 16) | (c.GetProperty("green").GetInt32() << 8)
+                           | c.GetProperty("blue").GetInt32();
+                })
+                .ToList();
+
+            /// <summary>The events posted to one endpoint, in order.</summary>
+            public List<string> EventsAt(string path) => Posts.Where(p => p.Path == path).Select(p => EventOf(p.Body)).ToList();
+
+            private static string EventOf(string body)
+            {
+                using var doc = JsonDocument.Parse(body);
+                return doc.RootElement.TryGetProperty("event", out var e) ? e.GetString() : null;
+            }
 
             public void Dispose()
             {
@@ -459,13 +481,13 @@ namespace PadForge.Tests
         [Fact]
         public void GameSense_ReadsTheAddress()
         {
-            Assert.True(GameSenseTactile.TryReadAddress("{\"address\":\"127.0.0.1:51248\"}", out string a));
+            Assert.True(GameSenseClient.TryReadAddress("{\"address\":\"127.0.0.1:51248\"}", out string a));
             Assert.Equal("127.0.0.1:51248", a);
-            Assert.False(GameSenseTactile.TryReadAddress("{\"address\":\"\"}", out _));
-            Assert.False(GameSenseTactile.TryReadAddress("{\"address\":51248}", out _));
-            Assert.False(GameSenseTactile.TryReadAddress("[]", out _));
-            Assert.False(GameSenseTactile.TryReadAddress("not json", out _));
-            Assert.Null(GameSenseTactile.ReadAddress(MissingCoreProps()));
+            Assert.False(GameSenseClient.TryReadAddress("{\"address\":\"\"}", out _));
+            Assert.False(GameSenseClient.TryReadAddress("{\"address\":51248}", out _));
+            Assert.False(GameSenseClient.TryReadAddress("[]", out _));
+            Assert.False(GameSenseClient.TryReadAddress("not json", out _));
+            Assert.Null(GameSenseClient.ReadAddress(MissingCoreProps()));
         }
 
         /// <summary>The handler JSON parses, targets the tactile device on
@@ -474,7 +496,7 @@ namespace PadForge.Tests
         [Fact]
         public void GameSense_TheHandlerPlaysNothingAtZero_AndNoPulseOutlastsItsRepeat()
         {
-            using var doc = JsonDocument.Parse(GameSenseTactile.BindBody);
+            using var doc = JsonDocument.Parse(GameSenseClient.BindBody);
             var root = doc.RootElement;
             Assert.Equal("PADFORGE", root.GetProperty("game").GetString());
             Assert.Equal("RUMBLE", root.GetProperty("event").GetString());
@@ -488,7 +510,7 @@ namespace PadForge.Tests
             var frequencies = handler.GetProperty("rate").GetProperty("frequency").EnumerateArray().ToList();
             for (int level = 0; level <= 3; level++)
             {
-                int value = GameSenseTactile.LevelValue(level);
+                int value = GameSenseClient.LevelValue(level);
                 var range = ranges.Single(r => r.GetProperty("low").GetInt32() <= value && value <= r.GetProperty("high").GetInt32());
                 var pulses = range.GetProperty("pattern").EnumerateArray().ToList();
                 var rate = frequencies.SingleOrDefault(r => r.GetProperty("low").GetInt32() <= value && value <= r.GetProperty("high").GetInt32());
@@ -502,30 +524,35 @@ namespace PadForge.Tests
                 int hz = rate.GetProperty("frequency").GetInt32();
                 Assert.True(length < 1000 / hz, $"level {level}: a {length} ms pulse repeats every {1000 / hz} ms");
             }
-            Assert.True(GameSenseTactile.LevelValue(1) < GameSenseTactile.LevelValue(2));
-            Assert.True(GameSenseTactile.LevelValue(2) < GameSenseTactile.LevelValue(3));
+            Assert.True(GameSenseClient.LevelValue(1) < GameSenseClient.LevelValue(2));
+            Assert.True(GameSenseClient.LevelValue(2) < GameSenseClient.LevelValue(3));
         }
 
         [Fact]
         public void GameSense_BindsOnce_PostsOnlyChanges_BeatsWhileRumbleHolds_AndStops()
         {
             using var server = new FakeGameSense();
-            using var client = new GameSenseTactile(server.WriteCoreProps(), 1000);
+            using var client = new GameSenseClient(server.WriteCoreProps(), 1000);
             Assert.True(client.TryConnect(now: 0));
-            Assert.Equal(new[] { "/game_metadata", "/bind_game_event" }, server.Paths());
+            // The connect also removes every color event a dropped session
+            // left bound (#494).
+            var colorTypes = PadForge.Common.Input.Peripherals.PeripheralLinker.GameSenseColorTypes;
+            Assert.Equal(new[] { "/game_metadata", "/bind_game_event" }.Concat(colorTypes.Select(_ => "/remove_game_event")),
+                server.Paths());
+            Assert.Equal(colorTypes.Select(t => "COLOR_" + t.ToUpperInvariant()), server.EventsAt("/remove_game_event"));
 
             Assert.True(client.Render(2, now: 10));
             Assert.True(client.Render(2, now: 20));            // same level: nothing posted
             Assert.Equal(new[] { 50 }, server.EventValues());
 
-            Assert.True(client.Render(2, now: 10 + GameSenseTactile.HeartbeatMs));
+            Assert.True(client.Render(2, now: 10 + GameSenseClient.HeartbeatMs));
             Assert.Equal("/game_heartbeat", server.Paths().Last());
 
-            Assert.True(client.Render(0, now: 20 + GameSenseTactile.HeartbeatMs));
-            Assert.True(client.Render(0, now: 40 + 3 * GameSenseTactile.HeartbeatMs));   // no beat in silence
+            Assert.True(client.Render(0, now: 20 + GameSenseClient.HeartbeatMs));
+            Assert.True(client.Render(0, now: 40 + 3 * GameSenseClient.HeartbeatMs));   // no beat in silence
             Assert.Equal(new[] { 50, 0 }, server.EventValues());
 
-            Assert.True(client.Render(3, now: 50 + 3 * GameSenseTactile.HeartbeatMs));
+            Assert.True(client.Render(3, now: 50 + 3 * GameSenseClient.HeartbeatMs));
             client.Close();
             Assert.Equal(new[] { 50, 0, 84, 0 }, server.EventValues());
             Assert.Equal("/stop_game", server.Paths().Last());
@@ -535,11 +562,11 @@ namespace PadForge.Tests
         [Fact]
         public void GameSense_ARefusalOrAMissingEngineDoesNotConnect()
         {
-            using (var client = new GameSenseTactile(MissingCoreProps(), 500))
+            using (var client = new GameSenseClient(MissingCoreProps(), 500))
                 Assert.False(client.TryConnect(0));
 
             using var server = new FakeGameSense { Status = 500 };
-            using (var client = new GameSenseTactile(server.WriteCoreProps(), 1000))
+            using (var client = new GameSenseClient(server.WriteCoreProps(), 1000))
                 Assert.False(client.TryConnect(0));
         }
 
@@ -547,7 +574,7 @@ namespace PadForge.Tests
         public void GameSense_AnEngineThatStopsAnsweringDisconnects()
         {
             var server = new FakeGameSense();
-            using var client = new GameSenseTactile(server.WriteCoreProps(), 500);
+            using var client = new GameSenseClient(server.WriteCoreProps(), 500);
             Assert.True(client.TryConnect(0));
             server.Dispose();
             Assert.False(client.Render(1, 10));

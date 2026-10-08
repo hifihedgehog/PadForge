@@ -660,8 +660,6 @@ namespace PadForge
                      or nameof(DashboardViewModel.HeadTrackingRangeY)
                      or nameof(DashboardViewModel.HeadTrackingRangeZ)
                      or nameof(DashboardViewModel.EnableWebController)
-                     or nameof(DashboardViewModel.EnableChromaLightbar)
-                     or nameof(DashboardViewModel.EnableLightsyncLightbar)
                      or nameof(DashboardViewModel.WebControllerPort)
                      or nameof(DashboardViewModel.EnableWebControllerPlainHttp)
                      or nameof(DashboardViewModel.WebControllerPlainHttpPort)

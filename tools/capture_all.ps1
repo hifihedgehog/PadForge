@@ -4700,10 +4700,10 @@ if ($Only.Count -gt 0) {
         }
     }
 
-    # Dashboard sections whose shot needs SEVERAL anchors in one frame.
+    # Dashboard sections whose shot needs SEVERAL anchors in one frame. The
+    # Lightbar Mirrors shot left with its section (#494): the Razer Chroma,
+    # Logitech LIGHTSYNC and SteelSeries GG device rows replaced it.
     $multiAnchorTargets = @(
-        @{ Shot = "dashboard-lightbar-mirrors"; Page = "Dashboard";
-           Anchors = @("LIGHTBAR MIRRORS", "Mirror Lightbar to Logitech LIGHTSYNC") },
         @{ Shot = "dashboard-head-tracking";    Page = "Dashboard";
            Anchors = @("HEAD TRACKING", "Set Neutral") },
         @{ Shot = "remote-link";                Page = "Dashboard";
@@ -7115,12 +7115,12 @@ if (Select-DeviceByName36 "MIDI Keyboard") {
 # reason the Settings block above changed: the page was reordered this cycle.
 # Head Tracking moved onto the Dashboard, Lightbar Mirrors and Razer Sensa HD
 # Haptics were new, and the Drivers status strip left for Settings, so every
-# fixed count below the Services header landed a section early or late. The
-# Razer Sensa section left again with #494 for the Razer Sensa device row.
+# fixed count below the Services header landed a section early or late. Both
+# of those sections left again with #494, for the vendor device rows.
 #
 # Section order (PageOrderContractTests): Input Engine, Virtual Controllers,
 # then Services: Web Controller, Remote Link, Head Tracking, Motion Server,
-# Lightbar Mirrors, Overlays, Touchpad Overlay.
+# Overlays, Touchpad Overlay.
 #
 # THE SECTION TITLES ARE UPPERCASED IN THE VIEW. DashboardPage.xaml runs
 # every SectionTitle through UpperConverter, and a TextBlock's UIA Name is
@@ -7138,11 +7138,7 @@ Write-Host "[3b] Dashboard sections"
 $dashSections = @(
     @{ Shot = "remote-link";               Anchors = @("REMOTE LINK", "Or Connect by Address (Advanced)");  After = 0 },
     @{ Shot = "dashboard-head-tracking";   Anchors = @("HEAD TRACKING", "Set Neutral");                     After = 0 },
-    @{ Shot = "dsu-port-box";              Anchors = @("MOTION SERVER", "Enable DSU Motion Server (CemuHook Motion Provider Protocol)"); After = -4 },
-    # One frame carrying both mirror families, which is what
-    # features/lightbar-mirrors.md shows. The second anchor is the section's
-    # last control, the LIGHTSYNC checkbox, so both cards are in the picture.
-    @{ Shot = "dashboard-lightbar-mirrors"; Anchors = @("LIGHTBAR MIRRORS", "Mirror Lightbar to Logitech LIGHTSYNC"); After = 0 }
+    @{ Shot = "dsu-port-box";              Anchors = @("MOTION SERVER", "Enable DSU Motion Server (CemuHook Motion Provider Protocol)"); After = -4 }
 )
 foreach ($ds in $dashSections) {
     Nav "Dashboard"; Start-Sleep -Milliseconds 800

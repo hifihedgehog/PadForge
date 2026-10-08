@@ -7,9 +7,10 @@ using PadForge.Services;
 namespace PadForge.Common.Input.Peripherals
 {
     /// <summary>
-    /// Runs the peripheral outputs while the engine runs (#494): the HID++
-    /// and GameSense workers, the Razer Sensa worker while its row is
-    /// assigned, and the linker pass that ties device rows to paths.
+    /// Runs the peripheral outputs while the engine runs (#494): the HID++,
+    /// GameSense, Razer Chroma and LED SDK workers, the Razer Sensa worker
+    /// while its row is assigned, and the linker pass that ties device rows
+    /// to paths.
     ///
     /// <para>Nothing here opens a vendor SDK for a device nobody assigned:
     /// the linker reads presence from the registry, files and process names,
@@ -28,6 +29,8 @@ namespace PadForge.Common.Input.Peripherals
 
         private readonly HidppBackend _hidpp;
         private readonly GameSenseBackend _gameSense;
+        private readonly ChromaBackend _chroma;
+        private readonly LedSdkBackend _ledSdk;
         private readonly Func<SensaHapticsService> _sensaFactory;
         private readonly Dictionary<string, Guid> _containers = new(StringComparer.OrdinalIgnoreCase);
         private readonly AutoResetEvent _wake = new(false);
@@ -45,21 +48,36 @@ namespace PadForge.Common.Input.Peripherals
         public event Action CapabilitiesChanged;
 
         public PeripheralOutputHost()
-            : this(new HidppBackend(), new GameSenseBackend(), () => new SensaHapticsService()) { }
+            : this(new HidppBackend(), new GameSenseBackend(), () => new SensaHapticsService(),
+                new ChromaBackend(), new LedSdkBackend()) { }
 
-        internal PeripheralOutputHost(HidppBackend hidpp, GameSenseBackend gameSense, Func<SensaHapticsService> sensa)
+        /// <summary>Whether a slot still holds a virtual controller, set by
+        /// the owner. A reorder moves the controllers first and rebuilds the
+        /// slots' effects dispatchers after, one slot at a time, so a slot
+        /// can be without a dispatcher for a second or two while its
+        /// controller is in place. Null treats every slot as without
+        /// one.</summary>
+        public Func<int, bool> SlotHasController { get; set; }
+
+        internal PeripheralOutputHost(HidppBackend hidpp, GameSenseBackend gameSense, Func<SensaHapticsService> sensa,
+            ChromaBackend chroma = null, LedSdkBackend ledSdk = null)
         {
             _hidpp = hidpp;
             _gameSense = gameSense;
             _sensaFactory = sensa;
+            _chroma = chroma;
+            _ledSdk = ledSdk;
         }
 
         public void Start()
         {
             if (_thread != null) return;
             _stop = false;
+            _hidpp.SnapshotChanged += Nudge;
             _hidpp.Start();
             _gameSense.Start();
+            _chroma?.Start();
+            _ledSdk?.Start();
             PeripheralOutputs.Presence = PeripheralPresence.Read();
             _thread = new Thread(Loop) { IsBackground = true, Name = "PeripheralLink" };
             _thread.Start();
@@ -81,8 +99,12 @@ namespace PadForge.Common.Input.Peripherals
                 _thread = null;
             }
             StopSensa();
+            _ledSdk?.Stop();
+            _chroma?.Stop();
             _gameSense.Stop();
+            _hidpp.SnapshotChanged -= Nudge;
             _hidpp.Stop();
+            PeripheralOutputs.ClearClaims();
             PeripheralOutputs.PublishLinks(LinkTable.Empty);
             PeripheralOutputs.Hidpp = HidppSnapshot.Empty;
         }
@@ -120,6 +142,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             var presence = PeripheralOutputs.Presence;
             var hidpp = _hidpp.Snapshot;
+            bool charge = ChargesChanged(PeripheralOutputs.Hidpp, hidpp);
             PeripheralOutputs.Hidpp = hidpp;
 
             var rows = new List<LinkRow>();
@@ -137,7 +160,7 @@ namespace PadForge.Common.Input.Peripherals
                         users.Add(ud);
                         continue;
                     }
-                    if (!PeripheralLinker.IsMouseOrKeyboard(ud.CapType)) continue;
+                    if (!PeripheralLinker.IsLinkable(ud.CapType)) continue;
                     // A device forwarded from another PC plays its rumble
                     // there, so only that PC links it to its vendor channel.
                     if (RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath)) continue;
@@ -166,6 +189,26 @@ namespace PadForge.Common.Input.Peripherals
 
             var table = PeripheralLinker.Build(rows, hidpp, presence);
 
+            // A device unassigned from a slot keeps no claim from it. Read
+            // after the device lock is released, never nested inside it.
+            var settings = SettingsManager.UserSettings;
+            if (settings != null)
+            {
+                var assigned = new HashSet<(Guid Device, int Slot)>();
+                lock (settings.SyncRoot)
+                {
+                    foreach (var us in settings.Items)
+                        if (us != null && us.MapTo >= 0 && us.InstanceGuid != Guid.Empty)
+                            assigned.Add((us.InstanceGuid, us.MapTo));
+                }
+                // A slot keeps its claims while a dispatcher lights it or a
+                // controller still sits there, so a reorder's rebuild never
+                // hands its devices back and takes them again.
+                var hasController = SlotHasController;
+                PeripheralOutputs.PruneClaims(assigned, slot => UserEffectsDispatcher.HasLiveDispatcher(slot)
+                    || (hasController != null && hasController(slot)));
+            }
+
             // The records first, so a tab that refreshes on the new table
             // reads the record that goes with it.
             bool changed = false;
@@ -184,7 +227,8 @@ namespace PadForge.Common.Input.Peripherals
                 changed = true;
             }
 
-            if (!table.SameAs(PeripheralOutputs.Links))
+            bool relinked = !table.SameAs(PeripheralOutputs.Links);
+            if (relinked)
             {
                 PeripheralOutputs.PublishLinks(table);
                 PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL links: {table.ByDevice.Count} row(s), {table.ByPath.Count} path(s)");
@@ -199,6 +243,30 @@ namespace PadForge.Common.Input.Peripherals
             {
                 try { CapabilitiesChanged?.Invoke(); } catch { }
             }
+            // Battery mode is drawn on demand, and a device that gained or
+            // lost a path is drawn on the next pass, so both ask for one once
+            // the snapshot and the table that maps a unit to its row are
+            // published. A new path reaches slots whose last pass lit
+            // nothing too.
+            if (relinked) UserEffectsDispatcher.RequestPeripheralRefreshAll(evenUnlit: true);
+            else if (charge) UserEffectsDispatcher.RequestPeripheralRefreshAll();
+        }
+
+        /// <summary>Whether any unit's charge differs between two snapshots, a
+        /// unit found or gone included.</summary>
+        internal static bool ChargesChanged(HidppSnapshot before, HidppSnapshot after)
+        {
+            if (ReferenceEquals(before, after)) return false;
+            var old = new Dictionary<string, int>(StringComparer.Ordinal);
+            foreach (var unit in before?.Units ?? Array.Empty<HidppUnit>())
+                old[unit.Key] = unit.BatteryPercent;
+            int seen = 0;
+            foreach (var unit in after?.Units ?? Array.Empty<HidppUnit>())
+            {
+                if (!old.TryGetValue(unit.Key, out int percent) || percent != unit.BatteryPercent) return true;
+                seen++;
+            }
+            return seen != old.Count;
         }
 
         /// <summary>The Sensa worker runs while the Sensa row is assigned to
@@ -255,6 +323,12 @@ namespace PadForge.Common.Input.Peripherals
         /// pulse ends on its own.</summary>
         public void WaitForSilence(int waitMs) => _gameSense.WaitForSilence(waitMs);
 
+        /// <summary>For an abnormal exit: hands the HID++ units lit directly
+        /// back to their own effect (<see cref="HidppBackend.ReleaseClaimedNow"/>).
+        /// Chroma and GameSense end their sessions on their own timeouts, and
+        /// the LED SDK goes with the process.</summary>
+        public void ReleaseLightingNow() => _hidpp.ReleaseClaimedNow();
+
         private void StopSensa()
         {
             var sensa = Interlocked.Exchange(ref _sensa, null);
@@ -269,6 +343,8 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (Interlocked.Exchange(ref _disposed, 1) != 0) return;
             Stop();
+            _ledSdk?.Dispose();
+            _chroma?.Dispose();
             _gameSense.Dispose();
             _hidpp.Dispose();
             _wake.Dispose();

@@ -58,7 +58,6 @@ namespace PadForge.Tests
                     "Dashboard_RemoteLink",
                     "Dashboard_HeadTracking",
                     "Dashboard_MotionServer",
-                    "Dashboard_LightbarMirrors",
                     "Dashboard_Overlays",
                     "Dashboard_TouchpadOverlay",
                 });

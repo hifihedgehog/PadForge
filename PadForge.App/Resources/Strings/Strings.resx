@@ -269,19 +269,6 @@
   <data name="Dashboard_Services" xml:space="preserve"><value>Services</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Motion Server</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protocol server for gyro and accelerometer data.</value></data>
-  <data name="Dashboard_Chroma" xml:space="preserve"><value>Razer Chroma</value></data>
-  <data name="Dashboard_ChromaDescription" xml:space="preserve"><value>Forwards the lightbar color a game sets on a virtual PlayStation controller to your Razer Chroma devices. PadForge appears in Razer Synapse as a Chroma app, where you scope or disable it.</value></data>
-  <data name="Dashboard_EnableChroma" xml:space="preserve"><value>Mirror Lightbar to Razer Chroma</value></data>
-  <data name="Dashboard_ChromaWaiting" xml:space="preserve"><value>Razer Synapse not detected. Retrying.</value></data>
-  <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>Connected to Razer Chroma</value></data>
-  <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>Requires Razer Synapse with Chroma Connect. Works with any physical controller: the color comes from the virtual pad the game paints.</value></data>
-  <data name="Dashboard_Lightsync" xml:space="preserve"><value>Logitech LIGHTSYNC</value></data>
-  <data name="Dashboard_LightsyncDescription" xml:space="preserve"><value>Forwards the lightbar color a game sets on a virtual PlayStation controller to your Logitech LIGHTSYNC devices through Logitech G HUB.</value></data>
-  <data name="Dashboard_EnableLightsync" xml:space="preserve"><value>Mirror Lightbar to Logitech LIGHTSYNC</value></data>
-  <data name="Dashboard_LightsyncWaiting" xml:space="preserve"><value>Logitech G HUB not detected. Retrying.</value></data>
-  <data name="Dashboard_LightsyncConnected" xml:space="preserve"><value>Connected to Logitech LIGHTSYNC</value></data>
-  <data name="Dashboard_LightsyncFooter" xml:space="preserve"><value>Requires Logitech G HUB (or Logitech Gaming Software). Works with any physical controller: the color comes from the virtual pad the game paints.</value></data>
-  <data name="Dashboard_LightbarMirrors" xml:space="preserve"><value>Lightbar Mirrors</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Enable DSU Motion Server (CemuHook Motion Provider Protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Port</value></data>
   <data name="Dashboard_WebControllerPort" xml:space="preserve"><value>Web Controller Port</value></data>
@@ -872,6 +859,25 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Set the lightbar base color and audio behavior on the assigned physical controller. Game writes always win. User settings apply when no game is driving the lightbar.</value></data>
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>While set to Player Number, the pad idles showing its virtual controller's player identity: the Sony player color on the lightbar (1 blue, 2 red, 3 green, 4 pink) and the matching player pips on a DualSense. Every device on the same virtual controller shows the same number. Games take over whenever they write lighting, anything you set here always wins, and Off turns a light fully dark.</value></data>
+  <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>This virtual controller lights the device with the same modes a DualSense lightbar has, set here for this controller alone. On a PlayStation virtual controller, a game that writes the lightbar takes over the way it does on a DualSense.</value></data>
+  <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Control This Device’s Lighting</value></data>
+  <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Off stops this virtual controller from lighting the device. A vendor row, or another device of its kind lit through the same software, can still set its color. A Set Chroma Color macro on this virtual controller still paints a Razer device.</value></data>
+  <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>Colors go straight to {0}.</value></data>
+  <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>This device has not answered yet. Its colors show once it wakes up.</value></data>
+  <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Colors go through {0}.</value></data>
+  <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} lights every device of this kind at once, so the one on Virtual Controller {1} sets their color.</value></data>
+  <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} lights every device of this kind at once, so the {1} row on Virtual Controller {2} sets their color.</value></data>
+  <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Virtual Controller {0} also lights this device, and its color shows.</value></data>
+  <data name="Pad_Lighting_RouteOtherControllerOnly" xml:space="preserve"><value>Virtual Controller {0} lights this device.</value></data>
+  <data name="Pad_Lighting_RouteOtherRow" xml:space="preserve"><value>Another row of this device on this virtual controller sets its color.</value></data>
+  <data name="Pad_Lighting_RouteOtherRowOnly" xml:space="preserve"><value>Another row of this device on this virtual controller lights it.</value></data>
+  <data name="Pad_Lighting_RouteWaiting" xml:space="preserve"><value>Waiting for {0}. Colors show once it runs.</value></data>
+  <data name="Pad_Lighting_RouteCannotLight" xml:space="preserve"><value>The Logitech LED engine on this PC cannot light this kind of device.</value></data>
+  <data name="Pad_Lighting_RouteVendorRow" xml:space="preserve"><value>Lights the devices {0} reaches that no assigned device lights on its own, such as {1}.</value></data>
+  <data name="Pad_Lighting_RouteVendorRowWaiting" xml:space="preserve"><value>Waiting for {0}. Once it runs, this row lights the devices it reaches that no assigned device lights on its own, such as {1}.</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>headsets, mousepads and Chroma Link strips</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>headsets, mousepads and speakers</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headsets</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Enter a six-digit hex color (RRGGBB or #RRGGBB) and press Enter or click away to apply.</value></data>
@@ -3070,6 +3076,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>Analog Keyboard</value></data>
   <data name="DeviceType_WebMenus" xml:space="preserve"><value>Web Menus</value></data>
   <data name="DeviceType_PeripheralHaptics" xml:space="preserve"><value>Haptics</value></data>
+  <data name="DeviceType_PeripheralLighting" xml:space="preserve"><value>Lighting</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>Head Yaw</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>Head Pitch</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>Head Roll</value></data>
@@ -3197,8 +3204,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Macro_GuideLedBrightnessName" xml:space="preserve"><value>Guide LED Brightness</value></data>
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Switch Layer</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Set Chroma Color</value></data>
-  <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Paints every Razer Chroma device one color while the action runs.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Paints every Razer Chroma device this color for the duration above, then hands the lighting back to Razer Synapse, or to the mirrored lightbar color when Mirror Lightbar to Razer Chroma is on and a game has set one. To hold the color for as long as the trigger is held, use While Held with Until Release. When two macros paint at once, the one lower in the list wins, so put a full-press macro below its soft-press twin. Needs Razer Synapse running.</value></data>
+  <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Paints the Razer devices assigned to this virtual controller, and every other Razer device of their kinds, one color while the action runs.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>For the duration above, paints this color on the Razer devices assigned to this virtual controller and on every other Razer device of their kinds, or on every Razer device when the Razer Chroma row is assigned. It overrides any virtual controller’s Lighting tab, then hands the lighting back. To hold the color for as long as the trigger is held, use While Held with Until Release. When two macros paint at once, the one lower in the list wins, so put a full-press macro below its soft-press twin. When macros on two virtual controllers paint the same kind of Razer device, the smaller player number wins. Needs Razer Synapse running.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Show Dreamcast Screen</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Plays pictures on the VMU of each Dreamcast pad in a Bliss-Box port that feeds this slot, then returns each port to its own screen setting.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Show Dreamcast pictures: {0} × {1} ms, repeat count {2}</value></data>
@@ -3830,9 +3837,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
-  <data name="About_InterhapticsDesc" xml:space="preserve">
-    <value>Haptic engine and Razer provider behind the Razer Sensa HD haptics mirror. HAR.dll and Interhaptics.RazerProvider.dll ship inside PadForge, unmodified from the public Core SDK. By Wyvrn. Wyvrn EULA.</value>
-  </data>
+  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Haptic engine and Razer provider behind the Razer Sensa row's rumble. HAR.dll and Interhaptics.RazerProvider.dll ship inside PadForge, unmodified from the public Core SDK. By Wyvrn. Wyvrn EULA.</value></data>
   <data name="About_ValveCad" xml:space="preserve">
     <value>Valve Steam Controller CAD</value>
   </data>
@@ -3854,15 +3859,11 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="About_Colore" xml:space="preserve">
     <value>Colore</value>
   </data>
-  <data name="About_ColoreDesc" xml:space="preserve">
-    <value>Razer Chroma REST API framing corroboration for the lightbar mirror, by Adam Hellberg and Brandon Scott. MIT. Documentation only, no code ships.</value>
-  </data>
+  <data name="About_ColoreDesc" xml:space="preserve"><value>Razer Chroma REST API framing corroboration for Razer lighting, by Adam Hellberg and Brandon Scott. MIT. Documentation only, no code ships.</value></data>
   <data name="About_LogitechLedRefs" xml:space="preserve">
     <value>Logitech LED SDK references</value>
   </data>
-  <data name="About_LogitechLedRefsDesc" xml:space="preserve">
-    <value>Engine entry points and calling convention behind the LIGHTSYNC lightbar mirror, read from Artemis.Plugins (PolyForm Noncommercial), Aurora (MIT), LogiLed2Corsair (MIT), Logitech-LED (GPL-2.0), logitech-led-sdk-rs (MIT OR Apache-2.0) and RGB.NET (LGPL-2.1). PadForge loads G HUB's own engine and ships no Logitech code.</value>
-  </data>
+  <data name="About_LogitechLedRefsDesc" xml:space="preserve"><value>Engine entry points, calling convention and zone layout behind Logitech lighting through G HUB, read from Artemis.Plugins (PolyForm Noncommercial), Aurora (MIT), LogiLed2Corsair (MIT), Logitech-LED (GPL-2.0), logitech-led-sdk-rs (MIT OR Apache-2.0) and RGB.NET (LGPL-2.1). PadForge loads G HUB's own engine and ships no Logitech code.</value></data>
   <data name="About_Opentrack" xml:space="preserve">
     <value>opentrack</value>
   </data>
@@ -3889,6 +3890,8 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   </data>
   <data name="About_OpenXrRefs" xml:space="preserve"><value>OpenXR references</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>The runtime interface, structure layout and registry keys behind headset and motion controller input, read from the Khronos OpenXR-SDK headers (Apache-2.0) and cross-checked against VirtualDesktop-OpenXR (MIT). PadForge talks to your own installed runtime and ships no Khronos code.</value></data>
+  <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>Peripheral output references</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>The HID++ haptic, lighting, pairing and battery frames, read from Solaar (GPL-2.0), libratbag (MIT), LiveHaptics and the OpenLogi docs, the Razer product IDs from OpenRazer (GPL-2.0), the SteelSeries product IDs from OpenRGB (GPL-2.0) and rivalcfg (WTFPL), and the tactile and color handlers from the GameSense SDK. Documentation only, no code ships.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK references</value></data>
   <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>The event word layout behind G-key input comes from LogitechGkeyLib.h in the SDK. The library search order and shutdown follow Mumble’s GKey.cpp (BSD 3-Clause). PadForge loads whichever copy of the library is on the machine and ships no Logitech code.</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup and AnalogSense</value></data>
@@ -4084,7 +4087,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con and Pro Controller HID, HD rumble and home LED notes, by dekuNukem, with ndeadly's switch2_controller_research for the Switch 2. Read for protocol facts only.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense and DualShock 4 lightbar output-report byte usage. GPL-2.0, read as documentation only, no GPL code ships.</value></data>
+  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense and DualShock 4 lightbar output-report byte usage, and the Logitech HID++ 0x8070 lighting frames and collection layout. GPL-2.0, read as documentation only, no GPL code ships.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>The elevated update-verb pattern behind the in-app updater's helper. LGPL-3.0, read as documentation only, no LGPL code ships.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

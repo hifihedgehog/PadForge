@@ -191,10 +191,22 @@ namespace PadForge.Tests
 
             Assert.Null(PeripheralLinker.Build(new[] { Row(A, InputDeviceType.Mouse, PeripheralLinker.SteelSeriesVid, 0x170E) },
                 HidppSnapshot.Empty, PeripheralPresence.None).For(A));
-            Assert.Null(PeripheralLinker.Build(new[] { Row(A, InputDeviceType.Mouse, PeripheralLinker.SteelSeriesVid, 0x1824) },
-                HidppSnapshot.Empty, gg).For(A));
-            Assert.Null(PeripheralLinker.Build(new[] { Row(A, InputDeviceType.Keyboard, PeripheralLinker.SteelSeriesVid, 0x170E) },
-                HidppSnapshot.Empty, gg).For(A));
+            // Any other SteelSeries mouse, and a keyboard, take their GameSense
+            // color type (#494) and no rumble.
+            var other = PeripheralLinker.Build(new[] { Row(A, InputDeviceType.Mouse, PeripheralLinker.SteelSeriesVid, 0x1824) },
+                HidppSnapshot.Empty, gg).For(A);
+            Assert.Empty(other.Haptics);
+            Assert.Equal(new[] { new OutputPath(OutputFamily.GameSenseColor, "mouse") }, other.Lighting);
+            var keyboard = PeripheralLinker.Build(new[] { Row(A, InputDeviceType.Keyboard, PeripheralLinker.SteelSeriesVid, 0x1612) },
+                HidppSnapshot.Empty, gg).For(A);
+            Assert.Empty(keyboard.Haptics);
+            Assert.Equal(new[] { new OutputPath(OutputFamily.GameSenseColor, "keyboard") }, keyboard.Lighting);
+            // A Rival's keyboard collection is the Rival: its color type and
+            // its rumble.
+            var rivalKeys = PeripheralLinker.Build(new[] { Row(A, InputDeviceType.Keyboard, PeripheralLinker.SteelSeriesVid, 0x170E) },
+                HidppSnapshot.Empty, gg).For(A);
+            Assert.Equal(new[] { PeripheralLinker.GameSenseTactilePath }, rivalKeys.Haptics);
+            Assert.Equal(new[] { new OutputPath(OutputFamily.GameSenseColor, "mouse") }, rivalKeys.Lighting);
         }
 
         [Fact]
@@ -227,6 +239,8 @@ namespace PadForge.Tests
             Assert.Equal(0, (int)PeripheralRowKind.RazerChroma);
             Assert.Equal(1, (int)PeripheralRowKind.LogitechLightsync);
             Assert.Equal(2, (int)PeripheralRowKind.RazerSensa);
+            Assert.Equal(3, (int)PeripheralRowKind.SteelSeriesGG);
+            Assert.Equal(4, Enum.GetValues(typeof(PeripheralRowKind)).Length);
 
             using var md5 = MD5.Create();
             Guid Hash(string s) => new(md5.ComputeHash(Encoding.UTF8.GetBytes(s)));
@@ -236,6 +250,7 @@ namespace PadForge.Tests
                 (PeripheralRowKind.RazerChroma, "pfrazerchroma", InputDeviceType.PeripheralLighting),
                 (PeripheralRowKind.LogitechLightsync, "pflogilightsync", InputDeviceType.PeripheralLighting),
                 (PeripheralRowKind.RazerSensa, "pfrazersensa", InputDeviceType.PeripheralHaptics),
+                (PeripheralRowKind.SteelSeriesGG, "pfsteelseriesgg", InputDeviceType.PeripheralLighting),
             })
             {
                 var row = new PeripheralOutputRow(kind);
@@ -447,20 +462,29 @@ namespace PadForge.Tests
             Assert.True(incomplete);
         }
 
+        /// <summary>The name is an extra a missing answer only leaves
+        /// unknown. The type decides which rows a receiver's unit lights and
+        /// rumbles (#494), so a missing type answer makes the unit incomplete
+        /// and it is asked again in full.</summary>
         [Fact]
-        public void TheNameAndTypeAreExtras_AMissingAnswerOnlyLeavesThemUnknown()
+        public void TheNameIsAnExtra_AMissingTypeIsAskedAgain()
         {
             var device = new Scripted();
             device.Features[0x8070] = 0x0E;
             device.Zones = new[] { new ushort[] { 0x0001 } };
-            device.Silent = (f, fn, p) => f == 0x03;
+            device.Silent = (f, fn, p) => f == 0x03 && fn != 2;
 
             var unit = Describe(device, out bool incomplete);
-
             Assert.False(incomplete);
             Assert.Null(unit.Name);
-            Assert.Equal(-1, unit.DeviceType);
+            Assert.Equal(3, unit.DeviceType);
             Assert.True(unit.DirectRgb);
+
+            device.Silent = (f, fn, p) => f == 0x03;
+            unit = Describe(device, out incomplete);
+            Assert.True(incomplete);
+            Assert.Equal(-1, unit.DeviceType);
+            Assert.False(unit.DirectRgb);
         }
 
         [Fact]
@@ -1151,7 +1175,7 @@ namespace PadForge.Tests
             PeripheralOutputs.SetLighting(B, slot: 0, player: 1, 0x44, 0x55, 0x66);
             Assert.True(PeripheralOutputs.LightingVersion > version);
             Assert.True(PeripheralOutputs.TryResolveColor(path, out int rgb, out var ruler));
-            Assert.Equal(B, ruler);
+            Assert.Equal(B, ruler.Device);
             Assert.Equal(0x445566, rgb);
 
             // The same color again is no change.
@@ -1166,7 +1190,7 @@ namespace PadForge.Tests
             PeripheralOutputs.ReleaseLighting(B, slot: 0);
             Assert.False(PeripheralOutputs.IsLit(B));
             Assert.True(PeripheralOutputs.TryResolveColor(path, out rgb, out ruler));
-            Assert.Equal(A, ruler);
+            Assert.Equal(A, ruler.Device);
             Assert.Equal(0x112233, rgb);
 
             PeripheralOutputs.ReleaseSlot(2);
@@ -1407,14 +1431,17 @@ namespace PadForge.Tests
             {
                 new DeviceLinks { Device = rival, Haptics = new[] { PeripheralLinker.GameSenseTactilePath } },
             }));
-            using var backend = new GameSenseBackend(() => new GameSenseTactile(coreProps, 1000),
+            using var backend = new GameSenseBackend(() => new GameSenseClient(coreProps, 1000),
                 _ => Volatile.Read(ref player), 2);
             backend.Start();
 
             PeripheralOutputs.SetMotors(rival, 65535, 65535);
             Assert.True(SpinWait.SpinUntil(() => server.EventValues().LastOrDefault() > 0, 5000), "the level was posted");
             Assert.Equal(new[] { "/game_metadata", "/bind_game_event" }, server.Paths().Take(2));
-            Assert.Equal(BackendState.Connected, PeripheralOutputs.StateOf(OutputFamily.GameSenseTactile));
+            // The worker reports the state once the level's post returns, and
+            // the server records the post before it answers.
+            Assert.True(SpinWait.SpinUntil(
+                () => PeripheralOutputs.StateOf(OutputFamily.GameSenseTactile) == BackendState.Connected, 1000));
 
             // The Rival leaves its controller: the motor stops at once, and
             // GG takes the mice back only after the release delay.
@@ -1437,7 +1464,7 @@ namespace PadForge.Tests
             {
                 new DeviceLinks { Device = rival, Haptics = new[] { PeripheralLinker.GameSenseTactilePath } },
             }));
-            using var backend = new GameSenseBackend(() => new GameSenseTactile(coreProps, 1000), _ => 1, 2);
+            using var backend = new GameSenseBackend(() => new GameSenseClient(coreProps, 1000), _ => 1, 2);
             backend.Start();
             PeripheralOutputs.SetMotors(rival, 65535, 0);
             Assert.True(SpinWait.SpinUntil(() => server.EventValues().LastOrDefault() > 0, 5000), "the level was posted");
@@ -1534,7 +1561,7 @@ namespace PadForge.Tests
             var silent = Profile(null, "silent");
 
             Assert.True(PeripheralSwitchMigration.Run(new[] { Switch(global: false) },
-                new List<ProfileData> { on, off, silent }, null, null, () => -1, Fresh));
+                new List<ProfileData> { on, off, silent }, null, null, _ => -1, Fresh));
 
             Assert.Single(on.Entries);
             Assert.Null(off.Entries);
@@ -1545,7 +1572,7 @@ namespace PadForge.Tests
             // A global switch that was on reaches the profile with no opinion.
             silent.EnableSensaHaptics = null;
             Assert.True(PeripheralSwitchMigration.Run(new[] { Switch(global: true) },
-                new List<ProfileData> { silent }, null, null, () => -1, Fresh));
+                new List<ProfileData> { silent }, null, null, _ => -1, Fresh));
             Assert.Single(silent.Entries);
         }
 
@@ -1554,13 +1581,13 @@ namespace PadForge.Tests
         {
             // On globally, off in the active profile: the live slot stays bare.
             Assert.False(PeripheralSwitchMigration.Run(new[] { Switch(global: true) },
-                new List<ProfileData>(), Profile(false, "active"), null, () => 1, Fresh));
+                new List<ProfileData>(), Profile(false, "active"), null, _ => 1, Fresh));
             Assert.Empty(SettingsManager.UserSettings.Items);
 
             // Off globally, on in the active profile: the live slot takes the row.
             var active = Profile(true, "active");
             Assert.True(PeripheralSwitchMigration.Run(new[] { Switch(global: false) },
-                new List<ProfileData>(), active, null, () => 1, Fresh));
+                new List<ProfileData>(), active, null, _ => 1, Fresh));
             var us = Assert.Single(SettingsManager.UserSettings.Items);
             Assert.Equal(Sensa, us.InstanceGuid);
             Assert.Equal(1, us.MapTo);
@@ -1571,7 +1598,7 @@ namespace PadForge.Tests
         public void TheDefaultTopologyTakesTheGlobalValue_OnceAndOffline()
         {
             Assert.True(PeripheralSwitchMigration.Run(new[] { Switch(global: true) },
-                new List<ProfileData>(), null, null, () => 0, Fresh));
+                new List<ProfileData>(), null, null, _ => 0, Fresh));
 
             var record = Assert.Single(SettingsManager.UserDevices.Items);
             Assert.Equal(Sensa, record.InstanceGuid);
@@ -1581,13 +1608,13 @@ namespace PadForge.Tests
             Assert.Equal(0, Assert.Single(SettingsManager.UserSettings.Items).MapTo);
 
             Assert.False(PeripheralSwitchMigration.Run(new[] { Switch(global: true) },
-                new List<ProfileData>(), null, null, () => 0, Fresh));
+                new List<ProfileData>(), null, null, _ => 0, Fresh));
             Assert.Single(SettingsManager.UserSettings.Items);
 
             // No controller: nothing to assign.
             SettingsManager.UserSettings = new SettingsCollection();
             Assert.False(PeripheralSwitchMigration.Run(new[] { Switch(global: true) },
-                new List<ProfileData>(), null, null, () => -1, Fresh));
+                new List<ProfileData>(), null, null, _ => -1, Fresh));
             Assert.Empty(SettingsManager.UserSettings.Items);
         }
 
@@ -1599,7 +1626,7 @@ namespace PadForge.Tests
                 p => p.EnableSensaHaptics, p => p.EnableSensaHaptics = null, Available: false);
 
             Assert.True(PeripheralSwitchMigration.Run(new[] { unavailable }, new List<ProfileData> { on },
-                Profile(true, "active"), Profile(true, "default"), () => 1, Fresh));
+                Profile(true, "active"), Profile(true, "default"), _ => 1, Fresh));
 
             Assert.Null(on.Entries);
             Assert.Null(on.EnableSensaHaptics);
@@ -1621,12 +1648,88 @@ namespace PadForge.Tests
             Assert.Empty(SettingsManager.UserSettings.Items);
         }
 
+        private static PeripheralSwitchMigration.LegacySwitch ChromaSwitch(bool global)
+            => new(PeripheralRowKind.RazerChroma, global, p => p.EnableChromaLightbar, p => p.EnableChromaLightbar = null);
+
+        /// <summary>A PlayStation controller carries the game's lightbar when
+        /// it is a DualSense or a DualShock 4, and no profile is the
+        /// PlayStation default, a DualSense.</summary>
+        [Fact]
+        public void TheLightbarProfiles_AreTheDualSenseAndTheDualShock4()
+        {
+            Assert.True(PeripheralSwitchMigration.DecodesLightbar("dualsense"));
+            Assert.True(PeripheralSwitchMigration.DecodesLightbar("dualsense-edge-bt"));
+            Assert.True(PeripheralSwitchMigration.DecodesLightbar("dualshock-4-v2-composite"));
+            Assert.True(PeripheralSwitchMigration.DecodesLightbar(null));
+            Assert.True(PeripheralSwitchMigration.DecodesLightbar(""));
+            Assert.False(PeripheralSwitchMigration.DecodesLightbar("dualshock-3"));
+
+            var created = new[] { true, true, true, true };
+            var ids = new[] { null, "dualshock-3", null, "dualsense" };
+            // Slot 1 shows first among the PlayStation slots but has no
+            // lightbar, slot 0 is not a PlayStation slot at all.
+            Assert.Equal(3, PeripheralSwitchMigration.FirstLightbarSlot(created, new[] { 1, 3, 2 }, i => ids[i]));
+            Assert.Equal(-1, PeripheralSwitchMigration.FirstLightbarSlot(created, new[] { 1 }, i => ids[i]));
+            Assert.Equal(-1, PeripheralSwitchMigration.FirstLightbarSlot(created, null, i => ids[i]));
+        }
+
+        /// <summary>A mirror switch's row goes to the first DualSense or
+        /// DualShock 4 in display order, not to the Xbox controller that
+        /// shows first, since the mirror showed only a game's lightbar. A
+        /// topology without one gets nothing.</summary>
+        [Fact]
+        public void AMirrorRow_GoesToTheFirstLightbarSlot_OrNowhere()
+        {
+            var profile = Profile(null);
+            Assert.True(PeripheralSwitchMigration.AddToProfile(profile, PeripheralRowKind.RazerChroma));
+            var entry = Assert.Single(profile.Entries);
+            Assert.Equal(PeripheralOutputRow.IdentityFor(PeripheralRowKind.RazerChroma), entry.InstanceGuid);
+            Assert.Equal(3, entry.MapTo);
+
+            var ds3 = Profile(null);
+            ds3.SlotProfileIds = new[] { null, null, null, "dualshock-3", null, null, null, null };
+            Assert.False(PeripheralSwitchMigration.AddToProfile(ds3, PeripheralRowKind.LogitechLightsync));
+            Assert.Null(ds3.Entries);
+
+            // The live topology gets the slot the kind asks for.
+            var asked = new List<PeripheralRowKind>();
+            Assert.True(PeripheralSwitchMigration.Run(new[] { ChromaSwitch(global: true) }, new List<ProfileData>(),
+                null, null, kind => { asked.Add(kind); return kind == PeripheralRowKind.RazerChroma ? 3 : -1; }, Fresh));
+            Assert.Equal(new[] { PeripheralRowKind.RazerChroma }, asked);
+            Assert.Equal(3, Assert.Single(SettingsManager.UserSettings.Items).MapTo);
+        }
+
+        /// <summary>A stored profile's display order is rebuilt the way the
+        /// live one is when the profile is applied: a profile saved before
+        /// slot orders existed reads in ascending index, and a saved order
+        /// that leaves a created slot out gets it appended.</summary>
+        [Fact]
+        public void AStoredProfilesOrder_IsRebuiltTheWayApplyingItRebuildsIt()
+        {
+            var legacy = new ProfileData
+            {
+                Name = "legacy",
+                SlotCreated = new[] { false, true, true, false, false, false, false, false },
+                SlotControllerTypes = new[] { 0, (int)VirtualControllerType.Xbox, (int)VirtualControllerType.PlayStation, 0, 0, 0, 0, 0 },
+            };
+            Assert.Equal(new[] { 2 }, PeripheralSwitchMigration.DisplayOrder(legacy, VirtualControllerType.PlayStation));
+            Assert.Equal(1, PeripheralSwitchMigration.FirstDisplayedSlot(legacy));
+            Assert.Equal(2, PeripheralSwitchMigration.RulingSlot(PeripheralRowKind.RazerChroma, legacy));
+            Assert.Equal(1, PeripheralSwitchMigration.RulingSlot(PeripheralRowKind.RazerSensa, legacy));
+
+            var partial = Profile(null);
+            partial.SlotCreated[5] = true;
+            partial.SlotControllerTypes[5] = (int)VirtualControllerType.PlayStation;
+            partial.PlayStationSlotOrder = new[] { 9, 5, 5 };
+            Assert.Equal(new[] { 5, 3 }, PeripheralSwitchMigration.DisplayOrder(partial, VirtualControllerType.PlayStation));
+        }
+
         [Fact]
         public void TheDefaultsStoredStateFollowsItsOwnValue()
         {
             var defaultSnapshot = Profile(null, "default");
             Assert.True(PeripheralSwitchMigration.Run(new[] { Switch(global: true) },
-                new List<ProfileData>(), Profile(false, "active"), defaultSnapshot, () => 1, Fresh));
+                new List<ProfileData>(), Profile(false, "active"), defaultSnapshot, _ => 1, Fresh));
             Assert.Single(defaultSnapshot.Entries);
             Assert.Empty(SettingsManager.UserSettings.Items);
         }

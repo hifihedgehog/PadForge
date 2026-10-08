@@ -144,8 +144,9 @@ namespace PadForge.Common
                 // Profiles exported before the v4.x schema rename carry the
                 // per-(slot, device) configs under the legacy element name.
                 profile.MigrateLegacySchema();
-                // A profile exported before #494 may carry the Razer Sensa
-                // switch, which becomes an assignment of the Razer Sensa row.
+                // A profile exported before #494 may carry the Razer Chroma,
+                // Logitech LIGHTSYNC and Razer Sensa switches, each of which
+                // becomes an assignment of its row.
                 PeripheralSwitchMigration.MigrateImported(profile);
                 profile.Id = Guid.NewGuid().ToString("N");
 

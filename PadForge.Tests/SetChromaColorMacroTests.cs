@@ -12,10 +12,11 @@ namespace PadForge.Tests
 {
     /// <summary>
     /// The Set Chroma Color macro action (issue #468). Both dispatch loops
-    /// carry it, and it asserts its color on every frame it is current,
-    /// which the Chroma service turns into lighting (ChromaLightbarTests pin
-    /// that half). The loops' sink is swapped for a recorder here, so these
-    /// tests never touch the service's process-wide color.
+    /// carry it, and it asserts its color for its own slot on every frame it
+    /// is current, which the Chroma worker paints onto the Razer devices
+    /// assigned to that slot (#494, ChromaBackendTests pin that half). The
+    /// loops' sink is swapped for a recorder here, so these tests never
+    /// touch the process-wide assertion state.
     /// </summary>
     [Collection("SettingsManagerStatics")]
     public class SetChromaColorMacroTests
@@ -46,15 +47,56 @@ namespace PadForge.Tests
         }
 
         /// <summary>Runs <paramref name="body"/> with the loops' Chroma sink
-        /// recording every assertion.</summary>
-        private static List<(byte R, byte G, byte B)> Recording(Action body)
+        /// recording every assertion's color, and the slots it named in
+        /// <paramref name="slots"/>.</summary>
+        private static List<(byte R, byte G, byte B)> Recording(Action body, List<int> slots = null)
         {
             var calls = new List<(byte, byte, byte)>();
             var saved = InputManager.MacroChromaSink;
-            InputManager.MacroChromaSink = (r, g, b) => calls.Add((r, g, b));
+            InputManager.MacroChromaSink = (slot, r, g, b) =>
+            {
+                calls.Add((r, g, b));
+                slots?.Add(slot);
+            };
             try { body(); }
             finally { InputManager.MacroChromaSink = saved; }
             return calls;
+        }
+
+        /// <summary>The color is the macro's own slot's (#494): the Chroma
+        /// worker paints the Razer devices assigned to that slot only.</summary>
+        [Fact]
+        public void TheAssertion_CarriesTheMacrosSlot()
+        {
+            var im = new InputManager();
+            var m = GamepadMacro("slot two", Gamepad.A, Chroma(9, 8, 7));
+            m.PadIndex = 2;
+            var slots = new List<int>();
+            var calls = Recording(() =>
+            {
+                var gp = new Gamepad { Buttons = Gamepad.A };
+                im.EvaluateSlotMacros(ref gp, new[] { m });
+            }, slots);
+            Assert.Equal(((byte)9, (byte)8, (byte)7), Assert.Single(calls));
+            Assert.Equal(2, Assert.Single(slots));
+
+            // The production sink is the facade's per-slot assertion.
+            string src = System.IO.File.ReadAllText(System.IO.Path.Combine(RepoRoot(),
+                "PadForge.App", "Common", "Input", "InputManager.Step4b.EvaluateMacros.cs"));
+            Assert.Contains("NoteChromaColor(macro.PadIndex, action.LightbarR, action.LightbarG, action.LightbarB);", src);
+            Assert.Equal(2, src.Split("NoteChromaColor(macro.PadIndex,").Length - 1);
+            // Each loop hands the frame's colors to the sink once, after it.
+            Assert.Equal(2, src.Split("FlushChromaColors();").Length - 1);
+            Assert.Contains("PadForge.Common.Input.Peripherals.PeripheralOutputs.AssertChromaMacro;", src);
+        }
+
+        private static string RepoRoot()
+        {
+            var dir = new System.IO.DirectoryInfo(AppContext.BaseDirectory);
+            while (dir != null && !System.IO.File.Exists(System.IO.Path.Combine(dir.FullName, "PadForge.sln")))
+                dir = dir.Parent;
+            Assert.NotNull(dir);
+            return dir.FullName;
         }
 
         [Fact]
@@ -111,21 +153,25 @@ namespace PadForge.Tests
         }
 
         /// <summary>A soft-press macro and a full-press macro both current
-        /// in one frame: the one evaluated last asserts last, so its color
-        /// is the one the service paints.</summary>
+        /// in one frame: the sink hears the color of the one evaluated last,
+        /// once, so the color a reader sees never flips between the two
+        /// within a frame.</summary>
         [Fact]
-        public void TwoMacrosInOneFrame_TheLastEvaluatedAssertsLast()
+        public void TwoMacrosInOneFrame_TheSinkHearsTheLastColorOnce()
         {
             var im = new InputManager();
             var soft = GamepadMacro("soft", Gamepad.A, Chroma(0, 255, 0));
             var full = GamepadMacro("full", Gamepad.B, Chroma(255, 0, 0));
             var calls = Recording(() =>
             {
-                var gp = new Gamepad { Buttons = (ushort)(Gamepad.A | Gamepad.B) };
-                im.EvaluateSlotMacros(ref gp, new[] { soft, full });
+                for (int frame = 0; frame < 3; frame++)
+                {
+                    var gp = new Gamepad { Buttons = (ushort)(Gamepad.A | Gamepad.B) };
+                    im.EvaluateSlotMacros(ref gp, new[] { soft, full });
+                }
             });
-            Assert.Equal(((byte)255, (byte)0, (byte)0), calls[^1]);
-            Assert.Equal(2, calls.Count);
+            Assert.Equal(3, calls.Count);
+            Assert.All(calls, c => Assert.Equal(((byte)255, (byte)0, (byte)0), c));
         }
 
         [Fact]

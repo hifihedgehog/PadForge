@@ -19,7 +19,10 @@ namespace PadForge.Common.Input
         /// that stands behind it.</summary>
         internal static bool PeripheralRowWanted(PeripheralRowKind kind, PeripheralPresence presence) => kind switch
         {
+            PeripheralRowKind.RazerChroma => presence.RazerSynapse,
+            PeripheralRowKind.LogitechLightsync => presence.LogitechLedSdk,
             PeripheralRowKind.RazerSensa => presence.RazerSynapse && presence.SensaPlatform,
+            PeripheralRowKind.SteelSeriesGG => presence.SteelSeriesGG,
             _ => false,
         };
 
@@ -75,9 +78,11 @@ namespace PadForge.Common.Input
         {
             if (!_peripheralRows.Remove(kind, out var row)) return;
             // A row going away mid-rumble owes its device a stop, the offline
-            // path's rule for every other device. Its record may already be
-            // gone, removed from the Devices page, so the stop keys on the id.
+            // path's rule for every other device, and its lighting goes back
+            // to the vendor's software. Its record may already be gone,
+            // removed from the Devices page, so both key on the id.
             PeripheralOutputs.StopHaptics(row.InstanceGuid);
+            PeripheralOutputs.ReleaseDevice(row.InstanceGuid);
             var ud = FindOnlineDeviceByInstanceGuid(row.InstanceGuid);
             if (ud != null)
             {

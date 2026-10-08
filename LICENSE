@@ -479,9 +479,9 @@ Protocol documentation references (no code from these projects ships)
   logitech-led-sdk-rs
   (https://github.com/nathaniel-daniel/logitech-led-sdk-rs, MIT OR
   Apache-2.0) and RGB.NET (https://github.com/DarthAffe/RGB.NET, LGPL-2.1):
-  the Logitech LED SDK engine entry points and calling convention behind the
-  LIGHTSYNC lightbar mirror. PadForge loads G HUB's own engine at run time
-  and ships no Logitech binary.
+  the Logitech LED SDK engine entry points, calling convention and zone
+  layout behind Logitech lighting through G HUB. PadForge loads G HUB's own
+  engine at run time and ships no Logitech binary.
   AudioEndPointLibrary (https://github.com/Belphemur/AudioEndPointLibrary,
   MIT): the layout of Windows' undocumented IPolicyConfig interface, which
   PadForge uses to re-enable a controller's audio endpoint.
@@ -753,7 +753,8 @@ Protocol documentation references (no code from these projects ships)
   published): Joy-Con and Pro Controller HID, HD rumble and home LED notes,
   and the Switch 2 controller commands and report notes.
   OpenRGB (https://gitlab.com/CalcProgrammer1/OpenRGB, GPL-2.0): DualSense
-  and DualShock 4 lightbar output-report byte usage.
+  and DualShock 4 lightbar output-report byte usage, and the Logitech HID++
+  0x8070 lighting frames and collection layout.
   OpenTabletDriver (https://github.com/OpenTabletDriver/OpenTabletDriver,
   LGPL-3.0): the elevated update-verb pattern behind the in-app updater's
   helper.
@@ -765,6 +766,18 @@ Protocol documentation references (no code from these projects ships)
   and performance-counter time conversion behind headset and motion
   controller input. PadForge talks to the runtime installed on the user's
   own machine and ships no Khronos binary.
+  Peripheral output references: the HID++ haptic, lighting, pairing and
+  battery frames, read from Solaar (https://github.com/pwr-Solaar/Solaar,
+  GPL-2.0), libratbag (https://github.com/libratbag/libratbag, MIT, Red
+  Hat, Inc. and David Herrmann), LiveHaptics
+  (https://github.com/Paul00O/LiveHaptics, no license published) and the
+  OpenLogi docs (https://openlogi.org/hidpp/features/x19b0-haptic-feedback,
+  no license published), the Razer product IDs from OpenRazer
+  (https://github.com/openrazer/openrazer, GPL-2.0), the SteelSeries
+  product IDs from OpenRGB (https://gitlab.com/CalcProgrammer1/OpenRGB,
+  GPL-2.0) and rivalcfg (https://github.com/flozz/rivalcfg, WTFPL), and
+  the tactile and color handlers from the GameSense SDK
+  (https://github.com/SteelSeries/gamesense-sdk, no license published).
   Racing telemetry references: the shared-memory and UDP layouts behind the
   wheel RPM shift LEDs, read from forza-data-web
   (https://github.com/geeooff/forza-data-web, Apache-2.0), forza-telemetry

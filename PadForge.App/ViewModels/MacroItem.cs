@@ -6618,15 +6618,18 @@ namespace PadForge.ViewModels
         /// the Steam Input action-set-layer graph shape.</summary>
         SwitchLayer = 55,
 
-        /// <summary>Paints every Razer Chroma device the action's color
+        /// <summary>Paints the action's color
         /// (<see cref="MacroAction.LightbarR"/>, G, B) while the action is
         /// current (issue #468, asked in discussion #463), the
-        /// <see cref="AxisHold"/> duration shape: asserted every frame, so
-        /// the color leaves when the action ends. Several macros asserting in
-        /// one frame resolve to the last one evaluated, which is how a
-        /// full-press macro listed below a soft-press one wins at the bottom
-        /// of the press. The Chroma service hands the lighting back to Synapse
-        /// once nothing asserts and the lightbar mirror is off. At the tail;
+        /// <see cref="AxisHold"/> duration shape: asserted every frame through
+        /// PeripheralOutputs.AssertChromaMacro for the macro's slot, so the
+        /// color leaves within MacroAssertWindowMs of the action ending. The
+        /// Chroma worker paints the categories of the Razer devices assigned
+        /// to that slot (every category when the Razer Chroma row is), ahead
+        /// of every Lighting-tab claim, whether or not those tabs control the
+        /// devices. Several macros asserting in one frame resolve to the last
+        /// one evaluated, which is how a full-press macro listed below a
+        /// soft-press one wins at the bottom of the press. At the tail;
         /// ordinal pinned.</summary>
         SetChromaColor = 56,
 

@@ -994,6 +994,18 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _lightbarColorCycleSmooth, value);
         }
 
+        private bool _peripheralLightingEnabled;
+        /// <summary>Whether this virtual controller lights a mouse or
+        /// keyboard whose own software sets its lighting (#494). Off by
+        /// default, so assigning a keyboard for its keys never repaints it.
+        /// The vendor lighting rows ignore it, since lighting is all they
+        /// carry.</summary>
+        public bool PeripheralLightingEnabled
+        {
+            get => _peripheralLightingEnabled;
+            set => SetProperty(ref _peripheralLightingEnabled, value);
+        }
+
         private int _lightbarRainbowBrightness = 100;
         /// <summary>Rainbow mode brightness, 0..100. The base Rainbow effect
         /// runs at full HSV value (V=1.0) which the firmware renders as
@@ -1715,6 +1727,10 @@ namespace PadForge.ViewModels
             _resetLightbarColorCycleSmooth ??= new RelayCommand(() => LightbarColorCycleSmooth = true);
         private RelayCommand _resetLightbarColorCycleSmooth;
 
+        public RelayCommand ResetPeripheralLightingEnabledCommand =>
+            _resetPeripheralLightingEnabled ??= new RelayCommand(() => PeripheralLightingEnabled = false);
+        private RelayCommand _resetPeripheralLightingEnabled;
+
         public RelayCommand ResetAudioLightbarSensitivityCommand =>
             _resetAudSens ??= new RelayCommand(() => AudioLightbarSensitivity = 4.0);
         private RelayCommand _resetAudSens;
@@ -2112,6 +2128,9 @@ namespace PadForge.ViewModels
         [XmlAttribute] public LightbarMode LightbarMode { get; set; } = LightbarMode.Off;
         [XmlAttribute] public int LightbarPeriodMs { get; set; } = 3000;
         [XmlAttribute] public bool LightbarColorCycleSmooth { get; set; } = true;
+        /// <summary>#494: off when absent, so a save from before the switch
+        /// leaves every mouse and keyboard to its own software.</summary>
+        [XmlAttribute] public bool PeripheralLightingEnabled { get; set; }
         [XmlAttribute] public int LightbarRainbowBrightness { get; set; } = 100;
         [XmlAttribute] public byte LightbarBatteryLowR  { get; set; } = 0xFF;
         [XmlAttribute] public byte LightbarBatteryLowG  { get; set; } = 0x00;

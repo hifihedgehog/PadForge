@@ -539,10 +539,17 @@ namespace PadForge.Common.Input
             {
                 foreach (var device in _failedDeliveries.Keys)
                     if (!guids.Contains(device)) _failedDeliveries.TryRemove(device, out _);
+                // Set before the no-change return, so the first change a
+                // dispatcher sees after a quiet first look still counts.
+                bool firstLook = !_assignmentSeen;
+                _assignmentSeen = true;
                 if (!AssignmentSetChanged(guids, _lastAssignedGuids)) return;
                 foreach (var g in _lastAssignedGuids)
                 {
                     if (guids.Contains(g)) continue;
+                    // A mouse or keyboard that left the slot (#494) is no
+                    // longer lit from it. Leaf call, no lock taken.
+                    Common.Input.Peripherals.PeripheralOutputs.ReleaseLighting(g, _padIndex);
                     _ownedLastDispatch.Remove(g);
                     _prevHadRumble.Remove(g);
                     _prevPadForgeWantsRightTrig.Remove(g);
@@ -557,6 +564,10 @@ namespace PadForge.Common.Input
                 // Keep the established devices-before-external lock order.
                 lock (s_externalStateLock)
                     s_externalState.Remove(_padIndex);
+                // The same rule for the slot's mice and keyboards (#494), but
+                // not on a new dispatcher's first look: a reorder rebuilds it
+                // after moving its controller's game color here.
+                if (!firstLook) Common.Input.Peripherals.GameLightbarCapture.Forget(_padIndex);
 
                 _lastAssignedGuids.Clear();
                 foreach (var g in guids) _lastAssignedGuids.Add(g);
@@ -564,6 +575,10 @@ namespace PadForge.Common.Input
         }
         private static readonly Dictionary<int, ExternalSubsystemState> s_externalState = new();
         private static readonly object s_externalStateLock = new();
+
+        /// <summary>Whether this dispatcher has looked at its slot's devices
+        /// yet. devices.SyncRoot only.</summary>
+        private bool _assignmentSeen;
 
         /// <summary>Captured external-write overrides that this dispatch
         /// frame should honor. Null fields mean "PadForge owns this
@@ -1073,6 +1088,83 @@ namespace PadForge.Common.Input
             return true;
         }
 
+        /// <summary>The lit mice, keyboards and lighting rows the last pass
+        /// colored (#494), so a refresh asked for a slot without any costs
+        /// nothing.</summary>
+        private volatile int _litPeripherals;
+
+        /// <summary>0 idle, 1 a refresh is queued or running, 2 another is
+        /// owed when it ends.</summary>
+        private int _peripheralRefreshState;
+        private long _peripheralRefreshAt;
+
+        /// <summary>Asks a slot's dispatcher for a pass over its lit
+        /// peripherals alone, because something they show changed outside it:
+        /// the game's lightbar on the slot's virtual
+        /// (<see cref="Common.Input.Peripherals.GameLightbarCapture"/>), or a
+        /// device's charge. One refresh runs at a time on the thread pool, at
+        /// most once per animation tick, and requests that arrive while it
+        /// runs fold into one more. A game that animates its lightbar every
+        /// frame therefore reaches the peripherals at the dispatcher's own
+        /// cadence, the HIDMaestro output reader that reports the color never
+        /// waits, and no Sony effect report is written for it.</summary>
+        internal static void RequestPeripheralRefresh(int padIndex, bool evenUnlit = false)
+        {
+            if (!_instances.TryGetValue(padIndex, out var d) || d == null || d._disposed) return;
+            // A slot that lit nothing last pass needs no refresh, unless a
+            // device gained a path since.
+            if (!evenUnlit && d._litPeripherals == 0) return;
+            while (true)
+            {
+                int state = System.Threading.Volatile.Read(ref d._peripheralRefreshState);
+                if (state == 2) return;
+                if (state == 1)
+                {
+                    if (System.Threading.Interlocked.CompareExchange(ref d._peripheralRefreshState, 2, 1) == 1) return;
+                    continue;
+                }
+                if (System.Threading.Interlocked.CompareExchange(ref d._peripheralRefreshState, 1, 0) == 0) break;
+            }
+            System.Threading.ThreadPool.UnsafeQueueUserWorkItem(
+                static state => ((UserEffectsDispatcher)state).RunPeripheralRefresh(), d);
+        }
+
+        private void RunPeripheralRefresh()
+        {
+            bool idle = false;
+            try
+            {
+                while (!_disposed)
+                {
+                    long wait = AnimTickMs - (Environment.TickCount64 - _peripheralRefreshAt);
+                    if (wait > 0) System.Threading.Thread.Sleep((int)Math.Min(wait, AnimTickMs));
+                    // Requests from here on owe one more pass.
+                    System.Threading.Volatile.Write(ref _peripheralRefreshState, 1);
+                    _peripheralRefreshAt = Environment.TickCount64;
+                    DispatchSnapshot(peripheralsOnly: true);
+                    if (System.Threading.Interlocked.CompareExchange(ref _peripheralRefreshState, 0, 1) == 1)
+                    {
+                        idle = true;
+                        return;
+                    }
+                }
+            }
+            catch
+            {
+                // A thread-pool fault must never take the process down.
+            }
+            finally
+            {
+                if (!idle) System.Threading.Volatile.Write(ref _peripheralRefreshState, 0);
+            }
+        }
+
+        /// <summary><see cref="RequestPeripheralRefresh"/> for every slot.</summary>
+        internal static void RequestPeripheralRefreshAll(bool evenUnlit = false)
+        {
+            foreach (var pad in _instances.Keys) RequestPeripheralRefresh(pad, evenUnlit);
+        }
+
         /// <summary>One apply pass on EVERY live dispatcher. Called after
         /// slot topology changes (create / delete / reorder) so each
         /// pad's player-identity idle floor (#191) picks up its new
@@ -1104,6 +1196,16 @@ namespace PadForge.Common.Input
                 .Remove(new System.Collections.Generic.KeyValuePair<int, UserEffectsDispatcher>(_padIndex, this));
         }
 
+        /// <summary>Whether a live dispatcher lights this slot. A slot left
+        /// without one, its virtual controller gone, lights nothing, so the
+        /// peripheral link pass drops its claims (#494). The release waits for
+        /// that pass rather than happening here, because a reorder disposes a
+        /// slot's dispatcher and registers its replacement a moment later, and
+        /// releasing in between would hand every device back and take it
+        /// again.</summary>
+        internal static bool HasLiveDispatcher(int padIndex)
+            => _instances.TryGetValue(padIndex, out var d) && d != null && !d._disposed;
+
         private void OnConfigChanged(object sender, PropertyChangedEventArgs e)
         {
             // Mode / period / overlay / macro-override changes can flip
@@ -1114,7 +1216,10 @@ namespace PadForge.Common.Input
             if (e.PropertyName == nameof(DeviceSlotConfig.LightbarMode)
                 || e.PropertyName == nameof(DeviceSlotConfig.LightbarPeriodMs)
                 || e.PropertyName == nameof(DeviceSlotConfig.InputReactiveMode)
-                || e.PropertyName == nameof(DeviceSlotConfig.MacroOverrideExpiresAtUtc))
+                || e.PropertyName == nameof(DeviceSlotConfig.MacroOverrideExpiresAtUtc)
+                // A mouse's or keyboard's control switch (#494) decides
+                // whether its animated mode counts toward the timer.
+                || e.PropertyName == nameof(DeviceSlotConfig.PeripheralLightingEnabled))
                 UpdateAnimTimer();
             if (e.PropertyName == nameof(DeviceSlotConfig.AudioPassthroughEnabled)
                 || e.PropertyName == nameof(DeviceSlotConfig.AudioMirrorSourceId))
@@ -1188,14 +1293,46 @@ namespace PadForge.Common.Input
                     && cfg.MacroOverrideHoldMode == MacroLightbarHoldMode.Reactive)
                 || cfg.InputReactiveMode != InputReactiveMode.Off);
 
+        /// <summary>Whether a device's config drives what this slot shows. A
+        /// mouse or keyboard whose Lighting tab leaves its lighting to its own
+        /// software shows nothing from here (#494), so its mode keeps no timer
+        /// running. A peripheral with no path now, asleep or offline or its
+        /// vendor's software closed, is decided by what this slot's last pass
+        /// saw (<paramref name="peripherals"/>, true for an online mouse or
+        /// keyboard): such a mouse follows its switch, and a vendor row or an
+        /// offline device drives nothing. Every other device keeps the old
+        /// rule.</summary>
+        internal static bool LightingDriven(Guid device, DeviceSlotConfig cfg,
+            IReadOnlyDictionary<Guid, bool> peripherals = null)
+        {
+            var links = Common.Input.Peripherals.PeripheralOutputs.Links.For(device);
+            if (links != null && links.Lighting.Length > 0)
+                return links.CatchAll || cfg?.PeripheralLightingEnabled == true;
+            if (peripherals != null && peripherals.TryGetValue(device, out bool canDrive))
+                return canDrive && cfg?.PeripheralLightingEnabled == true;
+            return true;
+        }
+
+        /// <summary>Devices the full pass has visited, every lane included,
+        /// for the test that a peripheral refresh never runs it.</summary>
+        private int _fullLaneVisits;
+        internal int FullLaneVisits => System.Threading.Volatile.Read(ref _fullLaneVisits);
+
+        /// <summary>The lit peripherals this slot's last pass saw, each true
+        /// when it is an online mouse or keyboard, false for a vendor row or
+        /// an offline device. Swapped whole, never changed after.</summary>
+        private volatile IReadOnlyDictionary<Guid, bool> _peripheralKinds = EmptyPeripheralKinds;
+        private static readonly IReadOnlyDictionary<Guid, bool> EmptyPeripheralKinds = new Dictionary<Guid, bool>();
+
         private bool HasTimerDemand()
         {
             if (_disposed || _config == null) return false;
             var configs = SlotPerDeviceConfigsProvider?.Invoke(_padIndex);
             if (configs != null && configs.Count > 0)
             {
+                var peripherals = _peripheralKinds;
                 foreach (var pair in configs)
-                    if (ConfigNeedsTimer(pair.Value)) return true;
+                    if (LightingDriven(pair.Key, pair.Value, peripherals) && ConfigNeedsTimer(pair.Value)) return true;
             }
             else if (ConfigNeedsTimer(_config)) return true;
             return !_failedDeliveries.IsEmpty || _slotNeedsRumbleTimer
@@ -1314,10 +1451,12 @@ namespace PadForge.Common.Input
             if (perDeviceCfgs != null && perDeviceCfgs.Count > 0)
             {
                 maxSensitivity = 0f;
+                var peripherals = _peripheralKinds;
                 foreach (var kvp in perDeviceCfgs)
                 {
                     var devCfg = kvp.Value;
                     if (devCfg == null) continue;
+                    if (!LightingDriven(kvp.Key, devCfg, peripherals)) continue;
                     var devMode = devCfg.LightbarMode;
                     if (IsAnimated(devMode)) anyAnimated = true;
                     if (IsAnimated(devMode) && !IsAudioMode(devMode)) anyTimeDrivenMode = true;
@@ -1625,7 +1764,59 @@ namespace PadForge.Common.Input
         private int _lastMoveSphereSig = -1;
         private long _lastMoveSphereLogMs;
 
-        private void DispatchSnapshot()
+        /// <summary>A mouse, keyboard or vendor row with lighting: one its
+        /// record says has it, so a device asleep keeps its claim, or one a
+        /// lighting path links now.</summary>
+        private static bool IsLitPeripheral(UserDevice ud)
+            => ud.HasPeripheralLighting || Common.Input.Peripherals.PeripheralOutputs.HasLighting(ud.InstanceGuid);
+
+        /// <summary>One lit peripheral's color for this slot (#494), or its
+        /// release when the device's own software keeps its lighting. True
+        /// when this slot lights it. Called under devices.SyncRoot: every
+        /// call below is a leaf, and the backends do the I/O.
+        ///
+        /// <para>The color is the Lighting tab's mode through the core every
+        /// lit device shares, under the game's lightbar the way a DualSense
+        /// takes it (<see cref="Common.Input.Peripherals.PeripheralLightingColor"/>).
+        /// Player Number shows this slot's own color, since each slot holds its
+        /// own claim and the claim from the smallest displayed player number
+        /// is the one the device shows (<see cref="Common.Input.Peripherals.PeripheralOutputs.Rules"/>).
+        /// The Sony lane's lowest-raw-index owner rule is deliberately not
+        /// used: it can disagree with the displayed numbers.</para></summary>
+        private bool LightPeripheral(UserDevice ud, IReadOnlyDictionary<Guid, DeviceSlotConfig> perDeviceCfgs,
+            DeviceSlotConfig anchor, float rawAudioPeak, long nowMs, int slotNumber)
+        {
+            Guid guid = ud.InstanceGuid;
+            DeviceSlotConfig devCfg = null;
+            if (perDeviceCfgs != null && perDeviceCfgs.TryGetValue(guid, out var resolved))
+                devCfg = resolved;
+            devCfg ??= anchor;
+            bool vendorRow = ud.Device is Common.Input.Peripherals.PeripheralOutputRow;
+            if (devCfg == null || (!vendorRow && !devCfg.PeripheralLightingEnabled))
+            {
+                Common.Input.Peripherals.PeripheralOutputs.ReleaseLighting(guid, _padIndex);
+                return false;
+            }
+
+            Common.Input.Peripherals.GameLightbarCapture.Read(_padIndex, nowMs, out int? fresh, out int? last);
+            float peak = Math.Clamp(rawAudioPeak * (float)devCfg.AudioLightbarSensitivity, 0f, 1f);
+            var state = _deviceStates.TryGetValue(guid, out var ds) ? ds : null;
+            uint pulse = state?.PulseColor ?? 0;
+            float pulseIntensity = ComputePulseIntensity(nowMs, devCfg);
+            // A Logitech device reports its charge over HID++. Any other
+            // holds Battery mode at its full-charge end, the web pad's rule.
+            int charge = Common.Input.Peripherals.PeripheralOutputs.BatteryOf(guid);
+            byte battery = (byte)Math.Clamp(charge < 0 ? 100 : charge, 0, 100);
+            Common.Input.Peripherals.PeripheralLightingColor.Resolve(devCfg, fresh, last, peak, nowMs,
+                _randomColor, pulse, pulseIntensity, battery, slotNumber, out byte r, out byte g, out byte b);
+            Common.Input.Peripherals.PeripheralOutputs.SetLighting(guid, _padIndex, slotNumber, r, g, b);
+            return true;
+        }
+
+        /// <param name="peripheralsOnly">Light the slot's mice, keyboards and
+        /// vendor rows and nothing else (#494): no Sony effect report, no web
+        /// pad or PS Move color. For a refresh only they need.</param>
+        private void DispatchSnapshot(bool peripheralsOnly = false)
         {
             // Snapshot once (Dispose can null the field on the UI thread while a
             // timer-thread dispatch is mid-flight).
@@ -1712,7 +1903,12 @@ namespace PadForge.Common.Input
             }
             _groupSlotsMask = groupMask;
             OnAssignmentSetObserved(guids, devices);
-            if (guids.Count == 0) return;
+            if (guids.Count == 0)
+            {
+                _litPeripherals = 0;
+                _peripheralKinds = EmptyPeripheralKinds;
+                return;
+            }
 
             // Payloads are built under the device lock and written after it.
             // PlayStationEffectWriter.Write does CreateFileW + WriteFile with a 1000 ms
@@ -1731,6 +1927,8 @@ namespace PadForge.Common.Input
             var pending = new List<(Guid Device, string Path, HMProfile Profile,
                 IReadOnlyDictionary<string, object> Fields, long Seq, long RecoveredThrough,
                 Guid SpeakerCleared, Guid BtBarReleased)>();
+            int litPeripherals = 0;
+            Dictionary<Guid, bool> peripheralKinds = null;
 
             lock (devices.SyncRoot)
             {
@@ -1767,8 +1965,25 @@ namespace PadForge.Common.Input
                     bool isPs = isDs5 || isDs4;
 
                     if (!guids.Contains(ud.InstanceGuid)) continue;
+                    if (peripheralsOnly)
+                    {
+                        if (isPs || !IsLitPeripheral(ud)) continue;
+                        (peripheralKinds ??= new Dictionary<Guid, bool>())[ud.InstanceGuid] =
+                            ud.IsOnline && ud.Device is not Common.Input.Peripherals.PeripheralOutputRow;
+                        if (!ud.IsOnline)
+                            Common.Input.Peripherals.PeripheralOutputs.ReleaseLighting(ud.InstanceGuid, _padIndex);
+                        else if (LightPeripheral(ud, perDeviceCfgs, cfg, rawAudioPeak, nowMs, playerNumber))
+                            litPeripherals++;
+                        continue;
+                    }
+                    System.Threading.Interlocked.Increment(ref _fullLaneVisits);
                     if (!ud.IsOnline)
                     {
+                        // An offline row lights nothing from this slot (#494),
+                        // and an offline peripheral keeps no timer running.
+                        if (!isPs && IsLitPeripheral(ud))
+                            (peripheralKinds ??= new Dictionary<Guid, bool>())[ud.InstanceGuid] = false;
+                        Common.Input.Peripherals.PeripheralOutputs.ReleaseLighting(ud.InstanceGuid, _padIndex);
                         _failedDeliveries.TryRemove(ud.InstanceGuid, out _);
                         // Remember the outage so the return re-arms below.
                         _deviceWasOffline.Add(ud.InstanceGuid);
@@ -1939,6 +2154,20 @@ namespace PadForge.Common.Input
                                 }
                             }
                         }
+                        continue;
+                    }
+
+                    // Mice, keyboards and the vendor lighting rows (#494): the
+                    // web pad's shape, one color per device through the same
+                    // core, handed to the peripheral backends instead of
+                    // written here, since a backend's I/O must never hold
+                    // this lock the poll thread needs.
+                    if (!isPs && IsLitPeripheral(ud))
+                    {
+                        (peripheralKinds ??= new Dictionary<Guid, bool>())[ud.InstanceGuid] =
+                            ud.Device is not Common.Input.Peripherals.PeripheralOutputRow;
+                        if (LightPeripheral(ud, perDeviceCfgs, cfg, rawAudioPeak, nowMs, playerNumber))
+                            litPeripherals++;
                         continue;
                     }
 
@@ -2467,6 +2696,9 @@ namespace PadForge.Common.Input
                     }
                 }
             }
+
+            _litPeripherals = litPeripherals;
+            _peripheralKinds = peripheralKinds ?? EmptyPeripheralKinds;
 
             // Lock released. Do the blocking HID I/O here, serialized against
             // every other dispatch's writes and ordered by capture sequence so

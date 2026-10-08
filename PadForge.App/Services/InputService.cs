@@ -144,8 +144,6 @@ namespace PadForge.Services
         private DispatcherTimer _uiTimer;
         private ForegroundMonitorService _foregroundMonitor;
         private ExternalControlService _externalControl;
-        private ChromaLightbarService _chromaService;
-        private LightsyncLightbarService _lightsyncService;
         private PadForge.Common.Input.Peripherals.PeripheralOutputHost _peripheralHost;
         private ProfileData _defaultProfileSnapshot;
 
@@ -2320,16 +2318,11 @@ namespace PadForge.Services
             // Serve the external-control pipe (#366) if the user opted in.
             StartExternalControlIfEnabled();
 
-            // Razer Chroma lightbar mirror (#373), opt-in.
-            StartChromaIfEnabled();
-
-            // Logitech LIGHTSYNC lightbar mirror (#382), opt-in.
-            StartLightsyncIfEnabled();
-
             // Haptic and RGB peripherals (#494): the host links mice,
             // keyboards and vendor rows to their outputs and runs the
             // backends, which reach a vendor only while something assigned
-            // uses it.
+            // uses it. The Razer Chroma (#373) and Logitech LIGHTSYNC (#382)
+            // lightbar mirrors became its vendor rows.
             StartPeripheralOutputs();
 
             // Capture default profile snapshot before any profile switches.
@@ -2536,8 +2529,6 @@ namespace PadForge.Services
                 _foregroundMonitor = null;
             }
             StopExternalControl();
-            StopChromaService();
-            StopLightsyncService();
             StopPeripheralOutputs();
             StopDsuServer();
             StopWebServer();
@@ -3631,8 +3622,6 @@ namespace PadForge.Services
             UpdateAnalogKeyboardsStatus();
             // Bliss-Box ports (#469): same cadence, same shape.
             UpdateBlissBoxStatus();
-            // Set Chroma Color (#468): the first action starts the service.
-            EnsureChromaForMacros();
 
             // Snapshot devices under lock to avoid cross-thread collection-modified
             // exceptions when the engine's UpdateDevices runs concurrently.
@@ -10033,27 +10022,6 @@ namespace PadForge.Services
                     StartDsuServerIfEnabled();
                 }
             }
-            else if (e.PropertyName == nameof(DashboardViewModel.EnableChromaLightbar))
-            {
-                if (_mainVm.Dashboard.EnableChromaLightbar)
-                    StartChromaIfEnabled();
-                else if (ChromaLightbarService.MacroColorRequested && _chromaService != null)
-                {
-                    // Set Chroma Color actions (#468) still use the service:
-                    // switch the mirror off and keep painting their colors.
-                    _chromaService.MirrorEnabled = false;
-                    _mainVm.Dashboard.ChromaStatus = Strings.Instance.Common_Stopped;
-                }
-                else
-                    StopChromaService();
-            }
-            else if (e.PropertyName == nameof(DashboardViewModel.EnableLightsyncLightbar))
-            {
-                if (_mainVm.Dashboard.EnableLightsyncLightbar)
-                    StartLightsyncIfEnabled();
-                else
-                    StopLightsyncService();
-            }
             else if (e.PropertyName == nameof(DashboardViewModel.EnableWebController))
             {
                 if (_mainVm.Dashboard.EnableWebController)
@@ -10235,103 +10203,6 @@ namespace PadForge.Services
             return "ok default";
         }
 
-        // ── Razer Chroma lightbar mirror (#373) ──
-
-        /// <summary>Runs the Chroma service while the lightbar mirror is on,
-        /// or once a Set Chroma Color action has run (#468). The service holds
-        /// a Synapse session only while it has something to paint, so running
-        /// it for macros costs an idle loop between presses.</summary>
-        private void StartChromaIfEnabled()
-        {
-            bool mirror = _mainVm.Dashboard.EnableChromaLightbar;
-            PadForge.Engine.SdlDiagLog.WriteLine(
-                $"CHROMA start? enabled={mirror} macros={ChromaLightbarService.MacroColorRequested} engine={_inputManager != null} live={_chromaService != null}");
-            if ((!mirror && !ChromaLightbarService.MacroColorRequested) || _inputManager == null)
-                return;
-            if (_chromaService != null)
-            {
-                _chromaService.MirrorEnabled = mirror;
-                return; // Already running.
-            }
-
-            _chromaService = new ChromaLightbarService { MirrorEnabled = mirror };
-            _chromaService.StateChanged += state =>
-            {
-                _dispatcher.BeginInvoke(() =>
-                {
-                    // The Dashboard line describes the mirror. A service that
-                    // runs for macro colors alone reads Stopped there.
-                    if (!_mainVm.Dashboard.EnableChromaLightbar)
-                    {
-                        _mainVm.Dashboard.ChromaStatus = Strings.Instance.Common_Stopped;
-                        return;
-                    }
-                    _mainVm.Dashboard.ChromaStatus = state switch
-                    {
-                        ChromaServiceState.Connected => Strings.Instance.Dashboard_ChromaConnected,
-                        ChromaServiceState.WaitingForSynapse => Strings.Instance.Dashboard_ChromaWaiting,
-                        _ => Strings.Instance.Common_Stopped,
-                    };
-                });
-            };
-            _chromaService.Start();
-        }
-
-        /// <summary>Starts the Chroma service the first time a Set Chroma
-        /// Color action runs with the mirror off (#468). On the dashboard
-        /// cadence: one volatile read while nothing has asked.</summary>
-        private void EnsureChromaForMacros()
-        {
-            if (_chromaService != null || !ChromaLightbarService.MacroColorRequested) return;
-            if (_inputManager == null || !_inputManager.IsRunning) return;
-            StartChromaIfEnabled();
-        }
-
-        private void StopChromaService()
-        {
-            if (_chromaService == null) return;
-            _chromaService.Dispose();
-            _chromaService = null;
-            _dispatcher.BeginInvoke(() =>
-                _mainVm.Dashboard.ChromaStatus = Strings.Instance.Common_Stopped);
-        }
-
-        // ── Logitech LIGHTSYNC lightbar mirror (#382) ──
-
-        private void StartLightsyncIfEnabled()
-        {
-            PadForge.Engine.SdlDiagLog.WriteLine(
-                $"LIGHTSYNC start? enabled={_mainVm.Dashboard.EnableLightsyncLightbar} engine={_inputManager != null} live={_lightsyncService != null}");
-            if (!_mainVm.Dashboard.EnableLightsyncLightbar || _inputManager == null)
-                return;
-            if (_lightsyncService != null)
-                return; // Already running.
-
-            _lightsyncService = new LightsyncLightbarService();
-            _lightsyncService.StateChanged += state =>
-            {
-                _dispatcher.BeginInvoke(() =>
-                {
-                    _mainVm.Dashboard.LightsyncStatus = state switch
-                    {
-                        LightsyncServiceState.Connected => Strings.Instance.Dashboard_LightsyncConnected,
-                        LightsyncServiceState.WaitingForGHub => Strings.Instance.Dashboard_LightsyncWaiting,
-                        _ => Strings.Instance.Common_Stopped,
-                    };
-                });
-            };
-            _lightsyncService.Start();
-        }
-
-        private void StopLightsyncService()
-        {
-            if (_lightsyncService == null) return;
-            _lightsyncService.Dispose();
-            _lightsyncService = null;
-            _dispatcher.BeginInvoke(() =>
-                _mainVm.Dashboard.LightsyncStatus = Strings.Instance.Common_Stopped);
-        }
-
         // ── Haptic and RGB peripherals (#494) ──
 
         /// <summary>Starts the peripheral host with the engine. Every output
@@ -10342,6 +10213,8 @@ namespace PadForge.Services
         {
             if (_inputManager == null || _peripheralHost != null) return;
             var host = new PadForge.Common.Input.Peripherals.PeripheralOutputHost();
+            var inputManager = _inputManager;
+            host.SlotHasController = pad => inputManager.HasVirtualControllerAt(pad);
             host.CapabilitiesChanged += OnPeripheralCapabilitiesChanged;
             _peripheralHost = host;
             host.Start();
@@ -13105,6 +12978,7 @@ namespace PadForge.Services
             // A tactile Rival (#494) plays until GG hears a zero, which only
             // the GameSense worker sends.
             try { _peripheralHost?.WaitForSilence(250); } catch { }
+            try { _peripheralHost?.ReleaseLightingNow(); } catch { }
             try { PadForge.Common.Input.HapticToneService.Shutdown(); } catch { }
             // #236: quiesce is an explicit silence edge; the shaker tone
             // must die with the other outputs.

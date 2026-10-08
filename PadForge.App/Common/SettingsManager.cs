@@ -519,8 +519,10 @@ namespace PadForge.Common.Input
 
             // A haptic peripheral removed mid-rumble (#494) leaves no row for
             // Step 2 to stop, and its backend would play the stored level on
-            // as soon as the row is found again.
+            // as soon as the row is found again. Its lighting goes back to the
+            // vendor's software the same way.
             PadForge.Common.Input.Peripherals.PeripheralOutputs.StopHaptics(instanceGuid);
+            PadForge.Common.Input.Peripherals.PeripheralOutputs.ReleaseDevice(instanceGuid);
 
             return removed;
         }

@@ -61,6 +61,11 @@ namespace PadForge.Common.Input.Peripherals
         public OutputPath[] Lighting { get; init; } = Array.Empty<OutputPath>();
         public OutputPath[] Haptics { get; init; } = Array.Empty<OutputPath>();
 
+        /// <summary>The HID++ units the row matches, whatever path lights or
+        /// rumbles it, so Battery mode reads a Logitech device's charge while
+        /// G HUB runs too.</summary>
+        public string[] HidppUnits { get; init; } = Array.Empty<string>();
+
         /// <summary>A vendor row (Razer Chroma, Logitech LIGHTSYNC,
         /// SteelSeries GG, Razer Sensa): it takes the paths no assigned
         /// device of its own claims, so a mouse set up on its own Lighting tab
@@ -116,7 +121,8 @@ namespace PadForge.Common.Input.Peripherals
                 var theirs = other.For(pair.Key);
                 if (theirs == null || theirs.CatchAll != pair.Value.CatchAll
                     || !SamePaths(theirs.Lighting, pair.Value.Lighting)
-                    || !SamePaths(theirs.Haptics, pair.Value.Haptics))
+                    || !SamePaths(theirs.Haptics, pair.Value.Haptics)
+                    || !theirs.HidppUnits.AsSpan().SequenceEqual(pair.Value.HidppUnits))
                     return false;
             }
             return true;
@@ -196,6 +202,7 @@ namespace PadForge.Common.Input.Peripherals
 
         private static PeripheralPresence s_presence = PeripheralPresence.None;
         private static HidppSnapshot s_hidpp = HidppSnapshot.Empty;
+        private static string[] s_ledSdkPaintable;
         private static readonly int[] s_states = new int[Enum.GetValues(typeof(OutputFamily)).Length];
 
         /// <summary>Raised when a backend's state, the presence of vendor
@@ -223,6 +230,23 @@ namespace PadForge.Common.Input.Peripherals
             {
                 var next = value ?? HidppSnapshot.Empty;
                 if (!ReferenceEquals(Interlocked.Exchange(ref s_hidpp, next), next)) RaiseStatusChanged();
+            }
+        }
+
+        /// <summary>The LED SDK paths the engine the worker last loaded can
+        /// paint, or null before any load and once nothing is claimed. The
+        /// Lighting tab names a device type that engine cannot paint instead
+        /// of a route.</summary>
+        public static string[] LedSdkPaintable
+        {
+            get => Volatile.Read(ref s_ledSdkPaintable);
+            set
+            {
+                var previous = Interlocked.Exchange(ref s_ledSdkPaintable, value);
+                bool same = previous == null || value == null
+                    ? previous == value
+                    : previous.AsSpan().SequenceEqual(value);
+                if (!same) RaiseStatusChanged();
             }
         }
 
@@ -354,12 +378,15 @@ namespace PadForge.Common.Input.Peripherals
 
         private sealed class LightClaim
         {
-            public int Slot;
             public int Player;
             public int Rgb;
         }
 
-        private static readonly ConcurrentDictionary<Guid, LightClaim> s_claims = new();
+        /// <summary>One claim per (device, slot): a mouse on two virtual
+        /// controllers holds one from each, and the ruling picks between
+        /// them the way it picks between two devices on a shared path, so
+        /// the two dispatchers never take turns repainting it.</summary>
+        private static readonly ConcurrentDictionary<(Guid Device, int Slot), LightClaim> s_claims = new();
         private static int s_lightingVersion;
 
         /// <summary>Bumped on every claim, release and color change, so a
@@ -369,26 +396,35 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Wakes the lighting backends on a change.</summary>
         public static event Action LightingChanged;
 
-        /// <summary>The color a lit row shows for the slot that owns it, from
-        /// the slot's effects dispatcher. <paramref name="player"/> is the
-        /// row's displayed player number, which decides a shared path.</summary>
+        /// <summary>Raised when a claim starts, ends or changes rank, never
+        /// for a color alone, so a tab naming the controller that rules a
+        /// shared path can follow it without redrawing at animation speed.
+        /// Any thread. The owner marshals.</summary>
+        public static event Action ClaimsChanged;
+
+        /// <summary>The color a lit row shows for one slot, from that slot's
+        /// effects dispatcher. <paramref name="player"/> is the slot's
+        /// displayed player number, which ranks this claim against the
+        /// device's claims from other slots and against other devices on a
+        /// shared path.</summary>
         public static void SetLighting(Guid device, int slot, int player, byte r, byte g, byte b)
         {
             int rgb = (r << 16) | (g << 8) | b;
-            bool changed = false;
-            s_claims.AddOrUpdate(device,
+            bool changed = false, ranked = false;
+            s_claims.AddOrUpdate((device, slot),
                 _ =>
                 {
                     changed = true;
-                    return new LightClaim { Slot = slot, Player = player, Rgb = rgb };
+                    ranked = true;
+                    return new LightClaim { Player = player, Rgb = rgb };
                 },
                 (_, claim) =>
                 {
                     lock (claim)
                     {
-                        if (claim.Slot != slot || claim.Player != player || claim.Rgb != rgb)
+                        if (claim.Player != player || claim.Rgb != rgb)
                         {
-                            claim.Slot = slot;
+                            ranked = claim.Player != player;
                             claim.Player = player;
                             claim.Rgb = rgb;
                             changed = true;
@@ -397,41 +433,90 @@ namespace PadForge.Common.Input.Peripherals
                     return claim;
                 });
             if (changed) BumpLighting();
+            if (ranked) RaiseClaimsChanged();
         }
 
-        /// <summary>The slot no longer lights this row: it left the slot, or
-        /// its Lighting tab gave the device back. A claim another slot holds
-        /// is left alone.</summary>
+        /// <summary>This slot no longer lights the row: the row left the
+        /// slot, or its Lighting tab gave the device back. Another slot's
+        /// claim on the same row is left alone.</summary>
         public static void ReleaseLighting(Guid device, int slot)
         {
-            if (!s_claims.TryGetValue(device, out var claim)) return;
-            bool mine;
-            lock (claim) mine = claim.Slot == slot;
-            if (mine && ((ICollection<KeyValuePair<Guid, LightClaim>>)s_claims)
-                    .Remove(new KeyValuePair<Guid, LightClaim>(device, claim)))
-                BumpLighting();
+            if (!s_claims.TryRemove((device, slot), out _)) return;
+            BumpLighting();
+            RaiseClaimsChanged();
         }
 
-        /// <summary>Every claim a slot holds, for a slot that went away.</summary>
+        /// <summary>Every claim a slot holds, for a slot whose effects
+        /// dispatcher went away with its virtual controller.</summary>
         public static void ReleaseSlot(int slot)
         {
             bool any = false;
-            foreach (var pair in s_claims)
-            {
-                bool mine;
-                lock (pair.Value) mine = pair.Value.Slot == slot;
-                if (mine && ((ICollection<KeyValuePair<Guid, LightClaim>>)s_claims).Remove(pair))
-                    any = true;
-            }
-            if (any) BumpLighting();
+            foreach (var key in s_claims.Keys)
+                if (key.Slot == slot && s_claims.TryRemove(key, out _)) any = true;
+            if (!any) return;
+            BumpLighting();
+            RaiseClaimsChanged();
         }
 
-        public static bool IsLit(Guid device) => s_claims.ContainsKey(device);
+        /// <summary>Every claim on a row, for a row that retired or was
+        /// removed from the Devices page.</summary>
+        public static void ReleaseDevice(Guid device)
+        {
+            bool any = false;
+            foreach (var key in s_claims.Keys)
+                if (key.Device == device && s_claims.TryRemove(key, out _)) any = true;
+            if (!any) return;
+            BumpLighting();
+            RaiseClaimsChanged();
+        }
+
+        /// <summary>Drops every claim whose device is no longer assigned to
+        /// its slot, or whose slot has no live effects dispatcher any more.
+        /// Unassigning a device runs no pass on its old slot's dispatcher,
+        /// and a slot whose virtual controller went away has none, so without
+        /// this a claim would hold its device on a color nobody sets. The link
+        /// pass calls it with the current assignments.</summary>
+        public static void PruneClaims(ISet<(Guid Device, int Slot)> assigned, Func<int, bool> slotLive = null)
+        {
+            if (assigned == null) return;
+            bool any = false;
+            foreach (var key in s_claims.Keys)
+            {
+                bool keep = assigned.Contains(key) && (slotLive == null || slotLive(key.Slot));
+                if (!keep && s_claims.TryRemove(key, out _)) any = true;
+            }
+            if (!any) return;
+            BumpLighting();
+            RaiseClaimsChanged();
+        }
+
+        /// <summary>Every claim, for the host's stop: the backends hand their
+        /// devices back on their own, and nothing claimed then carries into
+        /// the next engine start.</summary>
+        public static void ClearClaims()
+        {
+            if (s_claims.IsEmpty) return;
+            s_claims.Clear();
+            BumpLighting();
+            RaiseClaimsChanged();
+        }
+
+        public static bool IsLit(Guid device)
+        {
+            foreach (var key in s_claims.Keys)
+                if (key.Device == device) return true;
+            return false;
+        }
 
         private static void BumpLighting()
         {
             Interlocked.Increment(ref s_lightingVersion);
             try { LightingChanged?.Invoke(); } catch { }
+        }
+
+        private static void RaiseClaimsChanged()
+        {
+            try { ClaimsChanged?.Invoke(); } catch { }
         }
 
         /// <summary>One claimant of a path, as the ruling sees it.</summary>
@@ -454,32 +539,143 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The color a lighting path shows, or false when nothing
         /// assigned claims it, which is the backend's cue to hand the device
-        /// back to its own software.</summary>
-        public static bool TryResolveColor(OutputPath path, out int rgb, out Guid ruler)
+        /// back to its own software. <paramref name="ruler"/> is the winning
+        /// claim, for a tab naming the controller that rules a shared path.</summary>
+        public static bool TryResolveColor(OutputPath path, out int rgb, out Claimant ruler)
         {
             rgb = 0;
-            ruler = Guid.Empty;
+            ruler = default;
             var links = Links;
-            if (!links.ByPath.TryGetValue(path, out var devices)) return false;
-            Claimant best = default;
+            if (!links.ByPath.ContainsKey(path)) return false;
             bool found = false;
-            foreach (var device in devices)
+            foreach (var pair in s_claims)
             {
-                if (!s_claims.TryGetValue(device, out var claim)) continue;
-                var row = links.For(device);
+                var row = links.For(pair.Key.Device);
                 if (row == null || Array.IndexOf(row.Lighting, path) < 0) continue;
                 Claimant c;
-                lock (claim) c = new Claimant(device, row.CatchAll, claim.Player, claim.Slot, claim.Rgb);
-                if (!found || Rules(c, best))
+                lock (pair.Value)
+                    c = new Claimant(pair.Key.Device, row.CatchAll, pair.Value.Player, pair.Key.Slot, pair.Value.Rgb);
+                if (!found || Rules(c, ruler))
                 {
-                    best = c;
+                    ruler = c;
                     found = true;
                 }
             }
             if (!found) return false;
-            rgb = best.Rgb;
-            ruler = best.Device;
+            rgb = ruler.Rgb;
             return true;
+        }
+
+        public static bool TryResolveColor(OutputPath path, out int rgb)
+            => TryResolveColor(path, out rgb, out _);
+
+        // ─────────────────────────────────────────────
+        //  Set Chroma Color (#468), per slot
+        // ─────────────────────────────────────────────
+
+        /// <summary>How long a macro color outlives its latest assertion. The
+        /// action asserts on every poll, a millisecond apart, so this only
+        /// ever measures the gap after the action ends.</summary>
+        internal const int MacroAssertWindowMs = 120;
+
+        /// <summary>Per slot: the tick of the latest assertion shifted left
+        /// 24 bits, then the color, so one atomic read gives a matching
+        /// pair. Zero before any.</summary>
+        private static readonly long[] s_chromaMacro = new long[InputManager.MaxPads];
+
+        /// <summary>Raised when a slot's Set Chroma Color starts or changes
+        /// color. Any thread. Subscribers must not block.</summary>
+        internal static event Action ChromaMacroChanged;
+
+        /// <summary>A Set Chroma Color action is current on this slot (#468).
+        /// It paints the Razer devices assigned to the slot, whether or not
+        /// their Lighting tabs take control, and lets go within
+        /// <see cref="MacroAssertWindowMs"/> of the action ending. Called
+        /// from the poll thread on every frame the action is current.</summary>
+        public static void AssertChromaMacro(int slot, byte r, byte g, byte b)
+            => AssertChromaMacro(slot, r, g, b, Environment.TickCount64);
+
+        /// <summary><see cref="AssertChromaMacro(int, byte, byte, byte)"/> at
+        /// a given tick, so a test hands the assertion and the read one
+        /// clock.</summary>
+        internal static void AssertChromaMacro(int slot, byte r, byte g, byte b, long now)
+        {
+            if ((uint)slot >= (uint)s_chromaMacro.Length) return;
+            int rgb = (r << 16) | (g << 8) | b;
+            long next = (Math.Max(now, 1) << 24) | (long)rgb;
+            long previous = Interlocked.Exchange(ref s_chromaMacro[slot], next);
+            bool fresh = previous == 0 || (int)(previous & 0xFFFFFF) != rgb
+                || now - (previous >> 24) > MacroAssertWindowMs;
+            // Only the Chroma worker paints a macro color, so only it wakes.
+            if (fresh)
+            {
+                try { ChromaMacroChanged?.Invoke(); } catch { }
+            }
+        }
+
+        /// <summary>The slot's live Set Chroma Color, if one was asserted
+        /// within the window.</summary>
+        public static bool TryGetChromaMacro(int slot, long now, out int rgb)
+        {
+            rgb = 0;
+            if ((uint)slot >= (uint)s_chromaMacro.Length) return false;
+            long packed = Volatile.Read(ref s_chromaMacro[slot]);
+            if (packed == 0 || now - (packed >> 24) > MacroAssertWindowMs) return false;
+            rgb = (int)(packed & 0xFFFFFF);
+            return true;
+        }
+
+        /// <summary>The devices assigned to a slot, for a Set Chroma Color,
+        /// which paints the Razer devices among them.</summary>
+        public static ISet<Guid> DevicesOnSlot(int slot)
+        {
+            var set = new HashSet<Guid>();
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return set;
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                    if (us != null && us.MapTo == slot && us.InstanceGuid != Guid.Empty) set.Add(us.InstanceGuid);
+            }
+            return set;
+        }
+
+        /// <summary>A slot's displayed player number, or its index plus one
+        /// for a slot in no order list, the fallback every caller of
+        /// GetGlobalSlotNumber takes.</summary>
+        public static int DisplayedSlotNumber(int slot)
+        {
+            int number = SettingsManager.SlotOrders.GetGlobalSlotNumber(slot);
+            return number > 0 ? number : slot + 1;
+        }
+
+        /// <summary>True while any slot's Set Chroma Color is live.</summary>
+        public static bool AnyChromaMacro(long now)
+        {
+            for (int slot = 0; slot < s_chromaMacro.Length; slot++)
+                if (TryGetChromaMacro(slot, now, out _)) return true;
+            return false;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Battery
+        // ─────────────────────────────────────────────
+
+        /// <summary>A row's charge for the Battery lighting mode: the first
+        /// HID++ unit it links to that reports one, or -1. Razer and
+        /// SteelSeries software report no charge here, so those rows read
+        /// as unknown and the mode holds its full-charge color.</summary>
+        public static int BatteryOf(Guid device)
+        {
+            var links = Links.For(device);
+            if (links == null) return -1;
+            var units = Hidpp.Units;
+            foreach (var key in links.HidppUnits)
+            {
+                foreach (var unit in units)
+                    if (unit.Key == key && unit.BatteryPercent >= 0) return unit.BatteryPercent;
+            }
+            return -1;
         }
 
         /// <summary>The number a device ranks by on a shared haptic path
@@ -535,9 +731,11 @@ namespace PadForge.Common.Input.Peripherals
             PublishLinks(LinkTable.Empty);
             s_levels.Clear();
             s_claims.Clear();
+            Array.Clear(s_chromaMacro);
             Interlocked.Increment(ref s_lightingVersion);
             Volatile.Write(ref s_presence, PeripheralPresence.None);
             Volatile.Write(ref s_hidpp, HidppSnapshot.Empty);
+            Volatile.Write(ref s_ledSdkPaintable, null);
             for (int i = 0; i < s_states.Length; i++) Volatile.Write(ref s_states[i], 0);
         }
     }

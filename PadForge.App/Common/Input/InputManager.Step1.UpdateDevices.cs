@@ -1188,8 +1188,11 @@ namespace PadForge.Common.Input
                 catch { /* best effort */ }
             }
             // A haptic mouse or keyboard (#494) plays through a backend worker
-            // the SDL stop above never reaches, so its level drops here.
+            // the SDL stop above never reaches, so its level drops here, and
+            // its lighting goes back to the vendor's software until the
+            // dispatcher claims it again on its return.
             PadForge.Common.Input.Peripherals.PeripheralOutputs.StopHaptics(ud.InstanceGuid);
+            PadForge.Common.Input.Peripherals.PeripheralOutputs.ReleaseDevice(ud.InstanceGuid);
 
             // Dispose SDL handle.
             if (ud.Device != null)

@@ -207,6 +207,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0" Text="{Binding About_3doverstock, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,16,0" TextWrapping="Wrap"/>
@@ -561,168 +562,172 @@
                     <TextBlock Grid.Row="87" Grid.Column="1"
                                Text="{Binding About_PcscSharpDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="88" Text="{Binding About_ProtobufNet, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="88" Text="{Binding About_PeripheralOutputRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
                     <TextBlock Grid.Row="88" Grid.Column="1"
+                               Text="{Binding About_PeripheralOutputRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="89" Text="{Binding About_ProtobufNet, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="89" Grid.Column="1"
                                Text="{Binding About_ProtobufNetDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="89" Text="{Binding About_Psmoveapi, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="89" Grid.Column="1"
+                    <TextBlock Grid.Row="90" Text="{Binding About_Psmoveapi, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="90" Grid.Column="1"
                                Text="{Binding About_PsmoveapiDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="90" Text="{Binding About_QDollar, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="90" Grid.Column="1"
+                    <TextBlock Grid.Row="91" Text="{Binding About_QDollar, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="91" Grid.Column="1"
                                Text="{Binding About_QDollarDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="91" Text="{Binding About_QrCodeGen, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="91" Grid.Column="1"
+                    <TextBlock Grid.Row="92" Text="{Binding About_QrCodeGen, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="92" Grid.Column="1"
                                Text="{Binding About_QrCodeGenDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="92" Text="{Binding About_TelemetryRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="92" Grid.Column="1"
+                    <TextBlock Grid.Row="93" Text="{Binding About_TelemetryRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="93" Grid.Column="1"
                                Text="{Binding About_TelemetryRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="93" Text="{Binding About_RawInput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="93" Grid.Column="1"
+                    <TextBlock Grid.Row="94" Text="{Binding About_RawInput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="94" Grid.Column="1"
                                Text="{Binding About_RawInputDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="94" Text="{Binding About_RingConRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="94" Grid.Column="1"
+                    <TextBlock Grid.Row="95" Text="{Binding About_RingConRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="95" Grid.Column="1"
                                Text="{Binding About_RingConRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="95" Text="{Binding About_SAxense, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="95" Grid.Column="1"
+                    <TextBlock Grid.Row="96" Text="{Binding About_SAxense, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="96" Grid.Column="1"
                                Text="{Binding About_SAxenseDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="96" Text="{Binding About_Ds3Research, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="96" Grid.Column="1"
+                    <TextBlock Grid.Row="97" Text="{Binding About_Ds3Research, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="97" Grid.Column="1"
                                Text="{Binding About_Ds3ResearchDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="97" Text="{Binding About_SDL3, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="97" Grid.Column="1"
+                    <TextBlock Grid.Row="98" Text="{Binding About_SDL3, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="98" Grid.Column="1"
                                Text="{Binding About_SDL3Desc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="98" Text="{Binding About_GameControllerDb, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="98" Grid.Column="1"
+                    <TextBlock Grid.Row="99" Text="{Binding About_GameControllerDb, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="99" Grid.Column="1"
                                Text="{Binding About_GameControllerDbDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="99" Text="{Binding About_SerialControllerRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="99" Grid.Column="1"
+                    <TextBlock Grid.Row="100" Text="{Binding About_SerialControllerRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="100" Grid.Column="1"
                                Text="{Binding About_SerialControllerRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="100" Text="{Binding About_SipSorcery, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="100" Grid.Column="1"
+                    <TextBlock Grid.Row="101" Text="{Binding About_SipSorcery, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="101" Grid.Column="1"
                                Text="{Binding About_SipSorceryDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="101" Text="{Binding About_SpaceMouseRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="101" Grid.Column="1"
+                    <TextBlock Grid.Row="102" Text="{Binding About_SpaceMouseRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="102" Grid.Column="1"
                                Text="{Binding About_SpaceMouseRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="102" Text="{Binding About_SpecialK, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="102" Grid.Column="1"
+                    <TextBlock Grid.Row="103" Text="{Binding About_SpecialK, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="103" Grid.Column="1"
                                Text="{Binding About_SpecialKDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="103" Text="{Binding About_SpecialtyUsbRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="103" Grid.Column="1"
+                    <TextBlock Grid.Row="104" Text="{Binding About_SpecialtyUsbRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="104" Grid.Column="1"
                                Text="{Binding About_SpecialtyUsbRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="104" Text="{Binding About_SteamControllerRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="104" Grid.Column="1"
+                    <TextBlock Grid.Row="105" Text="{Binding About_SteamControllerRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="105" Grid.Column="1"
                                Text="{Binding About_SteamControllerRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="105" Text="{Binding About_SteamControllerSinger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="105" Grid.Column="1"
+                    <TextBlock Grid.Row="106" Text="{Binding About_SteamControllerSinger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="106" Grid.Column="1"
                                Text="{Binding About_SteamControllerSingerDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="106" Text="{Binding About_SteamHapticsSinger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="106" Grid.Column="1"
+                    <TextBlock Grid.Row="107" Text="{Binding About_SteamHapticsSinger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="107" Grid.Column="1"
                                Text="{Binding About_SteamHapticsSingerDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="107" Text="{Binding About_SteamKit2, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="107" Grid.Column="1"
+                    <TextBlock Grid.Row="108" Text="{Binding About_SteamKit2, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="108" Grid.Column="1"
                                Text="{Binding About_SteamKit2Desc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="108" Text="{Binding About_ThumbstickDeadzones, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="108" Grid.Column="1"
+                    <TextBlock Grid.Row="109" Text="{Binding About_ThumbstickDeadzones, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="109" Grid.Column="1"
                                Text="{Binding About_ThumbstickDeadzonesDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="109" Text="{Binding About_Touchmote, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="109" Grid.Column="1"
+                    <TextBlock Grid.Row="110" Text="{Binding About_Touchmote, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="110" Grid.Column="1"
                                Text="{Binding About_TouchmoteDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="110" Text="{Binding About_TrainControllerRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="110" Grid.Column="1"
+                    <TextBlock Grid.Row="111" Text="{Binding About_TrainControllerRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="111" Grid.Column="1"
                                Text="{Binding About_TrainControllerRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="111" Text="{Binding About_TriggerEffectGenerator, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="111" Grid.Column="1"
+                    <TextBlock Grid.Row="112" Text="{Binding About_TriggerEffectGenerator, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="112" Grid.Column="1"
                                Text="{Binding About_TriggerEffectGeneratorDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="112" Text="{Binding About_TritonLib, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="112" Grid.Column="1"
+                    <TextBlock Grid.Row="113" Text="{Binding About_TritonLib, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="113" Grid.Column="1"
                                Text="{Binding About_TritonLibDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="113" Text="{Binding About_UsbipWin2, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="113" Grid.Column="1"
+                    <TextBlock Grid.Row="114" Text="{Binding About_UsbipWin2, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="114" Grid.Column="1"
                                Text="{Binding About_UsbipWin2Desc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="114" Text="{Binding About_ValveCad, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="114" Grid.Column="1"
+                    <TextBlock Grid.Row="115" Text="{Binding About_ValveCad, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="115" Grid.Column="1"
                                Text="{Binding About_ValveCadDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="115" Text="{Binding About_ViGEmClient, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="115" Grid.Column="1"
+                    <TextBlock Grid.Row="116" Text="{Binding About_ViGEmClient, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="116" Grid.Column="1"
                                Text="{Binding About_ViGEmClientDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="116" Text="{Binding About_ViiperHbashton, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="116" Grid.Column="1"
+                    <TextBlock Grid.Row="117" Text="{Binding About_ViiperHbashton, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="117" Grid.Column="1"
                                Text="{Binding About_ViiperHbashtonDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="117" Text="{Binding About_Vosk, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="117" Grid.Column="1"
+                    <TextBlock Grid.Row="118" Text="{Binding About_Vosk, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="118" Grid.Column="1"
                                Text="{Binding About_VoskDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="118" Text="{Binding About_WheelRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="118" Grid.Column="1"
+                    <TextBlock Grid.Row="119" Text="{Binding About_WheelRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="119" Grid.Column="1"
                                Text="{Binding About_WheelRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="119" Text="{Binding About_WiiBrew, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="119" Grid.Column="1"
+                    <TextBlock Grid.Row="120" Text="{Binding About_WiiBrew, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="120" Grid.Column="1"
                                Text="{Binding About_WiiBrewDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="120" Text="{Binding About_WiimoteLib, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="120" Grid.Column="1"
+                    <TextBlock Grid.Row="121" Text="{Binding About_WiimoteLib, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="121" Grid.Column="1"
                                Text="{Binding About_WiimoteLibDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="121" Text="{Binding About_ModernWpf, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="121" Grid.Column="1"
+                    <TextBlock Grid.Row="122" Text="{Binding About_ModernWpf, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="122" Grid.Column="1"
                                Text="{Binding About_ModernWpfDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="122" Text="{Binding About_X1nput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="122" Grid.Column="1"
+                    <TextBlock Grid.Row="123" Text="{Binding About_X1nput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="123" Grid.Column="1"
                                Text="{Binding About_X1nputDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="123" Text="{Binding About_Xbledctl, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="123" Grid.Column="1"
+                    <TextBlock Grid.Row="124" Text="{Binding About_Xbledctl, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="124" Grid.Column="1"
                                Text="{Binding About_XbledctlDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="124" Text="{Binding About_XboxControllerRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="124" Grid.Column="1"
+                    <TextBlock Grid.Row="125" Text="{Binding About_XboxControllerRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="125" Grid.Column="1"
                                Text="{Binding About_XboxControllerRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="125" Text="{Binding About_XoneXow, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="125" Grid.Column="1"
+                    <TextBlock Grid.Row="126" Text="{Binding About_XoneXow, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="126" Grid.Column="1"
                                Text="{Binding About_XoneXowDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="126" Text="{Binding About_ZackslyIcons, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="126" Grid.Column="1"
+                    <TextBlock Grid.Row="127" Text="{Binding About_ZackslyIcons, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="127" Grid.Column="1"
                                Text="{Binding About_ZackslyIconsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="127" Text="{Binding About_MouseArt, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="127" Grid.Column="1"
+                    <TextBlock Grid.Row="128" Text="{Binding About_MouseArt, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="128" Grid.Column="1"
                                Text="{Binding About_MouseArtDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="128" Text="{Binding About_ZstdSharp, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="128" Grid.Column="1"
+                    <TextBlock Grid.Row="129" Text="{Binding About_ZstdSharp, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="129" Grid.Column="1"
                                Text="{Binding About_ZstdSharpDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
                 </Grid>
             </Border>

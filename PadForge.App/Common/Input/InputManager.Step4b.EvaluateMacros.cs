@@ -922,6 +922,7 @@ namespace PadForge.Common.Input
             if (_macroPassConsumedButtons != 0)
                 gp.Buttons = (ushort)((gp.Buttons & (ushort)~_macroPassConsumedButtons)
                                       | _macroPassOutputButtons);
+            FlushChromaColors();
         }
 
         /// <summary>Shift-layer gate for layer-scoped macros (translator
@@ -2802,11 +2803,49 @@ namespace PadForge.Common.Input
             return action.RepeatVcPulseOn;
         }
 
-        /// <summary>Where Set Chroma Color sends its color (#468): the Chroma
-        /// service's per-frame assertion. A seam so a test can watch both
-        /// dispatch loops without the service's process-wide state, which
-        /// the Chroma service tests reset from their own collection.</summary>
-        internal static Action<byte, byte, byte> MacroChromaSink = PadForge.Services.ChromaLightbarService.AssertMacroColor;
+        /// <summary>Where Set Chroma Color sends its color (#468): the slot's
+        /// per-frame assertion, which the Chroma worker paints onto the Razer
+        /// devices assigned to the slot (#494). A seam so a test can watch
+        /// both dispatch loops without the process-wide assertion state.</summary>
+        internal static Action<int, byte, byte, byte> MacroChromaSink =
+            PadForge.Common.Input.Peripherals.PeripheralOutputs.AssertChromaMacro;
+
+        /// <summary>Each slot's Set Chroma Color for the frame being
+        /// evaluated, packed 0x00RRGGBB, or -1. Two macros current at once
+        /// leave the last one evaluated here, and the sink hears only that
+        /// color once the slot's macros are done, so the color a reader sees
+        /// never flips between the two within a frame. Poll thread only.</summary>
+        private readonly int[] _frameChroma = CreateFrameChroma();
+        private bool _frameChromaAny;
+
+        private static int[] CreateFrameChroma()
+        {
+            var colors = new int[MaxPads];
+            System.Array.Fill(colors, -1);
+            return colors;
+        }
+
+        private void NoteChromaColor(int slot, byte r, byte g, byte b)
+        {
+            if ((uint)slot >= (uint)_frameChroma.Length) return;
+            _frameChroma[slot] = (r << 16) | (g << 8) | b;
+            _frameChromaAny = true;
+        }
+
+        /// <summary>Hands the frame's Set Chroma Color of each slot to the
+        /// sink, once.</summary>
+        private void FlushChromaColors()
+        {
+            if (!_frameChromaAny) return;
+            _frameChromaAny = false;
+            for (int slot = 0; slot < _frameChroma.Length; slot++)
+            {
+                int rgb = _frameChroma[slot];
+                if (rgb < 0) continue;
+                _frameChroma[slot] = -1;
+                MacroChromaSink(slot, (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb);
+            }
+        }
 
         /// <summary>Where Show Dreamcast Screen sends its pictures (#469): the
         /// screen service's queue, taking the slot, the pictures, the frame
@@ -2910,9 +2949,10 @@ namespace PadForge.Common.Input
                 case MacroActionType.SetChromaColor:
                     // Chroma color (#468): asserted every frame while
                     // current, the AxisHold duration shape, so the color
-                    // leaves when the action ends. No slot is involved:
-                    // Chroma paints the machine's devices.
-                    MacroChromaSink(action.LightbarR, action.LightbarG, action.LightbarB);
+                    // leaves when the action ends. It paints the Razer
+                    // devices assigned to this macro's controller (#494).
+                    // The frame's last color goes out after the walk.
+                    NoteChromaColor(macro.PadIndex, action.LightbarR, action.LightbarG, action.LightbarB);
                     if (actionElapsed >= action.DurationMs)
                         AdvanceAction(macro);
                     break;
@@ -4878,6 +4918,7 @@ namespace PadForge.Common.Input
                     if (_macroPassConsumedWords[w] != 0)
                         raw.Buttons[w] = (raw.Buttons[w] & ~_macroPassConsumedWords[w])
                                          | _macroPassOutputWords[w];
+            FlushChromaColors();
         }
 
         /// <summary>Extended twin of <see cref="ApplyMacroLatches"/> (issue #9
@@ -5254,7 +5295,7 @@ namespace PadForge.Common.Input
                 case MacroActionType.SetChromaColor:
                     // Extended twin (#468): the Chroma color does not touch
                     // the slot's surface, so it is the gamepad arm verbatim.
-                    MacroChromaSink(action.LightbarR, action.LightbarG, action.LightbarB);
+                    NoteChromaColor(macro.PadIndex, action.LightbarR, action.LightbarG, action.LightbarB);
                     if (actionElapsed >= action.DurationMs)
                         AdvanceAction(macro);
                     break;

@@ -563,10 +563,13 @@ namespace PadForge.Services
             }
         }
 
-        /// <summary>The live slot that shows the smallest player number.</summary>
-        private static int LiveRulingSlot()
-            => PeripheralSwitchMigration.FirstDisplayedSlot(SettingsManager.SlotCreated,
-                type => SettingsManager.SlotOrders.GetOrderSnapshotFor(type));
+        /// <summary>The live slot a migrated row goes to
+        /// (<see cref="PeripheralSwitchMigration.RulingSlot(PadForge.Common.Input.Peripherals.PeripheralRowKind, ProfileData)"/>'s
+        /// rule, over the live topology).</summary>
+        private int LiveRulingSlot(PadForge.Common.Input.Peripherals.PeripheralRowKind kind)
+            => PeripheralSwitchMigration.RulingSlot(kind, SettingsManager.SlotCreated,
+                type => SettingsManager.SlotOrders.GetOrderSnapshotFor(type),
+                slot => slot >= 0 && slot < _mainVm.Pads.Count ? _mainVm.Pads[slot].ProfileId : null);
 
         /// <summary>The setting a device gets on a fresh assignment to a live
         /// slot, as drag-and-drop gives it (DeviceService.AssignDeviceToSlot).</summary>
@@ -2534,17 +2537,16 @@ namespace PadForge.Services
             // Load web controller server settings.
             PadForge.Services.WebCustomLayoutStore.LoadFrom(appSettings.WebCustomLayoutsJson);
             _mainVm.Dashboard.EnableWebController = appSettings.EnableWebController;
-            // The service toggles' GLOBAL legs (three mirrors plus the
-            // head tracking enable), the value that stands when the active
-            // profile has no opinion. Under the guard, or the
-            // record-on-change hook would write these into the active
-            // profile (ActiveProfileId is already set above) and turn its
-            // null into an opinion it never authored.
+            // The service toggles' GLOBAL legs (the head tracking
+            // inputs), the value that stands when the active profile has no
+            // opinion. Under the guard, or the record-on-change hook would
+            // write these into the active profile (ActiveProfileId is
+            // already set above) and turn its null into an opinion it never
+            // authored. The lightbar mirrors that rode here became vendor
+            // rows (#494, PeripheralSwitchMigration).
             _applyingServiceToggles = true;
             try
             {
-                _mainVm.Dashboard.EnableChromaLightbar = appSettings.EnableChromaLightbar;
-                _mainVm.Dashboard.EnableLightsyncLightbar = appSettings.EnableLightsyncLightbar;
                 _mainVm.Dashboard.HeadTrackingEnabled = appSettings.HeadTrackingEnabled;
                 _mainVm.Dashboard.HeadTrackingFreeTrack = appSettings.HeadTrackingIndependentInputs
                     ? appSettings.HeadTrackingFreeTrack
@@ -2845,7 +2847,10 @@ namespace PadForge.Services
                 // An input-reactive overlay is a deliberate configuration on
                 // its own: it rides OVER the base mode, so a slot carrying
                 // only an overlay above a default base is configured.
-                || c.InputReactiveMode != ViewModels.InputReactiveMode.Off);
+                || c.InputReactiveMode != ViewModels.InputReactiveMode.Off
+                // #494: a controller taking a mouse's or keyboard's lighting
+                // is a deliberate choice, even with every mode at default.
+                || c.PeripheralLightingEnabled);
 
         /// <summary>VM-shape twin of <see cref="IsDeviceSlotConfigDataConfigured"/>,
         /// for the in-process Copy From path.</summary>
@@ -2876,7 +2881,8 @@ namespace PadForge.Services
                 || c.TouchpadSyntheticPressure
                 || c.TouchpadSyntheticTouchPercent != 50
                 // Same overlay rule as the DTO twin above.
-                || c.InputReactiveMode != ViewModels.InputReactiveMode.Off);
+                || c.InputReactiveMode != ViewModels.InputReactiveMode.Off
+                || c.PeripheralLightingEnabled);
 
         public void ApplyDeviceSlotConfigsToSlot(int slotIndex,
             ViewModels.DeviceSlotConfigData[] configs)
@@ -3286,6 +3292,7 @@ namespace PadForge.Services
                                 : ViewModels.LightbarMode.Off;
                     cfg.LightbarPeriodMs = cfgData.LightbarPeriodMs;
                     cfg.LightbarColorCycleSmooth = cfgData.LightbarColorCycleSmooth;
+                    cfg.PeripheralLightingEnabled = cfgData.PeripheralLightingEnabled;
                     cfg.LightbarRainbowBrightness = cfgData.LightbarRainbowBrightness;
                     cfg.LightbarBatteryLowR  = cfgData.LightbarBatteryLowR;
                     cfg.LightbarBatteryLowG  = cfgData.LightbarBatteryLowG;
@@ -4213,10 +4220,8 @@ namespace PadForge.Services
         private bool _applyingServiceToggles;
 
         /// <summary>Applies a profile's opinion on the service toggles
-        /// (Razer Chroma #373, Logitech LIGHTSYNC #382, head tracking #355)
-        /// to the Dashboard VM, whose PropertyChanged
-        /// starts or stops the service (the head tracking setter writes the
-        /// runtime flag the engine sweep reads). A null leg leaves the
+        /// (head tracking #355) to the Dashboard VM, whose setter writes the
+        /// runtime flag the engine sweep reads. A null leg leaves the
         /// toggle where it is: the global AppSettings value, or whatever the
         /// last opinionated profile set. The nullable contract mirrors
         /// <see cref="ProfileData.PollingRateOverrideMs"/> (0 there, null
@@ -4236,10 +4241,6 @@ namespace PadForge.Services
             _applyingServiceToggles = true;
             try
             {
-                if (profile.EnableChromaLightbar is bool chroma)
-                    _mainVm.Dashboard.EnableChromaLightbar = chroma;
-                if (profile.EnableLightsyncLightbar is bool lightsync)
-                    _mainVm.Dashboard.EnableLightsyncLightbar = lightsync;
                 if (profile.EnableHeadTracking is bool headTracking)
                     _mainVm.Dashboard.HeadTrackingEnabled = headTracking;
                 if (profile.EnableHeadTrackingFreeTrack is bool freeTrack)
@@ -4266,12 +4267,6 @@ namespace PadForge.Services
             if (profile == null) return;
             switch (e.PropertyName)
             {
-                case nameof(DashboardViewModel.EnableChromaLightbar):
-                    profile.EnableChromaLightbar = _mainVm.Dashboard.EnableChromaLightbar;
-                    break;
-                case nameof(DashboardViewModel.EnableLightsyncLightbar):
-                    profile.EnableLightsyncLightbar = _mainVm.Dashboard.EnableLightsyncLightbar;
-                    break;
                 case nameof(DashboardViewModel.HeadTrackingEnabled):
                     profile.HeadTrackingIndependentInputs = true;
                     profile.EnableHeadTracking = _mainVm.Dashboard.HeadTrackingEnabled;
@@ -4374,14 +4369,10 @@ namespace PadForge.Services
             profile.EnableShiftLayerFlyout = _mainVm.Dashboard.EnableShiftLayerFlyout;
             profile.EnableProfileOverlay = _mainVm.Dashboard.EnableProfileOverlay;
             // The service toggles are AUTHORED nullable legs (see
-            // ProfileData.EnableChromaLightbar): refresh a recorded opinion
+            // ProfileData.EnableHeadTracking): refresh a recorded opinion
             // from the live value, never invent one here. The live value
             // already equals the opinion after apply or record-on-change,
             // so this only closes the window between the two.
-            if (profile.EnableChromaLightbar != null)
-                profile.EnableChromaLightbar = _mainVm.Dashboard.EnableChromaLightbar;
-            if (profile.EnableLightsyncLightbar != null)
-                profile.EnableLightsyncLightbar = _mainVm.Dashboard.EnableLightsyncLightbar;
             if (profile.EnableHeadTracking != null)
                 profile.EnableHeadTracking = _mainVm.Dashboard.HeadTrackingEnabled;
             if (profile.EnableHeadTrackingFreeTrack != null)
@@ -4838,8 +4829,6 @@ namespace PadForge.Services
                 EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
                 EnableWebController = _mainVm.Dashboard.EnableWebController,
-                EnableChromaLightbar = _mainVm.Dashboard.EnableChromaLightbar,
-                EnableLightsyncLightbar = _mainVm.Dashboard.EnableLightsyncLightbar,
                 HeadTrackingEnabled = _mainVm.Dashboard.HeadTrackingEnabled,
                 HeadTrackingIndependentInputs = true,
                 HeadTrackingUdpPort = _mainVm.Dashboard.HeadTrackingUdpPort,
@@ -5075,6 +5064,7 @@ namespace PadForge.Services
                 LightbarMode = cfg.LightbarMode,
                 LightbarPeriodMs = cfg.LightbarPeriodMs,
                 LightbarColorCycleSmooth = cfg.LightbarColorCycleSmooth,
+                PeripheralLightingEnabled = cfg.PeripheralLightingEnabled,
                 LightbarRainbowBrightness = cfg.LightbarRainbowBrightness,
                 LightbarBatteryLowR  = cfg.LightbarBatteryLowR,
                 LightbarBatteryLowG  = cfg.LightbarBatteryLowG,
@@ -6698,16 +6688,13 @@ namespace PadForge.Services
         [XmlElement]
         public bool EnableWebController { get; set; }
 
-        /// <summary>Razer Chroma lightbar mirror opt-in (#373), the GLOBAL
-        /// leg. Default false: PadForge registers nothing with Synapse until
-        /// the user turns the mirror on. This is the value that stands when
-        /// the active profile has no opinion. The per-profile leg is the
-        /// nullable <see cref="ProfileData.EnableChromaLightbar"/>: a plain
-        /// bool there read as false in every pre-existing profile and the
-        /// first profile switch turned the mirror off, which the CHROMA diag
-        /// lines traced.</summary>
+        /// <summary>The Razer Chroma lightbar mirror switch (#373) as files
+        /// before #494 saved it. Read once by
+        /// <see cref="PeripheralSwitchMigration"/>, which assigns the Razer
+        /// Chroma row where it was on, and never written again.</summary>
         [XmlElement]
         public bool EnableChromaLightbar { get; set; }
+        public bool ShouldSerializeEnableChromaLightbar() => false;
 
         /// <summary>The Razer Sensa switch (#374) as files before #494 saved
         /// it. Read once by <see cref="PeripheralSwitchMigration"/>, which
@@ -6717,11 +6704,13 @@ namespace PadForge.Services
         public bool EnableSensaHaptics { get; set; }
         public bool ShouldSerializeEnableSensaHaptics() => false;
 
-        /// <summary>Logitech LIGHTSYNC lightbar mirror opt-in (#382), the
-        /// GLOBAL leg. Default false. Per-profile leg:
-        /// <see cref="ProfileData.EnableLightsyncLightbar"/>.</summary>
+        /// <summary>The Logitech LIGHTSYNC lightbar mirror switch (#382) as
+        /// files before #494 saved it. Read once by
+        /// <see cref="PeripheralSwitchMigration"/>, which assigns the Logitech
+        /// LIGHTSYNC row where it was on, and never written again.</summary>
         [XmlElement]
         public bool EnableLightsyncLightbar { get; set; }
+        public bool ShouldSerializeEnableLightsyncLightbar() => false;
 
         [XmlElement]
         public int WebControllerPort { get; set; } = 8080;
@@ -7665,26 +7654,19 @@ namespace PadForge.Services
         [XmlElement]
         public bool EnableProfileOverlay { get; set; } = true;
 
-        /// <summary>Razer Chroma lightbar mirror (#373), the profile's leg.
-        /// NULLABLE CONTRACT, the same shape as <see cref="PollingRateOverrideMs"/>
-        /// (0 there, null here): null means "no opinion, the toggle keeps
-        /// its current value", which is also what every profile saved
-        /// before this field deserializes to. A plain bool read as false in
-        /// every pre-existing profile and the first profile switch turned
-        /// the mirror off (commit 087568bd went global-only for exactly
-        /// that, which was the wrong fix). AUTHORED: the profile records a
-        /// value when the user changes the Dashboard toggle while it is
-        /// active (SettingsService.OnDashboardServiceToggleChanged), and no
-        /// snapshot builder invents one, so the default snapshot and a
-        /// Save As copy start with no opinion.</summary>
+        /// <summary>The profile's Razer Chroma lightbar mirror opinion (#373)
+        /// as files before #494 saved it. Read once by
+        /// <see cref="PeripheralSwitchMigration"/>, cleared, and never written
+        /// again.</summary>
         [XmlElement]
         public bool? EnableChromaLightbar { get; set; }
+        public bool ShouldSerializeEnableChromaLightbar() => false;
 
-        /// <summary>Logitech LIGHTSYNC lightbar mirror (#382), the profile's
-        /// leg. Same nullable, authored contract as
-        /// <see cref="EnableChromaLightbar"/>.</summary>
+        /// <summary>The profile's Logitech LIGHTSYNC lightbar mirror opinion
+        /// (#382), retired the same way.</summary>
         [XmlElement]
         public bool? EnableLightsyncLightbar { get; set; }
+        public bool ShouldSerializeEnableLightsyncLightbar() => false;
 
         /// <summary>The profile's Razer Sensa opinion (#374) as files before
         /// #494 saved it. Read once by <see cref="PeripheralSwitchMigration"/>,

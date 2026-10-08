@@ -50,7 +50,7 @@ namespace PadForge.Services
     /// registry and signals the mixer's global event, per a strings-level
     /// read of the shipped DLL). Without Synapse it fails init cleanly, so
     /// the worker retries every 30 seconds and reports WaitingForRuntime,
-    /// the same degradation contract as the Chroma mirror.</para>
+    /// the same degradation contract as the Chroma worker.</para>
     /// </summary>
     public sealed class SensaHapticsService : IDisposable
     {

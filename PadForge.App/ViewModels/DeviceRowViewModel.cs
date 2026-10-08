@@ -306,6 +306,7 @@ namespace PadForge.ViewModels
             "AnalogKeyboard" => Strings.Instance.DeviceType_AnalogKeyboard,
             "WebMenus" => Strings.Instance.DeviceType_WebMenus,
             "PeripheralHaptics" => Strings.Instance.DeviceType_PeripheralHaptics,
+            "PeripheralLighting" => Strings.Instance.DeviceType_PeripheralLighting,
             _ => Strings.Instance.DeviceType_Device
         };
 

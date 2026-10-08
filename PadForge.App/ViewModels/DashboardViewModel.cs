@@ -767,28 +767,6 @@ namespace PadForge.ViewModels
         }
 
         // ─────────────────────────────────────────────
-        //  Rumble on haptic mice (#494)
-        // ─────────────────────────────────────────────
-
-        private bool _enableMouseHaptics;
-
-        /// <summary>Whether rumble goes to haptic mice.</summary>
-        public bool EnableMouseHaptics
-        {
-            get => _enableMouseHaptics;
-            set => SetProperty(ref _enableMouseHaptics, value);
-        }
-
-        private string _mouseHapticsStatus = Strings.Instance.Common_Stopped;
-
-        /// <summary>Current status of the haptic mouse lane for UI display.</summary>
-        public string MouseHapticsStatus
-        {
-            get => _mouseHapticsStatus;
-            set => SetProperty(ref _mouseHapticsStatus, value ?? Strings.Instance.Common_Stopped);
-        }
-
-        // ─────────────────────────────────────────────
         //  Logitech LIGHTSYNC lightbar mirror (#382)
         // ─────────────────────────────────────────────
 

@@ -147,7 +147,6 @@ namespace PadForge.Services
         private ChromaLightbarService _chromaService;
         private LightsyncLightbarService _lightsyncService;
         private SensaHapticsService _sensaService;
-        private MouseHapticsService _mouseHapticsService;
         private ProfileData _defaultProfileSnapshot;
 
         // Active profile's touchpad custom-gesture working list. Mirrors
@@ -2330,9 +2329,6 @@ namespace PadForge.Services
             // Razer Sensa HD haptics translation (#374), opt-in.
             StartSensaIfEnabled();
 
-            // Rumble on haptic mice (#494), opt-in.
-            StartMouseHapticsIfEnabled();
-
             // Capture default profile snapshot before any profile switches.
             // If the app restarted with a named profile active, LoadProfiles
             // already captured the default's state before overwriting with the
@@ -2540,7 +2536,6 @@ namespace PadForge.Services
             StopChromaService();
             StopLightsyncService();
             StopSensaService();
-            StopMouseHapticsService();
             StopDsuServer();
             StopWebServer();
             StopRemoteLink();
@@ -10061,13 +10056,6 @@ namespace PadForge.Services
                 else
                     StopSensaService();
             }
-            else if (e.PropertyName == nameof(DashboardViewModel.EnableMouseHaptics))
-            {
-                if (_mainVm.Dashboard.EnableMouseHaptics)
-                    StartMouseHapticsIfEnabled();
-                else
-                    StopMouseHapticsService();
-            }
             else if (e.PropertyName == nameof(DashboardViewModel.EnableWebController))
             {
                 if (_mainVm.Dashboard.EnableWebController)
@@ -10381,54 +10369,6 @@ namespace PadForge.Services
             _sensaService = null;
             _dispatcher.BeginInvoke(() =>
                 _mainVm.Dashboard.SensaStatus = Strings.Instance.Common_Stopped);
-        }
-
-        // ── Rumble on haptic mice (#494) ──
-
-        private void StartMouseHapticsIfEnabled()
-        {
-            PadForge.Engine.SdlDiagLog.WriteLine(
-                $"MOUSEHAPTICS start? enabled={_mainVm.Dashboard.EnableMouseHaptics} engine={_inputManager != null} live={_mouseHapticsService != null}");
-            if (!_mainVm.Dashboard.EnableMouseHaptics || _inputManager == null)
-                return;
-            if (_mouseHapticsService != null)
-                return; // Already running.
-
-            _mouseHapticsService = new MouseHapticsService();
-            _mouseHapticsService.StateChanged += (state, targets) =>
-            {
-                _dispatcher.BeginInvoke(() =>
-                    _mainVm.Dashboard.MouseHapticsStatus = MouseHapticsStatusText(state, targets));
-            };
-            _mouseHapticsService.Start();
-        }
-
-        private void StopMouseHapticsService()
-        {
-            if (_mouseHapticsService == null) return;
-            _mouseHapticsService.Dispose();
-            _mouseHapticsService = null;
-            _dispatcher.BeginInvoke(() =>
-                _mainVm.Dashboard.MouseHapticsStatus = Strings.Instance.Common_Stopped);
-        }
-
-        /// <summary>The status line: the mice rumble goes to, each marked
-        /// when its own haptic feedback is off, or the search. The state
-        /// switch is the Sensa handler's.</summary>
-        internal static string MouseHapticsStatusText(MouseHapticsState state, IReadOnlyList<MouseHapticTarget> targets)
-            => state switch
-            {
-                MouseHapticsState.Active when targets is { Count: > 0 } => string.Format(
-                    Strings.Instance.Dashboard_MouseHapticsActive,
-                    string.Join(", ", targets.Select(MouseHapticTargetText))),
-                MouseHapticsState.Active or MouseHapticsState.Searching => Strings.Instance.Dashboard_MouseHapticsSearching,
-                _ => Strings.Instance.Common_Stopped,
-            };
-
-        private static string MouseHapticTargetText(MouseHapticTarget target)
-        {
-            string name = target.Name ?? Strings.Instance.Dashboard_MouseHapticsLogitechMouse;
-            return target.FeedbackOff ? string.Format(Strings.Instance.Dashboard_MouseHapticsFeedbackOff, name) : name;
         }
 
         private void StartDsuServerIfEnabled()

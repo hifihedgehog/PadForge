@@ -245,14 +245,6 @@
   <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>Razer Sensa-runtime niet gevonden. Opnieuw proberen.</value></data>
   <data name="Dashboard_SensaActive" xml:space="preserve"><value>Rumble wordt naar Sensa HD-haptiek gestreamd</value></data>
   <data name="Dashboard_SensaFooter" xml:space="preserve"><value>Vereist Razer Synapse 4 met Sensa HD-haptiek. Zet in Synapse de haptische bron van het apparaat op Sensa HD Games.</value></data>
-  <data name="Dashboard_MouseHaptics" xml:space="preserve"><value>Haptische muizen</value></data>
-  <data name="Dashboard_MouseHapticsDescription" xml:space="preserve"><value>Vertaalt controller-rumble naar pulsen op muizen met een trilmotor: de Logitech MX Master 4 en de SteelSeries Rival 500, 700 en 710.</value></data>
-  <data name="Dashboard_EnableMouseHaptics" xml:space="preserve"><value>Rumble naar haptische muizen sturen</value></data>
-  <data name="Dashboard_MouseHapticsActive" xml:space="preserve"><value>Rumble wordt naar {0} gestuurd</value></data>
-  <data name="Dashboard_MouseHapticsSearching" xml:space="preserve"><value>Geen haptische muis gevonden. Opnieuw proberen.</value></data>
-  <data name="Dashboard_MouseHapticsFeedbackOff" xml:space="preserve"><value>{0} (haptische feedback staat uit in Logi Options+)</value></data>
-  <data name="Dashboard_MouseHapticsLogitechMouse" xml:space="preserve"><value>Logitech-muis</value></data>
-  <data name="Dashboard_MouseHapticsFooter" xml:space="preserve"><value>De MX Master 4 werkt via zijn Logi Bolt-ontvanger of Bluetooth. Rival-muizen hebben een draaiende SteelSeries GG nodig.</value></data>
   <data name="Dashboard_Lightsync" xml:space="preserve"><value>Logitech LIGHTSYNC</value></data>
   <data name="Dashboard_LightsyncDescription" xml:space="preserve"><value>Stuurt de lightbar-kleur die een game op een virtuele PlayStation-controller instelt via Logitech G HUB door naar je Logitech LIGHTSYNC-apparaten.</value></data>
   <data name="Dashboard_EnableLightsync" xml:space="preserve"><value>Lightbar spiegelen naar Logitech LIGHTSYNC</value></data>

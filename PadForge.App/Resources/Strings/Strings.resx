@@ -281,14 +281,6 @@
   <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>Razer Sensa runtime not found. Retrying.</value></data>
   <data name="Dashboard_SensaActive" xml:space="preserve"><value>Streaming rumble to Sensa HD Haptics</value></data>
   <data name="Dashboard_SensaFooter" xml:space="preserve"><value>Requires Razer Synapse 4 with Sensa HD Haptics. Set the device’s Haptic Source to Sensa HD Games in Synapse.</value></data>
-  <data name="Dashboard_MouseHaptics" xml:space="preserve"><value>Haptic Mice</value></data>
-  <data name="Dashboard_MouseHapticsDescription" xml:space="preserve"><value>Translates controller rumble into pulses on mice with a vibration motor: the Logitech MX Master 4 and the SteelSeries Rival 500, 700 and 710.</value></data>
-  <data name="Dashboard_EnableMouseHaptics" xml:space="preserve"><value>Send Rumble to Haptic Mice</value></data>
-  <data name="Dashboard_MouseHapticsActive" xml:space="preserve"><value>Sending rumble to {0}</value></data>
-  <data name="Dashboard_MouseHapticsSearching" xml:space="preserve"><value>No haptic mouse found. Retrying.</value></data>
-  <data name="Dashboard_MouseHapticsFeedbackOff" xml:space="preserve"><value>{0} (haptic feedback is off in Logi Options+)</value></data>
-  <data name="Dashboard_MouseHapticsLogitechMouse" xml:space="preserve"><value>Logitech mouse</value></data>
-  <data name="Dashboard_MouseHapticsFooter" xml:space="preserve"><value>The MX Master 4 works over its Logi Bolt receiver or Bluetooth. Rival mice need SteelSeries GG running.</value></data>
   <data name="Dashboard_Lightsync" xml:space="preserve"><value>Logitech LIGHTSYNC</value></data>
   <data name="Dashboard_LightsyncDescription" xml:space="preserve"><value>Forwards the lightbar color a game sets on a virtual PlayStation controller to your Logitech LIGHTSYNC devices through Logitech G HUB.</value></data>
   <data name="Dashboard_EnableLightsync" xml:space="preserve"><value>Mirror Lightbar to Logitech LIGHTSYNC</value></data>

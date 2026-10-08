@@ -73,12 +73,6 @@
   },
   {
     "File": "PadForge.App/Views/DashboardPage.xaml",
-    "Id": "Reset_DashboardViewModel_EnableMouseHaptics_2010",
-    "Owner": "PadForge.ViewModels.DashboardViewModel",
-    "Property": "EnableMouseHaptics"
-  },
-  {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
     "Id": "Reset_DashboardViewModel_EnableMenuOverlay_2023",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "EnableMenuOverlay"

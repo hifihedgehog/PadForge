@@ -9,39 +9,29 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using PadForge.Common.Input;
-using PadForge.Resources.Strings;
 using PadForge.Services;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace PadForge.Tests
 {
-    /// <summary>The published amplitude and the armed flag are process
-    /// statics, and an engine test's idle edge silences the amplitude, so the
-    /// tests that stream rumble through a worker run alone.</summary>
-    [CollectionDefinition("MouseHapticsStatics", DisableParallelization = true)]
-    public class MouseHapticsStaticsCollection { }
-
     /// <summary>
-    /// Rumble on haptic mice (#494, asked in discussion #488). No MX Master 4
-    /// or Rival mouse is on the bench, so the device side runs against a
-    /// scripted HID++ channel built from the wire format Solaar, OpenLogi and
-    /// LiveHaptics agree on, and against a local GameSense server built from
-    /// the gamesense-sdk docs. The live test at the end talks to a real
-    /// Logitech receiver when PADFORGE_LIVE_HIDPP is set.
+    /// The haptic protocols behind rumble on mice (#494, asked in discussion
+    /// #488). No MX Master 4 or Rival mouse is on the bench, so the device
+    /// side runs against a scripted HID++ channel built from the wire format
+    /// Solaar, OpenLogi and LiveHaptics agree on, and against a local
+    /// GameSense server built from the gamesense-sdk docs. The live test at
+    /// the end talks to a real Logitech receiver when PADFORGE_LIVE_HIDPP is
+    /// set.
     /// </summary>
-    [Collection("MouseHapticsStatics")]
-    public class MouseHapticsTests : IDisposable
+    public class HidppHapticsTests
     {
         private readonly ITestOutputHelper _output;
 
-        public MouseHapticsTests(ITestOutputHelper output)
+        public HidppHapticsTests(ITestOutputHelper output)
         {
             _output = output;
-            MouseHapticsService.Silence();
         }
-
-        public void Dispose() => MouseHapticsService.Silence();
 
         // ── Scripted HID++ channel ──
 
@@ -116,60 +106,8 @@ namespace PadForge.Tests
             };
         }
 
-        private static VendorHidCollection Collection(string path) => new()
-        {
-            Path = path,
-            Key = "046D:C548:FF00:0002",
-            Name = "USB Receiver",
-            VendorId = 0x046D,
-            ProductId = 0xC548,
-            UsagePage = 0xFF00,
-            Usage = 0x0002,
-            InputReportLength = 20,
-        };
-
         private static string MissingCoreProps()
             => Path.Combine(Path.GetTempPath(), "padforge-no-gg-" + Guid.NewGuid().ToString("N"), "coreProps.json");
-
-        private static bool WaitFor(Func<bool> condition, int timeoutMs = 5000)
-        {
-            long start = Environment.TickCount64;
-            while (Environment.TickCount64 - start < timeoutMs)
-            {
-                if (condition()) return true;
-                Thread.Sleep(10);
-            }
-            return condition();
-        }
-
-        // ── The amplitude feed ──
-
-        [Theory]
-        [InlineData(0UL, 0f)]
-        [InlineData(0xFFFFUL, 1f)]
-        [InlineData(0xFFFF_0000UL, 1f)]
-        [InlineData(0xFFFF_0000_0000_0000UL, 1f)]
-        [InlineData(0x8000UL, 32768f / 65535f)]
-        public void PackToAmplitude_TakesTheLoudestVoice(ulong pack, float expected)
-        {
-            Assert.Equal(expected, MouseHapticsService.PackToAmplitude(unchecked((long)pack)), 5);
-            // The same reduction as the Sensa lane, its declared sibling.
-            Assert.Equal(SensaHapticsService.PackToAmplitude(unchecked((long)pack)),
-                MouseHapticsService.PackToAmplitude(unchecked((long)pack)), 6);
-        }
-
-        [Fact]
-        public void PublishAmplitude_Clamps_AndSilenceZeroes()
-        {
-            MouseHapticsService.PublishAmplitude(2f);
-            Assert.Equal(1f, MouseHapticsService.PublishedAmplitude);
-            MouseHapticsService.PublishAmplitude(-1f);
-            Assert.Equal(0f, MouseHapticsService.PublishedAmplitude);
-            MouseHapticsService.PublishAmplitude(0.5f);
-            Assert.Equal(0.5f, MouseHapticsService.PublishedAmplitude);
-            MouseHapticsService.Silence();
-            Assert.Equal(0f, MouseHapticsService.PublishedAmplitude);
-        }
 
         // ── The shaper ──
 
@@ -189,20 +127,20 @@ namespace PadForge.Tests
         [InlineData(0f, 3, 0)]
         public void Level_ClimbsAtTheOnThresholds_AndFallsAtTheOffOnes(float amplitude, int current, int expected)
         {
-            Assert.Equal(expected, MouseRumbleShaper.Level(amplitude, current));
+            Assert.Equal(expected, HapticRumbleShaper.Level(amplitude, current));
         }
 
         [Fact]
         public void Interval_RunsFrom250MsDownTo80Ms()
         {
-            Assert.Equal(250, MouseRumbleShaper.IntervalMs(0f));
-            Assert.Equal(250, MouseRumbleShaper.IntervalMs(MouseRumbleShaper.LightOn));
-            Assert.Equal(80, MouseRumbleShaper.IntervalMs(1f));
-            Assert.Equal(80, MouseRumbleShaper.IntervalMs(2f));
+            Assert.Equal(250, HapticRumbleShaper.IntervalMs(0f));
+            Assert.Equal(250, HapticRumbleShaper.IntervalMs(HapticRumbleShaper.LightOn));
+            Assert.Equal(80, HapticRumbleShaper.IntervalMs(1f));
+            Assert.Equal(80, HapticRumbleShaper.IntervalMs(2f));
             int previous = int.MaxValue;
             for (float a = 0f; a <= 1f; a += 0.01f)
             {
-                int interval = MouseRumbleShaper.IntervalMs(a);
+                int interval = HapticRumbleShaper.IntervalMs(a);
                 Assert.True(interval <= previous, $"interval rose at {a}");
                 previous = interval;
             }
@@ -212,20 +150,20 @@ namespace PadForge.Tests
         public void Waveform_PicksTheCollisionForTheLevel_AndFallsBackToWhatTheMouseLists()
         {
             const uint all = (1u << 2) | (1u << 3) | (1u << 4);
-            Assert.Null(MouseRumbleShaper.Waveform(0, all));
-            Assert.Equal((byte)0x04, MouseRumbleShaper.Waveform(1, all));   // subtle
-            Assert.Equal((byte)0x03, MouseRumbleShaper.Waveform(2, all));   // damp
-            Assert.Equal((byte)0x02, MouseRumbleShaper.Waveform(3, all));   // sharp
+            Assert.Null(HapticRumbleShaper.Waveform(0, all));
+            Assert.Equal((byte)0x04, HapticRumbleShaper.Waveform(1, all));   // subtle
+            Assert.Equal((byte)0x03, HapticRumbleShaper.Waveform(2, all));   // damp
+            Assert.Equal((byte)0x02, HapticRumbleShaper.Waveform(3, all));   // sharp
 
             // OpenLogi's two Actions Ring waveforms, damp state change (1)
             // and subtle collision (4): every level falls to subtle.
             const uint ring = (1u << 1) | (1u << 4);
-            Assert.Equal((byte)0x04, MouseRumbleShaper.Waveform(3, ring));
-            Assert.Equal((byte)0x04, MouseRumbleShaper.Waveform(1, ring));
+            Assert.Equal((byte)0x04, HapticRumbleShaper.Waveform(3, ring));
+            Assert.Equal((byte)0x04, HapticRumbleShaper.Waveform(1, ring));
 
-            Assert.Equal((byte)0x03, MouseRumbleShaper.Waveform(3, 1u << 3));
-            Assert.Equal((byte)0x02, MouseRumbleShaper.Waveform(1, 1u << 2));
-            Assert.Null(MouseRumbleShaper.Waveform(3, (1u << 0) | (1u << 1) | (1u << 14)));
+            Assert.Equal((byte)0x03, HapticRumbleShaper.Waveform(3, 1u << 3));
+            Assert.Equal((byte)0x02, HapticRumbleShaper.Waveform(1, 1u << 2));
+            Assert.Null(HapticRumbleShaper.Waveform(3, (1u << 0) | (1u << 1) | (1u << 14)));
         }
 
         // ── HID++ frames ──
@@ -422,178 +360,6 @@ namespace PadForge.Tests
             Assert.Null(HidppHapticProbe.ReadFeedbackEnabled(new FakeChannel(), device));
         }
 
-        // ── The service against a scripted mouse ──
-
-        private static List<byte> Waveforms(FakeChannel channel)
-            => channel.Writes.Select(w => w.Frame).Where(f => f[3] == 0x4C).Select(f => f[4]).ToList();
-
-        [Fact]
-        public void Service_FindsTheMouse_PlaysByLevel_AndStopsOnSilence()
-        {
-            var channel = new FakeChannel { Answer = Mouse(0x02) };
-            var states = new ConcurrentQueue<(MouseHapticsState State, MouseHapticTarget[] Targets)>();
-            using (var svc = new MouseHapticsService(100, 5, 10000,
-                       () => new[] { Collection(channel.Path) }, c => channel, MissingCoreProps(), 200))
-            {
-                svc.StateChanged += (s, t) => states.Enqueue((s, t.ToArray()));
-                svc.Start();
-                Assert.True(WaitFor(() => MouseHapticsService.PublisherArmed));
-                Assert.True(WaitFor(() => states.Any(s => s.State == MouseHapticsState.Active)),
-                    "the service never reported the mouse");
-                var active = states.First(s => s.State == MouseHapticsState.Active);
-                Assert.Equal(new MouseHapticTarget("MX Master 4", false), Assert.Single(active.Targets));
-                Assert.Empty(Waveforms(channel));   // nothing plays without rumble
-
-                MouseHapticsService.PublishAmplitude(1f);
-                Assert.True(WaitFor(() => Waveforms(channel).Count >= 4), "full rumble never pulsed");
-                Assert.All(Waveforms(channel), w => Assert.Equal(HidppHapticProtocol.SharpCollision, w));
-                var plays = channel.Writes.Where(w => w.Frame[3] == 0x4C).Select(w => w.Ms).ToList();
-                for (int i = 1; i < plays.Count; i++)
-                    Assert.True(plays[i] - plays[i - 1] >= 60, $"pulses {plays[i] - plays[i - 1]} ms apart");
-                Assert.All(channel.Writes, w => Assert.Equal(0x02, w.Frame[1]));
-
-                MouseHapticsService.PublishAmplitude(0.45f);
-                Assert.True(WaitFor(() => Waveforms(channel).Last() == HidppHapticProtocol.DampCollision),
-                    "medium rumble never played the damp collision");
-
-                MouseHapticsService.Silence();
-                Thread.Sleep(300);
-                int after = Waveforms(channel).Count;
-                Thread.Sleep(400);
-                Assert.Equal(after, Waveforms(channel).Count);
-            }
-            Assert.False(MouseHapticsService.PublisherArmed);
-            Assert.Equal(MouseHapticsState.Stopped, states.Last().State);
-            Assert.True(channel.Disposed, "the channel was left open after stop");
-        }
-
-        [Fact]
-        public void Service_ReportsFeedbackOff_AndSkipsAMouseWithNoCollision()
-        {
-            var off = new FakeChannel { Path = @"\\?\hid#a", Answer = Mouse(0x01, "MX Master 4", enabled: false) };
-            var mute = new FakeChannel { Path = @"\\?\hid#b", Answer = Mouse(0xFF, "Mute", mask: 0x3) };
-            var channels = new Dictionary<string, FakeChannel> { [off.Path] = off, [mute.Path] = mute };
-            var states = new ConcurrentQueue<(MouseHapticsState State, MouseHapticTarget[] Targets)>();
-            using var svc = new MouseHapticsService(100, 5, 10000,
-                () => new[] { Collection(off.Path), Collection(mute.Path) }, c => channels[c.Path], MissingCoreProps(), 200);
-            svc.StateChanged += (s, t) => states.Enqueue((s, t.ToArray()));
-            svc.Start();
-            Assert.True(WaitFor(() => states.Any(s => s.State == MouseHapticsState.Active)));
-            Thread.Sleep(200);
-            var last = states.Last(s => s.State == MouseHapticsState.Active);
-            Assert.Equal(new MouseHapticTarget("MX Master 4", true), Assert.Single(last.Targets));
-            Assert.True(mute.Disposed, "a mouse with no collision kept its channel");
-        }
-
-        [Fact]
-        public void Service_DropsAMouseWhoseWritesFail_AndFindsItAgain()
-        {
-            var channel = new FakeChannel { Answer = Mouse(0xFF) };
-            var states = new ConcurrentQueue<MouseHapticsState>();
-            using var svc = new MouseHapticsService(100, 5, 10000,
-                () => new[] { Collection(channel.Path) }, c => channel, MissingCoreProps(), 200);
-            svc.StateChanged += (s, t) => states.Enqueue(s);
-            svc.Start();
-            Assert.True(WaitFor(() => states.Contains(MouseHapticsState.Active)));
-
-            channel.FailWrites = true;
-            MouseHapticsService.PublishAmplitude(1f);
-            Assert.True(WaitFor(() => states.Last() == MouseHapticsState.Searching), "a dead mouse stayed listed");
-
-            MouseHapticsService.Silence();
-            channel.FailWrites = false;
-            Assert.True(WaitFor(() => states.Last() == MouseHapticsState.Active), "the mouse was never found again");
-        }
-
-        // ── The predecessor join, the Sensa lane's F10 rule ──
-
-        [Fact]
-        public void Service_NextWorkerWaitsForAStragglingPredecessor()
-        {
-            using var hold = new ManualResetEventSlim(false);
-            using var entered = new ManualResetEventSlim(false);
-            Thread aThread = null;
-            MouseHapticsService a = null, b = null;
-            try
-            {
-                a = new MouseHapticsService(100, 5, 10000, () =>
-                {
-                    aThread ??= Thread.CurrentThread;
-                    entered.Set();
-                    hold.Wait(30000);
-                    return Array.Empty<VendorHidCollection>();
-                }, c => null, MissingCoreProps(), 200);
-                a.Start();
-                Assert.True(entered.Wait(5000), "worker A never reached its scan");
-                Assert.True(MouseHapticsService.PublisherArmed);
-
-                // Stop joins 3 s and gives up with A parked in its scan.
-                a.Dispose();
-                Assert.True(MouseHapticsService.PublisherArmed);
-
-                b = new MouseHapticsService(100, 5, 10000, () => Array.Empty<VendorHidCollection>(),
-                    c => null, MissingCoreProps(), 200);
-                b.Start();
-                Thread.Sleep(150);
-                Assert.True(b.WorkerAlive);
-                Assert.Equal(0, b.ScanCount);   // parked on A's join
-
-                hold.Set();
-                Assert.True(aThread.Join(10000), "A never left after the hold released");
-                Assert.True(WaitFor(() => b.ScanCount >= 1), "B never ran after A left");
-                Thread.Sleep(100);
-                Assert.True(b.WorkerAlive, "B died after A's teardown");
-                Assert.True(MouseHapticsService.PublisherArmed, "A's finally disarmed the publisher under B");
-            }
-            finally
-            {
-                hold.Set();
-                aThread?.Join(10000);
-                b?.Dispose();
-                a?.Dispose();
-            }
-        }
-
-        [Fact]
-        public void Service_GivesUpOnAWedgedPredecessor()
-        {
-            using var hold = new ManualResetEventSlim(false);
-            using var entered = new ManualResetEventSlim(false);
-            Thread aThread = null;
-            MouseHapticsService a = null, b = null;
-            try
-            {
-                a = new MouseHapticsService(100, 5, 10000, () =>
-                {
-                    aThread ??= Thread.CurrentThread;
-                    entered.Set();
-                    hold.Wait(30000);
-                    return Array.Empty<VendorHidCollection>();
-                }, c => null, MissingCoreProps(), 200);
-                a.Start();
-                Assert.True(entered.Wait(5000));
-                a.Dispose();
-
-                var states = new ConcurrentQueue<MouseHapticsState>();
-                b = new MouseHapticsService(100, 5, 250, () => Array.Empty<VendorHidCollection>(),
-                    c => null, MissingCoreProps(), 200);
-                b.StateChanged += (s, t) => states.Enqueue(s);
-                b.Start();
-                Assert.True(WaitFor(() => !b.WorkerAlive), "B never gave up on the wedged predecessor");
-                // Positive control: A is still parked, so B left on its deadline.
-                Assert.True(aThread.IsAlive, "A was not wedged, so the give-up path never ran");
-                Assert.Equal(0, b.ScanCount);
-                Assert.Contains(MouseHapticsState.Stopped, states);
-            }
-            finally
-            {
-                hold.Set();
-                aThread?.Join(10000);
-                b?.Dispose();
-                a?.Dispose();
-            }
-        }
-
         // ── GameSense ──
 
         private sealed class FakeGameSense : IDisposable
@@ -768,144 +534,6 @@ namespace PadForge.Tests
             Assert.False(client.Connected);
         }
 
-        [Fact]
-        public void Service_DrivesGameSense()
-        {
-            using var server = new FakeGameSense();
-            var states = new ConcurrentQueue<(MouseHapticsState State, MouseHapticTarget[] Targets)>();
-            using (var svc = new MouseHapticsService(100, 5, 10000, () => Array.Empty<VendorHidCollection>(),
-                       c => null, server.WriteCoreProps(), 1000))
-            {
-                svc.StateChanged += (s, t) => states.Enqueue((s, t.ToArray()));
-                svc.Start();
-                Assert.True(WaitFor(() => states.Any(s => s.State == MouseHapticsState.Active)));
-                Assert.Equal(new MouseHapticTarget(MouseHapticsService.GameSenseName, false),
-                    Assert.Single(states.First(s => s.State == MouseHapticsState.Active).Targets));
-
-                MouseHapticsService.PublishAmplitude(0.8f);
-                Assert.True(WaitFor(() => server.EventValues().Contains(84)));
-                MouseHapticsService.Silence();
-                Assert.True(WaitFor(() => server.EventValues().LastOrDefault() == 0 && server.EventValues().Count >= 2));
-            }
-            Assert.Equal("/stop_game", server.Paths().Last());
-        }
-
-        // ── The status line ──
-
-        [Fact]
-        public void StatusText_NamesEachMouse_AndMarksFeedbackOff()
-        {
-            var s = Strings.Instance;
-            var targets = new[]
-            {
-                new MouseHapticTarget("MX Master 4", false),
-                new MouseHapticTarget(null, true),
-                new MouseHapticTarget(MouseHapticsService.GameSenseName, false),
-            };
-            string expected = string.Format(s.Dashboard_MouseHapticsActive, string.Join(", ",
-                "MX Master 4",
-                string.Format(s.Dashboard_MouseHapticsFeedbackOff, s.Dashboard_MouseHapticsLogitechMouse),
-                "SteelSeries GG"));
-            Assert.Equal(expected, InputService.MouseHapticsStatusText(MouseHapticsState.Active, targets));
-            Assert.Equal(s.Dashboard_MouseHapticsSearching,
-                InputService.MouseHapticsStatusText(MouseHapticsState.Searching, Array.Empty<MouseHapticTarget>()));
-            Assert.Equal(s.Common_Stopped,
-                InputService.MouseHapticsStatusText(MouseHapticsState.Stopped, Array.Empty<MouseHapticTarget>()));
-        }
-
-        // ── Source contracts ──
-
-        /// <summary>The lane publishes behind the armed gate with the Sensa
-        /// lane's rumble authority, runs right after it, and the three engine
-        /// paths that skip the lane silence it. The setting carries a global
-        /// leg, a nullable profile leg, the autosave entry and the card.</summary>
-        [Fact]
-        public void FeedAndSiblingContracts()
-        {
-            string step5 = RepoText("PadForge.App", "Common", "Input", "InputManager.Step5.VirtualDevices.cs");
-            int at = step5.IndexOf("private void UpdateMouseHapticsLane()", StringComparison.Ordinal);
-            Assert.True(at > 0);
-            string body = step5.Substring(at, 1100);
-            Assert.Contains("MouseHapticsService.PublisherArmed) return;", body);
-            Assert.Contains("GetInboundRumblePack(slot)", body);
-            Assert.Contains("LfeOutputState.MaxMerge", body);
-            Assert.Contains("PublishAmplitude(best)", body);
-
-            string im = RepoText("PadForge.App", "Common", "Input", "InputManager.cs");
-            int sensaCall = im.IndexOf("UpdateSensaLane();", StringComparison.Ordinal);
-            int mouseCall = im.IndexOf("UpdateMouseHapticsLane();", StringComparison.Ordinal);
-            Assert.True(sensaCall > 0 && mouseCall > sensaCall && mouseCall - sensaCall < 80,
-                "the mouse lane runs right after the Sensa lane");
-            int silences = 0;
-            for (int i = im.IndexOf("RumbleAudioService.SilenceAll();", StringComparison.Ordinal); i >= 0;
-                 i = im.IndexOf("RumbleAudioService.SilenceAll();", i + 1, StringComparison.Ordinal))
-            {
-                int next = im.IndexOf("MouseHapticsService.Silence();", i, StringComparison.Ordinal);
-                Assert.True(next > i && next - i < 250, "a rumble-audio silence edge without the mouse lane's");
-                silences++;
-            }
-            Assert.Equal(3, silences);
-
-            string ss = RepoText("PadForge.App", "Services", "SettingsService.cs");
-            Assert.Contains("_mainVm.Dashboard.EnableMouseHaptics = appSettings.EnableMouseHaptics;", ss);
-            Assert.Contains("EnableMouseHaptics = _mainVm.Dashboard.EnableMouseHaptics,", ss);
-            Assert.Contains("public bool EnableMouseHaptics { get; set; }", ss);
-            Assert.Contains("public bool? EnableMouseHaptics { get; set; }", ss);
-            Assert.Contains("if (profile.EnableMouseHaptics is bool mouseHaptics)", ss);
-            Assert.Contains("if (profile.EnableMouseHaptics != null)", ss);
-            Assert.Contains("case nameof(DashboardViewModel.EnableMouseHaptics):", ss);
-
-            string mw = RepoText("PadForge.App", "MainWindow.xaml.cs");
-            Assert.Contains("nameof(DashboardViewModel.EnableMouseHaptics)", mw);
-
-            string page = RepoText("PadForge.App", "Views", "DashboardPage.xaml");
-            Assert.Contains("Binding EnableMouseHaptics", page);
-            Assert.Contains("Binding MouseHapticsStatus", page);
-
-            string service = RepoText("PadForge.App", "Services", "InputService.cs");
-            Assert.Contains("StartMouseHapticsIfEnabled();", service);
-            Assert.Contains("StopMouseHapticsService();", service);
-        }
-
-        private static readonly string[] Locales =
-        {
-            "Strings.resx", "Strings.de.resx", "Strings.es.resx", "Strings.fr.resx",
-            "Strings.it.resx", "Strings.ja.resx", "Strings.ko.resx", "Strings.nl.resx",
-            "Strings.pt-BR.resx", "Strings.zh-Hans.resx",
-        };
-
-        /// <summary>Every locale names both supported families, keeps the
-        /// placeholders, and the footer names the receiver and GG.</summary>
-        [Fact]
-        public void EveryLocaleNamesTheMiceAndKeepsThePlaceholders()
-        {
-            foreach (string locale in Locales)
-            {
-                string text = RepoText("PadForge.App", "Resources", "Strings", locale);
-                string Value(string key)
-                {
-                    int at = text.IndexOf($"<data name=\"{key}\"", StringComparison.Ordinal);
-                    Assert.True(at >= 0, $"{locale} is missing {key}");
-                    int start = text.IndexOf("<value>", at, StringComparison.Ordinal) + 7;
-                    return text.Substring(start, text.IndexOf("</value>", start, StringComparison.Ordinal) - start);
-                }
-                string description = Value("Dashboard_MouseHapticsDescription");
-                Assert.Contains("MX Master 4", description);
-                Assert.Contains("Rival 500", description);
-                Assert.Contains("710", description);
-                Assert.Contains("{0}", Value("Dashboard_MouseHapticsActive"));
-                Assert.Contains("{0}", Value("Dashboard_MouseHapticsFeedbackOff"));
-                Assert.Contains("Logi Options+", Value("Dashboard_MouseHapticsFeedbackOff"));
-                string footer = Value("Dashboard_MouseHapticsFooter");
-                Assert.Contains("Logi Bolt", footer);
-                Assert.Contains("SteelSeries GG", footer);
-            }
-            // Korean spells haptic with U+D585, as the Sensa strings now do.
-            string ko = RepoText("PadForge.App", "Resources", "Strings", "Strings.ko.resx");
-            Assert.Contains("\uD585\uD2F1 \uB9C8\uC6B0\uC2A4", ko);
-            Assert.DoesNotContain("\uD581\uD2F1", ko);
-        }
-
         // ── Live hardware, opt-in ──
 
         /// <summary>Runs only with PADFORGE_LIVE_HIDPP=1: opens every HID++
@@ -963,15 +591,6 @@ namespace PadForge.Tests
                 foreach (string line in raw) _output.WriteLine(line);
                 if (shortCollection != null) RawHidOutput.ResetDevice(shortCollection.Path);
             }
-        }
-
-        private static string RepoText(params string[] parts)
-        {
-            var dir = new DirectoryInfo(AppContext.BaseDirectory);
-            while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PadForge.sln")))
-                dir = dir.Parent;
-            Assert.NotNull(dir);
-            return File.ReadAllText(Path.Combine(new[] { dir.FullName }.Concat(parts).ToArray()));
         }
     }
 }

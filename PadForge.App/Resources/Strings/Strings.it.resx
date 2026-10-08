@@ -245,14 +245,6 @@
   <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>Runtime Razer Sensa non trovato. Nuovo tentativo in corso.</value></data>
   <data name="Dashboard_SensaActive" xml:space="preserve"><value>Vibrazione in streaming verso Sensa HD Haptics</value></data>
   <data name="Dashboard_SensaFooter" xml:space="preserve"><value>Richiede Razer Synapse 4 con Sensa HD Haptics. In Synapse imposta la sorgente aptica del dispositivo su Sensa HD Games.</value></data>
-  <data name="Dashboard_MouseHaptics" xml:space="preserve"><value>Mouse aptici</value></data>
-  <data name="Dashboard_MouseHapticsDescription" xml:space="preserve"><value>Traduce la vibrazione del controller in impulsi sui mouse con motore di vibrazione: il Logitech MX Master 4 e i mouse SteelSeries Rival 500, 700 e 710.</value></data>
-  <data name="Dashboard_EnableMouseHaptics" xml:space="preserve"><value>Invia la vibrazione ai mouse aptici</value></data>
-  <data name="Dashboard_MouseHapticsActive" xml:space="preserve"><value>Invio della vibrazione a {0}</value></data>
-  <data name="Dashboard_MouseHapticsSearching" xml:space="preserve"><value>Nessun mouse aptico trovato. Nuovo tentativo in corso.</value></data>
-  <data name="Dashboard_MouseHapticsFeedbackOff" xml:space="preserve"><value>{0} (feedback aptico disattivato in Logi Options+)</value></data>
-  <data name="Dashboard_MouseHapticsLogitechMouse" xml:space="preserve"><value>Mouse Logitech</value></data>
-  <data name="Dashboard_MouseHapticsFooter" xml:space="preserve"><value>Il mouse MX Master 4 funziona tramite il ricevitore Logi Bolt o via Bluetooth. I mouse Rival richiedono SteelSeries GG in esecuzione.</value></data>
   <data name="Dashboard_Lightsync" xml:space="preserve"><value>Logitech LIGHTSYNC</value></data>
   <data name="Dashboard_LightsyncDescription" xml:space="preserve"><value>Inoltra il colore della barra luminosa che un gioco imposta su un controller PlayStation virtuale ai tuoi dispositivi Logitech LIGHTSYNC tramite Logitech G HUB.</value></data>
   <data name="Dashboard_EnableLightsync" xml:space="preserve"><value>Rifletti la barra luminosa su Logitech LIGHTSYNC</value></data>

@@ -2262,31 +2262,6 @@
                 </StackPanel>
             </Border>
 
-            <!-- ═══ Rumble on haptic mice (#494) ═══ -->
-            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
-                <!-- E962 = Segoe MDL2 Mouse, the glyph DeviceTypeGlyph gives mice. -->
-                <TextBlock Text="&#xE962;" Style="{StaticResource SectionGlyph}"/>
-                <TextBlock Text="{Binding Dashboard_MouseHaptics, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
-            </StackPanel>
-
-            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
-                <StackPanel>
-                    <TextBlock Text="{Binding Dashboard_MouseHapticsDescription, Source={x:Static strings:Strings.Instance}}"
-                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                        <CheckBox VerticalAlignment="Center" Content="{Binding Dashboard_EnableMouseHaptics, Source={x:Static strings:Strings.Instance}}"
-                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                  IsChecked="{Binding EnableMouseHaptics}"/>
-                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableMouseHaptics" SettingLabel="{Binding Dashboard_EnableMouseHaptics, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableMouseHaptics_2010"/>
-                    </StackPanel>
-                    <TextBlock Text="{Binding MouseHapticsStatus}" FontSize="12" TextWrapping="Wrap"
-                               FontFamily="{StaticResource TelemetryFontFamily}"
-                               Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,4"/>
-                    <TextBlock Text="{Binding Dashboard_MouseHapticsFooter, Source={x:Static strings:Strings.Instance}}"
-                               FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
-                </StackPanel>
-            </Border>
-
             <!-- ═══ Overlays (menu #9 B-17, shift layer, profile switch) ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <!-- E700 = Segoe MDL2 GlobalNavButton, the canonical menu glyph. -->

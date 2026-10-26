@@ -13,6 +13,8 @@ namespace PadForge.Common.Input
     /// </summary>
     internal static class RawHidOutput
     {
+        private static long s_cslDdEpoch;
+        internal static long CslDdEpoch => System.Threading.Interlocked.Read(ref s_cslDdEpoch);
         /// <summary>Per-path cached device handle + manual-reset event
         /// (the shape PlayStationEffectWriter used before its cache revert). Fanatec pedal rumble
         /// writes at up to poll rate, and the old open-per-write shape
@@ -45,13 +47,14 @@ namespace PadForge.Common.Input
                 if (io.Handle != IntPtr.Zero)
                 {
                     byte[] cachedBuf = SizeForCached(io, devicePath, buf);
-                    if (WriteOnHandle(io.Handle, io.Event, cachedBuf)) return true;
+                    if (WriteOnHandle(io.Handle, io.Event, cachedBuf, devicePath: devicePath, logicalLength: buf.Length)) return true;
                     // Stale handle (sleep, replug): drop the cache and fall
                     // through to the legacy path for THIS write.
                     CloseHandle(io.Event);
                     CloseHandle(io.Handle);
                     io.Handle = IntPtr.Zero;
                     io.Event = IntPtr.Zero;
+                    if (FanatecHidEndpoint.IsCslDd(devicePath)) System.Threading.Interlocked.Increment(ref s_cslDdEpoch);
                 }
 
                 IntPtr handle = CreateFileW(
@@ -63,20 +66,31 @@ namespace PadForge.Common.Input
                     FILE_FLAG_OVERLAPPED,
                     IntPtr.Zero);
 
-                if (handle == IntPtr.Zero || handle == INVALID_HANDLE_VALUE) return false;
+                if (handle == IntPtr.Zero || handle == INVALID_HANDLE_VALUE)
+                {
+                    int error = Marshal.GetLastWin32Error();
+                    HidOutputDiagnostics.Result(devicePath, "open-failed", buf, buf.Length, error, 0, Environment.TickCount64);
+                    return false;
+                }
 
                 // Windows HID requires the write buffer to be exactly the collection's
                 // OutputReportByteLength. The per-vendor writers build the logical
-                // report (report-ID byte + command bytes); pad/clamp it to the device's
+                // report (report-ID byte + command bytes); pad it to the device's
                 // actual length here. Without this, a wheel whose output reports are
                 // longer than the command rejects every write with ERROR_INVALID_PARAMETER
                 // (e.g. the G29 joystick collection wants 17 bytes; the lg4ff command is 8).
                 byte[] outBuf = ResizeForDevice(devicePath, handle, buf);
 
                 IntPtr ev = CreateEventW(IntPtr.Zero, true, false, null);
-                if (ev == IntPtr.Zero) { CloseHandle(handle); return false; }
+                if (ev == IntPtr.Zero)
+                {
+                    int error = Marshal.GetLastWin32Error();
+                    HidOutputDiagnostics.Result(devicePath, "event-failed", outBuf, buf.Length, error, 0, Environment.TickCount64);
+                    CloseHandle(handle);
+                    return false;
+                }
 
-                bool ok = WriteOnHandle(handle, ev, outBuf);
+                bool ok = WriteOnHandle(handle, ev, outBuf, devicePath: devicePath, logicalLength: buf.Length);
                 if (ok)
                 {
                     io.Handle = handle;
@@ -110,14 +124,19 @@ namespace PadForge.Common.Input
                 FILE_FLAG_OVERLAPPED,
                 IntPtr.Zero);
 
-            if (handle == IntPtr.Zero || handle == INVALID_HANDLE_VALUE) return false;
+            if (handle == IntPtr.Zero || handle == INVALID_HANDLE_VALUE)
+            {
+                int error = Marshal.GetLastWin32Error();
+                HidOutputDiagnostics.Result(devicePath, "open-failed", buf, buf.Length, error, 0, Environment.TickCount64);
+                return false;
+            }
 
             try
             {
                 byte[] outBuf = ResizeForDevice(devicePath, handle, buf);
                 IntPtr ev = CreateEventW(IntPtr.Zero, true, false, null);
                 if (ev == IntPtr.Zero) return false;
-                try { return WriteOnHandle(handle, ev, outBuf, timeoutMs); }
+                try { return WriteOnHandle(handle, ev, outBuf, timeoutMs, devicePath, buf.Length); }
                 finally { CloseHandle(ev); }
             }
             finally { CloseHandle(handle); }
@@ -139,10 +158,20 @@ namespace PadForge.Common.Input
             return io.Sized;
         }
 
-        private static bool WriteOnHandle(IntPtr handle, IntPtr ev, byte[] outBuf, int timeoutMs = 1000)
+        internal static bool IsCompleteWrite(bool completed, uint transferred, int expected)
+            => completed && transferred == expected;
+
+        private static bool WriteOnHandle(IntPtr handle, IntPtr ev, byte[] outBuf, int timeoutMs = 1000,
+            string devicePath = null, int logicalLength = 0)
         {
+            long started = Environment.TickCount64;
             // Manual-reset event: clear before reuse.
-            ResetEvent(ev);
+            if (!ResetEvent(ev))
+            {
+                int error = Marshal.GetLastWin32Error();
+                HidOutputDiagnostics.Result(devicePath, "reset-event-failed", outBuf, logicalLength, error, 0, started);
+                return false;
+            }
             // Pin held until every path below has passed its unbounded
             // GetOverlappedResult (or established no I/O is pending), so
             // the kernel never reads a moved buffer mid-write
@@ -155,7 +184,11 @@ namespace PadForge.Common.Input
                 if (!ok)
                 {
                     int err = Marshal.GetLastWin32Error();
-                    if (err != ERROR_IO_PENDING) return false;
+                    if (err != ERROR_IO_PENDING)
+                    {
+                        HidOutputDiagnostics.Result(devicePath, "write-failed", outBuf, logicalLength, err, 0, started);
+                        return false;
+                    }
                     if (WaitForSingleObject(ev, (uint)timeoutMs) != WAIT_OBJECT_0)
                     {
                         // CancelIo only REQUESTS abort; `ol` is a stack local
@@ -164,10 +197,16 @@ namespace PadForge.Common.Input
                         // unwinding (PlayStationEffectWriter drain).
                         CancelIo(handle);
                         GetOverlappedResult(handle, ref ol, out _, true);
+                        HidOutputDiagnostics.Result(devicePath, "write-timeout", outBuf, logicalLength, 1460, 0, started);
                         return false;
                     }
                 }
-                return GetOverlappedResult(handle, ref ol, out _, true);
+                bool complete = GetOverlappedResult(handle, ref ol, out uint transferred, true);
+                int error = complete ? 0 : Marshal.GetLastWin32Error();
+                bool delivered = IsCompleteWrite(complete, transferred, outBuf.Length);
+                HidOutputDiagnostics.Result(devicePath, delivered ? "write-ok" : complete ? "short-write" : "completion-failed",
+                    outBuf, logicalLength, error, transferred, started);
+                return delivered;
             }
             finally { pin.Free(); }
         }
@@ -254,6 +293,7 @@ namespace PadForge.Common.Input
         public static void ResetDevice(string devicePath)
         {
             if (string.IsNullOrEmpty(devicePath)) return;
+            if (FanatecHidEndpoint.IsCslDd(devicePath)) System.Threading.Interlocked.Increment(ref s_cslDdEpoch);
             _outLen.TryRemove(devicePath, out _);
             _featLen.TryRemove(devicePath, out _);
             if (s_ioCache.TryRemove(devicePath, out var io))
@@ -282,8 +322,8 @@ namespace PadForge.Common.Input
             finally { HidD_FreePreparsedData(pp); }
         }
 
-        // Returns buf sized to the device's OutputReportByteLength (zero-padded, or
-        // clamped if the command is somehow longer). Falls back to buf unchanged
+        // Returns buf padded to the device's OutputReportByteLength. Never
+        // truncates a command. Falls back to buf unchanged
         // when the caps query is unavailable.
         private static byte[] ResizeForDevice(string devicePath, IntPtr handle, byte[] buf)
         {
@@ -359,7 +399,7 @@ namespace PadForge.Common.Input
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         private static extern IntPtr CreateEventW(IntPtr lpEventAttributes, bool bManualReset, bool bInitialState, string lpName);
 
-        [DllImport("kernel32.dll")]
+        [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool ResetEvent(IntPtr hEvent);
 
         [DllImport("kernel32.dll", SetLastError = true)]

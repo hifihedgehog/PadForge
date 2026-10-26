@@ -2407,6 +2407,27 @@ namespace PadForge.Common.Input
             {
                 foreach (var ud in devices)
                 {
+                    // Native Fanatec slots are not owned by SDL and can exist
+                    // even while SDL's device wrapper is absent. Only touch a
+                    // wheel this engine attempted to drive.
+                    if (ud != null && FanatecRawHidWriter.IsFanatecWheel(ud.VendorId, ud.ProdId)
+                        && !string.IsNullOrEmpty(ud.DevicePath) && _appliedWheelFfb.ContainsKey(ud.DevicePath))
+                    {
+                        bool fanatecGate = false;
+                        try
+                        {
+                            System.Threading.Monitor.TryEnter(ud.OutputSync, 50, ref fanatecGate);
+                            if (fanatecGate)
+                            {
+                                if (FanatecRawHidWriter.WriteStopAllEffects(ud.DevicePath, ud.ProdId))
+                                    _appliedWheelFfb.TryRemove(ud.DevicePath, out _);
+                                _appliedWheelSettings.TryRemove(ud.DevicePath, out _);
+                                FanatecHidEndpoint.ResetDevice(ud.DevicePath);
+                            }
+                        }
+                        catch { /* best effort during shutdown */ }
+                        finally { if (fanatecGate) System.Threading.Monitor.Exit(ud.OutputSync); }
+                    }
                     if (ud?.ForceFeedbackState != null && ud.Device != null)
                     {
                         // Under the row's output gate when it comes free within

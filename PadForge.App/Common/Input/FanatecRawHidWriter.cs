@@ -13,10 +13,9 @@ namespace PadForge.Common.Input
     /// no GPL source translation. Uses the shared <see cref="RawHidOutput"/>
     /// write path.</para>
     ///
-    /// <para>HARDWARE VERIFICATION (real device): the wheel FFB output report ID
-    /// is assumed 0 (the Linux driver leaves <c>report-&gt;id</c> unset);
-    /// the pedal rumble report ID is 0x01 per the driver. Confirm both against
-    /// the device's HID descriptor (<c>OutputReportByteLength</c> / report IDs).</para>
+    /// <para>CSL DD (0020) output collection, report ID and length are resolved
+    /// from Windows HID capabilities. The input collection can differ from
+    /// the command collection. Other models retain their legacy transport.</para>
     /// </summary>
     internal static class FanatecRawHidWriter
     {
@@ -122,6 +121,21 @@ namespace PadForge.Common.Input
         public static bool WritePedalRumble(string devicePath, byte throttle, byte brake)
             => RawHidOutput.Write(devicePath, BuildPedalReport(throttle, brake));
 
+        public static bool WriteStopAllEffects(string devicePath, ushort pid)
+            => DisableAllSlots(effect => effect == 0
+                ? WriteWheelConstantForce(devicePath, 0, pid)
+                : WriteWheelCondition(devicePath, effect, 0, 0, 0, 0, 0, 0, 100));
+
+        internal static bool DisableAllSlots(Func<uint, bool> disable)
+        {
+            bool ok = disable(0);
+            // Disable spring, damper, inertia and friction: stopping slot zero
+            // alone leaves condition effects running in the firmware.
+            for (uint effect = 8; effect <= 11; effect++)
+                ok &= disable(effect);
+            return ok;
+        }
+
         // ─────────────────────────────────────────────
         //  Wheel base — constant force (hid-ftecff.c ftecff_update_slot)
         // ─────────────────────────────────────────────
@@ -162,7 +176,7 @@ namespace PadForge.Common.Input
                     cmd[2] = TranslateForce(levelS16); // TRANSLATE_FORCE(level, 8)
                 }
             }
-            return RawHidOutput.Write(devicePath, BuildWheelReport(cmd));
+            return WriteWheelCommand(devicePath, cmd);
         }
 
         // ── Wheel condition effects: spring (slot 1, cmd 0x0b) / damper +
@@ -243,7 +257,7 @@ namespace PadForge.Common.Input
                     cmd[6] = (byte)clip;
                 }
             }
-            return RawHidOutput.Write(devicePath, BuildWheelReport(cmd));
+            return WriteWheelCommand(devicePath, cmd);
         }
 
         // Per-base max rotation from the hid-ftec.c device table (the driver's 'auto'
@@ -279,10 +293,9 @@ namespace PadForge.Common.Input
             byte[] coarse = { 0xf5, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
             byte[] setup  = { 0xf8, 0x09, 0x01, 0x06, 0x01, 0x00, 0x00 };
             byte[] rng    = { 0xf8, 0x81, (byte)(degrees & 0xff), (byte)((degrees >> 8) & 0xff), 0x00, 0x00, 0x00 };
-            bool ok = RawHidOutput.Write(devicePath, BuildWheelReport(coarse));
-            ok &= RawHidOutput.Write(devicePath, BuildWheelReport(setup));
-            ok &= RawHidOutput.Write(devicePath, BuildWheelReport(rng));
-            return ok;
+            return WriteWheelCommand(devicePath, coarse)
+                && WriteWheelCommand(devicePath, setup)
+                && WriteWheelCommand(devicePath, rng);
         }
 
         /// <summary>Sets the wheel RPM / rev LEDs. <paramref name="ledMask9"/> bit 0
@@ -305,7 +318,7 @@ namespace PadForge.Common.Input
             baseCmd[0] = 0xf8;
             baseCmd[1] = 0x13;
             baseCmd[2] = (byte)(ledMask9 & 0xff);
-            bool ok = RawHidOutput.Write(devicePath, BuildWheelReport(baseCmd));
+            bool ok = WriteWheelCommand(devicePath, baseCmd);
 
             // Rim strip: reshuffle so the first LED is the highest bit.
             int reshuffled = 0;
@@ -317,16 +330,27 @@ namespace PadForge.Common.Input
             rim[2] = 0x08;
             rim[3] = (byte)((reshuffled >> 8) & 0xff);
             rim[4] = (byte)(reshuffled & 0xff);
-            ok &= RawHidOutput.Write(devicePath, BuildWheelReport(rim));
+            if (ok) ok = WriteWheelCommand(devicePath, rim);
             return ok;
         }
 
-        // Wheel FFB report: report ID 0 (driver leaves id unset) + 7 command
-        // bytes at offset 1. See HARDWARE VERIFICATION note re: report ID/length.
-        private static byte[] BuildWheelReport(byte[] cmd7)
+        private static bool WriteWheelCommand(string sourcePath, byte[] cmd7)
         {
-            byte[] report = new byte[8];
-            report[0] = 0x00; // report ID
+            if (string.IsNullOrEmpty(sourcePath)) return false;
+            if (!FanatecHidEndpoint.IsCslDd(sourcePath))
+                return RawHidOutput.Write(sourcePath, BuildWheelReport(cmd7, 0, 8));
+            if (!FanatecHidEndpoint.TryResolve(sourcePath, out var endpoint)) return false;
+            bool ok = RawHidOutput.Write(endpoint.Path, BuildWheelReport(cmd7, endpoint.ReportId, endpoint.ReportLength));
+            if (!ok) FanatecHidEndpoint.ResetDevice(sourcePath);
+            return ok;
+        }
+
+        internal static byte[] BuildWheelReport(byte[] cmd7, byte reportId, int reportLength)
+        {
+            if (cmd7 == null || cmd7.Length != 7) throw new ArgumentException("Expected seven command bytes.", nameof(cmd7));
+            if (reportLength != 8) throw new ArgumentOutOfRangeException(nameof(reportLength), "Expected the eight-byte command channel.");
+            byte[] report = new byte[reportLength];
+            report[0] = reportId;
             Array.Copy(cmd7, 0, report, 1, 7);
             return report;
         }

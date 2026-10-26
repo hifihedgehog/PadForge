@@ -228,6 +228,12 @@ namespace PadForge
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            if (Common.Input.FanatecHidEndpoint.TryRunProbe(e.Args, out int probeExitCode))
+            {
+                Shutdown(probeExitCode);
+                return;
+            }
+
             // Make the process's first known-folder lookup here, on the UI
             // thread, before any other thread starts or any window renders.
             // The first lookup resolves windows.storage's delay-loaded

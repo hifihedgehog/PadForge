@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using PadForge.Common.Telemetry;
 using PadForge.Engine;
 using PadForge.Engine.Common;
@@ -857,6 +857,7 @@ namespace PadForge.Common.Input
                 }
                 else if (isVendorFfb && !string.IsNullOrEmpty(ud.DevicePath)
                     && _appliedWheelFfb.ContainsKey(ud.DevicePath)
+                    && _appliedWheelFfb.CanRetry(ud.DevicePath, System.Environment.TickCount64)
                     && System.Threading.Monitor.TryEnter(ud.OutputSync))
                 {
                     // A vendor wheel or pedal holds its last force in firmware
@@ -871,11 +872,16 @@ namespace PadForge.Common.Input
                         if (!RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath)
                             && !RemoteLinkOutputRouter.PeerWroteLast(ud.DevicePath))
                         {
-                            if (isFanatecPedal) FanatecRawHidWriter.WritePedalRumble(ud.DevicePath, 0, 0);
-                            else if (isLogitechWheel) LogitechRawHidWriter.WriteStopEffect(ud.DevicePath, 0);
-                            else if (isFanatecWheel) FanatecRawHidWriter.WriteWheelConstantForce(ud.DevicePath, 0, ud.ProdId);
-                            else ThrustmasterRawHidWriter.WriteStop(ud.DevicePath);
-                            _appliedWheelFfb.TryRemove(ud.DevicePath, out _);
+                            bool stopped;
+                            if (isFanatecPedal) stopped = FanatecRawHidWriter.WritePedalRumble(ud.DevicePath, 0, 0);
+                            else if (isLogitechWheel) stopped = LogitechRawHidWriter.WriteStopEffect(ud.DevicePath, 0);
+                            else if (isFanatecWheel)
+                            {
+                                stopped = FanatecRawHidWriter.WriteStopAllEffects(ud.DevicePath, ud.ProdId);
+                            }
+                            else stopped = ThrustmasterRawHidWriter.WriteStop(ud.DevicePath);
+                            if (stopped) _appliedWheelFfb.TryRemove(ud.DevicePath, out _);
+                            else _appliedWheelFfb.Defer(ud.DevicePath, System.Environment.TickCount64);
                         }
                     }
                     finally { System.Threading.Monitor.Exit(ud.OutputSync); }
@@ -1314,7 +1320,8 @@ namespace PadForge.Common.Input
                         (int)cv.EffectType, (int)cv.Period,
                         hasCond ? (int)ca.PositiveCoefficient : 0, hasCond ? (int)ca.NegativeCoefficient : 0,
                         hasCond ? (int)ca.Offset : 0, hasCond ? (int)ca.DeadBand : 0,
-                        hasCond ? (int)ca.PositiveSaturation : 0, hasCond ? (int)ca.NegativeSaturation : 0, condGain);
+                        hasCond ? (int)ca.PositiveSaturation : 0, hasCond ? (int)ca.NegativeSaturation : 0, condGain,
+                        FanatecHidEndpoint.IsCslDd(ud.DevicePath) ? RawHidOutput.CslDdEpoch : 0);
 
                     // Reverse output relay (#138): a "peer://" wheel lives on another PC.
                     // Ship the semantic steering frame (force/condition/periodic + range +
@@ -1349,70 +1356,109 @@ namespace PadForge.Common.Input
                         return;
                     }
 
-                    if (_appliedWheelFfb.TryGetValue(ud.DevicePath, out var prevFfb) && prevFfb.Equals(ffbSig))
+                    long writeNow = System.Environment.TickCount64;
+                    bool urgentStop = !hasCond && wheelForce == 0 && acMag == 0;
+                    var writeDecision = _appliedWheelFfb.Decide(ud.DevicePath, ffbSig, writeNow,
+                        urgentStop);
+                    if (writeDecision == WheelWriteDecision.RetryBackoff)
                     {
-                        // Unchanged — the wheel already holds this force; skip the HID write.
+                        if (HidOutputDiagnostics.ShouldLog(ud.DevicePath, "ffb-backoff"))
+                            Engine.SdlDiagLog.WriteLine($"[WheelFFB] skip=retry-backoff path={ud.DevicePath}");
+                        return;
                     }
-                    else if (isLogitechWheel)
+
+                    // Preserve v5.1's choice to leave rotation range to the wheel.
+                    bool sendRange = WheelRangeLimits.SendsRange(firstPadSetting);
+                    int desRange = sendRange ? System.Math.Clamp(TryParseIntStatic(firstPadSetting.RotationRange, 900), 40, 2520) : 0;
+                    // Fanatec range setup changes firmware force state. Apply it
+                    // before the requested effect, and reapply both after a failed
+                    // delivery/reopened endpoint. Never let setup overwrite a force
+                    // which the signature cache now thinks is still on the wheel.
+                    if (isFanatecWheel && (!_appliedWheelSettings.TryGetValue(ud.DevicePath, out var fanatecSettings)
+                        || fanatecSettings.range != desRange || fanatecSettings.ac != desAc || fanatecSettings.epoch != ffbSig.OutputEpoch))
                     {
-                        if (hasCond)
-                            LogitechRawHidWriter.WriteCondition(ud.DevicePath, 0, cv.EffectType,
-                                ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
-                                (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, condGain,
-                                LogitechRawHidWriter.HasFrictionCap(ud.ProdId));
-                        else if (wheelForce == 0) LogitechRawHidWriter.WriteStopEffect(ud.DevicePath, 0);
-                        else LogitechRawHidWriter.WriteConstantForce(ud.DevicePath, 0, wheelForce);
+                        bool configured = (!sendRange || FanatecRawHidWriter.WriteRange(ud.DevicePath, desRange, ud.ProdId))
+                            && FanatecRawHidWriter.WriteStopAllEffects(ud.DevicePath, ud.ProdId)
+                            && FanatecRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);
+                        if (!configured)
+                        {
+                            _appliedWheelFfb.Record(ud.DevicePath, ffbSig, false, System.Environment.TickCount64, urgentStop);
+                            return;
+                        }
+                        _appliedWheelSettings[ud.DevicePath] = (desRange, desAc, ffbSig.OutputEpoch);
+                        _appliedWheelFfb.TryRemove(ud.DevicePath, out _);
+                        writeDecision = WheelWriteDecision.Write;
                     }
-                    else if (isFanatecWheel)
+
+                    if (writeDecision == WheelWriteDecision.Unchanged)
                     {
-                        if (hasCond)
-                            FanatecRawHidWriter.WriteWheelCondition(ud.DevicePath, cv.EffectType,
-                                ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
-                                (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, condGain);
+                        if (HidOutputDiagnostics.ShouldLog(ud.DevicePath, "ffb-unchanged"))
+                            Engine.SdlDiagLog.WriteLine($"[WheelFFB] skip=already-delivered path={ud.DevicePath} force={wheelForce} effect={cv.EffectType}");
+                    }
+                    else
+                    {
+                        bool delivered;
+                        if (isLogitechWheel)
+                        {
+                            if (hasCond)
+                                delivered = LogitechRawHidWriter.WriteCondition(ud.DevicePath, 0, cv.EffectType,
+                                    ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
+                                    (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, condGain,
+                                    LogitechRawHidWriter.HasFrictionCap(ud.ProdId));
+                            else if (wheelForce == 0) delivered = LogitechRawHidWriter.WriteStopEffect(ud.DevicePath, 0);
+                            else delivered = LogitechRawHidWriter.WriteConstantForce(ud.DevicePath, 0, wheelForce);
+                        }
+                        else if (isFanatecWheel)
+                        {
+                            delivered = true;
+                            if (_appliedWheelFfb.TryGetApplied(ud.DevicePath, out var previous))
+                            {
+                                if (previous.HasCond && (!hasCond || previous.Effect != (int)cv.EffectType))
+                                    delivered = FanatecRawHidWriter.WriteWheelCondition(ud.DevicePath, (uint)previous.Effect,
+                                        0, 0, 0, 0, 0, 0, 100);
+                                else if (hasCond && !previous.HasCond)
+                                    delivered = FanatecRawHidWriter.WriteWheelConstantForce(ud.DevicePath, 0, ud.ProdId);
+                            }
+                            if (delivered)
+                            {
+                                if (hasCond)
+                                    delivered = FanatecRawHidWriter.WriteWheelCondition(ud.DevicePath, cv.EffectType,
+                                        ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
+                                        (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, condGain);
+                                else if (urgentStop)
+                                    delivered = FanatecRawHidWriter.WriteStopAllEffects(ud.DevicePath, ud.ProdId);
+                                else
+                                {
+                                    delivered = FanatecRawHidWriter.WriteWheelConstantForce(ud.DevicePath, wheelForce, ud.ProdId);
+                                    if (delivered && acMag > 0)
+                                        delivered = FanatecRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);
+                                }
+                            }
+                            if (!delivered) _appliedWheelSettings.TryRemove(ud.DevicePath, out _);
+                        }
                         else
                         {
-                            FanatecRawHidWriter.WriteWheelConstantForce(ud.DevicePath, wheelForce, ud.ProdId);
-                            // Re-assert the software centering spring each frame so it
-                            // survives a game-driven condition overwriting slot 1.
-                            if (acMag > 0) FanatecRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);
+                            if (hasCond)
+                                delivered = ThrustmasterRawHidWriter.WriteCondition(ud.DevicePath, cv.EffectType,
+                                    ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
+                                    (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, condGain);
+                            else if (cv.HasDirectionalData && cv.Period > 0 && ForceFeedbackState.IsPeriodicEffect(cv.EffectType))
+                                delivered = ThrustmasterRawHidWriter.WritePeriodic(ud.DevicePath, cv.EffectType,
+                                    ForceFeedbackState.ComputeWheelSteeringPeak(cv, overallGain), (int)cv.Period);
+                            else delivered = ThrustmasterRawHidWriter.WriteConstantForce(ud.DevicePath, wheelForce);
                         }
+                        _appliedWheelFfb.Record(ud.DevicePath, ffbSig, delivered, System.Environment.TickCount64, urgentStop);
                     }
-                    else // Thrustmaster wheel
-                    {
-                        if (hasCond)
-                            ThrustmasterRawHidWriter.WriteCondition(ud.DevicePath, cv.EffectType,
-                                ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
-                                (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, condGain);
-                        else if (cv.HasDirectionalData && cv.Period > 0 && ForceFeedbackState.IsPeriodicEffect(cv.EffectType))
-                            // T300 firmware runs the waveform onboard (higher fidelity than
-                            // host sampling). Pass the un-sampled steering peak as the amplitude
-                            // — not the sampled level, which crosses zero mid-waveform.
-                            ThrustmasterRawHidWriter.WritePeriodic(ud.DevicePath, cv.EffectType,
-                                ForceFeedbackState.ComputeWheelSteeringPeak(cv, overallGain), (int)cv.Period);
-                        else ThrustmasterRawHidWriter.WriteConstantForce(ud.DevicePath, wheelForce);
-                    }
-                    _appliedWheelFfb[ud.DevicePath] = ffbSig;
 
-                    // Wheel settings (rotation range and auto-center). One-shot,
-                    // re-sent only when the persisted value changes. A range
-                    // left to the wheel (#512) is never sent, and 0 stands for
-                    // it here so turning the range back on sends it again.
-                    bool sendRange = WheelRangeLimits.SendsRange(firstPadSetting);
-                    int desRange = sendRange ? System.Math.Clamp(TryParseIntStatic(firstPadSetting.RotationRange, 900), 40, 2520) : 0; // per-wheel max enforced in each writer's WriteRange
-                    if (!_appliedWheelSettings.TryGetValue(ud.DevicePath, out var prevWs) || prevWs.range != desRange || prevWs.ac != desAc)
+                    // Wheel settings (rotation range + auto-center) — one-shot,
+                    // re-sent only when the persisted value changes.
+                    if (!isFanatecWheel && (!_appliedWheelSettings.TryGetValue(ud.DevicePath, out var prevWs) || prevWs.range != desRange || prevWs.ac != desAc))
                     {
                         bool applied;
                         if (isLogitechWheel)
                         {
                             applied  = !sendRange || LogitechRawHidWriter.WriteRange(ud.DevicePath, desRange, ud.ProdId);
                             applied &= LogitechRawHidWriter.WriteAutocenter(ud.DevicePath, acMag, LogitechRawHidWriter.IsMomo(ud.ProdId));
-                        }
-                        else if (isFanatecWheel)
-                        {
-                            // f5 in the range sequence disables the firmware centering spring,
-                            // so a base whose range is left to it keeps its own centering too.
-                            applied  = !sendRange || FanatecRawHidWriter.WriteRange(ud.DevicePath, desRange, ud.ProdId);
-                            applied &= FanatecRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);          // software centering spring replaces it (slot 1); disables at 0
                         }
                         else
                         {
@@ -1423,7 +1469,7 @@ namespace PadForge.Common.Input
                         // Latching on a failed write (device not ready on the first
                         // dispatch frame) would never re-send the auto-center disable,
                         // leaving the wheel at its firmware-default centering spring.
-                        if (applied) _appliedWheelSettings[ud.DevicePath] = (desRange, desAc);
+                        if (applied) _appliedWheelSettings[ud.DevicePath] = (desRange, desAc, 0);
                     }
 
                     // RPM / shift LEDs from the running game's telemetry (Logitech
@@ -1502,7 +1548,7 @@ namespace PadForge.Common.Input
         // wheel is assigned, while MarkDeviceOffline removes entries from a
         // ThreadPool thread (web/overlay disconnect); a plain Dictionary
         // resizing on the poll thread during that removal is undefined behavior.
-        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, (int range, int ac)> _appliedWheelSettings = new();
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, (int range, int ac, long epoch)> _appliedWheelSettings = new();
 
         // Per-device last-applied RPM LED bitmask, so the strip is only re-sent
         // when it changes (steady RPM = no write; blink/step = write on change).
@@ -1513,18 +1559,19 @@ namespace PadForge.Common.Input
         // every poll is a blocking HID write that halves the poll rate while a wheel is
         // connected (worst at idle: a steady stop/zero force re-sent every tick). Write the
         // force only when this signature changes.
-        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, WheelFfbSig> _appliedWheelFfb = new();
+        private readonly WheelFfbWriteCache<WheelFfbSig> _appliedWheelFfb = new();
         private readonly struct WheelFfbSig : System.IEquatable<WheelFfbSig>
         {
             public readonly bool HasCond, Dir; public readonly short Force;
             public readonly int Peak, Ac, Effect, Period, Pc, Nc, Off, Db, Ps, Ns, CondGain;
+            public readonly long OutputEpoch;
             public WheelFfbSig(bool hasCond, bool dir, short force, int peak, int ac, int effect, int period,
-                int pc, int nc, int off, int db, int ps, int ns, int condGain)
+                int pc, int nc, int off, int db, int ps, int ns, int condGain, long outputEpoch = 0)
             { HasCond = hasCond; Dir = dir; Force = force; Peak = peak; Ac = ac; Effect = effect; Period = period;
-              Pc = pc; Nc = nc; Off = off; Db = db; Ps = ps; Ns = ns; CondGain = condGain; }
+              Pc = pc; Nc = nc; Off = off; Db = db; Ps = ps; Ns = ns; CondGain = condGain; OutputEpoch = outputEpoch; }
             public bool Equals(WheelFfbSig o) => HasCond == o.HasCond && Dir == o.Dir && Force == o.Force && Peak == o.Peak
                 && Ac == o.Ac && Effect == o.Effect && Period == o.Period && Pc == o.Pc && Nc == o.Nc && Off == o.Off
-                && Db == o.Db && Ps == o.Ps && Ns == o.Ns && CondGain == o.CondGain;
+                && Db == o.Db && Ps == o.Ps && Ns == o.Ns && CondGain == o.CondGain && OutputEpoch == o.OutputEpoch;
             public override bool Equals(object o) => o is WheelFfbSig w && Equals(w);
             public override int GetHashCode() => System.HashCode.Combine(Force, Effect, Period, Pc, Nc, Off, CondGain, Ac);
         }

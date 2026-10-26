@@ -1303,6 +1303,7 @@ namespace PadForge.Common.Input
                 _appliedWheelSettings.TryRemove(ud.DevicePath, out _);
                 _appliedLeds.TryRemove(ud.DevicePath, out _);
                 _appliedWheelFfb.TryRemove(ud.DevicePath, out _);
+                FanatecHidEndpoint.ResetDevice(ud.DevicePath);
                 LogitechRawHidWriter.ResetDevice(ud.DevicePath);
                 ThrustmasterRawHidWriter.ResetDevice(ud.DevicePath);
                 RawHidOutput.ResetDevice(ud.DevicePath);

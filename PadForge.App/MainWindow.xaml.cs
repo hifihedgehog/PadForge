@@ -485,7 +485,7 @@ namespace PadForge
                     if (SettingsManager.SlotEnabled[i] == target) continue;
                     _deviceService.SetSlotEnabled(i, target);
                 }
-                _viewModel.RefreshNavControllerItems();
+                RefreshSlotPowerViews();
             });
 
             // Wire driver uninstall guards. Both read the PERSISTED slot
@@ -2275,8 +2275,7 @@ namespace PadForge
             DashboardPageView.SlotEnabledToggled += (s, args) =>
             {
                 _deviceService.SetSlotEnabled(args.SlotIndex, args.IsEnabled);
-                // Refresh sidebar so power button updates.
-                _viewModel.RefreshNavControllerItems();
+                RefreshSlotPowerViews();
             };
 
             DashboardPageView.EngineToggleRequested += (s, e) =>
@@ -4667,9 +4666,20 @@ namespace PadForge
             {
                 bool newState = !SettingsManager.SlotEnabled[padIndex];
                 _deviceService.SetSlotEnabled(padIndex, newState);
-                // Refresh nav items so IsEnabled updates and content rebuilds.
-                _viewModel.RefreshNavControllerItems();
+                RefreshSlotPowerViews();
             }
+        }
+
+        /// <summary>Redraws both cards after slots are turned on or off. The
+        /// sidebar card rebuilds from its nav item. The Dashboard card's flame
+        /// reads its slot summary, which the engine's display timer refreshes,
+        /// so with the engine stopped it kept the old state until the engine
+        /// started (discussion #543). UpdatePadDeviceInfo refreshes the
+        /// summaries after a slot is created for the same reason.</summary>
+        private void RefreshSlotPowerViews()
+        {
+            _viewModel.RefreshNavControllerItems();
+            _inputService.RefreshSlotSummaryProperties();
         }
 
         /// <summary>The HIDMaestro profile id to auto-map AGAINST when a slot is

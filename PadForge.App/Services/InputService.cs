@@ -2937,7 +2937,7 @@ namespace PadForge.Services
 
             // ── Handle macro-requested bulk VC disable/enable toggle (#91) ──
             // Action wired by MainWindow — fans out to DeviceService.SetSlotEnabled
-            // across every created slot and refreshes the sidebar power visuals.
+            // across every created slot and redraws both cards' flames.
             // Overlay confirmation slides in afterward with the resulting state.
             if (_inputManager.PendingToggleVCsDisabled)
             {

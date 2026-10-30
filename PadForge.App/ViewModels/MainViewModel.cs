@@ -10,7 +10,7 @@ namespace PadForge.ViewModels
 {
     /// <summary>
     /// ViewModel for a single virtual controller sidebar entry, one line:
-    /// [flame] N [Preset name] [type chip] #instance_number [X].
+    /// [flame] N [type chip] #instance_number [Preset name] [X].
     /// </summary>
     public class NavControllerItemViewModel : ObservableObject
     {

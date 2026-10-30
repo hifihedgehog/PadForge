@@ -855,30 +855,25 @@
                                                Margin="4,0,0,0"/>
                                 </StackPanel>
 
-                                <!-- Row 1: Preset, type chip and per-type instance
-                                     (discussion #543, owner-approved 2026-10-30),
-                                     in the sidebar card's order. The seven-tile
+                                <!-- Row 1: type chip, per-type instance and Preset
+                                     (discussion #543), in the sidebar card's order:
+                                     the slot, its type, then the Preset under that
+                                     type (owner, 2026-10-30). The seven-tile
                                      segment filled this row, and a stray click on
-                                     it changed the type outright. The Preset reads
-                                     as the title's second line. It trims at rest,
-                                     scrolls while the pointer is on the card, and
-                                     the card around it opens the slot's page. The
-                                     chip is the active tile on its own, with the
-                                     same ember and the same steel on a cold card.
-                                     A click on it opens the type bar Add
-                                     Controller uses, under the card. -->
+                                     it changed the type outright. The Preset trims
+                                     at rest, scrolls while the pointer is on the
+                                     card, and the card around it opens the slot's
+                                     page. The chip is the active tile on its own,
+                                     with the same ember and the same steel on a
+                                     cold card. A click on it opens the type bar
+                                     Add Controller uses, under the card. -->
                                 <Grid Grid.Row="1" Margin="0,8,0,0">
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <controls:MarqueeLabel Grid.Column="0" Text="{Binding PresetName}"
-                                                           VerticalAlignment="Center"
-                                                           TextElement.FontSize="12"
-                                                           TextElement.Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                           Active="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ContentPresenter}}"/>
-                                    <Button Grid.Column="1" Margin="8,0,0,0"
+                                    <Button Grid.Column="0"
                                             Click="TypeChip_Click" Tag="{Binding PadIndex}"
                                             AutomationProperties.AutomationId="Dash_SlotTypeChip">
                                         <Button.Style>
@@ -950,11 +945,23 @@
                                                              Visibility="{Binding TypeGlyph, Converter={StaticResource StringToVisibility}}"/>
                                         </Grid>
                                     </Button>
-                                    <TextBlock Grid.Column="2" Text="{Binding TypeInstanceLabel, StringFormat={}#{0}}"
+                                    <!-- Fixed box, as on the sidebar card: an
+                                         auto-width token would move the Preset
+                                         when the instance number gains a digit,
+                                         and stacked cards would stop lining up.
+                                         20 holds "#16" (17.6, Cascadia @10). -->
+                                    <TextBlock Grid.Column="1" Text="{Binding TypeInstanceLabel, StringFormat={}#{0}}"
                                                FontFamily="{StaticResource TelemetryFontFamily}"
                                                FontSize="10" FontWeight="SemiBold"
                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                               Width="20" TextAlignment="Left"
                                                VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                    <controls:MarqueeLabel Grid.Column="2" Text="{Binding PresetName}"
+                                                           Margin="4,0,0,0"
+                                                           VerticalAlignment="Center"
+                                                           TextElement.FontSize="12"
+                                                           TextElement.Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                           Active="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ContentPresenter}}"/>
                                 </Grid>
 
                                 <!-- Delete button (upper-right corner). Hover-

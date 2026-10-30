@@ -3419,7 +3419,7 @@ namespace PadForge
 
         /// <summary>
         /// Updates the Content and Icon of a controller NavigationViewItem.
-        /// Compact card with rounded border: [Power] N [Preset ...] [Type] #N [X]
+        /// Compact card with rounded border: [Power] N [Type] #N [Preset ...] [X]
         /// </summary>
         private void UpdateControllerNavItemContent(NavigationViewItem menuItem, NavControllerItemViewModel navItem)
         {
@@ -3588,8 +3588,9 @@ namespace PadForge
             System.Windows.Automation.AutomationProperties.SetName(powerBtn, Strings.Instance.Common_Enabled);
             row.Children.Add(powerBtn);
 
-            // Global slot number. The pill reads "what this slot IS" (#175):
-            // flame, number, Preset, then type + instance.
+            // Global slot number. The pill reads "what this slot IS" (#175),
+            // from the slot down: flame, number, type + instance, then the
+            // Preset under that type.
             var slotNumber = new System.Windows.Controls.TextBlock
             {
                 Text = $"{navItem.SlotNumber}",
@@ -3606,39 +3607,16 @@ namespace PadForge
             slotNumber.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
             row.Children.Add(slotNumber);
 
-            // Type + instance at the right end, docked after the X, so the row
-            // reads [Power] N [Preset ...] [Type] #N [X] (discussion #543,
-            // owner-approved 2026-10-30). The seven-tile switcher left the
-            // card: its buttons covered the row, so only the two numbers opened
-            // the slot's page, and a stray click changed the type outright. The
-            // active tile stays as a chip, and a click on it opens the type bar
-            // Add Controller uses (ShowControllerTypePopup).
-            var instanceLabel = new System.Windows.Controls.TextBlock
-            {
-                // "#{n}" to match the slot card seg (#175 iter 71); guard in
-                // case InstanceLabel ever already carries the prefix.
-                Text = string.IsNullOrEmpty(navItem.InstanceLabel) || navItem.InstanceLabel.Contains('#')
-                    ? navItem.InstanceLabel
-                    : "#" + navItem.InstanceLabel,
-                // Telemetry mono (#175 font sweep): the "#N" token matches
-                // the dashboard card's instance label face.
-                FontFamily = (System.Windows.Media.FontFamily)FindResource("TelemetryFontFamily"),
-                FontSize = 11,
-                VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(4, 0, 0, 0),
-                // Fixed box (user report 2026-07-06): an auto-width token
-                // moved the type chip when the instance number gained a digit,
-                // so stacked cards no longer lined up. 20 holds the worst case
-                // ("#16" = 19.3, Cascadia @11).
-                Width = 20,
-                TextAlignment = TextAlignment.Left
-            };
-            instanceLabel.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
-            System.Windows.Controls.DockPanel.SetDock(instanceLabel, System.Windows.Controls.Dock.Right);
-            row.Children.Add(instanceLabel);
-
-            // The chip draws the type the way the active tile did: its logo or
-            // MDL2 glyph at 11px, in the light ember-tile ink.
+            // Type + instance follow the number, so the row reads [Power] N
+            // [Type] #N [Preset ...] [X]: the slot, its type, then the Preset
+            // under that type (discussion #543, order set by the owner
+            // 2026-10-30). The seven-tile switcher left the card: its buttons
+            // covered the row, so only the two numbers opened the slot's page,
+            // and a stray click changed the type outright. The active tile
+            // stays as a chip, and a click on it opens the type bar Add
+            // Controller uses (ShowControllerTypePopup). The chip draws the
+            // type the way the active tile did: its logo or MDL2 glyph at
+            // 11px, in the light ember-tile ink.
             var chipInk = System.Windows.Media.Color.FromRgb(0xFF, 0xF3, 0xE8);
             UIElement TypeLogo(string data) => new System.Windows.Shapes.Path
             {
@@ -3680,7 +3658,10 @@ namespace PadForge
                 Padding = new Thickness(4),
                 MinWidth = 0,
                 MinHeight = 0,
-                Margin = new Thickness(7, 0, 0, 0),
+                // 5px after the number's box, as the power button's 3px
+                // padding and the number's 2px margin come before it, so the
+                // number sits evenly between the flame and the chip.
+                Margin = new Thickness(5, 0, 0, 0),
                 VerticalAlignment = VerticalAlignment.Center,
                 ToolTip = typeName,
                 Tag = navItem.PadIndex,
@@ -3695,8 +3676,30 @@ namespace PadForge
                 e.Handled = true; // Prevent NavigationView selection change.
                 ShowControllerTypePopup(menuItem, PlacementMode.Right, navItem.PadIndex, typeChip);
             };
-            System.Windows.Controls.DockPanel.SetDock(typeChip, System.Windows.Controls.Dock.Right);
             row.Children.Add(typeChip);
+
+            var instanceLabel = new System.Windows.Controls.TextBlock
+            {
+                // "#{n}" to match the slot card seg (#175 iter 71). The guard
+                // covers an InstanceLabel that already carries the prefix.
+                Text = string.IsNullOrEmpty(navItem.InstanceLabel) || navItem.InstanceLabel.Contains('#')
+                    ? navItem.InstanceLabel
+                    : "#" + navItem.InstanceLabel,
+                // Telemetry mono (#175 font sweep): the "#N" token matches
+                // the dashboard card's instance label face.
+                FontFamily = (System.Windows.Media.FontFamily)FindResource("TelemetryFontFamily"),
+                FontSize = 11,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(4, 0, 0, 0),
+                // Fixed box (user report 2026-07-06): an auto-width token
+                // moved what follows it when the instance number gained a
+                // digit, so stacked cards no longer lined up. 20 holds the
+                // worst case ("#16" = 19.3, Cascadia @11).
+                Width = 20,
+                TextAlignment = TextAlignment.Left
+            };
+            instanceLabel.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
+            row.Children.Add(instanceLabel);
 
             // Preset (discussion #543): the name the slot page's Preset chip
             // shows, what the slot IS. Last child, so it fills what the fixed
@@ -3726,7 +3729,7 @@ namespace PadForge
                 // must read congruent whatever their digit count. 233 sits
                 // inside the 236 outer cap the widened 244 pane allows and
                 // leaves the row 211 (20 padding, 2 border). The fixed parts
-                // take 115 of it (19 power, 18 number, 26 type chip, 24
+                // take 113 of it (19 power, 18 number, 24 type chip, 24
                 // instance, 28 X), and the Preset label takes the rest.
                 Width = 233,
                 Child = row,

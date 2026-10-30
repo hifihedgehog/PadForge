@@ -4665,7 +4665,7 @@ namespace PadForge.Common.Input
         private static void Ds5BtHeartbeat(Sink s, float[] pull, int frames, bool audible)
         {
             // Bench sessions only (PADFORGE_DIAG armed). The crash ring holds
-            // 400 lines, and a line per second per pad would evict the context
+            // 4,000 lines, and a line per second per pad would evict the context
             // a crash report actually needs.
             if (!Engine.SdlDiagLog.IsMirroring) return;
             var hb = _btHeartbeats.GetOrAdd(s.DeviceGuid, _ => new BtHeartbeat());

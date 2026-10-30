@@ -38,7 +38,7 @@ namespace PadForge.Common
             }
         }
 
-        /// <summary>Writes the in-memory ring (the last ~400 engine events,
+        /// <summary>Writes the in-memory ring (the last 4,000 engine events,
         /// collected whether or not logging is on) to a timestamped file
         /// and returns its path. Lets a user capture the moments around a
         /// glitch after the fact without having had logging enabled.</summary>

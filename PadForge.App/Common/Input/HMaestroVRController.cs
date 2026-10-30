@@ -83,7 +83,7 @@ namespace PadForge.Common.Input
         /// driver has no host to register with, so slot creation refuses
         /// early with a clear message instead of a silent dead pipe.
         /// Cached briefly: the probe walks Steam's library metadata on disk,
-        /// and the sidebar rail rebuild queries once per slot.</summary>
+        /// and the 5 s driver-status timer and every type bar ask again.</summary>
         public static bool IsAvailable()
         {
             long now = Environment.TickCount64;

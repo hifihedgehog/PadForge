@@ -152,10 +152,14 @@ namespace PadForge.Tests
         /// check above cannot see it. Each is counted here, by file. All but
         /// the main window's are added under a parent that is pinned: the
         /// canvas of the control that builds them, the lightbar host, or a
-        /// window that keeps left to right. The main window's eight are the
+        /// window that keeps left to right. The main window's nine are the
         /// flames and the platform logos of the navigation rail and its
-        /// pop-ups, which go into mirrored rows, so each pins itself. A new
-        /// one moves a count and sends its author here.</summary>
+        /// pop-ups, the type bar's change-type row among them (discussion
+        /// #543), which go into mirrored rows, so each pins itself.
+        /// MarqueeLabel's canvas carries text, not a drawing, and mirrors
+        /// with the language on purpose: in a right-to-left one the hidden
+        /// end of a name sits on the left, and the scroll must reveal it. A
+        /// new one moves a count and sends its author here.</summary>
         [Fact]
         public void EveryDrawingBuiltInCodeIsOnTheList()
         {
@@ -174,7 +178,8 @@ namespace PadForge.Tests
                 ["CurveEditor.xaml.cs"] = 1,
                 ["GunCalibrationScreen.cs"] = 1,
                 ["KBMPreviewView.xaml.cs"] = 4,
-                ["MainWindow.xaml.cs"] = 8,
+                ["MainWindow.xaml.cs"] = 9,
+                ["MarqueeLabel.cs"] = 1,
                 ["MenuOverlayWindow.xaml.cs"] = 2,
                 ["MouseGlyph.cs"] = 3,
                 ["PadPage.xaml.cs"] = 4,
@@ -192,7 +197,7 @@ namespace PadForge.Tests
             string main = File.ReadAllText(Path.Combine(AppDirectory(), "MainWindow.xaml.cs"));
             int pinned = Regex.Matches(main,
                 @"new System\.Windows\.Shapes\.Path\s*\{\s*FlowDirection = FlowDirection\.LeftToRight,").Count;
-            Assert.Equal(8, pinned);
+            Assert.Equal(9, pinned);
         }
 
         /// <summary>The left motor's capsule stays under the controller's

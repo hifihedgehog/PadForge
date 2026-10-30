@@ -124,6 +124,18 @@
                             </Trigger>
                         </Style.Triggers>
                     </Style>
+                    <!-- The sidebar card's type chip (discussion #543): the
+                         active tile on its own, a button that opens the type
+                         bar. The forge gradient stays on hover, and the faint
+                         ember glow the other tiles wear says it can be
+                         clicked. -->
+                    <Style x:Key="MiniTypeChipStyle" TargetType="Button" BasedOn="{StaticResource MiniTypeButtonActiveStyle}">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
                     <!-- Wait gold: the only sanctioned gold. Cooling flames,
                          awaiting-devices states, anything holding heat. -->
                     <SolidColorBrush x:Key="WaitBrush" Color="#E8B434"/>

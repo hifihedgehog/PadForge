@@ -106,7 +106,9 @@ namespace PadForge.Tests
         /// <summary>Every handler that clears the flag must re-hydrate the
         /// pad before it returns. The sidebar tiles had no re-arm at all,
         /// and the dashboard track re-armed only when the device list
-        /// refresh happened to change the selection.</summary>
+        /// refresh happened to change the selection. Since discussion #543
+        /// one handler, ChangeSlotType, runs every type change from either
+        /// card's type bar.</summary>
         [Fact]
         public void EveryTypeChangeHandlerRehydratesTheGridBeforeReturning()
         {
@@ -126,7 +128,7 @@ namespace PadForge.Tests
                 Assert.Contains("RefreshMappingsToViewModel(", tail);
                 at = code.IndexOf(clear, end, StringComparison.Ordinal);
             }
-            Assert.Equal(8, count); // the dashboard track plus the seven sidebar tiles
+            Assert.Equal(1, count); // ChangeSlotType, the one type-change path
         }
 
         private static string RepoText(params string[] parts)

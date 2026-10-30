@@ -9,9 +9,8 @@ using PadForge.Resources.Strings;
 namespace PadForge.ViewModels
 {
     /// <summary>
-    /// ViewModel for a single virtual controller sidebar entry.
-    /// Line 1: "Virtual Controller N"
-    /// Line 2: [type icon] #instance_number
+    /// ViewModel for a single virtual controller sidebar entry, one line:
+    /// [flame] N [Preset name] [type chip] #instance_number [X].
     /// </summary>
     public class NavControllerItemViewModel : ObservableObject
     {
@@ -51,6 +50,15 @@ namespace PadForge.ViewModels
         {
             get => _iconKey;
             set => SetProperty(ref _iconKey, value);
+        }
+
+        private string _presetName = string.Empty;
+        /// <summary>The slot's Preset as its Pad page chip names it
+        /// (PadViewModel.PresetDisplayName). The card prints it.</summary>
+        public string PresetName
+        {
+            get => _presetName;
+            set => SetProperty(ref _presetName, value ?? string.Empty);
         }
 
         private bool _isEnabled = true;
@@ -133,7 +141,11 @@ namespace PadForge.ViewModels
             // Create pad ViewModels (one per virtual controller slot).
             for (int i = 0; i < Common.Input.InputManager.MaxPads; i++)
             {
-                Pads.Add(new PadViewModel(i));
+                var pad = new PadViewModel(i);
+                // The sidebar and Dashboard cards print the slot's Preset,
+                // which the Pad page changes without touching the slot set.
+                pad.PropertyChanged += OnPadPresetChanged;
+                Pads.Add(pad);
             }
 
             Dashboard = new DashboardViewModel();
@@ -151,6 +163,39 @@ namespace PadForge.ViewModels
         {
             Title = Strings.Instance.Common_PadForge;
             RefreshEngineStatus();
+        }
+
+        /// <summary>Carries a pad's new Preset name to its sidebar entry and
+        /// its Dashboard card at once. The Dashboard's own refresh rides the
+        /// engine's display timer, which a stopped engine does not run. The
+        /// entry's PropertyChanged rebuilds WPF elements, so a change raised
+        /// off the UI thread moves onto it first.</summary>
+        private void OnPadPresetChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(PadViewModel.PresetDisplayName) || sender is not PadViewModel pad)
+                return;
+            var dispatcher = System.Windows.Application.Current?.Dispatcher;
+            if (dispatcher != null && !dispatcher.CheckAccess())
+            {
+                dispatcher.BeginInvoke(new Action(() => OnPadPresetChanged(sender, e)));
+                return;
+            }
+            string name = pad.PresetDisplayName;
+            foreach (var nav in NavControllerItems)
+            {
+                if (nav.PadIndex != pad.PadIndex) continue;
+                nav.PresetName = name;
+                break;
+            }
+            if (Dashboard?.SlotSummaries is { } cards)
+            {
+                foreach (var card in cards)
+                {
+                    if (card.PadIndex != pad.PadIndex) continue;
+                    card.PresetName = name;
+                    break;
+                }
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -282,6 +327,7 @@ namespace PadForge.ViewModels
                 nav.InstanceLabel = instanceNum.ToString();
                 nav.IconKey = iconKey;
                 nav.IsEnabled = SettingsManager.SlotEnabled[nav.PadIndex];
+                nav.PresetName = pad.PresetDisplayName;
 
                 // Update PadViewModel's display label and type instance number.
                 pad.Title = string.Format(Strings.Instance.Main_VirtualController_Format, globalCount);

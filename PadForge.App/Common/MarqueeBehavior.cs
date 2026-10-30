@@ -18,6 +18,10 @@ namespace PadForge.Common
     /// </summary>
     public static class MarqueeBehavior
     {
+        /// <summary>Scroll speed, shared with Controls.MarqueeLabel so the two
+        /// marquees move as one.</summary>
+        internal const double PixelsPerSecond = 40.0;
+
         public static readonly DependencyProperty IsEnabledProperty =
             DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(MarqueeBehavior),
                 new PropertyMetadata(false, OnIsEnabledChanged));
@@ -126,7 +130,7 @@ namespace PadForge.Common
             return brush;
         }
 
-        private static void SetEdgeFade(FrameworkElement clipAncestor, bool on)
+        internal static void SetEdgeFade(FrameworkElement clipAncestor, bool on)
         {
             if (clipAncestor == null) return;
             if (on)
@@ -205,7 +209,7 @@ namespace PadForge.Common
                 fe.CacheMode = new System.Windows.Media.BitmapCache();
 
             // Speed: ~40px/sec, with 2s pause at each end.
-            double durationSeconds = overflow / 40.0;
+            double durationSeconds = overflow / PixelsPerSecond;
 
             var animation = new DoubleAnimationUsingKeyFrames
             {

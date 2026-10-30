@@ -3905,6 +3905,7 @@ namespace PadForge.Services
                 var padVm = _mainVm.Pads[slot.PadIndex];
                 padVm.SlotNumber = globalCount;
                 slot.OutputType = padVm.OutputType;
+                slot.PresetName = padVm.PresetDisplayName;
 
                 switch (padVm.OutputType)
                 {

@@ -43,8 +43,10 @@ namespace PadForge.Views
         /// <summary>Raised when the user clicks the power button to toggle enabled state.</summary>
         public event EventHandler<(int SlotIndex, bool IsEnabled)> SlotEnabledToggled;
 
-        /// <summary>Raised when the user clicks a type icon to change controller type.</summary>
-        public event EventHandler<(int SlotIndex, VirtualControllerType Type)> SlotTypeChangeRequested;
+        /// <summary>Raised when the user clicks a slot card's type chip, with
+        /// the slot, the card the type bar opens under, and the chip that
+        /// takes the focus back (discussion #543).</summary>
+        public event EventHandler<(int SlotIndex, FrameworkElement Card, FrameworkElement Chip)> SlotTypeChipClicked;
 
         /// <summary>Raised when the user drags a card to swap with another card (padIndexA, padIndexB).</summary>
         public event EventHandler<(int PadIndexA, int PadIndexB)> SlotSwapRequested;
@@ -105,55 +107,21 @@ namespace PadForge.Views
             }
         }
 
-        private void XboxType_Click(object sender, RoutedEventArgs e)
+        private void TypeChip_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button btn && btn.Tag is int slotIndex)
-                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Xbox));
-        }
-
-        private void DS4Type_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn && btn.Tag is int slotIndex)
-                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.PlayStation));
-        }
-
-        private void NintendoType_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn && btn.Tag is int slotIndex)
-                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Nintendo));
-        }
-
-        private void ExtendedType_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn && btn.Tag is int slotIndex)
-                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Extended));
-        }
-
-        private void KeyboardMouseType_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn && btn.Tag is int slotIndex)
-                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.KeyboardMouse));
-        }
-
-        private void MidiType_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn && btn.Tag is int slotIndex)
+            if (sender is not Button chip || chip.Tag is not int slotIndex) return;
+            // The bar centers under the whole card, as Add Controller's does
+            // under its tile. The card root is the Border tagged with the slot.
+            FrameworkElement card = chip;
+            for (DependencyObject d = chip; d != null; d = VisualTreeHelper.GetParent(d))
             {
-                if (DataContext is ViewModels.DashboardViewModel vm && !vm.IsMidiAvailable) return;
-                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Midi));
+                if (d is Border border && border.Tag is int tag && tag == slotIndex)
+                {
+                    card = border;
+                    break;
+                }
             }
-        }
-
-        private void VrType_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn && btn.Tag is int slotIndex)
-            {
-                // The capacity check lives in the shared handler
-                // (SettingsManager.CanSlotTakeType); this tile only gates
-                // on the SteamVR dependency.
-                if (!PadForge.Common.Input.HMaestroVRController.IsAvailable()) return;
-                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Vr));
-            }
+            SlotTypeChipClicked?.Invoke(this, (slotIndex, card, chip));
         }
 
         // ─────────────────────────────────────────────

@@ -184,8 +184,8 @@ public sealed class AudioProfileLifecycleTests
                 typeof(PadForge.MainWindow).GetField("_viewModel", fields)!.SetValue(window, vm);
                 typeof(PadForge.MainWindow).GetField("_settingsService", fields)!.SetValue(window, settings);
                 typeof(PadForge.MainWindow).GetField("_inputService", fields)!.SetValue(window, input);
-                typeof(PadForge.MainWindow).GetMethod("OnSidebarTypeXbox", fields)!.Invoke(window,
-                    [new System.Windows.Controls.Button { Tag = 0 }, new System.Windows.RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent)]);
+                typeof(PadForge.MainWindow).GetMethod("ChangeSlotType", fields)!.Invoke(window,
+                    [0, VirtualControllerType.Xbox]);
             }
             else input.ApplyProfile(profile);
             effects.Dispose();

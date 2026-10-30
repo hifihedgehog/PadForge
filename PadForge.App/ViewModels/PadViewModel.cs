@@ -139,6 +139,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(MapAllButtonText));
             OnPropertyChanged(nameof(MapAllButtonTooltip));
             OnPropertyChanged(nameof(OutputTypeDisplayName));
+            OnPropertyChanged(nameof(PresetDisplayName));
 
             // Pipeline chip summaries carry localized preset names, so
             // the memo and the cached config both re-localize.
@@ -259,6 +260,10 @@ namespace PadForge.ViewModels
                     // engine-side fallback still catches null, but the UI
                     // binds to ProfileId directly.
                     ProfileId = defaultProfileId;
+                    // Raised here as well as in the ProfileId setter: a move
+                    // between two types with no HIDMaestro profile (Keyboard +
+                    // Mouse to MIDI) leaves the id null, and the name changes.
+                    OnPropertyChanged(nameof(PresetDisplayName));
                     ResetDeadZoneSettings();
                     RebuildMappings();
                     RebuildStickConfigs();
@@ -420,6 +425,7 @@ namespace PadForge.ViewModels
                         // presets Share and Options.
                         SyncMacroButtonStyle();
                     }
+                    OnPropertyChanged(nameof(PresetDisplayName));
                     ConfigItemDirtyCallback?.Invoke();
                 }
             }
@@ -565,6 +571,50 @@ namespace PadForge.ViewModels
             VirtualControllerType.Vr => Strings.Instance.ControllerType_VR,
             _ => string.Empty
         };
+
+        /// <summary>The name the slot's Preset chip shows on its Pad page: the
+        /// HIDMaestro profile for an Xbox, PlayStation, Nintendo or Extended
+        /// slot, the input halves for a Keyboard + Mouse slot, and the type
+        /// name for MIDI and VR, which have no Preset. The sidebar and
+        /// Dashboard cards print it (discussion #543). Raised wherever one of
+        /// those inputs changes: ProfileId, OutputType, the Keyboard + Mouse
+        /// halves and the culture.</summary>
+        /// <remarks>Read by RefreshSlotSummaryProperties on the 30 Hz
+        /// dashboard lane, so the lookups are index loops that allocate
+        /// nothing, the reason that lane dropped LINQ (AnyOnlineMatch).</remarks>
+        public string PresetDisplayName
+        {
+            get
+            {
+                if (_outputType == VirtualControllerType.KeyboardMouse)
+                {
+                    string mode = KbmSurfaces;
+                    var options = KbmConfig?.AvailableKbmSurfaces;
+                    for (int i = 0; options != null && i < options.Count; i++)
+                    {
+                        if (string.Equals(options[i].Value, mode, System.StringComparison.Ordinal))
+                            return options[i].Name;
+                    }
+                    return OutputTypeDisplayName;
+                }
+                if (HasHMaestroProfileBar)
+                {
+                    // Null falls back to the category default, the same rule
+                    // CreateVirtualController applies.
+                    string id = string.IsNullOrEmpty(_profileId)
+                        ? PadForge.Common.Input.InputManager.GetDefaultProfileId(_outputType)
+                        : _profileId;
+                    var profiles = AvailableProfiles;
+                    for (int i = 0; profiles != null && i < profiles.Count; i++)
+                    {
+                        var profile = profiles[i];
+                        if (string.Equals(profile.Id, id, System.StringComparison.OrdinalIgnoreCase))
+                            return string.IsNullOrEmpty(profile.Name) ? OutputTypeDisplayName : profile.Name;
+                    }
+                }
+                return OutputTypeDisplayName;
+            }
+        }
 
         /// <summary>Int binding for ComboBox SelectedIndex (0=Xbox, 1=PlayStation).</summary>
         public int OutputTypeIndex
@@ -950,6 +1000,7 @@ namespace PadForge.ViewModels
         public void NotifyKbmSurfacesChanged()
         {
             OnPropertyChanged(nameof(KbmSurfaces));
+            OnPropertyChanged(nameof(PresetDisplayName));
             OnPropertyChanged(nameof(KbmSocdEditorVisible));
             OnPropertyChanged(nameof(KbmSurfaceScopeVisible));
             // The device pickers follow the halves the mode leaves on, and

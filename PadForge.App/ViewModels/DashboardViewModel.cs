@@ -1777,7 +1777,33 @@ namespace PadForge.ViewModels
         public VirtualControllerType OutputType
         {
             get => _outputType;
-            set => SetProperty(ref _outputType, value);
+            set
+            {
+                if (SetProperty(ref _outputType, value))
+                {
+                    OnPropertyChanged(nameof(TypeGeometry));
+                    OnPropertyChanged(nameof(TypeGlyph));
+                }
+            }
+        }
+
+        /// <summary>The type chip's branded logo, or null for the types drawn
+        /// as a glyph. Same map as the Devices page slot badges.</summary>
+        public System.Windows.Media.Geometry TypeGeometry => SlotTypeIconMap.GeometryFor(_outputType);
+
+        /// <summary>The type chip's MDL2 glyph for the types without a logo,
+        /// empty otherwise.</summary>
+        public string TypeGlyph => SlotTypeIconMap.GlyphFor(_outputType);
+
+        private string _presetName = string.Empty;
+
+        /// <summary>The slot's Preset as its Pad page chip names it
+        /// (PadViewModel.PresetDisplayName), printed under the card's title
+        /// (discussion #543).</summary>
+        public string PresetName
+        {
+            get => _presetName;
+            set => SetProperty(ref _presetName, value ?? string.Empty);
         }
 
         /// <summary>Pipeline stage ledger (#175 item 10): one entry per

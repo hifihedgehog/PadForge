@@ -1373,7 +1373,8 @@ namespace PadForge.ViewModels
     /// sidebar cards and Dashboard wear (Common.ControllerIcons); MIDI and
     /// KbM have no vector logo anywhere in the app and keep their MDL2
     /// glyphs (E8D6 piano, E961 input), mirroring
-    /// MainWindow.UpdateControllerNavItemContent's type row.</summary>
+    /// MainWindow.UpdateControllerNavItemContent's type chip. The Dashboard
+    /// card's type chip reads this map too.</summary>
     internal static class SlotTypeIconMap
     {
         private static readonly System.Windows.Media.Geometry XboxGeometry = ParseFrozen(Common.ControllerIcons.XboxSvgPath);

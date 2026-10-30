@@ -59,6 +59,9 @@ namespace PadForge
         private DeviceService _deviceService;
         private Popup _controllerTypePopup;
         private DateTime _popupClosedAt;
+        // The anchor of the type bar that closed last, so the click that closed
+        // it reopens nothing while a click on another card's chip still opens.
+        private UIElement _popupClosedAnchor;
         // Profile switcher flyout (#175 item 8): own open/close-debounce
         // pair so it never cross-suppresses the controller-type popup.
         private Popup _profileSwitcherPopup;
@@ -2215,16 +2218,15 @@ namespace PadForge
                 pad.CopyMacroFromRequested += (s, e) => OnCopyMacroFrom(capturedPad);
             }
 
-            // MIDI availability must be probed BEFORE the rail is built. The
-            // rail's type-switcher reads the cached Settings.IsMidiAvailable
-            // rather than probing the registry per card, and that property
-            // starts false, so building first meant a machine WITH Windows
-            // MIDI Services painted its first rail without the MIDI segment.
-            // The 5 s driver timer then updates
-            // the property but deliberately does not rebuild on its baseline
-            // sweep, so the segment stayed missing until an unrelated rebuild.
-            // Safe this early: the method only writes the two view-models and
-            // null-guards _navDashboard, which BuildNavigationItems creates.
+            // MIDI availability is probed before the rail is built. The cached
+            // Settings.IsMidiAvailable starts false, and the rail's seven-tile
+            // type switcher once read it per card, so building first painted a
+            // MIDI Services machine's first rail without the MIDI tile. The
+            // type bar now reads it when it opens (discussion #543), and the
+            // early probe still gives both view-models their first value
+            // before anything shows. Safe this early: the method only writes
+            // the two view-models and null-guards _navDashboard, which
+            // BuildNavigationItems creates.
             RefreshMidiServicesStatus();
 
             // Build the sidebar navigation items dynamically.
@@ -2303,48 +2305,10 @@ namespace PadForge
                 }
             };
 
-            DashboardPageView.SlotTypeChangeRequested += (s, args) =>
-            {
-                // Per-type capacity belongs to the operation, not to each
-                // tile that can start it (SettingsManager.CanSlotTakeType).
-                if (!SettingsManager.CanSlotTakeType(args.Type,
-                        pi => _viewModel.Pads[pi].OutputType, args.SlotIndex))
-                    return;
-                // Order is load-bearing (2026-07-22 automap-loss root
-                // cause): ReAutoMapSlot authors the per-device legacy
-                // PadSettings, and the MERGE must fold them into the
-                // slot MappingSet BEFORE OutputType is set, because the
-                // setter's RebuildMappings rebuilds the grid view from
-                // the set, and the save pipeline REGENERATES settings
-                // from that view. With the old order (type first, merge
-                // after) the view rebuilt from the pre-merge set showed
-                // every new-type target as a sourceless skeleton, and
-                // the next view-driven save persisted that skeleton over
-                // the merged truth and regenerated the SELECTED device's
-                // PadSetting raw-less. Multi-controller Nintendo
-                // switches lost their automaps exactly this way.
-                SettingsManager.ReAutoMapSlot(args.SlotIndex, args.Type,
-                    ProfileIdForTypeChange(args.SlotIndex, args.Type));
-                SettingsService.RefreshMappingSetsFromLegacy();
-                _viewModel.Pads[args.SlotIndex].OutputType = args.Type;
-                _inputService.MoveSlotToGroupTail(args.SlotIndex);
-                // Stale-guard the Mappings view — see OnSidebarTypeXbox / PadViewModel.MappingsViewLoaded.
-                // RefreshDeviceList below can re-select the slot's device and fire the
-                // mapping-persisting save; the flag keeps it from writing the pre-change view.
-                _viewModel.Pads[args.SlotIndex].MappingsViewLoaded = false;
-                _settingsService.MarkDirty();
-                _inputService.RefreshDeviceList();
-                _viewModel.Devices.RefreshSlotButtons();
-                // Re-arm the grid from the merged set before the handler
-                // returns. The stale guard above only cleared on the next
-                // RefreshMappingsCore, and nothing on this path promised
-                // one (RefreshDeviceList re-selects only when the selection
-                // changed). Until it ran, every edit on the slot's grid was
-                // skipped by the tier-1 push and never reached the virtual
-                // controller (discussion #396: mappings made after a type
-                // change took effect only after forging was restarted).
-                InputService.RefreshMappingsToViewModel(_viewModel.Pads[args.SlotIndex]);
-            };
+            // A Dashboard card's type chip opens the type bar under its card
+            // (discussion #543), and the bar runs ChangeSlotType.
+            DashboardPageView.SlotTypeChipClicked += (s, args) =>
+                ShowControllerTypePopup(args.Card, PlacementMode.Bottom, args.SlotIndex, args.Chip);
 
             DashboardPageView.SlotSwapRequested += (s, args) =>
             {
@@ -3285,7 +3249,9 @@ namespace PadForge
                             // happened to fire.
                             or nameof(NavControllerItemViewModel.MappedDeviceCount)
                             or nameof(NavControllerItemViewModel.IsCreateFailed)
-                            or nameof(NavControllerItemViewModel.IsVirtualControllerConnected))
+                            or nameof(NavControllerItemViewModel.IsVirtualControllerConnected)
+                            // The card prints it (discussion #543).
+                            or nameof(NavControllerItemViewModel.PresetName))
                         {
                             UpdateControllerNavItemContent(capturedMenuItem, capturedNavItem);
                             // Collapsed rail: the mini card is a rendered
@@ -3453,7 +3419,7 @@ namespace PadForge
 
         /// <summary>
         /// Updates the Content and Icon of a controller NavigationViewItem.
-        /// Compact card with rounded border: [Power] [Gamepad] #N | [Xbox][PS] #N [X]
+        /// Compact card with rounded border: [Power] N [Preset ...] [Type] #N [X]
         /// </summary>
         private void UpdateControllerNavItemContent(NavigationViewItem menuItem, NavControllerItemViewModel navItem)
         {
@@ -3461,6 +3427,8 @@ namespace PadForge
             // The entry's screen-reader name follows its slot number, as the
             // card does.
             System.Windows.Automation.AutomationProperties.SetName(menuItem, AccessibleNames.SlotTitle(navItem.SlotNumber));
+            // The Preset the card prints, read after the name.
+            System.Windows.Automation.AutomationProperties.SetHelpText(menuItem, navItem.PresetName ?? string.Empty);
             // Keyboard focus on a button of the old card returns to the same
             // button on the new one, so a key press that rebuilds the card (a
             // type change, the power toggle) leaves the focus where it was.
@@ -3469,7 +3437,6 @@ namespace PadForge
                 && oldCard.IsAncestorOf(focused)
                 ? System.Windows.Automation.AutomationProperties.GetAutomationId(focused) : null;
             string iconKey = navItem.IconKey;
-            bool isXbox = iconKey == "XboxControllerIcon";
             bool isPlayStation = iconKey == "DS4ControllerIcon";
             bool isNintendo = iconKey == "NintendoControllerIcon";
             bool isExtended = iconKey == "ExtendedControllerIcon";
@@ -3494,18 +3461,11 @@ namespace PadForge
                 Tag = navItem.PadIndex,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(6, 0, 0, 0),
-                // Compact footprint (#175 clip report 2026-07-06): the
-                // style's 28px box plus this 6px margin costs 34px of dock
-                // width vs the 21px of the plain X it replaced (9px glyph +
-                // 3px padding each side + 6px margin), and the row only has
-                // ~193px: 223 pane + 40 item-margin reclaim - 40 icon column
-                // - 2 item border - 6 card margin - 22 card chrome. Budget
-                // holds at the two-digit worst case (slot "16" and "#16",
-                // both reachable at 16 slots): 19 power + 18 slot# + 120.3
-                // seg row (2 margin + 5x19 tiles + 4 label margin + 19.3 for
-                // "#16", Cascadia @11 measured) + 28 X = 185.3, ~7.7 slack.
-                // 22px + Padding 2 keeps the shared chrome (local values
-                // beat style setters); the X never shrinks below 22.
+                // Compact footprint (#175 clip report 2026-07-06): 22px plus
+                // Padding 2 keeps the shared chrome (local values beat style
+                // setters), and the X never shrinks below 22. Its 28px of
+                // dock width with the 6px margin is one of the row's fixed
+                // parts, budgeted at the card's Width below.
                 Width = 22,
                 Height = 22,
                 Padding = new Thickness(2),
@@ -3629,8 +3589,7 @@ namespace PadForge
             row.Children.Add(powerBtn);
 
             // Global slot number. The pill reads "what this slot IS" (#175):
-            // flame, number, type + instance. Type switching lives on the
-            // dashboard cards and the Pad page where there is room for it.
+            // flame, number, Preset, then type + instance.
             var slotNumber = new System.Windows.Controls.TextBlock
             {
                 Text = $"{navItem.SlotNumber}",
@@ -3638,8 +3597,6 @@ namespace PadForge
                 FontSize = 12,
                 FontWeight = FontWeights.Normal,
                 VerticalAlignment = VerticalAlignment.Center,
-                // Tight (#175 clip report): interior slack keeps the
-                // right-aligned type segment from clipping its left edge.
                 // The 16px box holds two digits: "16" measures 14.1 in
                 // Cascadia @12, so slot 10-16 fits without widening.
                 Margin = new Thickness(2, 0, 0, 0),
@@ -3649,102 +3606,13 @@ namespace PadForge
             slotNumber.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
             row.Children.Add(slotNumber);
 
-            // Type switcher returns to the rail (user direction, iteration 15):
-            // the dashboard segment in mini form. Active type is ember-filled;
-            // the card rebuilds on OutputType change via RefreshNavControllerItems.
-            // Read the cached status, not the live probe. This method runs once
-            // per rail card, and DriverInstaller.IsMidiRuntimeInstalled()
-            // enumerates the whole HKLM uninstall key under BOTH the 64-bit and
-            // 32-bit registry views, so a 16-slot rail rebuild paid 32 hive
-            // walks on the UI thread. RefreshMidiServicesStatus() keeps this
-            // property current on a 5 s timer, and the constructor calls it
-            // immediately before the rail's first build, so the value here is
-            // the same answer at worst five seconds older.
-            bool hasMidi = _viewModel.Settings.IsMidiAvailable;
-            var segRow = new System.Windows.Controls.StackPanel
-            {
-                Orientation = System.Windows.Controls.Orientation.Horizontal,
-                Margin = new Thickness(2, 0, 0, 0),
-                HorizontalAlignment = HorizontalAlignment.Right
-            };
-
-            System.Windows.Controls.Button MakeTypeButton(UIElement content, bool active, System.Windows.RoutedEventHandler click, string tip, bool enabled, string id)
-            {
-                // A SegmentButton reads to a screen reader as a radio button,
-                // checked on the slot's current type.
-                var b = new PadForge.Controls.SegmentButton
-                {
-                    IsSelected = active,
-                    Content = content,
-                    // 2px sides (#49 seven-tile fit; was 3px since the #175
-                    // two-digit fit): the VR tile pushed the worst case
-                    // (slot "16" plus "#16") to ≈223 vs the 211px the 233
-                    // card leaves the row, and the right-aligned segment
-                    // shaved the Xbox button's left edge again. 2px lands
-                    // the seven tiles at 17px each (11px glyph untouched,
-                    // exactly the 17px legibility floor) and the row at
-                    // ≈209.3, inside 211 without widening the card.
-                    Padding = new Thickness(2, 2, 2, 2),
-                    MinWidth = 0,
-                    MinHeight = 0,
-                    BorderThickness = new Thickness(0),
-                    Margin = new Thickness(0, 0, 2, 0),
-                    ToolTip = tip,
-                    Tag = navItem.PadIndex,
-                    IsEnabled = enabled,
-                    Cursor = System.Windows.Input.Cursors.Hand
-                };
-                System.Windows.Automation.AutomationProperties.SetAutomationId(b, "Nav_SlotType_" + id);
-                b.SetResourceReference(FrameworkElement.StyleProperty,
-                    active ? "MiniTypeButtonActiveStyle" : "MiniTypeButtonStyle");
-                if (active)
-                    b.SetResourceReference(System.Windows.Controls.Button.BackgroundProperty, "EmberSegGradient");
-                else
-                    b.Background = System.Windows.Media.Brushes.Transparent;
-                b.Click += click;
-                return b;
-            }
-
-            UIElement TypeLogo(string data, bool active)
-            {
-                var path = new System.Windows.Shapes.Path
-                {
-                    FlowDirection = FlowDirection.LeftToRight,
-                    Data = System.Windows.Media.Geometry.Parse(data),
-                    Width = 11,
-                    Height = 11,
-                    Stretch = System.Windows.Media.Stretch.Uniform
-                };
-                if (active)
-                    path.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xF3, 0xE8));
-                else
-                    path.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorTertiaryBrush");
-                return path;
-            }
-
-            UIElement TypeGlyph(string glyph, bool active)
-            {
-                var tb = new PadForge.Controls.GlyphText
-                {
-                    Text = glyph,
-                    FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
-                    FontSize = 11
-                };
-                if (active)
-                    tb.Foreground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xF3, 0xE8));
-                else
-                    tb.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
-                return tb;
-            }
-
-            segRow.Children.Add(MakeTypeButton(TypeLogo(XboxSvgPath, isXbox), isXbox, OnSidebarTypeXbox, Strings.Instance.ControllerType_Xbox, true, "Xbox"));
-            segRow.Children.Add(MakeTypeButton(TypeLogo(DS4SvgPath, isPlayStation), isPlayStation, OnSidebarTypePlayStation, Strings.Instance.ControllerType_PlayStation, true, "PlayStation"));
-            segRow.Children.Add(MakeTypeButton(TypeLogo(SwitchSvgPath, isNintendo), isNintendo, OnSidebarTypeNintendo, Strings.Instance.ControllerType_Nintendo, true, "Nintendo"));
-            segRow.Children.Add(MakeTypeButton(TypeLogo(ExtendedSvgPath, isExtended), isExtended, OnSidebarTypeExtended, Strings.Instance.ControllerType_Extended, true, "Extended"));
-            segRow.Children.Add(MakeTypeButton(TypeGlyph("\uE961", isKbm), isKbm, OnSidebarTypeKeyboardMouse, Strings.Instance.ControllerType_KeyboardMouse, true, "KeyboardMouse"));
-            segRow.Children.Add(MakeTypeButton(TypeGlyph("\uE8D6", isMidi), isMidi, OnSidebarTypeMidi, hasMidi ? Strings.Instance.ControllerType_MIDI : Strings.Instance.Main_MIDI_NotRunning, hasMidi || isMidi, "Midi"));
-            bool hasSteamVr = PadForge.Common.Input.HMaestroVRController.IsAvailable();
-            segRow.Children.Add(MakeTypeButton(TypeGlyph("\uF119", isVr), isVr, OnSidebarTypeVr, hasSteamVr ? Strings.Instance.ControllerType_VR : Strings.Instance.Main_VR_RequiresSteamVR, hasSteamVr || isVr, "Vr"));
+            // Type + instance at the right end, docked after the X, so the row
+            // reads [Power] N [Preset ...] [Type] #N [X] (discussion #543,
+            // owner-approved 2026-10-30). The seven-tile switcher left the
+            // card: its buttons covered the row, so only the two numbers opened
+            // the slot's page, and a stray click changed the type outright. The
+            // active tile stays as a chip, and a click on it opens the type bar
+            // Add Controller uses (ShowControllerTypePopup).
             var instanceLabel = new System.Windows.Controls.TextBlock
             {
                 // "#{n}" to match the slot card seg (#175 iter 71); guard in
@@ -3753,24 +3621,96 @@ namespace PadForge
                     ? navItem.InstanceLabel
                     : "#" + navItem.InstanceLabel,
                 // Telemetry mono (#175 font sweep): the "#N" token matches
-                // the dashboard seg's instance label face.
+                // the dashboard card's instance label face.
                 FontFamily = (System.Windows.Media.FontFamily)FindResource("TelemetryFontFamily"),
                 FontSize = 11,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(4, 0, 0, 0),
-                // Fixed box (user report 2026-07-06): the segment is
-                // right-anchored, so an auto-width token slid the five type
-                // tiles left when the instance number gained a digit
-                // (stacked cards' icons no longer lined up). 20 holds the
-                // worst case ("#16" = 19.3, Cascadia @11, iteration 107
-                // math) and left alignment anchors the "#" column too.
+                // Fixed box (user report 2026-07-06): an auto-width token
+                // moved the type chip when the instance number gained a digit,
+                // so stacked cards no longer lined up. 20 holds the worst case
+                // ("#16" = 19.3, Cascadia @11).
                 Width = 20,
                 TextAlignment = TextAlignment.Left
             };
             instanceLabel.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
-            segRow.Children.Add(instanceLabel);
+            System.Windows.Controls.DockPanel.SetDock(instanceLabel, System.Windows.Controls.Dock.Right);
+            row.Children.Add(instanceLabel);
 
-            row.Children.Add(segRow);
+            // The chip draws the type the way the active tile did: its logo or
+            // MDL2 glyph at 11px, in the light ember-tile ink.
+            var chipInk = System.Windows.Media.Color.FromRgb(0xFF, 0xF3, 0xE8);
+            UIElement TypeLogo(string data) => new System.Windows.Shapes.Path
+            {
+                FlowDirection = FlowDirection.LeftToRight,
+                Data = System.Windows.Media.Geometry.Parse(data),
+                Width = 11,
+                Height = 11,
+                Stretch = System.Windows.Media.Stretch.Uniform,
+                Fill = new System.Windows.Media.SolidColorBrush(chipInk)
+            };
+            UIElement TypeGlyph(string glyph) => new PadForge.Controls.GlyphText
+            {
+                Text = glyph,
+                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                FontSize = 11,
+                Foreground = new System.Windows.Media.SolidColorBrush(chipInk)
+            };
+            UIElement typeIcon = isPlayStation ? TypeLogo(DS4SvgPath)
+                : isNintendo ? TypeLogo(SwitchSvgPath)
+                : isExtended ? TypeLogo(ExtendedSvgPath)
+                : isKbm ? TypeGlyph("\uE961")
+                : isMidi ? TypeGlyph("\uE8D6")
+                : isVr ? TypeGlyph("\uF119")
+                : TypeLogo(XboxSvgPath);
+            string typeName = isPlayStation ? Strings.Instance.ControllerType_PlayStation
+                : isNintendo ? Strings.Instance.ControllerType_Nintendo
+                : isExtended ? Strings.Instance.ControllerType_Extended
+                : isKbm ? Strings.Instance.ControllerType_KeyboardMouse
+                : isMidi ? Strings.Instance.ControllerType_MIDI
+                : isVr ? Strings.Instance.ControllerType_VR
+                : Strings.Instance.ControllerType_Xbox;
+            var typeChip = new System.Windows.Controls.Button
+            {
+                Content = typeIcon,
+                // 4px around the 11px icon: a bigger target than the 15px tile
+                // it replaces, inside the 22px row.
+                Width = 19,
+                Height = 19,
+                Padding = new Thickness(4),
+                MinWidth = 0,
+                MinHeight = 0,
+                Margin = new Thickness(7, 0, 0, 0),
+                VerticalAlignment = VerticalAlignment.Center,
+                ToolTip = typeName,
+                Tag = navItem.PadIndex,
+                Cursor = System.Windows.Input.Cursors.Hand
+            };
+            typeChip.SetResourceReference(FrameworkElement.StyleProperty, "MiniTypeChipStyle");
+            typeChip.SetResourceReference(System.Windows.Controls.Control.BackgroundProperty, "EmberSegGradient");
+            System.Windows.Automation.AutomationProperties.SetAutomationId(typeChip, "Nav_SlotTypeChip");
+            System.Windows.Automation.AutomationProperties.SetName(typeChip, typeName);
+            typeChip.Click += (s, e) =>
+            {
+                e.Handled = true; // Prevent NavigationView selection change.
+                ShowControllerTypePopup(menuItem, PlacementMode.Right, navItem.PadIndex, typeChip);
+            };
+            System.Windows.Controls.DockPanel.SetDock(typeChip, System.Windows.Controls.Dock.Right);
+            row.Children.Add(typeChip);
+
+            // Preset (discussion #543): the name the slot page's Preset chip
+            // shows, what the slot IS. Last child, so it fills what the fixed
+            // parts leave. It trims at rest and scrolls while the pointer is on
+            // the card (bound below), and its tooltip carries the whole name.
+            var presetLabel = new PadForge.Controls.MarqueeLabel
+            {
+                Text = navItem.PresetName,
+                Margin = new Thickness(6, 0, 0, 0),
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            System.Windows.Documents.TextElement.SetFontSize(presetLabel, 12.0);
+            presetLabel.SetResourceReference(System.Windows.Documents.TextElement.ForegroundProperty, "TextFillColorSecondaryBrush");
+            row.Children.Add(presetLabel);
 
             // Flat host (#175 iteration 2): a boxed card inside a rail of
             // flat text items read as a foreign object on real pixels.
@@ -3783,22 +3723,17 @@ namespace PadForge
                 Padding = new Thickness(10, 6, 10, 6),
                 BorderThickness = new Thickness(1),
                 // Fixed width, not MinWidth (user 2026-07-06): stacked cards
-                // must read congruent whatever their digit count. 233 =
-                // worst-case row 204.34 (slot 16 + "#16" + the SIX-tile
-                // type segment, Nintendo added 2026-07-19; iteration 107
-                // math + 19) + 20 padding + 2 border + 6.7 headroom,
-                // inside the 236 outer cap the widened 244 pane allows.
-                // The SEVEN-tile segment (#49 VR) still fits 233: tile
-                // side-padding dropped 3px → 2px in MakeTypeButton, so the
-                // worst case is ≈209.3 against the 211 the card leaves.
+                // must read congruent whatever their digit count. 233 sits
+                // inside the 236 outer cap the widened 244 pane allows and
+                // leaves the row 211 (20 padding, 2 border). The fixed parts
+                // take 115 of it (19 power, 18 number, 26 type chip, 24
+                // instance, 28 X), and the Preset label takes the rest.
                 Width = 233,
                 Child = row,
                 Tag = navItem.PadIndex,
                 // Glow clearance (#175 clip report): the rail clips at the
                 // pill's bounds, truncating the heat ring left and right.
-                // 3px, not more: every horizontal pixel here narrows the
-                // type segment's dock area, which clips the Xbox button's
-                // left edge when the row runs out of slack.
+                // 3px, not more.
                 Margin = new Thickness(3, 2, 3, 2)
             };
             card.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "CardBackgroundFillColorDefaultBrush");
@@ -3955,6 +3890,10 @@ namespace PadForge
                 card.MouseEnter += (s, e) => cardDeleteBtn.Opacity = 1.0;
                 card.MouseLeave += (s, e) => cardDeleteBtn.Opacity = 0;
             }
+
+            // The Preset scrolls on the same card hover that reveals the X.
+            presetLabel.SetBinding(PadForge.Controls.MarqueeLabel.ActiveProperty,
+                new System.Windows.Data.Binding(nameof(UIElement.IsMouseOver)) { Source = card });
 
             // Drag reordering. Mouse-down recorded here, threshold + movement tracked at NavView level.
             card.PreviewMouseLeftButtonDown += OnCardDragStart;
@@ -4758,192 +4697,63 @@ namespace PadForge
                 : PadForge.Common.Input.InputManager.GetDefaultProfileId(newType);
         }
 
-        /// <summary>Handles sidebar Xbox type button click.</summary>
-        private void OnSidebarTypeXbox(object sender, RoutedEventArgs e)
+        /// <summary>Changes a slot's output type: the one type-change path. The
+        /// type bar that a sidebar or Dashboard card's type chip opens calls it
+        /// (discussion #543). The two cards' seven tiles had their own copies,
+        /// and the copies drifted. The Dashboard's never passed the slot's
+        /// Extended layout, so a switch to an unlettered Extended profile such
+        /// as Custom came up with no automap at all (CreateDefaultPadSetting's
+        /// extended parameter). The sidebar's never refreshed the device list
+        /// or the Devices page's slot badges. This path does both. Picking the
+        /// type the slot already has changes nothing, where the tiles re-ran the
+        /// automap over the slot and moved it to the end of its group.</summary>
+        private void ChangeSlotType(int padIndex, VirtualControllerType type)
         {
-            e.Handled = true;
-            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
-            {
-                // Merge BEFORE the type set: see the dashboard
-                // SlotTypeChangeRequested handler for the 2026-07-22
-                // automap-loss root cause this order prevents.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Xbox,
-                    ProfileIdForTypeChange(padIndex, VirtualControllerType.Xbox));
-                SettingsService.RefreshMappingSetsFromLegacy();
-                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Xbox;
-                _inputService.MoveSlotToGroupTail(padIndex);
-                // Stale-guard the Mappings view: the rebuild above re-auto-mapped
-                // the slot, but the OutputType setter's RebuildMappings reloaded the
-                // ViewModel from the pre-change MappingSet. Same guard as the device-
-                // assignment path (see PadViewModel.MappingsViewLoaded); cleared on
-                // the next RefreshMappingsCore.
-                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
-                _settingsService.MarkDirty();
-                // Re-arm the grid now (see the dashboard type handler and
-                // discussion #396): the stale guard above otherwise holds
-                // until the pad is navigated to again, and every grid edit
-                // made in between is dropped by the tier-1 push.
-                InputService.RefreshMappingsToViewModel(_viewModel.Pads[padIndex]);
-            }
-        }
-
-        /// <summary>Handles sidebar PlayStation type button click.</summary>
-        private void OnSidebarTypePlayStation(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
-            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
-            {
-                // Merge BEFORE the type set: see the dashboard
-                // SlotTypeChangeRequested handler for the 2026-07-22
-                // automap-loss root cause this order prevents.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.PlayStation,
-                    ProfileIdForTypeChange(padIndex, VirtualControllerType.PlayStation));
-                SettingsService.RefreshMappingSetsFromLegacy();
-                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.PlayStation;
-                _inputService.MoveSlotToGroupTail(padIndex);
-                // Stale-guard the Mappings view (see OnSidebarTypeXbox).
-                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
-                _settingsService.MarkDirty();
-                // Re-arm the grid now (see the dashboard type handler and
-                // discussion #396): the stale guard above otherwise holds
-                // until the pad is navigated to again, and every grid edit
-                // made in between is dropped by the tier-1 push.
-                InputService.RefreshMappingsToViewModel(_viewModel.Pads[padIndex]);
-            }
-        }
-
-        /// <summary>Handles sidebar Extended (custom DI) type button click.</summary>
-        private void OnSidebarTypeExtended(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
-            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
-            {
-                // Merge BEFORE the type set: see the dashboard
-                // SlotTypeChangeRequested handler for the 2026-07-22
-                // automap-loss root cause this order prevents.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Extended,
-                    ProfileIdForTypeChange(padIndex, VirtualControllerType.Extended),
-                    // The slot's layout, so an unlettered profile gets a raw
-                    // automap instead of the gamepad fields its surface never
-                    // reads.
-                    _viewModel.Pads[padIndex].ExtendedConfig);
-                SettingsService.RefreshMappingSetsFromLegacy();
-                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Extended;
-                _inputService.MoveSlotToGroupTail(padIndex);
-                // Stale-guard the Mappings view (see OnSidebarTypeXbox).
-                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
-                _settingsService.MarkDirty();
-                // Re-arm the grid now (see the dashboard type handler and
-                // discussion #396): the stale guard above otherwise holds
-                // until the pad is navigated to again, and every grid edit
-                // made in between is dropped by the tier-1 push.
-                InputService.RefreshMappingsToViewModel(_viewModel.Pads[padIndex]);
-            }
-        }
-
-        /// <summary>Handles sidebar Nintendo type button click.</summary>
-        private void OnSidebarTypeNintendo(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
-            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
-            {
-                // Merge BEFORE the type set: see the dashboard
-                // SlotTypeChangeRequested handler for the 2026-07-22
-                // automap-loss root cause this order prevents.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Nintendo,
-                    ProfileIdForTypeChange(padIndex, VirtualControllerType.Nintendo));
-                SettingsService.RefreshMappingSetsFromLegacy();
-                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Nintendo;
-                _inputService.MoveSlotToGroupTail(padIndex);
-                // Stale-guard the Mappings view (see OnSidebarTypeXbox).
-                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
-                _settingsService.MarkDirty();
-                // Re-arm the grid now (see the dashboard type handler and
-                // discussion #396): the stale guard above otherwise holds
-                // until the pad is navigated to again, and every grid edit
-                // made in between is dropped by the tier-1 push.
-                InputService.RefreshMappingsToViewModel(_viewModel.Pads[padIndex]);
-            }
-        }
-
-        /// <summary>Handles sidebar Keyboard+Mouse type button click.</summary>
-        private void OnSidebarTypeKeyboardMouse(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
-            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
-            {
-                // Merge BEFORE the type set: see the dashboard
-                // SlotTypeChangeRequested handler for the 2026-07-22
-                // automap-loss root cause this order prevents.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.KeyboardMouse,
-                    ProfileIdForTypeChange(padIndex, VirtualControllerType.KeyboardMouse));
-                SettingsService.RefreshMappingSetsFromLegacy();
-                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.KeyboardMouse;
-                _inputService.MoveSlotToGroupTail(padIndex);
-                // Stale-guard the Mappings view (see OnSidebarTypeXbox).
-                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
-                _settingsService.MarkDirty();
-                // Re-arm the grid now (see the dashboard type handler and
-                // discussion #396): the stale guard above otherwise holds
-                // until the pad is navigated to again, and every grid edit
-                // made in between is dropped by the tier-1 push.
-                InputService.RefreshMappingsToViewModel(_viewModel.Pads[padIndex]);
-            }
-        }
-
-        /// <summary>Handles sidebar MIDI type button click.</summary>
-        private void OnSidebarTypeMidi(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
-            if (!_viewModel.Settings.IsMidiAvailable) return;
-            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
-            {
-                // Merge BEFORE the type set: see the dashboard
-                // SlotTypeChangeRequested handler for the 2026-07-22
-                // automap-loss root cause this order prevents.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Midi,
-                    ProfileIdForTypeChange(padIndex, VirtualControllerType.Midi));
-                SettingsService.RefreshMappingSetsFromLegacy();
-                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Midi;
-                _inputService.MoveSlotToGroupTail(padIndex);
-                // Stale-guard the Mappings view (see OnSidebarTypeXbox).
-                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
-                _settingsService.MarkDirty();
-                // Re-arm the grid now (see the dashboard type handler and
-                // discussion #396): the stale guard above otherwise holds
-                // until the pad is navigated to again, and every grid edit
-                // made in between is dropped by the tier-1 push.
-                InputService.RefreshMappingsToViewModel(_viewModel.Pads[padIndex]);
-            }
-        }
-
-        /// <summary>Handles sidebar VR type button click.</summary>
-        private void OnSidebarTypeVr(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
-            if (!PadForge.Common.Input.HMaestroVRController.IsAvailable()) return;
-            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
-            {
-                if (!SettingsManager.CanSlotTakeType(VirtualControllerType.Vr,
-                        pi => _viewModel.Pads[pi].OutputType, padIndex))
-                    return;
-                // Merge BEFORE the type set: see the dashboard
-                // SlotTypeChangeRequested handler for the 2026-07-22
-                // automap-loss root cause this order prevents.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Vr,
-                    ProfileIdForTypeChange(padIndex, VirtualControllerType.Vr));
-                SettingsService.RefreshMappingSetsFromLegacy();
-                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Vr;
-                _inputService.MoveSlotToGroupTail(padIndex);
-                // Stale-guard the Mappings view (see OnSidebarTypeXbox).
-                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
-                _settingsService.MarkDirty();
-                // Re-arm the grid now (see the dashboard type handler and
-                // discussion #396): the stale guard above otherwise holds
-                // until the pad is navigated to again, and every grid edit
-                // made in between is dropped by the tier-1 push.
-                InputService.RefreshMappingsToViewModel(_viewModel.Pads[padIndex]);
-            }
+            if (padIndex < 0 || padIndex >= _viewModel.Pads.Count) return;
+            var pad = _viewModel.Pads[padIndex];
+            if (pad.OutputType == type) return;
+            // MIDI needs its service and VR needs SteamVR, as the tiles did.
+            if (type == VirtualControllerType.Midi && !_viewModel.Settings.IsMidiAvailable) return;
+            if (type == VirtualControllerType.Vr && !PadForge.Common.Input.HMaestroVRController.IsAvailable()) return;
+            // Per-type capacity belongs to the operation, not to each control
+            // that can start it (SettingsManager.CanSlotTakeType).
+            if (!SettingsManager.CanSlotTakeType(type, pi => _viewModel.Pads[pi].OutputType, padIndex))
+                return;
+            // Order is load-bearing (2026-07-22 automap-loss root cause):
+            // ReAutoMapSlot authors the per-device legacy PadSettings, and the
+            // MERGE must fold them into the slot MappingSet BEFORE OutputType
+            // is set, because the setter's RebuildMappings rebuilds the grid
+            // view from the set, and the save pipeline REGENERATES settings
+            // from that view. With the old order (type first, merge after) the
+            // view rebuilt from the pre-merge set showed every new-type target
+            // as a sourceless skeleton, and the next view-driven save persisted
+            // that skeleton over the merged truth and regenerated the SELECTED
+            // device's PadSetting raw-less. Multi-controller Nintendo switches
+            // lost their automaps exactly this way.
+            SettingsManager.ReAutoMapSlot(padIndex, type, ProfileIdForTypeChange(padIndex, type),
+                // The slot's layout, so an unlettered profile gets a raw
+                // automap instead of the gamepad fields its surface never
+                // reads. Only an Extended target reads it.
+                pad.ExtendedConfig);
+            SettingsService.RefreshMappingSetsFromLegacy();
+            pad.OutputType = type;
+            _inputService.MoveSlotToGroupTail(padIndex);
+            // Stale-guard the Mappings view (PadViewModel.MappingsViewLoaded).
+            // RefreshDeviceList below can re-select the slot's device and fire
+            // the mapping-persisting save, and the flag keeps that save from
+            // writing the pre-change view.
+            pad.MappingsViewLoaded = false;
+            _settingsService.MarkDirty();
+            _inputService.RefreshDeviceList();
+            _viewModel.Devices.RefreshSlotButtons();
+            // Re-arm the grid from the merged set before returning. The stale
+            // guard above only cleared on the next RefreshMappingsCore, and
+            // nothing on this path promised one (RefreshDeviceList re-selects
+            // only when the selection changed). Until it ran, every edit on the
+            // slot's grid was skipped by the tier-1 push and never reached the
+            // virtual controller (discussion #396: mappings made after a type
+            // change took effect only after forging was restarted).
+            InputService.RefreshMappingsToViewModel(pad);
         }
 
         /// <summary>
@@ -5576,9 +5386,14 @@ namespace PadForge
 
         /// <summary>
         /// Shows a popup anchored to the given element with controller type buttons.
-        /// Clicking a button creates a new slot of that type and navigates to it.
+        /// With no slot it is Add Controller's: a click creates a new slot of that
+        /// type and navigates to it. With a slot it is that card's type chip's
+        /// (discussion #543): the slot's type is lit, and a click runs
+        /// ChangeSlotType. The opener takes the keyboard focus back when the bar
+        /// closes, and defaults to the anchor.
         /// </summary>
-        private void ShowControllerTypePopup(UIElement anchor, PlacementMode placement = PlacementMode.Right)
+        private void ShowControllerTypePopup(UIElement anchor, PlacementMode placement = PlacementMode.Right,
+            int retypeSlot = -1, UIElement opener = null)
         {
             // If the popup is already open, close it instead of opening a duplicate.
             if (_controllerTypePopup != null && _controllerTypePopup.IsOpen)
@@ -5588,8 +5403,11 @@ namespace PadForge
                 return;
             }
 
-            // Suppress reopening if the popup was just dismissed within the same click cycle.
-            if ((DateTime.UtcNow - _popupClosedAt).TotalMilliseconds < 300)
+            // Suppress reopening if this anchor's popup was just dismissed within
+            // the same click cycle. Another anchor opens at once, so a click on a
+            // second card's type chip opens that card's bar.
+            if (ReferenceEquals(_popupClosedAnchor, anchor)
+                && (DateTime.UtcNow - _popupClosedAt).TotalMilliseconds < 300)
                 return;
 
             var popup = new Popup
@@ -5603,6 +5421,7 @@ namespace PadForge
             {
                 _controllerTypePopup = null;
                 _popupClosedAt = DateTime.UtcNow;
+                _popupClosedAnchor = anchor;
             };
             _controllerTypePopup = popup;
 
@@ -5692,6 +5511,13 @@ namespace PadForge
             };
 
             var stack = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal };
+
+            if (retypeSlot >= 0)
+            {
+                AddRetypeButtons(stack, popup, retypeSlot);
+                OpenTypePopup();
+                return;
+            }
 
             // Total active slots is the binding constraint (MaxPads = 16
             // across all six groups). When the global total is at the cap
@@ -6014,10 +5840,123 @@ namespace PadForge
             };
             stack.Children.Add(vrBtn);
 
-            border.Child = stack;
-            popup.Child = container;
-            PadForge.Common.KeyboardPopup.Wire(popup, anchor, container);
-            popup.IsOpen = true;
+            OpenTypePopup();
+
+            void OpenTypePopup()
+            {
+                border.Child = stack;
+                popup.Child = container;
+                PadForge.Common.KeyboardPopup.Wire(popup, opener ?? anchor, container);
+                popup.IsOpen = true;
+            }
+        }
+
+        /// <summary>Fills the type bar with one slot's choices (discussion
+        /// #543). Each button is a SegmentButton, so a screen reader hears the
+        /// slot's current type as the checked choice. That one is lit and only
+        /// closes the bar. MIDI and VR say why they cannot be picked, in the
+        /// words the tiles used.</summary>
+        private void AddRetypeButtons(System.Windows.Controls.StackPanel stack, Popup popup, int padIndex)
+        {
+            var current = _viewModel.Pads[padIndex].OutputType;
+            // The cached MIDI status the tiles read. RefreshMidiServicesStatus()
+            // keeps it current on a 5 s timer, where the live probe walks the
+            // HKLM uninstall key under both registry views.
+            bool hasMidi = _viewModel.Settings.IsMidiAvailable;
+            bool hasSteamVr = PadForge.Common.Input.HMaestroVRController.IsAvailable();
+            bool vrRoom = SettingsManager.CanSlotTakeType(VirtualControllerType.Vr,
+                pi => _viewModel.Pads[pi].OutputType, padIndex);
+            var litColor = System.Windows.Media.Color.FromRgb(0xFF, 0xF3, 0xE8);
+
+            UIElement Logo(string data, bool active)
+            {
+                var path = new System.Windows.Shapes.Path
+                {
+                    FlowDirection = FlowDirection.LeftToRight,
+                    Data = System.Windows.Media.Geometry.Parse(data),
+                    Width = 28,
+                    Height = 28,
+                    Stretch = System.Windows.Media.Stretch.Uniform
+                };
+                if (active)
+                    path.Fill = new System.Windows.Media.SolidColorBrush(litColor);
+                else
+                    path.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
+                return path;
+            }
+
+            UIElement Glyph(string glyph, bool active)
+            {
+                var icon = new PadForge.Controls.GlyphText
+                {
+                    Text = glyph,
+                    FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                    FontSize = 28,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+                if (active)
+                    icon.Foreground = new System.Windows.Media.SolidColorBrush(litColor);
+                else
+                    icon.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorPrimaryBrush");
+                return icon;
+            }
+
+            void AddChoice(VirtualControllerType type, Func<bool, UIElement> icon, string name, string tip, bool available, string id)
+            {
+                bool active = type == current;
+                var choice = new PadForge.Controls.SegmentButton
+                {
+                    IsSelected = active,
+                    Content = icon(active),
+                    Padding = new Thickness(8),
+                    MinWidth = 0,
+                    MinHeight = 0,
+                    BorderThickness = new Thickness(0),
+                    ToolTip = tip,
+                    Tag = padIndex,
+                    IsEnabled = available || active,
+                    Cursor = System.Windows.Input.Cursors.Hand
+                };
+                // The reason an unavailable choice gives sits in its tooltip.
+                System.Windows.Controls.ToolTipService.SetShowOnDisabled(choice, true);
+                System.Windows.Automation.AutomationProperties.SetAutomationId(choice, "RetypeBtn_" + id);
+                System.Windows.Automation.AutomationProperties.SetName(choice, name);
+                choice.SetResourceReference(FrameworkElement.StyleProperty,
+                    active ? "MiniTypeButtonActiveStyle" : "MiniTypeButtonStyle");
+                if (active)
+                    choice.SetResourceReference(System.Windows.Controls.Control.BackgroundProperty, "EmberSegGradient");
+                else
+                    choice.Background = System.Windows.Media.Brushes.Transparent;
+                choice.Click += (_, _) =>
+                {
+                    popup.IsOpen = false;
+                    if (!active)
+                        ChangeSlotType(padIndex, type);
+                };
+                stack.Children.Add(choice);
+            }
+
+            var text = Strings.Instance;
+            AddChoice(VirtualControllerType.Xbox, a => Logo(XboxSvgPath, a),
+                text.ControllerType_Xbox, text.ControllerType_Xbox, true, "Xbox");
+            AddChoice(VirtualControllerType.PlayStation, a => Logo(DS4SvgPath, a),
+                text.ControllerType_PlayStation, text.ControllerType_PlayStation, true, "PlayStation");
+            AddChoice(VirtualControllerType.Nintendo, a => Logo(SwitchSvgPath, a),
+                text.ControllerType_Nintendo, text.ControllerType_Nintendo, true, "Nintendo");
+            AddChoice(VirtualControllerType.Extended, a => Logo(ExtendedSvgPath, a),
+                text.ControllerType_Extended, text.ControllerType_Extended, true, "Extended");
+            AddChoice(VirtualControllerType.KeyboardMouse, a => Glyph("\uE961", a),
+                text.ControllerType_KeyboardMouse, text.ControllerType_KeyboardMouse, true, "KeyboardMouse");
+            AddChoice(VirtualControllerType.Midi, a => Glyph("\uE8D6", a),
+                text.ControllerType_MIDI, hasMidi ? text.ControllerType_MIDI : text.Main_MIDI_NotRunning,
+                hasMidi, "Midi");
+            AddChoice(VirtualControllerType.Vr, a => Glyph("\uF119", a),
+                text.ControllerType_VR,
+                !hasSteamVr ? text.Main_VR_RequiresSteamVR
+                    : !vrRoom ? string.Format(text.Main_VR_Max_Format, SettingsManager.MaxVrSlots)
+                    : text.ControllerType_VR,
+                hasSteamVr && vrRoom, "Vr");
         }
 
         /// <summary>

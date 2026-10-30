@@ -5906,27 +5906,36 @@ namespace PadForge
             void AddChoice(VirtualControllerType type, Func<bool, UIElement> icon, string name, string tip, bool available, string id)
             {
                 bool active = type == current;
+                bool offered = available || active;
+                var content = icon(active);
+                // An unavailable choice dims its icon, as Add Controller's do.
+                if (!offered) content.Opacity = 0.35;
                 var choice = new PadForge.Controls.SegmentButton
                 {
                     IsSelected = active,
-                    Content = icon(active),
+                    Content = content,
                     Padding = new Thickness(8),
                     MinWidth = 0,
-                    MinHeight = 0,
                     BorderThickness = new Thickness(0),
                     ToolTip = tip,
                     Tag = padIndex,
-                    IsEnabled = available || active,
-                    Cursor = System.Windows.Input.Cursors.Hand
+                    IsEnabled = offered,
+                    Cursor = offered ? System.Windows.Input.Cursors.Hand : System.Windows.Input.Cursors.No
                 };
                 // The reason an unavailable choice gives sits in its tooltip.
                 System.Windows.Controls.ToolTipService.SetShowOnDisabled(choice, true);
                 System.Windows.Automation.AutomationProperties.SetAutomationId(choice, "RetypeBtn_" + id);
                 System.Windows.Automation.AutomationProperties.SetName(choice, name);
-                choice.SetResourceReference(FrameworkElement.StyleProperty,
-                    active ? "MiniTypeButtonActiveStyle" : "MiniTypeButtonStyle");
+                // The lit choice wears the chip's tile and subtle hover glow.
+                // The others take the plain Button style Add Controller's
+                // buttons wear, which SegmentButton reaches through BaseStyle,
+                // its steel lift and faint ember glow on hover included
+                // (owner, 2026-10-30).
                 if (active)
+                {
+                    choice.SetResourceReference(FrameworkElement.StyleProperty, "MiniTypeChipStyle");
                     choice.SetResourceReference(System.Windows.Controls.Control.BackgroundProperty, "EmberSegGradient");
+                }
                 else
                     choice.Background = System.Windows.Media.Brushes.Transparent;
                 choice.Click += (_, _) =>

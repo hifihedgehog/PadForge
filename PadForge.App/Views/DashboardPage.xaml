@@ -888,6 +888,22 @@
                                                 <Setter Property="Background" Value="{DynamicResource EmberSegGradient}"/>
                                                 <Setter Property="ToolTip" Value="{Binding ControllerType_Xbox, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Setter Property="AutomationProperties.Name" Value="{Binding ControllerType_Xbox, Source={x:Static strings:Strings.Instance}}"/>
+                                                <!-- The sidebar chip's look (owner, 2026-10-30): no
+                                                     glow at rest, and on hover the color holds, so the
+                                                     chip keeps showing the slot's type, while
+                                                     TypeSwitchButton's subtle glow says it can be
+                                                     clicked. That template swaps the fill on hover and
+                                                     press, so the chip draws its own. -->
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="Button">
+                                                            <Border Background="{TemplateBinding Background}"
+                                                                    CornerRadius="4" Padding="{TemplateBinding Padding}">
+                                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
                                                 <Style.Triggers>
                                                     <!-- The type's name, live across a culture
                                                          change, as each tile carried it. -->
@@ -915,21 +931,10 @@
                                                         <Setter Property="ToolTip" Value="{Binding ControllerType_VR, Source={x:Static strings:Strings.Instance}}"/>
                                                         <Setter Property="AutomationProperties.Name" Value="{Binding ControllerType_VR, Source={x:Static strings:Strings.Instance}}"/>
                                                     </DataTrigger>
-                                                    <!-- The active tile's ember glow. A trigger, not
-                                                         a setter, so it outranks the base style's
-                                                         hover glow the way the tile's did. -->
-                                                    <DataTrigger Binding="{Binding HasMappedDevices}" Value="True">
-                                                        <Setter Property="Effect">
-                                                            <Setter.Value>
-                                                                <DropShadowEffect Color="#FF6B2C" BlurRadius="10" ShadowDepth="0" Opacity="0.4"/>
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                    </DataTrigger>
                                                     <!-- Cold card (0 mapped): the chip falls back to steel. -->
                                                     <DataTrigger Binding="{Binding HasMappedDevices}" Value="False">
                                                         <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
                                                         <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
-                                                        <Setter Property="Effect" Value="{x:Null}"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>

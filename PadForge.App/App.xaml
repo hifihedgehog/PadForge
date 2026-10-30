@@ -65,47 +65,9 @@
                     <SolidColorBrush x:Key="SteelLineSoftBrush" Color="#1C2536"/>
                     <SolidColorBrush x:Key="SegTrackBrush" Color="#0B0E14"/>
                     <SolidColorBrush x:Key="SegTrackStrokeBrush" Color="#1C2536"/>
-                    <!-- Mini-card type buttons (code-built): quiet hover that
-                         works on both grounds. -->
-                    <Style x:Key="MiniTypeButtonStyle" TargetType="Button">
-                        <Setter Property="Background" Value="Transparent"/>
-                        <Setter Property="BorderThickness" Value="0"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border x:Name="Bd" Background="{TemplateBinding Background}"
-                                            CornerRadius="5" Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter TargetName="Bd" Property="Background"
-                                                    Value="{DynamicResource SubtleFillColorSecondaryBrush}"/>
-                                            <!-- Hover glow (#175): subtle-fill lift is
-                                                 neutral, so faint ember. Static, shared,
-                                                 frozen (ControllerIcons.xaml). -->
-                                            <Setter TargetName="Bd" Property="Effect"
-                                                    Value="{StaticResource NeutralHoverGlow}"/>
-                                        </Trigger>
-                                        <Trigger Property="IsPressed" Value="True">
-                                            <Setter TargetName="Bd" Property="Background"
-                                                    Value="{DynamicResource SubtleFillColorTertiaryBrush}"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <!-- Disabled consistency (#175 final sweep): branded
-                             glyph content keeps its own colors, so dim the
-                             control as a whole. -->
-                        <Style.Triggers>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" Value="0.45"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                    <!-- Active variant: the forge gradient must not be
-                         swapped away on hover. -->
+                    <!-- The lit type tile, code-built: the forge gradient must
+                         not be swapped away on hover. MiniTypeChipStyle builds
+                         on it. -->
                     <Style x:Key="MiniTypeButtonActiveStyle" TargetType="Button">
                         <Setter Property="BorderThickness" Value="0"/>
                         <Setter Property="Template">
@@ -125,10 +87,10 @@
                         </Style.Triggers>
                     </Style>
                     <!-- The sidebar card's type chip (discussion #543): the
-                         active tile on its own, a button that opens the type
-                         bar. The forge gradient stays on hover, and the faint
-                         ember glow the other tiles wear says it can be
-                         clicked. -->
+                         lit tile on its own, a button that opens the type bar.
+                         The forge gradient stays on hover, and the faint ember
+                         glow every plain button wears there says it can be
+                         clicked. The type bar's lit choice wears it too. -->
                     <Style x:Key="MiniTypeChipStyle" TargetType="Button" BasedOn="{StaticResource MiniTypeButtonActiveStyle}">
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">

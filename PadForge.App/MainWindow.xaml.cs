@@ -4703,10 +4703,11 @@ namespace PadForge
         /// and the copies drifted. The Dashboard's never passed the slot's
         /// Extended layout, so a switch to an unlettered Extended profile such
         /// as Custom came up with no automap at all (CreateDefaultPadSetting's
-        /// extended parameter). The sidebar's never refreshed the device list
-        /// or the Devices page's slot badges. This path does both. Picking the
-        /// type the slot already has changes nothing, where the tiles re-ran the
-        /// automap over the slot and moved it to the end of its group.</summary>
+        /// extended parameter). This path passes it, and keeps the Dashboard's
+        /// explicit device-list and slot-badge refresh, which the sidebar's
+        /// copy left to MoveSlotToGroupTail and the rail rebuild. Picking the
+        /// type the slot already has changes nothing, where both copies re-ran
+        /// the automap over the slot.</summary>
         private void ChangeSlotType(int padIndex, VirtualControllerType type)
         {
             if (padIndex < 0 || padIndex >= _viewModel.Pads.Count) return;

@@ -473,6 +473,9 @@ namespace SDL3
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern ushort SDL_GetJoystickProductVersion(IntPtr joystick);
 
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern ushort SDL_GetJoystickFirmwareVersion(IntPtr joystick);
+
         [StructLayout(LayoutKind.Sequential)]
         public struct SDL_GUID
         {

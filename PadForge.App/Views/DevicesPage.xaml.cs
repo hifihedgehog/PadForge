@@ -619,11 +619,17 @@ namespace PadForge.Views
                     sb.AppendLine($"SDL GUID  {dev.SdlGuid}");
                 if (!string.IsNullOrEmpty(dev.HidHideInstancePath))
                     sb.AppendLine($"PATH      {dev.HidHideInstancePath}");
+                else if (!string.IsNullOrEmpty(dev.DossierConnectionPath))
+                    sb.AppendLine($"PATH      {dev.DossierConnectionPath}");
                 sb.AppendLine($"VID:PID   {dev.VendorIdHex}:{dev.ProductIdHex}");
                 if (dev.IsBluetoothLink)
                     sb.AppendLine("LINK      BT");
                 if (!string.IsNullOrEmpty(dev.SerialNumber))
                     sb.AppendLine($"SERIAL    {dev.SerialNumber}");
+                if (!string.IsNullOrEmpty(dev.FirmwareVersion))
+                    sb.AppendLine($"FIRMWARE  {dev.FirmwareVersion}");
+                if (!string.IsNullOrEmpty(dev.ProductRevision))
+                    sb.AppendLine($"REV       {dev.ProductRevision}");
                 if (dev.HasBattery)
                     sb.AppendLine($"BATT      {dev.BatteryText}" + (dev.BatteryCharging ? " CHG" : string.Empty));
 

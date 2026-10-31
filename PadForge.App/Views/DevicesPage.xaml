@@ -796,6 +796,19 @@
                                     <TextBlock Text="SERIAL" Width="64" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
                                     <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" Text="{Binding SelectedDevice.SerialNumber, Mode=OneWay}"/>
                                 </StackPanel>
+                                <!-- Firmware as SDL reports it (today the DualSense
+                                     and the Edge) and the USB release number.
+                                     Each hides when unreported. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,2"
+                                            Visibility="{Binding SelectedDevice.FirmwareVersion, Converter={StaticResource StringToVisibility}}">
+                                    <TextBlock Text="FIRMWARE" Width="64" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
+                                    <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" Text="{Binding SelectedDevice.FirmwareVersion, Mode=OneWay}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,2"
+                                            Visibility="{Binding SelectedDevice.ProductRevision, Converter={StaticResource StringToVisibility}}">
+                                    <TextBlock Text="REV" Width="64" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
+                                    <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" Text="{Binding SelectedDevice.ProductRevision, Mode=OneWay}"/>
+                                </StackPanel>
                                 <!-- Battery (#167 canon): glyph + percent, only
                                      when the device reports one. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,2"

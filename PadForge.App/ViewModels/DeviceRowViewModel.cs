@@ -62,6 +62,44 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _serialNumber, value);
         }
 
+        private string _firmwareVersion = string.Empty;
+
+        /// <summary>The dossier FIRMWARE line: the firmware version SDL
+        /// reports, which today is the DualSense's and the Edge's. Empty
+        /// hides the line.</summary>
+        public string FirmwareVersion
+        {
+            get => _firmwareVersion;
+            set => SetProperty(ref _firmwareVersion, value);
+        }
+
+        private string _productRevision = string.Empty;
+
+        /// <summary>The dossier REV line: the USB release number (bcdDevice).
+        /// Empty hides the line.</summary>
+        public string ProductRevision
+        {
+            get => _productRevision;
+            set => SetProperty(ref _productRevision, value);
+        }
+
+        /// <summary>Sony firmware reads the way dualsense-tester's
+        /// formatUpdateVersion writes it, the high byte and the low byte as
+        /// hex around a dot (0x0224 is 2.24, the version SDL takes as current
+        /// DualSense firmware). Other makers' values print as raw hex. 0 is
+        /// empty.</summary>
+        public static string FormatFirmwareVersion(ushort version, ushort vendorId)
+        {
+            if (version == 0) return string.Empty;
+            return vendorId == 0x054C
+                ? $"{version >> 8:X}.{version & 0xFF:X2}"
+                : $"0x{version:X4}";
+        }
+
+        /// <summary>The USB release number as USB tools print it, 0 as empty.</summary>
+        public static string FormatProductRevision(ushort version)
+            => version == 0 ? string.Empty : $"0x{version:X4}";
+
         private string _deviceName = string.Empty;
 
         /// <summary>Display name of the device.</summary>

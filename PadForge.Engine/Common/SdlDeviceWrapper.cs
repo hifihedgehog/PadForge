@@ -337,6 +337,14 @@ namespace PadForge.Engine
         /// <summary>Device serial number (e.g. Bluetooth MAC address). May be empty.</summary>
         public string SerialNumber { get; private set; } = string.Empty;
 
+        /// <summary>Firmware version as SDL reports it, 0 when unknown. SDL's
+        /// DualSense driver is the one that fills it, from the firmware
+        /// information report (SDL_hidapi_ps5.c).</summary>
+        public ushort FirmwareVersion { get; private set; }
+
+        /// <summary>The USB release number (bcdDevice), 0 when unknown.</summary>
+        public ushort ProductVersion { get; private set; }
+
         /// <summary>SDL joystick GUID string (32 hex chars) used for gamecontrollerdb matching.</summary>
         public string SdlGuid { get; private set; } = string.Empty;
 
@@ -469,6 +477,8 @@ namespace PadForge.Engine
             SdlDevicePath = SDL_GetJoystickPath(Joystick);
             DevicePath = SdlDevicePath;
             SerialNumber = SDL_GetJoystickSerial(Joystick) ?? string.Empty;
+            FirmwareVersion = SDL_GetJoystickFirmwareVersion(Joystick);
+            ProductVersion = SDL_GetJoystickProductVersion(Joystick);
             SdlGuid = GetJoystickGUIDString(Joystick);
 
             uint props = SDL_GetJoystickProperties(Joystick);

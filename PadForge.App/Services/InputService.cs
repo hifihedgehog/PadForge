@@ -15688,6 +15688,11 @@ namespace PadForge.Services
             // Dossier (#175 item 7): SDL's serial (BT MAC on most wireless
             // pads), already persisted on UserDevice. Empty when unreported.
             row.SerialNumber = ud.SerialNumber ?? string.Empty;
+            // FIRMWARE and REV come from the open SDL device, so an offline
+            // row shows neither.
+            var sdl = ud.Device as PadForge.Engine.SdlDeviceWrapper;
+            row.FirmwareVersion = DeviceRowViewModel.FormatFirmwareVersion(sdl?.FirmwareVersion ?? 0, sdl?.VendorId ?? 0);
+            row.ProductRevision = DeviceRowViewModel.FormatProductRevision(sdl?.ProductVersion ?? 0);
             row.DeviceName = ud.DevicePath == "aggregate://keyboards" ? Strings.Instance.Devices_AllKeyboardsMerged
                            : ud.DevicePath == "aggregate://mice" ? Strings.Instance.Devices_AllMiceMerged
                            : ud.DevicePath == "aggregate://touchpads" ? Strings.Instance.Devices_AllTouchpadsMerged

@@ -627,7 +627,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Idle Disconnect</value></data>
   <data name="Devices_Power" xml:space="preserve"><value>Power</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Device Dossier</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutes (0 = never)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>Minutes (0 = Never)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Disconnect Bluetooth When Plugged In over USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. When this controller reports it is charging while connected over Bluetooth, the Bluetooth link is dropped so it charges without powering the radio. Any USB power source counts, including wall chargers. If you turn Bluetooth back on while the cable stays in, it is left alone until the next unplug.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Read as iCade Controller</value></data>
@@ -2651,7 +2651,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Level</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Inactivity Timeout</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Seconds before a virtual controller is destroyed when all of its mapped devices are offline. 0 disables. Surviving controllers of the same type shift up to fill the gap and re-bind to lower slots.</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>seconds (0 = never)</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>Seconds (0 = Never)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Shift Layer</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Add a shift layer. A second mapping table that activates while a button is held or toggled.</value></data>

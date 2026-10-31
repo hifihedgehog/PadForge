@@ -1299,7 +1299,7 @@
                                  the unit text fills what is left and wraps. As a
                                  horizontal StackPanel the text had unbounded
                                  width, so the reset button added in a31fda39
-                                 pushed "minutes (0 = never)" past the edge, where
+                                 pushed "Minutes (0 = Never)" past the edge, where
                                  the pane clipped it mid-word. -->
                             <DockPanel LastChildFill="True" Margin="0,0,0,4"
                                        Visibility="{Binding SelectedDevice.ShowIdleDisconnect, Converter={StaticResource BoolToVisibilityConverter}}"

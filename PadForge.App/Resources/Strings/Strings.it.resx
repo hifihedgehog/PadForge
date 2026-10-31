@@ -520,6 +520,24 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} usa di nuovo il driver di Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Impossibile ripristinare il driver di Windows per {0}.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows ha riportato {0} sul proprio driver. Selezionalo nella pagina Dispositivi per cambiarlo di nuovo.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Usa solo in PadForge</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge sposta questa tastiera sul driver WinUSB di Windows e la legge direttamente. Windows smette allora di scrivere con questa tastiera in ogni programma, anche quando PadForge è chiuso, finché il suo driver di Windows non viene ripristinato da questa pagina. Le sue mappature e le sue macro continuano a funzionare mentre PadForge è in esecuzione.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Con la tastiera lasciano Windows anche: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>un mouse</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>i tasti multimediali</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>i tasti di accensione e sospensione</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>un controller di gioco</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>il collegamento con il software del produttore</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>altri controlli sulla stessa connessione</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>tastiera o mouse</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Dopo il passaggio, PadForge chiede se mantenerlo e restituisce la tastiera a Windows se nessuno risponde entro {0} secondi.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Mantenere questa tastiera in PadForge?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows non scrive più con {0}. Se non ti è rimasta nessuna tastiera o nessun mouse funzionante, non fare nulla: PadForge la restituisce a Windows allo scadere del conto alla rovescia.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Restituzione tra {0} s</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Mantieni</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Restituisci</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Scollega prima le altre tastiere di questo modello. Windows sposta insieme sul driver di PadForge tutte quelle collegate e smette di usare ciascuna per scrivere.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} usa di nuovo il driver di Windows perché il passaggio non è stato mantenuto.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> totale</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Rimuovi questo dispositivo e le sue impostazioni</value></data>

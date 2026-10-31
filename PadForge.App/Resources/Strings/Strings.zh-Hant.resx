@@ -779,6 +779,24 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} 已恢復使用其 Windows 驅動程式。</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>無法還原 {0} 的 Windows 驅動程式。</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows 已將 {0} 改回其本身的驅動程式。請在「裝置」頁面上選取它，以再次切換。</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>僅供 PadForge 使用</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge 會將此鍵盤改用 Windows 的 WinUSB 驅動程式，並自行讀取它。此後在還原其 Windows 驅動程式之前，Windows 在所有程式中都不會再用此鍵盤打字，即使 PadForge 已關閉也一樣。PadForge 執行期間，其對應和巨集仍會正常運作。您隨時可以從此頁面還原 Windows 驅動程式。</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>下列項目也會一併脫離 Windows：{0}。</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>滑鼠</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>媒體鍵</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>電源鍵和睡眠鍵</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>遊戲控制器</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>與廠商軟體的連結</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>同一連線上的其他控制項</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>鍵盤或滑鼠</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>切換後，PadForge 會詢問是否保留；若 {0} 秒內無人回應，會將鍵盤還給 Windows。</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>要在 PadForge 中保留此鍵盤嗎？</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows 已不再使用 {0} 打字。如果這使您沒有可用的鍵盤或滑鼠，請不要做任何操作：倒數結束時，PadForge 會將它還給 Windows。</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0} 秒後還給 Windows</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>保留</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>立即還給 Windows</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>請先拔除此型號的其他鍵盤。Windows 會將所有已插上的同型號鍵盤一次全部改用 PadForge 的驅動程式，並且不再用它們打字。</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} 已恢復使用其 Windows 驅動程式，因為未選擇保留切換。</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> 在線上 / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> 總計</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>移除此裝置及其設定</value></data>

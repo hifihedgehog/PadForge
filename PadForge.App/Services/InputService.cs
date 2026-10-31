@@ -14553,7 +14553,7 @@ namespace PadForge.Services
             bool hidHideUp = HidHideController.TryProbe(out int hidHideErr);
             int wantHiding = 0;
             foreach (var ud in snapshot)
-                if (ud.HidHideEnabled && !string.IsNullOrEmpty(ud.DevicePath)) wantHiding++;
+                if (ud.HidHideEnabled && !string.IsNullOrEmpty(ud.DevicePath) && !ServedByPadForgeDriver(ud)) wantHiding++;
             if (!hidHideUp && wantHiding > 0)
             {
                 PadForge.Engine.SdlDiagLog.WriteLine(
@@ -14704,7 +14704,10 @@ namespace PadForge.Services
                 // back every entry PadForge wrote.
                 foreach (var ud in standDown ? Array.Empty<UserDevice>() : snapshot)
                 {
-                    if (ud.HidHideEnabled && !string.IsNullOrEmpty(ud.DevicePath))
+                    // A device PadForge's own driver serves is already gone
+                    // from Windows, and its node is no HID device for HidHide
+                    // to cloak (#549).
+                    if (ud.HidHideEnabled && !string.IsNullOrEmpty(ud.DevicePath) && !ServedByPadForgeDriver(ud))
                     {
                         string instanceId = HidHideController.DevicePathToInstanceId(ud.DevicePath);
 
@@ -15135,6 +15138,10 @@ namespace PadForge.Services
             {
                 if (!ud.ConsumeInputEnabled) continue;
                 if (!HasAnySlotAssignment(ud.InstanceGuid)) continue;
+                // A device PadForge reads over WinUSB never reaches the hook,
+                // and the hook cannot tell keyboards apart, so its mapped keys
+                // would be swallowed on every other keyboard instead (#549).
+                if (ServedByPadForgeDriver(ud)) continue;
 
                 // Collect all mapped virtual key codes / mouse buttons from this device's mappings.
                 CollectSuppressedInputs(ud, suppressedKeys, suppressedMouse);
@@ -15396,6 +15403,17 @@ namespace PadForge.Services
         /// eats it. Before, a macro pad key typed itself and then ran its
         /// macro (discussion #537). The apply passes each slot's macros, read
         /// on the UI thread where every apply runs.</summary>
+        /// <summary>True for a device PadForge reads over its own WinUSB
+        /// driver: a keyboard taken from Windows (#549), plugged in or not,
+        /// or any row whose path is PadForge's WinUSB interface, a bound
+        /// TouchSense mouse's (#494) among them. Windows sees none of them
+        /// as an input device, so the low-level hooks and HidHide have
+        /// nothing of theirs to act on.</summary>
+        internal static bool ServedByPadForgeDriver(UserDevice ud)
+            => ud != null
+               && (PadForge.Common.Input.WinUsbKeyboards.KeyboardTakeovers.IsTakenOver(ud.InstanceGuid)
+                   || VendorUsbDriverInstaller.IsOwnInterfacePath(ud.DevicePath));
+
         internal static void CollectMacroTriggerKeys(UserDevice ud, Func<int, IEnumerable<MacroItem>> macrosOfSlot,
             HashSet<int> keys, HashSet<int> mouseButtons)
         {

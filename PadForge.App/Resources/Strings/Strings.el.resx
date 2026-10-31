@@ -779,6 +779,24 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0}: επανήλθε στο πρόγραμμα οδήγησης των Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Δεν ήταν δυνατή η επαναφορά του προγράμματος οδήγησης των Windows για: {0}.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Τα Windows επανέφεραν τη συσκευή {0} στο δικό τους πρόγραμμα οδήγησης. Επιλέξτε την στη σελίδα «Συσκευές» για να την αλλάξετε ξανά.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Χρήση μόνο στο PadForge</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>Το PadForge μεταφέρει αυτό το πληκτρολόγιο στο πρόγραμμα οδήγησης WinUSB των Windows και το διαβάζει το ίδιο. Τα Windows παύουν τότε να πληκτρολογούν με αυτό σε όλα τα προγράμματα, ακόμη και όταν το PadForge είναι κλειστό, μέχρι να επαναφερθεί το πρόγραμμα οδήγησης των Windows από αυτή τη σελίδα. Οι αντιστοιχίσεις και οι μακροεντολές του συνεχίζουν να λειτουργούν όσο εκτελείται το PadForge.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Μαζί με αυτό παύουν να λειτουργούν στα Windows: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>ένα ποντίκι</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>τα πλήκτρα πολυμέσων</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>τα πλήκτρα τροφοδοσίας και αναστολής λειτουργίας</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>ένα χειριστήριο παιχνιδιών</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>η σύνδεσή του με το λογισμικό του κατασκευαστή</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>άλλα στοιχεία ελέγχου στην ίδια σύνδεση</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>πληκτρολόγιο ή ποντίκι</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Μετά την αλλαγή, το PadForge ρωτά αν θέλετε να το κρατήσετε και επιστρέφει το πληκτρολόγιο στα Windows αν δεν απαντήσετε μέσα σε {0} δευτερόλεπτα.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Να παραμείνει αυτό το πληκτρολόγιο στο PadForge;</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Τα Windows δεν πληκτρολογούν πλέον με τη συσκευή {0}. Αν δεν σας έχει μείνει λειτουργικό πληκτρολόγιο ή ποντίκι, μην κάνετε τίποτα: το PadForge την επιστρέφει στα Windows όταν λήξει η αντίστροφη μέτρηση.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Επιστροφή σε {0} δευτ.</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Διατήρηση</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Επιστροφή</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Αποσυνδέστε πρώτα τα άλλα πληκτρολόγια αυτού του μοντέλου. Τα Windows μεταφέρουν ταυτόχρονα όλα τα συνδεδεμένα στο πρόγραμμα οδήγησης του PadForge και παύουν να πληκτρολογούν με το καθένα.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0}: επανήλθε στο πρόγραμμα οδήγησης των Windows, επειδή η αλλαγή δεν διατηρήθηκε.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> σε σύνδεση / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> συνολικά</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Αφαίρεση αυτής της συσκευής και των ρυθμίσεών της</value></data>

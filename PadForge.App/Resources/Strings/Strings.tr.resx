@@ -779,6 +779,24 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} yeniden Windows sürücüsünü kullanıyor.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>{0} için Windows sürücüsü geri yüklenemedi.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows, {0} cihazını yeniden kendi sürücüsüne aldı. Tekrar değiştirmek için Cihazlar sayfasında onu seçin.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Yalnızca PadForge'da kullan</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge, bu klavyeyi Windows'un WinUSB sürücüsüne taşır ve onu kendisi okur. Bunun ardından Windows, sürücüsü bu sayfadan geri yüklenene kadar, PadForge kapalıyken bile hiçbir programda bu klavyeyle yazı yazmaz. Eşlemeleri ve makroları PadForge çalışırken çalışmaya devam eder.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Bunlar da onunla birlikte Windows'tan ayrılır: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>bir fare</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>medya tuşları</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>güç ve uyku tuşları</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>bir oyun kontrolcüsü</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>üreticinin yazılımıyla bağlantısı</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>aynı bağlantıdaki diğer denetimler</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>klavye veya fare</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Geçişten sonra PadForge, klavyeyi tutup tutmayacağınızı sorar. {0} saniye içinde yanıt verilmezse klavyeyi Windows'a geri verir.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Bu klavye PadForge'da kalsın mı?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows artık {0} ile yazı yazmıyor. Bunun sonucunda çalışan klavyeniz veya fareniz kalmadıysa hiçbir şey yapmayın: geri sayım bitince PadForge onu Windows'a geri verir.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0} saniye içinde geri verilecek</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Tut</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Geri ver</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Önce bu modelin diğer klavyelerini çıkarın. Windows takılı olanların hepsini aynı anda PadForge'un sürücüsüne taşır ve hiçbiriyle yazı yazmaz.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} yeniden Windows sürücüsünü kullanıyor, çünkü geçiş korunmadı.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> çevrimiçi / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> toplam</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Bu cihazı ve ayarlarını kaldır</value></data>

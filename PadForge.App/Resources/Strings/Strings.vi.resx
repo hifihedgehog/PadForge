@@ -779,6 +779,24 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} đã trở lại trình điều khiển Windows của nó.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Không khôi phục được trình điều khiển Windows cho {0}.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows đã đưa {0} trở lại trình điều khiển riêng của nó. Hãy chọn nó trên trang Thiết bị để chuyển lại.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Chỉ dùng trong PadForge</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge chuyển bàn phím này sang trình điều khiển WinUSB của Windows và tự đọc nó. Khi đó Windows ngừng nhận gõ phím từ bàn phím này trong mọi chương trình, kể cả khi PadForge đã đóng, cho đến khi trình điều khiển Windows của nó được khôi phục từ trang này. Các ánh xạ và macro của nó vẫn hoạt động khi PadForge đang chạy.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Những thứ này cũng rời khỏi Windows cùng với nó: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>một con chuột</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>phím đa phương tiện</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>phím nguồn và phím ngủ</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>một tay cầm chơi game</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>liên kết của nó với phần mềm của nhà sản xuất</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>các điều khiển khác trên cùng kết nối</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>bàn phím hoặc chuột</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Sau khi chuyển, PadForge sẽ hỏi bạn có muốn giữ lại không, và trả bàn phím về cho Windows nếu không ai trả lời trong {0} giây.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Giữ bàn phím này trong PadForge?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows không còn nhận gõ phím từ {0}. Nếu bạn không còn bàn phím hoặc chuột nào dùng được, đừng làm gì cả: PadForge sẽ trả nó về cho Windows khi đếm ngược kết thúc.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Trả lại sau {0} giây</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Giữ</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Trả lại</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Trước tiên hãy rút các bàn phím khác cùng mẫu này. Windows chuyển mọi bàn phím đang cắm sang trình điều khiển của PadForge cùng lúc, và ngừng nhận gõ phím từ từng cái.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} đã trở lại trình điều khiển Windows của nó vì lần chuyển không được giữ lại.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> trực tuyến / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> tổng cộng</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Gỡ bỏ thiết bị này và thiết lập của nó</value></data>

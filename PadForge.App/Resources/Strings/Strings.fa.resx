@@ -779,6 +779,24 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} به درایور Windows خود برگشت.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>بازگردانی درایور Windows برای {0} ممکن نشد.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows درایور خودش را برای {0} برگرداند. برای تعویض دوباره، آن را در صفحه «دستگاه‌ها» انتخاب کنید.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>استفاده فقط در PadForge</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge این صفحه‌کلید را به درایور WinUSB در Windows منتقل می‌کند و خودش آن را می‌خواند. از آن پس Windows در هیچ برنامه‌ای با آن تایپ نمی‌کند، حتی وقتی PadForge بسته است، تا زمانی که درایور Windows آن از همین صفحه بازگردانده شود. نگاشت‌ها و ماکروهای آن تا وقتی PadForge اجرا می‌شود کار می‌کنند.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>این موارد هم همراه آن از Windows جدا می‌شوند: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>یک ماوس</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>کلیدهای رسانه</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>کلیدهای روشن/خاموش و خواب</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>یک کنترلر بازی</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>ارتباط آن با نرم‌افزار سازنده</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>سایر کنترل‌ها روی همین اتصال</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>صفحه‌کلید یا ماوس</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>پس از تعویض، PadForge می‌پرسد که آن را نگه دارد یا نه، و اگر ظرف {0} ثانیه پاسخی داده نشود، صفحه‌کلید را به Windows برمی‌گرداند.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>این صفحه‌کلید در PadForge بماند؟</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows دیگر با {0} تایپ نمی‌کند. اگر صفحه‌کلید یا ماوس کارکردی برایتان نمانده است، کاری نکنید: PadForge با پایان شمارش معکوس آن را به Windows برمی‌گرداند.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>بازگرداندن تا {0} ثانیه دیگر</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>نگه داشتن</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>بازگرداندن</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>ابتدا صفحه‌کلیدهای دیگر این مدل را جدا کنید. Windows همه صفحه‌کلیدهای وصل‌شده این مدل را یکجا به درایور PadForge منتقل می‌کند و دیگر با هیچ‌کدام تایپ نمی‌کند.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} به درایور Windows خود برگشت، چون تعویض نگه داشته نشد.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> آنلاین / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> کل</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>برداشتن این دستگاه و تنظیمات آن</value></data>

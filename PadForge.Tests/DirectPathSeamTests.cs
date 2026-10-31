@@ -2149,11 +2149,13 @@ namespace PadForge.Tests
         {
             var kinds = Enum.GetValues(typeof(VendorUsbDriverInstaller.OptInKind))
                 .Cast<VendorUsbDriverInstaller.OptInKind>().ToArray();
-            // Appended: the kinds before it keep their numbers.
-            Assert.Equal(new[] { "Xbox360Pad", "Xbox360Receiver", "IntelBaseStation", "Prodikeys", "TouchSenseMouse" },
+            // Appended: the kinds before it keep their numbers, and the
+            // keyboard takeover (#549) came after it.
+            Assert.Equal(new[] { "Xbox360Pad", "Xbox360Receiver", "IntelBaseStation", "Prodikeys", "TouchSenseMouse", "Keyboard" },
                 kinds.Select(k => k.ToString()));
             var touchSense = VendorUsbDriverInstaller.OptInKind.TouchSenseMouse;
             Assert.Equal(4, (int)touchSense);
+            Assert.Equal(5, (int)VendorUsbDriverInstaller.OptInKind.Keyboard);
 
             // Its devices are the TouchSense mice and nothing else.
             Assert.All(VendorUsbDriverInstaller.OptIns.Where(target => target.Kind == touchSense),

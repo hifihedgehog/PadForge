@@ -779,6 +779,24 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} znovu používá systémový ovladač Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Systémový ovladač Windows pro {0} se nepodařilo obnovit.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Systém Windows vrátil {0} na vlastní systémový ovladač. Chcete-li zařízení přepnout znovu, vyberte ho na stránce Zařízení.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Používat jen v programu PadForge</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge převede tuto klávesnici na systémový ovladač WinUSB z Windows a bude ji číst sám. Systém Windows pak tuto klávesnici přestane používat k psaní ve všech programech, i když PadForge nebude spuštěný, dokud její systémový ovladač Windows neobnovíte na této stránce. Přiřazení a makra klávesnice fungují dál, dokud PadForge běží.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Spolu s ní Windows opustí: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>myš</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>multimediální klávesy</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>klávesy napájení a spánku</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>herní ovladač</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>propojení se softwarem výrobce</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>další ovládací prvky na stejném připojení</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>klávesnice nebo myš</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Po přepnutí se PadForge zeptá, zda ji ponechat, a pokud do {0} s nikdo neodpoví, vrátí klávesnici systému Windows.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Ponechat tuto klávesnici v programu PadForge?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Systém Windows již nepoužívá zařízení {0} k psaní. Pokud vám kvůli tomu nezůstala žádná funkční klávesnice ani myš, nedělejte nic: po skončení odpočtu ji PadForge vrátí systému Windows.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Vrácení za {0} s</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Ponechat</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Vrátit</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Nejdřív odpojte ostatní klávesnice tohoto modelu. Systém Windows převede na systémový ovladač programu PadForge všechny připojené najednou a každou z nich přestane používat k psaní.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} znovu používá systémový ovladač Windows, protože přepnutí nebylo ponecháno.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> celkem</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Odebrat toto zařízení a jeho nastavení</value></data>

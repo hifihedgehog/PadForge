@@ -221,14 +221,20 @@ namespace PadForge.Tests
 
         /// <summary>The look, the open and each call on an open interface
         /// ask before the first call that reaches the PC, so a refusal
-        /// enumerates nothing, opens no handle and sends no transfer.</summary>
+        /// enumerates nothing, opens no handle and sends no transfer. A
+        /// bound keyboard's look, open and collection read (#549) ask the
+        /// same way.</summary>
         [Theory]
         [InlineData("Services", "TouchSenseBinding.cs", "internal static List<TouchSenseMouse> FindBound()", "RealTouchSenseAccess.Refused")]
+        [InlineData("Services", "WinUsbKeyboardBinding.cs", "internal static List<WinUsbKeyboard> FindBound()", "RealTouchSenseAccess.Refused")]
+        [InlineData("Services", "WinUsbKeyboardBinding.cs", "internal static Takes WhatLeaves(string nodeId)", "RealHidAccess.Refused")]
+        [InlineData("WinUsbKeyboards", "WinUsbKeyboardChannel.cs", "public static WinUsbKeyboardChannel Open(string path)", "RealTouchSenseAccess.Refused")]
         [InlineData("Services", "TouchSenseBinding.cs", "NodeDeclaresBuzz(VendorUsbDriverInstaller.UsbNode node)", "RealHidAccess.Refused")]
         [InlineData("Services", "TouchSenseBinding.cs", "internal static bool ReadOutputCaps(string path, out int buttons, out List<TouchSenseValueCap> values)", "RealHidAccess.Refused")]
         [InlineData("Peripherals", "TouchSenseChannel.cs", "public static TouchSenseChannel Open(string path)", "RealTouchSenseAccess.Refused")]
         [InlineData("Peripherals", "TouchSenseWinUsb.cs", "internal static WinUsbTouchSenseUsb Open(string path)", "RealTouchSenseAccess.Refused")]
         [InlineData("Peripherals", "TouchSenseWinUsb.cs", "public bool Describe(out byte interfaceClass, out byte interruptIn, out byte interruptOut)", "RealTouchSenseAccess.Refused")]
+        [InlineData("Peripherals", "TouchSenseWinUsb.cs", "public bool DescribeInterface(out byte number, out byte interfaceClass, out byte interruptIn, out ushort packetSize)", "RealTouchSenseAccess.Refused")]
         [InlineData("Peripherals", "TouchSenseWinUsb.cs", "public int ReadConfiguration(byte[] buffer)", "RealTouchSenseAccess.Refused")]
         [InlineData("Peripherals", "TouchSenseWinUsb.cs", "public bool ControlIn(byte[] setup, byte[] buffer, out int length)", "RealTouchSenseAccess.Refused")]
         [InlineData("Peripherals", "TouchSenseWinUsb.cs", "public bool ControlOut(byte[] setup, byte[] data)", "RealTouchSenseAccess.Refused")]
@@ -237,7 +243,12 @@ namespace PadForge.Tests
         [InlineData("Peripherals", "TouchSenseWinUsb.cs", "public void SetTimeout(byte pipe, int milliseconds)", "RealTouchSenseAccess.Refused")]
         public void EachRealCallAsksBeforeItReachesThePc(string folder, string file, string signature, string ask)
         {
-            string source = folder == "Services" ? Source("Services", file) : Source("Common", "Input", "Peripherals", file);
+            string source = folder switch
+            {
+                "Services" => Source("Services", file),
+                "WinUsbKeyboards" => Source("Common", "Input", "WinUsbKeyboards", file),
+                _ => Source("Common", "Input", "Peripherals", file),
+            };
             int at = source.IndexOf(signature, StringComparison.Ordinal);
             Assert.True(at >= 0, signature);
             Assert.Equal(-1, source.IndexOf(signature, at + 1, StringComparison.Ordinal));
@@ -269,6 +280,7 @@ namespace PadForge.Tests
             Assert.Equal(new[]
             {
                 "CreateFile", "WinUsb_Initialize", "CloseHandle",
+                "WinUsb_QueryInterfaceSettings", "WinUsb_QueryPipe",
                 "WinUsb_QueryInterfaceSettings", "WinUsb_QueryPipe",
                 "WinUsb_GetDescriptor",
                 "WinUsb_ControlTransfer", "WinUsb_ControlTransfer",

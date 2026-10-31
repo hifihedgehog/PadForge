@@ -2517,22 +2517,36 @@ namespace PadForge
 
         /// <summary>Moves the selected device to PadForge's WinUSB driver, or
         /// gives Windows its driver back, and records the opted-in IDs for the
-        /// start-up check.</summary>
+        /// start-up check. A keyboard (#549) records its takeover instead,
+        /// and after its switch the Keep prompt gives it back to Windows
+        /// unless the user keeps it.</summary>
         private async System.Threading.Tasks.Task SwitchDriverAsync(bool bind)
         {
             var devices = _viewModel.Devices;
             var offer = devices.DriverOffer;
             if (offer == null || devices.DriverBusy || (bind ? offer.Bind == null : !offer.Restore)) return;
-            string name = Services.VendorUsbDriverInstaller.NameOf(offer.Kind);
+            bool keyboard = offer.Kind == Services.VendorUsbDriverInstaller.OptInKind.Keyboard;
+            // A keyboard is named as its row names it. The kind's name is
+            // the one its package gives Device Manager.
+            var row = devices.SelectedDevice;
+            string name = keyboard && !string.IsNullOrWhiteSpace(row?.DeviceName)
+                ? row.DeviceName
+                : Services.VendorUsbDriverInstaller.NameOf(offer.Kind);
             Action<string> log = m => PadForge.Engine.SdlDiagLog.WriteLine("VendorUSB: " + m);
 
             // Said before the confirm, which speaks of the one device that
             // was chosen: Windows would move another of its model with it.
             devices.DriverBusy = true;
             var nodes = await System.Threading.Tasks.Task.Run(Services.VendorUsbDriverInstaller.ListPresentUsbNodes);
+            // A keyboard's collections are read off the UI thread, and its
+            // confirm is worded on it, in the language the page shows.
+            string cost = !bind ? null
+                : keyboard ? KeyboardDriverCost(await System.Threading.Tasks.Task.Run(() =>
+                    Services.WinUsbKeyboardBinding.WhatLeaves(offer.NodeId)))
+                : DriverCost(offer.Kind);
             if (bind && (TakesOthersAlong(offer, nodes, log)
                     || !Views.ConfirmDialog.Show(this, Strings.Instance.Devices_DriverConfirmTitle,
-                        DriverCost(offer.Kind), Strings.Instance.Devices_DriverSwitch)))
+                        cost, Strings.Instance.Devices_DriverSwitch, keyboard ? name : null)))
             {
                 devices.DriverBusy = false;
                 return;
@@ -2550,12 +2564,55 @@ namespace PadForge
                     return;
                 }
             }
-            bool ok = await System.Threading.Tasks.Task.Run(() => bind
-                ? Services.VendorUsbDriverInstaller.Bind(offer.Bind.Value, offer.NodeId, nodes, log, default, offer.From)
-                : Services.VendorUsbDriverInstaller.Restore(offer.NodeId, log, default));
-            devices.DriverBusy = false;
 
-            if (ok)
+            // A keyboard's takeover is recorded before its bind, so the
+            // device pass opens the bound keyboard under its own row the
+            // moment Windows lets it go. A bind that fails takes it back.
+            Common.Input.WinUsbKeyboards.KeyboardTakeoverEntry takeover = null;
+            if (bind && keyboard && row != null)
+            {
+                takeover = new Common.Input.WinUsbKeyboards.KeyboardTakeoverEntry
+                {
+                    NodeId = offer.NodeId,
+                    BindId = offer.Bind.Value.BindId,
+                    RowId = row.InstanceGuid.ToString(),
+                    Name = row.DeviceName,
+                    VendorId = row.VendorId,
+                    ProductId = row.ProductId,
+                };
+                AddKeyboardTakeover(takeover);
+            }
+
+            bool ok = await System.Threading.Tasks.Task.Run(() => bind
+                ? Services.VendorUsbDriverInstaller.Bind(offer.Bind.Value, offer.NodeId, nodes, log, default, offer.From, offer.Kind)
+                : Services.VendorUsbDriverInstaller.Restore(offer.NodeId, log, default));
+            string format = bind
+                ? (ok ? Strings.Instance.Status_DriverBound_Format : Strings.Instance.Status_DriverBindFailed_Format)
+                : (ok ? Strings.Instance.Status_DriverRestored_Format : Strings.Instance.Status_DriverRestoreFailed_Format);
+            bool persist = !ok;
+
+            if (keyboard)
+            {
+                if (bind && !ok && takeover != null) RemoveKeyboardTakeover(offer.NodeId);
+                else if (!bind && ok) RemoveKeyboardTakeover(offer.NodeId);
+
+                // The automatic undo, while the page is still busy. Someone
+                // whose only keyboard, or only mouse on a shared receiver,
+                // was just taken cannot answer, and the prompt's end gives
+                // the keyboard back to Windows.
+                if (bind && ok && !Views.KeepDriverDialog.Show(this, name, KeepDriverSeconds))
+                {
+                    _viewModel.SetStatus(string.Format(Strings.Instance.Status_DriverSwitching_Format, name));
+                    bool restored = await System.Threading.Tasks.Task.Run(() =>
+                        Services.VendorUsbDriverInstaller.Restore(offer.NodeId, log, default));
+                    if (restored) RemoveKeyboardTakeover(offer.NodeId);
+                    format = restored
+                        ? Strings.Instance.Status_DriverKeepExpired_Format
+                        : Strings.Instance.Status_DriverRestoreFailed_Format;
+                    persist = true;
+                }
+            }
+            else if (ok)
             {
                 var ids = _viewModel.Settings.WinUsbOptIns;
                 if (bind)
@@ -2573,10 +2630,8 @@ namespace PadForge
                 }
                 _settingsService?.MarkDirty();
             }
-            string format = bind
-                ? (ok ? Strings.Instance.Status_DriverBound_Format : Strings.Instance.Status_DriverBindFailed_Format)
-                : (ok ? Strings.Instance.Status_DriverRestored_Format : Strings.Instance.Status_DriverRestoreFailed_Format);
-            _viewModel.SetStatus(string.Format(format, name), persist: !ok);
+            devices.DriverBusy = false;
+            _viewModel.SetStatus(string.Format(format, name), persist: persist);
             devices.RefreshDriverOffer();
         }
 
@@ -2632,12 +2687,73 @@ namespace PadForge
         private bool TakesOthersAlong(Services.VendorUsbDriverInstaller.OptInOffer offer,
             System.Collections.Generic.IReadOnlyList<Services.VendorUsbDriverInstaller.UsbNode> nodes, Action<string> log)
         {
-            if (Services.VendorUsbDriverInstaller.WhyNotBind(offer.Bind.Value, offer.NodeId, nodes, offer.From, out string why)
+            if (Services.VendorUsbDriverInstaller.WhyNotBind(offer.Bind.Value, offer.NodeId, nodes, offer.From, out string why, offer.Kind)
                 != Services.VendorUsbDriverInstaller.BindRefusal.OthersPluggedIn)
                 return false;
             log(why);
-            _viewModel.SetStatus(Strings.Instance.Status_DriverBindOthersPluggedIn, persist: true);
+            _viewModel.SetStatus(offer.Kind == Services.VendorUsbDriverInstaller.OptInKind.Keyboard
+                ? Strings.Instance.Status_DriverBindOthersPluggedIn_Keyboard
+                : Strings.Instance.Status_DriverBindOthersPluggedIn, persist: true);
             return true;
+        }
+
+        /// <summary>How long the Keep prompt waits before it gives a
+        /// keyboard back to Windows (#549), the time Windows' own display
+        /// settings wait before they undo a change nobody kept.</summary>
+        internal const int KeepDriverSeconds = 15;
+
+        /// <summary>A keyboard's confirm (#549): what the switch takes, then
+        /// what else leaves Windows with it, read from the HID collections
+        /// on the keyboard's node (<see cref="Services.WinUsbKeyboardBinding.WhatLeaves(string)"/>),
+        /// then Hide from Games' warning about the only keyboard, or the
+        /// only keyboard or mouse when a mouse goes along, then the undo
+        /// that follows.</summary>
+        internal static string KeyboardDriverCost(Services.WinUsbKeyboardBinding.Takes takes)
+        {
+            var s = Strings.Instance;
+            var parts = new System.Collections.Generic.List<string> { s.Devices_DriverConfirm_Keyboard };
+            var names = new System.Collections.Generic.List<string>();
+            if (takes.HasFlag(Services.WinUsbKeyboardBinding.Takes.Mouse)) names.Add(s.Devices_DriverTakes_Mouse);
+            if (takes.HasFlag(Services.WinUsbKeyboardBinding.Takes.MediaKeys)) names.Add(s.Devices_DriverTakes_MediaKeys);
+            if (takes.HasFlag(Services.WinUsbKeyboardBinding.Takes.SystemKeys)) names.Add(s.Devices_DriverTakes_SystemKeys);
+            if (takes.HasFlag(Services.WinUsbKeyboardBinding.Takes.GameController)) names.Add(s.Devices_DriverTakes_GameController);
+            if (takes.HasFlag(Services.WinUsbKeyboardBinding.Takes.VendorControls)) names.Add(s.Devices_DriverTakes_VendorControls);
+            if (takes.HasFlag(Services.WinUsbKeyboardBinding.Takes.Other)) names.Add(s.Devices_DriverTakes_Other);
+            if (names.Count > 0) parts.Add(string.Format(s.Devices_DriverTakes_Format, string.Join(", ", names)));
+            parts.Add(string.Format(s.Devices_WarnHide_Format,
+                takes.HasFlag(Services.WinUsbKeyboardBinding.Takes.Mouse) ? s.Devices_DriverKind_KeyboardOrMouse : s.Devices_DeviceKind_Keyboard));
+            parts.Add(string.Format(s.Devices_DriverKeepNote_Format, KeepDriverSeconds));
+            return string.Join("\n\n", parts);
+        }
+
+        /// <summary>Records a keyboard's takeover in place of any earlier
+        /// one of its node, and hands the list to the device pass and the
+        /// input hooks (#549).</summary>
+        private void AddKeyboardTakeover(Common.Input.WinUsbKeyboards.KeyboardTakeoverEntry entry)
+        {
+            var list = _viewModel.Settings.KeyboardTakeovers;
+            for (int i = list.Count - 1; i >= 0; i--)
+                if (string.Equals(list[i].NodeId, entry.NodeId, StringComparison.OrdinalIgnoreCase)) list.RemoveAt(i);
+            list.Add(entry);
+            Common.Input.WinUsbKeyboards.KeyboardTakeovers.Apply(list);
+            _settingsService?.MarkDirty();
+        }
+
+        /// <summary>Drops a node's takeover, so its keyboard is an ordinary
+        /// keyboard again to the device pass and the input hooks.</summary>
+        private void RemoveKeyboardTakeover(string nodeId)
+        {
+            var list = _viewModel.Settings.KeyboardTakeovers;
+            bool removed = false;
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                if (!string.Equals(list[i].NodeId, nodeId, StringComparison.OrdinalIgnoreCase)) continue;
+                list.RemoveAt(i);
+                removed = true;
+            }
+            if (!removed) return;
+            Common.Input.WinUsbKeyboards.KeyboardTakeovers.Apply(list);
+            _settingsService?.MarkDirty();
         }
 
         /// <summary>What the switch to PadForge's driver takes from a
@@ -2651,6 +2767,8 @@ namespace PadForge
             Services.VendorUsbDriverInstaller.OptInKind.IntelBaseStation => Strings.Instance.Devices_DriverConfirm_IntelBaseStation,
             Services.VendorUsbDriverInstaller.OptInKind.Prodikeys => Strings.Instance.Devices_DriverConfirm_Prodikeys,
             Services.VendorUsbDriverInstaller.OptInKind.TouchSenseMouse => Strings.Instance.Devices_DriverConfirm_TouchSenseMouse,
+            // The switch itself states the rest (KeyboardDriverCost).
+            Services.VendorUsbDriverInstaller.OptInKind.Keyboard => Strings.Instance.Devices_DriverConfirm_Keyboard,
             _ => throw new ArgumentOutOfRangeException(nameof(kind)),
         };
 
@@ -2661,19 +2779,34 @@ namespace PadForge
         private void CheckOptedInDrivers()
         {
             var ids = _viewModel.Settings.WinUsbOptIns.ToList();
-            if (ids.Count == 0) return;
+            var takeovers = _viewModel.Settings.KeyboardTakeovers
+                .Select(Common.Input.WinUsbKeyboards.KeyboardTakeovers.Copy).ToList();
+            if (ids.Count == 0 && takeovers.Count == 0) return;
             _ = System.Threading.Tasks.Task.Run(async () =>
             {
                 await System.Threading.Tasks.Task.Delay(8000);
-                var moved = Services.VendorUsbDriverInstaller.MovedBack(ids, Services.VendorUsbDriverInstaller.ListPresentUsbNodes());
-                if (moved.Count == 0) return;
+                var nodes = Services.VendorUsbDriverInstaller.ListPresentUsbNodes();
+                var moved = ids.Count == 0
+                    ? new System.Collections.Generic.List<string>()
+                    : Services.VendorUsbDriverInstaller.MovedBack(ids, nodes);
+                var movedKeyboards = Services.WinUsbKeyboardBinding.MovedBack(takeovers, nodes);
+                if (moved.Count == 0 && movedKeyboards.Count == 0) return;
                 string names = string.Join(", ", moved
                     .Select(Services.VendorUsbDriverInstaller.KindOfId)
                     .Where(k => k != null)
                     .Select(k => Services.VendorUsbDriverInstaller.NameOf(k.Value))
+                    .Concat(movedKeyboards.Select(e => string.IsNullOrWhiteSpace(e.Name)
+                        ? Services.VendorUsbDriverInstaller.NameOf(Services.VendorUsbDriverInstaller.OptInKind.Keyboard)
+                        : e.Name))
                     .Distinct());
                 _ = Dispatcher.BeginInvoke(new Action(() =>
-                    _viewModel.SetStatus(string.Format(Strings.Instance.Status_DriverMovedBack_Format, names), persist: true)));
+                {
+                    // A keyboard Windows took back types again, so its
+                    // takeover goes, and the hooks read it as any keyboard
+                    // (#549).
+                    foreach (var entry in movedKeyboards) RemoveKeyboardTakeover(entry.NodeId);
+                    _viewModel.SetStatus(string.Format(Strings.Instance.Status_DriverMovedBack_Format, names), persist: true);
+                }));
             });
         }
 

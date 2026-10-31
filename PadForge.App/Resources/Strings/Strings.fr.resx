@@ -520,6 +520,24 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} utilise de nouveau le pilote Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Le pilote Windows de {0} n'a pas pu être restauré.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows a remis {0} sur son propre pilote. Sélectionnez-le sur la page Appareils pour le changer à nouveau.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Utiliser uniquement dans PadForge</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge passe ce clavier sur le pilote WinUSB de Windows et le lit lui-même. Windows cesse alors de saisir avec ce clavier dans tous les programmes, même lorsque PadForge est fermé, jusqu’à ce que son pilote Windows soit restauré depuis cette page. Ses mappages et ses macros continuent de fonctionner tant que PadForge est ouvert.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Ceci quitte Windows avec lui : {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>une souris</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>les touches multimédia</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>les touches d’alimentation et de mise en veille</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>une manette de jeu</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>son lien avec le logiciel du fabricant</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>d’autres commandes de la même connexion</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>clavier ou souris</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Après le changement, PadForge demande s’il faut le conserver et rend le clavier à Windows si personne ne répond dans les {0} secondes.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Conserver ce clavier dans PadForge ?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows ne saisit plus avec {0}. Si vous n’avez plus de clavier ni de souris fonctionnels, ne faites rien : PadForge le rend à Windows à la fin du compte à rebours.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Restitution dans {0} s</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Conserver</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Le rendre</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Débranchez d’abord les autres claviers de ce modèle. Windows passe en même temps tous ceux qui sont branchés sur le pilote de PadForge et cesse de saisir avec chacun d’eux.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} utilise de nouveau le pilote Windows, car le changement n’a pas été conservé.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> en ligne / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> total</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Supprimer cet appareil et ses paramètres</value></data>

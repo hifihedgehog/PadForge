@@ -779,6 +779,24 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} আবার তার Windows ড্রাইভারে ফিরে এসেছে।</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>{0}-এর Windows ড্রাইভার ফিরিয়ে আনা যায়নি।</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows {0}-কে আবার নিজের ড্রাইভারে ফিরিয়ে নিয়েছে। আবার বদলাতে ডিভাইস পৃষ্ঠায় এটি নির্বাচন করুন।</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>শুধু PadForge-এ ব্যবহার করুন</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge এই কীবোর্ডকে Windows-এর WinUSB ড্রাইভারে সরিয়ে নিয়ে নিজেই পড়ে। এরপর এই পৃষ্ঠা থেকে Windows ড্রাইভার ফিরিয়ে না আনা পর্যন্ত, PadForge বন্ধ থাকলেও, Windows কোনো প্রোগ্রামেই এটি দিয়ে টাইপ করে না। PadForge চলার সময় এর ম্যাপিং ও ম্যাক্রো কাজ করতে থাকে।</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>এগুলোও এর সঙ্গে Windows থেকে চলে যায়: {0}।</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>একটি মাউস</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>মিডিয়া কী</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>পাওয়ার ও স্লিপ কী</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>একটি গেম কন্ট্রোলার</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>নির্মাতার সফটওয়্যারের সঙ্গে এর সংযোগ</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>একই সংযোগের অন্যান্য কন্ট্রোল</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>কীবোর্ড বা মাউস</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>বদলানোর পর PadForge জিজ্ঞাসা করবে এটি রাখবেন কি না, আর {0} সেকেন্ডের মধ্যে কেউ উত্তর না দিলে কীবোর্ডটি Windows-কে ফিরিয়ে দেবে।</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>এই কীবোর্ড কি PadForge-এ রাখবেন?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows আর {0} দিয়ে টাইপ করে না। এতে যদি কোনো কাজের কীবোর্ড বা মাউস না থাকে, কিছু করবেন না: কাউন্টডাউন শেষ হলে PadForge এটি Windows-কে ফিরিয়ে দেবে।</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0} সেকেন্ডে ফিরিয়ে দেওয়া হবে</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>রাখুন</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>ফিরিয়ে দিন</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>আগে এই মডেলের অন্য কীবোর্ডগুলো খুলে ফেলুন। Windows লাগানো সবগুলোকে একসঙ্গে PadForge-এর ড্রাইভারে সরিয়ে নেয় এবং কোনোটি দিয়েই আর টাইপ করে না।</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>বদলানোটি রাখা হয়নি, তাই {0} আবার তার Windows ড্রাইভারে ফিরে এসেছে।</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> অনলাইন / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> মোট</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>এই ডিভাইস ও এর সেটিংস সরান</value></data>

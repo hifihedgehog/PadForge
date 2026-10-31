@@ -779,6 +779,24 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} поново користи свој Windows драјвер.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Windows драјвер за {0} није могуће вратити.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows је вратио {0} на сопствени драјвер. Изаберите га на страници „Уређаји“ да бисте поново променили драјвер.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Користи само у PadForge-у</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge пребацује ову тастатуру на Windows WinUSB драјвер и сам је очитава. Windows тада престаје да куца помоћу ње у свим програмима, чак и када је PadForge затворен, док се њен Windows драјвер не врати са ове странице. Њена мапирања и макрои раде док PadForge ради.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>С њом Windows напуштају: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>миш</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>медијски тастери</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>тастери за напајање и спавање</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>контролер за игре</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>њена веза са софтвером произвођача</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>остале контроле на истој вези</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>тастатура или миш</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Након промене, PadForge пита да ли желите да је задржите и враћа тастатуру систему Windows ако нико не одговори у року од {0} секунди.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Задржати ову тастатуру у програму PadForge?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows више не куца помоћу уређаја {0}. Ако сте због тога остали без исправне тастатуре или миша, не радите ништа: PadForge ће је вратити систему Windows када одбројавање истекне.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Преостало секунди до враћања: {0}</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Задржи</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Врати</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Прво искључите остале тастатуре овог модела. Windows одједном пребацује сваку прикључену тастатуру на PadForge драјвер и престаје да куца помоћу сваке од њих.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} поново користи свој Windows драјвер јер промена није задржана.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> на мрежи / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> укупно</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Уклони овај уређај и његова подешавања</value></data>

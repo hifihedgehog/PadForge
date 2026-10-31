@@ -779,6 +779,24 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} bruker Windows-driveren sin igjen.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Windows-driveren for {0} kunne ikke gjenopprettes.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows satte {0} tilbake på sin egen driver. Velg den på siden Enheter for å bytte den igjen.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Bruk bare i PadForge</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge flytter dette tastaturet til WinUSB-driveren i Windows og leser det selv. Windows slutter da å skrive med det i alle programmer, også mens PadForge er lukket, til Windows-driveren er gjenopprettet fra denne siden. Tilordningene og makroene fungerer så lenge PadForge kjører.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Disse forsvinner fra Windows sammen med det: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>en mus</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>mediataster</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>av/på- og dvaletaster</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>en spillkontroller</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>koblingen til produsentens programvare</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>andre kontroller på samme tilkobling</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>tastatur eller mus</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Etter byttet spør PadForge om du vil beholde det, og gir tastaturet tilbake til Windows hvis ingen svarer innen {0} sekunder.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Beholde dette tastaturet i PadForge?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows skriver ikke lenger med {0}. Hvis du står uten fungerende tastatur eller mus, gjør ingenting: PadForge gir det tilbake til Windows når nedtellingen er over.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Gir det tilbake om {0} sekunder</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Behold</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Gi tilbake</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Koble fra de andre tastaturene av denne modellen først. Windows flytter alle tilkoblede tastaturer av modellen til PadForge-driveren samtidig og slutter å skrive med hvert av dem.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} bruker Windows-driveren sin igjen fordi byttet ikke ble beholdt.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> tilkoblet / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> totalt</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Fjern denne enheten og innstillingene for den</value></data>

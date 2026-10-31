@@ -779,6 +779,24 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} folosește din nou driverul său Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Driverul Windows pentru {0} nu a putut fi restaurat.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows a readus {0} pe propriul driver. Selectați-l pe pagina Dispozitive pentru a-l schimba din nou.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Folosire numai în PadForge</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge mută această tastatură pe driverul WinUSB din Windows și o citește singur. Windows nu mai scrie apoi cu ea în niciun program, nici cât timp PadForge este închis, până la restaurarea driverului său Windows din această pagină. Maparea și macrocomenzile ei continuă să funcționeze cât timp rulează PadForge.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Pe lângă ea, Windows pierde: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>un mouse</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>tastele multimedia</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>tastele de alimentare și de repaus</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>un controler de jocuri</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>legătura cu software-ul producătorului</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>alte comenzi de pe aceeași conexiune</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>tastatură sau mouse</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>După schimbare, PadForge vă întreabă dacă o păstrați și redă tastatura către Windows dacă nu răspunde nimeni în {0} secunde.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Păstrați această tastatură în PadForge?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows nu mai scrie cu {0}. Dacă ați rămas fără tastatură sau mouse funcțional, nu faceți nimic: PadForge o redă către Windows când se încheie numărătoarea inversă.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Revenire peste {0} secunde</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Păstrare</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Redare către Windows</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Deconectați mai întâi celelalte tastaturi de acest model. Windows le mută deodată pe toate cele conectate pe driverul PadForge și nu mai scrie cu niciuna.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} folosește din nou driverul său Windows, deoarece schimbarea nu a fost păstrată.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> conectate / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> în total</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Elimină acest dispozitiv și setările sale</value></data>

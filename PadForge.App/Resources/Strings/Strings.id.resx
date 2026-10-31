@@ -779,6 +779,24 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} kembali memakai driver Windows-nya.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Driver Windows untuk {0} tidak dapat dipulihkan.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows mengembalikan {0} ke drivernya sendiri. Pilih perangkat itu di halaman Perangkat untuk menggantinya lagi.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Pakai Hanya di PadForge</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge memindahkan keyboard ini ke driver WinUSB milik Windows dan membacanya sendiri. Windows lalu berhenti mengetik dengannya di semua program, bahkan saat PadForge ditutup, sampai driver Windows-nya dipulihkan dari halaman ini. Pemetaan dan makronya tetap berfungsi selama PadForge berjalan.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Ini ikut meninggalkan Windows bersamanya: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>sebuah mouse</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>tombol media</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>tombol daya dan tidur</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>sebuah kontroler game</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>tautannya ke perangkat lunak pembuatnya</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>kontrol lain pada koneksi yang sama</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>keyboard atau mouse</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Setelah beralih, PadForge menanyakan apakah driver ini dipertahankan, dan mengembalikan keyboard ke Windows jika tidak ada jawaban dalam {0} detik.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Pertahankan Keyboard Ini di PadForge?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows tidak lagi mengetik dengan {0}. Jika Anda jadi tidak punya keyboard atau mouse yang berfungsi, tidak perlu melakukan apa pun: PadForge mengembalikannya ke Windows saat hitungan mundur selesai.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Dikembalikan dalam {0} detik</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Pertahankan</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Kembalikan</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Cabut dahulu keyboard lain dengan model ini. Windows memindahkan semua yang tercolok ke driver PadForge sekaligus, dan berhenti mengetik dengan masing-masing.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} kembali memakai driver Windows-nya karena peralihan tidak dipertahankan.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> total</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Hapus perangkat ini beserta pengaturannya</value></data>

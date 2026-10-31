@@ -779,6 +779,24 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} znova uporablja svoj gonilnik sistema Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Gonilnika sistema Windows za {0} ni bilo mogoče obnoviti.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows je za {0} znova nastavil lasten gonilnik. Za ponovni preklop izberite napravo na strani Naprave.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Uporabljaj samo v programu PadForge</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge to tipkovnico prestavi na gonilnik WinUSB sistema Windows in jo bere sam. Windows nato s tipkovnico v nobenem programu več ne tipka, tudi ko PadForge ni zagnan, dokler njen gonilnik sistema Windows ni obnovljen na tej strani. Njene preslikave in makri delujejo, dokler se PadForge izvaja.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Iz sistema Windows odidejo tudi: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>miška</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>večpredstavnostne tipke</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>tipke za vklop in spanje</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>igralni krmilnik</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>njena povezava s programom proizvajalca</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>drugi elementi na isti povezavi</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>tipkovnica ali miška</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Po preklopu vas PadForge vpraša, ali jo želite obdržati, in tipkovnico vrne sistemu Windows, če v {0} s ne odgovorite.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Obdržim to tipkovnico v programu PadForge?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows s tipkovnico {0} ne tipka več. Če vam zato ni ostala nobena delujoča tipkovnica ali miška, ne storite ničesar: PadForge jo vrne sistemu Windows, ko se odštevanje izteče.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Vrnitev čez {0} s</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Obdrži</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Vrni</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Najprej izključite druge tipkovnice tega modela. Windows vse priključene hkrati prestavi na gonilnik programa PadForge in s nobeno več ne tipka.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} znova uporablja svoj gonilnik sistema Windows, ker preklop ni bil obdržan.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> povezanih / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> skupaj</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Odstrani to napravo in njene nastavitve</value></data>

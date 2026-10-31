@@ -520,6 +520,24 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} vuelve a usar el controlador de Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>No se pudo restaurar el controlador de Windows de {0}.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows devolvió {0} a su propio controlador. Selecciónalo en la página Dispositivos para volver a cambiarlo.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Usar solo en PadForge</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge pasa este teclado al controlador WinUSB de Windows y lo lee por sí mismo. Windows deja entonces de escribir con él en todos los programas, incluso con PadForge cerrado, hasta que se restaure su controlador de Windows desde esta página. Sus asignaciones y macros siguen funcionando mientras PadForge está abierto.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Con él dejan de funcionar en Windows: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>un ratón</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>las teclas multimedia</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>las teclas de encendido y suspensión</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>un mando de juego</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>su vínculo con el software del fabricante</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>otros controles de la misma conexión</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>teclado o ratón</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Tras el cambio, PadForge pregunta si quieres conservarlo y devuelve el teclado a Windows si nadie responde en {0} segundos.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>¿Conservar este teclado en PadForge?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows ya no escribe con {0}. Si te has quedado sin teclado ni ratón que funcionen, no hagas nada: PadForge lo devuelve a Windows cuando termina la cuenta atrás.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Se devuelve en {0} s</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Conservar</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Devolver</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Desconecta primero los demás teclados de este modelo. Windows pasa a la vez todos los que estén conectados al controlador de PadForge y deja de escribir con cada uno.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} vuelve a usar el controlador de Windows porque no se conservó el cambio.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> en línea / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> total</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Quitar este dispositivo y su configuración</value></data>

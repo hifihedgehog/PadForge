@@ -520,6 +520,24 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} 已恢复为 Windows 驱动程序。</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>无法恢复 {0} 的 Windows 驱动程序。</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows 已将 {0} 恢复为其自带驱动程序。请在设备页面中选择它以再次切换。</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>仅在 PadForge 中使用</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge 会将此键盘切换到 Windows 的 WinUSB 驱动程序，并由自己读取它。之后在恢复其 Windows 驱动程序之前，Windows 不再在任何程序中使用此键盘打字，即使 PadForge 已关闭也是如此。PadForge 运行期间，其映射和宏仍可使用。您可以随时在此页面恢复 Windows 驱动程序。</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>以下设备也会随之脱离 Windows：{0}。</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>鼠标</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>媒体键</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>电源键和睡眠键</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>游戏控制器</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>与厂商软件的连接</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>同一连接上的其他控件</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>键盘或鼠标</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>切换后，PadForge 会询问是否保留；如果 {0} 秒内无人回答，则将键盘归还给 Windows。</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>在 PadForge 中保留此键盘？</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows 不再使用 {0} 打字。如果这导致您没有可用的键盘或鼠标，请不要操作：倒计时结束后，PadForge 会将其归还给 Windows。</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>将在 {0} 秒后归还</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>保留</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>立即归还</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>请先拔下此型号的其他键盘。Windows 会将所有已连接的此型号键盘一并切换到 PadForge 驱动程序，并不再使用它们打字。</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>未保留切换，{0} 已恢复为 Windows 驱动程序。</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> 在线 / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> 总计</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>移除此设备及其设置</value></data>

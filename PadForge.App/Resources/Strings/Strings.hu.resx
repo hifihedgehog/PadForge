@@ -779,6 +779,24 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} ismét a Windows-illesztőprogramját használja.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Nem sikerült visszaállítani a Windows-illesztőprogramot ehhez: {0}.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>A Windows visszaállította a saját illesztőprogramjára a következőt: {0}. Az újbóli átváltáshoz válassza ki az Eszközök oldalon.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Használat csak a PadForge-ban</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>A PadForge ezt a billentyűzetet a Windows WinUSB illesztőprogramjára állítja át, és maga olvassa. A Windows ezután egyetlen programban sem gépel vele, még a PadForge bezárt állapotában sem, amíg a Windows-illesztőprogramját vissza nem állítják ezen az oldalon. A hozzárendelései és makrói a PadForge futása alatt továbbra is működnek.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>A Windows ezeket is elveszíti: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>egy egér</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>médiabillentyűk</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>bekapcsoló- és alvásbillentyűk</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>egy játékvezérlő</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>a gyártó szoftverével létesített kapcsolata</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>az ugyanazon a kapcsolaton lévő egyéb vezérlők</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>billentyűzet vagy egér</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Az átváltás után a PadForge megkérdezi, megtartja-e, és ha {0} másodpercen belül nem válaszol senki, visszaadja a billentyűzetet a Windowsnak.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Megtartja ezt a billentyűzetet a PadForge-ban?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>A Windows már nem gépel ezzel: {0}. Ha emiatt nem maradt működő billentyűzete vagy egere, ne tegyen semmit: a PadForge a visszaszámlálás végén visszaadja a Windowsnak.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Visszaadás {0} másodperc múlva</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Megtartás</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Visszaadás</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Előbb húzza ki a többi ilyen modellű billentyűzetet. A Windows az összes csatlakoztatottat egyszerre állítja át a PadForge illesztőprogramjára, és egyikkel sem gépel tovább.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} ismét a Windows-illesztőprogramját használja, mert az átváltást nem tartották meg.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> összesen</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Az eszköz és beállításainak eltávolítása</value></data>

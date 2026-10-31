@@ -779,6 +779,24 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} снова работает на своем драйвере Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Не удалось вернуть драйвер Windows для {0}.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows вернула {0} на свой драйвер. Выберите это устройство на странице «Устройства», чтобы переключить его снова.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Использовать только в PadForge</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge переведет эту клавиатуру на драйвер WinUSB из состава Windows и будет считывать ее сам. После этого Windows перестанет набирать текст с нее во всех программах, даже когда PadForge закрыт, пока ее драйвер Windows не вернут на этой странице. Ее назначения и макросы продолжат работать, пока запущен PadForge.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Вместе с ней Windows потеряет: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>мышь</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>мультимедийные клавиши</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>клавиши питания и сна</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>геймпад</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>связь с программой производителя</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>другие элементы управления этого подключения</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>клавиатура или мышь</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>После переключения PadForge спросит, оставить ли его, и вернет клавиатуру Windows, если за {0} с не будет ответа.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Оставить эту клавиатуру в PadForge?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows больше не набирает текст с устройства {0}. Если у вас не осталось работающей клавиатуры или мыши, ничего не делайте: PadForge вернет его Windows по окончании отсчета.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Возврат через {0} с</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Оставить</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Вернуть</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Сначала отключите остальные клавиатуры этой модели. Windows переводит на драйвер PadForge сразу все подключенные и перестает набирать текст с каждой из них.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} снова работает на своем драйвере Windows, так как переключение не было сохранено.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> в сети / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> всего</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Убрать это устройство и его настройки</value></data>

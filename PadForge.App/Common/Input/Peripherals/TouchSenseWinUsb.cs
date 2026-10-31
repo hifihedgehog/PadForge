@@ -13,7 +13,7 @@ namespace PadForge.Common.Input.Peripherals
     /// <see cref="RealTouchSenseAccess"/> first, so the test host opens no
     /// WinUSB device and sends none a transfer.
     /// </summary>
-    internal sealed class WinUsbTouchSenseUsb : ITouchSenseUsb
+    internal sealed class WinUsbTouchSenseUsb : ITouchSenseUsb, WinUsbKeyboards.IKeyboardUsb
     {
         private const uint GENERIC_READ = 0x80000000, GENERIC_WRITE = 0x40000000;
         private const uint FILE_SHARE_READ = 0x1, FILE_SHARE_WRITE = 0x2, OPEN_EXISTING = 3;
@@ -69,6 +69,30 @@ namespace PadForge.Common.Input.Peripherals
                 else if (interruptOut == 0)
                 {
                     interruptOut = pipe.PipeId;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>The opened interface as a bound keyboard's open reads it
+        /// (#549): <see cref="Describe"/>'s walk, with the interface's
+        /// number, which a keyboard on a composite device needs for its
+        /// requests, and the IN pipe's packet size, which one read asks for.</summary>
+        public bool DescribeInterface(out byte number, out byte interfaceClass, out byte interruptIn, out ushort packetSize)
+        {
+            number = interfaceClass = interruptIn = 0;
+            packetSize = 0;
+            if (RealTouchSenseAccess.Refused) return false;
+            if (!WinUsb_QueryInterfaceSettings(_interface, 0, out var settings)) return false;
+            number = settings.bInterfaceNumber;
+            interfaceClass = settings.bInterfaceClass;
+            for (byte i = 0; i < settings.bNumEndpoints; i++)
+            {
+                if (!WinUsb_QueryPipe(_interface, 0, i, out var pipe) || pipe.PipeType != UsbdPipeTypeInterrupt) continue;
+                if ((pipe.PipeId & 0x80) != 0 && interruptIn == 0)
+                {
+                    interruptIn = pipe.PipeId;
+                    packetSize = pipe.MaximumPacketSize;
                 }
             }
             return true;

@@ -779,6 +779,24 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} znów używa sterownika systemu Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Nie udało się przywrócić sterownika systemu Windows dla urządzenia {0}.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>System Windows przywrócił urządzeniu {0} własny sterownik. Wybierz je na stronie Urządzenia, aby przełączyć je ponownie.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Używaj tylko w programie PadForge</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge przełącza tę klawiaturę na sterownik WinUSB systemu Windows i sam ją odczytuje. System Windows przestaje wtedy pisać na niej w każdym programie, także gdy PadForge jest zamknięty, dopóki jej sterownik systemu Windows nie zostanie przywrócony na tej stronie. Jej mapowania i makra działają dalej, gdy PadForge jest uruchomiony.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Razem z nią system Windows traci: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>mysz</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>klawisze multimedialne</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>klawisze zasilania i uśpienia</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>kontroler do gier</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>połączenie z oprogramowaniem producenta</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>inne elementy sterujące na tym samym połączeniu</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>klawiatura lub mysz</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Po przełączeniu PadForge zapyta, czy zachować zmianę, a jeśli nikt nie odpowie w ciągu {0} s, odda klawiaturę systemowi Windows.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Zachować tę klawiaturę w programie PadForge?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>System Windows nie pisze już na urządzeniu {0}. Jeśli nie masz teraz działającej klawiatury ani myszy, nic nie rób: PadForge odda je systemowi Windows po zakończeniu odliczania.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Oddanie za {0} s</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Zachowaj</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Oddaj</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Najpierw odłącz pozostałe klawiatury tego modelu. System Windows przełącza wszystkie podłączone naraz na sterownik programu PadForge i przestaje pisać na każdej z nich.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} znów używa sterownika systemu Windows, ponieważ zmiana nie została zachowana.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> łącznie</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Usuń to urządzenie i jego ustawienia</value></data>

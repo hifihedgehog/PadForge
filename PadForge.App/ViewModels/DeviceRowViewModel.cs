@@ -757,7 +757,7 @@ namespace PadForge.ViewModels
         /// term (ShowInputHidingSection, ShowInputModeSection); this was the
         /// member of that family that missed it.</summary>
         public bool ShowConsumeToggle =>
-            (DeviceTypeKey == "Keyboard" || DeviceTypeKey == "Mouse") && !IsInternalVirtual;
+            (DeviceTypeKey == "Keyboard" || DeviceTypeKey == "Mouse") && !IsInternalVirtual && !IsPadForgeDriverRow;
 
         /// <summary>True for PadForge-internal virtual sources (web controllers, web
         /// touchpads, the on-screen touchpad overlay). Identified by a URI-scheme
@@ -828,7 +828,17 @@ namespace PadForge.ViewModels
         /// offered there anyway, took the tick, saved it, and hid nothing.
         /// Consume Input is a separate route that does work on a merged
         /// keyboard or mouse row, so it keeps its own rule.</summary>
-        public bool ShowHidHideToggle => !IsInternalVirtual && !IsAggregate;
+        public bool ShowHidHideToggle => !IsInternalVirtual && !IsAggregate && !IsPadForgeDriverRow;
+
+        /// <summary>True for a row PadForge reads over its own WinUSB driver:
+        /// a keyboard taken from Windows (#549) or a bound TouchSense mouse
+        /// (#494). Windows sees neither as a keyboard or mouse, so there is
+        /// nothing to hide from games and nothing for the hook to consume,
+        /// and both toggles leave the row (InputService.ServedByPadForgeDriver
+        /// skips such a row in the hiding pass whatever it holds).</summary>
+        public bool IsPadForgeDriverRow =>
+            Services.VendorUsbDriverInstaller.IsOwnInterfacePath(_devicePath)
+            || Common.Input.WinUsbKeyboards.KeyboardTakeovers.IsTakenOver(InstanceGuid);
 
         /// <summary>True when at least one input-hiding toggle would be shown,
         /// so the "Input Hiding" section can hide its heading along with its
@@ -1202,6 +1212,7 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(IsInternalVirtual));
                     OnPropertyChanged(nameof(IsAggregate));
+                    OnPropertyChanged(nameof(IsPadForgeDriverRow));
                     OnPropertyChanged(nameof(ShowHidHideToggle));
                     OnPropertyChanged(nameof(ShowTabletCaptureStatus));
                     OnPropertyChanged(nameof(ShowInputHidingSection));

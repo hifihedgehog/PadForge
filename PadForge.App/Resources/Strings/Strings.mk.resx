@@ -779,6 +779,24 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} е повторно на својот двигател на Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Двигателот на Windows за {0} не можеше да се врати.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows го врати {0} на неговиот сопствен двигател. Изберете го на страницата Уреди за повторно да го префрлите.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Користи само во PadForge</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge ја префрла оваа тастатура на двигателот WinUSB на Windows и ја чита самиот. Тогаш Windows престанува да пишува со неа во сите програми, дури и кога PadForge е затворен, додека не се врати нејзиниот двигател на Windows од оваа страница. Нејзините мапирања и макроа продолжуваат да работат додека работи PadForge.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Со неа од Windows заминуваат: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>глушец</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>тастери за медиуми</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>тастери за напојување и мирување</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>контролер за игри</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>нејзината врска со софтверот на производителот</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>други контроли на истата врска</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>тастатура или глушец</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>По префрлањето, PadForge прашува дали да ја задржи и ја враќа тастатурата на Windows ако никој не одговори во рок од {0} секунди.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Да се задржи ли оваа тастатура во PadForge?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows повеќе не пишува со {0}. Ако останавте без работна тастатура или глушец, не правете ништо: PadForge ја враќа на Windows кога ќе заврши одбројувањето.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Се враќа за {0} сек.</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Задржи</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Врати ја</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Прво исклучете ги другите тастатури од овој модел. Windows ги префрла сите приклучени одеднаш на двигателот на PadForge и престанува да пишува со секоја од нив.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} е повторно на својот двигател на Windows бидејќи префрлањето не беше задржано.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> онлајн / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> вкупно</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Отстрани го овој уред и неговите поставки</value></data>

@@ -520,6 +520,24 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} gebruikt weer het Windows-stuurprogramma.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Het Windows-stuurprogramma voor {0} kon niet worden hersteld.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows heeft {0} teruggezet op het eigen stuurprogramma. Selecteer het op de pagina Apparaten om opnieuw over te schakelen.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Alleen in PadForge gebruiken</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge zet dit toetsenbord over op het WinUSB-stuurprogramma van Windows en leest het zelf uit. Windows typt er daarna in geen enkel programma meer mee, ook niet als PadForge is gesloten, totdat het Windows-stuurprogramma op deze pagina is hersteld. De toewijzingen en macro's blijven werken zolang PadForge draait.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Deze gaan er samen mee uit Windows: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>een muis</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>mediatoetsen</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>aan/uit- en slaaptoetsen</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>een gamecontroller</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>de koppeling met de software van de fabrikant</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>andere bediening op dezelfde verbinding</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>toetsenbord of muis</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Na het overschakelen vraagt PadForge of je het wilt behouden en geeft het toetsenbord terug aan Windows als je niet binnen {0} seconden antwoordt.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Dit toetsenbord in PadForge houden?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows typt niet meer met {0}. Als je daardoor geen werkend toetsenbord of muis meer hebt, doe dan niets: PadForge geeft het terug aan Windows zodra de aftelling afloopt.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Terug over {0} s</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Behouden</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Teruggeven</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Koppel eerst de andere toetsenborden van dit model los. Windows zet alle aangesloten toetsenborden van dit model tegelijk over op het PadForge-stuurprogramma en typt daarna met geen ervan meer.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} gebruikt weer het Windows-stuurprogramma omdat de overschakeling niet is behouden.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> totaal</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Dit apparaat en de bijbehorende instellingen verwijderen</value></data>

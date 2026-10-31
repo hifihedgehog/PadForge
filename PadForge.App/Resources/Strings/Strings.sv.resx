@@ -779,6 +779,24 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} använder sin Windows-drivrutin igen.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Windows-drivrutinen för {0} kunde inte återställas.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows flyttade tillbaka {0} till sin egen drivrutin. Välj enheten på sidan Enheter för att byta igen.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Använd bara i PadForge</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge flyttar det här tangentbordet till WinUSB-drivrutinen i Windows och läser av det själv. Windows slutar då skriva med det i alla program, även när PadForge är stängt, tills dess Windows-drivrutin har återställts från den här sidan. Dess mappningar och makron fortsätter att fungera medan PadForge körs.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Dessa försvinner då från Windows: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>en mus</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>mediatangenter</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>ström- och vilolägestangenter</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>en handkontroll</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>dess koppling till tillverkarens program</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>andra reglage på samma anslutning</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>tangentbord eller mus</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Efter bytet frågar PadForge om du vill behålla det och lämnar tillbaka tangentbordet till Windows om ingen svarar inom {0} sekunder.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Behåll tangentbordet i PadForge?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows skriver inte längre med {0}. Om du därmed står utan fungerande tangentbord eller mus ska du inte göra något: PadForge lämnar tillbaka det till Windows när nedräkningen är slut.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Lämnas tillbaka om {0} sekunder</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Behåll</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Lämna tillbaka</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Koppla först ur de andra tangentborden av den här modellen. Windows flyttar alla inkopplade till PadForge-drivrutinen på en gång och slutar skriva med vart och ett.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} använder sin Windows-drivrutin igen eftersom bytet inte behölls.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> totalt</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Ta bort den här enheten och dess inställningar</value></data>

@@ -779,6 +779,24 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} फेरि आफ्नो Windows ड्राइभरमा फर्कियो।</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>{0} को Windows ड्राइभर पुनर्स्थापना गर्न सकिएन।</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows ले {0} लाई फेरि यसको आफ्नै ड्राइभरमा राख्यो। फेरि स्विच गर्न यन्त्रहरू पृष्ठमा यसलाई चयन गर्नुहोस्।</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>PadForge मा मात्र प्रयोग गर्नुहोस्</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge ले यो किबोर्डलाई Windows को WinUSB ड्राइभरमा सार्छ र आफैं पढ्छ। त्यसपछि यो पृष्ठबाट यसको Windows ड्राइभर नफर्काएसम्म, PadForge बन्द भएको बेला पनि, Windows ले कुनै पनि प्रोग्राममा यसबाट टाइप गर्न छोड्छ। PadForge चलिरहेको बेला यसका म्यापिङ र म्याक्रोहरूले काम गरिरहन्छन्।</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>यससँगै यी पनि Windows बाट हट्छन्: {0}।</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>एउटा माउस</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>मिडिया कुञ्जीहरू</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>पावर र स्लिप कुञ्जीहरू</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>एउटा गेम कन्ट्रोलर</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>निर्माताको सफ्टवेयरसँगको यसको जडान</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>उही जडानमा रहेका अन्य नियन्त्रणहरू</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>किबोर्ड वा माउस</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>स्विच गरेपछि PadForge ले यसलाई राख्ने कि नराख्ने भनेर सोध्छ, र {0} सेकेन्डभित्र कसैले जवाफ नदिए किबोर्ड Windows लाई फिर्ता दिन्छ।</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>यो किबोर्ड PadForge मा राख्ने?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows ले अब {0} बाट टाइप गर्दैन। यसले गर्दा तपाईंसँग काम गर्ने किबोर्ड वा माउस बाँकी रहेन भने केही नगर्नुहोस्: गन्ती सकिएपछि PadForge ले यसलाई Windows लाई फिर्ता दिन्छ।</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0} सेकेन्डमा फिर्ता दिँदै</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>राख्नुहोस्</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>फिर्ता दिनुहोस्</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>पहिले यो मोडेलका अन्य किबोर्डहरू निकाल्नुहोस्। Windows ले जोडिएका सबैलाई एकैपटक PadForge को ड्राइभरमा सार्छ, र तीमध्ये कुनैबाट पनि टाइप गर्न छोड्छ।</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>स्विच नराखिएकाले {0} फेरि आफ्नो Windows ड्राइभरमा फर्कियो।</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> अनलाइन / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> कुल</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>यो यन्त्र र यसका सेटिङहरू हटाउनुहोस्</value></data>

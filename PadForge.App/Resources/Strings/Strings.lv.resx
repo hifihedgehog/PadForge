@@ -779,6 +779,24 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} atkal izmanto savu Windows draiveri.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Ierīces {0} Windows draiveri nevarēja atjaunot.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows atjaunoja ierīcei {0} tās draiveri. Atlasiet to lapā „Ierīces”, lai to atkal pārslēgtu.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Izmantot tikai programmā PadForge</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge pārslēdz šo tastatūru uz Windows WinUSB draiveri un pati to nolasa. Pēc tam Windows vairs neraksta ar šo tastatūru nevienā programmā, pat ja PadForge ir aizvērts, līdz tās Windows draiveris tiek atjaunots šajā lapā. Tās piešķīrumi un makro turpina darboties, kamēr darbojas PadForge.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Kopā ar to no Windows pazūd: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>pele</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>multivides taustiņi</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>barošanas un miega taustiņi</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>spēļu kontrolleris</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>tās saite ar ražotāja programmatūru</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>citas vadīklas tajā pašā savienojumā</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>tastatūra vai pele</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Pēc pārslēgšanas PadForge jautā, vai to paturēt, un atdod tastatūru atpakaļ sistēmai Windows, ja {0} sekunžu laikā neviens neatbild.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Paturēt šo tastatūru programmā PadForge?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows vairs neraksta ar ierīci {0}. Ja jums nav palicis neviena darbojoša tastatūra vai pele, neko nedariet: PadForge atdod to sistēmai Windows, kad atpakaļskaite beidzas.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Atdošana atpakaļ pēc {0} s</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Paturēt</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Atdot atpakaļ</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Vispirms atvienojiet citas šī modeļa tastatūras. Windows uzreiz pārslēdz visas pievienotās uz PadForge draiveri un pārstāj rakstīt ar katru no tām.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} atkal izmanto savu Windows draiveri, jo pārslēgšana netika paturēta.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> tiešsaistē / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> kopā</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Noņemt šo ierīci un tās iestatījumus</value></data>

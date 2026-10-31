@@ -779,6 +779,24 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} واپس اپنے Windows ڈرائیور پر ہے۔</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>{0} کا Windows ڈرائیور بحال نہیں ہو سکا۔</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows نے {0} کو واپس اپنے ڈرائیور پر کر دیا۔ اسے دوبارہ منتقل کرنے کے لیے آلات کے صفحے پر اسے منتخب کریں۔</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>صرف PadForge میں استعمال کریں</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge اس کی بورڈ کو Windows کے WinUSB ڈرائیور پر منتقل کرتا ہے اور خود اسے پڑھتا ہے۔ پھر Windows ہر پروگرام میں اس سے ٹائپنگ بند کر دیتا ہے، حتیٰ کہ PadForge بند ہونے پر بھی، جب تک اسی صفحے سے اس کا Windows ڈرائیور بحال نہ کیا جائے۔ PadForge چلنے کے دوران اس کی میپنگز اور میکروز کام کرتے رہتے ہیں۔</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>یہ بھی Windows سے چلے جاتے ہیں: {0}۔</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>ایک ماؤس</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>میڈیا کلیدیں</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>پاور اور سلیپ کلیدیں</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>ایک گیم کنٹرولر</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>بنانے والے کے سافٹ ویئر سے اس کا رابطہ</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>اسی کنکشن پر موجود دیگر کنٹرولز</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>کی بورڈ یا ماؤس</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>منتقلی کے بعد PadForge پوچھتا ہے کہ اسے رکھنا ہے یا نہیں، اور اگر {0} سیکنڈ میں کوئی جواب نہ دے تو کی بورڈ Windows کو واپس دے دیتا ہے۔</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>کیا اس کی بورڈ کو PadForge میں رکھیں؟</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows اب {0} سے ٹائپنگ نہیں کرتا۔ اگر اس کی وجہ سے آپ کے پاس کوئی چلتا ہوا کی بورڈ یا ماؤس نہیں رہا تو کچھ نہ کریں۔ الٹی گنتی ختم ہونے پر PadForge اسے Windows کو واپس دے دیتا ہے۔</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0} سیکنڈ میں واپس دیا جائے گا</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>رکھیں</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>واپس دیں</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>پہلے اس ماڈل کے دوسرے کی بورڈ نکال دیں۔ Windows ہر لگے ہوئے کی بورڈ کو ایک ساتھ PadForge کے ڈرائیور پر منتقل کر دیتا ہے، اور ہر ایک سے ٹائپنگ بند کر دیتا ہے۔</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} واپس اپنے Windows ڈرائیور پر ہے کیونکہ منتقلی برقرار نہیں رکھی گئی۔</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> آن لائن / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> کل</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>یہ آلہ اور اس کی ترتیبات ہٹائیں</value></data>

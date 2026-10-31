@@ -465,6 +465,9 @@ namespace PadForge.Common.Input
             // --- Phase 1n: TouchSense mice bound to WinUSB (issue #494) ---
             UpdateTouchSenseMice(ref changed);
 
+            // --- Phase 1o: keyboards bound to WinUSB (issue #549) ---
+            UpdateWinUsbKeyboards(ref changed);
+
             // --- Phase 1k: analog keyboards (issue #468) ---
             changed |= UpdateAnalogKeyboardDevices();
 

@@ -261,8 +261,13 @@ namespace PadForge.Services
         /// mouse with a TouchSense buzz motor (#494): bound to WinUSB it
         /// can be rumbled, and Windows stops using it as a pointer. It is
         /// the one kind whose node is also asked for a descriptor shape
-        /// before it is offered (<see cref="QueryOptIn"/>).</summary>
-        internal enum OptInKind { Xbox360Pad, Xbox360Receiver, IntelBaseStation, Prodikeys, TouchSenseMouse }
+        /// before it is offered (<see cref="QueryOptIn"/>). Keyboard is any
+        /// USB keyboard the user takes from Windows for PadForge alone
+        /// (#549): it is offered by its row's HID collection, not by its
+        /// IDs, so it has no row in <see cref="OptIns"/>
+        /// (<see cref="WinUsbKeyboardBinding.QueryOffer"/>). Append only:
+        /// a kind's place is never reused.</summary>
+        internal enum OptInKind { Xbox360Pad, Xbox360Receiver, IntelBaseStation, Prodikeys, TouchSenseMouse, Keyboard }
 
         /// <summary>One opt-in device. Revision names the bcdDevice a whole
         /// device must carry, and From the drivers it is bound from.</summary>
@@ -313,6 +318,7 @@ namespace PadForge.Services
             OptInKind.IntelBaseStation => "Intel Wireless Series base station",
             OptInKind.Prodikeys => "Creative Prodikeys PC-MIDI",
             OptInKind.TouchSenseMouse => "TouchSense mouse",
+            OptInKind.Keyboard => "Keyboard read by PadForge",
             _ => throw new ArgumentOutOfRangeException(nameof(kind)),
         };
 
@@ -614,9 +620,10 @@ namespace PadForge.Services
         /// whether the planned node is on WinUSB with PadForge's interface
         /// active afterward. <paramref name="from"/> names the drivers a node
         /// may be taken from: no driver and HidUsb unless an opt-in says
-        /// otherwise.</summary>
+        /// otherwise. <paramref name="kind"/> is the opt-in's, for the
+        /// refusals <see cref="WhyNotBind"/> makes by kind.</summary>
         internal static bool Bind(BindPlan plan, string instanceId, IReadOnlyList<UsbNode> nodes,
-            Action<string> log, CancellationToken ct, string[] from = null)
+            Action<string> log, CancellationToken ct, string[] from = null, OptInKind? kind = null)
         {
             // The test host changes no driver (NoDriverChangesForTest).
             if (NoDriverChangesForTest) return false;
@@ -627,7 +634,7 @@ namespace PadForge.Services
             try
             {
                 // Nothing is staged for a bind that is not made.
-                if (WhyNotBind(plan, instanceId, nodes, from, out string why) != BindRefusal.None)
+                if (WhyNotBind(plan, instanceId, nodes, from, out string why, kind) != BindRefusal.None)
                 {
                     log(why);
                     return false;
@@ -718,11 +725,13 @@ namespace PadForge.Services
 
         /// <summary>Whether a kind is bound one device at a time. A
         /// TouchSense mouse stops being Windows' pointer once it is bound,
-        /// which its confirm says of the one mouse the user chose, so the
-        /// bind is not made while it would take another mouse along. The
-        /// other kinds are read by PadForge either way and lose nothing
-        /// the user was not told.</summary>
-        internal static bool BindsOneDeviceAtATime(OptInKind kind) => kind == OptInKind.TouchSenseMouse;
+        /// and a keyboard stops typing (#549), which each one's confirm says
+        /// of the one device the user chose, so the bind is not made while
+        /// it would take another of the model along. The other kinds are
+        /// read by PadForge either way and lose nothing the user was not
+        /// told.</summary>
+        internal static bool BindsOneDeviceAtATime(OptInKind kind)
+            => kind is OptInKind.TouchSenseMouse or OptInKind.Keyboard;
 
         /// <summary>
         /// Whether a bind of this plan may be made, read from the present
@@ -739,16 +748,18 @@ namespace PadForge.Services
         /// that sits on a driver the bind takes nodes from would be moved
         /// too, though nobody chose it and nothing read what it declares.
         /// A node already on the bind's own driver changes nothing: it is
-        /// restarted on the driver it has.</para>
+        /// restarted on the driver it has. The kind is the caller's when it
+        /// names one: a keyboard's ID belongs to no row of
+        /// <see cref="OptIns"/>, so <see cref="KindOfId"/> cannot say it.</para>
         /// </summary>
         internal static BindRefusal WhyNotBind(BindPlan plan, string instanceId, IReadOnlyList<UsbNode> nodes,
-            string[] from, out string why)
+            string[] from, out string why, OptInKind? kind = null)
         {
             why = null;
             bool xusb = plan.Driver == BindDriver.Xusb22;
             string service = xusb ? "xusb22" : "WINUSB";
             from ??= xusb ? new[] { "" } : new[] { "", "HidUsb" };
-            bool oneAtATime = KindOfId(plan.BindId) is OptInKind kind && BindsOneDeviceAtATime(kind);
+            bool oneAtATime = (kind ?? KindOfId(plan.BindId)) is OptInKind known && BindsOneDeviceAtATime(known);
             if (nodes == null) return BindRefusal.None;
             // The other driver first, whatever the order of the nodes: it
             // is the refusal that unplugging nothing of the user's cures.
@@ -845,6 +856,19 @@ namespace PadForge.Services
         /// by its instance ID, which the interface path carries with # for
         /// each backslash.</summary>
         internal static bool HasActiveInterface(string instanceId) => HasActiveInterface(instanceId, InterfaceGuid);
+
+        /// <summary>True for a device path that is the interface PadForge's
+        /// package registers, the path of a row PadForge reads over WinUSB
+        /// itself: a bound TouchSense mouse's (#494) or keyboard's (#549).
+        /// Windows sees no such device as a mouse or keyboard, so neither
+        /// the input hooks nor HidHide has anything of it to act on.</summary>
+        internal static bool IsOwnInterfacePath(string path)
+        {
+            if (string.IsNullOrEmpty(path)) return false;
+            int hash = path.LastIndexOf('#');
+            return hash >= 0 && hash + 1 < path.Length
+                   && Guid.TryParse(path.Substring(hash + 1), out var guid) && guid == InterfaceGuid;
+        }
 
         internal static bool HasActiveInterface(string instanceId, Guid interfaceGuid)
             => NamesNode(ActiveInterfacePaths(interfaceGuid), instanceId);

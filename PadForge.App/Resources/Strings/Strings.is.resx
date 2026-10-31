@@ -779,6 +779,24 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} notar aftur Windows-rekil sinn.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Ekki tókst að endurheimta Windows-rekilinn fyrir {0}.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows setti {0} aftur á eigin rekil. Veldu það á síðunni „Tæki“ til að skipta aftur.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Nota aðeins í PadForge</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge færir þetta lyklaborð yfir á WinUSB-rekil Windows og les það sjálft. Windows hættir þá að nota lyklaborðið til innsláttar í öllum forritum, jafnvel þegar PadForge er lokað, þar til Windows-rekill þess er endurheimtur á þessari síðu. Varpanir þess og fjölvar halda áfram að virka á meðan PadForge keyrir.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Þetta fer úr umsjá Windows með því: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>mús</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>margmiðlunarlyklar</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>aflrofa- og svefnlyklar</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>leikjastýring</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>tenging þess við hugbúnað framleiðandans</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>aðrir stjórnhlutar á sömu tengingu</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>lyklaborð eða mús</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Eftir skiptin spyr PadForge hvort halda eigi rekilnum og skilar lyklaborðinu til Windows ef enginn svarar innan {0} sekúndna.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Halda þessu lyklaborði í PadForge?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows notar ekki lengur {0} til innsláttar. Ef þú ert nú án nothæfs lyklaborðs eða músar skaltu ekkert gera: PadForge skilar því til Windows þegar niðurtalningunni lýkur.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Skilað eftir {0} sekúndur</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Halda</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Skila</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Taktu fyrst hin lyklaborðin af þessari gerð úr sambandi. Windows færir öll tengd lyklaborð yfir á rekil PadForge í einu og hættir að nota hvert þeirra til innsláttar.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} notar aftur Windows-rekil sinn því skiptin voru ekki staðfest.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> tengd / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> alls</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Fjarlægja þetta tæki og stillingar þess</value></data>

@@ -779,6 +779,24 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} మళ్లీ దాని విండోస్ డ్రైవర్పైకి వచ్చింది.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>{0} కోసం విండోస్ డ్రైవర్ను పునరుద్ధరించలేకపోయాం.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>విండోస్ {0} ను తిరిగి దాని స్వంత డ్రైవర్పై ఉంచింది. దాన్ని మళ్లీ మార్చడానికి పరికరాల పేజీలో ఎంచుకోండి.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>PadForgeలో మాత్రమే ఉపయోగించు</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge ఈ కీబోర్డ్‌ను Windows యొక్క WinUSB డ్రైవర్‌కు మారుస్తుంది మరియు దాన్ని స్వయంగా చదువుతుంది. అప్పుడు ఈ పేజీలో దాని Windows డ్రైవర్‌ను పునరుద్ధరించే వరకు, PadForge మూసివేసి ఉన్నప్పుడు కూడా, Windows ప్రతి ప్రోగ్రామ్‌లో దానితో టైప్ చేయడం ఆపేస్తుంది. PadForge నడుస్తున్నప్పుడు దాని మ్యాపింగ్‌లు మరియు మాక్రోలు పనిచేస్తూనే ఉంటాయి.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>ఇవి దానితో పాటు Windowsను వదిలివేస్తాయి: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>ఒక మౌస్</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>మీడియా కీలు</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>పవర్ మరియు స్లీప్ కీలు</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>ఒక గేమ్ కంట్రోలర్</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>తయారీదారు సాఫ్ట్‌వేర్‌కు దాని లింక్</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>అదే కనెక్షన్‌లోని ఇతర నియంత్రణలు</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>కీబోర్డ్ లేదా మౌస్</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>మార్చిన తర్వాత, దాన్ని ఉంచాలా అని PadForge అడుగుతుంది, {0} సెకన్లలోపు ఎవరూ స్పందించకపోతే కీబోర్డ్‌ను Windowsకు తిరిగి ఇచ్చేస్తుంది.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>ఈ కీబోర్డ్‌ను PadForgeలో ఉంచాలా?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows ఇకపై {0} తో టైప్ చేయదు. దాని వల్ల పనిచేసే కీబోర్డ్ లేదా మౌస్ లేకుండా పోతే, ఏమీ చేయకండి: కౌంట్‌డౌన్ ముగిసినప్పుడు PadForge దాన్ని Windowsకు తిరిగి ఇచ్చేస్తుంది.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0} సెకన్లలో తిరిగి ఇవ్వబడుతుంది</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>ఉంచు</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>తిరిగి ఇవ్వు</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>ముందుగా ఈ మోడల్‌కు చెందిన ఇతర కీబోర్డ్‌లను అన్‌ప్లగ్ చేయండి. Windows ప్లగ్ చేసిన ప్రతిదాన్ని ఒకేసారి PadForge డ్రైవర్‌కు మారుస్తుంది, ప్రతిదానితో టైప్ చేయడం ఆపుతుంది.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>మార్పు ఉంచబడనందున {0} మళ్లీ దాని Windows డ్రైవర్‌పైకి వచ్చింది.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> ఆన్లైన్ / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> మొత్తం</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>ఈ పరికరాన్ని మరియు దాని సెట్టింగులను తీసివేయి</value></data>

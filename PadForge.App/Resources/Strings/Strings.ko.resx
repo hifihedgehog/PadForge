@@ -520,6 +520,24 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0}이(가) Windows 드라이버로 돌아왔습니다.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>{0}의 Windows 드라이버를 복원하지 못했습니다.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows가 {0}을(를) 원래 드라이버로 되돌렸습니다. 다시 전환하려면 장치 페이지에서 선택하세요.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>PadForge에서만 사용</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge는 이 키보드를 Windows의 WinUSB 드라이버로 옮기고 직접 읽습니다. 이후 이 페이지에서 Windows 드라이버를 복원할 때까지, PadForge를 닫아 두어도 Windows는 모든 프로그램에서 이 키보드로 입력하지 않습니다. 매핑과 매크로는 PadForge가 실행 중인 동안 계속 작동합니다.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>다음 항목도 Windows에서 사용할 수 없게 됩니다: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>마우스</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>미디어 키</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>전원 및 절전 키</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>게임 컨트롤러</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>제조사 소프트웨어와의 연결</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>같은 연결의 다른 컨트롤</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>키보드 또는 마우스</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>전환 후 PadForge가 유지할지 묻고, {0}초 안에 응답이 없으면 키보드를 Windows에 돌려줍니다.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>이 키보드를 PadForge에서 계속 사용하시겠습니까?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows는 더 이상 {0}(으)로 입력하지 않습니다. 사용할 수 있는 키보드나 마우스가 없어졌다면 아무것도 하지 마세요. 카운트다운이 끝나면 PadForge가 Windows에 되돌려 줍니다.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0}초 후 되돌립니다</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>유지</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>되돌리기</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>먼저 이 모델의 다른 키보드를 분리하세요. Windows는 연결된 이 모델의 키보드를 모두 한꺼번에 PadForge 드라이버로 옮기고, 그 키보드들로 입력하지 않게 됩니다.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>전환이 유지되지 않아 {0}이(가) Windows 드라이버로 돌아왔습니다.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value>대 온라인 / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value>대</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>이 장치 및 해당 설정을 제거합니다</value></data>

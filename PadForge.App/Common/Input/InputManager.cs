@@ -4280,6 +4280,7 @@ namespace PadForge.Common.Input
             ShutdownFalconInputs();
             ShutdownPeripheralRows();
             ShutdownTouchSenseMice();
+            ShutdownWinUsbKeyboards();
             ShutdownAnalogKeyboardInputs();
             ShutdownSdl();
             _gyroTiltStates.Clear();

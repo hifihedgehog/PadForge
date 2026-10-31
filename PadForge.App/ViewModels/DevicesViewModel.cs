@@ -57,8 +57,11 @@ namespace PadForge.ViewModels
             get => _selectedDevice;
             set
             {
+                var previous = _selectedDevice;
                 if (SetProperty(ref _selectedDevice, value))
                 {
+                    if (previous != null) previous.PropertyChanged -= OnSelectedDevicePropertyChanged;
+                    if (value != null) value.PropertyChanged += OnSelectedDevicePropertyChanged;
                     OnPropertyChanged(nameof(HasSelectedDevice));
                     _assignToSlotCommand?.NotifyCanExecuteChanged();
                     _removeDeviceCommand?.NotifyCanExecuteChanged();
@@ -94,6 +97,7 @@ namespace PadForge.ViewModels
             Services.VendorUsbDriverInstaller.OptInKind.IntelBaseStation => Strings.Instance.Devices_DriverBind_IntelBaseStation,
             Services.VendorUsbDriverInstaller.OptInKind.Prodikeys => Strings.Instance.Devices_DriverBind_Prodikeys,
             Services.VendorUsbDriverInstaller.OptInKind.TouchSenseMouse => Strings.Instance.Devices_DriverBind_TouchSenseMouse,
+            Services.VendorUsbDriverInstaller.OptInKind.Keyboard => Strings.Instance.Devices_DriverBind_Keyboard,
             _ => null,
         };
 
@@ -154,17 +158,35 @@ namespace PadForge.ViewModels
             device.GameModLine = string.Empty;
         }
 
+        /// <summary>A keyboard taken from Windows keeps its row and its ID
+        /// (#549): its path changes to its WinUSB interface once PadForge
+        /// opens it, and back after a restore. The switch the page offers
+        /// follows the path, so the restore shows on the row that was just
+        /// switched without selecting it again.</summary>
+        private void OnSelectedDevicePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(DeviceRowViewModel.DevicePath) && ReferenceEquals(sender, _selectedDevice))
+                RefreshDriverOffer();
+        }
+
         /// <summary>Reads the offer for the selected device. Only a row whose
-        /// IDs belong to an opt-in device costs a sweep of the USB
-        /// nodes.</summary>
+        /// IDs belong to an opt-in device, or a keyboard row (#549), costs a
+        /// sweep of the USB nodes. A device listed by its IDs keeps its own
+        /// offer, so an Intel base station's keyboard row is offered the
+        /// gamepads it has always been offered.</summary>
         public void RefreshDriverOffer()
         {
             var device = _selectedDevice;
-            _driverOffer = device != null
-                && Services.VendorUsbDriverInstaller.IsOptInRow(device.VendorId, device.ProductId)
-                ? Services.VendorUsbDriverInstaller.QueryOptIn(device.VendorId, device.ProductId,
-                    Services.VendorUsbDriverInstaller.ListPresentUsbNodes())
-                : null;
+            if (device == null)
+                _driverOffer = null;
+            else if (Services.VendorUsbDriverInstaller.IsOptInRow(device.VendorId, device.ProductId))
+                _driverOffer = Services.VendorUsbDriverInstaller.QueryOptIn(device.VendorId, device.ProductId,
+                    Services.VendorUsbDriverInstaller.ListPresentUsbNodes());
+            else if (device.DeviceTypeKey == "Keyboard" && !device.IsAggregate && !device.IsInternalVirtual)
+                _driverOffer = Services.WinUsbKeyboardBinding.QueryOffer(device.DevicePath,
+                    Services.VendorUsbDriverInstaller.ListPresentUsbNodes());
+            else
+                _driverOffer = null;
             NotifyDriverOffer();
         }
 

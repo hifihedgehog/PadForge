@@ -10,6 +10,22 @@ namespace PadForge.Common.Input.Peripherals
     internal readonly record struct TouchSenseMouse(string Path, ushort VendorId, ushort ProductId);
 
     /// <summary>
+    /// One WinUSB handle PadForge holds on a device bound to its driver:
+    /// a TouchSense mouse's (#494) or a keyboard's (#549). What the table of
+    /// open handles (<see cref="TouchSenseChannels"/>) needs of each, so a
+    /// driver switch can close any of them before Windows restarts the node.
+    /// </summary>
+    internal interface IWinUsbChannel : IDisposable
+    {
+        /// <summary>The device's WinUSB interface path.</summary>
+        string Path { get; }
+
+        /// <summary>False from the moment anyone closed the channel. A
+        /// closed channel never opens again: the device gets a new one.</summary>
+        bool IsOpen { get; }
+    }
+
+    /// <summary>
     /// The one WinUSB handle of a bound TouchSense mouse (#494). WinUSB
     /// lets one handle open a device (SDL3-build SDL
     /// docs/README-vendor-usb.md:65-66), so the row that reads the mouse's
@@ -17,19 +33,12 @@ namespace PadForge.Common.Input.Peripherals
     /// per mouse: one thread reads, one thread sends, and either may close
     /// it.
     /// </summary>
-    internal interface ITouchSenseChannel : IDisposable
+    internal interface ITouchSenseChannel : IWinUsbChannel
     {
-        /// <summary>The mouse's WinUSB interface path.</summary>
-        string Path { get; }
-
         /// <summary>The mouse's input report is the iFeel Mouse's, so what
         /// <see cref="TryRead"/> returns decodes as buttons, motion and
         /// wheel (<see cref="TouchSenseProtocol.DeclaresPointerReport"/>).</summary>
         bool ReadsPointer { get; }
-
-        /// <summary>False from the moment anyone closed the channel. A
-        /// closed channel never opens again: the mouse gets a new one.</summary>
-        bool IsOpen { get; }
 
         /// <summary>Sends one seven-byte frame. False when the mouse did
         /// not take it or the channel is closed. The caller then closes the
@@ -331,7 +340,9 @@ namespace PadForge.Common.Input.Peripherals
     /// (#494). The rows open and close them, since a bound mouse has a row
     /// for as long as it is plugged in, and the backend that buzzes a mouse
     /// finds its channel here, so no second handle is ever asked of a
-    /// device that takes one.
+    /// device that takes one. A bound keyboard's channel is listed here too
+    /// (#549), so the driver switch's <see cref="Hold"/> closes every WinUSB
+    /// handle PadForge has on a node, whatever device it is.
     /// </summary>
     internal sealed class TouchSenseChannels
     {
@@ -339,7 +350,7 @@ namespace PadForge.Common.Input.Peripherals
         internal static readonly TouchSenseChannels Shared = new();
 
         private readonly object _gate = new();
-        private readonly Dictionary<string, ITouchSenseChannel> _open = new(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, IWinUsbChannel> _open = new(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>The device nodes a driver switch holds, each as the
         /// token it has in an interface path, once for every hold on it.
@@ -370,7 +381,7 @@ namespace PadForge.Common.Input.Peripherals
         /// driver switch holds by now is closed here and not listed: its
         /// open began before the hold did, and the switch waits on a node
         /// no handle may keep open (<see cref="Hold"/>).</summary>
-        public void Publish(ITouchSenseChannel channel)
+        public void Publish(IWinUsbChannel channel)
         {
             if (channel == null || string.IsNullOrEmpty(channel.Path)) return;
             bool held;
@@ -432,14 +443,15 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>The open channel of the mouse at a path, or null. A
-        /// channel that was closed since it was listed is dropped here.</summary>
+        /// channel that was closed since it was listed is dropped here, and
+        /// a keyboard's channel at the path is no mouse's.</summary>
         public ITouchSenseChannel Find(string path)
         {
             if (string.IsNullOrEmpty(path)) return null;
             lock (_gate)
             {
                 if (!_open.TryGetValue(path, out var channel)) return null;
-                if (channel.IsOpen) return channel;
+                if (channel.IsOpen) return channel as ITouchSenseChannel;
                 _open.Remove(path);
                 return null;
             }
@@ -447,7 +459,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Takes a channel off the list, unless a newer one for
         /// the same path took its place.</summary>
-        public void Forget(ITouchSenseChannel channel)
+        public void Forget(IWinUsbChannel channel)
         {
             if (channel == null || string.IsNullOrEmpty(channel.Path)) return;
             lock (_gate)
@@ -479,13 +491,13 @@ namespace PadForge.Common.Input.Peripherals
             // An interface path carries its node's instance ID with # for
             // each backslash, and a # after it.
             string token = instanceId.Replace('\\', '#') + "#";
-            List<ITouchSenseChannel> closing = null;
+            List<IWinUsbChannel> closing = null;
             lock (_gate)
             {
                 _held.Add(token);
                 foreach (var pair in _open)
                     if (pair.Key.IndexOf(token, StringComparison.OrdinalIgnoreCase) >= 0)
-                        (closing ??= new List<ITouchSenseChannel>()).Add(pair.Value);
+                        (closing ??= new List<IWinUsbChannel>()).Add(pair.Value);
                 if (closing != null)
                     foreach (var channel in closing) _open.Remove(channel.Path);
             }

@@ -191,5 +191,13 @@ namespace PadForge.Common.Input
         /// <summary>Retires those rows when the manager is disposed, with
         /// the vendor rows and the unit rows.</summary>
         partial void ShutdownTouchSenseMice();
+
+        /// <summary>Phase 1o. Opens and retires the row of each keyboard
+        /// bound to PadForge's WinUSB driver (#549), and sets
+        /// <paramref name="changed"/> when the device list changed.</summary>
+        partial void UpdateWinUsbKeyboards(ref bool changed);
+
+        /// <summary>Retires those rows when the manager is disposed.</summary>
+        partial void ShutdownWinUsbKeyboards();
     }
 }

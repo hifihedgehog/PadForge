@@ -779,6 +779,24 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} மீண்டும் அதன் Windows இயக்கிக்குத் திரும்பியது.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>{0}-க்கான Windows இயக்கியை மீட்டெடுக்க முடியவில்லை.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows {0}-ஐ மீண்டும் தன் சொந்த இயக்கிக்கு மாற்றிவிட்டது. அதை மீண்டும் மாற்ற, சாதனங்கள் பக்கத்தில் அதைத் தேர்ந்தெடுக்கவும்.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>PadForge-இல் மட்டும் பயன்படுத்து</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge இந்த விசைப்பலகையை Windows-இன் WinUSB இயக்கிக்கு மாற்றி, தானே படிக்கும். அதன் பிறகு, இதன் Windows இயக்கி இந்தப் பக்கத்திலிருந்து மீட்டெடுக்கப்படும் வரை, PadForge மூடியிருந்தாலும் எல்லா நிரல்களிலும் Windows இதைக் கொண்டு தட்டச்சு செய்யாது. PadForge இயங்கும்போது இதன் மேப்பிங்குகளும் மேக்ரோக்களும் தொடர்ந்து வேலை செய்யும்.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>இவையும் இதனுடன் Windows-இலிருந்து நீங்கும்: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>ஒரு சுட்டி</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>மீடியா விசைகள்</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>பவர் மற்றும் உறக்க விசைகள்</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>ஒரு கேம் கட்டுப்படுத்தி</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>தயாரிப்பாளரின் மென்பொருளுடனான இதன் இணைப்பு</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>அதே இணைப்பில் உள்ள பிற கட்டுப்பாடுகள்</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>விசைப்பலகை அல்லது சுட்டி</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>மாற்றிய பிறகு, இதை வைத்துக்கொள்ள வேண்டுமா என PadForge கேட்கும். {0} வினாடிகளுக்குள் யாரும் பதிலளிக்காவிட்டால் விசைப்பலகையை Windows-இடமே திருப்பிக் கொடுக்கும்.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>இந்த விசைப்பலகையை PadForge-இல் வைத்திருக்கவா?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows இனி {0} மூலம் தட்டச்சு செய்யாது. அதனால் வேலை செய்யும் விசைப்பலகையோ சுட்டியோ இல்லாமல் போனால், எதுவும் செய்ய வேண்டாம்: கவுண்ட்டவுன் முடிந்ததும் PadForge அதை Windows-இடம் திருப்பிக் கொடுக்கும்.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0} வினாடிகளில் திருப்பிக் கொடுக்கப்படும்</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>வைத்திரு</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>திருப்பிக் கொடு</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>முதலில் இதே மாடலின் மற்ற விசைப்பலகைகளைக் கழற்றவும். செருகப்பட்டுள்ள ஒவ்வொன்றையும் Windows ஒரே நேரத்தில் PadForge-இன் இயக்கிக்கு மாற்றிவிடும், ஒவ்வொன்றிலும் தட்டச்சு செய்வதை நிறுத்திவிடும்.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>மாற்றம் வைத்துக்கொள்ளப்படாததால் {0} மீண்டும் அதன் Windows இயக்கிக்குத் திரும்பியது.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> ஆன்லைன் / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> மொத்தம்</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>இந்தச் சாதனத்தையும் அதன் அமைப்புகளையும் அகற்று</value></data>

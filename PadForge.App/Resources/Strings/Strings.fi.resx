@@ -779,6 +779,24 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} käyttää taas Windowsin ajuria.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Windowsin ajuria ei voitu palauttaa: {0}.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows palautti laitteen {0} omalle ajurilleen. Valitse se Laitteet-sivulla, jos haluat vaihtaa sen uudelleen.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Käytä vain PadForge-sovelluksessa</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge siirtää tämän näppäimistön Windowsin WinUSB-ajurille ja lukee sen itse. Windows lakkaa sen jälkeen kirjoittamasta sillä kaikissa ohjelmissa, myös PadForgen ollessa suljettuna, kunnes sen Windowsin ajuri palautetaan tältä sivulta. Sen yhdistämiset ja makrot toimivat edelleen PadForgen ollessa käynnissä.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Nämä poistuvat Windowsin käytöstä sen mukana: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>hiiri</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>medianäppäimet</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>virta- ja lepotilanäppäimet</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>peliohjain</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>sen yhteys valmistajan ohjelmistoon</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>muut samassa liitännässä olevat ohjaimet</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>näppäimistö tai hiiri</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Vaihdon jälkeen PadForge kysyy, haluatko pitää sen, ja palauttaa näppäimistön Windowsille, ellei kukaan vastaa {0} sekunnin kuluessa.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Pidetäänkö tämä näppäimistö PadForge-sovelluksessa?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows ei enää kirjoita laitteella {0}. Jos käytössäsi ei ole sen vuoksi toimivaa näppäimistöä tai hiirtä, älä tee mitään: PadForge palauttaa sen Windowsille, kun lähtölaskenta päättyy.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Palautetaan {0} sekunnin kuluttua</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Pidä</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Palauta</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Irrota ensin muut tämän mallin näppäimistöt. Windows siirtää kaikki kytketyt näppäimistöt PadForge-ajuriin kerralla ja lakkaa kirjoittamasta niillä.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} käyttää taas Windowsin ajuria, koska vaihtoa ei pidetty.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> yhteydessä / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> yhteensä</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Poista tämä laite ja sen asetukset</value></data>

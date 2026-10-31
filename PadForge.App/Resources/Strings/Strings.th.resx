@@ -779,6 +779,24 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} กลับไปใช้ไดรเวอร์ของ Windows แล้ว</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>กู้คืนไดรเวอร์ของ Windows สำหรับ {0} ไม่ได้</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows ย้าย {0} กลับไปใช้ไดรเวอร์ของตัวเอง เลือกอุปกรณ์นี้ในหน้าอุปกรณ์เพื่อสลับอีกครั้ง</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>ใช้เฉพาะใน PadForge</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge จะย้ายคีย์บอร์ดนี้ไปใช้ไดรเวอร์ WinUSB ของ Windows และอ่านค่าจากคีย์บอร์ดเอง หลังจากนั้น Windows จะหยุดใช้คีย์บอร์ดนี้พิมพ์ในทุกโปรแกรม แม้ว่า PadForge จะปิดอยู่ จนกว่าจะกู้คืนไดรเวอร์ของ Windows จากหน้านี้ การแมปและมาโครของคีย์บอร์ดยังใช้งานได้ตราบที่ PadForge ทำงานอยู่</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>สิ่งเหล่านี้จะหยุดทำงานกับ Windows ไปด้วย: {0}</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>เมาส์</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>คีย์สื่อ</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>คีย์เปิดปิดเครื่องและสลีป</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>คอนโทรลเลอร์เกม</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>การเชื่อมต่อกับซอฟต์แวร์ของผู้ผลิต</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>ปุ่มควบคุมอื่นๆ ในการเชื่อมต่อเดียวกัน</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>คีย์บอร์ดหรือเมาส์</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>หลังจากสลับแล้ว PadForge จะถามว่าต้องการใช้ต่อหรือไม่ และจะคืนคีย์บอร์ดให้ Windows หากไม่มีใครตอบภายใน {0} วินาที</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>ใช้คีย์บอร์ดนี้ใน PadForge ต่อไปหรือไม่</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows จะไม่ใช้ {0} พิมพ์อีกต่อไป หากทำให้คุณไม่มีคีย์บอร์ดหรือเมาส์ที่ใช้งานได้ ไม่ต้องทำอะไร PadForge จะคืนให้ Windows เมื่อการนับถอยหลังสิ้นสุด</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>คืนให้ใน {0} วินาที</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>ใช้ต่อ</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>คืนให้เดี๋ยวนี้</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>ถอดคีย์บอร์ดรุ่นเดียวกันตัวอื่นออกก่อน Windows จะย้ายทุกตัวที่เสียบอยู่ไปใช้ไดรเวอร์ของ PadForge พร้อมกัน และหยุดใช้แต่ละตัวพิมพ์</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} กลับไปใช้ไดรเวอร์ของ Windows แล้ว เพราะไม่ได้เลือกใช้ต่อ</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> ออนไลน์ / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> ทั้งหมด</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>นำอุปกรณ์นี้และการตั้งค่าของอุปกรณ์ออก</value></data>

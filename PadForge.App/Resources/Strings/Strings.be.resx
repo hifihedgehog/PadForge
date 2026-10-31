@@ -779,6 +779,24 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} зноў працуе на сваім драйверы Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Не ўдалося аднавіць драйвер Windows для {0}.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows вярнула {0} на ўласны драйвер. Выберыце прыладу на старонцы «Прылады», каб пераключыць яе зноў.</value></data>
+  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Выкарыстоўваць толькі ў PadForge</value></data>
+  <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge пераводзіць гэтую клавіятуру на драйвер Windows WinUSB і чытае яе сам. Пасля гэтага Windows перастае набіраць з яе тэкст ва ўсіх праграмах, нават калі PadForge закрыты, пакуль яе драйвер Windows не будзе адноўлены на гэтай старонцы. Прызначэнні і макрасы клавіятуры працуюць, пакуль запушчаны PadForge.</value></data>
+  <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Разам з ёй Windows страціць: {0}.</value></data>
+  <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>мыш</value></data>
+  <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>мультымедыйныя клавішы</value></data>
+  <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>клавішы сілкавання і сну</value></data>
+  <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>гульнявы кантролер</value></data>
+  <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>сувязь з праграмай вытворцы</value></data>
+  <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>іншыя элементы кіравання на гэтым жа падключэнні</value></data>
+  <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>клавіятура або мыш</value></data>
+  <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Пасля пераключэння PadForge спытае, ці пакідаць яго, і верне клавіятуру Windows, калі за {0} с няма адказу.</value></data>
+  <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Пакінуць гэтую клавіятуру ў PadForge?</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows больш не набірае тэкст з {0}. Калі ў вас не засталося працоўнай клавіятуры або мышы, нічога не рабіце: PadForge верне яе Windows, калі скончыцца адлік.</value></data>
+  <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Вяртанне праз {0} с</value></data>
+  <data name="Devices_DriverKeep" xml:space="preserve"><value>Пакінуць</value></data>
+  <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Вярнуць</value></data>
+  <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Спачатку адключыце іншыя клавіятуры гэтай мадэлі. Windows адначасова пераводзіць усе падключаныя на драйвер PadForge і перастае набіраць з кожнай тэкст.</value></data>
+  <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} зноў працуе на сваім драйверы Windows, бо пераключэнне не было пацверджана.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> падключана / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> усяго</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Выдаліць гэтую прыладу і яе налады</value></data>

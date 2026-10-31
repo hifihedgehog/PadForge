@@ -2431,6 +2431,16 @@ namespace PadForge.Services
                     if (!string.IsNullOrWhiteSpace(id))
                         vm.WinUsbOptIns.Add(id);
             }
+            vm.KeyboardTakeovers.Clear();
+            if (appSettings.KeyboardTakeovers != null)
+            {
+                foreach (var entry in appSettings.KeyboardTakeovers)
+                    if (PadForge.Common.Input.WinUsbKeyboards.KeyboardTakeovers.IsValid(entry))
+                        vm.KeyboardTakeovers.Add(entry);
+            }
+            // Read by the device pass and the input hooks, away from the
+            // view model (#549).
+            PadForge.Common.Input.WinUsbKeyboards.KeyboardTakeovers.Apply(vm.KeyboardTakeovers);
             vm.ICadePads.Clear();
             if (appSettings.ICadePads != null)
             {
@@ -5100,6 +5110,9 @@ namespace PadForge.Services
                 WinUsbOptIns = vm.WinUsbOptIns.Count > 0
                     ? vm.WinUsbOptIns.ToArray()
                     : null,
+                KeyboardTakeovers = vm.KeyboardTakeovers.Count > 0
+                    ? vm.KeyboardTakeovers.ToArray()
+                    : null,
                 ICadePads = vm.ICadePads.Count > 0
                     ? vm.ICadePads.ToArray()
                     : null,
@@ -7207,6 +7220,14 @@ namespace PadForge.Services
         [XmlArray("WinUsbOptIns")]
         [XmlArrayItem("Id")]
         public string[] WinUsbOptIns { get; set; }
+
+        /// <summary>The keyboards the user took from Windows for PadForge
+        /// alone from the Devices page (#549): the bound node, the ID its
+        /// package names and the row the keyboard had. Null when there are
+        /// none.</summary>
+        [XmlArray("KeyboardTakeovers")]
+        [XmlArrayItem("Keyboard")]
+        public PadForge.Common.Input.WinUsbKeyboards.KeyboardTakeoverEntry[] KeyboardTakeovers { get; set; }
 
         /// <summary>Pads in iCade mode the user marked on the Devices page
         /// (hifihedgehog/SDL#33 Part 16), handed to SDL as

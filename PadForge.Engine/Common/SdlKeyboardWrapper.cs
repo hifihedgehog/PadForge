@@ -132,9 +132,10 @@ namespace PadForge.Engine
 
         /// <summary>A keyboard's key objects for the given key indices, named
         /// by the keyboard name table. Shared with a keyboard shared over
-        /// Remote Link (RemotePeerDevice), so its keys carry the same names
-        /// as a local keyboard's.</summary>
-        internal static DeviceObjectItem[] KeyObjects(int[] indices)
+        /// Remote Link (RemotePeerDevice) and a keyboard PadForge reads over
+        /// WinUSB (WinUsbKeyboardDevice, #549), so their keys carry the same
+        /// names as a local keyboard's.</summary>
+        public static DeviceObjectItem[] KeyObjects(int[] indices)
         {
             indices ??= System.Array.Empty<int>();
             var items = new DeviceObjectItem[indices.Length];

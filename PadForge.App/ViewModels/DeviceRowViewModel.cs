@@ -841,12 +841,31 @@ namespace PadForge.ViewModels
             || Common.Input.WinUsbKeyboards.KeyboardTakeovers.IsTakenOver(InstanceGuid);
 
         /// <summary>True when at least one input-hiding toggle would be shown,
-        /// so the "Input Hiding" section can hide its heading along with its
-        /// (now-empty) body when nothing applies. It names the two toggles
-        /// rather than restating their rules, so a row where neither applies
-        /// (a merged touchpad or consumer-control row) loses the heading
-        /// too.</summary>
-        public bool ShowInputHidingSection => ShowHidHideToggle || ShowConsumeToggle;
+        /// or a button of a keyboard's switch, so the "Input Hiding" section
+        /// can hide its heading along with its (now-empty) body when nothing
+        /// applies. It names the toggles and the switch rather than
+        /// restating their rules, so a row where none applies (a merged
+        /// touchpad or consumer-control row) loses the heading too.</summary>
+        public bool ShowInputHidingSection => ShowHidHideToggle || ShowConsumeToggle || _showsHidingDriverSwitch;
+
+        private bool _showsHidingDriverSwitch;
+
+        /// <summary>Set by the Devices page while this row is selected and a
+        /// button of its keyboard switch (#549) shows. The button stands in
+        /// the Input Hiding section, which a switched keyboard keeps for it
+        /// alone, since both toggles leave such a row.</summary>
+        public bool ShowsHidingDriverSwitch
+        {
+            get => _showsHidingDriverSwitch;
+            set
+            {
+                if (!SetProperty(ref _showsHidingDriverSwitch, value)) return;
+                OnPropertyChanged(nameof(ShowInputHidingSection));
+                OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
+                OnPropertyChanged(nameof(ShowRawInputDivider));
+                OnPropertyChanged(nameof(ShowGunCalibrationDivider));
+            }
+        }
 
         public bool IsTabletDevice => DeviceTypeKey == "Tablet";
         public bool ShowTabletCaptureStatus => IsTabletDevice && !IsInternalVirtual;

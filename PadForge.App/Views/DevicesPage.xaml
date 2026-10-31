@@ -900,9 +900,11 @@
                             </Button.Style>
                         </Button>
                         <!-- Opt-in driver switch (hifihedgehog/SDL#33 Part 15): the
-                             Xbox 360 pads and receiver, the Intel base station and
-                             the Prodikeys, whose WinUSB binding takes something
-                             from Windows, move only on request, and move back. -->
+                             Xbox 360 pads and receiver, the Intel base station,
+                             the Prodikeys and the TouchSense mice, whose WinUSB
+                             binding takes something from Windows, move only on
+                             request, and move back. A keyboard's switch hides it
+                             from Windows and stands in Input Hiding below. -->
                         <Button Content="{Binding DriverBindText}" Margin="0,6,0,8"
                                 Padding="8,4" HorizontalAlignment="Left"
                                 Click="DriverBind_Click"
@@ -1274,6 +1276,28 @@
                             </CheckBox>
                             <reset:SettingResetButton Command="{Binding ResetSelectedDeviceSettingCommand}" CommandParameter="ConsumeInputEnabled" SettingLabel="{Binding Devices_ConsumeMapped, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceRowViewModel_ConsumeInputEnabled_1054" Visibility="{Binding Visibility, ElementName=ResetInput1054}"/>
                         </StackPanel>
+
+                        <!-- A keyboard's driver switch (#549) hides the whole
+                             keyboard from Windows, so it stands with the two
+                             toggles. A switched keyboard shows neither toggle,
+                             and its restore keeps the section for itself
+                             (DeviceRowViewModel.ShowsHidingDriverSwitch). -->
+                        <Button Content="{Binding DriverBindText}" Margin="0,4,0,4"
+                                Padding="8,4" HorizontalAlignment="Left"
+                                Click="DriverBind_Click"
+                                Visibility="{Binding ShowHidingDriverBind, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="{Binding Devices_DriverRestore, Source={x:Static strings:Strings.Instance}}" Margin="0,4,0,4"
+                                Padding="8,4" HorizontalAlignment="Left"
+                                Click="DriverRestore_Click"
+                                Visibility="{Binding ShowHidingDriverRestore, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
+                            </Button.Style>
+                        </Button>
 
                         <!-- Follows the section it divides. A bare separator sat
                              visible on devices where every control above it was

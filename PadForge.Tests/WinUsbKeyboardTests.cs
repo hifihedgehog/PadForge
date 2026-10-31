@@ -854,6 +854,63 @@ namespace PadForge.Tests
             row.DevicePath = @"\\?\HID#VID_1&PID_2#3&4#{884b96c3-56ef-11d1-bc8c-00a0c91405dd}";
             Assert.Equal(2, reads);   // the deselect's own read, and none for the path
         }
+
+        /// <summary>A keyboard's switch hides the keyboard from Windows, so
+        /// its buttons stand in the Input Hiding section, which keeps its
+        /// heading and dividers for a switched keyboard's restore alone.
+        /// While a switch runs, the buttons and that hold go. Every other
+        /// kind's buttons stand with the device's other buttons.</summary>
+        [Fact]
+        public void AKeyboardsSwitch_StandsInTheInputHidingSection()
+        {
+            var keyboardRestore = new VendorUsbDriverInstaller.OptInOffer(VendorUsbDriverInstaller.OptInKind.Keyboard, null, Array.Empty<string>(), "node", true);
+            var vm = new DevicesViewModel();
+            var row = new DeviceRowViewModel { DeviceTypeKey = "Keyboard", DevicePath = WinUsbKeyboardDeviceTests.Path };
+            vm.SelectedDevice = row;
+            Assert.True(row.IsPadForgeDriverRow);
+            Assert.False(row.ShowHidHideToggle || row.ShowConsumeToggle);
+
+            vm.ApplyDriverOffer(keyboardRestore);
+            Assert.True(vm.ShowHidingDriverRestore);
+            Assert.False(vm.ShowDriverRestore);
+            Assert.True(row.ShowsHidingDriverSwitch);
+            Assert.True(row.ShowInputHidingSection);
+            Assert.True(row.ShowInputModeOrHidingSection);
+
+            vm.DriverBusy = true;
+            Assert.False(vm.ShowHidingDriverRestore);
+            Assert.False(row.ShowInputHidingSection);
+            vm.DriverBusy = false;
+            Assert.True(row.ShowInputHidingSection);
+
+            // Another kind's switch stands with the other buttons.
+            vm.ApplyDriverOffer(new VendorUsbDriverInstaller.OptInOffer(VendorUsbDriverInstaller.OptInKind.TouchSenseMouse, null, Array.Empty<string>(), "node", true));
+            Assert.True(vm.ShowDriverRestore);
+            Assert.False(vm.ShowHidingDriverRestore);
+            Assert.False(row.ShowInputHidingSection);
+            foreach (VendorUsbDriverInstaller.OptInKind kind in Enum.GetValues<VendorUsbDriverInstaller.OptInKind>())
+                Assert.True((kind == VendorUsbDriverInstaller.OptInKind.Keyboard) == DevicesViewModel.Hides(kind), kind.ToString());
+
+            // A row no longer selected lets go of the section.
+            vm.ApplyDriverOffer(keyboardRestore);
+            vm.SelectedDevice = null;
+            Assert.False(row.ShowsHidingDriverSwitch);
+
+            // The two buttons stand between the section's heading and its
+            // divider, and the pair above it serves every other kind.
+            string page = AuditDelta20261002Tests.RepoText("PadForge.App", "Views", "DevicesPage.xaml");
+            int heading = page.IndexOf("{Binding Devices_InputHiding,", StringComparison.Ordinal);
+            int divider = page.IndexOf("<Separator", heading, StringComparison.Ordinal);
+            Assert.True(heading > 0 && divider > heading, $"{heading} {divider}");
+            string section = page.Substring(heading, divider - heading);
+            Assert.Contains("Visibility=\"{Binding ShowHidingDriverBind,", section);
+            Assert.Contains("Visibility=\"{Binding ShowHidingDriverRestore,", section);
+            Assert.Equal(1, section.Split("Click=\"DriverBind_Click\"").Length - 1);
+            Assert.Equal(1, section.Split("Click=\"DriverRestore_Click\"").Length - 1);
+            int above = page.IndexOf("Visibility=\"{Binding ShowDriverBind,", StringComparison.Ordinal);
+            Assert.True(above > 0 && above < heading, $"{above} {heading}");
+            Assert.Equal(1, page.Split("Visibility=\"{Binding ShowDriverBind,").Length - 1);
+        }
     }
 
     /// <summary>

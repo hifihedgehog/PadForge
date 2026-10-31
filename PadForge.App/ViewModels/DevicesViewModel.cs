@@ -60,7 +60,11 @@ namespace PadForge.ViewModels
                 var previous = _selectedDevice;
                 if (SetProperty(ref _selectedDevice, value))
                 {
-                    if (previous != null) previous.PropertyChanged -= OnSelectedDevicePropertyChanged;
+                    if (previous != null)
+                    {
+                        previous.PropertyChanged -= OnSelectedDevicePropertyChanged;
+                        previous.ShowsHidingDriverSwitch = false;
+                    }
                     if (value != null) value.PropertyChanged += OnSelectedDevicePropertyChanged;
                     OnPropertyChanged(nameof(HasSelectedDevice));
                     _assignToSlotCommand?.NotifyCanExecuteChanged();
@@ -87,8 +91,22 @@ namespace PadForge.ViewModels
         /// nothing.</summary>
         internal Services.VendorUsbDriverInstaller.OptInOffer DriverOffer => _driverOffer;
 
-        public bool ShowDriverBind => _driverOffer?.Bind != null && !_driverBusy;
-        public bool ShowDriverRestore => _driverOffer?.Restore == true && !_driverBusy;
+        /// <summary>Whether a kind's switch hides the device from Windows.
+        /// A keyboard's (#549) does, so its buttons stand in the Input
+        /// Hiding section with Hide from Games and Consume Mapped Inputs.
+        /// Every other kind's stand with the device's other buttons.</summary>
+        internal static bool Hides(Services.VendorUsbDriverInstaller.OptInKind kind)
+            => kind == Services.VendorUsbDriverInstaller.OptInKind.Keyboard;
+
+        private bool OfferHides => _driverOffer != null && Hides(_driverOffer.Kind);
+
+        public bool ShowDriverBind => _driverOffer?.Bind != null && !_driverBusy && !OfferHides;
+        public bool ShowDriverRestore => _driverOffer?.Restore == true && !_driverBusy && !OfferHides;
+
+        /// <summary>The same two buttons for a kind that hides, in the Input
+        /// Hiding section.</summary>
+        public bool ShowHidingDriverBind => _driverOffer?.Bind != null && !_driverBusy && OfferHides;
+        public bool ShowHidingDriverRestore => _driverOffer?.Restore == true && !_driverBusy && OfferHides;
 
         public string DriverBindText => _driverOffer?.Kind switch
         {
@@ -190,11 +208,24 @@ namespace PadForge.ViewModels
             NotifyDriverOffer();
         }
 
+        /// <summary>Shows an offer worked out elsewhere, for a test.</summary>
+        internal void ApplyDriverOffer(Services.VendorUsbDriverInstaller.OptInOffer offer)
+        {
+            _driverOffer = offer;
+            NotifyDriverOffer();
+        }
+
         private void NotifyDriverOffer()
         {
             OnPropertyChanged(nameof(ShowDriverBind));
             OnPropertyChanged(nameof(ShowDriverRestore));
+            OnPropertyChanged(nameof(ShowHidingDriverBind));
+            OnPropertyChanged(nameof(ShowHidingDriverRestore));
             OnPropertyChanged(nameof(DriverBindText));
+            // The section's heading and dividers are the row's, and a
+            // switched keyboard's row shows neither of the section's toggles.
+            if (_selectedDevice != null)
+                _selectedDevice.ShowsHidingDriverSwitch = ShowHidingDriverBind || ShowHidingDriverRestore;
         }
 
         // ─────────────────────────────────────────────

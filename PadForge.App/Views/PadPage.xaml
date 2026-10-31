@@ -88,10 +88,12 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <!-- A unit reads as part of its row's phrase, so it takes the
+             label's color (owner, 2026-10-30). UnitTextTests pins it. -->
         <Style x:Key="DzPercent" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="2,0,0,0"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
         </Style>
         <!--
             FontFamily / FontSize live on the child TextBlock so the symbol-
@@ -1495,7 +1497,7 @@
                                            ToolTip="{Binding HoldTimeToolTip}"/>
                                 <TextBox Text="{Binding TriggerHoldMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="80"
                                          ToolTip="{Binding HoldTimeToolTip}"/>
-                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                 <ui:Button Command="{Binding ResetTriggerHoldMsCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0" ToolTip="{Binding Macro_Reset_HoldTime, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
 
@@ -1511,7 +1513,7 @@
                                            ToolTip="{Binding TriggerPressWindowToolTip}"/>
                                 <TextBox Text="{Binding TriggerDoublePressMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="80"
                                          ToolTip="{Binding TriggerPressWindowToolTip}"/>
-                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                 <ui:Button Command="{Binding ResetTriggerDoublePressMsCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0" ToolTip="{Binding Macro_Reset_PressWindow, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
 
@@ -1528,7 +1530,7 @@
                                            ToolTip="{Binding InlineIntervalToolTip}"/>
                                 <TextBox Text="{Binding RepeatDelayMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="80"
                                          ToolTip="{Binding InlineIntervalToolTip}"/>
-                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                 <ui:Button Command="{Binding ResetRepeatDelayMsCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0" ToolTip="{Binding Macro_Reset_Interval, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
 
@@ -2055,7 +2057,7 @@
                                     <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="TriggerAxisThreshold" SettingLabel="{Binding Macro_Threshold, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroItem_TriggerAxisThreshold_1873" Margin="4,0,8,0"/>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
                                         <TextBlock Text="{Binding TriggerAxisThreshold, Mode=OneWay}"/>
-                                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%"/>
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%"/>
                                     </StackPanel>
                                 </StackPanel>
 
@@ -2518,7 +2520,7 @@
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_RepeatInterval_Label, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Width="80" Margin="0,0,8,0"/>
                                         <TextBox Text="{Binding IntervalMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="80"/>
-                                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                         <ui:Button Command="{Binding ResetIntervalMsCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0" ToolTip="{Binding Macro_Reset_Interval, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
 
@@ -2541,7 +2543,7 @@
                                                        Width="80" Margin="0,0,8,0"
                                                        ToolTip="{Binding Macro_SlowInterval_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <TextBox Text="{Binding SlowIntervalMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="80"/>
-                                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                             <ui:Button Command="{Binding ResetSlowIntervalMsCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0" ToolTip="{Binding Macro_Reset_SlowInterval, Source={x:Static strings:Strings.Instance}}"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
@@ -2562,7 +2564,7 @@
                                                        Width="80" Margin="0,0,8,0"
                                                        ToolTip="{Binding Macro_PressureStart_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <TextBox Text="{Binding PressureStartPercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="80"/>
-                                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                             <ui:Button Command="{Binding ResetPressureStartCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0" ToolTip="{Binding Macro_Reset_RampStart, Source={x:Static strings:Strings.Instance}}"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
@@ -2570,7 +2572,7 @@
                                                        Width="80" Margin="0,0,8,0"
                                                        ToolTip="{Binding Macro_PressureEnd_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <TextBox Text="{Binding PressureEndPercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="80"/>
-                                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                             <ui:Button Command="{Binding ResetPressureEndCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0" ToolTip="{Binding Macro_Reset_RampEnd, Source={x:Static strings:Strings.Instance}}"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
@@ -2677,7 +2679,7 @@
                                                    Width="80" Margin="0,0,8,0"/>
                                         <TextBox Text="{Binding DurationMs, Mode=TwoWay}" Width="80"/>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="DurationMs" SettingLabel="{Binding Macro_Duration, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_DurationMs_2459" Margin="4,0,8,0"/>
-                                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                     </StackPanel>
 
                                     <!-- Set Chroma Color card (#468): the color, painted on
@@ -2747,7 +2749,7 @@
                                                            VerticalAlignment="Center" Width="80" Margin="0,0,8,0" TextWrapping="Wrap"/>
                                                 <TextBox Text="{Binding DreamcastFrameMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="DreamcastFrameMs" SettingLabel="{Binding Macro_Dreamcast_FrameTime, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_DreamcastFrameMs_3302"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
@@ -2817,7 +2819,7 @@
                                                            VerticalAlignment="Center" Width="80" Margin="0,0,8,0" TextWrapping="Wrap"/>
                                                 <TextBox Text="{Binding ScreenFrameMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ScreenFrameMs" SettingLabel="{Binding Macro_Dreamcast_FrameTime, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_ScreenFrameMs_13103"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
@@ -2902,7 +2904,7 @@
                                                            VerticalAlignment="Center" Width="80" Margin="0,0,8,0" TextWrapping="Wrap"/>
                                                 <TextBox Text="{Binding PanStep, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Pixels, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Pixels, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="PanStep" SettingLabel="{Binding Macro_Pan_Step, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_PanStep_13108"/>
                                             </StackPanel>
                                             <TextBlock common:BidiText.Text="{Binding MacroAction_PanKeyboardScreen_Hint, Source={x:Static strings:Strings.Instance}}"
@@ -3012,7 +3014,7 @@
                                                         VerticalAlignment="Center"/>
                                                 <TextBox Text="{Binding LightbarHoldMs, Mode=TwoWay}" Width="80" Margin="8,0,0,0"/>
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="LightbarHoldMs" SettingLabel="{Binding Macro_TriggerHoldMs_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_LightbarHoldMs_2559" Margin="4,0,8,0"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                             </StackPanel>
                                             <!-- Fade slider — Reactive only. Linear fade from full to off after the hold. -->
                                             <StackPanel Orientation="Horizontal"
@@ -3024,7 +3026,7 @@
                                                         VerticalAlignment="Center"/>
                                                 <TextBox Text="{Binding LightbarFadeMs, Mode=TwoWay}" Width="80" Margin="8,0,0,0"/>
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="LightbarFadeMs" SettingLabel="{Binding Macro_LightbarFade_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_LightbarFadeMs_2570" Margin="4,0,8,0"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </Border>
@@ -3197,7 +3199,7 @@
                                                         Width="180" VerticalAlignment="Center"/>
                                                 <TextBox AutomationProperties.Name="{Binding MacroAction_Type_GuideLedBrightness, Source={x:Static strings:Strings.Instance}}" Text="{Binding GuideLedPercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="GuideLedPercent" SettingLabel="{Binding Macro_GuideLedBrightnessName, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_GuideLedPercent_2729"/>
                                             </StackPanel>
                                         </StackPanel>
@@ -3229,7 +3231,7 @@
                                                         Minimum="0" Maximum="100" Width="220"
                                                         VerticalAlignment="Center"/>
                                                 <TextBox Text="{Binding RumbleStrengthLeft, Mode=TwoWay}" Width="60" Margin="8,0,0,0"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="RumbleStrengthLeft" SettingLabel="{Binding Macro_RumbleStrengthLeft_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_RumbleStrengthLeft_2760"/>
                                             </StackPanel>
                                             <!-- Right motor strength -->
@@ -3240,7 +3242,7 @@
                                                         Minimum="0" Maximum="100" Width="220"
                                                         VerticalAlignment="Center"/>
                                                 <TextBox Text="{Binding RumbleStrengthRight, Mode=TwoWay}" Width="60" Margin="8,0,0,0"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="RumbleStrengthRight" SettingLabel="{Binding Macro_RumbleStrengthRight_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_RumbleStrengthRight_2770"/>
                                             </StackPanel>
                                             <!-- Hold ms — Reactive only -->
@@ -3253,7 +3255,7 @@
                                                         VerticalAlignment="Center"/>
                                                 <TextBox Text="{Binding RumbleHoldMs, Mode=TwoWay}" Width="80" Margin="8,0,0,0"/>
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="RumbleHoldMs" SettingLabel="{Binding Macro_TriggerHoldMs_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_RumbleHoldMs_2781" Margin="4,0,8,0"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                             </StackPanel>
                                             <!-- Fade ms — Reactive only -->
                                             <StackPanel Orientation="Horizontal"
@@ -3265,7 +3267,7 @@
                                                         VerticalAlignment="Center"/>
                                                 <TextBox Text="{Binding RumbleFadeMs, Mode=TwoWay}" Width="80" Margin="8,0,0,0"/>
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="RumbleFadeMs" SettingLabel="{Binding Macro_RumbleFadeMs_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_RumbleFadeMs_2792" Margin="4,0,8,0"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </Border>
@@ -3358,7 +3360,7 @@
                                                 <TextBox Text="{Binding TriggerEffectMs, Mode=TwoWay}" Width="80" Margin="8,0,0,0"
                                                          AutomationProperties.Name="{Binding MacroAction_TriggerEffect_Duration, Source={x:Static strings:Strings.Instance}}"/>
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="TriggerEffectMs" SettingLabel="{Binding MacroAction_TriggerEffect_Duration, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_TriggerEffectMs_3362" Margin="4,0,8,0"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                             </StackPanel>
                                             <TextBlock Text="{Binding MacroAction_TriggerEffect_Hint, Source={x:Static strings:Strings.Instance}}"
                                                        FontSize="11" TextWrapping="Wrap" Margin="0,4,0,0"
@@ -3415,7 +3417,7 @@
                                                         Width="180" VerticalAlignment="Center"/>
                                                 <TextBox Text="{Binding SoundVolume, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="SoundVolume" SettingLabel="{Binding Macro_Sound_Volume_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_SoundVolume_2834"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal">
@@ -3488,7 +3490,7 @@
                                              meant 0.2% (owner report, 2026-07-24). The VM converts
                                              to the persisted raw short, clamped to -100..100. -->
                                         <TextBox Text="{Binding AxisValuePercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F0}" Width="60"/>
-                                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="AxisValuePercent" SettingLabel="{Binding Macro_AxisValue, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_AxisValuePercent_2882"/>
                                     </StackPanel>
 
@@ -3664,7 +3666,7 @@
                                             <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="VolumeLimit" SettingLabel="{Binding Macro_VolumeLimit, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_VolumeLimit_3024" Margin="4,0,8,0"/>
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
                                                 <TextBlock Text="{Binding VolumeLimit, Mode=OneWay}"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%"/>
                                             </StackPanel>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
@@ -3777,7 +3779,7 @@
                                             <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="VolumeLimit" SettingLabel="{Binding Macro_VolumeLimit, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_VolumeLimit_3125" Margin="4,0,8,0"/>
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
                                                 <TextBlock Text="{Binding VolumeLimit, Mode=OneWay}"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%"/>
                                             </StackPanel>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
@@ -3941,7 +3943,7 @@
                                            Margin="12,0,8,0"/>
                                 <TextBox Text="{Binding RepeatDelayMs, Mode=TwoWay}"
                                          Width="60"/>
-                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                             </StackPanel>
                         </StackPanel>
                     </ScrollViewer>
@@ -5767,7 +5769,7 @@
                                                             <TextBox Text="{Binding GyroSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                                      Width="50" Margin="4,0,4,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"/>
-                                                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                             <ui:Button Command="{Binding ResetGyroSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
                                                         </StackPanel>
                                                         <!-- Gyro Lean rows scale by the GENERIC per-source
@@ -5785,7 +5787,7 @@
                                                             <TextBox Text="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                                      Width="50" Margin="4,0,4,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"/>
-                                                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                             <ui:Button Command="{Binding ResetSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
                                                         </StackPanel>
                                                         <!-- Per-source acceleration: rate-dependent gain the
@@ -5820,7 +5822,7 @@
                                                             <TextBox Text="{Binding MouseCursorSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                                      Width="50" Margin="4,0,4,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"/>
-                                                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                             <ui:Button Command="{Binding ResetMouseCursorSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
                                                         </StackPanel>
                                                         <!-- Per-source IR pointer sensitivity (#146). Renders for "IR Pointer X/Y". -->
@@ -5835,7 +5837,7 @@
                                                             <TextBox Text="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                                      Width="50" Margin="4,0,4,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"/>
-                                                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                             <ui:Button Command="{Binding ResetIrPointerSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
                                                         </StackPanel>
                                                         <!-- Per-source mouse-motion sensitivity (#154). Renders for "Mouse Motion X/Y". -->
@@ -5850,7 +5852,7 @@
                                                             <TextBox Text="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                                      Width="50" Margin="4,0,4,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"/>
-                                                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                             <ui:Button Command="{Binding ResetIrPointerSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
                                                         </StackPanel>
                                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0" Width="230"
@@ -6689,7 +6691,7 @@
                                                 <TextBox Text="{Binding GyroSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                          Width="50" Margin="4,0,4,0" Padding="2,1"
                                                          VerticalContentAlignment="Center"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                 <ui:Button Command="{Binding ResetGyroSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <!-- Gyro Lean primaries: same split as the
@@ -6706,7 +6708,7 @@
                                                 <TextBox Text="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                          Width="50" Margin="4,0,4,0" Padding="2,1"
                                                          VerticalContentAlignment="Center"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                 <ui:Button Command="{Binding ResetSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <!-- Primary-source acceleration, the twin of the
@@ -6740,7 +6742,7 @@
                                                 <TextBox Text="{Binding MouseCursorSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                          Width="50" Margin="4,0,4,0" Padding="2,1"
                                                          VerticalContentAlignment="Center"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                 <ui:Button Command="{Binding ResetMouseCursorSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <!-- Per-source IR pointer sensitivity (#146). Renders only for "IR Pointer X/Y". -->
@@ -6755,7 +6757,7 @@
                                                 <TextBox Text="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                          Width="50" Margin="4,0,4,0" Padding="2,1"
                                                          VerticalContentAlignment="Center"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                 <ui:Button Command="{Binding ResetIrPointerSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <!-- Per-source mouse-motion sensitivity (#154). Renders only for "Mouse Motion X/Y". -->
@@ -6770,7 +6772,7 @@
                                                 <TextBox Text="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                          Width="50" Margin="4,0,4,0" Padding="2,1"
                                                          VerticalContentAlignment="Center"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                 <ui:Button Command="{Binding ResetIrPointerSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                         </StackPanel>
@@ -8694,7 +8696,7 @@
                                     <Slider Value="{Binding LeftTriggerRouteScale, Mode=TwoWay}" Minimum="0" Maximum="200"
                                             SmallChange="1" LargeChange="10" Style="{StaticResource DzSlider}"/>
                                     <TextBox Text="{Binding LeftTriggerRouteScale, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
-                                    <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     <ui:Button Command="{Binding ResetLeftTriggerRouteScaleCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTriggerRouteScale, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -8784,7 +8786,7 @@
                                     <Slider Value="{Binding RightTriggerRouteScale, Mode=TwoWay}" Minimum="0" Maximum="200"
                                             SmallChange="1" LargeChange="10" Style="{StaticResource DzSlider}"/>
                                     <TextBox Text="{Binding RightTriggerRouteScale, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
-                                    <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     <ui:Button Command="{Binding ResetRightTriggerRouteScaleCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTriggerRouteScale, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -10715,7 +10717,7 @@
                                             ToolTip="{Binding Pad_Lighting_GuideLed_Brightness_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBox Text="{Binding DeviceConfig.GuideLedBrightness, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Style="{StaticResource DzValueEdit}"/>
-                                    <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
                                     <ui:Button Command="{Binding DeviceConfig.ResetGuideLedBrightnessCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetGuideLedBrightness, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
@@ -10811,7 +10813,7 @@
                                             ToolTip="{Binding Settings_GyroSimulationSmoothing_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBox Text="{Binding GyroSimulationSmoothingMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
-                                    <TextBlock Text="ms" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text="ms" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     <ui:Button Command="{Binding ResetGyroSimulationSmoothingCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetGyroSimulationSmoothing, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -11075,12 +11077,12 @@
                                             ToolTip="{Binding Settings_GyroSensitivityH_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBox Text="{Binding GyroSensitivityH, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
-                                    <TextBlock Text="×" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text="×" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     <ui:Button Command="{Binding ResetGyroSensitivityHCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetGyroSensitivityH, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBlock Text="{Binding GyroSensitivityH_DegPerTurn, StringFormat={}≈ {0:0}°/turn}"
                                                FontFamily="{StaticResource TelemetryFontFamily}"
-                                               VerticalAlignment="Center" Margin="14,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11"/>
+                                               VerticalAlignment="Center" Margin="14,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="11"/>
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
@@ -11093,12 +11095,12 @@
                                             ToolTip="{Binding Settings_GyroSensitivityV_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBox Text="{Binding GyroSensitivityV, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
-                                    <TextBlock Text="×" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text="×" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     <ui:Button Command="{Binding ResetGyroSensitivityVCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetGyroSensitivityV, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBlock Text="{Binding GyroSensitivityV_DegPerTurn, StringFormat={}≈ {0:0}°/turn}"
                                                FontFamily="{StaticResource TelemetryFontFamily}"
-                                               VerticalAlignment="Center" Margin="14,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11"/>
+                                               VerticalAlignment="Center" Margin="14,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="11"/>
                                 </StackPanel>
 
                                 <!-- Per-axis invert toggles. Independent from per-source
@@ -11136,7 +11138,7 @@
                                             ToolTip="{Binding Settings_GyroRealWorldCalibration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBox Text="{Binding GyroRealWorldCalibration, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
-                                    <TextBlock Text="×" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text="×" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     <ui:Button Command="{Binding ResetGyroRealWorldCalibrationCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetGyroRealWorldCalibration, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -11204,7 +11206,7 @@
                                             ToolTip="{Binding Settings_GyroDeadZone_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBox Text="{Binding GyroDeadZoneDegPerSec, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.0}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
-                                    <TextBlock Text="°/s" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text="°/s" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     <ui:Button Command="{Binding ResetGyroDeadZoneCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetGyroDeadZone, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -11223,7 +11225,7 @@
                                             ToolTip="{Binding Settings_GyroTightening_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBox Text="{Binding GyroTighteningThresholdDegPerSec, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.0}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
-                                    <TextBlock Text="°/s" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text="°/s" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     <ui:Button Command="{Binding ResetGyroTighteningCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetGyroTightening, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -11238,7 +11240,7 @@
                                             ToolTip="{Binding Settings_GyroSmoothingThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBox Text="{Binding GyroSmoothingThresholdDegPerSec, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.0}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
-                                    <TextBlock Text="°/s" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text="°/s" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     <ui:Button Command="{Binding ResetGyroSmoothingThresholdCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetGyroSmoothingThreshold, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -11253,7 +11255,7 @@
                                             ToolTip="{Binding Settings_GyroSmoothingWindow_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBox Text="{Binding GyroSmoothingWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
-                                    <TextBlock Text="ms" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text="ms" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     <ui:Button Command="{Binding ResetGyroSmoothingWindowCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetGyroSmoothingWindow, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -11311,7 +11313,7 @@
                                             ToolTip="{Binding Settings_GyroEasyAimThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBox Text="{Binding GyroEasyAimStickThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
-                                    <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     <ui:Button Command="{Binding ResetGyroEasyAimStickThresholdCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetGyroEasyAimThreshold, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>

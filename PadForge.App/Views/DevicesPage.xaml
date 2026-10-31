@@ -1313,7 +1313,7 @@
                                          LostFocus="IdleDisconnect_LostFocus"/>
                                 <TextBlock Text="{Binding Devices_IdleDisconnectMinutes, Source={x:Static strings:Strings.Instance}}"
                                            TextWrapping="Wrap"
-                                           VerticalAlignment="Center" Margin="8,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                           VerticalAlignment="Center" Margin="8,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                             </DockPanel>
 
                             <!-- Quick Charge (#372): its own container, gated on

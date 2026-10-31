@@ -2311,7 +2311,7 @@
                                       Minimum="0" Maximum="100"
                                       SpinButtonPlacementMode="Inline" Width="200"
                                       Margin="8,0,0,0"/>
-                        <TextBlock Text="%" VerticalAlignment="Center" Margin="4,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                        <TextBlock Text="%" VerticalAlignment="Center" Margin="4,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         <reset:SettingResetButton Command="{Binding ResetOpacityCommand}" SettingLabel="{Binding Dashboard_TouchpadOverlayOpacity, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">

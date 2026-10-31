@@ -354,7 +354,7 @@
                                           SpinButtonPlacementMode="Inline" Width="200"
                                           ToolTip="{Binding Settings_PollingIntervalTooltip, Source={x:Static strings:Strings.Instance}}"/>
                         </DockPanel>
-                        <TextBlock Grid.Column="2" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,8" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                        <TextBlock Grid.Column="2" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,8" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         <!-- Who is in charge of the knob (#365): while the
                              active profile carries a polling override, the
                              global value above is dormant, and a setting
@@ -375,7 +375,7 @@
                                           SpinButtonPlacementMode="Inline" Width="200"
                                           ToolTip="{Binding Settings_HmInactivityTimeoutTooltip, Source={x:Static strings:Strings.Instance}}"/>
                         </DockPanel>
-                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Settings_SecondsZeroNever, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Settings_SecondsZeroNever, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -546,7 +546,7 @@
                                       Minimum="5" Maximum="50"
                                       SpinButtonPlacementMode="Inline" Width="160" IsEnabled="{Binding DataContext.BatteryNotifyEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
                         <TextBlock Text="%" VerticalAlignment="Center" Margin="6,0,0,0"
-                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="BatteryNotifyThreshold" SettingLabel="{Binding Settings_BatteryNotifyThreshold, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_BatteryNotifyThreshold_269"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
@@ -566,7 +566,7 @@
                                       Minimum="0" Maximum="60"
                                       SpinButtonPlacementMode="Inline" Width="160" IsEnabled="{Binding DataContext.BatteryNotifyEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
                         <TextBlock Text="{Binding Devices_IdleDisconnectMinutes, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0"
-                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="BatteryNotifyRepeatMinutes" SettingLabel="{Binding Settings_BatteryNotifyRepeat, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_BatteryNotifyRepeatMinutes_277"/>
                     </StackPanel>
                     <!-- Full-charge notice, opt-in and independent of the low

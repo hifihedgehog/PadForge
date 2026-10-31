@@ -4964,6 +4964,37 @@ namespace PadForge.Services
             return (fire, notified || fire);
         }
 
+        // Per-device full-charge state, reset offline like the low state.
+        private readonly Dictionary<Guid, (int LastPct, bool Notified)> _batteryFullState = new();
+
+        // When each pad's low notice last showed, for the optional repeat.
+        private readonly Dictionary<Guid, long> _batteryLowShownAt = new();
+
+        /// <summary>The full-charge rule: fire when the level RISES to 100
+        /// during the session. On a pad that reports no charging state (an
+        /// Xbox pad's levels) a rise to full is the sign a charge finished.
+        /// First sight at 100 is no news and stays quiet. Falling to 90 or
+        /// below re-arms, a margin wider than one step of a 10% gauge, so a
+        /// pad that wobbles between 95 and 100 on the charger notifies
+        /// once.</summary>
+        public static (bool Fire, bool Notified) BatteryFullDecision(
+            bool hadState, int lastPct, bool notified, int pct)
+        {
+            if (pct <= 90)
+                return (false, false); // re-arm
+            bool fire = pct >= 100 && hadState && lastPct < 100 && !notified;
+            return (fire, notified || fire || (!hadState && pct >= 100));
+        }
+
+        /// <summary>The optional repeat of the low notice: due every
+        /// <paramref name="repeatMinutes"/> minutes while the notice still
+        /// stands (fired and not re-armed), the level is at or below the
+        /// threshold and the pad is not charging. 0 never repeats.</summary>
+        public static bool BatteryRepeatDue(bool notified, int pct, bool charging, int threshold,
+            long lastShownMs, long nowMs, int repeatMinutes)
+            => repeatMinutes > 0 && notified && !charging && pct <= threshold
+               && nowMs - lastShownMs >= repeatMinutes * 60_000L;
+
         // ─────────────────────────────────────────────
         //  Assignment offers (Settings > Assignment Prompts)
         // ─────────────────────────────────────────────
@@ -5161,15 +5192,20 @@ namespace PadForge.Services
             try
             {
                 var vm = _mainVm.Settings;
-                if (vm == null || !vm.BatteryNotifyEnabled) return;
+                if (vm == null) return;
                 if (ud == null || ud.InstanceGuid == Guid.Empty) return;
 
                 if (!ud.IsOnline)
                 {
                     _batteryNotifyState.Remove(ud.InstanceGuid);
+                    _batteryFullState.Remove(ud.InstanceGuid);
+                    _batteryLowShownAt.Remove(ud.InstanceGuid);
                     return;
                 }
                 if (pct < 0) return; // unknown level carries no information
+
+                NotifyBatteryFull(vm, ud, name, pct);
+                if (!vm.BatteryNotifyEnabled) return;
 
                 int threshold = vm.BatteryNotifyThreshold;
                 _batteryNotifyState.TryGetValue(ud.InstanceGuid, out var st);
@@ -5178,7 +5214,15 @@ namespace PadForge.Services
                 var (fire, newNotified) = BatteryEdgeDecision(
                     hadState, st.LastPct, st.Notified, pct, charging, threshold);
                 _batteryNotifyState[ud.InstanceGuid] = (pct, newNotified);
-                if (!fire) return;
+                long now = Environment.TickCount64;
+                if (!fire)
+                {
+                    _batteryLowShownAt.TryGetValue(ud.InstanceGuid, out long shownAt);
+                    if (!BatteryRepeatDue(newNotified, pct, charging, threshold,
+                            shownAt, now, vm.BatteryNotifyRepeatMinutes))
+                        return;
+                }
+                _batteryLowShownAt[ud.InstanceGuid] = now;
 
                 string title = Strings.Instance.Battery_LowTitle;
                 string text = string.Format(Strings.Instance.Battery_LowText_Format, name, pct);
@@ -5188,6 +5232,21 @@ namespace PadForge.Services
                     IdentifyDevice(ud.InstanceGuid);
             }
             catch { /* the notifier must never break the battery walk */ }
+        }
+
+        /// <summary>The full-charge notice. Its state is kept while the
+        /// option is off too, so turning it on beside a full pad stays
+        /// quiet.</summary>
+        private void NotifyBatteryFull(SettingsViewModel vm, UserDevice ud, string name, int pct)
+        {
+            bool hadState = _batteryFullState.TryGetValue(ud.InstanceGuid, out var st);
+            var (fire, notified) = BatteryFullDecision(hadState, st.LastPct, st.Notified, pct);
+            _batteryFullState[ud.InstanceGuid] = (pct, notified);
+            if (!fire || !vm.BatteryNotifyFull) return;
+
+            string text = string.Format(Strings.Instance.Battery_FullText_Format, name);
+            (System.Windows.Application.Current?.MainWindow as MainWindow)?.ShowTrayBalloon(Strings.Instance.Battery_FullTitle, text);
+            _mainVm.StatusText = text;
         }
 
         /// <summary>Test button (#293): pushes a synthetic low-battery event

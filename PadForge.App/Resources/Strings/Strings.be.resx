@@ -3917,6 +3917,10 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Паведамляць пры зарадзе не вышэй</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Таксама вібраваць кантролер</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Праверыць паведамленне</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Паўтараць паведамленне кожныя</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Паведамляць пры поўным зарадзе</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Кантролер цалкам зараджаны</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: цалкам зараджаны</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Прапановы прызначэння</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Калі прылада падключаецца, пакуль адкрыта старонка віртуальнага кантролера, PadForge можа прапанаваць прызначыць яе туды. Нічога не прызначаецца, пакуль вы не націснеце «Прызначыць». Клавіятуры, мышы, сэнсарныя панэлі і медыяклавішы ніколі не прапануюцца.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Прапаноўваць новыя прылады адкрытаму віртуальнаму кантролеру</value></data>

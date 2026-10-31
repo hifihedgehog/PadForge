@@ -3917,6 +3917,10 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Notificare la sau sub</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Vibrează și controlerul</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Testare notificare</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Repetă notificarea la fiecare</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Notificare la încărcare completă</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Controler încărcat complet</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: încărcat complet</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Solicitări de atribuire</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Când un dispozitiv se conectează cât timp pagina unui controler virtual este deschisă, PadForge se poate oferi să îl atribuie acolo. Nimic nu este atribuit până când nu faceți clic pe Atribuire. Tastaturile, mouse-urile, touchpadurile și tastele multimedia nu sunt oferite niciodată.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Oferire dispozitive noi controlerului virtual deschis</value></data>

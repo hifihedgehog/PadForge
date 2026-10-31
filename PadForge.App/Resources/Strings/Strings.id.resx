@@ -3917,6 +3917,10 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Beri tahu pada atau di bawah</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Getarkan juga kontroler</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Uji pemberitahuan</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Ulangi pemberitahuan setiap</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Beri tahu saat baterai penuh</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Kontroler terisi penuh</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: baterai terisi penuh</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Tawaran penetapan</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Saat sebuah perangkat tersambung ketika halaman kontroler virtual terbuka, PadForge dapat menawarkan untuk menetapkannya di sana. Tidak ada yang ditetapkan sampai Anda mengeklik Tetapkan. Keyboard, mouse, panel sentuh, dan tombol media tidak pernah ditawarkan.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Tawarkan perangkat baru ke kontroler virtual yang terbuka</value></data>

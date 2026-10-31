@@ -40,6 +40,8 @@ namespace PadForge.ViewModels
             nameof(BatteryNotifyEnabled) or
             nameof(BatteryNotifyThreshold) or
             nameof(BatteryNotifyVibrate) or
+            nameof(BatteryNotifyRepeatMinutes) or
+            nameof(BatteryNotifyFull) or
             nameof(EnableInputHiding) or
             nameof(KeepHidHideCloaksBetweenLaunches) or
             nameof(SteamVrInstallDir) or
@@ -184,6 +186,16 @@ namespace PadForge.ViewModels
                 case nameof(BatteryNotifyVibrate):
                 {
                     BatteryNotifyVibrate = false;
+                    break;
+                }
+                case nameof(BatteryNotifyRepeatMinutes):
+                {
+                    BatteryNotifyRepeatMinutes = 0;
+                    break;
+                }
+                case nameof(BatteryNotifyFull):
+                {
+                    BatteryNotifyFull = false;
                     break;
                 }
                 case nameof(EnableInputHiding):

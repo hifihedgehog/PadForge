@@ -3917,6 +3917,10 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>इस स्तर पर या इससे नीचे सूचित करें</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>कंट्रोलर में कंपन भी करें</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>सूचना का परीक्षण करें</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>सूचना दोहराने का अंतराल</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>पूरा चार्ज होने पर सूचित करें</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>कंट्रोलर पूरा चार्ज हो गया है</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: पूरा चार्ज हो गया</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>असाइनमेंट प्रॉम्प्ट</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>जब किसी वर्चुअल कंट्रोलर का पेज खुला हो और कोई डिवाइस कनेक्ट हो, तो PadForge उसे वहीं असाइन करने की पेशकश कर सकता है। जब तक आप “असाइन करें” पर क्लिक नहीं करते, कुछ भी असाइन नहीं होता। कीबोर्ड, माउस, टचपैड और मीडिया कुंजियों की पेशकश कभी नहीं की जाती।</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>खुले वर्चुअल कंट्रोलर के लिए नए डिवाइसों की पेशकश करें</value></data>

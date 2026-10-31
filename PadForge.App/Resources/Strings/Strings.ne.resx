@@ -3917,6 +3917,10 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>यति वा यसभन्दा कममा सूचित गर्नुहोस्</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>कन्ट्रोलरमा कम्पन पनि गराउनुहोस्</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>परीक्षण सूचना</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>सूचना दोहोर्याउने अन्तराल</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>पूर्ण चार्ज हुँदा सूचित गर्नुहोस्</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>कन्ट्रोलर पूर्ण चार्ज भयो</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: पूर्ण चार्ज भयो</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>असाइन गर्ने प्रस्तावहरू</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>भर्चुअल कन्ट्रोलरको पेज खुला रहँदा कुनै यन्त्र जडान भएमा PadForge ले त्यसलाई त्यहाँ असाइन गर्ने प्रस्ताव गर्न सक्छ। तपाईंले "असाइन गर्नुहोस्" क्लिक नगरेसम्म केही असाइन हुँदैन। किबोर्ड, माउस, टचप्याड र मिडिया कुञ्जीहरू कहिल्यै प्रस्ताव गरिँदैनन्।</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>नयाँ यन्त्रहरू खुला भर्चुअल कन्ट्रोलरलाई प्रस्ताव गर्नुहोस्</value></data>

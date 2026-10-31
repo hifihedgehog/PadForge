@@ -3917,6 +3917,10 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Thông báo khi bằng hoặc dưới</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Rung cả tay cầm</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Thử thông báo</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Lặp lại thông báo mỗi</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Thông báo khi sạc đầy</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Tay cầm đã sạc đầy</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: đã sạc đầy</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Lời nhắc gán</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Khi một thiết bị kết nối trong lúc trang của một tay cầm ảo đang mở, PadForge có thể đề nghị gán thiết bị vào đó. Không có gì được gán cho đến khi bạn nhấp Gán. Bàn phím, chuột, bàn cảm ứng và phím đa phương tiện không bao giờ được đề nghị.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Đề nghị gán thiết bị mới cho tay cầm ảo đang mở</value></data>

@@ -3868,6 +3868,10 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>通知阈值</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>同时让手柄振动</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>测试通知</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>重复通知间隔</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>充满电时通知</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>手柄已充满电</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}：已充满电</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>分配提示</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>当虚拟控制器页面处于打开状态时有设备接入，PadForge 可以提示将其分配到该控制器。在你点击“分配”之前不会分配任何设备。键盘、鼠标、触摸板和媒体键不会被提示。</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>向已打开的虚拟控制器提示新设备</value></data>

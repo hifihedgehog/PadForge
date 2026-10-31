@@ -3917,6 +3917,10 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Upozornit při hodnotě nejvýše</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Také zavibrovat ovladačem</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Otestovat upozornění</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Opakovat upozornění každých</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Upozornit při plném nabití</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Ovladač je plně nabitý</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: plně nabito</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Výzvy k přiřazení</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Když se zařízení připojí při otevřené stránce virtuálního ovladače, může PadForge nabídnout jeho přiřazení právě tam. Nic se nepřiřadí, dokud nekliknete na Přiřadit. Klávesnice, myši, touchpady a multimediální klávesy se nenabízejí nikdy.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Nabízet nová zařízení otevřenému virtuálnímu ovladači</value></data>

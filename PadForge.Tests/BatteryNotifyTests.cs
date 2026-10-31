@@ -82,5 +82,72 @@ namespace PadForge.Tests
             var (fire, _) = InputService.BatteryEdgeDecision(true, 40, false, 15, false, T);
             Assert.True(fire);
         }
+
+        // ── Full charge ──
+
+        [Fact]
+        public void Full_FiresOnTheRiseTo100_Once()
+        {
+            var (fire, notified) = InputService.BatteryFullDecision(true, 95, false, 100);
+            Assert.True(fire);
+            Assert.True(notified);
+
+            (fire, notified) = InputService.BatteryFullDecision(true, 100, true, 100);
+            Assert.False(fire);
+            Assert.True(notified);
+        }
+
+        [Fact]
+        public void Full_FirstSightAt100_IsNoNews()
+        {
+            // A pad that connects full (fresh off a charger, or an Xbox pad
+            // whose level reads full) says nothing, then a wobble stays quiet.
+            var (fire, notified) = InputService.BatteryFullDecision(false, 0, false, 100);
+            Assert.False(fire);
+            Assert.True(notified);
+            (fire, _) = InputService.BatteryFullDecision(true, 100, true, 95);
+            Assert.False(fire);
+            (fire, _) = InputService.BatteryFullDecision(true, 95, true, 100);
+            Assert.False(fire);
+        }
+
+        [Fact]
+        public void Full_ReArmsOnlyBelowTheMargin()
+        {
+            // One step of a 10% gauge (100 -> 95 -> 100) does not re-arm.
+            var (fire, notified) = InputService.BatteryFullDecision(true, 100, true, 95);
+            Assert.False(fire);
+            Assert.True(notified);
+
+            // A real discharge to 90 re-arms, and the next charge to full fires.
+            (fire, notified) = InputService.BatteryFullDecision(true, 95, true, 90);
+            Assert.False(fire);
+            Assert.False(notified);
+            (fire, _) = InputService.BatteryFullDecision(true, 90, false, 100);
+            Assert.True(fire);
+        }
+
+        // ── Optional repeat of the low notice ──
+
+        private const long Minute = 60_000;
+
+        [Fact]
+        public void Repeat_Off_NeverRepeats()
+            => Assert.False(InputService.BatteryRepeatDue(true, 10, false, T, 0, 600 * Minute, 0));
+
+        [Fact]
+        public void Repeat_DueAfterTheInterval_WhileStillLow()
+        {
+            Assert.False(InputService.BatteryRepeatDue(true, 10, false, T, 100 * Minute, 104 * Minute, 5));
+            Assert.True(InputService.BatteryRepeatDue(true, 10, false, T, 100 * Minute, 105 * Minute, 5));
+        }
+
+        [Fact]
+        public void Repeat_StopsWhenChargingOrAboveTheThreshold()
+        {
+            Assert.False(InputService.BatteryRepeatDue(true, 10, true, T, 0, 600 * Minute, 5));
+            Assert.False(InputService.BatteryRepeatDue(true, 18, false, T, 0, 600 * Minute, 5));
+            Assert.False(InputService.BatteryRepeatDue(false, 10, false, T, 0, 600 * Minute, 5));
+        }
     }
 }

@@ -3917,6 +3917,10 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Próg powiadomienia</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Włącz też wibracje kontrolera</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Testuj powiadomienie</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Powtarzaj powiadomienie co</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Powiadamiaj o pełnym naładowaniu</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Kontroler w pełni naładowany</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: bateria w pełni naładowana</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Propozycje przypisania</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Gdy urządzenie połączy się przy otwartej stronie wirtualnego kontrolera, PadForge może zaproponować przypisanie go do tego kontrolera. Nic nie zostanie przypisane, dopóki nie klikniesz Przypisz. Klawiatury, myszy, panele dotykowe i klawisze multimedialne nigdy nie są proponowane.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Proponuj przypisanie nowych urządzeń do otwartego wirtualnego kontrolera</value></data>

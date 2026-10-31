@@ -3917,6 +3917,10 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>اعلان در این مقدار یا کمتر</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>لرزاندن کنترلر نیز</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>آزمایش اعلان</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>تکرار اعلان هر</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>اعلان هنگام شارژ کامل</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>کنترلر کاملاً شارژ شد</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: کاملاً شارژ شد</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>پیشنهادهای اختصاص</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>وقتی دستگاهی در حالی وصل شود که صفحه یک کنترلر مجازی باز است، PadForge می‌تواند پیشنهاد دهد آن را به همان کنترلر اختصاص دهد. تا روی «اختصاص» کلیک نکنید، چیزی اختصاص داده نمی‌شود. صفحه‌کلیدها، ماوس‌ها، تاچ‌پدها و کلیدهای رسانه هرگز پیشنهاد داده نمی‌شوند.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>پیشنهاد دستگاه‌های جدید به کنترلر مجازی باز</value></data>

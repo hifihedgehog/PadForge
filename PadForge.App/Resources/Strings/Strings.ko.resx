@@ -3868,6 +3868,10 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>알림 기준</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>컨트롤러 진동도 울리기</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>알림 테스트</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>알림 반복 간격</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>충전 완료 시 알림</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>컨트롤러 충전 완료</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: 충전 완료</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>할당 제안</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>가상 컨트롤러 페이지가 열려 있을 때 장치가 연결되면 PadForge가 그곳에 할당할지 제안할 수 있습니다. 할당을 클릭하기 전에는 아무것도 할당되지 않습니다. 키보드, 마우스, 터치패드, 미디어 키는 제안되지 않습니다.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>새 장치를 열려 있는 가상 컨트롤러에 제안</value></data>

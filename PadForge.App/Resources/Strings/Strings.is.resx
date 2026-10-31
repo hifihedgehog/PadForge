@@ -3917,6 +3917,10 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Láta vita við eða undir</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Láta leikjastýringuna líka titra</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Prufutilkynning</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Endurtekningarbil tilkynningar</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Láta vita þegar rafhlaðan er full</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Leikjastýring fullhlaðin</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: fullhlaðin</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Tillögur um úthlutun</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Þegar tæki tengist á meðan síða sýndarstýringar er opin getur PadForge boðist til að úthluta því þangað. Engu er úthlutað fyrr en þú smellir á „Úthluta“. Lyklaborð, mýs, snertifletir og margmiðlunarlyklar eru aldrei boðnir.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Bjóða opnu sýndarstýringunni ný tæki</value></data>

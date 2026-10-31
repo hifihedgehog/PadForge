@@ -3917,6 +3917,10 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>達到或低於此電量時通知</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>同時令控制器震動</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>測試通知</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>重複提示間隔</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>充滿電時通知</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>控制器已充滿電</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}：已充滿電</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>指派提示</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>在虛擬控制器的頁面開啟期間有裝置連接時，PadForge 可提出把它指派到該控制器。在你按一下「指派」之前，不會指派任何裝置。鍵盤、滑鼠、觸控板和媒體鍵不會出現此提示。</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>提出把新裝置指派到已開啟的虛擬控制器</value></data>

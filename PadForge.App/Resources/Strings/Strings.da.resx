@@ -3917,6 +3917,10 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Giv besked ved eller under</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Lad også controlleren vibrere</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Test meddelelse</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Gentag beskeden hver</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Giv besked ved fuld opladning</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Controller fuldt opladet</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: fuldt opladet</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Forslag til tildeling</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Når en enhed tilsluttes, mens siden for en virtuel controller er åben, kan PadForge tilbyde at tildele den dér. Intet tildeles, før du klikker på Tildel. Tastaturer, mus, touchpads og medietaster tilbydes aldrig.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Tilbyd nye enheder til den åbne virtuelle controller</value></data>

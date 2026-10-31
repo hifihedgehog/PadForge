@@ -3868,6 +3868,10 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>通知するしきい値</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>コントローラーを振動させる</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>通知をテスト</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>通知を繰り返す間隔</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>充電完了時に通知</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>コントローラーの充電完了</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: 充電完了</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>割り当ての提案</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>仮想コントローラーのページを開いているときにデバイスが接続されると、PadForge はそこへの割り当てを提案できます。「割り当て」をクリックするまで何も割り当てられません。キーボード、マウス、タッチパッド、メディアキーは提案されません。</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>新しいデバイスを開いている仮想コントローラーに提案する</value></data>

@@ -3917,6 +3917,10 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>اس سطح پر یا اس سے کم پر اطلاع دیں</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>کنٹرولر کو وائبریٹ بھی کریں</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>ٹیسٹ اطلاع</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>اطلاع دہرائیں ہر</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>مکمل چارج ہونے پر اطلاع دیں</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>کنٹرولر مکمل چارج ہو گیا</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: مکمل چارج ہو گیا</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>تفویض کی پیشکش</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>جب کسی ورچوئل کنٹرولر کا صفحہ کھلا ہو اور کوئی آلہ منسلک ہو تو PadForge اسے وہاں تفویض کرنے کی پیشکش کر سکتا ہے۔ جب تک آپ "تفویض کریں" پر کلک نہ کریں کچھ تفویض نہیں ہوتا۔ کی بورڈ، ماؤس، ٹچ پیڈ اور میڈیا کلیدیں کبھی پیش نہیں کی جاتیں۔</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>نئے آلات کھلے ورچوئل کنٹرولر کو پیش کریں</value></data>

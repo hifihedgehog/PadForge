@@ -556,6 +556,27 @@
                                   IsEnabled="{Binding BatteryNotifyEnabled}"/>
                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="BatteryNotifyVibrate" SettingLabel="{Binding Settings_BatteryNotifyVibrate, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_BatteryNotifyVibrate_276"/>
                     </StackPanel>
+                    <!-- Repeat of the low notice, opt-in: 0 (the default)
+                         never repeats. -->
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock Text="{Binding Settings_BatteryNotifyRepeat, Source={x:Static strings:Strings.Instance}}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0"/>
+                        <ui:NumberBox Value="{Binding BatteryNotifyRepeatMinutes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Minimum="0" Maximum="60"
+                                      SpinButtonPlacementMode="Inline" Width="160" IsEnabled="{Binding DataContext.BatteryNotifyEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
+                        <TextBlock Text="{Binding Devices_IdleDisconnectMinutes, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="BatteryNotifyRepeatMinutes" SettingLabel="{Binding Settings_BatteryNotifyRepeat, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_BatteryNotifyRepeatMinutes_277"/>
+                    </StackPanel>
+                    <!-- Full-charge notice, opt-in and independent of the low
+                         notice. -->
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_BatteryNotifyFull, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding BatteryNotifyFull}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="BatteryNotifyFull" SettingLabel="{Binding Settings_BatteryNotifyFull, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_BatteryNotifyFull_278"/>
+                    </StackPanel>
                     <Button Content="{Binding Settings_BatteryNotifyTest, Source={x:Static strings:Strings.Instance}}"
                             Click="TestBatteryNotify_Click" Margin="0,12,0,0" HorizontalAlignment="Left"
                             IsEnabled="{Binding BatteryNotifyEnabled}"/>

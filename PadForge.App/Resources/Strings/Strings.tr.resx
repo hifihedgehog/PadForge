@@ -3917,6 +3917,10 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Şu düzeyde veya altında bildir</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Kontrolcüyü de titreştir</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Bildirimi test et</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Bildirimi şu aralıkla tekrarla</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Tam şarj olduğunda bildir</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Kontrolcü tamamen şarj oldu</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: tamamen şarj oldu</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Atama istemleri</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Bir sanal kontrolcünün sayfası açıkken bir cihaz bağlandığında PadForge onu oraya atamayı önerebilir. Siz Ata'ya tıklayana kadar hiçbir şey atanmaz. Klavyeler, fareler, dokunmatik yüzeyler ve medya tuşları hiçbir zaman önerilmez.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Yeni cihazları açık sanal kontrolcüye öner</value></data>

@@ -3890,6 +3890,10 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Notifica a partire da</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Fai vibrare anche il controller</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Prova notifica</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Ripeti la notifica ogni</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Notifica quando la batteria è carica</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Controller completamente carico</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: completamente carico</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Suggerimenti di assegnazione</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Quando un dispositivo si collega mentre è aperta la pagina di un controller virtuale, PadForge può proporre di assegnarlo lì. Nulla viene assegnato finché non fai clic su Assegna. Tastiere, mouse, touchpad e tasti multimediali non vengono mai proposti.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Proponi i nuovi dispositivi al controller virtuale aperto</value></data>

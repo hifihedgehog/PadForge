@@ -3917,6 +3917,10 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Obvesti pri ali pod</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Krmilnik naj tudi zavibrira</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Preizkusno obvestilo</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Ponavljaj obvestilo vsakih</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Obvesti, ko je baterija polna</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Krmilnik je napolnjen</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: baterija je polna</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Pozivi za dodelitev</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Ko se naprava poveže, medtem ko je odprta stran navideznega krmilnika, lahko PadForge ponudi, da jo dodeli temu krmilniku. Nič se ne dodeli, dokler ne kliknete „Dodeli“. Tipkovnice, miške, sledilne ploščice in večpredstavnostne tipke se nikoli ne ponudijo.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Ponudi nove naprave odprtemu navideznemu krmilniku</value></data>

@@ -3917,6 +3917,10 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>এই মাত্রায় বা এর নিচে জানান</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>কন্ট্রোলারও কাঁপান</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>পরীক্ষামূলক বিজ্ঞপ্তি</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>বিজ্ঞপ্তি আবার জানান, প্রতি</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>পুরো চার্জ হলে জানান</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>কন্ট্রোলার পুরো চার্জ হয়েছে</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: পুরো চার্জ হয়েছে</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>বরাদ্দের প্রস্তাব</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>কোনো ভার্চুয়াল কন্ট্রোলারের পৃষ্ঠা খোলা থাকা অবস্থায় একটি ডিভাইস সংযুক্ত হলে PadForge সেটি সেখানে বরাদ্দ করার প্রস্তাব দিতে পারে। আপনি “বরাদ্দ করুন”-এ ক্লিক না করা পর্যন্ত কিছুই বরাদ্দ হয় না। কীবোর্ড, মাউস, টাচপ্যাড ও মিডিয়া কী কখনো প্রস্তাব করা হয় না।</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>নতুন ডিভাইস খোলা ভার্চুয়াল কন্ট্রোলারে বরাদ্দের প্রস্তাব দিন</value></data>

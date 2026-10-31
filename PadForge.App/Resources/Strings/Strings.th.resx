@@ -3917,6 +3917,10 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>แจ้งเตือนเมื่อเท่ากับหรือต่ำกว่า</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>สั่นคอนโทรลเลอร์ด้วย</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>ทดสอบการแจ้งเตือน</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>แจ้งเตือนซ้ำทุก</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>แจ้งเตือนเมื่อชาร์จเต็ม</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>ชาร์จคอนโทรลเลอร์เต็มแล้ว</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: ชาร์จเต็มแล้ว</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>ข้อความเสนอการกำหนด</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>เมื่อมีอุปกรณ์เชื่อมต่อขณะที่หน้าของคอนโทรลเลอร์เสมือนเปิดอยู่ PadForge สามารถเสนอให้กำหนดอุปกรณ์นั้นให้คอนโทรลเลอร์เสมือนดังกล่าวได้ จะไม่มีการกำหนดใด ๆ จนกว่าคุณจะคลิก “กำหนด” คีย์บอร์ด เมาส์ ทัชแพด และคีย์สื่อจะไม่ถูกเสนอเลย</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>เสนออุปกรณ์ใหม่ให้คอนโทรลเลอร์เสมือนที่เปิดอยู่</value></data>

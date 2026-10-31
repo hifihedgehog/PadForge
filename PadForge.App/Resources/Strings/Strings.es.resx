@@ -3868,6 +3868,10 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Avisar cuando esté en o por debajo de</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Vibrar también el mando</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Probar notificación</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Repetir el aviso cada</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Avisar cuando la batería esté cargada por completo</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Mando completamente cargado</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: batería completamente cargada</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Avisos de asignación</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Cuando un dispositivo se conecta mientras está abierta la página de un mando virtual, PadForge puede ofrecer asignarlo ahí. No se asigna nada hasta que pulses Asignar. Los teclados, ratones, paneles táctiles y teclas multimedia nunca se ofrecen.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Ofrecer dispositivos nuevos al mando virtual abierto</value></data>

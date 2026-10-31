@@ -3868,6 +3868,10 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Avertir à partir de</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Faire aussi vibrer la manette</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Tester la notification</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Répéter l'alerte toutes les</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Avertir quand la batterie est pleine</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Manette entièrement chargée</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0} : batterie pleine</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Propositions d'affectation</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Quand un périphérique se connecte alors que la page d'une manette virtuelle est ouverte, PadForge peut proposer de l'y affecter. Rien n'est affecté tant que vous ne cliquez pas sur Affecter. Les claviers, souris, pavés tactiles et touches multimédia ne sont jamais proposés.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Proposer les nouveaux périphériques à la manette virtuelle ouverte</value></data>

@@ -3917,6 +3917,10 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Όριο ειδοποίησης</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Επίσης δόνηση του χειριστηρίου</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Δοκιμαστική ειδοποίηση</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Επανάληψη ειδοποίησης κάθε</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Ειδοποίηση όταν φορτίσει πλήρως</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Πλήρης φόρτιση χειριστηρίου</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: πλήρως φορτισμένο</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Προτροπές ανάθεσης</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Όταν συνδέεται μια συσκευή ενώ είναι ανοιχτή η σελίδα ενός εικονικού χειριστηρίου, το PadForge μπορεί να προτείνει την ανάθεσή της εκεί. Δεν γίνεται καμία ανάθεση μέχρι να κάνετε κλικ στην «Ανάθεση». Πληκτρολόγια, ποντίκια, επιφάνειες αφής και πλήκτρα πολυμέσων δεν προτείνονται ποτέ.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Πρόταση νέων συσκευών στο ανοιχτό εικονικό χειριστήριο</value></data>

@@ -3917,6 +3917,10 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Upozorniť pri hodnote alebo nižšej</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Zároveň rozvibrovať ovládač</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Testovacie upozornenie</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Opakovať upozornenie každých</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Upozorniť pri úplnom nabití</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Ovládač je úplne nabitý</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: úplne nabité</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Výzvy na priradenie</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Keď sa zariadenie pripojí, kým je otvorená stránka virtuálneho ovládača, PadForge môže ponúknuť jeho priradenie. Nič sa nepriradí, kým nekliknete na Priradiť. Klávesnice, myši, touchpady a multimediálne klávesy sa nikdy neponúkajú.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Ponúkať nové zariadenia otvorenému virtuálnemu ovládaču</value></data>

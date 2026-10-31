@@ -3917,6 +3917,10 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Известие при или под</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Вибрация и на контролера</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Тестово известие</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Повтаряй известието на всеки</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Известие при пълно зареждане</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Контролерът е напълно зареден</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: напълно зареден</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Предложения за назначаване</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Когато се свърже устройство, докато е отворена страницата на виртуален контролер, PadForge може да предложи да го назначи към него. Нищо не се назначава, докато не щракнете „Назначи“. Клавиатури, мишки, тъчпадове и мултимедийни клавиши никога не се предлагат.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Предлагане на нови устройства на отворения виртуален контролер</value></data>

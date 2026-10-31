@@ -3917,6 +3917,10 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Notify at or Below</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Also Vibrate the Controller</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Test Notification</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Repeat the Notice Every</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Notify When Fully Charged</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Controller Fully Charged</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: fully charged</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Assignment Prompts</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>When a device connects while a virtual controller's page is open, PadForge can offer to assign it there. Nothing is assigned until you click Assign. Keyboards, mice, touchpads, and media keys are never offered.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Offer New Devices to the Open Virtual Controller</value></data>

@@ -3917,6 +3917,10 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Varsle ved eller under</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Vibrer også kontrolleren</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Testvarsel</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Gjenta varselet hvert</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Varsle når batteriet er fulladet</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Kontrolleren er fulladet</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: fulladet</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Forslag om tilordning</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Når en enhet kobles til mens siden for en virtuell kontroller er åpen, kan PadForge tilby å tilordne den dit. Ingenting tilordnes før du klikker Tilordne. Tastaturer, mus, berøringsplater og medietaster blir aldri foreslått.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Foreslå nye enheter for den åpne virtuelle kontrolleren</value></data>

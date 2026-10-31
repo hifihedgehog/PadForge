@@ -3868,6 +3868,10 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Benachrichtigen bei höchstens</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Zusätzlich den Controller vibrieren lassen</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Benachrichtigung testen</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Benachrichtigung wiederholen alle</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Benachrichtigen, wenn der Akku voll ist</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Controller vollständig geladen</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: vollständig geladen</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Zuweisungshinweise</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Wenn ein Gerät verbunden wird, während die Seite eines virtuellen Controllers geöffnet ist, kann PadForge anbieten, es dort zuzuweisen. Zugewiesen wird erst, wenn du auf „Zuweisen“ klickst. Tastaturen, Mäuse, Touchpads und Medientasten werden nie angeboten.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Neue Geräte dem geöffneten virtuellen Controller anbieten</value></data>

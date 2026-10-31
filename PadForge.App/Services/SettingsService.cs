@@ -2363,6 +2363,8 @@ namespace PadForge.Services
             vm.BatteryNotifyEnabled = appSettings.BatteryNotifyEnabled;
             vm.BatteryNotifyThreshold = appSettings.BatteryNotifyThreshold;
             vm.BatteryNotifyVibrate = appSettings.BatteryNotifyVibrate;
+            vm.BatteryNotifyRepeatMinutes = appSettings.BatteryNotifyRepeatMinutes;
+            vm.BatteryNotifyFull = appSettings.BatteryNotifyFull;
             vm.AssignOfferNewDevice = appSettings.AssignOfferNewDevice;
             vm.AssignOfferEmptySlot = appSettings.AssignOfferEmptySlot;
             vm.StartMinimized = appSettings.StartMinimized;
@@ -4977,6 +4979,8 @@ namespace PadForge.Services
                 BatteryNotifyEnabled = vm.BatteryNotifyEnabled,
                 BatteryNotifyThreshold = vm.BatteryNotifyThreshold,
                 BatteryNotifyVibrate = vm.BatteryNotifyVibrate,
+                BatteryNotifyRepeatMinutes = vm.BatteryNotifyRepeatMinutes,
+                BatteryNotifyFull = vm.BatteryNotifyFull,
                 AssignOfferNewDevice = vm.AssignOfferNewDevice,
                 AssignOfferEmptySlot = vm.AssignOfferEmptySlot,
                 StartMinimized = vm.StartMinimized,
@@ -6807,6 +6811,10 @@ namespace PadForge.Services
         [XmlElement] public bool BatteryNotifyEnabled { get; set; } = true;
         [XmlElement] public int BatteryNotifyThreshold { get; set; } = 15;
         [XmlElement] public bool BatteryNotifyVibrate { get; set; }
+        /// <summary>Minutes between repeats of the low notice, 0 never
+        /// (opt-in). The full-charge notice is opt-in too.</summary>
+        [XmlElement] public int BatteryNotifyRepeatMinutes { get; set; }
+        [XmlElement] public bool BatteryNotifyFull { get; set; }
 
         /// <summary>Assignment Prompts (discussion with Xaklse, 2026-08-23):
         /// offer a connecting device to the virtual controller whose page is

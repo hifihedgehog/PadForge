@@ -448,6 +448,10 @@ public class Strings : INotifyPropertyChanged
     public string Settings_BatteryNotifyThreshold => Get("Settings_BatteryNotifyThreshold");
     public string Settings_BatteryNotifyVibrate => Get("Settings_BatteryNotifyVibrate");
     public string Settings_BatteryNotifyTest => Get("Settings_BatteryNotifyTest");
+    public string Settings_BatteryNotifyRepeat => Get("Settings_BatteryNotifyRepeat");
+    public string Settings_BatteryNotifyFull => Get("Settings_BatteryNotifyFull");
+    public string Battery_FullTitle => Get("Battery_FullTitle");
+    public string Battery_FullText_Format => Get("Battery_FullText_Format");
     public string Settings_AssignOffer => Get("Settings_AssignOffer");
     public string Settings_AssignOfferDesc => Get("Settings_AssignOfferDesc");
     public string Settings_AssignOfferNew => Get("Settings_AssignOfferNew");

@@ -1151,6 +1151,28 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _batteryNotifyVibrate, value);
         }
 
+        private int _batteryNotifyRepeatMinutes;
+
+        /// <summary>Shows the low-battery notice again every this many
+        /// minutes while the pad stays at or below the threshold and is not
+        /// charging. 0, the default, never repeats. Clamped 0-60.</summary>
+        public int BatteryNotifyRepeatMinutes
+        {
+            get => _batteryNotifyRepeatMinutes;
+            set => SetProperty(ref _batteryNotifyRepeatMinutes, System.Math.Clamp(value, 0, 60));
+        }
+
+        private bool _batteryNotifyFull;
+
+        /// <summary>Notify once when a pad's charge rises to 100%, which on a
+        /// pad that reports no charging state (an Xbox pad) is the sign a
+        /// charge finished. Opt-in, default off.</summary>
+        public bool BatteryNotifyFull
+        {
+            get => _batteryNotifyFull;
+            set => SetProperty(ref _batteryNotifyFull, value);
+        }
+
         private bool _assignOfferNewDevice = true;
 
         /// <summary>Assignment Prompts: offer a device PadForge has never

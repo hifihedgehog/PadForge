@@ -3917,6 +3917,10 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Meddela vid eller under</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Vibrera även handkontrollen</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Testa meddelande</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Upprepa meddelandet var</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Meddela när batteriet är fulladdat</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Handkontrollen är fulladdad</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: fulladdad</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Tilldelningsfrågor</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>När en enhet ansluts medan sidan för en virtuell handkontroll är öppen kan PadForge erbjuda att tilldela den dit. Ingenting tilldelas förrän du klickar på Tilldela. Tangentbord, möss, styrplattor och medietangenter erbjuds aldrig.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Erbjud nya enheter till den öppna virtuella handkontrollen</value></data>

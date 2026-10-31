@@ -3917,6 +3917,10 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Paziņot pie līmeņa vai zemāk</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Arī vibrēt kontrolleri</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Pārbaudīt paziņojumu</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Atkārtot paziņojumu ik pēc</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Paziņot, kad akumulators ir pilnībā uzlādēts</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Kontrollera akumulators ir pilnībā uzlādēts</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: pilnībā uzlādēts</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Piešķiršanas piedāvājumi</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Ja ierīce tiek pievienota, kamēr ir atvērta virtuālā kontrollera lapa, PadForge var piedāvāt to piešķirt tam. Nekas netiek piešķirts, kamēr nenoklikšķināt uz „Piešķirt”. Tastatūras, peles, skārienpaliktņi un multivides taustiņi nekad netiek piedāvāti.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Piedāvāt jaunas ierīces atvērtajam virtuālajam kontrollerim</value></data>

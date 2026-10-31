@@ -3917,6 +3917,10 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Ilmoita, kun varaus on enintään</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Täristä myös ohjainta</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Testaa ilmoitusta</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Toista ilmoitus joka</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Ilmoita, kun akku on ladattu täyteen</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Ohjain ladattu täyteen</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: ladattu täyteen</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Liittämiskehotteet</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kun laite yhdistetään virtuaaliohjaimen sivun ollessa auki, PadForge voi tarjoutua liittämään sen siihen. Mitään ei liitetä, ennen kuin valitset Liitä. Näppäimistöjä, hiiriä, kosketuslevyjä ja medianäppäimiä ei koskaan tarjota.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Tarjoa uusia laitteita avoinna olevaan virtuaaliohjaimeen</value></data>

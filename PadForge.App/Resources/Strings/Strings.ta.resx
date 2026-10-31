@@ -3917,6 +3917,10 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>இந்த அளவிலோ அதற்குக் கீழோ அறிவி</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>கட்டுப்படுத்தியையும் அதிரச் செய்</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>சோதனை அறிவிப்பு</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>அறிவிப்பை மீண்டும் காட்டும் இடைவெளி</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>முழுமையாக சார்ஜ் ஆனதும் அறிவி</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>கட்டுப்படுத்தி முழுமையாக சார்ஜ் ஆனது</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: முழுமையாக சார்ஜ் ஆனது</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>ஒதுக்கீட்டுப் பரிந்துரைகள்</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>ஒரு மெய்நிகர் கட்டுப்படுத்தியின் பக்கம் திறந்திருக்கும்போது ஒரு சாதனம் இணைந்தால், PadForge அதை அங்கே ஒதுக்கப் பரிந்துரைக்கலாம். நீங்கள் ஒதுக்கு என்பதைக் கிளிக் செய்யும் வரை எதுவும் ஒதுக்கப்படாது. விசைப்பலகைகள், சுட்டிகள், டச்பேடுகள், மீடியா விசைகள் ஒருபோதும் பரிந்துரைக்கப்படாது.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>திறந்துள்ள மெய்நிகர் கட்டுப்படுத்திக்குப் புதிய சாதனங்களைப் பரிந்துரை</value></data>

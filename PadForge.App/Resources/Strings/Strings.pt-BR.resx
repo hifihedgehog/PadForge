@@ -3862,6 +3862,10 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Avisar em ou Abaixo de</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Vibrar Também o Controle</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Testar Notificação</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Repetir o Aviso a Cada</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Avisar Quando a Carga Estiver Completa</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Controle Totalmente Carregado</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: totalmente carregado</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Sugestões de Atribuição</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Quando um dispositivo se conecta com a página de um controle virtual aberta, o PadForge pode oferecer atribuí-lo ali. Nada é atribuído até você clicar em Atribuir. Teclados, mouses, touchpads e teclas de mídia nunca são oferecidos.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Oferecer Dispositivos Novos ao Controle Virtual Aberto</value></data>

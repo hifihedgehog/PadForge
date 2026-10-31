@@ -1243,6 +1243,18 @@
   },
   {
     "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_BatteryNotifyRepeatMinutes_277",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "BatteryNotifyRepeatMinutes"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_BatteryNotifyFull_278",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "BatteryNotifyFull"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
     "Id": "Reset_SettingsViewModel_EnableInputHiding_348",
     "Owner": "PadForge.ViewModels.SettingsViewModel",
     "Property": "EnableInputHiding"

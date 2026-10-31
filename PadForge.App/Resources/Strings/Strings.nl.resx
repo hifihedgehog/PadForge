@@ -3888,6 +3888,10 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Melden bij of onder</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Ook de controller laten trillen</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Melding testen</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Melding herhalen elke</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Melden wanneer de batterij vol is</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Controller volledig opgeladen</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: volledig opgeladen</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Toewijzingsvoorstellen</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Als een apparaat verbinding maakt terwijl de pagina van een virtuele controller open is, kan PadForge voorstellen het daar toe te wijzen. Er wordt niets toegewezen tot je op Toewijzen klikt. Toetsenborden, muizen, touchpads en mediatoetsen worden nooit voorgesteld.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Nieuwe apparaten voorstellen aan de geopende virtuele controller</value></data>

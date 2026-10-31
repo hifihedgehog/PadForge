@@ -3917,6 +3917,10 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Értesítés ennél a szintnél vagy alatta</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>A kontroller rezegtetése is</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Értesítés tesztelése</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Az értesítés ismétlése ennyi időközönként</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Értesítés teljes feltöltöttség esetén</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>A kontroller teljesen feltöltve</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: teljesen feltöltve</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Hozzárendelési ajánlatok</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Ha egy eszköz akkor csatlakozik, amikor egy virtuális kontroller oldala nyitva van, a PadForge felajánlhatja, hogy oda rendeli. Semmi sem lesz hozzárendelve, amíg a Hozzárendelés gombra nem kattint. Billentyűzeteket, egereket, érintőpadokat és médiabillentyűket a program soha nem ajánl fel.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Új eszközök felajánlása a megnyitott virtuális kontrollernek</value></data>

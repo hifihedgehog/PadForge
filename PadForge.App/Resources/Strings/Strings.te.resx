@@ -3917,6 +3917,10 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>ఈ స్థాయిలో లేదా తక్కువలో తెలియజేయి</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>కంట్రోలర్ను కూడా వైబ్రేట్ చేయి</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>నోటిఫికేషన్ పరీక్ష</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>నోటీసును పునరావృతం చేయి, ప్రతి</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>పూర్తిగా ఛార్జ్ అయినప్పుడు తెలియజేయి</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>కంట్రోలర్ పూర్తిగా ఛార్జ్ అయింది</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: పూర్తిగా ఛార్జ్ అయింది</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>కేటాయింపు ప్రాంప్ట్లు</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్ పేజీ తెరిచి ఉండగా పరికరం కనెక్ట్ అయితే, PadForge దానిని అక్కడ కేటాయించమని సూచించగలదు. మీరు కేటాయించు క్లిక్ చేసే వరకు ఏదీ కేటాయించబడదు. కీబోర్డ్లు, మౌస్లు, టచ్ ప్యాడ్లు మరియు మీడియా కీలు ఎప్పుడూ సూచించబడవు.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>కొత్త పరికరాలను తెరిచి ఉన్న వర్చువల్ కంట్రోలర్కు సూచించు</value></data>

@@ -3917,6 +3917,10 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Обавести на нивоу или испод</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Покрени и вибрацију контролера</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Пробно обавештење</value></data>
+  <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>Понављај обавештење на сваких</value></data>
+  <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>Обавести када је батерија напуњена</value></data>
+  <data name="Battery_FullTitle" xml:space="preserve"><value>Контролер је потпуно напуњен</value></data>
+  <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: потпуно напуњен</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Понуде за доделу</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Када се уређај повеже док је отворена страница виртуелног контролера, PadForge може да понуди да га тамо додели. Ништа се не додељује док не кликнете на „Додели“. Тастатуре, мишеви, тачпедови и медијски тастери се никада не нуде.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Понуди нове уређаје отвореном виртуелном контролеру</value></data>

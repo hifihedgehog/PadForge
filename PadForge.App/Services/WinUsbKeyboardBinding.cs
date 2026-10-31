@@ -8,9 +8,9 @@ namespace PadForge.Services
 {
     /// <summary>
     /// What Windows says about a keyboard PadForge reads over WinUSB (#549),
-    /// read and never changed here: which bound keyboards are plugged in,
-    /// what the Devices page offers a keyboard row, and what else leaves
-    /// Windows when a keyboard's node is bound. The binding and its restore
+    /// or a mouse the same switch moved, read and never changed here: which
+    /// bound devices are plugged in, what the Devices page offers a keyboard
+    /// or mouse row, and what else leaves Windows when its node is bound. The binding and its restore
     /// are <see cref="VendorUsbDriverInstaller"/>'s, made only from the
     /// Devices page after its confirm, as a TouchSense mouse's are
     /// (<see cref="TouchSenseBinding"/>). The test host reads nothing from
@@ -50,25 +50,27 @@ namespace PadForge.Services
             {
                 var entry = KeyboardTakeovers.ForInterfacePath(takeovers, path);
                 if (entry == null || !KeyboardTakeovers.IsValid(entry)) continue;
-                keyboards.Add(new WinUsbKeyboard(path, entry.VendorId, entry.ProductId, entry.Row, entry.Name));
+                keyboards.Add(new WinUsbKeyboard(path, entry.VendorId, entry.ProductId, entry.Row, entry.Name, entry.IsMouse));
             }
             return keyboards;
         }
 
         /// <summary>
-        /// What the Devices page offers a keyboard row, or null. A Raw Input
-        /// keyboard whose collection sits on a USB node that Windows' HID
+        /// What the Devices page offers a keyboard row, or with
+        /// <paramref name="kind"/> Mouse a mouse row, or null. A Raw Input
+        /// device whose collection sits on a USB node that Windows' HID
         /// driver serves is offered the switch to PadForge's driver: the
         /// node is the collection's parent, the whole device or the
         /// interface of a composite device or receiver, so only that
-        /// interface moves. The row of a keyboard PadForge's driver serves,
+        /// interface moves. The row of a device PadForge's driver serves,
         /// whose path is its WinUSB interface path, is offered the restore.
-        /// A keyboard on Bluetooth, PS/2 or a virtual bus has no USB node
+        /// A device on Bluetooth, PS/2, I2C or a virtual bus has no USB node
         /// and is offered nothing.
         /// </summary>
         internal static VendorUsbDriverInstaller.OptInOffer QueryOffer(string devicePath,
             IReadOnlyList<VendorUsbDriverInstaller.UsbNode> nodes,
-            Func<string, string> parentOf = null, Func<string, bool> ours = null)
+            Func<string, string> parentOf = null, Func<string, bool> ours = null,
+            VendorUsbDriverInstaller.OptInKind kind = VendorUsbDriverInstaller.OptInKind.Keyboard)
         {
             if (string.IsNullOrEmpty(devicePath) || nodes == null) return null;
             parentOf ??= TouchSenseBinding.ParentOf;
@@ -80,8 +82,7 @@ namespace PadForge.Services
                 {
                     if (!string.Equals(n.InstanceId, boundNode, StringComparison.OrdinalIgnoreCase)) continue;
                     if (string.Equals(n.Service, "WINUSB", StringComparison.OrdinalIgnoreCase) && ours(n.InstanceId))
-                        return new VendorUsbDriverInstaller.OptInOffer(VendorUsbDriverInstaller.OptInKind.Keyboard,
-                            null, From, n.InstanceId, true);
+                        return new VendorUsbDriverInstaller.OptInOffer(kind, null, From, n.InstanceId, true);
                     return null;
                 }
                 return null;
@@ -95,10 +96,32 @@ namespace PadForge.Services
             {
                 if (!string.Equals(n.InstanceId, parent, StringComparison.OrdinalIgnoreCase)) continue;
                 if (!string.Equals(n.Service ?? string.Empty, "HidUsb", StringComparison.OrdinalIgnoreCase)) return null;
-                return new VendorUsbDriverInstaller.OptInOffer(VendorUsbDriverInstaller.OptInKind.Keyboard,
+                return new VendorUsbDriverInstaller.OptInOffer(kind,
                     new VendorUsbDriverInstaller.BindPlan(VendorUsbDriverInstaller.BindId(n),
-                        VendorUsbDriverInstaller.NameOf(VendorUsbDriverInstaller.OptInKind.Keyboard)),
+                        VendorUsbDriverInstaller.NameOf(kind)),
                     From, n.InstanceId, false);
+            }
+            return null;
+        }
+
+        /// <summary>The restore offered for a takeover's row whatever path the
+        /// row holds. A row whose WinUSB channel never opened, for a
+        /// descriptor PadForge cannot read, keeps its Raw Input path, which
+        /// names a collection that is gone, so the restore is offered by the
+        /// node the takeover recorded. Null when that node is not present on
+        /// WinUSB. Restore itself removes only a package PadForge
+        /// wrote.</summary>
+        internal static VendorUsbDriverInstaller.OptInOffer RestoreOffer(KeyboardTakeoverEntry takeover,
+            IReadOnlyList<VendorUsbDriverInstaller.UsbNode> nodes)
+        {
+            if (takeover == null || nodes == null || !KeyboardTakeovers.IsValid(takeover)) return null;
+            foreach (var n in nodes)
+            {
+                if (!string.Equals(n.InstanceId, takeover.NodeId, StringComparison.OrdinalIgnoreCase)) continue;
+                if (!string.Equals(n.Service, "WINUSB", StringComparison.OrdinalIgnoreCase)) return null;
+                return new VendorUsbDriverInstaller.OptInOffer(
+                    takeover.IsMouse ? VendorUsbDriverInstaller.OptInKind.Mouse : VendorUsbDriverInstaller.OptInKind.Keyboard,
+                    null, From, n.InstanceId, true);
             }
             return null;
         }
@@ -134,17 +157,19 @@ namespace PadForge.Services
             GameController = 8,
             VendorControls = 16,
             Other = 32,
+            Keyboard = 64,
         }
 
-        /// <summary>The collections on the node besides the keyboard's own,
-        /// read from this PC, or <see cref="Takes.None"/> when they cannot
-        /// be read. The test host reads no real collection.</summary>
-        internal static Takes WhatLeaves(string nodeId)
+        /// <summary>The collections on the node besides the switched
+        /// keyboard's own, or a mouse's own with <paramref name="kind"/>
+        /// Mouse, read from this PC, or <see cref="Takes.None"/> when they
+        /// cannot be read. The test host reads no real collection.</summary>
+        internal static Takes WhatLeaves(string nodeId, VendorUsbDriverInstaller.OptInKind kind = VendorUsbDriverInstaller.OptInKind.Keyboard)
         {
             if (RealHidAccess.Refused || string.IsNullOrEmpty(nodeId)) return Takes.None;
             try
             {
-                return WhatLeaves(nodeId, HidCollectionRuntime.Enumerate(), TouchSenseBinding.ParentOf);
+                return WhatLeaves(nodeId, HidCollectionRuntime.Enumerate(), TouchSenseBinding.ParentOf, kind);
             }
             catch
             {
@@ -154,12 +179,13 @@ namespace PadForge.Services
 
         /// <summary>The same answer from parts a caller hands in. A
         /// collection belongs to the node when the node is its parent, so a
-        /// keyboard of the same model on another port answers for itself.
-        /// The keyboard's own collections (Generic Desktop keyboard and
-        /// keypad) are the switch's subject, not something it takes
-        /// along.</summary>
+        /// device of the same model on another port answers for itself.
+        /// The switched device's own collections (a keyboard's Generic
+        /// Desktop keyboard and keypad, a mouse's mouse and pointer) are
+        /// the switch's subject, not something it takes along.</summary>
         internal static Takes WhatLeaves(string nodeId, IReadOnlyList<HidCollectionInfo> collections,
-            Func<string, string> parentOf)
+            Func<string, string> parentOf,
+            VendorUsbDriverInstaller.OptInKind kind = VendorUsbDriverInstaller.OptInKind.Keyboard)
         {
             var takes = Takes.None;
             if (string.IsNullOrEmpty(nodeId) || collections == null || parentOf == null) return takes;
@@ -170,7 +196,7 @@ namespace PadForge.Services
                 try { parent = parentOf(c.Path); }
                 catch { continue; }
                 if (!string.Equals(parent, nodeId, StringComparison.OrdinalIgnoreCase)) continue;
-                takes |= Classify(c.UsagePage, c.Usage);
+                takes |= Classify(c.UsagePage, c.Usage, kind);
             }
             return takes;
         }
@@ -178,15 +204,18 @@ namespace PadForge.Services
         /// <summary>One collection's kind by its top-level usage (HID Usage
         /// Tables: Generic Desktop 0x01 with Pointer 0x01, Mouse 0x02,
         /// Joystick 0x04, Gamepad 0x05, Keyboard 0x06, Keypad 0x07 and
-        /// System Control 0x80, Consumer 0x0C, vendor pages 0xFF00 and up).</summary>
-        internal static Takes Classify(ushort usagePage, ushort usage)
+        /// System Control 0x80, Consumer 0x0C, vendor pages 0xFF00 and up).
+        /// The kind the switch moves is its subject and takes nothing.</summary>
+        internal static Takes Classify(ushort usagePage, ushort usage,
+            VendorUsbDriverInstaller.OptInKind kind = VendorUsbDriverInstaller.OptInKind.Keyboard)
         {
+            bool mouse = kind == VendorUsbDriverInstaller.OptInKind.Mouse;
             if (usagePage == 0x01)
             {
                 return usage switch
                 {
-                    0x06 or 0x07 => Takes.None,
-                    0x01 or 0x02 => Takes.Mouse,
+                    0x06 or 0x07 => mouse ? Takes.Keyboard : Takes.None,
+                    0x01 or 0x02 => mouse ? Takes.None : Takes.Mouse,
                     0x04 or 0x05 => Takes.GameController,
                     0x80 => Takes.SystemKeys,
                     _ => Takes.Other,

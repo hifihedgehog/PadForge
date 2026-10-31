@@ -9,10 +9,25 @@ using PadForge.Engine.Common;
 
 namespace PadForge.Common.Input.WinUsbKeyboards
 {
-    /// <summary>One keyboard bound to PadForge's WinUSB driver, as the look
-    /// for bound keyboards finds it: the interface path Windows gives the
-    /// bound node, its IDs, and the row and name its takeover recorded.</summary>
-    internal readonly record struct WinUsbKeyboard(string Path, ushort VendorId, ushort ProductId, Guid RowId, string Name);
+    /// <summary>One keyboard or mouse bound to PadForge's WinUSB driver, as
+    /// the look for bound devices finds it: the interface path Windows
+    /// gives the bound node, its IDs, and the row, name and kind its
+    /// takeover recorded.</summary>
+    internal readonly record struct WinUsbKeyboard(string Path, ushort VendorId, ushort ProductId, Guid RowId, string Name,
+        bool IsMouse = false);
+
+    /// <summary>What the device pass needs of a row PadForge reads over
+    /// WinUSB in place of a Raw Input keyboard or mouse: its channel, and a
+    /// close that returns once the handle is gone.</summary>
+    internal interface IWinUsbInputRow : ISdlInputDevice
+    {
+        /// <summary>The channel this row reads.</summary>
+        IKeyboardChannel Channel { get; }
+
+        /// <summary>Retires the row and returns only once its handle is
+        /// closed, for the manager's shutdown.</summary>
+        void Close();
+    }
 
     /// <summary>
     /// The row of a keyboard bound to WinUSB (#549). Once bound, the
@@ -37,7 +52,7 @@ namespace PadForge.Common.Input.WinUsbKeyboards
     /// keeps for the other direction. Nothing the low-level hook holds is
     /// merged in: no key of this keyboard ever reaches the hook.</para>
     /// </summary>
-    internal sealed class WinUsbKeyboardDevice : ISdlInputDevice
+    internal sealed class WinUsbKeyboardDevice : IWinUsbInputRow
     {
         /// <summary>How long a blocking close waits for the reader to
         /// leave, above the read's own timeout.</summary>
@@ -98,7 +113,7 @@ namespace PadForge.Common.Input.WinUsbKeyboards
             => Md5Guid("pfwinusbkeyboard:" + (interfacePath ?? string.Empty).ToUpperInvariant());
 
         /// <summary>The channel this row reads.</summary>
-        internal IKeyboardChannel Channel => _channel;
+        public IKeyboardChannel Channel => _channel;
 
         // ─── ISdlInputDevice identity / capabilities ───
         public uint SdlInstanceId { get; }
@@ -236,7 +251,7 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         /// <summary>Retires the row and returns only once the keyboard's
         /// handle is closed, for the manager's shutdown, where the next
         /// engine start may open the same keyboard a moment later.</summary>
-        internal void Close()
+        public void Close()
         {
             _stop = true;
             try { _channel.Dispose(); } catch { }

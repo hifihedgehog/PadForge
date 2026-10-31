@@ -265,9 +265,10 @@ namespace PadForge.Services
         /// USB keyboard the user takes from Windows for PadForge alone
         /// (#549): it is offered by its row's HID collection, not by its
         /// IDs, so it has no row in <see cref="OptIns"/>
-        /// (<see cref="WinUsbKeyboardBinding.QueryOffer"/>). Append only:
-        /// a kind's place is never reused.</summary>
-        internal enum OptInKind { Xbox360Pad, Xbox360Receiver, IntelBaseStation, Prodikeys, TouchSenseMouse, Keyboard }
+        /// (<see cref="WinUsbKeyboardBinding.QueryOffer"/>). Mouse is any USB
+        /// mouse taken the same way, offered by its mouse collection. Append
+        /// only: a kind's place is never reused.</summary>
+        internal enum OptInKind { Xbox360Pad, Xbox360Receiver, IntelBaseStation, Prodikeys, TouchSenseMouse, Keyboard, Mouse }
 
         /// <summary>One opt-in device. Revision names the bcdDevice a whole
         /// device must carry, and From the drivers it is bound from.</summary>
@@ -319,6 +320,7 @@ namespace PadForge.Services
             OptInKind.Prodikeys => "Creative Prodikeys PC-MIDI",
             OptInKind.TouchSenseMouse => "TouchSense mouse",
             OptInKind.Keyboard => "Keyboard read by PadForge",
+            OptInKind.Mouse => "Mouse read by PadForge",
             _ => throw new ArgumentOutOfRangeException(nameof(kind)),
         };
 
@@ -724,14 +726,14 @@ namespace PadForge.Services
         }
 
         /// <summary>Whether a kind is bound one device at a time. A
-        /// TouchSense mouse stops being Windows' pointer once it is bound,
-        /// and a keyboard stops typing (#549), which each one's confirm says
-        /// of the one device the user chose, so the bind is not made while
-        /// it would take another of the model along. The other kinds are
-        /// read by PadForge either way and lose nothing the user was not
-        /// told.</summary>
+        /// TouchSense mouse or any mouse stops being Windows' pointer once
+        /// it is bound, and a keyboard stops typing (#549), which each
+        /// one's confirm says of the one device the user chose, so the bind
+        /// is not made while it would take another of the model along. The
+        /// other kinds are read by PadForge either way and lose nothing the
+        /// user was not told.</summary>
         internal static bool BindsOneDeviceAtATime(OptInKind kind)
-            => kind is OptInKind.TouchSenseMouse or OptInKind.Keyboard;
+            => kind is OptInKind.TouchSenseMouse or OptInKind.Keyboard or OptInKind.Mouse;
 
         /// <summary>
         /// Whether a bind of this plan may be made, read from the present

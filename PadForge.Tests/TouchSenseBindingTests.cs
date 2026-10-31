@@ -307,8 +307,8 @@ namespace PadForge.Tests
         /// anything is bound. The only other calls of the bind are the
         /// automatic binder's, which never plans a TouchSense mouse (the
         /// test above), and the keyboard screens' (#519), which binds the
-        /// G19's screen interface alone. A keyboard's cost (#549) also
-        /// names what leaves Windows with it.</summary>
+        /// G19's screen interface alone. The cost of a keyboard (#549) or
+        /// mouse taken from Windows also names what leaves with it.</summary>
         [Fact]
         public void TheBinding_IsMadeOnlyBehindTheConfirmThatStatesItsCost()
         {
@@ -322,17 +322,19 @@ namespace PadForge.Tests
             int confirm = body.IndexOf("|| !Views.ConfirmDialog.Show(this, Strings.Instance.Devices_DriverConfirmTitle,", asked, StringComparison.Ordinal);
             Assert.True(confirm > asked, "the confirm");
             Assert.True(string.IsNullOrWhiteSpace(body.Substring(asked + condition.Length, confirm - asked - condition.Length)), "nothing between them");
-            int cost = body.IndexOf("cost, Strings.Instance.Devices_DriverSwitch, keyboard ? name : null)))", confirm, StringComparison.Ordinal);
+            int cost = body.IndexOf("cost, Strings.Instance.Devices_DriverSwitch, taken ? name : null)))", confirm, StringComparison.Ordinal);
             Assert.True(cost > confirm, "the confirm shows the cost");
             // The cost is the offer's kind's, set once before the
-            // condition. A keyboard's adds what leaves with it, read from
-            // the collections on its node.
+            // condition. A taken keyboard's or mouse's adds what leaves with
+            // it, read from the collections on its node for its kind.
             string flat = string.Concat(body.Substring(0, asked).Where(c => !char.IsWhiteSpace(c)));
-            Assert.Contains("boolkeyboard=offer.Kind==Services.VendorUsbDriverInstaller.OptInKind.Keyboard;", flat);
-            Assert.Contains("stringcost=!bind?null:keyboard?KeyboardDriverCost(awaitSystem.Threading.Tasks.Task.Run(()=>"
-                + "Services.WinUsbKeyboardBinding.WhatLeaves(offer.NodeId))):DriverCost(offer.Kind);", flat);
+            Assert.Contains("boolmouse=offer.Kind==Services.VendorUsbDriverInstaller.OptInKind.Mouse;", flat);
+            Assert.Contains("booltaken=mouse||offer.Kind==Services.VendorUsbDriverInstaller.OptInKind.Keyboard;", flat);
+            Assert.Contains("stringcost=!bind?null:taken?TakeoverCost(offer.Kind,awaitSystem.Threading.Tasks.Task.Run(()=>"
+                + "Services.WinUsbKeyboardBinding.WhatLeaves(offer.NodeId,offer.Kind))):DriverCost(offer.Kind);", flat);
             Assert.Equal(1, body.Split(" cost =").Length - 1);
-            Assert.Equal(1, body.Split(" keyboard =").Length - 1);
+            Assert.Equal(1, body.Split(" taken =").Length - 1);
+            Assert.Equal(1, body.Split(" mouse =").Length - 1);
             int leave = body.IndexOf("return;", cost, StringComparison.Ordinal);
             int bind = body.IndexOf("Services.VendorUsbDriverInstaller.Bind(offer.Bind.Value, offer.NodeId, nodes, log, default, offer.From, offer.Kind)", StringComparison.Ordinal);
             Assert.True(leave > cost && bind > leave, "a refusal leaves before the bind");
@@ -572,13 +574,13 @@ namespace PadForge.Tests
 
         /// <summary>The other kinds are read by PadForge on either driver
         /// and lose nothing the user was not told, so two of one model are
-        /// bound together as before. A keyboard (#549) is bound alone, as a
-        /// TouchSense mouse is, since another of its model would stop
-        /// typing too.</summary>
+        /// bound together as before. A keyboard (#549) or a mouse taken from
+        /// Windows is bound alone, as a TouchSense mouse is, since another of
+        /// its model would stop typing or pointing too.</summary>
         [Fact]
         public void EveryOtherKind_IsBoundWithItsSiblingsAsBefore()
         {
-            var alone = new[] { Kind.TouchSenseMouse, Kind.Keyboard };
+            var alone = new[] { Kind.TouchSenseMouse, Kind.Keyboard, Kind.Mouse };
             foreach (Kind kind in Enum.GetValues<Kind>())
                 Assert.True(alone.Contains(kind) == Installer.BindsOneDeviceAtATime(kind), kind.ToString());
 

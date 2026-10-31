@@ -10,11 +10,12 @@ namespace PadForge.Common.Input
 {
     public partial class InputManager
     {
-        // Keyboards bound to WinUSB (#549). A bound keyboard is read over
-        // WinUSB and has no Raw Input row, so it gets a row of its own, a
-        // keyboard-type device (WinUsbKeyboardDevice) with the ID its
-        // takeover recorded, the Raw Input row's, so the keyboard keeps its
-        // slots, mappings and macros. The phase is the TouchSense mice's
+        // Keyboards bound to WinUSB (#549), and mice bound by the same
+        // switch. A bound keyboard or mouse is read over WinUSB and has no
+        // Raw Input row, so it gets a row of its own, a keyboard-type device
+        // (WinUsbKeyboardDevice) or a mouse-type one (WinUsbMouseDevice) as
+        // its takeover says, with the ID the takeover recorded, the Raw
+        // Input row's, so the device keeps its slots, mappings and macros. The phase is the TouchSense mice's
         // (Phase 1n, InputManager.TouchSenseMice.cs): looking for the bound
         // keyboards and opening one are blocking calls, so a worker makes
         // them on the sweep's cadence and the poll thread only registers
@@ -42,9 +43,9 @@ namespace PadForge.Common.Input
         /// <summary>The open rows by interface path, and the rows a sweep
         /// finished that the poll thread has not registered yet. Guarded
         /// by _winUsbKeyboardLock.</summary>
-        private readonly Dictionary<string, WinUsbKeyboardDevice> _winUsbKeyboards =
+        private readonly Dictionary<string, IWinUsbInputRow> _winUsbKeyboards =
             new(StringComparer.OrdinalIgnoreCase);
-        private readonly List<WinUsbKeyboardDevice> _winUsbKeyboardsPending = new();
+        private readonly List<IWinUsbInputRow> _winUsbKeyboardsPending = new();
 
         /// <summary>Per path, when the keyboard may be opened again, the
         /// channel it had before, which has to be closed first, and whether
@@ -63,7 +64,7 @@ namespace PadForge.Common.Input
         // failed), the open of one, the table the open channels are listed
         // in, the clock, and how the sweep is run off the poll thread.
         internal Func<IReadOnlyList<WinUsbKeyboard>> WinUsbKeyboardFind = WinUsbKeyboardBinding.FindBound;
-        internal Func<WinUsbKeyboard, IKeyboardChannel> WinUsbKeyboardOpen = keyboard => WinUsbKeyboardChannel.Open(keyboard.Path);
+        internal Func<WinUsbKeyboard, IKeyboardChannel> WinUsbKeyboardOpen = keyboard => WinUsbKeyboardChannel.Open(keyboard.Path, keyboard.IsMouse);
         internal TouchSenseChannels WinUsbKeyboardTable = TouchSenseChannels.Shared;
         internal Func<long> WinUsbKeyboardTicks = () => Environment.TickCount64;
         internal Func<Action, Task> WinUsbKeyboardRun = Task.Run;
@@ -219,12 +220,13 @@ namespace PadForge.Common.Input
                     IKeyboardChannel channel = null;
                     try { channel = WinUsbKeyboardOpen(keyboard); }
                     catch { }
+                    string what = keyboard.IsMouse ? "mouse" : "keyboard";
                     if (channel != null)
                         PadForge.Engine.SdlDiagLog.WriteLine(
-                            $"WinUsbKeyboard: opened {keyboard.VendorId:X4}:{keyboard.ProductId:X4} at {keyboard.Path}");
+                            $"WinUsbKeyboard: opened {what} {keyboard.VendorId:X4}:{keyboard.ProductId:X4} at {keyboard.Path}");
                     else if (!failedBefore)
                         PadForge.Engine.SdlDiagLog.WriteLine(
-                            $"WinUsbKeyboard: open failed for {keyboard.VendorId:X4}:{keyboard.ProductId:X4} at {keyboard.Path}, trying again every {WinUsbKeyboardReopenMs / 1000} s");
+                            $"WinUsbKeyboard: open failed for {what} {keyboard.VendorId:X4}:{keyboard.ProductId:X4} at {keyboard.Path}, trying again every {WinUsbKeyboardReopenMs / 1000} s");
 
                     lock (_winUsbKeyboardLock)
                     {
@@ -239,7 +241,9 @@ namespace PadForge.Common.Input
                             continue;
                         }
                         _winUsbKeyboardRetry.Remove(keyboard.Path);
-                        _winUsbKeyboardsPending.Add(new WinUsbKeyboardDevice(keyboard, channel, WinUsbKeyboardStartReaders));
+                        _winUsbKeyboardsPending.Add(keyboard.IsMouse
+                            ? new WinUsbMouseDevice(keyboard, channel, WinUsbKeyboardStartReaders)
+                            : new WinUsbKeyboardDevice(keyboard, channel, WinUsbKeyboardStartReaders));
                         _winUsbKeyboardAnyRows = true;
                     }
                     // Listed once its row exists. A channel whose node a
@@ -269,7 +273,7 @@ namespace PadForge.Common.Input
         /// <summary>Puts a row on the device list, in the place of the
         /// keyboard's Raw Input row when the takeover recorded it. Caller
         /// holds _winUsbKeyboardLock.</summary>
-        private void RegisterWinUsbKeyboard(WinUsbKeyboardDevice row)
+        private void RegisterWinUsbKeyboard(IWinUsbInputRow row)
         {
             UserDevice ud = FindOrCreateUserDevice(row.InstanceGuid);
             ud.LoadFromExternalDevice(row);
@@ -280,7 +284,7 @@ namespace PadForge.Common.Input
         /// its channel. The poll thread never waits for that. The shutdown
         /// does (<paramref name="wait"/>), so the keyboard's handle is gone
         /// when it returns. Caller holds _winUsbKeyboardLock.</summary>
-        private void RetireWinUsbKeyboard(WinUsbKeyboardDevice row, bool wait)
+        private void RetireWinUsbKeyboard(IWinUsbInputRow row, bool wait)
         {
             var ud = FindOnlineDeviceByInstanceGuid(row.InstanceGuid);
             if (ud != null && (ud.Device == null || ReferenceEquals(ud.Device, row)))
@@ -326,13 +330,13 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>The open rows, a snapshot for tests.</summary>
-        internal WinUsbKeyboardDevice[] WinUsbKeyboardRows
+        internal IWinUsbInputRow[] WinUsbKeyboardRows
         {
             get
             {
                 lock (_winUsbKeyboardLock)
                 {
-                    var rows = new WinUsbKeyboardDevice[_winUsbKeyboards.Count];
+                    var rows = new IWinUsbInputRow[_winUsbKeyboards.Count];
                     _winUsbKeyboards.Values.CopyTo(rows, 0);
                     return rows;
                 }

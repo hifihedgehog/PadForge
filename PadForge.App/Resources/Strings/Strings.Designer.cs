@@ -1088,10 +1088,12 @@ public class Strings : INotifyPropertyChanged
     public string Status_DriverRestored_Format => Get("Status_DriverRestored_Format");
     public string Status_DriverRestoreFailed_Format => Get("Status_DriverRestoreFailed_Format");
     public string Status_DriverMovedBack_Format => Get("Status_DriverMovedBack_Format");
-    public string Devices_DriverBind_Keyboard => Get("Devices_DriverBind_Keyboard");
+    public string Devices_DriverBind_OnlyInPadForge => Get("Devices_DriverBind_OnlyInPadForge");
     public string Devices_DriverConfirm_Keyboard => Get("Devices_DriverConfirm_Keyboard");
+    public string Devices_DriverConfirm_Mouse => Get("Devices_DriverConfirm_Mouse");
     public string Devices_DriverTakes_Format => Get("Devices_DriverTakes_Format");
     public string Devices_DriverTakes_Mouse => Get("Devices_DriverTakes_Mouse");
+    public string Devices_DriverTakes_Keyboard => Get("Devices_DriverTakes_Keyboard");
     public string Devices_DriverTakes_MediaKeys => Get("Devices_DriverTakes_MediaKeys");
     public string Devices_DriverTakes_SystemKeys => Get("Devices_DriverTakes_SystemKeys");
     public string Devices_DriverTakes_GameController => Get("Devices_DriverTakes_GameController");
@@ -1099,8 +1101,11 @@ public class Strings : INotifyPropertyChanged
     public string Devices_DriverTakes_Other => Get("Devices_DriverTakes_Other");
     public string Devices_DriverKind_KeyboardOrMouse => Get("Devices_DriverKind_KeyboardOrMouse");
     public string Devices_DriverKeepNote_Format => Get("Devices_DriverKeepNote_Format");
+    public string Devices_DriverKeepNote_Mouse_Format => Get("Devices_DriverKeepNote_Mouse_Format");
     public string Devices_DriverKeepTitle => Get("Devices_DriverKeepTitle");
+    public string Devices_DriverKeepTitle_Mouse => Get("Devices_DriverKeepTitle_Mouse");
     public string Devices_DriverKeepMessage_Format => Get("Devices_DriverKeepMessage_Format");
+    public string Devices_DriverKeepMessage_Mouse_Format => Get("Devices_DriverKeepMessage_Mouse_Format");
     public string Devices_DriverKeepCountdown_Format => Get("Devices_DriverKeepCountdown_Format");
     public string Devices_DriverKeep => Get("Devices_DriverKeep");
     public string Devices_DriverGiveBack => Get("Devices_DriverGiveBack");

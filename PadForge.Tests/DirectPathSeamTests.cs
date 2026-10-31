@@ -2150,12 +2150,13 @@ namespace PadForge.Tests
             var kinds = Enum.GetValues(typeof(VendorUsbDriverInstaller.OptInKind))
                 .Cast<VendorUsbDriverInstaller.OptInKind>().ToArray();
             // Appended: the kinds before it keep their numbers, and the
-            // keyboard takeover (#549) came after it.
-            Assert.Equal(new[] { "Xbox360Pad", "Xbox360Receiver", "IntelBaseStation", "Prodikeys", "TouchSenseMouse", "Keyboard" },
+            // keyboard takeover (#549) came after it, then the mouse's.
+            Assert.Equal(new[] { "Xbox360Pad", "Xbox360Receiver", "IntelBaseStation", "Prodikeys", "TouchSenseMouse", "Keyboard", "Mouse" },
                 kinds.Select(k => k.ToString()));
             var touchSense = VendorUsbDriverInstaller.OptInKind.TouchSenseMouse;
             Assert.Equal(4, (int)touchSense);
             Assert.Equal(5, (int)VendorUsbDriverInstaller.OptInKind.Keyboard);
+            Assert.Equal(6, (int)VendorUsbDriverInstaller.OptInKind.Mouse);
 
             // Its devices are the TouchSense mice and nothing else.
             Assert.All(VendorUsbDriverInstaller.OptIns.Where(target => target.Kind == touchSense),
@@ -2177,17 +2178,21 @@ namespace PadForge.Tests
             string Cost(VendorUsbDriverInstaller.OptInKind kind) => (string)cost.Invoke(null, new object[] { kind });
 
             // Every kind has a name, a button text and a cost text of its
-            // own, in each of the three switches.
+            // own, in each of the three switches, except that a keyboard's
+            // and a mouse's switch is one action under one button text.
+            var mouseKind = VendorUsbDriverInstaller.OptInKind.Mouse;
             foreach (var texts in new[]
             {
                 kinds.Select(VendorUsbDriverInstaller.NameOf).ToList(),
-                kinds.Select(BindText).ToList(),
+                kinds.Where(k => k != mouseKind).Select(BindText).ToList(),
                 kinds.Select(Cost).ToList(),
             })
             {
                 Assert.All(texts, text => Assert.False(string.IsNullOrWhiteSpace(text)));
                 Assert.Equal(texts.Count, texts.Distinct().Count());
             }
+            Assert.Equal(s.Devices_DriverBind_OnlyInPadForge, BindText(VendorUsbDriverInstaller.OptInKind.Keyboard));
+            Assert.Equal(s.Devices_DriverBind_OnlyInPadForge, BindText(mouseKind));
             Assert.Equal("TouchSense mouse", VendorUsbDriverInstaller.NameOf(touchSense));
             Assert.Equal(s.Devices_DriverBind_TouchSenseMouse, BindText(touchSense));
             Assert.Equal(s.Devices_DriverConfirm_TouchSenseMouse, Cost(touchSense));

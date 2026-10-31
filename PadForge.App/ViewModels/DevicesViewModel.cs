@@ -92,11 +92,12 @@ namespace PadForge.ViewModels
         internal Services.VendorUsbDriverInstaller.OptInOffer DriverOffer => _driverOffer;
 
         /// <summary>Whether a kind's switch hides the device from Windows.
-        /// A keyboard's (#549) does, so its buttons stand in the Input
-        /// Hiding section with Hide from Games and Consume Mapped Inputs.
-        /// Every other kind's stand with the device's other buttons.</summary>
+        /// A keyboard's (#549) and a mouse's do, so their buttons stand in
+        /// the Input Hiding section with Hide from Games and Consume Mapped
+        /// Inputs. Every other kind's stand with the device's other
+        /// buttons.</summary>
         internal static bool Hides(Services.VendorUsbDriverInstaller.OptInKind kind)
-            => kind == Services.VendorUsbDriverInstaller.OptInKind.Keyboard;
+            => kind is Services.VendorUsbDriverInstaller.OptInKind.Keyboard or Services.VendorUsbDriverInstaller.OptInKind.Mouse;
 
         private bool OfferHides => _driverOffer != null && Hides(_driverOffer.Kind);
 
@@ -115,7 +116,9 @@ namespace PadForge.ViewModels
             Services.VendorUsbDriverInstaller.OptInKind.IntelBaseStation => Strings.Instance.Devices_DriverBind_IntelBaseStation,
             Services.VendorUsbDriverInstaller.OptInKind.Prodikeys => Strings.Instance.Devices_DriverBind_Prodikeys,
             Services.VendorUsbDriverInstaller.OptInKind.TouchSenseMouse => Strings.Instance.Devices_DriverBind_TouchSenseMouse,
-            Services.VendorUsbDriverInstaller.OptInKind.Keyboard => Strings.Instance.Devices_DriverBind_Keyboard,
+            // A keyboard's and a mouse's switch is one action, so one text.
+            Services.VendorUsbDriverInstaller.OptInKind.Keyboard => Strings.Instance.Devices_DriverBind_OnlyInPadForge,
+            Services.VendorUsbDriverInstaller.OptInKind.Mouse => Strings.Instance.Devices_DriverBind_OnlyInPadForge,
             _ => null,
         };
 
@@ -200,9 +203,19 @@ namespace PadForge.ViewModels
             else if (Services.VendorUsbDriverInstaller.IsOptInRow(device.VendorId, device.ProductId))
                 _driverOffer = Services.VendorUsbDriverInstaller.QueryOptIn(device.VendorId, device.ProductId,
                     Services.VendorUsbDriverInstaller.ListPresentUsbNodes());
-            else if (device.DeviceTypeKey == "Keyboard" && !device.IsAggregate && !device.IsInternalVirtual)
-                _driverOffer = Services.WinUsbKeyboardBinding.QueryOffer(device.DevicePath,
-                    Services.VendorUsbDriverInstaller.ListPresentUsbNodes());
+            else if ((device.DeviceTypeKey == "Keyboard" || device.DeviceTypeKey == "Mouse")
+                     && !device.IsAggregate && !device.IsInternalVirtual)
+            {
+                // A taken device whose WinUSB row never opened still holds
+                // its Raw Input path. Its restore comes from its takeover.
+                var nodes = Services.VendorUsbDriverInstaller.ListPresentUsbNodes();
+                _driverOffer = Services.WinUsbKeyboardBinding.QueryOffer(device.DevicePath, nodes,
+                        kind: device.DeviceTypeKey == "Mouse"
+                            ? Services.VendorUsbDriverInstaller.OptInKind.Mouse
+                            : Services.VendorUsbDriverInstaller.OptInKind.Keyboard)
+                    ?? Services.WinUsbKeyboardBinding.RestoreOffer(
+                        Common.Input.WinUsbKeyboards.KeyboardTakeovers.ForRow(device.InstanceGuid), nodes);
+            }
             else
                 _driverOffer = null;
             NotifyDriverOffer();

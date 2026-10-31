@@ -7,12 +7,18 @@ using PadForge.Services;
 namespace PadForge.Common.Input.WinUsbKeyboards
 {
     /// <summary>A keyboard the user moved to PadForge's WinUSB driver from
-    /// the Devices page (#549): the USB node that was bound, the ID its
-    /// package names, and the row the keyboard had as a Raw Input keyboard,
-    /// so the row PadForge reads it through takes over that row's slots,
-    /// mappings and macros.</summary>
+    /// the Devices page (#549), or a mouse moved by the same switch: the USB
+    /// node that was bound, the ID its package names, and the row the
+    /// device had as a Raw Input keyboard or mouse, so the row PadForge
+    /// reads it through takes over that row's slots, mappings and
+    /// macros.</summary>
     public sealed class KeyboardTakeoverEntry
     {
+        /// <summary>The <see cref="Kind"/> of a mouse's takeover. A
+        /// keyboard's has none, as every takeover before the mouse switch
+        /// had none.</summary>
+        public const string MouseKind = "Mouse";
+
         /// <summary>The bound USB node's instance ID: the whole device, or
         /// the interface of a composite device or receiver the keyboard is
         /// on.</summary>
@@ -31,6 +37,14 @@ namespace PadForge.Common.Input.WinUsbKeyboards
 
         [XmlAttribute] public ushort VendorId { get; set; }
         [XmlAttribute] public ushort ProductId { get; set; }
+
+        /// <summary><see cref="MouseKind"/> for a mouse, empty for a
+        /// keyboard.</summary>
+        [XmlAttribute] public string Kind { get; set; }
+
+        /// <summary>True for a mouse's takeover.</summary>
+        [XmlIgnore]
+        public bool IsMouse => string.Equals(Kind, MouseKind, StringComparison.OrdinalIgnoreCase);
 
         /// <summary>The row ID, or empty when the file held none.</summary>
         [XmlIgnore]
@@ -59,8 +73,8 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         /// <summary>The takeovers now.</summary>
         internal static IReadOnlyList<KeyboardTakeoverEntry> Current => s_entries;
 
-        /// <summary>True for the row of a keyboard PadForge's driver serves,
-        /// whether or not the keyboard is plugged in. Its keys never reach
+        /// <summary>True for the row of a keyboard or mouse PadForge's driver
+        /// serves, whether or not it is plugged in. Its input never reaches
         /// Windows, so nothing of it goes to the input hooks.</summary>
         internal static bool IsTakenOver(Guid rowId)
         {
@@ -68,6 +82,15 @@ namespace PadForge.Common.Input.WinUsbKeyboards
             foreach (var entry in s_entries)
                 if (entry.Row == rowId) return true;
             return false;
+        }
+
+        /// <summary>The takeover of a row, or null.</summary>
+        internal static KeyboardTakeoverEntry ForRow(Guid rowId)
+        {
+            if (rowId == Guid.Empty) return null;
+            foreach (var entry in s_entries)
+                if (entry.Row == rowId) return entry;
+            return null;
         }
 
         /// <summary>The takeover whose node a WinUSB interface path names,
@@ -107,6 +130,7 @@ namespace PadForge.Common.Input.WinUsbKeyboards
             Name = entry.Name,
             VendorId = entry.VendorId,
             ProductId = entry.ProductId,
+            Kind = entry.Kind,
         };
     }
 }

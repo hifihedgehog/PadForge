@@ -779,10 +779,12 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} отново използва драйвера си от Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Драйверът на Windows за {0} не можа да бъде възстановен.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows върна {0} към собствения му драйвер. Изберете устройството на страницата „Устройства“, за да го превключите отново.</value></data>
-  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Използване само в PadForge</value></data>
+  <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Използване само в PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge прехвърля тази клавиатура към драйвера WinUSB на Windows и я чете сам. След това Windows спира да пише с нея във всички програми, дори когато PadForge е затворен, докато драйверът ѝ от Windows не бъде възстановен от тази страница. Нейните съпоставяния и макроси продължават да работят, докато PadForge работи.</value></data>
+  <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge прехвърля тази мишка към драйвера WinUSB на Windows и я чете сам. След това Windows спира да движи показалеца с нея във всички програми, дори когато PadForge е затворен, докато драйверът ѝ от Windows не бъде възстановен от тази страница. Нейните съпоставяния и макроси продължават да работят, докато PadForge работи.</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>С нея Windows губи и: {0}.</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>мишка</value></data>
+  <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>клавиатура</value></data>
   <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>мултимедийни клавиши</value></data>
   <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>клавиши за захранване и заспиване</value></data>
   <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>геймпад</value></data>
@@ -790,8 +792,11 @@
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>други контроли на същата връзка</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>клавиатура или мишка</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>След превключването PadForge ще попита дали да я запази и ще върне клавиатурата на Windows, ако никой не отговори в рамките на {0} секунди.</value></data>
+  <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>След превключването PadForge ще попита дали да я запази и ще върне мишката на Windows, ако никой не отговори в рамките на {0} секунди.</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Да запазите ли тази клавиатура в PadForge?</value></data>
+  <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>Да запазите ли тази мишка в PadForge?</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows вече не пише с {0}. Ако това ви е оставило без работеща клавиатура или мишка, не правете нищо: PadForge ще я върне на Windows, когато времето изтече.</value></data>
+  <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows вече не движи показалеца с {0}. Ако това ви е оставило без работеща клавиатура или мишка, не правете нищо: PadForge ще я върне на Windows, когато времето изтече.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Връщане след {0} сек.</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Запази</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Върни я</value></data>

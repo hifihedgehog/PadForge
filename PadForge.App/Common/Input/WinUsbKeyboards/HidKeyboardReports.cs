@@ -34,7 +34,9 @@ namespace PadForge.Common.Input.WinUsbKeyboards
     ///
     /// <para>Only the Keyboard/Keypad page and the Consumer page carry keys
     /// a keyboard row reads (<see cref="KbmHidKeyMap.TargetOf"/>). Fields
-    /// on other pages are parsed for their offsets and never decoded.</para>
+    /// on other pages are parsed for their offsets and never decoded. A
+    /// mouse's reports walk the same parser with a filter of their own
+    /// (<see cref="HidMouseReports"/>).</para>
     /// </summary>
     internal sealed class HidKeyboardReports
     {
@@ -80,6 +82,10 @@ namespace PadForge.Common.Input.WinUsbKeyboards
             public int LogicalMaximum { get; init; }
             public bool IsVariable { get; init; }
 
+            /// <summary>The Input item's Relative bit: values are changes
+            /// since the last report, as a mouse's motion is.</summary>
+            public bool IsRelative { get; init; }
+
             /// <summary>Page in the high 16 bits, usage in the low 16, as
             /// long as the larger of the usages listed and the report
             /// count.</summary>
@@ -109,6 +115,17 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         /// page.</summary>
         internal static HidKeyboardReports Parse(ReadOnlySpan<byte> descriptor)
         {
+            var fields = ParseFields(descriptor, CarriesKeys, out bool usesReportIds);
+            return fields == null || fields.Length == 0 ? null : new HidKeyboardReports(fields, usesReportIds);
+        }
+
+        /// <summary>The Input fields of a report descriptor whose usage list
+        /// <paramref name="keep"/> accepts, in descriptor order, or null
+        /// when the descriptor is malformed. Every Input item moves its
+        /// report's offset, kept or not.</summary>
+        internal static Field[] ParseFields(ReadOnlySpan<byte> descriptor, Func<uint[], bool> keep, out bool usesReportIds)
+        {
+            usesReportIds = false;
             if (descriptor.Length == 0 || descriptor.Length > MaxDescriptorLength) return null;
 
             var fields = new List<Field>();
@@ -119,7 +136,6 @@ namespace PadForge.Common.Input.WinUsbKeyboards
             var usageSizes = new List<int>();
             uint usageMinimum = 0;
             int delimiterDepth = 0, delimiterBranch = 0;
-            bool usesReportIds = false;
 
             int i = 0;
             while (i < descriptor.Length)
@@ -250,7 +266,7 @@ namespace PadForge.Common.Input.WinUsbKeyboards
                                 var list = new uint[count];
                                 for (int u = 0; u < count; u++)
                                     list[u] = usages[Math.Min(u, usages.Count - 1)];
-                                if (CarriesKeys(list))
+                                if (keep(list))
                                 {
                                     fields.Add(new Field
                                     {
@@ -261,6 +277,7 @@ namespace PadForge.Common.Input.WinUsbKeyboards
                                         LogicalMinimum = globals.LogicalMinimum,
                                         LogicalMaximum = globals.LogicalMaximum,
                                         IsVariable = (udata & 0x02) != 0,
+                                        IsRelative = (udata & 0x04) != 0,
                                         Usages = list,
                                     });
                                 }
@@ -277,7 +294,7 @@ namespace PadForge.Common.Input.WinUsbKeyboards
                 }
             }
 
-            return fields.Count == 0 ? null : new HidKeyboardReports(fields.ToArray(), usesReportIds);
+            return fields.ToArray();
         }
 
         /// <summary>Decodes one input report as the pipe delivered it and

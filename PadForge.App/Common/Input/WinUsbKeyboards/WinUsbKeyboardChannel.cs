@@ -37,13 +37,18 @@ namespace PadForge.Common.Input.WinUsbKeyboards
     }
 
     /// <summary>
-    /// A bound keyboard's open channel as its row reads it, so the row's
-    /// rules run against a scripted channel in the tests.
+    /// A bound keyboard's or mouse's open channel as its row reads it, so
+    /// the row's rules run against a scripted channel in the tests.
     /// </summary>
     internal interface IKeyboardChannel : IWinUsbChannel
     {
-        /// <summary>How the keyboard's input reports lay out its keys.</summary>
+        /// <summary>How a keyboard's input reports lay out its keys, null
+        /// on a mouse's channel.</summary>
         HidKeyboardReports Reports { get; }
+
+        /// <summary>How a mouse's input reports lay out its buttons, motion
+        /// and wheel, null on a keyboard's channel.</summary>
+        HidMouseReports Pointer { get; }
 
         /// <summary>The bytes one read asks for.</summary>
         int ReadLength { get; }
@@ -177,7 +182,7 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         private int _readFaults;
 
         private WinUsbKeyboardChannel(string path, IKeyboardUsb usb, byte interfaceNumber, byte inPipe, int readLength,
-            HidKeyboardReports reports, int maxReadFaults, int readFaultPauseMs)
+            HidKeyboardReports reports, HidMouseReports pointer, int maxReadFaults, int readFaultPauseMs)
         {
             Path = path;
             _usb = usb;
@@ -185,6 +190,7 @@ namespace PadForge.Common.Input.WinUsbKeyboards
             _inPipe = inPipe;
             _readBuffer = new byte[readLength];
             Reports = reports;
+            Pointer = pointer;
             _maxReadFaults = maxReadFaults;
             _readFaultPauseMs = readFaultPauseMs;
         }
@@ -195,27 +201,34 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         /// <summary>The interface the keyboard is read on.</summary>
         internal byte InterfaceNumber { get; }
 
-        /// <summary>How the keyboard's input reports lay out its keys.</summary>
+        /// <summary>How a keyboard's input reports lay out its keys, null
+        /// on a mouse's channel.</summary>
         public HidKeyboardReports Reports { get; }
+
+        /// <summary>How a mouse's input reports lay out its buttons, motion
+        /// and wheel, null on a keyboard's channel.</summary>
+        public HidMouseReports Pointer { get; }
 
         /// <summary>The bytes one read asks for: the pipe's packet size.</summary>
         public int ReadLength => _readBuffer.Length;
 
         /// <summary>Opens the bound keyboard at a WinUSB interface path, or
-        /// null when it cannot be opened or declares no keys. The test host
-        /// opens no device (<see cref="RealTouchSenseAccess"/>): a test hands
-        /// the other overload an interface of its own.</summary>
-        public static WinUsbKeyboardChannel Open(string path)
+        /// with <paramref name="mouse"/> the bound mouse, or null when it
+        /// cannot be opened or its reports carry no keys, for a mouse no
+        /// motion. The test host opens no device
+        /// (<see cref="RealTouchSenseAccess"/>): a test hands the other
+        /// overload an interface of its own.</summary>
+        public static WinUsbKeyboardChannel Open(string path, bool mouse = false)
         {
             if (RealTouchSenseAccess.Refused) return null;
-            return Open(path, WinUsbTouchSenseUsb.Open(path));
+            return Open(path, WinUsbTouchSenseUsb.Open(path), mouse: mouse);
         }
 
         /// <summary>The open sequence over an interface that is already
         /// open. Takes the interface over: it is closed here when the open
-        /// fails. The last two parameters are a test's.</summary>
+        /// fails. The fault parameters are a test's.</summary>
         internal static WinUsbKeyboardChannel Open(string path, IKeyboardUsb usb, int maxReadFaults = MaxReadFaults,
-            int readFaultPauseMs = ReadFaultPauseMs)
+            int readFaultPauseMs = ReadFaultPauseMs, bool mouse = false)
         {
             if (usb == null) return null;
             WinUsbKeyboardChannel opened = null;
@@ -238,15 +251,19 @@ namespace PadForge.Common.Input.WinUsbKeyboards
                 if (!usb.ControlIn(WinUsbKeyboardProtocol.ReportDescriptorSetup(number, length), descriptor, out int got)
                     || got != length)
                     return null;
-                var reports = HidKeyboardReports.Parse(descriptor);
-                if (reports == null) return null;
+                // A mouse is read by its buttons, motion and wheel, a
+                // keyboard by its keys, and a descriptor with nothing of
+                // the kind asked for opens nothing.
+                HidKeyboardReports reports = mouse ? null : HidKeyboardReports.Parse(descriptor);
+                HidMouseReports pointer = mouse ? HidMouseReports.Parse(descriptor) : null;
+                if (reports == null && pointer == null) return null;
 
                 // Its answer is not waited on for anything, as the TouchSense
                 // open treats it (TouchSenseChannel.Open).
                 usb.ControlOut(WinUsbKeyboardProtocol.SetIdleSetup(number), Array.Empty<byte>());
                 usb.SetTimeout(inPipe, ReadTimeoutMs);
                 int readLength = packetSize == 0 ? DefaultReadLength : Math.Min((int)packetSize, MaxReadLength);
-                opened = new WinUsbKeyboardChannel(path, usb, number, inPipe, readLength, reports,
+                opened = new WinUsbKeyboardChannel(path, usb, number, inPipe, readLength, reports, pointer,
                     maxReadFaults, readFaultPauseMs);
                 return opened;
             }

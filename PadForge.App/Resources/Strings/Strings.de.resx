@@ -520,10 +520,12 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} nutzt wieder den Windows-Treiber.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Der Windows-Treiber für {0} konnte nicht wiederhergestellt werden.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows hat {0} wieder auf den eigenen Treiber gesetzt. Wählen Sie es auf der Seite Geräte aus, um erneut zu wechseln.</value></data>
-  <data name="Devices_DriverBind_Keyboard" xml:space="preserve"><value>Nur in PadForge verwenden</value></data>
+  <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Nur in PadForge verwenden</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge verschiebt diese Tastatur auf den WinUSB-Treiber von Windows und liest sie selbst aus. Windows schreibt danach in keinem Programm mehr mit ihr, auch nicht bei geschlossenem PadForge, bis ihr Windows-Treiber auf dieser Seite wiederhergestellt ist. Ihre Zuordnungen und Makros funktionieren weiter, solange PadForge läuft.</value></data>
+  <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge verschiebt diese Maus auf den WinUSB-Treiber von Windows und liest sie selbst aus. Windows bewegt danach in keinem Programm mehr den Zeiger mit ihr, auch nicht bei geschlossenem PadForge, bis ihr Windows-Treiber auf dieser Seite wiederhergestellt ist. Ihre Zuordnungen und Makros funktionieren weiter, solange PadForge läuft.</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Diese verschwinden mit ihr aus Windows: {0}.</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>eine Maus</value></data>
+  <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>eine Tastatur</value></data>
   <data name="Devices_DriverTakes_MediaKeys" xml:space="preserve"><value>Mediatasten</value></data>
   <data name="Devices_DriverTakes_SystemKeys" xml:space="preserve"><value>Ein-/Aus- und Standbytasten</value></data>
   <data name="Devices_DriverTakes_GameController" xml:space="preserve"><value>ein Gamecontroller</value></data>
@@ -531,8 +533,11 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>weitere Bedienelemente an derselben Verbindung</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>Tastatur oder Maus</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Nach dem Wechsel fragt PadForge, ob die Tastatur bei PadForge bleiben soll, und gibt sie an Windows zurück, wenn niemand innerhalb von {0} Sekunden antwortet.</value></data>
+  <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>Nach dem Wechsel fragt PadForge, ob die Maus bei PadForge bleiben soll, und gibt sie an Windows zurück, wenn niemand innerhalb von {0} Sekunden antwortet.</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Diese Tastatur in PadForge behalten?</value></data>
+  <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>Diese Maus in PadForge behalten?</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows schreibt nicht mehr mit {0}. Falls Sie dadurch keine funktionierende Tastatur oder Maus mehr haben, tun Sie nichts: PadForge gibt sie an Windows zurück, sobald der Countdown abläuft.</value></data>
+  <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows bewegt den Zeiger nicht mehr mit {0}. Falls Sie dadurch keine funktionierende Tastatur oder Maus mehr haben, tun Sie nichts: PadForge gibt sie an Windows zurück, sobald der Countdown abläuft.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Rückgabe in {0} Sekunden</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Behalten</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Zurückgeben</value></data>

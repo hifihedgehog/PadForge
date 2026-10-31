@@ -903,8 +903,8 @@
                              Xbox 360 pads and receiver, the Intel base station,
                              the Prodikeys and the TouchSense mice, whose WinUSB
                              binding takes something from Windows, move only on
-                             request, and move back. A keyboard's switch hides it
-                             from Windows and stands in Input Hiding below. -->
+                             request, and move back. A keyboard's or mouse's switch
+                             hides it from Windows and stands in Input Hiding below. -->
                         <Button Content="{Binding DriverBindText}" Margin="0,6,0,8"
                                 Padding="8,4" HorizontalAlignment="Left"
                                 Click="DriverBind_Click"
@@ -1277,10 +1277,10 @@
                             <reset:SettingResetButton Command="{Binding ResetSelectedDeviceSettingCommand}" CommandParameter="ConsumeInputEnabled" SettingLabel="{Binding Devices_ConsumeMapped, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceRowViewModel_ConsumeInputEnabled_1054" Visibility="{Binding Visibility, ElementName=ResetInput1054}"/>
                         </StackPanel>
 
-                        <!-- A keyboard's driver switch (#549) hides the whole
-                             keyboard from Windows, so it stands with the two
-                             toggles. A switched keyboard shows neither toggle,
-                             and its restore keeps the section for itself
+                        <!-- A keyboard's or mouse's driver switch (#549) hides the
+                             whole device from Windows, so it stands with the two
+                             toggles. A switched device shows neither toggle, and
+                             its restore keeps the section for itself
                              (DeviceRowViewModel.ShowsHidingDriverSwitch). -->
                         <Button Content="{Binding DriverBindText}" Margin="0,4,0,4"
                                 Padding="8,4" HorizontalAlignment="Left"

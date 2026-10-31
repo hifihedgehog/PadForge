@@ -300,20 +300,23 @@ namespace PadForge.Tests
         public void Dispose() => Interlocked.Increment(ref Disposals);
     }
 
-    /// <summary>A scripted open keyboard channel for the row and the lane.</summary>
+    /// <summary>A scripted open keyboard channel for the row and the lane,
+    /// or with <c>mouse</c> a mouse's.</summary>
     internal sealed class FakeKeyboardChannel : IKeyboardChannel
     {
         private int _closed;
 
-        public FakeKeyboardChannel(string path, byte[] descriptor = null)
+        public FakeKeyboardChannel(string path, byte[] descriptor = null, bool mouse = false)
         {
             Path = path;
-            Reports = HidKeyboardReports.Parse(descriptor ?? KeyboardDescriptors.Boot);
+            if (mouse) Pointer = HidMouseReports.Parse(descriptor ?? WinUsbMouseTests.BootMouse);
+            else Reports = HidKeyboardReports.Parse(descriptor ?? KeyboardDescriptors.Boot);
         }
 
         public string Path { get; }
         public bool IsOpen => Volatile.Read(ref _closed) == 0;
         public HidKeyboardReports Reports { get; }
+        public HidMouseReports Pointer { get; }
         public int ReadLength => 8;
 
         public bool TryRead(Span<byte> report, out int length)
@@ -673,13 +676,14 @@ namespace PadForge.Tests
         public void TheConfirm_NamesWhatLeaves_AndWarnsOfTheOnlyKeyboardOrMouse()
         {
             var s = PadForge.Resources.Strings.Strings.Instance;
-            string plain = PadForge.MainWindow.KeyboardDriverCost(WinUsbKeyboardBinding.Takes.None);
+            string plain = PadForge.MainWindow.TakeoverCost(VendorUsbDriverInstaller.OptInKind.Keyboard, WinUsbKeyboardBinding.Takes.None);
             Assert.StartsWith(s.Devices_DriverConfirm_Keyboard, plain);
             Assert.Contains(string.Format(s.Devices_WarnHide_Format, s.Devices_DeviceKind_Keyboard), plain);
             Assert.Contains(string.Format(s.Devices_DriverKeepNote_Format, PadForge.MainWindow.KeepDriverSeconds), plain);
             Assert.DoesNotContain(s.Devices_DriverTakes_Mouse, plain);
 
-            string withMouse = PadForge.MainWindow.KeyboardDriverCost(WinUsbKeyboardBinding.Takes.Mouse | WinUsbKeyboardBinding.Takes.MediaKeys);
+            string withMouse = PadForge.MainWindow.TakeoverCost(VendorUsbDriverInstaller.OptInKind.Keyboard,
+                WinUsbKeyboardBinding.Takes.Mouse | WinUsbKeyboardBinding.Takes.MediaKeys);
             Assert.Contains(string.Format(s.Devices_DriverTakes_Format, s.Devices_DriverTakes_Mouse + ", " + s.Devices_DriverTakes_MediaKeys), withMouse);
             Assert.Contains(string.Format(s.Devices_WarnHide_Format, s.Devices_DriverKind_KeyboardOrMouse), withMouse);
             Assert.Equal(15, PadForge.MainWindow.KeepDriverSeconds);
@@ -889,7 +893,8 @@ namespace PadForge.Tests
             Assert.False(vm.ShowHidingDriverRestore);
             Assert.False(row.ShowInputHidingSection);
             foreach (VendorUsbDriverInstaller.OptInKind kind in Enum.GetValues<VendorUsbDriverInstaller.OptInKind>())
-                Assert.True((kind == VendorUsbDriverInstaller.OptInKind.Keyboard) == DevicesViewModel.Hides(kind), kind.ToString());
+                Assert.True((kind is VendorUsbDriverInstaller.OptInKind.Keyboard or VendorUsbDriverInstaller.OptInKind.Mouse)
+                    == DevicesViewModel.Hides(kind), kind.ToString());
 
             // A row no longer selected lets go of the section.
             vm.ApplyDriverOffer(keyboardRestore);
@@ -963,7 +968,7 @@ namespace PadForge.Tests
                 Manager.WinUsbKeyboardOpen = keyboard =>
                 {
                     if (FailOpens) return null;
-                    var channel = new FakeKeyboardChannel(keyboard.Path);
+                    var channel = new FakeKeyboardChannel(keyboard.Path, mouse: keyboard.IsMouse);
                     lock (Opened) Opened.Add(channel);
                     return channel;
                 };
@@ -1035,6 +1040,24 @@ namespace PadForge.Tests
             lane.Advance(InputManager.WinUsbKeyboardSweepMs);
             Assert.False(lane.Cycle());
             Assert.Single(lane.Opened);
+        }
+
+        /// <summary>A mouse's takeover gets a mouse row through the same
+        /// phase, opened as a mouse and read as one.</summary>
+        [Fact]
+        public void ABoundMouse_GetsAMouseRow_UnderTheIdItsTakeoverRecorded()
+        {
+            using var lane = new Lane();
+            var mouseId = new Guid("99999999-8888-7777-6666-555555555555");
+            lane.Bound = new[] { new WinUsbKeyboard(WinUsbMouseTests.Path, 0x046D, 0xC54D, mouseId, "Gaming Mouse", IsMouse: true) };
+            Assert.True(lane.Cycle());
+            var record = lane.Record(mouseId);
+            Assert.NotNull(record);
+            var row = Assert.IsType<WinUsbMouseDevice>(record.Device);
+            Assert.Equal(InputDeviceType.Mouse, record.CapType);
+            Assert.NotNull(Assert.Single(lane.Opened).Pointer);
+            row.Feed(new byte[] { 0x01, 0, 0, 0, 0 });
+            Assert.True(record.Device.GetCurrentState().Buttons[0]);
         }
 
         [Fact]

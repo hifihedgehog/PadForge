@@ -477,6 +477,38 @@ namespace PadForge.Tests
             Assert.True(refused > 0 && staged > refused, $"{refused} {staged}");
         }
 
+        /// <summary>A switch the user is told failed changes nothing later.
+        /// A program that holds the device open refuses its restart, and
+        /// Windows then sets PadForge's package for the next start of
+        /// Windows while the old driver keeps running (#549: Lenovo Legion
+        /// Toolkit held a laptop keyboard's lighting collection). A bind
+        /// that returns false is followed, in the same task, by the restore,
+        /// which removes only a package PadForge wrote, before the page
+        /// hears the result. The automatic binder keeps a pending bind,
+        /// since the bound state is the one it wants.</summary>
+        [Fact]
+        public void AFailedBind_IsTakenBack_BeforeThePageHearsOfIt()
+        {
+            string window = AuditDelta20261002Tests.RepoText("PadForge.App", "MainWindow.xaml.cs");
+            string body = Body(window, "private async System.Threading.Tasks.Task SwitchDriverAsync(bool bind)");
+            string flat = string.Concat(body.Where(c => !char.IsWhiteSpace(c)));
+            Assert.Contains("if(Services.VendorUsbDriverInstaller.Bind(offer.Bind.Value,offer.NodeId,nodes,log,default,offer.From,offer.Kind))"
+                + "returntrue;", flat);
+            int bound = flat.IndexOf("returntrue;", StringComparison.Ordinal);
+            int takeBack = flat.IndexOf("Services.VendorUsbDriverInstaller.Restore(offer.NodeId,log,default);returnfalse;", bound, StringComparison.Ordinal);
+            int heard = flat.IndexOf("});", bound, StringComparison.Ordinal);
+            Assert.True(bound > 0 && takeBack > bound && heard > takeBack, $"{bound} {takeBack} {heard}");
+
+            string installer = AuditDelta20261002Tests.RepoText("PadForge.App", "Services", "VendorUsbDriverInstaller.cs");
+            string restore = Body(installer, "internal static bool Restore(string instanceId, Action<string> log, CancellationToken ct)");
+            int owner = restore.IndexOf("!string.Equals(provider, \"PadForge\", StringComparison.Ordinal)", StringComparison.Ordinal);
+            int remove = restore.IndexOf("RemovePackage(inf, path);", StringComparison.Ordinal);
+            Assert.True(owner > 0 && remove > owner, $"{owner} {remove}");
+
+            string binder = AuditDelta20261002Tests.RepoText("PadForge.App", "Common", "Input", "VendorUsbBindingService.cs");
+            Assert.DoesNotContain("Restore(", binder);
+        }
+
         private static Installer.BindPlan PlanOf(ushort pid)
             => Installer.QueryOptIn(0x046D, pid, new[] { Mouse(pid, "HidUsb") }, _ => false, _ => true).Bind.Value;
 

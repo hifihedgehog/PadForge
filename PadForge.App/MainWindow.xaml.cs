@@ -2583,9 +2583,21 @@ namespace PadForge
                 AddKeyboardTakeover(takeover);
             }
 
-            bool ok = await System.Threading.Tasks.Task.Run(() => bind
-                ? Services.VendorUsbDriverInstaller.Bind(offer.Bind.Value, offer.NodeId, nodes, log, default, offer.From, offer.Kind)
-                : Services.VendorUsbDriverInstaller.Restore(offer.NodeId, log, default));
+            bool ok = await System.Threading.Tasks.Task.Run(() =>
+            {
+                if (!bind) return Services.VendorUsbDriverInstaller.Restore(offer.NodeId, log, default);
+                if (Services.VendorUsbDriverInstaller.Bind(offer.Bind.Value, offer.NodeId, nodes, log, default, offer.From, offer.Kind))
+                    return true;
+                // A program that holds the device open refuses its restart.
+                // Windows then sets the package for the next start of
+                // Windows and keeps the old driver running, after a switch
+                // the user is told failed and, for a keyboard, with no Keep
+                // prompt (#549, measured with Lenovo Legion Toolkit holding
+                // a laptop keyboard). The package is taken back, so nothing
+                // changes at that start.
+                Services.VendorUsbDriverInstaller.Restore(offer.NodeId, log, default);
+                return false;
+            });
             string format = bind
                 ? (ok ? Strings.Instance.Status_DriverBound_Format : Strings.Instance.Status_DriverBindFailed_Format)
                 : (ok ? Strings.Instance.Status_DriverRestored_Format : Strings.Instance.Status_DriverRestoreFailed_Format);

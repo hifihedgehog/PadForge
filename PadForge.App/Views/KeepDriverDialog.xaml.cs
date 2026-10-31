@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
 using PadForge.Resources.Strings;
@@ -18,6 +19,8 @@ namespace PadForge.Views
     public partial class KeepDriverDialog : Wpf.Ui.Controls.FluentWindow
     {
         private readonly DispatcherTimer _timer;
+        private readonly int _seconds;
+        private long _deadline;
         private int _remaining;
         private bool _kept;
 
@@ -33,13 +36,18 @@ namespace PadForge.Views
             MessageText.Text = string.Format(mouse
                 ? Strings.Instance.Devices_DriverKeepMessage_Mouse_Format
                 : Strings.Instance.Devices_DriverKeepMessage_Format, deviceName);
-            _remaining = Math.Max(1, seconds);
+            _seconds = Math.Max(1, seconds);
+            _remaining = _seconds;
             ShowRemaining();
 
-            _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+            // Each tick reads the time left against the deadline, so a tick
+            // a busy UI thread delays never stretches the wait. Counting
+            // ticks, a mouse's prompt stated 15 seconds and closed after 19
+            // while the device pass registered its row.
+            _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(250) };
             _timer.Tick += (_, _) =>
             {
-                _remaining = CountDown(_remaining);
+                _remaining = RemainingAt(_deadline, Stopwatch.GetTimestamp());
                 if (_remaining <= 0)
                 {
                     _timer.Stop();
@@ -51,6 +59,8 @@ namespace PadForge.Views
             Loaded += (_, _) =>
             {
                 GiveBackButton.Focus();
+                // The wait runs from the moment the prompt shows.
+                _deadline = Stopwatch.GetTimestamp() + (long)_seconds * Stopwatch.Frequency;
                 _timer.Start();
             };
             Closed += (_, _) => _timer.Stop();
@@ -71,9 +81,10 @@ namespace PadForge.Views
             return dlg._kept;
         }
 
-        /// <summary>One tick of the countdown: the seconds left after it,
-        /// never below zero.</summary>
-        internal static int CountDown(int remaining) => Math.Max(0, remaining - 1);
+        /// <summary>The whole seconds left until <paramref name="deadline"/>,
+        /// rounded up and never below zero, both in Stopwatch ticks.</summary>
+        internal static int RemainingAt(long deadline, long now)
+            => now >= deadline ? 0 : (int)Math.Ceiling((deadline - now) / (double)Stopwatch.Frequency);
 
         private void ShowRemaining()
             => CountdownText.Text = string.Format(Strings.Instance.Devices_DriverKeepCountdown_Format, _remaining);
@@ -81,8 +92,8 @@ namespace PadForge.Views
         private void KeepButton_Click(object sender, RoutedEventArgs e)
         {
             // Kept only while the countdown still runs: a click that lands
-            // as it ends finds the window closing and changes nothing.
-            if (_remaining <= 0) return;
+            // after the time ran out changes nothing.
+            if (RemainingAt(_deadline, Stopwatch.GetTimestamp()) <= 0) return;
             _timer.Stop();
             _kept = true;
             DialogResult = true;

@@ -689,12 +689,17 @@ namespace PadForge.Tests
             Assert.Equal(15, PadForge.MainWindow.KeepDriverSeconds);
         }
 
+        /// <summary>The countdown reads the time left against a deadline, so
+        /// late ticks never stretch the stated wait.</summary>
         [Fact]
-        public void TheKeepPromptsCountdown_EndsAtZero()
+        public void TheKeepPromptsCountdown_ReadsTheTimeLeft_FromItsDeadline()
         {
-            Assert.Equal(14, PadForge.Views.KeepDriverDialog.CountDown(15));
-            Assert.Equal(0, PadForge.Views.KeepDriverDialog.CountDown(1));
-            Assert.Equal(0, PadForge.Views.KeepDriverDialog.CountDown(0));
+            long f = System.Diagnostics.Stopwatch.Frequency, deadline = 1000 * f;
+            Assert.Equal(15, PadForge.Views.KeepDriverDialog.RemainingAt(deadline, deadline - 15 * f));
+            Assert.Equal(15, PadForge.Views.KeepDriverDialog.RemainingAt(deadline, deadline - 14 * f - f / 5));
+            Assert.Equal(1, PadForge.Views.KeepDriverDialog.RemainingAt(deadline, deadline - f / 10));
+            Assert.Equal(0, PadForge.Views.KeepDriverDialog.RemainingAt(deadline, deadline));
+            Assert.Equal(0, PadForge.Views.KeepDriverDialog.RemainingAt(deadline, deadline + f));
         }
 
         /// <summary>The Keep prompt's way out is the undo. Give It Back is
@@ -724,8 +729,10 @@ namespace PadForge.Tests
             Assert.Equal(2, xaml.Split("<Button ").Length - 1);
             Assert.Contains("GiveBackButton.Focus();", code);
 
-            // The countdown's end closes the prompt unanswered.
-            int tick = code.IndexOf("_remaining = CountDown(_remaining);", StringComparison.Ordinal);
+            // The countdown's end closes the prompt unanswered, its time read
+            // against the deadline set when the prompt shows.
+            Assert.Contains("_deadline = Stopwatch.GetTimestamp() + (long)_seconds * Stopwatch.Frequency;", code);
+            int tick = code.IndexOf("_remaining = RemainingAt(_deadline, Stopwatch.GetTimestamp());", StringComparison.Ordinal);
             int ends = code.IndexOf("Close();", tick, StringComparison.Ordinal);
             Assert.True(tick > 0 && ends > tick, $"{tick} {ends}");
 
@@ -733,7 +740,7 @@ namespace PadForge.Tests
             // nothing once the countdown has run out.
             Assert.Equal(1, code.Split("_kept = true;").Length - 1);
             int click = code.IndexOf("private void KeepButton_Click(object sender, RoutedEventArgs e)", StringComparison.Ordinal);
-            int gate = code.IndexOf("if (_remaining <= 0) return;", click, StringComparison.Ordinal);
+            int gate = code.IndexOf("if (RemainingAt(_deadline, Stopwatch.GetTimestamp()) <= 0) return;", click, StringComparison.Ordinal);
             int kept = code.IndexOf("_kept = true;", StringComparison.Ordinal);
             Assert.True(click > 0 && gate > click && kept > gate, $"{click} {gate} {kept}");
             Assert.Contains("return dlg._kept;", code);

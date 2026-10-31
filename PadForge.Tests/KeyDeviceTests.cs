@@ -2355,5 +2355,24 @@ namespace PadForge.Tests
             Assert.Equal(descriptor, keys.Contains(65));
             Assert.Equal(paramY, keys.Contains(66));
         }
+
+        /// <summary>A key that alone triggers a macro on the keyboard's slot
+        /// is consumed with the mapped ones, and a chord's keys are not. A
+        /// macro pad key typed itself before its macro ran (discussion
+        /// #537).</summary>
+        [Fact]
+        public void AKeyThatAloneTriggersAMacroIsConsumed()
+        {
+            var keyboard = Device(A, InputDeviceType.Keyboard);
+            var id = Guid.Parse(A);
+            var macros = new[]
+            {
+                new MacroItem { TriggerDeviceGuid = id, TriggerRawButtons = new[] { 65 } },
+                new MacroItem { TriggerDeviceGuid = id, TriggerRawButtons = new[] { 17, 112 } },
+            };
+            var keys = new HashSet<int>();
+            InputService.CollectMacroTriggerKeys(keyboard, slot => slot == Slot ? macros : null, keys, new HashSet<int>());
+            Assert.Equal(new[] { 65 }, keys.ToArray());
+        }
     }
 }

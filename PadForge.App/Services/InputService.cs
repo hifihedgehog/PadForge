@@ -15138,6 +15138,9 @@ namespace PadForge.Services
 
                 // Collect all mapped virtual key codes / mouse buttons from this device's mappings.
                 CollectSuppressedInputs(ud, suppressedKeys, suppressedMouse);
+                CollectMacroTriggerKeys(ud,
+                    slot => (uint)slot < (uint)_mainVm.Pads.Count ? _mainVm.Pads[slot].Macros : null,
+                    suppressedKeys, suppressedMouse);
             }
 
             ApplyInputHooks(suppressedKeys, suppressedMouse);
@@ -15384,6 +15387,54 @@ namespace PadForge.Services
                 _hookManager = null;
                 PadForge.Common.Input.HandheldChordRuntime.OnHooksDetached();
             }
+        }
+
+        /// <summary>Adds the keys and buttons of this device that alone
+        /// trigger a macro on one of its slots (<see cref="MacroTriggerConsumesKey"/>).
+        /// Consume Trigger Buttons promises the trigger input is eaten, and a
+        /// keyboard key reaches programs through Windows, so only the hook
+        /// eats it. Before, a macro pad key typed itself and then ran its
+        /// macro (discussion #537). The apply passes each slot's macros, read
+        /// on the UI thread where every apply runs.</summary>
+        internal static void CollectMacroTriggerKeys(UserDevice ud, Func<int, IEnumerable<MacroItem>> macrosOfSlot,
+            HashSet<int> keys, HashSet<int> mouseButtons)
+        {
+            if (!ud.IsKeyboard && !ud.IsMouse) return;
+            var slots = SettingsManager.GetAssignedSlots(ud.InstanceGuid);
+            if (slots == null) return;
+            foreach (int slot in slots)
+            {
+                var macros = macrosOfSlot(slot);
+                if (macros == null) continue;
+                foreach (var macro in macros)
+                {
+                    if (!MacroTriggerConsumesKey(macro, ud.InstanceGuid, out int index)) continue;
+                    if (ud.IsKeyboard) keys.Add(index);
+                    else mouseButtons.Add(index);
+                }
+            }
+        }
+
+        /// <summary>Whether a macro's trigger is one key or button of
+        /// <paramref name="device"/> that the hook should eat, and its index.
+        /// The macro must be on, keep Consume Trigger Buttons on and read its
+        /// trigger (every mode but Always and Custom Expression, the rule the
+        /// engine's consume follows). A trigger of several inputs is left
+        /// alone: the hook cannot tell a chord from its first key, so eating
+        /// each key of Ctrl+F1 would eat Ctrl pressed by itself.</summary>
+        internal static bool MacroTriggerConsumesKey(MacroItem macro, Guid device, out int index)
+        {
+            index = -1;
+            if (macro == null || !macro.IsEnabled || !macro.ConsumeTriggerButtons) return false;
+            if (macro.TriggerMode is MacroTriggerMode.Always or MacroTriggerMode.CustomExpression) return false;
+            if (macro.TriggerButtons != 0 || macro.UsesPovTrigger || macro.UsesAxisTrigger) return false;
+            var entries = macro.GetTriggerInputEntries();
+            if (entries.Count != 1) return false;
+            var e = entries[0];
+            if (e.RawButton < 0 || e.DeviceGuid != device) return false;
+            if (!string.IsNullOrEmpty(e.Pov) || !string.IsNullOrEmpty(e.SourceDescriptor)) return false;
+            index = e.RawButton;
+            return true;
         }
 
         /// <summary>

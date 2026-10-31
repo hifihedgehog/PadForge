@@ -167,6 +167,18 @@ namespace PadForge.Common.Input
         private static readonly byte[] PlayerLedBits =
             { 0x00, 0x04, 0x0A, 0x15, 0x1B, 0x1F };
 
+        /// <summary>The charge as a bar of pips filling from the left, one
+        /// pip per fifth: 1-20% lights one, 81-100% all five, 0% none. Bit
+        /// 0 is the leftmost LED (DualSense-Windows DS5State.h,
+        /// DS5W_OSTATE_PLAYER_LED_LEFT 0x01 through _RIGHT 0x10). An
+        /// unknown charge arrives as 100, as it does for the Battery
+        /// lightbar.</summary>
+        internal static byte BatteryPips(byte batteryPercent)
+        {
+            int lit = Math.Clamp((batteryPercent + 19) / 20, 0, 5);
+            return (byte)((1 << lit) - 1);
+        }
+
         // DS5 firmware trigger mode opcodes. The simple set (0x01/0x02/0x06)
         // takes scalar parameters; the official set (0x21/0x26) takes a
         // 10-zone bitmap + packed 3-bit strengths and is what
@@ -372,6 +384,10 @@ namespace PadForge.Common.Input
                 // via the override branch above.
                 playerIndicator = (byte)(PlayerIndicatorNoFade
                     | (playerNumber > 0 ? PlayerIdentityDefaults.PipsFor(playerNumber) : (byte)0));
+            }
+            else if (cfg.PlayerLedMode == PlayerLedMode.Battery)
+            {
+                playerIndicator = (byte)(PlayerIndicatorNoFade | BatteryPips(batteryPercent));
             }
             else
             {

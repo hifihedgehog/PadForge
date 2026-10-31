@@ -4165,6 +4165,7 @@ namespace PadForge.Services
                             {
                                 PlayerLedMode.All => "PLED ALL",
                                 PlayerLedMode.Off => "PLED OFF",
+                                PlayerLedMode.Battery => "PLED BATT",
                                 _ => "PLED P" + (int)cfg.PlayerLedMode,
                             });
                         if (cfg.PlayerLedBrightness != PlayerLedBrightness.High)

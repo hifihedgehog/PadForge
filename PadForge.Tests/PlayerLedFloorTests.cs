@@ -73,6 +73,25 @@ namespace PadForge.Tests
             Assert.Equal((byte)(0x20 | 0x0A), (byte)fields["playerIndicator"]);
         }
 
+        /// <summary>Battery Level fills the row from the left, one pip per
+        /// fifth of the charge (0x01 is the leftmost LED).</summary>
+        [Theory]
+        [InlineData(0, 0x00)]
+        [InlineData(1, 0x01)]
+        [InlineData(20, 0x01)]
+        [InlineData(21, 0x03)]
+        [InlineData(50, 0x07)]
+        [InlineData(80, 0x0F)]
+        [InlineData(81, 0x1F)]
+        [InlineData(100, 0x1F)]
+        public void Ds5_BatteryMode_ShowsTheChargeAsABarFromTheLeft(byte percent, byte pips)
+        {
+            var cfg = UntouchedConfig();
+            cfg.PlayerLedMode = PlayerLedMode.Battery;
+            var fields = Ds5EffectSynthesizer.BuildFields(cfg, batteryPercent: percent, playerNumber: 3);
+            Assert.Equal((byte)(0x20 | pips), (byte)fields["playerIndicator"]);
+        }
+
         [Fact]
         public void Ds5_ConfiguredLightbarMode_BeatsTheFloor()
         {

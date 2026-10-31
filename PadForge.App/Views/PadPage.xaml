@@ -10602,6 +10602,27 @@
                                                 </DataTemplate>
                                             </ComboBoxItem.ContentTemplate>
                                         </ComboBoxItem>
+                                        <!-- Battery: a bar filling from the left, one pip
+                                             per fifth of the charge
+                                             (Ds5EffectSynthesizer.BatteryPips). The label is
+                                             the Guide light's Battery Level string. -->
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_GuideLed_Battery, Source={x:Static strings:Strings.Instance}}"
+                                                      Tag="{x:Static vm:PlayerLedMode.Battery}">
+                                            <ComboBoxItem.ContentTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,6,0">
+                                                            <Ellipse Style="{StaticResource LedPipOn}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOn}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOn}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOff}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOff}"/>
+                                                        </StackPanel>
+                                                        <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBoxItem.ContentTemplate>
+                                        </ComboBoxItem>
                                     </ComboBox>
                                     <ui:Button Command="{Binding DeviceConfig.ResetPlayerLedModeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetPlayerPattern, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>

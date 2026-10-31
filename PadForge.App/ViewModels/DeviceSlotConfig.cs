@@ -1908,6 +1908,10 @@ namespace PadForge.ViewModels
         /// controller's player number. Appended after All. Macro cycle
         /// CSVs persist enum ints, so existing values never renumber.</summary>
         PlayerNumber = 6,
+        /// <summary>The pips show the battery charge as a bar filling from
+        /// the left, one pip per fifth (Ds5EffectSynthesizer.BatteryPips).
+        /// Appended after PlayerNumber for the same reason.</summary>
+        Battery = 7,
     }
 
     /// <summary>Player indicator brightness at byte 42 (ledBrightness).

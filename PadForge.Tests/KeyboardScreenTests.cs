@@ -732,6 +732,8 @@ namespace PadForge.Tests
         private sealed class StuckG19Link : IG19Link
         {
             public readonly ManualResetEventSlim Release = new();
+            /// <summary>Set once the reader is inside its read.</summary>
+            public readonly ManualResetEventSlim Reading = new();
             public int Writes;
             public bool FailWrites;
             public volatile bool Disposed;
@@ -746,6 +748,7 @@ namespace PadForge.Tests
             public G19Read ReadKeys(byte[] buffer, out int got)
             {
                 got = 0;
+                Reading.Set();
                 Release.Wait(TimeSpan.FromSeconds(10));
                 return G19Read.Error;
             }
@@ -772,6 +775,11 @@ namespace PadForge.Tests
                 var nodes = G19Nodes("WINUSB");
                 screen.Step(frame, 1, true, 0, nodes);
                 Assert.Single(links);
+                // The reader is inside its read before the write fails. A
+                // reader thread that starts late under a loaded run sees the
+                // screen closed, leaves without reading, and its link is
+                // freed, which is the close this test does not mean.
+                Assert.True(links[0].Reading.Wait(TimeSpan.FromSeconds(10)), "the reader never read");
 
                 // A write fails: the screen closes, and its reader stays
                 // stuck past the wait.

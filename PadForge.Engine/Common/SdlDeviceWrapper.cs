@@ -329,8 +329,6 @@ namespace PadForge.Engine
         /// <summary>The original SDL identity path, before native-path enrichment.</summary>
         public string SdlDevicePath { get; private set; } = string.Empty;
 
-        public GameInputDeviceMetadata GameInputInfo { get; private set; }
-
         /// <summary>SDL joystick type classification.</summary>
         public SDL_JoystickType JoystickType { get; private set; } = SDL_JoystickType.SDL_JOYSTICK_TYPE_UNKNOWN;
 
@@ -353,12 +351,12 @@ namespace PadForge.Engine
         /// <summary>Which SDL Windows backend produced this joystick, read
         /// from the GUID's driver-signature byte (SDL_CreateJoystickGUID puts
         /// it at data[14], hex chars 28-29 of the GUID string): 'x' XInput,
-        /// 'h' HIDAPI, 'r' RawInput, 'w' WGI, 'v' a virtual joystick
-        /// (SDL_virtualjoystick.c, the joysticks PadForge's own readers
-        /// attach), and DirectInput leaves it zero.
+        /// 'h' HIDAPI, 'v' a virtual joystick (SDL_virtualjoystick.c, the
+        /// joysticks PadForge's own readers attach), and DirectInput leaves
+        /// it zero. Any other byte prints as hex.
         /// The name cannot tell a pad's views apart (#395: one Vader 5 Pro
         /// arrives as three or four joysticks, two of them named alike).</summary>
-        public string Backend => GameInputInfo != null ? "gameinput" : BackendFromGuid(SdlGuid);
+        public string Backend => BackendFromGuid(SdlGuid);
 
         public static string BackendFromGuid(string sdlGuid)
         {
@@ -369,10 +367,7 @@ namespace PadForge.Engine
             {
                 'x' => "xinput",
                 'h' => "hidapi",
-                'r' => "rawinput",
-                'w' => "wgi",
                 'v' => "virtual",
-                'g' => "gameinput",
                 0 => "dinput",
                 _ => $"0x{sig:X2}",
             };
@@ -445,7 +440,6 @@ namespace PadForge.Engine
 
             // Close any previously opened device on this wrapper.
             CloseInternal();
-            GameInputInfo = null;
             SdlDevicePath = string.Empty;
 
             // Try Gamepad first for better mapping support. A Bliss-Box port
@@ -484,12 +478,6 @@ namespace PadForge.Engine
             SdlGuid = GetJoystickGUIDString(Joystick);
 
             uint props = SDL_GetJoystickProperties(Joystick);
-            GameInputInfo = GameInputDeviceMetadata.Read(props);
-            if (GameInputInfo != null)
-            {
-                DevicePath = GameInputInfo.HardwarePath(SdlDevicePath);
-                SdlDiagLog.WriteLine(GameInputInfo.DiagnosticText);
-            }
 
             // Always capture the raw joystick button/axis counts before any gamepad
             // override pins NumAxes/NumButtons to the standardized layout.

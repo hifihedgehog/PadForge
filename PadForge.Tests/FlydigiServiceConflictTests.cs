@@ -137,8 +137,6 @@ namespace PadForge.Tests
         [Theory]
         [InlineData("78", "xinput")]
         [InlineData("68", "hidapi")]
-        [InlineData("72", "rawinput")]
-        [InlineData("77", "wgi")]
         [InlineData("76", "virtual")]
         [InlineData("00", "dinput")]
         [InlineData("ab", "0xAB")]

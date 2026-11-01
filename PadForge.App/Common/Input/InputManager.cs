@@ -63,9 +63,9 @@ namespace PadForge.Common.Input
         /// itself (PsMoveDirectService / the DS3 service's navigation
         /// profile) and feeds SDL VIRTUAL joysticks, which are exempt: the
         /// virtual backend never calls SDL_ShouldIgnoreJoystick
-        /// (SDL_joystick.c:3845). On Windows its callers are the DirectInput,
-        /// RawInput, WGI, XInput, GameInput and HIDAPI backends and the
-        /// fork's Bluetooth LE, RFCOMM, serial, DJI network and iCade drivers
+        /// (SDL_joystick.c:3853). On Windows its callers are the DirectInput,
+        /// XInput, GameInput and HIDAPI backends and the fork's Bluetooth
+        /// LE, RFCOMM, serial, DJI network and iCade drivers
         /// (hifihedgehog/SDL#33).
         ///   0x054c/0x03d5: PS Move (ZCM1), 0x054c/0x0c5e: PS Move (ZCM2),
         ///   0x054c/0x042f: Navigation controller.</summary>
@@ -906,8 +906,6 @@ namespace PadForge.Common.Input
                 // Allow SDL3 to enumerate XInput controllers (Xbox, etc.).
                 // SDL_XINPUT_ENABLED defaults to 1, and setting it keeps that
                 // intent explicit against a changed upstream default.
-                // Do NOT set SDL_HINT_JOYSTICK_RAWINPUT. It conflicts with
-                // XInput enumeration and prevents Xbox controllers from appearing.
                 SDL_SetHint(SDL_HINT_XINPUT_ENABLED, "1");
 
                 // #395: replay the Flydigi driver switch. The previous SDL_Quit
@@ -1805,9 +1803,9 @@ namespace PadForge.Common.Input
                 _personaAudioOwner = new AudioPassthroughService.PersonaOwner();
 
             // Virtual-controller filtering happens in the two forks PadForge
-            // ships. The SDL3 fork's HIDAPI, DirectInput and RawInput
-            // backends walk each HID's PnP ancestor chain for "HIDMaestro"
-            // and skip matches. XInput slots come from the OpenXInput fork's
+            // ships. The SDL3 fork's HIDAPI and DirectInput backends walk
+            // each HID's PnP ancestor chain for "HIDMaestro" and skip matches
+            // (hid.c:1344, SDL_dinputjoystick.c:510). XInput slots come from the OpenXInput fork's
             // xinput1_4.dll, which SDL loads in place of the system one: its
             // enumeration skips XUSB interfaces backed by a HIDMaestro virtual,
             // so they never take a user index. No per-process slot tracking,

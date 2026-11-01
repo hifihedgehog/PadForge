@@ -15,15 +15,15 @@ namespace PadForge.Common.Input
     /// unchanged.
     ///
     /// Why a direct reader at all: a SpaceMouse enumerates as HID usage page
-    /// 0x01 Generic Desktop, usage 0x08 Multi-axis Controller. SDL's raw-input
-    /// backend subscribes to the GAMEPAD usage only
-    /// (SDL_rawinputjoystick.c:173-179, MULTIAXISCONTROLLER commented out), and
-    /// the hidapi enumeration path that would accept it (SDL_hidapi.c:1204) has
-    /// no 3Dconnexion driver, so the device is never turned into an SDL
-    /// joystick. Same shape as the Bluetooth DS3 before Ds3DirectService, and
-    /// this service follows that template (monitor loop, virtual attach,
-    /// serialized teardown) with SonyHeadsetMotionDevice's overlapped-read
-    /// pattern for the HID transport.
+    /// 0x01 Generic Desktop, usage 0x08 Multi-axis Controller. SDL's HIDAPI
+    /// enumeration admits that usage (SDL_hidapi.c:1112-1114) but has no
+    /// 3Dconnexion driver to open it. SDL's DirectInput backend takes any HID
+    /// game controller DirectInput lists that no other driver claims
+    /// (SDL_dinputjoystick.c:497-515), and how DirectInput classes a puck has
+    /// not been measured. The service follows Ds3DirectService's template
+    /// (monitor loop, virtual attach, serialized teardown) with
+    /// SonyHeadsetMotionDevice's overlapped-read pattern for the HID
+    /// transport.
     ///
     /// Concurrency with 3DxWare: Windows HIDClass gives every open file object
     /// its own input-report ring buffer (HidD_SetNumInputBuffers is per-handle),

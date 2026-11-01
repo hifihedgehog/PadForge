@@ -43,8 +43,6 @@ namespace SDL3
         // ─────────────────────────────────────────────
 
         public const string SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS = "SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS";
-        public const string SDL_HINT_JOYSTICK_RAWINPUT = "SDL_JOYSTICK_RAWINPUT";
-        public const string SDL_HINT_JOYSTICK_GAMEINPUT = "SDL_JOYSTICK_GAMEINPUT";
         // SDL 3 kept SDL2's XInput switch name. SDL_JOYSTICK_XINPUT is SDL's
         // build macro, not a hint, and setting it did nothing.
         public const string SDL_HINT_XINPUT_ENABLED = "SDL_XINPUT_ENABLED";

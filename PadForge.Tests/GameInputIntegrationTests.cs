@@ -14,51 +14,31 @@ namespace PadForge.Tests;
 [Collection("SettingsManagerStatics")]
 public class GameInputIntegrationTests
 {
+    /// <summary>A device's instance is keyed by its identity path: the same
+    /// path keeps it across SDL instance ids, and another path makes another
+    /// instance.</summary>
     [Fact]
-    public void MetadataCopiesNativePropertiesWithoutReplacingTheIdentityPath()
+    public void TheIdentityPathKeepsTheInstanceAcrossSdlInstances()
+    {
+        const string path = @"\\?\HID#VID_045E&PID_0B00#controller#{test}";
+        Guid stable = SdlDeviceWrapper.BuildInstanceGuid(path, 0x045e, 0x0b00, 1);
+        Assert.Equal(stable, SdlDeviceWrapper.BuildInstanceGuid(path, 0x045e, 0x0b00, 99));
+        Assert.NotEqual(stable, SdlDeviceWrapper.BuildInstanceGuid(@"\\?\HID#VID_045E&PID_0B00#other#{test}", 0x045e, 0x0b00, 1));
+    }
+
+    /// <summary>A missing string property returns the caller's default from
+    /// managed memory, not a pointer SDL handed back
+    /// (SDL3Minimal.SDL_GetStringProperty).</summary>
+    [Fact]
+    public void AMissingStringPropertyReturnsTheManagedDefault()
     {
         uint props = CreateProperties();
         Assert.NotEqual(0u, props);
-        GameInputDeviceMetadata metadata;
-        const string identity = "0123456789ABCDEF0123456789ABCDEF";
-        const string path = @"\\?\HID#VID_045E&PID_0B00#controller#{test}";
         try
         {
-            Set(props, "device_id", identity);
-            Set(props, "root_id", "ROOT");
-            Set(props, "pnp_path", path);
-            Set(props, "container_id", Guid.NewGuid().ToString());
-            Set(props, "firmware", "5.23.0.0");
-            Set(props, "runtime_path", @"C:\Windows\System32\GameInputRedist.dll");
-            Set(props, "runtime_version", "3.3.221.0");
-            Assert.True(SetNumberProperty(props, "SDL.joystick.gameinput.supported_layout", 0x3c000000));
-            metadata = GameInputDeviceMetadata.Read(props);
-        }
-        finally { DestroyProperties(props); }
-        Assert.NotNull(metadata);
-        Assert.Equal(identity, metadata.DeviceId);
-        Assert.Equal(path, metadata.HardwarePath(identity));
-        Assert.Equal(0x3c000000u, metadata.SupportedLayout);
-        Assert.Contains("runtime=3.3.221.0", metadata.DiagnosticText);
-        Assert.Equal("gameinput", SdlDeviceWrapper.BackendFromGuid(new string('0', 28) + "67" + "00"));
-        Guid stable = SdlDeviceWrapper.BuildInstanceGuid(identity, 0x045e, 0x0b00, 1);
-        Assert.Equal(stable, SdlDeviceWrapper.BuildInstanceGuid(identity, 0x045e, 0x0b00, 99));
-        Assert.NotEqual(stable, SdlDeviceWrapper.BuildInstanceGuid(metadata.NativePath, 0x045e, 0x0b00, 1));
-        Assert.Equal(identity, (metadata with { NativePath = "" }).HardwarePath(identity));
-    }
-
-    [Fact]
-    public void NativePathAloneDoesNotMakeAnotherBackendGameInput()
-    {
-        uint props = CreateProperties();
-        try
-        {
-            Set(props, "pnp_path", @"\\?\HID#unrelated");
             Assert.Equal("managed fallback", SDL3.SDL.SDL_GetStringProperty(props, "missing", "managed fallback"));
-            Assert.Null(GameInputDeviceMetadata.Read(props));
         }
         finally { DestroyProperties(props); }
-        Assert.Null(GameInputDeviceMetadata.Read(0));
     }
 
     [Theory]
@@ -210,17 +190,8 @@ public class GameInputIntegrationTests
         }
     }
 
-    private static void Set(uint props, string key, string value) =>
-        Assert.True(SetStringProperty(props, "SDL.joystick.gameinput." + key, value));
-
     [DllImport("SDL3", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_CreateProperties")]
     private static extern uint CreateProperties();
     [DllImport("SDL3", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_DestroyProperties")]
     private static extern void DestroyProperties(uint props);
-    [DllImport("SDL3", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetStringProperty")]
-    [return: MarshalAs(UnmanagedType.U1)]
-    private static extern bool SetStringProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
-    [DllImport("SDL3", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetNumberProperty")]
-    [return: MarshalAs(UnmanagedType.U1)]
-    private static extern bool SetNumberProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, long value);
 }

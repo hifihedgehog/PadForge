@@ -205,18 +205,16 @@ namespace PadForge.Engine
         ///
         /// <para>A HID interface or collection. SDL's HIDAPI enumeration
         /// skips it (hid.c:1344), and so does its DirectInput backend
-        /// (SDL_dinputjoystick.c:542), when a hardware id of the HID node
+        /// (SDL_dinputjoystick.c:510), when a hardware id of the HID node
         /// or one of its four parents names HIDMaestro
-        /// (hid_internal_is_hidmaestro_device, hid.c:1116-1139). The host
+        /// (hid_internal_is_hidmaestro_device, hid.c:1069-1143). The host
         /// controller is three parents above the HID node of a
         /// single-interface USB device and four above a composite's, so
-        /// neither is read. The Raw Input backend makes the same test
-        /// (SDL_rawinputjoystick.c:894) and stays off unless an application
-        /// turns it on (line 1035), which PadForge does not.</para>
+        /// neither is read.</para>
         ///
         /// <para>An XInput interface, the &amp;IG_ node HIDAPI leaves to
         /// XInput (hid.c:1334) and DirectInput passes over
-        /// (SDL_dinputjoystick.c:545). OpenXInput lists XUSB interfaces and
+        /// (SDL_dinputjoystick.c:513). OpenXInput lists XUSB interfaces and
         /// gives no slot to one when a hardware id of its node or one of
         /// that node's three parents names HIDMaestro (OpenXinput.cpp:1103
         /// and 1123, IsHidMaestroInterface). A pad xusb22 serves carries

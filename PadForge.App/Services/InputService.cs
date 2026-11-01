@@ -952,6 +952,7 @@ namespace PadForge.Services
             // Subscribe to engine events (raised on background thread).
             _inputManager.DevicesUpdated += OnDevicesUpdated;
             _inputManager.TabletCaptureChanged += OnTabletCaptureChanged;
+            _inputManager.TouchpadCaptureChanged += OnTouchpadCaptureChanged;
             _inputManager.FrequencyUpdated += OnFrequencyUpdated;
             _inputManager.ErrorOccurred += OnErrorOccurred;
             _inputManager.ErrorResolved += OnErrorResolved;
@@ -2633,6 +2634,7 @@ namespace PadForge.Services
             {
                 _inputManager.DevicesUpdated -= OnDevicesUpdated;
                 _inputManager.TabletCaptureChanged -= OnTabletCaptureChanged;
+                _inputManager.TouchpadCaptureChanged -= OnTouchpadCaptureChanged;
                 _inputManager.FrequencyUpdated -= OnFrequencyUpdated;
                 _inputManager.ErrorOccurred -= OnErrorOccurred;
                 _inputManager.ErrorResolved -= OnErrorResolved;
@@ -13944,7 +13946,8 @@ namespace PadForge.Services
             chainOf ??= HidHideController.ChainInstanceIds;
             foreach (var ud in snapshot)
             {
-                if (ud == null || ud.HidHideEnabled) continue;
+                // A touchpad PadForge reads alone is hidden, not left visible.
+                if (ud == null || ud.HidHideEnabled || ud.TouchpadOnlyInPadForge) continue;
                 bool offline = !ud.IsOnline;
                 if (offline && rowsCurrent) continue;
                 string id = HidHideController.DevicePathToInstanceId(ud.DevicePath);
@@ -14553,7 +14556,7 @@ namespace PadForge.Services
             bool hidHideUp = HidHideController.TryProbe(out int hidHideErr);
             int wantHiding = 0;
             foreach (var ud in snapshot)
-                if (ud.HidHideEnabled && !string.IsNullOrEmpty(ud.DevicePath) && !ServedByPadForgeDriver(ud)) wantHiding++;
+                if (AppliesHidHideFlag(ud) || ud.TouchpadOnlyInPadForge && IsTouchpadCollectionRow(ud)) wantHiding++;
             if (!hidHideUp && wantHiding > 0)
             {
                 PadForge.Engine.SdlDiagLog.WriteLine(
@@ -14671,6 +14674,7 @@ namespace PadForge.Services
                 _hidHideInverseOn = inverse;
                 bool standDown = inverse || _hidHideRefusedPadForge;
                 PrepareTabletVisibilityChanges(snapshot, standDown);
+                PrepareTouchpadVisibilityChanges(snapshot, standDown);
 
                 // Collect all desired blacklist IDs first, then sync atomically
                 // to avoid a window where devices briefly become visible.
@@ -14699,6 +14703,9 @@ namespace PadForge.Services
                 // A tablet's collection has its own capture and restart path
                 // (RefreshTabletCapture), so the release below leaves it alone.
                 var tabletIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                // A touchpad PadForge reads alone has its own capture and
+                // restart path too (InputService.Touchpads.cs).
+                var touchpadIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
                 // Stood down, no device is hidden, and the sync below takes
                 // back every entry PadForge wrote.
@@ -14707,7 +14714,7 @@ namespace PadForge.Services
                     // A device PadForge's own driver serves is already gone
                     // from Windows, and its node is no HID device for HidHide
                     // to cloak (#549).
-                    if (ud.HidHideEnabled && !string.IsNullOrEmpty(ud.DevicePath) && !ServedByPadForgeDriver(ud))
+                    if (AppliesHidHideFlag(ud))
                     {
                         string instanceId = HidHideController.DevicePathToInstanceId(ud.DevicePath);
 
@@ -14943,6 +14950,8 @@ namespace PadForge.Services
                     }
                 }
 
+                if (!standDown) AddTouchpadHides(snapshot, desiredIds, touchpadIds, keepOut, hidLog);
+
                 // Sync the diff against the DRIVER's list, never clearing the
                 // blacklist. False means the read or the write failed and the
                 // managed set was left as it was, so the next apply retries.
@@ -15055,8 +15064,10 @@ namespace PadForge.Services
                         string listed = listNow == null ? "unreadable"
                             : !string.IsNullOrEmpty(nativeSelf) && listNow.Contains(nativeSelf, StringComparer.OrdinalIgnoreCase) ? "yes" : "no";
                         PrepareTabletVisibilityChanges(snapshot, hideNone: true);
+                        PrepareTouchpadVisibilityChanges(snapshot, hideNone: true);
                         desiredIds.Clear();
                         synced = HidHideController.SyncManagedDevices(desiredIds, out _, out var undone);
+                        removed.AddRange(undone);
                         hidLog.Add($"HIDHIDE REFUSED: HidHide would not let PadForge open {probed} (err={probeError}) after hiding it. "
                             + $"PadForge took back {undone.Count} entr{(undone.Count == 1 ? "y" : "ies")} (write={(synced ? "ok" : "REFUSED")}) and hides nothing until the whitelist changes or the inverse application cloak goes off. "
                             + $"native={nativeSelf ?? "unknown"} listed={listed}");
@@ -15078,7 +15089,7 @@ namespace PadForge.Services
                 // then, or a receiver carrying another controller, stays
                 // connected.
                 if (synced && !refusedNow && _hidHideReachConfirmed && added.Count > 0)
-                    _controllerRelease.Release(added.Where(id => !tabletIds.Contains(id)));
+                    _controllerRelease.Release(added.Where(id => !tabletIds.Contains(id) && !touchpadIds.Contains(id)));
 
                 // #391: read the driver's list back. A write the caller
                 // believes landed but the driver dropped is the one failure
@@ -15088,6 +15099,7 @@ namespace PadForge.Services
                 var missing = HidHideController.MissingFromBlacklist(desiredIds.Where(id => !held.Contains(id)));
                 bool active = HidHideController.GetActive();
                 RefreshTabletCapture(snapshot, synced, added);
+                RefreshTouchpadCapture(snapshot, synced, added, removed);
                 hidLog.Add(
                     $"HIDHIDE sync desired={desiredIds.Count} added={added.Count} removed={removed.Count} active={active}"
                     + (synced ? "" : " write=REFUSED")
@@ -15370,8 +15382,10 @@ namespace PadForge.Services
         public void RemoveDeviceHiding(bool keepCloaks = false)
         {
             var tabletInputs = _inputManager?.GetTabletDevices() ?? Array.Empty<PadForge.Engine.Tablets.WindowsTabletDevice>();
+            var touchpadCaptures = _inputManager?.GetTouchpadCaptures() ?? Array.Empty<PadForge.Engine.Touchpads.TouchpadCapture>();
             bool retiring = System.Threading.Volatile.Read(ref _stopped) != 0;
             foreach (var tablet in tabletInputs) tablet.PrepareForUnhide(retireCapture: retiring);
+            foreach (var capture in touchpadCaptures) capture.PrepareForUnhide(retireCapture: retiring);
             // ── HidHide ──
             if (!keepCloaks)
             {
@@ -15384,6 +15398,8 @@ namespace PadForge.Services
                 _managedWhitelistDosPaths.Clear();
                 FinishTabletRelease(tabletInputs);
             }
+            // Kept cloaks or not: a touchpad is often the only pointer.
+            ReleaseTouchpads(touchpadCaptures, keepCloaks);
 
             // ── Input hooks ──
             if (_hookManager != null)
@@ -15413,6 +15429,15 @@ namespace PadForge.Services
             => ud != null
                && (PadForge.Common.Input.WinUsbKeyboards.KeyboardTakeovers.IsTakenOver(ud.InstanceGuid)
                    || VendorUsbDriverInstaller.IsOwnInterfacePath(ud.DevicePath));
+
+        /// <summary>Whether a row's Hide from Games flag reaches HidHide. A
+        /// row PadForge reads over its own driver has nothing to hide, and a
+        /// touchpad's two rows hide through Use Only in PadForge instead
+        /// (InputService.Touchpads.cs): a touchpad hidden with nothing
+        /// reading it was dead in Windows and in PadForge alike.</summary>
+        internal static bool AppliesHidHideFlag(UserDevice ud)
+            => ud != null && ud.HidHideEnabled && !string.IsNullOrEmpty(ud.DevicePath)
+               && !ServedByPadForgeDriver(ud) && !ud.IsTouchpad && !IsTouchpadMouseRow(ud);
 
         internal static void CollectMacroTriggerKeys(UserDevice ud, Func<int, IEnumerable<MacroItem>> macrosOfSlot,
             HashSet<int> keys, HashSet<int> mouseButtons)
@@ -15887,6 +15912,8 @@ namespace PadForge.Services
             row.HasTouchpad = ud.HasTouchpad;
             row.TabletCaptureState = ud.Device is PadForge.Engine.Tablets.WindowsTabletDevice tablet
                 ? tablet.CaptureState : PadForge.Engine.Tablets.TabletCaptureState.Offline;
+            row.TouchpadOnlyInPadForge = ud.TouchpadOnlyInPadForge;
+            row.TouchpadCaptureState = TouchpadCaptureStateOf(ud);
             row.DevicePath = ud.DevicePath;
 
             // Resolve the HID instance path for display.

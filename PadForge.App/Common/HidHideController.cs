@@ -640,6 +640,29 @@ namespace PadForge.Common
             }
         }
 
+        /// <summary>Removes these of PadForge's entries and leaves its others,
+        /// for a touchpad PadForge stops reading while the cloaks it keeps
+        /// between launches stay. Entries of other tools and ids PadForge
+        /// did not write are untouched. False when the list could not be
+        /// read or the write was refused.</summary>
+        public static bool RemoveManaged(IEnumerable<string> ids)
+        {
+            lock (_lock)
+            {
+                var drop = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach (var id in ids ?? Array.Empty<string>())
+                    if (!string.IsNullOrEmpty(id) && _managedDeviceIds.Contains(id)) drop.Add(id);
+                if (drop.Count == 0) return true;
+                var list = GetBlacklist();
+                // A failed read is never written back, as in RemoveManagedDevices.
+                if (list == null) return false;
+                list.RemoveAll(id => drop.Contains(id));
+                if (!SetBlacklist(list)) return false;
+                foreach (var id in drop) _managedDeviceIds.Remove(id);
+                return true;
+            }
+        }
+
         /// <summary>
         /// Syncs the blacklist to match the desired set of managed device IDs.
         /// Only adds/removes the diff and never clears the entire blacklist,

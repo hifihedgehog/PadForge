@@ -765,6 +765,7 @@
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>Очитавај музичке тастере</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>Репродукуј вибрацију на овом мишу</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Врати Windows драјвер</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>Врати Windows-у</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Пређи на PadForge драјвер</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge пребацује овај контролер на Windows WinUSB драјвер да би могао да очитава Chatpad. Контролер тада ради само док PadForge ради, а игре га виде преко PadForge виртуелног контролера. Сваки прикључени контролер овог модела прелази заједно са њим и сваки мора поново да се додели свом слоту. Windows драјвер можете вратити са ове странице у било ком тренутку.</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge пребацује овај пријемник на Windows WinUSB драјвер да би могао да очитава Chatpad уређаје и uDraw таблете. Сваки контролер и слушалице на пријемнику прелазе заједно са њим, раде само док PadForge ради и морају поново да се доделе свом слоту. Windows драјвер можете вратити са ове странице у било ком тренутку.</value></data>
@@ -782,6 +783,7 @@
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Користи само у PadForge-у</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge пребацује ову тастатуру на Windows WinUSB драјвер и сам је очитава. Windows тада престаје да куца помоћу ње у свим програмима, чак и када је PadForge затворен, док се њен Windows драјвер не врати са ове странице. Њена мапирања и макрои раде док PadForge ради.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge пребацује овај миш на Windows WinUSB драјвер и сам га очитава. Windows тада престаје да помера курсор помоћу њега у свим програмима, чак и када је PadForge затворен, док се његов Windows драјвер не врати са ове странице. Његова мапирања и макрои раде док PadForge ради.</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>PadForge сакрива овај тачпед од система Windows помоћу HidHide и сам га очитава. Док механизам ради, он не помера курсор и не кликће нити скролује ништа ни у једном програму, а његова мапирања раде у програму PadForge. Windows га добија назад када се механизам заустави или се PadForge затвори.</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>С њом Windows напуштају: {0}.</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>миш</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>тастатура</value></data>
@@ -791,17 +793,31 @@
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>њена веза са софтвером произвођача</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>остале контроле на истој вези</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>тастатура или миш</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>миш или тачпед</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Након промене, PadForge пита да ли желите да је задржите и враћа тастатуру систему Windows ако нико не одговори у року од {0} секунди.</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>Након промене, PadForge пита да ли желите да га задржите и враћа миш систему Windows ако нико не одговори у року од {0} секунди.</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>Након промене, PadForge пита да ли желите да га задржите и враћа тачпед систему Windows ако нико не одговори у року од {0} секунди.</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Задржати ову тастатуру у програму PadForge?</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>Задржати овај миш у програму PadForge?</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>Задржати овај тачпед у програму PadForge?</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows више не куца помоћу уређаја {0}. Ако сте због тога остали без исправне тастатуре или миша, не радите ништа: PadForge ће је вратити систему Windows када одбројавање истекне.</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows више не помера курсор помоћу уређаја {0}. Ако сте због тога остали без исправне тастатуре или миша, не радите ништа: PadForge ће га вратити систему Windows када одбројавање истекне.</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows више не помера курсор помоћу уређаја {0}. Ако сте због тога остали без исправне тастатуре или миша, не радите ништа: PadForge ће га вратити систему Windows када одбројавање истекне.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Преостало секунди до враћања: {0}</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Задржи</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Врати</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Прво искључите остале тастатуре овог модела. Windows одједном пребацује сваку прикључену тастатуру на PadForge драјвер и престаје да куца помоћу сваке од њих.</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} поново користи свој Windows драјвер јер промена није задржана.</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>Промена улаза за {0}…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>Само PadForge сада очитава {0}.</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>PadForge није успео да преузме {0} од система Windows.</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} је поново код система Windows.</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>{0} није могао да буде враћен систему Windows.</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>{0} је поново код система Windows јер промена није задржана.</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>PadForge није успео да очита {0}, па га Windows поново има.</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>Инсталирајте HidHide да бисте користили тачпед само у програму PadForge.</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>Укључите „Сакриј уређаје од игара“ у подешавањима да бисте користили тачпед само у програму PadForge.</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>Покрените механизам да бисте користили тачпед само у програму PadForge.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> на мрежи / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> укупно</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Уклони овај уређај и његова подешавања</value></data>
@@ -4144,8 +4160,10 @@
   <data name="Tablet_InputShared" xml:space="preserve"><value>Дељени улаз</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>Промена улаза</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>Чека се улаз са табле</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>Чека се улаз са тачпеда</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>Преузео PadForge</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>Улаз са табле није доступан</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>Улаз са тачпеда није доступан</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>Није могуће преузети {0}</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>Док механизам ради, скривање уређаја поново покреће улаз оловке табле и очитава га само у програму PadForge. Искључивање скривања враћа га систему Windows. Задржано скривање држи изворни показивач искљученим и након затварања програма PadForge.</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>Бочно дугме оловке</value></data>

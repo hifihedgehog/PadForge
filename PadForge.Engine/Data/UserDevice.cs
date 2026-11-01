@@ -586,6 +586,16 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public bool ConsumeInputEnabled { get; set; }
 
+        /// <summary>Whether PadForge reads this precision touchpad alone while
+        /// its engine runs: HidHide hides the touchpad's collection from every
+        /// other program, Windows included, and PadForge opens it itself
+        /// (TouchpadCapture). Set on the touchpad's row by Use Only in PadForge,
+        /// after its confirm and Keep prompt. Kept apart from
+        /// <see cref="HidHideEnabled"/>, which a touchpad's rows ignore: hiding
+        /// a touchpad with nothing reading it left it dead.</summary>
+        [XmlElement]
+        public bool TouchpadOnlyInPadForge { get; set; }
+
         /// <summary>Whether to bypass SDL's gamepad remapping and read raw joystick indices instead.</summary>
         [XmlElement]
         public bool ForceRawJoystickMode { get; set; }

@@ -331,7 +331,13 @@ namespace PadForge.Common.Input
                     }
                 }
 
-                // Detect disconnected PTP devices.
+                // Detect disconnected PTP devices. A touchpad PadForge
+                // starts or stops reading alone changes its handle and keeps
+                // its ID (TouchpadCapture), so a handle that left takes its
+                // row offline only when no current handle serves that row.
+                var currentPtpGuids = new HashSet<Guid>();
+                foreach (var h in currentPtpHandles)
+                    if (_ptpHandleToGuid.TryGetValue(h, out var servedGuid)) currentPtpGuids.Add(servedGuid);
                 var disconnected = new List<IntPtr>();
                 foreach (var h in _openedPtpHandles)
                 {
@@ -339,7 +345,7 @@ namespace PadForge.Common.Input
                     {
                         if (_ptpHandleToGuid.TryGetValue(h, out var guid))
                         {
-                            var ud = FindOnlineDeviceByInstanceGuid(guid);
+                            var ud = currentPtpGuids.Contains(guid) ? null : FindOnlineDeviceByInstanceGuid(guid);
                             if (ud != null)
                             {
                                 ud.IsOnline = false;
@@ -433,6 +439,9 @@ namespace PadForge.Common.Input
                 _ptpMergedCreated = false;
                 MarkChanged(ref changed, "ptp", "- merged touchpads");
             }
+
+            // --- Phase 1d2: the mouse rows of touchpads PadForge reads alone ---
+            UpdateTouchpadMouseRows(ref changed);
 
             // --- Phase 1e: MIDI input endpoints (issue #128) ---
             changed |= UpdateMidiInputDevices();

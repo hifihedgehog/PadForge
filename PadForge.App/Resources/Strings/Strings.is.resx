@@ -765,6 +765,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>Lesa hljómborðið</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>Spila titring á þessari mús</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Endurheimta Windows-rekilinn</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>Skila til Windows</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Skipta yfir í rekil PadForge</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge færir þessa leikjastýringu yfir á WinUSB-rekil Windows svo það geti lesið Chatpad-lyklaborðið. Leikjastýringin virkar þá aðeins á meðan PadForge keyrir og leikir sjá hana í gegnum sýndarstýringu PadForge. Allar tengdar leikjastýringar af þessari gerð færast með og úthluta þarf hverri þeirra aftur á sína rauf. Þú getur endurheimt Windows-rekilinn á þessari síðu hvenær sem er.</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge færir þennan móttakara yfir á WinUSB-rekil Windows svo það geti lesið Chatpad-lyklaborð og uDraw-teikniborð. Allar leikjastýringar og heyrnartól á móttakaranum færast með, virka aðeins á meðan PadForge keyrir og þeim þarf að úthluta aftur á sína rauf. Þú getur endurheimt Windows-rekilinn á þessari síðu hvenær sem er.</value></data>
@@ -782,6 +783,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Nota aðeins í PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge færir þetta lyklaborð yfir á WinUSB-rekil Windows og les það sjálft. Windows hættir þá að nota lyklaborðið til innsláttar í öllum forritum, jafnvel þegar PadForge er lokað, þar til Windows-rekill þess er endurheimtur á þessari síðu. Varpanir þess og fjölvar halda áfram að virka á meðan PadForge keyrir.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge færir þessa mús yfir á WinUSB-rekil Windows og les hana sjálft. Windows hættir þá að færa bendilinn með henni í öllum forritum, jafnvel þegar PadForge er lokað, þar til Windows-rekill hennar er endurheimtur á þessari síðu. Varpanir hennar og fjölvar halda áfram að virka á meðan PadForge keyrir.</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>PadForge felur þennan snertiflöt fyrir Windows með HidHide og les hann sjálft. Á meðan vélin er í gangi hreyfir hann engan bendil og smellir hvorki né flettir í neinu forriti, en varpanir hans halda áfram að virka í PadForge. Windows fær hann aftur þegar vélin stöðvast eða PadForge er lokað.</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Þetta fer úr umsjá Windows með því: {0}.</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>mús</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>lyklaborð</value></data>
@@ -791,17 +793,31 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>tenging þess við hugbúnað framleiðandans</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>aðrir stjórnhlutar á sömu tengingu</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>lyklaborð eða mús</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>mús eða snertiflötur</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Eftir skiptin spyr PadForge hvort halda eigi rekilnum og skilar lyklaborðinu til Windows ef enginn svarar innan {0} sekúndna.</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>Eftir skiptin spyr PadForge hvort halda eigi rekilnum og skilar músinni til Windows ef enginn svarar innan {0} sekúndna.</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>Eftir skiptin spyr PadForge hvort halda eigi honum og skilar snertifletinum til Windows ef enginn svarar innan {0} sekúndna.</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Halda þessu lyklaborði í PadForge?</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>Halda þessari mús í PadForge?</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>Halda þessum snertifleti í PadForge?</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows notar ekki lengur {0} til innsláttar. Ef þú ert nú án nothæfs lyklaborðs eða músar skaltu ekkert gera: PadForge skilar því til Windows þegar niðurtalningunni lýkur.</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows færir ekki lengur bendilinn með {0}. Ef þú ert nú án nothæfs lyklaborðs eða músar skaltu ekkert gera: PadForge skilar því til Windows þegar niðurtalningunni lýkur.</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows færir ekki lengur bendilinn með {0}. Ef þú ert nú án nothæfs lyklaborðs eða músar skaltu ekkert gera: PadForge skilar því til Windows þegar niðurtalningunni lýkur.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Skilað eftir {0} sekúndur</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Halda</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Skila</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Taktu fyrst hin lyklaborðin af þessari gerð úr sambandi. Windows færir öll tengd lyklaborð yfir á rekil PadForge í einu og hættir að nota hvert þeirra til innsláttar.</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} notar aftur Windows-rekil sinn því skiptin voru ekki staðfest.</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>Skiptir um inntak fyrir {0}…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>Aðeins PadForge les {0} núna.</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>PadForge gat ekki tekið {0} frá Windows.</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} er aftur hjá Windows.</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>Ekki tókst að skila {0} til Windows.</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>{0} er aftur hjá Windows því skiptin voru ekki staðfest.</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>PadForge gat ekki lesið {0} og skilaði því til Windows.</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>Settu upp HidHide til að nota snertiflöt aðeins í PadForge.</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>Kveiktu á Fela tæki fyrir leikjum í stillingum til að nota snertiflöt aðeins í PadForge.</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>Ræstu vélina til að nota snertiflöt aðeins í PadForge.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> tengd / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> alls</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Fjarlægja þetta tæki og stillingar þess</value></data>
@@ -4144,8 +4160,10 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Tablet_InputShared" xml:space="preserve"><value>Sameiginlegt inntak</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>Skiptir um inntak</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>Bíður eftir inntaki frá teikniborði</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>Bíður eftir inntaki frá snertifleti</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>Gripið af PadForge</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>Inntak teikniborðs ekki tiltækt</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>Inntak snertiflatar ekki tiltækt</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>Ekki tókst að grípa {0}</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>Þegar vélin er í gangi endurræsir „Fela tæki“ penna-inntak teikniborðsins og les það aðeins í PadForge. Ef slökkt er á felingu fer það aftur til Windows. Varanleg feling heldur líka innbyggða bendlinum óvirkum eftir að PadForge lokast.</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>Hliðarhnappur penna</value></data>

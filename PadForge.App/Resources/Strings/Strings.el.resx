@@ -765,6 +765,7 @@
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>Ανάγνωση των μουσικών πλήκτρων</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>Αναπαραγωγή δόνησης σε αυτό το ποντίκι</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Επαναφορά του προγράμματος οδήγησης των Windows</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>Επιστροφή στα Windows</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Αλλαγή στο πρόγραμμα οδήγησης του PadForge</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>Το PadForge μεταφέρει αυτό το χειριστήριο στο πρόγραμμα οδήγησης WinUSB των Windows, ώστε να μπορεί να διαβάζει το chatpad. Το χειριστήριο λειτουργεί τότε μόνο όσο εκτελείται το PadForge και τα παιχνίδια το βλέπουν μέσω του εικονικού χειριστηρίου του PadForge. Κάθε συνδεδεμένο χειριστήριο αυτού του μοντέλου μεταφέρεται μαζί του και το καθένα πρέπει να ανατεθεί ξανά στην υποδοχή του. Μπορείτε να επαναφέρετε το πρόγραμμα οδήγησης των Windows από αυτή τη σελίδα οποιαδήποτε στιγμή.</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>Το PadForge μεταφέρει αυτόν τον δέκτη στο πρόγραμμα οδήγησης WinUSB των Windows, ώστε να μπορεί να διαβάζει τα chatpad και τα tablet uDraw. Κάθε χειριστήριο και σετ κεφαλής του δέκτη μεταφέρεται μαζί του, λειτουργεί μόνο όσο εκτελείται το PadForge και πρέπει να ανατεθεί ξανά στην υποδοχή του. Μπορείτε να επαναφέρετε το πρόγραμμα οδήγησης των Windows από αυτή τη σελίδα οποιαδήποτε στιγμή.</value></data>
@@ -782,6 +783,7 @@
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Χρήση μόνο στο PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>Το PadForge μεταφέρει αυτό το πληκτρολόγιο στο πρόγραμμα οδήγησης WinUSB των Windows και το διαβάζει το ίδιο. Τα Windows παύουν τότε να πληκτρολογούν με αυτό σε όλα τα προγράμματα, ακόμη και όταν το PadForge είναι κλειστό, μέχρι να επαναφερθεί το πρόγραμμα οδήγησης των Windows από αυτή τη σελίδα. Οι αντιστοιχίσεις και οι μακροεντολές του συνεχίζουν να λειτουργούν όσο εκτελείται το PadForge.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>Το PadForge μεταφέρει αυτό το ποντίκι στο πρόγραμμα οδήγησης WinUSB των Windows και το διαβάζει το ίδιο. Τα Windows παύουν τότε να μετακινούν τον δείκτη με αυτό σε όλα τα προγράμματα, ακόμη και όταν το PadForge είναι κλειστό, μέχρι να επαναφερθεί το πρόγραμμα οδήγησης των Windows από αυτή τη σελίδα. Οι αντιστοιχίσεις και οι μακροεντολές του συνεχίζουν να λειτουργούν όσο εκτελείται το PadForge.</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>Το PadForge αποκρύπτει αυτή την επιφάνεια αφής από τα Windows με το HidHide και τη διαβάζει το ίδιο. Όσο εκτελείται η μηχανή, δεν μετακινεί κανέναν δείκτη και δεν κάνει κλικ ούτε κύλιση σε κανένα πρόγραμμα, ενώ οι αντιστοιχίσεις της συνεχίζουν να λειτουργούν στο PadForge. Τα Windows την παίρνουν πίσω όταν σταματήσει η μηχανή ή κλείσει το PadForge.</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Μαζί με αυτό παύουν να λειτουργούν στα Windows: {0}.</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>ένα ποντίκι</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>ένα πληκτρολόγιο</value></data>
@@ -791,17 +793,31 @@
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>η σύνδεσή του με το λογισμικό του κατασκευαστή</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>άλλα στοιχεία ελέγχου στην ίδια σύνδεση</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>πληκτρολόγιο ή ποντίκι</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>ποντίκι ή επιφάνεια αφής</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Μετά την αλλαγή, το PadForge ρωτά αν θέλετε να το κρατήσετε και επιστρέφει το πληκτρολόγιο στα Windows αν δεν απαντήσετε μέσα σε {0} δευτερόλεπτα.</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>Μετά την αλλαγή, το PadForge ρωτά αν θέλετε να το κρατήσετε και επιστρέφει το ποντίκι στα Windows αν δεν απαντήσετε μέσα σε {0} δευτερόλεπτα.</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>Μετά την αλλαγή, το PadForge ρωτά αν θέλετε να την κρατήσετε και επιστρέφει την επιφάνεια αφής στα Windows αν δεν απαντήσετε μέσα σε {0} δευτερόλεπτα.</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Να παραμείνει αυτό το πληκτρολόγιο στο PadForge;</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>Να παραμείνει αυτό το ποντίκι στο PadForge;</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>Να παραμείνει αυτή η επιφάνεια αφής στο PadForge;</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Τα Windows δεν πληκτρολογούν πλέον με τη συσκευή {0}. Αν δεν σας έχει μείνει λειτουργικό πληκτρολόγιο ή ποντίκι, μην κάνετε τίποτα: το PadForge την επιστρέφει στα Windows όταν λήξει η αντίστροφη μέτρηση.</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Τα Windows δεν μετακινούν πλέον τον δείκτη με τη συσκευή {0}. Αν δεν σας έχει μείνει λειτουργικό πληκτρολόγιο ή ποντίκι, μην κάνετε τίποτα: το PadForge την επιστρέφει στα Windows όταν λήξει η αντίστροφη μέτρηση.</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Τα Windows δεν μετακινούν πλέον τον δείκτη με τη συσκευή {0}. Αν δεν σας έχει μείνει λειτουργικό πληκτρολόγιο ή ποντίκι, μην κάνετε τίποτα: το PadForge την επιστρέφει στα Windows όταν λήξει η αντίστροφη μέτρηση.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Επιστροφή σε {0} δευτ.</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Διατήρηση</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Επιστροφή</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Αποσυνδέστε πρώτα τα άλλα πληκτρολόγια αυτού του μοντέλου. Τα Windows μεταφέρουν ταυτόχρονα όλα τα συνδεδεμένα στο πρόγραμμα οδήγησης του PadForge και παύουν να πληκτρολογούν με το καθένα.</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0}: επανήλθε στο πρόγραμμα οδήγησης των Windows, επειδή η αλλαγή δεν διατηρήθηκε.</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>Αλλαγή για: {0}…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>Πλέον μόνο το PadForge διαβάζει τη συσκευή {0}.</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>Το PadForge δεν μπόρεσε να πάρει τη συσκευή {0} από τα Windows.</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0}: επανήλθε στα Windows.</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>{0}: δεν ήταν δυνατή η επιστροφή στα Windows.</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>{0}: επανήλθε στα Windows, επειδή η αλλαγή δεν διατηρήθηκε.</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>Το PadForge δεν μπόρεσε να διαβάσει τη συσκευή {0}, γι' αυτό την πήραν πίσω τα Windows.</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>Εγκαταστήστε το HidHide για να χρησιμοποιείτε μια επιφάνεια αφής μόνο στο PadForge.</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>Ενεργοποιήστε την Απόκρυψη συσκευών από τα παιχνίδια στις Ρυθμίσεις για να χρησιμοποιείτε μια επιφάνεια αφής μόνο στο PadForge.</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>Εκκινήστε τη μηχανή για να χρησιμοποιείτε μια επιφάνεια αφής μόνο στο PadForge.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> σε σύνδεση / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> συνολικά</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Αφαίρεση αυτής της συσκευής και των ρυθμίσεών της</value></data>
@@ -4144,8 +4160,10 @@
   <data name="Tablet_InputShared" xml:space="preserve"><value>Κοινόχρηστη είσοδος</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>Αλλαγή εισόδου</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>Αναμονή για είσοδο από το tablet</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>Αναμονή για είσοδο από την επιφάνεια αφής</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>Δεσμευμένο από το PadForge</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>Η είσοδος του tablet δεν είναι διαθέσιμη</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>Η είσοδος της επιφάνειας αφής δεν είναι διαθέσιμη</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>Δεν ήταν δυνατή η δέσμευση: {0}</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>Με τη μηχανή σε λειτουργία, η «Απόκρυψη συσκευής» επανεκκινεί την είσοδο γραφίδας του tablet και τη διαβάζει μόνο στο PadForge. Η απενεργοποίηση της απόκρυψης την επιστρέφει στα Windows. Οι αποκρύψεις που διατηρούνται κρατούν επίσης απενεργοποιημένο τον εγγενή δείκτη αφού κλείσει το PadForge.</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>Κουμπί στελέχους γραφίδας</value></data>

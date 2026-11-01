@@ -765,6 +765,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>Citire clape muzicale</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>Redare vibrații pe acest mouse</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Restaurare driver Windows</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>Redare către Windows</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Trecere la driverul PadForge</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge mută acest controler pe driverul WinUSB din Windows pentru a putea citi chatpadul. Controlerul funcționează apoi doar cât timp rulează PadForge, iar jocurile îl văd prin controlerul virtual al PadForge. Toate controlerele conectate de acest model sunt mutate odată cu el și fiecare trebuie atribuit din nou slotului său. Puteți restaura oricând driverul Windows din această pagină.</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge mută acest receptor pe driverul WinUSB din Windows pentru a putea citi chatpadurile și tabletele uDraw. Toate controlerele și căștile de pe receptor sunt mutate odată cu el, funcționează doar cât timp rulează PadForge și trebuie atribuite din nou slotului lor. Puteți restaura oricând driverul Windows din această pagină.</value></data>
@@ -782,6 +783,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Folosire numai în PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge mută această tastatură pe driverul WinUSB din Windows și o citește singur. Windows nu mai scrie apoi cu ea în niciun program, nici cât timp PadForge este închis, până la restaurarea driverului său Windows din această pagină. Maparea și macrocomenzile ei continuă să funcționeze cât timp rulează PadForge.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge mută acest mouse pe driverul WinUSB din Windows și îl citește singur. Windows nu mai mișcă apoi indicatorul cu el în niciun program, nici cât timp PadForge este închis, până la restaurarea driverului său Windows din această pagină. Maparea și macrocomenzile lui continuă să funcționeze cât timp rulează PadForge.</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>PadForge ascunde acest touchpad față de Windows cu HidHide și îl citește singur. Cât timp rulează motorul, cu el nu se mișcă niciun indicator și nu se face clic sau derulare în niciun program, iar maparea lui continuă să funcționeze în PadForge. Windows îl primește înapoi când motorul se oprește sau când PadForge se închide.</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Pe lângă ea, Windows pierde: {0}.</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>un mouse</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>o tastatură</value></data>
@@ -791,17 +793,31 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>legătura cu software-ul producătorului</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>alte comenzi de pe aceeași conexiune</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>tastatură sau mouse</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>mouse sau touchpad</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>După schimbare, PadForge vă întreabă dacă o păstrați și redă tastatura către Windows dacă nu răspunde nimeni în {0} secunde.</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>După schimbare, PadForge vă întreabă dacă îl păstrați și redă mouse-ul către Windows dacă nu răspunde nimeni în {0} secunde.</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>După schimbare, PadForge vă întreabă dacă îl păstrați și redă touchpadul către Windows dacă nu răspunde nimeni în {0} secunde.</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Păstrați această tastatură în PadForge?</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>Păstrați acest mouse în PadForge?</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>Păstrați acest touchpad în PadForge?</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows nu mai scrie cu {0}. Dacă ați rămas fără tastatură sau mouse funcțional, nu faceți nimic: PadForge o redă către Windows când se încheie numărătoarea inversă.</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows nu mai mișcă indicatorul cu {0}. Dacă ați rămas fără tastatură sau mouse funcțional, nu faceți nimic: PadForge îl redă către Windows când se încheie numărătoarea inversă.</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows nu mai mișcă indicatorul cu {0}. Dacă ați rămas fără tastatură sau mouse funcțional, nu faceți nimic: PadForge îl redă către Windows când se încheie numărătoarea inversă.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Revenire peste {0} secunde</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Păstrare</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Redare către Windows</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Deconectați mai întâi celelalte tastaturi de acest model. Windows le mută deodată pe toate cele conectate pe driverul PadForge și nu mai scrie cu niciuna.</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} folosește din nou driverul său Windows, deoarece schimbarea nu a fost păstrată.</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>Se comută {0}…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>Acum doar PadForge citește {0}.</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>PadForge nu a putut prelua {0} de la Windows.</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} este din nou la Windows.</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>{0} nu a putut fi redat către Windows.</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>{0} este din nou la Windows, deoarece schimbarea nu a fost păstrată.</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>PadForge nu a putut citi {0}, așa că Windows îl are din nou.</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>Instalați HidHide pentru a folosi un touchpad numai în PadForge.</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>Activați Ascundere dispozitive față de jocuri în Setări pentru a folosi un touchpad numai în PadForge.</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>Porniți motorul pentru a folosi un touchpad numai în PadForge.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> conectate / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> în total</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Elimină acest dispozitiv și setările sale</value></data>
@@ -4144,8 +4160,10 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Tablet_InputShared" xml:space="preserve"><value>Intrare partajată</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>Se comută intrarea</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>Se așteaptă intrarea de la tabletă</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>Se așteaptă intrarea de la touchpad</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>Capturată de PadForge</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>Intrarea tabletei indisponibilă</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>Intrarea touchpadului indisponibilă</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>Nu s-a putut captura {0}</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>Cu motorul pornit, Ascundere dispozitiv repornește intrarea stiloului tabletei și o citește doar în PadForge. Dezactivarea ascunderii o redă către Windows. Ascunderile păstrate mențin indicatorul nativ dezactivat și după închiderea PadForge.</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>Buton lateral stilou</value></data>

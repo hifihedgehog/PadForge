@@ -765,6 +765,7 @@
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>میوزک کلیدیں پڑھیں</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>اس ماؤس پر رمبل چلائیں</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Windows ڈرائیور بحال کریں</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>Windows کو واپس دیں</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>PadForge کے ڈرائیور پر منتقل کریں</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge اس کنٹرولر کو Windows کے WinUSB ڈرائیور پر منتقل کرتا ہے تاکہ Chatpad پڑھ سکے۔ پھر کنٹرولر صرف PadForge کے چلنے کے دوران کام کرتا ہے، اور گیمز اسے PadForge کے ورچوئل کنٹرولر کے ذریعے دیکھتی ہیں۔ اس ماڈل کا ہر لگا ہوا کنٹرولر اس کے ساتھ منتقل ہو جاتا ہے، اور ہر ایک کو دوبارہ اس کے سلاٹ کو تفویض کرنا پڑتا ہے۔ Windows ڈرائیور کسی بھی وقت اسی صفحے سے بحال کریں۔</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge اس ریسیور کو Windows کے WinUSB ڈرائیور پر منتقل کرتا ہے تاکہ Chatpad اور uDraw ٹیبلٹس پڑھ سکے۔ ریسیور کا ہر کنٹرولر اور ہیڈسیٹ اس کے ساتھ منتقل ہو جاتا ہے، صرف PadForge کے چلنے کے دوران کام کرتا ہے، اور اسے دوبارہ اس کے سلاٹ کو تفویض کرنا پڑتا ہے۔ Windows ڈرائیور کسی بھی وقت اسی صفحے سے بحال کریں۔</value></data>
@@ -782,6 +783,7 @@
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>صرف PadForge میں استعمال کریں</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge اس کی بورڈ کو Windows کے WinUSB ڈرائیور پر منتقل کرتا ہے اور خود اسے پڑھتا ہے۔ پھر Windows ہر پروگرام میں اس سے ٹائپنگ بند کر دیتا ہے، حتیٰ کہ PadForge بند ہونے پر بھی، جب تک اسی صفحے سے اس کا Windows ڈرائیور بحال نہ کیا جائے۔ PadForge چلنے کے دوران اس کی میپنگز اور میکروز کام کرتے رہتے ہیں۔</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge اس ماؤس کو Windows کے WinUSB ڈرائیور پر منتقل کرتا ہے اور خود اسے پڑھتا ہے۔ پھر Windows ہر پروگرام میں اس سے پوائنٹر چلانا بند کر دیتا ہے، حتیٰ کہ PadForge بند ہونے پر بھی، جب تک اسی صفحے سے اس کا Windows ڈرائیور بحال نہ کیا جائے۔ PadForge چلنے کے دوران اس کی میپنگز اور میکروز کام کرتے رہتے ہیں۔</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>PadForge اس ٹچ پیڈ کو HidHide کے ذریعے Windows سے چھپاتا ہے اور خود اسے پڑھتا ہے۔ انجن چلنے کے دوران یہ کسی بھی پروگرام میں نہ پوائنٹر چلاتا ہے، نہ کلک کرتا ہے اور نہ اسکرول کرتا ہے، اور اس کی میپنگز PadForge میں کام کرتی رہتی ہیں۔ انجن رکنے یا PadForge بند ہونے پر Windows کو یہ واپس مل جاتا ہے۔</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>یہ بھی Windows سے چلے جاتے ہیں: {0}۔</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>ایک ماؤس</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>ایک کی بورڈ</value></data>
@@ -791,17 +793,31 @@
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>بنانے والے کے سافٹ ویئر سے اس کا رابطہ</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>اسی کنکشن پر موجود دیگر کنٹرولز</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>کی بورڈ یا ماؤس</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>ماؤس یا ٹچ پیڈ</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>منتقلی کے بعد PadForge پوچھتا ہے کہ اسے رکھنا ہے یا نہیں، اور اگر {0} سیکنڈ میں کوئی جواب نہ دے تو کی بورڈ Windows کو واپس دے دیتا ہے۔</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>منتقلی کے بعد PadForge پوچھتا ہے کہ اسے رکھنا ہے یا نہیں، اور اگر {0} سیکنڈ میں کوئی جواب نہ دے تو ماؤس Windows کو واپس دے دیتا ہے۔</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>منتقلی کے بعد PadForge پوچھتا ہے کہ اسے رکھنا ہے یا نہیں، اور اگر {0} سیکنڈ میں کوئی جواب نہ دے تو ٹچ پیڈ Windows کو واپس دے دیتا ہے۔</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>کیا اس کی بورڈ کو PadForge میں رکھیں؟</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>کیا اس ماؤس کو PadForge میں رکھیں؟</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>کیا اس ٹچ پیڈ کو PadForge میں رکھیں؟</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows اب {0} سے ٹائپنگ نہیں کرتا۔ اگر اس کی وجہ سے آپ کے پاس کوئی چلتا ہوا کی بورڈ یا ماؤس نہیں رہا تو کچھ نہ کریں۔ الٹی گنتی ختم ہونے پر PadForge اسے Windows کو واپس دے دیتا ہے۔</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows اب {0} سے پوائنٹر نہیں چلاتا۔ اگر اس کی وجہ سے آپ کے پاس کوئی چلتا ہوا کی بورڈ یا ماؤس نہیں رہا تو کچھ نہ کریں۔ الٹی گنتی ختم ہونے پر PadForge اسے Windows کو واپس دے دیتا ہے۔</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows اب {0} سے پوائنٹر نہیں چلاتا۔ اگر اس کی وجہ سے آپ کے پاس کوئی چلتا ہوا کی بورڈ یا ماؤس نہیں رہا تو کچھ نہ کریں۔ الٹی گنتی ختم ہونے پر PadForge اسے Windows کو واپس دے دیتا ہے۔</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0} سیکنڈ میں واپس دیا جائے گا</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>رکھیں</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>واپس دیں</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>پہلے اس ماڈل کے دوسرے کی بورڈ نکال دیں۔ Windows ہر لگے ہوئے کی بورڈ کو ایک ساتھ PadForge کے ڈرائیور پر منتقل کر دیتا ہے، اور ہر ایک سے ٹائپنگ بند کر دیتا ہے۔</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} واپس اپنے Windows ڈرائیور پر ہے کیونکہ منتقلی برقرار نہیں رکھی گئی۔</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>{0} بدلا جا رہا ہے…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>اب {0} کو صرف PadForge پڑھتا ہے۔</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>PadForge {0} کو Windows سے نہیں لے سکا۔</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} واپس Windows کے پاس ہے۔</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>{0} کو Windows کو واپس نہیں دیا جا سکا۔</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>{0} واپس Windows کے پاس ہے کیونکہ منتقلی برقرار نہیں رکھی گئی۔</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>PadForge {0} کو پڑھ نہیں سکا، اس لیے وہ Windows کو واپس مل گیا ہے۔</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>ٹچ پیڈ کو صرف PadForge میں استعمال کرنے کے لیے HidHide انسٹال کریں۔</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>ٹچ پیڈ کو صرف PadForge میں استعمال کرنے کے لیے ترتیبات میں آلات کو گیمز سے چھپائیں آن کریں۔</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>ٹچ پیڈ کو صرف PadForge میں استعمال کرنے کے لیے انجن شروع کریں۔</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> آن لائن / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> کل</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>یہ آلہ اور اس کی ترتیبات ہٹائیں</value></data>
@@ -4144,8 +4160,10 @@
   <data name="Tablet_InputShared" xml:space="preserve"><value>مشترکہ ان پٹ</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>ان پٹ بدلا جا رہا ہے</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>ٹیبلٹ ان پٹ کا انتظار ہے</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>ٹچ پیڈ ان پٹ کا انتظار ہے</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>PadForge کے قبضے میں</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>ٹیبلٹ ان پٹ دستیاب نہیں</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>ٹچ پیڈ ان پٹ دستیاب نہیں</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>{0} کو قبضے میں نہیں لیا جا سکا</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>انجن چلتے ہوئے "آلہ چھپائیں" ٹیبلٹ کا قلم ان پٹ دوبارہ شروع کرتا ہے اور اسے صرف PadForge میں پڑھتا ہے۔ چھپانا آف کرنے سے یہ Windows کو واپس مل جاتا ہے۔ برقرار رکھے گئے چھپاؤ PadForge بند ہونے کے بعد بھی اصل پوائنٹر کو غیر فعال رکھتے ہیں۔</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>قلم کا بیرل بٹن</value></data>

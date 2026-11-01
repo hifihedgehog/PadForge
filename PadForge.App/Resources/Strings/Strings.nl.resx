@@ -506,6 +506,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>Muziektoetsen uitlezen</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>Rumble op deze muis afspelen</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Windows-stuurprogramma herstellen</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>Teruggeven aan Windows</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Overschakelen naar het PadForge-stuurprogramma</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge zet deze controller over op het WinUSB-stuurprogramma van Windows om de chatpad uit te lezen. De controller werkt daarna alleen zolang PadForge draait, en games zien hem via de virtuele controller van PadForge. Elke aangesloten controller van dit model gaat mee over, en elke controller moet opnieuw aan zijn slot worden toegewezen. Je kunt het Windows-stuurprogramma op elk moment op deze pagina herstellen.</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge zet deze ontvanger over op het WinUSB-stuurprogramma van Windows om chatpads en uDraw-tablets uit te lezen. Elke controller en headset op de ontvanger gaat mee over, werkt alleen zolang PadForge draait en moet opnieuw aan zijn slot worden toegewezen. Je kunt het Windows-stuurprogramma op elk moment op deze pagina herstellen.</value></data>
@@ -523,6 +524,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Alleen in PadForge gebruiken</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge zet dit toetsenbord over op het WinUSB-stuurprogramma van Windows en leest het zelf uit. Windows typt er daarna in geen enkel programma meer mee, ook niet als PadForge is gesloten, totdat het Windows-stuurprogramma op deze pagina is hersteld. De toewijzingen en macro's blijven werken zolang PadForge draait.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge zet deze muis over op het WinUSB-stuurprogramma van Windows en leest hem zelf uit. Windows beweegt de aanwijzer er daarna in geen enkel programma meer mee, ook niet als PadForge is gesloten, totdat het Windows-stuurprogramma op deze pagina is hersteld. De toewijzingen en macro's blijven werken zolang PadForge draait.</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>PadForge verbergt deze touchpad met HidHide voor Windows en leest hem zelf uit. Zolang de engine draait, beweegt hij geen aanwijzer en klikt of scrolt hij niets in welk programma dan ook, en de toewijzingen blijven werken in PadForge. Windows krijgt hem terug zodra de engine stopt of PadForge wordt gesloten.</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Deze gaan er samen mee uit Windows: {0}.</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>een muis</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>een toetsenbord</value></data>
@@ -532,17 +534,31 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>de koppeling met de software van de fabrikant</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>andere bediening op dezelfde verbinding</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>toetsenbord of muis</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>muis of touchpad</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Na het overschakelen vraagt PadForge of je het wilt behouden en geeft het toetsenbord terug aan Windows als je niet binnen {0} seconden antwoordt.</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>Na het overschakelen vraagt PadForge of je het wilt behouden en geeft de muis terug aan Windows als je niet binnen {0} seconden antwoordt.</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>Na het overschakelen vraagt PadForge of je het wilt behouden en geeft de touchpad terug aan Windows als je niet binnen {0} seconden antwoordt.</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Dit toetsenbord in PadForge houden?</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>Deze muis in PadForge houden?</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>Deze touchpad in PadForge houden?</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows typt niet meer met {0}. Als je daardoor geen werkend toetsenbord of muis meer hebt, doe dan niets: PadForge geeft het terug aan Windows zodra de aftelling afloopt.</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows beweegt de aanwijzer niet meer met {0}. Als je daardoor geen werkend toetsenbord of muis meer hebt, doe dan niets: PadForge geeft het terug aan Windows zodra de aftelling afloopt.</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows beweegt de aanwijzer niet meer met {0}. Als je daardoor geen werkend toetsenbord of muis meer hebt, doe dan niets: PadForge geeft het terug aan Windows zodra de aftelling afloopt.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Terug over {0} s</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Behouden</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Teruggeven</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Koppel eerst de andere toetsenborden van dit model los. Windows zet alle aangesloten toetsenborden van dit model tegelijk over op het PadForge-stuurprogramma en typt daarna met geen ervan meer.</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} gebruikt weer het Windows-stuurprogramma omdat de overschakeling niet is behouden.</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>{0} wordt omgeschakeld…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>Alleen PadForge leest {0} nu uit.</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>PadForge kon {0} niet van Windows overnemen.</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} is terug bij Windows.</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>{0} kon niet worden teruggegeven aan Windows.</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>{0} is terug bij Windows omdat de overschakeling niet is behouden.</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>PadForge kon {0} niet uitlezen, dus Windows heeft hem terug.</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>Installeer HidHide om een touchpad alleen in PadForge te gebruiken.</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>Schakel Apparaten verbergen voor games in bij de instellingen om een touchpad alleen in PadForge te gebruiken.</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>Start de engine om een touchpad alleen in PadForge te gebruiken.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> totaal</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Dit apparaat en de bijbehorende instellingen verwijderen</value></data>
@@ -4115,8 +4131,10 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Tablet_InputShared" xml:space="preserve"><value>Gedeelde invoer</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>Invoer omschakelen</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>Wachten op tabletinvoer</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>Wachten op touchpadinvoer</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>Overgenomen door PadForge</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>Tabletinvoer niet beschikbaar</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>Touchpadinvoer niet beschikbaar</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>Kan {0} niet overnemen</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>Wanneer de engine draait, herstart Apparaat verbergen de peninvoer van de tablet en leest alleen PadForge deze. Als u het verbergen uitschakelt, krijgt Windows de invoer terug. Als apparaten tussen sessies verborgen blijven, blijft de Windows-aanwijzer ook na het sluiten van PadForge uitgeschakeld.</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>Penknop</value></data>

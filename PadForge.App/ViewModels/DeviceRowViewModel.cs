@@ -24,6 +24,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(CapabilitiesSummary));
             OnPropertyChanged(nameof(FlydigiServiceWarning));
             OnPropertyChanged(nameof(TabletInputStatus));
+            OnPropertyChanged(nameof(TouchpadInputStatus));
             OnPropertyChanged(nameof(GunCalibrationStatus));
             OnPropertyChanged(nameof(GunCalibrateTooltip));
         }
@@ -313,6 +314,14 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsTabletDevice));
                     OnPropertyChanged(nameof(ShowTabletCaptureStatus));
                     OnPropertyChanged(nameof(HandheldDaemonWarning));
+                    // A touchpad's row trades Hide from Games for its switch.
+                    OnPropertyChanged(nameof(IsTouchpadRow));
+                    OnPropertyChanged(nameof(ShowTouchpadCaptureStatus));
+                    OnPropertyChanged(nameof(ShowHidHideToggle));
+                    OnPropertyChanged(nameof(ShowInputHidingSection));
+                    OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
+                    OnPropertyChanged(nameof(ShowRawInputDivider));
+                    OnPropertyChanged(nameof(ShowGunCalibrationDivider));
                 }
             }
         }
@@ -828,7 +837,69 @@ namespace PadForge.ViewModels
         /// offered there anyway, took the tick, saved it, and hid nothing.
         /// Consume Input is a separate route that does work on a merged
         /// keyboard or mouse row, so it keeps its own rule.</summary>
-        public bool ShowHidHideToggle => !IsInternalVirtual && !IsAggregate && !IsPadForgeDriverRow;
+        public bool ShowHidHideToggle => !IsInternalVirtual && !IsAggregate && !IsPadForgeDriverRow
+            && !IsTouchpadRow && !_isTouchpadMouse;
+
+        /// <summary>True for a precision touchpad's own row. Its Input Hiding
+        /// is Use Only in PadForge (UserDevice.TouchpadOnlyInPadForge): hidden
+        /// with nothing reading it, a touchpad was dead in Windows and in
+        /// PadForge alike, so Hide from Games leaves the row.</summary>
+        public bool IsTouchpadRow => DeviceTypeKey == "Touchpad" && !IsAggregate && !IsInternalVirtual;
+
+        private bool _isTouchpadMouse;
+
+        /// <summary>Set by the Devices page while this row is selected and it
+        /// is a precision touchpad's mouse collection. Its switch is the
+        /// touchpad's, and Hide from Games leaves it as it leaves the
+        /// touchpad's own row.</summary>
+        public bool IsTouchpadMouse
+        {
+            get => _isTouchpadMouse;
+            set
+            {
+                if (!SetProperty(ref _isTouchpadMouse, value)) return;
+                OnPropertyChanged(nameof(ShowHidHideToggle));
+                OnPropertyChanged(nameof(ShowInputHidingSection));
+                OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
+                OnPropertyChanged(nameof(ShowRawInputDivider));
+                OnPropertyChanged(nameof(ShowGunCalibrationDivider));
+            }
+        }
+
+        private bool _touchpadOnlyInPadForge;
+
+        /// <summary>Whether PadForge reads this touchpad alone, the record's
+        /// <see cref="PadForge.Engine.Data.UserDevice.TouchpadOnlyInPadForge"/>.</summary>
+        public bool TouchpadOnlyInPadForge
+        {
+            get => _touchpadOnlyInPadForge;
+            set
+            {
+                if (SetProperty(ref _touchpadOnlyInPadForge, value))
+                    OnPropertyChanged(nameof(ShowTouchpadCaptureStatus));
+            }
+        }
+
+        /// <summary>The capture's line under the switch, as a tablet's row
+        /// shows its own, while the switch is on.</summary>
+        public bool ShowTouchpadCaptureStatus => IsTouchpadRow && _touchpadOnlyInPadForge;
+
+        private PadForge.Engine.Tablets.TabletCaptureState _touchpadCaptureState = PadForge.Engine.Tablets.TabletCaptureState.Shared;
+
+        public PadForge.Engine.Tablets.TabletCaptureState TouchpadCaptureState
+        {
+            get => _touchpadCaptureState;
+            set { if (SetProperty(ref _touchpadCaptureState, value)) OnPropertyChanged(nameof(TouchpadInputStatus)); }
+        }
+
+        public string TouchpadInputStatus => TouchpadCaptureState switch
+        {
+            PadForge.Engine.Tablets.TabletCaptureState.Switching => Strings.Instance.Tablet_InputSwitching,
+            PadForge.Engine.Tablets.TabletCaptureState.WaitingForInput => Strings.Instance.Touchpad_InputWaiting,
+            PadForge.Engine.Tablets.TabletCaptureState.Captured => Strings.Instance.Tablet_InputCaptured,
+            PadForge.Engine.Tablets.TabletCaptureState.Failed => Strings.Instance.Touchpad_InputFailed,
+            _ => Strings.Instance.Tablet_InputShared
+        };
 
         /// <summary>True for a row PadForge reads over its own WinUSB driver:
         /// a keyboard taken from Windows (#549) or a bound TouchSense mouse
@@ -1235,6 +1306,8 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsPadForgeDriverRow));
                     OnPropertyChanged(nameof(ShowHidHideToggle));
                     OnPropertyChanged(nameof(ShowTabletCaptureStatus));
+                    OnPropertyChanged(nameof(IsTouchpadRow));
+                    OnPropertyChanged(nameof(ShowTouchpadCaptureStatus));
                     OnPropertyChanged(nameof(ShowInputHidingSection));
                     OnPropertyChanged(nameof(ShowInputModeSection));
                     // ShowConsumeToggle now gates on IsInternalVirtual, which

@@ -1657,6 +1657,7 @@ namespace PadForge.Tests
             Assert.False(ud.ConsumeInputEnabled, who);
             Assert.False(ud.ForceRawJoystickMode, who);
             Assert.False(ud.QuickChargeEnabled, who);
+            Assert.False(ud.TouchpadOnlyInPadForge, who);
             Assert.Equal(0, ud.IdleDisconnectSeconds);
             Assert.Equal(0, ud.PeripheralOutputs);
             Assert.False(ud.HasAccelAux, who);

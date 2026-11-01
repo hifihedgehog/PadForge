@@ -765,6 +765,7 @@
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>म्यूज़िक कुंजियाँ पढ़ें</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>इस माउस पर रंबल चलाएँ</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Windows ड्राइवर पुनर्स्थापित करें</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>Windows को वापस दें</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>PadForge के ड्राइवर पर स्विच करें</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge इस कंट्रोलर को Windows के WinUSB ड्राइवर पर ले जाता है ताकि वह चैटपैड पढ़ सके। इसके बाद कंट्रोलर तभी काम करता है जब PadForge चल रहा हो, और गेम उसे PadForge के वर्चुअल कंट्रोलर के ज़रिए देखते हैं। इस मॉडल का लगा हुआ हर कंट्रोलर इसके साथ चला जाता है, और हर एक को उसके स्लॉट पर फिर से असाइन करना होता है। Windows ड्राइवर को इस पेज से कभी भी पुनर्स्थापित करें।</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge इस रिसीवर को Windows के WinUSB ड्राइवर पर ले जाता है ताकि वह चैटपैड और uDraw टैबलेट पढ़ सके। रिसीवर का हर कंट्रोलर और हेडसेट इसके साथ चला जाता है, तभी काम करता है जब PadForge चल रहा हो, और उसे उसके स्लॉट पर फिर से असाइन करना होता है। Windows ड्राइवर को इस पेज से कभी भी पुनर्स्थापित करें।</value></data>
@@ -782,6 +783,7 @@
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>केवल PadForge में उपयोग करें</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge इस कीबोर्ड को Windows के WinUSB ड्राइवर पर ले जाता है और उसे खुद पढ़ता है। इसके बाद Windows हर प्रोग्राम में इससे टाइपिंग करना बंद कर देता है, PadForge बंद होने पर भी, जब तक इस पेज से इसका Windows ड्राइवर पुनर्स्थापित न किया जाए। PadForge चलने तक इसके मैपिंग और मैक्रो काम करते रहते हैं।</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge इस माउस को Windows के WinUSB ड्राइवर पर ले जाता है और उसे खुद पढ़ता है। इसके बाद Windows हर प्रोग्राम में इससे पॉइंटर हिलाना बंद कर देता है, PadForge बंद होने पर भी, जब तक इस पेज से इसका Windows ड्राइवर पुनर्स्थापित न किया जाए। PadForge चलने तक इसके मैपिंग और मैक्रो काम करते रहते हैं।</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>PadForge इस टचपैड को HidHide से Windows से छिपाता है और उसे खुद पढ़ता है। इंजन चलने के दौरान यह किसी भी प्रोग्राम में न पॉइंटर हिलाता है, न कुछ क्लिक करता है, न स्क्रोल करता है, और इसके मैपिंग PadForge में काम करते रहते हैं। इंजन रुकने या PadForge बंद होने पर Windows को यह वापस मिल जाता है।</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>ये इसके साथ Windows से चले जाते हैं: {0}।</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>एक माउस</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>एक कीबोर्ड</value></data>
@@ -791,17 +793,31 @@
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>निर्माता के सॉफ़्टवेयर से इसका संपर्क</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>इसी कनेक्शन के अन्य कंट्रोल</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>कीबोर्ड या माउस</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>माउस या टचपैड</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>स्विच के बाद PadForge पूछता है कि इसे रखना है या नहीं, और अगर {0} सेकंड में कोई जवाब न मिले तो कीबोर्ड वापस Windows को दे देता है।</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>स्विच के बाद PadForge पूछता है कि इसे रखना है या नहीं, और अगर {0} सेकंड में कोई जवाब न मिले तो माउस वापस Windows को दे देता है।</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>स्विच के बाद PadForge पूछता है कि इसे रखना है या नहीं, और अगर {0} सेकंड में कोई जवाब न मिले तो टचपैड वापस Windows को दे देता है।</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>इस कीबोर्ड को PadForge में रखें?</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>इस माउस को PadForge में रखें?</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>इस टचपैड को PadForge में रखें?</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows अब {0} से टाइपिंग नहीं करता। अगर इससे आपके पास कोई चालू कीबोर्ड या माउस नहीं बचा, तो कुछ न करें: काउंटडाउन खत्म होने पर PadForge इसे Windows को वापस दे देता है।</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows अब {0} से पॉइंटर नहीं हिलाता। अगर इससे आपके पास कोई चालू कीबोर्ड या माउस नहीं बचा, तो कुछ न करें: काउंटडाउन खत्म होने पर PadForge इसे Windows को वापस दे देता है।</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows अब {0} से पॉइंटर नहीं हिलाता। अगर इससे आपके पास कोई चालू कीबोर्ड या माउस नहीं बचा, तो कुछ न करें: काउंटडाउन खत्म होने पर PadForge इसे Windows को वापस दे देता है।</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0} सेकंड में वापस दिया जा रहा है</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>रखें</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>वापस दें</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>पहले इस मॉडल के बाकी कीबोर्ड निकाल दें। Windows लगे हुए हर कीबोर्ड को एक साथ PadForge के ड्राइवर पर ले जाता है, और हर एक से टाइपिंग करना बंद कर देता है।</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} वापस अपने Windows ड्राइवर पर है क्योंकि स्विच को रखा नहीं गया।</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>{0} बदला जा रहा है…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>अब {0} को केवल PadForge पढ़ता है।</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>PadForge {0} को Windows से नहीं ले सका।</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} वापस Windows के पास है।</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>{0} को Windows को वापस नहीं दिया जा सका।</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>{0} वापस Windows के पास है क्योंकि स्विच को रखा नहीं गया।</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>PadForge {0} को पढ़ नहीं सका, इसलिए वह Windows को वापस मिल गया है।</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>टचपैड को केवल PadForge में उपयोग करने के लिए HidHide इंस्टॉल करें।</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>टचपैड को केवल PadForge में उपयोग करने के लिए सेटिंग्स में गेम से डिवाइस छिपाएँ चालू करें।</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>टचपैड को केवल PadForge में उपयोग करने के लिए इंजन शुरू करें।</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> ऑनलाइन / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> कुल</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>यह डिवाइस और इसकी सेटिंग्स निकालें</value></data>
@@ -4144,8 +4160,10 @@
   <data name="Tablet_InputShared" xml:space="preserve"><value>साझा इनपुट</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>इनपुट बदला जा रहा है</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>टैबलेट इनपुट की प्रतीक्षा</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>टचपैड इनपुट की प्रतीक्षा</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>PadForge द्वारा कैप्चर किया गया</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>टैबलेट इनपुट उपलब्ध नहीं</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>टचपैड इनपुट उपलब्ध नहीं</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>{0} कैप्चर नहीं हो सका</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>इंजन चलने के दौरान, “डिवाइस छिपाएँ” टैबलेट के पेन इनपुट को रीस्टार्ट करता है और उसे केवल PadForge में पढ़ता है। छिपाना बंद करने पर वह Windows को लौट जाता है। छिपाए रखे गए डिवाइस PadForge के बंद होने के बाद भी नेटिव पॉइंटर को अक्षम रखते हैं।</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>पेन बैरल बटन</value></data>

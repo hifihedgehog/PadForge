@@ -1281,7 +1281,10 @@
                              whole device from Windows, so it stands with the two
                              toggles. A switched device shows neither toggle, and
                              its restore keeps the section for itself
-                             (DeviceRowViewModel.ShowsHidingDriverSwitch). -->
+                             (DeviceRowViewModel.ShowsHidingDriverSwitch). A
+                             precision touchpad's switch stands here too, on its
+                             own row and on its mouse row, and gives the touchpad
+                             back to Windows rather than restoring a driver. -->
                         <Button Content="{Binding DriverBindText}" Margin="0,4,0,4"
                                 Padding="8,4" HorizontalAlignment="Left"
                                 Click="DriverBind_Click"
@@ -1290,7 +1293,7 @@
                                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
                             </Button.Style>
                         </Button>
-                        <Button Content="{Binding Devices_DriverRestore, Source={x:Static strings:Strings.Instance}}" Margin="0,4,0,4"
+                        <Button Content="{Binding DriverRestoreText}" Margin="0,4,0,4"
                                 Padding="8,4" HorizontalAlignment="Left"
                                 Click="DriverRestore_Click"
                                 Visibility="{Binding ShowHidingDriverRestore, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -1298,6 +1301,13 @@
                                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
                             </Button.Style>
                         </Button>
+
+                        <!-- The touchpad capture's line, as a tablet's row shows
+                             its own, while the switch is on. -->
+                        <TextBlock Text="{Binding SelectedDevice.TouchpadInputStatus}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,8"
+                                   Visibility="{Binding SelectedDevice.ShowTouchpadCaptureStatus, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                         <!-- Follows the section it divides. A bare separator sat
                              visible on devices where every control above it was

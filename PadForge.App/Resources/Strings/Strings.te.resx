@@ -765,6 +765,7 @@
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>మ్యూజిక్ కీలను చదువు</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>ఈ మౌస్పై రంబుల్ ప్లే చేయి</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>విండోస్ డ్రైవర్ను పునరుద్ధరించు</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>Windowsకు తిరిగి ఇవ్వు</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>PadForge డ్రైవర్కు మారండి</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>చాట్ప్యాడ్ను చదవడానికి PadForge ఈ కంట్రోలర్ను విండోస్ WinUSB డ్రైవర్కు మారుస్తుంది. అప్పుడు కంట్రోలర్ PadForge నడుస్తున్నప్పుడు మాత్రమే పని చేస్తుంది, గేమ్లకు ఇది PadForge వర్చువల్ కంట్రోలర్ ద్వారా కనిపిస్తుంది. ఈ మోడల్కు చెందిన ప్లగ్ చేసిన ప్రతి కంట్రోలర్ దీనితో మారుతుంది, ప్రతిదాన్ని దాని స్లాట్కు మళ్లీ కేటాయించాలి. విండోస్ డ్రైవర్ను ఈ పేజీ నుండి ఎప్పుడైనా పునరుద్ధరించవచ్చు.</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>చాట్ప్యాడ్లు మరియు uDraw టాబ్లెట్లను చదవడానికి PadForge ఈ రిసీవర్ను విండోస్ WinUSB డ్రైవర్కు మారుస్తుంది. రిసీవర్పై ఉన్న ప్రతి కంట్రోలర్, హెడ్సెట్ దీనితో మారుతుంది, PadForge నడుస్తున్నప్పుడు మాత్రమే పని చేస్తుంది, వాటిని వాటి స్లాట్కు మళ్లీ కేటాయించాలి. విండోస్ డ్రైవర్ను ఈ పేజీ నుండి ఎప్పుడైనా పునరుద్ధరించవచ్చు.</value></data>
@@ -782,6 +783,7 @@
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>PadForgeలో మాత్రమే ఉపయోగించు</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge ఈ కీబోర్డ్‌ను Windows యొక్క WinUSB డ్రైవర్‌కు మారుస్తుంది మరియు దాన్ని స్వయంగా చదువుతుంది. అప్పుడు ఈ పేజీలో దాని Windows డ్రైవర్‌ను పునరుద్ధరించే వరకు, PadForge మూసివేసి ఉన్నప్పుడు కూడా, Windows ప్రతి ప్రోగ్రామ్‌లో దానితో టైప్ చేయడం ఆపేస్తుంది. PadForge నడుస్తున్నప్పుడు దాని మ్యాపింగ్‌లు మరియు మాక్రోలు పనిచేస్తూనే ఉంటాయి.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge ఈ మౌస్‌ను Windows యొక్క WinUSB డ్రైవర్‌కు మారుస్తుంది మరియు దాన్ని స్వయంగా చదువుతుంది. అప్పుడు ఈ పేజీలో దాని Windows డ్రైవర్‌ను పునరుద్ధరించే వరకు, PadForge మూసివేసి ఉన్నప్పుడు కూడా, Windows ప్రతి ప్రోగ్రామ్‌లో దానితో పాయింటర్‌ను కదిలించడం ఆపేస్తుంది. PadForge నడుస్తున్నప్పుడు దాని మ్యాపింగ్‌లు మరియు మాక్రోలు పనిచేస్తూనే ఉంటాయి.</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>PadForge ఈ టచ్ ప్యాడ్‌ను HidHideతో Windows నుండి దాచి, దాన్ని స్వయంగా చదువుతుంది. ఇంజిన్ నడుస్తున్నప్పుడు, ఇది ఏ ప్రోగ్రామ్‌లోనూ పాయింటర్‌ను కదిలించదు, ఏదీ క్లిక్ చేయదు లేదా స్క్రోల్ చేయదు, మరియు దాని మ్యాపింగ్‌లు PadForgeలో పనిచేస్తూనే ఉంటాయి. ఇంజిన్ ఆగినప్పుడు లేదా PadForge మూసివేసినప్పుడు Windowsకు ఇది తిరిగి వస్తుంది.</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>ఇవి దానితో పాటు Windowsను వదిలివేస్తాయి: {0}.</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>ఒక మౌస్</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>ఒక కీబోర్డ్</value></data>
@@ -791,17 +793,31 @@
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>తయారీదారు సాఫ్ట్‌వేర్‌కు దాని లింక్</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>అదే కనెక్షన్‌లోని ఇతర నియంత్రణలు</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>కీబోర్డ్ లేదా మౌస్</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>మౌస్ లేదా టచ్ ప్యాడ్</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>మార్చిన తర్వాత, దాన్ని ఉంచాలా అని PadForge అడుగుతుంది, {0} సెకన్లలోపు ఎవరూ స్పందించకపోతే కీబోర్డ్‌ను Windowsకు తిరిగి ఇచ్చేస్తుంది.</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>మార్చిన తర్వాత, దాన్ని ఉంచాలా అని PadForge అడుగుతుంది, {0} సెకన్లలోపు ఎవరూ స్పందించకపోతే మౌస్‌ను Windowsకు తిరిగి ఇచ్చేస్తుంది.</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>మార్చిన తర్వాత, దాన్ని ఉంచాలా అని PadForge అడుగుతుంది, {0} సెకన్లలోపు ఎవరూ స్పందించకపోతే టచ్ ప్యాడ్‌ను Windowsకు తిరిగి ఇచ్చేస్తుంది.</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>ఈ కీబోర్డ్‌ను PadForgeలో ఉంచాలా?</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>ఈ మౌస్‌ను PadForgeలో ఉంచాలా?</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>ఈ టచ్ ప్యాడ్‌ను PadForgeలో ఉంచాలా?</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows ఇకపై {0} తో టైప్ చేయదు. దాని వల్ల పనిచేసే కీబోర్డ్ లేదా మౌస్ లేకుండా పోతే, ఏమీ చేయకండి: కౌంట్‌డౌన్ ముగిసినప్పుడు PadForge దాన్ని Windowsకు తిరిగి ఇచ్చేస్తుంది.</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows ఇకపై {0} తో పాయింటర్‌ను కదిలించదు. దాని వల్ల పనిచేసే కీబోర్డ్ లేదా మౌస్ లేకుండా పోతే, ఏమీ చేయకండి: కౌంట్‌డౌన్ ముగిసినప్పుడు PadForge దాన్ని Windowsకు తిరిగి ఇచ్చేస్తుంది.</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows ఇకపై {0} తో పాయింటర్‌ను కదిలించదు. దాని వల్ల పనిచేసే కీబోర్డ్ లేదా మౌస్ లేకుండా పోతే, ఏమీ చేయకండి: కౌంట్‌డౌన్ ముగిసినప్పుడు PadForge దాన్ని Windowsకు తిరిగి ఇచ్చేస్తుంది.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0} సెకన్లలో తిరిగి ఇవ్వబడుతుంది</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>ఉంచు</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>తిరిగి ఇవ్వు</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>ముందుగా ఈ మోడల్‌కు చెందిన ఇతర కీబోర్డ్‌లను అన్‌ప్లగ్ చేయండి. Windows ప్లగ్ చేసిన ప్రతిదాన్ని ఒకేసారి PadForge డ్రైవర్‌కు మారుస్తుంది, ప్రతిదానితో టైప్ చేయడం ఆపుతుంది.</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>మార్పు ఉంచబడనందున {0} మళ్లీ దాని Windows డ్రైవర్‌పైకి వచ్చింది.</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>{0} మారుస్తోంది…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>ఇప్పుడు {0}ను PadForge మాత్రమే చదువుతుంది.</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>PadForge {0}ను Windows నుండి తీసుకోలేకపోయింది.</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} మళ్లీ Windows వద్దకు వచ్చింది.</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>{0}ను Windowsకు తిరిగి ఇవ్వలేకపోయాము.</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>మార్పు ఉంచబడనందున {0} మళ్లీ Windows వద్దకు వచ్చింది.</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>PadForge {0}ను చదవలేకపోయింది, కాబట్టి Windows దాన్ని తిరిగి తీసుకుంది.</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>టచ్ ప్యాడ్‌ను PadForgeలో మాత్రమే ఉపయోగించడానికి HidHide ఇన్స్టాల్ చేయండి.</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>టచ్ ప్యాడ్‌ను PadForgeలో మాత్రమే ఉపయోగించడానికి సెట్టింగ్‌లలో పరికరాలను గేమ్‌ల నుండి దాచు ఆన్ చేయండి.</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>టచ్ ప్యాడ్‌ను PadForgeలో మాత్రమే ఉపయోగించడానికి ఇంజిన్ను ప్రారంభించండి.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> ఆన్లైన్ / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> మొత్తం</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>ఈ పరికరాన్ని మరియు దాని సెట్టింగులను తీసివేయి</value></data>
@@ -4144,8 +4160,10 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Tablet_InputShared" xml:space="preserve"><value>షేర్డ్ ఇన్పుట్</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>ఇన్పుట్ మారుతోంది</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>టాబ్లెట్ ఇన్పుట్ కోసం వేచి ఉంది</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>టచ్ ప్యాడ్ ఇన్పుట్ కోసం వేచి ఉంది</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>PadForge ద్వారా క్యాప్చర్ చేయబడింది</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>టాబ్లెట్ ఇన్పుట్ అందుబాటులో లేదు</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>టచ్ ప్యాడ్ ఇన్పుట్ అందుబాటులో లేదు</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>{0} ను క్యాప్చర్ చేయలేకపోయాం</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>ఇంజిన్ నడుస్తున్నప్పుడు, పరికరాన్ని దాచు టాబ్లెట్ యొక్క పెన్ ఇన్పుట్ను మళ్లీ ప్రారంభించి PadForge లో మాత్రమే చదువుతుంది. దాచడం ఆఫ్ చేస్తే అది Windows కు తిరిగి వెళ్తుంది. ఉంచిన క్లోక్లు PadForge మూసివేసిన తర్వాత కూడా నేటివ్ పాయింటర్ను నిలిపి ఉంచుతాయి.</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>పెన్ బారెల్ బటన్</value></data>

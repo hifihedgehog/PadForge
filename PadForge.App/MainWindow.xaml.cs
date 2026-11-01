@@ -2523,6 +2523,12 @@ namespace PadForge
         private async System.Threading.Tasks.Task SwitchDriverAsync(bool bind)
         {
             var devices = _viewModel.Devices;
+            // A precision touchpad's switch changes no driver.
+            if (devices.TouchpadSwitch != null)
+            {
+                await SwitchTouchpadAsync(bind);
+                return;
+            }
             var offer = devices.DriverOffer;
             if (offer == null || devices.DriverBusy || (bind ? offer.Bind == null : !offer.Restore)) return;
             bool mouse = offer.Kind == Services.VendorUsbDriverInstaller.OptInKind.Mouse;
@@ -2744,6 +2750,125 @@ namespace PadForge
                 both ? s.Devices_DriverKind_KeyboardOrMouse : mouse ? s.Devices_DeviceKind_Mouse : s.Devices_DeviceKind_Keyboard));
             parts.Add(string.Format(mouse ? s.Devices_DriverKeepNote_Mouse_Format : s.Devices_DriverKeepNote_Format, KeepDriverSeconds));
             return string.Join("\n\n", parts);
+        }
+
+        /// <summary>How long a touchpad's switch waits for its capture to
+        /// settle, the time the driver switch gives Windows to start a
+        /// bound device's interface.</summary>
+        internal const int TouchpadSettleMs = 5000;
+
+        /// <summary>Takes a precision touchpad from Windows for PadForge to
+        /// read alone, or gives it back (Use Only in PadForge on the
+        /// touchpad's two rows). No driver changes: while the engine runs,
+        /// HidHide hides the touchpad's collection and PadForge opens it
+        /// (InputService.Touchpads.cs). The confirm, the Keep prompt and the
+        /// give-back follow the keyboard's and mouse's switch.</summary>
+        private async System.Threading.Tasks.Task SwitchTouchpadAsync(bool take)
+        {
+            var devices = _viewModel.Devices;
+            var offer = devices.TouchpadSwitch;
+            if (offer == null || devices.DriverBusy || take == offer.Taken) return;
+            var ud = Common.Input.SettingsManager.FindDeviceByInstanceGuid(offer.TouchpadRow);
+            if (ud == null) return;
+            string name = string.IsNullOrWhiteSpace(offer.Name) ? ud.InstanceName : offer.Name;
+
+            if (take)
+            {
+                // The switch needs HidHide, Hide Devices from Games and the
+                // engine. A missing one is named before anything is asked.
+                string missing = !_viewModel.Settings.IsHidHideInstalled ? Strings.Instance.Status_TouchpadNeedsHidHide
+                    : !_viewModel.Settings.EnableInputHiding ? Strings.Instance.Status_TouchpadNeedsInputHiding
+                    : !_viewModel.IsEngineRunning ? Strings.Instance.Status_TouchpadNeedsEngine
+                    : null;
+                if (missing != null)
+                {
+                    _viewModel.SetStatus(missing, persist: true);
+                    return;
+                }
+            }
+
+            devices.DriverBusy = true;
+            if (take && !Views.ConfirmDialog.Show(this, Strings.Instance.Devices_DriverBind_OnlyInPadForge,
+                    TouchpadCost(), Strings.Instance.Devices_DriverBind_OnlyInPadForge, name))
+            {
+                devices.DriverBusy = false;
+                return;
+            }
+
+            _viewModel.SetStatus(string.Format(Strings.Instance.Status_TouchpadSwitching_Format, name));
+            bool ok = await SetTouchpadOnlyInPadForgeAsync(ud, take);
+            string format = take
+                ? (ok ? Strings.Instance.Status_TouchpadTaken_Format : Strings.Instance.Status_TouchpadTakeFailed_Format)
+                : (ok ? Strings.Instance.Status_TouchpadGivenBack_Format : Strings.Instance.Status_TouchpadGiveBackFailed_Format);
+            bool persist = !ok;
+            if (take && !ok)
+            {
+                // A take PadForge could not read is given back at once, so the
+                // touchpad is never left hidden with nothing reading it.
+                await SetTouchpadOnlyInPadForgeAsync(ud, false);
+            }
+            // The automatic undo, while the page is still busy. Someone whose
+            // only pointer was just taken cannot click Keep with it, and the
+            // prompt's end gives the touchpad back to Windows.
+            else if (take && !Views.KeepDriverDialog.Show(this, name, KeepDriverSeconds, touchpad: true))
+            {
+                _viewModel.SetStatus(string.Format(Strings.Instance.Status_TouchpadSwitching_Format, name));
+                bool back = await SetTouchpadOnlyInPadForgeAsync(ud, false);
+                format = back
+                    ? Strings.Instance.Status_TouchpadKeepExpired_Format
+                    : Strings.Instance.Status_TouchpadGiveBackFailed_Format;
+                persist = true;
+            }
+            devices.DriverBusy = false;
+            _viewModel.SetStatus(string.Format(format, name), persist: persist);
+            devices.RefreshDriverOffer();
+        }
+
+        /// <summary>Sets a touchpad row's switch, hands it to the hiding pass,
+        /// and waits for the touchpad's capture to settle: PadForge holding
+        /// the touchpad for a take, Windows having it back for a give-back.
+        /// True when it settled that way within <see cref="TouchpadSettleMs"/>.</summary>
+        private async System.Threading.Tasks.Task<bool> SetTouchpadOnlyInPadForgeAsync(Engine.Data.UserDevice ud, bool on)
+        {
+            ud.TouchpadOnlyInPadForge = on;
+            var row = _viewModel.Devices.FindByGuid(ud.InstanceGuid);
+            if (row != null) row.TouchpadOnlyInPadForge = on;
+            _settingsService?.MarkDirty();
+            _inputService.ApplyAutomaticDeviceHiding();
+            var timer = System.Diagnostics.Stopwatch.StartNew();
+            while (timer.ElapsedMilliseconds < TouchpadSettleMs)
+            {
+                await System.Threading.Tasks.Task.Delay(100);
+                var capture = _inputService.TouchpadCaptureOf(ud);
+                if (on)
+                {
+                    if (capture != null && capture.IsReading) return true;
+                    // A capture that failed already gave the touchpad back
+                    // (InputService.OnTouchpadCaptureChanged).
+                    if (capture?.CaptureState == Engine.Tablets.TabletCaptureState.Failed || !ud.TouchpadOnlyInPadForge)
+                        return false;
+                }
+                else
+                {
+                    // No capture: the hiding pass restarted the collection for
+                    // Windows itself (TouchpadCapture.RestartForWindows).
+                    if (capture == null || capture.CaptureState == Engine.Tablets.TabletCaptureState.Shared) return true;
+                    if (capture.CaptureState == Engine.Tablets.TabletCaptureState.Failed) return false;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>The confirm of a touchpad's switch: what it does, Hide
+        /// from Games' warning about the only pointer, and the undo that
+        /// follows.</summary>
+        internal static string TouchpadCost()
+        {
+            var s = Strings.Instance;
+            return string.Join("\n\n",
+                s.Devices_TouchpadConfirm,
+                string.Format(s.Devices_WarnHide_Format, s.Devices_DriverKind_MouseOrTouchpad),
+                string.Format(s.Devices_TouchpadKeepNote_Format, KeepDriverSeconds));
         }
 
         /// <summary>Records a keyboard's takeover in place of any earlier

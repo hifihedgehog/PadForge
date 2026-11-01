@@ -765,6 +765,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>Đọc các phím nhạc</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>Phát rung trên chuột này</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Khôi phục trình điều khiển Windows</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>Trả lại cho Windows</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Chuyển sang trình điều khiển của PadForge</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge chuyển tay cầm này sang trình điều khiển WinUSB của Windows để có thể đọc chatpad. Sau đó tay cầm chỉ hoạt động khi PadForge đang chạy, và trò chơi thấy nó thông qua tay cầm ảo của PadForge. Mọi tay cầm cùng mẫu đang cắm cũng được chuyển theo, và mỗi cái cần được gán lại vào khe của nó. Bạn có thể khôi phục trình điều khiển Windows từ trang này bất cứ lúc nào.</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge chuyển đầu thu này sang trình điều khiển WinUSB của Windows để có thể đọc chatpad và bảng vẽ uDraw. Mọi tay cầm và tai nghe trên đầu thu cũng được chuyển theo, chỉ hoạt động khi PadForge đang chạy, và cần được gán lại vào khe của mình. Bạn có thể khôi phục trình điều khiển Windows từ trang này bất cứ lúc nào.</value></data>
@@ -782,6 +783,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Chỉ dùng trong PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge chuyển bàn phím này sang trình điều khiển WinUSB của Windows và tự đọc nó. Khi đó Windows ngừng nhận gõ phím từ bàn phím này trong mọi chương trình, kể cả khi PadForge đã đóng, cho đến khi trình điều khiển Windows của nó được khôi phục từ trang này. Các ánh xạ và macro của nó vẫn hoạt động khi PadForge đang chạy.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge chuyển chuột này sang trình điều khiển WinUSB của Windows và tự đọc nó. Khi đó Windows ngừng di chuyển con trỏ bằng chuột này trong mọi chương trình, kể cả khi PadForge đã đóng, cho đến khi trình điều khiển Windows của nó được khôi phục từ trang này. Các ánh xạ và macro của nó vẫn hoạt động khi PadForge đang chạy.</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>PadForge ẩn bàn cảm ứng này khỏi Windows bằng HidHide và tự đọc nó. Khi bộ máy đang chạy, nó không di chuyển con trỏ và không nhấp hay cuộn gì trong bất kỳ chương trình nào, còn các ánh xạ của nó vẫn hoạt động trong PadForge. Windows sẽ nhận lại nó khi bộ máy dừng hoặc PadForge đóng.</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Những thứ này cũng rời khỏi Windows cùng với nó: {0}.</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>một con chuột</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>một bàn phím</value></data>
@@ -791,17 +793,31 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>liên kết của nó với phần mềm của nhà sản xuất</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>các điều khiển khác trên cùng kết nối</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>bàn phím hoặc chuột</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>chuột hoặc bàn cảm ứng</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Sau khi chuyển, PadForge sẽ hỏi bạn có muốn giữ lại không, và trả bàn phím về cho Windows nếu không ai trả lời trong {0} giây.</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>Sau khi chuyển, PadForge sẽ hỏi bạn có muốn giữ lại không, và trả chuột về cho Windows nếu không ai trả lời trong {0} giây.</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>Sau khi chuyển, PadForge sẽ hỏi bạn có muốn giữ lại không, và trả bàn cảm ứng về cho Windows nếu không ai trả lời trong {0} giây.</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Giữ bàn phím này trong PadForge?</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>Giữ chuột này trong PadForge?</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>Giữ bàn cảm ứng này trong PadForge?</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows không còn nhận gõ phím từ {0}. Nếu bạn không còn bàn phím hoặc chuột nào dùng được, đừng làm gì cả: PadForge sẽ trả nó về cho Windows khi đếm ngược kết thúc.</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows không còn di chuyển con trỏ bằng {0}. Nếu bạn không còn bàn phím hoặc chuột nào dùng được, đừng làm gì cả: PadForge sẽ trả nó về cho Windows khi đếm ngược kết thúc.</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows không còn di chuyển con trỏ bằng {0}. Nếu bạn không còn bàn phím hoặc chuột nào dùng được, đừng làm gì cả: PadForge sẽ trả nó về cho Windows khi đếm ngược kết thúc.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Trả lại sau {0} giây</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Giữ</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Trả lại</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Trước tiên hãy rút các bàn phím khác cùng mẫu này. Windows chuyển mọi bàn phím đang cắm sang trình điều khiển của PadForge cùng lúc, và ngừng nhận gõ phím từ từng cái.</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} đã trở lại trình điều khiển Windows của nó vì lần chuyển không được giữ lại.</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>Đang chuyển {0}…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>Giờ chỉ PadForge đọc {0}.</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>PadForge không thể lấy {0} khỏi Windows.</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} đã trở lại với Windows.</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>Không thể trả {0} lại cho Windows.</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>{0} đã trở lại với Windows vì lần chuyển không được giữ lại.</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>PadForge không thể đọc {0}, nên Windows đã nhận lại nó.</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>Hãy cài đặt HidHide để dùng bàn cảm ứng chỉ trong PadForge.</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>Hãy bật Ẩn thiết bị khỏi trò chơi trong Cài đặt để dùng bàn cảm ứng chỉ trong PadForge.</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>Hãy khởi động bộ máy để dùng bàn cảm ứng chỉ trong PadForge.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> trực tuyến / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> tổng cộng</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Gỡ bỏ thiết bị này và thiết lập của nó</value></data>
@@ -4144,8 +4160,10 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Tablet_InputShared" xml:space="preserve"><value>Đầu vào dùng chung</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>Đang chuyển đầu vào</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>Đang chờ đầu vào bảng vẽ</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>Đang chờ đầu vào bàn cảm ứng</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>PadForge đang chiếm quyền</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>Đầu vào bảng vẽ không khả dụng</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>Đầu vào bàn cảm ứng không khả dụng</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>Không chiếm quyền được {0}</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>Khi bộ máy đang chạy, Ẩn thiết bị khởi động lại đầu vào bút của bảng vẽ và chỉ đọc nó trong PadForge. Tắt chế độ ẩn sẽ trả nó về cho Windows. Trạng thái ẩn được giữ lại cũng giữ con trỏ gốc bị tắt sau khi PadForge đóng.</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>Nút thân bút</value></data>

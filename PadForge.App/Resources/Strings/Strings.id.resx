@@ -765,6 +765,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>Baca tuts musik</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>Mainkan getaran di mouse ini</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Pulihkan driver Windows</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>Kembalikan ke Windows</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Beralih ke driver PadForge</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge memindahkan kontroler ini ke driver WinUSB milik Windows agar dapat membaca chatpad. Kontroler lalu hanya berfungsi selama PadForge berjalan, dan game melihatnya melalui kontroler virtual PadForge. Setiap kontroler model ini yang tercolok ikut dipindahkan, dan masing-masing perlu ditetapkan lagi ke slotnya. Pulihkan driver Windows dari halaman ini kapan saja.</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge memindahkan penerima ini ke driver WinUSB milik Windows agar dapat membaca chatpad dan tablet uDraw. Setiap kontroler dan headset pada penerima ini ikut dipindahkan, hanya berfungsi selama PadForge berjalan, dan perlu ditetapkan lagi ke slotnya. Pulihkan driver Windows dari halaman ini kapan saja.</value></data>
@@ -782,6 +783,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Pakai Hanya di PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge memindahkan keyboard ini ke driver WinUSB milik Windows dan membacanya sendiri. Windows lalu berhenti mengetik dengannya di semua program, bahkan saat PadForge ditutup, sampai driver Windows-nya dipulihkan dari halaman ini. Pemetaan dan makronya tetap berfungsi selama PadForge berjalan.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge memindahkan mouse ini ke driver WinUSB milik Windows dan membacanya sendiri. Windows lalu berhenti menggerakkan penunjuk dengannya di semua program, bahkan saat PadForge ditutup, sampai driver Windows-nya dipulihkan dari halaman ini. Pemetaan dan makronya tetap berfungsi selama PadForge berjalan.</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>PadForge menyembunyikan panel sentuh ini dari Windows dengan HidHide dan membacanya sendiri. Selama mesin berjalan, panel sentuh ini tidak menggerakkan penunjuk dan tidak mengeklik atau menggulir apa pun di program mana pun, dan pemetaannya tetap berfungsi di PadForge. Windows mendapatkannya kembali saat mesin berhenti atau PadForge ditutup.</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Ini ikut meninggalkan Windows bersamanya: {0}.</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>sebuah mouse</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>sebuah keyboard</value></data>
@@ -791,17 +793,31 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>tautannya ke perangkat lunak pembuatnya</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>kontrol lain pada koneksi yang sama</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>keyboard atau mouse</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>mouse atau panel sentuh</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Setelah beralih, PadForge menanyakan apakah driver ini dipertahankan, dan mengembalikan keyboard ke Windows jika tidak ada jawaban dalam {0} detik.</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>Setelah beralih, PadForge menanyakan apakah driver ini dipertahankan, dan mengembalikan mouse ke Windows jika tidak ada jawaban dalam {0} detik.</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>Setelah beralih, PadForge menanyakan apakah panel sentuh ini dipertahankan, dan mengembalikannya ke Windows jika tidak ada jawaban dalam {0} detik.</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Pertahankan Keyboard Ini di PadForge?</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>Pertahankan Mouse Ini di PadForge?</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>Pertahankan Panel Sentuh Ini di PadForge?</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows tidak lagi mengetik dengan {0}. Jika Anda jadi tidak punya keyboard atau mouse yang berfungsi, tidak perlu melakukan apa pun: PadForge mengembalikannya ke Windows saat hitungan mundur selesai.</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows tidak lagi menggerakkan penunjuk dengan {0}. Jika Anda jadi tidak punya keyboard atau mouse yang berfungsi, tidak perlu melakukan apa pun: PadForge mengembalikannya ke Windows saat hitungan mundur selesai.</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows tidak lagi menggerakkan penunjuk dengan {0}. Jika Anda jadi tidak punya keyboard atau mouse yang berfungsi, tidak perlu melakukan apa pun: PadForge mengembalikannya ke Windows saat hitungan mundur selesai.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Dikembalikan dalam {0} detik</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Pertahankan</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Kembalikan</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Cabut dahulu keyboard lain dengan model ini. Windows memindahkan semua yang tercolok ke driver PadForge sekaligus, dan berhenti mengetik dengan masing-masing.</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} kembali memakai driver Windows-nya karena peralihan tidak dipertahankan.</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>Mengganti {0}…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>Sekarang hanya PadForge yang membaca {0}.</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>PadForge tidak dapat mengambil {0} dari Windows.</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} kembali ke Windows.</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>{0} tidak dapat dikembalikan ke Windows.</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>{0} kembali ke Windows karena peralihan tidak dipertahankan.</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>PadForge tidak dapat membaca {0}, jadi Windows memilikinya kembali.</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>Instal HidHide untuk memakai panel sentuh hanya di PadForge.</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>Aktifkan Sembunyikan perangkat dari game di Pengaturan untuk memakai panel sentuh hanya di PadForge.</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>Mulai mesin untuk memakai panel sentuh hanya di PadForge.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> total</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Hapus perangkat ini beserta pengaturannya</value></data>
@@ -4144,8 +4160,10 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Tablet_InputShared" xml:space="preserve"><value>Input bersama</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>Mengganti input</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>Menunggu input tablet</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>Menunggu input panel sentuh</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>Ditangkap oleh PadForge</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>Input tablet tidak tersedia</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>Input panel sentuh tidak tersedia</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>Tidak dapat menangkap {0}</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>Saat mesin berjalan, Sembunyikan perangkat memulai ulang input pena tablet dan membacanya hanya di PadForge. Mematikan penyembunyian mengembalikannya ke Windows. Penyembunyian yang dipertahankan juga membuat penunjuk bawaan tetap nonaktif setelah PadForge ditutup.</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>Tombol batang pena</value></data>

@@ -765,6 +765,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>A zenei billentyűk olvasása</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>Rezgés lejátszása ezen az egéren</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>A Windows-illesztőprogram visszaállítása</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>Visszaadás a Windowsnak</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Váltás a PadForge illesztőprogramjára</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>A PadForge ezt a kontrollert a Windows WinUSB illesztőprogramjára állítja át, hogy olvasni tudja a chatpadet. A kontroller ezután csak akkor működik, amíg a PadForge fut, és a játékok a PadForge virtuális kontrollerén keresztül látják. Az átállítás az ilyen modellű összes csatlakoztatott kontrollert érinti, és mindegyiket újra hozzá kell rendelni a foglalatához. A Windows-illesztőprogram erről az oldalról bármikor visszaállítható.</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>A PadForge ezt a vevőegységet a Windows WinUSB illesztőprogramjára állítja át, hogy olvasni tudja a chatpadeket és az uDraw táblákat. Az átállítás a vevőegység összes kontrollerét és headsetjét érinti: ezek csak akkor működnek, amíg a PadForge fut, és újra hozzá kell rendelni őket a foglalatukhoz. A Windows-illesztőprogram erről az oldalról bármikor visszaállítható.</value></data>
@@ -782,6 +783,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Használat csak a PadForge-ban</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>A PadForge ezt a billentyűzetet a Windows WinUSB illesztőprogramjára állítja át, és maga olvassa. A Windows ezután egyetlen programban sem gépel vele, még a PadForge bezárt állapotában sem, amíg a Windows-illesztőprogramját vissza nem állítják ezen az oldalon. A hozzárendelései és makrói a PadForge futása alatt továbbra is működnek.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>A PadForge ezt az egeret a Windows WinUSB illesztőprogramjára állítja át, és maga olvassa. A Windows ezután egyetlen programban sem mozgatja vele a mutatót, még a PadForge bezárt állapotában sem, amíg a Windows-illesztőprogramját vissza nem állítják ezen az oldalon. A hozzárendelései és makrói a PadForge futása alatt továbbra is működnek.</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>A PadForge ezt az érintőpadot a HidHide-dal elrejti a Windows elől, és maga olvassa. Amíg a bemeneti motor fut, egyetlen programban sem mozgat mutatót, nem kattint és nem görget, a hozzárendelései pedig a PadForge-ban továbbra is működnek. A Windows visszakapja, amikor a motor leáll vagy a PadForge bezárul.</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>A Windows ezeket is elveszíti: {0}.</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>egy egér</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>egy billentyűzet</value></data>
@@ -791,17 +793,31 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>a gyártó szoftverével létesített kapcsolata</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>az ugyanazon a kapcsolaton lévő egyéb vezérlők</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>billentyűzet vagy egér</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>egér vagy érintőpad</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Az átváltás után a PadForge megkérdezi, megtartja-e, és ha {0} másodpercen belül nem válaszol senki, visszaadja a billentyűzetet a Windowsnak.</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>Az átváltás után a PadForge megkérdezi, megtartja-e, és ha {0} másodpercen belül nem válaszol senki, visszaadja az egeret a Windowsnak.</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>Az átváltás után a PadForge megkérdezi, megtartja-e, és ha {0} másodpercen belül nem válaszol senki, visszaadja az érintőpadot a Windowsnak.</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Megtartja ezt a billentyűzetet a PadForge-ban?</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>Megtartja ezt az egeret a PadForge-ban?</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>Megtartja ezt az érintőpadot a PadForge-ban?</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>A Windows már nem gépel ezzel: {0}. Ha emiatt nem maradt működő billentyűzete vagy egere, ne tegyen semmit: a PadForge a visszaszámlálás végén visszaadja a Windowsnak.</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>A Windows már nem mozgatja vele a mutatót: {0}. Ha emiatt nem maradt működő billentyűzete vagy egere, ne tegyen semmit: a PadForge a visszaszámlálás végén visszaadja a Windowsnak.</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>A Windows már nem mozgatja vele a mutatót: {0}. Ha emiatt nem maradt működő billentyűzete vagy egere, ne tegyen semmit: a PadForge a visszaszámlálás végén visszaadja a Windowsnak.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Visszaadás {0} másodperc múlva</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Megtartás</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Visszaadás</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Előbb húzza ki a többi ilyen modellű billentyűzetet. A Windows az összes csatlakoztatottat egyszerre állítja át a PadForge illesztőprogramjára, és egyikkel sem gépel tovább.</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} ismét a Windows-illesztőprogramját használja, mert az átváltást nem tartották meg.</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>Váltás: {0}…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>Mostantól csak a PadForge olvassa: {0}.</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>A PadForge nem tudta átvenni a Windowstól: {0}.</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} ismét a Windowsnál van.</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>{0} nem adható vissza a Windowsnak.</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>{0} ismét a Windowsnál van, mert az átváltást nem tartották meg.</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>A PadForge nem tudta olvasni ezt: {0}, ezért a Windows visszakapta.</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>Telepítse a HidHide-ot, hogy az érintőpadot csak a PadForge-ban használhassa.</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>Kapcsolja be a Beállításokban az Eszközök elrejtése a játékok elől kapcsolót, hogy az érintőpadot csak a PadForge-ban használhassa.</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>Indítsa el a bemeneti motort, hogy az érintőpadot csak a PadForge-ban használhassa.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> összesen</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Az eszköz és beállításainak eltávolítása</value></data>
@@ -4144,8 +4160,10 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Tablet_InputShared" xml:space="preserve"><value>Megosztott bemenet</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>Bemenet váltása</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>Várakozás a rajztábla bemenetére</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>Várakozás az érintőpad bemenetére</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>A PadForge átvette</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>A rajztábla bemenete nem érhető el</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>Az érintőpad bemenete nem érhető el</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>Nem sikerült átvenni: {0}</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>Futó bemeneti motor mellett az Eszköz elrejtése újraindítja a rajztábla tollbemenetét, és azt csak a PadForge olvassa. Az elrejtés kikapcsolása visszaadja a Windowsnak. A megtartott rejtések a PadForge bezárása után is letiltva tartják a natív mutatót.</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>Toll oldalsó gombja</value></data>

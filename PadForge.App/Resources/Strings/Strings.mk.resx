@@ -765,6 +765,7 @@
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>Читај ги музичките тастери</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>Пуштај вибрации на овој глушец</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Врати го двигателот на Windows</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>Врати на Windows</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Префрли на двигателот на PadForge</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge го префрла овој контролер на двигателот WinUSB на Windows за да може да го чита Chatpad. Потоа контролерот работи само додека работи PadForge, а игрите го гледаат преку виртуелниот контролер на PadForge. Сите приклучени контролери од овој модел се префрлаат заедно со него и секој треба повторно да се додели на својот слот. Двигателот на Windows можете да го вратите од оваа страница во секое време.</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge го префрла овој приемник на двигателот WinUSB на Windows за да може да чита Chatpad и таблети uDraw. Секој контролер и слушалки на приемникот се префрлаат заедно со него, работат само додека работи PadForge и треба повторно да се доделат на својот слот. Двигателот на Windows можете да го вратите од оваа страница во секое време.</value></data>
@@ -782,6 +783,7 @@
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Користи само во PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge ја префрла оваа тастатура на двигателот WinUSB на Windows и ја чита самиот. Тогаш Windows престанува да пишува со неа во сите програми, дури и кога PadForge е затворен, додека не се врати нејзиниот двигател на Windows од оваа страница. Нејзините мапирања и макроа продолжуваат да работат додека работи PadForge.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge го префрла овој глушец на двигателот WinUSB на Windows и го чита самиот. Тогаш Windows престанува да го движи покажувачот со него во сите програми, дури и кога PadForge е затворен, додека не се врати неговиот двигател на Windows од оваа страница. Неговите мапирања и макроа продолжуваат да работат додека работи PadForge.</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>PadForge ја крие оваа допирна табла од Windows со HidHide и ја чита самиот. Додека работи моторот, таа не движи покажувач и не кликнува ниту скролува ништо во ниту една програма, а нејзините мапирања продолжуваат да работат во PadForge. Windows ја добива назад кога ќе запре моторот или ќе се затвори PadForge.</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Со неа од Windows заминуваат: {0}.</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>глушец</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>тастатура</value></data>
@@ -791,17 +793,31 @@
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>нејзината врска со софтверот на производителот</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>други контроли на истата врска</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>тастатура или глушец</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>глушец или допирна табла</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>По префрлањето, PadForge прашува дали да ја задржи и ја враќа тастатурата на Windows ако никој не одговори во рок од {0} секунди.</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>По префрлањето, PadForge прашува дали да го задржи и го враќа глушецот на Windows ако никој не одговори во рок од {0} секунди.</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>По префрлањето, PadForge прашува дали да ја задржи и ја враќа допирната табла на Windows ако никој не одговори во рок од {0} секунди.</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Да се задржи ли оваа тастатура во PadForge?</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>Да се задржи ли овој глушец во PadForge?</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>Да се задржи ли оваа допирна табла во PadForge?</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows повеќе не пишува со {0}. Ако останавте без работна тастатура или глушец, не правете ништо: PadForge ја враќа на Windows кога ќе заврши одбројувањето.</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows повеќе не го движи покажувачот со {0}. Ако останавте без работна тастатура или глушец, не правете ништо: PadForge го враќа на Windows кога ќе заврши одбројувањето.</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows повеќе не го движи покажувачот со {0}. Ако останавте без работна тастатура или глушец, не правете ништо: PadForge го враќа на Windows кога ќе заврши одбројувањето.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Се враќа за {0} сек.</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Задржи</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Врати ја</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Прво исклучете ги другите тастатури од овој модел. Windows ги префрла сите приклучени одеднаш на двигателот на PadForge и престанува да пишува со секоја од нив.</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} е повторно на својот двигател на Windows бидејќи префрлањето не беше задржано.</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>Се префрла {0}…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>Сега само PadForge го чита {0}.</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>PadForge не можеше да го земе {0} од Windows.</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} е повторно кај Windows.</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>{0} не можеше да се врати на Windows.</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>{0} е повторно кај Windows бидејќи префрлањето не беше задржано.</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>PadForge не можеше да го чита {0}, па Windows го има повторно.</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>Инсталирајте HidHide за да користите допирна табла само во PadForge.</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>Вклучете „Скриј ги уредите од игрите“ во Поставки за да користите допирна табла само во PadForge.</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>Стартувајте го моторот за да користите допирна табла само во PadForge.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> онлајн / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> вкупно</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Отстрани го овој уред и неговите поставки</value></data>
@@ -4144,8 +4160,10 @@
   <data name="Tablet_InputShared" xml:space="preserve"><value>Споделен влез</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>Се префрла влезот</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>Се чека влез од таблетот</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>Се чека влез од допирната табла</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>Преземен од PadForge</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>Влезот од таблетот не е достапен</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>Влезот од допирната табла не е достапен</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>{0} не можеше да се преземе</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>Додека моторот работи, криењето на уредот го рестартира влезот од пенкалото на таблетот и го чита само во PadForge. Исклучувањето на криењето го враќа во Windows. Задржаното криење го држи и нативниот покажувач оневозможен откако PadForge ќе се затвори.</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>Странично копче на пенкалото</value></data>

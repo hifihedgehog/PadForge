@@ -3392,7 +3392,7 @@ try {
             $set = { param($tag, $val) $n = $d.SelectSingleNode($tag); if ($n) { $n.InnerText = "$val" } }
             foreach ($tag in @("SerialNumber", "SdlGuid", "DisplayName", "GunCalibration", "FalconCalibration")) { & $set $tag "" }
             foreach ($tag in @("HidHideEnabled", "ConsumeInputEnabled", "ForceRawJoystickMode",
-                               "QuickChargeEnabled", "HasAccelAux", "HasGyroAux")) { & $set $tag "false" }
+                               "QuickChargeEnabled", "TouchpadOnlyInPadForge", "HasAccelAux", "HasGyroAux")) { & $set $tag "false" }
             foreach ($tag in @("IdleDisconnectSeconds", "PeripheralOutputs", "CapTouchpadCount")) { & $set $tag 0 }
             foreach ($tag in @("HidHideInstanceIds", "CapTouchpadFingerCounts")) {
                 $n = $d.SelectSingleNode($tag); if ($n) { $n.RemoveAll() }

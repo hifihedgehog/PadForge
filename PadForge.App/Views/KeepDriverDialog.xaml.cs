@@ -8,8 +8,9 @@ namespace PadForge.Views
 {
     /// <summary>
     /// The Keep prompt after a keyboard's switch to PadForge's driver
-    /// (#549), or a mouse's. Windows stops typing with the keyboard, or
-    /// moving the pointer with the mouse, at the switch, and a device on a
+    /// (#549), a mouse's, or a precision touchpad's switch to PadForge alone.
+    /// Windows stops typing with the keyboard, or moving the pointer with the
+    /// mouse or touchpad, at the switch, and a device on a
     /// shared receiver can take the other with it, so the switch asks to be
     /// kept and undoes itself when nobody answers: the way
     /// Windows' display settings undo a change after 15 seconds. Only the
@@ -24,16 +25,19 @@ namespace PadForge.Views
         private int _remaining;
         private bool _kept;
 
-        private KeepDriverDialog(string deviceName, int seconds, bool mouse)
+        private KeepDriverDialog(string deviceName, int seconds, bool mouse, bool touchpad)
         {
             InitializeComponent();
             // ConfirmDialog's remedy for a FluentWindow with no title bar,
             // so the prompt can be moved.
             MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
 
-            Title = mouse ? Strings.Instance.Devices_DriverKeepTitle_Mouse : Strings.Instance.Devices_DriverKeepTitle;
+            Title = touchpad ? Strings.Instance.Devices_TouchpadKeepTitle
+                : mouse ? Strings.Instance.Devices_DriverKeepTitle_Mouse : Strings.Instance.Devices_DriverKeepTitle;
             TitleText.Text = Title;
-            MessageText.Text = string.Format(mouse
+            MessageText.Text = string.Format(touchpad
+                ? Strings.Instance.Devices_TouchpadKeepMessage_Format
+                : mouse
                 ? Strings.Instance.Devices_DriverKeepMessage_Mouse_Format
                 : Strings.Instance.Devices_DriverKeepMessage_Format, deviceName);
             _seconds = Math.Max(1, seconds);
@@ -68,11 +72,12 @@ namespace PadForge.Views
 
         /// <summary>Modal prompt, centered on <paramref name="owner"/>
         /// (screen when null), worded for a mouse with
-        /// <paramref name="mouse"/>. True only when the user clicked Keep
+        /// <paramref name="mouse"/> and for a touchpad with
+        /// <paramref name="touchpad"/>. True only when the user clicked Keep
         /// before the countdown ran out.</summary>
-        public static bool Show(Window owner, string deviceName, int seconds, bool mouse = false)
+        public static bool Show(Window owner, string deviceName, int seconds, bool mouse = false, bool touchpad = false)
         {
-            var dlg = new KeepDriverDialog(deviceName, seconds, mouse);
+            var dlg = new KeepDriverDialog(deviceName, seconds, mouse, touchpad);
             if (owner != null)
                 dlg.Owner = owner;
             else

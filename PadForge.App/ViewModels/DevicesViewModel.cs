@@ -24,6 +24,7 @@ namespace PadForge.ViewModels
         {
             Title = Strings.Instance.Devices_Title;
             OnPropertyChanged(nameof(DriverBindText));
+            OnPropertyChanged(nameof(DriverRestoreText));
             // The chips keep their items through a language change, so their
             // names follow it here.
             foreach (var item in AnalogKeys)
@@ -64,6 +65,7 @@ namespace PadForge.ViewModels
                     {
                         previous.PropertyChanged -= OnSelectedDevicePropertyChanged;
                         previous.ShowsHidingDriverSwitch = false;
+                        previous.IsTouchpadMouse = false;
                     }
                     if (value != null) value.PropertyChanged += OnSelectedDevicePropertyChanged;
                     OnPropertyChanged(nameof(HasSelectedDevice));
@@ -105,11 +107,33 @@ namespace PadForge.ViewModels
         public bool ShowDriverRestore => _driverOffer?.Restore == true && !_driverBusy && !OfferHides;
 
         /// <summary>The same two buttons for a kind that hides, in the Input
-        /// Hiding section.</summary>
-        public bool ShowHidingDriverBind => _driverOffer?.Bind != null && !_driverBusy && OfferHides;
-        public bool ShowHidingDriverRestore => _driverOffer?.Restore == true && !_driverBusy && OfferHides;
+        /// Hiding section, and a precision touchpad's switch, which stands
+        /// there too.</summary>
+        public bool ShowHidingDriverBind => !_driverBusy
+            && (_driverOffer?.Bind != null && OfferHides || _touchpadOffer != null && !_touchpadOffer.Taken);
+        public bool ShowHidingDriverRestore => !_driverBusy
+            && (_driverOffer?.Restore == true && OfferHides || _touchpadOffer?.Taken == true);
 
-        public string DriverBindText => _driverOffer?.Kind switch
+        /// <summary>A precision touchpad's switch, Use Only in PadForge, on its
+        /// own row or on its mouse row: the touchpad row it acts on, that
+        /// row's name, and whether PadForge reads the touchpad alone
+        /// (UserDevice.TouchpadOnlyInPadForge). No driver changes: HidHide
+        /// hides the touchpad's collection and PadForge reads it
+        /// (InputService.Touchpads.cs).</summary>
+        internal sealed record TouchpadOffer(Guid TouchpadRow, string Name, bool Taken);
+
+        private TouchpadOffer _touchpadOffer;
+
+        /// <summary>The touchpad switch the selected row offers, or null.</summary>
+        internal TouchpadOffer TouchpadSwitch => _touchpadOffer;
+
+        /// <summary>The restore button's text: a driver's restore, or a
+        /// touchpad's give-back, which changes no driver.</summary>
+        public string DriverRestoreText => _touchpadOffer != null
+            ? Strings.Instance.Devices_TouchpadGiveBack
+            : Strings.Instance.Devices_DriverRestore;
+
+        public string DriverBindText => _touchpadOffer != null ? Strings.Instance.Devices_DriverBind_OnlyInPadForge : _driverOffer?.Kind switch
         {
             Services.VendorUsbDriverInstaller.OptInKind.Xbox360Pad => Strings.Instance.Devices_DriverBind_Xbox360Pad,
             Services.VendorUsbDriverInstaller.OptInKind.Xbox360Receiver => Strings.Instance.Devices_DriverBind_Xbox360Receiver,
@@ -198,8 +222,28 @@ namespace PadForge.ViewModels
         public void RefreshDriverOffer()
         {
             var device = _selectedDevice;
+            _touchpadOffer = null;
+            if (device != null) device.IsTouchpadMouse = false;
             if (device == null)
                 _driverOffer = null;
+            else if (device.IsTouchpadRow)
+            {
+                _driverOffer = null;
+                _touchpadOffer = new TouchpadOffer(device.InstanceGuid, device.DeviceName, device.TouchpadOnlyInPadForge);
+            }
+            else if (device.DeviceTypeKey == "Mouse" && !device.IsAggregate && !device.IsInternalVirtual
+                     && TouchpadCollectionBeside(device) is { } touchpadId)
+            {
+                // A touchpad's mouse collection: the switch is the touchpad's,
+                // never a WinUSB bind, which would take the whole touchpad
+                // device from Windows' touchpad driver. It shows once the
+                // touchpad's own row exists, which PadForge adds when it
+                // first reads the touchpad, and its record stays after that.
+                _driverOffer = null;
+                device.IsTouchpadMouse = true;
+                if (TouchpadRowOf(touchpadId) is { } touchpad)
+                    _touchpadOffer = new TouchpadOffer(touchpad.InstanceGuid, touchpad.DeviceName, touchpad.TouchpadOnlyInPadForge);
+            }
             else if (Services.VendorUsbDriverInstaller.IsOptInRow(device.VendorId, device.ProductId))
                 _driverOffer = Services.VendorUsbDriverInstaller.QueryOptIn(device.VendorId, device.ProductId,
                     Services.VendorUsbDriverInstaller.ListPresentUsbNodes());
@@ -228,6 +272,31 @@ namespace PadForge.ViewModels
             NotifyDriverOffer();
         }
 
+        /// <summary>Test seam: the touchpad collection beside a mouse row's
+        /// collection, by instance ID. The device tree by default
+        /// (TouchpadNodes.TouchpadOf).</summary>
+        internal Func<string, string> TouchpadOfCollection = Common.Input.Touchpads.TouchpadNodes.TouchpadOf;
+
+        /// <summary>The touchpad collection beside a mouse row's collection,
+        /// when the row is a touchpad's mouse collection, or null.</summary>
+        private string TouchpadCollectionBeside(DeviceRowViewModel mouseRow)
+        {
+            string id = HidHideController.DevicePathToInstanceId(mouseRow.DevicePath);
+            if (id == null || !id.StartsWith(@"HID\", StringComparison.OrdinalIgnoreCase)) return null;
+            string touchpad = TouchpadOfCollection(id);
+            return touchpad == null || string.Equals(touchpad, id, StringComparison.OrdinalIgnoreCase) ? null : touchpad;
+        }
+
+        /// <summary>The row of a touchpad collection, or null.</summary>
+        private DeviceRowViewModel TouchpadRowOf(string touchpadId)
+        {
+            foreach (var row in Devices)
+                if (row.IsTouchpadRow && string.Equals(HidHideController.DevicePathToInstanceId(row.DevicePath), touchpadId,
+                        StringComparison.OrdinalIgnoreCase))
+                    return row;
+            return null;
+        }
+
         private void NotifyDriverOffer()
         {
             OnPropertyChanged(nameof(ShowDriverBind));
@@ -235,6 +304,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(ShowHidingDriverBind));
             OnPropertyChanged(nameof(ShowHidingDriverRestore));
             OnPropertyChanged(nameof(DriverBindText));
+            OnPropertyChanged(nameof(DriverRestoreText));
             // The section's heading and dividers are the row's, and a
             // switched keyboard's row shows neither of the section's toggles.
             if (_selectedDevice != null)

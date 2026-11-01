@@ -506,6 +506,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>Leer las teclas musicales</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>Reproducir vibración en este ratón</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Restaurar el controlador de Windows</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>Devolver a Windows</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Cambiar al controlador de PadForge</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge pasa este mando al controlador WinUSB de Windows para poder leer el chatpad. A partir de entonces el mando solo funciona mientras PadForge está abierto, y los juegos lo ven a través del mando virtual de PadForge. Todos los mandos conectados de este modelo cambian con él, y cada uno debe volver a asignarse a su ranura. Puedes restaurar el controlador de Windows desde esta página cuando quieras.</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge pasa este receptor al controlador WinUSB de Windows para poder leer chatpads y tabletas uDraw. Cada mando y auricular del receptor cambia con él, solo funciona mientras PadForge está abierto y debe volver a asignarse a su ranura. Puedes restaurar el controlador de Windows desde esta página cuando quieras.</value></data>
@@ -523,6 +524,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Usar solo en PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge pasa este teclado al controlador WinUSB de Windows y lo lee por sí mismo. Windows deja entonces de escribir con él en todos los programas, incluso con PadForge cerrado, hasta que se restaure su controlador de Windows desde esta página. Sus asignaciones y macros siguen funcionando mientras PadForge está abierto.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge pasa este ratón al controlador WinUSB de Windows y lo lee por sí mismo. Windows deja entonces de mover el puntero con él en todos los programas, incluso con PadForge cerrado, hasta que se restaure su controlador de Windows desde esta página. Sus asignaciones y macros siguen funcionando mientras PadForge está abierto.</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>PadForge oculta este touchpad de Windows con HidHide y lo lee por sí mismo. Mientras el motor está en marcha, no mueve ningún puntero ni hace clic ni se desplaza en ningún programa, y sus asignaciones siguen funcionando en PadForge. Windows lo recupera cuando el motor se detiene o PadForge se cierra.</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Con él dejan de funcionar en Windows: {0}.</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>un ratón</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>un teclado</value></data>
@@ -532,17 +534,31 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>su vínculo con el software del fabricante</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>otros controles de la misma conexión</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>teclado o ratón</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>ratón o touchpad</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Tras el cambio, PadForge pregunta si quieres conservarlo y devuelve el teclado a Windows si nadie responde en {0} segundos.</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>Tras el cambio, PadForge pregunta si quieres conservarlo y devuelve el ratón a Windows si nadie responde en {0} segundos.</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>Tras el cambio, PadForge pregunta si quieres conservarlo y devuelve el touchpad a Windows si nadie responde en {0} segundos.</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>¿Conservar este teclado en PadForge?</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>¿Conservar este ratón en PadForge?</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>¿Conservar este touchpad en PadForge?</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows ya no escribe con {0}. Si te has quedado sin teclado ni ratón que funcionen, no hagas nada: PadForge lo devuelve a Windows cuando termina la cuenta atrás.</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows ya no mueve el puntero con {0}. Si te has quedado sin teclado ni ratón que funcionen, no hagas nada: PadForge lo devuelve a Windows cuando termina la cuenta atrás.</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows ya no mueve el puntero con {0}. Si te has quedado sin teclado ni ratón que funcionen, no hagas nada: PadForge lo devuelve a Windows cuando termina la cuenta atrás.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Se devuelve en {0} s</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Conservar</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Devolver</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Desconecta primero los demás teclados de este modelo. Windows pasa a la vez todos los que estén conectados al controlador de PadForge y deja de escribir con cada uno.</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} vuelve a usar el controlador de Windows porque no se conservó el cambio.</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>Cambiando {0}…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>Ahora solo PadForge lee {0}.</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>PadForge no pudo quitarle {0} a Windows.</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} vuelve a estar con Windows.</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>No se pudo devolver {0} a Windows.</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>{0} vuelve a estar con Windows porque no se conservó el cambio.</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>PadForge no pudo leer {0}, así que Windows lo recupera.</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>Instala HidHide para usar un touchpad solo en PadForge.</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>Activa Ocultar dispositivos de los juegos en Ajustes para usar un touchpad solo en PadForge.</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>Inicia el motor para usar un touchpad solo en PadForge.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> en línea / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> total</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Quitar este dispositivo y su configuración</value></data>
@@ -4095,8 +4111,10 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Tablet_InputShared" xml:space="preserve"><value>Entrada compartida</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>Cambiando entrada</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>Esperando entrada de la tableta</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>Esperando entrada del touchpad</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>Capturada por PadForge</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>Entrada de tableta no disponible</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>Entrada de touchpad no disponible</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>No se pudo capturar {0}</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>Con el motor en marcha, ocultar el dispositivo reinicia la entrada del lápiz y la lee solo en PadForge. Al dejar de ocultarlo, la entrada vuelve a Windows. Si se conserva la ocultación entre sesiones, el puntero nativo sigue desactivado al cerrar PadForge.</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>Botón lateral del lápiz</value></data>

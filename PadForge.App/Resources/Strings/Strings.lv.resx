@@ -765,6 +765,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>Lasīt mūzikas taustiņus</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>Atskaņot vibrāciju šajā pelē</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Atjaunot Windows draiveri</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>Atdot atpakaļ sistēmai Windows</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Pārslēgt uz PadForge draiveri</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge pārslēdz šo kontrolleri uz Windows WinUSB draiveri, lai varētu nolasīt Chatpad. Pēc tam kontrolleris darbojas tikai tad, kad darbojas PadForge, un spēles to redz caur PadForge virtuālo kontrolleri. Līdz ar to tiek pārslēgti visi pievienotie šī modeļa kontrolleri, un katrs no jauna jāpiešķir savam slotam. Windows draiveri var jebkurā laikā atjaunot šajā lapā.</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge pārslēdz šo uztvērēju uz Windows WinUSB draiveri, lai varētu nolasīt Chatpad tastatūras un uDraw planšetes. Līdz ar to tiek pārslēgti visi šim uztvērējam pievienotie kontrolleri un austiņas, tie darbojas tikai tad, kad darbojas PadForge, un katrs no jauna jāpiešķir savam slotam. Windows draiveri var jebkurā laikā atjaunot šajā lapā.</value></data>
@@ -782,6 +783,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Izmantot tikai programmā PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge pārslēdz šo tastatūru uz Windows WinUSB draiveri un pati to nolasa. Pēc tam Windows vairs neraksta ar šo tastatūru nevienā programmā, pat ja PadForge ir aizvērts, līdz tās Windows draiveris tiek atjaunots šajā lapā. Tās piešķīrumi un makro turpina darboties, kamēr darbojas PadForge.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge pārslēdz šo peli uz Windows WinUSB draiveri un pati to nolasa. Pēc tam Windows vairs nekustina rādītāju ar šo peli nevienā programmā, pat ja PadForge ir aizvērts, līdz tās Windows draiveris tiek atjaunots šajā lapā. Tās piešķīrumi un makro turpina darboties, kamēr darbojas PadForge.</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>PadForge paslēpj šo skārienpaliktni no Windows ar HidHide un pats to nolasa. Kamēr darbojas dzinējs, tas nekustina rādītāju un neko neuzklikšķina un neritina nevienā programmā, un tā piešķīrumi turpina darboties programmā PadForge. Windows to saņem atpakaļ, kad dzinējs apstājas vai PadForge tiek aizvērts.</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Kopā ar to no Windows pazūd: {0}.</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>pele</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>tastatūra</value></data>
@@ -791,17 +793,31 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>tās saite ar ražotāja programmatūru</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>citas vadīklas tajā pašā savienojumā</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>tastatūra vai pele</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>pele vai skārienpaliktnis</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Pēc pārslēgšanas PadForge jautā, vai to paturēt, un atdod tastatūru atpakaļ sistēmai Windows, ja {0} sekunžu laikā neviens neatbild.</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>Pēc pārslēgšanas PadForge jautā, vai to paturēt, un atdod peli atpakaļ sistēmai Windows, ja {0} sekunžu laikā neviens neatbild.</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>Pēc pārslēgšanas PadForge jautā, vai to paturēt, un atdod skārienpaliktni atpakaļ sistēmai Windows, ja {0} sekunžu laikā neviens neatbild.</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Paturēt šo tastatūru programmā PadForge?</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>Paturēt šo peli programmā PadForge?</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>Paturēt šo skārienpaliktni programmā PadForge?</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows vairs neraksta ar ierīci {0}. Ja jums nav palicis neviena darbojoša tastatūra vai pele, neko nedariet: PadForge atdod to sistēmai Windows, kad atpakaļskaite beidzas.</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows vairs nekustina rādītāju ar ierīci {0}. Ja jums nav palicis neviena darbojoša tastatūra vai pele, neko nedariet: PadForge atdod to sistēmai Windows, kad atpakaļskaite beidzas.</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows vairs nekustina rādītāju ar ierīci {0}. Ja jums nav palicis neviena darbojoša tastatūra vai pele, neko nedariet: PadForge atdod to sistēmai Windows, kad atpakaļskaite beidzas.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Atdošana atpakaļ pēc {0} s</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Paturēt</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Atdot atpakaļ</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Vispirms atvienojiet citas šī modeļa tastatūras. Windows uzreiz pārslēdz visas pievienotās uz PadForge draiveri un pārstāj rakstīt ar katru no tām.</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} atkal izmanto savu Windows draiveri, jo pārslēgšana netika paturēta.</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>Notiek ierīces {0} pārslēgšana…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>Ierīci {0} tagad nolasa tikai PadForge.</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>PadForge nevarēja pārņemt ierīci {0} no Windows.</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} atkal ir sistēmā Windows.</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>Ierīci {0} neizdevās atdot atpakaļ sistēmai Windows.</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>{0} atkal ir sistēmā Windows, jo pārslēgšana netika paturēta.</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>PadForge nevarēja nolasīt ierīci {0}, tāpēc Windows to ieguva atpakaļ.</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>Instalējiet HidHide, lai izmantotu skārienpaliktni tikai programmā PadForge.</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>Iestatījumos ieslēdziet opciju Paslēpt ierīces no spēlēm, lai izmantotu skārienpaliktni tikai programmā PadForge.</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>Palaidiet dzinēju, lai izmantotu skārienpaliktni tikai programmā PadForge.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> tiešsaistē / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> kopā</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Noņemt šo ierīci un tās iestatījumus</value></data>
@@ -4144,8 +4160,10 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Tablet_InputShared" xml:space="preserve"><value>Koplietota ievade</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>Notiek ievades pārslēgšana</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>Gaida planšetes ievadi</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>Gaida skārienpaliktņa ievadi</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>Pārņēmis PadForge</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>Planšetes ievade nav pieejama</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>Skārienpaliktņa ievade nav pieejama</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>Nevarēja pārņemt {0}</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>Kad dzinējs darbojas, ierīces paslēpšana restartē planšetes pildspalvas ievadi un nolasa to tikai PadForge. Izslēdzot slēpšanu, tā tiek atdota sistēmai Windows. Saglabāta maskēšana arī pēc PadForge aizvēršanas uztur sistēmas rādītāju atspējotu.</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>Pildspalvas sānu poga</value></data>

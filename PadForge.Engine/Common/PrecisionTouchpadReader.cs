@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
+using PadForge.Engine.Tablets;
+using PadForge.Engine.Touchpads;
 
 namespace PadForge.Engine
 {
@@ -14,8 +17,14 @@ namespace PadForge.Engine
     /// Exposes normalized finger positions (0-1) and contact states for up to
     /// 2 fingers, matching the <see cref="Engine.TouchpadState"/> format used
     /// by the PlayStation touchpad pipeline.
+    ///
+    /// <para>A touchpad PadForge reads alone (<see cref="TouchpadCapture"/>)
+    /// has no Raw Input row while HidHide hides it from Windows. Its capture
+    /// reads the collection's reports and hands them to the same parser, under
+    /// a key of its own and the touchpad's own path, so the touchpad's row
+    /// keeps its ID.</para>
     /// </summary>
-    public sealed class PrecisionTouchpadReader : IDisposable
+    public sealed class PrecisionTouchpadReader : IDisposable, ITouchpadCaptureHost
     {
         // ─────────────────────────────────────────────
         //  Constants
@@ -49,8 +58,15 @@ namespace PadForge.Engine
         // HIDP_STATUS codes
         private const uint HIDP_STATUS_SUCCESS = 0x00110000;
 
+        // A report whose ID the usage does not belong to (hidpi.h).
+        private const uint HIDP_STATUS_INCOMPATIBLE_REPORT_ID = 0xC011000A;
+
         // HidP Report Type
         private const int HidP_Input = 0;
+
+        // The Button page, whose usages 1 to 3 a precision touchpad reports at
+        // the top of its input report.
+        private const ushort HID_USAGE_PAGE_BUTTON = 0x09;
 
         private static readonly IntPtr HWND_MESSAGE = new IntPtr(-3);
 
@@ -352,6 +368,27 @@ namespace PadForge.Engine
             /// <summary>Timestamp of last WM_INPUT report for staleness detection.</summary>
             public long LastReportTicks;
 
+            /// <summary>True for a touchpad PadForge reads alone. Windows moves
+            /// no pointer with it then, so its frames also move its mouse row
+            /// (<see cref="TouchpadPointer"/>).</summary>
+            public bool FeedsPointer;
+            /// <summary>Mouse counts per touchpad unit, and the units each
+            /// axis spans, which turn a move of the normalized position
+            /// back into units.</summary>
+            public double CountsPerUnitX, CountsPerUnitY;
+            public int ExtentX, ExtentY;
+            /// <summary>The motion the frames left for the mouse row since it
+            /// last read, in mouse counts, and the touchpad's buttons now.</summary>
+            public double PointerX, PointerY;
+            public int PointerButtons;
+            /// <summary>Units per millimeter along each axis, and the clicks
+            /// and the wheel the frames make (<see cref="TouchpadMouse"/>).</summary>
+            public double UnitsPerMmX = 1, UnitsPerMmY = 1;
+            public TouchpadMouse Mouse;
+            /// <summary>When the last report came, in Environment.TickCount64
+            /// milliseconds.</summary>
+            public long LastReportMs;
+
             public PtpDeviceState()
             {
                 // -1 = "no contact on this slot." Default int (0) would
@@ -403,14 +440,18 @@ namespace PadForge.Engine
         {
             lock (_stateLock)
             {
-                var result = new (IntPtr, string, string, ushort, ushort)[_deviceStates.Count];
-                int i = 0;
+                var result = new List<(IntPtr, string, string, ushort, ushort)>(_deviceStates.Count);
                 foreach (var kvp in _deviceStates)
                 {
                     var ds = kvp.Value;
-                    result[i++] = (kvp.Key, ds.Name, ds.DevicePath, ds.VendorId, ds.ProductId);
+                    // A touchpad a capture reads is listed once, under the
+                    // capture's key. Its Raw Input entry can outlive the
+                    // capture's start by a message, until Windows reports the
+                    // collection gone.
+                    if (!ds.FeedsPointer && _capturedKeys.ContainsKey(ds.DevicePath)) continue;
+                    result.Add((kvp.Key, ds.Name, ds.DevicePath, ds.VendorId, ds.ProductId));
                 }
-                return result;
+                return result.ToArray();
             }
         }
 
@@ -513,12 +554,239 @@ namespace PadForge.Engine
 
         public void Dispose()
         {
+            // A capture's restore already asked for still finishes, after its
+            // open returns (TouchpadCapture.Dispose).
+            TouchpadCapture[] captures;
+            lock (_capturesLock)
+            {
+                _capturesClosed = true;
+                captures = new TouchpadCapture[_captures.Count];
+                _captures.Values.CopyTo(captures, 0);
+                _captures.Clear();
+            }
+            foreach (var capture in captures) capture.Dispose();
             Stop();
             foreach (var ptr in _preparsedCache.Values)
                 Marshal.FreeHGlobal(ptr);
             _preparsedCache.Clear();
             _valueCapsCache.Clear();
             _rangeCache.Clear();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Touchpads PadForge reads alone
+        // ─────────────────────────────────────────────
+
+        /// <summary>The keys a capture files its state under count down from
+        /// here, far below any Raw Input handle and below the listener's own
+        /// sentinels (RawInputListener.AggregateMouseHandle is -98).</summary>
+        internal const long CaptureKeyBase = -0x10000;
+
+        private long _nextCaptureKey = CaptureKeyBase;
+
+        /// <summary>The key each captured touchpad's state is filed under, by
+        /// its path. Guarded by _stateLock.</summary>
+        private readonly Dictionary<string, IntPtr> _capturedKeys = new(StringComparer.OrdinalIgnoreCase);
+
+        private readonly object _capturesLock = new();
+        private readonly Dictionary<string, TouchpadCapture> _captures = new(StringComparer.OrdinalIgnoreCase);
+        private bool _capturesClosed;
+
+        /// <summary>Raised when a capture's state changes: the capture, the
+        /// revision of the change, whether it asks for a hide just written to
+        /// be taken back, and the error.</summary>
+        public event Action<TouchpadCapture, int, bool, string> CaptureChanged;
+
+        /// <summary>The capture of the touchpad at this path, made on the
+        /// first ask. The path, name and IDs are the touchpad row's, so the
+        /// row keeps its ID while the capture reads it. Null once the reader
+        /// is disposed.</summary>
+        public TouchpadCapture CaptureFor(string path, string instanceId, string name, ushort vendorId, ushort productId)
+        {
+            if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(instanceId)) return null;
+            lock (_capturesLock)
+            {
+                if (_capturesClosed) return null;
+                if (_captures.TryGetValue(path, out var existing)) return existing;
+                var capture = new TouchpadCapture(this, path, instanceId, name, vendorId, productId, OnCaptureChanged);
+                _captures.Add(path, capture);
+                return capture;
+            }
+        }
+
+        /// <summary>Every capture made so far.</summary>
+        public TouchpadCapture[] GetCaptures()
+        {
+            lock (_capturesLock)
+            {
+                var captures = new TouchpadCapture[_captures.Count];
+                _captures.Values.CopyTo(captures, 0);
+                return captures;
+            }
+        }
+
+        private void OnCaptureChanged(TouchpadCapture capture, int version, bool rollback, string error)
+            => CaptureChanged?.Invoke(capture, version, rollback, error);
+
+        /// <summary>What a captured touchpad left for its mouse row since the
+        /// last call: the whole counts of its motion and the whole wheel
+        /// units of its scrolling, the fractions kept for the next call, and
+        /// its buttons as a mouse row's left (bit 0), right (bit 1) and
+        /// middle (bit 2). A touchpad silent past the contacts' own staleness
+        /// limit has lifted, as its contacts have (ReadDeviceState). False
+        /// when no capture reads the touchpad.</summary>
+        public bool ConsumeCapturedPointer(string path, out int dx, out int dy, out int wheel, out int buttons)
+        {
+            dx = dy = wheel = buttons = 0;
+            if (string.IsNullOrEmpty(path)) return false;
+            lock (_stateLock)
+            {
+                if (!_capturedKeys.TryGetValue(path, out var key) || !_deviceStates.TryGetValue(key, out var ds))
+                    return false;
+                // Toward zero, so what stays behind keeps its sign.
+                dx = (int)ds.PointerX;
+                dy = (int)ds.PointerY;
+                ds.PointerX -= dx;
+                ds.PointerY -= dy;
+                long now = DateTime.UtcNow.Ticks;
+                long nowMs = Environment.TickCount64;
+                bool stale = ds.LastReportTicks > 0 && now - ds.LastReportTicks > StaleThresholdTicks;
+                if (stale) ds.Mouse?.Silence(ds.LastReportMs);
+                buttons = stale ? 0 : TouchpadPointer.MouseButtons(ds.PointerButtons);
+                if (ds.Mouse != null)
+                {
+                    wheel = ds.Mouse.TakeWheel();
+                    buttons |= ds.Mouse.Buttons(nowMs);
+                }
+                return true;
+            }
+        }
+
+        ITouchpadLayout ITouchpadCaptureHost.Describe(TouchpadCapture capture) => CaptureLayout.Read(capture.DevicePath);
+
+        IntPtr ITouchpadCaptureHost.Publish(TouchpadCapture capture, ITouchpadLayout layout)
+        {
+            var shape = (CaptureLayout)layout;
+            lock (_stateLock)
+            {
+                var key = new IntPtr(--_nextCaptureKey);
+                _deviceStates[key] = new PtpDeviceState
+                {
+                    Name = string.IsNullOrWhiteSpace(capture.Name) ? "Precision Touchpad" : capture.Name,
+                    DevicePath = capture.DevicePath,
+                    VendorId = capture.VendorId,
+                    ProductId = capture.ProductId,
+                    FeedsPointer = true,
+                    CountsPerUnitX = shape.CountsPerUnitX,
+                    CountsPerUnitY = shape.CountsPerUnitY,
+                    ExtentX = shape.Ranges.logMaxX - shape.Ranges.logMinX,
+                    ExtentY = shape.Ranges.logMaxY - shape.Ranges.logMinY,
+                    UnitsPerMmX = shape.UnitsPerMmX,
+                    UnitsPerMmY = shape.UnitsPerMmY,
+                };
+                var state = _deviceStates[key];
+                state.Mouse = new TouchpadMouse(TouchpadSettings.Read(),
+                    state.ExtentX / state.UnitsPerMmX, state.ExtentY / state.UnitsPerMmY);
+                _capturedKeys[capture.DevicePath] = key;
+                return key;
+            }
+        }
+
+        bool ITouchpadCaptureHost.Feed(IntPtr key, ITouchpadLayout layout, IntPtr report, int length)
+        {
+            var shape = (CaptureLayout)layout;
+            return ParseTouchpadReport(key, shape.Preparsed, report, (uint)length, shape.ValueCaps, shape.Ranges, shape.Scratch);
+        }
+
+        void ITouchpadCaptureHost.Withdraw(IntPtr key)
+        {
+            lock (_stateLock)
+            {
+                if (!_deviceStates.TryGetValue(key, out var ds)) return;
+                _deviceStates.Remove(key);
+                if (_capturedKeys.TryGetValue(ds.DevicePath, out var current) && current == key)
+                    _capturedKeys.Remove(ds.DevicePath);
+            }
+        }
+
+        /// <summary>A captured collection's layout: its preparsed data, value
+        /// caps and contact ranges, the scale its pointer motion takes, and
+        /// the scratch its read loop parses with.</summary>
+        private sealed class CaptureLayout : ITouchpadLayout
+        {
+            internal IntPtr Preparsed;
+            internal HIDP_VALUE_CAPS[] ValueCaps;
+            internal (int logMinX, int logMaxX, int logMinY, int logMaxY) Ranges;
+            internal double CountsPerUnitX, CountsPerUnitY;
+            internal double UnitsPerMmX, UnitsPerMmY;
+            internal readonly ParseScratch Scratch = new();
+            public int ReportLength { get; private set; }
+
+            /// <summary>Reads the layout through a handle that asks for no
+            /// access, which Windows' exclusive read handle does not
+            /// refuse.</summary>
+            internal static CaptureLayout Read(string path)
+            {
+                using var handle = TabletNative.OpenMetadata(path);
+                if (handle.IsInvalid)
+                    throw new IOException($"The touchpad collection could not be opened (error {Marshal.GetLastWin32Error()}).");
+                if (!TabletNative.HidD_GetPreparsedData(handle, out IntPtr preparsed))
+                    throw new IOException("The touchpad collection gave no report layout.");
+                var layout = new CaptureLayout { Preparsed = preparsed };
+                try
+                {
+                    var caps = new HIDP_CAPS();
+                    if (HidP_GetCaps(preparsed, ref caps) != HIDP_STATUS_SUCCESS || caps.InputReportByteLength == 0)
+                        throw new IOException("The touchpad collection has no input report.");
+                    if (caps.UsagePage != HID_USAGE_PAGE_DIGITIZER || caps.Usage != HID_USAGE_DIGITIZER_TOUCH_PAD)
+                        throw new IOException("The collection is not a touchpad.");
+                    ushort count = caps.NumberInputValueCaps;
+                    var valueCaps = new HIDP_VALUE_CAPS[count];
+                    if (count == 0 || HidP_GetValueCaps(HidP_Input, valueCaps, ref count, preparsed) != HIDP_STATUS_SUCCESS)
+                        throw new IOException("The touchpad collection has no contact values.");
+                    if (count < valueCaps.Length) Array.Resize(ref valueCaps, count);
+                    layout.ValueCaps = valueCaps;
+                    layout.ReportLength = caps.InputReportByteLength;
+                    layout.Ranges = RangesOf(valueCaps);
+
+                    // Each axis's resolution, read from the first contact's
+                    // field, which every contact shares.
+                    int resX = 0, resY = 0;
+                    bool seenX = false, seenY = false;
+                    foreach (var vc in valueCaps)
+                    {
+                        if (vc.UsagePage != HID_USAGE_PAGE_GENERIC) continue;
+                        if (vc.UsageMin == HID_USAGE_GENERIC_X && !seenX)
+                        {
+                            seenX = true;
+                            resX = TouchpadPointer.UnitsPerMm(vc.LogicalMin, vc.LogicalMax, vc.PhysicalMin, vc.PhysicalMax, vc.Units, vc.UnitsExp);
+                        }
+                        else if (vc.UsageMin == HID_USAGE_GENERIC_Y && !seenY)
+                        {
+                            seenY = true;
+                            resY = TouchpadPointer.UnitsPerMm(vc.LogicalMin, vc.LogicalMax, vc.PhysicalMin, vc.PhysicalMax, vc.Units, vc.UnitsExp);
+                        }
+                    }
+                    layout.CountsPerUnitX = TouchpadPointer.CountsPerUnit(resX, layout.Ranges.logMinX, layout.Ranges.logMaxX, TouchpadPointer.AssumedWidthMm);
+                    layout.CountsPerUnitY = TouchpadPointer.CountsPerUnit(resY, layout.Ranges.logMinY, layout.Ranges.logMaxY, TouchpadPointer.AssumedHeightMm);
+                    layout.UnitsPerMmX = TouchpadPointer.CountsPerInch / 25.4 / layout.CountsPerUnitX;
+                    layout.UnitsPerMmY = TouchpadPointer.CountsPerInch / 25.4 / layout.CountsPerUnitY;
+                    SdlDiagLog.WriteLine($"TOUCHPAD layout {path}: report={layout.ReportLength} x={layout.Ranges.logMinX}..{layout.Ranges.logMaxX} res={resX}/mm y={layout.Ranges.logMinY}..{layout.Ranges.logMaxY} res={resY}/mm");
+                    return layout;
+                }
+                catch
+                {
+                    layout.Dispose();
+                    throw;
+                }
+            }
+
+            public void Dispose()
+            {
+                if (Preparsed == IntPtr.Zero) return;
+                TabletNative.HidD_FreePreparsedData(Preparsed);
+                Preparsed = IntPtr.Zero;
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -695,7 +963,7 @@ namespace PadForge.Engine
                 for (uint r = 0; r < rawHid.dwCount; r++)
                 {
                     IntPtr report = reportData + (int)(r * rawHid.dwSizeHid);
-                    ParseTouchpadReport(header.hDevice, preparsed, report, rawHid.dwSizeHid, valueCaps, ranges);
+                    ParseTouchpadReport(header.hDevice, preparsed, report, rawHid.dwSizeHid, valueCaps, ranges, _rawScratch);
                 }
             }
             catch { }
@@ -750,6 +1018,15 @@ namespace PadForge.Engine
             if (_rangeCache.TryGetValue(hDevice, out var cached))
                 return cached;
 
+            var ranges = RangesOf(valueCaps);
+            _rangeCache[hDevice] = ranges;
+            return ranges;
+        }
+
+        /// <summary>The X and Y ranges of a touchpad's contacts, shared by
+        /// the Raw Input path and a capture.</summary>
+        private static (int logMinX, int logMaxX, int logMinY, int logMaxY) RangesOf(HIDP_VALUE_CAPS[] valueCaps)
+        {
             int logMinX = 0, logMaxX = 1, logMinY = 0, logMaxY = 1;
 
             foreach (var vc in valueCaps)
@@ -768,9 +1045,7 @@ namespace PadForge.Engine
                 }
             }
 
-            var ranges = (logMinX, logMaxX, logMinY, logMaxY);
-            _rangeCache[hDevice] = ranges;
-            return ranges;
+            return (logMinX, logMaxX, logMinY, logMaxY);
         }
 
         /// <summary>Reads the tip-switch (button 0x42 on the digitizer
@@ -780,18 +1055,12 @@ namespace PadForge.Engine
         /// true again as a defensive fallback when the HID call fails
         /// (preserves legacy "treat report-present as touching"
         /// behavior on devices that don't expose tip-switch). The
-        /// per-call ushort[8] stack scratch is plenty: a digitizer
-        /// link collection's button page typically holds tip-switch +
-        /// in-range + confidence at most.</summary>
-        // Reused scratch: ReadTipSwitch runs per contact per report on
-        // the single raw-input message thread (~125-250 Hz x contacts
-        // while a finger is down), so the per-call array was steady churn.
-        private static readonly ushort[] s_tipUsageScratch = new ushort[8];
-
+        /// ushort[8] scratch is plenty: a digitizer link collection's
+        /// button page typically holds tip-switch + in-range +
+        /// confidence at most.</summary>
         private static bool ReadTipSwitch(IntPtr preparsed, IntPtr report,
-            uint reportLength, ushort linkCollection)
+            uint reportLength, ushort linkCollection, ushort[] usageList)
         {
-            var usageList = s_tipUsageScratch;
             uint length = (uint)usageList.Length;
             uint hr = HidP_GetUsages(HidP_Input, HID_USAGE_PAGE_DIGITIZER,
                 linkCollection, usageList, ref length, preparsed, report, reportLength);
@@ -801,29 +1070,48 @@ namespace PadForge.Engine
             return false;
         }
 
-        // Reused per-report contact scratch (single raw-input thread;
-        // fully consumed into FrameBuf* before return).
-        private readonly List<(float x, float y, int id)> _fingersScratch = new();
+        /// <summary>The scratch one reading thread parses with, reused per
+        /// report: ReadTipSwitch runs per contact per report (~125-250 Hz x
+        /// contacts while a finger is down), so per-call arrays were steady
+        /// churn. The Raw Input thread has one, and each capture's read loop
+        /// has its own, so two threads never share an array.</summary>
+        internal sealed class ParseScratch
+        {
+            internal readonly List<(float x, float y, int id)> Fingers = new();
+            internal readonly ushort[] TipUsages = new ushort[8];
+            internal readonly ushort[] ButtonUsages = new ushort[8];
+        }
 
-        private void ParseTouchpadReport(IntPtr hDevice, IntPtr preparsed, IntPtr report, uint reportLength,
-            HIDP_VALUE_CAPS[] valueCaps, (int logMinX, int logMaxX, int logMinY, int logMaxY) ranges)
+        private readonly ParseScratch _rawScratch = new();
+
+        /// <summary>Parses one input report into the touchpad's state. True
+        /// when the report was the touchpad's input report, false for another
+        /// report the collection carries, which is passed over.</summary>
+        private bool ParseTouchpadReport(IntPtr hDevice, IntPtr preparsed, IntPtr report, uint reportLength,
+            HIDP_VALUE_CAPS[] valueCaps, (int logMinX, int logMaxX, int logMinY, int logMaxY) ranges,
+            ParseScratch scratch)
         {
             // Read contact count for THIS report. PTP spec: the first
             // report of a touch frame carries the total expected contact
             // count in this usage; subsequent fragments in the same
             // frame carry zero. The reader uses this to assemble a
-            // multi-report frame before committing — see frame-assembly
+            // multi-report frame before committing. See the frame-assembly
             // block below.
-            HidP_GetUsageValue(HidP_Input, HID_USAGE_PAGE_DIGITIZER, 0,
+            uint countStatus = HidP_GetUsageValue(HidP_Input, HID_USAGE_PAGE_DIGITIZER, 0,
                 HID_USAGE_CONTACT_COUNT, out uint contactCount, preparsed, report, reportLength);
+            // Another input report of the collection, a vendor's for one,
+            // carries no contacts. Parsed as a frame it committed every
+            // finger as lifted. A touchpad report with no contact count
+            // (out of spec) answers USAGE_NOT_FOUND and is parsed as before.
+            if (countStatus == HIDP_STATUS_INCOMPATIBLE_REPORT_ID) return false;
 
             // Parse this report's contacts. The reader iterates the
-            // contact-ID-bearing link collections — each represents one
+            // contact-ID-bearing link collections. Each represents one
             // finger slot in the report descriptor. Most certified PTP
             // hardware caps a single report at 2 contacts; we read up
             // to PtpMaxFingers defensively in case a parallel-mode
             // device packs all fingers into one report.
-            var fingers = _fingersScratch;
+            var fingers = scratch.Fingers;
             fingers.Clear();
             // Contacts in THIS report that reported tip-switch = 0. They are
             // not buffered as live fingers, but the frame's declared
@@ -852,8 +1140,8 @@ namespace PadForge.Engine
                     // count and the gesture engine sees a finger that
                     // physically isn't there anymore. On 5-finger
                     // taps every lift report contributes one phantom
-                    // contact — fingerCount overshoots, no tap fires.
-                    if (!ReadTipSwitch(preparsed, report, reportLength, linkCollection))
+                    // contact. fingerCount overshoots, and no tap fires.
+                    if (!ReadTipSwitch(preparsed, report, reportLength, linkCollection, scratch.TipUsages))
                     {
                         // Counted, not buffered. The frame's contactCount
                         // includes this lifted contact, so skipping it
@@ -890,17 +1178,42 @@ namespace PadForge.Engine
                 }
             }
 
+            // The touchpad's buttons, Button 1 to 3 at the top of the report
+            // (Microsoft, Windows Precision Touchpad Collection, input report
+            // usages), read only for a touchpad whose frames move its mouse
+            // row. -1 when the report carries none of them.
+            int buttons = -1;
+            if (hDevice.ToInt64() <= CaptureKeyBase)
+            {
+                var usageList = scratch.ButtonUsages;
+                uint length = (uint)usageList.Length;
+                if (HidP_GetUsages(HidP_Input, HID_USAGE_PAGE_BUTTON, 0, usageList, ref length,
+                        preparsed, report, reportLength) == HIDP_STATUS_SUCCESS)
+                {
+                    buttons = 0;
+                    for (uint i = 0; i < length; i++)
+                        if (usageList[i] >= 1 && usageList[i] <= 3) buttons |= 1 << (usageList[i] - 1);
+                }
+            }
+
             // Update per-device state.
             lock (_stateLock)
             {
                 if (!_deviceStates.TryGetValue(hDevice, out var ds))
                 {
+                    // A capture's state exists from the moment it publishes
+                    // until it withdraws, so a report for a key it no longer
+                    // has is the capture's last, and is dropped.
+                    if (hDevice.ToInt64() <= CaptureKeyBase) return true;
                     ds = new PtpDeviceState();
                     PopulateDeviceInfo(hDevice, ds);
                     _deviceStates[hDevice] = ds;
                 }
 
                 ds.LastReportTicks = DateTime.UtcNow.Ticks;
+                long nowMs = Environment.TickCount64;
+                ds.LastReportMs = nowMs;
+                if (ds.FeedsPointer && buttons >= 0) ds.PointerButtons = buttons;
 
                 // Frame-assembly: PTP frames span multiple reports on
                 // most hardware (≤2 contacts per report; total carried
@@ -917,7 +1230,7 @@ namespace PadForge.Engine
                 //   - Commit when the buffer reaches the expected count.
                 //   - If a device never sets contact-count (out-of-spec),
                 //     FrameExpected stays 0 and every report commits as
-                //     its own frame — the legacy behavior, preserved as
+                //     its own frame, the legacy behavior, preserved as
                 //     fallback.
                 if (contactCount > 0)
                 {
@@ -934,7 +1247,7 @@ namespace PadForge.Engine
                 // Append this report's contacts, bounded by what the
                 // frame still expects. The HID descriptor commonly
                 // exposes more contact link-collections than the frame
-                // actually carries — empty slots return stale or zero
+                // actually carries. Empty slots return stale or zero
                 // X/Y but still parse as "contacts." Without the
                 // FrameExpected cap, a 2-finger report on a 5-slot
                 // descriptor commits as a 5-finger frame and the
@@ -956,78 +1269,119 @@ namespace PadForge.Engine
                     (ds.FrameExpected > 0 && ds.FrameSeen + ds.FrameLifted >= ds.FrameExpected)
                     || (ds.FrameExpected == 0);
 
-                if (!frameComplete) return;
+                if (frameComplete) CommitFrame(ds, nowMs);
+            }
+            return true;
+        }
 
-                // Commit the assembled frame with slot-stable assignment.
-                // Each buffered contact's HID contact ID looks up its
-                // existing engine-slot index first (pass 1); IDs not
-                // already mapped claim the lowest free slot (pass 2).
-                // Slots whose HID ID is no longer in the frame are
-                // released. This keeps a finger's engine slot stable
-                // across frames even when lower slots empty out.
-                System.Span<int>  assign  = stackalloc int [PtpMaxFingers];
-                System.Span<bool> claimed = stackalloc bool[PtpMaxFingers];
-                int n = System.Math.Min(ds.FrameSeen, PtpMaxFingers);
-                for (int i = 0; i < n; i++) assign[i] = -1;
+        /// <summary>Commits an assembled frame with slot-stable assignment,
+        /// and for a touchpad whose frames move its mouse row, adds the
+        /// frame's pointer motion (<see cref="TouchpadPointer.FrameMotion"/>)
+        /// and hands the frame to its clicks and wheel
+        /// (<see cref="TouchpadMouse"/>). Caller holds the state lock.</summary>
+        internal static void CommitFrame(PtpDeviceState ds, long nowMs = 0)
+        {
+            // Each buffered contact's HID contact ID looks up its
+            // existing engine-slot index first (pass 1). IDs not
+            // already mapped claim the lowest free slot (pass 2).
+            // Slots whose HID ID is no longer in the frame are
+            // released. This keeps a finger's engine slot stable
+            // across frames even when lower slots empty out.
+            System.Span<int>  assign  = stackalloc int [PtpMaxFingers];
+            System.Span<bool> claimed = stackalloc bool[PtpMaxFingers];
+            // Whether a contact kept its slot from the last frame, which is
+            // what gives it a motion (pass 1).
+            System.Span<bool> moved   = stackalloc bool[PtpMaxFingers];
+            int n = System.Math.Min(ds.FrameSeen, PtpMaxFingers);
+            for (int i = 0; i < n; i++) assign[i] = -1;
 
-                for (int i = 0; i < n; i++)
+            for (int i = 0; i < n; i++)
+            {
+                int id = ds.FrameBufId[i];
+                for (int s = 0; s < PtpMaxFingers; s++)
                 {
-                    int id = ds.FrameBufId[i];
-                    for (int s = 0; s < PtpMaxFingers; s++)
+                    if (ds.SlotToHidId[s] == id)
                     {
-                        if (ds.SlotToHidId[s] == id)
-                        {
-                            assign[i] = s;
-                            claimed[s] = true;
-                            break;
-                        }
-                    }
-                }
-
-                for (int i = 0; i < n; i++)
-                {
-                    if (assign[i] >= 0) continue;
-                    for (int s = 0; s < PtpMaxFingers; s++)
-                    {
-                        if (claimed[s] || ds.SlotToHidId[s] >= 0) continue;
                         assign[i] = s;
                         claimed[s] = true;
-                        ds.SlotToHidId[s] = ds.FrameBufId[i];
+                        moved[i] = ds.Down[s];
                         break;
                     }
                 }
+            }
 
-                // Release slots whose HID ID dropped out of this frame.
-                // The synth-cid pass in ReadDeviceState picks up the
-                // wasDown→!isDown transition from the cleared Down[]
-                // below and assigns -1 to CurrentContactId for these
-                // slots, terminating their paths cleanly.
+            for (int i = 0; i < n; i++)
+            {
+                if (assign[i] >= 0) continue;
                 for (int s = 0; s < PtpMaxFingers; s++)
                 {
-                    if (claimed[s]) continue;
-                    ds.SlotToHidId[s] = -1;
+                    if (claimed[s] || ds.SlotToHidId[s] >= 0) continue;
+                    assign[i] = s;
+                    claimed[s] = true;
+                    ds.SlotToHidId[s] = ds.FrameBufId[i];
+                    break;
                 }
+            }
 
-                for (int i = 0; i < PtpMaxFingers; i++) ds.Down[i] = false;
+            // The pointer motion, read before the positions below move on:
+            // each contact's move since the last frame, in touchpad units.
+            if (ds.FeedsPointer)
+            {
+                System.Span<(double Dx, double Dy, bool Moved)> touches = stackalloc (double, double, bool)[PtpMaxFingers];
+                int count = 0;
                 for (int i = 0; i < n; i++)
                 {
                     int s = assign[i];
                     if (s < 0) continue;
-                    ds.X[s] = ds.FrameBufX[i];
-                    ds.Y[s] = ds.FrameBufY[i];
-                    ds.Down[s] = true;
+                    touches[count++] = moved[i]
+                        ? ((ds.FrameBufX[i] - ds.X[s]) * ds.ExtentX, (ds.FrameBufY[i] - ds.Y[s]) * ds.ExtentY, true)
+                        : (0, 0, false);
                 }
-                ds.FrameExpected = 0;
-                ds.FrameSeen = 0;
-                // The lift tally is part of the frame counter, so it resets with
-                // it. Leaving it set here let a lift from the frame just
-                // committed count toward the NEXT frame's completion test
-                // (FrameSeen + FrameLifted >= FrameExpected), which fired that
-                // frame early: on a pad that carries two contacts per report, a
-                // three-finger frame completed on its first report with two
-                // fingers and the third committed as a frame of its own.
-                ds.FrameLifted = 0;
+                var (dx, dy) = TouchpadPointer.FrameMotion(touches.Slice(0, count),
+                    (ds.PointerButtons & TouchpadPointer.IntegratedButton) != 0);
+                ds.PointerX += dx * ds.CountsPerUnitX;
+                ds.PointerY += dy * ds.CountsPerUnitY;
+
+                if (ds.Mouse != null)
+                {
+                    System.Span<(int Id, double X, double Y)> mm = stackalloc (int, double, double)[PtpMaxFingers];
+                    for (int i = 0; i < n; i++)
+                        mm[i] = (ds.FrameBufId[i], ds.FrameBufX[i] * ds.ExtentX / ds.UnitsPerMmX,
+                            ds.FrameBufY[i] * ds.ExtentY / ds.UnitsPerMmY);
+                    ds.Mouse.Frame(mm.Slice(0, n), (ds.PointerButtons & TouchpadPointer.IntegratedButton) != 0, nowMs);
+                }
             }
+
+            // Release slots whose HID ID dropped out of this frame.
+            // The synth-cid pass in ReadDeviceState picks up the
+            // wasDown→!isDown transition from the cleared Down[]
+            // below and assigns -1 to CurrentContactId for these
+            // slots, terminating their paths cleanly.
+            for (int s = 0; s < PtpMaxFingers; s++)
+            {
+                if (claimed[s]) continue;
+                ds.SlotToHidId[s] = -1;
+            }
+
+            for (int i = 0; i < PtpMaxFingers; i++) ds.Down[i] = false;
+            for (int i = 0; i < n; i++)
+            {
+                int s = assign[i];
+                if (s < 0) continue;
+                ds.X[s] = ds.FrameBufX[i];
+                ds.Y[s] = ds.FrameBufY[i];
+                ds.Down[s] = true;
+            }
+            ds.FrameExpected = 0;
+            ds.FrameSeen = 0;
+            // The lift tally is part of the frame counter, so it resets with
+            // it. Leaving it set here let a lift from the frame just
+            // committed count toward the NEXT frame's completion test
+            // (FrameSeen + FrameLifted >= FrameExpected), which fired that
+            // frame early: on a pad that carries two contacts per report, a
+            // three-finger frame completed on its first report with two
+            // fingers and the third committed as a frame of its own.
+            ds.FrameLifted = 0;
         }
 
         /// <summary>Populates device name/VID/PID from Raw Input device info.</summary>

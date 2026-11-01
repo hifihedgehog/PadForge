@@ -765,6 +765,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>Läs av musiktangenterna</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>Spela upp vibration på den här musen</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Återställ Windows-drivrutinen</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>Lämna tillbaka till Windows</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Byt till PadForge-drivrutinen</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge flyttar den här handkontrollen till WinUSB-drivrutinen i Windows så att chatpaden kan läsas av. Handkontrollen fungerar då bara medan PadForge körs, och spel ser den via den virtuella handkontrollen i PadForge. Alla inkopplade handkontroller av den här modellen flyttas med, och var och en måste tilldelas sin plats igen. Du kan när som helst återställa Windows-drivrutinen från den här sidan.</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge flyttar den här mottagaren till WinUSB-drivrutinen i Windows så att Chatpad-enheter och uDraw-ritplattor kan läsas av. Alla handkontroller och headset på mottagaren flyttas med, fungerar bara medan PadForge körs och måste tilldelas sin plats igen. Du kan när som helst återställa Windows-drivrutinen från den här sidan.</value></data>
@@ -782,6 +783,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Använd bara i PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge flyttar det här tangentbordet till WinUSB-drivrutinen i Windows och läser av det själv. Windows slutar då skriva med det i alla program, även när PadForge är stängt, tills dess Windows-drivrutin har återställts från den här sidan. Dess mappningar och makron fortsätter att fungera medan PadForge körs.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge flyttar den här musen till WinUSB-drivrutinen i Windows och läser av den själv. Windows slutar då flytta pekaren med den i alla program, även när PadForge är stängt, tills dess Windows-drivrutin har återställts från den här sidan. Dess mappningar och makron fortsätter att fungera medan PadForge körs.</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>PadForge döljer den här styrplattan för Windows med HidHide och läser av den själv. Medan motorn körs flyttar den ingen pekare och klickar eller rullar ingenting i något program, och dess mappningar fortsätter att fungera i PadForge. Windows får tillbaka den när motorn stoppas eller PadForge stängs.</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Dessa försvinner då från Windows: {0}.</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>en mus</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>ett tangentbord</value></data>
@@ -791,17 +793,31 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>dess koppling till tillverkarens program</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>andra reglage på samma anslutning</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>tangentbord eller mus</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>mus eller styrplatta</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Efter bytet frågar PadForge om du vill behålla det och lämnar tillbaka tangentbordet till Windows om ingen svarar inom {0} sekunder.</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>Efter bytet frågar PadForge om du vill behålla det och lämnar tillbaka musen till Windows om ingen svarar inom {0} sekunder.</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>Efter bytet frågar PadForge om du vill behålla det och lämnar tillbaka styrplattan till Windows om ingen svarar inom {0} sekunder.</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Behåll tangentbordet i PadForge?</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>Behåll musen i PadForge?</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>Behåll styrplattan i PadForge?</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows skriver inte längre med {0}. Om du därmed står utan fungerande tangentbord eller mus ska du inte göra något: PadForge lämnar tillbaka det till Windows när nedräkningen är slut.</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows flyttar inte längre pekaren med {0}. Om du därmed står utan fungerande tangentbord eller mus ska du inte göra något: PadForge lämnar tillbaka det till Windows när nedräkningen är slut.</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows flyttar inte längre pekaren med {0}. Om du därmed står utan fungerande tangentbord eller mus ska du inte göra något: PadForge lämnar tillbaka den till Windows när nedräkningen är slut.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Lämnas tillbaka om {0} sekunder</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Behåll</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Lämna tillbaka</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Koppla först ur de andra tangentborden av den här modellen. Windows flyttar alla inkopplade till PadForge-drivrutinen på en gång och slutar skriva med vart och ett.</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} använder sin Windows-drivrutin igen eftersom bytet inte behölls.</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>Byter {0}…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>Bara PadForge läser av {0} nu.</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>PadForge kunde inte ta {0} från Windows.</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} är tillbaka hos Windows.</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>{0} kunde inte lämnas tillbaka till Windows.</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>{0} är tillbaka hos Windows eftersom bytet inte behölls.</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>PadForge kunde inte läsa av {0}, så Windows har den tillbaka.</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>Installera HidHide för att använda en styrplatta bara i PadForge.</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>Aktivera Dölj enheter för spel i inställningarna för att använda en styrplatta bara i PadForge.</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>Starta motorn för att använda en styrplatta bara i PadForge.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> totalt</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Ta bort den här enheten och dess inställningar</value></data>
@@ -4144,8 +4160,10 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Tablet_InputShared" xml:space="preserve"><value>Delad inmatning</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>Byter inmatning</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>Väntar på inmatning från ritplattan</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>Väntar på inmatning från styrplattan</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>Fångad av PadForge</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>Inmatning från ritplattan är inte tillgänglig</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>Inmatning från styrplattan är inte tillgänglig</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>Kunde inte fånga {0}</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>När motorn körs startar Dölj enhet om ritplattans penninmatning och läser bara av den i PadForge. Om du stänger av döljningen lämnas den tillbaka till Windows. Behållna döljningar håller också den vanliga pekaren inaktiverad efter att PadForge har stängts.</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>Pennans sidoknapp</value></data>

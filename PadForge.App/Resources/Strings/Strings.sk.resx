@@ -765,6 +765,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>Čítať hudobné klávesy</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>Prehrávať vibrácie na tejto myši</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Obnoviť ovládač systému Windows</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>Vrátiť systému Windows</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Prepnúť na ovládač zariadenia programu PadForge</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge prepne toto zariadenie na ovládač WinUSB systému Windows, aby mohol čítať chatpad. Herný ovládač potom funguje iba vtedy, keď PadForge beží, a hry ho vidia cez virtuálny ovládač programu PadForge. Spolu s ním sa prepnú všetky pripojené ovládače tohto modelu a každý z nich bude treba znova priradiť k jeho slotu. Ovládač systému Windows môžete kedykoľvek obnoviť na tejto stránke.</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge prepne tento prijímač na ovládač WinUSB systému Windows, aby mohol čítať chatpady a tablety uDraw. Spolu s ním sa prepnú všetky ovládače a headsety na prijímači, budú fungovať iba vtedy, keď PadForge beží, a bude ich treba znova priradiť k ich slotom. Ovládač systému Windows môžete kedykoľvek obnoviť na tejto stránke.</value></data>
@@ -782,6 +783,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Používať iba v programe PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge prepne túto klávesnicu na ovládač WinUSB systému Windows a bude ju čítať sám. Systém Windows potom túto klávesnicu prestane používať na písanie vo všetkých programoch, aj keď je PadForge zatvorený, kým sa jej ovládač systému Windows neobnoví na tejto stránke. Jej mapovania a makrá fungujú ďalej, kým PadForge beží.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge prepne túto myš na ovládač WinUSB systému Windows a bude ju čítať sám. Systém Windows potom túto myš prestane používať na pohyb ukazovateľa vo všetkých programoch, aj keď je PadForge zatvorený, kým sa jej ovládač systému Windows neobnoví na tejto stránke. Jej mapovania a makrá fungujú ďalej, kým PadForge beží.</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>PadForge skryje tento touchpad pred systémom Windows pomocou HidHide a bude ho čítať sám. Kým beží jadro, touchpad nehýbe ukazovateľom ani nekliká či neposúva obsah v žiadnom programe a jeho mapovania v programe PadForge fungujú ďalej. Systém Windows ho dostane späť, keď sa jadro zastaví alebo sa PadForge zatvorí.</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Spolu s ňou prestane v systéme Windows fungovať: {0}.</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>myš</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>klávesnica</value></data>
@@ -791,17 +793,31 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>jej prepojenie so softvérom výrobcu</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>ďalšie ovládacie prvky na rovnakom pripojení</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>klávesnica alebo myš</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>myš alebo touchpad</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Po prepnutí sa PadForge opýta, či ju ponechať, a ak do {0} sekúnd nikto neodpovie, vráti klávesnicu systému Windows.</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>Po prepnutí sa PadForge opýta, či ju ponechať, a ak do {0} sekúnd nikto neodpovie, vráti myš systému Windows.</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>Po prepnutí sa PadForge opýta, či ho ponechať, a ak do {0} sekúnd nikto neodpovie, vráti touchpad systému Windows.</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Ponechať túto klávesnicu v programe PadForge?</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>Ponechať túto myš v programe PadForge?</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>Ponechať tento touchpad v programe PadForge?</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Systém Windows už na písanie nepoužíva zariadenie {0}. Ak vám tak nezostala funkčná klávesnica ani myš, nerobte nič: PadForge ju vráti systému Windows po skončení odpočtu.</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Systém Windows už nepoužíva zariadenie {0} na pohyb ukazovateľa. Ak vám tak nezostala funkčná klávesnica ani myš, nerobte nič: PadForge ju vráti systému Windows po skončení odpočtu.</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Systém Windows už nepoužíva zariadenie {0} na pohyb ukazovateľa. Ak vám tak nezostala funkčná klávesnica ani myš, nerobte nič: PadForge ho vráti systému Windows po skončení odpočtu.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Vrátenie o {0} s</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Ponechať</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Vrátiť</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Najprv odpojte ostatné klávesnice tohto modelu. Systém Windows prepne naraz všetky pripojené na ovládač zariadenia programu PadForge a žiadnu z nich nebude používať na písanie.</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} opäť používa svoj ovládač systému Windows, pretože prepnutie nebolo ponechané.</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>Prepína sa zariadenie {0}…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>Zariadenie {0} teraz číta iba PadForge.</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>PadForge nedokázal prevziať zariadenie {0} od systému Windows.</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} je opäť v systéme Windows.</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>Zariadenie {0} sa nepodarilo vrátiť systému Windows.</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>{0} je opäť v systéme Windows, pretože prepnutie nebolo ponechané.</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>PadForge nedokázal čítať zariadenie {0}, preto ho opäť má systém Windows.</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>Ak chcete používať touchpad iba v programe PadForge, nainštalujte HidHide.</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>Ak chcete používať touchpad iba v programe PadForge, zapnite v Nastaveniach možnosť Skryť zariadenia pred hrami.</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>Ak chcete používať touchpad iba v programe PadForge, spustite jadro.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> celkom</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Odobrať toto zariadenie a jeho nastavenia</value></data>
@@ -4144,8 +4160,10 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Tablet_InputShared" xml:space="preserve"><value>Zdieľaný vstup</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>Prepína sa vstup</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>Čaká sa na vstup z tabletu</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>Čaká sa na vstup z touchpadu</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>Zachytené programom PadForge</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>Vstup z tabletu nie je k dispozícii</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>Vstup z touchpadu nie je k dispozícii</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>{0} sa nepodarilo zachytiť</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>Keď jadro beží, Skryť zariadenie reštartuje vstup pera tabletu a číta ho iba v programe PadForge. Vypnutím skrývania sa vráti systému Windows. Zachované skrytie ponechá natívny ukazovateľ vypnutý aj po zatvorení programu PadForge.</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>Bočné tlačidlo pera</value></data>

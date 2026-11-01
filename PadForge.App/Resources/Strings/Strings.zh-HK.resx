@@ -765,6 +765,7 @@
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>讀取音樂鍵</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>在此滑鼠上播放震動</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>還原 Windows 驅動程式</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>還給 Windows</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>切換至 PadForge 的驅動程式</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge 會把此控制器轉用 Windows 的 WinUSB 驅動程式，以便讀取 Chatpad。其後該控制器只會在 PadForge 執行時運作，而遊戲會透過 PadForge 的虛擬控制器看到它。所有已插入的同型號控制器都會一併轉用，並且各自需要重新指派到其插槽。你可隨時在此頁面還原 Windows 驅動程式。</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge 會把此接收器轉用 Windows 的 WinUSB 驅動程式，以便讀取 Chatpad 和 uDraw 繪圖板。接收器上的所有控制器和耳機都會一併轉用，只會在 PadForge 執行時運作，並需要重新指派到其插槽。你可隨時在此頁面還原 Windows 驅動程式。</value></data>
@@ -782,6 +783,7 @@
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>只在 PadForge 使用</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge 會把此鍵盤轉用 Windows 的 WinUSB 驅動程式，並自行讀取它。其後 Windows 不會再在任何程式中以此鍵盤輸入文字，即使 PadForge 已關閉也一樣，直至在此頁面還原其 Windows 驅動程式為止。PadForge 執行期間，此鍵盤的對應和巨集仍會正常運作。</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge 會把此滑鼠轉用 Windows 的 WinUSB 驅動程式，並自行讀取它。其後 Windows 不會再在任何程式中以此滑鼠移動指標，即使 PadForge 已關閉也一樣，直至在此頁面還原其 Windows 驅動程式為止。PadForge 執行期間，此滑鼠的對應和巨集仍會正常運作。</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>PadForge 會以 HidHide 對 Windows 隱藏此觸控板，並自行讀取它。引擎執行期間，此觸控板不會在任何程式中移動指標，也不會點按或捲動任何內容，其對應仍會在 PadForge 中正常運作。引擎停止或 PadForge 關閉後，Windows 會取回此觸控板。</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>以下項目會隨之離開 Windows：{0}。</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>一部滑鼠</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>一個鍵盤</value></data>
@@ -791,17 +793,31 @@
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>與製造商軟件的連接</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>同一連接上的其他控制項</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>鍵盤或滑鼠</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>滑鼠或觸控板</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>切換後，PadForge 會詢問是否保留；如果在 {0} 秒內沒有回應，會把鍵盤還給 Windows。</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>切換後，PadForge 會詢問是否保留；如果在 {0} 秒內沒有回應，會把滑鼠還給 Windows。</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>切換後，PadForge 會詢問是否保留；如果在 {0} 秒內沒有回應，會把觸控板還給 Windows。</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>要在 PadForge 保留此鍵盤嗎？</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>要在 PadForge 保留此滑鼠嗎？</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>要在 PadForge 保留此觸控板嗎？</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows 不會再以 {0} 輸入文字。如果這令你沒有可用的鍵盤或滑鼠，請不要做任何操作：倒數結束時，PadForge 會把它還給 Windows。</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows 不會再以 {0} 移動指標。如果這令你沒有可用的鍵盤或滑鼠，請不要做任何操作：倒數結束時，PadForge 會把它還給 Windows。</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows 不會再以 {0} 移動指標。如果這令你沒有可用的鍵盤或滑鼠，請不要做任何操作：倒數結束時，PadForge 會把它還給 Windows。</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0} 秒後還給 Windows</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>保留</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>立即還給 Windows</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>請先拔除此型號的其他鍵盤。Windows 會把所有已插入的同型號鍵盤同時轉用 PadForge 的驅動程式，並不再以它們輸入文字。</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>由於沒有保留切換，{0} 已轉回其 Windows 驅動程式。</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>正在切換 {0}…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>現在只有 PadForge 讀取 {0}。</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>PadForge 無法從 Windows 取得 {0}。</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} 已還給 Windows。</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>無法把 {0} 還給 Windows。</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>由於沒有保留切換，{0} 已還給 Windows。</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>PadForge 無法讀取 {0}，因此已還給 Windows。</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>請安裝 HidHide，才能只在 PadForge 使用觸控板。</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>請在設定中開啟「對遊戲隱藏裝置」，才能只在 PadForge 使用觸控板。</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>請啟動引擎，才能只在 PadForge 使用觸控板。</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> 部在線 / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> 部合共</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>移除此裝置及其設定</value></data>
@@ -4144,8 +4160,10 @@
   <data name="Tablet_InputShared" xml:space="preserve"><value>共用輸入</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>正在切換輸入</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>正在等待繪圖板輸入</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>正在等待觸控板輸入</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>已由 PadForge 擷取</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>繪圖板輸入無法使用</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>觸控板輸入無法使用</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>無法擷取 {0}</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>引擎執行期間，「隱藏裝置」會重新啟動繪圖板的筆輸入，並只在 PadForge 內讀取。關閉隱藏後，輸入會交還 Windows。若保留遮蔽，PadForge 關閉後原生指標亦會保持停用。</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>筆桿按鈕</value></data>

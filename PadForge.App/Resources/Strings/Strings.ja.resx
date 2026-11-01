@@ -506,6 +506,7 @@
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>音楽キーを読み取る</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>このマウスで振動を再生する</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Windows のドライバーに戻す</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>Windows に戻す</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>PadForge のドライバーに切り替える</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge はチャットパッドを読み取るため、このコントローラーを Windows の WinUSB ドライバーに切り替えます。その後、コントローラーは PadForge の実行中だけ動作し、ゲームには PadForge の仮想コントローラーを通して見えます。接続中の同じモデルのコントローラーもすべて切り替わり、それぞれスロットへの割り当てをやり直す必要があります。Windows のドライバーには、このページからいつでも戻せます。</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge はチャットパッドと uDraw タブレットを読み取るため、このレシーバーを Windows の WinUSB ドライバーに切り替えます。レシーバー上のコントローラーとヘッドセットはすべて一緒に切り替わり、PadForge の実行中だけ動作し、スロットへの割り当てをやり直す必要があります。Windows のドライバーには、このページからいつでも戻せます。</value></data>
@@ -523,6 +524,7 @@
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>PadForge でのみ使用する</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge はこのキーボードを Windows の WinUSB ドライバーに切り替え、自分で読み取ります。その後、このページで Windows のドライバーに戻すまで、PadForge を閉じていても、Windows はすべてのプログラムでこのキーボードを文字入力に使用しなくなります。PadForge の実行中は、マッピングとマクロは引き続き動作します。</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge はこのマウスを Windows の WinUSB ドライバーに切り替え、自分で読み取ります。その後、このページで Windows のドライバーに戻すまで、PadForge を閉じていても、Windows はすべてのプログラムでこのマウスをポインターの操作に使用しなくなります。PadForge の実行中は、マッピングとマクロは引き続き動作します。</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>PadForge はこのタッチパッドを HidHide で Windows から隠し、自分で読み取ります。エンジンの実行中は、どのプログラムでもポインターを動かしたり、クリックやスクロールをしたりしなくなり、マッピングは PadForge 内で引き続き動作します。エンジンを停止するか PadForge を閉じると、Windows に戻ります。</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>次のものも Windows で使えなくなります: {0}。</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>マウス</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>キーボード</value></data>
@@ -532,17 +534,31 @@
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>メーカーのソフトウェアとの接続</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>同じ接続上のその他のコントロール</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>キーボードまたはマウス</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>マウスまたはタッチパッド</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>切り替え後、PadForge はこのまま使用するかどうかを確認します。{0} 秒以内に応答がない場合は、キーボードを Windows に戻します。</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>切り替え後、PadForge はこのまま使用するかどうかを確認します。{0} 秒以内に応答がない場合は、マウスを Windows に戻します。</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>切り替え後、PadForge はこのまま使用するかどうかを確認します。{0} 秒以内に応答がない場合は、タッチパッドを Windows に戻します。</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>このキーボードを PadForge で使い続けますか?</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>このマウスを PadForge で使い続けますか?</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>このタッチパッドを PadForge で使い続けますか?</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows は {0} を文字入力に使用しなくなりました。使えるキーボードやマウスがなくなった場合は、何もしないでください。カウントダウンが終わると、PadForge が Windows に戻します。</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows は {0} をポインターの操作に使用しなくなりました。使えるキーボードやマウスがなくなった場合は、何もしないでください。カウントダウンが終わると、PadForge が Windows に戻します。</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows は {0} をポインターの操作に使用しなくなりました。使えるキーボードやマウスがなくなった場合は、何もしないでください。カウントダウンが終わると、PadForge が Windows に戻します。</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0} 秒後に元に戻します</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>使い続ける</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>元に戻す</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>先に、このモデルのほかのキーボードを取り外してください。Windows は接続されているこのモデルのキーボードをすべて同時に PadForge のドライバーに切り替え、どのキーボードも文字入力に使用しなくなります。</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>切り替えが維持されなかったため、{0} は Windows のドライバーに戻りました。</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>{0} を切り替えています…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>{0} を読み取るのは PadForge だけになりました。</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>PadForge は {0} を Windows から取得できませんでした。</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} は Windows に戻りました。</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>{0} を Windows に戻せませんでした。</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>切り替えが維持されなかったため、{0} は Windows に戻りました。</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>PadForge は {0} を読み取れなかったため、Windows に戻しました。</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>タッチパッドを PadForge だけで使うには、HidHide をインストールしてください。</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>タッチパッドを PadForge だけで使うには、設定で「ゲームからデバイスを隠す」をオンにしてください。</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>タッチパッドを PadForge だけで使うには、エンジンを起動してください。</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> 台がオンライン / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> 台</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>このデバイスとその設定を削除します</value></data>
@@ -4095,8 +4111,10 @@
   <data name="Tablet_InputShared" xml:space="preserve"><value>共有入力</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>入力を切り替え中</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>タブレット入力を待機中</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>タッチパッド入力を待機中</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>PadForge が取得中</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>タブレット入力を利用できません</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>タッチパッド入力を利用できません</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>{0} の入力を取得できませんでした</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>エンジンの実行中にデバイスを非表示にすると、タブレットのペン入力が再起動し、PadForge のみが読み取ります。非表示を解除すると、入力は Windows に戻ります。起動間で非表示を維持する場合、PadForge を閉じた後も Windows のポインター入力は無効のままです。</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>ペンのサイドボタン</value></data>

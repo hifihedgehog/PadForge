@@ -1833,6 +1833,7 @@ namespace PadForge.Common.Input
             // Note: on shared hardware (laptop trackpads), the digitizer registration
             // stops Windows from synthesizing mouse reports for the same device.
             _ptpReader = new PrecisionTouchpadReader();
+            AttachTouchpadCaptures(_ptpReader);
             _ptpReader.Start();
             StartTabletReader();
 
@@ -1965,6 +1966,7 @@ namespace PadForge.Common.Input
 
             RawInputListener.Stop();
 
+            DetachTouchpadCaptures(_ptpReader);
             _ptpReader?.Stop();
             _ptpReader?.Dispose();
             _ptpReader = null;
@@ -4281,6 +4283,7 @@ namespace PadForge.Common.Input
             ShutdownPeripheralRows();
             ShutdownTouchSenseMice();
             ShutdownWinUsbKeyboards();
+            ShutdownTouchpadMice();
             ShutdownAnalogKeyboardInputs();
             ShutdownSdl();
             _gyroTiltStates.Clear();

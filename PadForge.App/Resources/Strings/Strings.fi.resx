@@ -765,6 +765,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>Lue musiikkikoskettimet</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>Toista tärinää tällä hiirellä</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Palauta Windowsin ajuri</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>Palauta Windowsille</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Vaihda PadForge-ajuriin</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge siirtää tämän ohjaimen Windowsin WinUSB-ajurille, jotta se voi lukea chatpadin. Ohjain toimii sen jälkeen vain, kun PadForge on käynnissä, ja pelit näkevät sen PadForge-sovelluksen virtuaaliohjaimen kautta. Kaikki kytketyt tämän mallin ohjaimet siirtyvät samalla, ja jokainen on liitettävä paikkaansa uudelleen. Voit palauttaa Windowsin ajurin tältä sivulta milloin tahansa.</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge siirtää tämän vastaanottimen Windowsin WinUSB-ajurille, jotta se voi lukea chatpadeja ja uDraw-piirtopöytiä. Kaikki vastaanottimen ohjaimet ja kuulokkeet siirtyvät samalla, toimivat vain PadForge-sovelluksen ollessa käynnissä ja on liitettävä paikkaansa uudelleen. Voit palauttaa Windowsin ajurin tältä sivulta milloin tahansa.</value></data>
@@ -782,6 +783,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Käytä vain PadForge-sovelluksessa</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge siirtää tämän näppäimistön Windowsin WinUSB-ajurille ja lukee sen itse. Windows lakkaa sen jälkeen kirjoittamasta sillä kaikissa ohjelmissa, myös PadForgen ollessa suljettuna, kunnes sen Windowsin ajuri palautetaan tältä sivulta. Sen yhdistämiset ja makrot toimivat edelleen PadForgen ollessa käynnissä.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge siirtää tämän hiiren Windowsin WinUSB-ajurille ja lukee sen itse. Windows lakkaa sen jälkeen liikuttamasta sillä osoitinta kaikissa ohjelmissa, myös PadForge-sovelluksen ollessa suljettuna, kunnes sen Windowsin ajuri palautetaan tältä sivulta. Sen yhdistämiset ja makrot toimivat edelleen PadForge-sovelluksen ollessa käynnissä.</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>PadForge piilottaa tämän kosketuslevyn Windowsilta HidHide-ohjelmalla ja lukee sen itse. Moottorin ollessa käynnissä sillä ei liikuteta osoitinta eikä napsauteta tai vieritetä mitään missään ohjelmassa, ja sen yhdistämiset toimivat edelleen PadForge-sovelluksessa. Windows saa sen takaisin, kun moottori pysähtyy tai PadForge suljetaan.</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>Nämä poistuvat Windowsin käytöstä sen mukana: {0}.</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>hiiri</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>näppäimistö</value></data>
@@ -791,17 +793,31 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>sen yhteys valmistajan ohjelmistoon</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>muut samassa liitännässä olevat ohjaimet</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>näppäimistö tai hiiri</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>hiiri tai kosketuslevy</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>Vaihdon jälkeen PadForge kysyy, haluatko pitää sen, ja palauttaa näppäimistön Windowsille, ellei kukaan vastaa {0} sekunnin kuluessa.</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>Vaihdon jälkeen PadForge kysyy, haluatko pitää sen, ja palauttaa hiiren Windowsille, ellei kukaan vastaa {0} sekunnin kuluessa.</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>Vaihdon jälkeen PadForge kysyy, haluatko pitää sen, ja palauttaa kosketuslevyn Windowsille, ellei kukaan vastaa {0} sekunnin kuluessa.</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>Pidetäänkö tämä näppäimistö PadForge-sovelluksessa?</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>Pidetäänkö tämä hiiri PadForge-sovelluksessa?</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>Pidetäänkö tämä kosketuslevy PadForge-sovelluksessa?</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows ei enää kirjoita laitteella {0}. Jos käytössäsi ei ole sen vuoksi toimivaa näppäimistöä tai hiirtä, älä tee mitään: PadForge palauttaa sen Windowsille, kun lähtölaskenta päättyy.</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows ei enää liikuta osoitinta laitteella {0}. Jos käytössäsi ei ole sen vuoksi toimivaa näppäimistöä tai hiirtä, älä tee mitään: PadForge palauttaa sen Windowsille, kun lähtölaskenta päättyy.</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows ei enää liikuta osoitinta laitteella {0}. Jos käytössäsi ei ole sen vuoksi toimivaa näppäimistöä tai hiirtä, älä tee mitään: PadForge palauttaa sen Windowsille, kun lähtölaskenta päättyy.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Palautetaan {0} sekunnin kuluttua</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Pidä</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Palauta</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Irrota ensin muut tämän mallin näppäimistöt. Windows siirtää kaikki kytketyt näppäimistöt PadForge-ajuriin kerralla ja lakkaa kirjoittamasta niillä.</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} käyttää taas Windowsin ajuria, koska vaihtoa ei pidetty.</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>Vaihdetaan: {0}…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>Vain PadForge lukee nyt laitetta {0}.</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>PadForge ei voinut ottaa laitetta {0} Windowsilta.</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} on taas Windowsilla.</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>Laitetta {0} ei voitu palauttaa Windowsille.</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>{0} on taas Windowsilla, koska vaihtoa ei pidetty.</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>PadForge ei voinut lukea laitetta {0}, joten Windows sai sen takaisin.</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>Asenna HidHide, jotta voit käyttää kosketuslevyä vain PadForge-sovelluksessa.</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>Ota Asetuksissa käyttöön Piilota laitteet peleiltä, jotta voit käyttää kosketuslevyä vain PadForge-sovelluksessa.</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>Käynnistä moottori, jotta voit käyttää kosketuslevyä vain PadForge-sovelluksessa.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> yhteydessä / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> yhteensä</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Poista tämä laite ja sen asetukset</value></data>
@@ -4144,8 +4160,10 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Tablet_InputShared" xml:space="preserve"><value>Jaettu syöte</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>Vaihdetaan syötettä</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>Odotetaan piirtopöydän syötettä</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>Odotetaan kosketuslevyn syötettä</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>PadForge-sovelluksen kaappaama</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>Piirtopöydän syöte ei käytettävissä</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>Kosketuslevyn syöte ei käytettävissä</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>Kaappaus epäonnistui: {0}</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>Kun moottori on käynnissä, Piilota laite käynnistää piirtopöydän kynäsyötteen uudelleen ja lukee sitä vain PadForge-sovelluksessa. Piilotuksen poistaminen palauttaa sen Windowsille. Säilytetyt piilotukset pitävät myös alkuperäisen osoittimen pois käytöstä PadForge-sovelluksen sulkemisen jälkeen.</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>Kynän sivupainike</value></data>

@@ -765,6 +765,7 @@
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>อ่านคีย์ดนตรี</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>เล่นการสั่นบนเมาส์นี้</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>กู้คืนไดรเวอร์ของ Windows</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>คืนให้ Windows</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>สลับไปใช้ไดรเวอร์ของ PadForge</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge จะย้ายคอนโทรลเลอร์นี้ไปใช้ไดรเวอร์ WinUSB ของ Windows เพื่อให้อ่าน Chatpad ได้ หลังจากนั้นคอนโทรลเลอร์จะใช้งานได้เฉพาะขณะที่ PadForge ทำงานอยู่ และเกมจะเห็นคอนโทรลเลอร์ผ่านคอนโทรลเลอร์เสมือนของ PadForge คอนโทรลเลอร์รุ่นเดียวกันทุกตัวที่เสียบอยู่จะถูกย้ายไปด้วย และแต่ละตัวต้องกำหนดให้ช่องของตัวเองใหม่ คุณกู้คืนไดรเวอร์ของ Windows ได้จากหน้านี้ทุกเมื่อ</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge จะย้ายตัวรับสัญญาณนี้ไปใช้ไดรเวอร์ WinUSB ของ Windows เพื่อให้อ่าน Chatpad และแท็บเล็ต uDraw ได้ คอนโทรลเลอร์และชุดหูฟังทุกตัวบนตัวรับสัญญาณจะถูกย้ายไปด้วย ใช้งานได้เฉพาะขณะที่ PadForge ทำงานอยู่ และต้องกำหนดให้ช่องของตัวเองใหม่ คุณกู้คืนไดรเวอร์ของ Windows ได้จากหน้านี้ทุกเมื่อ</value></data>
@@ -782,6 +783,7 @@
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>ใช้เฉพาะใน PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge จะย้ายคีย์บอร์ดนี้ไปใช้ไดรเวอร์ WinUSB ของ Windows และอ่านค่าจากคีย์บอร์ดเอง หลังจากนั้น Windows จะหยุดใช้คีย์บอร์ดนี้พิมพ์ในทุกโปรแกรม แม้ว่า PadForge จะปิดอยู่ จนกว่าจะกู้คืนไดรเวอร์ของ Windows จากหน้านี้ การแมปและมาโครของคีย์บอร์ดยังใช้งานได้ตราบที่ PadForge ทำงานอยู่</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge จะย้ายเมาส์นี้ไปใช้ไดรเวอร์ WinUSB ของ Windows และอ่านค่าจากเมาส์เอง หลังจากนั้น Windows จะหยุดใช้เมาส์นี้เลื่อนตัวชี้ในทุกโปรแกรม แม้ว่า PadForge จะปิดอยู่ จนกว่าจะกู้คืนไดรเวอร์ของ Windows จากหน้านี้ การแมปและมาโครของเมาส์ยังใช้งานได้ตราบที่ PadForge ทำงานอยู่</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>PadForge จะซ่อนทัชแพดนี้จาก Windows ด้วย HidHide และอ่านค่าจากทัชแพดเอง ขณะที่เอนจินทำงาน ทัชแพดจะไม่เลื่อนตัวชี้ และไม่คลิกหรือเลื่อนหน้าจอในโปรแกรมใดเลย ส่วนการแมปของทัชแพดยังใช้งานได้ใน PadForge Windows จะได้ทัชแพดคืนเมื่อเอนจินหยุดหรือปิด PadForge</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>สิ่งเหล่านี้จะหยุดทำงานกับ Windows ไปด้วย: {0}</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>เมาส์</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>คีย์บอร์ด</value></data>
@@ -791,17 +793,31 @@
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>การเชื่อมต่อกับซอฟต์แวร์ของผู้ผลิต</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>ปุ่มควบคุมอื่นๆ ในการเชื่อมต่อเดียวกัน</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>คีย์บอร์ดหรือเมาส์</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>เมาส์หรือทัชแพด</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>หลังจากสลับแล้ว PadForge จะถามว่าต้องการใช้ต่อหรือไม่ และจะคืนคีย์บอร์ดให้ Windows หากไม่มีใครตอบภายใน {0} วินาที</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>หลังจากสลับแล้ว PadForge จะถามว่าต้องการใช้ต่อหรือไม่ และจะคืนเมาส์ให้ Windows หากไม่มีใครตอบภายใน {0} วินาที</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>หลังจากสลับแล้ว PadForge จะถามว่าต้องการใช้ต่อหรือไม่ และจะคืนทัชแพดให้ Windows หากไม่มีใครตอบภายใน {0} วินาที</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>ใช้คีย์บอร์ดนี้ใน PadForge ต่อไปหรือไม่</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>ใช้เมาส์นี้ใน PadForge ต่อไปหรือไม่</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>ใช้ทัชแพดนี้ใน PadForge ต่อไปหรือไม่</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows จะไม่ใช้ {0} พิมพ์อีกต่อไป หากทำให้คุณไม่มีคีย์บอร์ดหรือเมาส์ที่ใช้งานได้ ไม่ต้องทำอะไร PadForge จะคืนให้ Windows เมื่อการนับถอยหลังสิ้นสุด</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows จะไม่ใช้ {0} เลื่อนตัวชี้อีกต่อไป หากทำให้คุณไม่มีคีย์บอร์ดหรือเมาส์ที่ใช้งานได้ ไม่ต้องทำอะไร PadForge จะคืนให้ Windows เมื่อการนับถอยหลังสิ้นสุด</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows จะไม่ใช้ {0} เลื่อนตัวชี้อีกต่อไป หากทำให้คุณไม่มีคีย์บอร์ดหรือเมาส์ที่ใช้งานได้ ไม่ต้องทำอะไร PadForge จะคืนให้ Windows เมื่อการนับถอยหลังสิ้นสุด</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>คืนให้ใน {0} วินาที</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>ใช้ต่อ</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>คืนให้เดี๋ยวนี้</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>ถอดคีย์บอร์ดรุ่นเดียวกันตัวอื่นออกก่อน Windows จะย้ายทุกตัวที่เสียบอยู่ไปใช้ไดรเวอร์ของ PadForge พร้อมกัน และหยุดใช้แต่ละตัวพิมพ์</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>{0} กลับไปใช้ไดรเวอร์ของ Windows แล้ว เพราะไม่ได้เลือกใช้ต่อ</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>กำลังสลับ {0}…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>ตอนนี้มีเพียง PadForge ที่อ่าน {0}</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>PadForge ไม่สามารถนำ {0} ออกจาก Windows ได้</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} กลับไปอยู่กับ Windows แล้ว</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>ไม่สามารถคืน {0} ให้ Windows ได้</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>{0} กลับไปอยู่กับ Windows แล้ว เพราะไม่ได้เลือกใช้ต่อ</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>PadForge อ่าน {0} ไม่ได้ จึงคืนให้ Windows แล้ว</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>ติดตั้ง HidHide เพื่อใช้ทัชแพดเฉพาะใน PadForge</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>เปิด ซ่อนอุปกรณ์จากเกม ในการตั้งค่าเพื่อใช้ทัชแพดเฉพาะใน PadForge</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>เริ่มเอนจินเพื่อใช้ทัชแพดเฉพาะใน PadForge</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> ออนไลน์ / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> ทั้งหมด</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>นำอุปกรณ์นี้และการตั้งค่าของอุปกรณ์ออก</value></data>
@@ -4144,8 +4160,10 @@
   <data name="Tablet_InputShared" xml:space="preserve"><value>อินพุตที่ใช้ร่วมกัน</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>กำลังสลับอินพุต</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>กำลังรออินพุตจากแท็บเล็ต</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>กำลังรออินพุตจากทัชแพด</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>PadForge ยึดอินพุตแล้ว</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>อินพุตแท็บเล็ตไม่พร้อมใช้งาน</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>อินพุตทัชแพดไม่พร้อมใช้งาน</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>ยึดอินพุตของ {0} ไม่ได้</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>ขณะที่เอนจินทำงาน “ซ่อนอุปกรณ์” จะเริ่มอินพุตปากกาของแท็บเล็ตใหม่ และอ่านเฉพาะใน PadForge การปิดการซ่อนจะคืนอินพุตให้ Windows การพรางที่คงไว้ยังทำให้ตัวชี้ดั้งเดิมถูกปิดใช้งานต่อไปหลังจาก PadForge ปิด</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>ปุ่มด้านข้างของปากกา</value></data>

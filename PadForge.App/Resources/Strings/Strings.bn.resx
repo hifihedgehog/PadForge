@@ -765,6 +765,7 @@
   <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>মিউজিক কীগুলো পড়ুন</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>এই মাউসে রাম্বল চালান</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Windows ড্রাইভার ফিরিয়ে আনুন</value></data>
+  <data name="Devices_TouchpadGiveBack" xml:space="preserve"><value>Windows-কে ফিরিয়ে দিন</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>PadForge-এর ড্রাইভারে বদলান</value></data>
   <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>চ্যাটপ্যাড পড়ার জন্য PadForge এই কন্ট্রোলারটিকে Windows-এর WinUSB ড্রাইভারে সরিয়ে নেয়। এরপর কন্ট্রোলারটি কেবল PadForge চলার সময়ই কাজ করে, আর গেম একে PadForge-এর ভার্চুয়াল কন্ট্রোলারের মাধ্যমে দেখে। এই মডেলের লাগানো সব কন্ট্রোলারই এর সঙ্গে সরে যায়, আর প্রতিটিকে আবার তার স্লটে বরাদ্দ করতে হয়। যেকোনো সময় এই পৃষ্ঠা থেকে Windows ড্রাইভার ফিরিয়ে আনুন।</value></data>
   <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>চ্যাটপ্যাড ও uDraw ট্যাবলেট পড়ার জন্য PadForge এই রিসিভারটিকে Windows-এর WinUSB ড্রাইভারে সরিয়ে নেয়। রিসিভারের সব কন্ট্রোলার ও হেডসেট এর সঙ্গে সরে যায়, কেবল PadForge চলার সময়ই কাজ করে, আর প্রতিটিকে আবার তার স্লটে বরাদ্দ করতে হয়। যেকোনো সময় এই পৃষ্ঠা থেকে Windows ড্রাইভার ফিরিয়ে আনুন।</value></data>
@@ -782,6 +783,7 @@
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>শুধু PadForge-এ ব্যবহার করুন</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge এই কীবোর্ডকে Windows-এর WinUSB ড্রাইভারে সরিয়ে নিয়ে নিজেই পড়ে। এরপর এই পৃষ্ঠা থেকে Windows ড্রাইভার ফিরিয়ে না আনা পর্যন্ত, PadForge বন্ধ থাকলেও, Windows কোনো প্রোগ্রামেই এটি দিয়ে টাইপ করে না। PadForge চলার সময় এর ম্যাপিং ও ম্যাক্রো কাজ করতে থাকে।</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge এই মাউসকে Windows-এর WinUSB ড্রাইভারে সরিয়ে নিয়ে নিজেই পড়ে। এরপর এই পৃষ্ঠা থেকে Windows ড্রাইভার ফিরিয়ে না আনা পর্যন্ত, PadForge বন্ধ থাকলেও, Windows কোনো প্রোগ্রামেই এটি দিয়ে পয়েন্টার নড়ায় না। PadForge চলার সময় এর ম্যাপিং ও ম্যাক্রো কাজ করতে থাকে।</value></data>
+  <data name="Devices_TouchpadConfirm" xml:space="preserve"><value>PadForge HidHide দিয়ে এই টাচপ্যাডকে Windows থেকে লুকিয়ে রাখে এবং নিজেই এটি পড়ে। ইঞ্জিন চলার সময় এটি কোনো পয়েন্টার নড়ায় না এবং কোনো প্রোগ্রামে ক্লিক বা স্ক্রল করে না, তবে PadForge-এ এর ম্যাপিং কাজ করতে থাকে। ইঞ্জিন থামলে বা PadForge বন্ধ হলে Windows এটি ফিরে পায়।</value></data>
   <data name="Devices_DriverTakes_Format" xml:space="preserve"><value>এগুলোও এর সঙ্গে Windows থেকে চলে যায়: {0}।</value></data>
   <data name="Devices_DriverTakes_Mouse" xml:space="preserve"><value>একটি মাউস</value></data>
   <data name="Devices_DriverTakes_Keyboard" xml:space="preserve"><value>একটি কীবোর্ড</value></data>
@@ -791,17 +793,31 @@
   <data name="Devices_DriverTakes_VendorControls" xml:space="preserve"><value>নির্মাতার সফটওয়্যারের সঙ্গে এর সংযোগ</value></data>
   <data name="Devices_DriverTakes_Other" xml:space="preserve"><value>একই সংযোগের অন্যান্য কন্ট্রোল</value></data>
   <data name="Devices_DriverKind_KeyboardOrMouse" xml:space="preserve"><value>কীবোর্ড বা মাউস</value></data>
+  <data name="Devices_DriverKind_MouseOrTouchpad" xml:space="preserve"><value>মাউস বা টাচপ্যাড</value></data>
   <data name="Devices_DriverKeepNote_Format" xml:space="preserve"><value>বদলানোর পর PadForge জিজ্ঞাসা করবে এটি রাখবেন কি না, আর {0} সেকেন্ডের মধ্যে কেউ উত্তর না দিলে কীবোর্ডটি Windows-কে ফিরিয়ে দেবে।</value></data>
   <data name="Devices_DriverKeepNote_Mouse_Format" xml:space="preserve"><value>বদলানোর পর PadForge জিজ্ঞাসা করবে এটি রাখবেন কি না, আর {0} সেকেন্ডের মধ্যে কেউ উত্তর না দিলে মাউসটি Windows-কে ফিরিয়ে দেবে।</value></data>
+  <data name="Devices_TouchpadKeepNote_Format" xml:space="preserve"><value>বদলানোর পর PadForge জিজ্ঞাসা করবে এটি রাখবেন কি না, আর {0} সেকেন্ডের মধ্যে কেউ উত্তর না দিলে টাচপ্যাডটি Windows-কে ফিরিয়ে দেবে।</value></data>
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>এই কীবোর্ড কি PadForge-এ রাখবেন?</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>এই মাউস কি PadForge-এ রাখবেন?</value></data>
+  <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>এই টাচপ্যাড কি PadForge-এ রাখবেন?</value></data>
   <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows আর {0} দিয়ে টাইপ করে না। এতে যদি কোনো কাজের কীবোর্ড বা মাউস না থাকে, কিছু করবেন না: কাউন্টডাউন শেষ হলে PadForge এটি Windows-কে ফিরিয়ে দেবে।</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows আর {0} দিয়ে পয়েন্টার নড়ায় না। এতে যদি কোনো কাজের কীবোর্ড বা মাউস না থাকে, কিছু করবেন না: কাউন্টডাউন শেষ হলে PadForge এটি Windows-কে ফিরিয়ে দেবে।</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows আর {0} দিয়ে পয়েন্টার নড়ায় না। এতে যদি কোনো কাজের কীবোর্ড বা মাউস না থাকে, কিছু করবেন না: কাউন্টডাউন শেষ হলে PadForge এটি Windows-কে ফিরিয়ে দেবে।</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0} সেকেন্ডে ফিরিয়ে দেওয়া হবে</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>রাখুন</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>ফিরিয়ে দিন</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>আগে এই মডেলের অন্য কীবোর্ডগুলো খুলে ফেলুন। Windows লাগানো সবগুলোকে একসঙ্গে PadForge-এর ড্রাইভারে সরিয়ে নেয় এবং কোনোটি দিয়েই আর টাইপ করে না।</value></data>
   <data name="Status_DriverKeepExpired_Format" xml:space="preserve"><value>বদলানোটি রাখা হয়নি, তাই {0} আবার তার Windows ড্রাইভারে ফিরে এসেছে।</value></data>
+  <data name="Status_TouchpadSwitching_Format" xml:space="preserve"><value>{0} বদলানো হচ্ছে…</value></data>
+  <data name="Status_TouchpadTaken_Format" xml:space="preserve"><value>এখন শুধু PadForge-ই {0} পড়ে।</value></data>
+  <data name="Status_TouchpadTakeFailed_Format" xml:space="preserve"><value>PadForge Windows থেকে {0} নিতে পারেনি।</value></data>
+  <data name="Status_TouchpadGivenBack_Format" xml:space="preserve"><value>{0} আবার Windows-এর কাছে ফিরে এসেছে।</value></data>
+  <data name="Status_TouchpadGiveBackFailed_Format" xml:space="preserve"><value>{0} Windows-কে ফিরিয়ে দেওয়া যায়নি।</value></data>
+  <data name="Status_TouchpadKeepExpired_Format" xml:space="preserve"><value>বদলানোটি রাখা হয়নি, তাই {0} আবার Windows-এর কাছে ফিরে এসেছে।</value></data>
+  <data name="Status_TouchpadReadFailed_Format" xml:space="preserve"><value>PadForge {0} পড়তে পারেনি, তাই Windows এটি ফিরে পেয়েছে।</value></data>
+  <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>শুধু PadForge-এ টাচপ্যাড ব্যবহার করতে HidHide ইনস্টল করুন।</value></data>
+  <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>শুধু PadForge-এ টাচপ্যাড ব্যবহার করতে সেটিংসে গেম থেকে ডিভাইস লুকান চালু করুন।</value></data>
+  <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>শুধু PadForge-এ টাচপ্যাড ব্যবহার করতে ইঞ্জিন চালু করুন।</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> অনলাইন / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> মোট</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>এই ডিভাইস ও এর সেটিংস সরান</value></data>
@@ -4144,8 +4160,10 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Tablet_InputShared" xml:space="preserve"><value>শেয়ার করা ইনপুট</value></data>
   <data name="Tablet_InputSwitching" xml:space="preserve"><value>ইনপুট বদলানো হচ্ছে</value></data>
   <data name="Tablet_InputWaiting" xml:space="preserve"><value>ট্যাবলেট ইনপুটের অপেক্ষায়</value></data>
+  <data name="Touchpad_InputWaiting" xml:space="preserve"><value>টাচপ্যাড ইনপুটের অপেক্ষায়</value></data>
   <data name="Tablet_InputCaptured" xml:space="preserve"><value>PadForge-এর দখলে</value></data>
   <data name="Tablet_InputFailed" xml:space="preserve"><value>ট্যাবলেট ইনপুট উপলব্ধ নয়</value></data>
+  <data name="Touchpad_InputFailed" xml:space="preserve"><value>টাচপ্যাড ইনপুট উপলব্ধ নয়</value></data>
   <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>{0} দখলে নেওয়া যায়নি</value></data>
   <data name="Tablet_HideHelp" xml:space="preserve"><value>ইঞ্জিন চলা অবস্থায় “ডিভাইস লুকান” ট্যাবলেটের পেন ইনপুট নতুন করে চালু করে এবং কেবল PadForge-এ সেটি পড়ে। লুকানো বন্ধ করলে সেটি Windows-এ ফিরে যায়। আড়াল বজায় রাখা থাকলে PadForge বন্ধ হওয়ার পরও নেটিভ পয়েন্টার নিষ্ক্রিয় থাকে।</value></data>
   <data name="Tablet_Barrel" xml:space="preserve"><value>পেনের ব্যারেল বোতাম</value></data>

@@ -8,19 +8,23 @@ namespace PadForge.Common.Input
     ///
     /// <para>The report is three bytes, <c>E0 00 route</c>: the CUH-ZCT2E
     /// descriptor declares 0xE0 with a 2-byte payload (usage 0xFF800057, the
-    /// descriptor dump in DJm00n/ControllersInfo), and duaLib builds it as
+    /// descriptor dump in DJm00n/ControllersInfo), the Controllers Wiki lists
+    /// it as Set Audio Output for a USB pad and the adapter and gives its
+    /// routes (Sony DualShock 4/Data Structures), and duaLib builds it as
     /// ReportFeatureInDongleSetAudio (dataStructures.h) from its DualShock 4
     /// output path (readDualshock4.cpp) and its reset path for a pad on USB
-    /// (duaLibUtils.cpp). Its routes are duaLib's AudioOutput values, which
-    /// mihaits confirmed on a wired CUH-ZCT2 (#546), and they are the
-    /// DualSense's output path values, so the USB sink maps channels for
-    /// both through <see cref="AudioPassthroughService.MapMirrorChannels"/>.</para>
+    /// (duaLibUtils.cpp). mihaits confirmed the routes on a wired CUH-ZCT2
+    /// (#546), and they are the DualSense's output path values, so the USB
+    /// sink maps channels for both through
+    /// <see cref="AudioPassthroughService.MapMirrorChannels"/>.</para>
     ///
     /// <para>A route with the speaker also needs the speaker volume in output
     /// report 0x05: bit 0x80 of byte 1 (ds4mac docs/04-DS4-USB-Protocol.md
-    /// 3.2), byte 22 from 0x00 to 0x4F, and byte 23, which duaLib sets to 5
-    /// with its top bit "for audio" (BTSetStateData UNK_AUDIO1 and
-    /// UNK_AUDIO2) and #546 sets to the same 0x85.</para>
+    /// 3.2) and byte 22 from 0x00 to 0x4F. #546 also sent byte 23 as 0x85.
+    /// The wiki and duaLib's BTSetStateData say its two fields (UNK_AUDIO1
+    /// and UNK_AUDIO2) appear to be 5 and 1 for audio, and duaLib never sends
+    /// them. The byte goes out with the volume, once per route change, the
+    /// way duaLib sends the volume once per change.</para>
     /// </summary>
     internal static class Ds4UsbAudio
     {

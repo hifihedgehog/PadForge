@@ -284,6 +284,23 @@ namespace PadForge.Common.Input
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, long> s_lastWriteSeq =
             new(StringComparer.OrdinalIgnoreCase);
 
+        // Sony pads whose audio route PadForge left off the headset, by the
+        // last frame that landed on each: a DualSense's output path, or a
+        // DualShock 4's USB route (#546). Static, because a pad keeps its
+        // route when a slot's dispatcher is replaced. ReleaseAudioRoutes puts
+        // each back on the headset when the engine stops or the outputs are
+        // quiesced, and SweepOrphanedRoutes once no slot maps the pad, so
+        // audio to the pad does not stay on its speaker after PadForge lets
+        // go. A pad PadForge never routed is never listed.
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, (string Path, HMProfile Profile, bool Ds5)> s_routedOffHeadset = new();
+
+        // Set when the routes are released and cleared at the next engine
+        // start (ResumeAudioRoutes). While set, no frame routes a pad: none
+        // counts PadForge as playing to it, asserts an explicit path or sends
+        // a USB route. The dispatchers still run after an abnormal exit's
+        // release.
+        private static volatile bool s_audioRoutesReleased;
+
         // Per-device flag remembering whether PadForge's last dispatched
         // packet carried non-zero rumble. Drives the validFlag0 bit-0
         // gating: assert the rumble enable bit when current frame has
@@ -414,6 +431,157 @@ namespace PadForge.Common.Input
                 _prevDs4MicArmed[device] = audio.Ds4MicArmed;
                 // A frame with no route leaves the last one standing.
                 if (audio.Ds4UsbRoute >= 0) _prevDs4UsbRoute[device] = audio.Ds4UsbRoute;
+            }
+        }
+
+        /// <summary>Whether PadForge plays to the pad's speaker now: a sink
+        /// wants the speaker path and the routes have not been released.</summary>
+        private static bool PlaysToSpeaker(Guid device)
+            => !s_audioRoutesReleased && AudioPassthroughService.WantsSpeakerPath(device);
+
+        /// <summary>The route a frame leaves its pad on, 0 being the headset:
+        /// the DualShock 4 USB route it sends, or the DualSense output path it
+        /// asserts (valid_flag0 bit 7, path in bits 4-5 of the audio control
+        /// byte). -1 when the frame leaves the route alone.</summary>
+        internal static int DeliveredRoute(IReadOnlyDictionary<string, object> fields, out bool ds5)
+        {
+            ds5 = false;
+            if (fields.TryGetValue("ds4UsbRoute", out var usb) && usb is byte route) return route;
+            if (fields.TryGetValue("audioControlFlags", out var control) && control is byte flags
+                && fields.TryGetValue("validFlag0", out var valid) && valid is byte flag0
+                && (flag0 & 0x80) != 0)
+            {
+                ds5 = true;
+                return (flags >> 4) & 0x03;
+            }
+            return -1;
+        }
+
+        /// <summary>Lists or clears a pad in <see cref="s_routedOffHeadset"/>
+        /// from a frame that landed. A peer's owner routes its own pad.</summary>
+        private static void NoteDeliveredRoute(Guid device, string path, HMProfile profile,
+            IReadOnlyDictionary<string, object> fields)
+        {
+            int route = DeliveredRoute(fields, out bool ds5);
+            if (route < 0 || RemoteLinkOutputRouter.IsPeerPath(path)) return;
+            if (route == 0) s_routedOffHeadset.TryRemove(device, out _);
+            else s_routedOffHeadset[device] = (path, profile, ds5);
+        }
+
+        /// <summary>Puts every pad PadForge left off the headset back on it.
+        /// duaLib releases a pad when it closes too (duaLibUtils.cpp letGo,
+        /// from scePadClose and scePadTerminate), but it turns a DualShock 4's
+        /// route off (AudioOutput::Disabled), which would leave Windows audio
+        /// to the pad nowhere to play, and leaves a DualSense's audio path
+        /// where it was. Here a DualSense takes
+        /// <see cref="Ds5EffectSynthesizer.HeadsetPathFields"/> and a
+        /// DualShock 4 takes USB route 0. Runs when the engine stops and when
+        /// the outputs are quiesced on an abnormal exit, and waits at most
+        /// 250 ms for a write in progress.</summary>
+        internal static void ReleaseAudioRoutes()
+        {
+            // Under the capture lock, so every frame captured before this
+            // point carries an older sequence and every later one sees the
+            // release. With no device collection nothing is captured.
+            long seq;
+            lock (SettingsManager.UserDevices?.SyncRoot ?? new object())
+            {
+                s_audioRoutesReleased = true;
+                seq = System.Threading.Interlocked.Increment(ref s_dispatchSeq);
+            }
+            if (s_routedOffHeadset.IsEmpty) return;
+            bool gated = false;
+            try
+            {
+                System.Threading.Monitor.TryEnter(s_writeGate, 250, ref gated);
+                if (!gated) return;
+                foreach (var entry in s_routedOffHeadset)
+                {
+                    // A frame captured before the release that lands after it
+                    // is dropped as stale.
+                    s_lastWriteSeq.AddOrUpdate(entry.Value.Path, seq, (_, last) => Math.Max(last, seq));
+                    if (WriteHeadsetRoute(entry.Value)) s_routedOffHeadset.TryRemove(entry.Key, out _);
+                }
+            }
+            finally
+            {
+                if (gated) System.Threading.Monitor.Exit(s_writeGate);
+            }
+        }
+
+        /// <summary>Lets frames route a pad again. The engine calls it when it
+        /// starts.</summary>
+        internal static void ResumeAudioRoutes() => s_audioRoutesReleased = false;
+
+        /// <summary>Puts one pad back on its headset: a DualSense takes
+        /// <see cref="Ds5EffectSynthesizer.HeadsetPathFields"/>, a DualShock 4
+        /// USB route 0. Called under s_writeGate.</summary>
+        private static bool WriteHeadsetRoute((string Path, HMProfile Profile, bool Ds5) target)
+        {
+            try
+            {
+                if (target.Ds5)
+                    return PlayStationEffectWriter.Write(target.Path, target.Profile, Ds5EffectSynthesizer.HeadsetPathFields());
+                return !RemoteLinkOutputRouter.IsClaimedByPeer(target.Path)
+                    && RawHidOutput.SetFeature(target.Path,
+                        Ds4UsbAudio.BuildRouteReport(Ds4UsbAudio.RouteStereoHeadset), stampSonyBtCrc: false);
+            }
+            catch { return false; }
+        }
+
+        // Pads whose release after leaving every slot failed, so a pad that
+        // stops answering is not written on every frame. Cleared when a slot
+        // maps the pad again, and the engine stop tries it once more.
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, byte> s_orphanReleaseTried = new();
+
+        /// <summary>Puts a pad PadForge left off its headset back on it once no
+        /// slot maps it: unassigned, its slot deleted, or dropped by a profile
+        /// (#546). The decision and its sequence are taken under the capture
+        /// lock, so a slot that maps the pad afterwards captures a newer frame,
+        /// and that frame wins. An offline pad waits until it is back. Runs on
+        /// every dispatch, and on the thread pool when a dispatcher is
+        /// disposed, since a deleted slot takes its dispatcher with it.</summary>
+        private static void SweepOrphanedRoutes()
+        {
+            if (s_routedOffHeadset.IsEmpty) return;
+            var devices = SettingsManager.UserDevices;
+            var settings = SettingsManager.UserSettings;
+            if (devices == null || settings == null) return;
+            List<Guid> orphans = null;
+            long seq = 0;
+            var probe = new UserSetting[1];
+            // Devices before settings, the canonical order.
+            lock (devices.SyncRoot)
+            {
+                foreach (var device in s_routedOffHeadset.Keys)
+                {
+                    if (settings.FindByInstanceGuid(device, probe) > 0)
+                    {
+                        s_orphanReleaseTried.TryRemove(device, out _);
+                        continue;
+                    }
+                    if (s_orphanReleaseTried.ContainsKey(device)) continue;
+                    foreach (var ud in devices.Items)
+                    {
+                        if (ud == null || ud.InstanceGuid != device || !ud.IsOnline) continue;
+                        (orphans ??= new List<Guid>()).Add(device);
+                        break;
+                    }
+                }
+                if (orphans != null) seq = System.Threading.Interlocked.Increment(ref s_dispatchSeq);
+            }
+            if (orphans == null) return;
+            lock (s_writeGate)
+            {
+                foreach (var device in orphans)
+                {
+                    if (!s_routedOffHeadset.TryGetValue(device, out var target)) continue;
+                    // A slot that took the pad since wrote a newer frame.
+                    if (s_lastWriteSeq.TryGetValue(target.Path, out long last) && last > seq) continue;
+                    s_lastWriteSeq[target.Path] = seq;
+                    if (WriteHeadsetRoute(target)) s_routedOffHeadset.TryRemove(device, out _);
+                    else s_orphanReleaseTried[device] = 0;
+                }
             }
         }
 
@@ -1442,6 +1610,14 @@ namespace PadForge.Common.Input
             // could evict a replacement that registered between the two.
             ((System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<int, UserEffectsDispatcher>>)_instances)
                 .Remove(new System.Collections.Generic.KeyValuePair<int, UserEffectsDispatcher>(_padIndex, this));
+            // A deleted slot takes its dispatcher with it, and no other slot
+            // may dispatch soon, so the pads it left off their headsets are
+            // swept from here (#546). Off this thread: the sweep may write.
+            if (!s_routedOffHeadset.IsEmpty)
+                System.Threading.ThreadPool.QueueUserWorkItem(static _ =>
+                {
+                    try { SweepOrphanedRoutes(); } catch { }
+                });
         }
 
         /// <summary>Whether a live dispatcher lights this slot. A slot left
@@ -2233,6 +2409,7 @@ namespace PadForge.Common.Input
             }
             _groupSlotsMask = groupMask;
             OnAssignmentSetObserved(guids, devices);
+            SweepOrphanedRoutes();
             if (guids.Count == 0)
             {
                 _litPeripherals = 0;
@@ -2912,8 +3089,9 @@ namespace PadForge.Common.Input
                     // (slider, macro, profile apply). Idle, the bit stays
                     // clear and the firmware retains state.
                     int hpVol = devCfg?.HeadphoneVolume ?? 100;
-                    // Output path: only a non-Automatic choice is ever
-                    // authored, asserted on the claim burst or a change.
+                    // Output path: a non-Automatic choice is asserted on the
+                    // claim burst or a change. Automatic asserts only the
+                    // headphone path's return (the speaker block below).
                     int pathVal = AudioPassthroughService.ResolveOutputPath(
                         devCfg != null ? (int)devCfg.AudioOutputPath : 0, ud.InstanceGuid);
                     bool ds4Bt = !isDs5 && isBluetooth;
@@ -2921,18 +3099,20 @@ namespace PadForge.Common.Input
                     // Compared with what the pad last received. The values
                     // are committed when this frame lands (CommitDeliveredAudio).
                     bool hpChanged, pathChanged, ds4MicWasArmed;
-                    int lastUsbRoute;
+                    int lastUsbRoute, lastPath;
                     lock (_audioPrevGate)
                     {
                         hpChanged = !_prevHeadphoneVolume.TryGetValue(ud.InstanceGuid, out var prevHp)
                             || prevHp != hpVol;
-                        pathChanged = !_prevAudioOutputPath.TryGetValue(ud.InstanceGuid, out var prevPath)
-                            || prevPath != pathVal;
+                        pathChanged = !_prevAudioOutputPath.TryGetValue(ud.InstanceGuid, out lastPath)
+                            || lastPath != pathVal;
                         ds4MicWasArmed = _prevDs4MicArmed.TryGetValue(ud.InstanceGuid, out var dma) && dma;
                         lastUsbRoute = _prevDs4UsbRoute.TryGetValue(ud.InstanceGuid, out var lur) ? lur : -1;
                     }
                     bool assertHeadphone = assertAudioMute || hpChanged;
-                    bool assertAudioCtl = pathVal > 0 && (assertAudioMute || pathChanged);
+                    // Released routes stay released until the engine starts.
+                    bool assertAudioCtl = pathVal > 0 && (assertAudioMute || pathChanged)
+                        && !s_audioRoutesReleased;
 
                     // DualShock 4 on Bluetooth (#528). Byte 2 is 0xA1 while its
                     // headset microphone is armed and 0xA0 otherwise, and the
@@ -2955,9 +3135,9 @@ namespace PadForge.Common.Input
                     bool ds4Usb = !isDs5 && !isBluetooth
                         && AudioPassthroughService.Ds4HasAudio((ushort)ud.ProdId, false)
                         && !RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath);
-                    int ds4UsbRoute = ds4Usb
-                        ? Ds4UsbAudio.RouteToWrite(pathVal,
-                            AudioPassthroughService.WantsSpeakerPath(ud.InstanceGuid), lastUsbRoute)
+                    int ds4UsbRoute = ds4Usb && !s_audioRoutesReleased
+                        ? Ds4UsbAudio.RouteToWrite(pathVal, PlaysToSpeaker(ud.InstanceGuid), lastUsbRoute,
+                            s_routedOffHeadset.ContainsKey(ud.InstanceGuid))
                         : -1;
                     // Track whether THIS tick wrote a trigger effect for
                     // either source — PadForge cfg OR a dispatcher-injected
@@ -3072,7 +3252,7 @@ namespace PadForge.Common.Input
                             // its speaker-VOLUME half. Automatic preserves the
                             // old behavior byte for byte.
                             bool userPathForced = pathVal > 0;
-                            if (AudioPassthroughService.WantsSpeakerPath(ud.InstanceGuid))
+                            if (PlaysToSpeaker(ud.InstanceGuid))
                             {
                                 int master = SoundMacroService.GetSlotVolume(_padIndex);
                                 byte spkVol = master <= 0
@@ -3086,20 +3266,28 @@ namespace PadForge.Common.Input
                                     fields["audioControlFlags"] = (byte)(3 << 4);
                                 fields["audioControl2"] = (byte)3;
                             }
-                            else if (AudioPassthroughService.PeekSpeakerPathCleared(ud.InstanceGuid))
+                            else
                             {
-                                // Consume the one-shot either way so it cannot
-                                // fire a stale headphone restore later; with a
-                                // forced path there is nothing to restore, the
-                                // firmware already holds the user's choice.
-                                if (!userPathForced)
+                                // Automatic puts the headphone path back once:
+                                // after a speaker sink is torn down (the
+                                // one-shot), when it replaces an explicit path
+                                // that moved the pad off the headphones, or for
+                                // a pad another slot left off them (#546, as a
+                                // DualShock 4's USB route does). The one-shot is
+                                // spent either way, so it cannot fire a stale
+                                // restore later. A forced path needs no restore:
+                                // the firmware holds the user's choice.
+                                bool cleared = AudioPassthroughService.PeekSpeakerPathCleared(ud.InstanceGuid);
+                                if (!userPathForced
+                                    && (cleared || lastPath > (int)AudioOutputPath.StereoHeadset
+                                        || s_routedOffHeadset.ContainsKey(ud.InstanceGuid)))
                                 {
                                     fields["validFlag0"] = (byte)((byte)fields["validFlag0"] | 0x80);
                                     fields["validFlag1"] = (byte)((byte)fields["validFlag1"] | 0x80);
                                     fields["audioControlFlags"] = (byte)0;
                                     fields["audioControl2"] = (byte)0;
                                 }
-                                speakerCleared = ud.InstanceGuid;
+                                if (cleared) speakerCleared = ud.InstanceGuid;
                             }
                         }
 
@@ -3203,6 +3391,9 @@ namespace PadForge.Common.Input
                         // or failed frame leaves it armed for the next tick.
                         if (w.BtBarReleased != Guid.Empty)
                             _btBarReleasePending.TryRemove(w.BtBarReleased, out _);
+                        // Same contract for the route the pad now plays on,
+                        // which ReleaseAudioRoutes reads when PadForge lets go.
+                        NoteDeliveredRoute(w.Device, w.Path, w.Profile, w.Fields);
                         // The audio values are committed once the gate is
                         // released, which takes nothing while held.
                         (delivered ??= new()).Add((w.Device, w.Seq, w.Audio));

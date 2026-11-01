@@ -114,6 +114,10 @@ namespace PadForge.Common.Input
         /// way duaLib sends it at enumeration (duaLib.cpp:211).</summary>
         private const ushort ResetLights            = 0x0800;
         private const ushort EnablePlayerIndicator  = 0x1000;
+        // validFlag1 bit 7 = AllowAudioControl2, "Enable setting
+        // AudioControl2 section" (duaLib dataStructures.h /*1.7*/), the
+        // pre-gain byte PlayStationEffectWriter.ApplyAudioControl2 places.
+        private const ushort EnableAudioControl2    = 0x8000;
 
         // validFlag2 (byte 38) defines only three bits. duaLib
         // dataStructures.h names them at /*38.0*/../*38.2*/ and declares
@@ -732,6 +736,23 @@ namespace PadForge.Common.Input
                 { "lightbar",         new byte[] { ledR, ledG, ledB } },
             };
         }
+
+        /// <summary>A report that changes the audio path alone: the headphone
+        /// path and the pre-gain the dispatcher's speaker-path one-shot
+        /// restores, with every other valid flag clear, the way duaLib's letGo
+        /// sets only the flags it means to change (duaLibUtils.cpp). PadForge
+        /// sends it to a pad it left off the headset when it lets go
+        /// (UserEffectsDispatcher.ReleaseAudioRoutes, #546). Every field the
+        /// dictionary leaves out encodes as zero (HIDMaestro
+        /// VendorBlobCodec.EncodeOutput).</summary>
+        internal static Dictionary<string, object> HeadsetPathFields() => new()
+        {
+            { "btTag",             NextBtSeqTag() },
+            { "validFlag0",        (byte)(EnableAudioControl & 0xFF) },
+            { "validFlag1",        (byte)(EnableAudioControl2 >> 8) },
+            { "audioControlFlags", (byte)0 },
+            { "audioControl2",     (byte)0 },
+        };
 
         // Linear interpolation between two RGB colors. t is clamped
         // 0..1; t=0 returns color A, t=1 returns color B.

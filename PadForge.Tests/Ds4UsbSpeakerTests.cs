@@ -151,8 +151,8 @@ namespace PadForge.Tests
 
         /// <summary>The dispatcher routes a USB pad with audio, never a
         /// Bluetooth one, a first model or a peer, remembers the route only once
-        /// the frame lands, and forgets it when the pad comes back, since
-        /// re-enumeration resets the pad's route.</summary>
+        /// the frame lands, and forgets it when the pad comes back, so the pad
+        /// gets its route again.</summary>
         [Fact]
         public void TheDispatcher_OwnsTheRoute()
         {
@@ -160,8 +160,9 @@ namespace PadForge.Tests
             Assert.Contains("bool ds4Usb = !isDs5 && !isBluetooth\n"
                 + "                        && AudioPassthroughService.Ds4HasAudio((ushort)ud.ProdId, false)\n"
                 + "                        && !RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath);", src);
-            Assert.Contains("? Ds4UsbAudio.RouteToWrite(pathVal,\n"
-                + "                            AudioPassthroughService.WantsSpeakerPath(ud.InstanceGuid), lastUsbRoute)", src);
+            Assert.Contains("int ds4UsbRoute = ds4Usb && !s_audioRoutesReleased\n"
+                + "                        ? Ds4UsbAudio.RouteToWrite(pathVal, PlaysToSpeaker(ud.InstanceGuid), lastUsbRoute,\n"
+                + "                            s_routedOffHeadset.ContainsKey(ud.InstanceGuid))", src);
             Assert.Contains("assertDs4Mic, ds4UsbRoute);", src);
             Assert.Contains("(hpVol, pathVal, ds4MicArmed, ds4UsbRoute)));", src);
             Assert.Contains("_prevDs4UsbRoute.Remove(device);", src);

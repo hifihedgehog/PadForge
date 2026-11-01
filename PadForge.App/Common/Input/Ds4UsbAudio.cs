@@ -76,14 +76,18 @@ namespace PadForge.Common.Input
         /// it stops, as the DualSense's speaker path does, and otherwise
         /// leaves the pad alone. A route goes out only when it differs from
         /// the last one the pad took (<paramref name="lastRoute"/>, -1 for
-        /// none), so a returning pad, whose re-enumeration reset its route,
-        /// gets it again once the dispatcher forgets what it wrote.</summary>
-        public static int RouteToWrite(int resolvedPath, bool padForgePlays, int lastRoute)
+        /// none), so a pad that comes back gets its route again once the
+        /// dispatcher forgets what it wrote. <paramref name="leftOffHeadset"/>
+        /// says PadForge left the pad off the headset from any slot, so a pad
+        /// moved here from a slot that routed it gets the headset back
+        /// too.</summary>
+        public static int RouteToWrite(int resolvedPath, bool padForgePlays, int lastRoute,
+            bool leftOffHeadset = false)
         {
             int route;
             if (resolvedPath > 0) route = RouteFor(resolvedPath);
             else if (padForgePlays) route = RouteSpeaker;
-            else if (lastRoute > RouteStereoHeadset) route = RouteStereoHeadset;
+            else if (lastRoute > RouteStereoHeadset || leftOffHeadset) route = RouteStereoHeadset;
             else return -1;
             return route != lastRoute ? route : -1;
         }

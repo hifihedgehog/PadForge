@@ -1837,6 +1837,9 @@ namespace PadForge.Common.Input
             _ptpReader.Start();
             StartTabletReader();
 
+            // The last stop handed the Sony pads' audio routes back (#546).
+            UserEffectsDispatcher.ResumeAudioRoutes();
+
             // The last stop closed the Bliss-Box runtime (#469).
             BlissBoxRuntime.Open();
 
@@ -1991,6 +1994,11 @@ namespace PadForge.Common.Input
             AwaitPendingLifecycleTasks();
 
             DestroyAllVirtualControllers();
+
+            // Every Sony pad PadForge left off its headset gets the headset
+            // back (#546), with no dispatcher left to write after it and
+            // before the devices close.
+            UserEffectsDispatcher.ReleaseAudioRoutes();
 
             // Reset initializing flags so post-stop reads return false.
             // The UI tick has already been stopped by InputService.Stop
@@ -2418,6 +2426,10 @@ namespace PadForge.Common.Input
             // A Bliss-Box port's stop is its worker's to send (#469), and a
             // dying process may not outlive that, so wait a moment for it.
             try { BlissBoxRuntime.StopMotorsNow(250); } catch { }
+            // A Sony pad PadForge left on its speaker would keep it after
+            // the process dies (#546). The release waits at most 250 ms for
+            // a write in progress.
+            try { UserEffectsDispatcher.ReleaseAudioRoutes(); } catch { }
         }
 
         private void StopAllForceFeedback()

@@ -321,11 +321,12 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public async Task NewSlotInputWaitsUntilItsInventorySendCompletes()
+        public void NewSlotInputWaitsUntilItsInventorySendCompletes()
         {
             using var entered = new ManualResetEventSlim();
             using var release = new ManualResetEventSlim();
             using var inputStarted = new ManualResetEventSlim();
+            using var inputDone = new ManualResetEventSlim();
             var order = new List<LinkMessageType>();
             var lifetime = LinkLifetimeFixtures.Lifetime(new[] { LinkLifetimeFixtures.Info("a") }, (type, _, _, _) =>
             {
@@ -337,20 +338,43 @@ namespace PadForge.Tests
                 order.Add(type);
                 return true;
             });
-            var publish = Task.Run(() => lifetime.PublishLocalInventory(new LinkDeviceInventory(2,
-                new[] { LinkLifetimeFixtures.Info("b") })));
-            Task<bool> input = null;
+            // The send waits 5 s for release. Everything inside that window
+            // runs on threads of its own with plain waits, as in
+            // AuditDelta20260930Tests. A Task.Run and an await there waited
+            // on the thread pool, which the full suite keeps backed up for
+            // seconds at a time.
+            var published = LinkConnectionLifetime.InventoryResult.Unavailable;
+            bool sent = false;
+            Exception publishError = null, inputError = null;
+            var publish = new Thread(() =>
+            {
+                try { published = lifetime.PublishLocalInventory(new LinkDeviceInventory(2, new[] { LinkLifetimeFixtures.Info("b") })); }
+                catch (Exception e) { publishError = e; }
+            }) { IsBackground = true };
+            Thread input = null;
             try
             {
+                publish.Start();
                 Assert.True(entered.Wait(TimeSpan.FromSeconds(5)));
                 var captured = lifetime.CaptureInputBindings();
-                input = Task.Run(() => { inputStarted.Set(); return lifetime.SendInput(captured, "b", new byte[1], 2); });
+                input = new Thread(() =>
+                {
+                    inputStarted.Set();
+                    try { sent = lifetime.SendInput(captured, "b", new byte[1], 2); }
+                    catch (Exception e) { inputError = e; }
+                    finally { inputDone.Set(); }
+                }) { IsBackground = true };
+                input.Start();
                 Assert.True(inputStarted.Wait(TimeSpan.FromSeconds(5)));
-                Assert.NotSame(input, await Task.WhenAny(input, Task.Delay(100)));
+                Assert.False(inputDone.Wait(100));
             }
             finally { release.Set(); }
-            Assert.Equal(LinkConnectionLifetime.InventoryResult.Sent, await publish.WaitAsync(TimeSpan.FromSeconds(5)));
-            Assert.True(await input.WaitAsync(TimeSpan.FromSeconds(5)));
+            Assert.True(publish.Join(TimeSpan.FromSeconds(5)));
+            Assert.True(input.Join(TimeSpan.FromSeconds(5)));
+            Assert.Null(publishError);
+            Assert.Null(inputError);
+            Assert.Equal(LinkConnectionLifetime.InventoryResult.Sent, published);
+            Assert.True(sent);
             Assert.Equal(new[] { LinkMessageType.DeviceList, LinkMessageType.Input }, order);
         }
 

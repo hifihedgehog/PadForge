@@ -825,16 +825,13 @@ namespace PadForge.Common
             }
         }
 
-        /// <summary>
-        /// Finds all present HID device instance IDs matching the given VID/PID.
-        /// Used as a fallback when a device has a synthetic path (e.g., XInput#0)
-        /// that can't be converted to a valid instance ID. HIDMaestro's nodes
-        /// and nodes PadForge reads nothing from are left out
-        /// (<see cref="IsOutsideVidPidLookup"/>).
-        /// </summary>
-        public static List<string> FindInstanceIdsByVidPid(ushort vendorId, ushort productId)
+        /// <summary>True when a device instance id or interface path names
+        /// this vendor and product id in one of the forms Windows writes. The
+        /// lookup below and BluetoothFirmwareService's check of an XInput
+        /// slot's interface both match through it.</summary>
+        internal static bool NamesVidPid(string id, ushort vendorId, ushort productId)
         {
-            var result = new List<string>();
+            if (string.IsNullOrEmpty(id)) return false;
 
             // USB HID format: VID_045E&PID_0B13
             string vidPidUsb = $"VID_{vendorId:X4}&PID_{productId:X4}";
@@ -850,20 +847,32 @@ namespace PadForge.Common
             string vidBrEdr02 = $"VID&0002{vendorId:X4}";
             string vidBrEdr01 = $"VID&0001{vendorId:X4}";
 
+            // Match standard USB format, BLE GATT format, or BT Classic BR/EDR format.
+            return id.Contains(vidPidUsb, StringComparison.OrdinalIgnoreCase)
+                || (id.Contains(pidBle, StringComparison.OrdinalIgnoreCase)
+                    && (id.Contains(vidBle02, StringComparison.OrdinalIgnoreCase)
+                        || id.Contains(vidBle01, StringComparison.OrdinalIgnoreCase)
+                        || id.Contains(vidBrEdr02, StringComparison.OrdinalIgnoreCase)
+                        || id.Contains(vidBrEdr01, StringComparison.OrdinalIgnoreCase)));
+        }
+
+        /// <summary>
+        /// Finds all present HID device instance IDs matching the given VID/PID.
+        /// Used as a fallback when a device has a synthetic path (e.g., XInput#0)
+        /// that can't be converted to a valid instance ID. HIDMaestro's nodes
+        /// and nodes PadForge reads nothing from are left out
+        /// (<see cref="IsOutsideVidPidLookup"/>).
+        /// </summary>
+        public static List<string> FindInstanceIdsByVidPid(ushort vendorId, ushort productId)
+        {
+            var result = new List<string>();
+
             // Takes a node of this vendor and product id unless the lookup
             // leaves it out: HIDMaestro's own, or one PadForge reads nothing
             // from (IsOutsideVidPidLookup).
             void Offer(string instanceId)
             {
-                // Match standard USB format, BLE GATT format, or BT Classic BR/EDR format.
-                bool match = instanceId.Contains(vidPidUsb, StringComparison.OrdinalIgnoreCase)
-                    || (instanceId.Contains(pidBle, StringComparison.OrdinalIgnoreCase)
-                        && (instanceId.Contains(vidBle02, StringComparison.OrdinalIgnoreCase)
-                            || instanceId.Contains(vidBle01, StringComparison.OrdinalIgnoreCase)
-                            || instanceId.Contains(vidBrEdr02, StringComparison.OrdinalIgnoreCase)
-                            || instanceId.Contains(vidBrEdr01, StringComparison.OrdinalIgnoreCase)));
-
-                if (match && !IsOutsideVidPidLookup(instanceId))
+                if (NamesVidPid(instanceId, vendorId, productId) && !IsOutsideVidPidLookup(instanceId))
                     result.Add(instanceId);
             }
 

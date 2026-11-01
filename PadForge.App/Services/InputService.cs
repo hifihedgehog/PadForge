@@ -15855,12 +15855,17 @@ namespace PadForge.Services
 
         /// <summary>The dossier FIRMWARE text for a device: the value its
         /// open SDL device holds now, empty for a device SDL does not open.
-        /// The row fill and the 5 s battery tick both write it, so a version
-        /// SDL learns after open reaches the dossier.</summary>
+        /// When SDL holds none, an online Bluetooth LE device shows the
+        /// revision its Device Information service reports
+        /// (BluetoothFirmwareService), which is how an Xbox pad SDL reads
+        /// through XInput gets one. The row fill and the 5 s battery tick both
+        /// write it, so a version learned after open reaches the dossier.</summary>
         internal static string DossierFirmware(UserDevice ud)
         {
             var sdl = ud?.Device as PadForge.Engine.SdlDeviceWrapper;
-            return DeviceRowViewModel.FormatFirmwareVersion(sdl?.FirmwareVersion ?? 0, sdl?.VendorId ?? 0);
+            string text = DeviceRowViewModel.FormatFirmwareVersion(sdl?.FirmwareVersion ?? 0, sdl?.VendorId ?? 0);
+            if (text.Length > 0 || sdl == null || !ud.IsOnline) return text;
+            return PadForge.Common.Input.BluetoothFirmwareService.TryGet(sdl) ?? string.Empty;
         }
 
         /// <summary>

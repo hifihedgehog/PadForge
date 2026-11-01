@@ -347,6 +347,7 @@ namespace PadForge.Tests
             new object[] { Bluetooth, "private static async System.Threading.Tasks.Task<bool> TrySwitch2PowerOffAsync(string serial)", "if (OffLimitsForTest) return false;" },
             new object[] { Bluetooth, "private static bool TrySteamPowerOff(string devicePath)", "if (OffLimitsForTest) return false;" },
             new object[] { Bluetooth, "private static bool TryXInputPowerOff(ushort vendorId, ushort productId)", "if (OffLimitsForTest) return false;" },
+            new object[] { Input + "BluetoothFirmwareService.cs", "private static async Task<(string Text, bool Final)> ReadRevisionAsync(ulong address)", "if (BluetoothLinkHelper.OffLimitsForTest) return (null, true);" },
             new object[] { Services + "HeadsetTrackerRepair.cs", "internal static Outcome RequestHidServiceByAddress(ulong address, Action<string> log)", "if (PadForge.Common.Input.BluetoothLinkHelper.OffLimitsForTest) return Outcome.Failed;" },
             new object[] { Services + "HeadsetTrackerRepair.cs", "internal static bool RebindNode(string hardwareId, Action<string> log)", "if (PadForge.Common.Input.BluetoothLinkHelper.OffLimitsForTest) return false;" },
 

@@ -94,6 +94,7 @@ CMTelemetry
 Codemasters
 COM
 ComeUntoChrist.org
+ComfyJS
 CommunityToolkit.Mvvm
 ConToJREts
 CRC
@@ -115,6 +116,7 @@ DJI-RC-Emulator
 DjiMini2RCasJoystick
 DK1
 Dolphin
+DougDoug
 DPI
 DrunkDeer
 DS4
@@ -155,6 +157,7 @@ FFmpeg
 fh6-tel
 FlexInput
 FLY
+ForgePlay
 fortius_1942
 FortiusANT
 Forza
@@ -256,6 +259,7 @@ KettlerBLE
 kettlerUSB2BLE
 KeyAxis
 kHz
+KLAVIATURKIN
 L1
 L2
 L3
@@ -320,6 +324,7 @@ NintendoExtensionCtrl
 NuGet
 NuPhy
 NuPhyIO
+OBS
 OculusGo-Air-Mouse-4-macOS
 OCZ
 OEM
@@ -459,11 +464,15 @@ TaikoZucchini
 TechAntohere
 TinyUSB
 tm-bt-led
+tmi.js
 TrackIR
 TransposonY
 TriggerEffectGenerator
 TritonLib
 ttyT1941
+Twitch
+twitch.tv
+TwitchPlays
 UDP
 uDraw
 uDrawTablet
@@ -497,6 +506,7 @@ WiitarThing
 WinMM
 WinSCard
 WinUSB
+WLG
 WMI
 WPF
 Wpf.Ui.dll
@@ -521,6 +531,7 @@ XInput
 XOR-MAPPED-ADDRESS
 XPComboTest
 Y
+Yuriy
 yyyy-MM-dd
 Z
 ZeeClient

@@ -3806,6 +3806,8 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>2D schémata ovladačů (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), autor AL2009man. MIT.</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Gramatika příkazů a pravidla střídání na řádku Twitch Chat, portované do C#, a povrchová úprava WLG webového ovladače, autor Yuriy (KLAVIATURKIN). ISC.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>Dokumentace zvukového protokolu DualShock 4: parametry SBC a rozložení paketů, autor khallmark. GPL-2.0, jen dokumentace.</value>
   </data>
@@ -4353,6 +4355,8 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>Instrukce UDP, odpovědi, soubory portů a bajty efektů spouští, které stojí za Herními mody, čtené z oficiálních příkladů modů od Paliverse pro DSX v3.1 a DualSenseX v2, z obou verzí DualSenseY a DualSense4Rockstar (licence nezveřejněna), z DSZ a pydualsense (MIT) a z Wujek Dualsense API a serveru DSX ve forku DS4Windows od hbashton (GPL-3.0). Jen dokumentace, žádný kód se nedodává.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>Reference ke sluchátkům a mikrofonu DualShock 4</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>Směrování sluchátek a reproduktoru, stropy hlasitosti, rámování mikrofonu a režim reportů, které stojí za zvukem DualShock 4 přes Bluetooth, čtené z DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) a z forku DS4Windows od hbashton (GPL-3.0), se syntézními okny dekodéru SBC ověřenými podle libsbc od Google (Apache-2.0) a s USB sluchátky druhého modelu a adaptéru Sony čtenými z výpisů deskriptorů ControllersInfo od DJm00n (licence nezveřejněna) a ze sond LsUSB z linux-hardware.org (CC BY 4.0). Jen dokumentace, žádný kód se nedodává.</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Reference k chatu Twitch</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Čtení chatu bez přihlášení a pravidlo příkazů s !, čtené z tmi.js (MIT) a ComfyJS (MIT), a ponechání jen 20 nejnovějších příkazů, ze šablony TwitchPlays (MIT) od DougDoug. Jen dokumentace, žádný kód se nedodává.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Reference k displejům klávesnic</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Knihovny, snímky a klávesy, které stojí za displeji klávesnic, čtené z SDK Logitech LCD a Arx Control a z SDK S.T.R.I.K.E. 7 od Mad Catz, křížově ověřené podle logitech-lcd (MIT nebo Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff a ArxWidgetManager (licence nezveřejněna), systémového ovladače hid-lg-g15 pro Linux (GPL-2.0-or-later), libg15, G15Interface a lcdproc (GPL-2.0), gnome15 (GPL-3.0) a G19USB (Apache-2.0). PadForge načítá knihovny Logitech Gaming Software a soubor Strike7API.dll, který stáhnete nebo vyberete, a žádný kód z nich nedodává.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Reference k Novint Falcon</value></data>
@@ -4539,6 +4543,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Falcon_Calibrate" xml:space="preserve"><value>Kalibrovat dosah</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Změří, jak daleko se rukojeť pohybuje. Po čtyři sekundy měření ji přesuňte ke všem okrajům dosahu. Síly se mezitím vypnou.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Herní telemetrie</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch Chat</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Herní telemetrie</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Zpřístupní telemetrii, kterou posílají závodní hry, i sdílenou paměť hry Assetto Corsa na řádku Herní telemetrie na stránce Zařízení. Mapujte její rychlost, pedály a převodové stupně jako libovolný vstup, spouštějte s nimi makra nebo je testujte ve Vlastním výrazu. Dokud naslouchá, čtou z ní hru i kontrolky řazení podle otáček na volantu.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Naslouchat herní telemetrii</value></data>
@@ -4552,6 +4557,44 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>Vlastní formáty…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>Popíše pakety hry, kterou PadForge nezná, pole po poli.</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>V každé hře zapněte výstup telemetrie a nasměrujte ho na tento počítač a port. F1, hry od Codemasters a EA SPORTS WRC používají 20777, pokud se nezmění, Project CARS 2 a Automobilista 2 vždy používají 5606 a plugin od MrHokss pro simulátory kamionů používá 49001. Assetto Corsa a ACC port nepotřebují.</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>Libovolný příkaz</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Twitch Chat</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>Umožní divákům vašeho streamu hrát psaním do jeho chatu. Divák napíše příkaz, například !a, a PadForge stiskne to, na co je !a namapováno na řádku Twitch Chat na stránce Zařízení. Přiřaďte tento řádek slotu jako kterýkoli ovladač. PadForge čte chat bez přihlášení a nikdy do něj nepíše.</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Číst Twitch Chat</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Kanál</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Název vašeho kanálu nebo jeho adresa twitch.tv.</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>Pozastavit</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>Pokračovat</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Zastaví hrající příkaz, vyprázdní frontu a ignoruje příkazy z chatu, dokud nepokračujete.</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>Přeskočit</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>Zastaví hrající příkaz. Začne další příkaz ve frontě.</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>Vyprázdnit frontu</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>Zahodí příkazy čekající ve frontě. Ten, který se hraje, doběhne.</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>Ukončit převzetí</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>Ukončí výhradní ovládání, které si divák převzal příkazem !claim.</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>Zadejte název svého kanálu.</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Připojování k chatu kanálu {0}…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Čtení chatu kanálu {0}.</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Chat kanálu {0} se nepodařilo spojit. Zkouší se znovu.</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Pozastaveno.</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Obraz ovladače pro vaše vysílání. Přidejte tuto adresu do OBS jako zdroj prohlížeče:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Obraz ovladače pro vaše vysílání potřebuje Webový ovladač a jeho adresu nešifrovaného HTTP. Zapněte Nabízet i nešifrované HTTP na kartě Webový ovladač. Pro OBS na tomto počítači stačí Jen tento počítač.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Diváci se střídají pomocí !claim, které schvalují dva další diváci, a příkaz přeskakují pomocí !skip. Moderátoři jednají okamžitě. Ve frontě čeká jen 20 nejnovějších příkazů a příkaz se hraje nejvýše 10 sekund.</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Spravovat příkazy chatu</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Příkazy chatu</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Diváci píšou do chatu vašeho streamu ! a slovo, třeba !jump. Každé slovo je tlačítko na řádku Twitch Chat, mapované jako jakýkoli vstup. !a500ms drží A po dobu 500 ms, !a+b stiskne obě tlačítka najednou a !a b je stiskne jedno po druhém.</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>Slovo</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>Přidat</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>Slova</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>Obnovit obvyklá slova</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>Vrátí všechna přednastavená slova, která jste odebrali: a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left a right.</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>Slovo má nejvýše {0} písmen a číslic.</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>Slovo začíná písmenem a obsahuje jen písmena a číslice.</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>Slovo nesmí končit časem, například 2s nebo 500ms, který chat chápe jako dobu podržení.</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>Střídání využívá slova claim, accept, release, skip a skipall, takže žádné slovo nemůže být jedním z nich.</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>Seznam pojme nejvýše {0} slov.</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>Přidáno: {0}.</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} už v seznamu je.</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>Automatická detekce</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport a Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 až F1 25</value></data>

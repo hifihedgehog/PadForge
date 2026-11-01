@@ -28,6 +28,30 @@ namespace PadForge.Services
     {
         private const int MaxClients = 16;
         private const int DefaultPort = 8080;
+
+        /// <summary>How many controller picture pages (issue #555) may watch
+        /// at once. They take no client slot.</summary>
+        internal const int MaxDisplays = 4;
+        private int _displays;
+
+        /// <summary>The longest name a viewer's phone controller carries
+        /// (issue #555).</summary>
+        internal const int MaxViewerNameLength = 24;
+
+        /// <summary>One slot as the controller picture page draws it: what
+        /// is lit and where the sticks and triggers sit, the drawing its
+        /// virtual controller wears (a layout key) and the finish the pad
+        /// page shows.</summary>
+        internal readonly record struct DisplayFrame(DisplayPose Pose, string Layout, string Finish);
+
+        /// <summary>The picture page's view of a slot (0-based), or null for
+        /// a slot that is off. Set by InputService and called on the page's
+        /// socket task.</summary>
+        internal Func<int, DisplayFrame?> DisplaySlot { get; set; }
+
+        /// <summary>The first slot (0-based) the Twitch Chat row is assigned
+        /// to, or -1. Set by InputService.</summary>
+        internal Func<int> DisplayChatSlot { get; set; }
         private const string WebAssetPrefix = "PadForge.WebAssets.";
 
         private IWebControllerListener _listener;
@@ -210,6 +234,24 @@ namespace PadForge.Services
 
         /// <summary>True while the plain address is served.</summary>
         public bool IsPlainServing => _running && _plain != null;
+
+        /// <summary>The controller picture page (issue #555) on the plain
+        /// address, code included, for an OBS browser source, or null when
+        /// the plain address is not served. The main address will not do:
+        /// its certificate is self-signed, and OBS's browser engine cancels
+        /// a page it does not trust (obs-browser passes no
+        /// ignore-certificate-errors switch and leaves CEF's
+        /// OnCertificateError at its default, which cancels).</summary>
+        public string DisplayUrl
+        {
+            get
+            {
+                string baseUrl = PlainBaseUrl;
+                string code = _accessCode;
+                return baseUrl != null && code != null
+                    ? $"{baseUrl}/display.html?{WebControllerAccess.QueryName}={code}" : null;
+            }
+        }
 
         /// <summary>True after a start whose main address was refused because
         /// another program holds the port, until the next start.</summary>
@@ -1010,6 +1052,14 @@ namespace PadForge.Services
         private async Task HandleWebSocketAsync(HttpListenerContext ctx, CancellationToken lifetime, long generation,
             bool viaPlain = false, string admittedCode = null)
         {
+            // The controller picture page (#555) watches a slot. It makes no
+            // device and takes no client slot.
+            string view = ctx.Request.QueryString["view"];
+            if (view != null)
+            {
+                await HandleDisplayAsync(ctx, view, lifetime, generation, viaPlain, admittedCode).ConfigureAwait(false);
+                return;
+            }
             WebSocket ws = null;
             try
             {
@@ -1066,6 +1116,10 @@ namespace PadForge.Services
                     return;
                 }
                 int padId = allocated.Value;
+                // The viewer's name from the home page (#555), so the
+                // streamer can tell phone controllers apart. The identity
+                // stays the client id, so mappings survive a new name.
+                string viewer = CleanViewerName(ctx.Request.QueryString["name"]);
                 string name;
                 string customLayoutJson = null;
                 if (isTouchpadClient)
@@ -1077,7 +1131,7 @@ namespace PadForge.Services
                     // handheld, forwarded through the browser's Gamepad API
                     // (#402). Its own type key, so its ProductGuid is distinct
                     // from every drawn layout.
-                    name = $"Browser Gamepad {padId}";
+                    name = viewer != null ? $"Browser Gamepad: {viewer}" : $"Browser Gamepad {padId}";
                 else if (typeKey.StartsWith("custom:", StringComparison.Ordinal))
                 {
                     // A builder pad (#296 phase 4): its own typeKey per layout
@@ -1095,10 +1149,12 @@ namespace PadForge.Services
                         }
                         catch { }
                     }
-                    name = $"{customName} {padId}";
+                    name = viewer != null ? $"{customName}: {viewer}" : $"{customName} {padId}";
                 }
                 else
-                    name = $"{ResolveLayout(typeKey).NameStem} Web Controller {padId}";
+                    name = viewer != null
+                        ? $"{ResolveLayout(typeKey).NameStem} Web Controller: {viewer}"
+                        : $"{ResolveLayout(typeKey).NameStem} Web Controller {padId}";
                 // Pass typeKey explicitly so each layout (xbox360 / ds4 /
                 // touchpad) carries a distinct ProductGuid. Without this,
                 // FindOrCreateUserDevice's BT-reconnect fallback would
@@ -1622,6 +1678,188 @@ namespace PadForge.Services
         private static Task SendJsonAsync(WebSocket ws, object obj, CancellationToken ct, SemaphoreSlim gate = null)
             => SendTextAsync(ws, JsonSerializer.Serialize(obj), ct, gate);
 
+        /// <summary>A viewer's name as a device row shows it, or null for
+        /// none: control and format characters out (a right-to-left override
+        /// could make one name pose as another), trimmed, at most
+        /// <see cref="MaxViewerNameLength"/> characters.</summary>
+        internal static string CleanViewerName(string raw)
+        {
+            if (string.IsNullOrWhiteSpace(raw)) return null;
+            var sb = new StringBuilder(MaxViewerNameLength);
+            foreach (char c in raw.Trim())
+            {
+                var category = char.GetUnicodeCategory(c);
+                if (category is System.Globalization.UnicodeCategory.Control
+                    or System.Globalization.UnicodeCategory.Format
+                    or System.Globalization.UnicodeCategory.LineSeparator
+                    or System.Globalization.UnicodeCategory.ParagraphSeparator
+                    or System.Globalization.UnicodeCategory.Surrogate)
+                    continue;
+                sb.Append(c);
+                if (sb.Length >= MaxViewerNameLength) break;
+            }
+            string name = sb.ToString().Trim();
+            return name.Length == 0 ? null : name;
+        }
+
+        /// <summary>The slot (0-based) a picture page watches: the number it
+        /// names (1-based, as PadForge shows slots), else the first slot the
+        /// Twitch Chat row is assigned to, else the first slot.</summary>
+        internal int DisplaySlotFor(string view)
+        {
+            if (int.TryParse(view, System.Globalization.NumberStyles.None,
+                    System.Globalization.CultureInfo.InvariantCulture, out int n) && n >= 1 && n <= PadForge.Common.Input.InputManager.MaxPads)
+                return n - 1;
+            int chat = -1;
+            try { chat = DisplayChatSlot?.Invoke() ?? -1; } catch { }
+            return chat >= 0 && chat < PadForge.Common.Input.InputManager.MaxPads ? chat : 0;
+        }
+
+        /// <summary>
+        /// The controller picture page's socket (issue #555), read only. It
+        /// makes no device and takes no client slot. About 30 times a second
+        /// it sends the watched slot's output when it changed, the drawing
+        /// when the slot or its controller changed, and the chat when it
+        /// changed or a second has passed, so the claim's clock counts down.
+        /// </summary>
+        private async Task HandleDisplayAsync(HttpListenerContext ctx, string view, CancellationToken lifetime, long generation,
+            bool viaPlain, string admittedCode)
+        {
+            if (Interlocked.Increment(ref _displays) > MaxDisplays)
+            {
+                Interlocked.Decrement(ref _displays);
+                try { ctx.Response.StatusCode = 503; ctx.Response.Close(); } catch { }
+                return;
+            }
+            WebSocket ws = null;
+            CancellationTokenSource stop = null;
+            try
+            {
+                var wsCtx = await ctx.AcceptWebSocketAsync(null, TimeSpan.FromSeconds(30)).ConfigureAwait(false);
+                ws = wsCtx.WebSocket;
+                stop = CancellationTokenSource.CreateLinkedTokenSource(lifetime);
+                var token = stop.Token;
+                var socket = ws;
+                var ended = stop;
+                // The page sends nothing. This receive notices the close.
+                _ = Task.Run(async () =>
+                {
+                    var buffer = new byte[256];
+                    try
+                    {
+                        while (socket.State == WebSocketState.Open)
+                        {
+                            var r = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), token).ConfigureAwait(false);
+                            if (r.MessageType == WebSocketMessageType.Close) break;
+                        }
+                    }
+                    catch { }
+                    try { ended.Cancel(); } catch { }
+                });
+
+                // Which slot to watch is asked once a second: the chat row's
+                // slot takes the settings lock.
+                int slot = int.MinValue, want = DisplaySlotFor(view);
+                long slotCheckedAt = Environment.TickCount64;
+                string layout = null, finish = null;
+                string lastState = null;
+                PadForge.Common.Input.Twitch.TwitchChatDevice chatRow = null;
+                int chatVersion = int.MinValue;
+                long chatSentAt = 0;
+                while (!token.IsCancellationRequested && ws.State == WebSocketState.Open && IsServing(generation))
+                {
+                    // A page that joined through the plain address with a
+                    // code the streamer has since replaced is closed, as
+                    // SetPlainAccessCode closes the plain controllers.
+                    if (viaPlain && !string.Equals(_accessCode, admittedCode, StringComparison.Ordinal))
+                        break;
+                    long tick = Environment.TickCount64;
+                    if (tick - slotCheckedAt >= 1000)
+                    {
+                        want = DisplaySlotFor(view);
+                        slotCheckedAt = tick;
+                    }
+                    DisplayFrame? frame = null;
+                    try { frame = DisplaySlot?.Invoke(want); } catch { }
+                    string wantLayout = frame?.Layout ?? "xbox360";
+                    string wantFinish = frame?.Finish ?? string.Empty;
+                    if (want != slot || wantLayout != layout || wantFinish != finish)
+                    {
+                        slot = want;
+                        layout = wantLayout;
+                        finish = wantFinish;
+                        lastState = null;
+                        await SendJsonAsync(ws, new { type = "slot", slot = slot + 1, layout, finish }, token).ConfigureAwait(false);
+                    }
+                    // Sent only when it moved: a still pad costs nothing.
+                    string state = JsonSerializer.Serialize((frame?.Pose ?? RestPose).ToMessage());
+                    if (state != lastState)
+                    {
+                        lastState = state;
+                        await SendTextAsync(ws, state, token).ConfigureAwait(false);
+                    }
+                    var row = PadForge.Common.Input.Twitch.TwitchChatRuntime.Live;
+                    long now = Environment.TickCount64;
+                    int version = row?.ShowVersion ?? int.MinValue + 1;
+                    if (!ReferenceEquals(row, chatRow) || version != chatVersion || now - chatSentAt >= 1000)
+                    {
+                        chatRow = row;
+                        chatVersion = version;
+                        chatSentAt = now;
+                        await SendJsonAsync(ws, ChatMessage(row?.Snapshot()), token).ConfigureAwait(false);
+                    }
+                    await Task.Delay(33, token).ConfigureAwait(false);
+                }
+                if (ws.State == WebSocketState.Open)
+                {
+                    using var close = new CancellationTokenSource(1000);
+                    try { await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, null, close.Token).ConfigureAwait(false); } catch { }
+                }
+            }
+            catch { }
+            finally
+            {
+                Interlocked.Decrement(ref _displays);
+                try { stop?.Cancel(); } catch { }
+                try { ws?.Dispose(); } catch { }
+                try { stop?.Dispose(); } catch { }
+            }
+        }
+
+        /// <summary>A slot that is off: nothing lit, everything at
+        /// rest.</summary>
+        private static readonly DisplayPose RestPose = new();
+
+        /// <summary>The chat as the picture page shows it, or "on: false"
+        /// while chat control is off.</summary>
+        internal static object ChatMessage(PadForge.Common.Input.Twitch.TwitchChatSnapshot s)
+        {
+            if (s == null) return new { type = "chat", on = false };
+            return new
+            {
+                type = "chat",
+                on = true,
+                channel = s.Channel,
+                state = s.State switch
+                {
+                    null => "nochannel",
+                    PadForge.Common.Input.Twitch.TwitchChatState.Reading => "reading",
+                    PadForge.Common.Input.Twitch.TwitchChatState.Retrying => "retrying",
+                    _ => "connecting",
+                },
+                paused = s.Paused,
+                user = s.PlayingUser,
+                text = s.PlayingText,
+                next = s.Next.Select(n => new { user = n.User, text = n.Text }).ToArray(),
+                waiting = s.Waiting,
+                owner = s.Owner,
+                ownerSeconds = (s.OwnerRemainingMs + 999) / 1000,
+                requests = s.Requests.Select(r => new { user = r.User, votes = r.Votes, seconds = (r.RemainingMs + 999) / 1000 }).ToArray(),
+                votesNeeded = PadForge.Common.Input.Twitch.ChatTurns.RequiredVotes,
+                notice = s.Notice,
+            };
+        }
+
         /// <summary>Sends one text message, already JSON. Web Menus snapshots
         /// (#471) arrive built.</summary>
         private static async Task SendTextAsync(WebSocket ws, string json, CancellationToken ct, SemaphoreSlim gate = null)
@@ -1778,10 +2016,12 @@ namespace PadForge.Services
 
         private static readonly LayoutDef[] LayoutDefs =
         {
+            // WLG is Yuriy's (KLAVIATURKIN) finish from ForgePlay (#555),
+            // drawn from the same asset pack at the same sizes.
             new() { TypeKey = "xbox360", Folder = "XBOX360", NameStem = "Xbox 360",
                     BaseWidth = Xbox360Layout.BaseWidth, BaseHeight = Xbox360Layout.BaseHeight,
                     BasePath = Xbox360Layout.BasePath, StickMaxTravel = Xbox360Layout.StickMaxTravel,
-                    Overlays = Xbox360Layout.Overlays, Finishes = Array.Empty<string>() },
+                    Overlays = Xbox360Layout.Overlays, Finishes = new[] { "WLG" } },
             new() { TypeKey = "ds4", Folder = "DS4", NameStem = "DualShock 4",
                     BaseWidth = DS4Layout.BaseWidth, BaseHeight = DS4Layout.BaseHeight,
                     BasePath = DS4Layout.BasePath, StickMaxTravel = DS4Layout.StickMaxTravel,
@@ -1791,7 +2031,7 @@ namespace PadForge.Services
                     BaseWidth = DualSenseLayout.BaseWidth, BaseHeight = DualSenseLayout.BaseHeight,
                     BasePath = DualSenseLayout.BasePath, StickMaxTravel = DualSenseLayout.StickMaxTravel,
                     Overlays = DualSenseLayout.Overlays,
-                    Finishes = new[] { "CosmicRed", "GalacticPurple", "Midnight", "NovaPink", "StarlightBlue" } },
+                    Finishes = new[] { "CosmicRed", "GalacticPurple", "Midnight", "NovaPink", "StarlightBlue", "WLG" } },
             new() { TypeKey = "xboxone", Folder = "XBOXONE", NameStem = "Xbox One",
                     BaseWidth = XboxOneSLayout.BaseWidth, BaseHeight = XboxOneSLayout.BaseHeight,
                     BasePath = XboxOneSLayout.BasePath, StickMaxTravel = XboxOneSLayout.StickMaxTravel,
@@ -1800,7 +2040,7 @@ namespace PadForge.Services
                     BaseWidth = XboxSeriesXLayout.BaseWidth, BaseHeight = XboxSeriesXLayout.BaseHeight,
                     BasePath = XboxSeriesXLayout.BasePath, StickMaxTravel = XboxSeriesXLayout.StickMaxTravel,
                     Overlays = XboxSeriesXLayout.Overlays,
-                    Finishes = new[] { "Carbon", "DeepPink", "ElectricVolt", "PulseRed", "ShockBlue" } },
+                    Finishes = new[] { "Carbon", "DeepPink", "ElectricVolt", "PulseRed", "ShockBlue", "WLG" } },
             new() { TypeKey = "switchpro", Folder = "SWITCHPRO", NameStem = "Switch Pro",
                     BaseWidth = SwitchProLayout.BaseWidth, BaseHeight = SwitchProLayout.BaseHeight,
                     BasePath = SwitchProLayout.BasePath, StickMaxTravel = SwitchProLayout.StickMaxTravel,

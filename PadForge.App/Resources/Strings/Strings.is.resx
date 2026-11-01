@@ -3806,6 +3806,8 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>2D-skýringarmyndir af leikjastýringum (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), eftir AL2009man. MIT.</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Skipanamálfræði og reglur um skiptingu á hlutverkum línunnar Twitch-spjall, flutt yfir í C#, og WLG-áferð vefstýringarinnar, eftir Yuriy (KLAVIATURKIN). ISC.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>Skjölun á hljóðsamskiptareglum DualShock 4: SBC-færibreytur og uppsetning pakka, eftir khallmark. GPL-2.0, aðeins skjölun.</value>
   </data>
@@ -4353,6 +4355,8 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>UDP-skipanir, svör, gáttarskrár og bæti gikkáhrifa á bak við Leikjabreytingar, lesin úr opinberum DSX v3.1 og DualSenseX v2 mod-dæmum frá Paliverse, báðum útgáfum DualSenseY og DualSense4Rockstar (ekkert leyfi birt), DSZ og pydualsense (MIT), og Wujek Dualsense API og DSX-þjóninum í kvísl hbashton af DS4Windows (GPL-3.0). Aðeins skjölun, enginn kóði fylgir.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>Viðmiðanir fyrir heyrnartól DualShock 4</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>Beining hljóðs í heyrnartól og hátalara, hámark hljóðstyrks, rammasetning hljóðnema og skýrsluhamur á bak við Bluetooth-hljóð DualShock 4, lesin úr DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) og kvísl hbashton af DS4Windows (GPL-3.0), þar sem samsetningargluggar SBC-afkóðarans voru bornir saman við libsbc frá Google (Apache-2.0), og USB-heyrnartól annarrar gerðar og millistykkis Sony lesin úr ControllersInfo frá DJm00n, afritum af USB-lýsingum tækisins (ekkert leyfi birt), og LsUSB-skýrslum frá linux-hardware.org (CC BY 4.0). Aðeins skjölun, enginn kóði fylgir.</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Viðmiðanir fyrir Twitch-spjall</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Lestur spjalls án innskráningar og reglan um skipanir með !, lesin úr tmi.js (MIT) og ComfyJS (MIT), og að geyma aðeins 20 nýjustu skipanirnar, úr sniðmátinu TwitchPlays (MIT) frá DougDoug. Aðeins skjölun, enginn kóði fylgir.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Viðmiðanir fyrir lyklaborðsskjái</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Söfnin, rammarnir og lyklarnir á bak við lyklaborðsskjái, lesin úr SDK frá Logitech fyrir LCD og Arx Control og SDK frá Mad Catz fyrir S.T.R.I.K.E. 7, borin saman við logitech-lcd (MIT eða Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff og ArxWidgetManager (ekkert leyfi birt), hid-lg-g15-rekil Linux (GPL-2.0-or-later), libg15, G15Interface og lcdproc (GPL-2.0), gnome15 (GPL-3.0) og G19USB (Apache-2.0). PadForge hleður söfnum Logitech Gaming Software og Strike7API.dll sem þú sækir eða velur, og enginn kóði frá neinu þeirra fylgir með.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Viðmiðanir fyrir Novint Falcon</value></data>
@@ -4539,6 +4543,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Falcon_Calibrate" xml:space="preserve"><value>Kvarða seilingu</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Mælir hve langt handfangið færist. Færðu það að hverri brún seilingarinnar þær fjórar sekúndur sem yfirferðin stendur. Kraftarnir hvíla á meðan.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Leikjafjarmælingar</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch-spjall</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Leikjafjarmælingar</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Setur fjarmælingar sem kappakstursleikir senda, og sameiginlegt minni Assetto Corsa, á línuna Leikjafjarmælingar á tækjasíðunni. Varpaðu hraða, pedölum og gírum eins og hverju öðru inntaki, ræstu fjölvi með þeim eða prófaðu þau í sérsniðinni segð. Meðan hlustað er les LED-skiptiljós (RPM) stýris leikinn líka héðan.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Hlusta eftir leikjafjarmælingum</value></data>
@@ -4552,6 +4557,44 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>Sérsniðin snið…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>Lýsir pökkum leiks sem PadForge þekkir ekki, reit fyrir reit.</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>Kveiktu á fjarmælingaútgangi í hverjum leik og beindu honum á þessa tölvu og gátt. F1, Codemasters-leikir og EA SPORTS WRC nota 20777 nema því sé breytt, Project CARS 2 og Automobilista 2 nota alltaf 5606 og viðbót MrHokss fyrir vörubílahermana notar 49001. Assetto Corsa og ACC þurfa enga gátt.</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>Hvaða skipun sem er</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Twitch-spjall</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>Leyfir áhorfendum straumsins þíns að spila með því að skrifa í spjallið hans. Áhorfandi skrifar skipun eins og !a og PadForge ýtir á það sem !a er varpað á línuna Twitch-spjall á tækjasíðunni. Úthlutaðu línunni á rauf eins og hverjum öðrum stýripinna. PadForge les spjallið án innskráningar og skrifar aldrei í það.</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Lesa Twitch-spjall</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Rás</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Nafn rásarinnar þinnar eða twitch.tv-vistfang hennar.</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>Hlé</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>Halda áfram</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Stöðvar skipunina sem er í spilun, tæmir biðröðina og hunsar spjallskipanir þar til þú heldur áfram.</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>Sleppa</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>Stöðvar skipunina sem er í spilun. Sú næsta í röðinni hefst.</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>Tæma röð</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>Fellir niður skipanirnar sem bíða í röðinni. Sú sem er í spilun klárast.</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>Ljúka einkastjórn</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>Lýkur einkastjórninni sem áhorfandi tók með !claim.</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>Sláðu inn nafn rásarinnar þinnar.</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Tengist spjalli rásarinnar {0}…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Les spjall rásarinnar {0}.</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Náði ekki sambandi við spjall rásarinnar {0}. Reyni aftur.</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Í hléi.</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Stýripinnamyndin fyrir útsendinguna þína. Bættu þessu vistfangi við OBS sem vafrauppsprettu (browser source):</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Stýripinnamyndin fyrir útsendinguna þína krefst Vefstýringar og ódulkóðaða HTTP-vistfangsins hennar. Kveiktu á Bjóða einnig upp á ódulkóðað HTTP á spjaldinu Vefstýring. Aðeins þessi tölva nægir fyrir OBS á þessari tölvu.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Áhorfendur skiptast á með !claim, sem tveir aðrir áhorfendur samþykkja, og sleppa skipun með !skip. Umsjónarmenn gera það strax. Aðeins nýjustu 20 skipanirnar bíða í röðinni og skipun spilast í mesta lagi í 10 sekúndur.</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Sýsla með spjallskipanir</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Spjallskipanir</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Áhorfendur skrifa ! og orð í spjall straumsins þíns, til dæmis !jump. Hvert orð er hnappur á línunni Twitch-spjall og er varpað eins og hverju öðru inntaki. !a500ms heldur A inni í 500 ms, !a+b ýtir á báða og !a b ýtir á annan á eftir hinum.</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>Orð</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>Bæta við</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>Orð</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>Endurheimta venjuleg orð</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>Bætir aftur við forstilltum orðum sem þú fjarlægðir: a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left og right.</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>Orð hefur í mesta lagi {0} bókstafi og tölustafi.</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>Orð byrjar á bókstaf og hefur aðeins bókstafi og tölustafi.</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>Orð má ekki enda á tíma eins og 2s eða 500ms, því spjallið les það sem hversu lengi á að halda inni.</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>Skiptin nota claim, accept, release, skip og skipall, svo ekkert orð má vera eitt þeirra.</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>Listinn rúmar í mesta lagi {0} orð.</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>{0} bætt við.</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} er þegar á listanum.</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>Sjálfvirk greining</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport og Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 til F1 25</value></data>

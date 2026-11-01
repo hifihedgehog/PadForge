@@ -749,15 +749,22 @@ namespace PadForge.Common.Input
             string profileId = null,
             ViewModels.ExtendedSlotConfig extended = null)
             => CreateDefaultPadSetting(ud, outputType, profileId, extended,
-                ud == null ? null : Common.Input.BlissBoxRuntime.GamepadMapFor(ud));
+                ud == null ? null
+                : ud.CapType == InputDeviceType.TwitchChat ? Common.Input.Twitch.ChatGamepadPlacement.For()
+                : Common.Input.BlissBoxRuntime.GamepadMapFor(ud));
 
-        /// <param name="blissBox">Where the controller in a Bliss-Box port
-        /// read raw puts its inputs in SDL's gamepad layout
-        /// (<see cref="Common.Input.BlissBoxRuntime.GamepadMapFor"/>), null for
-        /// any other device.</param>
+        /// <param name="placement">Where the device puts its inputs in SDL's
+        /// gamepad layout: the controller in a Bliss-Box port read raw
+        /// (<see cref="Common.Input.BlissBoxRuntime.GamepadMapFor"/>) or the
+        /// Twitch Chat row's usual words
+        /// (<see cref="Common.Input.Twitch.ChatGamepadPlacement.For"/>, #555).
+        /// Null for any other device.</param>
+        // The D-pad's directions in GamepadPlacement.DPadButton's order.
+        private static readonly string[] DPadDirections = { "Up", "Down", "Left", "Right" };
+
         internal static PadSetting CreateDefaultPadSetting(UserDevice ud,
             Engine.VirtualControllerType outputType, string profileId,
-            ViewModels.ExtendedSlotConfig extended, Engine.Common.BlissBox.BlissBoxGamepadMap blissBox)
+            ViewModels.ExtendedSlotConfig extended, Engine.Common.GamepadPlacement placement)
         {
             var ps = new PadSetting();
 
@@ -787,8 +794,8 @@ namespace PadForge.Common.Input
             // With no placement it gets an empty default, and the port owes
             // the slot its default (BlissBoxRuntime.DefaultOwed).
             bool sdlLayout = ud.CapType == InputDeviceType.Gamepad
-                && !(blissBox == null && Common.Input.BlissBoxRuntime.ReadsRawHere(ud));
-            if ((sdlLayout || blissBox != null) && !ud.ForceRawJoystickMode)
+                && !(placement == null && Common.Input.BlissBoxRuntime.ReadsRawHere(ud));
+            if ((sdlLayout || placement != null) && !ud.ForceRawJoystickMode)
             {
                 // Only auto-map inputs the device actually exposes. Binding an
                 // output to a source the device lacks is NOT harmless: a missing
@@ -815,15 +822,25 @@ namespace PadForge.Common.Input
                 // some pads report past it (Misc 1 at 11, the paddles at 12 to
                 // 15, the touchpad click at 16, Misc 2 at 17), which bind only
                 // when the device lists them.
-                string Btn(int i) => blissBox != null ? OnDevice(blissBox.Button(i))
+                string Btn(int i) => placement != null ? OnDevice(placement.Button(i))
                     : HasButton(i) ? $"Button {i}" : null;
-                string Ax(int i) => blissBox != null ? OnDevice(blissBox.Axis(i))
+                string Ax(int i) => placement != null ? OnDevice(placement.Axis(i))
                     : HasAxis(i) ? $"Axis {i}" : null;
-                string Extra(int i) => blissBox != null ? OnDevice(blissBox.Button(i))
+                string Extra(int i) => placement != null ? OnDevice(placement.Button(i))
                     : objs != null && objs.Any(o => o != null
                         && (o.ObjectType & DeviceObjectTypeFlags.PushButton) != 0
                         && o.InputIndex == i) ? $"Button {i}" : null;
-                bool DPad() => (blissBox == null || blissBox.DPad) && HasHat();
+                bool DPad() => (placement == null || placement.DPad) && HasHat();
+
+                // One D-pad direction's source: the hat's, or the button a
+                // placement puts there when the device's D-pad is four
+                // buttons (the Twitch Chat row's !up and !down, #555).
+                string DPadSource(string direction)
+                {
+                    if (DPad()) return "POV 0 " + direction;
+                    int d = Array.IndexOf(DPadDirections, direction);
+                    return placement != null && d >= 0 ? OnDevice(placement.DPadButton(d)) : null;
+                }
 
                 // A port's input binds only while the port's own object list
                 // carries it, the rule HasButton and HasAxis keep above.
@@ -924,9 +941,9 @@ namespace PadForge.Common.Input
                     }
                     for (int b = 0; b < extended.ButtonCount; b++)
                         if (Btn(b) is { } button) ps.SetRawMapping($"RawBtn{b}", button);
-                    if (extended.PovCount > 0 && DPad())
-                        foreach (string dir in new[] { "Up", "Down", "Left", "Right" })
-                            ps.SetRawMapping($"RawPov0{dir}", $"POV 0 {dir}");
+                    if (extended.PovCount > 0)
+                        foreach (string dir in DPadDirections)
+                            if (DPadSource(dir) is { } pov) ps.SetRawMapping($"RawPov0{dir}", pov);
                     ps.FlushRawMappings();
                     ps.UpdateChecksum();
                     return ps;
@@ -949,7 +966,7 @@ namespace PadForge.Common.Input
                         {
                             Models2D.NintendoPreviewMap.GamepadInput.Axis => Ax(position.Index),
                             Models2D.NintendoPreviewMap.GamepadInput.Hat =>
-                                DPad() ? "POV 0 " + position.Target.Substring(4) : null,
+                                DPadSource(position.Target.Substring(4)),
                             _ => position.Index <= 10 ? Btn(position.Index) : Extra(position.Index),
                         };
                         if (source == null) continue;
@@ -1050,14 +1067,12 @@ namespace PadForge.Common.Input
                 if (Ax(4) is { } ry) ps.RightThumbAxisY = ry;
                 if (Ax(5) is { } rt) ps.RightTrigger = rt;
 
-                // D-pad from hat switch (individual directions for UI display and remapping).
-                if (DPad())
-                {
-                    ps.DPadUp = "POV 0 Up";
-                    ps.DPadDown = "POV 0 Down";
-                    ps.DPadLeft = "POV 0 Left";
-                    ps.DPadRight = "POV 0 Right";
-                }
+                // D-pad from hat switch (individual directions for UI display
+                // and remapping), or from a placement's four D-pad buttons.
+                if (DPadSource("Up") is { } dpadUp) ps.DPadUp = dpadUp;
+                if (DPadSource("Down") is { } dpadDown) ps.DPadDown = dpadDown;
+                if (DPadSource("Left") is { } dpadLeft) ps.DPadLeft = dpadLeft;
+                if (DPadSource("Right") is { } dpadRight) ps.DPadRight = dpadRight;
 
                 // SDL3 XInput backend button indices.
                 if (Btn(0) is { } south) ps.ButtonA = south;
@@ -1110,7 +1125,7 @@ namespace PadForge.Common.Input
                 // whose report carries it.
                 if (outputType == Engine.VirtualControllerType.PlayStation
                     && HMaestroProfileCatalog.ReportCarriesPressure(profileId)
-                    && (blissBox != null ? blissBox.PressureAxes : ButtonPressureSources.AxesFor(ud)) is { } pressureAxes)
+                    && (placement != null ? placement.PressureAxes : ButtonPressureSources.AxesFor(ud)) is { } pressureAxes)
                 {
                     // A target the pad has no pressure for (-1, an original
                     // Xbox controller's D-pad), or a port's pressure axis its
@@ -1119,7 +1134,7 @@ namespace PadForge.Common.Input
                     {
                         if (pressureAxes[i] < 0) return unset;
                         string source = "Axis " + pressureAxes[i].ToString(System.Globalization.CultureInfo.InvariantCulture);
-                        return (blissBox != null ? OnDevice(source) : source) ?? unset;
+                        return (placement != null ? OnDevice(source) : source) ?? unset;
                     }
                     ps.PressureButtonA = Axis(0, ps.PressureButtonA);
                     ps.PressureButtonB = Axis(1, ps.PressureButtonB);

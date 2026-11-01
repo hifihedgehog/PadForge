@@ -3766,6 +3766,8 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>Schemi 2D dei controller (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), di AL2009man. MIT.</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>La grammatica dei comandi e le regole di alternanza dei turni della riga Chat di Twitch, portate in C#, e la finitura WLG del controller Web, di Yuriy (KLAVIATURKIN). ISC.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>Documentazione del protocollo audio del DualShock 4: parametri SBC e layout dei pacchetti, di khallmark. GPL-2.0, solo documentazione.</value>
   </data>
@@ -4326,6 +4328,8 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>Le istruzioni UDP, le risposte, i file delle porte e i byte degli effetti dei grilletti alla base dei Mod di gioco, letti dagli esempi di mod ufficiali DSX v3.1 e DualSenseX v2 di Paliverse, da entrambe le versioni di DualSenseY e da DualSense4Rockstar (nessuna licenza pubblicata), da DSZ e pydualsense (MIT), e da Wujek Dualsense API e dal server DSX nel fork di DS4Windows di hbashton (GPL-3.0). Solo documentazione, nessun codice incluso.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>Riferimenti per l’headset di DualShock 4</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>L’instradamento di cuffie e altoparlante, i limiti di volume, la struttura dei frame del microfono e la modalità dei report alla base dell’audio Bluetooth di DualShock 4, letti da DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) e dal fork di DS4Windows di hbashton (GPL-3.0), con le finestre di sintesi del decodificatore SBC verificate con libsbc di Google (Apache-2.0), e gli headset USB del secondo modello e dell’adattatore di Sony letti dai dump dei descrittori ControllersInfo di DJm00n (nessuna licenza pubblicata) e dalle sonde LsUSB di linux-hardware.org (CC BY 4.0). Solo documentazione, nessun codice incluso.</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Riferimenti per la chat di Twitch</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>La lettura della chat senza accedere e la regola del comando con !, lette da tmi.js (MIT) e ComfyJS (MIT), e il mantenimento dei soli 20 comandi più recenti, dal template TwitchPlays di DougDoug (MIT). Solo documentazione, nessun codice incluso.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Riferimenti per gli schermi delle tastiere</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Le librerie, i frame e i tasti alla base degli schermi delle tastiere, letti dagli SDK LCD e Arx Control di Logitech e dall’SDK S.T.R.I.K.E. 7 di Mad Catz, verificati con logitech-lcd (MIT o Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff e ArxWidgetManager (nessuna licenza pubblicata), il driver hid-lg-g15 di Linux (GPL-2.0-or-later), libg15, G15Interface e lcdproc (GPL-2.0), gnome15 (GPL-3.0) e G19USB (Apache-2.0). PadForge carica le librerie di Logitech Gaming Software e Strike7API.dll che scarichi o scegli, e non distribuisce codice di nessuno di questi progetti.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Riferimenti per Novint Falcon</value></data>
@@ -4512,6 +4516,7 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Falcon_Calibrate" xml:space="preserve"><value>Calibra escursione</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Misura quanto si sposta l'impugnatura. Portala a ogni limite della sua escursione per i quattro secondi della scansione. Nel frattempo le forze si fermano.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Telemetria di gioco</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Chat di Twitch</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Telemetria di gioco</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Porta la telemetria inviata dai giochi di guida, e la memoria condivisa di Assetto Corsa, nella riga Telemetria di gioco della pagina Dispositivi. Mappa velocità, pedali e marce come qualsiasi input, usali per attivare macro oppure provali in un'espressione personalizzata. Mentre è in ascolto, anche i LED di regime del volante leggono il gioco da qui.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Ascolta la telemetria di gioco</value></data>
@@ -4525,6 +4530,44 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>Formati personalizzati…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>Descrive, campo per campo, i pacchetti di un gioco che PadForge non conosce.</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>Attiva l'output della telemetria in ogni gioco e puntalo a questo PC e a questa porta. F1, i giochi Codemasters ed EA SPORTS WRC usano 20777 se non cambiato, Project CARS 2 e Automobilista 2 usano sempre 5606 e il plugin di MrHokss per i simulatori di camion usa 49001. Assetto Corsa e ACC non richiedono una porta.</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>Qualsiasi comando</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Chat di Twitch</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>Permette a chi guarda la tua diretta di giocare scrivendo nella chat. Uno spettatore scrive un comando come !a e PadForge preme ciò a cui !a è assegnato nella riga Chat di Twitch della pagina Dispositivi. Assegna quella riga a uno slot come qualsiasi controller. PadForge legge la chat senza accedere e non vi scrive mai.</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Leggi la chat di Twitch</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Canale</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Il nome del tuo canale oppure il suo indirizzo twitch.tv</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>Pausa</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>Riprendi</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Ferma il comando in corso, svuota la coda e ignora i comandi della chat finché non riprendi.</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>Salta</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>Ferma il comando in corso. Parte il successivo in coda.</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>Svuota coda</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>Elimina i comandi in attesa in coda. Quello in corso termina.</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>Termina turno</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>Termina il controllo esclusivo che uno spettatore ha preso con !claim</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>Inserisci il nome del tuo canale.</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Connessione alla chat di {0}…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Lettura della chat di {0}.</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Impossibile raggiungere la chat di {0}. Nuovo tentativo in corso.</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>In pausa.</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>L'immagine del controller per la tua trasmissione. Aggiungi in OBS questo indirizzo come sorgente browser:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>L'immagine del controller per la tua trasmissione richiede il Controller Web e il suo indirizzo HTTP non cifrato. Attiva Servi anche HTTP non cifrato nella scheda Controller Web. Solo questo PC basta per OBS su questo PC.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Gli spettatori si alternano con !claim, che altri due spettatori approvano, e saltano un comando con !skip. I moderatori agiscono subito. In coda restano solo gli ultimi 20 comandi e un comando dura al massimo 10 secondi.</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Gestisci comandi della chat</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Comandi della chat</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Gli spettatori scrivono ! e una parola nella chat della tua diretta, come !jump. Ogni parola è un pulsante della riga Chat di Twitch, assegnato come qualsiasi input. !a500ms tiene premuto A per 500 ms, !a+b li preme insieme e !a b li preme uno dopo l'altro.</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>Parola</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>Aggiungi</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>Parole</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>Ripristina parole predefinite</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>Riaggiunge le parole predefinite che hai rimosso: a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left e right.</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>Una parola può avere al massimo {0} tra lettere e cifre.</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>Una parola inizia con una lettera e contiene solo lettere e cifre.</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>Una parola non può terminare con un tempo come 2s o 500ms, che la chat legge come durata della pressione.</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>I turni usano claim, accept, release, skip e skipall, quindi nessuna parola può essere una di queste.</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>L'elenco contiene al massimo {0} parole.</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>Aggiunto {0}.</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} è già nell'elenco.</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>Rilevamento automatico</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport e Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>Da F1 22 a F1 25</value></data>

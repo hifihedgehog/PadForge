@@ -588,6 +588,12 @@ namespace PadForge.Views
             dlg.ShowDialog();
         }
 
+        private void ManageChatCommands_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new ChatCommandsDialog { Owner = Window.GetWindow(this) };
+            dlg.ShowDialog();
+        }
+
         // ── Device dossier copy (#175 competitor item 7) ──
 
         /// <summary>

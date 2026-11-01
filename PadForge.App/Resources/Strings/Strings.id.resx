@@ -3806,6 +3806,8 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>Skema kontroler 2D (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), karya AL2009man. MIT.</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Tata bahasa perintah dan aturan giliran baris Chat Twitch, di-port ke C#, serta tampilan akhir WLG pada kontroler web, karya Yuriy (KLAVIATURKIN). ISC.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>Dokumentasi protokol audio DualShock 4: parameter SBC dan tata letak paket, karya khallmark. GPL-2.0, hanya dokumentasi.</value>
   </data>
@@ -4353,6 +4355,8 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>Instruksi UDP, balasan, file port, dan byte efek pelatuk di balik Mod game, dibaca dari contoh mod DSX v3.1 resmi dan DualSenseX v2 milik Paliverse, kedua versi DualSenseY dan DualSense4Rockstar (tanpa lisensi yang dipublikasikan), DSZ dan pydualsense (MIT), serta Wujek Dualsense API dan server DSX dalam fork DS4Windows milik hbashton (GPL-3.0). Hanya dokumentasi, tidak ada kode yang disertakan.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>Referensi headset DualShock 4</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>Perutean headphone dan speaker, batas volume, pembingkaian mikrofon, dan mode laporan di balik audio Bluetooth DualShock 4, dibaca dari DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT), dan fork DS4Windows milik hbashton (GPL-3.0), dengan jendela sintesis dekoder SBC diperiksa terhadap libsbc milik Google (Apache-2.0), dan headset USB model kedua serta adaptor Sony dibaca dari dump deskriptor ControllersInfo milik DJm00n (tanpa lisensi yang dipublikasikan) dan probe LsUSB milik linux-hardware.org (CC BY 4.0). Hanya dokumentasi, tidak ada kode yang disertakan.</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Referensi chat Twitch</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Membaca chat tanpa masuk akun dan aturan perintah !, dibaca dari tmi.js (MIT) dan ComfyJS (MIT), serta hanya menyimpan 20 perintah terbaru, dari templat TwitchPlays (MIT) milik DougDoug. Hanya dokumentasi, tidak ada kode yang disertakan.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Referensi layar keyboard</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Pustaka, frame, dan tombol di balik layar keyboard, dibaca dari SDK LCD dan Arx Control milik Logitech serta SDK S.T.R.I.K.E. 7 milik Mad Catz, diperiksa silang dengan logitech-lcd (MIT atau Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff dan ArxWidgetManager (tanpa lisensi yang dipublikasikan), driver hid-lg-g15 dari Linux (GPL-2.0-or-later), libg15, G15Interface, dan lcdproc (GPL-2.0), gnome15 (GPL-3.0), serta G19USB (Apache-2.0). PadForge memuat pustaka Logitech Gaming Software dan Strike7API.dll yang Anda unduh atau pilih, dan tidak menyertakan kode dari semuanya.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Referensi Novint Falcon</value></data>
@@ -4539,6 +4543,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Falcon_Calibrate" xml:space="preserve"><value>Kalibrasikan jangkauan</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Mengukur sejauh mana gagang bergerak. Gerakkan ke setiap tepi jangkauannya selama empat detik penyapuan berlangsung. Gaya dihentikan selama itu.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Telemetri Game</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Chat Twitch</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Telemetri Game</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Menampilkan telemetri yang dikirim game balap, beserta memori bersama Assetto Corsa, di baris Telemetri Game pada halaman Perangkat. Petakan kecepatan, pedal, dan giginya seperti input apa pun, picu makro dengannya, atau ujilah dalam Ekspresi kustom. Selagi mendengarkan, LED perpindahan gigi RPM setir juga membaca game dari sini.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Dengarkan Telemetri Game</value></data>
@@ -4552,6 +4557,44 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>Format kustom…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>Menjelaskan paket game yang tidak dikenal PadForge, bidang demi bidang.</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>Aktifkan keluaran telemetri di setiap game dan arahkan ke PC dan port ini. F1, game Codemasters, dan EA SPORTS WRC memakai 20777 kecuali diubah, Project CARS 2 dan Automobilista 2 selalu memakai 5606, dan plugin MrHokss untuk simulator truk memakai 49001. Assetto Corsa dan ACC tidak memerlukan port.</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>Perintah apa pun</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Chat Twitch</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>Memungkinkan penonton streaming Anda bermain dengan mengetik di chat-nya. Penonton mengetik perintah seperti !a, lalu PadForge menekan apa pun yang dipetakan ke !a pada baris Chat Twitch di halaman Perangkat. Tetapkan baris itu ke sebuah slot seperti kontroler lainnya. PadForge membaca chat tanpa masuk akun dan tidak pernah memposting di dalamnya.</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Baca Chat Twitch</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Kanal</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Nama kanal Anda atau alamat twitch.tv-nya.</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>Jeda</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>Lanjutkan</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Menghentikan perintah yang sedang dimainkan, mengosongkan antrean, dan mengabaikan perintah chat sampai Anda melanjutkan.</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>Lewati</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>Menghentikan perintah yang sedang dimainkan. Perintah berikutnya dalam antrean dimulai.</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>Kosongkan antrean</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>Membuang perintah yang menunggu dalam antrean. Perintah yang sedang dimainkan diselesaikan.</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>Akhiri klaim</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>Mengakhiri kendali penuh yang diambil penonton dengan !claim.</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>Masukkan nama kanal Anda.</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Menyambung ke chat {0}…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Membaca chat {0}.</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Tidak dapat menjangkau chat {0}. Mencoba lagi.</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Dijeda.</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Gambar kontroler untuk siaran Anda. Tambahkan alamat ini ke OBS sebagai browser source:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Gambar kontroler untuk siaran Anda memerlukan Kontroler web beserta alamat HTTP biasanya. Aktifkan Sajikan juga HTTP biasa di kartu Kontroler web. Hanya PC ini sudah cukup untuk OBS di PC ini.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Penonton bergiliran dengan !claim, yang disetujui dua penonton lain, dan melewati perintah dengan !skip. Moderator bertindak seketika. Hanya 20 perintah terbaru yang menunggu dalam antrean, dan satu perintah dimainkan paling lama 10 detik.</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Kelola perintah chat</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Perintah chat</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Penonton mengetik ! dan sebuah kata di chat streaming Anda, seperti !jump. Setiap kata adalah tombol pada baris Chat Twitch, dipetakan seperti input apa pun. !a500ms menahan A selama 500 ms, !a+b menekan keduanya, dan !a b menekan satu per satu secara berurutan.</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>Kata</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>Tambah</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>Kata</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>Pulihkan kata bawaan</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>Menambahkan kembali kata bawaan yang Anda hapus: a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left and right.</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>Satu kata paling banyak {0} huruf dan angka.</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>Kata diawali huruf dan hanya berisi huruf dan angka.</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>Kata tidak boleh diakhiri waktu seperti 2s atau 500ms, karena chat membacanya sebagai lama menahan.</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>Giliran bermain memakai claim, accept, release, skip, dan skipall, sehingga tidak ada kata yang boleh sama dengan itu.</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>Daftar menampung paling banyak {0} kata.</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>{0} ditambahkan.</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} sudah ada dalam daftar.</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>Deteksi otomatis</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport dan Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 sampai F1 25</value></data>

@@ -426,7 +426,11 @@ namespace PadForge.Tests
             Assert.Contains("bufferedAmount > BUFFER_LIMIT_BYTES) return;", js);
             // Identity: per tab, and claimed across tabs so a copied tab mints its own.
             Assert.Contains("sessionStorage.getItem(clientIdKey)", js);
-            Assert.DoesNotContain("localStorage.", js);        // no call, the comment may name it
+            // The one localStorage use is the viewer's name from the home
+            // page (#555), read and never written. The identity stays per tab.
+            Assert.DoesNotContain("localStorage.setItem", js);
+            Assert.Single(System.Text.RegularExpressions.Regex.Matches(js, @"localStorage\."));
+            Assert.Contains("localStorage.getItem(\"padforge_viewer_name\")", js);
             Assert.Contains("new BroadcastChannel(\"padforge_gamepad_identity\")", js);
             // Rumble is a lease the pings renew.
             Assert.Contains("RUMBLE_LEASE_MS", js);

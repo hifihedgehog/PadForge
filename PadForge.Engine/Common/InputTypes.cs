@@ -158,6 +158,11 @@ namespace PadForge.Engine
         // gear as buttons.
         public const int GameTelemetry = 44;
 
+        // A Twitch channel's chat (issue #555): button 0 is Any Command,
+        // held while a command plays, and each chat word the streamer keeps
+        // is a button at the index it was given.
+        public const int TwitchChat = 45;
+
         /// <summary>True when a row of this type answers a source whose
         /// DeviceGuid is empty, the "(Any Device)" wildcard that means
         /// whichever controller is assigned to the slot. Controllers,
@@ -180,13 +185,14 @@ namespace PadForge.Engine
         /// reason (#519). A resting Falcon reads center on all three axes,
         /// the head tracker's reason, so it stays out too (#521). A game's
         /// telemetry names its own axes and gears from index 0, so speed
-        /// would read as a stick (#531).</summary>
+        /// would read as a stick (#531). The Twitch Chat row's words number
+        /// their buttons from 0, the G-keys' reason (#555).</summary>
         public static bool AnswersAnyDeviceSources(int capType) => capType switch
         {
             HeadTracker or Nfc or Microphone or HandheldButtons or ConsumerControl or Tablet
                 or VrController or LogitechGKeys or AnalogKeyboard or WebMenus
                 or PeripheralLighting or PeripheralHaptics or KeyboardScreenKeys or NovintFalcon
-                or GameTelemetry => false,
+                or GameTelemetry or TwitchChat => false,
             _ => true,
         };
     }

@@ -3744,6 +3744,8 @@
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>2D 手柄示意图（Xbox 360、Xbox One S、Xbox Series、DualShock 4、DualSense），作者 AL2009man。MIT。</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>“Twitch 聊天”行的命令语法和轮流规则，已移植为 C#，以及网页控制器的 WLG 外观，由 Yuriy (KLAVIATURKIN) 提供。ISC。</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>DualShock 4 音频协议文档：SBC 参数与数据包布局，作者 khallmark。GPL-2.0，仅文档。</value>
   </data>
@@ -4304,6 +4306,8 @@
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>“游戏模组”背后的 UDP 指令、应答、端口文件和扳机效果字节，读自 Paliverse 官方的 DSX v3.1 和 DualSenseX v2 模组示例、DualSenseY 的两个版本和 DualSense4Rockstar (未公布许可)、DSZ 和 pydualsense (MIT)，以及 Wujek Dualsense API 和 hbashton 的 DS4Windows 分支中的 DSX 服务器 (GPL-3.0)。仅为文档参考，不含任何代码。</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>DualShock 4 耳机参考来源</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>DualShock 4 蓝牙音频背后的耳机与扬声器路由、音量上限、麦克风分帧和报告模式，读自 DS4-Sound-Link (MIT)、ds4mac (GPL-2.0)、ds4drv (MIT) 和 hbashton 的 DS4Windows 分支 (GPL-3.0)，SBC 解码器的合成窗口与 Google 的 libsbc (Apache-2.0) 核对，第二款机型和 Sony 适配器的 USB 耳机则读自 DJm00n 的 ControllersInfo 描述符转储 (未公布许可) 和 linux-hardware.org 的 LsUSB 探测报告 (CC BY 4.0)。仅为文档参考，不含任何代码。</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Twitch 聊天参考来源</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>无需登录即可读取聊天以及 ! 命令规则，读自 tmi.js (MIT) 和 ComfyJS (MIT)，只保留最新 20 条命令的做法则读自 DougDoug 的 TwitchPlays 模板 (MIT)。仅为文档参考，不含任何代码。</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>键盘屏幕参考来源</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>键盘屏幕背后的库、帧和按键，读自 Logitech 的 LCD 和 Arx Control SDK 以及 Mad Catz 的 S.T.R.I.K.E. 7 SDK，并与 logitech-lcd (MIT 或 Apache-2.0)、dcspy (MIT)、foo_logitech_lcd (LGPL-2.1)、LogitechStuff 和 ArxWidgetManager (未公布许可)、Linux 的 hid-lg-g15 驱动 (GPL-2.0-or-later)、libg15、G15Interface 和 lcdproc (GPL-2.0)、gnome15 (GPL-3.0) 以及 G19USB (Apache-2.0) 比对。PadForge 加载 Logitech Gaming Software 的库以及你下载或选择的 Strike7API.dll，不随附其中任何一个的代码。</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon 参考来源</value></data>
@@ -4490,6 +4494,7 @@
   <data name="Falcon_Calibrate" xml:space="preserve"><value>校准行程</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>测量握柄的移动范围。在扫描进行的 4 秒内，将其移动到行程的每个边缘。期间各种力会停止。</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>游戏遥测</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch 聊天</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>游戏遥测</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>将驾驶类游戏发送的遥测数据以及 Assetto Corsa 的共享内存，放到“设备”页面的“游戏遥测”行上。可像任何输入一样映射其速度、踏板和档位，用它们触发宏，或在自定义表达式中测试。监听期间，方向盘的转速换挡灯也从这里读取游戏数据。</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>监听游戏遥测</value></data>
@@ -4503,6 +4508,44 @@
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>自定义格式…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>逐字段描述 PadForge 不认识的游戏的数据包。</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>在每个游戏中开启遥测输出，并指向本机和此端口。F1、Codemasters 游戏和 EA SPORTS WRC 默认使用 20777，Project CARS 2 和 Automobilista 2 始终使用 5606，MrHokss 的卡车模拟游戏插件使用 49001。Assetto Corsa 和 ACC 无需端口。</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>任意命令</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Twitch 聊天</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>让观看直播的人通过在聊天中输入来参与游戏。观众输入 !a 之类的命令，PadForge 就会按下“设备”页面“Twitch 聊天”行上 !a 所映射的输入。像任何控制器一样，把该行分配给一个槽位。PadForge 无需登录即可读取聊天，也从不在其中发言。</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>读取 Twitch 聊天</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>频道</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>你的频道名称或 twitch.tv 地址。</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>暂停</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>继续</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>停止正在执行的命令，清空队列，并在你继续之前忽略聊天命令。</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>跳过</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>停止正在执行的命令，队列中的下一条随即开始。</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>清空队列</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>丢弃队列中等待的命令，正在执行的命令会执行完毕。</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>结束独占</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>结束观众通过 !claim 获得的独占控制。</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>请输入你的频道名称。</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>正在连接到 {0} 的聊天…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>正在读取 {0} 的聊天。</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>无法连接到 {0} 的聊天，正在重试。</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>已暂停。</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>用于直播画面的控制器图像。将此地址作为浏览器源添加到 OBS：</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>用于直播画面的控制器图像需要“网页控制器”及其未加密的 HTTP 地址。请在“网页控制器”卡片中开启“同时提供未加密的 HTTP”。若 OBS 在此电脑上运行，选择“仅限此电脑”即可。</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>观众通过 !claim 轮流控制，需要另外两名观众批准，也可用 !skip 跳过命令。管理员的操作立即生效。队列中只保留最新的 20 条命令，每条命令最多执行 10 秒。</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>管理聊天命令</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>聊天命令</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>观众在你的直播聊天中输入 ! 加一个词，例如 !jump。每个词都是“Twitch 聊天”行上的一个按钮，可像任何输入一样映射。!a500ms 按住 A 500 ms，!a+b 同时按下两个键，!a b 则依次按下。</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>词语</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>添加</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>词语</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>恢复常用词语</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>加回你移除的预设词语：a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left and right。</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>词语最多包含 {0} 个字母和数字。</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>词语须以字母开头，且只能包含字母和数字。</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>词语不能以 2s 或 500ms 这样的时间结尾，聊天会将其视为按住的时长。</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>轮流控制使用 claim、accept、release、skip 和 skipall，因此词语不能与它们相同。</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>列表最多容纳 {0} 个词语。</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>已添加 {0}。</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} 已在列表中。</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>自动检测</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport 和 Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 至 F1 25</value></data>

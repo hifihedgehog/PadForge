@@ -3806,6 +3806,8 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>2D-ohjainkaaviot (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), tekijä AL2009man. MIT.</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Twitch-chat-rivin komentokielioppi ja vuorottelusäännöt, siirretty C#:lle, sekä web-ohjaimen WLG-viimeistely, tekijä Yuriy (KLAVIATURKIN). ISC.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>DualShock 4 -ohjaimen ääniprotokollan dokumentaatio: SBC-parametrit ja pakettien rakenne, tekijä khallmark. GPL-2.0, vain dokumentaationa.</value>
   </data>
@@ -4353,6 +4355,8 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>UDP-komennot, vastaukset, porttitiedostot ja liipaisintehosteiden tavut Pelimodien taustalla, luettu seuraavista lähteistä: Paliversen viralliset DSX v3.1- ja DualSenseX v2 -modiesimerkit, DualSenseY (molemmat versiot) ja DualSense4Rockstar (lisenssiä ei julkaistu), DSZ ja pydualsense (MIT) sekä Wujek Dualsense API ja DSX-palvelin hbashtonin DS4Windows-haarassa (GPL-3.0). Vain dokumentaatio, koodia ei toimiteta.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>DualShock 4 -kuulokkeiden viitteet</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>Kuulokkeiden ja kaiuttimen reititys, äänenvoimakkuuden ylärajat, mikrofonin kehystys ja raporttitila Bluetooth-yhteydellä toimivan DualShock 4 -ohjaimen äänen taustalla, luettu seuraavista lähteistä: DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) ja hbashtonin DS4Windows-haara (GPL-3.0). SBC-dekooderin synteesi-ikkunat on tarkistettu Googlen libsbc-kirjastoa (Apache-2.0) vasten. Toisen mallin ja Sonyn sovittimen USB-kuulokeyhteydet on luettu DJm00nin ControllersInfo-projektin kuvaajavedoksista (lisenssiä ei julkaistu) ja linux-hardware.org-sivuston LsUSB-luotauksista (CC BY 4.0). Vain dokumentaatio, koodia ei toimiteta.</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Twitch-chatin viitteet</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Chatin lukeminen kirjautumatta sisään ja !-komentosääntö, luettu projekteista tmi.js (MIT) ja ComfyJS (MIT), sekä vain 20 uusimman komennon säilyttäminen, luettu tekijän DougDoug TwitchPlays (MIT) -mallipohjasta. Vain dokumentaatio, koodia ei toimiteta.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Näppäimistönäyttöjen viitteet</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Näppäimistönäyttöjen taustalla olevat kirjastot, kehykset ja näppäimet, luettu Logitechin LCD- ja Arx Control -SDK-paketeista sekä Mad Catzin S.T.R.I.K.E. 7 -SDK:sta ja tarkistettu seuraavia vasten: logitech-lcd (MIT tai Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff ja ArxWidgetManager (lisenssiä ei julkaistu), Linux-ytimen hid-lg-g15-ajuri (GPL-2.0-or-later), libg15, G15Interface ja lcdproc (GPL-2.0), gnome15 (GPL-3.0) ja G19USB (Apache-2.0). PadForge lataa Logitech Gaming Software -ohjelmiston kirjastot sekä lataamasi tai valitsemasi Strike7API.dll-tiedoston eikä toimita koodia mistään niistä.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon -viitteet</value></data>
@@ -4539,6 +4543,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Falcon_Calibrate" xml:space="preserve"><value>Kalibroi ulottuma</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Mittaa, kuinka pitkälle kahva liikkuu. Siirrä se ulottuman jokaiseen reunaan neljän sekunnin ajan, jonka mittaus kestää. Voimat lepäävät sillä välin.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Pelitelemetria</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch-chat</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Pelitelemetria</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Tuo ajopelien lähettämän telemetrian ja Assetto Corsa -pelin jaetun muistin Laitteet-sivun Pelitelemetria-riville. Määritä sen nopeus, polkimet ja vaihteet kuten mitä tahansa syötettä, käynnistä niillä makroja tai testaa niitä Mukautetussa lausekkeessa. Kun kuuntelu on päällä, rattien kierrosluvun vaihtovalot lukevat pelin tiedot myös täältä.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Kuuntele Pelitelemetriaa</value></data>
@@ -4552,6 +4557,44 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>Mukautetut formaatit…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>Kuvaa sellaisen pelin paketit, jota PadForge ei tunne, kenttä kerrallaan.</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>Ota telemetriatulostus käyttöön kussakin pelissä ja osoita se tähän tietokoneeseen ja porttiin. F1, Codemasters-pelit ja EA SPORTS WRC käyttävät porttia 20777, ellei sitä muuteta, Project CARS 2 ja Automobilista 2 käyttävät aina porttia 5606 ja MrHokss-nimisen tekijän rekkasimulaattoreille tekemä laajennus porttia 49001. Assetto Corsa ja ACC eivät tarvitse porttia.</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>Mikä tahansa komento</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Twitch-chat</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>Antaa streamiäsi katsovien pelata kirjoittamalla sen chattiin. Katsoja kirjoittaa komennon, kuten !a, ja PadForge painaa sitä, mihin !a on yhdistetty Laitteet-sivun Twitch-chat-rivillä. Liitä rivi paikkaan kuten mikä tahansa ohjain. PadForge lukee chattia kirjautumatta sisään eikä koskaan kirjoita siihen.</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Lue Twitch-chattia</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Kanava</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Kanavasi nimi tai sen twitch.tv-osoite.</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>Keskeytä</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>Jatka</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Pysäyttää toistettavan komennon, tyhjentää jonon ja ohittaa chat-komennot, kunnes jatkat.</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>Ohita</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>Pysäyttää toistettavan komennon. Jonon seuraava alkaa.</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>Tyhjennä jono</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>Poistaa jonossa odottavat komennot. Toistettava komento suoritetaan loppuun.</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>Lopeta yksinohjaus</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>Lopettaa yksinohjauksen, jonka katsoja otti komennolla !claim.</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>Anna kanavasi nimi.</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Yhdistetään kanavan {0} chattiin…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Luetaan kanavan {0} chattia.</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Kanavan {0} chattiin ei saatu yhteyttä. Yritetään uudelleen.</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Keskeytetty.</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Lähetyksesi ohjainkuva. Lisää tämä osoite OBS-ohjelmaan selainlähteeksi:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Lähetyksesi ohjainkuva tarvitsee Web-ohjaimen ja sen salaamattoman HTTP-osoitteen. Ota Web-ohjain-kortissa käyttöön Tarjoa myös salaamaton HTTP. Vain tämä tietokone riittää, kun käytät OBS-ohjelmaa tällä tietokoneella.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Katsojat ottavat vuoron komennolla !claim, jonka kaksi muuta katsojaa hyväksyy, ja ohittavat komennon komennolla !skip. Moderaattorit toimivat heti. Jonossa odottaa vain uusimmat 20 komentoa, ja komento soi enintään 10 sekuntia.</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Hallitse chat-komentoja</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Chat-komennot</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Katsojat kirjoittavat streamisi chattiin ! ja sanan, esimerkiksi !jump. Jokainen sana on Twitch-chat-rivin painike, joka yhdistetään kuten mikä tahansa syöte. !a500ms pitää A-painiketta painettuna 500 ms, !a+b painaa molempia ja !a b painaa ne peräkkäin.</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>Sana</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>Lisää</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>Sanat</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>Palauta tavalliset sanat</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>Lisää takaisin poistamasi valmiit sanat: a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left ja right.</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>Sanassa voi olla enintään {0} kirjainta ja numeroa.</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>Sana alkaa kirjaimella, ja siinä on vain kirjaimia ja numeroita.</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>Sana ei voi päättyä aikaan, kuten 2s tai 500ms, jonka chat tulkitsee pitoajaksi.</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>Vuoronotto käyttää sanoja claim, accept, release, skip ja skipall, joten mikään sana ei voi olla niistä yksi.</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>Luettelossa on enintään {0} sanaa.</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>Lisätty {0}.</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} on jo luettelossa.</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>Automaattitunnistus</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport ja Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 – F1 25</value></data>

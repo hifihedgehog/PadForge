@@ -1,0 +1,118 @@
+<ui:FluentWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.ChatCommandsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        xmlns:common="clr-namespace:PadForge.Common"
+        ExtendsContentIntoTitleBar="True"
+        WindowBackdropType="Mica"
+        Title="{Binding TwitchChat_DialogTitle, Source={x:Static strings:Strings.Instance}}"
+        Height="600" Width="560"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+             xmlns:reset="clr-namespace:PadForge.Controls">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Dialog head: the voice phrase dialog's chrome. -->
+        <Border Padding="14"
+                BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
+                           Fill="{DynamicResource EmberBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                           FontFamily="{StaticResource DisplayFontFamily}"
+                           FontWeight="SemiBold" FontSize="15"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"
+                           TextTrimming="CharacterEllipsis"/>
+                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
+                           VerticalAlignment="Center" Click="CloseButton_Click"
+                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
+                    <reset:GlyphText Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                </ui:Button>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- What a word is and how viewers use it. -->
+            <TextBlock Text="{Binding TwitchChat_DialogHint, Source={x:Static strings:Strings.Instance}}"
+                       TextWrapping="Wrap" FontSize="12"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,12"/>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock Text="{Binding TwitchChat_WordLabel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBox x:Name="WordBox" Width="220" VerticalAlignment="Center" Margin="0,0,8,0"
+                         MaxLength="24" KeyDown="WordBox_KeyDown"
+                         AutomationProperties.Name="{Binding TwitchChat_WordLabel, Source={x:Static strings:Strings.Instance}}"/>
+                <Button x:Name="AddBtn" Content="{Binding TwitchChat_AddButton, Source={x:Static strings:Strings.Instance}}" Click="AddButton_Click"
+                        MinWidth="90"
+                        Style="{StaticResource EmberAccentButton}"/>
+            </StackPanel>
+
+            <!-- The last add's result, or why the word cannot be one. -->
+            <TextBlock Grid.Row="2" x:Name="MessageText" common:LiveText.Polite="True"
+                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                       Margin="0,0,0,12" TextWrapping="Wrap"/>
+
+            <TextBlock Grid.Row="3" Text="{Binding TwitchChat_ListHeader, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,4,0,4"/>
+
+            <ListBox Grid.Row="4" x:Name="WordListBox" MinHeight="100">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource EmberSelectListItem}">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="8,6"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Display}" VerticalAlignment="Center" Margin="0,0,12,0"
+                                       FontFamily="{StaticResource TelemetryFontFamily}"/>
+                            <Button Grid.Column="1" Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Click="RemoveButton_Click"
+                                    Style="{StaticResource EmberDestructiveButton}"
+                                    Tag="{Binding Word}" MinWidth="72" VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Grid Grid.Row="5" Margin="0,18,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button Content="{Binding TwitchChat_RestoreButton, Source={x:Static strings:Strings.Instance}}" Click="RestoreButton_Click"
+                        ToolTip="{Binding TwitchChat_RestoreButton_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                <Button Grid.Column="2" Content="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}" MinWidth="90" IsCancel="True" Click="CloseButton_Click"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

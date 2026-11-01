@@ -4,6 +4,7 @@
     <title>PadForge - Web Controller</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="/css/layout_view.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -54,10 +55,14 @@
             color: #eee;
             width: 100%;
         }
-        .card img.preview {
+        /* Each card draws its controller at rest (layout_view.js), the
+           triggers and stick caps included, centered in this box. */
+        .card .preview {
             width: 100%;
             height: 120px;
-            object-fit: contain;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-bottom: 10px;
             pointer-events: none;
         }
@@ -86,29 +91,58 @@
         }
         .swatches a:hover { border-color: #fff; transform: scale(1.15); }
         .swatches a.default { background: linear-gradient(135deg, #666 50%, #333 50%); }
+        .viewer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: -12px 0 24px;
+            font-size: 14px;
+            color: #aaa;
+        }
+        .viewer input {
+            width: 200px;
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 2px solid #0f3460;
+            background: #16213e;
+            color: #eee;
+            font-size: 14px;
+        }
+        .viewer input:focus { outline: none; border-color: #e94560; }
     </style>
 </head>
 <body>
     <h1>PadForge</h1>
     <p class="subtitle">Choose a controller layout. Tap a color to pick a finish.</p>
+    <!-- The viewer's name (#555), kept in this browser. The controller,
+         Browser Gamepad and builder pages send it, so the streamer's
+         Devices page names each phone. -->
+    <div class="viewer">
+        <label for="viewerName">Your name</label>
+        <input id="viewerName" maxlength="24" autocomplete="nickname" placeholder="Shown to the streamer">
+    </div>
     <div class="cards">
         <div class="card">
             <a class="face" href="/controller.html?layout=xbox360">
-                <img class="preview" src="/img/2DModels/XBOX360/XB360_base.png" alt="">
+                <div class="preview" data-layout="xbox360"></div>
                 <div class="label">Xbox 360</div>
                 <div class="desc">Classic layout, dual analog sticks</div>
             </a>
+            <div class="swatches">
+                <a class="default" href="/controller.html?layout=xbox360" title="White"></a>
+                <a style="background:linear-gradient(135deg,#25242b 62%,#7b2fbe 62%)" href="/controller.html?layout=xbox360&finish=WLG" title="WLG"></a>
+            </div>
         </div>
         <div class="card">
             <a class="face" href="/controller.html?layout=xboxone">
-                <img class="preview" src="/img/2DModels/XBOXONE/XB1_S_base.png" alt="">
+                <div class="preview" data-layout="xboxone"></div>
                 <div class="label">Xbox One</div>
                 <div class="desc">Xbox One S layout</div>
             </a>
         </div>
         <div class="card">
             <a class="face" href="/controller.html?layout=xboxseries">
-                <img class="preview" src="/img/2DModels/XBOXSERIES/XBSeries_base.png" alt="">
+                <div class="preview" data-layout="xboxseries"></div>
                 <div class="label">Xbox Series X|S</div>
                 <div class="desc">Share button, hybrid D-pad</div>
             </a>
@@ -119,11 +153,12 @@
                 <a style="background:#cddc39" href="/controller.html?layout=xboxseries&finish=ElectricVolt" title="Electric Volt"></a>
                 <a style="background:#d32f2f" href="/controller.html?layout=xboxseries&finish=PulseRed" title="Pulse Red"></a>
                 <a style="background:#1976d2" href="/controller.html?layout=xboxseries&finish=ShockBlue" title="Shock Blue"></a>
+                <a style="background:linear-gradient(135deg,#25242b 62%,#7b2fbe 62%)" href="/controller.html?layout=xboxseries&finish=WLG" title="WLG"></a>
             </div>
         </div>
         <div class="card">
             <a class="face" href="/controller.html?layout=ds4">
-                <img class="preview" src="/img/2DModels/DS4/DS4_V2_base.png" alt="">
+                <div class="preview" data-layout="ds4"></div>
                 <div class="label">DualShock 4</div>
                 <div class="desc">Touchpad and lightbar</div>
             </a>
@@ -137,7 +172,7 @@
         </div>
         <div class="card">
             <a class="face" href="/controller.html?layout=dualsense">
-                <img class="preview" src="/img/2DModels/DualSense/DualSense_base.png" alt="">
+                <div class="preview" data-layout="dualsense"></div>
                 <div class="label">DualSense</div>
                 <div class="desc">PS5 layout with mute button</div>
             </a>
@@ -148,39 +183,40 @@
                 <a style="background:#23272f" href="/controller.html?layout=dualsense&finish=Midnight" title="Midnight Black"></a>
                 <a style="background:#f7a8c4" href="/controller.html?layout=dualsense&finish=NovaPink" title="Nova Pink"></a>
                 <a style="background:#7fb2d9" href="/controller.html?layout=dualsense&finish=StarlightBlue" title="Starlight Blue"></a>
+                <a style="background:linear-gradient(135deg,#25242b 62%,#7b2fbe 62%)" href="/controller.html?layout=dualsense&finish=WLG" title="WLG"></a>
             </div>
         </div>
         <div class="card">
             <a class="face" href="/controller.html?layout=dualsenseedge">
-                <img class="preview" src="/img/2DModels/DUALSENSEEDGE/DualSense_base.png" alt="">
+                <div class="preview" data-layout="dualsenseedge"></div>
                 <div class="label">DualSense Edge</div>
                 <div class="desc">Fn buttons and back paddles</div>
             </a>
         </div>
         <div class="card">
             <a class="face" href="/controller.html?layout=switchpro">
-                <img class="preview" src="/img/2DModels/SWITCHPRO/NSwitchPro_base.png" alt="">
+                <div class="preview" data-layout="switchpro"></div>
                 <div class="label">Switch Pro</div>
                 <div class="desc">Nintendo layout with Capture</div>
             </a>
         </div>
         <div class="card">
             <a class="face" href="/controller.html?layout=switch2pro">
-                <img class="preview" src="/img/2DModels/SWITCH2PRO/NSwitchPro_base.png" alt="">
+                <div class="preview" data-layout="switch2pro"></div>
                 <div class="label">Switch 2 Pro</div>
                 <div class="desc">C button and back paddles</div>
             </a>
         </div>
         <div class="card">
             <a class="face" href="/controller.html?layout=steamdeck">
-                <img class="preview" src="/img/2DModels/STEAMDECK/SD_base.png" alt="">
+                <div class="preview" data-layout="steamdeck"></div>
                 <div class="label">Steam Deck</div>
                 <div class="desc">Dual trackpads and four grips</div>
             </a>
         </div>
         <div class="card">
             <a class="face" href="/controller.html?layout=steamcontroller">
-                <img class="preview" src="/img/2DModels/STEAMCONTROLLER/SC_base.png" alt="">
+                <div class="preview" data-layout="steamcontroller"></div>
                 <div class="label">Steam Controller</div>
                 <div class="desc">Dual trackpads and paddles</div>
             </a>
@@ -215,6 +251,33 @@
         </div>
     </div>
     <div class="cards" id="customCards" style="margin-top:20px"></div>
+    <script src="/js/layout_view.js"></script>
+    <script>
+    // The cards' drawings (#555): each controller at rest, as its page
+    // draws it before a touch, instead of the bare body.
+    (function () {
+        var boxes = document.querySelectorAll(".preview[data-layout]");
+        Array.prototype.forEach.call(boxes, function (box) {
+            PadForgeLayoutView.fetchLayout(box.getAttribute("data-layout"), "", function (layout) {
+                var pad = document.createElement("div");
+                box.innerHTML = "";
+                box.appendChild(pad);
+                PadForgeLayoutView.draw(pad, layout);
+                PadForgeLayoutView.fit(pad, layout, box.clientWidth, box.clientHeight);
+            });
+        });
+    })();
+
+    // The viewer's name (#555), kept in this browser for the controller
+    // pages to send.
+    (function () {
+        var input = document.getElementById("viewerName");
+        try { input.value = localStorage.getItem("padforge_viewer_name") || ""; } catch (e) { }
+        input.addEventListener("input", function () {
+            try { localStorage.setItem("padforge_viewer_name", input.value.trim()); } catch (e) { }
+        });
+    })();
+    </script>
     <script>
     // Custom pads built on this server (#296 phase 4), listed beside the
     // stock cards.

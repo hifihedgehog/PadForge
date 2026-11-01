@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PadForge - Controller Picture</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/layout_view.css">
+    <style>
+        /* Transparent, for a browser source over the broadcast. */
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #stage {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px;
+            box-sizing: border-box;
+            gap: 10px;
+        }
+        #pad-box {
+            flex: 1 1 auto;
+            min-height: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #chat {
+            flex: 0 0 auto;
+            max-width: 96%;
+            box-sizing: border-box;
+            color: #fff;
+            background: rgba(16, 16, 26, 0.8);
+            border-radius: 12px;
+            padding: 10px 18px;
+            font-size: 24px;
+            line-height: 1.35;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+            display: none;
+        }
+        #chat .who { color: #ffb36b; font-weight: 600; }
+        #chat .cmd { font-family: Consolas, 'Courier New', monospace; }
+        #chat .small { font-size: 18px; color: #d8d8e4; }
+        #chat .paused { color: #ff8a8a; }
+        #chat div:empty { display: none; }
+    </style>
+</head>
+<body>
+<div id="stage">
+    <div id="pad-box"><div id="pad"></div></div>
+    <div id="chat">
+        <div id="playing"></div>
+        <div id="line" class="small"></div>
+        <div id="claim" class="small"></div>
+        <div id="notice" class="small"></div>
+    </div>
+</div>
+<script src="/js/layout_view.js"></script>
+<script src="/js/display_client.js"></script>
+</body>
+</html>

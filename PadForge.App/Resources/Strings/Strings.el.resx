@@ -3806,6 +3806,8 @@
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>2D σχηματικά χειριστηρίων (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), του AL2009man. MIT.</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Η γραμματική εντολών και οι κανόνες εναλλαγής σειράς της γραμμής Συνομιλία Twitch, μεταφερμένοι σε C#, και το φινίρισμα WLG του χειριστηρίου web, του Yuriy (KLAVIATURKIN). ISC.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>Τεκμηρίωση του πρωτοκόλλου ήχου του DualShock 4: παράμετροι SBC και διατάξεις πακέτων, του khallmark. GPL-2.0, μόνο ως τεκμηρίωση.</value>
   </data>
@@ -4353,6 +4355,8 @@
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>Οι εντολές UDP, οι απαντήσεις, τα αρχεία θυρών και τα byte εφέ σκανδάλης πίσω από τα Mod παιχνιδιών, όπως διαβάστηκαν από τα επίσημα παραδείγματα mod DSX v3.1 και DualSenseX v2 του Paliverse, και τις δύο εκδόσεις του DualSenseY και το DualSense4Rockstar (χωρίς δημοσιευμένη άδεια), τα DSZ και pydualsense (MIT), καθώς και το Wujek Dualsense API και τον διακομιστή DSX στη διακλάδωση του DS4Windows του hbashton (GPL-3.0). Μόνο ως τεκμηρίωση, δεν διανέμεται κώδικας.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>Αναφορές για τα ακουστικά του DualShock 4</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>Η δρομολόγηση ακουστικών και ηχείου, τα όρια έντασης, η πλαισίωση του μικροφώνου και η λειτουργία αναφορών πίσω από τον ήχο Bluetooth του DualShock 4, όπως διαβάστηκαν από τα DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) και τη διακλάδωση του DS4Windows του hbashton (GPL-3.0), με τα παράθυρα σύνθεσης του αποκωδικοποιητή SBC ελεγμένα έναντι του libsbc της Google (Apache-2.0), και τα ακουστικά USB του δεύτερου μοντέλου και του προσαρμογέα της Sony όπως διαβάστηκαν από τις εξαγωγές περιγραφέων ControllersInfo του DJm00n (χωρίς δημοσιευμένη άδεια) και τις διερευνήσεις LsUSB του linux-hardware.org (CC BY 4.0). Μόνο ως τεκμηρίωση, δεν διανέμεται κώδικας.</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Αναφορές για τη συνομιλία Twitch</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Η ανάγνωση της συνομιλίας χωρίς σύνδεση και ο κανόνας εντολών με !, όπως διαβάστηκαν από τα tmi.js (MIT) και ComfyJS (MIT), και η διατήρηση μόνο των 20 νεότερων εντολών, από το πρότυπο TwitchPlays (MIT) του DougDoug. Μόνο ως τεκμηρίωση, δεν διανέμεται κώδικας.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Αναφορές για τις οθόνες πληκτρολογίων</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Οι βιβλιοθήκες, τα καρέ και τα πλήκτρα πίσω από τις οθόνες πληκτρολογίων, όπως διαβάστηκαν από τα LCD και Arx Control SDK της Logitech και το S.T.R.I.K.E. 7 SDK της Mad Catz, και διασταυρώθηκαν με τα logitech-lcd (MIT ή Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff και ArxWidgetManager (χωρίς δημοσιευμένη άδεια), το πρόγραμμα οδήγησης hid-lg-g15 του Linux (GPL-2.0-or-later), τα libg15, G15Interface και lcdproc (GPL-2.0), το gnome15 (GPL-3.0) και το G19USB (Apache-2.0). Το PadForge φορτώνει τις βιβλιοθήκες του Logitech Gaming Software και το Strike7API.dll που κατεβάζετε ή επιλέγετε, και δεν διανέμει κώδικα από κανένα από αυτά.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Αναφορές για το Novint Falcon</value></data>
@@ -4539,6 +4543,7 @@
   <data name="Falcon_Calibrate" xml:space="preserve"><value>Βαθμονόμηση εύρους κίνησης</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Μετρά πόσο μακριά διανύει η λαβή. Μετακινήστε την σε κάθε άκρο του εύρους κίνησής της για τα τέσσερα δευτερόλεπτα που διαρκεί η σάρωση. Στο μεταξύ οι δυνάμεις σταματούν.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Τηλεμετρία παιχνιδιών</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Συνομιλία Twitch</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Τηλεμετρία παιχνιδιών</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Εμφανίζει την τηλεμετρία που στέλνουν τα παιχνίδια οδήγησης, καθώς και την κοινόχρηστη μνήμη του Assetto Corsa, στη γραμμή Τηλεμετρία παιχνιδιών της σελίδας Συσκευές. Αντιστοιχίστε την ταχύτητα, τα πεντάλ και τις σχέσεις ταχυτήτων όπως κάθε είσοδο, ενεργοποιήστε μακροεντολές με αυτά ή δοκιμάστε τα σε μια Προσαρμοσμένη έκφραση. Όσο γίνεται ακρόαση, τα LED αλλαγής ταχύτητας (RPM) μιας τιμονιέρας διαβάζουν το παιχνίδι και από εδώ.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Ακρόαση τηλεμετρίας παιχνιδιών</value></data>
@@ -4552,6 +4557,44 @@
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>Προσαρμοσμένες μορφές…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>Περιγράφει, πεδίο προς πεδίο, τα πακέτα ενός παιχνιδιού που το PadForge δεν γνωρίζει.</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>Ενεργοποιήστε την έξοδο τηλεμετρίας σε κάθε παιχνίδι και στρέψτε την σε αυτόν τον υπολογιστή και αυτή τη θύρα. Τα F1, τα παιχνίδια Codemasters και το EA SPORTS WRC χρησιμοποιούν το 20777 αν δεν αλλαχθεί, τα Project CARS 2 και Automobilista 2 χρησιμοποιούν πάντα το 5606 και το πρόσθετο του MrHokss για τους προσομοιωτές φορτηγών χρησιμοποιεί το 49001. Τα Assetto Corsa και ACC δεν χρειάζονται θύρα.</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>Οποιαδήποτε εντολή</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Συνομιλία Twitch</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>Επιτρέπει στους θεατές της μετάδοσής σας να παίζουν πληκτρολογώντας στη συνομιλία της. Ένας θεατής πληκτρολογεί μια εντολή όπως !a και το PadForge πατά ό,τι αντιστοιχεί στο !a στη γραμμή Συνομιλία Twitch της σελίδας Συσκευές. Αντιστοιχίστε αυτή τη γραμμή σε μια υποδοχή όπως κάθε χειριστήριο. Το PadForge διαβάζει τη συνομιλία χωρίς σύνδεση και δεν δημοσιεύει ποτέ σε αυτήν.</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Ανάγνωση συνομιλίας Twitch</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Κανάλι</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Το όνομα του καναλιού σας ή η διεύθυνσή του στο twitch.tv.</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>Παύση</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>Συνέχιση</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Σταματά την εντολή που εκτελείται, καθαρίζει τη σειρά και αγνοεί τις εντολές συνομιλίας μέχρι να συνεχίσετε.</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>Παράλειψη</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>Σταματά την εντολή που εκτελείται. Ξεκινά η επόμενη στη σειρά.</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>Εκκαθάριση σειράς</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>Απορρίπτει τις εντολές που περιμένουν στη σειρά. Αυτή που εκτελείται ολοκληρώνεται.</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>Τέλος διεκδίκησης</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>Τερματίζει τον αποκλειστικό έλεγχο που ανέλαβε ένας θεατής με !claim.</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>Εισαγάγετε το όνομα του καναλιού σας.</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Σύνδεση με τη συνομιλία του καναλιού {0}…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Ανάγνωση της συνομιλίας του καναλιού {0}.</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Δεν ήταν δυνατή η πρόσβαση στη συνομιλία του καναλιού {0}. Νέα προσπάθεια.</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Σε παύση.</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Η εικόνα του χειριστηρίου για τη μετάδοσή σας. Προσθέστε αυτή τη διεύθυνση στο OBS ως πηγή προγράμματος περιήγησης:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Η εικόνα του χειριστηρίου για τη μετάδοσή σας χρειάζεται το Χειριστήριο web και την απλή διεύθυνση HTTP. Ενεργοποιήστε το Παροχή και απλού HTTP στην κάρτα Χειριστήριο web. Το Μόνο αυτός ο υπολογιστής αρκεί για το OBS σε αυτόν τον υπολογιστή.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Οι θεατές παίρνουν σειρά με !claim, που εγκρίνουν δύο άλλοι θεατές, και προσπερνούν μια εντολή με !skip. Οι συντονιστές ενεργούν αμέσως. Στη σειρά περιμένουν μόνο οι 20 νεότερες εντολές και μια εντολή εκτελείται για το πολύ 10 δευτερόλεπτα.</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Διαχείριση εντολών συνομιλίας</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Εντολές συνομιλίας</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Οι θεατές πληκτρολογούν ! και μια λέξη στη συνομιλία της μετάδοσής σας, όπως !jump. Κάθε λέξη είναι ένα κουμπί στη γραμμή Συνομιλία Twitch, με αντιστοίχιση όπως κάθε είσοδο. Το !a500ms κρατά πατημένο το A για 500 ms, το !a+b πατά και τα δύο, και το !a b πατά το ένα μετά το άλλο.</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>Λέξη</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>Προσθήκη</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>Λέξεις</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>Επαναφορά συνήθων λέξεων</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>Προσθέτει ξανά όσες από τις προκαθορισμένες λέξεις αφαιρέσατε: a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left και right.</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>Μια λέξη έχει το πολύ {0} γράμματα και ψηφία.</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>Μια λέξη αρχίζει με γράμμα και περιέχει μόνο γράμματα και ψηφία.</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>Μια λέξη δεν μπορεί να τελειώνει σε χρόνο όπως 2s ή 500ms, που η συνομιλία διαβάζει ως διάρκεια κράτησης.</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>Η εναλλαγή σειράς χρησιμοποιεί τα claim, accept, release, skip και skipall, επομένως καμία λέξη δεν μπορεί να είναι κάποια από αυτές.</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>Η λίστα χωράει το πολύ {0} λέξεις.</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>Προστέθηκε το {0}.</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>Το {0} υπάρχει ήδη στη λίστα.</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>Αυτόματος εντοπισμός</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport και Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 έως F1 25</value></data>

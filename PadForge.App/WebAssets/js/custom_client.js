@@ -57,6 +57,11 @@
         var proto = location.protocol === "https:" ? "wss:" : "ws:";
         var url = proto + "//" + location.host + "/ws?id=" + encodeURIComponent(clientId)
             + "&layout=" + encodeURIComponent("custom:" + layout.id);
+        // The viewer's name from the home page (#555), so the streamer can
+        // tell phones apart.
+        var viewerName = "";
+        try { viewerName = localStorage.getItem("padforge_viewer_name") || ""; } catch (e) { }
+        if (viewerName) url += "&name=" + encodeURIComponent(viewerName);
         ws = new WebSocket(url);
         ws.onopen = function () {
             document.getElementById("disconnect-message").style.display = "none";

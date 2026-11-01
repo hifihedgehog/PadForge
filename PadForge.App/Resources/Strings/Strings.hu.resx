@@ -3806,6 +3806,8 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>2D-s kontrollerrajzok (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), készítette: AL2009man. MIT.</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>A Twitch-csevegés sor parancsnyelvtana és a körönkénti váltás szabályai, C# nyelvre portolva, valamint a webes kontroller WLG felülete, készítette: Yuriy (KLAVIATURKIN). ISC.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>A DualShock 4 hangprotokolljának dokumentációja: SBC-paraméterek és csomagfelépítések, készítette: khallmark. GPL-2.0, csak dokumentációként.</value>
   </data>
@@ -4353,6 +4355,8 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>A Játékmodok mögötti UDP-utasítások, válaszok, portfájlok és ravaszeffektus-bájtok, a következő forrásokból: a Paliverse hivatalos DSX v3.1 és DualSenseX v2 modpéldái, a DualSenseY mindkét verziója és a DualSense4Rockstar (nincs közzétett licenc), a DSZ és a pydualsense (MIT), valamint a Wujek Dualsense API és a DSX-szerver hbashton DS4Windows forkjában (GPL-3.0). Csak dokumentációként, a program nem tartalmaz belőlük kódot.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>DualShock 4 fejhallgató-referenciák</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>A DualShock 4 Bluetooth-hang mögötti fejhallgató- és hangszóró-irányítás, hangerőplafonok, mikrofonkeretezés és jelentésmód, a következő forrásokból: DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) és hbashton DS4Windows forkja (GPL-3.0). Az SBC-dekóder szintézisablakai pedig a Google libsbc (Apache-2.0) alapján lettek ellenőrizve, a második modell és a Sony adapterének USB-fejhallgatói pedig a DJm00n ControllersInfo leírókimentései (nincs közzétett licenc) és a linux-hardware.org LsUSB-lekérdezései (CC BY 4.0) alapján lettek kiolvasva. Csak dokumentációként, a program nem tartalmaz belőlük kódot.</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Twitch-csevegés-referenciák</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>A csevegés bejelentkezés nélküli olvasása és a ! parancsszabály a tmi.js (MIT) és a ComfyJS (MIT) alapján, a legújabb 20 parancs megtartása pedig a DougDoug TwitchPlays (MIT) sablonjából kiolvasva. Csak dokumentációként, a program nem tartalmaz belőlük kódot.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Billentyűzetképernyő-referenciák</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>A billentyűzetképernyők mögötti könyvtárak, képkockák és billentyűk, a Logitech LCD és Arx Control SDK-iból, valamint a Mad Catz S.T.R.I.K.E. 7 SDK-jából olvasva, és a logitech-lcd (MIT vagy Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff és ArxWidgetManager (nincs közzétett licenc), a Linux hid-lg-g15 illesztőprogramja (GPL-2.0-or-later), a libg15, G15Interface és lcdproc (GPL-2.0), gnome15 (GPL-3.0) és G19USB (Apache-2.0) alapján ellenőrizve. A PadForge betölti a Logitech Gaming Software könyvtárait és a letöltött vagy kiválasztott Strike7API.dll fájlt, és egyikükből sem tartalmaz kódot.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon-referenciák</value></data>
@@ -4539,6 +4543,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Falcon_Calibrate" xml:space="preserve"><value>Mozgástartomány kalibrálása</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Megméri, mekkora utat tesz meg a fogantyú. Mozgassa a mozgástartomány minden széléig a mérés négy másodperce alatt. Közben az erők szünetelnek.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Játéktelemetria</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch-csevegés</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Játéktelemetria</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Az autóversenyzős játékok által küldött telemetriát és az Assetto Corsa megosztott memóriáját az Eszközök oldal Játéktelemetria sorára teszi. A sebesség, a pedálok és a fokozatok bármely bemenethez hasonlóan hozzárendelhetők, makrókat indíthatnak, vagy kipróbálhatók egyéni kifejezésben. Amíg figyel, a kormány fordulatszám-váltásjelző LED-jei is innen olvassák a játékot.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Játéktelemetria figyelése</value></data>
@@ -4552,6 +4557,44 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>Egyéni formátumok…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>Mezőről mezőre leírja egy olyan játék csomagjait, amelyet a PadForge nem ismer.</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>A telemetriakimenetet minden játékban be kell kapcsolni, és erre a gépre és portra kell irányítani. Az F1, a Codemasters-játékok és az EA SPORTS WRC változtatás nélkül a 20777-es portot használja, a Project CARS 2 és az Automobilista 2 mindig az 5606-ost, MrHokss teherautó-szimulátorokhoz készült beépülő modulja pedig a 49001-est. Assetto Corsa és ACC esetén nem kell port.</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>Bármely parancs</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Twitch-csevegés</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>Lehetővé teszi, hogy a közvetítésedet nézők a csevegésbe gépeléssel játsszanak. A néző beír egy parancsot, például: !a, a PadForge pedig megnyomja azt, amihez az !a hozzá van rendelve az Eszközök oldal Twitch-csevegés során. Ezt a sort bármely kontrollerhez hasonlóan rendeld foglalathoz. A PadForge bejelentkezés nélkül olvassa a csevegést, és soha nem ír bele.</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Twitch-csevegés olvasása</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Csatorna</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>A csatornád neve vagy twitch.tv címe.</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>Szünet</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>Folytatás</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Leállítja a játszó parancsot, törli a sort, és a folytatásig figyelmen kívül hagyja a csevegés parancsait.</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>Kihagyás</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>Leállítja a játszó parancsot. A sorban következő indul el.</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>Sor törlése</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>Eldobja a sorban váró parancsokat. A játszó parancs befejeződik.</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>Irányítás vége</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>Véget vet az egyedüli irányításnak, amelyet egy néző a !claim paranccsal vett át.</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>Add meg a csatornád nevét.</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Csatlakozás {0} csevegéséhez…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>{0} csevegésének olvasása.</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>{0} csevegése nem érhető el. Újrapróbálkozás.</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Szüneteltetve.</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>A közvetítésed kontrollerképe. Add hozzá ezt a címet az OBS-hez böngészőforrásként:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>A közvetítés kontrollerképéhez a Webes kontroller és a sima HTTP-cím kell. Kapcsold be a Sima HTTP kiszolgálása is lehetőséget a Webes kontroller kártyán. Az ezen a számítógépen futó OBS-hez elég a Csak ez a számítógép.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>A nézők a !claim paranccsal kérhetik az irányítást, amelyet két másik nézőnek jóvá kell hagynia, a !skip paranccsal pedig kihagynak egy parancsot. A moderátorok azonnal cselekedhetnek. A sorban csak a legutóbbi 20 parancs vár, és egy parancs legfeljebb 10 másodpercig játszik.</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Csevegésparancsok kezelése</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Csevegésparancsok</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>A nézők a közvetítésed csevegésébe írnak egy ! jelet és egy szót, például: !jump. Minden szó egy gomb a Twitch-csevegés soron, bármely bemenethez hasonlóan hozzárendelhető. Az !a500ms 500 ms-ig nyomva tartja az A gombot, az !a+b mindkettőt megnyomja, az !a b pedig egymás után nyomja meg őket.</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>Szó</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>Hozzáadás</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>Szavak</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>Alapszavak visszaállítása</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>Visszaadja az eltávolított előre beállított szavakat: a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left és right.</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>Egy szó legfeljebb {0} betűből és számjegyből állhat.</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>A szó betűvel kezdődik, és csak betűket és számjegyeket tartalmaz.</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>A szó nem végződhet időtartamra, például 2s vagy 500ms, mert a csevegés ezt a nyomva tartás idejeként olvassa.</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>Az irányításátvétel a claim, accept, release, skip és skipall szavakat használja, ezért ezek egyike sem lehet szó.</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>A lista legfeljebb {0} szót tartalmazhat.</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>Hozzáadva: {0}.</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>A(z) {0} már szerepel a listán.</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>Automatikus felismerés</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport és Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22-től F1 25-ig</value></data>

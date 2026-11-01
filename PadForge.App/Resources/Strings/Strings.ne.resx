@@ -3806,6 +3806,8 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>2D कन्ट्रोलर रेखाचित्रहरू (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), AL2009man द्वारा। MIT.</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Twitch च्याट पङ्क्तिको कमान्ड व्याकरण र पालो लिने नियमहरू, C# मा पोर्ट गरिएका, र वेब कन्ट्रोलरको WLG फिनिस, Yuriy (KLAVIATURKIN) द्वारा। ISC.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>DualShock 4 अडियो प्रोटोकलको कागजात: SBC प्यारामिटर र प्याकेट लेआउटहरू, khallmark द्वारा। GPL-2.0, कागजात मात्र।</value>
   </data>
@@ -4353,6 +4355,8 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>गेम मोडहरू पछाडिका UDP निर्देशनहरू, जवाफहरू, पोर्ट फाइलहरू र ट्रिगर इफेक्ट बाइटहरू, Paliverse को आधिकारिक DSX v3.1 र DualSenseX v2 मोड उदाहरणहरू, DualSenseY का दुवै संस्करण र DualSense4Rockstar (कुनै इजाजतपत्र प्रकाशित छैन), DSZ र pydualsense (MIT), तथा Wujek Dualsense API र hbashton को DS4Windows फोर्कमा रहेको DSX सर्भर (GPL-3.0) बाट पढिएका। कागजात मात्र, कुनै कोड समावेश छैन।</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>DualShock 4 हेडसेट सन्दर्भहरू</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>DualShock 4 Bluetooth अडियो पछाडिको हेडफोन र स्पिकर राउटिङ, भोल्युमका अधिकतम सीमा, माइक्रोफोन फ्रेमिङ र रिपोर्ट मोड, DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) र hbashton को DS4Windows फोर्क (GPL-3.0) बाट पढिएका, SBC डिकोडरका सिन्थेसिस विन्डोहरू Google को libsbc (Apache-2.0) सँग जाँचिएका, र दोस्रो मोडेल र Sony को एडाप्टरका USB हेडसेटहरू DJm00n को ControllersInfo डिस्क्रिप्टर डम्पहरू (कुनै इजाजतपत्र प्रकाशित छैन) र linux-hardware.org को LsUSB प्रोबहरू (CC BY 4.0) बाट पढिएका। कागजात मात्र, कुनै कोड समावेश छैन।</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Twitch च्याट सन्दर्भहरू</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>साइन इन नगरी च्याट पढ्ने तरिका र ! कमान्ड नियम, tmi.js (MIT) र ComfyJS (MIT) बाट पढिएका, र सबैभन्दा नयाँ 20 कमान्डहरू मात्र राख्ने तरिका, DougDoug को TwitchPlays टेम्प्लेट (MIT) बाट। कागजात मात्र, कुनै कोड समावेश छैन।</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>किबोर्ड स्क्रिन सन्दर्भहरू</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>किबोर्ड स्क्रिनहरू पछाडिका लाइब्रेरीहरू, फ्रेमहरू र कुञ्जीहरू, Logitech को LCD र Arx Control SDKs तथा Mad Catz को S.T.R.I.K.E. 7 SDK बाट पढिएका, र logitech-lcd (MIT वा Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff र ArxWidgetManager (कुनै इजाजतपत्र प्रकाशित छैन), Linux को hid-lg-g15 ड्राइभर (GPL-2.0-or-later), libg15, G15Interface र lcdproc (GPL-2.0), gnome15 (GPL-3.0) र G19USB (Apache-2.0) सँग जाँचिएका। PadForge ले Logitech Gaming Software का लाइब्रेरीहरू र तपाईंले डाउनलोड गर्ने वा रोज्ने Strike7API.dll लोड गर्छ, र तीमध्ये कुनैको पनि कोड समावेश गर्दैन।</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon सन्दर्भहरू</value></data>
@@ -4539,6 +4543,7 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Falcon_Calibrate" xml:space="preserve"><value>पहुँच क्यालिब्रेट गर्नुहोस्</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>ह्यान्डल कति टाढा जान्छ भनेर नाप्छ। मापन चल्ने चार सेकेन्डसम्म यसलाई पहुँचको हरेक किनारासम्म सार्नुहोस्। त्यस बेला बलहरू रोकिन्छन्।</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>गेम टेलिमेट्री</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch च्याट</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>गेम टेलिमेट्री</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>ड्राइभिङ गेमहरूले पठाउने टेलिमेट्री र Assetto Corsa को साझा मेमोरीलाई यन्त्रहरू पृष्ठको गेम टेलिमेट्री पङ्क्तिमा राख्छ। यसको गति, पेडल र गियरलाई कुनै पनि इनपुटजस्तै म्याप गर्नुहोस्, तिनबाट म्याक्रोहरू सुरु गर्नुहोस्, वा अनुकूल अभिव्यक्तिमा परीक्षण गर्नुहोस्। यसले सुनिरहँदा ह्विलका RPM सिफ्ट LED ले पनि गेमलाई यहीँबाट पढ्छन्।</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>गेम टेलिमेट्रीका लागि सुन्नुहोस्</value></data>
@@ -4552,6 +4557,44 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>अनुकूल ढाँचाहरू…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>PadForge ले नचिनेको गेमका प्याकेटहरू फिल्ड-फिल्ड गरी वर्णन गर्छ।</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>प्रत्येक गेममा टेलिमेट्री आउटपुट खोल्नुहोस् र त्यसलाई यो PC र पोर्टतर्फ निर्देशित गर्नुहोस्। F1, Codemasters का गेमहरू र EA SPORTS WRC ले नबदलेसम्म 20777 प्रयोग गर्छन्, Project CARS 2 र Automobilista 2 ले सधैँ 5606 प्रयोग गर्छन्, र ट्रक सिमुलेटरहरूका लागि MrHokss को प्लगइनले 49001 प्रयोग गर्छ। Assetto Corsa र ACC लाई पोर्ट चाहिँदैन।</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>कुनै पनि कमान्ड</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Twitch च्याट</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>तपाईंको स्ट्रिम हेर्ने मानिसहरूलाई त्यसको च्याटमा टाइप गरेर खेल्न दिन्छ। दर्शकले !a जस्तो कमान्ड टाइप गर्छन्, र PadForge ले यन्त्रहरू पृष्ठको Twitch च्याट पङ्क्तिमा !a मा म्याप गरिएको कुरा थिच्छ। त्यो पङ्क्तिलाई कुनै पनि कन्ट्रोलरजस्तै स्लटमा तोक्नुहोस्। PadForge ले साइन इन नगरी च्याट पढ्छ र त्यसमा कहिल्यै पोस्ट गर्दैन।</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Twitch च्याट पढ्नुहोस्</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>च्यानल</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>तपाईंको च्यानलको नाम वा त्यसको twitch.tv ठेगाना।</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>पज गर्नुहोस्</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>जारी राख्नुहोस्</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>चलिरहेको कमान्ड रोक्छ, लाइन खाली गर्छ र तपाईंले जारी नराखेसम्म च्याट कमान्डहरूलाई बेवास्ता गर्छ।</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>छोड्नुहोस्</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>चलिरहेको कमान्ड रोक्छ। लाइनमा रहेको अर्को कमान्ड सुरु हुन्छ।</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>लाइन खाली गर्नुहोस्</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>लाइनमा पर्खिरहेका कमान्डहरू हटाउँछ। चलिरहेको कमान्ड पूरा हुन्छ।</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>दाबी अन्त्य गर्नुहोस्</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>दर्शकले !claim बाट लिएको एकल नियन्त्रण अन्त्य गर्छ।</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>आफ्नो च्यानलको नाम प्रविष्ट गर्नुहोस्।</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>{0} को च्याटमा जडान हुँदै…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>{0} को च्याट पढ्दै।</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>{0} को च्याटमा पुग्न सकिएन। फेरि प्रयास गर्दै।</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>पज गरिएको।</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>तपाईंको प्रसारणका लागि कन्ट्रोलरको चित्र। यो ठेगानालाई OBS मा ब्राउजर स्रोतको रूपमा थप्नुहोस्:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>तपाईंको प्रसारणका लागि कन्ट्रोलरको चित्रलाई वेब कन्ट्रोलर र त्यसको सादा HTTP ठेगाना चाहिन्छ। वेब कन्ट्रोलर कार्डमा “सादा HTTP पनि दिनुहोस्” सक्रिय गर्नुहोस्। यही PC मा चल्ने OBS का लागि “यो PC मात्र” पर्याप्त छ।</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>दर्शकहरू !claim बाट पालो लिन्छन्, जसलाई अरू दुई दर्शकले स्वीकृत गर्छन्, र !skip बाट कमान्ड छोड्छन्। मोडरेटरहरूले तुरुन्तै कार्य गर्छन्। सबैभन्दा नयाँ 20 कमान्ड मात्र लाइनमा पर्खन्छन्, र एउटा कमान्ड बढीमा 10 सेकेन्ड चल्छ।</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>च्याट कमान्डहरू व्यवस्थापन गर्नुहोस्</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>च्याट कमान्डहरू</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>दर्शकहरूले तपाईंको स्ट्रिमको च्याटमा !jump जस्तै ! र एउटा शब्द टाइप गर्छन्। प्रत्येक शब्द Twitch च्याट पङ्क्तिको एउटा बटन हो, जुन कुनै पनि इनपुटजस्तै म्याप गरिन्छ। !a500ms ले A लाई 500 ms सम्म थिचिराख्छ, !a+b ले दुवै थिच्छ, र !a b ले एकपछि अर्को थिच्छ।</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>शब्द</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>थप्नुहोस्</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>शब्दहरू</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>सामान्य शब्दहरू फर्काउनुहोस्</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>तपाईंले हटाएका पूर्वनिर्धारित शब्दहरू फेरि थप्छ: a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left र right।</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>शब्दमा बढीमा {0} अक्षर र अङ्क हुन्छन्।</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>शब्द अक्षरबाट सुरु हुन्छ र त्यसमा अक्षर र अङ्क मात्र हुन्छन्।</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>शब्द 2s वा 500ms जस्तो समयमा अन्त्य हुन सक्दैन, किनकि च्याटले त्यसलाई कति समय थिचिराख्ने भनेर पढ्छ।</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>पालो लिन claim, accept, release, skip र skipall प्रयोग हुन्छन्, त्यसैले कुनै पनि शब्द तीमध्ये एक हुन सक्दैन।</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>सूचीमा बढीमा {0} शब्द रहन्छन्।</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>{0} थपियो।</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} पहिले नै सूचीमा छ।</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>स्वतः पत्ता लगाउने</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport र Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 देखि F1 25 सम्म</value></data>

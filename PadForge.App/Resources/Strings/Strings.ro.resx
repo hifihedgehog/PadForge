@@ -3806,6 +3806,8 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>Scheme 2D de controlere (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), de AL2009man. MIT.</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Gramatica comenzilor și regulile de alternare a turelor ale rândului Chat Twitch, portate în C#, și finisajul WLG al controlerului web, de Yuriy (KLAVIATURKIN). ISC.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>Documentație pentru protocolul audio DualShock 4: parametrii SBC și structura pachetelor, de khallmark. GPL-2.0, doar ca documentație.</value>
   </data>
@@ -4353,6 +4355,8 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>Instrucțiunile UDP, răspunsurile, fișierele de port și octeții efectelor de trăgaci din spatele opțiunii Modificări de joc, citite din exemplele oficiale de moduri DSX v3.1 și DualSenseX v2 de la Paliverse, ambele versiuni ale DualSenseY și DualSense4Rockstar (fără licență publicată), DSZ și pydualsense (MIT), precum și Wujek Dualsense API și serverul DSX din forkul DS4Windows al lui hbashton (GPL-3.0). Doar documentație, nu este inclus niciun cod.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>Referințe pentru căștile DualShock 4</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>Rutarea sunetului către căști și difuzor, plafoanele de volum, încadrarea microfonului și modul de raport din spatele audio Bluetooth al DualShock 4, citite din DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) și forkul DS4Windows al lui hbashton (GPL-3.0), cu ferestrele de sinteză ale decodorului SBC verificate cu libsbc de la Google (Apache-2.0), iar căștile USB ale celui de-al doilea model și ale adaptorului Sony citite din descrierile de descriptori ControllersInfo ale lui DJm00n (fără licență publicată) și din sondele LsUSB de la linux-hardware.org (CC BY 4.0). Doar documentație, nu este inclus niciun cod.</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Referințe pentru chatul Twitch</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Citirea chatului fără autentificare și regula comenzilor cu !, citite din tmi.js (MIT) și ComfyJS (MIT), iar păstrarea doar a celor mai noi 20 de comenzi, din șablonul TwitchPlays al lui DougDoug (MIT). Doar documentație, nu este inclus niciun cod.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Referințe pentru ecranele tastaturilor</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Bibliotecile, cadrele și tastele din spatele ecranelor tastaturilor, citite din SDK-urile Logitech LCD și Arx Control și din SDK-ul S.T.R.I.K.E. 7 de la Mad Catz, verificate încrucișat cu logitech-lcd (MIT sau Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff și ArxWidgetManager (fără licență publicată), driverul hid-lg-g15 din Linux (GPL-2.0-or-later), libg15, G15Interface și lcdproc (GPL-2.0), gnome15 (GPL-3.0) și G19USB (Apache-2.0). PadForge încarcă bibliotecile Logitech Gaming Software și Strike7API.dll descărcat sau ales de utilizator și nu include cod din niciuna dintre ele.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Referințe Novint Falcon</value></data>
@@ -4539,6 +4543,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Falcon_Calibrate" xml:space="preserve"><value>Calibrare cursă</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Măsoară cât de departe se deplasează mânerul. Mutați-l la fiecare margine a cursei sale în cele patru secunde cât rulează măsurarea. Între timp, forțele se opresc.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Telemetrie de joc</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Chat Twitch</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Telemetrie de joc</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Afișează telemetria trimisă de jocurile de curse, precum și memoria partajată din Assetto Corsa, pe rândul Telemetrie de joc din pagina Dispozitive. Mapați viteza, pedalele și treptele ca orice intrare, declanșați macrocomenzi cu ele sau testați-le într-o expresie personalizată. Cât timp ascultă, LED-urile RPM de schimbare a treptei ale unui volan citesc jocul și de aici.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Ascultă telemetria de joc</value></data>
@@ -4552,6 +4557,44 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>Formate personalizate…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>Descrie, câmp cu câmp, pachetele unui joc necunoscut de PadForge.</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>Activați ieșirea de telemetrie în fiecare joc și indicați spre acest PC și acest port. F1, jocurile Codemasters și EA SPORTS WRC folosesc 20777 dacă nu se schimbă, Project CARS 2 și Automobilista 2 folosesc mereu 5606, iar pluginul lui MrHokss pentru simulatoarele de camioane folosește 49001. Assetto Corsa și ACC nu au nevoie de port.</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>Orice comandă</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Chat Twitch</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>Le permite spectatorilor transmisiei dvs. să joace scriind în chatul ei. Un spectator scrie o comandă precum !a, iar PadForge apasă ce este mapat pe !a pe rândul Chat Twitch din pagina Dispozitive. Atribuiți acest rând unui slot ca orice controler. PadForge citește chatul fără autentificare și nu postează niciodată în el.</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Citește chatul Twitch</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Canal</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Numele canalului dvs. sau adresa lui twitch.tv.</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>Pauză</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>Reluare</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Oprește comanda în curs, golește coada și ignoră comenzile din chat până la reluare.</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>Omitere</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>Oprește comanda în curs. Începe următoarea din coadă.</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>Golire coadă</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>Elimină comenzile care așteaptă în coadă. Cea în curs se termină.</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>Încheiere preluare</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>Încheie controlul exclusiv pe care un spectator l-a preluat cu !claim.</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>Introduceți numele canalului dvs.</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Se conectează la chatul canalului {0}…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Se citește chatul canalului {0}.</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Chatul canalului {0} nu a putut fi accesat. Se încearcă din nou.</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>În pauză.</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Imaginea controlerului pentru transmisia dvs. Adăugați această adresă în OBS ca sursă de browser:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Imaginea controlerului pentru transmisie necesită Controler web și adresa lui HTTP simplă. Activați Servește și HTTP simplu în cardul Controler web. Doar acest PC este suficient pentru OBS de pe acest PC.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Spectatorii își preiau controlul pe rând cu !claim, pe care îl aprobă alți doi spectatori, și omit o comandă cu !skip. Moderatorii acționează imediat. În coadă așteaptă doar ultimele 20 de comenzi, iar o comandă rulează cel mult 10 secunde.</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Gestionare comenzi chat</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Comenzi chat</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Spectatorii scriu ! și un cuvânt în chatul transmisiei dvs., de exemplu !jump. Fiecare cuvânt este un buton pe rândul Chat Twitch, mapat ca orice intrare. !a500ms ține apăsat A timp de 500 ms, !a+b le apasă pe amândouă, iar !a b le apasă una după alta.</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>Cuvânt</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>Adăugare</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>Cuvinte</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>Restaurare cuvinte uzuale</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>Readaugă cuvintele presetate pe care le-ați eliminat: a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left și right.</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>Un cuvânt are cel mult {0} litere și cifre.</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>Un cuvânt începe cu o literă și conține doar litere și cifre.</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>Un cuvânt nu se poate termina cu o durată precum 2s sau 500ms, pe care chatul o citește ca timp de apăsare.</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>Preluarea pe rând folosește claim, accept, release, skip și skipall, așa că niciun cuvânt nu poate fi unul dintre ele.</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>Lista conține cel mult {0} cuvinte.</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>S-a adăugat {0}.</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} este deja în listă.</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>Detectare automată</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport și Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 până la F1 25</value></data>

@@ -889,6 +889,17 @@
                             </Button.Style>
                         </Button>
 
+                        <!-- Manage the chat command words (issue #555): the
+                             Twitch Chat row, whose buttons are the words. -->
+                        <Button Content="{Binding TwitchChat_ManageButton, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
+                                Padding="8,4" HorizontalAlignment="Left"
+                                Click="ManageChatCommands_Click"
+                                Visibility="{Binding SelectedDevice.ShowManageChatCommands, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
+                            </Button.Style>
+                        </Button>
+
                         <!-- Learn / manage handheld hidden buttons (issue #343):
                              the per-machine Hidden Buttons row only. -->
                         <Button Content="{Binding Handheld_ManageButton, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
@@ -1101,6 +1112,12 @@
                         <TextBlock common:LiveText.Polite="True" Text="{Binding GameTelemetryStatus}" TextWrapping="Wrap"
                                    FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"
                                    Visibility="{Binding GameTelemetryStatus, Converter={StaticResource StringToVisibility}}"/>
+
+                        <!-- Twitch chat line (#555): the Dashboard card's line,
+                             bound to the text for the head tracker line's reason. -->
+                        <TextBlock common:LiveText.Polite="True" Text="{Binding TwitchChatStatus}" TextWrapping="Wrap"
+                                   FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"
+                                   Visibility="{Binding TwitchChatStatus, Converter={StaticResource StringToVisibility}}"/>
 
                         <Separator Margin="0,2,0,6"/>
 

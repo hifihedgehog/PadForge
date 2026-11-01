@@ -3806,6 +3806,8 @@
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>2D कंट्रोलर रेखाचित्र (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), AL2009man द्वारा। MIT।</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Twitch चैट पंक्ति का कमांड व्याकरण और बारी-बारी खेलने के नियम, C# में पोर्ट किए गए, और वेब कंट्रोलर का WLG फ़िनिश, Yuriy (KLAVIATURKIN) द्वारा। ISC।</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>DualShock 4 ऑडियो प्रोटोकॉल का दस्तावेज़: SBC पैरामीटर और पैकेट लेआउट, khallmark द्वारा। GPL-2.0, केवल दस्तावेज़ के रूप में।</value>
   </data>
@@ -4353,6 +4355,8 @@
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>गेम मॉड के पीछे के UDP निर्देश, जवाब, पोर्ट फ़ाइलें और ट्रिगर इफ़ेक्ट बाइट, जो Paliverse के आधिकारिक DSX v3.1 और DualSenseX v2 मॉड उदाहरणों, DualSenseY के दोनों संस्करणों और DualSense4Rockstar (कोई लाइसेंस प्रकाशित नहीं), DSZ और pydualsense (MIT), तथा Wujek Dualsense API और hbashton के DS4Windows फ़ोर्क के DSX सर्वर (GPL-3.0) से पढ़े गए। केवल दस्तावेज़, कोई कोड साथ नहीं आता।</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>DualShock 4 हेडसेट संदर्भ</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>DualShock 4 Bluetooth ऑडियो के पीछे का हेडफ़ोन और स्पीकर रूटिंग, वॉल्यूम की ऊपरी सीमा, माइक्रोफ़ोन फ़्रेमिंग और रिपोर्ट मोड, जो DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) और hbashton के DS4Windows फ़ोर्क (GPL-3.0) से पढ़े गए, साथ में SBC डिकोडर की सिंथेसिस विंडो Google के libsbc (Apache-2.0) से मिलाकर जाँची गईं, और दूसरे मॉडल तथा Sony के एडैप्टर के USB हेडसेट DJm00n के ControllersInfo डिस्क्रिप्टर डंप (कोई लाइसेंस प्रकाशित नहीं) और linux-hardware.org के LsUSB प्रोब (CC BY 4.0) से पढ़े गए। केवल दस्तावेज़, कोई कोड साथ नहीं आता।</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Twitch चैट संदर्भ</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>साइन इन किए बिना चैट पढ़ना और ! कमांड नियम, tmi.js (MIT) और ComfyJS (MIT) से पढ़े गए, और केवल सबसे नई 20 कमांड रखना, DougDoug के TwitchPlays (MIT) टेम्पलेट से। केवल दस्तावेज़, कोई कोड साथ नहीं आता।</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>कीबोर्ड स्क्रीन संदर्भ</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>कीबोर्ड स्क्रीन के पीछे की लाइब्रेरी, फ़्रेम और कुंजियाँ, जो Logitech के LCD और Arx Control SDKs तथा Mad Catz के S.T.R.I.K.E. 7 SDK से पढ़ी गईं और logitech-lcd (MIT या Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff और ArxWidgetManager (कोई लाइसेंस प्रकाशित नहीं), Linux के hid-lg-g15 ड्राइवर (GPL-2.0-or-later), libg15, G15Interface और lcdproc (GPL-2.0), gnome15 (GPL-3.0) और G19USB (Apache-2.0) से मिलाकर जाँची गईं। PadForge Logitech Gaming Software की लाइब्रेरी और आपके डाउनलोड या चुने हुए Strike7API.dll को लोड करता है और इनमें से किसी का कोई कोड साथ नहीं देता।</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon संदर्भ</value></data>
@@ -4539,6 +4543,7 @@
   <data name="Falcon_Calibrate" xml:space="preserve"><value>रीच कैलिब्रेट करें</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>मापता है कि हैंडल कितनी दूर तक जाता है। स्वीप चलने के चार सेकंड में उसे अपनी रीच के हर किनारे तक ले जाएँ। इस दौरान बल बंद रहते हैं।</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>गेम टेलीमेट्री</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch चैट</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>गेम टेलीमेट्री</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>ड्राइविंग गेम जो टेलीमेट्री भेजते हैं, और Assetto Corsa की साझा मेमोरी को डिवाइस पेज की गेम टेलीमेट्री पंक्ति पर दिखाता है। इसकी गति, पेडल और गियर को किसी भी इनपुट की तरह मैप करें, इनसे मैक्रो चलाएँ, या कस्टम एक्सप्रेशन में आज़माएँ। सुनते समय व्हील के RPM शिफ़्ट LED भी गेम को यहीं से पढ़ते हैं।</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>गेम टेलीमेट्री सुनें</value></data>
@@ -4552,6 +4557,44 @@
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>कस्टम फ़ॉर्मैट…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>ऐसे गेम के पैकेट फ़ील्ड-दर-फ़ील्ड बताता है जिसे PadForge नहीं जानता।</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>हर गेम में टेलीमेट्री आउटपुट चालू करें और उसे इस PC और पोर्ट की ओर करें। F1, Codemasters गेम और EA SPORTS WRC बदले जाने तक 20777 का उपयोग करते हैं, Project CARS 2 और Automobilista 2 हमेशा 5606 का, और ट्रक सिमुलेटर के लिए MrHokss का प्लगइन 49001 का। Assetto Corsa और ACC को पोर्ट नहीं चाहिए।</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>कोई भी कमांड</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Twitch चैट</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>आपकी स्ट्रीम देखने वालों को उसकी चैट में टाइप करके खेलने देता है। दर्शक !a जैसी कमांड टाइप करता है, और PadForge डिवाइस पेज की Twitch चैट पंक्ति पर !a से मैप किया गया बटन दबा देता है। उस पंक्ति को किसी भी कंट्रोलर की तरह स्लॉट में असाइन करें। PadForge साइन इन किए बिना चैट पढ़ता है और उसमें कभी कुछ पोस्ट नहीं करता।</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Twitch चैट पढ़ें</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>चैनल</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>आपके चैनल का नाम या उसका twitch.tv पता।</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>रोकें</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>फिर शुरू करें</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>चल रही कमांड को रोकता है, कतार खाली करता है और आपके फिर शुरू करने तक चैट कमांड को अनदेखा करता है।</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>छोड़ें</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>चल रही कमांड को रोकता है। कतार की अगली कमांड शुरू हो जाती है।</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>कतार साफ़ करें</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>कतार में प्रतीक्षा कर रही कमांड हटा देता है। जो चल रही है वह पूरी होती है।</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>क्लेम समाप्त करें</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>दर्शक ने !claim से जो अकेला नियंत्रण लिया था, उसे समाप्त करता है।</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>अपने चैनल का नाम दर्ज करें।</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>{0} की चैट से कनेक्ट हो रहा है…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>{0} की चैट पढ़ रहा है।</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>{0} की चैट तक नहीं पहुँच सका। फिर कोशिश कर रहा है।</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>रुका हुआ।</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>आपके प्रसारण के लिए कंट्रोलर की तस्वीर। इस पते को OBS में ब्राउज़र सोर्स के रूप में जोड़ें:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>आपके प्रसारण के लिए कंट्रोलर की तस्वीर को वेब कंट्रोलर और उसका सादा HTTP पता चाहिए। वेब कंट्रोलर कार्ड में सादा HTTP भी उपलब्ध कराएँ चालू करें। इस PC पर OBS के लिए केवल यह PC काफ़ी है।</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>दर्शक !claim से बारी लेते हैं, जिसे दो दूसरे दर्शक मंज़ूर करते हैं, और !skip से किसी कमांड को छोड़ देते हैं। मॉडरेटर तुरंत कार्रवाई करते हैं। कतार में केवल सबसे नई 20 कमांड रहती हैं, और एक कमांड अधिकतम 10 सेकंड चलती है।</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>चैट कमांड प्रबंधित करें</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>चैट कमांड</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>दर्शक आपकी स्ट्रीम की चैट में ! और एक शब्द टाइप करते हैं, जैसे !jump। हर शब्द Twitch चैट पंक्ति का एक बटन है, जिसे किसी भी इनपुट की तरह मैप किया जाता है। !a500ms A को 500 ms तक दबाए रखता है, !a+b दोनों को एक साथ दबाता है, और !a b एक के बाद एक दबाता है।</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>शब्द</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>जोड़ें</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>शब्द</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>सामान्य शब्द बहाल करें</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>आपके हटाए गए पहले से तय शब्द वापस जोड़ता है: a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left और right।</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>एक शब्द में अधिकतम {0} अक्षर और अंक हो सकते हैं।</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>शब्द अक्षर से शुरू होना चाहिए और उसमें केवल अक्षर और अंक हो सकते हैं।</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>शब्द 2s या 500ms जैसे समय पर खत्म नहीं हो सकता, क्योंकि चैट उसे दबाए रखने की अवधि मानती है।</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>बारी लेने के लिए claim, accept, release, skip और skipall इस्तेमाल होते हैं, इसलिए कोई शब्द इनमें से नहीं हो सकता।</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>सूची में अधिकतम {0} शब्द आ सकते हैं।</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>{0} जोड़ा गया।</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} सूची में पहले से है।</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>स्वतः पहचान</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport और Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 से F1 25</value></data>

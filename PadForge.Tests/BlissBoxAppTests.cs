@@ -1496,7 +1496,7 @@ namespace PadForge.Tests
             // port's Devices line and actions kept their last running state.
             string code = Repo("PadForge.App", "Services", "InputService.cs");
             int stop = code.IndexOf("                _inputManager.Stop();", StringComparison.Ordinal);
-            int refresh = code.IndexOf("                    UpdateHeadTrackingStatus();\n                    UpdateGameTelemetryStatus();\n                    UpdateGKeysStatus();\n                    UpdateAnalogKeyboardsStatus();\n                    UpdateBlissBoxStatus();", StringComparison.Ordinal);
+            int refresh = code.IndexOf("                    UpdateHeadTrackingStatus();\n                    UpdateGameTelemetryStatus();\n                    UpdateTwitchChatStatus();\n                    UpdateGKeysStatus();\n                    UpdateAnalogKeyboardsStatus();\n                    UpdateBlissBoxStatus();", StringComparison.Ordinal);
             Assert.True(stop > 0 && refresh > stop);
             Assert.Contains("UpdateDevicePanelLines(selected, selectedDevice);", code);
             Assert.Contains("        private void UpdateDevicePanelLines(DeviceRowViewModel row, UserDevice ud)\n        {\n            UpdateBlissBoxDeviceRow(row, ud);", code);

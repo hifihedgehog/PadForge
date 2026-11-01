@@ -212,8 +212,14 @@
 
     function wsUrlFor(slot) {
         var proto = location.protocol === "https:" ? "wss:" : "ws:";
-        return proto + "//" + location.host + "/ws?id=" + encodeURIComponent(clientId + "-g" + slot.n)
+        var url = proto + "//" + location.host + "/ws?id=" + encodeURIComponent(clientId + "-g" + slot.n)
             + "&layout=gamepad&mode=" + slot.mode + "&buttons=" + slot.buttons + "&axes=" + slot.axes;
+        // The viewer's name from the home page (#555), so the streamer can
+        // tell phones apart.
+        var viewerName = "";
+        try { viewerName = localStorage.getItem("padforge_viewer_name") || ""; } catch (e) { }
+        if (viewerName) url += "&name=" + encodeURIComponent(viewerName);
+        return url;
     }
 
     function retireSocket(ws) {

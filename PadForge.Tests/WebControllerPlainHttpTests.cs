@@ -167,6 +167,7 @@ namespace PadForge.Tests
             server.Stop();
             Assert.False(server.IsPlainServing);
             Assert.Null(server.PlainUrl);
+            Assert.Null(server.DisplayUrl);
             Assert.Null(server.PlainStatus);
             // Stopping closes the plain port's firewall opening.
             Assert.Equal(new WebControllerServer.PlainHttpOptions[] { plain, null }, firewall);
@@ -180,6 +181,9 @@ namespace PadForge.Tests
             Assert.True(server.Start(18080, new WebControllerServer.PlainHttpOptions(18081, true)));
             Assert.True(server.IsPlainLocalOnly);
             Assert.Equal("http://localhost:18081/?code=ABCDEFGHJK", server.PlainUrl);
+            // The controller picture (#555) rides the plain address, the one
+            // OBS loads: the main address's certificate is self-signed.
+            Assert.Equal("http://localhost:18081/display.html?code=ABCDEFGHJK", server.DisplayUrl);
             Assert.Equal(string.Format(Strings.Instance.Server_RunningOn_Format, "http://localhost:18081"), server.PlainStatus);
         }
 
@@ -208,6 +212,7 @@ namespace PadForge.Tests
             Assert.True(server.Start(18080, new WebControllerServer.PlainHttpOptions(18081, false)));
             Assert.False(server.IsPlainServing);
             Assert.Null(server.PlainUrl);
+            Assert.Null(server.DisplayUrl);
             Assert.Equal(new[] { "http://+:18080/" }, listener.Prefixes);
             Assert.Equal(Strings.Instance.Server_FailedToStart, server.PlainStatus);
         }
@@ -247,6 +252,7 @@ namespace PadForge.Tests
             Assert.True(server.Start(18080));
             Assert.Null(server.PlainStatus);
             Assert.Null(server.PlainUrl);
+            Assert.Null(server.DisplayUrl);
             Assert.False(server.IsPlainServing);
         }
 
@@ -456,6 +462,28 @@ namespace PadForge.Tests
             Assert.True(setterLock > setter && write > setterLock && sweep > write && sweep < setterEnd);
             // The only other writer of the code would bypass the sweep.
             Assert.Single(System.Text.RegularExpressions.Regex.Matches(source, @"\b_accessCode = "));
+        }
+
+        /// <summary>The controller picture page (#555) watches a slot through
+        /// a socket of its own: it gets the slot, the state and the chat,
+        /// takes no client slot, and on the plain address closes when the
+        /// streamer issues a new code, as the controllers do.</summary>
+        [Fact]
+        public async Task APicturePageWatchesASlot_AndANewCodeClosesItOnThePlainAddress()
+        {
+            using var run = LoopbackRun.Start(localOnly: false);
+            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(20));
+            using var page = new System.Net.WebSockets.ClientWebSocket();
+            await page.ConnectAsync(new Uri($"ws://127.0.0.1:{run.PlainPort}/ws?view=2&code={run.Code}"), timeout.Token);
+            string slot = await ReceiveText(page, timeout.Token);
+            Assert.Contains("\"type\":\"slot\"", slot);
+            Assert.Contains("\"slot\":2", slot);
+            Assert.Contains("\"type\":\"state\"", await ReceiveText(page, timeout.Token));
+            Assert.Contains("\"type\":\"chat\"", await ReceiveText(page, timeout.Token));
+            Assert.Equal(0, run.Server.ClientCount);
+
+            run.Server.SetPlainAccessCode(WebControllerAccess.Generate());
+            await ReceiveUntilClosed(page, timeout.Token);
         }
 
         private static async Task<string> ReceiveText(System.Net.WebSockets.ClientWebSocket socket, CancellationToken token)

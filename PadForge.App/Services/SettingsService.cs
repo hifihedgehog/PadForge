@@ -2294,6 +2294,10 @@ namespace PadForge.Services
                 appSettings.NfcTags?.Select(t => (t.Uid, t.Name, t.Button)));
             PadForge.Common.Input.VoicePhraseRegistry.LoadRegistry(
                 appSettings.VoicePhrases?.Select(v => (v.Phrase, v.Name, v.Button)));
+            // Twitch chat words (#555). Null, a file that never held the
+            // list, registers the usual words. An empty list stays empty.
+            PadForge.Common.Input.Twitch.ChatCommandRegistry.LoadRegistry(
+                appSettings.ChatCommands?.Select(c => (c.Word, c.Button)));
             // Handheld hidden buttons (#343): definitions first, then the
             // toggle, so the row that appears on enable already has them.
             PadForge.Common.Input.HandheldButtonRegistry.LoadRegistry(
@@ -2630,6 +2634,9 @@ namespace PadForge.Services
                 appSettings.WebControllerPlainHttpPort >= 1024 && appSettings.WebControllerPlainHttpPort <= 65535
                     ? appSettings.WebControllerPlainHttpPort : WebControllerServer.DefaultPlainPort;
             _mainVm.Dashboard.WebControllerPlainHttpLocalOnly = appSettings.WebControllerPlainHttpLocalOnly;
+            // Twitch chat (#555): machine settings, like the plain address.
+            _mainVm.Dashboard.TwitchChatChannel = appSettings.TwitchChatChannel ?? string.Empty;
+            _mainVm.Dashboard.EnableTwitchChat = appSettings.EnableTwitchChat;
             // A missing, damaged or foreign code reads as null, which the view
             // model ignores, so the fresh code it started with stays.
             string storedAccessCode = WebControllerAccess.UnprotectFromStorage(appSettings.WebControllerAccessCodeProtected);
@@ -4863,6 +4870,9 @@ namespace PadForge.Services
             var voicePhrases = PadForge.Common.Input.VoicePhraseRegistry.SaveRegistry()
                 .Select(v => new VoicePhraseData { Phrase = v.Phrase, Name = v.Name, Button = v.Button })
                 .ToArray();
+            var chatCommands = PadForge.Common.Input.Twitch.ChatCommandRegistry.SaveRegistry()
+                .Select(c => new ChatCommandData { Word = c.Word, Button = c.Button })
+                .ToArray();
             // Sync the ViewModel toggle to the static state.
             SettingsManager.EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching;
             SettingsManager.EnableExternalControl = vm.EnableExternalControl;
@@ -4965,6 +4975,7 @@ namespace PadForge.Services
                 MappingPickerHiddenDevices = pickerHidden,
                 PsMoveCalibrations = PadForge.Common.Input.PsMoveCalibrationRegistry.SaveRegistry(),
                 VoicePhrases = voicePhrases,
+                ChatCommands = chatCommands,
                 VoiceMacrosEnabled = PadForge.Services.VoiceMacroService.Enabled,
                 HandheldButtons = PadForge.Common.Input.HandheldButtonRegistry.SaveRegistry()
                     .Select(HandheldButtonData.From).ToArray(),
@@ -5053,6 +5064,8 @@ namespace PadForge.Services
                 EnableWebControllerPlainHttp = _mainVm.Dashboard.EnableWebControllerPlainHttp,
                 WebControllerPlainHttpPort = _mainVm.Dashboard.WebControllerPlainHttpPort,
                 WebControllerPlainHttpLocalOnly = _mainVm.Dashboard.WebControllerPlainHttpLocalOnly,
+                EnableTwitchChat = _mainVm.Dashboard.EnableTwitchChat,
+                TwitchChatChannel = _mainVm.Dashboard.TwitchChatChannel,
                 WebControllerAccessCodeProtected = ProtectAccessCode(_mainVm.Dashboard.WebControllerAccessCode),
                 WebCustomLayoutsJson = PadForge.Services.WebCustomLayoutStore.Json,
                 EnableRemoteLink = _mainVm.Dashboard.EnableRemoteLink,
@@ -6495,6 +6508,18 @@ namespace PadForge.Services
         }
     }
 
+    /// <summary>A Twitch chat word (issue #555): the normalized word and the
+    /// stable button it occupies on the Twitch Chat row, so saved bindings
+    /// survive.</summary>
+    public class ChatCommandData
+    {
+        [XmlAttribute]
+        public string Word { get; set; }
+
+        [XmlAttribute]
+        public int Button { get; set; }
+    }
+
     /// <summary>A registered voice phrase (issue #317): normalized text,
     /// display name, and the stable raw-button index it occupies (so saved
     /// bindings survive).</summary>
@@ -6615,6 +6640,13 @@ namespace PadForge.Services
         [XmlArray("VoicePhrases")]
         [XmlArrayItem("Phrase")]
         public VoicePhraseData[] VoicePhrases { get; set; }
+
+        /// <summary>The Twitch Chat row's words (issue #555). Null in a file
+        /// written before the list existed, which registers the usual
+        /// words.</summary>
+        [XmlArray("ChatCommands")]
+        [XmlArrayItem("Command")]
+        public ChatCommandData[] ChatCommands { get; set; }
 
         /// <summary>Voice macros (issue #317) master switch.</summary>
         [XmlElement]
@@ -7071,6 +7103,15 @@ namespace PadForge.Services
         /// reverse proxy running here.</summary>
         [XmlElement]
         public bool WebControllerPlainHttpLocalOnly { get; set; }
+
+        /// <summary>Whether the Twitch Chat row reads the channel (issue
+        /// #555). Machine-scoped like the plain address.</summary>
+        [XmlElement]
+        public bool EnableTwitchChat { get; set; }
+
+        /// <summary>The channel as the streamer typed it.</summary>
+        [XmlElement]
+        public string TwitchChatChannel { get; set; }
 
         /// <summary>The plain address's access code, encrypted for this
         /// machine by <see cref="WebControllerAccess.ProtectForStorage"/>.

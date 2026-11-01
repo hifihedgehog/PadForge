@@ -261,6 +261,7 @@ namespace PadForge.ViewModels
             nameof(EnableGameModServer) or
             nameof(GameModDsxStandIn) or
             nameof(EnableGameTelemetry) or
+            nameof(EnableTwitchChat) or
             nameof(EnableWebController) or
             nameof(EnableWebControllerPlainHttp) or
             nameof(WebControllerPlainHttpLocalOnly) or
@@ -293,6 +294,11 @@ namespace PadForge.ViewModels
                 case nameof(EnableGameTelemetry):
                 {
                     EnableGameTelemetry = false;
+                    break;
+                }
+                case nameof(EnableTwitchChat):
+                {
+                    EnableTwitchChat = false;
                     break;
                 }
                 case nameof(EnableWebController):

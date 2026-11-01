@@ -4289,6 +4289,7 @@ namespace PadForge.Common.Input
             ShutdownHandheldInputs();
             ShutdownHeadTrackerInputs();
             ShutdownGameTelemetryInputs();
+            ShutdownTwitchChatInputs();
             ShutdownLogitechGKeysInputs();
             ShutdownKeyboardScreenInputs();
             ShutdownFalconInputs();

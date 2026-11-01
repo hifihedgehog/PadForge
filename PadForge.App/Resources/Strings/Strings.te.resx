@@ -3806,6 +3806,8 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>2D కంట్రోలర్ స్కీమాటిక్స్ (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), AL2009man ద్వారా. MIT.</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Twitch చాట్ వరుస యొక్క కమాండ్ వ్యాకరణం మరియు టర్న్ తీసుకునే నియమాలు, C# కు పోర్ట్ చేయబడ్డాయి, మరియు వెబ్ కంట్రోలర్ యొక్క WLG ఫినిష్, Yuriy (KLAVIATURKIN) ద్వారా. ISC.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>DualShock 4 ఆడియో ప్రోటోకాల్ డాక్యుమెంటేషన్: SBC పారామితులు మరియు ప్యాకెట్ లేఅవుట్లు, khallmark ద్వారా. GPL-2.0, డాక్యుమెంటేషన్ మాత్రమే.</value>
   </data>
@@ -4353,6 +4355,8 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>గేమ్ మోడ్లు వెనుక ఉన్న UDP సూచనలు, ప్రత్యుత్తరాలు, పోర్ట్ ఫైళ్లు మరియు ట్రిగ్గర్ ఎఫెక్ట్ బైట్లు, Paliverse యొక్క అధికారిక DSX v3.1 మరియు DualSenseX v2 మోడ్ ఉదాహరణలు, DualSenseY యొక్క రెండు వెర్షన్లు మరియు DualSense4Rockstar (లైసెన్స్ ప్రచురించబడలేదు), DSZ మరియు pydualsense (MIT), Wujek Dualsense API, అలాగే hbashton యొక్క DS4Windows ఫోర్క్లోని DSX సర్వర్ (GPL-3.0) నుండి చదవబడ్డాయి. డాక్యుమెంటేషన్ మాత్రమే, కోడ్ ఏదీ పంపిణీ చేయబడదు.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>DualShock 4 హెడ్సెట్ సూచనలు</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>DualShock 4 Bluetooth ఆడియో వెనుక ఉన్న హెడ్ఫోన్ మరియు స్పీకర్ రూటింగ్, వాల్యూమ్ పరిమితులు, మైక్రోఫోన్ ఫ్రేమింగ్ మరియు రిపోర్ట్ మోడ్, DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) మరియు hbashton యొక్క DS4Windows ఫోర్క్ (GPL-3.0) నుండి చదవబడ్డాయి, SBC డీకోడర్ యొక్క సింథసిస్ విండోలు Google యొక్క libsbc (Apache-2.0) తో తనిఖీ చేయబడ్డాయి, మరియు రెండవ మోడల్ మరియు Sony అడాప్టర్ యొక్క USB హెడ్సెట్లు DJm00n యొక్క ControllersInfo డిస్క్రిప్టర్ డంప్ల నుండి (లైసెన్స్ ప్రచురించబడలేదు), linux-hardware.org యొక్క LsUSB ప్రోబ్ల నుండి (CC BY 4.0) చదవబడ్డాయి. డాక్యుమెంటేషన్ మాత్రమే, కోడ్ ఏదీ పంపిణీ చేయబడదు.</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Twitch చాట్ సూచనలు</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>సైన్ ఇన్ చేయకుండా చాట్ చదవడం మరియు ! కమాండ్ నియమం, tmi.js (MIT) మరియు ComfyJS (MIT) నుండి చదవబడ్డాయి, మరియు కేవలం తాజా 20 కమాండ్లను మాత్రమే ఉంచడం, DougDoug యొక్క TwitchPlays (MIT) టెంప్లేట్ నుండి చదవబడింది. డాక్యుమెంటేషన్ మాత్రమే, కోడ్ ఏదీ పంపిణీ చేయబడదు.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>కీబోర్డ్ స్క్రీన్ సూచనలు</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>కీబోర్డ్ స్క్రీన్ల వెనుక ఉన్న లైబ్రరీలు, ఫ్రేమ్లు మరియు కీలు, Logitech యొక్క LCD మరియు Arx Control SDKలు మరియు Mad Catz యొక్క S.T.R.I.K.E. 7 SDK నుండి చదవబడ్డాయి, logitech-lcd (MIT లేదా Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff మరియు ArxWidgetManager (లైసెన్స్ ప్రచురించబడలేదు), Linux యొక్క hid-lg-g15 డ్రైవర్ (GPL-2.0-or-later), libg15, G15Interface మరియు lcdproc (GPL-2.0), gnome15 (GPL-3.0) మరియు G19USB (Apache-2.0) తో క్రాస్-చెక్ చేయబడ్డాయి. PadForge Logitech Gaming Software యొక్క లైబ్రరీలను మరియు మీరు డౌన్లోడ్ చేసే లేదా ఎంచుకునే Strike7API.dll ను లోడ్ చేస్తుంది మరియు వాటిలో దేని నుండీ కోడ్ పంపిణీ చేయదు.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon సూచనలు</value></data>
@@ -4539,6 +4543,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Falcon_Calibrate" xml:space="preserve"><value>పరిధిని క్రమాంకనం చేయి</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>హ్యాండిల్ ఎంత దూరం కదులుతుందో కొలుస్తుంది. స్వీప్ నడిచే నాలుగు సెకన్ల పాటు దాన్ని దాని పరిధి యొక్క ప్రతి అంచుకు కదిలించండి. ఈలోగా ఫోర్స్‌లు విశ్రాంతిలో ఉంటాయి.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>గేమ్ టెలిమెట్రీ</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch చాట్</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>గేమ్ టెలిమెట్రీ</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>డ్రైవింగ్ గేమ్‌లు పంపే టెలిమెట్రీని, అలాగే Assetto Corsa షేర్డ్ మెమరీని, పరికరాల పేజీలోని గేమ్ టెలిమెట్రీ వరుసలో ఉంచుతుంది.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>గేమ్ టెలిమెట్రీ కోసం వినండి</value></data>
@@ -4552,6 +4557,44 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>కస్టమ్ ఫార్మాట్లు…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>PadForge కు తెలియని గేమ్ ప్యాకెట్లను ఫీల్డ్ వారీగా వివరిస్తుంది.</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>ప్రతి గేమ్లో టెలిమెట్రీ అవుట్పుట్ ఆన్ చేసి, దాన్ని ఈ PC కి, ఈ పోర్ట్ కు పంపేలా సెట్ చేయండి. F1, Codemasters గేమ్లు, EA SPORTS WRC మార్చకపోతే 20777 వాడతాయి, Project CARS 2 మరియు Automobilista 2 ఎల్లప్పుడూ 5606 వాడతాయి, ట్రక్ సిమ్యులేటర్ల కోసం MrHokss ప్లగిన్ 49001 వాడుతుంది. Assetto Corsa మరియు ACC కి పోర్ట్ అవసరం లేదు.</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>ఏదైనా కమాండ్</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Twitch చాట్</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>మీ స్ట్రీమ్ చూసేవారు దాని చాట్‌లో టైప్ చేసి ఆడేలా చేస్తుంది. వీక్షకుడు !a వంటి కమాండ్ టైప్ చేస్తే, పరికరాల పేజీలోని Twitch చాట్ వరుసలో !a దేనికి మ్యాప్ చేయబడిందో PadForge దాన్ని నొక్కుతుంది. ఆ వరుసను ఏ కంట్రోలర్‌లాగే ఒక స్లాట్‌కు కేటాయించండి. PadForge సైన్ ఇన్ చేయకుండానే చాట్‌ను చదువుతుంది, అందులో ఎప్పుడూ పోస్ట్ చేయదు.</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Twitch చాట్‌ను చదువు</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>ఛానెల్</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>మీ ఛానెల్ పేరు లేదా దాని twitch.tv చిరునామా.</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>పాజ్ చేయి</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>కొనసాగించు</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>ప్లే అవుతున్న కమాండ్‌ను ఆపి, వరుసను క్లియర్ చేసి, మీరు కొనసాగించే వరకు చాట్ కమాండ్‌లను పట్టించుకోదు.</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>దాటవేయి</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>ప్లే అవుతున్న కమాండ్‌ను ఆపుతుంది. వరుసలో తర్వాతది మొదలవుతుంది.</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>వరుసను క్లియర్ చేయి</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>వరుసలో వేచి ఉన్న కమాండ్‌లను తొలగిస్తుంది. ప్లే అవుతున్నది పూర్తవుతుంది.</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>క్లెయిమ్ ముగించు</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>!claim తో వీక్షకుడు తీసుకున్న ఏకైక నియంత్రణను ముగిస్తుంది.</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>మీ ఛానెల్ పేరు నమోదు చేయండి.</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>{0} చాట్‌కు కనెక్ట్ అవుతోంది…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>{0} చాట్‌ను చదువుతోంది.</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>{0} చాట్‌ను చేరుకోలేకపోయింది. మళ్లీ ప్రయత్నిస్తోంది.</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>పాజ్ అయింది.</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>మీ ప్రసారం కోసం కంట్రోలర్ చిత్రం. ఈ చిరునామాను OBS-లో బ్రౌజర్ సోర్స్‌గా జోడించండి:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>మీ ప్రసారం కోసం కంట్రోలర్ చిత్రానికి వెబ్ కంట్రోలర్, దాని సాధారణ HTTP చిరునామా అవసరం. వెబ్ కంట్రోలర్ కార్డ్‌లో సాధారణ HTTP-ను కూడా అందించు ఆన్ చేయండి. ఈ PCలో OBS కోసం ఈ PC మాత్రమే సరిపోతుంది.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>వీక్షకులు !claim తో వంతులవారీగా ఆడతారు, దాన్ని మరో ఇద్దరు వీక్షకులు ఆమోదిస్తారు, !skip తో కమాండ్‌ను దాటవేస్తారు. మోడరేటర్లు వెంటనే చర్య తీసుకుంటారు. వరుసలో తాజా 20 కమాండ్‌లు మాత్రమే వేచి ఉంటాయి, ఒక కమాండ్ గరిష్టంగా 10 సెకన్లు ప్లే అవుతుంది.</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>చాట్ కమాండ్‌లను నిర్వహించు</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>చాట్ కమాండ్‌లు</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>వీక్షకులు మీ స్ట్రీమ్ చాట్‌లో ! మరియు ఒక పదాన్ని టైప్ చేస్తారు, ఉదాహరణకు !jump. ప్రతి పదం Twitch చాట్ వరుసలో ఒక బటన్, ఏ ఇన్‌పుట్‌లాగే మ్యాప్ చేయవచ్చు. !a500ms A బటన్‌ను 500 ms పట్టుకుంటుంది, !a+b రెండింటినీ నొక్కుతుంది, !a b ఒకదాని తర్వాత ఒకటి నొక్కుతుంది.</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>పదం</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>జోడించు</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>పదాలు</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>సాధారణ పదాలను పునరుద్ధరించు</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>మీరు తీసివేసిన ముందుగా ఉన్న పదాలను తిరిగి జోడిస్తుంది: a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left, right.</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>పదంలో గరిష్టంగా {0} అక్షరాలు, అంకెలు ఉండాలి.</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>పదం అక్షరంతో మొదలై, అక్షరాలు, అంకెలు మాత్రమే ఉండాలి.</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>పదం 2s లేదా 500ms వంటి సమయంతో ముగియకూడదు, చాట్ దాన్ని ఎంతసేపు పట్టుకోవాలో అని చదువుతుంది.</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>వంతులవారీ ఆటకు claim, accept, release, skip, skipall వాడతారు, కాబట్టి ఏ పదమూ వాటిలో ఒకటి కాకూడదు.</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>జాబితాలో గరిష్టంగా {0} పదాలు ఉంటాయి.</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>{0} జోడించబడింది.</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} ఇప్పటికే జాబితాలో ఉంది.</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>ఆటో-డిటెక్ట్</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport మరియు Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 నుండి F1 25 వరకు</value></data>

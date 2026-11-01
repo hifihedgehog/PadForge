@@ -923,7 +923,8 @@ namespace PadForge.Tests
         public void TheDefaultMappingAsksThePortForTheControllerInItNow()
         {
             string manager = System.IO.File.ReadAllText(RepoPath("PadForge.App", "Common", "SettingsManager.cs"));
-            Assert.Contains("ud == null ? null : Common.Input.BlissBoxRuntime.GamepadMapFor(ud));", manager);
+            Assert.Contains(": ud.CapType == InputDeviceType.TwitchChat ? Common.Input.Twitch.ChatGamepadPlacement.For()", manager);
+            Assert.Contains(": Common.Input.BlissBoxRuntime.GamepadMapFor(ud));", manager);
             string runtime = System.IO.File.ReadAllText(RepoPath("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs"));
             int at = runtime.IndexOf("public static BlissBoxGamepadMap GamepadMapFor(UserDevice ud)", StringComparison.Ordinal);
             string body = runtime[at..runtime.IndexOf("\n        }", at, StringComparison.Ordinal)];

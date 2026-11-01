@@ -3806,6 +3806,8 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>2D kontrolcü şemaları (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense). Geliştiren: AL2009man. MIT.</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Twitch sohbeti satırının komut dilbilgisi ve sıra alma kuralları, C# diline uyarlandı, ayrıca web kontrolcüsünün WLG kaplaması. Geliştiren: Yuriy (KLAVIATURKIN). ISC.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>DualShock 4 ses protokolü belgesi: SBC parametreleri ve paket düzenleri. Geliştiren: khallmark. GPL-2.0, yalnızca belge.</value>
   </data>
@@ -4353,6 +4355,8 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>Oyun modlarının arkasındaki UDP komutları, yanıtlar, port dosyaları ve tetik efekti baytları. Paliverse'in resmî DSX v3.1 ve DualSenseX v2 mod örneklerinden, DualSenseY'nin her iki sürümünden ve DualSense4Rockstar'dan (lisans yayımlanmamış), DSZ ve pydualsense (MIT) projelerinden, Wujek Dualsense API'den ve hbashton'ın DS4Windows çatalındaki DSX sunucusundan (GPL-3.0) okundu. Yalnızca belge, hiçbir kod dağıtılmıyor.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>DualShock 4 kulaklık referansları</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>DualShock 4 Bluetooth sesinin arkasındaki kulaklık ve hoparlör yönlendirmesi, ses düzeyi sınırları, mikrofon çerçevelemesi ve rapor kipi. DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) ve hbashton'ın DS4Windows çatalından (GPL-3.0) okundu, SBC kod çözücünün sentez pencereleri ise Google'ın libsbc (Apache-2.0) kitaplığıyla denetlendi, ikinci modelin ve Sony'nin adaptörünün USB kulaklıkları da DJm00n'un ControllersInfo tanımlayıcı dökümlerinden (lisans yayımlanmamış) ve linux-hardware.org'un LsUSB yoklamalarından (CC BY 4.0) okundu. Yalnızca belge, hiçbir kod dağıtılmıyor.</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Twitch sohbeti referansları</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Sohbeti oturum açmadan okuma ve ! komut kuralı tmi.js (MIT) ve ComfyJS (MIT) kaynaklarından, yalnızca en yeni 20 komutu tutma ise DougDoug'un TwitchPlays (MIT) şablonundan okundu. Yalnızca belge, hiçbir kod dağıtılmıyor.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Klavye ekranı referansları</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Klavye ekranlarının arkasındaki kitaplıklar, kareler ve tuşlar. Logitech'in LCD ve Arx Control SDK'larından ve Mad Catz'in S.T.R.I.K.E. 7 SDK'sından okundu, logitech-lcd (MIT veya Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff ve ArxWidgetManager (lisans yayımlanmamış), Linux'un hid-lg-g15 sürücüsü (GPL-2.0-or-later), libg15, G15Interface ve lcdproc (GPL-2.0), gnome15 (GPL-3.0) ve G19USB (Apache-2.0) ile çapraz denetlendi. PadForge, Logitech Gaming Software'in kitaplıklarını ve indirdiğiniz ya da seçtiğiniz Strike7API.dll dosyasını yükler, bunların hiçbirinden kod dağıtmaz.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon referansları</value></data>
@@ -4539,6 +4543,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Falcon_Calibrate" xml:space="preserve"><value>Erişimi kalibre et</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Tutamağın ne kadar uzağa gittiğini ölçer. Tarama sürdüğü dört saniye boyunca tutamağı erişim alanının her kenarına götürün. Bu sırada kuvvetler durur.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Oyun telemetrisi</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch sohbeti</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Oyun telemetrisi</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Yarış oyunlarının gönderdiği telemetriyi ve Assetto Corsa'nın paylaşılan belleğini Cihazlar sayfasındaki Oyun telemetrisi satırına getirir. Hızı, pedalları ve vitesleri herhangi bir giriş gibi eşleyin, makroları bunlarla tetikleyin ya da Özel ifade içinde sınayın. Dinleme sürerken direksiyonun devir vites LED'leri de oyunu buradan okur.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Oyun telemetrisini dinle</value></data>
@@ -4552,6 +4557,44 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>Özel biçimler…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>PadForge'un tanımadığı bir oyunun paketlerini alan alan tanımlar.</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>Her oyunda telemetri çıkışını açın ve bu bilgisayara ile porta yöneltin. F1, Codemasters oyunları ve EA SPORTS WRC değiştirilmedikçe 20777, Project CARS 2 ve Automobilista 2 her zaman 5606, MrHokss'un kamyon simülatörleri eklentisi ise 49001 kullanır. Assetto Corsa ve ACC için port gerekmez.</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>Herhangi bir komut</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Twitch sohbeti</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>Yayınınızı izleyenlerin sohbete yazarak oynamasını sağlar. İzleyici !a gibi bir komut yazar, PadForge da bu komutun eşlendiği düğmeye Cihazlar sayfasındaki Twitch sohbeti satırında basar. Bu satırı herhangi bir kontrolcü gibi bir yuvaya atayın. PadForge sohbeti oturum açmadan okur ve sohbete hiçbir zaman mesaj yazmaz.</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Twitch sohbetini oku</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Kanal</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Kanalınızın adı veya twitch.tv adresi.</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>Duraklat</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>Sürdür</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Oynayan komutu durdurur, sırayı temizler ve siz sürdürene kadar sohbet komutlarını yok sayar.</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>Atla</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>Oynayan komutu durdurur. Sıradaki başlar.</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>Sırayı temizle</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>Sırada bekleyen komutları siler. Oynayan komut sona erer.</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>Kontrolü bitir</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>Bir izleyicinin !claim ile aldığı tek kişilik kontrolü sonlandırır.</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>Kanalınızın adını girin.</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>{0} kanalının sohbetine bağlanılıyor…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>{0} kanalının sohbeti okunuyor.</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>{0} kanalının sohbetine ulaşılamadı. Yeniden deneniyor.</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Duraklatıldı.</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Yayınınız için kontrolcü görüntüsü. Bu adresi OBS'ye tarayıcı kaynağı olarak ekleyin:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Yayınınız için kontrolcü görüntüsü, Web kontrolcüsü ve düz HTTP adresi gerektirir. Web kontrolcüsü kartında Düz HTTP de sun seçeneğini açın. Bu bilgisayardaki OBS için Yalnızca bu bilgisayar yeterlidir.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>İzleyiciler !claim ile sırayla kontrolü alır, bunu diğer iki izleyici onaylar. Bir komutu !skip ile atlarlar. Moderatörler hemen işlem yapar. Sırada yalnızca en yeni 20 komut bekler ve bir komut en çok 10 saniye oynar.</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Sohbet komutlarını yönet</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Sohbet komutları</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>İzleyiciler yayınınızın sohbetine ! ve bir sözcük yazar, örneğin !jump. Her sözcük Twitch sohbeti satırında bir düğmedir ve herhangi bir giriş gibi eşlenir. !a500ms A düğmesini 500 ms basılı tutar, !a+b ikisine birden basar, !a b ise birinin ardından diğerine basar.</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>Sözcük</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>Ekle</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>Sözcükler</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>Olağan sözcükleri geri yükle</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>Kaldırdığınız hazır sözcükleri geri ekler: a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left ve right.</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>Bir sözcük en çok {0} harf ve rakamdan oluşur.</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>Sözcük harfle başlamalı ve yalnızca harf ile rakam içermelidir.</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>Sözcük 2s veya 500ms gibi bir süreyle bitemez, sohbet bunu ne kadar basılı tutulacağı olarak okur.</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>Sırayla kontrol claim, accept, release, skip ve skipall sözcüklerini kullanır, bu yüzden hiçbir sözcük bunlardan biri olamaz.</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>Liste en çok {0} sözcük alır.</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>{0} eklendi.</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} zaten listede.</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>Otomatik algıla</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport ve Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22'den F1 25'e</value></data>

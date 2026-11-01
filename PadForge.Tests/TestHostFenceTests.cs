@@ -184,6 +184,7 @@ namespace PadForge.Tests
         private const string Krpc = "PadForge.Engine/RemoteLink/Dht/UdpKrpcTransport.cs";
         private const string Stun = "PadForge.Engine/RemoteLink/StunClient.cs";
         private const string Relay = "PadForge.Engine/RemoteLink/IrohRelayClient.cs";
+        private const string TwitchChat = Input + "Twitch/TwitchChatClient.cs";
         private const string SteamHttpFile = "PadForge.SteamWorkshop/Api/SteamHttp.cs";
         private const string SteamClientFile = "PadForge.SteamWorkshop/Api/SteamWorkshopClient.cs";
         private const string WorkshopDialog = "PadForge.App/Views/WorkshopBrowseDialog.xaml.cs";
@@ -434,6 +435,8 @@ namespace PadForge.Tests
             new object[] { LinkServerFile, "public async Task<bool> ConnectAsync(string host, int port, IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, CancellationToken ct = default)", RefusesHost + " return false;" },
             new object[] { LinkServerFile, "public async Task SendToAsync(byte[] dg, IPEndPoint dest, CancellationToken ct)", "if (PadForge.Engine.Common.OutboundNetworkGate.Refuses(dest?.Address)) return;" },
             new object[] { Relay, "private async Task<bool> ConnectOneAsync(string host, CancellationToken ct)", RefusesHost + " return false;" },
+            // The Twitch Chat row's connection to Twitch's chat (#555).
+            new object[] { TwitchChat, "private async Task<bool> SessionAsync(CancellationToken ct)", "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(Host))" },
             new object[] { Outbound, "public static bool Refuses(IPAddress address)", "OffLimitsForTest && (address == null || !IPAddress.IsLoopback(address));" },
             new object[] { Outbound, "public static bool RefusesHost(string host)", "OffLimitsForTest && !IsLoopbackHost(host);" },
             new object[] { Outbound, "public static HttpClient NewHttpClient()", "OffLimitsForTest ? new HttpClient(new LoopbackOnly()) : new HttpClient();" },
@@ -702,8 +705,9 @@ namespace PadForge.Tests
             // A name looked up: each behind the gate (AskedBeforeTheCall).
             Assert.Equal(Map((Krpc, 1), (LinkServerFile, 2), (Stun, 1)), FenceSource.Census(@"\bDns\.[A-Z][A-Za-z]*\("));
 
-            // A stream client: the relay's, the link's and Steam's.
-            Assert.Equal(Map((Relay, 1), (LinkServerFile, 1), (SteamClientFile, 1)),
+            // A stream client: the relay's, the link's, Steam's and the
+            // Twitch Chat row's (#555), whose session asks the gate first.
+            Assert.Equal(Map((Relay, 1), (LinkServerFile, 1), (SteamClientFile, 1), (TwitchChat, 1)),
                 FenceSource.Census(Creates("TcpClient|ClientWebSocket|SteamClient")));
 
             // An HTTP client. The driver installer's, the updater's and

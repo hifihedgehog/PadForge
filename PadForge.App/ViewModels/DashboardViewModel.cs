@@ -610,6 +610,127 @@ namespace PadForge.ViewModels
         }
 
         // ─────────────────────────────────────────────
+        //  Twitch Chat (#555)
+        // ─────────────────────────────────────────────
+        // The Twitch Chat row reads a channel's chat and presses the slots it
+        // is assigned to when viewers type commands. The setters mirror into
+        // TwitchChatRuntime, the Game Telemetry card's shape. The switch and
+        // the channel are machine settings like the plain web address's and
+        // stay out of profiles, so a profile switch never opens or closes the
+        // connection.
+
+        private bool _enableTwitchChat;
+
+        /// <summary>Whether the Twitch Chat row reads the channel.</summary>
+        public bool EnableTwitchChat
+        {
+            get => _enableTwitchChat;
+            set
+            {
+                if (!SetProperty(ref _enableTwitchChat, value)) return;
+                PadForge.Common.Input.Twitch.TwitchChatRuntime.Enabled = value;
+                // Turned off and on again, chat control starts unpaused.
+                if (!value) TwitchChatPaused = false;
+            }
+        }
+
+        private string _twitchChatChannel = string.Empty;
+
+        /// <summary>The channel as the streamer typed it, the name or the
+        /// channel's address. The runtime keeps the name Twitch uses.</summary>
+        public string TwitchChatChannel
+        {
+            get => _twitchChatChannel;
+            set
+            {
+                if (SetProperty(ref _twitchChatChannel, value ?? string.Empty))
+                    PadForge.Common.Input.Twitch.TwitchChatRuntime.Channel = _twitchChatChannel;
+            }
+        }
+
+        private string _twitchChatStatus = Strings.Instance.Common_Stopped;
+
+        /// <summary>The row's line: the channel it reads, or why it reads
+        /// nothing.</summary>
+        public string TwitchChatStatus
+        {
+            get => _twitchChatStatus;
+            set => SetProperty(ref _twitchChatStatus, value ?? Strings.Instance.Common_Stopped);
+        }
+
+        private bool _isTwitchChatRunning;
+
+        /// <summary>Reading truth for the card's flame: the row has joined
+        /// the channel's chat.</summary>
+        public bool IsTwitchChatRunning
+        {
+            get => _isTwitchChatRunning;
+            set => SetProperty(ref _isTwitchChatRunning, value);
+        }
+
+        private bool _isTwitchChatOpen;
+
+        /// <summary>True while the row is open, which the streamer's
+        /// controls act on.</summary>
+        public bool IsTwitchChatOpen
+        {
+            get => _isTwitchChatOpen;
+            set => SetProperty(ref _isTwitchChatOpen, value);
+        }
+
+        private bool _twitchChatPaused;
+
+        /// <summary>The streamer's Pause: the row ignores every command, and
+        /// pausing stops the command playing and clears the line. Not saved,
+        /// so PadForge starts unpaused.</summary>
+        public bool TwitchChatPaused
+        {
+            get => _twitchChatPaused;
+            set
+            {
+                if (SetProperty(ref _twitchChatPaused, value))
+                    PadForge.Common.Input.Twitch.TwitchChatRuntime.Paused = value;
+            }
+        }
+
+        private RelayCommand _twitchChatPauseCommand;
+        public RelayCommand TwitchChatPauseCommand =>
+            _twitchChatPauseCommand ??= new RelayCommand(() => TwitchChatPaused = !TwitchChatPaused);
+
+        private RelayCommand _twitchChatSkipCommand;
+        public RelayCommand TwitchChatSkipCommand =>
+            _twitchChatSkipCommand ??= new RelayCommand(() => PadForge.Common.Input.Twitch.TwitchChatRuntime.Skip());
+
+        private RelayCommand _twitchChatClearCommand;
+        public RelayCommand TwitchChatClearCommand =>
+            _twitchChatClearCommand ??= new RelayCommand(PadForge.Common.Input.Twitch.TwitchChatRuntime.ClearLine);
+
+        private RelayCommand _twitchChatEndClaimCommand;
+        public RelayCommand TwitchChatEndClaimCommand =>
+            _twitchChatEndClaimCommand ??= new RelayCommand(PadForge.Common.Input.Twitch.TwitchChatRuntime.EndClaim);
+
+        private string _twitchChatDisplayUrl;
+
+        /// <summary>The controller picture page on the plain HTTP address,
+        /// code included, for an OBS browser source. Null while the plain
+        /// address is not served.</summary>
+        public string TwitchChatDisplayUrl
+        {
+            get => _twitchChatDisplayUrl;
+            set => SetProperty(ref _twitchChatDisplayUrl, value);
+        }
+
+        private RelayCommand _copyTwitchChatDisplayUrlCommand;
+        public RelayCommand CopyTwitchChatDisplayUrlCommand =>
+            _copyTwitchChatDisplayUrlCommand ??= new RelayCommand(() =>
+            {
+                if (!string.IsNullOrEmpty(_twitchChatDisplayUrl))
+                {
+                    try { PadForge.Common.ShellLaunch.SetClipboardText(_twitchChatDisplayUrl); } catch { }
+                }
+            });
+
+        // ─────────────────────────────────────────────
         //  Head Tracking (#355)
         // ─────────────────────────────────────────────
         // A UDP listener on OpenTrack's port plus a FreeTrack 2.0 shared

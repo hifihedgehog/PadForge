@@ -3806,6 +3806,8 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>2D controller schematics (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), by AL2009man. MIT.</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>The Twitch Chat row's command grammar and turn-taking rules, ported to C#, and the web controller's WLG finish, by Yuriy (KLAVIATURKIN). ISC.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>DualShock 4 audio protocol documentation: SBC parameters and packet layouts, by khallmark. GPL-2.0, documentation only.</value>
   </data>
@@ -4379,6 +4381,8 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>The UDP instructions, replies, port files and trigger effect bytes behind Game Mods, read from Paliverse’s official DSX v3.1 and DualSenseX v2 mod examples, both versions of DualSenseY and DualSense4Rockstar (no license published), DSZ and pydualsense (MIT), and the Wujek Dualsense API and the DSX server in hbashton’s DS4Windows fork (GPL-3.0). Documentation only, no code ships.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>DualShock 4 headset references</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>The headphone and speaker routing, volume ceilings, microphone framing and report mode behind DualShock 4 Bluetooth audio, read from DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) and hbashton’s DS4Windows fork (GPL-3.0), with the SBC decoder’s synthesis windows checked against Google’s libsbc (Apache-2.0), and the USB headsets of the second model and Sony’s adapter read from DJm00n’s ControllersInfo descriptor dumps (no license published) and linux-hardware.org’s LsUSB probes (CC BY 4.0). Documentation only, no code ships.</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Twitch chat references</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Reading chat without signing in and the ! command rule, read from tmi.js (MIT) and ComfyJS (MIT), and keeping only the newest 20 commands, from DougDoug's TwitchPlays template (MIT). Documentation only, no code ships.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Keyboard screen references</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>The libraries, frames and keys behind keyboard screens, read from Logitech’s LCD and Arx Control SDKs and Mad Catz’s S.T.R.I.K.E. 7 SDK, cross-checked against logitech-lcd (MIT or Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff and ArxWidgetManager (no license published), Linux’s hid-lg-g15 driver (GPL-2.0-or-later), libg15, G15Interface and lcdproc (GPL-2.0), gnome15 (GPL-3.0) and G19USB (Apache-2.0). PadForge loads Logitech Gaming Software’s libraries and the Strike7API.dll you download or choose, and ships no code from any of them.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon references</value></data>
@@ -4565,6 +4569,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Falcon_Calibrate" xml:space="preserve"><value>Calibrate Reach</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Measures how far the handle travels. Move it to every edge of its reach for the four seconds the sweep runs. The forces rest meanwhile.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Game Telemetry</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch Chat</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Game Telemetry</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Puts the telemetry driving games send, and Assetto Corsa's shared memory, on the Game Telemetry row of the Devices page. Map its speed, pedals and gears like any input, trigger macros with them, or test them in a Custom Expression. While it listens, a wheel's RPM shift LEDs read the game from here too.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Listen for Game Telemetry</value></data>
@@ -4578,6 +4583,44 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>Custom Formats…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>Describes the packets of a game PadForge does not know, field by field.</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>Turn on telemetry output in each game and point it at this PC and port. F1, the Codemasters games and EA SPORTS WRC use 20777 unless changed, Project CARS 2 and Automobilista 2 always use 5606, and MrHokss's plugin for the truck simulators uses 49001. Assetto Corsa and ACC need no port.</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>Any Command</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Twitch Chat</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>Lets the people watching your stream play by typing in its chat. A viewer types a command like !a, and PadForge presses what !a is mapped to on the Twitch Chat row of the Devices page. Assign that row to a slot like any controller. PadForge reads the chat without signing in and never posts in it.</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Read Twitch Chat</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Channel</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Your channel's name or its twitch.tv address.</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>Pause</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>Resume</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Stops the command playing, clears the line and ignores chat commands until you resume.</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>Skip</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>Stops the command playing. The next one in line starts.</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>Clear Line</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>Drops the commands waiting in line. The one playing finishes.</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>End Claim</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>Ends the sole control a viewer took with !claim.</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>Enter your channel's name.</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Connecting to {0}'s chat…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Reading {0}'s chat.</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Could not reach {0}'s chat. Trying again.</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Paused.</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>The controller picture for your broadcast. Add this address to OBS as a browser source:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>The controller picture for your broadcast needs the Web Controller and its plain HTTP address. Turn on Also Serve Plain HTTP in the Web Controller card. This PC Only is enough for OBS on this PC.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Viewers take turns with !claim, which two other viewers approve, and skip a command with !skip. Moderators act at once. Only the newest 20 commands wait in line, and a command plays for at most 10 seconds.</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Manage Chat Commands</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Chat Commands</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Viewers type ! and a word in your stream's chat, like !jump. Each word is a button on the Twitch Chat row, mapped like any input. !a500ms holds A for 500 ms, !a+b presses both, and !a b presses one after the other.</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>Word</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>Add</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>Words</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>Restore Usual Words</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>Adds back any of the preset words you removed: a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left and right.</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>A word has at most {0} letters and digits.</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>A word starts with a letter and has only letters and digits.</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>A word cannot end in a time like 2s or 500ms, which chat reads as how long to hold.</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>Taking turns uses claim, accept, release, skip and skipall, so no word can be one of them.</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>The list holds at most {0} words.</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>Added {0}.</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} is already in the list.</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>Auto-Detect</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport and Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 to F1 25</value></data>

@@ -3806,6 +3806,8 @@
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>2D 控制器示意圖(Xbox 360、Xbox One S、Xbox Series、DualShock 4、DualSense)，由 AL2009man 製作。MIT。</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Twitch 聊天室列的指令語法和輪流規則，已移植到 C#，以及網頁控制器的 WLG 外觀，由 Yuriy (KLAVIATURKIN) 編寫。ISC。</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>DualShock 4 音訊協定的參考文件：SBC 參數和封包配置，由 khallmark 編寫。GPL-2.0，只作參考文件。</value>
   </data>
@@ -4353,6 +4355,8 @@
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>「遊戲模組」所用的 UDP 指令、回覆、連接埠檔案和扳機效果位元組，參考自 Paliverse 官方的 DSX v3.1 和 DualSenseX v2 模組範例、DualSenseY 的兩個版本、DualSense4Rockstar(未公佈授權)、DSZ 和 pydualsense(MIT)，以及 Wujek Dualsense API 和 hbashton 的 DS4Windows 分支內的 DSX 伺服器(GPL-3.0)。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>DualShock 4 耳機麥克風參考資料</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>DualShock 4 藍牙音訊所用的耳機和喇叭路由、音量上限、麥克風影格和報告模式，參考自 DS4-Sound-Link(MIT)、ds4mac(GPL-2.0)、ds4drv(MIT)和 hbashton 的 DS4Windows 分支(GPL-3.0)，而 SBC 解碼器的合成視窗已與 Google 的 libsbc(Apache-2.0)核對，第二代型號和 Sony 轉接器的 USB 耳機麥克風則參考自 DJm00n 的 ControllersInfo 描述元傾印檔(未公佈授權)和 linux-hardware.org 的 LsUSB 探測資料(CC BY 4.0)。只作參考文件，並無隨附任何程式碼。</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Twitch 聊天室參考資料</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>無需登入便能讀取聊天室和 ! 指令規則，參考自 tmi.js(MIT)和 ComfyJS(MIT)，而只保留最新 20 個指令的做法，則參考自 DougDoug 的 TwitchPlays 範本(MIT)。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>鍵盤熒幕參考資料</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>鍵盤熒幕所用的程式庫、影格和按鍵，參考自 Logitech 的 LCD 和 Arx Control SDK 以及 Mad Catz 的 S.T.R.I.K.E. 7 SDK，並與 logitech-lcd(MIT 或 Apache-2.0)、dcspy(MIT)、foo_logitech_lcd(LGPL-2.1)、LogitechStuff 和 ArxWidgetManager(未公佈授權)、Linux 的 hid-lg-g15 驅動程式(GPL-2.0-or-later)、libg15、G15Interface 和 lcdproc(GPL-2.0)、gnome15(GPL-3.0)以及 G19USB(Apache-2.0)交叉核對。PadForge 會載入 Logitech Gaming Software 的程式庫和你下載或選擇的 Strike7API.dll，並無隨附當中任何程式碼。</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon 參考資料</value></data>
@@ -4539,6 +4543,7 @@
   <data name="Falcon_Calibrate" xml:space="preserve"><value>校準活動範圍</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>量度握把可移動的距離。在四秒的掃描期間，請將握把移到活動範圍的每個邊緣。期間不會輸出任何力。</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>遊戲遙測</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch 聊天室</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>遊戲遙測</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>把賽車遊戲傳送的遙測資料，以及 Assetto Corsa 的共用記憶體，放到「裝置」頁的遊戲遙測列。可以像一般輸入一樣對應其速度、踏板和檔位，用它們觸發巨集，或在自訂運算式中測試。監聽期間，方向盤的轉速換檔 LED 也會由此讀取遊戲資料。</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>監聽遊戲遙測</value></data>
@@ -4552,6 +4557,44 @@
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>自訂格式…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>逐個欄位描述 PadForge 不認識的遊戲所傳送的封包。</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>在每款遊戲中開啟遙測輸出，並指向這部電腦和此連接埠。F1、Codemasters 遊戲和 EA SPORTS WRC 除非更改，否則使用 20777，Project CARS 2 和 Automobilista 2 固定使用 5606，MrHokss 的卡車模擬遊戲外掛程式使用 49001。Assetto Corsa 和 ACC 不需要連接埠。</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>任何指令</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Twitch 聊天室</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>讓觀看直播的人在聊天室輸入指令來玩遊戲。觀眾輸入 !a 之類的指令，PadForge 就會按下「裝置」頁 Twitch 聊天室列上 !a 所對應的按鍵。可以像一般控制器一樣把該列指派到插槽。PadForge 無需登入便能讀取聊天室，也不會在裏面發言。</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>讀取 Twitch 聊天室</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>頻道</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>你的頻道名稱或 twitch.tv 位址。</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>暫停</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>繼續</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>停止正在執行的指令、清除隊列，並在你按「繼續」前忽略聊天室指令。</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>略過</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>停止正在執行的指令，隊列中的下一個隨即開始。</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>清除隊列</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>捨棄隊列中等待的指令，正在執行的指令會完成。</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>結束獨佔</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>結束觀眾以 !claim 取得的獨佔控制。</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>請輸入你的頻道名稱。</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>正在連線到 {0} 的聊天室…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>正在讀取 {0} 的聊天室。</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>無法連線到 {0} 的聊天室，正在重試。</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>已暫停。</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>供直播使用的控制器畫面。請將此位址加入 OBS 作為瀏覽器來源：</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>供直播使用的控制器畫面需要網頁控制器及其未加密的 HTTP 位址。請在網頁控制器卡片中開啟「同時提供未加密的 HTTP」。如果 OBS 在這部電腦上，只需選用「只限這部電腦」。</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>觀眾以 !claim 輪流取得控制，須經另外兩位觀眾批准，也可用 !skip 略過指令。版主的操作會即時生效。隊列只保留最新的 20 個指令，每個指令最多執行 10 秒。</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>管理聊天室指令</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>聊天室指令</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>觀眾在直播的聊天室輸入 ! 加一個詞，例如 !jump。每個詞都是 Twitch 聊天室列上的一個按鍵，可像一般輸入一樣對應。!a500ms 會按住 A 達 500 毫秒，!a+b 會同時按下兩者，!a b 則會先後按下。</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>詞語</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>新增</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>詞語</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>還原常用詞語</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>加回你已移除的預設詞語：a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left and right。</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>詞語最多只能有 {0} 個字母和數字。</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>詞語須以字母開頭，並且只可包含字母和數字。</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>詞語不可以時間結尾，例如 2s 或 500ms，因為聊天室會將其視為按住的時間。</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>輪流控制已使用 claim、accept、release、skip 和 skipall，因此詞語不可與它們相同。</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>清單最多只能有 {0} 個詞語。</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>已新增 {0}。</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>清單中已有 {0}。</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>自動偵測</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport 和 Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 至 F1 25</value></data>

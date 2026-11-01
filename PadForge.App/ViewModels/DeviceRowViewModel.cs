@@ -306,6 +306,7 @@ namespace PadForge.ViewModels
                     // The voice manage button shipped invisible exactly that
                     // way (#315).
                     OnPropertyChanged(nameof(ShowManageVoicePhrases));
+                    OnPropertyChanged(nameof(ShowManageChatCommands));
                     OnPropertyChanged(nameof(ShowRegisterNfcTag));
                     OnPropertyChanged(nameof(IsHandheldDevice));
                     OnPropertyChanged(nameof(IsSystemMotionDevice));
@@ -356,6 +357,7 @@ namespace PadForge.ViewModels
             "KeyboardScreenKeys" => Strings.Instance.DeviceType_KeyboardScreenKeys,
             "NovintFalcon" => Strings.Instance.DeviceType_NovintFalcon,
             "GameTelemetry" => Strings.Instance.DeviceType_GameTelemetry,
+            "TwitchChat" => Strings.Instance.DeviceType_TwitchChat,
             _ => Strings.Instance.DeviceType_Device
         };
 
@@ -807,6 +809,8 @@ namespace PadForge.ViewModels
              // The Game Telemetry row (#531) is fed by a game's packets and
              // shared memory, with no HID instance behind it.
              || _devicePath.StartsWith("telemetry://", StringComparison.Ordinal)
+             // The Twitch Chat row (#555) is fed by a channel's chat.
+             || _devicePath.StartsWith("twitch://", StringComparison.Ordinal)
              // An analog keyboard row (#468) reads the keyboard's vendor
              // collection. Cloaking it would hide the keyboard's analog
              // interface from its own vendor software, which Razer's needs
@@ -1322,8 +1326,11 @@ namespace PadForge.ViewModels
                     // IsBluetoothLink, which is path-derived, so a link
                     // change must refresh the button too. Same for the
                     // Manage Voice Macros button's DualSense branch (#317).
+                    // Manage Chat Commands reads the path's peer:// prefix
+                    // (#555).
                     OnPropertyChanged(nameof(ShowRegisterNfcTag));
                     OnPropertyChanged(nameof(ShowManageVoicePhrases));
+                    OnPropertyChanged(nameof(ShowManageChatCommands));
                     OnPropertyChanged(nameof(ShowLearnHandheldButton));
                     OnPropertyChanged(nameof(DossierConnectionPath));
                 }
@@ -1379,7 +1386,7 @@ namespace PadForge.ViewModels
         /// a row has nothing to submit. A device on a linked PC is hardware
         /// and keeps the button: its row carries the remote device's own
         /// vendor id, product id and SDL GUID.</summary>
-        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Tablet" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc" && DeviceTypeKey != "HeadsetMotion" && DeviceTypeKey != "Microphone" && DeviceTypeKey != "HandheldButtons" && DeviceTypeKey != "ConsumerControl" && DeviceTypeKey != "SystemMotion" && DeviceTypeKey != "HeadTracker" && DeviceTypeKey != "VrController" && DeviceTypeKey != "LogitechGKeys" && DeviceTypeKey != "AnalogKeyboard" && DeviceTypeKey != "WebMenus" && DeviceTypeKey != "PeripheralLighting" && DeviceTypeKey != "PeripheralHaptics" && DeviceTypeKey != "KeyboardScreenKeys" && DeviceTypeKey != "NovintFalcon" && DeviceTypeKey != "GameTelemetry";
+        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Tablet" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc" && DeviceTypeKey != "HeadsetMotion" && DeviceTypeKey != "Microphone" && DeviceTypeKey != "HandheldButtons" && DeviceTypeKey != "ConsumerControl" && DeviceTypeKey != "SystemMotion" && DeviceTypeKey != "HeadTracker" && DeviceTypeKey != "VrController" && DeviceTypeKey != "LogitechGKeys" && DeviceTypeKey != "AnalogKeyboard" && DeviceTypeKey != "WebMenus" && DeviceTypeKey != "PeripheralLighting" && DeviceTypeKey != "PeripheralHaptics" && DeviceTypeKey != "KeyboardScreenKeys" && DeviceTypeKey != "NovintFalcon" && DeviceTypeKey != "GameTelemetry" && DeviceTypeKey != "TwitchChat";
 
         /// <summary>True for an NFC reader (issue #150): shows the "Register/Manage
         /// NFC Tags" button, which opens the tap-to-name registration flow.
@@ -1404,6 +1411,14 @@ namespace PadForge.ViewModels
             // offering the dialog there was a dead button (#248 audit).
             // Register on the owner.
             && !(DevicePath != null && DevicePath.StartsWith("peer://", System.StringComparison.Ordinal));
+
+        /// <summary>Whether to show the "Manage Chat Commands" button (issue
+        /// #555): the Twitch Chat row, whose words are this PC's list. A
+        /// peer's shared copy is managed on its owner, the NFC button's
+        /// peer:// rule.</summary>
+        public bool ShowManageChatCommands
+            => DeviceTypeKey == "TwitchChat"
+               && !(DevicePath != null && DevicePath.StartsWith("peer://", System.StringComparison.Ordinal));
 
         /// <summary>Whether to show the "Manage Voice Macros" button
         /// (issue #317): devices that carry voice phrases. Standalone

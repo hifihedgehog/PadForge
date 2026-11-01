@@ -1,0 +1,51 @@
+/* PadForge Web Controller: a controller drawing at rest (issue #555), for
+   layout_view.js. The same stacking controller.css gives the controller
+   page: trigger bases behind the base, everything else in front. */
+
+.pf-pad {
+    position: relative;
+}
+
+.pf-pad img {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+}
+
+.pf-pad img.pf-base {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* Press art: hidden until lit. */
+.pf-pad img.pf-press {
+    opacity: 0;
+    z-index: 2;
+    transition: opacity 0.05s;
+}
+.pf-pad img.pf-press.active {
+    opacity: 1;
+}
+
+/* A trigger shows its pull: clipped from the top, empty at rest. */
+.pf-pad img.pf-trigger {
+    opacity: 1;
+    clip-path: inset(100% 0 0 0);
+    z-index: 2;
+}
+
+/* The trigger at rest, behind the base, so only the part above the body
+   shows. A synthesized rest copy sets its own opacity and z-index. */
+.pf-pad img.pf-trigger-base {
+    opacity: 1;
+    z-index: 0;
+}
+
+.pf-pad img.pf-decal,
+.pf-pad img.pf-stick {
+    opacity: 1;
+    z-index: 2;
+}

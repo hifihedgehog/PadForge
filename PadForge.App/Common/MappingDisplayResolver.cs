@@ -1123,10 +1123,12 @@ namespace PadForge.Common
                 "Pen In Range" => s.Tablet_InRange,
                 "Any NFC Tag" => s.Mapping_NfcAnyTag,
                 // The rows that publish English names and are translated
-                // here: a microphone's Any Phrase (#317), a Falcon's handle
-                // axes (#521) and a keyboard screen's keys (#519, the
-                // numbered soft keys below the switch).
+                // here: a microphone's Any Phrase (#317), the Twitch Chat
+                // row's Any Command (#555), a Falcon's handle axes (#521) and
+                // a keyboard screen's keys (#519, the numbered soft keys
+                // below the switch).
                 PadForge.Common.Input.MicrophoneInputDevice.AnyPhraseName => s.Voice_AnyPhrase,
+                PadForge.Common.Input.Twitch.TwitchChatDevice.AnyCommandName => s.TwitchChat_AnyCommand,
                 PadForge.Common.Input.Falcon.FalconDevice.AxisNameLeftRight => s.Falcon_Axis_LeftRight,
                 PadForge.Common.Input.Falcon.FalconDevice.AxisNameUpDown => s.Falcon_Axis_UpDown,
                 PadForge.Common.Input.Falcon.FalconDevice.AxisNameInOut => s.Falcon_Axis_InOut,
@@ -2381,6 +2383,8 @@ namespace PadForge.Common
              ud.CapType != InputDeviceType.NovintFalcon &&
              // Telemetry axes and gears are named (Speed, Gear 3, #531).
              ud.CapType != InputDeviceType.GameTelemetry &&
+             // Chat commands are named for their words (!jump, #555).
+             ud.CapType != InputDeviceType.TwitchChat &&
              // Analog keys are named for their legends (#468).
              ud.CapType != InputDeviceType.AnalogKeyboard &&
              ud.CapType != InputDeviceType.Tablet));

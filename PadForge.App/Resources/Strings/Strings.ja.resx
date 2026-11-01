@@ -3744,6 +3744,8 @@
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>2D コントローラー図（Xbox 360、Xbox One S、Xbox Series、DualShock 4、DualSense）。作者: AL2009man。MIT。</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Twitch チャット行のコマンド文法とターン制ルール（C# に移植）、および Web コントローラーの WLG フィニッシュ。作者: Yuriy (KLAVIATURKIN)。ISC。</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>DualShock 4 オーディオプロトコルの資料。SBC パラメーターとパケットレイアウト。作者: khallmark。GPL-2.0、ドキュメントのみ。</value>
   </data>
@@ -4304,6 +4306,8 @@
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>ゲーム MOD を支える UDP の命令、応答、ポートファイル、トリガーエフェクトのバイト列は、Paliverse の公式 DSX v3.1 と DualSenseX v2 の MOD サンプル、DualSenseY の両バージョンと DualSense4Rockstar (ライセンス未公開)、DSZ と pydualsense (MIT)、Wujek Dualsense API と hbashton の DS4Windows フォークにある DSX サーバー (GPL-3.0) から読み取りました。資料のみで、コードは同梱していません。</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>DualShock 4 ヘッドセットの参照元</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>DualShock 4 の Bluetooth オーディオを支えるヘッドホンとスピーカーのルーティング、音量の上限、マイクのフレーミング、レポートモードは、DS4-Sound-Link (MIT)、ds4mac (GPL-2.0)、ds4drv (MIT)、hbashton の DS4Windows フォーク (GPL-3.0) から読み取り、SBC デコーダーの合成ウィンドウは Google の libsbc (Apache-2.0) と照合し、第2モデルと Sony のアダプターの USB ヘッドセットは DJm00n の ControllersInfo のディスクリプターダンプ (ライセンス未公開) と linux-hardware.org の LsUSB プローブ (CC BY 4.0) から読み取りました。資料のみで、コードは同梱していません。</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Twitch チャットの参照元</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>サインインせずにチャットを読み取る方法と ! コマンドの規則は tmi.js (MIT) と ComfyJS (MIT) から、最新の 20 件のコマンドだけを保持する方法は DougDoug の TwitchPlays (MIT) テンプレートから読み取りました。資料のみで、コードは同梱していません。</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>キーボード画面の参照元</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>キーボード画面を支えるライブラリ、フレーム、キーは、Logitech の LCD SDK と Arx Control SDK、Mad Catz の S.T.R.I.K.E. 7 SDK から読み取り、logitech-lcd (MIT または Apache-2.0)、dcspy (MIT)、foo_logitech_lcd (LGPL-2.1)、LogitechStuff と ArxWidgetManager (ライセンス未公開)、Linux の hid-lg-g15 ドライバー (GPL-2.0-or-later)、libg15、G15Interface、lcdproc (GPL-2.0)、gnome15 (GPL-3.0)、G19USB (Apache-2.0) と照合しました。PadForge は Logitech Gaming Software のライブラリと、ダウンロードまたは選択した Strike7API.dll を読み込み、これらのコードは一切同梱しません。</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon の参照元</value></data>
@@ -4490,6 +4494,7 @@
   <data name="Falcon_Calibrate" xml:space="preserve"><value>可動範囲をキャリブレーション</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>ハンドルが動く範囲を測定します。スイープが実行される 4 秒間に、ハンドルを可動範囲のすべての端まで動かしてください。その間、力は加わりません。</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>ゲームテレメトリー</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch チャット</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>ゲームテレメトリー</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>ドライビングゲームが送信するテレメトリーと Assetto Corsa の共有メモリーを、デバイスページの「ゲームテレメトリー」行に反映します。速度、ペダル、ギアを通常の入力と同様にマッピングしたり、マクロのトリガーにしたり、カスタム式で判定したりできます。受信中は、ホイールの RPM シフト LED もここからゲームの値を読み取ります。</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>ゲームテレメトリーを受信する</value></data>
@@ -4503,6 +4508,44 @@
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>カスタム形式…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>PadForge が知らないゲームのパケットを、フィールドごとに記述します。</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>各ゲームでテレメトリー出力をオンにし、この PC とこのポートを指定してください。F1、Codemasters のゲーム、EA SPORTS WRC は変更しない限り 20777、Project CARS 2 と Automobilista 2 は常に 5606、MrHokss 氏のトラックシミュレーター用プラグインは 49001 を使います。Assetto Corsa と ACC にポートは不要です。</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>任意のコマンド</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Twitch チャット</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>配信を見ている人が、チャットに入力してプレイできるようにします。視聴者が !a のようなコマンドを入力すると、PadForge は、デバイスページの「Twitch チャット」行で !a に割り当てられた入力を押します。この行は、通常のコントローラーと同様にスロットへ割り当ててください。PadForge はサインインせずにチャットを読み取り、チャットに投稿することはありません。</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Twitch チャットを読み取る</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>チャンネル</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>チャンネル名、または twitch.tv のアドレスを入力します。</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>一時停止</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>再開</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>実行中のコマンドを止めて待機列を空にし、再開するまでチャットコマンドを無視します。</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>スキップ</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>実行中のコマンドを止めます。待機列の次のコマンドが始まります。</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>待機列をクリア</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>待機列のコマンドを破棄します。実行中のコマンドは最後まで実行されます。</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>占有を終了</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>視聴者が !claim で取得した単独の操作権を終了します。</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>チャンネル名を入力してください。</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>{0} のチャットに接続しています…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>{0} のチャットを読み取り中です。</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>{0} のチャットに接続できませんでした。再試行しています。</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>一時停止中です。</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>配信用のコントローラー画像です。次のアドレスを OBS のブラウザーソースに追加してください:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>配信用のコントローラー画像には、Web コントローラーと暗号化なしの HTTP アドレスが必要です。Web コントローラーのカードで「暗号化なしの HTTP も提供する」をオンにしてください。この PC 上の OBS で使うなら「この PC のみ」で足ります。</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>視聴者は !claim で順番に操作でき、ほかの視聴者 2 人が承認します。!skip でコマンドをスキップできます。モデレーターは即座に実行できます。待機列に残るのは最新の 20 件のみで、1 つのコマンドの実行は最長 10 秒です。</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>チャットコマンドを管理</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>チャットコマンド</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>視聴者は配信のチャットに ! と単語を入力します (例: !jump)。各単語は Twitch チャット行のボタンで、通常の入力と同様にマッピングします。!a500ms は A を 500 ms 押し続け、!a+b は両方を同時に押し、!a b は順番に押します。</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>単語</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>追加</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>単語</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>標準の単語を復元</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>削除した標準の単語 (a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left, right) を元に戻します。</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>単語は英数字 {0} 文字までです。</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>単語は文字で始め、英数字のみを使ってください。</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>2s や 500ms のような時間で終わる単語は使えません。チャットでは押し続ける長さとして解釈されます。</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>順番の操作で claim、accept、release、skip、skipall を使うため、これらの単語は使えません。</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>リストに登録できる単語は {0} 個までです。</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>{0} を追加しました。</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} はすでにリストにあります。</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>自動検出</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport と Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 から F1 25</value></data>

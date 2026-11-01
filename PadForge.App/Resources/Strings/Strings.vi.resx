@@ -3806,6 +3806,8 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>Sơ đồ tay cầm 2D (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), của AL2009man. MIT.</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Ngữ pháp lệnh và quy tắc luân phiên lượt của hàng Chat Twitch, được chuyển sang C#, và lớp hoàn thiện WLG của tay cầm web, của Yuriy (KLAVIATURKIN). ISC.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>Tài liệu về giao thức âm thanh của DualShock 4: các tham số SBC và bố cục gói tin, của khallmark. GPL-2.0, chỉ dùng làm tài liệu.</value>
   </data>
@@ -4353,6 +4355,8 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>Các lệnh UDP, phản hồi, tệp cổng và byte hiệu ứng cò đứng sau Mod trò chơi, được đọc từ các ví dụ mod chính thức DSX v3.1 và DualSenseX v2 của Paliverse, cả hai phiên bản của DualSenseY và DualSense4Rockstar (không công bố giấy phép), DSZ và pydualsense (MIT), cùng Wujek Dualsense API và máy chủ DSX trong bản fork DS4Windows của hbashton (GPL-3.0). Chỉ dùng làm tài liệu, không có mã nào được phát hành kèm.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>Tài liệu tham chiếu tai nghe DualShock 4</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>Cách định tuyến tai nghe và loa, giới hạn âm lượng tối đa, khung micrô và chế độ báo cáo đứng sau âm thanh Bluetooth của DualShock 4, được đọc từ DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) và bản fork DS4Windows của hbashton (GPL-3.0), với các cửa sổ tổng hợp của bộ giải mã SBC được đối chiếu với libsbc của Google (Apache-2.0), còn tai nghe USB của kiểu máy thứ hai và bộ chuyển đổi của Sony được đọc từ các bản kết xuất bộ mô tả ControllersInfo của DJm00n (không công bố giấy phép) và các lượt thăm dò LsUSB của linux-hardware.org (CC BY 4.0). Chỉ dùng làm tài liệu, không có mã nào được phát hành kèm.</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Tài liệu tham chiếu chat Twitch</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Cách đọc chat mà không cần đăng nhập và quy tắc lệnh ! được đọc từ tmi.js (MIT) và ComfyJS (MIT), còn việc chỉ giữ 20 lệnh mới nhất lấy từ mẫu TwitchPlays (MIT) của DougDoug. Chỉ dùng làm tài liệu, không có mã nào được phát hành kèm.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Tài liệu tham chiếu màn hình bàn phím</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Các thư viện, khung hình và phím đứng sau màn hình bàn phím, được đọc từ LCD và Arx Control SDK của Logitech cùng S.T.R.I.K.E. 7 SDK của Mad Catz, đối chiếu với logitech-lcd (MIT hoặc Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff và ArxWidgetManager (không công bố giấy phép), trình điều khiển hid-lg-g15 của Linux (GPL-2.0-or-later), libg15, G15Interface và lcdproc (GPL-2.0), gnome15 (GPL-3.0) và G19USB (Apache-2.0). PadForge tải các thư viện của Logitech Gaming Software và Strike7API.dll mà bạn tải về hoặc chọn, và không phát hành kèm mã nào của chúng.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Tài liệu tham chiếu Novint Falcon</value></data>
@@ -4539,6 +4543,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Falcon_Calibrate" xml:space="preserve"><value>Hiệu chỉnh tầm với</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Đo quãng đường tay nắm di chuyển được. Hãy di chuyển nó tới mọi mép của tầm với trong bốn giây quét đang chạy. Các lực nghỉ trong lúc đó.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Telemetry trò chơi</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Chat Twitch</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Telemetry trò chơi</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Đưa telemetry mà các trò chơi lái xe gửi đi, cùng bộ nhớ dùng chung của Assetto Corsa, vào hàng Telemetry trò chơi trên trang Thiết bị. Ánh xạ tốc độ, bàn đạp và số xe như mọi đầu vào, dùng chúng để kích hoạt macro, hoặc thử chúng trong Biểu thức tùy chỉnh. Khi đang lắng nghe, đèn LED báo sang số theo RPM của vô lăng cũng đọc trò chơi từ đây.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Lắng nghe telemetry trò chơi</value></data>
@@ -4552,6 +4557,44 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>Định dạng tùy chỉnh…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>Mô tả từng trường trong các gói tin của một trò chơi mà PadForge chưa biết.</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>Bật xuất telemetry trong từng trò chơi và trỏ nó tới PC và cổng này. F1, các trò Codemasters và EA SPORTS WRC dùng 20777 nếu không đổi, Project CARS 2 và Automobilista 2 luôn dùng 5606, còn plugin của MrHokss cho các trò mô phỏng xe tải dùng 49001. Assetto Corsa và ACC không cần cổng.</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>Bất kỳ lệnh nào</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Chat Twitch</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>Cho phép những người xem luồng phát của bạn chơi bằng cách gõ trong khung chat. Người xem gõ một lệnh như !a, và PadForge sẽ nhấn nút mà !a được ánh xạ tới trên hàng Chat Twitch của trang Thiết bị. Gán hàng đó cho một khe như mọi tay cầm. PadForge đọc chat mà không cần đăng nhập và không bao giờ đăng bài trong đó.</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Đọc chat Twitch</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Kênh</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Tên kênh của bạn hoặc địa chỉ twitch.tv của kênh.</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>Tạm dừng</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>Tiếp tục</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Dừng lệnh đang chạy, xóa hàng chờ và bỏ qua các lệnh chat cho đến khi bạn tiếp tục.</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>Bỏ qua</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>Dừng lệnh đang chạy. Lệnh kế tiếp trong hàng chờ sẽ bắt đầu.</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>Xóa hàng chờ</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>Bỏ các lệnh đang chờ trong hàng. Lệnh đang chạy vẫn được thực hiện xong.</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>Kết thúc quyền điều khiển</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>Kết thúc quyền điều khiển riêng mà một người xem đã giành bằng !claim.</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>Nhập tên kênh của bạn.</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Đang kết nối tới chat của {0}…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Đang đọc chat của {0}.</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Không kết nối được tới chat của {0}. Đang thử lại.</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Đã tạm dừng.</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Hình tay cầm cho buổi phát của bạn. Thêm địa chỉ này vào OBS làm nguồn trình duyệt:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Hình tay cầm cho buổi phát của bạn cần Tay cầm web và địa chỉ HTTP thường của nó. Bật Phục vụ cả HTTP thường trong thẻ Tay cầm web. Chỉ PC này là đủ cho OBS trên PC này.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Người xem lần lượt đến lượt mình bằng !claim, cần hai người xem khác chấp thuận, và bỏ qua một lệnh bằng !skip. Người điều hành có hiệu lực ngay. Chỉ 20 lệnh mới nhất được chờ trong hàng, và mỗi lệnh chạy tối đa 10 giây.</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Quản lý lệnh chat</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Lệnh chat</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Người xem gõ ! kèm một từ trong chat của luồng phát, như !jump. Mỗi từ là một nút trên hàng Chat Twitch, được ánh xạ như mọi đầu vào. !a500ms giữ A trong 500 ms, !a+b nhấn cả hai, và !a b nhấn lần lượt từng nút.</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>Từ</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>Thêm</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>Các từ</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>Khôi phục từ thông dụng</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>Thêm lại những từ có sẵn mà bạn đã gỡ bỏ: a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left và right.</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>Một từ có tối đa {0} chữ cái và chữ số.</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>Một từ bắt đầu bằng chữ cái và chỉ gồm chữ cái và chữ số.</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>Một từ không được kết thúc bằng thời gian như 2s hoặc 500ms, vì chat hiểu đó là thời gian giữ nút.</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>Việc lần lượt đến lượt dùng claim, accept, release, skip và skipall, nên không từ nào được trùng với chúng.</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>Danh sách chứa tối đa {0} từ.</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>Đã thêm {0}.</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} đã có trong danh sách.</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>Tự phát hiện</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport và Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 đến F1 25</value></data>

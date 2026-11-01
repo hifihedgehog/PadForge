@@ -52,6 +52,10 @@ Third-Party Licenses and Attributions
   By AL2009man
   Copyright (c) 2024 Al. Lopez
   Licensed under MIT License
+  The web controller's WLG finish for the Xbox 360, Xbox Series and
+  DualSense drawings is by Yuriy (KLAVIATURKIN), from ForgePlay
+  (https://github.com/KLAVIATURKIN/ForgePlay), drawn from the same pack.
+  Licensed under the ISC License (text below)
 
 3D Controller Models
   Adapted from Handheld Companion (https://github.com/Valkirie/HandheldCompanion)
@@ -185,6 +189,14 @@ DualShock 3 Bluetooth research
   (https://github.com/null-dev/transbt) were read as protocol
   documentation only. All three are GPL-licensed. PadForge's pairing and
   reader code is original C# and contains no GPL code.
+
+ForgePlay
+  https://github.com/KLAVIATURKIN/ForgePlay
+  Copyright (c) 2026, YURIY (KLAVIATURKIN)
+  The Twitch Chat row's command grammar and its turn-taking rules are
+  ported to C# from ForgePlay's command parser, command executor, claim
+  control and skip control, and the web controller's WLG finish is its art.
+  Licensed under the ISC License (text below)
 
 Fusion
   https://github.com/xioTechnologies/Fusion
@@ -1065,6 +1077,11 @@ Protocol documentation references (no code from these projects ships)
   MIT) and sc2ds (https://github.com/ga2mer/sc2ds, no license published):
   the Steam Controller 2026 PCM haptics stream, reports 0x86, 0x88 and
   0x44.
+  Twitch chat references: reading chat without signing in and the "!"
+  command rule, read from tmi.js (https://github.com/tmijs/tmi.js, MIT) and
+  ComfyJS (https://github.com/instafluff/ComfyJS, MIT), and keeping only the
+  newest 20 commands, from DougDoug's TwitchPlays template
+  (https://github.com/DougDougGithub/TwitchPlays, MIT).
   ViGEmClient (https://github.com/nefarius/ViGEmClient, MIT): the
   DS4_REPORT_EX layout behind the virtual DualShock 4 input report.
   VIIPER, hbashton fork (https://github.com/hbashton/VIIPER, GPL-3.0-or-later):
@@ -3499,6 +3516,26 @@ The views and conclusions contained in the software and documentation
 are those of the authors and should not be interpreted as representing
 official policies, either expressed or implied, of The University of
 Texas at Austin.
+
+--------------------------------------------------------------------------------
+
+ISC License (ForgePlay, the source of the Twitch Chat row's command grammar and
+turn-taking rules and of the web controller's WLG finish art)
+===============================================================================
+
+Copyright (c) 2026, YURIY
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 --------------------------------------------------------------------------------
 

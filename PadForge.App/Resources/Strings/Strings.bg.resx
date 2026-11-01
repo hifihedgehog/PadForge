@@ -3806,6 +3806,8 @@
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>2D схеми на контролери (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), от AL2009man. MIT.</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Граматиката на командите и правилата за редуване на реда „Twitch чат“, пренесени на C#, и завършекът WLG на уеб контролера, от Yuriy (KLAVIATURKIN). ISC.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>Документация за аудио протокола на DualShock 4: параметри на SBC и структура на пакетите, от khallmark. GPL-2.0, само като документация.</value>
   </data>
@@ -4353,6 +4355,8 @@
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>UDP инструкциите, отговорите, файловете с портове и байтовете за ефектите на спусъците, на които се основават „Игрови модове“, взети от официалните примерни модове за DSX v3.1 и DualSenseX v2 на Paliverse, и двете версии на DualSenseY и DualSense4Rockstar (без публикуван лиценз), DSZ и pydualsense (MIT), както и Wujek Dualsense API и сървъра на DSX в разклонението на DS4Windows от hbashton (GPL-3.0). Само документация, не е включен код.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>Референции за слушалките на DualShock 4</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>Маршрутизирането на звука към слушалките и високоговорителя, ограниченията на силата на звука, рамкирането на микрофона и режимът на отчетите, на които се основава аудиото на DualShock 4 по Bluetooth, взети от DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) и разклонението на DS4Windows от hbashton (GPL-3.0), като синтезните прозорци на SBC декодера са проверени спрямо libsbc на Google (Apache-2.0), а USB слушалките на втория модел и на адаптера на Sony са взети от дъмповете на дескрипторите ControllersInfo на DJm00n (без публикуван лиценз) и от отчетите LsUSB на linux-hardware.org (CC BY 4.0). Само документация, не е включен код.</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Референции за Twitch чата</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Четенето на чата без вход в акаунт и правилото за команди с !, взети от tmi.js (MIT) и ComfyJS (MIT), и запазването само на най-новите 20 команди, взето от шаблона на DougDoug TwitchPlays (MIT). Само документация, не е включен код.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Референции за екраните на клавиатури</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Библиотеките, кадрите и клавишите, на които се основават екраните на клавиатурите, взети от SDK за LCD и Arx Control на Logitech и SDK за S.T.R.I.K.E. 7 на Mad Catz, проверени спрямо logitech-lcd (MIT или Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff и ArxWidgetManager (без публикуван лиценз), драйвера hid-lg-g15 на Linux (GPL-2.0-or-later), libg15, G15Interface и lcdproc (GPL-2.0), gnome15 (GPL-3.0) и G19USB (Apache-2.0). PadForge зарежда библиотеките на Logitech Gaming Software и Strike7API.dll, които изтеглите или изберете, и не включва код от нито една от тях.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Референции за Novint Falcon</value></data>
@@ -4539,6 +4543,7 @@
   <data name="Falcon_Calibrate" xml:space="preserve"><value>Калибриране на обхвата</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Измерва докъде стига ръкохватката. Преместете я до всеки край на обхвата ѝ за четирите секунди, докато трае обхождането. През това време силите са изключени.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Игрова телеметрия</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch чат</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Игрова телеметрия</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Показва телеметрията, която изпращат състезателните игри, и споделената памет на Assetto Corsa в реда „Игрова телеметрия“ на страницата Устройства. Съпоставяйте скоростта, педалите и предавките като всеки вход, задействайте макроси с тях или ги проверявайте в Персонализиран израз. Докато слуша, LED индикаторите за обороти на воланите също четат играта оттук.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Слушане за игрова телеметрия</value></data>
@@ -4552,6 +4557,44 @@
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>Персонализирани формати…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>Описва пакетите на игра, която PadForge не познава, поле по поле.</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>Включете изхода на телеметрията във всяка игра и го насочете към този компютър и порт. F1, игрите на Codemasters и EA SPORTS WRC използват 20777, освен ако не е променено, Project CARS 2 и Automobilista 2 винаги използват 5606, а добавката на MrHokss за симулаторите на камиони използва 49001. Assetto Corsa и ACC не изискват порт.</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>Всяка команда</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Twitch чат</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>Позволява на хората, които гледат стрийма ви, да играят, като пишат в чата му. Зрителят въвежда команда като !a, а PadForge натиска това, към което !a е съпоставена в реда „Twitch чат“ на страницата Устройства. Присвоете този ред на слот като всеки контролер. PadForge чете чата без вход в акаунт и никога не пише в него.</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Четене на Twitch чат</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Канал</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Името на канала ви или адресът му в twitch.tv.</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>Пауза</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>Продължи</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Спира изпълняваната команда, изчиства опашката и игнорира командите от чата, докато не продължите.</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>Пропусни</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>Спира изпълняваната команда. Започва следващата в опашката.</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>Изчисти опашката</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>Премахва чакащите в опашката команди. Изпълняваната приключва.</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>Прекрати поемането</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>Прекратява единственото управление, което зрител е поел с !claim.</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>Въведете името на канала си.</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Свързване с чата на {0}…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Четене на чата на {0}.</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Няма връзка с чата на {0}. Нов опит.</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>На пауза.</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Картината на контролера за излъчването ви. Добавете този адрес в OBS като източник „Браузър“:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Картината на контролера за излъчването ви изисква Уеб контролер и неговия обикновен HTTP адрес. Включете „Предоставяй и обикновен HTTP“ в картата „Уеб контролер“. „Само този компютър“ е достатъчно за OBS на този компютър.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Зрителите се редуват с !claim, което двама други зрители одобряват, и пропускат команда с !skip. Модераторите действат веднага. В опашката чакат само последните 20 команди, а една команда се изпълнява най-много 10 секунди.</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Управление на чат командите</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Чат команди</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Зрителите пишат ! и дума в чата на стрийма ви, например !jump. Всяка дума е бутон в реда „Twitch чат“ и се съпоставя като всеки вход. !a500ms държи A 500 ms, !a+b натиска и двата, а !a b натиска единия след другия.</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>Дума</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>Добави</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>Думи</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>Върни обичайните думи</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>Връща премахнатите от предварително зададените думи: a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left и right.</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>Думата има най-много {0} букви и цифри.</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>Думата започва с буква и съдържа само букви и цифри.</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>Думата не може да завършва на време като 2s или 500ms, което чатът чете като продължителност на задържане.</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>Редуването използва claim, accept, release, skip и skipall, затова никоя дума не може да е една от тях.</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>Списъкът побира най-много {0} думи.</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>Добавено: {0}.</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} вече е в списъка.</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>Автоматично разпознаване</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport и Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 до F1 25</value></data>

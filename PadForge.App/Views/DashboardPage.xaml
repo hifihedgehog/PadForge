@@ -2233,6 +2233,133 @@
                 </StackPanel>
             </Border>
 
+            <!-- ═══ Twitch Chat (#555) ═══ -->
+            <!-- Viewers press the slots the Twitch Chat row is assigned to by
+                 typing commands in the stream's chat. The Game Telemetry
+                 card's shape: the switch, the channel, the row's status line
+                 pushed by InputService on the dashboard tick, and the
+                 streamer's controls, which act on the open row. -->
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
+                <!-- E8F2 = Segoe MDL2 ChatBubbles (verified in live segmdl2.ttf). -->
+                <reset:GlyphText Text="&#xE8F2;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding Dashboard_TwitchChat, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
+            </StackPanel>
+
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="{Binding Dashboard_TwitchChatDescription, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Dashboard_EnableTwitchChat, Source={x:Static strings:Strings.Instance}}"
+                                  x:Name="TwitchChatCheckBox"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableTwitchChat}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableTwitchChat" SettingLabel="{Binding Dashboard_EnableTwitchChat, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableTwitchChat_2245"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10" IsEnabled="{Binding EnableTwitchChat}">
+                        <TextBlock Text="{Binding Dashboard_TwitchChatChannel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0"/>
+                        <!-- A second after the last key, so the row reopens
+                             once per edit rather than once per letter. -->
+                        <ui:TextBox Text="{Binding TwitchChatChannel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}"
+                                    AutomationProperties.Name="{Binding Dashboard_TwitchChatChannel, Source={x:Static strings:Strings.Instance}}"
+                                    ToolTip="{Binding Dashboard_TwitchChatChannel_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                    Width="260" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <!-- The streamer's controls, live while the row is open. -->
+                    <WrapPanel Margin="0,0,0,10" IsEnabled="{Binding IsTwitchChatOpen}">
+                        <Button Command="{Binding TwitchChatPauseCommand}" Margin="0,0,8,0" MinWidth="90"
+                                ToolTip="{Binding TwitchChat_Pause_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Setter Property="Content" Value="{Binding TwitchChat_Pause, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TwitchChatPaused}" Value="True">
+                                            <Setter Property="Content" Value="{Binding TwitchChat_Resume, Source={x:Static strings:Strings.Instance}}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button Command="{Binding TwitchChatSkipCommand}" Margin="0,0,8,0"
+                                Content="{Binding TwitchChat_Skip, Source={x:Static strings:Strings.Instance}}"
+                                ToolTip="{Binding TwitchChat_Skip_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <Button Command="{Binding TwitchChatClearCommand}" Margin="0,0,8,0"
+                                Content="{Binding TwitchChat_ClearLine, Source={x:Static strings:Strings.Instance}}"
+                                ToolTip="{Binding TwitchChat_ClearLine_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <Button Command="{Binding TwitchChatEndClaimCommand}"
+                                Content="{Binding TwitchChat_EndClaim, Source={x:Static strings:Strings.Instance}}"
+                                ToolTip="{Binding TwitchChat_EndClaim_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                    </WrapPanel>
+                    <DockPanel Margin="0,0,0,4">
+                        <!-- Reading = flame, as on the Game Telemetry card: the
+                             row's truth, not the switch. -->
+                        <Path DockPanel.Dock="Left" FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
+                              Width="11" Height="11" Stretch="Uniform"
+                              VerticalAlignment="Top" Margin="0,3,6,0">
+                            <Path.Style>
+                                <Style TargetType="Path">
+                                    <Setter Property="Fill" Value="Transparent"/>
+                                    <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <Setter Property="StrokeThickness" Value="1.1"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsTwitchChatRunning}" Value="True">
+                                            <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                            <Setter Property="Stroke" Value="{x:Null}"/>
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
+                        <TextBlock common:LiveText.Polite="True" Text="{Binding TwitchChatStatus}" FontSize="12"
+                                   FontFamily="{StaticResource TelemetryFontFamily}" TextWrapping="Wrap"
+                                   Foreground="{DynamicResource ColdBrush}"/>
+                    </DockPanel>
+                    <!-- The controller picture for the broadcast, on the plain
+                         address: OBS will not load the main address, whose
+                         certificate is self-signed. -->
+                    <StackPanel Margin="0,10,0,0"
+                                Visibility="{Binding TwitchChatDisplayUrl, Converter={StaticResource StringToVisibility}}">
+                        <TextBlock Text="{Binding Dashboard_TwitchChatDisplay, Source={x:Static strings:Strings.Instance}}"
+                                   FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,4"/>
+                        <StackPanel Orientation="Horizontal">
+                            <ui:TextBox Text="{Binding TwitchChatDisplayUrl, Mode=OneWay}" IsReadOnly="True"
+                                        AutomationProperties.Name="{Binding Dashboard_TwitchChatDisplay, Source={x:Static strings:Strings.Instance}}"
+                                        FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Width="360"/>
+                            <ui:Button Style="{StaticResource EmberIconButton}"
+                                       Command="{Binding CopyTwitchChatDisplayUrlCommand}" Margin="6,0,0,0"
+                                       VerticalAlignment="Center"
+                                       ToolTip="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}">
+                                <reset:GlyphText Text="&#xE8C8;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            </ui:Button>
+                        </StackPanel>
+                    </StackPanel>
+                    <!-- Shown while the plain address is off, which the
+                         picture needs. -->
+                    <TextBlock Text="{Binding Dashboard_TwitchChatDisplayOff, Source={x:Static strings:Strings.Instance}}" TextWrapping="Wrap"
+                               FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,10,0,0">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding TwitchChatDisplayUrl}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock Text="{Binding Dashboard_TwitchChatFooter, Source={x:Static strings:Strings.Instance}}" TextWrapping="Wrap"
+                               FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,8,0,0"/>
+                </StackPanel>
+            </Border>
+
             <!-- ═══ Overlays (menu #9 B-17, shift layer, profile switch) ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <!-- E700 = Segoe MDL2 GlobalNavButton, the canonical menu glyph. -->

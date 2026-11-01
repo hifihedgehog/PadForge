@@ -796,6 +796,32 @@ namespace PadForge.ViewModels
         internal int GameTelemetryStatusVersion { get; set; } = -1;
         internal object GameTelemetryStatusDevice { get; set; }
 
+        private bool _isTwitchChatDevice;
+        /// <summary>Whether the selected device is the Twitch Chat row (issue
+        /// #555): the command words as named chips, plus the chat's
+        /// line.</summary>
+        public bool IsTwitchChatDevice
+        {
+            get => _isTwitchChatDevice;
+            set => SetProperty(ref _isTwitchChatDevice, value);
+        }
+
+        private string _twitchChatStatus = string.Empty;
+        /// <summary>The channel the row reads, or why it reads nothing, the
+        /// Dashboard card's line. Written by InputService's panel lines,
+        /// which clear it once a stopped engine retires the row.</summary>
+        public string TwitchChatStatus
+        {
+            get => _twitchChatStatus;
+            set => SetProperty(ref _twitchChatStatus, value ?? string.Empty);
+        }
+
+        /// <summary>The row's status version and instance the current
+        /// <see cref="TwitchChatStatus"/> was built from, the Game Telemetry
+        /// row's cache pair.</summary>
+        internal int TwitchChatStatusVersion { get; set; } = -1;
+        internal object TwitchChatStatusDevice { get; set; }
+
         /// <summary>An axis's name from a row's own objects, or null.</summary>
         internal static string NamedAxis(IReadOnlyList<PadForge.Engine.DeviceObjectItem> objects, int slot)
         {
@@ -1074,7 +1100,7 @@ namespace PadForge.ViewModels
         /// are stored verbatim and used by the InputService update loop
         /// to read the matching <c>state.Buttons[Index]</c>.
         /// </summary>
-        internal void RebuildRawStateCollections(IReadOnlyList<int> axisIndices, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false, bool isNfc = false, IReadOnlyList<ConsumerButtonDisplayItem> consumerButtons = null, bool isHeadsetMotion = false, int voiceButtonBase = -1, bool isMicrophone = false, bool isHandheld = false, bool isSystemMotion = false, bool isHeadTracker = false, IReadOnlyList<PadForge.Engine.DeviceObjectItem> namedObjects = null, int[] analogKeyOrder = null, bool isFalcon = false, bool isGameTelemetry = false)
+        internal void RebuildRawStateCollections(IReadOnlyList<int> axisIndices, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false, bool isNfc = false, IReadOnlyList<ConsumerButtonDisplayItem> consumerButtons = null, bool isHeadsetMotion = false, int voiceButtonBase = -1, bool isMicrophone = false, bool isHandheld = false, bool isSystemMotion = false, bool isHeadTracker = false, IReadOnlyList<PadForge.Engine.DeviceObjectItem> namedObjects = null, int[] analogKeyOrder = null, bool isFalcon = false, bool isGameTelemetry = false, bool isTwitchChat = false)
         {
             // Analog keyboards (#468): key chips, gathered as keys move.
             IsAnalogKeyboardDevice = analogKeyOrder != null;
@@ -1100,6 +1126,8 @@ namespace PadForge.ViewModels
             FalconDotX = FalconDotY = 0.5;
             IsGameTelemetryDevice = isGameTelemetry;
             if (!isGameTelemetry) { GameTelemetryStatus = string.Empty; GameTelemetryStatusVersion = -1; GameTelemetryStatusDevice = null; }
+            IsTwitchChatDevice = isTwitchChat;
+            if (!isTwitchChat) { TwitchChatStatus = string.Empty; TwitchChatStatusVersion = -1; TwitchChatStatusDevice = null; }
             IsMicrophoneDevice = isMicrophone;
             ShowVoicePhrases = voiceButtonBase >= 0;
             RebuildVoicePhrases(voiceButtonBase);
@@ -1223,6 +1251,10 @@ namespace PadForge.ViewModels
             GameTelemetryStatus = string.Empty;
             GameTelemetryStatusVersion = -1;
             GameTelemetryStatusDevice = null;
+            IsTwitchChatDevice = false;
+            TwitchChatStatus = string.Empty;
+            TwitchChatStatusVersion = -1;
+            TwitchChatStatusDevice = null;
             HandheldButtons.Clear();
             ConsumerButtons.Clear();
             LiveMidi = null;

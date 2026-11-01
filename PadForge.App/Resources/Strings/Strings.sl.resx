@@ -3806,6 +3806,8 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>2D-sheme krmilnikov (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense). Avtor: AL2009man. MIT.</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Slovnica ukazov in pravila izmeničnega igranja v vrstici Klepet Twitch, prenesena v C#, ter dodelava WLG spletnega krmilnika. Avtor: Yuriy (KLAVIATURKIN). ISC.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>Dokumentacija zvočnega protokola DualShock 4: parametri SBC in razporeditve paketov. Avtor: khallmark. GPL-2.0, samo kot dokumentacija.</value>
   </data>
@@ -4353,6 +4355,8 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>Ukazi UDP, odgovori, datoteke vrat in bajti učinkov sprožilcev za „Modifikacije iger“, prebrani iz uradnih primerov modifikacij DSX v3.1 in DualSenseX v2 avtorja Paliverse, obeh različic DualSenseY in DualSense4Rockstar (brez objavljene licence), DSZ in pydualsense (MIT) ter Wujek Dualsense API in strežnika DSX v izpeljanki DS4Windows avtorja hbashton (GPL-3.0). Samo dokumentacija, nobena koda ni vključena.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>Reference za slušalke DualShock 4</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>Usmerjanje zvoka na slušalke in zvočnik, zgornje meje glasnosti, okvirjanje mikrofona in način poročil za zvok prek Bluetooth na krmilniku DualShock 4, prebrani iz DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) in izpeljanke DS4Windows avtorja hbashton (GPL-3.0), sintezna okna dekodirnika SBC pa so preverjena z libsbc podjetja Google (Apache-2.0), slušalke USB drugega modela in adapterja Sony pa so prebrane iz izpisov deskriptorjev ControllersInfo avtorja DJm00n (brez objavljene licence) in sond LsUSB s spletišča linux-hardware.org (CC BY 4.0). Samo dokumentacija, nobena koda ni vključena.</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Reference za klepet Twitch</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Branje klepeta brez prijave in pravilo ukaza z ! sta prebrana iz tmi.js (MIT) in ComfyJS (MIT), ohranjanje samo najnovejših 20 ukazov pa iz predloge TwitchPlays (MIT) avtorja DougDoug. Samo dokumentacija, nobena koda ni vključena.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Reference za zaslone tipkovnic</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Knjižnice, okvirji in tipke za zaslone tipkovnic, prebrani iz SDK-jev Logitech LCD in Arx Control ter SDK-ja S.T.R.I.K.E. 7 podjetja Mad Catz, preverjeni z logitech-lcd (MIT ali Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff in ArxWidgetManager (brez objavljene licence), gonilnikom hid-lg-g15 za Linux (GPL-2.0-or-later), libg15, G15Interface in lcdproc (GPL-2.0), gnome15 (GPL-3.0) in G19USB (Apache-2.0). PadForge naloži knjižnice programa Logitech Gaming Software in datoteko Strike7API.dll, ki jo prenesete ali izberete, in ne vključuje kode nobene od njih.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Reference za Novint Falcon</value></data>
@@ -4539,6 +4543,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Falcon_Calibrate" xml:space="preserve"><value>Umeri doseg</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Izmeri, kako daleč potuje ročaj. Premakni ga do vseh robov dosega v štirih sekundah, kolikor traja pometanje. Sile medtem mirujejo.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Telemetrija iger</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Klepet Twitch</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Telemetrija iger</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Telemetrijo, ki jo pošiljajo dirkalne igre, in skupni pomnilnik igre Assetto Corsa prikaže v vrstici Telemetrija iger na strani Naprave. Hitrost, pedale in prestave lahko preslikate kot vsak vhod, z njimi sprožite makre ali jih preizkusite v izrazu po meri. Med poslušanjem lučke za prestavljanje (RPM) na volanu igro berejo tudi od tu.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Poslušaj telemetrijo iger</value></data>
@@ -4552,6 +4557,44 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>Formati po meri…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>Opiše pakete igre, ki jo PadForge ne pozna, polje za poljem.</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>V vsaki igri vklopite izhod telemetrije in ga usmerite na ta računalnik in vrata. F1, igre Codemasters in EA SPORTS WRC privzeto uporabljajo 20777, Project CARS 2 in Automobilista 2 vedno uporabljata 5606, vtičnik MrHokss za simulatorje tovornjakov pa 49001. Assetto Corsa in ACC vrat ne potrebujeta.</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>Kateri koli ukaz</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Klepet Twitch</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>Gledalcem vašega prenosa omogoči igranje s tipkanjem v klepetu. Gledalec vtipka ukaz, na primer !a, PadForge pa pritisne tisto, na kar je !a preslikan v vrstici Klepet Twitch na strani Naprave. Vrstico dodelite reži kot vsak krmilnik. PadForge bere klepet brez prijave in vanj nikoli ne piše.</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Beri klepet Twitch</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Kanal</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Ime vašega kanala ali njegov naslov twitch.tv.</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>Pavziraj</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>Nadaljuj</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Ustavi ukaz, ki se izvaja, počisti vrsto in ne upošteva ukazov iz klepeta, dokler ne nadaljujete.</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>Preskoči</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>Ustavi ukaz, ki se izvaja. Začne se naslednji v vrsti.</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>Počisti vrsto</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>Zavrže ukaze, ki čakajo v vrsti. Ukaz, ki se izvaja, se konča.</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>Končaj prevzem</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>Konča izključni nadzor, ki ga je gledalec prevzel z !claim.</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>Vnesite ime svojega kanala.</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Povezovanje s klepetom kanala {0}…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Branje klepeta kanala {0}.</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Klepeta kanala {0} ni mogoče doseči. Poskus se ponovi.</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Pavza.</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Slika krmilnika za vaš prenos. Ta naslov dodajte v OBS kot vir brskalnika:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Slika krmilnika za vaš prenos potrebuje Spletni krmilnik in njegov navaden naslov HTTP. Vklopite Streži tudi navaden HTTP na kartici Spletni krmilnik. Samo ta računalnik zadostuje za OBS na tem računalniku.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Gledalci se menjajo z !claim, ki ga potrdita še dva gledalca, in ukaz preskočijo z !skip. Moderatorji ukrepajo takoj. V vrsti čaka le zadnjih 20 ukazov, ukaz pa se izvaja največ 10 sekund.</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Upravljaj klepetalne ukaze</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Klepetalni ukazi</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Gledalci v klepetu vašega prenosa vtipkajo ! in besedo, na primer !jump. Vsaka beseda je gumb v vrstici Klepet Twitch, preslikan kot vsak vhod. !a500ms drži A 500 ms, !a+b pritisne oba, !a b pa enega za drugim.</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>Beseda</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>Dodaj</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>Besede</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>Obnovi običajne besede</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>Znova doda vse prednastavljene besede, ki ste jih odstranili: a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left in right.</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>Beseda ima lahko največ {0} črk in številk.</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>Beseda se začne s črko in vsebuje samo črke in številke.</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>Beseda se ne sme končati s časom, kot sta 2s ali 500ms, ki ju klepet prebere kot trajanje držanja.</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>Izmenjavanje uporablja claim, accept, release, skip in skipall, zato nobena beseda ne sme biti ena od njih.</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>Seznam vsebuje največ {0} besed.</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>Dodano: {0}.</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} je že na seznamu.</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>Samodejno zaznavanje</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport in Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 do F1 25</value></data>

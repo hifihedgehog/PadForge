@@ -3806,6 +3806,8 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>2D-scheman över handkontroller (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), av AL2009man. MIT.</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Kommandogrammatiken och turtagningsreglerna för raden Twitch-chatt, porterade till C#, och webbhandkontrollens WLG-finish, av Yuriy (KLAVIATURKIN). ISC.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>Dokumentation av ljudprotokollet för DualShock 4: SBC-parametrar och paketlayouter, av khallmark. GPL-2.0, endast dokumentation.</value>
   </data>
@@ -4353,6 +4355,8 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>UDP-instruktionerna, svaren, portfilerna och byten för avtryckareffekter bakom Spelmoddar, lästa från Paliverses officiella exempelmoddar för DSX v3.1 och DualSenseX v2, båda versionerna av DualSenseY och DualSense4Rockstar (ingen licens publicerad), DSZ och pydualsense (MIT), samt Wujek Dualsense API och DSX-servern i hbashtons förgrening av DS4Windows (GPL-3.0). Endast dokumentation, ingen kod följer med.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>Referenser för DualShock 4-headset</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>Dirigeringen av hörlurs- och högtalarljud, volymtaken, mikrofonens ramindelning och rapportläget bakom Bluetooth-ljud för DualShock 4, lästa från DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) och hbashtons förgrening av DS4Windows (GPL-3.0), med SBC-avkodarens syntesfönster kontrollerade mot Googles libsbc (Apache-2.0), och USB-headseten för den andra modellen och Sonys adapter lästa från deskriptordumpar i DJm00ns ControllersInfo (ingen licens publicerad) och LsUSB-sonderingar från linux-hardware.org (CC BY 4.0). Endast dokumentation, ingen kod följer med.</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Referenser för Twitch-chatt</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Att läsa chatten utan att logga in och !-kommandoregeln, lästa från tmi.js (MIT) och ComfyJS (MIT), och att bara behålla de 20 senaste kommandona, från mallen TwitchPlays (MIT) av DougDoug. Endast dokumentation, ingen kod följer med.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Referenser för tangentbordsskärmar</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Biblioteken, ramarna och tangenterna bakom tangentbordsskärmar, lästa från Logitechs LCD SDK och Arx Control SDK samt Mad Catz S.T.R.I.K.E. 7 SDK, korskontrollerade mot logitech-lcd (MIT eller Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff och ArxWidgetManager (ingen licens publicerad), Linux-drivrutinen hid-lg-g15 (GPL-2.0-or-later), libg15, G15Interface och lcdproc (GPL-2.0), gnome15 (GPL-3.0) och G19USB (Apache-2.0). PadForge läser in biblioteken från Logitech Gaming Software och den Strike7API.dll som du laddar ned eller väljer, och levererar ingen kod från något av dem.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Referenser för Novint Falcon</value></data>
@@ -4539,6 +4543,7 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Falcon_Calibrate" xml:space="preserve"><value>Kalibrera omfång</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Mäter hur långt handtaget rör sig. Flytta det till alla kanter av dess omfång under de fyra sekunder som svepet pågår. Krafterna vilar under tiden.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Spelstatistik</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch-chatt</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Spelstatistik</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Visar statistiken som racingspel skickar, och delat minne från Assetto Corsa, på raden Spelstatistik på sidan Enheter. Mappa hastighet, pedaler och växlar som vilken indata som helst, starta makron med dem eller testa dem i ett anpassat uttryck. Medan den lyssnar läser även rattens växlingslampor för varvtal spelet härifrån.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Lyssna efter spelstatistik</value></data>
@@ -4552,6 +4557,44 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>Anpassade format…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>Beskriver paketen från ett spel som PadForge inte känner till, fält för fält.</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>Slå på statistikutdata i varje spel och rikta den mot den här datorn och porten. F1, Codemasters-spelen och EA SPORTS WRC använder 20777 om det inte ändras, Project CARS 2 och Automobilista 2 använder alltid 5606, och MrHokss tillägg för lastbilssimulatorerna använder 49001. Assetto Corsa och ACC behöver ingen port.</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>Valfritt kommando</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Twitch-chatt</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>Låter de som tittar på din stream spela genom att skriva i dess chatt. En tittare skriver ett kommando som !a, och PadForge trycker på det som !a är mappat till på raden Twitch-chatt på sidan Enheter. Tilldela raden till en plats som vilken handkontroll som helst. PadForge läser chatten utan att logga in och skriver aldrig något i den.</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Läs Twitch-chatten</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Kanal</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Namnet på din kanal eller dess adress på twitch.tv.</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>Pausa</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>Fortsätt</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Stoppar kommandot som spelas, tömmer kön och ignorerar chattkommandon tills du fortsätter.</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>Hoppa över</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>Stoppar kommandot som spelas. Nästa i kön startar.</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>Töm kön</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>Släpper kommandona som väntar i kön. Det som spelas blir klart.</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>Avsluta tur</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>Avslutar den ensamma kontroll som en tittare tog med !claim.</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>Ange namnet på din kanal.</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Ansluter till chatten för {0}…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Läser chatten för {0}.</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Det gick inte att nå chatten för {0}. Försöker igen.</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Pausad.</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Handkontrollbilden för din sändning. Lägg till den här adressen i OBS som en webbläsarkälla:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Handkontrollbilden för din sändning kräver Webbhandkontroll och dess vanliga HTTP-adress. Slå på Erbjud även vanlig HTTP på kortet Webbhandkontroll. Endast den här datorn räcker för OBS på den här datorn.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Tittare turas om med !claim, som två andra tittare godkänner, och hoppar över ett kommando med !skip. Moderatorer agerar direkt. Bara de 20 nyaste kommandona väntar i kön, och ett kommando spelas i högst 10 sekunder.</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Hantera chattkommandon</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Chattkommandon</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Tittare skriver ! och ett ord i streamens chatt, som !jump. Varje ord är en knapp på raden Twitch-chatt och mappas som vilken indata som helst. !a500ms håller ned A i 500 ms, !a+b trycker på båda och !a b trycker på dem efter varandra.</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>Ord</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>Lägg till</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>Ord</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>Återställ vanliga ord</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>Lägger tillbaka de förinställda orden som du tagit bort: a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left och right.</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>Ett ord får ha högst {0} bokstäver och siffror.</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>Ett ord måste börja med en bokstav och får bara innehålla bokstäver och siffror.</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>Ett ord får inte sluta på en tid som 2s eller 500ms, eftersom chatten läser det som hur länge knappen hålls ned.</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>Turtagning använder claim, accept, release, skip och skipall, så inget ord kan vara något av dem.</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>Listan rymmer högst {0} ord.</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>{0} har lagts till.</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} finns redan i listan.</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>Automatisk identifiering</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport och Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 till F1 25</value></data>

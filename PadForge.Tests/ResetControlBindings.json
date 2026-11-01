@@ -73,6 +73,12 @@
   },
   {
     "File": "PadForge.App/Views/DashboardPage.xaml",
+    "Id": "Reset_DashboardViewModel_EnableTwitchChat_2245",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "EnableTwitchChat"
+  },
+  {
+    "File": "PadForge.App/Views/DashboardPage.xaml",
     "Id": "Reset_DashboardViewModel_EnableMenuOverlay_2023",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "EnableMenuOverlay"

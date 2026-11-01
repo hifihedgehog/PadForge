@@ -61,6 +61,11 @@
         });
         var wsUrl = proto + "//" + location.host + "/ws?id=" + encodeURIComponent(clientId) + "&layout=" + encodeURIComponent(layoutType);
         if (hasTouchpad) wsUrl += "&touchpad=1";
+        // The viewer's name from the home page (#555), so the streamer can
+        // tell phones apart.
+        var viewerName = "";
+        try { viewerName = localStorage.getItem("padforge_viewer_name") || ""; } catch (e) { }
+        if (viewerName) wsUrl += "&name=" + encodeURIComponent(viewerName);
         ws = new WebSocket(wsUrl);
 
         ws.onopen = function () {

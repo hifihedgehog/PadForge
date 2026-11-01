@@ -3806,6 +3806,8 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>2D கட்டுப்படுத்தி வரைபடங்கள் (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), AL2009man உருவாக்கியவை. MIT.</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Twitch அரட்டை வரிசையின் கட்டளை இலக்கணமும் முறைமாற்று விதிகளும், C#-க்குப் போர்ட் செய்யப்பட்டவை, மற்றும் வலைக் கட்டுப்படுத்தியின் WLG பூச்சு, Yuriy (KLAVIATURKIN) உருவாக்கியவை. ISC.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>DualShock 4 ஆடியோ நெறிமுறை ஆவணம்: SBC அளவுருக்களும் பாக்கெட் அமைப்புகளும், khallmark உருவாக்கியது. GPL-2.0, ஆவணமாக மட்டும்.</value>
   </data>
@@ -4353,6 +4355,8 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>கேம் மோட்களுக்குப் பின்னால் உள்ள UDP கட்டளைகள், பதில்கள், போர்ட் கோப்புகள் மற்றும் டிரிகர் விளைவு பைட்டுகள், இவற்றிலிருந்து படிக்கப்பட்டவை: Paliverse-இன் அதிகாரப்பூர்வ DSX v3.1 மற்றும் DualSenseX v2 மோட் எடுத்துக்காட்டுகள், DualSenseY-இன் இரு பதிப்புகள் மற்றும் DualSense4Rockstar (உரிமம் வெளியிடப்படவில்லை), DSZ மற்றும் pydualsense (MIT), Wujek Dualsense API மற்றும் hbashton-இன் DS4Windows ஃபோர்க்கில் உள்ள DSX சர்வர் (GPL-3.0). ஆவணமாக மட்டும், எந்தக் குறியீடும் சேர்க்கப்படவில்லை.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>DualShock 4 ஹெட்செட் மேற்கோள்கள்</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>DualShock 4 Bluetooth ஆடியோவுக்குப் பின்னால் உள்ள ஹெட்ஃபோன் மற்றும் ஸ்பீக்கர் வழித்தடம், ஒலியளவு உச்சவரம்புகள், மைக்ரோஃபோன் ஃபிரேமிங் மற்றும் அறிக்கை முறை, இவற்றிலிருந்து படிக்கப்பட்டவை: DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT), hbashton-இன் DS4Windows ஃபோர்க் (GPL-3.0). SBC டிகோடரின் தொகுப்பு சாளரங்கள் Google-இன் libsbc (Apache-2.0) உடன் சரிபார்க்கப்பட்டன. இரண்டாம் மாடலின் மற்றும் Sony-இன் அடாப்டரின் USB ஹெட்செட்கள் DJm00n-இன் ControllersInfo டிஸ்கிரிப்டர் டம்ப்களிலிருந்தும் (உரிமம் வெளியிடப்படவில்லை) linux-hardware.org-இன் LsUSB ஆய்வுகளிலிருந்தும் (CC BY 4.0) படிக்கப்பட்டன. ஆவணமாக மட்டும், எந்தக் குறியீடும் சேர்க்கப்படவில்லை.</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Twitch அரட்டை மேற்கோள்கள்</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>உள்நுழையாமல் அரட்டையைப் படிப்பதும் ! கட்டளை விதியும் tmi.js (MIT) மற்றும் ComfyJS (MIT) ஆகியவற்றிலிருந்தும், சமீபத்திய 20 கட்டளைகளை மட்டும் வைத்திருப்பது DougDoug-இன் TwitchPlays (MIT) டெம்ப்ளேட்டிலிருந்தும் படிக்கப்பட்டன. ஆவணமாக மட்டும், எந்தக் குறியீடும் சேர்க்கப்படவில்லை.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>விசைப்பலகைத் திரை மேற்கோள்கள்</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>விசைப்பலகைத் திரைகளுக்குப் பின்னால் உள்ள நூலகங்கள், ஃபிரேம்கள் மற்றும் விசைகள், Logitech-இன் LCD மற்றும் Arx Control SDK-கள், Mad Catz-இன் S.T.R.I.K.E. 7 SDK ஆகியவற்றிலிருந்து படிக்கப்பட்டு, logitech-lcd (MIT அல்லது Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff மற்றும் ArxWidgetManager (உரிமம் வெளியிடப்படவில்லை), Linux-இன் hid-lg-g15 இயக்கி (GPL-2.0-or-later), libg15, G15Interface மற்றும் lcdproc (GPL-2.0), gnome15 (GPL-3.0), G19USB (Apache-2.0) ஆகியவற்றுடன் சரிபார்க்கப்பட்டவை. PadForge Logitech Gaming Software-இன் நூலகங்களையும் நீங்கள் பதிவிறக்கும் அல்லது தேர்ந்தெடுக்கும் Strike7API.dll-ஐயும் ஏற்றும், அவற்றில் எதிலிருந்தும் குறியீடு சேர்க்கப்படவில்லை.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon மேற்கோள்கள்</value></data>
@@ -4539,6 +4543,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Falcon_Calibrate" xml:space="preserve"><value>எட்டும் தொலைவை அளவுத்திருத்து</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>கைப்பிடி எவ்வளவு தூரம் நகர்கிறது என்பதை அளக்கிறது. அளவீடு நடக்கும் நான்கு வினாடிகளுக்கு அதன் எட்டும் தொலைவின் ஒவ்வொரு விளிம்புக்கும் நகர்த்துங்கள். அந்த நேரத்தில் விசைகள் ஓய்வில் இருக்கும்.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>கேம் டெலிமெட்ரி</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch அரட்டை</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>கேம் டெலிமெட்ரி</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>ஓட்டுதல் கேம்கள் அனுப்பும் டெலிமெட்ரியையும் Assetto Corsa-வின் பகிர்ந்த நினைவகத்தையும் சாதனங்கள் பக்கத்தின் கேம் டெலிமெட்ரி வரிசையில் காட்டுகிறது. அதன் வேகம், பெடல்கள், கியர்களை எந்த உள்ளீட்டையும் போல மேப் செய்யலாம், அவற்றால் மேக்ரோக்களை இயக்கலாம் அல்லது தனிப்பயன் கோவையில் சோதிக்கலாம். இது செவிமடுக்கும் போது, வீலின் RPM ஷிஃப்ட் LED-களும் கேமை இங்கிருந்தே படிக்கும்.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>கேம் டெலிமெட்ரியைச் செவிமடு</value></data>
@@ -4552,6 +4557,44 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>தனிப்பயன் வடிவங்கள்…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>PadForge அறியாத கேமின் பாக்கெட்டுகளை புலம் புலமாக விவரிக்கிறது.</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>ஒவ்வொரு கேமிலும் டெலிமெட்ரி வெளியீட்டை இயக்கி, இந்த PC-யையும் போர்ட்டையும் குறிப்பிடுங்கள். F1, Codemasters கேம்கள், EA SPORTS WRC ஆகியவை மாற்றாவிட்டால் 20777-ஐப் பயன்படுத்தும். Project CARS 2, Automobilista 2 எப்போதும் 5606-ஐயும், டிரக் சிமுலேட்டர்களுக்கான MrHokss-இன் செருகுநிரல் 49001-ஐயும் பயன்படுத்தும். Assetto Corsa, ACC-க்கு போர்ட் தேவையில்லை.</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>ஏதேனும் கட்டளை</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Twitch அரட்டை</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>உங்கள் ஸ்ட்ரீமைப் பார்ப்பவர்கள் அதன் அரட்டையில் தட்டச்சு செய்தே விளையாட உதவுகிறது. பார்வையாளர் !a போன்ற கட்டளையைத் தட்டச்சு செய்தால், சாதனங்கள் பக்கத்தின் Twitch அரட்டை வரிசையில் !a எதற்கு மேப் செய்யப்பட்டுள்ளதோ அதை PadForge அழுத்தும். அந்த வரிசையை எந்தக் கட்டுப்படுத்தியையும் போல ஒரு ஸ்லாட்டுக்கு ஒதுக்கவும். PadForge உள்நுழையாமல் அரட்டையைப் படிக்கிறது, அதில் ஒருபோதும் பதிவிடாது.</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Twitch அரட்டையைப் படி</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>சேனல்</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>உங்கள் சேனலின் பெயர் அல்லது அதன் twitch.tv முகவரி.</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>இடைநிறுத்து</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>தொடரு</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>இயங்கும் கட்டளையை நிறுத்தி, வரிசையை அழித்து, நீங்கள் தொடரும் வரை அரட்டைக் கட்டளைகளைப் புறக்கணிக்கும்.</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>தவிர்</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>இயங்கும் கட்டளையை நிறுத்தும். வரிசையில் அடுத்தது தொடங்கும்.</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>வரிசையை அழி</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>வரிசையில் காத்திருக்கும் கட்டளைகளை நீக்கும். இயங்குவது முடியும் வரை தொடரும்.</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>உரிமைகோரலை முடி</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>ஒரு பார்வையாளர் !claim மூலம் எடுத்த தனிக் கட்டுப்பாட்டை முடிக்கும்.</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>உங்கள் சேனலின் பெயரை உள்ளிடவும்.</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>{0}-இன் அரட்டையுடன் இணைக்கிறது…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>{0}-இன் அரட்டையைப் படிக்கிறது.</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>{0}-இன் அரட்டையை அடைய முடியவில்லை. மீண்டும் முயல்கிறது.</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>இடைநிறுத்தப்பட்டது.</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>உங்கள் ஒளிபரப்புக்கான கட்டுப்படுத்திப் படம். இந்த முகவரியை OBS-இல் உலாவி மூலமாகச் சேர்க்கவும்:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>ஒளிபரப்புக்கான கட்டுப்படுத்திப் படத்துக்கு வலைக் கட்டுப்படுத்தியும் அதன் சாதாரண HTTP முகவரியும் தேவை. வலைக் கட்டுப்படுத்தி அட்டையில் சாதாரண HTTP-யிலும் வழங்கு என்பதை இயக்கவும். இந்த PC-யில் உள்ள OBS-க்கு இந்த PC மட்டும் போதும்.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>பார்வையாளர்கள் !claim மூலம் முறை எடுக்கலாம், அதை வேறு இரு பார்வையாளர்கள் அங்கீகரிக்க வேண்டும். !skip மூலம் கட்டளையைத் தவிர்க்கலாம். மதிப்பாளர்களின் செயல் உடனே நடக்கும். வரிசையில் புதிய 20 கட்டளைகள் மட்டுமே காத்திருக்கும். ஒரு கட்டளை அதிகபட்சம் 10 வினாடிகள் இயங்கும்.</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>அரட்டைக் கட்டளைகளை நிர்வகி</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>அரட்டைக் கட்டளைகள்</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>பார்வையாளர்கள் உங்கள் ஸ்ட்ரீமின் அரட்டையில் ! உடன் ஒரு சொல்லைத் தட்டச்சு செய்கிறார்கள், எடுத்துக்காட்டாக !jump. ஒவ்வொரு சொல்லும் Twitch அரட்டை வரிசையில் ஒரு பொத்தான், எந்த உள்ளீட்டையும் போல மேப் செய்யப்படும். !a500ms A பொத்தானை 500 ms பிடித்திருக்கும், !a+b இரண்டையும் அழுத்தும், !a b ஒன்றன் பின் ஒன்றாக அழுத்தும்.</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>சொல்</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>சேர்</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>சொற்கள்</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>வழக்கமான சொற்களை மீட்டமை</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>நீங்கள் அகற்றிய முன்னமைவுச் சொற்களை மீண்டும் சேர்க்கும்: a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left, right.</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>ஒரு சொல்லில் அதிகபட்சம் {0} எழுத்துகளும் இலக்கங்களும் இருக்கலாம்.</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>சொல் ஓர் எழுத்தில் தொடங்கி, எழுத்துகளும் இலக்கங்களும் மட்டுமே கொண்டிருக்க வேண்டும்.</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>சொல் 2s அல்லது 500ms போன்ற நேரத்தில் முடியக்கூடாது, அதை எவ்வளவு நேரம் பிடிக்க வேண்டும் என்று அரட்டை படிக்கும்.</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>முறை எடுப்பதற்கு claim, accept, release, skip, skipall பயன்படுத்தப்படுகின்றன, எனவே எந்தச் சொல்லும் அவற்றில் ஒன்றாக இருக்கக்கூடாது.</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>பட்டியலில் அதிகபட்சம் {0} சொற்கள் இருக்கலாம்.</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>{0} சேர்க்கப்பட்டது.</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} ஏற்கனவே பட்டியலில் உள்ளது.</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>தானாகக் கண்டறி</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport மற்றும் Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 முதல் F1 25 வரை</value></data>

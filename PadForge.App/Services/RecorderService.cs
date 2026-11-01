@@ -832,7 +832,10 @@ namespace PadForge.Services
                 //     Any and the phrase together. The generic sweep would
                 //     record Any (index 0) every time; prefer the specific
                 //     phrase button. ──
-                if (digital && ud.CapType == PadForge.Engine.InputDeviceType.Microphone)
+                // The Twitch Chat row holds Any Command (0) with the word's
+                // own button the same way (#555).
+                if (digital && (ud.CapType == PadForge.Engine.InputDeviceType.Microphone
+                                || ud.CapType == PadForge.Engine.InputDeviceType.TwitchChat))
                 {
                     int bestMic = -1;
                     for (int i = 0; i < CustomInputState.MaxButtons; i++)

@@ -3806,6 +3806,8 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>Kontrolleru 2D shēmas (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), autors AL2009man. MIT.</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Rindas Twitch tērzēšana komandu gramatika un gājienu secības noteikumi, pārnesti uz C#, un tīmekļa kontrollera WLG apdare, autors Yuriy (KLAVIATURKIN). ISC.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>DualShock 4 audio protokola dokumentācija: SBC parametri un pakešu izkārtojumi, autors khallmark. GPL-2.0, tikai dokumentācija.</value>
   </data>
@@ -4353,6 +4355,8 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>UDP komandas, atbildes, portu faili un mēlīšu efektu baiti, uz kuriem balstās spēļu modifikācijas, iegūti no Paliverse oficiālajiem DSX v3.1 un DualSenseX v2 modifikāciju piemēriem, abām DualSenseY versijām un DualSense4Rockstar (licence nav publicēta), DSZ un pydualsense (MIT), kā arī Wujek Dualsense API un DSX servera hbashton DS4Windows atzarojumā (GPL-3.0). Tikai dokumentācija, kods netiek izplatīts.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>DualShock 4 austiņu atsauces</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>Austiņu un skaļruņa maršrutēšana, skaļuma griesti, mikrofona kadrēšana un atskaites režīms, uz kuriem balstās DualShock 4 Bluetooth audio, iegūti no DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) un hbashton DS4Windows atzarojuma (GPL-3.0), bet SBC dekodētāja sintēzes logi pārbaudīti ar Google libsbc (Apache-2.0), un otrā modeļa un Sony adaptera USB austiņu darbība iegūta no DJm00n ControllersInfo deskriptoru izrakstiem (licence nav publicēta) un linux-hardware.org LsUSB pārskatiem (CC BY 4.0). Tikai dokumentācija, kods netiek izplatīts.</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>Twitch tērzēšanas atsauces</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Tērzēšanas lasīšana, nepierakstoties, un ! komandu noteikums, iegūti no tmi.js (MIT) un ComfyJS (MIT), bet tikai jaunāko 20 komandu paturēšana no DougDoug izstrādātās TwitchPlays (MIT) veidnes. Tikai dokumentācija, kods netiek izplatīts.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Tastatūras ekrānu atsauces</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Bibliotēkas, kadri un taustiņi, uz kuriem balstās tastatūras ekrāni, iegūti no Logitech LCD un Arx Control SDK un Mad Catz S.T.R.I.K.E. 7 SDK, pārbaudīti ar logitech-lcd (MIT vai Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff un ArxWidgetManager (licence nav publicēta), Linux draiveri hid-lg-g15 (GPL-2.0-or-later), libg15, G15Interface un lcdproc (GPL-2.0), gnome15 (GPL-3.0) un G19USB (Apache-2.0). PadForge ielādē Logitech Gaming Software bibliotēkas un Strike7API.dll, ko lejupielādējat vai izvēlaties, un neizplata kodu no neviena no tiem.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon atsauces</value></data>
@@ -4539,6 +4543,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Falcon_Calibrate" xml:space="preserve"><value>Kalibrēt aptvērumu</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Izmēra, cik tālu rokturis pārvietojas. Pārvietojiet to līdz katrai aptvēruma malai četras sekundes, kamēr notiek mērījums. Spēki šajā laikā ir izslēgti.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Spēļu telemetrija</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch tērzēšana</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Spēļu telemetrija</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Ievieto telemetriju, ko sūta braukšanas spēles, kā arī Assetto Corsa koplietojamo atmiņu lapas Ierīces rindā Spēļu telemetrija. Piesaistiet tās ātrumu, pedāļus un pārnesumus kā jebkuru ievadi, aktivizējiet ar tiem makrosus vai pārbaudiet tos pielāgotā izteiksmē. Kamēr tā klausās, stūres RPM pārnesumu maiņas LED arī nolasa spēli no šejienes.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Klausīties spēļu telemetriju</value></data>
@@ -4552,6 +4557,44 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>Pielāgoti formāti…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>Apraksta tādas spēles paketes, kuru PadForge nepazīst, lauku pa laukam.</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>Katrā spēlē ieslēdziet telemetrijas izvadi un norādiet uz šo datoru un portu. F1, Codemasters spēles un EA SPORTS WRC izmanto 20777, ja tas nav mainīts, Project CARS 2 un Automobilista 2 vienmēr izmanto 5606, bet MrHokss izveidotais spraudnis kravas auto simulatoriem izmanto 49001. Assetto Corsa un ACC ports nav vajadzīgs.</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>Jebkura komanda</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Twitch tērzēšana</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>Ļauj jūsu straumes skatītājiem spēlēt, rakstot tās tērzēšanā. Skatītājs ieraksta komandu, piemēram, !a, un PadForge nospiež to, kam !a ir piesaistīta Ierīces lapas rindā Twitch tērzēšana. Piešķiriet šo rindu slotam kā jebkuru kontrolleri. PadForge lasa tērzēšanu, nepierakstoties, un nekad tajā neraksta.</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Lasīt Twitch tērzēšanu</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Kanāls</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Jūsu kanāla nosaukums vai tā twitch.tv adrese.</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>Pauze</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>Turpināt</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Aptur izpildāmo komandu, notīra rindu un ignorē tērzēšanas komandas, līdz turpināsiet.</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>Izlaist</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>Aptur izpildāmo komandu. Sākas nākamā rindā.</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>Notīrīt rindu</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>Noņem rindā gaidošās komandas. Izpildāmā komanda tiek pabeigta.</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>Beigt pārņemšanu</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>Beidz vienīgo vadību, ko skatītājs pārņēma ar !claim.</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>Ievadiet sava kanāla nosaukumu.</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Notiek savienojuma izveide ar kanāla {0} tērzēšanu…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Notiek kanāla {0} tērzēšanas lasīšana.</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Neizdevās sasniegt kanāla {0} tērzēšanu. Mēģina vēlreiz.</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Apturēts.</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Kontrollera attēls jūsu pārraidei. Pievienojiet šo adresi programmā OBS kā pārlūka avotu:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Kontrollera attēlam jūsu pārraidei ir vajadzīgs Tīmekļa kontrolleris un tā vienkāršā HTTP adrese. Kartītē Tīmekļa kontrolleris ieslēdziet Nodrošināt arī vienkāršu HTTP. Ar Tikai šis dators pietiek programmai OBS šajā datorā.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Skatītāji mainās pēc kārtas ar !claim, ko apstiprina divi citi skatītāji, un izlaiž komandu ar !skip. Moderatori rīkojas uzreiz. Rindā gaida tikai jaunākās 20 komandas, un komanda tiek izpildīta ne ilgāk kā 10 sekundes.</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Pārvaldīt tērzēšanas komandas</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Tērzēšanas komandas</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Skatītāji jūsu straumes tērzēšanā raksta ! un vārdu, piemēram, !jump. Katrs vārds ir poga rindā Twitch tērzēšana, ko piesaista kā jebkuru ievadi. !a500ms tur A 500 ms, !a+b nospiež abas, bet !a b nospiež vienu pēc otras.</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>Vārds</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>Pievienot</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>Vārdi</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>Atjaunot parastos vārdus</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>Pievieno atpakaļ noņemtos sagatavotos vārdus: a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left un right.</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>Vārdā ir ne vairāk kā {0} burtu un ciparu.</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>Vārds sākas ar burtu, un tajā ir tikai burti un cipari.</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>Vārds nevar beigties ar laiku, piemēram, 2s vai 500ms, jo tērzēšana to uztver kā turēšanas ilgumu.</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>Pārņemšanai izmanto claim, accept, release, skip un skipall, tāpēc neviens vārds nevar būt kāds no tiem.</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>Sarakstā ir ne vairāk kā {0} vārdu.</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>Pievienots {0}.</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} jau ir sarakstā.</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>Automātiska noteikšana</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport un Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 līdz F1 25</value></data>

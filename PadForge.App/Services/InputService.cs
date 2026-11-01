@@ -925,6 +925,8 @@ namespace PadForge.Services
             // settings load), so the load-time LoadRegistry fan-out is not handled.
             PadForge.Common.Input.NfcTagRegistry.RegistryChanged += OnNfcTagRegistryChanged;
             PadForge.Common.Input.VoicePhraseRegistry.RegistryChanged += OnVoicePhraseRegistryChanged;
+            // Twitch chat words (#555): the voice fan-out.
+            PadForge.Common.Input.Twitch.ChatCommandRegistry.RegistryChanged += OnChatCommandRegistryChanged;
             // Handheld hidden buttons (#343): same fan-out as NFC, plus the
             // hook keep-alive re-evaluation when a chord appears or a Learn
             // dialog arms a capture.
@@ -2626,6 +2628,7 @@ namespace PadForge.Services
             // for that reason.
             try { PadForge.Common.Input.NfcTagRegistry.RegistryChanged -= OnNfcTagRegistryChanged; } catch { }
             try { PadForge.Common.Input.VoicePhraseRegistry.RegistryChanged -= OnVoicePhraseRegistryChanged; } catch { }
+            try { PadForge.Common.Input.Twitch.ChatCommandRegistry.RegistryChanged -= OnChatCommandRegistryChanged; } catch { }
             try { PadForge.Common.Input.HandheldButtonRegistry.RegistryChanged -= OnHandheldRegistryChanged; } catch { }
             try { PadForge.Common.Input.HandheldButtonRegistry.ActivityChanged -= OnHandheldActivityChanged; } catch { }
             try { PadForge.Common.Input.AnalogKeyboardRuntime.KeyOrdersChanged -= OnAnalogKeyOrdersChanged; } catch { }
@@ -2661,6 +2664,7 @@ namespace PadForge.Services
                 {
                     UpdateHeadTrackingStatus();
                     UpdateGameTelemetryStatus();
+                    UpdateTwitchChatStatus();
                     UpdateGKeysStatus();
                     UpdateAnalogKeyboardsStatus();
                     UpdateBlissBoxStatus();
@@ -3732,6 +3736,8 @@ namespace PadForge.Services
             UpdateHeadTrackingStatus();
             // Game telemetry card (#531): same cadence, same shape.
             UpdateGameTelemetryStatus();
+            // Twitch chat card (#555): same cadence, same shape.
+            UpdateTwitchChatStatus();
             // G-Keys card (#454): same cadence, same shape.
             UpdateGKeysStatus();
             // Analog keyboards (#468): same cadence, same shape.
@@ -4592,12 +4598,14 @@ namespace PadForge.Services
                                || ud.CapType == InputDeviceType.LogitechGKeys
                                || ud.CapType == InputDeviceType.KeyboardScreenKeys
                                || ud.CapType == InputDeviceType.GameTelemetry
+                               || ud.CapType == InputDeviceType.TwitchChat
                                   ? ud.DeviceObjects : null,
                     analogKeyOrder: ud.CapType == InputDeviceType.AnalogKeyboard
                         ? PadForge.Common.Input.AnalogKeyboardRuntime.KeysFor(ud)
                         : null,
                     isFalcon: ud.CapType == InputDeviceType.NovintFalcon,
-                    isGameTelemetry: ud.CapType == InputDeviceType.GameTelemetry);
+                    isGameTelemetry: ud.CapType == InputDeviceType.GameTelemetry,
+                    isTwitchChat: ud.CapType == InputDeviceType.TwitchChat);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasAccelAuxData = ud.HasAccelAux;
@@ -5476,11 +5484,12 @@ namespace PadForge.Services
             UpdateFalconDeviceRow(row, ud);
             UpdateAnalogKeyboardDeviceRow(row, ud);
             UpdateGameModDeviceRow(row, ud);
-            // These two read the live row, which a stopped engine has
+            // These three read the live row, which a stopped engine has
             // retired, so here they clear the line the row showed while the
             // engine ran.
             UpdateHeadTrackerDevicePanel(_mainVm.Devices, ud);
             UpdateGameTelemetryDevicePanel(_mainVm.Devices, ud);
+            UpdateTwitchChatDevicePanel(_mainVm.Devices, ud);
         }
 
         /// <summary>The head tracker's source line (issue #355): which source
@@ -5595,12 +5604,14 @@ namespace PadForge.Services
                                || ud.CapType == InputDeviceType.LogitechGKeys
                                || ud.CapType == InputDeviceType.KeyboardScreenKeys
                                || ud.CapType == InputDeviceType.GameTelemetry
+                               || ud.CapType == InputDeviceType.TwitchChat
                                   ? ud.DeviceObjects : null,
                     analogKeyOrder: ud.CapType == InputDeviceType.AnalogKeyboard
                         ? PadForge.Common.Input.AnalogKeyboardRuntime.KeysFor(ud)
                         : null,
                     isFalcon: ud.CapType == InputDeviceType.NovintFalcon,
-                    isGameTelemetry: ud.CapType == InputDeviceType.GameTelemetry);
+                    isGameTelemetry: ud.CapType == InputDeviceType.GameTelemetry,
+                    isTwitchChat: ud.CapType == InputDeviceType.TwitchChat);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasAccelAuxData = ud.HasAccelAux;
@@ -10421,6 +10432,7 @@ namespace PadForge.Services
                 _peripheralHost?.DevicesChanged();
                 SyncDevicesList();
                 RefreshVoiceObjects();
+                RefreshChatObjects();
                 UpdatePadDeviceInfo();
                 // After the rosters, so "slot has devices" and "already on
                 // the slot" read this walk's truth.
@@ -11350,6 +11362,9 @@ namespace PadForge.Services
             {
                 _inputManager.RegisterExternalDevice(device);
             };
+            // The controller picture page (#555) reads slots through these.
+            _webServer.DisplaySlot = DisplayFrameFor;
+            _webServer.DisplayChatSlot = FirstTwitchChatSlot;
             _webServer.DeviceDisconnected += device =>
             {
                 _inputManager.UnregisterExternalDevice(device.InstanceGuid);
@@ -11469,6 +11484,8 @@ namespace PadForge.Services
                 dash.HasWebControllerQr = qr != null;
             }
             dash.WebControllerHttpsWarning = server?.HttpsUnavailable;
+            // The controller picture page (#555), for an OBS browser source.
+            dash.TwitchChatDisplayUrl = server?.DisplayUrl;
             dash.WebControllerPlainStatus = server?.PlainStatus;
             dash.IsWebControllerPlainRunning = server?.IsPlainServing == true;
             string plainUrl = server?.PlainUrl;
@@ -12580,7 +12597,9 @@ namespace PadForge.Services
                                 // So do a Novint Falcon's handle axes (#521).
                                 || devType == InputDeviceType.NovintFalcon
                                 // And the Game Telemetry row's axes and gears (#531).
-                                || devType == InputDeviceType.GameTelemetry)
+                                || devType == InputDeviceType.GameTelemetry
+                                // And the chat words, THIS machine's list (#555).
+                                || devType == InputDeviceType.TwitchChat)
                                 try { objects = dev.GetDeviceObjects(); } catch { }
                             var info = new RemotePeerDeviceInfo
                             {
@@ -13659,6 +13678,9 @@ namespace PadForge.Services
             // Game telemetry (#531): the same, for the same reason.
             ResetGameTelemetryStatusCache();
             UpdateGameTelemetryStatus();
+            // Twitch chat (#555): the same again.
+            ResetTwitchChatStatusCache();
+            UpdateTwitchChatStatus();
 
             // Web controller server. A port another program holds keeps its
             // reason.
@@ -16061,6 +16083,7 @@ namespace PadForge.Services
                 InputDeviceType.KeyboardScreenKeys => "KeyboardScreenKeys",
                 InputDeviceType.NovintFalcon => "NovintFalcon",
                 InputDeviceType.GameTelemetry => "GameTelemetry",
+                InputDeviceType.TwitchChat => "TwitchChat",
                 _ => "Device"
             };
             // Vendor daemon notice (#343): the sweep scans on its cadence;
@@ -18136,7 +18159,10 @@ namespace PadForge.Services
                             // live state either way.
                             if ((ud.HasVoicePhrases
                                     && b == PadForge.Engine.Common.Mapping.SourceCoercion.VoicePhraseButtonBase)
-                                || (ud.CapType == PadForge.Engine.InputDeviceType.Microphone && b == 0))
+                                || (ud.CapType == PadForge.Engine.InputDeviceType.Microphone && b == 0)
+                                // The Twitch Chat row holds Any Command (0)
+                                // with the word's own button (#555).
+                                || (ud.CapType == PadForge.Engine.InputDeviceType.TwitchChat && b == 0))
                             {
                                 for (int j = buttons.Length - 1; j > b; j--)
                                     if (buttons[j]) { b = j; break; }
@@ -18703,9 +18729,11 @@ namespace PadForge.Services
                             // Standalone microphone rows (#317): a recognition
                             // stamps the Any Phrase button (0) and the phrase's
                             // own button in the same tick. Record the specific
-                            // phrase, not Any, when both are held.
+                            // phrase, not Any, when both are held. The Twitch
+                            // Chat row holds Any Command the same way (#555).
                             bool skipMicAny = false;
-                            if (ud.CapType == PadForge.Engine.InputDeviceType.Microphone)
+                            if (ud.CapType == PadForge.Engine.InputDeviceType.Microphone
+                                || ud.CapType == PadForge.Engine.InputDeviceType.TwitchChat)
                                 for (int i = 1; i < count && !skipMicAny; i++)
                                     if (buttons[i]) skipMicAny = true;
                             for (int i = 0; i < count; i++)

@@ -3806,6 +3806,8 @@
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>แผนภาพคอนโทรลเลอร์ 2D (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense) โดย AL2009man สัญญาอนุญาต MIT</value>
   </data>
+  <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>ไวยากรณ์คำสั่งและกฎการสลับเทิร์นของแถวแชต Twitch พอร์ตมาเป็น C# และลูกเล่นพื้นผิว WLG ของคอนโทรลเลอร์บนเว็บ โดย Yuriy (KLAVIATURKIN) สัญญาอนุญาต ISC</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>เอกสารอ้างอิงโปรโตคอลเสียงของ DualShock 4: พารามิเตอร์ SBC และโครงสร้างแพ็กเก็ต โดย khallmark สัญญาอนุญาต GPL-2.0 ใช้เป็นเอกสารอ้างอิงเท่านั้น</value>
   </data>
@@ -4353,6 +4355,8 @@
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>คำสั่ง UDP การตอบกลับ ไฟล์พอร์ต และไบต์เอฟเฟกต์ทริกเกอร์ที่อยู่เบื้องหลังม็อดเกม อ่านจากตัวอย่างม็อด DSX v3.1 และ DualSenseX v2 อย่างเป็นทางการของ Paliverse, DualSenseY ทั้งสองเวอร์ชัน และ DualSense4Rockstar (ไม่มีการเผยแพร่ใบอนุญาต), DSZ และ pydualsense (MIT) รวมถึง Wujek Dualsense API และเซิร์ฟเวอร์ DSX ใน DS4Windows ฉบับฟอร์กของ hbashton (GPL-3.0) ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>แหล่งอ้างอิงเฮดเซ็ต DualShock 4</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>การกำหนดเส้นทางเสียงหูฟังและลำโพง เพดานระดับเสียง การจัดเฟรมไมโครโฟน และโหมดรายงานที่อยู่เบื้องหลังเสียง Bluetooth ของ DualShock 4 อ่านจาก DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) และ DS4Windows ฉบับฟอร์กของ hbashton (GPL-3.0) โดยตรวจสอบหน้าต่างการสังเคราะห์ของตัวถอดรหัส SBC เทียบกับ libsbc ของ Google (Apache-2.0) และเฮดเซ็ต USB ของรุ่นที่สองและอะแดปเตอร์ของ Sony อ่านจากไฟล์ดัมพ์ดีสคริปเตอร์ ControllersInfo ของ DJm00n (ไม่มีการเผยแพร่ใบอนุญาต) และการสำรวจ LsUSB ของ linux-hardware.org (CC BY 4.0) ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
+  <data name="About_TwitchChatRefs" xml:space="preserve"><value>แหล่งอ้างอิงแชต Twitch</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>การอ่านแชตโดยไม่ต้องลงชื่อเข้าใช้และกฎคำสั่งที่ขึ้นต้นด้วย ! อ่านจาก tmi.js (MIT) และ ComfyJS (MIT) และการเก็บเฉพาะคำสั่งล่าสุด 20 รายการ จากเทมเพลต TwitchPlays (MIT) ของ DougDoug ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>แหล่งอ้างอิงหน้าจอคีย์บอร์ด</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>ไลบรารี เฟรม และคีย์ที่อยู่เบื้องหลังหน้าจอคีย์บอร์ด อ่านจาก LCD และ Arx Control SDK ของ Logitech กับ S.T.R.I.K.E. 7 SDK ของ Mad Catz และตรวจสอบเทียบกับ logitech-lcd (MIT หรือ Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff และ ArxWidgetManager (ไม่มีการเผยแพร่ใบอนุญาต), ไดรเวอร์ hid-lg-g15 ของ Linux (GPL-2.0-or-later), libg15, G15Interface และ lcdproc (GPL-2.0), gnome15 (GPL-3.0) และ G19USB (Apache-2.0) PadForge โหลดไลบรารีของ Logitech Gaming Software และ Strike7API.dll ที่คุณดาวน์โหลดหรือเลือก และไม่มีโค้ดของสิ่งเหล่านี้รวมอยู่ในโปรแกรม</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>แหล่งอ้างอิง Novint Falcon</value></data>
@@ -4539,6 +4543,7 @@
   <data name="Falcon_Calibrate" xml:space="preserve"><value>ปรับเทียบระยะเอื้อม</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>วัดว่าด้ามจับเคลื่อนที่ได้ไกลเพียงใด ขยับให้สุดทุกขอบของระยะเอื้อมตลอดสี่วินาทีที่การวัดทำงาน ระหว่างนั้นแรงทั้งหมดจะหยุดพัก</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>เทเลเมทรีเกม</value></data>
+  <data name="DeviceType_TwitchChat" xml:space="preserve"><value>แชต Twitch</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>เทเลเมทรีเกม</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>นำเทเลเมทรีที่เกมแข่งรถส่งมา และหน่วยความจำที่ใช้ร่วมกันของ Assetto Corsa ไปไว้ในแถวเทเลเมทรีเกมของหน้าอุปกรณ์ แมปความเร็ว แป้นเหยียบ และเกียร์ได้เหมือนอินพุตทั่วไป ใช้สั่งแมโคร หรือทดสอบในนิพจน์กำหนดเอง ขณะรับข้อมูลอยู่ ไฟ LED เปลี่ยนเกียร์ตาม RPM ของพวงมาลัยก็อ่านข้อมูลเกมจากที่นี่ด้วย</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>รับเทเลเมทรีเกม</value></data>
@@ -4552,6 +4557,44 @@
   <data name="Dashboard_GameTelemetryFormats" xml:space="preserve"><value>รูปแบบกำหนดเอง…</value></data>
   <data name="Dashboard_GameTelemetryFormats_Tooltip" xml:space="preserve"><value>อธิบายแพ็กเก็ตของเกมที่ PadForge ไม่รู้จัก ทีละฟิลด์</value></data>
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>เปิดการส่งออกเทเลเมทรีในแต่ละเกม แล้วชี้มาที่พีซีเครื่องนี้และพอร์ตนี้ F1 เกมของ Codemasters และ EA SPORTS WRC ใช้ 20777 หากไม่ได้เปลี่ยน Project CARS 2 และ Automobilista 2 ใช้ 5606 เสมอ และปลั๊กอินของ MrHokss สำหรับเกมจำลองรถบรรทุกใช้ 49001 Assetto Corsa และ ACC ไม่ต้องใช้พอร์ต</value></data>
+  <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>คำสั่งใดก็ได้</value></data>
+  <data name="Dashboard_TwitchChat" xml:space="preserve"><value>แชต Twitch</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>ให้ผู้ชมสตรีมของคุณเล่นได้ด้วยการพิมพ์ในแชต ผู้ชมพิมพ์คำสั่งอย่าง !a แล้ว PadForge จะกดปุ่มที่แมปกับ !a ไว้ในแถวแชต Twitch ของหน้าอุปกรณ์ กำหนดแถวนั้นให้ช่องได้เหมือนคอนโทรลเลอร์ทั่วไป PadForge อ่านแชตโดยไม่ต้องลงชื่อเข้าใช้ และไม่โพสต์อะไรในแชตเลย</value></data>
+  <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>อ่านแชต Twitch</value></data>
+  <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>แชนเนล</value></data>
+  <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>ชื่อแชนเนลของคุณ หรือที่อยู่ twitch.tv ของแชนเนล</value></data>
+  <data name="TwitchChat_Pause" xml:space="preserve"><value>หยุดชั่วคราว</value></data>
+  <data name="TwitchChat_Resume" xml:space="preserve"><value>ทำต่อ</value></data>
+  <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>หยุดคำสั่งที่กำลังเล่น ล้างคิว และไม่สนใจคำสั่งในแชตจนกว่าคุณจะกดทำต่อ</value></data>
+  <data name="TwitchChat_Skip" xml:space="preserve"><value>ข้าม</value></data>
+  <data name="TwitchChat_Skip_Tooltip" xml:space="preserve"><value>หยุดคำสั่งที่กำลังเล่น แล้วเริ่มคำสั่งถัดไปในคิว</value></data>
+  <data name="TwitchChat_ClearLine" xml:space="preserve"><value>ล้างคิว</value></data>
+  <data name="TwitchChat_ClearLine_Tooltip" xml:space="preserve"><value>ทิ้งคำสั่งที่รออยู่ในคิว คำสั่งที่กำลังเล่นจะเล่นจนจบ</value></data>
+  <data name="TwitchChat_EndClaim" xml:space="preserve"><value>จบการครอบครอง</value></data>
+  <data name="TwitchChat_EndClaim_Tooltip" xml:space="preserve"><value>จบการควบคุมแต่เพียงผู้เดียวที่ผู้ชมรับไปด้วย !claim</value></data>
+  <data name="TwitchChat_Status_NoChannel" xml:space="preserve"><value>ใส่ชื่อแชนเนลของคุณ</value></data>
+  <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>กำลังเชื่อมต่อแชตของ {0}…</value></data>
+  <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>กำลังอ่านแชตของ {0}</value></data>
+  <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>เข้าถึงแชตของ {0} ไม่ได้ กำลังลองอีกครั้ง</value></data>
+  <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>หยุดชั่วคราว</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>ภาพคอนโทรลเลอร์สำหรับการออกอากาศของคุณ เพิ่มที่อยู่นี้ใน OBS เป็นบราวเซอร์ซอร์ส:</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>ภาพคอนโทรลเลอร์สำหรับการออกอากาศต้องใช้คอนโทรลเลอร์บนเว็บและที่อยู่ HTTP ธรรมดาของมัน เปิดใช้ ให้บริการ HTTP ธรรมดาด้วย ในการ์ดคอนโทรลเลอร์บนเว็บ เฉพาะพีซีเครื่องนี้ ก็เพียงพอสำหรับ OBS บนพีซีเครื่องนี้</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>ผู้ชมผลัดกันเล่นด้วย !claim ซึ่งต้องได้รับการอนุมัติจากผู้ชมอีกสองคน และข้ามคำสั่งด้วย !skip ผู้ดูแลทำได้ทันที คิวเก็บเฉพาะ 20 คำสั่งล่าสุด และแต่ละคำสั่งเล่นนานสุด 10 วินาที</value></data>
+  <data name="TwitchChat_ManageButton" xml:space="preserve"><value>จัดการคำสั่งแชต</value></data>
+  <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>คำสั่งแชต</value></data>
+  <data name="TwitchChat_DialogHint" xml:space="preserve"><value>ผู้ชมพิมพ์ ! ตามด้วยคำในแชตของสตรีม เช่น !jump แต่ละคำคือปุ่มหนึ่งในแถวแชต Twitch แมปได้เหมือนอินพุตทั่วไป !a500ms กดค้างปุ่ม A นาน 500 ms, !a+b กดทั้งสองปุ่มพร้อมกัน และ !a b กดทีละปุ่มต่อกัน</value></data>
+  <data name="TwitchChat_WordLabel" xml:space="preserve"><value>คำ</value></data>
+  <data name="TwitchChat_AddButton" xml:space="preserve"><value>เพิ่ม</value></data>
+  <data name="TwitchChat_ListHeader" xml:space="preserve"><value>คำ</value></data>
+  <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>คืนคำที่ใช้ทั่วไป</value></data>
+  <data name="TwitchChat_RestoreButton_Tooltip" xml:space="preserve"><value>เพิ่มคำที่ตั้งไว้ล่วงหน้าซึ่งคุณนำออกกลับคืน ได้แก่ a, b, x, y, lb, rb, lt, rt, select, start, ls, rs, up, down, left และ right</value></data>
+  <data name="TwitchChat_Problem_TooLong_Format" xml:space="preserve"><value>คำหนึ่งคำมีตัวอักษรและตัวเลขรวมกันได้ไม่เกิน {0} ตัว</value></data>
+  <data name="TwitchChat_Problem_Characters" xml:space="preserve"><value>คำต้องขึ้นต้นด้วยตัวอักษร และมีได้เฉพาะตัวอักษรกับตัวเลข</value></data>
+  <data name="TwitchChat_Problem_EndsInTime" xml:space="preserve"><value>คำต้องไม่ลงท้ายด้วยเวลา เช่น 2s หรือ 500ms เพราะแชตจะอ่านเป็นระยะเวลาที่กดค้าง</value></data>
+  <data name="TwitchChat_Problem_Reserved" xml:space="preserve"><value>การผลัดกันเล่นใช้ claim, accept, release, skip และ skipall จึงใช้คำเหล่านี้ไม่ได้</value></data>
+  <data name="TwitchChat_Problem_Full_Format" xml:space="preserve"><value>รายการมีได้ไม่เกิน {0} คำ</value></data>
+  <data name="TwitchChat_Added_Format" xml:space="preserve"><value>เพิ่ม {0} แล้ว</value></data>
+  <data name="TwitchChat_Exists_Format" xml:space="preserve"><value>{0} มีอยู่ในรายการแล้ว</value></data>
   <data name="Telemetry_Game_Auto" xml:space="preserve"><value>ตรวจหาอัตโนมัติ</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport และ Forza Horizon</value></data>
   <data name="Telemetry_Game_F1" xml:space="preserve"><value>F1 22 ถึง F1 25</value></data>

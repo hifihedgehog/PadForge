@@ -66,8 +66,9 @@ namespace PadForge.ViewModels
         private string _firmwareVersion = string.Empty;
 
         /// <summary>The dossier FIRMWARE line: the firmware version SDL
-        /// reports, which today is the DualSense's and the Edge's. Empty
-        /// hides the line.</summary>
+        /// reports, which the DualSense and the Edge give, as do pads on the
+        /// GIP and Xbox One drivers, Switch pads over Bluetooth and Flydigi
+        /// pads (hifihedgehog/SDL#42). Empty hides the line.</summary>
         public string FirmwareVersion
         {
             get => _firmwareVersion;
@@ -87,14 +88,20 @@ namespace PadForge.ViewModels
         /// <summary>Sony firmware reads the way dualsense-tester's
         /// formatUpdateVersion writes it, the high byte and the low byte as
         /// hex around a dot (0x0224 is 2.24, the version SDL takes as current
-        /// DualSense firmware). Other makers' values print as raw hex. 0 is
-        /// empty.</summary>
+        /// DualSense firmware). Microsoft and Nintendo values hold the major
+        /// version in the high byte and the minor in the low one, so they
+        /// print as decimal around a dot: 0x0505 is Xbox firmware 5.5 and
+        /// 0x0348 is Switch firmware 3.72 (hifihedgehog/SDL#42). Other
+        /// makers' values print as raw hex. 0 is empty.</summary>
         public static string FormatFirmwareVersion(ushort version, ushort vendorId)
         {
             if (version == 0) return string.Empty;
-            return vendorId == 0x054C
-                ? $"{version >> 8:X}.{version & 0xFF:X2}"
-                : $"0x{version:X4}";
+            return vendorId switch
+            {
+                0x054C => $"{version >> 8:X}.{version & 0xFF:X2}",
+                0x045E or 0x057E => $"{version >> 8}.{version & 0xFF}",
+                _ => $"0x{version:X4}",
+            };
         }
 
         /// <summary>The USB release number as USB tools print it, 0 as empty.</summary>

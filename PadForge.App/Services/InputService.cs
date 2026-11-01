@@ -4886,7 +4886,9 @@ namespace PadForge.Services
         /// Devices-page rows and every pad's device-roster items (#167).
         /// Runs on the UI timer at a 5 s cadence, matching the SDL wrapper's
         /// own battery cache interval. Offline devices read as no-battery so
-        /// the indicator disappears instead of freezing.</summary>
+        /// the indicator disappears instead of freezing. Each row's FIRMWARE
+        /// line is written on the same tick, since the wrapper re-reads the
+        /// version on that cadence.</summary>
         private void UpdateBatteryIndicators()
         {
             // Memoized per device per tick so both loops below agree; the
@@ -4912,6 +4914,7 @@ namespace PadForge.Services
                 var (rowPct, rowCharging) = EffectiveBattery(ud);
                 row.BatteryPercent = rowPct;
                 row.BatteryCharging = rowCharging;
+                row.FirmwareVersion = DossierFirmware(ud);
 
                 // Low-battery notification (#293). Edge-triggered, the
                 // Gamepad Battery Monitor rule in percent: fire only when the
@@ -15850,6 +15853,16 @@ namespace PadForge.Services
             return false;
         }
 
+        /// <summary>The dossier FIRMWARE text for a device: the value its
+        /// open SDL device holds now, empty for a device SDL does not open.
+        /// The row fill and the 5 s battery tick both write it, so a version
+        /// SDL learns after open reaches the dossier.</summary>
+        internal static string DossierFirmware(UserDevice ud)
+        {
+            var sdl = ud?.Device as PadForge.Engine.SdlDeviceWrapper;
+            return DeviceRowViewModel.FormatFirmwareVersion(sdl?.FirmwareVersion ?? 0, sdl?.VendorId ?? 0);
+        }
+
         /// <summary>
         /// Populates a DeviceRowViewModel from a UserDevice.
         /// </summary>
@@ -15866,7 +15879,7 @@ namespace PadForge.Services
             // FIRMWARE and REV come from the open SDL device, so an offline
             // row shows neither.
             var sdl = ud.Device as PadForge.Engine.SdlDeviceWrapper;
-            row.FirmwareVersion = DeviceRowViewModel.FormatFirmwareVersion(sdl?.FirmwareVersion ?? 0, sdl?.VendorId ?? 0);
+            row.FirmwareVersion = DossierFirmware(ud);
             row.ProductRevision = DeviceRowViewModel.FormatProductRevision(sdl?.ProductVersion ?? 0);
             row.DeviceName = ud.DevicePath == "aggregate://keyboards" ? Strings.Instance.Devices_AllKeyboardsMerged
                            : ud.DevicePath == "aggregate://mice" ? Strings.Instance.Devices_AllMiceMerged

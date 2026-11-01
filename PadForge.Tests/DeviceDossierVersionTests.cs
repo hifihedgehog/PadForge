@@ -1,3 +1,10 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using PadForge.Engine;
+using PadForge.Engine.Data;
+using PadForge.Services;
 using PadForge.ViewModels;
 
 namespace PadForge.Tests
@@ -28,5 +35,61 @@ namespace PadForge.Tests
         [InlineData(0, "")]
         public void Revision_PrintsAsUsbToolsPrintIt(int version, string expected)
             => Assert.Equal(expected, DeviceRowViewModel.FormatProductRevision((ushort)version));
+
+        /// <summary>The FIRMWARE text reads the open device's value each
+        /// time, so a version SDL learns after open (a late GIP firmware
+        /// reply, hifihedgehog/SDL#42) shows on the next write. A device SDL
+        /// does not open has no line.</summary>
+        [Fact]
+        public void DossierFirmware_ReadsTheOpenDevicesValueEachTime()
+        {
+            var wrapper = new SdlDeviceWrapper();
+            GC.SuppressFinalize(wrapper);
+            var ud = new UserDevice { Device = wrapper };
+            SetWrapper(wrapper, "VendorId", 0x045E);
+            Assert.Equal(string.Empty, InputService.DossierFirmware(ud));
+            SetWrapper(wrapper, "FirmwareVersion", 0x0505);
+            Assert.Equal("5.5", InputService.DossierFirmware(ud));
+            Assert.Equal(string.Empty, InputService.DossierFirmware(new UserDevice()));
+            Assert.Equal(string.Empty, InputService.DossierFirmware(null));
+        }
+
+        /// <summary>The wrapper reads the version again after open, on both
+        /// read paths, and the 5 s battery tick writes every row's FIRMWARE
+        /// line as the row fill does. Pinned in source, since the test host
+        /// opens no SDL device.</summary>
+        [Fact]
+        public void TheFirmwareIsReadAgainAfterOpen_AndTheBatteryTickWritesIt()
+        {
+            const string read = "FirmwareVersion = SDL_GetJoystickFirmwareVersion(Joystick);";
+            string wrapper = RepoFile("PadForge.Engine", "Common", "SdlDeviceWrapper.cs");
+            Assert.Equal(2, Regex.Matches(wrapper, Regex.Escape(read)).Count);
+            int start = wrapper.IndexOf("public CustomInputState GetCurrentState(", StringComparison.Ordinal);
+            int end = wrapper.IndexOf("public static Action<Guid, CustomInputState> ExternalVoiceAugment;", start, StringComparison.Ordinal);
+            string readState = wrapper.Substring(start, end - start);
+            Assert.Contains("now - _lastFirmwareReadTick > 5000", readState);
+            Assert.Contains(read, readState);
+
+            const string write = "row.FirmwareVersion = DossierFirmware(ud);";
+            string service = RepoFile("PadForge.App", "Services", "InputService.cs");
+            int tick = service.IndexOf("private void UpdateBatteryIndicators()", StringComparison.Ordinal);
+            int pads = service.IndexOf("foreach (var padVm in _mainVm.Pads)", tick, StringComparison.Ordinal);
+            Assert.Contains(write, service.Substring(tick, pads - tick));
+            int fill = service.IndexOf("private void PopulateDeviceRow(", StringComparison.Ordinal);
+            int name = service.IndexOf("row.DeviceName =", fill, StringComparison.Ordinal);
+            Assert.Contains(write, service.Substring(fill, name - fill));
+        }
+
+        private static void SetWrapper(SdlDeviceWrapper wrapper, string property, int value)
+            => typeof(SdlDeviceWrapper).GetProperty(property).SetValue(wrapper, (ushort)value);
+
+        private static string RepoFile(params string[] parts)
+        {
+            var dir = new DirectoryInfo(AppContext.BaseDirectory);
+            while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PadForge.sln")))
+                dir = dir.Parent;
+            Assert.NotNull(dir);
+            return File.ReadAllText(Path.Combine(new[] { dir.FullName }.Concat(parts).ToArray()));
+        }
     }
 }

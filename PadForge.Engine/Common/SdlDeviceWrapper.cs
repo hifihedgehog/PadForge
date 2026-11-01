@@ -338,8 +338,10 @@ namespace PadForge.Engine
         public string SerialNumber { get; private set; } = string.Empty;
 
         /// <summary>Firmware version as SDL reports it, 0 when unknown. SDL's
-        /// DualSense driver is the one that fills it, from the firmware
-        /// information report (SDL_hidapi_ps5.c).</summary>
+        /// DualSense, GIP, Xbox One, Switch (Bluetooth) and Flydigi drivers
+        /// fill it (hifihedgehog/SDL#42). It is read at open and again on
+        /// the battery's 5 s cadence, since a driver can learn it after open:
+        /// the GIP driver from a firmware reply that comes late.</summary>
         public ushort FirmwareVersion { get; private set; }
 
         /// <summary>The USB release number (bcdDevice), 0 when unknown.</summary>
@@ -1015,6 +1017,16 @@ namespace PadForge.Engine
             // check.
             if (state != null)
                 ExternalVoiceAugment?.Invoke(InstanceGuid, state);
+
+            // Firmware, on the battery's 5 s cadence and on both read paths:
+            // a driver can publish it after open, so the value read at open
+            // is read again.
+            long now = System.Environment.TickCount64;
+            if (now - _lastFirmwareReadTick > 5000)
+            {
+                _lastFirmwareReadTick = now;
+                FirmwareVersion = SDL_GetJoystickFirmwareVersion(Joystick);
+            }
 
             return state;
         }
@@ -2151,6 +2163,7 @@ namespace PadForge.Engine
         private long _lastBatteryReadTick;
         private int _cachedBatteryPercent = -1;
         private bool _cachedBatteryCharging;
+        private long _lastFirmwareReadTick;
 
         // Per-touchpad scratch, sized once at OpenInternal time when
         // HasTouchpad is true. _padFingerCounts is the per-pad finger

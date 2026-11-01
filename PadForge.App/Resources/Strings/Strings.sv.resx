@@ -2951,7 +2951,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Återställ tongräns</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopierar det som systemets standardutdata spelar upp till den här handkontrollens inbyggda högtalare, parallellt. Fungerar via USB och Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Den valda enheten har ingen inbyggd högtalare. Makroljud för den här handkontrollen spelas upp på systemets standardutdata.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>Via USB spelar den här handkontrollen upp ljud bara genom hörlursuttaget. Så länge inget är anslutet hoppar makroljud över den och spelas upp på systemets standardutdata eller på en annan handkontroll som hör till den här handkontrollen.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Återställ ljudutdata</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Testsvit för DualSense i webbläsaren av Xuezhou Dai (daidr): referens för CRC-inramningen av Sonys funktionsrapporter och de testkommandon för firmware som PadForge vidarebefordrar från virtuella till fysiska handkontroller. MIT.</value></data>

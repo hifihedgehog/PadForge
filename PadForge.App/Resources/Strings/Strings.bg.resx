@@ -2951,7 +2951,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Нулиране на границата на тона</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Копира паралелно всичко, което възпроизвежда изходното устройство по подразбиране на системата, към вградения високоговорител на този контролер. Работи чрез USB и Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Избраното устройство няма вграден високоговорител. Звуците от макроси за този контролер се възпроизвеждат на изходното устройство по подразбиране на системата.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>През USB този контролер възпроизвежда звук само през жака за слушалки. Докато в него няма включено нищо, звуците от макроси го прескачат и се възпроизвеждат на изходното устройство по подразбиране на системата или на друго устройство, зададено към този контролер.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Нулиране на изхода на звука</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Набор от тестове за DualSense в браузъра от Xuezhou Dai (daidr): референция за CRC рамкирането на отчетите за функции на Sony и тестовите команди на фърмуера, които PadForge препраща от виртуалните към физическите контролери. MIT.</value></data>

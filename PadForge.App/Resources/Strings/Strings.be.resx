@@ -2951,7 +2951,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Скінуць мяжу тону</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Паралельна капіруе ўсё, што прайграе сістэмная прылада вываду па змаўчанні, на ўбудаваны дынамік гэтага кантролера. Працуе па USB і Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>У выбранай прылады няма ўбудаванага дынаміка. Гукі макрасаў для гэтага геймпада прайграюцца на сістэмнай прыладзе вываду па змаўчанні.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>Праз USB гэты кантролер прайгравае гук толькі праз раз'ём для навушнікаў. Пакуль у яго нічога не падключана, гукі макрасаў прапускаюць яго і прайграюцца на сістэмнай прыладзе вываду па змаўчанні або на іншым кантролеры гэтага геймпада.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Скінуць вывад гуку</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Набор тэстаў DualSense у браўзеры ад Xuezhou Dai (daidr): эталон для кадравання CRC у feature-справаздачах Sony і тэставых каманд прашыўкі, якія PadForge перадае з віртуальных геймпадаў на фізічныя. MIT.</value></data>

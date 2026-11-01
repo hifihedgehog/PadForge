@@ -2951,7 +2951,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Сбросить предел тона</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Параллельно копирует все, что воспроизводит системное устройство вывода по умолчанию, на встроенный динамик этого контроллера. Работает по USB и Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>У выбранного устройства нет встроенного динамика. Звуки макросов для этого геймпада воспроизводятся на системном устройстве вывода по умолчанию.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>По USB этот контроллер воспроизводит звук только через разъем для наушников. Пока в него ничего не подключено, звуки макросов его пропускают и воспроизводятся на системном устройстве вывода по умолчанию или на другом контроллере этого геймпада.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Сбросить вывод звука</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Браузерный набор тестов DualSense от Xuezhou Dai (daidr): образец для кадрирования feature-отчетов Sony с CRC и тестовых команд прошивки, которые PadForge пересылает с виртуальных геймпадов на физические. MIT.</value></data>

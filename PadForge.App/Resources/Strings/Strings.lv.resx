@@ -2951,7 +2951,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Atiestatīt toņu robežu</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Paralēli kopē visu, ko atskaņo sistēmas noklusējuma izvade, uz šī kontrollera iebūvēto skaļruni. Darbojas ar USB un Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Atlasītajai ierīcei nav iebūvēta skaļruņa. Šīs spēļu pults makrosu skaņas tiek atskaņotas sistēmas noklusējuma izvadē.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>Izmantojot USB, šis kontrolleris skaņu atskaņo tikai caur austiņu ligzdu. Kamēr tajā nekas nav iesprausts, makrosu skaņas to izlaiž un tiek atskaņotas sistēmas noklusējuma izvadē vai citā šīs spēļu pults kontrollerī.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Atiestatīt skaņas izvadi</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Pārlūkprogrammas DualSense testu komplekts, autors Xuezhou Dai (daidr): atsauce Sony feature-report CRC kadrēšanai un aparātprogrammatūras testa komandām, ko PadForge pārsūta no virtuālajām uz fiziskajām spēļu pultīm. MIT.</value></data>

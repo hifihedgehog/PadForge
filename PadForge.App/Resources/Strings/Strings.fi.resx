@@ -2951,7 +2951,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Palauta sävyraja</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopioi järjestelmän oletuslähdön toistaman äänen samanaikaisesti tämän ohjaimen sisäänrakennettuun kaiuttimeen. Toimii USB- ja Bluetooth-yhteydellä.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Valitussa laitteessa ei ole sisäänrakennettua kaiutinta. Tämän ohjaimen makroäänet toistetaan järjestelmän oletuslähdössä.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>USB-yhteydellä tämä laite toistaa äänen vain kuulokeliitännän kautta. Kun liitäntään ei ole kytketty mitään, makroäänet ohittavat sen ja toistetaan järjestelmän oletuslähdössä tai toisessa tälle ohjaimelle määritetyssä laitteessa.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Palauta äänilähtö</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Selainpohjainen DualSense-testisarja, tekijä Xuezhou Dai (daidr): viitteenä Sonyn feature-raporttien CRC-kehystykselle ja laiteohjelmiston testikomennoille, jotka PadForge välittää virtuaalisilta ohjaimilta fyysisille. MIT.</value></data>

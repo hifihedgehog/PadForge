@@ -2417,7 +2417,6 @@
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>新建声音宏</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>还没有声音宏。创建一个并选择声音文件和触发条件。</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>所选设备没有内置扬声器。此手柄的宏声音将在系统默认输出上播放。</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>通过 USB 连接时，此手柄只通过耳机插孔播放声音。插孔未接入设备时，宏声音会跳过它，改在系统默认输出或此手柄上的其他手柄中播放。</value></data>
   <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>在“宏”选项卡中打开此宏</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>声音会自动路由到所选手柄。USB 下按硬件容器匹配手柄自身的音频端点。蓝牙下音频以 Sony HID 帧流式发送。</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>声音输出</value></data>

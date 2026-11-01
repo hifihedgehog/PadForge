@@ -2951,7 +2951,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>टोन सीमा रीसेट करें</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>सिस्टम का डिफ़ॉल्ट आउटपुट जो भी चलाता है, उसे साथ-साथ इस कंट्रोलर के अंतर्निहित स्पीकर पर भी चलाता है। USB और Bluetooth दोनों पर काम करता है।</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>चुने गए डिवाइस में अंतर्निहित स्पीकर नहीं है। इस पैड की मैक्रो ध्वनियाँ सिस्टम के डिफ़ॉल्ट आउटपुट पर चलती हैं।</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>USB पर यह कंट्रोलर ध्वनि केवल अपने हेडफ़ोन जैक से चलाता है। जब तक उसमें कुछ लगा नहीं होता, मैक्रो ध्वनियाँ उसे छोड़कर सिस्टम के डिफ़ॉल्ट आउटपुट या इस पैड के किसी दूसरे कंट्रोलर पर चलती हैं।</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>ध्वनि आउटपुट रीसेट करें</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) का ब्राउज़र DualSense टेस्ट सूट: Sony फ़ीचर-रिपोर्ट की CRC फ़्रेमिंग और उन फ़र्मवेयर टेस्ट कमांड का संदर्भ जिन्हें PadForge वर्चुअल से भौतिक पैड तक आगे भेजता है। MIT।</value></data>

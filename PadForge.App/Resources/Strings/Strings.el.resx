@@ -2951,7 +2951,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Επαναφορά ορίου τόνου</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Αντιγράφει παράλληλα ό,τι αναπαράγει η προεπιλεγμένη έξοδος του συστήματος στο ενσωματωμένο ηχείο αυτού του χειριστηρίου. Λειτουργεί μέσω USB και Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Η επιλεγμένη συσκευή δεν έχει ενσωματωμένο ηχείο. Οι ήχοι μακροεντολών για αυτό το χειριστήριο αναπαράγονται στην προεπιλεγμένη έξοδο του συστήματος.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>Μέσω USB αυτό το χειριστήριο αναπαράγει ήχο μόνο από την υποδοχή ακουστικών του. Όσο δεν είναι συνδεδεμένο τίποτα, οι ήχοι μακροεντολών το προσπερνούν και αναπαράγονται στην προεπιλεγμένη έξοδο του συστήματος ή σε άλλο χειριστήριο σε αυτό το pad.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Επαναφορά εξόδου ήχου</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Σουίτα δοκιμών DualSense για πρόγραμμα περιήγησης, του Xuezhou Dai (daidr): αναφορά για την πλαισίωση CRC των αναφορών feature της Sony και για τις εντολές δοκιμής υλικολογισμικού που προωθεί το PadForge από τα εικονικά στα φυσικά χειριστήρια. MIT.</value></data>

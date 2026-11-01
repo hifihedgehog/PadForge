@@ -2951,7 +2951,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>टोन सीमा रिसेट गर्नुहोस्</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>प्रणालीको पूर्वनिर्धारित आउटपुटले जे बजाउँछ त्यसलाई समानान्तर रूपमा यो कन्ट्रोलरको बिल्ट-इन स्पिकरमा कपी गर्छ। USB र Bluetooth दुवैमा काम गर्छ।</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>छानिएको यन्त्रमा बिल्ट-इन स्पिकर छैन। यो प्याडका म्याक्रो ध्वनिहरू प्रणालीको पूर्वनिर्धारित आउटपुटमा बज्छन्।</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>USB मार्फत यो कन्ट्रोलरले आफ्नो हेडफोन ज्याकबाट मात्र ध्वनि बजाउँछ। ज्याकमा केही नजोडिएसम्म, यो प्याडका म्याक्रो ध्वनिहरू यसलाई छोडेर प्रणालीको पूर्वनिर्धारित आउटपुटमा वा यो प्याडको अर्को कन्ट्रोलरमा बज्छन्।</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>ध्वनि आउटपुट रिसेट गर्नुहोस्</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) को ब्राउजरमा चल्ने DualSense परीक्षण सुइट: Sony फिचर-रिपोर्ट CRC फ्रेमिङ र PadForge ले भर्चुअलबाट भौतिक प्याडहरूमा पठाउने फर्मवेयर परीक्षण आदेशहरूको सन्दर्भ। MIT।</value></data>

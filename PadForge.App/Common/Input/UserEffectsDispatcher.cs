@@ -372,7 +372,12 @@ namespace PadForge.Common.Input
         // once, the same change gating as the headphone volume.
         private readonly Dictionary<Guid, bool> _prevDs4MicArmed = new();
 
-        // The three maps above hold what the pad has RECEIVED. A frame
+        // The route each DualShock 4 on USB last took through feature report
+        // 0xE0 (#546, Ds4UsbAudio.RouteToWrite). Absent until PadForge writes
+        // one, so a pad PadForge never routed is left alone.
+        private readonly Dictionary<Guid, int> _prevDs4UsbRoute = new();
+
+        // The four maps above hold what the pad has RECEIVED. A frame
         // commits its values only after PlayStationEffectWriter.Write accepts
         // it (CommitDeliveredAudio), the delivery contract SpeakerCleared and
         // BtBarReleased follow, so a frame the stale-skip drops or the writer
@@ -392,12 +397,13 @@ namespace PadForge.Common.Input
                 _prevHeadphoneVolume.Remove(device);
                 _prevAudioOutputPath.Remove(device);
                 _prevDs4MicArmed.Remove(device);
+                _prevDs4UsbRoute.Remove(device);
                 _audioCommitSeq[device] = System.Threading.Interlocked.Read(ref s_dispatchSeq);
             }
         }
 
         private void CommitDeliveredAudio(Guid device, long seq,
-            (int HeadphoneVolume, int OutputPath, bool Ds4MicArmed) audio)
+            (int HeadphoneVolume, int OutputPath, bool Ds4MicArmed, int Ds4UsbRoute) audio)
         {
             lock (_audioPrevGate)
             {
@@ -406,6 +412,8 @@ namespace PadForge.Common.Input
                 _prevHeadphoneVolume[device] = audio.HeadphoneVolume;
                 _prevAudioOutputPath[device] = audio.OutputPath;
                 _prevDs4MicArmed[device] = audio.Ds4MicArmed;
+                // A frame with no route leaves the last one standing.
+                if (audio.Ds4UsbRoute >= 0) _prevDs4UsbRoute[device] = audio.Ds4UsbRoute;
             }
         }
 
@@ -2251,7 +2259,7 @@ namespace PadForge.Common.Input
             var pending = new List<(Guid Device, string Path, HMProfile Profile,
                 IReadOnlyDictionary<string, object> Fields, long Seq, long RecoveredThrough,
                 Guid SpeakerCleared, Guid BtBarReleased,
-                (int HeadphoneVolume, int OutputPath, bool Ds4MicArmed) Audio)>();
+                (int HeadphoneVolume, int OutputPath, bool Ds4MicArmed, int Ds4UsbRoute) Audio)>();
             int litPeripherals = 0;
             Dictionary<Guid, bool> peripheralKinds = null;
 
@@ -2913,6 +2921,7 @@ namespace PadForge.Common.Input
                     // Compared with what the pad last received. The values
                     // are committed when this frame lands (CommitDeliveredAudio).
                     bool hpChanged, pathChanged, ds4MicWasArmed;
+                    int lastUsbRoute;
                     lock (_audioPrevGate)
                     {
                         hpChanged = !_prevHeadphoneVolume.TryGetValue(ud.InstanceGuid, out var prevHp)
@@ -2920,6 +2929,7 @@ namespace PadForge.Common.Input
                         pathChanged = !_prevAudioOutputPath.TryGetValue(ud.InstanceGuid, out var prevPath)
                             || prevPath != pathVal;
                         ds4MicWasArmed = _prevDs4MicArmed.TryGetValue(ud.InstanceGuid, out var dma) && dma;
+                        lastUsbRoute = _prevDs4UsbRoute.TryGetValue(ud.InstanceGuid, out var lur) ? lur : -1;
                     }
                     bool assertHeadphone = assertAudioMute || hpChanged;
                     bool assertAudioCtl = pathVal > 0 && (assertAudioMute || pathChanged);
@@ -2931,13 +2941,24 @@ namespace PadForge.Common.Input
                     // carries the route's volumes instead (the jack routes mute
                     // the speaker, Speaker Only mutes the jack), asserted on the
                     // DualSense rule: the claim burst, a level change, a route
-                    // change. On USB nothing here applies: a second-model pad
-                    // and Sony's adapter play through their own Windows audio
-                    // endpoints, whose volume Windows keeps, and a first-model
-                    // pad has no USB audio.
+                    // change. On USB none of these bytes apply: Windows keeps
+                    // the headset's level, and a first-model pad has no USB
+                    // audio.
                     var (ds4Headphone, ds4Speaker) = Ds4BtAudio.VolumesFor(pathVal, hpVol);
                     bool assertDs4Volumes = ds4Bt && (assertAudioMute || hpChanged || pathChanged);
                     bool assertDs4Mic = ds4MicArmed && (!ds4MicWasArmed || assertAudioMute);
+                    // DualShock 4 on USB (#546): a wired second model or a pad
+                    // on Sony's adapter takes its route as feature report 0xE0,
+                    // written when it changes (Ds4UsbAudio.RouteToWrite) and
+                    // committed with this frame's delivery. A peer's owner
+                    // routes its own pad.
+                    bool ds4Usb = !isDs5 && !isBluetooth
+                        && AudioPassthroughService.Ds4HasAudio((ushort)ud.ProdId, false)
+                        && !RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath);
+                    int ds4UsbRoute = ds4Usb
+                        ? Ds4UsbAudio.RouteToWrite(pathVal,
+                            AudioPassthroughService.WantsSpeakerPath(ud.InstanceGuid), lastUsbRoute)
+                        : -1;
                     // Track whether THIS tick wrote a trigger effect for
                     // either source — PadForge cfg OR a dispatcher-injected
                     // override (external mirror, impulse-trigger → AT
@@ -3017,7 +3038,7 @@ namespace PadForge.Common.Input
                                 devPlayerNumber,
                                 ds4Headphone, ds4Speaker, assertDs4Volumes,
                                 ds4MicArmed ? Ds4BtAudio.ModeMicrophone : Ds4BtAudio.ModeSpeaker,
-                                assertDs4Mic);
+                                assertDs4Mic, ds4UsbRoute);
 
                         // Macro-sound speaker routing (issue #83). The DualSense
                         // firmware sends its USB program audio to the headphone
@@ -3121,7 +3142,7 @@ namespace PadForge.Common.Input
                             recoveredThrough,
                             speakerCleared,
                             btConnectRelease ? ud.InstanceGuid : Guid.Empty,
-                            (hpVol, pathVal, ds4MicArmed)));
+                            (hpVol, pathVal, ds4MicArmed, ds4UsbRoute)));
                     }
                     catch
                     {
@@ -3142,7 +3163,7 @@ namespace PadForge.Common.Input
             // why this gate is a leaf and not an outer dispatch lock.
             if (pending.Count == 0) return;
             bool deliveryStateChanged = false;
-            List<(Guid Device, long Seq, (int HeadphoneVolume, int OutputPath, bool Ds4MicArmed) Audio)> delivered = null;
+            List<(Guid Device, long Seq, (int HeadphoneVolume, int OutputPath, bool Ds4MicArmed, int Ds4UsbRoute) Audio)> delivered = null;
             lock (s_writeGate)
             {
                 foreach (var w in pending)

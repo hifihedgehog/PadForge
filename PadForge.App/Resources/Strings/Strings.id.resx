@@ -2951,7 +2951,6 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Atur ulang batas nada</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Menyalin apa pun yang diputar output default sistem ke speaker bawaan kontroler ini, secara paralel. Berfungsi lewat USB dan Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Perangkat yang dipilih tidak memiliki speaker bawaan. Suara makro untuk gamepad ini diputar pada output default sistem.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>Melalui USB, kontroler ini memutar suara hanya lewat jack headphone-nya. Selama tidak ada yang tercolok, suara makro melewatinya dan diputar pada output default sistem atau kontroler lain pada gamepad ini.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Atur ulang output suara</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Rangkaian pengujian DualSense berbasis browser karya Xuezhou Dai (daidr): referensi untuk pembingkaian CRC feature report Sony dan perintah uji firmware yang diteruskan PadForge dari gamepad virtual ke gamepad fisik. MIT.</value></data>

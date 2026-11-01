@@ -2951,7 +2951,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>টোনের সীমা রিসেট করুন</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>সিস্টেমের ডিফল্ট আউটপুটে যা-ই বাজে তা একই সঙ্গে এই কন্ট্রোলারের অন্তর্নির্মিত স্পিকারেও কপি করে। USB ও Bluetooth, দুটিতেই কাজ করে।</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>নির্বাচিত ডিভাইসে অন্তর্নির্মিত স্পিকার নেই। এই প্যাডের ম্যাক্রোর শব্দ সিস্টেমের ডিফল্ট আউটপুটে বাজে।</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>USB-তে এই কন্ট্রোলার শুধু হেডফোন জ্যাকের মাধ্যমে শব্দ বাজায়। জ্যাকে কিছু লাগানো না থাকলে ম্যাক্রোর শব্দ এটিকে বাদ দিয়ে সিস্টেমের ডিফল্ট আউটপুটে বা এই প্যাডের অন্য কন্ট্রোলারে বাজে।</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>শব্দের আউটপুট রিসেট করুন</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr)-এর ব্রাউজারভিত্তিক DualSense টেস্ট স্যুট: Sony ফিচার-রিপোর্টের CRC ফ্রেমিং ও ফার্মওয়্যার টেস্ট কমান্ডের রেফারেন্স, যেগুলো PadForge ভার্চুয়াল প্যাড থেকে ফিজিক্যাল প্যাডে পাঠায়। MIT।</value></data>

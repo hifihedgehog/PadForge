@@ -2423,7 +2423,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>톤 한도 재설정</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>시스템 기본 출력에서 재생 중인 소리를 이 컨트롤러의 내장 스피커로도 동시에 출력합니다. USB와 Bluetooth 모두 지원합니다.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>선택한 장치에는 내장 스피커가 없습니다. 이 패드의 매크로 사운드는 시스템 기본 출력으로 재생됩니다.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>USB로 연결하면 이 컨트롤러는 헤드폰 잭으로만 소리를 재생합니다. 아무것도 꽂혀 있지 않으면 매크로 사운드는 이 컨트롤러를 건너뛰고 시스템 기본 출력 또는 이 패드의 다른 컨트롤러로 재생됩니다.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
   <data name="About_QDollarDesc" xml:space="preserve"><value>터치패드 도형 템플릿 매처(원 / 사각형 / 삼각형 / Z / 체크 표시 및 직접 기록한 제스처). Magrofuoco, Vatavu, Anthony, Wobbrock의 JavaScript 레퍼런스를 C#으로 재구현. BSD 3-Clause.</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>

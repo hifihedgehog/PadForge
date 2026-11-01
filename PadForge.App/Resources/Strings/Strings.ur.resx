@@ -2951,7 +2951,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>ٹون کی حد ری سیٹ کریں</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>سسٹم کا ڈیفالٹ آؤٹ پٹ جو کچھ چلاتا ہے اسے ساتھ ساتھ اس کنٹرولر کے اندرونی اسپیکر پر بھی چلاتا ہے۔ USB اور بلوٹوتھ دونوں پر کام کرتا ہے۔</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>منتخب آلے میں اندرونی اسپیکر نہیں ہے۔ اس پیڈ کی میکرو آوازیں سسٹم کے ڈیفالٹ آؤٹ پٹ پر چلتی ہیں۔</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>USB پر یہ کنٹرولر آواز صرف اپنے ہیڈ فون جیک سے چلاتا ہے۔ جب تک اس میں کچھ لگایا نہ جائے، میکرو کی آوازیں اسے چھوڑ کر سسٹم کے ڈیفالٹ آؤٹ پٹ پر یا اس پیڈ کے کسی دوسرے کنٹرولر پر چلتی ہیں۔</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>آواز کا آؤٹ پٹ ری سیٹ کریں</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) کا براؤزر پر مبنی DualSense ٹیسٹ سوٹ: Sony فیچر رپورٹ کی CRC فریمنگ اور ان فرم ویئر ٹیسٹ کمانڈز کا حوالہ جنہیں PadForge ورچوئل سے فزیکل پیڈز کو آگے بھیجتا ہے۔ MIT۔</value></data>

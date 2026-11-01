@@ -12929,9 +12929,6 @@
                                 <TextBlock Text="{Binding Pad_Audio_NoSpeaker, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}"
                                            Visibility="{Binding SelectedDeviceHasNoSpeaker, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                <TextBlock Text="{Binding Pad_Audio_HeadsetOnly, Source={x:Static strings:Strings.Instance}}"
-                                           Style="{StaticResource CardDescription}"
-                                           Visibility="{Binding SelectedDeviceIsHeadsetOnly, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_Audio_MasterVolume, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <Slider Value="{Binding SoundMasterVolume, Mode=TwoWay}" Minimum="0" Maximum="100" Style="{StaticResource DzSlider}"/>
@@ -12992,9 +12989,11 @@
                                      A DualShock 4 over Bluetooth takes the same list (#528):
                                      its stream targets the speaker or the headphone jack, so
                                      Headphones + Speaker collapses for it, and the collapsed
-                                     item keeps its index so the stored enum keeps its meaning. -->
+                                     item keeps its index so the stored enum keeps its meaning.
+                                     A DualShock 4 on USB takes the list too (#546): feature
+                                     report 0xE0 routes its USB audio, and it plays both. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
-                                            Visibility="{Binding SelectedDeviceHasHeadphoneJack, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            Visibility="{Binding SelectedDeviceHasOutputPath, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="{Binding Pad_Audio_OutputPath, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <ComboBox SelectedIndex="{Binding DeviceConfig.AudioOutputPath, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
                                               Width="340" VerticalAlignment="Center"

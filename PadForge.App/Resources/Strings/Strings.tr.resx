@@ -2951,7 +2951,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Ton sınırını sıfırla</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Sistemin varsayılan çıkışında çalınan her şeyi eşzamanlı olarak bu kontrolcünün yerleşik hoparlörüne kopyalar. USB ve Bluetooth üzerinden çalışır.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Seçili cihazda yerleşik hoparlör yok. Bu kumandanın makro sesleri sistemin varsayılan çıkışında çalınır.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>USB üzerinden bu kontrolcü sesi yalnızca kulaklık girişinden çalar. Girişe hiçbir şey takılı değilken makro sesleri bu cihazı atlar ve sistemin varsayılan çıkışında ya da bu kumandaya atanmış başka bir kontrolcüde çalınır.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Ses çıkışını sıfırla</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai'nin (daidr) tarayıcı tabanlı DualSense test paketi: PadForge'un sanal kumandalardan fiziksel kumandalara ilettiği Sony özellik raporu CRC çerçevelemesi ve donanım yazılımı test komutları için referans. MIT.</value></data>

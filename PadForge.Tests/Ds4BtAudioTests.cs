@@ -496,53 +496,57 @@ namespace PadForge.Tests
             Assert.DoesNotContain("!= 0x0BA0) continue", service);
             Assert.Equal(3, Count(service, "if (isDs4 && !Ds4HasAudio((ushort)ud.ProdId, isBt)) continue;"));
             string pad = RepoFile("PadForge.App", "ViewModels", "PadViewModel.cs");
-            Assert.Equal(2, Count(pad, "AudioPassthroughService.Ds4HasAudio((ushort)ud.ProdId,"));
+            // The speaker and DSP rows, and the USB pad the Output Path row
+            // offers itself to (#546).
+            Assert.Equal(3, Count(pad, "AudioPassthroughService.Ds4HasAudio((ushort)ud.ProdId,"));
         }
 
-        // The wired CUH-ZCT2 and Sony's adapter end their USB output and
-        // microphone in Headset terminals (0x0402) and name no speaker: the
-        // CUH-ZCT2E dump in DJm00n/ControllersInfo and a linuxhw/LsUSB probe of
-        // the adapter. HIDMaestro names the v2's output channels headsetLeft and
-        // headsetRight, and Sony lists only the stereo headset jack for the
-        // adapter.
-        [Theory]
-        [InlineData(0x09CC, false, true)]
-        [InlineData(0x09CC, true, false)]  // Bluetooth reaches the speaker
-        [InlineData(0x05C4, false, false)] // no USB audio at all
-        [InlineData(0x05C4, true, false)]
-        [InlineData(0x0BA0, false, true)]  // Sony's adapter
-        public void Ds4HeadsetOnly_IsTheWiredSecondModel(int pid, bool bluetooth, bool expected)
-            => Assert.Equal(expected, AudioPassthroughService.Ds4HeadsetOnly((ushort)pid, bluetooth));
-
+        // A wired CUH-ZCT2 and a pad on Sony's adapter route their USB audio
+        // with feature report 0xE0 (#546, Ds4UsbAudio). On a route that plays
+        // only through the jack, Headphones (Stereo) or (Mono), such a pad
+        // takes macro sounds only while its jack reports headphones. A route
+        // with the speaker takes them always, and so does every other pad.
         [Fact]
-        public void MacroSounds_SkipAHeadsetOnlyPadUntilItsJackReportsHeadphones()
+        public void MacroSounds_SkipAUsbPadOnAJackRouteUntilItsJackReportsHeadphones()
         {
             var states = (ConcurrentDictionary<Guid, bool>)typeof(AudioPassthroughService)
                 .GetField("s_padJackState", BindingFlags.Static | BindingFlags.NonPublic)!.GetValue(null)!;
             Guid pad = Guid.NewGuid();
             try
             {
-                Assert.True(AudioPassthroughService.TakesMacroSounds(false, pad));
-                Assert.False(AudioPassthroughService.TakesMacroSounds(true, pad)); // never read
+                foreach (int path in new[] { 0, 3, 4 })
+                    Assert.True(AudioPassthroughService.TakesMacroSounds(true, path, pad));
+                foreach (int path in new[] { 1, 2 })
+                {
+                    Assert.False(AudioPassthroughService.TakesMacroSounds(true, path, pad)); // never read
+                    Assert.True(AudioPassthroughService.TakesMacroSounds(false, path, pad));
+                }
                 AudioPassthroughService.NoteHeadphoneJack(pad, false);
-                Assert.False(AudioPassthroughService.TakesMacroSounds(true, pad));
-                Assert.True(AudioPassthroughService.TakesMacroSounds(false, pad));
+                Assert.False(AudioPassthroughService.TakesMacroSounds(true, 1, pad));
+                Assert.True(AudioPassthroughService.TakesMacroSounds(true, 4, pad));
                 AudioPassthroughService.NoteHeadphoneJack(pad, true);
-                Assert.True(AudioPassthroughService.TakesMacroSounds(true, pad));
+                Assert.True(AudioPassthroughService.TakesMacroSounds(true, 1, pad));
+                Assert.True(AudioPassthroughService.TakesMacroSounds(true, 2, pad));
             }
             finally { states.TryRemove(pad, out _); }
         }
 
         [Fact]
-        public void MacroRouting_AsksTakesMacroSounds_AndWatchesAWiredSecondModel()
+        public void MacroRouting_AsksTakesMacroSounds_AndWatchesEveryUsbPadsJack()
         {
             string service = RepoFile("PadForge.App", "Common", "Input", "AudioPassthroughService.cs");
-            Assert.Contains("if (isDs4 && !TakesMacroSounds(Ds4HeadsetOnly((ushort)ud.ProdId, isBt), padGuid)) continue;", service);
+            Assert.Contains("if (isDs4 && !TakesMacroSounds(!isBt, isBt ? 0 : ResolvedPathOf(slot, padGuid), padGuid)) continue;", service);
             Assert.Contains("(deviceFilter == null ? TakesMacroSounds(s) : s.DeviceGuid == deviceFilter.Value)", service);
             Assert.Contains("if (SinkAlive(s) && TakesMacroSounds(s) && (uint)s.Slot < MaxPads) routed[s.Slot] = true;", service);
-            Assert.Equal(2, Count(service, "isDs4 && Ds4HeadsetOnly((ushort)ud.ProdId, isBt)"));
-            Assert.Contains("if (d.IsPeer || (d.IsDs4 && !d.IsBt && !d.HeadsetOnly)) continue;", service);
+            // Under _lock the sink's last resolved path stands in for the
+            // provider, which takes settings locks.
+            Assert.Contains("private static bool TakesMacroSounds(Sink s) => TakesMacroSounds(s.UsbDs4, s.ResolvedPath, s.DeviceGuid);", service);
+            Assert.Contains("_sink.ResolvedPath = outPath;", service);
+            Assert.Contains("sk.ResolvedPath = resolved;", service);
+            Assert.Equal(2, Count(service, "isDs4 && !isBt));"));
+            Assert.Contains("if (d.IsPeer) continue;", service);
             Assert.Contains("if (w.IsDs4 && !w.IsBt) _workSignal.Set();", service);
+            Assert.DoesNotContain("HeadsetOnly", service);
         }
 
         [Fact]
@@ -625,39 +629,48 @@ namespace PadForge.Tests
             Assert.Equal(2, Count(macros, "PlacementVolume(a"));
         }
 
-        // A DualShock 4's USB audio is a stereo headset, channel 0 left and
-        // channel 1 right (wChannelConfig 0x0003 in the CUH-ZCT2E dump and the
-        // adapter's probe). The DualSense's Automatic route puts silence on
-        // channel 0 and a mono mix on channel 1, its speaker's tap.
+        // A DualShock 4's USB routes are the DualSense's (#546), so its sink
+        // maps channels by the resolved route: Automatic and Speaker Only put
+        // a mono mix on channel 1, the right channel the speaker plays, and
+        // Headphones (Stereo) passes left and right through.
         [Theory]
-        [InlineData(0)]
-        [InlineData(1)]
-        [InlineData(4)]
-        [InlineData(5)]
-        public void UsbChannels_PassAHeadsetsStereoThroughOnEveryRoute(int path)
+        [InlineData(0, 0f, 0.125f)]
+        [InlineData(1, 0.5f, -0.25f)]
+        [InlineData(2, 0.125f, 0f)]
+        [InlineData(3, 0.125f, 0.125f)]
+        [InlineData(4, 0f, 0.125f)]
+        public void UsbChannels_FollowTheRoute(int path, float ch0, float ch1)
         {
-            AudioPassthroughService.MapUsbChannels(true, path, 0.5f, -0.25f, out float c0, out float c1);
-            Assert.Equal((0.5f, -0.25f), (c0, c1));
-            AudioPassthroughService.MapUsbChannels(false, 0, 0.5f, -0.25f, out c0, out c1);
-            Assert.Equal((0f, 0.125f), (c0, c1));
+            AudioPassthroughService.MapMirrorChannels(path, 0.5f, -0.25f, out float c0, out float c1);
+            Assert.Equal((ch0, ch1), (c0, c1));
+            string service = RepoFile("PadForge.App", "Common", "Input", "AudioPassthroughService.cs");
+            Assert.Contains("MapMirrorChannels(outPath, _pull[f * 2], _pull[f * 2 + 1],", service);
+            Assert.DoesNotContain("MapUsbChannels", service);
         }
 
         [Fact]
-        public void UsbDs4Sink_IsStereoHeadphonesForTheDspChain()
+        public void UsbDs4Sink_IsStereoHeadphonesOnHeadphonesStereoAlone()
         {
             string service = RepoFile("PadForge.App", "Common", "Input", "AudioPassthroughService.cs").Replace("\r\n", "\n");
-            Assert.Contains("bool stereoHeadphones = sk.IsDs4\n                        ? !sk.IsBt || Ds4BtAudio.IsStereoRoute(resolved)", service);
-            Assert.Contains("bool stereoHeadset = _sink.IsDs4;", service);
+            Assert.Contains("bool stereoHeadphones = sk.IsDs4\n                        ? Ds4BtAudio.IsStereoRoute(resolved)", service);
+            Assert.DoesNotContain("bool stereoHeadset = _sink.IsDs4;", service);
         }
 
         [Fact]
-        public void AudioTab_ExplainsAHeadsetOnlyPad()
+        public void AudioTab_OffersOutputPathToAUsbPad()
         {
             string xaml = RepoFile("PadForge.App", "Views", "PadPage.xaml");
-            Assert.Contains("Visibility=\"{Binding SelectedDeviceIsHeadsetOnly,", xaml);
+            Assert.DoesNotContain("Pad_Audio_HeadsetOnly", xaml);
+            int path = xaml.IndexOf("<TextBlock Text=\"{Binding Pad_Audio_OutputPath, ", StringComparison.Ordinal);
+            Assert.True(path > 300);
+            Assert.Contains("Visibility=\"{Binding SelectedDeviceHasOutputPath,", xaml.Substring(path - 300, 300));
             string pad = RepoFile("PadForge.App", "ViewModels", "PadViewModel.cs");
-            Assert.Equal(3, Count(pad, "OnPropertyChanged(nameof(SelectedDeviceIsHeadsetOnly));"));
+            Assert.Equal(3, Count(pad, "OnPropertyChanged(nameof(SelectedDeviceHasOutputPath));"));
             Assert.Equal(3, Count(pad, "OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));"));
+            Assert.DoesNotContain("SelectedDeviceIsHeadsetOnly", pad);
+            // A USB pad offers Headphones + Speaker, which route 2 plays.
+            int both = pad.IndexOf("public bool SelectedDeviceHasHeadsetAndSpeakerPath", StringComparison.Ordinal);
+            Assert.Contains("|| IsUsbDs4WithAudio(ud);", pad.Substring(both, 700));
         }
 
         private static string RepoPath(params string[] parts)
@@ -1175,9 +1188,9 @@ namespace PadForge.Tests
         }
     }
 
-    /// <summary>The USB frame shaper on a DualShock 4's stereo headset and on
-    /// a DualSense. In the collection that swaps the output path provider,
-    /// which the DualSense case reads.</summary>
+    /// <summary>The USB frame shaper on a DualShock 4 and on a DualSense,
+    /// which play the same routes (#546). In the collection that swaps the
+    /// output path provider, which both read.</summary>
     [Collection("AudioProfileLifecycle")]
     public sealed class Ds4UsbShaperTests
     {
@@ -1191,7 +1204,7 @@ namespace PadForge.Tests
             }
         }
 
-        private static float[] ShapeOneBlock(bool ds4)
+        private static (float[] Frames, int ResolvedPath) ShapeOneBlock(bool ds4)
         {
             const BindingFlags any = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
             var aps = typeof(AudioPassthroughService);
@@ -1206,20 +1219,27 @@ namespace PadForge.Tests
             Assert.Equal(bytes.Length, shaper.Read(bytes, 0, bytes.Length));
             var floats = new float[16];
             Buffer.BlockCopy(bytes, 0, floats, 0, bytes.Length);
-            return floats;
+            return (floats, (int)sinkType.GetField("ResolvedPath")!.GetValue(sink)!);
         }
 
-        [Fact]
-        public void TheShaperPlaysADs4HeadsetInStereo_AndADualSenseOnItsRoute()
+        // Automatic puts the mono mix on the right channel, the one the
+        // speaker plays, and Headphones (Stereo) passes left and right
+        // through. The shaper keeps the path it played for macro routing.
+        [Theory]
+        [InlineData(0, 0f, 0.125f)]
+        [InlineData(1, 0.5f, -0.25f)]
+        public void TheShaperPlaysADs4AndADualSenseOnTheirRoute(int path, float left, float right)
         {
             var saved = AudioPassthroughService.DeviceAudioOutputPathProvider;
             try
             {
-                AudioPassthroughService.DeviceAudioOutputPathProvider = null;   // Automatic
-                var ds4 = ShapeOneBlock(true);
-                for (int f = 0; f < 8; f++) Assert.Equal((0.5f, -0.25f), (ds4[f * 2], ds4[f * 2 + 1]));
-                var ds5 = ShapeOneBlock(false);
-                for (int f = 0; f < 8; f++) Assert.Equal((0f, 0.125f), (ds5[f * 2], ds5[f * 2 + 1]));
+                AudioPassthroughService.DeviceAudioOutputPathProvider = path == 0 ? null : (_, _) => path;
+                foreach (bool ds4 in new[] { true, false })
+                {
+                    var (frames, resolved) = ShapeOneBlock(ds4);
+                    for (int f = 0; f < 8; f++) Assert.Equal((left, right), (frames[f * 2], frames[f * 2 + 1]));
+                    Assert.Equal(path, resolved);
+                }
             }
             finally { AudioPassthroughService.DeviceAudioOutputPathProvider = saved; }
         }

@@ -2951,7 +2951,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Endurstilla tónmörk</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Afritar samhliða allt sem sjálfgefið úttak kerfisins spilar í innbyggðan hátalara þessarar leikjastýringar. Virkar um USB og Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Valda tækið hefur engan innbyggðan hátalara. Fjölvahljóð þessarar leikjastýringar spilast á sjálfgefnu úttaki kerfisins.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>Yfir USB spilar þessi leikjastýring hljóð aðeins í gegnum heyrnartólatengið sitt. Á meðan ekkert er tengt sleppa fjölvahljóð henni og spilast á sjálfgefnu úttaki kerfisins eða á annarri leikjastýringu sem er tengd þessari leikjastýringu.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Endurstilla hljóðúttak</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Prófunarsafn fyrir DualSense í vafra eftir Xuezhou Dai (daidr): viðmiðun fyrir CRC-römmun feature-skýrslna frá Sony og prófunarskipanir fastbúnaðar sem PadForge framsendir frá sýndarleikjastýringum til raunverulegra. MIT.</value></data>

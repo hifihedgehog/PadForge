@@ -2951,7 +2951,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Đặt lại giới hạn âm</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Sao chép song song mọi thứ mà đầu ra mặc định của hệ thống đang phát sang loa tích hợp của tay cầm này. Hoạt động qua USB và Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Thiết bị đã chọn không có loa tích hợp. Âm thanh macro của tay cầm này phát trên đầu ra mặc định của hệ thống.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>Qua USB, tay cầm này chỉ phát âm thanh qua giắc cắm tai nghe. Khi chưa cắm gì vào, âm thanh macro sẽ bỏ qua tay cầm này và phát trên đầu ra mặc định của hệ thống hoặc trên một tay cầm khác được gán cho tay cầm này.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Đặt lại đầu ra âm thanh</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Bộ kiểm thử DualSense trên trình duyệt của Xuezhou Dai (daidr): tài liệu tham chiếu cho cách đóng khung CRC của feature report Sony và các lệnh kiểm thử firmware mà PadForge chuyển tiếp từ tay cầm ảo sang tay cầm vật lý. MIT.</value></data>

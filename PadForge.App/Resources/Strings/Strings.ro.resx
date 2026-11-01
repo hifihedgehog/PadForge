@@ -2951,7 +2951,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Resetare limită de ton</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copiază în paralel tot ce redă ieșirea implicită a sistemului în difuzorul integrat al acestui controler. Funcționează prin USB și Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Dispozitivul selectat nu are difuzor integrat. Sunetele macrocomenzilor pentru acest controler se redau pe ieșirea implicită a sistemului.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>Prin USB, acest controler redă sunetul numai prin mufa pentru căști. Cât timp nu este nimic conectat la mufă, sunetele macrocomenzilor îl ocolesc și se redau pe ieșirea implicită a sistemului sau pe un alt controler de la acest controler virtual.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Resetare ieșire sunet</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Suită de testare DualSense în browser de Xuezhou Dai (daidr): referință pentru încadrarea CRC a rapoartelor de funcții Sony și pentru comenzile de testare a firmware-ului pe care PadForge le transmite de la controlerele virtuale la cele fizice. MIT.</value></data>

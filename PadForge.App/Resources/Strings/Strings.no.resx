@@ -2951,7 +2951,6 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Tilbakestill tonegrense</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopierer det standardutgangen i systemet spiller av, til den innebygde høyttaleren i denne kontrolleren, parallelt. Fungerer over USB og Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Den valgte enheten har ingen innebygd høyttaler. Makrolyder for denne kontrolleren spilles av på systemets standardutgang.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>Over USB spiller denne kontrolleren av lyd bare gjennom hodetelefonkontakten. Så lenge ingenting er koblet til, hoppes den over for makrolyder, som spilles av på systemets standardutgang eller en annen kontroller for denne kontrolleren.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Tilbakestill lydutgang</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Testverktøy for DualSense i nettleseren av Xuezhou Dai (daidr): referanse for CRC-innrammingen av Sonys feature-rapporter og fastvaretestkommandoene PadForge videresender fra virtuelle til fysiske kontrollere. MIT.</value></data>

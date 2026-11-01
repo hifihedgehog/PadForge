@@ -2951,7 +2951,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Hanghatár visszaállítása</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Mindent, amit a rendszer alapértelmezett kimenete lejátszik, párhuzamosan a kontroller beépített hangszórójára is másol. USB-n és Bluetooth-on is működik.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>A kiválasztott eszköznek nincs beépített hangszórója. A kontroller makróhangjai a rendszer alapértelmezett kimenetén szólalnak meg.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>USB-n keresztül ez a kontroller csak a fejhallgató-csatlakozóján játssza le a hangot. Amíg nincs semmi csatlakoztatva, a makróhangok kihagyják, és a rendszer alapértelmezett kimenetén vagy a kontrollerhez rendelt másik eszközön szólalnak meg.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Hangkimenet visszaállítása</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Böngészős DualSense-tesztcsomag, készítette: Xuezhou Dai (daidr). Referencia a Sony feature reportok CRC-keretezéséhez és azokhoz a firmware-tesztparancsokhoz, amelyeket a PadForge a virtuális kontrollerekről a fizikaiakra továbbít. MIT.</value></data>

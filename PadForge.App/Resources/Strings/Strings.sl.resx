@@ -2951,7 +2951,6 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Ponastavi mejo tonov</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Vse, kar predvaja privzeti sistemski izhod, vzporedno kopira na vgrajeni zvočnik tega krmilnika. Deluje prek USB in Bluetootha.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Izbrana naprava nima vgrajenega zvočnika. Zvoki makrov za ta krmilnik se predvajajo na privzetem sistemskem izhodu.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>Prek USB ta krmilnik predvaja zvok samo prek priključka za slušalke. Dokler ni nič priklopljeno, zvoki makrov krmilnik preskočijo in se predvajajo na privzetem sistemskem izhodu ali drugem krmilniku za ta krmilnik.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Ponastavi izhod zvoka</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Brskalniški preizkusni paket za DualSense avtorja Xuezhou Dai (daidr): referenca za okvirjanje CRC poročil funkcij Sony in preizkusne ukaze vdelane programske opreme, ki jih PadForge posreduje z navideznih na fizične krmilnike. MIT.</value></data>

@@ -2951,7 +2951,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Ресетуј границу тона</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Паралелно копира све што подразумевани системски излаз репродукује на уграђени звучник овог контролера. Ради преко USB и Bluetooth везе.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Изабрани уређај нема уграђени звучник. Звукови макроа за овај контролер репродукују се на подразумеваном системском излазу.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>Преко USB везе овај контролер репродукује звук само преко утичнице за слушалице. Док ништа није прикључено, звукови макроа прескачу овај контролер и репродукују се на подразумеваном системском излазу или на другом контролеру додељеном овом контролеру.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Ресетуј излаз звука</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Скуп тестова за DualSense у прегледачу, аутор Xuezhou Dai (daidr): референца за Sony CRC уоквиравање feature извештаја и команде за тестирање фирмвера које PadForge прослеђује са виртуелних на физичке контролере. MIT.</value></data>

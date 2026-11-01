@@ -64,35 +64,35 @@ namespace PadForge.Common.Input
         /// dump in DJm00n/ControllersInfo, HIDMaestro's
         /// dualshock-4-v2-composite profile), and Sony's wireless adapter
         /// (0x0BA0) presents an audio device of its own. The USB sink finds
-        /// either endpoint by its container, as it finds a DualSense's. Sony's
-        /// own release for the CUH-ZCT2 lists "USB HID Class, USB Audio Class"
-        /// as new, and the first model (0x05C4) has no USB audio.</summary>
+        /// either endpoint by its container, as it finds a DualSense's, and
+        /// feature report 0xE0 sends it to the headset, the speaker or both
+        /// (#546, <see cref="Ds4UsbAudio"/>). Sony's own release for the
+        /// CUH-ZCT2 lists "USB HID Class, USB Audio Class" as new, and the
+        /// first model (0x05C4) has no USB audio.</summary>
         internal static bool Ds4HasAudio(ushort productId, bool isBluetooth)
             => isBluetooth || productId is 0x09CC or 0x0BA0;
 
-        /// <summary>Whether a DualShock 4's audio reaches only its headphone
-        /// jack on the link it is on: the second model on a cable, and any pad
-        /// on Sony's USB wireless adapter. Both USB audio functions end their
-        /// output stream and their microphone in Headset terminals (0x0402)
-        /// and name no speaker: the CUH-ZCT2E descriptor dump in
-        /// DJm00n/ControllersInfo, and a linux-hardware.org probe of the
-        /// adapter (linuxhw/LsUSB). HIDMaestro's dualshock-4-v2-composite
-        /// profile names the two channels headsetLeft and headsetRight,
-        /// DS4-Sound-Link's research has Windows route the pad's USB audio to
-        /// the 3.5 mm jack, and Sony's launch post for the adapter lists the
-        /// stereo headset jack among the features it carries, with no speaker.
-        /// Such a pad takes macro sounds only while its jack reports
-        /// headphones, so with nothing plugged in they play on the PC, as
-        /// they would without the pad.</summary>
-        internal static bool Ds4HeadsetOnly(ushort productId, bool isBluetooth)
-            => !isBluetooth && productId is 0x09CC or 0x0BA0;
-
         /// <summary>Whether a pad takes the slot's macro sounds: every pad
-        /// but a headset-only one whose jack has not reported headphones.</summary>
-        internal static bool TakesMacroSounds(bool headsetOnly, Guid device)
-            => !headsetOnly || TryGetHeadphoneJack(device) == true;
+        /// but a DualShock 4 on USB whose route plays only through the jack
+        /// (Headphones (Stereo) or (Mono), <see cref="Ds4UsbAudio"/>) while its
+        /// jack has not reported headphones. With nothing plugged in, those
+        /// sounds play on the PC, as they would without the pad. A route with
+        /// the speaker takes them always (#546).</summary>
+        internal static bool TakesMacroSounds(bool usbDs4, int resolvedPath, Guid device)
+            => !usbDs4 || !Ds4UsbAudio.IsHeadphoneOnlyPath(resolvedPath)
+               || TryGetHeadphoneJack(device) == true;
 
-        private static bool TakesMacroSounds(Sink s) => TakesMacroSounds(s.HeadsetOnly, s.DeviceGuid);
+        // Read under _lock, so it takes the path the sink last resolved
+        // (Sink.ResolvedPath), never the provider, which takes settings locks.
+        private static bool TakesMacroSounds(Sink s) => TakesMacroSounds(s.UsbDs4, s.ResolvedPath, s.DeviceGuid);
+
+        /// <summary>A device's resolved Output Path on a slot, 0 (Automatic)
+        /// when nothing answers. Never called under <see cref="_lock"/>.</summary>
+        private static int ResolvedPathOf(int slot, Guid device)
+        {
+            try { return DeviceAudioOutputPathProvider?.Invoke(slot, device) ?? 0; }
+            catch { return 0; }
+        }
 
         private static readonly object _lock = new();
 
@@ -125,9 +125,16 @@ namespace PadForge.Common.Input
             public int Slot;
             public bool IsBt;
             public bool IsDs4;
-            /// <summary>A pad whose audio reaches only its headphone jack
-            /// (<see cref="Ds4HeadsetOnly"/>).</summary>
-            public bool HeadsetOnly;
+            /// <summary>A DualShock 4 on USB, a wired second model or a pad on
+            /// Sony's adapter, whose route the effects dispatcher sets
+            /// (<see cref="Ds4UsbAudio"/>).</summary>
+            public bool UsbDs4;
+
+            /// <summary>The device's resolved Output Path as the sink last read
+            /// it: the USB render thread per output block, the worker per
+            /// reconcile. Macro routing reads it under <see cref="_lock"/>,
+            /// where the path provider must not be called.</summary>
+            public volatile int ResolvedPath;
             public string HidPath;
             public bool PassthroughOn;
 
@@ -1143,7 +1150,11 @@ namespace PadForge.Common.Input
         /// the speaker plays ch1. The original hardcoded (0, mono)
         /// shape was correct ONLY for the speaker paths, so selecting
         /// Headphones (Stereo) played silence in the left ear and a
-        /// mono downmix in the right. Owner-reported 2026-08-01.</para></summary>
+        /// mono downmix in the right. Owner-reported 2026-08-01.</para>
+        ///
+        /// <para>A DualShock 4 on USB takes the same four routes through
+        /// feature report 0xE0, so its sink maps through here too (#546,
+        /// <see cref="Ds4UsbAudio"/>).</para></summary>
         internal static void MapMirrorChannels(int path, float l, float r,
             out float ch0, out float ch1)
         {
@@ -1166,21 +1177,6 @@ namespace PadForge.Common.Input
                     ch1 = Math.Clamp((l + r) * 0.5f, -1f, 1f);
                     break;
             }
-        }
-
-        /// <summary>Maps one stereo source frame onto a USB pad's channels
-        /// 0/1. A DualShock 4's USB audio, the second model's or Sony's
-        /// adapter's, is a plain stereo headset: channel 0 left and channel 1
-        /// right (wChannelConfig 0x0003 in the CUH-ZCT2E descriptor dump and
-        /// the adapter's linuxhw/LsUSB probe, headsetLeft and headsetRight in
-        /// HIDMaestro's dualshock-4-v2-composite profile), with no firmware
-        /// route to pick. Every other pad takes the DualSense's routes
-        /// (<see cref="MapMirrorChannels"/>).</summary>
-        internal static void MapUsbChannels(bool stereoHeadset, int path, float l, float r,
-            out float ch0, out float ch1)
-        {
-            if (stereoHeadset) { ch0 = l; ch1 = r; return; }
-            MapMirrorChannels(path, l, r, out ch0, out ch1);
         }
 
         /// <summary>USB frame shaper per the DSY-v2 playback callbacks:
@@ -1237,20 +1233,18 @@ namespace PadForge.Common.Input
                 }
 
                 // A live transport can move to another slot without a rebuild.
-                // Read its current owner for each output block. A DualShock 4
-                // has no route to read (MapUsbChannels).
-                bool stereoHeadset = _sink.IsDs4;
+                // Read its current owner for each output block. A DualShock 4's
+                // USB routes are the DualSense's (Ds4UsbAudio), so one map
+                // serves both.
                 int outPath = 0;
-                if (!stereoHeadset)
-                {
-                    try { outPath = DeviceAudioOutputPathProvider?.Invoke(_sink.Slot, _deviceGuid) ?? 0; }
-                    catch { }
-                }
+                try { outPath = DeviceAudioOutputPathProvider?.Invoke(_sink.Slot, _deviceGuid) ?? 0; }
+                catch { }
+                _sink.ResolvedPath = outPath;
 
                 for (int f = 0; f < frames; f++)
                 {
                     int o = f * _outChannels;
-                    MapUsbChannels(stereoHeadset, outPath, _pull[f * 2], _pull[f * 2 + 1],
+                    MapMirrorChannels(outPath, _pull[f * 2], _pull[f * 2 + 1],
                         out _frames[o], out _frames[o + 1]);
                     if (haveHaptics)
                     {
@@ -1297,9 +1291,9 @@ namespace PadForge.Common.Input
                 // A wired first-model DS4 has no audio. See ReconcileOnWorker.
                 if (isDs4 && !Ds4HasAudio((ushort)ud.ProdId, isBt)) continue;
                 // A DualShock 4 on USB, a wired second model or a pad on
-                // Sony's adapter, hears macro sounds only through headphones
-                // in its jack.
-                if (isDs4 && !TakesMacroSounds(Ds4HeadsetOnly((ushort)ud.ProdId, isBt), padGuid)) continue;
+                // Sony's adapter, on a route that plays only through the jack
+                // hears macro sounds only while headphones are in it (#546).
+                if (isDs4 && !TakesMacroSounds(!isBt, isBt ? 0 : ResolvedPathOf(slot, padGuid), padGuid)) continue;
                 anyEligible = true;
                 break;
             }
@@ -3139,7 +3133,7 @@ namespace PadForge.Common.Input
             // Phase 1 — desired state, no locks (SettingsManager and the
             // config provider take their own locks; never nest them under
             // ours).
-            var desired = new List<(int Slot, Guid Guid, string Path, bool IsBt, bool IsDs4, bool PtOn, string MirrorSrc, bool RemoteFed, bool IsPeer, bool HeadsetOnly)>();
+            var desired = new List<(int Slot, Guid Guid, string Path, bool IsBt, bool IsDs4, bool PtOn, string MirrorSrc, bool RemoteFed, bool IsPeer, bool UsbDs4)>();
             for (int slot = 0; slot < MaxPads; slot++)
             {
                 // Demand for macro audio is config-derived, never latched:
@@ -3190,8 +3184,8 @@ namespace PadForge.Common.Input
                         }
                     bool isDs4 = Ds4Pids.Contains((ushort)ud.ProdId);
                     // A Bluetooth DS4 streams SBC over report 0x17. On USB the
-                    // second model and Sony's wireless adapter present a USB
-                    // headset and take the USB container path, and the first
+                    // second model and Sony's wireless adapter present USB
+                    // audio and take the USB container path, and the first
                     // model has no audio (Ds4HasAudio).
                     if (isDs4 && !Ds4HasAudio((ushort)ud.ProdId, isBt)) continue;
                     // A sink exists while the device's mirror toggle is on,
@@ -3202,7 +3196,7 @@ namespace PadForge.Common.Input
                     if (!ptOn && !demand && !personaDemand) continue;
                     personaPads?.Add((guid, ud.DevicePath, isBt, isDs4));
                     desired.Add((slot, guid, ud.DevicePath, isBt, isDs4, ptOn, mirrorSrc, false, false,
-                        isDs4 && Ds4HeadsetOnly((ushort)ud.ProdId, isBt)));
+                        isDs4 && !isBt));
                 }
                 if (personaDemand) RefreshPersonaTargets(personaFeed, slot, personaGeneration, personaPads, worker);
             }
@@ -3221,7 +3215,7 @@ namespace PadForge.Common.Input
                 bool isDs4 = Ds4Pids.Contains((ushort)ud.ProdId);
                 if (isDs4 && !Ds4HasAudio((ushort)ud.ProdId, isBt)) continue;
                 desired.Add((255, kv.Key, ud.DevicePath, isBt, isDs4, false, "", true, false,
-                    isDs4 && Ds4HeadsetOnly((ushort)ud.ProdId, isBt)));
+                    isDs4 && !isBt));
             }
 
             // Phase 2 — state sync under the lock; no I/O.
@@ -3241,7 +3235,7 @@ namespace PadForge.Common.Input
                             DeviceGuid = d.Guid,
                             IsBt = d.IsBt,
                             IsDs4 = d.IsDs4,
-                            HeadsetOnly = d.HeadsetOnly,
+                            UsbDs4 = d.UsbDs4,
                             MacroMixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(Rate, 2)) { ReadFully = true },
                         };
                         sink.Source = new SinkSource(sink);
@@ -3266,7 +3260,7 @@ namespace PadForge.Common.Input
                     sink.HidPath = d.Path;
                     sink.IsBt = d.IsBt;
                     sink.IsDs4 = d.IsDs4;
-                    sink.HeadsetOnly = d.HeadsetOnly;
+                    sink.UsbDs4 = d.UsbDs4;
                     sink.PassthroughOn = d.PtOn;
                     sink.MirrorSourceId = d.MirrorSrc ?? "";
                     sink.RemoteFed = d.RemoteFed;
@@ -3324,16 +3318,16 @@ namespace PadForge.Common.Input
             // Jack to owning a virtual DualSense. The DualSense on either
             // transport, and the DualShock 4 on Bluetooth (#528), each with its
             // own status-byte shape. A DualShock 4 on USB, a wired second model
-            // or a pad on Sony's adapter (0x0BA0), is watched too, because its
-            // macro sounds follow its jack (Ds4HeadsetOnly), and a wired first
-            // model builds no sink.
+            // or a pad on Sony's adapter (0x0BA0), is watched too, because Follow
+            // Headphone Jack and its headphone-only routes read the jack (#546),
+            // and a wired first model builds no sink.
             var jackWanted = new HashSet<Guid>();
             lock (_lock)
             {
                 if (!IsCurrentAudioWorker(worker)) return;
                 foreach (var d in desired)
                 {
-                    if (d.IsPeer || (d.IsDs4 && !d.IsBt && !d.HeadsetOnly)) continue;
+                    if (d.IsPeer) continue;
                     jackWanted.Add(d.Guid);
                     EnsureJackWatch(d.Guid, d.Path, d.IsBt, d.IsDs4);
                 }
@@ -3361,17 +3355,23 @@ namespace PadForge.Common.Input
                 foreach (var (sk, guid, slot) in pending)
                 {
                     var cfg = dspProvider(slot, guid);
-                    if (cfg == null) { sk.Dsp.Configure(0, true, null, 0, false, 1f, Rate); continue; }
+                    if (cfg == null)
+                    {
+                        sk.ResolvedPath = 0;
+                        sk.Dsp.Configure(0, true, null, 0, false, 1f, Rate);
+                        continue;
+                    }
                     var c = cfg.Value;
                     // Crossfeed belongs on a genuine stereo route only, and
                     // IsStereoHeadphoneRoute is where that rule and its
-                    // duaLib citations live. A Bluetooth DualShock 4 is stereo
-                    // on Headphones (Stereo) alone: its Default is the mono
-                    // speaker (#528, Ds4BtAudio.IsStereoRoute). On USB it is a
-                    // stereo headset on every route (MapUsbChannels).
+                    // duaLib citations live. A DualShock 4 is stereo on
+                    // Headphones (Stereo) alone, on either link: its Default
+                    // is the mono speaker (#528 on Bluetooth, #546 on USB,
+                    // Ds4BtAudio.IsStereoRoute).
                     int resolved = ResolveOutputPath(c.OutputPath, guid);
+                    sk.ResolvedPath = resolved;
                     bool stereoHeadphones = sk.IsDs4
-                        ? !sk.IsBt || Ds4BtAudio.IsStereoRoute(resolved)
+                        ? Ds4BtAudio.IsStereoRoute(resolved)
                         : IsStereoHeadphoneRoute(resolved);
                     sk.Dsp.Configure(
                         c.Crossfeed, !stereoHeadphones,

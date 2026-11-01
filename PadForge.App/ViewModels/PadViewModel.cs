@@ -1619,7 +1619,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(SelectedDeviceHasHeadsetAndSpeakerPath));
                     OnPropertyChanged(nameof(SelectedDeviceHasDs5AudioBuffer));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
-                    OnPropertyChanged(nameof(SelectedDeviceIsHeadsetOnly));
+                    OnPropertyChanged(nameof(SelectedDeviceHasOutputPath));
                     OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
                     OnPropertyChanged(nameof(SelectedDeviceIsTritonPcm));
                     OnPropertyChanged(nameof(SelectedDeviceHasTouchpadPulse));
@@ -1698,7 +1698,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(SelectedDeviceHasHeadsetAndSpeakerPath));
             OnPropertyChanged(nameof(SelectedDeviceHasDs5AudioBuffer));
             OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
-            OnPropertyChanged(nameof(SelectedDeviceIsHeadsetOnly));
+            OnPropertyChanged(nameof(SelectedDeviceHasOutputPath));
             OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
             OnPropertyChanged(nameof(SelectedDeviceIsTritonPcm));
             OnPropertyChanged(nameof(SelectedDeviceHasTouchpadPulse));
@@ -6260,10 +6260,11 @@ namespace PadForge.ViewModels
 
         /// <summary>The selected device has a route that plays the headphones
         /// and the speaker together, Output Path's "Headphones + Speaker".
-        /// The DualSense family does. The DualShock 4 plays one or the other
-        /// (target 0x02 or 0x24 in its stream), so the item is hidden for it
-        /// and its index stays in place, which keeps the stored enum's
-        /// meaning (#528).</summary>
+        /// The DualSense family does, and so does a DualShock 4 on USB, through
+        /// route 2 of feature report 0xE0 (#546). Over Bluetooth a DualShock 4
+        /// plays one or the other (target 0x02 or 0x24 in its stream), so the
+        /// item is hidden for it there and its index stays in place, which
+        /// keeps the stored enum's meaning (#528).</summary>
         public bool SelectedDeviceHasHeadsetAndSpeakerPath
         {
             get
@@ -6271,8 +6272,30 @@ namespace PadForge.ViewModels
                 var sel = SelectedMappedDevice;
                 if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
                 var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
-                return ud != null && ud.VendorId == 0x054C
-                    && ((ushort)ud.ProdId == 0x0CE6 || (ushort)ud.ProdId == 0x0DF2);
+                if (ud == null || ud.VendorId != 0x054C) return false;
+                return (ushort)ud.ProdId == 0x0CE6 || (ushort)ud.ProdId == 0x0DF2
+                    || IsUsbDs4WithAudio(ud);
+            }
+        }
+
+        /// <summary>A DualShock 4 on USB with audio, a wired second model or a
+        /// pad on Sony's adapter, whose route PadForge sets (#546).</summary>
+        private static bool IsUsbDs4WithAudio(PadForge.Engine.Data.UserDevice ud)
+            => (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) < 0
+               && PadForge.Common.Input.AudioPassthroughService.Ds4HasAudio((ushort)ud.ProdId, false);
+
+        /// <summary>The selected device's sound can be routed, so the Audio tab
+        /// shows Output Path: every pad with a headphone jack row, and a
+        /// DualShock 4 on USB, whose Headphone Volume Windows keeps (#546).</summary>
+        public bool SelectedDeviceHasOutputPath
+        {
+            get
+            {
+                if (SelectedDeviceHasHeadphoneJack) return true;
+                var sel = SelectedMappedDevice;
+                if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
+                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
+                return ud != null && ud.VendorId == 0x054C && IsUsbDs4WithAudio(ud);
             }
         }
 
@@ -6327,24 +6350,6 @@ namespace PadForge.ViewModels
         }
 
         public bool SelectedDeviceHasNoSpeaker => !SelectedDeviceHasSpeaker;
-
-        /// <summary>The selected device plays sound only through its headphone
-        /// jack on the link it is on, a DualShock 4 on USB, either a wired
-        /// second model or a pad on Sony's adapter
-        /// (AudioPassthroughService.Ds4HeadsetOnly), so the Audio tab says
-        /// where its sound goes.</summary>
-        public bool SelectedDeviceIsHeadsetOnly
-        {
-            get
-            {
-                var sel = SelectedMappedDevice;
-                if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
-                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
-                return ud != null && ud.VendorId == 0x054C
-                    && PadForge.Common.Input.AudioPassthroughService.Ds4HeadsetOnly((ushort)ud.ProdId,
-                        (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0);
-            }
-        }
 
         /// <summary>The selected device is a Sony pad whose audio rides an
         /// AudioPassthroughService sink, which is the only place the #347
@@ -8154,7 +8159,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(SelectedDeviceHasHeadsetAndSpeakerPath));
                     OnPropertyChanged(nameof(SelectedDeviceHasDs5AudioBuffer));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
-                    OnPropertyChanged(nameof(SelectedDeviceIsHeadsetOnly));
+                    OnPropertyChanged(nameof(SelectedDeviceHasOutputPath));
                     OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
                     OnPropertyChanged(nameof(SelectedDeviceIsTritonPcm));
                     OnPropertyChanged(nameof(MirrorEngageSelectedInput));

@@ -2423,7 +2423,6 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Restaurar Limite de Tom</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copia em paralelo o que a saída padrão do sistema reproduz para o alto-falante integrado deste controle. Funciona por USB e Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>O dispositivo selecionado não tem alto-falante integrado. Os sons de macro deste controle tocam na saída padrão.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>Por USB, este dispositivo toca o som apenas pelo conector de fones. Enquanto nada estiver conectado, os sons de macro o ignoram e tocam na saída padrão do sistema ou em outro dispositivo deste controle.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
   <data name="About_QDollarDesc" xml:space="preserve"><value>Comparador de modelos de formas para o touchpad (círculo / quadrado / triângulo / Z / marca de seleção e gestos gravados personalizados). Rederivação em C# da referência JavaScript de Magrofuoco, Vatavu, Anthony e Wobbrock. BSD 3-Clause.</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>

@@ -2951,7 +2951,6 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Resetuj limit tonu</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopiuje równolegle na wbudowany głośnik tego kontrolera wszystko, co odtwarza domyślne wyjście systemu. Działa przez USB i Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Wybrane urządzenie nie ma wbudowanego głośnika. Dźwięki makr dla tego pada są odtwarzane na domyślnym wyjściu systemu.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>Przez USB ten kontroler odtwarza dźwięk tylko przez gniazdo słuchawkowe. Dopóki nic nie jest podłączone, dźwięki makr pomijają go i są odtwarzane na domyślnym wyjściu systemu lub na innym kontrolerze przypisanym do tego pada.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Resetuj wyjście dźwięku</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Przeglądarkowy zestaw testów DualSense (autor: Xuezhou Dai, daidr): wzorzec ramkowania CRC raportów funkcji Sony oraz poleceń testowych oprogramowania układowego, które PadForge przekazuje z wirtualnych padów do fizycznych. MIT.</value></data>

@@ -2951,7 +2951,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>重設音調上限</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>把系統預設輸出所播放的內容，同步複製到此控制器的內置喇叭。USB 和藍牙均適用。</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>所選裝置沒有內置喇叭。此控制器的巨集聲音會在系統預設輸出上播放。</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>經 USB 連接時，這個控制器只會透過耳機插孔播放聲音。插孔未接上任何裝置時，巨集聲音會略過它，改在系統預設輸出，或指派給此控制器的另一個裝置上播放。</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>重設聲音輸出</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai(daidr)製作的瀏覽器版 DualSense 測試套件：PadForge 由虛擬控制器轉送到實體控制器的 Sony 功能報告 CRC 封裝格式和韌體測試指令，均以此為參考。MIT。</value></data>

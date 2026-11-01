@@ -2423,7 +2423,6 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Réinitialiser la limite de tonalité</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copie en parallèle ce que joue la sortie par défaut du système sur le haut-parleur intégré de cette manette. Fonctionne en USB et en Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Le périphérique sélectionné n’a pas de haut-parleur intégré. Les sons de macro de cette manette jouent sur la sortie par défaut.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>En USB, cette manette ne joue le son que par sa prise casque. Tant que rien n’y est branché, les sons de macro l’ignorent et jouent sur la sortie par défaut ou sur une autre manette de cette manette virtuelle.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
   <data name="About_QDollarDesc" xml:space="preserve"><value>Comparateur de gabarits de formes pour le pavé tactile (cercle / carré / triangle / Z / coche et gestes enregistrés personnalisés). Redérivation en C# de la référence JavaScript de Magrofuoco, Vatavu, Anthony et Wobbrock. BSD 3-Clause.</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>

@@ -2423,7 +2423,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Tongrenze zurücksetzen</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Gibt alles, was das Standard-Ausgabegerät spielt, parallel über den eingebauten Lautsprecher dieses Controllers aus. Funktioniert über USB und Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Das ausgewählte Gerät hat keinen eingebauten Lautsprecher. Makro-Sounds dieses Pads laufen über die Standard-Ausgabe.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>Über USB gibt dieser Controller Sound nur über seine Kopfhörerbuchse aus. Solange nichts eingesteckt ist, überspringen Makro-Sounds ihn und laufen über die Standard-Ausgabe oder einen anderen Controller an diesem Pad.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
   <data name="About_QDollarDesc" xml:space="preserve"><value>Formvorlagen-Matcher für das Touchpad (Kreis / Quadrat / Dreieck / Z / Häkchen und eigene aufgezeichnete Gesten). C#-Neuableitung der JavaScript-Referenz von Magrofuoco, Vatavu, Anthony und Wobbrock. BSD 3-Clause.</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>

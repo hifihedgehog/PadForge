@@ -2951,7 +2951,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>بازنشانی حد تُن</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>هر چه خروجی پیش‌فرض سیستم پخش می‌کند را هم‌زمان روی بلندگوی داخلی این کنترلر هم کپی می‌کند. با USB و بلوتوث کار می‌کند.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>دستگاه انتخاب‌شده بلندگوی داخلی ندارد. صداهای ماکروی این گیم‌پد از خروجی پیش‌فرض سیستم پخش می‌شوند.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>با اتصال USB، این کنترلر صدا را فقط از جک هدفون خود پخش می‌کند. تا زمانی که چیزی به جک وصل نیست، صداهای ماکرو از آن رد می‌شوند و از خروجی پیش‌فرض سیستم یا کنترلر دیگری در این گیم‌پد پخش می‌شوند.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>بازنشانی خروجی صدا</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>مجموعه آزمون DualSense در مرورگر، اثر Xuezhou Dai با نام کاربری daidr: مرجع قاب‌بندی CRC در گزارش‌های feature شرکت Sony و فرمان‌های آزمون فریم‌ور که PadForge از گیم‌پد مجازی به فیزیکی می‌فرستد. MIT.</value></data>

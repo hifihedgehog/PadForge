@@ -2951,7 +2951,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Resetovat limit tónu</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Souběžně kopíruje vše, co hraje výchozí systémový výstup, do vestavěného reproduktoru tohoto ovladače. Funguje přes USB i Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Vybrané zařízení nemá vestavěný reproduktor. Zvuky maker pro tento gamepad se přehrávají na výchozím systémovém výstupu.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>Přes USB tento ovladač přehrává zvuk pouze přes konektor pro sluchátka. Dokud v něm nic není zapojeno, zvuky maker ho přeskočí a přehrají se na výchozím systémovém výstupu nebo na jiném ovladači tohoto gamepadu.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Resetovat zvukový výstup</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Sada testů DualSense pro prohlížeč, autor Xuezhou Dai (daidr): předloha pro rámcování CRC u feature reportů Sony a pro testovací příkazy firmwaru, které PadForge přeposílá z virtuálních gamepadů do fyzických. MIT.</value></data>

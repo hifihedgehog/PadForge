@@ -135,6 +135,7 @@ namespace PadForge.Common.Input
             }
 
             ApplyAudioControl2(packet, fields);
+            ApplyDs4UsbAudioConfig(packet, fields);
 
             // Reverse output relay (#138): a "peer://" device lives on another PC. The
             // dispatcher has already baked the full config (rumble + adaptive triggers +
@@ -156,8 +157,12 @@ namespace PadForge.Common.Input
             // transitions until the peer releases ownership.
             if (RemoteLinkOutputRouter.IsClaimedByPeer(devicePath)) return false;
 
+            // A DualShock 4's USB route (#546) follows its output report, so
+            // the speaker volume is in place when the route reaches the
+            // speaker, and a route that fails fails the frame, which the
+            // dispatcher retries as it retries a failed output write.
             if (!Ds5WriteTrace.Enabled || packet.Length <= 3)
-                return WriteRaw(devicePath, packet);
+                return WriteRaw(devicePath, packet) && WriteDs4UsbRoute(devicePath, packet, fields);
 
             // USB report 0x02 carries the payload at byte 1. The BT
             // report 0x31 has the sequence tag at byte 1 and the 0x10
@@ -169,7 +174,29 @@ namespace PadForge.Common.Input
             bool written = WriteRaw(devicePath, packet);
             int start = packet[0] == 0x31 ? 3 : 1;
             Ds5WriteTrace.Log(written ? "pass" : "pass-fail", packet, start, packet.Length - start);
-            return written;
+            return written && WriteDs4UsbRoute(devicePath, packet, fields);
+        }
+
+        /// <summary>Byte 23 of a DualShock 4's USB report 0x05 while its route
+        /// plays the speaker (#546, <see cref="Ds4UsbAudio.SpeakerAudioConfig"/>).
+        /// HIDMaestro's dualshock-4-v2 profile declares the report's volumes up
+        /// to byte 22, so the encoder cannot place it.</summary>
+        internal static void ApplyDs4UsbAudioConfig(byte[] packet, IReadOnlyDictionary<string, object> fields)
+        {
+            if (!fields.TryGetValue("ds4UsbAudioConfig", out var raw) || raw is not byte value) return;
+            if (packet[0] == 0x05 && packet.Length > Ds4UsbAudio.SpeakerAudioConfigOffset)
+                packet[Ds4UsbAudio.SpeakerAudioConfigOffset] = value;
+        }
+
+        /// <summary>Sends a DualShock 4's USB route as feature report 0xE0
+        /// when the frame carries one, and only beside a USB report 0x05.
+        /// True when there was nothing to send.</summary>
+        private static bool WriteDs4UsbRoute(string devicePath, byte[] packet,
+            IReadOnlyDictionary<string, object> fields)
+        {
+            if (!fields.TryGetValue("ds4UsbRoute", out var raw) || raw is not byte route) return true;
+            if (packet[0] != 0x05) return true;
+            return RawHidOutput.SetFeature(devicePath, Ds4UsbAudio.BuildRouteReport(route), stampSonyBtCrc: false);
         }
 
         /// <summary>The DS5 audio_flags2 byte (speaker pre-gain in bits 0-2,

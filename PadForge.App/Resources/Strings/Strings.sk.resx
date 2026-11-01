@@ -2951,7 +2951,6 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Resetovať limit tónov</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Súbežne kopíruje všetko, čo prehráva predvolený systémový výstup, do vstavaného reproduktora tohto ovládača. Funguje cez USB aj Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Vybraté zariadenie nemá vstavaný reproduktor. Zvuky makier pre tento ovládač sa prehrávajú na predvolenom systémovom výstupe.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>Cez USB tento ovládač prehráva zvuk len cez konektor slúchadiel. Kým nie je nič zapojené, zvuky makier ho preskakujú a prehrávajú sa na predvolenom systémovom výstupe alebo na inom zariadení priradenom k tomuto ovládaču.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Resetovať výstup zvuku</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Testovacia sada DualSense v prehliadači od autora Xuezhou Dai (daidr): referencia pre rámcovanie CRC v hláseniach funkcií Sony a pre testovacie príkazy firmvéru, ktoré PadForge preposiela z virtuálnych do fyzických ovládačov. MIT.</value></data>

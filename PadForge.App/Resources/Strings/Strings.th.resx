@@ -2951,7 +2951,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>รีเซ็ตขีดจำกัดโทน</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>คัดลอกทุกอย่างที่เอาต์พุตเริ่มต้นของระบบเล่นไปยังลำโพงในตัวของคอนโทรลเลอร์นี้แบบขนานกัน ใช้ได้ทั้งผ่าน USB และ Bluetooth</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>อุปกรณ์ที่เลือกไม่มีลำโพงในตัว เสียงจากแมโครของเกมแพดนี้จะเล่นบนเอาต์พุตเริ่มต้นของระบบ</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>เมื่อเชื่อมต่อผ่าน USB คอนโทรลเลอร์นี้จะเล่นเสียงผ่านแจ็กหูฟังเท่านั้น ขณะที่ไม่มีอะไรเสียบอยู่ เสียงจากแมโครจะข้ามคอนโทรลเลอร์นี้ไปเล่นบนเอาต์พุตเริ่มต้นของระบบ หรือบนคอนโทรลเลอร์อื่นของเกมแพดนี้</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>รีเซ็ตเอาต์พุตเสียง</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>ชุดทดสอบ DualSense บนเบราว์เซอร์โดย Xuezhou Dai (daidr): ใช้อ้างอิงการจัดเฟรม CRC ของ feature report ของ Sony และคำสั่งทดสอบเฟิร์มแวร์ที่ PadForge ส่งต่อจากเกมแพดเสมือนไปยังเกมแพดจริง สัญญาอนุญาต MIT</value></data>

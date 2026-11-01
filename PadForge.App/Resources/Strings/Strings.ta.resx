@@ -2951,7 +2951,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>தொனி வரம்பை மீட்டமை</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>கணினியின் இயல்புநிலை வெளியீடு இயக்கும் எதையும், அதே நேரத்தில் இந்தக் கட்டுப்படுத்தியின் உள்ளமைந்த ஸ்பீக்கருக்கும் நகலெடுக்கும். USB மற்றும் Bluetooth வழியாக வேலை செய்யும்.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>தேர்ந்தெடுத்த சாதனத்தில் உள்ளமைந்த ஸ்பீக்கர் இல்லை. இந்தப் பேடுக்கான மேக்ரோ ஒலிகள் கணினியின் இயல்புநிலை வெளியீட்டில் ஒலிக்கும்.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>USB வழியாக இந்தக் கட்டுப்படுத்தி ஒலியை அதன் ஹெட்ஃபோன் ஜாக் வழியாக மட்டுமே இயக்கும். எதுவும் செருகப்படாதபோது, மேக்ரோ ஒலிகள் இதைத் தவிர்த்து, கணினியின் இயல்புநிலை வெளியீட்டில் அல்லது இந்தப் பேடில் உள்ள மற்றொரு கட்டுப்படுத்தியில் ஒலிக்கும்.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>ஒலி வெளியீட்டை மீட்டமை</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) உருவாக்கிய, உலாவியில் இயங்கும் DualSense சோதனைத் தொகுப்பு: PadForge மெய்நிகர் பேடுகளிலிருந்து இயற்பியல் பேடுகளுக்கு அனுப்பும் Sony ஃபீச்சர்-ரிப்போர்ட் CRC ஃப்ரேமிங் மற்றும் நிலைபொருள் சோதனைக் கட்டளைகளுக்கான மேற்கோள். MIT.</value></data>

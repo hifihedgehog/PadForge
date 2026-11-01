@@ -2951,7 +2951,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>టోన్ పరిమితి రీసెట్ చేయి</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>సిస్టమ్ డిఫాల్ట్ అవుట్పుట్ ప్లే చేసే ప్రతిదాన్నీ ఈ కంట్రోలర్ అంతర్నిర్మిత స్పీకర్కు సమాంతరంగా కాపీ చేస్తుంది. USB, బ్లూటూత్ రెండింటిలో పనిచేస్తుంది.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>ఎంచుకున్న పరికరంలో అంతర్నిర్మిత స్పీకర్ లేదు. ఈ ప్యాడ్ మాక్రో శబ్దాలు సిస్టమ్ డిఫాల్ట్ అవుట్పుట్లో ప్లే అవుతాయి.</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>USB ద్వారా ఈ కంట్రోలర్ శబ్దాన్ని దాని హెడ్ఫోన్ జాక్ ద్వారా మాత్రమే ప్లే చేస్తుంది. జాక్‌లో ఏదీ ప్లగ్ చేయనప్పుడు, మాక్రో శబ్దాలు ఈ కంట్రోలర్‌ను దాటవేసి సిస్టమ్ డిఫాల్ట్ అవుట్పుట్లో లేదా ఈ ప్యాడ్‌కు కేటాయించిన మరొక కంట్రోలర్లో ప్లే అవుతాయి.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>సౌండ్ అవుట్పుట్ రీసెట్ చేయి</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) రూపొందించిన బ్రౌజర్ DualSense పరీక్ష సూట్: PadForge వర్చువల్ ప్యాడ్ల నుండి భౌతిక ప్యాడ్లకు ఫార్వర్డ్ చేసే Sony ఫీచర్-రిపోర్ట్ CRC ఫ్రేమింగ్, ఫర్మ్వేర్ టెస్ట్ కమాండ్లకు రెఫరెన్స్. MIT.</value></data>

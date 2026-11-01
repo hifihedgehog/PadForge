@@ -187,26 +187,31 @@ public sealed class EffectDeliveryTests(ITestOutputHelper output)
     }
 
     // A frame captured before a re-arm, or before a newer frame's commit,
-    // lands late and must not undo either.
+    // lands late and must not undo either. A DualShock 4's USB route (#546)
+    // follows the same rules, and a frame with no route keeps the last one.
     [Fact] public void ALateCommitCannotUndoAReArmOrANewerCommit()
     {
         var dispatcher=(UserEffectsDispatcher)System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(typeof(UserEffectsDispatcher));
-        foreach(var f in new[]{"_audioPrevGate","_audioCommitSeq","_prevHeadphoneVolume","_prevAudioOutputPath","_prevDs4MicArmed"})
+        foreach(var f in new[]{"_audioPrevGate","_audioCommitSeq","_prevHeadphoneVolume","_prevAudioOutputPath","_prevDs4MicArmed","_prevDs4UsbRoute"})
         {
             var field=typeof(UserEffectsDispatcher).GetField(f,Private)!;
             field.SetValue(dispatcher,Activator.CreateInstance(field.FieldType));
         }
         var volumes=(Dictionary<Guid,int>)typeof(UserEffectsDispatcher).GetField("_prevHeadphoneVolume",Private)!.GetValue(dispatcher)!;
+        var routes=(Dictionary<Guid,int>)typeof(UserEffectsDispatcher).GetField("_prevDs4UsbRoute",Private)!.GetValue(dispatcher)!;
         var commit=typeof(UserEffectsDispatcher).GetMethod("CommitDeliveredAudio",Private)!;
         var rearm=typeof(UserEffectsDispatcher).GetMethod("RearmAudioAsserts",Private)!;
         long now=(long)typeof(UserEffectsDispatcher).GetField("s_dispatchSeq",Static)!.GetValue(null)!;
         var id=Guid.NewGuid();
-        commit.Invoke(dispatcher,[id,now-3,(50,1,false)]);
-        commit.Invoke(dispatcher,[id,now-5,(20,1,false)]);
-        Assert.Equal(50,volumes[id]);
+        commit.Invoke(dispatcher,[id,now-4,(50,1,false,3)]);
+        commit.Invoke(dispatcher,[id,now-6,(20,1,false,0)]);
+        Assert.Equal((50,3),(volumes[id],routes[id]));
+        commit.Invoke(dispatcher,[id,now-3,(50,1,false,-1)]);
+        Assert.Equal(3,routes[id]);
         rearm.Invoke(dispatcher,[id]);
-        commit.Invoke(dispatcher,[id,now-1,(20,1,false)]);
+        commit.Invoke(dispatcher,[id,now-1,(20,1,false,0)]);
         Assert.False(volumes.ContainsKey(id));
+        Assert.False(routes.ContainsKey(id));
     }
 
     [Theory] [InlineData("unassign")] [InlineData("offline")] [InlineData("owner")] [InlineData("dispose")]

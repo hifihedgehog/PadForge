@@ -22,8 +22,10 @@ namespace PadForge.Common.Input
     /// triggers, no player-indicator row and no mic LED. Its Bluetooth audio rides the
     /// audio lane's own reports, and this packet carries the audio mode in
     /// byte 2 plus the headphone and microphone levels when they change
-    /// (#528). Two output report shapes (both expressed via a single
-    /// dictionary):</para>
+    /// (#528). On USB it carries the speaker level while the pad's route
+    /// plays the speaker, and the route itself rides beside it as feature
+    /// report 0xE0 (#546, <see cref="Ds4UsbAudio"/>). Two output report
+    /// shapes (both expressed via a single dictionary):</para>
     ///
     /// <list type="bullet">
     /// <item><b>USB Report 0x05</b> — 32 bytes. Encoder consumes
@@ -104,7 +106,8 @@ namespace PadForge.Common.Input
             byte speakerVolume = Ds4BtAudio.VolumeMax,
             bool assertVolumes = false,
             byte audioMode = Ds4BtAudio.ModeSpeaker,
-            bool assertMicGain = false)
+            bool assertMicGain = false,
+            int usbRoute = -1)
         {
             // Per-subsystem mirroring: when a host has recently written
             // rumble or lightbar to our virtual, mirror their bytes
@@ -161,9 +164,17 @@ namespace PadForge.Common.Input
             if (assertMicGain)
                 validFlag0 |= Ds4BtAudio.FlagMicrophone;
 
+            // USB (#546): the route goes out as feature report 0xE0 beside
+            // this packet, and a route with the speaker turns its volume on
+            // here, with byte 23 the writer places after encoding. The
+            // headphone bytes stay off: Windows keeps the USB headset's level.
+            bool usbSpeaker = usbRoute >= 0 && Ds4UsbAudio.RouteHasSpeaker(usbRoute);
+            if (usbSpeaker)
+                validFlag0 |= Ds4BtAudio.FlagSpeaker;
+
             // No user-configurable flash for now. Leave on/off zeroed so
             // the firmware holds the chosen color without blinking.
-            return new Dictionary<string, object>
+            var fields = new Dictionary<string, object>
             {
                 { "btTag",       BtFramingTag      },  // BT only
                 { "btReserved",  audioMode         },  // BT only
@@ -177,8 +188,13 @@ namespace PadForge.Common.Input
                 { "headphoneVolumeLeft",  headphoneVolume },
                 { "headphoneVolumeRight", headphoneVolume },
                 { "micVolume",   Ds4BtAudio.MicGainMax },
-                { "speakerVolume", speakerVolume },
+                { "speakerVolume", usbSpeaker ? Ds4BtAudio.VolumeMax : speakerVolume },
             };
+            if (usbRoute >= 0)
+                fields["ds4UsbRoute"] = (byte)usbRoute;
+            if (usbSpeaker)
+                fields["ds4UsbAudioConfig"] = Ds4UsbAudio.SpeakerAudioConfig;
+            return fields;
         }
 
         // ────────────────────────────────────────────────

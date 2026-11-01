@@ -2423,7 +2423,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>トーン上限をリセット</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>システム既定の出力で再生中の音声を、このコントローラーの内蔵スピーカーにも並行して出力します。USBとBluetoothの両方で動作します。</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>選択中のデバイスには内蔵スピーカーがありません。このパッドのマクロサウンドはシステム既定の出力で再生されます。</value></data>
-  <data name="Pad_Audio_HeadsetOnly" xml:space="preserve"><value>USB接続では、このコントローラーはヘッドホンジャックからのみ音を出力します。ジャックに何も接続されていない間、マクロサウンドはこのコントローラーをスキップし、システム既定の出力またはこのパッドのもう1つのコントローラーで再生されます。</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
   <data name="About_QDollarDesc" xml:space="preserve"><value>タッチパッドの形状テンプレートマッチャー（円 / 四角 / 三角 / Z / チェックマーク、およびカスタム記録ジェスチャー）。Magrofuoco、Vatavu、Anthony、WobbrockによるJavaScriptリファレンスのC#再実装。BSD 3-Clause。</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>

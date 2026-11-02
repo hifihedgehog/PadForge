@@ -15,9 +15,12 @@ namespace PadForge.Common.Input
     /// Information service (GATT service 0x180A, Firmware Revision String
     /// 0x2A26, UTF-8), for a device whose SDL driver reports no firmware
     /// version. An Xbox pad on Bluetooth reaches SDL through XInput, which
-    /// builds its joystick from the vendor id, product id and product version
-    /// alone (SDL_xinputjoystick.c:187), so the Device Dossier showed no
-    /// FIRMWARE line for it. A Series X pad on Bluetooth LE answers
+    /// has no firmware query (its joystick carries the vendor id, product
+    /// id and product version, SDL_xinputjoystick.c:188). Since
+    /// hifihedgehog/SDL#44 SDL's XInput driver reads the version from
+    /// GameInput's device information, and it still reports 0 for a pad
+    /// GameInput does not list or cannot match to the slot. This service
+    /// covers that case. A Series X pad on Bluetooth LE answers
     /// "5.23.6.0", read on the reporting hardware, where its product version
     /// is 0x0523. Windows keeps a Bluetooth device's address, model and
     /// product version as device properties but not its firmware revision

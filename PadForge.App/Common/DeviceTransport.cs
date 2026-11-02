@@ -73,7 +73,7 @@ namespace PadForge.Common
                     return true;
 
                 // Xbox pads over Bluetooth surface as "XInput#N"
-                // (SDL_xinputjoystick.c:186). The path carries no HID GUID
+                // (SDL_xinputjoystick.c:187). The path carries no HID GUID
                 // and no BTHENUM, and an SDL binding would not help either:
                 // the XInput driver never assigns joystick->connection_state
                 // (zero occurrences in SDL_xinputjoystick.c), so

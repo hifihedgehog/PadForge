@@ -15857,8 +15857,9 @@ namespace PadForge.Services
         /// open SDL device holds now, empty for a device SDL does not open.
         /// When SDL holds none, an online Bluetooth LE device shows the
         /// revision its Device Information service reports
-        /// (BluetoothFirmwareService), which is how an Xbox pad SDL reads
-        /// through XInput gets one. The row fill and the 5 s battery tick both
+        /// (BluetoothFirmwareService), which is how an Xbox pad on Bluetooth LE
+        /// gets one when SDL's XInput driver finds no GameInput version for
+        /// it (hifihedgehog/SDL#44). The row fill and the 5 s battery tick both
         /// write it, so a version learned after open reaches the dossier.</summary>
         internal static string DossierFirmware(UserDevice ud)
         {

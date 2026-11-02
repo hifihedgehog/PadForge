@@ -106,7 +106,7 @@ namespace PadForge.Tests
         [InlineData("XInput#15", 15u)]
         public void XInputSlot_ParsesSdlBackendPath(string path, uint expected)
         {
-            // SDL_xinputjoystick.c:186: path = "XInput#%u" with the XInput
+            // SDL_xinputjoystick.c:187: path = "XInput#%u" with the XInput
             // user index. SDL's own XUSER_MAX_COUNT is 16 (SDL_xinput.h:45)
             // and the bundled OpenXInput fork is built to match, so the full
             // range must parse. The user's Xbox Series pad persists as

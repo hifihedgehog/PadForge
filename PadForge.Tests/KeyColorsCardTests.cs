@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Interop;
 using PadForge.Common.Input;
 using PadForge.Common.Input.Peripherals;
+using PadForge.Resources.Strings;
 using PadForge.ViewModels;
 using PadForge.Views;
 using Xunit;
@@ -98,6 +99,32 @@ namespace PadForge.Tests
             card.ClearLayer();
             Assert.Equal("Base>k04=FF0000,k29=00FF00", cfg.KeyLighting);
             Assert.Equal(KeyBackgroundRule.BaseLayer, card.BackgroundRule);
+        }
+
+        [Fact]
+        public void TheOtherLightsList_StaysOneListWhileItsLabelsHold_AndAnEmptySelectionChangesNothing()
+        {
+            // A ComboBox handed a new list on every refresh dropped its
+            // selection and wrote the empty selection back: a blank box with
+            // WPF's red error border, which stayed put while the card
+            // scrolled (owner, 2026-11-02).
+            var (card, cfg) = Attached("", Layer("Base", "Normal"), Layer("Shift1", "Fn"));
+            var first = card.BackgroundChoices;
+            Assert.Same(first, card.BackgroundChoices);
+            Assert.Equal(KeyBackgroundRule.Same, card.BackgroundRule);
+            Assert.Equal(Strings.Instance.Pad_Lighting_KeyColors_Others_Mode,
+                card.BackgroundChoices.Single(c => c.Rule == KeyBackgroundRule.Same).Label);
+
+            card.BackgroundRule = null;
+            Assert.Equal(string.Empty, cfg.KeyLighting);
+            Assert.Equal(KeyBackgroundRule.Same, card.BackgroundRule);
+
+            // Another layer has other choices, so a new list, held in turn.
+            card.SelectedLayerMask = "Shift1";
+            var shift = card.BackgroundChoices;
+            Assert.NotSame(first, shift);
+            Assert.Same(shift, card.BackgroundChoices);
+            Assert.Equal(KeyBackgroundRule.BaseLayer, shift[0].Rule);
         }
 
         [Fact]

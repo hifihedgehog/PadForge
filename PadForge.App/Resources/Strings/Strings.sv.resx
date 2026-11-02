@@ -1098,7 +1098,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Övriga lampor</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Vad lampor utan egen färg visar på det här lagret.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Färger från lagret {0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Belysningsläge</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Samma som Ljusfält</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Av</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>En färg</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Tryck på tangenter för att markera deras lampor, och tryck på en markerad tangent igen för att avmarkera den. Ctrl+Tab går vidare.</value></data>

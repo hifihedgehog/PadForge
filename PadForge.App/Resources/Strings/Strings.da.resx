@@ -1098,7 +1098,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Øvrige lys</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Hvad lys uden egen farve viser på dette lag.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Farver fra laget {0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Belysningstilstand</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Som Lysbjælke</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Fra</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Én farve</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Tryk på taster for at vælge deres lys, og tryk på en valgt tast igen for at fjerne valget. Ctrl+Tab går videre.</value></data>

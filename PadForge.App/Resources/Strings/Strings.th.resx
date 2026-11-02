@@ -1098,7 +1098,7 @@
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>ไฟอื่น</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>สิ่งที่ไฟซึ่งไม่มีสีของตัวเองจะแสดงในเลเยอร์นี้</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>สีของเลเยอร์ {0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>โหมดแสงไฟ</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>เหมือนแถบไฟ</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>ปิด</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>สีเดียว</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>กดแป้นเพื่อเลือกไฟของแป้นนั้น และกดแป้นที่เลือกไว้อีกครั้งเพื่อยกเลิก กด Ctrl+Tab เพื่อไปต่อ</value></data>

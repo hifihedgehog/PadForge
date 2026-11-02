@@ -1912,7 +1912,7 @@
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>其他灯光</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>在此层上没有自己颜色的灯光显示的内容。</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>{0} 层颜色</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>灯光模式</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>与灯条相同</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>关闭</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>单一颜色</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>按下按键以选择其灯光，再次按下已选按键可取消选择。按 Ctrl+Tab 离开。</value></data>

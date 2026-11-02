@@ -1098,7 +1098,7 @@
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Іншыя агні</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Што паказваюць агні без уласнага колеру на гэтым слоі.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Колеры слоя «{0}»</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Рэжым падсветкі</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Як Светлавая панэль</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Выключана</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Адзін колер</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Націскайце клавішы, каб выбраць іх агні, і націсніце выбраную клавішу яшчэ раз, каб зняць выбар. Ctrl+Tab ідзе далей.</value></data>

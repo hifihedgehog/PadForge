@@ -1098,7 +1098,7 @@
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>ఇతర లైట్లు</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>సొంత రంగు లేని లైట్లు ఈ లేయర్‌లో ఏమి చూపాలి.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>{0} లేయర్ రంగులు</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>లైటింగ్ మోడ్</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>లైట్ బార్ వలె</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>ఆఫ్</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>ఒకే రంగు</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>కీలను నొక్కి వాటి లైట్లను ఎంచుకో, ఎంచుకున్న కీని మళ్లీ నొక్కితే అది తొలగిపోతుంది. Ctrl+Tab తో ముందుకు వెళ్లవచ్చు.</value></data>

@@ -1098,7 +1098,7 @@
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>অন্যান্য লাইট</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>নিজস্ব রং না থাকা লাইট এই লেয়ারে কী দেখাবে।</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>{0} লেয়ারের রং</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>লাইটিং মোড</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>লাইটবারের মতো</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>বন্ধ</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>একটি রং</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>লাইট নির্বাচন করতে কী চাপুন, নির্বাচিত কী আবার চাপলে তা বাদ যাবে। Ctrl+Tab চাপলে পরের ধাপে যাবে।</value></data>

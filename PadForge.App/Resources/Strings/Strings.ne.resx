@@ -1098,7 +1098,7 @@
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>अन्य बत्तीहरू</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>यस तहमा आफ्नै रङ नभएका बत्तीहरूले के देखाउँछन्।</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>{0} तहका रङहरू</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>लाइटिङ मोड</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>लाइटबार जस्तै</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>बन्द</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>एउटै रङ</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>बत्तीहरू छान्न कुञ्जीहरू थिच्नुहोस्, र छानिएको कुञ्जी हटाउन फेरि थिच्नुहोस्। Ctrl+Tab ले अगाडि बढाउँछ।</value></data>

@@ -1098,7 +1098,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Önnur ljós</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Hvað ljós án eigin litar sýna á þessu lagi.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Litir lagsins {0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Lýsingarhamur</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Eins og Ljósrönd</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Slökkt</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Einn litur</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Ýttu á takka til að velja ljós þeirra og ýttu aftur á valinn takka til að hreinsa hann. Ctrl+Tab færir áfram.</value></data>

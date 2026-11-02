@@ -1098,7 +1098,7 @@
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>چراغ‌های دیگر</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>آنچه چراغ‌های بدون رنگ اختصاصی در این لایه نشان می‌دهند.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>رنگ‌های لایه {0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>حالت نورپردازی</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>مثل نوار نوری</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>خاموش</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>یک رنگ</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>برای انتخاب چراغ هر کلید، آن را فشار دهید و برای پاک کردن، کلید انتخاب‌شده را دوباره فشار دهید. Ctrl+Tab به مرحله بعد می‌رود.</value></data>

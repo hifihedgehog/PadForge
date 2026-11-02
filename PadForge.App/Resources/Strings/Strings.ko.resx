@@ -1913,7 +1913,7 @@
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>다른 조명</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>이 레이어에서 고유한 색상이 없는 조명이 표시할 내용입니다.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>{0} 레이어 색상</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>조명 모드</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>라이트바와 동일</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>끔</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>단일 색상</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>키를 눌러 해당 조명을 선택하고, 선택된 키를 다시 누르면 해제됩니다. Ctrl+Tab으로 다음으로 이동합니다.</value></data>

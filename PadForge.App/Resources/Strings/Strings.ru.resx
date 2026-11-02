@@ -1098,7 +1098,7 @@
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Остальная подсветка</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Что показывает подсветка, у которой нет своего цвета на этом слое.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Цвета слоя {0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Режим подсветки</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Как у световой панели</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Выкл.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Один цвет</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Нажимайте клавиши, чтобы выбрать их подсветку. Повторное нажатие выбранной клавиши снимает выбор. Ctrl+Tab переходит дальше.</value></data>

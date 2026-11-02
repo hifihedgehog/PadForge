@@ -1098,7 +1098,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Ostatní světla</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Co zobrazují světla bez vlastní barvy na této vrstvě.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Barvy vrstvy {0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Režim osvětlení</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Stejné jako Světelný panel</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Vypnuto</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Jedna barva</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Stisknutím kláves vyberete jejich světla, opětovným stisknutím vybrané klávesy výběr zrušíte. Ctrl+Tab přejde dál.</value></data>

@@ -1098,7 +1098,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Pozostałe diody</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Co pokazują na tej warstwie diody bez własnego koloru.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Kolory z warstwy: {0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Tryb podświetlenia</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Jak pasek świetlny</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Wyłączone</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Jeden kolor</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Naciskaj klawisze, aby zaznaczyć ich diody, a zaznaczony klawisz naciśnij ponownie, aby go odznaczyć. Ctrl+Tab przechodzi dalej.</value></data>

@@ -1098,7 +1098,7 @@
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Остале лампице</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Шта приказују лампице без сопствене боје на овом слоју.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Боје слоја {0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Режим осветљења</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Исто као светлосна трака</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Искључено</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Једна боја</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Притискајте тастере да изаберете њихове лампице, а изабрани тастер поново притисните да га уклоните. Ctrl+Tab иде даље.</value></data>

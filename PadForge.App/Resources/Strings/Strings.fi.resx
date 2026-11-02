@@ -1098,7 +1098,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Muut valot</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Mitä ilman omaa väriä olevat valot näyttävät tällä kerroksella.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Kerroksen {0} värit</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Valaistustila</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Sama kuin valopalkki</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Pois</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Yksi väri</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Valitse valot painamalla näppäimiä ja tyhjennä valittu painamalla sitä uudelleen. Ctrl+Tab siirtää eteenpäin.</value></data>

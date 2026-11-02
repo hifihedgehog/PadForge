@@ -1913,7 +1913,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Otras luces</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Lo que muestran en esta capa las luces sin color propio.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Colores de la capa {0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Modo de iluminación</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Igual que la barra de luz</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Desactivado</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Un solo color</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Pulsa teclas para seleccionar sus luces y vuelve a pulsar una tecla seleccionada para quitarla. Ctrl+Tab avanza.</value></data>

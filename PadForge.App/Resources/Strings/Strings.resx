@@ -1098,7 +1098,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Other Lights</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>What lights without their own color show on this layer.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>{0} Layer Colors</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Lighting Mode</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Same as Lightbar</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Off</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>One Color</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Press keys to select their lights, and press a selected key again to clear it. Ctrl+Tab moves on.</value></data>

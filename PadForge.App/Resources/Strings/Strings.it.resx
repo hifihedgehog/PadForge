@@ -1933,7 +1933,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Altre luci</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Cosa mostrano su questo livello le luci senza un colore proprio.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Colori del livello {0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Modalità di illuminazione</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Come la barra luminosa</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Disattivato</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Un colore</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Premi i tasti per selezionarne le luci e premi di nuovo un tasto selezionato per deselezionarlo. Ctrl+Tab passa oltre.</value></data>

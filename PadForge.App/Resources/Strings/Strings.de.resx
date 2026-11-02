@@ -1913,7 +1913,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Andere Lichter</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Was Lichter ohne eigene Farbe auf dieser Ebene anzeigen.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Farben der Ebene {0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Beleuchtungsmodus</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Wie Lightbar</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Aus</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Eine Farbe</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Tasten drücken, um ihre Lichter auszuwählen, und eine ausgewählte Taste erneut drücken, um sie abzuwählen. Mit Ctrl+Tab geht es weiter.</value></data>

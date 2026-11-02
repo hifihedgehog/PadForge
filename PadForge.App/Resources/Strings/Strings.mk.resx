@@ -1098,7 +1098,7 @@
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Останати светла</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Што прикажуваат светлата без своја боја на овој слој.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Бои на слојот {0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Режим на осветлување</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Исто како Светлосна лента</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Исклучено</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Една боја</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Притиснете копчиња за да ги изберете нивните светла, а притиснете избрано копче повторно за да го отстраните изборот. Ctrl+Tab продолжува понатаму.</value></data>

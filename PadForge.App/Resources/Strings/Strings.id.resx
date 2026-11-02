@@ -1098,7 +1098,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Lampu lainnya</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Tampilan lampu yang tidak punya warna sendiri pada lapisan ini.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Warna lapisan {0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Mode pencahayaan</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Sama dengan Bilah lampu</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Nonaktif</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Satu warna</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Tekan tombol untuk memilih lampunya, dan tekan lagi tombol yang terpilih untuk menghapus pilihan. Ctrl+Tab untuk melanjutkan.</value></data>

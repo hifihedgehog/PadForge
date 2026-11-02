@@ -1098,7 +1098,7 @@
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Diğer ışıklar</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Kendi rengi olmayan ışıkların bu katmanda ne göstereceği.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>{0} katmanı renkleri</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Aydınlatma modu</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Işık çubuğuyla aynı</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Kapalı</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Tek renk</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Işıklarını seçmek için tuşlara basın, seçili bir tuşa yeniden basarak seçimi kaldırın. Sonraki öğeye geçmek için Ctrl+Tab kullanın.</value></data>

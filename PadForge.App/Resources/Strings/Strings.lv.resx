@@ -1098,7 +1098,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Pārējās gaismas</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Ko rāda gaismas, kurām šajā slānī nav savas krāsas.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Slāņa “{0}” krāsas</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Apgaismojuma režīms</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Tāpat kā gaismas joslai</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Izslēgts</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Viena krāsa</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Nospiediet taustiņus, lai atlasītu to gaismas, un nospiediet atlasītu taustiņu vēlreiz, lai atlasi noņemtu. Ctrl+Tab pāriet tālāk.</value></data>

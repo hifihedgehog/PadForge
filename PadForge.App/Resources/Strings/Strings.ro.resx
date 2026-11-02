@@ -1098,7 +1098,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Alte lumini</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Ce afișează pe acest strat luminile fără culoare proprie.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Culorile stratului {0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Modul de iluminare</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>La fel ca Bară luminoasă</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Dezactivat</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>O singură culoare</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Apasă taste pentru a selecta luminile lor și apasă din nou o tastă selectată pentru a o deselecta. Ctrl+Tab trece mai departe.</value></data>

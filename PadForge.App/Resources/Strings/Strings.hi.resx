@@ -1098,7 +1098,7 @@
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>अन्य लाइट</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>जिन लाइट का अपना रंग नहीं है, वे इस लेयर पर क्या दिखाएँ।</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>{0} लेयर के रंग</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>लाइटिंग मोड</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>लाइटबार जैसा</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>बंद</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>एक रंग</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>लाइट चुनने के लिए कुंजियाँ दबाएँ, और चुनी हुई कुंजी को हटाने के लिए उसे फिर दबाएँ। Ctrl+Tab से आगे बढ़ें।</value></data>

@@ -1913,7 +1913,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Autres éclairages</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Ce qu’affichent, sur cette couche, les éclairages sans couleur propre.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Couleurs de la couche {0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Mode d’éclairage</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Comme la barre lumineuse</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Désactivé</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Une seule couleur</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Appuyez sur des touches pour sélectionner leurs éclairages, puis rappuyez sur une touche sélectionnée pour la désélectionner. Ctrl+Tab permet de continuer.</value></data>

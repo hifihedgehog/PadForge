@@ -1098,7 +1098,7 @@
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Άλλα φώτα</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Τι εμφανίζουν σε αυτό το επίπεδο τα φώτα που δεν έχουν δικό τους χρώμα.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Χρώματα επιπέδου {0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Λειτουργία φωτισμού</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Όπως η Φωτεινή μπάρα</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Σβηστό</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Ένα χρώμα</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Πατήστε πλήκτρα για να επιλέξετε τα φώτα τους και πατήστε ξανά ένα επιλεγμένο πλήκτρο για να το καταργήσετε. Το Ctrl+Tab προχωρά παρακάτω.</value></data>

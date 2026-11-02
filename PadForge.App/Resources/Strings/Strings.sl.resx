@@ -1098,7 +1098,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Druge lučke</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Kaj kažejo lučke brez lastne barve na tej plasti.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Barve plasti {0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Način osvetlitve</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Enako kot svetlobni trak</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Izklopljeno</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Ena barva</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Pritiskaj tipke, da izbereš njihove lučke, in ponovno pritisni izbrano tipko, da jo počistiš. Ctrl+Tab gre naprej.</value></data>

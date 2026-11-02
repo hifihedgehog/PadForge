@@ -1913,7 +1913,7 @@
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>その他のライト</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>このレイヤーで個別のカラーがないライトの表示です。</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>{0}レイヤーのカラー</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>ライティングモード</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>ライトバーと同じ</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>オフ</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>単色</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>キーを押すとそのライトを選択し、選択済みのキーをもう一度押すと解除します。Ctrl+Tab で次へ移動します。</value></data>

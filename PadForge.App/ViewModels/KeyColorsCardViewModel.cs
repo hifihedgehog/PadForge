@@ -157,9 +157,18 @@ namespace PadForge.ViewModels
         /// starts as.</summary>
         internal KeyLightingLayer Layer => Settings.LayerOrDefault(_selectedLayerMask);
 
+        private KeyBackgroundChoice[] _backgroundChoices;
+
         /// <summary>The Other Lights choices of the layer being colored. A
         /// shift layer can show the Base layer, and the Base layer has
-        /// none to show.</summary>
+        /// none to show.
+        ///
+        /// <para>One list for as long as its labels hold. A ComboBox handed
+        /// a new list drops its selection and writes the empty selection
+        /// back, and a list made on every read did that on every refresh:
+        /// the box went blank, with WPF's red error border drawn on the
+        /// window's adorner layer, where it stayed put while the card
+        /// scrolled.</para></summary>
         public IReadOnlyList<KeyBackgroundChoice> BackgroundChoices
         {
             get
@@ -175,20 +184,26 @@ namespace PadForge.ViewModels
                 choices.Add(new KeyBackgroundChoice { Rule = KeyBackgroundRule.Same, Label = s.Pad_Lighting_KeyColors_Others_Mode });
                 choices.Add(new KeyBackgroundChoice { Rule = KeyBackgroundRule.Off, Label = s.Pad_Lighting_KeyColors_Others_Off });
                 choices.Add(new KeyBackgroundChoice { Rule = KeyBackgroundRule.Color, Label = s.Pad_Lighting_KeyColors_Others_Color });
-                return choices;
+                var held = _backgroundChoices;
+                if (held != null && held.Length == choices.Count
+                    && held.Zip(choices).All(pair => pair.First.Rule == pair.Second.Rule && pair.First.Label == pair.Second.Label))
+                    return held;
+                return _backgroundChoices = choices.ToArray();
             }
         }
 
-        /// <summary>What the lights the layer gives no color show.</summary>
-        public KeyBackgroundRule BackgroundRule
+        /// <summary>What the lights the layer gives no color show. Null
+        /// from the ComboBox while it has no selection, which changes
+        /// nothing.</summary>
+        public KeyBackgroundRule? BackgroundRule
         {
             get => Layer.Background;
             set
             {
-                if (!Enum.IsDefined(value) || (value == KeyBackgroundRule.BaseLayer && IsBaseLayer)
-                    || value == BackgroundRule)
+                if (value is not KeyBackgroundRule rule || !Enum.IsDefined(rule)
+                    || (rule == KeyBackgroundRule.BaseLayer && IsBaseLayer) || rule == Layer.Background)
                     return;
-                Write(Copy(Layer, background: value));
+                Write(Copy(Layer, background: rule));
             }
         }
 
@@ -306,6 +321,9 @@ namespace PadForge.ViewModels
             if (!deviceChanged && !layersChanged) return;
             if (deviceChanged) _selection.Clear();
             OnPropertyChanged(string.Empty);
+            // Once more for the Other Lights rule, now that its ComboBox
+            // holds the list the refresh above may have replaced.
+            OnPropertyChanged(nameof(BackgroundRule));
             LightsChanged?.Invoke();
         }
 
@@ -325,7 +343,13 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(SelectedLayerMask));
                 RaiseLayer();
             }
-            else OnPropertyChanged(nameof(BackgroundChoices));
+            else
+            {
+                // The rule after its list, so the ComboBox finds the
+                // selection in the list it holds by then.
+                OnPropertyChanged(nameof(BackgroundChoices));
+                OnPropertyChanged(nameof(BackgroundRule));
+            }
         }
 
         /// <summary>True when the layer list or the layer being colored

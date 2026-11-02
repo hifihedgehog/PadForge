@@ -1098,7 +1098,7 @@
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>دیگر لائٹس</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>جن لائٹس کا اپنا رنگ نہیں، وہ اس لیئر پر کیا دکھائیں۔</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>{0} لیئر کے رنگ</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>لائٹنگ موڈ</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>لائٹ بار جیسا</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>آف</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>ایک رنگ</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>کیز دبا کر ان کی لائٹس منتخب کریں، اور منتخب کی کو دوبارہ دبا کر اسے ہٹائیں۔ Ctrl+Tab آگے بڑھاتا ہے۔</value></data>

@@ -1098,7 +1098,7 @@
   <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>மற்ற விளக்குகள்</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>இந்த அடுக்கில் சொந்த நிறம் இல்லாத விளக்குகள் எதைக் காட்டும்.</value></data>
   <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>{0} அடுக்கு நிறங்கள்</value></data>
-  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>ஒளியமைப்புப் பயன்முறை</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>லைட்பார் போலவே</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>ஆஃப்</value></data>
   <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>ஒரே நிறம்</value></data>
   <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>விசைகளை அழுத்தி அவற்றின் விளக்குகளைத் தேர்ந்தெடுக்கவும். தேர்ந்தெடுத்த விசையை மீண்டும் அழுத்தினால் தேர்வு நீங்கும். Ctrl+Tab அடுத்ததற்குச் செல்லும்.</value></data>

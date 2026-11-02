@@ -1,0 +1,132 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace PadForge.Common.Input.Peripherals
+{
+    /// <summary>
+    /// The light colors one controller asks of one device on top of its
+    /// background color (#557): keys by HID usage, groups of lights by name
+    /// (<see cref="LightGroups"/>), single lights by address, and, when set,
+    /// a background that replaces the claim's color. Colors are 0xRRGGBB.
+    ///
+    /// <para>Made whole and never changed, so a claim can carry one across
+    /// threads and a backend can compare two by content. Keys and groups
+    /// name nothing about a device, so one frame lights the W key on any
+    /// brand. A single light's address is the device's own, and only the
+    /// device it was set for has it.</para>
+    /// </summary>
+    internal sealed class KeyFrame : IEquatable<KeyFrame>
+    {
+        private static readonly IReadOnlyDictionary<ushort, int> NoKeys = new Dictionary<ushort, int>();
+        private static readonly IReadOnlyDictionary<string, int> NoGroups = new Dictionary<string, int>(StringComparer.Ordinal);
+        private static readonly IReadOnlyDictionary<int, int> NoLights = new Dictionary<int, int>();
+
+        /// <summary>No color on any light, and the claim's own background.</summary>
+        public static readonly KeyFrame Empty = new(null, null, null, null);
+
+        private readonly int _hash;
+
+        public IReadOnlyDictionary<ushort, int> Keys { get; }
+        public IReadOnlyDictionary<string, int> Groups { get; }
+        public IReadOnlyDictionary<int, int> Lights { get; }
+
+        /// <summary>The color every light without one of its own shows, or
+        /// null for the claim's color. 0 turns those lights off.</summary>
+        public int? Background { get; }
+
+        /// <summary>True when the frame changes nothing: no light color and
+        /// the claim's own background.</summary>
+        public bool IsEmpty => Keys.Count == 0 && Groups.Count == 0 && Lights.Count == 0 && Background == null;
+
+        public KeyFrame(IReadOnlyDictionary<ushort, int> keys, IReadOnlyDictionary<string, int> groups,
+            IReadOnlyDictionary<int, int> lights, int? background)
+        {
+            Keys = Copy(keys, NoKeys);
+            Groups = Copy(groups, NoGroups, StringComparer.Ordinal);
+            Lights = Copy(lights, NoLights);
+            Background = background.HasValue ? background.Value & 0xFFFFFF : null;
+            var hash = new HashCode();
+            foreach (var pair in Keys.OrderBy(p => p.Key)) { hash.Add(pair.Key); hash.Add(pair.Value); }
+            foreach (var pair in Groups.OrderBy(p => p.Key, StringComparer.Ordinal)) { hash.Add(pair.Key); hash.Add(pair.Value); }
+            foreach (var pair in Lights.OrderBy(p => p.Key)) { hash.Add(pair.Key); hash.Add(pair.Value); }
+            hash.Add(Background);
+            _hash = hash.ToHashCode();
+        }
+
+        private static IReadOnlyDictionary<TKey, int> Copy<TKey>(IReadOnlyDictionary<TKey, int> source,
+            IReadOnlyDictionary<TKey, int> none, IEqualityComparer<TKey> comparer = null)
+        {
+            if (source == null || source.Count == 0) return none;
+            var copy = new Dictionary<TKey, int>(source.Count, comparer);
+            foreach (var pair in source) copy[pair.Key] = pair.Value & 0xFFFFFF;
+            return copy;
+        }
+
+        public bool Equals(KeyFrame other)
+        {
+            if (ReferenceEquals(this, other)) return true;
+            if (other is null || other._hash != _hash || other.Background != Background) return false;
+            return Same(Keys, other.Keys) && Same(Groups, other.Groups) && Same(Lights, other.Lights);
+        }
+
+        private static bool Same<TKey>(IReadOnlyDictionary<TKey, int> a, IReadOnlyDictionary<TKey, int> b)
+        {
+            if (a.Count != b.Count) return false;
+            foreach (var pair in a)
+                if (!b.TryGetValue(pair.Key, out int value) || value != pair.Value) return false;
+            return true;
+        }
+
+        public override bool Equals(object obj) => obj is KeyFrame other && Equals(other);
+
+        public override int GetHashCode() => _hash;
+
+        /// <summary>Whether two frames would paint a device alike, with
+        /// null standing for <see cref="Empty"/>.</summary>
+        public static bool Same(KeyFrame a, KeyFrame b)
+            => (a ?? Empty).Equals(b ?? Empty);
+    }
+
+    /// <summary>Turns a unit's lights, its background color and a key frame
+    /// into one color per light (#557).</summary>
+    internal static class LightRenderer
+    {
+        /// <summary>
+        /// One 0xRRGGBB color for each light of <paramref name="map"/>, in
+        /// its order. The most specific color wins: the light's own, then
+        /// its key's, then its group's, then the background, which is the
+        /// frame's when it sets one and <paramref name="background"/>
+        /// otherwise. A key light whose key no source named takes the
+        /// background, as a key the frame does not name does.
+        /// </summary>
+        public static int[] Render(LightMap map, int background, KeyFrame frame)
+        {
+            var lights = map?.Lights ?? Array.Empty<LightInfo>();
+            var colors = new int[lights.Count];
+            frame ??= KeyFrame.Empty;
+            int fill = (frame.Background ?? background) & 0xFFFFFF;
+            for (int i = 0; i < lights.Count; i++)
+            {
+                var light = lights[i];
+                if (frame.Lights.TryGetValue(light.Address, out int color)
+                    || (light.Kind == LightKind.Key && light.Usage != 0 && frame.Keys.TryGetValue(light.Usage, out color))
+                    || (light.Group is { } group && frame.Groups.TryGetValue(group, out color)))
+                {
+                    colors[i] = color;
+                    continue;
+                }
+                colors[i] = fill;
+            }
+            return colors;
+        }
+
+        /// <summary>Whether two renders of one map paint the same.</summary>
+        public static bool Same(int[] a, int[] b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (a == null || b == null || a.Length != b.Length) return false;
+            return a.AsSpan().SequenceEqual(b);
+        }
+    }
+}

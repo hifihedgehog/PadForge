@@ -3040,13 +3040,20 @@ namespace PadForge.Services
             if (cfg == null || standIn == null) return;
             bool sourceSwitch = standIn.PeripheralLightingEnabled;
             var sourceHold = standIn.PeripheralClaimLevel;
+            string sourceLights = standIn.KeyLighting;
             standIn.PeripheralLightingEnabled = cfg.PeripheralLightingEnabled;
             standIn.PeripheralClaimLevel = cfg.PeripheralClaimLevel;
+            // #557: key and group colors carry over, since they name no
+            // device. A single light's color is set by the source device's
+            // own light number, which is another light on another model.
+            standIn.KeyLighting = PadForge.Common.Input.Peripherals.KeyLightingSettings.Parse(sourceLights)
+                .WithoutLights().Format();
             try { ApplyDeviceSlotConfigData(cfg, standIn); }
             finally
             {
                 standIn.PeripheralLightingEnabled = sourceSwitch;
                 standIn.PeripheralClaimLevel = sourceHold;
+                standIn.KeyLighting = sourceLights;
             }
         }
 
@@ -3452,6 +3459,8 @@ namespace PadForge.Services
                         cfg.PeripheralLightingEnabled = false;
                         cfg.PeripheralClaimLevel = cfgData.PeripheralClaimLevel;
                     }
+                    // #557: the device's light colors per shift layer.
+                    cfg.KeyLighting = cfgData.KeyLighting ?? string.Empty;
                     cfg.LightbarRainbowBrightness = cfgData.LightbarRainbowBrightness;
                     cfg.LightbarBatteryLowR  = cfgData.LightbarBatteryLowR;
                     cfg.LightbarBatteryLowG  = cfgData.LightbarBatteryLowG;
@@ -5296,6 +5305,7 @@ namespace PadForge.Services
                 LightbarColorCycleSmooth = cfg.LightbarColorCycleSmooth,
                 PeripheralLightingEnabled = cfg.PeripheralLightingEnabled,
                 PeripheralClaimLevel = cfg.PeripheralClaimLevel,
+                KeyLighting = cfg.KeyLighting,
                 LightbarRainbowBrightness = cfg.LightbarRainbowBrightness,
                 LightbarBatteryLowR  = cfg.LightbarBatteryLowR,
                 LightbarBatteryLowG  = cfg.LightbarBatteryLowG,

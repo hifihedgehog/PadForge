@@ -2315,8 +2315,54 @@ namespace PadForge.Common.Input
             // row has no such choice on its tab, so it asks for colors
             // alone whatever its config holds.
             int level = outputOnly ? 0 : (int)hold;
-            Common.Input.Peripherals.PeripheralOutputs.SetLighting(guid, _padIndex, slotNumber, r, g, b, level);
+            // The device's light colors for the shift layer engaged now
+            // (#557), over the color above.
+            var keys = KeyFrameFor(devCfg);
+            Common.Input.Peripherals.PeripheralOutputs.SetLighting(guid, _padIndex, slotNumber, r, g, b, level, keys);
             return true;
+        }
+
+        /// <summary>The light colors <paramref name="devCfg"/> holds for
+        /// this slot's engaged shift layer (#557), or null when it holds
+        /// none.</summary>
+        private Common.Input.Peripherals.KeyFrame KeyFrameFor(DeviceSlotConfig devCfg)
+        {
+            var settings = devCfg.KeyLightingParsed;
+            if (settings == null || settings.IsEmpty) return null;
+            return settings.FrameFor(EngagedLayerOf(_padIndex));
+        }
+
+        /// <summary>The shift layer engaged on <paramref name="padIndex"/>,
+        /// "Base" when none is or the slot has no mapping set.</summary>
+        private static string EngagedLayerOf(int padIndex)
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null || padIndex < 0 || padIndex >= sets.Length || sets[padIndex] == null)
+                return Common.Input.Peripherals.KeyLightingSettings.BaseMask;
+            return InputManager.GetEngagedLayerMask(padIndex, sets[padIndex]);
+        }
+
+        /// <summary>A slot's shift layer changed (#557,
+        /// InputManager.EngagedLayerChanged). The slot's lit peripherals are
+        /// repainted (<see cref="RequestPeripheralRefresh"/>) when a device
+        /// on it has light colors on any layer but Base, since only then can
+        /// the change show. Called on the polling thread, and never
+        /// blocks.</summary>
+        internal static void NotifyKeyLayersChanged(int padIndex)
+        {
+            var configs = SlotPerDeviceConfigsProvider?.Invoke(padIndex);
+            if (configs == null) return;
+            foreach (var cfg in configs.Values)
+            {
+                var settings = cfg?.KeyLightingParsed;
+                if (settings == null) continue;
+                foreach (var mask in settings.Layers.Keys)
+                {
+                    if (mask == Common.Input.Peripherals.KeyLightingSettings.BaseMask) continue;
+                    RequestPeripheralRefresh(padIndex);
+                    return;
+                }
+            }
         }
 
         /// <param name="peripheralsOnly">Light the slot's mice, keyboards and

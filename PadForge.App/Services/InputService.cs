@@ -1220,6 +1220,9 @@ namespace PadForge.Services
                 (_inputManager != null && padIndex >= 0 && padIndex < InputManager.MaxPads)
                     ? _inputManager.MacroTriggerEffects[padIndex] : null;
             MacroTriggerEffectState.Changed = UserEffectsDispatcher.NotifyModEffectsChanged;
+            // A shift layer engaging or letting go repaints a keyboard whose
+            // key colors differ by layer (#557).
+            InputManager.EngagedLayerChanged = UserEffectsDispatcher.NotifyKeyLayersChanged;
 
             UserEffectsDispatcher.SlotImpulseTriggerForDeviceProvider = (padIndex, deviceGuid) =>
             {
@@ -2683,6 +2686,7 @@ namespace PadForge.Services
                 UserEffectsDispatcher.SteeringTriggerVibProvider = null;
                 UserEffectsDispatcher.MacroTriggerEffectsProvider = null;
                 MacroTriggerEffectState.Changed = null;
+                InputManager.EngagedLayerChanged = null;
                 UserEffectsDispatcher.TestRumbleTargetGuidProvider = null;
                 UserEffectsDispatcher.SlotBatteryPercentProvider = null;
                 UserEffectsDispatcher.SlotPerDeviceConfigsProvider = null;

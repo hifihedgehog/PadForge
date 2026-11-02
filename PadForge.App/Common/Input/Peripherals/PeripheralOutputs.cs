@@ -592,6 +592,9 @@ namespace PadForge.Common.Input.Peripherals
             public int Player;
             public int Rgb;
             public int Level;
+            /// <summary>The slot's light colors for the device (#557), on
+            /// top of <see cref="Rgb"/>. Null for none.</summary>
+            public KeyFrame Keys;
         }
 
         /// <summary>One claim per (device, slot): a mouse on two virtual
@@ -624,23 +627,30 @@ namespace PadForge.Common.Input.Peripherals
         /// link table on its own tick: looked up anywhere else, an old claim
         /// could meet a new path at a level its slot never chose. A backend
         /// holds a unit at the smaller of the ruling claim's level and what
-        /// the unit offers.</summary>
-        public static void SetLighting(Guid device, int slot, int player, byte r, byte g, byte b, int level = 0)
+        /// the unit offers. <paramref name="keys"/> is the slot's light
+        /// colors for the device on top of that color (#557), null or empty
+        /// for none: a backend that paints light by light renders them over
+        /// the color (<see cref="LightRenderer.Render"/>), and one with a
+        /// single light paints the color alone.</summary>
+        public static void SetLighting(Guid device, int slot, int player, byte r, byte g, byte b, int level = 0,
+            KeyFrame keys = null)
         {
             int rgb = (r << 16) | (g << 8) | b;
+            if (keys != null && keys.IsEmpty) keys = null;
             bool changed = false, ranked = false;
             s_claims.AddOrUpdate((device, slot),
                 _ =>
                 {
                     changed = true;
                     ranked = true;
-                    return new LightClaim { Player = player, Rgb = rgb, Level = level };
+                    return new LightClaim { Player = player, Rgb = rgb, Level = level, Keys = keys };
                 },
                 (_, claim) =>
                 {
                     lock (claim)
                     {
-                        if (claim.Player != player || claim.Rgb != rgb || claim.Level != level)
+                        if (claim.Player != player || claim.Rgb != rgb || claim.Level != level
+                            || !KeyFrame.Same(claim.Keys, keys))
                         {
                             // A level that moves redraws the tab, as a rank
                             // does: its route line names what is held.
@@ -648,6 +658,7 @@ namespace PadForge.Common.Input.Peripherals
                             claim.Player = player;
                             claim.Rgb = rgb;
                             claim.Level = level;
+                            claim.Keys = keys;
                             changed = true;
                         }
                     }
@@ -740,6 +751,9 @@ namespace PadForge.Common.Input.Peripherals
             /// never ranks a claim: the ruling claim's level is the one the
             /// device is held at.</summary>
             public int Level { get; init; }
+
+            /// <summary>The claim's light colors (#557), null for none.</summary>
+            public KeyFrame Keys { get; init; }
         }
 
         /// <summary>The ruling between the claimants of one path, pure so the
@@ -778,6 +792,7 @@ namespace PadForge.Common.Input.Peripherals
                     c = new Claimant(pair.Key.Device, row.CatchAll, pair.Value.Player, pair.Key.Slot, pair.Value.Rgb)
                     {
                         Level = pair.Value.Level,
+                        Keys = pair.Value.Keys,
                     };
                 if (!found || Rules(c, ruler))
                 {

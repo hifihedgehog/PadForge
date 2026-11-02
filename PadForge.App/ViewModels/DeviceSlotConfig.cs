@@ -1037,6 +1037,37 @@ namespace PadForge.ViewModels
             }
         }
 
+        private string _keyLighting = string.Empty;
+        private PadForge.Common.Input.Peripherals.KeyLightingSettings _keyLightingParsed =
+            PadForge.Common.Input.Peripherals.KeyLightingSettings.Empty;
+
+        /// <summary>This device's light colors on this virtual controller,
+        /// per shift layer (#557), the Lighting tab's Key Colors or Zone
+        /// Colors card, in the text form
+        /// <see cref="PadForge.Common.Input.Peripherals.KeyLightingSettings"/>
+        /// reads and writes. A set value is read and written back, so equal
+        /// colors always save as equal text, and a part the reader does not
+        /// know is dropped.</summary>
+        public string KeyLighting
+        {
+            get => _keyLighting;
+            set
+            {
+                var parsed = PadForge.Common.Input.Peripherals.KeyLightingSettings.Parse(value);
+                string text = parsed.Format();
+                if (string.Equals(_keyLighting, text, StringComparison.Ordinal)) return;
+                // The parsed form first: the change notice runs a dispatcher
+                // pass, which reads it.
+                System.Threading.Volatile.Write(ref _keyLightingParsed, parsed);
+                SetProperty(ref _keyLighting, text);
+            }
+        }
+
+        /// <summary>The colors <see cref="KeyLighting"/> holds, whole, for
+        /// the dispatcher's thread.</summary>
+        internal PadForge.Common.Input.Peripherals.KeyLightingSettings KeyLightingParsed
+            => System.Threading.Volatile.Read(ref _keyLightingParsed);
+
         // Bit 8 the switch, the low byte the hold. One field, so a reader
         // on another thread never pairs the switch of one moment with the
         // hold of the next.
@@ -2217,6 +2248,10 @@ namespace PadForge.ViewModels
         /// <summary>#494: the lowest hold when absent, so a save from before
         /// the choice asks no device for more than its colors.</summary>
         [XmlAttribute] public PeripheralClaimLevel PeripheralClaimLevel { get; set; } = PeripheralClaimLevel.Colors;
+        /// <summary>#557: the device's light colors per shift layer
+        /// (KeyLightingSettings text). Empty when absent, so a save from
+        /// before them colors no key.</summary>
+        [XmlAttribute] public string KeyLighting { get; set; } = string.Empty;
         [XmlAttribute] public int LightbarRainbowBrightness { get; set; } = 100;
         [XmlAttribute] public byte LightbarBatteryLowR  { get; set; } = 0xFF;
         [XmlAttribute] public byte LightbarBatteryLowG  { get; set; } = 0x00;

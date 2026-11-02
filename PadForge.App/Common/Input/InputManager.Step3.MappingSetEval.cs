@@ -794,6 +794,28 @@ namespace PadForge.Common.Input
 
         private static readonly ShiftRuntime[] _shiftRuntime = new ShiftRuntime[MaxPads];
 
+        /// <summary>Called on the polling thread when a slot's shift layer
+        /// state changed since the last look (#557), so a keyboard whose
+        /// key colors differ by layer is repainted at once rather than on
+        /// the next animation tick, which a still color never asks for.
+        /// Must not block.</summary>
+        internal static Action<int> EngagedLayerChanged;
+        private static readonly int[] _layerVersionSeen = new int[MaxPads];
+
+        /// <summary>Raises <see cref="EngagedLayerChanged"/> once for each
+        /// change of the slot's shift runtime. Several devices on one slot
+        /// each resolve the layer, and the first to see a new version is
+        /// the one that tells.</summary>
+        private static void NoteLayerVersion(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= _shiftRuntime.Length) return;
+            var rt = _shiftRuntime[slotIndex];
+            if (rt == null) return;
+            int version = System.Threading.Volatile.Read(ref rt.Version);
+            if (System.Threading.Interlocked.Exchange(ref _layerVersionSeen[slotIndex], version) == version) return;
+            try { EngagedLayerChanged?.Invoke(slotIndex); } catch { }
+        }
+
         // v2 Postpone-the-mapping suppression set. For each slot, a
         // HashSet of "deviceGuid|descriptor" keys identifying source
         // bindings that should be treated as zero/false during this
@@ -2535,6 +2557,7 @@ namespace PadForge.Common.Input
             // NoInherit flag then selectively blocks fallthrough for
             // individual targets on inheritance-enabled layers.
             string activeMask = ResolveActiveLayerMask(slotIndex, mappingSet, state, thisDeviceGuid);
+            NoteLayerVersion(slotIndex);
             bool inheritUnmapped = false;
             if (activeMask != "Base" && mappingSet?.ShiftActivators != null)
             {

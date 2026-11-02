@@ -299,8 +299,8 @@ namespace PadForge.Models3D
 
             // The right pad IS the right thumbstick, in SDL's own words:
             // "the right pad is normally mapped to right thumbstick"
-            // (SDL_hidapi_steam.c 1673, with RIGHTX and RIGHTY reading
-            // sRightPadX/Y at 1650). Its four quarters carry that stick's
+            // (SDL_hidapi_steam.c 1659, with RIGHTX and RIGHTY reading
+            // sRightPadX/Y at 1636-1637). Its four quarters carry that stick's
             // axis directions and each highlights as itself, which is how a
             // direction with its own mesh behaves everywhere in this tree.
             // The left pad's quarters are D-pad keys and the standard part

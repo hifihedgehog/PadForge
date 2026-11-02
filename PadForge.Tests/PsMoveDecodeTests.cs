@@ -171,7 +171,7 @@ namespace PadForge.Tests
         [Fact]
         public void JoystickBlacklist_CoversTheWholeFamilyInSdlHintFormat()
         {
-            // SDL_hints.h:1401-1404: comma-separated 0xVVVV/0xPPPP pairs.
+            // SDL_hints.h:1407-1410: comma-separated 0xVVVV/0xPPPP pairs.
             string v = PadForge.Common.Input.InputManager.JoystickBlacklistDevices;
             Assert.Contains("0x054c/0x03d5", v);   // Move ZCM1
             Assert.Contains("0x054c/0x0c5e", v);   // Move ZCM2

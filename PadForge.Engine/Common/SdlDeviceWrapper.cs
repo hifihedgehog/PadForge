@@ -351,9 +351,11 @@ namespace PadForge.Engine
         /// <summary>Which SDL Windows backend produced this joystick, read
         /// from the GUID's driver-signature byte (SDL_CreateJoystickGUID puts
         /// it at data[14], hex chars 28-29 of the GUID string): 'x' XInput,
-        /// 'h' HIDAPI, 'v' a virtual joystick (SDL_virtualjoystick.c, the
-        /// joysticks PadForge's own readers attach), and DirectInput leaves
-        /// it zero. Any other byte prints as hex.
+        /// 'h' HIDAPI, 'g' GameInput (the Xbox One instruments its raw
+        /// report path lists by default, SDL_gameinputjoystick.cpp:258),
+        /// 'v' a virtual joystick (SDL_virtualjoystick.c, the joysticks
+        /// PadForge's own readers attach), and DirectInput leaves it zero.
+        /// Any other byte prints as hex.
         /// The name cannot tell a pad's views apart (#395: one Vader 5 Pro
         /// arrives as three or four joysticks, two of them named alike).</summary>
         public string Backend => BackendFromGuid(SdlGuid);
@@ -367,6 +369,7 @@ namespace PadForge.Engine
             {
                 'x' => "xinput",
                 'h' => "hidapi",
+                'g' => "gameinput",
                 'v' => "virtual",
                 0 => "dinput",
                 _ => $"0x{sig:X2}",
@@ -701,9 +704,9 @@ namespace PadForge.Engine
             // NFC reader (issue #241/#248, SDL#15). The NFC/IR MCU lives on
             // the classic Switch right Joy-Con (PID 0x2007) and Pro
             // Controller (PID 0x2009). The combined pair (synthetic PID
-            // 0x2008, SDL_hidapijoystick.c:1090) contains a right Joy-Con,
+            // 0x2008, SDL_hidapijoystick.c:1295) contains a right Joy-Con,
             // and SDL propagates the combined joystick to every child
-            // (SDL_hidapijoystick.c:784-787), so the right child posts the
+            // (SDL_hidapijoystick.c:989-992), so the right child posts the
             // tag UID onto the pair's joystick exactly like its GYRO_R.
             // Gated on GameController != 0 because the tag getter is a
             // gamepad-layer call. Switch 2 controllers are excluded: no
@@ -2046,12 +2049,12 @@ namespace PadForge.Engine
                     // Pressure fallback for a pad whose click SDL's mapping
                     // does not bind. The gen-1 Steam Controller is the case:
                     // its generated mapping is paddle1/paddle2 only, no
-                    // touchpad and no misc2 (SDL_gamepad.c:1263, against the
-                    // Deck's and Triton's touchpad:b17,misc2:b16 at 1266 and
-                    // 1269), while its driver registers two pads and encodes
+                    // touchpad and no misc2 (SDL_gamepad.c:1458, against the
+                    // Deck's and Triton's touchpad:b17,misc2:b16 at 1461 and
+                    // 1464), while its driver registers two pads and encodes
                     // the click purely in pressure: 0.5 for a finger down,
                     // plus another 0.5 when clicked (SDL_hidapi_steam.c
-                    // 1498-1500 for the left pad, 1518-1520 for the right).
+                    // 1646-1648 for the left pad, 1666-1668 for the right).
                     // Both its "Touchpad N Click" descriptors therefore read
                     // false forever while the pads physically click. Gated on
                     // the button being unmapped, because a DualSense reports
@@ -2280,7 +2283,7 @@ namespace PadForge.Engine
         /// multiplier in (1.1905, 1.2048] wraps the product past
         /// 65,535. Neither our chain (fully clamped) nor SDL's Deck
         /// driver (verbatim Uint16 pass-through into
-        /// MsgSimpleRumbleCmd, SDL_hidapi_steamdeck.c:429-447) nor the
+        /// MsgSimpleRumbleCmd, SDL_hidapi_steamdeck.c:420-438) nor the
         /// Linux hid-steam driver (verbatim magnitudes, same
         /// left_gain=2/right_gain=0 pair, hid-steam.c
         /// steam_haptic_rumble) scales the value, so the wrap lives
@@ -2300,10 +2303,10 @@ namespace PadForge.Engine
         /// BT D0G 0x1105/0x1106, dongle 0x1142), the same PID set
         /// HapticToneService gates on. Its driver is the ONLY one that
         /// encodes a pad click in touchpad pressure: 0.5 for a finger down
-        /// plus another 0.5 when clicked (SDL_hidapi_steam.c 1498-1500 and
-        /// 1518-1520). Every other driver sends a flat 1.0 for a plain touch
-        /// (ps4 1062, ps5 1428, shield 392) or a raw analog value (sinput
-        /// 1045), so a pressure-derived click must never be inferred for
+        /// plus another 0.5 when clicked (SDL_hidapi_steam.c 1646-1648 and
+        /// 1666-1668). Every other driver sends a flat 1.0 for a plain touch
+        /// (ps4 1055, ps5 1436, shield 368) or a raw analog value (sinput
+        /// 1030), so a pressure-derived click must never be inferred for
         /// them.</summary>
         private bool IsSteamControllerGen1 => VendorId == 0x28DE
             && ProductId is 0x1101 or 0x1102 or 0x1105 or 0x1106 or 0x1142;

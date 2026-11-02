@@ -55,7 +55,7 @@ namespace PadForge.Common.Input
 
         /// <summary>Devices no SDL joystick backend may enumerate
         /// (SDL_JOYSTICK_BLACKLIST_DEVICES format: comma-separated
-        /// 0xVVVV/0xPPPP, SDL_hints.h:1401-1404). The PS Move family (#277):
+        /// 0xVVVV/0xPPPP, SDL_hints.h:1407-1410). The PS Move family (#277):
         /// a docked Move exposes three HID collections (the col01-col03
         /// Windows quirk psmoveapi documents) and no SDL driver claims the
         /// PIDs, so each collection surfaced through the generic Windows
@@ -2470,7 +2470,7 @@ namespace PadForge.Common.Input
                             // An Xbox One+ pad's motors take the raw report
                             // (XboxImpulseHidWriter), never SDL's rumble, so SDL
                             // holds no level for it and skips the stop below as
-                            // a repeat (SDL_joystick.c:2287-2290). The pad would
+                            // a repeat (SDL_joystick.c:2295-2298). The pad would
                             // keep the last level for the long pulse the report
                             // asks for, the 0xFF, 0x00, 0xEB tail that xpadneo's
                             // rumble.c also sends. Like Step 2's final zero for an

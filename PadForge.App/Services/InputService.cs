@@ -2194,7 +2194,7 @@ namespace PadForge.Services
             // no allocation; the pair sink's stream thread calls this once
             // per 10 ms tick. Body motors only: SDL routes exactly the low
             // (left) / high (right) body values to the pair's children
-            // (SDL_hidapi_switch.c:2148-2156), and the Switch has no trigger
+            // (SDL_hidapi_switch.c:3279-3287), and the Switch has no trigger
             // motors, so trigger rumble never vibrates a Joy-Con side.
             PadForge.Common.Input.HapticToneService.SlotRumbleActiveProvider = slotIndex =>
             {
@@ -17895,7 +17895,7 @@ namespace PadForge.Services
                                     return;
                                 }
                                 // SDL's record of a level would be resent every
-                                // 2 s (SDL_joystick.c:3067-3072) over whatever the
+                                // 2 s (SDL_joystick.c:3089-3094) over whatever the
                                 // raw writer holds, so SDL stops and the raw
                                 // report takes the level.
                                 Buzz(0, 0);

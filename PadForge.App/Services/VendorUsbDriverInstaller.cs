@@ -77,7 +77,7 @@ namespace PadForge.Services
         /// Xbox 360 wireless receivers (xpad.c:184-185), s-config's receiver
         /// guide finds 05C6:9244 on the same Chinese receiver under Windows 10,
         /// and SDL lists 1430:070B as an Xbox 360 controller
-        /// (controller_list.h:270). Users bound each one by picking the Xbox
+        /// (controller_list.h:271). Users bound each one by picking the Xbox
         /// 360 driver by hand, which Windows 10 version 2004 stopped allowing
         /// for an ID the INF does not name, and then by adding the ID to a copy
         /// of the INF, which is what this package does without the copy.</summary>

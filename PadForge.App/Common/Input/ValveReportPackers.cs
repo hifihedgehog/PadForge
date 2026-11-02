@@ -107,7 +107,7 @@ namespace PadForge.Common.Input
         /// and full pull at short.MaxValue (MapToRawTriggerAxis, whose own
         /// comment is "Trigger rest is short.MinValue"). Every Valve wire
         /// carries it UNSIGNED, 0 to 32767, which is what SDL's drivers
-        /// decode back with * 2 - 32768 (SDL_hidapi_steam.c 1645,
+        /// decode back with * 2 - 32768 (SDL_hidapi_steam.c 1631,
         /// _steamdeck.c 234, _steam_triton.c 222).</para>
         ///
         /// <para>These packers CLAMPED to [0, 32767] instead of rescaling.
@@ -463,7 +463,7 @@ namespace PadForge.Common.Input
             WriteU16(dest, 24, (ushort)lt);
             WriteU16(dest, 26, (ushort)rt);
 
-            // IMU. SDL_hidapi_steam.c (1536 to 1543) decodes the 2015 pad as
+            // IMU. SDL_hidapi_steam.c (1684 to 1691) decodes the 2015 pad as
             // the Deck in every slot but one: gyro Z is +sGyroY, where accel
             // Z is -sAccelY. So roll goes in un-negated, and writing it
             // negated, as the Deck's map does, turned roll around.

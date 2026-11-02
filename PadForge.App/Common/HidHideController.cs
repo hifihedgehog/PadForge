@@ -1019,10 +1019,10 @@ namespace PadForge.Common
         /// (<see cref="PadForge.Engine.HidMaestroAncestry.ReadersDrop"/>).
         ///
         /// <para>SDL's GameInput backend makes no such test
-        /// (SDL_gameinputjoystick.cpp:177-307), so PadForge reads what it
+        /// (SDL_gameinputjoystick.cpp:245-399), so PadForge reads what it
         /// lists wherever it sits. With the hints PadForge sets it lists
-        /// only the instruments of its raw report table (lines 238-242 and
-        /// 389-424, SDL_gameinput_rawtype.h:43-99). Those are Xbox One
+        /// only the instruments of its raw report table (lines 312-316 and
+        /// 491-526, SDL_gameinput_rawtype.h:43-99). Those are Xbox One
         /// instruments, which Windows puts under xboxgip like an Xbox One
         /// pad, where neither walk reaches the stamp.</para></summary>
         internal static bool ReadersDrop(IReadOnlyList<OwnerHop> hops, Func<string, bool> carriesXusb)

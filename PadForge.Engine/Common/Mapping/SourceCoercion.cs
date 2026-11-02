@@ -7263,7 +7263,7 @@ namespace PadForge.Engine.Common.Mapping
         //
         // Steam Input splits a single physical trackpad (DualShock 4 /
         // DualSense: SDL registers exactly ONE touchpad,
-        // SDL_hidapi_ps4.c:732 / SDL_hidapi_ps5.c:846) into left_trackpad /
+        // SDL_hidapi_ps4.c:737 / SDL_hidapi_ps5.c:854) into left_trackpad /
         // right_trackpad halves. The windowed descriptors mirror that: the
         // source is live only while the finger sits in its half (X < 0.5 =
         // Left, X >= 0.5 = Right), absolute X reads re-normalize the half to

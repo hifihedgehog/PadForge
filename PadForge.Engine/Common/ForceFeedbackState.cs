@@ -232,7 +232,7 @@ namespace PadForge.Engine
         /// refuses a gamepad, SDL_haptic.c:310-311). A Remote Link peer sends
         /// a steady level once, so waiting for the next change would leave the
         /// motors stopped. A level goes out after a stop: SDL skips a write
-        /// that repeats the levels it last took (SDL_joystick.c:2287-2290),
+        /// that repeats the levels it last took (SDL_joystick.c:2295-2298),
         /// and a GPA's final stop from the retired port can end a level SDL
         /// took while the port was retiring. A device with no SDL motors takes
         /// no level, so the recorded ones are dropped: kept, they would go

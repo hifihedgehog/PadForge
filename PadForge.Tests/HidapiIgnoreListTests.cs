@@ -9,7 +9,7 @@ namespace PadForge.Tests
     /// wedges SDL's Sony third-party detection feature report forever on
     /// Windows, freezing the UI thread that runs enumeration. Entries must
     /// stay in SDL_HIDAPI_IGNORE_DEVICES format (comma-separated
-    /// 0xVVVV/0xPPPP, SDL_hints.h:1263-1277) or SDL silently ignores the
+    /// 0xVVVV/0xPPPP, SDL_hints.h:1290-1304) or SDL silently ignores the
     /// hint and the freeze returns.
     /// </summary>
     public class HidapiIgnoreListTests

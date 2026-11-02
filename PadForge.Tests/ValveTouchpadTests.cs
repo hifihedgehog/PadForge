@@ -161,7 +161,7 @@ namespace PadForge.Tests
         /// pads as touchpad 0 / 1, and the pad clicks as the gamepad buttons
         /// its mapping advertises: touchpad:b17 (left) at position 16 and
         /// misc2:b16 (right) at 17 (SDL_hidapi_steam_triton.c 48-54,
-        /// 584-585, SDL_gamepad.c 1269).</summary>
+        /// 575-576, SDL_gamepad.c 1464).</summary>
         [Fact]
         public void Automap_SteamController2026_RoutesEverythingOneToOne()
         {
@@ -202,7 +202,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>A 2015 Steam Controller (SDL sends its grips as RP1 /
-        /// LP1 at 12 / 13: SDL_gamepad.c 1263, and advertises no touchpad
+        /// LP1 at 12 / 13: SDL_gamepad.c 1458, and advertises no touchpad
         /// or misc2 button, so its clicks ride the wrapper's pressure
         /// descriptors) lands on the 2015 wire's grips, and every slot on
         /// that wire is bound.</summary>

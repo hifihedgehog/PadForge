@@ -360,10 +360,10 @@ namespace PadForge.Engine.Data
         /// camera drives the "IR Brightness" cover/proximity source (issue #151).
         /// Identity-derived from VID + name like the two properties above, so it
         /// is correct online or offline. The SDL driver names it exactly
-        /// "Nintendo Switch Joy-Con (R)" (SDL_hidapi_switch.c:1786/1838), so the
+        /// "Nintendo Switch Joy-Con (R)" (SDL_hidapi_switch.c:2820/2872), so the
         /// match is exact equality, not a suffix test: the Switch 2 right
         /// Joy-Con is "Nintendo Switch 2 Joy-Con (R)" under the same Nintendo
-        /// VID (SDL_ble_switch2joystick.c:1331) and has a mouse sensor, not an
+        /// VID (SDL_ble_switch2joystick.c:1158) and has a mouse sensor, not an
         /// IR camera, so a suffix match would offer a dead source there. The
         /// combined pair's "(L/R)" name cannot match either way. Computed, not
         /// stored, so a stale persisted value can never linger. Gates whether
@@ -397,7 +397,7 @@ namespace PadForge.Engine.Data
         /// <summary>Whether the device is a Joy-Con 2 (L or R), whose optical
         /// mouse sensor drives the "Mouse Motion X/Y" sources (issue #154).
         /// Identity-derived like the gates above, exact-equality against the
-        /// BLE driver's names (SDL_ble_switch2joystick.c:1328/:1331) so no
+        /// BLE driver's names (SDL_ble_switch2joystick.c:1155/:1158) so no
         /// suffix collision is possible. The Switch 2 Pro and GameCube have no
         /// mouse sensor, and the gen-1 Joy-Cons carry a camera instead.
         /// Computed, not stored. Gates the picker offering.</summary>

@@ -139,7 +139,7 @@ namespace PadForge.Tests
         /// <summary>The reader-capability gate (#248), mirroring the
         /// GuideLed gate tests: right Joy-Con single, combined pair (right
         /// child carries the MCU, SDL propagates the pair's joystick to it,
-        /// SDL_hidapijoystick.c:784-787), and Pro qualify. Left Joy-Con
+        /// SDL_hidapijoystick.c:989-992), and Pro qualify. Left Joy-Con
         /// (no reader), every Switch 2 controller (no reference reads their
         /// NFC on PC and no working code exists, verified 2026-07-24), and
         /// foreign VIDs with Nintendo PIDs do not.</summary>

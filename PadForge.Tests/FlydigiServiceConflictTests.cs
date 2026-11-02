@@ -137,6 +137,7 @@ namespace PadForge.Tests
         [Theory]
         [InlineData("78", "xinput")]
         [InlineData("68", "hidapi")]
+        [InlineData("67", "gameinput")]
         [InlineData("76", "virtual")]
         [InlineData("00", "dinput")]
         [InlineData("ab", "0xAB")]

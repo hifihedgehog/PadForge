@@ -171,7 +171,7 @@ namespace PadForge.Tests
 
         /// <summary>The 2015 Steam Controller's two pads are not two of a
         /// kind. SDL drives the LEFT one as the D-pad and the RIGHT one as
-        /// the right thumbstick (SDL_hidapi_steam.c 1655 and 1673), and
+        /// the right thumbstick (SDL_hidapi_steam.c 1639 and 1659), and
         /// Valve molds a D-pad cross into the left cover, naming that solid
         /// TrackPadCoverDirectional against the right one's Smooth.
         ///

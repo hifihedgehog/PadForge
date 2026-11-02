@@ -373,7 +373,7 @@ namespace PadForge.Common.Input
 
         /// <summary>Player LED idle floor (#191): the virtual controller's 1-based
         /// display number lights LED 1-4, wrapping past 4 exactly like SDL's PS3
-        /// driver (SDL_hidapi_ps3.c:244, 0x01 &lt;&lt; (1 + index % 4)). 0 = unmapped,
+        /// driver (SDL_hidapi_ps3.c:275, 0x01 &lt;&lt; (1 + index % 4)). 0 = unmapped,
         /// keeps LED 1.</summary>
         public void SetPlayerNumber(int oneBasedNumber)
         {
@@ -932,7 +932,7 @@ namespace PadForge.Common.Input
                     // report size; a shorter completion would leave stale bytes from
                     // the previous frame in the reused buffer past rd). raw[1]=0xFF is
                     // the DS3's invalid/wake frame; both references drop it
-                    // (SDL_hidapi_ps3.c:566 data[1]==0xFF, ScpToolkit BthDs3.cs:42).
+                    // (SDL_hidapi_ps3.c:587 data[1]==0xFF, ScpToolkit BthDs3.cs:42).
                     if (rd >= DS3_BT_INPUT_REPORT_SIZE && buf[0] == 0xA1 && buf[1] == 0x01 && buf[2] != 0xFF)
                     {
                         _everGotInput = true;
@@ -1060,7 +1060,7 @@ namespace PadForge.Common.Input
                     vendor_id = DS3_VID,
                     product_id = ProfilePid,
                     // 6 gamepad axes + the 10 button-pressure axes on 6-15, mirroring
-                    // upstream SDL's PS3 driver (SDL_hidapi_ps3.c:486-516) so the #193
+                    // upstream SDL's PS3 driver (SDL_hidapi_ps3.c:507-537) so the #193
                     // HasExtraGenericAxes seam surfaces them as "Axis 6".."Axis 15"
                     // identically on both transports.
                     naxes = 16,

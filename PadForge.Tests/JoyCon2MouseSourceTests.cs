@@ -224,7 +224,7 @@ namespace PadForge.Tests
         public void HasJoyCon2Mouse_GatesOnExactJoyCon2Identity()
         {
             // Both Joy-Con 2 halves carry the sensor (BLE driver names at
-            // SDL_ble_switch2joystick.c:1328/:1331). The gen-1 Joy-Cons, the
+            // SDL_ble_switch2joystick.c:1155/:1158). The gen-1 Joy-Cons, the
             // Switch 2 Pro/GameCube, and non-Nintendo VIDs must not match,
             // and the match is exact equality (the 74b325bc suffix lesson).
             Assert.True(new UserDevice { VendorId = 0x057E, ProductName = "Nintendo Switch 2 Joy-Con (L)" }.HasJoyCon2Mouse);

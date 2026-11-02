@@ -90,7 +90,7 @@ namespace PadForge.Tests
             // "Nintendo Switch Joy-Con (R)"). The left Joy-Con does not, and
             // neither does a non-Nintendo VID. The Switch 2 right Joy-Con
             // shares the Nintendo VID and ends with the same "Joy-Con (R)"
-            // (SDL_ble_switch2joystick.c:1331) but carries a mouse sensor,
+            // (SDL_ble_switch2joystick.c:1158) but carries a mouse sensor,
             // not an IR camera, so the gate must be exact.
             Assert.True(new UserDevice { VendorId = 0x057E, ProductName = "Nintendo Switch Joy-Con (R)" }.HasJoyConIr);
             Assert.False(new UserDevice { VendorId = 0x057E, ProductName = "Nintendo Switch Joy-Con (L)" }.HasJoyConIr);
@@ -105,7 +105,7 @@ namespace PadForge.Tests
             // the pair identity (PID 0x2008) is included. The name CANNOT
             // discriminate here: SDL's combined synthesis gives the gen-1 and
             // gen-2 pairs the identical "Switch Joy-Con (L/R)" product string
-            // (SDL_hidapijoystick.c:1123), and the gen-2 pair (PID 0x2068)
+            // (SDL_hidapijoystick.c:1303), and the gen-2 pair (PID 0x2068)
             // carries mouse sensors, not a camera.
             Assert.True(new UserDevice { VendorId = 0x057E, ProdId = 0x2008, ProductName = "Nintendo Switch Joy-Con (L/R)" }.HasJoyConIr);
             // Same name, gen-2 PID: excluded.

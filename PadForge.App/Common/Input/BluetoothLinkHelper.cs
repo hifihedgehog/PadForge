@@ -106,9 +106,9 @@ namespace PadForge.Common.Input
                 // second session cannot reach the command characteristic
                 // (Windows requires ALL openers of a service to be shared, and
                 // the driver's session is not). The fork's SendEffect
-                // passthrough (SDL#9) is that session's entry point; the
-                // direct GATT attempt remains as a fallback for SDL builds
-                // that predate it.
+                // passthrough (SDL#9) is that session's entry point. The
+                // direct GATT attempt runs when no gamepad is open to
+                // carry the effect, or when SDL refuses or fails the write.
                 if (TrySwitch2EffectPassthrough(gamepadHandle))
                     return true;
                 if (TrySwitch2PowerOff(serial))
@@ -119,7 +119,7 @@ namespace PadForge.Common.Input
                 return true;
 
             // Combined gen-1 Joy-Con pair (#184): its SDL serial is EMPTY. The
-            // combined driver's serial join (SDL_hidapi_combined.c:89) appends
+            // combined driver's serial join (SDL_hidapi_combined.c:82) appends
             // joystick->serial, which the Switch driver stopped writing in 2022
             // (upstream aa2e2f4843 moved the MAC to the device serial, set in
             // InitDevice before any joystick opens), so the join is dead code and
@@ -319,17 +319,17 @@ namespace PadForge.Common.Input
 
         /// <summary>The combined gen-1 Joy-Con pair (issue #184 sibling): SDL merges
         /// two Joy-Cons into one virtual device with the synthetic path
-        /// "nintendo_joycons_combined" (SDL_hidapijoystick.c:1087) and PID 0x2008
-        /// (controller_list.h:589), so the path predicate cannot see it even though
+        /// "nintendo_joycons_combined" (SDL_hidapijoystick.c:1292) and PID 0x2008
+        /// (controller_list.h:590), so the path predicate cannot see it even though
         /// both halves hold classic-BT links a single Joy-Con would pass with. Its
-        /// serial is the two child serials comma-joined (SDL_hidapi_combined.c:89),
+        /// serial is the two child serials comma-joined (SDL_hidapi_combined.c:82),
         /// which <see cref="TryDisconnect"/> splits to drop both links. The Switch 2
         /// pair (0x2068) is not here: it already passes <see cref="IsSwitch2"/> and
         /// powers off through its own protocol lane.</summary>
         public static bool IsJoyConPair(ushort vendorId, ushort productId)
             => vendorId == 0x057E && productId == 0x2008;
 
-        /// <summary>The Switch 2 family, mirroring SDL usb_ids.h:126-130 in
+        /// <summary>The Switch 2 family, mirroring SDL usb_ids.h:195-199 in
         /// full (Joy-Con 2 L/R/pair, Pro 2, NSO GameCube), never a hand-picked
         /// subset.</summary>
         public static bool IsSwitch2(ushort vendorId, ushort productId)
@@ -370,7 +370,7 @@ namespace PadForge.Common.Input
         /// what the all-devices target mode asks for.</para>
         ///
         /// <para>Service and characteristic UUIDs per
-        /// SDL_ble_switch2joystick.c:120,122; the command characteristic is
+        /// SDL_ble_switch2joystick.c:86,88. The command characteristic is
         /// write-without-response per the #153 hardware log. Blocking, worker
         /// thread only.</para></summary>
         private static bool TrySwitch2PowerOff(string serial)
@@ -386,10 +386,12 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Sends the shutdown as an SDL raw effect: [cmd, subcmd,
-        /// payload...], the frame the fork's BLE_JoystickSendEffect
-        /// passthrough hands to BLE_SendCommand (which builds the 0x91 BLE
-        /// header itself, SDL_ble_switch2joystick.c:793-811). Returns false
-        /// while the fork still stubs SendEffect with SDL_Unsupported.</summary>
+        /// payload...]. The fork's BLE_JoystickSendEffect wraps it in the
+        /// 0x91 command header with BLE_BuildCommand and writes it without
+        /// waiting for a reply, since the pad powers off instead of
+        /// answering (SDL_ble_switch2joystick.c:2052-2075, BLE_BuildCommand
+        /// at 584-601). Returns false when no gamepad is open, or when SDL
+        /// refuses or fails the write.</summary>
         private static bool TrySwitch2EffectPassthrough(IntPtr gamepadHandle)
         {
             if (OffLimitsForTest) return false;
@@ -510,14 +512,14 @@ namespace PadForge.Common.Input
 
         /// <summary>The XInput user-index space PadForge actually runs in:
         /// SDL enumerates 16 slots (SDL_xinput.h:45 XUSER_MAX_COUNT=16,
-        /// SDL_xinputjoystick.c:246), and the bundled OpenXInput fork is
+        /// SDL_xinputjoystick.c:382), and the bundled OpenXInput fork is
         /// built with OPENXINPUT_XUSER_MAX_COUNT=16, so its ordinals accept
         /// the full range in-process. Microsoft's 4-slot limit does not
         /// apply here.</summary>
         private const uint XInputSlotCount = 16;
 
         /// <summary>Parses SDL's XInput-backend joystick path ("XInput#N",
-        /// SDL_xinputjoystick.c:211, where N is the XInput user index).</summary>
+        /// SDL_xinputjoystick.c:186, where N is the XInput user index).</summary>
         public static bool TryParseXInputSlot(string devicePath, out uint slot)
         {
             slot = 0;
@@ -674,7 +676,7 @@ namespace PadForge.Common.Input
         /// the disconnect. Safe to call for any serial: unparseable input
         /// returns false without touching the radio. A comma-joined serial
         /// (SDL's combined Joy-Con pair carries both child serials joined
-        /// with ',', SDL_hidapi_combined.c:89) drops EVERY half's link, so
+        /// with ',', SDL_hidapi_combined.c:82) drops EVERY half's link, so
         /// disconnecting the pair powers off both physical Joy-Cons.</summary>
         public static bool TryDisconnect(string serial)
         {

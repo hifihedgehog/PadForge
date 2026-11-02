@@ -9,7 +9,7 @@ namespace PadForge.Tests
     /// audio by the slot's commanded motor sides. Left motor commanded -> left
     /// Joy-Con coil, right -> right (the SDL split: the pair's left child keeps
     /// only low_frequency_rumble, the right child only high_frequency_rumble,
-    /// SDL_hidapi_switch.c:2148-2156). Both motors -> both coils. NO motor ->
+    /// SDL_hidapi_switch.c:3279-3287). Both motors -> both coils. NO motor ->
     /// both coils, because audio is not rumble: macro sounds, the system-audio
     /// mirror, and remote frames arrive with no motor state at all, so motor
     /// state only steers side emphasis. A side stays hot for PairSideHoldMs

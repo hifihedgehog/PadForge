@@ -983,7 +983,7 @@ namespace PadForge.Common.Input
                     // share the table's Valve roles: Quick Access at misc 1,
                     // the rear buttons in SDL's RP1 LP1 RP2 LP2 order at 12 to
                     // 15 (R4 L4 R5 L5 on the Deck and 2026 wires, the two grips
-                    // on the 2015 wire: SDL_gamepad.c 1263 / 1266 / 1269).
+                    // on the 2015 wire: SDL_gamepad.c 1458 / 1461 / 1464).
                     void MapValve(string role, string source)
                     {
                         if (source == null) return;
@@ -994,7 +994,7 @@ namespace PadForge.Common.Input
 
                     // Trackpads. All three Valve drivers register the left
                     // pad as touchpad 0 and the right as touchpad 1, one
-                    // finger each (SDL_hidapi_steam.c 1668 / 1688,
+                    // finger each (SDL_hidapi_steam.c 1654 / 1674,
                     // _steamdeck.c 268 / 280, _steam_triton.c 254 / 266),
                     // and the slot's touch surface splits the same way:
                     // finger 0 is the left pad, finger 1 the right. A one-
@@ -1004,8 +1004,8 @@ namespace PadForge.Common.Input
                     // one "Touchpad 0 Click", and a second pad's click
                     // surfaces as MISC2): SDL's Deck and 2026 mappings bind
                     // touchpad:b17 = left click at position 16 and
-                    // misc2:b16 = right click at 17 (SDL_gamepad.c 1266 /
-                    // 1269 against _steamdeck.c 42-43, _steam_triton.c
+                    // misc2:b16 = right click at 17 (SDL_gamepad.c 1461 /
+                    // 1464 against _steamdeck.c 42-43, _steam_triton.c
                     // 53-54). A pad that advertises neither (the 2015
                     // controller, mapping paddle1/paddle2 only) clicks
                     // through the wrapper's pressure descriptors instead.

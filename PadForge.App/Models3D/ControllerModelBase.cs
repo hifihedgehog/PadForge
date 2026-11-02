@@ -43,8 +43,8 @@ namespace PadForge.Models3D
         /// SDL maps its LEFT trackpad to the D-pad and its RIGHT trackpad to
         /// the right thumbstick, and says so in the driver ("the left pad is
         /// normally mapped to D-Pad", "the right pad is normally mapped to
-        /// right thumbstick", SDL_hidapi_steam.c 1655 and 1673, with RIGHTX
-        /// and RIGHTY reading sRightPadX/Y at 1650). Valve molds a D-pad
+        /// right thumbstick", SDL_hidapi_steam.c 1639 and 1659, with RIGHTX
+        /// and RIGHTY reading sRightPadX/Y at 1636-1637). Valve molds a D-pad
         /// cross into that left pad and names the solid
         /// TrackPadCoverDirectional. So those two pads carry directions.</para>
         ///

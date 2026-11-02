@@ -1039,7 +1039,7 @@ namespace PadForge.Tests
             recorder.Sent.Clear();
             Assert.True(state.ResendScalar(device));
             // A stop goes first: SDL skips a write that repeats the levels it
-            // last took (SDL_joystick.c:2287-2290), and a GPA's final stop from
+            // last took (SDL_joystick.c:2295-2298), and a GPA's final stop from
             // the retired port can end a level SDL took while it retired.
             Assert.Equal(new[] { (0, 0), (30000, 1000) }, recorder.Sent);
             // The cache now matches, so the same level is not written twice.

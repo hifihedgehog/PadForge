@@ -106,7 +106,7 @@ namespace PadForge.Tests
         [InlineData("XInput#15", 15u)]
         public void XInputSlot_ParsesSdlBackendPath(string path, uint expected)
         {
-            // SDL_xinputjoystick.c:211: path = "XInput#%u" with the XInput
+            // SDL_xinputjoystick.c:186: path = "XInput#%u" with the XInput
             // user index. SDL's own XUSER_MAX_COUNT is 16 (SDL_xinput.h:45)
             // and the bundled OpenXInput fork is built to match, so the full
             // range must parse. The user's Xbox Series pad persists as
@@ -154,7 +154,7 @@ namespace PadForge.Tests
         [InlineData(0x2073)] // NSO GameCube
         public void Switch2Family_MirrorsSdlUsbIds(int pid)
         {
-            // The full family from SDL usb_ids.h:126-130, never a subset.
+            // The full family from SDL usb_ids.h:195-199, never a subset.
             Assert.True(BluetoothLinkHelper.IsSwitch2(0x057E, (ushort)pid));
         }
 

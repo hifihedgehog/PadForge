@@ -104,8 +104,8 @@ public static class NintendoPreviewMap
     ///
     /// <para>The 2015 pad's right click is ONE bit doing TWO jobs, and SDL
     /// reports it as both: SDL_GAMEPAD_BUTTON_RIGHT_STICK
-    /// (SDL_hidapi_steam.c 1627) AND the right touchpad's click on the
-    /// touchpad surface (1677), from the same
+    /// (SDL_hidapi_steam.c 1613) AND the right touchpad's click on the
+    /// touchpad surface (1663), from the same
     /// STEAM_BUTTON_RIGHTPAD_CLICKED_MASK. The pad is the right stick, so
     /// clicking it is the right stick button, and it is still the pad's
     /// click.</para>

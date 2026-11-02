@@ -53,7 +53,7 @@ namespace PadForge.Tests
         /// <summary>SDL's sensor values for a frame, in degrees per second
         /// and g. Every driver scales a word by 2000 degrees per second or
         /// 2 g over 32768 and sends (X, Z, -Y), but the 2015 driver reads its
-        /// gyro Z as +Y (SDL_hidapi_steam.c 1536 to 1542,
+        /// gyro Z as +Y (SDL_hidapi_steam.c 1684 to 1691,
         /// SDL_hidapi_steamdeck.c 250 to 257, SDL_hidapi_steam_triton.c 279
         /// to 286).</summary>
         private static (float[] gyro, float[] accel) SdlReads(string id, byte[] b)

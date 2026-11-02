@@ -371,7 +371,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>valid_flag1 bit 2, the lightbar color enable. SDL sets
-        /// exactly this bit to author the bar (SDL_hidapi_ps5.c:759,
+        /// exactly this bit to author the bar (SDL_hidapi_ps5.c:760,
         /// "Enable LED color").</summary>
         private const byte LightbarValidBit = 0x04;
 

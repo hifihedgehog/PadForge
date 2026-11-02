@@ -4508,6 +4508,11 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Ler Chat da Twitch</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Canal</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>O nome do seu canal ou o endereço dele em twitch.tv.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Quem aprova !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Quem pode dar a um espectador o controle exclusivo que ele pede com !claim, digitando !accept @name. Dois espectadores podem ser a mesma pessoa com contas extras.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Só você</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Você e seus moderadores</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Você, seus moderadores ou dois outros espectadores</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Pausar</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Retomar</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Interrompe o comando em execução, limpa a fila e ignora os comandos do chat até você retomar.</value></data>
@@ -4524,7 +4529,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Pausado.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>A imagem do controle para a sua transmissão. Adicione este endereço ao OBS como fonte de navegador:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>A imagem do controle para a sua transmissão precisa do Controle Web e do endereço HTTP sem criptografia dele. Ative Servir Também HTTP sem Criptografia no cartão Controle Web. Somente Este PC basta para o OBS neste PC.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Os espectadores se revezam com !claim, que outros dois espectadores aprovam, e pulam um comando com !skip. Os moderadores agem na hora. Só os 20 comandos mais recentes esperam na fila, e um comando é executado por no máximo 10 segundos.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Os espectadores se revezam com !claim, aprovado conforme definido acima, e pulam um comando com !skip, que exige dois espectadores ou um moderador. Só os 20 comandos mais recentes esperam na fila, e um comando é executado por no máximo 10 segundos.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Gerenciar Comandos do Chat</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Comandos do Chat</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Os espectadores digitam ! e uma palavra no chat da sua transmissão, como !jump. Cada palavra é um botão na linha Chat da Twitch, mapeado como qualquer entrada. !a500ms segura A por 500 ms, !a+b pressiona os dois e !a b pressiona um depois do outro.</value></data>

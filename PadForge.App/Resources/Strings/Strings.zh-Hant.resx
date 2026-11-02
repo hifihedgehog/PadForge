@@ -4563,6 +4563,11 @@
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>讀取 Twitch 聊天室</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>頻道</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>您的頻道名稱或 twitch.tv 位址。</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>誰能核准 !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>誰能輸入 !accept @name，讓觀眾取得以 !claim 要求的獨佔控制權。兩位觀眾可能是同一個人使用備用帳號。</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>僅限您</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>您和您的板主</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>您、您的板主或另外兩位觀眾</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>暫停</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>繼續</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>停止正在執行的指令、清空佇列，並在您繼續之前忽略聊天室指令。</value></data>
@@ -4579,7 +4584,7 @@
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>已暫停。</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>供直播使用的控制器畫面。請將此位址新增到 OBS 作為瀏覽器來源：</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>供直播使用的控制器畫面需要網頁控制器及其純 HTTP 位址。請在網頁控制器卡片中開啟「同時提供純 HTTP」。若 OBS 在這部電腦上，只要選「僅限這部電腦」即可。</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>觀眾以 !claim 輪流操作，需經另外兩位觀眾核准，並可用 !skip 略過指令。板主會立即生效。佇列中只保留最新的 20 個指令，每個指令最多執行 10 秒。</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>觀眾以 !claim 輪流操作，核准方式依上方設定，並可用 !skip 略過指令，需兩位觀眾或一位板主。佇列中只保留最新的 20 個指令，每個指令最多執行 10 秒。</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>管理聊天室指令</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>聊天室指令</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>觀眾在直播聊天室輸入 ! 加上一個詞，例如 !jump。每個詞都是 Twitch 聊天室列上的一個按鍵，可像任何輸入一樣對應。!a500ms 會按住 A 500 毫秒，!a+b 會同時按下兩者，!a b 則會依序按下。</value></data>

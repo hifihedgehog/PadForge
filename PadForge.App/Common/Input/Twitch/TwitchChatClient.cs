@@ -171,8 +171,9 @@ namespace PadForge.Common.Input.Twitch
         private int _statusVersion;
 
         /// <summary>A chat message: who sent it, whether a moderator or the
-        /// broadcaster did, and its text.</summary>
-        public event Action<string, bool, string> Message;
+        /// broadcaster did, whether the broadcaster did, and its
+        /// text.</summary>
+        public event Action<string, bool, bool, string> Message;
 
         public TwitchChatClient(string channel, Func<IChatSocket> newSocket = null)
         {
@@ -310,9 +311,14 @@ namespace PadForge.Common.Input.Twitch
                     if (line.Trailing == null) return LineOutcome.None;
                     string user = line.Tag("display-name");
                     if (user.Length == 0) user = line.Nick;
-                    bool moderator = line.Tag("mod") == "1"
-                        || line.Tag("badges").Contains("broadcaster/", StringComparison.Ordinal);
-                    Message?.Invoke(user, moderator, line.Trailing);
+                    // ComfyJS's test (app.js 1039): the sender's login, the
+                    // nick tmi.js reads from the prefix (ClientBase.js, the
+                    // PRIVMSG case), is the channel's name, which only the
+                    // channel's own account has. ForgePlay counts the
+                    // broadcaster as a moderator (ChatMessage.js 22 to 28).
+                    bool broadcaster = string.Equals(line.Nick, _channel, StringComparison.OrdinalIgnoreCase);
+                    bool moderator = broadcaster || line.Tag("mod") == "1";
+                    Message?.Invoke(user, moderator, broadcaster, line.Trailing);
                     return LineOutcome.Message;
                 default:
                     return LineOutcome.None;

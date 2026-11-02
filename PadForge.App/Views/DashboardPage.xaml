@@ -2256,16 +2256,39 @@
                                   IsChecked="{Binding EnableTwitchChat}"/>
                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableTwitchChat" SettingLabel="{Binding Dashboard_EnableTwitchChat, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableTwitchChat_2245"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10" IsEnabled="{Binding EnableTwitchChat}">
+                    <!-- One grid so the boxes line up under labels of
+                         different widths, the Game Telemetry card's grid. -->
+                    <Grid Margin="0,0,0,10" IsEnabled="{Binding EnableTwitchChat}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
                         <TextBlock Text="{Binding Dashboard_TwitchChatChannel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0"/>
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
                         <!-- A second after the last key, so the row reopens
                              once per edit rather than once per letter. -->
-                        <ui:TextBox Text="{Binding TwitchChatChannel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}"
+                        <ui:TextBox Grid.Column="1" Text="{Binding TwitchChatChannel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}"
                                     AutomationProperties.Name="{Binding Dashboard_TwitchChatChannel, Source={x:Static strings:Strings.Instance}}"
                                     ToolTip="{Binding Dashboard_TwitchChatChannel_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                    Width="260" VerticalAlignment="Center"/>
-                    </StackPanel>
+                                    Width="260" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                        <TextBlock Grid.Row="1" Text="{Binding Dashboard_TwitchChatClaimApproval, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0"/>
+                        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                            <ComboBox SelectedIndex="{Binding TwitchChatClaimApprovalIndex}" MinWidth="260" VerticalAlignment="Center"
+                                      AutomationProperties.Name="{Binding Dashboard_TwitchChatClaimApproval, Source={x:Static strings:Strings.Instance}}"
+                                      ToolTip="{Binding Dashboard_TwitchChatClaimApproval_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                <ComboBoxItem Content="{Binding TwitchChat_Approval_Streamer, Source={x:Static strings:Strings.Instance}}"/>
+                                <ComboBoxItem Content="{Binding TwitchChat_Approval_Moderators, Source={x:Static strings:Strings.Instance}}"/>
+                                <ComboBoxItem Content="{Binding TwitchChat_Approval_Viewers, Source={x:Static strings:Strings.Instance}}"/>
+                            </ComboBox>
+                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="TwitchChatClaimApprovalIndex" SettingLabel="{Binding Dashboard_TwitchChatClaimApproval, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_TwitchChatClaimApprovalIndex_2289" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
                     <!-- The streamer's controls, live while the row is open. -->
                     <WrapPanel Margin="0,0,0,10" IsEnabled="{Binding IsTwitchChatOpen}">
                         <Button Command="{Binding TwitchChatPauseCommand}" Margin="0,0,8,0" MinWidth="90"

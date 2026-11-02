@@ -168,7 +168,8 @@ namespace PadForge.Common.Input.Twitch
         internal int StatusVersion => _client?.StatusVersion ?? 0;
 
         /// <summary>Bumps when anything the picture page shows changes.</summary>
-        internal int ShowVersion => _player.Version + _turns.Version + StatusVersion + TwitchChatRuntime.PauseVersion;
+        internal int ShowVersion => _player.Version + _turns.Version + StatusVersion + TwitchChatRuntime.PauseVersion
+            + TwitchChatRuntime.ClaimApprovalVersion;
 
         /// <summary>Everything the picture page shows, read now.</summary>
         internal TwitchChatSnapshot Snapshot()
@@ -185,6 +186,7 @@ namespace PadForge.Common.Input.Twitch
                 _turns.Owner,
                 _turns.RemainingControlMs,
                 _turns.PendingRequests,
+                _turns.VotesNeeded,
                 _turns.Notice);
         }
 
@@ -201,16 +203,16 @@ namespace PadForge.Common.Input.Twitch
             return true;
         }
 
-        private void OnMessage(string user, bool moderator, string text)
+        private void OnMessage(string user, bool moderator, bool broadcaster, string text)
         {
             if (_disposed) return;
-            try { HandleMessage(user, moderator, text); }
+            try { HandleMessage(user, moderator, text, broadcaster); }
             catch (Exception ex) { SdlDiagLog.WriteLine("Twitch chat: a message failed: " + ex.Message); }
         }
 
         /// <summary>Acts on one chat message. The client calls it for every
         /// message, and the tests call it directly.</summary>
-        internal void HandleMessage(string user, bool moderator, string text)
+        internal void HandleMessage(string user, bool moderator, string text, bool broadcaster = false)
         {
             if (_disposed || string.IsNullOrEmpty(text)) return;
             string t = text.Trim();
@@ -237,7 +239,7 @@ namespace PadForge.Common.Input.Twitch
             string rest = space < 0 ? string.Empty : body.Substring(space + 1);
             string[] args = rest.Split((char[])null, 2, StringSplitOptions.RemoveEmptyEntries);
             string argument = args.Length > 0 ? args[0] : string.Empty;
-            if (_turns.Handle(user, moderator, command, argument, _player.IsPlaying, all => _player.Skip(all)))
+            if (_turns.Handle(user, moderator, command, argument, _player.IsPlaying, all => _player.Skip(all), broadcaster))
                 return;
             if (!_turns.CanPlay(user, moderator)) return;
 

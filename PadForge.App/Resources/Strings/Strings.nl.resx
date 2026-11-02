@@ -4534,6 +4534,11 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Twitch-chat lezen</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Kanaal</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Je kanaalnaam of het twitch.tv-adres van je kanaal.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Wie !claim goedkeurt</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Wie een kijker het alleenbeheer kan geven waar die met !claim om vraagt, door !accept @name te typen. Twee kijkers kunnen één persoon met extra accounts zijn.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Alleen jij</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Jij en je moderators</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Jij, je moderators of twee andere kijkers</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Pauzeren</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Hervatten</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Stopt het commando dat wordt uitgevoerd, wist de rij en negeert chatcommando's tot je hervat.</value></data>
@@ -4550,7 +4555,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Gepauzeerd.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Het controllerbeeld voor je uitzending. Voeg dit adres toe aan OBS als browserbron:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Het controllerbeeld voor je uitzending heeft de Webcontroller en het onversleutelde HTTP-adres nodig. Zet Ook onversleuteld HTTP aanbieden aan in de kaart Webcontroller. Alleen deze pc is genoeg voor OBS op deze pc.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Kijkers nemen beurten met !claim, wat twee andere kijkers goedkeuren, en slaan een commando over met !skip. Moderators handelen direct. Alleen de nieuwste 20 commando's wachten in de rij, en een commando duurt maximaal 10 seconden.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Kijkers nemen beurten met !claim, goedgekeurd zoals hierboven ingesteld, en slaan een commando over met !skip, waarvoor twee kijkers of één moderator nodig zijn. Alleen de nieuwste 20 commando's wachten in de rij, en een commando duurt maximaal 10 seconden.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Chatcommando's beheren</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Chatcommando's</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Kijkers typen ! en een woord in de chat van je stream, zoals !jump. Elk woord is een knop op de rij Twitch-chat, toegewezen zoals elke invoer. !a500ms houdt A 500 ms ingedrukt, !a+b drukt beide in en !a b drukt ze na elkaar in.</value></data>

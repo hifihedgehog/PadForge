@@ -17,6 +17,7 @@ namespace PadForge.Common.Input.Twitch
         string Owner,
         long OwnerRemainingMs,
         IReadOnlyList<(string User, int Votes, long RemainingMs)> Requests,
+        int VotesNeeded,
         string Notice);
 
     /// <summary>
@@ -26,16 +27,18 @@ namespace PadForge.Common.Input.Twitch
     /// thread's device sweep, by the row and by the controller picture page.
     ///
     /// <para><see cref="Version"/> bumps on a change that needs the row
-    /// reopened: the switch and the channel. Pause, Skip, Clear and End
-    /// Claim act on the open row at once.</para>
+    /// reopened: the switch and the channel. Pause, Skip, Clear, End Claim
+    /// and who approves a claim act on the open row at once.</para>
     /// </summary>
     internal static class TwitchChatRuntime
     {
         private static volatile bool _enabled;
         private static volatile string _channel = string.Empty;
         private static volatile bool _paused;
+        private static volatile TwitchClaimApproval _claimApproval;
         private static volatile int _version;
         private static int _pauseVersion;
+        private static int _claimApprovalVersion;
         private static TwitchChatDevice _live;
 
         public static bool Enabled
@@ -85,6 +88,23 @@ namespace PadForge.Common.Input.Twitch
         /// <summary>Bumps when <see cref="Paused"/> flips.</summary>
         internal static int PauseVersion => Volatile.Read(ref _pauseVersion);
 
+        /// <summary>Who approves a viewer's !claim. The open row reads it on
+        /// every command, so a change needs no reopening.</summary>
+        public static TwitchClaimApproval ClaimApproval
+        {
+            get => _claimApproval;
+            set
+            {
+                if (_claimApproval == value) return;
+                _claimApproval = value;
+                Interlocked.Increment(ref _claimApprovalVersion);
+            }
+        }
+
+        /// <summary>Bumps when <see cref="ClaimApproval"/> changes, which the
+        /// picture page's vote count shows.</summary>
+        internal static int ClaimApprovalVersion => Volatile.Read(ref _claimApprovalVersion);
+
         /// <summary>The open row, null while chat control is off.</summary>
         internal static TwitchChatDevice Live => Volatile.Read(ref _live);
 
@@ -110,6 +130,7 @@ namespace PadForge.Common.Input.Twitch
             _enabled = false;
             _channel = string.Empty;
             _paused = false;
+            _claimApproval = TwitchClaimApproval.Streamer;
             Volatile.Write(ref _live, null);
         }
     }

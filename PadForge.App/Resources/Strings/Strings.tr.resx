@@ -4563,6 +4563,11 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Twitch sohbetini oku</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Kanal</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Kanalınızın adı veya twitch.tv adresi.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>!claim'i kim onaylar</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>İzleyicinin !claim ile istediği tek kişilik kontrolü, !accept @name yazarak kimlerin verebileceğini belirler. İki izleyici, yedek hesapları olan tek kişi olabilir.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Yalnızca siz</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Siz ve moderatörleriniz</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Siz, moderatörleriniz veya diğer iki izleyici</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Duraklat</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Sürdür</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Oynayan komutu durdurur, sırayı temizler ve siz sürdürene kadar sohbet komutlarını yok sayar.</value></data>
@@ -4579,7 +4584,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Duraklatıldı.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Yayınınız için kontrolcü görüntüsü. Bu adresi OBS'ye tarayıcı kaynağı olarak ekleyin:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Yayınınız için kontrolcü görüntüsü, Web kontrolcüsü ve düz HTTP adresi gerektirir. Web kontrolcüsü kartında Düz HTTP de sun seçeneğini açın. Bu bilgisayardaki OBS için Yalnızca bu bilgisayar yeterlidir.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>İzleyiciler !claim ile sırayla kontrolü alır, bunu diğer iki izleyici onaylar. Bir komutu !skip ile atlarlar. Moderatörler hemen işlem yapar. Sırada yalnızca en yeni 20 komut bekler ve bir komut en çok 10 saniye oynar.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>İzleyiciler !claim ile sırayla kontrolü alır, onay yukarıdaki ayara göre verilir. Bir komutu !skip ile atlarlar, bunun için iki izleyici ya da bir moderatör gerekir. Sırada yalnızca en yeni 20 komut bekler ve bir komut en çok 10 saniye oynar.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Sohbet komutlarını yönet</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Sohbet komutları</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>İzleyiciler yayınınızın sohbetine ! ve bir sözcük yazar, örneğin !jump. Her sözcük Twitch sohbeti satırında bir düğmedir ve herhangi bir giriş gibi eşlenir. !a500ms A düğmesini 500 ms basılı tutar, !a+b ikisine birden basar, !a b ise birinin ardından diğerine basar.</value></data>

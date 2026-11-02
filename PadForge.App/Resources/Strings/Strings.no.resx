@@ -4563,6 +4563,11 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Les Twitch-chatten</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Kanal</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Kanalnavnet ditt eller twitch.tv-adressen til kanalen.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Hvem godkjenner !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Hvem som kan gi en seer eneste kontroll som seeren ber om med !claim, ved å skrive !accept @name. To seere kan være én person med ekstra kontoer.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Bare deg</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Deg og moderatorene dine</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Deg, moderatorene dine eller to andre seere</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Pause</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Fortsett</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Stopper kommandoen som spilles, tømmer køen og ignorerer chatkommandoer til du fortsetter.</value></data>
@@ -4579,7 +4584,7 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Satt på pause.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Kontrollerbildet for sendingen din. Legg til denne adressen i OBS som en nettleserkilde:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Kontrollerbildet for sendingen din krever Nettkontroller og den vanlige HTTP-adressen. Slå på Lever også vanlig HTTP i kortet Nettkontroller. Bare denne PC-en er nok for OBS på denne PC-en.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Seerne bytter på med !claim, som to andre seere godkjenner, og hopper over en kommando med !skip. Moderatorer handler med en gang. Bare de 20 nyeste kommandoene venter i køen, og en kommando spilles i høyst 10 sekunder.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Seerne bytter på med !claim, godkjent som angitt ovenfor, og hopper over en kommando med !skip, som krever to seere eller én moderator. Bare de 20 nyeste kommandoene venter i køen, og en kommando spilles i høyst 10 sekunder.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Behandle chatkommandoer</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Chatkommandoer</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Seerne skriver ! og et ord i chatten din, for eksempel !jump. Hvert ord er en knapp på raden Twitch-chat, tilordnet som en hvilken som helst inndata. !a500ms holder inne A i 500 ms, !a+b trykker begge, og !a b trykker den ene etter den andre.</value></data>

@@ -4514,6 +4514,11 @@
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Twitch チャットを読み取る</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>チャンネル</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>チャンネル名、または twitch.tv のアドレスを入力します。</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>!claim を承認する人</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>視聴者が !claim で求める単独の操作権を、!accept @name と入力して与えられる人を選びます。視聴者 2 人は、サブアカウントを使った同一人物である場合もあります。</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>自分のみ</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>自分とモデレーター</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>自分、モデレーター、または他の視聴者 2 人</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>一時停止</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>再開</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>実行中のコマンドを止めて待機列を空にし、再開するまでチャットコマンドを無視します。</value></data>
@@ -4530,7 +4535,7 @@
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>一時停止中です。</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>配信用のコントローラー画像です。次のアドレスを OBS のブラウザーソースに追加してください:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>配信用のコントローラー画像には、Web コントローラーと暗号化なしの HTTP アドレスが必要です。Web コントローラーのカードで「暗号化なしの HTTP も提供する」をオンにしてください。この PC 上の OBS で使うなら「この PC のみ」で足ります。</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>視聴者は !claim で順番に操作でき、ほかの視聴者 2 人が承認します。!skip でコマンドをスキップできます。モデレーターは即座に実行できます。待機列に残るのは最新の 20 件のみで、1 つのコマンドの実行は最長 10 秒です。</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>視聴者は !claim で順番に操作でき、承認は上の設定に従います。!skip でコマンドをスキップするには、視聴者 2 人またはモデレーター 1 人が必要です。待機列に残るのは最新の 20 件のみで、1 つのコマンドの実行は最長 10 秒です。</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>チャットコマンドを管理</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>チャットコマンド</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>視聴者は配信のチャットに ! と単語を入力します (例: !jump)。各単語は Twitch チャット行のボタンで、通常の入力と同様にマッピングします。!a500ms は A を 500 ms 押し続け、!a+b は両方を同時に押し、!a b は順番に押します。</value></data>

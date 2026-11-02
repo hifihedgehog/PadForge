@@ -4589,6 +4589,11 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Read Twitch Chat</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Channel</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Your channel's name or its twitch.tv address.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Who approves !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Who can give a viewer the sole control they ask for with !claim, by typing !accept @name. Two viewers can be one person with spare accounts.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Only you</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>You and your moderators</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>You, your moderators or two other viewers</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Pause</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Resume</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Stops the command playing, clears the line and ignores chat commands until you resume.</value></data>
@@ -4605,7 +4610,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Paused.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>The controller picture for your broadcast. Add this address to OBS as a browser source:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>The controller picture for your broadcast needs the Web Controller and its plain HTTP address. Turn on Also Serve Plain HTTP in the Web Controller card. This PC Only is enough for OBS on this PC.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Viewers take turns with !claim, which two other viewers approve, and skip a command with !skip. Moderators act at once. Only the newest 20 commands wait in line, and a command plays for at most 10 seconds.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Viewers take turns with !claim, approved as set above, and skip a command with !skip, which takes two viewers or one moderator. Only the newest 20 commands wait in line, and a command plays for at most 10 seconds.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Manage Chat Commands</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Chat Commands</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Viewers type ! and a word in your stream's chat, like !jump. Each word is a button on the Twitch Chat row, mapped like any input. !a500ms holds A for 500 ms, !a+b presses both, and !a b presses one after the other.</value></data>

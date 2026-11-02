@@ -262,6 +262,7 @@ namespace PadForge.ViewModels
             nameof(GameModDsxStandIn) or
             nameof(EnableGameTelemetry) or
             nameof(EnableTwitchChat) or
+            nameof(TwitchChatClaimApprovalIndex) or
             nameof(EnableWebController) or
             nameof(EnableWebControllerPlainHttp) or
             nameof(WebControllerPlainHttpLocalOnly) or
@@ -299,6 +300,11 @@ namespace PadForge.ViewModels
                 case nameof(EnableTwitchChat):
                 {
                     EnableTwitchChat = false;
+                    break;
+                }
+                case nameof(TwitchChatClaimApprovalIndex):
+                {
+                    TwitchChatClaimApprovalIndex = (int)PadForge.Common.Input.Twitch.TwitchClaimApproval.Streamer;
                     break;
                 }
                 case nameof(EnableWebController):

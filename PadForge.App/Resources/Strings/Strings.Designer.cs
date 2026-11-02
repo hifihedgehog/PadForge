@@ -4325,6 +4325,11 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_EnableTwitchChat => Get("Dashboard_EnableTwitchChat");
     public string Dashboard_TwitchChatChannel => Get("Dashboard_TwitchChatChannel");
     public string Dashboard_TwitchChatChannel_Tooltip => Get("Dashboard_TwitchChatChannel_Tooltip");
+    public string Dashboard_TwitchChatClaimApproval => Get("Dashboard_TwitchChatClaimApproval");
+    public string Dashboard_TwitchChatClaimApproval_Tooltip => Get("Dashboard_TwitchChatClaimApproval_Tooltip");
+    public string TwitchChat_Approval_Streamer => Get("TwitchChat_Approval_Streamer");
+    public string TwitchChat_Approval_Moderators => Get("TwitchChat_Approval_Moderators");
+    public string TwitchChat_Approval_Viewers => Get("TwitchChat_Approval_Viewers");
     public string TwitchChat_Pause => Get("TwitchChat_Pause");
     public string TwitchChat_Resume => Get("TwitchChat_Resume");
     public string TwitchChat_Pause_Tooltip => Get("TwitchChat_Pause_Tooltip");

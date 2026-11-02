@@ -4563,6 +4563,11 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Lesa Twitch-spjall</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Rás</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Nafn rásarinnar þinnar eða twitch.tv-vistfang hennar.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Hver samþykkir !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Hver getur veitt áhorfanda einkastjórnina sem hann biður um með !claim, með því að skrifa !accept @name. Tveir áhorfendur geta verið ein og sama manneskjan með aukaaðganga.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Aðeins þú</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Þú og umsjónarmenn þínir</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Þú, umsjónarmenn þínir eða tveir aðrir áhorfendur</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Hlé</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Halda áfram</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Stöðvar skipunina sem er í spilun, tæmir biðröðina og hunsar spjallskipanir þar til þú heldur áfram.</value></data>
@@ -4579,7 +4584,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Í hléi.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Stýripinnamyndin fyrir útsendinguna þína. Bættu þessu vistfangi við OBS sem vafrauppsprettu (browser source):</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Stýripinnamyndin fyrir útsendinguna þína krefst Vefstýringar og ódulkóðaða HTTP-vistfangsins hennar. Kveiktu á Bjóða einnig upp á ódulkóðað HTTP á spjaldinu Vefstýring. Aðeins þessi tölva nægir fyrir OBS á þessari tölvu.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Áhorfendur skiptast á með !claim, sem tveir aðrir áhorfendur samþykkja, og sleppa skipun með !skip. Umsjónarmenn gera það strax. Aðeins nýjustu 20 skipanirnar bíða í röðinni og skipun spilast í mesta lagi í 10 sekúndur.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Áhorfendur skiptast á með !claim, samþykkt eins og stillt er hér að ofan, og sleppa skipun með !skip, sem tveir áhorfendur eða einn umsjónarmaður geta gert. Aðeins nýjustu 20 skipanirnar bíða í röðinni og skipun spilast í mesta lagi í 10 sekúndur.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Sýsla með spjallskipanir</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Spjallskipanir</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Áhorfendur skrifa ! og orð í spjall straumsins þíns, til dæmis !jump. Hvert orð er hnappur á línunni Twitch-spjall og er varpað eins og hverju öðru inntaki. !a500ms heldur A inni í 500 ms, !a+b ýtir á báða og !a b ýtir á annan á eftir hinum.</value></data>

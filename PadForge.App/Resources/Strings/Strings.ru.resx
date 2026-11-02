@@ -4563,6 +4563,11 @@
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Читать чат Twitch</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Канал</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Название вашего канала или его адрес twitch.tv.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Кто подтверждает !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Кто может дать зрителю единоличное управление, о котором он просит командой !claim, написав !accept @name. Двое зрителей могут быть одним человеком с запасными аккаунтами.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Только вы</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Вы и ваши модераторы</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Вы, ваши модераторы или двое других зрителей</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Пауза</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Продолжить</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Останавливает играющую команду, очищает очередь и игнорирует команды чата, пока вы не продолжите.</value></data>
@@ -4579,7 +4584,7 @@
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Пауза.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Изображение контроллера для вашей трансляции. Добавьте этот адрес в OBS как источник «Браузер»:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Изображению контроллера для вашей трансляции нужны «Веб-контроллер» и адрес обычного HTTP. Включите «Также отдавать по обычному HTTP» в карточке «Веб-контроллер». Для OBS на этом ПК достаточно «Только этот ПК».</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Зрители играют по очереди с помощью !claim, который подтверждают двое других зрителей, и пропускают команду с помощью !skip. Модераторы действуют сразу. В очереди ждут только 20 последних команд, а одна команда играет не дольше 10 секунд.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Зрители играют по очереди с помощью !claim, подтверждаемого как задано выше, и пропускают команду с помощью !skip, для чего нужны двое зрителей или один модератор. В очереди ждут только 20 последних команд, а одна команда играет не дольше 10 секунд.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Управление командами чата</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Команды чата</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Зрители пишут в чате вашей трансляции знак ! и слово, например !jump. Каждое слово становится кнопкой в строке «Чат Twitch», которую можно назначить как любой ввод. !a500ms удерживает A 500 мс, !a+b нажимает обе кнопки сразу, а !a b нажимает одну за другой.</value></data>

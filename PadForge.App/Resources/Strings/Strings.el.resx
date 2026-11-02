@@ -4563,6 +4563,11 @@
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Ανάγνωση συνομιλίας Twitch</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Κανάλι</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Το όνομα του καναλιού σας ή η διεύθυνσή του στο twitch.tv.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Ποιος εγκρίνει το !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Ποιος μπορεί να δώσει σε έναν θεατή τον αποκλειστικό έλεγχο που ζητά με !claim, πληκτρολογώντας !accept @name. Δύο θεατές μπορεί να είναι το ίδιο άτομο με εφεδρικούς λογαριασμούς.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Μόνο εσείς</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Εσείς και οι συντονιστές σας</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Εσείς, οι συντονιστές σας ή δύο άλλοι θεατές</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Παύση</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Συνέχιση</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Σταματά την εντολή που εκτελείται, καθαρίζει τη σειρά και αγνοεί τις εντολές συνομιλίας μέχρι να συνεχίσετε.</value></data>
@@ -4579,7 +4584,7 @@
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Σε παύση.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Η εικόνα του χειριστηρίου για τη μετάδοσή σας. Προσθέστε αυτή τη διεύθυνση στο OBS ως πηγή προγράμματος περιήγησης:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Η εικόνα του χειριστηρίου για τη μετάδοσή σας χρειάζεται το Χειριστήριο web και την απλή διεύθυνση HTTP. Ενεργοποιήστε το Παροχή και απλού HTTP στην κάρτα Χειριστήριο web. Το Μόνο αυτός ο υπολογιστής αρκεί για το OBS σε αυτόν τον υπολογιστή.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Οι θεατές παίρνουν σειρά με !claim, που εγκρίνουν δύο άλλοι θεατές, και προσπερνούν μια εντολή με !skip. Οι συντονιστές ενεργούν αμέσως. Στη σειρά περιμένουν μόνο οι 20 νεότερες εντολές και μια εντολή εκτελείται για το πολύ 10 δευτερόλεπτα.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Οι θεατές παίρνουν σειρά με !claim, που εγκρίνεται όπως έχει οριστεί παραπάνω, και προσπερνούν μια εντολή με !skip, που χρειάζεται δύο θεατές ή έναν συντονιστή. Στη σειρά περιμένουν μόνο οι 20 νεότερες εντολές και μια εντολή εκτελείται για το πολύ 10 δευτερόλεπτα.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Διαχείριση εντολών συνομιλίας</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Εντολές συνομιλίας</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Οι θεατές πληκτρολογούν ! και μια λέξη στη συνομιλία της μετάδοσής σας, όπως !jump. Κάθε λέξη είναι ένα κουμπί στη γραμμή Συνομιλία Twitch, με αντιστοίχιση όπως κάθε είσοδο. Το !a500ms κρατά πατημένο το A για 500 ms, το !a+b πατά και τα δύο, και το !a b πατά το ένα μετά το άλλο.</value></data>

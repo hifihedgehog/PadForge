@@ -4563,6 +4563,11 @@
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Читај Twitch чет</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Канал</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Име вашег канала или његова twitch.tv адреса.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Ко одобрава !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Ко гледаоцу може дати искључиво управљање које тражи командом !claim, куцањем !accept @name. Два гледаоца могу бити једна особа са додатним налозима.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Само ви</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Ви и ваши модератори</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Ви, ваши модератори или два друга гледаоца</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Паузирај</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Настави</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Зауставља команду која се изводи, празни ред чекања и занемарује команде из чета док не наставите.</value></data>
@@ -4579,7 +4584,7 @@
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Паузирано.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Слика контролера за ваш пренос. Додајте ову адресу у програм OBS као извор прегледача:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Слици контролера за ваш пренос потребан је Веб контролер и његова обична HTTP адреса. Укључите Пружај и обичан HTTP у картици Веб контролер. Опција Само овај рачунар довољна је за програм OBS на овом рачунару.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Гледаоци се смењују командом !claim, коју одобравају два друга гледаоца, а команду прескачу са !skip. Модератори делују одмах. У реду чека само најновијих 20 команди, а једна команда траје највише 10 секунди.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Гледаоци се смењују командом !claim, одобреном како је подешено изнад, а команду прескачу са !skip, за шта су потребна два гледаоца или један модератор. У реду чека само најновијих 20 команди, а једна команда траје највише 10 секунди.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Управљај командама чета</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Команде чета</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Гледаоци у чету вашег стрима куцају ! и реч, на пример !jump. Свака реч је дугме у реду Twitch чет, мапирано као било који улаз. !a500ms држи дугме A 500ms, !a+b притиска оба, а !a b притиска једно за другим.</value></data>

@@ -4514,6 +4514,11 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Lire le chat Twitch</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Chaîne</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Le nom de votre chaîne ou son adresse twitch.tv.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Qui approuve !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Qui peut donner à un spectateur le contrôle exclusif qu'il demande avec !claim, en tapant !accept @name. Deux spectateurs peuvent être une seule personne avec des comptes secondaires.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Vous seulement</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Vous et vos modérateurs</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Vous, vos modérateurs ou deux autres spectateurs</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Pause</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Reprendre</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Arrête la commande en cours, vide la file et ignore les commandes du chat jusqu'à la reprise.</value></data>
@@ -4530,7 +4535,7 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>En pause.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>L'image de la manette pour votre diffusion. Ajoutez cette adresse à OBS comme source navigateur :</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>L'image de la manette pour votre diffusion nécessite le Contrôleur Web et son adresse HTTP non chiffrée. Activez Servir aussi en HTTP non chiffré dans la carte Contrôleur Web. Ce PC uniquement suffit pour OBS sur ce PC.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Les spectateurs jouent à tour de rôle avec !claim, que deux autres spectateurs approuvent, et passent une commande avec !skip. Les modérateurs agissent immédiatement. Seules les 20 dernières commandes attendent dans la file, et une commande joue 10 secondes au maximum.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Les spectateurs jouent à tour de rôle avec !claim, approuvé comme réglé ci-dessus, et passent une commande avec !skip, ce qui demande deux spectateurs ou un modérateur. Seules les 20 dernières commandes attendent dans la file, et une commande joue 10 secondes au maximum.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Gérer les commandes du chat</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Commandes du chat</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Les spectateurs tapent ! suivi d'un mot dans le chat de votre stream, par exemple !jump. Chaque mot est un bouton de la ligne Chat Twitch, mappé comme n'importe quelle entrée. !a500ms maintient A pendant 500 ms, !a+b appuie sur les deux, et !a b appuie sur l'un après l'autre.</value></data>

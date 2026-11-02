@@ -4563,6 +4563,11 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Đọc chat Twitch</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Kênh</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Tên kênh của bạn hoặc địa chỉ twitch.tv của kênh.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Ai chấp thuận !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Ai có thể trao cho người xem quyền điều khiển riêng mà họ yêu cầu bằng !claim, bằng cách gõ !accept @name. Hai người xem có thể chỉ là một người dùng thêm tài khoản phụ.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Chỉ bạn</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Bạn và người điều hành của bạn</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Bạn, người điều hành hoặc hai người xem khác</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Tạm dừng</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Tiếp tục</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Dừng lệnh đang chạy, xóa hàng chờ và bỏ qua các lệnh chat cho đến khi bạn tiếp tục.</value></data>
@@ -4579,7 +4584,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Đã tạm dừng.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Hình tay cầm cho buổi phát của bạn. Thêm địa chỉ này vào OBS làm nguồn trình duyệt:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Hình tay cầm cho buổi phát của bạn cần Tay cầm web và địa chỉ HTTP thường của nó. Bật Phục vụ cả HTTP thường trong thẻ Tay cầm web. Chỉ PC này là đủ cho OBS trên PC này.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Người xem lần lượt đến lượt mình bằng !claim, cần hai người xem khác chấp thuận, và bỏ qua một lệnh bằng !skip. Người điều hành có hiệu lực ngay. Chỉ 20 lệnh mới nhất được chờ trong hàng, và mỗi lệnh chạy tối đa 10 giây.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Người xem lần lượt đến lượt mình bằng !claim, được chấp thuận như đã đặt ở trên, và bỏ qua một lệnh bằng !skip, cần hai người xem hoặc một người điều hành. Chỉ 20 lệnh mới nhất được chờ trong hàng, và mỗi lệnh chạy tối đa 10 giây.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Quản lý lệnh chat</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Lệnh chat</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Người xem gõ ! kèm một từ trong chat của luồng phát, như !jump. Mỗi từ là một nút trên hàng Chat Twitch, được ánh xạ như mọi đầu vào. !a500ms giữ A trong 500 ms, !a+b nhấn cả hai, và !a b nhấn lần lượt từng nút.</value></data>

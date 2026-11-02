@@ -4563,6 +4563,11 @@
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>خواندن چت Twitch</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>کانال</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>نام کانال شما یا نشانی twitch.tv آن.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>چه کسی !claim را تأیید می‌کند</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>چه کسی می‌تواند با تایپ !accept @name کنترل انحصاری‌ای را که بیننده با !claim درخواست کرده به او بدهد. دو بیننده می‌توانند یک نفر با حساب‌های اضافه باشند.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>فقط شما</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>شما و مدیران چت شما</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>شما، مدیران چت یا دو بیننده دیگر</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>مکث</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>ادامه</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>فرمان در حال اجرا را متوقف می‌کند، صف را پاک می‌کند و تا زمان ادامه، فرمان‌های چت را نادیده می‌گیرد.</value></data>
@@ -4579,7 +4584,7 @@
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>مکث شده.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>تصویر کنترلر برای پخش زنده شما. این نشانی را در OBS به‌عنوان منبع مرورگر اضافه کنید:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>تصویر کنترلر برای پخش زنده شما به کنترلر وب و نشانی HTTP ساده آن نیاز دارد. در کارت کنترلر وب، HTTP ساده هم ارائه شود را روشن کنید. فقط همین رایانه برای OBS روی همین رایانه کافی است.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>بینندگان با !claim نوبت می‌گیرند که دو بیننده دیگر آن را تأیید می‌کنند، و با !skip یک فرمان را رد می‌کنند. مدیران چت فوراً اقدام می‌کنند. فقط 20 فرمان آخر در صف می‌مانند و هر فرمان حداکثر 10 ثانیه اجرا می‌شود.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>بینندگان با !claim نوبت می‌گیرند که طبق تنظیم بالا تأیید می‌شود، و با !skip یک فرمان را رد می‌کنند که به دو بیننده یا یک مدیر چت نیاز دارد. فقط 20 فرمان آخر در صف می‌مانند و هر فرمان حداکثر 10 ثانیه اجرا می‌شود.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>مدیریت فرمان‌های چت</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>فرمان‌های چت</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>بینندگان در چت استریم شما ! و یک کلمه تایپ می‌کنند، مثل !jump. هر کلمه یک دکمه در ردیف چت Twitch است و مثل هر ورودی نگاشت می‌شود. !a500ms دکمه A را 500 میلی‌ثانیه نگه می‌دارد، !a+b هر دو را فشار می‌دهد و !a b یکی پس از دیگری را فشار می‌دهد.</value></data>

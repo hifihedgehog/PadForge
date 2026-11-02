@@ -4,15 +4,37 @@ using System.Linq;
 
 namespace PadForge.Common.Input.Twitch
 {
+    /// <summary>Who approves a viewer's "!claim" (issue #555). Saved as its
+    /// number, so the order is fixed.</summary>
+    public enum TwitchClaimApproval
+    {
+        /// <summary>The streamer alone, the default. Viewer votes count for
+        /// nothing, since one person with spare accounts could cast
+        /// them all.</summary>
+        Streamer = 0,
+
+        /// <summary>The streamer and the channel's moderators.</summary>
+        Moderators = 1,
+
+        /// <summary>ForgePlay's rule: the streamer, a moderator, or any two
+        /// other viewers.</summary>
+        Viewers = 2,
+    }
+
     /// <summary>
     /// Taking turns (issue #555), Yuriy's rules from ForgePlay
     /// (src/main/command/ClaimControl.js and SkipControl.js):
     ///
     /// <list type="bullet">
-    /// <item>"!claim" asks for sole control. Two other viewers approve with
-    /// "!accept @name" or "!claim @name" within 60 seconds, and control lasts
-    /// five minutes. Up to five requests wait. A moderator's "!claim @name"
-    /// grants control at once, and "!claim status" shows the state.</item>
+    /// <item>"!claim" asks for sole control for five minutes, and the request
+    /// waits 60 seconds. Up to five requests wait. Who approves is the
+    /// streamer's choice (<see cref="TwitchClaimApproval"/>): an approver's
+    /// "!accept @name" or "!claim @name" grants control at once, and with
+    /// <see cref="TwitchClaimApproval.Viewers"/> two other viewers' "!accept
+    /// @name" or "!claim @name" do too. "!claim @name" from an approver needs
+    /// no request, as a moderator's does in ForgePlay. ForgePlay counts a
+    /// moderator's "!accept" as one viewer's vote. "!claim status" shows the
+    /// state.</item>
     /// <item>"!release" ends your own claim, and a moderator's
     /// "!release @name" ends someone else's.</item>
     /// <item>While someone holds control, only their commands and
@@ -50,6 +72,7 @@ namespace PadForge.Common.Input.Twitch
 
         private readonly object _lock = new();
         private readonly Func<long> _now;
+        private readonly Func<TwitchClaimApproval> _approval;
         private readonly Dictionary<string, Request> _requests = new(StringComparer.Ordinal);
         private readonly SkipVote[] _skips = new SkipVote[2];
         private string _owner;
@@ -58,10 +81,18 @@ namespace PadForge.Common.Input.Twitch
         private int _version;
 
         /// <param name="now">Milliseconds on a monotonic clock.</param>
-        public ChatTurns(Func<long> now = null)
+        /// <param name="approval">Who approves a claim, read on every
+        /// command, so a change applies at once. The streamer's setting when
+        /// null.</param>
+        public ChatTurns(Func<long> now = null, Func<TwitchClaimApproval> approval = null)
         {
             _now = now ?? (() => Environment.TickCount64);
+            _approval = approval ?? (() => TwitchChatRuntime.ClaimApproval);
         }
+
+        /// <summary>Votes a request needs, 0 when viewers cannot
+        /// approve.</summary>
+        public int VotesNeeded => _approval() == TwitchClaimApproval.Viewers ? RequiredVotes : 0;
 
         /// <summary>The latest result, for the controller picture page.</summary>
         public string Notice { get { lock (_lock) return _notice; } }
@@ -113,13 +144,15 @@ namespace PadForge.Common.Input.Twitch
         /// <paramref name="running"/> says a command is playing, which a skip
         /// needs, and <paramref name="skip"/> stops it, clearing the line too
         /// when its argument is true, and says whether anything
-        /// stopped.</summary>
-        public bool Handle(string user, bool moderator, string command, string argument, bool running, Func<bool, bool> skip)
+        /// stopped. <paramref name="broadcaster"/> says the streamer sent
+        /// it.</summary>
+        public bool Handle(string user, bool moderator, string command, string argument, bool running, Func<bool, bool> skip,
+            bool broadcaster = false)
         {
             switch (command)
             {
-                case "claim": Claim(user, moderator, argument); return true;
-                case "accept": Accept(user, argument); return true;
+                case "claim": Claim(user, Approves(moderator, broadcaster), argument); return true;
+                case "accept": Accept(user, Approves(moderator, broadcaster), argument); return true;
                 case "release": Release(user, moderator, argument); return true;
                 case "skip": Skip(user, moderator, running, all: false, skip); return true;
                 case "skipall": Skip(user, moderator, running, all: true, skip); return true;
@@ -152,7 +185,12 @@ namespace PadForge.Common.Input.Twitch
             }
         }
 
-        private void Claim(string user, bool moderator, string argument)
+        /// <summary>True when the sender approves claims alone under the
+        /// streamer's setting.</summary>
+        private bool Approves(bool moderator, bool broadcaster)
+            => broadcaster || (moderator && _approval() != TwitchClaimApproval.Streamer);
+
+        private void Claim(string user, bool approver, string argument)
         {
             lock (_lock)
             {
@@ -173,7 +211,7 @@ namespace PadForge.Common.Input.Twitch
                     Say($"@{Clean(user)}: invalid claim target {argument}.");
                     return;
                 }
-                if (moderator)
+                if (approver)
                 {
                     string granted = _requests.TryGetValue(target, out var request) ? request.User : Clean(argument);
                     Grant(granted);
@@ -184,7 +222,7 @@ namespace PadForge.Common.Input.Twitch
             }
         }
 
-        private void Accept(string user, string argument)
+        private void Accept(string user, bool approver, string argument)
         {
             lock (_lock)
             {
@@ -195,8 +233,21 @@ namespace PadForge.Common.Input.Twitch
                     Say($"@{Clean(user)}: use !accept @name.");
                     return;
                 }
-                Vote(user, target);
+                if (approver) Approve(user, target);
+                else Vote(user, target);
             }
+        }
+
+        // Caller holds _lock. An approver's "!accept": the request is granted
+        // at once.
+        private void Approve(string user, string target)
+        {
+            ExpireOwner();
+            string name = Clean(user);
+            if (_owner != null) { Say($"@{name}: control belongs to @{_owner}."); return; }
+            if (!_requests.TryGetValue(target, out var request)) { Say($"@{name}: @{target} has not asked for control."); return; }
+            Grant(request.User);
+            Say($"@{name} gave @{request.User} control for {ControlMs / 60000} minutes.");
         }
 
         // Caller holds _lock.
@@ -210,14 +261,26 @@ namespace PadForge.Common.Input.Twitch
             if (_requests.ContainsKey(key)) { Say($"@{name}: you already asked for control."); return; }
             if (_requests.Count >= MaxPendingRequests) { Say($"@{name}: {MaxPendingRequests} requests are already waiting."); return; }
             _requests[key] = new Request { User = name, ExpiresAt = _now() + VoteMs };
-            Say($"@{name} asked for control. {RequiredVotes} other viewers can approve with !accept @{name} within {VoteMs / 1000} seconds.");
+            string approvers = _approval() switch
+            {
+                TwitchClaimApproval.Streamer => "The streamer",
+                TwitchClaimApproval.Moderators => "The streamer or a moderator",
+                _ => $"{RequiredVotes} other viewers",
+            };
+            Say($"@{name} asked for control. {approvers} can approve with !accept @{name} within {VoteMs / 1000} seconds.");
         }
 
-        // Caller holds _lock.
+        // Caller holds _lock. A viewer's "!accept @name" or "!claim @name",
+        // which counts only while viewers can approve.
         private void Vote(string user, string target)
         {
             ExpireOwner();
             string name = Clean(user);
+            switch (_approval())
+            {
+                case TwitchClaimApproval.Streamer: Say($"@{name}: only the streamer approves claims."); return;
+                case TwitchClaimApproval.Moderators: Say($"@{name}: only the streamer and moderators approve claims."); return;
+            }
             if (_owner != null) { Say($"@{name}: control belongs to @{_owner}."); return; }
             if (!_requests.TryGetValue(target, out var request)) { Say($"@{name}: @{target} has not asked for control."); return; }
             string voter = Normalize(user);
@@ -244,8 +307,9 @@ namespace PadForge.Common.Input.Twitch
             }
             if (_requests.Count == 0) { Say("Nobody has control or has asked for it."); return; }
             long now = _now();
+            bool votes = _approval() == TwitchClaimApproval.Viewers;
             Say("Waiting: " + string.Join(", ", _requests.Values.Select(r =>
-                $"@{r.User} {r.Voters.Count} of {RequiredVotes}, {(Math.Max(0, r.ExpiresAt - now) + 999) / 1000} seconds")) + ".");
+                $"@{r.User} {(votes ? $"{r.Voters.Count} of {RequiredVotes}, " : "")}{(Math.Max(0, r.ExpiresAt - now) + 999) / 1000} seconds")) + ".");
         }
 
         private void Release(string user, bool moderator, string argument)

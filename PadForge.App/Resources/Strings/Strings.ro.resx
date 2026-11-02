@@ -4563,6 +4563,11 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Citește chatul Twitch</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Canal</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Numele canalului dvs. sau adresa lui twitch.tv.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Cine aprobă !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Cine îi poate acorda unui spectator controlul exclusiv cerut cu !claim, scriind !accept @name. Doi spectatori pot fi o singură persoană cu conturi suplimentare.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Doar dvs.</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Dvs. și moderatorii dvs.</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Dvs., moderatorii dvs. sau alți doi spectatori</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Pauză</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Reluare</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Oprește comanda în curs, golește coada și ignoră comenzile din chat până la reluare.</value></data>
@@ -4579,7 +4584,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>În pauză.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Imaginea controlerului pentru transmisia dvs. Adăugați această adresă în OBS ca sursă de browser:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Imaginea controlerului pentru transmisie necesită Controler web și adresa lui HTTP simplă. Activați Servește și HTTP simplu în cardul Controler web. Doar acest PC este suficient pentru OBS de pe acest PC.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Spectatorii își preiau controlul pe rând cu !claim, pe care îl aprobă alți doi spectatori, și omit o comandă cu !skip. Moderatorii acționează imediat. În coadă așteaptă doar ultimele 20 de comenzi, iar o comandă rulează cel mult 10 secunde.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Spectatorii își preiau controlul pe rând cu !claim, aprobat conform setării de mai sus, și omit o comandă cu !skip, ceea ce cere doi spectatori sau un moderator. În coadă așteaptă doar ultimele 20 de comenzi, iar o comandă rulează cel mult 10 secunde.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Gestionare comenzi chat</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Comenzi chat</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Spectatorii scriu ! și un cuvânt în chatul transmisiei dvs., de exemplu !jump. Fiecare cuvânt este un buton pe rândul Chat Twitch, mapat ca orice intrare. !a500ms ține apăsat A timp de 500 ms, !a+b le apasă pe amândouă, iar !a b le apasă una după alta.</value></data>

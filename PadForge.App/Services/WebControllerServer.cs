@@ -1855,7 +1855,7 @@ namespace PadForge.Services
                 owner = s.Owner,
                 ownerSeconds = (s.OwnerRemainingMs + 999) / 1000,
                 requests = s.Requests.Select(r => new { user = r.User, votes = r.Votes, seconds = (r.RemainingMs + 999) / 1000 }).ToArray(),
-                votesNeeded = PadForge.Common.Input.Twitch.ChatTurns.RequiredVotes,
+                votesNeeded = s.VotesNeeded,
                 notice = s.Notice,
             };
         }

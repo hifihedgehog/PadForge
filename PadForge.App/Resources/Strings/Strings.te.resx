@@ -4563,6 +4563,11 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Twitch చాట్‌ను చదువు</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>ఛానెల్</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>మీ ఛానెల్ పేరు లేదా దాని twitch.tv చిరునామా.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>!claim ను ఎవరు ఆమోదిస్తారు</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>వీక్షకుడు !claim తో అడిగే ఏకైక నియంత్రణను !accept @name అని టైప్ చేసి ఎవరు ఇవ్వగలరు. ఇద్దరు వీక్షకులు అదనపు ఖాతాలున్న ఒకే వ్యక్తి కావచ్చు.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>మీరు మాత్రమే</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>మీరు, మీ మోడరేటర్లు</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>మీరు, మీ మోడరేటర్లు లేదా మరో ఇద్దరు వీక్షకులు</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>పాజ్ చేయి</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>కొనసాగించు</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>ప్లే అవుతున్న కమాండ్‌ను ఆపి, వరుసను క్లియర్ చేసి, మీరు కొనసాగించే వరకు చాట్ కమాండ్‌లను పట్టించుకోదు.</value></data>
@@ -4579,7 +4584,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>పాజ్ అయింది.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>మీ ప్రసారం కోసం కంట్రోలర్ చిత్రం. ఈ చిరునామాను OBS-లో బ్రౌజర్ సోర్స్‌గా జోడించండి:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>మీ ప్రసారం కోసం కంట్రోలర్ చిత్రానికి వెబ్ కంట్రోలర్, దాని సాధారణ HTTP చిరునామా అవసరం. వెబ్ కంట్రోలర్ కార్డ్‌లో సాధారణ HTTP-ను కూడా అందించు ఆన్ చేయండి. ఈ PCలో OBS కోసం ఈ PC మాత్రమే సరిపోతుంది.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>వీక్షకులు !claim తో వంతులవారీగా ఆడతారు, దాన్ని మరో ఇద్దరు వీక్షకులు ఆమోదిస్తారు, !skip తో కమాండ్‌ను దాటవేస్తారు. మోడరేటర్లు వెంటనే చర్య తీసుకుంటారు. వరుసలో తాజా 20 కమాండ్‌లు మాత్రమే వేచి ఉంటాయి, ఒక కమాండ్ గరిష్టంగా 10 సెకన్లు ప్లే అవుతుంది.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>వీక్షకులు !claim తో వంతులవారీగా ఆడతారు, ఆమోదం పైన సెట్ చేసినట్లు ఉంటుంది. !skip తో కమాండ్‌ను దాటవేస్తారు, దానికి ఇద్దరు వీక్షకులు లేదా ఒక మోడరేటర్ కావాలి. వరుసలో తాజా 20 కమాండ్‌లు మాత్రమే వేచి ఉంటాయి, ఒక కమాండ్ గరిష్టంగా 10 సెకన్లు ప్లే అవుతుంది.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>చాట్ కమాండ్‌లను నిర్వహించు</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>చాట్ కమాండ్‌లు</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>వీక్షకులు మీ స్ట్రీమ్ చాట్‌లో ! మరియు ఒక పదాన్ని టైప్ చేస్తారు, ఉదాహరణకు !jump. ప్రతి పదం Twitch చాట్ వరుసలో ఒక బటన్, ఏ ఇన్‌పుట్‌లాగే మ్యాప్ చేయవచ్చు. !a500ms A బటన్‌ను 500 ms పట్టుకుంటుంది, !a+b రెండింటినీ నొక్కుతుంది, !a b ఒకదాని తర్వాత ఒకటి నొక్కుతుంది.</value></data>

@@ -4563,6 +4563,11 @@
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Чытаць Twitch-чат</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Канал</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Назва вашага канала або яго адрас twitch.tv.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Хто зацвярджае !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Хто можа даць гледачу адзіночнае кіраванне, якое ён просіць камандай !claim, набраўшы !accept @name. Двое гледачоў могуць быць адным чалавекам з запаснымі акаўнтамі.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Толькі вы</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Вы і вашы мадэратары</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Вы, вашы мадэратары або двое іншых гледачоў</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Прыпыніць</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Узнавіць</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Спыняе каманду, што выконваецца, ачышчае чаргу і ігнаруе каманды чата, пакуль вы не ўзнавіце.</value></data>
@@ -4579,7 +4584,7 @@
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Паўза.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Карцінка кантролера для вашай трансляцыі. Дадайце гэты адрас у OBS як крыніцу «Браўзер»:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Карцінцы кантролера для трансляцыі патрэбны Вэб-кантролер і яго просты адрас HTTP. Уключыце «Таксама раздаваць просты HTTP» на картцы «Вэб-кантролер». Для OBS на гэтым ПК хопіць «Толькі гэты ПК».</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Гледачы па чарзе бяруць кіраванне камандай !claim, якую пацвярджаюць двое іншых гледачоў, і прапускаюць каманду праз !skip. Мадэратары дзейнічаюць адразу. У чарзе чакаюць толькі 20 найноўшых каманд, а каманда выконваецца не даўжэй за 10 секунд.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Гледачы па чарзе бяруць кіраванне камандай !claim, якую зацвярджаюць, як задана вышэй, і прапускаюць каманду праз !skip, для чаго патрэбныя двое гледачоў або адзін мадэратар. У чарзе чакаюць толькі 20 найноўшых каманд, а каманда выконваецца не даўжэй за 10 секунд.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Кіраваць камандамі чата</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Каманды чата</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Гледачы пішуць у чаце вашай трансляцыі ! і слова, напрыклад !jump. За кожным словам стаіць кнопка ў радку «Twitch-чат», якая прызначаецца як любы ўваход. !a500ms трымае A 500 мс, !a+b націскае абедзве кнопкі, а !a b націскае іх па чарзе.</value></data>

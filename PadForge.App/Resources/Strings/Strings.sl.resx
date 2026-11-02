@@ -4563,6 +4563,11 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Beri klepet Twitch</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Kanal</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Ime vašega kanala ali njegov naslov twitch.tv.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Kdo potrdi !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Kdo lahko gledalcu da izključni nadzor, ki ga zahteva z !claim, in sicer s tipkanjem !accept @name. Dva gledalca sta lahko ena oseba z dodatnimi računi.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Samo vi</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Vi in vaši moderatorji</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Vi, vaši moderatorji ali dva druga gledalca</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Pavziraj</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Nadaljuj</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Ustavi ukaz, ki se izvaja, počisti vrsto in ne upošteva ukazov iz klepeta, dokler ne nadaljujete.</value></data>
@@ -4579,7 +4584,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Pavza.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Slika krmilnika za vaš prenos. Ta naslov dodajte v OBS kot vir brskalnika:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Slika krmilnika za vaš prenos potrebuje Spletni krmilnik in njegov navaden naslov HTTP. Vklopite Streži tudi navaden HTTP na kartici Spletni krmilnik. Samo ta računalnik zadostuje za OBS na tem računalniku.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Gledalci se menjajo z !claim, ki ga potrdita še dva gledalca, in ukaz preskočijo z !skip. Moderatorji ukrepajo takoj. V vrsti čaka le zadnjih 20 ukazov, ukaz pa se izvaja največ 10 sekund.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Gledalci se menjajo z !claim, potrjenim, kot je nastavljeno zgoraj, in ukaz preskočijo z !skip, za kar sta potrebna dva gledalca ali en moderator. V vrsti čaka le zadnjih 20 ukazov, ukaz pa se izvaja največ 10 sekund.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Upravljaj klepetalne ukaze</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Klepetalni ukazi</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Gledalci v klepetu vašega prenosa vtipkajo ! in besedo, na primer !jump. Vsaka beseda je gumb v vrstici Klepet Twitch, preslikan kot vsak vhod. !a500ms drži A 500 ms, !a+b pritisne oba, !a b pa enega za drugim.</value></data>

@@ -4563,6 +4563,11 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Twitch च्याट पढ्नुहोस्</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>च्यानल</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>तपाईंको च्यानलको नाम वा त्यसको twitch.tv ठेगाना।</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>!claim कसले स्वीकृत गर्छ</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>दर्शकले !claim बाट माग्ने एकल नियन्त्रण !accept @name टाइप गरेर कसले दिन सक्छ। अतिरिक्त खाताहरू भएको एउटै व्यक्ति दुई दर्शक हुन सक्छ।</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>तपाईं मात्र</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>तपाईं र तपाईंका मोडरेटरहरू</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>तपाईं, तपाईंका मोडरेटर वा अरू दुई दर्शक</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>पज गर्नुहोस्</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>जारी राख्नुहोस्</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>चलिरहेको कमान्ड रोक्छ, लाइन खाली गर्छ र तपाईंले जारी नराखेसम्म च्याट कमान्डहरूलाई बेवास्ता गर्छ।</value></data>
@@ -4579,7 +4584,7 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>पज गरिएको।</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>तपाईंको प्रसारणका लागि कन्ट्रोलरको चित्र। यो ठेगानालाई OBS मा ब्राउजर स्रोतको रूपमा थप्नुहोस्:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>तपाईंको प्रसारणका लागि कन्ट्रोलरको चित्रलाई वेब कन्ट्रोलर र त्यसको सादा HTTP ठेगाना चाहिन्छ। वेब कन्ट्रोलर कार्डमा “सादा HTTP पनि दिनुहोस्” सक्रिय गर्नुहोस्। यही PC मा चल्ने OBS का लागि “यो PC मात्र” पर्याप्त छ।</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>दर्शकहरू !claim बाट पालो लिन्छन्, जसलाई अरू दुई दर्शकले स्वीकृत गर्छन्, र !skip बाट कमान्ड छोड्छन्। मोडरेटरहरूले तुरुन्तै कार्य गर्छन्। सबैभन्दा नयाँ 20 कमान्ड मात्र लाइनमा पर्खन्छन्, र एउटा कमान्ड बढीमा 10 सेकेन्ड चल्छ।</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>दर्शकहरू माथि सेट गरेअनुसार स्वीकृत हुने !claim बाट पालो लिन्छन्, र !skip बाट कमान्ड छोड्छन्, जसका लागि दुई दर्शक वा एक मोडरेटर चाहिन्छ। सबैभन्दा नयाँ 20 कमान्ड मात्र लाइनमा पर्खन्छन्, र एउटा कमान्ड बढीमा 10 सेकेन्ड चल्छ।</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>च्याट कमान्डहरू व्यवस्थापन गर्नुहोस्</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>च्याट कमान्डहरू</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>दर्शकहरूले तपाईंको स्ट्रिमको च्याटमा !jump जस्तै ! र एउटा शब्द टाइप गर्छन्। प्रत्येक शब्द Twitch च्याट पङ्क्तिको एउटा बटन हो, जुन कुनै पनि इनपुटजस्तै म्याप गरिन्छ। !a500ms ले A लाई 500 ms सम्म थिचिराख्छ, !a+b ले दुवै थिच्छ, र !a b ले एकपछि अर्को थिच्छ।</value></data>

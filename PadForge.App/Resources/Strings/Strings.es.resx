@@ -4514,6 +4514,11 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Leer el chat de Twitch</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Canal</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>El nombre de tu canal o su dirección de twitch.tv.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Quién aprueba !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Quién puede dar a un espectador el control exclusivo que pide con !claim, escribiendo !accept @name. Dos espectadores pueden ser una sola persona con cuentas de sobra.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Solo tú</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Tú y tus moderadores</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Tú, tus moderadores o dos espectadores más</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Pausar</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Reanudar</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Detiene el comando en curso, vacía la cola e ignora los comandos del chat hasta que reanudes.</value></data>
@@ -4530,7 +4535,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>En pausa.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>La imagen del mando para tu emisión. Añade esta dirección a OBS como fuente de navegador:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>La imagen del mando para tu emisión necesita el Control web y su dirección HTTP sin cifrar. Activa Servir también HTTP sin cifrar en la tarjeta Control web. Solo este PC basta para OBS en este PC.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Los espectadores se turnan con !claim, que aprueban otros dos espectadores, y saltan un comando con !skip. Los moderadores actúan al instante. Solo esperan en la cola los 20 comandos más recientes, y un comando se ejecuta como máximo 10 segundos.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Los espectadores se turnan con !claim, aprobado como se indica arriba, y saltan un comando con !skip, que requiere a dos espectadores o a un moderador. Solo esperan en la cola los 20 comandos más recientes, y un comando se ejecuta como máximo 10 segundos.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Administrar comandos del chat</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Comandos del chat</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Los espectadores escriben ! y una palabra en el chat de tu directo, como !jump. Cada palabra es un botón de la fila Chat de Twitch, asignado como cualquier entrada. !a500ms mantiene A durante 500 ms, !a+b pulsa ambos y !a b pulsa uno tras otro.</value></data>

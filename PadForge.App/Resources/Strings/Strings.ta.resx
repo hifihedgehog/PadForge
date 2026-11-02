@@ -4563,6 +4563,11 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Twitch அரட்டையைப் படி</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>சேனல்</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>உங்கள் சேனலின் பெயர் அல்லது அதன் twitch.tv முகவரி.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>!claim-ஐ யார் அங்கீகரிப்பது</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>பார்வையாளர் !claim மூலம் கேட்கும் தனிக் கட்டுப்பாட்டை, !accept @name எனத் தட்டச்சு செய்து யார் வழங்கலாம். இரு பார்வையாளர்கள் கூடுதல் கணக்குகளைக் கொண்ட ஒரே நபராகவும் இருக்கலாம்.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>நீங்கள் மட்டும்</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>நீங்களும் உங்கள் மதிப்பாளர்களும்</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>நீங்கள், உங்கள் மதிப்பாளர்கள் அல்லது வேறு இரு பார்வையாளர்கள்</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>இடைநிறுத்து</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>தொடரு</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>இயங்கும் கட்டளையை நிறுத்தி, வரிசையை அழித்து, நீங்கள் தொடரும் வரை அரட்டைக் கட்டளைகளைப் புறக்கணிக்கும்.</value></data>
@@ -4579,7 +4584,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>இடைநிறுத்தப்பட்டது.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>உங்கள் ஒளிபரப்புக்கான கட்டுப்படுத்திப் படம். இந்த முகவரியை OBS-இல் உலாவி மூலமாகச் சேர்க்கவும்:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>ஒளிபரப்புக்கான கட்டுப்படுத்திப் படத்துக்கு வலைக் கட்டுப்படுத்தியும் அதன் சாதாரண HTTP முகவரியும் தேவை. வலைக் கட்டுப்படுத்தி அட்டையில் சாதாரண HTTP-யிலும் வழங்கு என்பதை இயக்கவும். இந்த PC-யில் உள்ள OBS-க்கு இந்த PC மட்டும் போதும்.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>பார்வையாளர்கள் !claim மூலம் முறை எடுக்கலாம், அதை வேறு இரு பார்வையாளர்கள் அங்கீகரிக்க வேண்டும். !skip மூலம் கட்டளையைத் தவிர்க்கலாம். மதிப்பாளர்களின் செயல் உடனே நடக்கும். வரிசையில் புதிய 20 கட்டளைகள் மட்டுமே காத்திருக்கும். ஒரு கட்டளை அதிகபட்சம் 10 வினாடிகள் இயங்கும்.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>பார்வையாளர்கள் !claim மூலம் முறை எடுக்கலாம், அது மேலே அமைத்தபடி அங்கீகரிக்கப்படும். !skip மூலம் கட்டளையைத் தவிர்க்கலாம், அதற்கு இரு பார்வையாளர்கள் அல்லது ஒரு மதிப்பாளர் தேவை. வரிசையில் புதிய 20 கட்டளைகள் மட்டுமே காத்திருக்கும். ஒரு கட்டளை அதிகபட்சம் 10 வினாடிகள் இயங்கும்.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>அரட்டைக் கட்டளைகளை நிர்வகி</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>அரட்டைக் கட்டளைகள்</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>பார்வையாளர்கள் உங்கள் ஸ்ட்ரீமின் அரட்டையில் ! உடன் ஒரு சொல்லைத் தட்டச்சு செய்கிறார்கள், எடுத்துக்காட்டாக !jump. ஒவ்வொரு சொல்லும் Twitch அரட்டை வரிசையில் ஒரு பொத்தான், எந்த உள்ளீட்டையும் போல மேப் செய்யப்படும். !a500ms A பொத்தானை 500 ms பிடித்திருக்கும், !a+b இரண்டையும் அழுத்தும், !a b ஒன்றன் பின் ஒன்றாக அழுத்தும்.</value></data>

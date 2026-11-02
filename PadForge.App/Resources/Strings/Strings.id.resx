@@ -4563,6 +4563,11 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Baca Chat Twitch</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Kanal</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Nama kanal Anda atau alamat twitch.tv-nya.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Siapa yang menyetujui !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Siapa yang dapat memberi penonton kendali penuh yang diminta dengan !claim, dengan mengetik !accept @name. Dua penonton bisa jadi satu orang dengan akun cadangan.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Hanya Anda</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Anda dan moderator Anda</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Anda, moderator Anda, atau dua penonton lain</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Jeda</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Lanjutkan</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Menghentikan perintah yang sedang dimainkan, mengosongkan antrean, dan mengabaikan perintah chat sampai Anda melanjutkan.</value></data>
@@ -4579,7 +4584,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Dijeda.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Gambar kontroler untuk siaran Anda. Tambahkan alamat ini ke OBS sebagai browser source:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Gambar kontroler untuk siaran Anda memerlukan Kontroler web beserta alamat HTTP biasanya. Aktifkan Sajikan juga HTTP biasa di kartu Kontroler web. Hanya PC ini sudah cukup untuk OBS di PC ini.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Penonton bergiliran dengan !claim, yang disetujui dua penonton lain, dan melewati perintah dengan !skip. Moderator bertindak seketika. Hanya 20 perintah terbaru yang menunggu dalam antrean, dan satu perintah dimainkan paling lama 10 detik.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Penonton bergiliran dengan !claim, disetujui sesuai pengaturan di atas, dan melewati perintah dengan !skip, yang membutuhkan dua penonton atau satu moderator. Hanya 20 perintah terbaru yang menunggu dalam antrean, dan satu perintah dimainkan paling lama 10 detik.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Kelola perintah chat</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Perintah chat</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Penonton mengetik ! dan sebuah kata di chat streaming Anda, seperti !jump. Setiap kata adalah tombol pada baris Chat Twitch, dipetakan seperti input apa pun. !a500ms menahan A selama 500 ms, !a+b menekan keduanya, dan !a b menekan satu per satu secara berurutan.</value></data>

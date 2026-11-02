@@ -648,6 +648,26 @@ namespace PadForge.ViewModels
             }
         }
 
+        private int _twitchChatClaimApprovalIndex;
+
+        /// <summary>Who approves a viewer's !claim, a
+        /// <see cref="PadForge.Common.Input.Twitch.TwitchClaimApproval"/> by
+        /// number: 0 the streamer alone, 1 with moderators, 2 also any two
+        /// viewers. A machine setting like the channel.</summary>
+        public int TwitchChatClaimApprovalIndex
+        {
+            get => _twitchChatClaimApprovalIndex;
+            set
+            {
+                // Out of range is a hand-edited file or the box's own -1
+                // when it loses its selection, never a pick.
+                if (value < 0 || value > (int)PadForge.Common.Input.Twitch.TwitchClaimApproval.Viewers) return;
+                if (SetProperty(ref _twitchChatClaimApprovalIndex, value))
+                    PadForge.Common.Input.Twitch.TwitchChatRuntime.ClaimApproval =
+                        (PadForge.Common.Input.Twitch.TwitchClaimApproval)value;
+            }
+        }
+
         private string _twitchChatStatus = Strings.Instance.Common_Stopped;
 
         /// <summary>The row's line: the channel it reads, or why it reads

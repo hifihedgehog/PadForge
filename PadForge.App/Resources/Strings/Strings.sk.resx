@@ -4563,6 +4563,11 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Čítať Twitch Chat</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Kanál</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Názov vášho kanála alebo jeho adresa twitch.tv.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Kto schvaľuje !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Kto môže divákovi dať výhradné ovládanie, o ktoré žiada príkazom !claim, napísaním !accept @name. Dvaja diváci môžu byť jedna osoba s náhradnými účtami.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Iba vy</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Vy a vaši moderátori</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Vy, vaši moderátori alebo dvaja iní diváci</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Pozastaviť</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Pokračovať</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Zastaví prehrávaný príkaz, vymaže rad a ignoruje príkazy z chatu, kým nepokračujete.</value></data>
@@ -4579,7 +4584,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Pozastavené.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Obraz ovládača pre vaše vysielanie. Pridajte túto adresu do OBS ako zdroj prehliadača:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Obraz ovládača pre vaše vysielanie vyžaduje Webový ovládač a jeho obyčajnú adresu HTTP. Zapnite Poskytovať aj obyčajné HTTP na karte Webový ovládač. Pre OBS na tomto počítači stačí Iba tento počítač.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Diváci sa striedajú pomocou !claim, ktoré schvália dvaja ďalší diváci, a príkaz preskočia pomocou !skip. Moderátori konajú okamžite. V rade čaká len 20 najnovších príkazov a príkaz sa prehráva najviac 10 sekúnd.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Diváci sa striedajú pomocou !claim, schváleného podľa nastavenia vyššie, a príkaz preskočia pomocou !skip, na čo treba dvoch divákov alebo jedného moderátora. V rade čaká len 20 najnovších príkazov a príkaz sa prehráva najviac 10 sekúnd.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Spravovať príkazy chatu</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Príkazy chatu</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Diváci píšu do chatu vášho vysielania ! a slovo, napríklad !jump. Každé slovo je tlačidlo v riadku Twitch Chat, mapované ako ľubovoľný vstup. !a500ms drží A 500 ms, !a+b stlačí obe naraz a !a b stlačí jedno po druhom.</value></data>

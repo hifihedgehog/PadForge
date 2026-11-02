@@ -4563,6 +4563,11 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Lue Twitch-chattia</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Kanava</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Kanavasi nimi tai sen twitch.tv-osoite.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Kuka hyväksyy komennon !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Kuka voi antaa katsojalle komennolla !claim pyydetyn yksinohjauksen kirjoittamalla !accept @name. Kaksi katsojaa voi olla sama henkilö, jolla on lisätilejä.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Vain sinä</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Sinä ja moderaattorisi</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Sinä, moderaattorisi tai kaksi muuta katsojaa</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Keskeytä</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Jatka</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Pysäyttää toistettavan komennon, tyhjentää jonon ja ohittaa chat-komennot, kunnes jatkat.</value></data>
@@ -4579,7 +4584,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Keskeytetty.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Lähetyksesi ohjainkuva. Lisää tämä osoite OBS-ohjelmaan selainlähteeksi:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Lähetyksesi ohjainkuva tarvitsee Web-ohjaimen ja sen salaamattoman HTTP-osoitteen. Ota Web-ohjain-kortissa käyttöön Tarjoa myös salaamaton HTTP. Vain tämä tietokone riittää, kun käytät OBS-ohjelmaa tällä tietokoneella.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Katsojat ottavat vuoron komennolla !claim, jonka kaksi muuta katsojaa hyväksyy, ja ohittavat komennon komennolla !skip. Moderaattorit toimivat heti. Jonossa odottaa vain uusimmat 20 komentoa, ja komento soi enintään 10 sekuntia.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Katsojat ottavat vuoron komennolla !claim, joka hyväksytään yllä olevan asetuksen mukaan, ja ohittavat komennon komennolla !skip, johon tarvitaan kaksi katsojaa tai yksi moderaattori. Jonossa odottaa vain uusimmat 20 komentoa, ja komento soi enintään 10 sekuntia.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Hallitse chat-komentoja</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Chat-komennot</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Katsojat kirjoittavat streamisi chattiin ! ja sanan, esimerkiksi !jump. Jokainen sana on Twitch-chat-rivin painike, joka yhdistetään kuten mikä tahansa syöte. !a500ms pitää A-painiketta painettuna 500 ms, !a+b painaa molempia ja !a b painaa ne peräkkäin.</value></data>

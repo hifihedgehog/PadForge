@@ -123,18 +123,27 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void JoiningReadsTheChat_AndAMessageNamesItsSenderAndWhetherAModeratorSentIt()
+        public void JoiningReadsTheChat_AndAMessageNamesItsSenderAndWhetherAModeratorOrTheStreamerSentIt()
         {
             using var client = new TwitchChatClient("chan");
-            var seen = new List<(string, bool, string)>();
-            client.Message += (u, m, t) => seen.Add((u, m, t));
+            var seen = new List<(string, bool, bool, string)>();
+            client.Message += (u, m, b, t) => seen.Add((u, m, b, t));
             Assert.Equal(TwitchChatClient.LineOutcome.Joined,
                 client.Handle(IrcLine.Parse(":justinfan1!justinfan1@justinfan1.tmi.twitch.tv JOIN #chan"), "justinfan1", out _));
             Assert.Equal(TwitchChatState.Reading, client.State);
             client.Handle(IrcLine.Parse("@display-name=Viewer;mod=0 :viewer!viewer@viewer.tmi.twitch.tv PRIVMSG #chan :!a"), "justinfan1", out _);
             client.Handle(IrcLine.Parse("@display-name=Helper;mod=1 :helper!helper@helper.tmi.twitch.tv PRIVMSG #chan :!skip"), "justinfan1", out _);
-            client.Handle(IrcLine.Parse("@badges=broadcaster/1;display-name=Host;mod=0 :host!host@host.tmi.twitch.tv PRIVMSG #chan :!skipall"), "justinfan1", out _);
-            Assert.Equal(new[] { ("Viewer", false, "!a"), ("Helper", true, "!skip"), ("Host", true, "!skipall") }, seen);
+            // The streamer is the account whose login is the channel's name
+            // (ComfyJS app.js 1039), with or without a badge.
+            client.Handle(IrcLine.Parse("@badges=broadcaster/1;display-name=Chan;mod=0 :chan!chan@chan.tmi.twitch.tv PRIVMSG #chan :!skipall"), "justinfan1", out _);
+            client.Handle(IrcLine.Parse("@display-name=CHAN;mod=0 :chan!chan@chan.tmi.twitch.tv PRIVMSG #chan :!b"), "justinfan1", out _);
+            // A badge on another login is not the streamer.
+            client.Handle(IrcLine.Parse("@badges=broadcaster/1;display-name=Other;mod=0 :other!other@other.tmi.twitch.tv PRIVMSG #chan :!x"), "justinfan1", out _);
+            Assert.Equal(new[]
+            {
+                ("Viewer", false, false, "!a"), ("Helper", true, false, "!skip"), ("Chan", true, true, "!skipall"),
+                ("CHAN", true, true, "!b"), ("Other", false, false, "!x"),
+            }, seen);
         }
 
         [Theory]
@@ -244,6 +253,8 @@ namespace PadForge.Tests
         {
             using var row = Row();
             row.HandleMessage("Mod", true, "!claim @Owner");
+            Assert.Null(row.Snapshot().Owner);
+            row.HandleMessage("Host", true, "!claim @Owner", broadcaster: true);
             Assert.Equal("Owner", row.Snapshot().Owner);
             row.HandleMessage("Other", false, "!a");
             Assert.Null(row.Snapshot().PlayingUser);
@@ -439,6 +450,22 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void TheDashboardsApprovalChoiceReachesTheRow_ResetsToTheStreamer_AndIgnoresAnythingOutOfRange()
+        {
+            Assert.Equal(0, new PadForge.Services.AppSettingsData().TwitchChatClaimApproval);
+            var vm = new PadForge.ViewModels.DashboardViewModel();
+            Assert.Equal((int)TwitchClaimApproval.Streamer, vm.TwitchChatClaimApprovalIndex);
+            vm.TwitchChatClaimApprovalIndex = (int)TwitchClaimApproval.Viewers;
+            Assert.Equal(TwitchClaimApproval.Viewers, TwitchChatRuntime.ClaimApproval);
+            vm.TwitchChatClaimApprovalIndex = -1;
+            vm.TwitchChatClaimApprovalIndex = 3;
+            Assert.Equal((int)TwitchClaimApproval.Viewers, vm.TwitchChatClaimApprovalIndex);
+            Assert.Equal(TwitchClaimApproval.Viewers, TwitchChatRuntime.ClaimApproval);
+            vm.ResetSettingCommand.Execute(nameof(vm.TwitchChatClaimApprovalIndex));
+            Assert.Equal(TwitchClaimApproval.Streamer, TwitchChatRuntime.ClaimApproval);
+        }
+
+        [Fact]
         public void TheChatMessageCarriesWhoIsPlaying_AndSaysWhenChatIsOff()
         {
             Assert.Contains("\"on\":false", System.Text.Json.JsonSerializer.Serialize(WebControllerServer.ChatMessage(null)));
@@ -448,6 +475,12 @@ namespace PadForge.Tests
             string json = System.Text.Json.JsonSerializer.Serialize(WebControllerServer.ChatMessage(row.Snapshot()));
             Assert.Contains("\"user\":\"Viewer\"", json);
             Assert.Contains("\"state\":\"nochannel\"", json);
+            // No count while only the streamer approves, the default.
+            Assert.Contains("\"votesNeeded\":0", json);
+            int shown = row.ShowVersion;
+            TwitchChatRuntime.ClaimApproval = TwitchClaimApproval.Viewers;
+            Assert.NotEqual(shown, row.ShowVersion);
+            json = System.Text.Json.JsonSerializer.Serialize(WebControllerServer.ChatMessage(row.Snapshot()));
             Assert.Contains("\"votesNeeded\":2", json);
         }
 

@@ -2636,6 +2636,9 @@ namespace PadForge.Services
             _mainVm.Dashboard.WebControllerPlainHttpLocalOnly = appSettings.WebControllerPlainHttpLocalOnly;
             // Twitch chat (#555): machine settings, like the plain address.
             _mainVm.Dashboard.TwitchChatChannel = appSettings.TwitchChatChannel ?? string.Empty;
+            _mainVm.Dashboard.TwitchChatClaimApprovalIndex =
+                Enum.IsDefined(typeof(PadForge.Common.Input.Twitch.TwitchClaimApproval), appSettings.TwitchChatClaimApproval)
+                    ? appSettings.TwitchChatClaimApproval : (int)PadForge.Common.Input.Twitch.TwitchClaimApproval.Streamer;
             _mainVm.Dashboard.EnableTwitchChat = appSettings.EnableTwitchChat;
             // A missing, damaged or foreign code reads as null, which the view
             // model ignores, so the fresh code it started with stays.
@@ -5066,6 +5069,7 @@ namespace PadForge.Services
                 WebControllerPlainHttpLocalOnly = _mainVm.Dashboard.WebControllerPlainHttpLocalOnly,
                 EnableTwitchChat = _mainVm.Dashboard.EnableTwitchChat,
                 TwitchChatChannel = _mainVm.Dashboard.TwitchChatChannel,
+                TwitchChatClaimApproval = _mainVm.Dashboard.TwitchChatClaimApprovalIndex,
                 WebControllerAccessCodeProtected = ProtectAccessCode(_mainVm.Dashboard.WebControllerAccessCode),
                 WebCustomLayoutsJson = PadForge.Services.WebCustomLayoutStore.Json,
                 EnableRemoteLink = _mainVm.Dashboard.EnableRemoteLink,
@@ -7112,6 +7116,11 @@ namespace PadForge.Services
         /// <summary>The channel as the streamer typed it.</summary>
         [XmlElement]
         public string TwitchChatChannel { get; set; }
+
+        /// <summary>Who approves a viewer's !claim, a TwitchClaimApproval by
+        /// number. Missing, it is 0: the streamer alone.</summary>
+        [XmlElement]
+        public int TwitchChatClaimApproval { get; set; }
 
         /// <summary>The plain address's access code, encrypted for this
         /// machine by <see cref="WebControllerAccess.ProtectForStorage"/>.

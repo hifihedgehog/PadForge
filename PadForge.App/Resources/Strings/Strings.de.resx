@@ -4514,6 +4514,11 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Twitch-Chat lesen</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Kanal</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Der Name deines Kanals oder seine twitch.tv-Adresse.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Wer !claim bestätigt</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Wer einem Zuschauer die alleinige Steuerung geben darf, die er mit !claim anfragt, indem er !accept @name eingibt. Zwei Zuschauer können dieselbe Person mit Zweitkonten sein.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Nur du</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Du und deine Moderatoren</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Du, deine Moderatoren oder zwei andere Zuschauer</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Pausieren</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Fortsetzen</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Beendet den laufenden Befehl, leert die Warteschlange und ignoriert Chat-Befehle, bis du fortsetzt.</value></data>
@@ -4530,7 +4535,7 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Pausiert.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Das Controller-Bild für deine Übertragung. Füge diese Adresse in OBS als Browserquelle hinzu:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Das Controller-Bild für deine Übertragung braucht den Web-Controller und seine unverschlüsselte HTTP-Adresse. Aktiviere im Web-Controller die Option Zusätzlich unverschlüsseltes HTTP bereitstellen. Nur dieser PC genügt für OBS auf diesem PC.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Zuschauer kommen mit !claim an die Reihe, was zwei weitere Zuschauer bestätigen müssen, und überspringen einen Befehl mit !skip. Moderatoren handeln sofort. Nur die neuesten 20 Befehle warten in der Warteschlange, und ein Befehl läuft höchstens 10 Sekunden.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Zuschauer kommen mit !claim an die Reihe, bestätigt wie oben eingestellt, und überspringen einen Befehl mit !skip, wofür zwei Zuschauer oder ein Moderator nötig sind. Nur die neuesten 20 Befehle warten in der Warteschlange, und ein Befehl läuft höchstens 10 Sekunden.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Chat-Befehle verwalten</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Chat-Befehle</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Zuschauer tippen im Chat deines Streams ! und ein Wort, zum Beispiel !jump. Jedes Wort ist eine Taste der Zeile Twitch-Chat und wird wie jede Eingabe zugeordnet. !a500ms hält A 500 ms lang gedrückt, !a+b drückt beide zugleich, und !a b drückt nacheinander.</value></data>

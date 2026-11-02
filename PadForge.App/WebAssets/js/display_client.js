@@ -137,8 +137,11 @@
         } else if ((c.requests || []).length) {
             c.requests.forEach(function (r, i) {
                 if (i) claim.push(" ");
+                // No count while only the streamer or moderators approve.
                 claim.push({ cls: "who", text: "@" + r.user },
-                    " asked for control: " + r.votes + " of " + c.votesNeeded + ", " + r.seconds + " s.");
+                    c.votesNeeded
+                        ? " asked for control: " + r.votes + " of " + c.votesNeeded + ", " + r.seconds + " s."
+                        : " asked for control, " + r.seconds + " s.");
             });
         }
         line(document.getElementById("claim"), claim);

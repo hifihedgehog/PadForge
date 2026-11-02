@@ -4563,6 +4563,11 @@
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Читај Twitch чет</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Канал</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Името на вашиот канал или неговата адреса twitch.tv.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Кој го одобрува !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Кој може да му го даде на гледачот единственото управување што го бара со !claim, со пишување !accept @name. Двајца гледачи може да бидат едно лице со резервни сметки.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Само вие</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Вие и вашите модератори</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Вие, вашите модератори или двајца други гледачи</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Паузирај</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Продолжи</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Ја запира командата што се игра, ја брише редицата и ги игнорира командите од четот додека не продолжите.</value></data>
@@ -4579,7 +4584,7 @@
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Паузирано.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Сликата на контролерот за вашето емитување. Додајте ја оваа адреса во OBS како извор на прелистувач:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Сликата на контролерот за вашето емитување бара Веб-контролер и неговата обична HTTP адреса. Вклучете Опслужувај и обичен HTTP во картичката Веб-контролер. Само овој компјутер е доволно за OBS на овој компјутер.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Гледачите се менуваат со !claim, што го одобруваат двајца други гледачи, а команда прескокнуваат со !skip. Модераторите дејствуваат веднаш. Во редицата чекаат само најновите 20 команди, а една команда се игра најмногу 10 секунди.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Гледачите се менуваат со !claim, одобрен како што е поставено погоре, а команда прескокнуваат со !skip, за што се потребни двајца гледачи или еден модератор. Во редицата чекаат само најновите 20 команди, а една команда се игра најмногу 10 секунди.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Управувај со команди за чет</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Команди за чет</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Гледачите пишуваат ! и збор во четот на вашиот стрим, на пример !jump. Секој збор е копче на редот Twitch чет, мапирано како кој било влез. !a500ms го држи A 500 ms, !a+b ги притиска двете, а !a b ги притиска едно по друго.</value></data>

@@ -14,8 +14,17 @@ namespace PadForge.Tests
     [Collection("SettingsManagerStatics")]
     public sealed class TwitchChatCommandTests : IDisposable
     {
-        public TwitchChatCommandTests() => ChatCommandRegistry.LoadRegistry(null);
-        public void Dispose() => ChatCommandRegistry.LoadRegistry(null);
+        public TwitchChatCommandTests()
+        {
+            ChatCommandRegistry.LoadRegistry(null);
+            TwitchChatRuntime.ResetForTest();
+        }
+
+        public void Dispose()
+        {
+            ChatCommandRegistry.LoadRegistry(null);
+            TwitchChatRuntime.ResetForTest();
+        }
 
         private static int B(string word) => ChatCommandRegistry.ButtonFor(word);
 
@@ -228,10 +237,10 @@ namespace PadForge.Tests
         private sealed class Clock { public long Now; }
 
         [Fact]
-        public void AClaimNeedsTwoOtherViewers_ThenGivesFiveMinutesOfSoleControl()
+        public void WithViewersChosen_AClaimNeedsTwoOtherViewers_ThenGivesFiveMinutesOfSoleControl()
         {
             var clock = new Clock { Now = 1000 };
-            var turns = new ChatTurns(() => clock.Now);
+            var turns = new ChatTurns(() => clock.Now, () => TwitchClaimApproval.Viewers);
             Assert.True(turns.Handle("Alice", false, "claim", "", false, null));
             Assert.Null(turns.Owner);
             Assert.True(turns.CanPlay("Bob", false));
@@ -261,9 +270,9 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void AModeratorGrantsAtOnce_AndEndsAnotherViewersControl()
+        public void WithModeratorsChosen_AModeratorGrantsAtOnce_AndEndsAnotherViewersControl()
         {
-            var turns = new ChatTurns(() => 0);
+            var turns = new ChatTurns(() => 0, () => TwitchClaimApproval.Moderators);
             turns.Handle("Mod", true, "claim", "@Dave", false, null);
             Assert.Equal("Dave", turns.Owner);
             turns.Handle("Eve", false, "release", "@Dave", false, null);
@@ -275,14 +284,101 @@ namespace PadForge.Tests
         [Fact]
         public void TheOwnerReleases_AndTheStreamerEndsAClaim()
         {
-            var turns = new ChatTurns(() => 0);
-            turns.Handle("Mod", true, "claim", "@Dave", false, null);
+            var turns = new ChatTurns(() => 0, () => TwitchClaimApproval.Streamer);
+            turns.Handle("Host", true, "claim", "@Dave", false, null, broadcaster: true);
             turns.Handle("Dave", false, "release", "", false, null);
             Assert.Null(turns.Owner);
-            turns.Handle("Mod", true, "claim", "@Dave", false, null);
+            turns.Handle("Host", true, "claim", "@Dave", false, null, broadcaster: true);
             turns.EndClaim();
             Assert.Null(turns.Owner);
             Assert.Contains("streamer", turns.Notice);
+        }
+
+        // ── Who approves a claim ──
+
+        [Fact]
+        public void ByDefault_OnlyTheStreamerApproves_AndNoVoteCounts()
+        {
+            Assert.Equal(TwitchClaimApproval.Streamer, TwitchChatRuntime.ClaimApproval);
+            var turns = new ChatTurns(() => 0);
+            Assert.Equal(0, turns.VotesNeeded);
+            turns.Handle("Alice", false, "claim", "", false, null);
+            Assert.Contains("The streamer can approve with !accept @Alice", turns.Notice);
+            // Three accounts of one troll, and a moderator by both commands.
+            turns.Handle("Bob", false, "accept", "@Alice", false, null);
+            Assert.Contains("only the streamer approves claims", turns.Notice);
+            turns.Handle("Carol", false, "claim", "@alice", false, null);
+            turns.Handle("Dan", false, "accept", "@alice", false, null);
+            turns.Handle("Mod", true, "accept", "@Alice", false, null);
+            turns.Handle("Mod", true, "claim", "@Alice", false, null);
+            Assert.Null(turns.Owner);
+            Assert.Equal(new[] { 0 }, turns.PendingRequests.Select(r => r.Votes));
+            turns.Handle("Host", true, "accept", "@alice", false, null, broadcaster: true);
+            Assert.Equal("Alice", turns.Owner);
+            Assert.Contains("@Host gave @Alice control", turns.Notice);
+        }
+
+        [Fact]
+        public void WithModeratorsChosen_AModeratorsAcceptGrants_AndAViewersIsRefused()
+        {
+            var turns = new ChatTurns(() => 0, () => TwitchClaimApproval.Moderators);
+            Assert.Equal(0, turns.VotesNeeded);
+            turns.Handle("Alice", false, "claim", "", false, null);
+            Assert.Contains("The streamer or a moderator can approve", turns.Notice);
+            turns.Handle("Bob", false, "accept", "@Alice", false, null);
+            turns.Handle("Carol", false, "accept", "@Alice", false, null);
+            Assert.Contains("only the streamer and moderators approve claims", turns.Notice);
+            Assert.Null(turns.Owner);
+            turns.Handle("Mod", true, "accept", "@Alice", false, null);
+            Assert.Equal("Alice", turns.Owner);
+        }
+
+        [Fact]
+        public void WithViewersChosen_AModeratorsAcceptGrantsAtOnceToo()
+        {
+            var turns = new ChatTurns(() => 0, () => TwitchClaimApproval.Viewers);
+            Assert.Equal(ChatTurns.RequiredVotes, turns.VotesNeeded);
+            turns.Handle("Alice", false, "claim", "", false, null);
+            Assert.Contains($"{ChatTurns.RequiredVotes} other viewers can approve", turns.Notice);
+            turns.Handle("Mod", true, "accept", "@Alice", false, null);
+            Assert.Equal("Alice", turns.Owner);
+        }
+
+        [Fact]
+        public void AnApproversAccept_NeedsAWaitingRequest()
+        {
+            var turns = new ChatTurns(() => 0, () => TwitchClaimApproval.Streamer);
+            turns.Handle("Host", true, "accept", "@Nobody", false, null, broadcaster: true);
+            Assert.Null(turns.Owner);
+            Assert.Contains("@nobody has not asked for control", turns.Notice);
+        }
+
+        [Fact]
+        public void TheChoiceIsReadOnEveryCommand()
+        {
+            var choice = TwitchClaimApproval.Streamer;
+            var turns = new ChatTurns(() => 0, () => choice);
+            turns.Handle("Alice", false, "claim", "", false, null);
+            turns.Handle("Bob", false, "accept", "@Alice", false, null);
+            choice = TwitchClaimApproval.Viewers;
+            // Bob's refused try did not count. Two votes cast now do.
+            turns.Handle("Carol", false, "accept", "@Alice", false, null);
+            Assert.Null(turns.Owner);
+            turns.Handle("Bob", false, "accept", "@Alice", false, null);
+            Assert.Equal("Alice", turns.Owner);
+        }
+
+        [Fact]
+        public void TheStatusShowsVotesOnlyWhileViewersApprove()
+        {
+            var choice = TwitchClaimApproval.Streamer;
+            var turns = new ChatTurns(() => 0, () => choice);
+            turns.Handle("Alice", false, "claim", "", false, null);
+            turns.Handle("Bob", false, "claim", "status", false, null);
+            Assert.Equal("Waiting: @Alice 60 seconds.", turns.Notice);
+            choice = TwitchClaimApproval.Viewers;
+            turns.Handle("Bob", false, "claim", "status", false, null);
+            Assert.Equal("Waiting: @Alice 0 of 2, 60 seconds.", turns.Notice);
         }
 
         [Fact]

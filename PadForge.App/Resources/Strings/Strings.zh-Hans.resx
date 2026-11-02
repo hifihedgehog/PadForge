@@ -4514,6 +4514,11 @@
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>读取 Twitch 聊天</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>频道</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>你的频道名称或 twitch.tv 地址。</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>谁来批准 !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>谁可以通过输入 !accept @name，让观众获得其通过 !claim 请求的独占控制。两名观众可能是同一个人使用的备用账号。</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>仅你本人</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>你和你的管理员</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>你、你的管理员或另外两名观众</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>暂停</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>继续</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>停止正在执行的命令，清空队列，并在你继续之前忽略聊天命令。</value></data>
@@ -4530,7 +4535,7 @@
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>已暂停。</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>用于直播画面的控制器图像。将此地址作为浏览器源添加到 OBS：</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>用于直播画面的控制器图像需要“网页控制器”及其未加密的 HTTP 地址。请在“网页控制器”卡片中开启“同时提供未加密的 HTTP”。若 OBS 在此电脑上运行，选择“仅限此电脑”即可。</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>观众通过 !claim 轮流控制，需要另外两名观众批准，也可用 !skip 跳过命令。管理员的操作立即生效。队列中只保留最新的 20 条命令，每条命令最多执行 10 秒。</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>观众通过 !claim 轮流控制，按上方设置批准，也可用 !skip 跳过命令，需要两名观众或一名管理员。队列中只保留最新的 20 条命令，每条命令最多执行 10 秒。</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>管理聊天命令</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>聊天命令</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>观众在你的直播聊天中输入 ! 加一个词，例如 !jump。每个词都是“Twitch 聊天”行上的一个按钮，可像任何输入一样映射。!a500ms 按住 A 500 ms，!a+b 同时按下两个键，!a b 则依次按下。</value></data>

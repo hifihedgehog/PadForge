@@ -4563,6 +4563,11 @@
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Twitch چیٹ پڑھیں</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>چینل</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>آپ کے چینل کا نام یا اس کا twitch.tv پتہ۔</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>!claim کون منظور کرے</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>ناظر جو واحد کنٹرول !claim سے مانگتا ہے، اسے !accept @name ٹائپ کر کے کون دے سکتا ہے۔ دو ناظرین فالتو اکاؤنٹس والا ایک ہی شخص ہو سکتے ہیں۔</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>صرف آپ</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>آپ اور آپ کے ماڈریٹر</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>آپ، آپ کے ماڈریٹر یا دو دوسرے ناظرین</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>روکیں</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>جاری رکھیں</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>چلتی ہوئی کمانڈ روک دیتا ہے، قطار صاف کرتا ہے اور جاری رکھنے تک چیٹ کمانڈز کو نظرانداز کرتا ہے۔</value></data>
@@ -4579,7 +4584,7 @@
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>روکا گیا ہے۔</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>آپ کی نشریات کے لیے کنٹرولر کی تصویر۔ یہ پتہ OBS میں براؤزر سورس کے طور پر شامل کریں:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>آپ کی نشریات کے لیے کنٹرولر کی تصویر کو ویب کنٹرولر اور اس کا سادہ HTTP پتہ درکار ہے۔ ویب کنٹرولر کارڈ میں سادہ HTTP بھی فراہم کریں آن کریں۔ اس PC پر OBS کے لیے صرف یہ PC کافی ہے۔</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>ناظرین !claim سے باری لیتے ہیں، جسے دو دوسرے ناظرین منظور کرتے ہیں، اور !skip سے کمانڈ چھوڑ دیتے ہیں۔ ماڈریٹر فوراً عمل کرتے ہیں۔ قطار میں صرف تازہ ترین 20 کمانڈز انتظار کرتی ہیں، اور ایک کمانڈ زیادہ سے زیادہ 10 سیکنڈ چلتی ہے۔</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>ناظرین !claim سے باری لیتے ہیں، جسے اوپر کی ترتیب کے مطابق منظور کیا جاتا ہے، اور !skip سے کمانڈ چھوڑ دیتے ہیں، جس کے لیے دو ناظرین یا ایک ماڈریٹر درکار ہے۔ قطار میں صرف تازہ ترین 20 کمانڈز انتظار کرتی ہیں، اور ایک کمانڈ زیادہ سے زیادہ 10 سیکنڈ چلتی ہے۔</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>چیٹ کمانڈز کا انتظام کریں</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>چیٹ کمانڈز</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>ناظرین آپ کی اسٹریم کی چیٹ میں ! اور ایک لفظ ٹائپ کرتے ہیں، جیسے !jump۔ ہر لفظ Twitch چیٹ قطار پر ایک بٹن ہے، جسے کسی بھی ان پٹ کی طرح میپ کیا جاتا ہے۔ !a500ms بٹن A کو 500 ms تک دبائے رکھتا ہے، !a+b دونوں دباتا ہے، اور !a b ایک کے بعد ایک دباتا ہے۔</value></data>

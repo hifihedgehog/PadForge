@@ -4563,6 +4563,11 @@
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>อ่านแชต Twitch</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>แชนเนล</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>ชื่อแชนเนลของคุณ หรือที่อยู่ twitch.tv ของแชนเนล</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>ใครอนุมัติ !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>ผู้ที่ให้การควบคุมแต่เพียงผู้เดียวแก่ผู้ชมที่ขอด้วย !claim ได้ โดยพิมพ์ !accept @name ผู้ชมสองคนอาจเป็นคนเดียวกันที่ใช้บัญชีสำรอง</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>เฉพาะคุณ</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>คุณและผู้ดูแลของคุณ</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>คุณ ผู้ดูแลของคุณ หรือผู้ชมอีกสองคน</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>หยุดชั่วคราว</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>ทำต่อ</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>หยุดคำสั่งที่กำลังเล่น ล้างคิว และไม่สนใจคำสั่งในแชตจนกว่าคุณจะกดทำต่อ</value></data>
@@ -4579,7 +4584,7 @@
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>หยุดชั่วคราว</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>ภาพคอนโทรลเลอร์สำหรับการออกอากาศของคุณ เพิ่มที่อยู่นี้ใน OBS เป็นบราวเซอร์ซอร์ส:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>ภาพคอนโทรลเลอร์สำหรับการออกอากาศต้องใช้คอนโทรลเลอร์บนเว็บและที่อยู่ HTTP ธรรมดาของมัน เปิดใช้ ให้บริการ HTTP ธรรมดาด้วย ในการ์ดคอนโทรลเลอร์บนเว็บ เฉพาะพีซีเครื่องนี้ ก็เพียงพอสำหรับ OBS บนพีซีเครื่องนี้</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>ผู้ชมผลัดกันเล่นด้วย !claim ซึ่งต้องได้รับการอนุมัติจากผู้ชมอีกสองคน และข้ามคำสั่งด้วย !skip ผู้ดูแลทำได้ทันที คิวเก็บเฉพาะ 20 คำสั่งล่าสุด และแต่ละคำสั่งเล่นนานสุด 10 วินาที</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>ผู้ชมผลัดกันเล่นด้วย !claim ซึ่งอนุมัติตามที่ตั้งไว้ด้านบน และข้ามคำสั่งด้วย !skip ซึ่งต้องใช้ผู้ชมสองคนหรือผู้ดูแลหนึ่งคน คิวเก็บเฉพาะ 20 คำสั่งล่าสุด และแต่ละคำสั่งเล่นนานสุด 10 วินาที</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>จัดการคำสั่งแชต</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>คำสั่งแชต</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>ผู้ชมพิมพ์ ! ตามด้วยคำในแชตของสตรีม เช่น !jump แต่ละคำคือปุ่มหนึ่งในแถวแชต Twitch แมปได้เหมือนอินพุตทั่วไป !a500ms กดค้างปุ่ม A นาน 500 ms, !a+b กดทั้งสองปุ่มพร้อมกัน และ !a b กดทีละปุ่มต่อกัน</value></data>

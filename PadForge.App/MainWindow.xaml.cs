@@ -674,6 +674,7 @@ namespace PadForge
                      or nameof(DashboardViewModel.GameTelemetryFormats)
                      or nameof(DashboardViewModel.EnableTwitchChat)
                      or nameof(DashboardViewModel.TwitchChatChannel)
+                     or nameof(DashboardViewModel.TwitchChatClaimApprovalIndex)
                      or nameof(DashboardViewModel.HeadTrackingEnabled)
                      or nameof(DashboardViewModel.HeadTrackingUdpPort)
                      or nameof(DashboardViewModel.HeadTrackingFreeTrack)

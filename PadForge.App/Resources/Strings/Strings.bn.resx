@@ -4563,6 +4563,11 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Twitch চ্যাট পড়ুন</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>চ্যানেল</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>আপনার চ্যানেলের নাম বা এর twitch.tv ঠিকানা।</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>কে !claim অনুমোদন করবেন</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>কোনো দর্শক !claim দিয়ে যে একক নিয়ন্ত্রণ চান, !accept @name লিখে সেটি কে দিতে পারবেন। দুজন দর্শক একই ব্যক্তির বাড়তি অ্যাকাউন্টও হতে পারেন।</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>শুধু আপনি</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>আপনি ও আপনার মডারেটররা</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>আপনি, আপনার মডারেটররা বা আরও দুজন দর্শক</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>বিরতি</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>চালিয়ে যান</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>চলমান কমান্ড থামায়, লাইন খালি করে এবং আপনি চালিয়ে না যাওয়া পর্যন্ত চ্যাট কমান্ড উপেক্ষা করে।</value></data>
@@ -4579,7 +4584,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>বিরতিতে আছে।</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>আপনার সম্প্রচারের জন্য কন্ট্রোলারের ছবি। এই ঠিকানাটি OBS-এ ব্রাউজার সোর্স হিসেবে যোগ করুন:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>সম্প্রচারের জন্য কন্ট্রোলারের ছবি পেতে ওয়েব কন্ট্রোলার ও এর সাধারণ HTTP ঠিকানা লাগে। ওয়েব কন্ট্রোলার কার্ডে সাধারণ HTTP-ও পরিবেশন করুন চালু করুন। এই পিসির OBS-এর জন্য শুধু এই পিসি যথেষ্ট।</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>দর্শকরা !claim দিয়ে পালা নেন, যেটি আরও দুজন দর্শক অনুমোদন করেন, এবং !skip দিয়ে কমান্ড বাদ দেন। মডারেটররা সঙ্গে সঙ্গে কাজ করতে পারেন। লাইনে শুধু সবচেয়ে নতুন 20টি কমান্ড অপেক্ষা করে, আর একটি কমান্ড সর্বোচ্চ 10 সেকেন্ড চলে।</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>দর্শকরা !claim দিয়ে পালা নেন, যা উপরের সেটিং অনুযায়ী অনুমোদিত হয়, এবং !skip দিয়ে কমান্ড বাদ দেন, যার জন্য দুজন দর্শক বা একজন মডারেটর লাগে। লাইনে শুধু সবচেয়ে নতুন 20টি কমান্ড অপেক্ষা করে, আর একটি কমান্ড সর্বোচ্চ 10 সেকেন্ড চলে।</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>চ্যাট কমান্ড পরিচালনা করুন</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>চ্যাট কমান্ড</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>দর্শকরা আপনার স্ট্রিমের চ্যাটে ! ও একটি শব্দ লেখেন (যেমন !jump)। প্রতিটি শব্দ Twitch চ্যাট সারির একটি বোতাম, যা যেকোনো ইনপুটের মতো ম্যাপ করা যায়। !a500ms বোতাম A 500 ms ধরে রাখে, !a+b দুটিই একসঙ্গে চাপে, আর !a b একটির পর একটি চাপে।</value></data>

@@ -4563,6 +4563,11 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Lasīt Twitch tērzēšanu</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Kanāls</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>Jūsu kanāla nosaukums vai tā twitch.tv adrese.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Kas apstiprina !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Kas var piešķirt skatītājam vienīgo vadību, ko viņš pieprasa ar !claim, ierakstot !accept @name. Divi skatītāji var būt viens cilvēks ar papildu kontiem.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Tikai jūs</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Jūs un jūsu moderatori</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Jūs, jūsu moderatori vai divi citi skatītāji</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Pauze</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Turpināt</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Aptur izpildāmo komandu, notīra rindu un ignorē tērzēšanas komandas, līdz turpināsiet.</value></data>
@@ -4579,7 +4584,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Apturēts.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Kontrollera attēls jūsu pārraidei. Pievienojiet šo adresi programmā OBS kā pārlūka avotu:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Kontrollera attēlam jūsu pārraidei ir vajadzīgs Tīmekļa kontrolleris un tā vienkāršā HTTP adrese. Kartītē Tīmekļa kontrolleris ieslēdziet Nodrošināt arī vienkāršu HTTP. Ar Tikai šis dators pietiek programmai OBS šajā datorā.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Skatītāji mainās pēc kārtas ar !claim, ko apstiprina divi citi skatītāji, un izlaiž komandu ar !skip. Moderatori rīkojas uzreiz. Rindā gaida tikai jaunākās 20 komandas, un komanda tiek izpildīta ne ilgāk kā 10 sekundes.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>Skatītāji mainās pēc kārtas ar !claim, ko apstiprina, kā iestatīts iepriekš, un izlaiž komandu ar !skip, kam vajag divus skatītājus vai vienu moderatoru. Rindā gaida tikai jaunākās 20 komandas, un komanda tiek izpildīta ne ilgāk kā 10 sekundes.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Pārvaldīt tērzēšanas komandas</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Tērzēšanas komandas</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>Skatītāji jūsu straumes tērzēšanā raksta ! un vārdu, piemēram, !jump. Katrs vārds ir poga rindā Twitch tērzēšana, ko piesaista kā jebkuru ievadi. !a500ms tur A 500 ms, !a+b nospiež abas, bet !a b nospiež vienu pēc otras.</value></data>

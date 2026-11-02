@@ -4563,6 +4563,11 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Twitch-csevegés olvasása</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Csatorna</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>A csatornád neve vagy twitch.tv címe.</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Ki hagyja jóvá a !claim parancsot</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Ki adhatja meg a nézőnek a !claim paranccsal kért egyedüli irányítást az !accept @name beírásával. Két néző lehet egyetlen személy is tartalék fiókokkal.</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Csak te</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Te és a moderátoraid</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>Te, a moderátoraid vagy két másik néző</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>Szünet</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>Folytatás</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>Leállítja a játszó parancsot, törli a sort, és a folytatásig figyelmen kívül hagyja a csevegés parancsait.</value></data>
@@ -4579,7 +4584,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Szüneteltetve.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>A közvetítésed kontrollerképe. Add hozzá ezt a címet az OBS-hez böngészőforrásként:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>A közvetítés kontrollerképéhez a Webes kontroller és a sima HTTP-cím kell. Kapcsold be a Sima HTTP kiszolgálása is lehetőséget a Webes kontroller kártyán. Az ezen a számítógépen futó OBS-hez elég a Csak ez a számítógép.</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>A nézők a !claim paranccsal kérhetik az irányítást, amelyet két másik nézőnek jóvá kell hagynia, a !skip paranccsal pedig kihagynak egy parancsot. A moderátorok azonnal cselekedhetnek. A sorban csak a legutóbbi 20 parancs vár, és egy parancs legfeljebb 10 másodpercig játszik.</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>A nézők a !claim paranccsal kérhetik az irányítást, a fent beállítottak szerint jóváhagyva, a !skip paranccsal pedig kihagynak egy parancsot, ehhez két néző vagy egy moderátor kell. A sorban csak a legutóbbi 20 parancs vár, és egy parancs legfeljebb 10 másodpercig játszik.</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>Csevegésparancsok kezelése</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>Csevegésparancsok</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>A nézők a közvetítésed csevegésébe írnak egy ! jelet és egy szót, például: !jump. Minden szó egy gomb a Twitch-csevegés soron, bármely bemenethez hasonlóan hozzárendelhető. Az !a500ms 500 ms-ig nyomva tartja az A gombot, az !a+b mindkettőt megnyomja, az !a b pedig egymás után nyomja meg őket.</value></data>

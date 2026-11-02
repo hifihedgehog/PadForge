@@ -4563,6 +4563,11 @@
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Twitch चैट पढ़ें</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>चैनल</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>आपके चैनल का नाम या उसका twitch.tv पता।</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>!claim को कौन मंज़ूर करे</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>कौन किसी दर्शक को वह अकेला नियंत्रण दे सकता है जो वह !claim से माँगता है, !accept @name टाइप करके। दो दर्शक अतिरिक्त खातों वाला एक ही व्यक्ति हो सकते हैं।</value></data>
+  <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>केवल आप</value></data>
+  <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>आप और आपके मॉडरेटर</value></data>
+  <data name="TwitchChat_Approval_Viewers" xml:space="preserve"><value>आप, आपके मॉडरेटर या दो दूसरे दर्शक</value></data>
   <data name="TwitchChat_Pause" xml:space="preserve"><value>रोकें</value></data>
   <data name="TwitchChat_Resume" xml:space="preserve"><value>फिर शुरू करें</value></data>
   <data name="TwitchChat_Pause_Tooltip" xml:space="preserve"><value>चल रही कमांड को रोकता है, कतार खाली करता है और आपके फिर शुरू करने तक चैट कमांड को अनदेखा करता है।</value></data>
@@ -4579,7 +4584,7 @@
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>रुका हुआ।</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>आपके प्रसारण के लिए कंट्रोलर की तस्वीर। इस पते को OBS में ब्राउज़र सोर्स के रूप में जोड़ें:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>आपके प्रसारण के लिए कंट्रोलर की तस्वीर को वेब कंट्रोलर और उसका सादा HTTP पता चाहिए। वेब कंट्रोलर कार्ड में सादा HTTP भी उपलब्ध कराएँ चालू करें। इस PC पर OBS के लिए केवल यह PC काफ़ी है।</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>दर्शक !claim से बारी लेते हैं, जिसे दो दूसरे दर्शक मंज़ूर करते हैं, और !skip से किसी कमांड को छोड़ देते हैं। मॉडरेटर तुरंत कार्रवाई करते हैं। कतार में केवल सबसे नई 20 कमांड रहती हैं, और एक कमांड अधिकतम 10 सेकंड चलती है।</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>दर्शक !claim से बारी लेते हैं, जिसे ऊपर तय किए अनुसार मंज़ूर किया जाता है, और !skip से किसी कमांड को छोड़ देते हैं, जिसके लिए दो दर्शक या एक मॉडरेटर चाहिए। कतार में केवल सबसे नई 20 कमांड रहती हैं, और एक कमांड अधिकतम 10 सेकंड चलती है।</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>चैट कमांड प्रबंधित करें</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>चैट कमांड</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>दर्शक आपकी स्ट्रीम की चैट में ! और एक शब्द टाइप करते हैं, जैसे !jump। हर शब्द Twitch चैट पंक्ति का एक बटन है, जिसे किसी भी इनपुट की तरह मैप किया जाता है। !a500ms A को 500 ms तक दबाए रखता है, !a+b दोनों को एक साथ दबाता है, और !a b एक के बाद एक दबाता है।</value></data>

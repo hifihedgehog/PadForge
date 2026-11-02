@@ -144,6 +144,8 @@ namespace PadForge.ViewModels
                 Add(MacroActionType.LightbarModeCycle, S.MacroAction_Type_LightbarModeCycle, S.Macro_Cat_Leds, S.MacroAction_LightbarModeCycle_Tooltip);
                 Add(MacroActionType.GuideLedBrightness, S.MacroAction_Type_GuideLedBrightness, S.Macro_Cat_Leds, S.MacroAction_GuideLedBrightness_Tooltip);
                 Add(MacroActionType.SetChromaColor, S.MacroAction_Type_SetChromaColor, S.Macro_Cat_Leds, S.MacroAction_SetChromaColor_Tooltip);
+                Add(MacroActionType.SetKeyColors, S.MacroAction_Type_SetKeyColors, S.Macro_Cat_Leds, S.MacroAction_SetKeyColors_Tooltip);
+                Add(MacroActionType.ClearKeyColors, S.MacroAction_Type_ClearKeyColors, S.Macro_Cat_Leds, S.MacroAction_ClearKeyColors_Tooltip);
                 Add(MacroActionType.ShowDreamcastScreen, S.MacroAction_Type_ShowDreamcastScreen, S.Macro_Cat_Leds, S.MacroAction_ShowDreamcastScreen_Tooltip);
                 Add(MacroActionType.ShowKeyboardScreen, S.MacroAction_Type_ShowKeyboardScreen, S.Macro_Cat_Leds, S.MacroAction_ShowKeyboardScreen_Tooltip);
                 Add(MacroActionType.KeyboardScreenMode, S.MacroAction_Type_KeyboardScreenMode, S.Macro_Cat_Leds, S.MacroAction_KeyboardScreenMode_Tooltip);

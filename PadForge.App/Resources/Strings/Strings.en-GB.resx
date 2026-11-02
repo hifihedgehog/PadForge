@@ -173,6 +173,20 @@
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Blend Smoothly Between Palette Colours</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Add Colour</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Replace the current palette with the four default colours (red, green, blue, yellow).</value></data>
+  <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Key Colours</value></data>
+  <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Zone Colours</value></data>
+  <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Select keys on the picture, or press them on the keyboard, and give them a colour. Each shift layer can have its own colours, shown while the layer is engaged.</value></data>
+  <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Select zones and give them a colour. Each shift layer can have its own colours, shown while the layer is engaged.</value></data>
+  <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>Remove the colours from every layer.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>What lights without their own colour show on this layer.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>{0} Layer Colours</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>One Colour</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor" xml:space="preserve"><value>Apply Colour</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor_Tooltip" xml:space="preserve"><value>Give the selected lights the colour above.</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor" xml:space="preserve"><value>Remove Colour</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor_Tooltip" xml:space="preserve"><value>Take the selected lights’ colours away on this layer, so they show what Other Lights says.</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer" xml:space="preserve"><value>Remove All Colours</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer_Tooltip" xml:space="preserve"><value>Remove every colour from this layer and set Other Lights back to how the layer starts.</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Manage user-imported HIDMaestro profiles: capture a new one from a connected device, export an existing one to JSON or delete one you no longer need.</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Map every axis, button and hat on the selected device straight through to the same-numbered virtual output. Sizes the layout to the device and replaces this device's rows on the slot with a 1:1 passthrough.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>The selected device exposes no axes, buttons or hats to clone.</value></data>
@@ -408,6 +422,7 @@
   <data name="Dashboard_HeadTrackingAxisRangesDesc" xml:space="preserve"><value>Set one axis on its own. Zero follows the range above. Rotation is in degrees, travel in centimetres.</value></data>
   <data name="Handheld_Intro" xml:space="preserve"><value>Press the hidden button once when asked. PadForge watches the keyboard, the mouse, every vendor report and every system event on this machine, and records whichever one the button changes.</value></data>
   <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>Registered "{0}". Start again to learn another.</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge lights one key light at a time. Press the key under the lit light to name it. The names are kept for every keyboard of this model, so Key Colours and the key colour macros reach the right keys.</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Hold the gesture button, flick, and one action fires when you release: left, right, up, down or a plain click below the flick distance. Map the five gestures on the Mappings tab or use them as macro triggers.</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Arms the gesture recogniser for this mouse on this slot. The gesture button keeps its normal click while gesturing, so pick a side button you do not otherwise map.</value></data>
   <data name="Pad_MouseGestures_Button_Tooltip" xml:space="preserve"><value>The mouse buttons that arm the recogniser while held. Each selected button carries its own five gestures, so different buttons can drive different actions.</value></data>
@@ -540,4 +555,12 @@
   <data name="Pad_Falcon_Spring" xml:space="preserve"><value>Centring Spring</value></data>
   <data name="Pad_Falcon_ResetSpring" xml:space="preserve"><value>Reset Centring Spring</value></data>
   <data name="Pad_Falcon_KickButton_Tooltip" xml:space="preserve"><value>While this grip button is held, and for a quarter second after, the game's rumble kicks the handle towards you. Rumble at other times shakes the handle.</value></data>
+  <data name="MacroAction_Type_SetKeyColors" xml:space="preserve"><value>Set Key Colours</value></data>
+  <data name="MacroAction_Type_ClearKeyColors" xml:space="preserve"><value>Clear Key Colours</value></data>
+  <data name="MacroAction_SetKeyColors_Tooltip" xml:space="preserve"><value>Lights keys in a colour on the keyboards and other devices this virtual controller lights: steady, fading, or counting down one key at a time.</value></data>
+  <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Ends the Set Key Colours actions running on this virtual controller that light one of the keys picked here, or every one when none is picked.</value></data>
+  <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Clear all key colours</value></data>
+  <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Clear key colours on {0} lights</value></data>
+  <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Keep Their Colours</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>The action lights the same keys on every keyboard this virtual controller lights, over the colours its Lighting tab gives them. The numbers show the order picked. Countdown turns the keys off one at a time, the last one picked first, so pick 1 to 0 for a cooldown on the number row. A keyboard or mouse lights only while its Control This Device’s Lighting is on.</value></data>
 </root>

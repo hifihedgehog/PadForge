@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace PadForge.Common.Input
@@ -219,6 +220,30 @@ namespace PadForge.Common.Input
                 _ => None,
             };
         }
+
+        /// <summary>The keyboard usages Windows reports scan key
+        /// <paramref name="scanKey"/> for (0x100 for the E0 form), the form a
+        /// window message's lParam carries: <see cref="ScanKeyOf"/> read the
+        /// other way. Two usages share 0x2B, the ANSI backslash (0x31) and the
+        /// ISO key left of Enter (0x32), so the caller tries each. Empty for a
+        /// scan key no row sends.</summary>
+        internal static IReadOnlyList<ushort> UsagesOfScanKey(int scanKey)
+            => s_usagesByScanKey.Value.TryGetValue(scanKey, out var usages) ? usages : Array.Empty<ushort>();
+
+        private static readonly Lazy<Dictionary<int, ushort[]>> s_usagesByScanKey = new(() =>
+        {
+            var lists = new Dictionary<int, List<ushort>>();
+            for (int u = 1; u <= 0xFF; u++)
+            {
+                int scanKey = ScanKeyOf(K(u));
+                if (scanKey < 0) continue;
+                if (!lists.TryGetValue(scanKey, out var list)) lists[scanKey] = list = new List<ushort>();
+                list.Add((ushort)u);
+            }
+            var table = new Dictionary<int, ushort[]>(lists.Count);
+            foreach (var pair in lists) table[pair.Key] = pair.Value.ToArray();
+            return table;
+        });
 
         /// <summary>The scan code the low-level hook reports for a keyboard
         /// usage, as <see cref="PadForge.Engine.Common.OwnHidOutput.ScanKey"/>

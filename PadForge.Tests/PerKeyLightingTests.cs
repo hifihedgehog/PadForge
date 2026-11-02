@@ -35,32 +35,55 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void TheBaseLayerHasNothingToInherit()
+        public void TheBaseLayerHasNoBaseLayerToShow_AndAShiftLayerStartsOnIt()
         {
-            var settings = KeyLightingSettings.Parse("Base>inherit,k04=FF0000|Shift1>inherit");
-            Assert.False(settings.LayerOf("Base").UsesBase);
-            Assert.True(settings.LayerOf("Shift1").UsesBase);
-            Assert.Equal("Base>k04=FF0000|Shift1>inherit", settings.Format());
+            var settings = KeyLightingSettings.Parse("Base>bg=base,k04=FF0000|Shift1>bg=base|Shift2>bg=same|Shift3>inherit");
+            Assert.Equal(KeyBackgroundRule.Same, settings.LayerOf("Base").Background);
+            // A shift layer on the rule it starts with and no colors changes
+            // nothing, so it is not saved. An item the reader no longer
+            // knows ("inherit") is dropped.
+            Assert.Null(settings.LayerOf("Shift1"));
+            Assert.Null(settings.LayerOf("Shift3"));
+            Assert.Equal(KeyBackgroundRule.Same, settings.LayerOf("Shift2").Background);
+            Assert.Equal("Base>k04=FF0000|Shift2>bg=same", settings.Format());
+            Assert.Equal(KeyBackgroundRule.BaseLayer, settings.LayerOrDefault("Shift9").Background);
+            Assert.Equal(KeyBackgroundRule.Same, settings.LayerOrDefault("Base").Background);
+            Assert.Equal(KeyBackgroundRule.Same, new KeyLightingLayer { Background = KeyBackgroundRule.BaseLayer }.Background);
         }
 
         [Fact]
-        public void ALayerWithItsOwnColorsShowsThem_AndOneThatInheritsOrHasNoneShowsBase()
+        public void AShiftLayerShowsItsColorsOverTheBaseLayer_UnlessItsRuleSaysOtherwise()
         {
-            var settings = KeyLightingSettings.Parse("Base>k04=FF0000|Shift1>bg=off,k06=FFFFFF|Shift2>inherit");
+            var settings = KeyLightingSettings.Parse("Base>k04=FF0000|Shift1>bg=off,k06=FFFFFF|Shift3>k06=00FF00");
 
             var shift1 = settings.FrameFor("Shift1");
             Assert.Equal(0xFFFFFF, shift1.Keys[0x06]);
             Assert.False(shift1.Keys.ContainsKey(0x04));
             Assert.Equal(0, shift1.Background);
+            Assert.Null(shift1.Under);
 
-            foreach (var mask in new[] { "Base", "Shift2", "Shift9", null })
+            var shift3 = settings.FrameFor("Shift3");
+            Assert.Equal(0x00FF00, shift3.Keys[0x06]);
+            Assert.Null(shift3.Background);
+            Assert.Equal(0xFF0000, shift3.Under.Keys[0x04]);
+
+            foreach (var mask in new[] { "Base", "Shift9", null })
             {
                 var frame = settings.FrameFor(mask);
                 Assert.Equal(0xFF0000, frame.Keys[0x04]);
                 Assert.Null(frame.Background);
+                Assert.Null(frame.Under);
             }
 
             Assert.True(KeyLightingSettings.Empty.FrameFor("Base").IsEmpty);
+            Assert.True(KeyLightingSettings.Empty.FrameFor("Shift1").IsEmpty);
+        }
+
+        [Fact]
+        public void TheRuleTheLayerStartsWithIsNotWritten_AndEveryOtherIs()
+        {
+            Assert.Equal("Base>bg=off|Shift1>bg=same|Shift2>bg=off|Shift3>bg=0A0B0C",
+                KeyLightingSettings.Parse("Base>bg=off|Shift1>bg=same|Shift2>bg=off|Shift3>bg=0a0b0c|Shift4>bg=base").Format());
         }
 
         [Fact]
@@ -170,6 +193,39 @@ namespace PadForge.Tests
         {
             var frame = new KeyFrame(new Dictionary<ushort, int> { [0x04] = 0xFFFFFF }, null, null, background: 0);
             Assert.Equal(new[] { 0, 0xFFFFFF, 0, 0, 0, 0, 0xFFFFFF }, LightRenderer.Render(Map(), 0x111111, frame));
+        }
+
+        [Fact]
+        public void AShiftLayerFallsThroughToTheBaseLayer_LightByLight()
+        {
+            var settings = KeyLightingSettings.Parse(
+                "Base>bg=101010,k04=FF0000,k29=00FF00,l1=ABCDEF|Shift1>k29=0000FF,k04=123456|Shift2>bg=same,k29=0000FF");
+            // Esc and both A lights from the shift layer, which outranks the
+            // Base layer's own color on light 1. The rest show Base's
+            // background.
+            Assert.Equal(new[] { 0x0000FF, 0x123456, 0x101010, 0x101010, 0x101010, 0x101010, 0x123456 },
+                LightRenderer.Render(Map(), 0x111111, settings.FrameFor("Shift1")));
+            // A layer with a rule of its own shows nothing of Base.
+            Assert.Equal(new[] { 0x0000FF, 0x111111, 0x111111, 0x111111, 0x111111, 0x111111, 0x111111 },
+                LightRenderer.Render(Map(), 0x111111, settings.FrameFor("Shift2")));
+            Assert.Equal(new[] { 0x00FF00, 0xABCDEF, 0x101010, 0x101010, 0x101010, 0x101010, 0xFF0000 },
+                LightRenderer.Render(Map(), 0x111111, settings.FrameFor("Base")));
+        }
+
+        [Fact]
+        public void TheFrameBeneathIsPartOfAFramesEquality()
+        {
+            var under = new KeyFrame(new Dictionary<ushort, int> { [4] = 1 }, null, null, null);
+            var a = new KeyFrame(new Dictionary<ushort, int> { [5] = 2 }, null, null, null, under);
+            var b = new KeyFrame(new Dictionary<ushort, int> { [5] = 2 }, null, null, null,
+                new KeyFrame(new Dictionary<ushort, int> { [4] = 1 }, null, null, null));
+            var c = new KeyFrame(new Dictionary<ushort, int> { [5] = 2 }, null, null, null);
+            Assert.Equal(a, b);
+            Assert.Equal(a.GetHashCode(), b.GetHashCode());
+            Assert.NotEqual(a, c);
+            // An empty frame beneath is none.
+            Assert.Equal(c, new KeyFrame(new Dictionary<ushort, int> { [5] = 2 }, null, null, null, KeyFrame.Empty));
+            Assert.False(new KeyFrame(null, null, null, null, under).IsEmpty);
         }
 
         [Fact]

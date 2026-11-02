@@ -119,6 +119,10 @@ namespace PadForge.Views
             PadForge.Common.Input.Peripherals.PeripheralOutputs.StatusChanged += OnPeripheralOutputsChanged;
             PadForge.Common.Input.Peripherals.PeripheralOutputs.ClaimsChanged -= OnPeripheralOutputsChanged;
             PadForge.Common.Input.Peripherals.PeripheralOutputs.ClaimsChanged += OnPeripheralOutputsChanged;
+            // A device whose lights become known one by one gains its Key
+            // Colors card (#557).
+            PadForge.Common.Input.Peripherals.PeripheralLightMaps.Changed -= OnPeripheralOutputsChanged;
+            PadForge.Common.Input.Peripherals.PeripheralLightMaps.Changed += OnPeripheralOutputsChanged;
         }
 
         private void PadPage_Unloaded(object sender, RoutedEventArgs e)
@@ -129,6 +133,7 @@ namespace PadForge.Views
             PadForge.Common.Input.Peripherals.PeripheralOutputs.LinksChanged -= OnPeripheralOutputsChanged;
             PadForge.Common.Input.Peripherals.PeripheralOutputs.StatusChanged -= OnPeripheralOutputsChanged;
             PadForge.Common.Input.Peripherals.PeripheralOutputs.ClaimsChanged -= OnPeripheralOutputsChanged;
+            PadForge.Common.Input.Peripherals.PeripheralLightMaps.Changed -= OnPeripheralOutputsChanged;
         }
 
         /// <summary>Raised on the peripheral host's thread. One refresh per
@@ -748,6 +753,7 @@ namespace PadForge.Views
                 PeripheralLightingRoute.Text = route ?? string.Empty;
                 PeripheralLightingRoute.Visibility = string.IsNullOrEmpty(route) ? Visibility.Collapsed : Visibility.Visible;
             }
+            SyncKeyColorsCard(hasPeripheralLighting ? lightingRow : null);
             if (LightingLightbarSubtitle != null)
                 LightingLightbarSubtitle.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
             if (LightingPlayerIdleHint != null)
@@ -3822,6 +3828,57 @@ namespace PadForge.Views
         /// the same observable properties, so no extra UI poke is needed.
         /// Invalid input is silently ignored — the textbox is restored
         /// to the current canonical RGB hex on next focus loss.</summary>
+        /// <summary>
+        /// The Key Colors card (#557): shown for a lit device whose path
+        /// knows its lights one by one, and attached, as the Lightbar card
+        /// is bound, to the device's config for this controller, with its
+        /// lights and the slot's shift layers. A device asleep or unplugged
+        /// has no lights to draw, so the card waits for it, and the colors
+        /// stay saved.
+        /// </summary>
+        private void SyncKeyColorsCard(PadForge.Engine.Data.UserDevice row)
+        {
+            if (KeyColorsCard == null || DataContext is not PadViewModel vm) return;
+            var map = row == null ? null
+                : PadForge.Common.Input.Peripherals.PeripheralLightMaps.FirstPerLight(
+                    PadForge.Common.Input.Peripherals.PeripheralOutputs.Links.For(row.InstanceGuid)?.Lighting, out _);
+            if (map == null)
+            {
+                vm.KeyColors.Detach();
+                KeyColorsCard.Visibility = Visibility.Collapsed;
+                return;
+            }
+            vm.KeyColors.Attach(vm.DeviceConfig, map, vm.LayerTabs);
+            KeyColorsCard.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>A layer chip on the Key Colors card picks the layer
+        /// being colored, as a Mappings tab chip picks the layer being
+        /// mapped (ShiftLayerTab_Click).</summary>
+        private void KeyColorLayer_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement { Tag: string mask } && DataContext is PadViewModel vm)
+                vm.KeyColors.SelectedLayerMask = mask;
+        }
+
+        /// <summary>A Key Colors swatch: the color the selection takes,
+        /// given to it at once. Tag carries RRGGBB, as on the Lightbar
+        /// card's swatches.</summary>
+        private void KeyColorSwatch_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement { Tag: string hex } && DataContext is PadViewModel vm)
+                vm.KeyColors.PaintHex = hex;
+        }
+
+        /// <summary>Enter applies a Key Colors hex box, as it does the
+        /// Lightbar card's (LightbarHexBox_KeyDown). Leaving the box
+        /// applies it through its binding.</summary>
+        private void KeyColorsHexBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && sender is TextBox box)
+                BindingOperations.GetBindingExpression(box, TextBox.TextProperty)?.UpdateSource();
+        }
+
         private void LightbarHexBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)

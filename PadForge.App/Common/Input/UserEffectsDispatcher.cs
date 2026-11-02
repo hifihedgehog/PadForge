@@ -193,6 +193,10 @@ namespace PadForge.Common.Input
         /// (#531), or null. Read once per pass, after a game mod's hold.</summary>
         public static Func<int, Common.Input.MacroTriggerEffectState> MacroTriggerEffectsProvider { get; set; }
 
+        /// <summary>A slot's key colors played by macros (#557), or null.
+        /// Painted over the Lighting tab's key colors.</summary>
+        public static Func<int, Common.Input.MacroKeyColorState> MacroKeyColorsProvider { get; set; }
+
         // Animated-lightbar polling cadence — 30Hz is enough to feel
         // responsive without flooding the BT HID write path. WriteFile
         // open+close is ~1ms per call; 30Hz = 30ms budget.
@@ -1772,7 +1776,10 @@ namespace PadForge.Common.Input
                 || ModChangedRecently(System.Threading.Volatile.Read(ref _modChangedMs), Environment.TickCount64)
                 // A macro's trigger effect ends at a time (#531), which no
                 // event announces.
-                || MacroTriggerEffectsProvider?.Invoke(_padIndex)?.AnyTimed == true;
+                || MacroTriggerEffectsProvider?.Invoke(_padIndex)?.AnyTimed == true
+                // So does a macro's key color, and it fades or counts down
+                // meanwhile (#557).
+                || MacroKeyColorsProvider?.Invoke(_padIndex)?.AnyTimed == true;
         }
 
         /// <summary>Whether a mod change at <paramref name="changedMs"/>
@@ -2316,21 +2323,50 @@ namespace PadForge.Common.Input
             // alone whatever its config holds.
             int level = outputOnly ? 0 : (int)hold;
             // The device's light colors for the shift layer engaged now
-            // (#557), over the color above.
-            var keys = KeyFrameFor(devCfg);
+            // (#557), with the slot's macro key colors over them, over the
+            // color above.
+            var keys = KeyFrameFor(devCfg, nowMs);
             Common.Input.Peripherals.PeripheralOutputs.SetLighting(guid, _padIndex, slotNumber, r, g, b, level, keys);
             return true;
         }
 
         /// <summary>The light colors <paramref name="devCfg"/> holds for
-        /// this slot's engaged shift layer (#557), or null when it holds
-        /// none.</summary>
-        private Common.Input.Peripherals.KeyFrame KeyFrameFor(DeviceSlotConfig devCfg)
+        /// this slot's engaged shift layer (#557), with the key colors the
+        /// slot's macros play over them, or null when there are none.</summary>
+        private Common.Input.Peripherals.KeyFrame KeyFrameFor(DeviceSlotConfig devCfg, long nowMs)
         {
             var settings = devCfg.KeyLightingParsed;
-            if (settings == null || settings.IsEmpty) return null;
-            return settings.FrameFor(EngagedLayerOf(_padIndex));
+            var frame = settings == null || settings.IsEmpty ? null : settings.FrameFor(EngagedLayerOf(_padIndex));
+            var macros = MacroKeyColorsProvider?.Invoke(_padIndex);
+            return macros != null && macros.Any ? macros.Compose(frame, nowMs) : frame;
         }
+
+        /// <summary>A slot's macro key colors changed (#557): one started,
+        /// ended or was cleared. Starts or stops the writer that paints a
+        /// fade, a countdown or an end, and repaints the slot's lit
+        /// peripherals. Called on the polling thread and the dispatcher's,
+        /// and never blocks.</summary>
+        internal static void NotifyMacroKeyColorsChanged(int padIndex)
+        {
+            if (!_instances.TryGetValue(padIndex, out var inst) || inst == null) return;
+            if (System.Threading.Interlocked.Exchange(ref inst._keyColorsQueued, 1) != 0) return;
+            System.Threading.ThreadPool.UnsafeQueueUserWorkItem(static d =>
+            {
+                System.Threading.Volatile.Write(ref d._keyColorsQueued, 0);
+                if (d._disposed) return;
+                try
+                {
+                    d.UpdateAnimTimer();
+                    RequestPeripheralRefresh(d._padIndex);
+                }
+                catch (Exception ex)
+                {
+                    Engine.SdlDiagLog.WriteLine("DISPATCH macro key colors pass failed: " + ex.GetType().Name);
+                }
+            }, inst, preferLocal: false);
+        }
+
+        private int _keyColorsQueued;
 
         /// <summary>The shift layer engaged on <paramref name="padIndex"/>,
         /// "Base" when none is or the slot has no mapping set.</summary>

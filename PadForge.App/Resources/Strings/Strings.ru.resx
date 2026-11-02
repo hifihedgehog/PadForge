@@ -1090,6 +1090,44 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Добавить цвет</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Сбросить палитру</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Заменить текущую палитру четырьмя цветами по умолчанию (красный, зеленый, синий, желтый).</value></data>
+  <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Цвета клавиш</value></data>
+  <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Цвета зон</value></data>
+  <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Выберите клавиши на рисунке или нажмите их на клавиатуре и задайте им цвет. У каждого слоя переключения могут быть свои цвета, они показываются, пока слой задействован.</value></data>
+  <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Выберите зоны и задайте им цвет. У каждого слоя переключения могут быть свои цвета, они показываются, пока слой задействован.</value></data>
+  <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>Убрать цвета на всех слоях.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Остальная подсветка</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Что показывает подсветка, у которой нет своего цвета на этом слое.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Цвета слоя {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Режим подсветки</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Выкл.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Один цвет</value></data>
+  <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Нажимайте клавиши, чтобы выбрать их подсветку. Повторное нажатие выбранной клавиши снимает выбор. Ctrl+Tab переходит дальше.</value></data>
+  <data name="Pad_Lighting_KeyColors_NoneSelected" xml:space="preserve"><value>Ничего не выбрано. Щёлкните или проведите мышью по рисунку, чтобы выбрать подсветку.</value></data>
+  <data name="Pad_Lighting_KeyColors_Selected_Format" xml:space="preserve"><value>Выбрано: {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllKeys" xml:space="preserve"><value>Все клавиши</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberRow" xml:space="preserve"><value>Цифровой ряд</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectFunctionKeys" xml:space="preserve"><value>F-клавиши</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberPad" xml:space="preserve"><value>Цифровой блок</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Стрелки</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Край</value></data>
+  <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Логотип</value></data>
+  <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Индикаторы</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Вся подсветка</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Снять выбор</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Выбор нажатием клавиш</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing_Tooltip" xml:space="preserve"><value>Пока включено, клавиша, нажатая при фокусе на рисунке, выбирает свою подсветку, а повторное нажатие снимает выбор. Ctrl+Tab выводит фокус с рисунка.</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor" xml:space="preserve"><value>Применить цвет</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor_Tooltip" xml:space="preserve"><value>Задать выбранной подсветке цвет, указанный выше.</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor" xml:space="preserve"><value>Убрать цвет</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor_Tooltip" xml:space="preserve"><value>Убрать собственные цвета выбранной подсветки на этом слое, чтобы она показывала то, что задано в списке «Остальная подсветка».</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer" xml:space="preserve"><value>Убрать все цвета</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer_Tooltip" xml:space="preserve"><value>Убрать все цвета на этом слое и вернуть «Остальная подсветка» в исходное состояние слоя.</value></data>
+  <data name="Pad_Lighting_KeyColors_UnnamedKey_Format" xml:space="preserve"><value>Клавиша {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Zone_Format" xml:space="preserve"><value>Зона {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Light_Format" xml:space="preserve"><value>Светодиод {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightColor_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightBaseLayer_Format" xml:space="preserve"><value>{0}: {1} из {2}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Удержание импульса</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Затухание импульса</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Пресет</value></data>
@@ -3314,6 +3352,31 @@
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Скрытые кнопки отключены. Сначала включите «Кнопки портативного ПК» в настройках.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>Работает {0}. Эта программа продолжит реагировать на эти кнопки, пока вы ее не остановите.</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Экспорт…</value></data>
+  <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>Назвать клавиши подсветки</value></data>
+  <data name="MapKeyLights_Title" xml:space="preserve"><value>Назвать клавиши подсветки</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge зажигает подсветку клавиш по одной. Нажмите клавишу под горящим светодиодом, чтобы назвать его. Названия сохраняются для всех клавиатур этой модели, поэтому «Цвета клавиш» и макросы цветов клавиш попадают на нужные клавиши.</value></data>
+  <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>Устройство:</value></data>
+  <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>Названо клавиш: {0} из {1}</value></data>
+  <data name="MapKeyLights_NoLights" xml:space="preserve"><value>У этого устройства нет подсветки клавиш, для которой PadForge может запомнить названия.</value></data>
+  <data name="MapKeyLights_Ready" xml:space="preserve"><value>Кнопка «Начать» зажигает первый светодиод без названия.</value></data>
+  <data name="MapKeyLights_Ask_Format" xml:space="preserve"><value>Горит светодиод {0}. Нажмите клавишу под ним.</value></data>
+  <data name="MapKeyLights_AskNamed_Format" xml:space="preserve"><value>Горит светодиод {0}, назван {1}. Нажмите клавишу под ним, чтобы назвать заново.</value></data>
+  <data name="MapKeyLights_Start" xml:space="preserve"><value>Начать</value></data>
+  <data name="MapKeyLights_Back" xml:space="preserve"><value>Назад</value></data>
+  <data name="MapKeyLights_Skip" xml:space="preserve"><value>Пропустить</value></data>
+  <data name="MapKeyLights_Skip_Tooltip" xml:space="preserve"><value>Оставить этот светодиод без названия и зажечь следующий.</value></data>
+  <data name="MapKeyLights_Forget" xml:space="preserve"><value>Забыть</value></data>
+  <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>Удалить запомненное название горящего светодиода.</value></data>
+  <data name="MapKeyLights_Stop" xml:space="preserve"><value>Остановить</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>Если ни один светодиод не загорается, отключите динамическое освещение для устройства в параметрах Windows или закройте его программу управления подсветкой и снова нажмите «Начать».</value></data>
+  <data name="MapKeyLights_Export" xml:space="preserve"><value>Экспорт…</value></data>
+  <data name="MapKeyLights_Import" xml:space="preserve"><value>Импорт…</value></data>
+  <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Забыть все</value></data>
+  <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Удалить все названия, запомненные для этой модели.</value></data>
+  <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Экспортировано названий: {0}.</value></data>
+  <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Импортировано названий: {0}.</value></data>
+  <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Импортировано названий для другой модели ({1}): {0}.</value></data>
+  <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>В этом файле нет названий подсветки клавиш.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Импорт…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Экспортировано кнопок: {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Импортировано кнопок: {0}.</value></data>
@@ -4716,4 +4779,31 @@
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{1}: {0} при удержании</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{1}: {0} до остановки</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Остановить эффект триггера: {0}</value></data>
+  <data name="MacroAction_Type_SetKeyColors" xml:space="preserve"><value>Задать цвета клавиш</value></data>
+  <data name="MacroAction_Type_ClearKeyColors" xml:space="preserve"><value>Снять цвета клавиш</value></data>
+  <data name="MacroAction_SetKeyColors_Tooltip" xml:space="preserve"><value>Подсвечивает клавиши цветом на клавиатурах и других устройствах, подсветкой которых управляет этот виртуальный контроллер: постоянно, с затуханием или с отсчётом по одной клавише.</value></data>
+  <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Завершает действия «Задать цвета клавиш», запущенные на этом виртуальном контроллере и подсвечивающие любую из выбранных здесь клавиш, а если ни одна не выбрана, то все.</value></data>
+  <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Снять все цвета клавиш</value></data>
+  <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Снять цвета клавиш, светодиодов: {0}</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>Светодиодов: {0}, цвет {1}, {2} мс</value></data>
+  <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>Светодиодов: {0}, цвет {1}, при удержании</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>Светодиодов: {0}, цвет {1}, до снятия</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>Светодиодов: {0}, цвет {1}, затухание {2} мс</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>Светодиодов: {0}, цвет {1}, отсчёт {2} мс</value></data>
+  <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Клавиши</value></data>
+  <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Каждый светодиод</value></data>
+  <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Клавиши не выбраны, поэтому действие ничего не подсвечивает.</value></data>
+  <data name="MacroAction_KeyColors_Style" xml:space="preserve"><value>Стиль</value></data>
+  <data name="MacroAction_KeyColors_Steady" xml:space="preserve"><value>Постоянный</value></data>
+  <data name="MacroAction_KeyColors_Fade" xml:space="preserve"><value>Затухание</value></data>
+  <data name="MacroAction_KeyColors_Countdown" xml:space="preserve"><value>Отсчёт</value></data>
+  <data name="MacroAction_KeyColors_Hold" xml:space="preserve"><value>Удерживается</value></data>
+  <data name="MacroAction_KeyColors_HoldDuration" xml:space="preserve"><value>Заданное время</value></data>
+  <data name="MacroAction_KeyColors_HoldRelease" xml:space="preserve"><value>Пока удерживается активатор макроса</value></data>
+  <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>До снятия</value></data>
+  <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Время</value></data>
+  <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Оставить их цвета</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Действие подсвечивает одни и те же клавиши на каждой клавиатуре, подсветкой которой управляет этот виртуальный контроллер, поверх цветов с вкладки «Подсветка». Цифры показывают порядок выбора. Отсчёт гасит клавиши по одной, начиная с последней выбранной, поэтому для кулдауна на цифровом ряду выберите клавиши от 1 до 0. Клавиатура или мышь подсвечивается, только когда включён параметр «Управлять подсветкой этого устройства».</value></data>
+  <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Прочее</value></data>
+  <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, номер {1}</value></data>
 </root>

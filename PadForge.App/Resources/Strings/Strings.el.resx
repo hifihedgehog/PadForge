@@ -1090,6 +1090,44 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Προσθήκη χρώματος</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Επαναφορά παλέτας</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Αντικαθιστά την τρέχουσα παλέτα με τα τέσσερα προεπιλεγμένα χρώματα (κόκκινο, πράσινο, μπλε, κίτρινο).</value></data>
+  <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Χρώματα πλήκτρων</value></data>
+  <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Χρώματα ζωνών</value></data>
+  <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Επιλέξτε πλήκτρα στην εικόνα ή πατήστε τα στο πληκτρολόγιο και δώστε τους χρώμα. Κάθε επίπεδο shift μπορεί να έχει δικά του χρώματα, που εμφανίζονται όσο το επίπεδο είναι ενεργό.</value></data>
+  <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Επιλέξτε ζώνες και δώστε τους χρώμα. Κάθε επίπεδο shift μπορεί να έχει δικά του χρώματα, που εμφανίζονται όσο το επίπεδο είναι ενεργό.</value></data>
+  <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>Αφαίρεση των χρωμάτων από κάθε επίπεδο.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Άλλα φώτα</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Τι εμφανίζουν σε αυτό το επίπεδο τα φώτα που δεν έχουν δικό τους χρώμα.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Χρώματα επιπέδου {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Λειτουργία φωτισμού</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Σβηστό</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Ένα χρώμα</value></data>
+  <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Πατήστε πλήκτρα για να επιλέξετε τα φώτα τους και πατήστε ξανά ένα επιλεγμένο πλήκτρο για να το καταργήσετε. Το Ctrl+Tab προχωρά παρακάτω.</value></data>
+  <data name="Pad_Lighting_KeyColors_NoneSelected" xml:space="preserve"><value>Δεν έχουν επιλεγεί φώτα. Κάντε κλικ ή σύρετε στην εικόνα για να επιλέξετε φώτα.</value></data>
+  <data name="Pad_Lighting_KeyColors_Selected_Format" xml:space="preserve"><value>Επιλεγμένα: {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllKeys" xml:space="preserve"><value>Όλα τα πλήκτρα</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberRow" xml:space="preserve"><value>Σειρά αριθμών</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectFunctionKeys" xml:space="preserve"><value>Πλήκτρα F</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberPad" xml:space="preserve"><value>Αριθμητικό πληκτρολόγιο</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Πλήκτρα βελών</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Άκρη</value></data>
+  <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Λογότυπο</value></data>
+  <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Κατάσταση</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Όλα τα φώτα</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Εκκαθάριση επιλογής</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Επιλογή με πάτημα πλήκτρων</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing_Tooltip" xml:space="preserve"><value>Όσο είναι ενεργό, ένα πλήκτρο που πατιέται με την εικόνα εστιασμένη επιλέγει τα φώτα του και το ξαναπάτημά του τα καταργεί. Το Ctrl+Tab βγάζει την εστίαση από την εικόνα.</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor" xml:space="preserve"><value>Εφαρμογή χρώματος</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor_Tooltip" xml:space="preserve"><value>Δώστε στα επιλεγμένα φώτα το χρώμα που βρίσκεται παραπάνω.</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor" xml:space="preserve"><value>Αφαίρεση χρώματος</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor_Tooltip" xml:space="preserve"><value>Αφαιρέστε τα χρώματα των επιλεγμένων φώτων σε αυτό το επίπεδο, ώστε να εμφανίζουν ό,τι ορίζει το στοιχείο Άλλα φώτα.</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer" xml:space="preserve"><value>Αφαίρεση όλων των χρωμάτων</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer_Tooltip" xml:space="preserve"><value>Αφαιρέστε κάθε χρώμα από αυτό το επίπεδο και επαναφέρετε τα Άλλα φώτα στην αρχική κατάσταση του επιπέδου.</value></data>
+  <data name="Pad_Lighting_KeyColors_UnnamedKey_Format" xml:space="preserve"><value>Πλήκτρο {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Zone_Format" xml:space="preserve"><value>Ζώνη {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Light_Format" xml:space="preserve"><value>Φως {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightColor_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightBaseLayer_Format" xml:space="preserve"><value>{0}: {1} από {2}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Κράτημα παλμού</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Εξασθένηση παλμού</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Προρύθμιση</value></data>
@@ -3314,6 +3352,31 @@
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Τα κρυφά κουμπιά είναι απενεργοποιημένα. Ενεργοποιήστε πρώτα τα «Κουμπιά υπολογιστή χειρός» στις Ρυθμίσεις.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>Το {0} εκτελείται. Εξακολουθεί να αντιδρά σε αυτά τα κουμπιά μέχρι να το σταματήσετε.</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Εξαγωγή…</value></data>
+  <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>Αντιστοίχιση φώτων πλήκτρων</value></data>
+  <data name="MapKeyLights_Title" xml:space="preserve"><value>Αντιστοίχιση φώτων πλήκτρων</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>Το PadForge ανάβει ένα φως πλήκτρου τη φορά. Πατήστε το πλήκτρο κάτω από το αναμμένο φως για να το ονομάσετε. Τα ονόματα διατηρούνται για κάθε πληκτρολόγιο αυτού του μοντέλου, ώστε τα Χρώματα πλήκτρων και οι μακροεντολές χρωμάτων πλήκτρων να φτάνουν στα σωστά πλήκτρα.</value></data>
+  <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>Συσκευή:</value></data>
+  <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>Πλήκτρα με όνομα: {0} από {1}</value></data>
+  <data name="MapKeyLights_NoLights" xml:space="preserve"><value>Αυτή η συσκευή δεν έχει φώτα πλήκτρων για τα οποία το PadForge μπορεί να μάθει ονόματα.</value></data>
+  <data name="MapKeyLights_Ready" xml:space="preserve"><value>Η Έναρξη ανάβει το πρώτο φως πλήκτρου χωρίς όνομα.</value></data>
+  <data name="MapKeyLights_Ask_Format" xml:space="preserve"><value>Το φως {0} είναι αναμμένο. Πατήστε το πλήκτρο κάτω από αυτό.</value></data>
+  <data name="MapKeyLights_AskNamed_Format" xml:space="preserve"><value>Το φως {0} είναι αναμμένο και ονομάζεται {1}. Πατήστε το πλήκτρο κάτω από αυτό για να το ονομάσετε ξανά.</value></data>
+  <data name="MapKeyLights_Start" xml:space="preserve"><value>Έναρξη</value></data>
+  <data name="MapKeyLights_Back" xml:space="preserve"><value>Πίσω</value></data>
+  <data name="MapKeyLights_Skip" xml:space="preserve"><value>Παράλειψη</value></data>
+  <data name="MapKeyLights_Skip_Tooltip" xml:space="preserve"><value>Αφήστε αυτό το φως χωρίς όνομα και ανάψτε το επόμενο.</value></data>
+  <data name="MapKeyLights_Forget" xml:space="preserve"><value>Διαγραφή</value></data>
+  <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>Αφαιρέστε το όνομα που έχει μάθει για το αναμμένο φως.</value></data>
+  <data name="MapKeyLights_Stop" xml:space="preserve"><value>Διακοπή</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>Αν δεν ανάψει κανένα φως, απενεργοποιήστε τον Δυναμικό φωτισμό για τη συσκευή στις Ρυθμίσεις των Windows ή κλείστε το δικό της λογισμικό φωτισμού και πατήστε ξανά Έναρξη.</value></data>
+  <data name="MapKeyLights_Export" xml:space="preserve"><value>Εξαγωγή…</value></data>
+  <data name="MapKeyLights_Import" xml:space="preserve"><value>Εισαγωγή…</value></data>
+  <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Διαγραφή όλων</value></data>
+  <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Αφαιρέστε κάθε όνομα που έχει μάθει για αυτό το μοντέλο.</value></data>
+  <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Εξήχθησαν {0} ονόματα.</value></data>
+  <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Εισήχθησαν {0} ονόματα.</value></data>
+  <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Εισήχθησαν {0} ονόματα για άλλο μοντέλο, {1}.</value></data>
+  <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Αυτό το αρχείο δεν περιέχει ονόματα φώτων πλήκτρων.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Εισαγωγή…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Εξήχθησαν {0} κουμπιά.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Εισήχθησαν {0} κουμπιά.</value></data>
@@ -4716,4 +4779,31 @@
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} ({1}) όσο κρατιέται</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} ({1}) μέχρι τη διακοπή</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Διακοπή εφέ σκανδάλης ({0})</value></data>
+  <data name="MacroAction_Type_SetKeyColors" xml:space="preserve"><value>Ορισμός χρωμάτων πλήκτρων</value></data>
+  <data name="MacroAction_Type_ClearKeyColors" xml:space="preserve"><value>Εκκαθάριση χρωμάτων πλήκτρων</value></data>
+  <data name="MacroAction_SetKeyColors_Tooltip" xml:space="preserve"><value>Ανάβει πλήκτρα με χρώμα στα πληκτρολόγια και στις άλλες συσκευές που φωτίζει αυτός ο εικονικός ελεγκτής: σταθερά, με σταδιακή εξασθένιση ή με αντίστροφη μέτρηση ένα πλήκτρο τη φορά.</value></data>
+  <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Τερματίζει τις ενέργειες Ορισμός χρωμάτων πλήκτρων που εκτελούνται σε αυτόν τον εικονικό ελεγκτή και ανάβουν ένα από τα πλήκτρα που επιλέγονται εδώ, ή όλες αν δεν επιλεγεί κανένα.</value></data>
+  <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Εκκαθάριση όλων των χρωμάτων πλήκτρων</value></data>
+  <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Εκκαθάριση χρωμάτων πλήκτρων σε {0} φώτα</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} φώτα ({1}) για {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} φώτα ({1}) όσο κρατιέται</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} φώτα ({1}) μέχρι την εκκαθάριση</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} φώτα ({1}), με εξασθένιση σε {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} φώτα ({1}), με αντίστροφη μέτρηση σε {2} ms</value></data>
+  <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Πλήκτρα</value></data>
+  <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Κάθε φως</value></data>
+  <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Δεν έχουν επιλεγεί πλήκτρα, άρα η ενέργεια δεν ανάβει τίποτα.</value></data>
+  <data name="MacroAction_KeyColors_Style" xml:space="preserve"><value>Στυλ</value></data>
+  <data name="MacroAction_KeyColors_Steady" xml:space="preserve"><value>Σταθερό</value></data>
+  <data name="MacroAction_KeyColors_Fade" xml:space="preserve"><value>Σταδιακή εξασθένιση</value></data>
+  <data name="MacroAction_KeyColors_Countdown" xml:space="preserve"><value>Αντίστροφη μέτρηση</value></data>
+  <data name="MacroAction_KeyColors_Hold" xml:space="preserve"><value>Κρατά</value></data>
+  <data name="MacroAction_KeyColors_HoldDuration" xml:space="preserve"><value>Για καθορισμένο χρόνο</value></data>
+  <data name="MacroAction_KeyColors_HoldRelease" xml:space="preserve"><value>Όσο κρατιέται η σκανδάλη της μακροεντολής</value></data>
+  <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>Μέχρι την εκκαθάριση</value></data>
+  <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Χρόνος</value></data>
+  <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Διατήρηση των χρωμάτων τους</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Η ενέργεια ανάβει τα ίδια πλήκτρα σε κάθε πληκτρολόγιο που φωτίζει αυτός ο εικονικός ελεγκτής, πάνω από τα χρώματα που τους δίνει η καρτέλα Φωτισμός. Οι αριθμοί δείχνουν τη σειρά επιλογής. Η αντίστροφη μέτρηση σβήνει τα πλήκτρα ένα προς ένα, ξεκινώντας από το τελευταίο που επιλέχθηκε, οπότε επιλέξτε 1 έως 0 για χρονόμετρο αναμονής στη σειρά αριθμών. Ένα πληκτρολόγιο ή ποντίκι ανάβει μόνο όσο είναι ενεργό το Έλεγχος του φωτισμού αυτής της συσκευής.</value></data>
+  <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Άλλα</value></data>
+  <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, αριθμός {1}</value></data>
 </root>

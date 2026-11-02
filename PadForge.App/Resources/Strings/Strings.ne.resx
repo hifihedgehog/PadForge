@@ -1090,6 +1090,44 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>रङ थप्नुहोस्</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>प्यालेट रिसेट गर्नुहोस्</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>हालको प्यालेटलाई चार पूर्वनिर्धारित रङ (रातो, हरियो, नीलो, पहेँलो) ले प्रतिस्थापन गर्नुहोस्।</value></data>
+  <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>कुञ्जी रङहरू</value></data>
+  <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>क्षेत्र रङहरू</value></data>
+  <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>चित्रमा कुञ्जीहरू छान्नुहोस्, वा किबोर्डमा थिच्नुहोस्, र तिनलाई रङ दिनुहोस्। प्रत्येक शिफ्ट तहको आफ्नै रङ हुन सक्छ, जुन तह सक्रिय हुँदा देखिन्छ।</value></data>
+  <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>क्षेत्रहरू छान्नुहोस् र तिनलाई रङ दिनुहोस्। प्रत्येक शिफ्ट तहको आफ्नै रङ हुन सक्छ, जुन तह सक्रिय हुँदा देखिन्छ।</value></data>
+  <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>सबै तहबाट रङहरू हटाउनुहोस्।</value></data>
+  <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>अन्य बत्तीहरू</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>यस तहमा आफ्नै रङ नभएका बत्तीहरूले के देखाउँछन्।</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>{0} तहका रङहरू</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>लाइटिङ मोड</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>बन्द</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>एउटै रङ</value></data>
+  <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>बत्तीहरू छान्न कुञ्जीहरू थिच्नुहोस्, र छानिएको कुञ्जी हटाउन फेरि थिच्नुहोस्। Ctrl+Tab ले अगाडि बढाउँछ।</value></data>
+  <data name="Pad_Lighting_KeyColors_NoneSelected" xml:space="preserve"><value>कुनै बत्ती छानिएको छैन। बत्तीहरू छान्न चित्रमा क्लिक वा ड्र्याग गर्नुहोस्।</value></data>
+  <data name="Pad_Lighting_KeyColors_Selected_Format" xml:space="preserve"><value>छानिएका: {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllKeys" xml:space="preserve"><value>सबै कुञ्जीहरू</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberRow" xml:space="preserve"><value>अङ्क पङ्क्ति</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectFunctionKeys" xml:space="preserve"><value>F कुञ्जीहरू</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberPad" xml:space="preserve"><value>अङ्क प्याड</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>तीर कुञ्जीहरू</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>किनारा</value></data>
+  <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>लोगो</value></data>
+  <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>स्थिति</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>सबै बत्तीहरू</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>छनोट हटाउनुहोस्</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>कुञ्जी थिचेर छान्नुहोस्</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing_Tooltip" xml:space="preserve"><value>सक्रिय हुँदा, चित्र फोकसमा भएका बेला थिचिएको कुञ्जीले आफ्ना बत्तीहरू छान्छ, र फेरि थिच्दा ती हट्छन्। Ctrl+Tab ले चित्र छोड्छ।</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor" xml:space="preserve"><value>रङ लागू गर्नुहोस्</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor_Tooltip" xml:space="preserve"><value>छानिएका बत्तीहरूलाई माथिको रङ दिनुहोस्।</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor" xml:space="preserve"><value>रङ हटाउनुहोस्</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor_Tooltip" xml:space="preserve"><value>यस तहमा छानिएका बत्तीहरूका रङ हटाउनुहोस्, ताकि तिनले अन्य बत्तीहरूमा तोकिएअनुसार देखाऊन्।</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer" xml:space="preserve"><value>सबै रङ हटाउनुहोस्</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer_Tooltip" xml:space="preserve"><value>यस तहबाट सबै रङ हटाउनुहोस् र अन्य बत्तीहरूलाई तहको सुरुको अवस्थामा फर्काउनुहोस्।</value></data>
+  <data name="Pad_Lighting_KeyColors_UnnamedKey_Format" xml:space="preserve"><value>कुञ्जी {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Zone_Format" xml:space="preserve"><value>क्षेत्र {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Light_Format" xml:space="preserve"><value>बत्ती {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightColor_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightBaseLayer_Format" xml:space="preserve"><value>{0}: {2} बाट {1}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>पल्स होल्ड</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>पल्स क्षय</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>प्रिसेट</value></data>
@@ -3314,6 +3352,31 @@
   <data name="Handheld_NoDevice" xml:space="preserve"><value>लुकेका बटनहरू बन्द छन्। पहिले सेटिङहरूमा “ह्यान्डहेल्ड PC बटनहरू सक्षम गर्नुहोस्” खोल्नुहोस्।</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} चलिरहेको छ। तपाईंले यसलाई नरोकेसम्म यसले यी बटनहरूमा प्रतिक्रिया दिइरहन्छ।</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>निर्यात…</value></data>
+  <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>कुञ्जी बत्तीहरू म्याप गर्नुहोस्</value></data>
+  <data name="MapKeyLights_Title" xml:space="preserve"><value>कुञ्जी बत्तीहरू म्याप गर्नुहोस्</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge ले एक पटकमा एउटा कुञ्जी बत्ती बाल्छ। नाम दिन बलेको बत्तीमुनिको कुञ्जी थिच्नुहोस्। नामहरू यस मोडेलका सबै किबोर्डका लागि राखिन्छन्, ताकि कुञ्जी रङहरू र कुञ्जी रङ म्याक्रोहरू सही कुञ्जीसम्म पुगून्।</value></data>
+  <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>यन्त्र:</value></data>
+  <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>नाम दिइएका कुञ्जीहरू: {1} मध्ये {0}</value></data>
+  <data name="MapKeyLights_NoLights" xml:space="preserve"><value>यस यन्त्रमा PadForge ले नाम सिक्न सक्ने कुनै कुञ्जी बत्ती छैन।</value></data>
+  <data name="MapKeyLights_Ready" xml:space="preserve"><value>सुरु गर्नुहोस् ले नाम नभएको पहिलो कुञ्जी बत्ती बाल्छ।</value></data>
+  <data name="MapKeyLights_Ask_Format" xml:space="preserve"><value>बत्ती {0} बलेको छ। त्यसमुनिको कुञ्जी थिच्नुहोस्।</value></data>
+  <data name="MapKeyLights_AskNamed_Format" xml:space="preserve"><value>बत्ती {0} बलेको छ र यसको नाम {1} हो। फेरि नाम दिन त्यसमुनिको कुञ्जी थिच्नुहोस्।</value></data>
+  <data name="MapKeyLights_Start" xml:space="preserve"><value>सुरु गर्नुहोस्</value></data>
+  <data name="MapKeyLights_Back" xml:space="preserve"><value>पछाडि</value></data>
+  <data name="MapKeyLights_Skip" xml:space="preserve"><value>छोड्नुहोस्</value></data>
+  <data name="MapKeyLights_Skip_Tooltip" xml:space="preserve"><value>यो बत्तीलाई नामबिना छोडेर अर्को बत्ती बाल्नुहोस्।</value></data>
+  <data name="MapKeyLights_Forget" xml:space="preserve"><value>बिर्सनुहोस्</value></data>
+  <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>बलेको बत्तीका लागि सिकिएको नाम हटाउनुहोस्।</value></data>
+  <data name="MapKeyLights_Stop" xml:space="preserve"><value>रोक्नुहोस्</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>कुनै बत्ती बलेन भने, Windows सेटिङमा यस यन्त्रका लागि Dynamic Lighting बन्द गर्नुहोस्, वा यसको आफ्नै लाइटिङ सफ्टवेयर बन्द गर्नुहोस्, अनि फेरि सुरु गर्नुहोस् थिच्नुहोस्।</value></data>
+  <data name="MapKeyLights_Export" xml:space="preserve"><value>निर्यात…</value></data>
+  <data name="MapKeyLights_Import" xml:space="preserve"><value>आयात…</value></data>
+  <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>सबै बिर्सनुहोस्</value></data>
+  <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>यस मोडेलका लागि सिकिएका सबै नाम हटाउनुहोस्।</value></data>
+  <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>{0} नाम निर्यात गरियो।</value></data>
+  <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>{0} नाम आयात गरियो।</value></data>
+  <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>अर्को मोडेल, {1} का लागि {0} नाम आयात गरियो।</value></data>
+  <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>त्यो फाइलमा कुनै कुञ्जी बत्ती नाम छैन।</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>आयात…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} बटन निर्यात गरियो।</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} बटन आयात गरियो।</value></data>
@@ -4716,4 +4779,31 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} {1} मा थिचिराखेसम्म</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} {1} मा रोकिएसम्म</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>{0} मा ट्रिगर प्रभाव रोक्नुहोस्</value></data>
+  <data name="MacroAction_Type_SetKeyColors" xml:space="preserve"><value>कुञ्जी रङहरू सेट गर्नुहोस्</value></data>
+  <data name="MacroAction_Type_ClearKeyColors" xml:space="preserve"><value>कुञ्जी रङहरू हटाउनुहोस्</value></data>
+  <data name="MacroAction_SetKeyColors_Tooltip" xml:space="preserve"><value>यो भर्चुअल कन्ट्रोलरले बाल्ने किबोर्ड र अन्य यन्त्रहरूमा कुञ्जीहरूलाई एउटा रङमा बाल्छ: स्थिर, मधुरो हुँदै, वा एक-एक कुञ्जी गरी उल्टो गन्ती गर्दै।</value></data>
+  <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>यस भर्चुअल कन्ट्रोलरमा चलिरहेका, यहाँ छानिएका कुनै कुञ्जी बाल्ने कुञ्जी रङहरू सेट गर्नुहोस् कार्यहरू अन्त्य गर्छ, वा कुनै नछानिएमा सबै।</value></data>
+  <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>सबै कुञ्जी रङहरू हटाउनुहोस्</value></data>
+  <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>{0} बत्तीहरूमा कुञ्जी रङ हटाउनुहोस्</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} बत्तीहरू {1} मा {2} ms का लागि</value></data>
+  <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} बत्तीहरू {1} मा थिचिराखेसम्म</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} बत्तीहरू {1} मा नहटाइएसम्म</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} बत्तीहरू {1} मा, {2} ms मा मधुरो हुँदै</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} बत्तीहरू {1} मा, {2} ms मा उल्टो गन्ती गर्दै</value></data>
+  <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>कुञ्जीहरू</value></data>
+  <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>हरेक बत्ती</value></data>
+  <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>कुनै कुञ्जी छानिएको छैन, त्यसैले कार्यले केही पनि बाल्दैन।</value></data>
+  <data name="MacroAction_KeyColors_Style" xml:space="preserve"><value>शैली</value></data>
+  <data name="MacroAction_KeyColors_Steady" xml:space="preserve"><value>स्थिर</value></data>
+  <data name="MacroAction_KeyColors_Fade" xml:space="preserve"><value>मधुरो हुँदै</value></data>
+  <data name="MacroAction_KeyColors_Countdown" xml:space="preserve"><value>उल्टो गन्ती</value></data>
+  <data name="MacroAction_KeyColors_Hold" xml:space="preserve"><value>रहने अवधि</value></data>
+  <data name="MacroAction_KeyColors_HoldDuration" xml:space="preserve"><value>तोकिएको समयसम्म</value></data>
+  <data name="MacroAction_KeyColors_HoldRelease" xml:space="preserve"><value>म्याक्रोको ट्रिगर थिचिराखेसम्म</value></data>
+  <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>नहटाइएसम्म</value></data>
+  <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>समय</value></data>
+  <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>आफ्नै रङ राख्ने</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>यो कार्यले यो भर्चुअल कन्ट्रोलरले बाल्ने हरेक किबोर्डमा उही कुञ्जीहरू, तिनको लाइटिङ ट्याबले दिएका रङमाथि बाल्छ। अङ्कहरूले छानिएको क्रम देखाउँछन्। उल्टो गन्तीले कुञ्जीहरू एक-एक गरी निभाउँछ, अन्तिममा छानिएको पहिले, त्यसैले अङ्क पङ्क्तिमा कुलडाउनका लागि 1 देखि 0 सम्म छान्नुहोस्। किबोर्ड वा माउस त्यसको यो यन्त्रको लाइटिङ नियन्त्रण गर्नुहोस् सक्रिय हुँदा मात्र बल्छ।</value></data>
+  <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>अन्य</value></data>
+  <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, क्रम {1}</value></data>
 </root>

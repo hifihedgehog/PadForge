@@ -2303,6 +2303,9 @@ namespace PadForge.Services
             PadForge.Common.Input.HandheldButtonRegistry.LoadRegistry(
                 appSettings.HandheldButtons?.Select(b => b.ToEntry()), appSettings.HandheldMachineKey);
             vm.HandheldButtonsEnabled = appSettings.HandheldButtonsEnabled;
+            // Key names learned with Map Key Lights (#557).
+            PadForge.Common.Input.Peripherals.LearnedKeyMaps.LoadRegistry(
+                appSettings.LearnedKeyMaps?.Select(m => (m.Product, m.Names)));
             // Head tracking (#355) loads with the Dashboard services below:
             // its enable is a per-profile leg under the authoring guard.
             // PS Move calibration blobs (#277): captured at pair time over USB,
@@ -3031,9 +3034,11 @@ namespace PadForge.Services
         /// had set. A hold is chosen for one device, for what that device
         /// does while it is lit. Carried to another, it would keep that
         /// device's lights from dimming, or switch its on-board memory mode
-        /// off, on a choice nobody made for it. The DTO's own values are
-        /// restored after, since a paste applies one stand-in to several
-        /// devices.</summary>
+        /// off, on a choice nobody made for it. Key colors carry over
+        /// without the colors of single lights, which are set by the source
+        /// device's light numbers and would land on other lights of another
+        /// model (#557). The DTO's own values are restored after, since a
+        /// paste applies one stand-in to several devices.</summary>
         private static void ApplyStandInDeviceSlotConfigData(ViewModels.DeviceSlotConfig cfg,
             ViewModels.DeviceSlotConfigData standIn)
         {
@@ -4164,7 +4169,15 @@ namespace PadForge.Services
                 PanStep = ad.PanStep,
                 TriggerEffectSide = ad.TriggerEffectSide,
                 TriggerEffectHold = ad.TriggerEffectHold,
-                TriggerEffectMs = ad.TriggerEffectMs
+                TriggerEffectMs = ad.TriggerEffectMs,
+                KeyColorTargets = ad.KeyColorTargets ?? "",
+                KeyColorStyle = ad.KeyColorStyle,
+                KeyColorHold = ad.KeyColorHold,
+                KeyColorMs = ad.KeyColorMs,
+                KeyColorRest = ad.KeyColorRest,
+                KeyRestR = ad.KeyRestR,
+                KeyRestG = ad.KeyRestG,
+                KeyRestB = ad.KeyRestB
             };
             // The effect's mode and values together (#531): set apart, the
             // mode's change would start the values over.
@@ -4993,6 +5006,8 @@ namespace PadForge.Services
                     .Select(HandheldButtonData.From).ToArray(),
                 HandheldMachineKey = PadForge.Common.Input.HandheldButtonRegistry.MachineKey,
                 HandheldButtonsEnabled = vm.HandheldButtonsEnabled,
+                LearnedKeyMaps = PadForge.Common.Input.Peripherals.LearnedKeyMaps.SaveRegistry()
+                    .Select(m => new LearnedKeyMapData { Product = m.Product, Names = m.Names }).ToArray(),
                 VoiceMinConfidence = PadForge.Services.VoiceMacroService.MinConfidence,
                 VoiceListeningMode = PadForge.Services.VoiceMacroService.ListeningMode,
                 HeadsetTrackerAddresses = PadForge.Common.Input.SonyHeadsetMotionRuntime.SavePersistedAddresses(),
@@ -5586,7 +5601,16 @@ namespace PadForge.Services
                 TriggerEffectMode = a.TriggerEffectMode,
                 TriggerEffectParameters = a.Type == MacroActionType.TriggerEffect ? a.TriggerEffectParameters : null,
                 TriggerEffectHold = a.TriggerEffectHold,
-                TriggerEffectMs = a.TriggerEffectMs
+                TriggerEffectMs = a.TriggerEffectMs,
+                KeyColorTargets = a.Type is MacroActionType.SetKeyColors or MacroActionType.ClearKeyColors
+                    ? a.KeyColorTargets : null,
+                KeyColorStyle = a.KeyColorStyle,
+                KeyColorHold = a.KeyColorHold,
+                KeyColorMs = a.KeyColorMs,
+                KeyColorRest = a.KeyColorRest,
+                KeyRestR = a.KeyRestR,
+                KeyRestG = a.KeyRestG,
+                KeyRestB = a.KeyRestB
             };
         }
 
@@ -6522,6 +6546,18 @@ namespace PadForge.Services
         }
     }
 
+    /// <summary>One device model's key names learned with Map Key Lights
+    /// (#557): the model's product key and its "light=UU" pairs, a light's
+    /// number in decimal and its key's HID usage in hex.</summary>
+    public class LearnedKeyMapData
+    {
+        [XmlAttribute]
+        public string Product { get; set; }
+
+        [XmlAttribute]
+        public string Names { get; set; }
+    }
+
     /// <summary>A Twitch chat word (issue #555): the normalized word and the
     /// stable button it occupies on the Twitch Chat row, so saved bindings
     /// survive.</summary>
@@ -6681,6 +6717,12 @@ namespace PadForge.Services
         /// subscription unless the user turns it on.</summary>
         [XmlElement]
         public bool HandheldButtonsEnabled { get; set; }
+
+        /// <summary>Key names learned with Map Key Lights (#557), per device
+        /// model.</summary>
+        [XmlArray("LearnedKeyMaps")]
+        [XmlArrayItem("Model")]
+        public LearnedKeyMapData[] LearnedKeyMaps { get; set; }
 
         /// <summary>UDP head-tracking input. Older files use this as the master
         /// switch until HeadTrackingIndependentInputs is written. A profile's
@@ -7820,6 +7862,19 @@ namespace PadForge.Services
         [XmlElement] public string TriggerEffectParameters { get; set; }
         [XmlElement] public ViewModels.MacroTriggerEffectHold TriggerEffectHold { get; set; } = ViewModels.MacroTriggerEffectHold.UntilRelease;
         [XmlElement] public int TriggerEffectMs { get; set; } = 500;
+
+        /// <summary>Set Key Colors and Clear Key Colors (#557): the lights
+        /// named, in the order picked ("kUU", "gNAME", "all"), the style,
+        /// how long it holds, the time, and what the other lights show, with
+        /// their color. The lights' color is LightbarR/G/B.</summary>
+        [XmlElement] public string KeyColorTargets { get; set; }
+        [XmlElement] public ViewModels.MacroKeyColorStyle KeyColorStyle { get; set; } = ViewModels.MacroKeyColorStyle.Steady;
+        [XmlElement] public ViewModels.MacroKeyColorHold KeyColorHold { get; set; } = ViewModels.MacroKeyColorHold.Duration;
+        [XmlElement] public int KeyColorMs { get; set; } = 3000;
+        [XmlElement] public ViewModels.MacroKeyColorRest KeyColorRest { get; set; } = ViewModels.MacroKeyColorRest.Keep;
+        [XmlElement] public byte KeyRestR { get; set; }
+        [XmlElement] public byte KeyRestG { get; set; }
+        [XmlElement] public byte KeyRestB { get; set; }
     }
 
     /// <summary>

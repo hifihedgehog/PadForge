@@ -1090,6 +1090,44 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Dodaj barvo</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Ponastavi paleto</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Trenutno paleto zamenja s štirimi privzetimi barvami (rdeča, zelena, modra, rumena).</value></data>
+  <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Barve tipk</value></data>
+  <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Barve con</value></data>
+  <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Izberi tipke na sliki ali jih pritisni na tipkovnici in jim dodeli barvo. Vsaka plast premika ima lahko svoje barve, ki se prikažejo, ko je plast vključena.</value></data>
+  <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Izberi cone in jim dodeli barvo. Vsaka plast premika ima lahko svoje barve, ki se prikažejo, ko je plast vključena.</value></data>
+  <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>Odstrani barve iz vseh plasti.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Druge lučke</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Kaj kažejo lučke brez lastne barve na tej plasti.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Barve plasti {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Način osvetlitve</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Izklopljeno</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Ena barva</value></data>
+  <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Pritiskaj tipke, da izbereš njihove lučke, in ponovno pritisni izbrano tipko, da jo počistiš. Ctrl+Tab gre naprej.</value></data>
+  <data name="Pad_Lighting_KeyColors_NoneSelected" xml:space="preserve"><value>Nobena lučka ni izbrana. Klikni ali povleci po sliki, da izbereš lučke.</value></data>
+  <data name="Pad_Lighting_KeyColors_Selected_Format" xml:space="preserve"><value>Izbrano: {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllKeys" xml:space="preserve"><value>Vse tipke</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberRow" xml:space="preserve"><value>Vrstica številk</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectFunctionKeys" xml:space="preserve"><value>Tipke F</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberPad" xml:space="preserve"><value>Številčnica</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Smerne tipke</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Rob</value></data>
+  <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logotip</value></data>
+  <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Stanje</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Vse lučke</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Počisti izbor</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Izberi s pritiskom tipk</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing_Tooltip" xml:space="preserve"><value>Ko je vključeno, tipka, pritisnjena z osredotočeno sliko, izbere njene lučke, ponoven pritisk pa jih počisti. Ctrl+Tab zapusti sliko.</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor" xml:space="preserve"><value>Uporabi barvo</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor_Tooltip" xml:space="preserve"><value>Izbranim lučkam dodeli zgornjo barvo.</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor" xml:space="preserve"><value>Odstrani barvo</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor_Tooltip" xml:space="preserve"><value>Odstrani barve izbranih lučk na tej plasti, da kažejo, kar določa možnost Druge lučke.</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer" xml:space="preserve"><value>Odstrani vse barve</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer_Tooltip" xml:space="preserve"><value>Odstrani vse barve s te plasti in nastavi Druge lučke nazaj na začetno stanje plasti.</value></data>
+  <data name="Pad_Lighting_KeyColors_UnnamedKey_Format" xml:space="preserve"><value>Tipka {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Zone_Format" xml:space="preserve"><value>Cona {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Light_Format" xml:space="preserve"><value>Lučka {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightColor_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightBaseLayer_Format" xml:space="preserve"><value>{0}: {1} iz plasti {2}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Zadržanje utripa</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pojemanje utripa</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Prednastavitev</value></data>
@@ -3314,6 +3352,31 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Skriti gumbi so izklopljeni. Najprej v nastavitvah omogočite gumbe ročnega računalnika.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} se izvaja. Na te gumbe se odziva, dokler ga ne ustavite.</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Izvozi …</value></data>
+  <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>Preslikaj lučke tipk</value></data>
+  <data name="MapKeyLights_Title" xml:space="preserve"><value>Preslikaj lučke tipk</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge osvetli po eno lučko tipke naenkrat. Pritisni tipko pod osvetljeno lučko, da jo poimenuješ. Imena se ohranijo za vse tipkovnice tega modela, zato Barve tipk in makri barv tipk dosežejo prave tipke.</value></data>
+  <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>Naprava:</value></data>
+  <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>Poimenovane tipke: {0} od {1}</value></data>
+  <data name="MapKeyLights_NoLights" xml:space="preserve"><value>Ta naprava nima lučk tipk, za katere bi se PadForge lahko naučil imen.</value></data>
+  <data name="MapKeyLights_Ready" xml:space="preserve"><value>Začetek osvetli prvo lučko tipke brez imena.</value></data>
+  <data name="MapKeyLights_Ask_Format" xml:space="preserve"><value>Lučka {0} sveti. Pritisni tipko pod njo.</value></data>
+  <data name="MapKeyLights_AskNamed_Format" xml:space="preserve"><value>Lučka {0} sveti in se imenuje {1}. Pritisni tipko pod njo, da jo poimenuješ znova.</value></data>
+  <data name="MapKeyLights_Start" xml:space="preserve"><value>Začetek</value></data>
+  <data name="MapKeyLights_Back" xml:space="preserve"><value>Nazaj</value></data>
+  <data name="MapKeyLights_Skip" xml:space="preserve"><value>Preskoči</value></data>
+  <data name="MapKeyLights_Skip_Tooltip" xml:space="preserve"><value>Pusti to lučko brez imena in osvetli naslednjo.</value></data>
+  <data name="MapKeyLights_Forget" xml:space="preserve"><value>Pozabi</value></data>
+  <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>Odstrani ime, naučeno za osvetljeno lučko.</value></data>
+  <data name="MapKeyLights_Stop" xml:space="preserve"><value>Ustavi</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>Če nobena lučka ne zasveti, izklopi dinamično osvetlitev za napravo v nastavitvah sistema Windows ali zapri njeno lastno programsko opremo za osvetlitev in znova pritisni Začetek.</value></data>
+  <data name="MapKeyLights_Export" xml:space="preserve"><value>Izvozi …</value></data>
+  <data name="MapKeyLights_Import" xml:space="preserve"><value>Uvozi …</value></data>
+  <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Pozabi vse</value></data>
+  <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Odstrani vsa imena, naučena za ta model.</value></data>
+  <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Izvožena imena: {0}.</value></data>
+  <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Uvožena imena: {0}.</value></data>
+  <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Uvožena imena za drug model, {1}: {0}.</value></data>
+  <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Ta datoteka ne vsebuje imen lučk tipk.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Uvozi …</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Izvoženi gumbi: {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Uvoženi gumbi: {0}.</value></data>
@@ -4716,4 +4779,31 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0}, sprožilec: {1}, med držanjem</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0}, sprožilec: {1}, do ustavitve</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Ustavi učinek sprožilca: {0}</value></data>
+  <data name="MacroAction_Type_SetKeyColors" xml:space="preserve"><value>Nastavi barve tipk</value></data>
+  <data name="MacroAction_Type_ClearKeyColors" xml:space="preserve"><value>Počisti barve tipk</value></data>
+  <data name="MacroAction_SetKeyColors_Tooltip" xml:space="preserve"><value>Osvetli tipke z barvo na tipkovnicah in drugih napravah, ki jih osvetljuje ta virtualni krmilnik: enakomerno, z bledenjem ali z odštevanjem po eno tipko naenkrat.</value></data>
+  <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Konča dejanja Nastavi barve tipk, ki se izvajajo na tem virtualnem krmilniku in osvetljujejo eno od tukaj izbranih tipk, ali vsa, če ni izbrana nobena.</value></data>
+  <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Počisti vse barve tipk</value></data>
+  <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Počisti barve tipk, lučke: {0}</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>Lučke: {0}, barva: {1}, {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>Lučke: {0}, barva: {1}, med držanjem</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>Lučke: {0}, barva: {1}, do počiščenja</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>Lučke: {0}, barva: {1}, bledenje {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>Lučke: {0}, barva: {1}, odštevanje {2} ms</value></data>
+  <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Tipke</value></data>
+  <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Vse lučke</value></data>
+  <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Nobena tipka ni izbrana, zato dejanje ne osvetli ničesar.</value></data>
+  <data name="MacroAction_KeyColors_Style" xml:space="preserve"><value>Slog</value></data>
+  <data name="MacroAction_KeyColors_Steady" xml:space="preserve"><value>Enakomerno</value></data>
+  <data name="MacroAction_KeyColors_Fade" xml:space="preserve"><value>Pojemanje</value></data>
+  <data name="MacroAction_KeyColors_Countdown" xml:space="preserve"><value>Odštevanje</value></data>
+  <data name="MacroAction_KeyColors_Hold" xml:space="preserve"><value>Traja</value></data>
+  <data name="MacroAction_KeyColors_HoldDuration" xml:space="preserve"><value>Določen čas</value></data>
+  <data name="MacroAction_KeyColors_HoldRelease" xml:space="preserve"><value>Medtem ko je sprožilec makra držan</value></data>
+  <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>Do počiščenja</value></data>
+  <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Čas</value></data>
+  <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Ohrani njihove barve</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Dejanje osvetli enake tipke na vsaki tipkovnici, ki jo osvetljuje ta virtualni krmilnik, čez barve, ki jih določa zavihek Osvetlitev. Številke kažejo vrstni red izbire. Odštevanje izklaplja tipke eno za drugo, zadnjo izbrano najprej, zato za odštevanje na vrstici številk izberi od 1 do 0. Tipkovnica ali miška se osvetli samo, če je vključeno Upravljaj osvetlitev te naprave.</value></data>
+  <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Drugo</value></data>
+  <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, številka {1}</value></data>
 </root>

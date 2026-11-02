@@ -743,6 +743,7 @@ namespace PadForge.Tests
         {
             PeripheralOutputs.ResetForTest();
             PeripheralLightMaps.ResetForTest();
+            LearnedKeyMaps.ResetForTest();
         }
 
         public void Dispose()
@@ -753,6 +754,7 @@ namespace PadForge.Tests
             }
             PeripheralOutputs.ResetForTest();
             PeripheralLightMaps.ResetForTest();
+            LearnedKeyMaps.ResetForTest();
         }
 
         private long Tick() => Interlocked.Read(ref _tick);
@@ -3448,6 +3450,65 @@ namespace PadForge.Tests
             Assert.Equal(new[] { Multi((1, 0x00FF00)) }, board.Take());
 
             Color(board, 0x112233);
+            Advance(40);
+            Passes(backend);
+            Assert.Equal(new[] { Paint(0x112233) }, board.Take());
+        }
+
+        /// <summary>A name learned with Map Key Lights for the board's
+        /// model reaches its map at the next pass, over the unnamed key the
+        /// lamp descriptions gave, and leaves when it is forgotten.</summary>
+        [Fact]
+        public void ALearnedNameReachesTheMap_AndForgettingItTakesItBack()
+        {
+            var (backend, board) = Found(b =>
+            {
+                Describing(b);
+                b.Bindings = new byte[] { 0x29, 0x00, 0x00, 0x00 };
+            });
+            Color(board, 0x112233);
+            Passes(backend);
+            Advance(20);
+            Passes(backend);
+            var map = PeripheralLightMaps.For(board.OutputPath);
+            Assert.Equal("lamparray:1234:0001:1:4", map.Product);
+            Assert.Equal(2, map.UnnamedKeyCount);
+
+            LearnedKeyMaps.Set(map.Product, 1, 0x04);
+            Passes(backend);
+            map = PeripheralLightMaps.For(board.OutputPath);
+            Assert.Equal(0x04, map.Lights[1].Usage);
+            Assert.Equal(LightKeySource.Learned, map.Lights[1].KeySource);
+            Assert.Equal(1, map.UnnamedKeyCount);
+            Assert.Equal(new[] { 1 }, map.IndexesOf(0x04));
+
+            LearnedKeyMaps.Set(map.Product, 1, 0);
+            Passes(backend);
+            map = PeripheralLightMaps.For(board.OutputPath);
+            Assert.Equal(0, map.Lights[1].Usage);
+            Assert.Equal(2, map.UnnamedKeyCount);
+        }
+
+        /// <summary>Map Key Lights' probe lights one lamp white and every
+        /// other off, ahead of the claim, lamp by lamp. When it ends the
+        /// claim's color comes back.</summary>
+        [Fact]
+        public void TheProbeLightsOneLamp_AheadOfTheClaim_AndThenTheClaimReturns()
+        {
+            var (backend, board) = Found(Describing);
+            Color(board, 0x112233);
+            Passes(backend);
+            Advance(20);
+            Passes(backend);
+            board.Take();
+
+            PeripheralOutputs.SetProbe(board.OutputPath,
+                new KeyFrame(null, null, new Dictionary<int, int> { [2] = 0xFFFFFF }, 0));
+            Advance(40);
+            Passes(backend);
+            Assert.Equal(new[] { Multi((0, 0), (1, 0), (2, 0xFFFFFF), (3, 0)) }, board.Take());
+
+            PeripheralOutputs.SetProbe(board.OutputPath, null);
             Advance(40);
             Passes(backend);
             Assert.Equal(new[] { Paint(0x112233) }, board.Take());

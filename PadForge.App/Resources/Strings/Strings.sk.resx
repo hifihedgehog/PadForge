@@ -1090,6 +1090,44 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Pridať farbu</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Resetovať paletu</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Nahradí aktuálnu paletu štyrmi predvolenými farbami (červená, zelená, modrá, žltá).</value></data>
+  <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Farby klávesov</value></data>
+  <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Farby zón</value></data>
+  <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Vyberte klávesy na obrázku alebo ich stlačte na klávesnici a priraďte im farbu. Každá vrstva môže mať vlastné farby, zobrazia sa pri aktivovaní vrstvy.</value></data>
+  <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Vyberte zóny a priraďte im farbu. Každá vrstva môže mať vlastné farby, zobrazia sa pri aktivovaní vrstvy.</value></data>
+  <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>Odstrániť farby zo všetkých vrstiev.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Ostatné svetlá</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Čo zobrazujú svetlá bez vlastnej farby na tejto vrstve.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Farby vrstvy {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Režim osvetlenia</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Vypnuté</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Jedna farba</value></data>
+  <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Stlačením klávesov vyberiete ich svetlá, opätovným stlačením vybraného klávesu výber zrušíte. Ctrl+Tab ide ďalej.</value></data>
+  <data name="Pad_Lighting_KeyColors_NoneSelected" xml:space="preserve"><value>Nie sú vybrané žiadne svetlá. Kliknutím alebo ťahaním na obrázku vyberiete svetlá.</value></data>
+  <data name="Pad_Lighting_KeyColors_Selected_Format" xml:space="preserve"><value>Vybrané: {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllKeys" xml:space="preserve"><value>Všetky klávesy</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberRow" xml:space="preserve"><value>Číselný rad</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectFunctionKeys" xml:space="preserve"><value>Klávesy F</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberPad" xml:space="preserve"><value>Číselná klávesnica</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Šípky</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Okraj</value></data>
+  <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logo</value></data>
+  <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Stav</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Všetky svetlá</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Zrušiť výber</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Vybrať stlačením klávesov</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing_Tooltip" xml:space="preserve"><value>Keď je zapnuté, kláves stlačený pri aktívnom obrázku vyberie jeho svetlá a opätovné stlačenie výber zruší. Ctrl+Tab opustí obrázok.</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor" xml:space="preserve"><value>Použiť farbu</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor_Tooltip" xml:space="preserve"><value>Priradiť vybraným svetlám farbu uvedenú vyššie.</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor" xml:space="preserve"><value>Odstrániť farbu</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor_Tooltip" xml:space="preserve"><value>Odobrať vybraným svetlám farby na tejto vrstve, aby zobrazovali to, čo určujú Ostatné svetlá.</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer" xml:space="preserve"><value>Odstrániť všetky farby</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer_Tooltip" xml:space="preserve"><value>Odstrániť všetky farby z tejto vrstvy a vrátiť Ostatné svetlá do východiskového stavu vrstvy.</value></data>
+  <data name="Pad_Lighting_KeyColors_UnnamedKey_Format" xml:space="preserve"><value>Kláves {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Zone_Format" xml:space="preserve"><value>Zóna {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Light_Format" xml:space="preserve"><value>Svetlo {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightColor_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightBaseLayer_Format" xml:space="preserve"><value>{0}: {1} z vrstvy {2}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Trvanie impulzu</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Doznievanie impulzu</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Predvoľba</value></data>
@@ -3314,6 +3352,31 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Skryté tlačidlá sú vypnuté. Najprv v časti Nastavenia povoľte tlačidlá handheldov.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} je spustený. Kým ho nezastavíte, stále reaguje na tieto tlačidlá.</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Exportovať…</value></data>
+  <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>Mapovať svetlá klávesov</value></data>
+  <data name="MapKeyLights_Title" xml:space="preserve"><value>Mapovať svetlá klávesov</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge rozsvecuje svetlá klávesov po jednom. Stlačte kláves pod rozsvieteným svetlom a pomenujte ho. Názvy sa uložia pre každú klávesnicu tohto modelu, takže Farby klávesov a makrá farieb klávesov zasiahnu správne klávesy.</value></data>
+  <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>Zariadenie:</value></data>
+  <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>Pomenované klávesy: {0} z {1}</value></data>
+  <data name="MapKeyLights_NoLights" xml:space="preserve"><value>Toto zariadenie nemá svetlá klávesov, ktorým by PadForge vedel naučiť názvy.</value></data>
+  <data name="MapKeyLights_Ready" xml:space="preserve"><value>Tlačidlo Začať rozsvieti prvé svetlo klávesu bez názvu.</value></data>
+  <data name="MapKeyLights_Ask_Format" xml:space="preserve"><value>Svieti svetlo {0}. Stlačte kláves pod ním.</value></data>
+  <data name="MapKeyLights_AskNamed_Format" xml:space="preserve"><value>Svieti svetlo {0} s názvom {1}. Stlačením klávesu pod ním ho pomenujete znova.</value></data>
+  <data name="MapKeyLights_Start" xml:space="preserve"><value>Začať</value></data>
+  <data name="MapKeyLights_Back" xml:space="preserve"><value>Späť</value></data>
+  <data name="MapKeyLights_Skip" xml:space="preserve"><value>Preskočiť</value></data>
+  <data name="MapKeyLights_Skip_Tooltip" xml:space="preserve"><value>Nechať toto svetlo bez názvu a rozsvietiť ďalšie.</value></data>
+  <data name="MapKeyLights_Forget" xml:space="preserve"><value>Zabudnúť</value></data>
+  <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>Odstrániť naučený názov rozsvieteného svetla.</value></data>
+  <data name="MapKeyLights_Stop" xml:space="preserve"><value>Zastaviť</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>Ak sa nerozsvieti žiadne svetlo, vypnite Dynamické osvetlenie pre zariadenie v Nastaveniach systému Windows alebo zatvorte jeho vlastný softvér na osvetlenie a znova stlačte Začať.</value></data>
+  <data name="MapKeyLights_Export" xml:space="preserve"><value>Exportovať…</value></data>
+  <data name="MapKeyLights_Import" xml:space="preserve"><value>Importovať…</value></data>
+  <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Zabudnúť všetko</value></data>
+  <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Odstrániť všetky naučené názvy pre tento model.</value></data>
+  <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Exportované názvy: {0}.</value></data>
+  <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Importované názvy: {0}.</value></data>
+  <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Importované názvy pre iný model ({1}): {0}.</value></data>
+  <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Tento súbor neobsahuje žiadne názvy svetiel klávesov.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Importovať…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Exportované tlačidlá: {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Importované tlačidlá: {0}.</value></data>
@@ -4716,4 +4779,31 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} ({1}, kým je držaná)</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} ({1}, do zastavenia)</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Zastaviť efekt spúšte: {0}</value></data>
+  <data name="MacroAction_Type_SetKeyColors" xml:space="preserve"><value>Nastaviť farby klávesov</value></data>
+  <data name="MacroAction_Type_ClearKeyColors" xml:space="preserve"><value>Zrušiť farby klávesov</value></data>
+  <data name="MacroAction_SetKeyColors_Tooltip" xml:space="preserve"><value>Rozsvieti klávesy farbou na klávesniciach a iných zariadeniach, ktoré tento virtuálny ovládač osvetľuje: stále, s postupným zhasnutím alebo s odpočtom po jednom klávese.</value></data>
+  <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Ukončí akcie Nastaviť farby klávesov spustené na tomto virtuálnom ovládači, ktoré rozsvecujú niektorý z tu vybraných klávesov, alebo všetky, ak nie je vybraný žiadny.</value></data>
+  <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Zrušiť všetky farby klávesov</value></data>
+  <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Zrušiť farby klávesov (svetlá: {0})</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>Svetlá: {0} ({1}, {2} ms)</value></data>
+  <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>Svetlá: {0} ({1}, kým je držaná)</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>Svetlá: {0} ({1}, do zrušenia)</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>Svetlá: {0} ({1}, postupné zhasnutie {2} ms)</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>Svetlá: {0} ({1}, odpočet {2} ms)</value></data>
+  <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Klávesy</value></data>
+  <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Každé svetlo</value></data>
+  <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Nie sú vybrané žiadne klávesy, takže akcia nič nerozsvieti.</value></data>
+  <data name="MacroAction_KeyColors_Style" xml:space="preserve"><value>Štýl</value></data>
+  <data name="MacroAction_KeyColors_Steady" xml:space="preserve"><value>Stála</value></data>
+  <data name="MacroAction_KeyColors_Fade" xml:space="preserve"><value>Postupné zhasnutie</value></data>
+  <data name="MacroAction_KeyColors_Countdown" xml:space="preserve"><value>Odpočet</value></data>
+  <data name="MacroAction_KeyColors_Hold" xml:space="preserve"><value>Trvanie</value></data>
+  <data name="MacroAction_KeyColors_HoldDuration" xml:space="preserve"><value>Nastavený čas</value></data>
+  <data name="MacroAction_KeyColors_HoldRelease" xml:space="preserve"><value>Kým je spúšť makra držaná</value></data>
+  <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>Do zrušenia</value></data>
+  <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Čas</value></data>
+  <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Ponechať ich farby</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Akcia rozsvieti rovnaké klávesy na každej klávesnici, ktorú tento virtuálny ovládač osvetľuje, nad farbami z karty Osvetlenie. Čísla ukazujú poradie výberu. Odpočet vypína klávesy po jednom, naposledy vybraný ako prvý, takže na cooldown na číselnom rade vyberte 1 až 0. Klávesnica alebo myš svieti len vtedy, keď je zapnuté Ovládať osvetlenie tohto zariadenia.</value></data>
+  <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Iné</value></data>
+  <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, poradie {1}</value></data>
 </root>

@@ -1090,6 +1090,44 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>新增顏色</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>重設調色盤</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>以四種預設顏色（紅、綠、藍、黃）取代目前的調色盤。</value></data>
+  <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>按鍵顏色</value></data>
+  <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>區域顏色</value></data>
+  <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>在圖片上選取按鍵，或直接按下鍵盤上的按鍵，然後為它們設定顏色。每個轉換層可有自己的顏色，並在該層啟用時顯示。</value></data>
+  <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>選取區域並為它們設定顏色。每個轉換層可有自己的顏色，並在該層啟用時顯示。</value></data>
+  <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>移除所有層的顏色。</value></data>
+  <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>其他燈光</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>此層上沒有自己顏色的燈光所顯示的內容。</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>{0}層顏色</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>燈光模式</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>關閉</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>單一顏色</value></data>
+  <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>按下按鍵即可選取其燈光，再按一次已選取的按鍵即可取消。按 Ctrl+Tab 離開。</value></data>
+  <data name="Pad_Lighting_KeyColors_NoneSelected" xml:space="preserve"><value>未選取任何燈光。在圖片上點按或拖曳即可選取燈光。</value></data>
+  <data name="Pad_Lighting_KeyColors_Selected_Format" xml:space="preserve"><value>已選取：{0}</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllKeys" xml:space="preserve"><value>所有按鍵</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberRow" xml:space="preserve"><value>數字列</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectFunctionKeys" xml:space="preserve"><value>F 功能鍵</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberPad" xml:space="preserve"><value>數字鍵盤</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>方向鍵</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>邊緣</value></data>
+  <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>標誌</value></data>
+  <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>狀態</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>所有燈光</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>清除選取</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>按鍵選取</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing_Tooltip" xml:space="preserve"><value>開啟時，圖片取得焦點後按下按鍵會選取其燈光，再按一次即取消選取。按 Ctrl+Tab 離開圖片。</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor" xml:space="preserve"><value>套用顏色</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor_Tooltip" xml:space="preserve"><value>為所選燈光設定上方的顏色。</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor" xml:space="preserve"><value>移除顏色</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor_Tooltip" xml:space="preserve"><value>移除所選燈光在此層的顏色，改為顯示「其他燈光」所設定的內容。</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer" xml:space="preserve"><value>移除所有顏色</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer_Tooltip" xml:space="preserve"><value>移除此層的所有顏色，並將「其他燈光」還原為此層的初始設定。</value></data>
+  <data name="Pad_Lighting_KeyColors_UnnamedKey_Format" xml:space="preserve"><value>按鍵 {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Zone_Format" xml:space="preserve"><value>區域 {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Light_Format" xml:space="preserve"><value>燈光 {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightColor_Format" xml:space="preserve"><value>{0}：{1}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightBaseLayer_Format" xml:space="preserve"><value>{0}：{1}（來自{2}）</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>脈動保持</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>脈動衰減</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>預設集</value></data>
@@ -3314,6 +3352,31 @@
   <data name="Handheld_NoDevice" xml:space="preserve"><value>隱藏按鈕已關閉。請先在「設定」中啟用「掌上電腦按鈕」。</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} 正在執行。在你把它停止之前，它仍會對這些按鈕作出反應。</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>匯出…</value></data>
+  <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>對應按鍵燈光</value></data>
+  <data name="MapKeyLights_Title" xml:space="preserve"><value>對應按鍵燈光</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge 會逐個點亮按鍵燈光。按下亮燈位置下方的按鍵，即可為該燈光命名。名稱會套用於此型號的所有鍵盤，讓「按鍵顏色」和按鍵顏色巨集能對準正確的按鍵。</value></data>
+  <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>裝置：</value></data>
+  <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>已命名按鍵：{0} / {1}</value></data>
+  <data name="MapKeyLights_NoLights" xml:space="preserve"><value>此裝置沒有 PadForge 可學習名稱的按鍵燈光。</value></data>
+  <data name="MapKeyLights_Ready" xml:space="preserve"><value>「開始」會點亮第一個未命名的按鍵燈光。</value></data>
+  <data name="MapKeyLights_Ask_Format" xml:space="preserve"><value>燈光 {0} 已亮起。請按下它下方的按鍵。</value></data>
+  <data name="MapKeyLights_AskNamed_Format" xml:space="preserve"><value>燈光 {0} 已亮起，名稱為 {1}。按下它下方的按鍵可重新命名。</value></data>
+  <data name="MapKeyLights_Start" xml:space="preserve"><value>開始</value></data>
+  <data name="MapKeyLights_Back" xml:space="preserve"><value>上一個</value></data>
+  <data name="MapKeyLights_Skip" xml:space="preserve"><value>略過</value></data>
+  <data name="MapKeyLights_Skip_Tooltip" xml:space="preserve"><value>不為此燈光命名，並點亮下一個。</value></data>
+  <data name="MapKeyLights_Forget" xml:space="preserve"><value>忘記</value></data>
+  <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>移除已亮起燈光所學習的名稱。</value></data>
+  <data name="MapKeyLights_Stop" xml:space="preserve"><value>停止</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>若沒有燈光亮起，請在 Windows 設定中關閉該裝置的動態光源，或關閉其專用燈光軟件，然後再按「開始」。</value></data>
+  <data name="MapKeyLights_Export" xml:space="preserve"><value>匯出…</value></data>
+  <data name="MapKeyLights_Import" xml:space="preserve"><value>匯入…</value></data>
+  <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>全部忘記</value></data>
+  <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>移除此型號所學習的所有名稱。</value></data>
+  <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>已匯出 {0} 個名稱。</value></data>
+  <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>已匯入 {0} 個名稱。</value></data>
+  <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>已匯入 {0} 個其他型號（{1}）的名稱。</value></data>
+  <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>該檔案不含任何按鍵燈光名稱。</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>匯入…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>已匯出 {0} 個按鈕。</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>已匯入 {0} 個按鈕。</value></data>
@@ -4716,4 +4779,31 @@
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{1}：{0}，按住期間</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{1}：{0}，直至停止</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>停止{0}的扳機效果</value></data>
+  <data name="MacroAction_Type_SetKeyColors" xml:space="preserve"><value>設定按鍵顏色</value></data>
+  <data name="MacroAction_Type_ClearKeyColors" xml:space="preserve"><value>清除按鍵顏色</value></data>
+  <data name="MacroAction_SetKeyColors_Tooltip" xml:space="preserve"><value>在此虛擬控制器控制燈光的鍵盤和其他裝置上，以指定顏色點亮按鍵：恆亮、漸隱，或逐個倒數熄滅。</value></data>
+  <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>結束此虛擬控制器上正在執行、並點亮此處所選任何按鍵的「設定按鍵顏色」動作；若未選取按鍵，則結束全部。</value></data>
+  <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>清除所有按鍵顏色</value></data>
+  <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>清除 {0} 個燈光的按鍵顏色</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} 個燈光：{1}，持續 {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} 個燈光：{1}，按住期間</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} 個燈光：{1}，直至清除</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} 個燈光：{1}，於 {2} ms 內漸隱</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} 個燈光：{1}，於 {2} ms 內倒數熄滅</value></data>
+  <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>按鍵</value></data>
+  <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>所有燈光</value></data>
+  <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>未選取按鍵，此動作不會點亮任何燈光。</value></data>
+  <data name="MacroAction_KeyColors_Style" xml:space="preserve"><value>樣式</value></data>
+  <data name="MacroAction_KeyColors_Steady" xml:space="preserve"><value>恆亮</value></data>
+  <data name="MacroAction_KeyColors_Fade" xml:space="preserve"><value>漸隱</value></data>
+  <data name="MacroAction_KeyColors_Countdown" xml:space="preserve"><value>倒數</value></data>
+  <data name="MacroAction_KeyColors_Hold" xml:space="preserve"><value>持續方式</value></data>
+  <data name="MacroAction_KeyColors_HoldDuration" xml:space="preserve"><value>持續指定時間</value></data>
+  <data name="MacroAction_KeyColors_HoldRelease" xml:space="preserve"><value>巨集的觸發器按住期間</value></data>
+  <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>直至清除</value></data>
+  <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>時間</value></data>
+  <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>保留原有顏色</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>此動作會在此虛擬控制器控制燈光的每部鍵盤上點亮相同的按鍵，並覆蓋「燈光」分頁為它們設定的顏色。數字代表選取的次序。倒數會逐個熄滅按鍵，最後選取的最先熄滅，因此選取 1 至 0 即可在數字列做出冷卻效果。鍵盤或滑鼠必須開啟「控制此裝置的燈光」，才會亮燈。</value></data>
+  <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>其他</value></data>
+  <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}，第 {1} 個</value></data>
 </root>

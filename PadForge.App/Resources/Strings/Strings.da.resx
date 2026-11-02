@@ -1090,6 +1090,44 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Tilføj farve</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Nulstil palet</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Erstat den aktuelle palet med de fire standardfarver (rød, grøn, blå, gul).</value></data>
+  <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Tastefarver</value></data>
+  <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Zonefarver</value></data>
+  <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Vælg taster på billedet, eller tryk på dem på tastaturet, og giv dem en farve. Hvert skiftelag kan have sine egne farver, som vises, mens laget er aktivt.</value></data>
+  <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Vælg zoner og giv dem en farve. Hvert skiftelag kan have sine egne farver, som vises, mens laget er aktivt.</value></data>
+  <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>Fjern farverne fra alle lag.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Øvrige lys</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Hvad lys uden egen farve viser på dette lag.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Farver fra laget {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Belysningstilstand</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Fra</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Én farve</value></data>
+  <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Tryk på taster for at vælge deres lys, og tryk på en valgt tast igen for at fjerne valget. Ctrl+Tab går videre.</value></data>
+  <data name="Pad_Lighting_KeyColors_NoneSelected" xml:space="preserve"><value>Ingen lys valgt. Klik eller træk på billedet for at vælge lys.</value></data>
+  <data name="Pad_Lighting_KeyColors_Selected_Format" xml:space="preserve"><value>Valgt: {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllKeys" xml:space="preserve"><value>Alle taster</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberRow" xml:space="preserve"><value>Talrække</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectFunctionKeys" xml:space="preserve"><value>F-taster</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberPad" xml:space="preserve"><value>Numerisk tastatur</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Piletaster</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Kant</value></data>
+  <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logo</value></data>
+  <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Alle lys</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Ryd markering</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Vælg ved tastetryk</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing_Tooltip" xml:space="preserve"><value>Når den er slået til, vælger en tast, der trykkes med billedet i fokus, dens lys, og et nyt tryk fjerner dem. Ctrl+Tab forlader billedet.</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor" xml:space="preserve"><value>Anvend farve</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor_Tooltip" xml:space="preserve"><value>Giv de valgte lys farven ovenfor.</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor" xml:space="preserve"><value>Fjern farve</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor_Tooltip" xml:space="preserve"><value>Fjern de valgte lyses farver på dette lag, så de viser det, som Øvrige lys angiver.</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer" xml:space="preserve"><value>Fjern alle farver</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer_Tooltip" xml:space="preserve"><value>Fjern alle farver fra dette lag, og sæt Øvrige lys tilbage til, hvordan laget starter.</value></data>
+  <data name="Pad_Lighting_KeyColors_UnnamedKey_Format" xml:space="preserve"><value>Tast {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Zone_Format" xml:space="preserve"><value>Zone {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Light_Format" xml:space="preserve"><value>Lys {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightColor_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightBaseLayer_Format" xml:space="preserve"><value>{0}: {1} fra {2}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Holdetid for puls</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Udtoning af puls</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Forudindstilling</value></data>
@@ -3314,6 +3352,31 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Skjulte knapper er slået fra. Aktiver først Knapper på håndholdt pc i Indstillinger.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} kører. Det reagerer stadig på disse knapper, indtil du stopper det.</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Eksporter…</value></data>
+  <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>Tilknyt tastelys</value></data>
+  <data name="MapKeyLights_Title" xml:space="preserve"><value>Tilknyt tastelys</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge tænder ét tastelys ad gangen. Tryk på tasten under det tændte lys for at navngive det. Navnene gemmes for alle tastaturer af denne model, så Tastefarver og tastefarvemakroerne rammer de rigtige taster.</value></data>
+  <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>Enhed:</value></data>
+  <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>Navngivne taster: {0} af {1}</value></data>
+  <data name="MapKeyLights_NoLights" xml:space="preserve"><value>Denne enhed har ingen tastelys, som PadForge kan lære navne til.</value></data>
+  <data name="MapKeyLights_Ready" xml:space="preserve"><value>Start tænder det første tastelys uden navn.</value></data>
+  <data name="MapKeyLights_Ask_Format" xml:space="preserve"><value>Lys {0} er tændt. Tryk på tasten under det.</value></data>
+  <data name="MapKeyLights_AskNamed_Format" xml:space="preserve"><value>Lys {0} er tændt og hedder {1}. Tryk på tasten under det for at navngive det igen.</value></data>
+  <data name="MapKeyLights_Start" xml:space="preserve"><value>Start</value></data>
+  <data name="MapKeyLights_Back" xml:space="preserve"><value>Tilbage</value></data>
+  <data name="MapKeyLights_Skip" xml:space="preserve"><value>Spring over</value></data>
+  <data name="MapKeyLights_Skip_Tooltip" xml:space="preserve"><value>Lad dette lys være uden navn, og tænd det næste.</value></data>
+  <data name="MapKeyLights_Forget" xml:space="preserve"><value>Glem</value></data>
+  <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>Fjern det navn, der er lært for det tændte lys.</value></data>
+  <data name="MapKeyLights_Stop" xml:space="preserve"><value>Stop</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>Hvis intet lys tændes, skal du slå Dynamisk belysning fra for enheden i Indstillinger i Windows eller lukke enhedens egen belysningssoftware og trykke på Start igen.</value></data>
+  <data name="MapKeyLights_Export" xml:space="preserve"><value>Eksporter…</value></data>
+  <data name="MapKeyLights_Import" xml:space="preserve"><value>Importer…</value></data>
+  <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Glem alle</value></data>
+  <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Fjern alle navne, der er lært for denne model.</value></data>
+  <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Eksporterede {0} navne.</value></data>
+  <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Importerede {0} navne.</value></data>
+  <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Importerede {0} navne til en anden model, {1}.</value></data>
+  <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Filen indeholder ingen navne på tastelys.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Importer…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} knapper er eksporteret.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} knapper er importeret.</value></data>
@@ -4716,4 +4779,31 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} på {1}, mens den holdes nede</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} på {1}, indtil den stoppes</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Stop triggereffekt på {0}</value></data>
+  <data name="MacroAction_Type_SetKeyColors" xml:space="preserve"><value>Angiv tastefarver</value></data>
+  <data name="MacroAction_Type_ClearKeyColors" xml:space="preserve"><value>Ryd tastefarver</value></data>
+  <data name="MacroAction_SetKeyColors_Tooltip" xml:space="preserve"><value>Tænder taster i en farve på de tastaturer og andre enheder, som denne virtuelle controller styrer lyset på: fast, udtonende eller som nedtælling én tast ad gangen.</value></data>
+  <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Afslutter de Angiv tastefarver-handlinger på denne virtuelle controller, der tænder en af de taster, der er valgt her, eller alle, hvis ingen er valgt.</value></data>
+  <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Ryd alle tastefarver</value></data>
+  <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Ryd tastefarver på {0} lys</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} lys i {1} i {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} lys i {1}, mens de holdes nede</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} lys i {1}, indtil de ryddes</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} lys i {1}, toner ud over {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} lys i {1}, tæller ned over {2} ms</value></data>
+  <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Taster</value></data>
+  <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Alle lys</value></data>
+  <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Ingen taster valgt, så handlingen tænder intet.</value></data>
+  <data name="MacroAction_KeyColors_Style" xml:space="preserve"><value>Stil</value></data>
+  <data name="MacroAction_KeyColors_Steady" xml:space="preserve"><value>Fast</value></data>
+  <data name="MacroAction_KeyColors_Fade" xml:space="preserve"><value>Tone ud</value></data>
+  <data name="MacroAction_KeyColors_Countdown" xml:space="preserve"><value>Nedtælling</value></data>
+  <data name="MacroAction_KeyColors_Hold" xml:space="preserve"><value>Holder</value></data>
+  <data name="MacroAction_KeyColors_HoldDuration" xml:space="preserve"><value>I et bestemt tidsrum</value></data>
+  <data name="MacroAction_KeyColors_HoldRelease" xml:space="preserve"><value>Mens makroens trigger holdes nede</value></data>
+  <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>Indtil den ryddes</value></data>
+  <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Tid</value></data>
+  <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Behold deres farver</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Handlingen tænder de samme taster på alle tastaturer, som denne virtuelle controller styrer lyset på, oven på de farver, som fanen Belysning giver dem. Tallene viser rækkefølgen, tasterne blev valgt i. Nedtælling slukker tasterne én ad gangen, den sidst valgte først, så vælg 1 til 0 for en nedkøling på talrækken. Et tastatur eller en mus lyser kun, mens Styr denne enheds belysning er slået til.</value></data>
+  <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Andre</value></data>
+  <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, nummer {1}</value></data>
 </root>

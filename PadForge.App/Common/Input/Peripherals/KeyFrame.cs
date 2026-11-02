@@ -7,8 +7,10 @@ namespace PadForge.Common.Input.Peripherals
     /// <summary>
     /// The light colors one controller asks of one device on top of its
     /// background color (#557): keys by HID usage, groups of lights by name
-    /// (<see cref="LightGroups"/>), single lights by address, and, when set,
-    /// a background that replaces the claim's color. Colors are 0xRRGGBB.
+    /// (<see cref="LightGroups"/>), single lights by address, when set a
+    /// background that replaces the claim's color, and, for a shift layer
+    /// that shows the Base layer under its own colors, the Base layer's
+    /// frame (<see cref="Under"/>). Colors are 0xRRGGBB.
     ///
     /// <para>Made whole and never changed, so a claim can carry one across
     /// threads and a backend can compare two by content. Keys and groups
@@ -32,25 +34,34 @@ namespace PadForge.Common.Input.Peripherals
         public IReadOnlyDictionary<int, int> Lights { get; }
 
         /// <summary>The color every light without one of its own shows, or
-        /// null for the claim's color. 0 turns those lights off.</summary>
+        /// null for <see cref="Under"/>'s, and without that the claim's
+        /// color. 0 turns those lights off.</summary>
         public int? Background { get; }
+
+        /// <summary>The frame a light falls through to when this one gives
+        /// it no color: a shift layer's Base layer. Null when there is
+        /// none, and never an empty frame.</summary>
+        public KeyFrame Under { get; }
 
         /// <summary>True when the frame changes nothing: no light color and
         /// the claim's own background.</summary>
-        public bool IsEmpty => Keys.Count == 0 && Groups.Count == 0 && Lights.Count == 0 && Background == null;
+        public bool IsEmpty => Keys.Count == 0 && Groups.Count == 0 && Lights.Count == 0 && Background == null
+            && Under == null;
 
         public KeyFrame(IReadOnlyDictionary<ushort, int> keys, IReadOnlyDictionary<string, int> groups,
-            IReadOnlyDictionary<int, int> lights, int? background)
+            IReadOnlyDictionary<int, int> lights, int? background, KeyFrame under = null)
         {
             Keys = Copy(keys, NoKeys);
             Groups = Copy(groups, NoGroups, StringComparer.Ordinal);
             Lights = Copy(lights, NoLights);
             Background = background.HasValue ? background.Value & 0xFFFFFF : null;
+            Under = under is { IsEmpty: false } ? under : null;
             var hash = new HashCode();
             foreach (var pair in Keys.OrderBy(p => p.Key)) { hash.Add(pair.Key); hash.Add(pair.Value); }
             foreach (var pair in Groups.OrderBy(p => p.Key, StringComparer.Ordinal)) { hash.Add(pair.Key); hash.Add(pair.Value); }
             foreach (var pair in Lights.OrderBy(p => p.Key)) { hash.Add(pair.Key); hash.Add(pair.Value); }
             hash.Add(Background);
+            hash.Add(Under?.GetHashCode() ?? 0);
             _hash = hash.ToHashCode();
         }
 
@@ -67,7 +78,8 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (ReferenceEquals(this, other)) return true;
             if (other is null || other._hash != _hash || other.Background != Background) return false;
-            return Same(Keys, other.Keys) && Same(Groups, other.Groups) && Same(Lights, other.Lights);
+            return Same(Keys, other.Keys) && Same(Groups, other.Groups) && Same(Lights, other.Lights)
+                && (Under is null ? other.Under is null : Under.Equals(other.Under));
         }
 
         private static bool Same<TKey>(IReadOnlyDictionary<TKey, int> a, IReadOnlyDictionary<TKey, int> b)
@@ -95,30 +107,44 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>
         /// One 0xRRGGBB color for each light of <paramref name="map"/>, in
         /// its order. The most specific color wins: the light's own, then
-        /// its key's, then its group's, then the background, which is the
-        /// frame's when it sets one and <paramref name="background"/>
-        /// otherwise. A key light whose key no source named takes the
-        /// background, as a key the frame does not name does.
+        /// its key's, then its group's. A light the frame gives no color
+        /// takes the color the frame beneath it gives
+        /// (<see cref="KeyFrame.Under"/>), by the same order, and failing
+        /// that the background: the first a frame sets, from the top, and
+        /// <paramref name="background"/> otherwise. A key light whose key
+        /// no source named takes the background, as a key no frame names
+        /// does.
         /// </summary>
         public static int[] Render(LightMap map, int background, KeyFrame frame)
         {
             var lights = map?.Lights ?? Array.Empty<LightInfo>();
             var colors = new int[lights.Count];
             frame ??= KeyFrame.Empty;
-            int fill = (frame.Background ?? background) & 0xFFFFFF;
-            for (int i = 0; i < lights.Count; i++)
-            {
-                var light = lights[i];
-                if (frame.Lights.TryGetValue(light.Address, out int color)
-                    || (light.Kind == LightKind.Key && light.Usage != 0 && frame.Keys.TryGetValue(light.Usage, out color))
-                    || (light.Group is { } group && frame.Groups.TryGetValue(group, out color)))
+            int fill = background;
+            for (var f = frame; f != null; f = f.Under)
+                if (f.Background is int set)
                 {
-                    colors[i] = color;
-                    continue;
+                    fill = set;
+                    break;
                 }
-                colors[i] = fill;
-            }
+            fill &= 0xFFFFFF;
+            for (int i = 0; i < lights.Count; i++)
+                colors[i] = ColorOf(frame, lights[i]) ?? fill;
             return colors;
+        }
+
+        /// <summary>The color the frames from <paramref name="frame"/> down
+        /// give <paramref name="light"/> of its own, or null.</summary>
+        public static int? ColorOf(KeyFrame frame, in LightInfo light)
+        {
+            for (var f = frame; f != null; f = f.Under)
+            {
+                if (f.Lights.TryGetValue(light.Address, out int color)
+                    || (light.Kind == LightKind.Key && light.Usage != 0 && f.Keys.TryGetValue(light.Usage, out color))
+                    || (light.Group is { } group && f.Groups.TryGetValue(group, out color)))
+                    return color;
+            }
+            return null;
         }
 
         /// <summary>Whether two renders of one map paint the same.</summary>

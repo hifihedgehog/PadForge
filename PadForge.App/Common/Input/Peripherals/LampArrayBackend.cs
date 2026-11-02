@@ -59,10 +59,21 @@ namespace PadForge.Common.Input.Peripherals
         /// unit painted blind.</summary>
         public IReadOnlyList<LampLevels> LampLevels { get; init; }
 
-        /// <summary>The unit's lights (#557), from its lamp descriptions.
-        /// Null until the lamps are read, and for a unit that does not
-        /// describe them.</summary>
+        /// <summary>The unit's lights (#557), from its lamp descriptions,
+        /// with the names Map Key Lights learned for its model
+        /// (<see cref="LearnedKeyMaps"/>). Null until the lamps are read,
+        /// and for a unit that does not describe them.</summary>
         public LightMap Map { get; init; }
+
+        /// <summary>The lights as the lamp descriptions give them, before
+        /// any learned name, kept so a name learned later can be applied.</summary>
+        public LightMap DeviceMap { get; init; }
+
+        /// <summary>The model's key for learned names: vendor, product,
+        /// LampArrayKind and lamp count, which together pick out one
+        /// keyboard's lamp numbering.</summary>
+        public string Product => string.Create(System.Globalization.CultureInfo.InvariantCulture,
+            $"lamparray:{VendorId:X4}:{ProductId:X4}:{Kind}:{LampCount}");
 
         /// <summary>How the lamps take a color, in runs
         /// (<see cref="LampArrayProtocol.BuildRuns"/>). Null until the
@@ -904,11 +915,13 @@ namespace PadForge.Common.Input.Peripherals
             _thread = new Thread(() => Worker(run, walks)) { IsBackground = true, Name = "PeripheralLampArray" };
             _thread.Start();
             PeripheralOutputs.LightingChanged += Wake;
+            LearnedKeyMaps.Changed += OnLearned;
         }
 
         public void Stop()
         {
             PeripheralOutputs.LightingChanged -= Wake;
+            LearnedKeyMaps.Changed -= OnLearned;
             var thread = _thread;
             if (thread == null) return;
             var run = _run;
@@ -977,6 +990,8 @@ namespace PadForge.Common.Input.Peripherals
             try { _wake.Set(); } catch (ObjectDisposedException) { }
         }
 
+        private void OnLearned(object sender, EventArgs e) => Wake();
+
         /// <summary>Whether a run is still the one in charge. A worker a
         /// timed-out Stop gave up on publishes nothing more.</summary>
         private bool InCharge(WorkerRun run) => ReferenceEquals(_run, run);
@@ -997,6 +1012,7 @@ namespace PadForge.Common.Input.Peripherals
             try
             {
                 int seenWalk = walksAtStart;
+                int seenLearned = LearnedKeyMaps.Version;
                 bool walked = false, scanned = false;
                 long nextLitRead = long.MinValue;
                 while (!run.Stop)
@@ -1014,6 +1030,15 @@ namespace PadForge.Common.Input.Peripherals
                     }
 
                     foreach (var lamp in lamps.Values) Describe(run, lamp, ref pass);
+
+                    // Names learned with Map Key Lights since the maps were
+                    // made (#557) reach them, and the tab, here.
+                    int learned = LearnedKeyMaps.Version;
+                    if (learned != seenLearned)
+                    {
+                        seenLearned = learned;
+                        Relearn(lamps);
+                    }
 
                     if (pass.Now >= nextLitRead && AnyUnit(lamps))
                     {
@@ -1072,6 +1097,21 @@ namespace PadForge.Common.Input.Peripherals
                     Volatile.Write(ref _claimed, NoClaims);
                     Volatile.Write(ref _snapshot, DirectBackendSnapshot.NotScanned);
                 }
+            }
+        }
+
+        /// <summary>Applies the learned names to every unit whose lamps
+        /// were read, and publishes each map they change.</summary>
+        private static void Relearn(Dictionary<string, Lamp> lamps)
+        {
+            foreach (var lamp in lamps.Values)
+            {
+                var unit = lamp.Unit;
+                if (unit?.DeviceMap == null) continue;
+                var map = LearnedKeyMaps.Apply(unit.DeviceMap);
+                if (ReferenceEquals(map, unit.Map)) continue;
+                lamp.Unit = unit with { Map = map };
+                PeripheralLightMaps.Publish(new OutputPath(OutputFamily.LampArrayUnit, unit.Path), map);
             }
         }
 
@@ -1690,9 +1730,12 @@ namespace PadForge.Common.Input.Peripherals
             var levels = lamp.Descriptions.Select(d => d.Levels).ToArray();
             var runs = LampArrayProtocol.BuildRuns(levels, unit.MultiUpdateSlots);
             // The light map (#557) only where the lamp response holds the
-            // descriptions where PadForge reads them.
-            var map = unit.DescribesLamps ? LampArrayProtocol.LightMapOf(lamp.Descriptions, unit.Kind) : null;
-            lamp.Unit = unit with { Runs = runs, LampLevels = levels, Map = map };
+            // descriptions where PadForge reads them, with the names Map Key
+            // Lights learned for the model.
+            var fromLamps = unit.DescribesLamps ? LampArrayProtocol.LightMapOf(lamp.Descriptions, unit.Kind) : null;
+            var deviceMap = fromLamps == null ? null : new LightMap(fromLamps.Lights, fromLamps.Source) { Product = unit.Product };
+            var map = LearnedKeyMaps.Apply(deviceMap);
+            lamp.Unit = unit with { Runs = runs, LampLevels = levels, Map = map, DeviceMap = deviceMap };
             lamp.Descriptions = null;
             lamp.LampsRead = true;
             if (map != null) PeripheralLightMaps.Publish(new OutputPath(OutputFamily.LampArrayUnit, unit.Path), map);
@@ -1708,7 +1751,7 @@ namespace PadForge.Common.Input.Peripherals
         /// while it stays awake.</summary>
         private static void Blind(Lamp lamp, string why)
         {
-            lamp.Unit = lamp.Unit with { Runs = null, LampLevels = null, Map = null };
+            lamp.Unit = lamp.Unit with { Runs = null, LampLevels = null, Map = null, DeviceMap = null };
             lamp.Descriptions = null;
             lamp.LampsRead = true;
             PadForge.Engine.SdlDiagLog.WriteLine(

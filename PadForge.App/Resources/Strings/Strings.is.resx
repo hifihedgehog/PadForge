@@ -1090,6 +1090,44 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Bæta við lit</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Endurstilla litaspjald</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Skipta núverandi litaspjaldi út fyrir sjálfgefnu litina fjóra (rauðan, grænan, bláan, gulan).</value></data>
+  <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Litir takka</value></data>
+  <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Litir svæða</value></data>
+  <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Veldu takka á myndinni, eða ýttu á þá á lyklaborðinu, og gefðu þeim lit. Hvert skiptilag getur haft sína eigin liti, sem birtast meðan lagið er virkt.</value></data>
+  <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Veldu svæði og gefðu þeim lit. Hvert skiptilag getur haft sína eigin liti, sem birtast meðan lagið er virkt.</value></data>
+  <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>Fjarlægja litina úr öllum lögum.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Önnur ljós</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Hvað ljós án eigin litar sýna á þessu lagi.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Litir lagsins {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Lýsingarhamur</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Slökkt</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Einn litur</value></data>
+  <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Ýttu á takka til að velja ljós þeirra og ýttu aftur á valinn takka til að hreinsa hann. Ctrl+Tab færir áfram.</value></data>
+  <data name="Pad_Lighting_KeyColors_NoneSelected" xml:space="preserve"><value>Engin ljós valin. Smelltu eða dragðu á myndina til að velja ljós.</value></data>
+  <data name="Pad_Lighting_KeyColors_Selected_Format" xml:space="preserve"><value>Valin: {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllKeys" xml:space="preserve"><value>Allir takkar</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberRow" xml:space="preserve"><value>Talnaröð</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectFunctionKeys" xml:space="preserve"><value>F-takkar</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberPad" xml:space="preserve"><value>Talnaborð</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Örvatakkar</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Jaðar</value></data>
+  <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Merki</value></data>
+  <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Staða</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Öll ljós</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Hreinsa val</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Velja með því að ýta á takka</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing_Tooltip" xml:space="preserve"><value>Meðan kveikt er á þessu velur takki sem ýtt er á, með myndina í fókus, ljós hans og ný ýting hreinsar þau. Ctrl+Tab yfirgefur myndina.</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor" xml:space="preserve"><value>Beita lit</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor_Tooltip" xml:space="preserve"><value>Gefa völdu ljósunum litinn hér að ofan.</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor" xml:space="preserve"><value>Fjarlægja lit</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor_Tooltip" xml:space="preserve"><value>Taka liti valinna ljósa af á þessu lagi svo þau sýni það sem Önnur ljós segir.</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer" xml:space="preserve"><value>Fjarlægja alla liti</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer_Tooltip" xml:space="preserve"><value>Fjarlægja alla liti af þessu lagi og setja Önnur ljós aftur eins og lagið byrjar.</value></data>
+  <data name="Pad_Lighting_KeyColors_UnnamedKey_Format" xml:space="preserve"><value>Takki {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Zone_Format" xml:space="preserve"><value>Svæði {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Light_Format" xml:space="preserve"><value>Ljós {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightColor_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightBaseLayer_Format" xml:space="preserve"><value>{0}: {1} frá {2}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Haldtími púls</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Dofnun púls</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Forstilling</value></data>
@@ -3314,6 +3352,31 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Slökkt er á földum hnöppum. Virkjaðu fyrst „Hnappar handtölvu“ í stillingum.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} er í gangi. Það bregst áfram við þessum hnöppum þar til þú stöðvar það.</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Flytja út…</value></data>
+  <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>Varpa lyklaljósum</value></data>
+  <data name="MapKeyLights_Title" xml:space="preserve"><value>Varpa lyklaljósum</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge lýsir einu lyklaljósi í einu. Ýttu á takkann undir upplýsta ljósinu til að nefna það. Nöfnin eru geymd fyrir öll lyklaborð af þessari gerð, svo Litir takka og fjölvar fyrir liti takka nái réttum tökkum.</value></data>
+  <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>Tæki:</value></data>
+  <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>Takkar með nafn: {0} af {1}</value></data>
+  <data name="MapKeyLights_NoLights" xml:space="preserve"><value>Þetta tæki hefur engin lyklaljós sem PadForge getur lært nöfn fyrir.</value></data>
+  <data name="MapKeyLights_Ready" xml:space="preserve"><value>Byrja lýsir fyrsta lyklaljósinu án nafns.</value></data>
+  <data name="MapKeyLights_Ask_Format" xml:space="preserve"><value>Ljós {0} er upplýst. Ýttu á takkann undir því.</value></data>
+  <data name="MapKeyLights_AskNamed_Format" xml:space="preserve"><value>Ljós {0} er upplýst og heitir {1}. Ýttu á takkann undir því til að nefna það aftur.</value></data>
+  <data name="MapKeyLights_Start" xml:space="preserve"><value>Byrja</value></data>
+  <data name="MapKeyLights_Back" xml:space="preserve"><value>Til baka</value></data>
+  <data name="MapKeyLights_Skip" xml:space="preserve"><value>Sleppa</value></data>
+  <data name="MapKeyLights_Skip_Tooltip" xml:space="preserve"><value>Skilja þetta ljós eftir án nafns og lýsa því næsta.</value></data>
+  <data name="MapKeyLights_Forget" xml:space="preserve"><value>Gleyma</value></data>
+  <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>Fjarlægja nafnið sem lært var fyrir upplýsta ljósið.</value></data>
+  <data name="MapKeyLights_Stop" xml:space="preserve"><value>Stöðva</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>Ef ekkert ljós kviknar skaltu slökkva á Dynamic Lighting fyrir tækið í Windows-stillingum, eða loka eigin lýsingarhugbúnaði þess, og ýta aftur á Byrja.</value></data>
+  <data name="MapKeyLights_Export" xml:space="preserve"><value>Flytja út…</value></data>
+  <data name="MapKeyLights_Import" xml:space="preserve"><value>Flytja inn…</value></data>
+  <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Gleyma öllu</value></data>
+  <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Fjarlægja öll nöfn sem lærð voru fyrir þessa gerð.</value></data>
+  <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Flutti út {0} nöfn.</value></data>
+  <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Flutti inn {0} nöfn.</value></data>
+  <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Flutti inn {0} nöfn fyrir aðra gerð, {1}.</value></data>
+  <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Þessi skrá geymir engin nöfn lyklaljósa.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Flytja inn…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Hnappar fluttir út: {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Hnappar fluttir inn: {0}.</value></data>
@@ -4716,4 +4779,31 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} á {1} meðan haldið er inni</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} á {1} þar til stöðvað</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Stöðva gikkáhrif á {0}</value></data>
+  <data name="MacroAction_Type_SetKeyColors" xml:space="preserve"><value>Stilla liti takka</value></data>
+  <data name="MacroAction_Type_ClearKeyColors" xml:space="preserve"><value>Hreinsa liti takka</value></data>
+  <data name="MacroAction_SetKeyColors_Tooltip" xml:space="preserve"><value>Lýsir takka í lit á lyklaborðum og öðrum tækjum sem þessi sýndarstýripinni lýsir: stöðugt, dofnandi eða niðurtalning einn takka í einu.</value></data>
+  <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Lýkur þeim Stilla liti takka aðgerðum á þessum sýndarstýripinna sem lýsa einhvern af völdum tökkum hér, eða öllum þegar enginn er valinn.</value></data>
+  <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Hreinsa alla liti takka</value></data>
+  <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Hreinsa liti takka á {0} ljósum</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} ljós í lit {1} í {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} ljós í lit {1} meðan haldið er inni</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} ljós í lit {1} þar til hreinsað</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} ljós í lit {1}, dofna á {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} ljós í lit {1}, niðurtalning á {2} ms</value></data>
+  <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Takkar</value></data>
+  <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Öll ljós</value></data>
+  <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Enginn takki valinn, því lýsir aðgerðin engu.</value></data>
+  <data name="MacroAction_KeyColors_Style" xml:space="preserve"><value>Stíll</value></data>
+  <data name="MacroAction_KeyColors_Steady" xml:space="preserve"><value>Stöðugt</value></data>
+  <data name="MacroAction_KeyColors_Fade" xml:space="preserve"><value>Dofna út</value></data>
+  <data name="MacroAction_KeyColors_Countdown" xml:space="preserve"><value>Niðurtalning</value></data>
+  <data name="MacroAction_KeyColors_Hold" xml:space="preserve"><value>Heldur</value></data>
+  <data name="MacroAction_KeyColors_HoldDuration" xml:space="preserve"><value>Í tiltekinn tíma</value></data>
+  <data name="MacroAction_KeyColors_HoldRelease" xml:space="preserve"><value>Meðan kveikja fjölvans er haldið inni</value></data>
+  <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>Þar til hreinsað</value></data>
+  <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Tími</value></data>
+  <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Halda litum þeirra</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Aðgerðin lýsir sömu tökkum á hverju lyklaborði sem þessi sýndarstýripinni lýsir, yfir litunum sem Lýsing flipinn gefur þeim. Tölurnar sýna röðina sem valið var í. Niðurtalning slekkur á tökkum einum í einu, þeim síðasta valda fyrst, svo veldu 1 til 0 fyrir endurhleðslutíma á talnaröðinni. Lyklaborð eða mús lýsist aðeins meðan kveikt er á Stjórna lýsingu þessa tækis.</value></data>
+  <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Annað</value></data>
+  <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, númer {1}</value></data>
 </root>

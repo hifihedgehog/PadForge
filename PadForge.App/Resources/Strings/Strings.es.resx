@@ -1905,6 +1905,44 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Añadir color</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Restablecer paleta</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Reemplaza la paleta actual con los cuatro colores predeterminados (rojo, verde, azul, amarillo).</value></data>
+  <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Colores de teclas</value></data>
+  <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Colores de zonas</value></data>
+  <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Selecciona teclas en la imagen, o púlsalas en el teclado, y asígnales un color. Cada capa de cambio puede tener sus propios colores, que se muestran mientras la capa está activa.</value></data>
+  <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Selecciona zonas y asígnales un color. Cada capa de cambio puede tener sus propios colores, que se muestran mientras la capa está activa.</value></data>
+  <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>Quitar los colores de todas las capas.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Otras luces</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Lo que muestran en esta capa las luces sin color propio.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Colores de la capa {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Modo de iluminación</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Desactivado</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Un solo color</value></data>
+  <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Pulsa teclas para seleccionar sus luces y vuelve a pulsar una tecla seleccionada para quitarla. Ctrl+Tab avanza.</value></data>
+  <data name="Pad_Lighting_KeyColors_NoneSelected" xml:space="preserve"><value>No hay luces seleccionadas. Haz clic o arrastra sobre la imagen para seleccionar luces.</value></data>
+  <data name="Pad_Lighting_KeyColors_Selected_Format" xml:space="preserve"><value>Seleccionadas: {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllKeys" xml:space="preserve"><value>Todas las teclas</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberRow" xml:space="preserve"><value>Fila de números</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectFunctionKeys" xml:space="preserve"><value>Teclas F</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberPad" xml:space="preserve"><value>Teclado numérico</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Teclas de flecha</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Borde</value></data>
+  <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logotipo</value></data>
+  <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Estado</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Todas las luces</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Borrar selección</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Seleccionar pulsando teclas</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing_Tooltip" xml:space="preserve"><value>Si está activado, una tecla pulsada con la imagen en primer plano selecciona sus luces, y al pulsarla de nuevo se quitan. Ctrl+Tab sale de la imagen.</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor" xml:space="preserve"><value>Aplicar color</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor_Tooltip" xml:space="preserve"><value>Dar a las luces seleccionadas el color de arriba.</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor" xml:space="preserve"><value>Quitar color</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor_Tooltip" xml:space="preserve"><value>Quitar los colores de las luces seleccionadas en esta capa, para que muestren lo que indica Otras luces.</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer" xml:space="preserve"><value>Quitar todos los colores</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer_Tooltip" xml:space="preserve"><value>Quitar todos los colores de esta capa y devolver Otras luces a su estado inicial en la capa.</value></data>
+  <data name="Pad_Lighting_KeyColors_UnnamedKey_Format" xml:space="preserve"><value>Tecla {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Zone_Format" xml:space="preserve"><value>Zona {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Light_Format" xml:space="preserve"><value>Luz {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightColor_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightBaseLayer_Format" xml:space="preserve"><value>{0}: {1} de {2}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Mantener pulso</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Decaimiento del pulso</value></data>
   <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>Restablecer gatillo izquierdo</value></data>
@@ -2800,6 +2838,31 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Los botones ocultos están desactivados. Activa primero Botones de PC portátil en Ajustes.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} está en ejecución. Seguirá reaccionando a estos botones hasta que lo cierres.</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Exportar…</value></data>
+  <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>Asignar luces de teclas</value></data>
+  <data name="MapKeyLights_Title" xml:space="preserve"><value>Asignar luces de teclas</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge enciende una luz de tecla cada vez. Pulsa la tecla situada bajo la luz encendida para nombrarla. Los nombres se conservan para todos los teclados de este modelo, de modo que Colores de teclas y las macros de colores de teclas lleguen a las teclas correctas.</value></data>
+  <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>Dispositivo:</value></data>
+  <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>Teclas nombradas: {0} de {1}</value></data>
+  <data name="MapKeyLights_NoLights" xml:space="preserve"><value>Este dispositivo no tiene luces de teclas cuyos nombres pueda aprender PadForge.</value></data>
+  <data name="MapKeyLights_Ready" xml:space="preserve"><value>Iniciar enciende la primera luz de tecla sin nombre.</value></data>
+  <data name="MapKeyLights_Ask_Format" xml:space="preserve"><value>La luz {0} está encendida. Pulsa la tecla situada bajo ella.</value></data>
+  <data name="MapKeyLights_AskNamed_Format" xml:space="preserve"><value>La luz {0} está encendida y se llama {1}. Pulsa la tecla situada bajo ella para nombrarla de nuevo.</value></data>
+  <data name="MapKeyLights_Start" xml:space="preserve"><value>Iniciar</value></data>
+  <data name="MapKeyLights_Back" xml:space="preserve"><value>Atrás</value></data>
+  <data name="MapKeyLights_Skip" xml:space="preserve"><value>Omitir</value></data>
+  <data name="MapKeyLights_Skip_Tooltip" xml:space="preserve"><value>Dejar esta luz sin nombre y encender la siguiente.</value></data>
+  <data name="MapKeyLights_Forget" xml:space="preserve"><value>Olvidar</value></data>
+  <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>Quitar el nombre aprendido de la luz encendida.</value></data>
+  <data name="MapKeyLights_Stop" xml:space="preserve"><value>Detener</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>Si no se enciende ninguna luz, desactiva la Iluminación dinámica del dispositivo en la Configuración de Windows, o cierra su propio software de iluminación, y pulsa Iniciar de nuevo.</value></data>
+  <data name="MapKeyLights_Export" xml:space="preserve"><value>Exportar…</value></data>
+  <data name="MapKeyLights_Import" xml:space="preserve"><value>Importar…</value></data>
+  <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Olvidar todo</value></data>
+  <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Quitar todos los nombres aprendidos de este modelo.</value></data>
+  <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Se exportaron {0} nombres.</value></data>
+  <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Se importaron {0} nombres.</value></data>
+  <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Se importaron {0} nombres de otro modelo, {1}.</value></data>
+  <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Ese archivo no contiene nombres de luces de teclas.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Importar…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} botones exportados.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} botones importados.</value></data>
@@ -4667,4 +4730,31 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} en {1} mientras se mantiene</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} en {1} hasta detenerlo</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Detener efecto de gatillo en {0}</value></data>
+  <data name="MacroAction_Type_SetKeyColors" xml:space="preserve"><value>Establecer colores de teclas</value></data>
+  <data name="MacroAction_Type_ClearKeyColors" xml:space="preserve"><value>Borrar colores de teclas</value></data>
+  <data name="MacroAction_SetKeyColors_Tooltip" xml:space="preserve"><value>Ilumina teclas de un color en los teclados y otros dispositivos que ilumina este mando virtual: fijo, con fundido o con cuenta atrás tecla a tecla.</value></data>
+  <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Finaliza las acciones Establecer colores de teclas en curso en este mando virtual que iluminan alguna de las teclas elegidas aquí, o todas si no se elige ninguna.</value></data>
+  <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Borrar todos los colores de teclas</value></data>
+  <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Borrar colores de teclas en {0} luces</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} luces en {1} durante {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} luces en {1} mientras se mantiene</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} luces en {1} hasta borrarlas</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} luces en {1}, con fundido durante {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} luces en {1}, con cuenta atrás durante {2} ms</value></data>
+  <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Teclas</value></data>
+  <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Todas las luces</value></data>
+  <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>No hay teclas elegidas, así que la acción no ilumina nada.</value></data>
+  <data name="MacroAction_KeyColors_Style" xml:space="preserve"><value>Estilo</value></data>
+  <data name="MacroAction_KeyColors_Steady" xml:space="preserve"><value>Fijo</value></data>
+  <data name="MacroAction_KeyColors_Fade" xml:space="preserve"><value>Fundido de salida</value></data>
+  <data name="MacroAction_KeyColors_Countdown" xml:space="preserve"><value>Cuenta atrás</value></data>
+  <data name="MacroAction_KeyColors_Hold" xml:space="preserve"><value>Se mantiene</value></data>
+  <data name="MacroAction_KeyColors_HoldDuration" xml:space="preserve"><value>Durante un tiempo fijo</value></data>
+  <data name="MacroAction_KeyColors_HoldRelease" xml:space="preserve"><value>Mientras se mantiene el activador de la macro</value></data>
+  <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>Hasta borrarlo</value></data>
+  <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Tiempo</value></data>
+  <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Conservar sus colores</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>La acción ilumina las mismas teclas en todos los teclados que ilumina este mando virtual, sobre los colores que les da su pestaña Iluminación. Los números indican el orden de selección. La cuenta atrás apaga las teclas una a una, empezando por la última elegida, así que elige de 1 a 0 para un tiempo de recarga en la fila de números. Un teclado o ratón solo se ilumina mientras está activada la opción Controlar la iluminación de este dispositivo.</value></data>
+  <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Otras</value></data>
+  <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, número {1}</value></data>
 </root>

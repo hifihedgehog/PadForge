@@ -2711,6 +2711,168 @@
                                         </StackPanel>
                                     </Border>
 
+                                    <!-- Set Key Colors card (#557): the lights, picked on a
+                                         full-size keyboard with a chip per group of lights and
+                                         numbered in the order picked, the color, the style, how
+                                         long it holds, and what the other lights show meanwhile.
+                                         Keys go by HID usage, so the action lights the same keys
+                                         on every keyboard this virtual controller lights. -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
+                                            Visibility="{Binding IsSetKeyColorsType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_Type_SetKeyColors, Source={x:Static strings:Strings.Instance}}"
+                                                       FontWeight="SemiBold" Margin="0,0,0,6"/>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_KeyColors_Keys, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="120" Margin="0,0,8,0"/>
+                                                <CheckBox IsChecked="{Binding KeyTargetPicker.AllLights, Mode=TwoWay}" VerticalAlignment="Center"
+                                                          Content="{Binding MacroAction_KeyColors_AllLights, Source={x:Static strings:Strings.Instance}}"/>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="KeyColorTargets" SettingLabel="{Binding MacroAction_KeyColors_Keys, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_KeyColorTargets_55701"/>
+                                            </StackPanel>
+                                            <views:KeyLightsView Source="{Binding KeyTargetPicker}" HorizontalAlignment="Left" Margin="0,0,0,4"
+                                                                 AutomationProperties.Name="{Binding MacroAction_KeyColors_Keys, Source={x:Static strings:Strings.Instance}}"/>
+                                            <TextBlock Text="{Binding Pad_Lighting_KeyColors_PickHint, Source={x:Static strings:Strings.Instance}}"
+                                                       Foreground="{DynamicResource EmberBrush}" TextWrapping="Wrap" Margin="0,0,0,4"
+                                                       Visibility="{Binding KeyTargetPicker.PickByPressing, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            <WrapPanel Margin="0,0,0,6">
+                                                <Button Padding="8,2" Margin="0,0,6,6" Command="{Binding KeyTargetPicker.SelectAllKeysCommand}"
+                                                        Content="{Binding Pad_Lighting_KeyColors_SelectAllKeys, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Padding="8,2" Margin="0,0,6,6" Command="{Binding KeyTargetPicker.SelectNumberRowCommand}"
+                                                        Content="{Binding Pad_Lighting_KeyColors_SelectNumberRow, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Padding="8,2" Margin="0,0,6,6" Command="{Binding KeyTargetPicker.SelectFunctionKeysCommand}"
+                                                        Content="{Binding Pad_Lighting_KeyColors_SelectFunctionKeys, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Padding="8,2" Margin="0,0,6,6" Command="{Binding KeyTargetPicker.SelectNumberPadCommand}"
+                                                        Content="{Binding Pad_Lighting_KeyColors_SelectNumberPad, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Padding="8,2" Margin="0,0,6,6" Command="{Binding KeyTargetPicker.SelectArrowsCommand}"
+                                                        Content="{Binding Pad_Lighting_KeyColors_SelectArrows, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Padding="8,2" Margin="0,0,6,6" Command="{Binding KeyTargetPicker.SelectWasdCommand}"
+                                                        Content="{Binding Pad_Lighting_KeyColors_SelectWasd, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Padding="8,2" Margin="0,0,6,6" Command="{Binding KeyTargetPicker.ClearSelectionCommand}"
+                                                        Content="{Binding Pad_Lighting_KeyColors_ClearSelection, Source={x:Static strings:Strings.Instance}}"/>
+                                                <ToggleButton Padding="8,2" Margin="0,0,6,6"
+                                                              IsChecked="{Binding KeyTargetPicker.PickByPressing, Mode=TwoWay}"
+                                                              Content="{Binding Pad_Lighting_KeyColors_PickByPressing, Source={x:Static strings:Strings.Instance}}"
+                                                              ToolTip="{Binding Pad_Lighting_KeyColors_PickByPressing_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            </WrapPanel>
+                                            <TextBlock Text="{Binding MacroAction_KeyColors_NoKeys, Source={x:Static strings:Strings.Instance}}"
+                                                       FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"
+                                                       Foreground="{DynamicResource SystemFillColorCautionBrush}"
+                                                       Visibility="{Binding HasNoKeyColorTargets, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            <views:ColorPickerControl HorizontalAlignment="Left" Margin="0,0,0,4"
+                                                                      Red="{Binding LightbarR, Mode=TwoWay}"
+                                                                      Green="{Binding LightbarG, Mode=TwoWay}"
+                                                                      Blue="{Binding LightbarB, Mode=TwoWay}"/>
+                                            <Border Width="80" Height="20" HorizontalAlignment="Left" CornerRadius="3" Margin="0,0,0,8"
+                                                    BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                                <Border.Background>
+                                                    <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                        <Binding Path="LightbarR"/>
+                                                        <Binding Path="LightbarG"/>
+                                                        <Binding Path="LightbarB"/>
+                                                    </MultiBinding>
+                                                </Border.Background>
+                                            </Border>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_KeyColors_Style, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="120" Margin="0,0,8,0"/>
+                                                <ComboBox SelectedValue="{Binding KeyColorStyle, Mode=TwoWay}"
+                                                          SelectedValuePath="Tag" MinWidth="240"
+                                                          AutomationProperties.Name="{Binding MacroAction_KeyColors_Style, Source={x:Static strings:Strings.Instance}}">
+                                                    <ComboBoxItem Content="{Binding MacroAction_KeyColors_Steady, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroKeyColorStyle.Steady}"/>
+                                                    <ComboBoxItem Content="{Binding MacroAction_KeyColors_Fade, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroKeyColorStyle.Fade}"/>
+                                                    <ComboBoxItem Content="{Binding MacroAction_KeyColors_Countdown, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroKeyColorStyle.Countdown}"/>
+                                                </ComboBox>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="KeyColorStyle" SettingLabel="{Binding MacroAction_KeyColors_Style, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_KeyColorStyle_55702"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                                        Visibility="{Binding IsKeyColorHoldShown, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_KeyColors_Hold, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="120" Margin="0,0,8,0"/>
+                                                <ComboBox SelectedValue="{Binding KeyColorHold, Mode=TwoWay}"
+                                                          SelectedValuePath="Tag" MinWidth="240"
+                                                          AutomationProperties.Name="{Binding MacroAction_KeyColors_Hold, Source={x:Static strings:Strings.Instance}}">
+                                                    <ComboBoxItem Content="{Binding MacroAction_KeyColors_HoldDuration, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroKeyColorHold.Duration}"/>
+                                                    <ComboBoxItem Content="{Binding MacroAction_KeyColors_HoldRelease, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroKeyColorHold.UntilRelease}"/>
+                                                    <ComboBoxItem Content="{Binding MacroAction_KeyColors_HoldCleared, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroKeyColorHold.UntilCleared}"/>
+                                                </ComboBox>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="KeyColorHold" SettingLabel="{Binding MacroAction_KeyColors_Hold, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_KeyColorHold_55703"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                                        Visibility="{Binding IsKeyColorTimed, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_KeyColors_Duration, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="120" Margin="0,0,8,0"/>
+                                                <Slider Value="{Binding KeyColorMs, Mode=TwoWay}"
+                                                        Minimum="1" Maximum="600000" Width="220" SmallChange="100" LargeChange="1000"
+                                                        VerticalAlignment="Center"
+                                                        AutomationProperties.Name="{Binding MacroAction_KeyColors_Duration, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBox Text="{Binding KeyColorMs, Mode=TwoWay}" Width="80" Margin="8,0,0,0"
+                                                         AutomationProperties.Name="{Binding MacroAction_KeyColors_Duration, Source={x:Static strings:Strings.Instance}}"/>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="KeyColorMs" SettingLabel="{Binding MacroAction_KeyColors_Duration, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_KeyColorMs_55704" Margin="4,0,8,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Lighting_KeyColors_Others, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="120" Margin="0,0,8,0"/>
+                                                <ComboBox SelectedValue="{Binding KeyColorRest, Mode=TwoWay}"
+                                                          SelectedValuePath="Tag" MinWidth="240"
+                                                          AutomationProperties.Name="{Binding Pad_Lighting_KeyColors_Others, Source={x:Static strings:Strings.Instance}}">
+                                                    <ComboBoxItem Content="{Binding MacroAction_KeyColors_RestKeep, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroKeyColorRest.Keep}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_KeyColors_Others_Off, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroKeyColorRest.Off}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_KeyColors_Others_Color, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroKeyColorRest.Color}"/>
+                                                </ComboBox>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="KeyColorRest" SettingLabel="{Binding Pad_Lighting_KeyColors_Others, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_KeyColorRest_55705"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="128,0,0,6"
+                                                        Visibility="{Binding IsKeyRestColorShown, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <views:ColorPickerControl HorizontalAlignment="Left"
+                                                                          Red="{Binding KeyRestR, Mode=TwoWay}"
+                                                                          Green="{Binding KeyRestG, Mode=TwoWay}"
+                                                                          Blue="{Binding KeyRestB, Mode=TwoWay}"/>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="KeyRestColor" SettingLabel="{Binding Pad_Lighting_KeyColors_Others_Color, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_KeyRestColor_55706" VerticalAlignment="Top"/>
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_SetKeyColors_Hint, Source={x:Static strings:Strings.Instance}}"
+                                                       FontSize="11" TextWrapping="Wrap"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Clear Key Colors card (#557): the lights whose Set Key
+                                         Colors it ends, or none for every one. -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
+                                            Visibility="{Binding IsClearKeyColorsType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_Type_ClearKeyColors, Source={x:Static strings:Strings.Instance}}"
+                                                       FontWeight="SemiBold" Margin="0,0,0,6"/>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_KeyColors_Keys, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="120" Margin="0,0,8,0"/>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="KeyColorTargets" SettingLabel="{Binding MacroAction_KeyColors_Keys, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_KeyColorTargets_55707"/>
+                                            </StackPanel>
+                                            <views:KeyLightsView Source="{Binding KeyTargetPicker}" HorizontalAlignment="Left" Margin="0,0,0,4"
+                                                                 AutomationProperties.Name="{Binding MacroAction_KeyColors_Keys, Source={x:Static strings:Strings.Instance}}"/>
+                                            <TextBlock Text="{Binding Pad_Lighting_KeyColors_PickHint, Source={x:Static strings:Strings.Instance}}"
+                                                       Foreground="{DynamicResource EmberBrush}" TextWrapping="Wrap" Margin="0,0,0,4"
+                                                       Visibility="{Binding KeyTargetPicker.PickByPressing, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            <WrapPanel Margin="0,0,0,6">
+                                                <Button Padding="8,2" Margin="0,0,6,6" Command="{Binding KeyTargetPicker.SelectNumberRowCommand}"
+                                                        Content="{Binding Pad_Lighting_KeyColors_SelectNumberRow, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Padding="8,2" Margin="0,0,6,6" Command="{Binding KeyTargetPicker.SelectFunctionKeysCommand}"
+                                                        Content="{Binding Pad_Lighting_KeyColors_SelectFunctionKeys, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Padding="8,2" Margin="0,0,6,6" Command="{Binding KeyTargetPicker.SelectNumberPadCommand}"
+                                                        Content="{Binding Pad_Lighting_KeyColors_SelectNumberPad, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Padding="8,2" Margin="0,0,6,6" Command="{Binding KeyTargetPicker.ClearSelectionCommand}"
+                                                        Content="{Binding Pad_Lighting_KeyColors_ClearSelection, Source={x:Static strings:Strings.Instance}}"/>
+                                                <ToggleButton Padding="8,2" Margin="0,0,6,6"
+                                                              IsChecked="{Binding KeyTargetPicker.PickByPressing, Mode=TwoWay}"
+                                                              Content="{Binding Pad_Lighting_KeyColors_PickByPressing, Source={x:Static strings:Strings.Instance}}"
+                                                              ToolTip="{Binding Pad_Lighting_KeyColors_PickByPressing_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            </WrapPanel>
+                                            <TextBlock Text="{Binding MacroAction_ClearKeyColors_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                       FontSize="11" TextWrapping="Wrap"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        </StackPanel>
+                                    </Border>
+
                                     <!-- Show Dreamcast Screen card (#469): the pictures in the
                                          order they show, each drawn as the VMU draws it (click
                                          one to remove it), how long each shows and how many
@@ -10393,6 +10555,313 @@
                                         </StackPanel>
                                     </StackPanel>
                                 </Border>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Key Colors, Zone Colors for a device whose lights
+                             are zones (#557): the selected device's lights
+                             one by one, per shift layer, written into the
+                             device's config for this controller
+                             (DeviceSlotConfig.KeyLighting through
+                             PadViewModel.KeyColors) the way the Lightbar card
+                             writes its mode. Shown by SyncTabVisibility for a
+                             lit mouse, keyboard or vendor row whose path
+                             knows its lights one by one (PeripheralLightMaps).
+                             The layer chips are the Mappings tab's shift
+                             layer chips with a pick of their own, so the
+                             layer being colored never moves the layer being
+                             mapped. The picture is built in code
+                             (KeyLightsView), as the Keyboard + Mouse preview
+                             is. Both color blocks are the Lightbar card's
+                             single-color block: picker, swatches, hex box,
+                             R/G/B rows. A color change reaches the selected
+                             lights at once, and Apply Color gives lights
+                             picked later the color as it stands. -->
+                        <Border x:Name="KeyColorsCard" Style="{StaticResource CardBorder}" Visibility="Collapsed">
+                            <Border.Resources>
+                                <!-- The Lightbar card's swatch, one style for the eight. -->
+                                <Style x:Key="KeyColorSwatch" TargetType="controls:ClickBorder">
+                                    <Setter Property="Width" Value="24"/>
+                                    <Setter Property="Height" Value="24"/>
+                                    <Setter Property="CornerRadius" Value="6"/>
+                                    <Setter Property="Margin" Value="0,0,6,0"/>
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                    <Setter Property="ClickMode" Value="Press"/>
+                                    <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
+                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                                <Style x:Key="KeyColorButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Setter Property="Padding" Value="10,4"/>
+                                    <Setter Property="Margin" Value="0,0,6,6"/>
+                                </Style>
+                            </Border.Resources>
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <controls:GlyphText Text="&#xE765;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding KeyColors.Title}" Style="{StaticResource CardTitle}"/>
+                                    <ui:Button Command="{Binding DeviceConfig.ResetKeyLightingCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_Lighting_KeyColors_ResetAll_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding KeyColors.Description}" Style="{StaticResource CardDescription}"/>
+
+                                <!-- The layer being colored. -->
+                                <ItemsControl ItemsSource="{Binding KeyColors.Layers}" Margin="0,0,0,8"
+                                              Visibility="{Binding KeyColors.HasLayers, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type vm:KeyColorLayerItem}">
+                                            <RadioButton GroupName="KeyColorLayers"
+                                                         Style="{StaticResource ShiftLayerTabChip}"
+                                                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                                         Margin="0,0,4,4"
+                                                         Padding="10,4"
+                                                         Click="KeyColorLayer_Click"
+                                                         Tag="{Binding LayerMask}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Ellipse Width="8" Height="8" Margin="0,0,6,0" VerticalAlignment="Center"
+                                                             Fill="{Binding Color, Converter={StaticResource HexToBrushConverter}}">
+                                                        <Ellipse.Style>
+                                                            <Style TargetType="Ellipse">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsBase}" Value="True">
+                                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Ellipse.Style>
+                                                    </Ellipse>
+                                                    <TextBlock Text="{Binding LayerName}" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </RadioButton>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <!-- What the layer's other lights show. A shift
+                                     layer starts on the Base layer's colors. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Pad_Lighting_KeyColors_Others, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource DzLabel}"/>
+                                    <ComboBox ItemsSource="{Binding KeyColors.BackgroundChoices}"
+                                              DisplayMemberPath="Label" SelectedValuePath="Rule"
+                                              SelectedValue="{Binding KeyColors.BackgroundRule, Mode=TwoWay}"
+                                              Width="340" VerticalAlignment="Center"
+                                              ToolTip="{Binding Pad_Lighting_KeyColors_Others_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              AutomationProperties.Name="{Binding Pad_Lighting_KeyColors_Others, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <Border Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,12"
+                                        HorizontalAlignment="Left"
+                                        BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                        Visibility="{Binding KeyColors.BackgroundIsColor, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <StackPanel>
+                                        <views:ColorPickerControl Margin="0,0,0,12" HorizontalAlignment="Left"
+                                            Red="{Binding KeyColors.BackgroundRed, Mode=TwoWay}"
+                                            Green="{Binding KeyColors.BackgroundGreen, Mode=TwoWay}"
+                                            Blue="{Binding KeyColors.BackgroundBlue, Mode=TwoWay}"/>
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="64"/>
+                                                <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Grid.Column="0" Width="48" Height="36" CornerRadius="4" HorizontalAlignment="Left"
+                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
+                                                <Border.Background>
+                                                    <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                        <Binding Path="KeyColors.BackgroundRed"/>
+                                                        <Binding Path="KeyColors.BackgroundGreen"/>
+                                                        <Binding Path="KeyColors.BackgroundBlue"/>
+                                                    </MultiBinding>
+                                                </Border.Background>
+                                            </Border>
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
+                                                       VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                            <TextBox Grid.Column="2" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                     FontFamily="{StaticResource TelemetryFontFamily}" Padding="6,4"
+                                                     Text="{Binding KeyColors.BackgroundHex, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                     KeyDown="KeyColorsHexBox_KeyDown"
+                                                     ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        </Grid>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                            <Slider Value="{Binding KeyColors.BackgroundRed, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                            <TextBox Text="{Binding KeyColors.BackgroundRed, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                            <Slider Value="{Binding KeyColors.BackgroundGreen, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                            <TextBox Text="{Binding KeyColors.BackgroundGreen, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                            <Slider Value="{Binding KeyColors.BackgroundBlue, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                            <TextBox Text="{Binding KeyColors.BackgroundBlue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- The picture, built in code. -->
+                                <views:KeyLightsView Source="{Binding KeyColors}" HorizontalAlignment="Left" Margin="0,0,0,4"
+                                                     AutomationProperties.Name="{Binding KeyColors.Title, TargetNullValue=''}"/>
+                                <TextBlock Text="{Binding Pad_Lighting_KeyColors_PickHint, Source={x:Static strings:Strings.Instance}}"
+                                           Foreground="{DynamicResource EmberBrush}" TextWrapping="Wrap" Margin="0,0,0,4"
+                                           Visibility="{Binding KeyColors.PickByPressing, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <TextBlock Text="{Binding KeyColors.SelectionSummary}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Margin="0,0,0,8"/>
+
+                                <!-- Selecting. -->
+                                <WrapPanel Margin="0,0,0,6">
+                                    <Button Style="{StaticResource KeyColorButton}" Command="{Binding KeyColors.SelectAllKeysCommand}"
+                                            Content="{Binding Pad_Lighting_KeyColors_SelectAllKeys, Source={x:Static strings:Strings.Instance}}"
+                                            Visibility="{Binding KeyColors.HasKeys, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <Button Style="{StaticResource KeyColorButton}" Command="{Binding KeyColors.SelectNumberRowCommand}"
+                                            Content="{Binding Pad_Lighting_KeyColors_SelectNumberRow, Source={x:Static strings:Strings.Instance}}"
+                                            Visibility="{Binding KeyColors.HasKeys, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <Button Style="{StaticResource KeyColorButton}" Command="{Binding KeyColors.SelectFunctionKeysCommand}"
+                                            Content="{Binding Pad_Lighting_KeyColors_SelectFunctionKeys, Source={x:Static strings:Strings.Instance}}"
+                                            Visibility="{Binding KeyColors.HasKeys, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <Button Style="{StaticResource KeyColorButton}" Command="{Binding KeyColors.SelectNumberPadCommand}"
+                                            Content="{Binding Pad_Lighting_KeyColors_SelectNumberPad, Source={x:Static strings:Strings.Instance}}"
+                                            Visibility="{Binding KeyColors.HasKeys, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <Button Style="{StaticResource KeyColorButton}" Command="{Binding KeyColors.SelectArrowsCommand}"
+                                            Content="{Binding Pad_Lighting_KeyColors_SelectArrows, Source={x:Static strings:Strings.Instance}}"
+                                            Visibility="{Binding KeyColors.HasKeys, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <Button Style="{StaticResource KeyColorButton}" Command="{Binding KeyColors.SelectWasdCommand}"
+                                            Content="{Binding Pad_Lighting_KeyColors_SelectWasd, Source={x:Static strings:Strings.Instance}}"
+                                            Visibility="{Binding KeyColors.HasKeys, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <Button Style="{StaticResource KeyColorButton}" Command="{Binding KeyColors.SelectEdgeCommand}"
+                                            Content="{Binding Pad_Lighting_KeyColors_Edge, Source={x:Static strings:Strings.Instance}}"
+                                            Visibility="{Binding KeyColors.HasEdge, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <Button Style="{StaticResource KeyColorButton}" Command="{Binding KeyColors.SelectLogoCommand}"
+                                            Content="{Binding Pad_Lighting_KeyColors_Logo, Source={x:Static strings:Strings.Instance}}"
+                                            Visibility="{Binding KeyColors.HasLogo, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <Button Style="{StaticResource KeyColorButton}" Command="{Binding KeyColors.SelectAllLightsCommand}"
+                                            Content="{Binding Pad_Lighting_KeyColors_SelectAllLights, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Style="{StaticResource KeyColorButton}" Command="{Binding KeyColors.ClearSelectionCommand}"
+                                            Content="{Binding Pad_Lighting_KeyColors_ClearSelection, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ToggleButton Padding="10,4" Margin="0,0,6,6"
+                                                  IsChecked="{Binding KeyColors.PickByPressing, Mode=TwoWay}"
+                                                  Content="{Binding Pad_Lighting_KeyColors_PickByPressing, Source={x:Static strings:Strings.Instance}}"
+                                                  ToolTip="{Binding Pad_Lighting_KeyColors_PickByPressing_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                  Visibility="{Binding KeyColors.HasKeys, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                </WrapPanel>
+
+                                <!-- The color the selection takes. -->
+                                <Border Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,8"
+                                        HorizontalAlignment="Left"
+                                        BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
+                                    <StackPanel>
+                                        <views:ColorPickerControl Margin="0,0,0,12" HorizontalAlignment="Left"
+                                            Red="{Binding KeyColors.PaintRed, Mode=TwoWay}"
+                                            Green="{Binding KeyColors.PaintGreen, Mode=TwoWay}"
+                                            Blue="{Binding KeyColors.PaintBlue, Mode=TwoWay}"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,2,0,10">
+                                            <controls:ClickBorder Style="{StaticResource KeyColorSwatch}" Tag="0000FF" ToolTip="#0000FF" Click="KeyColorSwatch_Click">
+                                                <Border CornerRadius="3" Margin="3" Background="#FF0000FF" IsHitTestVisible="False"/>
+                                            </controls:ClickBorder>
+                                            <controls:ClickBorder Style="{StaticResource KeyColorSwatch}" Tag="FF0000" ToolTip="#FF0000" Click="KeyColorSwatch_Click">
+                                                <Border CornerRadius="3" Margin="3" Background="#FFFF0000" IsHitTestVisible="False"/>
+                                            </controls:ClickBorder>
+                                            <controls:ClickBorder Style="{StaticResource KeyColorSwatch}" Tag="00FF00" ToolTip="#00FF00" Click="KeyColorSwatch_Click">
+                                                <Border CornerRadius="3" Margin="3" Background="#FF00FF00" IsHitTestVisible="False"/>
+                                            </controls:ClickBorder>
+                                            <controls:ClickBorder Style="{StaticResource KeyColorSwatch}" Tag="FF00FF" ToolTip="#FF00FF" Click="KeyColorSwatch_Click">
+                                                <Border CornerRadius="3" Margin="3" Background="#FFFF00FF" IsHitTestVisible="False"/>
+                                            </controls:ClickBorder>
+                                            <controls:ClickBorder Style="{StaticResource KeyColorSwatch}" Tag="FFBF00" ToolTip="#FFBF00" Click="KeyColorSwatch_Click">
+                                                <Border CornerRadius="3" Margin="3" Background="#FFFFBF00" IsHitTestVisible="False"/>
+                                            </controls:ClickBorder>
+                                            <controls:ClickBorder Style="{StaticResource KeyColorSwatch}" Tag="00FFFF" ToolTip="#00FFFF" Click="KeyColorSwatch_Click">
+                                                <Border CornerRadius="3" Margin="3" Background="#FF00FFFF" IsHitTestVisible="False"/>
+                                            </controls:ClickBorder>
+                                            <controls:ClickBorder Style="{StaticResource KeyColorSwatch}" Tag="FFFFFF" ToolTip="#FFFFFF" Click="KeyColorSwatch_Click">
+                                                <Border CornerRadius="3" Margin="3" Background="#FFFFFFFF" IsHitTestVisible="False"/>
+                                            </controls:ClickBorder>
+                                            <controls:ClickBorder Style="{StaticResource KeyColorSwatch}" Tag="FF6B2C" ToolTip="#FF6B2C" Click="KeyColorSwatch_Click">
+                                                <Border CornerRadius="3" Margin="3" Background="#FFFF6B2C" IsHitTestVisible="False"/>
+                                            </controls:ClickBorder>
+                                        </StackPanel>
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="64"/>
+                                                <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Grid.Column="0" Width="48" Height="36" CornerRadius="4" HorizontalAlignment="Left"
+                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
+                                                <Border.Background>
+                                                    <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                        <Binding Path="KeyColors.PaintRed"/>
+                                                        <Binding Path="KeyColors.PaintGreen"/>
+                                                        <Binding Path="KeyColors.PaintBlue"/>
+                                                    </MultiBinding>
+                                                </Border.Background>
+                                            </Border>
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
+                                                       VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                            <TextBox Grid.Column="2" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                     FontFamily="{StaticResource TelemetryFontFamily}" Padding="6,4"
+                                                     Text="{Binding KeyColors.PaintHex, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                     KeyDown="KeyColorsHexBox_KeyDown"
+                                                     ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        </Grid>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                            <Slider Value="{Binding KeyColors.PaintRed, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                            <TextBox Text="{Binding KeyColors.PaintRed, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                            <Slider Value="{Binding KeyColors.PaintGreen, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                            <TextBox Text="{Binding KeyColors.PaintGreen, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                            <Slider Value="{Binding KeyColors.PaintBlue, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                            <TextBox Text="{Binding KeyColors.PaintBlue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Coloring. -->
+                                <WrapPanel>
+                                    <Button Style="{StaticResource KeyColorButton}" Command="{Binding KeyColors.ApplyColorCommand}"
+                                            IsEnabled="{Binding KeyColors.HasSelection}"
+                                            ToolTip="{Binding Pad_Lighting_KeyColors_ApplyColor_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <controls:GlyphText Text="&#xE790;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding Pad_Lighting_KeyColors_ApplyColor, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Style="{StaticResource KeyColorButton}" Command="{Binding KeyColors.ClearSelectedColorsCommand}"
+                                            IsEnabled="{Binding KeyColors.HasSelection}"
+                                            ToolTip="{Binding Pad_Lighting_KeyColors_RemoveColor_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <controls:GlyphText Text="&#xE738;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding Pad_Lighting_KeyColors_RemoveColor, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Style="{StaticResource KeyColorButton}" Command="{Binding KeyColors.ClearLayerCommand}"
+                                            ToolTip="{Binding Pad_Lighting_KeyColors_ClearLayer_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <controls:GlyphText Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding Pad_Lighting_KeyColors_ClearLayer, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                </WrapPanel>
                             </StackPanel>
                         </Border>
 

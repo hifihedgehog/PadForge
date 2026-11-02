@@ -6,44 +6,78 @@ using System.Text;
 
 namespace PadForge.Common.Input.Peripherals
 {
-    /// <summary>What a shift layer does with the background color of the
-    /// lights it gives no color of their own (#557). Saved by name.</summary>
+    /// <summary>What a layer's lights show when the layer gives them no
+    /// color of their own (#557). Append-only, saved by name.</summary>
     public enum KeyBackgroundRule
     {
-        /// <summary>The Lighting tab's mode, as on the Base layer.</summary>
+        /// <summary>The Lighting tab's mode, the Base layer's rule until it
+        /// is given another.</summary>
         Same = 0,
         /// <summary>Those lights off.</summary>
         Off = 1,
         /// <summary>Those lights in <see cref="KeyLightingLayer.BackgroundRgb"/>.</summary>
         Color = 2,
+        /// <summary>Those lights as the Base layer shows them, a shift
+        /// layer's rule until it is given another: the Mappings tab's
+        /// inherit rule, light by light. The Base layer never has it.</summary>
+        BaseLayer = 3,
     }
 
-    /// <summary>One shift layer's light colors (#557). The Base layer always
-    /// has its own. Another layer either uses the Base layer's whole
-    /// (<see cref="UsesBase"/>, the Mappings tab's inherit rule) or sets its
-    /// own colors and background.</summary>
+    /// <summary>One layer's light colors (#557): its own colors, and what
+    /// its other lights show (<see cref="Background"/>).</summary>
     internal sealed class KeyLightingLayer
     {
         public string Mask { get; init; } = KeyLightingSettings.BaseMask;
-        public bool UsesBase { get; init; }
-        public KeyBackgroundRule Background { get; init; }
+
+        public bool IsBase => Mask == KeyLightingSettings.BaseMask;
+
+        private readonly KeyBackgroundRule? _background;
+
+        /// <summary>What the lights this layer gives no color show. Until
+        /// set, the rule the layer starts with
+        /// (<see cref="DefaultRule"/>). The Base layer has no Base layer
+        /// to show, so it reads <see cref="KeyBackgroundRule.BaseLayer"/>
+        /// as the Lighting tab's mode.</summary>
+        public KeyBackgroundRule Background
+        {
+            get
+            {
+                var rule = _background ?? DefaultRule(Mask);
+                return rule == KeyBackgroundRule.BaseLayer && IsBase ? KeyBackgroundRule.Same : rule;
+            }
+            init => _background = value;
+        }
+
         public int BackgroundRgb { get; init; }
         public IReadOnlyDictionary<ushort, int> Keys { get; init; } = new Dictionary<ushort, int>();
         public IReadOnlyDictionary<string, int> Groups { get; init; } = new Dictionary<string, int>(StringComparer.Ordinal);
         public IReadOnlyDictionary<int, int> Lights { get; init; } = new Dictionary<int, int>();
 
-        public bool IsEmpty => !UsesBase && Background == KeyBackgroundRule.Same
+        /// <summary>The rule a layer starts with: the Lighting tab's mode on
+        /// the Base layer, the Base layer's colors on a shift layer, the
+        /// way a key a shift layer leaves alone keeps doing what it does on
+        /// Base.</summary>
+        public static KeyBackgroundRule DefaultRule(string mask)
+            => mask == KeyLightingSettings.BaseMask ? KeyBackgroundRule.Same : KeyBackgroundRule.BaseLayer;
+
+        /// <summary>True when the layer changes nothing: no colors of its
+        /// own and the rule it starts with. Such a layer is not saved.</summary>
+        public bool IsEmpty => Background == DefaultRule(Mask)
             && Keys.Count == 0 && Groups.Count == 0 && Lights.Count == 0;
 
-        /// <summary>The frame this layer asks for: its colors, and its
-        /// background unless it keeps the Lighting tab's mode.</summary>
-        public KeyFrame ToFrame(bool keepLights = true) => new(Keys, Groups, keepLights ? Lights : null,
+        /// <summary>The frame this layer asks for: its colors, its
+        /// background unless it keeps the Lighting tab's mode, and, for a
+        /// layer that shows the Base layer under its own colors,
+        /// <paramref name="baseFrame"/> beneath them.</summary>
+        public KeyFrame ToFrame(bool keepLights = true, KeyFrame baseFrame = null) => new(Keys, Groups,
+            keepLights ? Lights : null,
             Background switch
             {
                 KeyBackgroundRule.Off => 0,
                 KeyBackgroundRule.Color => BackgroundRgb & 0xFFFFFF,
                 _ => null,
-            });
+            },
+            Background == KeyBackgroundRule.BaseLayer ? baseFrame : null);
     }
 
     /// <summary>
@@ -55,10 +89,11 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>The text: layers split by "|", a layer as its shift layer's
     /// LayerMask, "&gt;", then its items split by ",". An item is
-    /// "inherit" for a layer that uses the Base layer's colors,
-    /// "bg=same", "bg=off" or "bg=RRGGBB", "kUU=RRGGBB" for the key with
-    /// HID usage 0xUU, "gNAME=RRGGBB" for a group (<see cref="LightGroups"/>)
-    /// and "lN=RRGGBB" for the device's light number N. For example
+    /// "bg=same", "bg=off", "bg=base" or "bg=RRGGBB" for a rule other than
+    /// the one the layer starts with (<see cref="KeyLightingLayer.DefaultRule"/>),
+    /// "kUU=RRGGBB" for the key with HID usage 0xUU, "gNAME=RRGGBB" for a
+    /// group (<see cref="LightGroups"/>) and "lN=RRGGBB" for the device's
+    /// light number N. For example
     /// "Base&gt;k1A=FF0000,gedge=0000FF|Shift1&gt;bg=off,k06=FFFFFF". A part
     /// the reader does not know is dropped, and the writer puts everything
     /// in one order, so equal settings have equal text.</para>
@@ -78,15 +113,17 @@ namespace PadForge.Common.Input.Peripherals
             var copy = new Dictionary<string, KeyLightingLayer>(StringComparer.Ordinal);
             if (layers != null)
                 foreach (var pair in layers)
-                    if (ValidMask(pair.Key) && pair.Value != null && !pair.Value.IsEmpty)
-                        copy[pair.Key] = pair.Value.Mask == pair.Key ? pair.Value : Rename(pair.Value, pair.Key);
+                {
+                    if (!ValidMask(pair.Key) || pair.Value == null) continue;
+                    var layer = pair.Value.Mask == pair.Key ? pair.Value : Rename(pair.Value, pair.Key);
+                    if (!layer.IsEmpty) copy[pair.Key] = layer;
+                }
             Layers = copy;
         }
 
         private static KeyLightingLayer Rename(KeyLightingLayer layer, string mask) => new()
         {
             Mask = mask,
-            UsesBase = layer.UsesBase,
             Background = layer.Background,
             BackgroundRgb = layer.BackgroundRgb,
             Keys = layer.Keys,
@@ -103,19 +140,26 @@ namespace PadForge.Common.Input.Peripherals
         public KeyLightingLayer LayerOf(string mask)
             => mask != null && Layers.TryGetValue(mask, out var layer) ? layer : null;
 
+        /// <summary>The layer saved for <paramref name="mask"/>, or the
+        /// empty one it starts as.</summary>
+        public KeyLightingLayer LayerOrDefault(string mask)
+            => LayerOf(mask) ?? new KeyLightingLayer { Mask = mask };
+
         /// <summary>
         /// The frame for the shift layer engaged now
-        /// (InputManager.GetEngagedLayerMask). A layer with colors of its
-        /// own shows them. One set to use the Base layer, or one with
-        /// nothing saved, shows the Base layer's, the way an unmapped row
-        /// on a shift layer falls through to Base on the Mappings tab.
-        /// Empty when the device has no colors at all.
+        /// (InputManager.GetEngagedLayerMask). A shift layer shows its own
+        /// colors, and its other lights show what its rule says: the Base
+        /// layer's colors and background until it is given another rule,
+        /// the way an unmapped row on a shift layer falls through to Base
+        /// on the Mappings tab. A shift layer with nothing saved shows the
+        /// Base layer. Empty when the device has no colors at all.
         /// </summary>
         public KeyFrame FrameFor(string engagedMask, bool keepLights = true)
         {
+            var baseFrame = LayerOf(BaseMask)?.ToFrame(keepLights) ?? KeyFrame.Empty;
+            if (engagedMask == null || engagedMask == BaseMask) return baseFrame;
             var layer = LayerOf(engagedMask);
-            if (layer == null || layer.UsesBase) layer = LayerOf(BaseMask);
-            return layer == null ? KeyFrame.Empty : layer.ToFrame(keepLights);
+            return layer == null ? baseFrame : layer.ToFrame(keepLights, baseFrame);
         }
 
         /// <summary>These settings with <paramref name="layer"/> in place of
@@ -140,7 +184,6 @@ namespace PadForge.Common.Input.Peripherals
                 layers[pair.Key] = new KeyLightingLayer
                 {
                     Mask = l.Mask,
-                    UsesBase = l.UsesBase,
                     Background = l.Background,
                     BackgroundRgb = l.BackgroundRgb,
                     Keys = l.Keys,
@@ -164,8 +207,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (arrow <= 0) continue;
                 string mask = part.Substring(0, arrow).Trim();
                 if (!ValidMask(mask) || layers.ContainsKey(mask)) continue;
-                bool usesBase = false;
-                var background = KeyBackgroundRule.Same;
+                var background = KeyLightingLayer.DefaultRule(mask);
                 int backgroundRgb = 0;
                 var keys = new Dictionary<ushort, int>();
                 var groups = new Dictionary<string, int>(StringComparer.Ordinal);
@@ -174,11 +216,6 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     string item = raw.Trim();
                     if (item.Length == 0) continue;
-                    if (item == "inherit")
-                    {
-                        usesBase = true;
-                        continue;
-                    }
                     int eq = item.IndexOf('=');
                     if (eq <= 0) continue;
                     string name = item.Substring(0, eq);
@@ -187,6 +224,7 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         if (value == "same") background = KeyBackgroundRule.Same;
                         else if (value == "off") background = KeyBackgroundRule.Off;
+                        else if (value == "base") background = KeyBackgroundRule.BaseLayer;
                         else if (TryColor(value, out int bg))
                         {
                             background = KeyBackgroundRule.Color;
@@ -216,8 +254,6 @@ namespace PadForge.Common.Input.Peripherals
                 layers[mask] = new KeyLightingLayer
                 {
                     Mask = mask,
-                    // The Base layer has nothing to use but its own.
-                    UsesBase = usesBase && mask != BaseMask,
                     Background = background,
                     BackgroundRgb = backgroundRgb,
                     Keys = keys,
@@ -244,9 +280,14 @@ namespace PadForge.Common.Input.Peripherals
                 if (sb.Length > 0) sb.Append('|');
                 sb.Append(mask).Append('>');
                 var items = new List<string>();
-                if (layer.UsesBase && mask != BaseMask) items.Add("inherit");
-                if (layer.Background == KeyBackgroundRule.Off) items.Add("bg=off");
-                else if (layer.Background == KeyBackgroundRule.Color) items.Add("bg=" + Hex(layer.BackgroundRgb));
+                if (layer.Background != KeyLightingLayer.DefaultRule(mask))
+                    items.Add("bg=" + layer.Background switch
+                    {
+                        KeyBackgroundRule.Off => "off",
+                        KeyBackgroundRule.Color => Hex(layer.BackgroundRgb),
+                        KeyBackgroundRule.BaseLayer => "base",
+                        _ => "same",
+                    });
                 foreach (var pair in layer.Keys.OrderBy(p => p.Key))
                     items.Add("k" + pair.Key.ToString("X2", CultureInfo.InvariantCulture) + "=" + Hex(pair.Value));
                 foreach (var pair in layer.Groups.OrderBy(p => p.Key, StringComparer.Ordinal))

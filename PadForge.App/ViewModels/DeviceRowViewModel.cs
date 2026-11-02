@@ -1426,6 +1426,19 @@ namespace PadForge.ViewModels
             // Register on the owner.
             && !(DevicePath != null && DevicePath.StartsWith("peer://", System.StringComparison.Ordinal));
 
+        /// <summary>Whether to show the "Map Key Lights" button (#557): a
+        /// device whose lighting path knows its lights one by one, keys
+        /// among them, for a model names can be learned for. A peer's device
+        /// is mapped on its owner, the NFC button's peer:// rule.</summary>
+        public bool ShowMapKeyLights
+            => !(DevicePath != null && DevicePath.StartsWith("peer://", System.StringComparison.Ordinal))
+               && PadForge.Common.Input.Peripherals.PeripheralLightMaps.FirstPerLight(
+                   PadForge.Common.Input.Peripherals.PeripheralOutputs.Links.For(InstanceGuid)?.Lighting, out _)
+                   is { HasKeys: true, Product: not null };
+
+        /// <summary>The device's lights became known, changed or went.</summary>
+        internal void RefreshKeyLights() => OnPropertyChanged(nameof(ShowMapKeyLights));
+
         /// <summary>Whether to show the "Manage Chat Commands" button (issue
         /// #555): the Twitch Chat row, whose words are this PC's list. A
         /// peer's shared copy is managed on its owner, the NFC button's

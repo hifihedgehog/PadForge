@@ -1090,6 +1090,44 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Dodaj kolor</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Resetuj paletę</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Zastępuje bieżącą paletę czterema domyślnymi kolorami (czerwony, zielony, niebieski, żółty).</value></data>
+  <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Kolory klawiszy</value></data>
+  <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Kolory stref</value></data>
+  <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Zaznacz klawisze na obrazku lub naciśnij je na klawiaturze i nadaj im kolor. Każda warstwa może mieć własne kolory, widoczne po jej włączeniu.</value></data>
+  <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Zaznacz strefy i nadaj im kolor. Każda warstwa może mieć własne kolory, widoczne po jej włączeniu.</value></data>
+  <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>Usuń kolory ze wszystkich warstw.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Pozostałe diody</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Co pokazują na tej warstwie diody bez własnego koloru.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Kolory z warstwy: {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Tryb podświetlenia</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Wyłączone</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Jeden kolor</value></data>
+  <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Naciskaj klawisze, aby zaznaczyć ich diody, a zaznaczony klawisz naciśnij ponownie, aby go odznaczyć. Ctrl+Tab przechodzi dalej.</value></data>
+  <data name="Pad_Lighting_KeyColors_NoneSelected" xml:space="preserve"><value>Nie zaznaczono diod. Kliknij obrazek lub przeciągnij po nim, aby zaznaczyć diody.</value></data>
+  <data name="Pad_Lighting_KeyColors_Selected_Format" xml:space="preserve"><value>Zaznaczono: {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllKeys" xml:space="preserve"><value>Wszystkie klawisze</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberRow" xml:space="preserve"><value>Rząd cyfr</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectFunctionKeys" xml:space="preserve"><value>Klawisze F</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberPad" xml:space="preserve"><value>Klawiatura numeryczna</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Strzałki</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Krawędź</value></data>
+  <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logo</value></data>
+  <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Stan</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Wszystkie diody</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Wyczyść zaznaczenie</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Zaznaczaj naciskaniem klawiszy</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing_Tooltip" xml:space="preserve"><value>Gdy włączone, klawisz naciśnięty przy aktywnym obrazku zaznacza jego diody, a ponowne naciśnięcie je odznacza. Ctrl+Tab opuszcza obrazek.</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor" xml:space="preserve"><value>Zastosuj kolor</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor_Tooltip" xml:space="preserve"><value>Nadaj zaznaczonym diodom kolor wybrany powyżej.</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor" xml:space="preserve"><value>Usuń kolor</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor_Tooltip" xml:space="preserve"><value>Odbierz zaznaczonym diodom kolory na tej warstwie, aby pokazywały to, co określa ustawienie Pozostałe diody.</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer" xml:space="preserve"><value>Usuń wszystkie kolory</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer_Tooltip" xml:space="preserve"><value>Usuń wszystkie kolory z tej warstwy i przywróć ustawienie Pozostałe diody do stanu początkowego warstwy.</value></data>
+  <data name="Pad_Lighting_KeyColors_UnnamedKey_Format" xml:space="preserve"><value>Klawisz {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Zone_Format" xml:space="preserve"><value>Strefa {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Light_Format" xml:space="preserve"><value>Dioda {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightColor_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightBaseLayer_Format" xml:space="preserve"><value>{0}: {1} z warstwy {2}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Podtrzymanie impulsu</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Zanikanie impulsu</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
@@ -3314,6 +3352,31 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Ukryte przyciski są wyłączone. Najpierw włącz Przyciski handhelda PC w Ustawieniach.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>Program {0} jest uruchomiony. Nadal reaguje na te przyciski, dopóki go nie zatrzymasz.</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Eksportuj…</value></data>
+  <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>Mapuj diody klawiszy</value></data>
+  <data name="MapKeyLights_Title" xml:space="preserve"><value>Mapuj diody klawiszy</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge podświetla jedną diodę klawisza naraz. Naciśnij klawisz pod świecącą diodą, aby go nazwać. Nazwy są zapamiętywane dla każdej klawiatury tego modelu, więc Kolory klawiszy i makra kolorów klawiszy trafiają we właściwe klawisze.</value></data>
+  <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>Urządzenie:</value></data>
+  <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>Nazwane klawisze: {0} z {1}</value></data>
+  <data name="MapKeyLights_NoLights" xml:space="preserve"><value>To urządzenie nie ma diod klawiszy, których nazwy może poznać PadForge.</value></data>
+  <data name="MapKeyLights_Ready" xml:space="preserve"><value>Start zapala pierwszą diodę klawisza bez nazwy.</value></data>
+  <data name="MapKeyLights_Ask_Format" xml:space="preserve"><value>Świeci dioda {0}. Naciśnij klawisz pod nią.</value></data>
+  <data name="MapKeyLights_AskNamed_Format" xml:space="preserve"><value>Świeci dioda {0} o nazwie {1}. Naciśnij klawisz pod nią, aby nazwać ją ponownie.</value></data>
+  <data name="MapKeyLights_Start" xml:space="preserve"><value>Start</value></data>
+  <data name="MapKeyLights_Back" xml:space="preserve"><value>Wstecz</value></data>
+  <data name="MapKeyLights_Skip" xml:space="preserve"><value>Pomiń</value></data>
+  <data name="MapKeyLights_Skip_Tooltip" xml:space="preserve"><value>Pozostaw tę diodę bez nazwy i zapal następną.</value></data>
+  <data name="MapKeyLights_Forget" xml:space="preserve"><value>Zapomnij</value></data>
+  <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>Usuń nazwę zapamiętaną dla świecącej diody.</value></data>
+  <data name="MapKeyLights_Stop" xml:space="preserve"><value>Zatrzymaj</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>Jeśli żadna dioda się nie zapali, wyłącz Oświetlenie dynamiczne dla urządzenia w Ustawieniach Windows albo zamknij jego własne oprogramowanie do podświetlenia i naciśnij Start ponownie.</value></data>
+  <data name="MapKeyLights_Export" xml:space="preserve"><value>Eksportuj…</value></data>
+  <data name="MapKeyLights_Import" xml:space="preserve"><value>Importuj…</value></data>
+  <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Zapomnij wszystko</value></data>
+  <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Usuń wszystkie nazwy zapamiętane dla tego modelu.</value></data>
+  <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Wyeksportowano nazw: {0}.</value></data>
+  <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Zaimportowano nazw: {0}.</value></data>
+  <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Zaimportowano nazw: {0}, dla innego modelu: {1}.</value></data>
+  <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Ten plik nie zawiera nazw diod klawiszy.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Importuj…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Wyeksportowano przyciski: {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Zaimportowano przyciski: {0}.</value></data>
@@ -4716,4 +4779,31 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0}, spust: {1}, podczas przytrzymania</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0}, spust: {1}, do zatrzymania</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Zatrzymaj efekt spustu: {0}</value></data>
+  <data name="MacroAction_Type_SetKeyColors" xml:space="preserve"><value>Ustaw kolory klawiszy</value></data>
+  <data name="MacroAction_Type_ClearKeyColors" xml:space="preserve"><value>Wyczyść kolory klawiszy</value></data>
+  <data name="MacroAction_SetKeyColors_Tooltip" xml:space="preserve"><value>Podświetla klawisze wybranym kolorem na klawiaturach i innych urządzeniach, którymi steruje ten wirtualny kontroler: stale, z wygaszaniem lub odliczając po jednym klawiszu.</value></data>
+  <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Kończy działające na tym wirtualnym kontrolerze akcje Ustaw kolory klawiszy, które podświetlają któryś z tutaj wybranych klawiszy, albo wszystkie, gdy nic nie wybrano.</value></data>
+  <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Wyczyść wszystkie kolory klawiszy</value></data>
+  <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Wyczyść kolory klawiszy, diody: {0}</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>Diody: {0}, kolor {1}, przez {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>Diody: {0}, kolor {1}, podczas przytrzymania</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>Diody: {0}, kolor {1}, do wyczyszczenia</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>Diody: {0}, kolor {1}, wygaszanie przez {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>Diody: {0}, kolor {1}, odliczanie przez {2} ms</value></data>
+  <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Klawisze</value></data>
+  <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Wszystkie diody</value></data>
+  <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Nie wybrano klawiszy, więc akcja niczego nie podświetli.</value></data>
+  <data name="MacroAction_KeyColors_Style" xml:space="preserve"><value>Styl</value></data>
+  <data name="MacroAction_KeyColors_Steady" xml:space="preserve"><value>Stały</value></data>
+  <data name="MacroAction_KeyColors_Fade" xml:space="preserve"><value>Wygaszanie</value></data>
+  <data name="MacroAction_KeyColors_Countdown" xml:space="preserve"><value>Odliczanie</value></data>
+  <data name="MacroAction_KeyColors_Hold" xml:space="preserve"><value>Trwa</value></data>
+  <data name="MacroAction_KeyColors_HoldDuration" xml:space="preserve"><value>Przez określony czas</value></data>
+  <data name="MacroAction_KeyColors_HoldRelease" xml:space="preserve"><value>Dopóki przytrzymany jest aktywator makra</value></data>
+  <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>Do wyczyszczenia</value></data>
+  <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Czas</value></data>
+  <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Zachowaj ich kolory</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Akcja podświetla te same klawisze na każdej klawiaturze, którą ten wirtualny kontroler podświetla, nad kolorami z jego karty Podświetlenie. Cyfry pokazują kolejność wyboru. Odliczanie wyłącza klawisze po jednym, ostatnio wybrany jako pierwszy, więc wybierz od 1 do 0, aby uzyskać odliczanie na rzędzie cyfr. Klawiatura lub mysz świeci tylko wtedy, gdy włączona jest opcja Steruj podświetleniem tego urządzenia.</value></data>
+  <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Inne</value></data>
+  <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, numer {1}</value></data>
 </root>

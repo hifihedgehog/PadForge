@@ -51,7 +51,10 @@ namespace PadForge.Common.Input.Peripherals
     /// <see cref="X"/>, <see cref="Y"/>, <see cref="Width"/> and
     /// <see cref="Height"/> place it in the unit's own units when
     /// <see cref="HasPosition"/>: micrometers for a LampArray, key widths
-    /// for a layout, grid cells for a grid.</summary>
+    /// for a layout, grid cells for a grid. A light with a width and a
+    /// height spans them from its top left corner at X and Y, as a layout's
+    /// key does. A light without them is a point at X and Y, as a
+    /// LampArray's lamp is.</summary>
     internal readonly record struct LightInfo(int Address, LightKind Kind, ushort Usage, LightKeySource KeySource)
     {
         public float X { get; init; }
@@ -125,11 +128,16 @@ namespace PadForge.Common.Input.Peripherals
         /// reference or the device report it was read from.</summary>
         public string Source { get; }
 
+        /// <summary>The device model the map belongs to, the key Map Key
+        /// Lights stores its names under (<see cref="LearnedKeyMaps"/>), or
+        /// null for a map no names can be learned for.</summary>
+        public string Product { get; init; }
+
         /// <summary>True when every light has a position.</summary>
         public bool Positioned { get; }
 
-        /// <summary>The number of lights that are keys with a known
-        /// usage.</summary>
+        /// <summary>The number of keys with a known usage, each counted
+        /// once however many lights it has.</summary>
         public int KeyCount { get; }
 
         /// <summary>The number of zones.</summary>

@@ -1090,6 +1090,44 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Renk ekle</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Paleti sıfırla</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Geçerli paleti dört varsayılan renkle (kırmızı, yeşil, mavi, sarı) değiştirir.</value></data>
+  <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Tuş renkleri</value></data>
+  <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Bölge renkleri</value></data>
+  <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Resimde tuşları seçin ya da klavyede onlara basın ve bir renk verin. Her Shift katmanı kendi renklerine sahip olabilir, katman devredeyken gösterilir.</value></data>
+  <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Bölgeleri seçin ve onlara bir renk verin. Her Shift katmanı kendi renklerine sahip olabilir, katman devredeyken gösterilir.</value></data>
+  <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>Renkleri tüm katmanlardan kaldır.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Diğer ışıklar</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Kendi rengi olmayan ışıkların bu katmanda ne göstereceği.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>{0} katmanı renkleri</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Aydınlatma modu</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Kapalı</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Tek renk</value></data>
+  <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Işıklarını seçmek için tuşlara basın, seçili bir tuşa yeniden basarak seçimi kaldırın. Sonraki öğeye geçmek için Ctrl+Tab kullanın.</value></data>
+  <data name="Pad_Lighting_KeyColors_NoneSelected" xml:space="preserve"><value>Seçili ışık yok. Işık seçmek için resimde tıklayın veya sürükleyin.</value></data>
+  <data name="Pad_Lighting_KeyColors_Selected_Format" xml:space="preserve"><value>Seçilen: {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllKeys" xml:space="preserve"><value>Tüm tuşlar</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberRow" xml:space="preserve"><value>Sayı sırası</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectFunctionKeys" xml:space="preserve"><value>F tuşları</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberPad" xml:space="preserve"><value>Sayısal tuş takımı</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Ok tuşları</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Kenar</value></data>
+  <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logo</value></data>
+  <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Durum</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Tüm ışıklar</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Seçimi temizle</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Tuşa basarak seç</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing_Tooltip" xml:space="preserve"><value>Açıkken, resim odaktayken basılan tuş ışıklarını seçer, yeniden basmak seçimi kaldırır. Ctrl+Tab resimden çıkar.</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor" xml:space="preserve"><value>Rengi uygula</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor_Tooltip" xml:space="preserve"><value>Seçili ışıklara yukarıdaki rengi ver.</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor" xml:space="preserve"><value>Rengi kaldır</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor_Tooltip" xml:space="preserve"><value>Seçili ışıkların renklerini bu katmanda kaldır, böylece Diğer ışıklar ayarının gösterdiğini göstersinler.</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer" xml:space="preserve"><value>Tüm renkleri kaldır</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer_Tooltip" xml:space="preserve"><value>Bu katmandaki tüm renkleri kaldır ve Diğer ışıklar ayarını katmanın başlangıç durumuna döndür.</value></data>
+  <data name="Pad_Lighting_KeyColors_UnnamedKey_Format" xml:space="preserve"><value>Tuş {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Zone_Format" xml:space="preserve"><value>Bölge {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Light_Format" xml:space="preserve"><value>Işık {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightColor_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightBaseLayer_Format" xml:space="preserve"><value>{0}: {2} katmanından {1}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Darbe tutma</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Darbe sönümü</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Ön ayar</value></data>
@@ -3314,6 +3352,31 @@
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Gizli düğmeler kapalı. Önce Ayarlar'da El tipi bilgisayar düğmeleri seçeneğini etkinleştirin.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} çalışıyor. Siz durdurana kadar bu düğmelere tepki vermeye devam eder.</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Dışa aktar…</value></data>
+  <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>Tuş ışıklarını eşle</value></data>
+  <data name="MapKeyLights_Title" xml:space="preserve"><value>Tuş ışıklarını eşle</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge tuş ışıklarını tek tek yakar. Adlandırmak için yanan ışığın altındaki tuşa basın. Adlar bu modeldeki tüm klavyeler için saklanır, böylece Tuş renkleri ve tuş rengi makroları doğru tuşlara ulaşır.</value></data>
+  <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>Cihaz:</value></data>
+  <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>Adlandırılan tuşlar: {0} / {1}</value></data>
+  <data name="MapKeyLights_NoLights" xml:space="preserve"><value>Bu cihazda PadForge'un adlarını öğrenebileceği tuş ışığı yok.</value></data>
+  <data name="MapKeyLights_Ready" xml:space="preserve"><value>Başlat, adı olmayan ilk tuş ışığını yakar.</value></data>
+  <data name="MapKeyLights_Ask_Format" xml:space="preserve"><value>{0} numaralı ışık yanıyor. Altındaki tuşa basın.</value></data>
+  <data name="MapKeyLights_AskNamed_Format" xml:space="preserve"><value>{0} numaralı ışık yanıyor ve adı {1}. Yeniden adlandırmak için altındaki tuşa basın.</value></data>
+  <data name="MapKeyLights_Start" xml:space="preserve"><value>Başlat</value></data>
+  <data name="MapKeyLights_Back" xml:space="preserve"><value>Geri</value></data>
+  <data name="MapKeyLights_Skip" xml:space="preserve"><value>Atla</value></data>
+  <data name="MapKeyLights_Skip_Tooltip" xml:space="preserve"><value>Bu ışığı adsız bırak ve sonrakini yak.</value></data>
+  <data name="MapKeyLights_Forget" xml:space="preserve"><value>Unut</value></data>
+  <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>Yanan ışık için öğrenilen adı kaldır.</value></data>
+  <data name="MapKeyLights_Stop" xml:space="preserve"><value>Durdur</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>Hiçbir ışık yanmazsa, Windows Ayarları'nda cihaz için Dinamik Aydınlatma'yı kapatın veya cihazın kendi aydınlatma yazılımını kapatın ve Başlat'a yeniden basın.</value></data>
+  <data name="MapKeyLights_Export" xml:space="preserve"><value>Dışa aktar…</value></data>
+  <data name="MapKeyLights_Import" xml:space="preserve"><value>İçe aktar…</value></data>
+  <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Tümünü unut</value></data>
+  <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Bu model için öğrenilen tüm adları kaldır.</value></data>
+  <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>{0} ad dışa aktarıldı.</value></data>
+  <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>{0} ad içe aktarıldı.</value></data>
+  <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Başka bir model olan {1} için {0} ad içe aktarıldı.</value></data>
+  <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Bu dosyada tuş ışığı adı yok.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>İçe aktar…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} düğme dışa aktarıldı.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} düğme içe aktarıldı.</value></data>
@@ -4716,4 +4779,31 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0}, {1} üzerinde basılı tutulduğu sürece</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0}, {1} üzerinde durdurulana kadar</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>{0} üzerindeki tetik efektini durdur</value></data>
+  <data name="MacroAction_Type_SetKeyColors" xml:space="preserve"><value>Tuş renklerini ayarla</value></data>
+  <data name="MacroAction_Type_ClearKeyColors" xml:space="preserve"><value>Tuş renklerini temizle</value></data>
+  <data name="MacroAction_SetKeyColors_Tooltip" xml:space="preserve"><value>Bu sanal denetleyicinin aydınlattığı klavyelerde ve diğer cihazlarda tuşları bir renkle yakar: sabit, solarak veya tek tek geri sayarak.</value></data>
+  <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Bu sanal denetleyicide çalışan ve burada seçilen tuşlardan birini yakan Tuş renklerini ayarla eylemlerini sonlandırır, hiç tuş seçilmediyse hepsini sonlandırır.</value></data>
+  <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Tüm tuş renklerini temizle</value></data>
+  <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>{0} ışığın tuş renklerini temizle</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} ışık {1} renginde, {2} ms boyunca</value></data>
+  <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} ışık {1} renginde, basılı tutulduğu sürece</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} ışık {1} renginde, temizlenene kadar</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} ışık {1} renginde, {2} ms içinde sönerek</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} ışık {1} renginde, {2} ms içinde geri sayarak</value></data>
+  <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Tuşlar</value></data>
+  <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Her ışık</value></data>
+  <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Seçili tuş yok, bu yüzden eylem hiçbir şeyi yakmaz.</value></data>
+  <data name="MacroAction_KeyColors_Style" xml:space="preserve"><value>Stil</value></data>
+  <data name="MacroAction_KeyColors_Steady" xml:space="preserve"><value>Sabit</value></data>
+  <data name="MacroAction_KeyColors_Fade" xml:space="preserve"><value>Sönme</value></data>
+  <data name="MacroAction_KeyColors_Countdown" xml:space="preserve"><value>Geri sayım</value></data>
+  <data name="MacroAction_KeyColors_Hold" xml:space="preserve"><value>Tutulma</value></data>
+  <data name="MacroAction_KeyColors_HoldDuration" xml:space="preserve"><value>Belirli bir süre</value></data>
+  <data name="MacroAction_KeyColors_HoldRelease" xml:space="preserve"><value>Makronun etkinleştiricisi basılı tutulduğu sürece</value></data>
+  <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>Temizlenene kadar</value></data>
+  <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Süre</value></data>
+  <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Renklerini koru</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Eylem, bu sanal denetleyicinin aydınlattığı her klavyede aynı tuşları, Aydınlatma sekmesinin verdiği renklerin üzerine yakar. Sayılar seçim sırasını gösterir. Geri sayım tuşları tek tek söndürür, en son seçilen ilk söner. Bu yüzden sayı sırasında bir bekleme süresi için 1'den 0'a seçin. Klavye veya fare yalnızca Bu cihazın aydınlatmasını denetle açıkken yanar.</value></data>
+  <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Diğer</value></data>
+  <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, sıra {1}</value></data>
 </root>

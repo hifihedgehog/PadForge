@@ -1414,5 +1414,47 @@
     "Id": "Reset_PadViewModel_FalconPreloadButton_13114",
     "Owner": "PadForge.ViewModels.PadViewModel",
     "Property": "FalconPreloadButton"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_KeyColorTargets_55701",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "KeyColorTargets"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_KeyColorStyle_55702",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "KeyColorStyle"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_KeyColorHold_55703",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "KeyColorHold"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_KeyColorMs_55704",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "KeyColorMs"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_KeyColorRest_55705",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "KeyColorRest"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_KeyRestColor_55706",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "KeyRestColor"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_KeyColorTargets_55707",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "KeyColorTargets"
   }
 ]

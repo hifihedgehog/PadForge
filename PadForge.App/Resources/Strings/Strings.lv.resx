@@ -1090,6 +1090,44 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Pievienot krāsu</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Atiestatīt paleti</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Aizstāt pašreizējo paleti ar četrām noklusējuma krāsām (sarkana, zaļa, zila, dzeltena).</value></data>
+  <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Taustiņu krāsas</value></data>
+  <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Zonu krāsas</value></data>
+  <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Atlasiet taustiņus attēlā vai nospiediet tos uz tastatūras un piešķiriet tiem krāsu. Katram pārslēgšanas slānim var būt savas krāsas, kas tiek rādītas, kamēr slānis ir aktīvs.</value></data>
+  <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Atlasiet zonas un piešķiriet tām krāsu. Katram pārslēgšanas slānim var būt savas krāsas, kas tiek rādītas, kamēr slānis ir aktīvs.</value></data>
+  <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>Noņemt krāsas no visiem slāņiem.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Pārējās gaismas</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Ko rāda gaismas, kurām šajā slānī nav savas krāsas.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Slāņa “{0}” krāsas</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Apgaismojuma režīms</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Izslēgts</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Viena krāsa</value></data>
+  <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Nospiediet taustiņus, lai atlasītu to gaismas, un nospiediet atlasītu taustiņu vēlreiz, lai atlasi noņemtu. Ctrl+Tab pāriet tālāk.</value></data>
+  <data name="Pad_Lighting_KeyColors_NoneSelected" xml:space="preserve"><value>Nav atlasīta neviena gaisma. Noklikšķiniet vai velciet attēlā, lai atlasītu gaismas.</value></data>
+  <data name="Pad_Lighting_KeyColors_Selected_Format" xml:space="preserve"><value>Atlasītas: {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllKeys" xml:space="preserve"><value>Visi taustiņi</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberRow" xml:space="preserve"><value>Ciparu rinda</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectFunctionKeys" xml:space="preserve"><value>F taustiņi</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberPad" xml:space="preserve"><value>Ciparu bloks</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Bulttaustiņi</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Mala</value></data>
+  <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logotips</value></data>
+  <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Statuss</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Visas gaismas</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Notīrīt atlasi</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Atlasīt, nospiežot taustiņus</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing_Tooltip" xml:space="preserve"><value>Kad ieslēgts, taustiņš, kas nospiests, kamēr attēls ir fokusā, atlasa tā gaismas, un atkārtota nospiešana tās noņem. Ctrl+Tab pamet attēlu.</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor" xml:space="preserve"><value>Lietot krāsu</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor_Tooltip" xml:space="preserve"><value>Piešķirt atlasītajām gaismām iepriekš izvēlēto krāsu.</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor" xml:space="preserve"><value>Noņemt krāsu</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor_Tooltip" xml:space="preserve"><value>Noņemt atlasīto gaismu krāsas šajā slānī, lai tās rādītu to, ko nosaka “Pārējās gaismas”.</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer" xml:space="preserve"><value>Noņemt visas krāsas</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer_Tooltip" xml:space="preserve"><value>Noņemt visas krāsas no šī slāņa un atiestatīt “Pārējās gaismas” uz slāņa sākotnējo stāvokli.</value></data>
+  <data name="Pad_Lighting_KeyColors_UnnamedKey_Format" xml:space="preserve"><value>Taustiņš {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Zone_Format" xml:space="preserve"><value>Zona {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Light_Format" xml:space="preserve"><value>Gaisma {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightColor_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightBaseLayer_Format" xml:space="preserve"><value>{0}: {1} no {2}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Impulsa noturēšana</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Impulsa izdzišana</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Sagatave</value></data>
@@ -3314,6 +3352,31 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Slēptās pogas ir izslēgtas. Vispirms iestatījumos iespējojiet „Plaukstdatora pogas”.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} darbojas. Tā joprojām reaģē uz šīm pogām, līdz to apturat.</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Eksportēt…</value></data>
+  <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>Piesaistīt taustiņu gaismas</value></data>
+  <data name="MapKeyLights_Title" xml:space="preserve"><value>Piesaistīt taustiņu gaismas</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge ieslēdz taustiņu gaismas pa vienai. Nospiediet taustiņu zem iedegtās gaismas, lai to nosauktu. Nosaukumi tiek saglabāti visām šī modeļa tastatūrām, lai taustiņu krāsas un taustiņu krāsu makrosi sasniegtu pareizos taustiņus.</value></data>
+  <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>Ierīce:</value></data>
+  <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>Nosaukti taustiņi: {0} no {1}</value></data>
+  <data name="MapKeyLights_NoLights" xml:space="preserve"><value>Šai ierīcei nav taustiņu gaismu, kurām PadForge varētu apgūt nosaukumus.</value></data>
+  <data name="MapKeyLights_Ready" xml:space="preserve"><value>Poga Sākt ieslēdz pirmo taustiņa gaismu bez nosaukuma.</value></data>
+  <data name="MapKeyLights_Ask_Format" xml:space="preserve"><value>Iedegta gaisma {0}. Nospiediet taustiņu zem tās.</value></data>
+  <data name="MapKeyLights_AskNamed_Format" xml:space="preserve"><value>Iedegta gaisma {0}, nosaukums: {1}. Nospiediet taustiņu zem tās, lai to nosauktu vēlreiz.</value></data>
+  <data name="MapKeyLights_Start" xml:space="preserve"><value>Sākt</value></data>
+  <data name="MapKeyLights_Back" xml:space="preserve"><value>Atpakaļ</value></data>
+  <data name="MapKeyLights_Skip" xml:space="preserve"><value>Izlaist</value></data>
+  <data name="MapKeyLights_Skip_Tooltip" xml:space="preserve"><value>Atstāt šo gaismu bez nosaukuma un ieslēgt nākamo.</value></data>
+  <data name="MapKeyLights_Forget" xml:space="preserve"><value>Aizmirst</value></data>
+  <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>Noņemt iedegtajai gaismai apgūto nosaukumu.</value></data>
+  <data name="MapKeyLights_Stop" xml:space="preserve"><value>Apturēt</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>Ja neiedegas neviena gaisma, izslēdziet ierīcei dinamisko apgaismojumu Windows iestatījumos vai aizveriet tās pašas apgaismojuma programmatūru un vēlreiz nospiediet Sākt.</value></data>
+  <data name="MapKeyLights_Export" xml:space="preserve"><value>Eksportēt…</value></data>
+  <data name="MapKeyLights_Import" xml:space="preserve"><value>Importēt…</value></data>
+  <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Aizmirst visu</value></data>
+  <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Noņemt visus šim modelim apgūtos nosaukumus.</value></data>
+  <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Eksportēti nosaukumi: {0}.</value></data>
+  <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Importēti nosaukumi: {0}.</value></data>
+  <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Importēti nosaukumi citam modelim ({1}): {0}.</value></data>
+  <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Šajā failā nav taustiņu gaismu nosaukumu.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Importēt…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Eksportētas pogas: {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Importētas pogas: {0}.</value></data>
@@ -4716,4 +4779,31 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0}, {1}, kamēr tiek turēts</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0}, {1}, līdz apturēšanai</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Apturēt mēlītes efektu: {0}</value></data>
+  <data name="MacroAction_Type_SetKeyColors" xml:space="preserve"><value>Iestatīt taustiņu krāsas</value></data>
+  <data name="MacroAction_Type_ClearKeyColors" xml:space="preserve"><value>Notīrīt taustiņu krāsas</value></data>
+  <data name="MacroAction_SetKeyColors_Tooltip" xml:space="preserve"><value>Izgaismo taustiņus krāsā tastatūrās un citās ierīcēs, ko apgaismo šis virtuālais kontrolieris: nemainīgi, izdziestot vai atskaitot pa vienam taustiņam.</value></data>
+  <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Beidz darbību “Iestatīt taustiņu krāsas”, kas šajā virtuālajā kontrolierī izgaismo kādu no šeit izvēlētajiem taustiņiem, vai visas, ja neviens nav izvēlēts.</value></data>
+  <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Notīrīt visas taustiņu krāsas</value></data>
+  <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Notīrīt taustiņu krāsas, gaismas: {0}</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>Gaismas: {0}, {1}, {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>Gaismas: {0}, {1}, kamēr tiek turēts</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>Gaismas: {0}, {1}, līdz notīrīšanai</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>Gaismas: {0}, {1}, izdziestot {2} ms laikā</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>Gaismas: {0}, {1}, atskaite {2} ms laikā</value></data>
+  <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Taustiņi</value></data>
+  <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Visas gaismas</value></data>
+  <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Nav izvēlēts neviens taustiņš, tāpēc darbība neizgaismo neko.</value></data>
+  <data name="MacroAction_KeyColors_Style" xml:space="preserve"><value>Stils</value></data>
+  <data name="MacroAction_KeyColors_Steady" xml:space="preserve"><value>Nemainīgs</value></data>
+  <data name="MacroAction_KeyColors_Fade" xml:space="preserve"><value>Izdzišana</value></data>
+  <data name="MacroAction_KeyColors_Countdown" xml:space="preserve"><value>Atskaite</value></data>
+  <data name="MacroAction_KeyColors_Hold" xml:space="preserve"><value>Notur</value></data>
+  <data name="MacroAction_KeyColors_HoldDuration" xml:space="preserve"><value>Uz noteiktu laiku</value></data>
+  <data name="MacroAction_KeyColors_HoldRelease" xml:space="preserve"><value>Kamēr tiek turēts makrosa aktivizators</value></data>
+  <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>Līdz notīrīšanai</value></data>
+  <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Laiks</value></data>
+  <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Paturēt to krāsas</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Darbība izgaismo vienus un tos pašus taustiņus visās tastatūrās, ko apgaismo šis virtuālais kontrolieris, virs krāsām, ko tām piešķir cilne Apgaismojums. Cipari rāda izvēles secību. Atskaite izslēdz taustiņus pa vienam, sākot ar pēdējo izvēlēto, tāpēc ciparu rindā izvēlieties no 1 līdz 0, lai iegūtu atkārtotas izmantošanas taimeri. Tastatūra vai pele izgaismojas tikai tad, ja ir ieslēgts Vadīt šīs ierīces apgaismojumu.</value></data>
+  <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Citi</value></data>
+  <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, numurs {1}</value></data>
 </root>

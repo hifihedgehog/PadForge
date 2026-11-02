@@ -1207,6 +1207,12 @@ namespace PadForge.ViewModels
             nameof(TriggerEffectMode) or
             nameof(TriggerEffectHold) or
             nameof(TriggerEffectMs) or
+            nameof(KeyColorTargets) or
+            nameof(KeyColorStyle) or
+            nameof(KeyColorHold) or
+            nameof(KeyColorMs) or
+            nameof(KeyColorRest) or
+            "KeyRestColor" or
             nameof(RumbleStrengthRight) or
             nameof(SetGyroEngagedMode) or
             nameof(ShowVolumeOsd) or
@@ -1445,6 +1451,38 @@ namespace PadForge.ViewModels
                 case nameof(TriggerEffectMs):
                 {
                     TriggerEffectMs = 500;
+                    break;
+                }
+                case nameof(KeyColorTargets):
+                {
+                    KeyColorTargets = string.Empty;
+                    break;
+                }
+                case nameof(KeyColorStyle):
+                {
+                    KeyColorStyle = MacroKeyColorStyle.Steady;
+                    break;
+                }
+                case nameof(KeyColorHold):
+                {
+                    KeyColorHold = MacroKeyColorHold.Duration;
+                    break;
+                }
+                case nameof(KeyColorMs):
+                {
+                    KeyColorMs = 3000;
+                    break;
+                }
+                case nameof(KeyColorRest):
+                {
+                    KeyColorRest = MacroKeyColorRest.Keep;
+                    break;
+                }
+                case "KeyRestColor":
+                {
+                    KeyRestR = 0;
+                    KeyRestG = 0;
+                    KeyRestB = 0;
                     break;
                 }
                 case nameof(RumbleHoldMode):

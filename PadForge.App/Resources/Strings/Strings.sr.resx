@@ -1090,6 +1090,44 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Додај боју</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Ресетуј палету</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Замењује тренутну палету са четири подразумеване боје (црвена, зелена, плава, жута).</value></data>
+  <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Боје тастера</value></data>
+  <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Боје зона</value></data>
+  <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Изаберите тастере на слици или их притисните на тастатури и задајте им боју. Сваки слој може имати своје боје, које се виде док је слој укључен.</value></data>
+  <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Изаберите зоне и задајте им боју. Сваки слој може имати своје боје, које се виде док је слој укључен.</value></data>
+  <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>Уклони боје из свих слојева.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Остале лампице</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Шта приказују лампице без сопствене боје на овом слоју.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Боје слоја {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Режим осветљења</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Искључено</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Једна боја</value></data>
+  <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Притискајте тастере да изаберете њихове лампице, а изабрани тастер поново притисните да га уклоните. Ctrl+Tab иде даље.</value></data>
+  <data name="Pad_Lighting_KeyColors_NoneSelected" xml:space="preserve"><value>Нема изабраних лампица. Кликните или превуците по слици да изаберете лампице.</value></data>
+  <data name="Pad_Lighting_KeyColors_Selected_Format" xml:space="preserve"><value>Изабрано: {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllKeys" xml:space="preserve"><value>Сви тастери</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberRow" xml:space="preserve"><value>Ред са бројевима</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectFunctionKeys" xml:space="preserve"><value>F тастери</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberPad" xml:space="preserve"><value>Нумеричка тастатура</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Тастери са стрелицама</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Ивица</value></data>
+  <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Логотип</value></data>
+  <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Статус</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Све лампице</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Поништи избор</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Бирај притиском на тастере</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing_Tooltip" xml:space="preserve"><value>Док је укључено, тастер притиснут када је слика у фокусу бира своје лампице, а поновни притисак их уклања. Ctrl+Tab напушта слику.</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor" xml:space="preserve"><value>Примени боју</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor_Tooltip" xml:space="preserve"><value>Задај изабраним лампицама горњу боју.</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor" xml:space="preserve"><value>Уклони боју</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor_Tooltip" xml:space="preserve"><value>Уклони боје изабраних лампица на овом слоју, па приказују оно што одређују Остале лампице.</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer" xml:space="preserve"><value>Уклони све боје</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer_Tooltip" xml:space="preserve"><value>Уклони све боје са овог слоја и врати Остале лампице на почетно стање слоја.</value></data>
+  <data name="Pad_Lighting_KeyColors_UnnamedKey_Format" xml:space="preserve"><value>Тастер {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Zone_Format" xml:space="preserve"><value>Зона {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Light_Format" xml:space="preserve"><value>Лампица {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightColor_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightBaseLayer_Format" xml:space="preserve"><value>{0}: {1} из слоја {2}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Задржавање импулса</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Опадање импулса</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Шаблон</value></data>
@@ -3314,6 +3352,31 @@
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Скривена дугмад су искључена. Прво у Подешавањима омогућите „Дугмад ручног рачунара“.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} је покренут. И даље реагује на ова дугмад док га не зауставите.</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Извези…</value></data>
+  <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>Мапирај лампице тастера</value></data>
+  <data name="MapKeyLights_Title" xml:space="preserve"><value>Мапирај лампице тастера</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge осветљава једну лампицу тастера по једну. Притисните тастер испод осветљене лампице да јој дате име. Имена се чувају за сваку тастатуру овог модела, па Боје тастера и макрои боја тастера погађају праве тастере.</value></data>
+  <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>Уређај:</value></data>
+  <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>Именовани тастери: {0} од {1}</value></data>
+  <data name="MapKeyLights_NoLights" xml:space="preserve"><value>Овај уређај нема лампице тастера којима PadForge може да научи имена.</value></data>
+  <data name="MapKeyLights_Ready" xml:space="preserve"><value>Започни осветљава прву лампицу тастера без имена.</value></data>
+  <data name="MapKeyLights_Ask_Format" xml:space="preserve"><value>Лампица {0} је осветљена. Притисните тастер испод ње.</value></data>
+  <data name="MapKeyLights_AskNamed_Format" xml:space="preserve"><value>Лампица {0} је осветљена и зове се {1}. Притисните тастер испод ње да је поново именујете.</value></data>
+  <data name="MapKeyLights_Start" xml:space="preserve"><value>Започни</value></data>
+  <data name="MapKeyLights_Back" xml:space="preserve"><value>Назад</value></data>
+  <data name="MapKeyLights_Skip" xml:space="preserve"><value>Прескочи</value></data>
+  <data name="MapKeyLights_Skip_Tooltip" xml:space="preserve"><value>Остави ову лампицу без имена и осветли следећу.</value></data>
+  <data name="MapKeyLights_Forget" xml:space="preserve"><value>Заборави</value></data>
+  <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>Уклони име научено за осветљену лампицу.</value></data>
+  <data name="MapKeyLights_Stop" xml:space="preserve"><value>Заустави</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>Ако се ниједна лампица не упали, искључите Dynamic Lighting за уређај у подешавањима система Windows или затворите његов софтвер за осветљење, па поново притисните Започни.</value></data>
+  <data name="MapKeyLights_Export" xml:space="preserve"><value>Извези…</value></data>
+  <data name="MapKeyLights_Import" xml:space="preserve"><value>Увези…</value></data>
+  <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Заборави све</value></data>
+  <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Уклони свако име научено за овај модел.</value></data>
+  <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Извезена имена: {0}.</value></data>
+  <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Увезена имена: {0}.</value></data>
+  <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Увезена имена за други модел ({1}): {0}.</value></data>
+  <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Та датотека не садржи имена лампица тастера.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Увези…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Извезено дугмади: {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Увезено дугмади: {0}.</value></data>
@@ -4716,4 +4779,31 @@
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0}, {1}, док се држи</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0}, {1}, док се не заустави</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Заустави ефекат окидача: {0}</value></data>
+  <data name="MacroAction_Type_SetKeyColors" xml:space="preserve"><value>Постави боје тастера</value></data>
+  <data name="MacroAction_Type_ClearKeyColors" xml:space="preserve"><value>Уклони боје тастера</value></data>
+  <data name="MacroAction_SetKeyColors_Tooltip" xml:space="preserve"><value>Осветљава тастере бојом на тастатурама и другим уређајима које овај виртуелни контролер осветљава: постојано, са пригушивањем или одбројавањем тастер по тастер.</value></data>
+  <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Прекида радње Постави боје тастера које раде на овом виртуелном контролеру и осветљавају један од овде изабраних тастера, или све када ниједан није изабран.</value></data>
+  <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Уклони све боје тастера</value></data>
+  <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Уклони боје тастера, лампица: {0}</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>Лампице: {0}, {1}, {2} мс</value></data>
+  <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>Лампице: {0}, {1}, док се држи</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>Лампице: {0}, {1}, док се не уклоне</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>Лампице: {0}, {1}, пригушивање {2} мс</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>Лампице: {0}, {1}, одбројавање {2} мс</value></data>
+  <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Тастери</value></data>
+  <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Свака лампица</value></data>
+  <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Није изабран ниједан тастер, па радња ништа не осветљава.</value></data>
+  <data name="MacroAction_KeyColors_Style" xml:space="preserve"><value>Стил</value></data>
+  <data name="MacroAction_KeyColors_Steady" xml:space="preserve"><value>Постојано</value></data>
+  <data name="MacroAction_KeyColors_Fade" xml:space="preserve"><value>Пригушивање</value></data>
+  <data name="MacroAction_KeyColors_Countdown" xml:space="preserve"><value>Одбројавање</value></data>
+  <data name="MacroAction_KeyColors_Hold" xml:space="preserve"><value>Траје</value></data>
+  <data name="MacroAction_KeyColors_HoldDuration" xml:space="preserve"><value>Задато време</value></data>
+  <data name="MacroAction_KeyColors_HoldRelease" xml:space="preserve"><value>Док се држи окидач макроа</value></data>
+  <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>Док се не уклони</value></data>
+  <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Време</value></data>
+  <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Задржи њихове боје</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Радња осветљава исте тастере на свакој тастатури коју овај виртуелни контролер осветљава, преко боја које им даје картица Осветљење. Бројеви показују редослед избора. Одбројавање гаси тастере један по један, последњи изабран први, па изаберите од 1 до 0 за одбројавање на реду са бројевима. Тастатура или миш светле само док је укључено Управљај осветљењем овог уређаја.</value></data>
+  <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Остало</value></data>
+  <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, број {1}</value></data>
 </root>

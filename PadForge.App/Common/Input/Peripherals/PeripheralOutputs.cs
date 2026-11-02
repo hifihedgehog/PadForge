@@ -782,6 +782,13 @@ namespace PadForge.Common.Input.Peripherals
             ruler = default;
             var links = Links;
             if (!links.ByPath.ContainsKey(path)) return false;
+            // Map Key Lights asking about one light (#557) comes before
+            // every claim, for as long as its dialog asks.
+            if (s_probes.TryGetValue(path, out var probe))
+            {
+                ruler = new Claimant(Guid.Empty, false, 0, -1, 0) { Keys = probe };
+                return true;
+            }
             bool found = false;
             foreach (var pair in s_claims)
             {
@@ -807,6 +814,24 @@ namespace PadForge.Common.Input.Peripherals
 
         public static bool TryResolveColor(OutputPath path, out int rgb)
             => TryResolveColor(path, out rgb, out _);
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<OutputPath, KeyFrame> s_probes = new();
+
+        /// <summary>Lights a path with <paramref name="frame"/> over black,
+        /// ahead of every claim, while Map Key Lights asks which key a
+        /// light sits under (#557). A null frame ends it. The backend takes
+        /// the device for it and hands it back after, as for a claim.</summary>
+        public static void SetProbe(OutputPath path, KeyFrame frame)
+        {
+            if (frame == null)
+            {
+                if (s_probes.TryRemove(path, out _)) BumpLighting();
+                return;
+            }
+            if (s_probes.TryGetValue(path, out var was) && KeyFrame.Same(was, frame)) return;
+            s_probes[path] = frame;
+            BumpLighting();
+        }
 
         /// <summary>Whether a direct worker is writing to a device that its
         /// vendor's program would take over on starting, at
@@ -1089,6 +1114,7 @@ namespace PadForge.Common.Input.Peripherals
             s_levels.Clear();
             s_claims.Clear();
             s_identify.Clear();
+            s_probes.Clear();
             Volatile.Write(ref s_running, 0);
             Volatile.Write(ref s_slotHasController, null);
             Array.Clear(s_chromaMacro);

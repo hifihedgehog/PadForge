@@ -780,7 +780,13 @@ namespace PadForge.ViewModels
             set
             {
                 var old = _deviceConfig;
-                if (SetProperty(ref _deviceConfig, value ?? new()))
+                value ??= new();
+                // The Key Colors card edits the bound config too (#557). It
+                // lets go before the change notice, whose page handler
+                // attaches it to the new device's config and lights. A swap
+                // no page sees leaves it detached, never on the old config.
+                if (!ReferenceEquals(old, value)) KeyColors.Detach();
+                if (SetProperty(ref _deviceConfig, value))
                 {
                     if (old != null) old.PropertyChanged -= OnActiveDeviceConfigPropertyChanged;
                     if (_deviceConfig != null) _deviceConfig.PropertyChanged += OnActiveDeviceConfigPropertyChanged;
@@ -2556,6 +2562,11 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>The Lighting tab's Key Colors or Zone Colors card for
+        /// the selected device (#557). The page attaches it to
+        /// <see cref="DeviceConfig"/> and the device's lights.</summary>
+        public KeyColorsCardViewModel KeyColors { get; } = new();
+
         /// <summary>Tab strip backing collection. Always starts with the Base
         /// tab; each shift layer authored on this slot adds an entry.
         /// Populated by <see cref="RebuildLayerTabs"/> from
@@ -2698,6 +2709,7 @@ namespace PadForge.ViewModels
             }
             OnPropertyChanged(nameof(HasShiftLayers));
             OnPropertyChanged(nameof(IsActiveLayerInheriting));
+            KeyColors.UpdateLayers(LayerTabs);
             OnPropertyChanged(nameof(ActiveLayerColor));
 
             // #254 A-1: mirror the tabs into the macro-scope picker, with

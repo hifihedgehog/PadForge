@@ -267,6 +267,12 @@ namespace PadForge.Common.Input
             => heldEffects.ReleaseOwnersNotIn(owner => owner is MacroItem m && m.IsEnabled
                 && macros != null && Array.IndexOf(macros, m) >= 0);
 
+        /// <summary>The same sweep for key colors held until a macro's
+        /// trigger releases (#557).</summary>
+        private static void ReleaseKeyColorsOfMacrosGone(MacroKeyColorState heldColors, MacroItem[] macros)
+            => heldColors.ReleaseOwnersNotIn(owner => owner is MacroItem m && m.IsEnabled
+                && macros != null && Array.IndexOf(macros, m) >= 0);
+
         /// <summary>
         /// Step 4b: Evaluate macros for all pad slots.
         /// Called after CombineOutputStates and before VirtualDevices.
@@ -309,6 +315,10 @@ namespace PadForge.Common.Input
                 var heldEffects = MacroTriggerEffects[i];
                 if (heldEffects.AnyOwned)
                     ReleaseEffectsOfMacrosGone(heldEffects, macros);
+                // Key colors held the same way (#557).
+                var heldColors = MacroKeyColors[i];
+                if (heldColors.AnyOwned)
+                    ReleaseKeyColorsOfMacrosGone(heldColors, macros);
                 if (macros == null || macros.Length == 0)
                     continue;
 
@@ -3211,6 +3221,20 @@ namespace PadForge.Common.Input
                     break;
                 }
 
+                case MacroActionType.SetKeyColors:
+                    // Single-frame fire like Adaptive Trigger Effect (#557):
+                    // hold the colors in the slot's store and advance. The
+                    // dispatcher paints them, and their time, the macro's
+                    // release or a Clear Key Colors ends them.
+                    ApplyKeyColorsAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ClearKeyColors:
+                    ApplyClearKeyColorsAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
+
                 case MacroActionType.PlaySound:
                 {
                     // Single-frame fire like Rumble: hand the file to the
@@ -4055,13 +4079,48 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Ends the effects a macro holds until its trigger
-        /// releases. One volatile read while it holds none.</summary>
+        /// releases, its key colors among them (#557). One volatile read
+        /// each while it holds none.</summary>
         private void ReleaseHeldTriggerEffects(MacroItem macro)
         {
             int slotIndex = macro.PadIndex;
             if (slotIndex < 0 || slotIndex >= MaxPads) return;
             var held = MacroTriggerEffects[slotIndex];
             if (held.AnyOwned) held.ReleaseOwner(macro);
+            var colors = MacroKeyColors[slotIndex];
+            if (colors.AnyOwned) colors.ReleaseOwner(macro);
+        }
+
+        /// <summary>Set Key Colors (#557): the action's lights, color, style
+        /// and other lights, held on the slot for its time, until the
+        /// macro's trigger releases, or until a Clear Key Colors. An action
+        /// that names no light plays nothing.</summary>
+        private void ApplyKeyColorsAction(MacroItem macro, MacroAction action)
+        {
+            int slotIndex = macro.PadIndex;
+            if (slotIndex < 0 || slotIndex >= MaxPads) return;
+            var targets = KeyColorTarget.Parse(action.KeyColorTargets);
+            if (targets.Length == 0) return;
+            long now = Environment.TickCount64;
+            var hold = action.EffectiveKeyColorHold;
+            long until = hold == ViewModels.MacroKeyColorHold.Duration ? now + Math.Max(1, action.KeyColorMs) : long.MaxValue;
+            object owner = hold == ViewModels.MacroKeyColorHold.UntilRelease ? macro : null;
+            MacroKeyColors[slotIndex].Play(action, targets,
+                (action.LightbarR << 16) | (action.LightbarG << 8) | action.LightbarB,
+                action.KeyColorStyle, action.KeyColorRest,
+                (action.KeyRestR << 16) | (action.KeyRestG << 8) | action.KeyRestB,
+                now, until, owner);
+        }
+
+        /// <summary>Clear Key Colors (#557): ends the key colors running on
+        /// the slot that light one of the action's lights, or all of them
+        /// when it names none.</summary>
+        private void ApplyClearKeyColorsAction(MacroItem macro, MacroAction action)
+        {
+            int slotIndex = macro.PadIndex;
+            if (slotIndex < 0 || slotIndex >= MaxPads) return;
+            var colors = MacroKeyColors[slotIndex];
+            if (colors.Any) colors.Clear(KeyColorTarget.Parse(action.KeyColorTargets));
         }
 
         /// <summary>Parses "RRGGBB,RRGGBB,..." into palette entries.
@@ -5731,6 +5790,20 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
                 }
+
+                case MacroActionType.SetKeyColors:
+                    // Single-frame fire like Adaptive Trigger Effect (#557):
+                    // hold the colors in the slot's store and advance. The
+                    // dispatcher paints them, and their time, the macro's
+                    // release or a Clear Key Colors ends them.
+                    ApplyKeyColorsAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ClearKeyColors:
+                    ApplyClearKeyColorsAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
 
                 case MacroActionType.MouseRecenter:
                 {

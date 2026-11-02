@@ -24,6 +24,9 @@ namespace PadForge.Common.Input.Peripherals
         /// null.</summary>
         public static LightMap For(OutputPath path) => s_maps.TryGetValue(path, out var map) ? map : null;
 
+        /// <summary>Every map known now.</summary>
+        public static IEnumerable<LightMap> All => s_maps.Values;
+
         /// <summary>The first map among <paramref name="paths"/> with more
         /// than one light, the order a row's paths are tried in, or null.</summary>
         public static LightMap FirstPerLight(IEnumerable<OutputPath> paths, out OutputPath found)

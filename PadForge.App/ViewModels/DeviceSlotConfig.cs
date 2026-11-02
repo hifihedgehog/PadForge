@@ -1818,6 +1818,12 @@ namespace PadForge.ViewModels
             _resetPeripheralClaimLevel ??= new RelayCommand(() => PeripheralClaimLevel = PeripheralClaimLevel.Colors);
         private RelayCommand _resetPeripheralClaimLevel;
 
+        /// <summary>The Key Colors card's Reset All (#557): every layer's
+        /// light colors and Other Lights rule, back to none.</summary>
+        public RelayCommand ResetKeyLightingCommand =>
+            _resetKeyLighting ??= new RelayCommand(() => KeyLighting = string.Empty);
+        private RelayCommand _resetKeyLighting;
+
         public RelayCommand ResetAudioLightbarSensitivityCommand =>
             _resetAudSens ??= new RelayCommand(() => AudioLightbarSensitivity = 4.0);
         private RelayCommand _resetAudSens;

@@ -524,9 +524,10 @@ namespace PadForge.Tests
             // 2026-08-01, 54 appended for #315 voice, 55 appended for
             // #377 switch layer, 56 for #468 Set Chroma Color, 57 for #469
             // Show Dreamcast Screen, 58 to 61 for #519's keyboard screen
-            // actions, 62 and 63 for #531's Adaptive Trigger Effect pair).
+            // actions, 62 and 63 for #531's Adaptive Trigger Effect pair,
+            // 64 and 65 for #557's key colors pair).
             // The pins above are what this test protects.
-            Assert.Equal(MacroActionType.AxisScale, values[^13]);
+            Assert.Equal(MacroActionType.AxisScale, values[^15]);
         }
     }
 

@@ -2997,6 +2997,11 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsRumbleStickyHold));
                     OnPropertyChanged(nameof(IsTriggerEffectType));
                     OnPropertyChanged(nameof(IsTriggerEffectStopType));
+                    OnPropertyChanged(nameof(IsSetKeyColorsType));
+                    OnPropertyChanged(nameof(IsClearKeyColorsType));
+                    OnPropertyChanged(nameof(IsKeyColorTargetsType));
+                    OnPropertyChanged(nameof(IsKeyColorHoldShown));
+                    OnPropertyChanged(nameof(IsKeyColorTimed));
 
                     // Seed a freshly-typed pin action with the primary monitor's
                     // current center (issue #109). XML defaults cannot run code, so
@@ -3102,6 +3107,19 @@ namespace PadForge.ViewModels
         /// <summary>True when Type is TriggerEffect (issue #531).</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsTriggerEffectType => _type == MacroActionType.TriggerEffect;
+
+        /// <summary>True when Type is SetKeyColors (#557).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsSetKeyColorsType => _type == MacroActionType.SetKeyColors;
+
+        /// <summary>True when Type is ClearKeyColors (#557).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsClearKeyColorsType => _type == MacroActionType.ClearKeyColors;
+
+        /// <summary>True for either key colors action, which both name
+        /// lights with the key picker.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsKeyColorTargetsType => IsSetKeyColorsType || IsClearKeyColorsType;
 
         /// <summary>True when Type is TriggerEffectStop (issue #531).</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -4564,6 +4582,122 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(DisplayText));
             }
         }
+
+        // ── Key colors (for SetKeyColors / ClearKeyColors, #557) ──
+        // The color is the LightbarR/G/B trio, as Set Chroma Color's is.
+
+        private string _keyColorTargets = string.Empty;
+        /// <summary>The lights the action names, in the order picked:
+        /// "kUU" for a key by HID usage, "gNAME" for a group of lights,
+        /// "all" for every light (Common.Input.KeyColorTarget). Keys go by
+        /// usage, so one action lights the same keys on any keyboard. A
+        /// Clear Key Colors that names none ends every running action.</summary>
+        public string KeyColorTargets
+        {
+            get => _keyColorTargets;
+            set
+            {
+                string text = PadForge.Common.Input.KeyColorTarget.Format(PadForge.Common.Input.KeyColorTarget.Parse(value));
+                if (!SetProperty(ref _keyColorTargets, text)) return;
+                OnPropertyChanged(nameof(KeyColorTargetCount));
+                OnPropertyChanged(nameof(HasNoKeyColorTargets));
+                OnPropertyChanged(nameof(DisplayText));
+                _keyTargetPicker?.Reload();
+            }
+        }
+
+        /// <summary>How many lights the action names.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public int KeyColorTargetCount => PadForge.Common.Input.KeyColorTarget.Parse(_keyColorTargets).Length;
+
+        /// <summary>A Set Key Colors that names no light lights nothing, and
+        /// the editor says so.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool HasNoKeyColorTargets => KeyColorTargetCount == 0;
+
+        private KeyTargetPickerViewModel _keyTargetPicker;
+        /// <summary>The editor's key picker over <see cref="KeyColorTargets"/>.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public KeyTargetPickerViewModel KeyTargetPicker => _keyTargetPicker ??= new KeyTargetPickerViewModel(this);
+
+        private MacroKeyColorStyle _keyColorStyle = MacroKeyColorStyle.Steady;
+        /// <summary>Steady, fading, or counting down. Fade and Countdown run
+        /// for <see cref="KeyColorMs"/>.</summary>
+        public MacroKeyColorStyle KeyColorStyle
+        {
+            get => _keyColorStyle;
+            set
+            {
+                if (!SetProperty(ref _keyColorStyle, value)) return;
+                OnPropertyChanged(nameof(IsKeyColorHoldShown));
+                OnPropertyChanged(nameof(IsKeyColorTimed));
+                OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private MacroKeyColorHold _keyColorHold = MacroKeyColorHold.Duration;
+        /// <summary>How long a steady action holds.</summary>
+        public MacroKeyColorHold KeyColorHold
+        {
+            get => _keyColorHold;
+            set
+            {
+                if (!SetProperty(ref _keyColorHold, value)) return;
+                OnPropertyChanged(nameof(IsKeyColorTimed));
+                OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        /// <summary>The hold the action runs with: its own when steady, and
+        /// a time when it fades or counts down.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public MacroKeyColorHold EffectiveKeyColorHold
+            => _keyColorStyle == MacroKeyColorStyle.Steady ? _keyColorHold : MacroKeyColorHold.Duration;
+
+        /// <summary>The hold picker shows for a steady Set Key Colors.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsKeyColorHoldShown => IsSetKeyColorsType && _keyColorStyle == MacroKeyColorStyle.Steady;
+
+        /// <summary>The time row shows when the action runs for a time.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsKeyColorTimed => IsSetKeyColorsType && EffectiveKeyColorHold == MacroKeyColorHold.Duration;
+
+        private int _keyColorMs = 3000;
+        /// <summary>The action's length when it runs for a time, 1 to
+        /// 600000 ms (ten minutes, a long cooldown).</summary>
+        public int KeyColorMs
+        {
+            get => _keyColorMs;
+            set
+            {
+                if (SetProperty(ref _keyColorMs, Math.Clamp(value, 1, 600000)))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private MacroKeyColorRest _keyColorRest = MacroKeyColorRest.Keep;
+        /// <summary>What the lights the action leaves out show while it
+        /// runs.</summary>
+        public MacroKeyColorRest KeyColorRest
+        {
+            get => _keyColorRest;
+            set
+            {
+                if (!SetProperty(ref _keyColorRest, value)) return;
+                OnPropertyChanged(nameof(IsKeyRestColorShown));
+                OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsKeyRestColorShown => _keyColorRest == MacroKeyColorRest.Color;
+
+        private byte _keyRestR, _keyRestG, _keyRestB;
+        /// <summary>The other lights' color when <see cref="KeyColorRest"/>
+        /// is Color.</summary>
+        public byte KeyRestR { get => _keyRestR; set => SetProperty(ref _keyRestR, value); }
+        public byte KeyRestG { get => _keyRestG; set => SetProperty(ref _keyRestG, value); }
+        public byte KeyRestB { get => _keyRestB; set => SetProperty(ref _keyRestB, value); }
 
         // ── Sound (for MacroActionType.PlaySound / SoundStop, issue #83) ──
 
@@ -6191,6 +6325,10 @@ namespace PadForge.ViewModels
                     MacroActionType.RumbleTrigger => FormatRumbleTriggerSummary(),
                     MacroActionType.RumbleTriggerStop => Strings.Instance.MacroAction_RumbleTriggerStop,
                     MacroActionType.TriggerEffect => FormatTriggerEffectSummary(),
+                    MacroActionType.SetKeyColors => FormatKeyColorsSummary(),
+                    MacroActionType.ClearKeyColors => KeyColorTargetCount == 0
+                        ? Strings.Instance.MacroAction_ClearKeyColors_All
+                        : string.Format(Strings.Instance.MacroAction_ClearKeyColors_Format, KeyColorTargetCount),
                     MacroActionType.TriggerEffectStop => string.Format(
                         Strings.Instance.MacroAction_TriggerEffectStop_Format,
                         TriggerEffectSideName(_triggerEffectSide)),
@@ -6382,6 +6520,26 @@ namespace PadForge.ViewModels
             return _rumbleHoldMode == MacroRumbleHoldMode.Sticky
                 ? string.Format(Strings.Instance.MacroAction_Rumble_Sticky_Format, triggers)
                 : string.Format(Strings.Instance.MacroAction_Rumble_Reactive_Format, triggers, _rumbleHoldMs + _rumbleFadeMs);
+        }
+
+        /// <summary>"10 lights #FF0000, counting down over 5000 ms",
+        /// "4 lights #00FF00 until released" (#557).</summary>
+        private string FormatKeyColorsSummary()
+        {
+            var s = Strings.Instance;
+            string color = $"#{_lightbarR:X2}{_lightbarG:X2}{_lightbarB:X2}";
+            int count = KeyColorTargetCount;
+            return _keyColorStyle switch
+            {
+                MacroKeyColorStyle.Fade => string.Format(s.MacroAction_SetKeyColors_Fade_Format, count, color, _keyColorMs),
+                MacroKeyColorStyle.Countdown => string.Format(s.MacroAction_SetKeyColors_Countdown_Format, count, color, _keyColorMs),
+                _ => _keyColorHold switch
+                {
+                    MacroKeyColorHold.UntilRelease => string.Format(s.MacroAction_SetKeyColors_Held_Format, count, color),
+                    MacroKeyColorHold.UntilCleared => string.Format(s.MacroAction_SetKeyColors_Sticky_Format, count, color),
+                    _ => string.Format(s.MacroAction_SetKeyColors_Timed_Format, count, color, _keyColorMs),
+                },
+            };
         }
 
         /// <summary>"Galloping on R2 for 500 ms", "Feedback on both
@@ -7177,7 +7335,21 @@ namespace PadForge.ViewModels
         /// <summary>Ends the effects <see cref="TriggerEffect"/> holds on the
         /// slot's left trigger, right trigger or both (#531). One-shot.
         /// Ordinal pinned.</summary>
-        TriggerEffectStop = 63
+        TriggerEffectStop = 63,
+
+        /// <summary>Lights the keys and lights the action names on the
+        /// slot's lit keyboards, mice and lighting rows in a color (#557):
+        /// steady, fading, or counting down one key at a time, for a time,
+        /// until the macro's trigger releases, or until a
+        /// <see cref="ClearKeyColors"/>, over the Lighting tab's key colors,
+        /// with the other lights kept, off or in a second color meanwhile.
+        /// One-shot: the slot's store runs it. Ordinal pinned.</summary>
+        SetKeyColors = 64,
+
+        /// <summary>Ends the <see cref="SetKeyColors"/> actions running on
+        /// the slot that light one of the lights it names, or every one when
+        /// it names none (#557). One-shot. Ordinal pinned.</summary>
+        ClearKeyColors = 65
     }
 
     /// <summary>One parsed part of a <see cref="MacroActionType.CycleTapList"/>

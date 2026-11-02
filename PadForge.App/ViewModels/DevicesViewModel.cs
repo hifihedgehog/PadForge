@@ -18,6 +18,18 @@ namespace PadForge.ViewModels
         public DevicesViewModel()
         {
             Title = Strings.Instance.Devices_Title;
+            // A device's lights becoming known shows its Map Key Lights
+            // button (#557). The page lives as long as the app.
+            PadForge.Common.Input.Peripherals.PeripheralLightMaps.Changed += OnKeyLightsChanged;
+            PadForge.Common.Input.Peripherals.PeripheralOutputs.LinksChanged += OnKeyLightsChanged;
+        }
+
+        /// <summary>Raised on a backend's or the link pass's thread.</summary>
+        private void OnKeyLightsChanged()
+        {
+            var dispatcher = System.Windows.Application.Current?.Dispatcher;
+            if (dispatcher == null) return;
+            dispatcher.BeginInvoke(new Action(() => SelectedDevice?.RefreshKeyLights()));
         }
 
         protected override void OnCultureChanged()

@@ -931,6 +931,7 @@ namespace PadForge.Services
             // hook keep-alive re-evaluation when a chord appears or a Learn
             // dialog arms a capture.
             PadForge.Common.Input.HandheldButtonRegistry.RegistryChanged += OnHandheldRegistryChanged;
+            PadForge.Common.Input.Peripherals.LearnedKeyMaps.Changed += OnLearnedKeyMapsChanged;
             PadForge.Common.Input.HandheldButtonRegistry.ActivityChanged += OnHandheldActivityChanged;
             // Analog keyboards (#468): a key list that grows rebuilds the
             // pickers and the preview's order, the handheld fan-out.
@@ -1220,6 +1221,12 @@ namespace PadForge.Services
                 (_inputManager != null && padIndex >= 0 && padIndex < InputManager.MaxPads)
                     ? _inputManager.MacroTriggerEffects[padIndex] : null;
             MacroTriggerEffectState.Changed = UserEffectsDispatcher.NotifyModEffectsChanged;
+            // Key colors macros play (#557): the slot's store, and the
+            // wake-up that paints a change.
+            UserEffectsDispatcher.MacroKeyColorsProvider = padIndex =>
+                (_inputManager != null && padIndex >= 0 && padIndex < InputManager.MaxPads)
+                    ? _inputManager.MacroKeyColors[padIndex] : null;
+            MacroKeyColorState.Changed = UserEffectsDispatcher.NotifyMacroKeyColorsChanged;
             // A shift layer engaging or letting go repaints a keyboard whose
             // key colors differ by layer (#557).
             InputManager.EngagedLayerChanged = UserEffectsDispatcher.NotifyKeyLayersChanged;
@@ -2633,6 +2640,7 @@ namespace PadForge.Services
             try { PadForge.Common.Input.VoicePhraseRegistry.RegistryChanged -= OnVoicePhraseRegistryChanged; } catch { }
             try { PadForge.Common.Input.Twitch.ChatCommandRegistry.RegistryChanged -= OnChatCommandRegistryChanged; } catch { }
             try { PadForge.Common.Input.HandheldButtonRegistry.RegistryChanged -= OnHandheldRegistryChanged; } catch { }
+            try { PadForge.Common.Input.Peripherals.LearnedKeyMaps.Changed -= OnLearnedKeyMapsChanged; } catch { }
             try { PadForge.Common.Input.HandheldButtonRegistry.ActivityChanged -= OnHandheldActivityChanged; } catch { }
             try { PadForge.Common.Input.AnalogKeyboardRuntime.KeyOrdersChanged -= OnAnalogKeyOrdersChanged; } catch { }
             try { PadForge.Common.Input.BlissBoxRuntime.PortChanged -= OnBlissBoxPortChanged; } catch { }
@@ -2686,6 +2694,8 @@ namespace PadForge.Services
                 UserEffectsDispatcher.SteeringTriggerVibProvider = null;
                 UserEffectsDispatcher.MacroTriggerEffectsProvider = null;
                 MacroTriggerEffectState.Changed = null;
+                UserEffectsDispatcher.MacroKeyColorsProvider = null;
+                MacroKeyColorState.Changed = null;
                 InputManager.EngagedLayerChanged = null;
                 UserEffectsDispatcher.TestRumbleTargetGuidProvider = null;
                 UserEffectsDispatcher.SlotBatteryPercentProvider = null;
@@ -10282,6 +10292,17 @@ namespace PadForge.Services
         /// pickers, refresh the preview, persist) plus a hook re-evaluation,
         /// since the first chord learned is what makes the hooks necessary
         /// and the last one removed is what lets them go.</summary>
+        /// <summary>A key name learned, removed or imported with Map Key
+        /// Lights (#557) is saved at once, the handheld buttons' rule. The
+        /// backends apply it on their own.</summary>
+        private void OnLearnedKeyMapsChanged(object sender, EventArgs e)
+        {
+            _dispatcher.BeginInvoke(new Action(() =>
+            {
+                try { _settingsService?.Save(); } catch { /* persisted on next save regardless */ }
+            }));
+        }
+
         private void OnHandheldRegistryChanged(object sender, EventArgs e)
         {
             _dispatcher.BeginInvoke(new Action(() =>

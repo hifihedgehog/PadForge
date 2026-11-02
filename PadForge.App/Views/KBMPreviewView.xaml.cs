@@ -84,7 +84,7 @@ namespace PadForge.Views
         // mouse emit, so pressed states light ember, not the old blue.
         private static readonly Brush AccentBrush = F(0xFF,0x6B,0x2C);
         private static Brush DotBrush => IsDarkTheme ? _dotD : _dotL;
-        private static Brush KeyNormalBrush => IsDarkTheme ? _knD : _knL;
+        internal static Brush KeyNormalBrush => IsDarkTheme ? _knD : _knL;
         private static readonly Brush KeyPressedBrush = F(0xFF,0x6B,0x2C);
         private static readonly Brush HoverBrush = F(0xFF,0xA2,0x4D);
         private static readonly Brush FlashBrush = F(0xFF,0xA5,0x00);

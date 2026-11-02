@@ -1090,6 +1090,44 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Добави цвят</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Нулиране на палитрата</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Заменя текущата палитра с четирите цвята по подразбиране (червен, зелен, син, жълт).</value></data>
+  <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Цветове на клавишите</value></data>
+  <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Цветове на зоните</value></data>
+  <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Избери клавиши на картината или ги натисни на клавиатурата и им задай цвят. Всеки слой може да има свои цветове, показвани, докато слоят е активен.</value></data>
+  <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Избери зони и им задай цвят. Всеки слой може да има свои цветове, показвани, докато слоят е активен.</value></data>
+  <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>Премахни цветовете от всеки слой.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Други светлини</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Какво показват светлините без собствен цвят на този слой.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Цветове на слой {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Режим на осветление</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Изключено</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Един цвят</value></data>
+  <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Натискай клавиши, за да избереш светлините им, и натисни избран клавиш отново, за да го изчистиш. Ctrl+Tab продължава нататък.</value></data>
+  <data name="Pad_Lighting_KeyColors_NoneSelected" xml:space="preserve"><value>Няма избрани светлини. Щракни или плъзни по картината, за да избереш светлини.</value></data>
+  <data name="Pad_Lighting_KeyColors_Selected_Format" xml:space="preserve"><value>Избрани: {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllKeys" xml:space="preserve"><value>Всички клавиши</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberRow" xml:space="preserve"><value>Цифров ред</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectFunctionKeys" xml:space="preserve"><value>F клавиши</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberPad" xml:space="preserve"><value>Цифрова клавиатура</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Стрелки</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Ръб</value></data>
+  <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Лого</value></data>
+  <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Състояние</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Всички светлини</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Изчисти избора</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Избор чрез натискане на клавиши</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing_Tooltip" xml:space="preserve"><value>Когато е включено, клавиш, натиснат при фокус върху картината, избира светлините си, а повторното натискане ги изчиства. Ctrl+Tab напуска картината.</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor" xml:space="preserve"><value>Приложи цвят</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor_Tooltip" xml:space="preserve"><value>Задай на избраните светлини цвета отгоре.</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor" xml:space="preserve"><value>Премахни цвят</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor_Tooltip" xml:space="preserve"><value>Премахни цветовете на избраните светлини на този слой, за да показват каквото е зададено в „Други светлини“.</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer" xml:space="preserve"><value>Премахни всички цветове</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer_Tooltip" xml:space="preserve"><value>Премахни всички цветове от този слой и върни „Други светлини“ в началното състояние на слоя.</value></data>
+  <data name="Pad_Lighting_KeyColors_UnnamedKey_Format" xml:space="preserve"><value>Клавиш {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Zone_Format" xml:space="preserve"><value>Зона {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Light_Format" xml:space="preserve"><value>Светлина {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightColor_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightBaseLayer_Format" xml:space="preserve"><value>{0}: {1} от {2}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Задържане на импулса</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Затихване на импулса</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Предварителна настройка</value></data>
@@ -3314,6 +3352,31 @@
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Скритите бутони са изключени. Първо включете „Бутони на преносим компютър за игри“ в „Настройки“.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} работи. Той продължава да реагира на тези бутони, докато не го спрете.</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Експортирай…</value></data>
+  <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>Съпоставяне на светлини на клавиши</value></data>
+  <data name="MapKeyLights_Title" xml:space="preserve"><value>Съпоставяне на светлини на клавиши</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge осветява по една светлина на клавиш. Натисни клавиша под светещата светлина, за да я наименуваш. Имената се запазват за всяка клавиатура от този модел, така че „Цветове на клавишите“ и макросите за цветове на клавиши да стигат до правилните клавиши.</value></data>
+  <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>Устройство:</value></data>
+  <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>Наименувани клавиши: {0} от {1}</value></data>
+  <data name="MapKeyLights_NoLights" xml:space="preserve"><value>Това устройство няма светлини на клавиши, за които PadForge да научи имена.</value></data>
+  <data name="MapKeyLights_Ready" xml:space="preserve"><value>„Старт“ осветява първата светлина на клавиш без име.</value></data>
+  <data name="MapKeyLights_Ask_Format" xml:space="preserve"><value>Светлина {0} свети. Натисни клавиша под нея.</value></data>
+  <data name="MapKeyLights_AskNamed_Format" xml:space="preserve"><value>Светлина {0} свети и се казва {1}. Натисни клавиша под нея, за да я наименуваш отново.</value></data>
+  <data name="MapKeyLights_Start" xml:space="preserve"><value>Старт</value></data>
+  <data name="MapKeyLights_Back" xml:space="preserve"><value>Назад</value></data>
+  <data name="MapKeyLights_Skip" xml:space="preserve"><value>Пропусни</value></data>
+  <data name="MapKeyLights_Skip_Tooltip" xml:space="preserve"><value>Остави тази светлина без име и осветли следващата.</value></data>
+  <data name="MapKeyLights_Forget" xml:space="preserve"><value>Забрави</value></data>
+  <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>Премахни името, научено за светещата светлина.</value></data>
+  <data name="MapKeyLights_Stop" xml:space="preserve"><value>Спри</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>Ако не светне нито една светлина, изключи Динамичното осветление за устройството в Настройки на Windows или затвори собствения му софтуер за осветление и натисни „Старт“ отново.</value></data>
+  <data name="MapKeyLights_Export" xml:space="preserve"><value>Експортирай…</value></data>
+  <data name="MapKeyLights_Import" xml:space="preserve"><value>Импортирай…</value></data>
+  <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Забрави всички</value></data>
+  <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Премахни всички имена, научени за този модел.</value></data>
+  <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Експортирани имена: {0}.</value></data>
+  <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Импортирани имена: {0}.</value></data>
+  <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Импортирани {0} имена за друг модел: {1}.</value></data>
+  <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Този файл не съдържа имена на светлини на клавиши.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Импортирай…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Експортирани бутони: {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Импортирани бутони: {0}.</value></data>
@@ -4716,4 +4779,31 @@
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} на {1} докато е задържан</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} на {1} до спиране</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Спиране на ефекта на спусъка на {0}</value></data>
+  <data name="MacroAction_Type_SetKeyColors" xml:space="preserve"><value>Задаване на цветове на клавиши</value></data>
+  <data name="MacroAction_Type_ClearKeyColors" xml:space="preserve"><value>Изчистване на цветовете на клавиши</value></data>
+  <data name="MacroAction_SetKeyColors_Tooltip" xml:space="preserve"><value>Осветява клавиши в цвят на клавиатурите и другите устройства, които този виртуален контролер осветява: постоянно, с избледняване или с обратно броене по един клавиш.</value></data>
+  <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Прекратява действията „Задаване на цветове на клавиши“, изпълнявани на този виртуален контролер, които осветяват някой от избраните тук клавиши, или всички, ако не е избран нито един.</value></data>
+  <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Изчистване на всички цветове на клавиши</value></data>
+  <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Изчистване на цветовете на клавиши на {0} светлини</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} светлини в {1} за {2} мс</value></data>
+  <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} светлини в {1} докато е задържан</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} светлини в {1} до изчистване</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} светлини в {1}, избледняват за {2} мс</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} светлини в {1}, обратно броене за {2} мс</value></data>
+  <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Клавиши</value></data>
+  <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Всяка светлина</value></data>
+  <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Не са избрани клавиши, затова действието не осветява нищо.</value></data>
+  <data name="MacroAction_KeyColors_Style" xml:space="preserve"><value>Стил</value></data>
+  <data name="MacroAction_KeyColors_Steady" xml:space="preserve"><value>Постоянно</value></data>
+  <data name="MacroAction_KeyColors_Fade" xml:space="preserve"><value>Избледняване</value></data>
+  <data name="MacroAction_KeyColors_Countdown" xml:space="preserve"><value>Обратно броене</value></data>
+  <data name="MacroAction_KeyColors_Hold" xml:space="preserve"><value>Задържа</value></data>
+  <data name="MacroAction_KeyColors_HoldDuration" xml:space="preserve"><value>За определено време</value></data>
+  <data name="MacroAction_KeyColors_HoldRelease" xml:space="preserve"><value>Докато е задържан спусъкът на макроса</value></data>
+  <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>До изчистване</value></data>
+  <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Време</value></data>
+  <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Запазване на цветовете им</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Действието осветява едни и същи клавиши на всяка клавиатура, която този виртуален контролер осветява, върху цветовете от раздела му „Осветление“. Числата показват реда на избиране. Обратното броене изключва клавишите един по един, като започва от последния избран, затова избери от 1 до 0 за таймер на цифровия ред. Клавиатура или мишка светва само докато е включено „Управление на осветлението на това устройство“.</value></data>
+  <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Други</value></data>
+  <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, номер {1}</value></data>
 </root>

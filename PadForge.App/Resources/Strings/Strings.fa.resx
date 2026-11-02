@@ -1090,6 +1090,44 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>افزودن رنگ</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>بازنشانی پالت</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>پالت کنونی را با چهار رنگ پیش‌فرض (قرمز، سبز، آبی، زرد) جایگزین می‌کند.</value></data>
+  <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>رنگ کلیدها</value></data>
+  <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>رنگ ناحیه‌ها</value></data>
+  <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>کلیدها را روی تصویر انتخاب کنید یا روی صفحه‌کلید فشار دهید و به آن‌ها رنگ بدهید. هر لایه شیفت می‌تواند رنگ‌های خودش را داشته باشد که تا وقتی لایه فعال است نمایش داده می‌شود.</value></data>
+  <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>ناحیه‌ها را انتخاب کنید و به آن‌ها رنگ بدهید. هر لایه شیفت می‌تواند رنگ‌های خودش را داشته باشد که تا وقتی لایه فعال است نمایش داده می‌شود.</value></data>
+  <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>برداشتن رنگ‌ها از همه لایه‌ها.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>چراغ‌های دیگر</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>آنچه چراغ‌های بدون رنگ اختصاصی در این لایه نشان می‌دهند.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>رنگ‌های لایه {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>حالت نورپردازی</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>خاموش</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>یک رنگ</value></data>
+  <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>برای انتخاب چراغ هر کلید، آن را فشار دهید و برای پاک کردن، کلید انتخاب‌شده را دوباره فشار دهید. Ctrl+Tab به مرحله بعد می‌رود.</value></data>
+  <data name="Pad_Lighting_KeyColors_NoneSelected" xml:space="preserve"><value>هیچ چراغی انتخاب نشده است. برای انتخاب چراغ‌ها روی تصویر کلیک کنید یا بکشید.</value></data>
+  <data name="Pad_Lighting_KeyColors_Selected_Format" xml:space="preserve"><value>انتخاب‌شده: {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllKeys" xml:space="preserve"><value>همه کلیدها</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberRow" xml:space="preserve"><value>ردیف اعداد</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectFunctionKeys" xml:space="preserve"><value>کلیدهای F</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberPad" xml:space="preserve"><value>صفحه‌کلید عددی</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>کلیدهای جهت‌نما</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>لبه</value></data>
+  <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>لوگو</value></data>
+  <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>وضعیت</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>همه چراغ‌ها</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>پاک کردن انتخاب</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>انتخاب با فشردن کلیدها</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing_Tooltip" xml:space="preserve"><value>تا وقتی روشن است، کلیدی که با تمرکز روی تصویر فشار دهید چراغ‌هایش را انتخاب می‌کند و فشردن دوباره آن را پاک می‌کند. Ctrl+Tab از تصویر خارج می‌شود.</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor" xml:space="preserve"><value>اعمال رنگ</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor_Tooltip" xml:space="preserve"><value>رنگ بالا را به چراغ‌های انتخاب‌شده بدهید.</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor" xml:space="preserve"><value>برداشتن رنگ</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor_Tooltip" xml:space="preserve"><value>رنگ چراغ‌های انتخاب‌شده را در این لایه بردارید تا آنچه در چراغ‌های دیگر آمده است را نشان دهند.</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer" xml:space="preserve"><value>برداشتن همه رنگ‌ها</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer_Tooltip" xml:space="preserve"><value>همه رنگ‌ها را از این لایه بردارید و چراغ‌های دیگر را به حالت شروع لایه برگردانید.</value></data>
+  <data name="Pad_Lighting_KeyColors_UnnamedKey_Format" xml:space="preserve"><value>کلید {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Zone_Format" xml:space="preserve"><value>ناحیه {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Light_Format" xml:space="preserve"><value>چراغ {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightColor_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightBaseLayer_Format" xml:space="preserve"><value>{0}: {1} از {2}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>ماندگاری تپش</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>میرایی تپش</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>پیش‌تنظیم</value></data>
@@ -3314,6 +3352,31 @@
   <data name="Handheld_NoDevice" xml:space="preserve"><value>دکمه‌های پنهان خاموش‌اند. ابتدا «دکمه‌های رایانه دستی» را در تنظیمات فعال کنید.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} در حال اجراست. تا وقتی آن را متوقف نکنید، همچنان به این دکمه‌ها واکنش نشان می‌دهد.</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>صادر کردن…</value></data>
+  <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>نگاشت چراغ کلیدها</value></data>
+  <data name="MapKeyLights_Title" xml:space="preserve"><value>نگاشت چراغ کلیدها</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge چراغ کلیدها را یکی‌یکی روشن می‌کند. کلیدی را که زیر چراغ روشن است فشار دهید تا نام‌گذاری شود. نام‌ها برای هر صفحه‌کلید این مدل نگه داشته می‌شوند، تا رنگ کلیدها و ماکروهای رنگ کلید به کلیدهای درست برسند.</value></data>
+  <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>دستگاه:</value></data>
+  <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>کلیدهای نام‌گذاری‌شده: {0} از {1}</value></data>
+  <data name="MapKeyLights_NoLights" xml:space="preserve"><value>این دستگاه چراغ کلیدی ندارد که PadForge بتواند برایش نام یاد بگیرد.</value></data>
+  <data name="MapKeyLights_Ready" xml:space="preserve"><value>شروع، اولین چراغ کلید بدون نام را روشن می‌کند.</value></data>
+  <data name="MapKeyLights_Ask_Format" xml:space="preserve"><value>چراغ {0} روشن است. کلید زیر آن را فشار دهید.</value></data>
+  <data name="MapKeyLights_AskNamed_Format" xml:space="preserve"><value>چراغ {0} روشن است و نامش {1} است. برای نام‌گذاری دوباره، کلید زیر آن را فشار دهید.</value></data>
+  <data name="MapKeyLights_Start" xml:space="preserve"><value>شروع</value></data>
+  <data name="MapKeyLights_Back" xml:space="preserve"><value>قبلی</value></data>
+  <data name="MapKeyLights_Skip" xml:space="preserve"><value>رد شدن</value></data>
+  <data name="MapKeyLights_Skip_Tooltip" xml:space="preserve"><value>این چراغ را بدون نام بگذارید و چراغ بعدی را روشن کنید.</value></data>
+  <data name="MapKeyLights_Forget" xml:space="preserve"><value>فراموش کردن</value></data>
+  <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>نام یادگرفته‌شده برای چراغ روشن را بردارید.</value></data>
+  <data name="MapKeyLights_Stop" xml:space="preserve"><value>توقف</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>اگر هیچ چراغی روشن نشد، نورپردازی پویا را برای دستگاه در تنظیمات Windows خاموش کنید یا نرم‌افزار نورپردازی خود دستگاه را ببندید و دوباره شروع را فشار دهید.</value></data>
+  <data name="MapKeyLights_Export" xml:space="preserve"><value>صادر کردن…</value></data>
+  <data name="MapKeyLights_Import" xml:space="preserve"><value>وارد کردن…</value></data>
+  <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>فراموش کردن همه</value></data>
+  <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>همه نام‌های یادگرفته‌شده برای این مدل را بردارید.</value></data>
+  <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>{0} نام صادر شد.</value></data>
+  <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>{0} نام وارد شد.</value></data>
+  <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>{0} نام برای مدل دیگری، {1}، وارد شد.</value></data>
+  <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>آن فایل نام چراغ کلیدی ندارد.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>وارد کردن…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} دکمه صادر شد.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} دکمه وارد شد.</value></data>
@@ -4716,4 +4779,31 @@
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} روی {1} تا وقتی نگه داشته شود</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} روی {1} تا توقف</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>توقف اثر ماشه روی {0}</value></data>
+  <data name="MacroAction_Type_SetKeyColors" xml:space="preserve"><value>تنظیم رنگ کلیدها</value></data>
+  <data name="MacroAction_Type_ClearKeyColors" xml:space="preserve"><value>پاک کردن رنگ کلیدها</value></data>
+  <data name="MacroAction_SetKeyColors_Tooltip" xml:space="preserve"><value>کلیدها را روی صفحه‌کلیدها و دستگاه‌های دیگری که این کنترلر مجازی روشن می‌کند رنگی می‌کند: ثابت، محو شونده، یا شمارش معکوس یک کلید در هر بار.</value></data>
+  <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>اقدام‌های تنظیم رنگ کلیدها را که روی این کنترلر مجازی اجرا می‌شوند و یکی از کلیدهای انتخاب‌شده در اینجا را روشن می‌کنند پایان می‌دهد، یا اگر کلیدی انتخاب نشده باشد همه را.</value></data>
+  <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>پاک کردن همه رنگ‌های کلیدها</value></data>
+  <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>پاک کردن رنگ کلیدها روی {0} چراغ</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} چراغ به رنگ {1} به مدت {2} میلی‌ثانیه</value></data>
+  <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} چراغ به رنگ {1} تا وقتی نگه داشته شود</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} چراغ به رنگ {1} تا پاک شدن</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} چراغ به رنگ {1}، محو شدن در {2} میلی‌ثانیه</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} چراغ به رنگ {1}، شمارش معکوس در {2} میلی‌ثانیه</value></data>
+  <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>کلیدها</value></data>
+  <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>هر چراغ</value></data>
+  <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>کلیدی انتخاب نشده است، پس این اقدام چیزی را روشن نمی‌کند.</value></data>
+  <data name="MacroAction_KeyColors_Style" xml:space="preserve"><value>سبک</value></data>
+  <data name="MacroAction_KeyColors_Steady" xml:space="preserve"><value>ثابت</value></data>
+  <data name="MacroAction_KeyColors_Fade" xml:space="preserve"><value>محو شدن</value></data>
+  <data name="MacroAction_KeyColors_Countdown" xml:space="preserve"><value>شمارش معکوس</value></data>
+  <data name="MacroAction_KeyColors_Hold" xml:space="preserve"><value>نگه داشتن</value></data>
+  <data name="MacroAction_KeyColors_HoldDuration" xml:space="preserve"><value>برای مدت مشخص</value></data>
+  <data name="MacroAction_KeyColors_HoldRelease" xml:space="preserve"><value>تا وقتی فعال‌ساز ماکرو نگه داشته شده است</value></data>
+  <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>تا پاک شدن</value></data>
+  <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>زمان</value></data>
+  <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>حفظ رنگ‌هایشان</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>این اقدام همان کلیدها را روی هر صفحه‌کلیدی که این کنترلر مجازی روشن می‌کند، روی رنگ‌هایی که زبانه نورپردازی به آن‌ها می‌دهد، روشن می‌کند. شماره‌ها ترتیب انتخاب را نشان می‌دهند. شمارش معکوس کلیدها را یکی‌یکی خاموش می‌کند و آخرین کلید انتخاب‌شده را اول خاموش می‌کند، پس برای زمان‌سنج بازیابی روی ردیف اعداد، کلیدهای 1 تا 0 را انتخاب کنید. صفحه‌کلید یا ماوس فقط وقتی روشن می‌شود که کنترل نورپردازی این دستگاه برایش روشن باشد.</value></data>
+  <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>سایر</value></data>
+  <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}، شماره {1}</value></data>
 </root>

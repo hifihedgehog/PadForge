@@ -580,6 +580,19 @@ namespace PadForge.Views
             dlg.ShowDialog();
         }
 
+        // ── Map Key Lights (#557) ──
+
+        private void MapKeyLights_Click(object sender, RoutedEventArgs e)
+        {
+            var row = (DataContext as PadForge.ViewModels.DevicesViewModel)?.SelectedDevice;
+            if (row == null) return;
+            var map = PadForge.Common.Input.Peripherals.PeripheralLightMaps.FirstPerLight(
+                PadForge.Common.Input.Peripherals.PeripheralOutputs.Links.For(row.InstanceGuid)?.Lighting, out var path);
+            if (map == null) return;
+            var dlg = new MapKeyLightsDialog(path, row.DeviceName) { Owner = Window.GetWindow(this) };
+            dlg.ShowDialog();
+        }
+
         // ── Voice macros (issue #315) ──
 
         private void ManageVoicePhrases_Click(object sender, RoutedEventArgs e)

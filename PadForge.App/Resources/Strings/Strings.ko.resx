@@ -1905,6 +1905,44 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>색상 추가</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>팔레트 초기화</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>현재 팔레트를 기본 네 가지 색상(빨강, 초록, 파랑, 노랑)으로 교체합니다.</value></data>
+  <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>키 색상</value></data>
+  <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>영역 색상</value></data>
+  <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>그림에서 키를 선택하거나 키보드에서 직접 눌러 색상을 지정하세요. 각 시프트 레이어마다 고유한 색상을 지정할 수 있으며, 레이어가 활성화된 동안 표시됩니다.</value></data>
+  <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>영역을 선택하고 색상을 지정하세요. 각 시프트 레이어마다 고유한 색상을 지정할 수 있으며, 레이어가 활성화된 동안 표시됩니다.</value></data>
+  <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>모든 레이어의 색상을 제거합니다.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>다른 조명</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>이 레이어에서 고유한 색상이 없는 조명이 표시할 내용입니다.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>{0} 레이어 색상</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>조명 모드</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>끔</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>단일 색상</value></data>
+  <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>키를 눌러 해당 조명을 선택하고, 선택된 키를 다시 누르면 해제됩니다. Ctrl+Tab으로 다음으로 이동합니다.</value></data>
+  <data name="Pad_Lighting_KeyColors_NoneSelected" xml:space="preserve"><value>선택된 조명이 없습니다. 그림을 클릭하거나 드래그하여 조명을 선택하세요.</value></data>
+  <data name="Pad_Lighting_KeyColors_Selected_Format" xml:space="preserve"><value>선택됨: {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllKeys" xml:space="preserve"><value>모든 키</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberRow" xml:space="preserve"><value>숫자 행</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectFunctionKeys" xml:space="preserve"><value>F 키</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberPad" xml:space="preserve"><value>숫자 키패드</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>방향키</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>가장자리</value></data>
+  <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>로고</value></data>
+  <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>상태</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>모든 조명</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>선택 해제</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>키를 눌러 선택</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing_Tooltip" xml:space="preserve"><value>켜져 있으면 그림에 포커스가 있을 때 누른 키의 조명이 선택되고, 다시 누르면 해제됩니다. Ctrl+Tab으로 그림에서 나갑니다.</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor" xml:space="preserve"><value>색상 적용</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor_Tooltip" xml:space="preserve"><value>선택한 조명에 위의 색상을 지정합니다.</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor" xml:space="preserve"><value>색상 제거</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor_Tooltip" xml:space="preserve"><value>이 레이어에서 선택한 조명의 색상을 제거하여 다른 조명 설정대로 표시되게 합니다.</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer" xml:space="preserve"><value>모든 색상 제거</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer_Tooltip" xml:space="preserve"><value>이 레이어의 모든 색상을 제거하고 다른 조명을 레이어의 초기 상태로 되돌립니다.</value></data>
+  <data name="Pad_Lighting_KeyColors_UnnamedKey_Format" xml:space="preserve"><value>키 {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Zone_Format" xml:space="preserve"><value>영역 {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Light_Format" xml:space="preserve"><value>조명 {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightColor_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightBaseLayer_Format" xml:space="preserve"><value>{0}: {2}의 {1}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>펄스 유지</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>펄스 감쇠</value></data>
   <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>왼쪽 트리거 초기화</value></data>
@@ -2800,6 +2838,31 @@
   <data name="Handheld_NoDevice" xml:space="preserve"><value>숨겨진 버튼이 꺼져 있습니다. 먼저 설정에서 휴대용 PC 버튼을 켜세요.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0}이(가) 실행 중입니다. 중지할 때까지 이 버튼에 계속 반응합니다.</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>내보내기…</value></data>
+  <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>키 조명 매핑</value></data>
+  <data name="MapKeyLights_Title" xml:space="preserve"><value>키 조명 매핑</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge가 키 조명을 하나씩 밝힙니다. 밝아진 조명 아래의 키를 눌러 이름을 지정하세요. 이름은 같은 모델의 모든 키보드에 저장되므로 키 색상과 키 색상 매크로가 올바른 키에 적용됩니다.</value></data>
+  <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>장치:</value></data>
+  <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>이름 지정된 키: {0} / {1}</value></data>
+  <data name="MapKeyLights_NoLights" xml:space="preserve"><value>이 장치에는 PadForge가 이름을 학습할 수 있는 키 조명이 없습니다.</value></data>
+  <data name="MapKeyLights_Ready" xml:space="preserve"><value>시작을 누르면 이름이 없는 첫 번째 키 조명이 켜집니다.</value></data>
+  <data name="MapKeyLights_Ask_Format" xml:space="preserve"><value>조명 {0}이(가) 켜져 있습니다. 그 아래의 키를 누르세요.</value></data>
+  <data name="MapKeyLights_AskNamed_Format" xml:space="preserve"><value>조명 {0}이(가) 켜져 있으며 이름은 {1}입니다. 다시 지정하려면 그 아래의 키를 누르세요.</value></data>
+  <data name="MapKeyLights_Start" xml:space="preserve"><value>시작</value></data>
+  <data name="MapKeyLights_Back" xml:space="preserve"><value>이전</value></data>
+  <data name="MapKeyLights_Skip" xml:space="preserve"><value>건너뛰기</value></data>
+  <data name="MapKeyLights_Skip_Tooltip" xml:space="preserve"><value>이 조명에 이름을 지정하지 않고 다음 조명을 켭니다.</value></data>
+  <data name="MapKeyLights_Forget" xml:space="preserve"><value>삭제</value></data>
+  <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>켜져 있는 조명에 학습된 이름을 제거합니다.</value></data>
+  <data name="MapKeyLights_Stop" xml:space="preserve"><value>정지</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>조명이 켜지지 않으면 Windows 설정에서 해당 장치의 동적 조명을 끄거나 장치 전용 조명 소프트웨어를 종료한 다음 시작을 다시 누르세요.</value></data>
+  <data name="MapKeyLights_Export" xml:space="preserve"><value>내보내기…</value></data>
+  <data name="MapKeyLights_Import" xml:space="preserve"><value>가져오기…</value></data>
+  <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>모두 삭제</value></data>
+  <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>이 모델에 학습된 모든 이름을 제거합니다.</value></data>
+  <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>이름 {0}개를 내보냈습니다.</value></data>
+  <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>이름 {0}개를 가져왔습니다.</value></data>
+  <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>다른 모델 {1}의 이름 {0}개를 가져왔습니다.</value></data>
+  <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>이 파일에는 키 조명 이름이 없습니다.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>가져오기…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>버튼 {0}개를 내보냈습니다.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>버튼 {0}개를 가져왔습니다.</value></data>
@@ -4667,4 +4730,31 @@
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{1}에서 {0}, 누르는 동안</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{1}에서 {0}, 정지할 때까지</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>{0}의 트리거 효과 정지</value></data>
+  <data name="MacroAction_Type_SetKeyColors" xml:space="preserve"><value>키 색상 설정</value></data>
+  <data name="MacroAction_Type_ClearKeyColors" xml:space="preserve"><value>키 색상 해제</value></data>
+  <data name="MacroAction_SetKeyColors_Tooltip" xml:space="preserve"><value>이 가상 컨트롤러가 조명을 제어하는 키보드와 기타 장치의 키를 색상으로 밝힙니다. 고정, 페이드 아웃, 또는 키를 하나씩 끄는 카운트다운 중에서 고를 수 있습니다.</value></data>
+  <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>이 가상 컨트롤러에서 실행 중인 키 색상 설정 동작 중 여기서 고른 키를 밝히는 동작을 종료합니다. 고른 키가 없으면 모두 종료합니다.</value></data>
+  <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>모든 키 색상 해제</value></data>
+  <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>조명 {0}개의 키 색상 해제</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>조명 {0}개, {1}, {2} ms 동안</value></data>
+  <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>조명 {0}개, {1}, 누르는 동안</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>조명 {0}개, {1}, 해제할 때까지</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>조명 {0}개, {1}, {2} ms에 걸쳐 페이드 아웃</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>조명 {0}개, {1}, {2} ms에 걸쳐 카운트다운</value></data>
+  <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>키</value></data>
+  <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>모든 조명</value></data>
+  <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>선택한 키가 없어 아무 조명도 켜지지 않습니다.</value></data>
+  <data name="MacroAction_KeyColors_Style" xml:space="preserve"><value>스타일</value></data>
+  <data name="MacroAction_KeyColors_Steady" xml:space="preserve"><value>고정</value></data>
+  <data name="MacroAction_KeyColors_Fade" xml:space="preserve"><value>페이드 아웃</value></data>
+  <data name="MacroAction_KeyColors_Countdown" xml:space="preserve"><value>카운트다운</value></data>
+  <data name="MacroAction_KeyColors_Hold" xml:space="preserve"><value>유지</value></data>
+  <data name="MacroAction_KeyColors_HoldDuration" xml:space="preserve"><value>정해진 시간 동안</value></data>
+  <data name="MacroAction_KeyColors_HoldRelease" xml:space="preserve"><value>매크로의 트리거를 누르는 동안</value></data>
+  <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>해제할 때까지</value></data>
+  <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>시간</value></data>
+  <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>기존 색상 유지</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>이 동작은 이 가상 컨트롤러가 조명을 제어하는 모든 키보드에서 같은 키를 조명 탭에서 지정한 색상 위에 밝힙니다. 숫자는 선택한 순서를 나타냅니다. 카운트다운은 마지막에 선택한 키부터 하나씩 끄므로, 숫자 행에서 쿨다운을 만들려면 1부터 0까지 순서대로 선택하세요. 키보드나 마우스는 이 장치의 조명 제어가 켜져 있을 때만 밝혀집니다.</value></data>
+  <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>기타</value></data>
+  <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, {1}번째</value></data>
 </root>

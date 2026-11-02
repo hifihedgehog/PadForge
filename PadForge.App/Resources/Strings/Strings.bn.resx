@@ -1090,6 +1090,44 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>রং যোগ করুন</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>প্যালেট রিসেট করুন</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>বর্তমান প্যালেটের জায়গায় চারটি ডিফল্ট রং বসান (লাল, সবুজ, নীল, হলুদ)।</value></data>
+  <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>কী-র রং</value></data>
+  <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>জোনের রং</value></data>
+  <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>ছবিতে কী নির্বাচন করুন বা কিবোর্ডে চাপুন, তারপর সেগুলোকে একটি রং দিন। প্রতিটি শিফট লেয়ারের নিজস্ব রং থাকতে পারে, লেয়ার সক্রিয় থাকার সময় তা দেখা যায়।</value></data>
+  <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>জোন নির্বাচন করুন এবং সেগুলোকে একটি রং দিন। প্রতিটি শিফট লেয়ারের নিজস্ব রং থাকতে পারে, লেয়ার সক্রিয় থাকার সময় তা দেখা যায়।</value></data>
+  <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>সব লেয়ার থেকে রং সরান।</value></data>
+  <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>অন্যান্য লাইট</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>নিজস্ব রং না থাকা লাইট এই লেয়ারে কী দেখাবে।</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>{0} লেয়ারের রং</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>লাইটিং মোড</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>বন্ধ</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>একটি রং</value></data>
+  <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>লাইট নির্বাচন করতে কী চাপুন, নির্বাচিত কী আবার চাপলে তা বাদ যাবে। Ctrl+Tab চাপলে পরের ধাপে যাবে।</value></data>
+  <data name="Pad_Lighting_KeyColors_NoneSelected" xml:space="preserve"><value>কোনো লাইট নির্বাচিত নেই। লাইট নির্বাচন করতে ছবিতে ক্লিক করুন বা টেনে আনুন।</value></data>
+  <data name="Pad_Lighting_KeyColors_Selected_Format" xml:space="preserve"><value>নির্বাচিত: {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllKeys" xml:space="preserve"><value>সব কী</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberRow" xml:space="preserve"><value>নম্বর সারি</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectFunctionKeys" xml:space="preserve"><value>F কী</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberPad" xml:space="preserve"><value>নম্বর প্যাড</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>অ্যারো কী</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>প্রান্ত</value></data>
+  <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>লোগো</value></data>
+  <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>স্ট্যাটাস</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>সব লাইট</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>নির্বাচন সাফ করুন</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>কী চেপে নির্বাচন করুন</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing_Tooltip" xml:space="preserve"><value>চালু থাকলে, ছবিতে ফোকাস থাকা অবস্থায় কী চাপলে তার লাইট নির্বাচিত হয়, আবার চাপলে বাদ যায়। Ctrl+Tab চাপলে ছবি থেকে বেরিয়ে আসবে।</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor" xml:space="preserve"><value>রং প্রয়োগ করুন</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor_Tooltip" xml:space="preserve"><value>নির্বাচিত লাইটগুলোকে উপরের রংটি দিন।</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor" xml:space="preserve"><value>রং সরান</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor_Tooltip" xml:space="preserve"><value>এই লেয়ারে নির্বাচিত লাইটগুলোর রং সরান, তখন সেগুলো অন্যান্য লাইট যা বলে তা দেখাবে।</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer" xml:space="preserve"><value>সব রং সরান</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer_Tooltip" xml:space="preserve"><value>এই লেয়ার থেকে সব রং সরান এবং অন্যান্য লাইট আবার লেয়ারের শুরুর অবস্থায় ফিরিয়ে দিন।</value></data>
+  <data name="Pad_Lighting_KeyColors_UnnamedKey_Format" xml:space="preserve"><value>কী {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Zone_Format" xml:space="preserve"><value>জোন {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Light_Format" xml:space="preserve"><value>লাইট {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightColor_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightBaseLayer_Format" xml:space="preserve"><value>{0}: {2} থেকে {1}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>পালস ধরে রাখা</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>পালস মিলিয়ে যাওয়া</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>প্রিসেট</value></data>
@@ -3314,6 +3352,31 @@
   <data name="Handheld_NoDevice" xml:space="preserve"><value>লুকানো বোতাম বন্ধ করা আছে। আগে সেটিংসে “হ্যান্ডহেল্ড পিসির বোতাম” সক্ষম করুন।</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} চলছে। আপনি এটি বন্ধ না করা পর্যন্ত এটি এই বোতামগুলোতে সাড়া দিতে থাকবে।</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>এক্সপোর্ট করুন…</value></data>
+  <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>কী লাইট ম্যাপ করুন</value></data>
+  <data name="MapKeyLights_Title" xml:space="preserve"><value>কী লাইট ম্যাপ করুন</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge একবারে একটি কী লাইট জ্বালায়। নাম দিতে জ্বলন্ত লাইটের নিচের কী-টি চাপুন। নামগুলো এই মডেলের প্রতিটি কিবোর্ডের জন্য সংরক্ষিত থাকে, ফলে কী-র রং এবং কী-র রঙের ম্যাক্রো সঠিক কী-তে পৌঁছায়।</value></data>
+  <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>ডিভাইস:</value></data>
+  <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>নাম দেওয়া কী: {0}/{1}</value></data>
+  <data name="MapKeyLights_NoLights" xml:space="preserve"><value>এই ডিভাইসে এমন কোনো কী লাইট নেই যার নাম PadForge শিখতে পারে।</value></data>
+  <data name="MapKeyLights_Ready" xml:space="preserve"><value>শুরু করুন চাপলে নাম ছাড়া প্রথম কী লাইটটি জ্বলবে।</value></data>
+  <data name="MapKeyLights_Ask_Format" xml:space="preserve"><value>লাইট {0} জ্বলছে। এর নিচের কী-টি চাপুন।</value></data>
+  <data name="MapKeyLights_AskNamed_Format" xml:space="preserve"><value>লাইট {0} জ্বলছে এবং এর নাম {1}। আবার নাম দিতে এর নিচের কী-টি চাপুন।</value></data>
+  <data name="MapKeyLights_Start" xml:space="preserve"><value>শুরু করুন</value></data>
+  <data name="MapKeyLights_Back" xml:space="preserve"><value>পিছনে</value></data>
+  <data name="MapKeyLights_Skip" xml:space="preserve"><value>এড়িয়ে যান</value></data>
+  <data name="MapKeyLights_Skip_Tooltip" xml:space="preserve"><value>এই লাইটটি নাম ছাড়া রেখে পরেরটি জ্বালান।</value></data>
+  <data name="MapKeyLights_Forget" xml:space="preserve"><value>ভুলে যান</value></data>
+  <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>জ্বলন্ত লাইটের শেখা নামটি সরান।</value></data>
+  <data name="MapKeyLights_Stop" xml:space="preserve"><value>থামান</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>কোনো লাইট না জ্বললে, Windows সেটিংসে ডিভাইসটির ডাইনামিক লাইটিং বন্ধ করুন বা এর নিজস্ব লাইটিং সফটওয়্যার বন্ধ করুন, তারপর আবার শুরু করুন চাপুন।</value></data>
+  <data name="MapKeyLights_Export" xml:space="preserve"><value>এক্সপোর্ট করুন…</value></data>
+  <data name="MapKeyLights_Import" xml:space="preserve"><value>ইমপোর্ট করুন…</value></data>
+  <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>সব ভুলে যান</value></data>
+  <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>এই মডেলের জন্য শেখা সব নাম সরান।</value></data>
+  <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>{0}টি নাম এক্সপোর্ট করা হয়েছে।</value></data>
+  <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>{0}টি নাম ইমপোর্ট করা হয়েছে।</value></data>
+  <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>অন্য মডেল {1}-এর জন্য {0}টি নাম ইমপোর্ট করা হয়েছে।</value></data>
+  <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>ওই ফাইলে কোনো কী লাইটের নাম নেই।</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>ইমপোর্ট করুন…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0}টি বোতাম এক্সপোর্ট হয়েছে।</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0}টি বোতাম ইমপোর্ট হয়েছে।</value></data>
@@ -4716,4 +4779,31 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{1}-এ {0}, ধরে রাখা পর্যন্ত</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{1}-এ {0}, থামানো পর্যন্ত</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>{0}-এ ট্রিগার ইফেক্ট থামান</value></data>
+  <data name="MacroAction_Type_SetKeyColors" xml:space="preserve"><value>কী-র রং সেট করুন</value></data>
+  <data name="MacroAction_Type_ClearKeyColors" xml:space="preserve"><value>কী-র রং সাফ করুন</value></data>
+  <data name="MacroAction_SetKeyColors_Tooltip" xml:space="preserve"><value>এই ভার্চুয়াল কন্ট্রোলার যেসব কিবোর্ড ও অন্য ডিভাইসের লাইট নিয়ন্ত্রণ করে, তাতে কী-কে একটি রঙে জ্বালায়: স্থির, ফিকে হয়ে যাওয়া, বা একটি করে কী গুনে গুনে নিভিয়ে।</value></data>
+  <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>এই ভার্চুয়াল কন্ট্রোলারে চলমান যে কী-র রং সেট করুন অ্যাকশনগুলো এখানে বাছাই করা কোনো কী জ্বালাচ্ছে সেগুলো শেষ করে, কিছু বাছাই না থাকলে সবগুলো শেষ করে।</value></data>
+  <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>সব কী-র রং সাফ করুন</value></data>
+  <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>{0}টি লাইটের কী-র রং সাফ করুন</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0}টি লাইট {1} রঙে, {2} ms ধরে</value></data>
+  <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0}টি লাইট {1} রঙে, ধরে রাখা পর্যন্ত</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0}টি লাইট {1} রঙে, সাফ করা পর্যন্ত</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0}টি লাইট {1} রঙে, {2} ms ধরে ফিকে হয়ে</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0}টি লাইট {1} রঙে, {2} ms ধরে গুনে গুনে নিভে</value></data>
+  <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>কী</value></data>
+  <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>প্রতিটি লাইট</value></data>
+  <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>কোনো কী বাছাই করা হয়নি, তাই অ্যাকশন কিছুই জ্বালাবে না।</value></data>
+  <data name="MacroAction_KeyColors_Style" xml:space="preserve"><value>ধরন</value></data>
+  <data name="MacroAction_KeyColors_Steady" xml:space="preserve"><value>স্থির</value></data>
+  <data name="MacroAction_KeyColors_Fade" xml:space="preserve"><value>ফিকে হয়ে নিভে যাওয়া</value></data>
+  <data name="MacroAction_KeyColors_Countdown" xml:space="preserve"><value>কাউন্টডাউন</value></data>
+  <data name="MacroAction_KeyColors_Hold" xml:space="preserve"><value>ধরে রাখে</value></data>
+  <data name="MacroAction_KeyColors_HoldDuration" xml:space="preserve"><value>নির্দিষ্ট সময়ের জন্য</value></data>
+  <data name="MacroAction_KeyColors_HoldRelease" xml:space="preserve"><value>ম্যাক্রোর ট্রিগার ধরে রাখার সময়</value></data>
+  <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>সাফ করা পর্যন্ত</value></data>
+  <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>সময়</value></data>
+  <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>তাদের রং রাখুন</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>অ্যাকশনটি এই ভার্চুয়াল কন্ট্রোলার যত কিবোর্ডের লাইট নিয়ন্ত্রণ করে, সবগুলোতে একই কী জ্বালায়, লাইটিং ট্যাবের দেওয়া রঙের উপরে। সংখ্যাগুলো বাছাইয়ের ক্রম দেখায়। কাউন্টডাউন একবারে একটি কী নেভায়, শেষে বাছাই করা কী আগে, তাই নম্বর সারিতে কুলডাউন দেখাতে 1 থেকে 0 বাছাই করুন। কিবোর্ড বা মাউসের লাইট কেবল তখনই জ্বলে যখন এই ডিভাইসের লাইটিং নিয়ন্ত্রণ করুন চালু থাকে।</value></data>
+  <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>অন্যান্য</value></data>
+  <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, নম্বর {1}</value></data>
 </root>

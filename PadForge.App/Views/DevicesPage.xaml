@@ -910,6 +910,18 @@
                                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
                             </Button.Style>
                         </Button>
+
+                        <!-- Map Key Lights (#557): a keyboard whose lights are
+                             known one by one, to name the keys its own
+                             description leaves unnamed. -->
+                        <Button Content="{Binding MapKeyLights_ManageButton, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
+                                Padding="8,4" HorizontalAlignment="Left"
+                                Click="MapKeyLights_Click"
+                                Visibility="{Binding SelectedDevice.ShowMapKeyLights, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
+                            </Button.Style>
+                        </Button>
                         <!-- Opt-in driver switch (hifihedgehog/SDL#33 Part 15): the
                              Xbox 360 pads and receiver, the Intel base station,
                              the Prodikeys and the TouchSense mice, whose WinUSB

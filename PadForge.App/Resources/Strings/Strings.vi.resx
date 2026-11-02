@@ -1090,6 +1090,44 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Thêm màu</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Đặt lại bảng màu</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Thay bảng màu hiện tại bằng bốn màu mặc định (đỏ, xanh lá, xanh dương, vàng).</value></data>
+  <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Màu phím</value></data>
+  <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Màu vùng</value></data>
+  <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Chọn phím trên hình, hoặc nhấn chúng trên bàn phím, rồi cho chúng một màu. Mỗi lớp shift có thể có màu riêng, hiển thị khi lớp đó được kích hoạt.</value></data>
+  <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Chọn vùng rồi cho chúng một màu. Mỗi lớp shift có thể có màu riêng, hiển thị khi lớp đó được kích hoạt.</value></data>
+  <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>Gỡ màu khỏi mọi lớp.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others" xml:space="preserve"><value>Đèn khác</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Tooltip" xml:space="preserve"><value>Những đèn không có màu riêng sẽ hiển thị gì trên lớp này.</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_BaseLayer_Format" xml:space="preserve"><value>Màu của lớp {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Mode" xml:space="preserve"><value>Chế độ đèn</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Off" xml:space="preserve"><value>Tắt</value></data>
+  <data name="Pad_Lighting_KeyColors_Others_Color" xml:space="preserve"><value>Một màu</value></data>
+  <data name="Pad_Lighting_KeyColors_PickHint" xml:space="preserve"><value>Nhấn phím để chọn đèn của chúng, nhấn lại phím đã chọn để bỏ chọn. Ctrl+Tab để chuyển tiếp.</value></data>
+  <data name="Pad_Lighting_KeyColors_NoneSelected" xml:space="preserve"><value>Chưa chọn đèn nào. Nhấp hoặc kéo trên hình để chọn đèn.</value></data>
+  <data name="Pad_Lighting_KeyColors_Selected_Format" xml:space="preserve"><value>Đã chọn: {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllKeys" xml:space="preserve"><value>Tất cả phím</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberRow" xml:space="preserve"><value>Hàng số</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectFunctionKeys" xml:space="preserve"><value>Phím F</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectNumberPad" xml:space="preserve"><value>Bàn phím số</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Phím mũi tên</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Viền</value></data>
+  <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logo</value></data>
+  <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Trạng thái</value></data>
+  <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Tất cả đèn</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Bỏ chọn</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Chọn bằng cách nhấn phím</value></data>
+  <data name="Pad_Lighting_KeyColors_PickByPressing_Tooltip" xml:space="preserve"><value>Khi bật, nhấn một phím lúc hình đang được lấy tiêu điểm sẽ chọn đèn của phím đó, nhấn lại sẽ bỏ chọn. Ctrl+Tab để rời khỏi hình.</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor" xml:space="preserve"><value>Áp dụng màu</value></data>
+  <data name="Pad_Lighting_KeyColors_ApplyColor_Tooltip" xml:space="preserve"><value>Cho các đèn đã chọn màu ở trên.</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor" xml:space="preserve"><value>Gỡ màu</value></data>
+  <data name="Pad_Lighting_KeyColors_RemoveColor_Tooltip" xml:space="preserve"><value>Gỡ màu của các đèn đã chọn trên lớp này, để chúng hiển thị theo mục Đèn khác.</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer" xml:space="preserve"><value>Gỡ tất cả màu</value></data>
+  <data name="Pad_Lighting_KeyColors_ClearLayer_Tooltip" xml:space="preserve"><value>Gỡ mọi màu khỏi lớp này và đặt Đèn khác về trạng thái ban đầu của lớp.</value></data>
+  <data name="Pad_Lighting_KeyColors_UnnamedKey_Format" xml:space="preserve"><value>Phím {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Zone_Format" xml:space="preserve"><value>Vùng {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Light_Format" xml:space="preserve"><value>Đèn {0}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightColor_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Pad_Lighting_KeyColors_LightBaseLayer_Format" xml:space="preserve"><value>{0}: {1} từ {2}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Thời gian giữ xung</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Thời gian tắt dần xung</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Thiết lập sẵn</value></data>
@@ -3314,6 +3352,31 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Nút ẩn đang tắt. Trước tiên hãy bật Nút PC cầm tay trong Thiết lập.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} đang chạy. Nó vẫn phản ứng với các nút này cho đến khi bạn dừng nó.</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Xuất…</value></data>
+  <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>Ánh xạ đèn phím</value></data>
+  <data name="MapKeyLights_Title" xml:space="preserve"><value>Ánh xạ đèn phím</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge thắp từng đèn phím một. Nhấn phím nằm dưới đèn đang sáng để đặt tên cho nó. Các tên được lưu cho mọi bàn phím cùng kiểu máy này, để Màu phím và các macro màu phím tác động đúng phím.</value></data>
+  <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>Thiết bị:</value></data>
+  <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>Phím đã đặt tên: {0} trên {1}</value></data>
+  <data name="MapKeyLights_NoLights" xml:space="preserve"><value>Thiết bị này không có đèn phím nào mà PadForge có thể học tên.</value></data>
+  <data name="MapKeyLights_Ready" xml:space="preserve"><value>Bắt đầu sẽ thắp đèn phím đầu tiên chưa có tên.</value></data>
+  <data name="MapKeyLights_Ask_Format" xml:space="preserve"><value>Đèn {0} đang sáng. Nhấn phím nằm dưới nó.</value></data>
+  <data name="MapKeyLights_AskNamed_Format" xml:space="preserve"><value>Đèn {0} đang sáng và có tên {1}. Nhấn phím nằm dưới nó để đặt tên lại.</value></data>
+  <data name="MapKeyLights_Start" xml:space="preserve"><value>Bắt đầu</value></data>
+  <data name="MapKeyLights_Back" xml:space="preserve"><value>Quay lại</value></data>
+  <data name="MapKeyLights_Skip" xml:space="preserve"><value>Bỏ qua</value></data>
+  <data name="MapKeyLights_Skip_Tooltip" xml:space="preserve"><value>Để đèn này không có tên và thắp đèn tiếp theo.</value></data>
+  <data name="MapKeyLights_Forget" xml:space="preserve"><value>Quên</value></data>
+  <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>Gỡ tên đã học cho đèn đang sáng.</value></data>
+  <data name="MapKeyLights_Stop" xml:space="preserve"><value>Dừng</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>Nếu không có đèn nào sáng, hãy tắt Ánh sáng động cho thiết bị trong Cài đặt Windows, hoặc đóng phần mềm chiếu sáng riêng của nó, rồi nhấn Bắt đầu lại.</value></data>
+  <data name="MapKeyLights_Export" xml:space="preserve"><value>Xuất…</value></data>
+  <data name="MapKeyLights_Import" xml:space="preserve"><value>Nhập…</value></data>
+  <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Quên tất cả</value></data>
+  <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Gỡ mọi tên đã học cho kiểu máy này.</value></data>
+  <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Đã xuất {0} tên.</value></data>
+  <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Đã nhập {0} tên.</value></data>
+  <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Đã nhập {0} tên cho một kiểu máy khác, {1}.</value></data>
+  <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Tệp đó không chứa tên đèn phím nào.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Nhập…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Đã xuất {0} nút.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Đã nhập {0} nút.</value></data>
@@ -4716,4 +4779,31 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} trên {1} khi đang giữ</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} trên {1} cho đến khi dừng</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Dừng hiệu ứng cò trên {0}</value></data>
+  <data name="MacroAction_Type_SetKeyColors" xml:space="preserve"><value>Đặt màu phím</value></data>
+  <data name="MacroAction_Type_ClearKeyColors" xml:space="preserve"><value>Xóa màu phím</value></data>
+  <data name="MacroAction_SetKeyColors_Tooltip" xml:space="preserve"><value>Thắp sáng phím bằng một màu trên các bàn phím và thiết bị khác mà bộ điều khiển ảo này điều khiển đèn: cố định, mờ dần, hoặc đếm ngược từng phím một.</value></data>
+  <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Kết thúc các hành động Đặt màu phím đang chạy trên bộ điều khiển ảo này có thắp sáng một trong các phím được chọn ở đây, hoặc tất cả khi không chọn phím nào.</value></data>
+  <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Xóa tất cả màu phím</value></data>
+  <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Xóa màu phím trên {0} đèn</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} đèn màu {1} trong {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} đèn màu {1} khi đang giữ</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} đèn màu {1} cho đến khi xóa</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} đèn màu {1}, mờ dần trong {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} đèn màu {1}, đếm ngược trong {2} ms</value></data>
+  <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Phím</value></data>
+  <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Mọi đèn</value></data>
+  <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Chưa chọn phím nào, nên hành động không thắp sáng gì.</value></data>
+  <data name="MacroAction_KeyColors_Style" xml:space="preserve"><value>Kiểu</value></data>
+  <data name="MacroAction_KeyColors_Steady" xml:space="preserve"><value>Cố định</value></data>
+  <data name="MacroAction_KeyColors_Fade" xml:space="preserve"><value>Mờ dần</value></data>
+  <data name="MacroAction_KeyColors_Countdown" xml:space="preserve"><value>Đếm ngược</value></data>
+  <data name="MacroAction_KeyColors_Hold" xml:space="preserve"><value>Giữ</value></data>
+  <data name="MacroAction_KeyColors_HoldDuration" xml:space="preserve"><value>Trong một khoảng thời gian</value></data>
+  <data name="MacroAction_KeyColors_HoldRelease" xml:space="preserve"><value>Trong khi giữ bộ kích hoạt của macro</value></data>
+  <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>Cho đến khi bị xóa</value></data>
+  <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Thời gian</value></data>
+  <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Giữ màu của chúng</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Hành động thắp sáng cùng các phím trên mọi bàn phím mà bộ điều khiển ảo này điều khiển đèn, phủ lên các màu mà thẻ Đèn của nó đặt. Các số cho biết thứ tự đã chọn. Đếm ngược tắt từng phím một, phím chọn cuối cùng tắt trước, nên hãy chọn 1 đến 0 để làm bộ đếm hồi chiêu trên hàng số. Bàn phím hoặc chuột chỉ sáng khi Điều khiển đèn của thiết bị này được bật.</value></data>
+  <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Khác</value></data>
+  <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, số {1}</value></data>
 </root>

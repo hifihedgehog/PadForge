@@ -539,6 +539,22 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
+        /// Per-slot key colors played by <c>MacroActionType.SetKeyColors</c>
+        /// and ended by <c>ClearKeyColors</c> (#557). Read by the effect
+        /// dispatcher when it lights the slot's keyboards, mice and lighting
+        /// rows, over the Lighting tab's key colors. Lives with the engine,
+        /// like <see cref="MacroTriggerEffects"/>.
+        /// </summary>
+        public MacroKeyColorState[] MacroKeyColors { get; } = InitMacroKeyColors();
+
+        private static MacroKeyColorState[] InitMacroKeyColors()
+        {
+            var arr = new MacroKeyColorState[MaxPads];
+            for (int i = 0; i < arr.Length; i++) arr[i] = new MacroKeyColorState(i);
+            return arr;
+        }
+
+        /// <summary>
         /// Per-slot post-processed vibration. Each motor is the max
         /// across every device mapped to the slot, with each device's
         /// own PadSetting applied (gain/balance/swap, audio rumble,

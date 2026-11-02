@@ -1,12 +1,20 @@
 # Sabbath lock.
 #
-# Sets repository interactions to `collaborators_only` every Saturday at
-# 23:59 America/New_York. The lock self-expires 24 hours later (Sun
-# 23:59 ET) via the interaction-limits API's one_day window. The
-# companion sabbath-unlock.yml cron at Mon 00:01 ET acts as a safety
-# belt: it DELETEs the lock if for any reason it is still active past
-# midnight ET. DELETE is idempotent, so the normal weekly path runs
-# unlock-as-no-op.
+# Sets repository interactions to `collaborators_only` from Sunday 00:00
+# to Monday 00:00 America/New_York. The interaction-limits API's one_day
+# window ends the limit 24 hours after it is set, and the companion
+# sabbath-unlock.yml removes it at Monday 00:00 ET as well.
+#
+# GitHub starts scheduled runs late under load. Through October 2026 a
+# run set for Saturday 23:59 ET started four to seven hours late, so the
+# limit ran from Sunday morning into Monday morning. So the schedule
+# fires every hour from Saturday 19:07 ET, and the first run that starts
+# on Saturday sleeps until Sunday 00:00 ET and sets the limit then. A run
+# that starts on Sunday sets it at once unless it is already set, which
+# also covers a Saturday whose runs never came. The runs share one
+# concurrency group, so one sleeps and the next waits behind it. A
+# GitHub-hosted job may run six hours, and the longest sleep, from
+# 19:07, is under five.
 #
 # Owner and collaborators are exempt. Outside contributors are
 # temporarily restricted from opening issues, opening pull requests, and
@@ -29,40 +37,72 @@
 #   5. Store the token as repository secret SABBATH_PAT under
 #      Settings -> Secrets and variables -> Actions.
 #
-# Cron minute :59 chosen per the user's requested lock-at-23:59-ET.
-# Scheduled GitHub Actions can run several minutes late under load;
-# the lock may actually start a few minutes past midnight ET. In the
-# worst case the first few minutes of Sunday are unlocked.
-#
-# Manual re-lock is available via the Actions tab (workflow_dispatch).
+# A manual run from the Actions tab sets the limit at once, or with
+# wait_for_midnight follows the schedule's rules.
 
 name: Sabbath lock
 
 on:
   schedule:
-    - cron: "59 23 * * 6"
+    - cron: "7 19-23 * * 6"
+      timezone: "America/New_York"
+    - cron: "7 0-21/3 * * 0"
       timezone: "America/New_York"
   workflow_dispatch:
+    inputs:
+      wait_for_midnight:
+        description: 'Follow the schedule: wait for Sunday 00:00 ET on a Saturday, act only on a Sunday'
+        type: boolean
+        default: false
 
 permissions: {}
+
+concurrency:
+  group: sabbath-lock
+  cancel-in-progress: false
 
 jobs:
   lock:
     runs-on: ubuntu-latest
+    timeout-minutes: 340
     steps:
-      - name: Set interaction limit to collaborators_only for one day
+      - name: Set interaction limit to collaborators_only for Sunday
         env:
           PAT: ${{ secrets.SABBATH_PAT }}
           REPO: ${{ github.repository }}
+          SCHEDULED: ${{ github.event_name == 'schedule' || inputs.wait_for_midnight }}
         run: |
           set -euo pipefail
           if [ -z "${PAT:-}" ]; then
             echo "SABBATH_PAT secret is not set. See header comment in this workflow file." >&2
             exit 1
           fi
-          curl -fsSL -X PUT \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer $PAT" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/${REPO}/interaction-limits" \
-            -d '{"limit":"collaborators_only","expiry":"one_day"}'
+          export TZ=America/New_York
+          url="https://api.github.com/repos/${REPO}/interaction-limits"
+          api() {
+            curl -fsSL \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer $PAT" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "$@"
+          }
+          if [ "$SCHEDULED" = "true" ]; then
+            day=$(date +%u)
+            if [ "$day" = "6" ]; then
+              wait=$(( $(date -d 'tomorrow 00:00' +%s) - $(date +%s) ))
+              echo "$(date '+%a %H:%M:%S %Z'): waiting ${wait}s for Sunday 00:00."
+              if [ "$wait" -gt 0 ]; then
+                sleep "$wait"
+              fi
+            elif [ "$day" != "7" ]; then
+              echo "$(date '+%a %H:%M %Z') is outside the Sabbath. Nothing to do."
+              exit 0
+            fi
+            if [ "$(api "$url" | jq -r '.limit // empty')" = "collaborators_only" ]; then
+              echo "The limit is already set."
+              exit 0
+            fi
+          fi
+          api -X PUT "$url" -d '{"limit":"collaborators_only","expiry":"one_day"}'
+          echo
+          echo "Limit set at $(date '+%a %Y-%m-%d %H:%M:%S %Z')."

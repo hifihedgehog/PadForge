@@ -69,10 +69,11 @@ namespace PadForge.ViewModels
         /// reports, which the DualSense and the Edge give, as do pads on the
         /// GIP and Xbox One drivers, Switch pads over Bluetooth and Flydigi
         /// pads (hifihedgehog/SDL#42), and Xbox pads on the XInput driver
-        /// whose device GameInput lists (hifihedgehog/SDL#44). A Bluetooth
-        /// LE pad SDL reports none for shows the revision its Device
-        /// Information service gives, as an Xbox pad on Bluetooth does
-        /// ("5.23.6.0"). Empty hides the line.</summary>
+        /// whose device GameInput lists (hifihedgehog/SDL#44), shown in
+        /// all four parts when SDL publishes them (hifihedgehog/SDL#46). A
+        /// Bluetooth LE pad SDL reports none for shows the revision its
+        /// Device Information service gives, as an Xbox pad on Bluetooth
+        /// does ("5.23.6.0"). Empty hides the line.</summary>
         public string FirmwareVersion
         {
             get => _firmwareVersion;

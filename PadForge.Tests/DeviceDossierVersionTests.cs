@@ -54,6 +54,38 @@ namespace PadForge.Tests
             Assert.Equal(string.Empty, InputService.DossierFirmware(null));
         }
 
+        /// <summary>The whole version SDL's XInput driver publishes for a pad
+        /// GameInput lists (hifihedgehog/SDL#46) comes before the two parts
+        /// the 16-bit value keeps.</summary>
+        [Fact]
+        public void DossierFirmware_ShowsTheWholeGameInputVersion()
+        {
+            var wrapper = new SdlDeviceWrapper();
+            GC.SuppressFinalize(wrapper);
+            var ud = new UserDevice { Device = wrapper };
+            SetWrapper(wrapper, "VendorId", 0x045E);
+            SetWrapper(wrapper, "FirmwareVersion", 0x0511);
+            Assert.Equal("5.17", InputService.DossierFirmware(ud));
+            typeof(SdlDeviceWrapper).GetProperty("FirmwareText").SetValue(wrapper, "5.17.3202.0");
+            Assert.Equal("5.17.3202.0", InputService.DossierFirmware(ud));
+        }
+
+        /// <summary>Only a GameInputVersion's shape reads as firmware text:
+        /// four decimal parts of 0 to 65535.</summary>
+        [Theory]
+        [InlineData("5.17.3202.0", "5.17.3202.0")]
+        [InlineData("65535.65535.65535.65535", "65535.65535.65535.65535")]
+        [InlineData("5.17", "")]
+        [InlineData("5.17.3202.0.1", "")]
+        [InlineData("5..3202.0", "")]
+        [InlineData("5.17.3202.x", "")]
+        [InlineData("65536.0.0.0", "")]
+        [InlineData(" 5.17.3202.0", "")]
+        [InlineData("", "")]
+        [InlineData(null, "")]
+        public void FirmwareText_TakesOnlyAFourPartVersion(string text, string expected)
+            => Assert.Equal(expected, SdlDeviceWrapper.ParseFirmwareText(text));
+
         /// <summary>The wrapper reads the version again after open, on both
         /// read paths, and the 5 s battery tick writes every row's FIRMWARE
         /// line as the row fill does. Pinned in source, since the test host
@@ -69,6 +101,9 @@ namespace PadForge.Tests
             string readState = wrapper.Substring(start, end - start);
             Assert.Contains("now - _lastFirmwareReadTick > 5000", readState);
             Assert.Contains(read, readState);
+            const string text = "FirmwareText = ReadFirmwareText(Joystick);";
+            Assert.Equal(2, Regex.Matches(wrapper, Regex.Escape(text)).Count);
+            Assert.Contains(text, readState);
 
             const string write = "row.FirmwareVersion = DossierFirmware(ud);";
             string service = RepoFile("PadForge.App", "Services", "InputService.cs");

@@ -337,10 +337,54 @@ namespace PadForge.Engine
 
         /// <summary>Firmware version as SDL reports it, 0 when unknown. SDL's
         /// DualSense, GIP, Xbox One, Switch (Bluetooth) and Flydigi drivers
-        /// fill it (hifihedgehog/SDL#42). It is read at open and again on
-        /// the battery's 5 s cadence, since a driver can learn it after open:
-        /// the GIP driver from a firmware reply that comes late.</summary>
+        /// fill it (hifihedgehog/SDL#42), and its XInput driver does for a pad
+        /// GameInput lists (hifihedgehog/SDL#44). It is read at open and again
+        /// on the battery's 5 s cadence, since a driver can learn it after
+        /// open: the GIP driver from a firmware reply that comes late.</summary>
         public ushort FirmwareVersion { get; private set; }
+
+        /// <summary>The whole firmware version GameInput reports for an XInput
+        /// pad, as text ("5.17.3202.0"), from <see cref="XInputFirmwareProperty"/>
+        /// (hifihedgehog/SDL#46). <see cref="FirmwareVersion"/> keeps only its
+        /// first two parts. Empty when SDL sets none. Read with
+        /// <see cref="FirmwareVersion"/>.</summary>
+        public string FirmwareText { get; private set; } = string.Empty;
+
+        /// <summary>The fork's joystick property for an XInput pad's GameInput
+        /// firmware version, major.minor.build.revision in decimal
+        /// (hifihedgehog/SDL#46).</summary>
+        internal const string XInputFirmwareProperty = "SDL.joystick.xinput.firmware";
+
+        /// <summary>The property's text when it holds four dot-separated
+        /// decimal parts of 0 to 65535 each, the shape of a GameInputVersion.
+        /// Anything else reads as empty.</summary>
+        internal static string ParseFirmwareText(string text)
+        {
+            if (string.IsNullOrEmpty(text) || text.Length > 23)
+                return string.Empty;
+            string[] parts = text.Split('.');
+            if (parts.Length != 4)
+                return string.Empty;
+            foreach (string part in parts)
+            {
+                if (part.Length == 0 || part.Length > 5)
+                    return string.Empty;
+                foreach (char c in part)
+                    if (c < '0' || c > '9')
+                        return string.Empty;
+                if (int.Parse(part, System.Globalization.CultureInfo.InvariantCulture) > ushort.MaxValue)
+                    return string.Empty;
+            }
+            return text;
+        }
+
+        private static string ReadFirmwareText(IntPtr joystick)
+        {
+            uint props = SDL_GetJoystickProperties(joystick);
+            return props != 0
+                ? ParseFirmwareText(SDL_GetStringProperty(props, XInputFirmwareProperty, null))
+                : string.Empty;
+        }
 
         /// <summary>The USB release number (bcdDevice), 0 when unknown.</summary>
         public ushort ProductVersion { get; private set; }
@@ -477,6 +521,7 @@ namespace PadForge.Engine
             DevicePath = SdlDevicePath;
             SerialNumber = SDL_GetJoystickSerial(Joystick) ?? string.Empty;
             FirmwareVersion = SDL_GetJoystickFirmwareVersion(Joystick);
+            FirmwareText = ReadFirmwareText(Joystick);
             ProductVersion = SDL_GetJoystickProductVersion(Joystick);
             SdlGuid = GetJoystickGUIDString(Joystick);
 
@@ -1017,6 +1062,7 @@ namespace PadForge.Engine
             {
                 _lastFirmwareReadTick = now;
                 FirmwareVersion = SDL_GetJoystickFirmwareVersion(Joystick);
+                FirmwareText = ReadFirmwareText(Joystick);
             }
 
             return state;

@@ -15,6 +15,12 @@
 #
 # Lift the pause: disable this workflow in the Actions tab.
 #
+# Archive: before a discussion is deleted, the delete step and the sweep
+# both save it with its replies as one Markdown file in the private
+# repository PadForge-discussion-archive, never in this public one. A
+# discussion that could not be saved is not deleted, and the sweep
+# deletes nothing while the token cannot reach the archive.
+#
 # Auth: ISSUE_BOT_TOKEN, the owner's token. Deleting a discussion needs
 # admin rights, which GITHUB_TOKEN does not carry.
 #
@@ -53,6 +59,8 @@ env:
   # What the marker becomes on a notice whose discussion was kept. It does
   # not contain MARKER, so nothing reads it as a pause.
   KEPT: '<!-- padforge-new-discussion-kept -->'
+  # The private repository removed discussions are saved to
+  ARCHIVE: ${{ github.repository_owner }}/PadForge-discussion-archive
 
 jobs:
   pause:
@@ -92,9 +100,40 @@ jobs:
       - name: Wait
         run: sleep "$DELAY"
 
-      - name: Delete unless unlocked
+      - name: Save and delete unless unlocked
         run: |
           set -euo pipefail
+          # Saves a discussion and its replies as one Markdown file in the
+          # private archive repository, unless an earlier run saved it.
+          # Kept the same as the copy in the other job.
+          archive() {
+            local json num path md
+            json=$(gh api graphql \
+              -f query='query($d:ID!){node(id:$d){... on Discussion{number title url createdAt body authorAssociation author{login} category{name} comments(first:50){nodes{createdAt body author{login} replies(first:50){nodes{createdAt body author{login}}}}}}}}' \
+              -f d="$1") || return 1
+            num=$(jq -r '.data.node.number' <<<"$json")
+            path="removed/$(jq -r '.data.node.createdAt[0:10]' <<<"$json")-${num}.md"
+            if gh api "repos/$ARCHIVE/contents/$path" --silent 2>/dev/null; then
+              return 0
+            fi
+            md=$(jq -r --arg m "$MARKER" '
+                .data.node as $d
+                | "# #\($d.number) \($d.title)\n\n"
+                  + "- Author: \($d.author.login // "ghost") (\($d.authorAssociation))\n"
+                  + "- Posted: \($d.createdAt)\n"
+                  + "- Category: \($d.category.name)\n"
+                  + "- Was at: \($d.url)\n\n"
+                  + $d.body + "\n"
+                  + ([$d.comments.nodes[]
+                      | select(.body | contains($m) | not)
+                      | "\n## \(.author.login // "ghost"), \(.createdAt)\n\n\(.body)\n"
+                        + ([.replies.nodes[]
+                            | "\n### \(.author.login // "ghost"), \(.createdAt)\n\n\(.body)\n"] | join(""))]
+                     | join(""))' <<<"$json")
+            gh api -X PUT "repos/$ARCHIVE/contents/$path" \
+              -f message="Removed discussion #$num" \
+              -f content="$(printf '%s\n' "$md" | base64 -w0)" --silent
+          }
           # "true", "false", or "null" for a discussion that is gone. The
           # // operator would turn false into its fallback too.
           locked=$(gh api graphql \
@@ -122,10 +161,14 @@ jobs:
             echo "Discussion #$NUMBER is gone or could not be read ($locked). Leaving it."
             exit 0
           fi
+          if ! archive "$DISCUSSION_ID"; then
+            echo "Could not save #$NUMBER to $ARCHIVE, so it stays locked for the sweep." >&2
+            exit 1
+          fi
           gh api graphql \
             -f query='mutation($d:ID!){deleteDiscussion(input:{id:$d}){discussion{number}}}' \
             -f d="$DISCUSSION_ID" > /dev/null
-          echo "Discussion #$NUMBER deleted."
+          echo "Discussion #$NUMBER saved to the archive and deleted."
 
   sweep:
     if: >-
@@ -135,9 +178,49 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.ISSUE_BOT_TOKEN }}
     steps:
-      - name: Delete paused discussions older than an hour
+      - name: Check that the archive is reachable
         run: |
           set -euo pipefail
+          push=$(gh api "repos/$ARCHIVE" --jq '.permissions.push' 2>/dev/null || echo unreachable)
+          if [ "$push" != "true" ]; then
+            echo "The token cannot write to $ARCHIVE ($push), so nothing is deleted." >&2
+            exit 1
+          fi
+
+      - name: Save and delete paused discussions older than an hour
+        run: |
+          set -euo pipefail
+          # Saves a discussion and its replies as one Markdown file in the
+          # private archive repository, unless an earlier run saved it.
+          # Kept the same as the copy in the other job.
+          archive() {
+            local json num path md
+            json=$(gh api graphql \
+              -f query='query($d:ID!){node(id:$d){... on Discussion{number title url createdAt body authorAssociation author{login} category{name} comments(first:50){nodes{createdAt body author{login} replies(first:50){nodes{createdAt body author{login}}}}}}}}' \
+              -f d="$1") || return 1
+            num=$(jq -r '.data.node.number' <<<"$json")
+            path="removed/$(jq -r '.data.node.createdAt[0:10]' <<<"$json")-${num}.md"
+            if gh api "repos/$ARCHIVE/contents/$path" --silent 2>/dev/null; then
+              return 0
+            fi
+            md=$(jq -r --arg m "$MARKER" '
+                .data.node as $d
+                | "# #\($d.number) \($d.title)\n\n"
+                  + "- Author: \($d.author.login // "ghost") (\($d.authorAssociation))\n"
+                  + "- Posted: \($d.createdAt)\n"
+                  + "- Category: \($d.category.name)\n"
+                  + "- Was at: \($d.url)\n\n"
+                  + $d.body + "\n"
+                  + ([$d.comments.nodes[]
+                      | select(.body | contains($m) | not)
+                      | "\n## \(.author.login // "ghost"), \(.createdAt)\n\n\(.body)\n"
+                        + ([.replies.nodes[]
+                            | "\n### \(.author.login // "ghost"), \(.createdAt)\n\n\(.body)\n"] | join(""))]
+                     | join(""))' <<<"$json")
+            gh api -X PUT "repos/$ARCHIVE/contents/$path" \
+              -f message="Removed discussion #$num" \
+              -f content="$(printf '%s\n' "$md" | base64 -w0)" --silent
+          }
           o="${GITHUB_REPOSITORY%/*}"; n="${GITHUB_REPOSITORY#*/}"
           now=$(date -u +%s)
           data=$(gh api graphql \
@@ -175,10 +258,14 @@ jobs:
                        | length > 0 and min <= ($now - 3600))
               | "\(.id) \(.number)"' <<<"$data" \
           | while read -r id num; do
+              if ! archive "$id"; then
+                echo "Could not save #$num to $ARCHIVE, so it stays."
+                continue
+              fi
               if gh api graphql \
                    -f query='mutation($d:ID!){deleteDiscussion(input:{id:$d}){discussion{number}}}' \
                    -f d="$id" > /dev/null; then
-                echo "Deleted paused discussion #$num."
+                echo "Saved and deleted paused discussion #$num."
               else
                 echo "Could not delete #$num, it may already be gone."
               fi

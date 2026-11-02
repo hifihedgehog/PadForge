@@ -221,7 +221,7 @@ namespace PadForge.Engine
         /// the interface on the USB device above the HID node, two nodes
         /// below the host controller, and gets no slot. A pad xboxgip
         /// serves carries it on the HID node, four nodes below
-        /// (SDL_xinput_paddle_identity.cpp:518-553), where the walk ends at
+        /// (SDL_xinput_paddle_identity.cpp:519-554), where the walk ends at
         /// the root hub: it keeps its slot and PadForge reads it. Windows
         /// says which node carries the interface
         /// (<see cref="CarriesXusbInterface"/>).</para>

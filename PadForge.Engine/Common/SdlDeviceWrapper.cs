@@ -396,7 +396,7 @@ namespace PadForge.Engine
         /// from the GUID's driver-signature byte (SDL_CreateJoystickGUID puts
         /// it at data[14], hex chars 28-29 of the GUID string): 'x' XInput,
         /// 'h' HIDAPI, 'g' GameInput (the Xbox One instruments its raw
-        /// report path lists by default, SDL_gameinputjoystick.cpp:258),
+        /// report path lists by default, SDL_gameinputjoystick.cpp:274),
         /// 'v' a virtual joystick (SDL_virtualjoystick.c, the joysticks
         /// PadForge's own readers attach), and DirectInput leaves it zero.
         /// Any other byte prints as hex.

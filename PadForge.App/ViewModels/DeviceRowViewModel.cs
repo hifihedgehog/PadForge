@@ -82,8 +82,9 @@ namespace PadForge.ViewModels
 
         private string _productRevision = string.Empty;
 
-        /// <summary>The dossier REV line: the USB release number (bcdDevice).
-        /// Empty hides the line.</summary>
+        /// <summary>The dossier REV line: the product version the device
+        /// reports, its USB release number (bcdDevice) over USB and its PnP ID
+        /// product version over Bluetooth LE. Empty hides the line.</summary>
         public string ProductRevision
         {
             get => _productRevision;
@@ -109,7 +110,8 @@ namespace PadForge.ViewModels
             };
         }
 
-        /// <summary>The USB release number as USB tools print it, 0 as empty.</summary>
+        /// <summary>The product version as USB tools print a release number,
+        /// 0 as empty.</summary>
         public static string FormatProductRevision(ushort version)
             => version == 0 ? string.Empty : $"0x{version:X4}";
 

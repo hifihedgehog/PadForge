@@ -386,7 +386,9 @@ namespace PadForge.Engine
                 : string.Empty;
         }
 
-        /// <summary>The USB release number (bcdDevice), 0 when unknown.</summary>
+        /// <summary>The product version SDL reports, 0 when unknown: the USB
+        /// release number (bcdDevice) over USB, the PnP ID product version over
+        /// Bluetooth LE.</summary>
         public ushort ProductVersion { get; private set; }
 
         /// <summary>SDL joystick GUID string (32 hex chars) used for gamecontrollerdb matching.</summary>

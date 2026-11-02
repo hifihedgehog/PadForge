@@ -39,6 +39,10 @@ namespace PadForge.Tests
         /// <summary>The zones of its 0x8070, as lists of effect IDs.</summary>
         public ushort[][] Zones = Array.Empty<ushort[]>();
 
+        /// <summary>The location each 0x8070 zone answers, 1 (primary) for a
+        /// zone this leaves out.</summary>
+        public ushort[] ZoneLocations = Array.Empty<ushort>();
+
         /// <summary>The first byte of a mode read's answer.</summary>
         public byte Mode = 0x01;
 
@@ -120,7 +124,9 @@ namespace PadForge.Tests
                 switch (fn)
                 {
                     case 0: return HidppHapticsTests.Ans(d, f, 0, (byte)Zones.Length);
-                    case 1: return HidppHapticsTests.Ans(d, f, 1, p[0], 0, 1, (byte)Zones[p[0]].Length);
+                    case 1:
+                        ushort location = p[0] < ZoneLocations.Length ? ZoneLocations[p[0]] : (ushort)1;
+                        return HidppHapticsTests.Ans(d, f, 1, p[0], (byte)(location >> 8), (byte)location, (byte)Zones[p[0]].Length);
                     case 2:
                         ushort effect = Zones[p[0]][p[1]];
                         return HidppHapticsTests.Ans(d, f, 2, p[0], p[1], (byte)(effect >> 8), (byte)effect);
@@ -2925,10 +2931,10 @@ namespace PadForge.Tests
         }
 
         /// <summary>A keyboard that refuses a zone frame goes back to its
-        /// clusters, and its map is taken down, so the Lighting tab stops
-        /// offering colors it cannot show.</summary>
+        /// clusters, and its map becomes theirs, so the Lighting tab offers
+        /// the colors it can show: the keys cluster and the logo.</summary>
         [Fact]
-        public void ARefusedZoneFrame_SendsTheKeyboardToItsClusters_AndTakesItsMapDown()
+        public void ARefusedZoneFrame_SendsTheKeyboardToItsClusters_AndItsMapToTheirs()
         {
             var device = HidppLightDevice.G915X();
             device.Refuse = (f, fn, p) => f == 0x09 && fn == HidppUnitProtocol.FunctionPerKeyV2SetIndividual ? (byte)0x02 : null;
@@ -2939,7 +2945,28 @@ namespace PadForge.Tests
             var lines = bench.After(10);
             Assert.Contains("ask 11 FF 09 1C 01 FF", lines);
             Assert.Equal(Clusters(Keys, 0x112233), lines.TakeLast(2));
-            Assert.Null(PeripheralLightMaps.For(bench.Path));
+            var map = PeripheralLightMaps.For(bench.Path);
+            Assert.Equal(new[] { LightKind.Zone, LightKind.Logo }, map.Lights.Select(l => l.Kind));
+            Assert.Null(map.Product);
+        }
+
+        /// <summary>A mouse with two clusters takes a color for each (#557):
+        /// the logo group's color on its logo cluster and the claim's on the
+        /// other, each the Fixed effect, under the claim. Its map is the two
+        /// clusters.</summary>
+        [Fact]
+        public void AMouseWithTwoClusters_PaintsEachItsOwnColor()
+        {
+            using var bench = new Bench(HidppLightDevice.G903());
+            var map = PeripheralLightMaps.For(bench.Path);
+            Assert.Equal(new[] { LightKind.Zone, LightKind.Logo }, map.Lights.Select(l => l.Kind));
+            bench.Link();
+            bench.Light(0x112233, keys: new KeyFrame(null, new Dictionary<string, int> { ["logo"] = 0x00FF00 }, null, null));
+            Assert.Equal(Join(MouseClaim, Fixed(Mouse, 0, 0x112233), Fixed(Mouse, 1, 0x00FF00)), bench.After(3));
+
+            bench.Clear();
+            bench.Light(0x112233, keys: new KeyFrame(null, new Dictionary<string, int> { ["logo"] = 0x0000FF }, null, null));
+            Assert.Equal(new[] { Fixed(Mouse, 1, 0x0000FF) }, bench.After(1));
         }
 
         /// <summary>A zone no reference names is a key with no key yet. A

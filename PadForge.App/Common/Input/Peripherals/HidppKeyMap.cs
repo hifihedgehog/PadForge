@@ -214,6 +214,34 @@ namespace PadForge.Common.Input.Peripherals
             _ => true,
         };
 
+        /// <summary>
+        /// The zones of a HID++ device painted zone by zone (#557): its
+        /// 0x8070 zones or 0x8071 clusters, two or more, each at its own
+        /// index. The zone a device places at the logo is the logo, and
+        /// every other is numbered in the device's order, since the location
+        /// codes name no more than the primary zone, the logo and the two
+        /// sides (libratbag hidpp20.h hidpp20_color_led_location, OpenRGB
+        /// zone_location_name). Null for a device with fewer than two.
+        /// </summary>
+        internal static LightMap Zones(HidppUnit unit)
+        {
+            if (unit == null || unit.Zones.Length < 2) return null;
+            var lights = new List<LightInfo>(unit.Zones.Length);
+            int number = 0;
+            for (int i = 0; i < unit.Zones.Length; i++)
+            {
+                byte zone = unit.Zones[i].Zone;
+                ushort location = i < unit.ZoneLocations.Length ? unit.ZoneLocations[i] : (ushort)0;
+                lights.Add(location == LogoLocation
+                    ? new LightInfo(zone, LightKind.Logo, 0, LightKeySource.None)
+                    : new LightInfo(zone, LightKind.Zone, 0, LightKeySource.None) { Zone = ++number });
+            }
+            return new LightMap(lights, "HID++ zones");
+        }
+
+        /// <summary>The location code of a logo zone or cluster.</summary>
+        internal const ushort LogoLocation = 2;
+
         /// <summary>The address of key <paramref name="id"/> of a 0x8080 key
         /// type: the type's bit above the ID, so no two lights of a board
         /// share one.</summary>

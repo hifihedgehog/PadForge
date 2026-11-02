@@ -101,9 +101,14 @@ namespace PadForge.Common.Input.Peripherals
         /// later paint relies on.</summary>
         public abstract HidppStep[] Paint(int rgb, bool full);
 
-        /// <summary>Whether the plan paints a color per light (#557,
-        /// <see cref="PaintLights"/>).</summary>
-        public virtual bool PaintsLights => false;
+        /// <summary>The lights the plan paints one by one (#557): a
+        /// keyboard's keys, or the zones of a device with two or more. Null
+        /// for a plan that paints one color.</summary>
+        public virtual LightMap Lights => null;
+
+        /// <summary>Whether the plan paints a color per light
+        /// (<see cref="PaintLights"/>).</summary>
+        public bool PaintsLights => Lights != null;
 
         /// <summary>The frames that show one color per light of
         /// <paramref name="map"/> (#557), <paramref name="colors"/> in the
@@ -196,11 +201,53 @@ namespace PadForge.Common.Input.Peripherals
     {
         protected readonly byte Effect;
         protected readonly HidppZone[] Zones;
+        private readonly HidppUnit _zoneUnit;
+        private LightMap _zoneLights;
 
         public ZonePlan(HidppUnit unit, byte effectIndex) : base(unit, 0)
         {
             Effect = effectIndex;
             Zones = unit.Zones;
+            _zoneUnit = unit;
+        }
+
+        /// <summary>A device with two zones or more paints each its own
+        /// color (#557, <see cref="HidppKeyMap.Zones"/>).</summary>
+        public override LightMap Lights => _zoneLights ??= HidppKeyMap.Zones(_zoneUnit);
+
+        /// <summary>Each zone that changed, or every zone, gets the static
+        /// effect in its own color, the frame a one-color paint sends each
+        /// zone (#557).</summary>
+        public override HidppStep[] PaintLights(LightMap map, int[] colors, int[] shown, bool full)
+        {
+            if (Lights == null) return null;
+            var steps = new List<HidppStep>(Zones.Length);
+            AddZoneColors(steps, map, colors, full ? null : shown);
+            if (steps.Count == 0) AddZoneColors(steps, map, colors, null);
+            return steps.ToArray();
+        }
+
+        /// <summary>The claim again and every zone in its color, as
+        /// <see cref="KeepAlive"/> sends the claim and the color.</summary>
+        public override HidppStep[] KeepAliveLights(int level, LightMap map, int[] colors, bool painted)
+        {
+            if (Lights == null) return null;
+            var steps = new List<HidppStep>(Zones.Length + 1);
+            steps.AddRange(Claim(level, 0));
+            AddZoneColors(steps, map, colors, null);
+            return steps.ToArray();
+        }
+
+        private void AddZoneColors(List<HidppStep> steps, LightMap map, int[] colors, int[] shown)
+        {
+            for (int i = 0; i < map.Lights.Count && i < colors.Length; i++)
+            {
+                if (shown != null && shown[i] == colors[i]) continue;
+                foreach (var zone in Zones)
+                    if (zone.Zone == map.Lights[i].Address)
+                        steps.Add(Write(HidppUnitProtocol.SetStaticColor(Device, Effect, zone,
+                            (byte)(colors[i] >> 16), (byte)(colors[i] >> 8), (byte)colors[i])));
+            }
         }
 
         public override int FrameGapMs => 0;
@@ -288,9 +335,13 @@ namespace PadForge.Common.Input.Peripherals
             _unit = unit;
         }
 
+        private LightMap _keyLights;
+
         /// <summary>A board whose keys were read paints them one by one
-        /// (#557).</summary>
-        public override bool PaintsLights => _unit.KeyTypes.Length > 0;
+        /// (#557). Its two zones draw into the same buffer as its keys, so a
+        /// board whose keys were not read is painted one color.</summary>
+        public override LightMap Lights
+            => _unit.KeyTypes.Length > 0 ? _keyLights ??= HidppKeyMap.Of(_unit) : null;
 
         /// <summary>A board that refuses a key frame is painted one color
         /// from then on. A refused commit is a failed paint, as it always
@@ -316,6 +367,7 @@ namespace PadForge.Common.Input.Peripherals
         /// </summary>
         public override HidppStep[] PaintLights(LightMap map, int[] colors, int[] shown, bool full)
         {
+            if (Lights == null) return null;
             var whole = new List<HidppStep>();
             AddZones(whole, 0);
             var under = new int[colors.Length];
@@ -346,6 +398,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <see cref="ZonePlan.KeepAlive"/> sends the claim and the color.</summary>
         public override HidppStep[] KeepAliveLights(int level, LightMap map, int[] colors, bool painted)
         {
+            if (Lights == null) return null;
             var steps = new List<HidppStep>();
             steps.AddRange(Claim(level, 0));
             steps.AddRange(PaintLights(map, colors, null, full: true));
@@ -549,6 +602,47 @@ namespace PadForge.Common.Input.Peripherals
                     (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb)));
         }
 
+        private LightMap _clusterLights;
+
+        /// <summary>A device with two clusters or more paints each its own
+        /// color (#557, <see cref="HidppKeyMap.Zones"/>).</summary>
+        public override LightMap Lights => _clusterLights ??= HidppKeyMap.Zones(Unit);
+
+        /// <summary>Each cluster that changed, or every cluster, gets the
+        /// Fixed effect in its own color, the frame a one-color paint sends
+        /// each cluster (#557).</summary>
+        public override HidppStep[] PaintLights(LightMap map, int[] colors, int[] shown, bool full)
+        {
+            if (Lights == null) return null;
+            var steps = new List<HidppStep>(Unit.Zones.Length);
+            AddClusterColors(steps, map, colors, full ? null : shown);
+            if (steps.Count == 0) AddClusterColors(steps, map, colors, null);
+            return steps.ToArray();
+        }
+
+        /// <summary>The hold and every cluster in its color, as
+        /// <see cref="KeepAlive"/> sends the hold and the color.</summary>
+        public override HidppStep[] KeepAliveLights(int level, LightMap map, int[] colors, bool painted)
+        {
+            if (Lights == null) return null;
+            var steps = new List<HidppStep>(Unit.Zones.Length + 2);
+            AddHold(steps, level);
+            AddClusterColors(steps, map, colors, null);
+            return steps.ToArray();
+        }
+
+        private void AddClusterColors(List<HidppStep> steps, LightMap map, int[] colors, int[] shown)
+        {
+            for (int i = 0; i < map.Lights.Count && i < colors.Length; i++)
+            {
+                if (shown != null && shown[i] == colors[i]) continue;
+                foreach (var cluster in Unit.Zones)
+                    if (cluster.Zone == map.Lights[i].Address)
+                        steps.Add(Write(HidppUnitProtocol.RgbFixedColor(Device, Effect, cluster,
+                            (byte)(colors[i] >> 16), (byte)(colors[i] >> 8), (byte)colors[i])));
+            }
+        }
+
         private const byte Both = HidppUnitProtocol.SwControlClusters | HidppUnitProtocol.SwControlPower;
     }
 
@@ -631,7 +725,11 @@ namespace PadForge.Common.Input.Peripherals
 
         public override HidppLightPlan WithoutPerKey => new ClusterPlan(Unit, Effect);
 
-        public override bool PaintsLights => true;
+        private LightMap _keyLights;
+
+        /// <summary>The keyboard's keys from its 0x8081 zones (#557), in
+        /// place of its clusters.</summary>
+        public override LightMap Lights => _keyLights ??= HidppKeyMap.Of(Unit);
 
         /// <summary>The whole picture again, so a zone the keyboard never
         /// took is put right within one interval, as OpenRGB's rolling
@@ -655,6 +753,7 @@ namespace PadForge.Common.Input.Peripherals
         /// </summary>
         public override HidppStep[] PaintLights(LightMap map, int[] colors, int[] shown, bool full)
         {
+            if (Lights == null) return null;
             var steps = new List<HidppStep>();
             int most = MostCommon(colors);
             if (full)

@@ -53,6 +53,13 @@ namespace PadForge.Common.Input.Peripherals
         /// effect. Empty for a device with no effect feature.</summary>
         public HidppZone[] Zones { get; init; } = Array.Empty<HidppZone>();
 
+        /// <summary>Where each of <see cref="Zones"/> is on the device, in
+        /// the same order, as the zone or cluster reports it: 1 primary, 2
+        /// logo, 3 left side, 4 right side (libratbag hidpp20.h
+        /// hidpp20_color_led_location, OpenRGB zone_location_name), for a
+        /// device painted zone by zone (#557).</summary>
+        public ushort[] ZoneLocations { get; init; } = Array.Empty<ushort>();
+
         /// <summary>The effect feature the unit is painted through, 0x8070
         /// or 0x8071, or 0 for none. Kept apart from
         /// <see cref="RgbFeatureId"/>, which is the first RGB feature the
@@ -1062,14 +1069,15 @@ namespace PadForge.Common.Input.Peripherals
             }
             if (unit.RgbFeatureId == HidppUnitProtocol.ColorLedEffects)
             {
-                var zones = StaticZones(channel, deviceIndex, unit.RgbIndex, timeout, out bool zonesMissed);
+                var zones = StaticZones(channel, deviceIndex, unit.RgbIndex, timeout, out bool zonesMissed, out var where);
                 if (zones == null) return null;
                 if (zonesMissed) { incomplete = true; return unit; }
                 // A zone-only device is painted through the feature just
                 // found, so it is asked nothing more than it ever was.
                 unit = unit with
                 {
-                    Zones = zones, EffectFeatureId = HidppUnitProtocol.ColorLedEffects, EffectIndex = unit.RgbIndex,
+                    Zones = zones, ZoneLocations = where,
+                    EffectFeatureId = HidppUnitProtocol.ColorLedEffects, EffectIndex = unit.RgbIndex,
                 };
             }
 
@@ -1140,10 +1148,13 @@ namespace PadForge.Common.Input.Peripherals
                 if (reply.Kind == HidppReplyKind.WriteFailed) return null;
                 if (Missed(reply)) { missed = true; return unit; }
                 if (zonesAt == 0) return unit;
-                var zones = StaticZones(channel, device, zonesAt, timeout, out missed);
+                var zones = StaticZones(channel, device, zonesAt, timeout, out missed, out var where);
                 if (zones == null) return null;
                 if (missed) return unit;
-                unit = unit with { EffectFeatureId = HidppUnitProtocol.ColorLedEffects, EffectIndex = zonesAt, Zones = zones };
+                unit = unit with
+                {
+                    EffectFeatureId = HidppUnitProtocol.ColorLedEffects, EffectIndex = zonesAt, Zones = zones, ZoneLocations = where,
+                };
 
                 // A keyboard of the G810 class whose very long collection is
                 // open is read for its keys, which answer on that report
@@ -1166,10 +1177,10 @@ namespace PadForge.Common.Input.Peripherals
             if (reply.Kind == HidppReplyKind.WriteFailed) return null;
             if (Missed(reply)) { missed = true; return unit; }
 
-            var clusters = FixedClusters(channel, device, unit.RgbIndex, timeout, out missed, out int multiCluster);
+            var clusters = FixedClusters(channel, device, unit.RgbIndex, timeout, out missed, out int multiCluster, out var places);
             if (clusters == null) return null;
             if (missed) return unit;
-            unit = unit with { Zones = clusters };
+            unit = unit with { Zones = clusters, ZoneLocations = places };
 
             HidppReply info = default;
             bool infoRead = false;
@@ -1372,10 +1383,12 @@ namespace PadForge.Common.Input.Peripherals
         /// not places to paint (the same document, p.5-6).</para>
         /// </summary>
         internal static HidppZone[] FixedClusters(IHidppChannel channel, byte deviceIndex, byte featureIndex, int timeout,
-            out bool missed, out int multiCluster)
+            out bool missed, out int multiCluster, out ushort[] locations)
         {
             missed = false;
             multiCluster = 0;
+            locations = Array.Empty<ushort>();
+            var where = new List<ushort>();
             const byte all = HidppUnitProtocol.AllClusters;
             var info = AskInfo(channel, deviceIndex, featureIndex, all, all, wholeEcho: false, timeout);
             if (info.Kind == HidppReplyKind.WriteFailed) return null;
@@ -1402,10 +1415,12 @@ namespace PadForge.Common.Input.Peripherals
                     ushort id = (ushort)((effect.Param(2) << 8) | effect.Param(3));
                     if (id != HidppUnitProtocol.StaticEffectId) continue;
                     clusters.Add(new HidppZone((byte)c, (byte)e));
+                    where.Add((ushort)location);
                     break;
                 }
                 if (missed) break;
             }
+            locations = where.ToArray();
             return clusters.ToArray();
         }
 
@@ -1519,9 +1534,11 @@ namespace PadForge.Common.Input.Peripherals
         /// stops, so the caller asks again rather than keep a device with
         /// zones missing.</summary>
         internal static HidppZone[] StaticZones(IHidppChannel channel, byte deviceIndex, byte featureIndex, int timeout,
-            out bool missed)
+            out bool missed, out ushort[] locations)
         {
             missed = false;
+            locations = Array.Empty<ushort>();
+            var where = new List<ushort>();
             var info = channel.Request(deviceIndex, featureIndex, 0, Array.Empty<byte>(), timeout);
             if (info.Kind == HidppReplyKind.WriteFailed) return null;
             missed = Missed(info);
@@ -1546,10 +1563,12 @@ namespace PadForge.Common.Input.Peripherals
                     ushort id = (ushort)((effect.Param(2) << 8) | effect.Param(3));
                     if (id != HidppUnitProtocol.StaticEffectId) continue;
                     zones.Add(new HidppZone((byte)z, (byte)e));
+                    where.Add((ushort)((zoneInfo.Param(1) << 8) | zoneInfo.Param(2)));
                     break;
                 }
                 if (missed) break;
             }
+            locations = where.ToArray();
             return zones.ToArray();
         }
 

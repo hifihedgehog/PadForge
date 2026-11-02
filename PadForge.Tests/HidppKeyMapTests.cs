@@ -282,16 +282,75 @@ namespace PadForge.Tests
             Assert.Equal("commit 11 FF 09 7C", lines[^1]);
         }
 
-        /// <summary>A plan that paints one color has no frames light by
-        /// light, so the worker paints it one color.</summary>
+        /// <summary>A device with two zones or clusters paints each its own
+        /// color, and one with a single zone, or a G810-class board whose keys
+        /// were not read, paints one color.</summary>
         [Fact]
-        public void OnlyTheStreamPlanPaintsLightByLight()
+        public void WhichPlansPaintLightByLight()
         {
-            Assert.False(HidppLightPlan.For(HidppLightPlanTests.ClusterUnit()).PaintsLights);
-            Assert.False(HidppLightPlan.For(HidppLightPlanTests.BoardUnit()).PaintsLights);
+            Assert.True(HidppLightPlan.For(HidppLightPlanTests.ClusterUnit()).PaintsLights);
+            Assert.True(HidppLightPlan.For(HidppLightPlanTests.StreamUnit()).WithoutPerKey.PaintsLights);
+            Assert.True(HidppLightPlan.For(HidppLightPlanTests.ZoneUnit() with
+            {
+                Zones = new[] { new HidppZone(0, 1), new HidppZone(1, 1) },
+            }).PaintsLights);
             Assert.False(HidppLightPlan.For(HidppLightPlanTests.ZoneUnit()).PaintsLights);
-            Assert.False(HidppLightPlan.For(HidppLightPlanTests.StreamUnit()).WithoutPerKey.PaintsLights);
-            Assert.Null(HidppLightPlan.For(HidppLightPlanTests.ClusterUnit()).PaintLights(LightMap.Empty, Array.Empty<int>(), null, true));
+            Assert.False(HidppLightPlan.For(HidppLightPlanTests.BoardUnit()).PaintsLights);
+            Assert.Null(HidppLightPlan.For(HidppLightPlanTests.ZoneUnit()).PaintLights(LightMap.Empty, Array.Empty<int>(), null, true));
+        }
+
+        /// <summary>The zone map: the zone a device places at the logo is the
+        /// logo and the others are numbered in order, each at its own index.</summary>
+        [Fact]
+        public void TheZoneMap_NamesTheLogo_AndNumbersTheRest()
+        {
+            var unit = HidppLightPlanTests.ClusterUnit() with
+            {
+                Zones = new[] { new HidppZone(0, 1), new HidppZone(3, 2), new HidppZone(5, 1) },
+                ZoneLocations = new ushort[] { 1, 2, 4 },
+            };
+            var map = HidppKeyMap.Zones(unit);
+            Assert.Equal(new[] { 0, 3, 5 }, map.Lights.Select(l => l.Address));
+            Assert.Equal(new[] { LightKind.Zone, LightKind.Logo, LightKind.Zone }, map.Lights.Select(l => l.Kind));
+            Assert.Equal(new[] { 1, 0, 2 }, map.Lights.Select(l => l.Zone));
+            Assert.Equal(2, map.ZoneCount);
+            Assert.False(map.HasKeys);
+            Assert.Null(HidppKeyMap.Zones(HidppLightPlanTests.ZoneUnit()));
+        }
+
+        /// <summary>A zone device's frames: each zone the static effect in
+        /// its own color, a change the zones that changed, and the keep-alive
+        /// the claim and every zone. A cluster device's the same with the
+        /// Fixed effect, and its hold in place of the claim.</summary>
+        [Fact]
+        public void EachZoneAndEachCluster_TakesItsOwnColor()
+        {
+            var zoneUnit = HidppLightPlanTests.ZoneUnit() with
+            {
+                Zones = new[] { new HidppZone(0, 1), new HidppZone(1, 2) },
+                ZoneLocations = new ushort[] { 1, 2 },
+            };
+            var zones = HidppLightPlan.For(zoneUnit);
+            var map = zones.Lights;
+            int[] colors = { 0x112233, 0x00FF00 };
+            Assert.Equal(new[] { "11 01 0E 3C 00 01 11 22 33 02", "11 01 0E 3C 01 02 00 FF 00 02" },
+                Text(zones.PaintLights(map, colors, null, full: true)));
+            Assert.Equal(new[] { "11 01 0E 3C 01 02 00 00 FF 02" },
+                Text(zones.PaintLights(map, new[] { 0x112233, 0x0000FF }, colors, full: false)));
+            Assert.Equal(new[] { "11 01 0E 8C 01 01", "11 01 0E 3C 00 01 11 22 33 02", "11 01 0E 3C 01 02 00 FF 00 02" },
+                Text(zones.KeepAliveLights(0, map, colors, painted: true)));
+
+            var clusters = HidppLightPlan.For(HidppLightPlanTests.ClusterUnit());
+            var clusterMap = clusters.Lights;
+            Assert.Equal(new[]
+            {
+                "11 01 0A 1C 00 01 11 22 33 02 00 00 00 00 00 00 01", "11 01 0A 1C 01 01 00 FF 00 02 00 00 00 00 00 00 01",
+            }, Text(clusters.PaintLights(clusterMap, colors, null, full: true)));
+            Assert.Equal(new[]
+            {
+                "11 01 0A 5C 01 03 05", "11 01 0A 8C 01 01",
+                "11 01 0A 1C 00 01 11 22 33 02 00 00 00 00 00 00 01", "11 01 0A 1C 01 01 00 FF 00 02 00 00 00 00 00 00 01",
+            }, Text(clusters.KeepAliveLights(2, clusterMap, colors, painted: true)));
         }
     }
 }

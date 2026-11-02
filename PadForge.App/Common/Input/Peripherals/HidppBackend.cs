@@ -49,8 +49,8 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>A record compares its arrays by reference, and every scan
-        /// builds new ones, so the zones, the per-key zones, the model IDs
-        /// and the key types are compared by value.</summary>
+        /// builds new ones, so the zones and their locations, the per-key
+        /// zones, the model IDs and the key types are compared by value.</summary>
         private static bool SameUnit(HidppUnit a, HidppUnit b)
         {
             if (ReferenceEquals(a, b)) return true;
@@ -59,9 +59,14 @@ namespace PadForge.Common.Input.Peripherals
             for (int i = 0; i < a.KeyTypes.Length; i++)
                 if (!a.KeyTypes[i].SameAs(b.KeyTypes[i])) return false;
             return a.Zones.AsSpan().SequenceEqual(b.Zones)
+                   && a.ZoneLocations.AsSpan().SequenceEqual(b.ZoneLocations)
                    && a.PerKeyZones.AsSpan().SequenceEqual(b.PerKeyZones)
                    && a.ModelIds.AsSpan().SequenceEqual(b.ModelIds)
-                   && (a with { Zones = b.Zones, PerKeyZones = b.PerKeyZones, ModelIds = b.ModelIds, KeyTypes = b.KeyTypes }) == b;
+                   && (a with
+                   {
+                       Zones = b.Zones, ZoneLocations = b.ZoneLocations, PerKeyZones = b.PerKeyZones,
+                       ModelIds = b.ModelIds, KeyTypes = b.KeyTypes,
+                   }) == b;
         }
     }
 
@@ -291,6 +296,10 @@ namespace PadForge.Common.Input.Peripherals
         /// last given their names at.</summary>
         private int _mapsVersion = -1;
 
+        /// <summary>A plan fell back to fewer lights, so the maps are owed
+        /// a sync on the next pass. Worker thread only.</summary>
+        private bool _mapsDirty;
+
         private HidppSnapshot _snapshot = HidppSnapshot.Empty;
         private Thread _thread;
         private volatile WorkerRun _run;
@@ -485,7 +494,7 @@ namespace PadForge.Common.Input.Peripherals
                     var links = PeripheralOutputs.Links;
                     bool active = PlayHaptics(channels, states, links, now, out bool playing, out bool linked, ref nextScan);
                     if (playing) quietSince = now;
-                    if (LearnedKeyMaps.Version != _mapsVersion) SyncMaps(channels);
+                    if (_mapsDirty || LearnedKeyMaps.Version != _mapsVersion) SyncMaps(channels);
                     bool queued = PaintLighting(run, channels, states, links, now, ref nextScan);
                     bool quiet = now - quietSince >= QuietMs;
 
@@ -925,9 +934,12 @@ namespace PadForge.Common.Input.Peripherals
                         light.Plan = fallback;
                         Enqueue(light, fallback.Paint(light.QueuedRgb, full: true), light.QueuedRgb, null, null, now);
                         // Its keys can no longer be painted one by one, so
-                        // the Lighting tab stops offering them (#557).
+                        // the Lighting tab stops offering them, and offers
+                        // the zones of the plan it falls back to where that
+                        // plan has them (#557).
                         if (_maps.Remove(unit.Key))
                             PeripheralLightMaps.Remove(new OutputPath(OutputFamily.HidppUnit, unit.Key));
+                        _mapsDirty = true;
                         return true;
                 }
                 if (++light.Next < light.Queue.Length)
@@ -1577,14 +1589,15 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>
         /// Publishes the light map of every unit painted light by light
-        /// (#557) and takes down the maps of units that left or fell back
-        /// to one color. A unit found again with the same lights keeps its
-        /// map, so the Lighting tab does not redraw on every scan. The
-        /// names Map Key Lights learned go over each map, again whenever
-        /// they change.
+        /// (#557), the map its plan paints by (<see cref="HidppLightPlan.Lights"/>),
+        /// and takes down the maps of units that left or fell back to one
+        /// color. A unit found again with the same lights keeps its map, so
+        /// the Lighting tab does not redraw on every scan. The names Map Key
+        /// Lights learned go over each map, again whenever they change.
         /// </summary>
         private void SyncMaps(Dictionary<string, Channel> channels)
         {
+            _mapsDirty = false;
             int version = LearnedKeyMaps.Version;
             bool relearn = version != _mapsVersion;
             _mapsVersion = version;
@@ -1593,8 +1606,7 @@ namespace PadForge.Common.Input.Peripherals
                 foreach (var unit in channel.Units)
                 {
                     var plan = channel.Lights.TryGetValue(unit.DeviceIndex, out var light) ? light.Plan : HidppLightPlan.For(unit);
-                    if (plan == null || !plan.PaintsLights) continue;
-                    var fresh = HidppKeyMap.Of(unit);
+                    var fresh = plan?.Lights;
                     if (fresh == null) continue;
                     seen.Add(unit.Key);
                     var path = new OutputPath(OutputFamily.HidppUnit, unit.Key);

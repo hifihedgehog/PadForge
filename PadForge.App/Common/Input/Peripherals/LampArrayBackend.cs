@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -40,6 +41,28 @@ namespace PadForge.Common.Input.Peripherals
         /// 0 for a device with none (<see cref="LampArrayLayout.MultiUpdateSlots"/>).</summary>
         public int MultiUpdateSlots { get; init; }
         public bool WindowsLit { get; init; }
+
+        /// <summary>The multi update report's ID when PadForge can send it,
+        /// 0 otherwise (<see cref="LampArrayLayout.MultiId"/>, #557).</summary>
+        public byte MultiId { get; init; }
+
+        /// <summary>The width of InputBinding in the lamp response
+        /// (<see cref="LampArrayLayout.InputBindingBits"/>).</summary>
+        public int InputBindingBits { get; init; }
+
+        /// <summary>The lamp response describes each lamp where PadForge
+        /// reads it (<see cref="LampArrayLayout.DescribesLamps"/>).</summary>
+        public bool DescribesLamps { get; init; }
+
+        /// <summary>Each lamp's level counts in lamp order, for painting
+        /// lamp by lamp (#557). Null until the lamps are read, and for a
+        /// unit painted blind.</summary>
+        public IReadOnlyList<LampLevels> LampLevels { get; init; }
+
+        /// <summary>The unit's lights (#557), from its lamp descriptions.
+        /// Null until the lamps are read, and for a unit that does not
+        /// describe them.</summary>
+        public LightMap Map { get; init; }
 
         /// <summary>How the lamps take a color, in runs
         /// (<see cref="LampArrayProtocol.BuildRuns"/>). Null until the
@@ -125,9 +148,22 @@ namespace PadForge.Common.Input.Peripherals
                     return null;
                 }
                 IntPtr parsed = preparsed;
-                rejection = LampArrayProtocol.CrossCheck(layout,
-                    (reportId, link, values) => Build(parsed, layout.FeatureLength, reportId, link, values));
-                return rejection == null ? layout : null;
+                LampArrayProtocol.ParserBuild build = (reportId, link, values) => Build(parsed, layout.FeatureLength, reportId, link, values);
+                rejection = LampArrayProtocol.CrossCheck(layout, build);
+                if (rejection != null) return null;
+                // Lamp by lamp (#557): the descriptions and the multi update
+                // are used only where the parser lays them out as PadForge
+                // reads and writes them. Either miss leaves the device to
+                // one color at a time.
+                bool describes = LampArrayProtocol.CheckDescriptions(layout, build);
+                bool multi = LampArrayProtocol.CheckMulti(layout, fields,
+                    (reportId, link, set) => BuildFields(parsed, layout.FeatureLength, reportId, link, set));
+                return layout with
+                {
+                    DescribesLamps = describes,
+                    MultiId = multi ? layout.MultiId : (byte)0,
+                    MultiLink = multi ? layout.MultiLink : (ushort)0,
+                };
             }
             catch
             {
@@ -213,7 +249,10 @@ namespace PadForge.Common.Input.Peripherals
         {
             foreach (var cap in caps)
                 fields.Add(new LampValueCap(output, cap.ReportID, cap.LinkCollection, cap.LinkUsagePage, cap.LinkUsage,
-                    cap.UsagePage, cap.UsageMin, cap.IsRange ? cap.UsageMax : cap.UsageMin, cap.BitSize, cap.ReportCount));
+                    cap.UsagePage, cap.UsageMin, cap.IsRange ? cap.UsageMax : cap.UsageMin, cap.BitSize, cap.ReportCount)
+                {
+                    DataIndex = cap.DataIndexMin,
+                });
         }
 
         /// <summary>One report as the parser lays it out: zeroed for its
@@ -234,6 +273,55 @@ namespace PadForge.Common.Input.Peripherals
             }
             return report;
         }
+
+        /// <summary>One report built by the parser from single values,
+        /// value arrays and fields by data index (#557). No device I/O.
+        /// Null when the parser refuses a step.</summary>
+        private static byte[] BuildFields(IntPtr preparsed, int length, byte reportId, ushort link,
+            IReadOnlyList<LampArrayProtocol.ParserField> fields)
+        {
+            var report = new byte[length];
+            if (HidP_InitializeReportForID(SonyHeadsetHid.HidP_Feature, reportId, preparsed, report, (uint)report.Length)
+                != SonyHeadsetHid.HIDP_STATUS_SUCCESS)
+                return null;
+            foreach (var field in fields)
+            {
+                uint status;
+                if (field.Array != null)
+                    status = HidP_SetUsageValueArray(SonyHeadsetHid.HidP_Feature, LampArrayProtocol.UsagePage, link, field.Usage,
+                        field.Array, (ushort)field.Array.Length, preparsed, report, (uint)report.Length);
+                else if (field.DataIndex >= 0)
+                {
+                    var data = new[] { new HIDP_DATA { DataIndex = (ushort)field.DataIndex, RawValue = field.Value } };
+                    uint count = 1;
+                    status = HidP_SetData(SonyHeadsetHid.HidP_Feature, data, ref count, preparsed, report, (uint)report.Length);
+                }
+                else
+                    status = HidP_SetUsageValue(SonyHeadsetHid.HidP_Feature, LampArrayProtocol.UsagePage, link, field.Usage,
+                        field.Value, preparsed, report, (uint)report.Length);
+                if (status != SonyHeadsetHid.HIDP_STATUS_SUCCESS) return null;
+            }
+            return report;
+        }
+
+        /// <summary>HIDP_DATA (hidpi.h): a data index and its raw value,
+        /// the union's ULONG member.</summary>
+        [StructLayout(LayoutKind.Sequential)]
+        private struct HIDP_DATA
+        {
+            public ushort DataIndex;
+            public ushort Reserved;
+            public uint RawValue;
+        }
+
+        [DllImport("hid.dll")]
+        private static extern uint HidP_SetUsageValueArray(int reportType, ushort usagePage,
+            ushort linkCollection, ushort usage, byte[] usageValue, ushort usageValueByteLength,
+            IntPtr preparsedData, [In, Out] byte[] report, uint reportLength);
+
+        [DllImport("hid.dll")]
+        private static extern uint HidP_SetData(int reportType, [In] HIDP_DATA[] dataList, ref uint dataLength,
+            IntPtr preparsedData, [In, Out] byte[] report, uint reportLength);
 
         /// <summary>One field of a report as the parser reads it, or null
         /// when it cannot.</summary>
@@ -654,7 +742,11 @@ namespace PadForge.Common.Input.Peripherals
             public IHidReportChannel Io;
             public Phase Phase;
             public bool LampsRead;
-            public List<LampLevels> Levels;
+            public List<LampDescription> Descriptions;
+
+            /// <summary>What each lamp shows after the last per-lamp paint
+            /// (#557), or null when the unit was last painted one color.</summary>
+            public int[] Shown;
             public int LampAttempt;
             public bool Rerequested;
             public long LampNextAt;
@@ -1029,6 +1121,7 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     var lamp = lamps[path];
                     lamps.Remove(path);
+                    PeripheralLightMaps.Remove(new OutputPath(OutputFamily.LampArrayUnit, path));
                     if (lamp.Claimed || lamp.Owed) pass.Claims = true;
                     Dispose(ref lamp.Io);
                     Dispose(ref lamp.ProbeIo);
@@ -1198,6 +1291,9 @@ namespace PadForge.Common.Input.Peripherals
                 HasControl = layout.HasControl,
                 FeatureLength = layout.FeatureLength,
                 MultiUpdateSlots = layout.MultiUpdateSlots,
+                MultiId = layout.MultiId,
+                InputBindingBits = layout.InputBindingBits,
+                DescribesLamps = layout.DescribesLamps,
                 WindowsLit = lit,
             };
             lamp.WindowsLit = lit;
@@ -1304,7 +1400,8 @@ namespace PadForge.Common.Input.Peripherals
             var unit = lamp.Unit;
             var path = new OutputPath(OutputFamily.LampArrayUnit, unit.Path);
             int rgb = 0;
-            bool wanted = links.ByPath.ContainsKey(path) && PeripheralOutputs.TryResolveColor(path, out rgb);
+            PeripheralOutputs.Claimant ruler = default;
+            bool wanted = links.ByPath.ContainsKey(path) && PeripheralOutputs.TryResolveColor(path, out rgb, out ruler);
 
             if (lamp.WindowsLit)
             {
@@ -1362,7 +1459,7 @@ namespace PadForge.Common.Input.Peripherals
                         Sleep(lamp, "its lamp request failed", ref pass);
                         return;
                     }
-                    lamp.Levels = new List<LampLevels>(unit.LampCount);
+                    lamp.Descriptions = new List<LampDescription>(unit.LampCount);
                     lamp.LampAttempt = 0;
                     lamp.Rerequested = false;
                     lamp.LampNextAt = pass.Now;
@@ -1406,7 +1503,7 @@ namespace PadForge.Common.Input.Peripherals
                     pass.DueAt(lamp.SettleUntil);
                     return;
                 }
-                if (!Send(lamp, rgb, ref pass)) return;
+                if (!Paint(lamp, rgb, ruler.Keys, full: true, ref pass)) return;
                 lamp.Phase = Phase.Lit;
                 lamp.Misses = 0;
                 pass.DueAt(lamp.ClaimedAt + ReassertMs);
@@ -1421,7 +1518,7 @@ namespace PadForge.Common.Input.Peripherals
             // longer than one interval.
             long spaced = lamp.SentAt + unit.PaintIntervalMs;
             bool reassert = pass.Now - lamp.ClaimedAt >= ReassertMs;
-            if (!reassert && rgb == lamp.SentRgb)
+            if (!reassert && Showing(lamp, rgb, ruler.Keys))
             {
                 pass.DueAt(lamp.ClaimedAt + ReassertMs);
                 return;
@@ -1440,9 +1537,77 @@ namespace PadForge.Common.Input.Peripherals
                 }
                 lamp.ClaimedAt = _ticks();
             }
-            if (!Send(lamp, rgb, ref pass)) return;
-            pass.DueAt(lamp.ClaimedAt + ReassertMs);
+            if (!Paint(lamp, rgb, ruler.Keys, full: reassert, ref pass)) return;
+            // Lamps a range-only device could not take in one update go out
+            // after the next interval.
+            pass.DueAt(lamp.Shown != null && !Showing(lamp, rgb, ruler.Keys)
+                ? lamp.SentAt + unit.PaintIntervalMs
+                : lamp.ClaimedAt + ReassertMs);
         }
+
+        /// <summary>The color of every lamp for a claim (#557): its key
+        /// frame rendered over its color, or null where the unit is painted
+        /// one color: no frame, no light map, or levels it could not read.</summary>
+        private static int[] LampColors(LampArrayUnit unit, int rgb, KeyFrame keys)
+        {
+            if (keys == null || keys.IsEmpty || unit.Map == null || !unit.Map.PerLight || unit.LampLevels == null
+                || unit.Map.Lights.Count != unit.LampLevels.Count)
+                return null;
+            return LightRenderer.Render(unit.Map, rgb, keys);
+        }
+
+        /// <summary>Whether the unit shows what the claim asks for now.</summary>
+        private static bool Showing(Lamp lamp, int rgb, KeyFrame keys)
+        {
+            var colors = LampColors(lamp.Unit, rgb, keys);
+            return colors == null
+                ? lamp.Shown == null && rgb == lamp.SentRgb
+                : LightRenderer.Same(colors, lamp.Shown);
+        }
+
+        /// <summary>Paints the claim: one color the way <see cref="Send"/>
+        /// does, or lamp by lamp where the claim carries a key frame the
+        /// unit's map can show (#557). <paramref name="full"/> sends every
+        /// lamp, as the first paint and a re-assert do. Otherwise only the
+        /// lamps whose color changed go out. False when a write failed, and
+        /// the unit is asleep then.</summary>
+        private bool Paint(Lamp lamp, int rgb, KeyFrame keys, bool full, ref Pass pass)
+        {
+            var colors = LampColors(lamp.Unit, rgb, keys);
+            if (colors == null)
+            {
+                if (!Send(lamp, rgb, ref pass)) return false;
+                lamp.Shown = null;
+                return true;
+            }
+            var shown = lamp.Shown;
+            var due = new List<int>(colors.Length);
+            for (int i = 0; i < colors.Length; i++)
+                if (full || shown == null || shown[i] != colors[i]) due.Add(i);
+            if (due.Count == 0) return true;
+            var frames = LampArrayProtocol.LampFrames(lamp.Unit, colors, due, out int covered);
+            foreach (var frame in frames)
+            {
+                if (Set(lamp, frame)) continue;
+                Sleep(lamp, "a color write failed", ref pass);
+                return false;
+            }
+            // Lamps the update did not reach keep what they showed. From a
+            // one-color paint that is the color sent then.
+            if (shown == null)
+            {
+                shown = new int[colors.Length];
+                Array.Fill(shown, lamp.Sent ? lamp.SentRgb : -1);
+            }
+            else shown = (int[])shown.Clone();
+            for (int i = 0; i < covered; i++) shown[due[i]] = colors[due[i]];
+            lamp.Shown = shown;
+            lamp.SentRgb = -1;
+            lamp.SentAt = _ticks();
+            lamp.Sent = true;
+            return true;
+        }
+
 
         /// <summary>
         /// Reads the lamps of a unit that is open, from where the last pass
@@ -1474,7 +1639,7 @@ namespace PadForge.Common.Input.Peripherals
             }
             var report = new byte[Math.Max(unit.FeatureLength, LampArrayProtocol.ResponseLength)];
             int read = 0;
-            while (lamp.Levels.Count < unit.LampCount)
+            while (lamp.Descriptions.Count < unit.LampCount)
             {
                 if (run.Stop) return false;
                 if (read == LampsPerPass)
@@ -1484,7 +1649,7 @@ namespace PadForge.Common.Input.Peripherals
                     pass.DueAt(pass.Now);
                     return false;
                 }
-                int due = lamp.Levels.Count;
+                int due = lamp.Descriptions.Count;
                 if (!Get(lamp.Io, unit.ResponseId, report))
                 {
                     if (++lamp.LampAttempt >= ReadAttempts)
@@ -1497,11 +1662,12 @@ namespace PadForge.Common.Input.Peripherals
                     return false;
                 }
                 lamp.LampAttempt = 0;
-                if (!LampArrayProtocol.TryParseLampResponse(report, out int id, out var levels))
+                if (!LampArrayProtocol.TryParseLampDescription(report, unit.InputBindingBits, out var described))
                 {
                     Blind(lamp, "its lamp response is shorter than " + LampArrayProtocol.ResponseLength + " bytes");
                     return true;
                 }
+                int id = described.LampId;
                 if (id != due)
                 {
                     if (lamp.Rerequested)
@@ -1518,13 +1684,18 @@ namespace PadForge.Common.Input.Peripherals
                     continue;
                 }
                 lamp.Rerequested = false;
-                lamp.Levels.Add(levels);
+                lamp.Descriptions.Add(described);
                 read++;
             }
-            var runs = LampArrayProtocol.BuildRuns(lamp.Levels, unit.MultiUpdateSlots);
-            lamp.Unit = unit with { Runs = runs };
-            lamp.Levels = null;
+            var levels = lamp.Descriptions.Select(d => d.Levels).ToArray();
+            var runs = LampArrayProtocol.BuildRuns(levels, unit.MultiUpdateSlots);
+            // The light map (#557) only where the lamp response holds the
+            // descriptions where PadForge reads them.
+            var map = unit.DescribesLamps ? LampArrayProtocol.LightMapOf(lamp.Descriptions, unit.Kind) : null;
+            lamp.Unit = unit with { Runs = runs, LampLevels = levels, Map = map };
+            lamp.Descriptions = null;
             lamp.LampsRead = true;
+            if (map != null) PeripheralLightMaps.Publish(new OutputPath(OutputFamily.LampArrayUnit, unit.Path), map);
             // The level counts decide what a color looks like on the
             // device, so the log holds them for a color that comes out dim.
             PadForge.Engine.SdlDiagLog.WriteLine(
@@ -1537,8 +1708,8 @@ namespace PadForge.Common.Input.Peripherals
         /// while it stays awake.</summary>
         private static void Blind(Lamp lamp, string why)
         {
-            lamp.Unit = lamp.Unit with { Runs = null };
-            lamp.Levels = null;
+            lamp.Unit = lamp.Unit with { Runs = null, LampLevels = null, Map = null };
+            lamp.Descriptions = null;
             lamp.LampsRead = true;
             PadForge.Engine.SdlDiagLog.WriteLine(
                 $"PERIPHERAL LampArray {lamp.Label} lamps could not be read ({why}), painting without their level counts");
@@ -1685,7 +1856,8 @@ namespace PadForge.Common.Input.Peripherals
             if (lamp.Claimed) pass.Claims = true;
             Dispose(ref lamp.Io);
             lamp.Phase = Phase.Idle;
-            lamp.Levels = null;
+            lamp.Descriptions = null;
+            lamp.Shown = null;
             lamp.Sent = false;
         }
 

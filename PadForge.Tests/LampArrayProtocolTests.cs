@@ -515,6 +515,9 @@ namespace PadForge.Tests
             {
                 AttributesLink = 1, RequestLink = 2, ResponseLink = 3, RangeLink = 5, ControlLink = 6,
                 MultiUpdateSlots = 8,
+                // #557: its multi update and lamp descriptions are the ones
+                // PadForge sends and reads.
+                MultiId = 4, MultiLink = 4, InputBindingBits = 8, DescribesLamps = true,
             }, layout);
 
             // The IDs are the device's choice, and so is their order.
@@ -557,9 +560,10 @@ namespace PadForge.Tests
         }
 
         /// <summary>The control report is optional (HID Usage Tables 1.6,
-        /// 26.10.1), the multi update is not used at all, and a field on
-        /// another page, or in a collection of another page, is none of
-        /// these reports'.</summary>
+        /// 26.10.1), so is the multi update to PadForge, which paints a
+        /// device without one in ranges (#557), and a field on another
+        /// page, or in a collection of another page, is none of these
+        /// reports'.</summary>
         [Fact]
         public void ADeviceWithNoControlReport_IsDriven_AndWhatIsNotUsedIsNotChecked()
         {
@@ -853,6 +857,258 @@ namespace PadForge.Tests
                 LampArrayProtocol.CrossCheck(BenchLayout, Parser(BenchLayout, refuse: 3)));
             // And one it builds too short to hold the frame.
             Assert.NotNull(LampArrayProtocol.CrossCheck(BenchLayout, (id, link, fields) => new[] { id }));
+        }
+
+        // ── Lamp by lamp (#557) ──
+
+        private static byte[] Response(int lamp, uint x, uint y, uint purposes, byte binding, LampLevels levels, int length = 29)
+        {
+            var report = new byte[length];
+            report[0] = 0x03;
+            BitConverter.TryWriteBytes(report.AsSpan(1), (ushort)lamp);
+            BitConverter.TryWriteBytes(report.AsSpan(3), x);
+            BitConverter.TryWriteBytes(report.AsSpan(7), y);
+            BitConverter.TryWriteBytes(report.AsSpan(11), 9000u);
+            BitConverter.TryWriteBytes(report.AsSpan(15), 4000u);
+            BitConverter.TryWriteBytes(report.AsSpan(19), purposes);
+            report[23] = levels.Red;
+            report[24] = levels.Green;
+            report[25] = levels.Blue;
+            report[26] = levels.Intensity;
+            report[27] = levels.Programmable ? (byte)1 : (byte)0;
+            if (length > 28) report[28] = binding;
+            return report;
+        }
+
+        /// <summary>The bench board's own answer for its Esc key, read from
+        /// the device: lamp 0 at 21.8 by 67 mm, a control lamp bound to
+        /// usage 0x29.</summary>
+        [Fact]
+        public void ALampDescriptionReadsPositionPurposesAndItsKey()
+        {
+            var levels = new LampLevels(true, 255, 255, 255, 1);
+            var report = Response(0, 21800, 67000, 0x01, 0x29, levels);
+            Assert.True(LampArrayProtocol.TryParseLampDescription(report, 8, out var lamp));
+            Assert.Equal(new LampDescription(0, 21800, 67000, 9000, 4000, 0x01, levels, 0x29), lamp);
+
+            Assert.True(LampArrayProtocol.TryParseLampDescription(report, 0, out lamp));
+            Assert.Equal(0, lamp.InputBinding);
+
+            var wide = Response(7, 1, 2, 0x01, 0x34, levels, length: 30);
+            wide[29] = 0x12;
+            Assert.True(LampArrayProtocol.TryParseLampDescription(wide, 16, out lamp));
+            Assert.Equal(0x1234, lamp.InputBinding);
+
+            Assert.False(LampArrayProtocol.TryParseLampDescription(report.AsSpan(0, 28), 8, out _));
+        }
+
+        [Fact]
+        public void AKeyboardsControlLampsAreKeys_AndItsOtherLampsGoByPurpose()
+        {
+            var l = new LampLevels(true, 255, 255, 255, 1);
+            var lamps = new[]
+            {
+                new LampDescription(0, 100, 200, 0, 0, 0x01, l, 0x29),
+                new LampDescription(1, 110, 200, 0, 0, 0x01, l, 0),
+                new LampDescription(2, 120, 200, 0, 0, 0x02, l, 0),
+                new LampDescription(3, 130, 200, 0, 0, 0x04 | 0x02, l, 0),
+                new LampDescription(4, 140, 200, 0, 0, 0x08, l, 0),
+                new LampDescription(5, 150, 200, 0, 0, 0x10, l, 0),
+                new LampDescription(6, 160, 200, 0, 0, 0x01 | 0x04, l, 0x04),
+            };
+            var map = LampArrayProtocol.LightMapOf(lamps, kind: 1);
+            Assert.Equal(new[] { LightKind.Key, LightKind.Key, LightKind.Edge, LightKind.Logo, LightKind.Status, LightKind.Other, LightKind.Key },
+                map.Lights.Select(light => light.Kind));
+            Assert.Equal(new ushort[] { 0x29, 0, 0, 0, 0, 0, 0x04 }, map.Lights.Select(light => light.Usage));
+            Assert.Equal(LightKeySource.Device, map.Lights[0].KeySource);
+            Assert.Equal(LightKeySource.None, map.Lights[1].KeySource);
+            Assert.Equal(1, map.UnnamedKeyCount);
+            Assert.True(map.Positioned);
+            Assert.Equal(130f, map.Lights[3].X);
+
+            // On a mouse a control lamp is a zone, numbered in lamp order.
+            var mouse = LampArrayProtocol.LightMapOf(lamps, kind: 2);
+            Assert.Equal(new[] { 1, 2, 0, 0, 0, 0, 3 }, mouse.Lights.Select(light => light.Zone));
+            Assert.False(mouse.HasKeys);
+        }
+
+        /// <summary>The page's own example (HID Usage Tables 1.6, 26.11.1):
+        /// eight slots, five lamps, the unused slots left zero.</summary>
+        [Fact]
+        public void AMultiUpdateIsLaidOutAsThePagesExample()
+        {
+            var lamps = new[]
+            {
+                new LampValues(0x19, 0xFF, 0x00, 0xFF, 0x80), new LampValues(0x23, 0x80, 0x80, 0xFF, 0xFF),
+                new LampValues(0x72, 0x00, 0x00, 0x80, 0xFF), new LampValues(0x56, 0xFF, 0x80, 0x00, 0x80),
+                new LampValues(0x64, 0xFF, 0xFF, 0x00, 0xFF),
+            };
+            var report = LampArrayProtocol.MultiUpdate(0x04, 8, complete: true, lamps);
+            Assert.Equal("04 05 01 19 00 23 00 72 00 56 00 64 00 00 00 00 00 00 00 "
+                         + "FF 00 FF 80 80 80 FF FF 00 00 80 FF FF 80 00 80 FF FF 00 FF "
+                         + "00 00 00 00 00 00 00 00 00 00 00 00",
+                LampArrayProtocol.Hex(report, report.Length));
+            Assert.Throws<ArgumentException>(() => LampArrayProtocol.MultiUpdate(0x04, 2, false, lamps));
+        }
+
+        [Fact]
+        public void ALampsChannelValuesFollowTheOneColorRules()
+        {
+            var full = new LampLevels(true, 255, 255, 255, 1);
+            Assert.Equal(((byte)0x11, (byte)0x22, (byte)0x33, (byte)1), LampArrayProtocol.ChannelValues(full, 0x112233));
+            Assert.Equal(((byte)0, (byte)0, (byte)0, (byte)0), LampArrayProtocol.ChannelValues(full, 0));
+            var fixedLamp = new LampLevels(false, 0, 0, 0, 3);
+            Assert.Equal(((byte)0, (byte)0, (byte)0, (byte)1), LampArrayProtocol.ChannelValues(fixedLamp, 0x010000));
+            Assert.Equal(((byte)0, (byte)0, (byte)0, (byte)3), LampArrayProtocol.ChannelValues(fixedLamp, 0xFF0000));
+        }
+
+        private static LampArrayUnit Unit(int lamps, byte multiId, int slots)
+            => new("p", 1, 2)
+            {
+                LampCount = lamps, RangeId = 5, MultiId = multiId, MultiUpdateSlots = slots,
+                LampLevels = Enumerable.Repeat(new LampLevels(true, 255, 255, 255, 1), lamps).ToArray(),
+            };
+
+        [Fact]
+        public void LampFramesSendEveryDueLampByMultiUpdate_InSlotSizedReports_TheLastComplete()
+        {
+            var unit = Unit(10, 0x04, 4);
+            var colors = Enumerable.Range(0, 10).Select(i => i * 0x010101).ToArray();
+            var due = new[] { 0, 1, 2, 3, 4, 9 };
+            var frames = LampArrayProtocol.LampFrames(unit, colors, due, out int covered);
+            Assert.Equal(6, covered);
+            Assert.Equal(2, frames.Count);
+            Assert.Equal("04 04 00 00 00 01 00 02 00 03 00", LampArrayProtocol.Hex(frames[0], 11));
+            Assert.Equal("04 02 01 04 00 09 00 00 00 00 00", LampArrayProtocol.Hex(frames[1], 11));
+            Assert.Equal("04 04 04 01 09 09 09 01", LampArrayProtocol.Hex(frames[1][11..], 8));
+        }
+
+        [Fact]
+        public void WithoutAMultiUpdate_LampFramesSendRuns_AsManyAsTheDeviceTakes_TheRestLater()
+        {
+            // No multi update at all: one report per update.
+            var unit = Unit(6, 0, 0);
+            var colors = new[] { 0xFF0000, 0xFF0000, 0x00FF00, 0x00FF00, 0x00FF00, 0x0000FF };
+            var frames = LampArrayProtocol.LampFrames(unit, colors, new[] { 0, 1, 2, 3, 4, 5 }, out int covered);
+            Assert.Equal(2, covered);
+            Assert.Equal(new[] { "05 01 00 00 01 00 FF 00 00 01" }, frames.Select(f => LampArrayProtocol.Hex(f, f.Length)));
+
+            // A multi update PadForge cannot send still says how many
+            // reports the device takes: here two, so two runs go.
+            unit = Unit(6, 0, 4);
+            frames = LampArrayProtocol.LampFrames(unit, colors, new[] { 0, 1, 2, 3, 4, 5 }, out covered);
+            Assert.Equal(5, covered);
+            Assert.Equal(new[] { "05 00 00 00 01 00 FF 00 00 01", "05 01 02 00 04 00 00 FF 00 01" },
+                frames.Select(f => LampArrayProtocol.Hex(f, f.Length)));
+
+            // A gap in the due lamps ends a run.
+            frames = LampArrayProtocol.LampFrames(Unit(6, 0, 1), colors, new[] { 0, 2, 3 }, out covered);
+            Assert.Equal(3, covered);
+            Assert.Equal(new[] { "05 00 00 00 00 00 FF 00 00 01", "05 01 02 00 03 00 00 FF 00 01" },
+                frames.Select(f => LampArrayProtocol.Hex(f, f.Length)));
+            Assert.Empty(LampArrayProtocol.LampFrames(unit, colors, Array.Empty<int>(), out covered));
+            Assert.Equal(0, covered);
+        }
+
+        [Fact]
+        public void TheMultiUpdateIsKeptOnlyWhenItIsAFeatureReportOfItsOwn_LaidOutAsPadForgeBuildsIt()
+        {
+            Assert.Equal(4, LampArrayProtocol.CheckShape(BenchCaps(), 51, out _).MultiId);
+
+            var output = Replace(BenchCaps(), cap => cap.LinkUsage == 0x50, cap => cap with { Output = true });
+            Assert.Equal(0, LampArrayProtocol.CheckShape(output, 51, out _).MultiId);
+
+            // A channel short of a slot.
+            var shortRed = BenchCaps();
+            shortRed.Remove(shortRed.Last(cap => cap.LinkUsage == 0x50 && cap.UsageMin == 0x51));
+            Assert.Equal(0, LampArrayProtocol.CheckShape(shortRed, 51, out _).MultiId);
+
+            // Its ID shared with another report.
+            var shared = Replace(BenchCaps(), cap => cap.LinkUsage == 0x50, cap => cap with { ReportId = 5 });
+            Assert.Equal(0, LampArrayProtocol.CheckShape(shared, 51, out _).MultiId);
+        }
+
+        /// <summary>A parser that lays a multi update out as Microsoft's
+        /// struct does: the lamp IDs as one array, then each slot's red,
+        /// green, blue and intensity as fields of their own, in the order
+        /// their data indexes give.</summary>
+        private static byte[] ParserLike(byte id, IReadOnlyList<LampArrayProtocol.ParserField> fields, bool swapGreenBlue = false)
+        {
+            var report = new byte[51];
+            report[0] = id;
+            foreach (var field in fields)
+            {
+                if (field.Usage == 0x03) report[1] = (byte)field.Value;
+                else if (field.Usage == 0x55) report[2] = (byte)field.Value;
+                else if (field.Usage == 0x21 && field.Array != null) field.Array.CopyTo(report, 3);
+                else if (field.DataIndex >= 100)
+                {
+                    int slot = (field.DataIndex - 100) / 4, channel = (field.DataIndex - 100) % 4;
+                    if (swapGreenBlue && channel is 1 or 2) channel = 3 - channel;
+                    report[19 + slot * 4 + channel] = (byte)field.Value;
+                }
+                else return null;
+            }
+            return report;
+        }
+
+        private static List<LampValueCap> IndexedBenchCaps()
+        {
+            var caps = BenchCaps();
+            // The bench board declares each slot's channels red to
+            // intensity, and the parser numbers them in that order.
+            int slotOf = 0;
+            var result = new List<LampValueCap>();
+            var counts = new Dictionary<ushort, int>();
+            foreach (var cap in caps)
+            {
+                if (cap.LinkUsage == 0x50 && cap.UsageMin is >= 0x51 and <= 0x54)
+                {
+                    counts.TryGetValue(cap.UsageMin, out slotOf);
+                    counts[cap.UsageMin] = slotOf + 1;
+                    result.Add(cap with { DataIndex = (ushort)(100 + slotOf * 4 + (cap.UsageMin - 0x51)) });
+                }
+                else result.Add(cap);
+            }
+            return result;
+        }
+
+        [Fact]
+        public void TheMultiUpdateIsCheckedAgainstTheParser_ArrayAndSeparateFieldsAlike()
+        {
+            var caps = IndexedBenchCaps();
+            var layout = LampArrayProtocol.CheckShape(caps, 51, out _);
+            Assert.True(LampArrayProtocol.CheckMulti(layout, caps, (id, link, fields) => ParserLike(id, fields)));
+            Assert.False(LampArrayProtocol.CheckMulti(layout, caps, (id, link, fields) => ParserLike(id, fields, swapGreenBlue: true)));
+            Assert.False(LampArrayProtocol.CheckMulti(layout, caps, (id, link, fields) => null));
+            Assert.False(LampArrayProtocol.CheckMulti(layout with { MultiId = 0 }, caps, (id, link, fields) => ParserLike(id, fields)));
+        }
+
+        [Fact]
+        public void TheLampDescriptionsAreCheckedAgainstTheParser()
+        {
+            var layout = LampArrayProtocol.CheckShape(BenchCaps(), 51, out _);
+            byte[] Build(byte id, ushort link, IReadOnlyList<(ushort Usage, uint Value)> values, bool swap)
+            {
+                var report = new byte[51];
+                report[0] = id;
+                foreach (var (usage, value) in values)
+                {
+                    int at = usage switch
+                    {
+                        0x21 => 1, 0x23 => 3, 0x24 => 7, 0x25 => 11, 0x27 => swap ? 19 : 15, 0x26 => swap ? 15 : 19,
+                        0x28 => 23, 0x29 => 24, 0x2A => 25, 0x2B => 26, 0x2C => 27, 0x2D => 28, _ => -1,
+                    };
+                    if (at < 0) return null;
+                    int width = usage is 0x21 ? 2 : usage is >= 0x23 and <= 0x27 ? 4 : 1;
+                    for (int i = 0; i < width; i++) report[at + i] = (byte)(value >> (8 * i));
+                }
+                return report;
+            }
+            Assert.True(LampArrayProtocol.CheckDescriptions(layout, (id, link, values) => Build(id, link, values, false)));
+            Assert.False(LampArrayProtocol.CheckDescriptions(layout, (id, link, values) => Build(id, link, values, true)));
+            Assert.False(LampArrayProtocol.CheckDescriptions(layout with { DescribesLamps = false },
+                (id, link, values) => Build(id, link, values, false)));
         }
     }
 }

@@ -84,6 +84,11 @@ namespace PadForge.Tests
 
         // What its attributes report says, and its lamps.
         public volatile int LampCount;
+
+        /// <summary>Each lamp's purposes and InputBinding (#557). Null
+        /// answers every lamp as a control lamp bound to A.</summary>
+        public volatile uint[] Purposes;
+        public volatile byte[] Bindings;
         public volatile uint Kind = 1;
         public volatile uint IntervalUs = 20000;
         public volatile LampLevels[] Lamps;
@@ -242,13 +247,13 @@ namespace PadForge.Tests
                 BitConverter.TryWriteBytes(report.AsSpan(1), (ushort)lamp);
                 BitConverter.TryWriteBytes(report.AsSpan(3), (uint)(lamp * 19000));
                 BitConverter.TryWriteBytes(report.AsSpan(15), 4000u);
-                BitConverter.TryWriteBytes(report.AsSpan(19), 1u);
+                BitConverter.TryWriteBytes(report.AsSpan(19), Purposes?[lamp] ?? 1u);
                 report[23] = lamps[lamp].Red;
                 report[24] = lamps[lamp].Green;
                 report[25] = lamps[lamp].Blue;
                 report[26] = lamps[lamp].Intensity;
                 report[27] = lamps[lamp].Programmable ? (byte)1 : (byte)0;
-                report[28] = 0x04;
+                report[28] = Bindings?[lamp] ?? 0x04;
                 return report;
             }
             // Nothing else is readable. Firmware stalls a read of its
@@ -737,6 +742,7 @@ namespace PadForge.Tests
         public LampArrayBackendTests()
         {
             PeripheralOutputs.ResetForTest();
+            PeripheralLightMaps.ResetForTest();
         }
 
         public void Dispose()
@@ -746,6 +752,7 @@ namespace PadForge.Tests
                 try { owned.Dispose(); } catch { }
             }
             PeripheralOutputs.ResetForTest();
+            PeripheralLightMaps.ResetForTest();
         }
 
         private long Tick() => Interlocked.Read(ref _tick);
@@ -3370,6 +3377,100 @@ namespace PadForge.Tests
                 foreach (var backend in made) backend.Dispose();
             }
         }
+
+
+        // ── Lamp by lamp (#557) ──
+
+        /// <summary>A board whose lamps describe themselves and take multi
+        /// updates: Esc, A, a control lamp bound to no key, and an edge lamp.</summary>
+        private static void Describing(LampBoard board)
+        {
+            board.Layout = board.Layout with { MultiId = 4, MultiLink = 4, InputBindingBits = 8, DescribesLamps = true };
+            board.Purposes = new uint[] { 1, 1, 1, 2 };
+            board.Bindings = new byte[] { 0x29, 0x04, 0x00, 0x00 };
+        }
+
+        private static KeyFrame Keys(int a, int edge = -1)
+            => new(new Dictionary<ushort, int> { [0x04] = a },
+                edge < 0 ? null : new Dictionary<string, int> { ["edge"] = edge }, null, null);
+
+        private static void Color(LampBoard board, int rgb, KeyFrame keys)
+            => PeripheralOutputs.SetLighting(board.Row, slot: 0, player: 1, (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb,
+                keys: keys);
+
+        private static string Multi(params (ushort Lamp, int Rgb)[] lamps)
+        {
+            var values = lamps.Select(l => new LampValues(l.Lamp, (byte)(l.Rgb >> 16), (byte)(l.Rgb >> 8), (byte)l.Rgb,
+                (l.Rgb & 0xFFFFFF) != 0 ? (byte)1 : (byte)0)).ToArray();
+            var report = LampArrayProtocol.MultiUpdate(4, 8, complete: true, values);
+            return "set " + string.Join(" ", report.Select(b => b.ToString("X2")));
+        }
+
+        /// <summary>A key frame paints the board lamp by lamp, one multi
+        /// update for its four lamps: each key in its own color, a key no
+        /// source named and every key the frame leaves out in the claim's
+        /// color, the edge lamp in its group's. The board's map is
+        /// published for the Lighting tab.</summary>
+        [Fact]
+        public void AKeyFramePaintsLampByLamp_ByMultiUpdate_AndTheMapIsPublished()
+        {
+            var (backend, board) = Found(Describing);
+            Color(board, 0x112233, Keys(0xFF0000, edge: 0x0000FF));
+            Passes(backend);
+            Advance(20);
+            Passes(backend);
+            var calls = board.Take();
+            Assert.Equal(Multi((0, 0x112233), (1, 0xFF0000), (2, 0x112233), (3, 0x0000FF)), calls.Last());
+
+            var map = PeripheralLightMaps.For(board.OutputPath);
+            Assert.NotNull(map);
+            Assert.Equal(new[] { LightKind.Key, LightKind.Key, LightKind.Key, LightKind.Edge }, map.Lights.Select(l => l.Kind));
+            Assert.Equal(new ushort[] { 0x29, 0x04, 0, 0 }, map.Lights.Select(l => l.Usage));
+            Assert.Equal(1, map.UnnamedKeyCount);
+        }
+
+        /// <summary>A change to one key sends that lamp alone, once the
+        /// device's interval is over. A frame that goes away paints the
+        /// board one color again, in the range report one color takes.</summary>
+        [Fact]
+        public void AChangedKeySendsOnlyItsLamp_AndNoFrameIsOneColorAgain()
+        {
+            var (backend, board) = Found(Describing);
+            Color(board, 0x112233, Keys(0xFF0000));
+            Passes(backend);
+            Advance(20);
+            Passes(backend);
+            board.Take();
+
+            Color(board, 0x112233, Keys(0x00FF00));
+            Advance(40);
+            Passes(backend);
+            Assert.Equal(new[] { Multi((1, 0x00FF00)) }, board.Take());
+
+            Color(board, 0x112233);
+            Advance(40);
+            Passes(backend);
+            Assert.Equal(new[] { Paint(0x112233) }, board.Take());
+        }
+
+        /// <summary>A board whose lamp response holds its descriptions
+        /// elsewhere has no map, so a key frame changes nothing on it: it
+        /// is painted one color.</summary>
+        [Fact]
+        public void ABoardThatDoesNotDescribeItsLamps_IsPaintedOneColor_WhateverTheFrame()
+        {
+            var (backend, board) = Found(b =>
+            {
+                Describing(b);
+                b.Layout = b.Layout with { DescribesLamps = false };
+            });
+            Color(board, 0x112233, Keys(0xFF0000));
+            Passes(backend);
+            Advance(20);
+            Passes(backend);
+            Assert.Equal(Paint(0x112233), board.Take().Last());
+            Assert.Null(PeripheralLightMaps.For(board.OutputPath));
+        }
     }
 
     internal static class LampArrayBackendTestExtensions
@@ -3875,7 +3976,7 @@ namespace PadForge.Tests
                 .OrderBy(name => name, StringComparer.Ordinal);
             var expected = new[]
             {
-                "HidP_InitializeReportForID", "HidP_SetUsageValue",
+                "HidP_InitializeReportForID", "HidP_SetUsageValue", "HidP_SetUsageValueArray", "HidP_SetData",
                 "CM_Get_Device_Interface_PropertyW", "CM_Locate_DevNodeW", "CM_Get_Parent", "CM_Get_Device_IDW",
                 "CM_Get_DevNode_PropertyW",
                 "GetShellWindow", "GetWindowThreadProcessId", "OpenProcess", "OpenProcessToken", "GetTokenInformation",

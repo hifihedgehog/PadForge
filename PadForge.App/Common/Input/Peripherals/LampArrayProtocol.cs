@@ -1,6 +1,7 @@
 using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PadForge.Common.Input.Peripherals
@@ -18,6 +19,19 @@ namespace PadForge.Common.Input.Peripherals
     /// off, and a count of 0 is a channel the lamp does not have.</summary>
     internal readonly record struct LampLevels(bool Programmable, byte Red, byte Green, byte Blue, byte Intensity);
 
+    /// <summary>Everything a lamp says of itself in its attributes response
+    /// (HID Usage Tables 1.6, 26.3), kept whole for its light map (#557):
+    /// its position in micrometers from the bounding box's origin, its
+    /// update latency, its purposes (<see cref="LampArrayProtocol.PurposeControl"/>
+    /// and the rest), its levels, and the key or button it sits under, 0
+    /// for none.</summary>
+    internal readonly record struct LampDescription(int LampId, uint X, uint Y, uint Z, uint LatencyUs, uint Purposes,
+        LampLevels Levels, ushort InputBinding);
+
+    /// <summary>One lamp's slot in a multi update: its ID and the four
+    /// channel values it takes, already within its level counts.</summary>
+    internal readonly record struct LampValues(ushort LampId, byte Red, byte Green, byte Blue, byte Intensity);
+
     /// <summary>A span of neighboring lamps that all take the same values,
     /// so one range report paints them. Both ends are lamps of the span.</summary>
     internal readonly record struct LampRun(int Start, int End, LampLevels Levels);
@@ -27,7 +41,13 @@ namespace PadForge.Common.Input.Peripherals
     /// logical collection it sits in, the usages it covers and how wide it
     /// is. A field that covers one usage carries it in both ends.</summary>
     internal readonly record struct LampValueCap(bool Output, byte ReportId, ushort LinkCollection, ushort LinkUsagePage,
-        ushort LinkUsage, ushort UsagePage, ushort UsageMin, ushort UsageMax, ushort BitSize, ushort ReportCount);
+        ushort LinkUsage, ushort UsagePage, ushort UsageMin, ushort UsageMax, ushort BitSize, ushort ReportCount)
+    {
+        /// <summary>The field's first data index (HIDP_VALUE_CAPS.DataIndexMin),
+        /// which orders fields of the same usage as the descriptor declares
+        /// them, for a parser build by data index (#557).</summary>
+        public ushort DataIndex { get; init; }
+    }
 
     /// <summary>Where a device put its LampArray reports: the report ID it
     /// chose for each, which it is free to choose, and the link collection
@@ -48,6 +68,24 @@ namespace PadForge.Common.Input.Peripherals
         /// The count says how many reports of one update the device is
         /// sure to take (<see cref="LampArrayProtocol.BuildRuns"/>).</summary>
         public int MultiUpdateSlots { get; init; }
+
+        /// <summary>The multi update report's ID and collection when it is
+        /// laid out the way <see cref="LampArrayProtocol.MultiUpdate"/>
+        /// builds it, which paints lamps one by one (#557). 0 for a device
+        /// with no such report or one laid out otherwise, which is painted
+        /// in ranges.</summary>
+        public byte MultiId { get; init; }
+        public ushort MultiLink { get; init; }
+
+        /// <summary>The width of InputBinding in the lamp response, 8 or
+        /// 16 bits, 0 for a device that declares none (#557).</summary>
+        public int InputBindingBits { get; init; }
+
+        /// <summary>The lamp response carries each lamp's position and
+        /// purposes where <see cref="LampArrayProtocol.TryParseLampDescription"/>
+        /// reads them, so the unit has a light map (#557). False for a
+        /// device that lays them out otherwise, which is painted one color.</summary>
+        public bool DescribesLamps { get; init; }
     }
 
     /// <summary>
@@ -108,6 +146,26 @@ namespace PadForge.Common.Input.Peripherals
         internal const ushort LampIdStartUsage = 0x61;
         internal const ushort LampIdEndUsage = 0x62;
         internal const ushort AutonomousModeUsage = 0x71;
+        internal const ushort PositionXUsage = 0x23;
+        internal const ushort PositionYUsage = 0x24;
+        internal const ushort PositionZUsage = 0x25;
+        internal const ushort LampPurposesUsage = 0x26;
+        internal const ushort UpdateLatencyUsage = 0x27;
+        internal const ushort InputBindingUsage = 0x2D;
+
+        /// <summary>LampPurposes flags (HID Usage Tables 1.6, 26.3.1,
+        /// hut1_6.txt): a lamp under a key or button, accent lighting, a
+        /// logo, a status light, one that lights something outside the
+        /// array, and one the user looks at directly. Flags combine.</summary>
+        internal const uint PurposeControl = 0x01;
+        internal const uint PurposeAccent = 0x02;
+        internal const uint PurposeBranding = 0x04;
+        internal const uint PurposeStatus = 0x08;
+        internal const uint PurposeIllumination = 0x10;
+        internal const uint PurposePresentation = 0x20;
+
+        /// <summary>LampArrayKind for a keyboard (26.2.1).</summary>
+        internal const int KindKeyboard = 1;
 
         /// <summary>LampUpdateComplete, the one update flag: this report is
         /// the last of a batch, and the device now shows the batch at once
@@ -182,6 +240,35 @@ namespace PadForge.Common.Input.Peripherals
         public static byte[] AllOff(LampArrayUnit unit)
             => RangeUpdate(unit.RangeId, complete: true, 0, unit.LampCount - 1, 0, 0, 0, 0);
 
+        /// <summary>LampMultiUpdateReport: up to <paramref name="slots"/>
+        /// lamps, each with its own four channel values (HID Usage Tables
+        /// 1.6, 26.11.1, #557). The report ID, LampCount, LampUpdateFlags,
+        /// then every LampId slot as 16 bits, then every slot's red, green,
+        /// blue and intensity, Microsoft's packed struct
+        /// (ArduinoHidForWindows src/LampArrayReports.h:34-41) and
+        /// hid-rgb-ctl's builder (src/device.rs:709-735). Slots past
+        /// <paramref name="lamps"/> are left zero, as the page recommends
+        /// for an unused slot. The last report of an update is flagged
+        /// complete, so the device shows the update at once.</summary>
+        public static byte[] MultiUpdate(byte reportId, int slots, bool complete, ReadOnlySpan<LampValues> lamps)
+        {
+            if (lamps.Length > slots) throw new ArgumentException("more lamps than slots", nameof(lamps));
+            var report = new byte[3 + slots * 6];
+            report[0] = reportId;
+            report[1] = (byte)lamps.Length;
+            report[2] = complete ? LampUpdateComplete : (byte)0x00;
+            int colors = 3 + slots * 2;
+            for (int i = 0; i < lamps.Length; i++)
+            {
+                BinaryPrimitives.WriteUInt16LittleEndian(report.AsSpan(3 + i * 2), lamps[i].LampId);
+                report[colors + i * 4] = lamps[i].Red;
+                report[colors + i * 4 + 1] = lamps[i].Green;
+                report[colors + i * 4 + 2] = lamps[i].Blue;
+                report[colors + i * 4 + 3] = lamps[i].Intensity;
+            }
+            return report;
+        }
+
         // ─────────────────────────────────────────────
         //  Reports read from the device
         // ─────────────────────────────────────────────
@@ -217,6 +304,80 @@ namespace PadForge.Common.Input.Peripherals
             lampId = BinaryPrimitives.ReadUInt16LittleEndian(report.Slice(1));
             levels = new LampLevels(report[27] != 0, report[23], report[24], report[25], report[26]);
             return true;
+        }
+
+        /// <summary>The whole lamp response (#557): the lamp ID at bytes 1
+        /// and 2, PositionX, PositionY and PositionZ at 3, 7 and 11,
+        /// UpdateLatencyInMicroseconds at 15 and LampPurposes at 19, each 32
+        /// bits, the level counts and IsProgrammable at 23 to 27, and
+        /// InputBinding at 28, <paramref name="bindingBits"/> wide: 8 in
+        /// Microsoft's struct (ArduinoHidForWindows src/LampArrayReports.h),
+        /// 16 on one keyboard (Apex3TklDynamicLighting Driver.c:300-301), 0
+        /// for a device with no such field. The same bytes the parser is
+        /// checked against (<see cref="CrossCheck"/>). False for a buffer
+        /// too short to hold them.</summary>
+        public static bool TryParseLampDescription(ReadOnlySpan<byte> report, int bindingBits, out LampDescription lamp)
+        {
+            lamp = default;
+            if (!TryParseLampResponse(report, out int lampId, out var levels)) return false;
+            ushort binding = 0;
+            if (bindingBits == 16 && report.Length >= ResponseLength + 1)
+                binding = BinaryPrimitives.ReadUInt16LittleEndian(report.Slice(28));
+            else if (bindingBits == 8)
+                binding = report[28];
+            lamp = new LampDescription(lampId,
+                BinaryPrimitives.ReadUInt32LittleEndian(report.Slice(3)),
+                BinaryPrimitives.ReadUInt32LittleEndian(report.Slice(7)),
+                BinaryPrimitives.ReadUInt32LittleEndian(report.Slice(11)),
+                BinaryPrimitives.ReadUInt32LittleEndian(report.Slice(15)),
+                BinaryPrimitives.ReadUInt32LittleEndian(report.Slice(19)),
+                levels, binding);
+            return true;
+        }
+
+        /// <summary>
+        /// The light map of a unit from its lamps (#557), in lamp order, so
+        /// a light's address is its LampId. Every lamp has its position.
+        ///
+        /// <para>On a keyboard, a control lamp is a key, named by its
+        /// InputBinding, a usage of the Keyboard/Keypad page, which the
+        /// page requires there and requires to be 0 for a lamp under no
+        /// key (HID Usage Tables 1.6, 26.3, hut1_6.txt:15162-15168). A
+        /// control lamp with 0 is a key no source has named, which Map Key
+        /// Lights can name. On any other kind of device a control lamp is a
+        /// zone, numbered in lamp order, since its binding is a mouse
+        /// button or nothing. A lamp with several purposes is the first of
+        /// control, branding, status and accent it has, and anything else is
+        /// other lighting.</para>
+        /// </summary>
+        public static LightMap LightMapOf(IReadOnlyList<LampDescription> lamps, int kind)
+        {
+            var lights = new List<LightInfo>(lamps?.Count ?? 0);
+            if (lamps == null) return new LightMap(lights, "LampArray");
+            int zone = 0;
+            foreach (var lamp in lamps)
+            {
+                LightInfo light;
+                uint p = lamp.Purposes;
+                if ((p & PurposeControl) != 0 && kind == KindKeyboard)
+                {
+                    bool named = lamp.InputBinding != 0;
+                    light = new LightInfo(lamp.LampId, LightKind.Key, lamp.InputBinding,
+                        named ? LightKeySource.Device : LightKeySource.None);
+                }
+                else if ((p & PurposeControl) != 0)
+                    light = new LightInfo(lamp.LampId, LightKind.Zone, 0, LightKeySource.None) { Zone = ++zone };
+                else if ((p & PurposeBranding) != 0)
+                    light = new LightInfo(lamp.LampId, LightKind.Logo, 0, LightKeySource.None);
+                else if ((p & PurposeStatus) != 0)
+                    light = new LightInfo(lamp.LampId, LightKind.Status, 0, LightKeySource.None);
+                else if ((p & PurposeAccent) != 0)
+                    light = new LightInfo(lamp.LampId, LightKind.Edge, 0, LightKeySource.None);
+                else
+                    light = new LightInfo(lamp.LampId, LightKind.Other, 0, LightKeySource.None);
+                lights.Add(light with { X = lamp.X, Y = lamp.Y, HasPosition = true });
+            }
+            return new LightMap(lights, "LampArray");
         }
 
         // ─────────────────────────────────────────────
@@ -291,6 +452,25 @@ namespace PadForge.Common.Input.Peripherals
             return new[] { new LampRun(0, lamps.Count - 1, new LampLevels(programmable, red, green, blue, intensity)) };
         }
 
+        /// <summary>The four channel values one lamp takes for a color,
+        /// 0xRRGGBB, by the rules <see cref="Frames"/> gives: a programmable
+        /// lamp takes each channel scaled to its count and its full
+        /// intensity for any lit color, a fixed-color lamp takes 0 on its
+        /// color channels and the color's brightest channel scaled to its
+        /// intensity count, never 0 for a lit color where it has a level
+        /// (#557).</summary>
+        public static (byte Red, byte Green, byte Blue, byte Intensity) ChannelValues(LampLevels levels, int rgb)
+        {
+            byte r = (byte)(rgb >> 16), g = (byte)(rgb >> 8), b = (byte)rgb;
+            bool lit = (r | g | b) != 0;
+            if (levels.Programmable)
+                return ((byte)Scale(r, levels.Red), (byte)Scale(g, levels.Green), (byte)Scale(b, levels.Blue),
+                    lit ? levels.Intensity : (byte)0);
+            int level = Scale(Math.Max(r, Math.Max(g, b)), levels.Intensity);
+            if (lit && level == 0 && levels.Intensity > 0) level = 1;
+            return (0, 0, 0, (byte)level);
+        }
+
         /// <summary>
         /// The reports that paint a unit one color, 0xRRGGBB: one range
         /// report per run, the last one flagged complete, so the device
@@ -345,27 +525,83 @@ namespace PadForge.Common.Input.Peripherals
             var frames = new byte[runs.Count][];
             for (int i = 0; i < runs.Count; i++)
             {
-                var levels = runs[i].Levels;
-                byte red = 0, green = 0, blue = 0, intensity;
-                if (levels.Programmable)
-                {
-                    red = (byte)Scale(r, levels.Red);
-                    green = (byte)Scale(g, levels.Green);
-                    blue = (byte)Scale(b, levels.Blue);
-                    intensity = lit ? levels.Intensity : (byte)0;
-                }
-                else
-                {
-                    int level = Scale(Math.Max(r, Math.Max(g, b)), levels.Intensity);
-                    // A dim color on a lamp with few levels would round to
-                    // off. It is lit, so it takes the lowest level the lamp
-                    // has, where it has one at all.
-                    if (lit && level == 0 && levels.Intensity > 0) level = 1;
-                    intensity = (byte)level;
-                }
+                // A dim color on a lamp with few levels would round to off.
+                // It is lit, so it takes the lowest level the lamp has,
+                // where it has one at all (ChannelValues).
+                var (red, green, blue, intensity) = ChannelValues(runs[i].Levels, rgb);
                 frames[i] = RangeUpdate(unit.RangeId, complete: i == runs.Count - 1, runs[i].Start, runs[i].End,
                     red, green, blue, intensity);
             }
+            return frames;
+        }
+
+        /// <summary>How many update reports the device takes back to back
+        /// before the host must wait its interval: as many multi updates as
+        /// it takes to set every lamp (HID Usage Tables 1.6, 26.7), one for
+        /// a device with no multi update, the rule <see cref="BuildRuns"/>
+        /// follows.</summary>
+        public static int BackToBack(LampArrayUnit unit)
+            => unit.MultiUpdateSlots > 0 ? Math.Max(1, (unit.LampCount + unit.MultiUpdateSlots - 1) / unit.MultiUpdateSlots) : 1;
+
+        /// <summary>
+        /// The reports that bring the lamps in <paramref name="due"/>, by
+        /// index in lamp order, to their colors in <paramref name="colors"/>
+        /// (#557), each lamp at its own level counts
+        /// (<see cref="ChannelValues"/>), and how many of the due lamps they
+        /// cover.
+        ///
+        /// <para>With the multi update, every due lamp, in reports of the
+        /// device's slot count. A device takes as many of those back to back
+        /// as it needs to set every lamp (HID Usage Tables 1.6, 26.7), and
+        /// the due lamps are never more than every lamp. Without it, range
+        /// updates over runs of neighboring due lamps that take the same
+        /// values, as many runs as <see cref="BackToBack"/> allows, so the
+        /// rest wait for the next update. Either way the last report is
+        /// flagged complete, and the device shows them as one update.</para>
+        /// </summary>
+        public static List<byte[]> LampFrames(LampArrayUnit unit, IReadOnlyList<int> colors, IReadOnlyList<int> due, out int covered)
+        {
+            covered = 0;
+            var frames = new List<byte[]>();
+            var levels = unit?.LampLevels;
+            if (levels == null || colors == null || due == null || due.Count == 0) return frames;
+
+            if (unit.MultiId != 0 && unit.MultiUpdateSlots > 0)
+            {
+                int slots = unit.MultiUpdateSlots;
+                var chunk = new LampValues[Math.Min(slots, due.Count)];
+                for (int start = 0; start < due.Count; start += slots)
+                {
+                    int count = Math.Min(slots, due.Count - start);
+                    for (int i = 0; i < count; i++)
+                    {
+                        int lamp = due[start + i];
+                        var (r, g, b, intensity) = ChannelValues(levels[lamp], colors[lamp]);
+                        chunk[i] = new LampValues((ushort)lamp, r, g, b, intensity);
+                    }
+                    frames.Add(MultiUpdate(unit.MultiId, slots, complete: start + count >= due.Count, chunk.AsSpan(0, count)));
+                }
+                covered = due.Count;
+                return frames;
+            }
+
+            int budget = BackToBack(unit);
+            int at = 0;
+            while (at < due.Count && frames.Count < budget)
+            {
+                int first = due[at];
+                var values = ChannelValues(levels[first], colors[first]);
+                int end = at;
+                while (end + 1 < due.Count && due[end + 1] == due[end] + 1
+                       && ChannelValues(levels[due[end + 1]], colors[due[end + 1]]) == values)
+                    end++;
+                frames.Add(RangeUpdate(unit.RangeId, complete: false, first, due[end],
+                    values.Red, values.Green, values.Blue, values.Intensity));
+                at = end + 1;
+            }
+            // The last report sent closes the update.
+            frames[^1][1] = LampUpdateComplete;
+            covered = at;
             return frames;
         }
 
@@ -492,6 +728,33 @@ namespace PadForge.Common.Input.Peripherals
                 slots += ValuesOf(cap, LampIdUsage);
             }
 
+            // The lamp descriptions (#557): positions, latency and purposes
+            // as single 32-bit values, and InputBinding as 8 or 16 bits if
+            // the device has it. A device that declares them otherwise is
+            // still driven, one color at a time, so a miss here rejects
+            // nothing.
+            string unused = null;
+            bool describes = Field(response, "lamp response report", PositionXUsage, 32, ref unused)
+                && Field(response, "lamp response report", PositionYUsage, 32, ref unused)
+                && Field(response, "lamp response report", PositionZUsage, 32, ref unused)
+                && Field(response, "lamp response report", LampPurposesUsage, 32, ref unused)
+                && Field(response, "lamp response report", UpdateLatencyUsage, 32, ref unused);
+            int bindingBits = 0;
+            if (Field(response, "lamp response report", InputBindingUsage, 8, ref unused)) bindingBits = 8;
+            else if (Field(response, "lamp response report", InputBindingUsage, 16, ref unused)) bindingBits = 16;
+
+            // The multi update, which paints lamps one by one (#557). Kept
+            // only when it is a feature report of its own ID laid out the
+            // way MultiUpdate builds it. Anything else leaves the device to
+            // range updates.
+            byte multiId = 0;
+            ushort multiLink = 0;
+            if (MultiShape(caps, slots, ids, out var multi))
+            {
+                multiId = multi.ReportId;
+                multiLink = multi.LinkCollection;
+            }
+
             return new LampArrayLayout(attributes[0].ReportId, request[0].ReportId, response[0].ReportId, range[0].ReportId,
                 control.Count > 0 ? control[0].ReportId : (byte)0, control.Count > 0, featureLength)
             {
@@ -501,7 +764,157 @@ namespace PadForge.Common.Input.Peripherals
                 RangeLink = range[0].LinkCollection,
                 ControlLink = control.Count > 0 ? control[0].LinkCollection : (ushort)0,
                 MultiUpdateSlots = slots,
+                MultiId = multiId,
+                MultiLink = multiLink,
+                InputBindingBits = bindingBits,
+                DescribesLamps = describes,
             };
+        }
+
+        /// <summary>
+        /// Whether the multi update report is one PadForge can send
+        /// (#557): every field of it a Feature field in one report of its
+        /// own nonzero ID and one collection, LampCount and
+        /// LampUpdateFlags single 8-bit values, LampId 16-bit values and
+        /// each channel 8-bit values, <paramref name="slots"/> of each,
+        /// declared as one array or as separate fields. Its byte layout is
+        /// then checked against Windows' parser (<see cref="CheckMulti"/>).
+        /// </summary>
+        private static bool MultiShape(IReadOnlyList<LampValueCap> caps, int slots, List<byte> otherIds, out LampValueCap first)
+        {
+            first = default;
+            if (slots <= 0 || slots > 255) return false;
+            var fields = new List<LampValueCap>();
+            foreach (var cap in caps)
+            {
+                if (cap.UsagePage != UsagePage || cap.LinkUsagePage != UsagePage || cap.LinkUsage != MultiUpdateReport) continue;
+                if (cap.Output) return false;
+                fields.Add(cap);
+            }
+            if (fields.Count == 0) return false;
+            first = fields[0];
+            if (first.ReportId == 0 || otherIds.Contains(first.ReportId)) return false;
+            foreach (var cap in fields)
+                if (cap.ReportId != first.ReportId || cap.LinkCollection != first.LinkCollection) return false;
+            return Values(fields, LampCountUsage, 8) == 1
+                && Values(fields, LampUpdateFlagsUsage, 8) == 1
+                && Values(fields, LampIdUsage, 16) == slots
+                && Values(fields, RedUpdateChannelUsage, 8) == slots
+                && Values(fields, GreenUpdateChannelUsage, 8) == slots
+                && Values(fields, BlueUpdateChannelUsage, 8) == slots
+                && Values(fields, IntensityUpdateChannelUsage, 8) == slots;
+        }
+
+        /// <summary>How many values <paramref name="usage"/> has across a
+        /// report's fields, or -1 when any field holding it is another
+        /// width.</summary>
+        private static int Values(List<LampValueCap> fields, ushort usage, int bits)
+        {
+            int count = 0;
+            foreach (var cap in fields)
+            {
+                if (usage < cap.UsageMin || usage > cap.UsageMax) continue;
+                if (cap.BitSize != bits) return -1;
+                count += ValuesOf(cap, usage);
+            }
+            return count;
+        }
+
+        /// <summary>One field set in a parser build (#557): a single value
+        /// by usage, a usage value array as its bytes, or one field by its
+        /// data index, the way a report with several fields of one usage
+        /// is filled.</summary>
+        internal readonly record struct ParserField(ushort Usage, uint Value, byte[] Array = null, int DataIndex = -1);
+
+        /// <summary>Builds one report through Windows' HID parser from
+        /// <see cref="ParserField"/>s, with no device I/O. Null when the
+        /// parser refused a field.</summary>
+        internal delegate byte[] ParserBuildFields(byte reportId, ushort linkCollection, IReadOnlyList<ParserField> fields);
+
+        /// <summary>
+        /// Whether Windows' parser lays the multi update out the way
+        /// <see cref="MultiUpdate"/> builds it (#557): the parser builds a
+        /// full report of known values, an array field with all its values
+        /// at once and separate fields of one usage by data index, in the
+        /// order the descriptor declares them, and the bytes must match.
+        /// </summary>
+        internal static bool CheckMulti(LampArrayLayout layout, IReadOnlyList<LampValueCap> caps, ParserBuildFields build)
+        {
+            if (layout == null || layout.MultiId == 0 || build == null) return false;
+            int slots = layout.MultiUpdateSlots;
+            var lamps = new LampValues[slots];
+            for (int i = 0; i < slots; i++)
+                lamps[i] = new LampValues((ushort)(0x1100 + i), (byte)(0x10 + i), (byte)(0x40 + i), (byte)(0x70 + i), (byte)(0xA0 + i));
+            var fields = new List<ParserField>
+            {
+                new(LampCountUsage, (uint)slots),
+                new(LampUpdateFlagsUsage, LampUpdateComplete),
+            };
+            if (!AddSlots(fields, caps, layout, LampIdUsage, 2, i => lamps[i].LampId)
+                || !AddSlots(fields, caps, layout, RedUpdateChannelUsage, 1, i => lamps[i].Red)
+                || !AddSlots(fields, caps, layout, GreenUpdateChannelUsage, 1, i => lamps[i].Green)
+                || !AddSlots(fields, caps, layout, BlueUpdateChannelUsage, 1, i => lamps[i].Blue)
+                || !AddSlots(fields, caps, layout, IntensityUpdateChannelUsage, 1, i => lamps[i].Intensity))
+                return false;
+            byte[] built = build(layout.MultiId, layout.MultiLink, fields);
+            byte[] expected = MultiUpdate(layout.MultiId, slots, complete: true, lamps);
+            return built != null && built.Length >= expected.Length && built.AsSpan(0, expected.Length).SequenceEqual(expected);
+        }
+
+        /// <summary>The fields that set one usage's slot values: the whole
+        /// array when one field holds every slot, else each field by its
+        /// data index in declared order.</summary>
+        private static bool AddSlots(List<ParserField> fields, IReadOnlyList<LampValueCap> caps, LampArrayLayout layout,
+            ushort usage, int bytes, Func<int, int> value)
+        {
+            var holding = caps.Where(cap => !cap.Output && cap.UsagePage == UsagePage && cap.LinkUsage == MultiUpdateReport
+                    && cap.ReportId == layout.MultiId && usage >= cap.UsageMin && usage <= cap.UsageMax)
+                .OrderBy(cap => cap.DataIndex).ToList();
+            int slots = layout.MultiUpdateSlots;
+            if (holding.Count == 1 && holding[0].UsageMin == holding[0].UsageMax && ValuesOf(holding[0], usage) == slots && slots > 1)
+            {
+                var array = new byte[slots * bytes];
+                for (int i = 0; i < slots; i++)
+                {
+                    int v = value(i);
+                    array[i * bytes] = (byte)v;
+                    if (bytes == 2) array[i * bytes + 1] = (byte)(v >> 8);
+                }
+                fields.Add(new ParserField(usage, 0, array));
+                return true;
+            }
+            int slot = 0;
+            foreach (var cap in holding)
+            {
+                if (ValuesOf(cap, usage) != 1 || cap.UsageMin != cap.UsageMax) return false;
+                fields.Add(new ParserField(usage, (uint)value(slot++), null, cap.DataIndex));
+            }
+            return slot == slots;
+        }
+
+        /// <summary>
+        /// Whether Windows' parser puts each lamp's position, latency,
+        /// purposes and InputBinding where
+        /// <see cref="TryParseLampDescription"/> reads them (#557), the way
+        /// <see cref="CrossCheck"/> checks the lamp ID and level counts.
+        /// </summary>
+        internal static bool CheckDescriptions(LampArrayLayout layout, ParserBuild build)
+        {
+            if (layout == null || !layout.DescribesLamps || build == null) return false;
+            var values = new List<(ushort, uint)>
+            {
+                (LampIdUsage, 0x1234), (PositionXUsage, 0x11223344), (PositionYUsage, 0x55667788),
+                (PositionZUsage, 0x0A0B0C0D), (UpdateLatencyUsage, 0x01020304), (LampPurposesUsage, 0x00000005),
+                (RedLevelCountUsage, 0xA1), (GreenLevelCountUsage, 0xB2), (BlueLevelCountUsage, 0xC3),
+                (IntensityLevelCountUsage, 0xD4), (IsProgrammableUsage, 0x01),
+            };
+            uint binding = layout.InputBindingBits == 16 ? 0xBEEFu : layout.InputBindingBits == 8 ? 0x2Cu : 0u;
+            if (layout.InputBindingBits != 0) values.Add((InputBindingUsage, binding));
+            byte[] response = build(layout.ResponseId, layout.ResponseLink, values);
+            return response != null && response[0] == layout.ResponseId
+                && TryParseLampDescription(response, layout.InputBindingBits, out var lamp)
+                && lamp == new LampDescription(0x1234, 0x11223344, 0x55667788, 0x0A0B0C0D, 0x01020304, 0x00000005,
+                    new LampLevels(true, 0xA1, 0xB2, 0xC3, 0xD4), (ushort)binding);
         }
 
         /// <summary>The Feature fields of one report: the ones on the

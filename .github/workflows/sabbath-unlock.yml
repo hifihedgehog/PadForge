@@ -1,14 +1,21 @@
 # Sabbath unlock.
 #
-# Two triggers:
-#   1. Weekly cron every Monday 00:01 America/New_York. The lock set
-#      by sabbath-lock.yml on Sat 23:59 ET has its own 24-hour
-#      self-expiry that fires at Sun 23:59 ET, so this cron is
-#      normally a no-op DELETE on an already-expired lock. It exists
-#      to release any one-off mid-week lock (e.g. someone manually
-#      PUTting interaction-limits outside the normal Sat 23:59
-#      cadence) that would otherwise leak into Monday daytime.
-#   2. workflow_dispatch for manual emergency release any time.
+# Removes the interaction limit at Monday 00:00 America/New_York. The
+# limit sabbath-lock.yml sets at Sunday 00:00 ET ends by itself 24 hours
+# later. This workflow ends one that started late, and any other limit
+# still in place on Monday.
+#
+# GitHub starts scheduled runs late under load: through October 2026 the
+# Monday 00:01 ET run started four to seven hours late. So the schedule
+# fires every hour from Sunday 19:07 ET, and the first run that starts
+# on Sunday sleeps until Monday 00:00 ET and removes the limit then. A
+# run that starts on Monday or later removes it at once, and Monday runs
+# at 01:07, 04:07 and 07:07 ET cover a Sunday whose runs never came. The
+# runs share one concurrency group, so one sleeps and the next waits
+# behind it. DELETE is idempotent, so a run after the first is a no-op.
+#
+# A manual run from the Actions tab removes the limit at once, or with
+# wait_for_midnight follows the schedule's rules.
 #
 # Same authentication requirement as sabbath-lock.yml. The repository
 # secret SABBATH_PAT must be a fine-grained Personal Access Token with
@@ -24,28 +31,50 @@ name: Sabbath unlock
 
 on:
   schedule:
-    - cron: "1 0 * * 1"
+    - cron: "7 19-23 * * 0"
+      timezone: "America/New_York"
+    - cron: "7 1-7/3 * * 1"
       timezone: "America/New_York"
   workflow_dispatch:
+    inputs:
+      wait_for_midnight:
+        description: 'Follow the schedule: on a Sunday, wait for Monday 00:00 ET'
+        type: boolean
+        default: false
 
 permissions: {}
+
+concurrency:
+  group: sabbath-unlock
+  cancel-in-progress: false
 
 jobs:
   unlock:
     runs-on: ubuntu-latest
+    timeout-minutes: 340
     steps:
       - name: Remove interaction limit
         env:
           PAT: ${{ secrets.SABBATH_PAT }}
           REPO: ${{ github.repository }}
+          SCHEDULED: ${{ github.event_name == 'schedule' || inputs.wait_for_midnight }}
         run: |
           set -euo pipefail
           if [ -z "${PAT:-}" ]; then
             echo "SABBATH_PAT secret is not set. See header comment in sabbath-lock.yml." >&2
             exit 1
           fi
+          export TZ=America/New_York
+          if [ "$SCHEDULED" = "true" ] && [ "$(date +%u)" = "7" ]; then
+            wait=$(( $(date -d 'tomorrow 00:00' +%s) - $(date +%s) ))
+            echo "$(date '+%a %H:%M:%S %Z'): waiting ${wait}s for Monday 00:00."
+            if [ "$wait" -gt 0 ]; then
+              sleep "$wait"
+            fi
+          fi
           curl -fsSL -X DELETE \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer $PAT" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             "https://api.github.com/repos/${REPO}/interaction-limits"
+          echo "Limit removed at $(date '+%a %Y-%m-%d %H:%M:%S %Z')."

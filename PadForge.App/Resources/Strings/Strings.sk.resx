@@ -987,6 +987,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Pri nastavení Číslo hráča ovládač v nečinnosti zobrazuje identitu hráča svojho virtuálneho ovládača: farbu hráča Sony na svetelnej lište (1 modrá, 2 červená, 3 zelená, 4 ružová) a zodpovedajúce indikátory hráča na ovládači DualSense. Každé zariadenie na tom istom virtuálnom ovládači zobrazuje rovnaké číslo. Hry prevezmú kontrolu vždy, keď zapisujú osvetlenie, všetko, čo nastavíte tu, má vždy prednosť a Vypnuté svetlo úplne zhasne.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Tento virtuálny ovládač osvetľuje zariadenie rovnakými režimami, aké má svetelná lišta ovládača DualSense, nastavenými tu iba pre tento ovládač. Na virtuálnom ovládači PlayStation hra, ktorá zapisuje do svetelnej lišty, prevezme kontrolu rovnako ako na ovládači DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Ovládať osvetlenie tohto zariadenia</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Ovládanie osvetlenia</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Keď je vypnuté, tento virtuálny ovládač zariadenie neosvetľuje. Jeho farbu môže stále nastaviť riadok výrobcu alebo iné zariadenie rovnakého druhu osvetlené cez ten istý softvér. Makro Nastaviť farbu Chroma na tomto virtuálnom ovládači stále zafarbí zariadenie Razer.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Prevzatie osvetlenia</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Iba farby</value></data>
@@ -1111,6 +1112,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Šípky</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Okraj</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>Okraj {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logo</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Stav</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Herný režim</value></data>

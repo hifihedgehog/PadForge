@@ -987,6 +987,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Ko je nastavljena možnost „Številka igralca“, krmilnik v mirovanju prikazuje identiteto igralca svojega navideznega krmilnika: Sonyjevo barvo igralca na svetlobnem traku (1 modra, 2 rdeča, 3 zelena, 4 rožnata) in ustrezne lučke igralca na krmilniku DualSense. Vse naprave na istem navideznem krmilniku prikazujejo isto številko. Igre prevzamejo nadzor, kadar zapišejo osvetlitev. Kar nastavite tukaj, ima vedno prednost, „Izklopljeno“ pa luč popolnoma ugasne.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Ta navidezni krmilnik osvetljuje napravo z enakimi načini, kot jih ima svetlobni trak krmilnika DualSense, nastavljenimi tukaj samo za ta krmilnik. Na navideznem krmilniku PlayStation igra, ki piše na svetlobni trak, prevzame nadzor tako kot na krmilniku DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Upravljaj osvetlitev te naprave</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Nadzor osvetlitve</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Ko je izklopljeno, ta navidezni krmilnik naprave ne osvetljuje. Njeno barvo lahko še vedno nastavi vrstica proizvajalca ali druga naprava iste vrste, osvetljena prek iste programske opreme. Makro „Nastavi barvo Chroma“ na tem navideznem krmilniku še vedno obarva napravo Razer.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Prevzem osvetlitve</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Samo barve</value></data>
@@ -1111,6 +1112,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Smerne tipke</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Rob</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>Rob {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logotip</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Stanje</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Igralni način</value></data>

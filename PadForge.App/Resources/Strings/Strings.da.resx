@@ -987,6 +987,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Når den er sat til Spillernummer, viser controlleren i hvile sin virtuelle controllers spilleridentitet: Sonys spillerfarve på lysbjælken (1 blå, 2 rød, 3 grøn, 4 lyserød) og de tilsvarende spillerprikker på en DualSense. Alle enheder på den samme virtuelle controller viser det samme nummer. Spil overtager, når de skriver belysning, alt, hvad du angiver her, har altid forrang, og Fra slukker et lys helt.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Denne virtuelle controller belyser enheden med de samme tilstande som en DualSense-lysbjælke, angivet her kun for denne controller. På en virtuel PlayStation-controller overtager et spil, der skriver til lysbjælken, på samme måde som på en DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Styr denne enheds belysning</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Styring af belysning</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Fra forhindrer denne virtuelle controller i at belyse enheden. En producentrække eller en anden enhed af samme slags, der belyses via den samme software, kan stadig angive dens farve. En makro med Angiv Chroma-farve på denne virtuelle controller farver stadig en Razer-enhed.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Kontrol over belysning</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Kun farver</value></data>
@@ -1111,6 +1112,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Piletaster</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Kant</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>Kant {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logo</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Status</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Spiltilstand</value></data>

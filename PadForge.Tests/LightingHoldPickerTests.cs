@@ -526,12 +526,18 @@ namespace PadForge.Tests
             }
             XElement Named(string name) => One(n => (string)n.Attribute(x + "Name") == name, "an element named " + name);
 
-            var panel = Named("PeripheralLightingPanel");
-            var rows = panel.Elements().Select(e => (string)e.Attribute(x + "Name")).ToList();
+            // The switch and the hold are the Lighting Control card's rows,
+            // the hold last, and the route line stays with the tab's text
+            // above the cards (#557: no setting sits outside a card).
+            var card = Named("PeripheralLightingCard");
+            Assert.Equal("{StaticResource CardBorder}", (string)card.Attribute("Style"));
+            var rows = card.Elements().Single().Elements().Select(e => (string)e.Attribute(x + "Name")).ToList();
             int control = rows.IndexOf("PeripheralLightingControlRow");
             Assert.True(control >= 0);
             Assert.Equal("PeripheralClaimLevelRow", rows[control + 1]);
-            Assert.Equal("PeripheralLightingRoute", rows[control + 2]);
+            Assert.Equal(control + 2, rows.Count);
+            var panel = Named("PeripheralLightingPanel");
+            Assert.Contains("PeripheralLightingRoute", panel.Elements().Select(e => (string)e.Attribute(x + "Name")));
 
             var row = Named("PeripheralClaimLevelRow");
             Assert.Equal("Collapsed", (string)row.Attribute("Visibility"));
@@ -574,6 +580,30 @@ namespace PadForge.Tests
             Assert.True(labelWidth >= 158, "the label column clips its widest label");
             Assert.True(labelWidth + pickerWidth + resetWidth <= cardRow,
                 $"the row is {labelWidth + pickerWidth + resetWidth} wide, wider than the {cardRow} of the card below it");
+        }
+
+        /// <summary>Every setting on the Lighting and Force Feedback tabs sits
+        /// in a card, the way the rest of a device's tabs are laid out. The
+        /// Lighting Control switch and the Lighting Hold row once sat loose
+        /// between the tab's text and its first card (owner, 2026-11-02).
+        /// The tab's text, its subtitle and route line, may sit outside.</summary>
+        [Theory]
+        [InlineData("Pad_Lighting")]
+        [InlineData("Pad_ForceFeedback")]
+        public void EverySettingOnTheOutputTabs_SitsInACard(string tab)
+        {
+            var page = XDocument.Parse(RepoText("PadForge.App", "Views", "PadPage.xaml"));
+            string name = "{Binding " + tab + ", Source={x:Static strings:Strings.Instance}}";
+            var scroller = page.Descendants().Single(n => n.Name.LocalName == "ScrollViewer"
+                && (string)n.Attribute("AutomationProperties.Name") == name);
+            string[] settings = { "CheckBox", "ComboBox", "Slider", "TextBox", "ToggleSwitch", "RadioButton", "SettingResetButton" };
+            var loose = scroller.Descendants()
+                .Where(n => settings.Contains(n.Name.LocalName))
+                .Where(n => !n.Ancestors().TakeWhile(a => a != scroller)
+                    .Any(a => a.Name.LocalName == "Border" && ((string)a.Attribute("Style") ?? "").Contains("CardBorder")))
+                .Select(n => n.Name.LocalName + " " + ((string)n.Attribute("Content") ?? (string)n.Attribute("AutomationProperties.AutomationId") ?? ""))
+                .ToList();
+            Assert.True(loose.Count == 0, "outside a card: " + string.Join("; ", loose));
         }
 
         /// <summary>The tab asks what the selected device offers on every

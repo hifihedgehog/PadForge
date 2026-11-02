@@ -1337,6 +1337,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_Subtitle => Get("Pad_Lighting_Subtitle");
     public string Pad_Lighting_PlayerIdle_Hint => Get("Pad_Lighting_PlayerIdle_Hint");
     public string Pad_Lighting_PeripheralSubtitle => Get("Pad_Lighting_PeripheralSubtitle");
+    public string Pad_Lighting_ControlCard => Get("Pad_Lighting_ControlCard");
     public string Pad_Lighting_ControlDevice => Get("Pad_Lighting_ControlDevice");
     public string Pad_Lighting_ControlDevice_Tooltip => Get("Pad_Lighting_ControlDevice_Tooltip");
     public string Pad_Lighting_ClaimLevel => Get("Pad_Lighting_ClaimLevel");
@@ -1391,6 +1392,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_KeyColors_SelectArrows => Get("Pad_Lighting_KeyColors_SelectArrows");
     public string Pad_Lighting_KeyColors_SelectWasd => Get("Pad_Lighting_KeyColors_SelectWasd");
     public string Pad_Lighting_KeyColors_Edge => Get("Pad_Lighting_KeyColors_Edge");
+    public string Pad_Lighting_KeyColors_Edge_Format => Get("Pad_Lighting_KeyColors_Edge_Format");
     public string Pad_Lighting_KeyColors_Logo => Get("Pad_Lighting_KeyColors_Logo");
     public string Pad_Lighting_KeyColors_Status => Get("Pad_Lighting_KeyColors_Status");
     public string Pad_Lighting_KeyColors_GameMode => Get("Pad_Lighting_KeyColors_GameMode");

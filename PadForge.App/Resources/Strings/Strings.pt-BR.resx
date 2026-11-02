@@ -1812,6 +1812,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Enquanto Número do Jogador estiver selecionado, o controle em repouso mostra a identidade de jogador do seu controle virtual: a cor de jogador da Sony na barra de luz (1 azul, 2 vermelho, 3 verde, 4 rosa) e, em um DualSense, os LEDs de jogador correspondentes. Todos os dispositivos do mesmo controle virtual mostram o mesmo número. Os jogos assumem quando escrevem iluminação, o que você definir aqui sempre vence, e as opções de desligar apagam essa luz por completo.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Este controle virtual ilumina o dispositivo com os mesmos modos da barra de luz de um DualSense, definidos aqui só para este controle. Em um controle virtual PlayStation, um jogo que escreve na barra de luz assume o controle como em um DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Controlar a Iluminação Deste Dispositivo</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Controle da Iluminação</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Desativado impede que este controle virtual ilumine o dispositivo. Uma linha de fabricante, ou outro dispositivo do mesmo tipo iluminado pelo mesmo software, ainda pode definir a cor dele. Uma macro “Definir Cor do Chroma” deste controle virtual ainda pinta um dispositivo Razer.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Retenção da Iluminação</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Somente Cores</value></data>
@@ -1926,6 +1927,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Teclas de Seta</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Borda</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>Borda {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logotipo</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Status</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Modo de Jogo</value></data>

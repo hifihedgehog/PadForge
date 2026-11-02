@@ -987,6 +987,7 @@
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>ప్లేయర్ సంఖ్యకు సెట్ చేసినప్పుడు, ప్యాడ్ నిష్క్రియంగా దాని వర్చువల్ కంట్రోలర్ ప్లేయర్ గుర్తింపును చూపుతుంది: లైట్ బార్పై Sony ప్లేయర్ రంగు (1 నీలం, 2 ఎరుపు, 3 ఆకుపచ్చ, 4 గులాబీ) మరియు DualSenseపై సరిపోలే ప్లేయర్ పిప్స్. ఒకే వర్చువల్ కంట్రోలర్లోని ప్రతి పరికరం ఒకే సంఖ్యను చూపుతుంది. గేమ్లు లైటింగ్ రాసినప్పుడల్లా అవి స్వాధీనం చేసుకుంటాయి, ఇక్కడ మీరు సెట్ చేసింది ఎల్లప్పుడూ గెలుస్తుంది, ఆఫ్ లైట్ను పూర్తిగా చీకటి చేస్తుంది.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>ఈ వర్చువల్ కంట్రోలర్ DualSense లైట్ బార్కు ఉండే అవే మోడ్లతో పరికరాన్ని వెలిగిస్తుంది, ఈ కంట్రోలర్కు మాత్రమే ఇక్కడ సెట్ చేయబడతాయి. PlayStation వర్చువల్ కంట్రోలర్పై, లైట్ బార్ను రాసే గేమ్ DualSenseపై చేసినట్లే స్వాధీనం చేసుకుంటుంది.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>ఈ పరికర లైటింగ్ను నియంత్రించు</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>లైటింగ్ నియంత్రణ</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>ఆఫ్ చేస్తే ఈ వర్చువల్ కంట్రోలర్ పరికరాన్ని వెలిగించదు. విక్రేత వరుస, లేదా అదే సాఫ్ట్వేర్ ద్వారా వెలిగే అదే రకమైన మరో పరికరం, ఇంకా దాని రంగును సెట్ చేయవచ్చు. ఈ వర్చువల్ కంట్రోలర్పై Set Chroma Color మాక్రో ఇంకా Razer పరికరానికి రంగు వేస్తుంది.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>లైటింగ్ పట్టు</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>రంగులు మాత్రమే</value></data>
@@ -1111,6 +1112,7 @@
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>బాణం కీలు</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>అంచు</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>అంచు {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>లోగో</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>స్థితి</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>గేమ్ మోడ్</value></data>

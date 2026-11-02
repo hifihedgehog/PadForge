@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using PadForge.Common.Input;
 using PadForge.Common.Input.Peripherals;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Resources.Strings;
 using PadForge.Services;
 using PadForge.ViewModels;
+using PadForge.Views;
 using Xunit;
 
 namespace PadForge.Tests
@@ -112,6 +115,33 @@ namespace PadForge.Tests
             Assert.Equal(0x04, keys.Single(l => l.Address == 0x6D).Usage);  // A
             Assert.Equal(0x58, keys.Single(l => l.Address == 0xA7).Usage);  // Number Pad Enter
             Assert.Equal(0x4F, keys.Single(l => l.Address == 0xA1).Usage);  // Right Arrow
+        }
+
+        [Fact]
+        public void TheEdgeLights_CarryNumbersOnTheirChips_AsZonesDo()
+        {
+            // 28 chips all reading Edge could not be told apart.
+            var map = new LightMap(LenovoLegionLighting.Gen10Lights(), "test");
+            Assert.Equal(28, map.EdgeCount);
+            Assert.Equal(0, map.EdgeNumberOf(0));      // Escape
+            Assert.Equal(1, map.EdgeNumberOf(101));    // neon 1
+            Assert.Equal(10, map.EdgeNumberOf(110));   // neon 10
+            Assert.Equal(0, map.EdgeNumberOf(111));    // the logo
+            Assert.Equal(11, map.EdgeNumberOf(112));   // vent 1
+            Assert.Equal(28, map.EdgeNumberOf(129));   // vent 18
+            Assert.Equal(0, map.EdgeNumberOf(130));
+            var s = Strings.Instance;
+            Assert.Equal(string.Format(CultureInfo.CurrentCulture, s.Pad_Lighting_KeyColors_Edge_Format, 11),
+                KeyLightsView.Legend(map.Lights[112], IntPtr.Zero, map.EdgeNumberOf(112)));
+
+            // One edge light keeps the plain name.
+            var single = new LightMap(new[]
+            {
+                new LightInfo(1, LightKind.Key, 0x29, LightKeySource.Device),
+                new LightInfo(2, LightKind.Edge, 0, LightKeySource.None),
+            }, "test");
+            Assert.Equal(0, single.EdgeNumberOf(1));
+            Assert.Equal(s.Pad_Lighting_KeyColors_Edge, KeyLightsView.Legend(single.Lights[1], IntPtr.Zero, single.EdgeNumberOf(1)));
         }
 
         [Fact]

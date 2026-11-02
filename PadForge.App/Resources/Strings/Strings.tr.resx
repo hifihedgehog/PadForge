@@ -987,6 +987,7 @@
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Oyuncu numarası seçiliyken kumanda, boştayken sanal kontrolcüsünün oyuncu kimliğini gösterir: ışık çubuğunda Sony oyuncu rengi (1 mavi, 2 kırmızı, 3 yeşil, 4 pembe) ve DualSense'te buna karşılık gelen oyuncu ışıkları. Aynı sanal kontrolcüdeki her cihaz aynı numarayı gösterir. Oyunlar aydınlatmaya yazdıklarında denetimi devralır, burada ayarladığınız her şey her zaman önceliklidir ve Kapalı seçeneği ışığı tamamen söndürür.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Bu sanal kontrolcü, cihazı bir DualSense ışık çubuğundaki modların aynısıyla aydınlatır ve bu modlar burada yalnızca bu kontrolcü için ayarlanır. PlayStation sanal kontrolcüsünde, ışık çubuğuna yazan bir oyun tıpkı DualSense'te olduğu gibi denetimi devralır.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Bu cihazın aydınlatmasını denetle</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Aydınlatma denetimi</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Kapalıyken bu sanal kontrolcü cihazı aydınlatmaz. Bir üretici satırı veya aynı yazılım üzerinden aydınlatılan aynı türden başka bir cihaz yine de rengini ayarlayabilir. Bu sanal kontrolcüdeki bir Chroma rengini ayarla makrosu Razer cihazını yine de boyar.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Aydınlatma sahipliği</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Yalnızca renkler</value></data>
@@ -1111,6 +1112,7 @@
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Ok tuşları</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Kenar</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>Kenar {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logo</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Durum</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Oyun modu</value></data>

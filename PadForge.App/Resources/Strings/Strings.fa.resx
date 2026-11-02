@@ -987,6 +987,7 @@
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>تا وقتی روی «شماره بازیکن» تنظیم است، گیم‌پد در حالت بیکاری هویت بازیکن کنترلر مجازی‌اش را نشان می‌دهد: رنگ بازیکن Sony روی نوار نوری (1 آبی، 2 قرمز، 3 سبز، 4 صورتی) و نقطه‌های بازیکن متناظر روی DualSense. همه دستگاه‌های یک کنترلر مجازی همان شماره را نشان می‌دهند. هر وقت بازی‌ها نورپردازی را بنویسند کنترل را به دست می‌گیرند، هر چه اینجا تنظیم کنید همیشه اولویت دارد و «خاموش» چراغ را کاملاً تاریک می‌کند.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>این کنترلر مجازی دستگاه را با همان حالت‌هایی روشن می‌کند که نوار نوری DualSense دارد و اینجا فقط برای همین کنترلر تنظیم می‌شود. در کنترلر مجازی PlayStation، بازی‌ای که نوار نوری را می‌نویسد، مانند DualSense کنترل را به دست می‌گیرد.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>کنترل نورپردازی این دستگاه</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>کنترل نورپردازی</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>«خاموش» نمی‌گذارد این کنترلر مجازی دستگاه را روشن کند. یک ردیف سازنده، یا دستگاه دیگری از همین نوع که با همان نرم‌افزار روشن می‌شود، همچنان می‌تواند رنگ آن را تعیین کند. ماکروی «تنظیم رنگ Chroma» روی این کنترلر مجازی همچنان دستگاه Razer را رنگ می‌کند.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>در اختیار گرفتن نورپردازی</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>فقط رنگ‌ها</value></data>
@@ -1111,6 +1112,7 @@
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>کلیدهای جهت‌نما</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>لبه</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>لبه {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>لوگو</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>وضعیت</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>حالت بازی</value></data>

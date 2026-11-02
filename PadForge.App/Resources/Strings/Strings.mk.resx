@@ -987,6 +987,7 @@
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Кога е поставено на „Број на играч“, контролерот во мирување го прикажува идентитетот на играчот на својот виртуелен контролер: бојата на играчот на Sony на светлосната лента (1 сина, 2 црвена, 3 зелена, 4 розова) и соодветните точки за играч на DualSense. Секој уред на истиот виртуелен контролер го прикажува истиот број. Игрите го преземаат управувањето секогаш кога запишуваат осветлување, сѐ што ќе поставите тука секогаш има предност, а „Исклучено“ целосно го гаси светлото.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Овој виртуелен контролер го осветлува уредот со истите режими што ги има светлосната лента на DualSense, поставени тука само за овој контролер. На виртуелен контролер PlayStation, играта што ја запишува светлосната лента го презема управувањето исто како на DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Управувај со осветлувањето на овој уред</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Управување со осветлувањето</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Кога е исклучено, овој виртуелен контролер не го осветлува уредот. Ред на производителот, или друг уред од ист вид осветлен преку истиот софтвер, сѐ уште може да ја поставува неговата боја. Макрото „Постави Chroma боја“ на овој виртуелен контролер сѐ уште го бои уредот Razer.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Задржување на осветлувањето</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Само бои</value></data>
@@ -1111,6 +1112,7 @@
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Стрелки</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Раб</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>Раб {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Логотип</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Статус</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Игрален режим</value></data>

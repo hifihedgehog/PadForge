@@ -987,6 +987,7 @@
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>設為「玩家編號」時，控制器閒置時會顯示其虛擬控制器的玩家身分：光條顯示 Sony 的玩家顏色（1 藍、2 紅、3 綠、4 粉紅），DualSense 亦會亮起相應的玩家指示燈。同一虛擬控制器上的所有裝置都顯示相同編號。遊戲寫入燈光時會由遊戲接管，你在這裡設定的任何項目一律優先，而「關閉」會讓該燈完全熄滅。</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>此虛擬控制器會以 DualSense 光條所具備的相同模式為該裝置亮燈，這裡的設定只適用於此控制器。在 PlayStation 虛擬控制器上，寫入光條的遊戲會像在 DualSense 上一樣接管燈光。</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>控制此裝置的燈光</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>燈光控制</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>關閉後，此虛擬控制器不會再為該裝置亮燈。廠商列，或經同一軟件亮燈的其他同類裝置，仍可設定其顏色。此虛擬控制器上的「設定 Chroma 顏色」巨集仍會為 Razer 裝置上色。</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>燈光接管</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>只限顏色</value></data>
@@ -1111,6 +1112,7 @@
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>方向鍵</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>邊緣</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>邊緣 {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>標誌</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>狀態</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>遊戲模式</value></data>

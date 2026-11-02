@@ -9488,66 +9488,84 @@
                                    TextWrapping="Wrap" Margin="0,-8,0,16"/>
 
                         <!-- A mouse, keyboard or vendor lighting row (#494):
-                             this slot's lighting reaches it through the card
-                             below, the way it reaches a DualSense. The switch
-                             is per (slot, device) and starts off, so assigning
-                             a keyboard for its keys never repaints it. The
-                             vendor rows hide it: lighting is all they carry.
-                             The route line names the path and who rules a
-                             shared one, the Force Feedback tab's ember line.
-                             Shown and filled by SyncTabVisibility. -->
+                             this slot's lighting reaches it through the cards
+                             below, the way it reaches a DualSense. The route
+                             line names the path and who rules a shared one,
+                             the Force Feedback tab's ember line. Shown and
+                             filled by SyncTabVisibility. -->
                         <StackPanel x:Name="PeripheralLightingPanel" Visibility="Collapsed" Margin="0,0,0,16">
                             <TextBlock Text="{Binding Pad_Lighting_PeripheralSubtitle, Source={x:Static strings:Strings.Instance}}"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                       TextWrapping="Wrap" Margin="0,0,0,8"/>
-                            <StackPanel x:Name="PeripheralLightingControlRow" Orientation="Horizontal" Margin="0,0,0,8">
-                                <CheckBox VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                          IsChecked="{Binding DeviceConfig.PeripheralLightingEnabled, Mode=TwoWay}"
-                                          Content="{Binding Pad_Lighting_ControlDevice, Source={x:Static strings:Strings.Instance}}"
-                                          ToolTip="{Binding Pad_Lighting_ControlDevice_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                <reset:SettingResetButton Command="{Binding DeviceConfig.ResetPeripheralLightingEnabledCommand}" SettingLabel="{Binding Pad_Lighting_ControlDevice, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_PeripheralLightingEnabled"/>
-                            </StackPanel>
-                            <!-- Lighting Hold (#494): how firmly this slot may
-                                 hold the device while it lights it, for a
-                                 Logitech device whose own power saving or saved
-                                 profile takes the color away. Per (slot, device)
-                                 like the switch above, and at its first option
-                                 until this tab says more. Shown for a device
-                                 that offers a hold, with the last option only
-                                 where the device offers that one, and with the
-                                 tooltip that stops before that option where it
-                                 does not (SyncTabVisibility). A vendor row or a
-                                 unit row never shows it.
-                                 Widths, measured (tools/combomeasure): the
-                                 widest option is the Spanish last one at
-                                 525.33px, so 534 leaves about 9px of slack, as
-                                 the Base Color card's pickers have. The label
-                                 column is 210 where a row's is 270, wide enough
-                                 for the widest label, the Spanish one at 158px.
-                                 That keeps the row at 776, inside the 780 that
-                                 card's picker rows take. Re-measure if these
-                                 strings change.
-                                 Typing a letter selects nothing here: it would
-                                 select the last option where that one is out
-                                 of the list. -->
-                            <StackPanel x:Name="PeripheralClaimLevelRow" Orientation="Horizontal" Margin="0,0,0,8" Visibility="Collapsed">
-                                <TextBlock Text="{Binding Pad_Lighting_ClaimLevel, Source={x:Static strings:Strings.Instance}}"
-                                           Style="{StaticResource DzLabel}" Width="210"/>
-                                <ComboBox x:Name="PeripheralClaimLevelPicker"
-                                          SelectedIndex="{Binding DeviceConfig.PeripheralClaimLevel, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
-                                          Width="534" VerticalAlignment="Center" IsTextSearchEnabled="False"
-                                          ToolTip="{Binding Pad_Lighting_ClaimLevel_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                          AutomationProperties.AutomationId="PeripheralClaimLevelCombo"
-                                          AutomationProperties.Name="{Binding Pad_Lighting_ClaimLevel, Source={x:Static strings:Strings.Instance}}">
-                                    <ComboBoxItem AutomationProperties.AutomationId="PeripheralClaimLevelColorsItem" Content="{Binding Pad_Lighting_ClaimLevel_Colors, Source={x:Static strings:Strings.Instance}}"/>
-                                    <ComboBoxItem AutomationProperties.AutomationId="PeripheralClaimLevelPowerItem" Content="{Binding Pad_Lighting_ClaimLevel_Power, Source={x:Static strings:Strings.Instance}}"/>
-                                    <ComboBoxItem x:Name="PeripheralClaimLevelHostModeItem" AutomationProperties.AutomationId="PeripheralClaimLevelHostModeItem" Content="{Binding Pad_Lighting_ClaimLevel_HostMode, Source={x:Static strings:Strings.Instance}}"/>
-                                </ComboBox>
-                                <reset:SettingResetButton Command="{Binding DeviceConfig.ResetPeripheralClaimLevelCommand}" SettingLabel="{Binding Pad_Lighting_ClaimLevel, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_PeripheralClaimLevel"/>
-                            </StackPanel>
+                                       TextWrapping="Wrap"/>
                             <TextBlock x:Name="PeripheralLightingRoute" Visibility="Collapsed"
-                                       Foreground="{DynamicResource EmberBrush}" TextWrapping="Wrap"/>
+                                       Foreground="{DynamicResource EmberBrush}" TextWrapping="Wrap" Margin="0,8,0,0"/>
                         </StackPanel>
+
+                        <!-- Lighting Control (#494, #557): whether this slot
+                             lights a mouse or keyboard row at all, and how
+                             firmly. The switch is per (slot, device) and
+                             starts off, so assigning a keyboard for its keys
+                             never repaints it. A vendor row or a unit row has
+                             no card: lighting is all it carries. A card of its
+                             own, as every setting on the tab sits in one: the
+                             Lighting Hold row's label column, measured below,
+                             is not the Lightbar card's. Shown by
+                             SyncTabVisibility with the switch. -->
+                        <Border x:Name="PeripheralLightingCard" Style="{StaticResource CardBorder}" Visibility="Collapsed">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <controls:GlyphText Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Lighting_ControlCard, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
+                                <StackPanel x:Name="PeripheralLightingControlRow" Orientation="Horizontal" Margin="0,0,0,8">
+                                    <CheckBox VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                              IsChecked="{Binding DeviceConfig.PeripheralLightingEnabled, Mode=TwoWay}"
+                                              Content="{Binding Pad_Lighting_ControlDevice, Source={x:Static strings:Strings.Instance}}"
+                                              ToolTip="{Binding Pad_Lighting_ControlDevice_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <reset:SettingResetButton Command="{Binding DeviceConfig.ResetPeripheralLightingEnabledCommand}" SettingLabel="{Binding Pad_Lighting_ControlDevice, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_PeripheralLightingEnabled"/>
+                                </StackPanel>
+                                <!-- Lighting Hold (#494): how firmly this slot may
+                                     hold the device while it lights it, for a
+                                     Logitech device whose own power saving or saved
+                                     profile takes the color away. Per (slot, device)
+                                     like the switch above, and at its first option
+                                     until this tab says more. Shown for a device
+                                     that offers a hold, with the last option only
+                                     where the device offers that one, and with the
+                                     tooltip that stops before that option where it
+                                     does not (SyncTabVisibility). A vendor row or a
+                                     unit row never shows it.
+                                     Widths, measured (tools/combomeasure): the
+                                     widest option is the Spanish last one at
+                                     525.33px, so 534 leaves about 9px of slack, as
+                                     the Base Color card's pickers have. The label
+                                     column is 210 where a row's is 270, wide enough
+                                     for the widest label, the Spanish one at 158px.
+                                     That keeps the row at 776, inside the 780 the
+                                     Lightbar card's picker rows take. Re-measure if
+                                     these strings change.
+                                     Typing a letter selects nothing here: it would
+                                     select the last option where that one is out
+                                     of the list. -->
+                                <StackPanel x:Name="PeripheralClaimLevelRow" Orientation="Horizontal" Margin="0,0,0,8" Visibility="Collapsed">
+                                    <TextBlock Text="{Binding Pad_Lighting_ClaimLevel, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource DzLabel}" Width="210"/>
+                                    <ComboBox x:Name="PeripheralClaimLevelPicker"
+                                              SelectedIndex="{Binding DeviceConfig.PeripheralClaimLevel, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
+                                              Width="534" VerticalAlignment="Center" IsTextSearchEnabled="False"
+                                              ToolTip="{Binding Pad_Lighting_ClaimLevel_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              AutomationProperties.AutomationId="PeripheralClaimLevelCombo"
+                                              AutomationProperties.Name="{Binding Pad_Lighting_ClaimLevel, Source={x:Static strings:Strings.Instance}}">
+                                        <ComboBoxItem AutomationProperties.AutomationId="PeripheralClaimLevelColorsItem" Content="{Binding Pad_Lighting_ClaimLevel_Colors, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem AutomationProperties.AutomationId="PeripheralClaimLevelPowerItem" Content="{Binding Pad_Lighting_ClaimLevel_Power, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem x:Name="PeripheralClaimLevelHostModeItem" AutomationProperties.AutomationId="PeripheralClaimLevelHostModeItem" Content="{Binding Pad_Lighting_ClaimLevel_HostMode, Source={x:Static strings:Strings.Instance}}"/>
+                                    </ComboBox>
+                                    <reset:SettingResetButton Command="{Binding DeviceConfig.ResetPeripheralClaimLevelCommand}" SettingLabel="{Binding Pad_Lighting_ClaimLevel, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_PeripheralClaimLevel"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
 
                         <!-- Unified lightbar mode picker. Replaces the
                              v3.0 BaseColor + AudioLightbar split. The

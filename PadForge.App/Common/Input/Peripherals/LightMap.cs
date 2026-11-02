@@ -173,6 +173,17 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The number of zones.</summary>
         public int ZoneCount { get; }
 
+        /// <summary>The number of edge lights.</summary>
+        public int EdgeCount { get; }
+
+        private readonly int[] _edgeNumbers;
+
+        /// <summary>An edge light's number among the unit's edge lights, from
+        /// 1, in map order, where the unit has more than one, so their chips
+        /// can be told apart as zones are. 0 for any other light.</summary>
+        public int EdgeNumberOf(int index)
+            => _edgeNumbers != null && (uint)index < (uint)_edgeNumbers.Length ? _edgeNumbers[index] : 0;
+
         /// <summary>The number of key lights whose key no source named, the
         /// ones Map Key Lights asks about.</summary>
         public int UnnamedKeyCount { get; }
@@ -188,6 +199,7 @@ namespace PadForge.Common.Input.Peripherals
                 var light = Lights[i];
                 if (!light.HasPosition) positioned = false;
                 if (light.Kind == LightKind.Zone) ZoneCount = Math.Max(ZoneCount, light.Zone);
+                if (light.Kind == LightKind.Edge) EdgeCount++;
                 if (light.Kind != LightKind.Key) continue;
                 if (light.Usage == 0)
                 {
@@ -200,6 +212,13 @@ namespace PadForge.Common.Input.Peripherals
             foreach (var pair in byUsage) _byUsage[pair.Key] = pair.Value.ToArray();
             KeyCount = _byUsage.Count;
             Positioned = positioned;
+            if (EdgeCount > 1)
+            {
+                _edgeNumbers = new int[Lights.Count];
+                int number = 0;
+                for (int i = 0; i < Lights.Count; i++)
+                    if (Lights[i].Kind == LightKind.Edge) _edgeNumbers[i] = ++number;
+            }
         }
 
         /// <summary>The indexes into <see cref="Lights"/> of the lights

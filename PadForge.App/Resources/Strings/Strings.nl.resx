@@ -1832,6 +1832,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Zolang Spelersnummer is gekozen, toont de pad in rust de spelersidentiteit van zijn virtuele controller: de Sony-spelerkleur op de lightbar (1 blauw, 2 rood, 3 groen, 4 roze) en op een DualSense de bijbehorende speler-leds. Alle apparaten op dezelfde virtuele controller tonen hetzelfde nummer. Games nemen het over zodra ze verlichting schrijven, wat je hier instelt wint altijd, en Uit maakt dat licht volledig donker.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Deze virtuele controller verlicht het apparaat met dezelfde modi als de lightbar van een DualSense, hier alleen voor deze controller ingesteld. Op een virtuele PlayStation-controller neemt een game die de lightbar instelt het over, net als op een DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Verlichting van dit apparaat regelen</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Verlichtingsbeheer</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Uit voorkomt dat deze virtuele controller het apparaat verlicht. Een fabrikantrij, of een ander apparaat van dezelfde soort dat via dezelfde software oplicht, kan de kleur nog steeds bepalen. Een macro ‘Chroma-kleur instellen’ op deze virtuele controller kleurt een Razer-apparaat nog steeds.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Greep op verlichting</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Alleen kleuren</value></data>
@@ -1946,6 +1947,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Pijltoetsen</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Rand</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>Rand {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logo</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Status</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Gamemodus</value></data>

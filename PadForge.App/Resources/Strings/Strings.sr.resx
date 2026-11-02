@@ -987,6 +987,7 @@
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Када је подешено на „Број играча“, контролер у мировању приказује идентитет играча свог виртуелног контролера: Sony боју играча на светлосној траци (1 плава, 2 црвена, 3 зелена, 4 розе) и одговарајуће индикаторе играча на DualSense контролеру. Сваки уређај на истом виртуелном контролеру приказује исти број. Игре преузимају контролу кад год шаљу осветљење, оно што овде подесите увек има предност, а „Искључено“ потпуно гаси светло.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Овај виртуелни контролер осветљава уређај истим режимима које има светлосна трака DualSense контролера, подешеним овде само за овај контролер. На PlayStation виртуелном контролеру игра која шаље боју светлосне траке преузима контролу као и на DualSense контролеру.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Управљај осветљењем овог уређаја</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Управљање осветљењем</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Када је искључено, овај виртуелни контролер не осветљава уређај. Ред произвођача, или други уређај исте врсте осветљен преко истог софтвера, и даље може да подеси његову боју. Макро „Постави Chroma боју“ на овом виртуелном контролеру и даље боји Razer уређај.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Преузимање осветљења</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Само боје</value></data>
@@ -1111,6 +1112,7 @@
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Тастери са стрелицама</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Ивица</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>Ивица {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Логотип</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Статус</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Игрички режим</value></data>

@@ -987,6 +987,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Þegar stillt er á „Númer spilara“ sýnir leikjastýringin í hvíld auðkenni spilara á sýndarstýringunni sinni: spilaralit Sony á ljósröndinni (1 blár, 2 rauður, 3 grænn, 4 bleikur) og samsvarandi spilaraljós á DualSense. Öll tæki á sömu sýndarstýringu sýna sama númer. Leikir taka yfir þegar þeir skrifa lýsingu, allt sem þú stillir hér gengur alltaf fyrir og „Slökkt“ slekkur ljós alveg.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Þessi sýndarstýring lýsir tækið með sömu hömum og ljósrönd DualSense hefur, stillt hér fyrir þessa leikjastýringu eingöngu. Á PlayStation-sýndarstýringu tekur leikur sem skrifar á ljósröndina yfir á sama hátt og á DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Stjórna lýsingu þessa tækis</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Stjórnun lýsingar</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>„Slökkt“ kemur í veg fyrir að þessi sýndarstýring lýsi tækið. Framleiðandalína, eða annað tæki sömu gerðar sem er lýst í gegnum sama hugbúnað, getur samt stillt lit þess. Fjölvi af gerðinni „Stilla Chroma-lit“ á þessari sýndarstýringu litar samt Razer-tæki.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Yfirráð yfir lýsingu</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Aðeins litir</value></data>
@@ -1111,6 +1112,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Örvatakkar</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Jaðar</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>Jaðar {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Merki</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Staða</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Leikjahamur</value></data>

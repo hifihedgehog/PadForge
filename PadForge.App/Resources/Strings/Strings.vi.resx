@@ -987,6 +987,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Khi đặt là Số thứ tự người chơi, lúc nhàn rỗi tay cầm hiển thị danh tính người chơi của tay cầm ảo: màu người chơi của Sony trên thanh đèn (1 xanh dương, 2 đỏ, 3 xanh lá, 4 hồng) và các chấm người chơi tương ứng trên DualSense. Mọi thiết bị trên cùng một tay cầm ảo hiển thị cùng một số. Trò chơi giành quyền điều khiển mỗi khi chúng ghi đèn, bất cứ thứ gì bạn đặt ở đây luôn được ưu tiên, và Tắt sẽ làm đèn tắt hẳn.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Tay cầm ảo này chiếu sáng thiết bị bằng chính các chế độ mà thanh đèn DualSense có, được đặt ở đây chỉ riêng cho tay cầm này. Trên tay cầm ảo PlayStation, trò chơi ghi vào thanh đèn sẽ giành quyền điều khiển giống như trên DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Điều khiển đèn của thiết bị này</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Điều khiển đèn</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Tắt sẽ ngăn tay cầm ảo này chiếu sáng thiết bị. Một hàng của hãng, hoặc một thiết bị cùng loại được chiếu sáng qua cùng phần mềm, vẫn có thể đặt màu của nó. Macro Đặt màu Chroma trên tay cầm ảo này vẫn tô màu cho thiết bị Razer.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Mức giữ quyền đèn</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Chỉ màu</value></data>
@@ -1111,6 +1112,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Phím mũi tên</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Viền</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>Viền {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logo</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Trạng thái</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Chế độ game</value></data>

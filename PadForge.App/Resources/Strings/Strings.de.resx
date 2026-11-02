@@ -1812,6 +1812,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Solange Spielernummer gewählt ist, zeigt das Pad im Leerlauf die Spieler-Identität seines virtuellen Controllers: die Sony-Spielerfarbe auf der Lightbar (1 Blau, 2 Rot, 3 Grün, 4 Pink) und beim DualSense die passenden Spieler-LEDs. Alle Geräte am selben virtuellen Controller zeigen dieselbe Nummer. Spiele übernehmen, sobald sie Beleuchtung schreiben, alles, was hier eingestellt ist, hat immer Vorrang, und Aus macht das jeweilige Licht vollständig dunkel.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Dieser virtuelle Controller beleuchtet das Gerät mit denselben Modi wie die Lightbar eines DualSense, hier nur für diesen Controller eingestellt. Auf einem virtuellen PlayStation-Controller übernimmt ein Spiel, das die Lightbar setzt, so wie bei einem DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Beleuchtung dieses Geräts steuern</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Beleuchtungssteuerung</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Aus hält diesen virtuellen Controller davon ab, das Gerät zu beleuchten. Eine Herstellerzeile oder ein anderes Gerät dieser Art, das über dieselbe Software leuchtet, kann seine Farbe weiterhin bestimmen. Ein Makro „Chroma-Farbe festlegen“ an diesem virtuellen Controller färbt ein Razer-Gerät trotzdem.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Beleuchtungsübernahme</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Nur Farben</value></data>
@@ -1926,6 +1927,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Pfeiltasten</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Rand</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>Rand {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logo</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Status</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Spielmodus</value></data>

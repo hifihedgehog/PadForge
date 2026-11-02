@@ -987,6 +987,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Selama diatur ke Nomor pemain, gamepad yang diam menampilkan identitas pemain kontroler virtualnya: warna pemain Sony pada bilah lampu (1 biru, 2 merah, 3 hijau, 4 merah muda) dan titik pemain yang sesuai pada DualSense. Setiap perangkat pada kontroler virtual yang sama menampilkan nomor yang sama. Game mengambil alih setiap kali menulis pencahayaan, apa pun yang Anda atur di sini selalu diutamakan, dan Nonaktif membuat lampu padam sepenuhnya.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Kontroler virtual ini menerangi perangkat dengan mode yang sama seperti bilah lampu DualSense, diatur di sini khusus untuk kontroler ini. Pada kontroler virtual PlayStation, game yang menulis ke bilah lampu mengambil alih seperti halnya pada DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Kendalikan pencahayaan perangkat ini</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Kendali pencahayaan</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Nonaktif menghentikan kontroler virtual ini menerangi perangkat. Baris vendor, atau perangkat sejenis lain yang diterangi melalui perangkat lunak yang sama, masih dapat mengatur warnanya. Makro Atur warna Chroma pada kontroler virtual ini tetap mewarnai perangkat Razer.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Cakupan kendali pencahayaan</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Hanya warna</value></data>
@@ -1111,6 +1112,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Tombol panah</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Tepi</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>Tepi {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logo</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Status</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Mode Game</value></data>

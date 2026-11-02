@@ -987,6 +987,7 @@
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>खेलाडी नम्बरमा सेट हुँदा, प्याडले निष्क्रिय अवस्थामा आफ्नो भर्चुअल कन्ट्रोलरको खेलाडी पहिचान देखाउँछ: लाइटबारमा Sony खेलाडी रङ (1 नीलो, 2 रातो, 3 हरियो, 4 गुलाबी) र DualSense मा मिल्दो खेलाडी बत्तीहरू। एउटै भर्चुअल कन्ट्रोलरका सबै यन्त्रहरूले एउटै नम्बर देखाउँछन्। गेमहरूले लाइटिङ लेख्दा नियन्त्रण लिन्छन्, यहाँ तपाईंले सेट गरेको जुनसुकै कुरा सधैँ लागू हुन्छ, र बन्दले बत्ती पूर्ण रूपमा निभाउँछ।</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>यो भर्चुअल कन्ट्रोलरले DualSense लाइटबारमा भएकै मोडहरूले यन्त्रलाई बाल्छ, जुन यहाँ यो कन्ट्रोलरका लागि मात्र सेट गरिन्छ। PlayStation भर्चुअल कन्ट्रोलरमा, लाइटबार लेख्ने गेमले DualSense मा जस्तै नियन्त्रण लिन्छ।</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>यो यन्त्रको लाइटिङ नियन्त्रण गर्नुहोस्</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>लाइटिङ नियन्त्रण</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>बन्द गर्दा यो भर्चुअल कन्ट्रोलरले यन्त्र बाल्न छोड्छ। विक्रेता पङ्क्ति, वा उही सफ्टवेयरमार्फत बालिएको उही प्रकारको अर्को यन्त्रले अझै यसको रङ सेट गर्न सक्छ। यो भर्चुअल कन्ट्रोलरको Set Chroma Color म्याक्रोले अझै Razer यन्त्रमा रङ लगाउँछ।</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>लाइटिङ नियन्त्रण स्तर</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>रङ मात्र</value></data>
@@ -1111,6 +1112,7 @@
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>तीर कुञ्जीहरू</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>किनारा</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>किनारा {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>लोगो</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>स्थिति</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>गेम मोड</value></data>

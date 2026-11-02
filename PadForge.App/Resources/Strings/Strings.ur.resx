@@ -987,6 +987,7 @@
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>جب "پلیئر نمبر" پر سیٹ ہو تو پیڈ فارغ حالت میں اپنے ورچوئل کنٹرولر کی پلیئر شناخت دکھاتا ہے: لائٹ بار پر Sony کا پلیئر رنگ (1 نیلا، 2 سرخ، 3 سبز، 4 گلابی) اور DualSense پر اسی کے مطابق پلیئر نقطے۔ ایک ہی ورچوئل کنٹرولر کا ہر آلہ ایک ہی نمبر دکھاتا ہے۔ گیمز جب بھی لائٹنگ لکھیں تو کنٹرول سنبھال لیتی ہیں، یہاں آپ جو بھی سیٹ کریں وہ ہمیشہ مقدم رہتا ہے، اور "آف" روشنی کو بالکل بجھا دیتا ہے۔</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>یہ ورچوئل کنٹرولر آلے کو انہی موڈز سے روشن کرتا ہے جو DualSense لائٹ بار میں ہوتے ہیں، اور یہ یہاں صرف اسی کنٹرولر کے لیے سیٹ ہوتے ہیں۔ PlayStation ورچوئل کنٹرولر پر جو گیم لائٹ بار لکھتی ہے وہ اسی طرح کنٹرول سنبھال لیتی ہے جیسے DualSense پر۔</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>اس آلے کی لائٹنگ کنٹرول کریں</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>لائٹنگ کنٹرول</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>آف کرنے پر یہ ورچوئل کنٹرولر آلے کو روشن نہیں کرتا۔ وینڈر کی قطار، یا اسی سافٹ ویئر سے روشن ہونے والا اسی قسم کا کوئی دوسرا آلہ، پھر بھی اس کا رنگ سیٹ کر سکتا ہے۔ اس ورچوئل کنٹرولر کا "Chroma رنگ سیٹ کریں" میکرو پھر بھی Razer آلے کو رنگ دیتا ہے۔</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>لائٹنگ پر گرفت</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>صرف رنگ</value></data>
@@ -1111,6 +1112,7 @@
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>ایرو کیز</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>کنارہ</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>کنارہ {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>لوگو</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>اسٹیٹس</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>گیم موڈ</value></data>

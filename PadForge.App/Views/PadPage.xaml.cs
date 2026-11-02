@@ -741,6 +741,11 @@ namespace PadForge.Views
                 LightbarPreviewPanel.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
             if (PeripheralLightingPanel != null)
                 PeripheralLightingPanel.Visibility = hasPeripheralLighting ? Visibility.Visible : Visibility.Collapsed;
+            // The Lighting Control card holds the switch and the Lighting
+            // Hold row, for a mouse or keyboard row alone.
+            if (PeripheralLightingCard != null)
+                PeripheralLightingCard.Visibility = hasPeripheralLighting && !vendorLightingRow
+                    ? Visibility.Visible : Visibility.Collapsed;
             if (PeripheralLightingControlRow != null)
                 PeripheralLightingControlRow.Visibility = hasPeripheralLighting && !vendorLightingRow
                     ? Visibility.Visible : Visibility.Collapsed;

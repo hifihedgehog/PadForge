@@ -1812,6 +1812,7 @@
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>플레이어 번호가 선택된 동안 패드는 대기 상태에서 가상 컨트롤러의 플레이어 식별을 표시합니다. 라이트바에는 소니 플레이어 색상(1 파랑, 2 빨강, 3 초록, 4 분홍)이, DualSense에서는 해당 플레이어 LED가 켜집니다. 같은 가상 컨트롤러의 모든 장치가 같은 번호를 표시합니다. 게임이 조명을 쓰면 게임이 우선하고 여기서 설정한 내용은 항상 우선하며, 끔을 선택하면 해당 조명이 완전히 꺼집니다.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>이 가상 컨트롤러는 DualSense 라이트바와 같은 모드로 장치를 켜며, 여기서 정한 설정은 이 컨트롤러에만 적용됩니다. PlayStation 가상 컨트롤러에서는 게임이 라이트바를 쓰면 DualSense에서처럼 게임이 우선합니다.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>이 장치의 조명 제어</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>조명 제어</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>끄면 이 가상 컨트롤러가 장치를 켜지 않습니다. 제조사 행이나 같은 소프트웨어로 켜지는 같은 종류의 다른 장치는 여전히 색상을 정할 수 있습니다. 이 가상 컨트롤러의 ‘Chroma 색상 설정’ 매크로는 Razer 장치를 계속 칠합니다.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>조명 점유</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>색상만</value></data>
@@ -1926,6 +1927,7 @@
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>방향키</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>가장자리</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>가장자리 {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>로고</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>상태</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>게임 모드</value></data>

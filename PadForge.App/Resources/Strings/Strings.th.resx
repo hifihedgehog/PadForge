@@ -987,6 +987,7 @@
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>เมื่อตั้งเป็น “หมายเลขผู้เล่น” เกมแพดจะแสดงตัวตนผู้เล่นของคอนโทรลเลอร์เสมือนขณะไม่ได้ใช้งาน: สีผู้เล่นของ Sony บนแถบไฟ (1 น้ำเงิน, 2 แดง, 3 เขียว, 4 ชมพู) และจุดไฟผู้เล่นที่ตรงกันบน DualSense ทุกอุปกรณ์บนคอนโทรลเลอร์เสมือนเดียวกันจะแสดงหมายเลขเดียวกัน เกมจะเข้าควบคุมทุกครั้งที่เขียนค่าแสงไฟ สิ่งที่คุณตั้งไว้ที่นี่จะมีผลเหนือกว่าเสมอ และ “ปิด” จะดับไฟสนิท</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>คอนโทรลเลอร์เสมือนนี้ให้แสงไฟแก่อุปกรณ์ด้วยโหมดเดียวกับที่แถบไฟของ DualSense มี โดยตั้งค่าที่นี่สำหรับคอนโทรลเลอร์นี้เท่านั้น บนคอนโทรลเลอร์เสมือนแบบ PlayStation เกมที่เขียนค่าแถบไฟจะเข้าควบคุมแบบเดียวกับที่ทำบน DualSense</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>ควบคุมแสงไฟของอุปกรณ์นี้</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>การควบคุมแสงไฟ</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>เมื่อปิด คอนโทรลเลอร์เสมือนนี้จะหยุดให้แสงไฟแก่อุปกรณ์ แถวของผู้ผลิต หรืออุปกรณ์ชนิดเดียวกันอีกตัวที่ให้แสงไฟผ่านซอฟต์แวร์เดียวกัน ยังคงตั้งสีของอุปกรณ์นี้ได้ แมโคร “ตั้งสี Chroma” บนคอนโทรลเลอร์เสมือนนี้ยังคงระบายสีอุปกรณ์ Razer ได้</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>ระดับการควบคุมแสงไฟ</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>เฉพาะสี</value></data>
@@ -1111,6 +1112,7 @@
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>แป้นลูกศร</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>ขอบ</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>ขอบ {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>โลโก้</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>สถานะ</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>โหมดเกม</value></data>

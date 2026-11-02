@@ -987,6 +987,7 @@
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>பிளேயர் எண் என அமைக்கப்பட்டிருக்கும்போது, பேட் ஓய்வில் இருக்கையில் அதன் மெய்நிகர் கட்டுப்படுத்தியின் பிளேயர் அடையாளத்தைக் காட்டும்: லைட்பாரில் Sony பிளேயர் நிறம் (1 நீலம், 2 சிவப்பு, 3 பச்சை, 4 இளஞ்சிவப்பு), DualSense-இல் அதற்குப் பொருந்தும் பிளேயர் புள்ளிகள். ஒரே மெய்நிகர் கட்டுப்படுத்தியில் உள்ள ஒவ்வொரு சாதனமும் அதே எண்ணைக் காட்டும். கேம்கள் ஒளியமைப்பை எழுதும்போதெல்லாம் அவை பொறுப்பேற்கும், நீங்கள் இங்கே அமைக்கும் எதுவும் எப்போதும் முன்னுரிமை பெறும், ஆஃப் என்பது விளக்கை முழுவதுமாக அணைக்கும்.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>இந்த மெய்நிகர் கட்டுப்படுத்தி, DualSense லைட்பாரில் உள்ள அதே பயன்முறைகளைக் கொண்டு சாதனத்தை ஒளிரச் செய்யும், அவை இந்தக் கட்டுப்படுத்திக்கு மட்டும் இங்கே அமைக்கப்படும். PlayStation மெய்நிகர் கட்டுப்படுத்தியில், லைட்பாரை எழுதும் கேம், DualSense-இல் செய்வது போலவே பொறுப்பேற்கும்.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>இந்தச் சாதனத்தின் ஒளியமைப்பைக் கட்டுப்படுத்து</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>ஒளியமைப்புக் கட்டுப்பாடு</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>ஆஃப் என்பது இந்த மெய்நிகர் கட்டுப்படுத்தி சாதனத்தை ஒளிரச் செய்வதை நிறுத்தும். ஒரு தயாரிப்பாளர் வரிசை, அல்லது அதே மென்பொருள் வழியாக ஒளிரும் அதே வகையான வேறொரு சாதனம், அதன் நிறத்தைத் தொடர்ந்து அமைக்க முடியும். இந்த மெய்நிகர் கட்டுப்படுத்தியில் உள்ள Chroma நிறத்தை அமை மேக்ரோ, Razer சாதனத்திற்குத் தொடர்ந்து நிறம் தீட்டும்.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>ஒளியமைப்புப் பிடிப்பு</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>நிறங்கள் மட்டும்</value></data>
@@ -1111,6 +1112,7 @@
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>அம்பு விசைகள்</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>விளிம்பு</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>விளிம்பு {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>லோகோ</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>நிலை</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>கேம் பயன்முறை</value></data>

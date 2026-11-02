@@ -987,6 +987,7 @@
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Όταν είναι ρυθμισμένο σε «Αριθμός παίκτη», το χειριστήριο σε αδράνεια δείχνει την ταυτότητα παίκτη του εικονικού του χειριστηρίου: το χρώμα παίκτη της Sony στη φωτεινή μπάρα (1 μπλε, 2 κόκκινο, 3 πράσινο, 4 ροζ) και τις αντίστοιχες κουκκίδες παίκτη σε ένα DualSense. Κάθε συσκευή στο ίδιο εικονικό χειριστήριο δείχνει τον ίδιο αριθμό. Τα παιχνίδια αναλαμβάνουν κάθε φορά που γράφουν φωτισμό, ό,τι ορίζετε εδώ υπερισχύει πάντα και το «Σβηστό» σβήνει εντελώς ένα φως.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Αυτό το εικονικό χειριστήριο φωτίζει τη συσκευή με τις ίδιες λειτουργίες που έχει η φωτεινή μπάρα ενός DualSense, οι οποίες ορίζονται εδώ μόνο για αυτό το χειριστήριο. Σε ένα εικονικό χειριστήριο PlayStation, ένα παιχνίδι που γράφει στη φωτεινή μπάρα αναλαμβάνει τον έλεγχο, όπως και σε ένα DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Έλεγχος του φωτισμού αυτής της συσκευής</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Έλεγχος φωτισμού</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Όταν είναι ανενεργό, αυτό το εικονικό χειριστήριο δεν φωτίζει τη συσκευή. Μια γραμμή κατασκευαστή, ή μια άλλη συσκευή του ίδιου είδους που φωτίζεται μέσω του ίδιου λογισμικού, μπορεί ακόμη να ορίσει το χρώμα της. Μια μακροεντολή «Ορισμός χρώματος Chroma» σε αυτό το εικονικό χειριστήριο εξακολουθεί να χρωματίζει μια συσκευή Razer.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Δέσμευση φωτισμού</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Μόνο χρώματα</value></data>
@@ -1111,6 +1112,7 @@
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Πλήκτρα βελών</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Άκρη</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>Άκρη {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Λογότυπο</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Κατάσταση</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Λειτουργία παιχνιδιού</value></data>

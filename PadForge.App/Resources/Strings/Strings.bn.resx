@@ -987,6 +987,7 @@
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>“প্লেয়ার নম্বর”-এ সেট থাকলে প্যাডটি নিষ্ক্রিয় অবস্থায় তার ভার্চুয়াল কন্ট্রোলারের প্লেয়ার পরিচয় দেখায়: লাইটবারে Sony-র প্লেয়ার রং (1 নীল, 2 লাল, 3 সবুজ, 4 গোলাপি) আর DualSense-এ মিল রাখা প্লেয়ার বিন্দু। একই ভার্চুয়াল কন্ট্রোলারের সব ডিভাইস একই নম্বর দেখায়। গেম লাইটিং লিখলেই নিয়ন্ত্রণ নেয়, এখানে আপনি যা সেট করেন তা সব সময় প্রাধান্য পায়, আর “বন্ধ” দিলে আলো পুরোপুরি নিভে যায়।</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>এই ভার্চুয়াল কন্ট্রোলার ডিভাইসটিকে DualSense লাইটবারের মতো একই মোডগুলো দিয়ে আলোকিত করে, যা এখানে কেবল এই কন্ট্রোলারের জন্য সেট করা হয়। PlayStation ভার্চুয়াল কন্ট্রোলারে কোনো গেম লাইটবারে লিখলে DualSense-এর মতোই সেটি নিয়ন্ত্রণ নেয়।</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>এই ডিভাইসের লাইটিং নিয়ন্ত্রণ করুন</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>লাইটিং নিয়ন্ত্রণ</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>বন্ধ করলে এই ভার্চুয়াল কন্ট্রোলার ডিভাইসটিকে আর আলোকিত করে না। কোনো ভেন্ডর সারি, অথবা একই সফটওয়্যার দিয়ে আলোকিত একই ধরনের অন্য ডিভাইস তবুও এর রং ঠিক করতে পারে। এই ভার্চুয়াল কন্ট্রোলারের “Chroma রং সেট করুন” ম্যাক্রো তবুও Razer ডিভাইসে রং দেয়।</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>লাইটিং দখল</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>শুধু রং</value></data>
@@ -1111,6 +1112,7 @@
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>অ্যারো কী</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>প্রান্ত</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>প্রান্ত {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>লোগো</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>স্ট্যাটাস</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>গেম মোড</value></data>

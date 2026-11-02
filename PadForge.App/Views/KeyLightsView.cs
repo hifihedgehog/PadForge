@@ -256,7 +256,7 @@ namespace PadForge.Views
             double width = 0, height = 0;
             foreach (var (index, box) in placed)
             {
-                AddLight(index, map.Lights[index], box, chip: false, layout);
+                AddLight(index, map.Lights[index], map.EdgeNumberOf(index), box, chip: false, layout);
                 width = Math.Max(width, box.Right);
                 height = Math.Max(height, box.Bottom);
             }
@@ -268,7 +268,7 @@ namespace PadForge.Views
             for (int i = 0; i < map.Lights.Count; i++)
             {
                 if (onPicture.Contains(i)) continue;
-                string legend = _card.LegendOf(i) ?? Legend(map.Lights[i], layout);
+                string legend = _card.LegendOf(i) ?? Legend(map.Lights[i], layout, map.EdgeNumberOf(i));
                 double w = Math.Max(ChipMinWidth, new FormattedText(legend, CultureInfo.CurrentUICulture,
                     FlowDirection.LeftToRight, typeface, LegendSize, Brushes.Black, dip).WidthIncludingTrailingWhitespace + 20);
                 if (x > 0 && x + w > TargetWidth)
@@ -277,7 +277,7 @@ namespace PadForge.Views
                     y += ChipHeight + ChipGap;
                 }
                 var box = new Rect(x, y, w, ChipHeight);
-                AddLight(i, map.Lights[i], box, chip: true, layout);
+                AddLight(i, map.Lights[i], map.EdgeNumberOf(i), box, chip: true, layout);
                 x += w + ChipGap;
                 width = Math.Max(width, box.Right);
                 height = Math.Max(height, box.Bottom);
@@ -396,10 +396,10 @@ namespace PadForge.Views
             KeyboardFamilies.KeychronQ6,
         };
 
-        private void AddLight(int index, LightInfo light, Rect box, bool chip, IntPtr layout)
+        private void AddLight(int index, LightInfo light, int edgeNumber, Rect box, bool chip, IntPtr layout)
         {
             bool big = chip || light.Kind is LightKind.Key or LightKind.Zone;
-            string legend = _card.LegendOf(index) ?? Legend(light, layout);
+            string legend = _card.LegendOf(index) ?? Legend(light, layout, edgeNumber);
             var text = new TextBlock
             {
                 Text = big ? legend : string.Empty,
@@ -514,8 +514,10 @@ namespace PadForge.Views
 
         /// <summary>The legend a light carries: a key's the way the
         /// Keyboard + Mouse preview writes it for the input layout in use, a
-        /// zone's number, or the name of what the light is.</summary>
-        internal static string Legend(LightInfo light, IntPtr layout)
+        /// zone's number, an edge light's number where its unit has several
+        /// (<see cref="LightMap.EdgeNumberOf"/>), or the name of what the
+        /// light is.</summary>
+        internal static string Legend(LightInfo light, IntPtr layout, int edgeNumber = 0)
         {
             var s = Strings.Instance;
             if (LabelText(light) is { } label) return label;
@@ -524,6 +526,7 @@ namespace PadForge.Views
                 LightKind.Key when light.Usage != 0 => KeyLegend(light.Usage, layout),
                 LightKind.Key => string.Format(CultureInfo.CurrentCulture, s.Pad_Lighting_KeyColors_UnnamedKey_Format, light.Address),
                 LightKind.Zone => string.Format(CultureInfo.CurrentCulture, s.Pad_Lighting_KeyColors_Zone_Format, light.Zone),
+                LightKind.Edge when edgeNumber > 0 => string.Format(CultureInfo.CurrentCulture, s.Pad_Lighting_KeyColors_Edge_Format, edgeNumber),
                 LightKind.Edge => s.Pad_Lighting_KeyColors_Edge,
                 LightKind.Logo => s.Pad_Lighting_KeyColors_Logo,
                 LightKind.Status => s.Pad_Lighting_KeyColors_Status,

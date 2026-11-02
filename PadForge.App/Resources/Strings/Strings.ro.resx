@@ -987,6 +987,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Cât timp este setat pe Număr jucător, controlerul afișează în repaus identitatea de jucător a controlerului său virtual: culoarea de jucător Sony pe bara luminoasă (1 albastru, 2 roșu, 3 verde, 4 roz) și punctele de jucător corespunzătoare pe un DualSense. Toate dispozitivele de pe același controler virtual afișează același număr. Jocurile preiau controlul ori de câte ori scriu iluminarea, orice setați aici are întotdeauna prioritate, iar Dezactivat stinge complet lumina.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Acest controler virtual iluminează dispozitivul cu aceleași moduri pe care le are bara luminoasă a unui DualSense, setate aici doar pentru acest controler. Pe un controler virtual PlayStation, un joc care scrie bara luminoasă preia controlul la fel ca pe un DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Controlul iluminării acestui dispozitiv</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Controlul iluminării</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Dezactivat împiedică acest controler virtual să ilumineze dispozitivul. Un rând de producător sau alt dispozitiv de același tip iluminat prin același software îi poate seta în continuare culoarea. O macrocomandă Setare culoare Chroma de pe acest controler virtual colorează în continuare un dispozitiv Razer.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Control asupra iluminării</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Doar culorile</value></data>
@@ -1111,6 +1112,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Taste săgeată</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Margine</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>Margine {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Sigla</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Stare</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Mod joc</value></data>

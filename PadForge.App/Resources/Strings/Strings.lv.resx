@@ -987,6 +987,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Kad iestatīts „Spēlētāja numurs”, spēļu pults dīkstāvē rāda sava virtuālā kontrollera spēlētāja identitāti: Sony spēlētāja krāsu gaismas joslā (1 zila, 2 sarkana, 3 zaļa, 4 rozā) un atbilstošos spēlētāja punktus DualSense kontrollerī. Visas ierīces vienā virtuālajā kontrollerī rāda vienu un to pašu numuru. Spēles pārņem vadību ikreiz, kad tās raksta apgaismojumu, viss, ko iestatāt šeit, vienmēr ir prioritārs, un „Izslēgts” pilnībā izslēdz gaismu.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Šis virtuālais kontrolleris izgaismo ierīci ar tiem pašiem režīmiem, kas ir DualSense gaismas joslai, un tie šeit tiek iestatīti tikai šim kontrollerim. PlayStation virtuālajā kontrollerī spēle, kas raksta gaismas joslā, pārņem vadību tāpat kā DualSense kontrollerī.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Vadīt šīs ierīces apgaismojumu</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Apgaismojuma vadība</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Kad šī opcija ir izslēgta, šis virtuālais kontrolleris vairs neizgaismo ierīci. Ražotāja rinda vai cita tāda paša veida ierīce, ko izgaismo ar to pašu programmatūru, joprojām var iestatīt tās krāsu. Makross „Iestatīt Chroma krāsu” šajā virtuālajā kontrollerī joprojām iekrāso Razer ierīci.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Apgaismojuma pārņemšana</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Tikai krāsas</value></data>
@@ -1111,6 +1112,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Bulttaustiņi</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Mala</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>Mala {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logotips</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Statuss</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Spēles režīms</value></data>

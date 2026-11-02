@@ -987,6 +987,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>While set to Player Number, the pad idles showing its virtual controller's player identity: the Sony player color on the lightbar (1 blue, 2 red, 3 green, 4 pink) and the matching player pips on a DualSense. Every device on the same virtual controller shows the same number. Games take over whenever they write lighting, anything you set here always wins, and Off turns a light fully dark.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>This virtual controller lights the device with the same modes a DualSense lightbar has, set here for this controller alone. On a PlayStation virtual controller, a game that writes the lightbar takes over the way it does on a DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Control This Device’s Lighting</value></data>
+  <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Lighting Control</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Off stops this virtual controller from lighting the device. A vendor row, or another device of its kind lit through the same software, can still set its color. A Set Chroma Color macro on this virtual controller still paints a Razer device.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Lighting Hold</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Colors Only</value></data>
@@ -1111,6 +1112,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_SelectArrows" xml:space="preserve"><value>Arrow Keys</value></data>
   <data name="Pad_Lighting_KeyColors_SelectWasd" xml:space="preserve"><value>WASD</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Edge</value></data>
+  <data name="Pad_Lighting_KeyColors_Edge_Format" xml:space="preserve"><value>Edge {0}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logo</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Status</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Game Mode</value></data>

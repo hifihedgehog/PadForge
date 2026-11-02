@@ -45,6 +45,10 @@ namespace PadForge.Tests
         /// <summary>The flags and the events a claim read answers.</summary>
         public byte ClaimFlags, ClaimEvents;
 
+        /// <summary>The layout code its 0x4540 answers: 1, US, the code
+        /// keyleds reads from an American board (layouts README).</summary>
+        public byte Layout = 0x01;
+
         /// <summary>The transports byte and the six model ID bytes of its
         /// 0x0003 answer.</summary>
         public byte Transports = 0x0E;
@@ -89,6 +93,7 @@ namespace PadForge.Tests
             if (At(0x0003) != 0 && f == At(0x0003) && fn == 0)
                 return HidppHapticsTests.Ans(d, f, 0, new byte[] { 0x05, 0x11, 0x22, 0x33, 0x44, 0x00, Transports }
                     .Concat(Model).ToArray());
+            if (At(0x4540) != 0 && f == At(0x4540) && fn == 0) return HidppHapticsTests.Ans(d, f, 0, Layout);
             if (At(0x8071) != 0 && f == At(0x8071))
             {
                 if (fn == 0) return Info(d, f, p[0], p[1]);
@@ -203,7 +208,9 @@ namespace PadForge.Tests
         /// own program paints on a G815 (g810-led-resources
         /// dumps/g815/G815-keys-ALL-FD7600.pcapng) with the bits of zones 0
         /// and 255 set as Logitech's document has a device report them,
-        /// and 0x8100 at 0x15. Its model ID is the G915's, B354407CC33E.</summary>
+        /// 0x8100 at 0x15, and 0x4540 at 0x10, where the G915 TKL lists it
+        /// (Solaar docs/devices, 408E). Its model ID is the G915's,
+        /// B354407CC33E.</summary>
         public static HidppLightDevice G915(byte index = 1)
         {
             var device = new HidppLightDevice { Index = index, Name = "G915", Type = 0 };
@@ -211,6 +218,7 @@ namespace PadForge.Tests
             device.Features[0x8081] = 0x0B;
             device.Features[0x8100] = 0x15;
             device.Features[0x0003] = 0x02;
+            device.Features[0x4540] = 0x10;
             device.Clusters = new[]
             {
                 ((ushort)0x0002, new ushort[] { 0x0000, 0x0001, 0x0003, 0x000A }),
@@ -310,8 +318,9 @@ namespace PadForge.Tests
                     break;
                 case HidppUnitProtocol.PerKeyLighting: ok = function is 4 or 5; break;
                 case HidppUnitProtocol.PerKeyLightingV2:
-                    ok = function is 0 or 5 || (function == 7 && P(0) == 0x00);
+                    ok = function is 0 or 1 or 5 or 6 || (function == 7 && P(0) == 0x00);
                     break;
+                case HidppUnitProtocol.KeyboardLayout: ok = function == 0; break;
                 case HidppUnitProtocol.OnboardProfiles:
                     ok = function == 2 || (function == 1 && P(0) is 0x01 or 0x02);
                     break;
@@ -894,10 +903,14 @@ namespace PadForge.Tests
         [InlineData(0x8071, "11 01 06 9C")]
         [InlineData(0x8071, "11 01 06 5C 01 04 00")]
         // 0x8081: a frame end that persists, and the setters this build
-        // does not use.
+        // does not use: five zones in a row and the two delta
+        // compressions.
         [InlineData(0x8081, "11 01 07 7C 01")]
-        [InlineData(0x8081, "11 01 07 1C 01 12 34 56")]
-        [InlineData(0x8081, "11 01 07 6C 01 FE 12 34 56")]
+        [InlineData(0x8081, "11 01 07 2C 01 12 34 56")]
+        [InlineData(0x8081, "11 01 07 3C 01 12 34 56")]
+        [InlineData(0x8081, "11 01 07 4C 01 12 34 56")]
+        // 0x4540: anything but the read of the layout code.
+        [InlineData(0x4540, "11 01 0A 1C 01")]
         // 0x8070: the static effect written to flash.
         [InlineData(0x8070, "11 01 06 3C 00 01 12 34 56 02 00 00 00 00 00 00 01")]
         [InlineData(0x8070, "11 01 06 4C 00")]
@@ -930,7 +943,10 @@ namespace PadForge.Tests
         [InlineData(0x8071, "11 01 06 8C 01 01")]
         [InlineData(0x8071, "11 01 06 0C FF FF 00")]
         [InlineData(0x8081, "11 01 07 5C 01 FE 12 34 56")]
+        [InlineData(0x8081, "11 01 07 1C 01 12 34 56")]
+        [InlineData(0x8081, "11 01 07 6C 12 34 56 01 FE")]
         [InlineData(0x8081, "11 01 07 7C")]
+        [InlineData(0x4540, "11 01 0A 0C")]
         [InlineData(0x8070, "11 01 06 8C 01 01")]
         [InlineData(0x8070, "11 01 06 8C 00 00")]
         [InlineData(0x8070, "11 01 06 3C 00 01 12 34 56 02")]
@@ -985,8 +1001,10 @@ namespace PadForge.Tests
         /// <summary>A G915 behind a receiver: the first pass finds 0x8071,
         /// and after the batteries the probe looks up 0x8081, walks both
         /// clusters to their Fixed effect and no further, reads the three
-        /// zone pages, looks up 0x8101 then 0x8100, and reads the model ID.
-        /// It offers every level.</summary>
+        /// zone pages, reads the layout code and the model IDs for the
+        /// keyboard's light map (#557), then looks up 0x8101 and 0x8100.
+        /// The model IDs read once serve the mode's question too. It
+        /// offers every level.</summary>
         [Fact]
         public void AG915_EndsWithItsClustersItsZonesItsModeFeatureAndEveryLevel()
         {
@@ -998,8 +1016,13 @@ namespace PadForge.Tests
             Assert.False(incomplete);
             Assert.Equal(new ushort[]
             {
-                0x19B0, 0x8071, 0x1004, 0x1000, 0x8081, 0x8101, 0x8100, 0x0003,
+                0x19B0, 0x8071, 0x1004, 0x1000, 0x8081, 0x4540, 0x0003, 0x8101, 0x8100,
             }, channel.RootLookups);
+            Assert.Equal(115, unit.PerKeyZones.Length);
+            Assert.Equal(1, unit.KeyboardLayout);
+            Assert.Equal(new ushort[] { 0xB354, 0x407C, 0xC33E }, unit.ModelIds);
+            Assert.Single(Asked(channel, 0x10));
+            Assert.Single(Asked(channel, 0x02));
             Assert.Equal(HidppUnitProtocol.RgbEffects, unit.RgbFeatureId);
             Assert.Equal((HidppUnitProtocol.RgbEffects, (byte)0x0A), (unit.EffectFeatureId, unit.EffectIndex));
             Assert.Equal((HidppUnitProtocol.PerKeyLightingV2, (byte)0x0B), (unit.PerKeyFeatureId, unit.PerKeyIndex));
@@ -1204,36 +1227,39 @@ namespace PadForge.Tests
         /// <summary>The zone pages: bit i of a page is zone page * 112 + i.
         /// Zones 0 and 255 are no zones though their bits may be set, a
         /// page the device refuses holds none, and a keyboard whose only
-        /// zone is 254 has one bound for both ends.</summary>
+        /// zone is 254 has that zone alone.</summary>
         [Fact]
-        public void TheZoneBounds_AreTheLowestAndHighestZone_BetweenOneAnd254()
+        public void TheZonePresence_IsEveryZoneBetweenOneAnd254_LowestFirst()
         {
-            static (byte, byte, bool) Bounds(params byte[][] pages)
+            static byte[] Zones(params byte[][] pages)
             {
                 var device = HidppLightDevice.G915X();
                 device.ZonePages = pages;
-                Assert.True(HidppUnitProbe.ZoneBounds(device.Channel(), 0xFF, 0x09, 300, out byte lowest, out byte highest, out bool missed));
-                return (lowest, highest, missed);
+                Assert.True(HidppUnitProbe.ZonePresence(device.Channel(), 0xFF, 0x09, 300, out byte[] zones, out bool missed));
+                Assert.False(missed);
+                return zones;
             }
+            static IEnumerable<byte> Run(int first, int last) => Enumerable.Range(first, last - first + 1).Select(z => (byte)z);
 
             // The G915 X's own pages: zone 0's bit is set and is no zone.
-            Assert.Equal(((byte)0x01, (byte)0xD2, false), Bounds(HidppLightDevice.G915X().ZonePages));
+            byte[] g915x = Run(1, 111).Concat(new byte[] { 153, 155, 156, 157, 158 }).Concat(Run(180, 188))
+                .Append((byte)210).ToArray();
+            Assert.Equal(g915x, Zones(HidppLightDevice.G915X().ZonePages));
             // A G515 LS TKL: zones 1 to 79, 97 to 111 and 254.
-            Assert.Equal(((byte)0x01, (byte)0xFE, false), Bounds(
+            Assert.Equal(Run(1, 79).Concat(Run(97, 111)).Append((byte)254), Zones(
                 HidppHapticsTests.Hex("FE FF FF FF FF FF FF FF FF FF 00 00 FE FF", 14), new byte[14],
                 HidppHapticsTests.Hex("00 00 00 40", 14)));
             // Zone 254 alone, with zone 255's bit set beside it.
-            Assert.Equal(((byte)0xFE, (byte)0xFE, false), Bounds(new byte[14], new byte[14], HidppHapticsTests.Hex("00 00 00 C0", 14)));
+            Assert.Equal(new byte[] { 0xFE }, Zones(new byte[14], new byte[14], HidppHapticsTests.Hex("00 00 00 C0", 14)));
             // A refused third page keeps the first two.
-            Assert.Equal(((byte)0x01, (byte)0xD2, false), Bounds(HidppLightDevice.G915X().ZonePages[0],
-                HidppLightDevice.G915X().ZonePages[1], null));
+            Assert.Equal(g915x, Zones(HidppLightDevice.G915X().ZonePages[0], HidppLightDevice.G915X().ZonePages[1], null));
             // No zone at all.
-            Assert.Equal(((byte)0, (byte)0, false), Bounds(HidppHapticsTests.Hex("01", 14), new byte[14], HidppHapticsTests.Hex("00 00 00 80", 14)));
+            Assert.Empty(Zones(HidppHapticsTests.Hex("01", 14), new byte[14], HidppHapticsTests.Hex("00 00 00 80", 14)));
 
             var silent = HidppLightDevice.G915X();
             silent.Silent = (f, fn, p) => f == 0x09 && p[1] == 1;
             var channel = silent.Channel();
-            Assert.True(HidppUnitProbe.ZoneBounds(channel, 0xFF, 0x09, 300, out _, out _, out bool missed));
+            Assert.True(HidppUnitProbe.ZonePresence(channel, 0xFF, 0x09, 300, out _, out bool missed));
             Assert.True(missed);
             // Nothing is asked past the page that went unanswered.
             Assert.Equal(2, channel.Asked.Count);
@@ -1249,12 +1275,15 @@ namespace PadForge.Tests
         [InlineData("effect")]
         [InlineData("page-2")]
         [InlineData("multi-cluster")]
+        [InlineData("lookup-4540")]
+        [InlineData("layout")]
         [InlineData("lookup-8101")]
         [InlineData("lookup-0003")]
         [InlineData("model")]
         public void AnUnansweredRequestOfTheLightingWalk_LeavesTheUnitIncomplete_AndEndsTheWalk(string at)
         {
             var device = HidppLightDevice.G915X();
+            device.Features[0x4540] = 0x0B;
             device.Silent = (f, fn, p) => at switch
             {
                 "lookup-8081" => f == 0 && p[0] == 0x80 && p[1] == 0x81,
@@ -1263,6 +1292,8 @@ namespace PadForge.Tests
                 "effect" => f == 0x08 && p[0] == 0x00 && p[1] == 0x01,
                 "page-2" => f == 0x09 && p[1] == 0x02,
                 "multi-cluster" => f == 0x08 && p[0] == 0xFF && p[1] == 0x01,
+                "lookup-4540" => f == 0 && p[0] == 0x45 && p[1] == 0x40,
+                "layout" => f == 0x0B,
                 "lookup-8101" => f == 0 && p[0] == 0x81 && p[1] == 0x01,
                 "lookup-0003" => f == 0 && p[0] == 0x00 && p[1] == 0x03,
                 _ => f == 0x02,
@@ -1354,8 +1385,15 @@ namespace PadForge.Tests
     [Collection("PeripheralOutputStatics")]
     public class HidppLightWorkerTests : IDisposable
     {
-        public HidppLightWorkerTests() => PeripheralOutputs.ResetForTest();
-        public void Dispose() => PeripheralOutputs.ResetForTest();
+        public HidppLightWorkerTests() => Reset();
+        public void Dispose() => Reset();
+
+        private static void Reset()
+        {
+            PeripheralOutputs.ResetForTest();
+            PeripheralLightMaps.ResetForTest();
+            LearnedKeyMaps.ResetForTest();
+        }
 
         private static readonly Guid Container = new("0a0b0c0d-1111-2222-3333-444455556666");
 
@@ -1444,8 +1482,8 @@ namespace PadForge.Tests
             public void Link()
                 => PeripheralOutputs.PublishLinks(new LinkTable(new[] { new DeviceLinks { Device = Row, Lighting = new[] { Path } } }));
 
-            public void Light(int rgb, int level = 0)
-                => PeripheralOutputs.SetLighting(Row, slot: 0, player: 1, (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb, level);
+            public void Light(int rgb, int level = 0, KeyFrame keys = null)
+                => PeripheralOutputs.SetLighting(Row, slot: 0, player: 1, (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb, level, keys);
 
             public void Release() => PeripheralOutputs.ReleaseLighting(Row, 0);
 
@@ -1637,6 +1675,9 @@ namespace PadForge.Tests
             while (range.EndsWith(" 00", StringComparison.Ordinal)) range = range[..^3];
             return new[] { range, $"{kind} 11 FF 09 7C" };
         }
+        /// <summary>A key frame that colors A alone (#557).</summary>
+        private static KeyFrame KeyA(int rgb) => new(new Dictionary<ushort, int> { [0x04] = rgb }, null, null, null);
+
         private static string[] FirstPaint(int rgb, string kind = "ask") => Join(
             "write 11 FF 08 5C 01 01", Clusters(Keys, rgb),
             $"{kind} 11 FF 08 1C FF 01 00 00 00 00 00 00 00 00 00 00 01",
@@ -2744,6 +2785,134 @@ namespace PadForge.Tests
             bench.Release();
             bench.Passes();
             Assert.Equal(new[] { "ask 11 FF 08 5C 01" }, bench.Lit());
+        }
+
+        /// <summary>A G915 X with its layout code read: its light map is
+        /// published for the Lighting tab (#557), and a key frame paints it
+        /// zone by zone. The first paint is the one-color first paint in
+        /// the color most zones take, then that color over every zone, A
+        /// in its own color and the frame end, each frame awaited.</summary>
+        [Fact]
+        public void AKeyFrame_PaintsAG915XZoneByZone_AndItsMapIsPublished()
+        {
+            var device = HidppLightDevice.G915X();
+            device.Features[0x4540] = 0x0B;
+            using var bench = new Bench(device);
+            var map = PeripheralLightMaps.For(bench.Path);
+            Assert.NotNull(map);
+            Assert.Equal("hidpp:B38A:01", map.Product);
+            Assert.Equal(119, map.Lights.Count);
+
+            bench.Link();
+            bench.Light(0x112233, keys: KeyA(0xFF0000));
+            Assert.Equal(Join("write 11 FF 08 5C 01 01", Clusters(Keys, 0x112233),
+                "ask 11 FF 08 1C FF 01 00 00 00 00 00 00 00 00 00 00 01", Stream(0x112233),
+                "ask 11 FF 09 5C 01 D2 11 22 33", "ask 11 FF 09 1C 01 FF", "ask 11 FF 09 7C"), bench.After(9));
+        }
+
+        /// <summary>A changed key sends its zone alone. A frame that goes
+        /// away paints the keyboard one color again, with the range and
+        /// the frame end.</summary>
+        [Fact]
+        public void AChangedKey_SendsItsZoneAlone_AndNoFrameIsOneColorAgain()
+        {
+            using var bench = new Bench(HidppLightDevice.G915X());
+            bench.Link();
+            bench.Light(0x112233, keys: KeyA(0xFF0000));
+            bench.After(9);
+
+            bench.Clear();
+            bench.Light(0x112233, keys: KeyA(0x00FF00));
+            Assert.Equal(new[] { "ask 11 FF 09 1C 01 00 FF", "ask 11 FF 09 7C" }, bench.After(2));
+
+            bench.Clear();
+            bench.Light(0x112233);
+            Assert.Equal(Stream(0x112233), bench.After(2));
+        }
+
+        /// <summary>While the claim stands, the keep-alive repaints the
+        /// whole picture in one frame, so a zone the keyboard never took
+        /// is put right.</summary>
+        [Fact]
+        public void TheKeepAliveOfAKeyFrame_RepaintsTheWholePicture()
+        {
+            var device = HidppLightDevice.G915X();
+            using var bench = new Bench(device, reassertMs: 1000);
+            bench.Link();
+            bench.Light(0x112233, keys: KeyA(0xFF0000));
+            bench.After(9);
+
+            device.ClaimFlags = HidppUnitProtocol.SwControlClusters;
+            bench.Clear();
+            bench.Tick(1000);
+            Assert.Equal(new[]
+            {
+                "ask 11 FF 08 5C", "ask 11 FF 09 5C 01 D2 11 22 33", "ask 11 FF 09 1C 01 FF", "ask 11 FF 09 7C",
+            }, bench.After(4));
+        }
+
+        /// <summary>A keyboard that refuses a zone frame goes back to its
+        /// clusters, and its map is taken down, so the Lighting tab stops
+        /// offering colors it cannot show.</summary>
+        [Fact]
+        public void ARefusedZoneFrame_SendsTheKeyboardToItsClusters_AndTakesItsMapDown()
+        {
+            var device = HidppLightDevice.G915X();
+            device.Refuse = (f, fn, p) => f == 0x09 && fn == HidppUnitProtocol.FunctionPerKeyV2SetIndividual ? (byte)0x02 : null;
+            using var bench = new Bench(device);
+            Assert.NotNull(PeripheralLightMaps.For(bench.Path));
+            bench.Link();
+            bench.Light(0x112233, keys: KeyA(0xFF0000));
+            var lines = bench.After(10);
+            Assert.Contains("ask 11 FF 09 1C 01 FF", lines);
+            Assert.Equal(Clusters(Keys, 0x112233), lines.TakeLast(2));
+            Assert.Null(PeripheralLightMaps.For(bench.Path));
+        }
+
+        /// <summary>A zone no reference names is a key with no key yet. A
+        /// name learned for it with Map Key Lights reaches the published
+        /// map at the next pass, and the key's color then reaches that
+        /// zone.</summary>
+        [Fact]
+        public void ALearnedNameReachesTheMap_AndTheKeysColorReachesItsZone()
+        {
+            var device = HidppLightDevice.G915X();
+            device.ZonePages[1][0] |= 0x01;
+            using var bench = new Bench(device);
+            var map = PeripheralLightMaps.For(bench.Path);
+            Assert.Equal(1, map.UnnamedKeyCount);
+
+            LearnedKeyMaps.Set(map.Product, 112, 0x68);
+            bench.Passes();
+            map = PeripheralLightMaps.For(bench.Path);
+            Assert.Equal(0, map.UnnamedKeyCount);
+            var learned = map.Lights.Single(l => l.Address == 112);
+            Assert.Equal((LightKind.Key, (ushort)0x68, LightKeySource.Learned), (learned.Kind, learned.Usage, learned.KeySource));
+
+            bench.Link();
+            bench.Light(0x112233, keys: new KeyFrame(new Dictionary<ushort, int> { [0x68] = 0x0000FF }, null, null, null));
+            Assert.Contains("ask 11 FF 09 1C 70 00 00 FF", bench.After(9));
+        }
+
+        /// <summary>Map Key Lights' probe lights one zone white and every
+        /// other off, ahead of the claim, in the fewest frames: the whole
+        /// picture, black over every zone and Esc white. When it ends the
+        /// claim's picture comes back.</summary>
+        [Fact]
+        public void TheProbeLightsOneZone_AheadOfTheClaim_AndThenTheClaimReturns()
+        {
+            using var bench = new Bench(HidppLightDevice.G915X());
+            bench.Link();
+            bench.Light(0x112233);
+            bench.After(8);
+
+            bench.Clear();
+            PeripheralOutputs.SetProbe(bench.Path, new KeyFrame(null, null, new Dictionary<int, int> { [38] = 0xFFFFFF }, 0));
+            Assert.Equal(new[] { "ask 11 FF 09 5C 01 D2", "ask 11 FF 09 1C 26 FF FF FF", "ask 11 FF 09 7C" }, bench.After(3));
+
+            bench.Clear();
+            PeripheralOutputs.SetProbe(bench.Path, null);
+            Assert.Equal(Stream(0x112233), bench.After(2));
         }
 
         /// <summary>The keep-alive of a keyboard that streams reads its

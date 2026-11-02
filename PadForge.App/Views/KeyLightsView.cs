@@ -518,6 +518,7 @@ namespace PadForge.Views
         internal static string Legend(LightInfo light, IntPtr layout)
         {
             var s = Strings.Instance;
+            if (LabelText(light) is { } label) return label;
             return light.Kind switch
             {
                 LightKind.Key when light.Usage != 0 => KeyLegend(light.Usage, layout),
@@ -527,6 +528,26 @@ namespace PadForge.Views
                 LightKind.Logo => s.Pad_Lighting_KeyColors_Logo,
                 LightKind.Status => s.Pad_Lighting_KeyColors_Status,
                 _ => string.Format(CultureInfo.CurrentCulture, s.Pad_Lighting_KeyColors_Light_Format, light.Address),
+            };
+        }
+
+        /// <summary>The words for a light's label (<see cref="LightLabel"/>),
+        /// or null for a light with none. A G-key reads as Logitech prints
+        /// it, and the media keys take the names the macro editor gives
+        /// them. The brightness key takes the Lighting tab's word for
+        /// brightness.</summary>
+        internal static string LabelText(LightInfo light)
+        {
+            var s = Strings.Instance;
+            return light.Label switch
+            {
+                LightLabel.GKey => "G" + light.LabelNumber.ToString(CultureInfo.InvariantCulture),
+                LightLabel.Brightness => s.Pad_Lighting_GuideLed_Brightness,
+                LightLabel.PlayPause => s.Key_MediaPlayPause,
+                LightLabel.Mute => s.Key_VolumeMute,
+                LightLabel.Next => s.Key_MediaNext,
+                LightLabel.Previous => s.Key_MediaPrev,
+                _ => null,
             };
         }
 

@@ -63,6 +63,21 @@ namespace PadForge.Common.Input.Peripherals
         public byte PerKeyMin { get; init; }
         public byte PerKeyMax { get; init; }
 
+        /// <summary>Every zone a 0x8081 keyboard reports present, lowest
+        /// first, from 1 to 254, for its light map (#557,
+        /// <see cref="HidppKeyMap"/>). Empty for every other unit.</summary>
+        public byte[] PerKeyZones { get; init; } = Array.Empty<byte>();
+
+        /// <summary>The layout code feature 0x4540 gives for a 0x8081
+        /// keyboard, which says its region (<see cref="HidppKeyMap.KeysOf"/>),
+        /// or 0 when the keyboard does not say.</summary>
+        public int KeyboardLayout { get; init; }
+
+        /// <summary>The model IDs feature 0x0003 lists for a 0x8081
+        /// keyboard, one per transport it has, in the order of its transport
+        /// bits. Empty when unread.</summary>
+        public ushort[] ModelIds { get; init; } = Array.Empty<ushort>();
+
         /// <summary>The place of the Host streaming effect (ID 0x0013) in a
         /// 0x8071 device's list of multi-cluster effects, or -1 for a
         /// device that lists none. Logitech's own program chooses that
@@ -172,6 +187,11 @@ namespace PadForge.Common.Input.Peripherals
         public const ushort PerKeyLightingV2 = 0x8081;
         public const ushort OnboardProfiles = 0x8100;
         public const ushort ProfileManagement = 0x8101;
+
+        /// <summary>KEYBOARD_LAYOUT_2: function 0 answers the layout code in
+        /// its first byte (Solaar hidpp20.py get_keyboard_layout, OpenRGB
+        /// LogitechHIDPP20Controller.cpp DiscoverKeyboardLayout).</summary>
+        public const ushort KeyboardLayout = 0x4540;
         public const ushort UnifiedBattery = 0x1004;
         public const ushort BatteryStatus = 0x1000;
 
@@ -196,8 +216,16 @@ namespace PadForge.Common.Input.Peripherals
         public const byte FunctionPerKeyCommit = 5;
 
         public const byte FunctionPerKeyV2GetInfo = 0;
+        public const byte FunctionPerKeyV2SetIndividual = 1;
         public const byte FunctionPerKeyV2SetRange = 5;
+        public const byte FunctionPerKeyV2SetSingleValue = 6;
         public const byte FunctionPerKeyV2FrameEnd = 7;
+
+        /// <summary>The most zones one setIndividualRgbZones frame colors,
+        /// the most ranges one setRangeRgbZones frame holds, and the most
+        /// zones one setRgbZonesSingleValue frame colors (Logitech's x8081
+        /// document, p.6-7, p.12-13 and p.14-15).</summary>
+        public const int PerKeyIndividualMax = 4, PerKeyRangesMax = 3, PerKeySingleMax = 13;
 
         public const byte FunctionOnboardSetMode = 1;
         public const byte FunctionOnboardGetMode = 2;
@@ -371,6 +399,61 @@ namespace PadForge.Common.Input.Peripherals
         public static byte[] PerKeyRange(byte deviceIndex, byte featureIndex, byte first, byte last, byte r, byte g, byte b)
             => HidppHapticProtocol.Frame(deviceIndex, featureIndex, FunctionPerKeyV2SetRange, new byte[] { first, last, r, g, b });
 
+        /// <summary>0x8081 setRangeRgbZones with up to three ranges, each
+        /// [first, last, R, G, B], the first below the last (Logitech's
+        /// x8081 document, p.12-14). The zero after the last ends the list.
+        /// OpenRGB packs a frame's runs of three or more zones of one color
+        /// this way, three to a frame (RGBController_LogitechHIDPP20.cpp,
+        /// DeviceUpdateLEDs' fn5 batches).</summary>
+        public static byte[] PerKeyRanges(byte deviceIndex, byte featureIndex, IReadOnlyList<(byte First, byte Last, int Rgb)> ranges)
+        {
+            var p = new byte[ranges.Count * 5];
+            for (int i = 0; i < ranges.Count; i++)
+            {
+                var (first, last, rgb) = ranges[i];
+                p[i * 5] = first;
+                p[i * 5 + 1] = last;
+                p[i * 5 + 2] = (byte)(rgb >> 16);
+                p[i * 5 + 3] = (byte)(rgb >> 8);
+                p[i * 5 + 4] = (byte)rgb;
+            }
+            return HidppHapticProtocol.Frame(deviceIndex, featureIndex, FunctionPerKeyV2SetRange, p);
+        }
+
+        /// <summary>0x8081 setIndividualRgbZones: up to four [zone, R, G, B]
+        /// (Logitech's x8081 document, p.6-7). The zero after the last ends
+        /// the list. OpenRGB sends a frame's lone colors this way
+        /// (LogitechHIDPP20Controller.cpp SetPerKeyColors).</summary>
+        public static byte[] PerKeyIndividual(byte deviceIndex, byte featureIndex, IReadOnlyList<(byte Zone, int Rgb)> zones)
+        {
+            var p = new byte[zones.Count * 4];
+            for (int i = 0; i < zones.Count; i++)
+            {
+                var (zone, rgb) = zones[i];
+                p[i * 4] = zone;
+                p[i * 4 + 1] = (byte)(rgb >> 16);
+                p[i * 4 + 2] = (byte)(rgb >> 8);
+                p[i * 4 + 3] = (byte)rgb;
+            }
+            return HidppHapticProtocol.Frame(deviceIndex, featureIndex, FunctionPerKeyV2SetIndividual, p);
+        }
+
+        /// <summary>0x8081 setRgbZonesSingleValue: the color, then up to 13
+        /// zones it goes to, not necessarily neighbors (Logitech's x8081
+        /// document, p.14-15). The zero after the last ends the list.
+        /// OpenRGB sends the scattered zones of one color this way
+        /// (RGBController_LogitechHIDPP20.cpp, DeviceUpdateLEDs' fn6
+        /// batches).</summary>
+        public static byte[] PerKeySingleValue(byte deviceIndex, byte featureIndex, int rgb, IReadOnlyList<byte> zones)
+        {
+            var p = new byte[3 + zones.Count];
+            p[0] = (byte)(rgb >> 16);
+            p[1] = (byte)(rgb >> 8);
+            p[2] = (byte)rgb;
+            for (int i = 0; i < zones.Count; i++) p[3 + i] = zones[i];
+            return HidppHapticProtocol.Frame(deviceIndex, featureIndex, FunctionPerKeyV2SetSingleValue, p);
+        }
+
         /// <summary>0x8081 frameEnd: shows what the range staged. Every
         /// byte is zero: persistence 0, volatile memory, and the frame
         /// counts a live stream carries (Logitech's x8081 document,
@@ -429,6 +512,22 @@ namespace PadForge.Common.Input.Peripherals
         /// hidpp20.py:1821-1834).</summary>
         public static bool KeepsOnBoardMode(HidppReply deviceInfo)
         {
+            foreach (var (bit, id) in ModelIdsByTransport(deviceInfo))
+                if ((bit == 2 && id == G915TklWirelessId) || (bit == 3 && id == G915TklUsbId)) return true;
+            return false;
+        }
+
+        /// <summary>The model IDs a 0x0003 getDeviceInfo answer lists, in
+        /// the order of its transport bits (<see cref="KeepsOnBoardMode"/>).</summary>
+        public static ushort[] ModelIds(HidppReply deviceInfo)
+        {
+            var ids = new List<ushort>(3);
+            foreach (var (_, id) in ModelIdsByTransport(deviceInfo)) ids.Add(id);
+            return ids.ToArray();
+        }
+
+        private static IEnumerable<(int Bit, ushort Id)> ModelIdsByTransport(HidppReply deviceInfo)
+        {
             int transports = deviceInfo.Param(6);
             int at = 7;
             for (int bit = 0; bit < 4 && at + 1 <= 12; bit++)
@@ -436,9 +535,8 @@ namespace PadForge.Common.Input.Peripherals
                 if ((transports & (1 << bit)) == 0) continue;
                 ushort id = (ushort)((deviceInfo.Param(at) << 8) | deviceInfo.Param(at + 1));
                 at += 2;
-                if ((bit == 2 && id == G915TklWirelessId) || (bit == 3 && id == G915TklUsbId)) return true;
+                yield return (bit, id);
             }
-            return false;
         }
 
         /// <summary>The percent a battery answer gives, or -1 when it gives
@@ -928,9 +1026,10 @@ namespace PadForge.Common.Input.Peripherals
         /// <para>A 0x8071 device: 0x8081 is looked up, the clusters are
         /// walked for the Fixed effect, the zones of a 0x8081 found are
         /// read, and a keyboard with both has its multi-cluster effects
-        /// walked for Host streaming. Then the feature that switches the
-        /// on-board memory mode is looked up, 0x8101 before 0x8100, the
-        /// order OpenRGB and Solaar test them in
+        /// walked for Host streaming, then its layout code (0x4540) and its
+        /// model IDs (0x0003) read for its light map (#557). Then the
+        /// feature that switches the on-board memory mode is looked up,
+        /// 0x8101 before 0x8100, the order OpenRGB and Solaar test them in
         /// (LogitechHIDPP20Controller.cpp:3978-3998,
         /// settings_templates.py:3334-3337), and the claim levels the unit
         /// offers follow from it (<see cref="HidppUnit.MaxClaimLevel"/>):
@@ -974,18 +1073,42 @@ namespace PadForge.Common.Input.Peripherals
             if (missed) return unit;
             unit = unit with { Zones = clusters };
 
+            HidppReply info = default;
+            bool infoRead = false;
             if (perKey != 0)
             {
                 unit = unit with { PerKeyFeatureId = HidppUnitProtocol.PerKeyLightingV2, PerKeyIndex = perKey };
-                if (!ZoneBounds(channel, device, perKey, timeout, out byte lowest, out byte highest, out missed)) return null;
+                if (!ZonePresence(channel, device, perKey, timeout, out byte[] zones, out missed)) return null;
                 if (missed) return unit;
-                unit = unit with { PerKeyMin = lowest, PerKeyMax = highest };
+                unit = unit with
+                {
+                    PerKeyMin = zones.Length > 0 ? zones[0] : (byte)0,
+                    PerKeyMax = zones.Length > 0 ? zones[^1] : (byte)0,
+                };
                 if (clusters.Length > 0 && ClusterStreamPlan.Fits(unit))
                 {
                     int streaming = HostStreaming(channel, device, unit.RgbIndex, multiCluster, timeout, out missed, out bool failed);
                     if (failed) return null;
                     if (missed) return unit;
                     unit = unit with { HostStreamingIndex = streaming };
+
+                    // A keyboard painted key by key (#557) is read for its
+                    // light map: its zones, its region and its model.
+                    unit = unit with { PerKeyZones = zones };
+                    byte layoutAt = Feature(channel, device, HidppUnitProtocol.KeyboardLayout, timeout, out reply);
+                    if (reply.Kind == HidppReplyKind.WriteFailed) return null;
+                    if (Missed(reply)) { missed = true; return unit; }
+                    if (layoutAt != 0)
+                    {
+                        var layout = channel.Request(device, layoutAt, 0, Array.Empty<byte>(), timeout);
+                        if (layout.Kind == HidppReplyKind.WriteFailed) return null;
+                        if (Missed(layout)) { missed = true; return unit; }
+                        if (layout.Kind == HidppReplyKind.Answer) unit = unit with { KeyboardLayout = layout.Param(0) };
+                    }
+                    if (!ReadDeviceInfo(channel, device, timeout, out info, out infoRead, out missed)) return null;
+                    if (missed) return unit;
+                    if (infoRead && info.Kind == HidppReplyKind.Answer)
+                        unit = unit with { ModelIds = HidppUnitProtocol.ModelIds(info) };
                 }
             }
             // With no cluster to paint there is no claim, so no level to
@@ -1010,18 +1133,35 @@ namespace PadForge.Common.Input.Peripherals
             // switched, since it cannot be told from the keyboard that must
             // not be. One that lacks the feature is not that keyboard, which
             // lists it (Solaar docs/devices, the G915 TKL's dump for 408E).
-            byte infoAt = Feature(channel, device, HidppUnitProtocol.DeviceInformation, timeout, out reply);
-            if (reply.Kind == HidppReplyKind.WriteFailed) return null;
-            if (Missed(reply)) { missed = true; return unit; }
-            bool staysOnBoard = false;
-            if (infoAt != 0)
+            if (!infoRead)
             {
-                var info = channel.Request(device, infoAt, 0, Array.Empty<byte>(), timeout);
-                if (info.Kind == HidppReplyKind.WriteFailed) return null;
-                if (Missed(info)) { missed = true; return unit; }
-                staysOnBoard = info.Kind != HidppReplyKind.Answer || HidppUnitProtocol.KeepsOnBoardMode(info);
+                if (!ReadDeviceInfo(channel, device, timeout, out info, out infoRead, out missed)) return null;
+                if (missed) return unit;
             }
+            bool staysOnBoard = infoRead && (info.Kind != HidppReplyKind.Answer || HidppUnitProtocol.KeepsOnBoardMode(info));
             return unit with { ModeFeatureId = modeFeature, ModeIndex = mode, MaxClaimLevel = staysOnBoard ? 1 : 2 };
+        }
+
+        /// <summary>Feature 0x0003's getDeviceInfo answer, which lists the
+        /// device's model IDs (<see cref="HidppUnitProtocol.ModelIds"/>).
+        /// <paramref name="read"/> is false for a device without the
+        /// feature. False when a write failed. <paramref name="missed"/> is
+        /// set when a request went unanswered.</summary>
+        private static bool ReadDeviceInfo(IHidppChannel channel, byte device, int timeout, out HidppReply info,
+            out bool read, out bool missed)
+        {
+            info = default;
+            read = false;
+            missed = false;
+            byte infoAt = Feature(channel, device, HidppUnitProtocol.DeviceInformation, timeout, out var reply);
+            if (reply.Kind == HidppReplyKind.WriteFailed) return false;
+            if (Missed(reply)) { missed = true; return true; }
+            if (infoAt == 0) return true;
+            info = channel.Request(device, infoAt, 0, Array.Empty<byte>(), timeout);
+            if (info.Kind == HidppReplyKind.WriteFailed) return false;
+            if (Missed(info)) { missed = true; return true; }
+            read = true;
+            return true;
         }
 
         /// <summary>
@@ -1109,23 +1249,23 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>
-        /// The lowest and the highest zone a 0x8081 device has, from its
-        /// three pages of presence bits, bit i of a page for zone
-        /// page * 112 + i with the first bit the low one of the first byte
-        /// (Logitech's x8081 document, p.4-6, read the same way by OpenRGB
+        /// Every zone a 0x8081 device has, lowest first, from its three
+        /// pages of presence bits, bit i of a page for zone page * 112 + i
+        /// with the first bit the low one of the first byte (Logitech's
+        /// x8081 document, p.4-6, read the same way by OpenRGB
         /// LogitechHIDPP20Controller.cpp:3026-3082 and Solaar
         /// settings_templates.py:4165-4169). Zones 0 and 255 are not zones
         /// and are passed over, though a device may set their bits (the
         /// same document, p.1 and p.5). A page the device refuses holds
-        /// none. Both are 0 for a device with no zone. False when a write
+        /// none. Empty for a device with no zone. False when a write
         /// failed. <paramref name="missed"/> is set when a request went
         /// unanswered.
         /// </summary>
-        internal static bool ZoneBounds(IHidppChannel channel, byte deviceIndex, byte featureIndex, int timeout,
-            out byte lowest, out byte highest, out bool missed)
+        internal static bool ZonePresence(IHidppChannel channel, byte deviceIndex, byte featureIndex, int timeout,
+            out byte[] zones, out bool missed)
         {
-            lowest = 0;
-            highest = 0;
+            var found = new List<byte>();
+            zones = Array.Empty<byte>();
             missed = false;
             for (byte page = 0; page <= 2; page++)
             {
@@ -1140,10 +1280,10 @@ namespace PadForge.Common.Input.Peripherals
                     if ((reply.Param(2 + bit / 8) & (1 << (bit % 8))) == 0) continue;
                     int zone = page * 112 + bit;
                     if (zone < 1 || zone > 254) continue;
-                    if (lowest == 0) lowest = (byte)zone;
-                    highest = (byte)zone;
+                    found.Add((byte)zone);
                 }
             }
+            zones = found.ToArray();
             return true;
         }
 

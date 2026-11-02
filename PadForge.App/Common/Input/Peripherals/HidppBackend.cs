@@ -48,13 +48,17 @@ namespace PadForge.Common.Input.Peripherals
             return true;
         }
 
-        /// <summary>A record compares its zone array by reference, and every
-        /// scan builds a new array, so the zones are compared by value.</summary>
+        /// <summary>A record compares its arrays by reference, and every scan
+        /// builds new ones, so the zones, the per-key zones and the model
+        /// IDs are compared by value.</summary>
         private static bool SameUnit(HidppUnit a, HidppUnit b)
         {
             if (ReferenceEquals(a, b)) return true;
             if (a == null || b == null) return false;
-            return a.Zones.AsSpan().SequenceEqual(b.Zones) && (a with { Zones = b.Zones }) == b;
+            return a.Zones.AsSpan().SequenceEqual(b.Zones)
+                   && a.PerKeyZones.AsSpan().SequenceEqual(b.PerKeyZones)
+                   && a.ModelIds.AsSpan().SequenceEqual(b.ModelIds)
+                   && (a with { Zones = b.Zones, PerKeyZones = b.PerKeyZones, ModelIds = b.ModelIds }) == b;
         }
     }
 
@@ -211,12 +215,21 @@ namespace PadForge.Common.Input.Peripherals
             public int Rgb;
             public long SentAt;
 
+            /// <summary>What each light of <see cref="ShownMap"/> shows after
+            /// the last paint (#557), or null when the unit was last painted
+            /// one color.</summary>
+            public int[] Shown;
+            public LightMap ShownMap;
+
             /// <summary>The frames in flight, the next one's place, the
-            /// earliest it may go out and the color they carry.</summary>
+            /// earliest it may go out and the color they carry, with the
+            /// color of each light for a paint light by light.</summary>
             public HidppStep[] Queue;
             public int Next;
             public long NextAt;
             public int QueuedRgb;
+            public int[] QueuedColors;
+            public LightMap QueuedMap;
 
             /// <summary>The claim's first paint is not out yet. The claim is
             /// logged once it is.</summary>
@@ -264,6 +277,17 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Each present path's container ID, looked up once per
         /// appearance that answers it. Worker thread only.</summary>
         private readonly Dictionary<string, Guid> _containers = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>The light map of each unit painted light by light (#557),
+        /// by unit key: the map from the board's zones, and that map with
+        /// the names Map Key Lights learned, the one published. Worker
+        /// thread only.</summary>
+        private readonly Dictionary<string, (LightMap Base, LightMap Map)> _maps = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>The <see cref="LearnedKeyMaps.Version"/> the maps were
+        /// last given their names at.</summary>
+        private int _mapsVersion = -1;
+
         private HidppSnapshot _snapshot = HidppSnapshot.Empty;
         private Thread _thread;
         private volatile WorkerRun _run;
@@ -379,12 +403,14 @@ namespace PadForge.Common.Input.Peripherals
             _thread.Start();
             PeripheralOutputs.HapticsChanged += Wake;
             PeripheralOutputs.LightingChanged += Wake;
+            LearnedKeyMaps.Changed += OnLearned;
         }
 
         public void Stop()
         {
             PeripheralOutputs.HapticsChanged -= Wake;
             PeripheralOutputs.LightingChanged -= Wake;
+            LearnedKeyMaps.Changed -= OnLearned;
             if (_thread == null) return;
             _run.Stop = true;
             Wake();
@@ -397,6 +423,10 @@ namespace PadForge.Common.Input.Peripherals
         {
             try { _wake.Set(); } catch (ObjectDisposedException) { }
         }
+
+        /// <summary>A name learned with Map Key Lights (#557) wakes the
+        /// worker, which gives its maps the names on its next pass.</summary>
+        private void OnLearned(object sender, EventArgs e) => Wake();
 
         private void Worker(WorkerRun run)
         {
@@ -448,6 +478,7 @@ namespace PadForge.Common.Input.Peripherals
                     var links = PeripheralOutputs.Links;
                     bool active = PlayHaptics(channels, states, links, now, out bool playing, out bool linked, ref nextScan);
                     if (playing) quietSince = now;
+                    if (LearnedKeyMaps.Version != _mapsVersion) SyncMaps(channels);
                     bool queued = PaintLighting(run, channels, states, links, now, ref nextScan);
                     bool quiet = now - quietSince >= QuietMs;
 
@@ -506,6 +537,9 @@ namespace PadForge.Common.Input.Peripherals
                 // the worker has no channel that is known to reach it.
                 try { PayOwedNow(); } catch { }
                 _owed.Clear();
+                foreach (string key in _maps.Keys) PeripheralLightMaps.Remove(new OutputPath(OutputFamily.HidppUnit, key));
+                _maps.Clear();
+                _mapsVersion = -1;
                 Volatile.Write(ref _claimed, Array.Empty<ClaimRecord>());
                 Volatile.Write(ref _snapshot, HidppSnapshot.Empty);
             }
@@ -583,7 +617,11 @@ namespace PadForge.Common.Input.Peripherals
                         // The level travels with the ruling claim, and a unit
                         // is never held more firmly than it offers.
                         int level = Math.Clamp(Math.Min(ruler.Level, unit.MaxClaimLevel), 0, light.Plan.MaxLevel);
-                        ok = Drive(channel, unit, light, rgb, level, now, ref claims);
+                        var map = LightsFor(unit, light);
+                        int[] colors = map != null && ruler.Keys is { IsEmpty: false } keys
+                            ? LightRenderer.Render(map, rgb, keys)
+                            : null;
+                        ok = Drive(channel, unit, light, rgb, map, colors, level, now, ref claims);
                     }
                     else if (light.Claimed && LeftToLogitechProgram(path))
                     {
@@ -623,9 +661,36 @@ namespace PadForge.Common.Input.Peripherals
             return queued;
         }
 
+        /// <summary>The light map a unit is painted by (#557), or null for a
+        /// unit painted one color: a plan that paints one color, or a board
+        /// with no map of more than one light.</summary>
+        private LightMap LightsFor(HidppUnit unit, Light light)
+            => light.Plan.PaintsLights && _maps.TryGetValue(unit.Key, out var entry) && entry.Map.PerLight ? entry.Map : null;
+
+        /// <summary>Whether the unit shows what the claim asks for now: one
+        /// color, or <paramref name="colors"/> light by light on the map
+        /// they were painted by.</summary>
+        private static bool Showing(Light light, int rgb, LightMap map, int[] colors)
+            => colors == null
+                ? light.Shown == null && rgb == light.Rgb
+                : light.Shown != null && ReferenceEquals(light.ShownMap, map) && LightRenderer.Same(colors, light.Shown);
+
+        /// <summary>The frames of a paint after the claim's own: one color,
+        /// or light by light. A paint light by light sends the lights whose
+        /// color changed when the unit shows a picture on the same map, and
+        /// the whole picture otherwise.</summary>
+        private static HidppStep[] PaintSteps(Light light, int rgb, LightMap map, int[] colors)
+        {
+            bool full = !light.Painted;
+            if (colors == null) return light.Plan.Paint(rgb, full);
+            int[] shown = !full && light.Shown != null && ReferenceEquals(light.ShownMap, map) ? light.Shown : null;
+            return light.Plan.PaintLights(map, colors, shown, full);
+        }
+
         /// <summary>One lit unit's turn. False when a write failed, which
         /// means the collection is gone.</summary>
-        private bool Drive(Channel channel, HidppUnit unit, Light light, int rgb, int level, long now, ref bool claims)
+        private bool Drive(Channel channel, HidppUnit unit, Light light, int rgb, LightMap map, int[] colors, int level,
+            long now, ref bool claims)
         {
             // A claim at another level is a claim to make over: the device
             // goes back at the level it was held at, and the same pass
@@ -638,24 +703,25 @@ namespace PadForge.Common.Input.Peripherals
             }
 
             if (light.Queue != null) return Send(channel.Io, unit, light, now, ref claims);
-            if (!light.Claimed) return Claim(channel, unit, light, rgb, level, now, ref claims);
+            if (!light.Claimed) return Claim(channel, unit, light, rgb, map, colors, level, now, ref claims);
 
             if (now - light.ClaimedAt >= _reassertMs)
-                return KeepAlive(channel, unit, light, rgb, now, ref claims);
+                return KeepAlive(channel, unit, light, rgb, map, colors, now, ref claims);
 
             // A new color, or a color whose paint was not answered. A paint
             // that failed is made again at once, since the floor between
             // paints passed while it waited, until too many have failed in a
             // row. Then the keep-alive is the next try.
-            if (light.Painted && rgb == light.Rgb) return true;
+            if (light.Painted && Showing(light, rgb, map, colors)) return true;
             if (light.FailedPaints >= HidppLightPlan.FailedPaintLimit) return true;
             if (light.FailedPaints == 0 && now - light.SentAt < light.Plan.PaintMs) return true;
-            Enqueue(light, light.Plan.Paint(rgb, full: !light.Painted), rgb, now);
+            Enqueue(light, PaintSteps(light, rgb, map, colors), rgb, map, colors, now);
             return Send(channel.Io, unit, light, now, ref claims);
         }
 
         /// <summary>Takes a unit's lighting and queues its first color.</summary>
-        private bool Claim(Channel channel, HidppUnit unit, Light light, int rgb, int level, long now, ref bool claims)
+        private bool Claim(Channel channel, HidppUnit unit, Light light, int rgb, LightMap map, int[] colors, int level,
+            long now, ref bool claims)
         {
             var plan = light.Plan;
             byte savedMode = 0;
@@ -709,20 +775,21 @@ namespace PadForge.Common.Input.Peripherals
             light.FailedPaints = 0;
             NoteClaimed(channel.Io.Path, unit.DeviceIndex, HidppLightPlan.Frames(light.HandBack));
 
-            EnqueueClaim(light, rgb, now);
+            EnqueueClaim(light, rgb, map, colors, now);
             return Send(channel.Io, unit, light, now, ref claims);
         }
 
         /// <summary>Queues the frames of a unit's claim, at the level and
-        /// with the mode on its books, and its first paint behind them.</summary>
-        private static void EnqueueClaim(Light light, int rgb, long now)
+        /// with the mode on its books, and its first paint behind them, one
+        /// color or light by light.</summary>
+        private static void EnqueueClaim(Light light, int rgb, LightMap map, int[] colors, long now)
         {
             var claim = light.Plan.Claim(light.Level, light.SavedMode);
-            var paint = light.Plan.Paint(rgb, full: true);
+            var paint = colors == null ? light.Plan.Paint(rgb, full: true) : light.Plan.PaintLights(map, colors, null, full: true);
             var steps = new HidppStep[claim.Length + paint.Length];
             claim.CopyTo(steps, 0);
             paint.CopyTo(steps, claim.Length);
-            Enqueue(light, steps, rgb, now);
+            Enqueue(light, steps, rgb, map, colors, now);
             light.Painted = false;
             light.Claiming = true;
         }
@@ -731,7 +798,8 @@ namespace PadForge.Common.Input.Peripherals
         /// claim first (<see cref="HidppLightPlan.ClaimRead"/>) repeats
         /// nothing that would take the display from its per-key frames, and
         /// claims in full again only when the read shows the claim gone.</summary>
-        private bool KeepAlive(Channel channel, HidppUnit unit, Light light, int rgb, long now, ref bool claims)
+        private bool KeepAlive(Channel channel, HidppUnit unit, Light light, int rgb, LightMap map, int[] colors, long now,
+            ref bool claims)
         {
             var plan = light.Plan;
             light.ClaimedAt = now;
@@ -757,7 +825,7 @@ namespace PadForge.Common.Input.Peripherals
                     PadForge.Engine.SdlDiagLog.WriteLine(
                         $"PERIPHERAL HID++ '{unit.Name}' was back in its on-board memory mode, claiming again");
                     light.FailedPaints = 0;
-                    EnqueueClaim(light, rgb, now);
+                    EnqueueClaim(light, rgb, map, colors, now);
                     return Send(channel.Io, unit, light, now, ref claims);
                 }
             }
@@ -778,22 +846,27 @@ namespace PadForge.Common.Input.Peripherals
                     // record does not change.
                     PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HID++ '{unit.Name}' lighting claim was gone, claiming again");
                     light.FailedPaints = 0;
-                    EnqueueClaim(light, rgb, now);
+                    EnqueueClaim(light, rgb, map, colors, now);
                     return Send(channel.Io, unit, light, now, ref claims);
                 }
             }
-            Enqueue(light, plan.KeepAlive(light.Level, rgb, light.Painted), rgb, now);
+            var keep = colors == null
+                ? plan.KeepAlive(light.Level, rgb, light.Painted)
+                : plan.KeepAliveLights(light.Level, map, colors, light.Painted);
+            Enqueue(light, keep, rgb, map, colors, now);
             return Send(channel.Io, unit, light, now, ref claims);
         }
 
         /// <summary>Puts the frames of one claim or one paint in a unit's
         /// queue, in place of anything still in it. The floor between paints
         /// counts from here, where the paint begins.</summary>
-        private static void Enqueue(Light light, HidppStep[] steps, int rgb, long now)
+        private static void Enqueue(Light light, HidppStep[] steps, int rgb, LightMap map, int[] colors, long now)
         {
             light.Queue = steps;
             light.Next = 0;
             light.QueuedRgb = rgb;
+            light.QueuedMap = colors == null ? null : map;
+            light.QueuedColors = colors;
             light.SentAt = now;
         }
 
@@ -842,7 +915,11 @@ namespace PadForge.Common.Input.Peripherals
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"PERIPHERAL HID++ '{unit.Name}' refused a per-key frame, lighting its clusters alone");
                         light.Plan = fallback;
-                        Enqueue(light, fallback.Paint(light.QueuedRgb, full: true), light.QueuedRgb, now);
+                        Enqueue(light, fallback.Paint(light.QueuedRgb, full: true), light.QueuedRgb, null, null, now);
+                        // Its keys can no longer be painted one by one, so
+                        // the Lighting tab stops offering them (#557).
+                        if (_maps.Remove(unit.Key))
+                            PeripheralLightMaps.Remove(new OutputPath(OutputFamily.HidppUnit, unit.Key));
                         return true;
                 }
                 if (++light.Next < light.Queue.Length)
@@ -852,6 +929,8 @@ namespace PadForge.Common.Input.Peripherals
                 }
                 light.Queue = null;
                 light.Rgb = light.QueuedRgb;
+                light.Shown = light.QueuedColors;
+                light.ShownMap = light.QueuedMap;
                 light.Painted = true;
                 light.FailedPaints = 0;
                 if (light.Claiming)
@@ -1078,6 +1157,8 @@ namespace PadForge.Common.Input.Peripherals
             light.SavedMode = 0;
             light.HandBack = null;
             light.Painted = false;
+            light.Shown = null;
+            light.ShownMap = null;
             light.Queue = null;
             light.Claiming = false;
             light.FailedPaints = 0;
@@ -1491,8 +1572,67 @@ namespace PadForge.Common.Input.Peripherals
             if (forget) states.Remove(path);
         }
 
+        /// <summary>
+        /// Publishes the light map of every unit painted light by light
+        /// (#557) and takes down the maps of units that left or fell back
+        /// to one color. A unit found again with the same lights keeps its
+        /// map, so the Lighting tab does not redraw on every scan. The
+        /// names Map Key Lights learned go over each map, again whenever
+        /// they change.
+        /// </summary>
+        private void SyncMaps(Dictionary<string, Channel> channels)
+        {
+            int version = LearnedKeyMaps.Version;
+            bool relearn = version != _mapsVersion;
+            _mapsVersion = version;
+            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var channel in channels.Values)
+                foreach (var unit in channel.Units)
+                {
+                    var plan = channel.Lights.TryGetValue(unit.DeviceIndex, out var light) ? light.Plan : HidppLightPlan.For(unit);
+                    if (plan == null || !plan.PaintsLights) continue;
+                    var fresh = HidppKeyMap.Of(unit);
+                    if (fresh == null) continue;
+                    seen.Add(unit.Key);
+                    var path = new OutputPath(OutputFamily.HidppUnit, unit.Key);
+                    if (_maps.TryGetValue(unit.Key, out var known) && SameLights(known.Base, fresh))
+                    {
+                        if (!relearn) continue;
+                        var again = LearnedKeyMaps.Apply(known.Base);
+                        if (SameLights(again, known.Map)) continue;
+                        _maps[unit.Key] = (known.Base, again);
+                        PeripheralLightMaps.Publish(path, again);
+                        continue;
+                    }
+                    var map = LearnedKeyMaps.Apply(fresh);
+                    _maps[unit.Key] = (fresh, map);
+                    PeripheralLightMaps.Publish(path, map);
+                }
+            List<string> gone = null;
+            foreach (string key in _maps.Keys)
+                if (!seen.Contains(key)) (gone ??= new List<string>()).Add(key);
+            if (gone == null) return;
+            foreach (string key in gone)
+            {
+                _maps.Remove(key);
+                PeripheralLightMaps.Remove(new OutputPath(OutputFamily.HidppUnit, key));
+            }
+        }
+
+        /// <summary>Whether two maps hold the same lights for the same
+        /// model.</summary>
+        private static bool SameLights(LightMap a, LightMap b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (a == null || b == null || a.Product != b.Product || a.Lights.Count != b.Lights.Count) return false;
+            for (int i = 0; i < a.Lights.Count; i++)
+                if (a.Lights[i] != b.Lights[i]) return false;
+            return true;
+        }
+
         private void Publish(Dictionary<string, Channel> channels, Dictionary<string, HidppPathState> states)
         {
+            SyncMaps(channels);
             var units = new List<HidppUnit>();
             foreach (var channel in channels.Values) units.AddRange(channel.Units);
             var pending = new HashSet<Guid>();

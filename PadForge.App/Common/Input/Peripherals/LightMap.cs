@@ -44,6 +44,23 @@ namespace PadForge.Common.Input.Peripherals
         Learned = 4,
     }
 
+    /// <summary>What a light that is not a keyboard-page key is called on
+    /// its chip (#557): a G-key or a media key a device lights. Put into
+    /// words when the chip is drawn, so the name follows the interface's
+    /// language. Saved nowhere, so the order is free.</summary>
+    internal enum LightLabel : byte
+    {
+        None = 0,
+        /// <summary>G and <see cref="LightInfo.LabelNumber"/>, as Logitech
+        /// prints it on the key.</summary>
+        GKey = 1,
+        Brightness = 2,
+        PlayPause = 3,
+        Mute = 4,
+        Next = 5,
+        Previous = 6,
+    }
+
     /// <summary>One light of a unit. <see cref="Address"/> is the index the
     /// family's frames use for it: a lamp ID, a zone ID, a grid cell as
     /// row times columns plus column. <see cref="Usage"/> is the key's HID
@@ -66,6 +83,11 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>For a zone, its number among the unit's zones, from 1.
         /// 0 for any other kind.</summary>
         public int Zone { get; init; }
+
+        /// <summary>What names a light that no keyboard-page usage names,
+        /// such as a G-key or a media key, and its number for a G-key.</summary>
+        public LightLabel Label { get; init; }
+        public int LabelNumber { get; init; }
 
         /// <summary>The group a whole-group color reaches it by
         /// (<see cref="KeyFrame.Groups"/>): "zone" and the zone's number for

@@ -101,6 +101,24 @@ namespace PadForge.Common.Input.Peripherals
         /// later paint relies on.</summary>
         public abstract HidppStep[] Paint(int rgb, bool full);
 
+        /// <summary>Whether the plan paints a color per light (#557,
+        /// <see cref="PaintLights"/>).</summary>
+        public virtual bool PaintsLights => false;
+
+        /// <summary>The frames that show one color per light of
+        /// <paramref name="map"/> (#557), <paramref name="colors"/> in the
+        /// map's order. With <paramref name="shown"/>, what the lights show
+        /// now, only the lights whose color changed go out. Without it the
+        /// whole picture does, as a keep-alive and a first paint send it.
+        /// <paramref name="full"/> is the first paint after a claim. Null
+        /// for a plan that paints one color alone.</summary>
+        public virtual HidppStep[] PaintLights(LightMap map, int[] colors, int[] shown, bool full) => null;
+
+        /// <summary>The frames that hold the claim of a unit painted light by
+        /// light (#557), as <see cref="KeepAlive"/> holds one painted one
+        /// color. Null for a plan that paints one color alone.</summary>
+        public virtual HidppStep[] KeepAliveLights(int level, LightMap map, int[] colors, bool painted) => null;
+
         /// <summary>The frames that hold the claim, sent on the worker's
         /// re-assert interval. For a plan with a <see cref="ClaimRead"/>
         /// they are what goes out while that read shows the claim
@@ -509,11 +527,138 @@ namespace PadForge.Common.Input.Peripherals
 
         public override HidppLightPlan WithoutPerKey => new ClusterPlan(Unit, Effect);
 
+        public override bool PaintsLights => true;
+
+        /// <summary>The whole picture again, so a zone the keyboard never
+        /// took is put right within one interval, as OpenRGB's rolling
+        /// resync puts it right (RGBController_LogitechHIDPP20.cpp,
+        /// DeviceUpdateLEDs). A keyboard whose first paint has not landed
+        /// gets that first paint whole, as <see cref="KeepAlive"/> sends it.</summary>
+        public override HidppStep[] KeepAliveLights(int level, LightMap map, int[] colors, bool painted)
+            => PaintLights(map, colors, null, full: !painted);
+
+        /// <summary>
+        /// One color per zone (#557). A first paint after a claim is the
+        /// one-color first paint in the color most zones take, its clusters,
+        /// Host streaming and its first frame, so the replay the firmware
+        /// may need is the frame Logitech's own program sends then. The
+        /// whole picture is one frame: a range over every zone in that
+        /// color, then the zones of every other color, then the frame end,
+        /// so a keep-alive that repaints it never shows the one color
+        /// between. A change sends the zones whose color changed, or the
+        /// whole picture when that takes fewer frames, and the frame end.
+        /// The zones go out as OpenRGB groups them (<see cref="AddZones"/>).
+        /// </summary>
+        public override HidppStep[] PaintLights(LightMap map, int[] colors, int[] shown, bool full)
+        {
+            var steps = new List<HidppStep>();
+            int most = MostCommon(colors);
+            if (full)
+            {
+                AddClusters(steps, most);
+                if (Unit.HostStreamingIndex >= 0)
+                    steps.Add(new HidppStep(HidppUnitProtocol.RgbHostStreaming(Device, Effect, (byte)Unit.HostStreamingIndex),
+                        HidppStepKind.Select));
+                AddFrame(steps, most);
+            }
+            var whole = new List<HidppStep> { Range(most) };
+            var under = new int[colors.Length];
+            Array.Fill(under, most);
+            AddZones(whole, map, colors, under);
+            if (shown != null && !full)
+            {
+                var changed = new List<HidppStep>();
+                AddZones(changed, map, colors, shown);
+                if (changed.Count <= whole.Count) whole = changed;
+            }
+            steps.AddRange(whole);
+            steps.Add(new HidppStep(HidppUnitProtocol.PerKeyFrameEnd(Device, Unit.PerKeyIndex), HidppStepKind.Commit));
+            return steps.ToArray();
+        }
+
+        /// <summary>
+        /// The frames for the zones whose color differs from what they show,
+        /// grouped as OpenRGB groups a frame's changed zones
+        /// (RGBController_LogitechHIDPP20.cpp, DeviceUpdateLEDs), by color.
+        /// A color on two zones or more sends each run of three or more
+        /// neighboring zones as a range, three ranges to a frame, and its
+        /// other zones as one color for up to 13 zones. A color on one zone
+        /// alone goes with the other lone ones, four to a frame. Logitech's
+        /// own guideline for the feature orders it the same way, ranges
+        /// first, then one value for scattered zones, then single zones
+        /// (x8081 document, p.3-4).
+        /// </summary>
+        private void AddZones(List<HidppStep> steps, LightMap map, int[] colors, int[] shown)
+        {
+            var byColor = new SortedDictionary<int, List<byte>>();
+            for (int i = 0; i < map.Lights.Count && i < colors.Length; i++)
+            {
+                int zone = map.Lights[i].Address;
+                if (zone < 1 || zone > 254 || colors[i] == shown[i]) continue;
+                if (!byColor.TryGetValue(colors[i], out var zones)) byColor[colors[i]] = zones = new List<byte>();
+                zones.Add((byte)zone);
+            }
+            var lone = new List<(byte Zone, int Rgb)>();
+            foreach (var (rgb, zones) in byColor)
+            {
+                if (zones.Count == 1)
+                {
+                    lone.Add((zones[0], rgb));
+                    continue;
+                }
+                zones.Sort();
+                var ranges = new List<(byte First, byte Last, int Rgb)>();
+                var scattered = new List<byte>();
+                int start = 0;
+                for (int i = 1; i <= zones.Count; i++)
+                {
+                    if (i < zones.Count && zones[i] == zones[i - 1] + 1) continue;
+                    if (i - start >= 3) ranges.Add((zones[start], zones[i - 1], rgb));
+                    else for (int j = start; j < i; j++) scattered.Add(zones[j]);
+                    start = i;
+                }
+                for (int i = 0; i < ranges.Count; i += HidppUnitProtocol.PerKeyRangesMax)
+                    steps.Add(Stream(HidppUnitProtocol.PerKeyRanges(Device, Unit.PerKeyIndex,
+                        ranges.GetRange(i, Math.Min(HidppUnitProtocol.PerKeyRangesMax, ranges.Count - i)))));
+                for (int i = 0; i < scattered.Count; i += HidppUnitProtocol.PerKeySingleMax)
+                    steps.Add(Stream(HidppUnitProtocol.PerKeySingleValue(Device, Unit.PerKeyIndex, rgb,
+                        scattered.GetRange(i, Math.Min(HidppUnitProtocol.PerKeySingleMax, scattered.Count - i)))));
+            }
+            for (int i = 0; i < lone.Count; i += HidppUnitProtocol.PerKeyIndividualMax)
+                steps.Add(Stream(HidppUnitProtocol.PerKeyIndividual(Device, Unit.PerKeyIndex,
+                    lone.GetRange(i, Math.Min(HidppUnitProtocol.PerKeyIndividualMax, lone.Count - i)))));
+        }
+
+        /// <summary>The color the most lights take, the lowest of those
+        /// tied, so the same picture gives the same frames.</summary>
+        internal static int MostCommon(int[] colors)
+        {
+            var counts = new Dictionary<int, int>();
+            int best = 0, bestCount = 0;
+            foreach (int rgb in colors)
+            {
+                counts.TryGetValue(rgb, out int count);
+                counts[rgb] = ++count;
+                if (count > bestCount || (count == bestCount && rgb < best))
+                {
+                    best = rgb;
+                    bestCount = count;
+                }
+            }
+            return best;
+        }
+
+        private static HidppStep Stream(byte[] frame) => new(frame, HidppStepKind.Stream);
+
+        /// <summary>One range over every zone.</summary>
+        private HidppStep Range(int rgb)
+            => Stream(HidppUnitProtocol.PerKeyRange(Device, Unit.PerKeyIndex, Unit.PerKeyMin, Unit.PerKeyMax,
+                (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb));
+
         /// <summary>One range over every zone, then the frame end.</summary>
         private void AddFrame(List<HidppStep> steps, int rgb)
         {
-            steps.Add(new HidppStep(HidppUnitProtocol.PerKeyRange(Device, Unit.PerKeyIndex, Unit.PerKeyMin, Unit.PerKeyMax,
-                (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb), HidppStepKind.Stream));
+            steps.Add(Range(rgb));
             steps.Add(new HidppStep(HidppUnitProtocol.PerKeyFrameEnd(Device, Unit.PerKeyIndex), HidppStepKind.Commit));
         }
     }

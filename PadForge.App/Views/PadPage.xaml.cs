@@ -534,6 +534,9 @@ namespace PadForge.Views
             bool hasPeripheralLighting = false;
             bool vendorLightingRow = false;
             PadForge.Engine.Data.UserDevice lightingRow = null;
+            // A row that only takes output (#494): a lit unit, a vendor's
+            // lighting row, a rumble row.
+            bool outputOnlyRow = false;
             // A Novint Falcon row (#521): the Force Feedback tab with its
             // Falcon card.
             PadForge.Engine.Data.UserDevice falconRow = null;
@@ -550,6 +553,7 @@ namespace PadForge.Views
                     {
                         if (ud == null) continue;
                         if (ud.InstanceGuid != selectedGuid) continue;
+                        outputOnlyRow = InputDeviceType.IsOutputOnly(ud.CapType);
 
                         hasForceFeedback =
                             ud.CapType == InputDeviceType.Gamepad
@@ -704,6 +708,14 @@ namespace PadForge.Views
             var routeVm = DataContext as PadViewModel;
             int routeSlot = routeVm?.PadIndex ?? -1;
             bool slotLive = routeSlot >= 0 && PadForge.Common.Input.Peripherals.PeripheralOutputs.SlotLive(routeSlot);
+            // Nothing on a row that only takes output reaches a stick or a
+            // trigger, so neither tab has a setting that acts on it.
+            if (outputOnlyRow)
+            {
+                TabSticks.Visibility = Visibility.Collapsed;
+                TabTriggers.Visibility = Visibility.Collapsed;
+            }
+
             if (PeripheralHapticsRoute != null)
             {
                 string route = hasPeripheralHaptics
@@ -894,7 +906,7 @@ namespace PadForge.Views
                 // the one collapsing predicate with no eviction here, so a user
                 // sitting on either when the slot became VR was left on a
                 // collapsed tab with no selected button.
-                if ((isMidi || isVrSlot) && (vm.SelectedConfigTab == 3 || vm.SelectedConfigTab == 4))
+                if ((isMidi || isVrSlot || outputOnlyRow) && (vm.SelectedConfigTab == 3 || vm.SelectedConfigTab == 4))
                     vm.SelectedConfigTab = 0;
                 else if (isKbm && vm.SelectedConfigTab == 4)
                     vm.SelectedConfigTab = 0;

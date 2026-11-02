@@ -30,6 +30,9 @@ namespace PadForge.Common.Input.Peripherals
             // SteelSeries.
             Add(backends, OutputFamily.SteelSeriesUnit, () => new SteelSeriesDirectBackend());
 
+            // The OpenRGB families of the shared HID lighting worker (#557).
+            Add(backends, OutputFamily.HidLightingUnit, () => new HidLightingBackend());
+
             // Razer. Last of the lighting families: its hand-back can wait
             // on a lock other tools share.
             Add(backends, OutputFamily.RazerUnit, () => new RazerDirectBackend());

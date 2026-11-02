@@ -50,6 +50,9 @@ namespace PadForge.Common.Input.Peripherals
         LampArrayUnit,
         /// <summary>One TouchSense mouse bound to WinUSB. Rumble only.</summary>
         TouchSenseUnit,
+        /// <summary>One device of an OpenRGB controller family on its own
+        /// lighting collection, through the shared HID lighting worker (#557).</summary>
+        HidLightingUnit,
     }
 
     /// <summary>Where a backend stands, for the device tabs.</summary>
@@ -85,7 +88,7 @@ namespace PadForge.Common.Input.Peripherals
         public bool Shared => Family switch
         {
             OutputFamily.HidppUnit or OutputFamily.RazerUnit or OutputFamily.SteelSeriesUnit
-                or OutputFamily.LampArrayUnit or OutputFamily.TouchSenseUnit => false,
+                or OutputFamily.LampArrayUnit or OutputFamily.TouchSenseUnit or OutputFamily.HidLightingUnit => false,
             OutputFamily.ChromaCategory or OutputFamily.LedSdkType or OutputFamily.GameSenseColor
                 or OutputFamily.GameSenseTactile or OutputFamily.Interhaptics => true,
             _ => throw new ArgumentOutOfRangeException(nameof(Family)),

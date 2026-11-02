@@ -4575,6 +4575,7 @@ namespace PadForge.Services
             // engine ran, and no port, screen or Falcon is open now, so this
             // clears them.
             UpdateDevicePanelLines(selected, ud);
+            if (ShowsNoRawState(devVm, selected, ud)) return;
 
             // Build the structural layout from cached capabilities.
             if (selected.InstanceGuid != devVm.LastRawStateDeviceGuid)
@@ -5560,6 +5561,23 @@ namespace PadForge.Services
             row.AnalogKeyboardLine = line;
         }
 
+        /// <summary>A lighting or rumble row (#494) reads no input, so its
+        /// Raw Input State section is hidden
+        /// (DeviceRowViewModel.ShowRawInputState) and holds nothing: the
+        /// collections of the row shown before are cleared once, when the
+        /// row is opened. True for such a row.</summary>
+        private static bool ShowsNoRawState(DevicesViewModel devVm, DeviceRowViewModel selected, UserDevice ud)
+        {
+            if (!InputDeviceType.IsOutputOnly(ud.CapType)) return false;
+            if (selected.InstanceGuid != devVm.LastRawStateDeviceGuid)
+            {
+                devVm.ClearRawState();
+                devVm.LastRawStateDeviceGuid = selected.InstanceGuid;
+            }
+            devVm.HasRawData = false;
+            return true;
+        }
+
         /// <summary>The device object the Devices page preview was last built
         /// from, beside the row it belongs to (LastRawStateDeviceGuid).</summary>
         private PadForge.Engine.ISdlInputDevice _lastRawStateDevice;
@@ -5588,6 +5606,7 @@ namespace PadForge.Services
             // Calibrate Reach (#521), an analog keyboard's Synapse line (#468),
             // and the head tracker's and game telemetry's lines (#355, #531).
             UpdateDevicePanelLines(selected, ud);
+            if (ShowsNoRawState(devVm, selected, ud)) return;
 
             // Rebuild collections when the selected device changes, or when
             // the same row was opened again: a Bliss-Box port the switch moved

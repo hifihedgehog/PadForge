@@ -143,12 +143,13 @@ namespace PadForge.Tests
         /// <summary>VR hides Sticks and Triggers, and was the one collapsing
         /// predicate with no eviction, so a user sitting on either tab when
         /// the slot became VR was left on a collapsed tab with no selected
-        /// button.</summary>
+        /// button. A row that only takes output hides both too (#557), and
+        /// evicts the same way.</summary>
         [Fact]
         public void AVrSlotEvictsASelectionOnACollapsedTab()
         {
             string cs = CodeBehind();
-            Assert.Contains("if ((isMidi || isVrSlot) && (vm.SelectedConfigTab == 3 || vm.SelectedConfigTab == 4))", cs);
+            Assert.Contains("if ((isMidi || isVrSlot || outputOnlyRow) && (vm.SelectedConfigTab == 3 || vm.SelectedConfigTab == 4))", cs);
         }
 
         /// <summary>The runtime clear guarded one of the two statements it was

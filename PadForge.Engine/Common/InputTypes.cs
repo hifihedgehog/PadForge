@@ -195,6 +195,11 @@ namespace PadForge.Engine
                 or GameTelemetry or TwitchChat => false,
             _ => true,
         };
+
+        /// <summary>Whether a row only takes output: a lighting or rumble
+        /// row (#494), which reads no input, so no stick, trigger or raw
+        /// input surface applies to it.</summary>
+        public static bool IsOutputOnly(int capType) => capType is PeripheralLighting or PeripheralHaptics;
     }
 
     // ─────────────────────────────────────────────────────────────────

@@ -353,6 +353,11 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Windows Dynamic Lighting lights it (LampArray units only).</summary>
         public bool WindowsLit { get; init; }
 
+        /// <summary>The device's own controller stays in charge of its
+        /// lights while Windows Dynamic Lighting holds a LampArray interface
+        /// of the same device (<see cref="HidLightingModel.LitBesideWindows"/>).</summary>
+        public bool LitBesideWindows { get; init; }
+
         /// <summary>The highest claim level the unit offers: 0 colors
         /// alone, 1 its lighting power too, 2 its on-board memory mode off
         /// as well. 0 in every family but HidppUnit, whose units carry
@@ -616,6 +621,12 @@ namespace PadForge.Common.Input.Peripherals
                         }
                         AddOwnUnits(native, direct, OutputFamily.SteelSeriesUnit, row);
                     }
+                    else
+                    {
+                        // A device of an OpenRGB family the shared worker
+                        // lights, such as a Lenovo Legion keyboard.
+                        AddOwnUnits(native, direct, OutputFamily.HidLightingUnit, row);
+                    }
 
                     // The family is chosen as if every unit answered, and
                     // only the units that do are linked. A row whose own
@@ -693,6 +704,11 @@ namespace PadForge.Common.Input.Peripherals
             /// (<see cref="DirectUnit.Asleep"/>). It still counts toward
             /// which family lights the row, and no path is linked to it.</summary>
             public bool Asleep { get; init; }
+
+            /// <summary>A native unit whose controller stays in charge of
+            /// the device's lights while Windows Dynamic Lighting holds its
+            /// LampArray interface (<see cref="DirectUnit.LitBesideWindows"/>).</summary>
+            public bool BesideWindows { get; init; }
         }
 
         internal enum LightingChoice
@@ -728,7 +744,14 @@ namespace PadForge.Common.Input.Peripherals
         /// repaints a mouse over HID++ about twice a second, and a 0x8070
         /// write beside it lasts one sample (OpenLogi issue 1129, where
         /// SetSWControl made no difference). The row keeps its tab, whose
-        /// line names Windows and the switch.</para>
+        /// line names Windows and the switch. Not where the device's own
+        /// controller stays in charge beside Windows
+        /// (<see cref="Candidate.BesideWindows"/>): a Lenovo Legion keyboard
+        /// with Dynamic Lighting off in its BIOS takes no colors on its
+        /// LampArray interface while Windows' switch for it reads on, and
+        /// OpenRGB and Lenovo Legion Toolkit light it through its own
+        /// controller (<see cref="LenovoLegionLighting"/>). Step 3 then
+        /// lights it.</para>
         ///
         /// <para>3. The device's own protocol. For a Logitech device that is
         /// HID++ ahead of any LampArray unit, because every reference that
@@ -753,13 +776,15 @@ namespace PadForge.Common.Input.Peripherals
             directWhenClosed = false;
             bool windowsLit = false;
             foreach (var lamp in lamps) windowsLit |= lamp.WindowsLit;
+            bool besideWindows = false;
+            foreach (var candidate in native) besideWindows |= candidate.BesideWindows;
             if (programRuns)
             {
                 if (shared.Count == 0) return LightingChoice.None;
                 directWhenClosed = !windowsLit && (native.Count > 0 || lamps.Count > 0);
                 return LightingChoice.Shared;
             }
-            if (windowsLit) return LightingChoice.LampArray;
+            if (windowsLit && !besideWindows) return LightingChoice.LampArray;
             if (native.Count > 0) return LightingChoice.Native;
             if (lamps.Count > 0) return LightingChoice.LampArray;
             return sharedWaits && shared.Count > 0 ? LightingChoice.Shared : LightingChoice.None;
@@ -769,7 +794,11 @@ namespace PadForge.Common.Input.Peripherals
         {
             foreach (var unit in direct)
                 if (unit.Family == family && MatchesDevice(unit, row))
-                    native.Add(new Candidate(unit.Path, unit.MaxClaimLevel, false) { Asleep = unit.Asleep });
+                    native.Add(new Candidate(unit.Path, unit.MaxClaimLevel, false)
+                    {
+                        Asleep = unit.Asleep,
+                        BesideWindows = unit.LitBesideWindows,
+                    });
         }
 
         /// <summary>A Razer, SteelSeries or TouchSense unit belongs to the

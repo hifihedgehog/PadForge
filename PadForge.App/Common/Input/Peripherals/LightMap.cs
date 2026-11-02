@@ -64,6 +64,9 @@ namespace PadForge.Common.Input.Peripherals
         CapsLock = 9,
         ScrollLock = 10,
         NumLock = 11,
+        /// <summary>The Fn key, which has no usage: the keyboard handles it
+        /// and never reports it.</summary>
+        Fn = 12,
     }
 
     /// <summary>One light of a unit. <see cref="Address"/> is the index the

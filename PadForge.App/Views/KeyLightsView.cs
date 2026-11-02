@@ -552,6 +552,8 @@ namespace PadForge.Views
                 LightLabel.CapsLock => s.Key_CapsLock,
                 LightLabel.ScrollLock => s.Key_ScrollLock,
                 LightLabel.NumLock => s.Key_NumLock,
+                // Printed so on the key in every language.
+                LightLabel.Fn => "Fn",
                 _ => null,
             };
         }

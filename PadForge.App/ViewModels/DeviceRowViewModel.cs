@@ -308,6 +308,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(ShowInputHidingSection));
                     OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
                     OnPropertyChanged(nameof(ShowRawInputDivider));
+                    OnPropertyChanged(nameof(ShowRawInputState));
                     OnPropertyChanged(nameof(ShowGunCalibrationDivider));
                     OnPropertyChanged(nameof(IsMidiDevice));
                     OnPropertyChanged(nameof(IsHeadsetMotionDevice));
@@ -1008,8 +1009,15 @@ namespace PadForge.ViewModels
         /// fix. So: draw when Power drew, or when nothing above it did.
         /// Power drew when either of its controls did
         /// (<see cref="ShowPowerSection"/>), so a wired-rebound Sony pad
-        /// showing only the Quick Charge checkbox still gets its rule.</para></summary>
-        public bool ShowRawInputDivider => ShowPowerSection || ShowGunCalibration || !ShowInputModeOrHidingSection;
+        /// showing only the Quick Charge checkbox still gets its rule. A row
+        /// with no Raw Input State section has no rule before it either
+        /// (<see cref="ShowRawInputState"/>).</para></summary>
+        public bool ShowRawInputDivider => ShowRawInputState
+            && (ShowPowerSection || ShowGunCalibration || !ShowInputModeOrHidingSection);
+
+        /// <summary>Whether the Raw Input State section shows. A lighting or
+        /// rumble row (#494) reads no input, so it has none.</summary>
+        public bool ShowRawInputState => DeviceTypeKey != "PeripheralLighting" && DeviceTypeKey != "PeripheralHaptics";
 
         // ─────────────────────────────────────────────
         //  Light gun (GunCon 2 calibration)

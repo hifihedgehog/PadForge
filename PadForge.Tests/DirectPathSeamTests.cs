@@ -270,7 +270,8 @@ namespace PadForge.Tests
             Assert.Equal(7, (int)OutputFamily.SteelSeriesUnit);
             Assert.Equal(8, (int)OutputFamily.LampArrayUnit);
             Assert.Equal(9, (int)OutputFamily.TouchSenseUnit);
-            Assert.Equal(10, Enum.GetValues(typeof(OutputFamily)).Length);
+            Assert.Equal(10, (int)OutputFamily.HidLightingUnit);
+            Assert.Equal(11, Enum.GetValues(typeof(OutputFamily)).Length);
 
             Assert.Equal(1, (int)PeripheralOutputKinds.Haptics);
             Assert.Equal(2, (int)PeripheralOutputKinds.Lighting);

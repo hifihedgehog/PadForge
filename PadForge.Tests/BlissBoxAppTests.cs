@@ -1502,7 +1502,7 @@ namespace PadForge.Tests
             Assert.Contains("        private void UpdateDevicePanelLines(DeviceRowViewModel row, UserDevice ud)\n        {\n            UpdateBlissBoxDeviceRow(row, ud);", code);
             // A row selected while the engine is stopped clears the line and
             // actions it kept from when the engine ran.
-            Assert.Contains("            UpdateDevicePanelLines(selected, ud);\n\n            // Build the structural layout from cached capabilities.", code);
+            Assert.Contains("            UpdateDevicePanelLines(selected, ud);\n            if (ShowsNoRawState(devVm, selected, ud)) return;\n\n            // Build the structural layout from cached capabilities.", code);
             // Identify hands back the level the row's snapshot holds, which a
             // Remote Link peer's steady level would otherwise lose.
             Assert.Contains("                        Buzz(65535, 65535);\n                        await System.Threading.Tasks.Task.Delay(500).ConfigureAwait(false);\n                        Restore();", code);

@@ -1446,7 +1446,8 @@
 
                         <!-- ─── Raw Input State (Visual) ─── -->
                         <TextBlock Text="{Binding Devices_RawInputState, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
-                                   Style="{StaticResource SectionEyebrow}" Margin="0,0,0,8"/>
+                                   Style="{StaticResource SectionEyebrow}" Margin="0,0,0,8"
+                                   Visibility="{Binding SelectedDevice.ShowRawInputState, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                         <!-- Novint Falcon (#521): the handle as a dot in its
                              Left/Right and Up/Down square. In/Out and the four

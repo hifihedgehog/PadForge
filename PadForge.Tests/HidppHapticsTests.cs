@@ -65,6 +65,7 @@ namespace PadForge.Tests
             public bool Write(byte[] frame)
             {
                 if (FailWrites) return false;
+                if (frame[0] == HidppHapticProtocol.VeryLongReportId && !HasVeryLong) return false;
                 Writing?.Invoke(frame);
                 Writes.Enqueue((_clock.ElapsedMilliseconds, frame));
                 Traffic.Enqueue(("write", frame));
@@ -95,6 +96,25 @@ namespace PadForge.Tests
                 try { Waiter.Wait(s_never, timeoutMs); }
                 finally { Waiting = null; }
                 return reply;
+            }
+
+            /// <summary>Whether the channel reaches a very long collection
+            /// (#557). A very long frame on a channel without one fails.</summary>
+            public bool HasVeryLong { get; set; }
+
+            public HidppReply RequestFrame(byte[] frame, int timeoutMs)
+            {
+                if (FailWrites) return new HidppReply(HidppReplyKind.WriteFailed);
+                if (frame[0] == HidppHapticProtocol.VeryLongReportId && !HasVeryLong)
+                    return new HidppReply(HidppReplyKind.WriteFailed);
+                byte device = frame[1], feature = frame[2], function = (byte)(frame[3] >> 4);
+                var parameters = frame.Skip(4).ToArray();
+                Asked.Enqueue((device, feature, function));
+                Waits.Enqueue((feature, function, timeoutMs));
+                Traffic.Enqueue(("ask", frame));
+                if (feature == 0 && function == 0)
+                    RootLookups.Enqueue((ushort)((parameters[0] << 8) | parameters[1]));
+                return Held(Answer(device, feature, function, parameters), frame, timeoutMs);
             }
 
             public HidppReply Request(byte deviceIndex, byte featureIndex, byte function, byte[] parameters, int timeoutMs)
@@ -155,6 +175,18 @@ namespace PadForge.Tests
 
         /// <summary>An answer report: the long header with PadForge's
         /// software ID, then the payload.</summary>
+        /// <summary>A very long answer, as a G810 gives its key list (#557).</summary>
+        internal static HidppReply AnsVeryLong(byte device, byte feature, byte function, params byte[] payload)
+        {
+            var report = new byte[64];
+            report[0] = 0x12;
+            report[1] = device;
+            report[2] = feature;
+            report[3] = (byte)((function << 4) | HidppHapticProtocol.SoftwareId);
+            payload.AsSpan(0, Math.Min(payload.Length, 60)).CopyTo(report.AsSpan(4));
+            return new HidppReply(HidppReplyKind.Answer, 0, report);
+        }
+
         internal static HidppReply Ans(byte device, byte feature, byte function, params byte[] payload)
         {
             var report = new byte[20];

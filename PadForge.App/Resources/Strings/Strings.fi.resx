@@ -1113,6 +1113,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Reuna</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logo</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Tila</value></data>
+  <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Pelitila</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Kaikki valot</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Tyhjennä valinta</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Valitse näppäimiä painamalla</value></data>

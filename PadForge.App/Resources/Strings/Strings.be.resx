@@ -1113,6 +1113,7 @@
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Край</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Лагатып</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Стан</value></data>
+  <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Гульнявы рэжым</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Усе агні</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Зняць выбар</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Выбіраць націскам клавіш</value></data>

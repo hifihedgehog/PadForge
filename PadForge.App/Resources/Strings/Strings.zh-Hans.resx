@@ -1927,6 +1927,7 @@
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>边缘</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>标志</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>状态</value></data>
+  <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>游戏模式</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>所有灯光</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>清除选择</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>按键选择</value></data>

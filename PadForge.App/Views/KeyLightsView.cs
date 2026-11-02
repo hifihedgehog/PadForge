@@ -533,9 +533,9 @@ namespace PadForge.Views
 
         /// <summary>The words for a light's label (<see cref="LightLabel"/>),
         /// or null for a light with none. A G-key reads as Logitech prints
-        /// it, and the media keys take the names the macro editor gives
-        /// them. The brightness key takes the Lighting tab's word for
-        /// brightness.</summary>
+        /// it, and the media keys and the lock lights take the names the
+        /// macro editor gives those keys. The brightness key takes the
+        /// Lighting tab's word for brightness.</summary>
         internal static string LabelText(LightInfo light)
         {
             var s = Strings.Instance;
@@ -547,6 +547,11 @@ namespace PadForge.Views
                 LightLabel.Mute => s.Key_VolumeMute,
                 LightLabel.Next => s.Key_MediaNext,
                 LightLabel.Previous => s.Key_MediaPrev,
+                LightLabel.Stop => s.Key_MediaStop,
+                LightLabel.GameMode => s.Pad_Lighting_KeyColors_GameMode,
+                LightLabel.CapsLock => s.Key_CapsLock,
+                LightLabel.ScrollLock => s.Key_ScrollLock,
+                LightLabel.NumLock => s.Key_NumLock,
                 _ => null,
             };
         }

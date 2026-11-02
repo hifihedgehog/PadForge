@@ -1928,6 +1928,7 @@
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>가장자리</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>로고</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>상태</value></data>
+  <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>게임 모드</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>모든 조명</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>선택 해제</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>키를 눌러 선택</value></data>

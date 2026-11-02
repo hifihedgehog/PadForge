@@ -1113,6 +1113,7 @@
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>ขอบ</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>โลโก้</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>สถานะ</value></data>
+  <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>โหมดเกม</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>ไฟทั้งหมด</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>ล้างการเลือก</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>เลือกด้วยการกดแป้น</value></data>

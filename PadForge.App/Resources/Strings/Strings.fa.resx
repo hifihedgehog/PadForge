@@ -1113,6 +1113,7 @@
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>لبه</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>لوگو</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>وضعیت</value></data>
+  <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>حالت بازی</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>همه چراغ‌ها</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>پاک کردن انتخاب</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>انتخاب با فشردن کلیدها</value></data>

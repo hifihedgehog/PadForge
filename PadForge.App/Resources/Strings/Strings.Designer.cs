@@ -1393,6 +1393,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_KeyColors_Edge => Get("Pad_Lighting_KeyColors_Edge");
     public string Pad_Lighting_KeyColors_Logo => Get("Pad_Lighting_KeyColors_Logo");
     public string Pad_Lighting_KeyColors_Status => Get("Pad_Lighting_KeyColors_Status");
+    public string Pad_Lighting_KeyColors_GameMode => Get("Pad_Lighting_KeyColors_GameMode");
     public string Pad_Lighting_KeyColors_SelectAllLights => Get("Pad_Lighting_KeyColors_SelectAllLights");
     public string Pad_Lighting_KeyColors_ClearSelection => Get("Pad_Lighting_KeyColors_ClearSelection");
     public string Pad_Lighting_KeyColors_PickByPressing => Get("Pad_Lighting_KeyColors_PickByPressing");

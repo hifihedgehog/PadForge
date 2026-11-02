@@ -1113,6 +1113,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Okraj</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logo</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Stav</value></data>
+  <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Herný režim</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Všetky svetlá</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Zrušiť výber</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Vybrať stlačením klávesov</value></data>

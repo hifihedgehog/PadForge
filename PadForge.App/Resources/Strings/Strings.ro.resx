@@ -1113,6 +1113,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Margine</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Sigla</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Stare</value></data>
+  <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Mod joc</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Toate luminile</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Golire selecție</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Selectare prin apăsarea tastelor</value></data>

@@ -49,16 +49,19 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>A record compares its arrays by reference, and every scan
-        /// builds new ones, so the zones, the per-key zones and the model
-        /// IDs are compared by value.</summary>
+        /// builds new ones, so the zones, the per-key zones, the model IDs
+        /// and the key types are compared by value.</summary>
         private static bool SameUnit(HidppUnit a, HidppUnit b)
         {
             if (ReferenceEquals(a, b)) return true;
             if (a == null || b == null) return false;
+            if (a.KeyTypes.Length != b.KeyTypes.Length) return false;
+            for (int i = 0; i < a.KeyTypes.Length; i++)
+                if (!a.KeyTypes[i].SameAs(b.KeyTypes[i])) return false;
             return a.Zones.AsSpan().SequenceEqual(b.Zones)
                    && a.PerKeyZones.AsSpan().SequenceEqual(b.PerKeyZones)
                    && a.ModelIds.AsSpan().SequenceEqual(b.ModelIds)
-                   && (a with { Zones = b.Zones, PerKeyZones = b.PerKeyZones, ModelIds = b.ModelIds }) == b;
+                   && (a with { Zones = b.Zones, PerKeyZones = b.PerKeyZones, ModelIds = b.ModelIds, KeyTypes = b.KeyTypes }) == b;
         }
     }
 
@@ -264,7 +267,7 @@ namespace PadForge.Common.Input.Peripherals
         internal const int OneShotMs = 200;
 
         private readonly Func<IReadOnlyList<VendorHidCollection>> _enumerate;
-        private readonly Func<VendorHidCollection, VendorHidCollection, IHidppChannel> _open;
+        private readonly Func<VendorHidCollection, VendorHidCollection, VendorHidCollection, IHidppChannel> _open;
         private readonly Func<string, Guid> _containerOf;
         private readonly int _activeTickMs;
         private readonly int _idleTickMs;
@@ -313,7 +316,9 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Test seam: the enumeration (every vendor collection, the
         /// long ones and their short siblings), the channel opener (a long
-        /// collection and its receiver's short one, or null), the container
+        /// collection and its receiver's short one, or null, with
+        /// <paramref name="openWithVeryLong"/> in its place for a test of a
+        /// keyboard's very long collection), the container
         /// lookup, the lighting re-assert interval, the one-shot writer the
         /// crash path uses, the wait for a predecessor worker and the
         /// worker's clock, so a bench drives the worker against scripted
@@ -322,10 +327,12 @@ namespace PadForge.Common.Input.Peripherals
             Func<VendorHidCollection, VendorHidCollection, IHidppChannel> open, Func<string, Guid> containerOf,
             int activeTickMs, int idleTickMs, int reassertMs = ReassertMs,
             Func<string, byte[], int, bool> writeOnce = null, int predecessorJoinMs = PredecessorJoinMs,
-            Func<long> ticks = null)
+            Func<long> ticks = null,
+            Func<VendorHidCollection, VendorHidCollection, VendorHidCollection, IHidppChannel> openWithVeryLong = null)
         {
             _enumerate = enumerate ?? VendorHidRuntime.Enumerate;
-            _open = open ?? ((c, s) => HidppChannel.Open(c, s));
+            _open = openWithVeryLong
+                    ?? (open != null ? (c, s, v) => open(c, s) : (c, s, v) => HidppChannel.Open(c, s, v));
             _containerOf = containerOf ?? AudioPassthroughService.DevicePathContainerId;
             _activeTickMs = activeTickMs;
             _idleTickMs = idleTickMs;
@@ -901,19 +908,20 @@ namespace PadForge.Common.Input.Peripherals
                             $"PERIPHERAL HID++ '{unit.Name}' refused the Host streaming effect, painting on");
                         break;
                     case Outcome.Refused:
-                        var fallback = light.Plan.WithoutPerKey;
+                        var fallback = light.Plan.FallsBackOn(step.Kind) ? light.Plan.WithoutPerKey : null;
                         if (fallback == null)
                         {
                             light.Queue = null;
                             light.FailedPaints++;
                             return true;
                         }
-                        // The device will not take a per-key frame. Its
-                        // clusters are painted again, since choosing Host
-                        // streaming may have taken the display from them,
-                        // and the unit stays on its clusters from here on.
+                        // The device will not take a per-key frame. It is
+                        // painted one color in full again, its clusters too,
+                        // since choosing Host streaming may have taken the
+                        // display from them, and it stays on one color from
+                        // here on.
                         PadForge.Engine.SdlDiagLog.WriteLine(
-                            $"PERIPHERAL HID++ '{unit.Name}' refused a per-key frame, lighting its clusters alone");
+                            $"PERIPHERAL HID++ '{unit.Name}' refused a per-key frame, lighting it one color");
                         light.Plan = fallback;
                         Enqueue(light, fallback.Paint(light.QueuedRgb, full: true), light.QueuedRgb, null, null, now);
                         // Its keys can no longer be painted one by one, so
@@ -973,14 +981,9 @@ namespace PadForge.Common.Input.Peripherals
             return HidppUnitProbe.Missed(reply) ? Outcome.Unanswered : Outcome.Refused;
         }
 
-        /// <summary>A frame as a request: the same 20 bytes, with the
-        /// channel waiting for the answer that repeats its header.</summary>
-        private static HidppReply Ask(IHidppChannel io, byte[] frame, int timeoutMs)
-        {
-            var parameters = new byte[HidppHapticProtocol.LongReportLength - 4];
-            Array.Copy(frame, 4, parameters, 0, parameters.Length);
-            return io.Request(frame[1], frame[2], (byte)(frame[3] >> 4), parameters, timeoutMs);
-        }
+        /// <summary>A frame as a request: the same bytes, long or very long,
+        /// with the channel waiting for the answer that repeats its header.</summary>
+        private static HidppReply Ask(IHidppChannel io, byte[] frame, int timeoutMs) => io.RequestFrame(frame, timeoutMs);
 
         /// <summary>Hands one claimed unit back to its own lighting, now,
         /// with whatever was queued for it dropped. A plan that sends its
@@ -1405,7 +1408,7 @@ namespace PadForge.Common.Input.Peripherals
                 var io = open ? channel.Io
                     : _open(collection, state.ReceiverKind != HidppReceiverKind.None
                         ? HidppReceiverProtocol.ShortSibling(collection, all)
-                        : null);
+                        : null, HidppReceiverProtocol.VeryLongSibling(collection, all));
                 if (io == null)
                 {
                     HidppUnitProbe.MissOpenSlots(state, now, HidppHapticProtocol.IsBluetoothPath(collection.Path));

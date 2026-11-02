@@ -9,6 +9,17 @@ namespace PadForge.Common.Input.Peripherals
     /// cluster's own list, which differs between zones of one device.</summary>
     internal readonly record struct HidppZone(byte Zone, byte StaticEffectIndex);
 
+    /// <summary>One key type of a feature 0x8080 keyboard (#557): its bit,
+    /// the top value each channel takes, and the IDs of its keys, as the
+    /// keyboard lists them (<see cref="HidppUnitProbe.KeyTypes"/>).</summary>
+    internal sealed record HidppKeyType(ushort Type, byte MaxRed, byte MaxGreen, byte MaxBlue, byte[] Keys)
+    {
+        /// <summary>Whether two hold the same type, values and keys.</summary>
+        public bool SameAs(HidppKeyType other)
+            => other != null && Type == other.Type && MaxRed == other.MaxRed && MaxGreen == other.MaxGreen
+               && MaxBlue == other.MaxBlue && Keys.AsSpan().SequenceEqual(other.Keys);
+    }
+
     /// <summary>
     /// One Logitech device on a HID++ collection (#494): its slot, its name
     /// and kind from feature 0x0005, its haptics (0x19B0), its RGB feature,
@@ -68,15 +79,21 @@ namespace PadForge.Common.Input.Peripherals
         /// <see cref="HidppKeyMap"/>). Empty for every other unit.</summary>
         public byte[] PerKeyZones { get; init; } = Array.Empty<byte>();
 
-        /// <summary>The layout code feature 0x4540 gives for a 0x8081
-        /// keyboard, which says its region (<see cref="HidppKeyMap.KeysOf"/>),
-        /// or 0 when the keyboard does not say.</summary>
+        /// <summary>The layout code feature 0x4540 gives for a keyboard
+        /// painted key by key, which says its region
+        /// (<see cref="HidppKeyMap.KeysOf"/>), or 0 when the keyboard does
+        /// not say.</summary>
         public int KeyboardLayout { get; init; }
 
-        /// <summary>The model IDs feature 0x0003 lists for a 0x8081
-        /// keyboard, one per transport it has, in the order of its transport
-        /// bits. Empty when unread.</summary>
+        /// <summary>The model IDs feature 0x0003 lists for a keyboard painted
+        /// key by key, one per transport it has, in the order of its
+        /// transport bits. Empty when unread.</summary>
         public ushort[] ModelIds { get; init; } = Array.Empty<ushort>();
+
+        /// <summary>The key types of a 0x8080 keyboard whose very long
+        /// collection is open, with their keys (#557). Empty for every other
+        /// unit.</summary>
+        public HidppKeyType[] KeyTypes { get; init; } = Array.Empty<HidppKeyType>();
 
         /// <summary>The place of the Host streaming effect (ID 0x0013) in a
         /// 0x8071 device's list of multi-cluster effects, or -1 for a
@@ -212,8 +229,30 @@ namespace PadForge.Common.Input.Peripherals
         public const byte FunctionRgbSwControl = 5;
         public const byte FunctionRgbPowerMode = 8;
 
+        /// <summary>0x8080's functions (keyleds feature_leds.c:28-35):
+        /// the key type bits, a type's key count and top channel values, a
+        /// page of a type's keys, key colors, a type's fill, and the commit.</summary>
+        public const byte FunctionPerKeyGetInfo = 0;
+        public const byte FunctionPerKeyGetTypeInfo = 1;
+        public const byte FunctionPerKeyGetKeys = 2;
+        public const byte FunctionPerKeySetKeys = 3;
         public const byte FunctionPerKeyFill = 4;
         public const byte FunctionPerKeyCommit = 5;
+
+        /// <summary>The keys one very long frame of 0x8080 lists or colors:
+        /// 60 parameter bytes, 4 of them the type and the count, then 4 per
+        /// key (OpenRGB HIDPP20_8080_KEYS_PER_FRAME, Logitech Gaming
+        /// Software's 12 FF 0C 3A 00 01 00 0E frames).</summary>
+        public const int PerKeyKeysPerFrame = 14;
+
+        /// <summary>The single-bit key types OpenRGB walks: keys, media,
+        /// G-keys, buttons, the logo and the indicators. A set bit outside
+        /// them is never asked about (LogitechHIDPP20Controller.cpp
+        /// DiscoverPerKey8080).</summary>
+        public static readonly ushort[] KnownKeyTypes =
+        {
+            KeyTypeKeys, KeyTypeMedia, KeyTypeGKeys, KeyTypeButtons, KeyTypeLogo, KeyTypeIndicators,
+        };
 
         public const byte FunctionPerKeyV2GetInfo = 0;
         public const byte FunctionPerKeyV2SetIndividual = 1;
@@ -247,6 +286,7 @@ namespace PadForge.Common.Input.Peripherals
         public const ushort KeyTypeKeys = 0x0001;
         public const ushort KeyTypeMedia = 0x0002;
         public const ushort KeyTypeGKeys = 0x0004;
+        public const ushort KeyTypeButtons = 0x0008;
         public const ushort KeyTypeLogo = 0x0010;
         public const ushort KeyTypeIndicators = 0x0040;
 
@@ -356,6 +396,30 @@ namespace PadForge.Common.Input.Peripherals
             {
                 (byte)(keyType >> 8), (byte)keyType, r, g, b,
             });
+
+        /// <summary>0x8080 setKeyColors on the very long report: the key
+        /// type, the count, then each key's ID and color, up to 14 (keyleds
+        /// feature_leds.c keyleds_set_leds, OpenRGB SetPerKey8080). The
+        /// board holds them until <see cref="PerKeyCommit"/>. Logitech Gaming
+        /// Software sends its key colors so (set_keys_colors.pcapng:
+        /// 12 FF 0C 3A 00 01 00 0E 58 00 DC FF 47 00 DC FF ...).</summary>
+        public static byte[] PerKeySetKeys(byte deviceIndex, byte featureIndex, ushort keyType, IReadOnlyList<(byte Id, int Rgb)> keys)
+        {
+            var p = new byte[4 + keys.Count * 4];
+            p[0] = (byte)(keyType >> 8);
+            p[1] = (byte)keyType;
+            p[2] = (byte)(keys.Count >> 8);
+            p[3] = (byte)keys.Count;
+            for (int i = 0; i < keys.Count; i++)
+            {
+                var (id, rgb) = keys[i];
+                p[4 + i * 4] = id;
+                p[5 + i * 4] = (byte)(rgb >> 16);
+                p[6 + i * 4] = (byte)(rgb >> 8);
+                p[7 + i * 4] = (byte)rgb;
+            }
+            return HidppHapticProtocol.VeryLongFrame(deviceIndex, featureIndex, FunctionPerKeySetKeys, p);
+        }
 
         /// <summary>0x8080 commit: shows what the fills staged (keyleds
         /// feature_leds.c:239-244, set_fx_color_00ff00.pcapng:
@@ -667,6 +731,25 @@ namespace PadForge.Common.Input.Peripherals
             {
                 if (c == null || c.VendorId != longCollection.VendorId || c.ProductId != longCollection.ProductId) continue;
                 if (c.UsagePage != HidppHapticProtocol.UsagePage || c.Usage != ShortUsage) continue;
+                if (string.Equals(PathKey(c.Path), key, StringComparison.OrdinalIgnoreCase)) return c;
+            }
+            return null;
+        }
+
+        /// <summary>A keyboard's very long collection (#557): the same device
+        /// and the same interface by the path key, on usage page 0xFF43 usage
+        /// 0x0604, which OpenRGB opens beside any collection on that page
+        /// (LogitechControllerDetect.cpp:1237-1265). Null for a collection on
+        /// another page and for a keyboard without one.</summary>
+        public static VendorHidCollection VeryLongSibling(VendorHidCollection longCollection,
+            IEnumerable<VendorHidCollection> all)
+        {
+            if (longCollection == null || all == null || longCollection.UsagePage != 0xFF43) return null;
+            string key = PathKey(longCollection.Path);
+            foreach (var c in all)
+            {
+                if (c == null || c.VendorId != longCollection.VendorId || c.ProductId != longCollection.ProductId) continue;
+                if (c.UsagePage != 0xFF43 || c.Usage != HidppHapticProtocol.VeryLongUsage) continue;
                 if (string.Equals(PathKey(c.Path), key, StringComparison.OrdinalIgnoreCase)) return c;
             }
             return null;
@@ -1060,7 +1143,22 @@ namespace PadForge.Common.Input.Peripherals
                 var zones = StaticZones(channel, device, zonesAt, timeout, out missed);
                 if (zones == null) return null;
                 if (missed) return unit;
-                return unit with { EffectFeatureId = HidppUnitProtocol.ColorLedEffects, EffectIndex = zonesAt, Zones = zones };
+                unit = unit with { EffectFeatureId = HidppUnitProtocol.ColorLedEffects, EffectIndex = zonesAt, Zones = zones };
+
+                // A keyboard of the G810 class whose very long collection is
+                // open is read for its keys, which answer on that report
+                // alone, then for its region and its model (#557).
+                if (unit.PerKeyFeatureId == HidppUnitProtocol.PerKeyLighting && unit.IsKeyboardKind && channel.HasVeryLong)
+                {
+                    if (!KeyTypes(channel, device, unit.PerKeyIndex, timeout, out var types, out missed)) return null;
+                    if (missed) return unit;
+                    if (types.Length > 0)
+                    {
+                        unit = unit with { KeyTypes = types };
+                        if (!ReadKeyboardIdentity(channel, unit, timeout, out unit, out _, out _, out missed)) return null;
+                    }
+                }
+                return unit;
             }
 
             unit = unit with { EffectFeatureId = HidppUnitProtocol.RgbEffects, EffectIndex = unit.RgbIndex };
@@ -1095,20 +1193,8 @@ namespace PadForge.Common.Input.Peripherals
                     // A keyboard painted key by key (#557) is read for its
                     // light map: its zones, its region and its model.
                     unit = unit with { PerKeyZones = zones };
-                    byte layoutAt = Feature(channel, device, HidppUnitProtocol.KeyboardLayout, timeout, out reply);
-                    if (reply.Kind == HidppReplyKind.WriteFailed) return null;
-                    if (Missed(reply)) { missed = true; return unit; }
-                    if (layoutAt != 0)
-                    {
-                        var layout = channel.Request(device, layoutAt, 0, Array.Empty<byte>(), timeout);
-                        if (layout.Kind == HidppReplyKind.WriteFailed) return null;
-                        if (Missed(layout)) { missed = true; return unit; }
-                        if (layout.Kind == HidppReplyKind.Answer) unit = unit with { KeyboardLayout = layout.Param(0) };
-                    }
-                    if (!ReadDeviceInfo(channel, device, timeout, out info, out infoRead, out missed)) return null;
+                    if (!ReadKeyboardIdentity(channel, unit, timeout, out unit, out info, out infoRead, out missed)) return null;
                     if (missed) return unit;
-                    if (infoRead && info.Kind == HidppReplyKind.Answer)
-                        unit = unit with { ModelIds = HidppUnitProtocol.ModelIds(info) };
                 }
             }
             // With no cluster to paint there is no claim, so no level to
@@ -1140,6 +1226,108 @@ namespace PadForge.Common.Input.Peripherals
             }
             bool staysOnBoard = infoRead && (info.Kind != HidppReplyKind.Answer || HidppUnitProtocol.KeepsOnBoardMode(info));
             return unit with { ModeFeatureId = modeFeature, ModeIndex = mode, MaxClaimLevel = staysOnBoard ? 1 : 2 };
+        }
+
+        /// <summary>The layout code (0x4540) and the model IDs (0x0003) of a
+        /// keyboard painted key by key, for its light map (#557,
+        /// <see cref="HidppKeyMap"/>), with the 0x0003 answer for the mode's
+        /// own question. False when a write failed. <paramref name="missed"/>
+        /// is set when a request went unanswered, and <paramref name="read"/>
+        /// is the unit as far as the reads got.</summary>
+        private static bool ReadKeyboardIdentity(IHidppChannel channel, HidppUnit unit, int timeout, out HidppUnit read,
+            out HidppReply info, out bool infoRead, out bool missed)
+        {
+            read = unit;
+            info = default;
+            infoRead = false;
+            missed = false;
+            byte device = unit.DeviceIndex;
+            byte layoutAt = Feature(channel, device, HidppUnitProtocol.KeyboardLayout, timeout, out var reply);
+            if (reply.Kind == HidppReplyKind.WriteFailed) return false;
+            if (Missed(reply)) { missed = true; return true; }
+            if (layoutAt != 0)
+            {
+                var layout = channel.Request(device, layoutAt, 0, Array.Empty<byte>(), timeout);
+                if (layout.Kind == HidppReplyKind.WriteFailed) return false;
+                if (Missed(layout)) { missed = true; return true; }
+                if (layout.Kind == HidppReplyKind.Answer) read = read with { KeyboardLayout = layout.Param(0) };
+            }
+            if (!ReadDeviceInfo(channel, device, timeout, out info, out infoRead, out missed)) return false;
+            if (missed) return true;
+            if (infoRead && info.Kind == HidppReplyKind.Answer) read = read with { ModelIds = HidppUnitProtocol.ModelIds(info) };
+            return true;
+        }
+
+        /// <summary>
+        /// The key types of a 0x8080 keyboard and the IDs of their keys, as
+        /// OpenRGB and Logitech Gaming Software walk them
+        /// (LogitechHIDPP20Controller.cpp DiscoverPerKey8080 and
+        /// ReadPerKey8080Colors, g810-led-resources
+        /// dumps/g810-spectrum/set_keys_colors.pcapng: 11 FF 0C 0A, then 1A
+        /// and 2A for each type): function 0's type bits, for each known bit
+        /// function 1's key count and top channel values, then function 2's
+        /// pages of 14 keys, as many as the count needs. The count bounds
+        /// the pages, never the keys: a G810 counts 105 keys and its eight
+        /// pages list 111 (the same capture). A key ID of 0 is padding. A
+        /// type whose count cannot be read is paged until a page lists
+        /// nothing, within OpenRGB's bound, and a type whose count is 0 has
+        /// no keys. False when a write failed. <paramref name="missed"/> is
+        /// set when a request went unanswered.
+        /// </summary>
+        internal static bool KeyTypes(IHidppChannel channel, byte deviceIndex, byte featureIndex, int timeout,
+            out HidppKeyType[] types, out bool missed)
+        {
+            types = Array.Empty<HidppKeyType>();
+            missed = false;
+            var info = channel.Request(deviceIndex, featureIndex, HidppUnitProtocol.FunctionPerKeyGetInfo, Array.Empty<byte>(), timeout);
+            if (info.Kind == HidppReplyKind.WriteFailed) return false;
+            if (Missed(info)) { missed = true; return true; }
+            if (info.Kind != HidppReplyKind.Answer) return true;
+            int flags = (info.Param(0) << 8) | info.Param(1);
+            int maxKeys = (info.Param(5) << 8) | info.Param(6);
+            var found = new List<HidppKeyType>();
+            foreach (ushort type in HidppUnitProtocol.KnownKeyTypes)
+            {
+                if ((flags & type) == 0) continue;
+                byte hi = (byte)(type >> 8), lo = (byte)type;
+                var typeInfo = channel.Request(deviceIndex, featureIndex, HidppUnitProtocol.FunctionPerKeyGetTypeInfo,
+                    new[] { hi, lo }, timeout);
+                if (typeInfo.Kind == HidppReplyKind.WriteFailed) return false;
+                if (Missed(typeInfo)) { missed = true; return true; }
+                bool counted = typeInfo.Kind == HidppReplyKind.Answer;
+                int count = counted ? (typeInfo.Param(0) << 8) | typeInfo.Param(1) : 0;
+                if (counted && count == 0) continue;
+                int pages = counted
+                    ? (count + HidppUnitProtocol.PerKeyKeysPerFrame - 1) / HidppUnitProtocol.PerKeyKeysPerFrame
+                    : Math.Max(16, maxKeys / HidppUnitProtocol.PerKeyKeysPerFrame + 4);
+                var keys = new List<byte>();
+                for (int page = 0; page < pages; page++)
+                {
+                    int offset = page * HidppUnitProtocol.PerKeyKeysPerFrame;
+                    byte offHi = (byte)(offset >> 8), offLo = (byte)offset;
+                    var answer = AskEchoed(channel, deviceIndex, featureIndex, HidppUnitProtocol.FunctionPerKeyGetKeys,
+                        new byte[] { hi, lo, offHi, offLo, 0x00 }, timeout,
+                        r => r.Param(0) == hi && r.Param(1) == lo && r.Param(2) == offHi && r.Param(3) == offLo);
+                    if (answer.Kind == HidppReplyKind.WriteFailed) return false;
+                    if (Missed(answer)) { missed = true; return true; }
+                    if (answer.Kind != HidppReplyKind.Answer) break;
+                    int live = 0;
+                    for (int e = 0; e < HidppUnitProtocol.PerKeyKeysPerFrame; e++)
+                    {
+                        byte id = answer.Param(4 + e * 4);
+                        if (id == 0) continue;
+                        keys.Add(id);
+                        live++;
+                    }
+                    if (live == 0) break;
+                }
+                if (keys.Count == 0) continue;
+                found.Add(new HidppKeyType(type,
+                    counted ? typeInfo.Param(2) : (byte)0xFF, counted ? typeInfo.Param(3) : (byte)0xFF,
+                    counted ? typeInfo.Param(4) : (byte)0xFF, keys.ToArray()));
+            }
+            types = found.ToArray();
+            return true;
         }
 
         /// <summary>Feature 0x0003's getDeviceInfo answer, which lists the

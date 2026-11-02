@@ -1113,6 +1113,7 @@
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>किनारा</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>लोगो</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>स्थिति</value></data>
+  <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>गेम मोड</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>सभी लाइट</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>चयन साफ़ करें</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>कुंजी दबाकर चुनें</value></data>

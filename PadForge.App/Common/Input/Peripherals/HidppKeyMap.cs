@@ -39,6 +39,24 @@ namespace PadForge.Common.Input.Peripherals
     /// which Map Key Lights asks about. OpenRGB shows such a zone for the
     /// same reason, so a board nobody has studied can still be lit key by
     /// key.</para>
+    ///
+    /// <para>A keyboard of the G810 class, with the per-key feature 0x8080,
+    /// lists its keys itself, by type (<see cref="HidppUnitProbe.KeyTypes"/>):
+    /// a key's ID on the keys type is its HID usage, a media key's is its
+    /// consumer usage, a G-key's is its number, and the indicators are the
+    /// backlight key, the Game Mode key and the three lock lights, 1 to 5
+    /// (keyleds layout files: zone 64 codes 1 Light, 2 Game, 3 CapsLockLed,
+    /// 4 ScrollLockLed, 5 NumLockLed, zone 2 B5 Next, B6 Prev, B7 Stop, CD
+    /// Play, E2 Mute). Its list holds the same region keys of the other
+    /// region, and the JIS and Korean language keys on every board
+    /// (set_keys_colors.pcapng lists 87 to 8B on a board whose keyleds
+    /// files put them on the Japanese layout alone, and 90 and 91 on the
+    /// Korean), so they are left out the same way. Its other types list
+    /// lights a board may not have either: the boards OpenRGB has studied
+    /// keep only the extras its tables place, and the rest it treats as
+    /// phantoms, the G910's media keys among them, which light nothing
+    /// (RGBController_LogitechHIDPP20.cpp known_kb_8080_strips). A board
+    /// no reference has studied keeps every light it lists.</para>
     /// </summary>
     internal static class HidppKeyMap
     {
@@ -57,6 +75,48 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The PRO X TKL RAPID's USB product ID, the model ID its
         /// 0x0003 answer lists (OpenRGB known_kb_layout_edits, 0xC35B).</summary>
         internal const ushort ProXTklRapid = 0xC35B;
+
+        // The lights beyond the main block of each studied 0x8080 board, as
+        // addresses (AddressOf): OpenRGB's strips, with the G810's and the
+        // G610's logo, five indicators and five media keys, the G512's two
+        // indicators, the G910's G1 to G9, logo and nameplate, and the G
+        // Pro's logo and four indicators. The G410 lights its first two
+        // indicators alone (OpenRGB HIDPP20_QUIRK_8080_KEYTYPE40_ID12_ONLY,
+        // keyleds' G410 layout files).
+        private static readonly int[] G810Extras =
+        {
+            0x1001, 0x4001, 0x4002, 0x4003, 0x4004, 0x4005, 0x02B5, 0x02B6, 0x02B7, 0x02CD, 0x02E2,
+        };
+        private static readonly int[] G512Extras = { 0x4002, 0x4003 };
+        private static readonly int[] G910Extras =
+        {
+            0x0401, 0x0402, 0x0403, 0x0404, 0x0405, 0x0406, 0x0407, 0x0408, 0x0409, 0x1001, 0x1002,
+        };
+        private static readonly int[] GProExtras = { 0x1001, 0x4001, 0x4002, 0x4003, 0x4004 };
+        private static readonly int[] G410Extras = { 0x4001, 0x4002 };
+
+        /// <summary>Each studied board's extras, by the model ID its 0x0003
+        /// answer lists: the G810 (0xC331, 0xC337), G610 (0xC333, 0xC338),
+        /// G512 (0xC342, 0xC33C), G910 (0xC32B, 0xC335) and G Pro (0xC339)
+        /// as OpenRGB's known_kb_8080_strips keys them, and the G410
+        /// (0xC330) as its quirk table does.</summary>
+        private static readonly Dictionary<ushort, int[]> s_extras = new()
+        {
+            [0xC331] = G810Extras, [0xC337] = G810Extras, [0xC333] = G810Extras, [0xC338] = G810Extras,
+            [0xC342] = G512Extras, [0xC33C] = G512Extras,
+            [0xC32B] = G910Extras, [0xC335] = G910Extras,
+            [0xC339] = GProExtras,
+            [0xC330] = G410Extras,
+        };
+
+        /// <summary>The extras of the studied board a unit is, or null for a
+        /// board no reference has studied.</summary>
+        internal static int[] ExtrasOf(HidppUnit unit)
+        {
+            foreach (ushort model in unit.ModelIds)
+                if (s_extras.TryGetValue(model, out var extras)) return extras;
+            return null;
+        }
 
         /// <summary>
         /// The region keys a board with layout code <paramref name="code"/>
@@ -92,12 +152,18 @@ namespace PadForge.Common.Input.Peripherals
         };
 
         /// <summary>The unit's light map, or null for a unit that is not a
-        /// keyboard lit through 0x8081 or that reports no zone.</summary>
+        /// keyboard lit through 0x8081 with zones or through 0x8080 with
+        /// keys.</summary>
         internal static LightMap Of(HidppUnit unit)
         {
-            if (unit == null || !unit.IsKeyboardKind || unit.PerKeyFeatureId != HidppUnitProtocol.PerKeyLightingV2
-                || unit.PerKeyZones.Length == 0)
-                return null;
+            if (unit == null || !unit.IsKeyboardKind) return null;
+            if (unit.PerKeyFeatureId == HidppUnitProtocol.PerKeyLightingV2 && unit.PerKeyZones.Length > 0) return OfZones(unit);
+            if (unit.PerKeyFeatureId == HidppUnitProtocol.PerKeyLighting && unit.KeyTypes.Length > 0) return OfKeyTypes(unit);
+            return null;
+        }
+
+        private static LightMap OfZones(HidppUnit unit)
+        {
             bool rapid = Array.IndexOf(unit.ModelIds, ProXTklRapid) >= 0;
             var region = KeysOf(unit.KeyboardLayout);
             var lights = new List<LightInfo>(unit.PerKeyZones.Length);
@@ -145,6 +211,81 @@ namespace PadForge.Common.Input.Peripherals
             0x31 => (region & RegionKeys.Backslash) != 0,
             0x32 => (region & RegionKeys.Pound) != 0,
             0x64 => (region & RegionKeys.LeftOfZ) != 0,
+            _ => true,
+        };
+
+        /// <summary>The address of key <paramref name="id"/> of a 0x8080 key
+        /// type: the type's bit above the ID, so no two lights of a board
+        /// share one.</summary>
+        internal static int AddressOf(ushort type, byte id) => (type << 8) | id;
+
+        /// <summary>The key type and the ID at a 0x8080 address.</summary>
+        internal static (ushort Type, byte Id) KeyAt(int address) => ((ushort)(address >> 8), (byte)address);
+
+        private static LightMap OfKeyTypes(HidppUnit unit)
+        {
+            var extras = ExtrasOf(unit);
+            var lights = new List<LightInfo>();
+            foreach (var type in unit.KeyTypes)
+                foreach (byte id in type.Keys)
+                    if (KeyLightOf(type.Type, id, unit.KeyboardLayout, extras) is LightInfo light) lights.Add(light);
+            return new LightMap(lights, "HID++ 0x8080") { Product = ProductOf(unit) };
+        }
+
+        /// <summary>The light of key <paramref name="id"/> of a 0x8080 key
+        /// type, or null for a key the board lists and does not have. A
+        /// studied board's <paramref name="extras"/> say which lights beyond
+        /// the main block it has.</summary>
+        internal static LightInfo? KeyLightOf(ushort type, byte id, int layoutCode, int[] extras)
+        {
+            int address = AddressOf(type, id);
+            if (type == HidppUnitProtocol.KeyTypeKeys)
+            {
+                if (!Has(id, KeysOf(layoutCode)) || !HasLanguageKey(id, layoutCode)) return null;
+                return new LightInfo(address, LightKind.Key, id, LightKeySource.Device);
+            }
+            if (extras != null && Array.IndexOf(extras, address) < 0) return null;
+            switch (type)
+            {
+                case HidppUnitProtocol.KeyTypeMedia:
+                    return id switch
+                    {
+                        0xB5 => Named(address, LightLabel.Next),
+                        0xB6 => Named(address, LightLabel.Previous),
+                        0xB7 => Named(address, LightLabel.Stop),
+                        0xCD => Named(address, LightLabel.PlayPause),
+                        0xE2 => Named(address, LightLabel.Mute),
+                        _ => new LightInfo(address, LightKind.Other, 0, LightKeySource.None),
+                    };
+                case HidppUnitProtocol.KeyTypeGKeys:
+                    return Named(address, LightLabel.GKey) with { LabelNumber = id };
+                case HidppUnitProtocol.KeyTypeLogo:
+                    return new LightInfo(address, LightKind.Logo, 0, LightKeySource.None);
+                case HidppUnitProtocol.KeyTypeIndicators:
+                    var status = new LightInfo(address, LightKind.Status, 0, LightKeySource.Vendor);
+                    return id switch
+                    {
+                        1 => status with { Label = LightLabel.Brightness },
+                        2 => status with { Label = LightLabel.GameMode },
+                        3 => status with { Label = LightLabel.CapsLock },
+                        4 => status with { Label = LightLabel.ScrollLock },
+                        5 => status with { Label = LightLabel.NumLock },
+                        _ => status with { KeySource = LightKeySource.None },
+                    };
+                default:
+                    return new LightInfo(address, LightKind.Other, 0, LightKeySource.None);
+            }
+        }
+
+        /// <summary>Whether a board with layout code
+        /// <paramref name="code"/> has the language key at
+        /// <paramref name="usage"/>: the five JIS keys (0x87 to 0x8B) are on
+        /// the Japanese layout alone and the two Korean keys (0x90, 0x91) on
+        /// the Korean, as the keyleds layout files carry them.</summary>
+        private static bool HasLanguageKey(ushort usage, int code) => usage switch
+        {
+            >= 0x87 and <= 0x8B => code == 0x0A,
+            0x90 or 0x91 => code == 0x09,
             _ => true,
         };
 

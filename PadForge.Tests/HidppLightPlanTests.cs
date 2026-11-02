@@ -49,6 +49,12 @@ namespace PadForge.Tests
         /// keyleds reads from an American board (layouts README).</summary>
         public byte Layout = 0x01;
 
+        /// <summary>The key types its 0x8080 lists, each with the count its
+        /// function 1 gives, which bounds the pages and need not be the
+        /// number of keys: a G810 counts 105 keys and lists 111
+        /// (g810-led-resources dumps/g810-spectrum/set_keys_colors.pcapng).</summary>
+        public (HidppKeyType Type, int Count)[] KeyTypes = Array.Empty<(HidppKeyType, int)>();
+
         /// <summary>The transports byte and the six model ID bytes of its
         /// 0x0003 answer.</summary>
         public byte Transports = 0x0E;
@@ -120,7 +126,40 @@ namespace PadForge.Tests
                         return HidppHapticsTests.Ans(d, f, 2, p[0], p[1], (byte)(effect >> 8), (byte)effect);
                 }
             }
-            if (At(0x8080) != 0 && f == At(0x8080)) return HidppHapticsTests.Ans(d, f, fn, p);
+            if (At(0x8080) != 0 && f == At(0x8080))
+            {
+                // The key list the way a G810 gives it: the type bits and the
+                // rest of function 0's answer as the capture shows it, the
+                // count and top values per type, and pages of 14 keys on the
+                // very long report. Writes are echoed.
+                ushort asked = p.Length >= 2 ? (ushort)((p[0] << 8) | p[1]) : (ushort)0;
+                switch (fn)
+                {
+                    case 0:
+                        int flags = 0;
+                        foreach (var (type, _) in KeyTypes) flags |= type.Type;
+                        return HidppHapticsTests.Ans(d, f, 0, (byte)(flags >> 8), (byte)flags, 0x00, 0x00, 0x0D);
+                    case 1:
+                        foreach (var (type, count) in KeyTypes)
+                            if (type.Type == asked)
+                                return HidppHapticsTests.Ans(d, f, 1, (byte)(count >> 8), (byte)count,
+                                    type.MaxRed, type.MaxGreen, type.MaxBlue);
+                        return new HidppReply(HidppReplyKind.Error, 0x02);
+                    case 2:
+                        int offset = (p[2] << 8) | p[3];
+                        foreach (var (type, _) in KeyTypes)
+                            if (type.Type == asked)
+                            {
+                                var page = new List<byte> { p[0], p[1], p[2], p[3] };
+                                for (int i = offset; i < Math.Min(type.Keys.Length, offset + 14); i++)
+                                    page.AddRange(new byte[] { type.Keys[i], 0x00, 0xDC, 0xFF });
+                                return HidppHapticsTests.AnsVeryLong(d, f, 2, page.ToArray());
+                            }
+                        return new HidppReply(HidppReplyKind.Error, 0x02);
+                    default:
+                        return HidppHapticsTests.Ans(d, f, fn, p);
+                }
+            }
             // A mode read gives the mode. A mode write is answered under its
             // own header, as a device answers every request.
             if (At(0x8100) != 0 && f == At(0x8100))
@@ -179,6 +218,33 @@ namespace PadForge.Tests
             device.Features[0x8080] = 0x0C;
             device.Features[0x8070] = 0x0D;
             device.Zones = new[] { new ushort[] { 0x0000, 0x0001 }, new ushort[] { 0x0000, 0x0001 } };
+            return device;
+        }
+
+        /// <summary>A G810 with its keys listed as it lists them to Logitech
+        /// Gaming Software (set_keys_colors.pcapng): the keys type counting
+        /// 105 and listing 0x04 to 0x65, the JIS keys 0x87 to 0x8B and the
+        /// modifiers, five media keys, the logo type counting one and listing
+        /// two, and five indicators. Model ID C331 on its cable, layout code
+        /// 3 (UK), with 0x0003 and 0x4540 at indexes the capture does not
+        /// show.</summary>
+        public static HidppLightDevice G810Keys()
+        {
+            var device = G810();
+            device.Features[0x0003] = 0x02;
+            device.Features[0x4540] = 0x0E;
+            device.Layout = 0x03;
+            device.Transports = 0x08;
+            device.Model = new byte[] { 0xC3, 0x31, 0x00, 0x00, 0x00, 0x00 };
+            byte[] keys = Enumerable.Range(0x04, 98).Concat(Enumerable.Range(0x87, 5)).Concat(Enumerable.Range(0xE0, 8))
+                .Select(k => (byte)k).ToArray();
+            device.KeyTypes = new[]
+            {
+                (new HidppKeyType(0x0001, 0xFF, 0xFF, 0xFF, keys), 105),
+                (new HidppKeyType(0x0002, 0xFF, 0xFF, 0xFF, new byte[] { 0xCD, 0xB6, 0xB5, 0xB7, 0xE2 }), 5),
+                (new HidppKeyType(0x0010, 0xFF, 0xFF, 0xFF, new byte[] { 0x01, 0x02 }), 1),
+                (new HidppKeyType(0x0040, 0xFF, 0xFF, 0xFF, new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05 }), 5),
+            };
             return device;
         }
 
@@ -316,7 +382,12 @@ namespace PadForge.Tests
                          // The power mode: set, Full.
                          || (function == 8 && P(0) == 0x01 && P(1) == 0x01);
                     break;
-                case HidppUnitProtocol.PerKeyLighting: ok = function is 4 or 5; break;
+                // 0x8080: the key list, key colors, fills and the commit. The
+                // key list's fifth byte is OpenRGB's persistence option,
+                // volatile (ReadPerKey8080Colors).
+                case HidppUnitProtocol.PerKeyLighting:
+                    ok = function is 0 or 1 or 3 or 4 or 5 || (function == 2 && P(4) == 0x00);
+                    break;
                 case HidppUnitProtocol.PerKeyLightingV2:
                     ok = function is 0 or 1 or 5 or 6 || (function == 7 && P(0) == 0x00);
                     break;
@@ -1449,11 +1520,12 @@ namespace PadForge.Tests
             public volatile bool Present = true;
 
             public Bench(HidppLightDevice device, VendorHidCollection collection = null, int reassertMs = int.MaxValue,
-                int idleTickMs = 1)
+                int idleTickMs = 1, bool veryLong = false)
             {
                 Device = device;
                 Collection = collection ?? (device.Index == HidppHapticProtocol.DirectDeviceIndex ? Cable : Receiver);
                 Channel = device.Channel(Collection.Path, HidppHapticProtocol.IsBluetoothPath(Collection.Path));
+                Channel.HasVeryLong = veryLong;
                 Backend = new HidppBackend(() => Present ? new[] { Collection } : Array.Empty<VendorHidCollection>(),
                     (c, s) => Channel, _ => Container, 1, idleTickMs, reassertMs,
                     (path, frame, timeout) =>
@@ -1582,7 +1654,7 @@ namespace PadForge.Tests
             /// <summary>Every frame so far on the unit's lighting and mode
             /// features, written or asked, in order.</summary>
             public string[] Lit()
-                => HidppHapticsTests.Lines(Channel.Traffic.Where(t => t.Frame[0] == 0x11 && t.Frame[1] == Unit.DeviceIndex
+                => HidppHapticsTests.Lines(Channel.Traffic.Where(t => t.Frame[0] is 0x11 or 0x12 && t.Frame[1] == Unit.DeviceIndex
                     && t.Frame[2] != 0
                     && (t.Frame[2] == Unit.EffectIndex || t.Frame[2] == Unit.PerKeyIndex || t.Frame[2] == Unit.ModeIndex)));
 
@@ -1612,7 +1684,8 @@ namespace PadForge.Tests
                         if (frame[2] != HidppReceiverProtocol.GetLongRegister) return "a short frame that reads no register: " + text;
                         continue;
                     }
-                    if (frame[0] != HidppHapticProtocol.LongReportId) return "a report of another kind: " + text;
+                    if (frame[0] is not (HidppHapticProtocol.LongReportId or HidppHapticProtocol.VeryLongReportId))
+                        return "a report of another kind: " + text;
                     string refusal = frame[1] == Device.Index
                         ? HidppFrameRules.Refusal(Device.FeatureAt(frame[2]), frame)
                         : frame[2] == 0 && frame[3] >> 4 == 0 ? null : "a frame to a slot no device was found at";
@@ -2915,6 +2988,72 @@ namespace PadForge.Tests
             Assert.Equal(Stream(0x112233), bench.After(2));
         }
 
+        /// <summary>A G810 whose very long collection is open, with a key
+        /// frame (#557): the claim, the static effect on each zone in black,
+        /// which passes the per-key buffer through, each key type filled
+        /// with the color most of its keys take, A in its own color on a
+        /// very long frame, and the awaited commit. Its map is published.
+        /// A changed key sends that key and the commit.</summary>
+        [Fact]
+        public void AG810WithAKeyFrame_IsPaintedKeyByKey_AndAChangeSendsTheKeyAlone()
+        {
+            using var bench = new Bench(HidppLightDevice.G810Keys(), Board, veryLong: true);
+            var map = PeripheralLightMaps.For(bench.Path);
+            Assert.NotNull(map);
+            Assert.Equal("hidpp:C331:03", map.Product);
+            bench.Link();
+            bench.Light(0x112233, keys: KeyA(0xFF0000));
+            Assert.Equal(new[]
+            {
+                "write 11 FF 0D 8C 01 01", "write 11 FF 0D 3C 00 01", "write 11 FF 0D 3C 01 01",
+                "write 11 FF 0C 4C 00 01 11 22 33", "write 11 FF 0C 4C 00 02 11 22 33",
+                "write 11 FF 0C 4C 00 10 11 22 33", "write 11 FF 0C 4C 00 40 11 22 33",
+                "ask 12 FF 0C 3C 00 01 00 01 04 FF", "ask 11 FF 0C 5C",
+            }, bench.After(9));
+
+            bench.Clear();
+            bench.Light(0x112233, keys: KeyA(0x00FF00));
+            Assert.Equal(new[] { "ask 12 FF 0C 3C 00 01 00 01 04 00 FF", "ask 11 FF 0C 5C" }, bench.After(2));
+        }
+
+        /// <summary>A G810 that refuses a key frame is painted one color from
+        /// then on and its map is taken down. A refused commit is a failed
+        /// paint and nothing more.</summary>
+        [Fact]
+        public void AG810ThatRefusesAKeyFrame_IsPaintedOneColor_AndARefusedCommitIsAFailedPaint()
+        {
+            var device = HidppLightDevice.G810Keys();
+            device.Refuse = (f, fn, p) => f == 0x0C && fn == HidppUnitProtocol.FunctionPerKeySetKeys ? (byte)0x02 : null;
+            using (var bench = new Bench(device, Board, veryLong: true))
+            {
+                bench.Link();
+                bench.Light(0x112233, keys: KeyA(0xFF0000));
+                var lines = bench.After(12);
+                Assert.Contains("ask 12 FF 0C 3C 00 01 00 01 04 FF", lines);
+                Assert.Equal("ask 11 FF 0C 5C", lines[^1]);
+                Assert.Null(PeripheralLightMaps.For(bench.Path));
+                bench.Release();
+            }
+
+            var commits = HidppLightDevice.G810Keys();
+            commits.Refuse = (f, fn, p) => f == 0x0C && fn == HidppUnitProtocol.FunctionPerKeyCommit ? (byte)0x02 : null;
+            using var other = new Bench(commits, Board, veryLong: true);
+            other.Link();
+            other.Light(0x112233, keys: KeyA(0xFF0000));
+            other.After(9);
+            Assert.NotNull(PeripheralLightMaps.For(other.Path));
+        }
+
+        /// <summary>A G810 whose very long collection is not open has its
+        /// keys never asked for and no map, and is painted one color.</summary>
+        [Fact]
+        public void AG810WithoutItsVeryLongCollection_IsPaintedOneColor()
+        {
+            using var bench = new Bench(HidppLightDevice.G810Keys(), Board);
+            Assert.Null(PeripheralLightMaps.For(bench.Path));
+            Assert.Empty(bench.Unit.KeyTypes);
+        }
+
         /// <summary>The keep-alive of a keyboard that streams reads its
         /// claim first. While the cluster flag stands it repaints through
         /// the per-key frames alone, since a cluster frame would take the
@@ -3197,7 +3336,9 @@ namespace PadForge.Tests
                 .ToArray();
             Assert.Equal(new[] { "ResetDevice", "Write", "WriteOnce" }, Members(all, "RawHidOutput"));
             Assert.Equal(new[] { "Enumerate" }, Members(all, "VendorHidRuntime"));
-            Assert.Equal(2, System.Text.RegularExpressions.Regex.Matches(haptics, @"new VendorHidReader\(").Count);
+            // One reader each for the long collection, a receiver's short one
+            // and a keyboard's very long one (#557).
+            Assert.Equal(3, System.Text.RegularExpressions.Regex.Matches(haptics, @"new VendorHidReader\(").Count);
             Assert.DoesNotContain("new VendorHidReader(", units + backend + plans);
 
             // A channel is refused where it opens, and writes where the
@@ -3206,7 +3347,8 @@ namespace PadForge.Tests
             Assert.Contains("_write = RawHidOutput.Write;", haptics);
             // The worker opens a channel through that one door, and its
             // crash path writes through the fenced one-shot helper.
-            Assert.Contains("_open = open ?? ((c, s) => HidppChannel.Open(c, s));", backend);
+            Assert.Contains("_open = openWithVeryLong", backend);
+            Assert.Contains("?? (open != null ? (c, s, v) => open(c, s) : (c, s, v) => HidppChannel.Open(c, s, v));", backend);
             Assert.Contains("_writeOnce = writeOnce ?? RawHidOutput.WriteOnce;", backend);
             Assert.Contains("try { written = _writeOnce(record.Path, frame, OneShotMs); }", backend);
             // The stop path's write of what a unit is owed is the one other.

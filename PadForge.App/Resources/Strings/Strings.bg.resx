@@ -1113,6 +1113,7 @@
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Ръб</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Лого</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Състояние</value></data>
+  <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Игрови режим</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Всички светлини</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Изчисти избора</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Избор чрез натискане на клавиши</value></data>

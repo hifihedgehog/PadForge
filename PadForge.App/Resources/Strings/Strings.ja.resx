@@ -1928,6 +1928,7 @@
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>エッジ</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>ロゴ</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>ステータス</value></data>
+  <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>ゲームモード</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>すべてのライト</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>選択を解除</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>キー押下で選択</value></data>

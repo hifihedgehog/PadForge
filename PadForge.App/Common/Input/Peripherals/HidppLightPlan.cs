@@ -146,6 +146,11 @@ namespace PadForge.Common.Input.Peripherals
         /// from.</summary>
         public virtual HidppLightPlan WithoutPerKey => null;
 
+        /// <summary>Whether a refused awaited frame of this kind sends the
+        /// unit to <see cref="WithoutPerKey"/>: any per-key frame, and the
+        /// frame end that shows them.</summary>
+        public virtual bool FallsBackOn(HidppStepKind kind) => kind is HidppStepKind.Stream or HidppStepKind.Commit;
+
         /// <summary>The frames alone, for the crash path's record.</summary>
         public static byte[][] Frames(HidppStep[] steps)
         {
@@ -275,11 +280,110 @@ namespace PadForge.Common.Input.Peripherals
     internal sealed class ZonePerKeyPlan : ZonePlan
     {
         private readonly byte _perKey;
+        private readonly HidppUnit _unit;
 
         public ZonePerKeyPlan(HidppUnit unit, byte effectIndex) : base(unit, effectIndex)
         {
             _perKey = unit.PerKeyIndex;
+            _unit = unit;
         }
+
+        /// <summary>A board whose keys were read paints them one by one
+        /// (#557).</summary>
+        public override bool PaintsLights => _unit.KeyTypes.Length > 0;
+
+        /// <summary>A board that refuses a key frame is painted one color
+        /// from then on. A refused commit is a failed paint, as it always
+        /// was.</summary>
+        public override bool FallsBackOn(HidppStepKind kind) => kind == HidppStepKind.Stream;
+
+        public override HidppLightPlan WithoutPerKey
+            => PaintsLights ? new ZonePerKeyPlan(_unit with { KeyTypes = Array.Empty<HidppKeyType>() }, Effect) : null;
+
+        /// <summary>
+        /// One color per key (#557), the way Logitech Gaming Software paints
+        /// a G810 key by key (g810-led-resources
+        /// dumps/g810-spectrum/set_keys_colors.pcapng) and OpenRGB sends a
+        /// frame (SetPerKey8080). The whole picture is the static effect on
+        /// each zone in black, which carries no color marker and so passes
+        /// the per-key buffer through (OpenRGB SetZoneEffect: "pass-through
+        /// to per-key buffer"), then each key type filled with the color most
+        /// of its keys take, then the keys of every other color, 14 to a very
+        /// long frame, then the awaited commit. A change sends the keys whose
+        /// color changed and the commit, or the whole picture when that
+        /// takes fewer frames. A media key's red follows
+        /// <see cref="HidppUnitProtocol.MediaRed"/>, as its fill's does.
+        /// </summary>
+        public override HidppStep[] PaintLights(LightMap map, int[] colors, int[] shown, bool full)
+        {
+            var whole = new List<HidppStep>();
+            AddZones(whole, 0);
+            var under = new int[colors.Length];
+            foreach (var type in _unit.KeyTypes)
+            {
+                var ofType = new List<int>();
+                for (int i = 0; i < map.Lights.Count && i < colors.Length; i++)
+                    if (HidppKeyMap.KeyAt(map.Lights[i].Address).Type == type.Type) ofType.Add(i);
+                if (ofType.Count == 0) continue;
+                var typeColors = new int[ofType.Count];
+                for (int k = 0; k < typeColors.Length; k++) typeColors[k] = colors[ofType[k]];
+                int most = ClusterStreamPlan.MostCommon(typeColors);
+                foreach (int i in ofType) under[i] = most;
+                whole.Add(Fill(type.Type, Ready(type.Type, most)));
+            }
+            AddKeys(whole, map, colors, under);
+            if (shown != null && !full)
+            {
+                var changed = new List<HidppStep>();
+                AddKeys(changed, map, colors, shown);
+                if (changed.Count <= whole.Count) whole = changed;
+            }
+            whole.Add(new HidppStep(HidppUnitProtocol.PerKeyCommit(Device, _perKey), HidppStepKind.Commit));
+            return whole.ToArray();
+        }
+
+        /// <summary>The claim again and the whole picture, as
+        /// <see cref="ZonePlan.KeepAlive"/> sends the claim and the color.</summary>
+        public override HidppStep[] KeepAliveLights(int level, LightMap map, int[] colors, bool painted)
+        {
+            var steps = new List<HidppStep>();
+            steps.AddRange(Claim(level, 0));
+            steps.AddRange(PaintLights(map, colors, null, full: true));
+            return steps.ToArray();
+        }
+
+        /// <summary>The key frames for the lights whose color differs from
+        /// what they show, by type in the board's order, 14 to a frame, as
+        /// OpenRGB groups a frame's keys (SetPerKey8080).</summary>
+        private void AddKeys(List<HidppStep> steps, LightMap map, int[] colors, int[] shown)
+        {
+            var byType = new Dictionary<ushort, List<(byte Id, int Rgb)>>();
+            for (int i = 0; i < map.Lights.Count && i < colors.Length; i++)
+            {
+                if (colors[i] == shown[i]) continue;
+                var (type, id) = HidppKeyMap.KeyAt(map.Lights[i].Address);
+                if (!byType.TryGetValue(type, out var keys)) byType[type] = keys = new List<(byte, int)>();
+                keys.Add((id, Ready(type, colors[i])));
+            }
+            foreach (var type in _unit.KeyTypes)
+            {
+                if (!byType.TryGetValue(type.Type, out var keys)) continue;
+                for (int i = 0; i < keys.Count; i += HidppUnitProtocol.PerKeyKeysPerFrame)
+                    steps.Add(new HidppStep(HidppUnitProtocol.PerKeySetKeys(Device, _perKey, type.Type,
+                        keys.GetRange(i, Math.Min(HidppUnitProtocol.PerKeyKeysPerFrame, keys.Count - i))), HidppStepKind.Stream));
+            }
+        }
+
+        /// <summary>A color as a key of <paramref name="type"/> takes it: a
+        /// media key's red follows <see cref="HidppUnitProtocol.MediaRed"/>.</summary>
+        private static int Ready(ushort type, int rgb)
+        {
+            if (type != HidppUnitProtocol.KeyTypeMedia) return rgb;
+            byte r = (byte)(rgb >> 16), g = (byte)(rgb >> 8), b = (byte)rgb;
+            return (HidppUnitProtocol.MediaRed(r, g, b) << 16) | (g << 8) | b;
+        }
+
+        private HidppStep Fill(ushort keyType, int rgb) => Fill(keyType, (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb);
 
         public override HidppStep[] Paint(int rgb, bool full)
         {

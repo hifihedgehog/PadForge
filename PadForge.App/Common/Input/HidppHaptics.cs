@@ -36,6 +36,18 @@ namespace PadForge.Common.Input
         public const byte LongReportId = 0x11;
         public const int LongReportLength = 20;
 
+        /// <summary>The 64-byte very long report (#557). A keyboard of the
+        /// G810 class takes key colors on it 14 at a time and answers its
+        /// key list on it: Logitech Gaming Software sends 12 FF 0C 3A ...
+        /// and gets the answers to 11 FF 0C 2A ... back as 12 FF 0C 2A ...
+        /// (g810-led-resources dumps/g810-spectrum/set_keys_colors.pcapng).
+        /// Windows puts the report in a collection of its own, usage page
+        /// 0xFF43 usage 0x0604, which OpenRGB opens beside the 20-byte one
+        /// (LogitechControllerDetect.cpp:1237-1265).</summary>
+        public const byte VeryLongReportId = 0x12;
+        public const int VeryLongReportLength = 64;
+        public const ushort VeryLongUsage = 0x0604;
+
         /// <summary>The software ID in the low nibble of every request, which
         /// the device echoes in its answer. Solaar's table (base.py
         /// SOLAAR_SOFTWARE_ID) lists the IDs other tools claim, OpenRGB 0x07,
@@ -88,6 +100,20 @@ namespace PadForge.Common.Input
             return frame;
         }
 
+        /// <summary>A very long request, laid out as a long one with room for
+        /// 60 parameter bytes (OpenRGB LogitechHIDPP20Controller.cpp
+        /// SendVeryLongFrame).</summary>
+        public static byte[] VeryLongFrame(byte deviceIndex, byte featureIndex, byte function, ReadOnlySpan<byte> parameters)
+        {
+            var frame = new byte[VeryLongReportLength];
+            frame[0] = VeryLongReportId;
+            frame[1] = deviceIndex;
+            frame[2] = featureIndex;
+            frame[3] = (byte)((function << 4) | SoftwareId);
+            parameters.Slice(0, Math.Min(parameters.Length, VeryLongReportLength - 4)).CopyTo(frame.AsSpan(4));
+            return frame;
+        }
+
         /// <summary>Root (feature index 0) function 0, getFeature: the answer
         /// carries the feature's index in byte 0, or 0 when the device lacks
         /// it.</summary>
@@ -106,7 +132,7 @@ namespace PadForge.Common.Input
             byte function, out byte errorCode)
         {
             errorCode = 0;
-            if (report.Length < 6 || report[0] != LongReportId || report[1] != deviceIndex)
+            if (report.Length < 6 || report[0] is not (LongReportId or VeryLongReportId) || report[1] != deviceIndex)
                 return HidppReplyKind.None;
             byte functionByte = (byte)((function << 4) | SoftwareId);
             if (report[2] == featureIndex && report[3] == functionByte)
@@ -288,6 +314,16 @@ namespace PadForge.Common.Input
         /// for its answer, retrying once when the device answers busy.</summary>
         HidppReply Request(byte deviceIndex, byte featureIndex, byte function, byte[] parameters, int timeoutMs);
 
+        /// <summary>Sends a frame as it was built, long or very long, as a
+        /// request, and waits as <see cref="Request"/> does for the answer
+        /// that repeats its header (#557).</summary>
+        HidppReply RequestFrame(byte[] frame, int timeoutMs);
+
+        /// <summary>Whether the channel reaches the device's very long
+        /// report (<see cref="HidppHapticProtocol.VeryLongReportId"/>), to
+        /// write it and to read its answers.</summary>
+        bool HasVeryLong { get; }
+
         /// <summary>Reads one record of a receiver's long register
         /// (<see cref="Peripherals.HidppReceiverProtocol"/>): the record, a
         /// HID++ 1.0 error, or a timeout. A channel opened without the
@@ -349,6 +385,8 @@ namespace PadForge.Common.Input
         private readonly VendorHidReader _reader;
         private VendorHidReader _shortReader;
         private string _shortPath;
+        private VendorHidReader _veryLongReader;
+        private string _veryLongPath;
         private Pending _pending;
         private RegisterPending _registerPending;
         private int _disposed;
@@ -361,7 +399,8 @@ namespace PadForge.Common.Input
         public bool Bluetooth { get; }
         public HidppWaiter Waiter { get; set; }
 
-        private HidppChannel(VendorHidCollection collection, VendorHidCollection shortCollection)
+        private HidppChannel(VendorHidCollection collection, VendorHidCollection shortCollection,
+            VendorHidCollection veryLongCollection)
         {
             Path = collection.Path;
             Bluetooth = HidppHapticProtocol.IsBluetoothPath(collection.Path);
@@ -374,6 +413,12 @@ namespace PadForge.Common.Input
                 _shortReader = new VendorHidReader(shortCollection);
                 _shortReader.ReportReceived += OnReport;
             }
+            if (veryLongCollection != null)
+            {
+                _veryLongPath = veryLongCollection.Path;
+                _veryLongReader = new VendorHidReader(veryLongCollection);
+                _veryLongReader.ReportReceived += OnReport;
+            }
         }
 
         /// <summary>Test seam: a channel with no reader and no device. Its
@@ -381,11 +426,12 @@ namespace PadForge.Common.Input
         /// meant for, and the test hands it the reports a device would send
         /// through <see cref="Feed"/>, so the matching and the waiting that
         /// run are the shipping ones.</summary>
-        internal HidppChannel(string path, string shortPath, Func<string, byte[], bool> write)
+        internal HidppChannel(string path, string shortPath, Func<string, byte[], bool> write, string veryLongPath = null)
         {
             Path = path;
             Bluetooth = HidppHapticProtocol.IsBluetoothPath(path);
             _shortPath = shortPath;
+            _veryLongPath = veryLongPath;
             _write = write;
         }
 
@@ -395,10 +441,13 @@ namespace PadForge.Common.Input
         /// <summary>Opens the collection's reader, or returns null when it
         /// cannot be opened. A receiver's short collection, when given, is
         /// opened beside it for the pairing read, and a channel that cannot
-        /// open it only loses that read.</summary>
-        public static HidppChannel Open(VendorHidCollection collection, VendorHidCollection shortCollection = null)
+        /// open it only loses that read. A keyboard's very long collection,
+        /// when given, is opened the same way for its key colors (#557),
+        /// and a channel that cannot open it paints the keyboard one color.</summary>
+        public static HidppChannel Open(VendorHidCollection collection, VendorHidCollection shortCollection = null,
+            VendorHidCollection veryLongCollection = null)
         {
-            var channel = new HidppChannel(collection, shortCollection);
+            var channel = new HidppChannel(collection, shortCollection, veryLongCollection);
             if (!channel._reader.Open())
             {
                 channel.Dispose();
@@ -411,8 +460,17 @@ namespace PadForge.Common.Input
                 channel._shortReader = null;
                 channel._shortPath = null;
             }
+            if (channel._veryLongReader != null && !channel._veryLongReader.Open())
+            {
+                channel._veryLongReader.ReportReceived -= channel.OnReport;
+                channel._veryLongReader.Dispose();
+                channel._veryLongReader = null;
+                channel._veryLongPath = null;
+            }
             return channel;
         }
+
+        public bool HasVeryLong => _veryLongPath != null;
 
         private void OnReport(VendorHidReader reader, byte[] buffer, int length)
         {
@@ -444,7 +502,16 @@ namespace PadForge.Common.Input
             pending.Done.Set();
         }
 
-        public bool Write(byte[] frame) => Volatile.Read(ref _disposed) == 0 && _write(Path, frame);
+        /// <summary>Writes a frame to the collection that carries its report:
+        /// a very long frame to the very long collection, which a channel
+        /// without one cannot send.</summary>
+        public bool Write(byte[] frame)
+        {
+            if (Volatile.Read(ref _disposed) != 0) return false;
+            if (frame.Length > 0 && frame[0] == HidppHapticProtocol.VeryLongReportId)
+                return _veryLongPath != null && _write(_veryLongPath, frame);
+            return _write(Path, frame);
+        }
 
         /// <summary>Waits for an answer through the worker's waiter when it
         /// set one, so its pulses go out meanwhile, and in one piece
@@ -456,14 +523,18 @@ namespace PadForge.Common.Input
         }
 
         public HidppReply Request(byte deviceIndex, byte featureIndex, byte function, byte[] parameters, int timeoutMs)
+            => RequestFrame(HidppHapticProtocol.Frame(deviceIndex, featureIndex, function, parameters), timeoutMs);
+
+        public HidppReply RequestFrame(byte[] frame, int timeoutMs)
         {
+            byte deviceIndex = frame[1], featureIndex = frame[2], function = (byte)(frame[3] >> 4);
             for (int attempt = 0; attempt < 2; attempt++)
             {
                 var pending = new Pending(deviceIndex, featureIndex, function);
                 Volatile.Write(ref _pending, pending);
                 try
                 {
-                    if (!Write(HidppHapticProtocol.Frame(deviceIndex, featureIndex, function, parameters)))
+                    if (!Write(frame))
                         return new HidppReply(HidppReplyKind.WriteFailed);
                     if (!Await(pending.Done, timeoutMs))
                         return new HidppReply(HidppReplyKind.Timeout);
@@ -527,6 +598,13 @@ namespace PadForge.Common.Input
                 shortReader.ReportReceived -= OnReport;
                 shortReader.Dispose();
                 RawHidOutput.ResetDevice(_shortPath);
+            }
+            var veryLongReader = _veryLongReader;
+            if (veryLongReader != null)
+            {
+                veryLongReader.ReportReceived -= OnReport;
+                veryLongReader.Dispose();
+                RawHidOutput.ResetDevice(_veryLongPath);
             }
         }
     }

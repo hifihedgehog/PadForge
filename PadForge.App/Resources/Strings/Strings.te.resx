@@ -1113,6 +1113,7 @@
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>అంచు</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>లోగో</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>స్థితి</value></data>
+  <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>గేమ్ మోడ్</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>అన్ని లైట్లు</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>ఎంపికను తొలగించు</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>కీలను నొక్కి ఎంచుకో</value></data>

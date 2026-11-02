@@ -1113,6 +1113,7 @@
   <data name="Pad_Lighting_KeyColors_Edge" xml:space="preserve"><value>Άκρη</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Λογότυπο</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Κατάσταση</value></data>
+  <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Λειτουργία παιχνιδιού</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Όλα τα φώτα</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Εκκαθάριση επιλογής</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Επιλογή με πάτημα πλήκτρων</value></data>

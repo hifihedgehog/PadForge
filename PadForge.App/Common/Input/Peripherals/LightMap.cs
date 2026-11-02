@@ -59,6 +59,11 @@ namespace PadForge.Common.Input.Peripherals
         Mute = 4,
         Next = 5,
         Previous = 6,
+        Stop = 7,
+        GameMode = 8,
+        CapsLock = 9,
+        ScrollLock = 10,
+        NumLock = 11,
     }
 
     /// <summary>One light of a unit. <see cref="Address"/> is the index the

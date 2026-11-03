@@ -231,6 +231,7 @@ namespace PadForge.Common.Input.Peripherals
             XpgSummonerLighting.Instance,
             OksKeyboardLighting.Instance,
             LightSaltLighting.Instance,
+            DarkProjectKeyboardLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

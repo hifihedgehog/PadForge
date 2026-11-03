@@ -113,11 +113,20 @@ namespace PadForge.Common.Input.Peripherals
         /// productName (Bazecor package.json:3).</summary>
         public static readonly VendorProgram Bazecor = new("Bazecor", "Bazecor");
 
+        /// <summary>Cooler Master's MasterPlus, which lights the family's
+        /// keyboards, mice, mousepads and controllers. Its executables, by
+        /// the file list Advanced Uninstaller PRO gives for MasterPlus PER
+        /// 2.0.4 ("MasterPlus(PER. Only).exe" and cm-blackhawk.exe, the
+        /// background component, in Program Files (x86)\CoolerMaster\PORTAL).
+        /// No source code names the program's processes.</summary>
+        public static readonly VendorProgram MasterPlus = new("MasterPlus", "MasterPlus", "cm-blackhawk");
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
         {
             LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor,
+            MasterPlus,
         };
     }
 

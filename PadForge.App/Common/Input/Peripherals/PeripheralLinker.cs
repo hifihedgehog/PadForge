@@ -27,6 +27,11 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>SteelSeries GG or its engine runs, so GG drives the SteelSeries devices.</summary>
         public bool SteelSeriesGGRunning { get; init; }
 
+        /// <summary>The programs of <see cref="VendorPrograms.All"/> that
+        /// run, each of which drives the devices of the shared-worker models
+        /// that name it (<see cref="HidLightingModel.Programs"/>).</summary>
+        public RunningPrograms Programs { get; init; } = RunningPrograms.None;
+
         /// <summary>The Chroma SDK runtime Synapse installs, which Colore's
         /// native layer loads by this name.</summary>
         internal const string ChromaRuntimeDll = "RzChromaSDK64.dll";
@@ -134,6 +139,7 @@ namespace PadForge.Common.Input.Peripherals
                 LogitechGamingSoftware = source.LogitechGamingSoftware,
                 RazerSoftwareRunning = source.RazerSoftwareRunning,
                 SteelSeriesGGRunning = source.SteelSeriesGGRunning,
+                Programs = source.Programs,
             };
         }
 
@@ -146,8 +152,13 @@ namespace PadForge.Common.Input.Peripherals
         /// runs, as <see cref="LogiLedEngineNative.RunningHost"/> answers
         /// it. The Logitech and Razer programs are whole names. SteelSeries
         /// GG is any name that starts with one of
-        /// <see cref="SteelSeriesHostPrefixes"/>.</summary>
-        internal static PeripheralPresence WithRunning(PeripheralPresence current, IEnumerable<string> imageNames)
+        /// <see cref="SteelSeriesHostPrefixes"/>. The programs of
+        /// <paramref name="known"/>, <see cref="VendorPrograms.All"/> unless
+        /// a test names others, are matched by their own rule
+        /// (<see cref="VendorProgram.Owns"/>), from the same names, so the
+        /// check costs no second snapshot.</summary>
+        internal static PeripheralPresence WithRunning(PeripheralPresence current, IEnumerable<string> imageNames,
+            IReadOnlyList<VendorProgram> known = null)
         {
             var running = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (string image in imageNames ?? Array.Empty<string>())
@@ -176,6 +187,7 @@ namespace PadForge.Common.Input.Peripherals
                 LogitechGamingSoftware = host != null && host != LogiLedEngineNative.HostProcesses[0],
                 RazerSoftwareRunning = running.Overlaps(RazerHostProcesses),
                 SteelSeriesGGRunning = steelSeries,
+                Programs = RunningPrograms.Of(running, known ?? VendorPrograms.All),
             };
         }
     }
@@ -363,6 +375,14 @@ namespace PadForge.Common.Input.Peripherals
         /// that change (<see cref="HidLightingModel.LiveThroughLampArray"/>).</summary>
         public bool LiveThroughLampArray { get; init; }
 
+        /// <summary>The programs that light the unit's device while they
+        /// run, for a unit of the shared worker
+        /// (<see cref="HidLightingModel.Programs"/>). The model's own list,
+        /// the same one on every snapshot, so two snapshots of one unit stay
+        /// equal. Empty for every other family, whose programs the linker
+        /// knows by vendor ID (<see cref="PeripheralLinker.HasVendorProgram"/>).</summary>
+        public IReadOnlyList<VendorProgram> Programs { get; init; } = Array.Empty<VendorProgram>();
+
         /// <summary>The highest claim level the unit offers: 0 colors
         /// alone, 1 its lighting power too, 2 its on-board memory mode off
         /// as well. 0 in every family but HidppUnit, whose units carry
@@ -526,6 +546,10 @@ namespace PadForge.Common.Input.Peripherals
                 int maxLevel = 0;
                 bool directWhenClosed = false;
                 bool windowsLightsLampArray = false;
+                // The program a device of the shared worker is left to,
+                // and whether the device's model names any.
+                string leftToProgram = null;
+                bool ownPrograms = false;
                 // For a unit row, the vendor of the unit it stands for.
                 ushort unitVendor = 0;
                 if (row.VendorRow is PeripheralRowKind kind)
@@ -580,6 +604,7 @@ namespace PadForge.Common.Input.Peripherals
                     var shared = new List<OutputPath>();
                     var native = new List<Candidate>();
                     bool programRuns = false, sharedWaits = false;
+                    VendorProgram holder = null;
                     OutputPath? shadow = null;
                     if (row.VendorId == LogitechVid)
                     {
@@ -630,8 +655,22 @@ namespace PadForge.Common.Input.Peripherals
                     else
                     {
                         // A device of an OpenRGB family the shared worker
-                        // lights, such as a Lenovo Legion keyboard.
+                        // lights, such as a Lenovo Legion keyboard. Its
+                        // model names the programs that light it, and
+                        // while one of them runs the device is that
+                        // program's, by the rule the three vendors above
+                        // follow.
                         AddOwnUnits(native, direct, OutputFamily.HidLightingUnit, row);
+                        holder = ProgramHolding(direct, row, presence, out ownPrograms);
+                        programRuns = holder != null;
+                        // A program with an SDK route of PadForge's own
+                        // (#557 item 11) adds that route's path to shared
+                        // here. The row is then lit through it while the
+                        // program runs, as a Razer row is lit through
+                        // Synapse, and its line says the device is lit on
+                        // its own once the program is closed
+                        // (directWhenClosed). With no such path the device
+                        // is left to the program (leftToProgram below).
                     }
 
                     // The family is chosen as if every unit answered, and
@@ -642,6 +681,10 @@ namespace PadForge.Common.Input.Peripherals
                     // lights keeps the device's own protocol closed whether
                     // or not it answers.
                     var chosen = ChooseLighting(programRuns, shared, sharedWaits, native, lamps, out directWhenClosed);
+                    // A program of the device's model runs and PadForge
+                    // has no path through it: the row holds no path, keeps
+                    // its Lighting tab, and the tab names the program.
+                    if (chosen == LightingChoice.None && holder != null) leftToProgram = holder.Name;
                     if (chosen == LightingChoice.Shared) lighting.AddRange(shared);
                     else if (chosen != LightingChoice.None)
                     {
@@ -668,7 +711,7 @@ namespace PadForge.Common.Input.Peripherals
                             AddOnce(haptics, candidate.Path);
                 }
 
-                if (haptics.Count == 0 && lighting.Count == 0) continue;
+                if (haptics.Count == 0 && lighting.Count == 0 && leftToProgram == null) continue;
                 result.Add(new DeviceLinks
                 {
                     Device = row.Device,
@@ -681,7 +724,9 @@ namespace PadForge.Common.Input.Peripherals
                     DirectWhenClosed = directWhenClosed,
                     WindowsLightsLampArray = windowsLightsLampArray,
                     Shadows = shadows,
-                    HasVendorProgram = row.VendorRow == null && HasVendorProgram(row.Unit == null ? row.VendorId : unitVendor),
+                    HasVendorProgram = row.VendorRow == null
+                                       && (ownPrograms || HasVendorProgram(row.Unit == null ? row.VendorId : unitVendor)),
+                    LeftToProgram = leftToProgram,
                 });
             }
             return new LinkTable(result);
@@ -749,7 +794,9 @@ namespace PadForge.Common.Input.Peripherals
         /// and <see cref="Build(IEnumerable{LinkRow}, LinkInputs)"/> then
         /// links only the units of it that answer.
         ///
-        /// <para>1. The vendor's program runs: its shared path, when its SDK
+        /// <para>1. The vendor's program runs, or for a device of the
+        /// shared worker a program its model names
+        /// (<see cref="ProgramHolding"/>): its shared path, when its SDK
         /// is installed, and nothing else. The program drives every device
         /// of its vendor, and two programs driving one device fight over it
         /// (uncoil apps/uncoild/src/conflicts.rs:34-37, which tells the user
@@ -845,6 +892,30 @@ namespace PadForge.Common.Input.Peripherals
                         BesideWindows = unit.LitBesideWindows,
                         LiveThroughLampArray = unit.LiveThroughLampArray,
                     });
+        }
+
+        /// <summary>The program that has a row's shared-worker device now:
+        /// the first program that runs among those named by a unit of the
+        /// row's own device (<see cref="DirectUnit.Programs"/>), asleep or
+        /// not, since the program has the device either way. Null when none
+        /// runs. <paramref name="named"/> says whether any such unit names a
+        /// program at all, which makes the row one the link pass watches
+        /// for a starting program while it is claimed
+        /// (<see cref="DeviceLinks.HasVendorProgram"/>).</summary>
+        internal static VendorProgram ProgramHolding(IReadOnlyList<DirectUnit> direct, LinkRow row,
+            PeripheralPresence presence, out bool named)
+        {
+            named = false;
+            VendorProgram holder = null;
+            var running = presence?.Programs ?? RunningPrograms.None;
+            foreach (var unit in direct)
+            {
+                if (unit.Family != OutputFamily.HidLightingUnit || !MatchesDevice(unit, row)) continue;
+                if (unit.Programs == null || unit.Programs.Count == 0) continue;
+                named = true;
+                holder ??= running.FirstOf(unit.Programs);
+            }
+            return holder;
         }
 
         /// <summary>Links the candidates that answer now

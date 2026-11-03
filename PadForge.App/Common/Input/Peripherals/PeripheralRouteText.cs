@@ -157,6 +157,15 @@ namespace PadForge.Common.Input.Peripherals
             if (ud == null || !PeripheralOutputs.Running) return null;
             var s = Strings.Instance;
             var links = PeripheralOutputs.Links.For(ud.InstanceGuid);
+            // A program the device's model names runs and lights it, and
+            // the device is lit on its own once that program is closed
+            // (DeviceLinks.LeftToProgram). The program's name stands where
+            // a shared path's app stands. This line says colors go through
+            // the program, which holds only for a program with an SDK route
+            // of PadForge's own, until the line of its own lands with the
+            // next translation pass (#557).
+            if (links?.LeftToProgram is string program)
+                return lightsHere ? string.Format(s.Pad_Lighting_RouteThroughOrDirect, program) : null;
             if (links == null || links.Lighting.Length == 0)
             {
                 // The record says it has lighting, and no path reaches it

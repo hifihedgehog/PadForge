@@ -103,6 +103,21 @@ namespace PadForge.Common.Input.Peripherals
     /// (LenovoLegionToolkit-Team KeyboardBacklightPage.xaml.cs
     /// CheckDynamicLightingWarningAsync), so this path is chosen over that
     /// interface then (<see cref="HidLightingModel.LitBesideWindows"/>).</para>
+    ///
+    /// <para>Lenovo's programs. Lenovo Vantage, Legion Space and Legion
+    /// Zone light the keyboard, and while any of them runs the keyboard is
+    /// left to it (<see cref="VendorPrograms.LenovoSpectrum"/>): Lenovo
+    /// Legion Toolkit's Spectrum page stands down for the same three. The
+    /// Toolkit itself is not among them. On a Gen 10 machine it hides its
+    /// one streamed effect, Aurora Sync
+    /// (LenovoLegionToolkit-Team
+    /// SpectrumKeyboardBacklightController.cs:211-214), and the profile
+    /// keys only start that effect (lines 62-83), so it writes the
+    /// keyboard only on the user's own action: lighting picked on its
+    /// page, or an automation step the user set up
+    /// (LenovoLegionToolkit.Lib.Automation/Steps/SpectrumKeyboardBacklight*AutomationStep.cs).
+    /// That is the user choosing that lighting, as with a profile
+    /// key.</para>
     /// </summary>
     internal sealed class LenovoLegionLighting : IHidLightingFamily
     {
@@ -228,6 +243,7 @@ namespace PadForge.Common.Input.Peripherals
                 },
                 LitBesideWindows = true,
                 LiveThroughLampArray = true,
+                Programs = VendorPrograms.LenovoSpectrum,
                 HoldMs = HoldMs,
                 RepaintMs = RepaintMs,
                 RecheckMs = RecheckMs,

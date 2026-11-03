@@ -568,7 +568,7 @@ namespace PadForge.Tests
     /// for two passes.
     /// </summary>
     [Collection("PeripheralOutputStatics")]
-    public class HidLightingBackendTests : IDisposable
+    public partial class HidLightingBackendTests : IDisposable
     {
         private static readonly Guid Box = new("11111111-2222-3333-4444-555555555555");
         private static readonly Guid Device = new("00000000-0000-0000-0000-0000000000a1");
@@ -636,7 +636,7 @@ namespace PadForge.Tests
                     lock (_oneShots) _oneShots.Add((path, (byte[])frame.Clone(), timeoutMs));
                     return true;
                 },
-                (_, _, _) => false, ms => Advance(ms), idleTickMs: 5);
+                (_, _, _) => false, Wait, idleTickMs: 5);
             backend.Start();
             backend.Rescan(present);
             Passes(backend);

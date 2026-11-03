@@ -50,6 +50,15 @@ namespace PadForge.Common.Input.Peripherals
         /// (<see cref="PeripheralLinker.ChooseLighting"/>).</summary>
         public bool LiveThroughLampArray { get; init; }
 
+        /// <summary>The programs that light the model's devices while they
+        /// run (<see cref="VendorPrograms"/>). While one runs, the linker
+        /// leaves the device to it, and the worker lets go of the device
+        /// with no hand-back, since one that lands after the program's own
+        /// writes would undo them. Nothing is sent to the device meanwhile:
+        /// no picture, no hand-back owed from an earlier run, and nothing
+        /// on the crash path.</summary>
+        public IReadOnlyList<VendorProgram> Programs { get; init; } = Array.Empty<VendorProgram>();
+
         /// <summary>How long a changed picture has to stay the same before
         /// it goes out. 0: at once.</summary>
         public int HoldMs { get; init; }

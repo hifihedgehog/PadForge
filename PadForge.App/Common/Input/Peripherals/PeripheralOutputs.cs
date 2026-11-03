@@ -146,14 +146,23 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The row's device is of a vendor whose program drives
         /// every device of that vendor while it runs: a Logitech, Razer or
         /// SteelSeries device (<see cref="PeripheralLinker.HasVendorProgram"/>),
-        /// or the row of a unit of one. A path that lights such a row on
+        /// the row of a unit of one, or a device whose shared-worker model
+        /// names programs (<see cref="DirectUnit.Programs"/>). A path that lights such a row on
         /// its own is withdrawn when the program starts, so the link pass
         /// watches for the program while one is claimed
         /// (<see cref="PeripheralOutputs.AnyClaimAVendorProgramTakes"/>).</summary>
         public bool HasVendorProgram { get; init; }
 
+        /// <summary>The program the row's device is left to, by name, or
+        /// null: a program its shared-worker model names runs, and
+        /// PadForge has no path through it
+        /// (<see cref="PeripheralLinker.ProgramHolding"/>). The row then
+        /// holds no lighting path and keeps its Lighting tab, whose line
+        /// names the program.</summary>
+        public string LeftToProgram { get; init; }
+
         public PeripheralOutputKinds Kinds
-            => (Lighting.Length > 0 ? PeripheralOutputKinds.Lighting : PeripheralOutputKinds.None)
+            => (Lighting.Length > 0 || LeftToProgram != null ? PeripheralOutputKinds.Lighting : PeripheralOutputKinds.None)
              | (Haptics.Length > 0 ? PeripheralOutputKinds.Haptics : PeripheralOutputKinds.None)
              | (MaxClaimLevel >= 1 ? PeripheralOutputKinds.LightingLevel1 : PeripheralOutputKinds.None)
              | (MaxClaimLevel >= 2 ? PeripheralOutputKinds.LightingLevel2 : PeripheralOutputKinds.None);
@@ -210,6 +219,7 @@ namespace PadForge.Common.Input.Peripherals
                     || theirs.DirectWhenClosed != pair.Value.DirectWhenClosed
                     || theirs.WindowsLightsLampArray != pair.Value.WindowsLightsLampArray
                     || theirs.HasVendorProgram != pair.Value.HasVendorProgram
+                    || !string.Equals(theirs.LeftToProgram, pair.Value.LeftToProgram, StringComparison.Ordinal)
                     || !SamePaths(theirs.Lighting, pair.Value.Lighting)
                     || !SamePaths(theirs.Haptics, pair.Value.Haptics)
                     || !SamePaths(theirs.Shadows, pair.Value.Shadows)
@@ -866,12 +876,12 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Whether a claim resolves on a lighting path that a
         /// vendor's program would take away: a HID++, Razer or SteelSeries
-        /// unit, or a LampArray unit held by a row of one of those three
-        /// vendors, the unit's own row included
+        /// unit, a shared-worker unit or a LampArray unit held by a row of
+        /// a device a program drives, the unit's own row included
         /// (<see cref="DeviceLinks.HasVendorProgram"/>). Not a LampArray
         /// unit Windows Dynamic Lighting lights, which its backend leaves
-        /// unpainted, and not a LampArray unit of any other vendor's
-        /// device, whose path no running flag can move. The table and the
+        /// unpainted, and not a unit of any other device, whose path no
+        /// running flag can move. The table and the
         /// units come from one pass's publish.</summary>
         internal static bool AnyClaimAVendorProgramTakes()
         {
@@ -885,6 +895,11 @@ namespace PadForge.Common.Input.Peripherals
                     case OutputFamily.HidppUnit:
                     case OutputFamily.RazerUnit:
                     case OutputFamily.SteelSeriesUnit:
+                        break;
+                    // A unit of the shared worker whose model names a
+                    // program (DirectUnit.Programs) marks its row.
+                    case OutputFamily.HidLightingUnit:
+                        if (!LitByARowWithAVendorProgram(links, pair.Value, path)) continue;
                         break;
                     case OutputFamily.LampArrayUnit:
                         if (!LitByARowWithAVendorProgram(links, pair.Value, path)) continue;

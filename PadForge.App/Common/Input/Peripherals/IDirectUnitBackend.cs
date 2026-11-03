@@ -45,7 +45,8 @@ namespace PadForge.Common.Input.Peripherals
     /// resolves on it: the family's hand-back, then the handle is closed.
     /// Two exceptions send nothing. A path withdrawn because the vendor's
     /// program started (<see cref="PeripheralPresence.RazerSoftwareRunning"/>,
-    /// <see cref="PeripheralPresence.SteelSeriesGGRunning"/>): the program
+    /// <see cref="PeripheralPresence.SteelSeriesGGRunning"/>, a program a
+    /// shared-worker model names, <see cref="HidLightingModel.Programs"/>): the program
     /// has taken the device, and a hand-back that lands after its claim
     /// undoes it. And a LampArray unit Windows Dynamic Lighting started to
     /// light, whose hand-back would switch Windows' own effect off.</para>

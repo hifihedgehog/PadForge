@@ -43,7 +43,11 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>Hand back. When no claim resolves on the unit or its path
     /// leaves the link table, the session returns the device to its own
-    /// lighting and the handle closes.</para>
+    /// lighting and the handle closes. Not when the path left because a
+    /// program the model names started (<see cref="HidLightingModel.Programs"/>):
+    /// the worker lets go with nothing sent, and sends the device nothing,
+    /// owed colors and the crash path's frames included, while the program
+    /// runs.</para>
     ///
     /// <para>Fail. A write or a read that fails, a hand-back included,
     /// closes the unit's channel and lists the unit asleep, asks the host
@@ -133,7 +137,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The units whose sessions name frames that undo what they
         /// wrote, for the crash path, which cannot wait on this worker.
         /// Swapped whole.</summary>
-        private (string Path, byte[][] Frames, bool Feature)[] _recorded = Array.Empty<(string, byte[][], bool)>();
+        private (string Path, byte[][] Frames, bool Feature, IReadOnlyList<VendorProgram> Programs)[] _recorded = Array.Empty<(string, byte[][], bool, IReadOnlyList<VendorProgram>)>();
 
         private readonly IReadOnlyList<IHidLightingFamily> _families;
         private readonly Func<string, IHidReportChannel> _open;
@@ -205,7 +209,7 @@ namespace PadForge.Common.Input.Peripherals
         internal bool WorkerAlive => Volatile.Read(ref _worker)?.IsAlive == true;
 
         /// <summary>The crash path's record, for a test.</summary>
-        internal (string Path, byte[][] Frames, bool Feature)[] Recorded => Volatile.Read(ref _recorded);
+        internal (string Path, byte[][] Frames, bool Feature, IReadOnlyList<VendorProgram> Programs)[] Recorded => Volatile.Read(ref _recorded);
 
         public void Start()
         {
@@ -266,8 +270,12 @@ namespace PadForge.Common.Input.Peripherals
             {
                 try { _thread?.Join((int)Math.Min(left, PanicJoinMs)); } catch { }
             }
-            foreach (var (path, frames, feature) in Interlocked.Exchange(ref _recorded, Array.Empty<(string, byte[][], bool)>()))
+            foreach (var (path, frames, feature, programs) in Interlocked.Exchange(ref _recorded, Array.Empty<(string, byte[][], bool, IReadOnlyList<VendorProgram>)>()))
             {
+                // A program of the model runs and has the device: nothing
+                // goes to it, as the Razer worker sends nothing while
+                // Synapse runs (RazerDirectBackend.ReleaseClaimedNow).
+                if (ProgramRuns(programs)) continue;
                 foreach (byte[] frame in frames)
                 {
                     left = deadline - _ticks();
@@ -369,8 +377,10 @@ namespace PadForge.Common.Input.Peripherals
                     // channel goes out through a report of its own, as on
                     // the crash path, where the session names frames for it.
                     // Not from a worker that outlived its Stop into the next
-                    // run, whose worker has the collections by then. What
-                    // stays owed is in the model's keeping for the next run.
+                    // run, whose worker has the collections by then. A unit
+                    // whose program runs is released with nothing to send
+                    // (Release). What stays owed is in the model's keeping
+                    // for the next run.
                     if (frames == null || !ownRun) continue;
                     foreach (var frame in frames)
                     {
@@ -381,7 +391,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (current == null || ReferenceEquals(current, run))
                 {
                     foreach (var unit in units) PeripheralLightMaps.Remove(PathOf(unit));
-                    Volatile.Write(ref _recorded, Array.Empty<(string, byte[][], bool)>());
+                    Volatile.Write(ref _recorded, Array.Empty<(string, byte[][], bool, IReadOnlyList<VendorProgram>)>());
                     Volatile.Write(ref _snapshot, DirectBackendSnapshot.NotScanned);
                 }
             }
@@ -473,6 +483,7 @@ namespace PadForge.Common.Input.Peripherals
                     Asleep = unit.Asleep,
                     LitBesideWindows = unit.Model.LitBesideWindows,
                     LiveThroughLampArray = unit.Model.LiveThroughLampArray,
+                    Programs = unit.Model.Programs ?? Array.Empty<VendorProgram>(),
                 };
             }
             Volatile.Write(ref _snapshot, new DirectBackendSnapshot(list));
@@ -534,7 +545,9 @@ namespace PadForge.Common.Input.Peripherals
                 // Colors an earlier run left in the device's memory go back
                 // with no claim on it, once this run's first claims have had
                 // the time to resolve, and once per answer of the unit's.
-                if (run.Stop || unit.Model.Owed?.Invoke() != true) return;
+                // Not while a program of the model has the device: they
+                // stay owed, in the model's keeping, until it has stopped.
+                if (run.Stop || ProgramRuns(unit.Model.Programs) || unit.Model.Owed?.Invoke() != true) return;
                 long repairAt = Volatile.Read(ref _repairAt);
                 if (now < repairAt)
                 {
@@ -549,6 +562,11 @@ namespace PadForge.Common.Input.Peripherals
             // A stopping worker opens nothing and paints nothing more. Its
             // finally hands back what it holds.
             if (run.Stop) return;
+            // A program of the model started. The link pass publishes the
+            // presence before the table it links from it, so the path is
+            // still linked for the moment between, and nothing goes out
+            // meanwhile. The next table lets the unit go (Release).
+            if (ProgramRuns(unit.Model.Programs)) return;
             if (unit.Io == null && !Open(unit))
             {
                 Fail(unit, now, "did not open for read and write or did not answer", ref changed, ref failed, ref due);
@@ -697,12 +715,34 @@ namespace PadForge.Common.Input.Peripherals
         private bool Release(Unit unit)
         {
             if (unit.Session == null) return true;
+            if (ProgramRunning(unit.Model.Programs) is VendorProgram program)
+            {
+                // A program of the model started, and the linker takes the
+                // unit's path away from the pass that sees it. The program
+                // lights the device from here on, and a hand-back that
+                // landed after its own writes would undo them, so the
+                // worker lets go without a frame, as the Razer worker does
+                // while Synapse runs (RazerDirectBackend.Pump and LetGo)
+                // and the SteelSeries worker once GG has the path
+                // (SteelSeriesDirectBackend.Release). What the session
+                // wrote stays owed in the model's keeping.
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"PERIPHERAL HidLighting {unit.Label} left to {program.Name}, which started");
+                return true;
+            }
             bool released = false;
             try { released = unit.Session.HandBack(unit.Io, _wait); } catch { }
             Track(unit);
             if (released) PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} lighting handed back");
             return released;
         }
+
+        /// <summary>The first of <paramref name="programs"/> that runs now,
+        /// by the presence the link pass last published, or null.</summary>
+        private static VendorProgram ProgramRunning(IReadOnlyList<VendorProgram> programs)
+            => programs == null || programs.Count == 0 ? null : PeripheralOutputs.Presence.Programs.FirstOf(programs);
+
+        private static bool ProgramRuns(IReadOnlyList<VendorProgram> programs) => ProgramRunning(programs) != null;
 
         /// <summary>A write, an open or a read failed. The channel closes and
         /// the unit is listed asleep, never taken off the list.</summary>
@@ -744,9 +784,9 @@ namespace PadForge.Common.Input.Peripherals
             Unrecord(unit);
             if (frames.Length == 0) return;
             var current = Volatile.Read(ref _recorded);
-            var next = new (string, byte[][], bool)[current.Length + 1];
+            var next = new (string, byte[][], bool, IReadOnlyList<VendorProgram>)[current.Length + 1];
             current.CopyTo(next, 0);
-            next[current.Length] = (unit.Path, frames, unit.Session.Feature);
+            next[current.Length] = (unit.Path, frames, unit.Session.Feature, unit.Model.Programs);
             Volatile.Write(ref _recorded, next);
             unit.Recorded = true;
             unit.RecordedFrames = frames;
@@ -762,7 +802,7 @@ namespace PadForge.Common.Input.Peripherals
             var frames = unit.RecordedFrames;
             unit.RecordedFrames = null;
             var current = Volatile.Read(ref _recorded);
-            var next = new List<(string, byte[][], bool)>(current.Length);
+            var next = new List<(string, byte[][], bool, IReadOnlyList<VendorProgram>)>(current.Length);
             foreach (var entry in current)
                 if (!ReferenceEquals(entry.Frames, frames)) next.Add(entry);
             Volatile.Write(ref _recorded, next.ToArray());

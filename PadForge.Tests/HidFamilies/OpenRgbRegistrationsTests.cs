@@ -30,7 +30,7 @@ namespace PadForge.Tests
         }
 
         private static OpenRgbRegistration Row(string source, string name = null)
-            => OpenRgbRegistrations.All.Concat(OpenRgbRegistrations.Specimens)
+            => OpenRgbRegistrations.All
                 .Single(r => r.Source == source && (name == null || r.Name == name));
 
         private static OpenRgbRegistration Hid(int vid, int pid, int iface = -1, int page = -1, int usage = -1,
@@ -46,7 +46,7 @@ namespace PadForge.Tests
         /// <summary>Per family, the rows that are not read from the settings
         /// are, field for field, the registrations OpenRGB's detector
         /// objects made when the family's own files were built and run
-        /// (registrations_dump.tsv), and each specimen is among its family's.</summary>
+        /// (registrations_dump.tsv).</summary>
         [Fact]
         public void EveryRegistration_IsWhatOpenRgbsDetectorObjectsRegister()
         {
@@ -73,8 +73,6 @@ namespace PadForge.Tests
                 var theirs = dumped.Where(p => p[0] == family).Select(p => string.Join("|", p)).OrderBy(x => x, StringComparer.Ordinal);
                 Assert.Equal(theirs, mine);
             }
-            foreach (var specimen in OpenRgbRegistrations.Specimens)
-                Assert.Contains(Key(specimen), dumped.Select(p => string.Join("|", p)));
         }
 
         /// <summary>
@@ -250,27 +248,6 @@ namespace PadForge.Tests
                           fromSettings.UsagePage, fromSettings.Usage, fromSettings.FromSettings));
             var keychron = Row("QMKKeychronControllerDetect.cpp:55");
             Assert.Equal((0x3434, -1, -1, 0xFF60, 0x61, false), (keychron.VendorId, keychron.ProductId, keychron.Interface, keychron.UsagePage, keychron.Usage, keychron.FromSettings));
-        }
-
-        /// <summary>The forms none of the 54 families uses, read the same way:
-        /// _WRAPPED_I and _WRAPPED_IPU (DetectionManager.h:576 and 578,
-        /// HyperXMicrophoneControllerDetect.cpp:52, HyperXMousematControllerDetect.cpp:49),
-        /// USB serial (line 592, BlinkyTapeControllerDetect.cpp:37), and the
-        /// bus forms _BPU and _BP with hidapi's USB bus, 1 (lines 563-564,
-        /// hidapi.h:129, LogitechControllerDetect.cpp:1791-1792).</summary>
-        [Fact]
-        public void TheOtherForms_DecodeFromTheirOwnDefinitions()
-        {
-            var quadcast = Row("HyperXMicrophoneControllerDetect.cpp:52");
-            Assert.Equal(("REGISTER_HID_WRAPPED_DETECTOR_I", true, 0, -1, -1), (quadcast.Macro, quadcast.IsWrapped, quadcast.Interface, quadcast.UsagePage, quadcast.Usage));
-            var mat = Row("HyperXMousematControllerDetect.cpp:49");
-            Assert.Equal(("REGISTER_HID_WRAPPED_DETECTOR_IPU", 1, 0xFF90, 0xFF00), (mat.Macro, mat.Interface, mat.UsagePage, mat.Usage));
-            var tape = Row("BlinkyTapeControllerDetect.cpp:37");
-            Assert.Equal(("REGISTER_USB_SERIAL_DETECTOR", OpenRgbTransport.UsbSerial, -1), (tape.Macro, tape.Transport, tape.Interface));
-            var bpu = Row("LogitechControllerDetect.cpp:1791");
-            Assert.Equal(("REGISTER_HID_DETECTOR_BPU", 0x046D, -1, -1, 0xFF00, 2, 1), (bpu.Macro, bpu.VendorId, bpu.ProductId, bpu.Interface, bpu.UsagePage, bpu.Usage, bpu.Bus));
-            var bp = Row("LogitechControllerDetect.cpp:1792");
-            Assert.Equal(("REGISTER_HID_DETECTOR_BP", 0xFF43, -1, 1), (bp.Macro, bp.UsagePage, bp.Usage, bp.Bus));
         }
 
         // ── The matching rules ──

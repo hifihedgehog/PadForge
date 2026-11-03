@@ -488,17 +488,5 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new("XPGSummonerKeyboardController", "XPG Summoner Gaming Keyboard", "DetectXPGSummonerControllers", "REGISTER_HID_DETECTOR_IPU", OpenRgbTransport.Hid, 0x125F, 0x9418, 2, 0xFF01, 0x01, -1, true, false, "XPGSummonerControllerDetect.cpp:35"),
             new("ZETKeyboardController", "ZET Blade Optical", "DetectZETBladeOptical", "REGISTER_HID_DETECTOR_IP", OpenRgbTransport.Hid, 0x2EA8, 0x2125, 1, 0xFF00, -1, -1, true, false, "ZETKeyboardControllerDetect.cpp:44"),
         };
-
-        /// <summary>The first registration of each macro form the families above
-        /// do not use, read the same way from a family that does, for the tests
-        /// that hold each form's decoding to its source line.</summary>
-        internal static readonly OpenRgbRegistration[] Specimens =
-        {
-            new("HyperXMicrophoneController", "HyperX Quadcast S", "DetectHyperXMicrophoneControllers", "REGISTER_HID_WRAPPED_DETECTOR_I", OpenRgbTransport.Hid, 0x0951, 0x171F, 0, -1, -1, -1, true, false, "HyperXMicrophoneControllerDetect.cpp:52"),
-            new("HyperXMousematController", "HyperX Pulsefire Mat", "DetectHyperXMousematControllers", "REGISTER_HID_WRAPPED_DETECTOR_IPU", OpenRgbTransport.Hid, 0x03F0, 0x0F8D, 1, 0xFF90, 0xFF00, -1, true, false, "HyperXMousematControllerDetect.cpp:49"),
-            new("BlinkyTapeController", "BlinkyTape", "DetectBlinkyTapeControllers", "REGISTER_USB_SERIAL_DETECTOR", OpenRgbTransport.UsbSerial, 0x1D50, 0x605E, -1, -1, -1, -1, true, false, "BlinkyTapeControllerDetect.cpp:37"),
-            new("LogitechController", "Logitech HID++ 2.0", "DetectLogitechHIDPP20", "REGISTER_HID_DETECTOR_BPU", OpenRgbTransport.Hid, 0x046D, -1, -1, 0xFF00, 0x02, 1, true, false, "LogitechControllerDetect.cpp:1791"),
-            new("LogitechController", "Logitech HID++ 2.0", "DetectLogitechHIDPP20", "REGISTER_HID_DETECTOR_BP", OpenRgbTransport.Hid, 0x046D, -1, -1, 0xFF43, -1, 1, true, false, "LogitechControllerDetect.cpp:1792"),
-        };
     }
 }

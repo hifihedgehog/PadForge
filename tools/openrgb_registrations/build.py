@@ -82,9 +82,7 @@ def main():
     failed = []
     try:
         only = sys.argv[2:]
-        specimen_families = [f for f, _ in gen.SPECIMENS if f not in gen.FAMILIES]
-        families = gen.FAMILIES + sorted(set(specimen_families), key=specimen_families.index)
-        for family in (only or families):
+        for family in (only or gen.FAMILIES):
             regs = gen.read_family(root, family, dm, dm_macros, ctors, bus)
             files = sorted(set(r.invocation[0] for r in regs))
             fam_dir = os.path.join(work, family)

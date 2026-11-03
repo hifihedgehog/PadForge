@@ -150,12 +150,23 @@ namespace PadForge.Common.Input.Peripherals
         /// productName (Bazecor package.json:3).</summary>
         public static readonly VendorProgram Bazecor = new("Bazecor", "Bazecor");
 
+        /// <summary>Wootility, Wooting's program for its keyboards. Its main
+        /// executable is Wootility.exe, in a per-user folder,
+        /// %LocalAppData%\Programs\wootility (the file list of Wootility
+        /// 5.0.6 at advanceduninstaller.com, Wootility-5_0_6). No source
+        /// code names its processes.</summary>
+        public static readonly VendorProgram WootingWootility = new("Wootility", "Wootility");
+
+        /// <summary>The program that lights the Wooting keyboards.</summary>
+        public static readonly IReadOnlyList<VendorProgram> Wooting = new[] { WootingWootility };
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
         {
             LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor, CorsairIcue,
             LegionAccessoryCentral,
+            WootingWootility,
         };
     }
 

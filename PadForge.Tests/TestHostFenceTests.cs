@@ -194,6 +194,7 @@ namespace PadForge.Tests
         private const string GameModFiles = Services + "GameModPortFiles.cs";
         private const string Telemetry = Input + "Telemetry/GameTelemetryDevice.cs";
         private const string Kunos = Input + "Telemetry/KunosSharedMemory.cs";
+        private const string OwnLighting = Input + "Peripherals/OwnLightingChannels.cs";
 
         private const string RefusesHost = "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(host))";
         private const string VendorRefuses = "if (PadForge.Engine.Common.VendorProgramGate.Refuses";
@@ -224,6 +225,7 @@ namespace PadForge.Tests
             (GameModFiles, "GameModPortFiles"),
             (Telemetry, "GameTelemetryDevice"),
             (Kunos, "KunosSharedMemory"),
+            (OwnLighting, "OwnLightingChannels"),
         };
 
         private const string Flag = "OffLimitsForTest";
@@ -262,6 +264,7 @@ namespace PadForge.Tests
             Assert.True(GameModPortFiles.OffLimitsForTest);
             Assert.True(PadForge.Common.Input.Telemetry.GameTelemetryDevice.OffLimitsForTest);
             Assert.True(PadForge.Common.Input.Telemetry.KunosSharedMemory.OffLimitsForTest);
+            Assert.True(OwnLightingChannels.OffLimitsForTest);
         }
 
         /// <summary>Each flag is a plain field that starts false, and no
@@ -445,6 +448,15 @@ namespace PadForge.Tests
             // The pipe a running PadForge serves.
             new object[] { ControlPipe, "public void Start()", "if (OffLimitsForTest && ServesTheAppsOwnPipe) return;" },
 
+            // A laptop's lighting through its firmware, and a keyboard's
+            // serial port (#557).
+            new object[] { OwnLighting, "internal static IAtkAcpiChannel OpenAtkAcpi()", "if (OffLimitsForTest) return null;" },
+            new object[] { OwnLighting, "internal static IHpBiosChannel OpenHpBios()", "if (OffLimitsForTest) return null;" },
+            new object[] { OwnLighting, "public byte[] Call(int command, int commandType, byte[] input)", "if (OffLimitsForTest) return null;" },
+            new object[] { OwnLighting, "internal static bool HpBiosCallOnce(int command, int commandType, byte[] input, int timeoutMs)", "if (OffLimitsForTest) return false;" },
+            new object[] { OwnLighting, "internal static ISerialLineChannel OpenSerial(string path, int baud)", "if (OffLimitsForTest) return null;" },
+            new object[] { OwnLighting, "internal static bool SerialWriteOnce(string path, int baud, byte[] bytes, int timeoutMs)", "if (OffLimitsForTest) return false;" },
+
             // Steam.
             new object[] { SteamHttpFile, "private static HttpClient CreateClient()", "var http = OffLimitsForTest ? new HttpClient(new SendsNothing()) : new HttpClient();" },
             new object[] { SteamClientFile, "public async Task EnsureLoggedOnAsync(CancellationToken ct = default)", "if (SteamHttp.OffLimitsForTest)" },
@@ -608,6 +620,7 @@ namespace PadForge.Tests
                 "PadForge.App/Common/Input/Ds3DirectService.cs",
                 "PadForge.App/Common/Input/HapticToneService.cs",
                 "PadForge.App/Common/Input/KeyboardScreens/G19UsbScreen.cs",
+                "PadForge.App/Common/Input/Peripherals/OwnLightingChannels.cs",
                 "PadForge.App/Common/Input/Peripherals/TouchSenseWinUsb.cs",
                 "PadForge.App/Common/Input/PlayStationEffectWriter.cs",
                 "PadForge.App/Common/Input/PsMoveDirectService.cs",

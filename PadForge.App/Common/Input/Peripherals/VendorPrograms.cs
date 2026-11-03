@@ -93,9 +93,32 @@ namespace PadForge.Common.Input.Peripherals
         /// LenovoLegionToolkit.WPF/Controls/KeyboardBacklight/Spectrum/SpectrumKeyboardBacklightControl.xaml.cs:352-364).</summary>
         public static readonly IReadOnlyList<VendorProgram> LenovoSpectrum = new[] { LenovoVantage, LegionSpace, LegionZone };
 
+        /// <summary>ASUS Armoury Crate, which lights a TUF laptop's
+        /// keyboard. G-Helper counts it as running while either of these
+        /// two processes runs (g-helper app/Helpers/AsusService.cs:44-50,
+        /// IsArmouryRunning).</summary>
+        public static readonly VendorProgram ArmouryCrate = new("Armoury Crate", "ArmouryCrate.Service", "LightingService");
+
+        /// <summary>HP's OMEN Gaming Hub, which lights an Omen laptop's
+        /// keyboard. Its background process, by the name HP's support forum
+        /// gives it (HP Community threads "OmenCommandCenterBackground.exe
+        /// Memory Error" and "Omen Command Center Background.exe Application
+        /// Error"), and named there as the process that applies its RGB
+        /// lighting settings. No source code names the hub's
+        /// processes.</summary>
+        public static readonly VendorProgram OmenGamingHub = new("OMEN Gaming Hub", "OmenCommandCenterBackground");
+
+        /// <summary>Dygma's Bazecor, which drives a Raise over the same
+        /// serial port: its executable is named by its package's
+        /// productName (Bazecor package.json:3).</summary>
+        public static readonly VendorProgram Bazecor = new("Bazecor", "Bazecor");
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
-        public static readonly IReadOnlyList<VendorProgram> All = new[] { LenovoVantage, LegionSpace, LegionZone };
+        public static readonly IReadOnlyList<VendorProgram> All = new[]
+        {
+            LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor,
+        };
     }
 
     /// <summary>The programs of <see cref="VendorPrograms"/> that run, from

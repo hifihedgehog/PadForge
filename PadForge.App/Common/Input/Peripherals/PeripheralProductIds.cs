@@ -15,7 +15,11 @@ namespace PadForge.Common.Input.Peripherals
     {
         /// <summary>Every USB_PID in openrazer
         /// daemon/openrazer_daemon/hardware/mouse.py, the wireless receivers
-        /// included.</summary>
+        /// included, and three more from OpenRGB at c6fc8016 (#557): the
+        /// Basilisk V4 Pro, 00E2 wired and 00E3 wireless
+        /// (Controllers/RazerController/RazerDevices.h:168-169), and the Mouse
+        /// Dock Pro, 00A4, a receiver whose rows carry the input of the mouse
+        /// paired to it (RazerDevices.h:278, RazerControllerDetect.cpp:42-82).</summary>
         internal static readonly ushort[] RazerMice =
         {
             0x0013, 0x0015, 0x0016, 0x001F, 0x0020, 0x0024, 0x0025, 0x0029, 0x002E, 0x002F,
@@ -29,7 +33,7 @@ namespace PadForge.Common.Input.Peripherals
             0x00A6, 0x00A7, 0x00A8, 0x00AA, 0x00AB, 0x00AF, 0x00B0, 0x00B2, 0x00B3, 0x00B4,
             0x00B6, 0x00B7, 0x00B8, 0x00B9, 0x00BE, 0x00BF, 0x00C0, 0x00C1, 0x00C2, 0x00C3,
             0x00C4, 0x00C5, 0x00C7, 0x00C8, 0x00CB, 0x00CC, 0x00CD, 0x00D0, 0x00D1, 0x00D3,
-            0x00D4, 0x00D6, 0x00D7,
+            0x00D4, 0x00D6, 0x00D7, 0x00A4, 0x00E2, 0x00E3,
         };
 
         /// <summary>Every USB_PID in openrazer keyboards.py, the keypads

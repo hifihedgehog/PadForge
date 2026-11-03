@@ -69,6 +69,31 @@ namespace PadForge.Common.Input.Peripherals
     /// opens nothing and writes nothing. It is not painted again on the
     /// clock.</para>
     ///
+    /// <para>Light by light (#557). A product with more than one light
+    /// (<see cref="RazerLightTable"/>) has its map published for the
+    /// Lighting tab's Key Colors card, and a claim that carries key colors
+    /// paints it a color per light: one report per LED with each LED's
+    /// color, or a frame with each cell's color, the extended matrix frame
+    /// for a product painted one color by effect
+    /// (<see cref="RazerDirectProtocol.PaintLights"/>). A claim with none,
+    /// a fallback, and a Set Chroma Color paint the one color as before. A
+    /// new picture goes out on the same clock as a new color, and an
+    /// unchanged one is not sent again but at a re-assert. A device that
+    /// refuses its first paint light by light is painted one color until
+    /// its claim ends. A keyboard whose keys OpenRGB's KeyboardLayoutManager
+    /// lays out is asked its layout once while it stays, right after its
+    /// claim read, and its map follows the region it names
+    /// (<see cref="RazerDirectProtocol.RegionOf"/>).</para>
+    ///
+    /// <para>A wireless receiver (#557). A product whose claim read is the
+    /// list of paired devices, the Mouse Dock Pro, names in its answer the
+    /// devices paired to it. Each that the table paints gets a unit of its
+    /// own, listed under the receiver's product ID and reached through the
+    /// receiver's collection under its own transaction ID, which the
+    /// receiver relays, as OpenRGB adds a controller for each
+    /// (RazerControllerDetect.cpp:42-82 at c6fc8016). Its replies are read
+    /// every 2 ms until they are final (<see cref="Exchange"/>).</para>
+    ///
     /// <para>Set Chroma Color (#468) paints the Razer devices on its
     /// virtual controller whether or not their Lighting tabs take control.
     /// For a unit that is the live macro of the controller with the
@@ -191,8 +216,8 @@ namespace PadForge.Common.Input.Peripherals
             public bool WentUnlocked;
 
             // Where the request stands while it is in flight.
-            public int Sends, HandleFaults, Refusals;
-            public bool Sent, Reread, Locked;
+            public int Sends, HandleFaults, Refusals, Rereads;
+            public bool Sent, Locked;
             public long DueAt;
 
             public Ask(byte[] request, int lockWaitMs, bool evenUnlocked = false)
@@ -237,6 +262,11 @@ namespace PadForge.Common.Input.Peripherals
             /// another than <see cref="TransactionId"/>, which its writes
             /// carry. Else 0 (<see cref="ReadId"/>).</summary>
             public byte ProbeId;
+
+            /// <summary>The reply to the claim read when it was a success
+            /// or busy, for a claim read that is a list the claim uses: the
+            /// regions (<see cref="RazerProbe.RegionList"/>).</summary>
+            public byte[] ProbeReply;
             public string Collection;
             public int NextId;
 
@@ -270,6 +300,54 @@ namespace PadForge.Common.Input.Peripherals
             public bool Wants;
             public int Wanted;
 
+            /// <summary>The picture wanted light by light (#557): a color
+            /// for each light of <see cref="Map"/>, and the color of every
+            /// LED or cell the map leaves out. Null colors for one color,
+            /// <see cref="Wanted"/>.</summary>
+            public int[] WantedColors;
+            public int WantedFill;
+
+            /// <summary>The key colors of the claim the picture was made from,
+            /// and the map it was rendered on.</summary>
+            public KeyFrame WantedKeys;
+            public LightMap WantedMap;
+
+            /// <summary>A keyboard's region, which picks the keys of its map:
+            /// ANSI until the keyboard has said (<see cref="RegionRead"/>),
+            /// asked once while the device stays.</summary>
+            public HidFamilies.KeyboardLayout Region = HidFamilies.KeyboardLayout.AnsiQwerty;
+            public bool RegionRead;
+
+            /// <summary>The picture of the last paint that went out whole,
+            /// and the map it was painted by.</summary>
+            public int[] SentColors;
+            public LightMap SentMap;
+            public int SentFill;
+
+            /// <summary>The product's lights (#557), or null for a product
+            /// painted one color, and the map they make with the names Map
+            /// Key Lights learned over them.</summary>
+            public RazerLightRow Lights;
+            public LightMap Map;
+
+            /// <summary>The device refused a paint light by light before it
+            /// took any of it, so it is painted one color until its claim
+            /// ends.</summary>
+            public bool NoLights;
+
+            /// <summary>For a device paired to a wireless receiver, the
+            /// receiver's unit: every report of this unit goes out through
+            /// the receiver's collection under this product's own
+            /// transaction ID, which the receiver relays to it (OpenRGB
+            /// RazerControllerDetect.cpp:42-82 at c6fc8016). Null for a unit
+            /// of its own.</summary>
+            public Unit Receiver;
+            public bool Relayed => Receiver != null;
+
+            /// <summary>For a receiver, the product IDs its last list of
+            /// paired devices named.</summary>
+            public ushort[] Paired = Array.Empty<ushort>();
+
             // The conversation in flight.
             public IEnumerator<Ask> Script;
             public Ask Flight;
@@ -292,6 +370,20 @@ namespace PadForge.Common.Input.Peripherals
             public readonly Dictionary<int, ISet<Guid>> OnSlot = new();
             public IReadOnlyList<HidCollectionInfo> Present;
             public bool Scanned, Dirty, AskWalk;
+
+            /// <summary>The lists of paired devices receivers answered in
+            /// this pass, applied once the pass has served every unit
+            /// (<see cref="ApplyPaired"/>).</summary>
+            public readonly List<(Unit Receiver, ushort[] Pids)> PairedFound = new();
+
+            /// <summary>The published light maps (#557) need making again:
+            /// a unit came or went, or Map Key Lights learned names, which
+            /// <see cref="MapsVersion"/> follows.</summary>
+            public bool MapsDirty = true;
+            public int MapsVersion = -1;
+
+            /// <summary>The paths this run has a map published under.</summary>
+            public readonly HashSet<OutputPath> Maps = new();
 
             /// <summary>Set for the worker's last act, which waits for a
             /// slow device's reply in place where a pass notes it as due.</summary>
@@ -330,7 +422,11 @@ namespace PadForge.Common.Input.Peripherals
         /// crash path, which cannot wait on this worker. Swapped whole,
         /// under <see cref="_claimedGate"/>, which is never held across a
         /// device call.</summary>
-        private (string Path, byte[][] HandBack, WorkerRun Run)[] _claimed = Array.Empty<(string, byte[][], WorkerRun)>();
+        /// <para>An entry names the unit as well as its collection: a
+        /// receiver and each device paired to it share one collection
+        /// (#557).</para>
+        private (string Path, byte[][] HandBack, WorkerRun Run, string Key)[] _claimed
+            = Array.Empty<(string, byte[][], WorkerRun, string)>();
         private readonly object _claimedGate = new();
 
         private Thread _thread;
@@ -538,6 +634,10 @@ namespace PadForge.Common.Input.Peripherals
             }
             Due(work, work.ContainerRetryAt);
 
+            // A unit's map is up before it is painted by, and again when
+            // Map Key Lights learned names (#557).
+            if (work.MapsDirty || LearnedKeyMaps.Version != work.MapsVersion) SyncMaps(work);
+
             // The table first, then the presence: the link pass publishes
             // the presence before the table it links from it, so a table
             // that shows a path withdrawn is never read beside a presence
@@ -555,12 +655,18 @@ namespace PadForge.Common.Input.Peripherals
                 if (unit.Gone && unit.Script == null && unit.Owed.Length == 0) (gone ??= new List<Unit>()).Add(unit);
             }
             if (gone != null)
-                foreach (var unit in gone) work.Units.Remove(unit.Listed.Key);
+                foreach (var unit in gone)
+                {
+                    work.Units.Remove(unit.Listed.Key);
+                    work.MapsDirty = true;
+                }
+            ApplyPaired(work);
 
             // A live Set Chroma Color ends without a word, so the pass
             // that lets it go runs at its lapse (ChromaBackend.PollWaitMs).
             Due(work, PeripheralOutputs.NextChromaMacroLapse(now));
 
+            if (work.MapsDirty || LearnedKeyMaps.Version != work.MapsVersion) SyncMaps(work);
             if (work.Dirty) Publish(work);
             if (work.AskWalk)
             {
@@ -619,7 +725,7 @@ namespace PadForge.Common.Input.Peripherals
                 list.Add(collection);
             }
             Forget(work.Containers, seen);
-            work.Refusing.RemoveWhere(key => !seen.Contains(key));
+            work.Refusing.RemoveWhere(key => !seen.Contains(CollectionOf(key)));
 
             var kept = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var pair in devices)
@@ -656,9 +762,11 @@ namespace PadForge.Common.Input.Peripherals
                         Listed = new DirectUnit(OutputFamily.RazerUnit, key, pair.Key.Container,
                             RazerDirectProtocol.VendorId, row.ProductId),
                         Leds = row.Leds,
+                        Lights = RazerLightTable.Find(row.ProductId),
                     };
                     work.Units[key] = unit;
                     work.Dirty = true;
+                    work.MapsDirty = true;
                     PadForge.Engine.SdlDiagLog.WriteLine(
                         $"PERIPHERAL Razer found '{row.Name}' pid={row.ProductId:X4} family={row.Family} collections={paths.Length}");
                 }
@@ -669,12 +777,27 @@ namespace PadForge.Common.Input.Peripherals
                 kept.Add(unit.Listed.Key);
             }
 
+            // A device paired to a receiver stays while the receiver's
+            // collection does, on the receiver's collections, whether or not
+            // the receiver takes a color of its own.
+            foreach (var unit in work.Units.Values)
+            {
+                var receiver = unit.Receiver;
+                if (receiver == null || !seen.Contains(receiver.Listed.Key)) continue;
+                if (kept.Contains(receiver.Listed.Key)) unit.Collections = receiver.Collections;
+                if (unit.Collection != null && Array.FindIndex(unit.Collections,
+                        p => string.Equals(p, unit.Collection, StringComparison.OrdinalIgnoreCase)) < 0)
+                    unit.Collection = null;
+                if (walked && unit.Asleep) unit.AskOnce = true;
+                kept.Add(unit.Listed.Key);
+            }
+
             // A unit that refused every paint is on its way out already,
             // and leaves once its hand-back is through. One that is owed
             // that hand-back leaves with its collection, as any unit does.
             List<Unit> left = null;
             foreach (var unit in work.Units.Values)
-                if (unit.Gone ? unit.Owed.Length > 0 && !seen.Contains(unit.Listed.Key) : !kept.Contains(unit.Listed.Key))
+                if (unit.Gone ? unit.Owed.Length > 0 && !seen.Contains(CollectionOf(unit.Listed.Key)) : !kept.Contains(unit.Listed.Key))
                     (left ??= new List<Unit>()).Add(unit);
             if (left != null)
             {
@@ -690,6 +813,7 @@ namespace PadForge.Common.Input.Peripherals
                     PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL Razer '{unit.Row.Name}' left");
                 }
                 work.Dirty = true;
+                work.MapsDirty = true;
             }
             if (!work.Scanned)
             {
@@ -707,6 +831,165 @@ namespace PadForge.Common.Input.Peripherals
                 foreach (string path in gone) containers.Remove(path);
         }
 
+        // ─────────────────────────────────────────────
+        //  A wireless receiver's paired devices (#557)
+        // ─────────────────────────────────────────────
+
+        /// <summary>The key of a device paired to a receiver: the
+        /// receiver's key, which is an interface path and holds no bar, a
+        /// bar and the device's product ID.</summary>
+        internal static string PairedKey(string receiverKey, ushort productId) => receiverKey + "|" + productId.ToString("X4");
+
+        /// <summary>The collection a unit key stands on: the key itself, or
+        /// for a paired device its receiver's.</summary>
+        internal static string CollectionOf(string key)
+        {
+            int bar = key.IndexOf('|');
+            return bar < 0 ? key : key.Substring(0, bar);
+        }
+
+        /// <summary>
+        /// Brings each receiver's paired units in line with the list it
+        /// answered in this pass. A paired product the table paints gets a
+        /// unit of its own, listed under the receiver's product ID, since
+        /// the receiver's rows carry the device's input, and reached through
+        /// the receiver's collection under its own transaction ID, as OpenRGB
+        /// adds a controller for each (RazerControllerDetect.cpp:42-82 at
+        /// c6fc8016). The receiver's own product ID is never one of them. A
+        /// paired unit the list no longer names leaves, with no report: the
+        /// receiver says the device is not behind it.
+        /// </summary>
+        private void ApplyPaired(Work work)
+        {
+            if (work.PairedFound.Count == 0) return;
+            foreach (var (receiver, pids) in work.PairedFound)
+            {
+                if (receiver.Gone || !work.Units.ContainsKey(receiver.Listed.Key)) continue;
+                receiver.Paired = pids;
+                List<Unit> left = null;
+                foreach (var unit in work.Units.Values)
+                    if (ReferenceEquals(unit.Receiver, receiver) && Array.IndexOf(pids, unit.Row.ProductId) < 0)
+                        (left ??= new List<Unit>()).Add(unit);
+                if (left != null)
+                    foreach (var unit in left)
+                    {
+                        ClearOwed(unit);
+                        Abandon(unit);
+                        Shut(unit);
+                        work.Units.Remove(unit.Listed.Key);
+                        work.Dirty = work.MapsDirty = true;
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"PERIPHERAL Razer '{unit.Row.Name}' is no longer paired to '{receiver.Row.Name}'");
+                    }
+                foreach (ushort pid in pids)
+                {
+                    var row = RazerDirectTable.Find(pid);
+                    string key = PairedKey(receiver.Listed.Key, pid);
+                    if (row == null || !row.HasColorPath || row.Probe == RazerProbe.PairedDevices
+                        || work.Units.ContainsKey(key) || work.Refusing.Contains(key))
+                        continue;
+                    work.Units[key] = new Unit
+                    {
+                        Row = row,
+                        Run = work.Run,
+                        Receiver = receiver,
+                        Path = new OutputPath(OutputFamily.RazerUnit, key),
+                        Listed = new DirectUnit(OutputFamily.RazerUnit, key, receiver.Listed.ContainerId,
+                            RazerDirectProtocol.VendorId, receiver.Row.ProductId),
+                        Leds = row.Leds,
+                        Lights = RazerLightTable.Find(row.ProductId),
+                        Collections = receiver.Collections,
+                        Collection = receiver.Collection,
+                    };
+                    work.Dirty = work.MapsDirty = true;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"PERIPHERAL Razer found '{row.Name}' pid={pid:X4} family={row.Family} paired to '{receiver.Row.Name}'");
+                }
+            }
+            work.PairedFound.Clear();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Light maps (#557)
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Publishes the light map of every unit whose product has more
+        /// than one light, with the names Map Key Lights learned over it,
+        /// and takes down the maps of units that left
+        /// (SteelSeriesDirectBackend.SyncMaps). A map that did not change
+        /// is not published again, so the Lighting tab does not redraw on
+        /// every pass. A worker that outlived its run publishes nothing.
+        /// </summary>
+        private void SyncMaps(Work work)
+        {
+            work.MapsDirty = false;
+            work.MapsVersion = LearnedKeyMaps.Version;
+            if (!Current(work)) return;
+            var published = new HashSet<OutputPath>();
+            foreach (var unit in work.Units.Values)
+            {
+                var map = unit.Lights == null || unit.Gone ? null
+                    : LearnedKeyMaps.Apply(RazerLightTable.Map(unit.Row.ProductId, unit.Region));
+                if (map == null)
+                {
+                    if (unit.Map != null) PeripheralLightMaps.Remove(unit.Path);
+                    unit.Map = null;
+                    continue;
+                }
+                published.Add(unit.Path);
+                if (SameLights(map, unit.Map)) continue;
+                unit.Map = map;
+                PeripheralLightMaps.Publish(unit.Path, map);
+            }
+            foreach (var path in work.Maps)
+                if (!published.Contains(path)) PeripheralLightMaps.Remove(path);
+            work.Maps.Clear();
+            work.Maps.UnionWith(published);
+        }
+
+        /// <summary>Whether two maps hold the same lights for the same
+        /// model (SteelSeriesDirectBackend.SameLights).</summary>
+        private static bool SameLights(LightMap a, LightMap b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (a == null || b == null || a.Product != b.Product || a.Lights.Count != b.Lights.Count) return false;
+            for (int i = 0; i < a.Lights.Count; i++)
+                if (a.Lights[i] != b.Lights[i]) return false;
+            return true;
+        }
+
+        /// <summary>The picture a unit wants: light by light where its
+        /// product has more than one light, the claim carries key colors,
+        /// it is painted by its own family and took a paint light by light
+        /// when it was asked, else the one color (#557). The claim's
+        /// color is the background its lights show where the frame gives
+        /// them none (<see cref="LightRenderer.Render"/>).</summary>
+        private static void Picture(Unit unit, KeyFrame keys)
+        {
+            var map = unit.Map;
+            if (unit.Plan == 0 && !unit.NoLights && unit.Lights != null && map is { PerLight: true }
+                && keys is { IsEmpty: false })
+            {
+                unit.WantedColors = LightRenderer.Render(map, unit.Wanted, keys);
+                unit.WantedFill = LightRenderer.Fill(unit.Wanted, keys);
+                unit.WantedMap = map;
+                return;
+            }
+            unit.WantedColors = null;
+            unit.WantedFill = unit.Wanted;
+            unit.WantedMap = null;
+        }
+
+        /// <summary>Whether the last paint that went out whole shows what
+        /// is wanted now: the one color, or the same colors light by light
+        /// on the same map (SteelSeriesDirectBackend.Showing).</summary>
+        private static bool Showing(Unit unit)
+            => unit.WantedColors == null
+                ? unit.SentColors == null && unit.Rgb == unit.Wanted
+                : unit.SentColors != null && ReferenceEquals(unit.SentMap, unit.WantedMap) && unit.SentFill == unit.WantedFill
+                  && LightRenderer.Same(unit.WantedColors, unit.SentColors);
+
         private void Publish(Work work)
         {
             work.Dirty = false;
@@ -719,8 +1002,18 @@ namespace PadForge.Common.Input.Peripherals
                 units.Add(unit.Listed);
             }
             // One order whatever the dictionary's, so a list that holds the
-            // same units reads as the same list.
-            units.Sort((a, b) => string.CompareOrdinal(a.Key, b.Key));
+            // same units reads as the same list. A device paired to a
+            // receiver comes just ahead of the receiver: the receiver's
+            // rows carry that device's input, and the first of a row's
+            // paths with lights of their own is the one its Key Colors card
+            // shows (PeripheralLightMaps.FirstPerLight).
+            units.Sort((a, b) =>
+            {
+                int byCollection = string.CompareOrdinal(CollectionOf(a.Key), CollectionOf(b.Key));
+                if (byCollection != 0) return byCollection;
+                bool pairedA = a.Key.IndexOf('|') >= 0, pairedB = b.Key.IndexOf('|') >= 0;
+                return pairedA != pairedB ? (pairedA ? -1 : 1) : string.CompareOrdinal(a.Key, b.Key);
+            });
             Volatile.Write(ref _snapshot, new DirectBackendSnapshot(units, work.Scanned));
             try { SnapshotChanged?.Invoke(); } catch { }
         }
@@ -752,7 +1045,10 @@ namespace PadForge.Common.Input.Peripherals
                 return;
             }
 
-            unit.Wants = !unit.Asleep && !unit.Gone && Wants(work, unit, links, out unit.Wanted);
+            KeyFrame keys = null;
+            unit.Wants = !unit.Asleep && !unit.Gone && Wants(work, unit, links, out unit.Wanted, out keys);
+            unit.WantedKeys = keys;
+            if (unit.Wants) Picture(unit, keys);
 
             // A conversation that ends leaves room for the next one in the
             // same pass: a claim that was just refused its lock, a paint
@@ -768,15 +1064,18 @@ namespace PadForge.Common.Input.Peripherals
         /// of a virtual controller that holds a row of it, else its ruling
         /// claim. False when no row links its path or neither gives a
         /// color.</summary>
-        private bool Wants(Work work, Unit unit, LinkTable links, out int rgb)
+        private bool Wants(Work work, Unit unit, LinkTable links, out int rgb, out KeyFrame keys)
         {
             rgb = 0;
+            keys = null;
             if (!links.ByPath.TryGetValue(unit.Path, out var rows)) return false;
             unit.Rows = rows;
             if (PeripheralOutputs.AnyChromaMacro(work.Now)
                 && MacroOn(LitThrough(links, unit.Path, rows), work.Now, slot => OnSlot(work, slot), _slotNumber, out rgb))
                 return true;
-            return PeripheralOutputs.TryResolveColor(unit.Path, out rgb);
+            if (!PeripheralOutputs.TryResolveColor(unit.Path, out rgb, out var ruler)) return false;
+            keys = ruler.Keys;
+            return true;
         }
 
         private ISet<Guid> OnSlot(Work work, int slot)
@@ -928,7 +1227,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (now >= ready) return Start(unit, Paint(work, unit, claim: true));
                 Due(work, ready);
             }
-            else if (unit.Wanted != unit.Rgb)
+            else if (!Showing(unit))
             {
                 if (held)
                 {
@@ -1035,7 +1334,14 @@ namespace PadForge.Common.Input.Peripherals
                         unit.TransactionId = id;
                         unit.ProbeId = probe == id ? (byte)0 : probe;
                         unit.Collection = path;
+                        unit.ProbeReply = ask.Outcome == Outcome.Accepted ? ask.Reply : null;
                         if (ask.Outcome == Outcome.Accepted) NoteBrightness(unit, ask.Reply);
+                        // A receiver's answer names the devices paired to
+                        // it (#557), which get units of their own once the
+                        // pass is through. Only a success is a list.
+                        if (row.Probe == RazerProbe.PairedDevices && ask.Outcome == Outcome.Accepted
+                            && ask.Reply[RazerDirectProtocol.StatusAt] == RazerDirectProtocol.StatusSuccess)
+                            work.PairedFound.Add((unit, RazerDirectProtocol.PairedProductIds(ask.Reply, row.ProductId)));
                         yield break;
                     case Outcome.Timeout:
                         // The receiver answered, so the collection is its
@@ -1090,7 +1396,9 @@ namespace PadForge.Common.Input.Peripherals
         /// log once.</summary>
         private static void NoteBrightness(Unit unit, byte[] reply)
         {
-            if (unit.DimNoted || unit.Row.Probe == RazerProbe.ClassicState) return;
+            if (unit.DimNoted || unit.Row.Probe is not (RazerProbe.ExtendedBrightness or RazerProbe.StandardBrightness
+                    or RazerProbe.LaptopBrightness))
+                return;
             int at = RazerDirectProtocol.ArgumentsAt + (unit.Row.Probe == RazerProbe.LaptopBrightness ? 1 : 2);
             if (reply[RazerDirectProtocol.StatusAt] != RazerDirectProtocol.StatusSuccess || reply[at] != 0) return;
             unit.DimNoted = true;
@@ -1170,10 +1478,36 @@ namespace PadForge.Common.Input.Peripherals
             if (unit.Io == null) yield break;
             var row = unit.Row;
 
+            // A keyboard laid out by OpenRGB's KeyboardLayoutManager says
+            // its region, which picks the keys of its map, once while it
+            // stays (#557). The map is made again at once, so the claim
+            // paints the keys the keyboard has.
+            if (unit.Lights?.KeyboardRecipe != null && !unit.RegionRead)
+            {
+                var ask = Read(RazerDirectProtocol.KeyboardInfoRead(ReadId(unit)));
+                yield return ask;
+                if (Lost(work, unit, ask)) yield break;
+                unit.RegionRead = true;
+                var region = ask.Outcome == Outcome.Accepted ? RazerDirectProtocol.RegionOf(ask.Reply) : null;
+                if (region is { } found && found != unit.Region)
+                {
+                    unit.Region = found;
+                    PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL Razer '{row.Name}' is laid out {found}");
+                    SyncMaps(work);
+                    Picture(unit, unit.WantedKeys);
+                }
+            }
+
             // The lit regions the device names, where its family has the
             // list (OpenRGB RazerController.cpp:1197-1271).
             unit.Leds = row.Leds;
-            if (row.Family == RazerFamily.Extended)
+            if (row.Family == RazerFamily.Extended && row.Probe == RazerProbe.RegionList)
+            {
+                // The claim read was this list already.
+                if (unit.ProbeReply != null)
+                    unit.Leds = RazerDirectProtocol.PaintLeds(row, RazerDirectProtocol.Regions(unit.ProbeReply));
+            }
+            else if (row.Family == RazerFamily.Extended)
             {
                 var ask = Read(RazerDirectProtocol.RegionListRead(ReadId(unit)));
                 yield return ask;
@@ -1227,7 +1561,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             var row = unit.Row;
             byte id = unit.TransactionId;
-            if (row.Family is RazerFamily.Extended or RazerFamily.ExtendedFrame)
+            if (row.Family is RazerFamily.Extended or RazerFamily.ExtendedFrame or RazerFamily.ExtendedMatrix)
             {
                 bool missing = false;
                 var restored = new List<byte>();
@@ -1310,6 +1644,12 @@ namespace PadForge.Common.Input.Peripherals
             while (true)
             {
                 int rgb = unit.Wanted;
+                // The picture light by light (#557), taken whole when the
+                // paint starts, as the color is. A unit that refused it is
+                // painted one color from here.
+                int[] colors = unit.NoLights || unit.Plan != 0 ? null : unit.WantedColors;
+                int fill = colors == null ? rgb : unit.WantedFill;
+                var map = colors == null ? null : unit.WantedMap;
                 // Every stamp is a fresh read of the clock. A pass reads
                 // its own once, at its start, and may get here much later,
                 // behind another device's replies.
@@ -1318,11 +1658,13 @@ namespace PadForge.Common.Input.Peripherals
                 var reports = new List<byte[]>();
                 if (claim && unit.Plan == 0) reports.AddRange(RazerDirectProtocol.Claim(row, id));
                 int claimReports = reports.Count;
-                reports.AddRange(unit.Plan == 0
-                    ? RazerDirectProtocol.Paint(row, id, unit.Leds, rgb)
-                    : RazerDirectProtocol.Paint(row.Fallbacks[unit.Plan - 1], id, rgb));
+                reports.AddRange(unit.Plan != 0
+                    ? RazerDirectProtocol.Paint(row.Fallbacks[unit.Plan - 1], id, rgb)
+                    : colors != null
+                        ? RazerDirectProtocol.PaintLights(row, unit.Lights, map.Lights, id, unit.Leds, colors, fill)
+                        : RazerDirectProtocol.Paint(row, id, unit.Leds, rgb));
 
-                bool refused = false;
+                bool refused = false, lightsRefused = false;
                 int painted = 0;
                 for (int at = 0; at < reports.Count; at++)
                 {
@@ -1360,6 +1702,16 @@ namespace PadForge.Common.Input.Peripherals
                     }
                     if (ask.Outcome is Outcome.NotSupported or Outcome.Refused)
                     {
+                        // A paint light by light that the device refused
+                        // before it took any of it says nothing of the
+                        // product's own family: the unit is painted one
+                        // color from here, by that family, until its claim
+                        // ends.
+                        if (colors != null && painted == 0 && at >= claimReports)
+                        {
+                            lightsRefused = true;
+                            break;
+                        }
                         // Nothing of the product's color was ever taken:
                         // it does not take this family.
                         if (!unit.Claimed && painted == 0)
@@ -1379,6 +1731,17 @@ namespace PadForge.Common.Input.Peripherals
                     yield break;
                 }
 
+                if (lightsRefused)
+                {
+                    unit.NoLights = true;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"PERIPHERAL Razer '{row.Name}' refused its colors light by light, painting it one color");
+                    // The paint goes out again in one color, with the claim
+                    // reports in front where it had them: they only open
+                    // the claim, as at every re-assert.
+                    continue;
+                }
+
                 if (!refused)
                 {
                     if (!unit.Claimed)
@@ -1390,6 +1753,9 @@ namespace PadForge.Common.Input.Peripherals
                     if (claim) unit.ClaimedAt = started;
                     unit.Rgb = rgb;
                     unit.Held = rgb;
+                    unit.SentColors = colors;
+                    unit.SentMap = colors == null ? null : map;
+                    unit.SentFill = fill;
                     unit.SentAt = started;
                     yield break;
                 }
@@ -1545,7 +1911,18 @@ namespace PadForge.Common.Input.Peripherals
             => ask.Outcome == Outcome.Accepted
                && (ask.Request[RazerDirectProtocol.CommandAt] & 0x80) == 0;
 
-        private static int ReplyMs(RazerDirectRow row) => (row.ReplyWaitUs + 999) / 1000;
+        /// <summary>The wait before each read of a unit's reply: the
+        /// product's own, or for a device behind a receiver the receiver's
+        /// polling interval (<see cref="RazerDirectProtocol.RelayPollUs"/>).</summary>
+        private static int ReplyUs(Unit unit) => unit.Relayed ? RazerDirectProtocol.RelayPollUs : unit.Row.ReplyWaitUs;
+
+        private static int ReplyMs(Unit unit) => (ReplyUs(unit) + 999) / 1000;
+
+        /// <summary>How many more times a reply that is not final yet is
+        /// read before the request goes out again: once, or for a device
+        /// behind a receiver until the receiver's 50 reads are spent
+        /// (<see cref="RazerDirectProtocol.RelayPolls"/>).</summary>
+        private static int Rereads(Unit unit) => unit.Relayed ? RazerDirectProtocol.RelayPolls - 1 : 1;
 
         /// <summary>
         /// Takes one request toward its outcome: the lock, the report, the
@@ -1563,6 +1940,13 @@ namespace PadForge.Common.Input.Peripherals
         /// (361-372) and uncoil takes as the answer of a receiver with no
         /// mouse behind it (crates/uncoil-hid/src/transport.rs:104-114 and
         /// 247-253): the unit is asked again on the worker's own interval.</para>
+        ///
+        /// <para>A device behind a receiver answers busy while the receiver
+        /// relays the request, and the receiver drops a report sent
+        /// meanwhile, so its reply is read every 2 ms until it is final, 50
+        /// reads at most, as OpenRGB does for such a device
+        /// (RazerController.cpp:2098-2124 at c6fc8016). Those reads are
+        /// noted as due, as a slow device's are.</para>
         /// </summary>
         private bool Exchange(Work work, Unit unit, Ask ask)
         {
@@ -1571,12 +1955,24 @@ namespace PadForge.Common.Input.Peripherals
             // A slow device's waits are noted as due and left to a later
             // pass. The worker's last act has no later pass, and waits for
             // each in place.
-            bool defer = row.SlowReply && !work.Blocking;
+            bool defer = (row.SlowReply || unit.Relayed) && !work.Blocking;
             while (true)
             {
                 if (!ask.Sent)
                 {
                     if (defer && now < ask.DueAt) return false;
+                    // A receiver drops a report that comes while it relays
+                    // another, so a receiver and the devices paired to it
+                    // send one request at a time between them, as OpenRGB's
+                    // device lock keeps their controllers to
+                    // (RazerController.cpp:2095-2096 at c6fc8016). The
+                    // worker's own lock is the same thread's on every unit,
+                    // so it does not do it.
+                    if (!work.Blocking && SiblingInFlight(work, unit))
+                    {
+                        ask.DueAt = _ticks() + RazerDirectProtocol.RelayPollUs / 1000;
+                        return false;
+                    }
                     if (!ask.Locked)
                     {
                         // A request that already went out without the lock
@@ -1598,17 +1994,17 @@ namespace PadForge.Common.Input.Peripherals
                         continue;
                     }
                     ask.Sent = true;
-                    ask.Reread = false;
+                    ask.Rereads = 0;
                     // The reply is due from when the request went out, and
                     // that can be well after the pass read its clock.
                     long sent = _ticks();
                     unit.LastSentAt = sent;
                     if (defer)
                     {
-                        ask.DueAt = sent + ReplyMs(row);
+                        ask.DueAt = sent + ReplyMs(unit);
                         return false;
                     }
-                    _wait(row.ReplyWaitUs);
+                    _wait(ReplyUs(unit));
                 }
                 else if (defer && now < ask.DueAt)
                 {
@@ -1622,7 +2018,9 @@ namespace PadForge.Common.Input.Peripherals
                 }
                 else
                 {
-                    switch (RazerDirectProtocol.Check(ask.Request, reply))
+                    switch (unit.Relayed
+                                ? RazerDirectProtocol.CheckRelayed(ask.Request, reply)
+                                : RazerDirectProtocol.Check(ask.Request, reply))
                     {
                         case RazerReply.Accepted:
                             return Done(ask, Outcome.Accepted, reply);
@@ -1634,20 +2032,35 @@ namespace PadForge.Common.Input.Peripherals
                             ask.Refusals++;
                             break;
                         default:
-                            if (ask.Reread) break;
-                            ask.Reread = true;
+                            if (ask.Rereads >= Rereads(unit)) break;
+                            ask.Rereads++;
                             if (defer)
                             {
-                                ask.DueAt = _ticks() + ReplyMs(row);
+                                ask.DueAt = _ticks() + ReplyMs(unit);
                                 return false;
                             }
-                            _wait(row.ReplyWaitUs);
+                            _wait(ReplyUs(unit));
                             continue;
                     }
                 }
                 if (!Again(work, unit, ask)) return true;
                 if (defer) return false;
             }
+        }
+
+        /// <summary>Whether another unit on the same receiver, the receiver
+        /// or a device paired to it, has a request out whose reply is still
+        /// unread.</summary>
+        private static bool SiblingInFlight(Work work, Unit unit)
+        {
+            var receiver = unit.Receiver ?? unit;
+            if (unit.Receiver == null && receiver.Paired.Length == 0) return false;
+            foreach (var other in work.Units.Values)
+                if (!ReferenceEquals(other, unit)
+                    && (ReferenceEquals(other, receiver) || ReferenceEquals(other.Receiver, receiver))
+                    && other.Flight is { Sent: true })
+                    return true;
+            return false;
         }
 
         private bool Done(Ask ask, Outcome outcome, byte[] reply)
@@ -1678,7 +2091,7 @@ namespace PadForge.Common.Input.Peripherals
                     : Outcome.Silent;
                 return false;
             }
-            if (unit.Row.SlowReply && !work.Blocking) ask.DueAt = _ticks() + AttemptGapMs;
+            if ((unit.Row.SlowReply || unit.Relayed) && !work.Blocking) ask.DueAt = _ticks() + AttemptGapMs;
             else _wait(AttemptGapMs * 1000);
             return true;
         }
@@ -1723,6 +2136,9 @@ namespace PadForge.Common.Input.Peripherals
             unit.HandBack = Array.Empty<byte[]>();
             unit.Rgb = NoColor;
             unit.Held = NoColor;
+            unit.SentColors = null;
+            unit.SentMap = null;
+            unit.NoLights = false;
         }
 
         private void Release(Unit unit, bool handedBack, bool lost = false)
@@ -1766,16 +2182,18 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>Adds a unit to the crash path's record, or replaces
-        /// what the record holds for its collection, with the hand-back the
-        /// unit holds now.</summary>
+        /// what the record holds for it on its collection, with the
+        /// hand-back the unit holds now.</summary>
         private void NoteClaimed(Unit unit)
         {
             lock (_claimedGate)
             {
-                var next = new List<(string, byte[][], WorkerRun)>(_claimed.Length + 1);
+                var next = new List<(string, byte[][], WorkerRun, string)>(_claimed.Length + 1);
                 foreach (var entry in _claimed)
-                    if (!string.Equals(entry.Path, unit.IoPath, StringComparison.OrdinalIgnoreCase)) next.Add(entry);
-                next.Add((unit.IoPath, unit.HandBack, unit.Run));
+                    if (!string.Equals(entry.Path, unit.IoPath, StringComparison.OrdinalIgnoreCase)
+                        || !string.Equals(entry.Key, unit.Listed.Key, StringComparison.OrdinalIgnoreCase))
+                        next.Add(entry);
+                next.Add((unit.IoPath, unit.HandBack, unit.Run, unit.Listed.Key));
                 Volatile.Write(ref _claimed, next.ToArray());
             }
         }
@@ -1784,19 +2202,20 @@ namespace PadForge.Common.Input.Peripherals
         /// entry is its own run's. A worker that outlived its run closes
         /// its handles when it comes back, and the collection may be on
         /// the record for its successor by then, which holds it now.</summary>
-        private void RemoveClaimed(Unit unit) => Unrecord(unit.IoPath, unit.Run);
+        private void RemoveClaimed(Unit unit) => Unrecord(unit.IoPath, unit);
 
         /// <summary>Takes a run's entry for a collection off the crash
         /// path's record, whether a claim made it or it is a hand-back
         /// that was owed.</summary>
-        private void Unrecord(string path, WorkerRun run)
+        private void Unrecord(string path, Unit unit)
         {
             lock (_claimedGate)
             {
-                int at = Array.FindIndex(_claimed, e => ReferenceEquals(e.Run, run)
-                    && string.Equals(e.Path, path, StringComparison.OrdinalIgnoreCase));
+                int at = Array.FindIndex(_claimed, e => ReferenceEquals(e.Run, unit.Run)
+                    && string.Equals(e.Path, path, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(e.Key, unit.Listed.Key, StringComparison.OrdinalIgnoreCase));
                 if (at < 0) return;
-                var next = new List<(string, byte[][], WorkerRun)>(_claimed);
+                var next = new List<(string, byte[][], WorkerRun, string)>(_claimed);
                 next.RemoveAt(at);
                 Volatile.Write(ref _claimed, next.ToArray());
             }
@@ -1807,7 +2226,7 @@ namespace PadForge.Common.Input.Peripherals
         private void ClearOwed(Unit unit)
         {
             if (unit.Owed.Length == 0) return;
-            Unrecord(unit.OwedPath, unit.Run);
+            Unrecord(unit.OwedPath, unit);
             unit.Owed = Array.Empty<byte[]>();
             unit.OwedPath = null;
         }
@@ -1909,7 +2328,12 @@ namespace PadForge.Common.Input.Peripherals
                 Volatile.Write(ref _claimed, Array.FindAll(_claimed, e => !ReferenceEquals(e.Run, work.Run)));
             var current = _run;
             if (current == null || ReferenceEquals(current, work.Run))
+            {
                 Volatile.Write(ref _snapshot, DirectBackendSnapshot.NotScanned);
+                // The maps go with the list they were the lights of.
+                foreach (var path in work.Maps) PeripheralLightMaps.Remove(path);
+                work.Maps.Clear();
+            }
         }
 
         /// <summary>
@@ -1933,14 +2357,14 @@ namespace PadForge.Common.Input.Peripherals
             Wake();
             int join = (int)Math.Clamp(deadline - _ticks(), 0, PanicJoinMs);
             try { _thread?.Join(join); } catch { }
-            (string Path, byte[][] HandBack, WorkerRun Run)[] claimed;
+            (string Path, byte[][] HandBack, WorkerRun Run, string Key)[] claimed;
             lock (_claimedGate)
             {
                 claimed = _claimed;
-                Volatile.Write(ref _claimed, Array.Empty<(string, byte[][], WorkerRun)>());
+                Volatile.Write(ref _claimed, Array.Empty<(string, byte[][], WorkerRun, string)>());
             }
             if (PeripheralOutputs.Presence.RazerSoftwareRunning) return;
-            foreach (var (path, handBack, _) in claimed)
+            foreach (var (path, handBack, _, _) in claimed)
             {
                 foreach (var report in handBack)
                 {

@@ -351,16 +351,18 @@ namespace PadForge.Tests
                 => Backend.Snapshot.Units.SingleOrDefault(u => u.Key == device.Key);
 
             /// <summary>What holds for every device whatever the test did:
-            /// no report of class 00, where the device mode lives, and no
-            /// request sent while the reply to the one before it on that
-            /// handle was still unread.</summary>
+            /// no report of class 00, where the device mode lives, but a
+            /// receiver's read of its paired devices (00/BF) and a keyboard's
+            /// read of its layout (00/86), and no request
+            /// sent while the reply to the one before it on that handle was
+            /// still unread.</summary>
             public void Verify(bool everyReplyRead = true)
             {
                 foreach (var device in Devices)
                 {
                     foreach (var call in device.Calls.Where(c => c.Kind == "set"))
                     {
-                        Assert.NotEqual(0x00, call.Bytes[P.ClassAt]);
+                        Assert.True(call.Bytes[P.ClassAt] != 0x00 || call.Bytes[P.CommandAt] is 0xBF or 0x86);
                         Assert.Equal(P.BufferLength, call.Bytes.Length);
                         Assert.Equal(P.Crc(call.Bytes), call.Bytes[P.CrcAt]);
                     }
@@ -574,6 +576,439 @@ namespace PadForge.Tests
             Assert.False(bench.Unit(mouse).Asleep);
             Assert.Equal(0, Volatile.Read(ref bench.Walks));
             bench.Verify();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Light by light (#557)
+        // ─────────────────────────────────────────────
+
+        private const ushort Lancehead = 0x0059, MouseDockPro = 0x00A4, BasiliskV3ProWireless = 0x00AB;
+
+        private static void LightKeys(FakeRazer device, int rgb, KeyFrame keys)
+            => PeripheralOutputs.SetLighting(device.Row, 0, 1, (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb, keys: keys);
+
+        private static KeyFrame Logo(int rgb)
+            => new(null, new Dictionary<string, int> { [LightGroups.Logo] = rgb }, null, null);
+
+        /// <summary>A Lancehead's frame of 16 with its logo, cell 14 in
+        /// OpenRGB's order (RazerDevices.cpp:6193-6244), in one color and
+        /// every other cell in another.</summary>
+        private static int[] LanceheadFrame(int rest, int logo)
+        {
+            var cells = Enumerable.Repeat(rest, 16).ToArray();
+            cells[14] = logo;
+            return cells;
+        }
+
+        /// <summary>A product with more than one light has its map published
+        /// under its unit's path once the unit is listed, and taken down when
+        /// the unit leaves and when the worker stops. A product with one
+        /// light has none. Nothing is sent to publish it.</summary>
+        [Fact]
+        public void AUnitsLightMap_IsPublishedWhileItIsListed()
+        {
+            PeripheralLightMaps.ResetForTest();
+            try
+            {
+                using var bench = new Bench();
+                var lancehead = bench.Add(Lancehead);
+                var viper = bench.Add(0x0078);
+                bench.StartAndWalk();
+                var map = PeripheralLightMaps.For(lancehead.Path);
+                Assert.NotNull(map);
+                Assert.Equal("razer:1532:0059", map.Product);
+                Assert.Equal(16, map.Lights.Count);
+                Assert.Equal(LightKind.Logo, map.Lights[14].Kind);
+                Assert.Null(PeripheralLightMaps.For(viper.Path));
+                Assert.All(bench.Devices, d => Assert.Equal(0, d.Opens));
+
+                lancehead.Present = false;
+                bench.Walk();
+                bench.Passes();
+                Assert.Null(PeripheralLightMaps.For(lancehead.Path));
+
+                lancehead.Present = true;
+                bench.Walk();
+                bench.Passes();
+                Assert.NotNull(PeripheralLightMaps.For(lancehead.Path));
+                bench.Backend.Stop();
+                Assert.Null(PeripheralLightMaps.For(lancehead.Path));
+            }
+            finally
+            {
+                PeripheralLightMaps.ResetForTest();
+            }
+        }
+
+        /// <summary>
+        /// A claim with key colors paints the product light by light: a
+        /// Lancehead, painted one color one report per LED, takes the
+        /// extended matrix frame and the custom frame effect, its logo in
+        /// the logo's color and every other cell in the claim's color. The
+        /// same picture again sends nothing, a new one paints again, and a
+        /// claim with no key colors paints the one color as before.
+        /// </summary>
+        [Fact]
+        public void KeyColors_PaintTheFrame_AndNoneLeaveTheOneColor()
+        {
+            PeripheralLightMaps.ResetForTest();
+            try
+            {
+                using var bench = new Bench();
+                var mouse = bench.Add(Lancehead);
+                bench.StartAndWalk();
+                bench.Link(mouse);
+                bench.Light(mouse, Red);
+                bench.Passes();
+                // The claim of #494, unchanged: the reads, then a static
+                // effect per LED.
+                Assert.Equal(Lines(
+                    P.ExtendedBrightnessRead(0x3F, 0x04),
+                    P.RegionListRead(0x3F),
+                    P.StoredEffectRead(0x3F, 0x04), P.StoredEffectRead(0x3F, 0x01),
+                    P.StoredEffectRead(0x3F, 0x11), P.StoredEffectRead(0x3F, 0x10),
+                    P.ExtendedStatic(0x3F, 0x04, Red), P.ExtendedStatic(0x3F, 0x01, Red),
+                    P.ExtendedStatic(0x3F, 0x11, Red), P.ExtendedStatic(0x3F, 0x10, Red)), mouse.Sent());
+
+                long mark = bench.Mark;
+                bench.Advance(RazerDirectBackend.PaintMs);
+                LightKeys(mouse, Red, Logo(Green));
+                bench.Passes();
+                Assert.Equal(Lines(P.ExtendedMatrixRow(0x3F, 0, LanceheadFrame(Red, Green)), P.ExtendedCustom(0x3F)),
+                    mouse.Sent(mark));
+
+                // The same picture: nothing.
+                mark = bench.Mark;
+                bench.Advance(RazerDirectBackend.PaintMs);
+                LightKeys(mouse, Red, Logo(Green));
+                bench.Passes();
+                Assert.Empty(mouse.Sent(mark));
+
+                // Another background under the same key colors.
+                bench.Advance(RazerDirectBackend.PaintMs);
+                LightKeys(mouse, Blue, Logo(Green));
+                bench.Passes();
+                Assert.Equal(Lines(P.ExtendedMatrixRow(0x3F, 0, LanceheadFrame(Blue, Green)), P.ExtendedCustom(0x3F)),
+                    mouse.Sent(mark));
+
+                // No key colors: the one color, one report per LED.
+                mark = bench.Mark;
+                bench.Advance(RazerDirectBackend.PaintMs);
+                bench.Light(mouse, Blue);
+                bench.Passes();
+                Assert.Equal(Lines(P.ExtendedStatic(0x3F, 0x04, Blue), P.ExtendedStatic(0x3F, 0x01, Blue),
+                    P.ExtendedStatic(0x3F, 0x11, Blue), P.ExtendedStatic(0x3F, 0x10, Blue)), mouse.Sent(mark));
+
+                // A frame that sets its own background paints every other
+                // cell in it, not in the claim's color
+                // (LightRenderer.Fill).
+                mark = bench.Mark;
+                bench.Advance(RazerDirectBackend.PaintMs);
+                LightKeys(mouse, Red, new KeyFrame(null, new Dictionary<string, int> { [LightGroups.Logo] = Green }, null, Blue));
+                bench.Passes();
+                Assert.Equal(Lines(P.ExtendedMatrixRow(0x3F, 0, LanceheadFrame(Blue, Green)), P.ExtendedCustom(0x3F)),
+                    mouse.Sent(mark));
+
+                // The re-assert repaints the picture that is wanted.
+                bench.Advance(RazerDirectBackend.PaintMs);
+                LightKeys(mouse, Red, Logo(Green));
+                bench.Passes();
+                mark = bench.Mark;
+                bench.Advance(RazerDirectBackend.ReassertMs);
+                bench.Passes();
+                Assert.Equal(Lines(P.ExtendedMatrixRow(0x3F, 0, LanceheadFrame(Red, Green)), P.ExtendedCustom(0x3F)),
+                    mouse.Sent(mark));
+                bench.Verify();
+            }
+            finally
+            {
+                PeripheralLightMaps.ResetForTest();
+            }
+        }
+
+        /// <summary>A device that refuses its first paint light by light
+        /// before it took any of it is painted one color in the same paint,
+        /// by its own family, and stays one color while its claim lasts:
+        /// the refusal does not count against the family.</summary>
+        [Fact]
+        public void ADeviceThatRefusesItsFrame_IsPaintedOneColor()
+        {
+            PeripheralLightMaps.ResetForTest();
+            try
+            {
+                using var bench = new Bench();
+                var mouse = bench.Add(Lancehead);
+                mouse.Answer = request => Is(request, 0x0F, 0x03) ? Reply(request, P.StatusNotSupported) : Answers(request);
+                bench.StartAndWalk();
+                bench.Link(mouse);
+                LightKeys(mouse, Red, Logo(Green));
+                bench.Passes();
+                var sent = mouse.Sent();
+                Assert.Equal(Lines(P.ExtendedMatrixRow(0x3F, 0, LanceheadFrame(Red, Green)),
+                    P.ExtendedStatic(0x3F, 0x04, Red), P.ExtendedStatic(0x3F, 0x01, Red),
+                    P.ExtendedStatic(0x3F, 0x11, Red), P.ExtendedStatic(0x3F, 0x10, Red)), sent.Skip(6));
+                Assert.False(bench.Unit(mouse).Asleep);
+
+                long mark = bench.Mark;
+                bench.Advance(RazerDirectBackend.PaintMs);
+                LightKeys(mouse, Red, Logo(Blue));
+                bench.Passes();
+                Assert.Empty(mouse.Sent(mark));
+                bench.Advance(RazerDirectBackend.PaintMs);
+                LightKeys(mouse, Green, Logo(Blue));
+                bench.Passes();
+                Assert.Equal(Lines(P.ExtendedStatic(0x3F, 0x04, Green), P.ExtendedStatic(0x3F, 0x01, Green),
+                    P.ExtendedStatic(0x3F, 0x11, Green), P.ExtendedStatic(0x3F, 0x10, Green)), mouse.Sent(mark));
+                bench.Verify();
+            }
+            finally
+            {
+                PeripheralLightMaps.ResetForTest();
+            }
+        }
+
+        /// <summary>
+        /// A Mouse Dock Pro's claim read is its list of paired devices
+        /// (OpenRGB RazerController.cpp:1273-1306). A paired product the
+        /// table paints gets a unit of its own, listed under the dock's
+        /// product ID and container ahead of the dock, and reached through
+        /// the dock's collection on a handle of its own under its own ID.
+        /// Each of its replies is read every 2 ms until it is past busy
+        /// (2098-2124), and it is painted light by light like any unit.
+        /// The two share the dock's collection on the crash path's record,
+        /// and leave with it.
+        /// </summary>
+        [Fact]
+        public void ADockProsPairedMouse_IsAUnitOfItsOwn_ReachedThroughTheDock()
+        {
+            PeripheralLightMaps.ResetForTest();
+            try
+            {
+                using var bench = new Bench(reassertMs: int.MaxValue);
+                var dock = bench.Add(MouseDockPro);
+                byte[] polled = null;
+                int busy = 0;
+                dock.Answer = request =>
+                {
+                    if (Is(request, 0x00, 0xBF))
+                        return Reply(request, P.StatusSuccess, 2, 0x01, 0x00, 0xAB, 0x01, 0x00, 0xA4);
+                    if (request[P.TransactionAt] != 0x1F) return Answers(request);
+                    // The receiver relays: three reads of busy, then the answer.
+                    if (!ReferenceEquals(request, polled))
+                    {
+                        polled = request;
+                        busy = 0;
+                    }
+                    return ++busy <= 3 ? Reply(request, P.StatusBusy) : Answers(request);
+                };
+                bench.StartAndWalk();
+                bench.Link(dock);
+                bench.Light(dock, Red);
+                bench.Passes();
+                var red9 = Enumerable.Repeat(Red, 9).ToArray();
+                Assert.Equal(Lines(P.PairedDevicesRead(0xFF), P.StoredEffectRead(0xFF, 0x00),
+                    P.ExtendedMatrixRow(0xFF, 0, red9), P.ExtendedCustom(0xFF)), dock.Sent());
+
+                // The mouse behind it, listed ahead of the dock.
+                string pairedKey = RazerDirectBackend.PairedKey(dock.Key, BasiliskV3ProWireless);
+                bench.Passes();
+                var units = bench.Backend.Snapshot.Units;
+                Assert.Equal(new[] { pairedKey, dock.Key }, units.Select(u => u.Key));
+                Assert.Equal(new DirectUnit(OutputFamily.RazerUnit, pairedKey, dock.Container, 0x1532, MouseDockPro), units[0]);
+                var pairedPath = new OutputPath(OutputFamily.RazerUnit, pairedKey);
+                Assert.Equal("razer:1532:00AB", PeripheralLightMaps.For(pairedPath).Product);
+
+                // The dock's row lights both.
+                long mark = bench.Mark;
+                PeripheralOutputs.PublishLinks(new LinkTable(new[]
+                {
+                    new DeviceLinks { Device = dock.Row, Lighting = new[] { pairedPath, dock.Path }, HasVendorProgram = true },
+                }));
+                LightKeys(dock, Red, Logo(Green));
+                for (int step = 0; step < 400 && dock.Sent(mark, r => r[P.TransactionAt] == 0x1F).Length < 5; step++)
+                {
+                    bench.Advance(2);
+                    bench.Passes(1);
+                }
+                // The last report's reads, 2 ms apart.
+                for (int step = 0; step < 8; step++)
+                {
+                    bench.Advance(2);
+                    bench.Passes(1);
+                }
+                bench.Passes();
+                var cells = Enumerable.Repeat(Red, 13).ToArray();
+                cells[1] = Green;
+                Assert.Equal(Lines(P.ExtendedBrightnessRead(0x1F, 0x00), P.RegionListRead(0x1F), P.StoredEffectRead(0x1F, 0x00),
+                    P.ExtendedMatrixRow(0x1F, 0, cells), P.ExtendedCustom(0x1F)),
+                    dock.Sent(mark, r => r[P.TransactionAt] == 0x1F));
+                Assert.Equal(2, dock.Opens);
+                // On the mouse's own handle, every request is followed by
+                // four reads, three of them busy, each 2 ms after the last.
+                var relay = dock.Channels.ToArray()[1];
+                Assert.Equal(Enumerable.Repeat(new[] { "set", "get", "get", "get", "get" }, 5).SelectMany(k => k),
+                    relay.Calls.Select(c => c.Kind));
+                Assert.All(relay.Calls, c => Assert.Equal(dock.Key, relay.Path));
+                // The dock repainted its own lights meanwhile, and no
+                // request of either went out while the other's reply was
+                // still unread: one request at a time on the receiver.
+                Assert.NotEmpty(dock.Sent(mark, r => r[P.TransactionAt] == 0xFF));
+                var timeline = dock.Channels.SelectMany((c, i) => c.Calls.Select(call => (Channel: i, call.Kind, call.Tick)))
+                    .OrderBy(e => e.Tick).ToList();
+                for (int i = 0; i < timeline.Count; i++)
+                {
+                    var e = timeline[i];
+                    if (e.Kind != "set") continue;
+                    // A request is open until its handle's last read before
+                    // that handle's next request.
+                    int last = i;
+                    for (int j = i + 1; j < timeline.Count && !(timeline[j].Channel == e.Channel && timeline[j].Kind == "set"); j++)
+                        if (timeline[j].Channel == e.Channel) last = j;
+                    for (int j = i + 1; j <= last; j++)
+                        Assert.False(timeline[j].Kind == "set" && timeline[j].Channel != e.Channel,
+                            $"a request on handle {timeline[j].Channel} went out while handle {e.Channel} waited");
+                }
+                // The crash path's record holds both on the one collection.
+                Assert.Equal(new[] { dock.Key, dock.Key }, bench.Backend.Claimed.Select(e => e.Path));
+
+                // The dock leaves, and the mouse with it.
+                dock.Present = false;
+                bench.Walk();
+                bench.Passes();
+                Assert.Empty(bench.Backend.Snapshot.Units);
+                Assert.Null(PeripheralLightMaps.For(pairedPath));
+                Assert.Empty(bench.Backend.Claimed);
+                bench.Verify();
+            }
+            finally
+            {
+                PeripheralLightMaps.ResetForTest();
+            }
+        }
+
+        /// <summary>
+        /// A keyboard laid out by OpenRGB's KeyboardLayoutManager is asked its
+        /// layout once, right after its claim read, and its map follows the
+        /// region it names before its first paint: a BlackWidow Chroma that
+        /// answers 06, a UK board, is laid out ISO, and a Q colored by its
+        /// usage lights cell 46 of the frame, with the frame's background on
+        /// every other cell, those no key holds included. It is not asked
+        /// again on its next claim.
+        /// </summary>
+        [Fact]
+        public void AKeyboard_SaysItsRegion_AndItsMapFollowsIt()
+        {
+            PeripheralLightMaps.ResetForTest();
+            try
+            {
+                using var bench = new Bench();
+                var board = bench.Add(BlackWidowChroma);
+                board.Answer = request => Is(request, 0x00, 0x86) ? Reply(request, P.StatusSuccess, 0x06, 0x01) : Answers(request);
+                bench.StartAndWalk();
+                Assert.Equal(110, PeripheralLightMaps.For(board.Path).Lights.Count);
+                bench.Link(board);
+                LightKeys(board, Red, new KeyFrame(new Dictionary<ushort, int> { [0x14] = Green }, null, null, Blue));
+                bench.Passes();
+                var iso = PeripheralLightMaps.For(board.Path);
+                Assert.Equal(111, iso.Lights.Count);
+                Assert.Contains(iso.Lights, l => l.Usage == 0x64);
+                var frame = new List<byte[]>();
+                for (int row = 0; row < 6; row++)
+                {
+                    // The frame's own background, Blue, on every other cell,
+                    // a key's or none's.
+                    var cells = Enumerable.Repeat(Blue, 22).ToArray();
+                    if (row == 2) cells[2] = Green;
+                    frame.Add(P.StandardRow(0xFF, row, cells));
+                }
+                frame.Add(P.StandardShow(0xFF));
+                Assert.Equal(Lines(new[] { P.StandardBrightnessRead(0xFF, 0x05), P.KeyboardInfoRead(0xFF) }.Concat(frame).ToArray()),
+                    board.Sent());
+
+                // The next claim does not ask again.
+                PeripheralOutputs.ReleaseLighting(board.Row, 0);
+                bench.Passes();
+                long mark = bench.Mark;
+                bench.Light(board, Blue);
+                bench.Passes();
+                Assert.Empty(board.Sent(mark, r => r[P.ClassAt] == 0x00));
+                bench.Verify();
+            }
+            finally
+            {
+                PeripheralLightMaps.ResetForTest();
+            }
+        }
+
+        /// <summary>A Basilisk V4 Pro's claim read is its region list, the
+        /// read OpenRGB opens it with (RazerController.cpp:1207-1224), and
+        /// the claim takes its regions from that answer with no second
+        /// read: then the stored effect of LED 00 and the static effect on
+        /// it, under ID 1F.</summary>
+        [Fact]
+        public void ABasiliskV4Pro_IsReadOnceForItsRegions_AndPaintedOnLed00()
+        {
+            using var bench = new Bench(reassertMs: int.MaxValue);
+            var mouse = bench.Add(0x00E3);
+            bench.StartAndWalk();
+            bench.Link(mouse);
+            bench.Light(mouse, Red);
+            for (int step = 0; step < 50 && mouse.Sent().Length < 3; step++)
+            {
+                bench.Advance(32);
+                bench.Passes(1);
+            }
+            bench.Advance(32);
+            bench.Passes();
+            Assert.Equal(Lines(P.RegionListRead(0x1F), P.StoredEffectRead(0x1F, 0x00), P.ExtendedStatic(0x1F, 0x00, Red)),
+                mouse.Sent());
+            bench.Verify();
+        }
+
+        /// <summary>A paired device the dock no longer lists leaves, and the
+        /// dock's own product ID is never a unit behind it.</summary>
+        [Fact]
+        public void ADeviceTheDockNoLongerLists_Leaves()
+        {
+            PeripheralLightMaps.ResetForTest();
+            try
+            {
+                using var bench = new Bench(reassertMs: int.MaxValue);
+                var dock = bench.Add(MouseDockPro);
+                var listed = new byte[] { 2, 0x01, 0x00, 0xAB, 0x01, 0x00, 0xA4 };
+                dock.Answer = request => Is(request, 0x00, 0xBF) ? Reply(request, P.StatusSuccess, listed) : Answers(request);
+                bench.StartAndWalk();
+                bench.Link(dock);
+                bench.Light(dock, Red);
+                bench.Passes();
+                bench.Passes();
+                Assert.Equal(2, bench.Backend.Snapshot.Units.Count);
+
+                // A busy answer is no list: the mouse stays.
+                var answered = dock.Answer;
+                dock.Answer = request => Is(request, 0x00, 0xBF) ? Reply(request, P.StatusBusy) : Answers(request);
+                PeripheralOutputs.ReleaseLighting(dock.Row, 0);
+                bench.Passes();
+                bench.Light(dock, Red);
+                bench.Passes();
+                bench.Passes();
+                Assert.Equal(2, bench.Backend.Snapshot.Units.Count);
+                dock.Answer = answered;
+
+                // Unpaired: the next claim's list names nobody.
+                listed = new byte[] { 1, 0x00, 0xFF, 0xFF };
+                PeripheralOutputs.ReleaseLighting(dock.Row, 0);
+                bench.Passes();
+                bench.Light(dock, Red);
+                bench.Passes();
+                bench.Passes();
+                Assert.Equal(new[] { dock.Key }, bench.Backend.Snapshot.Units.Select(u => u.Key));
+                bench.Verify();
+            }
+            finally
+            {
+                PeripheralLightMaps.ResetForTest();
+            }
         }
 
         /// <summary>The crash path's record holds the unit, with the
@@ -2576,7 +3011,7 @@ namespace PadForge.Tests
             bench.Light(keyboard, Red);
             bench.Passes();
             var frame = Enumerable.Range(0, 6).Select(r => P.StandardRow(0xFF, r, 22, Red)).Append(P.StandardShow(0xFF));
-            Assert.Equal(Lines(new[] { P.StandardBrightnessRead(0xFF, 0x05) }.Concat(frame).ToArray()), keyboard.Sent());
+            Assert.Equal(Lines(new[] { P.StandardBrightnessRead(0xFF, 0x05), P.KeyboardInfoRead(0xFF) }.Concat(frame).ToArray()), keyboard.Sent());
             Assert.Empty(bench.Backend.Claimed.Single().HandBack);
 
             long mark = bench.Mark;
@@ -3202,7 +3637,8 @@ namespace PadForge.Tests
 
             // The keyboard is claimed and painted in one pass. The mouse's
             // first request is out and its reply not read yet.
-            Assert.Equal(8, keyboard.Sent().Length);
+            // The claim read, the layout read, six rows and the show report.
+            Assert.Equal(9, keyboard.Sent().Length);
             Assert.Equal(new[] { "set" }, mouse.Calls.Select(c => c.Kind));
             Assert.DoesNotContain(59900, bench.Waits);
             Assert.All(bench.Waits, w => Assert.Equal(600, w));
@@ -3317,7 +3753,7 @@ namespace PadForge.Tests
             Assert.Equal(5, onFirst.Count);
             Assert.All(onFirst, c => Assert.True(Is(c.Bytes, 0x03, 0x83)));
             var frame = Enumerable.Range(0, 6).Select(r => P.StandardRow(0xFF, r, 22, Red)).Append(P.StandardShow(0xFF));
-            Assert.Equal(Lines(new[] { P.StandardBrightnessRead(0xFF, 0x05) }.Concat(frame).ToArray()),
+            Assert.Equal(Lines(new[] { P.StandardBrightnessRead(0xFF, 0x05), P.KeyboardInfoRead(0xFF) }.Concat(frame).ToArray()),
                 keyboard.Calls.Where(c => c.Kind == "set" && c.Path == second).Select(c => RazerDirectProtocolTests.Line(c.Bytes)));
             Assert.Equal(second, bench.Backend.Claimed.Single().Path);
             Assert.Equal(second, Assert.Single(keyboard.Channels, c => !c.Disposed).Path);
@@ -3399,7 +3835,8 @@ namespace PadForge.Tests
             bench.Light(mouse, Red);
             bench.Link(keyboard, mouse);
             bench.Passes();
-            Assert.Equal(8, keyboard.Sent().Length);
+            // The claim read, the layout read, six rows and the show report.
+            Assert.Equal(9, keyboard.Sent().Length);
             Assert.Equal(new[] { "set" }, mouse.Calls.Select(c => c.Kind));
 
             // 59 ms after the request, 99 ms after that pass began: not yet.

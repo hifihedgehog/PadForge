@@ -2,9 +2,10 @@
 //
 // One row for each Razer product ID in PeripheralProductIds, from the research
 // table of #494 (razer-direct-table.json), which was read out of openrazer 477f4d6d
-// and OpenRGB 01bd77c. 232 rows, 180 of them with a color path: 98 extended matrix,
-// 62 standard matrix, 11 classic LED, 7 extended one-row frame, 2 mouse extended
-// matrix. The comment on a row says how far the two projects agree on it.
+// and OpenRGB 01bd77c, with the rows of #557 read out of OpenRGB c6fc8016. 235 rows, 183 of them
+// with a color path: 100 extended matrix, 62 standard matrix, 11 classic LED, 7
+// extended one-row frame, 2 mouse extended matrix, 1 extended matrix frame. The
+// comment on a row says how far the two projects agree on it.
 
 using System.Collections.Generic;
 
@@ -101,6 +102,7 @@ namespace PadForge.Common.Input.Peripherals
             new() { ProductId = 0x009F, Name = "Razer Viper Mini SE (Wireless)", Family = RazerFamily.None, ReplyWaitUs = 59900, Collections = Interface0Mouse }, // no color path, collection inferred
             new() { ProductId = 0x00A1, Name = "Razer DeathAdder V2 Lite", Family = RazerFamily.Extended, TransactionId = 0x1F, Leds = Ids(0x04), SpectrumLeds = Ids(0x04), Probe = RazerProbe.ExtendedBrightness, ProbeLed = 0x04, ReplyWaitUs = 600, Collections = Interface0Mouse }, // openrazer only, collection inferred
             new() { ProductId = 0x00A3, Name = "Razer Cobra", Family = RazerFamily.Extended, TransactionId = 0x1F, Leds = Ids(0x04), SpectrumLeds = Ids(0x04), Probe = RazerProbe.ExtendedBrightness, ProbeLed = 0x04, ReplyWaitUs = 600, Collections = Interface0Mouse }, // disagree: led
+            new() { ProductId = 0x00A4, Name = "Razer Mouse Dock Pro", Family = RazerFamily.ExtendedMatrix, TransactionId = 0xFF, Leds = Ids(0x00), SpectrumLeds = Ids(0x00), Rows = 1, Columns = 9, Probe = RazerProbe.PairedDevices, ReplyWaitUs = 600, Collections = Interface0Mouse }, // disagree: matrix_size
             new() { ProductId = 0x00A5, Name = "Razer Viper V2 Pro (Wired)", Family = RazerFamily.None, ReplyWaitUs = 31000, Collections = Interface0Mouse }, // no color path, collection inferred
             new() { ProductId = 0x00A6, Name = "Razer Viper V2 Pro (Wireless)", Family = RazerFamily.None, ReplyWaitUs = 31000, Collections = Interface0Mouse }, // no color path, collection inferred
             new() { ProductId = 0x00A7, Name = "Razer Naga V2 Pro (Wired)", Family = RazerFamily.ExtendedFrame, TransactionId = 0x1F, Leds = Ids(0x00), SpectrumLeds = Ids(0x00), Columns = 3, Probe = RazerProbe.ExtendedBrightness, ReplyWaitUs = 31000, Collections = Interface0Mouse }, // both agree
@@ -135,6 +137,8 @@ namespace PadForge.Common.Input.Peripherals
             new() { ProductId = 0x00D4, Name = "Razer Basilisk Mobile (Receiver)", Family = RazerFamily.ExtendedFrame, TransactionId = 0x1F, Leds = Ids(0x00), Columns = 2, Probe = RazerProbe.ExtendedBrightness, ReplyWaitUs = 31000, Collections = Interface0Mouse }, // openrazer only, collection inferred
             new() { ProductId = 0x00D6, Name = "Razer Basilisk V3 Pro 35K Phantom Green Edition (Wired)", Family = RazerFamily.Extended, TransactionId = 0x1F, Leds = Ids(0x00), SpectrumLeds = Ids(0x00), Probe = RazerProbe.ExtendedBrightness, ReplyWaitUs = 31000, Collections = Interface0Mouse }, // both agree
             new() { ProductId = 0x00D7, Name = "Razer Basilisk V3 Pro 35K Phantom Green Edition (Wireless)", Family = RazerFamily.Extended, TransactionId = 0x1F, Leds = Ids(0x00), SpectrumLeds = Ids(0x00), Probe = RazerProbe.ExtendedBrightness, ReplyWaitUs = 31000, Collections = Interface0Mouse }, // both agree
+            new() { ProductId = 0x00E2, Name = "Razer Basilisk V4 Pro (Wired)", Family = RazerFamily.Extended, TransactionId = 0x1F, Leds = Ids(0x00), SpectrumLeds = Ids(0x00), Probe = RazerProbe.RegionList, ReplyWaitUs = 31000, Collections = Interface3Consumer }, // OpenRGB only
+            new() { ProductId = 0x00E3, Name = "Razer Basilisk V4 Pro (Wireless)", Family = RazerFamily.Extended, TransactionId = 0x1F, Leds = Ids(0x00), SpectrumLeds = Ids(0x00), Probe = RazerProbe.RegionList, ReplyWaitUs = 31000, Collections = Interface3Consumer }, // OpenRGB only
             new() { ProductId = 0x010D, Name = "Razer BlackWidow Ultimate 2012", Family = RazerFamily.Mono, TransactionId = 0xFF, Leds = Ids(0x04), ReplyWaitUs = 600, Collections = Interface2Mouse }, // no color path, collection inferred
             new() { ProductId = 0x010E, Name = "Razer BlackWidow Stealth Edition", Family = RazerFamily.Mono, TransactionId = 0xFF, Leds = Ids(0x04), ReplyWaitUs = 600, Collections = Interface2Mouse }, // no color path, collection inferred
             new() { ProductId = 0x010F, Name = "Razer Anansi", Family = RazerFamily.Classic, TransactionId = 0xFF, Leds = Ids(0x05), SpectrumLeds = Ids(0x05), Probe = RazerProbe.StandardBrightness, ProbeLed = 0x05, Flags = RazerRowFlags.EffectFirst, ReplyWaitUs = 600, Collections = Interface2Mouse }, // openrazer only, collection inferred

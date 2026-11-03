@@ -27,6 +27,14 @@ namespace PadForge.Common.Input.Peripherals
         Standard,
         /// <summary>The mouse extended matrix effect, one report per LED (03/0D).</summary>
         MouseExtended,
+        /// <summary>The extended matrix frame (#557): one 0F/03 row for
+        /// each row of the frame, then the custom frame effect, 0F/02
+        /// [00 00 08] at size 0C, which shows it. OpenRGB sends every
+        /// frame of an extended matrix product so (OpenRGB
+        /// RazerController.cpp:207-258, 793-810 and 931-940 at c6fc8016),
+        /// and openrazer builds the same effect report
+        /// (razerchromacommon.c:703-706).</summary>
+        ExtendedMatrix,
     }
 
     /// <summary>What sets one row apart inside its family.</summary>
@@ -68,6 +76,15 @@ namespace PadForge.Common.Input.Peripherals
         LaptopBrightness,
         /// <summary>03/80 [01 LED 00], an LED's state.</summary>
         ClassicState,
+        /// <summary>0F/80 at size 50, the list of lighting regions, the
+        /// first read OpenRGB sends a product it paints through LED 00
+        /// (RazerController.cpp:1197-1271 at c6fc8016).</summary>
+        RegionList,
+        /// <summary>00/BF at size 50, the devices a wireless receiver has
+        /// paired, the read OpenRGB sends every product it opens
+        /// (RazerController.cpp:1273-1306 and RazerControllerDetect.cpp:52
+        /// at c6fc8016).</summary>
+        PairedDevices,
     }
 
     /// <summary>A HID collection the product table names as the one a
@@ -328,6 +345,21 @@ namespace PadForge.Common.Input.Peripherals
             return arguments;
         }
 
+        /// <summary>A header and a color per column, for a frame row whose
+        /// lights differ (#557).</summary>
+        private static byte[] WithColors(ReadOnlySpan<byte> header, ReadOnlySpan<int> colors)
+        {
+            var arguments = new byte[header.Length + 3 * colors.Length];
+            header.CopyTo(arguments);
+            for (int i = 0; i < colors.Length; i++)
+            {
+                arguments[header.Length + 3 * i] = R(colors[i]);
+                arguments[header.Length + 3 * i + 1] = G(colors[i]);
+                arguments[header.Length + 3 * i + 2] = B(colors[i]);
+            }
+            return arguments;
+        }
+
         // ─────────────────────────────────────────────
         //  Extended matrix effect (class 0F)
         // ─────────────────────────────────────────────
@@ -402,6 +434,25 @@ namespace PadForge.Common.Input.Peripherals
             => Report(transactionId, 0x0F, 0x03,
                 WithColors(stackalloc byte[] { 0x00, 0x00, 0x00, 0x00, (byte)(leds - 1) }, leds, rgb));
 
+        /// <summary>0F/03 [00 00 row 00 stop R G B ...]: one row of an
+        /// extended matrix frame from column 0, a color per column, at its
+        /// exact size, 5 and three for each column. OpenRGB sets the row,
+        /// the start and the stop column at arguments 2 to 4 and declares
+        /// the row's length plus 5 (RazerController.cpp:793-810 at
+        /// c6fc8016). openrazer's builder puts them at the same places
+        /// (razerchromacommon.c:751-776) and declares 0x47 for most
+        /// products, which is the same size for a row of 22 columns.</summary>
+        internal static byte[] ExtendedMatrixRow(byte transactionId, int row, ReadOnlySpan<int> colors)
+            => Report(transactionId, 0x0F, 0x03,
+                WithColors(stackalloc byte[] { 0x00, 0x00, (byte)row, 0x00, (byte)(colors.Length - 1) }, colors));
+
+        /// <summary>0F/02 [00 00 08] at size 0C: the custom frame effect,
+        /// which shows the rows sent before it and stores nothing. Both
+        /// projects build it so (OpenRGB RazerController.cpp:931-940 at
+        /// c6fc8016, openrazer razerchromacommon.c:703-706).</summary>
+        internal static byte[] ExtendedCustom(byte transactionId)
+            => Report(transactionId, 0x0F, 0x02, 0x0C, stackalloc byte[] { 0x00, 0x00, 0x08 });
+
         // ─────────────────────────────────────────────
         //  Standard matrix (class 03)
         // ─────────────────────────────────────────────
@@ -415,11 +466,24 @@ namespace PadForge.Common.Input.Peripherals
             => Report(transactionId, 0x03, 0x0B,
                 WithColors(stackalloc byte[] { 0xFF, (byte)row, 0x00, (byte)(columns - 1) }, columns, rgb));
 
+        /// <summary>03/0B [FF row 00 stop R G B ...] with a color per
+        /// column (#557), the row OpenRGB sends in its Direct mode
+        /// (RazerController.cpp:812-830 at c6fc8016).</summary>
+        internal static byte[] StandardRow(byte transactionId, int row, ReadOnlySpan<int> colors)
+            => Report(transactionId, 0x03, 0x0B,
+                WithColors(stackalloc byte[] { 0xFF, (byte)row, 0x00, (byte)(colors.Length - 1) }, colors));
+
         /// <summary>03/0C [00 stop R G B ...]: a frame that is one line of
         /// LEDs. Both projects declare size 32 whatever the line holds
         /// (razerchromacommon.c:1019-1036, RazerController.cpp:777-791).</summary>
         internal static byte[] StandardLine(byte transactionId, int columns, int rgb)
             => Report(transactionId, 0x03, 0x0C, 0x32, WithColors(stackalloc byte[] { 0x00, (byte)(columns - 1) }, columns, rgb));
+
+        /// <summary>03/0C [00 stop R G B ...] at size 32 with a color per
+        /// LED (#557), as OpenRGB sends a linear frame
+        /// (RazerController.cpp:777-791 at c6fc8016).</summary>
+        internal static byte[] StandardLine(byte transactionId, ReadOnlySpan<int> colors)
+            => Report(transactionId, 0x03, 0x0C, 0x32, WithColors(stackalloc byte[] { 0x00, (byte)(colors.Length - 1) }, colors));
 
         /// <summary>03/0A [05 00]: shows the frame the rows filled. The
         /// second byte is the storage byte, 00 (razerchromacommon.c:390-396,
@@ -447,6 +511,114 @@ namespace PadForge.Common.Input.Peripherals
         /// (razerchromacommon.c:1008-1014).</summary>
         internal static byte[] LaptopBrightnessRead(byte transactionId)
             => Report(transactionId, 0x0E, 0x84, stackalloc byte[] { 0x01, 0x00 });
+
+        // ─────────────────────────────────────────────
+        //  A keyboard's region (#557)
+        // ─────────────────────────────────────────────
+
+        /// <summary>00/86 with no argument at size 00: the keyboard's layout
+        /// and variant, as OpenRGB asks it under the product's own ID
+        /// (RazerController.cpp:1308-1320 at c6fc8016, RazerController.h:61).
+        /// openrazer asks the same command at size 02 under FF
+        /// (razerkbd_driver.c:510-511 at 477f4d6d). A read: the command ID
+        /// has its top bit set.</summary>
+        internal static byte[] KeyboardInfoRead(byte transactionId)
+            => Report(transactionId, 0x00, 0x86, 0x00, ReadOnlySpan<byte>.Empty);
+
+        /// <summary>
+        /// The region a keyboard's reply to <see cref="KeyboardInfoRead"/>
+        /// names, as OpenRGB lays the keyboard out for it: its first argument
+        /// is the layout (RazerController.cpp:1318), whose type
+        /// GetKeyboardLayoutType gives (1322-1364, the values at
+        /// RazerController.h:117-153), and the controller builds ISO QWERTY
+        /// for ISO, ISO AZERTY for French, ISO QWERTZ for German, and ANSI
+        /// QWERTY for ANSI, for JIS and for a layout it does not know
+        /// (RGBController_Razer.cpp:238-258). Null for a reply that is not a
+        /// success: the keyboard is laid out ANSI, as OpenRGB lays out one
+        /// whose answer it cannot read.
+        /// </summary>
+        internal static HidFamilies.KeyboardLayout? RegionOf(ReadOnlySpan<byte> reply)
+        {
+            if (reply.Length < BufferLength || reply[StatusAt] != StatusSuccess) return null;
+            return reply[ArgumentsAt] switch
+            {
+                // UK, Nordic, Greek, Korean, Brazilian, Latin American
+                // Spanish, Swiss, Spanish, Italian, Portuguese, Hebrew.
+                2 or 6 or 7 or 9 or 13 or 14 or 15 or 16 or 17 or 18 or 19 => HidFamilies.KeyboardLayout.IsoQwerty,
+                // French.
+                4 => HidFamilies.KeyboardLayout.IsoAzerty,
+                // German.
+                3 => HidFamilies.KeyboardLayout.IsoQwertz,
+                // US, Russian, Chinese Traditional, Turkish, Thai, Arabic,
+                // Japanese, and any other.
+                _ => HidFamilies.KeyboardLayout.AnsiQwerty,
+            };
+        }
+
+        // ─────────────────────────────────────────────
+        //  A wireless receiver (#557)
+        // ─────────────────────────────────────────────
+
+        /// <summary>The most devices a receiver's list is read for
+        /// (OpenRGB RazerController.h:174 at c6fc8016).</summary>
+        internal const int MaxPaired = 8;
+
+        /// <summary>How long a report relayed to a device behind a
+        /// receiver waits before each read of its reply, and how many
+        /// reads it gets. A receiver answers busy while it relays and drops
+        /// a report sent meanwhile, so OpenRGB reads the reply every 2 ms
+        /// until it is final, at most 50 times (RazerController.cpp:2098-2124
+        /// at c6fc8016).</summary>
+        internal const int RelayPollUs = 2000;
+        internal const int RelayPolls = 50;
+
+        /// <summary>00/BF with no argument and size 50: the receiver's
+        /// pairing slots (OpenRGB RazerController.cpp:1283-1284 and
+        /// RazerController.h:62 at c6fc8016). A read: the command ID has
+        /// its top bit set, and no device-mode report is ever built
+        /// here.</summary>
+        internal static byte[] PairedDevicesRead(byte transactionId)
+            => Report(transactionId, 0x00, 0xBF, 0x50, ReadOnlySpan<byte>.Empty);
+
+        /// <summary>
+        /// The product IDs a receiver's reply to
+        /// <see cref="PairedDevicesRead"/> lists, the receiver's own left
+        /// out: a slot count, then for each slot a connection status and a
+        /// big-endian product ID, FFFF for an empty slot. A paired device
+        /// is listed whether or not it is connected, since a sleeping mouse
+        /// reconnects only once it is used (OpenRGB
+        /// RazerController.cpp:1276-1306 and RazerControllerDetect.cpp:54-60
+        /// at c6fc8016). Empty for a reply that is not a success, which is
+        /// what a product that is no receiver answers.
+        /// </summary>
+        internal static ushort[] PairedProductIds(ReadOnlySpan<byte> reply, ushort own)
+        {
+            if (reply.Length < BufferLength || reply[StatusAt] != StatusSuccess) return Array.Empty<ushort>();
+            var arguments = reply.Slice(ArgumentsAt, MaxArguments);
+            int slots = arguments[0];
+            // The first eight slots that hold a device are read, the
+            // receiver's own included, and that one is left out after.
+            var listed = new List<ushort>();
+            for (int slot = 0; slot < slots && slot * 3 + 3 < MaxArguments && listed.Count < MaxPaired; slot++)
+            {
+                var pid = (ushort)((arguments[slot * 3 + 2] << 8) | arguments[slot * 3 + 3]);
+                if (pid != 0x0000 && pid != 0xFFFF) listed.Add(pid);
+            }
+            var pids = new List<ushort>(listed.Count);
+            foreach (ushort pid in listed)
+                if (pid != own && !pids.Contains(pid)) pids.Add(pid);
+            return pids.ToArray();
+        }
+
+        /// <summary>What a reply says about a report relayed through a
+        /// receiver: as <see cref="Check"/>, but busy is not final, and
+        /// the reply is read again (OpenRGB RazerController.cpp:2114-2121
+        /// at c6fc8016).</summary>
+        internal static RazerReply CheckRelayed(ReadOnlySpan<byte> request, ReadOnlySpan<byte> reply)
+        {
+            var verdict = Check(request, reply);
+            return verdict == RazerReply.Accepted && reply[StatusAt] == StatusBusy ? RazerReply.Early : verdict;
+        }
 
         // ─────────────────────────────────────────────
         //  Mouse extended matrix (03/0D)
@@ -684,6 +856,8 @@ namespace PadForge.Common.Input.Peripherals
             RazerProbe.StandardBrightness => StandardBrightnessRead(transactionId, row.ProbeLed),
             RazerProbe.LaptopBrightness => LaptopBrightnessRead(transactionId),
             RazerProbe.ClassicState => ClassicStateRead(transactionId, row.ProbeLed),
+            RazerProbe.RegionList => RegionListRead(transactionId),
+            RazerProbe.PairedDevices => PairedDevicesRead(transactionId),
             _ => null,
         };
 
@@ -742,17 +916,108 @@ namespace PadForge.Common.Input.Peripherals
                         reports.Add(StandardStatic(transactionId, rgb));
                         break;
                     }
-                    bool first = transactionId == row.TransactionId;
-                    byte rows = first && row.RowTransactionId != 0 ? row.RowTransactionId : transactionId;
-                    byte show = first && row.ShowTransactionId != 0 ? row.ShowTransactionId : transactionId;
+                    FrameIds(row, transactionId, out byte rows, out byte show);
                     if (row.Has(RazerRowFlags.LineRows)) reports.Add(StandardLine(rows, row.Columns, rgb));
                     else
                         for (int index = 0; index < row.Rows; index++)
                             reports.Add(StandardRow(rows, index, row.Columns, rgb));
                     reports.Add(StandardShow(show));
                     break;
+                case RazerFamily.ExtendedMatrix:
+                    var line = new int[row.Columns];
+                    Array.Fill(line, rgb);
+                    for (int index = 0; index < row.Rows; index++)
+                        reports.Add(ExtendedMatrixRow(transactionId, index, line));
+                    reports.Add(ExtendedCustom(transactionId));
+                    break;
             }
             return reports;
+        }
+
+        /// <summary>The IDs a standard matrix frame's rows and its show
+        /// report go out under (<see cref="Paint(RazerDirectRow, byte, byte[], int)"/>).</summary>
+        private static void FrameIds(RazerDirectRow row, byte transactionId, out byte rows, out byte show)
+        {
+            bool first = transactionId == row.TransactionId;
+            rows = first && row.RowTransactionId != 0 ? row.RowTransactionId : transactionId;
+            show = first && row.ShowTransactionId != 0 ? row.ShowTransactionId : transactionId;
+        }
+
+        /// <summary>
+        /// The reports that paint a product light by light (#557): each
+        /// light of <paramref name="lights"/> in its color from
+        /// <paramref name="colors"/>, in the map's order, and every LED or
+        /// cell the map leaves out in <paramref name="fill"/>.
+        ///
+        /// <para>A product painted one report per LED gets the same
+        /// reports as <see cref="Paint(RazerDirectRow, byte, byte[], int)"/>,
+        /// each in its own LED's color, the way openrazer paints each zone
+        /// through its own attribute with the LED the attribute names
+        /// (razermouse_driver.c:5185-5190 at 477f4d6d) and OpenRGB its
+        /// custom products (RazerController.cpp:1501-1534 at c6fc8016).</para>
+        ///
+        /// <para>A product painted by frame gets the frame of the map's
+        /// size with a color per cell: the rows and the show report of a
+        /// standard matrix, the one row of a one-row extended frame behind
+        /// the claim's mode report, or the extended matrix rows and the
+        /// custom frame effect, which is also how a product painted by
+        /// effect one color at a time is painted light by light. OpenRGB
+        /// sends every frame so, a row at a time from row 0, then the
+        /// report that shows it (RazerController.cpp:207-258 at
+        /// c6fc8016).</para>
+        /// </summary>
+        internal static List<byte[]> PaintLights(RazerDirectRow row, RazerLightRow plan, IReadOnlyList<LightInfo> lights,
+            byte transactionId, byte[] leds, IReadOnlyList<int> colors, int fill)
+        {
+            if (plan.Plan == RazerLightPlan.PerLed)
+            {
+                var reports = new List<byte[]>();
+                foreach (byte led in leds)
+                {
+                    var one = Paint(row, transactionId, new[] { led }, ColorAt(lights, colors, led, fill));
+                    reports.AddRange(one);
+                }
+                return reports;
+            }
+
+            int rowCount = plan.Rows, columns = plan.Columns;
+            var grid = new int[rowCount * columns];
+            Array.Fill(grid, fill & 0xFFFFFF);
+            for (int i = 0; i < lights.Count && i < colors.Count; i++)
+            {
+                int address = lights[i].Address;
+                if ((uint)address < (uint)grid.Length) grid[address] = colors[i] & 0xFFFFFF;
+            }
+            var frame = new List<byte[]>();
+            switch (row.Family)
+            {
+                case RazerFamily.Standard:
+                    FrameIds(row, transactionId, out byte rowsId, out byte showId);
+                    if (row.Has(RazerRowFlags.LineRows)) frame.Add(StandardLine(rowsId, grid.AsSpan(0, columns)));
+                    else
+                        for (int index = 0; index < rowCount; index++)
+                            frame.Add(StandardRow(rowsId, index, grid.AsSpan(index * columns, columns)));
+                    frame.Add(StandardShow(showId));
+                    break;
+                case RazerFamily.ExtendedFrame:
+                    frame.Add(ExtendedMatrixRow(transactionId, 0, grid.AsSpan(0, columns)));
+                    break;
+                default:
+                    for (int index = 0; index < rowCount; index++)
+                        frame.Add(ExtendedMatrixRow(transactionId, index, grid.AsSpan(index * columns, columns)));
+                    frame.Add(ExtendedCustom(transactionId));
+                    break;
+            }
+            return frame;
+        }
+
+        /// <summary>The color of the light at <paramref name="address"/>,
+        /// or <paramref name="fill"/> where the map has none there.</summary>
+        private static int ColorAt(IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors, int address, int fill)
+        {
+            for (int i = 0; i < lights.Count && i < colors.Count; i++)
+                if (lights[i].Address == address) return colors[i] & 0xFFFFFF;
+            return fill & 0xFFFFFF;
         }
 
         /// <summary>The paint of a fallback, under the ID the product
@@ -784,7 +1049,7 @@ namespace PadForge.Common.Input.Peripherals
         internal static List<byte[]> StoredReads(RazerDirectRow row, byte transactionId, byte[] leds)
         {
             var reports = new List<byte[]>();
-            if (row.Family is RazerFamily.Extended or RazerFamily.ExtendedFrame)
+            if (row.Family is RazerFamily.Extended or RazerFamily.ExtendedFrame or RazerFamily.ExtendedMatrix)
                 foreach (byte led in leds) reports.Add(StoredEffectRead(transactionId, led));
             else if (row.Family == RazerFamily.Classic)
                 foreach (byte led in leds)
@@ -803,7 +1068,7 @@ namespace PadForge.Common.Input.Peripherals
         /// 473-482).</summary>
         internal static byte[] Spectrum(RazerDirectRow row, byte transactionId, byte led) => row.Family switch
         {
-            RazerFamily.Extended or RazerFamily.ExtendedFrame => ExtendedSpectrum(transactionId, led),
+            RazerFamily.Extended or RazerFamily.ExtendedFrame or RazerFamily.ExtendedMatrix => ExtendedSpectrum(transactionId, led),
             RazerFamily.MouseExtended => MouseExtendedSpectrum(transactionId, led),
             RazerFamily.Classic => ClassicEffect(transactionId, led, ClassicEffectSpectrum),
             _ => null,

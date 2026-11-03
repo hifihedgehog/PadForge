@@ -1,11 +1,13 @@
 """The Razer direct-lighting product table, from the research table of #494.
 
-WHAT IT READS. razer-direct-table.json, one entry for each of the 232 Razer
+WHAT IT READS. razer-direct-table.json, one entry for each of the 235 Razer
 product IDs PadForge lists (PeripheralProductIds.RazerMice and
 RazerKeyboards). The research extraction built it from the openrazer drivers
-and from OpenRGB's RazerController, and it spells every report a product is
-sent as text: "0F/02 [00 04 01 00 00 01 R G B]". The file is not in this
-repository. Pass its path.
+and from OpenRGB's RazerController, #557 added the Basilisk V4 Pro and the
+Mouse Dock Pro from OpenRGB c6fc8016 (each entry's cites name its revision),
+and it spells every report a product is sent as text: "0F/02 [00 04 01 00 00 01 R G B]". It is kept at
+tools/data/razer-direct-table.json, which is read unless --json names
+another.
 
 WHAT IT WRITES. PadForge.App/Common/Input/Peripherals/RazerDirectTable.cs, one
 row per product ID: the family that paints it, its transaction ID and the
@@ -25,18 +27,19 @@ apart, this script builds each row's reports again from the row it is about to
 write, by the same rules the C# builders follow, and refuses to write the file
 unless they equal the reports the research table spells. It then prints one
 SHA-256 per family over those reports. RazerDirectProtocolTests holds the same
-five digests and computes them from the C# builders over every row, so a
+six digests and computes them from the C# builders over every row, so a
 builder and the table cannot disagree on any product without a red test.
 
 WHAT IS LEFT OUT. The alternates the research table marks as other forms of a
 product's own family (zero_led, per_led) are not fallbacks and are not
 written: nothing sends them. A product's per-zone frame path is not written
-either, since a one-color paint has no use for it.
+either: tools/gen_razer_light_table.py writes the light by light paint.
 
 Usage:
-    python tools/gen_razer_direct_table.py --json path/to/razer-direct-table.json
-    python tools/gen_razer_direct_table.py --json ... --check    (compare, write nothing)
-    python tools/gen_razer_direct_table.py --json ... --frames out.txt
+    python tools/gen_razer_direct_table.py
+    python tools/gen_razer_direct_table.py --check    (compare, write nothing)
+    python tools/gen_razer_direct_table.py --frames out.txt
+    python tools/gen_razer_direct_table.py --json path/to/another.json
 """
 import argparse
 import hashlib
@@ -47,6 +50,7 @@ import sys
 
 PROJ_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT = os.path.join(PROJ_ROOT, "PadForge.App", "Common", "Input", "Peripherals", "RazerDirectTable.cs")
+RESEARCH = os.path.join(PROJ_ROOT, "tools", "data", "razer-direct-table.json")
 
 # The color the digests are computed with. Every byte differs from the others
 # and from zero, so a swapped or dropped channel changes the digest.
@@ -61,8 +65,9 @@ FAMILY = {
     "ext_frame1": "ExtendedFrame",
     "std": "Standard",
     "mext": "MouseExtended",
+    "ext_matrix": "ExtendedMatrix",
 }
-COLOR_FAMILIES = ("classic", "ext", "ext_frame1", "std", "mext")
+COLOR_FAMILIES = ("classic", "ext", "ext_frame1", "std", "mext", "ext_matrix")
 
 # RazerRowFlags, in the order the enum declares them.
 FLAGS = ("LineRows", "HeldEffect", "EffectFirst", "NoState", "Laptop", "SpectrumBack")
@@ -157,13 +162,17 @@ def build_probe(row):
         return (0x0E, 0x84, 2, [0x01, 0x00])
     if kind == "ClassicState":
         return (0x03, 0x80, 3, [0x01, led, 0x00])
+    if kind == "RegionList":
+        return (0x0F, 0x80, 0x50, [])
+    if kind == "PairedDevices":
+        return (0x00, 0xBF, 0x50, [])
     raise TableError("%s: no claim read" % row["pid"])
 
 
 def build_reads(row):
     family = row["family"]
     frames = []
-    if family in ("ext", "ext_frame1"):
+    if family in ("ext", "ext_frame1", "ext_matrix"):
         for led in row["leds"]:
             frames.append((0x0F, 0x82, 0x0C, [0x01, led]))
     elif family == "classic":
@@ -192,6 +201,11 @@ def line_row(columns):
 
 
 SHOW = (0x03, 0x0A, 2, [0x05, 0x00])
+CUSTOM = (0x0F, 0x02, 0x0C, [0x00, 0x00, 0x08])
+
+
+def extended_row(index, columns):
+    return (0x0F, 0x03, 5 + 3 * columns, [0x00, 0x00, index, 0x00, columns - 1] + rgb_run(columns))
 STANDARD_STATIC = (0x03, 0x0A, 4, [0x06] + list(TEST_COLOR))
 
 
@@ -206,6 +220,8 @@ def build_paint(row):
         return [(tx, (0x0F, 0x03, 5 + 3 * count, [0x00, 0x00, 0x00, 0x00, count - 1] + rgb_run(count)))]
     if family == "mext":
         return [(tx, (0x03, 0x0D, 6, [0x00, led, 0x06] + list(TEST_COLOR))) for led in row["leds"]]
+    if family == "ext_matrix":
+        return [(tx, extended_row(index, row["columns"])) for index in range(row["rows"])] + [(tx, CUSTOM)]
     if family == "classic":
         frames = []
         for led in row["leds"]:
@@ -226,7 +242,7 @@ def build_paint(row):
 
 def build_back(row):
     family = row["family"]
-    if family in ("ext", "ext_frame1"):
+    if family in ("ext", "ext_frame1", "ext_matrix"):
         return [(0x0F, 0x02, 6, [0x00, led, 0x03, 0x00, 0x00, 0x00]) for led in row["spectrum"]]
     if family == "mext":
         return [(0x03, 0x0D, 3, [0x00, led, 0x04]) for led in row["spectrum"]]
@@ -322,6 +338,10 @@ def to_row(pid, device):
     probe = plan["probe"]["frame"]
     if probe == "0E/84 [01 00]":
         row["probe"] = "LaptopBrightness"
+    elif probe == "0F/80 [] size 50":
+        row["probe"] = "RegionList"
+    elif probe == "00/BF [] size 50":
+        row["probe"] = "PairedDevices"
     else:
         match = re.match(r"^(0F/84|03/83|03/80) \[01 ([0-9A-F]{2}) 00\]$", probe)
         need(match, pid, "unexpected claim read %r" % probe)
@@ -335,7 +355,7 @@ def to_row(pid, device):
 
     # The fallback at hand-back.
     back = plan["handback_fallback"]
-    if method in ("ext", "ext_frame1"):
+    if method in ("ext", "ext_frame1", "ext_matrix"):
         row["spectrum"] = [led_of(r"^0F/02 \[00 ([0-9A-F]{2}) 03 00 00 00\]$", f, pid) for f in back]
     elif method == "mext":
         row["spectrum"] = [led_of(r"^03/0D \[00 ([0-9A-F]{2}) 04\]$", f, pid) for f in back]
@@ -369,6 +389,10 @@ def to_row(pid, device):
         else:
             need(mode == "effect, after the color holds 1000 ms", pid, "unexpected paint mode %r" % mode)
             row["flags"].append("HeldEffect")
+    elif method == "ext_matrix":
+        need(mode == "frame", pid, "unexpected paint mode %r" % mode)
+        dims = plan["frame_dims"]
+        row["rows"], row["columns"] = dims["rows"], dims["cols"]
     elif method == "classic":
         need(mode == "led", pid, "unexpected paint mode %r" % mode)
         if not plan["claim"]:
@@ -487,11 +511,13 @@ def emit(rows, meta):
     add("//")
     add("// One row for each Razer product ID in PeripheralProductIds, from the research")
     add("// table of #494 (razer-direct-table.json), which was read out of openrazer %s" % sources["openrazer"])
-    add("// and OpenRGB %s. %d rows, %d of them with a color path: %d extended matrix," % (
-        sources["openrgb"], len(rows), colored, counts.get("ext", 0)))
-    add("// %d standard matrix, %d classic LED, %d extended one-row frame, %d mouse extended" % (
-        counts.get("std", 0), counts.get("classic", 0), counts.get("ext_frame1", 0), counts.get("mext", 0)))
-    add("// matrix. The comment on a row says how far the two projects agree on it.")
+    add("// and OpenRGB %s, with the rows of #557 read out of OpenRGB %s. %d rows, %d of them" % (
+        sources["openrgb"], sources["openrgb_557"], len(rows), colored))
+    add("// with a color path: %d extended matrix, %d standard matrix, %d classic LED, %d" % (
+        counts.get("ext", 0), counts.get("std", 0), counts.get("classic", 0), counts.get("ext_frame1", 0)))
+    add("// extended one-row frame, %d mouse extended matrix, %d extended matrix frame. The" % (
+        counts.get("mext", 0), counts.get("ext_matrix", 0)))
+    add("// comment on a row says how far the two projects agree on it.")
     add("")
     add("using System.Collections.Generic;")
     add("")
@@ -537,7 +563,7 @@ def digests(rows):
 
 def main():
     parser = argparse.ArgumentParser(description="Writes RazerDirectTable.cs from the research table.")
-    parser.add_argument("--json", required=True, help="razer-direct-table.json")
+    parser.add_argument("--json", default=RESEARCH, help="the research table, tools/data/razer-direct-table.json by default")
     parser.add_argument("--out", default=OUTPUT, help="the C# file to write")
     parser.add_argument("--check", action="store_true", help="compare with the file on disk and write nothing")
     parser.add_argument("--frames", help="write every row's reports to this file, as the digests read them")

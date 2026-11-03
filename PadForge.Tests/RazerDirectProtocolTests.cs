@@ -429,27 +429,29 @@ namespace PadForge.Tests
         //  The product table
         // ─────────────────────────────────────────────
 
-        /// <summary>The table has one row for each of the 232 product IDs
-        /// PadForge lists, 180 of them with a color path, in the family
-        /// counts the research names: 98, 62, 11, 7 and 2.</summary>
+        /// <summary>The table has one row for each of the 235 product IDs
+        /// PadForge lists, 183 of them with a color path, in the family
+        /// counts the research names, 98, 62, 11, 7 and 2, and the three of
+        /// #557: two Basilisk V4 Pro rows on the extended matrix and the
+        /// Mouse Dock Pro on the extended matrix frame.</summary>
         [Fact]
-        public void TheTableHasARowForEveryListedProduct_AndOneHundredEightyColorPaths()
+        public void TheTableHasARowForEveryListedProduct_AndOneHundredEightyThreeColorPaths()
         {
             var rows = RazerDirectTable.Rows;
-            Assert.Equal(232, rows.Length);
-            Assert.Equal(232, rows.Select(r => r.ProductId).Distinct().Count());
-            Assert.Equal(180, rows.Count(r => r.HasColorPath));
+            Assert.Equal(235, rows.Length);
+            Assert.Equal(235, rows.Select(r => r.ProductId).Distinct().Count());
+            Assert.Equal(183, rows.Count(r => r.HasColorPath));
             int Of(RazerFamily family) => rows.Count(r => r.Family == family);
-            Assert.Equal((98, 62, 11, 7, 2),
+            Assert.Equal((100, 62, 11, 7, 2, 1),
                 (Of(RazerFamily.Extended), Of(RazerFamily.Standard), Of(RazerFamily.Classic),
-                 Of(RazerFamily.ExtendedFrame), Of(RazerFamily.MouseExtended)));
+                 Of(RazerFamily.ExtendedFrame), Of(RazerFamily.MouseExtended), Of(RazerFamily.ExtendedMatrix)));
             Assert.Equal((21, 29, 2), (Of(RazerFamily.Mono), Of(RazerFamily.None), Of(RazerFamily.Legacy)));
 
             // The rows are the lists the linker tells a mouse from a
             // keyboard by, no more and no fewer.
             var listed = PeripheralProductIds.RazerMice.Concat(PeripheralProductIds.RazerKeyboards).OrderBy(p => p).ToArray();
             Assert.Equal(listed, rows.Select(r => r.ProductId).OrderBy(p => p).ToArray());
-            Assert.Equal(70, rows.Count(r => r.HasColorPath && PeripheralProductIds.RazerMice.Contains(r.ProductId)));
+            Assert.Equal(73, rows.Count(r => r.HasColorPath && PeripheralProductIds.RazerMice.Contains(r.ProductId)));
             Assert.Equal(110, rows.Count(r => r.HasColorPath && PeripheralProductIds.RazerKeyboards.Contains(r.ProductId)));
 
             Assert.Null(RazerDirectTable.Find(0xFFFF));
@@ -457,14 +459,14 @@ namespace PadForge.Tests
 
             // The reply waits are openrazer's four classes for a product
             // that takes a color, and 47 laptops are kept awake.
-            Assert.Equal(new[] { (600, 146), (4900, 6), (31000, 24), (59900, 4) },
+            Assert.Equal(new[] { (600, 147), (4900, 6), (31000, 26), (59900, 4) },
                 rows.Where(r => r.HasColorPath).GroupBy(r => r.ReplyWaitUs).OrderBy(g => g.Key).Select(g => (g.Key, g.Count())));
-            Assert.Equal(28, rows.Count(r => r.HasColorPath && r.SlowReply));
+            Assert.Equal(30, rows.Count(r => r.HasColorPath && r.SlowReply));
             Assert.Equal(47, rows.Count(r => r.Has(RazerRowFlags.Laptop)));
 
-            // The first transaction ID of the 180: 1F, 3F, FF and 9F.
+            // The first transaction ID of the 183: 1F, 3F, FF and 9F.
             int First(byte id) => rows.Count(r => r.HasColorPath && r.TransactionId == id);
-            Assert.Equal((56, 56, 62, 6), (First(0x1F), First(0x3F), First(0xFF), First(0x9F)));
+            Assert.Equal((58, 56, 63, 6), (First(0x1F), First(0x3F), First(0xFF), First(0x9F)));
             Assert.Equal(73, rows.Count(r => r.HasColorPath && r.OtherTransactionIds.Length > 0));
         }
 
@@ -500,7 +502,8 @@ namespace PadForge.Tests
                 Assert.NotEmpty(RazerDirectProtocol.Paint(row, row.TransactionId, row.Leds, Color));
                 Assert.True(row.ReplyWaitUs > 0, id);
                 bool byLed = row.Family is RazerFamily.Extended or RazerFamily.MouseExtended or RazerFamily.Classic;
-                Assert.Equal(byLed || row.Family == RazerFamily.ExtendedFrame, row.Leds.Length > 0);
+                Assert.Equal(byLed || row.Family is RazerFamily.ExtendedFrame or RazerFamily.ExtendedMatrix, row.Leds.Length > 0);
+                if (row.Family == RazerFamily.ExtendedMatrix) Assert.True(row.Rows > 0 && row.Columns > 0, id);
                 if (row.Family == RazerFamily.Standard)
                     Assert.Equal(row.Has(RazerRowFlags.HeldEffect), row.Rows == 0 && row.Columns == 0);
                 if (row.Family == RazerFamily.ExtendedFrame) Assert.InRange(row.Columns, 2, 3);
@@ -710,15 +713,16 @@ namespace PadForge.Tests
         /// reads before a claim, the claim, the paint, the hand-back and
         /// each fallback. tools/gen_razer_direct_table.py prints one SHA-256
         /// per family over those reports as the research table has them,
-        /// and these are its five. A digest that differs names its family.
+        /// and these are its six. A digest that differs names its family.
         /// Run the tool with --frames to list the reports it hashed.
         /// </summary>
         [Theory]
         [InlineData("Classic", 11, "7fdb3060a5f4bebf958bce1e2ff2140093abccf33c988da1965fc404c073bffb")]
-        [InlineData("Extended", 98, "2e452f456ec4883dbf7f25f610a52dea67a397fea4ef657ac0596f7bec98ccb6")]
+        [InlineData("Extended", 100, "5964ef83cdad04a7b1ee817f245b3bf4372d3ede177ad138fb1815dd95e318a1")]
         [InlineData("ExtendedFrame", 7, "c92b94a865eadbef1b9b0cb3e138470b25ce3f1beb8e7cf23e28ba79f036250d")]
         [InlineData("Standard", 62, "2b972311fce70f196e723221bca36f31012233cdb90b82646779c045a86477fd")]
         [InlineData("MouseExtended", 2, "486f3bb0a135a3b124e890b7a9ad1220a21117632d6ea44410e8b451226fa231")]
+        [InlineData("ExtendedMatrix", 1, "679714ecbac9fa38d5206c3997048e70594f11143a441a044318e6119c1734d8")]
         public void EveryRowOfAFamily_BuildsTheReportsTheResearchTableSpells(string name, int count, string digest)
         {
             var family = Enum.Parse<RazerFamily>(name);
@@ -732,7 +736,10 @@ namespace PadForge.Tests
 
         /// <summary>Every report any row builds is 91 bytes with a true
         /// checksum, carries storage 00 where its command has a storage
-        /// byte, and is never a device-mode report. A read carries 01.</summary>
+        /// byte, and is never a device-mode report. A read carries 01, but
+        /// for the two reads with no argument, the region list and a
+        /// receiver's paired devices. The one class 00 report is that last
+        /// read.</summary>
         [Fact]
         public void EveryReportARowBuilds_StoresNothing_AndNoneSetsTheDeviceMode()
         {
@@ -761,7 +768,7 @@ namespace PadForge.Tests
                     Assert.True(report[RazerDirectProtocol.SizeAt] <= RazerDirectProtocol.MaxArguments, line);
                     byte commandClass = report[RazerDirectProtocol.ClassAt], command = report[RazerDirectProtocol.CommandAt];
                     byte first = report[RazerDirectProtocol.ArgumentsAt];
-                    Assert.False(commandClass == 0x00, line);
+                    Assert.True(commandClass != 0x00 || command == 0xBF, line);
                     bool read = (command & 0x80) != 0;
                     // The commands whose first argument is the storage byte.
                     bool stores = (commandClass == 0x0F && command == 0x02)
@@ -769,7 +776,9 @@ namespace PadForge.Tests
                     if (stores) Assert.True(first == 0x00, line);
                     if (commandClass == 0x03 && command == 0x0A && first == 0x05)
                         Assert.True(report[RazerDirectProtocol.ArgumentsAt + 1] == 0x00, line);
-                    if (read) Assert.True(first == 0x01, line);
+                    bool listRead = (commandClass, command) is (0x0F, 0x80) or (0x00, 0xBF);
+                    if (read && !listRead) Assert.True(first == 0x01, line);
+                    if (listRead) Assert.True(report.Skip(RazerDirectProtocol.ArgumentsAt).Take(RazerDirectProtocol.MaxArguments).All(b => b == 0), line);
                     checkedReports++;
                 }
             }

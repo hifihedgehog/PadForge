@@ -233,6 +233,7 @@ namespace PadForge.Common.Input.Peripherals
             LightSaltLighting.Instance,
             DarkProjectKeyboardLighting.Instance,
             MntKeyboardLighting.Instance,
+            FnaticStreakLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

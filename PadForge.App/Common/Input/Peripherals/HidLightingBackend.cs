@@ -108,9 +108,12 @@ namespace PadForge.Common.Input.Peripherals
 
             public bool BuiltInKeyboard;
 
-            /// <summary>The map the open session read from the device
+            /// <summary>The map a session read from the device
             /// (<see cref="HidLightingSession.Map"/>), or null for the
-            /// model's.</summary>
+            /// model's. Kept while the device stays, across closes and
+            /// reopens, and dropped only when the unit leaves the walk, as
+            /// the SteelSeries worker keeps the SKU it learned for the
+            /// device's stay (SteelSeriesDirectBackend SkuAsked).</summary>
             public LightMap SessionMap;
 
             /// <summary>The published map: the session's, else the model's,
@@ -406,8 +409,8 @@ namespace PadForge.Common.Input.Peripherals
                     bool feature = unit.Session?.Feature ?? true;
                     var own = unit.Own != null ? unit.Model.WriteOnce : null;
                     // The maps are taken down below, and a successor's are
-                    // its own, so no map goes back here.
-                    Close(unit, restoreMap: false);
+                    // its own.
+                    Close(unit);
                     // A hand-back that did not go out on the worker's
                     // channel goes out through a report of its own, as on
                     // the crash path, where the session names frames for it.
@@ -507,8 +510,10 @@ namespace PadForge.Common.Input.Peripherals
                     unit.Seen = false;
                     continue;
                 }
-                // The device is gone, so there is nothing to hand back to.
-                Close(unit, restoreMap: false);
+                // The device is gone, so there is nothing to hand back to,
+                // and the unit, with the map its sessions read, goes off the
+                // list. A device that comes back is a new unit.
+                Close(unit);
                 PeripheralLightMaps.Remove(PathOf(unit));
                 units.RemoveAt(i);
                 changed = true;
@@ -534,8 +539,8 @@ namespace PadForge.Common.Input.Peripherals
                 $"PERIPHERAL HidLighting found {unit.Label} ({unit.Model.Family?.Name}), {unit.Model.Map.Lights.Count} lights");
         }
 
-        /// <summary>Publishes the unit's map, the one its open session read
-        /// from the device or else the model's, with the names Map Key
+        /// <summary>Publishes the unit's map, the one a session read from
+        /// the device while it stays or else the model's, with the names Map Key
         /// Lights learned for it, as the SteelSeries worker swaps a unit's
         /// map once its SKU answers (SteelSeriesDirectBackend.SyncMap).</summary>
         private static void PublishMap(Unit unit)
@@ -747,11 +752,16 @@ namespace PadForge.Common.Input.Peripherals
             unit.LaterAt = 0;
             unit.CheckAt = _ticks() + unit.Model.RecheckMs;
             // A session that read the device's own map lights and publishes
-            // by it from now on (HidLightingSession.Map).
+            // by it from now on, for as long as the device stays
+            // (HidLightingSession.Map). A later session that reads none
+            // leaves the map an earlier one read.
             LightMap read = null;
             try { read = session.Map; } catch { }
-            unit.SessionMap = read;
-            if (read != null) PublishMap(unit);
+            if (read != null)
+            {
+                unit.SessionMap = read;
+                PublishMap(unit);
+            }
             // A session that finds colors of an earlier run's names their
             // undoing from its first moment.
             Track(unit);
@@ -875,11 +885,9 @@ namespace PadForge.Common.Input.Peripherals
             PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} {why}, listed asleep");
         }
 
-        /// <summary>Closes the unit's channel and drops its session. The
-        /// model's map goes back up where the session had put its own, unless
-        /// <paramref name="restoreMap"/> is false because the unit's map is
-        /// taken down next.</summary>
-        private void Close(Unit unit, bool restoreMap = true)
+        /// <summary>Closes the unit's channel and drops its session. The map
+        /// a session read from the device stays published.</summary>
+        private void Close(Unit unit)
         {
             Unrecord(unit);
             var handle = unit.Handle;
@@ -891,11 +899,6 @@ namespace PadForge.Common.Input.Peripherals
             unit.Pending = null;
             unit.PendingMap = null;
             unit.LaterAt = 0;
-            if (unit.SessionMap != null)
-            {
-                unit.SessionMap = null;
-                if (restoreMap) PublishMap(unit);
-            }
             try { handle?.Dispose(); } catch { }
         }
 

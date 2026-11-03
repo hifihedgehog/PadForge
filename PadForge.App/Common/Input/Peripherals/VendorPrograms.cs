@@ -93,6 +93,43 @@ namespace PadForge.Common.Input.Peripherals
         /// LenovoLegionToolkit.WPF/Controls/KeyboardBacklight/Spectrum/SpectrumKeyboardBacklightControl.xaml.cs:352-364).</summary>
         public static readonly IReadOnlyList<VendorProgram> LenovoSpectrum = new[] { LenovoVantage, LegionSpace, LegionZone };
 
+        /// <summary>Corsair iCUE, by the process name Aurora looks for
+        /// before it lights a Corsair device through iCUE
+        /// (Aurora AuroraDeviceManager/Devices/RGBNet/Implementations/CorsairRgbNetDevice.cs:46).</summary>
+        public static readonly VendorProgram CorsairIcue = new("Corsair iCUE", "iCUE");
+
+        /// <summary>The program that lights a Lenovo 4-zone keyboard. Lenovo
+        /// Legion Toolkit refuses every 4-zone write while Lenovo Vantage
+        /// runs and checks no other program
+        /// (LenovoLegionToolkit-Team RGBKeyboardBacklightController.cs:214-218,
+        /// RGBKeyboardBacklightControl.xaml.cs:186-200).</summary>
+        public static readonly IReadOnlyList<VendorProgram> Lenovo4Zone = new[] { LenovoVantage };
+
+        /// <summary>The programs that light the per-key keyboards of the
+        /// Legion Y740 to the Legion 7 Gen 6: Lenovo Vantage, which
+        /// Lenovo's Legion user guides name for keyboard lighting effects
+        /// (download.lenovo.com legion_slim_7 explore_lightingEffects.html),
+        /// and Corsair iCUE, which Lenovo's support video for Legion
+        /// keyboard lighting uses (support.lenovo.com vid500120).</summary>
+        public static readonly IReadOnlyList<VendorProgram> LenovoLegionUsb = new[] { LenovoVantage, CorsairIcue };
+
+        /// <summary>Legion Accessory Central, Lenovo's program for its
+        /// Legion accessories (support.lenovo.com acc500148), by the three
+        /// programs its installer puts in its app folder: legion_hid.exe,
+        /// whose main window and device modules (Lenny.Module.K500,
+        /// Lenny.Module.M300) light the K500 keyboard and the M300 mouse
+        /// through ldm_k500.dll and ldm_m300.dll, legion_haw.exe, which
+        /// starts legion_hid.exe, and legion_api.exe. Read from installer
+        /// 2.0.6.06161 (setup_2.0.6.06161.exe, SHA-256 6834205E...43D5, the
+        /// winget package Lenovo.LegionAccessoryCentral), file names and
+        /// strings only.</summary>
+        public static readonly VendorProgram LegionAccessoryCentral = new("Legion Accessory Central",
+            "legion_hid", "legion_haw", "legion_api");
+
+        /// <summary>The program that lights the K500 keyboard and the M300
+        /// mouse.</summary>
+        public static readonly IReadOnlyList<VendorProgram> LenovoAccessories = new[] { LegionAccessoryCentral };
+
         /// <summary>ASUS Armoury Crate, which lights a TUF laptop's
         /// keyboard. G-Helper counts it as running while either of these
         /// two processes runs (g-helper app/Helpers/AsusService.cs:44-50,
@@ -117,7 +154,8 @@ namespace PadForge.Common.Input.Peripherals
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
         {
-            LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor,
+            LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor, CorsairIcue,
+            LegionAccessoryCentral,
         };
     }
 

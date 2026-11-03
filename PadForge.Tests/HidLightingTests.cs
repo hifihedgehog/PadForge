@@ -394,11 +394,11 @@ namespace PadForge.Tests
             Assert.Equal(150, model.HoldMs);
             Assert.Equal(500, model.RepaintMs);
             // The keyboard collection of the same device, the controller's
-            // other vendor collections, the 24-zone board, and a short
-            // feature report.
+            // other vendor collections, a product OpenRGB does not list, and
+            // a short feature report.
             Assert.Null(HidLightingFamilies.Match(Collection(page: 0x0001, usage: 0x06)));
             Assert.Null(HidLightingFamilies.Match(Collection(usage: 0x10)));
-            Assert.Null(HidLightingFamilies.Match(Collection(pid: 0xC195)));
+            Assert.Null(HidLightingFamilies.Match(Collection(pid: 0xC196)));
             Assert.Null(HidLightingFamilies.Match(Collection(feature: 17)));
         }
     }
@@ -483,6 +483,16 @@ namespace PadForge.Tests
                     case LenovoLegionLighting.SetDirectMode:
                         Log.Add($"D0 {report[4]:X2} {report[5]}");
                         break;
+                    case LenovoLegionLighting.KeyCount:
+                    case LenovoLegionLighting.KeyPage:
+                        KeyMapReads.Add(LenovoLegionLightingTests.Hex(report, 6));
+                        _late = null;
+                        _answer = KeyMapAnswer(report);
+                        break;
+                    case LenovoLegionLighting.DirectFrameOpcode:
+                        Log.Add("A1");
+                        Direct.Add((byte[])report.Clone());
+                        break;
                     default:
                         Log.Add(report[1].ToString("X2"));
                         break;
@@ -517,6 +527,56 @@ namespace PadForge.Tests
         public List<string> Calls()
         {
             lock (_gate) return Log.ToList();
+        }
+
+        /// <summary>The key codes the keyboard reports, twenty to a row, as
+        /// Lenovo Legion Toolkit reads a 20 by 7 board (GetKeyboardLayoutAsync,
+        /// SpectrumKeyboardBacklightController.cs:104-110). OpenRGB's 101
+        /// ANSI keys unless a test sets others. Null: the key requests go
+        /// unanswered.</summary>
+        public List<int> KeyCodes = LenovoLegionLighting.Keys.Select(k => (int)k.Number).ToList();
+
+        /// <summary>The codes on the page outside the grid.</summary>
+        public List<int> OutsideCodes = new();
+
+        /// <summary>Every key count and key page request, as hex.</summary>
+        public readonly List<string> KeyMapReads = new();
+
+        /// <summary>Every direct frame.</summary>
+        public readonly List<byte[]> Direct = new();
+
+        private const int Width = 20;
+
+        /// <summary>The answer to a key count or key page request in the
+        /// layout of LENOVO_SPECTRUM_GET_KEY_COUNT_RESPONSE and
+        /// LENOVO_SPECTRUM_GET_KEY_PAGE_RESPONSE (Lenovo Legion Toolkit
+        /// Native.cs:224-255): bytes 5 and 6 the rows and the keys per row,
+        /// or the parameter and the row in bytes 4 and 5 and three bytes a
+        /// key from byte 6.</summary>
+        private byte[] KeyMapAnswer(byte[] report)
+        {
+            if (KeyCodes == null) return _answer;
+            var answer = new byte[LenovoLegionLighting.PacketSize];
+            answer[0] = 0x07;
+            answer[1] = report[1];
+            answer[2] = 0xC0;
+            answer[3] = 0x03;
+            answer[4] = report[4];
+            if (report[1] == LenovoLegionLighting.KeyCount)
+            {
+                answer[5] = (byte)Math.Max(1, (KeyCodes.Count + Width - 1) / Width);
+                answer[6] = Width;
+                return answer;
+            }
+            answer[5] = report[5];
+            var codes = report[4] == 0x08 ? OutsideCodes : KeyCodes.Skip(report[5] * Width).Take(Width).ToList();
+            for (int x = 0; x < codes.Count && x < Width; x++)
+            {
+                answer[6 + 3 * x] = (byte)x;
+                answer[7 + 3 * x] = (byte)codes[x];
+                answer[8 + 3 * x] = (byte)(codes[x] >> 8);
+            }
+            return answer;
         }
     }
 
@@ -709,7 +769,10 @@ namespace PadForge.Tests
             Assert.True(unit.LiveThroughLampArray);
             var map = PeripheralLightMaps.For(PathOf(Spectrum));
             Assert.NotNull(map);
-            Assert.Equal(130, map.Lights.Count);
+            // OpenRGB's 130 lights and the five keys only ISO and JIS boards
+            // have, unnamed.
+            Assert.Equal(135, map.Lights.Count);
+            Assert.All(map.Lights.Skip(130), l => Assert.Equal(0, l.Usage));
             Assert.Equal(0, Opens);
             Assert.Empty(_keyboard.Calls());
         }
@@ -1203,6 +1266,184 @@ namespace PadForge.Tests
             original[1] = LenovoLegionLighting.SaveProfile;
             lock (_oneShots)
                 Assert.Contains(_oneShots, shot => shot.Path == Spectrum.Path && shot.Frame.SequenceEqual(original));
+        }
+
+        [Fact]
+        public void TheSession_ReadsTheKeyMap_AndNeverStreamsAGen10Keyboard()
+        {
+            using var backend = Lit();
+            // GET_KEY_COUNT, the six pages of OpenRGB's 101 keys at twenty a
+            // row, and the page outside the grid (GetKeyMapAsync).
+            Assert.Equal("07 C4 C0 03 07 00", _keyboard.KeyMapReads[0]);
+            Assert.Equal(8, _keyboard.KeyMapReads.Count);
+            Assert.Equal("07 C5 C0 03 08 00", _keyboard.KeyMapReads[^1]);
+            // No direct mode, no direct frame.
+            Light(0x445566);
+            Advance(LenovoLegionLighting.RepaintMs);
+            Passes(backend);
+            Advance(LenovoLegionLighting.HoldMs);
+            Passes(backend);
+            Assert.DoesNotContain(_keyboard.Calls(), c => c.StartsWith("D0 01") || c == "A1");
+            Assert.Empty(_keyboard.Direct);
+        }
+
+        [Fact]
+        public void AnIsoGen10Board_ShowsItsOwnKeysNamed_AndStoresThemInThePicture()
+        {
+            _keyboard.KeyCodes = LenovoLightingTests.IsoCodes.ToList();
+            using var backend = Lit();
+            // The published map is the board's own, read from the keyboard:
+            // its ISO keys named, the keys it lacks gone.
+            var map = PeripheralLightMaps.For(PathOf(Spectrum));
+            Assert.Equal((ushort)0x32, map.Lights.Single(l => l.Address == 0xA8).Usage);
+            Assert.Equal((ushort)0x64, map.Lights.Single(l => l.Address == 0x4E).Usage);
+            Assert.DoesNotContain(map.Lights, l => l.Address == 0x26 || l.Address == 0x60);
+            Assert.Equal(LenovoLightingTests.IsoCodes.Length + 29, map.Lights.Count);
+            // The picture holds exactly those lights.
+            Assert.Equal(LenovoLegionLighting.StaticFrame(5, map.Lights, Enumerable.Repeat(0x112233, map.Lights.Count).ToArray()),
+                _keyboard.Stored(5));
+            // A key frame that colors the ISO # key reaches 0xA8.
+            Light(0x112233, new KeyFrame(new Dictionary<ushort, int> { [0x32] = 0xFF0000 }, null, null, null));
+            Advance(LenovoLegionLighting.RepaintMs);
+            Passes(backend);
+            Advance(LenovoLegionLighting.HoldMs);
+            Passes(backend);
+            var colors = map.Lights.Select(l => l.Address == 0xA8 ? 0xFF0000 : 0x112233).ToArray();
+            Assert.Equal(LenovoLegionLighting.StaticFrame(5, map.Lights, colors), _keyboard.Stored(5));
+        }
+
+        [Fact]
+        public void AnAnsiBoard_ShowsExactlyItsOwnKeys_ForItsWholeStay()
+        {
+            using var backend = Lit();
+            var map = PeripheralLightMaps.For(PathOf(Spectrum));
+            // OpenRGB's 130 lights, none of the ISO or JIS keys.
+            Assert.Equal(130, map.Lights.Count);
+            Assert.Equal(LenovoLegionLighting.Gen10Lights().Select(l => l.Address), map.Lights.Select(l => l.Address));
+            // The session closes and the board's map stays.
+            Unlight();
+            Passes(backend);
+            Assert.True(Channel().Disposed);
+            Assert.Same(map, PeripheralLightMaps.For(PathOf(Spectrum)));
+        }
+
+        [Fact]
+        public void AKeyboardThatDoesNotAnswerTheKeyMap_LightsOpenRgbsLights()
+        {
+            _keyboard.KeyCodes = null;
+            using var backend = Lit();
+            Assert.Equal(Picture(5, 0x112233), _keyboard.Stored(5));
+        }
+
+        private static HidCollectionInfo Gen8 => new()
+        {
+            Path = @"\\?\hid#vid_048d&pid_c988&col02#8&11b458cb&0&0001",
+            VendorId = 0x048D, ProductId = 0xC988, UsagePage = 0xFF89, Usage = 0x07, FeatureReportLength = 960,
+        };
+
+        private const string Gen8Product = "lenovo:048D:C988";
+
+        private HidLightingBackend Streaming(int rgb = 0x112233)
+        {
+            var backend = Started(Gen8);
+            Link(PathOf(Gen8));
+            Light(rgb);
+            Passes(backend);
+            Passes(backend);
+            return backend;
+        }
+
+        [Fact]
+        public void AGen8Claim_SavesTheProfile_EntersDirectMode_StoresTheGroup_AndStreams()
+        {
+            using var backend = Streaming();
+            // The profile read and backed up, then OpenRGB's Direct entry:
+            // direct mode on, the black Direct group, then the frame
+            // (RGBController_Lenovo_Gen7_8.cpp:507-515 and 531-550).
+            Assert.Equal(new[] { "CA", "CA", "CC 5", "CA", "D0 01 5", "CB 5", "A1" }, _keyboard.Calls());
+            var lights = LenovoLegionLighting.Gen7Lights(LenovoLegionLighting.Legion7Gen8);
+            Assert.Equal(LenovoLegionLighting.StreamGroupFrame(5, lights, LenovoLegionLighting.Format.Gen7), _keyboard.Stored(5));
+            Assert.Equal(LenovoLegionLighting.DirectFrame(lights, Enumerable.Repeat(0x112233, lights.Count).ToArray()),
+                Assert.Single(_keyboard.Direct));
+            Assert.NotNull(KeyboardProfileBackups.Get(Gen8Product));
+            // The crash path turns direct mode off, then puts the profile back.
+            var frames = Assert.Single(backend.Recorded).Frames;
+            Assert.Equal("07 D0 C0 03 02 05", Hex(frames[0], 6));
+            Assert.Equal(LenovoLegionLighting.SaveProfile, frames[1][1]);
+            Assert.Equal(0x03, frames[1][3]);
+        }
+
+        [Fact]
+        public void AGen8Stream_SendsEachChangedPicture_AsADirectFrameAlone()
+        {
+            using var backend = Streaming();
+            int before = _keyboard.Calls().Count;
+            Light(0x445566);
+            Passes(backend);
+            // Not sooner than 60 ms after the frame before.
+            Assert.Equal(before, _keyboard.Calls().Count);
+            Advance(LenovoLegionLighting.StreamRepaintMs);
+            Passes(backend);
+            Assert.Equal(new[] { "A1" }, _keyboard.Calls().Skip(before));
+            Assert.Equal(0x44, _keyboard.Direct[^1][6]);
+        }
+
+        [Fact]
+        public void AGen8HandBack_TurnsDirectModeOff_AndPutsTheProfileBack()
+        {
+            using var backend = Streaming();
+            int before = _keyboard.Calls().Count;
+            Unlight();
+            Passes(backend);
+            Assert.Equal(new[] { "CA", "CA", "CC 5", "D0 02 5", "CB 5", "CA", "CC 5" }, _keyboard.Calls().Skip(before));
+            // The original profile 5, behind the Gen 7 length byte.
+            var restored = _keyboard.Stored(5);
+            restored[1] = LenovoLegionLighting.GetProfile;
+            var original = LenovoLegionLighting.ContentsOf(LenovoLegionLightingTests.OwnersProfile5Answer(), 5);
+            Assert.Equal(original.Skip(2), LenovoLegionLighting.ContentsOf(restored, 5).Skip(2));
+            Assert.Equal((byte)(original.Length + 2), restored[2]);
+            Assert.Equal(0x03, restored[3]);
+            Assert.Null(KeyboardProfileBackups.Get(Gen8Product));
+            Assert.Empty(backend.Recorded);
+        }
+
+        [Fact]
+        public void AProfileKey_StopsTheGen8Stream_AndTheReturnEntersAgain()
+        {
+            using var backend = Streaming();
+            _keyboard.Active = 4;
+            Advance(LenovoLegionLighting.RecheckMs);
+            Passes(backend);
+            Assert.Empty(backend.Recorded);
+            int before = _keyboard.Calls().Count;
+            Light(0x445566);
+            Advance(LenovoLegionLighting.StreamRepaintMs);
+            Passes(backend);
+            Assert.DoesNotContain("A1", _keyboard.Calls().Skip(before));
+            Assert.DoesNotContain(_keyboard.Calls(), c => c.EndsWith(" 4") && !c.StartsWith("CA"));
+
+            _keyboard.Active = 5;
+            Advance(LenovoLegionLighting.AwayMs);
+            Passes(backend);
+            // Back on its profile: direct mode on, the group, the frame.
+            Assert.Equal(new[] { "D0 01 5", "CB 5", "A1" }, _keyboard.Calls().Skip(before).Where(c => c != "CA"));
+            Assert.Single(backend.Recorded);
+            Assert.Empty(_keyboard.ForeignReads);
+        }
+
+        [Fact]
+        public void AGen8GroupAKilledRunLeft_IsTurnedOffAndPutBack_WithNoClaim()
+        {
+            var original = LenovoLegionLighting.ContentsOf(LenovoLegionLightingTests.OwnersProfile5Answer(), 5);
+            KeyboardProfileBackups.LoadRegistry(new[] { (Gen8Product, 5, Convert.ToHexString(original)) });
+            var lights = LenovoLegionLighting.Gen7Lights(LenovoLegionLighting.Legion7Gen8);
+            _keyboard.Store(5, LenovoLegionLighting.StreamGroupFrame(5, lights, LenovoLegionLighting.Format.Gen7));
+
+            using var backend = Started(Gen8);
+            Advance(HidLightingBackend.RepairGraceMs);
+            Passes(backend);
+            Assert.Equal(new[] { "CA", "CA", "CC 5", "D0 02 5", "CB 5", "CA", "CC 5" }, _keyboard.Calls());
+            Assert.Null(KeyboardProfileBackups.Get(Gen8Product));
         }
     }
 

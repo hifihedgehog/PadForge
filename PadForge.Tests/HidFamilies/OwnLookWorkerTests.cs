@@ -446,10 +446,10 @@ namespace PadForge.Tests
         }, "device") { Product = "fake:own" };
 
         /// <summary>A session that read the device's own map: the worker
-        /// publishes it and renders by it while the session is open, and the
-        /// model's map goes back when the unit closes.</summary>
+        /// publishes it and renders by it, and the map stays after the
+        /// session closes, for as long as the device stays.</summary>
         [Fact]
-        public void ASessionsOwnMap_IsPublishedAndPaintedWhileItIsOpen_AndTheModelsComesBack()
+        public void ASessionsOwnMap_IsPublishedAndPainted_AndStaysAfterTheSessionCloses()
         {
             _family.Found = new[] { Laptop() };
             _family.SessionMap = DeviceMap();
@@ -465,7 +465,30 @@ namespace PadForge.Tests
 
             Unlight();
             Passes(backend);
-            Assert.Same(_family.Model.Map, PeripheralLightMaps.For(Path));
+            Assert.Contains("close " + Key, _family.Calls());
+            Assert.Same(_family.SessionMap, PeripheralLightMaps.For(Path));
+        }
+
+        /// <summary>A later session that reads no map of its own leaves the
+        /// map an earlier session read while the device stays.</summary>
+        [Fact]
+        public void ALaterSessionThatReadsNoMap_LeavesTheMapAnEarlierOneRead()
+        {
+            _family.Found = new[] { Laptop() };
+            var read = DeviceMap();
+            _family.SessionMap = read;
+            using var backend = Started();
+            Link();
+            Light(0x112233);
+            Passes(backend);
+            Unlight();
+            Passes(backend);
+
+            _family.SessionMap = null;
+            Light(0x445566);
+            Passes(backend);
+            Assert.Same(read, PeripheralLightMaps.For(Path));
+            Assert.Contains("paint " + Key + " io=null 445566,445566,445566", _family.Calls());
         }
 
         [Fact]
@@ -513,10 +536,11 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary>A unit that fails goes back to the model's map with its
-        /// session, and one that leaves takes its map down.</summary>
+        /// <summary>A unit that fails keeps the map its session read, and one
+        /// that leaves the walk takes its map down: a device that comes back
+        /// starts from the model's map.</summary>
         [Fact]
-        public void AFailedOrGoneUnit_LeavesNoSessionMapBehind()
+        public void AFailedUnit_KeepsItsSessionMap_AndAGoneUnitLeavesNoneBehind()
         {
             _family.Found = new[] { Laptop() };
             _family.SessionMap = DeviceMap();
@@ -530,11 +554,18 @@ namespace PadForge.Tests
             Light(0x445566);
             Passes(backend);
             Assert.True(Assert.Single(backend.Snapshot.Units).Asleep);
-            Assert.Same(_family.Model.Map, PeripheralLightMaps.For(Path));
+            Assert.Same(_family.SessionMap, PeripheralLightMaps.For(Path));
 
             _family.Found = Array.Empty<OwnDevice>();
             Walk(backend);
             Assert.Null(PeripheralLightMaps.For(Path));
+
+            // Back in the walk with no claim on it: the model's map until a
+            // session reads one.
+            Unlight();
+            _family.Found = new[] { Laptop() };
+            Walk(backend);
+            Assert.Same(_family.Model.Map, PeripheralLightMaps.For(Path));
         }
 
         [Fact]

@@ -204,7 +204,8 @@ namespace PadForge.Tests
     }
 
     /// <summary>No laptop's lighting is set through its firmware's ACPI
-    /// device or BIOS WMI method, and no serial port is opened (#557).</summary>
+    /// device, BIOS WMI method or Lenovo GameZone WMI method, and no serial
+    /// port is opened (#557).</summary>
     internal static class OwnLightingOffLimits
     {
         [ModuleInitializer]

@@ -46,7 +46,8 @@ namespace PadForge.Common.Input.Peripherals
     /// <summary>
     /// The machine side of the shared worker's families whose devices are
     /// no HID collections (#557): the ASUS ATK ACPI device, the HP BIOS WMI
-    /// method and USB serial ports. Every member that opens a device,
+    /// method and USB serial ports, and the Lenovo GameZone WMI method a
+    /// 4-zone keyboard's hand-back calls. Every member that opens a device,
     /// calls a WMI method or writes asks <see cref="OffLimitsForTest"/>
     /// first, so the test host reaches none of them (OwnLightingOffLimits
     /// in PadForge.Tests). The reads the looks make, a WMI query of the
@@ -235,6 +236,50 @@ namespace PadForge.Common.Input.Peripherals
             {
                 using var bios = new HpBiosChannel();
                 return bios.Call(command, commandType, input) != null;
+            }, timeoutMs);
+        }
+
+        // ─────────────────────────────────────────────
+        //  Lenovo GameZone WMI
+        // ─────────────────────────────────────────────
+
+        internal const string LenovoNamespace = @"ROOT\WMI";
+        internal const string LenovoGameZoneQuery = "SELECT * FROM LENOVO_GAMEZONE_DATA";
+        internal const string LenovoLightOwnerMethod = "SetLightControlOwner";
+
+        /// <summary>LENOVO_GAMEZONE_DATA.SetLightControlOwner with
+        /// <paramref name="owner"/> as its Data, on the first instance the
+        /// query finds, as Lenovo Legion Toolkit calls it
+        /// (WMI.LenovoGameZoneData.cs:171-174, CallAsync in WMI.cs:58-78).
+        /// 0 gives a 4-zone keyboard back to the firmware. Bounded by
+        /// <paramref name="timeoutMs"/>, since a WMI call can stall the
+        /// worker. True when the call went through in time.</summary>
+        internal static bool SetLenovoLightControlOwner(int owner, int timeoutMs)
+        {
+            if (OffLimitsForTest) return false;
+            return HidReportChannel.RunBounded(() =>
+            {
+                try
+                {
+                    using var searcher = new ManagementObjectSearcher(LenovoNamespace, LenovoGameZoneQuery);
+                    using var results = searcher.Get();
+                    foreach (ManagementBaseObject row in results)
+                    {
+                        using (row)
+                        {
+                            if (row is not ManagementObject zone) continue;
+                            using var parameters = zone.GetMethodParameters(LenovoLightOwnerMethod);
+                            parameters["Data"] = owner;
+                            using var result = zone.InvokeMethod(LenovoLightOwnerMethod, parameters, null);
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+                catch
+                {
+                    return false;
+                }
             }, timeoutMs);
         }
 

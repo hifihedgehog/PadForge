@@ -456,6 +456,7 @@ namespace PadForge.Tests
             new object[] { OwnLighting, "internal static bool HpBiosCallOnce(int command, int commandType, byte[] input, int timeoutMs)", "if (OffLimitsForTest) return false;" },
             new object[] { OwnLighting, "internal static ISerialLineChannel OpenSerial(string path, int baud)", "if (OffLimitsForTest) return null;" },
             new object[] { OwnLighting, "internal static bool SerialWriteOnce(string path, int baud, byte[] bytes, int timeoutMs)", "if (OffLimitsForTest) return false;" },
+            new object[] { OwnLighting, "internal static bool SetLenovoLightControlOwner(int owner, int timeoutMs)", "if (OffLimitsForTest) return false;" },
 
             // Steam.
             new object[] { SteamHttpFile, "private static HttpClient CreateClient()", "var http = OffLimitsForTest ? new HttpClient(new SendsNothing()) : new HttpClient();" },

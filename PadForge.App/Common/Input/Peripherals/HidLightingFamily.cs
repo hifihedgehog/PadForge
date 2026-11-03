@@ -178,11 +178,12 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The map of the device this session opened, read from the
         /// device, or null to keep the model's (<see cref="HidLightingModel.Map"/>).
-        /// Read once, right after the session begins. While the session is
-        /// open the worker publishes it, with the names Map Key Lights
-        /// learned for it, renders every picture by it and hands
-        /// <see cref="Paint"/> its lights, and the model's map goes back
-        /// when the unit closes.</summary>
+        /// Read once, right after the session begins. From then on, for as
+        /// long as the device stays in the walk, the worker publishes it,
+        /// with the names Map Key Lights learned for it, renders every
+        /// picture by it and hands <see cref="Paint"/> its lights, across
+        /// closes and reopens. The model's map goes back only when the unit
+        /// leaves the walk.</summary>
         public virtual LightMap Map => null;
 
         /// <summary>How long a picture that came back
@@ -213,6 +214,11 @@ namespace PadForge.Common.Input.Peripherals
         public static readonly IReadOnlyList<IHidLightingFamily> All = new IHidLightingFamily[]
         {
             LenovoLegionLighting.Instance,
+            LenovoLegionUsbLighting.Instance,
+            Lenovo4ZoneLighting.Instance,
+            LenovoK500Lighting.Instance,
+            LenovoK510Lighting.Instance,
+            LenovoM300Lighting.Instance,
             AsusTufLaptopLighting.Instance,
             HpOmenLaptopLighting.Instance,
             DygmaRaiseLighting.Instance,

@@ -223,6 +223,8 @@ namespace PadForge.Common.Input.Peripherals
             HpOmenLaptopLighting.Instance,
             DygmaRaiseLighting.Instance,
             WootingKeyboardLighting.Instance,
+            SinowealthLighting.Instance,
+            SinowealthMouseLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

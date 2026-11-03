@@ -126,8 +126,8 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
 
         /// <summary>KeyboardLayoutManager(layout, size, values), lines
         /// 321-472. <paramref name="defaultValues"/> and
-        /// <paramref name="regionalOverlay"/> are layout_values; an overlay
-        /// listed twice for one region takes the first, as std::map does.</summary>
+        /// <paramref name="regionalOverlay"/> are layout_values. Of two
+        /// overlays for one region the first counts, as std::map keeps it.</summary>
         public KeyboardLayoutManager(KeyboardLayout layout, KeyboardSize size, uint[] defaultValues,
                                      (KeyboardLayout Layout, KeyboardLed[] Keys)[] regionalOverlay)
         {
@@ -551,15 +551,17 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
     {
         private static Dictionary<string, KeyboardLayoutRecipe> s_byName;
 
-        /// <summary>The recipe OpenRGB calls <paramref name="name"/>, or null.</summary>
+        /// <summary>The recipe OpenRGB calls <paramref name="name"/>, or null.
+        /// Safe from any thread: two first callers may each build the index,
+        /// and each publishes a whole one.</summary>
         public static KeyboardLayoutRecipe Recipe(string name)
         {
-            var byName = s_byName;
+            var byName = System.Threading.Volatile.Read(ref s_byName);
             if (byName == null)
             {
                 byName = new Dictionary<string, KeyboardLayoutRecipe>(StringComparer.Ordinal);
                 foreach (var recipe in Recipes) byName[recipe.Name] = recipe;
-                s_byName = byName;
+                System.Threading.Volatile.Write(ref s_byName, byName);
             }
             return name != null && byName.TryGetValue(name, out var found) ? found : null;
         }

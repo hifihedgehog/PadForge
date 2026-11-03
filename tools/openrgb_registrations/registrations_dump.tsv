@@ -1,0 +1,472 @@
+openrgb	c6fc8016d215cca17d660c47746a08d7ea6a9175
+A4TechController	Hid	Bloody B820R	2522	64016	2	65362	528	-1	1
+A4TechController	Hid	Bloody W60 Pro	2522	14314	2	65331	1321	-1	1
+A4TechController	Hid	Bloody W70 Max	2522	31215	2	65331	1304	-1	1
+A4TechController	Hid	Bloody W90 Max	2522	13926	2	65331	1341	-1	1
+A4TechController	Hid	Bloody W90 Pro	2522	14774	2	65331	1357	-1	1
+A4TechController	Hid	Bloody MP 50RS	2522	64096	2	65522	24585	-1	1
+AOCKeyboardController	Hid	AOC GK500	14648	4472	-1	65305	65305	-1	1
+AOCKeyboardController	Hid	AOC GK500	14648	4649	-1	65305	65305	-1	1
+AcerNitroHidKeyboardController	Hid	AcerNitroHidKeyboardController	3314	20784	-1	65370	1	-1	1
+AlienwareController	Hid	Dell G Series LED Controller	6268	1360	-1	-1	-1	-1	1
+AlienwareController	Hid	Dell G Series LED Controller	6268	1361	-1	-1	-1	-1	1
+AlienwareKeyboardController	Hid	Alienware AW410K	1266	6504	2	65280	1	-1	1
+AlienwareKeyboardController	Hid	Alienware AW510K	1266	6192	2	65280	1	-1	1
+AnnePro2Controller	Hid	Anne Pro 2	1241	32776	1	-1	-1	-1	1
+AnnePro2Controller	Hid	Anne Pro 2	1241	32777	1	-1	-1	-1	1
+AnnePro2Controller	Hid	Anne Pro 2	1241	41618	1	-1	-1	-1	1
+AnnePro2Controller	Hid	Anne Pro 2	1241	41619	1	-1	-1	-1	1
+AnnePro2Controller	Hid	Anne Pro 2	13073	41623	1	-1	-1	-1	1
+AsusAuraCoreController	Hid	ASUS Aura Core	2821	6228	-1	-1	-1	-1	1
+AsusAuraCoreController	Hid	ASUS Aura Core	2821	6246	-1	-1	-1	-1	1
+AsusAuraCoreController	Hid	ASUS Aura Core	2821	6249	-1	-1	-1	-1	1
+AsusAuraCoreController	Hid	ASUS ROG Strix SCAR 15	2821	6582	-1	65329	121	-1	1
+AsusAuraCoreController	Hid	ASUS ROG Strix SCAR 17	2821	6246	-1	65329	121	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Throne	2821	6361	0	-1	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Throne QI	2821	6341	0	-1	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Throne QI GUNDAM	2821	6548	0	-1	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Scope TKL	2821	6412	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Scope TKL PNK LTD	2821	6484	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Scope RX TKL Wireless Deluxe	2821	6661	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Scope NX TKL Moonlight White	2821	6608	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Azoth USB	2821	6787	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Azoth 2.4GHz	2821	6789	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Claymore	2821	6221	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Falchion (Wired)	2821	6460	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Falchion (Wireless)	2821	6462	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Flare	2821	6261	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Flare PNK LTD	2821	6351	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Flare CoD Black Ops 4 Edition	2821	6319	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Flare II Animate	2821	6652	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Flare II	2821	6654	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Scope	2821	6392	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Scope RX	2821	6481	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Scope RX EVA-02 Edition	2821	6930	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Scope NX Wireless Deluxe USB	2821	6646	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Scope NX Wireless Deluxe 2.4GHz	2821	6648	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Scope II	2821	6835	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Scope II RX	2821	6837	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Scope II 96 Wireless USB	2821	6830	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Scope II 96 RX Wireless USB	2821	7032	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS TUF Gaming K1	2821	6469	2	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS TUF Gaming K3	2821	6475	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS TUF Gaming K3 GEN II	2821	6960	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS TUF Gaming K5	2821	6297	2	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS TUF Gaming K7	2821	6314	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS TUF Gaming K3 GEN II MIKU EDITION	2821	7262	1	65280	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix XG27AQ	2821	6540	-1	65440	1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix XG27AQM	2821	6587	-1	65440	1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix XG279Q	2821	6425	-1	65440	1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix XG27W	2821	6451	-1	65440	1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix XG32VC	2821	6504	-1	65440	1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG PG32UQ	2821	6585	-1	65440	1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Gladius II Core	2821	6365	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Gladius II	2821	6213	2	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Gladius II Origin	2821	6263	2	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Gladius II Origin PNK LTD	2821	6349	2	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Gladius II Origin COD	2821	6321	2	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Gladius II Wireless	2821	6302	1	65299	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Gladius II Wireless	2821	6304	2	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Gladius III	2821	6523	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Gladius III Core	2821	7309	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Gladius III Wireless USB	2821	6525	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Gladius III Wireless 2.4Ghz	2821	6527	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Gladius III Wireless Bluetooth	2821	6529	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Gladius III Wireless AimPoint USB	2821	6768	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Gladius III Wireless AimPoint 2.4Ghz	2821	6770	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Chakram (Wireless)	2821	6373	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Chakram (Wired)	2821	6371	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Chakram Core	2821	6488	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Chakram X USB	2821	6680	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Chakram X 2.4GHz	2821	6682	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	Asus ROG Spatha X USB	2821	6519	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	Asus ROG Spatha X 2.4GHz	2821	6521	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	Asus ROG Spatha X Dock	2821	6521	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Pugio	2821	6214	2	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Pugio II (Wired)	2821	6406	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Pugio II (Wireless)	2821	6408	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Impact	2821	6215	2	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Impact II	2821	6369	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Impact II Gundam	2821	6302	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Impact II Electro Punk	2821	6486	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Impact II Moonlight White	2821	6610	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Impact II Wireless USB	2821	6471	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Impact II Wireless 2.4 Ghz	2821	6473	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Impact III	2821	6792	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Keris	2821	6492	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Keris Wireless USB	2821	6494	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Keris Wireless 2.4Ghz	2821	6496	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Keris Wireless Bluetooth	2821	6498	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Keris Wireless AimPoint USB	2821	6758	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Keris Wireless AimPoint 2.4Ghz	2821	6760	0	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS TUF Gaming M3	2821	6416	1	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS TUF Gaming M3 Gen II	2821	6811	2	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS TUF Gaming M5	2821	6296	2	65281	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix Evolve	2821	6235	1	8	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Spatha Wired	2821	6172	1	8	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Spatha Wireless	2821	6180	1	8	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Balteus	2821	6289	-1	65286	1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Balteus Qi	2821	6288	-1	65286	1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Ryuo AIO	2821	6279	-1	65394	161	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Ryujin AIO	2821	6318	-1	65394	161	-1	1
+AsusAuraUSBController	Hid	ASUS Aura Addressable	2821	6247	-1	-1	-1	-1	1
+AsusAuraUSBController	Hid	ASUS Aura Addressable	2821	6258	-1	-1	-1	-1	1
+AsusAuraUSBController	Hid	ASUS Aura Addressable	2821	6307	-1	-1	-1	-1	1
+AsusAuraUSBController	Hid	ASUS Aura Addressable	2821	6309	-1	-1	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix LC III	2821	6953	-1	-1	-1	-1	1
+AsusAuraUSBController	Hid	ASUS Aura Motherboard	2821	6387	-1	-1	-1	-1	1
+AsusAuraUSBController	Hid	ASUS Aura Motherboard	2821	6457	-1	-1	-1	-1	1
+AsusAuraUSBController	Hid	ASUS Aura Motherboard	2821	6575	-1	65394	161	-1	1
+AsusAuraUSBController	Hid	ASUS Aura Motherboard	2821	6822	-1	-1	-1	-1	1
+AsusAuraUSBController	Hid	ASUS Aura Motherboard	2821	7149	-1	-1	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG AURA Terminal	2821	6281	-1	-1	-1	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Ally	2821	6846	2	65329	118	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Ally X	2821	6988	2	65329	118	-1	1
+AsusAuraUSBController	Hid	ASUS ROG Strix LC	2821	34718	-1	255	1	-1	1
+AsusLegacyUSBController	Hid	ASUS Cerberus Mech	6493	8263	1	65281	1	-1	1
+AsusLegacyUSBController	Hid	ASUS Sagaris GK1100	2821	6197	1	65282	2	-1	1
+AsusLegacyUSBController	Hid	ASUS ROG Strix Claw	6493	4118	0	65281	1	-1	1
+AsusTUFLaptopController	Device	ASUS TUF Laptop	-1	-1	-1	-1	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard MX BOARD 3.0S FL NBL	1130	119	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard MX BOARD 3.0S FL RGB	1130	121	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard MX BOARD 3.0S FL RGB KOREAN	1130	131	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard MX 1.0 FL BL	1130	171	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard MX BOARD 1.0 TKL RGB	1130	172	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard MX BOARD 8.0 TKL RGB	1130	183	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard MX BOARD 10.0 FL RGB	1130	187	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard G80-3000 TKL NBL	1130	195	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard MX BOARD 2.0S FL RGB (EU)	1130	422	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard MX BOARD 2.0S FL RGB (US)	1130	196	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard MX BOARD 2.0S FL NBL	1130	206	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard G80-3000 TKL RGB	1130	197	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard MV BOARD 3.0 FL RGB	1130	199	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard CCF MX 8.0 TKL BL	1130	201	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard CCF MX 1.0 TKL BL	1130	202	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard CCF MX 1.0 TKL NBL	1130	203	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard G80-3000 TKL NBL KOREAN	1130	205	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard MX 1.0 FL NBL	1130	210	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard MX 1.0 FL RGB	1130	211	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard G80-3000N TKL RGB (EU)	1130	221	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard G80-3000N TKL RGB (US)	1130	224	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard G80-3000N FL RGB (EU)	1130	222	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard G80-3000N FL RGB (US)	1130	225	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard MX BOARD 10.0N FL RGB (EU)	1130	223	1	65308	-1	-1	1
+CherryKeyboardController	Hid	Cherry Keyboard MX BOARD 10.0N FL RGB (US)	1130	226	1	65308	-1	-1	1
+ClevoKeyboardController	Hid	Clevo Keyboard (ITE 8291)	1165	24587	-1	65283	1	-1	1
+ClevoKeyboardController	Hid	Clevo Keyboard (ITE 829x)	1165	35088	-1	65417	204	-1	1
+CoolerMasterController	Hid	Cooler Master MasterKeys Pro S	9494	60	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master MasterKeys Pro L	9494	59	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master MasterKeys Pro L White	9494	71	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master MK850	9494	105	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master SK620 White	9494	345	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master SK620 Black	9494	343	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master SK622 White	9494	331	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master SK622 Black	9494	329	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master SK630	9494	137	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master SK650	9494	141	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master SK652	9494	349	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master SK653	9494	427	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master MK730	9494	143	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master MK750	9494	103	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master CK530	9494	159	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master CK530 V2	9494	327	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master CK550 V2	9494	325	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master CK550 V1 / CK552	9494	127	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master ARGB	9494	4113	0	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master ARGB Gen 2 A1	9494	371	1	65281	1	-1	1
+CoolerMasterController	Hid	Cooler Master ARGB Gen 2 A1 V2	9494	457	1	65281	1	-1	1
+CoolerMasterController	Hid	Cooler Master ARGB Gen 2 A1 Mini	9494	459	1	65281	1	-1	1
+CoolerMasterController	Hid	Cooler Master RGB	9494	79	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master Small ARGB	9494	4096	0	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master MM530	9494	101	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master MM711	9494	257	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master MM712	9494	361	3	65290	2	-1	1
+CoolerMasterController	Hid	Cooler Master MM720	9494	321	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master MM730	9494	357	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master MP750 XL	9494	265	-1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master MP750 Large	9494	263	-1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master MP750 Medium	9494	261	-1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master Radeon RX 6000 GPU	9494	333	1	-1	-1	-1	1
+CoolerMasterController	Hid	Cooler Master Radeon RX 6900 GPU	9494	347	1	-1	-1	-1	1
+CoolerMasterController	Hid	Cooler Master GM27-FQS ARGB Monitor	9494	443	0	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master GM34-CWQ ARGB Monitor	9494	447	0	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master GD160 ARGB Gaming Desk	9494	425	0	65280	1	-1	1
+CorsairPeripheralController	Hid	Corsair K55 RGB	6940	6973	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair K65 RGB	6940	6935	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair K65 LUX RGB	6940	6967	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair K65 RGB RAPIDFIRE	6940	6969	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair K68 RGB	6940	6991	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair K68 RED	6940	6975	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair K68 RED SHADOW	6940	7077	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair K70 RGB	6940	6931	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair K70 LUX	6940	6966	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair K70 LUX RGB	6940	6963	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair K70 RGB RAPIDFIRE	6940	6968	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair K70 RGB MK.2	6940	6985	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair K70 RGB MK.2 SE	6940	7019	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair K70 RGB MK.2 Low Profile	6940	6997	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair K70 RGB PRO Optomechanical	6940	7110	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair K95 RGB	6940	6929	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair K95 RGB PLATINUM	6940	6957	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair K95 RGB PLATINUM SE	6940	7042	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair Strafe	6940	6944	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair Strafe Red	6940	6980	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair Strafe MK.2	6940	6984	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair Glaive RGB	6940	6964	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair Glaive RGB PRO	6940	7028	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair Harpoon RGB	6940	6972	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair Harpoon RGB PRO	6940	7029	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair Ironclaw RGB	6940	7005	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair M65	6940	6930	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair M65 PRO	6940	6958	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair M65 RGB Elite	6940	7002	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair Nightsword	6940	7004	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair Scimitar RGB	6940	6942	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair Scimitar PRO RGB	6940	6974	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair Scimitar Elite RGB	6940	7051	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair Sabre RGB	6940	6959	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair Sabre RGB Optical	6940	6962	1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair MM800 RGB Polaris	6940	6971	-1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair ST100 RGB	6940	2612	-1	65474	-1	-1	1
+CorsairPeripheralController	Hid	Corsair K65 Mini	6940	7087	1	-1	-1	-1	1
+CorsairPeripheralController	Hid	Corsair K55 RGB PRO XT	6940	7073	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K55 RGB PRO	6940	7076	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K57 RGB (Wired)	6940	7022	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K60 RGB PRO	6940	7072	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K60 RGB PRO SE	6940	7053	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K60 RGB PRO Low Profile	6940	7085	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K60 RGB PRO TKL Black	6940	7111	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K60 RGB PRO TKL White	6940	7149	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K70 Core RGB	6940	7165	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K70 Core RGB TKL	6940	11009	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K70 RGB PRO	6940	7108	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K70 RGB PRO V2	6940	7091	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K70 RGB TKL	6940	7027	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K70 RGB TKL Champion Series	6940	7097	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K95 RGB PLATINUM XT	6940	7049	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K100 RGB Optical	6940	7036	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K100 RGB Optical	6940	7109	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K100 MX Red	6940	7037	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair Dark Core RGB SE (Wired)	6940	6987	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair Dark Core RGB Pro SE (Wired)	6940	7038	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair Harpoon Wireless (Wired)	6940	7006	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair Ironclaw Wireless (Wired)	6940	6988	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair Ironclaw Wireless SE (Wired)	6940	11058	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair Ironclaw Wireless SE	6940	11008	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair Katar Pro	6940	7059	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair Katar Pro V2	6940	7098	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair Katar Pro XT	6940	7084	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair M55 RGB PRO	6940	7024	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair M65 RGB Ultra Wired	6940	7070	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair M65 RGB Ultra Wireless (Wired)	6940	7093	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair M75 Gaming Mouse	6940	7152	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair M75 Wireless	6940	7132	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair M75 Wireless (Wired)	6940	7153	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair Scimitar Elite RGB	6940	7139	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair Slipstream Wireless Receiver HW	6940	7078	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair Slipstream Wireless Receiver SW	6940	7013	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair Slipstream Wireless Receiver HW	6940	7014	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair MM700	6940	7067	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair MM700 3XL	6940	7113	1	65346	-1	-1	1
+CougarController	Hid	Cougar 700K EVO Gaming Keyboard	1547	28688	3	65280	1	-1	1
+CougarController	Hid	Cougar Revenger ST	4815	1042	0	1	2	-1	1
+DarkProject	Hid	Dark Project KD3B V2	6493	8289	2	65474	4	-1	1
+DasKeyboardController	Hid	Das Keyboard 4Q RGB	9456	8247	1	1	128	-1	1
+DasKeyboardController	Hid	Das Keyboard 5Q RGB	9456	8224	1	-1	-1	-1	1
+DasKeyboardController	Hid	Das Keyboard 5QS RGB	9456	8346	1	-1	-1	-1	1
+DuckyKeyboardController	Hid	Ducky Shine 7/Ducky One 2 RGB	1241	840	1	-1	-1	-1	1
+DuckyKeyboardController	Hid	Ducky One 2 RGB TKL	1241	854	1	-1	-1	-1	1
+DygmaRaiseController	Device	Dygma Raise	-1	-1	-1	-1	-1	-1	1
+EVGAUSBController	Hid	EVGA Z15 Keyboard	14402	9742	1	8	75	-1	1
+EVGAUSBController	Hid	EVGA Z15 Keyboard	14402	9736	1	8	75	-1	1
+EVGAUSBController	Hid	EVGA Z20 Keyboard	14402	9738	1	8	75	-1	1
+EVGAUSBController	Hid	EVGA Z20 Keyboard	14402	9744	1	8	75	-1	1
+EVGAUSBController	Hid	EVGA X20 Gaming Mouse	14402	9248	2	65535	0	-1	1
+EVGAUSBController	Hid	EVGA X20 USB Receiver	14402	9218	2	65535	0	-1	1
+EVGAUSBController	Hid	EVGA X12 Gaming Mouse	14402	9250	1	8	75	-1	1
+EVisionKeyboardController	Hid	EVision Keyboard 0C45:5004	3141	20484	1	65308	-1	-1	1
+EVisionKeyboardController	Hid	EVision Keyboard 0C45:5104	3141	20740	1	65308	-1	-1	1
+EVisionKeyboardController	Hid	EVision Keyboard 0C45:5204	3141	20996	1	65308	-1	-1	1
+EVisionKeyboardController	Hid	EVision Keyboard 0C45:652F	3141	25903	1	65308	-1	-1	1
+EVisionKeyboardController	Hid	EVision Keyboard 0C45:7672	3141	30322	1	65308	-1	-1	1
+EVisionKeyboardController	Hid	EVision Keyboard 0C45:7698	3141	30360	1	65308	-1	-1	1
+EVisionKeyboardController	Hid	EVision Keyboard 0C45:8520	3141	34080	1	65308	-1	-1	1
+EVisionKeyboardController	Hid	EVision Keyboard 320F:5000	12815	20480	1	65308	-1	-1	1
+EVisionKeyboardController	Hid	EVision Keyboard 320F:502A	12815	20522	1	65308	-1	-1	1
+EVisionKeyboardController	Hid	EVision Keyboard 320F:505B	12815	20571	1	65308	-1	-1	1
+EVisionKeyboardController	Hid	EVision Keyboard 320F:5078	12815	20600	1	65308	-1	-1	1
+EVisionKeyboardController	Hid	EVision Keyboard 320F:5064	12815	20580	1	65308	-1	-1	1
+EVisionKeyboardController	Hid	EVision Keyboard 320F:5084	12815	20612	1	65308	-1	-1	1
+EVisionKeyboardController	Hid	EVision Keyboard 320F:5041	12815	20545	1	65308	-1	-1	1
+EVisionKeyboardController	Hid	Endorfy Omnis	12953	18	1	65308	-1	-1	1
+FnaticStreakController	Hid	Fnatic Streak	12046	257	1	-1	-1	-1	1
+FnaticStreakController	Hid	Fnatic miniStreak	12046	258	1	-1	-1	-1	1
+FnaticStreakController	Hid	Fnatic Streak65	12046	261	1	-1	-1	-1	1
+GaiZongGaiKeyboardController	Hid	GaiZhongGai 68+4 PRO	12385	18176	3	-1	-1	-1	1
+GaiZongGaiKeyboardController	Hid	GaiZhongGai 42 PRO	12385	18177	3	-1	-1	-1	1
+GaiZongGaiKeyboardController	Hid	GaiZhongGai Dial	12385	18208	3	-1	-1	-1	1
+GaiZongGaiKeyboardController	Hid	GaiZhongGai LightBoard	12385	18192	3	-1	-1	-1	1
+GaiZongGaiKeyboardController	Hid	GaiZhongGai RGB HUB Green	12385	18193	3	-1	-1	-1	1
+GaiZongGaiKeyboardController	Hid	GaiZhongGai RGB HUB Blue	12385	18194	3	-1	-1	-1	1
+GaiZongGaiKeyboardController	Hid	GaiZhongGai 17+4+Touch PRO	12385	18288	3	-1	-1	-1	1
+GaiZongGaiKeyboardController	Hid	GaiZhongGai 17 PRO	12385	18289	3	-1	-1	-1	1
+GaiZongGaiKeyboardController	Hid	GaiZhongGai 20 PRO	12385	18290	3	-1	-1	-1	1
+GigabyteAorusLaptopController	Hid	Gigabyte Aorus 17X Keyboard	1044	31295	3	65281	1	-1	1
+GigabyteAorusLaptopController	Hid	Gigabyte Aorus 17X Backlight	1044	31298	3	65281	1	-1	1
+GigabyteAorusLaptopController	Hid	Gigabyte Aorus 15BKF Keyboard	1044	31299	3	65281	1	-1	1
+GigabyteAorusLaptopController	Hid	Gigabyte Aorus 15BKF Backlight	1044	31300	3	65281	1	-1	1
+HPOmenLaptopController	Device	HP Omen 4-Zone Laptop Keyboard	-1	-1	-1	-1	-1	-1	1
+HYTEKeyboardController	Hid	HYTE Keeb TKL	13314	768	-1	65297	240	-1	1
+HyperXKeyboardController	Hid	HyperX Alloy Elite 2	2385	5905	3	65424	-1	-1	1
+HyperXKeyboardController	Hid	HyperX Alloy Elite 2 (HP)	1008	1423	3	65424	-1	-1	1
+HyperXKeyboardController	Hid	HyperX Alloy Elite RGB	2385	5822	2	65281	-1	-1	1
+HyperXKeyboardController	Hid	HyperX Alloy FPS RGB	2385	5852	2	65281	-1	-1	1
+HyperXKeyboardController	Hid	HyperX Alloy Origins 60	2385	5940	3	-1	-1	-1	1
+HyperXKeyboardController	Hid	HyperX Alloy Origins 60 (HP)	1008	3214	3	-1	-1	-1	1
+HyperXKeyboardController	Hid	HyperX Alloy Origins 65 (HP)	1008	911	3	-1	-1	-1	1
+HyperXKeyboardController	Hid	HyperX Alloy Origins	2385	5861	3	-1	-1	-1	1
+HyperXKeyboardController	Hid	HyperX Alloy Origins (HP)	1008	1425	3	65424	-1	-1	1
+HyperXKeyboardController	Hid	HyperX Alloy Origins Core	2385	5862	2	-1	-1	-1	1
+HyperXKeyboardController	Hid	HyperX Alloy Origins Core (HP)	1008	2447	2	-1	-1	-1	1
+HyperXKeyboardController	Hid	HyperX Eve 1800 (HP)	1008	2242	2	-1	-1	-1	1
+HyperXKeyboardController	Hid	HyperX Origins 2 65 (HP)	1008	3266	3	-1	-1	-1	1
+IonicoController	Hid	Ionico Light Bar	1165	24581	-1	65283	1	-1	1
+IonicoController	Hid	Ionico Keyboard	1165	52736	-1	65298	1	-1	1
+KeychronKeyboardController	Hid	Keychron Gaming Keyboard 1	1452	591	0	1	6	-1	1
+LenovoControllers	Hid	Lenovo Ideapad 3-15ach6	1165	51555	-1	65417	204	-1	1
+LenovoControllers	Hid	Lenovo 5 2023	1165	51589	-1	65417	204	-1	1
+LenovoControllers	Hid	Lenovo 5 2023 Ideapad	1165	51588	-1	65417	204	-1	1
+LenovoControllers	Hid	Lenovo 5 2022	1165	51573	-1	65417	204	-1	1
+LenovoControllers	Hid	Lenovo 5 2022 Ideapad	1165	51571	-1	65417	204	-1	1
+LenovoControllers	Hid	Lenovo 5 2021	1165	51557	-1	65417	204	-1	1
+LenovoControllers	Hid	Lenovo 5 2021 Ideapad	1165	51555	-1	65417	204	-1	1
+LenovoControllers	Hid	Lenovo 5 2020	1165	51541	-1	65417	204	-1	1
+LenovoControllers	Hid	Lenovo Legion K500	6127	24789	3	-1	-1	-1	1
+LenovoControllers	Hid	Lenovo Legion K510 Mini Pro	6127	24986	1	65308	146	-1	1
+LenovoControllers	Hid	Lenovo Legion M300	6127	24804	-1	65281	1	-1	1
+LenovoControllers	Hid	Lenovo Legion Y740	1165	51509	-1	65417	7	-1	1
+LenovoControllers	Hid	Lenovo Legion 7 Gen 5	1165	51542	-1	65417	7	-1	1
+LenovoControllers	Hid	Lenovo Legion 7S Gen 5	1165	51543	-1	65417	7	-1	1
+LenovoControllers	Hid	Lenovo Legion 7 Gen 6	1165	51560	-1	65417	7	-1	1
+LenovoControllers	Hid	Lenovo Legion 7S Gen 6	1165	51559	-1	65417	7	-1	1
+LenovoControllers	Hid	Lenovo Legion 7S Gen 7	1165	51575	-1	65417	7	-1	1
+LenovoControllers	Hid	Lenovo Legion 7 Gen 7	1165	51576	-1	65417	7	-1	1
+LenovoControllers	Hid	Lenovo Legion 7 Gen 8	1165	51592	-1	65417	7	-1	1
+LenovoControllers	Hid	Lenovo Legion 7S Gen 8	1165	51591	-1	65417	7	-1	1
+LenovoControllers	Hid	Lenovo Legion 7 Gen 9	1165	51607	-1	65417	7	-1	1
+LenovoControllers	Hid	Lenovo Legion 7 Gen 9	1165	51608	-1	65417	7	-1	1
+LenovoControllers	Hid	Lenovo Legion 7 Gen 10	1165	49559	-1	65417	7	-1	1
+LenovoControllers	Hid	Lenovo Legion 5 Gen 10	1165	49557	-1	65417	7	-1	1
+LightSaltController	Hid	LightSalt Peripherals	1155	22352	1	1	0	-1	1
+MNTKeyboardController	Hid	MNT Reform Keyboard	4617	27906	0	1	6	-1	1
+MNTKeyboardController	Hid	MNT Pocket Reform Keyboard	4617	27910	0	1	6	-1	1
+MSI3ZoneController	Hid	MSI 3-Zone Laptop	6000	65280	-1	-1	-1	-1	1
+MSIKeyboardController	Hid	MSI Keyboard MS_1565	5218	5633	-1	255	1	-1	1
+MSIKeyboardController	Hid	MSI Mystic Light MS_1562	5218	5474	-1	255	1	-1	1
+MSIKeyboardController	Hid	MSI Mystic Light MS_1563	5218	5475	-1	255	1	-1	1
+MSIKeyboardController	Hid	MSI Mystic Light MS_1564	5218	5476	-1	255	1	-1	1
+MSILaptopController	Hid	MSI Laptop Keyboard	4152	4386	-1	-1	-1	-1	1
+MSILaptopController	Hid	MSI Laptop Lightbar	4152	4449	0	-1	-1	-1	1
+MSILaptopController	Hid	MSI GE68HX Keyboard	4152	4410	0	-1	-1	-1	1
+MSILaptopController	Hid	MSI GE68HX Lightbar	4152	4427	0	-1	-1	-1	1
+MSIVigorController	Hid	MSI Vigor GK30 controller	3504	2864	1	65281	1	-1	1
+MintakaKeyboardController	Hid	VSG Mintaka	1452	598	0	1	6	-1	1
+MountainKeyboardController	Hid	Mountain Everest	12930	1	3	65280	1	-1	1
+MountainKeyboardController	Hid	Mountain Everest 60	12930	5	2	65535	1	-1	1
+MountainKeyboardController	Hid	Mountain Everest 60	12930	6	2	65535	1	-1	1
+OKSController	Hid	OKS Optical Axis RGB	7247	61064	1	-1	-1	-1	1
+QMKController	Hid	Keychron RGB QMK/ZMK Keyboard	13364	-1	-1	65376	97	-1	1
+QMKController	Dynamic	QMK OpenRGB Devices	-1	-1	-1	-1	-1	-1	1
+QMKController	Dynamic	QMK VialRGB Devices	-1	-1	-1	-1	-1	-1	1
+QMKController	Hid	Raspberry Pi 500+	11914	17	-1	65376	97	-1	1
+QMKController	Hid	YMDK 84	8352	16941	-1	65376	97	-1	1
+RedSquareKeyroxController	Hid	Red Square Keyrox TKL	6700	5393	3	65280	2	-1	1
+RedSquareKeyroxController	Hid	Red Square Keyrox TKL V2	6700	9489	3	65280	2	-1	1
+RoccatController	Hid	Roccat Horde Aimo	7805	12350	1	11	0	-1	1
+RoccatController	Hid	Roccat Magma	7805	12580	1	65281	-1	-1	1
+RoccatController	Hid	Roccat Magma Mini	7805	27040	1	65281	-1	-1	1
+RoccatController	Hid	Roccat Pyro	7805	12620	1	65281	-1	-1	1
+RoccatController	Hid	Roccat Vulcan 100 Aimo	7805	12410	1	11	-1	-1	1
+RoccatController	Hid	Roccat Vulcan 120-Series Aimo	7805	12440	1	11	-1	-1	1
+RoccatController	Hid	Roccat Vulcan TKL	7805	12270	1	11	-1	-1	1
+RoccatController	Hid	Roccat Vulcan Pro	7805	12535	1	65281	-1	-1	1
+RoccatController	Hid	Roccat Vulcan TKL Pro	7805	12570	1	65281	-1	-1	1
+RoccatController	Hid	Roccat Vulcan II	7805	12110	1	65281	-1	-1	1
+RoccatController	Hid	Roccat Vulcan II Max	7805	12002	1	65281	-1	-1	1
+RoccatController	Hid	Roccat Vulcan II Mini	7805	12041	1	65281	-1	-1	1
+RoccatController	Hid	Turtle Beach Vulcan II	4341	20507	1	65281	-1	-1	1
+RoccatController	Hid	Turtle Beach Vulcan II TKL	4341	20515	1	11	-1	-1	1
+RoccatController	Hid	Turtle Beach Vulcan II TKL Pro	4341	20481	1	1	-1	-1	1
+RoccatController	Hid	Roccat Burst Core	7805	11750	3	65281	1	-1	1
+RoccatController	Hid	Roccat Burst Pro	7805	11745	3	65281	1	-1	1
+RoccatController	Hid	Roccat Burst Pro Air	7805	11430	0	1	2	-1	1
+RoccatController	Hid	Roccat Kone Aimo	7805	11815	0	11	0	-1	1
+RoccatController	Hid	Roccat Kone Aimo 16K	7805	11820	0	11	0	-1	1
+RoccatController	Hid	Roccat Kone Pro	7805	11400	3	65281	1	-1	1
+RoccatController	Hid	Roccat Kone Pro Air	7805	11406	2	65280	1	-1	1
+RoccatController	Hid	Roccat Kone Pro Air (Wired)	7805	11410	1	65299	1	-1	1
+RoccatController	Hid	Roccat Kone XP	7805	11403	3	65281	1	-1	1
+RoccatController	Hid	Roccat Kova	7805	11502	0	11	0	-1	1
+RoccatController	Hid	Roccat Sense Aimo Mid	7805	13370	0	65281	1	-1	1
+RoccatController	Hid	Roccat Sense Aimo XXL	7805	13371	0	65281	1	-1	1
+RoccatController	Hid	Roccat Elo 7.1	7805	14900	3	12	1	-1	1
+RoyuanKeyboardController	Hid	Akko 3068B Plus / PC75B Plus	12625	16387	0	-1	-1	-1	1
+RoyuanKeyboardController	Hid	Skyloong GK68HE Pro	12625	20521	2	-1	-1	-1	1
+RoyuanKeyboardController	Hid	Epomaker TH80 Pro (USB Cable)	12625	16400	2	-1	-1	-1	1
+RoyuanKeyboardController	Hid	Epomaker TH80 Pro (USB Dongle)	12625	16401	2	-1	-1	-1	1
+RoyuanKeyboardController	Hid	Attack Shark K86 (USB Cable)	12625	16405	2	-1	-1	-1	1
+SayoDeviceController	Hid	SayoDevice E1	32905	7	-1	65297	2	-1	1
+SinowealthController	Hid	Glorious Model O / O-	9610	54	-1	65280	-1	-1	1
+SinowealthController	Hid	Glorious Model D / D-	9610	51	-1	65280	-1	-1	1
+SinowealthController	Hid	Everest GT-100 RGB	9610	41	-1	65280	-1	-1	1
+SinowealthController	Hid	ZET Fury Pro	9610	4103	1	65280	1	-1	1
+SinowealthController	Hid	Glorious Model O / O- Wireless	9610	8226	-1	65535	1	-1	1
+SinowealthController	Hid	Glorious Model O / O- Wireless	9610	8209	-1	65535	0	-1	1
+SinowealthController	Hid	Glorious Model D / D- Wireless	9610	8227	-1	65535	0	-1	1
+SinowealthController	Hid	Glorious Model D / D- Wireless	9610	8210	-1	65535	0	-1	1
+SinowealthController	Hid	Genesis Xenon 200	9610	4103	-1	65280	1	-1	1
+SinowealthController	Hid	Genesis Thor 300	9610	144	1	65280	1	-1	1
+SinowealthController	Hid	Sinowealth Keyboard	9610	268	1	65280	1	-1	1
+SkyloongController	Hid	Skyloong GK104 Pro	7847	2311	1	-1	-1	-1	1
+ThermaltakePoseidonZRGBController	Hid	Thermaltake Poseidon Z RGB	9802	12294	1	65281	-1	-1	1
+ValkyrieKeyboardController	Hid	Valkyrie VK99 Pro	1452	591	3	65299	1	-1	1
+ValkyrieKeyboardController	Hid	Valkyrie VK99	1452	591	2	65299	1	-1	1
+WinbondGamingKeyboardController	Hid	Winbond Gaming Keyboard	1046	45628	-1	65307	145	-1	1
+WitmodKeyboardController	Hid	Witmod Keyboard	1046	49989	2	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting One (Legacy)	1003	65281	-1	4919	-1	-1	1
+WootingKeyboardController	Hid	Wooting Two (Legacy)	1003	65282	-1	4919	-1	-1	1
+WootingKeyboardController	Hid	Wooting One	12771	4354	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting One	12771	4352	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting One	12771	4353	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting Two	12771	4610	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting Two	12771	4608	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting Two	12771	4609	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting Two Lekker Edition	12771	4626	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting Two Lekker Edition	12771	4624	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting Two Lekker Edition	12771	4625	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting Two HE	12771	4642	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting Two HE	12771	4640	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting Two HE	12771	4641	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting Two HE (ARM)	12771	4658	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting Two HE (ARM)	12771	4656	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting Two HE (ARM)	12771	4657	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting 60HE	12771	4866	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting 60HE	12771	4864	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting 60HE	12771	4865	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting 60HE (ARM)	12771	4882	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting 60HE (ARM)	12771	4880	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting 60HE (ARM)	12771	4881	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting 60HE+	12771	4898	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting 60HE+	12771	4896	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting 60HE+	12771	4897	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting 60HEv2	12771	4930	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting 60HEv2	12771	4928	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting 60HEv2	12771	4929	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting 80HE	12771	5122	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting 80HE	12771	5120	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting 80HE	12771	5121	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting UwU RGB	12771	5394	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting UwU RGB	12771	5392	-1	-1	-1	-1	1
+WootingKeyboardController	Hid	Wooting UwU RGB	12771	5393	-1	-1	-1	-1	1
+XPGSummonerKeyboardController	Hid	XPG Summoner Gaming Keyboard	4703	37912	2	65281	1	-1	1
+ZETKeyboardController	Hid	ZET Blade Optical	11944	8485	1	65280	-1	-1	1

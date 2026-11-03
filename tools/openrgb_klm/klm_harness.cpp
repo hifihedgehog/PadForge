@@ -987,7 +987,7 @@ layout_values gk8120_offset_values =
     }
 };
 
-// Logitech's tables are static const arrays of keyboard_led; the
+// Logitech's tables are static const arrays of keyboard_led. The
 // controller builds a key_set from pointer and count (lines 471 and 1979).
 
 struct named { const void* p; const char* n; };

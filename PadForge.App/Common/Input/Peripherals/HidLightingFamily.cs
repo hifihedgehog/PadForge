@@ -222,6 +222,8 @@ namespace PadForge.Common.Input.Peripherals
             MsiVigorLighting.Instance,
             AlienwareLighting.Instance,
             AlienwareKeyboardLighting.Instance,
+            AcerNitroLighting.Instance,
+            IonicoLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

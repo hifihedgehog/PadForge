@@ -218,6 +218,7 @@ namespace PadForge.Common.Input.Peripherals
             DygmaRaiseLighting.Instance,
             RoccatLighting.Instance,
             RoccatVulcanLighting.Instance,
+            CherryKeyboardLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

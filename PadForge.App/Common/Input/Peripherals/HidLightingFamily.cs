@@ -225,6 +225,7 @@ namespace PadForge.Common.Input.Peripherals
             MountainKeyboardLighting.Instance,
             MintakaKeyboardLighting.Instance,
             SkyloongKeyboardLighting.Instance,
+            WitmodKeyboardLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

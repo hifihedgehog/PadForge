@@ -998,7 +998,7 @@
   <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>顏色會直接傳送到 {0}。</value></data>
   <data name="Pad_Lighting_RouteDirectPower" xml:space="preserve"><value>顏色會直接傳送到 {0}。亮燈期間，它不會自行調暗燈光。</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>顏色會直接傳送到 {0}。亮燈期間，其內置記憶體模式會關閉。</value></data>
-  <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>顏色會直接傳送到 {0}。變色效果，例如顏色循環或隨聲音變化的顏色，需要在手提電腦的 BIOS 中開啟 Dynamic Lighting。未開啟時，按鍵會保持最後的固定顏色。</value></data>
+  <data name="Pad_Lighting_RouteDirectSmoothestInBios" xml:space="preserve"><value>顏色會直接傳送到 {0}。變色效果，例如顏色循環或隨聲音變化的顏色，在手提電腦的 BIOS 中開啟 Dynamic Lighting 後會最流暢。</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>顏色會直接傳送到 {0}。如果手提電腦的 BIOS 中已開啟 Dynamic Lighting，按鍵會改由 Windows 動態燈光效果亮燈。在 Windows「設定」中為此鍵盤關閉 Windows 動態燈光效果，PadForge 便會為按鍵亮燈，包括變色效果。</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>此裝置尚未回應。待它喚醒後便會顯示顏色。</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>顏色會經 {0} 傳送。</value></data>

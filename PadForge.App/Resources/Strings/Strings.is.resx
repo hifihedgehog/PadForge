@@ -998,7 +998,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>Litir fara beint til {0}.</value></data>
   <data name="Pad_Lighting_RouteDirectPower" xml:space="preserve"><value>Litir fara beint til {0}. Það dempar ekki ljósin sjálft á meðan það er lýst.</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Litir fara beint til {0}. Slökkt er á ham innbyggðs minnis þess á meðan það er lýst.</value></data>
-  <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Litir fara beint til {0}. Breytilegir litir, svo sem litahringrás eða litir sem fylgja hljóði, krefjast þess að kveikt sé á Dynamic Lighting í BIOS fartölvunnar. Án þess halda takkarnir síðustu föstu litum.</value></data>
+  <data name="Pad_Lighting_RouteDirectSmoothestInBios" xml:space="preserve"><value>Litir fara beint til {0}. Breytilegir litir, svo sem litahringrás eða litir sem fylgja hljóði, hreyfast mýkst þegar kveikt er á Dynamic Lighting í BIOS fartölvunnar.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Litir fara beint til {0}. Ef kveikt er á Dynamic Lighting í BIOS fartölvunnar lýsir Windows Dynamic Lighting takkana í staðinn. Slökktu á Windows Dynamic Lighting fyrir þetta lyklaborð í stillingum Windows og þá lýsir PadForge þá, þar á meðal með breytilegum litum.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Þetta tæki hefur ekki svarað enn. Litir þess birtast þegar það vaknar.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Litir fara í gegnum {0}.</value></data>

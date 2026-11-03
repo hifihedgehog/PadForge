@@ -1822,7 +1822,7 @@
   <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>颜色直接发送到 {0}。</value></data>
   <data name="Pad_Lighting_RouteDirectPower" xml:space="preserve"><value>颜色直接发送到 {0}。点亮期间，设备不会自行调暗灯光。</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>颜色直接发送到 {0}。点亮期间，设备的板载模式处于关闭状态。</value></data>
-  <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>颜色直接发送到 {0}。变化的颜色（如颜色循环或随声音变化的颜色）需要在笔记本电脑的 BIOS 中开启 Dynamic Lighting。未开启时，按键会保持最后的静态颜色。</value></data>
+  <data name="Pad_Lighting_RouteDirectSmoothestInBios" xml:space="preserve"><value>颜色直接发送到 {0}。变化的颜色，例如颜色循环或跟随声音变化的颜色，在笔记本电脑的 BIOS 中开启 Dynamic Lighting 时最为流畅。</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>颜色直接发送到 {0}。如果笔记本电脑的 BIOS 中已开启 Dynamic Lighting，则由 Windows 动态照明点亮按键。在 Windows 设置中为此键盘关闭 Windows 动态照明后，PadForge 即可点亮按键，包括变化的颜色。</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>此设备尚未响应。设备唤醒后即显示颜色。</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>颜色通过 {0} 发送。</value></data>

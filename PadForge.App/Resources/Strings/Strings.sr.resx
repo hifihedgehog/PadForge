@@ -998,7 +998,7 @@
   <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>Боје се шаљу директно на {0}.</value></data>
   <data name="Pad_Lighting_RouteDirectPower" xml:space="preserve"><value>Боје се шаљу директно на {0}. Док је осветљен, уређај сам не пригушује своја светла.</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Боје се шаљу директно на {0}. Док је осветљен, његов режим уграђене меморије је искључен.</value></data>
-  <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Боје се шаљу директно на {0}. Боје које се мењају, као што су циклус боја или боје које прате звук, захтевају да је Dynamic Lighting укључен у BIOS-у лаптопа. Без тога, тастери задржавају последње непромењиве боје.</value></data>
+  <data name="Pad_Lighting_RouteDirectSmoothestInBios" xml:space="preserve"><value>Боје се шаљу директно на {0}. Боје које се мењају, као што су циклус боја или боје које прате звук, најглађе се смењују када је Dynamic Lighting укључен у BIOS-у лаптопа.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Боје се шаљу директно на {0}. Ако је Dynamic Lighting укључен у BIOS-у лаптопа, тастере уместо тога осветљава Windows динамичко осветљење. Искључите Windows динамичко осветљење за ову тастатуру у Windows подешавањима и PadForge ће их осветљавати, укључујући и боје које се мењају.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Овај уређај још није одговорио. Боје ће се приказати када се пробуди.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Боје се шаљу преко {0}.</value></data>

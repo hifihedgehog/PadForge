@@ -998,7 +998,7 @@
   <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>สีจะส่งตรงไปยัง {0}</value></data>
   <data name="Pad_Lighting_RouteDirectPower" xml:space="preserve"><value>สีจะส่งตรงไปยัง {0} อุปกรณ์จะไม่หรี่ไฟเองขณะที่ได้รับแสงไฟ</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>สีจะส่งตรงไปยัง {0} โหมดหน่วยความจำในตัวจะปิดขณะที่ได้รับแสงไฟ</value></data>
-  <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>สีจะส่งตรงไปยัง {0} สีที่เปลี่ยนแปลง เช่น วงจรสีหรือสีที่ตามเสียง ต้องเปิด Dynamic Lighting ใน BIOS ของแล็ปท็อป หากไม่เปิด ปุ่มจะคงสีนิ่งล่าสุดไว้</value></data>
+  <data name="Pad_Lighting_RouteDirectSmoothestInBios" xml:space="preserve"><value>สีจะส่งตรงไปยัง {0} สีที่เปลี่ยนแปลง เช่น การไล่สีหรือสีที่เปลี่ยนตามเสียง จะเคลื่อนไหวลื่นไหลที่สุดเมื่อเปิด Dynamic Lighting ใน BIOS ของแล็ปท็อป</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>สีจะส่งตรงไปยัง {0} หากเปิด Dynamic Lighting ใน BIOS ของแล็ปท็อป Dynamic Lighting (แสงแบบไดนามิก) ของ Windows จะให้แสงไฟแก่ปุ่มแทน ปิด Dynamic Lighting ของ Windows สำหรับคีย์บอร์ดนี้ในการตั้งค่า Windows แล้ว PadForge จะให้แสงไฟแก่ปุ่ม รวมถึงสีที่เปลี่ยนแปลง</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>อุปกรณ์นี้ยังไม่ตอบกลับ สีจะแสดงเมื่ออุปกรณ์ตื่นขึ้น</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>สีจะส่งผ่าน {0}</value></data>

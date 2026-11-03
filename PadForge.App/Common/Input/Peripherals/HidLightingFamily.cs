@@ -43,10 +43,10 @@ namespace PadForge.Common.Input.Peripherals
         /// (<see cref="PeripheralLinker.ChooseLighting"/>).</summary>
         public bool LitBesideWindows { get; init; }
 
-        /// <summary>The device's own controller keeps still pictures only,
-        /// and a LampArray interface of the same device shows colors that
-        /// change wherever the device's firmware lets that interface take
-        /// colors, so the linker lights a row through both
+        /// <summary>The device's own controller shows colors that change
+        /// only roughly, and a LampArray interface of the same device shows
+        /// them as they come wherever the device's firmware lets that
+        /// interface take colors, so the linker lights a row through both
         /// (<see cref="PeripheralLinker.ChooseLighting"/>).</summary>
         public bool LiveThroughLampArray { get; init; }
 
@@ -56,6 +56,16 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The shortest time between two pictures sent.</summary>
         public int RepaintMs { get; init; }
+
+        /// <summary>How often a picture that keeps changing goes out, frame
+        /// by frame, through <see cref="HidLightingSession.Stream"/>. 0: the
+        /// model only stores pictures.</summary>
+        public int StreamMs { get; init; }
+
+        /// <summary>How long a streamed picture has to stay the same before
+        /// it is stored and the stream ends. Longer than
+        /// <see cref="HoldMs"/>.</summary>
+        public int StreamHoldMs { get; init; }
 
         /// <summary>How often an open session reads the device's state again
         /// (<see cref="HidLightingSession.Recheck"/>). 0: never.</summary>
@@ -105,6 +115,13 @@ namespace PadForge.Common.Input.Peripherals
         /// model's.</summary>
         public abstract HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
             IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors);
+
+        /// <summary>Shows one frame of a picture that keeps changing. Only a
+        /// model with <see cref="HidLightingModel.StreamMs"/> is asked, and a
+        /// later <see cref="Paint"/> stores the picture and ends the
+        /// stream.</summary>
+        public virtual HidLightingPaint Stream(IHidReportChannel io, Action<int> wait,
+            IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors) => HidLightingPaint.Failed;
 
         /// <summary>How long a picture that came back
         /// <see cref="HidLightingPaint.Later"/> waits before the next

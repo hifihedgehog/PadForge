@@ -1823,7 +1823,7 @@
   <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>色は {0} に直接送られます。</value></data>
   <data name="Pad_Lighting_RouteDirectPower" xml:space="preserve"><value>色は {0} に直接送られます。点灯している間、デバイスは自分でライトを暗くしません。</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>色は {0} に直接送られます。点灯している間、デバイスのオンボードモードはオフになります。</value></data>
-  <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>色は {0} に直接送られます。変化する色（カラーサイクルや音に合わせて変わる色など）には、ノート PC の BIOS で Dynamic Lighting をオンにする必要があります。オンにしないと、キーは最後の固定色のままになります。</value></data>
+  <data name="Pad_Lighting_RouteDirectSmoothestInBios" xml:space="preserve"><value>色は {0} に直接送られます。変化する色(色のサイクルや音に合わせて動く色など)は、ノート PC の BIOS で Dynamic Lighting がオンの場合に最も滑らかに動きます。</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>色は {0} に直接送られます。ノート PC の BIOS で Dynamic Lighting がオンの場合は、代わりに Windows の動的ライティングがキーを点灯させます。Windows の設定でこのキーボードの動的ライティングをオフにすると、変化する色を含め、PadForge がキーを点灯させます。</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>このデバイスはまだ応答していません。スリープから復帰すると色が表示されます。</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>色は {0} を通して送られます。</value></data>

@@ -127,6 +127,85 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void TheStreamSwitch_IsOpenRgbsGen10Frame()
+        {
+            // {REPORT_ID, SET_DIRECT_MODE, 0xC0, 0x03, 01 on or 02 off,
+            // profile} with bytes 2 and 3 overwritten by the payload length
+            // 2 (setLedsDirectOn and setLedsDirectOff, lines 134-166).
+            var on = LenovoLegionLighting.StreamOn(5);
+            Assert.Equal(960, on.Length);
+            Assert.Equal("07 D0 02 00 01 05", Hex(on, 6));
+            Assert.All(on.Skip(6), b => Assert.Equal(0, b));
+            var off = LenovoLegionLighting.StreamOff(3);
+            Assert.Equal("07 D0 02 00 02 03", Hex(off, 6));
+            Assert.All(off.Skip(6), b => Assert.Equal(0, b));
+        }
+
+        [Fact]
+        public void TheStreamFrame_IsOpenRgbsGen10DirectFrame()
+        {
+            var lights = new[]
+            {
+                new LightInfo(0x0001, LightKind.Key, 0x29, LightKeySource.Generated),
+                new LightInfo(0x03E9, LightKind.Edge, 0, LightKeySource.None),
+            };
+            // {REPORT_ID, DIRECT_MODE}, the payload length in bytes 2 and 3,
+            // then each light's address low byte first and its color, a
+            // black light included (the Gen 10 branch of setLedsDirect,
+            // lines 170-198).
+            var frame = LenovoLegionLighting.StreamFrame(lights, new[] { 0x112233, 0x000000 });
+            Assert.Equal(960, frame.Length);
+            Assert.Equal("07 A1 0A 00 01 00 11 22 33 E9 03 00 00 00", Hex(frame, 14));
+            Assert.All(frame.Skip(14), b => Assert.Equal(0, b));
+        }
+
+        [Fact]
+        public void TheStreamFrame_CarriesEveryLightOfTheBoard_AndStopsWhereOneReportEnds()
+        {
+            var lights = LenovoLegionLighting.Gen10Lights();
+            var colors = Enumerable.Range(0, lights.Count).Select(n => 0x010203 * (n + 1)).ToArray();
+            var frame = LenovoLegionLighting.StreamFrame(lights, colors);
+            // 130 lights of five bytes each.
+            Assert.Equal(650, frame[2] | frame[3] << 8);
+            for (int n = 0; n < lights.Count; n++)
+            {
+                int at = 4 + n * 5;
+                Assert.Equal(lights[n].Address, frame[at] | frame[at + 1] << 8);
+                Assert.Equal(colors[n], frame[at + 2] << 16 | frame[at + 3] << 8 | frame[at + 4]);
+            }
+
+            // OpenRGB's loop takes a light while i + 5 <= PACKET_SIZE
+            // (line 186): 191 lights in one report.
+            var many = Enumerable.Range(1, 200).Select(n => new LightInfo(n, LightKind.Key, 0, LightKeySource.None)).ToArray();
+            var cut = LenovoLegionLighting.StreamFrame(many, new int[200]);
+            Assert.Equal(191 * 5, cut[2] | cut[3] << 8);
+            Assert.Equal(191, cut[4 + 190 * 5]);
+        }
+
+        [Fact]
+        public void TheStreamGroup_IsOpenRgbsDirectGroup()
+        {
+            var lights = new[]
+            {
+                new LightInfo(0x0001, LightKind.Key, 0x29, LightKeySource.Generated),
+                new LightInfo(0x03E9, LightKind.Edge, 0, LightKeySource.None),
+            };
+            // GetLedGroups puts every light of the Direct mode in one group
+            // of black (RGBController_Lenovo_Gen7_8.cpp:692-718 and
+            // 794-797), and setLedsByGroup sends it as it sends the Static
+            // mode's, with mode 0x0D (RGBController_Lenovo_Gen7_8.h:29).
+            // Payload 3 + 23 = 26.
+            var frame = LenovoLegionLighting.StreamGroupFrame(5, lights);
+            Assert.Equal("07 CB 1A 00 05 01 01 "
+                         + "01 06 01 0D 02 00 03 00 04 03 05 02 06 00 01 00 00 00 02 01 00 E9 03", Hex(frame, 30));
+            Assert.All(frame.Skip(30), b => Assert.Equal(0, b));
+            // The whole board: one group of 130 lights.
+            var board = LenovoLegionLighting.StreamGroupFrame(5, LenovoLegionLighting.Gen10Lights());
+            Assert.Equal(3 + 19 + 2 * 130, board[2] | board[3] << 8);
+            Assert.Equal(130, board[25]);
+        }
+
+        [Fact]
         public void TheStaticFrame_MatchesOpenRgbsWritesAsTheOwnersKeyboardHoldsThem()
         {
             // The keys in 0x101010 and the edges black: OpenRGB leaves the
@@ -255,6 +334,27 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void TheStreamGroupOfPadForges_ReadsAsItsOwn_AndIsToldFromAStillPicture()
+        {
+            var lights = LenovoLegionLighting.Gen10Lights();
+            var group = LenovoLegionLighting.StreamGroupFrame(5, lights);
+            group[1] = LenovoLegionLighting.GetProfile;
+            var contents = LenovoLegionLighting.ContentsOf(group, 5);
+            Assert.True(LenovoLegionLighting.IsOwnPicture(contents, 5, Addresses));
+            Assert.True(LenovoLegionLighting.HoldsStream(contents, 5, Addresses));
+
+            var picture = LenovoLegionLighting.StaticFrame(5, lights, Enumerable.Repeat(0x123456, lights.Count).ToArray());
+            picture[1] = LenovoLegionLighting.GetProfile;
+            Assert.False(LenovoLegionLighting.HoldsStream(LenovoLegionLighting.ContentsOf(picture, 5), 5, Addresses));
+            // Effects of the keyboard's own, another profile, a light the
+            // model does not have, nothing read.
+            Assert.False(LenovoLegionLighting.HoldsStream(LenovoLegionLighting.ContentsOf(OwnersProfile4Answer(), 4), 4, Addresses));
+            Assert.False(LenovoLegionLighting.HoldsStream(contents, 4, Addresses));
+            Assert.False(LenovoLegionLighting.HoldsStream(contents, 5, new HashSet<int> { 0x0001 }));
+            Assert.False(LenovoLegionLighting.HoldsStream(null, 5, Addresses));
+        }
+
+        [Fact]
         public void TheGen10Board_HasOpenRgbsZonesInItsOrder()
         {
             var lights = LenovoLegionLighting.Gen10Lights();
@@ -345,6 +445,10 @@ namespace PadForge.Tests
             // A picture is written once it has held, at most twice a second.
             Assert.Equal(150, model.HoldMs);
             Assert.Equal(500, model.RepaintMs);
+            // A moving one goes out every 60 ms, Lenovo Legion Toolkit's
+            // Aurora Sync interval, and is stored once it holds for 3 s.
+            Assert.Equal(60, model.StreamMs);
+            Assert.Equal(3000, model.StreamHoldMs);
             // The keyboard collection of the same device, the controller's
             // other vendor collections, the 24-zone board, and a short
             // feature report.
@@ -362,6 +466,8 @@ namespace PadForge.Tests
     /// with the profile's frame as it was written, and with
     /// <see cref="LateAnswers"/> the first read after it returns the answer
     /// before it. SAVE_PROFILE stores its frame, SWITCH_PROFILE switches.
+    /// SET_DIRECT_MODE is logged with its switch and profile, and the last
+    /// DIRECT_MODE frame is kept.
     /// </summary>
     internal sealed class FakeSpectrumKeyboard
     {
@@ -431,6 +537,13 @@ namespace PadForge.Tests
                         Log.Add("C8 " + report[4]);
                         _active = report[4];
                         break;
+                    case LenovoLegionLighting.SetDirectMode:
+                        Log.Add($"D0 {report[4]:X2} {report[5]}");
+                        break;
+                    case LenovoLegionLighting.StreamFrameOp:
+                        Log.Add("A1");
+                        _frame = (byte[])report.Clone();
+                        break;
                     default:
                         Log.Add(report[1].ToString("X2"));
                         break;
@@ -465,6 +578,14 @@ namespace PadForge.Tests
         public List<string> Calls()
         {
             lock (_gate) return Log.ToList();
+        }
+
+        private byte[] _frame;
+
+        /// <summary>The last DIRECT_MODE frame, or null.</summary>
+        public byte[] LastFrame
+        {
+            get { lock (_gate) return _frame; }
         }
     }
 
@@ -569,9 +690,11 @@ namespace PadForge.Tests
             lock (_channels) return index < 0 ? _channels[^1] : _channels[index];
         }
 
-        private HidLightingBackend Started(params HidCollectionInfo[] present)
+        private HidLightingBackend Started(params HidCollectionInfo[] present) => StartedWith(null, present);
+
+        private HidLightingBackend StartedWith(IReadOnlyList<IHidLightingFamily> families, params HidCollectionInfo[] present)
         {
-            var backend = new HidLightingBackend(null, Open, _ => Box, Tick,
+            var backend = new HidLightingBackend(families, Open, _ => Box, Tick,
                 (path, frame, timeoutMs) =>
                 {
                     lock (_oneShots) _oneShots.Add((path, (byte[])frame.Clone(), timeoutMs));
@@ -623,9 +746,9 @@ namespace PadForge.Tests
 
         /// <summary>A claim on the keyboard, held until its first picture is
         /// written.</summary>
-        private HidLightingBackend Lit(int rgb = 0x112233)
+        private HidLightingBackend Lit(int rgb = 0x112233, IReadOnlyList<IHidLightingFamily> families = null)
         {
-            var backend = Started(Spectrum);
+            var backend = StartedWith(families, Spectrum);
             Link(PathOf(Spectrum));
             Light(rgb);
             Passes(backend);
@@ -635,6 +758,36 @@ namespace PadForge.Tests
         }
 
         private List<string> Writes() => _keyboard.Calls().Where(c => c.StartsWith("CB") || c.StartsWith("C8")).ToList();
+
+        /// <summary>The Lenovo family with its stream turned off, a model
+        /// that only stores pictures, as a family without a stream
+        /// is.</summary>
+        private sealed class StoresOnly : IHidLightingFamily
+        {
+            private HidLightingModel _model;
+
+            public string Name => "Lenovo Legion, stores only";
+
+            public HidLightingModel Match(HidCollectionInfo collection)
+            {
+                var model = LenovoLegionLighting.Instance.Match(collection);
+                if (model == null) return null;
+                return _model ??= new HidLightingModel
+                {
+                    Family = this, Name = model.Name, Map = model.Map,
+                    LitBesideWindows = model.LitBesideWindows, LiveThroughLampArray = model.LiveThroughLampArray,
+                    HoldMs = model.HoldMs, RepaintMs = model.RepaintMs, StreamMs = 0, StreamHoldMs = model.StreamHoldMs,
+                    RecheckMs = model.RecheckMs, Begin = model.Begin, Owed = model.Owed, Repair = model.Repair,
+                };
+            }
+        }
+
+        private static IReadOnlyList<IHidLightingFamily> StoringOnly() => new IHidLightingFamily[] { new StoresOnly() };
+
+        /// <summary>A color cycle's colors, a new one each step.</summary>
+        private static int Cycle(int step) => 0x100000 * (step + 1) | 0x000040;
+
+        private static int[] All(int rgb) => Enumerable.Repeat(rgb, LenovoLegionLighting.Gen10Lights().Count).ToArray();
 
         [Fact]
         public void TheScan_ListsTheUnitAndPublishesItsLights_AndOpensNothing()
@@ -725,9 +878,9 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void AChangedPicture_HoldsFirst_AndKeepsTheRepaintInterval()
+        public void AModelThatOnlyStores_HoldsAChangedPictureFirst_AndKeepsTheRepaintInterval()
         {
-            using var backend = Lit();
+            using var backend = Lit(families: StoringOnly());
             int writes = Writes().Count;
 
             Light(0x445566);
@@ -744,9 +897,9 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void APictureThatNeverHolds_IsNeverWritten()
+        public void AModelThatOnlyStores_NeverWritesAPictureThatNeverHolds()
         {
-            using var backend = Lit();
+            using var backend = Lit(families: StoringOnly());
             int writes = Writes().Count;
             for (int i = 0; i < 20; i++)
             {
@@ -760,6 +913,290 @@ namespace PadForge.Tests
             Advance(LenovoLegionLighting.RepaintMs);
             Passes(backend);
             Assert.Equal(writes + 1, Writes().Count);
+            Assert.DoesNotContain(_keyboard.Calls(), c => c.StartsWith("D0") || c == "A1");
+        }
+
+        [Fact]
+        public void AMovingPicture_GoesOutFrameByFrameThroughAuroraSync_AndIsStoredOnceItHoldsStill()
+        {
+            using var backend = Lit();
+            // Long after that write, a color cycle starts, a new color each
+            // frame.
+            Advance(LenovoLegionLighting.StreamHoldMs);
+            Passes(backend);
+            int before = _keyboard.Calls().Count;
+            var lights = LenovoLegionLighting.Gen10Lights();
+            // The worker passes on its own as well, so each step changes one
+            // thing and lets the passes settle: a new color, then 60 ms.
+            for (int i = 0; i < 6; i++)
+            {
+                Light(Cycle(i));
+                Passes(backend);
+                Advance(LenovoLegionLighting.StreamMs);
+                Passes(backend);
+            }
+            // The first color waits to hold, and the second shows the
+            // picture moving and goes out at once. After that a frame goes
+            // out every 60 ms with the color of the moment. The Aurora Sync
+            // group is stored once, and every frame follows a read of the
+            // active profile and SET_DIRECT_MODE on.
+            var frame = new[] { "CA", "D0 01 5", "A1" };
+            Assert.Equal(new[] { "CA", "CB 5", "D0 01 5", "A1" }.Concat(Enumerable.Repeat(frame, 5).SelectMany(f => f)),
+                _keyboard.Calls().Skip(before));
+            Assert.Equal(LenovoLegionLighting.StreamGroupFrame(5, lights), _keyboard.Stored(5));
+            Assert.Equal(LenovoLegionLighting.StreamFrame(lights, All(Cycle(5))), _keyboard.LastFrame);
+            // Meanwhile the crash path turns the stream off before it puts
+            // the profile back.
+            var record = Assert.Single(backend.Recorded);
+            Assert.Equal(2, record.Frames.Length);
+            Assert.Equal("07 D0 02 00 02 05", Hex(record.Frames[0], 6));
+            Assert.Equal("07 CB E0 00 05 01 01 01 06 01 0B", Hex(record.Frames[1], 11));
+
+            // It holds still: the frames go on for 3 s after the last change,
+            // seen 60 ms ago.
+            Advance(LenovoLegionLighting.StreamHoldMs - LenovoLegionLighting.StreamMs - 1);
+            Passes(backend);
+            Assert.Equal(1, _keyboard.Calls().Skip(before).Count(c => c == "CB 5"));
+            Assert.Equal("A1", _keyboard.Calls().Last());
+            Assert.Equal(LenovoLegionLighting.StreamFrame(lights, All(Cycle(5))), _keyboard.LastFrame);
+
+            // Then the stream is turned off and the picture stored.
+            Advance(1);
+            Passes(backend);
+            Assert.Equal(new[] { "CA", "D0 02 5", "CB 5" }, _keyboard.Calls().TakeLast(3));
+            Assert.Equal(Picture(5, Cycle(5)), _keyboard.Stored(5));
+            Assert.Single(Assert.Single(backend.Recorded).Frames);
+
+            // And it stays: nothing goes out but the profile checks.
+            int stored = _keyboard.Calls().Count;
+            Advance(5000);
+            Passes(backend);
+            Assert.All(_keyboard.Calls().Skip(stored), c => Assert.Equal("CA", c));
+        }
+
+        [Fact]
+        public void AChangeSoonAfterAWrite_Streams_OnceTheRepaintIntervalHasPassed()
+        {
+            using var backend = Lit();
+            int before = _keyboard.Calls().Count;
+            // A change right after a write may be the next step of a slow
+            // animation, so it streams, and the stream's group goes into the
+            // profile no sooner than 500 ms after the write before it.
+            Light(0x445566);
+            Passes(backend);
+            Advance(LenovoLegionLighting.RepaintMs - 1);
+            Passes(backend);
+            Assert.Equal(before, _keyboard.Calls().Count);
+
+            Advance(1);
+            Passes(backend);
+            Assert.Equal(new[] { "CA", "CB 5", "D0 01 5", "A1" }, _keyboard.Calls().Skip(before));
+            var lights = LenovoLegionLighting.Gen10Lights();
+            Assert.Equal(LenovoLegionLighting.StreamFrame(lights, All(0x445566)), _keyboard.LastFrame);
+
+            // No step follows: 3 s after the change the picture is stored.
+            Advance(LenovoLegionLighting.StreamHoldMs - LenovoLegionLighting.RepaintMs);
+            Passes(backend);
+            Assert.Equal(new[] { "CA", "D0 02 5", "CB 5" }, _keyboard.Calls().TakeLast(3));
+            Assert.Equal(Picture(5, 0x445566), _keyboard.Stored(5));
+        }
+
+        [Fact]
+        public void AChangeUndoneBeforeItsFirstFrame_StartsNoStream()
+        {
+            using var backend = Lit();
+            int before = _keyboard.Calls().Count;
+            Light(0x445566);
+            Passes(backend);
+            // Back to the stored picture before the first frame was due:
+            // the keyboard still shows it, so nothing goes out.
+            Advance(100);
+            Light(0x112233);
+            Passes(backend);
+            Advance(LenovoLegionLighting.RepaintMs);
+            Passes(backend);
+            Assert.Equal(before, _keyboard.Calls().Count);
+
+            // A still change long after is stored as any is.
+            Advance(LenovoLegionLighting.StreamHoldMs);
+            Light(0x778899);
+            Passes(backend);
+            Advance(LenovoLegionLighting.HoldMs);
+            Passes(backend);
+            Assert.DoesNotContain(_keyboard.Calls(), c => c.StartsWith("D0") || c == "A1");
+            Assert.Equal(Picture(5, 0x778899), _keyboard.Stored(5));
+        }
+
+        [Fact]
+        public void AStreamThatEndsOnTheStoredPicture_StoresItAgain()
+        {
+            using var backend = Lit();
+            Advance(LenovoLegionLighting.StreamHoldMs);
+            Passes(backend);
+            Light(Cycle(0));
+            Passes(backend);
+            Advance(LenovoLegionLighting.StreamMs);
+            Passes(backend);
+            Light(Cycle(1));
+            Passes(backend);
+            Advance(LenovoLegionLighting.StreamMs);
+            Passes(backend);
+            // The profile holds the Aurora Sync group now, so the picture it
+            // held before is a new one to the keyboard.
+            Light(0x112233);
+            Passes(backend);
+            Advance(LenovoLegionLighting.StreamMs);
+            Passes(backend);
+            var lights = LenovoLegionLighting.Gen10Lights();
+            Assert.Equal(LenovoLegionLighting.StreamFrame(lights, All(0x112233)), _keyboard.LastFrame);
+
+            Advance(LenovoLegionLighting.StreamHoldMs);
+            Passes(backend);
+            Assert.Equal(new[] { "CA", "D0 02 5", "CB 5" }, _keyboard.Calls().TakeLast(3));
+            Assert.Equal(Picture(5, 0x112233), _keyboard.Stored(5));
+        }
+
+        [Fact]
+        public void AHandBackMidStream_TurnsTheStreamOff_ThenPutsTheProfileBack()
+        {
+            using var backend = Lit();
+            Light(0x445566);
+            Advance(LenovoLegionLighting.RepaintMs);
+            Passes(backend);
+            Assert.Equal("A1", _keyboard.Calls().Last());
+            int before = _keyboard.Calls().Count;
+
+            Unlight();
+            Passes(backend);
+            // The active profile, what it holds (the Aurora Sync group), the
+            // stream off, the restore, and the read that checks it.
+            Assert.Equal(new[] { "CA", "CA", "CC 5", "D0 02 5", "CB 5", "CA", "CC 5" }, _keyboard.Calls().Skip(before));
+            var answer = LenovoLegionLightingTests.OwnersProfile5Answer();
+            answer[1] = LenovoLegionLighting.SaveProfile;
+            Assert.Equal(answer, _keyboard.Stored(5));
+            Assert.Null(KeyboardProfileBackups.Get(Product));
+            Assert.Empty(backend.Recorded);
+            Assert.True(Channel().Disposed);
+        }
+
+        [Fact]
+        public void AProfileKeyMidStream_StopsTheFrames_UntilTheKeyboardIsBackOnItsProfile()
+        {
+            using var backend = Lit();
+            Light(0x445566);
+            Advance(LenovoLegionLighting.RepaintMs);
+            Passes(backend);
+            int frames = _keyboard.Calls().Count(c => c == "A1");
+            Assert.Equal(1, frames);
+            int stores = _keyboard.Calls().Count(c => c == "CB 5");
+
+            // Fn+Space: the keyboard is on profile 4. The next frame's read
+            // finds it there, and no frame names profile 5 meanwhile. The
+            // read is not asked again until the wait for the profile ends.
+            _keyboard.Active = 4;
+            int reads = _keyboard.Calls().Count(c => c == "CA");
+            for (int i = 0; i < 5; i++)
+            {
+                Light(Cycle(i));
+                Advance(LenovoLegionLighting.StreamMs);
+                Passes(backend);
+            }
+            Assert.Equal(reads + 1, _keyboard.Calls().Count(c => c == "CA"));
+            Assert.Equal(frames, _keyboard.Calls().Count(c => c == "A1"));
+            Assert.Equal(1, _keyboard.Calls().Count(c => c == "D0 01 5"));
+            Assert.DoesNotContain(_keyboard.Calls(), c => c.EndsWith(" 4"));
+            Assert.Empty(backend.Recorded);
+            Assert.Equal(LenovoLegionLighting.StreamGroupFrame(5, LenovoLegionLighting.Gen10Lights()), _keyboard.Stored(5));
+
+            // Back on profile 5, the frames go on, the group not written
+            // again.
+            _keyboard.Active = 5;
+            Light(0x778899);
+            Advance(LenovoLegionLighting.AwayMs);
+            Passes(backend);
+            Assert.Equal(frames + 1, _keyboard.Calls().Count(c => c == "A1"));
+            Assert.Equal(stores, _keyboard.Calls().Count(c => c == "CB 5"));
+            Assert.Equal(2, Assert.Single(backend.Recorded).Frames.Length);
+            Assert.Empty(_keyboard.ForeignReads);
+        }
+
+        [Fact]
+        public void ARunKilledMidStream_IsTurnedOffAndPutBack_ByTheNextRun()
+        {
+            // A run was killed while it streamed: its Aurora Sync group in
+            // profile 5, its backup on disk.
+            KeyboardProfileBackups.LoadRegistry(new[] { (Product, 5, Convert.ToHexString(Original5())) });
+            _keyboard.Store(5, LenovoLegionLighting.StreamGroupFrame(5, LenovoLegionLighting.Gen10Lights()));
+
+            using var backend = Started(Spectrum);
+            Advance(HidLightingBackend.RepairGraceMs);
+            Passes(backend);
+            Assert.Equal(new[] { "CA", "CA", "CC 5", "D0 02 5", "CB 5", "CA", "CC 5" }, _keyboard.Calls());
+            Assert.Equal(Original5(), LenovoLegionLighting.ContentsOf(Answer(_keyboard.Stored(5)), 5));
+            Assert.Null(KeyboardProfileBackups.Get(Product));
+        }
+
+        [Fact]
+        public void AKilledRunsStream_IsTurnedOff_BeforeTheNextRunsPicture()
+        {
+            KeyboardProfileBackups.LoadRegistry(new[] { (Product, 5, Convert.ToHexString(Original5())) });
+            _keyboard.Store(5, LenovoLegionLighting.StreamGroupFrame(5, LenovoLegionLighting.Gen10Lights()));
+            Link(PathOf(Spectrum));
+            Light(0x0000FF);
+
+            using var backend = Started(Spectrum);
+            // The session finds the group, so its crash path turns the
+            // stream off before it puts the profile back.
+            var record = Assert.Single(backend.Recorded);
+            Assert.Equal(2, record.Frames.Length);
+            Assert.Equal("07 D0 02 00 02 05", Hex(record.Frames[0], 6));
+            Assert.Equal(Original5(), record.Frames[1].AsSpan(2, Original5().Length).ToArray());
+
+            Advance(LenovoLegionLighting.HoldMs);
+            Passes(backend);
+            Assert.Equal(new[] { "CA", "CA", "CC 5", "CA", "D0 02 5", "CB 5" }, _keyboard.Calls());
+            Assert.Equal(Picture(5, 0x0000FF), _keyboard.Stored(5));
+            Assert.Single(Assert.Single(backend.Recorded).Frames);
+        }
+
+        [Fact]
+        public void AKilledRunsStreamGroup_IsNotWrittenAgain_WhenTheNextRunStreams()
+        {
+            KeyboardProfileBackups.LoadRegistry(new[] { (Product, 5, Convert.ToHexString(Original5())) });
+            _keyboard.Store(5, LenovoLegionLighting.StreamGroupFrame(5, LenovoLegionLighting.Gen10Lights()));
+            Link(PathOf(Spectrum));
+            Light(Cycle(0));
+
+            using var backend = Started(Spectrum);
+            Advance(LenovoLegionLighting.StreamMs);
+            Light(Cycle(1));
+            Passes(backend);
+            Assert.Equal(new[] { "CA", "CA", "CC 5", "CA", "D0 01 5", "A1" }, _keyboard.Calls());
+            Assert.Equal(LenovoLegionLighting.StreamFrame(LenovoLegionLighting.Gen10Lights(), All(Cycle(1))),
+                _keyboard.LastFrame);
+        }
+
+        [Fact]
+        public void TheCrashPathMidStream_TurnsTheStreamOff_ThenPutsTheProfileBack()
+        {
+            var backend = Lit();
+            Light(0x445566);
+            Advance(LenovoLegionLighting.RepaintMs);
+            Passes(backend);
+            // The worker cannot reach the keyboard on its own channel.
+            Channel().FailWrites = true;
+
+            backend.ReleaseClaimedNow(Environment.TickCount64 + 2000);
+            backend.Dispose();
+            var original = LenovoLegionLightingTests.OwnersProfile5Answer();
+            original[1] = LenovoLegionLighting.SaveProfile;
+            lock (_oneShots)
+            {
+                var shots = _oneShots.Where(s => s.Path == Spectrum.Path).Select(s => s.Frame).ToList();
+                int off = shots.FindIndex(f => Hex(f, 6) == "07 D0 02 00 02 05");
+                Assert.True(off >= 0, "the stream was turned off");
+                Assert.True(off + 1 < shots.Count && shots[off + 1].SequenceEqual(original), "then the profile put back");
+            }
         }
 
         [Fact]
@@ -786,6 +1223,9 @@ namespace PadForge.Tests
         public void AProfileKey_StopsTheWrites_UntilTheKeyboardIsBackOnItsProfile()
         {
             using var backend = Lit();
+            // Long after that write, so the change is a still one.
+            Advance(LenovoLegionLighting.StreamHoldMs);
+            Passes(backend);
             // Fn+Space: the keyboard is on profile 4 now.
             _keyboard.Active = 4;
             Light(0x445566);
@@ -1165,13 +1605,13 @@ namespace PadForge.Tests
                 PeripheralLinker.ChooseLighting(false, Array.Empty<OutputPath>(), false, plain, litLamp, out _));
         }
 
-        /// <summary>A controller that keeps still pictures only lights a row
-        /// together with a LampArray unit of the device, which shows the
-        /// colors that change wherever the firmware lets it, unless Windows
-        /// holds that unit. A controller that shows a stream keeps the
+        /// <summary>A controller that shows changing colors only roughly
+        /// lights a row together with a LampArray unit of the device, which
+        /// shows them smoothly wherever the firmware lets it, unless Windows
+        /// holds that unit. A controller that shows them smoothly keeps the
         /// device to itself, as before.</summary>
         [Fact]
-        public void AControllerThatKeepsStillPicturesOnly_LightsARowWithTheLampArray_UnlessWindowsHoldsIt()
+        public void AControllerThatStreamsRoughly_LightsARowWithTheLampArray_UnlessWindowsHoldsIt()
         {
             var still = new[]
             {

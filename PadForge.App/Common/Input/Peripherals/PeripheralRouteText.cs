@@ -264,15 +264,15 @@ namespace PadForge.Common.Input.Peripherals
                 string line = level >= 2 ? s.Pad_Lighting_RouteDirectHostMode
                     : level == 1 ? s.Pad_Lighting_RouteDirectPower
                     : s.Pad_Lighting_RouteDirect;
-                // A keyboard whose own controller keeps still pictures only
-                // shows changing colors through its LampArray interface,
+                // A keyboard whose own controller shows changing colors only
+                // roughly shows them smoothly through its LampArray interface,
                 // which an option in the laptop's BIOS turns on and off and
                 // which Windows may hold (HidLightingModel.LiveThroughLampArray).
                 if (PeripheralOutputs.Direct.Find(path) is { LiveThroughLampArray: true })
                 {
                     if (links.WindowsLightsLampArray) line = s.Pad_Lighting_RouteDirectBesideWindows;
                     else if (Array.Exists(links.Lighting, p => p.Family == OutputFamily.LampArrayUnit))
-                        line = s.Pad_Lighting_RouteDirectChangingNeedsBios;
+                        line = s.Pad_Lighting_RouteDirectSmoothestInBios;
                 }
                 return string.Format(line, name);
             }

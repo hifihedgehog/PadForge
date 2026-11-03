@@ -107,9 +107,10 @@ namespace PadForge.Common.Input.Peripherals
             public bool Lit;
 
             /// <summary>The colors last sent, the map they were rendered
-            /// for, and when.</summary>
+            /// for, the frames that carried them, and when.</summary>
             public int[] Shown;
             public LightMap ShownMap;
+            public byte[][] ShownFrames;
             public long PaintAt;
 
             /// <summary>Windows resumed from sleep: the picture goes out
@@ -619,6 +620,7 @@ namespace PadForge.Common.Input.Peripherals
             unit.Lit = false;
             unit.Shown = null;
             unit.ShownMap = null;
+            unit.ShownFrames = null;
             unit.Reassert = false;
             return true;
         }
@@ -645,10 +647,15 @@ namespace PadForge.Common.Input.Peripherals
             // color of ours and nothing can undo it (HidppBackend.PaintLighting).
             if (!unit.Recorded) Record(unit);
             unit.Lit = true;
-            foreach (var frame in unit.Session.Paint(map.Lights, colors))
+            // An unchanged picture goes out again in the frames that carried
+            // it: a family that streams, as a Lenovo Legion keyboard needs,
+            // re-asserts many times a second.
+            var frames = fresh && unit.ShownFrames != null ? unit.ShownFrames : unit.Session.Paint(map.Lights, colors);
+            foreach (var frame in frames)
                 if (!Send(unit.Io, frame, unit.Session.Feature)) return false;
             unit.Shown = colors;
             unit.ShownMap = map;
+            unit.ShownFrames = frames;
             unit.PaintAt = _ticks();
             unit.Reassert = false;
             if (first)
@@ -716,6 +723,7 @@ namespace PadForge.Common.Input.Peripherals
             unit.Lit = false;
             unit.Shown = null;
             unit.ShownMap = null;
+            unit.ShownFrames = null;
             try { io?.Dispose(); } catch { }
         }
 

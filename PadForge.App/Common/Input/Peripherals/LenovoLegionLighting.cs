@@ -25,7 +25,16 @@ namespace PadForge.Common.Input.Peripherals
     /// (LenovoUSBController_Gen7_8.cpp:134-199). OpenRGB sends D0 01 ahead
     /// of every A1 on these boards, which "may ignore A1 updates unless D0
     /// is reasserted" (RGBController_Lenovo_Gen7_8.cpp:535-549), and so does
-    /// every paint here. The boards before Gen 10 enter Direct mode by
+    /// every paint here. Direct mode lasts only while frames keep coming:
+    /// on the owner's Legion Pro 7 16AFR10H a picture sent once every five
+    /// seconds showed for a moment and gave way to the stored effect each
+    /// time. Lenovo Legion Toolkit holds the same Direct mode (its Aurora
+    /// sync) by sending the colors every 60 ms for as long as it lights the
+    /// keyboard, in its original (SpectrumKeyboardBacklightController.cs:41
+    /// and 488-548) and in its maintained fork that drives Gen 10
+    /// (LenovoLegionToolkit-Team, the same file, lines 28 and 552-633), and
+    /// the picture goes out at that rate here (<see cref="ReassertMs"/>).
+    /// The boards before Gen 10 enter Direct mode by
     /// writing a profile group into the device's stored profile as well
     /// (RGBController_Lenovo_Gen7_8.cpp:507-515), which a hand-back would
     /// have to restore.</para>
@@ -74,11 +83,10 @@ namespace PadForge.Common.Input.Peripherals
         /// and sends on every change.</summary>
         internal const int RepaintMs = 60;
 
-        /// <summary>The interval every PadForge lighting worker puts its
-        /// claim back on (SteelSeriesDirectProtocol.ReassertMs), which
-        /// brings Direct mode back after a key on the keyboard switched
-        /// profiles.</summary>
-        internal const int ReassertMs = SteelSeriesDirectProtocol.ReassertMs;
+        /// <summary>How often an unchanged picture goes out again: Lenovo
+        /// Legion Toolkit's 60 ms, since Direct mode gives way to the stored
+        /// effect soon after the last frame (see the class notes).</summary>
+        internal const int ReassertMs = 60;
 
         public string Name => "Lenovo Legion";
 

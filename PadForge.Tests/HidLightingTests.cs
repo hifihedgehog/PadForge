@@ -168,6 +168,10 @@ namespace PadForge.Tests
             Assert.Same(LenovoLegionLighting.Instance, model.Family);
             Assert.True(model.LitBesideWindows);
             Assert.Equal("lenovo:048D:C197", model.Map.Product);
+            // Direct mode gives way to the stored effect soon after the last
+            // frame, so the picture streams at Lenovo Legion Toolkit's 60 ms.
+            Assert.Equal(60, model.ReassertMs);
+            Assert.Equal(60, model.RepaintMs);
             // The keyboard collection of the same device, the controller's
             // other vendor collections, the 24-zone board OpenRGB gives no
             // Direct mode, and a short feature report.
@@ -361,6 +365,32 @@ namespace PadForge.Tests
             Advance(1);
             Passes(backend);
             Assert.Equal(new[] { "set 07 D0 02 00 01 05", "set 07 A1 8A 02 01 00" }, Calls(channel).Skip(4));
+            Assert.Equal(1, Opens);
+        }
+
+        [Fact]
+        public void TheLegionsPicture_StreamsEvery60Ms_InTheSameBytes()
+        {
+            // The owner's Legion Pro 7 showed a picture sent every five
+            // seconds for a moment, then its stored white: Direct mode holds
+            // only while frames keep coming.
+            using var backend = Started(Spectrum);
+            Link(PathOf(Spectrum));
+            Light(0x112233);
+            Passes(backend);
+            var channel = Channel();
+            var first = Sets(channel);
+            Assert.Equal(3, first.Count);
+
+            for (int round = 1; round <= 3; round++)
+            {
+                Advance(60);
+                Passes(backend);
+                var sets = Sets(channel);
+                Assert.Equal(3 + round * 2, sets.Count);
+                Assert.Equal(first[1], sets[^2]);   // D0 01 05
+                Assert.Equal(first[2], sets[^1]);   // A1, every light
+            }
             Assert.Equal(1, Opens);
         }
 

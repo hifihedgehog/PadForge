@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using PadForge.Common;
 using PadForge.Common.Input;
+using PadForge.Common.Input.Peripherals;
 using PadForge.Common.Input.Telemetry;
 using PadForge.Engine.Common;
 using PadForge.Engine.Common.AnalogKeyboard;
@@ -200,6 +201,14 @@ namespace PadForge.Tests
     {
         [ModuleInitializer]
         internal static void Set() => GameModPortFiles.OffLimitsForTest = true;
+    }
+
+    /// <summary>No laptop's lighting is set through its firmware's ACPI
+    /// device or BIOS WMI method, and no serial port is opened (#557).</summary>
+    internal static class OwnLightingOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => OwnLightingChannels.OffLimitsForTest = true;
     }
 
     /// <summary>The GameInput service is left as it is. HIDMaestro's context

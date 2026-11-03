@@ -383,6 +383,12 @@ namespace PadForge.Common.Input.Peripherals
         /// knows by vendor ID (<see cref="PeripheralLinker.HasVendorProgram"/>).</summary>
         public IReadOnlyList<VendorProgram> Programs { get; init; } = Array.Empty<VendorProgram>();
 
+        /// <summary>The unit lights the PC's own keyboard through the PC's
+        /// firmware, as an ASUS TUF or HP Omen laptop's is, so it names no
+        /// USB device: it belongs to the keyboard rows in the PC's own
+        /// container (<see cref="PeripheralLinker.MatchesDevice"/>).</summary>
+        public bool BuiltInKeyboard { get; init; }
+
         /// <summary>The highest claim level the unit offers: 0 colors
         /// alone, 1 its lighting power too, 2 its on-board memory mode off
         /// as well. 0 in every family but HidppUnit, whose units carry
@@ -938,11 +944,17 @@ namespace PadForge.Common.Input.Peripherals
         /// rows of its own device: the same container, and the same vendor
         /// and product ID, which every collection of one USB device reports.
         /// The pair also tells the built-in devices of a laptop apart, which
-        /// all share one container.</summary>
+        /// all share one container. A unit that lights the PC's own
+        /// keyboard through the PC's firmware (<see cref="DirectUnit.BuiltInKeyboard"/>)
+        /// has no pair to give, and goes to the keyboard rows in the PC's
+        /// own container, where a built-in LampArray unit goes too
+        /// (<see cref="MatchesLampArray"/>).</summary>
         internal static bool MatchesDevice(DirectUnit unit, LinkRow row)
             => IsLinkable(row.CapType) && row.VendorRow == null && row.Unit == null
                && row.Container != Guid.Empty && unit.ContainerId == row.Container
-               && unit.VendorId == row.VendorId && unit.ProductId == row.ProductId;
+               && (unit.BuiltInKeyboard
+                   ? row.Container == LocalMachineContainer && IsKeyboard(row.CapType)
+                   : unit.VendorId == row.VendorId && unit.ProductId == row.ProductId);
 
         /// <summary>How many LampArray units each container holds, which
         /// decides whether a unit there is told from its neighbors by

@@ -19,7 +19,13 @@ namespace PadForge.Common.Input.Peripherals
     /// collection is in the last list, and its model's light map is
     /// published for the Lighting tab and Map Key Lights from the scan on,
     /// with the names Map Key Lights learned for the model
-    /// (<see cref="LearnedKeyMaps"/>).</para>
+    /// (<see cref="LearnedKeyMaps"/>). A family whose devices are no HID
+    /// collections (<see cref="IOwnLookFamily"/>) looks for them on its own
+    /// at the same cue, and a unit it found stays listed while its look
+    /// still finds it. Such a unit is opened and written through its
+    /// model's own channel (<see cref="HidLightingModel.Open"/>), and its
+    /// crash frames go out through its model's own one-shot writer, by the
+    /// same rules as a collection's.</para>
     ///
     /// <para>Open. Only a unit a row links and a claim resolves on, for
     /// read and write, and then the model reads what its session needs
@@ -96,15 +102,30 @@ namespace PadForge.Common.Input.Peripherals
             public long ContainerRetryAt;
             public bool Seen;
 
-            /// <summary>The published map: the model's with the learned
-            /// names applied.</summary>
+            /// <summary>The family whose own look found the unit, or null
+            /// for a HID collection of the host's walk.</summary>
+            public IOwnLookFamily Own;
+
+            public bool BuiltInKeyboard;
+
+            /// <summary>The map the open session read from the device
+            /// (<see cref="HidLightingSession.Map"/>), or null for the
+            /// model's.</summary>
+            public LightMap SessionMap;
+
+            /// <summary>The published map: the session's, else the model's,
+            /// with the learned names applied.</summary>
             public LightMap Map;
 
             public bool Asleep;
             public long RetryAt;
 
             /// <summary>The open channel and its session, or null.
-            /// Everything below is of one open and is reset by the next.</summary>
+            /// Everything below is of one open and is reset by the next.
+            /// <see cref="Io"/> is the channel of a HID collection, and null
+            /// for a unit an own look found, whose channel is
+            /// <see cref="Handle"/> alone.</summary>
+            public IDisposable Handle;
             public IHidReportChannel Io;
             public HidLightingSession Session;
 
@@ -134,10 +155,17 @@ namespace PadForge.Common.Input.Peripherals
             public string Label => $"{Model?.Name ?? "unit"} {VendorId:X4}:{ProductId:X4}";
         }
 
+        /// <summary>One unit's entry on the crash path's record: its key, the
+        /// frames that undo what its session wrote, whether they are feature
+        /// reports, its model's programs, and for a unit an own look found,
+        /// the model's one-shot writer (<see cref="HidLightingModel.WriteOnce"/>).</summary>
+        internal sealed record CrashRecord(string Path, byte[][] Frames, bool Feature,
+            IReadOnlyList<VendorProgram> Programs, Func<string, byte[], int, bool> Write);
+
         /// <summary>The units whose sessions name frames that undo what they
         /// wrote, for the crash path, which cannot wait on this worker.
         /// Swapped whole.</summary>
-        private (string Path, byte[][] Frames, bool Feature, IReadOnlyList<VendorProgram> Programs)[] _recorded = Array.Empty<(string, byte[][], bool, IReadOnlyList<VendorProgram>)>();
+        private CrashRecord[] _recorded = Array.Empty<CrashRecord>();
 
         private readonly IReadOnlyList<IHidLightingFamily> _families;
         private readonly Func<string, IHidReportChannel> _open;
@@ -209,7 +237,7 @@ namespace PadForge.Common.Input.Peripherals
         internal bool WorkerAlive => Volatile.Read(ref _worker)?.IsAlive == true;
 
         /// <summary>The crash path's record, for a test.</summary>
-        internal (string Path, byte[][] Frames, bool Feature, IReadOnlyList<VendorProgram> Programs)[] Recorded => Volatile.Read(ref _recorded);
+        internal CrashRecord[] Recorded => Volatile.Read(ref _recorded);
 
         public void Start()
         {
@@ -270,23 +298,27 @@ namespace PadForge.Common.Input.Peripherals
             {
                 try { _thread?.Join((int)Math.Min(left, PanicJoinMs)); } catch { }
             }
-            foreach (var (path, frames, feature, programs) in Interlocked.Exchange(ref _recorded, Array.Empty<(string, byte[][], bool, IReadOnlyList<VendorProgram>)>()))
+            foreach (var record in Interlocked.Exchange(ref _recorded, Array.Empty<CrashRecord>()))
             {
                 // A program of the model runs and has the device: nothing
                 // goes to it, as the Razer worker sends nothing while
                 // Synapse runs (RazerDirectBackend.ReleaseClaimedNow).
-                if (ProgramRuns(programs)) continue;
-                foreach (byte[] frame in frames)
+                if (ProgramRuns(record.Programs)) continue;
+                foreach (byte[] frame in record.Frames)
                 {
                     left = deadline - _ticks();
                     if (left <= 0) return;
-                    try { WriteOnce(path, frame, feature, (int)Math.Min(left, OneShotMs)); } catch { }
+                    try { WriteOnce(record.Path, frame, record.Feature, record.Write, (int)Math.Min(left, OneShotMs)); } catch { }
                 }
             }
         }
 
-        private bool WriteOnce(string path, byte[] frame, bool feature, int timeoutMs)
-            => feature ? _setFeatureOnce(path, frame, timeoutMs) : _writeOutputOnce(path, frame, timeoutMs);
+        /// <summary>One frame through a handle of its own: the model's writer
+        /// for a unit an own look found, else a feature or an output report
+        /// to the HID collection.</summary>
+        private bool WriteOnce(string path, byte[] frame, bool feature, Func<string, byte[], int, bool> own, int timeoutMs)
+            => own != null ? own(path, frame, timeoutMs)
+                : feature ? _setFeatureOnce(path, frame, timeoutMs) : _writeOutputOnce(path, frame, timeoutMs);
 
         private void OnLearned(object sender, EventArgs e) => Wake();
 
@@ -367,12 +399,15 @@ namespace PadForge.Common.Input.Peripherals
                 bool ownRun = successor == null || ReferenceEquals(successor, run);
                 foreach (var unit in units)
                 {
-                    if (unit.Io == null) continue;
+                    if (unit.Handle == null) continue;
                     bool released = false;
                     try { released = Release(unit); } catch { }
                     var frames = released ? null : unit.Session?.CrashFrames;
                     bool feature = unit.Session?.Feature ?? true;
-                    Close(unit);
+                    var own = unit.Own != null ? unit.Model.WriteOnce : null;
+                    // The maps are taken down below, and a successor's are
+                    // its own, so no map goes back here.
+                    Close(unit, restoreMap: false);
                     // A hand-back that did not go out on the worker's
                     // channel goes out through a report of its own, as on
                     // the crash path, where the session names frames for it.
@@ -384,14 +419,14 @@ namespace PadForge.Common.Input.Peripherals
                     if (frames == null || !ownRun) continue;
                     foreach (var frame in frames)
                     {
-                        try { WriteOnce(unit.Path, frame, feature, OneShotMs); } catch { }
+                        try { WriteOnce(unit.Path, frame, feature, own, OneShotMs); } catch { }
                     }
                 }
                 var current = _run;
                 if (current == null || ReferenceEquals(current, run))
                 {
                     foreach (var unit in units) PeripheralLightMaps.Remove(PathOf(unit));
-                    Volatile.Write(ref _recorded, Array.Empty<(string, byte[][], bool, IReadOnlyList<VendorProgram>)>());
+                    Volatile.Write(ref _recorded, Array.Empty<CrashRecord>());
                     Volatile.Write(ref _snapshot, DirectBackendSnapshot.NotScanned);
                 }
             }
@@ -412,13 +447,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 var model = HidLightingFamilies.Match(collection, _families);
                 if (model == null) continue;
-                Unit unit = null;
-                foreach (var known in units)
-                {
-                    if (!string.Equals(known.Path, collection.Path, StringComparison.OrdinalIgnoreCase)) continue;
-                    unit = known;
-                    break;
-                }
+                var unit = Find(units, collection.Path);
                 if (unit == null)
                 {
                     unit = new Unit
@@ -427,14 +456,49 @@ namespace PadForge.Common.Input.Peripherals
                         Model = model,
                     };
                     LookUpContainer(unit, now);
-                    PublishMap(unit);
-                    units.Add(unit);
+                    Found(units, unit);
                     changed = true;
-                    PadForge.Engine.SdlDiagLog.WriteLine(
-                        $"PERIPHERAL HidLighting found {unit.Label} ({model.Family?.Name}), {model.Map.Lights.Count} lights");
                 }
                 unit.Seen = true;
             }
+
+            // The families whose devices are no HID collections look on
+            // their own, at the same cue (IDirectUnitBackend.Rescan).
+            foreach (var family in _families)
+            {
+                if (family is not IOwnLookFamily own) continue;
+                IReadOnlyList<OwnDevice> found;
+                try { found = own.Look(); }
+                catch { found = null; }
+                if (found == null)
+                {
+                    // A look that could not be made says nothing about
+                    // what is there.
+                    foreach (var unit in units)
+                        if (ReferenceEquals(unit.Own, own)) unit.Seen = true;
+                    continue;
+                }
+                foreach (var device in found)
+                {
+                    if (device?.Key == null || device.Model == null) continue;
+                    var unit = Find(units, device.Key);
+                    if (unit == null)
+                    {
+                        unit = new Unit
+                        {
+                            Path = device.Key, VendorId = device.VendorId, ProductId = device.ProductId,
+                            Model = device.Model, Own = own, BuiltInKeyboard = device.BuiltInKeyboard,
+                            Container = device.Container,
+                        };
+                        // A container the look gave is taken as it is.
+                        if (unit.Container == Guid.Empty) LookUpContainer(unit, now);
+                        Found(units, unit);
+                        changed = true;
+                    }
+                    unit.Seen = true;
+                }
+            }
+
             for (int i = units.Count - 1; i >= 0; i--)
             {
                 var unit = units[i];
@@ -444,7 +508,7 @@ namespace PadForge.Common.Input.Peripherals
                     continue;
                 }
                 // The device is gone, so there is nothing to hand back to.
-                Close(unit);
+                Close(unit, restoreMap: false);
                 PeripheralLightMaps.Remove(PathOf(unit));
                 units.RemoveAt(i);
                 changed = true;
@@ -452,11 +516,32 @@ namespace PadForge.Common.Input.Peripherals
             return changed;
         }
 
-        /// <summary>Publishes the unit's map with the names Map Key Lights
-        /// learned for the model.</summary>
+        /// <summary>The listed unit a key names, compared without case, or
+        /// null.</summary>
+        private static Unit Find(List<Unit> units, string key)
+        {
+            foreach (var known in units)
+                if (string.Equals(known.Path, key, StringComparison.OrdinalIgnoreCase)) return known;
+            return null;
+        }
+
+        /// <summary>Lists a unit a scan found and publishes its map.</summary>
+        private static void Found(List<Unit> units, Unit unit)
+        {
+            PublishMap(unit);
+            units.Add(unit);
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"PERIPHERAL HidLighting found {unit.Label} ({unit.Model.Family?.Name}), {unit.Model.Map.Lights.Count} lights");
+        }
+
+        /// <summary>Publishes the unit's map, the one its open session read
+        /// from the device or else the model's, with the names Map Key
+        /// Lights learned for it, as the SteelSeries worker swaps a unit's
+        /// map once its SKU answers (SteelSeriesDirectBackend.SyncMap).</summary>
         private static void PublishMap(Unit unit)
         {
-            var map = LearnedKeyMaps.Apply(unit.Model.Map) ?? unit.Model.Map;
+            var source = unit.SessionMap ?? unit.Model.Map;
+            var map = LearnedKeyMaps.Apply(source) ?? source;
             if (ReferenceEquals(map, unit.Map)) return;
             unit.Map = map;
             PeripheralLightMaps.Publish(PathOf(unit), map);
@@ -484,6 +569,7 @@ namespace PadForge.Common.Input.Peripherals
                     LitBesideWindows = unit.Model.LitBesideWindows,
                     LiveThroughLampArray = unit.Model.LiveThroughLampArray,
                     Programs = unit.Model.Programs ?? Array.Empty<VendorProgram>(),
+                    BuiltInKeyboard = unit.BuiltInKeyboard,
                 };
             }
             Volatile.Write(ref _snapshot, new DirectBackendSnapshot(list));
@@ -536,7 +622,7 @@ namespace PadForge.Common.Input.Peripherals
             bool wanted = links.ByPath.ContainsKey(path) && PeripheralOutputs.TryResolveColor(path, out rgb, out ruler);
             if (!wanted)
             {
-                if (unit.Io != null)
+                if (unit.Handle != null)
                 {
                     if (Release(unit)) Close(unit);
                     else Fail(unit, now, "hand-back failed", ref changed, ref failed, ref due);
@@ -547,7 +633,11 @@ namespace PadForge.Common.Input.Peripherals
                 // the time to resolve, and once per answer of the unit's.
                 // Not while a program of the model has the device: they
                 // stay owed, in the model's keeping, until it has stopped.
-                if (run.Stop || ProgramRuns(unit.Model.Programs) || unit.Model.Owed?.Invoke() != true) return;
+                // A family whose devices are no HID collections owes
+                // nothing this way (HidLightingModel.Repair takes a HID
+                // channel).
+                if (run.Stop || unit.Own != null || ProgramRuns(unit.Model.Programs)
+                    || unit.Model.Owed?.Invoke() != true) return;
                 long repairAt = Volatile.Read(ref _repairAt);
                 if (now < repairAt)
                 {
@@ -567,7 +657,7 @@ namespace PadForge.Common.Input.Peripherals
             // still linked for the moment between, and nothing goes out
             // meanwhile. The next table lets the unit go (Release).
             if (ProgramRuns(unit.Model.Programs)) return;
-            if (unit.Io == null && !Open(unit))
+            if (unit.Handle == null && !Open(unit))
             {
                 Fail(unit, now, "did not open for read and write or did not answer", ref changed, ref failed, ref due);
                 return;
@@ -580,11 +670,31 @@ namespace PadForge.Common.Input.Peripherals
         /// again. Nothing is sent.</summary>
         private bool Answers(Unit unit)
         {
-            IHidReportChannel io = null;
+            var handle = OpenHandle(unit, out _);
+            try { handle?.Dispose(); } catch { }
+            return handle != null;
+        }
+
+        /// <summary>Opens a unit's channel: a HID collection for read and
+        /// write through the worker's opener, or the channel of a family
+        /// whose devices are no HID collections through its model's
+        /// (<see cref="HidLightingModel.Open"/>). Null when it did not open
+        /// that way. <paramref name="io"/> is the HID channel, null for the
+        /// other kind.</summary>
+        private IDisposable OpenHandle(Unit unit, out IHidReportChannel io)
+        {
+            io = null;
+            if (unit.Own != null)
+            {
+                IDisposable own = null;
+                try { own = unit.Model.Open?.Invoke(unit.Path); } catch { }
+                return own;
+            }
             try { io = _open(unit.Path); } catch { }
-            bool answers = io != null && !io.FeatureOnly;
+            if (io != null && !io.FeatureOnly) return io;
             try { io?.Dispose(); } catch { }
-            return answers;
+            io = null;
+            return null;
         }
 
         /// <summary>Opens a unit no claim resolves on and hands back what an
@@ -612,20 +722,22 @@ namespace PadForge.Common.Input.Peripherals
         /// model's first reads went unanswered.</summary>
         private bool Open(Unit unit)
         {
-            IHidReportChannel io = null;
-            try { io = _open(unit.Path); } catch { }
-            if (io == null || io.FeatureOnly)
-            {
-                try { io?.Dispose(); } catch { }
-                return false;
-            }
+            var handle = OpenHandle(unit, out var io);
+            if (handle == null) return false;
             HidLightingSession session = null;
-            try { session = unit.Model.Begin?.Invoke(io, _wait); } catch { }
+            try
+            {
+                session = unit.Own != null
+                    ? unit.Model.BeginOwn?.Invoke(handle, _wait)
+                    : unit.Model.Begin?.Invoke(io, _wait);
+            }
+            catch { }
             if (session == null)
             {
-                try { io.Dispose(); } catch { }
+                try { handle.Dispose(); } catch { }
                 return false;
             }
+            unit.Handle = handle;
             unit.Io = io;
             unit.Session = session;
             unit.Shown = null;
@@ -634,6 +746,12 @@ namespace PadForge.Common.Input.Peripherals
             unit.PendingMap = null;
             unit.LaterAt = 0;
             unit.CheckAt = _ticks() + unit.Model.RecheckMs;
+            // A session that read the device's own map lights and publishes
+            // by it from now on (HidLightingSession.Map).
+            LightMap read = null;
+            try { read = session.Map; } catch { }
+            unit.SessionMap = read;
+            if (read != null) PublishMap(unit);
             // A session that finds colors of an earlier run's names their
             // undoing from its first moment.
             Track(unit);
@@ -757,10 +875,15 @@ namespace PadForge.Common.Input.Peripherals
             PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} {why}, listed asleep");
         }
 
-        private void Close(Unit unit)
+        /// <summary>Closes the unit's channel and drops its session. The
+        /// model's map goes back up where the session had put its own, unless
+        /// <paramref name="restoreMap"/> is false because the unit's map is
+        /// taken down next.</summary>
+        private void Close(Unit unit, bool restoreMap = true)
         {
             Unrecord(unit);
-            var io = unit.Io;
+            var handle = unit.Handle;
+            unit.Handle = null;
             unit.Io = null;
             unit.Session = null;
             unit.Shown = null;
@@ -768,7 +891,12 @@ namespace PadForge.Common.Input.Peripherals
             unit.Pending = null;
             unit.PendingMap = null;
             unit.LaterAt = 0;
-            try { io?.Dispose(); } catch { }
+            if (unit.SessionMap != null)
+            {
+                unit.SessionMap = null;
+                if (restoreMap) PublishMap(unit);
+            }
+            try { handle?.Dispose(); } catch { }
         }
 
         // ─────────────────────────────────────────────
@@ -784,9 +912,10 @@ namespace PadForge.Common.Input.Peripherals
             Unrecord(unit);
             if (frames.Length == 0) return;
             var current = Volatile.Read(ref _recorded);
-            var next = new (string, byte[][], bool, IReadOnlyList<VendorProgram>)[current.Length + 1];
+            var next = new CrashRecord[current.Length + 1];
             current.CopyTo(next, 0);
-            next[current.Length] = (unit.Path, frames, unit.Session.Feature, unit.Model.Programs);
+            next[current.Length] = new CrashRecord(unit.Path, frames, unit.Session.Feature, unit.Model.Programs,
+                unit.Own != null ? unit.Model.WriteOnce : null);
             Volatile.Write(ref _recorded, next);
             unit.Recorded = true;
             unit.RecordedFrames = frames;
@@ -802,7 +931,7 @@ namespace PadForge.Common.Input.Peripherals
             var frames = unit.RecordedFrames;
             unit.RecordedFrames = null;
             var current = Volatile.Read(ref _recorded);
-            var next = new List<(string, byte[][], bool, IReadOnlyList<VendorProgram>)>(current.Length);
+            var next = new List<CrashRecord>(current.Length);
             foreach (var entry in current)
                 if (!ReferenceEquals(entry.Frames, frames)) next.Add(entry);
             Volatile.Write(ref _recorded, next.ToArray());

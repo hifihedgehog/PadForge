@@ -23,6 +23,44 @@ namespace PadForge.Common.Input.Peripherals
         HidLightingModel Match(HidCollectionInfo collection);
     }
 
+    /// <summary>
+    /// A family whose devices are no HID collections (#557): a laptop
+    /// keyboard lit through its firmware's WMI or ACPI interface, or a
+    /// keyboard lit through a USB serial port. It finds its devices by a
+    /// look of its own and talks to each through a channel of its own kind
+    /// (<see cref="HidLightingModel.Open"/>). Its <see cref="IHidLightingFamily.Match"/>
+    /// answers null for every collection. The worker's scan, claim,
+    /// repaint, hand-back, failure and crash path are the ones every family
+    /// has.
+    /// </summary>
+    internal interface IOwnLookFamily : IHidLightingFamily
+    {
+        /// <summary>The family's devices present now, asked nothing that
+        /// changes them. Called on the worker thread at every walk the host
+        /// hands over, so a look that costs keeps what it found. Null when
+        /// the look could not be made, and then the units the last look
+        /// found stay listed.</summary>
+        IReadOnlyList<OwnDevice> Look();
+    }
+
+    /// <summary>One device an own-look family found.</summary>
+    internal sealed record OwnDevice(string Key, HidLightingModel Model)
+    {
+        public ushort VendorId { get; init; }
+        public ushort ProductId { get; init; }
+
+        /// <summary>The container the device sits in where the family knows
+        /// it. Guid.Empty: the worker looks it up from <see cref="Key"/>,
+        /// which is then a device interface path.</summary>
+        public Guid Container { get; init; }
+
+        /// <summary>The device lights the PC's own keyboard, which has no
+        /// vendor and product ID the family can name, so it goes to the
+        /// keyboard rows in the PC's own container
+        /// (<see cref="DirectUnit.BuiltInKeyboard"/>).</summary>
+        public bool BuiltInKeyboard { get; init; }
+    }
+
     /// <summary>One model of a family: its lights in the order a session
     /// takes their colors, when a picture goes out, and how a session with
     /// it starts.</summary>
@@ -76,6 +114,26 @@ namespace PadForge.Common.Input.Peripherals
         /// written.</summary>
         public Func<IHidReportChannel, Action<int>, HidLightingSession> Begin { get; init; }
 
+        /// <summary>For a family whose devices are no HID collections
+        /// (<see cref="IOwnLookFamily"/>): opens the device a key names, in
+        /// the channel kind the family speaks, or answers null when it did
+        /// not open. Null for a HID family, whose collection the worker
+        /// opens for read and write.</summary>
+        public Func<string, IDisposable> Open { get; init; }
+
+        /// <summary>Starts a session on a channel <see cref="Open"/> made,
+        /// the counterpart of <see cref="Begin"/>. The session talks through
+        /// that channel and is handed no HID channel (null) by the
+        /// worker.</summary>
+        public Func<IDisposable, Action<int>, HidLightingSession> BeginOwn { get; init; }
+
+        /// <summary>For a family whose devices are no HID collections: sends
+        /// one of the session's crash frames
+        /// (<see cref="HidLightingSession.CrashFrames"/>) to the device a key
+        /// names through a channel of its own, within a bound in
+        /// milliseconds. True when it went out.</summary>
+        public Func<string, byte[], int, bool> WriteOnce { get; init; }
+
         /// <summary>Whether the device may still show colors an earlier run
         /// wrote into its own memory and never handed back. Null: never.</summary>
         public Func<bool> Owed { get; init; }
@@ -102,7 +160,10 @@ namespace PadForge.Common.Input.Peripherals
 
     /// <summary>One open of a unit: it shows pictures and hands the device
     /// back, on the channel the worker opened, and keeps what the crash
-    /// path sends when the worker cannot.</summary>
+    /// path sends when the worker cannot. A session of a family whose
+    /// devices are no HID collections talks through the channel it began
+    /// on (<see cref="HidLightingModel.BeginOwn"/>), and the
+    /// <c>io</c> it is handed is null.</summary>
     internal abstract class HidLightingSession
     {
         /// <summary>True when the frames are feature reports, false for
@@ -114,6 +175,15 @@ namespace PadForge.Common.Input.Peripherals
         /// model's.</summary>
         public abstract HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
             IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors);
+
+        /// <summary>The map of the device this session opened, read from the
+        /// device, or null to keep the model's (<see cref="HidLightingModel.Map"/>).
+        /// Read once, right after the session begins. While the session is
+        /// open the worker publishes it, with the names Map Key Lights
+        /// learned for it, renders every picture by it and hands
+        /// <see cref="Paint"/> its lights, and the model's map goes back
+        /// when the unit closes.</summary>
+        public virtual LightMap Map => null;
 
         /// <summary>How long a picture that came back
         /// <see cref="HidLightingPaint.Later"/> waits before the next
@@ -143,6 +213,9 @@ namespace PadForge.Common.Input.Peripherals
         public static readonly IReadOnlyList<IHidLightingFamily> All = new IHidLightingFamily[]
         {
             LenovoLegionLighting.Instance,
+            AsusTufLaptopLighting.Instance,
+            HpOmenLaptopLighting.Instance,
+            DygmaRaiseLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

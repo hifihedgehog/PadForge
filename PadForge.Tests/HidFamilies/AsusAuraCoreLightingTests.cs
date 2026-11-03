@@ -101,7 +101,7 @@ namespace PadForge.Tests
             Assert.Empty(session.CrashFrames);
         }
 
-        /// <summary>The GA15DH: 5D unanswered, 5E answered; the handshake
+        /// <summary>The GA15DH: 5D unanswered and 5E answered, then the handshake
         /// with a read after each (AsusAuraCoreController.cpp:346-410), then
         /// InitDirectMode (lines 179-224), and BC D0 frames of sixteen LEDs
         /// (lines 226-288).</summary>

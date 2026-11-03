@@ -40,8 +40,13 @@ namespace PadForge.Common.Input.Peripherals
     /// The session first reads the mode and the palette, 0B 03 and 0B 05,
     /// as OpenRGB does when it starts (lines 64-135,
     /// RGBController_AsusSagarisKeyboard.cpp:151-163), and its hand-back
-    /// writes them back. A keyboard that does not answer gets no
-    /// picture.</para>
+    /// writes them back. A keyboard that does not answer gets no picture.
+    /// What it read goes into the settings file before the first picture, as
+    /// <see cref="LenovoLegionLighting"/> keeps its profile, so a run that
+    /// ends with no hand-back, as a forced kill does, leaves the backup, and
+    /// the next run writes it back while the keyboard still shows the Static
+    /// mode PadForge leaves, and drops it once something else set the
+    /// keyboard.</para>
     ///
     /// <para>ROG Strix Claw (195D:1016). Feature report 07 of nine bytes. Its
     /// wheel light can only be on or off and its logo light only dimmed, both
@@ -86,8 +91,11 @@ namespace PadForge.Common.Input.Peripherals
             _cerberus = new(() => Model("ASUS Cerberus Mech", CerberusMap(), (io, wait) => BeginCerberus(io)));
             _sagaris = new(() => Model("ASUS Sagaris GK1100",
                 new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } },
-                    "OpenRGB RGBController_AsusSagarisKeyboard.cpp") { Product = "asus:0B05:1835" },
-                (io, wait) => BeginSagaris(io)));
+                    "OpenRGB RGBController_AsusSagarisKeyboard.cpp") { Product = SagarisProduct },
+                (io, wait) => BeginSagaris(io),
+                () => KeyboardProfileBackups.Get(SagarisProduct) != null
+                      && KeyboardProfileBackups.Failures(SagarisProduct) < LenovoLegionLighting.RepairTries,
+                (io, wait) => RepairSagaris(io)));
             _claw = new(() => Model("ASUS ROG Strix Claw",
                 new LightMap(new[]
                 {
@@ -111,7 +119,8 @@ namespace PadForge.Common.Input.Peripherals
             };
         }
 
-        private HidLightingModel Model(string name, LightMap map, Func<IHidReportChannel, Action<int>, HidLightingSession> begin)
+        private HidLightingModel Model(string name, LightMap map, Func<IHidReportChannel, Action<int>, HidLightingSession> begin,
+            Func<bool> owed = null, Func<IHidReportChannel, Action<int>, bool> repair = null)
             => new()
             {
                 Family = this,
@@ -121,6 +130,8 @@ namespace PadForge.Common.Input.Peripherals
                 HoldMs = LenovoLegionLighting.HoldMs,
                 RepaintMs = LenovoLegionLighting.RepaintMs,
                 Begin = begin,
+                Owed = owed,
+                Repair = repair,
             };
 
         // ─────────────────────────────────────────────
@@ -256,7 +267,42 @@ namespace PadForge.Common.Input.Peripherals
                 frames[SagarisColors] = SagarisModeFrame(Mode, Brightness, Speed, ColorIndex);
                 return frames;
             }
+
+            /// <summary>The state as the settings file keeps it: the four mode
+            /// bytes, then each palette entry's three.</summary>
+            public byte[] Contents()
+            {
+                var contents = new byte[4 + 3 * SagarisColors];
+                contents[0] = Mode;
+                contents[1] = Brightness;
+                contents[2] = Speed;
+                contents[3] = ColorIndex;
+                for (int i = 0; i < SagarisColors; i++) Palette[i].CopyTo(contents, 4 + 3 * i);
+                return contents;
+            }
+
+            /// <summary>A state from <see cref="Contents"/>, or null for bytes
+            /// of another length.</summary>
+            public static SagarisState FromContents(byte[] contents)
+            {
+                if (contents == null || contents.Length != 4 + 3 * SagarisColors) return null;
+                var palette = new byte[SagarisColors][];
+                for (int i = 0; i < SagarisColors; i++) palette[i] = contents.AsSpan(4 + 3 * i, 3).ToArray();
+                return new SagarisState(contents[0], contents[1], contents[2], contents[3], palette);
+            }
+
+            public bool SameAs(SagarisState other)
+                => other != null && Contents().AsSpan().SequenceEqual(other.Contents());
+
+            /// <summary>Whether the keyboard shows what a picture of PadForge's
+            /// leaves: the Static mode at brightness 3, speed 0 and color index 0
+            /// (<see cref="SagarisFrames"/>).</summary>
+            public bool LooksOurs => Mode == SagarisStatic && Brightness == SagarisBrightness && Speed == 0 && ColorIndex == 0;
         }
+
+        /// <summary>The key the Sagaris's backup is kept under in the settings
+        /// file (<see cref="KeyboardProfileBackups"/>).</summary>
+        internal const string SagarisProduct = "asus:0B05:1835";
 
         /// <summary>GetMode and GetColors (AsusSagarisKeyboardController.cpp:64-135),
         /// or null when an answer did not come.</summary>
@@ -281,11 +327,50 @@ namespace PadForge.Common.Input.Peripherals
             return new SagarisState(mode[3], mode[4], mode[5], mode[6], palette);
         }
 
-        private static HidLightingSession BeginSagaris(IHidReportChannel io)
+        /// <summary>Starts a session on what the keyboard shows. A backup an
+        /// earlier run left stands in for it when the keyboard still shows
+        /// that run's picture, and is dropped when something else set it
+        /// since, as <see cref="LenovoLegionLighting"/> treats its profile
+        /// backup.</summary>
+        internal static HidLightingSession BeginSagaris(IHidReportChannel io)
         {
             if (io == null) return null;
             var state = ReadSagaris(io);
-            return state == null ? null : new SagarisSession(state);
+            if (state == null) return null;
+            bool ours = false;
+            if (KeyboardProfileBackups.Get(SagarisProduct) is { } backup)
+            {
+                var saved = SagarisState.FromContents(backup.Contents);
+                if (saved != null && state.SameAs(saved))
+                {
+                    state = saved;
+                }
+                else if (saved != null && state.LooksOurs)
+                {
+                    // An earlier run's picture, never handed back.
+                    state = saved;
+                    ours = true;
+                }
+                else
+                {
+                    KeyboardProfileBackups.Drop(SagarisProduct);
+                }
+            }
+            return new SagarisSession(state, ours);
+        }
+
+        /// <summary>Puts back what an earlier run left, with no claim on the
+        /// keyboard. True when nothing is owed any more.</summary>
+        internal static bool RepairSagaris(IHidReportChannel io)
+        {
+            if (KeyboardProfileBackups.Get(SagarisProduct) is not { } backup) return true;
+            var saved = SagarisState.FromContents(backup.Contents);
+            var now = saved == null ? null : ReadSagaris(io);
+            bool settled = saved == null
+                           || (now != null && (now.SameAs(saved) || !now.LooksOurs || SendSagaris(io, saved.Restore())));
+            if (settled) KeyboardProfileBackups.Drop(SagarisProduct);
+            else KeyboardProfileBackups.NoteFailure(SagarisProduct);
+            return settled;
         }
 
         /// <summary>Sends output frames as OpenRGB does, each SetMode with the
@@ -303,17 +388,25 @@ namespace PadForge.Common.Input.Peripherals
             return true;
         }
 
+        /// <summary>A session on the Sagaris. Its first picture waits until the
+        /// state it replaces is in the settings file, so a run that ends with
+        /// no hand-back leaves the backup, and the next run puts it back
+        /// (<see cref="HidLightingModel.Owed"/>).</summary>
         internal sealed class SagarisSession : HidLightingSession
         {
             private readonly SagarisState _state;
+            private readonly byte[] _contents;
             private readonly byte[][] _restore;
             private bool _ours;
             private byte[][] _crash = Array.Empty<byte[]>();
 
-            public SagarisSession(SagarisState state)
+            public SagarisSession(SagarisState state, bool ours = false)
             {
                 _state = state;
+                _contents = state.Contents();
                 _restore = state.Restore();
+                _ours = ours;
+                if (ours) _crash = _restore;
             }
 
             public SagarisState State => _state;
@@ -326,6 +419,14 @@ namespace PadForge.Common.Input.Peripherals
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
             {
                 if (colors == null || colors.Count == 0) return HidLightingPaint.Sent;
+                if (KeyboardProfileBackups.Get(SagarisProduct) is not { } held
+                    || !held.Contents.AsSpan().SequenceEqual(_contents))
+                    KeyboardProfileBackups.Take(SagarisProduct, 0, _contents);
+                if (!KeyboardProfileBackups.IsPersisted(SagarisProduct))
+                {
+                    LaterMs = LenovoLegionLighting.SavingMs;
+                    return HidLightingPaint.Later;
+                }
                 // Marked first: a write that reports a failure may still have
                 // landed.
                 _ours = true;
@@ -335,8 +436,9 @@ namespace PadForge.Common.Input.Peripherals
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
             {
-                if (!_ours) return true;
-                if (!SendSagaris(io, _restore)) return false;
+                if (_ours && !SendSagaris(io, _restore)) return false;
+                if (KeyboardProfileBackups.Get(SagarisProduct) is { } held && held.Contents.AsSpan().SequenceEqual(_contents))
+                    KeyboardProfileBackups.Drop(SagarisProduct);
                 _ours = false;
                 _crash = Array.Empty<byte[]>();
                 return true;

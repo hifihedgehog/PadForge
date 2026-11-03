@@ -340,6 +340,7 @@ namespace PadForge.Tests
             Assert.NotNull(model);
             Assert.Same(LenovoLegionLighting.Instance, model.Family);
             Assert.True(model.LitBesideWindows);
+            Assert.True(model.LiveThroughLampArray);
             Assert.Equal("lenovo:048D:C197", model.Map.Product);
             // A picture is written once it has held, at most twice a second.
             Assert.Equal(150, model.HoldMs);
@@ -646,6 +647,7 @@ namespace PadForge.Tests
             Assert.Equal((ushort)0x048D, unit.VendorId);
             Assert.Equal((ushort)0xC197, unit.ProductId);
             Assert.True(unit.LitBesideWindows);
+            Assert.True(unit.LiveThroughLampArray);
             var map = PeripheralLightMaps.For(PathOf(Spectrum));
             Assert.NotNull(map);
             Assert.Equal(130, map.Lights.Count);
@@ -1163,28 +1165,97 @@ namespace PadForge.Tests
                 PeripheralLinker.ChooseLighting(false, Array.Empty<OutputPath>(), false, plain, litLamp, out _));
         }
 
+        /// <summary>A controller that keeps still pictures only lights a row
+        /// together with a LampArray unit of the device, which shows the
+        /// colors that change wherever the firmware lets it, unless Windows
+        /// holds that unit. A controller that shows a stream keeps the
+        /// device to itself, as before.</summary>
+        [Fact]
+        public void AControllerThatKeepsStillPicturesOnly_LightsARowWithTheLampArray_UnlessWindowsHoldsIt()
+        {
+            var still = new[]
+            {
+                new PeripheralLinker.Candidate(new OutputPath(OutputFamily.HidLightingUnit, "s"), 0, false)
+                {
+                    BesideWindows = true, LiveThroughLampArray = true,
+                },
+            };
+            var plain = new[] { new PeripheralLinker.Candidate(new OutputPath(OutputFamily.RazerUnit, "r"), 0, false) };
+            var lamp = new[] { new PeripheralLinker.Candidate(new OutputPath(OutputFamily.LampArrayUnit, "l"), 0, false) };
+            var litLamp = new[] { new PeripheralLinker.Candidate(new OutputPath(OutputFamily.LampArrayUnit, "l"), 0, true) };
+            var noShared = Array.Empty<OutputPath>();
+            Assert.Equal(PeripheralLinker.LightingChoice.NativeAndLampArray,
+                PeripheralLinker.ChooseLighting(false, noShared, false, still, lamp, out _));
+            Assert.Equal(PeripheralLinker.LightingChoice.Native,
+                PeripheralLinker.ChooseLighting(false, noShared, false, still, litLamp, out _));
+            Assert.Equal(PeripheralLinker.LightingChoice.Native,
+                PeripheralLinker.ChooseLighting(false, noShared, false, still, Array.Empty<PeripheralLinker.Candidate>(), out _));
+            Assert.Equal(PeripheralLinker.LightingChoice.Native,
+                PeripheralLinker.ChooseLighting(false, noShared, false, plain, lamp, out _));
+        }
+
+        /// <summary>The owner's Legion: the keyboard collection and the
+        /// lighting controller are 048D:C197, the LampArray interface
+        /// 048D:C193, all three in the PC's own container.</summary>
+        private static (LinkRow Row, DirectUnit Spectrum, DirectUnit Lamp) Legion(bool windowsLit, bool lampAsleep = false)
+        {
+            var pc = PeripheralLinker.LocalMachineContainer;
+            var row = new LinkRow(A, InputDeviceType.Keyboard, 0x048D, 0xC197, pc, null);
+            var spectrum = new DirectUnit(OutputFamily.HidLightingUnit, "spectrum", pc, 0x048D, 0xC197)
+            {
+                LitBesideWindows = true, LiveThroughLampArray = true,
+            };
+            var lamp = new DirectUnit(OutputFamily.LampArrayUnit, "lamp", pc, 0x048D, 0xC193)
+            {
+                Kind = PeripheralLinker.LampArrayKindKeyboard, WindowsLit = windowsLit, Asleep = lampAsleep,
+            };
+            return (row, spectrum, lamp);
+        }
+
+        private static LinkInputs Inputs(params DirectUnit[] units)
+            => new(HidppSnapshot.Empty, new PeripheralPresence(false, false, false, false, false)) { Units = units };
+
         [Fact]
         public void TheLegionsKeyboardRow_IsLitThroughItsController_WhileWindowsHoldsItsLampArray()
         {
-            // The owner's Legion: the keyboard collection and the lighting
-            // controller are 048D:C197, the LampArray interface 048D:C193,
-            // all three in the PC's own container.
-            var pc = PeripheralLinker.LocalMachineContainer;
-            var row = new LinkRow(A, InputDeviceType.Keyboard, 0x048D, 0xC197, pc, null);
-            var spectrum = new DirectUnit(OutputFamily.HidLightingUnit, "spectrum", pc, 0x048D, 0xC197) { LitBesideWindows = true };
-            var lamp = new DirectUnit(OutputFamily.LampArrayUnit, "lamp", pc, 0x048D, 0xC193)
-            {
-                Kind = PeripheralLinker.LampArrayKindKeyboard, WindowsLit = true,
-            };
-            var inputs = new LinkInputs(HidppSnapshot.Empty, new PeripheralPresence(false, false, false, false, false))
-            {
-                Units = new[] { spectrum, lamp },
-            };
+            var (row, spectrum, lamp) = Legion(windowsLit: true);
+            var inputs = Inputs(spectrum, lamp);
             var links = PeripheralLinker.Build(new[] { row }, inputs).For(A);
             Assert.Equal(new[] { spectrum.Path }, links.Lighting);
+            Assert.True(links.WindowsLightsLampArray);
             // The LampArray interface stays reached by the keyboard row, so
             // it gets no row of its own.
             Assert.Empty(PeripheralLinker.Orphans(new[] { row }, inputs));
+        }
+
+        /// <summary>With Windows off the LampArray interface, the row takes
+        /// both paths, the controller's first, so the Key Colors card keeps
+        /// the controller's lights. A LampArray unit that does not answer
+        /// is left out, and the controller lights the row alone.</summary>
+        [Fact]
+        public void TheLegionsKeyboardRow_IsLitThroughItsControllerAndItsLampArray_WhileWindowsLeavesItAlone()
+        {
+            var (row, spectrum, lamp) = Legion(windowsLit: false);
+            var links = PeripheralLinker.Build(new[] { row }, Inputs(spectrum, lamp)).For(A);
+            Assert.Equal(new[] { spectrum.Path, lamp.Path }, links.Lighting);
+            Assert.False(links.WindowsLightsLampArray);
+
+            (row, spectrum, lamp) = Legion(windowsLit: false, lampAsleep: true);
+            links = PeripheralLinker.Build(new[] { row }, Inputs(spectrum, lamp)).For(A);
+            Assert.Equal(new[] { spectrum.Path }, links.Lighting);
+            Assert.False(links.WindowsLightsLampArray);
+
+            // The controller does not answer: the row holds no path, as a
+            // row whose own unit sleeps always has, and the LampArray unit
+            // never stands in for it.
+            var (_, _, awakeLamp) = Legion(windowsLit: false);
+            Assert.Null(PeripheralLinker.Build(new[] { row }, Inputs(spectrum with { Asleep = true }, awakeLamp)).For(A));
+
+            // A table that differs only in what Windows takes is a change.
+            var lit = PeripheralLinker.Build(new[] { row }, Inputs(spectrum, Legion(windowsLit: true).Lamp));
+            var unlit = PeripheralLinker.Build(new[] { row }, Inputs(spectrum, Legion(windowsLit: false, lampAsleep: true).Lamp));
+            Assert.Equal(unlit.For(A).Lighting, lit.For(A).Lighting);
+            Assert.False(lit.SameAs(unlit));
         }
 
         [Fact]

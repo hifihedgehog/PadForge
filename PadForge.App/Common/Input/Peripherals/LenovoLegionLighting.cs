@@ -70,16 +70,24 @@ namespace PadForge.Common.Input.Peripherals
     /// keyboard on the last picture that did.</para>
     ///
     /// <para>Windows Dynamic Lighting. The same keyboards also offer a
-    /// LampArray interface (048D:C193 on the owner's Legion). With Dynamic
-    /// Lighting off in the BIOS that interface takes no colors, while the
-    /// signed-in user's switch for it still reads on, and this controller
-    /// lights the keys. OpenRGB drives the controller with no regard to
-    /// Windows, and Lenovo Legion Toolkit's maintained fork drives it
-    /// while Windows Dynamic Lighting is on, warning only that Windows
-    /// "might prevent" it (LenovoLegionToolkit-Team
-    /// KeyboardBacklightPage.xaml.cs CheckDynamicLightingWarningAsync), so
-    /// this path is chosen over that interface
-    /// (<see cref="HidLightingModel.LitBesideWindows"/>).</para>
+    /// LampArray interface (048D:C193 on the owner's Legion), and an option
+    /// in the BIOS decides whether it takes colors. With Dynamic Lighting
+    /// off there, the interface takes none, even while the signed-in user's
+    /// switch for it reads on, and this controller lights the keys. With it
+    /// on, the interface shows what a host sends as it comes: a color cycle
+    /// sent as one range update every 50 ms played on the owner's Legion.
+    /// Every report either collection answers read the same under both
+    /// settings, save the one that echoes the last lamp asked about, so a
+    /// row lights through both, and colors that change show through the
+    /// interface wherever the BIOS lets it
+    /// (<see cref="HidLightingModel.LiveThroughLampArray"/>). Where Windows
+    /// Dynamic Lighting lights that interface, this controller lights the
+    /// keys alone. OpenRGB drives it with no regard to Windows, and Lenovo
+    /// Legion Toolkit's maintained fork drives it while Windows Dynamic
+    /// Lighting is on, warning only that Windows "might prevent" it
+    /// (LenovoLegionToolkit-Team KeyboardBacklightPage.xaml.cs
+    /// CheckDynamicLightingWarningAsync), so this path is chosen over that
+    /// interface then (<see cref="HidLightingModel.LitBesideWindows"/>).</para>
     /// </summary>
     internal sealed class LenovoLegionLighting : IHidLightingFamily
     {
@@ -190,6 +198,7 @@ namespace PadForge.Common.Input.Peripherals
                     Product = product,
                 },
                 LitBesideWindows = true,
+                LiveThroughLampArray = true,
                 HoldMs = HoldMs,
                 RepaintMs = RepaintMs,
                 RecheckMs = RecheckMs,

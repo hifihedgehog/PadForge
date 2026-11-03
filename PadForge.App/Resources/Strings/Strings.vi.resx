@@ -998,6 +998,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>Màu được gửi thẳng đến {0}.</value></data>
   <data name="Pad_Lighting_RouteDirectPower" xml:space="preserve"><value>Màu được gửi thẳng đến {0}. Thiết bị không tự giảm độ sáng đèn trong lúc được chiếu sáng.</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Màu được gửi thẳng đến {0}. Chế độ bộ nhớ tích hợp của nó tắt trong lúc được chiếu sáng.</value></data>
+  <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Màu được gửi thẳng đến {0}. Các màu thay đổi, như chu kỳ màu hoặc màu theo âm thanh, cần bật Dynamic Lighting trong BIOS của laptop. Nếu không, các phím giữ màu tĩnh gần nhất.</value></data>
+  <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Màu được gửi thẳng đến {0}. Nếu Dynamic Lighting được bật trong BIOS của laptop, Ánh sáng động (Dynamic Lighting) của Windows sẽ chiếu sáng các phím thay thế. Hãy tắt Ánh sáng động của Windows cho bàn phím này trong Cài đặt của Windows, khi đó PadForge sẽ chiếu sáng chúng, kể cả các màu thay đổi.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Thiết bị này chưa trả lời. Màu của nó sẽ hiện khi nó thức dậy.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Màu được gửi qua {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Màu được gửi qua {0}, phần mềm này chiếu sáng mọi thiết bị cùng loại cùng lúc. Khi {0} không chạy, PadForge tự chiếu sáng thiết bị này.</value></data>

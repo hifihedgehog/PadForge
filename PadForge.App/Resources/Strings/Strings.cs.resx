@@ -998,6 +998,8 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>Barvy jdou přímo do zařízení {0}.</value></data>
   <data name="Pad_Lighting_RouteDirectPower" xml:space="preserve"><value>Barvy jdou přímo do zařízení {0}. Dokud svítí, samo svá světla netlumí.</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Barvy jdou přímo do zařízení {0}. Dokud svítí, je jeho režim vestavěné paměti vypnutý.</value></data>
+  <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Barvy jdou přímo do zařízení {0}. Měnící se barvy, například barevný cyklus nebo barvy reagující na zvuk, vyžadují zapnuté Dynamic Lighting v BIOS notebooku. Bez něj klávesy zůstanou na posledních stálých barvách.</value></data>
+  <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Barvy jdou přímo do zařízení {0}. Pokud je v BIOS notebooku zapnuté Dynamic Lighting, klávesy místo toho rozsvěcuje Dynamické osvětlení ve Windows. Vypněte pro tuto klávesnici Dynamické osvětlení ve Windows v Nastavení Windows a bude je rozsvěcovat PadForge, včetně měnících se barev.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Toto zařízení zatím neodpovědělo. Jeho barvy se zobrazí, jakmile se probudí.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Barvy jdou přes software {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Barvy jdou přes software {0}, který rozsvěcuje všechna zařízení tohoto druhu najednou. Dokud software {0} neběží, rozsvěcuje PadForge toto zařízení sám.</value></data>

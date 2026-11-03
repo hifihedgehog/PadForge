@@ -998,6 +998,8 @@
   <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>रंग सीधे {0} को जाते हैं।</value></data>
   <data name="Pad_Lighting_RouteDirectPower" xml:space="preserve"><value>रंग सीधे {0} को जाते हैं। रोशन रहने के दौरान वह अपनी लाइट खुद मंद नहीं करता।</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>रंग सीधे {0} को जाते हैं। रोशन रहने के दौरान उसका ऑन-बोर्ड मेमोरी मोड बंद रहता है।</value></data>
+  <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>रंग सीधे {0} को जाते हैं। बदलते रंग, जैसे कलर साइकिल या ध्वनि के साथ चलने वाले रंग, तभी दिखते हैं जब लैपटॉप के BIOS में Dynamic Lighting चालू हो। इसके बिना कीज़ आखिरी स्थिर रंग पर बनी रहती हैं।</value></data>
+  <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>रंग सीधे {0} को जाते हैं। अगर लैपटॉप के BIOS में Dynamic Lighting चालू है, तो कीज़ को Windows की डायनेमिक लाइटिंग रोशन करती है। Windows सेटिंग्स में इस कीबोर्ड के लिए डायनेमिक लाइटिंग बंद करें, तब PadForge उन्हें रोशन करेगा, बदलते रंग भी।</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>इस डिवाइस ने अभी तक जवाब नहीं दिया है। इसके जागते ही इसके रंग दिखेंगे।</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>रंग {0} के ज़रिए जाते हैं।</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>रंग {0} के ज़रिए जाते हैं, जो इस तरह के हर डिवाइस को एक साथ रोशन करता है। जब {0} नहीं चल रहा होता, तब PadForge इस डिवाइस को खुद रोशन करता है।</value></data>

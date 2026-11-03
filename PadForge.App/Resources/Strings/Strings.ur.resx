@@ -998,6 +998,8 @@
   <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>رنگ سیدھے {0} کو جاتے ہیں۔</value></data>
   <data name="Pad_Lighting_RouteDirectPower" xml:space="preserve"><value>رنگ سیدھے {0} کو جاتے ہیں۔ جب تک یہ روشن ہو، خود سے اپنی روشنیاں مدھم نہیں کرتا۔</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>رنگ سیدھے {0} کو جاتے ہیں۔ جب تک یہ روشن ہو، اس کا آن بورڈ میموری موڈ آف رہتا ہے۔</value></data>
+  <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>رنگ سیدھے {0} کو جاتے ہیں۔ بدلتے رنگوں، جیسے رنگوں کی گردش یا آواز کے ساتھ چلنے والے رنگوں، کے لیے لیپ ٹاپ کے BIOS میں Dynamic Lighting آن ہونا ضروری ہے۔ اس کے بغیر بٹن آخری ٹھہرے ہوئے رنگ دکھاتے رہتے ہیں۔</value></data>
+  <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>رنگ سیدھے {0} کو جاتے ہیں۔ اگر لیپ ٹاپ کے BIOS میں Dynamic Lighting آن ہو تو بٹنوں کو Windows Dynamic Lighting روشن کرتا ہے۔ Windows کی ترتیبات میں اس کی بورڈ کے لیے Windows Dynamic Lighting آف کر دیں تو PadForge انہیں روشن کرے گا، بدلتے رنگوں سمیت۔</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>اس آلے نے ابھی تک جواب نہیں دیا۔ اس کے جاگتے ہی اس کے رنگ نظر آئیں گے۔</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>رنگ {0} کے ذریعے جاتے ہیں۔</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>رنگ {0} کے ذریعے جاتے ہیں، جو اس قسم کے تمام آلات کو ایک ساتھ روشن کرتا ہے۔ جب {0} نہ چل رہا ہو تو PadForge اس آلے کو خود روشن کرتا ہے۔</value></data>

@@ -358,6 +358,11 @@ namespace PadForge.Common.Input.Peripherals
         /// of the same device (<see cref="HidLightingModel.LitBesideWindows"/>).</summary>
         public bool LitBesideWindows { get; init; }
 
+        /// <summary>The device's own controller keeps still pictures only,
+        /// and a LampArray interface of the same device carries the colors
+        /// that change (<see cref="HidLightingModel.LiveThroughLampArray"/>).</summary>
+        public bool LiveThroughLampArray { get; init; }
+
         /// <summary>The highest claim level the unit offers: 0 colors
         /// alone, 1 its lighting power too, 2 its on-board memory mode off
         /// as well. 0 in every family but HidppUnit, whose units carry
@@ -520,6 +525,7 @@ namespace PadForge.Common.Input.Peripherals
                 var shadows = Array.Empty<OutputPath>();
                 int maxLevel = 0;
                 bool directWhenClosed = false;
+                bool windowsLightsLampArray = false;
                 // For a unit row, the vendor of the unit it stands for.
                 ushort unitVendor = 0;
                 if (row.VendorRow is PeripheralRowKind kind)
@@ -639,14 +645,20 @@ namespace PadForge.Common.Input.Peripherals
                     if (chosen == LightingChoice.Shared) lighting.AddRange(shared);
                     else if (chosen != LightingChoice.None)
                     {
-                        foreach (var candidate in chosen == LightingChoice.Native ? native : lamps)
-                        {
-                            if (candidate.Asleep) continue;
-                            AddOnce(lighting, candidate.Path);
-                            maxLevel = Math.Max(maxLevel, candidate.Level);
-                        }
-                        if (chosen == LightingChoice.Native && lighting.Count > 0 && shadow is OutputPath stoodInFor)
+                        // The device's own units go first, so the Key Colors
+                        // card shows their lights (PeripheralLightMaps.FirstPerLight).
+                        int own = 0;
+                        if (chosen is LightingChoice.Native or LightingChoice.NativeAndLampArray)
+                            own = LinkAwake(native, lighting, ref maxLevel);
+                        // The LampArray units ride with the device's own: a
+                        // row whose own unit sleeps holds no path, as under
+                        // Native, and the card never moves to their lights.
+                        if (chosen == LightingChoice.LampArray || (chosen == LightingChoice.NativeAndLampArray && own > 0))
+                            LinkAwake(lamps, lighting, ref maxLevel);
+                        if (own > 0 && shadow is OutputPath stoodInFor)
                             shadows = new[] { stoodInFor };
+                        windowsLightsLampArray = chosen == LightingChoice.Native
+                                                 && lamps.Exists(l => l.WindowsLit) && native.Exists(c => c.BesideWindows);
                     }
 
                     // A TouchSense mouse bound to WinUSB rumbles through its
@@ -667,6 +679,7 @@ namespace PadForge.Common.Input.Peripherals
                     UnitRow = row.Unit != null,
                     MaxClaimLevel = maxLevel,
                     DirectWhenClosed = directWhenClosed,
+                    WindowsLightsLampArray = windowsLightsLampArray,
                     Shadows = shadows,
                     HasVendorProgram = row.VendorRow == null && HasVendorProgram(row.Unit == null ? row.VendorId : unitVendor),
                 });
@@ -709,6 +722,11 @@ namespace PadForge.Common.Input.Peripherals
             /// the device's lights while Windows Dynamic Lighting holds its
             /// LampArray interface (<see cref="DirectUnit.LitBesideWindows"/>).</summary>
             public bool BesideWindows { get; init; }
+
+            /// <summary>A native unit whose controller keeps still pictures
+            /// only, so a LampArray unit of the device lights the row beside
+            /// it (<see cref="DirectUnit.LiveThroughLampArray"/>).</summary>
+            public bool LiveThroughLampArray { get; init; }
         }
 
         internal enum LightingChoice
@@ -719,6 +737,9 @@ namespace PadForge.Common.Input.Peripherals
             /// <summary>The device's own protocol: HID++, Razer, SteelSeries.</summary>
             Native,
             LampArray,
+            /// <summary>The device's own protocol and its LampArray units
+            /// together (<see cref="Candidate.LiveThroughLampArray"/>).</summary>
+            NativeAndLampArray,
         }
 
         /// <summary>
@@ -750,10 +771,29 @@ namespace PadForge.Common.Input.Peripherals
         /// with Dynamic Lighting off in its BIOS takes no colors on its
         /// LampArray interface while Windows' switch for it reads on, and
         /// OpenRGB and Lenovo Legion Toolkit light it through its own
-        /// controller (<see cref="LenovoLegionLighting"/>). Step 3 then
+        /// controller (<see cref="LenovoLegionLighting"/>). Step 4 then
         /// lights it.</para>
         ///
-        /// <para>3. The device's own protocol. For a Logitech device that is
+        /// <para>3. The device's own controller keeps still pictures only
+        /// (<see cref="Candidate.LiveThroughLampArray"/>), and the device
+        /// has a LampArray unit Windows does not light: both. A Lenovo
+        /// Legion Gen 10 keyboard stores each picture in a lighting profile
+        /// and shows no stream of them (<see cref="LenovoLegionLighting"/>).
+        /// With Dynamic Lighting on in its BIOS, its LampArray interface
+        /// shows every frame, and while a host holds that interface "No
+        /// source other than the Host can modify Lamp state" (HID Usage
+        /// Tables 1.6, 26.10.1), so the stored picture stays out of sight.
+        /// With Dynamic Lighting off, the interface takes no colors and the
+        /// stored picture shows. Nothing the keyboard reports tells the two
+        /// apart, so both carry the row's colors, and each shows them where
+        /// the firmware lets it. OpenRGB drives both as well: its LampArray
+        /// detector takes every collection on page 0x59, usage 0x01, with
+        /// no vendor left out
+        /// (Controllers/HIDLampArrayController/HIDLampArrayControllerDetect.cpp:50).
+        /// The LampArray units ride with the device's own unit and are
+        /// never linked without it.</para>
+        ///
+        /// <para>4. The device's own protocol. For a Logitech device that is
         /// HID++ ahead of any LampArray unit, because every reference that
         /// lights a 0x8071 or per-key Logitech device speaks HID++ to it,
         /// none drives Logitech's virtual LampArray unit from a host other
@@ -762,9 +802,9 @@ namespace PadForge.Common.Input.Peripherals
         /// Controllers/LogitechController/LogitechControllerDetect.cpp:1771-1774).
         /// The native path is the proven one, so it comes first.</para>
         ///
-        /// <para>4. A LampArray unit of the device.</para>
+        /// <para>5. A LampArray unit of the device.</para>
         ///
-        /// <para>5. The shared path again, where it waits for its program
+        /// <para>6. The shared path again, where it waits for its program
         /// (<paramref name="sharedWaits"/>): a Razer or SteelSeries model
         /// with no unit of its own keeps its tab and its "Waiting for" line.
         /// A Logitech row has no such step, since the LED SDK path is given
@@ -776,8 +816,12 @@ namespace PadForge.Common.Input.Peripherals
             directWhenClosed = false;
             bool windowsLit = false;
             foreach (var lamp in lamps) windowsLit |= lamp.WindowsLit;
-            bool besideWindows = false;
-            foreach (var candidate in native) besideWindows |= candidate.BesideWindows;
+            bool besideWindows = false, live = false;
+            foreach (var candidate in native)
+            {
+                besideWindows |= candidate.BesideWindows;
+                live |= candidate.LiveThroughLampArray;
+            }
             if (programRuns)
             {
                 if (shared.Count == 0) return LightingChoice.None;
@@ -785,6 +829,7 @@ namespace PadForge.Common.Input.Peripherals
                 return LightingChoice.Shared;
             }
             if (windowsLit && !besideWindows) return LightingChoice.LampArray;
+            if (live && !windowsLit && lamps.Count > 0) return LightingChoice.NativeAndLampArray;
             if (native.Count > 0) return LightingChoice.Native;
             if (lamps.Count > 0) return LightingChoice.LampArray;
             return sharedWaits && shared.Count > 0 ? LightingChoice.Shared : LightingChoice.None;
@@ -798,7 +843,24 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         Asleep = unit.Asleep,
                         BesideWindows = unit.LitBesideWindows,
+                        LiveThroughLampArray = unit.LiveThroughLampArray,
                     });
+        }
+
+        /// <summary>Links the candidates that answer now
+        /// (<see cref="Candidate.Asleep"/>) and returns how many it
+        /// linked.</summary>
+        private static int LinkAwake(List<Candidate> candidates, List<OutputPath> lighting, ref int maxLevel)
+        {
+            int linked = 0;
+            foreach (var candidate in candidates)
+            {
+                if (candidate.Asleep) continue;
+                AddOnce(lighting, candidate.Path);
+                maxLevel = Math.Max(maxLevel, candidate.Level);
+                linked++;
+            }
+            return linked;
         }
 
         /// <summary>A Razer, SteelSeries or TouchSense unit belongs to the

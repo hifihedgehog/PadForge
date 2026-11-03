@@ -998,6 +998,8 @@
   <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>Колеры ідуць напрамую на {0}.</value></data>
   <data name="Pad_Lighting_RouteDirectPower" xml:space="preserve"><value>Колеры ідуць напрамую на {0}. Пакуль прылада падсвечваецца, яна сама не прыглушае падсветку.</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Колеры ідуць напрамую на {0}. Пакуль прылада падсвечваецца, яе рэжым убудаванай памяці выключаны.</value></data>
+  <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Колеры ідуць напрамую на {0}. Зменлівым колерам, напрыклад цыклу колераў або колерам у такт гуку, патрэбны ўключаны Dynamic Lighting у BIOS ноўтбука. Без гэтага клавішы застаюцца з апошнімі няменнымі колерамі.</value></data>
+  <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Колеры ідуць напрамую на {0}. Калі ў BIOS ноўтбука ўключаны Dynamic Lighting, клавішы замест гэтага падсвечвае Dynamic Lighting у Windows. Выключыце для гэтай клавіятуры Dynamic Lighting у параметрах Windows, і PadForge будзе падсвечваць клавішы, уключна са зменлівымі колерамі.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Гэтая прылада яшчэ не адказала. Колеры з'явяцца, калі яна прачнецца.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Колеры ідуць праз {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Колеры ідуць праз {0}, які падсвечвае ўсе прылады гэтага тыпу адначасова. Пакуль {0} не працуе, PadForge падсвечвае гэтую прыладу сам.</value></data>

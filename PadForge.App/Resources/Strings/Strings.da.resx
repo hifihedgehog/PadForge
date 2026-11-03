@@ -998,6 +998,8 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>Farverne sendes direkte til {0}.</value></data>
   <data name="Pad_Lighting_RouteDirectPower" xml:space="preserve"><value>Farverne sendes direkte til {0}. Den dæmper ikke selv sit lys, mens den er belyst.</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Farverne sendes direkte til {0}. Dens tilstand med indbygget hukommelse er slået fra, mens den er belyst.</value></data>
+  <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Farverne sendes direkte til {0}. Skiftende farver, f.eks. et farveskift eller farver, der følger lyden, kræver, at Dynamic Lighting er slået til i den bærbares BIOS. Uden det beholder tasterne de seneste faste farver.</value></data>
+  <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Farverne sendes direkte til {0}. Hvis Dynamic Lighting er slået til i den bærbares BIOS, er det Dynamisk belysning i Windows, der belyser tasterne i stedet. Slå Dynamisk belysning i Windows fra for dette tastatur i Indstillinger i Windows, så belyser PadForge dem, også med skiftende farver.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Denne enhed har ikke svaret endnu. Dens farver vises, når den vågner.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Farverne sendes via {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Farverne sendes via {0}, som belyser alle enheder af denne slags på én gang. Mens {0} ikke kører, belyser PadForge selv denne enhed.</value></data>

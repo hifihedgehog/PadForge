@@ -998,6 +998,8 @@
   <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>Цвета идут напрямую на {0}.</value></data>
   <data name="Pad_Lighting_RouteDirectPower" xml:space="preserve"><value>Цвета идут напрямую на {0}. Пока устройство подсвечивается, оно само не приглушает подсветку.</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Цвета идут напрямую на {0}. Пока устройство подсвечивается, его режим встроенной памяти отключен.</value></data>
+  <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Цвета идут напрямую на {0}. Для меняющихся цветов, например смены цветов по кругу или цветов, следующих за звуком, нужно включить Dynamic Lighting в BIOS ноутбука. Без этого клавиши сохраняют последние постоянные цвета.</value></data>
+  <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Цвета идут напрямую на {0}. Если Dynamic Lighting включено в BIOS ноутбука, клавиши подсвечивает «Динамическое освещение» Windows. Отключите для этой клавиатуры «Динамическое освещение» Windows в параметрах Windows, и подсвечивать клавиши будет PadForge, включая меняющиеся цвета.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Это устройство пока не ответило. Цвета появятся, когда оно проснется.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Цвета идут через {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Цвета идут через {0}, а эта программа подсвечивает все устройства такого типа сразу. Пока {0} не работает, PadForge подсвечивает это устройство сам.</value></data>

@@ -257,6 +257,37 @@ namespace PadForge.Tests
             Assert.False(KeyFrame.Same(null, a));
             Assert.False(KeyFrame.Same(a, new KeyFrame(a.Keys, null, null, background: 0)));
         }
+
+        /// <summary>A frame without its single lights' colors drops them at
+        /// every depth and keeps everything else, a frame beneath that held
+        /// nothing else goes with them, and a frame with none is its own
+        /// answer. The answer is kept, so a backend asked twice gets the
+        /// same frame.</summary>
+        [Fact]
+        public void AFrameWithoutItsLights_DropsThemAtEveryDepth_AndKeepsTheRest()
+        {
+            var keys = new Dictionary<ushort, int> { [4] = 1 };
+            var groups = new Dictionary<string, int> { [LightGroups.Logo] = 2 };
+            var lightsOnly = new KeyFrame(null, null, new Dictionary<int, int> { [7] = 3 }, null);
+            var keysUnder = new KeyFrame(keys, null, new Dictionary<int, int> { [8] = 4 }, 5);
+            var top = new KeyFrame(keys, groups, new Dictionary<int, int> { [9] = 6 }, 7, keysUnder);
+
+            Assert.True(top.HasLights);
+            Assert.True(new KeyFrame(keys, null, null, null, lightsOnly).HasLights);
+            var stripped = top.WithoutLights;
+            Assert.False(stripped.HasLights);
+            Assert.Equal(new KeyFrame(keys, groups, null, 7, new KeyFrame(keys, null, null, 5)), stripped);
+            Assert.Same(stripped, top.WithoutLights);
+
+            // A frame beneath with nothing but single lights is gone.
+            Assert.Null(new KeyFrame(keys, null, null, null, lightsOnly).WithoutLights.Under);
+            Assert.True(lightsOnly.WithoutLights.IsEmpty);
+
+            var none = new KeyFrame(keys, groups, null, 7);
+            Assert.False(none.HasLights);
+            Assert.Same(none, none.WithoutLights);
+            Assert.Same(KeyFrame.Empty, KeyFrame.Empty.WithoutLights);
+        }
     }
 
     [Collection("PeripheralOutputStatics")]

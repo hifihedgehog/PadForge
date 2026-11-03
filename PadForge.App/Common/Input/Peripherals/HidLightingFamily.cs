@@ -43,6 +43,13 @@ namespace PadForge.Common.Input.Peripherals
         /// (<see cref="PeripheralLinker.ChooseLighting"/>).</summary>
         public bool LitBesideWindows { get; init; }
 
+        /// <summary>The device's own controller keeps still pictures only,
+        /// and a LampArray interface of the same device shows colors that
+        /// change wherever the device's firmware lets that interface take
+        /// colors, so the linker lights a row through both
+        /// (<see cref="PeripheralLinker.ChooseLighting"/>).</summary>
+        public bool LiveThroughLampArray { get; init; }
+
         /// <summary>How long a changed picture has to stay the same before
         /// it goes out. 0: at once.</summary>
         public int HoldMs { get; init; }

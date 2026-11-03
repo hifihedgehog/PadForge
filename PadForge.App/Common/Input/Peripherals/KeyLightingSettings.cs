@@ -69,8 +69,7 @@ namespace PadForge.Common.Input.Peripherals
         /// background unless it keeps the Lighting tab's mode, and, for a
         /// layer that shows the Base layer under its own colors,
         /// <paramref name="baseFrame"/> beneath them.</summary>
-        public KeyFrame ToFrame(bool keepLights = true, KeyFrame baseFrame = null) => new(Keys, Groups,
-            keepLights ? Lights : null,
+        public KeyFrame ToFrame(KeyFrame baseFrame = null) => new(Keys, Groups, Lights,
             Background switch
             {
                 KeyBackgroundRule.Off => 0,
@@ -154,12 +153,12 @@ namespace PadForge.Common.Input.Peripherals
         /// on the Mappings tab. A shift layer with nothing saved shows the
         /// Base layer. Empty when the device has no colors at all.
         /// </summary>
-        public KeyFrame FrameFor(string engagedMask, bool keepLights = true)
+        public KeyFrame FrameFor(string engagedMask)
         {
-            var baseFrame = LayerOf(BaseMask)?.ToFrame(keepLights) ?? KeyFrame.Empty;
+            var baseFrame = LayerOf(BaseMask)?.ToFrame() ?? KeyFrame.Empty;
             if (engagedMask == null || engagedMask == BaseMask) return baseFrame;
             var layer = LayerOf(engagedMask);
-            return layer == null ? baseFrame : layer.ToFrame(keepLights, baseFrame);
+            return layer == null ? baseFrame : layer.ToFrame(baseFrame);
         }
 
         /// <summary>These settings with <paramref name="layer"/> in place of

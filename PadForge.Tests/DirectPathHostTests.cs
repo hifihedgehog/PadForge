@@ -368,6 +368,116 @@ namespace PadForge.Tests
             Assert.Equal(string.Format(s.Pad_Lighting_RouteDirect, "ROG Falchion"), PeripheralRouteText.Lighting(keyboard, 0));
         }
 
+        /// <summary>A keyboard whose own controller keeps still pictures
+        /// only, the Lenovo Legion's, shows changing colors through its
+        /// LampArray interface. Its line says so: with both paths linked,
+        /// that changing colors need the BIOS option, and with Windows
+        /// holding the interface, what Windows takes and how to hand it
+        /// back. A controller that shows a stream keeps the plain
+        /// line.</summary>
+        [Fact]
+        public void AControllerThatKeepsStillPicturesOnly_SaysWhatChangingColorsNeed()
+        {
+            var s = Strings.Instance;
+            var pc = PeripheralLinker.LocalMachineContainer;
+            var spectrum = new DirectUnit(OutputFamily.HidLightingUnit, "spectrum", pc, 0x048D, 0xC197)
+            {
+                Name = "ITE Device(8258)", LitBesideWindows = true, LiveThroughLampArray = true,
+            };
+            var lamp = new DirectUnit(OutputFamily.LampArrayUnit, "lamp", pc, 0x048D, 0xC193) { Kind = 1 };
+            var keyboard = Device(A, 0x048D, InputDeviceType.Keyboard);
+
+            Link(new DeviceLinks { Device = A, Lighting = new[] { spectrum.Path, lamp.Path } });
+            PeripheralOutputs.Direct = Found(spectrum, lamp);
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteDirectChangingNeedsBios, "ITE Device(8258)"),
+                PeripheralRouteText.Lighting(keyboard, 0));
+            Assert.Null(PeripheralRouteText.Lighting(keyboard, 0, lightsHere: false));
+
+            Link(new DeviceLinks { Device = A, Lighting = new[] { spectrum.Path }, WindowsLightsLampArray = true });
+            PeripheralOutputs.Direct = Found(spectrum, lamp with { WindowsLit = true });
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteDirectBesideWindows, "ITE Device(8258)"),
+                PeripheralRouteText.Lighting(keyboard, 0));
+
+            // The interface does not answer: the controller lights the keys
+            // alone, and the line promises nothing more.
+            Link(new DeviceLinks { Device = A, Lighting = new[] { spectrum.Path } });
+            PeripheralOutputs.Direct = Found(spectrum, lamp with { Asleep = true });
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteDirect, "ITE Device(8258)"), PeripheralRouteText.Lighting(keyboard, 0));
+
+            // A controller that shows a stream reads as any unit does.
+            var streams = spectrum with { LiveThroughLampArray = false };
+            Link(new DeviceLinks { Device = A, Lighting = new[] { streams.Path, lamp.Path } });
+            PeripheralOutputs.Direct = Found(streams, lamp);
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteDirect, "ITE Device(8258)"), PeripheralRouteText.Lighting(keyboard, 0));
+        }
+
+        /// <summary>A single light's color is set by its address on the
+        /// lights the row's Key Colors card shows, the first of its paths
+        /// that knows its lights one by one. Every other path of the row
+        /// takes the same frame without those colors, its keys, groups and
+        /// background kept, since the address is not its own. A frame with
+        /// no single light's color goes to every path as it is.</summary>
+        [Fact]
+        public void ASingleLightsColor_GoesOnlyToThePathWhoseLightsTheCardShows()
+        {
+            var native = new OutputPath(OutputFamily.HidLightingUnit, "spectrum");
+            var lamp = new OutputPath(OutputFamily.LampArrayUnit, "lamp");
+            LightMap Map(int first) => new(new[]
+            {
+                new LightInfo(first, LightKind.Key, 0x04, LightKeySource.Generated),
+                new LightInfo(first + 1, LightKind.Other, 0, LightKeySource.None),
+            }, "test");
+            PeripheralLightMaps.ResetForTest();
+            try
+            {
+                PeripheralLightMaps.Publish(native, Map(0x61));
+                PeripheralLightMaps.Publish(lamp, Map(0x61));
+                Link(new DeviceLinks { Device = A, Lighting = new[] { native, lamp } });
+                var under = new KeyFrame(null, null, new Dictionary<int, int> { [0x62] = 0x00FF00 }, null);
+                var frame = new KeyFrame(new Dictionary<ushort, int> { [0x04] = 0x0000FF },
+                    new Dictionary<string, int> { [LightGroups.Edge] = 0x123456 },
+                    new Dictionary<int, int> { [0x62] = 0xFF0000 }, 0x111111, under);
+                PeripheralOutputs.SetLighting(A, slot: 0, player: 1, 1, 2, 3, keys: frame);
+
+                Assert.True(PeripheralOutputs.TryResolveColor(native, out int rgb, out var ruler));
+                Assert.Same(frame, ruler.Keys);
+                Assert.Equal(0x010203, rgb);
+
+                Assert.True(PeripheralOutputs.TryResolveColor(lamp, out rgb, out ruler));
+                Assert.Equal(0x010203, rgb);
+                Assert.False(ruler.Keys.HasLights);
+                Assert.Empty(ruler.Keys.Lights);
+                Assert.Null(ruler.Keys.Under);
+                Assert.Equal(0x0000FF, ruler.Keys.Keys[0x04]);
+                Assert.Equal(0x123456, ruler.Keys.Groups[LightGroups.Edge]);
+                Assert.Equal(0x111111, ruler.Keys.Background);
+                // The light the address names on that path keeps the
+                // background, never the other unit's single-light color.
+                Assert.Equal(new[] { 0x0000FF, 0x111111 },
+                    LightRenderer.Render(PeripheralLightMaps.For(lamp), rgb, ruler.Keys));
+
+                // The card shows the first path that knows its lights one by
+                // one: with the LampArray first, it keeps them instead.
+                Link(new DeviceLinks { Device = A, Lighting = new[] { lamp, native } });
+                Assert.True(PeripheralOutputs.TryResolveColor(lamp, out _, out ruler));
+                Assert.Same(frame, ruler.Keys);
+                Assert.True(PeripheralOutputs.TryResolveColor(native, out _, out ruler));
+                Assert.False(ruler.Keys.HasLights);
+
+                // A frame of keys and groups alone reaches both as it is.
+                var keysOnly = new KeyFrame(new Dictionary<ushort, int> { [0x04] = 0x0000FF }, null, null, null);
+                PeripheralOutputs.SetLighting(A, slot: 0, player: 1, 1, 2, 3, keys: keysOnly);
+                Assert.True(PeripheralOutputs.TryResolveColor(native, out _, out ruler));
+                Assert.Same(keysOnly, ruler.Keys);
+                Assert.True(PeripheralOutputs.TryResolveColor(lamp, out _, out ruler));
+                Assert.Same(keysOnly, ruler.Keys);
+            }
+            finally
+            {
+                PeripheralLightMaps.ResetForTest();
+            }
+        }
+
         /// <summary>A unit of any direct family reads as a HID++ unit does:
         /// by the name its backend read, else the row's, and with the
         /// controller whose color shows when another claim rules it.</summary>

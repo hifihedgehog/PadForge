@@ -131,6 +131,12 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Lit through a shared path now, with a direct path waiting for the vendor program to stop.</summary>
         public bool DirectWhenClosed { get; init; }
 
+        /// <summary>Windows Dynamic Lighting lights a LampArray unit of the
+        /// row's device, and the device's own controller lights the row
+        /// beside it (<see cref="PeripheralLinker.ChooseLighting"/>), so
+        /// the tab can say what Windows takes.</summary>
+        public bool WindowsLightsLampArray { get; init; }
+
         /// <summary>The shared paths this row's direct path stands in for. A
         /// shared backend does not paint one of them while this row holds a
         /// claim, so a directly lit Razer mouse is never painted by the
@@ -202,6 +208,7 @@ namespace PadForge.Common.Input.Peripherals
                     || theirs.UnitRow != pair.Value.UnitRow
                     || theirs.MaxClaimLevel != pair.Value.MaxClaimLevel
                     || theirs.DirectWhenClosed != pair.Value.DirectWhenClosed
+                    || theirs.WindowsLightsLampArray != pair.Value.WindowsLightsLampArray
                     || theirs.HasVendorProgram != pair.Value.HasVendorProgram
                     || !SamePaths(theirs.Lighting, pair.Value.Lighting)
                     || !SamePaths(theirs.Haptics, pair.Value.Haptics)
@@ -812,6 +819,15 @@ namespace PadForge.Common.Input.Peripherals
             }
             if (!found) return false;
             rgb = ruler.Rgb;
+            // A single light's color was set on the lights the row's Key
+            // Colors card shows, the first of its paths that knows its
+            // lights one by one, and its address is that unit's alone. Any
+            // other path of the row takes the frame without them.
+            if (ruler.Keys is { HasLights: true } keys && links.For(ruler.Device) is { } rulingRow)
+            {
+                PeripheralLightMaps.FirstPerLight(rulingRow.Lighting, out var lightsPath);
+                if (lightsPath != path) ruler = ruler with { Keys = keys.WithoutLights };
+            }
             return true;
         }
 

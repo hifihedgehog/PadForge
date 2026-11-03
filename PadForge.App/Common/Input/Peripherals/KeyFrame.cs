@@ -48,6 +48,20 @@ namespace PadForge.Common.Input.Peripherals
         public bool IsEmpty => Keys.Count == 0 && Groups.Count == 0 && Lights.Count == 0 && Background == null
             && Under == null;
 
+        /// <summary>True when this frame or one beneath it colors a single
+        /// light by its address.</summary>
+        public bool HasLights => Lights.Count > 0 || Under is { HasLights: true };
+
+        private KeyFrame _withoutLights;
+
+        /// <summary>The frame with no single light's color at any depth: what
+        /// a device other than the one the lights were set on takes, since
+        /// an address is only its own device's. The frame itself when it has
+        /// none.</summary>
+        public KeyFrame WithoutLights
+            => !HasLights ? this
+                : _withoutLights ??= new KeyFrame(Keys, Groups, null, Background, Under?.WithoutLights);
+
         public KeyFrame(IReadOnlyDictionary<ushort, int> keys, IReadOnlyDictionary<string, int> groups,
             IReadOnlyDictionary<int, int> lights, int? background, KeyFrame under = null)
         {

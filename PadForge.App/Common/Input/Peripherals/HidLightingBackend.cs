@@ -472,6 +472,7 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     Asleep = unit.Asleep,
                     LitBesideWindows = unit.Model.LitBesideWindows,
+                    LiveThroughLampArray = unit.Model.LiveThroughLampArray,
                 };
             }
             Volatile.Write(ref _snapshot, new DirectBackendSnapshot(list));

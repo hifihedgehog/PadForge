@@ -227,6 +227,7 @@ namespace PadForge.Common.Input.Peripherals
             ClevoLighting.Instance,
             GigabyteAorusLaptopLighting.Instance,
             EvgaLighting.Instance,
+            A4TechLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

@@ -123,12 +123,6 @@ namespace PadForge.Common.Input.Peripherals
             /// tried again.</summary>
             public long LaterAt;
 
-            /// <summary>The picture keeps changing and goes out frame by
-            /// frame (<see cref="HidLightingModel.StreamMs"/>), and when the
-            /// last frame went.</summary>
-            public bool Animating;
-            public long StreamedAt;
-
             /// <summary>When the session reads the device's state
             /// again.</summary>
             public long CheckAt;
@@ -621,8 +615,6 @@ namespace PadForge.Common.Input.Peripherals
             unit.Pending = null;
             unit.PendingMap = null;
             unit.LaterAt = 0;
-            unit.Animating = false;
-            unit.StreamedAt = 0;
             unit.CheckAt = _ticks() + unit.Model.RecheckMs;
             // A session that finds colors of an earlier run's names their
             // undoing from its first moment.
@@ -656,67 +648,17 @@ namespace PadForge.Common.Input.Peripherals
             var colors = LightRenderer.Render(map, rgb, keys);
             if (unit.Shown != null && ReferenceEquals(unit.ShownMap, map) && LightRenderer.Same(colors, unit.Shown))
             {
-                // The device shows this picture already and keeps it: no
-                // frame went out since it was stored, so a stream that has
-                // not started yet is dropped.
+                // The device shows this picture already and keeps it.
                 unit.Pending = null;
                 unit.PendingMap = null;
-                unit.Animating = false;
                 return true;
             }
             if (unit.Pending == null || !ReferenceEquals(unit.PendingMap, map) || !LightRenderer.Same(colors, unit.Pending))
             {
-                // A picture that changes again before the one before it
-                // held, or soon after one was stored, is moving. A model that
-                // streams shows it frame by frame from here, and stores it
-                // only once it holds still.
-                if (model.StreamMs > 0 && !unit.Animating
-                    && ((unit.Pending != null && now - unit.PendingAt < model.HoldMs)
-                        || (unit.Shown != null && now - unit.SentAt < model.StreamHoldMs)))
-                {
-                    unit.Animating = true;
-                    PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} picture moving, streaming");
-                }
                 unit.Pending = colors;
                 unit.PendingMap = map;
                 unit.PendingAt = now;
             }
-
-            var session = unit.Session;
-            HidLightingPaint result;
-            if (unit.Animating && now - unit.PendingAt < model.StreamHoldMs)
-            {
-                long next = Math.Max(unit.StreamedAt + model.StreamMs, unit.LaterAt);
-                // The first frame after a stored picture keeps the repaint
-                // interval, since starting a stream may write the device's
-                // memory as a picture does.
-                if (unit.Shown != null) next = Math.Max(next, unit.SentAt + model.RepaintMs);
-                if (now < next)
-                {
-                    Soonest(ref due, next);
-                    return true;
-                }
-                try { result = session.Stream(unit.Io, _wait, map.Lights, colors); }
-                catch { result = HidLightingPaint.Failed; }
-                Track(unit);
-                if (result == HidLightingPaint.Failed) return false;
-                if (result == HidLightingPaint.Later)
-                {
-                    unit.LaterAt = _ticks() + Math.Max(1, session.LaterMs);
-                    Soonest(ref due, unit.LaterAt);
-                    return true;
-                }
-                // The stream took the place of the stored picture.
-                unit.Shown = null;
-                unit.ShownMap = null;
-                unit.StreamedAt = _ticks();
-                unit.LaterAt = 0;
-                Soonest(ref due, unit.StreamedAt + model.StreamMs);
-                return true;
-            }
-
-            // A stream reaches here once its picture has held for
-            // StreamHoldMs, longer than HoldMs.
             long at = unit.PendingAt + model.HoldMs;
             if (unit.Shown != null) at = Math.Max(at, unit.SentAt + model.RepaintMs);
             at = Math.Max(at, unit.LaterAt);
@@ -726,6 +668,8 @@ namespace PadForge.Common.Input.Peripherals
                 return true;
             }
 
+            var session = unit.Session;
+            HidLightingPaint result;
             try { result = session.Paint(unit.Io, _wait, map.Lights, colors); }
             catch { result = HidLightingPaint.Failed; }
             Track(unit);
@@ -736,10 +680,7 @@ namespace PadForge.Common.Input.Peripherals
                 Soonest(ref due, unit.LaterAt);
                 return true;
             }
-            bool first = unit.Shown == null && unit.StreamedAt == 0;
-            if (unit.Animating)
-                PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} picture still, stored");
-            unit.Animating = false;
+            bool first = unit.Shown == null;
             unit.Shown = colors;
             unit.ShownMap = map;
             unit.SentAt = _ticks();
@@ -787,8 +728,6 @@ namespace PadForge.Common.Input.Peripherals
             unit.Pending = null;
             unit.PendingMap = null;
             unit.LaterAt = 0;
-            unit.Animating = false;
-            unit.StreamedAt = 0;
             try { io?.Dispose(); } catch { }
         }
 

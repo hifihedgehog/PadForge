@@ -368,15 +368,15 @@ namespace PadForge.Tests
             Assert.Equal(string.Format(s.Pad_Lighting_RouteDirect, "ROG Falchion"), PeripheralRouteText.Lighting(keyboard, 0));
         }
 
-        /// <summary>A keyboard whose own controller shows changing colors
-        /// only roughly, the Lenovo Legion's, shows them smoothly through its
+        /// <summary>A keyboard whose own controller keeps still pictures
+        /// only, the Lenovo Legion's, shows changing colors through its
         /// LampArray interface. Its line says so: with both paths linked,
-        /// that changing colors move most smoothly with the BIOS option on,
-        /// and with Windows holding the interface, what Windows takes and how
-        /// to hand it back. A controller that shows them smoothly keeps the
-        /// plain line.</summary>
+        /// that changing colors need the BIOS option, and with Windows
+        /// holding the interface, what Windows takes and how to hand it
+        /// back. A controller that shows a stream keeps the plain
+        /// line.</summary>
         [Fact]
-        public void AControllerThatStreamsRoughly_SaysWhereChangingColorsMoveSmoothest()
+        public void AControllerThatKeepsStillPicturesOnly_SaysWhatChangingColorsNeed()
         {
             var s = Strings.Instance;
             var pc = PeripheralLinker.LocalMachineContainer;
@@ -389,7 +389,7 @@ namespace PadForge.Tests
 
             Link(new DeviceLinks { Device = A, Lighting = new[] { spectrum.Path, lamp.Path } });
             PeripheralOutputs.Direct = Found(spectrum, lamp);
-            Assert.Equal(string.Format(s.Pad_Lighting_RouteDirectSmoothestInBios, "ITE Device(8258)"),
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteDirectChangingNeedsBios, "ITE Device(8258)"),
                 PeripheralRouteText.Lighting(keyboard, 0));
             Assert.Null(PeripheralRouteText.Lighting(keyboard, 0, lightsHere: false));
 
@@ -404,8 +404,7 @@ namespace PadForge.Tests
             PeripheralOutputs.Direct = Found(spectrum, lamp with { Asleep = true });
             Assert.Equal(string.Format(s.Pad_Lighting_RouteDirect, "ITE Device(8258)"), PeripheralRouteText.Lighting(keyboard, 0));
 
-            // A controller that shows changing colors smoothly reads as any
-            // unit does.
+            // A controller that shows a stream reads as any unit does.
             var streams = spectrum with { LiveThroughLampArray = false };
             Link(new DeviceLinks { Device = A, Lighting = new[] { streams.Path, lamp.Path } });
             PeripheralOutputs.Direct = Found(streams, lamp);

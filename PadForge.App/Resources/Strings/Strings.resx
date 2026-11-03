@@ -998,7 +998,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>Colors go straight to {0}.</value></data>
   <data name="Pad_Lighting_RouteDirectPower" xml:space="preserve"><value>Colors go straight to {0}. It does not dim its lights by itself while it is lit.</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Colors go straight to {0}. Its on-board memory mode is off while it is lit.</value></data>
-  <data name="Pad_Lighting_RouteDirectSmoothestInBios" xml:space="preserve"><value>Colors go straight to {0}. Changing colors, such as a color cycle or colors that follow sound, move most smoothly with Dynamic Lighting turned on in the laptop's BIOS.</value></data>
+  <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Colors go straight to {0}. Changing colors, such as a color cycle or colors that follow sound, need Dynamic Lighting turned on in the laptop's BIOS. Without it, the keys keep the last steady colors.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Colors go straight to {0}. If Dynamic Lighting is on in the laptop's BIOS, Windows Dynamic Lighting lights the keys instead. Turn Windows Dynamic Lighting off for this keyboard in Windows Settings and PadForge lights them, changing colors included.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>This device has not answered yet. Its colors show once it wakes up.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Colors go through {0}.</value></data>

@@ -358,9 +358,9 @@ namespace PadForge.Common.Input.Peripherals
         /// of the same device (<see cref="HidLightingModel.LitBesideWindows"/>).</summary>
         public bool LitBesideWindows { get; init; }
 
-        /// <summary>The device's own controller shows colors that change only
-        /// roughly, and a LampArray interface of the same device carries them
-        /// as they come (<see cref="HidLightingModel.LiveThroughLampArray"/>).</summary>
+        /// <summary>The device's own controller keeps still pictures only,
+        /// and a LampArray interface of the same device carries the colors
+        /// that change (<see cref="HidLightingModel.LiveThroughLampArray"/>).</summary>
         public bool LiveThroughLampArray { get; init; }
 
         /// <summary>The highest claim level the unit offers: 0 colors
@@ -723,9 +723,9 @@ namespace PadForge.Common.Input.Peripherals
             /// LampArray interface (<see cref="DirectUnit.LitBesideWindows"/>).</summary>
             public bool BesideWindows { get; init; }
 
-            /// <summary>A native unit whose controller shows changing colors
-            /// only roughly, so a LampArray unit of the device lights the row
-            /// beside it (<see cref="DirectUnit.LiveThroughLampArray"/>).</summary>
+            /// <summary>A native unit whose controller keeps still pictures
+            /// only, so a LampArray unit of the device lights the row beside
+            /// it (<see cref="DirectUnit.LiveThroughLampArray"/>).</summary>
             public bool LiveThroughLampArray { get; init; }
         }
 
@@ -774,22 +774,21 @@ namespace PadForge.Common.Input.Peripherals
         /// controller (<see cref="LenovoLegionLighting"/>). Step 4 then
         /// lights it.</para>
         ///
-        /// <para>3. The device's own controller shows changing colors only
-        /// roughly (<see cref="Candidate.LiveThroughLampArray"/>), and the
-        /// device has a LampArray unit Windows does not light: both. A Lenovo
-        /// Legion Gen 10 keyboard stores each still picture in a lighting
-        /// profile and streams a moving one through its Aurora Sync effect,
-        /// less evenly than its LampArray interface shows it
-        /// (<see cref="LenovoLegionLighting"/>). With Dynamic Lighting on in
-        /// its BIOS, that interface shows every frame, and while a host holds
-        /// it "No source other than the Host can modify Lamp state" (HID
-        /// Usage Tables 1.6, 26.10.1), so the controller's pictures and
-        /// stream stay out of sight. With Dynamic Lighting off, the interface
-        /// takes no colors and the controller's show. Nothing the keyboard
-        /// reports tells the two apart, so both carry the row's colors, and
-        /// each shows them where the firmware lets it. OpenRGB drives both as
-        /// well: its LampArray detector takes every collection on page 0x59,
-        /// usage 0x01, with no vendor left out
+        /// <para>3. The device's own controller keeps still pictures only
+        /// (<see cref="Candidate.LiveThroughLampArray"/>), and the device
+        /// has a LampArray unit Windows does not light: both. A Lenovo
+        /// Legion Gen 10 keyboard stores each picture in a lighting profile
+        /// and shows no stream of them (<see cref="LenovoLegionLighting"/>).
+        /// With Dynamic Lighting on in its BIOS, its LampArray interface
+        /// shows every frame, and while a host holds that interface "No
+        /// source other than the Host can modify Lamp state" (HID Usage
+        /// Tables 1.6, 26.10.1), so the stored picture stays out of sight.
+        /// With Dynamic Lighting off, the interface takes no colors and the
+        /// stored picture shows. Nothing the keyboard reports tells the two
+        /// apart, so both carry the row's colors, and each shows them where
+        /// the firmware lets it. OpenRGB drives both as well: its LampArray
+        /// detector takes every collection on page 0x59, usage 0x01, with
+        /// no vendor left out
         /// (Controllers/HIDLampArrayController/HIDLampArrayControllerDetect.cpp:50).
         /// The LampArray units ride with the device's own unit and are
         /// never linked without it.</para>

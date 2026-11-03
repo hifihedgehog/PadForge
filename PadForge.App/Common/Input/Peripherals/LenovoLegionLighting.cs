@@ -15,32 +15,28 @@ namespace PadForge.Common.Input.Peripherals
     /// collection is 048D:C197 COL02, usage page 0xFF89 and usage 0x07, with
     /// 960-byte feature reports.
     ///
-    /// <para>A picture that holds still is stored in the keyboard's active
-    /// lighting profile, as OpenRGB's Static mode stores it: one
-    /// SAVE_PROFILE frame with a static group for each color
-    /// (setLedsByGroup, and GetLedGroups in
-    /// RGBController_Lenovo_Gen7_8.cpp:657-806). The keyboard then shows it
-    /// on its own and keeps it. The Gen 10 tools that color keys one by one
-    /// write static groups into the profile as well: legion-spectrum-control,
-    /// built on a Legion Pro 7 16IAX10H (spectrum-ctl.py cmd_keys), and the
-    /// Toolkit's fork (SetProfileDescriptionAsync).</para>
-    ///
-    /// <para>A picture that keeps changing, a color cycle or colors that
-    /// follow sound, goes out frame by frame through Lenovo's Aurora Sync,
-    /// the effect that shows the frames a host sends
-    /// (<see cref="Session.Stream"/>). Frames alone lose to the profile's
-    /// own effect on Gen 10: OpenRGB's Direct mode frames showed for a
-    /// moment and gave way to the stored effect on the owner's Legion, sent
-    /// every five seconds, every 60 ms with D0 01 ahead of each frame, and
-    /// every 60 ms behind a single D0 01. With the Aurora Sync group stored
-    /// first, the frames changed the keys live on the owner's Legion, less
-    /// evenly than through the LampArray interface. Lenovo Legion Toolkit's
-    /// maintained fork hides its Aurora Sync on Gen 10 machines as
-    /// "unsupported on modern Legions" (commit fc8c4f41,
-    /// SpectrumKeyboardBacklightController.cs:211-214), and its maintainer
+    /// <para>The colors are stored in the keyboard's active lighting
+    /// profile, as OpenRGB's Static mode stores them: one SAVE_PROFILE frame
+    /// with a static group for each color (setLedsByGroup, and GetLedGroups
+    /// in RGBController_Lenovo_Gen7_8.cpp:657-806). The keyboard then shows
+    /// them on its own and keeps them. A stream of colors does not show well
+    /// on Gen 10. OpenRGB's Direct mode frames showed for a moment and gave
+    /// way to the stored effect on the owner's Legion, sent every five
+    /// seconds, every 60 ms with D0 01 ahead of each frame, and every 60 ms
+    /// behind a single D0 01. With the Aurora Sync group stored first
+    /// (<see cref="StreamHeader"/>), frames sent every 60 ms with D0 01 ahead
+    /// of each changed the keys, but the keys went dark for a moment at
+    /// every change (2026-11-03). Lenovo Legion Toolkit's maintained fork
+    /// hides its streamed Aurora Sync on Gen 10 machines as "unsupported on
+    /// modern Legions" (commit fc8c4f41,
+    /// SpectrumKeyboardBacklightController.cs:211-214). Its maintainer
     /// reports Lenovo moved that effect to Windows Dynamic Lighting
-    /// (LenovoLegionToolkit-Team issue 112), the smoother path where the BIOS
-    /// allows it (below).</para>
+    /// (LenovoLegionToolkit-Team issue 112), and on a Legion Pro 7 16IAX10H
+    /// its Aurora Sync left the keys dark or frozen (issue 335). The Gen 10
+    /// tools that color keys one by one write static groups into the
+    /// profile as well: legion-spectrum-control, built on a Legion Pro 7
+    /// 16IAX10H (spectrum-ctl.py cmd_keys), and the Toolkit's fork
+    /// (SetProfileDescriptionAsync).</para>
     ///
     /// <para>The profile is the keyboard's own memory, so PadForge puts back
     /// what it held. Before its first write a session reads the profile
@@ -60,6 +56,16 @@ namespace PadForge.Common.Input.Peripherals
     /// late: a read right after the request can return the answer before
     /// it.</para>
     ///
+    /// <para>A build of 2026-11-03 (6411cbdc) streamed through the Aurora
+    /// Sync group, and a run of it killed mid-stream leaves the group in the
+    /// profile with its backup on disk. The group reads as a picture of
+    /// PadForge's (<see cref="IsOwnPicture"/>), and putting the profile
+    /// back turns direct mode off first, as OpenRGB turns its Direct mode
+    /// off before it writes the next mode (<see cref="StopStream"/>). A
+    /// session that opens on the group puts the profile back before
+    /// anything else, so the keyboard shows its own lighting until a picture
+    /// of the session's holds.</para>
+    ///
     /// <para>A profile key that moves the keyboard to another profile is
     /// the user choosing its stored lighting. The session writes nothing
     /// until the keyboard is back on its profile, as OpenRGB adopts a
@@ -71,13 +77,12 @@ namespace PadForge.Common.Input.Peripherals
     /// it back and switches back, waiting the 100 ms after each switch that
     /// Lenovo Legion Toolkit waits (SetProfileAsync).</para>
     ///
-    /// <para>Every stored picture lands in the keyboard's memory, so a
-    /// changed picture is stored once it has held for 150 ms, the spacing of
+    /// <para>Every write lands in the keyboard's memory, so a changed
+    /// picture goes out once it has held for 150 ms, the spacing of
     /// legion-spectrum-control's live preview (spectrum-web.py previewHW),
-    /// and no sooner than 500 ms after the write before it. A stream costs
-    /// two such writes: the Aurora Sync group at its start, and the stored
-    /// picture at its end, once the picture has held still for 3 s. Its
-    /// frames go out as DIRECT_MODE reports, never as SAVE_PROFILE.</para>
+    /// and no sooner than 500 ms after the write before it. A picture that
+    /// never holds, a rainbow or a light that follows the sound, leaves the
+    /// keyboard on the last picture that did.</para>
     ///
     /// <para>Windows Dynamic Lighting. The same keyboards also offer a
     /// LampArray interface (048D:C193 on the owner's Legion), and an option
@@ -116,10 +121,8 @@ namespace PadForge.Common.Input.Peripherals
         internal const byte SaveProfile = 0xCB;
         internal const byte GetProfile = 0xCC;
 
-        /// <summary>SET_DIRECT_MODE and DIRECT_MODE, the frame of a stream
-        /// (LenovoUSBController_Gen7_8.h:33 and 26).</summary>
+        /// <summary>SET_DIRECT_MODE (LenovoUSBController_Gen7_8.h:33).</summary>
         internal const byte SetDirectMode = 0xD0;
-        internal const byte StreamFrameOp = 0xA1;
 
         /// <summary>The Legion 7 Gen 10 (LenovoDevices.h:40).</summary>
         internal const ushort Legion7Gen10 = 0xC197;
@@ -143,12 +146,12 @@ namespace PadForge.Common.Input.Peripherals
             0x06, 0x01, 0x0B, 0x02, 0x00, 0x03, 0x00, 0x04, 0x03, 0x05, 0x02, 0x06, 0x00,
         };
 
-        /// <summary>The header of the Aurora Sync group, the effect that
-        /// shows the frames a host sends: mode 0x0D, Lenovo Legion Toolkit's
-        /// LegionAuraSync (Native.cs:91) and OpenRGB's Direct mode
-        /// (RGBController_Lenovo_Gen7_8.h:29), the rest as
-        /// <see cref="StaticHeader"/>, since GetLedGroups fills both alike
-        /// (RGBController_Lenovo_Gen7_8.cpp:692-803).</summary>
+        /// <summary>The header of the Aurora Sync group the build of
+        /// 2026-11-03 stored to stream: mode 0x0D, Lenovo Legion Toolkit's
+        /// LegionAuraSync (LenovoLegionToolkit-Team Native.cs:91) and
+        /// OpenRGB's Direct mode (RGBController_Lenovo_Gen7_8.h:29), the
+        /// rest as <see cref="StaticHeader"/>, since GetLedGroups fills both
+        /// alike (RGBController_Lenovo_Gen7_8.cpp:692-803).</summary>
         internal static ReadOnlySpan<byte> StreamHeader => new byte[]
         {
             0x06, 0x01, 0x0D, 0x02, 0x00, 0x03, 0x00, 0x04, 0x03, 0x05, 0x02, 0x06, 0x00,
@@ -163,17 +166,6 @@ namespace PadForge.Common.Input.Peripherals
         /// every write in its memory and no reference streams this frame,
         /// so the bound is PadForge's.</summary>
         internal const int RepaintMs = 500;
-
-        /// <summary>How often a frame of a moving picture goes out: Lenovo
-        /// Legion Toolkit's Aurora Sync interval
-        /// (SpectrumKeyboardBacklightController.cs:28).</summary>
-        internal const int StreamMs = 60;
-
-        /// <summary>How long a streamed picture holds still before it is
-        /// stored and the stream ends. Each start and end of a stream is a
-        /// write into the keyboard's memory, so a pause shorter than this,
-        /// a gap in the music, costs no write. The bound is PadForge's.</summary>
-        internal const int StreamHoldMs = 3000;
 
         /// <summary>How often a read looks for the late answer to
         /// GET_PROFILE, and for how long. On the owner's keyboard the answer
@@ -238,8 +230,6 @@ namespace PadForge.Common.Input.Peripherals
                 LiveThroughLampArray = true,
                 HoldMs = HoldMs,
                 RepaintMs = RepaintMs,
-                StreamMs = StreamMs,
-                StreamHoldMs = StreamHoldMs,
                 RecheckMs = RecheckMs,
                 Begin = (io, wait) => Begin(io, wait, product, addresses),
                 Owed = () => KeyboardProfileBackups.Get(product) != null
@@ -418,6 +408,10 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>SWITCH_PROFILE (LenovoUSBController_Gen7_8.cpp:259-265).</summary>
         internal static byte[] ProfileSwitch(byte profile) => Frame(SwitchProfile, stackalloc byte[] { profile });
 
+        /// <summary>SET_DIRECT_MODE off for a profile, in the Gen 10 form
+        /// (setLedsDirectOff, LenovoUSBController_Gen7_8.cpp:151-166).</summary>
+        internal static byte[] StreamOff(byte profile) => Frame(SetDirectMode, stackalloc byte[] { 0x02, profile });
+
         /// <summary>GET_PROFILE for <paramref name="profile"/>, with the
         /// length OpenRGB gives it on Gen 10, the packet less its header
         /// (getProfileSettings, LenovoUSBController_Gen7_8.cpp:269-271).</summary>
@@ -451,24 +445,6 @@ namespace PadForge.Common.Input.Peripherals
         /// lights' addresses low byte first, and the payload length in bytes
         /// 2 and 3 (lines 122-125).</summary>
         internal static byte[] StaticFrame(byte profile, IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
-            => GroupsFrame(profile, StaticHeader, lights, Groups(lights, colors));
-
-        /// <summary>SAVE_PROFILE with one Aurora Sync group of every light,
-        /// in black, the group OpenRGB's Direct mode stores before its frames
-        /// on the Gen 7 and 8 controllers (DeviceUpdateMode,
-        /// RGBController_Lenovo_Gen7_8.cpp:507-515, and GetLedGroups,
-        /// 692-718). Without it the profile's own effect keeps drawing under
-        /// the frames: on the owner's Legion a stream of red pulsed against
-        /// the stored white.</summary>
-        internal static byte[] StreamGroupFrame(byte profile, IReadOnlyList<LightInfo> lights)
-        {
-            var all = new List<int>(lights.Count);
-            for (int n = 0; n < lights.Count; n++) all.Add(n);
-            return GroupsFrame(profile, StreamHeader, lights, new List<(int Color, List<int> Lights)> { (0, all) });
-        }
-
-        private static byte[] GroupsFrame(byte profile, ReadOnlySpan<byte> header, IReadOnlyList<LightInfo> lights,
-            List<(int Color, List<int> Lights)> groups)
         {
             var frame = new byte[PacketSize];
             int at = 0;
@@ -478,12 +454,13 @@ namespace PadForge.Common.Input.Peripherals
             frame[at++] = profile;
             frame[at++] = 0x01;
             frame[at++] = 0x01;
+            var groups = Groups(lights, colors);
             for (int g = 0; g < groups.Count; g++)
             {
                 var (color, members) = groups[g];
                 frame[at++] = (byte)(g + 1);
-                header.CopyTo(frame.AsSpan(at));
-                at += header.Length;
+                StaticHeader.CopyTo(frame.AsSpan(at));
+                at += StaticHeader.Length;
                 frame[at++] = 1;
                 frame[at++] = (byte)(color >> 16);
                 frame[at++] = (byte)(color >> 8);
@@ -498,32 +475,6 @@ namespace PadForge.Common.Input.Peripherals
             frame[2] = (byte)((at - 4) & 0xFF);
             frame[3] = (byte)((at - 4) >> 8);
             return frame;
-        }
-
-        /// <summary>SET_DIRECT_MODE on and off for a profile, in the Gen 10
-        /// form (setLedsDirectOn and setLedsDirectOff,
-        /// LenovoUSBController_Gen7_8.cpp:134-166).</summary>
-        internal static byte[] StreamOn(byte profile) => Frame(SetDirectMode, stackalloc byte[] { 0x01, profile });
-        internal static byte[] StreamOff(byte profile) => Frame(SetDirectMode, stackalloc byte[] { 0x02, profile });
-
-        /// <summary>One frame of a stream: each light's address, low byte
-        /// first, and its color, five bytes a light, black ones included
-        /// (the Gen 10 branch of setLedsDirect,
-        /// LenovoUSBController_Gen7_8.cpp:170-198).</summary>
-        internal static byte[] StreamFrame(IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
-        {
-            int count = Math.Min(Math.Min(lights?.Count ?? 0, colors?.Count ?? 0), (PacketSize - 4) / 5);
-            var payload = new byte[count * 5];
-            for (int n = 0; n < count; n++)
-            {
-                int color = colors[n];
-                payload[n * 5] = (byte)(lights[n].Address & 0xFF);
-                payload[n * 5 + 1] = (byte)(lights[n].Address >> 8);
-                payload[n * 5 + 2] = (byte)(color >> 16);
-                payload[n * 5 + 3] = (byte)(color >> 8);
-                payload[n * 5 + 4] = (byte)color;
-            }
-            return Frame(StreamFrameOp, payload);
         }
 
         /// <summary>The lights of each color, by their place in the map, the
@@ -671,12 +622,12 @@ namespace PadForge.Common.Input.Peripherals
                && bytes[at + 7] == 0x04 && bytes[at + 9] == 0x05 && bytes[at + 11] == 0x06;
 
         /// <summary>Whether <paramref name="contents"/> are a picture
-        /// <see cref="StaticFrame"/> or <see cref="StreamGroupFrame"/> wrote:
-        /// the payload length in the length bytes, then static or Aurora Sync
-        /// groups numbered from 1, one color each, over lights of the model,
-        /// none twice. OpenRGB's Static mode writes the same, so a profile it
-        /// wrote after a run of PadForge's ended without a hand-back reads as
-        /// PadForge's.</summary>
+        /// <see cref="StaticFrame"/> wrote, or the Aurora Sync group of the
+        /// build of 2026-11-03: the payload length in the length bytes, then
+        /// static or Aurora Sync groups numbered from 1, one color each, over
+        /// lights of the model, none twice. OpenRGB's Static mode writes the
+        /// same, so a profile it wrote after a run of PadForge's ended without
+        /// a hand-back reads as PadForge's.</summary>
         internal static bool IsOwnPicture(byte[] contents, byte profile, ISet<int> addresses)
         {
             if (contents == null || contents.Length < 5 || (contents[0] | contents[1] << 8) != contents.Length - 2
@@ -705,8 +656,7 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>Whether <paramref name="contents"/> are the Aurora Sync
-        /// group <see cref="StreamGroupFrame"/> wrote, so the keyboard may
-        /// still take frames for that profile.</summary>
+        /// group the build of 2026-11-03 stored to stream.</summary>
         internal static bool HoldsStream(byte[] contents, byte profile, ISet<int> addresses)
             => IsOwnPicture(contents, profile, addresses)
                && contents.AsSpan(6, StreamHeader.Length).SequenceEqual(StreamHeader);
@@ -775,9 +725,9 @@ namespace PadForge.Common.Input.Peripherals
             return now != null && (Same(now, contents) || !IsOwnPicture(now, profile, addresses));
         }
 
-        /// <summary>SET_DIRECT_MODE off for a profile that holds PadForge's
-        /// Aurora Sync group, ahead of the write that replaces the group, as
-        /// OpenRGB turns its Direct mode off before it writes the next mode
+        /// <summary>SET_DIRECT_MODE off for a profile that holds the Aurora
+        /// Sync group, ahead of the write that replaces the group, as OpenRGB
+        /// turns its Direct mode off before it writes the next mode
         /// (DeviceUpdateMode, RGBController_Lenovo_Gen7_8.cpp:499-505 and
         /// 525-528). True when the profile holds no such group or the frame
         /// went out.</summary>
@@ -819,7 +769,9 @@ namespace PadForge.Common.Input.Peripherals
         /// backup holds one profile at a time. A backup of this profile
         /// stands in for what the profile holds when that is a picture of
         /// PadForge's, and is dropped when another program wrote the profile
-        /// since.</summary>
+        /// since. The Aurora Sync group a killed run of the build of
+        /// 2026-11-03 left is settled at once, so no picture waits on
+        /// it.</summary>
         private static HidLightingSession Begin(IHidReportChannel io, Action<int> wait, string product,
             ISet<int> addresses)
         {
@@ -838,27 +790,35 @@ namespace PadForge.Common.Input.Peripherals
             var contents = ReadContents(io, wait, active);
             if (contents == null) return null;
             byte[] original = contents;
-            bool ours = false, streaming = false;
+            bool ours = false;
             if (backup is { } own)
             {
                 if (Same(contents, own.Contents))
                 {
                     original = own.Contents;
                 }
+                else if (HoldsStream(contents, active, addresses))
+                {
+                    if (KeyboardProfileBackups.Failures(product) >= RepairTries) return null;
+                    if (!Settle(io, wait, product, own, active, addresses))
+                    {
+                        KeyboardProfileBackups.NoteFailure(product);
+                        return null;
+                    }
+                    original = own.Contents;
+                }
                 else if (IsOwnPicture(contents, active, addresses))
                 {
-                    // An earlier run's picture, never handed back, or its
-                    // Aurora Sync group.
+                    // An earlier run's picture, never handed back.
                     original = own.Contents;
                     ours = true;
-                    streaming = HoldsStream(contents, active, addresses);
                 }
                 else
                 {
                     KeyboardProfileBackups.Drop(product);
                 }
             }
-            return new Session(product, addresses, active, original, ours, streaming);
+            return new Session(product, addresses, active, original, ours);
         }
 
         /// <summary>Settles a backup an earlier run left, with no claim on
@@ -887,23 +847,15 @@ namespace PadForge.Common.Input.Peripherals
             /// <summary>Another profile was active at the last read.</summary>
             private bool _away;
 
-            /// <summary>The profile holds PadForge's Aurora Sync group: a
-            /// stream wrote it (<see cref="Stream"/>), or an earlier run left
-            /// it.</summary>
-            private bool _streaming;
-
             private byte[][] _crash = Array.Empty<byte[]>();
-            private bool _crashStreams;
 
-            public Session(string product, ISet<int> addresses, byte profile, byte[] original, bool ours,
-                bool streaming)
+            public Session(string product, ISet<int> addresses, byte profile, byte[] original, bool ours)
             {
                 _product = product;
                 _addresses = addresses;
                 _profile = profile;
                 _original = original;
                 _ours = ours;
-                _streaming = streaming;
                 Track();
             }
 
@@ -923,60 +875,6 @@ namespace PadForge.Common.Input.Peripherals
             public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
             {
-                var ready = Ready(io, wait);
-                if (ready != HidLightingPaint.Sent) return ready;
-                // Marked first: a write that reports a failure may still
-                // have landed.
-                _ours = true;
-                Track();
-                return EndStream(io) && io.SetFeature(StaticFrame(_profile, lights, colors))
-                    ? HidLightingPaint.Sent
-                    : HidLightingPaint.Failed;
-            }
-
-            /// <summary>
-            /// One frame of a moving picture, as Lenovo Legion Toolkit's
-            /// maintained fork streams its Aurora Sync: once the profile holds
-            /// the Aurora Sync effect, the frames follow SET_DIRECT_MODE on
-            /// (StartAuroraIfNeededAsync and AuroraRefreshAsync,
-            /// SpectrumKeyboardBacklightController.cs:409-422 and 535-620).
-            /// The group is written once, before the first frame.
-            /// SET_DIRECT_MODE goes ahead of every frame, as OpenRGB sends it
-            /// to a Gen 10 controller:
-            /// "Gen10 may ignore A1 updates unless D0 is reasserted"
-            /// (RGBController_Lenovo_Gen7_8.cpp:535-549).
-            ///
-            /// <para>The active profile is read before every frame, as before
-            /// every picture, so no SET_DIRECT_MODE names a profile a profile
-            /// key has left: OpenRGB, Lenovo Legion Toolkit and
-            /// legion-spectrum-control leave unsaid what the keyboard does
-            /// with one that is not active. A group an earlier run left is not
-            /// written again.</para>
-            /// </summary>
-            public override HidLightingPaint Stream(IHidReportChannel io, Action<int> wait,
-                IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
-            {
-                var ready = Ready(io, wait);
-                if (ready != HidLightingPaint.Sent) return ready;
-                if (!_streaming)
-                {
-                    // Marked first, as for a picture: the group may have
-                    // landed whatever the write reports.
-                    _ours = true;
-                    _streaming = true;
-                    Track();
-                    if (!io.SetFeature(StreamGroupFrame(_profile, lights))) return HidLightingPaint.Failed;
-                }
-                return io.SetFeature(StreamOn(_profile)) && io.SetFeature(StreamFrame(lights, colors))
-                    ? HidLightingPaint.Sent
-                    : HidLightingPaint.Failed;
-            }
-
-            /// <summary>Whether a write may go out now: the backup is in the
-            /// settings file, and the session's profile is the active one.
-            /// <see cref="HidLightingPaint.Sent"/> when it may.</summary>
-            private HidLightingPaint Ready(IHidReportChannel io, Action<int> wait)
-            {
                 // The backup reaches the settings file before the first
                 // write it guards.
                 if (KeyboardProfileBackups.Get(_product) is not { } held || held.Profile != _profile
@@ -995,23 +893,13 @@ namespace PadForge.Common.Input.Peripherals
                     LaterMs = AwayMs;
                     return HidLightingPaint.Later;
                 }
-                return HidLightingPaint.Sent;
-            }
-
-            /// <summary>SET_DIRECT_MODE off ahead of the picture that replaces
-            /// the Aurora Sync group, as OpenRGB leaves its Direct mode
-            /// (RGBController_Lenovo_Gen7_8.cpp:499-505) and Lenovo Legion
-            /// Toolkit's maintained fork its Aurora Sync
-            /// (SpectrumKeyboardBacklightController.cs:627-634).
-            /// True when the profile holds no such group or the frame went
-            /// out.</summary>
-            private bool EndStream(IHidReportChannel io)
-            {
-                if (!_streaming) return true;
-                if (!io.SetFeature(StreamOff(_profile))) return false;
-                _streaming = false;
+                // Marked first: a write that reports a failure may still
+                // have landed.
+                _ours = true;
                 Track();
-                return true;
+                return io.SetFeature(StaticFrame(_profile, lights, colors))
+                    ? HidLightingPaint.Sent
+                    : HidLightingPaint.Failed;
             }
 
             /// <summary>Reads which profile is active while the profile may
@@ -1038,13 +926,10 @@ namespace PadForge.Common.Input.Peripherals
                     return true;
                 }
                 if (ReadActiveProfile(io, wait) is not byte active) return false;
-                // Settle turns the stream off when it finds the group, on the
-                // session's profile.
                 if (!Settle(io, wait, _product, new KeyboardProfileBackups.Backup(_profile, _original), active,
                         _addresses))
                     return false;
                 _ours = false;
-                _streaming = false;
                 Track();
                 return true;
             }
@@ -1052,11 +937,8 @@ namespace PadForge.Common.Input.Peripherals
             private void Track()
             {
                 bool owed = _ours && !_away;
-                if (owed == _crash.Length > 0 && (!owed || _crashStreams == _streaming)) return;
-                _crashStreams = _streaming;
-                _crash = !owed ? Array.Empty<byte[]>()
-                    : _streaming ? new[] { StreamOff(_profile), RestoreFrame(_original) }
-                    : new[] { RestoreFrame(_original) };
+                if (owed == _crash.Length > 0) return;
+                _crash = owed ? new[] { RestoreFrame(_original) } : Array.Empty<byte[]>();
             }
         }
     }

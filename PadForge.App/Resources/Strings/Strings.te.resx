@@ -998,7 +998,7 @@
   <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>రంగులు నేరుగా {0}కు వెళ్తాయి.</value></data>
   <data name="Pad_Lighting_RouteDirectPower" xml:space="preserve"><value>రంగులు నేరుగా {0}కు వెళ్తాయి. ఇది వెలుగుతున్నప్పుడు తన లైట్లను తానే మసకబార్చదు.</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>రంగులు నేరుగా {0}కు వెళ్తాయి. ఇది వెలుగుతున్నప్పుడు దాని ఆన్-బోర్డ్ మెమరీ మోడ్ ఆఫ్లో ఉంటుంది.</value></data>
-  <data name="Pad_Lighting_RouteDirectSmoothestInBios" xml:space="preserve"><value>రంగులు నేరుగా {0}కు వెళ్తాయి. మారే రంగులు, అంటే కలర్ సైకిల్ లేదా ధ్వనిని అనుసరించే రంగులు, ల్యాప్టాప్ BIOSలో Dynamic Lighting ఆన్‌లో ఉంటే అత్యంత సాఫీగా కదులుతాయి.</value></data>
+  <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>రంగులు నేరుగా {0}కు వెళ్తాయి. రంగుల చక్రం లేదా ధ్వనిని అనుసరించే రంగుల వంటి మారే రంగులకు ల్యాప్టాప్ BIOSలో Dynamic Lighting ఆన్ చేసి ఉండాలి. అది లేకపోతే కీలు చివరి స్థిరమైన రంగులనే ఉంచుకుంటాయి.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>రంగులు నేరుగా {0}కు వెళ్తాయి. ల్యాప్టాప్ BIOSలో Dynamic Lighting ఆన్‌లో ఉంటే, కీలను Windows డైనమిక్ లైటింగ్ వెలిగిస్తుంది. Windows సెట్టింగులలో ఈ కీబోర్డ్ కోసం Windows డైనమిక్ లైటింగ్ ఆఫ్ చేయండి, అప్పుడు PadForge వాటిని వెలిగిస్తుంది, మారే రంగులతో సహా.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>ఈ పరికరం ఇంకా స్పందించలేదు. అది మేల్కొన్నాక దాని రంగులు కనిపిస్తాయి.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>రంగులు {0} ద్వారా వెళ్తాయి.</value></data>

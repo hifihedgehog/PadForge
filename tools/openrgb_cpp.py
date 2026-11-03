@@ -13,7 +13,7 @@ import re
 import subprocess
 
 _TOKEN = re.compile(r"""
-    (?P<ws>\s+)
+    (?P<ws>\s+|\\(?=\s*$))
   | (?P<str>"(?:\\.|[^"\\\n])*")
   | (?P<chr>'(?:\\.|[^'\\\n])')
   | (?P<num>0[xX][0-9A-Fa-f]+[uUlL]*|\d+[uUlL]*)
@@ -92,12 +92,19 @@ class Source:
 
     def __init__(self, root, rel):
         self.rel = rel.replace("\\", "/")
-        with open(root + "/" + self.rel, encoding="utf-8") as f:
+        with open(root + "/" + self.rel, encoding="utf-8-sig") as f:
             self.raw = f.read()
         text = strip_comments(self.raw)
         self.defines = {}
         self.macros = {}
+        # The files #include "..." names, in order, from live lines.
+        self.includes = []
         lines = text.split("\n")
+        # Conditional blocks are kept or dropped as a Windows build with
+        # MSVC compiles them: each entry is (this branch is live, a branch
+        # of this block was taken, the enclosing block is live).
+        stack = []
+        live = True
         i = 0
         while i < len(lines):
             if lines[i].lstrip().startswith("#"):
@@ -106,10 +113,39 @@ class Source:
                 while directive.endswith("\\"):
                     i += 1
                     directive = directive[:-1] + " " + lines[i]
-                self._directive(directive.strip())
+                directive = directive.strip()
+                m = re.match(r"#\s*(\w+)\s*(.*)$", directive)
+                word, rest = (m.group(1), m.group(2)) if m else ("", "")
+                if word in ("if", "ifdef", "ifndef"):
+                    if word == "ifdef":
+                        cond = self._defined(rest.strip())
+                    elif word == "ifndef":
+                        cond = not self._defined(rest.strip())
+                    else:
+                        cond = self._condition(rest)
+                    stack.append((live and cond, cond, live))
+                    live = live and cond
+                elif word == "elif":
+                    _, taken, outer = stack.pop()
+                    cond = not taken and self._condition(rest)
+                    stack.append((outer and cond, taken or cond, outer))
+                    live = outer and cond
+                elif word == "else":
+                    _, taken, outer = stack.pop()
+                    stack.append((outer and not taken, True, outer))
+                    live = outer and not taken
+                elif word == "endif":
+                    _, _, outer = stack.pop()
+                    live = outer
+                elif live:
+                    self._directive(directive)
                 for k in range(start, i + 1):
                     lines[k] = ""
+            elif not live:
+                lines[i] = ""
             i += 1
+        if stack:
+            raise CppError("%s: unclosed #if" % self.rel)
         self.tokens = []
         for number, line in enumerate(lines, 1):
             pos = 0
@@ -122,12 +158,47 @@ class Source:
                 if kind != "ws":
                     self.tokens.append(Token(kind, re.sub(r"\s+", "", m.group()) if kind == "id" else m.group(), number))
 
+    # What OpenRGB's 64-bit Windows build defines: MSVC's own names and
+    # the build's DEFINES (OpenRGB.pro:416-422).
+    PLATFORM_DEFINES = {"_WIN32", "WIN32", "_WIN64", "_MSC_VER", "_M_X64", "_MBCS", "_CRT_SECURE_NO_WARNINGS",
+                        "_WINSOCK_DEPRECATED_NO_WARNINGS", "WIN32_LEAN_AND_MEAN", "HID_HOTPLUG_ENABLED"}
+
+    def _defined(self, name):
+        return name in self.PLATFORM_DEFINES or name in self.defines or name in self.macros
+
+    def _condition(self, text):
+        """The value of an #if expression made of defined(), names, numbers
+        and ! && || ( ). A name that is not defined counts as 0."""
+        text = re.sub(r"defined\s*\(\s*(\w+)\s*\)|defined\s+(\w+)",
+                      lambda m: "1" if self._defined(m.group(1) or m.group(2)) else "0", text)
+        out = []
+        for tok in re.findall(r"\|\||&&|!|\(|\)|\w+|\S", text):
+            if tok == "||":
+                out.append(" or ")
+            elif tok == "&&":
+                out.append(" and ")
+            elif tok == "!":
+                out.append(" not ")
+            elif tok in "()":
+                out.append(tok)
+            elif re.match(r"^\d+$", tok):
+                out.append(tok)
+            elif re.match(r"^\w+$", tok):
+                out.append("1" if tok in self.PLATFORM_DEFINES else "0")
+            else:
+                raise CppError("%s: cannot read #if %s" % (self.rel, text))
+        return bool(eval("".join(out), {"__builtins__": {}}))
+
     def _directive(self, line):
+        m = re.match(r'#\s*include\s*"([^"]+)"', line)
+        if m:
+            self.includes.append(m.group(1))
+            return
         m = re.match(r"#\s*define\s+(\w+)\(([^)]*)\)\s*(.*)$", line)
         if m:
             self.macros[m.group(1)] = ([a.strip() for a in m.group(2).split(",")], m.group(3))
             return
-        m = re.match(r"#\s*define\s+(\w+)\s+(.*)$", line)
+        m = re.match(r"#\s*define\s+(\w+)\s*(.*)$", line)
         if m:
             self.defines[m.group(1)] = m.group(2).strip()
 
@@ -409,6 +480,53 @@ def enum_values(source, enum_name, constants=None):
         values[name] = nxt
         nxt += 1
     return values
+
+
+def enum_blocks(source):
+    """Every enum of a file, in order: a list of (name, value tokens or
+    None) per enum, for enum, enum class, typedef enum and unnamed enums."""
+    toks = source.tokens
+    out = []
+    for i, t in enumerate(toks):
+        if t.text != "enum" or t.kind != "id":
+            continue
+        j = i + 1
+        while j < len(toks) and toks[j].text not in ("{", ";", "(", ")", ","):
+            j += 1
+        if j >= len(toks) or toks[j].text != "{":
+            continue
+        node, _ = parse_braces(toks, j)
+        members = []
+        for element in node:
+            if not isinstance(element, Expr):
+                raise CppError("%s:%d: enum member in braces" % (source.rel, node.line))
+            name = element[0].text
+            if len(element) > 1:
+                if element[1].text != "=":
+                    raise CppError("%s:%d: enum member %r" % (source.rel, element.line, name))
+                value = Expr(element[2:])
+                value.line = element.line
+            else:
+                value = None
+            members.append((name, value))
+        out.append(members)
+    return out
+
+
+def add_enum_constants(evaluator, source):
+    """Adds the constants of every enum in source to evaluator, each
+    worked out the way the compiler does. A member whose value cannot be
+    worked out here, and the members after it, are left out."""
+    for members in enum_blocks(source):
+        nxt = 0
+        for name, value in members:
+            if value is not None:
+                try:
+                    nxt = evaluator.integer(value)
+                except CppError:
+                    break
+            evaluator.constants[name] = nxt
+            nxt += 1
 
 
 def git_head(root):

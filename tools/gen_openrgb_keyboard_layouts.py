@@ -1078,7 +1078,7 @@ def write_harness(commit, rd, recipes):
                     out.append(body.rstrip() + ";")
                     break
     w("")
-    w("// Logitech's tables are static const arrays of keyboard_led; the")
+    w("// Logitech's tables are static const arrays of keyboard_led. The")
     w("// controller builds a key_set from pointer and count (lines 471 and 1979).")
     w("")
     w("struct named { const void* p; const char* n; };")

@@ -551,15 +551,17 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
     {
         private static Dictionary<string, KeyboardLayoutRecipe> s_byName;
 
-        /// <summary>The recipe OpenRGB calls <paramref name="name"/>, or null.</summary>
+        /// <summary>The recipe OpenRGB calls <paramref name="name"/>, or null.
+        /// Safe from any thread: two first callers may each build the index,
+        /// and each publishes a whole one.</summary>
         public static KeyboardLayoutRecipe Recipe(string name)
         {
-            var byName = s_byName;
+            var byName = System.Threading.Volatile.Read(ref s_byName);
             if (byName == null)
             {
                 byName = new Dictionary<string, KeyboardLayoutRecipe>(StringComparer.Ordinal);
                 foreach (var recipe in Recipes) byName[recipe.Name] = recipe;
-                s_byName = byName;
+                System.Threading.Volatile.Write(ref s_byName, byName);
             }
             return name != null && byName.TryGetValue(name, out var found) ? found : null;
         }

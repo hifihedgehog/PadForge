@@ -218,6 +218,8 @@ namespace PadForge.Common.Input.Peripherals
             DygmaRaiseLighting.Instance,
             CoolerMasterLighting.Instance,
             HyperXKeyboardLighting.Instance,
+            CougarLighting.Instance,
+            DuckyKeyboardLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

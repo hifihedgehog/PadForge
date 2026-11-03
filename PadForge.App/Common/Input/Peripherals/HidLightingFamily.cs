@@ -227,6 +227,7 @@ namespace PadForge.Common.Input.Peripherals
             SinowealthMouseLighting.Instance,
             QmkLighting.Instance,
             ValkyrieKeyboardLighting.Instance,
+            GaiZhongGaiLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

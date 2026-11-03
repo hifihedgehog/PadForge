@@ -916,6 +916,10 @@ namespace PadForge.Common.Input.Peripherals
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"PERIPHERAL HID++ '{unit.Name}' refused the Host streaming effect, painting on");
                         break;
+                    case Outcome.Refused when step.Kind == HidppStepKind.Fill:
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"PERIPHERAL HID++ '{unit.Name}' refused a key type fill, painting on");
+                        break;
                     case Outcome.Refused:
                         var fallback = light.Plan.FallsBackOn(step.Kind) ? light.Plan.WithoutPerKey : null;
                         if (fallback == null)

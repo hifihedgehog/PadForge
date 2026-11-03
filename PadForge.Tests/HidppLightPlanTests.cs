@@ -708,27 +708,30 @@ namespace PadForge.Tests
             {
                 Same(plan.Paint(0x00FF00, full),
                     "11 FF 0D 3C 00 01 00 FF 00 02", "11 FF 0D 3C 01 01 00 FF 00 02",
-                    "11 FF 0C 4C 00 40 00 FF", "11 FF 0C 4C 00 02 01 FF",
+                    "fill 11 FF 0C 4C 00 40 00 FF", "fill 11 FF 0C 4C 00 02 01 FF",
                     "commit 11 FF 0C 5C");
                 Same(plan.Paint(0xFF0000, full),
                     "11 FF 0D 3C 00 01 FF 00 00 02", "11 FF 0D 3C 01 01 FF 00 00 02",
-                    "11 FF 0C 4C 00 40 FF", "11 FF 0C 4C 00 02 FF",
+                    "fill 11 FF 0C 4C 00 40 FF", "fill 11 FF 0C 4C 00 02 FF",
                     "commit 11 FF 0C 5C");
                 Same(plan.Paint(0x000000, full),
                     "11 FF 0D 3C 00 01", "11 FF 0D 3C 01 01",
-                    "11 FF 0C 4C 00 40", "11 FF 0C 4C 00 02",
-                    "11 FF 0C 4C 00 01", "11 FF 0C 4C 00 04", "11 FF 0C 4C 00 10",
+                    "fill 11 FF 0C 4C 00 40", "fill 11 FF 0C 4C 00 02",
+                    "fill 11 FF 0C 4C 00 01", "fill 11 FF 0C 4C 00 04", "fill 11 FF 0C 4C 00 10",
                     "commit 11 FF 0C 5C");
             }
             Same(plan.KeepAlive(0, 0x00FF00, painted: true),
                 "11 FF 0D 8C 01 01",
                 "11 FF 0D 3C 00 01 00 FF 00 02", "11 FF 0D 3C 01 01 00 FF 00 02",
-                "11 FF 0C 4C 00 40 00 FF", "11 FF 0C 4C 00 02 01 FF",
+                "fill 11 FF 0C 4C 00 40 00 FF", "fill 11 FF 0C 4C 00 02 01 FF",
                 "commit 11 FF 0C 5C");
             Same(plan.HandBack(0, 0),
-                "11 FF 0C 4C 00 40 FF FF FF", "11 FF 0C 4C 00 02 FF FF FF",
+                "fill 11 FF 0C 4C 00 40 FF FF FF", "fill 11 FF 0C 4C 00 02 FF FF FF",
                 "commit 11 FF 0C 5C",
                 "11 FF 0D 8C");
+            // A refused fill keeps the board on its keys: only a refused key
+            // frame sends it to its zones.
+            Assert.False(plan.FallsBackOn(HidppStepKind.Fill));
         }
 
         /// <summary>The cluster plan's claim at each level. Level 0 is
@@ -2738,10 +2741,10 @@ namespace PadForge.Tests
         }
 
         /// <summary>The G810 class in the worker: the 0x8070 claim, the two
-        /// zones, the two fills and the awaited commit, all in one pass and
-        /// back to back. Black adds the three fills. The hand-back leaves
-        /// the indicators and the media keys white, commits, and releases,
-        /// and the crash path holds those four frames.</summary>
+        /// zones, the two awaited fills and the awaited commit, all in one
+        /// pass. Black adds the three fills. The hand-back leaves the
+        /// indicators and the media keys white, commits, and releases, and
+        /// the crash path holds those four frames.</summary>
         [Fact]
         public void ABoardWithPerKeyFills_IsPaintedInOnePass_AndHandedBackWithItsIndicatorsWhite()
         {
@@ -2750,7 +2753,7 @@ namespace PadForge.Tests
             string[] green =
             {
                 "write 11 FF 0D 3C 00 01 00 FF 00 02", "write 11 FF 0D 3C 01 01 00 FF 00 02",
-                "write 11 FF 0C 4C 00 40 00 FF", "write 11 FF 0C 4C 00 02 01 FF", "ask 11 FF 0C 5C",
+                "ask 11 FF 0C 4C 00 40 00 FF", "ask 11 FF 0C 4C 00 02 01 FF", "ask 11 FF 0C 5C",
             };
             bench.Link();
             bench.Light(0x00FF00);
@@ -2765,7 +2768,7 @@ namespace PadForge.Tests
             Assert.Equal(new[]
             {
                 "write 11 FF 0D 3C 00 01 FF 00 00 02", "write 11 FF 0D 3C 01 01 FF 00 00 02",
-                "write 11 FF 0C 4C 00 40 FF", "write 11 FF 0C 4C 00 02 FF", "ask 11 FF 0C 5C",
+                "ask 11 FF 0C 4C 00 40 FF", "ask 11 FF 0C 4C 00 02 FF", "ask 11 FF 0C 5C",
             }, bench.Lit());
 
             bench.Clear();
@@ -2774,8 +2777,8 @@ namespace PadForge.Tests
             Assert.Equal(new[]
             {
                 "write 11 FF 0D 3C 00 01", "write 11 FF 0D 3C 01 01",
-                "write 11 FF 0C 4C 00 40", "write 11 FF 0C 4C 00 02",
-                "write 11 FF 0C 4C 00 01", "write 11 FF 0C 4C 00 04", "write 11 FF 0C 4C 00 10",
+                "ask 11 FF 0C 4C 00 40", "ask 11 FF 0C 4C 00 02",
+                "ask 11 FF 0C 4C 00 01", "ask 11 FF 0C 4C 00 04", "ask 11 FF 0C 4C 00 10",
                 "ask 11 FF 0C 5C",
             }, bench.Lit());
 
@@ -2784,9 +2787,52 @@ namespace PadForge.Tests
             bench.Passes();
             Assert.Equal(new[]
             {
-                "write 11 FF 0C 4C 00 40 FF FF FF", "write 11 FF 0C 4C 00 02 FF FF FF", "ask 11 FF 0C 5C", "write 11 FF 0D 8C",
+                "ask 11 FF 0C 4C 00 40 FF FF FF", "ask 11 FF 0C 4C 00 02 FF FF FF", "ask 11 FF 0C 5C", "write 11 FF 0D 8C",
             }, bench.Lit());
             Assert.Empty(bench.Record());
+        }
+
+        /// <summary>A board that refuses one fill, as one with no key of that
+        /// type may: the paint goes on to the commit, the color counts as
+        /// shown, and no one-color fallback paint follows.</summary>
+        [Fact]
+        public void ARefusedFill_LeavesThePaintGoing()
+        {
+            var device = HidppLightDevice.G810();
+            device.Refuse = (f, fn, p) => f == 0x0C && fn == 4 && p.Length > 1 && p[1] == 0x04 ? (byte)0x02 : null;
+            using var bench = new Bench(device, Board);
+            bench.Link();
+            bench.Light(0x000000);
+            bench.Passes();
+            Assert.Equal(new[]
+            {
+                "write 11 FF 0D 8C 01 01", "write 11 FF 0D 3C 00 01", "write 11 FF 0D 3C 01 01",
+                "ask 11 FF 0C 4C 00 40", "ask 11 FF 0C 4C 00 02",
+                "ask 11 FF 0C 4C 00 01", "ask 11 FF 0C 4C 00 04", "ask 11 FF 0C 4C 00 10",
+                "ask 11 FF 0C 5C",
+            }, bench.Lit());
+            bench.Clear();
+            bench.Tick(HidppBackend.PaintMs);
+            Assert.Empty(bench.Lit());
+        }
+
+        /// <summary>A fill that goes unanswered ends the paint before the
+        /// commit, so the color is not taken as shown and the next pass
+        /// paints it again, up to the failed-paint limit.</summary>
+        [Fact]
+        public void AnUnansweredFill_EndsThePaintBeforeTheCommit()
+        {
+            var device = HidppLightDevice.G810();
+            device.Silent = (f, fn, p) => f == 0x0C && fn == 4 && p.Length > 1 && p[1] == 0x02;
+            using var bench = new Bench(device, Board);
+            bench.Link();
+            bench.Light(0x00FF00);
+            for (int i = 0; i < 8; i++) bench.Passes();
+            var lit = bench.Lit();
+            Assert.Single(lit, l => l == "write 11 FF 0D 8C 01 01");
+            Assert.DoesNotContain("ask 11 FF 0C 5C", lit);
+            Assert.Equal(HidppLightPlan.FailedPaintLimit, lit.Count(l => l == "ask 11 FF 0C 4C 00 02 01 FF"));
+            Assert.Equal(1 + 4 * HidppLightPlan.FailedPaintLimit, lit.Length);
         }
 
         /// <summary>A commit that is not answered: the color is not taken
@@ -3033,8 +3079,8 @@ namespace PadForge.Tests
             Assert.Equal(new[]
             {
                 "write 11 FF 0D 8C 01 01", "write 11 FF 0D 3C 00 01", "write 11 FF 0D 3C 01 01",
-                "write 11 FF 0C 4C 00 01 11 22 33", "write 11 FF 0C 4C 00 02 11 22 33",
-                "write 11 FF 0C 4C 00 10 11 22 33", "write 11 FF 0C 4C 00 40 11 22 33",
+                "ask 11 FF 0C 4C 00 01 11 22 33", "ask 11 FF 0C 4C 00 02 11 22 33",
+                "ask 11 FF 0C 4C 00 10 11 22 33", "ask 11 FF 0C 4C 00 40 11 22 33",
                 "ask 12 FF 0C 3C 00 01 00 01 04 FF", "ask 11 FF 0C 5C",
             }, bench.After(9));
 

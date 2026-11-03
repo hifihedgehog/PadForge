@@ -26,7 +26,7 @@ namespace PadForge.Common.Input.Peripherals
     /// Global\RazerLinkReadWriteGuardMutex, which OpenRGB creates and holds
     /// around every report it sends (OpenRGB
     /// Controllers/RazerController/RazerDeviceGuard.cpp:21-39 and 61,
-    /// RazerController.cpp:2143-2149) and uncoil around each request and
+    /// RazerController.cpp:2095-2096 and 2133) and uncoil around each request and
     /// its reply (uncoil crates/uncoil-hid/src/guard.rs:24). PadForge takes
     /// it around each request and its reply too, so neither tool reads a
     /// reply to PadForge's request, nor PadForge theirs.

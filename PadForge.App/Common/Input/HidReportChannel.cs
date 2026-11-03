@@ -47,7 +47,7 @@ namespace PadForge.Common.Input
         /// the read failed or the handle is feature-only. A SteelSeries
         /// mouse on its wireless dongle answers each write with a report
         /// that has to be read back before the next one (OpenRGB
-        /// SteelSeriesAeroxWirelessController.cpp:214-228).</summary>
+        /// SteelSeriesAeroxWirelessController.cpp:254-268).</summary>
         int ReadInput(byte[] buffer, int timeoutMs);
     }
 

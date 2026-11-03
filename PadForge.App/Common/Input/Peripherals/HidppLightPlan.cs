@@ -23,6 +23,12 @@ namespace PadForge.Common.Input.Peripherals
         /// waits for its answer. One that goes unanswered ends the paint,
         /// and a refusal is logged and the paint goes on.</summary>
         Select,
+
+        /// <summary>A 0x8080 fill of one key type. The worker waits for its
+        /// answer, so the next frame keeps off its heels. One that goes
+        /// unanswered ends the paint, and a refusal is logged and the paint
+        /// goes on, as when the fill was written unawaited.</summary>
+        Fill,
     }
 
     /// <summary>One frame of a light plan and how it goes out.</summary>
@@ -308,8 +314,9 @@ namespace PadForge.Common.Input.Peripherals
     /// (dumps/g810-spectrum/set_keys_colors.pcapng), and only with the
     /// effect ended first can nothing draw over them.</para>
     ///
-    /// <para>The commit is awaited: a board answers busy to one that comes
-    /// too soon, and a commit that is lost leaves the fills unshown.</para>
+    /// <para>The fills and the commit are awaited: a board answers busy to
+    /// a frame that comes too soon, and a commit that is lost leaves the
+    /// fills unshown.</para>
     ///
     /// <para>The hand-back fills the indicators and the media keys white
     /// before the release. The release returns the keys to the board's own
@@ -463,8 +470,17 @@ namespace PadForge.Common.Input.Peripherals
             Write(HidppUnitProtocol.SetSwControl(Device, Effect, claim: false)),
         };
 
+        /// <summary>A fill, awaited. Logitech Gaming Software waits for each
+        /// fill's answer before its next frame, the G-key fill to a G810
+        /// that has no G-keys included, which the board answers as done
+        /// (dumps/g810-spectrum/set_keys_colors.pcapng and
+        /// set_fx_color_00ff00.pcapng). A board answers busy to a frame
+        /// that comes too soon, and a busy answer to a fill nobody reads
+        /// leaves that key type on its old color. OpenRGB found the same of
+        /// key frames sent unpaced: "the firmware drops writes and only some
+        /// keys change" (LogitechHIDPP20Controller.cpp:5506-5510).</summary>
         private HidppStep Fill(ushort keyType, byte r, byte g, byte b)
-            => Write(HidppUnitProtocol.PerKeyFill(Device, _perKey, keyType, r, g, b));
+            => new(HidppUnitProtocol.PerKeyFill(Device, _perKey, keyType, r, g, b), HidppStepKind.Fill);
     }
 
     /// <summary>

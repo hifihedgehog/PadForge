@@ -362,8 +362,8 @@ namespace PadForge.Common.Input.Peripherals
             },
 
             // Rival 3 Wireless, through its dongle. One LED, in the wheel.
-            // This firmware has no color command: a color is a small LED
-            // program, uploaded in two parts and then bound to the LED.
+            // A color is a small LED program, uploaded in two parts and
+            // then bound to the LED, as SignalRGB colors this mouse.
             // 03 00 00 00 30 00 carries the first 0x30 bytes of the
             // program (LedProgram), 03 00 30 00 2C clears the 0x2C bytes
             // after them, 05 00 10 FF 00 00 00 00 5C binds LED 0x10 to the
@@ -373,7 +373,12 @@ namespace PadForge.Common.Input.Peripherals
             // here: 09 is the save (rivalcfg
             // devices/rival3_wireless.py:80), and no reference says what
             // E8 does. The 60 ms between reports is the wait SignalRGB
-            // makes on the same firmware in the Rival 650.
+            // makes on the same firmware in the Rival 650. OpenRGB colors
+            // the wheel with 13 01 RR GG BB instead
+            // (SteelSeriesAeroxWirelessController.cpp:187-194, from commit
+            // 95154754). That is not sent: 13 is the Rival 3 Gen 2's
+            // factory reset (rival_re tools/rival/protocol.py:42-53), and
+            // SignalRGB's frames light this mouse without it.
             new()
             {
                 Family = SteelSeriesFamily.Rival3Wireless, Interface = 3, Report = SteelSeriesReport.Output,
@@ -487,9 +492,9 @@ namespace PadForge.Common.Input.Peripherals
             // devices/aerox3_wireless_wired.py:53-79,
             // devices/aerox5_wireless_wired.py:64-82,
             // devices/aerox9_wireless_wired.py:58-76, OpenRGB
-            // SteelSeriesAeroxWirelessController.cpp:159-184). 22 FF is the
+            // SteelSeriesAeroxWirelessController.cpp:176-226). 22 FF is the
             // rainbow effect (devices/aerox3_wireless_wired.py:141-148,
-            // OpenRGB SteelSeriesAeroxWirelessController.cpp:149-157).
+            // OpenRGB SteelSeriesAeroxWirelessController.cpp:158-175).
             // OpenRGB's fourth zone is 26, the reactive color, and is not
             // painted. The firmware is the Aerox 3's, so the gap is too.
             new()
@@ -503,7 +508,7 @@ namespace PadForge.Common.Input.Peripherals
             // The same mice through the 2.4 GHz dongle: bit 6 set in the
             // command, 61 and 62, and a reply to read after each report
             // (rivalcfg devices/aerox3_wireless_wireless.py:3-16, OpenRGB
-            // SteelSeriesAeroxWirelessController.cpp:214-228). GG sends a
+            // SteelSeriesAeroxWirelessController.cpp:254-268). GG sends a
             // dongle 61 01 ZZ and the color, one zone per report. The reply
             // comes 8 to 22 ms after the report, and GG's next report
             // follows the reply by 6.4 ms at the median (the captures of

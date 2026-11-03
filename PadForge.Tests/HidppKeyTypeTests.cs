@@ -180,8 +180,8 @@ namespace PadForge.Tests
             Assert.Equal(new[]
             {
                 "11 FF 0D 3C 00 01", "11 FF 0D 3C 01 01",
-                "11 FF 0C 4C 00 01 11 22 33", "11 FF 0C 4C 00 02 11 22 33", "11 FF 0C 4C 00 10 11 22 33",
-                "11 FF 0C 4C 00 40 11 22 33",
+                "fill 11 FF 0C 4C 00 01 11 22 33", "fill 11 FF 0C 4C 00 02 11 22 33", "fill 11 FF 0C 4C 00 10 11 22 33",
+                "fill 11 FF 0C 4C 00 40 11 22 33",
             }, lines.Take(6));
             var keyFrames = lines.Where(l => l.StartsWith("stream 12 FF 0C 3C 00 01", StringComparison.Ordinal)).ToArray();
             Assert.Equal(2, keyFrames.Length);

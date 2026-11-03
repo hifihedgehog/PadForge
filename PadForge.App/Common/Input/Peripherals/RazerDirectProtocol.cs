@@ -189,7 +189,7 @@ namespace PadForge.Common.Input.Peripherals
     /// as a HID feature report with report ID 0 (openrazer
     /// driver/razercommon.h:124-136). Windows wants the ID in front, so the
     /// buffer is 91 bytes, the layout OpenRGB's hidapi build has
-    /// (RazerController.cpp:721-743). After the ID: the status, the
+    /// (RazerController.h:236-249). After the ID: the status, the
     /// transaction ID, two bytes of remaining packets, the protocol type,
     /// the data size, the command class, the command ID, 80 argument bytes,
     /// the checksum and a reserved byte. A command ID with its top bit set
@@ -198,7 +198,7 @@ namespace PadForge.Common.Input.Peripherals
     /// <para>The checksum is the XOR of the report from its remaining
     /// packets through its last argument, buffer bytes 3 to 88, so the
     /// status and the transaction ID stay out of it (razercommon.c:111-124
-    /// over the 90 bytes, RazerController.cpp:694-715 over the 91).</para>
+    /// over the 90 bytes, RazerController.cpp:602-623 over the 91).</para>
     ///
     /// <para>Every write here that has a storage byte carries 00, which
     /// shows the color and writes nothing to the device's memory
@@ -263,7 +263,7 @@ namespace PadForge.Common.Input.Peripherals
         internal const int EffectHoldMs = 1000;
 
         /// <summary>The most regions a list is believed to hold. OpenRGB
-        /// reads at most 16 (RazerController.cpp:1299 and 1316), which is
+        /// reads at most 16 (RazerController.cpp:1212 and 1229), which is
         /// also all a report has room for.</summary>
         internal const int MaxRegions = 16;
 
@@ -348,7 +348,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>0F/02 [00 LED effect flags rate count colors]: any
         /// effect in the one argument layout the command has, for writing
         /// back what <see cref="StoredEffectRead"/> gave. The size is 6 and
-        /// three for each color (OpenRGB RazerController.cpp:1126-1148).</summary>
+        /// three for each color (OpenRGB RazerController.cpp:1034-1056).</summary>
         internal static byte[] ExtendedEffect(byte transactionId, byte led, byte effect, byte flags, byte rate,
             ReadOnlySpan<byte> colors)
         {
@@ -368,7 +368,7 @@ namespace PadForge.Common.Input.Peripherals
             => Report(transactionId, 0x0F, 0x84, stackalloc byte[] { 0x01, led, 0x00 });
 
         /// <summary>0F/80 with no argument and size 50: the device's list
-        /// of lighting regions (OpenRGB RazerController.cpp:1308).</summary>
+        /// of lighting regions (OpenRGB RazerController.cpp:1221).</summary>
         internal static byte[] RegionListRead(byte transactionId)
             => Report(transactionId, 0x0F, 0x80, 0x50, ReadOnlySpan<byte>.Empty);
 
@@ -409,7 +409,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>03/0B [FF row 00 stop R G B ...]: one row of the
         /// frame, from column 0, at its exact size. openrazer declares 46
         /// whatever the row holds and OpenRGB the bytes sent
-        /// (razerchromacommon.c:450-472, RazerController.cpp:904-922): the
+        /// (razerchromacommon.c:450-472, RazerController.cpp:812-830): the
         /// exact size is what both send for a full 22-column row.</summary>
         internal static byte[] StandardRow(byte transactionId, int row, int columns, int rgb)
             => Report(transactionId, 0x03, 0x0B,
@@ -417,13 +417,13 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>03/0C [00 stop R G B ...]: a frame that is one line of
         /// LEDs. Both projects declare size 32 whatever the line holds
-        /// (razerchromacommon.c:1019-1036, RazerController.cpp:869-883).</summary>
+        /// (razerchromacommon.c:1019-1036, RazerController.cpp:777-791).</summary>
         internal static byte[] StandardLine(byte transactionId, int columns, int rgb)
             => Report(transactionId, 0x03, 0x0C, 0x32, WithColors(stackalloc byte[] { 0x00, (byte)(columns - 1) }, columns, rgb));
 
         /// <summary>03/0A [05 00]: shows the frame the rows filled. The
         /// second byte is the storage byte, 00 (razerchromacommon.c:390-396,
-        /// RazerController.cpp:1034-1042).</summary>
+        /// RazerController.cpp:942-950).</summary>
         internal static byte[] StandardShow(byte transactionId)
             => Report(transactionId, 0x03, 0x0A, stackalloc byte[] { 0x05, 0x00 });
 
@@ -505,7 +505,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>
         /// What a reply says about its request. It belongs to the request
         /// when it carries the same transaction ID, command class and
-        /// command ID (OpenRGB RazerController.cpp:1270-1272. openrazer
+        /// command ID (OpenRGB RazerController.cpp:1183-1185. openrazer
         /// compares class and ID, razermouse_driver.c:136-143). A device
         /// asked too soon still shows the reply before it, or status 00,
         /// and is read again before anything is sent again (uncoil
@@ -546,7 +546,7 @@ namespace PadForge.Common.Input.Peripherals
         /// The regions a device lists in its reply to
         /// <see cref="RegionListRead"/>: five-byte records that open with
         /// the region's LED ID, ended by a record whose ID is 00 (OpenRGB
-        /// RazerController.cpp:1316-1324. One keyboard's whole answer is
+        /// RazerController.cpp:1229-1237. One keyboard's whole answer is
         /// "0519030612", openrazer wiki Unknown-commands.md:46). Empty
         /// for a reply that is not a success, and for a list that fills
         /// the report without its closing zero: such a list may run past
@@ -622,7 +622,7 @@ namespace PadForge.Common.Input.Peripherals
         /// claim sets no state (<see cref="RazerRowFlags.NoState"/>, the
         /// Tartarus Chroma). No reference sends that product a state report
         /// for its backlight: OpenRGB sends it the color and the effect
-        /// alone (RazerController.cpp:2042-2046), and openrazer sends 03/00
+        /// alone (RazerController.cpp:1990-1995), and openrazer sends 03/00
         /// to its three profile LEDs only (razerkbd_driver.c:2103-2105). So
         /// its hand-back is the color and the effect, and its state reply
         /// is not read.</para>
@@ -711,7 +711,7 @@ namespace PadForge.Common.Input.Peripherals
         /// Chroma (razermouse_driver.c:3922-3925 and 1097-1102). A product that
         /// answered another of its IDs gets that one on every report, the
         /// way OpenRGB sends one ID per product
-        /// (RazerController.cpp:65 and 735).</para>
+        /// (RazerController.cpp:66 and 643).</para>
         /// </summary>
         internal static List<byte[]> Paint(RazerDirectRow row, byte transactionId, byte[] leds, int rgb)
         {

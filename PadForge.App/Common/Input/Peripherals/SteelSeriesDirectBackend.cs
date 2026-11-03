@@ -41,7 +41,7 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>A 2.4 GHz dongle answers each report on its input report, and
     /// the worker reads that answer before the next report goes (OpenRGB
-    /// SteelSeriesAeroxWirelessController.cpp:214-228). The dongle stays on
+    /// SteelSeriesAeroxWirelessController.cpp:254-268). The dongle stays on
     /// the bus while its mouse is switched off or asleep and then answers
     /// anything with 40 FF: "the second byte returned is 255 (0xff) if the
     /// mouse is off or sleeping", behind a first byte of 0x40 (rivalcfg

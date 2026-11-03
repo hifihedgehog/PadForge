@@ -60,7 +60,7 @@ namespace PadForge.Common.Input.Peripherals
     /// back to its own lighting when the host goes quiet, so its claim read
     /// is sent whenever <see cref="KeepAliveMs"/> pass with nothing else
     /// (OpenRGB
-    /// Controllers/RazerController/RazerController/RazerController.cpp:250-265,
+    /// Controllers/RazerController/RazerController/RazerController.cpp:94-110 and 155-170,
     /// OpenSynapse src/OpenSynapse.Windows/Lighting/BladeLightingController.cs:73-74).
     /// A product painted by the standard matrix effect report, which has no
     /// storage byte, takes a color only once it has held for
@@ -1171,7 +1171,7 @@ namespace PadForge.Common.Input.Peripherals
             var row = unit.Row;
 
             // The lit regions the device names, where its family has the
-            // list (OpenRGB RazerController.cpp:1284-1325).
+            // list (OpenRGB RazerController.cpp:1197-1271).
             unit.Leds = row.Leds;
             if (row.Family == RazerFamily.Extended)
             {

@@ -226,6 +226,7 @@ namespace PadForge.Common.Input.Peripherals
             IonicoLighting.Instance,
             ClevoLighting.Instance,
             GigabyteAorusLaptopLighting.Instance,
+            EvgaLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

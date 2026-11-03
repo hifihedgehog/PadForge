@@ -41,6 +41,14 @@ namespace PadForge.Services
     /// bound only while its device type is claimed and removed when it stops
     /// being claimed, so a type PadForge does not light keeps GG's.</para>
     ///
+    /// <para>A type claimed with light colors (#557) travels on a second
+    /// event instead, with a handler per light
+    /// (<see cref="PadForge.Common.Input.Peripherals.GameSenseLights"/>). A
+    /// type that changes form has its old event removed before the new one
+    /// is bound. A light event GG refuses to bind leaves its type on the
+    /// one-color event until the next connection, logged once. Either event
+    /// is posted again only when its body changes.</para>
+    ///
     /// <para>The calls are synchronous with a short timeout, because they run
     /// on the GameSense worker. A local engine answers in milliseconds.</para>
     /// </summary>
@@ -133,8 +141,11 @@ namespace PadForge.Services
                + ",\"green\":" + ((rgb >> 8) & 0xFF).ToString(System.Globalization.CultureInfo.InvariantCulture)
                + ",\"blue\":" + (rgb & 0xFF).ToString(System.Globalization.CultureInfo.InvariantCulture) + "}}}}";
 
-        internal static string RemoveEventBody(string type)
-            => "{\"game\":\"" + Game + "\",\"event\":\"" + ColorEvent(type) + "\"}";
+        internal static string RemoveEventBody(string type) => RemoveBody(ColorEvent(type));
+
+        /// <summary>remove_game_event for an event by its name.</summary>
+        internal static string RemoveBody(string eventName)
+            => "{\"game\":\"" + Game + "\",\"event\":\"" + eventName + "\"}";
 
         internal static string EventBody(int value)
             => "{\"game\":\"" + Game + "\",\"event\":\"" + Event + "\",\"data\":{\"value\":"
@@ -152,7 +163,14 @@ namespace PadForge.Services
 
         private readonly string _corePropsPath;
         private readonly HttpClient _http;
-        private readonly Dictionary<string, int> _colors = new();
+
+        /// <summary>Each type GG lights for PadForge now: the event it is
+        /// bound on and the body last posted there.</summary>
+        private readonly Dictionary<string, (string Event, string Body)> _colors = new();
+
+        /// <summary>The types whose light event GG refused to bind in this
+        /// connection.</summary>
+        private readonly HashSet<string> _lightsRefused = new();
         private string _base;
         private int _level;
         private long _lastPost;
@@ -191,10 +209,15 @@ namespace PadForge.Services
             // go now, so a type nobody claims stays GG's. An event that is not
             // registered answers an error, which changes nothing.
             foreach (var type in PadForge.Common.Input.Peripherals.PeripheralLinker.GameSenseColorTypes)
+            {
                 Post(url, "/remove_game_event", RemoveEventBody(type));
+                if (PadForge.Common.Input.Peripherals.GameSenseLights.MapOf(type) != null)
+                    Post(url, "/remove_game_event", RemoveBody(PadForge.Common.Input.Peripherals.GameSenseLights.Event(type)));
+            }
             _base = url;
             _level = 0;
             _colors.Clear();
+            _lightsRefused.Clear();
             _lastPost = now;
             return true;
         }
@@ -213,40 +236,80 @@ namespace PadForge.Services
             return Heartbeat(now);
         }
 
-        /// <summary>Each claimed device type's color: a type newly claimed is
-        /// bound and painted, a changed color is posted, and a type no longer
-        /// claimed is removed so GG lights it again. False when the engine
-        /// stopped answering, which disconnects.</summary>
-        public bool SetColors(IReadOnlyList<KeyValuePair<string, int>> wanted, long now)
+        /// <summary>Each claimed device type's colors: a type newly claimed is
+        /// bound and painted, a changed picture is posted, a type that
+        /// changes between one color and light by light moves to the other
+        /// event, and a type no longer claimed is removed so GG lights it
+        /// again. False when the engine stopped answering, which
+        /// disconnects.</summary>
+        public bool SetColors(IReadOnlyList<PadForge.Common.Input.Peripherals.GameSenseBackend.Want> wanted, long now)
         {
             if (_base == null) return false;
             List<string> gone = null;
             foreach (var type in _colors.Keys)
             {
                 bool still = false;
-                foreach (var pair in wanted)
-                    if (pair.Key == type) { still = true; break; }
+                foreach (var want in wanted)
+                    if (want.Type == type) { still = true; break; }
                 if (!still) (gone ??= new List<string>()).Add(type);
             }
             if (gone != null)
             {
                 foreach (var type in gone)
                 {
-                    if (!Post(_base, "/remove_game_event", RemoveEventBody(type))) return Drop();
+                    if (!Post(_base, "/remove_game_event", RemoveBody(_colors[type].Event))) return Drop();
                     _colors.Remove(type);
                     _lastPost = now;
                 }
             }
-            foreach (var pair in wanted)
+            foreach (var want in wanted)
             {
-                bool bound = _colors.TryGetValue(pair.Key, out int sent);
-                if (bound && sent == pair.Value) continue;
-                if (!bound && !Post(_base, "/bind_game_event", ColorBindBody(pair.Key))) return Drop();
-                if (!Post(_base, "/game_event", ColorEventBody(pair.Key, pair.Value))) return Drop();
-                _colors[pair.Key] = pair.Value;
+                var (eventName, body) = PostFor(want);
+                bool bound = _colors.TryGetValue(want.Type, out var sent);
+                if (bound && sent.Event == eventName && sent.Body == body) continue;
+                if (bound && sent.Event != eventName)
+                {
+                    if (!Post(_base, "/remove_game_event", RemoveBody(sent.Event))) return Drop();
+                    _colors.Remove(want.Type);
+                    bound = false;
+                    _lastPost = now;
+                }
+                if (!bound)
+                {
+                    bool lights = eventName != ColorEvent(want.Type);
+                    if (!Post(_base, "/bind_game_event",
+                            lights ? PadForge.Common.Input.Peripherals.GameSenseLights.BindBody(Game, want.Type)
+                                   : ColorBindBody(want.Type)))
+                    {
+                        if (!lights) return Drop();
+                        // GG answered and would not take the light event:
+                        // the type stays on its one-color event from here.
+                        _lightsRefused.Add(want.Type);
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"PERIPHERAL GameSense refused the {want.Type} light event, painting one color");
+                        (eventName, body) = PostFor(want);
+                        if (!Post(_base, "/bind_game_event", ColorBindBody(want.Type))) return Drop();
+                    }
+                }
+                if (!Post(_base, "/game_event", body)) return Drop();
+                _colors[want.Type] = (eventName, body);
                 _lastPost = now;
             }
             return Heartbeat(now);
+        }
+
+        /// <summary>The event a want travels on and the body posted there:
+        /// the type's light event when the want carries light colors, the
+        /// type has lights and GG took the event, else its one-color
+        /// event.</summary>
+        private (string Event, string Body) PostFor(PadForge.Common.Input.Peripherals.GameSenseBackend.Want want)
+        {
+            var map = PadForge.Common.Input.Peripherals.GameSenseLights.MapOf(want.Type);
+            if (map == null || want.Keys == null || want.Keys.IsEmpty || _lightsRefused.Contains(want.Type))
+                return (ColorEvent(want.Type), ColorEventBody(want.Type, want.Rgb));
+            var colors = PadForge.Common.Input.Peripherals.LightRenderer.Render(map, want.Rgb, want.Keys);
+            return (PadForge.Common.Input.Peripherals.GameSenseLights.Event(want.Type),
+                PadForge.Common.Input.Peripherals.GameSenseLights.EventBody(Game, want.Type, colors));
         }
 
         /// <summary>Keeps the game active while rumble or a color holds.</summary>
@@ -274,7 +337,7 @@ namespace PadForge.Services
         {
             if (_base == null) return;
             if (_level != 0) Post(_base, "/game_event", EventBody(0));
-            foreach (var type in _colors.Keys) Post(_base, "/remove_game_event", RemoveEventBody(type));
+            foreach (var bound in _colors.Values) Post(_base, "/remove_game_event", RemoveBody(bound.Event));
             Post(_base, "/stop_game", GameBody);
             _base = null;
             _level = 0;

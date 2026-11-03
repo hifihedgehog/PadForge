@@ -23,8 +23,11 @@ namespace PadForge.Common.Input.Peripherals
     /// a post only when a value changes, a heartbeat while one holds, a color
     /// event removed as soon as its type stops being claimed, and stop_game
     /// once nothing has been claimed for <see cref="ReleaseMs"/>, which hands
-    /// the devices back to GG. The HTTP calls run here, never on the poll
-    /// thread. With GG let go and nothing claimed, the worker waits
+    /// the devices back to GG. A type claimed with light colors (#557) is
+    /// colored light by light on its own event
+    /// (<see cref="GameSenseLights"/>), and its lights are published for
+    /// the Key Colors card while the worker runs. The HTTP calls run here,
+    /// never on the poll thread. With GG let go and nothing claimed, the worker waits
     /// <see cref="IdleTickMs"/> between looks, and a level that starts, a
     /// color claimed or Identify wakes it at once.</para>
     /// </summary>
@@ -121,6 +124,8 @@ namespace PadForge.Common.Input.Peripherals
             PeripheralOutputs.HapticsChanged += OnRulerMoved;
             PeripheralOutputs.IdentifyChanged += OnRulerMoved;
             PeripheralOutputs.LightingChanged += Wake;
+            foreach (var pair in GameSenseLights.Maps)
+                PeripheralLightMaps.Publish(new OutputPath(OutputFamily.GameSenseColor, pair.Key), pair.Value);
             _thread = new Thread(() => Worker(run)) { IsBackground = true, Name = "PeripheralGameSense" };
             _thread.Start();
         }
@@ -131,6 +136,8 @@ namespace PadForge.Common.Input.Peripherals
             PeripheralOutputs.IdentifyChanged -= OnRulerMoved;
             PeripheralOutputs.LightingChanged -= Wake;
             if (_thread == null) return;
+            foreach (var pair in GameSenseLights.Maps)
+                PeripheralLightMaps.Remove(new OutputPath(OutputFamily.GameSenseColor, pair.Key));
             _run.Stop = true;
             Wake();
             try { _thread.Join(3000); } catch { }
@@ -153,25 +160,31 @@ namespace PadForge.Common.Input.Peripherals
             try { _wake.Set(); } catch (ObjectDisposedException) { }
         }
 
-        /// <summary>Each claimed color type's color, in path order.</summary>
-        internal static List<KeyValuePair<string, int>> Colors()
+        /// <summary>What one color type should show: a color, and the light
+        /// colors on top of it (#557), null for none.</summary>
+        internal readonly record struct Want(string Type, int Rgb, KeyFrame Keys);
+
+        /// <summary>Each claimed color type's color and light colors, in path
+        /// order.</summary>
+        internal static List<Want> Colors()
         {
-            var colors = new List<KeyValuePair<string, int>>();
+            var colors = new List<Want>();
             foreach (var type in PeripheralLinker.GameSenseColorTypes)
-                if (PeripheralOutputs.TryResolveColor(new OutputPath(OutputFamily.GameSenseColor, type), out int rgb))
-                    colors.Add(new KeyValuePair<string, int>(type, rgb));
+                if (PeripheralOutputs.TryResolveColor(new OutputPath(OutputFamily.GameSenseColor, type), out int rgb,
+                        out var ruler))
+                    colors.Add(new Want(type, rgb, ruler.Keys));
             return colors;
         }
 
         /// <summary>Whether the claimed types differ from the ones GG holds.</summary>
-        private static bool TypesChanged(List<KeyValuePair<string, int>> colors, IReadOnlyCollection<string> held)
+        private static bool TypesChanged(List<Want> colors, IReadOnlyCollection<string> held)
         {
             if (colors.Count != held.Count) return true;
-            foreach (var pair in colors)
+            foreach (var want in colors)
             {
                 bool found = false;
                 foreach (var type in held)
-                    if (type == pair.Key) { found = true; break; }
+                    if (type == want.Type) { found = true; break; }
                 if (!found) return true;
             }
             return false;

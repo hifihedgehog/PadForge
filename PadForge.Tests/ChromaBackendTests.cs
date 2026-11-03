@@ -32,7 +32,13 @@ namespace PadForge.Tests
 
         private static OutputPath Category(string name) => new(OutputFamily.ChromaCategory, name);
 
+        /// <summary>Each wanted category and its color, the light colors
+        /// left out.</summary>
         private static List<KeyValuePair<string, int>> Wanted(Func<int, ISet<Guid>> devicesOnSlot = null,
+            long? now = null, Func<int, int> slotNumber = null)
+            => Wants(devicesOnSlot, now, slotNumber).Select(w => new KeyValuePair<string, int>(w.Category, w.Rgb)).ToList();
+
+        private static List<ChromaBackend.Want> Wants(Func<int, ISet<Guid>> devicesOnSlot = null,
             long? now = null, Func<int, int> slotNumber = null)
             => ChromaBackend.Wanted(PeripheralOutputs.Links, now ?? Environment.TickCount64,
                 devicesOnSlot ?? (_ => new HashSet<Guid>()), slotNumber ?? (slot => slot + 1));
@@ -40,10 +46,10 @@ namespace PadForge.Tests
         [Fact]
         public void TheColorIntegerIsBgr_AndTheInitListsTheSessionsCategories()
         {
-            Assert.Equal(0x0000FF, ChromaBackend.ToBgr(0xFF0000));
-            Assert.Equal(0x00FF00, ChromaBackend.ToBgr(0x00FF00));
-            Assert.Equal(0xFF0000, ChromaBackend.ToBgr(0x0000FF));
-            Assert.Equal(0x563412, ChromaBackend.ToBgr(0x123456));
+            Assert.Equal(0x0000FF, ChromaLayouts.ToBgr(0xFF0000));
+            Assert.Equal(0x00FF00, ChromaLayouts.ToBgr(0x00FF00));
+            Assert.Equal(0xFF0000, ChromaLayouts.ToBgr(0x0000FF));
+            Assert.Equal(0x563412, ChromaLayouts.ToBgr(0x123456));
 
             using var doc = JsonDocument.Parse(ChromaBackend.InitBody(new[] { "mouse", "keypad" }));
             var root = doc.RootElement;
@@ -331,6 +337,8 @@ namespace PadForge.Tests
             public readonly ConcurrentQueue<(long Tick, string Method, string Path)> Requests = new();
             /// <summary>Each category PUT and the result it was answered with.</summary>
             public readonly ConcurrentQueue<(string Category, int Result)> Puts = new();
+            /// <summary>Each category PUT's body, in order.</summary>
+            public readonly ConcurrentQueue<(string Category, string Body)> PutBodies = new();
             public string Endpoint { get; }
             public volatile int InitStatus = 200;
             public volatile int HeartbeatStatus = 200;
@@ -360,7 +368,8 @@ namespace PadForge.Tests
                     HttpListenerContext ctx;
                     try { ctx = _listener.GetContext(); }
                     catch { break; }
-                    using (var reader = new StreamReader(ctx.Request.InputStream, Encoding.UTF8)) reader.ReadToEnd();
+                    string requestBody;
+                    using (var reader = new StreamReader(ctx.Request.InputStream, Encoding.UTF8)) requestBody = reader.ReadToEnd();
                     string path = ctx.Request.Url.AbsolutePath;
                     string method = ctx.Request.HttpMethod;
                     Requests.Enqueue((Environment.TickCount64, method, path));
@@ -376,6 +385,7 @@ namespace PadForge.Tests
                     {
                         string category = path.Substring("/chromasdk/".Length);
                         int result = PutResult(category);
+                        PutBodies.Enqueue((category, requestBody));
                         Puts.Enqueue((category, result));
                         body = "{\"result\":" + result + "}";
                     }
@@ -611,6 +621,213 @@ namespace PadForge.Tests
             PeripheralOutputs.ReleaseLighting(Mouse, 0);
             Assert.True(SpinWait.SpinUntil(() => server.Count("PUT", "/chromasdk/mouse") >= 1, 30000), "the mouse category came back");
             Assert.Equal(2, server.Count("POST", "/razer/chromasdk"));
+        }
+
+        // ─────────────────────────────────────────────
+        //  Light by light (#557)
+        // ─────────────────────────────────────────────
+
+        private const int Red = 0xFF0000, Blue = 0x0000FF, Green = 0x00FF00;
+
+        /// <summary>BGR of each, R + (G &lt;&lt; 8) + (B &lt;&lt; 16)
+        /// (REST keyboard page, "Color value in BGR format").</summary>
+        private const int RedBgr = 255, BlueBgr = 16711680, GreenBgr = 65280;
+
+        /// <summary>The flag of a key effect: "a bit mask of 0x01000000
+        /// (16777216)" (REST keyboard page, CHROMA_CUSTOM_KEY).</summary>
+        private const int Flag = 16777216;
+
+        private static KeyFrame Keys(params (ushort Usage, int Rgb)[] keys)
+            => new(keys.ToDictionary(k => k.Usage, k => k.Rgb), null, null, null);
+
+        private static int[][] Grid(JsonElement grid) => grid.EnumerateArray()
+            .Select(row => row.EnumerateArray().Select(c => c.GetInt32()).ToArray()).ToArray();
+
+        /// <summary>Without light colors, or on a category of one light, the
+        /// body is CHROMA_STATIC exactly as the worker sent it before #557.</summary>
+        [Fact]
+        public void WithoutLightColors_TheEffectIsTheStaticBodyOfOld()
+        {
+            const string old = "{\"effect\":\"CHROMA_STATIC\",\"param\":{\"color\":255}}";
+            foreach (var category in PeripheralLinker.ChromaCategories)
+            {
+                Assert.Equal(old, ChromaLayouts.EffectBody(category, Red, null));
+                Assert.Equal(old, ChromaLayouts.EffectBody(category, Red, KeyFrame.Empty));
+            }
+            Assert.Equal(old, ChromaLayouts.EffectBody("unknown", Red, Keys((0x1A, Blue))));
+        }
+
+        /// <summary>
+        /// W in red over a blue claim. CHROMA_CUSTOM_KEY carries two 6 by 22
+        /// grids. The canvas has W's cell, RZKEY_W 0x0203 (row 2, column 3,
+        /// RzChromaSDKTypes.h:241), red and every other cell blue. The key
+        /// array carries the flag at every RZKEY cell, with red at W and blue
+        /// elsewhere, and 0 at every cell no RZKEY names, the logo's
+        /// RZLED_LOGO 0x0014 among them.
+        /// </summary>
+        [Fact]
+        public void AKeyboardFrame_IsCustomKey_WithTheCanvasAndTheFlaggedKeys()
+        {
+            using var doc = JsonDocument.Parse(ChromaLayouts.EffectBody("keyboard", Blue, Keys((0x1A, Red))));
+            var root = doc.RootElement;
+            Assert.Equal("CHROMA_CUSTOM_KEY", root.GetProperty("effect").GetString());
+            var color = Grid(root.GetProperty("param").GetProperty("color"));
+            var key = Grid(root.GetProperty("param").GetProperty("key"));
+            Assert.Equal(6, color.Length);
+            Assert.All(color, row => Assert.Equal(22, row.Length));
+            Assert.Equal(6, key.Length);
+            Assert.All(key, row => Assert.Equal(22, row.Length));
+
+            var rzkeyCells = SdkLightMapsTests.Pairs(SdkLightMapsTests.RgbNetRazerCells).Keys
+                .Concat(SdkLightMapsTests.Pairs(SdkLightMapsTests.ChromaJapaneseCells).Keys)
+                .Concat(new[] { 0x0100, 0x0200, 0x0300, 0x0400, 0x0500, 0x050C })
+                .ToHashSet();
+            for (int r = 0; r < 6; r++)
+                for (int c = 0; c < 22; c++)
+                {
+                    int code = (r << 8) | c;
+                    bool w = code == 0x0203;
+                    Assert.Equal(w ? RedBgr : BlueBgr, color[r][c]);
+                    Assert.Equal(rzkeyCells.Contains(code) ? Flag | (w ? RedBgr : BlueBgr) : 0, key[r][c]);
+                }
+            Assert.Equal(0, key[0][20]);
+        }
+
+        /// <summary>The logo, the media keys and a group reach their canvas
+        /// cells: the logo group at RZLED_LOGO's cell, play and pause at row
+        /// 0, column 19.</summary>
+        [Fact]
+        public void TheKeyboardLogoAndMediaKeys_RideTheCanvas()
+        {
+            var frame = new KeyFrame(null, new Dictionary<string, int> { [LightGroups.Logo] = Green, [LightGroups.Other] = Red },
+                null, null);
+            using var doc = JsonDocument.Parse(ChromaLayouts.EffectBody("keyboard", Blue, frame));
+            var color = Grid(doc.RootElement.GetProperty("param").GetProperty("color"));
+            var key = Grid(doc.RootElement.GetProperty("param").GetProperty("key"));
+            Assert.Equal(GreenBgr, color[0][20]);
+            Assert.Equal(RedBgr, color[0][18]);
+            Assert.Equal(RedBgr, color[0][19]);
+            Assert.Equal(0, key[0][19]);
+            // Fn and the macro keys are "other" lights with RZKEY codes.
+            Assert.Equal(Flag | RedBgr, key[5][12]);
+            Assert.Equal(Flag | RedBgr, key[1][0]);
+            Assert.Equal(BlueBgr, color[0][0]);
+        }
+
+        /// <summary>The mouse takes CHROMA_CUSTOM2 on 9 by 7 (REST mouse
+        /// page): the logo group at RZLED2_LOGO 0x0703, zone 1 at the wheel
+        /// RZLED2_SCROLLWHEEL 0x0203, and the background everywhere else.</summary>
+        [Fact]
+        public void AMouseFrame_IsCustom2_OnTheNineBySevenGrid()
+        {
+            var frame = new KeyFrame(null, new Dictionary<string, int> { [LightGroups.Logo] = Red, [LightGroups.Zone(1)] = Green },
+                null, null);
+            using var doc = JsonDocument.Parse(ChromaLayouts.EffectBody("mouse", Blue, frame));
+            Assert.Equal("CHROMA_CUSTOM2", doc.RootElement.GetProperty("effect").GetString());
+            var grid = Grid(doc.RootElement.GetProperty("param"));
+            Assert.Equal(9, grid.Length);
+            Assert.All(grid, row => Assert.Equal(7, row.Length));
+            for (int r = 0; r < 9; r++)
+                for (int c = 0; c < 7; c++)
+                    Assert.Equal((r, c) switch { (7, 3) => RedBgr, (2, 3) => GreenBgr, _ => BlueBgr }, grid[r][c]);
+        }
+
+        /// <summary>The headset's 5, the mousepad's 15 and Chroma Link's 5
+        /// take CHROMA_CUSTOM as a flat array, the keypad as 4 rows of 5
+        /// (REST headset, keypad and Chroma Link pages, Colore's
+        /// *CustomConverter.cs).</summary>
+        [Theory]
+        [InlineData("headset", 5)]
+        [InlineData("mousepad", 15)]
+        [InlineData("chromalink", 5)]
+        public void ALedArrayFrame_IsCustom_OneColorPerLed(string category, int leds)
+        {
+            var frame = new KeyFrame(null, new Dictionary<string, int> { [LightGroups.Zone(2)] = Red }, null, null);
+            using var doc = JsonDocument.Parse(ChromaLayouts.EffectBody(category, Blue, frame));
+            Assert.Equal("CHROMA_CUSTOM", doc.RootElement.GetProperty("effect").GetString());
+            var colors = doc.RootElement.GetProperty("param").EnumerateArray().Select(e => e.GetInt32()).ToArray();
+            Assert.Equal(Enumerable.Range(0, leds).Select(i => i == 1 ? RedBgr : BlueBgr), colors);
+        }
+
+        [Fact]
+        public void AKeypadFrame_IsCustom_OnFourRowsOfFive()
+        {
+            var frame = new KeyFrame(null, new Dictionary<string, int> { [LightGroups.Zone(7)] = Red }, null, Green);
+            using var doc = JsonDocument.Parse(ChromaLayouts.EffectBody("keypad", Blue, frame));
+            Assert.Equal("CHROMA_CUSTOM", doc.RootElement.GetProperty("effect").GetString());
+            var grid = Grid(doc.RootElement.GetProperty("param"));
+            Assert.Equal(4, grid.Length);
+            Assert.All(grid, row => Assert.Equal(5, row.Length));
+            // Zone 7 is the seventh cell, row 1, column 1. The frame's own
+            // background replaces the claim's color everywhere else.
+            for (int r = 0; r < 4; r++)
+                for (int c = 0; c < 5; c++)
+                    Assert.Equal(r == 1 && c == 1 ? RedBgr : GreenBgr, grid[r][c]);
+        }
+
+        /// <summary>The claim's light colors reach the worker's want, and a
+        /// Set Chroma Color carries none.</summary>
+        [Fact]
+        public void TheWantCarriesTheClaimsLightColors_AndAMacroNone()
+        {
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Category("keyboard") } });
+            var frame = Keys((0x1A, Red));
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0, 0, 0xFF, keys: frame);
+            var want = Assert.Single(Wants());
+            Assert.Equal(("keyboard", Blue), (want.Category, want.Rgb));
+            Assert.Equal(frame, want.Keys);
+
+            long now = 1_000_000;
+            PeripheralOutputs.AssertChromaMacro(0, 1, 2, 3, now);
+            var macro = Assert.Single(Wants(slot => slot == 0 ? new HashSet<Guid> { Keyboard } : new HashSet<Guid>(), now));
+            Assert.Equal(0x010203, macro.Rgb);
+            Assert.Null(macro.Keys);
+        }
+
+        /// <summary>The worker paints a claim with light colors through its
+        /// custom effect, does not send the same picture twice, sends a new
+        /// one, and goes back to CHROMA_STATIC when the light colors go. The
+        /// lights of every category are published while it runs and taken
+        /// down when it stops.</summary>
+        [Fact]
+        public void TheWorker_SendsTheCustomEffect_OnceAPicture_AndStaticWithoutLightColors()
+        {
+            using var server = new FakeChromaServer();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Category("keyboard") } });
+            var backend = Backend(server);
+            try
+            {
+                backend.Start();
+                foreach (var category in PeripheralLinker.ChromaCategories)
+                    Assert.Same(ChromaLayouts.MapOf(category), PeripheralLightMaps.For(Category(category)));
+
+                string Bodies() => string.Join("\n", server.PutBodies.Where(p => p.Category == "keyboard").Select(p => p.Body));
+                int Count() => server.PutBodies.Count(p => p.Category == "keyboard");
+
+                PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0, 0, 0xFF, keys: Keys((0x1A, Red)));
+                Assert.True(SpinWait.SpinUntil(() => Count() >= 1, 30000), "the keyboard was painted");
+                Assert.Equal(ChromaLayouts.EffectBody("keyboard", Blue, Keys((0x1A, Red))), server.PutBodies.Last().Body);
+
+                // The same picture from a new but equal frame: nothing more.
+                PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0, 0, 0xFF, keys: Keys((0x1A, Red)));
+                WorkerCadence.WaitAfterAFullPass(() => backend.PassCount, () => backend.WaitMs);
+                Assert.Equal(1, Count());
+
+                PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0, 0, 0xFF, keys: Keys((0x1A, Green)));
+                Assert.True(SpinWait.SpinUntil(() => Count() >= 2, 30000), "the new picture went out");
+                Assert.Equal(ChromaLayouts.EffectBody("keyboard", Blue, Keys((0x1A, Green))), server.PutBodies.Last().Body);
+
+                PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0, 0, 0xFF);
+                Assert.True(SpinWait.SpinUntil(() => Count() >= 3, 30000), "the one color went out");
+                Assert.Equal("{\"effect\":\"CHROMA_STATIC\",\"param\":{\"color\":16711680}}", server.PutBodies.Last().Body);
+                Assert.DoesNotContain("CHROMA_STATIC", Bodies().Split('\n')[0]);
+            }
+            finally
+            {
+                backend.Dispose();
+            }
+            foreach (var category in PeripheralLinker.ChromaCategories)
+                Assert.Null(PeripheralLightMaps.For(Category(category)));
         }
     }
 }

@@ -50,6 +50,14 @@ namespace PadForge.Common.Input.Peripherals
     /// resolution would replace its last segment instead of appending. The
     /// endpoint is injectable because the production port is machine-global,
     /// and a test that talked to it would reach a real Synapse.</para>
+    ///
+    /// <para>A claim that carries light colors (#557) paints its category
+    /// light by light through the category's custom effect
+    /// (<see cref="ChromaLayouts.EffectBody"/>), and a claim with none, or a
+    /// Set Chroma Color, sends CHROMA_STATIC as before. Each category's
+    /// lights are published for the Key Colors card while the worker runs.
+    /// An effect goes out again only when its body changes, so a picture a
+    /// category already shows is not sent twice.</para>
     /// </summary>
     internal sealed class ChromaBackend : IDisposable
     {
@@ -108,6 +116,10 @@ namespace PadForge.Common.Input.Peripherals
         internal static bool IsRazersServer(string endpoint)
             => string.Equals(endpoint?.TrimEnd('/'), DefaultEndpoint, StringComparison.OrdinalIgnoreCase);
 
+        /// <summary>What one category should show: a color, and the light
+        /// colors on top of it, null for none.</summary>
+        internal readonly record struct Want(string Category, int Rgb, KeyFrame Keys);
+
         internal bool WorkerAlive => _loop != null && !_loop.IsCompleted;
 
         /// <summary>Passes the worker has started, for the test of its
@@ -125,6 +137,8 @@ namespace PadForge.Common.Input.Peripherals
             var token = _cts.Token;
             PeripheralOutputs.LightingChanged += Wake;
             PeripheralOutputs.ChromaMacroChanged += Wake;
+            foreach (var pair in ChromaLayouts.Maps)
+                PeripheralLightMaps.Publish(new OutputPath(OutputFamily.ChromaCategory, pair.Key), pair.Value);
             _loop = Task.Run(() => LoopAsync(token), token);
         }
 
@@ -133,6 +147,8 @@ namespace PadForge.Common.Input.Peripherals
             if (_cts == null) return;
             PeripheralOutputs.LightingChanged -= Wake;
             PeripheralOutputs.ChromaMacroChanged -= Wake;
+            foreach (var pair in ChromaLayouts.Maps)
+                PeripheralLightMaps.Remove(new OutputPath(OutputFamily.ChromaCategory, pair.Key));
             try { _cts.Cancel(); } catch { }
             // The worker may be parked in a REST call. Give it the wait,
             // then let it finish on its own: the session it ends is its own.
@@ -148,11 +164,6 @@ namespace PadForge.Common.Input.Peripherals
             catch (SemaphoreFullException) { }
             catch (ObjectDisposedException) { }
         }
-
-        /// <summary>0x00RRGGBB to the Chroma BGR integer,
-        /// R + (G &lt;&lt; 8) + (B &lt;&lt; 16).</summary>
-        internal static int ToBgr(int rgb)
-            => ((rgb >> 16) & 0xFF) | (rgb & 0xFF00) | ((rgb & 0xFF) << 16);
 
         /// <summary>The app-info JSON Synapse shows in its Connect tab, with
         /// the categories this session lights. Field names verbatim from the
@@ -214,11 +225,11 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Each category's color right now, in the canonical
         /// category order: a live Set Chroma Color on a slot that has a Razer
         /// device of the category, the smaller displayed number first, else
-        /// the category's ruling claim. A category a directly lit device
-        /// stands in for is left out (<see cref="Shadowed"/>), so the
-        /// session never lists it, and every other category is wanted as
-        /// before.</summary>
-        internal static List<KeyValuePair<string, int>> Wanted(LinkTable links, long now,
+        /// the category's ruling claim with its light colors. A category a
+        /// directly lit device stands in for is left out
+        /// (<see cref="Shadowed"/>), so the session never lists it, and
+        /// every other category is wanted as before.</summary>
+        internal static List<Want> Wanted(LinkTable links, long now,
             Func<int, ISet<Guid>> devicesOnSlot, Func<int, int> slotNumber)
         {
             var shadowed = Shadowed(links, now, devicesOnSlot, slotNumber);
@@ -245,23 +256,24 @@ namespace PadForge.Common.Input.Peripherals
                 }
             }
 
-            var wanted = new List<KeyValuePair<string, int>>();
+            var wanted = new List<Want>();
             foreach (var category in PeripheralLinker.ChromaCategories)
             {
                 if (shadowed != null && shadowed.Contains(category)) continue;
                 if (macros.TryGetValue(category, out var macro))
-                    wanted.Add(new KeyValuePair<string, int>(category, macro.Rgb));
-                else if (PeripheralOutputs.TryResolveColor(new OutputPath(OutputFamily.ChromaCategory, category), out int rgb))
-                    wanted.Add(new KeyValuePair<string, int>(category, rgb));
+                    wanted.Add(new Want(category, macro.Rgb, null));
+                else if (PeripheralOutputs.TryResolveColor(new OutputPath(OutputFamily.ChromaCategory, category),
+                             out int rgb, out var ruler))
+                    wanted.Add(new Want(category, rgb, ruler.Keys));
             }
             return wanted;
         }
 
-        private static bool SameCategories(List<KeyValuePair<string, int>> wanted, List<string> session)
+        private static bool SameCategories(List<Want> wanted, List<string> session)
         {
             if (session == null || session.Count != wanted.Count) return false;
             for (int i = 0; i < wanted.Count; i++)
-                if (wanted[i].Key != session[i]) return false;
+                if (wanted[i].Category != session[i]) return false;
             return true;
         }
 
@@ -269,7 +281,8 @@ namespace PadForge.Common.Input.Peripherals
         {
             string session = null;
             List<string> sessionCategories = null;
-            var lastSent = new Dictionary<string, int>();
+            // The effect each category last took, by its body.
+            var lastSent = new Dictionary<string, string>();
             // The rejection last logged per category, so a category refused
             // on every poll logs once. Cleared for a category when a color is
             // accepted there and for all when a session opens, so a refusal
@@ -317,7 +330,7 @@ namespace PadForge.Common.Input.Peripherals
                         if (session != null) await EndSessionAsync(session).ConfigureAwait(false);
                         session = null;
                         var categories = new List<string>(wanted.Count);
-                        foreach (var pair in wanted) categories.Add(pair.Key);
+                        foreach (var want in wanted) categories.Add(want.Category);
                         // HttpClient reports its own timeout as a
                         // TaskCanceledException, so the filter keeps a slow
                         // init on the retry path. Only a stop ends the loop.
@@ -359,13 +372,14 @@ namespace PadForge.Common.Input.Peripherals
                         }
                         if (!broken)
                         {
-                            foreach (var pair in wanted)
+                            foreach (var want in wanted)
                             {
-                                if (lastSent.TryGetValue(pair.Key, out int sent) && sent == pair.Value) continue;
-                                // A rejected PUT leaves the last color in place
-                                // so the next poll retries it.
-                                if (await SendStaticAsync(session, pair.Key, ToBgr(pair.Value), rejectLogged, ct).ConfigureAwait(false))
-                                    lastSent[pair.Key] = pair.Value;
+                                string body = ChromaLayouts.EffectBody(want.Category, want.Rgb, want.Keys);
+                                if (lastSent.TryGetValue(want.Category, out string sent) && sent == body) continue;
+                                // A rejected PUT leaves the last effect in
+                                // place, so the next poll retries it.
+                                if (await SendEffectAsync(session, want.Category, body, rejectLogged, ct).ConfigureAwait(false))
+                                    lastSent[want.Category] = body;
                             }
                         }
                     }
@@ -449,18 +463,16 @@ namespace PadForge.Common.Input.Peripherals
             return string.IsNullOrWhiteSpace(uri) ? null : uri.TrimEnd('/');
         }
 
-        /// <summary>PUTs CHROMA_STATIC to one category and returns whether it
+        /// <summary>PUTs an effect to one category and returns whether it
         /// was accepted. The REST server answers HTTP 200 with a nonzero
         /// "result" on a rejected effect, and Colore checks that field after
         /// every effect call (Rest/RestApi.cs SetEffectAsync), so acceptance
         /// is read from the body. A rejection is logged once per category and
         /// code until that category is accepted or a new session opens, which
         /// <paramref name="rejectLogged"/>, the worker's own map, keeps.</summary>
-        private async Task<bool> SendStaticAsync(string session, string category, int bgr,
+        private async Task<bool> SendEffectAsync(string session, string category, string body,
             Dictionary<string, string> rejectLogged, CancellationToken ct)
         {
-            string body = "{\"effect\":\"CHROMA_STATIC\",\"param\":{\"color\":"
-                + bgr.ToString(System.Globalization.CultureInfo.InvariantCulture) + "}}";
             using var resp = await _http.PutAsync(session + "/" + category, JsonContent(body), ct).ConfigureAwait(false);
             string reject = null;
             if (!resp.IsSuccessStatusCode)

@@ -493,6 +493,10 @@ namespace PadForge.Tests
             public string Address { get; }
             public volatile int Status = 200;
 
+            /// <summary>The status for one post by its path and body, or null
+            /// for <see cref="Status"/>.</summary>
+            public Func<string, string, int?> StatusFor;
+
             /// <summary>Runs on the server's thread with a post's path, after
             /// the post is recorded and before it is answered, so a test can
             /// hold the caller inside its call.</summary>
@@ -537,7 +541,7 @@ namespace PadForge.Tests
                     try { BeforeAnswer?.Invoke(ctx.Request.Url.AbsolutePath); } catch { }
                     try
                     {
-                        ctx.Response.StatusCode = Status;
+                        ctx.Response.StatusCode = StatusFor?.Invoke(ctx.Request.Url.AbsolutePath, body) ?? Status;
                         byte[] bytes = Encoding.UTF8.GetBytes("{}");
                         ctx.Response.ContentType = "application/json";
                         ctx.Response.ContentLength64 = bytes.Length;
@@ -653,11 +657,13 @@ namespace PadForge.Tests
             using var client = new GameSenseClient(server.WriteCoreProps(), 10000);
             Assert.True(client.TryConnect(now: 0));
             // The connect also removes every color event a dropped session
-            // left bound (#494).
-            var colorTypes = PadForge.Common.Input.Peripherals.PeripheralLinker.GameSenseColorTypes;
-            Assert.Equal(new[] { "/game_metadata", "/bind_game_event" }.Concat(colorTypes.Select(_ => "/remove_game_event")),
+            // left bound (#494), and the light event of each type that has
+            // lights (#557).
+            var removed = new[] { "COLOR_MOUSE", "LIGHTS_MOUSE", "COLOR_KEYBOARD", "LIGHTS_KEYBOARD", "COLOR_HEADSET" };
+            Assert.Equal(new[] { "mouse", "keyboard", "headset" }, PadForge.Common.Input.Peripherals.PeripheralLinker.GameSenseColorTypes);
+            Assert.Equal(new[] { "/game_metadata", "/bind_game_event" }.Concat(removed.Select(_ => "/remove_game_event")),
                 server.Paths());
-            Assert.Equal(colorTypes.Select(t => "COLOR_" + t.ToUpperInvariant()), server.EventsAt("/remove_game_event"));
+            Assert.Equal(removed, server.EventsAt("/remove_game_event"));
 
             Assert.True(client.Render(2, now: 10));
             Assert.True(client.Render(2, now: 20));            // same level: nothing posted

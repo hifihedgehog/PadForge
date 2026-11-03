@@ -24,7 +24,8 @@ namespace PadForge.Services
     /// carry. LogiLedInitWithName takes an ANSI char*, per the mangling
     /// (QEBD) and the Rust binding's CString call site. Optional exports
     /// (InitWithName, SetTargetDevice, Save, Restore,
-    /// SetLightingForTargetZone) degrade per export: old engines carry only
+    /// SetLightingForTargetZone, SetLightingForKeyWithKeyName) degrade per
+    /// export: old engines carry only
     /// 13 exports (proven by PE parse), and a missing optional must not kill
     /// the feature.
     ///
@@ -65,6 +66,11 @@ namespace PadForge.Services
         private delegate byte SetLightingFn(int redPct, int greenPct, int bluePct);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate byte SetZoneFn(int deviceType, int zone, int redPct, int greenPct, int bluePct);
+        // LogiLed::KeyName is an int-sized enum (W4 in the header's mangling,
+        // logitech-led-sdk-rs bindings-x86_64.rs), passed as int the way
+        // RGB.NET calls it (_LogitechGSDK.cs:140-141).
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate byte SetKeyFn(int keyName, int redPct, int greenPct, int bluePct);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate void VoidFn();
 
@@ -76,6 +82,7 @@ namespace PadForge.Services
         private BoolFn _restore;
         private SetLightingFn _setLighting;
         private SetZoneFn _setZone;
+        private SetKeyFn _setKey;
         private VoidFn _shutdown;
 
         /// <summary>The process names every reference gates on: G HUB's
@@ -164,6 +171,11 @@ namespace PadForge.Services
             // The 9.00 header's zone call (logitech-led-sdk-rs
             // bindings-x86_64.rs:354, RGB.NET _LogitechGSDK.cs:146).
             _setZone = Resolve<SetZoneFn>("LogiLedSetLightingForTargetZone");
+            // The per-key call RGB.NET paints per-key boards with
+            // (PerKey/LogitechPerKeyUpdateQueue.cs:31-41), one of the names
+            // the SDK's own LogitechLedEnginesWrapper.dll resolves in the
+            // engine.
+            _setKey = Resolve<SetKeyFn>("LogiLedSetLightingForKeyWithKeyName");
             detail = $"loaded {path}";
             return true;
         }
@@ -198,6 +210,16 @@ namespace PadForge.Services
         public bool ZoneCallsAvailable => _setZone != null;
 
         public bool TargetCallsAvailable => _setTarget != null;
+
+        public bool KeyCallsAvailable => _setKey != null;
+
+        public bool SetLightingForKeyWithKeyName(int keyName, int rPct, int gPct, int bPct)
+        {
+            var fn = _setKey;
+            if (fn == null) return false;
+            try { return fn(keyName, rPct, gPct, bPct) != 0; }
+            catch { return false; }
+        }
 
         public bool SetLightingForTargetZone(int deviceType, int zone, int rPct, int gPct, int bPct)
         {
@@ -242,6 +264,7 @@ namespace PadForge.Services
             _restore = null;
             _setLighting = null;
             _setZone = null;
+            _setKey = null;
             _shutdown = null;
             if (_module != IntPtr.Zero)
             {

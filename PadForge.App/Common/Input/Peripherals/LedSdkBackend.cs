@@ -56,6 +56,16 @@ namespace PadForge.Common.Input.Peripherals
         /// LogiLedSetLighting on their own target.</summary>
         bool ZoneCallsAvailable { get; }
 
+        /// <summary>LogiLedSetLightingForKeyWithKeyName in PERCENT 0-100: one
+        /// key of the per-key boards (#557). False when the engine lacks the
+        /// export or the call answers false.</summary>
+        bool SetLightingForKeyWithKeyName(int keyName, int rPct, int gPct, int bPct);
+
+        /// <summary>Whether the loaded engine exports
+        /// LogiLedSetLightingForKeyWithKeyName. Without it a per-key board
+        /// shows one color.</summary>
+        bool KeyCallsAvailable { get; }
+
         /// <summary>Restore, then shutdown, each swallowed.</summary>
         void RestoreAndShutdown();
 
@@ -77,6 +87,22 @@ namespace PadForge.Common.Input.Peripherals
     /// (RGB.NET's G213 at LogitechDeviceProvider.cs:99), and for a per-key
     /// keyboard the whole board through LogiLedSetTargetDevice(PERKEY_RGB) and
     /// LogiLedSetLighting.</para>
+    ///
+    /// <para>A claim that carries light colors (#557) paints its type light
+    /// by light on the type's map (<see cref="LogiLedKeys"/>): each zone
+    /// through its own zone call, and on a per-key board the background
+    /// through LogiLedSetLighting on the per-key target, then each key whose
+    /// color differs through LogiLedSetLightingForKeyWithKeyName. That is
+    /// RGB.NET's per-key call (PerKey/LogitechPerKeyUpdateQueue.cs:31-41)
+    /// behind Aurora's whole-board call (LogitechDevice.cs:94-135), so a key
+    /// the table lacks shows the background. The per-key bitmap call is not
+    /// used: the manual reads its bytes as RGBA (LogitechGamingLEDSDK.pdf
+    /// p.27) and LogiLed2Corsair reads them so (main.cpp:449-455), where
+    /// Aurora writes them blue first (LogitechDevice.cs:147-150), and its
+    /// table covers the US layout alone. After that whole picture only the
+    /// lights whose color changed go out, until a liveness round, a restore
+    /// or a new background sends the whole picture again. A claim with no
+    /// light colors paints one color as before.</para>
     ///
     /// <para>The LIGHTSYNC row's whole-device path lights the devices with no
     /// zones through LogiLedSetTargetDevice(RGB | MONOCHROME) and
@@ -208,6 +234,8 @@ namespace PadForge.Common.Input.Peripherals
             var ct = _cts.Token;
             int generation = Interlocked.Increment(ref s_generation);
             PeripheralOutputs.LightingChanged += Wake;
+            foreach (var pair in LogiLedKeys.Maps)
+                PeripheralLightMaps.Publish(new OutputPath(OutputFamily.LedSdkType, pair.Key), pair.Value);
             _loop = Task.Run(() => LoopAsync(ct, generation));
         }
 
@@ -215,6 +243,8 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (_cts == null) return;
             PeripheralOutputs.LightingChanged -= Wake;
+            foreach (var pair in LogiLedKeys.Maps)
+                PeripheralLightMaps.Remove(new OutputPath(OutputFamily.LedSdkType, pair.Key));
             _cts.Cancel();
             bool finished = true;
             try { finished = _loop == null || _loop.Wait(_stopWaitMs); } catch { }
@@ -244,14 +274,42 @@ namespace PadForge.Common.Input.Peripherals
             PeripheralOutputs.SetBackendState(OutputFamily.LedSdkType, state);
         }
 
-        /// <summary>Each claimed type's color right now, in path order.</summary>
-        internal static List<KeyValuePair<string, int>> Wanted()
+        /// <summary>What one type should show: a color, and the light colors
+        /// on top of it, null for none.</summary>
+        internal readonly record struct Want(string Type, int Rgb, KeyFrame Keys);
+
+        /// <summary>Each claimed type's color and light colors right now, in
+        /// path order.</summary>
+        internal static List<Want> Wanted()
         {
-            var wanted = new List<KeyValuePair<string, int>>();
+            var wanted = new List<Want>();
             foreach (var type in PeripheralLinker.LedSdkTypes)
-                if (PeripheralOutputs.TryResolveColor(new OutputPath(OutputFamily.LedSdkType, type), out int rgb))
-                    wanted.Add(new KeyValuePair<string, int>(type, rgb));
+                if (PeripheralOutputs.TryResolveColor(new OutputPath(OutputFamily.LedSdkType, type), out int rgb,
+                        out var ruler))
+                    wanted.Add(new Want(type, rgb, ruler.Keys));
             return wanted;
+        }
+
+        /// <summary>What a type shows: one color when <see cref="Colors"/>
+        /// is null, else a color per light of <see cref="Map"/> over
+        /// <see cref="Fill"/>.</summary>
+        internal sealed record Picture(int Rgb, LightMap Map, int[] Colors, int Fill)
+        {
+            public bool Same(Picture other)
+                => other != null && (Colors == null
+                    ? other.Colors == null && Rgb == other.Rgb
+                    : ReferenceEquals(Map, other.Map) && Fill == other.Fill && LightRenderer.Same(Colors, other.Colors));
+        }
+
+        /// <summary>The picture a want asks for: light by light when it
+        /// carries light colors and its type has a map, else one color.</summary>
+        internal static Picture PictureOf(Want want)
+        {
+            var map = LogiLedKeys.MapOf(want.Type);
+            if (map == null || want.Keys == null || want.Keys.IsEmpty)
+                return new Picture(want.Rgb, null, null, want.Rgb);
+            return new Picture(want.Rgb, map, LightRenderer.Render(map, want.Rgb, want.Keys),
+                LightRenderer.Fill(want.Rgb, want.Keys));
         }
 
         private async Task WaitAsync(int ms, CancellationToken ct)
@@ -267,10 +325,10 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>The claimed types, in path order, as one key.</summary>
-        private static string TypesOf(List<KeyValuePair<string, int>> wanted)
+        private static string TypesOf(List<Want> wanted)
         {
             var key = new System.Text.StringBuilder();
-            foreach (var pair in wanted) key.Append(pair.Key).Append(',');
+            foreach (var want in wanted) key.Append(want.Type).Append(',');
             return key.ToString();
         }
 
@@ -285,10 +343,10 @@ namespace PadForge.Common.Input.Peripherals
         };
 
         /// <summary>Whether this engine can paint any claimed type.</summary>
-        private bool AnyPaintable(List<KeyValuePair<string, int>> wanted)
+        private bool AnyPaintable(List<Want> wanted)
         {
-            foreach (var pair in wanted)
-                if (CanPaint(pair.Key)) return true;
+            foreach (var want in wanted)
+                if (CanPaint(want.Type)) return true;
             return false;
         }
 
@@ -406,6 +464,58 @@ namespace PadForge.Common.Input.Peripherals
             return any;
         }
 
+        /// <summary>
+        /// One type light by light (#557). With no <paramref name="last"/>
+        /// the whole picture goes out: on a per-key board the background
+        /// through LogiLedSetLighting on the per-key target, then every key
+        /// whose color differs from it, and every zone. Without the target
+        /// call that whole-board call would reach every device, so every key
+        /// goes out instead. With <paramref name="last"/>, the picture the
+        /// type shows on the same map and background, only the lights whose
+        /// color changed go out. True when any call took.
+        /// </summary>
+        private bool PaintLights(string type, Picture picture, Picture last)
+        {
+            var (code, _) = TypeOf(type);
+            if (code < 0) return false;
+            var lights = picture.Map.Lights;
+            var colors = picture.Colors;
+            bool any = false;
+            if (type == "keyboard")
+            {
+                bool target = _native.TargetCallsAvailable;
+                bool whole = last == null && target;
+                if (target) _native.SetTarget(LogiDeviceTypePerKey);
+                if (whole) any |= SetLighting(picture.Fill);
+                if (_native.KeyCallsAvailable)
+                    for (int i = 0; i < lights.Count; i++)
+                    {
+                        if (!LogiLedKeys.IsKey(lights[i])) continue;
+                        bool send = last != null ? colors[i] != last.Colors[i] : !whole || colors[i] != picture.Fill;
+                        if (!send) continue;
+                        int rgb = colors[i];
+                        any |= _native.SetLightingForKeyWithKeyName(lights[i].Address,
+                            ToPercent((rgb >> 16) & 0xFF), ToPercent((rgb >> 8) & 0xFF), ToPercent(rgb & 0xFF));
+                    }
+            }
+            // The mask is sticky global state, so it goes back to every type
+            // before the zone calls, as in the one-color paint.
+            _native.SetTarget(LogiDeviceTypeAll);
+            if (_native.ZoneCallsAvailable)
+                for (int i = 0; i < lights.Count; i++)
+                {
+                    if (LogiLedKeys.IsKey(lights[i])) continue;
+                    if (last != null && colors[i] == last.Colors[i]) continue;
+                    int rgb = colors[i];
+                    any |= _native.SetLightingForTargetZone(code, lights[i].Address - LogiLedKeys.ZoneBase,
+                        ToPercent((rgb >> 16) & 0xFF), ToPercent((rgb >> 8) & 0xFF), ToPercent(rgb & 0xFF));
+                }
+            return any;
+        }
+
+        private bool SetLighting(int rgb)
+            => _native.SetLighting(ToPercent((rgb >> 16) & 0xFF), ToPercent((rgb >> 8) & 0xFF), ToPercent(rgb & 0xFF));
+
         private async Task LoopAsync(CancellationToken ct, int generation)
         {
             bool loaded = false;
@@ -518,7 +628,7 @@ namespace PadForge.Common.Input.Peripherals
                     unpaintableLogged = null;
                     PadForge.Engine.SdlDiagLog.WriteLine("PERIPHERAL LED SDK session open");
 
-                    var sent = new Dictionary<string, int>();
+                    var sent = new Dictionary<string, Picture>();
                     long lastRound = Environment.TickCount64 - _livenessMs;
                     int failStreak = 0;
                     bool reinit = false;
@@ -534,8 +644,8 @@ namespace PadForge.Common.Input.Peripherals
                         foreach (var type in sent.Keys)
                         {
                             bool still = false;
-                            foreach (var pair in wanted)
-                                if (pair.Key == type) { still = true; break; }
+                            foreach (var want in wanted)
+                                if (want.Type == type) { still = true; break; }
                             if (!still) { dropped = true; break; }
                         }
                         if (dropped)
@@ -550,21 +660,30 @@ namespace PadForge.Common.Input.Peripherals
                         if (round) lastRound = now;
                         bool took = false;
                         bool repaintAll = false;
-                        foreach (var pair in wanted)
+                        foreach (var want in wanted)
                         {
                             // A type this engine cannot paint counts for
                             // nothing.
-                            if (!CanPaint(pair.Key)) continue;
-                            if (!round && !repaintAll && sent.TryGetValue(pair.Key, out int last) && last == pair.Value)
-                                continue;
-                            took |= Paint(pair.Key, pair.Value);
+                            if (!CanPaint(want.Type)) continue;
+                            var picture = PictureOf(want);
+                            sent.TryGetValue(want.Type, out var last);
+                            if (!round && !repaintAll && picture.Same(last)) continue;
+                            // Light by light, only what changed goes out
+                            // between rounds, on the map and background
+                            // the type shows.
+                            var shown = !round && !repaintAll && picture.Colors != null && last?.Colors != null
+                                        && ReferenceEquals(last.Map, picture.Map) && last.Fill == picture.Fill
+                                ? last : null;
+                            took |= picture.Colors == null
+                                ? Paint(want.Type, want.Rgb)
+                                : PaintLights(want.Type, picture, shown);
                             // Recorded whether or not it took, so a type that
                             // fails waits for a new color or the next round
                             // instead of going out on every poll.
-                            sent[pair.Key] = pair.Value;
+                            sent[want.Type] = picture;
                             // The whole-device call reaches zonal devices
                             // too, so every type after it goes out again.
-                            if (pair.Key == PeripheralLinker.LedSdkWholeDevices) repaintAll = true;
+                            if (want.Type == PeripheralLinker.LedSdkWholeDevices) repaintAll = true;
                         }
                         if (took) failStreak = 0;
                         else if (round && ++failStreak >= 3)

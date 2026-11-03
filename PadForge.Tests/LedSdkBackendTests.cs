@@ -39,6 +39,9 @@ namespace PadForge.Tests
             /// <summary>False for an engine without the target export.</summary>
             public volatile bool TargetOk = true;
             public bool TargetCallsAvailable => TargetOk;
+            /// <summary>False for an engine without the per-key export.</summary>
+            public volatile bool KeyOk = true;
+            public bool KeyCallsAvailable => KeyOk;
             /// <summary>The device type whose zone calls answer false, or -1.</summary>
             public volatile int FailingType = -1;
             /// <summary>Holds the first Init until set, a native call that
@@ -67,6 +70,11 @@ namespace PadForge.Tests
             {
                 Log($"zone:{type}:{zone}:{r},{g},{b}");
                 return SetOk && ZoneOk && type != FailingType;
+            }
+            public bool SetLightingForKeyWithKeyName(int keyName, int r, int g, int b)
+            {
+                Log($"key:{keyName:X}:{r},{g},{b}");
+                return SetOk && KeyOk;
             }
             public void RestoreAndShutdown() => Log("restore-shutdown");
             public void Unload() => Log("unload");
@@ -541,6 +549,161 @@ namespace PadForge.Tests
             Thread.Sleep(50);
             Assert.Equal(0, native.Count("restore-shutdown"));
             Assert.Equal(BackendState.Connected, PeripheralOutputs.StateOf(OutputFamily.LedSdkType));
+        }
+
+        // ─────────────────────────────────────────────
+        //  Light by light (#557)
+        // ─────────────────────────────────────────────
+
+        /// <summary>W's KeyName, its set 1 scan code (LogitechLEDLib.h:72).</summary>
+        private const int KeyNameW = 0x11;
+
+        private static KeyFrame Frame(Dictionary<ushort, int> keys = null, Dictionary<string, int> groups = null)
+            => new(keys, groups, null, null);
+
+        /// <summary>The calls after the last session's save.</summary>
+        private static string[] AfterSave(FakeNative native)
+        {
+            var calls = native.Calls;
+            return calls.Skip(Array.LastIndexOf(calls, "save") + 1).ToArray();
+        }
+
+        /// <summary>
+        /// W in red over a blue claim on the keyboard type: the background on
+        /// the per-key target, then the one key that differs from it by
+        /// KeyName in percent, the mask back to every type, and the five
+        /// zones in the background. A new color for W sends W alone, the
+        /// same picture sends nothing, and a zone's color sends that zone
+        /// alone.
+        /// </summary>
+        [Fact]
+        public void AKeyboardFrame_PaintsTheBackground_ThenEachDifferentKey_ThenOnlyWhatChanges()
+        {
+            var native = new FakeNative();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Type("keyboard") } });
+            using var backend = Backend(native);
+            backend.Start();
+            Assert.Same(LogiLedKeys.MapOf("keyboard"), PeripheralLightMaps.For(Type("keyboard")));
+
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x00, 0x00, 0xFF,
+                keys: Frame(new Dictionary<ushort, int> { [0x1A] = 0xFF0000 }));
+            Assert.True(WaitFor(() => native.Count("zone:0:4:0,0,100") == 1), "the keyboard was painted");
+            Assert.Equal(new[]
+            {
+                "target:4", "set:0,0,100", $"key:{KeyNameW:X}:100,0,0", "target:7",
+                "zone:0:0:0,0,100", "zone:0:1:0,0,100", "zone:0:2:0,0,100", "zone:0:3:0,0,100", "zone:0:4:0,0,100",
+            }, AfterSave(native));
+
+            int before = native.Calls.Length;
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x00, 0x00, 0xFF,
+                keys: Frame(new Dictionary<ushort, int> { [0x1A] = 0x00FF00 }));
+            Assert.True(WaitFor(() => native.Count($"key:{KeyNameW:X}:0,100,0") == 1), "W went out again");
+            Assert.True(WaitFor(() => native.Calls.Length >= before + 3));
+            Assert.Equal(new[] { "target:4", $"key:{KeyNameW:X}:0,100,0", "target:7" }, native.Calls.Skip(before).ToArray());
+
+            // An equal frame: nothing more.
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x00, 0x00, 0xFF,
+                keys: Frame(new Dictionary<ushort, int> { [0x1A] = 0x00FF00 }));
+            Thread.Sleep(100);
+            Assert.Equal(before + 3, native.Calls.Length);
+
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x00, 0x00, 0xFF,
+                keys: Frame(new Dictionary<ushort, int> { [0x1A] = 0x00FF00 },
+                    new Dictionary<string, int> { [LightGroups.Zone(2)] = 0xFF0000 }));
+            Assert.True(WaitFor(() => native.Count("zone:0:1:100,0,0") == 1), "zone 2 went out");
+            Assert.True(WaitFor(() => native.Calls.Length >= before + 6));
+            Assert.Equal(new[] { "target:4", "target:7", "zone:0:1:100,0,0" }, native.Calls.Skip(before + 3).ToArray());
+
+            // The light colors go: the one-color paint, as before #557.
+            int oneColor = native.Calls.Length;
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x00, 0x00, 0xFF);
+            Assert.True(WaitFor(() => native.Calls.Length >= oneColor + 8));
+            Assert.Equal(new[]
+            {
+                "target:4", "set:0,0,100", "target:7",
+                "zone:0:0:0,0,100", "zone:0:1:0,0,100", "zone:0:2:0,0,100", "zone:0:3:0,0,100", "zone:0:4:0,0,100",
+            }, native.Calls.Skip(oneColor).ToArray());
+
+            backend.Stop();
+            Assert.Null(PeripheralLightMaps.For(Type("keyboard")));
+        }
+
+        /// <summary>A new background sends the whole picture again: the
+        /// background call reaches every key the map lacks.</summary>
+        [Fact]
+        public void ANewBackground_SendsTheWholePictureAgain()
+        {
+            var native = new FakeNative();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Type("keyboard") } });
+            using var backend = Backend(native);
+            backend.Start();
+            var keys = new Dictionary<ushort, int> { [0x1A] = 0xFF0000 };
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x00, 0x00, 0xFF, keys: Frame(keys));
+            Assert.True(WaitFor(() => native.Count("zone:0:4:0,0,100") == 1));
+            int before = native.Calls.Length;
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x00, 0xFF, 0x00, keys: Frame(keys));
+            Assert.True(WaitFor(() => native.Count("zone:0:4:0,100,0") == 1));
+            Assert.Equal(new[]
+            {
+                "target:4", "set:0,100,0", $"key:{KeyNameW:X}:100,0,0", "target:7",
+                "zone:0:0:0,100,0", "zone:0:1:0,100,0", "zone:0:2:0,100,0", "zone:0:3:0,100,0", "zone:0:4:0,100,0",
+            }, native.Calls.Skip(before).ToArray());
+        }
+
+        /// <summary>An engine without the per-key export paints the per-key
+        /// board in the background alone, and its zones light by light.</summary>
+        [Fact]
+        public void AnEngineWithoutTheKeyCall_PaintsTheBoardInTheBackground()
+        {
+            var native = new FakeNative { KeyOk = false };
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Type("keyboard") } });
+            using var backend = Backend(native);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x00, 0x00, 0xFF,
+                keys: Frame(new Dictionary<ushort, int> { [0x1A] = 0xFF0000 },
+                    new Dictionary<string, int> { [LightGroups.Zone(1)] = 0xFF0000 }));
+            Assert.True(WaitFor(() => native.Count("zone:0:4:0,0,100") == 1));
+            Assert.Equal(new[]
+            {
+                "target:4", "set:0,0,100", "target:7",
+                "zone:0:0:100,0,0", "zone:0:1:0,0,100", "zone:0:2:0,0,100", "zone:0:3:0,0,100", "zone:0:4:0,0,100",
+            }, AfterSave(native));
+        }
+
+        /// <summary>Without the target call the background call would reach
+        /// every device, so it is not sent, and every key goes out on its
+        /// own: the 104 keys, nine G-keys, the logo and the badge.</summary>
+        [Fact]
+        public void AnEngineWithoutTheTargetCall_SendsEveryKey()
+        {
+            var native = new FakeNative { TargetOk = false };
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Type("keyboard") } });
+            using var backend = Backend(native);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x00, 0x00, 0xFF,
+                keys: Frame(new Dictionary<ushort, int> { [0x1A] = 0xFF0000 }));
+            Assert.True(WaitFor(() => native.Count("zone:0:4:0,0,100") == 1));
+            var calls = AfterSave(native);
+            Assert.DoesNotContain(calls, c => c.StartsWith("set:"));
+            Assert.Equal(115, calls.Count(c => c.StartsWith("key:")));
+            Assert.Equal(114, calls.Count(c => c.StartsWith("key:") && c.EndsWith(":0,0,100")));
+            Assert.Contains($"key:{KeyNameW:X}:100,0,0", calls);
+            Assert.Contains("key:FFFF1:0,0,100", calls);
+        }
+
+        /// <summary>A mouse frame paints each of the three zones its own
+        /// color.</summary>
+        [Fact]
+        public void AMouseFrame_PaintsEachZoneItsOwnColor()
+        {
+            var native = new FakeNative();
+            Link(new DeviceLinks { Device = Mouse, Lighting = new[] { Type("mouse") } });
+            using var backend = Backend(native);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Mouse, slot: 0, player: 1, 0x00, 0x00, 0xFF,
+                keys: Frame(groups: new Dictionary<string, int> { [LightGroups.Zone(2)] = 0xFF0000 }));
+            Assert.True(WaitFor(() => native.Count("zone:3:2:0,0,100") == 1));
+            Assert.Equal(new[] { "target:7", "zone:3:0:0,0,100", "zone:3:1:100,0,0", "zone:3:2:0,0,100" }, AfterSave(native));
         }
     }
 }

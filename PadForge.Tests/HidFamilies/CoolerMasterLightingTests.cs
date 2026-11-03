@@ -157,7 +157,7 @@ namespace PadForge.Tests
         public void MasterPlus_IsAProgramOfTheTable()
         {
             Assert.Contains(VendorPrograms.MasterPlus, VendorPrograms.All);
-            Assert.Same(VendorPrograms.MasterPlus, VendorPrograms.All[^1]);
+            Assert.Equal(1, VendorPrograms.All.Count(p => ReferenceEquals(p, VendorPrograms.MasterPlus)));
             Assert.Equal("MasterPlus", VendorPrograms.MasterPlus.Name);
             Assert.True(VendorPrograms.MasterPlus.Owns("MasterPlus(PER. Only)"));
             Assert.True(VendorPrograms.MasterPlus.Owns("cm-blackhawk"));

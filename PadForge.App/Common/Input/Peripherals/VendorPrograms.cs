@@ -121,12 +121,20 @@ namespace PadForge.Common.Input.Peripherals
         /// No source code names the program's processes.</summary>
         public static readonly VendorProgram MasterPlus = new("MasterPlus", "MasterPlus", "cm-blackhawk");
 
+        /// <summary>HyperX NGENUITY, which lights HyperX keyboards. Its
+        /// executable is NGenuity.exe (FreeFixer's file entry "What is
+        /// NGenuity.exe?", and the file list Advanced Uninstaller PRO gives
+        /// for HyperX NGenuity Software), and its Microsoft Store build runs
+        /// NGenuity2Helper.exe, which the same prefix takes in. No source code
+        /// names the program's processes.</summary>
+        public static readonly VendorProgram Ngenuity = new("NGENUITY", "NGenuity");
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
         {
             LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor,
-            MasterPlus,
+            MasterPlus, Ngenuity,
         };
     }
 

@@ -113,11 +113,25 @@ namespace PadForge.Common.Input.Peripherals
         /// productName (Bazecor package.json:3).</summary>
         public static readonly VendorProgram Bazecor = new("Bazecor", "Bazecor");
 
+        /// <summary>MSI's Mystic Light, which lights MSI's Mystic Light
+        /// keyboards. Aurora counts it as running while
+        /// Mystic_Light_Service.exe runs (Aurora
+        /// AuroraDeviceManager/Devices/RGBNet/Implementations/MsiDevice.cs:22-26).</summary>
+        public static readonly VendorProgram MsiMysticLight = new("Mystic Light", "Mystic_Light_Service");
+
+        /// <summary>SteelSeries GG, which lights the SteelSeries controllers
+        /// of MSI laptops (MSI FAQ 2540: a model whose downloads list
+        /// SteelSeries GG has its keyboard lit through it), by the process
+        /// names the linker counts GG by
+        /// (<see cref="PeripheralPresence.SteelSeriesHostPrefixes"/>).</summary>
+        public static readonly VendorProgram SteelSeriesGG = new("SteelSeries GG", PeripheralPresence.SteelSeriesHostPrefixes);
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
         {
             LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor,
+            MsiMysticLight, SteelSeriesGG,
         };
     }
 

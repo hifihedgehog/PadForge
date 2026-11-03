@@ -23,12 +23,32 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The usage or label of an OpenRGB key name. False for
         /// a name this table does not hold.</summary>
         public static bool TryGet(string name, out ushort usage, out LightLabel label)
+            => TryGet(name, out usage, out label, out _);
+
+        /// <summary>The usage or label of an OpenRGB key name, and the
+        /// number a G-key's label carries (G1 is 1). False for a name this
+        /// table does not hold.</summary>
+        public static bool TryGet(string name, out ushort usage, out LightLabel label, out int labelNumber)
         {
             usage = 0;
             label = LightLabel.None;
+            labelNumber = 0;
             if (name == null) return false;
             if (s_usages.TryGetValue(name, out usage)) return true;
-            return s_labels.TryGetValue(name, out label);
+            if (s_labels.TryGetValue(name, out label)) return true;
+            // The G-keys families name in their edit lists, "Key: G1" in
+            // Corsair's (CorsairPeripheralV2Devices.cpp:67-72) and the G910's
+            // (RGBController_LogitechHIDPP20.cpp:848-857), "G1" in the G915
+            // X's (lines 443-451).
+            string g = name.StartsWith("Key: ", StringComparison.Ordinal) ? name.Substring(5) : name;
+            if (g.Length >= 2 && g.Length <= 3 && g[0] == 'G' && g[1] != '0'
+                && int.TryParse(g.AsSpan(1), System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out int n))
+            {
+                label = LightLabel.GKey;
+                labelNumber = n;
+                return true;
+            }
+            return false;
         }
 
         private static readonly Dictionary<string, ushort> s_usages = new(StringComparer.Ordinal)
@@ -179,6 +199,27 @@ namespace PadForge.Common.Input.Peripherals
             ["Key: Media Stop"] = LightLabel.Stop,
             ["Key: Media Mute"] = LightLabel.Mute,
             ["Key: Brightness"] = LightLabel.Brightness,
+            // Names the families' own edit lists give the lights they add,
+            // which KeyboardLayoutManager carries into a layout (#557). The
+            // Logitech strips (RGBController_LogitechHIDPP20.cpp:423-456 and
+            // 794-830) leave off "Key: ", and their Lighting key, 0x4001, is
+            // the brightness key HidppKeyMap labels the same way. Cooler
+            // Master's CK550 V2 marks its Num, Caps and Scroll Lock lights
+            // N, C and S (CMKeyboardDevices.cpp:675-677).
+            ["Brightness"] = LightLabel.Brightness,
+            ["Lighting"] = LightLabel.Brightness,
+            ["Media Play/Pause"] = LightLabel.PlayPause,
+            ["Media Previous"] = LightLabel.Previous,
+            ["Media Next"] = LightLabel.Next,
+            ["Media Mute"] = LightLabel.Mute,
+            ["Game Mode"] = LightLabel.GameMode,
+            ["Game Mode Indicator"] = LightLabel.GameMode,
+            ["Num Lock Indicator"] = LightLabel.NumLock,
+            ["Caps Lock Indicator"] = LightLabel.CapsLock,
+            ["Scroll Lock Indicator"] = LightLabel.ScrollLock,
+            ["Indicator: N"] = LightLabel.NumLock,
+            ["Indicator: C"] = LightLabel.CapsLock,
+            ["Indicator: S"] = LightLabel.ScrollLock,
         };
     }
 }

@@ -226,6 +226,7 @@ namespace PadForge.Common.Input.Peripherals
             MintakaKeyboardLighting.Instance,
             SkyloongKeyboardLighting.Instance,
             WitmodKeyboardLighting.Instance,
+            WinbondKeyboardLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

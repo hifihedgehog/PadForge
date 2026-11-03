@@ -221,14 +221,18 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>The model of one keyboard, the same object at every look
-        /// while its two paths stay.</summary>
+        /// while its two paths stay. Locked: a worker a timed-out Stop left
+        /// behind can look while the next one does.</summary>
         private HidLightingModel ModelFor(OpenRgbRegistration registration, HidCollectionInfo control, string ledPath)
         {
             string key = control.Path + "|" + ledPath;
-            if (_models.TryGetValue(key, out var model)) return model;
-            model = Model(registration.Name, control.VendorId, control.ProductId, ledPath);
-            _models[key] = model;
-            return model;
+            lock (_models)
+            {
+                if (_models.TryGetValue(key, out var model)) return model;
+                model = Model(registration.Name, control.VendorId, control.ProductId, ledPath);
+                _models[key] = model;
+                return model;
+            }
         }
 
         internal HidLightingModel Model(string name, ushort vendorId, ushort productId, string ledPath)

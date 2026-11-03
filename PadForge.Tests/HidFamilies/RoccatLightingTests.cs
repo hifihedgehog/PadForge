@@ -534,6 +534,18 @@ namespace PadForge.Tests
             Assert.Equal("ctrl", Assert.Single(shots).Item1);
         }
 
+        /// <summary>The LED and control collections OpenRGB opens per
+        /// product (RoccatControllerDetect.cpp:125-153).</summary>
+        [Fact]
+        public void TheTwoCollections_AreOpenRgbs()
+        {
+            foreach (ushort pid in new ushort[] { 0x30F7, 0x311A, 0x314C, 0x3124, 0x69A0, 0x2F4E, 0x2F09, 0x2EE2, 0x501B })
+                Assert.Equal((3, 0xFF00, 1, 0xFF01), RoccatVulcanLighting.Interfaces(pid));
+            Assert.Equal((4, 0xFF00, 1, 0x0001), RoccatVulcanLighting.Interfaces(0x5001));
+            foreach (ushort pid in new ushort[] { 0x307A, 0x3098, 0x2FEE, 0x5023 })
+                Assert.Equal((3, 0x0001, 1, 0x000B), RoccatVulcanLighting.Interfaces(pid));
+        }
+
         /// <summary>The look pairs a control collection with the LED
         /// collection in its container and leaves a keyboard whose LED
         /// collection is missing or elsewhere.</summary>

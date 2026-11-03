@@ -176,6 +176,15 @@ namespace PadForge.Common.Input.Peripherals
         public abstract HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
             IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors);
 
+        /// <summary>The map of the device this session opened, read from the
+        /// device, or null to keep the model's (<see cref="HidLightingModel.Map"/>).
+        /// Read once, right after the session begins. While the session is
+        /// open the worker publishes it, with the names Map Key Lights
+        /// learned for it, renders every picture by it and hands
+        /// <see cref="Paint"/> its lights, and the model's map goes back
+        /// when the unit closes.</summary>
+        public virtual LightMap Map => null;
+
         /// <summary>How long a picture that came back
         /// <see cref="HidLightingPaint.Later"/> waits before the next
         /// try.</summary>

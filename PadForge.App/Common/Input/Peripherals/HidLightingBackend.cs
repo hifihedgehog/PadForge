@@ -106,14 +106,15 @@ namespace PadForge.Common.Input.Peripherals
             /// for a HID collection of the host's walk.</summary>
             public IOwnLookFamily Own;
 
-            /// <summary>The container came with the look and is not looked
-            /// up.</summary>
-            public bool FixedContainer;
-
             public bool BuiltInKeyboard;
 
-            /// <summary>The published map: the model's with the learned
-            /// names applied.</summary>
+            /// <summary>The map the open session read from the device
+            /// (<see cref="HidLightingSession.Map"/>), or null for the
+            /// model's.</summary>
+            public LightMap SessionMap;
+
+            /// <summary>The published map: the session's, else the model's,
+            /// with the learned names applied.</summary>
             public LightMap Map;
 
             public bool Asleep;
@@ -404,7 +405,9 @@ namespace PadForge.Common.Input.Peripherals
                     var frames = released ? null : unit.Session?.CrashFrames;
                     bool feature = unit.Session?.Feature ?? true;
                     var own = unit.Own != null ? unit.Model.WriteOnce : null;
-                    Close(unit);
+                    // The maps are taken down below, and a successor's are
+                    // its own, so no map goes back here.
+                    Close(unit, restoreMap: false);
                     // A hand-back that did not go out on the worker's
                     // channel goes out through a report of its own, as on
                     // the crash path, where the session names frames for it.
@@ -485,9 +488,10 @@ namespace PadForge.Common.Input.Peripherals
                         {
                             Path = device.Key, VendorId = device.VendorId, ProductId = device.ProductId,
                             Model = device.Model, Own = own, BuiltInKeyboard = device.BuiltInKeyboard,
-                            Container = device.Container, FixedContainer = device.Container != Guid.Empty,
+                            Container = device.Container,
                         };
-                        if (!unit.FixedContainer) LookUpContainer(unit, now);
+                        // A container the look gave is taken as it is.
+                        if (unit.Container == Guid.Empty) LookUpContainer(unit, now);
                         Found(units, unit);
                         changed = true;
                     }
@@ -504,7 +508,7 @@ namespace PadForge.Common.Input.Peripherals
                     continue;
                 }
                 // The device is gone, so there is nothing to hand back to.
-                Close(unit);
+                Close(unit, restoreMap: false);
                 PeripheralLightMaps.Remove(PathOf(unit));
                 units.RemoveAt(i);
                 changed = true;
@@ -530,11 +534,14 @@ namespace PadForge.Common.Input.Peripherals
                 $"PERIPHERAL HidLighting found {unit.Label} ({unit.Model.Family?.Name}), {unit.Model.Map.Lights.Count} lights");
         }
 
-        /// <summary>Publishes the unit's map with the names Map Key Lights
-        /// learned for the model.</summary>
+        /// <summary>Publishes the unit's map, the one its open session read
+        /// from the device or else the model's, with the names Map Key
+        /// Lights learned for it, as the SteelSeries worker swaps a unit's
+        /// map once its SKU answers (SteelSeriesDirectBackend.SyncMap).</summary>
         private static void PublishMap(Unit unit)
         {
-            var map = LearnedKeyMaps.Apply(unit.Model.Map) ?? unit.Model.Map;
+            var source = unit.SessionMap ?? unit.Model.Map;
+            var map = LearnedKeyMaps.Apply(source) ?? source;
             if (ReferenceEquals(map, unit.Map)) return;
             unit.Map = map;
             PeripheralLightMaps.Publish(PathOf(unit), map);
@@ -739,6 +746,12 @@ namespace PadForge.Common.Input.Peripherals
             unit.PendingMap = null;
             unit.LaterAt = 0;
             unit.CheckAt = _ticks() + unit.Model.RecheckMs;
+            // A session that read the device's own map lights and publishes
+            // by it from now on (HidLightingSession.Map).
+            LightMap read = null;
+            try { read = session.Map; } catch { }
+            unit.SessionMap = read;
+            if (read != null) PublishMap(unit);
             // A session that finds colors of an earlier run's names their
             // undoing from its first moment.
             Track(unit);
@@ -862,7 +875,11 @@ namespace PadForge.Common.Input.Peripherals
             PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} {why}, listed asleep");
         }
 
-        private void Close(Unit unit)
+        /// <summary>Closes the unit's channel and drops its session. The
+        /// model's map goes back up where the session had put its own, unless
+        /// <paramref name="restoreMap"/> is false because the unit's map is
+        /// taken down next.</summary>
+        private void Close(Unit unit, bool restoreMap = true)
         {
             Unrecord(unit);
             var handle = unit.Handle;
@@ -874,6 +891,11 @@ namespace PadForge.Common.Input.Peripherals
             unit.Pending = null;
             unit.PendingMap = null;
             unit.LaterAt = 0;
+            if (unit.SessionMap != null)
+            {
+                unit.SessionMap = null;
+                if (restoreMap) PublishMap(unit);
+            }
             try { handle?.Dispose(); } catch { }
         }
 

@@ -23,6 +23,9 @@ namespace PadForge.Tests
         public volatile bool BeginFails;
         public volatile bool HandBackFails;
 
+        /// <summary>The map a session reads from the device, or null.</summary>
+        public volatile LightMap SessionMap;
+
         /// <summary>Set: the next paint waits on it, after it sets
         /// <see cref="Held"/>.</summary>
         public volatile ManualResetEventSlim Hold;
@@ -109,6 +112,8 @@ namespace PadForge.Tests
         }
 
         public override bool Feature => false;
+
+        public override LightMap Map => _family.SessionMap;
 
         public override byte[][] CrashFrames => _crash;
 
@@ -429,6 +434,107 @@ namespace PadForge.Tests
             Assert.Equal(0, Volatile.Read(ref repairs));
             Assert.Equal(0, Volatile.Read(ref _hidOpens));
             Assert.Empty(family.Calls());
+        }
+
+        /// <summary>A board the session read three lights from: an ISO
+        /// board's key the model lacks among them.</summary>
+        private static LightMap DeviceMap() => new(new[]
+        {
+            new LightInfo(0, LightKind.Zone, 0, LightKeySource.None),
+            new LightInfo(1, LightKind.Key, 0x29, LightKeySource.Device),
+            new LightInfo(7, LightKind.Key, 0, LightKeySource.None),
+        }, "device") { Product = "fake:own" };
+
+        /// <summary>A session that read the device's own map: the worker
+        /// publishes it and renders by it while the session is open, and the
+        /// model's map goes back when the unit closes.</summary>
+        [Fact]
+        public void ASessionsOwnMap_IsPublishedAndPaintedWhileItIsOpen_AndTheModelsComesBack()
+        {
+            _family.Found = new[] { Laptop() };
+            _family.SessionMap = DeviceMap();
+            using var backend = Started();
+            Assert.Same(_family.Model.Map, PeripheralLightMaps.For(Path));
+
+            Link();
+            Light(0x112233);
+            Passes(backend);
+            Assert.Same(_family.SessionMap, PeripheralLightMaps.For(Path));
+            // Three colors, the session map's lights in its order.
+            Assert.Contains("paint " + Key + " io=null 112233,112233,112233", _family.Calls());
+
+            Unlight();
+            Passes(backend);
+            Assert.Same(_family.Model.Map, PeripheralLightMaps.For(Path));
+        }
+
+        [Fact]
+        public void ASessionWithNoMapOfItsOwn_KeepsTheModels()
+        {
+            _family.Found = new[] { Laptop() };
+            using var backend = Started();
+            Link();
+            Light(0x112233);
+            Passes(backend);
+            Assert.Same(_family.Model.Map, PeripheralLightMaps.For(Path));
+            Assert.Contains("paint " + Key + " io=null 112233,112233", _family.Calls());
+        }
+
+        /// <summary>Names Map Key Lights learned apply to the session's map,
+        /// at once and when they change, and the pictures follow them.</summary>
+        [Fact]
+        public void LearnedNames_ApplyToTheSessionsMap()
+        {
+            LearnedKeyMaps.ResetForTest();
+            try
+            {
+                _family.Found = new[] { Laptop() };
+                _family.SessionMap = DeviceMap();
+                using var backend = Started();
+                Link();
+                Light(0x112233);
+                Passes(backend);
+                Assert.Equal(0, PeripheralLightMaps.For(Path).Lights[2].Usage);
+
+                // Light 7 learned as A, and a key frame that colors A.
+                LearnedKeyMaps.Set("fake:own", 7, 0x04);
+                PeripheralOutputs.SetLighting(Device, slot: 0, player: 1, 0x11, 0x22, 0x33,
+                    keys: new KeyFrame(new Dictionary<ushort, int> { [0x04] = 0xFF0000 }, null, null, null));
+                Passes(backend, 3);
+                var published = PeripheralLightMaps.For(Path);
+                Assert.Equal(3, published.Lights.Count);
+                Assert.Equal((ushort)0x04, published.Lights[2].Usage);
+                Assert.Equal(LightKeySource.Learned, published.Lights[2].KeySource);
+                Assert.Contains("paint " + Key + " io=null 112233,112233,FF0000", _family.Calls());
+            }
+            finally
+            {
+                LearnedKeyMaps.ResetForTest();
+            }
+        }
+
+        /// <summary>A unit that fails goes back to the model's map with its
+        /// session, and one that leaves takes its map down.</summary>
+        [Fact]
+        public void AFailedOrGoneUnit_LeavesNoSessionMapBehind()
+        {
+            _family.Found = new[] { Laptop() };
+            _family.SessionMap = DeviceMap();
+            using var backend = Started();
+            Link();
+            Light(0x112233);
+            Passes(backend);
+            Assert.Same(_family.SessionMap, PeripheralLightMaps.For(Path));
+
+            _family.PaintFails = true;
+            Light(0x445566);
+            Passes(backend);
+            Assert.True(Assert.Single(backend.Snapshot.Units).Asleep);
+            Assert.Same(_family.Model.Map, PeripheralLightMaps.For(Path));
+
+            _family.Found = Array.Empty<OwnDevice>();
+            Walk(backend);
+            Assert.Null(PeripheralLightMaps.For(Path));
         }
 
         [Fact]

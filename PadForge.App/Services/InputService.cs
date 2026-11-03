@@ -932,6 +932,7 @@ namespace PadForge.Services
             // dialog arms a capture.
             PadForge.Common.Input.HandheldButtonRegistry.RegistryChanged += OnHandheldRegistryChanged;
             PadForge.Common.Input.Peripherals.LearnedKeyMaps.Changed += OnLearnedKeyMapsChanged;
+            PadForge.Common.Input.Peripherals.KeyboardProfileBackups.Changed += OnKeyboardProfileBackupsChanged;
             PadForge.Common.Input.HandheldButtonRegistry.ActivityChanged += OnHandheldActivityChanged;
             // Analog keyboards (#468): a key list that grows rebuilds the
             // pickers and the preview's order, the handheld fan-out.
@@ -2641,6 +2642,7 @@ namespace PadForge.Services
             try { PadForge.Common.Input.Twitch.ChatCommandRegistry.RegistryChanged -= OnChatCommandRegistryChanged; } catch { }
             try { PadForge.Common.Input.HandheldButtonRegistry.RegistryChanged -= OnHandheldRegistryChanged; } catch { }
             try { PadForge.Common.Input.Peripherals.LearnedKeyMaps.Changed -= OnLearnedKeyMapsChanged; } catch { }
+            try { PadForge.Common.Input.Peripherals.KeyboardProfileBackups.Changed -= OnKeyboardProfileBackupsChanged; } catch { }
             try { PadForge.Common.Input.HandheldButtonRegistry.ActivityChanged -= OnHandheldActivityChanged; } catch { }
             try { PadForge.Common.Input.AnalogKeyboardRuntime.KeyOrdersChanged -= OnAnalogKeyOrdersChanged; } catch { }
             try { PadForge.Common.Input.BlissBoxRuntime.PortChanged -= OnBlissBoxPortChanged; } catch { }
@@ -10319,6 +10321,17 @@ namespace PadForge.Services
             _dispatcher.BeginInvoke(new Action(() =>
             {
                 try { _settingsService?.Save(); } catch { /* persisted on next save regardless */ }
+            }));
+        }
+
+        /// <summary>A keyboard profile's backup taken or let go (#557) is
+        /// saved at once: the lighting worker holds its first write to the
+        /// keyboard until the backup is on disk.</summary>
+        private void OnKeyboardProfileBackupsChanged(object sender, EventArgs e)
+        {
+            _dispatcher.BeginInvoke(new Action(() =>
+            {
+                try { _settingsService?.Save(); } catch { /* the worker waits for the next save */ }
             }));
         }
 

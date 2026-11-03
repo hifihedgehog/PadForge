@@ -2306,6 +2306,10 @@ namespace PadForge.Services
             // Key names learned with Map Key Lights (#557).
             PadForge.Common.Input.Peripherals.LearnedKeyMaps.LoadRegistry(
                 appSettings.LearnedKeyMaps?.Select(m => (m.Product, m.Names)));
+            // What a keyboard's stored lighting profile held before PadForge
+            // wrote its colors over it (#557), for the hand-back a run owes.
+            PadForge.Common.Input.Peripherals.KeyboardProfileBackups.LoadRegistry(
+                appSettings.KeyboardProfileBackups?.Select(b => (b.Product, b.Profile, b.Contents)));
             // Head tracking (#355) loads with the Dashboard services below:
             // its enable is a per-profile leg under the authoring guard.
             // PS Move calibration blobs (#277): captured at pair time over USB,
@@ -4716,6 +4720,10 @@ namespace PadForge.Services
 
         private int _saveCount;
 
+        /// <summary>The version of the keyboard profile backups the save in
+        /// progress serializes, handed back once the file is written.</summary>
+        private int _profileBackupsBuilt;
+
         /// <summary>How many times a save has written a settings file, so a
         /// caller can tell a later write from its own (the Bliss-Box picture
         /// copy, #469). A reload clears <see cref="IsDirty"/> without one.</summary>
@@ -4849,6 +4857,9 @@ namespace PadForge.Services
                     serializedBytes = ms.ToArray();
                 }
                 File.WriteAllBytes(filePath, serializedBytes);
+                // A keyboard profile's backup is on disk now, and the write
+                // it guards may go out (#557).
+                PadForge.Common.Input.Peripherals.KeyboardProfileBackups.Persisted(_profileBackupsBuilt);
 
                 IsDirty = false;
                 System.Threading.Interlocked.Increment(ref _saveCount);
@@ -5008,6 +5019,10 @@ namespace PadForge.Services
                 HandheldButtonsEnabled = vm.HandheldButtonsEnabled,
                 LearnedKeyMaps = PadForge.Common.Input.Peripherals.LearnedKeyMaps.SaveRegistry()
                     .Select(m => new LearnedKeyMapData { Product = m.Product, Names = m.Names }).ToArray(),
+                KeyboardProfileBackups = PadForge.Common.Input.Peripherals.KeyboardProfileBackups
+                    .SaveRegistry(out _profileBackupsBuilt)
+                    .Select(b => new KeyboardProfileBackupData { Product = b.Product, Profile = b.Profile, Contents = b.Contents })
+                    .ToArray(),
                 VoiceMinConfidence = PadForge.Services.VoiceMacroService.MinConfidence,
                 VoiceListeningMode = PadForge.Services.VoiceMacroService.ListeningMode,
                 HeadsetTrackerAddresses = PadForge.Common.Input.SonyHeadsetMotionRuntime.SavePersistedAddresses(),
@@ -6031,6 +6046,10 @@ namespace PadForge.Services
                 // a picture PadForge replaced, and the next time the switch is
                 // on, the port's default Adapter mode writes it back.
                 BlissBoxPorts = BlissBoxPortData.KeepAdapterPictures(_mainVm.Settings.BlissBoxPorts),
+                // It names no keyboard profile backups (#557), and
+                // KeyboardProfileBackups.LoadRegistry keeps the ones held
+                // for the same reason: each is the only copy of a lighting
+                // profile PadForge wrote over.
             });
             // LoadAppSettings can't reset the language: a fresh
             // AppSettingsData carries Language = "" and
@@ -6558,6 +6577,22 @@ namespace PadForge.Services
         public string Names { get; set; }
     }
 
+    /// <summary>What a keyboard's stored lighting profile held before
+    /// PadForge wrote its colors over it (#557): the model's product key,
+    /// the profile's number, and its contents as the keyboard gave them, in
+    /// hex.</summary>
+    public class KeyboardProfileBackupData
+    {
+        [XmlAttribute]
+        public string Product { get; set; }
+
+        [XmlAttribute]
+        public int Profile { get; set; }
+
+        [XmlAttribute]
+        public string Contents { get; set; }
+    }
+
     /// <summary>A Twitch chat word (issue #555): the normalized word and the
     /// stable button it occupies on the Twitch Chat row, so saved bindings
     /// survive.</summary>
@@ -6723,6 +6758,12 @@ namespace PadForge.Services
         [XmlArray("LearnedKeyMaps")]
         [XmlArrayItem("Model")]
         public LearnedKeyMapData[] LearnedKeyMaps { get; set; }
+
+        /// <summary>Keyboard lighting profiles PadForge wrote over and has
+        /// not yet put back (#557), one per keyboard model.</summary>
+        [XmlArray("KeyboardProfileBackups")]
+        [XmlArrayItem("Backup")]
+        public KeyboardProfileBackupData[] KeyboardProfileBackups { get; set; }
 
         /// <summary>UDP head-tracking input. Older files use this as the master
         /// switch until HeadTrackingIndependentInputs is written. A profile's

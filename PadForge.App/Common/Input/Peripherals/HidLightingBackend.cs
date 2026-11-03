@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Microsoft.Win32;
 
 namespace PadForge.Common.Input.Peripherals
 {
@@ -11,8 +10,8 @@ namespace PadForge.Common.Input.Peripherals
     /// through the device's own lighting collection, light by light. One
     /// thread owns every collection of those families, the shape of
     /// <see cref="SteelSeriesDirectBackend"/>, and each family supplies only
-    /// what differs: which collections are its own, its lights, and its
-    /// frames (<see cref="IHidLightingFamily"/>).
+    /// what differs: which collections are its own, its lights, and how a
+    /// session reads, writes and hands back (<see cref="IHidLightingFamily"/>).
     ///
     /// <para>Scan. From the list the host hands over
     /// (<see cref="Rescan"/>), by the families' registrations, with nothing
@@ -23,34 +22,37 @@ namespace PadForge.Common.Input.Peripherals
     /// (<see cref="LearnedKeyMaps"/>).</para>
     ///
     /// <para>Open. Only a unit a row links and a claim resolves on, for
-    /// read and write, and then the model reads what its frames need
+    /// read and write, and then the model reads what its session needs
     /// (<see cref="HidLightingModel.Begin"/>). A collection that opens with
     /// no access right only is one another program holds, and is not
-    /// written to.</para>
+    /// written to. A unit no claim resolves on is opened only while its
+    /// model owes it colors an earlier run left in the device's memory
+    /// (<see cref="HidLightingModel.Owed"/>), to hand those back, from
+    /// <see cref="RepairGraceMs"/> after the worker starts.</para>
     ///
     /// <para>Paint. The claim's color and key frame are rendered into one
-    /// color per light (<see cref="LightRenderer.Render"/>), and every paint
-    /// sends every light, so a paint is its own re-assert. A change goes
-    /// out once the model's repaint interval has passed since the paint
-    /// before, and an unchanged picture goes out again on its re-assert
-    /// interval and once more when Windows resumes from sleep. The unit's
-    /// hand-back goes on the crash path's record before its first
-    /// frame.</para>
+    /// color per light (<see cref="LightRenderer.Render"/>). A picture the
+    /// device already shows is not sent again. A changed one goes out once
+    /// it has stayed the same for the model's hold time and the model's
+    /// repaint interval has passed since the picture before, and a picture
+    /// the session cannot send yet is tried again after the time it names.
+    /// The session reads the device's state again on the model's recheck
+    /// interval. The crash path's record holds the session's own frames for
+    /// undoing what it wrote, kept current after every call into the
+    /// session.</para>
     ///
     /// <para>Hand back. When no claim resolves on the unit or its path
-    /// leaves the link table, the model's frames that return the device to
-    /// its own lighting go out and the handle closes.</para>
+    /// leaves the link table, the session returns the device to its own
+    /// lighting and the handle closes.</para>
     ///
-    /// <para>Fail. A write that fails, a hand-back included, closes the
-    /// unit's channel and lists the unit asleep, asks the host for a walk,
-    /// and tries the unit again every <see cref="RetryMs"/> by opening it.
-    /// A unit that may show a color of ours is owed its hand-back, which
-    /// keeps its place on the crash path's record and goes out on the try
-    /// that finds the unit open again, before anything else.</para>
+    /// <para>Fail. A write or a read that fails, a hand-back included,
+    /// closes the unit's channel and lists the unit asleep, asks the host
+    /// for a walk, and tries the unit again every <see cref="RetryMs"/> by
+    /// opening it. What a failed hand-back leaves owed stays in the model's
+    /// keeping, which the next open or the next run settles.</para>
     /// </summary>
     internal sealed class HidLightingBackend : IDirectUnitBackend
     {
-        internal const int ActiveTickMs = HidppBackend.ActiveTickMs;
         internal const int IdleTickMs = HidppBackend.IdleTickMs;
         internal const int PredecessorJoinMs = HidppBackend.PredecessorJoinMs;
         internal const int StopJoinMs = 3000;
@@ -66,6 +68,15 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>How long a unit whose container Windows could not name
         /// yet waits before the next lookup.</summary>
         internal const int ContainerRetryMs = 1000;
+
+        /// <summary>How long after the worker starts a unit no claim
+        /// resolves on waits before the colors an earlier run left in it go
+        /// back: time for the first device scan (2000 ms,
+        /// InputManager.EnumerationIntervalMs) and the link pass after it
+        /// (<see cref="PeripheralOutputHost.LinkMs"/>) to resolve this
+        /// run's claims, so a keyboard a claim lights again is not handed
+        /// back and lit again a moment later.</summary>
+        internal const int RepairGraceMs = 5000;
 
         /// <summary>One present lighting collection and what the worker
         /// holds of it. Worker thread only.</summary>
@@ -88,12 +99,6 @@ namespace PadForge.Common.Input.Peripherals
             public bool Asleep;
             public long RetryAt;
 
-            /// <summary>The hand-back the unit is owed and how it goes out,
-            /// or null. Its entry stays on the crash path's record
-            /// meanwhile.</summary>
-            public byte[][] Owed;
-            public bool OwedFeature;
-
             /// <summary>The open channel and its session, or null.
             /// Everything below is of one open and is reset by the next.</summary>
             public IHidReportChannel Io;
@@ -102,35 +107,32 @@ namespace PadForge.Common.Input.Peripherals
             public bool Recorded;
             public byte[][] RecordedFrames;
 
-            /// <summary>A paint went out, or was tried, so the device may
-            /// show a color of ours.</summary>
-            public bool Lit;
-
-            /// <summary>The colors last sent, the map they were rendered
-            /// for, the frames that carried them, and when.</summary>
+            /// <summary>The colors the device shows from the session, the
+            /// map they were rendered for, and when they went out.</summary>
             public int[] Shown;
             public LightMap ShownMap;
-            public byte[][] ShownFrames;
-            public long PaintAt;
+            public long SentAt;
 
-            /// <summary>Windows resumed from sleep: the claim and the picture
-            /// go out once more.</summary>
-            public bool Reassert;
+            /// <summary>A changed picture waiting to go out, its map, and
+            /// since when it has stayed the same.</summary>
+            public int[] Pending;
+            public LightMap PendingMap;
+            public long PendingAt;
 
-            /// <summary>The session's state changed under it
-            /// (<see cref="HidLightingSession.Recheck"/>): the claim goes out
-            /// again ahead of the next picture.</summary>
-            public bool Reclaim;
+            /// <summary>When a picture the session could not send yet is
+            /// tried again.</summary>
+            public long LaterAt;
 
-            /// <summary>When the session's state is read again.</summary>
+            /// <summary>When the session reads the device's state
+            /// again.</summary>
             public long CheckAt;
 
             public string Label => $"{Model?.Name ?? "unit"} {VendorId:X4}:{ProductId:X4}";
         }
 
-        /// <summary>The units that may show a color of ours, with the
-        /// frames that undo it, for the crash path, which cannot wait on
-        /// this worker. Swapped whole.</summary>
+        /// <summary>The units whose sessions name frames that undo what they
+        /// wrote, for the crash path, which cannot wait on this worker.
+        /// Swapped whole.</summary>
         private (string Path, byte[][] Frames, bool Feature)[] _recorded = Array.Empty<(string, byte[][], bool)>();
 
         private readonly IReadOnlyList<IHidLightingFamily> _families;
@@ -139,7 +141,7 @@ namespace PadForge.Common.Input.Peripherals
         private readonly Func<long> _ticks;
         private readonly Func<string, byte[], int, bool> _setFeatureOnce;
         private readonly Func<string, byte[], int, bool> _writeOutputOnce;
-        private readonly int _activeTickMs;
+        private readonly Action<int> _wait;
         private readonly int _idleTickMs;
         private readonly int _predecessorJoinMs;
         private readonly int _stopJoinMs;
@@ -153,9 +155,7 @@ namespace PadForge.Common.Input.Peripherals
         private int _disposed;
         private int _passes;
         private int _waitMs;
-
-        private readonly bool _powerEvents;
-        private int _resumed;
+        private long _repairAt;
 
         /// <summary>The newest worker thread of any instance, which the
         /// next one waits for. Static because the collections it holds are
@@ -163,27 +163,27 @@ namespace PadForge.Common.Input.Peripherals
         private static Thread s_lastWorker;
 
         public HidLightingBackend()
-            : this(null, null, null, null, null, null, ActiveTickMs, IdleTickMs, powerEvents: true) { }
+            : this(null, null, null, null, null, null, null, IdleTickMs) { }
 
         /// <summary>Test seam: the families, the channel opener, the
         /// container lookup, the clock, the crash path's two one-shot
-        /// writers, the two ticks, the wait for a predecessor worker and
-        /// Stop's wait. The opener and the one-shot writers are the worker's
-        /// only ways to a device, and their defaults open nothing in the
-        /// test host (<see cref="RealHidAccess"/>).</summary>
+        /// writers, the wait a session takes between an exchange and the
+        /// next, the idle tick, the wait for a predecessor worker and Stop's
+        /// wait. The opener and the one-shot writers are the worker's only
+        /// ways to a device, and their defaults open nothing in the test
+        /// host (<see cref="RealHidAccess"/>).</summary>
         internal HidLightingBackend(IReadOnlyList<IHidLightingFamily> families, Func<string, IHidReportChannel> open,
             Func<string, Guid> containerOf, Func<long> ticks, Func<string, byte[], int, bool> setFeatureOnce,
-            Func<string, byte[], int, bool> writeOutputOnce, int activeTickMs, int idleTickMs,
-            int predecessorJoinMs = PredecessorJoinMs, int stopJoinMs = StopJoinMs, bool powerEvents = false)
+            Func<string, byte[], int, bool> writeOutputOnce, Action<int> wait, int idleTickMs,
+            int predecessorJoinMs = PredecessorJoinMs, int stopJoinMs = StopJoinMs)
         {
-            _powerEvents = powerEvents;
             _families = families ?? HidLightingFamilies.All;
             _open = open ?? HidReportChannel.Open;
             _containerOf = containerOf ?? AudioPassthroughService.DevicePathContainerId;
             _ticks = ticks ?? (() => Environment.TickCount64);
             _setFeatureOnce = setFeatureOnce ?? HidReportChannel.SetFeatureOnce;
             _writeOutputOnce = writeOutputOnce ?? HidReportChannel.WriteOutputOnce;
-            _activeTickMs = activeTickMs;
+            _wait = wait ?? (ms => Thread.Sleep(ms));
             _idleTickMs = idleTickMs;
             _predecessorJoinMs = predecessorJoinMs;
             _stopJoinMs = stopJoinMs;
@@ -212,6 +212,7 @@ namespace PadForge.Common.Input.Peripherals
             if (Volatile.Read(ref _disposed) != 0 || _thread != null) return;
             var run = new WorkerRun();
             _run = run;
+            Volatile.Write(ref _repairAt, _ticks() + RepairGraceMs);
             Volatile.Write(ref _present, null);
             Volatile.Write(ref _snapshot, DirectBackendSnapshot.NotScanned);
             _thread = new Thread(() => Worker(run)) { IsBackground = true, Name = "PeripheralHidLighting" };
@@ -220,7 +221,6 @@ namespace PadForge.Common.Input.Peripherals
             PeripheralOutputs.LightingChanged += Wake;
             PeripheralOutputs.LinksChanged += Wake;
             LearnedKeyMaps.Changed += OnLearned;
-            if (_powerEvents) SystemEvents.PowerModeChanged += OnPowerMode;
         }
 
         public void Stop()
@@ -228,7 +228,6 @@ namespace PadForge.Common.Input.Peripherals
             PeripheralOutputs.LightingChanged -= Wake;
             PeripheralOutputs.LinksChanged -= Wake;
             LearnedKeyMaps.Changed -= OnLearned;
-            if (_powerEvents) SystemEvents.PowerModeChanged -= OnPowerMode;
             if (_thread == null) return;
             _run.Stop = true;
             Wake();
@@ -255,8 +254,8 @@ namespace PadForge.Common.Input.Peripherals
         /// stops first and its own finally hands back what it holds, the
         /// order <see cref="HidppBackend.ReleaseClaimedNow"/> keeps. A
         /// worker that does not stop in time claims nothing more, and each
-        /// unit still on record gets its hand-back through a one-shot write
-        /// on a handle of its own.</summary>
+        /// unit still on record gets its frames through a one-shot write on
+        /// a handle of its own.</summary>
         public void ReleaseClaimedNow(long deadline)
         {
             var run = _run;
@@ -281,22 +280,7 @@ namespace PadForge.Common.Input.Peripherals
         private bool WriteOnce(string path, byte[] frame, bool feature, int timeoutMs)
             => feature ? _setFeatureOnce(path, frame, timeoutMs) : _writeOutputOnce(path, frame, timeoutMs);
 
-        private void OnPowerMode(object sender, PowerModeChangedEventArgs e)
-        {
-            if (e.Mode == PowerModes.Resume) NoteResume();
-        }
-
         private void OnLearned(object sender, EventArgs e) => Wake();
-
-        /// <summary>Windows resumed from sleep: every open unit gets its
-        /// picture once more, since a device that lost power in between
-        /// shows its stored lighting again while its collection never left
-        /// the list.</summary>
-        internal void NoteResume()
-        {
-            Interlocked.Exchange(ref _resumed, 1);
-            Wake();
-        }
 
         /// <summary>Brings the worker's next pass forward. Any thread.</summary>
         internal void Wake()
@@ -343,11 +327,9 @@ namespace PadForge.Common.Input.Peripherals
                     }
 
                     var links = PeripheralOutputs.Links;
-                    bool resumed = Interlocked.Exchange(ref _resumed, 0) != 0;
                     foreach (var unit in units)
                     {
                         if (run.Stop) break;
-                        if (resumed && unit.Io != null) unit.Reassert = true;
                         Serve(run, unit, links, _ticks(), ref changed, ref failed, ref due);
                     }
 
@@ -373,38 +355,27 @@ namespace PadForge.Common.Input.Peripherals
                 // Each device goes back to its own lighting before its
                 // handle closes, so stopping the engine leaves no keyboard
                 // held in a color of ours.
-                foreach (var unit in units)
-                {
-                    if (unit.Io == null) continue;
-                    bool sent = false;
-                    try { sent = Release(unit); } catch { }
-                    // A hand-back that did not go out on the worker's
-                    // channel is owed, and goes out below on a handle of
-                    // its own.
-                    if (!sent && unit.Lit && unit.Session != null)
-                    {
-                        unit.Owed = unit.Session.HandBack();
-                        unit.OwedFeature = unit.Session.Feature;
-                    }
-                    Close(unit);
-                }
-                // A unit owed its hand-back has no handle of the worker's,
-                // and gets it now through a one-shot write, as on the crash
-                // path. Not from a worker that outlived its Stop into the
-                // next run, whose worker has the collections by then.
                 var successor = _run;
                 bool ownRun = successor == null || ReferenceEquals(successor, run);
                 foreach (var unit in units)
                 {
-                    if (unit.Owed == null) continue;
-                    if (ownRun)
+                    if (unit.Io == null) continue;
+                    bool released = false;
+                    try { released = Release(unit); } catch { }
+                    var frames = released ? null : unit.Session?.CrashFrames;
+                    bool feature = unit.Session?.Feature ?? true;
+                    Close(unit);
+                    // A hand-back that did not go out on the worker's
+                    // channel goes out through a report of its own, as on
+                    // the crash path, where the session names frames for it.
+                    // Not from a worker that outlived its Stop into the next
+                    // run, whose worker has the collections by then. What
+                    // stays owed is in the model's keeping for the next run.
+                    if (frames == null || !ownRun) continue;
+                    foreach (var frame in frames)
                     {
-                        foreach (var frame in unit.Owed)
-                        {
-                            try { WriteOnce(unit.Path, frame, unit.OwedFeature, OneShotMs); } catch { }
-                        }
+                        try { WriteOnce(unit.Path, frame, feature, OneShotMs); } catch { }
                     }
-                    ClearOwed(unit);
                 }
                 var current = _run;
                 if (current == null || ReferenceEquals(current, run))
@@ -463,7 +434,6 @@ namespace PadForge.Common.Input.Peripherals
                     continue;
                 }
                 // The device is gone, so there is nothing to hand back to.
-                ClearOwed(unit);
                 Close(unit);
                 PeripheralLightMaps.Remove(PathOf(unit));
                 units.RemoveAt(i);
@@ -530,7 +500,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 if (now >= unit.RetryAt)
                 {
-                    if (unit.Owed != null ? PayBack(unit) : Answers(unit))
+                    if (Answers(unit))
                     {
                         unit.Asleep = false;
                         changed = true;
@@ -554,9 +524,24 @@ namespace PadForge.Common.Input.Peripherals
             bool wanted = links.ByPath.ContainsKey(path) && PeripheralOutputs.TryResolveColor(path, out rgb, out ruler);
             if (!wanted)
             {
-                if (unit.Io == null) return;
-                if (Release(unit)) Close(unit);
-                else Fail(unit, now, "hand-back failed", ref changed, ref failed, ref due);
+                if (unit.Io != null)
+                {
+                    if (Release(unit)) Close(unit);
+                    else Fail(unit, now, "hand-back failed", ref changed, ref failed, ref due);
+                    return;
+                }
+                // Colors an earlier run left in the device's memory go back
+                // with no claim on it, once this run's first claims have had
+                // the time to resolve, and once per answer of the unit's.
+                if (run.Stop || unit.Model.Owed?.Invoke() != true) return;
+                long repairAt = Volatile.Read(ref _repairAt);
+                if (now < repairAt)
+                {
+                    Soonest(ref due, repairAt);
+                    return;
+                }
+                if (!Repair(unit))
+                    Fail(unit, now, "did not take back the colors an earlier run left", ref changed, ref failed, ref due);
                 return;
             }
 
@@ -568,7 +553,7 @@ namespace PadForge.Common.Input.Peripherals
                 Fail(unit, now, "did not open for read and write or did not answer", ref changed, ref failed, ref due);
                 return;
             }
-            if (!Paint(unit, rgb, ruler.Keys, now, ref due))
+            if (!Paint(unit, rgb, ruler.Keys, ref due))
                 Fail(unit, now, "write failed", ref changed, ref failed, ref due);
         }
 
@@ -583,30 +568,29 @@ namespace PadForge.Common.Input.Peripherals
             return answers;
         }
 
-        /// <summary>The try of an asleep unit that is owed its hand-back:
-        /// the collection is opened as a claim opens it and sent the frames.
-        /// True when all of them went out, which settles the debt and says
-        /// the unit answers again.</summary>
-        private bool PayBack(Unit unit)
+        /// <summary>Opens a unit no claim resolves on and hands back what an
+        /// earlier run left in it (<see cref="HidLightingModel.Repair"/>).
+        /// True when nothing is owed any more.</summary>
+        private bool Repair(Unit unit)
         {
             IHidReportChannel io = null;
             try { io = _open(unit.Path); } catch { }
-            bool sent = io != null && !io.FeatureOnly;
-            if (sent)
+            if (io == null || io.FeatureOnly)
             {
-                // No frame goes out behind one that failed.
-                foreach (var frame in unit.Owed) sent = sent && Send(io, frame, unit.OwedFeature);
+                try { io?.Dispose(); } catch { }
+                return false;
             }
-            try { io?.Dispose(); } catch { }
-            if (!sent) return false;
-            ClearOwed(unit);
-            PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} lighting handed back, owed since it failed");
-            return true;
+            bool settled = false;
+            try { settled = unit.Model.Repair?.Invoke(io, _wait) ?? true; } catch { }
+            try { io.Dispose(); } catch { }
+            if (settled)
+                PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} colors an earlier run left handed back");
+            return settled;
         }
 
         /// <summary>Opens the unit's collection for read and write and
         /// starts its session. False when it did not open that way or the
-        /// model's first read went unanswered.</summary>
+        /// model's first reads went unanswered.</summary>
         private bool Open(Unit unit)
         {
             IHidReportChannel io = null;
@@ -617,7 +601,7 @@ namespace PadForge.Common.Input.Peripherals
                 return false;
             }
             HidLightingSession session = null;
-            try { session = unit.Model.Begin?.Invoke(io); } catch { }
+            try { session = unit.Model.Begin?.Invoke(io, _wait); } catch { }
             if (session == null)
             {
                 try { io.Dispose(); } catch { }
@@ -625,130 +609,104 @@ namespace PadForge.Common.Input.Peripherals
             }
             unit.Io = io;
             unit.Session = session;
-            unit.Lit = false;
             unit.Shown = null;
             unit.ShownMap = null;
-            unit.ShownFrames = null;
-            unit.Reassert = false;
-            unit.Reclaim = false;
+            unit.Pending = null;
+            unit.PendingMap = null;
+            unit.LaterAt = 0;
             unit.CheckAt = _ticks() + unit.Model.RecheckMs;
+            // A session that finds colors of an earlier run's names their
+            // undoing from its first moment.
+            Track(unit);
             return true;
         }
 
-        /// <summary>One pass over an open, wanted unit. False when a write
-        /// or a read failed.</summary>
-        private bool Paint(Unit unit, int rgb, KeyFrame keys, long now, ref long due)
+        /// <summary>One pass over an open, wanted unit, with the claim's
+        /// color and key frame as the pass resolved them. False when a
+        /// write or a read failed.</summary>
+        private bool Paint(Unit unit, int rgb, KeyFrame keys, ref long due)
         {
+            // The clock after the claim resolved: a picture is never taken
+            // to have held from before it was seen.
+            long now = _ticks();
             var model = unit.Model;
-            var session = unit.Session;
-            if (model.RecheckMs > 0 && now >= unit.CheckAt)
+            if (model.RecheckMs > 0)
             {
-                unit.CheckAt = now + model.RecheckMs;
-                bool reclaim = false;
-                try
+                if (now >= unit.CheckAt)
                 {
-                    if (!session.Recheck(unit.Io, out reclaim)) return false;
+                    unit.CheckAt = now + model.RecheckMs;
+                    bool answered;
+                    try { answered = unit.Session.Recheck(unit.Io, _wait); }
+                    catch { answered = false; }
+                    Track(unit);
+                    if (!answered) return false;
                 }
-                catch
-                {
-                    return false;
-                }
-                if (reclaim)
-                {
-                    // The hand-back on record follows the session's state.
-                    unit.Reclaim = true;
-                    if (unit.Recorded)
-                    {
-                        Unrecord(unit);
-                        Record(unit);
-                    }
-                }
+                Soonest(ref due, unit.CheckAt);
             }
-            if (model.RecheckMs > 0) Soonest(ref due, unit.CheckAt);
-
             var map = unit.Map ?? model.Map;
             var colors = LightRenderer.Render(map, rgb, keys);
-            bool first = unit.Shown == null || !ReferenceEquals(unit.ShownMap, map);
-            bool fresh = !first && LightRenderer.Same(colors, unit.Shown);
-            long repaintAt = unit.PaintAt + model.RepaintMs;
-            long reassertAt = unit.PaintAt + model.ReassertMs;
-            if (!first && !unit.Reassert && !unit.Reclaim && now < reassertAt && (fresh || now < repaintAt))
+            if (unit.Shown != null && ReferenceEquals(unit.ShownMap, map) && LightRenderer.Same(colors, unit.Shown))
             {
-                Soonest(ref due, fresh ? reassertAt : repaintAt);
+                // The device shows this picture already and keeps it.
+                unit.Pending = null;
+                unit.PendingMap = null;
+                return true;
+            }
+            if (unit.Pending == null || !ReferenceEquals(unit.PendingMap, map) || !LightRenderer.Same(colors, unit.Pending))
+            {
+                unit.Pending = colors;
+                unit.PendingMap = map;
+                unit.PendingAt = now;
+            }
+            long at = unit.PendingAt + model.HoldMs;
+            if (unit.Shown != null) at = Math.Max(at, unit.SentAt + model.RepaintMs);
+            at = Math.Max(at, unit.LaterAt);
+            if (now < at)
+            {
+                Soonest(ref due, at);
                 return true;
             }
 
-            // The crash path knows the hand-back before the first frame
-            // goes out, so no moment exists in which the device shows a
-            // color of ours and nothing can undo it (HidppBackend.PaintLighting).
-            if (!unit.Recorded) Record(unit);
-            unit.Lit = true;
-            // The claim goes ahead of a session's first picture and again
-            // where the device may have dropped it: Windows resumed, the
-            // session's state changed, or the stream paused long enough.
-            // Sent on every frame instead, a claim that restarts the
-            // device's own effect shows that effect between frames.
-            bool claim = unit.ShownFrames == null || unit.Reassert || unit.Reclaim
-                || (model.ReclaimAfterMs > 0 && now - unit.PaintAt >= model.ReclaimAfterMs);
-            if (claim)
+            var session = unit.Session;
+            HidLightingPaint result;
+            try { result = session.Paint(unit.Io, _wait, map.Lights, colors); }
+            catch { result = HidLightingPaint.Failed; }
+            Track(unit);
+            if (result == HidLightingPaint.Failed) return false;
+            if (result == HidLightingPaint.Later)
             {
-                foreach (var frame in session.Claim())
-                    if (!Send(unit.Io, frame, session.Feature)) return false;
+                unit.LaterAt = _ticks() + Math.Max(1, session.LaterMs);
+                Soonest(ref due, unit.LaterAt);
+                return true;
             }
-            // An unchanged picture goes out again in the frames that carried
-            // it: a family that streams, as a Lenovo Legion keyboard needs,
-            // re-asserts many times a second.
-            var frames = fresh && unit.ShownFrames != null ? unit.ShownFrames : session.Paint(map.Lights, colors);
-            foreach (var frame in frames)
-                if (!Send(unit.Io, frame, session.Feature)) return false;
+            bool first = unit.Shown == null;
             unit.Shown = colors;
             unit.ShownMap = map;
-            unit.ShownFrames = frames;
-            unit.PaintAt = _ticks();
-            unit.Reassert = false;
-            unit.Reclaim = false;
+            unit.SentAt = _ticks();
+            unit.Pending = null;
+            unit.PendingMap = null;
+            unit.LaterAt = 0;
             if (first)
                 PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} lit, {colors.Length} lights");
-            Soonest(ref due, unit.PaintAt + model.ReassertMs);
             return true;
         }
 
-        private static bool Send(IHidReportChannel io, byte[] frame, bool feature)
-        {
-            try { return io != null && (feature ? io.SetFeature(frame) : io.WriteOutput(frame)); }
-            catch { return false; }
-        }
-
-        /// <summary>Sends the hand-back of a unit a paint went to, on the
-        /// device's state as it is now, the way Lenovo Legion Toolkit reads
-        /// the active profile before its stop
-        /// (SpectrumKeyboardBacklightController.cs:556-563). True when every
-        /// frame went out, or none was owed.</summary>
+        /// <summary>The unit's session returns the device to its own
+        /// lighting. True when it did, or had nothing to undo.</summary>
         private bool Release(Unit unit)
         {
-            if (!unit.Lit || unit.Session == null) return true;
-            try { unit.Session.Recheck(unit.Io, out _); } catch { }
-            foreach (var frame in unit.Session.HandBack())
-                if (!Send(unit.Io, frame, unit.Session.Feature)) return false;
-            PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} lighting handed back");
-            return true;
+            if (unit.Session == null) return true;
+            bool released = false;
+            try { released = unit.Session.HandBack(unit.Io, _wait); } catch { }
+            Track(unit);
+            if (released) PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} lighting handed back");
+            return released;
         }
 
-        /// <summary>A write, an open or the session's first read failed. The
-        /// channel closes and the unit is listed asleep, never taken off the
-        /// list. A unit a paint went to is owed its hand-back from here
-        /// on.</summary>
+        /// <summary>A write, an open or a read failed. The channel closes and
+        /// the unit is listed asleep, never taken off the list.</summary>
         private void Fail(Unit unit, long now, string why, ref bool changed, ref bool failed, ref long due)
         {
-            if (unit.Lit && unit.Session != null)
-            {
-                var handBack = unit.Session.HandBack();
-                if (handBack.Length > 0)
-                {
-                    unit.Owed = handBack;
-                    unit.OwedFeature = unit.Session.Feature;
-                }
-            }
             Close(unit);
             unit.Asleep = true;
             unit.RetryAt = now + RetryMs;
@@ -758,25 +716,17 @@ namespace PadForge.Common.Input.Peripherals
             PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} {why}, listed asleep");
         }
 
-        private void ClearOwed(Unit unit)
-        {
-            if (unit.Owed == null) return;
-            unit.Owed = null;
-            Unrecord(unit);
-        }
-
         private void Close(Unit unit)
         {
-            // The record keeps the entry of a unit that is owed its
-            // hand-back.
-            if (unit.Owed == null) Unrecord(unit);
+            Unrecord(unit);
             var io = unit.Io;
             unit.Io = null;
             unit.Session = null;
-            unit.Lit = false;
             unit.Shown = null;
             unit.ShownMap = null;
-            unit.ShownFrames = null;
+            unit.Pending = null;
+            unit.PendingMap = null;
+            unit.LaterAt = 0;
             try { io?.Dispose(); } catch { }
         }
 
@@ -784,9 +734,13 @@ namespace PadForge.Common.Input.Peripherals
         //  The crash path's record
         // ─────────────────────────────────────────────
 
-        private void Record(Unit unit)
+        /// <summary>Brings the unit's entry on the record in line with the
+        /// frames its session names now.</summary>
+        private void Track(Unit unit)
         {
-            var frames = unit.Session.HandBack();
+            var frames = unit.Session?.CrashFrames ?? Array.Empty<byte[]>();
+            if (unit.Recorded ? ReferenceEquals(frames, unit.RecordedFrames) : frames.Length == 0) return;
+            Unrecord(unit);
             if (frames.Length == 0) return;
             var current = Volatile.Read(ref _recorded);
             var next = new (string, byte[][], bool)[current.Length + 1];

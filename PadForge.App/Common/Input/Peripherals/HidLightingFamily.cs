@@ -216,6 +216,7 @@ namespace PadForge.Common.Input.Peripherals
             AsusTufLaptopLighting.Instance,
             HpOmenLaptopLighting.Instance,
             DygmaRaiseLighting.Instance,
+            AsusAuraUsbLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

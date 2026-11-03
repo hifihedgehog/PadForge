@@ -205,18 +205,15 @@ namespace PadForge.Tests
             Assert.Empty(HandBack(SteelSeriesFamily.Rival700));
         }
 
-        /// <summary>signal-plugins Steelseries_Rival_3_Mouse_Wireless.js:64-136,
-        /// without its E8: the program's first part with one point, the
-        /// zero part, the bind of LED 10 and the closing 1C.</summary>
+        /// <summary>OpenRGB SteelSeriesAeroxWirelessController.cpp:187-194:
+        /// 13, the wheel's LED 01 and the color, in one output report, with
+        /// no claim and no hand-back, since OpenRGB sends this mouse no
+        /// effect and no save (158-174 and 235-252).</summary>
         [Fact]
-        public void ARival3Wireless_GetsItsColorAsAnLedProgram_InFourReports()
+        public void ARival3Wireless_GetsItsColorInOneReport_AsOpenRgbSendsIt()
         {
             var color = Color(SteelSeriesFamily.Rival3Wireless);
-            Assert.Equal(4, color.Length);
-            Same("00 03 00 00 00 30 00 10 27 00*14 01 00*7 01 12 34 56 12 34 56", SteelSeriesReport.Output, color[0]);
-            Same("00 03 00 30 00 2C", SteelSeriesReport.Output, color[1]);
-            Same("00 05 00 10 FF 00 00 00 00 5C", SteelSeriesReport.Output, color[2]);
-            Same("00 1C 00 55 00 0E 01 01", SteelSeriesReport.Output, color[3]);
+            Same("00 13 01 12 34 56", SteelSeriesReport.Output, Assert.Single(color));
             Assert.Empty(Claim(SteelSeriesFamily.Rival3Wireless));
             Assert.Empty(HandBack(SteelSeriesFamily.Rival3Wireless));
         }
@@ -657,7 +654,7 @@ namespace PadForge.Tests
             [SteelSeriesFamily.Rival310] = new byte[] { 0x5B },
             [SteelSeriesFamily.Rival600] = new byte[] { 0x05 },
             [SteelSeriesFamily.Rival700] = new byte[] { 0x05 },
-            [SteelSeriesFamily.Rival3Wireless] = new byte[] { 0x03, 0x05, 0x1C },
+            [SteelSeriesFamily.Rival3Wireless] = new byte[] { 0x13 },
             [SteelSeriesFamily.Rival650] = new byte[] { 0x03, 0x05 },
             [SteelSeriesFamily.Rival3Gen2] = new byte[] { 0x21, 0x22 },
             [SteelSeriesFamily.Aerox3] = new byte[] { 0x21, 0x22 },
@@ -706,7 +703,10 @@ namespace PadForge.Tests
         /// SteelSeriesApexTZoneController.cpp:45-54). 01 resets a Rival 3
         /// Gen 2 and 13 is its factory reset (rival_re
         /// tools/rival/protocol.py:42-53), and 01 01 puts an Apex 3 TKL in
-        /// its bootloader (apex-3-tkl docs/internals.md:63).
+        /// its bootloader (apex-3-tkl docs/internals.md:63). 13 is also the
+        /// Rival 3 Wireless's color (OpenRGB
+        /// SteelSeriesAeroxWirelessController.cpp:187-194), so that family
+        /// alone sends it.
         /// 23 and 63 are the brightness, 2D and 6D the sensitivity presets,
         /// 26 the reactive color and 27 the default lighting
         /// (devices/aerox3.py:15-21, 71-90 and 139-153). E8 is a report of
@@ -718,7 +718,7 @@ namespace PadForge.Tests
         [Fact]
         public void NoBuilderEverProducesASaveAResetOrASetting()
         {
-            byte[] never = { 0x09, 0x59, 0x11, 0x51, 0x06, 0x01, 0x13, 0x23, 0x63, 0x2D, 0x6D, 0x26, 0x27, 0xE8, 0x90 };
+            byte[] never = { 0x09, 0x59, 0x11, 0x51, 0x06, 0x01, 0x23, 0x63, 0x2D, 0x6D, 0x26, 0x27, 0xE8, 0x90 };
             int frames = 0;
             foreach (var (info, part, frame) in EveryFrame())
             {
@@ -731,6 +731,7 @@ namespace PadForge.Tests
                     $"{info.Family} {part} sends {frame.Command:X2}, which is not one of its commands");
                 if (frame.Command == 0x08) Assert.Equal(SteelSeriesFamily.Rival300, info.Family);
                 if (frame.Command == 0x0A) Assert.Equal(SteelSeriesFamily.Rival3, info.Family);
+                if (frame.Command == 0x13) Assert.Equal(SteelSeriesFamily.Rival3Wireless, info.Family);
                 if (frame.Command == 0x61) Assert.NotEqual(SteelSeriesFamily.ApexProGen3, info.Family);
             }
             Assert.True(frames > 100, "every family was walked");
@@ -790,8 +791,9 @@ namespace PadForge.Tests
         /// vendor's own where a capture of it exists and a reference
         /// tool's wait where none does, the longer one where two tools
         /// differ (rivalcfg's 50 ms over libratbag's 10 on the Rival 100
-        /// and 300, and on the Prime mice no capture gives a rate for).
-        /// Every family has a re-assert interval.</summary>
+        /// and 300, and on the Prime mice and the Rival 3 Wireless no
+        /// capture gives a rate for). Every family has a re-assert
+        /// interval.</summary>
         [Theory]
         [InlineData(SteelSeriesFamily.Rival100, 0, 1, 50, 50, 5000, false)]
         [InlineData(SteelSeriesFamily.Rival300, 0, 2, 50, 100, 5000, false)]
@@ -799,7 +801,7 @@ namespace PadForge.Tests
         [InlineData(SteelSeriesFamily.Rival310, 0, 2, 24, 66, 5000, false)]
         [InlineData(SteelSeriesFamily.Rival600, 0, 8, 22, 200, 5000, false)]
         [InlineData(SteelSeriesFamily.Rival700, 0, 2, 50, 100, 5000, false)]
-        [InlineData(SteelSeriesFamily.Rival3Wireless, 3, 4, 60, 250, 30000, false)]
+        [InlineData(SteelSeriesFamily.Rival3Wireless, 3, 1, 50, 50, 5000, false)]
         [InlineData(SteelSeriesFamily.Rival650, 0, 16, 60, 1000, 30000, false)]
         [InlineData(SteelSeriesFamily.Rival3Gen2, 3, 1, 0, 33, 5000, false)]
         [InlineData(SteelSeriesFamily.Aerox3, 3, 3, 16, 50, 5000, false)]
@@ -877,7 +879,7 @@ namespace PadForge.Tests
         [InlineData(SteelSeriesFamily.Rival310, 0, 36)]
         [InlineData(SteelSeriesFamily.Rival600, 0, 50)]
         [InlineData(SteelSeriesFamily.Rival700, 0, 14)]
-        [InlineData(SteelSeriesFamily.Rival3Wireless, 38, 0)]
+        [InlineData(SteelSeriesFamily.Rival3Wireless, 6, 0)]
         [InlineData(SteelSeriesFamily.Rival650, 50, 0)]
         [InlineData(SteelSeriesFamily.Rival3Gen2, 12, 0)]
         [InlineData(SteelSeriesFamily.Aerox3, 12, 0)]

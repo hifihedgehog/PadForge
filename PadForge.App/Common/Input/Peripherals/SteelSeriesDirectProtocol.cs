@@ -216,10 +216,10 @@ namespace PadForge.Common.Input.Peripherals
         /// re-asserts on.</summary>
         internal const int ReassertMs = 5000;
 
-        /// <summary>The re-assert of the two mice whose color is an LED
-        /// program in several reports. They sleep behind a dongle like the
-        /// others, and their frames are the slowest and the least proven,
-        /// so they are repeated least.</summary>
+        /// <summary>The re-assert of the Rival 650, whose color is an LED
+        /// program in sixteen reports. It sleeps behind a dongle like the
+        /// others, and its frames are the slowest and the least proven, so
+        /// they are repeated least.</summary>
         internal const int SlowReassertMs = 30000;
 
         private static SteelSeriesFrame Out(params byte[] data) => Make(SteelSeriesReport.Output, data);
@@ -361,43 +361,34 @@ namespace PadForge.Common.Input.Peripherals
                 },
             },
 
-            // Rival 3 Wireless, through its dongle. One LED, in the wheel.
-            // A color is a small LED program, uploaded in two parts and
-            // then bound to the LED, as SignalRGB colors this mouse.
-            // 03 00 00 00 30 00 carries the first 0x30 bytes of the
-            // program (LedProgram), 03 00 30 00 2C clears the 0x2C bytes
-            // after them, 05 00 10 FF 00 00 00 00 5C binds LED 0x10 to the
-            // 0x5C bytes, and 1C 00 55 00 0E 01 01 closes the sequence
-            // (signal-plugins Steelseries_Rival_3_Mouse_Wireless.js:64-136).
-            // SignalRGB sends E8 in front and 09 at start. Neither is sent
-            // here: 09 is the save (rivalcfg
-            // devices/rival3_wireless.py:80), and no reference says what
-            // E8 does. The 60 ms between reports is the wait SignalRGB
-            // makes on the same firmware in the Rival 650. OpenRGB colors
-            // the wheel with 13 01 RR GG BB instead
-            // (SteelSeriesAeroxWirelessController.cpp:187-194, from commit
-            // 95154754). That is not sent: 13 is the Rival 3 Gen 2's
-            // factory reset (rival_re tools/rival/protocol.py:42-53), and
-            // SignalRGB's frames light this mouse without it.
+            // Rival 3 Wireless, through its dongle, on interface 3 (OpenRGB
+            // SteelSeriesControllerDetect.cpp:513). One LED, in the wheel:
+            // 13, the LED's number 01 and the color, one output report that
+            // OpenRGB writes with no reply read on this mouse
+            // (SteelSeriesAeroxWirelessController.cpp:187-194, 81-103 and
+            // 254-268, from commit 95154754). OpenRGB sends it no effect
+            // and no save (158-174 and 235-252), and neither is sent here.
+            // 13 is the Rival 3 Gen 2's factory reset (rival_re
+            // tools/rival/protocol.py:46), so no other family may send it.
+            // SignalRGB uploads an LED program instead, four reports 60 ms
+            // apart for one color (signal-plugins
+            // Steelseries_Rival_3_Mouse_Wireless.js:64-136). OpenRGB sets
+            // this mouse no pace, so the gap is rivalcfg's 50 ms wait
+            // (mouse.py:85 and 312-314).
             new()
             {
                 Family = SteelSeriesFamily.Rival3Wireless, Interface = 3, Report = SteelSeriesReport.Output,
-                GapMs = 60, RepaintMs = 250, ReassertMs = SlowReassertMs,
-                Color = (_, _, r, g, b) => new[]
-                {
-                    Out(LedProgram(points: 1, r, g, b)),
-                    Out(0x03, 0x00, 0x30, 0x00, 0x2C),
-                    Out(0x05, 0x00, 0x10, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x5C),
-                    Out(0x1C, 0x00, 0x55, 0x00, 0x0E, 0x01, 0x01),
-                },
+                GapMs = 50, RepaintMs = 50, ReassertMs = ReassertMs,
+                Color = (_, _, r, g, b) => new[] { Out(0x13, 0x01, r, g, b) },
             },
 
             // Rival 650 Wireless, on its cable and through its dongle.
-            // Eight LEDs, 0x10 to 0x17, each the program and the bind of
-            // the Rival 3 Wireless (signal-plugins
-            // Steelseries_Rival_650_Mouse.js:84-131). OpenRGB sends four
-            // reports per LED, with the second program part and a 1C
-            // (OpenRGB SteelSeriesRivalController.cpp:164-218). The shorter
+            // Eight LEDs, 0x10 to 0x17, each an LED program and its bind
+            // (signal-plugins Steelseries_Rival_650_Mouse.js:84-131).
+            // OpenRGB sends four reports per LED, with the second program
+            // part and a 1C (OpenRGB SteelSeriesRivalController.cpp:164-218),
+            // and gives the program's first three points red, green and
+            // blue at distances 00, 54 and 54 ahead of the color. The shorter
             // form is the one a Windows program streams. SignalRGB waits
             // 60 ms after each program report by default and says a lower
             // delay "increases chance of mouse locking up"
@@ -412,7 +403,7 @@ namespace PadForge.Common.Input.Peripherals
                     var frames = new SteelSeriesFrame[16];
                     for (int led = 0; led < 8; led++)
                     {
-                        frames[led * 2] = Out(LedProgram(points: 4, r, g, b));
+                        frames[led * 2] = Out(LedProgram(r, g, b));
                         frames[led * 2 + 1] = Out(0x05, 0x00, (byte)(0x10 + led), 0xFF, 0x00, 0x00, 0x00, 0x00, 0x5C);
                     }
                     return frames;
@@ -896,20 +887,18 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>
-        /// The first part of the LED program of a Rival 3 Wireless or a
-        /// Rival 650: 03 00 00 00 30 00, an offset of 0 and a length of
-        /// 0x30, then the program itself from d[6], which has the layout of
-        /// the Rival 310's cycle from its duration on. d[6..7] the
-        /// duration, 10 27, d[22] 01 for a cycle that does not repeat,
-        /// d[30] the number of points, d[31..33] the start color. With one
-        /// point the color follows as that point (signal-plugins
-        /// Steelseries_Rival_3_Mouse_Wireless.js:72-103). With four, the
-        /// first three are left black at distance 0 and the fourth is the
-        /// color (Steelseries_Rival_650_Mouse.js:98-118).
+        /// The first part of the Rival 650's LED program: 03 00 00 00 30
+        /// 00, an offset of 0 and a length of 0x30, then the program itself
+        /// from d[6], which has the layout of the Rival 310's cycle from
+        /// its duration on. d[6..7] the duration, 10 27, d[22] 01 for a
+        /// cycle that does not repeat, d[30] the number of points, four,
+        /// d[31..33] the start color. The first three points are left
+        /// black at distance 0 and the fourth is the color
+        /// (signal-plugins Steelseries_Rival_650_Mouse.js:98-118).
         /// </summary>
-        private static byte[] LedProgram(int points, byte r, byte g, byte b)
+        private static byte[] LedProgram(byte r, byte g, byte b)
         {
-            int last = 34 + (points - 1) * 4;
+            const int points = 4, last = 34 + (points - 1) * 4;
             var data = new byte[last + 3];
             data[0] = 0x03;
             data[4] = 0x30;

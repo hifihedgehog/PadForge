@@ -223,6 +223,12 @@ namespace PadForge.Tests
         [Fact]
         public void TheEveAndOrigins2_65_SendReport44Frames()
         {
+            // Both write output reports (hid_write).
+            foreach (int pid in new[] { 0x08C2, 0x0CC2 })
+            {
+                var session = (HyperXKeyboardLighting.Session)ModelOf(0x03F0, pid).Begin(new FakeReportChannel(), NoWait);
+                Assert.False(session.Feature);
+            }
             var colors = Enumerable.Range(1, 74).ToArray();
             var frames = HyperXKeyboardLighting.Report44Frames(colors, 4, true);
             // 44 01 04 00, then 44 02 nn 00 and twenty colors

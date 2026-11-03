@@ -110,6 +110,9 @@ namespace PadForge.Tests
             Assert.Equal((byte)(colors[104] >> 8), picture[12].Report[8 + 48 + 1]);
             Assert.Equal(0x2D, picture[12].Report[2]);
             Assert.All(picture.Skip(1).Take(7), p => Assert.Equal(0x64, p.Report[6]));
+            // Both start reports carry the Custom mode's brightness, 100.
+            Assert.Equal("00 14 2C 0A 00 FF 64", Hex(picture[0].Report, 7));
+            Assert.Equal("00 14 2C 0A 00 FF 64", Hex(picture[11].Report, 7));
         }
 
         [Fact]

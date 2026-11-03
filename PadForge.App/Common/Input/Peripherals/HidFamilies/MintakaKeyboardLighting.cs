@@ -30,6 +30,14 @@ namespace PadForge.Common.Input.Peripherals
     /// spacing PadForge keeps for every write that lands in a keyboard's
     /// memory (<see cref="LenovoLegionLighting.HoldMs"/>).</para>
     ///
+    /// <para>Windows. The collection OpenRGB registers is the keyboard
+    /// collection itself, which Windows opens for itself, so it opens for
+    /// another program with no access right only. Feature reports pass on
+    /// such a handle (<see cref="HidReportChannel"/>), and they are all this
+    /// keyboard takes, but the shared worker writes to no handle opened that
+    /// way (<see cref="HidLightingBackend"/>), so the unit is listed asleep
+    /// until the worker lets a model take one.</para>
+    ///
     /// <para>Hand-back. No source reads the effect area back, and OpenRGB
     /// sends nothing when it closes, so the keyboard keeps PadForge's last
     /// picture in its Custom mode until another program or its own controls

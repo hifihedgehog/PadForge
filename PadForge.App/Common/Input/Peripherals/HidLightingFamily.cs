@@ -223,6 +223,7 @@ namespace PadForge.Common.Input.Peripherals
             HpOmenLaptopLighting.Instance,
             DygmaRaiseLighting.Instance,
             CorsairPeripheralLighting.Instance,
+            CorsairPeripheralV2Lighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

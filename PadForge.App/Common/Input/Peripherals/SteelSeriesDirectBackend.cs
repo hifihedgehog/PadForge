@@ -224,6 +224,28 @@ namespace PadForge.Common.Input.Peripherals
             public int SentRgb = NoColor;
             public long PaintAt;
 
+            /// <summary>The picture of the paint in flight and of the last
+            /// one sent whole (#557): a color per light of the map, and the
+            /// color of a key the lights leave out. Null colors for one
+            /// color.</summary>
+            public int[] QueueColors;
+            public LightMap QueueMap;
+            public int QueueFill;
+            public int[] SentColors;
+            public LightMap SentMap;
+            public int SentFill;
+
+            /// <summary>A per-key board's SKU, which picks the keys of its
+            /// map (<see cref="SteelSeriesApexLayouts"/>), or null. Asked once
+            /// while the device stays: <see cref="SkuAsked"/> after the
+            /// answer or the limit, and <see cref="AskingSku"/> until then,
+            /// up to <see cref="SkuUntil"/>.</summary>
+            public string Sku;
+            public bool SkuAsked;
+            public bool AskingSku;
+            public byte SkuCommand;
+            public long SkuUntil;
+
             /// <summary>A dongle's answer to the report before is still
             /// awaited, until <see cref="AwaitUntil"/>.</summary>
             public bool Awaiting;
@@ -266,6 +288,15 @@ namespace PadForge.Common.Input.Peripherals
 
         private DirectBackendSnapshot _snapshot = DirectBackendSnapshot.NotScanned;
         private IReadOnlyList<HidCollectionInfo> _present;
+
+        /// <summary>Each unit's light map (#557): the one its family or its
+        /// SKU gives, and that one with the names Map Key Lights learned.
+        /// Worker thread only, by unit path.</summary>
+        private readonly Dictionary<string, (LightMap Base, LightMap Map)> _maps = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>The <see cref="LearnedKeyMaps.Version"/> the maps were
+        /// made at. Worker thread only.</summary>
+        private int _mapsVersion = -1;
         private Thread _thread;
         // The newest worker's thread, which Stop does not forget.
         private Thread _worker;
@@ -352,6 +383,7 @@ namespace PadForge.Common.Input.Peripherals
             _thread.Start();
             PeripheralOutputs.LightingChanged += Wake;
             PeripheralOutputs.LinksChanged += Wake;
+            LearnedKeyMaps.Changed += OnLearned;
             if (_powerEvents) SystemEvents.PowerModeChanged += OnPowerMode;
         }
 
@@ -359,6 +391,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             PeripheralOutputs.LightingChanged -= Wake;
             PeripheralOutputs.LinksChanged -= Wake;
+            LearnedKeyMaps.Changed -= OnLearned;
             if (_powerEvents) SystemEvents.PowerModeChanged -= OnPowerMode;
             if (_thread == null) return;
             _run.Stop = true;
@@ -415,6 +448,8 @@ namespace PadForge.Common.Input.Peripherals
             if (e.Mode == PowerModes.Resume) NoteResume();
         }
 
+        private void OnLearned(object sender, EventArgs e) => Wake();
+
         /// <summary>Windows resumed from sleep: every open unit gets its
         /// claim and its color once more, since a device that lost power in
         /// between shows its stored lighting again while its collection
@@ -461,6 +496,10 @@ namespace PadForge.Common.Input.Peripherals
                         changed = Scan(units, present, now) || scanned == null;
                         scanned = present;
                     }
+                    // A unit's map is up before it is painted by, and again
+                    // when Map Key Lights learned names. A board's SKU
+                    // updates its own map as it comes (Learned).
+                    if (changed || LearnedKeyMaps.Version != _mapsVersion) SyncMaps(units);
 
                     var links = PeripheralOutputs.Links;
                     bool resumed = Interlocked.Exchange(ref _resumed, 0) != 0;
@@ -537,6 +576,10 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     Volatile.Write(ref _recorded, Array.Empty<(string, byte[][])>());
                     Volatile.Write(ref _snapshot, DirectBackendSnapshot.NotScanned);
+                    foreach (string key in _maps.Keys)
+                        PeripheralLightMaps.Remove(new OutputPath(OutputFamily.SteelSeriesUnit, key));
+                    _maps.Clear();
+                    _mapsVersion = -1;
                 }
             }
         }
@@ -667,7 +710,8 @@ namespace PadForge.Common.Input.Peripherals
             }
 
             int rgb = 0;
-            bool wanted = links.ByPath.ContainsKey(path) && PeripheralOutputs.TryResolveColor(path, out rgb);
+            PeripheralOutputs.Claimant ruler = default;
+            bool wanted = links.ByPath.ContainsKey(path) && PeripheralOutputs.TryResolveColor(path, out rgb, out ruler);
             if (!wanted)
             {
                 if (unit.Io != null && Release(unit, path, now, blocking: false, ref due, out bool lost))
@@ -697,7 +741,7 @@ namespace PadForge.Common.Input.Peripherals
                     return;
                 }
             }
-            if (!Paint(run, unit, rgb, now, ref due))
+            if (!Paint(run, unit, rgb, ruler.Keys, now, ref due))
                 Fail(unit, now, "write failed", ref changed, ref failed, ref due);
         }
 
@@ -766,6 +810,11 @@ namespace PadForge.Common.Input.Peripherals
             // included.
             unit.NextAt = Math.Max(unit.NextAt, now);
             unit.SentRgb = NoColor;
+            unit.SentColors = null;
+            unit.SentMap = null;
+            unit.QueueColors = null;
+            unit.QueueMap = null;
+            unit.AskingSku = false;
             unit.Awaiting = false;
             unit.MouseOff = false;
             unit.QuietUntil = now;
@@ -790,7 +839,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>One pass over an open, wanted unit. False when a write
         /// or a read failed.</summary>
-        private bool Paint(WorkerRun run, Unit unit, int rgb, long now, ref long due)
+        private bool Paint(WorkerRun run, Unit unit, int rgb, KeyFrame keys, long now, ref long due)
         {
             var info = unit.Plan.Info;
 
@@ -802,6 +851,29 @@ namespace PadForge.Common.Input.Peripherals
                     Soonest(ref due, now + _activeTickMs);
                     return true;
                 }
+            }
+
+            // A per-key board's SKU, once the version says which query it
+            // takes, and before its claim, so no lighting of ours is out
+            // when it is asked. An answer that is already there is taken in
+            // this pass, as the version's is.
+            if (info.PerKey && !unit.SkuAsked && !unit.AskingSku && !AskSku(unit, now)) return false;
+            if (unit.AskingSku) ReadSku(unit, now);
+            if (unit.AskingSku)
+            {
+                Soonest(ref due, now + _activeTickMs);
+                return true;
+            }
+
+            // The colors light by light where the claim carries key colors
+            // and the unit has more than one light (#557), else one color.
+            var map = MapOf(unit);
+            int[] colors = null;
+            int fill = rgb;
+            if (map != null && keys is { IsEmpty: false })
+            {
+                colors = LightRenderer.Render(map, rgb, keys);
+                fill = LightRenderer.Fill(rgb, keys);
             }
 
             if (unit.Awaiting)
@@ -840,7 +912,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 // The color is read when its first report can go, so the
                 // one that goes is the newest.
-                long startAt = StartAt(unit, info, rgb, now);
+                long startAt = StartAt(unit, info, rgb, map, colors, fill, now);
                 if (now < startAt)
                 {
                     Soonest(ref due, startAt);
@@ -854,7 +926,9 @@ namespace PadForge.Common.Input.Peripherals
                     unit.ClaimSent = false;
                 unit.Reassert = false;
                 var claim = unit.ClaimSent ? SteelSeriesDirectProtocol.NoFrames : info.Claim(unit.Gen3);
-                var color = info.Color(unit.Plan.ColorReport, unit.Gen3, (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb);
+                var color = colors == null
+                    ? info.Color(unit.Plan.ColorReport, unit.Gen3, (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb)
+                    : info.Paint(unit.Plan.ColorReport, unit.Gen3, map.Lights, colors, fill);
                 var queue = new SteelSeriesFrame[claim.Length + color.Length];
                 claim.CopyTo(queue, 0);
                 color.CopyTo(queue, claim.Length);
@@ -862,6 +936,9 @@ namespace PadForge.Common.Input.Peripherals
                 unit.Next = 0;
                 unit.ClaimFrames = claim.Length;
                 unit.QueueRgb = rgb;
+                unit.QueueColors = colors;
+                unit.QueueMap = map;
+                unit.QueueFill = fill;
             }
 
             while (unit.Queue != null && !unit.Awaiting && unit.Next < unit.Queue.Length && now >= unit.NextAt)
@@ -926,30 +1003,44 @@ namespace PadForge.Common.Input.Peripherals
             if (now < unit.QuietUntil) Soonest(ref due, unit.QuietUntil);
             else if (unit.Awaiting) Soonest(ref due, now + _activeTickMs);
             else if (unit.Queue != null) Soonest(ref due, unit.NextAt);
-            else Soonest(ref due, StartAt(unit, info, rgb, now));
+            else Soonest(ref due, StartAt(unit, info, rgb, map, colors, fill, now));
             return true;
         }
 
-        /// <summary>The soonest the next paint of <paramref name="rgb"/>
-        /// may start, or long.MaxValue when none is owed. The first color
-        /// of an open, and the one after a dongle's pause, go at once. A
-        /// new color waits out the family's fastest repaint, and an
-        /// unchanged one its re-assert, where the family has one. None
-        /// starts inside the gap after the report before.</summary>
-        private static long StartAt(Unit unit, SteelSeriesFamilyInfo info, int rgb, long now)
+        /// <summary>The soonest the next paint of <paramref name="rgb"/>,
+        /// or of <paramref name="colors"/> light by light, may start, or
+        /// long.MaxValue when none is owed. The first color of an open, and
+        /// the one after a dongle's pause, go at once. A new picture waits
+        /// out the family's fastest repaint, and an unchanged one its
+        /// re-assert, where the family has one. None starts inside the gap
+        /// after the report before.</summary>
+        private static long StartAt(Unit unit, SteelSeriesFamilyInfo info, int rgb, LightMap map, int[] colors, int fill,
+            long now)
         {
             long at = unit.SentRgb == NoColor || unit.Reassert ? now
-                : rgb != unit.SentRgb ? unit.PaintAt + info.RepaintMs
+                : !Showing(unit, rgb, map, colors, fill) ? unit.PaintAt + info.RepaintMs
                 : info.ReassertMs > 0 ? unit.PaintAt + info.ReassertMs
                 : long.MaxValue;
             return at == long.MaxValue ? at : Math.Max(at, unit.NextAt);
         }
+
+        /// <summary>Whether the last picture sent whole is the one asked for
+        /// now: one color, or <paramref name="colors"/> light by light on
+        /// the map they were painted by (HidppBackend.Showing).</summary>
+        private static bool Showing(Unit unit, int rgb, LightMap map, int[] colors, int fill)
+            => colors == null
+                ? unit.SentColors == null && rgb == unit.SentRgb
+                : unit.SentColors != null && ReferenceEquals(unit.SentMap, map) && fill == unit.SentFill
+                  && LightRenderer.Same(colors, unit.SentColors);
 
         /// <summary>The last report of a color is out, and answered where
         /// the family answers.</summary>
         private static void Finish(Unit unit)
         {
             unit.SentRgb = unit.QueueRgb;
+            unit.SentColors = unit.QueueColors;
+            unit.SentMap = unit.QueueMap;
+            unit.SentFill = unit.QueueFill;
             unit.Queue = null;
             if (unit.Announced) return;
             unit.Announced = true;
@@ -967,6 +1058,7 @@ namespace PadForge.Common.Input.Peripherals
             unit.Awaiting = false;
             unit.Queue = null;
             unit.SentRgb = NoColor;
+            unit.SentColors = null;
             unit.NextAt = now;
             unit.QuietUntil = now + QuietMs;
             unit.MouseOff = mouseOff;
@@ -993,6 +1085,167 @@ namespace PadForge.Common.Input.Peripherals
             if (now < unit.QueryUntil) return;
             unit.Gen3 = false;
             unit.Querying = false;
+        }
+
+        /// <summary>
+        /// Asks a per-key board for what picks its keys, as OpenRGB asks it
+        /// once at detection (SteelSeriesApexController::GetSerial,
+        /// SteelSeriesApexController.cpp:351-419): a board of the first
+        /// generation for its serial, whose first five characters are the
+        /// SKU, the wired Apex Pro TKL Gen 3 for its region. A board on
+        /// firmware 1.19.7 or later takes the third generation's path,
+        /// which reads no serial. Every other board's SKU is fixed by its
+        /// product, and a collection with no input report is not asked.
+        /// False when the query did not go out.
+        /// </summary>
+        private bool AskSku(Unit unit, long now)
+        {
+            var info = unit.Plan.Info;
+            ushort pid = unit.ProductId;
+            byte command = SteelSeriesApexLayouts.AsksRegion(pid) ? SteelSeriesApexLayouts.RegionCommand
+                : SteelSeriesApexLayouts.AsksSerial(pid) && !(info.Gated && unit.Gen3) ? SteelSeriesApexLayouts.SerialCommand
+                : (byte)0;
+            if (command == 0 || unit.Io.InputReportLength <= 0)
+            {
+                Learned(unit, SteelSeriesApexLayouts.FixedSku(pid)
+                              ?? (info.Gated && unit.Gen3 ? SteelSeriesApexLayouts.TklUsSku : null));
+                return true;
+            }
+            Drain(unit);
+            if (!Send(unit, SteelSeriesDirectProtocol.SkuQuery(command))) return false;
+            unit.AskingSku = true;
+            unit.SkuCommand = command;
+            unit.SkuUntil = now + QueryTimeoutMs;
+            return true;
+        }
+
+        /// <summary>Reads the answer to <see cref="AskSku"/>. The serial is
+        /// the report's first characters, and the region the third byte
+        /// behind an echoed F5. A report that is neither is skipped, and a
+        /// board that does not answer by <see cref="Unit.SkuUntil"/> keeps
+        /// the keys of its product's form.</summary>
+        private void ReadSku(Unit unit, long now)
+        {
+            for (int i = 0; i < ReadLimit; i++)
+            {
+                int read = unit.Io.ReadInput(unit.Input, 0);
+                if (read <= 0) break;
+                var reply = unit.Input.AsSpan(1, read - 1);
+                if (unit.SkuCommand == SteelSeriesApexLayouts.RegionCommand)
+                {
+                    if (reply.Length == 0 || reply[0] != SteelSeriesApexLayouts.RegionCommand) continue;
+                    Learned(unit, SteelSeriesApexLayouts.SkuOfRegion(reply));
+                    return;
+                }
+                if (SteelSeriesApexLayouts.SkuOfSerial(reply) is not string sku) continue;
+                Learned(unit, sku);
+                return;
+            }
+            if (now < unit.SkuUntil) return;
+            Learned(unit, null);
+        }
+
+        /// <summary>The SKU query is done: the unit's map follows
+        /// <paramref name="sku"/>, or its product's form for none, from this
+        /// pass's paint on.</summary>
+        private void Learned(Unit unit, string sku)
+        {
+            unit.AskingSku = false;
+            unit.SkuAsked = true;
+            unit.Sku = sku;
+            SyncMap(unit, relearn: false);
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"PERIPHERAL SteelSeries {unit.ProductId:X4} keys of SKU {sku ?? "none"}"
+                + (SteelSeriesApexLayouts.Knows(sku) ? "" : $", {SteelSeriesApexLayouts.FormOf(unit.ProductId)} layout"));
+        }
+
+        // ─────────────────────────────────────────────
+        //  Light maps (#557)
+        // ─────────────────────────────────────────────
+
+        /// <summary>The map a unit is painted by light by light, or null for
+        /// one painted one color.</summary>
+        private LightMap MapOf(Unit unit)
+            => _maps.TryGetValue(unit.Path, out var entry) && entry.Map.PerLight ? entry.Map : null;
+
+        /// <summary>
+        /// Publishes the light map of every unit with more than one light,
+        /// and takes down the maps of units that left (HidppBackend.SyncMaps).
+        /// A unit found again with the same lights keeps its map, so the
+        /// Lighting tab does not redraw on every scan. The names Map Key
+        /// Lights learned go over each map, again whenever they change.
+        /// </summary>
+        private void SyncMaps(List<Unit> units)
+        {
+            int version = LearnedKeyMaps.Version;
+            bool relearn = version != _mapsVersion;
+            _mapsVersion = version;
+            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var unit in units)
+                if (SyncMap(unit, relearn)) seen.Add(unit.Path);
+            List<string> gone = null;
+            foreach (string key in _maps.Keys)
+                if (!seen.Contains(key)) (gone ??= new List<string>()).Add(key);
+            if (gone == null) return;
+            foreach (string key in gone)
+            {
+                _maps.Remove(key);
+                PeripheralLightMaps.Remove(new OutputPath(OutputFamily.SteelSeriesUnit, key));
+            }
+        }
+
+        /// <summary>Brings one unit's published map in line with its lights,
+        /// with the learned names again where <paramref name="relearn"/>.
+        /// True when the unit has more than one light.</summary>
+        private bool SyncMap(Unit unit, bool relearn)
+        {
+            var fresh = LightsOf(unit);
+            if (fresh == null) return false;
+            var path = new OutputPath(OutputFamily.SteelSeriesUnit, unit.Path);
+            if (_maps.TryGetValue(unit.Path, out var known) && SameLights(known.Base, fresh))
+            {
+                if (!relearn) return true;
+                var again = LearnedKeyMaps.Apply(known.Base);
+                if (SameLights(again, known.Map)) return true;
+                _maps[unit.Path] = (known.Base, again);
+                PeripheralLightMaps.Publish(path, again);
+                return true;
+            }
+            var map = LearnedKeyMaps.Apply(fresh);
+            _maps[unit.Path] = (fresh, map);
+            PeripheralLightMaps.Publish(path, map);
+            return true;
+        }
+
+        /// <summary>A unit's lights as its family or its SKU gives them, or
+        /// null for a family painted one color.</summary>
+        private static LightMap LightsOf(Unit unit)
+        {
+            var info = unit.Plan.Info;
+            string product = $"steelseries:{SteelSeriesDirectProtocol.VendorId:X4}:{unit.ProductId:X4}";
+            if (info.PerKey)
+            {
+                string sku = unit.Sku ?? SteelSeriesApexLayouts.FixedSku(unit.ProductId);
+                var form = SteelSeriesApexLayouts.FormOf(unit.ProductId);
+                var lights = SteelSeriesApexLayouts.Lights(SteelSeriesApexLayouts.Grid(sku, form));
+                string source = SteelSeriesApexLayouts.Knows(sku)
+                    ? "OpenRGB SteelSeriesApexRegions.h, SKU " + sku
+                    : "OpenRGB SteelSeriesApexRegions.h, " + form + " layout";
+                return new LightMap(lights, source) { Product = product };
+            }
+            if (info.Lights is not { Count: > 1 } own) return null;
+            return new LightMap(own, "rivalcfg and OpenRGB SteelSeriesController") { Product = product };
+        }
+
+        /// <summary>Whether two maps hold the same lights for the same
+        /// model.</summary>
+        private static bool SameLights(LightMap a, LightMap b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (a == null || b == null || a.Product != b.Product || a.Lights.Count != b.Lights.Count) return false;
+            for (int i = 0; i < a.Lights.Count; i++)
+                if (a.Lights[i] != b.Lights[i]) return false;
+            return true;
         }
 
         /// <summary>Looks for a dongle's answer to the report before,
@@ -1072,6 +1325,7 @@ namespace PadForge.Common.Input.Peripherals
             // finished, and a claim that comes back paints from the top.
             unit.Queue = null;
             unit.SentRgb = NoColor;
+            unit.SentColors = null;
 
             if (LeftToVendorProgram(path))
             {
@@ -1227,9 +1481,11 @@ namespace PadForge.Common.Input.Peripherals
             unit.Io = null;
             unit.Queue = null;
             unit.Querying = false;
+            unit.AskingSku = false;
             unit.Awaiting = false;
             unit.Lit = false;
             unit.SentRgb = NoColor;
+            unit.SentColors = null;
             try { io?.Dispose(); } catch { }
         }
 

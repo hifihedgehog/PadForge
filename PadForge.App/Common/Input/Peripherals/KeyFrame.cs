@@ -134,17 +134,21 @@ namespace PadForge.Common.Input.Peripherals
             var lights = map?.Lights ?? Array.Empty<LightInfo>();
             var colors = new int[lights.Count];
             frame ??= KeyFrame.Empty;
-            int fill = background;
-            for (var f = frame; f != null; f = f.Under)
-                if (f.Background is int set)
-                {
-                    fill = set;
-                    break;
-                }
-            fill &= 0xFFFFFF;
+            int fill = Fill(background, frame);
             for (int i = 0; i < lights.Count; i++)
                 colors[i] = ColorOf(frame, lights[i]) ?? fill;
             return colors;
+        }
+
+        /// <summary>The color a light the frames give none takes: the
+        /// background the first frame from the top sets, and
+        /// <paramref name="background"/> otherwise.</summary>
+        public static int Fill(int background, KeyFrame frame)
+        {
+            for (var f = frame; f != null; f = f.Under)
+                if (f.Background is int set)
+                    return set & 0xFFFFFF;
+            return background & 0xFFFFFF;
         }
 
         /// <summary>The color the frames from <paramref name="frame"/> down

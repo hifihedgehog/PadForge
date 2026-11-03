@@ -57,6 +57,7 @@ namespace PadForge.Tests
         public SteelSeriesDirectBackendTests()
         {
             PeripheralOutputs.ResetForTest();
+            PeripheralLightMaps.ResetForTest();
             SettingsManager.UserDevices = new DeviceCollection();
             SettingsManager.UserSettings = new SettingsCollection();
         }
@@ -66,6 +67,7 @@ namespace PadForge.Tests
             SettingsManager.UserDevices = _devices;
             SettingsManager.UserSettings = _settings;
             PeripheralOutputs.ResetForTest();
+            PeripheralLightMaps.ResetForTest();
         }
 
         // ── The bench ──
@@ -153,6 +155,10 @@ namespace PadForge.Tests
 
         private static void Light(int rgb, int player = 1)
             => PeripheralOutputs.SetLighting(Device, slot: 0, player, (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb);
+
+        /// <summary>A claim with key colors over the color (#557).</summary>
+        private static void Light(int rgb, KeyFrame keys)
+            => PeripheralOutputs.SetLighting(Device, slot: 0, player: 1, (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb, keys: keys);
 
         private static void Unlight() => PeripheralOutputs.ReleaseLighting(Device, 0);
 
@@ -811,6 +817,7 @@ namespace PadForge.Tests
         public void TheGapHoldsAfterAHandBack()
         {
             var keyboard = Control(0x1640, 1);
+            _script = channel => channel.Input = Answering(channel, (0xFF, SerialReply("64660")));
             using var backend = Started(keyboard);
             long t0 = Tick();
             Link(PathOf(keyboard));
@@ -822,7 +829,8 @@ namespace PadForge.Tests
             Passes(backend);
             Advance(66);
             Passes(backend);
-            Assert.Equal(("out", "00 41 00", t0 + 132), Writes(Channel())[2]);
+            // Behind the serial query, the claim and the color.
+            Assert.Equal(("out", "00 41 00", t0 + 132), Writes(Channel())[3]);
             Assert.True(Channel().Disposed);
 
             Light(0x654321);
@@ -2190,6 +2198,36 @@ namespace PadForge.Tests
                 };
             };
 
+        /// <summary>A keyboard that answers the version query with this text
+        /// and the serial query with a serial of this SKU, each once it is
+        /// out.</summary>
+        private void AnswersVersionAndSerial(byte[] version, string sku)
+            => _script = channel => channel.Input = Answering(channel, (0x90, version), (0xFF, SerialReply(sku)));
+
+        /// <summary>A board's answer to the serial query: the report ID
+        /// position, then the serial, whose first five characters are the
+        /// SKU.</summary>
+        private static byte[] SerialReply(string sku)
+            => new byte[] { 0x00 }.Concat(System.Text.Encoding.ASCII.GetBytes(sku + "A12345678901234")).ToArray();
+
+        /// <summary>Answers to queries, each given once, after its query is
+        /// out.</summary>
+        private static Func<byte[]> Answering(FakeReportChannel channel, params (byte Command, byte[] Reply)[] answers)
+        {
+            var given = new HashSet<byte>();
+            return () =>
+            {
+                foreach (var (command, reply) in answers)
+                {
+                    if (given.Contains(command)) continue;
+                    if (!channel.Calls.Any(c => c.Kind == "out" && c.Bytes.Length > 1 && c.Bytes[1] == command)) continue;
+                    given.Add(command);
+                    return reply;
+                }
+                return null;
+            };
+        }
+
         private static string PerKey(byte packet)
             => "set " + Hex(SteelSeriesDirectProtocol.Color(
                 packet == 0x3A ? SteelSeriesFamily.ApexPro : packet == 0x40 ? SteelSeriesFamily.Apex9 : SteelSeriesFamily.ApexProWireless,
@@ -2253,14 +2291,16 @@ namespace PadForge.Tests
         }
 
         /// <summary>An Apex Pro TKL changes its packet number with its
-        /// firmware: 3A before 1.19.7, 40 from it on.</summary>
+        /// firmware: 3A before 1.19.7, 40 from it on. On the older firmware
+        /// it is asked its serial after its version, as OpenRGB asks a
+        /// board of the first generation.</summary>
         [Theory]
-        [InlineData(0x36, "out 00 90 | ", 0x3A, "00 3B")]
+        [InlineData(0x36, "out 00 90 | out 00 FF | ", 0x3A, "00 3B")]
         [InlineData(0x37, "out 00 90 | set 00 4B | ", 0x40, "00 41 00")]
         public void AnApexProTkl_TakesThePacketOfItsFirmware(int patch, string before, int packet, string handBack)
         {
             var keyboard = Control(0x1614, 1);
-            AnswersVersion(0x00, 0x90, 0x00, 0x31, 0x2E, 0x31, 0x39, 0x2E, (byte)patch);
+            AnswersVersionAndSerial(new byte[] { 0x00, 0x90, 0x00, 0x31, 0x2E, 0x31, 0x39, 0x2E, (byte)patch }, "64734");
             using var backend = Started(keyboard);
             Link(PathOf(keyboard));
             Light(0x123456);
@@ -2337,7 +2377,10 @@ namespace PadForge.Tests
 
         /// <summary>The version query goes out once per open, first, on the
         /// four boards a firmware update moves to the third generation, and
-        /// on no other.</summary>
+        /// on no other. The SKU query goes out once, after it where there is
+        /// one: the serial to the boards OpenRGB reads one from, the region
+        /// to the wired Apex Pro TKL Gen 3, and nothing to a board its
+        /// product gives a SKU.</summary>
         [Fact]
         public void TheVersionQuery_GoesOutOncePerOpen_First_OnTheGatedBoardsAlone()
         {
@@ -2372,8 +2415,13 @@ namespace PadForge.Tests
                     else
                     {
                         Assert.Equal(0, queries);
-                        Assert.DoesNotContain(channel.Calls, c => c.Kind == "in");
                     }
+                    string sku = productId == 0x1642 ? "00 F5"
+                        : productId is 0x1610 or 0x1612 or 0x1640 or 0x1614 ? "00 FF"
+                        : null;
+                    Assert.Equal(sku == null ? 0 : 1, writes.Count(w => w.Bytes is "00 FF" or "00 F5"));
+                    if (sku != null) Assert.Equal(gated.Contains(productId) ? 1 : 0, writes.FindIndex(w => w.Bytes == sku));
+                    else Assert.DoesNotContain(channel.Calls, c => c.Kind == "in" && !gated.Contains(productId));
                 }
             }
         }
@@ -2387,12 +2435,14 @@ namespace PadForge.Tests
         public void AnApexProGen3_ClaimsWith4101_AgainOnItsInterval_AndHandsBackWith4100()
         {
             var keyboard = Control(0x1640, 1);
+            _script = channel => channel.Input = Answering(channel, (0xFF, SerialReply("64660")));
             using var backend = Started(keyboard);
             long t0 = Tick();
             Link(PathOf(keyboard));
             Light(0x123456);
             Passes(backend);
-            Assert.Equal(new[] { ("out", "00 41 01", t0) }, Writes(Channel()));
+            // OpenRGB reads this board's serial as the first generation's.
+            Assert.Equal(new[] { ("out", "00 FF", t0), ("out", "00 41 01", t0) }, Writes(Channel()));
             Assert.Equal(keyboard.Path + " = 00 41 00", Recorded(backend));
             Advance(66);
             Passes(backend);
@@ -2400,17 +2450,17 @@ namespace PadForge.Tests
             Passes(backend);
             Advance(66);
             Passes(backend);
-            Assert.Equal("out 00 41 01 | " + PerKey(0x3A) + " | out 00 41 01 | " + PerKey(0x3A), Sent(Channel()));
-            Assert.Equal(new[] { t0, t0 + 66, t0 + 5066, t0 + 5132 }, Writes(Channel()).Select(w => w.At));
+            Assert.Equal("out 00 FF | out 00 41 01 | " + PerKey(0x3A) + " | out 00 41 01 | " + PerKey(0x3A), Sent(Channel()));
+            Assert.Equal(new[] { t0, t0, t0 + 66, t0 + 5066, t0 + 5132 }, Writes(Channel()).Select(w => w.At));
 
             Unlight();
             Passes(backend);
             Advance(66);
             Passes(backend);
-            Assert.Equal(("out", "00 41 00", t0 + 5198), Writes(Channel())[4]);
+            Assert.Equal(("out", "00 41 00", t0 + 5198), Writes(Channel())[5]);
             Assert.True(Channel().Disposed);
-            // Nothing was read from a board that is not asked anything.
-            Assert.DoesNotContain(Channel().Calls, c => c.Kind == "in");
+            // The serial is asked once.
+            Assert.Single(Writes(Channel()), w => w.Bytes == "00 FF");
         }
 
         /// <summary>A wireless Apex Pro TKL is of the third generation from
@@ -2969,11 +3019,13 @@ namespace PadForge.Tests
                 if (made != null) waits[made.PassCount] = made.WaitMs;
                 return Tick();
             }
-            // The keyboard's first frame takes 25 ms.
+            // The keyboard's first report takes 25 ms. It answers its
+            // serial query at once.
             int slowPass = 0;
             _script = channel =>
             {
                 if (channel.Path != keyboard.Path) return;
+                channel.Input = Answering(channel, (0xFF, SerialReply("64626")));
                 channel.Ticks = () =>
                 {
                     if (Interlocked.CompareExchange(ref slowPass, Volatile.Read(ref worker).PassCount + 1, 0) == 0) Advance(25);
@@ -3010,6 +3062,199 @@ namespace PadForge.Tests
             Advance(1);
             Passes(backend);
             Assert.Equal(("out", "00 21 02 00 00 00 12 34 56", t0 + 41), Writes(Of(aerox))[1]);
+        }
+
+        // ── Light by light (#557) ──
+
+        /// <summary>The color a per-key frame gives one key code, as "CC RR
+        /// GG BB".</summary>
+        private static string KeyIn(string frame, byte code)
+        {
+            var bytes = frame.Split(' ');
+            int i = Array.IndexOf(SteelSeriesDirectProtocol.ApexKeys, code);
+            return string.Join(" ", bytes.Skip(3 + i * 4).Take(4));
+        }
+
+        /// <summary>A Rival 3's four zones are published at the scan, with
+        /// nothing opened, and a claim with key colors paints each zone in
+        /// the one report: the logo and the second zone their own colors, the
+        /// rest the claim's. A changed zone repaints after the family's
+        /// fastest repaint, the same picture does not, and the map leaves
+        /// with the device.</summary>
+        [Fact]
+        public void AZoneMouse_PublishesItsLights_AndPaintsEachZone()
+        {
+            var mouse = Control(0x184C, 3);
+            using var backend = Started(mouse);
+            var map = PeripheralLightMaps.For(PathOf(mouse));
+            Assert.NotNull(map);
+            Assert.Equal(new[] { LightKind.Zone, LightKind.Zone, LightKind.Zone, LightKind.Logo }, map.Lights.Select(l => l.Kind));
+            Assert.Equal("steelseries:1038:184C", map.Product);
+            Assert.Equal(0, Opens);
+
+            long t0 = Tick();
+            Link(PathOf(mouse));
+            Light(0x000010, new KeyFrame(null, new Dictionary<string, int> { ["logo"] = 0xFF0000, ["zone2"] = 0x00FF00 }, null, null));
+            Passes(backend);
+            Assert.Equal("out 00 0A 00 0F 00 00 10 00 FF 00 00 00 10 FF 00 00", Sent(Channel()));
+
+            Light(0x000010, new KeyFrame(null, new Dictionary<string, int> { ["logo"] = 0xFF0000, ["zone2"] = 0x0000FF }, null, null));
+            Passes(backend);
+            Advance(32);
+            Passes(backend);
+            Assert.Single(Writes(Channel()));
+            Advance(1);
+            Passes(backend);
+            Assert.Equal(("out", "00 0A 00 0F 00 00 10 00 00 FF 00 00 10 FF 00 00", t0 + 33), Writes(Channel())[1]);
+            Advance(1000);
+            Passes(backend);
+            Assert.Equal(2, Writes(Channel()).Count);
+
+            backend.Rescan(Array.Empty<HidCollectionInfo>());
+            Passes(backend);
+            Assert.Null(PeripheralLightMaps.For(PathOf(mouse)));
+        }
+
+        /// <summary>An Apex Pro answers its serial query in front of its first
+        /// frame, and its map becomes the keys of its SKU, 64634, a full UK
+        /// board: the two ISO keys in, the ANSI backslash out. The per-key
+        /// frame carries A in its own color, the ISO key in its own, and the
+        /// claim's color on the rest, the ANSI backslash the SKU lacks
+        /// included. The board is asked once while it stays.</summary>
+        [Fact]
+        public void AnApexPro_TakesTheKeysOfTheSkuItsSerialNames()
+        {
+            var keyboard = Control(0x1610, 1);
+            _script = channel => channel.Input = Answering(channel, (0xFF, SerialReply("64634")));
+            using var backend = Started(keyboard);
+            var before = PeripheralLightMaps.For(PathOf(keyboard));
+            Assert.Contains(before.Lights, l => l.Address == 0x31);
+            Assert.DoesNotContain(before.Lights, l => l.Address == 0x64);
+
+            Link(PathOf(keyboard));
+            Light(0x000011, new KeyFrame(new Dictionary<ushort, int> { [0x04] = 0xFF0000, [0x64] = 0x00FF00 }, null, null, null));
+            Passes(backend);
+            var after = PeripheralLightMaps.For(PathOf(keyboard));
+            Assert.Contains(after.Lights, l => l.Address == 0x64);
+            Assert.Contains(after.Lights, l => l.Address == 0x32);
+            Assert.DoesNotContain(after.Lights, l => l.Address == 0x31);
+
+            var writes = Writes(Channel());
+            Assert.Equal("00 FF", writes[0].Bytes);
+            Assert.StartsWith("00 3A 70", writes[1].Bytes);
+            Assert.Equal("04 FF 00 00", KeyIn(writes[1].Bytes, 0x04));
+            Assert.Equal("64 00 FF 00", KeyIn(writes[1].Bytes, 0x64));
+            Assert.Equal("05 00 00 11", KeyIn(writes[1].Bytes, 0x05));
+            Assert.Equal("31 00 00 11", KeyIn(writes[1].Bytes, 0x31));
+
+            // A new claim is a new open, and the board is not asked again.
+            Unlight();
+            Passes(backend);
+            Advance(66);
+            Passes(backend);
+            Light(0x000011);
+            Passes(backend);
+            Assert.Equal(2, Opens);
+            Assert.DoesNotContain(Writes(Channel()), w => w.Bytes == "00 FF");
+        }
+
+        /// <summary>A frame that sets its own background gives it to every
+        /// key it names no color for: the keys of the SKU's map and the ANSI
+        /// backslash the UK board lacks alike, never the claim's color.</summary>
+        [Fact]
+        public void AFramesBackground_ReachesTheKeysTheSkuLacks()
+        {
+            var keyboard = Control(0x1610, 1);
+            _script = channel => channel.Input = Answering(channel, (0xFF, SerialReply("64634")));
+            using var backend = Started(keyboard);
+            Link(PathOf(keyboard));
+            Light(0x000011, new KeyFrame(new Dictionary<ushort, int> { [0x04] = 0xFF0000 }, null, null, 0x00FF00));
+            Passes(backend);
+
+            var writes = Writes(Channel());
+            Assert.StartsWith("00 3A 70", writes[1].Bytes);
+            Assert.Equal("04 FF 00 00", KeyIn(writes[1].Bytes, 0x04));
+            Assert.Equal("05 00 FF 00", KeyIn(writes[1].Bytes, 0x05));
+            Assert.Equal("31 00 FF 00", KeyIn(writes[1].Bytes, 0x31));
+        }
+
+        /// <summary>An Apex 7 TKL that never answers its serial query keeps
+        /// the keys of its product's form, a TKL board, where OpenRGB would
+        /// show the keypad, and is painted once the query's limit has
+        /// passed.</summary>
+        [Fact]
+        public void ABoardThatGivesNoSerial_KeepsTheKeysOfItsForm()
+        {
+            var keyboard = Control(0x1618, 1);
+            using var backend = Started(keyboard);
+            long t0 = Tick();
+            Link(PathOf(keyboard));
+            Light(0x123456);
+            Passes(backend);
+            Assert.Equal("out 00 FF", Sent(Channel()));
+            Advance(SteelSeriesDirectBackend.QueryTimeoutMs);
+            Passes(backend);
+            Assert.Equal(("set", PerKey(0x3A).Substring(4), t0 + SteelSeriesDirectBackend.QueryTimeoutMs), Writes(Channel())[1]);
+            var map = PeripheralLightMaps.For(PathOf(keyboard));
+            Assert.DoesNotContain(map.Lights, l => l.Address == 0x59);
+            Assert.Contains(map.Lights, l => l.Address == 0xFB);
+        }
+
+        /// <summary>A board whose collection has no input report could not
+        /// answer, and is not asked: it is painted at once with the keys of
+        /// its form.</summary>
+        [Fact]
+        public void ABoardWithNoInputReport_IsNotAsked()
+        {
+            var keyboard = Control(0x1610, 1, input: 0);
+            _opener = path =>
+            {
+                var channel = new FakeReportChannel
+                {
+                    Path = path, InputReportLength = 0, OutputReportLength = 65, FeatureReportLength = 643, Ticks = Tick,
+                };
+                lock (_channels) _channels.Add(channel);
+                return channel;
+            };
+            using var backend = Started(keyboard);
+            Link(PathOf(keyboard));
+            Light(0x123456);
+            Passes(backend);
+            Assert.Equal(PerKey(0x3A), Sent(Channel()));
+            Assert.Contains(PeripheralLightMaps.For(PathOf(keyboard)).Lights, l => l.Address == 0x59);
+        }
+
+        /// <summary>The wired Apex Pro TKL Gen 3 answers the region query,
+        /// F5, a byte and the region: 04 is a UK board, SKU 64743, a TKL with
+        /// the ISO keys. The query goes ahead of its 4B claim.</summary>
+        [Fact]
+        public void TheRegionQuery_PicksTheKeysOfTheApexProTklGen3()
+        {
+            var keyboard = Control(0x1642, 1);
+            // Another report comes first and is not taken for the answer.
+            _script = channel =>
+            {
+                var answer = Answering(channel, (0xF5, new byte[] { 0x00, 0xF5, 0x00, 0x04 }));
+                bool stray = false;
+                channel.Input = () =>
+                {
+                    if (!stray && channel.Calls.Any(c => c.Kind == "out" && c.Bytes[1] == 0xF5))
+                    {
+                        stray = true;
+                        return new byte[] { 0x00, 0xA3, 0x00, 0x05 };
+                    }
+                    return answer();
+                };
+            };
+            using var backend = Started(keyboard);
+            Link(PathOf(keyboard));
+            Light(0x123456);
+            Passes(backend);
+            Assert.Equal(new[] { "00 F5", "00 4B" }, Writes(Channel()).Take(2).Select(w => w.Bytes));
+            var map = PeripheralLightMaps.For(PathOf(keyboard));
+            Assert.Contains(map.Lights, l => l.Address == 0x64);
+            Assert.DoesNotContain(map.Lights, l => l.Address == 0x59);
+            Assert.Equal("OpenRGB SteelSeriesApexRegions.h, SKU 64743", map.Source);
         }
 
         // ── The test host and real devices ──

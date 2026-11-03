@@ -121,10 +121,41 @@ namespace PadForge.Common.Input.Peripherals
         /// interval, and once when Windows resumes from sleep.</summary>
         public Func<bool, SteelSeriesFrame[]> Claim { get; init; } = _ => SteelSeriesDirectProtocol.NoFrames;
 
-        /// <summary>The frames of one color on every LED or zone: the
-        /// report type they travel as, the firmware generation, then red,
-        /// green and blue.</summary>
-        public Func<SteelSeriesReport, bool, byte, byte, byte, SteelSeriesFrame[]> Color { get; init; }
+        /// <summary>The frames of one color on a family whose LEDs are one
+        /// light: the report type they travel as, the firmware generation,
+        /// then red, green and blue. Null for a family with
+        /// <see cref="Paint"/>.</summary>
+        public Func<SteelSeriesReport, bool, byte, byte, byte, SteelSeriesFrame[]> OneColor { get; init; }
+
+        /// <summary>The family's lights in the order <see cref="Paint"/>
+        /// takes their colors (#557), or null for a family painted one color
+        /// and for a per-key board, whose lights follow its SKU
+        /// (<see cref="PerKey"/>).</summary>
+        public IReadOnlyList<LightInfo> Lights { get; init; }
+
+        /// <summary>A per-key Apex board, whose lights are the keys of its
+        /// SKU (<see cref="SteelSeriesApexLayouts"/>).</summary>
+        public bool PerKey { get; init; }
+
+        /// <summary>The frames of one color per light: the report type, the
+        /// firmware generation, the unit's lights, a color for each, and
+        /// the color of a key the lights leave out, which a per-key board's
+        /// frame carries for every key code. Null for a family painted one
+        /// color.</summary>
+        public Func<SteelSeriesReport, bool, IReadOnlyList<LightInfo>, IReadOnlyList<int>, int, SteelSeriesFrame[]> Paint { get; init; }
+
+        /// <summary>The frames of one color on every LED, zone or key: the
+        /// family's own one-color frames, or its paint with the color on
+        /// every light, so one builder makes both.</summary>
+        public SteelSeriesFrame[] Color(SteelSeriesReport report, bool gen3, byte r, byte g, byte b)
+        {
+            if (Paint == null) return OneColor(report, gen3, r, g, b);
+            int rgb = r << 16 | g << 8 | b;
+            var lights = Lights ?? Array.Empty<LightInfo>();
+            var colors = new int[lights.Count];
+            Array.Fill(colors, rgb);
+            return Paint(report, gen3, lights, colors, rgb);
+        }
 
         /// <summary>The frames that return the device to its own
         /// lighting, or none for a family no reference has such a frame
@@ -258,7 +289,7 @@ namespace PadForge.Common.Input.Peripherals
                 Family = SteelSeriesFamily.Rival100, Interface = 0, Report = SteelSeriesReport.Output,
                 GapMs = 50, RepaintMs = 50, ReassertMs = ReassertMs,
                 Claim = _ => new[] { Out(0x07, 0x00, 0x01) },
-                Color = (_, _, r, g, b) => new[] { Out(0x05, 0x00, r, g, b) },
+                OneColor = (_, _, r, g, b) => new[] { Out(0x05, 0x00, r, g, b) },
             },
 
             // Rival and Rival 300. Two LEDs, 01 the logo and 02 the wheel:
@@ -273,7 +304,8 @@ namespace PadForge.Common.Input.Peripherals
                 Family = SteelSeriesFamily.Rival300, Interface = 0, Report = SteelSeriesReport.Output,
                 GapMs = 50, RepaintMs = 100, ReassertMs = ReassertMs,
                 Claim = _ => new[] { Out(0x07, 0x01, 0x01), Out(0x07, 0x02, 0x01) },
-                Color = (_, _, r, g, b) => new[] { Out(0x08, 0x01, r, g, b), Out(0x08, 0x02, r, g, b) },
+                Lights = new[] { Logo(0x01), Zone(0x02, 1) },
+                Paint = (_, _, _, c, _) => new[] { Out(0x08, 0x01, R(c[0]), G(c[0]), B(c[0])), Out(0x08, 0x02, R(c[1]), G(c[1]), B(c[1])) },
             },
 
             // Rival 3, both product IDs. Four zones in one report: 0A 00 0F
@@ -287,12 +319,15 @@ namespace PadForge.Common.Input.Peripherals
             // set one zone per report with 05 00 ZZ and a brightness
             // (rivalcfg devices/rival3.py:50-96, OpenRGB
             // SteelSeriesRival3Controller.cpp:54-77), four reports where
-            // the vendor's frame is one.
+            // the vendor's frame is one. The first three zones are the top,
+            // middle and bottom LEDs of the strip (rivalcfg
+            // devices/rival3.py:57-86).
             new()
             {
                 Family = SteelSeriesFamily.Rival3, Interface = 3, Report = SteelSeriesReport.Output,
                 RepaintMs = 33, ReassertMs = ReassertMs,
-                Color = (_, _, r, g, b) => new[] { Out(Fill(new byte[] { 0x0A, 0x00, 0x0F }, 4, r, g, b)) },
+                Lights = new[] { Zone(0, 1), Zone(1, 2), Zone(2, 3), Logo(3) },
+                Paint = (_, _, _, c, _) => new[] { Out(Slots(new byte[] { 0x0A, 0x00, 0x0F }, c)) },
             },
 
             // Rival 310, Sensei 310, Sensei TEN. Two LEDs, 00 the logo and
@@ -311,23 +346,29 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = SteelSeriesFamily.Rival310, Interface = 0, Report = SteelSeriesReport.Feature,
                 AltReport = SteelSeriesReport.Output, GapMs = 24, RepaintMs = 66, ReassertMs = ReassertMs,
-                Color = (report, _, r, g, b) => new[]
+                Lights = new[] { Logo(0x00), Zone(0x01, 1) },
+                Paint = (report, _, _, c, _) => new[]
                 {
-                    Make(report, Cycle310(0x00, r, g, b)), Make(report, Cycle310(0x01, r, g, b)),
+                    Make(report, Cycle310(0x00, R(c[0]), G(c[0]), B(c[0]))),
+                    Make(report, Cycle310(0x01, R(c[1]), G(c[1]), B(c[1]))),
                 },
             },
 
             // Rival 600. Eight LEDs, each a feature report (Cycle600). The
             // Engine spaces them 22 ms apart at the median, and each takes
             // about 11 ms on the wire (the captures of OpenRGB issue 833).
+            // The wheel, the logo, then the left and right LED of the side
+            // strips from the top (rivalcfg devices/rival600.py:76-163).
             new()
             {
                 Family = SteelSeriesFamily.Rival600, Interface = 0, Report = SteelSeriesReport.Feature,
                 GapMs = 22, RepaintMs = 200, ReassertMs = ReassertMs,
-                Color = (_, _, r, g, b) =>
+                Lights = SideStrips(),
+                Paint = (_, _, _, c, _) =>
                 {
                     var frames = new SteelSeriesFrame[Rival600Leds.Length];
-                    for (int led = 0; led < frames.Length; led++) frames[led] = Feat(Cycle600((byte)led, r, g, b));
+                    for (int led = 0; led < frames.Length; led++)
+                        frames[led] = Feat(Cycle600((byte)led, R(c[led]), G(c[led]), B(c[led])));
                     return frames;
                 },
             },
@@ -354,10 +395,11 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = SteelSeriesFamily.Rival700, Interface = 0, Report = SteelSeriesReport.Feature,
                 GapMs = 50, RepaintMs = 100, ReassertMs = ReassertMs,
-                Color = (_, _, r, g, b) => new[]
+                Lights = new[] { Logo(0x00), Zone(0x01, 1) },
+                Paint = (_, _, _, c, _) => new[]
                 {
-                    Feat(0x05, 0x00, 0x00, r, g, b, 0xFF, 0x32, 0xC8, 0xC8, 0x00, 0x00, 0x01),
-                    Feat(0x05, 0x00, 0x01, r, g, b, 0xFF, 0x32, 0xC8, 0xC8, 0x00, 0x01, 0x01),
+                    Feat(0x05, 0x00, 0x00, R(c[0]), G(c[0]), B(c[0]), 0xFF, 0x32, 0xC8, 0xC8, 0x00, 0x00, 0x01),
+                    Feat(0x05, 0x00, 0x01, R(c[1]), G(c[1]), B(c[1]), 0xFF, 0x32, 0xC8, 0xC8, 0x00, 0x01, 0x01),
                 },
             },
 
@@ -379,7 +421,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = SteelSeriesFamily.Rival3Wireless, Interface = 3, Report = SteelSeriesReport.Output,
                 GapMs = 50, RepaintMs = 50, ReassertMs = ReassertMs,
-                Color = (_, _, r, g, b) => new[] { Out(0x13, 0x01, r, g, b) },
+                OneColor = (_, _, r, g, b) => new[] { Out(0x13, 0x01, r, g, b) },
             },
 
             // Rival 650 Wireless, on its cable and through its dongle.
@@ -393,17 +435,21 @@ namespace PadForge.Common.Input.Peripherals
             // 60 ms after each program report by default and says a lower
             // delay "increases chance of mouse locking up"
             // (Steelseries_Rival_650_Mouse.js:17-31), so one color takes
-            // about a second, and at most one a second is sent.
+            // about a second, and at most one a second is sent. The LEDs are
+            // the Rival 600's: the wheel, the logo, then the left and right
+            // LED of the side strips from the top
+            // (Steelseries_Rival_650_Mouse.js:33-48).
             new()
             {
                 Family = SteelSeriesFamily.Rival650, Interface = 0, Report = SteelSeriesReport.Output,
                 GapMs = 60, RepaintMs = 1000, ReassertMs = SlowReassertMs,
-                Color = (_, _, r, g, b) =>
+                Lights = SideStrips(),
+                Paint = (_, _, _, c, _) =>
                 {
                     var frames = new SteelSeriesFrame[16];
                     for (int led = 0; led < 8; led++)
                     {
-                        frames[led * 2] = Out(LedProgram(r, g, b));
+                        frames[led * 2] = Out(LedProgram(R(c[led]), G(c[led]), B(c[led])));
                         frames[led * 2 + 1] = Out(0x05, 0x00, (byte)(0x10 + led), 0xFF, 0x00, 0x00, 0x00, 0x00, 0x5C);
                     }
                     return frames;
@@ -421,12 +467,14 @@ namespace PadForge.Common.Input.Peripherals
             // colors, 65 ms apart at the median and 33 ms at the least
             // (the captures of OpenRGB issue 4917). 22 07 is rivalcfg's
             // rainbow effect on every zone
-            // (devices/rival3_gen2.py:97-116).
+            // (devices/rival3_gen2.py:97-116). The zones are the top, middle
+            // and bottom LEDs of the strip (devices/rival3_gen2.py:50-76).
             new()
             {
                 Family = SteelSeriesFamily.Rival3Gen2, Interface = 3, Report = SteelSeriesReport.Output,
                 RepaintMs = 33, ReassertMs = ReassertMs,
-                Color = (_, _, r, g, b) => new[] { Out(Fill(new byte[] { 0x21, 0x07 }, 3, r, g, b)) },
+                Lights = Zones(3),
+                Paint = (_, _, _, c, _) => new[] { Out(Slots(new byte[] { 0x21, 0x07 }, c)) },
                 HandBack = _ => new[] { Out(0x22, 0x07) },
             },
 
@@ -443,11 +491,12 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = SteelSeriesFamily.Aerox3, Interface = 3, Report = SteelSeriesReport.Output,
                 GapMs = 16, RepaintMs = 50, ReassertMs = ReassertMs,
-                Color = (_, _, r, g, b) => new[]
+                Lights = Zones(3),
+                Paint = (_, _, _, c, _) => new[]
                 {
-                    Out(0x21, 0x01, r, g, b),
-                    Out(0x21, 0x02, 0x00, 0x00, 0x00, r, g, b),
-                    Out(0x21, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, r, g, b),
+                    Out(0x21, 0x01, R(c[0]), G(c[0]), B(c[0])),
+                    Out(0x21, 0x02, 0x00, 0x00, 0x00, R(c[1]), G(c[1]), B(c[1])),
+                    Out(0x21, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, R(c[2]), G(c[2]), B(c[2])),
                 },
                 HandBack = _ => new[] { Out(0x22, 0x07) },
             },
@@ -459,12 +508,15 @@ namespace PadForge.Common.Input.Peripherals
             // 1783 and 2437). OpenRGB sends the same bytes as a feature
             // report (SteelSeriesRival5Controller.cpp:103-120), the one
             // reference that does. 22 FF 03 is rivalcfg's rainbow effect
-            // (devices/rival5.py:256-263).
+            // (devices/rival5.py:256-263). Between the wheel and the logo
+            // sit the eight LEDs of the side strips, left and right from the
+            // top (devices/rival5.py:65-184).
             new()
             {
                 Family = SteelSeriesFamily.Rival5, Interface = 0, Report = SteelSeriesReport.Output,
                 RepaintMs = 33, ReassertMs = ReassertMs,
-                Color = (_, _, r, g, b) => new[] { Out(Fill(new byte[] { 0x21, 0xFF, 0x03 }, 10, r, g, b)) },
+                Lights = Rival5Lights(),
+                Paint = (_, _, _, c, _) => new[] { Out(Slots(new byte[] { 0x21, 0xFF, 0x03 }, c)) },
                 HandBack = _ => new[] { Out(0x22, 0xFF, 0x03) },
             },
 
@@ -475,7 +527,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = SteelSeriesFamily.PrimeMini, Interface = 3, Report = SteelSeriesReport.Output,
                 RepaintMs = 50, ReassertMs = ReassertMs,
-                Color = (_, _, r, g, b) => new[] { Out(0x21, 0x00, r, g, b) },
+                OneColor = (_, _, r, g, b) => new[] { Out(0x21, 0x00, r, g, b) },
             },
 
             // Aerox 3, 5 and 9 Wireless on the cable. Three zones, one
@@ -492,7 +544,8 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = SteelSeriesFamily.AeroxWireless, Interface = 3, Report = SteelSeriesReport.Output,
                 GapMs = 16, RepaintMs = 50, ReassertMs = ReassertMs,
-                Color = (_, _, r, g, b) => Zones(0x21, 3, r, g, b),
+                Lights = Zones(3),
+                Paint = (_, _, _, c, _) => ZoneFrames(0x21, c),
                 HandBack = _ => new[] { Out(0x22, 0xFF) },
             },
 
@@ -508,7 +561,8 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = SteelSeriesFamily.AeroxWirelessDongle, Interface = 3, Report = SteelSeriesReport.Output,
                 GapMs = 6, RepaintMs = 50, ReassertMs = ReassertMs, Echoes = true,
-                Color = (_, _, r, g, b) => Zones(0x61, 3, r, g, b),
+                Lights = Zones(3),
+                Paint = (_, _, _, c, _) => ZoneFrames(0x61, c),
                 HandBack = _ => new[] { Out(0x62, 0xFF) },
             },
 
@@ -520,7 +574,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = SteelSeriesFamily.PrimeWireless, Interface = 3, Report = SteelSeriesReport.Output,
                 RepaintMs = 50, ReassertMs = ReassertMs,
-                Color = (_, _, r, g, b) => Zones(0x21, 1, r, g, b),
+                OneColor = (_, _, r, g, b) => new[] { Out(0x21, 0x01, 0x00, r, g, b) },
             },
 
             // And through the dongle, with bit 6 and the reply (rivalcfg
@@ -529,7 +583,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = SteelSeriesFamily.PrimeWirelessDongle, Interface = 3, Report = SteelSeriesReport.Output,
                 RepaintMs = 50, ReassertMs = ReassertMs, Echoes = true,
-                Color = (_, _, r, g, b) => Zones(0x61, 1, r, g, b),
+                OneColor = (_, _, r, g, b) => new[] { Out(0x61, 0x01, 0x00, r, g, b) },
             },
 
             // Prime+. One LED: 62 01, the color, twelve zeros, the color
@@ -546,7 +600,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = SteelSeriesFamily.PrimePlus, Interface = 0, Report = SteelSeriesReport.Feature,
                 AltReport = SteelSeriesReport.Output, RepaintMs = 50, ReassertMs = ReassertMs,
-                Color = (report, _, r, g, b) => new[] { Make(report, PrimeColor(r, g, b)) },
+                OneColor = (report, _, r, g, b) => new[] { Make(report, PrimeColor(r, g, b)) },
             },
 
             // Prime and its editions. The same bytes, as the output report
@@ -557,7 +611,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = SteelSeriesFamily.Prime, Interface = 0, Report = SteelSeriesReport.Output,
                 AltReport = SteelSeriesReport.Feature, RepaintMs = 33, ReassertMs = ReassertMs,
-                Color = (report, _, r, g, b) => new[] { Make(report, PrimeColor(r, g, b)) },
+                OneColor = (report, _, r, g, b) => new[] { Make(report, PrimeColor(r, g, b)) },
             },
 
             // The per-key Apex boards. One feature report: a packet number,
@@ -626,7 +680,8 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = SteelSeriesFamily.Apex3, Interface = 3, Report = SteelSeriesReport.Output,
                 RepaintMs = 50, ReassertMs = ReassertMs,
-                Color = (_, _, r, g, b) => new[] { Out(Fill(new byte[] { 0x0B, 0x00 }, 10, r, g, b)) },
+                Lights = Zones(10),
+                Paint = (_, _, _, c, _) => new[] { Out(Slots(new byte[] { 0x0B, 0x00 }, c)) },
             },
 
             // Apex 3 TKL. Eight zones: 21, the mask FF, eight colors, and
@@ -639,7 +694,8 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = SteelSeriesFamily.Apex3Tkl, Interface = 1, Report = SteelSeriesReport.Output,
                 RepaintMs = 33, ReassertMs = ReassertMs,
-                Color = (_, _, r, g, b) => new[] { Out(Fill(new byte[] { 0x21, 0xFF }, 8, r, g, b)) },
+                Lights = Zones(8),
+                Paint = (_, _, _, c, _) => new[] { Out(Slots(new byte[] { 0x21, 0xFF }, c)) },
                 HandBack = _ => new[] { Out(0x22, 0xFF) },
             },
 
@@ -666,7 +722,8 @@ namespace PadForge.Common.Input.Peripherals
                     Feat(0x00, 0x00, 0x00, 0x03, 0x01, 0x00, 0xFF),
                     Feat(0x00, 0x00, 0x00, 0x01, 0x00, 0x85, 0xFF),
                 },
-                Color = (_, _, r, g, b) => new[] { Feat(M750Grid(r, g, b)) },
+                Lights = SteelSeriesApexLayouts.M750Lights(),
+                Paint = (_, _, lights, c, _) => new[] { Feat(M750Grid(lights, c)) },
             },
 
             // Apex of 2013 and Apex 350. Five zones in one report: 07 00,
@@ -681,16 +738,17 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = SteelSeriesFamily.Apex2013, Interface = 0, Report = SteelSeriesReport.Output,
                 RepaintMs = 50, ReassertMs = ReassertMs,
-                Color = (_, _, r, g, b) =>
+                Lights = new[] { Zone(0, 1), Zone(1, 2), Zone(2, 3), Zone(3, 4), Logo(4) },
+                Paint = (_, _, _, c, _) =>
                 {
                     var data = new byte[2 + 5 * 4];
                     data[0] = 0x07;
                     for (int zone = 0; zone < 5; zone++)
                     {
                         int at = 2 + zone * 4;
-                        data[at] = r;
-                        data[at + 1] = g;
-                        data[at + 2] = b;
+                        data[at] = R(c[zone]);
+                        data[at + 1] = G(c[zone]);
+                        data[at + 2] = B(c[zone]);
                         data[at + 3] = 0x08;
                     }
                     return new[] { Out(data) };
@@ -716,7 +774,8 @@ namespace PadForge.Common.Input.Peripherals
                 Claim = gen3 => claim is SteelSeriesFrame fixedClaim ? new[] { Copy(fixedClaim) }
                     : gated && gen3 ? new[] { Feat(0x4B) }
                     : NoFrames,
-                Color = (_, gen3, r, g, b) => new[] { Feat(PerKey(packet(gen3), r, g, b)) },
+                PerKey = true,
+                Paint = (_, gen3, lights, c, fill) => new[] { Feat(PerKey(packet(gen3), lights, c, fill)) },
                 HandBack = gen3 => gen3HandBack || (gated && gen3) ? new[] { Out(0x41, 0x00) } : new[] { Out(0x3B) },
             };
 
@@ -755,29 +814,76 @@ namespace PadForge.Common.Input.Peripherals
         //  The frames that need more than a list of bytes
         // ─────────────────────────────────────────────
 
-        /// <summary>A head followed by the same color <paramref name="count"/>
-        /// times.</summary>
-        private static byte[] Fill(byte[] head, int count, byte r, byte g, byte b)
+        private static byte R(int color) => (byte)(color >> 16);
+        private static byte G(int color) => (byte)(color >> 8);
+        private static byte B(int color) => (byte)color;
+
+        /// <summary>A head followed by one color per light.</summary>
+        private static byte[] Slots(byte[] head, IReadOnlyList<int> colors)
         {
-            var data = new byte[head.Length + count * 3];
+            var data = new byte[head.Length + colors.Count * 3];
             head.CopyTo(data, 0);
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < colors.Count; i++)
             {
                 int at = head.Length + i * 3;
-                data[at] = r;
-                data[at + 1] = g;
-                data[at + 2] = b;
+                data[at] = R(colors[i]);
+                data[at + 1] = G(colors[i]);
+                data[at + 2] = B(colors[i]);
             }
             return data;
         }
 
-        /// <summary>One report per zone of the wireless Aerox and Prime
-        /// mice: the command, 01, the zone and its color.</summary>
-        private static SteelSeriesFrame[] Zones(byte command, int count, byte r, byte g, byte b)
+        /// <summary>One report per zone of the wireless Aerox mice: the
+        /// command, 01, the zone and its color.</summary>
+        private static SteelSeriesFrame[] ZoneFrames(byte command, IReadOnlyList<int> colors)
         {
-            var frames = new SteelSeriesFrame[count];
-            for (int zone = 0; zone < count; zone++) frames[zone] = Out(command, 0x01, (byte)zone, r, g, b);
+            var frames = new SteelSeriesFrame[colors.Count];
+            for (int zone = 0; zone < frames.Length; zone++)
+                frames[zone] = Out(command, 0x01, (byte)zone, R(colors[zone]), G(colors[zone]), B(colors[zone]));
             return frames;
+        }
+
+        // ─────────────────────────────────────────────
+        //  The lights (#557)
+        // ─────────────────────────────────────────────
+
+        /// <summary>A zone, numbered from 1, at an address of the family's
+        /// frames.</summary>
+        private static LightInfo Zone(int address, int zone)
+            => new(address, LightKind.Zone, 0, LightKeySource.None) { Zone = zone };
+
+        private static LightInfo Logo(int address) => new(address, LightKind.Logo, 0, LightKeySource.None);
+
+        private static LightInfo Edge(int address) => new(address, LightKind.Edge, 0, LightKeySource.None);
+
+        /// <summary><paramref name="count"/> zones at the addresses 0 on.</summary>
+        private static LightInfo[] Zones(int count)
+        {
+            var lights = new LightInfo[count];
+            for (int zone = 0; zone < count; zone++) lights[zone] = Zone(zone, zone + 1);
+            return lights;
+        }
+
+        /// <summary>The lights of a Rival 600 or 650: the wheel, the logo,
+        /// then six LEDs of the side strips.</summary>
+        private static LightInfo[] SideStrips()
+        {
+            var lights = new LightInfo[8];
+            lights[0] = Zone(0, 1);
+            lights[1] = Logo(1);
+            for (int led = 2; led < 8; led++) lights[led] = Edge(led);
+            return lights;
+        }
+
+        /// <summary>The lights of a Rival 5: the wheel, eight LEDs of the
+        /// side strips, then the logo.</summary>
+        private static LightInfo[] Rival5Lights()
+        {
+            var lights = new LightInfo[10];
+            lights[0] = Zone(0, 1);
+            for (int led = 1; led < 9; led++) lights[led] = Edge(led);
+            lights[9] = Logo(9);
+            return lights;
         }
 
         /// <summary>
@@ -937,40 +1043,35 @@ namespace PadForge.Common.Input.Peripherals
             return data;
         }
 
-        /// <summary>The HID usages of the per-key Apex frame, in the order
-        /// OpenRGB sends them (SteelSeriesApexController.cpp:23-37). "No
-        /// keyboard has every key fitted but the same format packet can be
-        /// sent regardless of model and the firmware will pick the keys
+        /// <summary>The key codes of the per-key Apex frame, in the order
+        /// OpenRGB sends them (SteelSeriesApexController.cpp:23-37, generated
+        /// into <see cref="SteelSeriesApexLayouts.Keys"/>). "No keyboard has
+        /// every key fitted but the same format packet can be sent
+        /// regardless of model and the firmware will pick the keys
         /// applicable to it, ignoring the rest" (SteelSeriesApexRegions.h:22-26),
         /// so every board gets all of them.</summary>
-        internal static readonly byte[] ApexKeys =
-        {
-            0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D,
-            0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
-            0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20, 0x21,
-            0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B,
-            0x2C, 0x2D, 0x2E, 0x2F, 0x30, 0x32, 0x33, 0x34, 0x35, 0x36,
-            0x37, 0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F, 0x40,
-            0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4A,
-            0x4B, 0x4C, 0x4D, 0x4E, 0x4F, 0x50, 0x51, 0x52, 0x64, 0xE0,
-            0xE1, 0xE2, 0xE3, 0xE4, 0xE5, 0xE6, 0xE7, 0xF0, 0x31, 0x87,
-            0x88, 0x89, 0x8A, 0x8B, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58,
-            0x59, 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F, 0x60, 0x61, 0x62,
-            0x63, 0xFB,
-        };
+        internal static readonly byte[] ApexKeys = SteelSeriesApexLayouts.Keys;
 
-        private static byte[] PerKey(byte packet, byte r, byte g, byte b)
+        /// <summary>The per-key frame: each key code of <see cref="ApexKeys"/>
+        /// with the color of its light, a light's address being its code,
+        /// and <paramref name="fill"/> for a code the lights leave out. The
+        /// frame lists every code, and the lights only the keys the board's
+        /// SKU has, so a key a SKU missed still takes the background.</summary>
+        private static byte[] PerKey(byte packet, IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors, int fill)
         {
+            var byCode = new Dictionary<int, int>(lights.Count);
+            for (int i = 0; i < lights.Count && i < colors.Count; i++) byCode[lights[i].Address] = colors[i];
             var data = new byte[2 + ApexKeys.Length * 4];
             data[0] = packet;
             data[1] = (byte)ApexKeys.Length;
             for (int i = 0; i < ApexKeys.Length; i++)
             {
+                int color = byCode.TryGetValue(ApexKeys[i], out int own) ? own : fill;
                 int at = 2 + i * 4;
                 data[at] = ApexKeys[i];
-                data[at + 1] = r;
-                data[at + 2] = g;
-                data[at + 3] = b;
+                data[at + 1] = R(color);
+                data[at + 2] = G(color);
+                data[at + 3] = B(color);
             }
             return data;
         }
@@ -980,36 +1081,49 @@ namespace PadForge.Common.Input.Peripherals
         internal const int M750Slots = 6 * 22;
 
         /// <summary>The 28 slots of that grid with no key behind them, the
-        /// NA entries of OpenRGB's table, counted row by row from the
-        /// frame's first slot. SignalRGB's key map names the other 104
-        /// (signal-plugins Steelseries_Apex_M750_Keyboard.js:41-48).</summary>
-        internal static readonly byte[] M750NoKey =
+        /// NA entries of OpenRGB's table (<see cref="SteelSeriesApexLayouts.M750"/>),
+        /// counted row by row from the frame's first slot. SignalRGB's key
+        /// map names the other 104 (signal-plugins
+        /// Steelseries_Apex_M750_Keyboard.js:41-48).</summary>
+        internal static readonly byte[] M750NoKey = NoKeySlots();
+
+        private static byte[] NoKeySlots()
         {
-            3, 5, 6, 7, 8, 13, 14, 18, 20,
-            33, 35, 36, 37, 39,
-            56, 58, 59, 60, 61, 65,
-            79,
-            101,
-            115, 120, 128, 129, 130, 131,
-        };
+            var slots = new List<byte>();
+            for (int slot = 0; slot < M750Slots; slot++)
+                if (SteelSeriesApexLayouts.M750[slot] < 0) slots.Add((byte)slot);
+            return slots.ToArray();
+        }
 
         /// <summary>
         /// The Apex M750's color frame: the head, then three bytes per
-        /// slot. A slot with a key gets the color. One with none gets
-        /// FF 32 00, as the Engine fills it: in the 72 frames it relays in
-        /// the captures of OpenRGB issue 641, those 28 slots hold FF 32 00
-        /// every time and every other slot the color of its key. OpenRGB
-        /// sends the same filler (SteelSeriesApexMController.cpp:108-122).
-        /// SignalRGB writes the 104 key slots alone and leaves these 28 to
-        /// its engine (signal-plugins Steelseries_Apex_M750_Keyboard.js:116-133).
-        /// The vendor's bytes are the ones sent.
+        /// slot. A slot with a key gets its light's color, a light's address
+        /// being its slot. One with none gets FF 32 00, as the Engine fills
+        /// it: in the 72 frames it relays in the captures of OpenRGB issue
+        /// 641, those 28 slots hold FF 32 00 every time and every other slot
+        /// the color of its key. OpenRGB sends the same filler
+        /// (SteelSeriesApexMController.cpp:108-122). SignalRGB writes the
+        /// 104 key slots alone and leaves these 28 to its engine
+        /// (signal-plugins Steelseries_Apex_M750_Keyboard.js:116-133). The
+        /// vendor's bytes are the ones sent.
         /// </summary>
-        private static byte[] M750Grid(byte r, byte g, byte b)
+        private static byte[] M750Grid(IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
         {
-            var data = Fill(new byte[] { 0x00, 0x00, 0x01, 0x8E, 0x01, 0x03, 0x06, 0x16 }, M750Slots, r, g, b);
+            const int head = 8;
+            var data = new byte[head + M750Slots * 3];
+            new byte[] { 0x00, 0x00, 0x01, 0x8E, 0x01, 0x03, 0x06, 0x16 }.CopyTo(data, 0);
+            for (int i = 0; i < lights.Count && i < colors.Count; i++)
+            {
+                int slot = lights[i].Address;
+                if ((uint)slot >= M750Slots) continue;
+                int at = head + slot * 3;
+                data[at] = R(colors[i]);
+                data[at + 1] = G(colors[i]);
+                data[at + 2] = B(colors[i]);
+            }
             foreach (byte slot in M750NoKey)
             {
-                int at = 8 + slot * 3;
+                int at = head + slot * 3;
                 data[at] = 0xFF;
                 data[at + 1] = 0x32;
                 data[at + 2] = 0x00;
@@ -1031,6 +1145,12 @@ namespace PadForge.Common.Input.Peripherals
         /// back over anything sent and not stored (apex-web
         /// PROTOCOL.md:83-85).</summary>
         internal static SteelSeriesFrame VersionQuery() => Out(0x90);
+
+        /// <summary>The serial or region query of a per-key board, an output
+        /// report of the command alone (SteelSeriesApexBaseController.cpp:52-57,
+        /// SteelSeriesApexController.cpp:375-382), answered by an input
+        /// report (<see cref="SteelSeriesApexLayouts"/>).</summary>
+        internal static SteelSeriesFrame SkuQuery(byte command) => Out(command);
 
         internal const byte VersionCommand = 0x90;
 

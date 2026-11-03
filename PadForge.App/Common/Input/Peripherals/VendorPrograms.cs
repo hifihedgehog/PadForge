@@ -150,12 +150,18 @@ namespace PadForge.Common.Input.Peripherals
         /// productName (Bazecor package.json:3).</summary>
         public static readonly VendorProgram Bazecor = new("Bazecor", "Bazecor");
 
+        /// <summary>XPG Prime, which lights the XPG Summoner. SignalRGB's
+        /// plugin for the keyboard stands down while XPG-Prime.exe runs
+        /// (signal-plugins XPG_Summoner_Keyboard.js:20-22).</summary>
+        public static readonly VendorProgram XpgPrime = new("XPG Prime", "XPG-Prime");
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
         {
             LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor, CorsairIcue,
             LegionAccessoryCentral,
+            XpgPrime,
         };
     }
 

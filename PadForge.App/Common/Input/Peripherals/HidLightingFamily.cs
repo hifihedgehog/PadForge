@@ -228,6 +228,7 @@ namespace PadForge.Common.Input.Peripherals
             WitmodKeyboardLighting.Instance,
             WinbondKeyboardLighting.Instance,
             ZetKeyboardLighting.Instance,
+            XpgSummonerLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

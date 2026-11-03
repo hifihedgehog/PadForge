@@ -223,6 +223,7 @@ namespace PadForge.Common.Input.Peripherals
             HpOmenLaptopLighting.Instance,
             DygmaRaiseLighting.Instance,
             MountainKeyboardLighting.Instance,
+            MintakaKeyboardLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

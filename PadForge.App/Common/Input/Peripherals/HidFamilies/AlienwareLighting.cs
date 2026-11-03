@@ -28,10 +28,13 @@ namespace PadForge.Common.Input.Peripherals
     /// picture of a session sets the zones' dim level to 0 first, as
     /// OpenRGB does once when it finds the controller (UpdateDim, lines
     /// 714-745, called from RGBController_Alienware.cpp:128). Each report
-    /// is followed by a wait, 60 ms or 1 s after "finish and play", and a
-    /// read of the controller's answer, which is checked as OpenRGB checks
-    /// it (SendHIDReport, lines 68-93, and lines 288-523). A picture takes
-    /// a second or more, so the controller sets the pace.</para>
+    /// is followed by a wait of 60 ms and a read of the controller's answer,
+    /// which is checked as OpenRGB checks it (SendHIDReport, lines 68-93,
+    /// and lines 288-523). SendHIDReport means to wait 1 s after "finish and
+    /// play", but it looks for that step in byte 3, which holds the step's
+    /// high byte, 0 (UserAnimation, lines 362-363), so OpenRGB waits 60 ms
+    /// there too, and so does PadForge. A picture of four zones takes ten
+    /// exchanges, 600 ms of waits, so the controller sets the pace.</para>
     ///
     /// <para>Hand-back. Nothing goes out. The animation slot PadForge plays
     /// is the one the controller does not save, and no reference returns
@@ -80,9 +83,8 @@ namespace PadForge.Common.Input.Peripherals
         internal const ushort TempoMax = 0x00FA;
         internal const ushort ColorDuration = 2000;
 
-        /// <summary>The waits after a report (AlienwareController.cpp:83-92).</summary>
+        /// <summary>The wait after a report (AlienwareController.cpp:83-92).</summary>
         internal const int ReportWaitMs = 60;
-        internal const int FinishWaitMs = 1000;
 
         /// <summary>The platform of the four zones the model's map holds
         /// until a session reads the controller: the G5 SE 5505
@@ -229,10 +231,10 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Sends a report, waits as SendHIDReport waits and reads
         /// the answer (GetResponse, lines 231-247). Null when either
         /// failed.</summary>
-        private static byte[] Exchange(IHidReportChannel io, Action<int> wait, byte[] report, int waitMs = ReportWaitMs)
+        private static byte[] Exchange(IHidReportChannel io, Action<int> wait, byte[] report)
         {
             if (!io.SetFeature(report)) return null;
-            wait(waitMs);
+            wait(ReportWaitMs);
             var answer = new byte[ReportSize];
             return io.GetFeature(0, answer) ? answer : null;
         }
@@ -293,7 +295,7 @@ namespace PadForge.Common.Input.Peripherals
                     if (!Took(action, Exchange(io, wait, action))) return HidLightingPaint.Failed;
                 }
                 // Finish and play answers its result in byte 5 (line 394).
-                var finish = Exchange(io, wait, Animation(AnimationFinishPlay, UnsavedSlot), FinishWaitMs);
+                var finish = Exchange(io, wait, Animation(AnimationFinishPlay, UnsavedSlot));
                 return finish != null && finish[1] != 0 && finish[5] == 0 ? HidLightingPaint.Sent : HidLightingPaint.Failed;
             }
 

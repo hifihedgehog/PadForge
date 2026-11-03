@@ -126,7 +126,9 @@ namespace PadForge.Tests.LaptopFamilies
                 expected.Add("F 00 03 24 00 07 D0 00 FA " + Hex(new[] { (byte)(colors[z] >> 16), (byte)(colors[z] >> 8), (byte)colors[z] }));
                 expected.AddRange(new[] { "W 60", "G 00" });
             }
-            expected.AddRange(new[] { "F 00 03 21 00 03 FF FF 00 00 00 00", "W 1000", "G 00" });
+            // 60 ms after "finish and play" too: SendHIDReport looks for the
+            // step in byte 3, which holds its high byte (AlienwareController.cpp:80-92).
+            expected.AddRange(new[] { "F 00 03 21 00 03 FF FF 00 00 00 00", "W 60", "G 00" });
             Assert.Equal(expected, io.Lines(11));
 
             // The dim level goes once a session.

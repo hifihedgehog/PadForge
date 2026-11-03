@@ -200,6 +200,8 @@ namespace PadForge.Tests.LaptopFamilies
             Assert.True(session.HandBack(io, io.Wait));
             Assert.Equal(restore, io.Sent("F"));
             Assert.Empty(session.CrashFrames);
+            // The wired mouse takes no wait between packets.
+            Assert.DoesNotContain(io.Log, e => e.Kind == "W");
             // A static mouse is restored without the activating writes.
             var plain = X20(mode: 1);
             var s1 = (EvgaLighting.MouseSession)EvgaLighting.MouseSession.Begin(plain, plain.Wait, 0);
@@ -292,6 +294,18 @@ namespace PadForge.Tests.LaptopFamilies
             Assert.Contains(io.Sent("F"), f => f.SequenceEqual(Padded("07 EA 02 01 01 00 01 01", 40)));
             Assert.Equal("80 10 20 30", Hex(x12.Static.Skip(4).Take(4).ToArray()));
             Assert.Empty(session.CrashFrames);
+        }
+
+        /// <summary>GetReport reads again, 5 ms later, an answer that does
+        /// not carry the header and the command it asked for
+        /// (EVGAX12Controller.cpp:233-251).</summary>
+        [Fact]
+        public void AnX12AnswerOfAnotherCommand_IsReadAgain()
+        {
+            var x12 = new FakeX12();
+            x12.Io.Answers.Enqueue((byte[])x12.Static.Clone());
+            Assert.NotNull(EvgaLighting.X12Session.Begin(x12.Io, x12.Io.Wait));
+            Assert.Equal(new[] { "F 07 EA 01 01", "W 5", "G 07", "W 5", "G 07", "F 07 EA 01 02", "W 5", "G 07" }, x12.Io.Lines(4));
         }
 
         [Fact]

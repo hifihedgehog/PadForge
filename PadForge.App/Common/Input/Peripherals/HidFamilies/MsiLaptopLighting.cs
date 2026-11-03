@@ -32,10 +32,11 @@ namespace PadForge.Common.Input.Peripherals
     /// shows PadForge's last picture until SteelSeries GG or MSI's program
     /// sets another, or the controller restarts.</para>
     ///
-    /// <para>SteelSeries GG lights these laptops' keyboards, MSI's support
-    /// says so for models whose downloads list GG (MSI FAQ 2540), and while
-    /// it runs the device is left to it
-    /// (<see cref="VendorPrograms.SteelSeriesGG"/>).</para>
+    /// <para>SteelSeries' program lights these laptops' keyboards on
+    /// Windows: msi-perkeyrgb's protocol comes from the traffic between the
+    /// SteelSeries Engine and the keyboard (msi-perkeyrgb README.md:101-105).
+    /// While SteelSeries GG, the Engine's successor, runs, the device is left
+    /// to it (<see cref="VendorPrograms.SteelSeriesGG"/>).</para>
     /// </summary>
     internal sealed partial class MsiLaptopLighting : IHidLightingFamily
     {

@@ -119,10 +119,9 @@ namespace PadForge.Common.Input.Peripherals
         /// AuroraDeviceManager/Devices/RGBNet/Implementations/MsiDevice.cs:22-26).</summary>
         public static readonly VendorProgram MsiMysticLight = new("Mystic Light", "Mystic_Light_Service");
 
-        /// <summary>SteelSeries GG, which lights the SteelSeries controllers
-        /// of MSI laptops (MSI FAQ 2540: a model whose downloads list
-        /// SteelSeries GG has its keyboard lit through it), by the process
-        /// names the linker counts GG by
+        /// <summary>SteelSeries GG and the Engine before it, which light the
+        /// SteelSeries controllers of MSI laptops (msi-perkeyrgb
+        /// README.md:101-105), by the process names the linker counts GG by
         /// (<see cref="PeripheralPresence.SteelSeriesHostPrefixes"/>).</summary>
         public static readonly VendorProgram SteelSeriesGG = new("SteelSeries GG", PeripheralPresence.SteelSeriesHostPrefixes);
 

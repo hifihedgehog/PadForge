@@ -15,8 +15,20 @@ set ORGB=%~1
 if "%ORGB%"=="" set ORGB=%HERE%..\..\..\OpenRGB
 set OUT=%TEMP%\padforge_klm_harness
 if not exist "%OUT%" mkdir "%OUT%"
-"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -property installationPath > "%OUT%\vs.txt" || exit /b 1
+set VSWHERE=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe
+rem Each check jumps to its message, since a path with "(x86)" in it would
+rem close an if block early.
+if not exist "%VSWHERE%" goto no_vswhere
+if exist "%OUT%\vs.txt" del "%OUT%\vs.txt"
+if exist "%OUT%\vs.txt" goto stale_vs
+set VS=
+"%VSWHERE%" -latest -products * -property installationPath > "%OUT%\vs.txt"
+if errorlevel 1 goto vswhere_failed
 set /p VS=<"%OUT%\vs.txt"
+if "%VS%"=="" goto no_vs
+if not exist "%VS%\VC\Auxiliary\Build\vcvars64.bat" goto no_vcvars
+rem vcvars64.bat runs vswhere.exe by its bare name, so its folder goes on PATH.
+set "PATH=%PATH%;%ProgramFiles(x86)%\Microsoft Visual Studio\Installer"
 call "%VS%\VC\Auxiliary\Build\vcvars64.bat" >nul || exit /b 1
 set C=%ORGB%\Controllers
 cl /nologo /std:c++17 /utf-8 /EHsc /MD /O1 /W0 /D_MSVC_STL_HARDENING=1 /Fe"%OUT%\klm_harness.exe" /Fo"%OUT%\\" ^
@@ -30,3 +42,20 @@ cl /nologo /std:c++17 /utf-8 /EHsc /MD /O1 /W0 /D_MSVC_STL_HARDENING=1 /Fe"%OUT%
  "%ORGB%\RGBController\RGBControllerKeyNames.cpp" || exit /b 1
 "%OUT%\klm_harness.exe" "%HERE%klm_dump.tsv" || exit /b 1
 echo wrote %HERE%klm_dump.tsv
+exit /b 0
+
+:no_vswhere
+echo vswhere.exe is not at "%VSWHERE%". Install the Visual Studio C++ tools.
+exit /b 1
+:stale_vs
+echo Could not delete the old "%OUT%\vs.txt".
+exit /b 1
+:vswhere_failed
+echo vswhere.exe failed.
+exit /b 1
+:no_vs
+echo vswhere.exe found no Visual Studio installation.
+exit /b 1
+:no_vcvars
+echo "%VS%" has no C++ tools: vcvars64.bat is missing.
+exit /b 1

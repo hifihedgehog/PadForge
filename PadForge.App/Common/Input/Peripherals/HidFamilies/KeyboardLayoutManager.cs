@@ -126,8 +126,8 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
 
         /// <summary>KeyboardLayoutManager(layout, size, values), lines
         /// 321-472. <paramref name="defaultValues"/> and
-        /// <paramref name="regionalOverlay"/> are layout_values; an overlay
-        /// listed twice for one region takes the first, as std::map does.</summary>
+        /// <paramref name="regionalOverlay"/> are layout_values. Of two
+        /// overlays for one region the first counts, as std::map keeps it.</summary>
         public KeyboardLayoutManager(KeyboardLayout layout, KeyboardSize size, uint[] defaultValues,
                                      (KeyboardLayout Layout, KeyboardLed[] Keys)[] regionalOverlay)
         {

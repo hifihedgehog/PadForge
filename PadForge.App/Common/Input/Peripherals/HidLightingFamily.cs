@@ -237,6 +237,7 @@ namespace PadForge.Common.Input.Peripherals
             PoseidonZRgbLighting.Instance,
             SayoDeviceLighting.Instance,
             HyteKeyboardLighting.Instance,
+            AocKeyboardLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

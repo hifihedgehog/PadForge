@@ -225,6 +225,7 @@ namespace PadForge.Common.Input.Peripherals
             WootingKeyboardLighting.Instance,
             SinowealthLighting.Instance,
             SinowealthMouseLighting.Instance,
+            QmkLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

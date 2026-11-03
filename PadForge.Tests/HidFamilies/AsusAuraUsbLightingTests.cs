@@ -109,7 +109,7 @@ namespace PadForge.Tests
             var board = OpenRgbRegistrations.Of(AsusAuraUsbLighting.OpenRgbFamily).First(r => r.Name == "ASUS Aura Motherboard" && r.UsagePage == -1);
             Assert.Null(new AsusAuraUsbLighting().Match(CollectionOf(board, output: 9)));
             Assert.NotNull(new AsusAuraUsbLighting().Match(CollectionOf(board, output: 65)));
-            Assert.NotNull(new AsusAuraUsbLighting().Match(CollectionOf(board, output: 0)));
+            Assert.Null(new AsusAuraUsbLighting().Match(CollectionOf(board, output: 0)));
             Assert.Null(new AsusAuraUsbLighting().Match(new HidCollectionInfo { Path = "x", VendorId = 0x1234, ProductId = 0x18F3 }));
         }
 
@@ -236,7 +236,7 @@ namespace PadForge.Tests
 
         /// <summary>A Nordic legend takes the key of the UK layout's LED of
         /// the same value: the Scope II 96's "§ ½", LED 1, is UK's back tick
-        /// (AsusAuraKeyboardLayouts.h, the NO and UK maps of
+        /// (AsusAuraKeyboardLayouts.h:1548-1942, the NO and UK maps of
         /// AsusROGStrixScopeII96WirelessLayouts).</summary>
         [Fact]
         public void ANordicLegend_IsTheUkKeyOfItsLed()
@@ -267,9 +267,12 @@ namespace PadForge.Tests
         [Fact]
         public void AKeyboardSession_ReadsItsRegion_AndHandsBackNothing()
         {
+            // Windows puts the report ID, 0, ahead of the answer, and hidapi
+            // drops it (hid.c:1221-1229), so OpenRGB's bytes 4 and 5 are 5
+            // and 6 here.
             var answer = new byte[65];
-            answer[4] = 2;
-            answer[5] = 4;
+            answer[5] = 2;
+            answer[6] = 4;
             var io = Channel(answer);
             var session = AsusAuraUsbLighting.BeginKeyboard(io, 0x18F8);
             Assert.NotNull(session);
@@ -291,6 +294,15 @@ namespace PadForge.Tests
             Assert.Empty(io.Calls);
         }
 
+        /// <summary>hidapi drops the 0 ahead of a report of a collection
+        /// without report IDs, and keeps any other ID (hid.c:1221-1234).</summary>
+        [Fact]
+        public void AnAnswer_IsLaidOutAsHidapiHandsItOver()
+        {
+            Assert.Equal("01 02", Hex(AsusAuraUsbLighting.AsHidapiRead(new byte[] { 0x00, 0x01, 0x02 })));
+            Assert.Equal("EC 30 02", Hex(AsusAuraUsbLighting.AsHidapiRead(new byte[] { 0xEC, 0x30, 0x02 })));
+        }
+
         [Fact]
         public void AKeyboardThatDoesNotAnswer_GetsNoSession()
             => Assert.Null(AsusAuraUsbLighting.BeginKeyboard(Channel(), 0x18F8));
@@ -303,7 +315,7 @@ namespace PadForge.Tests
         public void TheClaymore_TakesRemoteControl_AndGivesItBack()
         {
             var numpad = new byte[65];
-            numpad[5] = 1;
+            numpad[6] = 1;
             var io = Channel(numpad);
             var session = AsusAuraUsbLighting.BeginKeyboard(io, 0x184D);
             var outs = Outs(io);
@@ -334,7 +346,7 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "Logo", "Scroll Wheel", "Underglow", "All", "Dock" }, AsusAuraTables.MouseZoneNames);
         }
 
-        /// <summary>SendUpdate (AsusAuraMouseController.cpp:156-224): 00 51 28,
+        /// <summary>SendUpdate (AsusAuraMouseController.cpp:141-219): 00 51 28,
         /// the zone, 00, the mode, the brightness, then red, green, blue,
         /// direction, random and speed, and on the Gladius II Origin PNK LTD
         /// a 00 before the color.</summary>
@@ -362,9 +374,9 @@ namespace PadForge.Tests
             Assert.True(session.HandBack(io, _ => { }));
         }
 
-        /// <summary>SendDirect (AsusAuraMouseController.cpp:231-264) of the
+        /// <summary>SendDirect (AsusAuraMouseController.cpp:221-264) of the
         /// Chakram X: nine LEDs, the logo at 7, the wheel at 8 and the
-        /// underglow at 0 to 6 (AsusAuraMouseDevices.h:772-781), five to a
+        /// underglow at 0 to 6 (AsusAuraMouseDevices.h:773-782), five to a
         /// frame from an offset.</summary>
         [Fact]
         public void AMouseWithDirect_TakesDirectFrames()
@@ -379,9 +391,9 @@ namespace PadForge.Tests
 
         /// <summary>The Strix Evolve's Direct mode and brightness, then its
         /// color, each by SendUpdate, 0C C4 0F 00 with the key and value, and a
-        /// read after it (AsusAuraMouseGen1Controller.cpp:116-138,
+        /// read after it (AsusAuraMouseGen1Controller.cpp:101-125,
         /// RGBController_AsusROGStrixEvolve.cpp:119-130). ResetToSavedLighting,
-        /// 0C C4, hands back (lines 172-181).</summary>
+        /// 0C C4, hands back (lines 171-181).</summary>
         [Fact]
         public void TheStrixEvolve_IsLitThroughItsKeys()
         {
@@ -410,7 +422,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>SendDirectSpatha: report 10 of 33 bytes, 00 F0 00, then
-        /// the side, wheel and logo colors (AsusAuraMouseGen1Controller.cpp:152-170).
+        /// the side, wheel and logo colors (AsusAuraMouseGen1Controller.cpp:150-169).
         /// Its Direct mode sends nothing (RGBController_AsusROGSpatha.cpp:192-197).</summary>
         [Fact]
         public void TheSpatha_TakesOneFrame()
@@ -426,8 +438,8 @@ namespace PadForge.Tests
 
         // ── Mousemats, stands, monitors ──
 
-        /// <summary>UpdateLeds of a mousemat, report EE (AsusAuraMousematController.cpp:85-107),
-        /// and of a headset stand in two frames (AsusAuraHeadsetStandController.cpp:83-125).</summary>
+        /// <summary>UpdateLeds of a mousemat, report EE (AsusAuraMousematController.cpp:69-93),
+        /// and of a headset stand in two frames (AsusAuraHeadsetStandController.cpp:69-113).</summary>
         [Fact]
         public void MousematAndStandFrames_AreUpdateLeds()
         {
@@ -445,7 +457,7 @@ namespace PadForge.Tests
         /// <summary>The monitors: 03 02 A1 80, the register and the value, red,
         /// blue and green at three registers from 16 (0 on the XG279Q), the
         /// PG32UQ and XG32VC opening with 20 and 30, and A0 01 to apply
-        /// (AsusAuraMonitorController.cpp:64-123).</summary>
+        /// (AsusAuraMonitorController.cpp:53-123).</summary>
         [Fact]
         public void MonitorFrames_AreItsRegisters()
         {
@@ -478,7 +490,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>A mainboard's channels from its config table
-        /// (AsusAuraMainboardController.cpp:13-56): its own LEDs on effect
+        /// (AsusAuraMainboardController.cpp:15-58): its own LEDs on effect
         /// channel 0 and direct channel 4, then each header on the next effect
         /// channel, and on AULA3-AR32 firmware the board's effect channel
         /// after the headers.</summary>
@@ -496,7 +508,7 @@ namespace PadForge.Tests
             var ar32 = AsusAuraUsbLighting.AuraChannels(config, "AULA3-AR32-0207", mainboard: true);
             Assert.Equal(new AsusAuraUsbLighting.AuraChannel(3, 4, 6, 2, false), ar32[0]);
             Assert.Equal(new AsusAuraUsbLighting.AuraChannel(0, 0, 1, 0, true), ar32[1]);
-            // More headers than LEDs: no 12 V headers (lines 19-22).
+            // More headers than LEDs: no 12 V headers (lines 21-24).
             config[0x1D] = 9;
             Assert.Equal(0, AsusAuraUsbLighting.AuraChannels(config, null, true)[0].Headers);
             var addressable = AsusAuraUsbLighting.AuraChannels(config, null, mainboard: false);
@@ -507,7 +519,7 @@ namespace PadForge.Tests
             Assert.Equal(Enumerable.Range(1, 9), map.Lights.Select(l => l.Zone));
         }
 
-        /// <summary>SendDirect (AsusAuraUSBController.cpp:271-335): EC 40, the
+        /// <summary>SendDirect (AsusAuraUSBController.cpp:148-212): EC 40, the
         /// channel with 80 on the last frame, the offset, the count, then
         /// twenty colors to a frame.</summary>
         [Fact]
@@ -523,9 +535,9 @@ namespace PadForge.Tests
 
         /// <summary>The session reads EC 82 and EC B0, and a mainboard then
         /// takes SetGen1 and Direct mode on its own LEDs
-        /// (AsusAuraMainboardController.cpp:58-80 and 154-182). A header
+        /// (AsusAuraMainboardController.cpp:64-86 and 160-188). A header
         /// takes OpenRGB's Static effect once per color: EC 35 then EC 36 with
-        /// its bit after the board's LEDs (lines 107-153 and 184-219).</summary>
+        /// its bit after the board's LEDs (lines 111-153 and 190-225).</summary>
         [Fact]
         public void AMainboardSession_ReadsItsTable_AndLightsItsHeadersStatic()
         {
@@ -553,7 +565,7 @@ namespace PadForge.Tests
 
         /// <summary>An addressable controller's headers take EC 3B with the
         /// channel, 00, the mode and the color
-        /// (AsusAuraAddressableController.cpp:79-112), and no SetGen1.</summary>
+        /// (AsusAuraAddressableController.cpp:60-96), and no SetGen1.</summary>
         [Fact]
         public void AnAddressableSession_LightsEachHeaderStatic()
         {
@@ -571,9 +583,9 @@ namespace PadForge.Tests
         // ── Coolers and the Ally ──
 
         /// <summary>The Ryuo's Direct mode, EC 3B 00 22 FF, and EC 40 80 00
-        /// with the count and colors (AsusAuraRyuoAIOController.cpp:89-139);
+        /// with the count and colors (AsusAuraRyuoAIOController.cpp:71-125),
         /// the Strix LC's EC 3B 00 FF and EC 40 00 FF 04 with 77 10 F3 after
-        /// the colors (AsusROGStrixLCController.cpp:82-127).</summary>
+        /// the colors (AsusROGStrixLCController.cpp:67-128).</summary>
         [Fact]
         public void CoolerFrames_AreTheirDirectModes()
         {
@@ -601,7 +613,7 @@ namespace PadForge.Tests
 
         /// <summary>The Ally's opening, SendInitialization and
         /// UpdateBrightness(3), and its four LEDs, 5A D1 08 0C
-        /// (AsusROGAllyController.cpp:58-124).</summary>
+        /// (AsusROGAllyController.cpp:58-130).</summary>
         [Fact]
         public void TheAlly_IsOpenedAndLitThroughFeatureReports()
         {

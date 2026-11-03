@@ -18,7 +18,7 @@ namespace PadForge.Common.Input.Peripherals
     /// collection answers: 5D is a four-zone keyboard, and 5E the GA15DH's
     /// strip of twenty LEDs (IdentifyDevice, AsusAuraCoreController.cpp:290-344).
     /// A collection that answers neither gets no controller
-    /// (AsusAuraCoreControllerDetect.cpp:19-38), and one with no feature
+    /// (AsusAuraCoreControllerDetect.cpp:19-42), and one with no feature
     /// report at all cannot answer, so it is not matched. The session asks
     /// the same two reads. The GA15DH then takes the handshake, "ASUS
     /// Tech.Inc." and 05 20 31 00 10 each with a read after (lines 346-410),
@@ -43,7 +43,7 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>Aura Core laptops (AsusAuraCoreLaptopController, the Strix SCAR
     /// 15 and 17 collections FF31:79). OpenRGB knows a laptop by its
-    /// mainboard name (Win32_BaseBoard Product, dmiinfo.cpp:31-36), and a
+    /// mainboard name (Win32_BaseBoard Product, dmiinfo.cpp:29), and a
     /// laptop not in its list gets no controller
     /// (AsusAuraCoreLaptopController.cpp:34-72). Its zones are the generated
     /// layouts (<see cref="KeyboardLayouts"/>, family "AsusAuraCore"), built
@@ -83,15 +83,15 @@ namespace PadForge.Common.Input.Peripherals
         internal const ushort VendorId = 0x0B05;
 
         /// <summary>The report IDs of the two Aura Core kinds and of the
-        /// laptops (AsusAuraCoreController.cpp:303 and 326,
-        /// AsusAuraCoreLaptopController.h:73).</summary>
+        /// laptops (AsusAuraCoreController.cpp:316 and 338,
+        /// AsusAuraCoreLaptopController.h:80).</summary>
         internal const byte KeyboardReport = 0x5D, Ga15dhReport = 0x5E;
 
         /// <summary>The frame lengths (AsusAuraCoreController.cpp:315 and 337,
-        /// AsusAuraCoreLaptopController.h:21).</summary>
+        /// AsusAuraCoreLaptopController.h:27).</summary>
         internal const int KeyboardLength = 17, Ga15dhLength = 64, LaptopLength = 64;
 
-        /// <summary>The commands (AsusAuraCoreController.h:36-43).</summary>
+        /// <summary>The commands (AsusAuraCoreController.h:38-45).</summary>
         internal const byte Update = 0xB3, Apply = 0xB4, Set = 0xB5, Brightness = 0xBA, Direct = 0xBC;
 
         internal const int KeyboardZones = 4, Ga15dhLeds = 20, Ga15dhLedsPerFrame = 16;
@@ -100,11 +100,11 @@ namespace PadForge.Common.Input.Peripherals
         /// (AsusAuraCoreLaptopController.cpp:218 and 239).</summary>
         internal const int LaptopKeySet = 167, LaptopLedsPerFrame = 16;
 
-        /// <summary>ASUSAURACORELAPTOP_LAYOUT_ISO (AsusAuraCoreLaptopController.h:84).</summary>
+        /// <summary>ASUSAURACORELAPTOP_LAYOUT_ISO (AsusAuraCoreLaptopController.h:100).</summary>
         internal const byte LaptopIso = 0x02;
 
         /// <summary>The brightness OpenRGB's Direct mode sets
-        /// (ASUSAURACORELAPTOP_BRIGHTNESS_MAX, AsusAuraCoreLaptopController.h:30).</summary>
+        /// (ASUSAURACORELAPTOP_BRIGHTNESS_MAX, AsusAuraCoreLaptopController.h:37).</summary>
         internal const byte LaptopBrightness = 3;
 
         /// <summary>Set by the test assembly for the life of its process, never
@@ -125,7 +125,7 @@ namespace PadForge.Common.Input.Peripherals
         internal AsusAuraCoreLighting(Func<string> mainboard) => _mainboard = mainboard ?? MainboardName;
 
         /// <summary>The mainboard's name as OpenRGB's DMIInfo reads it on
-        /// Windows, Product of Win32_BaseBoard (dmiinfo.cpp:31-34), or null.
+        /// Windows, Product of Win32_BaseBoard (dmiinfo.cpp:29), or null.
         /// A read.</summary>
         internal static string MainboardName()
         {
@@ -516,13 +516,13 @@ namespace PadForge.Common.Input.Peripherals
             int productId)
         {
             if (io == null || rows == null || rows.Count == 0) return null;
-            var scratch = new byte[Math.Max(LaptopLength, io.InputReportLength)];
-            AsusAuraUsbLighting.Clear(io, scratch);
             bool single = SingleZone(rows);
             var opening = LaptopOpening(single);
             // The first BC goes out when the controller is made, before the
-            // layout read.
+            // layout read, which drains the input first.
             if (!io.SetFeature(opening[0])) return null;
+            var scratch = new byte[Math.Max(LaptopLength, io.InputReportLength)];
+            AsusAuraUsbLighting.Clear(io, scratch);
             var answer = new byte[Math.Max(LaptopLength, io.FeatureReportLength)];
             var layout = KeyboardLayout.AnsiQwerty;
             if (io.SetFeature(LaptopLayoutQuery()) && io.GetFeature(KeyboardReport, answer) && answer[12] == LaptopIso)

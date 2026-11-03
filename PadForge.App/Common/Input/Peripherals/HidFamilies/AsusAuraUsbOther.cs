@@ -9,56 +9,56 @@ namespace PadForge.Common.Input.Peripherals
     /// keyboard or mouse (#557).
     ///
     /// <para>Mousemats. The ROG Balteus and Balteus Qi: report EE, C0 81 and
-    /// fifteen LEDs, each 00 and its color (AsusAuraMousematController.cpp:85-107,
+    /// fifteen LEDs, each 00 and its color (AsusAuraMousematController.cpp:69-93,
     /// RGBController_AsusAuraMousemat.cpp:190-217).</para>
     ///
     /// <para>Headset stands. The ROG Throne family: two frames, C0 81 00 00
     /// with the first fifteen LEDs and C0 81 01 00 with the last three, the
     /// seventeen underglow LEDs then the logo
-    /// (AsusAuraHeadsetStandController.cpp:83-125,
-    /// RGBController_AsusAuraHeadsetStand.cpp:136-171).</para>
+    /// (AsusAuraHeadsetStandController.cpp:69-113,
+    /// RGBController_AsusAuraHeadsetStand.cpp:120-158).</para>
     ///
     /// <para>Monitors. Feature report 03 of eight bytes, 02 A1 80, then a
     /// register and a value: the PG32UQ and XG32VC first take 20 and 30, each
     /// LED takes its red, blue and green at three registers from 16, or from
     /// 0 on the XG279Q, and A0 01 applies them
-    /// (AsusAuraMonitorController.cpp:64-123, RGBController_AsusAuraMonitor.cpp:96-108).</para>
+    /// (AsusAuraMonitorController.cpp:53-123, RGBController_AsusAuraMonitor.cpp:77-91).</para>
     ///
     /// <para>Mainboards, addressable controllers, the AURA Terminal and the
     /// Strix LC III. The session reads the firmware string (EC 82) and the
     /// config table (EC B0) as the controller does when it is made
-    /// (AsusAuraUSBController.cpp:140-148 and 193-269), and its map from
-    /// them (AsusAuraMainboardController.cpp:13-56,
-    /// AsusAuraAddressableController.cpp:13-22): the mainboard's own LEDs
+    /// (AsusAuraUSBController.cpp:17-25 and 70-146), and its map from
+    /// them (AsusAuraMainboardController.cpp:15-58,
+    /// AsusAuraAddressableController.cpp:15-24): the mainboard's own LEDs
     /// first, then one light per addressable header. A mainboard then takes
-    /// SetGen1 (EC 52 53 00 01, AsusAuraMainboardController.cpp:58-80), and
+    /// SetGen1 (EC 52 53 00 01, AsusAuraMainboardController.cpp:64-86), and
     /// its own LEDs go into Direct mode (EC 35 with the effect channel and
-    /// FF, lines 154-182) and take EC 40 frames of twenty LEDs, the last one
-    /// marked with 80 (AsusAuraUSBController.cpp:271-335). OpenRGB sizes an
+    /// FF, lines 160-188) and take EC 40 frames of twenty LEDs, the last one
+    /// marked with 80 (AsusAuraUSBController.cpp:148-212). OpenRGB sizes an
     /// addressable header only when the user says how many LEDs it has, and
     /// lights none until then (RGBController_AsusAuraUSB.cpp:233-270 and
     /// 359-365). PadForge lights each header as one zone through OpenRGB's
     /// Static effect for that channel, which needs no count, and sends it only
     /// when the header's color changes: EC 3B on an addressable controller
-    /// (AsusAuraAddressableController.cpp:79-112), and EC 35 then EC 36 with
+    /// (AsusAuraAddressableController.cpp:60-96), and EC 35 then EC 36 with
     /// the header's bit in the mask on a mainboard
-    /// (AsusAuraMainboardController.cpp:107-153 and 184-219). None of these
+    /// (AsusAuraMainboardController.cpp:111-153 and 190-225). None of these
     /// frames is followed by the commit, EC 3F 55, that saves a mainboard's
-    /// effect (lines 221-240).</para>
+    /// effect (lines 227-247).</para>
     ///
     /// <para>Coolers. The Ryuo and Ryujin take their Direct mode (EC 3B 00 22
     /// FF) and then EC 40 80 00 with the LED count and colors, twelve LEDs on
-    /// a Ryuo and five on a Ryujin (AsusAuraRyuoAIOController.cpp:15-25,
-    /// 55-108). The Strix LC takes EC 3B 00 FF and then EC 40 00 FF 04 with
+    /// a Ryuo and five on a Ryujin (AsusAuraRyuoAIOController.cpp:15-26,
+    /// 71-125). The Strix LC takes EC 3B 00 FF and then EC 40 00 FF 04 with
     /// its four LEDs from byte 5 and 77 10 F3 after them
-    /// (AsusROGStrixLCController.cpp:14-24, 64-127).</para>
+    /// (AsusROGStrixLCController.cpp:14-23, 67-128).</para>
     ///
     /// <para>The ROG Ally. Feature report 5A of 64 bytes. The controller
     /// sends 5D B9 and 5D with "ASUS Tech.Inc." when it is made, and OpenRGB's
     /// Direct mode sets the brightness to its maximum, 3, with 5A BA C5 C4
-    /// (AsusROGAllyController.cpp:18-24, 58-104,
-    /// RGBController_AsusROGAlly.cpp:36-45 and 186-193). Its four LEDs, two
-    /// per stick, take 5A D1 08 0C and their colors (lines 106-124).</para>
+    /// (AsusROGAllyController.cpp:16-23, 58-106,
+    /// RGBController_AsusROGAlly.cpp:37-45 and 186-193). Its four LEDs, two
+    /// per stick, take 5A D1 08 0C and their colors (lines 108-130).</para>
     /// </summary>
     internal sealed partial class AsusAuraUsbLighting
     {
@@ -66,7 +66,7 @@ namespace PadForge.Common.Input.Peripherals
         //  Mousemats and headset stands
         // ─────────────────────────────────────────────
 
-        /// <summary>The mousemat's report ID (AsusAuraMousematController.cpp:91).</summary>
+        /// <summary>The mousemat's report ID (AsusAuraMousematController.cpp:78).</summary>
         internal const byte MousematReport = 0xEE;
 
         internal const int MousematLeds = 15, HeadsetStandLeds = 18;
@@ -76,7 +76,7 @@ namespace PadForge.Common.Input.Peripherals
                 new LightMap(Edges(MousematLeds), "OpenRGB RGBController_AsusAuraMousemat.cpp") { Product = ProductKey(productId) },
                 (io, wait) => io == null ? null : new FramesSession(MousematFrames));
 
-        /// <summary>UpdateLeds of a mousemat (AsusAuraMousematController.cpp:85-107).</summary>
+        /// <summary>UpdateLeds of a mousemat (AsusAuraMousematController.cpp:69-93).</summary>
         internal static List<byte[]> MousematFrames(IReadOnlyList<int> colors)
         {
             var frame = Frame(PacketSize, MousematReport, 0xC0, 0x81, 0x00, 0x00);
@@ -85,7 +85,7 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>The stand's seventeen underglow LEDs and its logo
-        /// (RGBController_AsusAuraHeadsetStand.cpp:136-171).</summary>
+        /// (RGBController_AsusAuraHeadsetStand.cpp:120-158).</summary>
         private HidLightingModel HeadsetStand(string name, int productId)
         {
             var lights = new LightInfo[HeadsetStandLeds];
@@ -96,7 +96,7 @@ namespace PadForge.Common.Input.Peripherals
                 (io, wait) => io == null ? null : new FramesSession(HeadsetStandFrames));
         }
 
-        /// <summary>UpdateLeds of a headset stand (AsusAuraHeadsetStandController.cpp:83-125).</summary>
+        /// <summary>UpdateLeds of a headset stand (AsusAuraHeadsetStandController.cpp:69-113).</summary>
         internal static List<byte[]> HeadsetStandFrames(IReadOnlyList<int> colors)
         {
             var first = Frame(PacketSize, 0x00, 0xC0, 0x81, 0x00, 0x00);
@@ -137,13 +137,13 @@ namespace PadForge.Common.Input.Peripherals
         // ─────────────────────────────────────────────
 
         /// <summary>The monitor PIDs that take the two opening registers
-        /// (AsusAuraMonitorController.h:17-23).</summary>
+        /// (AsusAuraMonitorController.h:19-25).</summary>
         internal const int Pg32uq = 0x19B9, Xg32vc = 0x1968, Xg279q = 0x1919;
 
         internal const int MonitorLength = 8, MonitorLeds = 3;
 
         /// <summary>The monitor's three backlight LEDs
-        /// (RGBController_AsusAuraMonitor.cpp:63-81), lighting behind the
+        /// (RGBController_AsusAuraMonitor.cpp:53-75), lighting behind the
         /// screen.</summary>
         private HidLightingModel Monitor(string name, int productId)
         {
@@ -158,7 +158,7 @@ namespace PadForge.Common.Input.Peripherals
             => Frame(MonitorLength, 0x03, 0x02, 0xA1, 0x80, register, value);
 
         /// <summary>DeviceUpdateLEDs' feature reports
-        /// (RGBController_AsusAuraMonitor.cpp:96-108).</summary>
+        /// (RGBController_AsusAuraMonitor.cpp:77-91).</summary>
         internal static List<byte[]> MonitorFrames(int productId, IReadOnlyList<int> colors)
         {
             var frames = new List<byte[]>();
@@ -206,7 +206,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The report ID and the commands of the Aura USB
         /// controllers (AsusAuraUSBController.h:44-55,
-        /// AsusAuraAddressableController.h:19-22, AsusAuraMainboardController.h:171-176).</summary>
+        /// AsusAuraAddressableController.h:19-22, AsusAuraMainboardController.h:19-24).</summary>
         internal const byte AuraReport = 0xEC, AuraFirmware = 0x82, AuraConfig = 0xB0, AuraDirect = 0x40,
             AuraApply = 0x80, AuraOverflow = 0x10, AddressableEffect = 0x3B, MainboardEffect = 0x35,
             MainboardEffectColor = 0x36;
@@ -226,8 +226,8 @@ namespace PadForge.Common.Input.Peripherals
         /// a mainboard its own LEDs first, where it has any, with their
         /// effect channel numbered from the header count on AULA3-AR32
         /// firmware, then each header
-        /// (AsusAuraMainboardController.cpp:13-56), and on an addressable
-        /// controller each header alone (AsusAuraAddressableController.cpp:13-22).</summary>
+        /// (AsusAuraMainboardController.cpp:15-58), and on an addressable
+        /// controller each header alone (AsusAuraAddressableController.cpp:15-24).</summary>
         internal static List<AuraChannel> AuraChannels(byte[] config, string firmware, bool mainboard)
         {
             var channels = new List<AuraChannel>();
@@ -276,7 +276,7 @@ namespace PadForge.Common.Input.Peripherals
                 (io, wait) => BeginAuraUsb(io, productId, mainboard));
 
         /// <summary>GetFirmwareVersion and GetConfigTable
-        /// (AsusAuraUSBController.cpp:193-269): a reply 02 carries the
+        /// (AsusAuraUSBController.cpp:70-146): a reply 02 carries the
         /// firmware string, a reply 30 the config table from byte 4. Then
         /// SetGen1 on a mainboard, and Direct mode on its own LEDs, the
         /// SetMode OpenRGB's first update sends for each channel with LEDs
@@ -304,13 +304,13 @@ namespace PadForge.Common.Input.Peripherals
             return new AuraUsbSession(AuraUsbMap(productId, channels), channels, mainboard);
         }
 
-        /// <summary>SendEffect of a mainboard (AsusAuraMainboardController.cpp:154-182),
+        /// <summary>SendEffect of a mainboard (AsusAuraMainboardController.cpp:160-188),
         /// with no shutdown effect.</summary>
         internal static byte[] MainboardEffectFrame(byte effectChannel, byte mode)
             => Frame(PacketSize, AuraReport, MainboardEffect, effectChannel, 0x00, 0x00, mode);
 
         /// <summary>SendEffect of an addressable controller
-        /// (AsusAuraAddressableController.cpp:79-112).</summary>
+        /// (AsusAuraAddressableController.cpp:60-96).</summary>
         internal static byte[] AddressableEffectFrame(byte channel, byte mode, int rgb)
         {
             var frame = Frame(PacketSize, AuraReport, AddressableEffect, channel, 0x00, mode);
@@ -318,7 +318,7 @@ namespace PadForge.Common.Input.Peripherals
             return frame;
         }
 
-        /// <summary>SendColor of a mainboard (AsusAuraMainboardController.cpp:184-219):
+        /// <summary>SendColor of a mainboard (AsusAuraMainboardController.cpp:190-225):
         /// the mask of LEDs from <paramref name="start"/>, high byte first, and
         /// the colors at their places.</summary>
         internal static byte[] MainboardColorFrame(int start, int count, int rgb)
@@ -330,7 +330,7 @@ namespace PadForge.Common.Input.Peripherals
             return frame;
         }
 
-        /// <summary>SendDirect (AsusAuraUSBController.cpp:271-335): twenty LEDs
+        /// <summary>SendDirect (AsusAuraUSBController.cpp:148-212): twenty LEDs
         /// to a frame from an offset, the apply bit on the last frame, and the
         /// 8-bit overflow flag and offset past 255 LEDs.</summary>
         internal static List<byte[]> AuraDirectFrames(byte device, IReadOnlyList<int> colors)
@@ -415,7 +415,7 @@ namespace PadForge.Common.Input.Peripherals
             /// <summary>OpenRGB's Static mode on one header channel: SetMode
             /// of an addressable controller, or of a mainboard, whose color
             /// frame starts at the LEDs of the channels before it
-            /// (AsusAuraMainboardController.cpp:107-152).</summary>
+            /// (AsusAuraMainboardController.cpp:111-153).</summary>
             private bool SendStatic(IHidReportChannel io, int index, AuraChannel channel, int rgb)
             {
                 if (!_mainboard) return io.WriteOutput(AddressableEffectFrame((byte)index, AuraModeStatic, rgb));
@@ -448,7 +448,7 @@ namespace PadForge.Common.Input.Peripherals
                 });
         }
 
-        /// <summary>SetLedsDirect of a Ryuo (AsusAuraRyuoAIOController.cpp:89-108).</summary>
+        /// <summary>SetLedsDirect of a Ryuo (AsusAuraRyuoAIOController.cpp:71-88).</summary>
         internal static List<byte[]> RyuoFrames(int leds, IReadOnlyList<int> colors)
         {
             var frame = Frame(PacketSize, AuraReport, AuraDirect, 0x80, 0x00, (byte)leds);
@@ -469,7 +469,7 @@ namespace PadForge.Common.Input.Peripherals
                     return new FramesSession(StrixLcFrames);
                 });
 
-        /// <summary>SetLedsDirect of a Strix LC (AsusROGStrixLCController.cpp:82-107).</summary>
+        /// <summary>SetLedsDirect of a Strix LC (AsusROGStrixLCController.cpp:67-92).</summary>
         internal static List<byte[]> StrixLcFrames(IReadOnlyList<int> colors)
         {
             var frame = Frame(PacketSize, AuraReport, AuraDirect, 0x00, 0xFF, StrixLcLeds);
@@ -503,7 +503,7 @@ namespace PadForge.Common.Input.Peripherals
                 });
 
         /// <summary>SendInitialization and UpdateBrightness(3)
-        /// (AsusROGAllyController.cpp:58-104).</summary>
+        /// (AsusROGAllyController.cpp:58-106).</summary>
         internal static List<byte[]> AllyOpening()
         {
             var id = Frame(AllyLength, 0x5D);
@@ -516,7 +516,7 @@ namespace PadForge.Common.Input.Peripherals
             };
         }
 
-        /// <summary>UpdateLeds of the Ally (AsusROGAllyController.cpp:106-124).</summary>
+        /// <summary>UpdateLeds of the Ally (AsusROGAllyController.cpp:108-130).</summary>
         internal static byte[] AllyFrame(IReadOnlyList<int> colors)
         {
             var frame = Frame(AllyLength, 0x5A, 0xD1, 0x08, 0x0C);

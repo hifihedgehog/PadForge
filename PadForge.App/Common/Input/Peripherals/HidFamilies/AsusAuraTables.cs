@@ -41,7 +41,7 @@ namespace PadForge.Common.Input.Peripherals
     {
         /// <summary>The LEDs of <paramref name="zone"/>, or none: std::map's
         /// operator[] on a missing key gives an empty list
-        /// (AsusAuraMouseController.cpp:240).</summary>
+        /// (AsusAuraMouseController.cpp:231).</summary>
         public byte[] LedsOf(int zone)
         {
             foreach (var (z, leds) in Zones)
@@ -57,12 +57,12 @@ namespace PadForge.Common.Input.Peripherals
     {
         /// <summary>The region keys OpenRGB falls back to
         /// (ASUS_TUF_K7_LAYOUT_UK and _US, AsusAuraKeyboardLayouts.h:24 and
-        /// 36).</summary>
+        /// 37).</summary>
         internal const int RegionUk = 4;
         internal const int RegionUs = 17;
 
         /// <summary>The ASUS_TUF_K7_LAYOUT_NO key, the one region besides UK
-        /// and US a map holds (AsusAuraKeyboardLayouts.h:30).</summary>
+        /// and US a map holds (AsusAuraKeyboardLayouts.h:31).</summary>
         internal const int RegionNo = 11;
 
         /// <summary>A keyboard line's map by OpenRGB's name for it, or
@@ -112,7 +112,7 @@ namespace PadForge.Common.Input.Peripherals
         /// its HID usage where <see cref="OpenRgbKeys"/> knows the name, a
         /// logo for "Logo" and "Logo n", an edge light for the underglow, a
         /// zone for "Keyboard LED n", the TUF K1 and K5's five zones
-        /// (AsusAuraKeyboardLayouts.h:3731-3735), and for any other name a
+        /// (AsusAuraKeyboardLayouts.h:3732-3736), and for any other name a
         /// key no source named, with the label its name has.
         /// <paramref name="legendUsage"/> is the key of a national legend
         /// OpenRgbKeys does not hold, 0 for none.</summary>

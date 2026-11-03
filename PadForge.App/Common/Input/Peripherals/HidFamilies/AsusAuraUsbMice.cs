@@ -12,25 +12,25 @@ namespace PadForge.Common.Input.Peripherals
     /// <para>Mice. A mouse's zones, mode list and bounds come from
     /// aura_mouse_devices by product ID (<see cref="AsusAuraTables.Mice"/>),
     /// one light per zone, named by aura_mouse_zone_names
-    /// (RGBController_AsusAuraMouse.cpp:14-21 and 195-212). A product ID the
+    /// (RGBController_AsusAuraMouse.cpp:14-21 and 193-216). A product ID the
     /// table lacks gets no zones, as std::map's operator[] gives it
-    /// (line 37). A mouse with a direct mode of its own takes 51 29 frames,
+    /// (line 48). A mouse with a direct mode of its own takes 51 29 frames,
     /// five LEDs to a frame from an offset, each zone's color on the LEDs
-    /// aura_mouse_led_maps gives it (AsusAuraMouseController.cpp:231-264).
+    /// aura_mouse_led_maps gives it (AsusAuraMouseController.cpp:221-264).
     /// Any other mouse is lit per zone through its static mode, as OpenRGB
-    /// and ASUS light it (RGBController_AsusAuraMouse.cpp:58-79): 51 28 with
+    /// and ASUS light it (RGBController_AsusAuraMouse.cpp:56-89): 51 28 with
     /// the zone, the static mode's place in the mode list, the brightness at
     /// its maximum and the color, the input drained before it and its answer
-    /// awaited for 10 ms (AsusAuraMouseController.cpp:156-229 and
-    /// RGBController_AsusAuraMouse.cpp:236-249). The Gladius II Origin PNK LTD
-    /// takes the long form of that frame (lines 176-196).</para>
+    /// awaited for 10 ms (AsusAuraMouseController.cpp:141-219 and
+    /// RGBController_AsusAuraMouse.cpp:238-251). The Gladius II Origin PNK LTD
+    /// takes the long form of that frame (lines 173-194).</para>
     ///
     /// <para>First ROG mice. Feature report 0C. The Strix Evolve takes its
     /// Direct mode and full brightness at the keys 19 and 1A and its color at
     /// 1C to 1E, each by SendUpdate (RGBController_AsusROGStrixEvolve.cpp:109-130,
-    /// AsusAuraMouseGen1Controller.cpp:126-148), which waits 15 ms after each.
+    /// AsusAuraMouseGen1Controller.cpp:101-125), which waits 15 ms after each.
     /// The Spatha takes all three colors in one feature report 10
-    /// (lines 167-170). ResetToSavedLighting, 0C C4 and zeros (lines 172-181),
+    /// (lines 150-169). ResetToSavedLighting, 0C C4 and zeros (lines 171-181),
     /// returns both to the lighting stored in the mouse, and is their
     /// hand-back.</para>
     ///
@@ -40,31 +40,31 @@ namespace PadForge.Common.Input.Peripherals
     /// </summary>
     internal sealed partial class AsusAuraUsbLighting
     {
-        /// <summary>The mouse zones (AsusAuraMouseDevices.h:61-68).</summary>
+        /// <summary>The mouse zones (AsusAuraMouseDevices.h:64-71).</summary>
         internal const byte MouseZoneLogo = 0, MouseZoneScroll = 1, MouseZoneUnderglow = 2, MouseZoneAll = 3,
             MouseZoneDock = 4;
 
-        /// <summary>AURA_MOUSE_MODE_STATIC (AsusAuraMouseDevices.h:72).</summary>
+        /// <summary>AURA_MOUSE_MODE_STATIC (AsusAuraMouseDevices.h:75).</summary>
         internal const byte MouseModeStatic = 0;
 
-        /// <summary>The Gladius II Origin PNK LTD (AsusAuraMouseDevices.h:21).</summary>
+        /// <summary>The Gladius II Origin PNK LTD (AsusAuraMouseDevices.h:20).</summary>
         internal const int GladiusIIOriginPnk = 0x18CD;
 
-        /// <summary>The LEDs of one direct frame (AsusAuraMouseController.cpp:247-252).</summary>
+        /// <summary>The LEDs of one direct frame (AsusAuraMouseController.cpp:241-246).</summary>
         internal const int MouseLedsPerFrame = 5;
 
         /// <summary>How long SendUpdate waits for its answer
-        /// (AsusAuraMouseController.cpp:228).</summary>
+        /// (AsusAuraMouseController.cpp:218).</summary>
         internal const int MouseAwaitMs = 10;
 
-        /// <summary>The Gen 1 mice (AsusAuraMouseGen1ControllerDetect.cpp:23-25).</summary>
+        /// <summary>The Gen 1 mice (AsusAuraMouseGen1ControllerDetect.cpp:24-26).</summary>
         internal const int StrixEvolvePid = 0x185B, SpathaWired = 0x181C, SpathaWireless = 0x1824;
 
-        /// <summary>The Gen 1 feature report's length (AsusAuraMouseGen1Controller.cpp:122).</summary>
+        /// <summary>The Gen 1 feature report's length (AsusAuraMouseGen1Controller.cpp:107).</summary>
         internal const int Gen1Length = 9;
 
         /// <summary>The wait after each Gen 1 SendUpdate
-        /// (AsusAuraMouseGen1Controller.cpp:137).</summary>
+        /// (AsusAuraMouseGen1Controller.cpp:123).</summary>
         internal const int Gen1SettleMs = 15;
 
         /// <summary>ASUS_ROG_STRIX_EVOLVE_MODE_DIRECT and its full brightness
@@ -98,15 +98,15 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>The place of the static mode in a mouse's mode list,
-        /// the value OpenRGB gives its Static mode (RGBController_AsusAuraMouse.cpp:47-79).
+        /// the value OpenRGB gives its Static mode (RGBController_AsusAuraMouse.cpp:56-89).
         /// -1 where the list has none.</summary>
         internal static int StaticModeOf(AsusMouseDevice mouse)
             => mouse == null ? -1 : Array.IndexOf(mouse.Modes, MouseModeStatic);
 
-        /// <summary>SendUpdate's frame (AsusAuraMouseController.cpp:156-224)
+        /// <summary>SendUpdate's frame (AsusAuraMouseController.cpp:141-219)
         /// for a zone in a mode with a color, direction 0, no random color,
         /// speed 0 and a brightness, as DeviceUpdateSingleLED sends it
-        /// (RGBController_AsusAuraMouse.cpp:247).</summary>
+        /// (RGBController_AsusAuraMouse.cpp:249).</summary>
         internal static byte[] MouseUpdateFrame(int productId, byte zone, byte mode, int rgb, byte brightness)
         {
             var frame = Frame(PacketSize, 0x00, 0x51, 0x28, zone, 0x00, mode, brightness);
@@ -117,7 +117,7 @@ namespace PadForge.Common.Input.Peripherals
             return frame;
         }
 
-        /// <summary>SendDirect's frames (AsusAuraMouseController.cpp:231-264):
+        /// <summary>SendDirect's frames (AsusAuraMouseController.cpp:221-264):
         /// each zone's color, by its place among the mouse's zones, on the
         /// LEDs the map lists for that place, then the LEDs five to a frame
         /// with their offset.</summary>
@@ -188,14 +188,14 @@ namespace PadForge.Common.Input.Peripherals
         //  The first ROG mice
         // ─────────────────────────────────────────────
 
-        /// <summary>SendUpdate (AsusAuraMouseGen1Controller.cpp:116-138).</summary>
+        /// <summary>SendUpdate (AsusAuraMouseGen1Controller.cpp:101-125).</summary>
         internal static byte[] Gen1UpdateFrame(byte key, byte value)
             => Frame(Gen1Length, 0x0C, 0xC4, 0x0F, 0x00, key, value);
 
-        /// <summary>ResetToSavedLighting (AsusAuraMouseGen1Controller.cpp:172-181).</summary>
+        /// <summary>ResetToSavedLighting (AsusAuraMouseGen1Controller.cpp:171-181).</summary>
         internal static byte[] Gen1ResetFrame() => Frame(Gen1Length, 0x0C, 0xC4);
 
-        /// <summary>SendDirectSpatha (AsusAuraMouseGen1Controller.cpp:152-170).</summary>
+        /// <summary>SendDirectSpatha (AsusAuraMouseGen1Controller.cpp:150-169).</summary>
         internal static byte[] SpathaDirectFrame(IReadOnlyList<int> colors)
         {
             var frame = Frame(33, 0x10, 0x00, 0xF0, 0x00);
@@ -231,7 +231,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The Strix Evolve's Direct mode at full brightness
         /// (RGBController_AsusROGStrixEvolve.cpp:126-130 with the mode's
-        /// default brightness, lines 36-45). The Spatha's Direct mode sends
+        /// default brightness, lines 37-45). The Spatha's Direct mode sends
         /// nothing (RGBController_AsusROGSpatha.cpp:192-197).</summary>
         private static HidLightingSession BeginGen1(IHidReportChannel io, Action<int> wait, bool spatha)
         {

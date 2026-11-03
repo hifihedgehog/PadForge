@@ -127,6 +127,12 @@ namespace PadForge.Tests
             Starts("06 0B 04 00 00 0F 08 01", outs[0], 65);
             Starts("06 0B 01 01 03", outs[1], 65);
             Assert.Equal(8, session.CrashFrames.Length);
+            // The same array while it holds, so the crash path's record
+            // does not churn (HidLightingSession.CrashFrames).
+            var crash = session.CrashFrames;
+            session.Paint(io, _ => { }, model.Map.Lights, new[] { 0x000000 });
+            Assert.Same(crash, session.CrashFrames);
+            io.Calls.Clear();
 
             io.Calls.Clear();
             Assert.True(session.HandBack(io, _ => { }));

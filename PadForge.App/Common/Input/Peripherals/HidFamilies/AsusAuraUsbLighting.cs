@@ -11,7 +11,7 @@ namespace PadForge.Common.Input.Peripherals
     /// detector names. The collection is the first of OpenRGB's candidates
     /// for it (<see cref="OpenRgbRegistrations.Match(string, HidCollectionInfo, int)"/>),
     /// since RunHIDDetector stops at the first detector that returns a
-    /// controller (DetectionManager.cpp:1599-1622) and every detector of this
+    /// controller (DetectionManager.cpp:1602-1624) and every detector of this
     /// family returns one for a collection it opens. The sub-controllers and
     /// their sources, all under Controllers/AsusAuraUSBController at the
     /// pinned commit:
@@ -37,7 +37,7 @@ namespace PadForge.Common.Input.Peripherals
     /// mode a device of this family shows, so none can be put back while the
     /// device stays plugged in, save where the device has a command for it:
     /// the first ROG mice take ResetToSavedLighting
-    /// (AsusAuraMouseGen1Controller.cpp:172-181), and the Claymore takes
+    /// (AsusAuraMouseGen1Controller.cpp:171-181), and the Claymore takes
     /// AllowRemoteControl(0), the frame OpenRGB ends every mode change of the
     /// Claymore with (RGBController_AsusAuraKeyboard.cpp:657-662). Every other
     /// device keeps the last colors PadForge sent until it is replugged or
@@ -61,7 +61,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The family's folder name in OpenRGB's Controllers.</summary>
         internal const string OpenRgbFamily = "AsusAuraUSBController";
 
-        /// <summary>AURA_USB_VID (AsusAuraUSBControllerDetect.cpp:20).</summary>
+        /// <summary>AURA_USB_VID (AsusAuraUSBControllerDetect.cpp:21).</summary>
         internal const ushort VendorId = 0x0B05;
 
         /// <summary>The length every output frame of the family goes out at,
@@ -70,7 +70,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>How long a read waits for an answer OpenRGB waits for
         /// with no bound (hid_read): AsusAuraKeyboardController.cpp:170 and
-        /// AsusAuraUSBController.cpp:212.</summary>
+        /// AsusAuraUSBController.cpp:89.</summary>
         internal const int AnswerMs = 1000;
 
         /// <summary>How many queued answers a read of what came in drops at
@@ -100,12 +100,13 @@ namespace PadForge.Common.Input.Peripherals
         /// answers its detector (AsusAuraUSBControllerDetect.cpp:149-163), and
         /// a collection with no 65-byte output report cannot carry the EC
         /// frames, so OpenRGB's controller on it reads no config table and
-        /// lights nothing (AsusAuraUSBController.cpp:193-239). A length of 0
-        /// is a walk that did not read it, and passes.</summary>
+        /// lights nothing (AsusAuraUSBController.cpp:70-116). The walk reads
+        /// every collection's report lengths from its descriptor, so 0 is a
+        /// collection with no output report.</summary>
         internal static bool Carries(OpenRgbRegistration registration, HidCollectionInfo collection)
         {
             if (registration.UsagePage != OpenRgbRegistration.Any) return true;
-            return collection.OutputReportLength == 0 || collection.OutputReportLength >= PacketSize;
+            return collection.OutputReportLength >= PacketSize;
         }
 
         /// <summary>The model a registration's detector builds for a
@@ -197,13 +198,22 @@ namespace PadForge.Common.Input.Peripherals
         internal static void Await(IHidReportChannel io, byte[] scratch, int ms) => io.ReadInput(scratch, ms);
 
         /// <summary>Writes a frame and reads its answer, the hid_write then
-        /// hid_read OpenRGB's reads make. Null when the write failed or no
+        /// hid_read OpenRGB's reads make, laid out as hidapi hands it over
+        /// (<see cref="AsHidapiRead"/>). Null when the write failed or no
         /// answer came.</summary>
         internal static byte[] Ask(IHidReportChannel io, byte[] frame)
         {
             if (!io.WriteOutput(frame)) return null;
             var answer = new byte[Math.Max(PacketSize, io.InputReportLength)];
-            return io.ReadInput(answer, AnswerMs) > 0 ? answer : null;
+            return io.ReadInput(answer, AnswerMs) > 0 ? AsHidapiRead(answer) : null;
         }
+
+        /// <summary>An input report as hidapi's hid_read hands it to OpenRGB
+        /// on Windows: a report of a collection without report IDs comes
+        /// with the 0 Windows puts ahead of it dropped, and any other report
+        /// with its ID in byte 0 (hidapi windows/hid.c:1221-1234). OpenRGB's
+        /// answer offsets count from there.</summary>
+        internal static byte[] AsHidapiRead(byte[] report)
+            => report.Length > 0 && report[0] == 0x00 ? report.AsSpan(1).ToArray() : report;
     }
 }

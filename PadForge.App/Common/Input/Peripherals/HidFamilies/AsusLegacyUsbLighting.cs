@@ -267,6 +267,7 @@ namespace PadForge.Common.Input.Peripherals
             if (!io.WriteOutput(SagarisFrame(SagarisReport, 0x0B, 0x03))) return null;
             var mode = new byte[scratch.Length];
             if (io.ReadInput(mode, SagarisReadMs) <= 0) return null;
+            mode = AsusAuraUsbLighting.AsHidapiRead(mode);
             AsusAuraUsbLighting.Clear(io, scratch);
             if (!io.WriteOutput(SagarisFrame(SagarisReport, 0x0B, 0x05))) return null;
             var palette = new byte[SagarisColors][];
@@ -274,6 +275,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 var answer = new byte[scratch.Length];
                 if (io.ReadInput(answer, SagarisReadMs) <= 0) return null;
+                answer = AsusAuraUsbLighting.AsHidapiRead(answer);
                 palette[i] = new[] { answer[4], answer[5], answer[6] };
             }
             return new SagarisState(mode[3], mode[4], mode[5], mode[6], palette);
@@ -304,10 +306,15 @@ namespace PadForge.Common.Input.Peripherals
         internal sealed class SagarisSession : HidLightingSession
         {
             private readonly SagarisState _state;
+            private readonly byte[][] _restore;
             private bool _ours;
             private byte[][] _crash = Array.Empty<byte[]>();
 
-            public SagarisSession(SagarisState state) => _state = state;
+            public SagarisSession(SagarisState state)
+            {
+                _state = state;
+                _restore = state.Restore();
+            }
 
             public SagarisState State => _state;
 
@@ -322,14 +329,14 @@ namespace PadForge.Common.Input.Peripherals
                 // Marked first: a write that reports a failure may still have
                 // landed.
                 _ours = true;
-                _crash = _state.Restore();
+                _crash = _restore;
                 return SendSagaris(io, SagarisFrames(colors[0])) ? HidLightingPaint.Sent : HidLightingPaint.Failed;
             }
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
             {
                 if (!_ours) return true;
-                if (!SendSagaris(io, _state.Restore())) return false;
+                if (!SendSagaris(io, _restore)) return false;
                 _ours = false;
                 _crash = Array.Empty<byte[]>();
                 return true;

@@ -26,8 +26,7 @@ namespace PadForge.Tests
             Assert.All(full, l => Assert.InRange(l.Address, 0, 123));
             Assert.All(mini, l => Assert.InRange(l.Address, 0, 105));
             Assert.Equal(full.Count, full.Select(l => l.Address).Distinct().Count());
-            Assert.Equal(1, one.Count);
-            Assert.Equal(LightKind.Zone, one[0].Kind);
+            Assert.Equal(LightKind.Zone, Assert.Single(one).Kind);
         }
 
         [Fact]

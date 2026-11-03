@@ -276,6 +276,32 @@ namespace PadForge.Tests
             Assert.False(OpenRgbRegistrations.Compare(Hid(0x1234, 0x5678) with { FromSettings = true }, c));
         }
 
+        /// <summary>hidapi's Windows backend numbers a USB device with one
+        /// interface, whose path has no "&amp;mi_", interface 0
+        /// (windows/hid.c:515-521 and 568-570), and leaves a Bluetooth one
+        /// at -1 (line 758). The bus is read from the path: "HID#VID_" under
+        /// USB, the HID and HID-over-GATT service UUIDs under Bluetooth.
+        /// A bus given to Compare wins over the path.</summary>
+        [Fact]
+        public void TheInterface_IsHidapis()
+        {
+            var usb = Collection(0x1234, 0x5678) with { Path = @"\\?\HID#VID_1234&PID_5678#7&2a3b&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}" };
+            var usbSecond = usb with { Path = @"\\?\hid#vid_1234&pid_5678&mi_01#8&1&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}", InterfaceNumber = 1 };
+            var bt = Collection(0x1234, 0x5678) with { Path = @"\\?\HID#{00001124-0000-1000-8000-00805f9b34fb}_VID&00021234_PID&5678#9&1&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}" };
+            var ble = Collection(0x1234, 0x5678) with { Path = @"\\?\HID#{00001812-0000-1000-8000-00805f9b34fb}_Dev_VID&021234_PID&5678_REV&0001#a&1&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}" };
+            Assert.Equal((1, 1, 2, 2, -1), (OpenRgbRegistrations.BusOf(usb), OpenRgbRegistrations.BusOf(usbSecond),
+                OpenRgbRegistrations.BusOf(bt), OpenRgbRegistrations.BusOf(ble), OpenRgbRegistrations.BusOf(Collection(0x1234, 0x5678))));
+            Assert.True(OpenRgbRegistrations.Compare(Hid(0x1234, 0x5678, iface: 0), usb));
+            Assert.False(OpenRgbRegistrations.Compare(Hid(0x1234, 0x5678, iface: 1), usb));
+            Assert.True(OpenRgbRegistrations.Compare(Hid(0x1234, 0x5678, iface: 1), usbSecond));
+            Assert.False(OpenRgbRegistrations.Compare(Hid(0x1234, 0x5678, iface: 0), bt));
+            Assert.False(OpenRgbRegistrations.Compare(Hid(0x1234, 0x5678, iface: 0), ble));
+            Assert.True(OpenRgbRegistrations.Compare(Hid(0x1234, 0x5678), bt));
+            Assert.True(OpenRgbRegistrations.Compare(Hid(0x1234, 0x5678, bus: 2), bt));
+            Assert.False(OpenRgbRegistrations.Compare(Hid(0x1234, 0x5678, bus: 1), bt));
+            Assert.True(OpenRgbRegistrations.Compare(Hid(0x1234, 0x5678, iface: 0), bt, busType: 1));
+        }
+
         /// <summary>RunHIDDetector (DetectionManager.cpp:1515-1628): a
         /// specific detector whose IDs match turns the generic ones off for
         /// the collection even when its other fields do not compare, a

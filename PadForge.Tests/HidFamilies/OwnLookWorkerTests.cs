@@ -21,6 +21,7 @@ namespace PadForge.Tests
         public volatile bool OpenFails;
         public volatile bool PaintFails;
         public volatile bool BeginFails;
+        public volatile bool HandBackFails;
 
         /// <summary>Set: the next paint waits on it, after it sets
         /// <see cref="Held"/>.</summary>
@@ -129,6 +130,7 @@ namespace PadForge.Tests
         public override bool HandBack(IHidReportChannel io, Action<int> wait)
         {
             lock (_family.Log) _family.Log.Add($"handback {_channel.Key} io={(io == null ? "null" : "hid")}");
+            if (_family.HandBackFails) return false;
             _crash = Array.Empty<byte[]>();
             return true;
         }
@@ -353,6 +355,29 @@ namespace PadForge.Tests
             lock (_hidShots) Assert.Empty(_hidShots);
         }
 
+        /// <summary>A hand-back that did not go out on the channel as the
+        /// worker stops goes out through the family's own writer, as a
+        /// collection's goes out through a report of its own.</summary>
+        [Fact]
+        public void AHandBackThatFailsAtStop_GoesOutThroughTheFamilysWriter()
+        {
+            _family.Found = new[] { Laptop() };
+            var backend = Started();
+            Link();
+            Light(0x112233);
+            Passes(backend);
+            _family.HandBackFails = true;
+            backend.Stop();
+            backend.Dispose();
+            lock (_family.OneShots)
+            {
+                var shot = Assert.Single(_family.OneShots);
+                Assert.Equal(Key, shot.Key);
+                Assert.Equal(new byte[] { 0xBB }, shot.Frame);
+            }
+            lock (_hidShots) Assert.Empty(_hidShots);
+        }
+
         [Fact]
         public void TheCrashPath_WritesAnOwnUnitsFramesThroughItsFamilysWriter()
         {
@@ -380,6 +405,30 @@ namespace PadForge.Tests
             _family.Hold.Set();
             _family.Hold = null;
             backend.Dispose();
+        }
+
+        /// <summary>The repair of colors an earlier run left takes a HID
+        /// channel (HidLightingModel.Repair), so an own unit never gets one,
+        /// even from a model that says it owes some.</summary>
+        [Fact]
+        public void AnOwnUnit_IsNeverRepairedThroughAHidChannel()
+        {
+            int repairs = 0;
+            var family = new FakeOwnFamily();
+            var model = new HidLightingModel
+            {
+                Family = family, Name = family.Model.Name, Map = family.Model.Map,
+                Open = family.Model.Open, BeginOwn = family.Model.BeginOwn, WriteOnce = family.Model.WriteOnce,
+                Owed = () => true,
+                Repair = (_, _) => { Interlocked.Increment(ref repairs); return true; },
+            };
+            family.Found = new[] { new OwnDevice(Key, model) { Container = Box } };
+            using var backend = Started(family);
+            Advance(HidLightingBackend.RepairGraceMs + 10_000);
+            Passes(backend, 3);
+            Assert.Equal(0, Volatile.Read(ref repairs));
+            Assert.Equal(0, Volatile.Read(ref _hidOpens));
+            Assert.Empty(family.Calls());
         }
 
         [Fact]

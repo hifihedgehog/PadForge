@@ -165,11 +165,16 @@ namespace PadForge.Tests
             Assert.Empty(session.CrashFrames);
 
             var lights = model.Map.Lights;
+            // The BIOS changed a byte outside the colors since the session
+            // began: the write keeps it, since each picture reads the table
+            // first, as setColors does.
+            bios.Table[1] ^= 0xFF;
+            var current = (byte[])bios.Table.Clone();
             Assert.Equal(HidLightingPaint.Sent, session.Paint(null, _ => { }, lights, new[] { 1, 2, 3, 4 }));
             // A read, then the write of the whole table.
             Assert.Equal(new[] { (0x20009, 2), (0x20009, 3) }, bios.Calls.Skip(1).Select(c => (c.Command, c.Type)));
             Assert.Equal(128, bios.Calls[^1].Input.Length);
-            Assert.Equal(HpOmenLaptopLighting.Painted(original, lights, new[] { 1, 2, 3, 4 }), bios.Table);
+            Assert.Equal(HpOmenLaptopLighting.Painted(current, lights, new[] { 1, 2, 3, 4 }), bios.Table);
             Assert.Equal(original, Assert.Single(session.CrashFrames));
 
             // The crash path writes that table through a call of its own.

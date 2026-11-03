@@ -19,9 +19,8 @@ namespace PadForge.Tests.LaptopFamilies
         public readonly List<(string Kind, byte[] Bytes)> Log = new();
 
         /// <summary>The answers to feature reads, in turn. A read with none
-        /// left answers <see cref="Default"/>, or fails when that is null.</summary>
+        /// left answers from <see cref="Echo"/>, or fails without it.</summary>
         public readonly Queue<byte[]> Answers = new();
-        public byte[] Default;
 
         /// <summary>Answers a feature read from the last feature report sent,
         /// when set and no scripted answer is left.</summary>
@@ -61,7 +60,6 @@ namespace PadForge.Tests.LaptopFamilies
                 var last = Log.LastOrDefault(e => e.Kind == "F").Bytes;
                 answer = last == null ? null : Echo(last);
             }
-            answer ??= Default;
             if (answer == null) return false;
             Array.Clear(buffer);
             Array.Copy(answer, buffer, Math.Min(answer.Length, buffer.Length));

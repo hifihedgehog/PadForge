@@ -220,6 +220,8 @@ namespace PadForge.Common.Input.Peripherals
             MsiLaptopLighting.Instance,
             Msi3ZoneLighting.Instance,
             MsiVigorLighting.Instance,
+            AlienwareLighting.Instance,
+            AlienwareKeyboardLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

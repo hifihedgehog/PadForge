@@ -126,12 +126,20 @@ namespace PadForge.Common.Input.Peripherals
         /// (<see cref="PeripheralPresence.SteelSeriesHostPrefixes"/>).</summary>
         public static readonly VendorProgram SteelSeriesGG = new("SteelSeries GG", PeripheralPresence.SteelSeriesHostPrefixes);
 
+        /// <summary>Alienware Command Center, which lights Dell's G series
+        /// laptops and Alienware's keyboards. alienfx-tools stops its
+        /// service, AWCCService, before it drives the lights itself
+        /// (alienfx-tools Common/Common.cpp:98-103), and Dell's forums name
+        /// the program's own process AWCC.exe and its service's
+        /// AWCC.Service.exe. The one prefix takes in both.</summary>
+        public static readonly VendorProgram AlienwareCommandCenter = new("Alienware Command Center", "AWCC");
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
         {
             LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor,
-            MsiMysticLight, SteelSeriesGG,
+            MsiMysticLight, SteelSeriesGG, AlienwareCommandCenter,
         };
     }
 

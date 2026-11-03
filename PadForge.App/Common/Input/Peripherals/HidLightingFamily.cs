@@ -220,6 +220,7 @@ namespace PadForge.Common.Input.Peripherals
             RoccatVulcanLighting.Instance,
             CherryKeyboardLighting.Instance,
             EVisionKeyboardLighting.Instance,
+            DasKeyboardLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

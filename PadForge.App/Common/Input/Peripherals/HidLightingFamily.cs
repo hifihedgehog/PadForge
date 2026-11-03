@@ -45,9 +45,20 @@ namespace PadForge.Common.Input.Peripherals
         /// color.</summary>
         public int RepaintMs { get; init; }
 
-        /// <summary>How often an unchanged color goes out again, which puts
-        /// the claim back after the device dropped it.</summary>
+        /// <summary>How often an unchanged picture goes out again: for a
+        /// device that holds a picture only while frames keep coming, the
+        /// stream's interval.</summary>
         public int ReassertMs { get; init; }
+
+        /// <summary>A stream that paused this long may have let the device
+        /// drop the claim, so the claim frames go out again ahead of the next
+        /// picture. 0: only a new session and Windows resuming claim
+        /// again.</summary>
+        public int ReclaimAfterMs { get; init; }
+
+        /// <summary>How often the session reads the device's state again
+        /// (<see cref="HidLightingSession.Recheck"/>). 0: never.</summary>
+        public int RecheckMs { get; init; }
 
         /// <summary>Reads what a session needs before its first frame, on a
         /// channel open for read and write. Null when the device did not
@@ -64,11 +75,26 @@ namespace PadForge.Common.Input.Peripherals
         /// output reports.</summary>
         public abstract bool Feature { get; }
 
+        /// <summary>The frames that put the device under the host's colors,
+        /// sent ahead of the first picture of a session and again where the
+        /// device may have dropped them. Empty where the picture alone
+        /// claims it.</summary>
+        public virtual byte[][] Claim() => System.Array.Empty<byte[]>();
+
         /// <summary>The frames that show <paramref name="colors"/>, one per
         /// light of <paramref name="lights"/>, the unit's map in the order
-        /// of the model's. Each paint claims the device again, so a paint is
-        /// its own re-assert.</summary>
+        /// of the model's.</summary>
         public abstract byte[][] Paint(IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors);
+
+        /// <summary>Reads the device's state again on its own channel.
+        /// <paramref name="reclaim"/> is true when the claim must go out
+        /// again, and the claim and hand-back frames may have changed. False
+        /// when the device did not answer.</summary>
+        public virtual bool Recheck(IHidReportChannel io, out bool reclaim)
+        {
+            reclaim = false;
+            return true;
+        }
 
         /// <summary>The frames that return the device to its own lighting.
         /// Empty where no frame does.</summary>

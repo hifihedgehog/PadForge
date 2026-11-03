@@ -364,16 +364,19 @@ namespace PadForge.Tests
 
             Advance(1);
             Passes(backend);
-            Assert.Equal(new[] { "set 07 D0 02 00 01 05", "set 07 A1 8A 02 01 00" }, Calls(channel).Skip(4));
+            // The picture alone: Direct mode is entered once per session.
+            Assert.Equal(new[] { "set 07 A1 8A 02 01 00" }, Calls(channel).Skip(4));
             Assert.Equal(1, Opens);
         }
 
         [Fact]
-        public void TheLegionsPicture_StreamsEvery60Ms_InTheSameBytes()
+        public void TheLegionsPicture_StreamsEvery60Ms_InTheSameBytes_BehindOneClaim()
         {
             // The owner's Legion Pro 7 showed a picture sent every five
             // seconds for a moment, then its stored white: Direct mode holds
-            // only while frames keep coming.
+            // only while frames keep coming. D0 01 ahead of every frame of
+            // the stream left it flickering to white, so the claim goes out
+            // once and the picture alone streams.
             using var backend = Started(Spectrum);
             Link(PathOf(Spectrum));
             Light(0x112233);
@@ -387,11 +390,68 @@ namespace PadForge.Tests
                 Advance(60);
                 Passes(backend);
                 var sets = Sets(channel);
-                Assert.Equal(3 + round * 2, sets.Count);
-                Assert.Equal(first[1], sets[^2]);   // D0 01 05
-                Assert.Equal(first[2], sets[^1]);   // A1, every light
+                Assert.Equal(3 + round, sets.Count);
+                Assert.Equal(first[2], sets[^1]);   // A1, every light, the same bytes
             }
             Assert.Equal(1, Opens);
+        }
+
+        [Fact]
+        public void AStreamThatPaused_EntersDirectModeAgain()
+        {
+            using var backend = Started(Spectrum);
+            Link(PathOf(Spectrum));
+            Light(0x112233);
+            Passes(backend);
+            var channel = Channel();
+
+            Advance(LenovoLegionLighting.ReclaimAfterMs);
+            Passes(backend);
+            Assert.Equal(new[] { "set 07 D0 02 00 01 05", "set 07 A1 8A 02 01 00" }, Calls(channel).Skip(4));
+        }
+
+        [Fact]
+        public void WindowsResuming_EntersDirectModeAgain()
+        {
+            using var backend = Started(Spectrum);
+            Link(PathOf(Spectrum));
+            Light(0x112233);
+            Passes(backend);
+            var channel = Channel();
+
+            Advance(10);
+            backend.NoteResume();
+            Passes(backend);
+            Assert.Equal(new[] { "set 07 D0 02 00 01 05", "set 07 A1 8A 02 01 00" }, Calls(channel).Skip(4));
+        }
+
+        [Fact]
+        public void AProfileKey_MovesTheClaimAndTheHandBackToTheNewProfile()
+        {
+            using var backend = Started(Spectrum);
+            Link(PathOf(Spectrum));
+            Light(0x112233);
+            Passes(backend);
+            var channel = Channel();
+
+            // A profile key on the keyboard: the next read finds profile 3.
+            _feature = _ => Bytes("07 CA 01 00 03");
+            for (int step = 0; step < LenovoLegionLighting.RecheckMs / 60; step++)
+            {
+                Advance(60);
+                Passes(backend);
+            }
+            Advance(LenovoLegionLighting.RecheckMs % 60 + 60);
+            Passes(backend);
+            var calls = Calls(channel);
+            int read = calls.LastIndexOf("set 07 CA 01 00 00 00");
+            Assert.True(read > 2, "the profile was read again");
+            Assert.Equal(new[] { "get 07", "set 07 D0 02 00 01 03", "set 07 A1 8A 02 01 00" }, calls.Skip(read + 1).Take(3));
+            Assert.Equal("07 D0 02 00 02 03", Hex(Assert.Single(Assert.Single(backend.Recorded).Frames), 6));
+
+            Unlight();
+            Passes(backend);
+            Assert.Equal("set 07 D0 02 00 02 03", Calls(channel).Last());
         }
 
         [Fact]
@@ -411,8 +471,8 @@ namespace PadForge.Tests
             Advance(LenovoLegionLighting.RepaintMs - 10);
             Passes(backend);
             var sets = Sets(channel);
-            Assert.Equal(5, sets.Count);
-            Assert.Equal("01 00 44 55 66", BitConverter.ToString(sets[4], 4, 5).Replace('-', ' '));
+            Assert.Equal(4, sets.Count);
+            Assert.Equal("01 00 44 55 66", BitConverter.ToString(sets[3], 4, 5).Replace('-', ' '));
         }
 
         [Fact]

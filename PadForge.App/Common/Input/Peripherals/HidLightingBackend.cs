@@ -113,9 +113,17 @@ namespace PadForge.Common.Input.Peripherals
             public byte[][] ShownFrames;
             public long PaintAt;
 
-            /// <summary>Windows resumed from sleep: the picture goes out
-            /// once more.</summary>
+            /// <summary>Windows resumed from sleep: the claim and the picture
+            /// go out once more.</summary>
             public bool Reassert;
+
+            /// <summary>The session's state changed under it
+            /// (<see cref="HidLightingSession.Recheck"/>): the claim goes out
+            /// again ahead of the next picture.</summary>
+            public bool Reclaim;
+
+            /// <summary>When the session's state is read again.</summary>
+            public long CheckAt;
 
             public string Label => $"{Model?.Name ?? "unit"} {VendorId:X4}:{ProductId:X4}";
         }
@@ -622,21 +630,49 @@ namespace PadForge.Common.Input.Peripherals
             unit.ShownMap = null;
             unit.ShownFrames = null;
             unit.Reassert = false;
+            unit.Reclaim = false;
+            unit.CheckAt = _ticks() + unit.Model.RecheckMs;
             return true;
         }
 
         /// <summary>One pass over an open, wanted unit. False when a write
-        /// failed.</summary>
+        /// or a read failed.</summary>
         private bool Paint(Unit unit, int rgb, KeyFrame keys, long now, ref long due)
         {
             var model = unit.Model;
+            var session = unit.Session;
+            if (model.RecheckMs > 0 && now >= unit.CheckAt)
+            {
+                unit.CheckAt = now + model.RecheckMs;
+                bool reclaim = false;
+                try
+                {
+                    if (!session.Recheck(unit.Io, out reclaim)) return false;
+                }
+                catch
+                {
+                    return false;
+                }
+                if (reclaim)
+                {
+                    // The hand-back on record follows the session's state.
+                    unit.Reclaim = true;
+                    if (unit.Recorded)
+                    {
+                        Unrecord(unit);
+                        Record(unit);
+                    }
+                }
+            }
+            if (model.RecheckMs > 0) Soonest(ref due, unit.CheckAt);
+
             var map = unit.Map ?? model.Map;
             var colors = LightRenderer.Render(map, rgb, keys);
             bool first = unit.Shown == null || !ReferenceEquals(unit.ShownMap, map);
             bool fresh = !first && LightRenderer.Same(colors, unit.Shown);
             long repaintAt = unit.PaintAt + model.RepaintMs;
             long reassertAt = unit.PaintAt + model.ReassertMs;
-            if (!first && !unit.Reassert && now < reassertAt && (fresh || now < repaintAt))
+            if (!first && !unit.Reassert && !unit.Reclaim && now < reassertAt && (fresh || now < repaintAt))
             {
                 Soonest(ref due, fresh ? reassertAt : repaintAt);
                 return true;
@@ -647,17 +683,30 @@ namespace PadForge.Common.Input.Peripherals
             // color of ours and nothing can undo it (HidppBackend.PaintLighting).
             if (!unit.Recorded) Record(unit);
             unit.Lit = true;
+            // The claim goes ahead of a session's first picture and again
+            // where the device may have dropped it: Windows resumed, the
+            // session's state changed, or the stream paused long enough.
+            // Sent on every frame instead, a claim that restarts the
+            // device's own effect shows that effect between frames.
+            bool claim = unit.ShownFrames == null || unit.Reassert || unit.Reclaim
+                || (model.ReclaimAfterMs > 0 && now - unit.PaintAt >= model.ReclaimAfterMs);
+            if (claim)
+            {
+                foreach (var frame in session.Claim())
+                    if (!Send(unit.Io, frame, session.Feature)) return false;
+            }
             // An unchanged picture goes out again in the frames that carried
             // it: a family that streams, as a Lenovo Legion keyboard needs,
             // re-asserts many times a second.
-            var frames = fresh && unit.ShownFrames != null ? unit.ShownFrames : unit.Session.Paint(map.Lights, colors);
+            var frames = fresh && unit.ShownFrames != null ? unit.ShownFrames : session.Paint(map.Lights, colors);
             foreach (var frame in frames)
-                if (!Send(unit.Io, frame, unit.Session.Feature)) return false;
+                if (!Send(unit.Io, frame, session.Feature)) return false;
             unit.Shown = colors;
             unit.ShownMap = map;
             unit.ShownFrames = frames;
             unit.PaintAt = _ticks();
             unit.Reassert = false;
+            unit.Reclaim = false;
             if (first)
                 PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} lit, {colors.Length} lights");
             Soonest(ref due, unit.PaintAt + model.ReassertMs);
@@ -670,11 +719,15 @@ namespace PadForge.Common.Input.Peripherals
             catch { return false; }
         }
 
-        /// <summary>Sends the hand-back of a unit a paint went to. True
-        /// when every frame went out, or none was owed.</summary>
+        /// <summary>Sends the hand-back of a unit a paint went to, on the
+        /// device's state as it is now, the way Lenovo Legion Toolkit reads
+        /// the active profile before its stop
+        /// (SpectrumKeyboardBacklightController.cs:556-563). True when every
+        /// frame went out, or none was owed.</summary>
         private bool Release(Unit unit)
         {
             if (!unit.Lit || unit.Session == null) return true;
+            try { unit.Session.Recheck(unit.Io, out _); } catch { }
             foreach (var frame in unit.Session.HandBack())
                 if (!Send(unit.Io, frame, unit.Session.Feature)) return false;
             PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} lighting handed back");

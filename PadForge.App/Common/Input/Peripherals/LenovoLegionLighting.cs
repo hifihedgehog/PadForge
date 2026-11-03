@@ -24,16 +24,24 @@ namespace PadForge.Common.Input.Peripherals
     /// and D0 02 with the same profile to leave it
     /// (LenovoUSBController_Gen7_8.cpp:134-199). OpenRGB sends D0 01 ahead
     /// of every A1 on these boards, which "may ignore A1 updates unless D0
-    /// is reasserted" (RGBController_Lenovo_Gen7_8.cpp:535-549), and so does
-    /// every paint here. Direct mode lasts only while frames keep coming:
-    /// on the owner's Legion Pro 7 16AFR10H a picture sent once every five
-    /// seconds showed for a moment and gave way to the stored effect each
-    /// time. Lenovo Legion Toolkit holds the same Direct mode (its Aurora
-    /// sync) by sending the colors every 60 ms for as long as it lights the
-    /// keyboard, in its original (SpectrumKeyboardBacklightController.cs:41
-    /// and 488-548) and in its maintained fork that drives Gen 10
-    /// (LenovoLegionToolkit-Team, the same file, lines 28 and 552-633), and
-    /// the picture goes out at that rate here (<see cref="ReassertMs"/>).
+    /// is reasserted" (RGBController_Lenovo_Gen7_8.cpp:535-549). OpenRGB
+    /// sends on a change alone, though. Direct mode lasts only while frames
+    /// keep coming: on the owner's Legion Pro 7 16AFR10H a picture sent
+    /// every five seconds showed for a moment and gave way to the stored
+    /// effect each time, and D0 01 ahead of every frame of a 60 ms stream
+    /// left the keys flickering between the colors and the stored white.
+    /// Lenovo Legion Toolkit is the reference that streams. Its Aurora sync,
+    /// the same D0 and A1, sends D0 01 once, then the colors every 60 ms for
+    /// as long as it lights the keyboard, and D0 02 on the profile active
+    /// at that moment to stop, in its original
+    /// (SpectrumKeyboardBacklightController.cs:41 and 470-568) and in its
+    /// maintained fork that drives Gen 10 (LenovoLegionToolkit-Team, the
+    /// same file, lines 28 and 552-633). So here: D0 01 ahead of a
+    /// session's first picture, then A1 alone every 60 ms
+    /// (<see cref="ReassertMs"/>), and D0 01 again, as OpenRGB's note asks,
+    /// only where the keyboard may have left Direct mode: a stream that
+    /// paused (<see cref="ReclaimAfterMs"/>), Windows resuming, or the
+    /// active profile changed under it (<see cref="RecheckMs"/>).
     /// The boards before Gen 10 enter Direct mode by
     /// writing a profile group into the device's stored profile as well
     /// (RGBController_Lenovo_Gen7_8.cpp:507-515), which a hand-back would
@@ -88,6 +96,17 @@ namespace PadForge.Common.Input.Peripherals
         /// effect soon after the last frame (see the class notes).</summary>
         internal const int ReassertMs = 60;
 
+        /// <summary>A stream that skipped four frames has stopped as far as
+        /// the keyboard can tell, so D0 01 goes ahead of the next picture.</summary>
+        internal const int ReclaimAfterMs = 4 * ReassertMs;
+
+        /// <summary>How often the active profile is read again. Lenovo
+        /// Legion Toolkit learns of a profile key from the keyboard's key
+        /// events and restarts its stream on the new profile
+        /// (SpectrumKeyboardBacklightController.cs:71-92). PadForge reads
+        /// the profile instead, which changes nothing on the keyboard.</summary>
+        internal const int RecheckMs = 2000;
+
         public string Name => "Lenovo Legion";
 
         private static readonly Lazy<HidLightingModel> s_gen10 = new(() => Model(
@@ -115,6 +134,8 @@ namespace PadForge.Common.Input.Peripherals
             LitBesideWindows = true,
             RepaintMs = RepaintMs,
             ReassertMs = ReassertMs,
+            ReclaimAfterMs = ReclaimAfterMs,
+            RecheckMs = RecheckMs,
             Begin = Begin,
         };
 
@@ -322,17 +343,26 @@ namespace PadForge.Common.Input.Peripherals
                 : null;
 
         private static HidLightingSession Begin(IHidReportChannel io)
+            => ReadProfile(io, out byte? profile) && profile is byte read ? new Session(read) : null;
+
+        /// <summary>Asks for the active profile. False when the exchange
+        /// failed. <paramref name="profile"/> is null for an answer that is
+        /// not one (<see cref="ProfileOf"/>).</summary>
+        private static bool ReadProfile(IHidReportChannel io, out byte? profile)
         {
-            if (io == null) return null;
+            profile = null;
+            if (io == null) return false;
             var answer = new byte[Math.Max(PacketSize, io.FeatureReportLength)];
-            if (!io.SetFeature(ActiveProfileQuery()) || !io.GetFeature(ReportId, answer)) return null;
-            return ProfileOf(answer) is byte profile ? new Session(profile) : null;
+            if (!io.SetFeature(ActiveProfileQuery()) || !io.GetFeature(ReportId, answer)) return false;
+            profile = ProfileOf(answer);
+            return true;
         }
 
-        /// <summary>A session on one profile.</summary>
+        /// <summary>A session on the keyboard's active profile, which it
+        /// follows when the profile changes.</summary>
         internal sealed class Session : HidLightingSession
         {
-            private readonly byte _profile;
+            private byte _profile;
 
             public Session(byte profile) => _profile = profile;
 
@@ -340,10 +370,27 @@ namespace PadForge.Common.Input.Peripherals
 
             public override bool Feature => true;
 
+            public override byte[][] Claim() => new[] { Direct(on: true, _profile) };
+
             public override byte[][] Paint(IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
-                => new[] { Direct(on: true, _profile), Colors(lights, colors) };
+                => new[] { Colors(lights, colors) };
 
             public override byte[][] HandBack() => new[] { Direct(on: false, _profile) };
+
+            /// <summary>A profile key moved the keyboard to another profile:
+            /// Direct mode is entered again on it, and the hand-back leaves
+            /// it there. An answer that is not one keeps the profile.</summary>
+            public override bool Recheck(IHidReportChannel io, out bool reclaim)
+            {
+                reclaim = false;
+                if (!ReadProfile(io, out byte? profile)) return false;
+                if (profile is byte read && read != _profile)
+                {
+                    _profile = read;
+                    reclaim = true;
+                }
+                return true;
+            }
         }
     }
 }

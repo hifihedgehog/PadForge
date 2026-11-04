@@ -681,6 +681,9 @@ namespace PadForge.Tests
             [SteelSeriesFamily.ArctisNova3] = new byte[] { 0xAA, 0xA5, 0x09, 0xA3 },
             [SteelSeriesFamily.Siberia350] = new byte[] { 0x00 },
             [SteelSeriesFamily.QckPrismCloth] = new byte[] { 0x0E, 0x0D },
+            [SteelSeriesFamily.QckPrism12] = new byte[] { 0x0E, 0x0D },
+            [SteelSeriesFamily.ArctisProGameDac] = new byte[] { 0x2C, 0xAA, 0xA5, 0xA3 },
+            [SteelSeriesFamily.ArenaSpeakers] = new byte[] { 0xA7 },
         };
 
         /// <summary>The report ID each family's frames carry: 06 on the Arctis
@@ -690,7 +693,7 @@ namespace PadForge.Tests
         /// other.</summary>
         private static byte ReportIdOf(SteelSeriesFamily family) => family switch
         {
-            SteelSeriesFamily.Arctis5 or SteelSeriesFamily.ArctisNova3 => 0x06,
+            SteelSeriesFamily.Arctis5 or SteelSeriesFamily.ArctisNova3 or SteelSeriesFamily.ArenaSpeakers => 0x06,
             SteelSeriesFamily.Siberia350 => 0x01,
             _ => 0x00,
         };
@@ -813,6 +816,8 @@ namespace PadForge.Tests
         {
             SteelSeriesFamily.Arctis5, SteelSeriesFamily.ArctisNova3, SteelSeriesFamily.Siberia350,
             SteelSeriesFamily.QckPrismCloth,
+            SteelSeriesFamily.QckPrism12,
+            SteelSeriesFamily.ArenaSpeakers,
         };
 
         /// <summary>How fast each family takes its reports: the gap between
@@ -855,10 +860,13 @@ namespace PadForge.Tests
         [InlineData(SteelSeriesFamily.Apex3Tkl, 1, 1, 0, 33, 5000, false)]
         [InlineData(SteelSeriesFamily.ApexM750, 2, 1, 10, 55, 5000, false)]
         [InlineData(SteelSeriesFamily.Apex2013, 0, 1, 0, 50, 5000, false)]
-        [InlineData(SteelSeriesFamily.Arctis5, 5, 12, 0, 50, 5000, false)]
+        [InlineData(SteelSeriesFamily.Arctis5, 5, 24, 0, 50, 5000, false)]
         [InlineData(SteelSeriesFamily.ArctisNova3, 4, 6, 0, 500, 0, false)]
         [InlineData(SteelSeriesFamily.Siberia350, 3, 4, 0, 500, 5000, false)]
         [InlineData(SteelSeriesFamily.QckPrismCloth, 0, 2, 0, 33, 5000, false)]
+        [InlineData(SteelSeriesFamily.QckPrism12, 0, 2, 0, 33, 5000, false)]
+        [InlineData(SteelSeriesFamily.ArctisProGameDac, 0, 8, 20, 230, 5000, false)]
+        [InlineData(SteelSeriesFamily.ArenaSpeakers, 4, 1, 0, 33, 5000, false)]
         public void EachFamily_SitsOnItsInterface_AndIsPacedAsItsReferencesPaceIt(object familyValue, int iface,
             int reports, int gapMs, int repaintMs, int reassertMs, bool echoes)
         {
@@ -948,6 +956,9 @@ namespace PadForge.Tests
         [InlineData(SteelSeriesFamily.ArctisNova3, 521, 0)]
         [InlineData(SteelSeriesFamily.Siberia350, 16, 0)]
         [InlineData(SteelSeriesFamily.QckPrismCloth, 65, 525)]
+        [InlineData(SteelSeriesFamily.QckPrism12, 65, 525)]
+        [InlineData(SteelSeriesFamily.ArctisProGameDac, 14, 0)]
+        [InlineData(SteelSeriesFamily.ArenaSpeakers, 64, 0)]
         public void EachFamilysLongestFrames_AreWhatItsCollectionMustHold(object familyValue, int output, int feature)
         {
             var info = SteelSeriesDirectProtocol.Info((SteelSeriesFamily)familyValue);
@@ -967,8 +978,9 @@ namespace PadForge.Tests
             var ids = SteelSeriesDirectProtocol.Models.Select(m => m.ProductId).ToList();
             Assert.Equal(ids.Count, ids.Distinct().Count());
             var listed = PeripheralProductIds.SteelSeriesMice.Concat(PeripheralProductIds.SteelSeriesKeyboards)
-                .Concat(PeripheralProductIds.SteelSeriesHeadsets).Concat(PeripheralProductIds.SteelSeriesMousemats).ToList();
-            Assert.Equal(96 + 4 + 9, listed.Count);
+                .Concat(PeripheralProductIds.SteelSeriesHeadsets).Concat(PeripheralProductIds.SteelSeriesMousemats)
+                .Concat(PeripheralProductIds.SteelSeriesSpeakers).ToList();
+            Assert.Equal(96 + 6 + 10 + 2, listed.Count);
             Assert.Equal(listed.Count, listed.Distinct().Count());
             Assert.Equal(listed.OrderBy(id => id), ids.OrderBy(id => id));
 
@@ -990,16 +1002,15 @@ namespace PadForge.Tests
                 if (family == SteelSeriesFamily.None) continue;
                 bool keyboardFamily = family >= SteelSeriesFamily.ApexPro && family <= SteelSeriesFamily.Apex2013;
                 bool headsetFamily = family is SteelSeriesFamily.Arctis5 or SteelSeriesFamily.ArctisNova3
-                    or SteelSeriesFamily.Siberia350;
+                    or SteelSeriesFamily.Siberia350 or SteelSeriesFamily.ArctisProGameDac;
                 Assert.Equal(PeripheralProductIds.SteelSeriesKeyboards.Contains(productId), keyboardFamily);
                 Assert.Equal(PeripheralProductIds.SteelSeriesHeadsets.Contains(productId), headsetFamily);
                 Assert.Equal(PeripheralProductIds.SteelSeriesMousemats.Contains(productId),
-                    family == SteelSeriesFamily.QckPrismCloth);
+                    family is SteelSeriesFamily.QckPrismCloth or SteelSeriesFamily.QckPrism12);
+                Assert.Equal(PeripheralProductIds.SteelSeriesSpeakers.Contains(productId),
+                    family == SteelSeriesFamily.ArenaSpeakers);
             }
-            // A product the table lacks has no family: the QcK Prism of
-            // 0x1507, which SignalRGB alone lights (signal-plugins
-            // Steelseries_Qck_Prism_Mousepad.js:22-26).
-            Assert.Equal(SteelSeriesFamily.None, SteelSeriesDirectProtocol.FamilyOf(0x1507));
+            // A product the table lacks has no family.
             Assert.Equal(SteelSeriesFamily.None, SteelSeriesDirectProtocol.FamilyOf(0x0000));
         }
 
@@ -1018,7 +1029,7 @@ namespace PadForge.Tests
             Assert.Equal(none.OrderBy(id => id),
                 SteelSeriesDirectProtocol.Models.Where(m => m.Family == SteelSeriesFamily.None).Select(m => m.ProductId).OrderBy(id => id));
             Assert.All(none, id => Assert.Contains(id, PeripheralProductIds.SteelSeriesMice));
-            Assert.Equal(95, SteelSeriesDirectProtocol.Models.Count(m => m.Family != SteelSeriesFamily.None));
+            Assert.Equal(100, SteelSeriesDirectProtocol.Models.Count(m => m.Family != SteelSeriesFamily.None));
             Assert.Equal(19, SteelSeriesDirectProtocol.Models.Count(m => PeripheralProductIds.SteelSeriesKeyboards.Contains(m.ProductId)
                                                                          && m.Family != SteelSeriesFamily.None));
         }
@@ -1059,7 +1070,10 @@ namespace PadForge.Tests
         [InlineData(SteelSeriesFamily.Apex3Tkl, new ushort[] { 0x1622 })]
         [InlineData(SteelSeriesFamily.ApexM750, new ushort[] { 0x0616 })]
         [InlineData(SteelSeriesFamily.Apex2013, new ushort[] { 0x1202, 0x1206 })]
-        [InlineData(SteelSeriesFamily.Arctis5, new ushort[] { 0x1250, 0x12AA })]
+        [InlineData(SteelSeriesFamily.Arctis5, new ushort[] { 0x1250, 0x1252, 0x12AA })]
+        [InlineData(SteelSeriesFamily.ArctisProGameDac, new ushort[] { 0x1280 })]
+        [InlineData(SteelSeriesFamily.QckPrism12, new ushort[] { 0x1507 })]
+        [InlineData(SteelSeriesFamily.ArenaSpeakers, new ushort[] { 0x1A00, 0x1A05 })]
         [InlineData(SteelSeriesFamily.ArctisNova3, new ushort[] { 0x12EC })]
         [InlineData(SteelSeriesFamily.Siberia350, new ushort[] { 0x1229 })]
         [InlineData(SteelSeriesFamily.QckPrismCloth, new ushort[] { 0x150A, 0x150D, 0x1514, 0x1516, 0x1518, 0x151A, 0x151C, 0x151E, 0x1520 })]
@@ -1068,17 +1082,18 @@ namespace PadForge.Tests
                 SteelSeriesDirectProtocol.Models.Where(m => m.Family == (SteelSeriesFamily)familyValue)
                     .Select(m => m.ProductId).OrderBy(id => id));
 
-        /// <summary>35 of the 95 lit products have a frame that returns
-        /// them to their own lighting. The other 60, the headsets and mats
-        /// among them, keep the last color until they lose power.</summary>
+        /// <summary>36 of the 100 lit products have a frame that returns
+        /// them to their own lighting. The other 64, the headsets and mats
+        /// among them but for the GameDAC, keep the last color until they lose
+        /// power.</summary>
         [Fact]
-        public void ThirtyFiveProductsCanBeHandedBack_AndSixtyKeepTheirLastColor()
+        public void ThirtySixProductsCanBeHandedBack_AndSixtyFourKeepTheirLastColor()
         {
             bool HandsBack(SteelSeriesFamily family)
                 => SteelSeriesDirectProtocol.HandBack(family, false).Length > 0 && SteelSeriesDirectProtocol.HandBack(family, true).Length > 0;
             var lit = SteelSeriesDirectProtocol.Models.Where(m => m.Family != SteelSeriesFamily.None).ToList();
-            Assert.Equal(35, lit.Count(m => HandsBack(m.Family)));
-            Assert.Equal(60, lit.Count(m => !HandsBack(m.Family)));
+            Assert.Equal(36, lit.Count(m => HandsBack(m.Family)));
+            Assert.Equal(64, lit.Count(m => !HandsBack(m.Family)));
             // A family hands back on both firmware generations or on neither.
             Assert.All(SteelSeriesDirectProtocol.Families, f =>
                 Assert.Equal(f.HandBack(false).Length > 0, f.HandBack(true).Length > 0));
@@ -1089,6 +1104,7 @@ namespace PadForge.Tests
                     SteelSeriesFamily.ApexPro, SteelSeriesFamily.ApexProTkl, SteelSeriesFamily.Apex9,
                     SteelSeriesFamily.ApexProTkl2023, SteelSeriesFamily.ApexProTklGen3,
                     SteelSeriesFamily.ApexProWireless, SteelSeriesFamily.ApexProGen3, SteelSeriesFamily.Apex3Tkl,
+                    SteelSeriesFamily.ArctisProGameDac,
                 },
                 SteelSeriesDirectProtocol.Families.Where(f => HandsBack(f.Family)).Select(f => f.Family));
         }

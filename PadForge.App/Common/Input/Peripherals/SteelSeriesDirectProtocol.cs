@@ -85,6 +85,12 @@ namespace PadForge.Common.Input.Peripherals
         Siberia350,
         /// <summary>The QCK Prism Cloth mousemats.</summary>
         QckPrismCloth,
+        /// <summary>The QcK Prism of twelve LEDs, 0x1507.</summary>
+        QckPrism12,
+        /// <summary>The Arctis Pro GameDAC.</summary>
+        ArctisProGameDac,
+        /// <summary>The Arena 7 and Arena 9 speakers.</summary>
+        ArenaSpeakers,
     }
 
     /// <summary>One row of the family table: where a family's control
@@ -786,8 +792,11 @@ namespace PadForge.Common.Input.Peripherals
                 },
             },
 
-            // Arctis 5, both product IDs. Two lights, the left and the right
-            // earcup, each six 37-byte output reports with the report ID 06:
+            // Arctis 5, both product IDs, and the Arctis Pro, whose plugin
+            // sends the same reports (signal-plugins
+            // Steelseries_Arctis_Pro_Headset.js:90-135). Four lights, the left
+            // and the right earcup and the two microphone LEDs, each six
+            // 37-byte output reports with the report ID 06:
             // 81 43 01 22 and 81 43 01 23, then 8A 42 00 20 41 00 and the
             // color with FF 32 C8 C8 behind it, 8A 42 00 20 41 08 and the
             // zone with 01, 8A 42 00 20 60 and the zone, and 8A 42 00 20 05
@@ -796,8 +805,9 @@ namespace PadForge.Common.Input.Peripherals
             // sends the same reports on Windows (signal-plugins
             // Steelseries_Arctis_5_Headset.js:118-166), but for an apply that
             // drops the 00 of byte 3 there, against its own copy of that
-            // report (line 105) and OpenRGB's. Its two microphone LEDs come
-            // from that plugin alone and are not lit. OpenRGB registers the
+            // report (line 105) and OpenRGB's. The microphone LEDs, zones 2 and
+            // 3, come from that plugin alone (lines 25-35), since OpenRGB's
+            // zones stop at the earcups. OpenRGB registers the
             // headset on interface 5 (SteelSeriesControllerDetect.cpp:524-525),
             // where SignalRGB names the collection's usage page 0xFFC0 and
             // usage 1 (Steelseries_Arctis_5_Headset.js:76-79). OpenRGB saves
@@ -808,11 +818,11 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = SteelSeriesFamily.Arctis5, Interface = 5, Report = SteelSeriesReport.Output,
                 RepaintMs = 50, ReassertMs = ReassertMs,
-                Lights = Zones(2),
+                Lights = Zones(4),
                 Paint = (_, _, _, c, _) =>
                 {
-                    var frames = new List<SteelSeriesFrame>(12);
-                    for (int zone = 0; zone < 2; zone++) frames.AddRange(Arctis5Zone((byte)zone, c[zone]));
+                    var frames = new List<SteelSeriesFrame>(24);
+                    for (int zone = 0; zone < 4; zone++) frames.AddRange(Arctis5Zone((byte)zone, c[zone]));
                     return frames.ToArray();
                 },
             },
@@ -888,6 +898,56 @@ namespace PadForge.Common.Input.Peripherals
                 Report = SteelSeriesReport.Feature, RepaintMs = 33, ReassertMs = ReassertMs,
                 Lights = Zones(2),
                 Paint = (_, _, _, c, _) => QckFrames(c),
+            },
+
+            // The QcK Prism of 0x1507, which OpenRGB does not list. Twelve
+            // lights in one 525-byte feature report, 0E 00 0C with each LED's
+            // color twelve bytes on from the last, 01 nine bytes behind it and
+            // its index two after that, then the same apply report as the
+            // cloth mats (signal-plugins Steelseries_Qck_Prism_Mousepad.js:68-98).
+            // The plugin takes interface 0 alone (lines 115-117). It files
+            // 1514 and 151C here as well, where OpenRGB drives them as two-LED
+            // cloth mats, and those stay OpenRGB's.
+            new()
+            {
+                Family = SteelSeriesFamily.QckPrism12, Interface = 0, UsagePage = null, Usage = null,
+                Report = SteelSeriesReport.Feature, RepaintMs = 33, ReassertMs = ReassertMs,
+                Lights = Zones(12),
+                Paint = (_, _, _, c, _) => Qck12Frames(c),
+            },
+
+            // Arctis Pro GameDAC, which OpenRGB does not list. Four lights, the
+            // zones of the Arctis Pro, each in a report AA, the zone, the color,
+            // FF 32 C8 C8 00, the zone and 01, 20 ms apart, then A5 08, A5 03 and
+            // A5 04 with 0A and 00, and A3 (signal-plugins
+            // Steelseries_Arctis_Pro_GameDAC_Headset.js, sendColors, lines
+            // 477-520). The plugin leaves 150 ms after those. It takes the
+            // lighting with 2C 01 at its start and gives it back with 2C 00
+            // (lines 191-207), and takes interface 0 alone (lines 533-535). Its
+            // equalizer and display writes are no lighting and are not sent.
+            new()
+            {
+                Family = SteelSeriesFamily.ArctisProGameDac, Interface = 0, UsagePage = null, Usage = null,
+                Report = SteelSeriesReport.Output, GapMs = 20, RepaintMs = 230, ReassertMs = ReassertMs,
+                Lights = Zones(4),
+                Claim = _ => new[] { Sized(SteelSeriesReport.Output, 4, 0x00, 0x2C, 0x01, 0x00) },
+                Paint = (_, _, _, c, _) => GameDacFrames(c),
+                HandBack = _ => new[] { Sized(SteelSeriesReport.Output, 4, 0x00, 0x2C, 0x00, 0x00) },
+            },
+
+            // Arena 7 and Arena 9 speakers, which OpenRGB does not list. Four
+            // lights, each speaker's bottom ring and rear, in one 64-byte output
+            // report 06 A7 0F, on every render (signal-plugins
+            // Steelseries_Arena_7_Speakers.js and Steelseries_Arena_9_Speakers.js,
+            // SendColorPacket). The plugin takes interface 4, usage page 0xFFC0,
+            // and names no usage (Validate), and has no frame that returns the
+            // stored lighting.
+            new()
+            {
+                Family = SteelSeriesFamily.ArenaSpeakers, Interface = 4, Usage = null,
+                Report = SteelSeriesReport.Output, RepaintMs = 33, ReassertMs = ReassertMs,
+                Lights = Zones(4),
+                Paint = (_, _, _, c, _) => new[] { ArenaFrame(c) },
             },
         };
 
@@ -1069,6 +1129,53 @@ namespace PadForge.Common.Input.Peripherals
             b[0x1A] = 0x01;
             b[0x1C] = 0x01;
             return new[] { color, Sized(SteelSeriesReport.Output, QckApplySize, 0x00, 0x0D) };
+        }
+
+        /// <summary>The QcK Prism of twelve LEDs: sendColors
+        /// (Steelseries_Qck_Prism_Mousepad.js:68-98).</summary>
+        private static SteelSeriesFrame[] Qck12Frames(IReadOnlyList<int> colors)
+        {
+            var color = Sized(SteelSeriesReport.Feature, QckColorSize, 0x00, 0x0E, 0x00, 0x0C);
+            var b = color.Buffer;
+            for (int led = 0; led < 12; led++)
+            {
+                b[led * 12 + 5] = R(colors[led]);
+                b[led * 12 + 6] = G(colors[led]);
+                b[led * 12 + 7] = B(colors[led]);
+                b[led * 12 + 14] = 0x01;
+                b[led * 12 + 16] = (byte)led;
+            }
+            return new[] { color, Sized(SteelSeriesReport.Output, QckApplySize, 0x00, 0x0D) };
+        }
+
+        /// <summary>The Arctis Pro GameDAC: sendColors
+        /// (Steelseries_Arctis_Pro_GameDAC_Headset.js:477-520).</summary>
+        private static SteelSeriesFrame[] GameDacFrames(IReadOnlyList<int> colors)
+        {
+            const SteelSeriesReport o = SteelSeriesReport.Output;
+            var frames = new List<SteelSeriesFrame>(8);
+            for (byte zone = 0; zone < 4; zone++)
+                frames.Add(Sized(o, 14, 0x00, 0xAA, zone, R(colors[zone]), G(colors[zone]), B(colors[zone]),
+                    0xFF, 0x32, 0xC8, 0xC8, 0x00, zone, 0x01));
+            frames.Add(Sized(o, 5, 0x00, 0xA5, 0x08, 0x0A, 0x00));
+            frames.Add(Sized(o, 5, 0x00, 0xA5, 0x03, 0x0A, 0x00));
+            frames.Add(Sized(o, 5, 0x00, 0xA5, 0x04, 0x0A, 0x00));
+            frames.Add(Sized(o, 3, 0x00, 0xA3, 0x00));
+            return frames.ToArray();
+        }
+
+        /// <summary>The Arena speakers: SendColorPacket, the left speaker's two
+        /// lights and then the right's.</summary>
+        private static SteelSeriesFrame ArenaFrame(IReadOnlyList<int> colors)
+        {
+            var frame = Sized(SteelSeriesReport.Output, 64, 0x06, 0xA7, 0x0F);
+            for (int light = 0; light < 4; light++)
+            {
+                frame.Buffer[3 + light * 3] = R(colors[light]);
+                frame.Buffer[4 + light * 3] = G(colors[light]);
+                frame.Buffer[5 + light * 3] = B(colors[light]);
+            }
+            return frame;
         }
 
         /// <summary>One report per zone of the wireless Aerox mice: the
@@ -1460,11 +1567,13 @@ namespace PadForge.Common.Input.Peripherals
         /// One row per product ID in
         /// <see cref="PeripheralProductIds.SteelSeriesMice"/>,
         /// <see cref="PeripheralProductIds.SteelSeriesKeyboards"/>,
-        /// <see cref="PeripheralProductIds.SteelSeriesHeadsets"/> and
-        /// <see cref="PeripheralProductIds.SteelSeriesMousemats"/>: the
-        /// product IDs of rivalcfg's device profiles and of OpenRGB's
+        /// <see cref="PeripheralProductIds.SteelSeriesHeadsets"/>,
+        /// <see cref="PeripheralProductIds.SteelSeriesMousemats"/> and
+        /// <see cref="PeripheralProductIds.SteelSeriesSpeakers"/>: the
+        /// product IDs of rivalcfg's device profiles, of OpenRGB's
         /// detectors (rivalcfg devices/*.py, OpenRGB SteelSeriesDevices.h
-        /// and SteelSeriesControllerDetect.cpp:469-561). A product whose
+        /// and SteelSeriesControllerDetect.cpp:469-561) and of the SignalRGB
+        /// plugins for what those two lack. A product whose
         /// family is <see cref="SteelSeriesFamily.None"/> gets no unit, and
         /// neither does one the lists lack. Each product's name is in
         /// <see cref="SteelSeriesNames"/> (<see cref="NameOf"/>).
@@ -1592,6 +1701,8 @@ namespace PadForge.Common.Input.Peripherals
 
             (0x1250, SteelSeriesFamily.Arctis5),             // Arctis 5
             (0x12AA, SteelSeriesFamily.Arctis5),             // Arctis 5
+            (0x1252, SteelSeriesFamily.Arctis5),             // Arctis Pro
+            (0x1280, SteelSeriesFamily.ArctisProGameDac),    // Arctis Pro GameDAC
             (0x12EC, SteelSeriesFamily.ArctisNova3),         // Arctis Nova 3
             (0x1229, SteelSeriesFamily.Siberia350),          // Siberia 350
 
@@ -1604,6 +1715,10 @@ namespace PadForge.Common.Input.Peripherals
             (0x151C, SteelSeriesFamily.QckPrismCloth),       // QCK Prism Cloth XL CS:GO Neo Noir
             (0x151E, SteelSeriesFamily.QckPrismCloth),       // QCK Prism Cloth XL Destiny
             (0x1520, SteelSeriesFamily.QckPrismCloth),       // QCK Prism Cloth XL Destiny 2 Lightfall
+            (0x1507, SteelSeriesFamily.QckPrism12),          // QcK Prism
+
+            (0x1A00, SteelSeriesFamily.ArenaSpeakers),       // Arena 7
+            (0x1A05, SteelSeriesFamily.ArenaSpeakers),       // Arena 9
         };
 
         private static readonly Dictionary<ushort, SteelSeriesFamily> s_byProduct = ByProduct();

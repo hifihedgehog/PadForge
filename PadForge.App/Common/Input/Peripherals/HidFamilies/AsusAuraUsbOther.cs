@@ -458,7 +458,7 @@ namespace PadForge.Common.Input.Peripherals
                         continue;
                     }
                     int rgb = mine[0] & 0xFFFFFF;
-                    if (_headerColors[c] == rgb && !_headerDirect[c]) continue;
+                    if (_headerColors[c] == rgb) continue;
                     if (!SendStatic(io, c, channel, rgb)) return HidLightingPaint.Failed;
                     _headerColors[c] = rgb;
                     _headerDirect[c] = false;

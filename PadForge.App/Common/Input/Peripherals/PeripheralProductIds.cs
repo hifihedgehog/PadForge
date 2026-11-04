@@ -124,16 +124,23 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The headsets OpenRGB's SteelSeries detectors light: the
         /// Siberia 350, the Arctis Nova 3 and the Arctis 5's two product IDs
         /// (Controllers/SteelSeriesController/SteelSeriesDevices.h:69-72,
-        /// SteelSeriesControllerDetect.cpp:522-525).</summary>
-        internal static readonly ushort[] SteelSeriesHeadsets = { 0x1229, 0x1250, 0x12AA, 0x12EC };
+        /// SteelSeriesControllerDetect.cpp:522-525), and the Arctis Pro and its
+        /// GameDAC, which SignalRGB's plugins light.</summary>
+        internal static readonly ushort[] SteelSeriesHeadsets = { 0x1229, 0x1250, 0x1252, 0x1280, 0x12AA, 0x12EC };
 
         /// <summary>The QCK Prism Cloth mousemats OpenRGB's SteelSeries
         /// detectors light (SteelSeriesDevices.h:77-85,
-        /// SteelSeriesControllerDetect.cpp:530-538).</summary>
+        /// SteelSeriesControllerDetect.cpp:530-538), and the QcK Prism of
+        /// 0x1507, which SignalRGB's plugin lights.</summary>
         internal static readonly ushort[] SteelSeriesMousemats =
         {
-            0x150A, 0x150D, 0x1514, 0x1516, 0x1518, 0x151A, 0x151C, 0x151E, 0x1520,
+            0x1507, 0x150A, 0x150D, 0x1514, 0x1516, 0x1518, 0x151A, 0x151C, 0x151E, 0x1520,
         };
+
+        /// <summary>The Arena 7 and Arena 9 speakers, which SignalRGB's plugins
+        /// light (signal-plugins Steelseries_Arena_7_Speakers.js:3,
+        /// Steelseries_Arena_9_Speakers.js:3).</summary>
+        internal static readonly ushort[] SteelSeriesSpeakers = { 0x1A00, 0x1A05 };
 
         /// <summary>Whether a row lights as a keyboard: by its product ID
         /// where a list holds it, else by the row's own kind.</summary>

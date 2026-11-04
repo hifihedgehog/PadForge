@@ -386,6 +386,20 @@ namespace PadForge.Common.Input.Peripherals
             GameSirLighting.Instance,
             TurtleBeachKP7Lighting.Instance,
             LegoDimensionsToypadLighting.Instance,
+            CreativeSoundBlasterLighting.Instance,
+            EdifierHaloLighting.Instance,
+            SkydimoHidLighting.Instance,
+            SkydimoSerialLighting.Instance,
+            BlinkyTapeLighting.Instance,
+            HyteMousematLighting.Instance,
+            DreamCheekyLighting.Instance,
+            LuxaforLighting.Instance,
+            MadCatzCyborgLighting.Instance,
+            ThingMBlinkLighting.Instance,
+            StreamDeckLighting.Instance,
+            WushiDockLighting.Instance,
+            RobobloqLightStripLighting.Instance,
+            ClevoLightbarLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

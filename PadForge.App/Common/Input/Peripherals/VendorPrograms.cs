@@ -310,6 +310,50 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The program that lights the KP7.</summary>
         public static readonly IReadOnlyList<VendorProgram> TurtleBeach = new[] { TurtleBeachSwarmII };
 
+        /// <summary>Skydimo's app, which lights its headset stand and its
+        /// light strips. Its executable is SkyDimo.exe, in
+        /// C:\Program Files (x86)\Skydimo (the file lists Advanced Uninstaller
+        /// PRO gives for Skydimo's Windows installs, among them version
+        /// 1.0.0.240202). No source code names its processes.</summary>
+        public static readonly VendorProgram Skydimo = new("Skydimo", "SkyDimo");
+
+        /// <summary>HYTE Nexus, which lights the CNVS mousepad. Its main
+        /// executable is "HYTE Nexus.exe" and its service's
+        /// "HYTE Nexus Service.exe" in version 1.0.204 and
+        /// HYTE.Nexus.Service.exe from version 1.3.134 on (the file lists
+        /// Advanced Uninstaller PRO gives for HYTE Nexus 1.0.204, 1.3.134 and
+        /// 1.5.560). The two prefixes take in all three. No source code names
+        /// its processes.</summary>
+        public static readonly VendorProgram HyteNexus = new("HYTE Nexus", "HYTE Nexus", "HYTE.Nexus");
+
+        /// <summary>Luxafor's app, which lights the Luxafor Flag.
+        /// LuxaforOnAir counts it as running while LuxaforApp.exe runs, and
+        /// stands aside, since the app overrides its colors (LuxaforOnAir
+        /// LuxOnAir/Properties/Settings.Designer.cs:39, ConflictChecker.cs:28
+        /// and 75-85).</summary>
+        public static readonly VendorProgram LuxaforApp = new("Luxafor", "LuxaforApp");
+
+        /// <summary>The amBX software that drives the Mad Catz Cyborg Gaming
+        /// Light: its engine service, C:\Program Files\amBX\System\amBX_Engine.exe
+        /// (the LASSH service entry for the amBX Engine at sysinfo.org), and
+        /// its effect generator amBXFxGen.exe, which holds the lights until it
+        /// is stopped (a MediaPortal forum thread on amBX lights, "Amb i
+        /// Light Support", page 5). The one prefix takes in both. No source
+        /// code names its processes.</summary>
+        public static readonly VendorProgram AmBx = new("amBX", "amBX");
+
+        /// <summary>Blink1Control2, ThingM's program for the blink(1). Its
+        /// executable is named by its package's productName, Blink1Control2
+        /// (Blink1Control2 package.json:19), and the prefix takes in the
+        /// Blink1Control before it.</summary>
+        public static readonly VendorProgram Blink1Control = new("Blink1Control", "Blink1Control");
+
+        /// <summary>Elgato's Stream Deck app, which draws the Stream Deck's
+        /// keys while it runs. Elgato's own CLI counts it as running while
+        /// StreamDeck.exe runs on Windows (elgatosf/cli src/stream-deck.ts:61-63,
+        /// isStreamDeckRunning).</summary>
+        public static readonly VendorProgram ElgatoStreamDeck = new("Stream Deck", "StreamDeck");
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
@@ -317,7 +361,8 @@ namespace PadForge.Common.Input.Peripherals
             LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor, CorsairIcue,
             LegionAccessoryCentral, MasterPlus, Ngenuity, MsiMysticLight, SteelSeriesGG, AlienwareCommandCenter,
             RoccatSwarm, XpgPrime, WootingWootility, OpenRgb, LogitechGHub, LogitechGamingSoftware, GloriousCore,
-            AorusEngine, RgbFusion, NzxtCam, PatriotViperMouse, TurtleBeachSwarmII,
+            AorusEngine, RgbFusion, NzxtCam, PatriotViperMouse, TurtleBeachSwarmII, Skydimo, HyteNexus, LuxaforApp,
+            AmBx, Blink1Control, ElgatoStreamDeck,
         };
     }
 

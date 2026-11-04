@@ -217,7 +217,7 @@ namespace PadForge.Tests
     internal static class AsusAuraCoreOffLimits
     {
         [ModuleInitializer]
-        internal static void Set() => PadForge.Common.Input.Peripherals.HidFamilies.AsusAuraCoreLighting.OffLimitsForTest = true;
+        internal static void Set() => PadForge.Common.Input.Peripherals.AsusAuraCoreLighting.OffLimitsForTest = true;
     }
 
     /// <summary>The GameInput service is left as it is. HIDMaestro's context

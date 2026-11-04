@@ -267,7 +267,7 @@ namespace PadForge.Tests
             Assert.True(PadForge.Common.Input.Telemetry.GameTelemetryDevice.OffLimitsForTest);
             Assert.True(PadForge.Common.Input.Telemetry.KunosSharedMemory.OffLimitsForTest);
             Assert.True(OwnLightingChannels.OffLimitsForTest);
-            Assert.True(PadForge.Common.Input.Peripherals.HidFamilies.AsusAuraCoreLighting.OffLimitsForTest);
+            Assert.True(PadForge.Common.Input.Peripherals.AsusAuraCoreLighting.OffLimitsForTest);
         }
 
         /// <summary>Each flag is a plain field that starts false, and no

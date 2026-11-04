@@ -37,6 +37,14 @@ namespace PadForge.Common.Input.Peripherals
             // hand-back is two packets on a loopback connection.
             Add(backends, OutputFamily.OpenRgbDevice, () => new OpenRgbBackend());
 
+            // Corsair iCUE's SDK while iCUE runs (#557). Its hand-back is a
+            // call into the SDK on its own worker.
+            Add(backends, OutputFamily.IcueDevice, () => new IcueBackend());
+
+            // Wooting's RGB SDK reports beside Wootility while it runs
+            // (#557). Its hand-back is one feature report.
+            Add(backends, OutputFamily.WootingRgbSdk, () => new WootingRgbSdkBackend());
+
             // Razer. Last of the lighting families: its hand-back can wait
             // on a lock other tools share.
             Add(backends, OutputFamily.RazerUnit, () => new RazerDirectBackend());

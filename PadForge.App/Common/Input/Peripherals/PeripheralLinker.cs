@@ -32,6 +32,11 @@ namespace PadForge.Common.Input.Peripherals
         /// that name it (<see cref="HidLightingModel.Programs"/>).</summary>
         public RunningPrograms Programs { get; init; } = RunningPrograms.None;
 
+        /// <summary>The iCUE SDK's client library is found, so a Corsair
+        /// device is lit through iCUE while it runs (#557,
+        /// <see cref="PadForge.Services.IcueSdkNative.FindLibrary"/>).</summary>
+        public bool CorsairIcueSdk { get; init; }
+
         /// <summary>The Chroma SDK runtime Synapse installs, which Colore's
         /// native layer loads by this name.</summary>
         internal const string ChromaRuntimeDll = "RzChromaSDK64.dll";
@@ -106,7 +111,10 @@ namespace PadForge.Common.Input.Peripherals
             }
             catch { }
 
-            return new PeripheralPresence(ledSdk, false, synapse, gg, PlatformSupport.SensaAvailable);
+            return new PeripheralPresence(ledSdk, false, synapse, gg, PlatformSupport.SensaAvailable)
+            {
+                CorsairIcueSdk = PadForge.Services.IcueSdkNative.FindLibrary() != null,
+            };
         }
 
         /// <summary>A presence with its running flags from one snapshot of
@@ -739,6 +747,8 @@ namespace PadForge.Common.Input.Peripherals
                         // its own once the program is closed
                         // (directWhenClosed). With no such path the device
                         // is left to the program (leftToProgram below).
+                        IcueRoute.AddShared(shared, holder, presence, row);
+                        WootingRgbSdkRoute.AddShared(shared, holder, direct, row);
                     }
 
                     // The family is chosen as if every unit answered, and

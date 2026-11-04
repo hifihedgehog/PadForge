@@ -116,6 +116,7 @@ namespace PadForge.Common.Input.Peripherals
             OutputFamily.LedSdkType => PeripheralOutputs.Presence.LogitechGamingSoftware
                 ? "Logitech Gaming Software" : "Logitech G HUB",
             OutputFamily.GameSenseColor => "SteelSeries GG",
+            OutputFamily.IcueDevice => VendorPrograms.CorsairIcue.Name,
             _ => null,
         };
 

@@ -56,6 +56,12 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>One controller of the OpenRGB SDK server while OpenRGB
         /// runs and holds the device, LED by LED (#557).</summary>
         OpenRgbDevice,
+        /// <summary>A Corsair device type through the iCUE SDK while iCUE
+        /// runs, every device of that type at once, LED by LED (#557).</summary>
+        IcueDevice,
+        /// <summary>One Wooting keyboard through the RGB SDK's reports beside
+        /// Wootility while it runs, key by key (#557).</summary>
+        WootingRgbSdk,
     }
 
     /// <summary>Where a backend stands, for the device tabs.</summary>
@@ -95,6 +101,8 @@ namespace PadForge.Common.Input.Peripherals
                 or OutputFamily.OpenRgbDevice => false,
             OutputFamily.ChromaCategory or OutputFamily.LedSdkType or OutputFamily.GameSenseColor
                 or OutputFamily.GameSenseTactile or OutputFamily.Interhaptics => true,
+            OutputFamily.IcueDevice => true,
+            OutputFamily.WootingRgbSdk => false,
             _ => throw new ArgumentOutOfRangeException(nameof(Family)),
         };
     }

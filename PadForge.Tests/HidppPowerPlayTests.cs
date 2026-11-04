@@ -14,6 +14,7 @@ namespace PadForge.Tests
     /// index 7 on that receiver alone, as a slot the table never reads
     /// empty.
     /// </summary>
+    [Collection("PeripheralOutputStatics")]
     public class HidppPowerPlayTests
     {
         /// <summary>A LIGHTSPEED receiver whose pairing table lists a mouse
@@ -97,6 +98,38 @@ namespace PadForge.Tests
             var found = HidppUnitProbe.Probe(channel, state, Guid.Empty, HidppHapticProbe.FirstRetryMs);
             Assert.Equal(7, Assert.Single(found).DeviceIndex);
             Assert.False(HidppUnitProbe.HasOpenSlot(state, bluetooth: false));
+        }
+
+        /// <summary>The worker marks a path of the POWERPLAY receiver as one
+        /// with a device of its own, from its product ID, and finds the mat
+        /// beside the mouse. The LIGHTSPEED receiver of a plain mouse,
+        /// 046D:C539, is never asked for index 7.</summary>
+        [Theory]
+        [InlineData(0xC53A, new byte[] { 1, 7 })]
+        [InlineData(0xC539, new byte[] { 1 })]
+        public void TheWorker_FindsTheMat_OnThePowerPlayReceiverAlone(int productId, byte[] indexes)
+        {
+            PeripheralOutputs.ResetForTest();
+            try
+            {
+                var receiver = new VendorHidCollection
+                {
+                    Path = $@"\\?\hid#vid_046d&pid_{productId:x4}&mi_02&col02#bench",
+                    VendorId = 0x046D, ProductId = (ushort)productId, UsagePage = 0xFF00, Usage = 0x0002, InputReportLength = 20,
+                };
+                var channel = Receiver(MouseAndMat());
+                using var backend = new HidppBackend(() => new[] { receiver }, (c, s) => channel, _ => Guid.NewGuid(), 1, 5);
+                backend.Start();
+
+                Assert.True(System.Threading.SpinWait.SpinUntil(() => backend.Snapshot.Units.Count == indexes.Length, 5000),
+                    "the scan found the receiver's devices");
+                Assert.Equal(indexes, backend.Snapshot.Units.Select(u => u.DeviceIndex).OrderBy(i => i));
+                Assert.Equal(productId == 0xC53A, channel.Asked.Any(a => a.Device == 7));
+            }
+            finally
+            {
+                PeripheralOutputs.ResetForTest();
+            }
         }
 
         [Fact]

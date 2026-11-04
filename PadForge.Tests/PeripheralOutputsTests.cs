@@ -261,7 +261,8 @@ namespace PadForge.Tests
             Assert.Equal(3, (int)PeripheralRowKind.SteelSeriesGG);
             Assert.Equal(4, (int)PeripheralRowKind.AsusAura);
             Assert.Equal(5, (int)PeripheralRowKind.MsiMysticLight);
-            Assert.Equal(6, Enum.GetValues(typeof(PeripheralRowKind)).Length);
+            Assert.Equal(6, (int)PeripheralRowKind.CorsairIcue);
+            Assert.Equal(7, Enum.GetValues(typeof(PeripheralRowKind)).Length);
 
             using var md5 = MD5.Create();
             Guid Hash(string s) => new(md5.ComputeHash(Encoding.UTF8.GetBytes(s)));
@@ -280,6 +281,8 @@ namespace PadForge.Tests
                     "ASUS Aura", "asusaura://local", (ushort)0x4155),
                 (PeripheralRowKind.MsiMysticLight, "pfmsimysticlight", InputDeviceType.PeripheralLighting,
                     "MSI Mystic Light", "msimysticlight://local", (ushort)0x4D4C),
+                (PeripheralRowKind.CorsairIcue, "pfcorsairicue", InputDeviceType.PeripheralLighting,
+                    "Corsair iCUE", "corsairicue://local", (ushort)0x4943),
             })
             {
                 var row = new PeripheralOutputRow(kind);

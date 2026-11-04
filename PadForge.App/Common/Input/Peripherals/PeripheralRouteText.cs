@@ -130,7 +130,9 @@ namespace PadForge.Common.Input.Peripherals
         /// graphics card and DRAM types (RGB.NET 3c5af72
         /// RGB.NET.Devices.Asus/AsusDeviceProvider.cs:80-84), and the MSI
         /// Mystic Light row what Mystic Light lights there, MSI_MB and
-        /// MSI_VGA (RGB.NET.Devices.Msi/MsiDeviceProvider.cs:92-101).</summary>
+        /// MSI_VGA (RGB.NET.Devices.Msi/MsiDeviceProvider.cs:92-101). The
+        /// Corsair iCUE row names the two device types of IcueRoute.Types
+        /// with no input row (iCUESDK.h:45-62).</summary>
         internal static string VendorRowExamples(OutputFamily family)
         {
             var s = Strings.Instance;
@@ -141,6 +143,7 @@ namespace PadForge.Common.Input.Peripherals
                 OutputFamily.GameSenseColor => s.Pad_Lighting_VendorRowExamples_GameSense,
                 OutputFamily.AuraSdkType => s.Pad_Lighting_VendorRowExamples_Aura,
                 OutputFamily.MysticLightType => s.Pad_Lighting_VendorRowExamples_MysticLight,
+                OutputFamily.IcueDevice => s.Pad_Lighting_VendorRowExamples_Icue,
                 _ => null,
             };
         }

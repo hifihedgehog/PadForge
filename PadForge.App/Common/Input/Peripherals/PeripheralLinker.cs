@@ -646,6 +646,10 @@ namespace PadForge.Common.Input.Peripherals
                             foreach (var type in MysticLightBackend.PathKeys)
                                 lighting.Add(new OutputPath(OutputFamily.MysticLightType, type));
                             break;
+                        case PeripheralRowKind.CorsairIcue when presence.CorsairIcueSdk:
+                            foreach (var (key, _) in IcueRoute.Types)
+                                lighting.Add(new OutputPath(OutputFamily.IcueDevice, key));
+                            break;
                     }
                 }
                 else if (row.Unit is OutputPath unit)

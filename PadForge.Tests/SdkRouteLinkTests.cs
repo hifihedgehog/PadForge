@@ -119,6 +119,27 @@ namespace PadForge.Tests
             Assert.False(InputManager.PeripheralRowWanted(PeripheralRowKind.AsusAura, Presence("x", aura: false)));
             Assert.True(InputManager.PeripheralRowWanted(PeripheralRowKind.MsiMysticLight, Presence("x", mysticLight: true)));
             Assert.False(InputManager.PeripheralRowWanted(PeripheralRowKind.MsiMysticLight, Presence("x", mysticLight: false)));
+            Assert.True(InputManager.PeripheralRowWanted(PeripheralRowKind.CorsairIcue, Presence("x") with { CorsairIcueSdk = true }));
+            Assert.False(InputManager.PeripheralRowWanted(PeripheralRowKind.CorsairIcue, Presence("x")));
+        }
+
+        /// <summary>The Corsair iCUE row takes a path for every device type
+        /// iCUE lights (#557), so a Corsair mousepad or headset stand, which
+        /// no input row stands for and whose unit row is withheld while iCUE
+        /// runs, lights through iCUE. With iCUE not installed no such path
+        /// exists.</summary>
+        [Fact]
+        public void TheIcueRow_TakesEveryIcueType_WhileICueIsInstalled()
+        {
+            var icue = new LinkRow(PeripheralOutputRow.IdentityFor(PeripheralRowKind.CorsairIcue), 0, 0, 0, Guid.Empty,
+                PeripheralRowKind.CorsairIcue);
+            var links = PeripheralLinker.Build(new[] { icue }, HidppSnapshot.Empty, Presence("explorer.exe") with { CorsairIcueSdk = true })
+                .For(icue.Device);
+            Assert.Equal(new[] { "keyboard", "mouse", "mousemat", "headsetstand" }.Select(k => new OutputPath(OutputFamily.IcueDevice, k)),
+                links.Lighting);
+            Assert.True(links.CatchAll);
+            Assert.True(links.OutputOnly);
+            Assert.Null(PeripheralLinker.Build(new[] { icue }, HidppSnapshot.Empty, Presence("explorer.exe")).For(icue.Device));
         }
 
         /// <summary>The tab names the program a path runs through, by the

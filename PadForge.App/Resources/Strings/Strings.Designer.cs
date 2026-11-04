@@ -1376,6 +1376,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_VendorRowExamples_GameSense => Get("Pad_Lighting_VendorRowExamples_GameSense");
     public string Pad_Lighting_VendorRowExamples_Aura => Get("Pad_Lighting_VendorRowExamples_Aura");
     public string Pad_Lighting_VendorRowExamples_MysticLight => Get("Pad_Lighting_VendorRowExamples_MysticLight");
+    public string Pad_Lighting_VendorRowExamples_Icue => Get("Pad_Lighting_VendorRowExamples_Icue");
     public string Pad_Lighting_BaseColor => Get("Pad_Lighting_BaseColor");
     public string Pad_Lighting_Hex => Get("Pad_Lighting_Hex");
     public string Pad_Lighting_HexTooltip => Get("Pad_Lighting_HexTooltip");

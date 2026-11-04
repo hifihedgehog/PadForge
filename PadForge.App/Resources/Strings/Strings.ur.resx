@@ -1025,6 +1025,7 @@
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>ہیڈسیٹ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>لائٹ بار</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>چھ ہندسوں کا ہیکس رنگ (RRGGBB یا #RRGGBB) درج کریں اور لاگو کرنے کے لیے Enter دبائیں یا کہیں اور کلک کریں۔</value></data>

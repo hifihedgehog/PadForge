@@ -565,6 +565,27 @@ namespace PadForge.Tests
             Assert.Equal("motherboards and graphics cards", En(nameof(s.Pad_Lighting_VendorRowExamples_MysticLight)));
         }
 
+        /// <summary>The Corsair iCUE row names what no input row stands for,
+        /// and waits for iCUE in the same line as the other vendor rows.</summary>
+        [Fact]
+        public void TheIcueRow_NamesItsOwnExamples()
+        {
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            var icue = PeripheralOutputRow.IdentityFor(PeripheralRowKind.CorsairIcue);
+            Link(new DeviceLinks
+            {
+                Device = icue, CatchAll = true,
+                Lighting = IcueRoute.Types.Select(t => new OutputPath(OutputFamily.IcueDevice, t.Key)).ToArray(),
+            });
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteVendorRow, "Corsair iCUE", s.Pad_Lighting_VendorRowExamples_Icue),
+                PeripheralRouteText.Lighting(Device(icue, 0x5046), 0));
+            PeripheralOutputs.SetBackendState(OutputFamily.IcueDevice, BackendState.Waiting);
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteVendorRowWaiting, "Corsair iCUE", s.Pad_Lighting_VendorRowExamples_Icue),
+                PeripheralRouteText.Lighting(Device(icue, 0x5046), 0));
+            Assert.Equal("mousepads and headset stands", PadForge.Resources.Strings.Strings.ResourceManager.GetString(
+                nameof(s.Pad_Lighting_VendorRowExamples_Icue), System.Globalization.CultureInfo.InvariantCulture));
+        }
+
         /// <summary>An analog keyboard row's own path is synthetic, so its
         /// container comes from the HID collection it reads, and a Logitech
         /// analog keyboard finds its HID++ unit like any keyboard row.</summary>

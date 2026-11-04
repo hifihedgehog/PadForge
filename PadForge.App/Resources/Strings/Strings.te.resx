@@ -1025,6 +1025,7 @@
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>హెడ్సెట్లు</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>లైట్ బార్</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ఆరు అంకెల హెక్స్ రంగును (RRGGBB లేదా #RRGGBB) నమోదు చేసి, వర్తింపజేయడానికి Enter నొక్కండి లేదా వెలుపల క్లిక్ చేయండి.</value></data>

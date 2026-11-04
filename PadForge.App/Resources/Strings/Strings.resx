@@ -1025,6 +1025,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headsets</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value><comment>Examples that end the route line of the ASUS Aura row ({1} of Pad_Lighting_RouteVendorRow and Pad_Lighting_RouteVendorRowWaiting): the kinds of ASUS devices Armoury Crate lights. Lowercase and plural, a list as it reads in the middle of a sentence.</comment></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value><comment>Examples that end the route line of the MSI Mystic Light row, the same use as Pad_Lighting_VendorRowExamples_Aura.</comment></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value><comment>Examples that end the route line of the Corsair iCUE row, the same use as Pad_Lighting_VendorRowExamples_Aura. Lowercase and plural, a list as it reads in the middle of a sentence.</comment></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Enter a six-digit hex color (RRGGBB or #RRGGBB) and press Enter or click away to apply.</value></data>

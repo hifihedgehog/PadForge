@@ -35,6 +35,7 @@ namespace PadForge.Common.Input
             PeripheralRowKind.SteelSeriesGG => presence.SteelSeriesGG,
             PeripheralRowKind.AsusAura => presence.AsusAuraSdk,
             PeripheralRowKind.MsiMysticLight => presence.MsiMysticLightSdk,
+            PeripheralRowKind.CorsairIcue => presence.CorsairIcueSdk,
             _ => false,
         };
 

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using PadForge.Common.Input;
 using PadForge.Common.Input.Peripherals;
 using PadForge.Common.Input.Peripherals.HidFamilies;
@@ -10,14 +9,6 @@ using static PadForge.Tests.AsusAuraUsbLightingTests;
 
 namespace PadForge.Tests
 {
-    /// <summary>The Aura Core family never reads the PC's mainboard name in
-    /// the test host (#557).</summary>
-    internal static class AsusAuraCoreOffLimits
-    {
-        [ModuleInitializer]
-        internal static void Set() => AsusAuraCoreLighting.OffLimitsForTest = true;
-    }
-
     /// <summary>The ASUS Aura Core family against OpenRGB's
     /// AsusAuraCoreController at the pinned commit (#557).</summary>
     public class AsusAuraCoreLightingTests

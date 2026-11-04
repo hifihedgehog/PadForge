@@ -212,6 +212,14 @@ namespace PadForge.Tests
         internal static void Set() => OwnLightingChannels.OffLimitsForTest = true;
     }
 
+    /// <summary>The ASUS Aura Core family does not read the PC's mainboard
+    /// name through WMI (#557).</summary>
+    internal static class AsusAuraCoreOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => PadForge.Common.Input.Peripherals.HidFamilies.AsusAuraCoreLighting.OffLimitsForTest = true;
+    }
+
     /// <summary>The GameInput service is left as it is. HIDMaestro's context
     /// asks sc.exe about the service as it is built, and where the service
     /// is stopped it sets it to start with Windows and starts it. The

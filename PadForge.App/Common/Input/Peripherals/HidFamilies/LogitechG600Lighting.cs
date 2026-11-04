@@ -18,9 +18,11 @@ namespace PadForge.Common.Input.Peripherals
     /// (LogitechG600Controller.cpp:49-68, LogitechG600Controller.h:19-24).
     /// Direct leaves the speed at a mode's default, 0
     /// (RGBController_LogitechG600.cpp:35-40, RGBControllerInterface.h:339).
-    /// OpenRGB marks the mouse as one it saves nothing to ("@save :o:",
-    /// RGBController_LogitechG600.cpp:18). The one light is the side
-    /// lights' zone (lines 72-88).</para>
+    /// OpenRGB offers no save for the mouse ("@save :o:",
+    /// RGBController_LogitechG600.cpp:18) and sends nothing but F1.
+    /// libratbag stores a color only by writing a whole profile report
+    /// (driver-logitech-g600.c:477-590), which is never sent here. The one
+    /// light is the side lights' zone (RGBController_LogitechG600.cpp:72-88).</para>
     ///
     /// <para>Hand-back. The mouse stores its lighting in each of its three
     /// profiles, reports F3 to F5 of 154 bytes, as red, green, blue, the

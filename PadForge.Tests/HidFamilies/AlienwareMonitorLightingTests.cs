@@ -105,8 +105,8 @@ namespace PadForge.Tests.MonitorFamilies
         [Fact]
         public void TheAw3423DwfKey_IsGenerateKeys()
         {
-            var odd = MonitorTest.Bytes("01 02 03 04 05 06 07 08 10 20 30 40 50 60 70 00 99");
-            Assert.Equal("DB FC 7E 7A 4D 72 34 FC", MonitorTest.Hex(AlienwareMonitorLighting.GenerateKey(odd)));
+            var odd = MonitorTest.Bytes("01 02 03 04 05 06 07 08 10 20 30 40 50 60 73 00 99");
+            Assert.Equal("CB FC 7E 3A 4D 72 34 FC", MonitorTest.Hex(AlienwareMonitorLighting.GenerateKey(odd)));
             var even = MonitorTest.Bytes("00 11 22 33 44 55 03 77 80 81 82 83 84 85 86 03 99");
             Assert.Equal("4A 7F FF CE CC F1 B5 F7", MonitorTest.Hex(AlienwareMonitorLighting.GenerateKey(even)));
             Assert.Equal("CA FE 7D 7E 48 74 33 F4", MonitorTest.Hex(AlienwareMonitorLighting.GenerateKey(new byte[17])));
@@ -125,7 +125,7 @@ namespace PadForge.Tests.MonitorFamilies
             Assert.NotNull(session);
             Assert.Empty(io.Log);
             var input = new byte[193];
-            MonitorTest.Bytes("01 02 03 04 05 06 07 08 10 20 30 40 50 60 70 00 99").CopyTo(input, 1);
+            MonitorTest.Bytes("01 02 03 04 05 06 07 08 10 20 30 40 50 60 73 00 99").CopyTo(input, 1);
             io.Requested.Enqueue(input);
             var lights = AlienwareMonitorLighting.Lights();
             Assert.Equal(HidLightingPaint.Sent, session.Paint(io, io.Wait, lights, new[] { 0x445566, 0x445566, 0x445566 }));
@@ -136,7 +136,7 @@ namespace PadForge.Tests.MonitorFamilies
             Assert.Equal((byte)193, io.Log[1].Bytes[1]);
             var login = new byte[193];
             MonitorTest.Bytes("00 40 E1 02").CopyTo(login, 0);
-            MonitorTest.Bytes("DB FC 7E 7A 4D 72 34 FC").CopyTo(login, 65);
+            MonitorTest.Bytes("CB FC 7E 3A 4D 72 34 FC").CopyTo(login, 65);
             Assert.Equal(MonitorTest.Hex(login), MonitorTest.Hex(sent[1]));
             var color = new byte[193];
             MonitorTest.Bytes("00 40 C6").CopyTo(color, 0);

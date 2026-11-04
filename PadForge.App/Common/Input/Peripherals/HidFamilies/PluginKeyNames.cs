@@ -29,6 +29,14 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 // The Speedlink ORIOS keyboard names its legends in German.
                 ["^"] = 0x35, ["ß"] = 0x2D, ["´"] = 0x2E, ["Ü"] = 0x2F, ["+"] = 0x30, ["Ö"] = 0x33, ["Ä"] = 0x34,
                 ["#"] = 0x32, ["<"] = 0x64, ["AltGr"] = 0xE6, ["-"] = 0x38,
+                // Other spellings in the QMK plugins.
+                ["Delete"] = 0x4C, ["Ins"] = 0x49, ["PgUp"] = 0x4B, ["PgDn"] = 0x4E, ["PrtSc"] = 0x46, ["Screenshot"] = 0x46,
+                ["L Alt"] = 0xE2, ["L Ctrl"] = 0xE0, ["R Alt"] = 0xE6, ["R Ctrl"] = 0xE4, ["R Shift"] = 0xE5,
+                ["Right Win"] = 0xE7, ["Win"] = 0xE3, ["Numlock"] = 0x53, ["Num"] = 0x53, ["ISO_#"] = 0x32, ["ISO_<"] = 0x64,
+                ["Upp Arrow"] = 0x52, ["|"] = 0x31, ["\\|"] = 0x31, ["~"] = 0x35, ["="] = 0x2E, ["F23"] = 0x72, ["F24"] = 0x73,
+                ["Enm"] = 0x4A, [">"] = 0x37, ["Space 1"] = 0x2C, ["Space 2"] = 0x2C, ["\\\\"] = 0x31,
+                // The Nordic legends of the GMMK and Keychron ISO boards.
+                ["§"] = 0x35, ["¨"] = 0x30, ["Å"] = 0x2F, ["Æ"] = 0x34, ["Ø"] = 0x33,
             };
             for (int i = 0; i < 26; i++) usages[((char)('A' + i)).ToString()] = (ushort)(0x04 + i);
             for (int i = 1; i <= 9; i++) usages[i.ToString()] = (ushort)(0x1D + i);
@@ -67,7 +75,9 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         {
             var label = name switch
             {
-                "Fn" or "FN Lock" => LightLabel.Fn,
+                "Fn" or "FN Lock" or "FN1" or "FN2" => LightLabel.Fn,
+                "Light" or "Cycle LED" => LightLabel.Brightness,
+                "Knob" or "Knob1" or "Knob 2" or "Knob3" or "Encoder Knob" => LightLabel.Dial,
                 "Brightness" => LightLabel.Brightness,
                 "Mute" or "Media Mute" or "Mute Mic" or "VOLUME_MUTE" => LightLabel.Mute,
                 "MediaPlayPause" => LightLabel.PlayPause,
@@ -80,8 +90,14 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             if (name.StartsWith("Logo", StringComparison.Ordinal) || name is "LeftLogo" or "RightLogo")
                 return new LightInfo(address, LightKind.Logo, 0, LightKeySource.None);
             if (name.StartsWith("TopBar", StringComparison.Ordinal) || name.StartsWith("BottomBar", StringComparison.Ordinal)
-                || name.StartsWith("LeftBar", StringComparison.Ordinal) || name.StartsWith("RightBar", StringComparison.Ordinal))
+                || name.StartsWith("LeftBar", StringComparison.Ordinal) || name.StartsWith("RightBar", StringComparison.Ordinal)
+                || name.StartsWith("Left LED", StringComparison.Ordinal) || name.StartsWith("Right LED", StringComparison.Ordinal)
+                || name.StartsWith("UG", StringComparison.Ordinal) || name.StartsWith("Underglow", StringComparison.OrdinalIgnoreCase))
                 return new LightInfo(address, LightKind.Edge, 0, LightKeySource.None);
+            // The Q0's four buttons above its number pad carry shapes, and an
+            // unnamed entry in a table is a key no plugin names.
+            if (name is "Circle" or "Cross" or "Square" or "Triangle" or "")
+                return new LightInfo(address, LightKind.Key, 0, LightKeySource.None);
             if (name.Length is 2 or 3 && name[0] == 'G' && int.TryParse(name.AsSpan(1), out int gKey))
                 return new LightInfo(address, LightKind.Other, 0, LightKeySource.None) { Label = LightLabel.GKey, LabelNumber = gKey };
             if (name == "Profile")
@@ -96,6 +112,10 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         internal static IEnumerable<string> Unresolved(PluginKeyTable table)
             => table.Names.Where(n => !s_usages.ContainsKey(n)
                 && Other(0, n) is { Kind: LightKind.Other, Label: LightLabel.None });
+
+        /// <summary>The usage or label each name of the lists resolves to, so a
+        /// test can name a table's keys.</summary>
+        internal static bool IsNamedKey(string name) => s_usages.ContainsKey(name);
 
         /// <summary>A light of a Corsair mouse or stand from what its plugin
         /// names it.</summary>

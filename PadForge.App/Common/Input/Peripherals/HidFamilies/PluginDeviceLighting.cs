@@ -78,6 +78,11 @@ namespace PadForge.Common.Input.Peripherals
         /// picture.</summary>
         public IReadOnlyList<PluginStep> Start { get; init; } = Array.Empty<PluginStep>();
 
+        /// <summary>Whether the device answers as the plugin's firmware does,
+        /// asked ahead of any picture. Null: every collection the row matches is
+        /// the device. False leaves it dark and writes nothing more.</summary>
+        public Func<IHidReportChannel, Action<int>, bool> Answers { get; init; }
+
         /// <summary>The steps that return the device to its own lighting.
         /// Empty for a device whose plugin only sends it one last color, which
         /// PadForge does not do.</summary>
@@ -215,7 +220,8 @@ namespace PadForge.Common.Input.Peripherals
             KeepAliveMs = device.KeepAliveMs,
             KeepAliveIdleMs = device.KeepAliveMs,
             Siblings = device.Siblings,
-            Begin = device.Siblings.Count > 0 ? null : (io, _) => io == null ? null : new Session(device, device.Picture),
+            Begin = device.Siblings.Count > 0 ? null : (io, wait) =>
+                io == null || device.Answers?.Invoke(io, wait) == false ? null : new Session(device, device.Picture),
             BeginWith = device.Siblings.Count == 0 ? null : (io, siblings, _) =>
                 io == null ? null : new Session(device, device.PictureWith?.Invoke(siblings), siblings),
         };

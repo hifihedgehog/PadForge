@@ -15,7 +15,8 @@ namespace PadForge.Common.Input.Peripherals
                 .Concat(AlienwareDevices()).Concat(AsusDevices()).Concat(Fnatic()).Concat(HyperX()).Concat(RazerDevices())
                 .Concat(LogitechG19()).Concat(MountainMakalu()).Concat(CoolerMasterMat()).Concat(CorsairHeadsets())
                 .Concat(CorsairDarkCore()).Concat(CorsairNexus()).Concat(Roccat()).Concat(RoyalKludge())
-                .Concat(NzxtFunction()).Concat(Glorious()).Concat(SteelSeriesKeyboards()).Concat(StripControllers());
+                .Concat(NzxtFunction()).Concat(Glorious()).Concat(SteelSeriesKeyboards()).Concat(StripControllers())
+                .Concat(QmkBoards());
 
         // ── Corsair headsets (Corsair/Modern_Corsair/Virtuoso_HeadSets, Corsair/Void_HeadSets) ──
 
@@ -1029,6 +1030,132 @@ namespace PadForge.Common.Input.Peripherals
                 var frame = Frame(length, start);
                 int count = Math.Min(perReport, colors.Length - n * perReport);
                 for (int i = 0; i < count; i++) PutRgb(frame, start.Length + i * 3, colors[n * perReport + i]);
+                yield return PluginStep.Output(frame);
+            }
+        }
+
+        // ── Keyboards flashed with SignalRGB's QMK firmware (QMK/**/*.js) ──
+
+        /// <summary>
+        /// Boards whose owner flashed QMK with SignalRGB's protocol. Their stock
+        /// firmware has the same IDs and no such protocol, so a session first asks
+        /// for the firmware type (00 28), which only that firmware answers, with 01
+        /// for mainline QMK or 02 for VIA (requestFirmwareType, Keychron_Q1_QMK_Keyboard.js).
+        /// With no such answer the board stays dark.
+        ///
+        /// <para>A session turns the protocol's lighting on (00 25), and a picture
+        /// goes out nine LEDs to a report (00 24, the first LED, the count, the
+        /// colors). The hand-back turns it off (00 26), and the board's own effect
+        /// returns. The GMMK Pro's plugin asks its user whether the board is ANSI
+        /// or ISO and nothing on the wire says, so PadForge lists its ANSI keys.
+        /// The GMMK 2 96%'s second ID, 0x505B, is an EVision board in OpenRGB, whose
+        /// family lights it, and so stays there. The plugin for the Redragon K556
+        /// names no IDs.</para>
+        /// </summary>
+        private static IEnumerable<PluginDevice> QmkBoards()
+        {
+            foreach (var (name, vendor, products, table) in new (string, ushort, ushort[], PluginKeyTable)[]
+            {
+            ("Feker IK75", 0xF2E7, new ushort[] { 0x1226 }, PluginKeyTables.QmkFeker),
+            ("Freja 65 Keyboard", 0x5453, new ushort[] { 0x0067 }, PluginKeyTables.QmkFreja65),
+            ("GMMK 2 65% ANSI QMK Keyboard", 0x320F, new ushort[] { 0x5045 }, PluginKeyTables.QmkGmmk265Ansi),
+            ("GMMK 2 65% ISO QMK Keyboard", 0x320F, new ushort[] { 0x504A }, PluginKeyTables.QmkGmmk265Iso),
+            ("GMMK 2 96% ANSI QMK Keyboard", 0x320F, new ushort[] { 0x504B }, PluginKeyTables.QmkGmmk296Ansi),
+            ("GMMK 2 96% ISO QMK Keyboard", 0x320F, new ushort[] { 0x505A }, PluginKeyTables.QmkGmmk296Iso),
+            ("Glorious GMMK Pro QMK Keyboard", 0x320F, new ushort[] { 0x5044 }, PluginKeyTables.QmkGmmkPro),
+            ("KBDFans KBD67", 0x4B42, new ushort[] { 0x1225 }, PluginKeyTables.QmkKbd67),
+            ("Keychron K10 Pro QMK Keyboard", 0x3434, new ushort[] { 0x02A0 }, PluginKeyTables.QmkK10Pro),
+            ("Keychron K2 Pro QMK Keyboard", 0x3434, new ushort[] { 0x0220 }, PluginKeyTables.QmkK2Pro),
+            ("Keychron K8 Pro QMK Keyboard", 0x3434, new ushort[] { 0x0280 }, PluginKeyTables.QmkK8Pro),
+            ("Keychron K8 TKL QMK Keyboard", 0x3434, new ushort[] { 0xFE0F }, PluginKeyTables.QmkK8Tkl),
+            ("Keychron Q0 QMK Keyboard", 0x3434, new ushort[] { 0x0130 }, PluginKeyTables.QmkQ0),
+            ("Keychron Q12 QMK Keyboard", 0x3434, new ushort[] { 0x01D1 }, PluginKeyTables.QmkQ12),
+            ("Keychron Q1 QMK Keyboard", 0x3434, new ushort[] { 0x0107 }, PluginKeyTables.QmkQ1Ansi),
+            ("Keychron Q1 QMK Keyboard", 0x3434, new ushort[] { 0x0109 }, PluginKeyTables.QmkQ1Iso),
+            ("Keychron Q5 QMK Keyboard", 0x3434, new ushort[] { 0x0151 }, PluginKeyTables.QmkQ5),
+            ("Keychron Q6 QMK Keyboard", 0x3434, new ushort[] { 0x0160, 0x0161 }, PluginKeyTables.QmkQ6Ansi),
+            ("Keychron Q6 QMK Keyboard", 0x3434, new ushort[] { 0x0162, 0x0163 }, PluginKeyTables.QmkQ6Iso),
+            ("Keychron V1 QMK Keyboard", 0x3434, new ushort[] { 0x0310, 0x0311 }, PluginKeyTables.QmkV1),
+            ("Keychron V2 QMK Keyboard", 0x3434, new ushort[] { 0x0320, 0x0321 }, PluginKeyTables.QmkV2),
+            ("Keychron V3 QMK Keyboard", 0x3434, new ushort[] { 0x0331 }, PluginKeyTables.QmkV3),
+            ("Keychron V5 QMK Keyboard", 0x3434, new ushort[] { 0x0351 }, PluginKeyTables.QmkV5),
+            ("Keychron V6 QMK Keyboard", 0x3434, new ushort[] { 0x0361 }, PluginKeyTables.QmkV6),
+            ("Massdrop CTRL QMK Keyboard", 0x04D8, new ushort[] { 0xEED2 }, PluginKeyTables.QmkDropCtrl),
+            })
+                foreach (ushort product in products)
+                    yield return new PluginDevice
+                    {
+                        Name = name,
+                        VendorId = vendor,
+                        ProductId = product,
+                        Plugin = table.Plugin,
+                        Interface = 1,
+                        OutputLength = QmkReportLength,
+                        Lights = PluginKeyNames.Lights(table, places: QmkPlaces(table)),
+                        Slots = table.Indexes.Max() + 1,
+                        Answers = QmkAnswers,
+                        Start = new[] { PluginStep.Output(Frame(32, 0x00, 0x25)), PluginStep.Wait(QmkCommandWaitMs) },
+                        Picture = colors => QmkPicture(colors),
+                        HandBack = new[] { PluginStep.Output(Frame(32, 0x00, 0x26)), PluginStep.Wait(QmkCommandWaitMs) },
+                    };
+        }
+
+        /// <summary>What the QMK plugins' legends mean by place, where the name
+        /// alone would mislead: "-" and "+" are the minus and equal keys here,
+        /// and the Q1 ANSI's "&lt;" and "&gt;" its comma and period. The Q1 ISO's
+        /// legends are Nordic, the K8 TKL's "|" is the ISO key beside the left
+        /// shift and its unnamed key the backslash, and the V1's "Enm" sits where
+        /// its Q1 kin has Home.</summary>
+        private static IReadOnlyDictionary<string, ushort> QmkPlaces(PluginKeyTable table)
+        {
+            var places = new Dictionary<string, ushort>
+            {
+                ["-"] = 0x2D, ["+"] = 0x2E, ["="] = 0x2E, ["~"] = 0x35, ["<"] = 0x36, [">"] = 0x37, ["|"] = 0x31, ["Enm"] = 0x4A, [""] = 0x31,
+            };
+            if (ReferenceEquals(table, PluginKeyTables.QmkQ1Iso))
+            {
+                places["|"] = 0x35;
+                places["\\"] = 0x2E;
+                places["+"] = 0x2D;
+                places["'"] = 0x32;
+            }
+            else if (ReferenceEquals(table, PluginKeyTables.QmkK8Tkl))
+            {
+                places["|"] = 0x64;
+            }
+            else if (ReferenceEquals(table, PluginKeyTables.QmkGmmk296Iso))
+            {
+                places["§"] = 0x35;
+            }
+            return places;
+        }
+
+        internal const int QmkReportLength = 33;
+        internal const int QmkCommandWaitMs = 30;
+
+        /// <summary>The firmware type's two answers.</summary>
+        internal static bool QmkAnswers(IHidReportChannel io, Action<int> wait)
+        {
+            if (!io.WriteOutput(Frame(32, 0x00, 0x28))) return false;
+            wait?.Invoke(QmkCommandWaitMs);
+            var answer = new byte[Math.Max(io.InputReportLength, 33)];
+            // The board may hold other reports ahead of the answer, as the
+            // plugin's read loop allows for.
+            for (int i = 0; i < 8; i++)
+            {
+                if (io.ReadInput(answer, 10) <= 0) return false;
+                if (answer[1] == 0x28) return answer[2] is 0x01 or 0x02;
+            }
+            return false;
+        }
+
+        internal static IEnumerable<PluginStep> QmkPicture(int[] colors)
+        {
+            for (int led = 0; led < colors.Length; led += 9)
+            {
+                int count = Math.Min(9, colors.Length - led);
+                var frame = Frame(QmkReportLength, 0x00, 0x24, (byte)led, (byte)count);
+                for (int i = 0; i < count; i++) PutRgb(frame, 4 + i * 3, colors[led + i]);
                 yield return PluginStep.Output(frame);
             }
         }

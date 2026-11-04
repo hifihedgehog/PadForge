@@ -33,6 +33,31 @@ TABLES = [
     ("Rk84", "Royal Kludge/RK_84_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
     ("ApexM750TklPubg", "Steelseries/Steelseries_Apex_M750_TKL_PUBG_Keyboard.js", "vLedNames", "vLedPositions", "vKeymap"),
     ("ApexProMini", "Steelseries/Steelseries_Apex_Pro_Mini_Keyboard.js", "vLedNames", "vLedPositions", "vKeymap"),
+    ("QmkFeker", "QMK/Feker/Feker-IK75.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("QmkFreja65", "QMK/Freja_65_QMK_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("QmkGmmk265Ansi", "QMK/GMMK/GMMK_2_65_ANSI_QMK_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("QmkGmmk265Iso", "QMK/GMMK/GMMK_2_65_ISO_QMK_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("QmkGmmk296Ansi", "QMK/GMMK/GMMK_2_96_ANSI_QMK_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("QmkGmmk296Iso", "QMK/GMMK/GMMK_2_96_ISO_QMK_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("QmkGmmkPro", "QMK/GMMK/GMMK_Pro_QMK_Keyboard.js", "vKeyNamesProAnsi", "vKeyPositionsProAnsi", "vKeysProAnsi"),
+    ("QmkKbd67", "QMK/KBDFans KBD67/KBDFans_KBD67_V2_QMK_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("QmkK10Pro", "QMK/Keychron/Keychron_K10Pro_QMK_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("QmkK2Pro", "QMK/Keychron/Keychron_K2Pro_QMK_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("QmkK8Pro", "QMK/Keychron/Keychron_K8Pro_QMK_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("QmkK8Tkl", "QMK/Keychron/Keychron_K8_TKL_QMK_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("QmkQ0", "QMK/Keychron/Keychron_Q0_QMK_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("QmkQ12", "QMK/Keychron/Keychron_Q12_QMK_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("QmkQ1Ansi", "QMK/Keychron/Keychron_Q1_QMK_Keyboard.js", "vKeyNamesANSI", "vKeyPositionsANSI", "vKeysANSI"),
+    ("QmkQ1Iso", "QMK/Keychron/Keychron_Q1_QMK_Keyboard.js", "vKeyNamesISO", "vKeyPositionsISO", "vKeysISO"),
+    ("QmkQ5", "QMK/Keychron/Keychron_Q5_QMK_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("QmkQ6Ansi", "QMK/Keychron/Keychron_Q6_QMK_Keyboard.js", "vKeyNamesANSI", "vKeyPositionsANSI", "vKeysANSI"),
+    ("QmkQ6Iso", "QMK/Keychron/Keychron_Q6_QMK_Keyboard.js", "vKeyNamesISO", "vKeyPositionsISO", "vKeysISO"),
+    ("QmkV1", "QMK/Keychron/Keychron_V1_QMK_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("QmkV2", "QMK/Keychron/Keychron_V2_QMK_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("QmkV3", "QMK/Keychron/Keychron_V3_QMK_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("QmkV5", "QMK/Keychron/Keychron_V5_QMK_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("QmkV6", "QMK/Keychron/Keychron_V6_QMK_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("QmkDropCtrl", "QMK/Drop CTRL/Massdrop_CTRL_QMK_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
 ]
 
 # Keyboards a plugin keeps in a library object: the table's name, the plugin and
@@ -49,6 +74,12 @@ LIBRARY_TABLES = [
 # 39, Q 16, Caps Lock 53, A 0. A pair is the LED and the LED it goes beside.
 MOVED_LEDS = {
     "K70ProMini": ((157, 39), (168, 45)),
+}
+
+# The Q1 ISO table counts up from 0 to 82 but for its Tab key, which holds 39, the
+# number of the O in the same row. In the sequence Tab is 30, as in the ANSI table.
+FIXED_INDEXES = {
+    "QmkQ1Iso": {"Tab": 30},
 }
 
 # The Claymore II's table with the number pad on the right holds the two ISO
@@ -150,6 +181,7 @@ def generate(root):
         path = os.path.join(root, "Plugins", plugin)
         text = open(path, encoding="utf-8", errors="replace").read()
         names = read_list(text, names_list)
+        fixes = FIXED_INDEXES.get(table, {})
         for after, name in MISSING_NAMES.get(table, ()):
             names.insert(names.index(after) + 1, name)
         places = read_list(text, places_list)
@@ -158,6 +190,8 @@ def generate(root):
         count = len(places)
         if len(names) < count or len(indexes) < count:
             raise ValueError(f"{table}: {len(names)} names, {len(places)} places, {len(indexes)} indexes")
+        for name, index in fixes.items():
+            indexes[names.index(name)] = index
         write_table(lines, table, plugin, names[:count], places[:count], indexes[:count])
     for table, plugin, entry in LIBRARY_TABLES:
         text = open(os.path.join(root, "Plugins", plugin), encoding="utf-8", errors="replace").read()

@@ -155,6 +155,31 @@ namespace PadForge.Tests
                 PluginKeyTables.SpeedlinkOriosKb, PluginKeyTables.FnaticMiniStreak, PluginKeyTables.ClaymoreIiRight,
                 PluginKeyTables.ClaymoreIiLeft, PluginKeyTables.K65Mini, PluginKeyTables.Strafe, PluginKeyTables.Rk61, PluginKeyTables.Rk84,
                 PluginKeyTables.K70ProMini, PluginKeyTables.K100Air, PluginKeyTables.ApexM750TklPubg, PluginKeyTables.ApexProMini,
+                PluginKeyTables.QmkFeker,
+                PluginKeyTables.QmkFreja65,
+                PluginKeyTables.QmkGmmk265Ansi,
+                PluginKeyTables.QmkGmmk265Iso,
+                PluginKeyTables.QmkGmmk296Ansi,
+                PluginKeyTables.QmkGmmk296Iso,
+                PluginKeyTables.QmkGmmkPro,
+                PluginKeyTables.QmkKbd67,
+                PluginKeyTables.QmkK10Pro,
+                PluginKeyTables.QmkK2Pro,
+                PluginKeyTables.QmkK8Pro,
+                PluginKeyTables.QmkK8Tkl,
+                PluginKeyTables.QmkQ0,
+                PluginKeyTables.QmkQ12,
+                PluginKeyTables.QmkQ1Ansi,
+                PluginKeyTables.QmkQ1Iso,
+                PluginKeyTables.QmkQ5,
+                PluginKeyTables.QmkQ6Ansi,
+                PluginKeyTables.QmkQ6Iso,
+                PluginKeyTables.QmkV1,
+                PluginKeyTables.QmkV2,
+                PluginKeyTables.QmkV3,
+                PluginKeyTables.QmkV5,
+                PluginKeyTables.QmkV6,
+                PluginKeyTables.QmkDropCtrl,
             })
             {
                 Assert.Empty(PluginKeyNames.Unresolved(table));
@@ -820,6 +845,101 @@ namespace PadForge.Tests
             Assert.Equal("00 01 00 02 00 AA 01 02 03", Hex(frames[0], 9));
             Assert.Equal("00 02 00 02 00 AA 04 05 06", Hex(frames[1], 9));
             Assert.Equal(513, frames[0].Length);
+        }
+
+        // ── QMK ──
+
+        private static PluginDevice Q1 => Device(0x3434, 0x0107);
+
+        private static FakeReportChannel QmkChannel(params byte[][] answers)
+        {
+            var queue = new Queue<byte[]>(answers);
+            return new FakeReportChannel
+            {
+                OutputReportLength = F.QmkReportLength,
+                InputReportLength = 33,
+                Input = () => queue.Count > 0 ? queue.Dequeue() : null,
+            };
+        }
+
+        [Theory]
+        [InlineData(0x01)]
+        [InlineData(0x02)]
+        public void Qmk_LightsOnlyWhatAnswersTheFirmwareTypes(int type)
+        {
+            var io = QmkChannel(new byte[] { 0x00, 0x28, (byte)type });
+            var waits = new List<int>();
+            var session = F.Instance.Match(CollectionOf(Q1)).Begin(io, Recorder(waits));
+            Assert.NotNull(session);
+            Assert.Equal("00 28", Short(io.Calls.Single(c => c.Kind == "out").Bytes));
+            Assert.Equal(new[] { 30 }, waits);
+        }
+
+        [Fact]
+        public void Qmk_AStockFirmware_StaysDark_AndIsWrittenNoMore()
+        {
+            var silent = QmkChannel();
+            Assert.Null(F.Instance.Match(CollectionOf(Q1)).Begin(silent, _ => { }));
+            Assert.Single(silent.Calls, c => c.Kind == "out");
+            // VIA answers an unknown command with FF.
+            Assert.Null(F.Instance.Match(CollectionOf(Q1)).Begin(QmkChannel(new byte[] { 0x00, 0xFF, 0x28 }), _ => { }));
+            Assert.Null(F.Instance.Match(CollectionOf(Q1)).Begin(QmkChannel(new byte[] { 0x00, 0x28, 0x03 }), _ => { }));
+        }
+
+        [Fact]
+        public void Qmk_FindsItsAnswerBehindOtherReports()
+        {
+            var io = QmkChannel(new byte[] { 0x00, 0x99 }, new byte[] { 0x00, 0x28, 0x01 });
+            Assert.NotNull(F.Instance.Match(CollectionOf(Q1)).Begin(io, _ => { }));
+        }
+
+        [Fact]
+        public void Qmk_NineLedsToAReport_ThenTurnsItselfOff()
+        {
+            var d = Q1;
+            Assert.Equal(new[] { "out 00 25", "wait 30" }, ShortSteps(d.Start));
+            Assert.Equal(new[] { "out 00 26", "wait 30" }, ShortSteps(d.HandBack));
+            var colors = new int[20];
+            colors[0] = 0x010203;
+            colors[9] = 0x040506;
+            colors[19] = 0x070809;
+            var steps = F.QmkPicture(colors).ToArray();
+            Assert.Equal(3, steps.Length);
+            Assert.Equal("00 24 00 09 01 02 03", Hex(steps[0].Bytes, 7));
+            Assert.Equal("00 24 09 09 04 05 06", Hex(steps[1].Bytes, 7));
+            Assert.Equal("00 24 12 02 00 00 00 07 08 09", Hex(steps[2].Bytes, 10));
+            Assert.Equal(33, steps[0].Bytes.Length);
+        }
+
+        [Fact]
+        public void Qmk_LegendsGoByPlace()
+        {
+            ushort UsageOf(PluginKeyTable table, PluginDevice d, string name)
+                => d.Lights[Array.IndexOf(table.Names, name)].Usage;
+            var ansi = Device(0x3434, 0x0107);
+            Assert.Equal(0x2D, UsageOf(PluginKeyTables.QmkQ1Ansi, ansi, "-"));
+            Assert.Equal(0x2E, UsageOf(PluginKeyTables.QmkQ1Ansi, ansi, "+"));
+            Assert.Equal(0x36, UsageOf(PluginKeyTables.QmkQ1Ansi, ansi, "<"));
+            Assert.Equal(0x37, UsageOf(PluginKeyTables.QmkQ1Ansi, ansi, ">"));
+            var iso = Device(0x3434, 0x0109);
+            Assert.Equal(0x35, UsageOf(PluginKeyTables.QmkQ1Iso, iso, "|"));
+            Assert.Equal(0x2D, UsageOf(PluginKeyTables.QmkQ1Iso, iso, "+"));
+            Assert.Equal(0x2E, UsageOf(PluginKeyTables.QmkQ1Iso, iso, "\\"));
+            Assert.Equal(0x2F, UsageOf(PluginKeyTables.QmkQ1Iso, iso, "Å"));
+            Assert.Equal(0x32, UsageOf(PluginKeyTables.QmkQ1Iso, iso, "'"));
+            // Tab takes its own LED, not the O's.
+            Assert.Equal(30, iso.Lights[Array.IndexOf(PluginKeyTables.QmkQ1Iso.Names, "Tab")].Address);
+            Assert.Equal(0x64, UsageOf(PluginKeyTables.QmkK8Tkl, Device(0x3434, 0xFE0F), "|"));
+            Assert.Equal(0x31, UsageOf(PluginKeyTables.QmkK8Tkl, Device(0x3434, 0xFE0F), ""));
+        }
+
+        [Fact]
+        public void Qmk_TheAnsiAndIsoIdsTakeTheirOwnKeys()
+        {
+            Assert.Equal(PluginKeyTables.QmkQ1Ansi.Names.Length, Device(0x3434, 0x0107).Lights.Count);
+            Assert.Equal(PluginKeyTables.QmkQ1Iso.Names.Length, Device(0x3434, 0x0109).Lights.Count);
+            Assert.Equal(PluginKeyTables.QmkQ6Ansi.Names.Length, Device(0x3434, 0x0161).Lights.Count);
+            Assert.Equal(PluginKeyTables.QmkQ6Iso.Names.Length, Device(0x3434, 0x0162).Lights.Count);
         }
 
         [Fact]

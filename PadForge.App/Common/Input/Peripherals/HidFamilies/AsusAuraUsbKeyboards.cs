@@ -128,6 +128,10 @@ namespace PadForge.Common.Input.Peripherals
             if (layout == null) return new LightMap(Array.Empty<LightInfo>(), "OpenRGB " + setName) { Product = product };
             var uk = set.Find(AsusAuraTables.RegionUk);
             var cells = AsusAuraTables.Cells(layout.Matrix, layout.Rows, layout.Cols, layout.Leds.Length);
+            // OpenRGB's grid for the Strix Scope TKL numbers another order than its list of LEDs, so
+            // the 1 would show on the bottom row. Its names and LEDs agree, and the key picker draws
+            // its keys from their usages.
+            bool placed = setName != "AsusROGStrixScopeTKLLayouts";
             var lights = new LightInfo[layout.Leds.Length];
             for (int i = 0; i < lights.Length; i++)
             {
@@ -142,7 +146,7 @@ namespace PadForge.Common.Input.Peripherals
                         }
                 var light = AsusAuraTables.LightOf(name, id, legend);
                 var (row, col) = cells[i];
-                lights[i] = row < 0 ? light : light with { X = col, Y = row, Width = 1, Height = 1, HasPosition = true };
+                lights[i] = row < 0 || !placed ? light : light with { X = col, Y = row, Width = 1, Height = 1, HasPosition = true };
             }
             return new LightMap(lights, "OpenRGB " + set.Source) { Product = product };
         }

@@ -95,6 +95,45 @@ namespace PadForge.Tests
             Assert.True(missed.Count == 0, missed.Count + " registrations no family lights:\n" + string.Join("\n", missed));
         }
 
+        /// <summary>A keyboard's table puts each key in its place: Q left of W on one row, and the rows in
+        /// order. A table out of step lights other keys' LEDs with nothing in the frames to show it.</summary>
+        [Fact]
+        public void EveryKeyboardTable_KeepsItsKeysInKeyboardOrder()
+        {
+            var faults = new List<string>();
+            var seen = new HashSet<string>();
+            foreach (var r in OpenRgbRegistrations.All)
+            {
+                if (r.Transport != OpenRgbTransport.Hid || r.FromSettings) continue;
+                var model = ModelOf(r);
+                if (model?.Map == null) continue;
+                var found = KeyTableOrderTests.Faults(model.Map.Lights).ToList();
+                if (found.Count > 0 && seen.Add(r.Family + " " + r.Name))
+                    faults.Add($"{r.Family} {r.Name} {r.VendorId:X4}:{r.ProductId:X4}: {found.Count}: {string.Join("; ", found.Take(4))}");
+            }
+            Assert.True(faults.Count == 0, faults.Count + " tables:\n" + string.Join("\n", faults));
+        }
+
+        /// <summary>What the tables get wrong in OpenRGB is put right here.</summary>
+        [Fact]
+        public void AKeyOpenRgbsTableNamesWrong_IsPutRight()
+        {
+            ushort At(IEnumerable<LightInfo> lights, int address) => lights.Single(l => l.Address == address).Usage;
+            // The Everest 60's row runs C, V, B, N.
+            var everest = MountainKeyboardLighting.Everest60Lights();
+            Assert.Equal(0x19, everest.Single(l => l.Usage == 0x19).Usage);
+            Assert.True(everest.Single(l => l.Usage == 0x19).X < everest.Single(l => l.Usage == 0x05).X);
+            // The Strix Scope TKL's grid does not follow its list, and its names and LEDs do.
+            var scope = AsusAuraUsbLighting.KeyboardMap(0x190C, "AsusROGStrixScopeTKLLayouts", AsusAuraTables.RegionUk);
+            Assert.False(scope.Positioned);
+            Assert.Equal(0x1E, At(scope.Lights, 0x11));
+            Assert.Equal(0x14, At(scope.Lights, 0x12));
+            // The Vulcan II TKL Pro has both of its keys, Y and Z, once.
+            var model = ModelOf(OpenRgbRegistrations.All.First(r => r.Name == "Turtle Beach Vulcan II TKL Pro"));
+            Assert.Single(model.Map.Lights, l => l.Usage == 0x1C);
+            Assert.Single(model.Map.Lights, l => l.Usage == 0x1D);
+        }
+
         /// <summary>The Thrustmaster Sol's lights are on a vendor interface that
         /// is no HID collection, which OpenRGB reaches through libusb and UsbDk
         /// (ThrustmasterSolControllerDetect.cpp:43-60), so it would take a

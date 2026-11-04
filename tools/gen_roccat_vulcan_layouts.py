@@ -126,6 +126,9 @@ def main():
                 token = led[0][0].text if len(led[0]) == 1 else None
                 name = ev.string(led[0])
                 value = ev.integer(led[1])
+                # The Vulcan II TKL Pro's UK table names the key beside the left shift Y a second time.
+                if table == "TurtleBeachVulcanIITKLProLayouts" and token == "KEY_EN_Y" and value == 0x3A:
+                    name = key_names["KEY_EN_Z"]
                 if not 0 <= value <= 255:
                     raise CppError("line %d: id %d is not a byte" % (led.line, value))
                 leds.append((name, value, token))

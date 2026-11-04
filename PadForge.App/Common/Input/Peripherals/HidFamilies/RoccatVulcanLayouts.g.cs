@@ -1228,7 +1228,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 new("Key: Enter (ISO)", 0x37),
                 new("Key: Left Shift", 0x38),
                 new("Key: \\ (ISO)", 0x39),
-                new("Key: Y", 0x3A),
+                new("Key: Z", 0x3A),
                 new("Key: X", 0x3B),
                 new("Key: C", 0x3C),
                 new("Key: V", 0x3D),

@@ -239,6 +239,13 @@ namespace PadForge.Common.Input.Peripherals
         /// its processes.</summary>
         public static readonly VendorProgram HyteNexus = new("HYTE Nexus", "HYTE Nexus", "HYTE.Nexus");
 
+        /// <summary>Luxafor's app, which lights the Luxafor Flag.
+        /// LuxaforOnAir counts it as running while LuxaforApp.exe runs, and
+        /// stands aside, since the app overrides its colors (LuxaforOnAir
+        /// LuxOnAir/Properties/Settings.Designer.cs:39, ConflictChecker.cs:28
+        /// and 75-85).</summary>
+        public static readonly VendorProgram LuxaforApp = new("Luxafor", "LuxaforApp");
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
@@ -246,7 +253,7 @@ namespace PadForge.Common.Input.Peripherals
             LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor, CorsairIcue,
             LegionAccessoryCentral, MasterPlus, Ngenuity, MsiMysticLight, SteelSeriesGG, AlienwareCommandCenter,
             RoccatSwarm, XpgPrime, WootingWootility, OpenRgb,
-            Skydimo, HyteNexus,
+            Skydimo, HyteNexus, LuxaforApp,
         };
     }
 

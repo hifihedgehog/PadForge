@@ -40,9 +40,9 @@ namespace PadForge.Common.Input.Peripherals
     /// each one before it goes on (lines 720-754, 805-828).</item>
     /// <item>A session opens with the color init command 33, as the SDK
     /// sends it once it finds the keyboard (lines 488-490), and hands back
-    /// with the reset command 32, which "will restore all the colours to the
-    /// colours that were originally on the keyboard" and which the SDK
-    /// sends to every keyboard when an application closes
+    /// with the reset command 32, which the SDK's header says returns the
+    /// keyboard to the colors it had before, and which the SDK sends to
+    /// every keyboard when an application closes
     /// (wooting-rgb-sdk.h:69-93, wooting-rgb-sdk.c:106-124).</item>
     /// <item>A picture is the SDK's 6 by 21 matrix of 16-bit colors, red 5,
     /// green 6 and blue 5 (wooting-rgb-sdk.c:83-91), low byte first as

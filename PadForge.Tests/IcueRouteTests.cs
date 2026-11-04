@@ -515,8 +515,8 @@ namespace PadForge.Tests
             Assert.Equal(BackendState.Idle, PeripheralOutputs.StateOf(OutputFamily.IcueDevice));
         }
 
-        /// <summary>A claim loads the library and calls CorsairConnect once;
-        /// until the SDK says connected, nothing else is called and the tab
+        /// <summary>A claim loads the library and calls CorsairConnect once.
+        /// Until the SDK says connected, nothing else is called and the tab
         /// waits.</summary>
         [Fact]
         public void AClaim_LoadsAndConnectsOnce_AndWaitsForTheSdkToConnect()

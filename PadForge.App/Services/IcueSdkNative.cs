@@ -15,16 +15,20 @@ namespace PadForge.Services
     /// resolves (RGB.NET.Devices.Corsair Native/_CUESDK.cs:108-120).
     ///
     /// <para>Where the library comes from. Corsair ships it in the SDK's
-    /// release zip, as redist\x64\iCUESDK.x64_2019.dll, for an application
-    /// to put beside its own executable (RGB.NET.Devices.Corsair README.md,
-    /// "Required SDK"), and Aurora ships it so
-    /// (AuroraDeviceManager/Devices/RGBNet/Implementations/NewCorsairRgbNetDevice.cs:135).
-    /// PadForge redistributes nothing of Corsair's, and Corsair's license
-    /// bars passing the SDK on (cue-sdk docs/index.html, "End User License
-    /// Agreement", Your Responsibilities (a)). So the library is looked for
-    /// where iCUE itself is installed (<see cref="LibraryPaths"/>), and with
-    /// none there the route is not offered
-    /// (<see cref="PeripheralPresence.CorsairIcueSdk"/>). The library is
+    /// release zip, in the redist folder the SDK's documentation describes
+    /// as the 32 and 64 bit .dll files (cue-sdk docs/index.html, "SDK
+    /// Package"), for an application to put beside its own executable
+    /// (RGB.NET.Devices.Corsair README.md, "Required SDK"), and Aurora ships
+    /// it so (AuroraDeviceManager.csproj:141, loaded in
+    /// NewCorsairRgbNetDevice.cs:39-42). PadForge ships version
+    /// 4.0.84, signed by Corsair Memory, Inc., inside its executable, as it
+    /// ships the Interhaptics engine (PadForge.App.csproj), and loads it by
+    /// name where the runtime finds the libraries the executable carries. A
+    /// copy in iCUE 5's own folder is the fallback (<see cref="LibraryPaths"/>).
+    /// The route is offered where iCUE 4 or 5 is installed
+    /// (<see cref="Installed"/>, <see cref="PeripheralPresence.CorsairIcueSdk"/>),
+    /// the versions SDK v4 serves ("SDK features are supported in iCUE
+    /// version 4.31 or higher", docs/index.html, "Overview"). The library is
     /// x64 only from SDK v4.0.84 on (the README's x86 note), so an ARM64
     /// process never loads it.</para>
     ///
@@ -57,12 +61,49 @@ namespace PadForge.Services
         /// <summary>Where iCUE 5 installs itself, the folder uninstall
         /// listings give for it (Advanced Uninstaller, Corsair iCUE5 Software
         /// 5.15.117: C:\Program Files\Corsair\Corsair iCUE5 Software). No
-        /// source shows the library in it.</summary>
+        /// source shows the library in it, so it is the fallback to
+        /// PadForge's own copy.</summary>
         internal static IEnumerable<string> LibraryPaths()
         {
             string programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
             if (!string.IsNullOrEmpty(programFiles))
                 yield return Path.Combine(programFiles, "Corsair", "Corsair iCUE5 Software", LibraryName);
+        }
+
+        /// <summary>Where iCUE 5 and iCUE 4 put iCUE.exe: Corsair iCUE5
+        /// Software and CORSAIR iCUE 4 Software under Program Files
+        /// (Advanced Uninstaller's entries for iCUE 5.15.117 and for iCUE 4),
+        /// where Corsair's own clean-reinstall article puts iCUE 4 and 5
+        /// (help.corsair.com, article 360025166712).</summary>
+        internal static IEnumerable<string> ProgramPaths()
+        {
+            string programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+            if (string.IsNullOrEmpty(programFiles)) yield break;
+            yield return Path.Combine(programFiles, "Corsair", "Corsair iCUE5 Software", "iCUE.exe");
+            yield return Path.Combine(programFiles, "Corsair", "CORSAIR iCUE 4 Software", "iCUE.exe");
+        }
+
+        /// <summary>The value iCUE 5's installer writes under the machine's
+        /// Run key, which Aurora takes as iCUE installed wherever it went
+        /// (Aurora IcueInstallationUtils.cs:11-17, AutoStartUtils.cs:84-98).</summary>
+        internal const string RunValueName = "Corsair iCUE5 Software";
+
+        private const string RunKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
+
+        /// <summary>Whether iCUE 4 or 5 is installed, in an x64 process: its
+        /// iCUE.exe in its folder (<see cref="ProgramPaths"/>), or iCUE 5's
+        /// Run value (<see cref="RunValueName"/>).</summary>
+        internal static bool Installed()
+        {
+            if (RuntimeInformation.ProcessArchitecture != Architecture.X64) return false;
+            try
+            {
+                foreach (string path in ProgramPaths())
+                    if (File.Exists(path)) return true;
+                using var run = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(RunKey);
+                return run?.GetValue(RunValueName) != null;
+            }
+            catch { return false; }
         }
 
         /// <summary>The first of <see cref="LibraryPaths"/> that exists, in
@@ -133,13 +174,26 @@ namespace PadForge.Services
                 return false;
             }
             if (_module != IntPtr.Zero) { detail = "already loaded"; return true; }
-            string path = FindLibrary();
-            if (path == null) { detail = LibraryName + " not found"; return false; }
-            IntPtr module = LoadLibraryExW(path, IntPtr.Zero, LoadWithAlteredSearchPath);
+            // PadForge's own copy, by name, where the runtime finds the
+            // libraries the executable carries. A copy in iCUE's folder is
+            // the fallback.
+            string path = LibraryName + " (PadForge's copy)";
+            IntPtr module = IntPtr.Zero;
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+            {
+                try { NativeLibrary.TryLoad(LibraryName, typeof(IcueSdkNative).Assembly, DllImportSearchPath.AssemblyDirectory, out module); }
+                catch { module = IntPtr.Zero; }
+            }
             if (module == IntPtr.Zero)
             {
-                detail = $"LoadLibrary failed ({Marshal.GetLastWin32Error()}) for {path}";
-                return false;
+                path = FindLibrary();
+                if (path == null) { detail = LibraryName + " not found"; return false; }
+                module = LoadLibraryExW(path, IntPtr.Zero, LoadWithAlteredSearchPath);
+                if (module == IntPtr.Zero)
+                {
+                    detail = $"LoadLibrary failed ({Marshal.GetLastWin32Error()}) for {path}";
+                    return false;
+                }
             }
 
             T Resolve<T>(string name) where T : class

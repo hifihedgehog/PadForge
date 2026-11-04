@@ -178,6 +178,22 @@
     <Content Include="Resources\Interhaptics\$(NativeArch)\Interhaptics.RazerProvider.dll" Link="Interhaptics.RazerProvider.dll" Condition="Exists('Resources\Interhaptics\$(NativeArch)\Interhaptics.RazerProvider.dll')">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <!-- The iCUE SDK v4 client library (#557), the redist file of Corsair's
+         cue-sdk 4.0.84 that an iCUE SDK application ships beside itself
+         (RGB.NET.Devices.Corsair README, "Required SDK"), as Aurora does
+         (AuroraDeviceManager.csproj). Corsair builds it for x64 alone.
+         IcueSdkNative loads it by name while iCUE runs. -->
+    <Content Include="Resources\Corsair\$(NativeArch)\iCUESDK.x64_2019.dll" Link="iCUESDK.x64_2019.dll" Condition="Exists('Resources\Corsair\$(NativeArch)\iCUESDK.x64_2019.dll')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <!-- MSI's Mystic Light SDK 1.0.0.8 library (#557), from MSI's
+         Mystic_light_SDK.zip, which an application ships beside itself
+         (RGB.NET.Devices.Msi README, "Required SDK"), as Aurora does
+         (AuroraDeviceManager.csproj). x64 alone. MysticLightNative loads it
+         by name while Mystic Light runs. -->
+    <Content Include="Resources\MysticLight\$(NativeArch)\MysticLight_SDK_x64.dll" Link="MysticLight_SDK_x64.dll" Condition="Exists('Resources\MysticLight\$(NativeArch)\MysticLight_SDK_x64.dll')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\OpenXInput\$(NativeArch)\xinput1_4.dll" Link="xinput1_4.dll" Condition="Exists('Resources\OpenXInput\$(NativeArch)\xinput1_4.dll')">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -884,6 +900,10 @@
            Text="Publish refused: Resources\SDL3\$(NativeArch)\libusb-1.0.dll is missing. SDL loads it by name at run time, and without it wired Switch 2 controllers and the GameCube adapter never open." />
     <Error Condition="!Exists('Resources\OpenXInput\$(NativeArch)\xinput1_4.dll')"
            Text="Publish refused: Resources\OpenXInput\$(NativeArch)\xinput1_4.dll is missing. It has to come from a $(NativeArch) build of the OpenXInput fork. Without it SDL loads the system xinput1_4.dll, the HIDMaestro filter is gone, and PadForge reads its own virtual controllers back as input." />
+    <Error Condition="'$(NativeArch)' == 'x64' And !Exists('Resources\Corsair\x64\iCUESDK.x64_2019.dll')"
+           Text="Publish refused: Resources\Corsair\x64\iCUESDK.x64_2019.dll is missing. It is the redist library of Corsair's iCUE SDK 4.0.84. Without it Corsair devices are left to iCUE while it runs." />
+    <Error Condition="'$(NativeArch)' == 'x64' And !Exists('Resources\MysticLight\x64\MysticLight_SDK_x64.dll')"
+           Text="Publish refused: Resources\MysticLight\x64\MysticLight_SDK_x64.dll is missing. It is the x64 library of MSI's Mystic Light SDK 1.0.0.8. Without it MSI devices are left to Mystic Light while it runs." />
     <Error Condition="'$(NativeArch)' == 'arm64' And !Exists('Resources\Vosk\arm64\libvosk.dll')"
            Text="Publish refused: Resources\Vosk\arm64\libvosk.dll is missing. The Vosk package carries no ARM64 library, so the ARM64 build bundles its own, built by tools/build-libvosk-arm64.sh. Without it voice macros lose the Vosk recognizer on ARM64." />
   </Target>

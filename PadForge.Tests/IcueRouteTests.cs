@@ -310,8 +310,9 @@ namespace PadForge.Tests
             Assert.Equal(new[] { new OutputPath(OutputFamily.IcueDevice, "keyboard") }, shared);
         }
 
-        /// <summary>The installed read finds the library only where iCUE 5
-        /// installs itself, in an x64 process.</summary>
+        /// <summary>The fallback to PadForge's own copy of the library is
+        /// looked for where iCUE 5 installs itself, and the test host loads
+        /// no library.</summary>
         [Fact]
         public void TheLibrary_IsLookedForInICuesFolder()
         {

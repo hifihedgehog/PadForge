@@ -52,22 +52,37 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>Where the library is found. MSI hands the SDK out as a
     /// download for an application to ship beside itself (RGB.NET.Devices.Msi
-    /// README.md, "Required SDK"), and its documentation asks only that
-    /// "MSI Mystic Light related applications must be installed" (p.2).
-    /// PadForge ships no copy of MSI's library. It looks for one in the
-    /// folder of MSI's Mystic Light service, which the service's ImagePath
-    /// names (HKLM\SYSTEM\CurrentControlSet\Services\Mystic_Light_Service,
-    /// the service MSI's installer registers, Advanced Uninstaller PRO's
-    /// entry for "MSI SDK" 1.0.0.46), and in that folder's Lib folder, by
-    /// the 64-bit library's own name in MSI's download
-    /// (MysticLight_SDK_x64.dll, Mystic_light_SDK.zip 1.0.0.08) and by
-    /// the name RGB.NET gives it (MysticLight_SDK.dll). A library built for
-    /// another processor than PadForge's is passed over.</para>
+    /// README.md, "Required SDK"), and Aurora ships it so
+    /// (AuroraDeviceManager.csproj:183, loaded in MsiDevice.cs:17-20).
+    /// PadForge ships the x64 library of MSI's Mystic_light_SDK.zip
+    /// 1.0.0.08, signed by Micro-Star International, inside its executable,
+    /// as it ships the Interhaptics engine (PadForge.App.csproj), and loads
+    /// it by name (<see cref="BundledName"/>) where the runtime finds the
+    /// libraries the executable carries. A copy in the folder of MSI's
+    /// Mystic Light service, which the service's ImagePath names
+    /// (HKLM\SYSTEM\CurrentControlSet\Services\Mystic_Light_Service, the
+    /// service MSI's installer registers, Advanced Uninstaller PRO's entry
+    /// for "MSI SDK" 1.0.0.46), or in that folder's Lib folder, by the
+    /// 64-bit library's own name in MSI's download and by the name RGB.NET
+    /// gives it (MysticLight_SDK.dll), is the fallback. A library built for
+    /// another processor than PadForge's is passed over. The SDK's
+    /// documentation asks only that "MSI Mystic Light related applications
+    /// must be installed" (p.2), so the route is offered where that service
+    /// is registered (<see cref="Installed"/>).</para>
     /// </summary>
     internal sealed class MysticLightNative : IMysticLightNative
     {
         internal const string ServiceKey = @"SYSTEM\CurrentControlSet\Services\Mystic_Light_Service";
         internal static readonly string[] LibraryNames = { "MysticLight_SDK_x64.dll", "MysticLight_SDK.dll" };
+
+        /// <summary>The name PadForge's own copy carries, MSI's own name for
+        /// the 64-bit library in Mystic_light_SDK.zip 1.0.0.08.</summary>
+        internal const string BundledName = "MysticLight_SDK_x64.dll";
+
+        /// <summary>Whether MSI's Mystic Light service is registered, in an
+        /// x64 process, the application the SDK needs installed (p.2).</summary>
+        internal static bool Installed()
+            => RuntimeInformation.ProcessArchitecture == Architecture.X64 && ServiceFolder() != null;
 
         private IntPtr _module;
         private InitializeFn _initialize;
@@ -159,12 +174,25 @@ namespace PadForge.Common.Input.Peripherals
                 return false;
             }
             if (_module != IntPtr.Zero) { detail = "already loaded"; return true; }
-            string path = FindLibrary();
-            if (path == null) { detail = "MysticLight_SDK not found beside the Mystic Light service"; return false; }
-            if (!NativeLibrary.TryLoad(path, out IntPtr module))
+            // PadForge's own copy, by name, where the runtime finds the
+            // libraries the executable carries. A copy beside the service is
+            // the fallback.
+            string path = BundledName + " (PadForge's copy)";
+            IntPtr module = IntPtr.Zero;
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
             {
-                detail = "LoadLibrary failed for " + path;
-                return false;
+                try { NativeLibrary.TryLoad(BundledName, typeof(MysticLightNative).Assembly, DllImportSearchPath.AssemblyDirectory, out module); }
+                catch { module = IntPtr.Zero; }
+            }
+            if (module == IntPtr.Zero)
+            {
+                path = FindLibrary();
+                if (path == null) { detail = "MysticLight_SDK not found"; return false; }
+                if (!NativeLibrary.TryLoad(path, out module))
+                {
+                    detail = "LoadLibrary failed for " + path;
+                    return false;
+                }
             }
 
             T Resolve<T>(string name) where T : Delegate

@@ -36,13 +36,16 @@ namespace PadForge.Common.Input.Peripherals
         /// Armoury Crate's LightingService does (<see cref="AuraSdkNative.Registered"/>, #557).</summary>
         public bool AsusAuraSdk { get; init; }
 
-        /// <summary>MSI's Mystic Light SDK library sits beside MSI's Mystic
-        /// Light service (<see cref="MysticLightNative.FindLibrary"/>, #557).</summary>
+        /// <summary>MSI's Mystic Light service is registered, in an x64
+        /// process, so an MSI device is lit through the Mystic Light SDK,
+        /// with PadForge's own copy of its library, while Mystic Light runs
+        /// (<see cref="MysticLightNative.Installed"/>, #557).</summary>
         public bool MsiMysticLightSdk { get; init; }
 
-        /// <summary>The iCUE SDK's client library is found, so a Corsair
-        /// device is lit through iCUE while it runs (#557,
-        /// <see cref="PadForge.Services.IcueSdkNative.FindLibrary"/>).</summary>
+        /// <summary>iCUE 4 or 5 is installed, in an x64 process, so a Corsair
+        /// device is lit through iCUE's SDK, with PadForge's own copy of its
+        /// client library, while iCUE runs (#557,
+        /// <see cref="PadForge.Services.IcueSdkNative.Installed"/>).</summary>
         public bool CorsairIcueSdk { get; init; }
 
         /// <summary>The Chroma SDK runtime Synapse installs, which Colore's
@@ -124,11 +127,11 @@ namespace PadForge.Common.Input.Peripherals
             catch { }
 
             bool mysticLight = false;
-            try { mysticLight = MysticLightNative.FindLibrary() != null; }
+            try { mysticLight = MysticLightNative.Installed(); }
             catch { }
 
             bool icue = false;
-            try { icue = PadForge.Services.IcueSdkNative.FindLibrary() != null; }
+            try { icue = PadForge.Services.IcueSdkNative.Installed(); }
             catch { }
 
             return new PeripheralPresence(ledSdk, false, synapse, gg, PlatformSupport.SensaAvailable)

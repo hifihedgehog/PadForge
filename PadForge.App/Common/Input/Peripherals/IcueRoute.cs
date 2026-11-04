@@ -186,8 +186,8 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>
         /// The route's line in the link pass (#557 item 11): while the
-        /// program holding a Corsair row's device is iCUE and its SDK's
-        /// library is found (<see cref="PeripheralPresence.CorsairIcueSdk"/>),
+        /// program holding a Corsair row's device is iCUE, installed in a
+        /// version its SDK serves (<see cref="PeripheralPresence.CorsairIcueSdk"/>),
         /// the row's type path goes into <paramref name="shared"/>, and the
         /// row is lit through iCUE. Only a Corsair device: Lenovo's Legion
         /// laptops name iCUE too (<see cref="VendorPrograms.LenovoLegionUsb"/>),

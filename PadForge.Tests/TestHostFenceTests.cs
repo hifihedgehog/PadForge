@@ -717,11 +717,13 @@ namespace PadForge.Tests
                 FenceSource.Body(macros, "internal static bool TrySetSessionVolume(IntPtr pSession, float volume)"), StringComparison.Ordinal);
         }
 
-        /// <summary>A library of another vendor's is loaded by its path in
-        /// nine places. Logitech's four, Mad Catz's one (#519), Force
-        /// Dimension's one (#521), MSI's Mystic Light library and Corsair's
-        /// one (#557) ask the vendor gate, Corsair's behind a fence of its own
-        /// too. The two VR runtimes ask theirs (VrRuntimeOffLimitsTests).</summary>
+        /// <summary>A library of another vendor's is loaded in the places
+        /// listed. Logitech's four, Mad Catz's one (#519), Force Dimension's
+        /// one (#521), MSI's Mystic Light library and Corsair's one (#557) ask
+        /// the vendor gate, Corsair's behind a fence of its own too. MSI's and
+        /// Corsair's each have two calls: PadForge's own copy by name, then a
+        /// copy in the vendor's folder by path, both after the gate. The two
+        /// VR runtimes ask theirs (VrRuntimeOffLimitsTests).</summary>
         [Fact]
         public void EveryLibraryLoadedByPath_IsOnTheList()
             => Assert.Equal(Map(
@@ -732,8 +734,8 @@ namespace PadForge.Tests
                 (LgsArx, 1),
                 (Strike7, 1),
                 (ForceDimension, 1),
-                (MysticLight, 1),
-                (Icue, 1),
+                (MysticLight, 2),
+                (Icue, 2),
                 ("PadForge.Engine/Common/OpenXr/OpenXrSession.cs", 1)),
                 FenceSource.Census(@"NativeLibrary\.(Try)?Load\(|\bLoadLibrary(Ex)?[AW]?\(", callsOnly: true));
 

@@ -33,7 +33,7 @@ namespace PadForge.Tests
             var lights = AocMouseLighting.Lights();
             Assert.Equal((0, LightKind.Logo), (lights[0].Address, lights[0].Kind));
             Assert.Equal((1, LightKind.Zone, 1), (lights[1].Address, lights[1].Kind, lights[1].Zone));
-            // The map's order is the color order; a reversed map still puts
+            // The map's order is the color order. A reversed map still puts
             // each color by its address.
             var reversed = new[] { lights[1], lights[0] };
             var frame = AocMouseLighting.Direct(reversed, new[] { 0x445566, 0x112233 });

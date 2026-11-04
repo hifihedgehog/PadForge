@@ -17,7 +17,7 @@ namespace PadForge.Tests
             // SetMode for Static, red 11 green 22 blue 33
             // (MSIClutchGM11Controller.cpp:88-271): each feature report is
             // 00 and eight bytes whose last is FF minus the sum of the seven
-            // before; the palette is a 33-byte output report.
+            // before. The palette is a 33-byte output report.
             var frames = MsiClutchLighting.StaticFrames(0x112233);
             Assert.Equal(new[] { true, true, true, true, false, true }, frames.Select(f => f.Feature));
             Assert.Equal(new[]

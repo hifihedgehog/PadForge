@@ -67,7 +67,7 @@ namespace PadForge.Tests
             Assert.Equal(Rgb(colors[at20]), Hex(new[] { frames[0][62], frames[0][63], frames[1][2] }));
             // The Num Lock indicator in slot 28: byte 84, page 1 at 24.
             Assert.Equal(Rgb(colors[0]), Hex(frames[1].Skip(24).ToArray(), 3));
-            // Wrist rest 2 in slot 32: bytes 96 to 98, page 1 at 36; the rest is zero.
+            // Wrist rest 2 in slot 32: bytes 96 to 98, page 1 at 36. The rest is zero.
             Assert.Equal(Rgb(colors[32]), Hex(frames[1].Skip(36).ToArray(), 3));
             Assert.All(frames[1].Skip(39), b => Assert.Equal(0, b));
         }

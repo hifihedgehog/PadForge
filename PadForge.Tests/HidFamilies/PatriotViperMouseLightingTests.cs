@@ -14,7 +14,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheLedReports_AreOpenRgbs_WithTheirCheckByte()
         {
-            // 01 13, index, FF, R G B; byte 63 the xor of 0 to 62, plus 1
+            // 01 13, index, FF, R G B. Byte 63 the xor of 0 to 62, plus 1
             // when even, minus 1 when odd (PatriotViperMouseController.cpp:50-85).
             // 01^13^00^FF^11^22^33 = ED, odd: EC.
             var first = PatriotViperMouseLighting.LedFrame(0, 0x112233);

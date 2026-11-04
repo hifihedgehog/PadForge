@@ -315,6 +315,68 @@ namespace PadForge.Tests
             Assert.Null(SinowealthMouseLighting.RegistrationOf(Collection((ushort)vendor, 0x0001)));
         }
 
+        // ── ITE's other IDs ──
+
+        /// <summary>ite8291r3.py:9 and ite_8291.c:899-902: the same 8291 reports.</summary>
+        [Theory]
+        [InlineData(0x6004)]
+        [InlineData(0x6006)]
+        [InlineData(0x600A)]
+        public void TheOther8291Ids_TakeThe8291sModel(int product)
+        {
+            var collection = new HidCollectionInfo
+            {
+                Path = "fake", VendorId = 0x048D, ProductId = (ushort)product, UsagePage = 0xFF03, Usage = 1,
+                FeatureReportLength = 8, OutputReportLength = 65,
+            };
+            var model = new ClevoLighting(() => "").Match(collection);
+            Assert.Equal("Clevo Keyboard (ITE 8291)", model.Name);
+            Assert.True(model.Map.Lights.Count > 80);
+            Assert.Null(new ClevoLighting(() => "").Match(collection with { OutputReportLength = 64 }));
+        }
+
+        /// <summary>ite_8291_lb.c:198-226, by product, at the Direct-free mono mode.</summary>
+        [Theory]
+        [InlineData(0x6010, "14 00 01 11 22 33 00 00", "08 02 01 01 64 08 00 00")]
+        [InlineData(0x7000, "14 01 01 11 22 33 00 00", "08 21 01 01 64 01 00 00")]
+        public void ALightbar_IsItsProductsTwoReports(int product, string color, string mode)
+        {
+            var steps = PluginDeviceLighting.TuxedoLightbarPicture((ushort)product, 0x112233, "", "").ToList();
+            Assert.Equal(color, Hex(steps[0].Bytes, 8));
+            Assert.Equal(mode, Hex(steps[1].Bytes, 8));
+            Assert.Equal(PluginStepKind.Feature, steps[1].Kind);
+            Assert.Equal(8, Row(0x048D, (ushort)product).FeatureLength);
+        }
+
+        /// <summary>color_scaling (ite_8291_lb.c:102-119).</summary>
+        [Fact]
+        public void ALightbarsGreenAndBlue_AreScaledOnTheMachinesThatNeedIt()
+        {
+            Assert.Equal(((byte)100, (byte)49), PluginDeviceLighting.LightbarScaled(0x6010, "STEPOL1XA04", "", 255, 127));
+            Assert.Equal(((byte)100, (byte)49), PluginDeviceLighting.LightbarScaled(0x6010, "STELLARIS1XI05", "", 255, 127));
+            Assert.Equal(((byte)100, (byte)49), PluginDeviceLighting.LightbarScaled(0x6010, "STELLARIS17I06", "", 255, 127));
+            Assert.Equal(((byte)255, (byte)127), PluginDeviceLighting.LightbarScaled(0x7000, "STEPOL1XA04", "", 255, 127));
+            Assert.Equal(((byte)200, (byte)127), PluginDeviceLighting.LightbarScaled(0x7000, "", "XxAF5xxx", 255, 127));
+            Assert.Equal(((byte)255, (byte)127), PluginDeviceLighting.LightbarScaled(0x6010, "", "", 255, 127));
+        }
+
+        /// <summary>ite_8297.c:58-65, and only on TUXEDO's machines, since Gigabyte's motherboards
+        /// use the same chip and IDs.</summary>
+        [Fact]
+        public void The8297_IsOneReport_AndOnlyOnTuxedosMachines()
+        {
+            var row = Row(0x048D, 0x8297);
+            Assert.Equal("CC B0 01 01 11 22 33", First(row, 0x112233, 7));
+            Assert.Equal(64, row.FeatureLength);
+            Assert.NotNull(row.OnlyWhen);
+            Assert.False(row.OnlyWhen());
+            Assert.Null(PluginDeviceLighting.Instance.Match(Collection(0x048D, 0x8297, feature: 64)));
+            Assert.True(PluginDeviceLighting.IsTuxedo("TUXEDO", "InfinityBook"));
+            Assert.True(PluginDeviceLighting.IsTuxedo("Notebook", "TUXEDO Stellaris"));
+            Assert.False(PluginDeviceLighting.IsTuxedo("Gigabyte Technology Co., Ltd.", "X570 AORUS"));
+            Assert.False(PluginDeviceLighting.IsTuxedo(null, null));
+        }
+
         // ── alienfx-tools ──
 
         [Theory]

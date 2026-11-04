@@ -91,6 +91,10 @@ namespace PadForge.Common.Input.Peripherals
         /// are the unit's own and its siblings.</summary>
         public Func<IHidReportChannel, IReadOnlyList<IHidReportChannel>, Action<int>, PluginVariant> AskVariant { get; init; }
 
+        /// <summary>Asked before a row is listed, for a row whose IDs another maker's device
+        /// shares. Null: every PC.</summary>
+        public Func<bool> OnlyWhen { get; init; }
+
         /// <summary>The model takes feature reports on a collection Windows holds
         /// open, a keyboard's own.</summary>
         public bool HeldByWindows { get; init; }
@@ -233,6 +237,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (device.Usage != OpenRgbRegistration.Any && device.Usage != collection.Usage) continue;
                 if (collection.OutputReportLength < device.OutputLength) continue;
                 if (collection.FeatureReportLength < device.FeatureLength) continue;
+                if (device.OnlyWhen != null && !device.OnlyWhen()) continue;
                 lock (_models)
                 {
                     if (!_models.TryGetValue(device, out var model)) _models[device] = model = ModelOf(device);

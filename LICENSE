@@ -879,7 +879,9 @@ Protocol documentation references (no code from these projects ships)
   published, facts only), uchroma (https://github.com/cyanogen/uchroma, LGPL-3.0),
   Polychromatic (https://github.com/polychromatic/polychromatic, GPL-3.0),
   ckb-next (https://github.com/ckb-next/ckb-next, GPL-2.0), libratbag
-  (https://github.com/libratbag/libratbag, MIT), libcmmk
+  (https://github.com/libratbag/libratbag, MIT), tuxedo-drivers
+  (https://github.com/tuxedocomputers/tuxedo-drivers, GPL-2.0-or-later),
+  ite8291r3-ctl (https://github.com/pobrn/ite8291r3-ctl, GPL-2.0), libcmmk
   (https://github.com/chmod222/libcmmk, LGPL-3.0), Eruption
   (https://github.com/eruption-project/eruption, GPL-3.0-or-later),
   roccat-vulcan-api-rs (https://github.com/ChickenStorm/roccat-vulcan-api-rs,

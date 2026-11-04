@@ -62,6 +62,8 @@ namespace PadForge.Tests
                         || AsusAuraUsbLighting.GHelperProducts.ContainsKey(product);
                 case RoccatKoneEmpLighting.VendorId when product == RoccatKoneEmpLighting.ProductId:
                     return true;
+                case 0x048D:
+                    return ClevoLighting.Other8291Pids.Contains(product);
                 // HID++ asks each device for its lighting features, so no table
                 // of products bounds it.
                 case PeripheralLinker.LogitechVid:
@@ -126,6 +128,8 @@ namespace PadForge.Tests
             [(0x0B05, 0x19B3)] = LidScreen,
             // Behind the Omni receiver, as asus-rog-strix-impact3-wireless.device says.
             [(0x0B05, 0x1AD7)] = "A mouse behind the Omni receiver, lit through 1ACE.",
+            // aura/device.py:27-34: page 0x59, which the LampArray family lights on any device.
+            [(0x048D, 0xC693)] = "A LampArray, which the LampArray family lights.",
             // An external disk's light, through SCSI (asusctl rog-scsi).
             [(0x0B05, 0x1932)] = "ROG Strix Arion, an external disk lit through SCSI commands.",
         };
@@ -157,7 +161,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheOtherInventory_ReadsEachProject()
         {
-            foreach (string source in new[] { "ckb-next", "libratbag", "g-helper", "asusctl" })
+            foreach (string source in new[] { "ckb-next", "libratbag", "g-helper", "asusctl", "tuxedo-drivers", "ite8291r3-ctl", "aura-loq" })
                 Assert.Contains(OtherProjectsInventory.All, r => r.Source.StartsWith(source, StringComparison.Ordinal));
         }
 

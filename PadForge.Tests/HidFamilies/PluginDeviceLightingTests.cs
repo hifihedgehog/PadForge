@@ -87,7 +87,7 @@ namespace PadForge.Tests
         [Fact]
         public void EveryDevice_IsMatchedAtItsOwnCollection_AndNowhereElse()
         {
-            foreach (var d in F.Devices)
+            foreach (var d in F.Devices.Where(x => x.OnlyWhen == null))
             {
                 var collection = CollectionOf(d);
                 var model = F.Instance.Match(collection);
@@ -119,7 +119,7 @@ namespace PadForge.Tests
         public void TheFamily_IsInTheWorkersList_AndNoOtherFamilyTakesItsDevices()
         {
             Assert.Single(HidLightingFamilies.All, f => ReferenceEquals(f, F.Instance));
-            foreach (var d in F.Devices)
+            foreach (var d in F.Devices.Where(x => x.OnlyWhen == null))
             {
                 var model = HidLightingFamilies.Match(CollectionOf(d));
                 Assert.True(model != null, d.Name);

@@ -11,7 +11,7 @@ namespace PadForge.Common.Input.Peripherals
     internal sealed partial class PluginDeviceLighting
     {
         private static IEnumerable<PluginDevice> OtherProjectDevices()
-            => GHelperMice().Concat(GHelperDock()).Concat(GHelperHeadsets()).Concat(LibratbagMice());
+            => GHelperMice().Concat(GHelperDock()).Concat(GHelperHeadsets()).Concat(LibratbagMice()).Concat(TuxedoLights());
 
         // ── ASUS mice only G-Helper names (app/Peripherals/Mouse/AsusMouse.cs) ──
 
@@ -163,6 +163,71 @@ namespace PadForge.Common.Input.Peripherals
         {
             int level = Math.Max(Math.Max(R(color), G(color)), B(color));
             return (byte)(level == 0 ? 1 : level / 86 + 2);
+        }
+
+        // ── TUXEDO's lights (tuxedo-drivers src/ite_8291_lb, src/ite_8297) ──
+
+        /// <summary>color_scaling (ite_8291_lb.c:102-119): green and blue at 100/255 on three
+        /// SKUs of 6010, and green at 200/255 on one board, read once.</summary>
+        private static readonly Lazy<(string Sku, string Board)> s_tuxedoMachine =
+            new(() => (HidFamilyDmi.ProductSku() ?? "", AsusAuraCoreLighting.MainboardName() ?? ""));
+
+        internal static (byte G, byte B) LightbarScaled(ushort product, string sku, string board, byte g, byte b)
+        {
+            if (product == 0x6010 && sku is "STEPOL1XA04" or "STELLARIS1XI05" or "STELLARIS17I06")
+                return ((byte)(100 * g / 255), (byte)(100 * b / 255));
+            if (board is "XxAF5xxx" or "XxAF5xxx_mLED") return ((byte)(200 * g / 255), b);
+            return (g, b);
+        }
+
+        /// <summary>ite8291_write_lightbar_mono (ite_8291_lb.c:198-226): the color, then the
+        /// mono mode at full brightness, eight bytes each and each its own report ID.</summary>
+        internal static IEnumerable<PluginStep> TuxedoLightbarPicture(ushort product, int color, string sku, string board)
+        {
+            var (g, b) = LightbarScaled(product, sku, board, G(color), B(color));
+            yield return PluginStep.Feature(new byte[] { 0x14, (byte)(product == 0x7000 ? 0x01 : 0x00), 0x01, R(color), g, b, 0x00, 0x00 });
+            yield return PluginStep.Feature(product == 0x7000
+                ? new byte[] { 0x08, 0x21, 0x01, 0x01, 0x64, 0x01, 0x00, 0x00 }
+                : new byte[] { 0x08, 0x02, 0x01, 0x01, 0x64, 0x08, 0x00, 0x00 });
+        }
+
+        /// <summary>Whether this PC is TUXEDO's, as tuxedo_compatibility_check asks. ITE's 8297
+        /// is also the chip of Gigabyte's motherboard lighting, under the same IDs, and parts
+        /// inside a PC stay out of the direct path, so only TUXEDO's own laptops take this row.</summary>
+        internal static bool IsTuxedo(string manufacturer, string product)
+            => (manufacturer ?? "").Contains("TUXEDO", StringComparison.OrdinalIgnoreCase)
+               || (product ?? "").Contains("TUXEDO", StringComparison.OrdinalIgnoreCase);
+
+        private static readonly Lazy<bool> s_onTuxedo = new(() => IsTuxedo(HidFamilyDmi.Manufacturer(), HidFamilyDmi.ProductName()));
+
+        private static IEnumerable<PluginDevice> TuxedoLights()
+        {
+            foreach (ushort product in new ushort[] { 0x6010, 0x7000 })
+                yield return new PluginDevice
+                {
+                    Name = "TUXEDO Light Bar",
+                    VendorId = 0x048D,
+                    ProductId = product,
+                    Source = "tuxedo-drivers",
+                    Plugin = "src/ite_8291_lb/ite_8291_lb.c",
+                    FeatureLength = 8,
+                    Lights = new[] { Edge(0) },
+                    Slots = 1,
+                    Picture = colors => TuxedoLightbarPicture(product, colors[0], s_tuxedoMachine.Value.Sku, s_tuxedoMachine.Value.Board),
+                };
+            yield return new PluginDevice
+            {
+                Name = "TUXEDO Keyboard Light",
+                VendorId = 0x048D,
+                ProductId = 0x8297,
+                Source = "tuxedo-drivers",
+                Plugin = "src/ite_8297/ite_8297.c",
+                FeatureLength = 64,
+                OnlyWhen = () => s_onTuxedo.Value,
+                Lights = new[] { Zone(0, 1) },
+                Slots = 1,
+                Picture = colors => new[] { PluginStep.Feature(Frame(64, 0xCC, 0xB0, 0x01, 0x01, R(colors[0]), G(colors[0]), B(colors[0]))) },
+            };
         }
 
         // ── ASUS headsets (app/Peripherals/Headset) ──

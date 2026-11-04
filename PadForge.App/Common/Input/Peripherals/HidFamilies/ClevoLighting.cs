@@ -13,6 +13,9 @@ namespace PadForge.Common.Input.Peripherals
     /// (ClevoKeyboardControllerDetect.cpp:60-61): usage page 0xFF03 with
     /// 8-byte feature reports and 65-byte output reports for the 8291, usage
     /// page 0xFF89 usage 0xCC with 6-byte feature reports for the 829x.
+    /// ite8291r3-ctl (ite8291r3.py:9) and tuxedo-drivers (ite_8291.c:899-902) drive the
+    /// same 8291 under three more IDs with the same reports, which take the 8291's
+    /// layout here.
     ///
     /// <para>The lights are the keys of OpenRGB's layouts, built by its
     /// keyboard layout manager in the ISO region its code always passes
@@ -58,6 +61,9 @@ namespace PadForge.Common.Input.Peripherals
         internal const string LayoutFamily = "ClevoKeyboard";
 
         internal const ushort Ite8291Pid = 0x600B;
+
+        /// <summary>The 8291's other IDs.</summary>
+        internal static readonly ushort[] Other8291Pids = { 0x6004, 0x6006, 0x600A };
         internal const ushort Ite829xPid = 0x8910;
 
         /// <summary>The 8291's sizes and commands
@@ -129,11 +135,12 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (collection == null) return null;
             bool ite829x = collection.ProductId == Ite829xPid;
-            if (!ite829x && collection.ProductId != Ite8291Pid) return null;
+            bool other = Array.IndexOf(Other8291Pids, collection.ProductId) >= 0;
+            if (!ite829x && !other && collection.ProductId != Ite8291Pid) return null;
             if (ite829x ? collection.FeatureReportLength < ReportSize829x
                     : collection.FeatureReportLength < ReportSize8291 || collection.OutputReportLength < RowDataSize)
                 return null;
-            var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
+            var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, other ? collection with { ProductId = Ite8291Pid } : collection);
             if (registrations.Count == 0) return null;
             string key;
             if (ite829x) key = LayoutKey(true, null);

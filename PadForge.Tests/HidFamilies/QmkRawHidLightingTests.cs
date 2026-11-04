@@ -43,8 +43,11 @@ namespace PadForge.Tests
                 return true;
             }
 
+            public readonly List<int> ReadWaits = new();
+
             public int ReadInput(byte[] buffer, int timeoutMs)
             {
+                ReadWaits.Add(timeoutMs);
                 if (_next == null) return 0;
                 Array.Copy(_next, buffer, Math.Min(_next.Length, buffer.Length));
                 int length = _next.Length;
@@ -266,6 +269,47 @@ namespace PadForge.Tests
             };
             Assert.Null(QmkRawHidLighting.Begin(blank, _ => { }, "p"));
             Assert.DoesNotContain(blank.Written, w => w[1] == 0x07);
+        }
+
+        /// <summary>A picture's echo is waited for briefly: a board that stops answering must not
+        /// hold the worker for a second a frame, as it may while the session asks at the start.</summary>
+        [Fact]
+        public void APicture_WaitsBrieflyForItsEcho()
+        {
+            var board = Via(0x000D, 0x03);
+            var session = QmkRawHidLighting.Begin(board, _ => { }, "p");
+            board.ReadWaits.Clear();
+            session.Paint(board, _ => { }, session.Map.Lights, new[] { 0xFF0000 });
+            Assert.NotEmpty(board.ReadWaits);
+            Assert.All(board.ReadWaits, ms => Assert.True(ms <= 20));
+        }
+
+        /// <summary>The answer to the version question has to be that question's.</summary>
+        [Fact]
+        public void AnAnswerToAnotherQuestion_IsNoVersion()
+        {
+            var board = Via(0x000D, 0x03);
+            var through = board.Reply;
+            board.Reply = packet =>
+            {
+                var answer = through(packet);
+                if (packet[1] == 0x01) answer[1] = 0x02;
+                return answer;
+            };
+            Assert.Null(QmkRawHidLighting.Begin(board, _ => { }, "p"));
+        }
+
+        /// <summary>A keyboard OpenRGB names that runs neither Vial's RGB nor Keychron's protocol may
+        /// still run VIA.</summary>
+        [Theory]
+        [InlineData(0x20A0, 0x422D)]
+        [InlineData(0x3434, 0x0106)]
+        public void ARowOfOpenRgb_FallsBackToVia(int vendor, int product)
+        {
+            var collection = KeyboardFamilyRig.Collection((ushort)vendor, (ushort)product, 0xFF60, 0x61, iface: 1, output: 33, input: 33);
+            var model = new QmkLighting().Match(collection);
+            Assert.NotNull(model);
+            Assert.IsType<QmkRawHidLighting.ViaSession>(model.Begin(Via(0x000D, 0x03), _ => { }));
         }
 
         /// <summary>A hand-back before any picture has nothing to put back.</summary>

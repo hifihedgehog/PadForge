@@ -549,6 +549,27 @@ namespace PadForge.Tests
             lock (_queried) Assert.Equal(2, _queried.Count);
         }
 
+        /// <summary>The scan's own opener with no access right is
+        /// HidReportChannel.OpenFeatureOnly, which opens nothing in the test
+        /// host (RealHidAccess): a model with an identity check lists
+        /// nothing there, and no string is read from a device of this
+        /// machine.</summary>
+        [Fact]
+        public void TheDefaultStringOpener_OpensNothingInTheTestHost()
+        {
+            Assert.True(RealHidAccess.Refused);
+            var asked = new List<string>();
+            IdentifiedModel(asked);
+            using var backend = new HidLightingBackend(new IHidLightingFamily[] { _family }, Open, _ => Box, Tick,
+                (_, _, _) => true, (_, _, _) => true, ms => Advance(ms), idleTickMs: 5);
+            backend.Start();
+            backend.Rescan(new[] { Collection() });
+            Passes(backend);
+            Assert.Empty(backend.Snapshot.Units);
+            lock (asked) Assert.Empty(asked);
+            Assert.Null(HidReportChannel.OpenFeatureOnly(Collection().Path));
+        }
+
         /// <summary>A model with no identity check reads no strings.</summary>
         [Fact]
         public void AModelWithNoIdentityCheck_ReadsNoStrings()

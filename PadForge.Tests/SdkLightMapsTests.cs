@@ -14,6 +14,19 @@ namespace PadForge.Tests
     /// </summary>
     public class SdkLightMapsTests
     {
+        /// <summary>A keyboard with the per-key feature gets the keys of the LED
+        /// SDK's map, and one with only zones gets the zones.</summary>
+        [Fact]
+        public void AKeyboardsRow_ShowsWhatItsDeviceHas()
+        {
+            var perKey = LogiLedKeys.KeyboardOf(new HidppUnit { RgbFeatureId = 0x8081, PerKeyFeatureId = 0x8081 });
+            var zones = LogiLedKeys.KeyboardOf(new HidppUnit { RgbFeatureId = 0x8070 });
+            Assert.True(perKey.KeyCount > 100);
+            Assert.Equal(0, zones.KeyCount);
+            Assert.NotEmpty(zones.Lights);
+            Assert.Same(LogiLedKeys.MapOf("keyboard"), LogiLedKeys.KeyboardOf(null));
+        }
+
         /// <summary>Each 6 by 22 cell RGB.NET's Razer keyboard mapping names
         /// with a key (RGB.NET.Devices.Razer Generic/LedMappings.cs, its
         /// 8 by 24 grid one row and one column in), as cell:usage, the usage

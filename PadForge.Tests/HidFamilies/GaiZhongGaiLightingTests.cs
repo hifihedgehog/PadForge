@@ -186,6 +186,29 @@ namespace PadForge.Tests
             Assert.Equal(3 + 4 + 2 + 9, session.Map.Lights.Count);
         }
 
+        /// <summary>A hub can hold another count than the one written. The map
+        /// follows what it answers, as OpenRGB's reads its counts back after
+        /// the write (GaiZhongGaiController.cpp:126-145).</summary>
+        [Fact]
+        public void AHub_TakesTheCountsItAnswers_NotTheOnesWritten()
+        {
+            byte[] lengths = { 0x00, 0x03, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0, 0, 0, 0, 0, 0, 0, 0 };
+            var log = new ReportLog();
+            log.InputAnswer = o =>
+            {
+                if (o[1] != 0x87) return null;
+                var answer = new byte[65];
+                answer[1] = o[1];
+                Array.Copy(lengths, 0, answer, 3, 16);
+                return answer;
+            };
+            var io = new ReportLogChannel { Device = log, Path = "hub" };
+            var session = G.Session.Begin(io, G.HubGreen, "p");
+            // The hub stays at its first counts, whatever the write asked.
+            Assert.True(session.SizeStrips(io, _ => { }, new[] { 0, 4 }));
+            Assert.Equal(new[] { 1, 1, 1, 3, 3 }, session.Map.Lights.Select(l => l.Zone));
+        }
+
         /// <summary>The blue hub has eight channels and a lower most, and a board
         /// that is no hub has no strips.</summary>
         [Fact]

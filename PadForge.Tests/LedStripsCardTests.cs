@@ -99,6 +99,65 @@ namespace PadForge.Tests
             Assert.Equal(new double?[] { 0, 12, 0 }, card.Rows.Select(r => r.Leds));
         }
 
+        /// <summary>A card that moved to another device stops listening to the
+        /// last one, or that device's counts would reach this one's rows.</summary>
+        [Fact]
+        public void TheCard_LetsGoOfTheDeviceItLeft()
+        {
+            var left = new DeviceSlotConfig();
+            var card = new LedStripsCardViewModel();
+            card.Attach(left, Map(new LightStrip(1, 48, 0)));
+            card.Attach(new DeviceSlotConfig(), Map(new LightStrip(1, 48, 0)));
+            int raised = 0;
+            card.Rows[0].PropertyChanged += (_, _) => raised++;
+            left.LedStripCounts = "5";
+            Assert.Equal(0, raised);
+            card.Detach();
+            Assert.Empty(card.Rows);
+        }
+
+        /// <summary>The counts go to disk and come back with the rest of a
+        /// device's settings.</summary>
+        [Fact]
+        public void TheCounts_SaveAndLoad()
+        {
+            var build = typeof(PadForge.Services.SettingsService).GetMethod("BuildDeviceSlotConfigData",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+            Assert.NotNull(build);
+            var saved = (DeviceSlotConfigData)build.Invoke(null, new object[]
+            {
+                new DeviceSlotConfig { LedStripCounts = "30,0,12" }, 3, Guid.NewGuid(),
+            });
+            Assert.Equal("30,0,12", saved.LedStripCounts);
+            var loaded = new DeviceSlotConfig { LedStripCounts = "9" };
+            PadForge.Services.SettingsService.ApplyDeviceSlotConfigData(loaded, saved);
+            Assert.Equal("30,0,12", loaded.LedStripCounts);
+            saved.LedStripCounts = null;
+            PadForge.Services.SettingsService.ApplyDeviceSlotConfigData(loaded, saved);
+            Assert.Equal(string.Empty, loaded.LedStripCounts);
+        }
+
+        /// <summary>A copy onto a device with no settings of its own leaves that
+        /// device's counts alone: they describe what is plugged into it. The
+        /// copy's data is left as it came.</summary>
+        [Fact]
+        public void AStandIn_KeepsItsOwnCounts()
+        {
+            var build = typeof(PadForge.Services.SettingsService).GetMethod("BuildDeviceSlotConfigData",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+            var apply = typeof(PadForge.Services.SettingsService).GetMethod("ApplyStandInDeviceSlotConfigData",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+            Assert.NotNull(apply);
+            var source = (DeviceSlotConfigData)build.Invoke(null, new object[]
+            {
+                new DeviceSlotConfig { LedStripCounts = "30" }, 3, Guid.NewGuid(),
+            });
+            var standIn = new DeviceSlotConfig { LedStripCounts = "12,4" };
+            apply.Invoke(null, new object[] { standIn, source });
+            Assert.Equal("12,4", standIn.LedStripCounts);
+            Assert.Equal("30", source.LedStripCounts);
+        }
+
         /// <summary>A count comes back as a new map, and the rows of the same
         /// strips stay, so a box being typed in keeps its focus.</summary>
         [Fact]

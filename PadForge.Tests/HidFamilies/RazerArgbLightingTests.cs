@@ -19,6 +19,25 @@ namespace PadForge.Tests
     [Collection("RazerGuardLog")]
     public class RazerArgbLightingTests
     {
+        /// <summary>Another Razer product's interface 1 is not the controller's,
+        /// so it never teaches the family a page.</summary>
+        [Fact]
+        public void OnlyTheControllersOwnProduct_IsItsArgbInterface()
+        {
+            var collection = new HidCollectionInfo
+            {
+                Path = @"\\?\hid#vid_1532&pid_0f1f&mi_01#7&1&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}",
+                VendorId = 0x1532,
+                ProductId = 0x0F1F,
+                InterfaceNumber = 1,
+                UsagePage = 0x000C,
+                Usage = 1,
+            };
+            Assert.True(RazerArgbLighting.IsArgbInterface(collection));
+            Assert.False(RazerArgbLighting.IsArgbInterface(collection with { ProductId = 0x0084 }));
+            Assert.False(RazerArgbLighting.IsArgbInterface(collection with { VendorId = 0x046D }));
+        }
+
         private static string Packet(byte report, byte channel, string colors)
             => $"00 {report:X2} {channel:X2} {channel:X2} 00 4F " + colors
                + string.Concat(Enumerable.Repeat(" 00", 321 - 6 - colors.Split(' ').Length));

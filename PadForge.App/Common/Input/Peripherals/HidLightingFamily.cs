@@ -368,6 +368,7 @@ namespace PadForge.Common.Input.Peripherals
             SkydimoSerialLighting.Instance,
             BlinkyTapeLighting.Instance,
             HyteMousematLighting.Instance,
+            DreamCheekyLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

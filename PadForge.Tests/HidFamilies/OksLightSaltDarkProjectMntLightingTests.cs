@@ -62,8 +62,51 @@ namespace PadForge.Tests
             Assert.Equal(5, waits[^1]);
             Assert.True(session.HandBack(io, _ => { }));
             Assert.Equal(11, io.Calls.Count);
+            // No serial string: the full board, the model's map.
+            Assert.Null(session.Map);
             Assert.Null(OksKeyboardLighting.Instance.Match(CollectionFor(
                 OpenRgbRegistrations.Of(OksKeyboardLighting.OpenRgbFamily).Single(), output: 9)));
+        }
+
+        /// <summary>A serial string starting with 'B' is the 87-key board: its
+        /// led_kb87_names in a 6 by 17 grid, each color at its row times 21
+        /// plus its column (RGBController_OKSKeyboard.cpp:26-32, 49-52, 71-90,
+        /// 166-218 and 237-247).</summary>
+        [Fact]
+        public void An87KeyBoard_IsToldByItsSerial_AndPutsEachKeyAtItsRowOf21()
+        {
+            Assert.True(OksKeyboardLighting.IsKb87("B1234"));
+            Assert.False(OksKeyboardLighting.IsKb87("A1234"));
+            Assert.False(OksKeyboardLighting.IsKb87("b1234"));
+            Assert.False(OksKeyboardLighting.IsKb87(""));
+            Assert.False(OksKeyboardLighting.IsKb87(null));
+
+            var model = OksKeyboardLighting.Instance.Match(CollectionFor(
+                OpenRgbRegistrations.Of(OksKeyboardLighting.OpenRgbFamily).Single(), output: 65));
+            var io = new FakeReportChannel { OutputReportLength = 65, SerialNumber = "B0001" };
+            var session = model.Begin(io, _ => { });
+            var lights = session.Map.Lights;
+            Assert.EndsWith(":kb87", session.Map.Product);
+            // Escape 0, F1 at column 2, 1 at row 1 column 1, Right Arrow at
+            // row 5 column 16.
+            Assert.Equal(0, lights.Single(l => l.Usage == 0x29).Address);
+            Assert.Equal(2, lights.Single(l => l.Usage == 0x3A).Address);
+            Assert.Equal(22, lights.Single(l => l.Usage == 0x1E).Address);
+            Assert.Equal(121, lights.Single(l => l.Usage == 0x4F).Address);
+            // No number pad: index 102 and on are past zone_sizes_kb87.
+            Assert.DoesNotContain(lights, l => l.Usage == 0x62);
+            Assert.Equal(lights.Count, lights.Select(l => l.Address).Distinct().Count());
+
+            // The frames carry the 126 places: the 1 key's color at place 22,
+            // the second report's eighth place (8 + 14).
+            int before = io.Calls.Count;
+            var colors = Distinct(lights.Count);
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, lights, colors));
+            var reports = Calls(io).Skip(before).Select(c => c.Bytes).ToList();
+            Assert.Equal(9, reports.Count);
+            int one = colors[lights.ToList().FindIndex(l => l.Usage == 0x1E)];
+            Assert.Equal(new byte[] { 22, (byte)(one >> 16), (byte)(one >> 8), (byte)one },
+                reports[1].Skip(5 + 8 * 4).Take(4).ToArray());
         }
     }
 

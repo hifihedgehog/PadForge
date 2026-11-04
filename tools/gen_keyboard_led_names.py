@@ -9,7 +9,7 @@ RGBController/RGBControllerKeyNames.cpp:
 - ZETKeyboardController: led_names, and SKIP_INDICES from the controller.
 - XPGSummonerKeyboardController/RGBController_XPGSummoner.cpp: led_names and
   matrix_map.
-- OKSController/RGBController_OKSKeyboard.cpp: led_names.
+- OKSController/RGBController_OKSKeyboard.cpp: led_names and led_kb87_names.
 - LightSaltController: the keyboard's and the keypad's led_names,
   led_indices and led_deflections.
 - DarkProject: led_names, and packet_map from the controller.
@@ -71,6 +71,8 @@ TABLES = [
      "The Summoner's 6 by 21 grid, each cell the light's index in the frame, matrix_map."),
     ("OksNames", "OKSController/RGBController_OKSKeyboard.cpp", "led_names", "str",
      "The Optical Axis's 6 by 21 names, led_names."),
+    ("OksKb87Names", "OKSController/RGBController_OKSKeyboard.cpp", "led_kb87_names", "str",
+     "The 87-key board's 6 by 17 names, led_kb87_names."),
     ("LightSaltKeyboardNames", "LightSaltController/RGBController_LightSaltKeyboard.cpp", "led_names", "str",
      "The LightSalt keyboard's names, led_names."),
     ("LightSaltKeyboardIndices", "LightSaltController/RGBController_LightSaltKeyboard.cpp", "led_indices", "int",

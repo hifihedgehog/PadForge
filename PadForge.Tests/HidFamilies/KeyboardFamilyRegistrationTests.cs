@@ -108,6 +108,7 @@ namespace PadForge.Tests
                 KeyboardLedNames.OksNames, KeyboardLedNames.LightSaltKeyboardNames, KeyboardLedNames.LightSaltKeypadNames,
                 KeyboardLedNames.DarkProjectNames, KeyboardLedNames.MntReformNames, KeyboardLedNames.MntPocketReformNames,
                 KeyboardLedNames.FnaticFullNames, KeyboardLedNames.FnaticMiniNames, KeyboardLedNames.PoseidonNames,
+                KeyboardLedNames.OksKb87Names, KeyboardLedNames.KeychronNames,
             };
             foreach (var name in tables.SelectMany(t => t).Where(n => !string.IsNullOrEmpty(n)))
             {

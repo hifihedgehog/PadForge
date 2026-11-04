@@ -387,6 +387,36 @@ namespace PadForge.Tests
             Assert.DoesNotContain(calls, c => c.StartsWith("key:"));
         }
 
+        /// <summary>A keyboard lit in zones (NB_KB_4ZONE_RGB) is lit through
+        /// its Lights list, as RGB.NET lights it (AsusKeyboardRGBDevice.cs:93-98
+        /// and AsusUpdateQueue.cs:76-87): its four lights are the keyboard
+        /// path's four zones, beside the keys of a per-key board.</summary>
+        [Fact]
+        public void AZoneKeyboard_IsLitThroughItsLights_AsTheKeyboardPathsZones()
+        {
+            var native = new FakeAura();
+            native.Script = new[]
+            {
+                new AuraDevice(0, AuraLights.NotebookKeyboard4ZoneRgb, "TUF", 4, Array.Empty<ushort>()),
+                new AuraDevice(1, AuraLights.KeyboardRgb, "Strix", 0, new ushort[] { 0x1E }),
+            };
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            using var backend = Backend(native);
+            backend.Start();
+            var frame = new KeyFrame(new Dictionary<ushort, int> { [0x04] = 0xFF0000 },
+                new Dictionary<string, int> { [LightGroups.Zone(3)] = 0x00FF00 }, null, null);
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x00, 0x00, 0xFF, keys: frame);
+            Assert.True(WaitFor(() => native.Count("apply:0") == 1 && native.Count("apply:1") == 1));
+            var calls = native.Calls;
+            Assert.Equal(new[] { "light:0:0:0000FF", "light:0:1:0000FF", "light:0:2:00FF00", "light:0:3:0000FF" },
+                calls.Where(c => c.StartsWith("light:")));
+            Assert.Equal(new[] { "key:1:1E:FF0000" }, calls.Where(c => c.StartsWith("key:")));
+            var map = PeripheralLightMaps.For(Path("keyboard"));
+            Assert.Equal(4, map.ZoneCount);
+            Assert.Equal(AuraLights.KeyboardKeys.Length + 4, map.Lights.Count);
+        }
+
         /// <summary>The last claim going hands every device back with
         /// ReleaseControl (the seam's Close), and the worker goes idle.</summary>
         [Fact]

@@ -43,7 +43,7 @@ namespace PadForge.Common.Input.Peripherals
     /// class made and cast to IAuraSdk2, SwitchMode to take the devices,
     /// Enumerate(0) for every device (AsusDeviceProvider.cs:61-74), each
     /// light colored through its Red, Green and Blue and each device sent
-    /// with Apply (AsusUpdateQueue.cs:158-202), and ReleaseControl(0) to give
+    /// with Apply (AsusUpdateQueue.cs:36-38 and 46-90), and ReleaseControl(0) to give
     /// them back (AsusDeviceProvider.cs:103). The device collection is held
     /// for the session's life, as RGB.NET holds it against an access
     /// violation inside the SDK (AsusDeviceProvider.cs:37).

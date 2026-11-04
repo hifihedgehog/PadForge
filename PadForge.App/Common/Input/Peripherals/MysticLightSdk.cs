@@ -24,7 +24,7 @@ namespace PadForge.Common.Input.Peripherals
         int Initialize();
 
         /// <summary>MLAPI_GetDeviceInfo: each device type and its LED count,
-        /// which the SDK hands back as strings (RGB.NET _MsiSDK.cs:342-352).</summary>
+        /// which the SDK hands back as strings (RGB.NET _MsiSDK.cs:214-224).</summary>
         int GetDeviceInfo(out string[] types, out string[] ledCounts);
 
         int GetLedStyle(string type, int index, out string style);
@@ -46,7 +46,7 @@ namespace PadForge.Common.Input.Peripherals
     /// <summary>
     /// The Mystic Light SDK library, MysticLight_SDK, loaded by its path
     /// and called through its exports as RGB.NET.Devices.Msi calls them
-    /// (Native/_MsiSDK.cs:158-190 and 253-337, Cdecl, BSTR strings, SAFEARRAY
+    /// (Native/_MsiSDK.cs:30-62 and 125-209, Cdecl, BSTR strings, SAFEARRAY
     /// lists of BSTR) and as MSI's own sample declares them
     /// (MysticLight_Test(C#).cs:37-70).
     ///

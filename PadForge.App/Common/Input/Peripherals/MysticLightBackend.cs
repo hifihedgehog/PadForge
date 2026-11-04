@@ -7,7 +7,7 @@ namespace PadForge.Common.Input.Peripherals
     /// <summary>
     /// The MSI Mystic Light SDK worker (#557 item 11). While MSI's Mystic
     /// Light runs (<see cref="VendorPrograms.MsiMysticLight"/>, the process
-    /// Aurora waits for before it opens the SDK: Aurora MsiDevice.cs:69-73),
+    /// Aurora waits for before it opens the SDK: Aurora MsiDevice.cs:22-26),
     /// the MSI devices it lights are lit through its SDK, LED by LED.
     ///
     /// <para>Paths. The SDK names a device by a type string and numbers its
@@ -20,9 +20,9 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>Each LED is set to the "Steady" style once, before its first
     /// color, as RGB.NET sets it so that the LED shows a color it is given
-    /// (MsiMainboardRGBDevice.cs:36-40, the same in the graphics card and
+    /// (MsiMainboardRGBDevice.cs:36-41, the same in the graphics card and
     /// mouse devices), and is then colored with MLAPI_SetLedColor
-    /// (MsiDeviceUpdateQueue.cs:413-414). Only LEDs whose color changed are
+    /// (MsiDeviceUpdateQueue.cs:41-42). Only LEDs whose color changed are
     /// sent again.</para>
     ///
     /// <para>Hand-back. Before it changes an LED the worker reads its style

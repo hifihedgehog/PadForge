@@ -22,7 +22,7 @@ namespace PadForge.Common.Input.Peripherals
     /// back to Armoury Crate's own lighting.</para>
     ///
     /// <para>Each device is sent with one Apply after its lights are set,
-    /// as RGB.NET sends it (AsusUpdateQueue.cs:202). A device whose lights
+    /// as RGB.NET sends it (AsusUpdateQueue.cs:90). A device whose lights
     /// did not change is not sent. Within a device only the lights whose
     /// color changed are set again, and the first picture of a session
     /// sets every one.</para>

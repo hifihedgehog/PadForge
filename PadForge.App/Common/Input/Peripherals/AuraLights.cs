@@ -18,14 +18,14 @@ namespace PadForge.Common.Input.Peripherals
     /// Keyboard/AsusKeyboardLedMapping.cs), addressed by the Aura key code,
     /// which IAuraSyncKeyboard.Key takes. A keyboard lit in zones
     /// (KEYBOARD_5ZONE_RGB, NB_KB_4ZONE_RGB) is lit through its Lights
-    /// list, as RGB.NET lights it (AsusKeyboardRGBDevice.cs:410-415), so
+    /// list, as RGB.NET lights it (AsusKeyboardRGBDevice.cs:69 and 93-98), so
     /// once the session has read the devices the path also carries one
     /// zone light per index of the longest such list, at
     /// <see cref="ZoneBase"/> plus the index. Every other path carries one
     /// zone per index of the longest Lights list among its devices, as
     /// RGB.NET lights each light of a mainboard, a graphics card or any
-    /// other device as one LED (AsusMainboardRGBDevice.cs:575-580,
-    /// AsusUnspecifiedRGBDevice.cs:307-312). Two devices of one path show
+    /// other device as one LED (AsusMainboardRGBDevice.cs:31-33,
+    /// AsusUnspecifiedRGBDevice.cs:40-42). Two devices of one path show
     /// the same colors at the same index.</para>
     /// </summary>
     internal static partial class AuraLights
@@ -38,7 +38,7 @@ namespace PadForge.Common.Input.Peripherals
         internal static readonly string[] Categories =
             { "keyboard", "mouse", "headset", "mainboard", "strip", "vga", "dram", "other" };
 
-        // AsusDeviceType (RGB.NET.Devices.Asus Enum/AsusDeviceType.cs:7-25).
+        // AsusDeviceType (RGB.NET.Devices.Asus Enum/AsusDeviceType.cs:7-26).
         internal const uint MbRgb = 0x10000;
         internal const uint MbAddressable = 0x11000;
         internal const uint VgaRgb = 0x20000;
@@ -69,8 +69,8 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Whether a type is lit key by key through
         /// IAuraSyncKeyboard.Key, as RGB.NET writes KEYBOARD_RGB and
-        /// NB_KB_RGB (AsusUpdateQueue.cs:162-176). Every other type is lit
-        /// through its Lights list (AsusUpdateQueue.cs:188-199).</summary>
+        /// NB_KB_RGB (AsusUpdateQueue.cs:50-73). Every other type is lit
+        /// through its Lights list (AsusUpdateQueue.cs:76-87).</summary>
         internal static bool PerKey(uint type) => type == KeyboardRgb || type == NotebookKeyboardRgb;
 
         private static readonly Lazy<LightMap> s_keyboard = new(() => BuildKeyboard(0));

@@ -220,7 +220,14 @@ namespace PadForge.Common.Input.Peripherals
                 LightRenderer.Fill(want.Rgb, want.Keys));
         }
 
-        private void Report(BackendState state) => PeripheralOutputs.SetBackendState(Family, state);
+        /// <summary>The worker's state for the tabs. A worker whose run has
+        /// ended reports nothing: Stop reports Idle after it, and a worker
+        /// left inside the SDK by a Stop that timed out must not report
+        /// over that, or over the run after it.</summary>
+        private void Report(Run run, BackendState state)
+        {
+            if (!run.Ended) PeripheralOutputs.SetBackendState(Family, state);
+        }
 
         private void Loop(Run run, Thread previous)
         {
@@ -244,9 +251,9 @@ namespace PadForge.Common.Input.Peripherals
                     var presence = PeripheralOutputs.Presence;
                     if (wanted.Count == 0)
                     {
-                        if (open) CloseSession(ref open, sent);
+                        if (open) CloseSession(run, ref open, sent);
                         failureLogged = null;
-                        Report(BackendState.Idle);
+                        Report(run, BackendState.Idle);
                         Wait(_pollMs);
                         continue;
                     }
@@ -254,9 +261,9 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         // The program went away: its SDK goes with it, and
                         // the session ends with what can still be sent.
-                        if (open) CloseSession(ref open, sent);
+                        if (open) CloseSession(run, ref open, sent);
                         failureLogged = null;
-                        Report(BackendState.Waiting);
+                        Report(run, BackendState.Waiting);
                         Wait(_pollMs);
                         continue;
                     }
@@ -264,7 +271,7 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         if (Environment.TickCount64 < retryAt)
                         {
-                            Report(BackendState.Waiting);
+                            Report(run, BackendState.Waiting);
                             Wait(_pollMs);
                             continue;
                         }
@@ -276,7 +283,7 @@ namespace PadForge.Common.Input.Peripherals
                                 PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL {LogName} open failed: {detail}");
                             }
                             retryAt = Environment.TickCount64 + _retryMs;
-                            Report(BackendState.Waiting);
+                            Report(run, BackendState.Waiting);
                             Wait(_pollMs);
                             continue;
                         }
@@ -288,9 +295,9 @@ namespace PadForge.Common.Input.Peripherals
                         {
                             var map = SessionMap(category) ?? StaticMap(category);
                             maps[category] = map;
-                            PeripheralLightMaps.Publish(PathOf(category), map);
+                            if (!run.Ended) PeripheralLightMaps.Publish(PathOf(category), map);
                         }
-                        Report(BackendState.Connected);
+                        Report(run, BackendState.Connected);
                         PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL {LogName} session open");
                     }
 
@@ -329,9 +336,9 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         // The program stopped answering: the session ends,
                         // and a new one opens after the retry interval.
-                        CloseSession(ref open, sent);
+                        CloseSession(run, ref open, sent);
                         retryAt = Environment.TickCount64 + _retryMs;
-                        Report(BackendState.Waiting);
+                        Report(run, BackendState.Waiting);
                     }
                     Wait(_pollMs);
                 }
@@ -342,18 +349,22 @@ namespace PadForge.Common.Input.Peripherals
             }
             finally
             {
-                if (open) CloseSession(ref open, sent);
+                if (open) CloseSession(run, ref open, sent);
                 run.Released.Set();
             }
         }
 
-        private void CloseSession(ref bool open, Dictionary<string, SdkPicture> sent)
+        /// <summary>Ends the session. The paths' maps go back to what is
+        /// known before the SDK is opened, unless the run has ended, when
+        /// Stop takes them down.</summary>
+        private void CloseSession(Run run, ref bool open, Dictionary<string, SdkPicture> sent)
         {
             try { Close(); } catch { }
             open = false;
             sent.Clear();
-            foreach (string category in Categories)
-                PeripheralLightMaps.Publish(PathOf(category), StaticMap(category));
+            if (!run.Ended)
+                foreach (string category in Categories)
+                    PeripheralLightMaps.Publish(PathOf(category), StaticMap(category));
             PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL {LogName} handed back");
         }
 

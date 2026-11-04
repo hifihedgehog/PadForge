@@ -124,6 +124,7 @@ namespace PadForge.Common.Input.Peripherals
             OutputFamily.GameSenseColor => "SteelSeries GG",
             OutputFamily.AuraSdkType => VendorPrograms.ArmouryCrate.Name,
             OutputFamily.MysticLightType => VendorPrograms.MsiMysticLight.Name,
+            OutputFamily.IcueDevice => VendorPrograms.CorsairIcue.Name,
             _ => null,
         };
 

@@ -200,6 +200,7 @@ namespace PadForge.Tests
         private const string AuraCore = Input + "Peripherals/HidFamilies/AsusAuraCoreLighting.cs";
         private const string OpenRgb = Input + "Peripherals/OpenRgbClient.cs";
         private const string OpenRgbPort = Input + "Peripherals/OpenRgbServerPort.cs";
+        private const string Icue = Services + "IcueSdkNative.cs";
 
         private const string RefusesHost = "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(host))";
         private const string VendorRefuses = "if (PadForge.Engine.Common.VendorProgramGate.Refuses";
@@ -234,6 +235,7 @@ namespace PadForge.Tests
             (AuraCore, "AsusAuraCoreLighting"),
             (OpenRgb, "OpenRgbTcpLink"),
             (OpenRgbPort, "OpenRgbServerPort"),
+            (Icue, "IcueSdkNative"),
         };
 
         private const string Flag = "OffLimitsForTest";
@@ -276,6 +278,7 @@ namespace PadForge.Tests
             Assert.True(PadForge.Common.Input.Peripherals.AsusAuraCoreLighting.OffLimitsForTest);
             Assert.True(OpenRgbTcpLink.OffLimitsForTest);
             Assert.True(OpenRgbServerPort.OffLimitsForTest);
+            Assert.True(IcueSdkNative.OffLimitsForTest);
         }
 
         /// <summary>Each flag is a plain field that starts false, and no
@@ -476,6 +479,8 @@ namespace PadForge.Tests
             new object[] { OpenRgbPort, "internal static int Find()", "if (OffLimitsForTest) return OpenRgbProtocol.DefaultPort;" },
             new object[] { OpenRgbPort, "internal static string ReadSettings(string path)", "if (OffLimitsForTest) return null;" },
             new object[] { OpenRgbPort, "internal static string CommandLineOf(uint processId)", "if (OffLimitsForTest) return null;" },
+            // Corsair iCUE's SDK library (#557).
+            new object[] { Icue, "public bool TryLoad(out string detail)", "if (OffLimitsForTest || PadForge.Engine.Common.VendorProgramGate.Refuses)" },
 
             // Steam.
             new object[] { SteamHttpFile, "private static HttpClient CreateClient()", "var http = OffLimitsForTest ? new HttpClient(new SendsNothing()) : new HttpClient();" },
@@ -714,9 +719,9 @@ namespace PadForge.Tests
 
         /// <summary>A library of another vendor's is loaded by its path in
         /// nine places. Logitech's four, Mad Catz's one (#519), Force
-        /// Dimension's one (#521) and MSI's Mystic Light library (#557) ask
-        /// the vendor gate. The two VR runtimes ask theirs
-        /// (VrRuntimeOffLimitsTests).</summary>
+        /// Dimension's one (#521), MSI's Mystic Light library and Corsair's
+        /// one (#557) ask the vendor gate, Corsair's behind a fence of its own
+        /// too. The two VR runtimes ask theirs (VrRuntimeOffLimitsTests).</summary>
         [Fact]
         public void EveryLibraryLoadedByPath_IsOnTheList()
             => Assert.Equal(Map(
@@ -728,6 +733,7 @@ namespace PadForge.Tests
                 (Strike7, 1),
                 (ForceDimension, 1),
                 (MysticLight, 1),
+                (Icue, 1),
                 ("PadForge.Engine/Common/OpenXr/OpenXrSession.cs", 1)),
                 FenceSource.Census(@"NativeLibrary\.(Try)?Load\(|\bLoadLibrary(Ex)?[AW]?\(", callsOnly: true));
 

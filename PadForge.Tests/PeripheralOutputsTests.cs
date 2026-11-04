@@ -91,19 +91,19 @@ namespace PadForge.Tests
             {
                 OutputFamily.HidppUnit, OutputFamily.RazerUnit, OutputFamily.SteelSeriesUnit,
                 OutputFamily.LampArrayUnit, OutputFamily.TouchSenseUnit, OutputFamily.HidLightingUnit,
-                OutputFamily.OpenRgbDevice,
+                OutputFamily.OpenRgbDevice, OutputFamily.WootingRgbSdk,
             };
             var shared = new[]
             {
                 OutputFamily.ChromaCategory, OutputFamily.LedSdkType, OutputFamily.GameSenseColor,
                 OutputFamily.GameSenseTactile, OutputFamily.Interhaptics,
-                OutputFamily.AuraSdkType, OutputFamily.MysticLightType,
+                OutputFamily.AuraSdkType, OutputFamily.MysticLightType, OutputFamily.IcueDevice,
             };
             Assert.All(direct, family => Assert.False(new OutputPath(family, "k").Shared));
             Assert.All(shared, family => Assert.True(new OutputPath(family, "k").Shared));
             Assert.Equal(Enum.GetValues(typeof(OutputFamily)).Cast<OutputFamily>().OrderBy(f => f),
                 direct.Concat(shared).OrderBy(f => f));
-            Assert.Throws<ArgumentOutOfRangeException>(() => { _ = new OutputPath((OutputFamily)14, "k").Shared; });
+            Assert.Throws<ArgumentOutOfRangeException>(() => { _ = new OutputPath((OutputFamily)16, "k").Shared; });
         }
 
         [Fact]

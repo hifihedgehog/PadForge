@@ -62,6 +62,12 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>One kind of MSI device through the Mystic Light SDK
         /// while Mystic Light runs (#557).</summary>
         MysticLightType,
+        /// <summary>A Corsair device type through the iCUE SDK while iCUE
+        /// runs, every device of that type at once, LED by LED (#557).</summary>
+        IcueDevice,
+        /// <summary>One Wooting keyboard through the RGB SDK's reports beside
+        /// Wootility while it runs, key by key (#557).</summary>
+        WootingRgbSdk,
     }
 
     /// <summary>Where a backend stands, for the device tabs.</summary>
@@ -101,7 +107,9 @@ namespace PadForge.Common.Input.Peripherals
                 or OutputFamily.OpenRgbDevice => false,
             OutputFamily.ChromaCategory or OutputFamily.LedSdkType or OutputFamily.GameSenseColor
                 or OutputFamily.GameSenseTactile or OutputFamily.Interhaptics
-                or OutputFamily.AuraSdkType or OutputFamily.MysticLightType => true,
+                or OutputFamily.AuraSdkType or OutputFamily.MysticLightType
+                or OutputFamily.IcueDevice => true,
+            OutputFamily.WootingRgbSdk => false,
             _ => throw new ArgumentOutOfRangeException(nameof(Family)),
         };
     }

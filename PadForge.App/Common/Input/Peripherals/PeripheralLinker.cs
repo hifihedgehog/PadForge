@@ -40,6 +40,11 @@ namespace PadForge.Common.Input.Peripherals
         /// Light service (<see cref="MysticLightNative.FindLibrary"/>, #557).</summary>
         public bool MsiMysticLightSdk { get; init; }
 
+        /// <summary>The iCUE SDK's client library is found, so a Corsair
+        /// device is lit through iCUE while it runs (#557,
+        /// <see cref="PadForge.Services.IcueSdkNative.FindLibrary"/>).</summary>
+        public bool CorsairIcueSdk { get; init; }
+
         /// <summary>The Chroma SDK runtime Synapse installs, which Colore's
         /// native layer loads by this name.</summary>
         internal const string ChromaRuntimeDll = "RzChromaSDK64.dll";
@@ -122,10 +127,15 @@ namespace PadForge.Common.Input.Peripherals
             try { mysticLight = MysticLightNative.FindLibrary() != null; }
             catch { }
 
+            bool icue = false;
+            try { icue = PadForge.Services.IcueSdkNative.FindLibrary() != null; }
+            catch { }
+
             return new PeripheralPresence(ledSdk, false, synapse, gg, PlatformSupport.SensaAvailable)
             {
                 AsusAuraSdk = aura,
                 MsiMysticLightSdk = mysticLight,
+                CorsairIcueSdk = icue,
             };
         }
 
@@ -794,6 +804,8 @@ namespace PadForge.Common.Input.Peripherals
                         // its own once the program is closed
                         // (directWhenClosed). With no such path the device
                         // is left to the program (leftToProgram below).
+                        IcueRoute.AddShared(shared, holder, presence, row);
+                        WootingRgbSdkRoute.AddShared(shared, holder, direct, row);
                     }
 
                     // The family is chosen as if every unit answered, and

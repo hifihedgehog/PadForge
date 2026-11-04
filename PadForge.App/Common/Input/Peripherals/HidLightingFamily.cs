@@ -406,6 +406,12 @@ namespace PadForge.Common.Input.Peripherals
             MsiMonitorLighting.Instance,
             MsiOptixLighting.Instance,
             ViewSonicMonitorLighting.Instance,
+            RazerKrakenLighting.Instance,
+            RazerKrakenV3Lighting.Instance,
+            RazerKrakenV4Lighting.Instance,
+            RazerHanboLighting.Instance,
+            RazerArgbLighting.Instance,
+            RazerChargingPadLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

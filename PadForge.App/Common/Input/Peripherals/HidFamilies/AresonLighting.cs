@@ -22,9 +22,8 @@ namespace PadForge.Common.Input.Peripherals
     /// 0xFF (lines 116-124, RGBController_Areson.cpp:38-46), and its speed
     /// has no value (GetSpeedValue, AresonController.cpp:51-77).</para>
     ///
-    /// <para>OpenRGB marks every mode as one the mouse saves on its own
-    /// ("@save :x:" for a Save button it lacks, and
-    /// MODE_FLAG_AUTOMATIC_SAVE on every mode,
+    /// <para>OpenRGB offers no Save for these mice ("@save :x:") and marks
+    /// every mode as one the mouse saves on its own (MODE_FLAG_AUTOMATIC_SAVE,
     /// RGBController_Areson.cpp:16-121), so every picture lands in the
     /// mouse's memory. A changed picture is held and pictures are spaced as
     /// the Lenovo Gen 10 keyboard's stored writes are

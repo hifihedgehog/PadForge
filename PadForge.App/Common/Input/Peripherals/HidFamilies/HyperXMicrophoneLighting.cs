@@ -40,7 +40,7 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>Hand-back: none. OpenRGB's Shutdown sends nothing, and
     /// SignalRGB's plugin sends a last color the user picks
-    /// (signal-plugins HyperX_Quadcast_S.js). When the frames stop the
+    /// (signal-plugins HyperX_Quadcast_S.js:53-55). When the frames stop the
     /// microphone is taken to go back to the lighting it stores, as the
     /// keep-alive implies. That has not been seen on a device.</para>
     /// </summary>

@@ -408,6 +408,8 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     var frame = Frame(20, 0x13, 0x88, 0x01, 0x00, 0x23);
                     PutRgb(frame, 5, colors[0]);
+                    // CalculateCrc means this sum. Its loop runs past the plugin's short array, so
+                    // its own result comes out 0, and a firmware that ignores the byte takes either.
                     int sum = 0;
                     for (int i = 0; i < 19; i++) sum += frame[i];
                     frame[19] = (byte)sum;
@@ -451,11 +453,13 @@ namespace PadForge.Common.Input.Peripherals
 
         private static IEnumerable<PluginDevice> AlienwareMonitorsGen1()
         {
-            foreach (var (name, pid) in new (string, ushort)[]
+            foreach (var (name, pid, lights) in new (string, ushort, LightInfo[])[]
             {
-                ("Alienware AW3418DW", 0x274A),
-                ("Alienware AW3418HW", 0x274B),
-                ("Alienware AW2518H", 0x274C),
+                // The back, the stand, the bottom and the switch, each its LED's bit.
+                ("Alienware AW3418DW", 0x274A, new[] { Edge(0), Edge(1), Edge(2), Status(3) }),
+                ("Alienware AW3418HW", 0x274B, new[] { Edge(0), Edge(1), Edge(2), Status(3) }),
+                // The back logo alone (Alienware_Monitor_Gen1_Controller.js:204-209).
+                ("Alienware AW2518H", 0x274C, new[] { Logo(0) }),
             })
                 yield return new PluginDevice
                 {
@@ -468,9 +472,8 @@ namespace PadForge.Common.Input.Peripherals
                     UsagePage = 0xFF00,
                     Usage = 0x0001,
                     OutputLength = 65,
-                    // The back, the stand, the bottom and the switch, each its LED's bit.
-                    Lights = new[] { Edge(0), Edge(1), Edge(2), Status(3) },
-                    Slots = 4,
+                    Lights = lights,
+                    Slots = lights.Length,
                     RepaintMs = AlienwareMonitorRepaintMs,
                     Start = new[] { PluginStep.Output(FilledFrame(0x95, 0x00, 0x00, 0x00)) },
                     Picture = AlienwareGen1Picture,
@@ -489,7 +492,7 @@ namespace PadForge.Common.Input.Peripherals
 
         internal static IEnumerable<PluginStep> AlienwareGen1Picture(int[] colors)
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < colors.Length; i++)
                 yield return PluginStep.Output(FilledFrame(0x92, 0x48, 0x05, 0x00, 0x04, (byte)(1 << i), R(colors[i]), G(colors[i]), B(colors[i])));
         }
 
@@ -634,6 +637,8 @@ namespace PadForge.Common.Input.Peripherals
                 FeatureLength = 642,
                 BuildLights = () => PluginKeyNames.Lights(board.Table()),
                 Slots = 256,
+                // setSoftwareMode, "Direct Mode" in the plugin.
+                Start = new[] { PluginStep.Feature(Frame(642, 0x00, 0x4B)) },
                 Picture = colors =>
                 {
                     var leds = board.Table().Indexes;

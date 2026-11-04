@@ -515,7 +515,9 @@ namespace PadForge.Tests
         public void TheAw2725df_HasNoLightAtTheBitItLacks()
         {
             var d = Device(0x187C, 0x1014);
-            Assert.Equal(new[] { 0, 1, 3 }, d.Lights.Select(l => l.Address));
+            Assert.Equal(new[] { 0, 1, 2 }, d.Lights.Select(l => l.Address));
+            var bits = d.Picture(new[] { 1, 2, 3 }).Select(s => s.Bytes[9]);
+            Assert.Equal(new byte[] { 1, 2, 8 }, bits);
         }
 
         // ── SteelSeries ──

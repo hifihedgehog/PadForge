@@ -268,6 +268,17 @@ namespace PadForge.Tests
             Assert.DoesNotContain(blank.Written, w => w[1] == 0x07);
         }
 
+        /// <summary>A hand-back before any picture has nothing to put back.</summary>
+        [Fact]
+        public void AHandBackBeforeAPicture_SendsNothing()
+        {
+            var board = Via(0x000D, 0x03);
+            var session = QmkRawHidLighting.Begin(board, _ => { }, "p");
+            board.Written.Clear();
+            Assert.True(session.HandBack(board, _ => { }));
+            Assert.Empty(board.Written);
+        }
+
         /// <summary>A value that holds the byte asked with is told by the second byte.</summary>
         [Fact]
         public void AValueThatHoldsTheProbe_IsStillSeen()
@@ -360,7 +371,7 @@ namespace PadForge.Tests
         {
             Assert.Null(QmkRawHidLighting.Begin(null, _ => { }, "p"));
             Assert.Null(QmkRawHidLighting.Begin(new Board { Reply = _ => null }, _ => { }, "p"));
-            Assert.Null(QmkRawHidLighting.Begin(Via(0x0008), _ => { }, "p"));
+            Assert.Null(QmkRawHidLighting.Begin(Via(0x0008, 0x80, 0x81, 0x83), _ => { }, "p"));
             var other = new Board();
             other.Reply = packet =>
             {

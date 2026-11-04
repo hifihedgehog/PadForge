@@ -125,7 +125,8 @@ namespace PadForge.Common.Input.Peripherals
                     ProductId = pid,
                     Plugin = "Corsair/Void_HeadSets/" + plugin,
                     Interface = 3,
-                    UsagePage = 0xFFC5,
+                    // This model's plugin takes page FF00 as well.
+                    UsagePage = pid == 0x0A14 ? OpenRgbRegistration.Any : 0xFFC5,
                     Usage = 0x0001,
                     OutputLength = 20,
                     // The left and the right can.
@@ -497,7 +498,10 @@ namespace PadForge.Common.Input.Peripherals
                 KeepAliveMs = 5000,
                 Start = new[]
                 {
+                    // sendPacketString reads its index as hexadecimal, so the plugin's bytes past
+                    // the tenth land from byte 16.
                     PluginStep.Output(Frame(64, 0x00, 0xFE, 0x01, 0x00, 0x00, 0x00, 0x09, 0x08, 0x02, 0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                         0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF)),
                     PluginStep.Output(Frame(64, 0x00, 0xFE, 0x02, 0x00, 0x00, 0x01)),
                     // The plugin's keep-alive report (GetBatteryStatus).
@@ -668,30 +672,28 @@ namespace PadForge.Common.Input.Peripherals
 
         // ── NZXT Function keyboards (Nzxt/Peripheral Protocol/*.js) ──
 
-        /// <summary>Which of the three boards' fixed bytes a keyboard takes.</summary>
-        internal enum FunctionBoard { Full, MiniTkl, TklIso }
-
         private static IEnumerable<PluginDevice> NzxtFunction()
         {
             const string Folder = "Nzxt/Peripheral Protocol/";
-            foreach (var (name, pid, plugin, board) in new (string, ushort, string, FunctionBoard)[]
+            // setISO and setMTKL (NZXT_Function_Keyboard.js:121-127).
+            foreach (var (name, pid, iso, mini) in new (string, ushort, bool, bool)[]
             {
-                ("NZXT Function", 0x2103, "NZXT_Function_Keyboard.js", FunctionBoard.Full),
-                ("NZXT Function", 0x2106, "NZXT_Function_Keyboard.js", FunctionBoard.Full),
-                ("NZXT Function MiniTKL", 0x2105, "NZXT_Function_Keyboard.js", FunctionBoard.MiniTkl),
-                ("NZXT Function MiniTKL", 0x2108, "NZXT_Function_Keyboard.js", FunctionBoard.MiniTkl),
-                ("NZXT Function TKL", 0x2107, "NZXT_Function_Keyboard.js", FunctionBoard.TklIso),
-                ("NZXT Function TKL", 0x2104, "NZXT_Function_Keyboard.js", FunctionBoard.Full),
-                ("NZXT Function 2", 0x2130, "NZXT_Function_Keyboard.js", FunctionBoard.Full),
-                ("NZXT Function 2", 0x2131, "NZXT_Function_Keyboard.js", FunctionBoard.TklIso),
-                ("NZXT Function 2", 0x2136, "NZXT_Function_Keyboard.js", FunctionBoard.Full),
+                ("NZXT Function", 0x2103, false, false),
+                ("NZXT Function", 0x2106, false, false),
+                ("NZXT Function MiniTKL", 0x2105, false, true),
+                ("NZXT Function MiniTKL", 0x2108, true, true),
+                ("NZXT Function TKL", 0x2107, true, false),
+                ("NZXT Function TKL", 0x2104, false, false),
+                ("NZXT Function 2", 0x2130, false, false),
+                ("NZXT Function 2", 0x2131, true, false),
+                ("NZXT Function 2", 0x2136, false, false),
             })
                 yield return new PluginDevice
                 {
                     Name = name,
                     VendorId = 0x1E71,
                     ProductId = pid,
-                    Plugin = Folder + plugin,
+                    Plugin = Folder + "NZXT_Function_Keyboard.js",
                     Interface = 1,
                     OutputLength = 65,
                     Lights = Zones(10),
@@ -704,10 +706,10 @@ namespace PadForge.Common.Input.Peripherals
                         PluginStep.Output(Frame(64, 0x43, 0x82, 0x00, 0x41, 0x64)),
                         PluginStep.Output(Frame(64, 0x43, 0x97, 0x00, 0x10, 0x01)),
                     },
-                    Picture = colors => FunctionPicture(colors, board),
+                    Picture = colors => FunctionPicture(colors, iso, mini),
                     AskVariant = (io, _, _) =>
                     {
-                        Func<int[], IEnumerable<PluginStep>> picture = colors => FunctionPicture(colors, board);
+                        Func<int[], IEnumerable<PluginStep>> picture = colors => FunctionPicture(colors, iso, mini);
                         if (FunctionFirmwareIsNew(io)) picture = FunctionNewPicture;
                         return new PluginVariant(Zones(10), 10, picture);
                     },
@@ -743,10 +745,10 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Four reports that carry a keyboard's ten zones between fixed
         /// bytes, each zone's color 22 bytes on from the last.</summary>
-        internal static IEnumerable<PluginStep> FunctionPicture(int[] colors, FunctionBoard board)
+        internal static IEnumerable<PluginStep> FunctionPicture(int[] colors, bool iso, bool mini)
         {
             var one = Frame(65, 0x43, 0xBD, 0x03, 0x10, 0x01, 0x01, 0x00, 0x03, 0x00, 0x03, 0x00, 0x03, 0x00,
-                board == FunctionBoard.TklIso ? (byte)0x03 : (byte)0x01, 0x00, 0x03);
+                iso ? (byte)0x03 : (byte)0x01, 0x00, 0x03);
             foreach (var (at, value) in new (int, byte)[]
             {
                 (0x1A, 0x01), (0x1B, 0x06), (29, 0x0C), (31, 0x0C), (33, 0x0C), (35, 0x0C), (37, 0x04), (48, 0x01),
@@ -770,9 +772,9 @@ namespace PadForge.Common.Input.Peripherals
             foreach (var (at, value) in new (int, byte)[]
             {
                 (0x0E, 0x01), (0x10, 0x40), (0x18, 0x40), (0x1A, 0x40), (0x1B, 0x08), (0x1C, 0x43), (0x1D, 0x08), (0x1E, 0x40),
-                (0x24, 0x01), (0x26, board == FunctionBoard.MiniTkl ? (byte)0xF0 : (byte)0x30), (0x28, 0x40),
-                (0x2A, board == FunctionBoard.MiniTkl ? (byte)0xE0 : (byte)0x60),
-                (0x2C, board == FunctionBoard.TklIso ? (byte)0x70 : (byte)0x60), (0x2E, 0x20), (0x30, 0x34),
+                (0x24, 0x01), (0x26, mini ? (byte)0xF0 : (byte)0x30), (0x28, 0x40),
+                (0x2A, mini ? (byte)0xE0 : (byte)0x60),
+                (0x2C, iso ? (byte)0x70 : (byte)0x60), (0x2E, 0x20), (0x30, 0x34),
                 (58, 0x01), (60, 0x0E), (62, 0x1C),
             })
                 three[at] = value;
@@ -1177,6 +1179,7 @@ namespace PadForge.Common.Input.Peripherals
             var third = new byte[65];
             Array.Fill(third, (byte)0xFF);
             new byte[] { 0x14, 0x2C, 0x0A, 0x00, 0xFF, 0x64 }.CopyTo(third, 0);
+            third[64] = 0x00;
             yield return new PluginDevice
             {
                 Name = "Mountain Macropad",
@@ -1529,35 +1532,34 @@ namespace PadForge.Common.Input.Peripherals
                 Programs = new[] { VendorPrograms.AlienwareCommandCenter },
                 Picture = Alienware15Picture,
             };
-            foreach (var (name, pid, plugin) in new[]
+            // Each light's bit, by the plugin's Leds (Alienware_Monitor_Gen2_Controller.js:196-228).
+            foreach (var (name, pid, bits, lights) in new[]
             {
-                ("Alienware AW3423DW", (ushort)0x100B, "Alienware/Alienware_Monitor_Gen2_Controller.js"),
-                ("Alienware AW3821DW", (ushort)0x1008, "Alienware/Alienware_Monitor_Gen2_Controller.js"),
-                ("Alienware AW2725DF", (ushort)0x1014, "Alienware/Alienware_Monitor_Gen2_Controller.js"),
+                ("Alienware AW3423DW", (ushort)0x100B, new byte[] { 1, 2, 4, 8 }, new[] { Edge(0), Edge(1), Logo(2), Status(3) }),
+                ("Alienware AW3821DW", (ushort)0x1008, new byte[] { 4, 2, 1, 8 }, new[] { Edge(0), Edge(1), Logo(2), Status(3) }),
+                ("Alienware AW2725DF", (ushort)0x1014, new byte[] { 1, 2, 8 }, new[] { Logo(0), Edge(1), Status(2) }),
             })
                 yield return new PluginDevice
                 {
                     Name = name,
                     VendorId = 0x187C,
                     ProductId = pid,
-                    Plugin = plugin,
+                    Plugin = "Alienware/Alienware_Monitor_Gen2_Controller.js",
                     Interface = 0,
                     UsagePage = 0xFF00,
                     Usage = 0x0001,
                     OutputLength = 65,
                     // The middle light, the big back light, the back logo and the
                     // switch. The AW2725DF has the logo, the number and the switch.
-                    Lights = pid == 0x1014
-                        ? new[] { Logo(0), Edge(1), Status(3) }
-                        : new[] { Edge(0), Edge(1), Logo(2), Status(3) },
-                    Slots = 4,
+                    Lights = lights,
+                    Slots = lights.Length,
                     RepaintMs = AlienwareMonitorRepaintMs,
                     Programs = new[] { VendorPrograms.AlienwareCommandCenter },
                     Start = new[]
                     {
                         PluginStep.Output(Frame(65, 0x00, 0x92, 0x37, 0x05, 0x00, 0x51, 0x82, 0xD0, 0xF4, 0x99)),
                     },
-                    Picture = AlienwareMonitorPicture,
+                    Picture = colors => AlienwareMonitorPicture(colors, bits),
                 };
         }
 
@@ -1583,17 +1585,20 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>A report per light, the rest of it FF. The plugin leaves
         /// byte 0 at FF too, where OpenRGB writes report ID 0 to the same
         /// firmware family (AlienwareMonitorController.cpp:47-89). The monitor
-        /// has no numbered reports, so PadForge sends 0.</summary>
-        internal static IEnumerable<PluginStep> AlienwareMonitorPicture(int[] colors)
+        /// has no numbered reports, so PadForge sends 0. Byte 14 is getCRC: 110, the bytes from 5
+        /// to 13 in XOR.</summary>
+        internal static IEnumerable<PluginStep> AlienwareMonitorPicture(int[] colors, byte[] bits)
         {
-            byte[] ids = { 1, 2, 4, 8 };
-            for (int i = 0; i < ids.Length; i++)
+            for (int i = 0; i < bits.Length; i++)
             {
                 var frame = new byte[65];
                 Array.Fill(frame, (byte)0xFF);
                 frame[0] = 0x00;
-                new byte[] { 0x92, 0x37, 0x0A, 0x00, 0x51, 0x87, 0xD0, 0x04, ids[i], R(colors[i]), G(colors[i]), B(colors[i]), 0x23, 0xB8 }
+                new byte[] { 0x92, 0x37, 0x0A, 0x00, 0x51, 0x87, 0xD0, 0x04, bits[i], R(colors[i]), G(colors[i]), B(colors[i]), 0x23 }
                     .CopyTo(frame, 1);
+                int check = 110;
+                for (int at = 5; at <= 13; at++) check ^= frame[at];
+                frame[14] = (byte)check;
                 yield return PluginStep.Output(frame);
             }
         }
@@ -2016,7 +2021,7 @@ namespace PadForge.Common.Input.Peripherals
                 FeatureLength = 64,
                 Lights = Edges(8),
                 Slots = 8,
-                Start = new[] { PluginStep.Feature(Frame(64, (0, 0xA1), (1, 0x3C), (16, 0x01))) },
+                Start = new[] { PluginStep.Feature(Frame(64, (0, 0xA1), (1, 0x3C), (16, 0x01), (41, 0x64))) },
                 Picture = colors =>
                 {
                     var frame = Frame(64, (0, 0xA1), (1, 0x3C), (16, 0x0F), (41, 0x64));

@@ -622,7 +622,7 @@ namespace PadForge.Tests
             Assert.Equal(5000, elo.KeepAliveMs);
             var syn = Device(0x1E7D, 0x3A3B);
             Assert.Equal(new[] { "out 00 FE 03 00 00 01 02 03 04 05 06" }, ShortSteps(syn.Picture(new[] { 0x010203, 0x040506 })));
-            Assert.Equal("out 00 FE 01 00 00 00 09 08 02 00 FF FF FF FF FF FF FF FF FF", ShortSteps(syn.Start)[0]);
+            Assert.Equal("out 00 FE 01 00 00 00 09 08 02 00 00 00 00 00 00 00 FF FF FF FF FF FF FF FF FF", ShortSteps(syn.Start)[0]);
         }
 
         // ── Royal Kludge ──
@@ -673,15 +673,15 @@ namespace PadForge.Tests
         // ── NZXT ──
 
         [Theory]
-        [InlineData(0x2103, 0)]
-        [InlineData(0x2106, 0)]
-        [InlineData(0x2104, 0)]
-        [InlineData(0x2105, 1)]
-        [InlineData(0x2108, 1)]
-        [InlineData(0x2107, 2)]
-        public void Function_FourReports_ZonesAtThePluginsPlaces(int pid, int boardNumber)
+        [InlineData(0x2103, false, false)]
+        [InlineData(0x2106, false, false)]
+        [InlineData(0x2104, false, false)]
+        [InlineData(0x2105, false, true)]
+        [InlineData(0x2108, true, true)]
+        [InlineData(0x2107, true, false)]
+        [InlineData(0x2131, true, false)]
+        public void Function_FourReports_ZonesAtThePluginsPlaces(int pid, bool iso, bool mini)
         {
-            var board = (F.FunctionBoard)boardNumber;
             var d = Device(0x1E71, (ushort)pid);
             Assert.Equal(new[] { "out 43 81 00 84", "out 43 81 00 86", "out 43 82 00 41 64", "out 43 97 00 10 01" }, ShortSteps(d.Start));
             var colors = new int[10];
@@ -702,10 +702,10 @@ namespace PadForge.Tests
                     Assert.Equal(new[] { (byte)zone, (byte)zone, (byte)zone }, frames[f].Skip(offset).Take(3));
                     zone++;
                 }
-            Assert.Equal(board == F.FunctionBoard.TklIso ? 0x03 : 0x01, frames[0][0x0D]);
-            Assert.Equal(board == F.FunctionBoard.MiniTkl ? 0xF0 : 0x30, frames[2][0x26]);
-            Assert.Equal(board == F.FunctionBoard.MiniTkl ? 0xE0 : 0x60, frames[2][0x2A]);
-            Assert.Equal(board == F.FunctionBoard.TklIso ? 0x70 : 0x60, frames[2][0x2C]);
+            Assert.Equal(iso ? 0x03 : 0x01, frames[0][0x0D]);
+            Assert.Equal(mini ? 0xF0 : 0x30, frames[2][0x26]);
+            Assert.Equal(mini ? 0xE0 : 0x60, frames[2][0x2A]);
+            Assert.Equal(iso ? 0x70 : 0x60, frames[2][0x2C]);
         }
 
         // ── Glorious ──
@@ -1094,7 +1094,8 @@ namespace PadForge.Tests
             Assert.Equal("04 05 06", Hex(frame.Skip(8 + 33).ToArray(), 3));
             Assert.Equal("out 00 11", ShortSteps(d.Start)[0]);
             Assert.Equal("14 2C 0A 00 FF 64 FF", Hex(d.Start[2].Bytes, 7));
-            Assert.Equal(0xFF, d.Start[2].Bytes[64]);
+            Assert.Equal(0xFF, d.Start[2].Bytes[63]);
+            Assert.Equal(0x00, d.Start[2].Bytes[64]);
         }
 
         [Fact]
@@ -1263,16 +1264,24 @@ namespace PadForge.Tests
         [Fact]
         public void AlienwareMonitors_AReportPerLight_TheRestFF_ReportIdZero()
         {
-            foreach (ushort pid in new ushort[] { 0x100B, 0x1008 })
+            // Byte 14 is getCRC: 110, then bytes 5 to 13 in XOR.
+            foreach (var (pid, first) in new (ushort, byte)[] { (0x100B, 0x01), (0x1008, 0x04) })
             {
                 var d = Device(0x187C, pid);
                 Assert.Equal(new[] { "out 00 92 37 05 00 51 82 D0 F4 99" }, ShortSteps(d.Start));
-                var steps = d.Picture(new[] { 0x010203, 0x040506, 0x070809, 0x0A0B0C }).ToArray();
+                var steps = d.Picture(new[] { 0x112233, 0x040506, 0x070809, 0x0A0B0C }).ToArray();
                 Assert.Equal(4, steps.Length);
-                Assert.Equal("00 92 37 0A 00 51 87 D0 04 01 01 02 03 23 B8 FF", Hex(steps[0].Bytes, 16));
-                Assert.Equal("00 92 37 0A 00 51 87 D0 04 08 0A 0B 0C 23 B8 FF", Hex(steps[3].Bytes, 16));
+                Assert.Equal($"00 92 37 0A 00 51 87 D0 04 {first:X2} 11 22 33 23", Hex(steps[0].Bytes, 14));
+                int check = 110;
+                for (int at = 5; at <= 13; at++) check ^= steps[0].Bytes[at];
+                Assert.Equal((byte)check, steps[0].Bytes[14]);
+                Assert.Equal(0xFF, steps[0].Bytes[15]);
+                Assert.Equal("00 92 37 0A 00 51 87 D0 04 08 0A 0B 0C 23", Hex(steps[3].Bytes, 14));
                 Assert.Equal(0xFF, steps[0].Bytes[64]);
             }
+            // The plugin's own frame for this color (Alienware_Monitor_Gen2_Controller.js, run).
+            var aw = Device(0x187C, 0x100B).Picture(new[] { 0x112233, 0, 0, 0 }).First().Bytes;
+            Assert.Equal(0x4E, aw[14]);
         }
 
         [Fact]

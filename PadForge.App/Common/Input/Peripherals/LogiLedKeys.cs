@@ -60,6 +60,38 @@ namespace PadForge.Common.Input.Peripherals
         /// call reaches, rather than a zone.</summary>
         internal static bool IsKey(in LightInfo light) => light.Address < ZoneBase;
 
+        private static readonly Lazy<(LightMap Keys, LightMap Zones)> s_keyboardParts = new(() =>
+        {
+            var whole = MapOf("keyboard");
+            var keys = new List<LightInfo>();
+            var zones = new List<LightInfo>();
+            foreach (var light in whole.Lights) (IsKey(light) ? keys : zones).Add(light);
+            return (new LightMap(keys, "Logitech LED SDK 9.00 LogitechLEDLib.h, KeyName"),
+                    new LightMap(zones, "Logitech LED SDK 9.00, keyboard zones"));
+        });
+
+        /// <summary>
+        /// The lights the Key Colors card shows for one Logitech keyboard
+        /// lit through the LED SDK's keyboard path. That path serves every
+        /// Logitech keyboard at once, so its map holds the per-key boards'
+        /// keys and the zone boards' five zones together, and a board has
+        /// one kind or the other: a per-key board answers to KeyName and a
+        /// zone board, the G213, to LogiLedSetLightingForTargetZone's five
+        /// keyboard zones (LogitechLEDLib.h:200). RGB.NET makes the same
+        /// split, a per-key device for the per-key boards and a five-zone
+        /// device for the G213 (RGB.NET 3c5af72
+        /// RGB.NET.Devices.Logitech/LogitechDeviceProvider.cs:60-81 and 99). The
+        /// HID++ unit of the row tells them apart: a per-key board has a
+        /// per-key lighting feature, 0x8080 or 0x8081
+        /// (<see cref="HidppUnit.PerKeyFeatureId"/>), and a zone board none.
+        /// With no unit known, the whole map, as the path paints it.
+        /// </summary>
+        internal static LightMap KeyboardOf(HidppUnit unit)
+        {
+            if (unit == null || !unit.HasRgb) return MapOf("keyboard");
+            return unit.PerKeyFeatureId != 0 ? s_keyboardParts.Value.Keys : s_keyboardParts.Value.Zones;
+        }
+
         private static LightInfo KeyLight(int code, ushort usage, string name)
         {
             if (usage != 0) return new LightInfo(code, LightKind.Key, usage, LightKeySource.Vendor);

@@ -213,4 +213,105 @@ namespace PadForge.Tests
             Assert.Null(GameSenseLights.MapOf("headset"));
         }
     }
+
+    /// <summary>
+    /// A Logitech keyboard lit through the LED SDK's keyboard path shows the
+    /// lights its own board has (#557): the keys on a per-key board, the
+    /// five zones on a zone board such as the G213, never both. The path
+    /// serves every Logitech keyboard at once, so its published map holds
+    /// both kinds, and the row's HID++ unit tells which is the row's.
+    /// </summary>
+    [Collection("PeripheralOutputStatics")]
+    public class LedSdkKeyboardRowMapTests : IDisposable
+    {
+        private static readonly Guid Row = new("00000000-0000-0000-0000-0000000000c7");
+        private static readonly OutputPath Keyboard = new(OutputFamily.LedSdkType, "keyboard");
+
+        public LedSdkKeyboardRowMapTests()
+        {
+            PeripheralOutputs.ResetForTest();
+            PeripheralLightMaps.ResetForTest();
+            PeripheralLightMaps.Publish(Keyboard, LogiLedKeys.MapOf("keyboard"));
+        }
+
+        public void Dispose()
+        {
+            PeripheralOutputs.ResetForTest();
+            PeripheralLightMaps.ResetForTest();
+        }
+
+        private static DeviceLinks Links(params HidppUnit[] units)
+        {
+            PeripheralOutputs.Hidpp = new HidppSnapshot(units, Array.Empty<Guid>());
+            return new DeviceLinks { Device = Row, Lighting = new[] { Keyboard }, HidppUnits = units.Select(u => u.Key).ToArray() };
+        }
+
+        [Fact]
+        public void APerKeyBoard_ShowsItsKeys_AndAZoneBoard_ItsFiveZones()
+        {
+            var whole = LogiLedKeys.MapOf("keyboard");
+            // A G915 X: 0x8071 for its zones and 0x8081 for its keys.
+            var perKey = new HidppUnit
+            {
+                ChannelPath = "rx", DeviceIndex = 1, DeviceType = 0, RgbFeatureId = 0x8071, RgbIndex = 9,
+                PerKeyFeatureId = 0x8081, PerKeyIndex = 10,
+            };
+            var map = PeripheralLightMaps.ForRow(Links(perKey), out var found);
+            Assert.Equal(Keyboard, found);
+            Assert.All(map.Lights, l => Assert.True(LogiLedKeys.IsKey(l)));
+            Assert.Equal(whole.Lights.Count(l => LogiLedKeys.IsKey(l)), map.Lights.Count);
+            Assert.True(map.HasKeys);
+            Assert.Equal(0, map.ZoneCount);
+
+            // A G610 answers 0x8080.
+            var perKeyV1 = perKey with { PerKeyFeatureId = 0x8080 };
+            Assert.Same(map, PeripheralLightMaps.ForRow(Links(perKeyV1), out _));
+
+            // A G213: 0x8070 and no per-key feature.
+            var zones = new HidppUnit { ChannelPath = "usb", DeviceIndex = 0xFF, DeviceType = 0, RgbFeatureId = 0x8070, RgbIndex = 7 };
+            map = PeripheralLightMaps.ForRow(Links(zones), out found);
+            Assert.Equal(Keyboard, found);
+            Assert.Equal(Enumerable.Range(1, 5), map.Lights.Select(l => l.Zone));
+            Assert.All(map.Lights, l => Assert.Equal(LightKind.Zone, l.Kind));
+            Assert.False(map.HasKeys);
+        }
+
+        /// <summary>With no lit HID++ unit known for the row, the card shows
+        /// the path's whole map, as the path paints it. A row on another
+        /// path, or the mouse type, is never narrowed.</summary>
+        [Fact]
+        public void WithNoUnitKnown_TheWholeMapShows_AndOtherPathsAreUntouched()
+        {
+            var whole = LogiLedKeys.MapOf("keyboard");
+            Assert.Same(whole, PeripheralLightMaps.ForRow(Links(), out _));
+            var dark = new HidppUnit { ChannelPath = "usb", DeviceIndex = 0xFF, DeviceType = 0, PerKeyFeatureId = 0x8081 };
+            Assert.Same(whole, PeripheralLightMaps.ForRow(Links(dark), out _));
+            Assert.Null(PeripheralLightMaps.ForRow(null, out _));
+
+            var mouse = new OutputPath(OutputFamily.LedSdkType, "mouse");
+            var mouseMap = LogiLedKeys.MapOf("mouse");
+            PeripheralLightMaps.Publish(mouse, mouseMap);
+            var zones = new HidppUnit { ChannelPath = "usb", DeviceIndex = 0xFF, DeviceType = 3, RgbFeatureId = 0x8070, RgbIndex = 7 };
+            PeripheralOutputs.Hidpp = new HidppSnapshot(new[] { zones }, Array.Empty<Guid>());
+            var links = new DeviceLinks { Device = Row, Lighting = new[] { mouse }, HidppUnits = new[] { zones.Key } };
+            Assert.Same(mouseMap, PeripheralLightMaps.ForRow(links, out var found));
+            Assert.Equal(mouse, found);
+        }
+
+        /// <summary>A keyboard row on a receiver with a mouse beside it takes
+        /// the keyboard unit's kind, whichever unit is listed first.</summary>
+        [Fact]
+        public void TheKeyboardUnit_DecidesOverAMouseOnTheSameRow()
+        {
+            var mouse = new HidppUnit { ChannelPath = "rx", DeviceIndex = 2, DeviceType = 3, RgbFeatureId = 0x8070, RgbIndex = 7 };
+            var board = new HidppUnit
+            {
+                ChannelPath = "rx", DeviceIndex = 1, DeviceType = 0, RgbFeatureId = 0x8071, RgbIndex = 9,
+                PerKeyFeatureId = 0x8081, PerKeyIndex = 10,
+            };
+            var map = PeripheralLightMaps.ForRow(Links(mouse, board), out _);
+            Assert.True(map.HasKeys);
+            Assert.Equal(0, map.ZoneCount);
+        }
+    }
 }

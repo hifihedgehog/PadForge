@@ -3857,8 +3857,8 @@ namespace PadForge.Views
         {
             if (KeyColorsCard == null || DataContext is not PadViewModel vm) return;
             var map = row == null ? null
-                : PadForge.Common.Input.Peripherals.PeripheralLightMaps.FirstPerLight(
-                    PadForge.Common.Input.Peripherals.PeripheralOutputs.Links.For(row.InstanceGuid)?.Lighting, out _);
+                : PadForge.Common.Input.Peripherals.PeripheralLightMaps.ForRow(
+                    PadForge.Common.Input.Peripherals.PeripheralOutputs.Links.For(row.InstanceGuid), out _);
             if (map == null)
             {
                 vm.KeyColors.Detach();

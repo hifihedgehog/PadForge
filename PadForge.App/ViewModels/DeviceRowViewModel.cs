@@ -1443,8 +1443,8 @@ namespace PadForge.ViewModels
         /// is mapped on its owner, the NFC button's peer:// rule.</summary>
         public bool ShowMapKeyLights
             => !(DevicePath != null && DevicePath.StartsWith("peer://", System.StringComparison.Ordinal))
-               && PadForge.Common.Input.Peripherals.PeripheralLightMaps.FirstPerLight(
-                   PadForge.Common.Input.Peripherals.PeripheralOutputs.Links.For(InstanceGuid)?.Lighting, out _)
+               && PadForge.Common.Input.Peripherals.PeripheralLightMaps.ForRow(
+                   PadForge.Common.Input.Peripherals.PeripheralOutputs.Links.For(InstanceGuid), out _)
                    is { HasKeys: true, Product: not null };
 
         /// <summary>The device's lights became known, changed or went.</summary>

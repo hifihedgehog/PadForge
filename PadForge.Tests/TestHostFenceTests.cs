@@ -195,6 +195,8 @@ namespace PadForge.Tests
         private const string Telemetry = Input + "Telemetry/GameTelemetryDevice.cs";
         private const string Kunos = Input + "Telemetry/KunosSharedMemory.cs";
         private const string OwnLighting = Input + "Peripherals/OwnLightingChannels.cs";
+        private const string AuraSdk = Input + "Peripherals/AuraSdk.cs";
+        private const string MysticLight = Input + "Peripherals/MysticLightSdk.cs";
         private const string AuraCore = Input + "Peripherals/HidFamilies/AsusAuraCoreLighting.cs";
 
         private const string RefusesHost = "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(host))";
@@ -434,6 +436,9 @@ namespace PadForge.Tests
             new object[] { Chroma, "private async Task<string> InitAsync(IReadOnlyList<string> categories, CancellationToken ct)", VendorRefuses + " && IsRazersServer(_endpoint)) return null;" },
             new object[] { GameSense, "public bool TryConnect(long now)", VendorRefuses + " && IsGgsOwnFile(_corePropsPath)) return false;" },
             new object[] { LogiLed, "public bool TryLoad(out string detail)", VendorRefuses + ")" },
+            // The ASUS Aura SDK's COM server and MSI's Mystic Light library (#557).
+            new object[] { AuraSdk, "public bool Open(out string detail)", VendorRefuses + ")" },
+            new object[] { MysticLight, "public bool TryLoad(out string detail)", VendorRefuses + ")" },
             new object[] { VendorGate, "public static bool Refuses", "OffLimitsForTest;" },
 
             // What is sent beyond this PC.
@@ -698,9 +703,10 @@ namespace PadForge.Tests
         }
 
         /// <summary>A library of another vendor's is loaded by its path in
-        /// eight places. Logitech's four, Mad Catz's one (#519) and Force
-        /// Dimension's one (#521) ask the vendor gate. The two VR runtimes ask
-        /// theirs (VrRuntimeOffLimitsTests).</summary>
+        /// nine places. Logitech's four, Mad Catz's one (#519), Force
+        /// Dimension's one (#521) and MSI's Mystic Light library (#557) ask
+        /// the vendor gate. The two VR runtimes ask theirs
+        /// (VrRuntimeOffLimitsTests).</summary>
         [Fact]
         public void EveryLibraryLoadedByPath_IsOnTheList()
             => Assert.Equal(Map(
@@ -711,6 +717,7 @@ namespace PadForge.Tests
                 (LgsArx, 1),
                 (Strike7, 1),
                 (ForceDimension, 1),
+                (MysticLight, 1),
                 ("PadForge.Engine/Common/OpenXr/OpenXrSession.cs", 1)),
                 FenceSource.Census(@"NativeLibrary\.(Try)?Load\(|\bLoadLibrary(Ex)?[AW]?\(", callsOnly: true));
 

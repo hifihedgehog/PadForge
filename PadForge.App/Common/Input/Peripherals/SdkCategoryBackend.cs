@@ -84,10 +84,12 @@ namespace PadForge.Common.Input.Peripherals
         protected abstract LightMap SessionMap(string category);
 
         /// <summary>Paints one path. <paramref name="last"/> is the picture
-        /// the path shows, on the same map and background, when only the
-        /// lights whose color changed need to go out, and null for the
-        /// whole picture. False when a call failed, which ends the
-        /// session.</summary>
+        /// the path shows in this session, whose color at each light
+        /// (<see cref="SdkPicture.ColorAt"/>) says which lights changed, and
+        /// null for the whole picture. Both SDKs set each light by its own
+        /// call, so a light whose color did not change needs nothing, one
+        /// color or light by light alike. False when a call failed, which
+        /// ends the session.</summary>
         protected abstract bool Paint(string category, SdkPicture picture, SdkPicture last);
 
         /// <summary>A path nobody claims any more while the session goes on
@@ -309,11 +311,8 @@ namespace PadForge.Common.Input.Peripherals
                         var picture = PictureOf(want, map);
                         sent.TryGetValue(want.Category, out var last);
                         if (picture.Same(last)) continue;
-                        var shown = picture.Colors != null && last?.Colors != null
-                                    && ReferenceEquals(last.Map, picture.Map) && last.Fill == picture.Fill
-                            ? last : null;
                         bool took;
-                        try { took = Paint(want.Category, picture, shown); }
+                        try { took = Paint(want.Category, picture, last); }
                         catch (Exception ex)
                         {
                             PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL {LogName} paint fault: {ex.GetType().Name}");

@@ -47,8 +47,9 @@ namespace PadForge.Common.Input.Peripherals
     /// <para>Paint. The claim's color and key frame are rendered into one
     /// color per light (<see cref="LightRenderer.Render"/>). A picture the
     /// device already shows is not sent again. A changed one goes out once
-    /// it has stayed the same for the model's hold time and the model's
-    /// repaint interval has passed since the picture before, and a picture
+    /// it has stayed the same for the hold time and the repaint interval
+    /// has passed since the picture before, the model's or, where the
+    /// session tells its device apart, the session's, and a picture
     /// the session cannot send yet is tried again after the time it names.
     /// The session reads the device's state again on the model's recheck
     /// interval. A device that drops the host's colors when the host goes
@@ -999,8 +1000,19 @@ namespace PadForge.Common.Input.Peripherals
                 unit.PendingMap = map;
                 unit.PendingAt = now;
             }
-            long at = unit.PendingAt + model.HoldMs;
-            if (unit.Shown != null) at = Math.Max(at, unit.SentAt + model.RepaintMs);
+            int holdMs, repaintMs;
+            try
+            {
+                holdMs = unit.Session.HoldMs ?? model.HoldMs;
+                repaintMs = unit.Session.RepaintMs ?? model.RepaintMs;
+            }
+            catch
+            {
+                holdMs = model.HoldMs;
+                repaintMs = model.RepaintMs;
+            }
+            long at = unit.PendingAt + holdMs;
+            if (unit.Shown != null) at = Math.Max(at, unit.SentAt + repaintMs);
             at = Math.Max(at, unit.LaterAt);
             if (now < at)
             {

@@ -88,6 +88,10 @@ namespace PadForge.Tests
             Assert.IsType<AsusAuraCoreLighting.KeyboardSession>(session);
             Assert.Empty(Sets(io));
             Assert.Equal(4, session.Map.Lights.Count);
+            // B4 stores each picture (asusd src/aura_laptop/mod.rs:118-125):
+            // the model's bounds, 150 and 500 ms.
+            Assert.Null(session.HoldMs);
+            Assert.Null(session.RepaintMs);
             Assert.True(session.HandBack(io, _ => { }));
             Assert.Empty(session.CrashFrames);
         }
@@ -103,6 +107,10 @@ namespace PadForge.Tests
             io.Feature = id => id == 0x5E ? new byte[] { 0x5E } : null;
             var session = AsusAuraCoreLighting.BeginCore(io, _ => { }, 0x1866, null);
             Assert.IsType<AsusAuraCoreLighting.Ga15dhSession>(session);
+            // Nothing stored (asusd src/aura_laptop/mod.rs:179-205): no hold,
+            // the stream's interval.
+            Assert.Equal(0, session.HoldMs);
+            Assert.Equal(HidppBackend.PaintMs, session.RepaintMs);
             var sets = Sets(io);
             Assert.Equal(5, sets.Count);
             Starts("5E 41 53 55 53 20 54 65 63 68 2E 49 6E 63 2E", sets[0], 64);
@@ -143,7 +151,9 @@ namespace PadForge.Tests
             // The same laptop reached through 1866, which answers neither
             // Aura Core report.
             io = Channel();
-            Assert.IsType<AsusAuraCoreLighting.LaptopSession>(AsusAuraCoreLighting.BeginCore(io, _ => { }, 0x1866, rows));
+            var throughCore = Assert.IsType<AsusAuraCoreLighting.LaptopSession>(AsusAuraCoreLighting.BeginCore(io, _ => { }, 0x1866, rows));
+            Assert.Equal(0, throughCore.HoldMs);
+            Assert.Equal(HidppBackend.PaintMs, throughCore.RepaintMs);
         }
 
         /// <summary>The GU603VV's one zone is one light, BC 01, and its

@@ -259,6 +259,17 @@ namespace PadForge.Common.Input.Peripherals
         /// try.</summary>
         public int LaterMs { get; protected set; }
 
+        /// <summary>The hold and the shortest time between two pictures for
+        /// the device this session opened, where the session tells apart
+        /// devices one model covers, one that stores each picture and one
+        /// that does not. Null: the model's
+        /// (<see cref="HidLightingModel.HoldMs"/>,
+        /// <see cref="HidLightingModel.RepaintMs"/>). Read at every
+        /// picture.</summary>
+        public virtual int? HoldMs => null;
+
+        public virtual int? RepaintMs => null;
+
         /// <summary>Reads the device's state again, so the frames the crash
         /// path holds follow it. False when the device did not
         /// answer.</summary>

@@ -73,6 +73,14 @@ namespace PadForge.Tests
 
         public bool KeepAliveFails { get; init; }
 
+        /// <summary>The session's own bounds, or null for the model's.</summary>
+        public int? Hold { get; init; }
+        public int? Repaint { get; init; }
+
+        public override int? HoldMs => Hold;
+
+        public override int? RepaintMs => Repaint;
+
         public override bool Feature => false;
 
         public override byte[][] CrashFrames => Array.Empty<byte[]>();
@@ -549,6 +557,58 @@ namespace PadForge.Tests
             using var backend = Started(Collection());
             Assert.Single(backend.Snapshot.Units);
             lock (_queried) Assert.Empty(_queried);
+        }
+
+        // ─────────────────────────────────────────────
+        //  A session's own bounds
+        // ─────────────────────────────────────────────
+
+        /// <summary>A session that names its own hold and repaint interval
+        /// paints by them, not the model's.</summary>
+        [Fact]
+        public void ASessionsOwnBounds_WinOverTheModels()
+        {
+            _family.With(m => new HidLightingModel
+            {
+                Family = m.Family, Name = m.Name, Map = m.Map, HoldMs = 150, RepaintMs = 500,
+                Begin = (io, _) => new FakeWorkerSession(_family, io) { Hold = 0, Repaint = 33 },
+            });
+            using var backend = Lit(Collection());
+            // No hold: the first picture went out at once.
+            Assert.Equal(1, Count("paint 112233,112233"));
+            Light(0x445566);
+            Advance(32);
+            Passes(backend);
+            Assert.Equal(0, Count("paint 445566,445566"));
+            Advance(1);
+            Passes(backend);
+            Assert.Equal(1, Count("paint 445566,445566"));
+        }
+
+        /// <summary>A session that names none keeps the model's.</summary>
+        [Fact]
+        public void ASessionWithNoBounds_KeepsTheModels()
+        {
+            _family.With(m => new HidLightingModel
+            {
+                Family = m.Family, Name = m.Name, Map = m.Map, Begin = m.Begin, HoldMs = 150, RepaintMs = 500,
+            });
+            using var backend = Lit(Collection());
+            Assert.Empty(_family.Calls());
+            Advance(149);
+            Passes(backend);
+            Assert.Empty(_family.Calls());
+            Advance(1);
+            Passes(backend);
+            Assert.Equal(1, Count("paint 112233,112233"));
+            Light(0x445566);
+            Passes(backend);
+            Advance(499);
+            Passes(backend);
+            Assert.Equal(0, Count("paint 445566,445566"));
+            Advance(1);
+            Passes(backend);
+            Assert.Equal(1, Count("paint 445566,445566"));
         }
 
         [Fact]

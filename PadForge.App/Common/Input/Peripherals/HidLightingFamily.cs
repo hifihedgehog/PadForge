@@ -264,6 +264,15 @@ namespace PadForge.Common.Input.Peripherals
             AocKeyboardLighting.Instance,
             CorsairPeripheralLighting.Instance,
             CorsairPeripheralV2Lighting.Instance,
+            WootingKeyboardLighting.Instance,
+            SinowealthLighting.Instance,
+            SinowealthMouseLighting.Instance,
+            QmkLighting.Instance,
+            ValkyrieKeyboardLighting.Instance,
+            GaiZhongGaiLighting.Instance,
+            AnnePro2Lighting.Instance,
+            RedSquareKeyroxLighting.Instance,
+            RoyuanLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

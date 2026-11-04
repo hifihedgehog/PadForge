@@ -1,0 +1,192 @@
+"""The Genesis Thor 300 light table, from OpenRGB (#557).
+
+WHAT IT READS, under OpenRGB's Controllers/SinowealthController:
+- SinowealthKeyboard90Controller/SinowealthKeyboard90Controller.h: thor300's
+  matrix_map[6][23], each cell the number of the light there or NA, and
+  led_names[], each light's OpenRGB name and the key index the keyboard's
+  single-LED report takes for it, in light order.
+- Sinowealth1007Controller/RGBController_Sinowealth1007.cpp: led_names[],
+  the ZET Fury Pro's seven lights in order.
+- RGBController/RGBControllerKeyNames.cpp: the string behind each KEY_ name.
+
+The Sinowealth keyboards with product ID 0x010C are laid out by
+KeyboardLayoutManager, from KeyboardLayouts.g.cs.
+
+WHAT IT WRITES. PadForge.App/Common/Input/Peripherals/HidFamilies/SinowealthLayouts.g.cs.
+
+Usage:
+    python tools/gen_sinowealth_layouts.py OPENRGB_ROOT
+    python tools/gen_sinowealth_layouts.py OPENRGB_ROOT --check   (compare, write nothing)
+"""
+import argparse
+import os
+import re
+import subprocess
+import sys
+
+PROJ_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+OUTPUT = os.path.join(PROJ_ROOT, "PadForge.App", "Common", "Input", "Peripherals", "HidFamilies", "SinowealthLayouts.g.cs")
+
+THOR_REL = "SinowealthKeyboard90Controller/SinowealthKeyboard90Controller.h"
+ZET_REL = "Sinowealth1007Controller/RGBController_Sinowealth1007.cpp"
+
+
+def read(path):
+    with open(path, encoding="utf-8-sig") as f:
+        return f.read()
+
+
+def strip_comments(text):
+    out = []
+    i, n = 0, len(text)
+    while i < n:
+        c = text[i]
+        if c == '"':
+            j = i + 1
+            while text[j] != '"':
+                j += 2 if text[j] == "\\" else 1
+            out.append(text[i:j + 1])
+            i = j + 1
+        elif text.startswith("//", i):
+            j = text.find("\n", i)
+            j = n if j < 0 else j
+            out.append(" " * (j - i))
+            i = j
+        elif text.startswith("/*", i):
+            j = text.index("*/", i) + 2
+            out.append(re.sub(r"[^\n]", " ", text[i:j]))
+            i = j
+        else:
+            out.append(c)
+            i += 1
+    return "".join(out)
+
+
+def c_string(literal):
+    body = literal[1:-1]
+    return re.sub(r"\\(.)", lambda m: {"n": "\n", "t": "\t"}.get(m.group(1), m.group(1)), body)
+
+
+def cs_string(value):
+    return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+def key_names(path):
+    names = {}
+    for name, literal in re.findall(r'const\s+char\s*\*\s*(\w+)\s*=\s*("(?:[^"\\]|\\.)*")\s*;', read(path)):
+        names[name] = c_string(literal)
+    return names
+
+
+def array_body(text, name):
+    m = re.search(r"\b" + re.escape(name) + r"\s*(?:\[[^\]]*\]\s*)+=?\s*\{", text)
+    if not m:
+        sys.exit("no array " + name)
+    depth, i = 1, m.end()
+    while depth:
+        c = text[i]
+        if c == '"':
+            i += 1
+            while text[i] != '"':
+                i += 2 if text[i] == "\\" else 1
+        elif c == "{":
+            depth += 1
+        elif c == "}":
+            depth -= 1
+        i += 1
+    return text[m.end():i - 1], text.count("\n", 0, m.start()) + 1
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("openrgb")
+    parser.add_argument("--check", action="store_true")
+    args = parser.parse_args()
+
+    folder = os.path.join(args.openrgb, "Controllers", "SinowealthController")
+    thor = strip_comments(read(os.path.join(folder, THOR_REL)))
+    zet = strip_comments(read(os.path.join(folder, ZET_REL)))
+    names = key_names(os.path.join(args.openrgb, "RGBController", "RGBControllerKeyNames.cpp"))
+    commit = subprocess.run(["git", "-C", args.openrgb, "rev-parse", "HEAD"],
+                            capture_output=True, text=True, check=True).stdout.strip()
+
+    mbody, mline = array_body(thor, "matrix_map")
+    cells = []
+    for token in re.findall(r"0x[0-9A-Fa-f]+|\d+|NA", mbody):
+        cells.append(None if token == "NA" else int(token, 0))
+    if len(cells) != 6 * 23:
+        sys.exit("matrix_map: %d cells" % len(cells))
+    where = {}
+    for idx, value in enumerate(cells):
+        if value is None:
+            continue
+        if value in where:
+            sys.exit("matrix_map: light %d twice" % value)
+        where[value] = (idx // 23, idx % 23)
+
+    nbody, nline = array_body(thor, "led_names")
+    leds = []
+    for name, idx in re.findall(r"\{\s*(\w+|\"(?:[^\"\\]|\\.)*\")\s*,\s*(0x[0-9A-Fa-f]+|\d+)\s*\}", nbody):
+        text = c_string(name) if name.startswith('"') else names.get(name)
+        if text is None:
+            sys.exit("unknown key name " + name)
+        leds.append((text, int(idx, 0)))
+    if len(leds) != 104 or sorted(where) != list(range(104)):
+        sys.exit("Thor 300: %d names, %d cells" % (len(leds), len(where)))
+
+    zbody, zline = array_body(zet, "led_names")
+    zet_names = [c_string(s) for s in re.findall(r'"(?:[^"\\]|\\.)*"', zbody)]
+    if len(zet_names) != 7:
+        sys.exit("ZET Fury Pro: %d names" % len(zet_names))
+
+    out = []
+    out.append("// <auto-generated>")
+    out.append("//     Generated by tools/gen_sinowealth_layouts.py from OpenRGB at %s" % commit[:10])
+    out.append("//     (Controllers/SinowealthController: thor300's matrix_map[] and led_names[] of")
+    out.append("//     SinowealthKeyboard90Controller.h, and led_names[] of")
+    out.append("//     RGBController_Sinowealth1007.cpp, with the key names of")
+    out.append("//     RGBController/RGBControllerKeyNames.cpp). Do not edit by hand.")
+    out.append("// </auto-generated>")
+    out.append("namespace PadForge.Common.Input.Peripherals.HidFamilies")
+    out.append("{")
+    out.append("    internal static partial class SinowealthLayouts")
+    out.append("    {")
+    out.append("        /// <summary>The OpenRGB commit the tables were read at.</summary>")
+    out.append("        internal const string OpenRgbCommit = \"%s\";" % commit)
+    out.append("")
+    out.append("        /// <summary>SinowealthKeyboard90Controller.h:%d led_names and :%d matrix_map:" % (nline, mline))
+    out.append("        /// the Genesis Thor 300's lights in order, each with its name, the key index")
+    out.append("        /// its single-LED report takes, and its row and column of 6 by 23.</summary>")
+    out.append("        internal static readonly SinowealthLed[] Thor300 =")
+    out.append("        {")
+    for n, (text, idx) in enumerate(leds):
+        row, col = where[n]
+        out.append("            new(%s, 0x%02X, %d, %d)," % (cs_string(text), idx, row, col))
+    out.append("        };")
+    out.append("")
+    out.append("        /// <summary>RGBController_Sinowealth1007.cpp:%d led_names: the ZET Fury" % zline)
+    out.append("        /// Pro's seven lights in order.</summary>")
+    out.append("        internal static readonly string[] ZetFuryPro =")
+    out.append("        {")
+    for text in zet_names:
+        out.append("            %s," % cs_string(text))
+    out.append("        };")
+    out.append("    }")
+    out.append("}")
+    text = "\r\n".join(out) + "\r\n"
+
+    if args.check:
+        try:
+            with open(OUTPUT, encoding="utf-8-sig", newline="") as f:
+                current = f.read()
+        except FileNotFoundError:
+            current = ""
+        print("up to date" if current == text else "differs")
+        sys.exit(0 if current == text else 1)
+    with open(OUTPUT, "w", encoding="utf-8", newline="") as f:
+        f.write(text)
+    print("wrote %s: Thor 300 %d, ZET Fury Pro %d" % (OUTPUT, len(leds), len(zet_names)))
+
+
+if __name__ == "__main__":
+    main()

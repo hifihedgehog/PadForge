@@ -943,6 +943,40 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void Macropad_TwelveKeys_ByNumber()
+        {
+            var d = Device(0x3282, 0x0008);
+            Assert.Equal(new[] { 1, 12 }, new[] { d.Lights[0].LabelNumber, d.Lights[11].LabelNumber });
+            Assert.All(d.Lights, l => Assert.Equal(LightLabel.MacroKey, l.Label));
+            var colors = new int[12];
+            colors[0] = 0x010203;
+            colors[11] = 0x040506;
+            var frame = Assert.Single(d.Picture(colors)).Bytes;
+            Assert.Equal("00 14 2C 00 01 00 4B 00 01 02 03", Hex(frame, 11));
+            Assert.Equal("04 05 06", Hex(frame.Skip(8 + 33).ToArray(), 3));
+            Assert.Equal("out 00 11", ShortSteps(d.Start)[0]);
+            Assert.Equal("14 2C 0A 00 FF 64 FF", Hex(d.Start[2].Bytes, 7));
+            Assert.Equal(0xFF, d.Start[2].Bytes[64]);
+        }
+
+        [Fact]
+        public void M65B_NineToAReport_ThenTheApply()
+        {
+            var colors = new int[F.RamaLeds];
+            colors[0] = 0x010203;
+            colors[80] = 0x040506;
+            var steps = ShortSteps(F.RamaPicture(colors));
+            Assert.Equal(10, steps.Length);
+            Assert.Equal("out 00 07 41 00 01 02 03", steps[0]);
+            Assert.Equal("out 00 07 41 09", steps[1]);
+            Assert.EndsWith("04 05 06", steps[8]);
+            Assert.StartsWith("out 00 07 41 48", steps[8]);
+            Assert.Equal("out 00 07 42", steps[9]);
+            var d = Device(0x5241, 0x065B);
+            Assert.Equal(F.RamaLeds, F.MapOf(d, Array.Empty<int>()).UnnamedKeyCount);
+        }
+
+        [Fact]
         public void Evga_TwoZoneReports_TwoAnswers_TwoApplies()
         {
             var steps = F.EvgaPicture(new[] { 0x010203, 0x040506, 0x070809, 0x0A0B0C }).ToArray();

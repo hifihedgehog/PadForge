@@ -16,7 +16,7 @@ namespace PadForge.Common.Input.Peripherals
                 .Concat(LogitechG19()).Concat(MountainMakalu()).Concat(CoolerMasterMat()).Concat(CorsairHeadsets())
                 .Concat(CorsairDarkCore()).Concat(CorsairNexus()).Concat(Roccat()).Concat(RoyalKludge())
                 .Concat(NzxtFunction()).Concat(Glorious()).Concat(SteelSeriesKeyboards()).Concat(StripControllers())
-                .Concat(QmkBoards());
+                .Concat(QmkBoards()).Concat(Macropad()).Concat(RamaM65B());
 
         // ── Corsair headsets (Corsair/Modern_Corsair/Virtuoso_HeadSets, Corsair/Void_HeadSets) ──
 
@@ -1158,6 +1158,78 @@ namespace PadForge.Common.Input.Peripherals
                 for (int i = 0; i < count; i++) PutRgb(frame, 4 + i * 3, colors[led + i]);
                 yield return PluginStep.Output(frame);
             }
+        }
+
+        // ── Mountain Macropad (Mountain_Macropad.js) ──
+
+        private static IEnumerable<PluginDevice> Macropad()
+        {
+            var third = new byte[65];
+            Array.Fill(third, (byte)0xFF);
+            new byte[] { 0x14, 0x2C, 0x0A, 0x00, 0xFF, 0x64 }.CopyTo(third, 0);
+            yield return new PluginDevice
+            {
+                Name = "Mountain Macropad",
+                VendorId = 0x3282,
+                ProductId = 0x0008,
+                Plugin = "Mountain/Mountain_Macropad.js",
+                Interface = 2,
+                OutputLength = 65,
+                Lights = Enumerable.Range(0, 12).Select(i =>
+                    new LightInfo(i, LightKind.Other, 0, LightKeySource.None) { Label = LightLabel.MacroKey, LabelNumber = i + 1 }).ToArray(),
+                Slots = 12,
+                Start = new[]
+                {
+                    PluginStep.Output(Frame(65, 0x00, 0x11)),
+                    PluginStep.Output(Frame(65, 0x00, 0x14, 0x00, 0x00, 0x00, 0x01, 0x06)),
+                    PluginStep.Output(third),
+                },
+                Picture = colors =>
+                {
+                    var frame = Frame(65, 0x00, 0x14, 0x2C, 0x00, 0x01, 0x00, 0x4B, 0x00);
+                    for (int i = 0; i < 12; i++) PutRgb(frame, 8 + i * 3, colors[i]);
+                    return new[] { PluginStep.Output(frame) };
+                },
+            };
+        }
+
+        // ── Rama Works M65-B (Rama_M65B.js) ──
+
+        /// <summary>The LEDs the plugin sends, nine to a report. It reads each
+        /// LED's color at its place on a grid fifteen wide, and its list of key
+        /// names is another board's, so no source names these keys and Map Key
+        /// Lights asks about each.</summary>
+        internal const int RamaLeds = 81;
+
+        private static IEnumerable<PluginDevice> RamaM65B()
+        {
+            yield return new PluginDevice
+            {
+                Name = "Rama Works M65-B",
+                VendorId = 0x5241,
+                ProductId = 0x065B,
+                Plugin = "Rama/Rama_M65B.js",
+                UsagePage = 0xFF60,
+                Usage = 0x0061,
+                OutputLength = 64,
+                Lights = Enumerable.Range(0, RamaLeds).Select(i => new LightInfo(i, LightKind.Key, 0, LightKeySource.None)
+                {
+                    X = i % 15, Y = i / 15, Width = 1, Height = 1, HasPosition = true,
+                }).ToArray(),
+                Slots = RamaLeds,
+                Picture = RamaPicture,
+            };
+        }
+
+        internal static IEnumerable<PluginStep> RamaPicture(int[] colors)
+        {
+            for (int offset = 0; offset < RamaLeds; offset += 9)
+            {
+                var frame = Frame(64, 0x00, 0x07, 0x41, (byte)offset);
+                for (int i = 0; i < 9; i++) PutRgb(frame, 4 + i * 3, colors[offset + i]);
+                yield return PluginStep.Output(frame);
+            }
+            yield return PluginStep.Output(Frame(64, 0x00, 0x07, 0x42));
         }
 
         // ── EVGA X15 and X17 mice (X-15_Mouse.js, X-17_Mouse.js) ──

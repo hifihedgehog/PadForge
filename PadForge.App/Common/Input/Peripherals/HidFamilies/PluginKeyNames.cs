@@ -56,12 +56,18 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             var lights = new LightInfo[table.Names.Length];
             for (int i = 0; i < lights.Length; i++)
             {
-                string name = table.Names[i];
+                string name = (table.Names[i] ?? "").Trim();
                 int address = table.Indexes[i] - baseIndex;
+                // A second LED under a key lights with its key.
+                string key = name.StartsWith("2nd ", StringComparison.Ordinal) ? name.Substring(4) : name;
                 LightInfo light;
-                if (places != null && places.TryGetValue(name, out ushort place))
+                if (table.Usages != null && table.Usages[i] != 0)
+                    light = new LightInfo(address, LightKind.Key, table.Usages[i], LightKeySource.Generated);
+                else if (table.Usages != null)
+                    light = Other(address, name);
+                else if (places != null && places.TryGetValue(key, out ushort place))
                     light = new LightInfo(address, LightKind.Key, place, LightKeySource.Generated);
-                else if (s_usages.TryGetValue(name, out ushort usage))
+                else if (s_usages.TryGetValue(key, out ushort usage))
                     light = new LightInfo(address, LightKind.Key, usage, LightKeySource.Generated);
                 else
                     light = Other(address, name);
@@ -70,12 +76,23 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             return lights;
         }
 
+        /// <summary>A table's names with the given entries set and the rest null:
+        /// a generated table names only the lights no usage names.</summary>
+        internal static string[] Sparse(int count, params (int At, string Name)[] named)
+        {
+            var names = new string[count];
+            foreach (var (at, name) in named) names[at] = name;
+            return names;
+        }
+
         /// <summary>A light no keyboard-page usage names.</summary>
         internal static LightInfo Other(int address, string name)
         {
             var label = name switch
             {
                 "Fn" or "FN Lock" or "FN1" or "FN2" => LightLabel.Fn,
+                "Volume Up" => LightLabel.VolumeUp,
+                "Volume Down" => LightLabel.VolumeDown,
                 "Light" or "Cycle LED" => LightLabel.Brightness,
                 "Knob" or "Knob1" or "Knob 2" or "Knob3" or "Encoder Knob" => LightLabel.Dial,
                 "Brightness" => LightLabel.Brightness,
@@ -100,6 +117,10 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 return new LightInfo(address, LightKind.Key, 0, LightKeySource.None);
             if (name.Length is 2 or 3 && name[0] == 'G' && int.TryParse(name.AsSpan(1), out int gKey))
                 return new LightInfo(address, LightKind.Other, 0, LightKeySource.None) { Label = LightLabel.GKey, LabelNumber = gKey };
+            if (name.Length == 2 && name[0] == 'M' && char.IsDigit(name[1]))
+                return new LightInfo(address, LightKind.Other, 0, LightKeySource.None) { Label = LightLabel.MacroKey, LabelNumber = name[1] - '0' };
+            if (name.StartsWith("Led ", StringComparison.Ordinal))
+                return new LightInfo(address, LightKind.Edge, 0, LightKeySource.None);
             if (name == "Profile")
                 return new LightInfo(address, LightKind.Other, 0, LightKeySource.None) { Label = LightLabel.ProfileKey, LabelNumber = 1 };
             if (name is "Space Left" or "Space Right")
@@ -110,7 +131,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         /// <summary>The names <see cref="Lights"/> finds neither a usage nor a
         /// label for, for the tests.</summary>
         internal static IEnumerable<string> Unresolved(PluginKeyTable table)
-            => table.Names.Where(n => !s_usages.ContainsKey(n)
+            => table.Names.Select(n => (n ?? "").Trim()).Where(n => !s_usages.ContainsKey(n.StartsWith("2nd ", StringComparison.Ordinal) ? n.Substring(4) : n)
                 && Other(0, n) is { Kind: LightKind.Other, Label: LightLabel.None });
 
         /// <summary>The usage or label each name of the lists resolves to, so a

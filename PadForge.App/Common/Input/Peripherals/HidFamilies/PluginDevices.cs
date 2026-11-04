@@ -16,7 +16,7 @@ namespace PadForge.Common.Input.Peripherals
                 .Concat(LogitechG19()).Concat(MountainMakalu()).Concat(CoolerMasterMat()).Concat(CorsairHeadsets())
                 .Concat(CorsairDarkCore()).Concat(CorsairNexus()).Concat(Roccat()).Concat(RoyalKludge())
                 .Concat(NzxtFunction()).Concat(Glorious()).Concat(SteelSeriesKeyboards()).Concat(StripControllers())
-                .Concat(QmkBoards()).Concat(Macropad()).Concat(RamaM65B());
+                .Concat(QmkBoards()).Concat(Macropad()).Concat(RamaM65B()).Concat(BetaDevices()).Concat(HasteWirelessNewFirmware());
 
         // ── Corsair headsets (Corsair/Modern_Corsair/Virtuoso_HeadSets, Corsair/Void_HeadSets) ──
 
@@ -29,93 +29,68 @@ namespace PadForge.Common.Input.Peripherals
         /// SE's.</summary>
         private static IEnumerable<PluginDevice> CorsairHeadsets()
         {
-            const string Virtuoso = "Corsair/Modern_Corsair/Virtuoso_HeadSets/";
-            foreach (var (name, pid, device, plugin) in new (string, ushort, byte, string)[]
+            const string Headsets = "Corsair/Modern_Corsair/Corsair_Headset_Controller.js";
+            foreach (var (name, pid, wireless) in new (string, ushort, bool)[]
             {
-                ("Corsair Virtuoso Headset", 0x0A42, 0x09, "Corsair_Virtuoso_Headset.js"),
-                ("Corsair Virtuoso Headset", 0x0A41, 0x09, "Corsair_Virtuoso_Headset_0x0A41.js"),
-                ("Corsair Virtuoso Headset - Wired", 0x0A43, 0x08, "Corsair_Virtuoso_Headset_Wired.js"),
-                ("Corsair Virtuoso Gaming SE Headset", 0xA346, 0x09, "Corsair_Virtuoso_SE_Gaming_Headset.js"),
-                ("Corsair Virtuoso SE Headset", 0x0A3E, 0x09, "Corsair_Virtuoso_SE_Headset.js"),
-                ("Corsair Virtuoso SE Headset - Wired", 0x0A3D, 0x08, "Corsair_Virtuoso_SE_Headset_Wired.js"),
-                ("Corsair Virtuoso Wireless Gaming Headset", 0x0A4C, 0x09, "Corsair_Virtuoso_Wireless_Gaming_Headset.js"),
-                ("Corsair Virtuoso Wireless Gaming Headset", 0x0A5C, 0x09, "Corsair_Virtuoso_Wireless_Gaming_Headset.js"),
-                ("Corsair Virtuoso XT Headset", 0x0A64, 0x09, "Corsair_Virtuoso_XT_Headset.js"),
+                ("Corsair Virtuoso Wireless", 0x0A40, true),
+                ("Corsair Virtuoso", 0x0A41, false),
+                ("Corsair Virtuoso Wireless", 0x0A42, true),
+                ("Corsair Virtuoso", 0x0A43, false),
+                ("Corsair Virtuoso Wireless", 0x0A44, true),
+                ("Corsair Virtuoso Wireless", 0x0A4B, true),
+                ("Corsair Virtuoso Wireless", 0x0A4C, true),
+                ("Corsair Virtuoso", 0x0A5A, false),
+                ("Corsair Virtuoso Wireless", 0x0A5C, true),
+                ("Corsair Virtuoso SE", 0x0A3D, false),
+                ("Corsair Virtuoso SE Wireless", 0x0A3E, true),
+                ("Corsair Virtuoso XT", 0x0A62, false),
+                ("Corsair Virtuoso XT Wireless", 0x0A64, true),
+                ("Corsair HS80 RGB", 0x0A69, false),
+                ("Corsair HS80 RGB Wireless", 0x0A6B, true),
+                ("Corsair HS80 RGB White", 0x0A71, false),
+                ("Corsair HS80 RGB White Wireless", 0x0A73, true),
+                // On master only, and not on beta's list.
+                ("Corsair Virtuoso Gaming SE", 0xA346, true),
             })
+            {
+                // The device byte: 09 through the dongle, 08 on the cable.
+                byte device = wireless ? (byte)0x09 : (byte)0x08;
                 yield return new PluginDevice
                 {
                     Name = name,
                     VendorId = CorsairLights.VendorId,
                     ProductId = pid,
-                    Plugin = Virtuoso + plugin,
-                    Interface = 4,
+                    Plugin = Headsets,
+                    // Interface 3 or 4 by the model: the plugin tries the ones it lists.
+                    UsagePage = 0xFF42,
                     Usage = 0x0001,
                     OutputLength = 64,
-                    // The left can, the right can and the microphone.
+                    // The logo, the power light and the microphone.
                     Lights = Zones(3),
                     Slots = 3,
                     Programs = s_icue,
+                    // A wireless headset drops the host's colors when it sleeps. The
+                    // plugin watches for that on its reports, and a keep-alive takes
+                    // it again with no second collection.
+                    KeepAliveMs = wireless ? 5000 : 0,
                     Start = new[]
                     {
                         PluginStep.Output(Frame(64, 0x02, device, 0x01, 0x03, 0x00, 0x02)),
+                        PluginStep.Wait(100),
                         PluginStep.Output(Frame(64, 0x02, device, 0x0D, 0x00, 0x01)),
+                        PluginStep.Wait(100),
+                        PluginStep.Output(Frame(64, 0x02, device, 0x01, 0x02, 0x00, 0xE8, 0x03)),
                     },
                     Picture = colors => VirtuosoPicture(device, colors),
                     HandBack = new[] { PluginStep.Output(Frame(64, 0x02, device, 0x01, 0x03, 0x00, 0x01)) },
                 };
-            foreach (var (name, pid, device, plugin) in new (string, ushort, byte, string)[]
-            {
-                ("Corsair HS80 RGB USB Gaming Headset", 0x0A69, 0x08, "Corsair_HS80_RGB_USB_Gaming_Headset.js"),
-                ("Corsair HS80 RGB USB Gaming Headset", 0x0A71, 0x08, "Corsair_HS80_RGB_USB_Gaming_Headset_0x0a71.js"),
-                ("Corsair HS80 RGB Wireless Gaming Headset", 0x0A6B, 0x09, "Corsair_HS80_RGB_Wireless_Gaming_Headset.js"),
-                ("Corsair HS80 RGB Wireless Gaming Headset", 0x0A73, 0x09, "Corsair_HS80_RGB_Wireless_Gaming_Headset_0x0a73.js"),
-            })
-                yield return new PluginDevice
-                {
-                    Name = name,
-                    VendorId = CorsairLights.VendorId,
-                    ProductId = pid,
-                    Plugin = Virtuoso + plugin,
-                    Interface = 3,
-                    UsagePage = 0xFF42,
-                    Usage = 0x0001,
-                    OutputLength = 64,
-                    Lights = new[] { Logo(0), Status(1) },
-                    Slots = 2,
-                    Programs = s_icue,
-                    // The plugin sets software mode again when the headset says
-                    // it turned on. A keep-alive does the same without a second
-                    // collection.
-                    KeepAliveMs = 5000,
-                    Start = new[]
-                    {
-                        PluginStep.Output(Frame(64, 0x02, device, 0x01, 0x03, 0x00, 0x02)),
-                        PluginStep.Output(Frame(64, 0x02, device, 0x0D, 0x00, 0x01)),
-                        PluginStep.Output(Frame(64, 0x02, device, 0x01, 0x02, 0x00, 0xE8, 0x03)),
-                    },
-                    Picture = colors =>
-                    {
-                        var frame = Frame(64, 0x02, device, 0x06, 0x00, 0x09);
-                        for (int i = 0; i < 2; i++)
-                        {
-                            frame[8 + i * 2] = R(colors[i]);
-                            frame[11 + i * 2] = G(colors[i]);
-                            frame[14 + i * 2] = B(colors[i]);
-                        }
-                        return new[] { PluginStep.Output(frame) };
-                    },
-                    HandBack = new[]
-                    {
-                        PluginStep.Output(Frame(64, 0x02, device, 0x01, 0x02)),
-                        PluginStep.Output(Frame(64, 0x02, device, 0x01, 0x03, 0x00, 0x01)),
-                    },
-                };
+            }
             yield return new PluginDevice
             {
                 Name = "Corsair HS80 RGB Wired Gaming Headset",
                 VendorId = CorsairLights.VendorId,
                 ProductId = 0x0A88,
-                Plugin = Virtuoso + "Corsair_HS80_RGB_Wired_Gaming_Headset.js",
+                Plugin = "Corsair/Modern_Corsair/Corsair_HS80_RGB_Wired_Gaming_Headset.js",
                 Interface = 3,
                 UsagePage = 0xFFC5,
                 Usage = 0x0001,
@@ -341,25 +316,8 @@ namespace PadForge.Common.Input.Peripherals
                 FeatureLength = 17,
                 Lights = Edges(4),
                 Slots = 4,
-                Start = new[]
-                {
-                    PluginStep.Feature(new byte[]
-                    {
-                        0x02, 0x00, 0x09, 0x12, 0xFA, 0x00, 0xFF, 0x00, 0x00, 0xFF, 0x09, 0x12, 0xFA, 0x00, 0xFF, 0x7D, 0x00, 0xFF, 0x09, 0x12,
-                        0xFA, 0x00, 0xFF, 0xFF, 0x00, 0xFF, 0x09, 0x12, 0xFA, 0x00, 0x7D, 0xFF, 0x00, 0xFF, 0x00, 0x00, 0x01, 0xFF, 0x00,
-                    }),
-                    PluginStep.Feature(Frame(5, 0x01, 0xFF, 0xFF)),
-                },
-                Picture = colors =>
-                {
-                    var frame = Frame(17, 0x03);
-                    for (int i = 0; i < 4; i++)
-                    {
-                        PutRgb(frame, 1 + i * 4, colors[i]);
-                        frame[4 + i * 4] = 0xFF;
-                    }
-                    return new[] { PluginStep.Feature(frame) };
-                },
+                Start = KoneDockStart(),
+                Picture = KoneDockPicture,
             };
             foreach (var (name, pid, plugin, id) in new (string, ushort, string, byte)[]
             {
@@ -546,6 +504,28 @@ namespace PadForge.Common.Input.Peripherals
             };
         }
 
+        /// <summary>The Kone XP Air dock's Initialize, Roccat's and Turtle Beach's.</summary>
+        private static PluginStep[] KoneDockStart() => new[]
+        {
+            PluginStep.Feature(new byte[]
+            {
+                        0x02, 0x00, 0x09, 0x12, 0xFA, 0x00, 0xFF, 0x00, 0x00, 0xFF, 0x09, 0x12, 0xFA, 0x00, 0xFF, 0x7D, 0x00, 0xFF, 0x09, 0x12,
+                        0xFA, 0x00, 0xFF, 0xFF, 0x00, 0xFF, 0x09, 0x12, 0xFA, 0x00, 0x7D, 0xFF, 0x00, 0xFF, 0x00, 0x00, 0x01, 0xFF, 0x00,
+            }),
+            PluginStep.Feature(Frame(5, 0x01, 0xFF, 0xFF)),
+        };
+
+        internal static IEnumerable<PluginStep> KoneDockPicture(int[] colors)
+        {
+            var frame = Frame(17, 0x03);
+            for (int i = 0; i < 4; i++)
+            {
+                PutRgb(frame, 1 + i * 4, colors[i]);
+                frame[4 + i * 4] = 0xFF;
+            }
+            yield return PluginStep.Feature(frame);
+        }
+
         /// <summary>The Kone XP Air's Initialize. The wireless plugin's third
         /// byte says 01 for the mouse and 00 for the receiver, its own note.</summary>
         private static PluginStep[] KoneXpStart(byte id) => Steps(30, 30,
@@ -616,9 +596,9 @@ namespace PadForge.Common.Input.Peripherals
 
         private static IEnumerable<PluginDevice> RoyalKludge()
         {
-            foreach (ushort pid in new ushort[] { 0x0055, 0x007A, 0x0060, 0x004A })
+            foreach (ushort pid in new ushort[] { 0x0055, 0x007A, 0x0060, 0x004A, 0x00EC, 0x00E1, 0x00F8, 0x00C7, 0x0065 })
                 yield return RoyalKludgeRow("Royal Kludge RK61", pid, PluginKeyTables.Rk61, colors => RoyalKludgePicture(colors, greenFirst: true, waitAfter: true));
-            foreach (ushort pid in new ushort[] { 0x005D, 0x0059, 0x00C8, 0x010D, 0x00F4 })
+            foreach (ushort pid in new ushort[] { 0x005D, 0x0059, 0x00C8, 0x010D, 0x00F4, 0x00F3 })
                 yield return RoyalKludgeRow("Royal Kludge RK84", pid, PluginKeyTables.Rk84, colors => RoyalKludgePicture(colors, greenFirst: false, waitAfter: false));
         }
 
@@ -687,10 +667,13 @@ namespace PadForge.Common.Input.Peripherals
             {
                 ("NZXT Function", 0x2103, "NZXT_Function_Keyboard.js", FunctionBoard.Full),
                 ("NZXT Function", 0x2106, "NZXT_Function_Keyboard.js", FunctionBoard.Full),
-                ("NZXT Function MiniTKL", 0x2105, "NZXT_Function_MiniTKL_Keyboard.js", FunctionBoard.MiniTkl),
-                ("NZXT Function MiniTKL", 0x2108, "NZXT_Function_MiniTKL_Keyboard.js", FunctionBoard.MiniTkl),
-                ("NZXT Function TKL", 0x2107, "NZXT_Function_TKL_ISO_Keyboard.js", FunctionBoard.TklIso),
-                ("NZXT Function TKL", 0x2104, "NZXT_Function_TKL_Keyboard.js", FunctionBoard.Full),
+                ("NZXT Function MiniTKL", 0x2105, "NZXT_Function_Keyboard.js", FunctionBoard.MiniTkl),
+                ("NZXT Function MiniTKL", 0x2108, "NZXT_Function_Keyboard.js", FunctionBoard.MiniTkl),
+                ("NZXT Function TKL", 0x2107, "NZXT_Function_Keyboard.js", FunctionBoard.TklIso),
+                ("NZXT Function TKL", 0x2104, "NZXT_Function_Keyboard.js", FunctionBoard.Full),
+                ("NZXT Function 2", 0x2130, "NZXT_Function_Keyboard.js", FunctionBoard.Full),
+                ("NZXT Function 2", 0x2131, "NZXT_Function_Keyboard.js", FunctionBoard.TklIso),
+                ("NZXT Function 2", 0x2136, "NZXT_Function_Keyboard.js", FunctionBoard.Full),
             })
                 yield return new PluginDevice
                 {
@@ -705,11 +688,46 @@ namespace PadForge.Common.Input.Peripherals
                     Programs = new[] { VendorPrograms.NzxtCam },
                     Start = new[]
                     {
-                        PluginStep.Output(Frame(10, 0x43, 0x81, 0x00, 0x84)),
-                        PluginStep.Output(Frame(10, 0x43, 0x81, 0x00, 0x86)),
+                        PluginStep.Output(Frame(64, 0x43, 0x81, 0x00, 0x84)),
+                        PluginStep.Output(Frame(64, 0x43, 0x81, 0x00, 0x86)),
+                        PluginStep.Output(Frame(64, 0x43, 0x82, 0x00, 0x41, 0x64)),
+                        PluginStep.Output(Frame(64, 0x43, 0x97, 0x00, 0x10, 0x01)),
                     },
                     Picture = colors => FunctionPicture(colors, board),
+                    AskVariant = (io, _, _) =>
+                    {
+                        Func<int[], IEnumerable<PluginStep>> picture = colors => FunctionPicture(colors, board);
+                        if (FunctionFirmwareIsNew(io)) picture = FunctionNewPicture;
+                        return new PluginVariant(Zones(10), 10, picture);
+                    },
                 };
+        }
+
+        /// <summary>Whether the firmware's version, the third to fifth bytes of its
+        /// second answer, is 1.3.71 or later, where the keyboard takes one report
+        /// (Initialize and fetchFWVersion, NZXT_Function_Keyboard.js). A keyboard
+        /// that does not answer keeps the older frames.</summary>
+        internal static bool FunctionFirmwareIsNew(IHidReportChannel io)
+        {
+            if (!io.WriteOutput(Frame(64, 0x43, 0x81, 0x00, 0x01))) return false;
+            var answer = new byte[Math.Max(io.InputReportLength, 64)];
+            if (io.ReadInput(answer, AskMs) <= 0 || io.ReadInput(answer, AskMs) <= 0) return false;
+            int version = answer[3] << 16 | answer[4] << 8 | answer[5];
+            return version >= (1 << 16 | 3 << 8 | 71);
+        }
+
+        /// <summary>All ten zones in one report, with every key of every bank on,
+        /// then the plugin's closing report.</summary>
+        internal static IEnumerable<PluginStep> FunctionNewPicture(int[] colors)
+        {
+            var frame = new byte[64];
+            new byte[] { 0x43, 0xBD, 0x01, 0x10, 0x02 }.CopyTo(frame, 0);
+            Array.Fill(frame, (byte)0xFF, 5, 18);
+            frame[23] = 0x00;
+            frame[24] = 0x0A;
+            for (int z = 0; z < 10; z++) PutRgb(frame, 25 + z * 4, colors[z]);
+            yield return PluginStep.Output(frame);
+            yield return PluginStep.Output(Frame(64, 0x43, 0x01));
         }
 
         /// <summary>Four reports that carry a keyboard's ten zones between fixed
@@ -764,6 +782,7 @@ namespace PadForge.Common.Input.Peripherals
             foreach (var (name, pid, plugin, wired) in new (string, ushort, string, bool)[]
             {
                 ("Glorious Model O Wireless", 0x2024, "Glorious_Model_O_Wireless.js", false),
+                ("Glorious Model O Wireless", 0x2026, "Glorious_Model_O_Wireless.js", false),
                 ("Glorious Model D Wireless", 0x2025, "Glorious_Model_D_Wireless.js", false),
                 ("Glorious Model O Wireless - Wired", 0x2013, "Glorious_Model_O_Wireless_-_Wired.js", true),
                 ("Glorious Model D Wireless - Wired", 0x2014, "Glorious_Model_D_Wireless_-_Wired.js", true),
@@ -801,19 +820,20 @@ namespace PadForge.Common.Input.Peripherals
             yield return PluginStep.Feature(Frame(65, 0x00, 0x00, 0x00, 0x02, 0x02, 0x02, 0x02, 0x00, 0xFF));
         }
 
-        // ── SteelSeries Apex M750 TKL PUBG and Apex Pro Mini (Steelseries/*.js) ──
+        // ── SteelSeries Apex M750 TKL and Apex Pro Mini (Steelseries/*.js) ──
 
         private static IEnumerable<PluginDevice> SteelSeriesKeyboards()
         {
+            foreach (var (name, pid) in new (string, ushort)[] { ("SteelSeries Apex M750 TKL", 0x0617), ("SteelSeries Apex M750 TKL PUBG Edition", 0x0619) })
             yield return new PluginDevice
             {
-                Name = "SteelSeries Apex M750 TKL PUBG Edition",
+                Name = name,
                 VendorId = 0x1038,
-                ProductId = 0x0619,
-                Plugin = PluginKeyTables.ApexM750TklPubg.Plugin,
+                ProductId = pid,
+                Plugin = PluginKeyTables.ApexM750Tkl.Plugin,
                 Interface = 2,
                 FeatureLength = 513,
-                Lights = PluginKeyNames.Lights(PluginKeyTables.ApexM750TklPubg),
+                Lights = PluginKeyNames.Lights(PluginKeyTables.ApexM750Tkl),
                 Slots = (513 - 9) / 3,
                 Programs = new[] { VendorPrograms.SteelSeriesGG },
                 Start = new[]
@@ -846,7 +866,7 @@ namespace PadForge.Common.Input.Peripherals
         internal static IEnumerable<PluginStep> ApexM750Picture(int[] colors)
         {
             var frame = Frame(513, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x01, 0x03, 0x06, 0x12);
-            foreach (int index in PluginKeyTables.ApexM750TklPubg.Indexes) PutRgb(frame, index * 3 + 9, colors[index]);
+            foreach (int index in PluginKeyTables.ApexM750Tkl.Indexes) PutRgb(frame, index * 3 + 9, colors[index]);
             yield return PluginStep.Feature(frame);
             yield return PluginStep.Feature(Frame(513, 0x00, 0x00, 0x00, 0x00, 0x03, 0x01, 0x04, 0x00, 0x2D, 0x01));
             yield return PluginStep.Wait(2);
@@ -1054,80 +1074,56 @@ namespace PadForge.Common.Input.Peripherals
         /// </summary>
         private static IEnumerable<PluginDevice> QmkBoards()
         {
-            foreach (var (name, vendor, products, table) in new (string, ushort, ushort[], PluginKeyTable)[]
-            {
-            ("Feker IK75", 0xF2E7, new ushort[] { 0x1226 }, PluginKeyTables.QmkFeker),
-            ("Freja 65 Keyboard", 0x5453, new ushort[] { 0x0067 }, PluginKeyTables.QmkFreja65),
-            ("GMMK 2 65% ANSI QMK Keyboard", 0x320F, new ushort[] { 0x5045 }, PluginKeyTables.QmkGmmk265Ansi),
-            ("GMMK 2 65% ISO QMK Keyboard", 0x320F, new ushort[] { 0x504A }, PluginKeyTables.QmkGmmk265Iso),
-            ("GMMK 2 96% ANSI QMK Keyboard", 0x320F, new ushort[] { 0x504B }, PluginKeyTables.QmkGmmk296Ansi),
-            ("GMMK 2 96% ISO QMK Keyboard", 0x320F, new ushort[] { 0x505A }, PluginKeyTables.QmkGmmk296Iso),
-            ("Glorious GMMK Pro QMK Keyboard", 0x320F, new ushort[] { 0x5044 }, PluginKeyTables.QmkGmmkPro),
-            ("KBDFans KBD67", 0x4B42, new ushort[] { 0x1225 }, PluginKeyTables.QmkKbd67),
-            ("Keychron K10 Pro QMK Keyboard", 0x3434, new ushort[] { 0x02A0 }, PluginKeyTables.QmkK10Pro),
-            ("Keychron K2 Pro QMK Keyboard", 0x3434, new ushort[] { 0x0220 }, PluginKeyTables.QmkK2Pro),
-            ("Keychron K8 Pro QMK Keyboard", 0x3434, new ushort[] { 0x0280 }, PluginKeyTables.QmkK8Pro),
-            ("Keychron K8 TKL QMK Keyboard", 0x3434, new ushort[] { 0xFE0F }, PluginKeyTables.QmkK8Tkl),
-            ("Keychron Q0 QMK Keyboard", 0x3434, new ushort[] { 0x0130 }, PluginKeyTables.QmkQ0),
-            ("Keychron Q12 QMK Keyboard", 0x3434, new ushort[] { 0x01D1 }, PluginKeyTables.QmkQ12),
-            ("Keychron Q1 QMK Keyboard", 0x3434, new ushort[] { 0x0107 }, PluginKeyTables.QmkQ1Ansi),
-            ("Keychron Q1 QMK Keyboard", 0x3434, new ushort[] { 0x0109 }, PluginKeyTables.QmkQ1Iso),
-            ("Keychron Q5 QMK Keyboard", 0x3434, new ushort[] { 0x0151 }, PluginKeyTables.QmkQ5),
-            ("Keychron Q6 QMK Keyboard", 0x3434, new ushort[] { 0x0160, 0x0161 }, PluginKeyTables.QmkQ6Ansi),
-            ("Keychron Q6 QMK Keyboard", 0x3434, new ushort[] { 0x0162, 0x0163 }, PluginKeyTables.QmkQ6Iso),
-            ("Keychron V1 QMK Keyboard", 0x3434, new ushort[] { 0x0310, 0x0311 }, PluginKeyTables.QmkV1),
-            ("Keychron V2 QMK Keyboard", 0x3434, new ushort[] { 0x0320, 0x0321 }, PluginKeyTables.QmkV2),
-            ("Keychron V3 QMK Keyboard", 0x3434, new ushort[] { 0x0331 }, PluginKeyTables.QmkV3),
-            ("Keychron V5 QMK Keyboard", 0x3434, new ushort[] { 0x0351 }, PluginKeyTables.QmkV5),
-            ("Keychron V6 QMK Keyboard", 0x3434, new ushort[] { 0x0361 }, PluginKeyTables.QmkV6),
-            ("Massdrop CTRL QMK Keyboard", 0x04D8, new ushort[] { 0xEED2 }, PluginKeyTables.QmkDropCtrl),
-            })
-                foreach (ushort product in products)
+            foreach (var board in PluginQmkTables.Boards)
+                foreach (ushort product in board.Products)
+                {
+                    var table = new Lazy<PluginKeyTable>(board.Table);
                     yield return new PluginDevice
                     {
-                        Name = name,
-                        VendorId = vendor,
+                        Name = board.Name,
+                        VendorId = board.Vendor,
                         ProductId = product,
-                        Plugin = table.Plugin,
+                        Plugin = board.Plugin,
                         Interface = 1,
                         OutputLength = QmkReportLength,
-                        Lights = PluginKeyNames.Lights(table, places: QmkPlaces(table)),
-                        Slots = table.Indexes.Max() + 1,
+                        BuildLights = () => PluginKeyNames.Lights(table.Value),
+                        // At most what one byte of a report can number.
+                        Slots = 256,
                         Answers = QmkAnswers,
+                        AskVariant = (io, _, wait) => QmkVariant(board, table, io, wait),
                         Start = new[] { PluginStep.Output(Frame(32, 0x00, 0x25)), PluginStep.Wait(QmkCommandWaitMs) },
                         Picture = colors => QmkPicture(colors),
                         HandBack = new[] { PluginStep.Output(Frame(32, 0x00, 0x26)), PluginStep.Wait(QmkCommandWaitMs) },
                     };
+                }
         }
 
-        /// <summary>What the QMK plugins' legends mean by place, where the name
-        /// alone would mislead: "-" and "+" are the minus and equal keys here,
-        /// and the Q1 ANSI's "&lt;" and "&gt;" its comma and period. The Q1 ISO's
-        /// legends are Nordic, the K8 TKL's "|" is the ISO key beside the left
-        /// shift and its unnamed key the backslash, and the V1's "Enm" sits where
-        /// its Q1 kin has Home.</summary>
-        private static IReadOnlyDictionary<string, ushort> QmkPlaces(PluginKeyTable table)
+        /// <summary>The board's table, and for a plugin that tells its layouts
+        /// apart by the firmware, the one the third byte of its unique identifier
+        /// names (returnUniqueIdentifier, GMMK_Pro_QMK_Keyboard.js and
+        /// GMMK_3_QMK_Keyboard.js).</summary>
+        internal static PluginVariant QmkVariant(PluginQmkBoard board, Lazy<PluginKeyTable> table, IHidReportChannel io, Action<int> wait)
         {
-            var places = new Dictionary<string, ushort>
+            if (board.Variants == null) return VariantOf(table.Value, QmkPicture);
+            byte? unique = QmkUniqueByte(io, wait);
+            foreach (var (byteValue, variant) in board.Variants)
+                if (byteValue == unique) return VariantOf(variant(), QmkPicture);
+            foreach (var (byteValue, variant) in board.Variants)
+                if (byteValue == null) return VariantOf(variant(), QmkPicture);
+            return VariantOf(table.Value, QmkPicture);
+        }
+
+        internal static byte? QmkUniqueByte(IHidReportChannel io, Action<int> wait)
+        {
+            if (!io.WriteOutput(Frame(32, 0x00, 0x23))) return null;
+            wait?.Invoke(QmkCommandWaitMs);
+            var answer = new byte[Math.Max(io.InputReportLength, 33)];
+            for (int i = 0; i < 8; i++)
             {
-                ["-"] = 0x2D, ["+"] = 0x2E, ["="] = 0x2E, ["~"] = 0x35, ["<"] = 0x36, [">"] = 0x37, ["|"] = 0x31, ["Enm"] = 0x4A, [""] = 0x31,
-            };
-            if (ReferenceEquals(table, PluginKeyTables.QmkQ1Iso))
-            {
-                places["|"] = 0x35;
-                places["\\"] = 0x2E;
-                places["+"] = 0x2D;
-                places["'"] = 0x32;
+                if (io.ReadInput(answer, 10) <= 0) return null;
+                if (answer[1] == 0x23) return answer[4];
             }
-            else if (ReferenceEquals(table, PluginKeyTables.QmkK8Tkl))
-            {
-                places["|"] = 0x64;
-            }
-            else if (ReferenceEquals(table, PluginKeyTables.QmkGmmk296Iso))
-            {
-                places["§"] = 0x35;
-            }
-            return places;
+            return null;
         }
 
         internal const int QmkReportLength = 33;
@@ -1521,8 +1517,9 @@ namespace PadForge.Common.Input.Peripherals
             };
             foreach (var (name, pid, plugin) in new[]
             {
-                ("Alienware AW3423DW", (ushort)0x100B, "Alienware/Alienware_AW3423DW.js"),
-                ("Alienware AW3821DW", (ushort)0x1008, "Alienware/Alienware_AW3821DW.js"),
+                ("Alienware AW3423DW", (ushort)0x100B, "Alienware/Alienware_Monitor_Gen2_Controller.js"),
+                ("Alienware AW3821DW", (ushort)0x1008, "Alienware/Alienware_Monitor_Gen2_Controller.js"),
+                ("Alienware AW2725DF", (ushort)0x1014, "Alienware/Alienware_Monitor_Gen2_Controller.js"),
             })
                 yield return new PluginDevice
                 {
@@ -1534,9 +1531,11 @@ namespace PadForge.Common.Input.Peripherals
                     UsagePage = 0xFF00,
                     Usage = 0x0001,
                     OutputLength = 65,
-                    // The middle light, the big back light, the back logo and
-                    // the switch.
-                    Lights = new[] { Edge(0), Edge(1), Logo(2), Status(3) },
+                    // The middle light, the big back light, the back logo and the
+                    // switch. The AW2725DF has the logo, the number and the switch.
+                    Lights = pid == 0x1014
+                        ? new[] { Logo(0), Edge(1), Status(3) }
+                        : new[] { Edge(0), Edge(1), Logo(2), Status(3) },
                     Slots = 4,
                     RepaintMs = AlienwareMonitorRepaintMs,
                     Programs = new[] { VendorPrograms.AlienwareCommandCenter },
@@ -1594,7 +1593,7 @@ namespace PadForge.Common.Input.Peripherals
                 Name = "ASUS PG43UQ",
                 VendorId = 0x0B05,
                 ProductId = 0x1931,
-                Plugin = "Asus/ASUS_PG43UQ_Monitor.js",
+                Plugin = "Asus/ASUS_Monitor_Controller.js",
                 Interface = 0,
                 FeatureLength = 8,
                 Lights = new[] { Logo(0) },
@@ -1615,7 +1614,7 @@ namespace PadForge.Common.Input.Peripherals
                 Name = "ASUS ROG Keris",
                 VendorId = 0x0B05,
                 ProductId = 0x1A59,
-                Plugin = "Asus/ASUS_ROG_Keris_Mouse.js",
+                Plugin = "Asus/Asus_Mouse.js",
                 Interface = 0,
                 OutputLength = 65,
                 Lights = new[] { Logo(0), Wheel(1) },
@@ -1624,11 +1623,12 @@ namespace PadForge.Common.Input.Peripherals
                 Picture = colors => Enumerable.Range(0, 2).Select(zone => PluginStep.Output(Frame(65,
                     0x00, 0x51, 0x28, (byte)zone, 0x00, 0x00, 0x04, R(colors[zone]), G(colors[zone]), B(colors[zone])))),
             };
+            foreach (ushort claymore in new ushort[] { 0x196B, 0x1934 })
             yield return new PluginDevice
             {
                 Name = "ASUS ROG Claymore II",
                 VendorId = 0x0B05,
-                ProductId = 0x196B,
+                ProductId = claymore,
                 Plugin = PluginKeyTables.ClaymoreIiRight.Plugin,
                 Interface = 1,
                 UsagePage = 0xFF00,
@@ -1638,7 +1638,9 @@ namespace PadForge.Common.Input.Peripherals
                 Slots = ClaymoreSlots,
                 Programs = new[] { VendorPrograms.ArmouryCrate },
                 Siblings = new[] { new HidSibling(2, 0xFFC0) },
-                PictureWith = ClaymorePictureWith,
+                PictureWith = siblings => ClaymorePictureWith(siblings),
+                AskVariant = (io, siblings, _) => new PluginVariant(PluginKeyNames.Lights(PluginKeyTables.ClaymoreIiRight), ClaymoreSlots,
+                    ClaymorePictureWith(siblings, ClaymoreStartsLeft(io))),
                 HandBack = new[] { PluginStep.Output(ClaymoreOwnEffect) },
             };
         }
@@ -1660,9 +1662,18 @@ namespace PadForge.Common.Input.Peripherals
         /// the plugin starts from the right. A light's address stays its LED
         /// number with the pad on the right, and the frames take the other
         /// side's number for the same key, so the card does not change.</summary>
-        internal static Func<int[], IEnumerable<PluginStep>> ClaymorePictureWith(IReadOnlyList<IHidReportChannel> siblings)
+        /// <summary>The pad's place as the keyboard reports it: byte 17 of its answer,
+        /// FF with no pad and 01 for the right (ASUS_ROG_Claymore_II.js).</summary>
+        internal static bool ClaymoreStartsLeft(IHidReportChannel io)
         {
-            bool left = false;
+            if (!io.WriteOutput(Frame(65, 0x00, 0x12))) return false;
+            var answer = new byte[Math.Max(io.InputReportLength, 65)];
+            return io.ReadInput(answer, AskMs) > 0 && answer[17] != 0xFF && answer[17] != 0x01;
+        }
+
+        internal static Func<int[], IEnumerable<PluginStep>> ClaymorePictureWith(IReadOnlyList<IHidReportChannel> siblings, bool startsLeft = false)
+        {
+            bool left = startsLeft;
             var buffer = new byte[65];
             return colors =>
             {
@@ -1670,7 +1681,8 @@ namespace PadForge.Common.Input.Peripherals
                 while (plate != null && plate.ReadInput(buffer, 0) > 0)
                     if (buffer[0] == 0x03 && buffer[1] == 0x81 && buffer[2] == 0x04 && buffer[3] == 0x00)
                     {
-                        if (buffer[4] == 0x01) left = false;
+                        // FF: no pad on it, which lights as the right.
+                        if (buffer[4] is 0x01 or 0xFF) left = false;
                         else if (buffer[4] == 0x00) left = true;
                     }
                 return ClaymorePicture(colors, left);
@@ -1796,6 +1808,7 @@ namespace PadForge.Common.Input.Peripherals
                     Name = "HyperX Pulsefire Haste Wireless",
                     VendorId = 0x03F0,
                     ProductId = pid,
+                    // The plugin as master kept it, for firmware before 4.1.0.6.
                     Plugin = "HyperX/HyperX_PusleFire_Haste_Wireless_Mouse.js",
                     Interface = 3,
                     FeatureLength = 65,
@@ -1804,6 +1817,42 @@ namespace PadForge.Common.Input.Peripherals
                     Programs = new[] { VendorPrograms.Ngenuity },
                     Start = HasteStart().ToArray(),
                     Picture = HastePicture,
+                };
+        }
+
+        /// <summary>Firmware 4.1.0.6 and later moved to interface 2 and these frames
+        /// (HyperX_PulseFire_Haste_Wireless_Mouse.js on beta).</summary>
+        private static IEnumerable<PluginDevice> HasteWirelessNewFirmware()
+        {
+            foreach (ushort pid in new ushort[] { 0x048E, 0x028E })
+                yield return new PluginDevice
+                {
+                    Name = "HyperX Pulsefire Haste Wireless",
+                    VendorId = 0x03F0,
+                    ProductId = pid,
+                    Plugin = "HyperX/HyperX_PulseFire_Haste_Wireless_Mouse.js",
+                    Interface = 2,
+                    UsagePage = 0xFF00,
+                    Usage = 0x0001,
+                    OutputLength = 64,
+                    // Two LEDs under the wheel.
+                    Lights = new[] { Wheel(0), Edge(1) },
+                    Slots = 2,
+                    Programs = new[] { VendorPrograms.Ngenuity },
+                    Start = new[]
+                    {
+                        PluginStep.Output(Frame(64, 0x00, 0x46)),
+                        PluginStep.Output(Frame(64, 0x00, 0x57, 0x12, 0x01)),
+                        PluginStep.Output(Frame(64, 0x00, 0x51)),
+                    },
+                    Picture = colors =>
+                    {
+                        var frame = Frame(64, 0x00, 0xD2, 0x00, 0x00, 0x08);
+                        PutRgb(frame, 5, colors[0]);
+                        PutRgb(frame, 8, colors[1]);
+                        frame[11] = 0x64;
+                        return new[] { PluginStep.Output(frame) };
+                    },
                 };
         }
 

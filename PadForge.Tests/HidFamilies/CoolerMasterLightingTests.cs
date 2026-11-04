@@ -278,7 +278,7 @@ namespace PadForge.Tests
         [Fact]
         public void EveryKeyboard_HasOpenRgbsLayoutInEachRegion_AddressedByItsLedValue()
         {
-            foreach (ushort pid in CoolerMasterLighting.V1Keyboards.Concat(CoolerMasterLighting.V2Keyboards).Where(p => p != CoolerMasterLighting.Sk650Other))
+            foreach (ushort pid in CoolerMasterLighting.V1Keyboards.Concat(CoolerMasterLighting.V2Keyboards).Where(p => p != CoolerMasterLighting.Sk650Other && p != CoolerMasterLighting.Sk621))
             {
                 var row = KeyboardLayouts.ModelsOf("CoolerMaster", pid).Single();
                 foreach (var region in new[] { KeyboardLayout.AnsiQwerty, KeyboardLayout.IsoQwerty, KeyboardLayout.Jis })

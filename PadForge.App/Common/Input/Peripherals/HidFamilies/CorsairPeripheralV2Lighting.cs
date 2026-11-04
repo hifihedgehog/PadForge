@@ -127,7 +127,11 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The receivers (CorsairPeripheralV2Controller.cpp:36-43,
         /// CorsairPeripheralV2Devices.h:98, 107 and 109-111).</summary>
         internal static bool IsReceiver(uint productId)
-            => productId is 0x1BA6 or 0x1B66 or 0x1B65 or 0x1BDC or 0x2B00;
+            => productId is 0x1BA6 or 0x1B66 or 0x1B65 or 0x1BDC or 0x2B00 or LaptopReceiver;
+
+        /// <summary>The dongle of Corsair's laptops, which only SignalRGB's plugin
+        /// lists (Corsair_Bragi_Device.js, ProductIDList).</summary>
+        internal const ushort LaptopReceiver = 0x0D01;
 
         /// <summary>CORSAIR_K57_RGB_WIRED_PID (CorsairPeripheralV2Devices.h:72).</summary>
         internal const ushort K57Wired = 0x1B6E;
@@ -194,7 +198,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>
         /// Corsair's devices on the same protocol that OpenRGB has no table for,
-        /// and SignalRGB's plugin does (Corsair_Bragi_Device.js:925-983): the
+        /// and SignalRGB's plugins do (Corsair_Bragi_Device.js, Corsair_Headset_Controller_Bragi.js): the
         /// frames are this family's, opening the lighting endpoint and writing
         /// to it, and a mouse takes its colors as blocks of reds, greens and
         /// blues, as the plugin's ledSpacing says and this family's mice do. A
@@ -203,36 +207,28 @@ namespace PadForge.Common.Input.Peripherals
         /// OpenRGB's is 41). The K70 Pro's third ID takes OpenRGB's K70 Pro, as
         /// the plugin lists them together.
         /// </summary>
-        internal static readonly Lazy<CorsairV2Device[]> PluginDevices = new(() => new[]
+        internal static readonly Lazy<CorsairV2Device[]> PluginDevices = new(() => PluginCorsairTables.Devices
+            .Where(d => !IsReceiver(d.Product) && CorsairLights.V2Devices.All(v => v.ProductId != d.Product))
+            .Select(PluginDevice)
+            .ToArray());
+
+        /// <summary>The K70 Pro's ID OpenRGB does not list takes its table, as the
+        /// plugin lists them together.</summary>
+        private static CorsairV2Device PluginDevice(PluginCorsairDevice row)
         {
-            PluginMouse("Corsair Sabre RGB Pro", 0x1B79, "Logo Zone", "Scroll Zone", "DPI Zone 1", "DPI Zone 2", "DPI Zone 3"),
-            PluginMouse("Corsair Sabre RGB Pro Wireless", 0x1B98, "Logo Zone", "Profile Indicator", "DPI Indicator"),
-            PluginMouse("Corsair Dark Core RGB Pro", 0x1B80, DarkCoreProLights),
-            PluginMouse("Corsair Dark Core RGB Pro", 0x1B81, DarkCoreProLights),
-            PluginMouse("Corsair Dark Core RGB Pro SE", 0x1B7F, DarkCoreProLights),
-            PluginMouse("Corsair Darkstar", 0x1BB2, "Logo", "Side Led 1", "Side Led 2", "Side Led 3", "Side Led 4", "Side Led 5", "Side Led 6", "Front Left", "Front Right"),
-            PluginKeyboard("Corsair K70 Pro Mini", 0x1BB6, PluginKeyTables.K70ProMini, baseIndex: -4),
-            PluginKeyboard("Corsair K100 Air", 0x1BAB, PluginKeyTables.K100Air, baseIndex: 0),
-            CorsairLights.K70RgbProDevice with { Name = "Corsair K70 RGB PRO", ProductId = 0x1BD4 },
-        });
-
-        private static readonly string[] DarkCoreProLights =
-        {
-            "Scroll Wheel", "Side Led 1", "Side Led 2", "Side Led 3", "Side Led 4", "Side Led 5", "logo", "Right Side Led",
-            "Dpi 1", "dpi 2", "Dpi 3", "Battery indicator",
-        };
-
-        private static CorsairV2Device PluginMouse(string name, ushort productId, params string[] lights)
-            => new(name, productId, CorsairDeviceType.Mouse, 1, lights.Length, Array.Empty<CorsairV2Zone>(), null)
+            if (row.Product == 0x1BD4) return CorsairLights.K70RgbProDevice with { Name = "Corsair K70 RGB PRO", ProductId = 0x1BD4 };
+            var table = row.Table();
+            var lights = table.Usages != null
+                ? PluginKeyNames.Lights(table)
+                : table.Names.Select((name, i) => PluginKeyNames.Named(table.Indexes[i], name)).ToArray();
+            var type = row.Kind == PluginCorsairKind.Keyboard ? CorsairDeviceType.Keyboard : CorsairDeviceType.Mouse;
+            return new CorsairV2Device(row.Name, row.Product, type, 1, table.Names.Length, Array.Empty<CorsairV2Zone>(), null)
             {
-                OwnLights = lights.Select((light, i) => PluginKeyNames.Named(i, light)).ToArray(),
+                OwnLights = lights,
+                OwnBuffer = row.Spacing,
+                OwnInterface = row.Interface,
             };
-
-        private static CorsairV2Device PluginKeyboard(string name, ushort productId, PluginKeyTable table, int baseIndex)
-            => new(name, productId, CorsairDeviceType.Keyboard, 1, table.Names.Length, Array.Empty<CorsairV2Zone>(), null)
-            {
-                OwnLights = PluginKeyNames.Lights(table, baseIndex),
-            };
+        }
 
         /// <summary>The registration OpenRGB would make for a device of
         /// <see cref="PluginDevices"/>: the interface and usage page of its
@@ -240,18 +236,22 @@ namespace PadForge.Common.Input.Peripherals
         internal static OpenRgbRegistration PluginRegistration(HidCollectionInfo collection)
         {
             var device = PluginDevices.Value.FirstOrDefault(d => d.ProductId == collection.ProductId);
-            if (device == null || collection.UsagePage != 0xFF42) return null;
-            if (OpenRgbRegistrations.InterfaceOf(collection, OpenRgbRegistrations.BusOf(collection)) != 1) return null;
-            return new OpenRgbRegistration(OpenRgbFamily, device.Name, DetectHardware, "SignalRGB", OpenRgbTransport.Hid,
-                CorsairLights.VendorId, device.ProductId, 1, 0xFF42, OpenRgbRegistration.Any, OpenRgbRegistration.Any,
+            if (collection.UsagePage != 0xFF42) return null;
+            string name = device?.Name ?? (collection.ProductId == LaptopReceiver ? "Corsair Laptop Slipstream Dongle" : null);
+            if (name == null) return null;
+            int number = device?.OwnInterface ?? 1;
+            if (OpenRgbRegistrations.InterfaceOf(collection, OpenRgbRegistrations.BusOf(collection)) != number) return null;
+            return new OpenRgbRegistration(OpenRgbFamily, name, DetectHardware, "SignalRGB", OpenRgbTransport.Hid,
+                CorsairLights.VendorId, collection.ProductId, number, 0xFF42, OpenRgbRegistration.Any, OpenRgbRegistration.Any,
                 true, false, "signal-plugins Corsair_Bragi_Device.js");
         }
 
-        /// <summary>A Dark Core Pro's dongle or the mouse on its cable: the
-        /// plugin's two sources name these IDs both ways (its library's "Slip
-        /// Stream Dongle" against the standalone plugin's "Wired"), so the
-        /// session asks through the dongle's command first and takes the answer.</summary>
-        internal static bool MayBeReceiver(uint productId) => productId is 0x1B7F or 0x1B80 or 0x1B81;
+        /// <summary>A device of the plugin's list, whose IDs the plugin names for a
+        /// dongle in some places and the device on its cable in others (its library's
+        /// "Slip Stream Dongle" for the Dark Core Pro against the standalone plugin's
+        /// "Wired"). The session asks through the dongle's command first and takes
+        /// the answer.</summary>
+        internal static bool MayBeReceiver(uint productId) => PluginDevices.Value.Any(d => d.ProductId == productId);
 
         /// <summary>The board layout an answer to property 41 names
         /// (RGBController_CorsairV2Hardware.cpp:95-110).</summary>
@@ -280,7 +280,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (device.OwnLights != null)
             {
-                bufferLength = device.OwnLights.Max(l => l.Address) + 1;
+                bufferLength = Math.Max(device.OwnLights.Max(l => l.Address) + 1, device.OwnBuffer);
                 return device.OwnLights.ToList();
             }
             var lights = new List<LightInfo>();

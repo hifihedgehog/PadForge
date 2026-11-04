@@ -38,9 +38,10 @@ namespace PadForge.Common.Input.Peripherals
     }
 
     /// <summary>A keyboard's keys as a plugin lists them
-    /// (<see cref="PluginKeyTables"/>): each key's name, LED index and
-    /// place.</summary>
-    internal sealed record PluginKeyTable(string Plugin, string[] Names, int[] Indexes, byte[] X, byte[] Y);
+    /// (<see cref="PluginKeyTables"/>): each key's name, LED index and place.
+    /// A generated table can carry each key's usage, worked out from its place
+    /// on the board, with a name left for the lights no usage names.</summary>
+    internal sealed record PluginKeyTable(string Plugin, string[] Names, int[] Indexes, byte[] X, byte[] Y, ushort[] Usages = null);
 
     /// <summary>One device a plugin drives, by its product ID: the
     /// collection its frames go to, its lights, and the frames.</summary>
@@ -50,7 +51,7 @@ namespace PadForge.Common.Input.Peripherals
         public ushort VendorId { get; init; }
         public ushort ProductId { get; init; }
 
-        /// <summary>The plugin, under signal-plugins/Plugins.</summary>
+        /// <summary>The plugin, under signal-plugins/Plugins or in qmk-plugins.</summary>
         public string Plugin { get; init; }
 
         /// <summary>The interface, usage page and usage a plugin's Validate
@@ -66,7 +67,29 @@ namespace PadForge.Common.Input.Peripherals
         public int OutputLength { get; init; }
         public int FeatureLength { get; init; }
 
-        public IReadOnlyList<LightInfo> Lights { get; init; }
+        public IReadOnlyList<LightInfo> Lights
+        {
+            get => _lights ??= _buildLights?.Invoke();
+            init => _lights = value;
+        }
+
+        /// <summary>Builds <see cref="Lights"/> when the device is first lit, for
+        /// the rows with large tables: PadForge reads every row when it starts
+        /// and lights few.</summary>
+        public Func<IReadOnlyList<LightInfo>> BuildLights { init => _buildLights = value; }
+
+        private IReadOnlyList<LightInfo> _lights;
+        private Func<IReadOnlyList<LightInfo>> _buildLights;
+
+        /// <summary>Asks a device that shares its IDs with other boards which one
+        /// it is, ahead of any picture: the lights and frames of that board, or
+        /// null when the plugin has none for it and lights nothing. The channels
+        /// are the unit's own and its siblings.</summary>
+        public Func<IHidReportChannel, IReadOnlyList<IHidReportChannel>, Action<int>, PluginVariant> AskVariant { get; init; }
+
+        /// <summary>The model takes feature reports on a collection Windows holds
+        /// open, a keyboard's own.</summary>
+        public bool HeldByWindows { get; init; }
 
         /// <summary>The colors <see cref="Picture"/> takes, by address.</summary>
         public int Slots { get; init; }
@@ -136,8 +159,9 @@ namespace PadForge.Common.Input.Peripherals
     /// <summary>
     /// The lit peripherals OpenRGB has no controller for and SignalRGB's plugins
     /// drive (#557). OpenRGB is PadForge's source wherever it has a device.
-    /// signal-plugins (github.com/SRGBmods) is the source only for these, read
-    /// as a record of what each device takes: its report lengths, its frames,
+    /// signal-plugins (gitlab.com/signalrgb/signal-plugins, its beta branch) and
+    /// qmk-plugins (github.com/SRGBmods/qmk-plugins) are the source only for
+    /// these, read as a record of what each device takes: its report lengths, its frames,
     /// its LED order. The repository has no license file, so none of its code
     /// is copied.
     ///
@@ -220,19 +244,36 @@ namespace PadForge.Common.Input.Peripherals
             KeepAliveMs = device.KeepAliveMs,
             KeepAliveIdleMs = device.KeepAliveMs,
             Siblings = device.Siblings,
-            Begin = device.Siblings.Count > 0 ? null : (io, wait) =>
-                io == null || device.Answers?.Invoke(io, wait) == false ? null : new Session(device, device.Picture),
-            BeginWith = device.Siblings.Count == 0 ? null : (io, siblings, _) =>
-                io == null ? null : new Session(device, device.PictureWith?.Invoke(siblings), siblings),
+            HeldByWindows = device.HeldByWindows,
+            Begin = device.Siblings.Count > 0 ? null : (io, wait) => Start(device, device.Picture, io, null, wait),
+            BeginWith = device.Siblings.Count == 0 ? null : (io, siblings, wait) =>
+                Start(device, device.PictureWith?.Invoke(siblings), io, siblings, wait),
         };
+
+        private static HidLightingSession Start(PluginDevice device, Func<int[], IEnumerable<PluginStep>> picture,
+            IHidReportChannel io, IReadOnlyList<IHidReportChannel> siblings, Action<int> wait)
+        {
+            if (io == null || device.Answers?.Invoke(io, wait) == false) return null;
+            PluginVariant variant = null;
+            if (device.AskVariant != null)
+            {
+                variant = device.AskVariant(io, siblings, wait);
+                if (variant == null) return null;
+            }
+            return new Session(device, picture, siblings, variant);
+        }
+
+        private static string SourceOf(PluginDevice device) => "SignalRGB " + device.Plugin;
+
+        private static string ProductOf(PluginDevice device) => $"plugin:{device.VendorId:X4}:{device.ProductId:X4}";
 
         /// <summary>A device's lights. For strips: the count set for a strip
         /// gives it that many lights, and with none it is one light across its
         /// default LEDs.</summary>
         internal static LightMap MapOf(PluginDevice device, IReadOnlyList<int> counts)
         {
-            string source = "SignalRGB " + device.Plugin;
-            string product = $"plugin:{device.VendorId:X4}:{device.ProductId:X4}";
+            string source = SourceOf(device);
+            string product = ProductOf(device);
             if (device.StripMaxLeds.Count == 0) return new LightMap(device.Lights, source) { Product = product };
             var lights = new List<LightInfo>();
             var strips = new LightStrip[device.StripMaxLeds.Count];
@@ -322,17 +363,21 @@ namespace PadForge.Common.Input.Peripherals
             private readonly Func<int[], IEnumerable<PluginStep>> _picture;
             private readonly IReadOnlyList<IHidReportChannel> _siblings;
             private readonly byte[][] _crashFrames;
+            private readonly int _slots;
             private bool _started;
             private LightMap _map;
             private IReadOnlyList<int> _counts = Array.Empty<int>();
 
             public Session(PluginDevice device, Func<int[], IEnumerable<PluginStep>> picture,
-                IReadOnlyList<IHidReportChannel> siblings = null)
+                IReadOnlyList<IHidReportChannel> siblings = null, PluginVariant variant = null)
             {
                 _device = device;
-                _picture = picture;
+                _picture = variant?.Picture ?? picture;
+                _slots = variant?.Slots ?? device.Slots;
                 _siblings = siblings ?? Array.Empty<IHidReportChannel>();
-                _map = device.StripMaxLeds.Count > 0 ? MapOf(device, _counts) : null;
+                _map = variant != null
+                    ? new LightMap(variant.Lights, SourceOf(device)) { Product = ProductOf(device) }
+                    : device.StripMaxLeds.Count > 0 ? MapOf(device, _counts) : null;
                 // The crash path sends one kind of report, the session's.
                 var kind = device.Feature ? PluginStepKind.Feature : PluginStepKind.Output;
                 _crashFrames = device.HandBack.Where(s => s.Kind == kind).Select(s => s.Bytes).ToArray();
@@ -363,7 +408,7 @@ namespace PadForge.Common.Input.Peripherals
                     if (_siblings.Count > 0) foreach (var step in _device.SiblingStart) Run(_siblings[0], wait, step);
                     foreach (var step in _device.Start) Run(io, wait, step);
                 }
-                var byAddress = CoolerMasterLighting.ByAddress(lights, colors, _device.Slots);
+                var byAddress = CoolerMasterLighting.ByAddress(lights, colors, _slots);
                 var steps = _device.StripPicture != null
                     ? _device.StripPicture(byAddress, LedCounts())
                     : _picture(byAddress);

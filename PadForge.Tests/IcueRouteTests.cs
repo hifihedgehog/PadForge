@@ -223,8 +223,8 @@ namespace PadForge.Tests
         [InlineData(0x0A34, InputDeviceType.Mouse, "headsetstand")] // ST100, V1 Headset Stands
         [InlineData(0x1B4B, InputDeviceType.Keyboard, "mouse")] // Dark Core SE, V2
         [InlineData(0x1B6E, InputDeviceType.Mouse, "keyboard")] // K57 wired, V2
-        [InlineData(0x1BFF, InputDeviceType.Keyboard, "keyboard")] // listed nowhere
-        [InlineData(0x1BFF, InputDeviceType.Mouse, "mouse")]
+        [InlineData(0x1FFF, InputDeviceType.Keyboard, "keyboard")] // listed nowhere
+        [InlineData(0x1FFF, InputDeviceType.Mouse, "mouse")]
         public void ARowsType_IsItsProducts_ElseItsOwnKind(int productId, int capType, string key)
             => Assert.Equal(key, IcueRoute.KeyOf(IcueRoute.RowType((ushort)productId, capType)));
 

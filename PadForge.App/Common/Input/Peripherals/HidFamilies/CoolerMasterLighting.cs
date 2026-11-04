@@ -74,7 +74,8 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (collection == null || collection.VendorId != VendorId) return null;
             var registrations = OpenRgbRegistrations.Match(OpenRgbFamily,
-                collection.ProductId == Sk650Other ? collection with { ProductId = Sk650 } : collection);
+                collection.ProductId == Sk650Other ? collection with { ProductId = Sk650 }
+                : collection.ProductId == Sk621 ? collection with { ProductId = Sk622B } : collection);
             if (registrations.Count == 0) return null;
             // OpenRGB runs the detectors in this order and keeps the first
             // that makes a controller.

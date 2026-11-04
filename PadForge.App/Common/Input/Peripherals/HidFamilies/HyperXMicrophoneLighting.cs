@@ -69,6 +69,10 @@ namespace PadForge.Common.Input.Peripherals
         /// bounds it beyond the keep-alive, so the bound is PadForge's.</summary>
         internal const int RepaintMs = HyperXKeyboardLighting.RepaintMs;
 
+        /// <summary>The QuadCast S OpenRGB names, and the one only SignalRGB's plugin does.</summary>
+        internal const ushort QuadcastS = 0x171F;
+        internal const ushort OtherQuadcastS = 0x171D;
+
         public string Name => "HyperX microphones";
 
         private readonly Dictionary<int, HidLightingModel> _models = new();
@@ -77,6 +81,10 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (collection == null || (collection.VendorId != KingstonVid && collection.VendorId != HpVid)) return null;
             if (collection.FeatureReportLength < ReportSize) return null;
+            // SignalRGB's plugin sends this QuadCast S the other one's reports
+            // (HyperX_Quadcast_S.js: ProductId 0x171D and 0x171F).
+            if (collection.VendorId == KingstonVid && collection.ProductId == OtherQuadcastS)
+                collection = collection with { ProductId = QuadcastS };
             var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
             if (registrations.Count == 0) return null;
             var registration = registrations[0];

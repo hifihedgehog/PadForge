@@ -17,7 +17,7 @@ namespace PadForge.Tests
     public class PluginDeviceLightingTests
     {
         private static PluginDevice Device(ushort vid, ushort pid)
-            => F.Devices.Single(d => d.VendorId == vid && d.ProductId == pid);
+            => F.Devices.First(d => d.VendorId == vid && d.ProductId == pid);
 
         private static HidCollectionInfo CollectionOf(PluginDevice d)
         {
@@ -131,6 +131,9 @@ namespace PadForge.Tests
         {
             foreach (var d in F.Devices)
             {
+                // A board that says what it is takes its frames from that answer:
+                // PluginDevicesBetaTests has those.
+                if (d.AskVariant != null && d.Picture == null) continue;
                 var noCounts = d.StripMaxLeds.Select(_ => -d.StripDefaultLeds).ToArray();
                 Func<int[], IEnumerable<PluginStep>> picture = d.StripPicture != null
                     ? colors => d.StripPicture(colors, noCounts)
@@ -154,32 +157,7 @@ namespace PadForge.Tests
             {
                 PluginKeyTables.SpeedlinkOriosKb, PluginKeyTables.FnaticMiniStreak, PluginKeyTables.ClaymoreIiRight,
                 PluginKeyTables.ClaymoreIiLeft, PluginKeyTables.K65Mini, PluginKeyTables.Strafe, PluginKeyTables.Rk61, PluginKeyTables.Rk84,
-                PluginKeyTables.K70ProMini, PluginKeyTables.K100Air, PluginKeyTables.ApexM750TklPubg, PluginKeyTables.ApexProMini,
-                PluginKeyTables.QmkFeker,
-                PluginKeyTables.QmkFreja65,
-                PluginKeyTables.QmkGmmk265Ansi,
-                PluginKeyTables.QmkGmmk265Iso,
-                PluginKeyTables.QmkGmmk296Ansi,
-                PluginKeyTables.QmkGmmk296Iso,
-                PluginKeyTables.QmkGmmkPro,
-                PluginKeyTables.QmkKbd67,
-                PluginKeyTables.QmkK10Pro,
-                PluginKeyTables.QmkK2Pro,
-                PluginKeyTables.QmkK8Pro,
-                PluginKeyTables.QmkK8Tkl,
-                PluginKeyTables.QmkQ0,
-                PluginKeyTables.QmkQ12,
-                PluginKeyTables.QmkQ1Ansi,
-                PluginKeyTables.QmkQ1Iso,
-                PluginKeyTables.QmkQ5,
-                PluginKeyTables.QmkQ6Ansi,
-                PluginKeyTables.QmkQ6Iso,
-                PluginKeyTables.QmkV1,
-                PluginKeyTables.QmkV2,
-                PluginKeyTables.QmkV3,
-                PluginKeyTables.QmkV5,
-                PluginKeyTables.QmkV6,
-                PluginKeyTables.QmkDropCtrl,
+                PluginKeyTables.ApexM750Tkl, PluginKeyTables.ApexProMini,
             })
             {
                 Assert.Empty(PluginKeyNames.Unresolved(table));
@@ -287,42 +265,37 @@ namespace PadForge.Tests
         // ── The frames, from each plugin ──
 
         [Theory]
+        [InlineData(0x0A40, 0x09)]
+        [InlineData(0x0A41, 0x08)]
         [InlineData(0x0A42, 0x09)]
-        [InlineData(0x0A41, 0x09)]
         [InlineData(0x0A43, 0x08)]
-        [InlineData(0xA346, 0x09)]
-        [InlineData(0x0A3E, 0x09)]
-        [InlineData(0x0A3D, 0x08)]
+        [InlineData(0x0A44, 0x09)]
+        [InlineData(0x0A4B, 0x09)]
         [InlineData(0x0A4C, 0x09)]
+        [InlineData(0x0A5A, 0x08)]
         [InlineData(0x0A5C, 0x09)]
+        [InlineData(0x0A3D, 0x08)]
+        [InlineData(0x0A3E, 0x09)]
+        [InlineData(0x0A62, 0x08)]
         [InlineData(0x0A64, 0x09)]
-        public void Virtuoso_TakesSoftwareControl_ThenTheReds_Greens_Blues(int pid, int device)
+        [InlineData(0x0A69, 0x08)]
+        [InlineData(0x0A6B, 0x09)]
+        [InlineData(0x0A71, 0x08)]
+        [InlineData(0x0A73, 0x09)]
+        [InlineData(0xA346, 0x09)]
+        public void ACorsairHeadset_TakesSoftwareControl_ThenTheReds_Greens_Blues(int pid, int device)
         {
             var d = Device(0x1B1C, (ushort)pid);
             string m = device.ToString("X2");
-            Assert.Equal(new[] { $"out 02 {m} 01 03 00 02", $"out 02 {m} 0D 00 01" }, ShortSteps(d.Start));
+            Assert.Equal(new[]
+            {
+                $"out 02 {m} 01 03 00 02", "wait 100", $"out 02 {m} 0D 00 01", "wait 100", $"out 02 {m} 01 02 00 E8 03",
+            }, ShortSteps(d.Start));
             Assert.Equal(new[] { $"out 02 {m} 06 00 09 00 00 00 01 04 07 02 05 08 03 06 09" },
                 ShortSteps(d.Picture(new[] { 0x010203, 0x040506, 0x070809 })));
             Assert.Equal(new[] { $"out 02 {m} 01 03 00 01" }, ShortSteps(d.HandBack));
-            Assert.Equal(4, d.Interface);
-        }
-
-        [Theory]
-        [InlineData(0x0A69, 0x08)]
-        [InlineData(0x0A71, 0x08)]
-        [InlineData(0x0A6B, 0x09)]
-        [InlineData(0x0A73, 0x09)]
-        public void Hs80_TakesSoftwareControl_AndKeepsIt(int pid, int device)
-        {
-            var d = Device(0x1B1C, (ushort)pid);
-            string m = device.ToString("X2");
-            Assert.Equal(new[] { $"out 02 {m} 01 03 00 02", $"out 02 {m} 0D 00 01", $"out 02 {m} 01 02 00 E8 03" }, ShortSteps(d.Start));
-            // Reds at 8 and 10, greens at 11 and 13, blues at 14 and 16.
-            Assert.Equal(new[] { $"out 02 {m} 06 00 09 00 00 00 01 00 04 02 00 05 03 00 06" },
-                ShortSteps(d.Picture(new[] { 0x010203, 0x040506 })));
-            Assert.Equal(new[] { $"out 02 {m} 01 02", $"out 02 {m} 01 03 00 01" }, ShortSteps(d.HandBack));
-            Assert.Equal(5000, d.KeepAliveMs);
-            Assert.Equal((3, 0xFF42, 1), (d.Interface, d.UsagePage, d.Usage));
+            Assert.Equal((OpenRgbRegistration.Any, 0xFF42, 1), (d.Interface, d.UsagePage, d.Usage));
+            Assert.Equal(device == 0x09 ? 5000 : 0, d.KeepAliveMs);
         }
 
         [Fact]
@@ -422,7 +395,7 @@ namespace PadForge.Tests
         [InlineData(0x1B80, 12)]
         [InlineData(0x1B81, 12)]
         [InlineData(0x1B7F, 12)]
-        [InlineData(0x1BB2, 9)]
+        [InlineData(0x1BB2, 13)]
         public void TheBragiMice_AreMatched_WithThePluginsLights(int pid, int lights)
         {
             var collection = new HidCollectionInfo
@@ -448,21 +421,16 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void TheK70ProMini_RunsFourBelowTheFamilysNumbers()
+        public void TheK70ProMini_TakesTheFamilysNumbers()
         {
             var device = CorsairPeripheralV2Lighting.DeviceOf(0x1BB6);
             var lights = device.OwnLights;
-            // OpenRGB's K70 has Esc at 41 and A at 4. The plugin's Mini has 37 and 0.
+            // OpenRGB's K70 has Esc at 41 and A at 4, and so does the plugin's Mini.
             Assert.Equal(41, lights.Single(l => l.Usage == 0x29).Address);
             Assert.Equal(4, lights.Single(l => l.Usage == 0x04).Address);
             Assert.All(lights, l => Assert.True(l.Address >= 0));
-            // Each key the LED the K65 Mini's plugin gives it, four up.
-            var k65 = PluginKeyTables.K65Mini;
-            foreach (var name in new[] { "Tab", "Q", "\\", "CapsLock", "S", "Enter", "Left Shift", "Z", "Right Ctrl" })
-            {
-                var mini = PluginKeyTables.K70ProMini;
-                Assert.Equal(k65.Indexes[Array.IndexOf(k65.Names, name)], mini.Indexes[Array.IndexOf(mini.Names, name)]);
-            }
+            // Each key's LED is its usage on the keyboard page.
+            Assert.All(lights.Where(l => l.Kind == LightKind.Key && l.Usage is >= 0x04 and <= 0x1D), l => Assert.Equal(l.Usage, l.Address));
             var air = CorsairPeripheralV2Lighting.DeviceOf(0x1BAB).OwnLights;
             Assert.Equal(41, air.Single(l => l.Usage == 0x29).Address);
             Assert.Equal(4, air.Single(l => l.Usage == 0x04).Address);
@@ -482,8 +450,8 @@ namespace PadForge.Tests
         {
             var device = CorsairPeripheralV2Lighting.DeviceOf(0x1BB2);
             var map = CorsairPeripheralV2Lighting.MapOf(device, KeyboardLayout.AnsiQwerty, out int length);
-            Assert.Equal(9, length);
-            Assert.Equal(9, map.Lights.Count);
+            Assert.Equal(13, length);
+            Assert.Equal(13, map.Lights.Count);
         }
 
         // ── Roccat ──
@@ -628,7 +596,7 @@ namespace PadForge.Tests
         {
             var board = (F.FunctionBoard)boardNumber;
             var d = Device(0x1E71, (ushort)pid);
-            Assert.Equal(new[] { "out 43 81 00 84", "out 43 81 00 86" }, ShortSteps(d.Start));
+            Assert.Equal(new[] { "out 43 81 00 84", "out 43 81 00 86", "out 43 82 00 41 64", "out 43 97 00 10 01" }, ShortSteps(d.Start));
             var colors = new int[10];
             for (int i = 0; i < 10; i++) colors[i] = 0x010101 * (i + 1);
             var frames = d.Picture(colors).Select(s => s.Bytes).ToArray();
@@ -688,7 +656,7 @@ namespace PadForge.Tests
         {
             var d = Device(0x1038, 0x0619);
             var colors = new int[d.Slots];
-            int index = PluginKeyTables.ApexM750TklPubg.Indexes[0];
+            int index = PluginKeyTables.ApexM750Tkl.Indexes[0];
             colors[index] = 0x010203;
             var steps = d.Picture(colors).ToArray();
             Assert.Equal("00 00 00 00 FF 01 03 06 12", Hex(steps[0].Bytes, 9));
@@ -923,35 +891,101 @@ namespace PadForge.Tests
             Assert.Equal(33, steps[0].Bytes.Length);
         }
 
+        private static PluginQmkBoard QmkBoard(ushort vendor, ushort product)
+            => PluginQmkTables.Boards.Single(b => b.Vendor == vendor && b.Products.Contains(product));
+
+        /// <summary>The usage of the key a board's table puts at a place.</summary>
+        private static ushort UsageAt(PluginKeyTable table, int x, int y)
+        {
+            for (int i = 0; i < table.Indexes.Length; i++)
+                if (table.X[i] == x && table.Y[i] == y) return table.Usages[i];
+            throw new InvalidOperationException($"no key at {x},{y}");
+        }
+
         [Fact]
         public void Qmk_LegendsGoByPlace()
         {
-            ushort UsageOf(PluginKeyTable table, PluginDevice d, string name)
-                => d.Lights[Array.IndexOf(table.Names, name)].Usage;
-            var ansi = Device(0x3434, 0x0107);
-            Assert.Equal(0x2D, UsageOf(PluginKeyTables.QmkQ1Ansi, ansi, "-"));
-            Assert.Equal(0x2E, UsageOf(PluginKeyTables.QmkQ1Ansi, ansi, "+"));
-            Assert.Equal(0x36, UsageOf(PluginKeyTables.QmkQ1Ansi, ansi, "<"));
-            Assert.Equal(0x37, UsageOf(PluginKeyTables.QmkQ1Ansi, ansi, ">"));
-            var iso = Device(0x3434, 0x0109);
-            Assert.Equal(0x35, UsageOf(PluginKeyTables.QmkQ1Iso, iso, "|"));
-            Assert.Equal(0x2D, UsageOf(PluginKeyTables.QmkQ1Iso, iso, "+"));
-            Assert.Equal(0x2E, UsageOf(PluginKeyTables.QmkQ1Iso, iso, "\\"));
-            Assert.Equal(0x2F, UsageOf(PluginKeyTables.QmkQ1Iso, iso, "Å"));
-            Assert.Equal(0x32, UsageOf(PluginKeyTables.QmkQ1Iso, iso, "'"));
-            // Tab takes its own LED, not the O's.
-            Assert.Equal(30, iso.Lights[Array.IndexOf(PluginKeyTables.QmkQ1Iso.Names, "Tab")].Address);
-            Assert.Equal(0x64, UsageOf(PluginKeyTables.QmkK8Tkl, Device(0x3434, 0xFE0F), "|"));
-            Assert.Equal(0x31, UsageOf(PluginKeyTables.QmkK8Tkl, Device(0x3434, 0xFE0F), ""));
+            // The Q1 ISO's legends are Nordic.
+            var iso = QmkBoard(0x3434, 0x0109).Table();
+            Assert.Equal(0x35, UsageAt(iso, 0, 1));
+            Assert.Equal(0x2D, UsageAt(iso, 11, 1));
+            Assert.Equal(0x2E, UsageAt(iso, 12, 1));
+            Assert.Equal(0x2F, UsageAt(iso, 11, 2));
+            Assert.Equal(0x30, UsageAt(iso, 12, 2));
+            Assert.Equal(0x32, UsageAt(iso, 12, 3));
+            // The Q1 ANSI's list of names has a comma where the quote is.
+            var ansi = QmkBoard(0x3434, 0x0107).Table();
+            Assert.Equal(0x2D, UsageAt(ansi, 11, 1));
+            Assert.Equal(0x2E, UsageAt(ansi, 12, 1));
+            Assert.Equal(0x34, UsageAt(ansi, 11, 3));
+            // QWERTZ: the K8 Pro ISO DE's Z sits where a US board has Y.
+            var german = QmkBoard(0x3434, 0x0281).Table();
+            Assert.Contains((ushort)0x1C, german.Usages);
+            Assert.Contains((ushort)0x1D, german.Usages);
+            Assert.Contains((ushort)0x64, german.Usages);
+            Assert.Contains((ushort)0x32, german.Usages);
         }
 
         [Fact]
         public void Qmk_TheAnsiAndIsoIdsTakeTheirOwnKeys()
         {
-            Assert.Equal(PluginKeyTables.QmkQ1Ansi.Names.Length, Device(0x3434, 0x0107).Lights.Count);
-            Assert.Equal(PluginKeyTables.QmkQ1Iso.Names.Length, Device(0x3434, 0x0109).Lights.Count);
-            Assert.Equal(PluginKeyTables.QmkQ6Ansi.Names.Length, Device(0x3434, 0x0161).Lights.Count);
-            Assert.Equal(PluginKeyTables.QmkQ6Iso.Names.Length, Device(0x3434, 0x0162).Lights.Count);
+            foreach (var (ansi, iso) in new (ushort, ushort)[] { (0x0107, 0x0109), (0x0161, 0x0162) })
+            {
+                Assert.DoesNotContain((ushort)0x64, QmkBoard(0x3434, ansi).Table().Usages);
+                Assert.Contains((ushort)0x64, QmkBoard(0x3434, iso).Table().Usages);
+            }
+        }
+
+        /// <summary>Every table is whole: as many LEDs as places and usages, each
+        /// LED once where the plugin is right, and most keys named.</summary>
+        [Fact]
+        public void EveryQmkTable_IsInStep()
+        {
+            foreach (var board in PluginQmkTables.Boards)
+                foreach (var table in new[] { board.Table }.Concat(board.Variants?.Select(v => v.Table) ?? Array.Empty<Func<PluginKeyTable>>()))
+                {
+                    var t = table();
+                    Assert.Equal(t.Indexes.Length, t.Names.Length);
+                    Assert.Equal(t.Indexes.Length, t.X.Length);
+                    Assert.Equal(t.Indexes.Length, t.Y.Length);
+                    Assert.Equal(t.Indexes.Length, t.Usages.Length);
+                    Assert.True(t.Indexes.Max() < 256, board.Name);
+                    Assert.Equal(t.Indexes.Length, PluginKeyNames.Lights(t).Count);
+                }
+        }
+
+        /// <summary>Each product is one row, so the first row that matches is
+        /// the only one, and every board names at least one product.</summary>
+        [Fact]
+        public void NoQmkProduct_IsListedTwice()
+        {
+            var seen = new HashSet<(ushort, ushort)>();
+            foreach (var board in PluginQmkTables.Boards)
+            {
+                Assert.NotEmpty(board.Products);
+                foreach (var product in board.Products) Assert.True(seen.Add((board.Vendor, product)), $"{board.Name} {product:X4}");
+            }
+        }
+
+        [Theory]
+        [InlineData(6, true)]
+        [InlineData(5, false)]
+        public void TheGmmkPro_TakesItsLayoutFromTheFirmware(int unique, bool isIso)
+        {
+            var board = QmkBoard(0x320F, 0x5044);
+            var iso = board.Variants.Single(v => v.Unique == 6).Table();
+            var ansi = board.Variants.Single(v => v.Unique == null).Table();
+            var io = QmkChannel(new byte[] { 0x00, 0x23, 0x00, 0x00, (byte)unique });
+            var variant = F.QmkVariant(board, new Lazy<PluginKeyTable>(board.Table), io, _ => { });
+            Assert.Equal((isIso ? iso : ansi).Indexes.Length, variant.Lights.Count);
+            Assert.Equal("00 23", Hex(io.Calls.First().Bytes, 2));
+        }
+
+        [Fact]
+        public void TheGmmk3_ReportsItsVendorAsItsProduct_AsItsFirmwareDoes()
+        {
+            var board = QmkBoard(0x504B, 0x320F);
+            Assert.Equal(new byte?[] { 11, 12, 13, 14, 15, 16 }, board.Variants.Select(v => v.Unique));
         }
 
         [Fact]

@@ -54,6 +54,14 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The lights of a device OpenRGB has no table for, from
         /// SignalRGB's plugin, in place of <see cref="Zones"/>.</summary>
         public IReadOnlyList<LightInfo> OwnLights { get; init; }
+
+        /// <summary>The colors of a block of a plugin's device with
+        /// <see cref="OwnLights"/>, where its spacing runs past its lights. 0: one
+        /// past its highest light.</summary>
+        public int OwnBuffer { get; init; }
+
+        /// <summary>The interface its plugin writes to.</summary>
+        public int OwnInterface { get; init; } = 1;
     }
 
     /// <summary>

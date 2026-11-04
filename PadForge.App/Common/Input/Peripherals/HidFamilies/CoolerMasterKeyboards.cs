@@ -84,6 +84,10 @@ namespace PadForge.Common.Input.Peripherals
         /// with the first (CoolerMaster_SK650_Keyboard.js:3). OpenRGB has it
         /// not, and the frames and keys are the first's.</summary>
         internal const ushort Sk650Other = 0x0123;
+
+        /// <summary>The SK621, which only SignalRGB's plugin lists, with the same
+        /// frames as the SK622 (CoolerMaster_SK622_Keyboard.js).</summary>
+        internal const ushort Sk621 = 0x0087;
         internal const ushort Sk652 = 0x015D;
         internal const ushort Sk653 = 0x01AB;
 
@@ -95,7 +99,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The keyboards DetectCoolerMasterV2Keyboards makes a V2
         /// controller for (CoolerMasterControllerDetect.cpp:202-213).</summary>
         internal static readonly ushort[] V2Keyboards =
-            { Sk620B, Sk620W, Sk622B, Sk622W, Sk630, Sk650, Sk650Other, Sk652, Sk653, Ck530, Ck530V2, Ck550V2, Ck552V2, Mk730, Mk750 };
+            { Sk620B, Sk620W, Sk621, Sk622B, Sk622W, Sk630, Sk650, Sk650Other, Sk652, Sk653, Ck530, Ck530V2, Ck550V2, Ck552V2, Mk730, Mk750 };
 
         private static HidLightingModel KeyboardModel(string name, ushort productId)
         {
@@ -114,7 +118,7 @@ namespace PadForge.Common.Input.Peripherals
         /// layout.</summary>
         internal static IReadOnlyList<LightInfo> KeyboardLights(ushort productId, KeyboardLayout region)
         {
-            var row = KeyboardLayouts.ModelsOf(LayoutFamily, productId == Sk650Other ? Sk650 : productId).FirstOrDefault();
+            var row = KeyboardLayouts.ModelsOf(LayoutFamily, productId == Sk650Other ? Sk650 : productId == Sk621 ? Sk622B : productId).FirstOrDefault();
             var layout = row == null ? null : KeyboardLayouts.Build(row.Recipe, region);
             return layout?.Lights((_, key) => (int)key.Value);
         }
@@ -199,6 +203,7 @@ namespace PadForge.Common.Input.Peripherals
                 case Sk620W:
                     frames.Add(Magic(0x09));
                     break;
+                case Sk621:
                 case Sk622B:
                 case Sk622W:
                     frames.AddRange(MagicStartup());

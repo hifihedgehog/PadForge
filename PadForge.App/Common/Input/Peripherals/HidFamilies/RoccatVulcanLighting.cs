@@ -86,6 +86,11 @@ namespace PadForge.Common.Input.Peripherals
         internal const ushort TurtleBeachVulcanIITkl = 0x5023;
         internal const ushort TurtleBeachVulcanIITklPro = 0x5001;
 
+        /// <summary>Turtle Beach's name for the Vulcan II Max. SignalRGB's plugin
+        /// sends it the Roccat board's reports, 0x0237 color bytes in nine packets
+        /// (Turtle_Beach_Vulcan_II_Max_Keyboard.js).</summary>
+        internal const ushort TurtleBeachVulcanIIMax = 0x501C;
+
         /// <summary>The modes (RoccatVulcanKeyboardController.h:38-50).</summary>
         internal const byte ModeDirect = 0x0B;
         internal const byte ModeDefault = 0x02;
@@ -140,6 +145,8 @@ namespace PadForge.Common.Input.Peripherals
         public HidLightingModel Match(HidCollectionInfo collection)
         {
             if (collection?.Path == null) return null;
+            if (collection.VendorId == TurtleBeachVendorId && collection.ProductId == TurtleBeachVulcanIIMax)
+                collection = collection with { VendorId = RoccatVendorId, ProductId = VulcanIIMax };
             OpenRgbRegistration registration = null;
             foreach (var r in OpenRgbRegistrations.Match(FamilyName, collection))
             {

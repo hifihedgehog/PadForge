@@ -307,6 +307,14 @@ namespace PadForge.Common.Input.Peripherals
         public static readonly VendorProgram TurtleBeachSwarmII = new("Turtle Beach Swarm II",
             "Turtle Beach Swarm II", "Turtle Beach Device Service");
 
+        /// <summary>Thermaltake's TT iTAKE, which lights its Level 20 desk
+        /// (ConflictingProcesses, ThermalTake_Level20_Desk.js).</summary>
+        public static readonly VendorProgram ThermaltakeItake = new("TT iTAKE", "TT iTAKE Engine");
+
+        /// <summary>The program of KBM!'s keyboards
+        /// (ConflictingProcesses, KBM_Keyboard_Controller.js).</summary>
+        public static readonly VendorProgram KbmTeclado = new("Teclado Mecanico Gamer", "TECLADO MECANICO GAMER");
+
         /// <summary>The program that lights the KP7.</summary>
         public static readonly IReadOnlyList<VendorProgram> TurtleBeach = new[] { TurtleBeachSwarmII };
 

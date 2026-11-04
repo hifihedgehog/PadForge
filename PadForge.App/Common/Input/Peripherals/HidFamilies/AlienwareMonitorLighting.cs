@@ -74,6 +74,7 @@ namespace PadForge.Common.Input.Peripherals
         /// AlienwareMonitorControllerDetect.cpp:20-25).</summary>
         internal const ushort VendorId = 0x187C;
         internal const ushort Aw3423Dwf = 0x100E;
+        internal const ushort Aw2724Dm = 0x1010;
         internal const ushort Aw3225Qf = 0x1013;
 
         /// <summary>The AW3225QF's report with its ID (packet[65],
@@ -117,6 +118,9 @@ namespace PadForge.Common.Input.Peripherals
         public HidLightingModel Match(HidCollectionInfo collection)
         {
             if (collection == null || collection.VendorId != VendorId) return null;
+            // SignalRGB's plugin sends the AW2724DM what OpenRGB sends the AW3423DWF,
+            // to the same lights (Alienware_Monitor_Gen3_Controller.js).
+            if (collection.ProductId == Aw2724Dm) collection = collection with { ProductId = Aw3423Dwf };
             var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
             if (registrations.Count == 0) return null;
             var registration = registrations[0];

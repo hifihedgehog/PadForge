@@ -69,6 +69,10 @@ namespace PadForge.Common.Input.Peripherals
     /// OpenRGB opens it by.</summary>
     internal sealed record HidSibling(int Interface, ushort UsagePage)
     {
+        /// <summary>Above 0, the sibling's feature reports are shorter than this:
+        /// it tells two collections of one interface and page apart.</summary>
+        public int FeatureBelow { get; init; }
+
         /// <summary>Whether <paramref name="candidate"/> of the walk is this
         /// sibling of <paramref name="unit"/>, the container aside.</summary>
         public bool Is(HidCollectionInfo unit, HidCollectionInfo candidate)
@@ -76,6 +80,7 @@ namespace PadForge.Common.Input.Peripherals
             && !string.Equals(candidate.Path, unit.Path, StringComparison.OrdinalIgnoreCase)
             && candidate.VendorId == unit.VendorId && candidate.ProductId == unit.ProductId
             && candidate.UsagePage == UsagePage
+            && (FeatureBelow == 0 || candidate.FeatureReportLength < FeatureBelow)
             && OpenRgbRegistrations.InterfaceOf(candidate, OpenRgbRegistrations.BusOf(candidate)) == Interface;
     }
 

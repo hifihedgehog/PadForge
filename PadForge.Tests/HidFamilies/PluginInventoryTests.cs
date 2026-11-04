@@ -19,26 +19,36 @@ namespace PadForge.Tests
         /// services name no USB product, so they never reach the inventory.</summary>
         private static readonly (string Path, string Reason)[] LeftOut =
         {
-            ("AMD/", InsideAPc), ("Aqua Computer/", InsideAPc), ("AsRock/", InsideAPc),
-            ("Asus/Motherboard", InsideAPc), ("CoolerMaster/Intel_Arc", InsideAPc), ("Corsair/Corsair_Elite_Capellix", InsideAPc),
-            ("Corsair/Legacy_Lighting_Controllers/", InsideAPc), ("Corsair/Modern_Corsair/Corsair_Lighting_Commander", InsideAPc),
-            ("Corsair/Platinum_Pro_XT_AIO/", InsideAPc),
-            ("GigaByte/", InsideAPc), ("Lian Li/", InsideAPc), ("Msi/", InsideAPc), ("Nzxt/NZXT_Motherboard", InsideAPc),
-            ("Nzxt/NZXT_Smart_Device", InsideAPc), ("Nzxt/Nzxt_Kraken", InsideAPc),
-            ("Razer/Razer_PWM_Controller", InsideAPc), ("Razer/Razer_Tomahawk_Case", InsideAPc), ("Thermal Take/ThermalTake_LEDBOX", InsideAPc),
-            ("Thermal Take/ThermalTake_Riing", InsideAPc), ("Thermal Take/ThermalTake_Ring", InsideAPc), ("Thermal Take/Thermaltake_DPSG", InsideAPc),
-            ("Zalman/", InsideAPc),
+            ("AMD/", InsideAPc), ("Airgoo/", InsideAPc), ("Aqua Computer/", InsideAPc), ("AsRock/", InsideAPc),
+            ("Asus/ASUS_Ryujin", InsideAPc), ("Asus/ASUS_Ryuo", InsideAPc), ("Asus/ASUS_ROG_Strix_LC", InsideAPc),
+            ("Asus/Motherboard", InsideAPc), ("CoolerMaster/ACER_P09", InsideAPc), ("CoolerMaster/Intel_Arc", InsideAPc),
+            ("Corsair/Corsair_Elite_Capellix", InsideAPc), ("Corsair/Corsair_ICUE_Link", InsideAPc), ("Corsair/Corsair_Nautilus", InsideAPc),
+            ("Corsair/Corsair_XC7", InsideAPc), ("Corsair/Corsair_XD6", InsideAPc),
+            ("Corsair/Legacy_Lighting_Controllers/", InsideAPc), ("Corsair/Modern_Corsair/Corsair_ICUE_Link", InsideAPc),
+            ("Corsair/Modern_Corsair/Corsair_Lighting_Commander", InsideAPc), ("Corsair/Platinum_Pro_XT_AIO/", InsideAPc),
+            ("GigaByte/", InsideAPc), ("ID-Cooling/", InsideAPc), ("Lian Li/", InsideAPc), ("Msi/", InsideAPc), ("Nollie/", InsideAPc),
+            ("Nzxt/NZXT_Kraken", InsideAPc), ("Nzxt/NZXT_Motherboard", InsideAPc), ("Nzxt/NZXT_Smart_Device", InsideAPc), ("Nzxt/Nzxt_Kraken", InsideAPc),
+            ("PrismRGB/", InsideAPc), ("Razer/Razer_PWM_Controller", InsideAPc), ("Razer/Razer_Tomahawk_Case", InsideAPc),
+            ("Thermal Take/ThermalTake_LEDBOX", InsideAPc), ("Thermal Take/ThermalTake_Riing", InsideAPc), ("Thermal Take/ThermalTake_Ring", InsideAPc),
+            ("Thermal Take/Thermaltake_DPSG", InsideAPc), ("Thermalright/", InsideAPc), ("Turzx/", InsideAPc), ("Zalman/", InsideAPc), ("Zhi Yan/", InsideAPc),
             ("SRGBmods.net/SRGBmods_Wifi_LC", NetworkLights),
             ("HyperX/HyperX_Cloud_Flight", "The plugin says it has no lights and reads the battery alone."),
             ("Razer/Razer_Info_Finder", "A developer's tool, not a device."),
             ("Sony/", "DualSense and DualShock 4 lights go through PadForge's controller path."),
         };
 
+        /// <summary>The hubs for fans and strips here are parts inside a case too,
+        /// like OpenRGB's Nollie and DRGB families, which stay out by the same
+        /// rule, and the screens are on coolers.</summary>
         private const string InsideAPc = "A part inside a PC.";
         private const string NetworkLights = "Lights on the network.";
 
         private static bool IsLeftOut(string plugin)
             => LeftOut.Any(l => plugin.StartsWith(l.Path, StringComparison.Ordinal));
+
+        /// <summary>Products of a plugin with others that are lit: the M75 Air,
+        /// whose entry in the Bragi plugin's library lists no lights.</summary>
+        private static readonly (ushort Vendor, ushort Product)[] NoLights = { (0x1B1C, 0x1BF2) };
 
         private static bool IsLit(ushort vendor, ushort product)
         {
@@ -61,9 +71,17 @@ namespace PadForge.Tests
                     return CorsairPeripheralLighting.OtherIds.ContainsKey(product) || CorsairPeripheralV2Lighting.DeviceOf(product) != null
                         || CorsairPeripheralV2Lighting.IsReceiver(product);
                 case CoolerMasterLighting.VendorId:
-                    return product == CoolerMasterLighting.Sk650Other;
+                    return product is CoolerMasterLighting.Sk650Other or CoolerMasterLighting.Sk621;
                 case LgMonitorLighting.VendorId:
                     return product == LgMonitorLighting.Ultragear38;
+                case AlienwareMonitorLighting.VendorId:
+                    return product == AlienwareMonitorLighting.Aw2724Dm;
+                case HyperXMicrophoneLighting.KingstonVid:
+                    return product == HyperXMicrophoneLighting.OtherQuadcastS;
+                case RoccatVulcanLighting.TurtleBeachVendorId:
+                    return product is RoccatVulcanLighting.TurtleBeachVulcanIIMax or RoccatLighting.TurtleBeachAimoWide;
+                case LogitechX56Lighting.VendorId:
+                    return product is LogitechX56Lighting.JoystickProductId or LogitechX56Lighting.ThrottleProductId;
                 default:
                     return false;
             }
@@ -73,7 +91,7 @@ namespace PadForge.Tests
         public void EveryProductOfEveryPlugin_IsLit_OrLeftOutForAStatedReason()
         {
             var missed = PluginInventory.All
-                .Where(row => !IsLeftOut(row.Plugin) && !IsLit(row.Vendor, row.Product))
+                .Where(row => !IsLeftOut(row.Plugin) && !NoLights.Contains((row.Vendor, row.Product)) && !IsLit(row.Vendor, row.Product))
                 .Select(row => $"{row.Vendor:X4}:{row.Product:X4} {row.Plugin}")
                 .ToList();
             Assert.True(missed.Count == 0, missed.Count + " products no family lights:\n" + string.Join("\n", missed));

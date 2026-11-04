@@ -117,9 +117,18 @@ namespace PadForge.Common.Input.Peripherals
         private readonly Dictionary<string, HidLightingModel> _models = new(StringComparer.Ordinal);
         private readonly object _gate = new();
 
+        /// <summary>The Sense Aimo OpenRGB names (RoccatControllerDetect.cpp:61) and
+        /// Turtle Beach's AIMO Pad Wide.</summary>
+        internal const ushort SenseAimoMid = 0x343A;
+        internal const ushort TurtleBeachAimoWide = 0x5026;
+
         public HidLightingModel Match(HidCollectionInfo collection)
         {
             if (collection == null) return null;
+            // Turtle Beach's AIMO Pad Wide takes the Sense Aimo's reports on the
+            // same collection (Turtle_Beach_AIMO_Wide_Mousepad.js).
+            if (collection.VendorId == RoccatVulcanLighting.TurtleBeachVendorId && collection.ProductId == TurtleBeachAimoWide)
+                collection = collection with { VendorId = RoccatVulcanLighting.RoccatVendorId, ProductId = SenseAimoMid };
             foreach (var registration in OpenRgbRegistrations.Match(FamilyName, collection))
             {
                 lock (_gate)

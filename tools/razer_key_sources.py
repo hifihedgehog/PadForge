@@ -198,10 +198,14 @@ def name_keys(pid, name, rows, cols, zone, uch_repo, poly_repo, uch_devices, pol
         return None, "; ".join(reasons)
     if len(candidates) == 1:
         return candidates[0][1], "%s, one source (%s)" % (candidates[0][0], "; ".join(reasons))
-    (wa, ka), (wb, kb) = candidates[:2]
-    differ = sorted(cell for cell in set(ka) & set(kb) if ka[cell] != kb[cell])
-    merged = {cell: key for cell, key in {**ka, **kb}.items() if cell not in differ}
+    named = {}
+    for _, keys in candidates:
+        for cell, key in keys.items():
+            named.setdefault(cell, set()).add(key)
+    differ = sorted(cell for cell, found in named.items() if len(found) > 1)
+    merged = {cell: next(iter(found)) for cell, found in named.items() if len(found) == 1}
+    names = " and ".join(where for where, _ in candidates)
     if not differ:
-        return merged, "%s and %s, which agree" % (wa, wb)
-    return merged, "%s and %s, which agree but at %s, left unnamed" % (
-        wa, wb, ", ".join("row %d column %d" % cell for cell in differ))
+        return merged, "%s, which agree" % names
+    return merged, "%s, which agree but at %s, left unnamed" % (
+        names, ", ".join("row %d column %d" % cell for cell in differ))

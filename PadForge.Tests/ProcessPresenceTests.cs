@@ -24,6 +24,12 @@ namespace PadForge.Tests
     /// </summary>
     public class ProcessPresenceTests
     {
+        /// <summary>Every wait here guards against a hang and makes no timing
+        /// claim, so a run that works never reaches it. A 5 s bound ran out
+        /// while other test hosts loaded the machine (2026-11-04: the failed
+        /// run took the bound to the millisecond), so the bound is 30 s.</summary>
+        private static readonly TimeSpan Bound = TimeSpan.FromSeconds(30);
+
         private static string RepoRoot()
         {
             var d = new DirectoryInfo(AppContext.BaseDirectory);
@@ -133,7 +139,7 @@ namespace PadForge.Tests
                 Assert.True(clock.ElapsedMilliseconds < 1_000, $"the poll waited {clock.ElapsedMilliseconds} ms for the check");
             }
             finally { gate.Set(); }
-            Assert.True(SpinWait.SpinUntil(() => check.Latest != null, 5_000));
+            Assert.True(SpinWait.SpinUntil(() => check.Latest != null, Bound));
             Assert.True(check.Latest.Value);
             Assert.Equal(1, check.Latest.Generation);
         }
@@ -151,8 +157,8 @@ namespace PadForge.Tests
                     for (int i = 0; i < 200; i++) check.Poll(Environment.TickCount64);
                 }) { IsBackground = true }).ToList();
                 askers.ForEach(t => t.Start());
-                askers.ForEach(t => Assert.True(t.Join(5_000), "an asking thread waited on the check"));
-                Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref checks) == 1, 5_000));
+                askers.ForEach(t => Assert.True(t.Join(Bound), "an asking thread waited on the check"));
+                Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref checks) == 1, Bound));
                 Thread.Sleep(200);
                 Assert.Equal(1, Volatile.Read(ref checks));
             }
@@ -162,7 +168,7 @@ namespace PadForge.Tests
             {
                 check.Poll(Environment.TickCount64);
                 return Volatile.Read(ref checks) == 2;
-            }, 5_000));
+            }, Bound));
         }
 
         [Fact]
@@ -172,13 +178,13 @@ namespace PadForge.Tests
             var check = new PeriodicWorkerCheck(() => Interlocked.Increment(ref checks) % 2 == 1, 2_000);
 
             check.Poll(100_000);
-            Assert.True(SpinWait.SpinUntil(() => check.Latest?.Generation == 1, 5_000));
+            Assert.True(SpinWait.SpinUntil(() => check.Latest?.Generation == 1, Bound));
             Assert.True(check.Latest.Value);
             check.Poll(101_999);
             Thread.Sleep(100);
             Assert.Equal(1, Volatile.Read(ref checks));
             check.Poll(102_000);
-            Assert.True(SpinWait.SpinUntil(() => check.Latest?.Generation == 2, 5_000));
+            Assert.True(SpinWait.SpinUntil(() => check.Latest?.Generation == 2, Bound));
             Assert.False(check.Latest.Value);
         }
 
@@ -193,11 +199,11 @@ namespace PadForge.Tests
             }, 1_000);
 
             check.Poll(50_000);
-            Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref checks) == 1, 5_000));
+            Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref checks) == 1, Bound));
             Thread.Sleep(100);
             Assert.Null(check.Latest);
             check.Poll(51_000);
-            Assert.True(SpinWait.SpinUntil(() => check.Latest != null, 5_000));
+            Assert.True(SpinWait.SpinUntil(() => check.Latest != null, Bound));
             Assert.Equal(1, check.Latest.Generation);
         }
 

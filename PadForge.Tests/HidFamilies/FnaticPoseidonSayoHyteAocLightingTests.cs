@@ -247,13 +247,19 @@ namespace PadForge.Tests
             Assert.Equal("BF 4A", Hex(config.Skip(115).ToArray()));
             // The color report: reds, greens, blues in three runs of 120 by value.
             var lights = AocKeyboardLighting.Lights();
-            var colors = lights.Select(_ => 0x112233).ToArray();
+            var colors = Distinct(lights.Count);
             var custom = AocKeyboardLighting.Custom(lights, colors);
             Assert.Equal(361, custom.Length);
             Assert.Equal(0x20, custom[0]);
-            // Escape at value 90 (RGBController_AOCKeyboard.cpp:33).
-            Assert.Equal(90, lights.First(l => l.Usage == 0x29).Address);
-            Assert.Equal((0x11, 0x22, 0x33), (custom[91], custom[211], custom[331]));
+            // Escape at value 90 (RGBController_AOCKeyboard.cpp:33): its red
+            // at 1 + 90, its green at 121 + 90, its blue at 241 + 90.
+            int escape = lights.ToList().FindIndex(l => l.Usage == 0x29);
+            Assert.Equal(90, lights[escape].Address);
+            Assert.Equal(((byte)(colors[escape] >> 16), (byte)(colors[escape] >> 8), (byte)colors[escape]),
+                (custom[91], custom[211], custom[331]));
+            // A value no key has stays black in all three runs.
+            int unused = Enumerable.Range(0, 120).First(v => lights.All(l => l.Address != v));
+            Assert.Equal((0, 0, 0), (custom[1 + unused], custom[121 + unused], custom[241 + unused]));
         }
 
         [Fact]

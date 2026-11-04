@@ -105386,7 +105386,7 @@
     "probe": {
      "frame": "03/83 [01 05 00]",
      "openrazer_tx": 255,
-     "source": "openrazer brightness read, razeraccessory_driver.c:1627-1644"
+     "source": "openrazer brightness read, razeraccessory_driver.c:1625-1642"
     },
     "stream": {
      "row": "0F/03",
@@ -105471,7 +105471,7 @@
     "probe": {
      "frame": "03/83 [01 05 00]",
      "openrazer_tx": 255,
-     "source": "openrazer brightness read, razeraccessory_driver.c:1627-1644"
+     "source": "openrazer brightness read, razeraccessory_driver.c:1625-1642"
     },
     "stream": {
      "row": "0F/03",
@@ -105563,7 +105563,7 @@
     "probe": {
      "frame": "03/83 [01 05 00]",
      "openrazer_tx": 255,
-     "source": "openrazer brightness read, razeraccessory_driver.c:1627-1644"
+     "source": "openrazer brightness read, razeraccessory_driver.c:1625-1642"
     },
     "stream": {
      "row": "0F/03",
@@ -105667,7 +105667,7 @@
     "probe": {
      "frame": "03/83 [01 05 00]",
      "openrazer_tx": 255,
-     "source": "openrazer brightness read, razeraccessory_driver.c:1627-1644"
+     "source": "openrazer brightness read, razeraccessory_driver.c:1625-1642"
     },
     "stream": {
      "row": "0F/03",
@@ -106156,7 +106156,7 @@
     "probe": {
      "frame": "03/83 [01 05 00]",
      "openrazer_tx": 255,
-     "source": "openrazer brightness read, razeraccessory_driver.c:1627-1644"
+     "source": "openrazer brightness read, razeraccessory_driver.c:1625-1642"
     },
     "stream": {
      "row": "0F/03",
@@ -106253,7 +106253,7 @@
     "probe": {
      "frame": "03/83 [01 05 00]",
      "openrazer_tx": 255,
-     "source": "openrazer brightness read, razeraccessory_driver.c:1627-1644"
+     "source": "openrazer brightness read, razeraccessory_driver.c:1625-1642"
     },
     "stream": {
      "row": "0F/03",
@@ -106435,7 +106435,7 @@
     "probe": {
      "frame": "03/83 [01 05 00]",
      "openrazer_tx": 255,
-     "source": "openrazer brightness read, razeraccessory_driver.c:1627-1644"
+     "source": "openrazer brightness read, razeraccessory_driver.c:1625-1642"
     },
     "stream": {
      "row": "0F/03",

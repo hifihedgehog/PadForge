@@ -390,7 +390,7 @@ namespace PadForge.Tests
         /// <summary>Nine mice and one keyboard are read under FF, the ID
         /// openrazer sends their brightness read under, and painted under
         /// 3F, the ID it paints them under, and so are seven accessories,
-        /// painted under 3F or 1F (openrazer razeraccessory_driver.c:1627-1644
+        /// painted under 3F or 1F (openrazer razeraccessory_driver.c:1625-1642
         /// and 665-702). Their claim read is asked under FF first and under
         /// their own IDs after it. Every other row is asked under the IDs it
         /// is painted under and no other.</summary>

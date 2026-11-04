@@ -65,11 +65,9 @@ namespace PadForge.Tests
 
         [Theory]
         [InlineData("ASUS ROG Strix G15", true)]
-        [InlineData("asus tuf gaming f15", true)]
         [InlineData("ASUS TUF Gaming F15", false)]
         public void ALaptopThatIsNoTufGaming_OrHasNoAtkInterface_HasNoUnit(string product, bool atk)
         {
-            // "TUF Gaming", case and all (AsusTUFLaptopDetect_Windows.cpp:33).
             var family = new AsusTufLaptopLighting(() => product, _ => atk, () => new FakeAtkAcpi());
             Assert.Empty(family.Look());
         }

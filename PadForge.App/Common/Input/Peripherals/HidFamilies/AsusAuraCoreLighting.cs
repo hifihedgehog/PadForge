@@ -79,6 +79,10 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>Armoury Crate lights these keyboards, and while it runs each is
     /// left to it (<see cref="VendorPrograms.ArmouryCrate"/>).</para>
+    ///
+    /// <para>The laptops OpenRGB does not describe, and a keyboard on one of its
+    /// Aura Core products whose firmware or asusctl says what it is, light through
+    /// <see cref="AsusLaptopAura"/>, which stores nothing.</para>
     /// </summary>
     internal sealed class AsusAuraCoreLighting : IHidLightingFamily
     {
@@ -119,15 +123,25 @@ namespace PadForge.Common.Input.Peripherals
         public string Name => "ASUS Aura Core";
 
         private readonly Func<string> _mainboard;
+        private readonly Func<string> _product;
         private string _board;
         private int _boardRead;
+        private AsusLaptopMachine _machine;
         private readonly ConcurrentDictionary<string, HidLightingModel> _models = new(StringComparer.Ordinal);
 
         public AsusAuraCoreLighting()
             : this(null) { }
 
-        /// <summary>Test seam: the mainboard name read.</summary>
-        internal AsusAuraCoreLighting(Func<string> mainboard) => _mainboard = mainboard ?? MainboardName;
+        /// <summary>Test seam: the mainboard name read and the product name read.</summary>
+        internal AsusAuraCoreLighting(Func<string> mainboard, Func<string> product = null)
+        {
+            _mainboard = mainboard ?? MainboardName;
+            _product = product ?? ProductName;
+        }
+
+        /// <summary>The PC's product name, which G-Helper's model checks read, or
+        /// null. A read.</summary>
+        private static string ProductName() => OffLimitsForTest ? null : OwnLightingChannels.ProductName();
 
         /// <summary>The mainboard's name as OpenRGB's DMIInfo reads it on
         /// Windows, Product of Win32_BaseBoard (dmiinfo.cpp:29), or null.
@@ -160,11 +174,21 @@ namespace PadForge.Common.Input.Peripherals
             return board;
         }
 
+        /// <summary>The machine, read once per family.</summary>
+        internal AsusLaptopMachine Machine()
+        {
+            var machine = Volatile.Read(ref _machine);
+            if (machine != null) return machine;
+            machine = new AsusLaptopMachine(_product(), Board());
+            Volatile.Write(ref _machine, machine);
+            return machine;
+        }
+
         public HidLightingModel Match(HidCollectionInfo collection)
         {
             if (collection == null || collection.VendorId != VendorId) return null;
             var found = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
-            if (found.Count == 0) return null;
+            if (found.Count == 0) return LaptopAuraModel(collection);
             // Both kinds read and write feature reports.
             if (collection.FeatureReportLength == 0) return null;
             var first = found[0];
@@ -177,9 +201,32 @@ namespace PadForge.Common.Input.Peripherals
             }
             if (first.Detector != "DetectAsusAuraCoreLaptopControllers") return null;
             var laptopRows = LaptopRows(Board());
-            if (laptopRows == null) return null;
+            if (laptopRows == null) return LaptopAuraModel(collection);
             return _models.GetOrAdd($"laptop:{collection.ProductId:X4}",
                 _ => LaptopModel(first.Name, collection.ProductId, laptopRows));
+        }
+
+        /// <summary>The model of a laptop OpenRGB does not describe, or null for a
+        /// collection that is not one or a laptop lit through the ATK ACPI device.</summary>
+        private HidLightingModel LaptopAuraModel(HidCollectionInfo collection)
+        {
+            if (!AsusLaptopAura.Takes(collection)) return null;
+            var machine = Machine();
+            if (machine.ThroughAcpi) return null;
+            int productId = collection.ProductId;
+            bool rear = productId == AsusLaptopAura.RearLightProduct && machine.Z13;
+            return _models.GetOrAdd($"aura:{productId:X4}", _ => new HidLightingModel
+            {
+                Family = this,
+                Name = rear ? "ASUS Laptop Rear Light" : "ASUS Laptop Keyboard",
+                Map = rear ? AsusLaptopAura.WholeMap(productId, "laptop-rear") : AsusLaptopAura.FirstMap(productId, machine),
+                Programs = new[] { VendorPrograms.ArmouryCrate },
+                HoldMs = rear ? LenovoLegionLighting.HoldMs : 0,
+                RepaintMs = rear ? LenovoLegionLighting.RepaintMs : HidppBackend.PaintMs,
+                LiveThroughLampArray = !rear,
+                Identify = AsusLaptopAura.AnswersAura,
+                Begin = (io, wait) => AsusLaptopAura.Begin(io, wait, productId, machine),
+            });
         }
 
         private HidLightingModel Model(string name, LightMap map, int holdMs, int repaintMs,
@@ -227,15 +274,29 @@ namespace PadForge.Common.Input.Peripherals
         /// <paramref name="laptopRows"/> where it answers neither report.</summary>
         private HidLightingModel CoreModel(string name, int productId, IReadOnlyList<KeyboardLayoutModel> laptopRows)
             => Model(name, KeyboardMap(productId), LenovoLegionLighting.HoldMs, LenovoLegionLighting.RepaintMs,
-                (io, wait) => BeginCore(io, wait, productId, laptopRows));
+                (io, wait) => BeginCore(io, wait, productId, laptopRows, Machine()));
 
-        /// <summary>IdentifyDevice's reads, then the kind's session.</summary>
+        /// <summary>IdentifyDevice's reads, then the kind's session. A keyboard that
+        /// answers 5D and whose firmware or asusctl says what it is opens the way
+        /// <see cref="AsusLaptopAura"/> does, in direct mode, where OpenRGB would store
+        /// each picture per zone. A TUF laptop stays with OpenRGB here: G-Helper lights
+        /// it through ACPI and never sends this query to it.</summary>
         internal static HidLightingSession BeginCore(IHidReportChannel io, Action<int> wait, int productId,
-            IReadOnlyList<KeyboardLayoutModel> laptopRows)
+            IReadOnlyList<KeyboardLayoutModel> laptopRows, AsusLaptopMachine machine = null)
         {
             if (io == null) return null;
             var buffer = new byte[Math.Max(64, io.FeatureReportLength)];
-            if (io.GetFeature(KeyboardReport, buffer)) return new KeyboardSession(productId);
+            if (io.GetFeature(KeyboardReport, buffer))
+            {
+                machine ??= AsusLaptopMachine.Unknown;
+                if (machine.ThroughAcpi) return new KeyboardSession(productId);
+                var answer = AsusLaptopAura.Ask(io);
+                if (!AsusLaptopAura.Says(answer, AsusLaptopAura.BoardOf(machine.Board, productId)))
+                    return new KeyboardSession(productId);
+                if (laptopRows != null && AsusLaptopAura.KindOf(answer, machine, AsusLaptopAura.BoardOf(machine.Board, productId)) == AsusLaptopAura.Kind.PerKey)
+                    return BeginLaptop(io, laptopRows, productId);
+                return AsusLaptopAura.Open(io, wait, productId, machine, answer);
+            }
             if (io.GetFeature(Ga15dhReport, buffer))
             {
                 foreach (var frame in Ga15dhHandshake())

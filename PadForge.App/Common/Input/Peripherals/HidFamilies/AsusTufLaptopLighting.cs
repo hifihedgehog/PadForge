@@ -9,7 +9,7 @@ namespace PadForge.Common.Input.Peripherals
     /// device as OpenRGB's AsusTUFLaptopController lights it on Windows
     /// (#557). One color for the whole keyboard.
     ///
-    /// <para>The look is OpenRGB's detector: the PC's product name holds
+    /// <para>The look starts from OpenRGB's detector: the PC's product name holds
     /// "TUF Gaming" (AsusTUFLaptopDetect_Windows.cpp:26-33) and the ASUS WMI
     /// interface is present as ACPI\PNP0C14\ATK
     /// (AsusTUFLaptopController_Windows.cpp:63 and 97). Neither changes,
@@ -18,7 +18,17 @@ namespace PadForge.Common.Input.Peripherals
     /// <para>The color goes out as OpenRGB's Static mode sends it: DEVS on
     /// the RGB mode device, with the magic that does not store the setting
     /// (setMode, AsusTUFLaptopController_Windows.cpp:255-298). G-Helper
-    /// sends the same six bytes (AsusACPI.cs:938-959).</para>
+    /// sends the same six bytes (AsusACPI.cs:938-959), and where that device
+    /// does not take them, sends them to its second one, TUF_KB2 (lines
+    /// 950-957), which OpenRGB does not know. PadForge does the same with the
+    /// magic that does not store.</para>
+    ///
+    /// <para>G-Helper's look is wider than OpenRGB's. It lights "TUF", "TX Gaming"
+    /// and "TX Air" this way, and Vivobook, Zenbook, ProArt, ExpertBook, V16 and
+    /// "ASUSLaptop" as well (isACPI, Aura.cs:105, AppConfig.cs:403-405 and
+    /// 423-425). Most of that second list have one white backlight, so one of
+    /// them is listed only when DSTS says an RGB mode device is there
+    /// (DeviceGet and IsSupported, AsusACPI.cs:490-498 and 797-803).</para>
     ///
     /// <para>Hand-back. Nothing goes out. Each color PadForge sends uses
     /// the magic that leaves the keyboard's stored setting as it was
@@ -42,6 +52,19 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>ASUS_WMI_DEVID_TUF_RGB_MODE (AsusTUFLaptopController_Windows.h:15).</summary>
         internal const uint RgbModeDevice = 0x00100056;
 
+        /// <summary>TUF_KB2 (AsusACPI.cs:142).</summary>
+        internal const uint RgbModeDevice2 = 0x0010005A;
+
+        /// <summary>DSTS, the read method (AsusACPI.cs:35).</summary>
+        internal const uint Dsts = 0x53545344;
+
+        /// <summary>IsTUF (AppConfig.cs:403-405). No check of the device, as with
+        /// OpenRGB's look.</summary>
+        internal static readonly string[] TufMarkers = { "TUF", "TX Gaming", "TX Air" };
+
+        /// <summary>IsVivoZenPro (AppConfig.cs:423-425).</summary>
+        internal static readonly string[] OtherMarkers = { "Vivobook", "Zenbook", "ProArt", "EXPERTBOOK", " V16", "ASUSLaptop" };
+
         /// <summary>ASUS_WMI_KEYBOARD_MAGIC_USE (AsusTUFLaptopController_Windows.h:36).</summary>
         internal const byte MagicUse = 0xB3;
 
@@ -55,10 +78,6 @@ namespace PadForge.Common.Input.Peripherals
         /// AsusTUFLaptopController_Windows.h:22). G-Helper sends 0xEB for a
         /// static color too (Aura.cs:1151).</summary>
         internal const byte SpeedNormal = 0xEB;
-
-        /// <summary>What OpenRGB's detector looks for in the product name
-        /// (AsusTUFLaptopDetect_Windows.cpp:33), case and all.</summary>
-        internal const string ProductMarker = "TUF Gaming";
 
         /// <summary>The unit's key, the device OpenRGB opens.</summary>
         internal const string Key = OwnLightingChannels.AtkAcpiPath;
@@ -115,8 +134,7 @@ namespace PadForge.Common.Input.Peripherals
             string product = _productName();
             // A query that gave no answer is asked again at the next look.
             if (product == null) return null;
-            found = product.Contains(ProductMarker, StringComparison.Ordinal)
-                    && _instancePresent(OwnLightingChannels.AtkWmiInstance)
+            found = _instancePresent(OwnLightingChannels.AtkWmiInstance) && Looks(product)
                 ? new[]
                 {
                     new OwnDevice(Key, Model)
@@ -129,15 +147,48 @@ namespace PadForge.Common.Input.Peripherals
             return found;
         }
 
+        /// <summary>Whether a PC of this name is lit through the ATK device.</summary>
+        private bool Looks(string product)
+        {
+            foreach (string marker in TufMarkers)
+                if (product.Contains(marker, StringComparison.OrdinalIgnoreCase)) return true;
+            foreach (string marker in OtherMarkers)
+                if (product.Contains(marker, StringComparison.OrdinalIgnoreCase)) return HasRgbDevice();
+            return false;
+        }
+
+        /// <summary>Whether DSTS reports either RGB mode device. Its answer less
+        /// 0x10000 is not negative for one that is there (DeviceGet, IsSupported).</summary>
+        private bool HasRgbDevice()
+        {
+            IAtkAcpiChannel atk = null;
+            try { atk = _open(); } catch { }
+            if (atk == null) return false;
+            try
+            {
+                foreach (uint device in new[] { RgbModeDevice, RgbModeDevice2 })
+                {
+                    var arguments = new byte[8];
+                    BitConverter.TryWriteBytes(arguments.AsSpan(0, 4), device);
+                    if (atk.Call(Dsts, arguments) is int status && status - 0x10000 >= 0) return true;
+                }
+                return false;
+            }
+            finally
+            {
+                try { atk.Dispose(); } catch { }
+            }
+        }
+
         /// <summary>The arguments of DEVS for a color: the device, then the
         /// two numbers setMode builds, low byte first
         /// (AsusTUFLaptopController_Windows.cpp:294-297, three ints at
         /// lines 190-199): the magic, the mode, red, green, then blue, the
         /// speed and two zero bytes.</summary>
-        internal static byte[] ColorArguments(int rgb)
+        internal static byte[] ColorArguments(int rgb, uint device = RgbModeDevice)
         {
             var arguments = new byte[12];
-            BitConverter.TryWriteBytes(arguments.AsSpan(0, 4), RgbModeDevice);
+            BitConverter.TryWriteBytes(arguments.AsSpan(0, 4), device);
             arguments[4] = MagicUse;
             arguments[5] = ModeStatic;
             arguments[6] = (byte)(rgb >> 16);
@@ -150,6 +201,7 @@ namespace PadForge.Common.Input.Peripherals
         internal sealed class Session : HidLightingSession
         {
             private readonly IAtkAcpiChannel _atk;
+            private uint _device = RgbModeDevice;
 
             public Session(IAtkAcpiChannel atk) => _atk = atk;
 
@@ -163,7 +215,11 @@ namespace PadForge.Common.Input.Peripherals
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
             {
                 if (colors == null || colors.Count == 0) return HidLightingPaint.Sent;
-                return _atk.Call(Devs, ColorArguments(colors[0])) == 1 ? HidLightingPaint.Sent : HidLightingPaint.Failed;
+                if (_atk.Call(Devs, ColorArguments(colors[0], _device)) == 1) return HidLightingPaint.Sent;
+                if (_device == RgbModeDevice2 || _atk.Call(Devs, ColorArguments(colors[0], RgbModeDevice2)) != 1)
+                    return HidLightingPaint.Failed;
+                _device = RgbModeDevice2;
+                return HidLightingPaint.Sent;
             }
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait) => true;

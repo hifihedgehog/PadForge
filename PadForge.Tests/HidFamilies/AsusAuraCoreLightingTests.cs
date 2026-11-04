@@ -46,8 +46,9 @@ namespace PadForge.Tests
                 Assert.Null(family.Match(CollectionOf(r, feature: 0)));
             }
             var scar15 = rows.Single(r => r.Name == "ASUS ROG Strix SCAR 15");
-            Assert.Null(new AsusAuraCoreLighting(() => "SOME-BOARD").Match(CollectionOf(scar15)));
-            Assert.Null(new AsusAuraCoreLighting(() => null).Match(CollectionOf(scar15)));
+            // A board OpenRGB does not list: G-Helper's way (AsusLaptopAuraTests).
+            Assert.Equal("ASUS Laptop Keyboard", new AsusAuraCoreLighting(() => "SOME-BOARD").Match(CollectionOf(scar15)).Name);
+            Assert.Equal("ASUS Laptop Keyboard", new AsusAuraCoreLighting(() => null).Match(CollectionOf(scar15)).Name);
             var laptop = family.Match(CollectionOf(scar15));
             Assert.Equal(0, laptop.HoldMs);
             Assert.Equal(HidppBackend.PaintMs, laptop.RepaintMs);
@@ -86,7 +87,10 @@ namespace PadForge.Tests
             io.Feature = id => id == 0x5D ? new byte[] { 0x5D, 1 } : null;
             var session = AsusAuraCoreLighting.BeginCore(io, _ => { }, 0x1854, null);
             Assert.IsType<AsusAuraCoreLighting.KeyboardSession>(session);
-            Assert.Empty(Sets(io));
+            // G-Helper's query, unanswered: nothing else goes out.
+            Assert.Equal(3, Sets(io).Count);
+            Starts("5D B9", Sets(io)[0], 64);
+            Starts("5D 05 20 31 00 20", Sets(io)[2], 64);
             Assert.Equal(4, session.Map.Lights.Count);
             // B4 stores each picture (asusd src/aura_laptop/mod.rs:118-125):
             // the model's bounds, 150 and 500 ms.

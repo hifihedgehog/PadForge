@@ -364,6 +364,14 @@ namespace PadForge.Common.Input.Peripherals
             KeychronKeyboardLighting.Instance,
             LogitechG600Lighting.Instance,
             LogitechX56Lighting.Instance,
+            HyperXMouseLighting.Instance,
+            HyperXMousematLighting.Instance,
+            HyperXMicrophoneLighting.Instance,
+            HyperXMicrophoneV2Lighting.Instance,
+            RedragonMouseLighting.Instance,
+            AresonLighting.Instance,
+            InstantMouseLighting.Instance,
+            HoltekLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

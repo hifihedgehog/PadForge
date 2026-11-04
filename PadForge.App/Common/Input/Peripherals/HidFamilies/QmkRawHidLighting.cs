@@ -90,6 +90,11 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
 
             private const byte SolidColor = 0x01;
 
+            /// <summary>The wait for a picture's echo. The firmware answers every write
+            /// (via.c:290-297), and a board that stops answering must not hold the worker for
+            /// a second a frame, as it may while the session asks at the start.</summary>
+            private const int PaintAnswerMs = 20;
+
             /// <summary>The head of a value's frame and its value IDs: by channel, or by ID alone.</summary>
             internal sealed record Target(byte[] Head, byte Brightness, byte Effect, byte Color, byte OldBrightness, byte OldEffect, byte OldHue, byte OldSaturation);
 
@@ -191,10 +196,8 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 var (h, s, v) = QmkLighting.Hsv(rgb);
                 foreach (var target in _targets)
                 {
-                    if (!_started && QmkLighting.Exchange(io, Set(target, target.Effect, SolidColor), out _) == null)
-                        return HidLightingPaint.Failed;
-                    if (QmkLighting.Exchange(io, Set(target, target.Color, h, s), out _) == null
-                        || QmkLighting.Exchange(io, Set(target, target.Brightness, v), out _) == null)
+                    if (!_started && !Send(io, Set(target, target.Effect, SolidColor))) return HidLightingPaint.Failed;
+                    if (!Send(io, Set(target, target.Color, h, s)) || !Send(io, Set(target, target.Brightness, v)))
                         return HidLightingPaint.Failed;
                 }
                 _started = true;
@@ -205,8 +208,15 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             {
                 if (!_started) return true;
                 foreach (var frame in _restore)
-                    if (QmkLighting.Exchange(io, frame, out _) == null) return false;
+                    if (!Send(io, frame)) return false;
                 _started = false;
+                return true;
+            }
+
+            private static bool Send(IHidReportChannel io, byte[] frame)
+            {
+                if (!io.WriteOutput(frame)) return false;
+                io.ReadInput(new byte[Math.Max(QmkLighting.ReportSize, io.InputReportLength)], PaintAnswerMs);
                 return true;
             }
         }
@@ -364,7 +374,8 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 if (!_started)
                 {
                     if (!io.WriteOutput(_direct)) return HidLightingPaint.Failed;
-                    io.ReadInput(new byte[Math.Max(OpenRgbPacket + 1, io.InputReportLength)], QmkLighting.ReadTimeoutMs);
+                    // QMK_OPENRGB_HID_READ_TIMEOUT (QMKOpenRGBController.h:23).
+                    io.ReadInput(new byte[Math.Max(OpenRgbPacket + 1, io.InputReportLength)], 50);
                     _started = true;
                 }
                 foreach (var frame in Frames(_revision, lights, colors))

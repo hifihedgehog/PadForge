@@ -68,6 +68,24 @@ namespace PadForge.Tests
             Assert.Equal(KeyboardLayout.IsoQwerty, WinbondKeyboardLighting.RegionOf(Answer("K221UKCVRGB"), 64, KeyboardLayout.AnsiQwerty));
         }
 
+        /// <summary>The fallback reaches the session: a Hator board whose answer names no
+        /// region gets ANSI's map, a key fewer than ISO's.</summary>
+        [Fact]
+        public void AHatorSession_KeepsAnsi_WhereItsAnswerNamesNoRegion()
+        {
+            var answers = new System.Collections.Generic.Queue<byte[]>(new[] { Answer("SOMETHING") });
+            var io = new FakeReportChannel
+            {
+                OutputReportLength = 64, InputReportLength = 64, ProductString = "Hator Rockfall TKL",
+                Input = () => answers.Count > 0 ? answers.Dequeue() : null,
+            };
+            var session = Model().Begin(io, _ => { });
+            int ansi = KeyboardLayouts.Build("winbond_gaming_keyboard_tkl_layouts_hator", KeyboardLayout.AnsiQwerty).GetKeyCount();
+            int iso = KeyboardLayouts.Build("winbond_gaming_keyboard_tkl_layouts_hator", KeyboardLayout.IsoQwerty).GetKeyCount();
+            Assert.NotEqual(ansi, iso);
+            Assert.Equal(ansi, session.Map.Lights.Count);
+        }
+
         /// <summary>A PCMK TKL's map is OpenRGB's TKL layout with one logo light
         /// at KV(255, 0), and a picture ends with the logo report, its color
         /// unscaled (WinbondGamingKeyboardController.cpp:228-258 and 326-333). The

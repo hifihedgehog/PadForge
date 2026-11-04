@@ -53,6 +53,12 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>One device of an OpenRGB controller family on its own
         /// lighting collection, through the shared HID lighting worker (#557).</summary>
         HidLightingUnit,
+        /// <summary>One kind of ASUS device through the Aura SDK while
+        /// Armoury Crate runs (#557).</summary>
+        AuraSdkType,
+        /// <summary>One kind of MSI device through the Mystic Light SDK
+        /// while Mystic Light runs (#557).</summary>
+        MysticLightType,
     }
 
     /// <summary>Where a backend stands, for the device tabs.</summary>
@@ -90,7 +96,8 @@ namespace PadForge.Common.Input.Peripherals
             OutputFamily.HidppUnit or OutputFamily.RazerUnit or OutputFamily.SteelSeriesUnit
                 or OutputFamily.LampArrayUnit or OutputFamily.TouchSenseUnit or OutputFamily.HidLightingUnit => false,
             OutputFamily.ChromaCategory or OutputFamily.LedSdkType or OutputFamily.GameSenseColor
-                or OutputFamily.GameSenseTactile or OutputFamily.Interhaptics => true,
+                or OutputFamily.GameSenseTactile or OutputFamily.Interhaptics
+                or OutputFamily.AuraSdkType or OutputFamily.MysticLightType => true,
             _ => throw new ArgumentOutOfRangeException(nameof(Family)),
         };
     }

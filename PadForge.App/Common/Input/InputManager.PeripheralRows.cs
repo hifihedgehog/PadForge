@@ -30,6 +30,8 @@ namespace PadForge.Common.Input
             PeripheralRowKind.LogitechLightsync => presence.LogitechLedSdk,
             PeripheralRowKind.RazerSensa => presence.RazerSynapse && presence.SensaPlatform,
             PeripheralRowKind.SteelSeriesGG => presence.SteelSeriesGG,
+            PeripheralRowKind.AsusAura => presence.AsusAuraSdk,
+            PeripheralRowKind.MsiMysticLight => presence.MsiMysticLightSdk,
             _ => false,
         };
 

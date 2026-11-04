@@ -41,6 +41,12 @@ namespace PadForge.Common.Input.Peripherals
             // asks nothing of it.
             Add(backends, OutputFamily.TouchSenseUnit, () => new TouchSenseBackend());
 
+            // The ASUS Aura SDK while Armoury Crate runs (#557).
+            Add(backends, OutputFamily.AuraSdkType, () => new AuraSdkBackend());
+
+            // The MSI Mystic Light SDK while Mystic Light runs (#557).
+            Add(backends, OutputFamily.MysticLightType, () => new MysticLightBackend());
+
             return backends;
         }
 

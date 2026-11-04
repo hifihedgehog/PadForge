@@ -18,6 +18,9 @@ RGBController/RGBControllerKeyNames.cpp:
   led_names_mini.
 - ThermaltakePoseidonZRGBController: led_names, and keys from the
   controller.
+- KeychronKeyboardController/RGBController_KeychronKeyboard.cpp: the matrix,
+  the names and the buffer places of the k3_keychron struct, its third,
+  fourth and fifth members.
 
 WHAT IT WRITES. PadForge.App/Common/Input/Peripherals/HidFamilies/KeyboardLedNames.g.cs,
 each array as OpenRGB holds it, a name as its string and NA as -1, with
@@ -44,7 +47,8 @@ OUTPUT = os.path.join(PROJ_ROOT, "PadForge.App", "Common", "Input", "Peripherals
 
 NA = 0xFFFFFFFF
 
-# (C# name, file under Controllers, array, kind, summary)
+# (C# name, file under Controllers, array, kind, summary[, member]): member
+# is the index of the braced member of a struct the table is.
 TABLES = [
     ("MountainNames", "MountainKeyboardController/RGBController_MountainKeyboard.cpp", "led_names", "str",
      "The Everest's names by color index, led_names."),
@@ -95,6 +99,12 @@ TABLES = [
      "str", "The Poseidon Z RGB's names in light order, led_names."),
     ("PoseidonKeys", "ThermaltakePoseidonZRGBController/ThermaltakePoseidonZRGBController.cpp", "keys", "int",
      "Each light's byte in the color reports, keys."),
+    ("KeychronMatrix", "KeychronKeyboardController/RGBController_KeychronKeyboard.cpp", "k3_keychron", "int",
+     "The K3 V2's 6 by 16 grid, each cell the index of its name, the matrix of k3_keychron.", 2),
+    ("KeychronNames", "KeychronKeyboardController/RGBController_KeychronKeyboard.cpp", "k3_keychron", "str",
+     "The K3 V2's names, the led_names of k3_keychron.", 3),
+    ("KeychronPlaces", "KeychronKeyboardController/RGBController_KeychronKeyboard.cpp", "k3_keychron", "int",
+     "Each LED's place in the color buffer, in LED order, the led_sequence_positions of k3_keychron.", 4),
 ]
 
 def key_names(root):
@@ -181,7 +191,7 @@ def main():
     out.append("        /// <summary>The OpenRGB commit the tables were read at.</summary>")
     out.append("        internal const string OpenRgbCommit = \"%s\";" % commit)
     counts = []
-    for cs_name, rel, array, kind, summary in TABLES:
+    for cs_name, rel, array, kind, summary, *member in TABLES:
         if rel not in sources:
             source = oc.Source(os.path.join(root, "Controllers"), rel)
             evaluator = oc.Evaluator([source], strings=names)
@@ -192,6 +202,11 @@ def main():
             node, line = definition(source, array)
         except CppError as e:
             sys.exit(str(e))
+        if member:
+            node = node[member[0]]
+            if not isinstance(node, Node):
+                sys.exit("%s: member %d of %s is not braced" % (rel, member[0], array))
+            line = node.line
         values = []
         for element in flatten(node):
             if kind == "str":

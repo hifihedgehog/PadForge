@@ -367,6 +367,7 @@ namespace PadForge.Common.Input.Peripherals
             RazerKrakenLighting.Instance,
             RazerKrakenV3Lighting.Instance,
             RazerKrakenV4Lighting.Instance,
+            RazerHanboLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

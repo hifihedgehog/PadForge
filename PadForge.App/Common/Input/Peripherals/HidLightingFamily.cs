@@ -369,6 +369,7 @@ namespace PadForge.Common.Input.Peripherals
             RedragonMouseLighting.Instance,
             AresonLighting.Instance,
             InstantMouseLighting.Instance,
+            HoltekLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

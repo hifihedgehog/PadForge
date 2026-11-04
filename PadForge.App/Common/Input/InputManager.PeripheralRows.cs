@@ -15,11 +15,14 @@ namespace PadForge.Common.Input
         private readonly object _peripheralRowsLock = new object();
         private volatile bool _peripheralRowsSuppressed;
 
-        // Unit rows (#494): one per lit unit no mouse or keyboard row
-        // reaches, a headset or a light strip that Windows lists as a HID
-        // LampArray. The peripheral host says which units those are
-        // (PeripheralOutputs.UnitRows), and the rows open and retire here by
-        // the vendor rows' rules. Guarded by _peripheralRowsLock.
+        // Unit rows (#494, #557): one per lit unit no mouse or keyboard row
+        // reaches, a headset, a mousepad, a dock, a speaker or a light
+        // strip, found as a HID LampArray, a Razer or SteelSeries device, a
+        // device of the shared worker or a Logitech HID++ device
+        // (PeripheralLinker.Orphans). The peripheral host says which units
+        // those are (PeripheralOutputs.UnitRows), and the rows open and
+        // retire here by the vendor rows' rules. Guarded by
+        // _peripheralRowsLock.
         private readonly Dictionary<OutputPath, PeripheralUnitRow> _peripheralUnitRows = new();
 
         /// <summary>The vendor rows this build opens, each with the software

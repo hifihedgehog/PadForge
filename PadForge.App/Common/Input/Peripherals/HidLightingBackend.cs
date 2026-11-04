@@ -570,6 +570,7 @@ namespace PadForge.Common.Input.Peripherals
                 var unit = units[i];
                 list[i] = new DirectUnit(OutputFamily.HidLightingUnit, unit.Path, unit.Container, unit.VendorId, unit.ProductId)
                 {
+                    Name = unit.Model.Name,
                     Asleep = unit.Asleep,
                     LitBesideWindows = unit.Model.LitBesideWindows,
                     LiveThroughLampArray = unit.Model.LiveThroughLampArray,

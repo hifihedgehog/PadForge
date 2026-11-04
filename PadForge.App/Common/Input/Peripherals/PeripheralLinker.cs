@@ -500,7 +500,7 @@ namespace PadForge.Common.Input.Peripherals
         internal const int LampArrayKindKeyboard = 1;
         internal const int LampArrayKindMouse = 2;
 
-        /// <summary>How long a LampArray unit must go unreached by any mouse
+        /// <summary>How long a lit unit must go unreached by any mouse
         /// or keyboard row before it gets a row of its own
         /// (<see cref="HeldOrphans"/>).</summary>
         internal const int UnitRowHoldMs = 5000;
@@ -543,7 +543,18 @@ namespace PadForge.Common.Input.Peripherals
             var direct = inputs.Units ?? Array.Empty<DirectUnit>();
             var lampArrays = LampArraysPerContainer(direct);
             var result = new List<DeviceLinks>();
-            foreach (var row in rows)
+            // A unit row's link reads every other row and what they link,
+            // so the rows are listed once, the unit rows go last, and the
+            // device census is taken at the first of them, from the links
+            // of every other row.
+            var rowList = rows as IReadOnlyList<LinkRow> ?? new List<LinkRow>(rows);
+            var ordered = new List<LinkRow>(rowList.Count);
+            foreach (var row in rowList)
+                if (row.VendorRow != null || row.Unit == null) ordered.Add(row);
+            foreach (var row in rowList)
+                if (row.VendorRow == null && row.Unit != null) ordered.Add(row);
+            DeviceFamilies families = null;
+            foreach (var row in ordered)
             {
                 var haptics = new List<OutputPath>();
                 var lighting = new List<OutputPath>();
@@ -582,15 +593,38 @@ namespace PadForge.Common.Input.Peripherals
                 else if (row.Unit is OutputPath unit)
                 {
                     // A unit row holds its own unit and nothing else, for as
-                    // long as the unit is there and answers, and its
-                    // vendor's program does not run. The program drives the
-                    // device from the pass that sees it, where the row
-                    // itself retires only at the input manager's next
-                    // device scan (Orphans).
-                    if (FindUnit(unit, direct) is DirectUnit own)
+                    // long as the unit is there and answers, its device's
+                    // program does not run, and the device is not a device
+                    // row's. The program drives the device from the pass
+                    // that sees it, and a device row that reaches the unit,
+                    // or lights its device through a unit of another family
+                    // (DeviceFamilies), takes it from the pass that reaches
+                    // it, so no path is held by two rows. The row itself
+                    // retires only at the input manager's next device scan
+                    // (Orphans).
+                    if (unit.Family == OutputFamily.HidppUnit)
+                    {
+                        // A HID++ unit is listed by the HID++ worker, not
+                        // among the direct units. Its row reads the unit's
+                        // charge for the Battery mode as a mouse row does.
+                        if (FindHidppUnit(unit.Key, hidpp) is HidppUnit own)
+                        {
+                            unitVendor = LogitechVid;
+                            units.Add(own.Key);
+                            families ??= DeviceFamilies.Of(direct, hidpp, result);
+                            if (LightsUnitRow(own) && !VendorProgramRuns(LogitechVid, presence)
+                                && !ReachedByAnyRow(own, rowList) && !families.Loses(UnitOf(own)))
+                                lighting.Add(unit);
+                        }
+                    }
+                    else if (FindUnit(unit, direct) is DirectUnit own)
                     {
                         unitVendor = own.VendorId;
-                        if (LightsUnitRow(own) && !VendorProgramRuns(own.VendorId, presence)) lighting.Add(unit);
+                        ownPrograms = own.Programs is { Count: > 0 };
+                        families ??= DeviceFamilies.Of(direct, hidpp, result);
+                        if (LightsUnitRow(own) && !UnitProgramRuns(own, presence)
+                            && !ReachedByAnyRow(own, rowList, lampArrays) && !families.Loses(own))
+                            lighting.Add(unit);
                     }
                 }
                 else if (IsLinkable(row.CapType))
@@ -759,6 +793,21 @@ namespace PadForge.Common.Input.Peripherals
             SteelSeriesVid => presence.SteelSeriesGGRunning,
             _ => false,
         };
+
+        /// <summary>Whether a program that drives a direct unit's device
+        /// runs now: its vendor's, for the three vendors that have one
+        /// (<see cref="VendorProgramRuns"/>), or one its shared-worker
+        /// model names (<see cref="DirectUnit.Programs"/>,
+        /// <see cref="ProgramHolding"/>). The one read behind a unit row's
+        /// path and behind whether the unit gets a row
+        /// (<see cref="Orphans"/>).</summary>
+        internal static bool UnitProgramRuns(DirectUnit unit, PeripheralPresence presence)
+        {
+            if (unit == null || presence == null) return false;
+            if (VendorProgramRuns(unit.VendorId, presence)) return true;
+            return unit.Programs is { Count: > 0 } programs
+                   && (presence.Programs ?? RunningPrograms.None).FirstOf(programs) != null;
+        }
 
         /// <summary>One path a row could be lit through on its own, with the
         /// claim level its unit offers and whether Windows lights it.</summary>
@@ -1019,10 +1068,25 @@ namespace PadForge.Common.Input.Peripherals
             return null;
         }
 
+        /// <summary>The HID++ unit a unit row stands for, as the HID++
+        /// worker lists it, or null.</summary>
+        private static HidppUnit FindHidppUnit(string key, HidppSnapshot hidpp)
+        {
+            foreach (var candidate in hidpp.Units)
+                if (candidate != null && candidate.Key == key) return candidate;
+            return null;
+        }
+
         /// <summary>Whether a unit row's unit is there to light: awake, of
         /// a family that lights, and not one that ignores a raw host.</summary>
         private static bool LightsUnitRow(DirectUnit unit)
             => unit.Family != OutputFamily.TouchSenseUnit && !unit.Asleep && !IgnoresRawHost(unit);
+
+        /// <summary>Whether a HID++ unit can be lit on its own: the units a
+        /// Logitech row is given a HID++ lighting path to
+        /// (<see cref="HidppUnit.HasLightPlan"/>). The worker lists a unit
+        /// only while it answers, so a listed one is awake.</summary>
+        private static bool LightsUnitRow(HidppUnit unit) => unit.HasRgb && unit.HasLightPlan;
 
         /// <summary>Whether a unit that is listed and does not answer now
         /// (<see cref="DirectUnit.Asleep"/>) is one of this row's: the unit
@@ -1120,49 +1184,297 @@ namespace PadForge.Common.Input.Peripherals
             return held ?? NoRows;
         }
 
-        /// <summary>The LampArray units no mouse, keyboard or analog
-        /// keyboard row reaches: a headset, a mousepad, a light strip, a
-        /// monitor, a chassis light. Each gets a row of its own
+        /// <summary>
+        /// The lit units no mouse, keyboard or analog keyboard row reaches:
+        /// a headset, a mousepad, a headset stand, a dock, a light strip, a
+        /// speaker, a monitor, a chassis light. Each gets a row of its own
         /// (<see cref="PeripheralUnitRow"/>), since a device with no row
-        /// cannot be assigned. A unit whose container is not known yet is
-        /// not one: its row may be a lookup away. Neither is a unit that
-        /// ignores a raw host. A unit that is asleep
-        /// (<see cref="DirectUnit.Asleep"/>) is listed like any other, so a
-        /// row it already has stays open while it sleeps.
+        /// cannot be assigned, and a device that cannot be assigned is
+        /// never lit. Every family whose units stand for one device each
+        /// takes part: LampArray, Razer, SteelSeries, the shared worker's,
+        /// and HID++. TouchSense units carry rumble alone and no row is
+        /// opened for rumble.
         ///
-        /// <para>A Logitech, Razer or SteelSeries unit is not one while
-        /// that vendor's program runs. The program drives every device of
-        /// its vendor then, a headset or a mousepad included, and the
-        /// vendor's own row is how such a device is lit through it, so a
-        /// row of the unit's own would have PadForge write beside the
-        /// program, the fight a device row is kept out of by the same
-        /// running flag (<see cref="ChooseLighting"/>). A row the unit
-        /// already has holds no path from the pass that sees the program
-        /// (<see cref="Build(IEnumerable{LinkRow}, LinkInputs)"/>) and
-        /// retires at the input manager's next device scan, and the unit
-        /// waits out <see cref="UnitRowHoldMs"/> again once the program
-        /// has stopped.</para></summary>
+        /// <para>A unit is reached when a row takes it by the rule its
+        /// family links by in
+        /// <see cref="Build(IEnumerable{LinkRow}, LinkInputs)"/>
+        /// (<see cref="Reaches(LinkRow, DirectUnit, IReadOnlyDictionary{Guid, int})"/>),
+        /// whichever path that row ends up lit through. A unit whose
+        /// container is not known yet is not one: its row may be a lookup
+        /// away. Neither is a LampArray unit that ignores a raw host.</para>
+        ///
+        /// <para>A unit is not one while a program that drives its device
+        /// runs: its vendor's for a Logitech, Razer or SteelSeries device,
+        /// or one the unit's shared-worker model names
+        /// (<see cref="UnitProgramRuns"/>). The program drives the device
+        /// then, a headset or a mousepad included, and the vendor's own row
+        /// is how such a device is lit through it, so a row of the unit's
+        /// own would have PadForge write beside the program, the fight a
+        /// device row is kept out of by the same running flag
+        /// (<see cref="ChooseLighting"/>). A row the unit already has holds
+        /// no path from the pass that sees the program and retires at the
+        /// input manager's next device scan, and the unit waits out
+        /// <see cref="UnitRowHoldMs"/> again once the program has
+        /// stopped.</para>
+        ///
+        /// <para>A unit that is asleep (<see cref="DirectUnit.Asleep"/>) is
+        /// one only while it already has a row, so that row stays open
+        /// while it sleeps and no row is opened for a device that has not
+        /// answered. The HID++ worker lists a unit only while it answers,
+        /// so a HID++ unit's row retires while the unit sleeps and comes
+        /// back, under the same id and with the same assignment, once it
+        /// answers again.</para>
+        ///
+        /// <para>One device can have units of two families, a LampArray
+        /// collection beside its vendor's own. A row lights such a device
+        /// through one family at a time (<see cref="ChooseLighting"/>), and
+        /// a unit row beside it would paint it from a second ruling, so of
+        /// the units of one device only the family that rule chooses gets
+        /// rows, whether or not a device row reaches the units of that
+        /// family (<see cref="DeviceFamilies"/>). A LampArray strip beside
+        /// keys a keyboard row lights through its vendor's unit gets
+        /// none.</para>
+        /// </summary>
         internal static List<DirectUnit> Orphans(IReadOnlyList<LinkRow> rows, LinkInputs inputs)
         {
             var orphans = new List<DirectUnit>();
             var direct = inputs.Units ?? Array.Empty<DirectUnit>();
             var presence = inputs.Presence ?? PeripheralPresence.None;
+            var hidpp = inputs.Hidpp ?? HidppSnapshot.Empty;
             var lampArrays = LampArraysPerContainer(direct);
+            // What the device rows link, which decides a device's family
+            // ahead of the census.
+            var deviceRows = new List<LinkRow>(rows.Count);
+            foreach (var row in rows)
+                if (row.Unit == null) deviceRows.Add(row);
+            var families = DeviceFamilies.Of(direct, hidpp, Build(deviceRows, inputs).ByDevice.Values);
             foreach (var unit in direct)
             {
-                if (unit.Family != OutputFamily.LampArrayUnit || unit.ContainerId == Guid.Empty || IgnoresRawHost(unit))
+                if (unit == null || !GetsUnitRow(unit.Family) || unit.ContainerId == Guid.Empty || IgnoresRawHost(unit))
                     continue;
-                if (VendorProgramRuns(unit.VendorId, presence)) continue;
+                if (UnitProgramRuns(unit, presence) || families.Loses(unit)) continue;
                 bool reached = false;
                 foreach (var row in rows)
                 {
-                    if (!MatchesLampArray(unit, row, lampArrays)) continue;
+                    if (!Reaches(row, unit, lampArrays)) continue;
                     reached = true;
                     break;
                 }
                 if (!reached) orphans.Add(unit);
             }
+            if (!VendorProgramRuns(LogitechVid, presence))
+            {
+                foreach (var unit in hidpp.Units)
+                {
+                    if (unit == null || !LightsUnitRow(unit) || unit.ContainerId == Guid.Empty) continue;
+                    bool reached = false;
+                    foreach (var row in rows)
+                    {
+                        if (!Reaches(row, unit)) continue;
+                        reached = true;
+                        break;
+                    }
+                    if (reached) continue;
+                    var listed = UnitOf(unit);
+                    if (!families.Loses(listed)) orphans.Add(listed);
+                }
+            }
+            // The family is chosen as if every unit answered, as a row's
+            // is, so a device whose own unit sleeps does not hand its row
+            // to its LampArray unit and take it back when it wakes. Then a
+            // unit asleep keeps the row it has and gets none it has not.
+            orphans.RemoveAll(unit => unit.Asleep && !HasUnitRow(rows, unit.Path));
             return orphans;
+        }
+
+        /// <summary>Whether a row other than a unit row takes a direct unit
+        /// (<see cref="Reaches(LinkRow, DirectUnit, IReadOnlyDictionary{Guid, int})"/>),
+        /// which is then that row's to light and no unit row's.</summary>
+        private static bool ReachedByAnyRow(DirectUnit unit, IReadOnlyList<LinkRow> rows,
+            IReadOnlyDictionary<Guid, int> lampArrays)
+        {
+            foreach (var row in rows)
+                if (Reaches(row, unit, lampArrays)) return true;
+            return false;
+        }
+
+        /// <summary>Whether a row other than a unit row takes a HID++
+        /// unit (<see cref="Reaches(LinkRow, HidppUnit)"/>).</summary>
+        private static bool ReachedByAnyRow(HidppUnit unit, IReadOnlyList<LinkRow> rows)
+        {
+            foreach (var row in rows)
+                if (Reaches(row, unit)) return true;
+            return false;
+        }
+
+        /// <summary>The families whose units get rows of their own
+        /// (<see cref="Orphans"/>): every one that lights a device through
+        /// a unit of its own. HID++ units are not direct units and are
+        /// read from the HID++ snapshot.</summary>
+        internal static bool GetsUnitRow(OutputFamily family)
+            => family is OutputFamily.LampArrayUnit or OutputFamily.RazerUnit or OutputFamily.SteelSeriesUnit
+                or OutputFamily.HidLightingUnit;
+
+        /// <summary>Whether a row takes a direct unit by the rule its family
+        /// links by in <see cref="Build(IEnumerable{LinkRow}, LinkInputs)"/>:
+        /// a LampArray unit by <see cref="MatchesLampArray"/>, a Razer or
+        /// SteelSeries unit by <see cref="MatchesDevice"/> from a row of
+        /// that vendor, and a shared-worker unit by
+        /// <see cref="MatchesDevice"/> from a row of any other vendor, the
+        /// rows the linker reads that family for. A laptop keyboard the
+        /// shared worker lights through the PC's firmware is taken by the
+        /// keyboard rows in the PC's own container
+        /// (<see cref="DirectUnit.BuiltInKeyboard"/>).</summary>
+        internal static bool Reaches(LinkRow row, DirectUnit unit, IReadOnlyDictionary<Guid, int> lampArrays)
+            => unit.Family switch
+            {
+                OutputFamily.LampArrayUnit => MatchesLampArray(unit, row, lampArrays),
+                OutputFamily.RazerUnit => row.VendorId == RazerVid && MatchesDevice(unit, row),
+                OutputFamily.SteelSeriesUnit => row.VendorId == SteelSeriesVid && MatchesDevice(unit, row),
+                OutputFamily.HidLightingUnit => row.VendorId != LogitechVid && row.VendorId != RazerVid
+                                                && row.VendorId != SteelSeriesVid && MatchesDevice(unit, row),
+                _ => false,
+            };
+
+        /// <summary>Whether a row takes a HID++ unit: a Logitech mouse or
+        /// keyboard row the unit matches by container and kind
+        /// (<see cref="Matches"/>), the rows the linker reads HID++ units
+        /// for.</summary>
+        internal static bool Reaches(LinkRow row, HidppUnit unit)
+            => IsLinkable(row.CapType) && row.VendorRow == null && row.Unit == null
+               && row.VendorId == LogitechVid && Matches(unit, row);
+
+        /// <summary>A HID++ unit as a unit row needs it: its path, its
+        /// container, Logitech's vendor ID and the name the device gave
+        /// through feature 0x0005. The worker knows no product ID for a
+        /// unit, which may sit behind a receiver, so it carries 0, and the
+        /// row is named by the unit's own name.</summary>
+        internal static DirectUnit UnitOf(HidppUnit unit)
+            => new(OutputFamily.HidppUnit, unit.Key, unit.ContainerId, LogitechVid, 0) { Name = unit.Name };
+
+        /// <summary>Whether a unit row standing for this path is among the
+        /// rows.</summary>
+        private static bool HasUnitRow(IReadOnlyList<LinkRow> rows, OutputPath path)
+        {
+            foreach (var row in rows)
+                if (row.Unit == path) return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Which family each device outside the PC's own container is lit
+        /// through on its own: the units of a LampArray collection, or the
+        /// units of its vendor's own protocol (Razer, SteelSeries, the
+        /// shared worker, HID++). A family a device row links a unit of is
+        /// the device's: its own protocol where the row links one of its
+        /// units (step 3 links LampArray units beside it), else the
+        /// LampArray units where the row links one of those. A device no
+        /// row lights is counted over every lit unit of it, reached by a
+        /// row or not, asleep or not, and whether or not a program holds
+        /// it, in <see cref="ChooseLighting"/>'s order.
+        /// Windows Dynamic Lighting lights a LampArray unit of the device,
+        /// and no unit of its own stays in charge beside Windows
+        /// (<see cref="DirectUnit.LitBesideWindows"/>): the LampArray units,
+        /// which their backend leaves unpainted while Windows holds them
+        /// (step 2). Otherwise the device's own protocol (step 4), the order
+        /// OpenRGB keeps too: a device node a vendor's detector matches by
+        /// vendor and product ID is offered to no generic detector, and its
+        /// LampArray detector is a generic one (OpenRGB
+        /// DetectionManager.cpp:123-127, 292-299 and 1533-1596,
+        /// HIDLampArrayControllerDetect.cpp:50). A unit of the other family
+        /// gets no row of its own, since the device's row, or the unit row
+        /// of the chosen family, lights the device already. The LampArray
+        /// units that ride beside a device's own unit under step 3 are
+        /// left out of unit rows: a unit row holds one unit.
+        ///
+        /// <para>A device is told by its container and vendor ID. Outside
+        /// the PC a container is one physical device, the units of a
+        /// receiver included, and the vendor ID keeps a hub's or a
+        /// monitor's parts of another maker apart. In the PC's own
+        /// container every built-in device sits together and is told by its
+        /// product ID and kind, so nothing there is counted.</para>
+        /// </summary>
+        internal sealed class DeviceFamilies
+        {
+            private readonly HashSet<(Guid, ushort)> _lamps = new();
+            private readonly HashSet<(Guid, ushort)> _natives = new();
+            private readonly HashSet<(Guid, ushort)> _windowsLit = new();
+            private readonly HashSet<(Guid, ushort)> _besideWindows = new();
+            private readonly HashSet<(Guid, ushort)> _linkedLamps = new();
+            private readonly HashSet<(Guid, ushort)> _linkedNatives = new();
+
+            /// <summary>The census of the direct units and the HID++ units
+            /// a row could be lit through on their own: of a family that
+            /// gets unit rows, in a known container, and, for a LampArray
+            /// unit, not one that ignores a raw host. <paramref name="linked"/>
+            /// are the links of the rows other than unit rows, whose
+            /// lighting paths name the units a device row lights.</summary>
+            internal static DeviceFamilies Of(IReadOnlyList<DirectUnit> direct, HidppSnapshot hidpp,
+                IEnumerable<DeviceLinks> linked)
+            {
+                direct ??= Array.Empty<DirectUnit>();
+                hidpp ??= HidppSnapshot.Empty;
+                var families = new DeviceFamilies();
+                foreach (var unit in direct)
+                {
+                    if (unit == null || !GetsUnitRow(unit.Family) || IgnoresRawHost(unit)) continue;
+                    families.Count(unit);
+                }
+                foreach (var unit in hidpp.Units)
+                    if (unit != null && LightsUnitRow(unit)) families.Count(UnitOf(unit));
+                // A vendor row's paths are shared ones, which name no unit.
+                foreach (var links in linked)
+                {
+                    foreach (var path in links.Lighting)
+                    {
+                        var unit = path.Family == OutputFamily.HidppUnit
+                            ? FindHidppUnit(path.Key, hidpp) is HidppUnit h ? UnitOf(h) : null
+                            : FindUnit(path, direct);
+                        if (unit == null || !Counted(unit, out var device)) continue;
+                        if (unit.Family == OutputFamily.LampArrayUnit) families._linkedLamps.Add(device);
+                        else families._linkedNatives.Add(device);
+                    }
+                }
+                return families;
+            }
+
+            /// <summary>Whether a unit is of a device the census counts,
+            /// and that device.</summary>
+            private static bool Counted(DirectUnit unit, out (Guid, ushort) device)
+            {
+                device = (unit.ContainerId, unit.VendorId);
+                return unit.ContainerId != Guid.Empty && unit.ContainerId != LocalMachineContainer;
+            }
+
+            private void Count(DirectUnit unit)
+            {
+                if (!Counted(unit, out var device)) return;
+                if (unit.Family == OutputFamily.LampArrayUnit)
+                {
+                    _lamps.Add(device);
+                    if (unit.WindowsLit) _windowsLit.Add(device);
+                }
+                else
+                {
+                    _natives.Add(device);
+                    if (unit.LitBesideWindows) _besideWindows.Add(device);
+                }
+            }
+
+            /// <summary>Whether the unit's device has units of both
+            /// families and the unit is of the one the device is not lit
+            /// through. A device in the PC's own container is never
+            /// counted, so its units never lose.</summary>
+            internal bool Loses(DirectUnit unit)
+            {
+                if (!Counted(unit, out var device)) return false;
+                bool lamp = unit.Family == OutputFamily.LampArrayUnit;
+                if (_linkedNatives.Contains(device)) return lamp;
+                if (_linkedLamps.Contains(device)) return !lamp;
+                if (!_lamps.Contains(device) || !_natives.Contains(device)) return false;
+                bool lampsWin = _windowsLit.Contains(device) && !_besideWindows.Contains(device);
+                return lamp != lampsWin;
+            }
         }
 
         /// <summary>The orphans that have been orphans for

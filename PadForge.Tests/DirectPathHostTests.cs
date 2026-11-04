@@ -2052,9 +2052,55 @@ namespace PadForge.Tests
             Assert.Empty(PeripheralOutputs.UnitRows);
         }
 
+        /// <summary>A Razer unit no row reaches is listed for a row of its
+        /// own after the hold, as a LampArray unit is (#557), and a mouse
+        /// row of the device that comes online takes it back in the next
+        /// pass. While Synapse runs it is listed for none.</summary>
+        [Fact]
+        public void ARazerUnitNoRowReaches_IsListedAfterTheHold_AndItsMouseRowTakesItBack()
+        {
+            var unit = new DirectUnit(OutputFamily.RazerUnit, "razer", Box, PeripheralLinker.RazerVid, 0x0084)
+            {
+                Name = "Razer DeathAdder V2",
+            };
+            var razer = new FakeDirectBackend(OutputFamily.RazerUnit);
+            var presence = PeripheralPresence.None;
+            using var host = Host(new IDirectUnitBackend[] { razer }, readPresence: () => Volatile.Read(ref presence),
+                readRunning: _ => Volatile.Read(ref presence));
+            host.Start();
+            razer.Found(unit);
+            Passes(host);
+            Assert.Empty(PeripheralOutputs.UnitRows);
+            Advance(PeripheralLinker.UnitRowHoldMs);
+            Passes(host);
+            Assert.Equal(new[] { unit }, PeripheralOutputs.UnitRows);
+            Assert.Equal("Razer DeathAdder V2", PeripheralUnitRow.NameFor(PeripheralOutputs.UnitRows[0]));
+
+            // Synapse starts, seen at the next read of the programs: listed
+            // no more. It stops: listed again after the whole hold.
+            Volatile.Write(ref presence, PeripheralPresence.None with { RazerSoftwareRunning = true });
+            Advance(PeripheralOutputHost.PresenceMs);
+            Passes(host);
+            Assert.Empty(PeripheralOutputs.UnitRows);
+            Volatile.Write(ref presence, PeripheralPresence.None);
+            Advance(PeripheralOutputHost.PresenceMs);
+            Passes(host);
+            Assert.Empty(PeripheralOutputs.UnitRows);
+            Advance(PeripheralLinker.UnitRowHoldMs);
+            Passes(host);
+            Assert.Equal(new[] { unit }, PeripheralOutputs.UnitRows);
+
+            // The mouse comes online: its own row lights the device.
+            var mouse = AddRow(PeripheralLinker.RazerVid, 0x0084, InputDeviceType.Mouse, BoxPath);
+            Passes(host);
+            Assert.Empty(PeripheralOutputs.UnitRows);
+            Assert.Equal(new[] { unit.Path }, PeripheralOutputs.Links.For(mouse.InstanceGuid).Lighting);
+        }
+
         /// <summary>A unit with a row of its own that falls asleep stays
         /// listed, so its row stays open: a failed write never closes the
-        /// row and makes the device wait out the hold again.</summary>
+        /// row and makes the device wait out the hold again. A unit asleep
+        /// with no row yet is listed for none.</summary>
         [Fact]
         public void AUnitWithARowOfItsOwn_StaysListedWhileItSleeps_SoItsRowStaysOpen()
         {
@@ -2065,6 +2111,26 @@ namespace PadForge.Tests
             lamp.Found(headset);
             Passes(host);
             Advance(PeripheralLinker.UnitRowHoldMs);
+            Passes(host);
+            Assert.Equal(new[] { headset }, PeripheralOutputs.UnitRows);
+
+            // Asleep before the input manager opened its row: no row for a
+            // device that does not answer.
+            lamp.Found(headset with { Asleep = true });
+            Passes(host);
+            Assert.Empty(PeripheralOutputs.UnitRows);
+            lamp.Found(headset);
+            Passes(host);
+            Advance(PeripheralLinker.UnitRowHoldMs);
+            Passes(host);
+            Assert.Equal(new[] { headset }, PeripheralOutputs.UnitRows);
+
+            // The input manager opens the row.
+            using var row = new PeripheralUnitRow(headset);
+            var record = new UserDevice();
+            record.LoadFromExternalDevice(row);
+            record.IsOnline = true;
+            lock (SettingsManager.UserDevices.SyncRoot) SettingsManager.UserDevices.Items.Add(record);
             Passes(host);
             Assert.Equal(new[] { headset }, PeripheralOutputs.UnitRows);
 

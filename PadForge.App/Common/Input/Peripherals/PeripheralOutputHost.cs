@@ -82,7 +82,7 @@ namespace PadForge.Common.Input.Peripherals
         private readonly Dictionary<string, Guid> _containers = new(StringComparer.OrdinalIgnoreCase);
         private readonly AutoResetEvent _wake = new(false);
 
-        /// <summary>When each LampArray unit no row reaches was first seen
+        /// <summary>When each lit unit no row reaches was first seen
         /// that way (<see cref="PeripheralLinker.HeldOrphans"/>). Link
         /// thread only.</summary>
         private readonly Dictionary<OutputPath, long> _orphanSince = new();

@@ -8,11 +8,14 @@ namespace PadForge.Common.Input.Peripherals
 {
     /// <summary>
     /// A device row for one lit device that no mouse or keyboard row reaches
-    /// (#494): a headset, a mousepad, a light strip, a monitor or a chassis
-    /// light that Windows lists as a HID LampArray. Without a row it could
-    /// not be assigned, so it gets this one. It has no inputs. Assigned to a
+    /// (#494, #557): a headset, a mousepad, a headset stand, a dock, a light
+    /// strip, a speaker, a monitor or a chassis light, found as a HID
+    /// LampArray, a Razer or SteelSeries device, a device of the shared
+    /// worker or a Logitech HID++ device. Without a row it could not be
+    /// assigned, so it gets this one. It has no inputs. Assigned to a
     /// virtual controller it takes that controller's lighting through its
-    /// Lighting tab, one color for the whole unit, like any other lit device.
+    /// Lighting tab like any other lit device, and its Key Colors card where
+    /// its unit knows its lights one by one.
     ///
     /// <para><see cref="PeripheralOutputRow"/>'s shape: a synthetic
     /// <see cref="ISdlInputDevice"/> registered by the same Step 1 phase.
@@ -70,15 +73,21 @@ namespace PadForge.Common.Input.Peripherals
             => "pfunit:" + ((int)family).ToString(System.Globalization.CultureInfo.InvariantCulture)
                + ":" + (key ?? string.Empty).ToUpperInvariant();
 
-        /// <summary>The row's name: the unit's own product name, or what
-        /// kind of unit it is and its vendor and product ID where it gave
-        /// none, the way a vendor collection with no name is listed
-        /// (VendorHidRuntime.Probe). Neither is translated.</summary>
+        /// <summary>The row's name: the product name the unit's backend
+        /// knows (<see cref="DirectUnit.Name"/>), the one the device gave
+        /// for a LampArray or HID++ unit, the product table's for a Razer
+        /// unit and OpenRGB's for a unit of the shared worker. Where there
+        /// is none, what kind of unit it is and its vendor and product ID,
+        /// the way a vendor collection with no name is listed
+        /// (VendorHidRuntime.Probe), and the vendor ID alone for a unit
+        /// whose product ID its backend does not know (0), a HID++ device
+        /// behind a receiver. A product name is not translated, and neither
+        /// is the other form.</summary>
         public static string NameFor(DirectUnit unit)
         {
             if (!string.IsNullOrWhiteSpace(unit.Name)) return unit.Name.Trim();
             string kind = unit.Family == OutputFamily.LampArrayUnit ? "LampArray" : "Device";
-            return $"{kind} {unit.VendorId:X4}:{unit.ProductId:X4}";
+            return unit.ProductId == 0 ? $"{kind} {unit.VendorId:X4}" : $"{kind} {unit.VendorId:X4}:{unit.ProductId:X4}";
         }
 
         // ─── ISdlInputDevice identity / capabilities ───

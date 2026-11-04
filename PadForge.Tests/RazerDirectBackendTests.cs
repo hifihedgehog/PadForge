@@ -456,8 +456,12 @@ namespace PadForge.Tests
             string boardKey = board.Collections.Single(c => c.InterfaceNumber == 3).Path;
             Assert.Equal(new[] { mouse.Key, keyboardKey, boardKey }.OrderBy(k => k, StringComparer.Ordinal), snapshot.Units.Select(u => u.Key));
             var unit = snapshot.Units.Single(u => u.Key == mouse.Key);
-            Assert.Equal(new DirectUnit(OutputFamily.RazerUnit, mouse.Key, mouse.Container, 0x1532, DeathAdderV2), unit);
-            Assert.Null(unit.Name);
+            // Named by the product table, the name its row takes when no
+            // mouse row reaches it (#557).
+            Assert.Equal(new DirectUnit(OutputFamily.RazerUnit, mouse.Key, mouse.Container, 0x1532, DeathAdderV2)
+            {
+                Name = "Razer DeathAdder V2",
+            }, unit);
             Assert.False(unit.Asleep);
             Assert.Equal(0, unit.MaxClaimLevel);
             Assert.Equal(keyboard.Container, snapshot.Units.Single(u => u.Key == keyboardKey).ContainerId);
@@ -814,7 +818,13 @@ namespace PadForge.Tests
                 bench.Passes();
                 var units = bench.Backend.Snapshot.Units;
                 Assert.Equal(new[] { pairedKey, dock.Key }, units.Select(u => u.Key));
-                Assert.Equal(new DirectUnit(OutputFamily.RazerUnit, pairedKey, dock.Container, 0x1532, MouseDockPro), units[0]);
+                // The paired mouse takes its own name from the table, the
+                // dock its own.
+                Assert.Equal(new DirectUnit(OutputFamily.RazerUnit, pairedKey, dock.Container, 0x1532, MouseDockPro)
+                {
+                    Name = "Razer Basilisk V3 Pro (Wireless)",
+                }, units[0]);
+                Assert.Equal("Razer Mouse Dock Pro", units[1].Name);
                 var pairedPath = new OutputPath(OutputFamily.RazerUnit, pairedKey);
                 Assert.Equal("razer:1532:00AB", PeripheralLightMaps.For(pairedPath).Product);
 

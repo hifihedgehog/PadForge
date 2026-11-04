@@ -825,7 +825,8 @@ namespace PadForge.Tests
             var razer = new DirectUnit(OutputFamily.RazerUnit, "razer", OtherBox, Razer, 0x0084);
             var inputs = Inputs(Presence(), null, headset, unknown, razer, Lamp("keys", Box));
 
-            Assert.Equal(new[] { headset }, PeripheralLinker.Orphans(new[] { keyboard }, inputs));
+            // The Razer unit in the other container is one too (#557).
+            Assert.Equal(new[] { headset, razer }, PeripheralLinker.Orphans(new[] { keyboard }, inputs));
             // Windows lighting it changes nothing about who reaches it.
             Assert.Equal(new[] { headset with { WindowsLit = true } },
                 PeripheralLinker.Orphans(new[] { keyboard }, Inputs(Presence(), null, headset with { WindowsLit = true })));

@@ -765,6 +765,9 @@ namespace PadForge.Tests
             Assert.Equal(Box, unit.ContainerId);
             Assert.Equal((ushort)0x048D, unit.VendorId);
             Assert.Equal((ushort)0xC197, unit.ProductId);
+            // OpenRGB's name for the model, the name its row takes when no
+            // keyboard row reaches it (LenovoUSBControllerDetect.cpp:79).
+            Assert.Equal("Lenovo Legion 7 Gen 10", unit.Name);
             Assert.True(unit.LitBesideWindows);
             Assert.True(unit.LiveThroughLampArray);
             var map = PeripheralLightMaps.For(PathOf(Spectrum));

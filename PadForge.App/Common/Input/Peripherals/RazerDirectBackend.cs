@@ -760,7 +760,7 @@ namespace PadForge.Common.Input.Peripherals
                         Run = work.Run,
                         Path = new OutputPath(OutputFamily.RazerUnit, key),
                         Listed = new DirectUnit(OutputFamily.RazerUnit, key, pair.Key.Container,
-                            RazerDirectProtocol.VendorId, row.ProductId),
+                            RazerDirectProtocol.VendorId, row.ProductId) { Name = row.Name },
                         Leds = row.Leds,
                         Lights = RazerLightTable.Find(row.ProductId),
                     };
@@ -895,7 +895,7 @@ namespace PadForge.Common.Input.Peripherals
                         Receiver = receiver,
                         Path = new OutputPath(OutputFamily.RazerUnit, key),
                         Listed = new DirectUnit(OutputFamily.RazerUnit, key, receiver.Listed.ContainerId,
-                            RazerDirectProtocol.VendorId, receiver.Row.ProductId),
+                            RazerDirectProtocol.VendorId, receiver.Row.ProductId) { Name = row.Name },
                         Leds = row.Leds,
                         Lights = RazerLightTable.Find(row.ProductId),
                         Collections = receiver.Collections,

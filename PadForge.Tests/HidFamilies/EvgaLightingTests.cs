@@ -89,6 +89,12 @@ namespace PadForge.Tests.LaptopFamilies
             Assert.Equal((byte)(-expectedSum), report[7]);
             Assert.Equal("FF 11 22 33", Hex(report.Skip(12).Take(4).ToArray()));
             Assert.Equal(Padded("06 EA 02", 792), EvgaLighting.HardwareModesFrame());
+            // The Z20's game mode key sits in slot 0, byte 8, the first byte
+            // the checksum takes in.
+            var z20 = EvgaLighting.KeyboardLights(z20: true);
+            var gm = EvgaLighting.DirectFrame(z20, z20.Select(l => l.Address == 126 ? 0x010203 : 0).ToList());
+            Assert.Equal("FF 01 02 03", Hex(gm.Skip(8).Take(4).ToArray()));
+            Assert.Equal(unchecked((byte)-(0xFF * 132 + 6)), gm[7]);
         }
 
         [Fact]

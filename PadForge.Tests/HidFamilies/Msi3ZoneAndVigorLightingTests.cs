@@ -53,6 +53,9 @@ namespace PadForge.Tests.LaptopFamilies
                 "01 02 40 06 AA BB CC EC",
                 "01 02 40 07 AA BB CC EC",
             }, frames.Select(f => Hex(f)));
+            // A fifth color is never sent: regions 5 to 7 repeat the fourth.
+            var more = Msi3ZoneLighting.Frames(new[] { 1, 2, 3, 4, 0x555555 });
+            Assert.All(more.Skip(3), f => Assert.Equal("00 00 04", Hex(f.Skip(4).Take(3).ToArray())));
         }
 
         [Fact]

@@ -151,15 +151,36 @@ namespace PadForge.Common.Input.Peripherals
             _ => 0,
         };
 
-        /// <summary>The unit's light map, or null for a unit that is not a
-        /// keyboard lit through 0x8081 with zones or through 0x8080 with
-        /// keys.</summary>
+        /// <summary>The unit's light map: a keyboard's keys through 0x8081
+        /// zones or 0x8080 key types, another device's 0x8081 zones where it
+        /// reports two or more (<see cref="OfDeviceZones"/>), else
+        /// null.</summary>
         internal static LightMap Of(HidppUnit unit)
         {
-            if (unit == null || !unit.IsKeyboardKind) return null;
+            if (unit == null) return null;
+            if (!unit.IsKeyboardKind)
+                return unit.PerKeyFeatureId == HidppUnitProtocol.PerKeyLightingV2 && unit.PerKeyZones.Length > 1
+                    ? OfDeviceZones(unit)
+                    : null;
             if (unit.PerKeyFeatureId == HidppUnitProtocol.PerKeyLightingV2 && unit.PerKeyZones.Length > 0) return OfZones(unit);
             if (unit.PerKeyFeatureId == HidppUnitProtocol.PerKeyLighting && unit.KeyTypes.Length > 0) return OfKeyTypes(unit);
             return null;
+        }
+
+        /// <summary>A mouse's or another device's 0x8081 zones, each a zone
+        /// at its zone ID, numbered in the order the device reports them.
+        /// No reference names where a mouse's zones sit: OpenRGB lists them
+        /// by ID alone (LogitechHIDPP20Controller.cpp:3022-3084), and its
+        /// G203 LIGHTSYNC controller names three LEDs of one zone and no
+        /// more (RGBController_LogitechG203L.cpp:117-123).</summary>
+        private static LightMap OfDeviceZones(HidppUnit unit)
+        {
+            var lights = new List<LightInfo>(unit.PerKeyZones.Length);
+            int number = 0;
+            foreach (byte zone in unit.PerKeyZones)
+                if (zone is >= 1 and <= 254)
+                    lights.Add(new LightInfo(zone, LightKind.Zone, 0, LightKeySource.None) { Zone = ++number });
+            return new LightMap(lights, "HID++ 0x8081") { Product = ProductOf(unit) };
         }
 
         private static LightMap OfZones(HidppUnit unit)

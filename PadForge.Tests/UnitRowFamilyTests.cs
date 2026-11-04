@@ -139,7 +139,7 @@ namespace PadForge.Tests
         /// <summary>A unit is reached only by the rows its family is read
         /// for in the linker: a Razer unit by a Razer row, a SteelSeries
         /// unit by a SteelSeries row, a shared-worker unit by a row of any
-        /// other vendor. A row the linker would never light the unit from
+        /// vendor. A row the linker would never light the unit from
         /// leaves it an orphan, so it is never left with no row at all.</summary>
         [Fact]
         public void AUnitIsReached_OnlyByTheRowsItsFamilyIsReadFor()
@@ -159,15 +159,16 @@ namespace PadForge.Tests
             Assert.Equal(new[] { builtIn },
                 PeripheralLinker.Orphans(new[] { keyboard with { Container = Box } }, Inputs(Nothing, builtIn)));
 
-            // The linker reads Logitech, Razer and SteelSeries rows for
-            // their own families alone, so the same keyboard row with one of
-            // those vendors never lights the unit, and leaves it an orphan.
+            // The linker reads Logitech, Razer and SteelSeries rows for the
+            // shared worker too, so the same keyboard row with one of those
+            // vendors lights the unit and leaves no orphan.
             foreach (ushort vendor in new[] { Logitech, Razer, SteelSeries })
             {
                 var theirs = keyboard with { VendorId = vendor };
-                Assert.Null(PeripheralLinker.Build(new[] { theirs }, Inputs(Nothing, builtIn)).For(A));
-                Assert.Equal(new[] { builtIn }, PeripheralLinker.Orphans(new[] { theirs }, Inputs(Nothing, builtIn)));
-                Assert.False(PeripheralLinker.Reaches(theirs, builtIn, new Dictionary<Guid, int>()));
+                Assert.Equal(new[] { new OutputPath(OutputFamily.HidLightingUnit, "omen") },
+                    PeripheralLinker.Build(new[] { theirs }, Inputs(Nothing, builtIn)).For(A).Lighting);
+                Assert.Empty(PeripheralLinker.Orphans(new[] { theirs }, Inputs(Nothing, builtIn)));
+                Assert.True(PeripheralLinker.Reaches(theirs, builtIn, new Dictionary<Guid, int>()));
             }
             Assert.True(PeripheralLinker.Reaches(keyboard, builtIn, new Dictionary<Guid, int>()));
 

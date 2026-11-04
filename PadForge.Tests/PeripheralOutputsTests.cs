@@ -1156,8 +1156,9 @@ namespace PadForge.Tests
             Assert.True(found[1].DirectRgb && !found[1].HasHaptics);
             Assert.Equal(new[] { new HidppZone(0, 1), new HidppZone(1, 0) }, found[1].Zones);
             Assert.Equal((HidppUnitProtocol.UnifiedBattery, (byte)0x08), (found[1].BatteryFeatureId, found[1].BatteryIndex));
-            Assert.Equal(new[] { true, true, false, false, false, false }, state.Settled.Skip(1).ToArray());
-            Assert.Equal(new[] { false, false, false, true, true, true }, state.Unpaired.Skip(1).ToArray());
+            // Index 7 is a Bolt's no slot: never asked, never read (#557).
+            Assert.Equal(new[] { true, true, false, false, false, false, false }, state.Settled.Skip(1).ToArray());
+            Assert.Equal(new[] { false, false, false, true, true, true, false }, state.Unpaired.Skip(1).ToArray());
             Assert.Equal(HidppHapticProbe.FirstRetryMs, state.RetryAt[3]);
             Assert.Equal(1, state.Misses[3]);
         }

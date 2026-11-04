@@ -76,7 +76,9 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The row's name: the product name the unit's backend
         /// knows (<see cref="DirectUnit.Name"/>), the one the device gave
         /// for a LampArray or HID++ unit, the product table's for a Razer
-        /// unit and OpenRGB's for a unit of the shared worker. Where there
+        /// unit, OpenRGB's or rivalcfg's for a SteelSeries unit
+        /// (<see cref="SteelSeriesNames"/>) and OpenRGB's for a unit of the
+        /// shared worker. Where there
         /// is none, what kind of unit it is and its vendor and product ID,
         /// the way a vendor collection with no name is listed
         /// (VendorHidRuntime.Probe), and the vendor ID alone for a unit

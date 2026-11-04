@@ -63,6 +63,14 @@ namespace PadForge.Common.Input
         public const byte FirstReceiverIndex = 1;
         public const byte LastReceiverIndex = 6;
 
+        /// <summary>The index of a device a receiver carries itself, past its
+        /// six slots: the POWERPLAY mat's own lighting behind its LIGHTSPEED
+        /// receiver (#557, libratbag data/devices/logitech-g-powerplay.device:3-8,
+        /// "DeviceIndex=7"). Solaar asks indexes 1 to 7 of every receiver,
+        /// since "some receivers have devices past their max # devices"
+        /// (Solaar lib/logitech_receiver/receiver.py:352-361).</summary>
+        public const byte BuiltInDeviceIndex = 7;
+
         public const ushort DeviceNameFeature = 0x0005;
         public const ushort HapticFeature = 0x19B0;
 
@@ -614,10 +622,11 @@ namespace PadForge.Common.Input
     internal sealed class HidppPathState
     {
         /// <summary>Index 0 stands for device index 0xFF, 1 to 6 for a
-        /// receiver's slots.</summary>
-        internal readonly bool[] Settled = new bool[HidppHapticProtocol.LastReceiverIndex + 1];
-        internal readonly long[] RetryAt = new long[HidppHapticProtocol.LastReceiverIndex + 1];
-        internal readonly int[] Misses = new int[HidppHapticProtocol.LastReceiverIndex + 1];
+        /// receiver's slots, and 7 for the device a receiver carries itself
+        /// (<see cref="BuiltInDevice"/>).</summary>
+        internal readonly bool[] Settled = new bool[HidppHapticProtocol.BuiltInDeviceIndex + 1];
+        internal readonly long[] RetryAt = new long[HidppHapticProtocol.BuiltInDeviceIndex + 1];
+        internal readonly int[] Misses = new int[HidppHapticProtocol.BuiltInDeviceIndex + 1];
 
         /// <summary>Set once device index 0xFF answered: the collection is a
         /// device, never a receiver, and slots 1 to 6 are not asked.</summary>
@@ -635,15 +644,22 @@ namespace PadForge.Common.Input
         /// whose table is not read.</summary>
         internal Peripherals.HidppReceiverKind ReceiverKind;
 
+        /// <summary>The receiver carries a device of its own at
+        /// <see cref="HidppHapticProtocol.BuiltInDeviceIndex"/>, which its
+        /// pairing table does not list, so that index is asked as a slot
+        /// that is never read as empty
+        /// (<see cref="Peripherals.HidppReceiverProtocol.HasBuiltInDevice"/>).</summary>
+        internal bool BuiltInDevice;
+
         /// <summary>Slots the receiver's pairing table says hold no device
         /// (<see cref="Peripherals.HidppReceiverProtocol"/>). Never asked, and
         /// never pending: nothing there can wake. Read again at each scan, so
         /// a device paired later is found.</summary>
-        internal readonly bool[] Unpaired = new bool[HidppHapticProtocol.LastReceiverIndex + 1];
+        internal readonly bool[] Unpaired = new bool[HidppHapticProtocol.BuiltInDeviceIndex + 1];
 
         /// <summary>Slots where a device with an output was found, so one
         /// that stops answering there went to sleep.</summary>
-        internal readonly bool[] Held = new bool[HidppHapticProtocol.LastReceiverIndex + 1];
+        internal readonly bool[] Held = new bool[HidppHapticProtocol.BuiltInDeviceIndex + 1];
 
         /// <summary>Pairing reads that went unanswered in a row. A receiver
         /// that never answers the register stops being asked after

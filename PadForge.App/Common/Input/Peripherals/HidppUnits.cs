@@ -694,6 +694,19 @@ namespace PadForge.Common.Input.Peripherals
         public static byte PairingSub(HidppReceiverKind kind, byte slot)
             => kind == HidppReceiverKind.Bolt ? (byte)(0x50 + slot) : (byte)(0x20 + slot - 1);
 
+        /// <summary>The POWERPLAY's LIGHTSPEED receiver, 046D:C53A
+        /// (OpenRGB LogitechControllerDetect.cpp:96 and 1684, Solaar
+        /// base_usb.py:172 and 201), which carries the mat's own lighting
+        /// as device index 7, wireless ID 405F (libratbag
+        /// data/devices/logitech-g-powerplay.device:3-8, Solaar
+        /// descriptors.py:445). The mouse it charges pairs in its
+        /// slots as with any receiver.</summary>
+        public const ushort PowerPlayReceiver = 0xC53A;
+
+        /// <summary>Whether a receiver carries a device of its own at
+        /// <see cref="HidppHapticProtocol.BuiltInDeviceIndex"/>.</summary>
+        public static bool HasBuiltInDevice(ushort productId) => productId == PowerPlayReceiver;
+
         /// <summary>The short request for one long register record.</summary>
         public static byte[] ReadRegister(byte register, byte sub)
         {
@@ -816,7 +829,7 @@ namespace PadForge.Common.Input.Peripherals
             // A Bluetooth path is the device itself: it has no slots.
             if (state.Direct || state.Dead || channel.Bluetooth) return found;
 
-            for (byte index = HidppHapticProtocol.FirstReceiverIndex; index <= HidppHapticProtocol.LastReceiverIndex; index++)
+            for (byte index = HidppHapticProtocol.FirstReceiverIndex; index <= LastSlot(state, channel.Bluetooth); index++)
             {
                 AskSlot(channel, state, index, containerId, now, timeout, found, out bool answered);
                 if (answered) state.Receiver = true;
@@ -825,12 +838,21 @@ namespace PadForge.Common.Input.Peripherals
             return found;
         }
 
+        /// <summary>The last index a path's walk asks: none past 0xFF for a
+        /// device or a Bluetooth path, the six slots of a receiver, and the
+        /// device a receiver carries itself where it has one
+        /// (<see cref="HidppPathState.BuiltInDevice"/>).</summary>
+        internal static int LastSlot(HidppPathState state, bool bluetooth)
+            => state.Direct || bluetooth ? 0
+                : state.BuiltInDevice ? HidppHapticProtocol.BuiltInDeviceIndex
+                : HidppHapticProtocol.LastReceiverIndex;
+
         /// <summary>True while some slot of the path keeps the scan fast
         /// (<see cref="HidppPathState.Waiting"/>).</summary>
         public static bool Pending(HidppPathState state, bool bluetooth)
         {
             int first = state.Receiver ? HidppHapticProtocol.FirstReceiverIndex : 0;
-            int last = state.Direct || bluetooth ? 0 : HidppHapticProtocol.LastReceiverIndex;
+            int last = LastSlot(state, bluetooth);
             for (int slot = first; slot <= last; slot++)
                 if (state.Waiting(slot)) return true;
             return false;
@@ -844,7 +866,7 @@ namespace PadForge.Common.Input.Peripherals
         public static bool HasOpenSlot(HidppPathState state, bool bluetooth)
         {
             int first = state.Receiver ? HidppHapticProtocol.FirstReceiverIndex : 0;
-            int last = state.Direct || bluetooth ? 0 : HidppHapticProtocol.LastReceiverIndex;
+            int last = LastSlot(state, bluetooth);
             for (int slot = first; slot <= last; slot++)
                 if (state.Open(slot)) return true;
             return false;
@@ -856,7 +878,7 @@ namespace PadForge.Common.Input.Peripherals
         internal static void MissOpenSlots(HidppPathState state, long now, bool bluetooth)
         {
             int first = state.Receiver ? HidppHapticProtocol.FirstReceiverIndex : 0;
-            int last = state.Direct || bluetooth ? 0 : HidppHapticProtocol.LastReceiverIndex;
+            int last = LastSlot(state, bluetooth);
             for (int slot = first; slot <= last; slot++)
                 if (state.Open(slot) && now >= state.RetryAt[slot]) Backoff(state, slot, now);
         }

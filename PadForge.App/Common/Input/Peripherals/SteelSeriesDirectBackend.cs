@@ -658,7 +658,11 @@ namespace PadForge.Common.Input.Peripherals
             {
                 var unit = units[i];
                 list[i] = new DirectUnit(OutputFamily.SteelSeriesUnit, unit.Path, unit.Container,
-                    SteelSeriesDirectProtocol.VendorId, unit.ProductId) { Asleep = unit.Asleep };
+                    SteelSeriesDirectProtocol.VendorId, unit.ProductId)
+                {
+                    Name = SteelSeriesDirectProtocol.NameOf(unit.ProductId),
+                    Asleep = unit.Asleep,
+                };
             }
             Volatile.Write(ref _snapshot, new DirectBackendSnapshot(list));
             try { SnapshotChanged?.Invoke(); } catch { }

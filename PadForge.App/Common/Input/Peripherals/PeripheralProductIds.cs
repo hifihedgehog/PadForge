@@ -101,6 +101,20 @@ namespace PadForge.Common.Input.Peripherals
             0x1622, 0x1628, 0x1630, 0x1632, 0x1634, 0x1640, 0x1642, 0x1644, 0x1646,
         };
 
+        /// <summary>The headsets OpenRGB's SteelSeries detectors light: the
+        /// Siberia 350, the Arctis Nova 3 and the Arctis 5's two product IDs
+        /// (Controllers/SteelSeriesController/SteelSeriesDevices.h:69-72,
+        /// SteelSeriesControllerDetect.cpp:522-525).</summary>
+        internal static readonly ushort[] SteelSeriesHeadsets = { 0x1229, 0x1250, 0x12AA, 0x12EC };
+
+        /// <summary>The QCK Prism Cloth mousemats OpenRGB's SteelSeries
+        /// detectors light (SteelSeriesDevices.h:77-85,
+        /// SteelSeriesControllerDetect.cpp:530-538).</summary>
+        internal static readonly ushort[] SteelSeriesMousemats =
+        {
+            0x150A, 0x150D, 0x1514, 0x1516, 0x1518, 0x151A, 0x151C, 0x151E, 0x1520,
+        };
+
         /// <summary>Whether a row lights as a keyboard: by its product ID
         /// where a list holds it, else by the row's own kind.</summary>
         internal static bool LightsAsKeyboard(ushort productId, int capType, ushort[] mice, ushort[] keyboards)

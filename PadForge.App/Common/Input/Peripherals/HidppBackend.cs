@@ -1422,6 +1422,8 @@ namespace PadForge.Common.Input.Peripherals
                         ReceiverKind = collection.UsagePage == HidppHapticProtocol.UsagePage
                             ? HidppReceiverProtocol.KindOf(collection.ProductId)
                             : HidppReceiverKind.None,
+                        BuiltInDevice = collection.UsagePage == HidppHapticProtocol.UsagePage
+                                        && HidppReceiverProtocol.HasBuiltInDevice(collection.ProductId),
                     };
                 }
                 if (!_containers.TryGetValue(collection.Path, out var container))
@@ -1506,10 +1508,10 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Whether a scan has anything to ask this path: a slot not
         /// yet answered whose backoff is over.</summary>
-        private static bool HasQuestions(HidppPathState state, long now, bool bluetooth)
+        internal static bool HasQuestions(HidppPathState state, long now, bool bluetooth)
         {
             int first = state.Receiver ? HidppHapticProtocol.FirstReceiverIndex : 0;
-            int last = state.Direct || bluetooth ? 0 : HidppHapticProtocol.LastReceiverIndex;
+            int last = HidppUnitProbe.LastSlot(state, bluetooth);
             for (int slot = first; slot <= last; slot++)
                 if (state.Open(slot) && now >= state.RetryAt[slot]) return true;
             return false;

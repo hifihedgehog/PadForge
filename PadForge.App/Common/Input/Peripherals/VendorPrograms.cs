@@ -223,13 +223,27 @@ namespace PadForge.Common.Input.Peripherals
         /// (AuroraDeviceManager/Devices/RGBNet/Implementations/OpenRgbNetDevice.cs:27-35).</summary>
         public static readonly VendorProgram OpenRgb = new("OpenRGB", "OpenRGB");
 
+        /// <summary>Logitech G HUB, by its agent, and Logitech Gaming
+        /// Software, by its two hosts: the process names every Logitech
+        /// reference gates on, which the linker counts the Logitech program
+        /// by (<see cref="PadForge.Services.LogiLedEngineNative.HostProcesses"/>).
+        /// They light the Logitech devices of the shared worker, such as
+        /// the G600 (<see cref="LogitechG600Lighting"/>).</summary>
+        public static readonly VendorProgram LogitechGHub = new("Logitech G HUB",
+            PadForge.Services.LogiLedEngineNative.HostProcesses[0]);
+        public static readonly VendorProgram LogitechGamingSoftware = new("Logitech Gaming Software",
+            PadForge.Services.LogiLedEngineNative.HostProcesses[1], PadForge.Services.LogiLedEngineNative.HostProcesses[2]);
+
+        /// <summary>The programs that light a Logitech device.</summary>
+        public static readonly IReadOnlyList<VendorProgram> Logitech = new[] { LogitechGHub, LogitechGamingSoftware };
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
         {
             LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor, CorsairIcue,
             LegionAccessoryCentral, MasterPlus, Ngenuity, MsiMysticLight, SteelSeriesGG, AlienwareCommandCenter,
-            RoccatSwarm, XpgPrime, WootingWootility, OpenRgb,
+            RoccatSwarm, XpgPrime, WootingWootility, OpenRgb, LogitechGHub, LogitechGamingSoftware,
         };
     }
 

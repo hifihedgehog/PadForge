@@ -13,10 +13,14 @@ namespace PadForge.Common.Input.Peripherals
 
     /// <summary>One report for a SteelSeries device: its type, and its
     /// bytes as a Windows HID call takes them. Byte 0 is the report ID
-    /// position, always 0x00, since the control collection declares no
-    /// report IDs (libratbag driver-steelseries.c:44), and the command
-    /// follows it. The channel pads the buffer with zeros to the
-    /// collection's report length.</summary>
+    /// position, 0x00 on a mouse's or keyboard's control collection, which
+    /// declares no report IDs (libratbag driver-steelseries.c:44), and the
+    /// command follows it. The headsets' collections number their reports,
+    /// and there byte 0 is the report's ID (OpenRGB
+    /// SteelSeriesArctis5Controller.h:158-159,
+    /// SteelSeriesArctisNova3Controller.h:17-19,
+    /// SteelSeriesSiberiaController.cpp:21-22). The channel pads the buffer
+    /// with zeros to the collection's report length, as hidapi does.</summary>
     internal readonly record struct SteelSeriesFrame(SteelSeriesReport Report, byte[] Buffer)
     {
         /// <summary>The command byte, the first the device reads.</summary>
@@ -73,6 +77,14 @@ namespace PadForge.Common.Input.Peripherals
         ApexM750,
         /// <summary>The Apex of 2013 and the Apex 350.</summary>
         Apex2013,
+        /// <summary>The Arctis 5 headset, both product IDs.</summary>
+        Arctis5,
+        /// <summary>The Arctis Nova 3 headset.</summary>
+        ArctisNova3,
+        /// <summary>The Siberia 350 headset.</summary>
+        Siberia350,
+        /// <summary>The QCK Prism Cloth mousemats.</summary>
+        QckPrismCloth,
     }
 
     /// <summary>One row of the family table: where a family's control
@@ -84,6 +96,15 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The USB interface the control collection is alone on.</summary>
         public int Interface { get; init; }
+
+        /// <summary>The control collection's usage page and usage, the
+        /// vendor page every lit mouse and keyboard keeps it on
+        /// (<see cref="SteelSeriesDirectProtocol.ControlUsagePage"/>). Null
+        /// for a product OpenRGB registers by its interface alone and no
+        /// reference names the page of: any collection on the interface
+        /// whose reports are long enough is it.</summary>
+        public ushort? UsagePage { get; init; } = SteelSeriesDirectProtocol.ControlUsagePage;
+        public ushort? Usage { get; init; } = SteelSeriesDirectProtocol.ControlUsage;
 
         /// <summary>The report type of the color frames.</summary>
         public SteelSeriesReport Report { get; init; }
@@ -103,7 +124,9 @@ namespace PadForge.Common.Input.Peripherals
         public int RepaintMs { get; init; }
 
         /// <summary>How long the claim and an unchanged color stand before
-        /// they are sent again. Every family has one.</summary>
+        /// they are sent again. Every family has one but the Arctis Nova 3,
+        /// whose color frames end with the report OpenRGB saves it with: 0,
+        /// never.</summary>
         public int ReassertMs { get; init; }
 
         /// <summary>A 2.4 GHz dongle: each report is answered by an input
@@ -182,7 +205,10 @@ namespace PadForge.Common.Input.Peripherals
     /// opens such a collection for read and write, so output reports reach
     /// it. The mouse or keyboard collection of the same device is another
     /// interface, takes feature reports alone, and is never written to
-    /// here.</para>
+    /// here. The headsets and mousemats (#557) are the exceptions OpenRGB
+    /// drives: the Arctis headsets on the same page with numbered reports,
+    /// the Siberia 350 and the QCK mats on an interface whose page no
+    /// reference names (<see cref="SteelSeriesFamilyInfo.UsagePage"/>).</para>
     ///
     /// <para>A frame is chosen by product ID from <see cref="Models"/> and
     /// never from a descriptor, because the families reuse command numbers.
@@ -204,7 +230,12 @@ namespace PadForge.Common.Input.Peripherals
     /// docs/internals.md:40), with 0x51 through a dongle, and the pair
     /// 06 00 08 then 09 on the Apex 3
     /// (OpenRGB SteelSeriesApexTZoneController.cpp:45-54). A color that
-    /// follows a game changes many times a second, and flash wears. The
+    /// follows a game changes many times a second, and flash wears. The one
+    /// exception is the Arctis Nova 3: OpenRGB saves its color with the
+    /// apply report that ends every color it sends it, the same bytes
+    /// (SteelSeriesArctisNova3Controller.cpp:84-96, 112-115 and 120-148),
+    /// so a color may be stored, and its family sends no color sooner than
+    /// 500 ms after the last and never repeats one. The
     /// brightness commands stay out as well (0x23, 0x0A on the Apex 3):
     /// they are the user's setting, and on the wireless Aerox mice 0x23
     /// carries the dim timer in the same frame
@@ -754,6 +785,110 @@ namespace PadForge.Common.Input.Peripherals
                     return new[] { Out(data) };
                 },
             },
+
+            // Arctis 5, both product IDs. Two lights, the left and the right
+            // earcup, each six 37-byte output reports with the report ID 06:
+            // 81 43 01 22 and 81 43 01 23, then 8A 42 00 20 41 00 and the
+            // color with FF 32 C8 C8 behind it, 8A 42 00 20 41 08 and the
+            // zone with 01, 8A 42 00 20 60 and the zone, and 8A 42 00 20 05
+            // (OpenRGB SteelSeriesArctis5Controller.cpp:51-140, zones 0 and
+            // 1 from RGBController_SteelSeriesArctis5.cpp:54-90). SignalRGB
+            // sends the same reports on Windows (signal-plugins
+            // Steelseries_Arctis_5_Headset.js:118-166), but for an apply that
+            // drops the 00 of byte 3 there, against its own copy of that
+            // report (line 105) and OpenRGB's. Its two microphone LEDs come
+            // from that plugin alone and are not lit. OpenRGB registers the
+            // headset on interface 5 (SteelSeriesControllerDetect.cpp:524-525),
+            // where SignalRGB names the collection's usage page 0xFFC0 and
+            // usage 1 (Steelseries_Arctis_5_Headset.js:76-79). OpenRGB saves
+            // nothing ("@save :x:", RGBController_SteelSeriesArctis5.cpp:18)
+            // and waits for nothing between the reports, and no reference
+            // has a frame that returns the stored lighting.
+            new()
+            {
+                Family = SteelSeriesFamily.Arctis5, Interface = 5, Report = SteelSeriesReport.Output,
+                RepaintMs = 50, ReassertMs = ReassertMs,
+                Lights = Zones(2),
+                Paint = (_, _, _, c, _) =>
+                {
+                    var frames = new List<SteelSeriesFrame>(12);
+                    for (int zone = 0; zone < 2; zone++) frames.AddRange(Arctis5Zone((byte)zone, c[zone]));
+                    return frames.ToArray();
+                },
+            },
+
+            // Arctis Nova 3. Two lights, OpenRGB's LED 0, "Right", and LED 1,
+            // "Left" (RGBController_SteelSeriesArctisNova3.cpp:98-117), each
+            // three output reports with the report ID 06: the 521-byte
+            // effect report of Direct mode, AA and the side, then the
+            // 64-byte select report A5, the side and 0A, then the 64-byte
+            // apply report (SteelSeriesArctisNova3Controller.cpp:68-96 and
+            // 120-148, SteelSeriesArctisNova3Controller.h:17-19). OpenRGB
+            // registers it on interface 4, usage page 0xFFC0, usage 1
+            // (SteelSeriesControllerDetect.cpp:523). Its save is the apply
+            // report again (lines 112-115), so this family repaints slowly
+            // and never re-asserts (above). No reference has a frame that
+            // returns the stored lighting.
+            new()
+            {
+                Family = SteelSeriesFamily.ArctisNova3, Interface = 4, Report = SteelSeriesReport.Output,
+                RepaintMs = 500, ReassertMs = 0,
+                Lights = Zones(2),
+                Paint = (_, _, _, c, _) =>
+                {
+                    var frames = new List<SteelSeriesFrame>(6);
+                    for (int led = 0; led < 2; led++) frames.AddRange(Nova3Led((byte)led, c[led]));
+                    return frames.ToArray();
+                },
+            },
+
+            // Siberia 350. One light, four 16-byte output reports with the
+            // report ID 01, each 00, a command and its payload's length, then
+            // the payload: 95 80 BF, 80 52 20, 83 and the color, 93 03 80
+            // (OpenRGB SteelSeriesSiberiaController.cpp:16-36 and 73-105).
+            // OpenRGB registers it on interface 3 with no usage page
+            // (SteelSeriesControllerDetect.cpp:522), and offers it as a
+            // static color with no Direct mode and no save ("@direct :x:",
+            // RGBController_SteelSeriesSiberia.cpp:14-40), the one reference
+            // for it. So a color goes no sooner than 500 ms after the last,
+            // the bound PadForge keeps for a device that takes stored
+            // pictures only.
+            new()
+            {
+                Family = SteelSeriesFamily.Siberia350, Interface = 3, UsagePage = null, Usage = null,
+                Report = SteelSeriesReport.Output, RepaintMs = 500, ReassertMs = ReassertMs,
+                OneColor = (_, _, r, g, b) => new[]
+                {
+                    SiberiaCommand(0x95, 0x80, 0xBF),
+                    SiberiaCommand(0x80, 0x52, 0x20),
+                    SiberiaCommand(0x83, r, g, b),
+                    SiberiaCommand(0x93, 0x03, 0x80),
+                },
+            },
+
+            // QCK Prism Cloth mousemats. Two lights in one 525-byte feature
+            // report, 0E 00 02, then per light its color, FF 32 C8 and the
+            // bytes OpenRGB sets behind it, then a 65-byte output report 0D
+            // that applies it (OpenRGB SteelSeriesQCKMatController.cpp:51-100,
+            // lights 0 and 1 from RGBController_SteelSeriesQCKMat.cpp:52-74).
+            // SignalRGB sends the same two reports, read from the vendor's
+            // own traffic with USBlyzer, on every render (signal-plugins
+            // Steelseries_Qck_Mousepad.js:70-115). The two references name
+            // the lights the other way round, OpenRGB the first "Mat Bottom
+            // LED" and SignalRGB "Mousemat Top", so they are two zones here.
+            // OpenRGB registers the mats on interface 0 with no usage page
+            // (SteelSeriesControllerDetect.cpp:530-538), as SignalRGB takes
+            // interface 0 alone (Steelseries_Qck_Mousepad.js:127-131).
+            // OpenRGB saves nothing ("@save :x:",
+            // RGBController_SteelSeriesQCKMat.cpp:18), and no reference has
+            // a frame that returns the stored lighting.
+            new()
+            {
+                Family = SteelSeriesFamily.QckPrismCloth, Interface = 0, UsagePage = null, Usage = null,
+                Report = SteelSeriesReport.Feature, RepaintMs = 33, ReassertMs = ReassertMs,
+                Lights = Zones(2),
+                Paint = (_, _, _, c, _) => QckFrames(c),
+            },
         };
 
         /// <summary>One per-key Apex row. <paramref name="packet"/> answers
@@ -831,6 +966,109 @@ namespace PadForge.Common.Input.Peripherals
                 data[at + 2] = B(colors[i]);
             }
             return data;
+        }
+
+        /// <summary>A report of <paramref name="length"/> bytes, report ID
+        /// included, that starts with <paramref name="head"/> and is zero
+        /// after it, the buffer OpenRGB clears and fills.</summary>
+        private static SteelSeriesFrame Sized(SteelSeriesReport report, int length, params byte[] head)
+        {
+            var buffer = new byte[length];
+            head.CopyTo(buffer, 0);
+            return new SteelSeriesFrame(report, buffer);
+        }
+
+        /// <summary>ARCTIS_5_REPORT_SIZE and ARCTIS_5_REPORT_ID
+        /// (SteelSeriesArctis5Controller.h:158-159).</summary>
+        internal const int Arctis5ReportSize = 37;
+        internal const byte HeadsetReportId = 0x06;
+
+        /// <summary>SetColor's six reports for one earcup
+        /// (SteelSeriesArctis5Controller.cpp:51-140).</summary>
+        private static SteelSeriesFrame[] Arctis5Zone(byte zone, int color)
+        {
+            const SteelSeriesReport o = SteelSeriesReport.Output;
+            const int n = Arctis5ReportSize;
+            const byte id = HeadsetReportId;
+            return new[]
+            {
+                Sized(o, n, id, 0x81, 0x43, 0x01, 0x22),
+                Sized(o, n, id, 0x81, 0x43, 0x01, 0x23),
+                Sized(o, n, id, 0x8A, 0x42, 0x00, 0x20, 0x41, 0x00, R(color), G(color), B(color), 0xFF, 0x32, 0xC8, 0xC8),
+                Sized(o, n, id, 0x8A, 0x42, 0x00, 0x20, 0x41, 0x08, zone, 0x01),
+                Sized(o, n, id, 0x8A, 0x42, 0x00, 0x20, 0x60, zone),
+                Sized(o, n, id, 0x8A, 0x42, 0x00, 0x20, 0x05),
+            };
+        }
+
+        /// <summary>ARCTIS_NOVA3_REPORT_SIZE and ARCTIS_NOVA3_APPLY_REPORT_SIZE
+        /// (SteelSeriesArctisNova3Controller.h:17-18).</summary>
+        internal const int Nova3EffectSize = 521;
+        internal const int Nova3ApplySize = 64;
+
+        /// <summary>SetDirect's three reports for one LED, 0 the right and 1
+        /// the left: the effect report, SelectZone with 0A and ApplyZone
+        /// (SteelSeriesArctisNova3Controller.cpp:71-96 and 120-148).</summary>
+        private static SteelSeriesFrame[] Nova3Led(byte led, int color)
+        {
+            var effect = Sized(SteelSeriesReport.Output, Nova3EffectSize, HeadsetReportId, 0xAA, led == 0 ? (byte)0x01 : (byte)0x00);
+            var e = effect.Buffer;
+            e[0x0D] = 0x98;
+            e[0x0E] = 0x3A;
+            e[0x15] = 0x55;
+            e[0x17] = 0x96;
+            e[0x1D] = 0x01;
+            e[0x25] = 0x02;
+            e[0x2D] = R(color);
+            e[0x2E] = G(color);
+            e[0x2F] = B(color);
+            e[0x30] = 0xFF;
+            return new[]
+            {
+                effect,
+                Sized(SteelSeriesReport.Output, Nova3ApplySize, HeadsetReportId, 0xA5, led == 0 ? (byte)0x02 : (byte)0x01, 0x0A),
+                Sized(SteelSeriesReport.Output, Nova3ApplySize, HeadsetReportId, led == 0 ? (byte)0x09 : (byte)0xA3),
+            };
+        }
+
+        /// <summary>send_usb_msg's 16-byte report: the report ID 01, 00, the
+        /// command, the payload's length and the payload
+        /// (SteelSeriesSiberiaController.cpp:16-36).</summary>
+        internal const int SiberiaReportSize = 16;
+
+        private static SteelSeriesFrame SiberiaCommand(byte command, params byte[] payload)
+        {
+            var frame = Sized(SteelSeriesReport.Output, SiberiaReportSize, 0x01, 0x00, command, (byte)payload.Length);
+            payload.CopyTo(frame.Buffer, 4);
+            return frame;
+        }
+
+        /// <summary>The QCK mat's feature report and its apply report, 525
+        /// and 65 bytes (SteelSeriesQCKMatController.cpp:51-100).</summary>
+        internal const int QckColorSize = 525;
+        internal const int QckApplySize = 65;
+
+        private static SteelSeriesFrame[] QckFrames(IReadOnlyList<int> colors)
+        {
+            var color = Sized(SteelSeriesReport.Feature, QckColorSize, 0x00, 0x0E, 0x00, 0x02);
+            var b = color.Buffer;
+            b[0x05] = R(colors[0]);
+            b[0x06] = G(colors[0]);
+            b[0x07] = B(colors[0]);
+            b[0x08] = 0xFF;
+            b[0x09] = 0x32;
+            b[0x0A] = 0xC8;
+            b[0x0E] = 0x01;
+            b[0x11] = R(colors[1]);
+            b[0x12] = G(colors[1]);
+            b[0x13] = B(colors[1]);
+            b[0x14] = 0xFF;
+            b[0x15] = 0x32;
+            b[0x16] = 0xC8;
+            b[0x19] = 0x01;
+            b[0x1A] = 0x01;
+            b[0x1C] = 0x01;
+            return new[] { color, Sized(SteelSeriesReport.Output, QckApplySize, 0x00, 0x0D) };
         }
 
         /// <summary>One report per zone of the wireless Aerox mice: the
@@ -1220,13 +1458,16 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>
         /// One row per product ID in
-        /// <see cref="PeripheralProductIds.SteelSeriesMice"/> and
-        /// <see cref="PeripheralProductIds.SteelSeriesKeyboards"/>: the
+        /// <see cref="PeripheralProductIds.SteelSeriesMice"/>,
+        /// <see cref="PeripheralProductIds.SteelSeriesKeyboards"/>,
+        /// <see cref="PeripheralProductIds.SteelSeriesHeadsets"/> and
+        /// <see cref="PeripheralProductIds.SteelSeriesMousemats"/>: the
         /// product IDs of rivalcfg's device profiles and of OpenRGB's
         /// detectors (rivalcfg devices/*.py, OpenRGB SteelSeriesDevices.h
-        /// and SteelSeriesControllerDetect.cpp:469-555). A product whose
+        /// and SteelSeriesControllerDetect.cpp:469-561). A product whose
         /// family is <see cref="SteelSeriesFamily.None"/> gets no unit, and
-        /// neither does one the lists lack.
+        /// neither does one the lists lack. Each product's name is in
+        /// <see cref="SteelSeriesNames"/> (<see cref="NameOf"/>).
         /// </summary>
         internal static readonly (ushort ProductId, SteelSeriesFamily Family)[] Models =
         {
@@ -1348,6 +1589,21 @@ namespace PadForge.Common.Input.Peripherals
             (0x1646, SteelSeriesFamily.ApexProWireless),
             (0x161A, SteelSeriesFamily.Apex3),               // Apex 3
             (0x1622, SteelSeriesFamily.Apex3Tkl),            // Apex 3 TKL
+
+            (0x1250, SteelSeriesFamily.Arctis5),             // Arctis 5
+            (0x12AA, SteelSeriesFamily.Arctis5),             // Arctis 5
+            (0x12EC, SteelSeriesFamily.ArctisNova3),         // Arctis Nova 3
+            (0x1229, SteelSeriesFamily.Siberia350),          // Siberia 350
+
+            (0x150A, SteelSeriesFamily.QckPrismCloth),       // QCK Prism Cloth Medium
+            (0x150D, SteelSeriesFamily.QckPrismCloth),       // QCK Prism Cloth XL
+            (0x1514, SteelSeriesFamily.QckPrismCloth),       // QCK Prism Cloth XL CS:GO Neon Rider
+            (0x1516, SteelSeriesFamily.QckPrismCloth),       // QCK Prism Cloth 3XL
+            (0x1518, SteelSeriesFamily.QckPrismCloth),       // QCK Prism Cloth 4XL
+            (0x151A, SteelSeriesFamily.QckPrismCloth),       // QCK Prism Cloth 5XL
+            (0x151C, SteelSeriesFamily.QckPrismCloth),       // QCK Prism Cloth XL CS:GO Neo Noir
+            (0x151E, SteelSeriesFamily.QckPrismCloth),       // QCK Prism Cloth XL Destiny
+            (0x1520, SteelSeriesFamily.QckPrismCloth),       // QCK Prism Cloth XL Destiny 2 Lightfall
         };
 
         private static readonly Dictionary<ushort, SteelSeriesFamily> s_byProduct = ByProduct();
@@ -1364,6 +1620,22 @@ namespace PadForge.Common.Input.Peripherals
         /// for one the table lacks.</summary>
         internal static SteelSeriesFamily FamilyOf(ushort productId)
             => s_byProduct.TryGetValue(productId, out var family) ? family : SteelSeriesFamily.None;
+
+        private static readonly Dictionary<ushort, string> s_names = Names();
+
+        private static Dictionary<ushort, string> Names()
+        {
+            var names = new Dictionary<ushort, string>(SteelSeriesNames.All.Length);
+            foreach (var (productId, name, _) in SteelSeriesNames.All) names.TryAdd(productId, name);
+            return names;
+        }
+
+        /// <summary>A product's name, the one OpenRGB registers it under,
+        /// else rivalcfg's (<see cref="SteelSeriesNames"/>, generated by
+        /// tools/gen_steelseries_names.py), or null for a product neither
+        /// names.</summary>
+        internal static string NameOf(ushort productId)
+            => s_names.TryGetValue(productId, out var name) ? name : null;
 
         // ─────────────────────────────────────────────
         //  The scan's gate
@@ -1405,6 +1677,9 @@ namespace PadForge.Common.Input.Peripherals
         /// second vendor collection, on page 0xFF00, one interface lower,
         /// and OpenRGB's Rival 3 detector changed no color until it was
         /// moved to interface 3, "Usage Page 0xFFC0" (OpenRGB issue 1167).
+        /// The Siberia 350 and the QCK mats, which OpenRGB registers by
+        /// interface alone and no reference names a page for, take any page
+        /// there (<see cref="SteelSeriesFamilyInfo.UsagePage"/>).
         /// Its reports are long enough for every frame of the family:
         /// Windows fails a buffer shorter than the report, and a frame is
         /// never cut. And a dongle's collection has the input report its
@@ -1423,7 +1698,8 @@ namespace PadForge.Common.Input.Peripherals
             if (info == null) return false;
             int iface = collection.InterfaceNumber < 0 ? 0 : collection.InterfaceNumber;
             if (iface != info.Interface) return false;
-            if (collection.UsagePage != ControlUsagePage || collection.Usage != ControlUsage) return false;
+            if (info.UsagePage is ushort page && collection.UsagePage != page) return false;
+            if (info.Usage is ushort usage && collection.Usage != usage) return false;
             // The echoed command and its status, behind the report ID.
             if (info.Echoes && collection.InputReportLength < 3) return false;
             if (Fits(info, info.Report, collection))

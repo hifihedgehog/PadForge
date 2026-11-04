@@ -362,6 +362,8 @@ namespace PadForge.Common.Input.Peripherals
             RedSquareKeyroxLighting.Instance,
             RoyuanLighting.Instance,
             KeychronKeyboardLighting.Instance,
+            LogitechG600Lighting.Instance,
+            LogitechX56Lighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

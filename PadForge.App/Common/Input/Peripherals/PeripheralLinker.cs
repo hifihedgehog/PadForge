@@ -778,35 +778,36 @@ namespace PadForge.Common.Input.Peripherals
                         }
                         AddOwnUnits(native, direct, OutputFamily.SteelSeriesUnit, row);
                     }
-                    else
-                    {
-                        // A device of an OpenRGB family the shared worker
-                        // lights, such as a Lenovo Legion keyboard. Its
-                        // model names the programs that light it, and
-                        // while one of them runs the device is that
-                        // program's, by the rule the three vendors above
-                        // follow.
-                        AddOwnUnits(native, direct, OutputFamily.HidLightingUnit, row);
-                        holder = ProgramHolding(direct, row, presence, out ownPrograms);
-                        // An ASUS device no family of PadForge's lights is
-                        // Armoury Crate's while it runs, as every ASUS device
-                        // is, and is lit through the Aura SDK where it is
-                        // installed (#557 item 11).
-                        if (holder == null && row.VendorId == AsusVid && presence.AsusAuraSdk)
-                            holder = presence.Programs.FirstOf(ArmouryCrateOnly);
-                        programRuns = holder != null;
-                        AddSdkRoute(shared, holder, presence, row);
-                        // A program with an SDK route of PadForge's own
-                        // (#557 item 11) adds that route's path to shared
-                        // here. The row is then lit through it while the
-                        // program runs, as a Razer row is lit through
-                        // Synapse, and its line says the device is lit on
-                        // its own once the program is closed
-                        // (directWhenClosed). With no such path the device
-                        // is left to the program (leftToProgram below).
-                        IcueRoute.AddShared(shared, holder, presence, row);
-                        WootingRgbSdkRoute.AddShared(shared, holder, direct, row);
-                    }
+
+                    // A device of an OpenRGB family the shared worker
+                    // lights, whatever its vendor: a Lenovo Legion keyboard,
+                    // and under the three vendors above a Logitech G600 or
+                    // the SteelSeries controller of an MSI laptop's keyboard
+                    // (OpenRGB LogitechControllerDetect.cpp:1547,
+                    // MSILaptopControllerDetect.cpp:330-333), which the
+                    // vendor's program rule above holds too. Its model names
+                    // the programs that light it, and while one of them runs
+                    // the device is that program's, by the rule the three
+                    // vendors follow.
+                    AddOwnUnits(native, direct, OutputFamily.HidLightingUnit, row);
+                    holder = ProgramHolding(direct, row, presence, out ownPrograms);
+                    // An ASUS device no family of PadForge's lights is Armoury
+                    // Crate's while it runs, as every ASUS device is, and is
+                    // lit through the Aura SDK where it is installed (#557
+                    // item 11).
+                    if (holder == null && row.VendorId == AsusVid && presence.AsusAuraSdk)
+                        holder = presence.Programs.FirstOf(ArmouryCrateOnly);
+                    programRuns |= holder != null;
+                    // A program with an SDK route of PadForge's own (#557
+                    // item 11) adds that route's path to shared here. The row
+                    // is then lit through it while the program runs, as a
+                    // Razer row is lit through Synapse, and its line says the
+                    // device is lit on its own once the program is closed
+                    // (directWhenClosed). With no such path the device is left
+                    // to the program (leftToProgram below).
+                    AddSdkRoute(shared, holder, presence, row);
+                    IcueRoute.AddShared(shared, holder, presence, row);
+                    WootingRgbSdkRoute.AddShared(shared, holder, direct, row);
 
                     // The family is chosen as if every unit answered, and
                     // only the units that do are linked. A row whose own
@@ -1628,8 +1629,8 @@ namespace PadForge.Common.Input.Peripherals
         /// a LampArray unit by <see cref="MatchesLampArray"/>, a Razer or
         /// SteelSeries unit by <see cref="MatchesDevice"/> from a row of
         /// that vendor, and a shared-worker unit by
-        /// <see cref="MatchesDevice"/> from a row of any other vendor, the
-        /// rows the linker reads that family for. A laptop keyboard the
+        /// <see cref="MatchesDevice"/> from a row of any vendor, the rows
+        /// the linker reads that family for. A laptop keyboard the
         /// shared worker lights through the PC's firmware is taken by the
         /// keyboard rows in the PC's own container
         /// (<see cref="DirectUnit.BuiltInKeyboard"/>).</summary>
@@ -1639,8 +1640,7 @@ namespace PadForge.Common.Input.Peripherals
                 OutputFamily.LampArrayUnit => MatchesLampArray(unit, row, lampArrays),
                 OutputFamily.RazerUnit => row.VendorId == RazerVid && MatchesDevice(unit, row),
                 OutputFamily.SteelSeriesUnit => row.VendorId == SteelSeriesVid && MatchesDevice(unit, row),
-                OutputFamily.HidLightingUnit => row.VendorId != LogitechVid && row.VendorId != RazerVid
-                                                && row.VendorId != SteelSeriesVid && MatchesDevice(unit, row),
+                OutputFamily.HidLightingUnit => MatchesDevice(unit, row),
                 _ => false,
             };
 

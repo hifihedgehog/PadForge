@@ -642,11 +642,12 @@ namespace PadForge.Tests
             Assert.IsType<ZonePerKeyPlan>(HidppLightPlan.For(BoardUnit()));
             Assert.IsType<ClusterPlan>(HidppLightPlan.For(ClusterUnit()));
             Assert.IsType<ClusterStreamPlan>(HidppLightPlan.For(StreamUnit()));
-            // A mouse with both features stays on its clusters, and so does
-            // a keyboard whose 0x8081 reports no zone.
-            Assert.IsType<ClusterPlan>(HidppLightPlan.For(StreamUnit(type: 3)));
+            // A mouse with both features, and a device of no known kind, is
+            // painted through its 0x8081 zones too. A keyboard whose 0x8081
+            // reports no zone stays on its clusters.
+            Assert.IsType<ClusterStreamPlan>(HidppLightPlan.For(StreamUnit(type: 3)));
             Assert.IsType<ClusterPlan>(HidppLightPlan.For(StreamUnit() with { PerKeyMin = 0, PerKeyMax = 0 }));
-            Assert.IsType<ClusterPlan>(HidppLightPlan.For(StreamUnit(type: -1)));
+            Assert.IsType<ClusterStreamPlan>(HidppLightPlan.For(StreamUnit(type: -1)));
 
             Assert.Null(HidppLightPlan.For(null));
             Assert.Null(HidppLightPlan.For(new HidppUnit()));
@@ -1239,10 +1240,13 @@ namespace PadForge.Tests
         }
 
         /// <summary>A mouse with both features (the G502 X PLUS: one
-        /// cluster, zones 1 to 8) has its zones read and stays on its
-        /// cluster, so its multi-cluster effects are never walked.</summary>
+        /// cluster, zones 1 to 8) is painted LED by LED through 0x8081, as
+        /// OpenRGB paints every device whose 0x8081 lists zones
+        /// (RGBController_LogitechHIDPP20.cpp:947-958): its zones are read,
+        /// its multi-cluster effects walked for Host streaming, and its
+        /// eight LEDs are eight zones.</summary>
         [Fact]
-        public void AMouseWithBothFeatures_StaysOnItsCluster()
+        public void AMouseWithBothFeatures_IsPaintedLedByLed()
         {
             var device = HidppLightDevice.G915X();
             device.Type = 3;
@@ -1253,10 +1257,91 @@ namespace PadForge.Tests
             var unit = device.Describe(channel, out bool incomplete);
 
             Assert.False(incomplete);
+            Assert.False(unit.IsKeyboardKind);
             Assert.Equal(((byte)0x01, (byte)0x08), (unit.PerKeyMin, unit.PerKeyMax));
-            Assert.Equal(-1, unit.HostStreamingIndex);
-            Assert.IsType<ClusterPlan>(HidppLightPlan.For(unit));
-            Assert.DoesNotContain("11 FF 08 0C FF", Asked(channel, 0x08));
+            Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 }, unit.PerKeyZones);
+            Assert.Equal(1, unit.HostStreamingIndex);
+            var plan = Assert.IsType<ClusterStreamPlan>(HidppLightPlan.For(unit));
+            Assert.Contains("11 FF 08 0C FF", Asked(channel, 0x08));
+            var lights = plan.Lights.Lights;
+            Assert.Equal(Enumerable.Range(1, 8), lights.Select(l => l.Address));
+            Assert.Equal(Enumerable.Range(1, 8), lights.Select(l => l.Zone));
+            Assert.All(lights, l => Assert.Equal(LightKind.Zone, l.Kind));
+        }
+
+        /// <summary>A G203 LIGHTSYNC: 0x8071 with one cluster and 0x8081 with
+        /// three zones (OpenRGB LogitechG203LController.cpp:24-35 and
+        /// 170-199, RGBController_LogitechG203L.cpp:117-123). Every zone
+        /// goes out through setIndividualRgbZones, fn 1, four to a frame and
+        /// in zone order, then the frame end, fn 7, as that controller and
+        /// HaloDaemon write a mouse's LEDs (HaloDaemon-plugins
+        /// logitech/lib/hidpp2/lighting.lua:124-153). No range and no single
+        /// value frame is built for it.</summary>
+        [Fact]
+        public void AMousesZones_GoOutOneByOne()
+        {
+            var unit = new HidppUnit
+            {
+                ChannelPath = "usb", DeviceIndex = 0xFF, DeviceType = 3,
+                RgbFeatureId = HidppUnitProtocol.RgbEffects, RgbIndex = 0x0E,
+                EffectFeatureId = HidppUnitProtocol.RgbEffects, EffectIndex = 0x0E,
+                Zones = new[] { new HidppZone(0, 1) },
+                PerKeyFeatureId = HidppUnitProtocol.PerKeyLightingV2, PerKeyIndex = 0x12,
+                PerKeyMin = 1, PerKeyMax = 3, PerKeyZones = new byte[] { 1, 2, 3 },
+                HostStreamingIndex = -1,
+            };
+            var plan = Assert.IsType<ClusterStreamPlan>(HidppLightPlan.For(unit));
+            static string[] T(IEnumerable<HidppStep> steps)
+                => steps.Select(x => (x.Kind == HidppStepKind.Write ? "" : x.Kind.ToString().ToLowerInvariant() + " ")
+                                     + HidppHapticsTests.Text(x.Frame)).ToArray();
+            static void S(HidppStep[] steps, params string[] expected) => Assert.Equal(expected, T(steps));
+
+            // One color: the cluster, then the frame twice, every zone alone.
+            S(plan.Paint(0x123456, full: true),
+                "11 FF 0E 1C 00 01 12 34 56 02 00 00 00 00 00 00 01",
+                "stream 11 FF 12 1C 01 12 34 56 02 12 34 56 03 12 34 56", "commit 11 FF 12 7C",
+                "stream 11 FF 12 1C 01 12 34 56 02 12 34 56 03 12 34 56", "commit 11 FF 12 7C");
+            S(plan.Paint(0x123456, full: false),
+                "stream 11 FF 12 1C 01 12 34 56 02 12 34 56 03 12 34 56", "commit 11 FF 12 7C");
+
+            // Light by light: the whole picture zone by zone, and a change
+            // the zone that changed alone.
+            var map = plan.Lights;
+            Assert.Equal(new[] { 1, 2, 3 }, map.Lights.Select(l => l.Zone));
+            int[] colors = { 0xAA0000, 0x00BB00, 0xAA0000 };
+            S(plan.PaintLights(map, colors, null, full: false),
+                "stream 11 FF 12 1C 01 AA 00 00 02 00 BB 00 03 AA", "commit 11 FF 12 7C");
+            S(plan.PaintLights(map, colors, new[] { 0xAA0000, 0xAA0000, 0xAA0000 }, full: false),
+                "stream 11 FF 12 1C 02 00 BB", "commit 11 FF 12 7C");
+            // The keep-alive sends the whole picture again.
+            S(plan.KeepAliveLights(0, map, colors, painted: true),
+                "stream 11 FF 12 1C 01 AA 00 00 02 00 BB 00 03 AA", "commit 11 FF 12 7C");
+
+            // Five zones are two frames, the second with the fifth alone.
+            var five = new ClusterStreamPlan(unit with { PerKeyMax = 5, PerKeyZones = new byte[] { 1, 2, 3, 4, 5 } }, 0x0E);
+            S(five.Paint(0x010203, full: false),
+                "stream 11 FF 12 1C 01 01 02 03 02 01 02 03 03 01 02 03 04 01 02 03",
+                "stream 11 FF 12 1C 05 01 02 03", "commit 11 FF 12 7C");
+
+            // A keyboard of the same features keeps its range.
+            var board = new ClusterStreamPlan(unit with { DeviceType = 0 }, 0x0E);
+            Assert.StartsWith("stream 11 FF 12 5C", T(board.Paint(0x123456, full: false))[0]);
+        }
+
+        /// <summary>A mouse whose 0x8081 lists one zone has no light map: its
+        /// one LED takes the one color.</summary>
+        [Fact]
+        public void AMouseWithOneZone_HasNoLightMap()
+        {
+            var unit = new HidppUnit
+            {
+                DeviceIndex = 0xFF, DeviceType = 3,
+                PerKeyFeatureId = HidppUnitProtocol.PerKeyLightingV2, PerKeyIndex = 0x12,
+                PerKeyMin = 1, PerKeyMax = 1, PerKeyZones = new byte[] { 1 },
+            };
+            Assert.Null(HidppKeyMap.Of(unit));
+            Assert.Equal(2, HidppKeyMap.Of(unit with { PerKeyMax = 2, PerKeyZones = new byte[] { 1, 2 } }).Lights.Count);
+            Assert.Null(HidppKeyMap.Of(unit with { PerKeyFeatureId = HidppUnitProtocol.PerKeyLighting, PerKeyZones = new byte[] { 1, 2 } }));
         }
 
         /// <summary>A G810: the first pass finds 0x8080, and after the

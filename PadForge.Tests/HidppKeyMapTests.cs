@@ -133,14 +133,15 @@ namespace PadForge.Tests
 
         /// <summary>The model Map Key Lights keeps its names under is the
         /// first model ID and the layout code, or the name with no model ID.
-        /// Only a keyboard painted key by key through 0x8081 has a map.</summary>
+        /// Only a keyboard painted key by key through 0x8081 has a map of
+        /// keys. Another device's zones are zones (#557).</summary>
         [Fact]
-        public void TheModelIsTheFirstModelIdAndTheLayoutCode_AndOnlyAKeyboardPaintedKeyByKeyHasAMap()
+        public void TheModelIsTheFirstModelIdAndTheLayoutCode_AndOnlyAKeyboardPaintedKeyByKeyHasAKeyMap()
         {
             Assert.Equal("hidpp:B38A:01", HidppKeyMap.Of(Board(G915XZones, models: new ushort[] { 0xB38A, 0x40B5, 0xC356 })).Product);
             Assert.Equal("hidpp:G915 X:04", HidppKeyMap.Of(Board(G915XZones, layout: 4)).Product);
             Assert.Null(HidppKeyMap.Of(Board(Array.Empty<byte>())));
-            Assert.Null(HidppKeyMap.Of(Board(G915XZones) with { DeviceType = 3 }));
+            Assert.All(HidppKeyMap.Of(Board(G915XZones) with { DeviceType = 3 }).Lights, l => Assert.Equal(LightKind.Zone, l.Kind));
             Assert.Null(HidppKeyMap.Of(HidppLightPlanTests.BoardUnit()));
             Assert.Null(HidppKeyMap.Of(null));
         }

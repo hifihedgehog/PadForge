@@ -699,24 +699,37 @@ namespace PadForge.Common.Input.Peripherals
     /// feature is that "all the hidpp requests have to be validated"
     /// (x8081 document, p.3), its own program waits for each answer
     /// (OpenRGB issue 4461, unplug_and_replug.pcapng), and a refused range
-    /// would otherwise leave the board on the stream's empty picture. A
-    /// mouse with both features stays on <see cref="ClusterPlan"/>: the one
-    /// such mouse known, the G502 X PLUS, answers with a single cluster
+    /// would otherwise leave the board on the stream's empty picture.</para>
+    ///
+    /// <para>A mouse or any other device with both features is painted the
+    /// same way, LED by LED: OpenRGB paints every device whose 0x8081 lists
+    /// zones through it (RGBController_LogitechHIDPP20.cpp:947-958 and
+    /// 2428-2437), its G203 LIGHTSYNC controller lit that mouse's three LEDs
+    /// with 0x8081's setIndividualRgbZones and frame end under an 0x8071
+    /// claim (LogitechG203LController.cpp:24-104 and 170-200), and
+    /// HaloDaemon streams a mouse's LEDs the same way. On such a device
+    /// every zone goes out through setIndividualRgbZones alone, four to a
+    /// frame: HaloDaemon writes a mouse's LEDs one by one because its
+    /// consecutive-zones frame left one LED of a G502's strip on its old
+    /// color (HaloDaemon-plugins logitech/lib/hidpp2/lighting.lua:128-153),
+    /// and the G502 X PLUS answers with a single cluster
     /// (OpenRGB-Fixed diagnostics/OpenRGB-Diagnostics/2026-09-13-g502-rcca/
-    /// control-after-handoff.json:42-59), and optimized per-key frames left
-    /// one of its lights on an old color (HaloDaemon-plugins
-    /// lighting.lua:128-131).</para>
+    /// control-after-handoff.json:42-59), so its LEDs are reached through
+    /// 0x8081 alone.</para>
     /// </summary>
     internal sealed class ClusterStreamPlan : ClusterPlan
     {
         public ClusterStreamPlan(HidppUnit unit, byte effectIndex) : base(unit, effectIndex) { }
 
-        /// <summary>A keyboard with 0x8081 beside its 0x8071, and at least
-        /// one zone to paint.</summary>
+        /// <summary>A device with 0x8081 beside its 0x8071, and at least one
+        /// zone to paint.</summary>
         public static bool Fits(HidppUnit unit)
-            => unit.IsKeyboardKind
-               && unit.PerKeyFeatureId == HidppUnitProtocol.PerKeyLightingV2 && unit.PerKeyIndex != 0
+            => unit.PerKeyFeatureId == HidppUnitProtocol.PerKeyLightingV2 && unit.PerKeyIndex != 0
                && unit.PerKeyMin != 0 && unit.PerKeyMax >= unit.PerKeyMin;
+
+        /// <summary>A device other than a keyboard, whose zones go out one
+        /// by one through setIndividualRgbZones.</summary>
+        private bool OneByOne => !Unit.IsKeyboardKind;
 
         public override HidppStep[] Paint(int rgb, bool full)
         {
@@ -766,6 +779,8 @@ namespace PadForge.Common.Input.Peripherals
         /// between. A change sends the zones whose color changed, or the
         /// whole picture when that takes fewer frames, and the frame end.
         /// The zones go out as OpenRGB groups them (<see cref="AddZones"/>).
+        /// A device other than a keyboard gets no range: the whole picture
+        /// is every zone in its own color, one by one.
         /// </summary>
         public override HidppStep[] PaintLights(LightMap map, int[] colors, int[] shown, bool full)
         {
@@ -780,9 +795,18 @@ namespace PadForge.Common.Input.Peripherals
                         HidppStepKind.Select));
                 AddFrame(steps, most);
             }
-            var whole = new List<HidppStep> { Range(most) };
+            var whole = new List<HidppStep>();
             var under = new int[colors.Length];
-            Array.Fill(under, most);
+            if (OneByOne)
+            {
+                // Every light in its own color, none under a range.
+                Array.Fill(under, NoColor);
+            }
+            else
+            {
+                whole.Add(Range(most));
+                Array.Fill(under, most);
+            }
             AddZones(whole, map, colors, under);
             if (shown != null && !full)
             {
@@ -820,9 +844,10 @@ namespace PadForge.Common.Input.Peripherals
             var lone = new List<(byte Zone, int Rgb)>();
             foreach (var (rgb, zones) in byColor)
             {
-                if (zones.Count == 1)
+                // A device other than a keyboard takes every zone alone.
+                if (zones.Count == 1 || OneByOne)
                 {
-                    lone.Add((zones[0], rgb));
+                    foreach (byte zone in zones) lone.Add((zone, rgb));
                     continue;
                 }
                 zones.Sort();
@@ -843,6 +868,8 @@ namespace PadForge.Common.Input.Peripherals
                     steps.Add(Stream(HidppUnitProtocol.PerKeySingleValue(Device, Unit.PerKeyIndex, rgb,
                         scattered.GetRange(i, Math.Min(HidppUnitProtocol.PerKeySingleMax, scattered.Count - i)))));
             }
+            // In zone order, as HaloDaemon sends a mouse's LEDs (lighting.lua:124).
+            if (OneByOne) lone.Sort((a, b) => a.Zone.CompareTo(b.Zone));
             for (int i = 0; i < lone.Count; i += HidppUnitProtocol.PerKeyIndividualMax)
                 steps.Add(Stream(HidppUnitProtocol.PerKeyIndividual(Device, Unit.PerKeyIndex,
                     lone.GetRange(i, Math.Min(HidppUnitProtocol.PerKeyIndividualMax, lone.Count - i)))));
@@ -874,11 +901,28 @@ namespace PadForge.Common.Input.Peripherals
             => Stream(HidppUnitProtocol.PerKeyRange(Device, Unit.PerKeyIndex, Unit.PerKeyMin, Unit.PerKeyMax,
                 (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb));
 
-        /// <summary>One range over every zone, then the frame end.</summary>
+        /// <summary>One range over every zone, then the frame end. A device
+        /// other than a keyboard gets every zone it reports in the color,
+        /// one by one, in place of the range.</summary>
         private void AddFrame(List<HidppStep> steps, int rgb)
         {
-            steps.Add(Range(rgb));
+            if (OneByOne)
+            {
+                var zones = new List<(byte Zone, int Rgb)>(Unit.PerKeyZones.Length);
+                foreach (byte zone in Unit.PerKeyZones) zones.Add((zone, rgb));
+                for (int i = 0; i < zones.Count; i += HidppUnitProtocol.PerKeyIndividualMax)
+                    steps.Add(Stream(HidppUnitProtocol.PerKeyIndividual(Device, Unit.PerKeyIndex,
+                        zones.GetRange(i, Math.Min(HidppUnitProtocol.PerKeyIndividualMax, zones.Count - i)))));
+            }
+            else
+            {
+                steps.Add(Range(rgb));
+            }
             steps.Add(new HidppStep(HidppUnitProtocol.PerKeyFrameEnd(Device, Unit.PerKeyIndex), HidppStepKind.Commit));
         }
+
+        /// <summary>A color no light takes, so every light counts as
+        /// changed.</summary>
+        private const int NoColor = -1;
     }
 }

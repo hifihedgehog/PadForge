@@ -38,7 +38,7 @@ namespace PadForge.Tests
         {
             // CalculateChecksum (RoyuanKeyboardController.cpp:249-271).
             var report = new byte[] { 0, 0x07, 0x01, 0x04, 0x03, 0x08, 0x10, 0x20, 0x30 };
-            // Sum 0x07+1+4+3+8+0x10+0x20+0x30 = 0x77; ones' complement 0x88.
+            // Sum 0x07+1+4+3+8+0x10+0x20+0x30 = 0x77, ones' complement 0x88.
             Assert.Equal(0x88, R.Checksum(report, 1, 8, true));
             // Next power of two above 0x77 is 0x80: 0x80 - 0x77 - 1 = 8.
             Assert.Equal(0x08, R.Checksum(report, 1, 8, false));
@@ -52,7 +52,7 @@ namespace PadForge.Tests
             var akko = R.Picture(R.Board.Akko, 0x102030);
             Assert.Equal(65, akko.Length);
             Assert.Equal("00 07 01 04 03 08 10 20 30 88", Hex(akko, 10));
-            // The Epomaker's Always On: speed 0, brightness 4, option 07;
+            // The Epomaker's Always On: speed 0, brightness 4, option 07,
             // sum 0x07+1+0+4+7+0x60 = 0x73, 0x80 - 0x73 - 1 = 0x0C.
             Assert.Equal("00 07 01 00 04 07 10 20 30 0C", Hex(R.Picture(R.Board.Legacy, 0x102030), 10));
             // The Skyloong's Direct mode and color (lines 379-427).

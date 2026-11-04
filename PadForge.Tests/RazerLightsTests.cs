@@ -733,13 +733,16 @@ namespace PadForge.Tests
         /// that no source names: a Blade Stealth (2019), whose uchroma entry
         /// takes its parent's mapping, which names cells outside its 6 by 16
         /// matrix, and for which Polychromatic draws no map (its Stealth map
-        /// is for 2016 and 2017, commit bb9e51a), and a Blade 14 (2024),
-        /// which neither lists.</summary>
+        /// is for 2016 and 2017, commit bb9e51a), a Blade 14 (2024), which
+        /// neither lists, and an Ornata, which uchroma does not list and whose
+        /// name only begins Polychromatic's "Razer Ornata V2 (US)", a map of
+        /// another board though of the same 6 by 22.</summary>
         [Fact]
         public void ABoardNoSecondSourceFits_KeepsItsKeysUnnamed()
         {
             Assert.Equal(96, RazerLightTable.Map(0x0239).UnnamedKeyCount);
-            Assert.All(new ushort[] { 0x0239, 0x02B6 }, pid =>
+            Assert.Equal(6 * 22, RazerLightTable.Map(0x021F).UnnamedKeyCount);
+            Assert.All(new ushort[] { 0x0239, 0x02B6, 0x021F }, pid =>
             {
                 var row = RazerLightTable.Find(pid);
                 Assert.Empty(row.Lights);

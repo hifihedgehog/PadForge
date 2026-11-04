@@ -1227,7 +1227,11 @@ QMK Firmware
   The key positions and base-layer keys of the keyboards the Keyboard +
   Mouse preview draws are generated from QMK's layout data
   (layouts/default and keyboards/hhkb/jp) and the Q6's layout in
-  Keychron's fork, by tools/gen_kbm_layouts.py.
+  Keychron's fork, by tools/gen_kbm_layouts.py. The keys of keyboards flashed
+  with SignalRGB's firmware are generated from the LED lists, layouts and
+  default keymaps of their folders in both, by tools/gen_plugin_key_tables.py,
+  and the GMMK 3's LED order is read from QMK-OpenRGB
+  (https://github.com/ell1010/QMK-OpenRGB).
   Licensed under the GNU General Public License v2.0 or later (full text
   below)
 

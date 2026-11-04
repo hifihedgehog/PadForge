@@ -48,11 +48,14 @@ namespace PadForge.Common.Input.Peripherals
     /// (RazerDevices.cpp:9083-9102, RazerController.cpp:63-66). OpenRGB's
     /// strips start with no LEDs until its user sizes them
     /// (RGBController_RazerAddressable.cpp:189-192), and its packets carry
-    /// 80 colors for every channel all the same. PadForge cannot know a
-    /// strip's length, so its map is the 80 lights of each channel, a
-    /// channel's lights past the end of its strip lighting nothing, and it
-    /// never sends the size report OpenRGB sends when its user sizes a
-    /// channel (RazerController.cpp:172-177 and 681-708).</para>
+    /// 80 colors for every channel all the same. Until a count is set on the
+    /// Lighting tab, PadForge's map is the 80 lights of each channel, a
+    /// channel's lights past the end of its strip lighting nothing. A count
+    /// narrows the channel's lights to that many, the rest of its packet
+    /// black, and goes out as the size report OpenRGB sends when its user
+    /// sizes a channel (DeviceConfigureZone,
+    /// RGBController_RazerAddressable.cpp:235-247, RazerController.cpp:172-177
+    /// and 681-708).</para>
     ///
     /// <para>The hand-back. The packets and the brightness store nothing.
     /// A session reads each channel's stored brightness at its start, as
@@ -151,11 +154,11 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = this,
                 Name = name,
-                Map = RazerHidTable.MapOf(productId),
+                Map = StripMap(productId, null),
                 RepaintMs = RepaintMs,
                 Siblings = new[] { new HidSibling(ArgbInterface, argbPage) },
                 BeginWith = (control, siblings, wait) => siblings?.Count == 1
-                    ? Session.Begin(control, siblings[0], wait, transaction)
+                    ? Session.Begin(control, siblings[0], wait, transaction, productId)
                     : null,
             };
         }
@@ -163,6 +166,41 @@ namespace PadForge.Common.Input.Peripherals
         // ─────────────────────────────────────────────
         //  The reports
         // ─────────────────────────────────────────────
+
+        /// <summary>The controller's lights, each channel's 80 or the count set
+        /// for it. A light's address is its place among all 480, so a channel's
+        /// count leaves the others' addresses.</summary>
+        internal static LightMap StripMap(ushort productId, IReadOnlyList<int> counts)
+        {
+            var table = RazerHidTable.MapOf(productId);
+            var strips = new LightStrip[Channels];
+            for (int c = 0; c < Channels; c++)
+                strips[c] = new LightStrip(c + 1, ChannelLeds, Math.Min(StripCounts.At(counts, c + 1), ChannelLeds));
+            var lights = new List<LightInfo>(table.Lights.Count);
+            foreach (var light in table.Lights)
+            {
+                int channel = light.Address / ChannelLeds;
+                if (channel >= Channels || strips[channel].Leds == 0 || light.Address % ChannelLeds < strips[channel].Leds)
+                    lights.Add(light);
+            }
+            return new LightMap(lights, table.Source) { Product = table.Product, Strips = strips };
+        }
+
+        /// <summary>razer_create_addressable_size_report
+        /// (RazerController.cpp:681-708): 0F/08 at size 0D, 06, then per channel
+        /// 19 and its count, or its number and 0 with no count.</summary>
+        internal static byte[] SizeReport(byte transaction, IReadOnlyList<int> counts)
+        {
+            Span<byte> arguments = stackalloc byte[1 + 2 * Channels];
+            arguments[0] = Channels;
+            for (int c = 0; c < Channels; c++)
+            {
+                int count = Math.Min(StripCounts.At(counts, c + 1), ChannelLeds);
+                arguments[1 + 2 * c] = count == 0 ? (byte)(c + 1) : (byte)0x19;
+                arguments[2 + 2 * c] = (byte)count;
+            }
+            return RazerDirectProtocol.Report(transaction, 0x0F, 0x08, 0x0D, arguments);
+        }
 
         /// <summary>razer_create_custom_frame_argb_report for one channel,
         /// from column 0 to 79 (RazerController.cpp:741-775), with the report
@@ -211,20 +249,41 @@ namespace PadForge.Common.Input.Peripherals
             private readonly byte[][] _handBack;
             private bool _direct;
             private byte[][] _crash = Array.Empty<byte[]>();
+            private readonly ushort _productId;
+            private LightMap _map;
+            private IReadOnlyList<int> _sizeSent = StripCounts.None;
 
-            private Session(IHidReportChannel control, IHidReportChannel argb, byte transaction, byte[][] handBack)
+            private Session(IHidReportChannel control, IHidReportChannel argb, byte transaction, byte[][] handBack,
+                ushort productId)
             {
                 _control = control;
                 _argb = argb;
                 _transaction = transaction;
                 _handBack = handBack;
+                _productId = productId;
+            }
+
+            /// <summary>The model's map until a count is set.</summary>
+            public override LightMap Map => _map;
+
+            /// <summary>The channels' lights, and the size report OpenRGB sends
+            /// where a count changed. Another program holding the Razer lock
+            /// costs the report, not the count: the packets do not depend on
+            /// it.</summary>
+            public override bool SizeStrips(IHidReportChannel io, Action<int> wait, IReadOnlyList<int> counts)
+            {
+                _map = StripMap(_productId, counts);
+                if (StripCounts.Same(_sizeSent, counts)) return true;
+                var sent = RazerFeatureLink.Send(_control, SizeReport(_transaction, counts), RazerGuard.CommandWaitMs);
+                if (sent == true) _sizeSent = counts;
+                return sent != false;
             }
 
             /// <summary>Reads the stored effect of LED 05 and each channel's
             /// stored brightness, the hand-back. Null for an ARGB collection
             /// whose feature report is shorter than the packet.</summary>
             internal static Session Begin(IHidReportChannel control, IHidReportChannel argb, Action<int> wait,
-                byte transaction)
+                byte transaction, ushort productId)
             {
                 if (control == null || argb == null || argb.FeatureReportLength < PacketLength) return null;
                 var handBack = new List<byte[]>();
@@ -240,7 +299,7 @@ namespace PadForge.Common.Input.Peripherals
                     if (reply == null || reply[RazerDirectProtocol.ArgumentsAt + 1] != led) continue;
                     handBack.Add(BrightnessWrite(transaction, led, reply[RazerDirectProtocol.ArgumentsAt + 2]));
                 }
-                return new Session(control, argb, transaction, handBack.ToArray());
+                return new Session(control, argb, transaction, handBack.ToArray(), productId);
             }
 
             public override bool Feature => true;
@@ -253,10 +312,14 @@ namespace PadForge.Common.Input.Peripherals
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
             {
                 if (!_direct) _crash = _handBack;
+                var byAddress = new int[Channels * ChannelLeds];
+                int count = Math.Min(lights?.Count ?? 0, colors?.Count ?? 0);
+                for (int i = 0; i < count; i++)
+                    if ((uint)lights[i].Address < (uint)byAddress.Length) byAddress[lights[i].Address] = colors[i];
                 for (int channel = 0; channel < Channels; channel++)
                 {
                     wait?.Invoke(PacketWaitMs);
-                    var sent = RazerFeatureLink.Send(_argb, Packet(channel, colors, channel * ChannelLeds), RazerGuard.PaintWaitMs);
+                    var sent = RazerFeatureLink.Send(_argb, Packet(channel, byAddress, channel * ChannelLeds), RazerGuard.PaintWaitMs);
                     if (sent == null) return Later();
                     if (sent == false) return HidLightingPaint.Failed;
                 }

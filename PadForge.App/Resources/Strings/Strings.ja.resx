@@ -1828,11 +1828,11 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>このデバイスはまだ応答していません。スリープから復帰すると色が表示されます。</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>色は {0} を通して送られます。</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>色は {0} を通して送られます。{0} はこの種類のデバイスをすべて同時に点灯させます。{0} が起動していない間は、PadForge がこのデバイスを単独で点灯させます。</value></data>
-  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
-  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} は起動している間このデバイスを点灯させます。{0} が起動していない間は、PadForge が単独で点灯させます。</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>色は OpenRGB の SDK Server を通して送られます。OpenRGB が起動していない間は、PadForge がこのデバイスを単独で点灯させます。</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>色は OpenRGB の SDK Server を通して送られます。</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB がこのデバイスを保持していて、このデバイス用の Direct モードがないため、照明は OpenRGB に任せたままになります。</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB は SDK Server をオフにして起動しているため、PadForge はこのデバイスを OpenRGB に任せます。OpenRGB で SDK Server をオンにすると、PadForge はそれを通してデバイスを点灯させます。</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} はこの種類のデバイスをすべて同時に点灯させるため、仮想コントローラー {1} のデバイスが色を決めます。</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} はこの種類のデバイスをすべて同時に点灯させるため、仮想コントローラー {2} の {1} の行が色を決めます。</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>仮想コントローラー {0} もこのデバイスを点灯させており、その色が表示されます。</value></data>
@@ -1848,9 +1848,9 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>ヘッドセット、マウスパッド、Chroma Link ストリップ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>ヘッドセット、マウスパッド、スピーカー</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>ヘッドセット</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>マザーボード、グラフィックスカード、メモリ</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>マザーボードとグラフィックスカード</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>マウスパッドとヘッドセットスタンド</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>ライトバー</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>6 桁の 16 進カラー (RRGGBB または #RRGGBB) を入力し、Enter キーを押すかフォーカスを外すと適用されます。</value></data>
@@ -1917,6 +1917,11 @@
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>パレットをリセット</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>現在のパレットを既定の 4 色 (赤、緑、青、黄) に置き換えます。</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>キーのカラー</value></data>
+  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>LED ストリップ</value></data>
+  <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>各アドレサブルヘッダーが駆動する LED の数です。数を指定すると、各 LED が個別の色になります。0 の場合、ヘッダーは数を指定せずに点灯します。</value></data>
+  <data name="Pad_Lighting_LedStrips_Header_Format" xml:space="preserve"><value>ヘッダー {0}</value></data>
+  <data name="Pad_Lighting_LedStrips_Tooltip" xml:space="preserve"><value>このヘッダーに接続されたものの LED の数です。わからない場合は 0 のままにしてください。</value></data>
+  <data name="Pad_Lighting_LedStrips_ResetAll" xml:space="preserve"><value>すべてのヘッダーの LED 数をリセット</value></data>
   <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>ゾーンのカラー</value></data>
   <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>図上でキーを選ぶか、キーボードで押して、カラーを指定します。シフトレイヤーごとに別のカラーを設定でき、レイヤーが有効な間に表示されます。</value></data>
   <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>ゾーンを選んでカラーを指定します。シフトレイヤーごとに別のカラーを設定でき、レイヤーが有効な間に表示されます。</value></data>
@@ -1943,7 +1948,7 @@
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>ゲームモード</value></data>
   <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
   <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>ファン</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>すべてのライト</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>選択を解除</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>キー押下で選択</value></data>

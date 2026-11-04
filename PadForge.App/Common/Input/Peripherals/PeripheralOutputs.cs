@@ -660,6 +660,9 @@ namespace PadForge.Common.Input.Peripherals
             /// <summary>The slot's light colors for the device (#557), on
             /// top of <see cref="Rgb"/>. Null for none.</summary>
             public KeyFrame Keys;
+            /// <summary>The LED counts the slot holds for the device's strips
+            /// (#557, <see cref="StripCounts"/>). Null for none.</summary>
+            public IReadOnlyList<int> Strips;
         }
 
         /// <summary>One claim per (device, slot): a mouse on two virtual
@@ -696,9 +699,12 @@ namespace PadForge.Common.Input.Peripherals
         /// colors for the device on top of that color (#557), null or empty
         /// for none: a backend that paints light by light renders them over
         /// the color (<see cref="LightRenderer.Render"/>), and one with a
-        /// single light paints the color alone.</summary>
+        /// single light paints the color alone. <paramref name="strips"/>
+        /// is the LED counts the slot holds for the device's strips (#557,
+        /// <see cref="StripCounts"/>), null for none: a backend that drives
+        /// strips sizes them by the ruling claim's.</summary>
         public static void SetLighting(Guid device, int slot, int player, byte r, byte g, byte b, int level = 0,
-            KeyFrame keys = null)
+            KeyFrame keys = null, IReadOnlyList<int> strips = null)
         {
             int rgb = (r << 16) | (g << 8) | b;
             if (keys != null && keys.IsEmpty) keys = null;
@@ -708,14 +714,14 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     changed = true;
                     ranked = true;
-                    return new LightClaim { Player = player, Rgb = rgb, Level = level, Keys = keys };
+                    return new LightClaim { Player = player, Rgb = rgb, Level = level, Keys = keys, Strips = strips };
                 },
                 (_, claim) =>
                 {
                     lock (claim)
                     {
                         if (claim.Player != player || claim.Rgb != rgb || claim.Level != level
-                            || !KeyFrame.Same(claim.Keys, keys))
+                            || !KeyFrame.Same(claim.Keys, keys) || !StripCounts.Same(claim.Strips, strips))
                         {
                             // A level that moves redraws the tab, as a rank
                             // does: its route line names what is held.
@@ -724,6 +730,7 @@ namespace PadForge.Common.Input.Peripherals
                             claim.Rgb = rgb;
                             claim.Level = level;
                             claim.Keys = keys;
+                            claim.Strips = strips;
                             changed = true;
                         }
                     }
@@ -819,6 +826,10 @@ namespace PadForge.Common.Input.Peripherals
 
             /// <summary>The claim's light colors (#557), null for none.</summary>
             public KeyFrame Keys { get; init; }
+
+            /// <summary>The LED counts the claim holds for the device's strips
+            /// (#557), null for none.</summary>
+            public IReadOnlyList<int> Strips { get; init; }
         }
 
         /// <summary>The ruling between the claimants of one path, pure so the
@@ -865,6 +876,7 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         Level = pair.Value.Level,
                         Keys = pair.Value.Keys,
+                        Strips = pair.Value.Strips,
                     };
                 if (!found || Rules(c, ruler))
                 {

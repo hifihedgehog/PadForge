@@ -223,6 +223,128 @@ namespace PadForge.Tests
         //  The keep-alive
         // ─────────────────────────────────────────────
 
+        /// <summary>A session of a device with strips that logs each count it
+        /// is given and draws its map from it.</summary>
+        private sealed class SizedSession : FakeWorkerSession
+        {
+            private readonly FakeWorkerFamily _log;
+            private LightMap _map;
+
+            public SizedSession(FakeWorkerFamily family, IHidReportChannel io) : base(family, io) => _log = family;
+
+            public bool Fails { get; init; }
+
+            public override LightMap Map => _map;
+
+            public override bool SizeStrips(IHidReportChannel io, Action<int> wait, IReadOnlyList<int> counts)
+            {
+                _log.Add("size " + StripCounts.Format(counts));
+                if (Fails) return false;
+                var lights = Enumerable.Range(0, Math.Max(1, StripCounts.At(counts, 1)))
+                    .Select(i => new LightInfo(i, LightKind.Edge, 0, LightKeySource.None)).ToArray();
+                _map = new LightMap(lights, "sized") { Strips = new[] { new LightStrip(1, 48, StripCounts.At(counts, 1)) } };
+                return true;
+            }
+        }
+
+        private void LightSized(int rgb, params int[] counts) => PeripheralOutputs.SetLighting(Device, slot: 0, player: 1,
+            (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb, strips: counts);
+
+        /// <summary>The ruling claim's counts reach the session before the
+        /// picture, once per change, the worker reads the session's map after
+        /// them and publishes it, and a picture goes out by that map. A claim
+        /// with no counts asks nothing of a session that holds none.</summary>
+        [Fact]
+        public void AClaimsStripCounts_ReachTheSessionBeforeThePicture_OncePerChange()
+        {
+            _family.With(m => new HidLightingModel
+            {
+                Family = m.Family, Name = m.Name, Map = m.Map, Begin = (io, _) => new SizedSession(_family, io),
+            });
+            var unit = Collection();
+            using var backend = Started(unit);
+            Link(unit);
+            Light(0x112233);
+            Passes(backend);
+            Assert.DoesNotContain(_family.Calls(), c => c.StartsWith("size", StringComparison.Ordinal));
+            Assert.Equal(1, Count("paint 112233,112233"));
+
+            LightSized(0x112233, 3);
+            Passes(backend);
+            Assert.Equal(1, Count("size 3"));
+            var path = new OutputPath(OutputFamily.HidLightingUnit, unit.Path);
+            Assert.Equal(3, PeripheralLightMaps.For(path).Lights.Count);
+            Assert.Equal(new[] { new LightStrip(1, 48, 3) }, PeripheralLightMaps.For(path).Strips);
+            var calls = _family.Calls();
+            Assert.True(calls.IndexOf("size 3") < calls.IndexOf("paint 112233,112233,112233"));
+
+            // The same counts in another list ask nothing more.
+            LightSized(0x445566, 3, 0);
+            Passes(backend);
+            Assert.Equal(1, Count("size 3"));
+            Assert.Equal(1, Count("paint 445566,445566,445566"));
+
+            // A count taken away is a change like any other.
+            Light(0x445566);
+            Passes(backend);
+            Assert.Equal(1, Count("size "));
+            Assert.Single(PeripheralLightMaps.For(path).Lights);
+        }
+
+        /// <summary>A session that opens later is given the counts again, since
+        /// a new session starts with none, and a write that fails fails the unit
+        /// as any write does.</summary>
+        [Fact]
+        public void ANewSession_IsGivenTheCountsAgain_AndAFailedWriteFailsTheUnit()
+        {
+            int sessions = 0;
+            _family.With(m => new HidLightingModel
+            {
+                Family = m.Family, Name = m.Name, Map = m.Map,
+                Begin = (io, _) => new SizedSession(_family, io) { Fails = ++sessions == 1 },
+            });
+            var unit = Collection();
+            using var backend = Started(unit);
+            Link(unit);
+            LightSized(0x112233, 2);
+            Passes(backend);
+            // The first session's write failed, so no picture went out on it.
+            Assert.Equal(1, Count("size 2"));
+            Assert.DoesNotContain(_family.Calls(), c => c.StartsWith("paint", StringComparison.Ordinal));
+            Advance(60_000);
+            Passes(backend, 4);
+            Assert.Equal(2, Count("size 2"));
+            Assert.Equal(1, Count("paint 112233,112233"));
+        }
+
+        /// <summary>A map an earlier session sized stays across closes, so a
+        /// new session on the same device is told when the claim has no counts
+        /// any more, and the map goes back with it.</summary>
+        [Fact]
+        public void ANewSessionOnASizedMap_IsToldThereAreNoCounts()
+        {
+            _family.With(m => new HidLightingModel
+            {
+                Family = m.Family, Name = m.Name, Map = m.Map, Begin = (io, _) => new SizedSession(_family, io),
+            });
+            var unit = Collection();
+            using var backend = Started(unit);
+            Link(unit);
+            LightSized(0x112233, 3);
+            Passes(backend);
+            var path = new OutputPath(OutputFamily.HidLightingUnit, unit.Path);
+            Assert.Equal(3, PeripheralLightMaps.For(path).Lights.Count);
+            Unlight();
+            Passes(backend);
+            Assert.Equal(1, Count("handback"));
+            Assert.Equal(3, PeripheralLightMaps.For(path).Lights.Count);
+            Light(0x445566);
+            Passes(backend);
+            Assert.Equal(1, Count("size "));
+            Assert.Single(PeripheralLightMaps.For(path).Lights);
+            Assert.Equal(1, Count("paint 445566"));
+        }
+
         /// <summary>A keep-alive whose idle time is its interval, HyperX's
         /// and Corsair's: the picture again once that long passed with
         /// nothing sent, the resend included

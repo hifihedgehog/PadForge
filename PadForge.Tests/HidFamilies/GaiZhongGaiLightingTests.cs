@@ -140,6 +140,67 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void AHub_WritesACountLikeSetChannelLen_AndReadsItsLightsBack()
+        {
+            byte[] lengths = { 0x00, 0x03, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0, 0, 0, 0, 0, 0, 0, 0 };
+            var log = new ReportLog();
+            log.InputAnswer = o =>
+            {
+                var written = log.Of('O').LastOrDefault(r => r[1] == 0x86);
+                if (written != null) Array.Copy(written, 3, lengths, 0, 16);
+                if (o[1] == 0x88) lengths[7] = 0x09;
+                if (o[1] != 0x87 && o[1] != 0x88) return null;
+                var answer = new byte[65];
+                answer[1] = o[1];
+                Array.Copy(lengths, 0, answer, 3, 16);
+                return answer;
+            };
+            var io = new ReportLogChannel { Device = log, Path = "hub" };
+            var session = G.Session.Begin(io, G.HubGreen, "p");
+            Assert.Equal(new[] { 1, 2, 3, 4 }.Select(n => new LightStrip(n, 637, 0)), session.Map.Strips);
+            Assert.Equal(5, session.Map.Lights.Count);
+
+            // Channel 2 takes four lights: SetChannelLen's 0x86 with every
+            // channel's count from byte 3, then 0x87 (GaiZhongGaiController.cpp:126-145).
+            log.Clear();
+            int waited = 0;
+            Assert.True(session.SizeStrips(io, ms => waited += ms, new[] { 0, 4 }));
+            var outputs = log.Of('O');
+            Assert.Equal(2, outputs.Count);
+            Assert.Equal("00 86 00 00 03 00 04 00 02", Hex(outputs[0], 9));
+            Assert.Equal("00 87", Hex(outputs[1], 2));
+            Assert.Equal(50, waited);
+            Assert.Equal(new[] { 1, 1, 1, 2, 2, 2, 2, 3, 3 }, session.Map.Lights.Select(l => l.Zone));
+            Assert.Equal(new[] { new LightStrip(1, 637, 0), new LightStrip(2, 637, 4) }, session.Map.Strips.Take(2));
+
+            // The count it holds already goes nowhere.
+            log.Clear();
+            Assert.True(session.SizeStrips(io, _ => { }, new[] { 0, 4 }));
+            Assert.Empty(log.Of('O'));
+
+            // The green hub's fourth channel at its most is an order to
+            // measure (lines 104-119): 0x88, and the hub's answer.
+            log.Clear();
+            Assert.True(session.SizeStrips(io, _ => { }, new[] { 0, 4, 0, 637 }));
+            Assert.Equal("00 88", Hex(Assert.Single(log.Of('O')), 2));
+            Assert.Equal(3 + 4 + 2 + 9, session.Map.Lights.Count);
+        }
+
+        /// <summary>The blue hub has eight channels and a lower most, and a board
+        /// that is no hub has no strips.</summary>
+        [Fact]
+        public void TheBlueHub_HasEightStrips_AndABoardHasNone()
+        {
+            Assert.Equal(Enumerable.Range(1, 8).Select(n => new LightStrip(n, 633, 0)), G.HubStrips(G.HubBlue, null));
+            var log = new ReportLog();
+            var io = new ReportLogChannel { Device = log, Path = "board" };
+            var session = G.Session.Begin(io, G.Pro68, "p");
+            Assert.True(session.SizeStrips(io, _ => { }, new[] { 4 }));
+            Assert.Empty(log.Of('O'));
+            Assert.Null(session.Map);
+        }
+
+        [Fact]
         public void AHub_ReadsItsChannelCounts_AndLightsEachChannelAsAZone()
         {
             using var rig = new KeyboardFamilyRig { OutputLength = 65, InputLength = 65 };

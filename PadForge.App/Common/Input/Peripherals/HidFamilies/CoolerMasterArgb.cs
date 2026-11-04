@@ -23,8 +23,9 @@ namespace PadForge.Common.Input.Peripherals
     /// <para>The ARGB controller. Four addressable headers and one RGB
     /// header, each lit as one zone. OpenRGB lights an addressable header
     /// light by light only once the user has told it how many LEDs the
-    /// header drives (its zones start at 0 LEDs, RGBController_CMARGBController.cpp:416-422),
-    /// so each header takes its zone's color through OpenRGB's Static mode,
+    /// header drives (its zones start at 0 LEDs, RGBController_CMARGBController.cpp:416-422).
+    /// Until a count is set on the Lighting tab, each header takes its zone's
+    /// color through OpenRGB's Static mode,
     /// as a zone mode sends it (DeviceUpdateZoneMode, lines 522-619): 00 80
     /// 01 01, then 00 80 0B 02, the port, the mode 0A, 10 (no random
     /// colors), the speed 0, the brightness FF and the color (SetPortMode at
@@ -34,6 +35,20 @@ namespace PadForge.Common.Input.Peripherals
     /// 00 80 01 03, then 00 80 04 05 10 00 FF and the color. Only the headers
     /// whose color changed go out.</para>
     ///
+    /// <para>A count on any header puts the whole device in OpenRGB's Direct
+    /// mode, which is the device's and not a header's
+    /// (MODE_FLAG_REQUIRES_ENTIRE_DEVICE, RGBController_CMARGBController.cpp:102-107):
+    /// 00 80 01 01 02 once, and each picture as SetPortLEDsDirect sends it,
+    /// that many colors from the frame's byte 5 (CMARGBController.cpp:245-297).
+    /// A header with no count takes its one color for 48 LEDs, the most a
+    /// header takes (lines 401, RGBController_CMARGBController.cpp), as the
+    /// Small ARGB does below, since Static is not open to it in that mode. A
+    /// count that changes goes out as SetPortLEDCount
+    /// (DeviceConfigureZone, CMARGBController.cpp:151-164). The RGB header
+    /// keeps its Static mode, as in OpenRGB's Direct mode. Pictures then go
+    /// out at the realtime rate, as SignalRGB's plugin streams this device
+    /// (Cooler_Master_ARGB_Controller.js, Render, on each frame).</para>
+    ///
     /// <para>The Small ARGB controller has no Static mode, only effects and,
     /// on firmware 0012, Direct (RGBController_CMSmallARGBController.cpp:84-205).
     /// The session sets Direct as SetMode does (SendUpdate,
@@ -41,12 +56,17 @@ namespace PadForge.Common.Input.Peripherals
     /// SetLedsDirect does (lines 173-222), its one color for 48 LEDs, the
     /// most the header takes (CM_SMALL_ARGB_MAX_LEDS,
     /// RGBController_CMSmallARGBController.h:19), so a strip of any length
-    /// it drives shows it.</para>
+    /// it drives shows it. With a count set on the Lighting tab it sends that
+    /// many colors, after SetLedCount (CMSmallARGBController.cpp:148-158,
+    /// RGBController_CMSmallARGBController.cpp:292). SignalRGB's plugin
+    /// streams these frames (Cooler_Master_A-RGB_LED_Small_Controller.js,
+    /// Render), so they go out at the realtime rate.</para>
     ///
     /// <para>What the writes do. OpenRGB marks both devices' modes as saved
     /// by the device ("@save :robot:", RGBController_CMARGBController.cpp:18,
-    /// RGBController_CMSmallARGBController.cpp:18), so a picture is held
-    /// 150 ms and pictures go out no sooner than 500 ms apart, PadForge's
+    /// RGBController_CMSmallARGBController.cpp:18), so a picture sent as a
+    /// mode is held
+    /// 150 ms and such pictures go out no sooner than 500 ms apart, PadForge's
     /// spacing for writes that land in a device's memory
     /// (<see cref="LenovoLegionLighting.HoldMs"/>). A session first reads
     /// what each header runs, as OpenRGB reads it to start in the device's
@@ -109,16 +129,83 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(new[]
-            {
-                ZoneLight(0, 1), ZoneLight(1, 2), ZoneLight(2, 3), ZoneLight(3, 4), ZoneLight(ArgbRgbPort, 5),
-            }, "OpenRGB RGBController_CMARGBController.cpp") { Product = Product(productId) },
+            Map = ArgbMap(Product(productId), null),
             Programs = new[] { VendorPrograms.MasterPlus },
             HoldMs = LenovoLegionLighting.HoldMs,
             RepaintMs = LenovoLegionLighting.RepaintMs,
             Identify = IsArgbFirmware,
-            Begin = (io, wait) => BeginArgb(io),
+            Begin = (io, wait) => BeginArgb(io, Product(productId)),
         };
+
+        /// <summary>A light's address on a sized strip: its strip's number,
+        /// then its LED. A zone's address is its port, below all of them.</summary>
+        internal static int StripAddress(int strip, int led) => strip << 8 | led;
+
+        /// <summary>The controller's lights: each addressable header one zone,
+        /// or with a count set for it that many edge lights, then the RGB
+        /// header, a zone.</summary>
+        internal static LightMap ArgbMap(string product, IReadOnlyList<int> counts)
+        {
+            var lights = new List<LightInfo>();
+            var strips = new LightStrip[ArgbRgbPort];
+            for (int port = 0; port < ArgbRgbPort; port++)
+            {
+                int leds = Math.Min(StripCounts.At(counts, port + 1), SmallArgbLeds);
+                strips[port] = new LightStrip(port + 1, SmallArgbLeds, leds);
+                if (leds == 0) lights.Add(ZoneLight(port, port + 1));
+                for (int led = 0; led < leds; led++)
+                    lights.Add(new LightInfo(StripAddress(port + 1, led), LightKind.Edge, 0, LightKeySource.None) { Zone = port + 1 });
+            }
+            lights.Add(ZoneLight(ArgbRgbPort, 5));
+            return new LightMap(lights, "OpenRGB RGBController_CMARGBController.cpp") { Product = product, Strips = strips };
+        }
+
+        /// <summary>The colors <paramref name="strip"/> takes in a picture, one
+        /// per LED in map order: those of its edge lights.</summary>
+        internal static List<int> StripColors(int strip, IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
+        {
+            var mine = new List<int>();
+            int count = Math.Min(lights?.Count ?? 0, colors?.Count ?? 0);
+            for (int i = 0; i < count; i++)
+                if (lights[i].Address >> 8 == strip) mine.Add(colors[i] & 0xFFFFFF);
+            return mine;
+        }
+
+        /// <summary>SetPortLEDCount (CMARGBController.cpp:151-164): 80 0D 02, the
+        /// port's ID, the count and 01.</summary>
+        internal static byte[] ArgbLedCount(int port, int count)
+            => Packet(stackalloc byte[] { 0x80, 0x0D, 0x02, ArgbPorts[port], (byte)count, 0x01 });
+
+        /// <summary>SetPortLEDsDirect (CMARGBController.cpp:245-297): the packet
+        /// number at byte 1, 80 added to the last's, then 07, the port's index
+        /// and the LED count with the colors from byte 5 in the first report,
+        /// and the colors from byte 2 in each one after.</summary>
+        internal static List<byte[]> ArgbDirectFrames(int port, IReadOnlyList<int> leds)
+        {
+            var colors = new List<byte>(leds.Count * 3);
+            foreach (int color in leds)
+            {
+                colors.Add(R(color));
+                colors.Add(G(color));
+                colors.Add(B(color));
+            }
+            var frames = new List<byte[]>();
+            var buffer = new byte[PacketLength];
+            buffer[2] = 0x07;
+            buffer[3] = (byte)port;
+            buffer[4] = (byte)leds.Count;
+            int at = 5, next = 0;
+            while (next < colors.Count)
+            {
+                buffer[1] = (byte)frames.Count;
+                while (at < PacketLength && next < colors.Count) buffer[at++] = colors[next++];
+                if (next == colors.Count) buffer[1] += 0x80;
+                frames.Add(buffer);
+                buffer = new byte[PacketLength];
+                at = 2;
+            }
+            return frames;
+        }
 
         /// <summary>GetPortStatus's request (CMARGBController.cpp:107-131):
         /// 80 0B 01 and the port, or 80 0A 01 00 for the RGB header.</summary>
@@ -182,7 +269,7 @@ namespace PadForge.Common.Input.Peripherals
             => ArgbSetPortMode(port, new ArgbPortState(port == ArgbRgbPort ? RgbStatic : ArgbStatic, 0, ArgbBrightness,
                 false, color & 0xFFFFFF));
 
-        private static HidLightingSession BeginArgb(IHidReportChannel io)
+        private static HidLightingSession BeginArgb(IHidReportChannel io, string product)
         {
             if (io == null) return null;
             var states = new ArgbPortState[ArgbPorts.Length];
@@ -191,16 +278,22 @@ namespace PadForge.Common.Input.Peripherals
                 if (ArgbStatusOf(Exchange(io, ArgbStatusQuery(port), required: false), port) is not { } state) return null;
                 states[port] = state;
             }
-            return new ArgbSession(states);
+            return new ArgbSession(states, product);
         }
 
         internal sealed class ArgbSession : Session
         {
+            private readonly string _product;
+            private LightMap _map;
+            private readonly int[] _counts = new int[ArgbRgbPort];
+            private bool _sized;
+            private bool _direct;
             private int[] _shown;
 
-            public ArgbSession(ArgbPortState[] states)
+            public ArgbSession(ArgbPortState[] states, string product)
             {
                 States = states;
+                _product = product;
                 var frames = new List<byte[]>();
                 for (int port = 0; port < states.Length; port++) frames.AddRange(ArgbSetPortMode(port, states[port]));
                 SetHandBack(frames.ToArray());
@@ -208,6 +301,40 @@ namespace PadForge.Common.Input.Peripherals
 
             /// <summary>What each header ran when the session began.</summary>
             public IReadOnlyList<ArgbPortState> States { get; }
+
+            /// <summary>The model's map until a count is set.</summary>
+            public override LightMap Map => _map;
+
+            /// <summary>Direct frames store nothing, so a sized device takes
+            /// pictures at the realtime rate.</summary>
+            public override int? HoldMs => _sized ? 0 : null;
+
+            public override int? RepaintMs => _sized ? A1PeriodMs : null;
+
+            /// <summary>DeviceConfigureZone for each header whose count changed
+            /// (RGBController_CMARGBController.cpp:463-471).</summary>
+            public override bool SizeStrips(IHidReportChannel io, Action<int> wait, IReadOnlyList<int> counts)
+            {
+                bool sized = false;
+                for (int port = 0; port < ArgbRgbPort; port++)
+                {
+                    int leds = Math.Min(StripCounts.At(counts, port + 1), SmallArgbLeds);
+                    if (leds > 0) sized = true;
+                    if (leds == _counts[port]) continue;
+                    Owe();
+                    if (!WriteAll(io, new[] { ArgbLedCount(port, leds) })) return false;
+                    _counts[port] = leds;
+                }
+                _map = ArgbMap(_product, counts);
+                _sized = sized;
+                if (!sized && _direct)
+                {
+                    // The Static frames of the next picture leave Direct.
+                    _direct = false;
+                    _shown = null;
+                }
+                return true;
+            }
 
             /// <summary>The hand-back has no reads: OpenRGB reads nothing
             /// after SetPortMode.</summary>
@@ -218,6 +345,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Owe();
                 var map = ByAddress(lights, colors, ArgbPorts.Length);
+                if (_sized) return PaintDirect(io, map, lights, colors);
                 for (int port = 0; port < map.Length; port++)
                 {
                     if (_shown != null && _shown[port] == map[port]) continue;
@@ -227,9 +355,38 @@ namespace PadForge.Common.Input.Peripherals
                 return HidLightingPaint.Sent;
             }
 
+            /// <summary>OpenRGB's Direct mode: the device's Direct once, each
+            /// addressable header's frames, and the RGB header's Static mode when
+            /// its color changed (DeviceUpdateZoneLEDs,
+            /// RGBController_CMARGBController.cpp:483-503).</summary>
+            private HidLightingPaint PaintDirect(IHidReportChannel io, int[] zones,
+                IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
+            {
+                if (!_direct)
+                {
+                    if (!WriteAll(io, ArgbSetPortMode(0, new ArgbPortState(ArgbDirect, 0, 0, false, 0))))
+                        return HidLightingPaint.Failed;
+                    _direct = true;
+                    _shown = null;
+                }
+                for (int port = 0; port < ArgbRgbPort; port++)
+                {
+                    IReadOnlyList<int> leds = _counts[port] > 0
+                        ? StripColors(port + 1, lights, colors)
+                        : System.Linq.Enumerable.Repeat(zones[port], SmallArgbLeds).ToArray();
+                    if (!WriteAll(io, ArgbDirectFrames(port, leds))) return HidLightingPaint.Failed;
+                }
+                if ((_shown == null || _shown[ArgbRgbPort] != zones[ArgbRgbPort])
+                    && !WriteAll(io, ArgbColor(ArgbRgbPort, zones[ArgbRgbPort])))
+                    return HidLightingPaint.Failed;
+                _shown = zones;
+                return HidLightingPaint.Sent;
+            }
+
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
             {
                 _shown = null;
+                _direct = false;
                 return base.HandBack(io, wait);
             }
         }
@@ -242,16 +399,34 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(new[] { ZoneLight(0, 1) }, "OpenRGB RGBController_CMSmallARGBController.cpp")
-            {
-                Product = Product(productId),
-            },
+            Map = SmallArgbMap(Product(productId), null),
             Programs = new[] { VendorPrograms.MasterPlus },
-            HoldMs = LenovoLegionLighting.HoldMs,
-            RepaintMs = LenovoLegionLighting.RepaintMs,
+            RepaintMs = A1PeriodMs,
             Identify = IsSmallArgbFirmware,
-            Begin = (io, wait) => BeginSmallArgb(io),
+            Begin = (io, wait) => BeginSmallArgb(io, Product(productId)),
         };
+
+        /// <summary>The controller's lights: its header one zone, or with a
+        /// count set for it that many edge lights.</summary>
+        internal static LightMap SmallArgbMap(string product, IReadOnlyList<int> counts)
+        {
+            int leds = Math.Min(StripCounts.At(counts, 1), SmallArgbLeds);
+            var lights = new List<LightInfo>();
+            if (leds == 0) lights.Add(ZoneLight(0, 1));
+            for (int led = 0; led < leds; led++)
+                lights.Add(new LightInfo(StripAddress(1, led), LightKind.Edge, 0, LightKeySource.None) { Zone = 1 });
+            return new LightMap(lights, "OpenRGB RGBController_CMSmallARGBController.cpp")
+            {
+                Product = product,
+                Strips = new[] { new LightStrip(1, SmallArgbLeds, leds) },
+            };
+        }
+
+        /// <summary>SetLedCount for its one zone (CMSmallARGBController.cpp:148-158,
+        /// RGBController_CMSmallARGBController.cpp:292): 80 0D 02, the zone, 0F
+        /// less the count or 01 where that is none, and the count.</summary>
+        internal static byte[] SmallLedCount(int count)
+            => Packet(stackalloc byte[] { 0x80, 0x0D, 0x02, 0x01, (byte)(0x0F - count > 0 ? 0x0F - count : 0x01), (byte)count });
 
         /// <summary>GetStatus's two requests (CMSmallARGBController.cpp:44-61):
         /// 80 01 01 FF 01, then 80 0B 01 01.</summary>
@@ -321,25 +496,47 @@ namespace PadForge.Common.Input.Peripherals
             return frames;
         }
 
-        private static HidLightingSession BeginSmallArgb(IHidReportChannel io)
+        private static HidLightingSession BeginSmallArgb(IHidReportChannel io, string product)
         {
             if (io == null || Exchange(io, SmallStatusOpen(), required: false) == null) return null;
             if (SmallStatusOf(Exchange(io, SmallStatusQuery(), required: false)) is not { } state) return null;
-            return new SmallArgbSession(state);
+            return new SmallArgbSession(state, product);
         }
 
         internal sealed class SmallArgbSession : Session
         {
             private bool _direct;
+            private readonly string _product;
+            private LightMap _map;
+            private int _count;
 
-            public SmallArgbSession(ArgbPortState state)
+            public SmallArgbSession(ArgbPortState state, string product)
             {
                 State = state;
+                _product = product;
                 SetHandBack(SmallSetMode(state));
             }
 
             /// <summary>What the header ran when the session began.</summary>
             public ArgbPortState State { get; }
+
+            /// <summary>The model's map until a count is set.</summary>
+            public override LightMap Map => _map;
+
+            /// <summary>DeviceConfigureZone where the count changed
+            /// (RGBController_CMSmallARGBController.cpp:286-296).</summary>
+            public override bool SizeStrips(IHidReportChannel io, Action<int> wait, IReadOnlyList<int> counts)
+            {
+                int leds = Math.Min(StripCounts.At(counts, 1), SmallArgbLeds);
+                if (leds != _count)
+                {
+                    Owe();
+                    if (!WriteAll(io, new[] { SmallLedCount(leds) })) return false;
+                    _count = leds;
+                }
+                _map = SmallArgbMap(_product, counts);
+                return true;
+            }
 
             /// <summary>SendUpdate's two reports, with the read OpenRGB makes
             /// after the second (CMSmallARGBController.cpp:249-250).</summary>
@@ -361,9 +558,13 @@ namespace PadForge.Common.Input.Peripherals
                         return HidLightingPaint.Failed;
                     _direct = true;
                 }
-                int color = ByAddress(lights, colors, 1)[0];
-                var leds = new int[SmallArgbLeds];
-                Array.Fill(leds, color);
+                IReadOnlyList<int> leds = StripColors(1, lights, colors);
+                if (_count == 0)
+                {
+                    var all = new int[SmallArgbLeds];
+                    Array.Fill(all, ByAddress(lights, colors, 1)[0]);
+                    leds = all;
+                }
                 return WriteAll(io, SmallDirectFrames(leds)) ? HidLightingPaint.Sent : HidLightingPaint.Failed;
             }
 

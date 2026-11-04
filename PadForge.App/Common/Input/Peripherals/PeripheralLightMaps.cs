@@ -43,6 +43,21 @@ namespace PadForge.Common.Input.Peripherals
             return null;
         }
 
+        /// <summary>The first map among <paramref name="paths"/> that lists
+        /// strips its user can size, the row's LED Strips card, or null. A
+        /// strip left unsized can be one light, so this does not ask for
+        /// more than one.</summary>
+        public static LightMap WithStrips(IEnumerable<OutputPath> paths)
+        {
+            if (paths == null) return null;
+            foreach (var path in paths)
+            {
+                var map = For(path);
+                if (map != null && map.Strips.Count > 0) return map;
+            }
+            return null;
+        }
+
         /// <summary>The lights a row's Key Colors card shows: the first map
         /// among its paths with more than one light
         /// (<see cref="FirstPerLight"/>), narrowed to the lights the row's

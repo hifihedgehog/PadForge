@@ -1003,11 +1003,11 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Ez az eszköz még nem válaszolt. A színei megjelennek, amint felébred.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>A színek ezen keresztül jutnak el: {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>A színek ezen keresztül jutnak el: {0}, amely egyszerre világítja meg az összes ilyen fajta eszközt. Amíg a(z) {0} nem fut, a PadForge maga világítja meg ezt az eszközt.</value></data>
-  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
-  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>A(z) {0} világítja meg ezt az eszközt, amíg fut. Amíg a(z) {0} nem fut, a PadForge maga világítja meg.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>A színek az OpenRGB SDK Serverén keresztül jutnak el. Amíg az OpenRGB nem fut, a PadForge maga világítja meg ezt az eszközt.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>A színek az OpenRGB SDK Serverén keresztül jutnak el.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>Az OpenRGB tartja ezt az eszközt, és nincs hozzá Direct módja, ezért a világítása az OpenRGB-nél marad.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>Az OpenRGB kikapcsolt SDK Serverrel fut, ezért a PadForge az OpenRGB-re hagyja ezt az eszközt. Kapcsold be az SDK Servert az OpenRGB-ben, és a PadForge azon keresztül világítja meg az eszközt.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>A(z) {0} egyszerre világítja meg az összes ilyen fajta eszközt, ezért a színüket a(z) {1}. virtuális kontrolleren lévő határozza meg.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>A(z) {0} egyszerre világítja meg az összes ilyen fajta eszközt, ezért a színüket a(z) {2}. virtuális kontroller {1} sora határozza meg.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>A(z) {0}. virtuális kontroller is megvilágítja ezt az eszközt, és annak a színe látszik.</value></data>
@@ -1023,9 +1023,9 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>headsetek, egérpadok és Chroma Link szalagok</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>headsetek, egérpadok és hangszórók</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headsetek</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>alaplapok, videokártyák és memóriák</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>alaplapok és videokártyák</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>egérpadok és headsetállványok</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Fénysáv</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Adjon meg egy hatjegyű hexadecimális színt (RRGGBB vagy #RRGGBB), majd az alkalmazáshoz nyomja meg az Enter billentyűt, vagy kattintson máshová.</value></data>
@@ -1102,6 +1102,11 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Paletta visszaállítása</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>A jelenlegi paletta lecserélése a négy alapértelmezett színre (piros, zöld, kék, sárga).</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Billentyűszínek</value></data>
+  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>LED-szalagok</value></data>
+  <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>Hány LED-et hajt meg az egyes címezhető csatlakozók. Darabszámmal minden LED saját színt kap. 0 esetén a csatlakozó darabszám nélkül világít.</value></data>
+  <data name="Pad_Lighting_LedStrips_Header_Format" xml:space="preserve"><value>{0}. csatlakozó</value></data>
+  <data name="Pad_Lighting_LedStrips_Tooltip" xml:space="preserve"><value>A csatlakozóra kötött eszköz LED-jeinek száma. Ha nem tudod, hagyd 0-n.</value></data>
+  <data name="Pad_Lighting_LedStrips_ResetAll" xml:space="preserve"><value>Az összes csatlakozó LED-számának visszaállítása</value></data>
   <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Zónaszínek</value></data>
   <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Jelölj ki billentyűket a képen, vagy nyomd meg őket a billentyűzeten, és adj nekik színt. Minden váltórétegnek lehetnek saját színei, amelyek a réteg bekapcsolt állapotában látszanak.</value></data>
   <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Jelölj ki zónákat, és adj nekik színt. Minden váltórétegnek lehetnek saját színei, amelyek a réteg bekapcsolt állapotában látszanak.</value></data>
@@ -1128,7 +1133,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Játékmód</value></data>
   <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
   <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Ventilátor</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Minden fény</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Kijelölés törlése</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Kijelölés billentyűnyomással</value></data>

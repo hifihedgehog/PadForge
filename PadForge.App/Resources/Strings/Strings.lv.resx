@@ -1003,11 +1003,11 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Šī ierīce vēl nav atbildējusi. Tās krāsas parādīsies, tiklīdz tā pamodīsies.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Krāsas tiek sūtītas caur {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Krāsas tiek sūtītas caur {0}, kas vienlaikus izgaismo visas šāda veida ierīces. Kamēr {0} nedarbojas, PadForge izgaismo šo ierīci pats.</value></data>
-  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
-  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} izgaismo šo ierīci, kamēr darbojas. Kamēr {0} nedarbojas, PadForge to izgaismo pats.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Krāsas tiek sūtītas caur OpenRGB SDK Server. Kamēr OpenRGB nedarbojas, PadForge šo ierīci izgaismo pats.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Krāsas tiek sūtītas caur OpenRGB SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB patur šo ierīci, un tam nav Direct režīma šai ierīcei, tāpēc tās apgaismojums paliek OpenRGB ziņā.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB darbojas ar izslēgtu SDK Server, tāpēc PadForge atstāj šo ierīci OpenRGB ziņā. Ieslēdziet SDK Server programmā OpenRGB, un PadForge izgaismos ierīci caur to.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} vienlaikus izgaismo visas šāda veida ierīces, tāpēc to krāsu nosaka ierīce, kas piešķirta virtuālajam kontrollerim {1}.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} vienlaikus izgaismo visas šāda veida ierīces, tāpēc to krāsu nosaka rinda {1} virtuālajā kontrollerī {2}.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Šo ierīci izgaismo arī virtuālais kontrolleris {0}, un redzama ir tā krāsa.</value></data>
@@ -1023,9 +1023,9 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>austiņas, peles paliktņus un Chroma Link lentes</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>austiņas, peles paliktņus un skaļruņus</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>austiņas</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>mātesplates, videokartes un atmiņu</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>mātesplates un videokartes</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>peles paliktņus un austiņu statīvus</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Gaismas josla</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Ievadiet sešciparu heksadecimālu krāsu (RRGGBB vai #RRGGBB) un nospiediet Enter vai noklikšķiniet citur, lai to lietotu.</value></data>
@@ -1102,6 +1102,11 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Atiestatīt paleti</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Aizstāt pašreizējo paleti ar četrām noklusējuma krāsām (sarkana, zaļa, zila, dzeltena).</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Taustiņu krāsas</value></data>
+  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>LED lentes</value></data>
+  <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>Cik LED vada katrs adresējamais savienotājs. Ar skaitu katra LED saņem savu krāsu. Pie 0 savienotājs spīd bez tā.</value></data>
+  <data name="Pad_Lighting_LedStrips_Header_Format" xml:space="preserve"><value>Savienotājs {0}</value></data>
+  <data name="Pad_Lighting_LedStrips_Tooltip" xml:space="preserve"><value>LED skaits tam, kas pievienots šim savienotājam. Ja nezināt, atstājiet 0.</value></data>
+  <data name="Pad_Lighting_LedStrips_ResetAll" xml:space="preserve"><value>Atiestatīt visu savienotāju LED skaitu</value></data>
   <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Zonu krāsas</value></data>
   <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Atlasiet taustiņus attēlā vai nospiediet tos uz tastatūras un piešķiriet tiem krāsu. Katram pārslēgšanas slānim var būt savas krāsas, kas tiek rādītas, kamēr slānis ir aktīvs.</value></data>
   <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Atlasiet zonas un piešķiriet tām krāsu. Katram pārslēgšanas slānim var būt savas krāsas, kas tiek rādītas, kamēr slānis ir aktīvs.</value></data>
@@ -1128,7 +1133,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Spēles režīms</value></data>
   <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
   <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Ventilators</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Visas gaismas</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Notīrīt atlasi</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Atlasīt, nospiežot taustiņus</value></data>

@@ -173,6 +173,14 @@ namespace PadForge.Common.Input.Peripherals
             public LightMap PendingMap;
             public long PendingAt;
 
+            /// <summary>The strip counts the session was last given
+            /// (<see cref="HidLightingSession.SizeStrips"/>), and whether it
+            /// has yet to be given any on a device that lists strips. A new
+            /// session starts with none, while the map an earlier one sized
+            /// stays, so a claim with no counts has to reach it too.</summary>
+            public IReadOnlyList<int> Sized;
+            public bool SizeDue;
+
             /// <summary>When a picture the session could not send yet is
             /// tried again.</summary>
             public long LaterAt;
@@ -812,7 +820,9 @@ namespace PadForge.Common.Input.Peripherals
                 Fail(unit, now, "did not open for read and write or did not answer", ref changed, ref failed, ref due);
                 return;
             }
-            if (!Paint(unit, rgb, ruler.Keys, ref due))
+            // Map Key Lights asking about one light has no claim behind it,
+            // so the strips stay as the claims sized them.
+            if ((ruler.Device != Guid.Empty && !SizeStrips(unit, ruler.Strips)) || !Paint(unit, rgb, ruler.Keys, ref due))
                 Fail(unit, now, "write failed", ref changed, ref failed, ref due);
         }
 
@@ -958,20 +968,42 @@ namespace PadForge.Common.Input.Peripherals
             unit.LaterAt = 0;
             unit.CheckAt = _ticks() + unit.Model.RecheckMs;
             unit.KeptAt = _ticks();
-            // A session that read the device's own map lights and publishes
-            // by it from now on, for as long as the device stays
-            // (HidLightingSession.Map). A later session that reads none
-            // leaves the map an earlier one read.
-            LightMap read = null;
-            try { read = session.Map; } catch { }
-            if (read != null)
-            {
-                unit.SessionMap = read;
-                PublishMap(unit);
-            }
+            unit.Sized = null;
+            ReadSessionMap(unit);
+            unit.SizeDue = (unit.SessionMap ?? unit.Model.Map).Strips.Count > 0;
             // A session that finds colors of an earlier run's names their
             // undoing from its first moment.
             Track(unit);
+            return true;
+        }
+
+        /// <summary>A session that read the device's own map lights and
+        /// publishes by it from now on, for as long as the device stays
+        /// (<see cref="HidLightingSession.Map"/>). A later session that reads
+        /// none leaves the map an earlier one read.</summary>
+        private static void ReadSessionMap(Unit unit)
+        {
+            LightMap read = null;
+            try { read = unit.Session.Map; } catch { }
+            if (read == null) return;
+            unit.SessionMap = read;
+            PublishMap(unit);
+        }
+
+        /// <summary>Gives the session the ruling claim's strip counts where
+        /// they differ from the last it was given. False when a write or a
+        /// read failed.</summary>
+        private bool SizeStrips(Unit unit, IReadOnlyList<int> counts)
+        {
+            if (!unit.SizeDue && StripCounts.Same(unit.Sized, counts)) return true;
+            unit.SizeDue = false;
+            unit.Sized = counts;
+            bool sent;
+            try { sent = unit.Session.SizeStrips(unit.Io, _wait, counts ?? StripCounts.None); }
+            catch { sent = false; }
+            Track(unit);
+            if (!sent) return false;
+            ReadSessionMap(unit);
             return true;
         }
 

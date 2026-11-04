@@ -242,41 +242,86 @@ namespace PadForge.Common.Input.Peripherals
             return new[] { first, second, third };
         }
 
-        /// <summary>The session's lights: each strip's LEDs in order, each at
-        /// its place among all of them, with the strip's number.</summary>
-        internal static LightMap A1Map(ushort productId, IReadOnlyList<A1Target> targets)
+        /// <summary>The number the LED Strips card knows a port by, from 1.</summary>
+        internal static int A1PortNumber(byte port) => System.Numerics.BitOperations.TrailingZeroCount(port) + 1;
+
+        /// <summary>The targets with the counts set for their ports: a Gen1
+        /// port's strip takes the count, held to 6 to 60, where one is set, as
+        /// OpenRGB's sized Gen1 zone does
+        /// (RGBController_CMARGBGen2A1Controller.cpp:1400-1404). A Gen2 port
+        /// reports its own devices, so no count touches it.</summary>
+        internal static List<A1Target> A1Sized(IReadOnlyList<A1Target> measured, IReadOnlyList<int> counts)
+        {
+            var targets = new List<A1Target>(measured.Count);
+            foreach (var target in measured)
+            {
+                int count = target.Subport == 0x00 ? StripCounts.At(counts, A1PortNumber(target.Port)) : 0;
+                targets.Add(count > 0 ? target with { Leds = Math.Clamp(count, A1Gen1MinLeds, A1MaxLeds) } : target);
+            }
+            return targets;
+        }
+
+        /// <summary>The session's lights: each strip's LEDs in order, with the
+        /// strip's number. A light's address is its strip's place and then its
+        /// LED, so a count set on one strip leaves the others' addresses.</summary>
+        internal static LightMap A1Map(ushort productId, IReadOnlyList<A1Target> targets, IReadOnlyList<int> counts = null)
         {
             var lights = new List<LightInfo>();
+            var strips = new List<LightStrip>();
             var key = new StringBuilder();
             for (int t = 0; t < targets.Count; t++)
             {
                 for (int i = 0; i < targets[t].Leds; i++)
-                    lights.Add(new LightInfo(lights.Count, LightKind.Edge, 0, LightKeySource.None) { Zone = t + 1 });
+                    lights.Add(new LightInfo(t << 8 | i, LightKind.Edge, 0, LightKeySource.None) { Zone = t + 1 });
                 key.Append($":{targets[t].Port:X2}{targets[t].Subport:X2}x{targets[t].Leds}");
+                if (targets[t].Subport == 0x00)
+                {
+                    int number = A1PortNumber(targets[t].Port);
+                    strips.Add(new LightStrip(number, A1MaxLeds, Math.Min(StripCounts.At(counts, number), A1MaxLeds)));
+                }
             }
-            return new LightMap(lights, "OpenRGB RGBController_CMARGBGen2A1Controller.cpp") { Product = Product(productId) + key };
+            return new LightMap(lights, "OpenRGB RGBController_CMARGBGen2A1Controller.cpp")
+            {
+                Product = Product(productId) + key,
+                Strips = strips,
+            };
         }
 
         private static HidLightingSession BeginArgbGen2A1(IHidReportChannel io, Action<int> wait, ushort productId)
         {
             if (io == null) return null;
             var targets = A1Topology(io, productId == A1Mini ? 1 : A1Ports);
-            return targets.Count == 0 ? null : new ArgbGen2A1Session(targets, A1Map(productId, targets));
+            return targets.Count == 0 ? null : new ArgbGen2A1Session(targets, A1Map(productId, targets), productId);
         }
 
         internal sealed class ArgbGen2A1Session : HidLightingSession
         {
-            private readonly LightMap _map;
+            private LightMap _map;
+            private readonly IReadOnlyList<A1Target> _measured;
+            private readonly ushort _productId;
             private bool _realtime;
             private byte[][] _crash = Array.Empty<byte[]>();
 
-            public ArgbGen2A1Session(IReadOnlyList<A1Target> targets, LightMap map)
+            public ArgbGen2A1Session(IReadOnlyList<A1Target> targets, LightMap map, ushort productId)
             {
                 Targets = targets;
+                _measured = targets;
                 _map = map;
+                _productId = productId;
             }
 
-            public IReadOnlyList<A1Target> Targets { get; }
+            public IReadOnlyList<A1Target> Targets { get; private set; }
+
+            /// <summary>Every frame carries 60 LEDs' colors whatever the strip's
+            /// count, so nothing goes out here. OpenRGB's own Gen1 size is its
+            /// host's, written to no device
+            /// (RGBController_CMARGBGen2A1Controller.cpp:980-995).</summary>
+            public override bool SizeStrips(IHidReportChannel io, Action<int> wait, IReadOnlyList<int> counts)
+            {
+                Targets = A1Sized(_measured, counts);
+                _map = A1Map(_productId, Targets, counts);
+                return true;
+            }
 
             public override LightMap Map => _map;
 
@@ -319,13 +364,16 @@ namespace PadForge.Common.Input.Peripherals
             {
                 if (io == null) return HidLightingPaint.Failed;
                 if (!_realtime && !Enter(io, wait)) return HidLightingPaint.Failed;
-                var byAddress = ByAddress(lights, colors, _map.Lights.Count);
-                int at = 0;
-                foreach (var target in Targets)
+                for (int t = 0; t < Targets.Count; t++)
                 {
-                    var span = byAddress.AsSpan(at, Math.Min(target.Leds, byAddress.Length - at));
-                    at += target.Leds;
-                    if (!Send(io, wait, A1RealtimeFrame(target.Port, target.Subport, span))) return HidLightingPaint.Failed;
+                    var strip = new int[Targets[t].Leds];
+                    int count = Math.Min(lights?.Count ?? 0, colors?.Count ?? 0);
+                    for (int i = 0; i < count; i++)
+                    {
+                        int led = lights[i].Address & 0xFF;
+                        if (lights[i].Address >> 8 == t && led < strip.Length) strip[led] = colors[i] & 0xFFFFFF;
+                    }
+                    if (!Send(io, wait, A1RealtimeFrame(Targets[t].Port, Targets[t].Subport, strip))) return HidLightingPaint.Failed;
                 }
                 return HidLightingPaint.Sent;
             }

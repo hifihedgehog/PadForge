@@ -1003,11 +1003,11 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Bu cihaz henüz yanıt vermedi. Uyandığında renkleri görünür.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Renkler {0} üzerinden gider.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Renkler, bu türdeki tüm cihazları aynı anda aydınlatan {0} üzerinden gider. {0} çalışmıyorken PadForge bu cihazı kendi başına aydınlatır.</value></data>
-  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
-  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} çalışırken bu cihazı aydınlatır. {0} çalışmıyorken PadForge onu kendi başına aydınlatır.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Renkler OpenRGB'nin SDK Server'ı üzerinden gider. OpenRGB çalışmıyorken PadForge bu cihazı kendi başına aydınlatır.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Renkler OpenRGB'nin SDK Server'ı üzerinden gider.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB bu cihazı elinde tutuyor ve onun için Direct modu yok, bu yüzden aydınlatması OpenRGB'de kalır.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB, SDK Server'ı kapalı olarak çalışıyor, bu yüzden PadForge bu cihazı OpenRGB'ye bırakır. OpenRGB'de SDK Server'ı açın, PadForge cihazı onun üzerinden aydınlatsın.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} bu türdeki tüm cihazları aynı anda aydınlattığı için renklerini Sanal kontrolcü {1} üzerindeki belirler.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} bu türdeki tüm cihazları aynı anda aydınlattığı için renklerini Sanal kontrolcü {2} üzerindeki {1} satırı belirler.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Sanal kontrolcü {0} da bu cihazı aydınlatıyor ve onun rengi görünüyor.</value></data>
@@ -1023,9 +1023,9 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>kulaklıklar, fare altlıkları ve Chroma Link şeritleri</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>kulaklıklar, fare altlıkları ve hoparlörler</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>kulaklıklar</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>anakartlar, grafik kartları ve bellek</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>anakartlar ve grafik kartları</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>fare altlıkları ve kulaklık standları</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Işık çubuğu</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Altı haneli bir onaltılık renk (RRGGBB veya #RRGGBB) girin ve uygulamak için Enter'a basın ya da başka bir yere tıklayın.</value></data>
@@ -1102,6 +1102,11 @@
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Paleti sıfırla</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Geçerli paleti dört varsayılan renkle (kırmızı, yeşil, mavi, sarı) değiştirir.</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Tuş renkleri</value></data>
+  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>LED şeritler</value></data>
+  <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>Her adreslenebilir konektörün kaç LED sürdüğü. Bir sayı verildiğinde her LED kendi rengini alır. 0'da konektör sayı olmadan yanar.</value></data>
+  <data name="Pad_Lighting_LedStrips_Header_Format" xml:space="preserve"><value>Konektör {0}</value></data>
+  <data name="Pad_Lighting_LedStrips_Tooltip" xml:space="preserve"><value>Bu konektöre takılı olanın LED sayısı. Bilmiyorsanız 0'da bırakın.</value></data>
+  <data name="Pad_Lighting_LedStrips_ResetAll" xml:space="preserve"><value>Tüm konektörlerin LED sayısını sıfırla</value></data>
   <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Bölge renkleri</value></data>
   <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Resimde tuşları seçin ya da klavyede onlara basın ve bir renk verin. Her Shift katmanı kendi renklerine sahip olabilir, katman devredeyken gösterilir.</value></data>
   <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Bölgeleri seçin ve onlara bir renk verin. Her Shift katmanı kendi renklerine sahip olabilir, katman devredeyken gösterilir.</value></data>

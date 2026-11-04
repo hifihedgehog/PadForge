@@ -771,6 +771,7 @@ namespace PadForge.Views
                 PeripheralLightingRoute.Visibility = string.IsNullOrEmpty(route) ? Visibility.Collapsed : Visibility.Visible;
             }
             SyncKeyColorsCard(hasPeripheralLighting ? lightingRow : null);
+            SyncLedStripsCard(hasPeripheralLighting ? lightingRow : null);
             if (LightingLightbarSubtitle != null)
                 LightingLightbarSubtitle.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
             if (LightingPlayerIdleHint != null)
@@ -3867,6 +3868,28 @@ namespace PadForge.Views
             }
             vm.KeyColors.Attach(vm.DeviceConfig, map, vm.LayerTabs);
             KeyColorsCard.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>
+        /// The LED Strips card (#557): shown for a lit device with strips only
+        /// its user can size, attached as the Key Colors card is. A strip with
+        /// no count can be a single light, which shows no Key Colors card, so
+        /// this card does not wait for one.
+        /// </summary>
+        private void SyncLedStripsCard(PadForge.Engine.Data.UserDevice row)
+        {
+            if (LedStripsCard == null || DataContext is not PadViewModel vm) return;
+            var map = row == null ? null
+                : PadForge.Common.Input.Peripherals.PeripheralLightMaps.WithStrips(
+                    PadForge.Common.Input.Peripherals.PeripheralOutputs.Links.For(row.InstanceGuid)?.Lighting);
+            if (map == null)
+            {
+                vm.LedStrips.Detach();
+                LedStripsCard.Visibility = Visibility.Collapsed;
+                return;
+            }
+            vm.LedStrips.Attach(vm.DeviceConfig, map);
+            LedStripsCard.Visibility = Visibility.Visible;
         }
 
         /// <summary>A layer chip on the Key Colors card picks the layer

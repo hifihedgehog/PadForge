@@ -10576,6 +10576,44 @@
                             </StackPanel>
                         </Border>
 
+                        <!-- LED Strips (#557): how many LEDs each strip of a device has,
+                             for a device that drives strips of a length only its user knows
+                             (LightMap.Strips: ASUS Aura headers, Cooler Master's ARGB
+                             controllers, the Razer ARGB controller, GaiZhongGai's hubs). A
+                             row per strip, as the Lighting Hold row is laid out: the label
+                             column is 210, the box the app's proven NumberBox width of 200
+                             (Dashboard port boxes), and a reset for the row. Above Key
+                             Colors, since a count changes the lights that card shows. -->
+                        <Border x:Name="LedStripsCard" Style="{StaticResource CardBorder}" Visibility="Collapsed">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <controls:GlyphText Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Lighting_LedStrips, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <ui:Button Command="{Binding DeviceConfig.ResetLedStripCountsCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_Lighting_LedStrips_ResetAll, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_Lighting_LedStrips_Description, Source={x:Static strings:Strings.Instance}}"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" Margin="0,0,0,8"/>
+                                <ItemsControl ItemsSource="{Binding LedStrips.Rows}" Focusable="False">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="{Binding Label}" Style="{StaticResource DzLabel}" Width="210"/>
+                                                <ui:NumberBox Width="200" Minimum="0" Maximum="{Binding Maximum}" SmallChange="1" VerticalAlignment="Center"
+                                                              Value="{Binding Leds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              ToolTip="{Binding Pad_Lighting_LedStrips_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                              AutomationProperties.Name="{Binding Label, TargetNullValue=''}"/>
+                                                <reset:SettingResetButton Command="{Binding ResetCountCommand}" SettingLabel="{Binding Label}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_LedStripCount"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+
                         <!-- Key Colors, Zone Colors for a device whose lights
                              are zones (#557): the selected device's lights
                              one by one, per shift layer, written into the

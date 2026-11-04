@@ -785,7 +785,11 @@ namespace PadForge.ViewModels
                 // lets go before the change notice, whose page handler
                 // attaches it to the new device's config and lights. A swap
                 // no page sees leaves it detached, never on the old config.
-                if (!ReferenceEquals(old, value)) KeyColors.Detach();
+                if (!ReferenceEquals(old, value))
+                {
+                    KeyColors.Detach();
+                    LedStrips.Detach();
+                }
                 if (SetProperty(ref _deviceConfig, value))
                 {
                     if (old != null) old.PropertyChanged -= OnActiveDeviceConfigPropertyChanged;
@@ -2566,6 +2570,10 @@ namespace PadForge.ViewModels
         /// the selected device (#557). The page attaches it to
         /// <see cref="DeviceConfig"/> and the device's lights.</summary>
         public KeyColorsCardViewModel KeyColors { get; } = new();
+
+        /// <summary>The Lighting tab's LED Strips card for the selected device
+        /// (#557). The page attaches it as it does <see cref="KeyColors"/>.</summary>
+        public LedStripsCardViewModel LedStrips { get; } = new();
 
         /// <summary>Tab strip backing collection. Always starts with the Base
         /// tab; each shift layer authored on this slot adds an entry.

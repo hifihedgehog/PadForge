@@ -1003,11 +1003,11 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Denne enhed har ikke svaret endnu. Dens farver vises, når den vågner.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Farverne sendes via {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Farverne sendes via {0}, som belyser alle enheder af denne slags på én gang. Mens {0} ikke kører, belyser PadForge selv denne enhed.</value></data>
-  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
-  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} belyser denne enhed, mens det kører. Mens {0} ikke kører, belyser PadForge den selv.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Farverne sendes via OpenRGB's SDK Server. Mens OpenRGB ikke kører, belyser PadForge selv denne enhed.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Farverne sendes via OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holder denne enhed og har ingen Direct-tilstand til den, så dens belysning bliver hos OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB kører med sin SDK Server slået fra, så PadForge overlader denne enhed til OpenRGB. Slå SDK Server til i OpenRGB, så belyser PadForge enheden gennem den.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} belyser alle enheder af denne slags på én gang, så den på virtuel controller {1} bestemmer deres farve.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} belyser alle enheder af denne slags på én gang, så rækken {1} på virtuel controller {2} bestemmer deres farve.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Virtuel controller {0} belyser også denne enhed, og dens farve vises.</value></data>
@@ -1023,9 +1023,9 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>headsets, musemåtter og Chroma Link-strips</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>headsets, musemåtter og højttalere</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headsets</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>bundkort, grafikkort og hukommelse</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>bundkort og grafikkort</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>musemåtter og headsetholdere</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lysbjælke</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Angiv en sekscifret hexfarve (RRGGBB eller #RRGGBB), og tryk på Enter, eller klik et andet sted for at anvende den.</value></data>
@@ -1102,6 +1102,11 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Nulstil palet</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Erstat den aktuelle palet med de fire standardfarver (rød, grøn, blå, gul).</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Tastefarver</value></data>
+  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>LED-strips</value></data>
+  <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>Hvor mange LED'er hvert adresserbart stik driver. Med et antal får hver LED sin egen farve. Ved 0 lyser stikket uden et antal.</value></data>
+  <data name="Pad_Lighting_LedStrips_Header_Format" xml:space="preserve"><value>Stik {0}</value></data>
+  <data name="Pad_Lighting_LedStrips_Tooltip" xml:space="preserve"><value>Antallet af LED'er på det, der er sat i dette stik. Lad det stå på 0, hvis du ikke ved det.</value></data>
+  <data name="Pad_Lighting_LedStrips_ResetAll" xml:space="preserve"><value>Nulstil antallet af LED'er på alle stik</value></data>
   <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Zonefarver</value></data>
   <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Vælg taster på billedet, eller tryk på dem på tastaturet, og giv dem en farve. Hvert skiftelag kan have sine egne farver, som vises, mens laget er aktivt.</value></data>
   <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Vælg zoner og giv dem en farve. Hvert skiftelag kan have sine egne farver, som vises, mens laget er aktivt.</value></data>
@@ -1128,7 +1133,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Spiltilstand</value></data>
   <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
   <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Blæser</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Alle lys</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Ryd markering</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Vælg ved tastetryk</value></data>

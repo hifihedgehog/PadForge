@@ -37,14 +37,18 @@ namespace PadForge.Common.Input.Peripherals
     /// marked with 80 (AsusAuraUSBController.cpp:148-212). OpenRGB sizes an
     /// addressable header only when the user says how many LEDs it has, and
     /// lights none until then (RGBController_AsusAuraUSB.cpp:233-270 and
-    /// 359-365). PadForge lights each header as one zone through OpenRGB's
-    /// Static effect for that channel, which needs no count, and sends it only
-    /// when the header's color changes: EC 3B on an addressable controller
+    /// 359-365). PadForge lights a header with no count as one zone through
+    /// OpenRGB's Static effect for that channel, and sends it only when the
+    /// header's color changes: EC 3B on an addressable controller
     /// (AsusAuraAddressableController.cpp:60-96), and EC 35 then EC 36 with
     /// the header's bit in the mask on a mainboard
-    /// (AsusAuraMainboardController.cpp:111-153 and 190-225). None of these
-    /// frames is followed by the commit, EC 3F 55, that saves a mainboard's
-    /// effect (lines 227-247).</para>
+    /// (AsusAuraMainboardController.cpp:111-153 and 190-225). A header given a
+    /// count on the Lighting tab lights LED by LED as OpenRGB's sized zone
+    /// does: its Direct effect once, and then EC 40 frames with that many
+    /// colors (RGBController_AsusAuraUSB.cpp:311-366,
+    /// AsusAuraUSBController.cpp:148-212). None of these frames is followed
+    /// by the commit, EC 3F 55, that saves a mainboard's effect (lines
+    /// 227-247).</para>
     ///
     /// <para>Coolers. The Ryuo and Ryujin take their Direct mode (EC 3B 00 22
     /// FF) and then EC 40 80 00 with the LED count and colors, twelve LEDs on
@@ -214,6 +218,14 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>AURA_MODE_STATIC and AURA_MODE_DIRECT (AsusAuraUSBController.h:23 and 41).</summary>
         internal const byte AuraModeStatic = 0x01, AuraModeDirect = 0xFF;
 
+        /// <summary>The most LEDs a header takes, AURA_ADDRESSABLE_MAX_LEDS
+        /// (RGBController_AsusAuraUSB.h:17).</summary>
+        internal const int AuraHeaderMaxLeds = 500;
+
+        /// <summary>A light's address: its channel, then its LED on the
+        /// channel.</summary>
+        internal static int AuraAddress(int channel, int led) => channel << 12 | led;
+
         /// <summary>LEDS_PER_PACKET (AsusAuraUSBController.h:63).</summary>
         internal const int AuraLedsPerPacket = 0x14;
 
@@ -255,19 +267,34 @@ namespace PadForge.Common.Input.Peripherals
             return channels;
         }
 
-        /// <summary>The lights of the channels: each of a mainboard's own LEDs
-        /// and 12 V headers, then one per addressable header, every light a
-        /// zone numbered in order.</summary>
         internal static LightMap AuraUsbMap(int productId, IReadOnlyList<AuraChannel> channels)
+            => AuraUsbMap(ProductKey(productId), channels, null);
+
+        /// <summary>The lights of the channels: each of a mainboard's own LEDs
+        /// and 12 V headers, a zone numbered in order, then each addressable
+        /// header: one zone, or with a count set for it that many edge lights.
+        /// A header keeps its zone number whatever its count, so the zones
+        /// after it keep theirs.</summary>
+        internal static LightMap AuraUsbMap(string product, IReadOnlyList<AuraChannel> channels, IReadOnlyList<int> counts)
         {
             var lights = new List<LightInfo>();
+            var strips = new List<LightStrip>();
+            int zone = 0;
             for (int c = 0; c < channels.Count; c++)
             {
-                int count = channels[c].Addressable ? 1 : channels[c].Leds;
-                for (int led = 0; led < count; led++)
-                    lights.Add(Zone(c << 8 | led, lights.Count + 1));
+                if (!channels[c].Addressable)
+                {
+                    for (int led = 0; led < channels[c].Leds; led++) lights.Add(Zone(AuraAddress(c, led), ++zone));
+                    continue;
+                }
+                int leds = Math.Min(StripCounts.At(counts, strips.Count + 1), AuraHeaderMaxLeds);
+                strips.Add(new LightStrip(strips.Count + 1, AuraHeaderMaxLeds, leds));
+                zone++;
+                if (leds == 0) lights.Add(Zone(AuraAddress(c, 0), zone));
+                for (int led = 0; led < leds; led++)
+                    lights.Add(new LightInfo(AuraAddress(c, led), LightKind.Edge, 0, LightKeySource.None) { Zone = zone });
             }
-            return new LightMap(lights, "OpenRGB AsusAuraUSBController config table") { Product = ProductKey(productId) };
+            return new LightMap(lights, "OpenRGB AsusAuraUSBController config table") { Product = product, Strips = strips };
         }
 
         private HidLightingModel AuraUsb(string name, int productId, bool mainboard)
@@ -368,10 +395,15 @@ namespace PadForge.Common.Input.Peripherals
 
         internal sealed class AuraUsbSession : HidLightingSession
         {
-            private readonly LightMap _map;
+            private LightMap _map;
             private readonly List<AuraChannel> _channels;
             private readonly bool _mainboard;
             private readonly int?[] _headerColors;
+
+            /// <summary>The count set for each channel's header, and whether
+            /// the header takes its Direct effect now.</summary>
+            private readonly int[] _headerLeds;
+            private readonly bool[] _headerDirect;
 
             public AuraUsbSession(LightMap map, List<AuraChannel> channels, bool mainboard)
             {
@@ -379,6 +411,21 @@ namespace PadForge.Common.Input.Peripherals
                 _channels = channels;
                 _mainboard = mainboard;
                 _headerColors = new int?[channels.Count];
+                _headerLeds = new int[channels.Count];
+                _headerDirect = new bool[channels.Count];
+            }
+
+            /// <summary>Nothing goes out here. OpenRGB's sized zones reach the
+            /// device only as frames, so each header changes over at its next
+            /// picture (<see cref="Paint"/>).</summary>
+            public override bool SizeStrips(IHidReportChannel io, Action<int> wait, IReadOnlyList<int> counts)
+            {
+                _map = AuraUsbMap(_map.Product, _channels, counts);
+                int strip = 0;
+                for (int c = 0; c < _channels.Count; c++)
+                    if (_channels[c].Addressable)
+                        _headerLeds[c] = Math.Min(StripCounts.At(counts, ++strip), AuraHeaderMaxLeds);
+                return true;
             }
 
             public override bool Feature => false;
@@ -396,21 +443,37 @@ namespace PadForge.Common.Input.Peripherals
                     var channel = _channels[c];
                     var mine = new List<int>();
                     for (int i = 0; i < count; i++)
-                        if (lights[i].Address >> 8 == c) mine.Add(colors[i]);
+                        if (lights[i].Address >> 12 == c) mine.Add(colors[i]);
                     if (mine.Count == 0) continue;
-                    if (!channel.Addressable)
+                    if (!channel.Addressable || _headerLeds[c] > 0)
                     {
+                        if (channel.Addressable && !_headerDirect[c])
+                        {
+                            if (!SendDirectEffect(io, c, channel)) return HidLightingPaint.Failed;
+                            _headerDirect[c] = true;
+                            _headerColors[c] = null;
+                        }
                         foreach (var frame in AuraDirectFrames(channel.DirectChannel, mine))
                             if (!io.WriteOutput(frame)) return HidLightingPaint.Failed;
                         continue;
                     }
                     int rgb = mine[0] & 0xFFFFFF;
-                    if (_headerColors[c] == rgb) continue;
+                    if (_headerColors[c] == rgb && !_headerDirect[c]) continue;
                     if (!SendStatic(io, c, channel, rgb)) return HidLightingPaint.Failed;
                     _headerColors[c] = rgb;
+                    _headerDirect[c] = false;
                 }
                 return HidLightingPaint.Sent;
             }
+
+            /// <summary>OpenRGB's Direct mode on one header channel: SetMode of
+            /// an addressable controller, with no color of its own, or of a
+            /// mainboard, which sends only the effect for it
+            /// (AsusAuraMainboardController.cpp:111-127).</summary>
+            private bool SendDirectEffect(IHidReportChannel io, int index, AuraChannel channel)
+                => io.WriteOutput(_mainboard
+                    ? MainboardEffectFrame(channel.EffectChannel, AuraModeDirect)
+                    : AddressableEffectFrame((byte)index, AuraModeDirect, 0));
 
             /// <summary>OpenRGB's Static mode on one header channel: SetMode
             /// of an addressable controller, or of a mainboard, whose color

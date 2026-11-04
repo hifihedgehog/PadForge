@@ -1003,11 +1003,11 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Thiết bị này chưa trả lời. Màu của nó sẽ hiện khi nó thức dậy.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Màu được gửi qua {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Màu được gửi qua {0}, phần mềm này chiếu sáng mọi thiết bị cùng loại cùng lúc. Khi {0} không chạy, PadForge tự chiếu sáng thiết bị này.</value></data>
-  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
-  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} chiếu sáng thiết bị này khi đang chạy. Khi {0} không chạy, PadForge tự chiếu sáng thiết bị.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Màu được gửi qua SDK Server của OpenRGB. Khi OpenRGB không chạy, PadForge tự chiếu sáng thiết bị này.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Màu được gửi qua SDK Server của OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB đang giữ thiết bị này và không có chế độ Direct cho nó, nên đèn của thiết bị vẫn do OpenRGB quản lý.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB đang chạy với SDK Server tắt, nên PadForge để thiết bị này cho OpenRGB. Hãy bật SDK Server trong OpenRGB và PadForge sẽ chiếu sáng thiết bị qua đó.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} chiếu sáng mọi thiết bị cùng loại cùng lúc, nên thiết bị trên Tay cầm ảo {1} quyết định màu của chúng.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} chiếu sáng mọi thiết bị cùng loại cùng lúc, nên hàng {1} trên Tay cầm ảo {2} quyết định màu của chúng.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Tay cầm ảo {0} cũng chiếu sáng thiết bị này, và màu của nó được hiển thị.</value></data>
@@ -1023,9 +1023,9 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>tai nghe, tấm lót chuột và dải đèn Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>tai nghe, tấm lót chuột và loa</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>tai nghe</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>bo mạch chủ, card đồ họa và bộ nhớ</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>bo mạch chủ và card đồ họa</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>tấm lót chuột và giá đỡ tai nghe</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Thanh đèn</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Nhập mã màu hex sáu chữ số (RRGGBB hoặc #RRGGBB) rồi nhấn Enter hoặc nhấp ra ngoài để áp dụng.</value></data>
@@ -1102,6 +1102,11 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Đặt lại bảng màu</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Thay bảng màu hiện tại bằng bốn màu mặc định (đỏ, xanh lá, xanh dương, vàng).</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Màu phím</value></data>
+  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>Dải đèn LED</value></data>
+  <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>Số LED mà mỗi đầu cắm định địa chỉ điều khiển. Khi có số lượng, mỗi LED nhận màu riêng. Ở mức 0, đầu cắm sáng mà không cần số lượng.</value></data>
+  <data name="Pad_Lighting_LedStrips_Header_Format" xml:space="preserve"><value>Đầu cắm {0}</value></data>
+  <data name="Pad_Lighting_LedStrips_Tooltip" xml:space="preserve"><value>Số LED của thứ đang cắm vào đầu cắm này. Để 0 nếu bạn không biết.</value></data>
+  <data name="Pad_Lighting_LedStrips_ResetAll" xml:space="preserve"><value>Đặt lại số LED của mọi đầu cắm</value></data>
   <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Màu vùng</value></data>
   <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Chọn phím trên hình, hoặc nhấn chúng trên bàn phím, rồi cho chúng một màu. Mỗi lớp shift có thể có màu riêng, hiển thị khi lớp đó được kích hoạt.</value></data>
   <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Chọn vùng rồi cho chúng một màu. Mỗi lớp shift có thể có màu riêng, hiển thị khi lớp đó được kích hoạt.</value></data>
@@ -1128,7 +1133,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Chế độ game</value></data>
   <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
   <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Quạt</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Tất cả đèn</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Bỏ chọn</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Chọn bằng cách nhấn phím</value></data>

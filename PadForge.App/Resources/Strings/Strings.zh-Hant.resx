@@ -1003,11 +1003,11 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>此裝置尚未回應。它喚醒後就會顯示顏色。</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>顏色會透過 {0} 傳送。</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>顏色會透過 {0} 傳送，而它會同時點亮所有這類裝置。{0} 未執行時，PadForge 會自行點亮此裝置。</value></data>
-  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
-  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} 執行時會點亮此裝置。{0} 未執行時，PadForge 會自行點亮它。</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>顏色會透過 OpenRGB 的 SDK Server 傳送。OpenRGB 未執行時，PadForge 會自行點亮此裝置。</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>顏色會透過 OpenRGB 的 SDK Server 傳送。</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB 佔用此裝置且沒有適用於它的 Direct 模式，因此其燈光仍由 OpenRGB 控制。</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB 正在執行但其 SDK Server 已關閉，因此 PadForge 將此裝置交給 OpenRGB。在 OpenRGB 中開啟 SDK Server 後，PadForge 會透過它點亮此裝置。</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} 會同時點亮所有這類裝置，因此由虛擬控制器 {1} 上的那一個決定它們的顏色。</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} 會同時點亮所有這類裝置，因此由虛擬控制器 {2} 上的 {1} 列決定它們的顏色。</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>虛擬控制器 {0} 也會點亮此裝置，顯示的是它的顏色。</value></data>
@@ -1023,9 +1023,9 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>耳機、滑鼠墊和 Chroma Link 燈條</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>耳機、滑鼠墊和喇叭</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>耳機</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>主機板、顯示卡和記憶體</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>主機板和顯示卡</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>滑鼠墊和耳機架</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>燈條</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>輸入六位數的十六進位色碼（RRGGBB 或 #RRGGBB），然後按 Enter 或按一下其他地方即可套用。</value></data>
@@ -1102,6 +1102,11 @@
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>重設調色盤</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>以四種預設顏色（紅、綠、藍、黃）取代目前的調色盤。</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>按鍵顏色</value></data>
+  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>LED 燈條</value></data>
+  <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>每個可定址接頭驅動的 LED 數量。設定數量後，每個 LED 都有自己的顏色。為 0 時，接頭不按數量點亮。</value></data>
+  <data name="Pad_Lighting_LedStrips_Header_Format" xml:space="preserve"><value>接頭 {0}</value></data>
+  <data name="Pad_Lighting_LedStrips_Tooltip" xml:space="preserve"><value>接在此接頭上的裝置的 LED 數量。如果不清楚，請保留為 0。</value></data>
+  <data name="Pad_Lighting_LedStrips_ResetAll" xml:space="preserve"><value>重設所有接頭的 LED 數量</value></data>
   <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>區域顏色</value></data>
   <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>在圖上選取按鍵，或直接在鍵盤上按下按鍵，然後為它們指定顏色。每個換檔層都可以有自己的顏色，該層啟用時才會顯示。</value></data>
   <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>選取區域並為它們指定顏色。每個換檔層都可以有自己的顏色，該層啟用時才會顯示。</value></data>
@@ -1128,7 +1133,7 @@
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>遊戲模式</value></data>
   <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
   <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>風扇</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>所有燈光</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>清除選取</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>按下按鍵以選取</value></data>

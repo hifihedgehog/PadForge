@@ -1003,11 +1003,11 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Þetta tæki hefur ekki svarað enn. Litir þess birtast þegar það vaknar.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Litir fara í gegnum {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Litir fara í gegnum {0}, sem lýsir öll tæki af þessari gerð í einu. Á meðan {0} er ekki í gangi lýsir PadForge þetta tæki sjálft.</value></data>
-  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
-  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lýsir þetta tæki á meðan það er í gangi. Á meðan {0} er ekki í gangi lýsir PadForge það sjálft.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Litir fara í gegnum SDK Server í OpenRGB. Á meðan OpenRGB er ekki í gangi lýsir PadForge þetta tæki sjálft.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Litir fara í gegnum SDK Server í OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB heldur þessu tæki og er ekki með Direct-stillingu fyrir það, svo lýsing þess verður áfram hjá OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB er í gangi með slökkt á SDK Server, svo PadForge lætur OpenRGB eftir þetta tæki. Kveiktu á SDK Server í OpenRGB og PadForge lýsir tækið í gegnum hann.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} lýsir öll tæki af þessari gerð í einu, svo tækið á sýndarstýringu {1} ræður lit þeirra.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} lýsir öll tæki af þessari gerð í einu, svo línan {1} á sýndarstýringu {2} ræður lit þeirra.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Sýndarstýring {0} lýsir líka þetta tæki og litur hennar birtist.</value></data>
@@ -1023,9 +1023,9 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>heyrnartól, músamottur og Chroma Link-ljósaborðar</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>heyrnartól, músamottur og hátalarar</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>heyrnartól</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>móðurborð, skjákort og minni</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>móðurborð og skjákort</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>músamottur og heyrnartólastandar</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Ljósrönd</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Sláðu inn sex stafa hex-lit (RRGGBB eða #RRGGBB) og ýttu á Enter eða smelltu annars staðar til að virkja hann.</value></data>
@@ -1102,6 +1102,11 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Endurstilla litaspjald</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Skipta núverandi litaspjaldi út fyrir sjálfgefnu litina fjóra (rauðan, grænan, bláan, gulan).</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Litir takka</value></data>
+  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>LED-borðar</value></data>
+  <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>Hversu mörgum LED hvert vistfangstengi stýrir. Með fjölda fær hver LED sinn eigin lit. Við 0 lýsir tengið án hans.</value></data>
+  <data name="Pad_Lighting_LedStrips_Header_Format" xml:space="preserve"><value>Tengi {0}</value></data>
+  <data name="Pad_Lighting_LedStrips_Tooltip" xml:space="preserve"><value>Fjöldi LED á því sem er tengt í þetta tengi. Láttu standa 0 ef þú veist það ekki.</value></data>
+  <data name="Pad_Lighting_LedStrips_ResetAll" xml:space="preserve"><value>Endurstilla fjölda LED á öllum tengjum</value></data>
   <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Litir svæða</value></data>
   <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Veldu takka á myndinni, eða ýttu á þá á lyklaborðinu, og gefðu þeim lit. Hvert skiptilag getur haft sína eigin liti, sem birtast meðan lagið er virkt.</value></data>
   <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Veldu svæði og gefðu þeim lit. Hvert skiptilag getur haft sína eigin liti, sem birtast meðan lagið er virkt.</value></data>
@@ -1128,7 +1133,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Leikjahamur</value></data>
   <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
   <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Vifta</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Öll ljós</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Hreinsa val</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Velja með því að ýta á takka</value></data>

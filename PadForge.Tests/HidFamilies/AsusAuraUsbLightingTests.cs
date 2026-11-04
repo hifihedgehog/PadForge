@@ -575,6 +575,84 @@ namespace PadForge.Tests
             Starts("EC 40 82 00 01 00 00 07", Assert.Single(AsusAuraUsbLighting.AuraDirectFrames(0x02, new[] { 7 })), 65);
         }
 
+        /// <summary>A header given a count lights LED by LED as OpenRGB's sized
+        /// zone does (RGBController_AsusAuraUSB.cpp:311-366): its Direct effect
+        /// once, EC 35 with the effect channel and FF on a mainboard
+        /// (AsusAuraMainboardController.cpp:111-127), then EC 40 frames of that
+        /// many colors on its direct channel. With no count, Static comes
+        /// back, and the header's zone keeps its number.</summary>
+        [Fact]
+        public void AMainboardHeaderGivenACount_LightsLedByLed_AndGoesBackWithout()
+        {
+            var io = Channel(Answer(0x02, (2, (byte)'A')), Answer(0x30, (4 + 0x02, 2), (4 + 0x1B, 2)));
+            var session = AsusAuraUsbLighting.BeginAuraUsb(io, 0x18F3, mainboard: true);
+            Assert.Equal(new[] { 1, 2, 3, 4 }, session.Map.Lights.Select(l => l.Zone));
+            Assert.Equal(new[] { new LightStrip(1, 500, 0), new LightStrip(2, 500, 0) }, session.Map.Strips);
+            io.Calls.Clear();
+            Assert.True(session.SizeStrips(io, _ => { }, new[] { 2 }));
+            Assert.Empty(Outs(io));
+            Assert.Equal(new[] { new LightStrip(1, 500, 2), new LightStrip(2, 500, 0) }, session.Map.Strips);
+            Assert.Equal(new[] { 0, 1, 1 << 12, 1 << 12 | 1, 2 << 12 }, session.Map.Lights.Select(l => l.Address));
+            Assert.Equal(new[] { LightKind.Zone, LightKind.Zone, LightKind.Edge, LightKind.Edge, LightKind.Zone }, session.Map.Lights.Select(l => l.Kind));
+            // The second header keeps zone 4 whatever the first one's count.
+            Assert.Equal(new[] { 1, 2, 3, 3, 4 }, session.Map.Lights.Select(l => l.Zone));
+
+            var colors = new[] { 0x010203, 0x040506, 0x070809, 0x0A0B0C, 0x0D0E0F };
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, session.Map.Lights, colors));
+            var outs = Outs(io);
+            Assert.Equal(5, outs.Count);
+            Starts("EC 40 84 00 02 01 02 03 04 05 06", outs[0], 65);
+            Starts("EC 35 01 00 00 FF", outs[1], 65);
+            Starts("EC 40 80 00 02 07 08 09 0A 0B 0C", outs[2], 65);
+            Starts("EC 35 02 00 00 01", outs[3], 65);
+
+            // The next picture sends no effect for the sized header.
+            io.Calls.Clear();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, session.Map.Lights, colors));
+            outs = Outs(io);
+            Assert.Equal(2, outs.Count);
+            Starts("EC 40 80 00 02 07 08 09 0A 0B 0C", outs[1], 65);
+
+            // No count: the header's Static effect returns, even in the color
+            // it last showed as a zone.
+            Assert.True(session.SizeStrips(io, _ => { }, StripCounts.None));
+            Assert.Equal(new[] { 1, 2, 3, 4 }, session.Map.Lights.Select(l => l.Zone));
+            io.Calls.Clear();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, session.Map.Lights, new[] { 0x010203, 0x040506, 0x070809, 0x0D0E0F }));
+            outs = Outs(io);
+            Starts("EC 35 01 00 00 01", outs[1], 65);
+            Assert.Equal(3, outs.Count);
+        }
+
+        /// <summary>On an addressable controller the Direct effect is EC 3B with
+        /// the channel and FF (AsusAuraAddressableController.cpp:60-96), and
+        /// the frames reach past 255 LEDs with the overflow flag
+        /// (AsusAuraUSBController.cpp:204-208). A count is held to the most a
+        /// header takes.</summary>
+        [Fact]
+        public void AnAddressableHeaderGivenACount_TakesItsDirectEffect_AndEveryLed()
+        {
+            var io = Channel(Answer(0x02, (2, (byte)'A')), Answer(0x30, (4 + 0x02, 1)));
+            var session = AsusAuraUsbLighting.BeginAuraUsb(io, 0x1867, mainboard: false);
+            io.Calls.Clear();
+            Assert.True(session.SizeStrips(io, _ => { }, new[] { 900 }));
+            Assert.Equal(500, session.Map.Lights.Count);
+            Assert.Equal(new[] { new LightStrip(1, 500, 500) }, session.Map.Strips);
+            Assert.All(session.Map.Lights, l => Assert.Equal(0, l.Address >> 12));
+            var colors = Enumerable.Range(0, 500).Select(i => 0x010101 * (i % 200)).ToArray();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, session.Map.Lights, colors));
+            var outs = Outs(io);
+            Starts("EC 3B 00 00 FF", outs[0], 65);
+            // 500 LEDs at 20 to a frame, after the effect.
+            Assert.Equal(26, outs.Count);
+            Assert.Equal(0x80, outs[25][2] & 0x80);
+            Assert.Equal(0x10, outs[25][2] & 0x10);
+            // The first LED past 255 is offset 0 of the overflow, 260 here,
+            // the frame after the one that reached it (lines 204-208).
+            Assert.Equal(0x10, outs[14][2] & 0x10);
+            Assert.Equal(4, outs[14][3]);
+        }
+
         /// <summary>The session reads EC 82 and EC B0, and a mainboard then
         /// takes SetGen1 and Direct mode on its own LEDs
         /// (AsusAuraMainboardController.cpp:64-86 and 160-188). A header

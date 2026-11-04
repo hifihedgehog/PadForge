@@ -246,13 +246,24 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The map of the device this session opened, read from the
         /// device, or null to keep the model's (<see cref="HidLightingModel.Map"/>).
-        /// Read once, right after the session begins. From then on, for as
+        /// Read right after the session begins, and again after
+        /// <see cref="SizeStrips"/>. From then on, for as
         /// long as the device stays in the walk, the worker publishes it,
         /// with the names Map Key Lights learned for it, renders every
         /// picture by it and hands <see cref="Paint"/> its lights, across
         /// closes and reopens. The model's map goes back only when the unit
         /// leaves the walk.</summary>
         public virtual LightMap Map => null;
+
+        /// <summary>Sizes the strips the session's map lists
+        /// (<see cref="LightMap.Strips"/>): <paramref name="counts"/> is the
+        /// LED count set for each, by strip number
+        /// (<see cref="StripCounts"/>). The worker calls it before a picture
+        /// when the ruling claim's counts differ from the last the session
+        /// was given, and reads <see cref="Map"/> after it. A session of a
+        /// device with no strips does nothing. False when a write or a read
+        /// failed.</summary>
+        public virtual bool SizeStrips(IHidReportChannel io, Action<int> wait, IReadOnlyList<int> counts) => true;
 
         /// <summary>How long a picture that came back
         /// <see cref="HidLightingPaint.Later"/> waits before the next

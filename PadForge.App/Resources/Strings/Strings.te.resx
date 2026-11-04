@@ -1003,11 +1003,11 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>ఈ పరికరం ఇంకా స్పందించలేదు. అది మేల్కొన్నాక దాని రంగులు కనిపిస్తాయి.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>రంగులు {0} ద్వారా వెళ్తాయి.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>రంగులు {0} ద్వారా వెళ్తాయి, ఇది ఈ రకమైన ప్రతి పరికరాన్ని ఒకేసారి వెలిగిస్తుంది. {0} నడవనప్పుడు, PadForge ఈ పరికరాన్ని తానే వెలిగిస్తుంది.</value></data>
-  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
-  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} నడుస్తున్నంతసేపు ఈ పరికరాన్ని వెలిగిస్తుంది. {0} నడవనప్పుడు, PadForge దీన్ని తానే వెలిగిస్తుంది.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>రంగులు OpenRGB యొక్క SDK Server ద్వారా వెళ్తాయి. OpenRGB నడవనప్పుడు, PadForge ఈ పరికరాన్ని తానే వెలిగిస్తుంది.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>రంగులు OpenRGB యొక్క SDK Server ద్వారా వెళ్తాయి.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB ఈ పరికరాన్ని పట్టుకుంది, దీనికి దానిలో Direct మోడ్ లేదు, కాబట్టి దీని లైటింగ్ OpenRGB దగ్గరే ఉంటుంది.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB తన SDK Server ఆపివేసి నడుస్తోంది, కాబట్టి PadForge ఈ పరికరాన్ని OpenRGBకే వదిలేస్తుంది. OpenRGBలో SDK Server ఆన్ చేయి, అప్పుడు PadForge దాని ద్వారా పరికరాన్ని వెలిగిస్తుంది.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} ఈ రకమైన ప్రతి పరికరాన్ని ఒకేసారి వెలిగిస్తుంది, కాబట్టి వర్చువల్ కంట్రోలర్ {1}లోనిది వాటి రంగును సెట్ చేస్తుంది.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} ఈ రకమైన ప్రతి పరికరాన్ని ఒకేసారి వెలిగిస్తుంది, కాబట్టి వర్చువల్ కంట్రోలర్ {2}లోని {1} వరుస వాటి రంగును సెట్ చేస్తుంది.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్ {0} కూడా ఈ పరికరాన్ని వెలిగిస్తుంది, దాని రంగే కనిపిస్తుంది.</value></data>
@@ -1023,9 +1023,9 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>హెడ్సెట్లు, మౌస్ప్యాడ్లు మరియు Chroma Link స్ట్రిప్లు</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>హెడ్సెట్లు, మౌస్ప్యాడ్లు మరియు స్పీకర్లు</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>హెడ్సెట్లు</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>మదర్బోర్డులు, గ్రాఫిక్స్ కార్డులు మరియు మెమరీ</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>మదర్బోర్డులు మరియు గ్రాఫిక్స్ కార్డులు</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>మౌస్ప్యాడ్లు మరియు హెడ్సెట్ స్టాండ్లు</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>లైట్ బార్</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ఆరు అంకెల హెక్స్ రంగును (RRGGBB లేదా #RRGGBB) నమోదు చేసి, వర్తింపజేయడానికి Enter నొక్కండి లేదా వెలుపల క్లిక్ చేయండి.</value></data>
@@ -1102,6 +1102,11 @@
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>పాలెట్ను రీసెట్ చేయి</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>ప్రస్తుత పాలెట్ను నాలుగు డిఫాల్ట్ రంగులతో (ఎరుపు, ఆకుపచ్చ, నీలం, పసుపు) భర్తీ చేయండి.</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>కీ రంగులు</value></data>
+  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>LED స్ట్రిప్లు</value></data>
+  <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>ప్రతి అడ్రెసబుల్ హెడర్ ఎన్ని LEDలను నడుపుతుంది. సంఖ్య ఇస్తే ప్రతి LED తన సొంత రంగు తీసుకుంటుంది. 0 వద్ద హెడర్ సంఖ్య లేకుండా వెలుగుతుంది.</value></data>
+  <data name="Pad_Lighting_LedStrips_Header_Format" xml:space="preserve"><value>హెడర్ {0}</value></data>
+  <data name="Pad_Lighting_LedStrips_Tooltip" xml:space="preserve"><value>ఈ హెడర్కు అనుసంధానించిన దానిలోని LEDల సంఖ్య. తెలియకపోతే 0గా వదిలేయి.</value></data>
+  <data name="Pad_Lighting_LedStrips_ResetAll" xml:space="preserve"><value>అన్ని హెడర్ల LED సంఖ్యను రీసెట్ చేయి</value></data>
   <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>జోన్ రంగులు</value></data>
   <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>చిత్రంపై కీలను ఎంచుకో, లేదా కీబోర్డ్‌లో నొక్కి, వాటికి రంగు ఇవ్వు. ప్రతి షిఫ్ట్ లేయర్‌కు సొంత రంగులు ఉండవచ్చు, లేయర్ ఆన్‌లో ఉన్నప్పుడు అవి కనిపిస్తాయి.</value></data>
   <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>జోన్‌లను ఎంచుకుని వాటికి రంగు ఇవ్వు. ప్రతి షిఫ్ట్ లేయర్‌కు సొంత రంగులు ఉండవచ్చు, లేయర్ ఆన్‌లో ఉన్నప్పుడు అవి కనిపిస్తాయి.</value></data>
@@ -1128,7 +1133,7 @@
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>గేమ్ మోడ్</value></data>
   <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
   <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>ఫ్యాన్</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>అన్ని లైట్లు</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>ఎంపికను తొలగించు</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>కీలను నొక్కి ఎంచుకో</value></data>

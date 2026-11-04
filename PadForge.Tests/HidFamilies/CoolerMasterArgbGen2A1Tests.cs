@@ -141,8 +141,61 @@ namespace PadForge.Tests
             }, session.Targets);
             Assert.Equal(114, session.Map.Lights.Count);
             Assert.Equal(new[] { 1, 2, 3 }, session.Map.Lights.Select(l => l.Zone).Distinct());
-            Assert.Equal(Enumerable.Range(0, 114), session.Map.Lights.Select(l => l.Address));
+            Assert.Equal(Enumerable.Range(0, 24).Select(i => i)
+                .Concat(Enumerable.Range(0, 60).Select(i => 1 << 8 | i))
+                .Concat(Enumerable.Range(0, 30).Select(i => 2 << 8 | i)), session.Map.Lights.Select(l => l.Address));
             Assert.Empty(session.CrashFrames);
+            // Only the Gen1 port's strip is its user's to size: Gen2 reports
+            // its own devices (lines 1353-1355 and 1400-1404).
+            Assert.Equal(new[] { new LightStrip(2, 60, 0) }, session.Map.Strips);
+        }
+
+        /// <summary>A count on a Gen1 port is its strip's length, held to 6 to
+        /// 60, as OpenRGB's sized Gen1 zone (RGBController_CMARGBGen2A1Controller.cpp:1400-1404).
+        /// No write goes out, since every frame carries 60 LEDs. A count on a
+        /// Gen2 port changes nothing, and the first strips' addresses stay.</summary>
+        [Fact]
+        public void ACount_SizesAGen1Port_AndLeavesGen2Alone()
+        {
+            var device = new FakeA1Device { Answer = Topology };
+            var session = Assert.IsType<CoolerMasterLighting.ArgbGen2A1Session>(Model(0x0173).Begin(device, device.Wait));
+            var before = session.Map.Lights.Where(l => l.Address >> 8 < 2).Select(l => l.Address).ToArray();
+            device.Outs.Clear();
+            device.Log.Clear();
+            Assert.True(session.SizeStrips(device, device.Wait, new[] { 10, 40 }));
+            Assert.Empty(device.Log);
+            Assert.Equal(new[] { 24, 60, 40 }, session.Targets.Select(t => t.Leds));
+            Assert.Equal(124, session.Map.Lights.Count);
+            Assert.Equal(new[] { new LightStrip(2, 60, 40) }, session.Map.Strips);
+            Assert.Equal(before, session.Map.Lights.Where(l => l.Address >> 8 < 2).Select(l => l.Address));
+
+            Assert.True(session.SizeStrips(device, device.Wait, new[] { 0, 3 }));
+            Assert.Equal(6, session.Targets[2].Leds);
+            Assert.True(session.SizeStrips(device, device.Wait, new[] { 0, 200 }));
+            Assert.Equal(60, session.Targets[2].Leds);
+            // No count: the length the port reported comes back.
+            Assert.True(session.SizeStrips(device, device.Wait, StripCounts.None));
+            Assert.Equal(30, session.Targets[2].Leds);
+        }
+
+        /// <summary>A picture reaches each LED by its address, whichever strip
+        /// it is on, and a strip's frame carries its own LEDs' colors.</summary>
+        [Fact]
+        public void APicture_GoesToEachStripByItsLightsAddresses()
+        {
+            var device = new FakeA1Device { Answer = Topology };
+            var session = Assert.IsType<CoolerMasterLighting.ArgbGen2A1Session>(Model(0x0173).Begin(device, device.Wait));
+            Assert.True(session.SizeStrips(device, device.Wait, new[] { 0, 6 }));
+            var lights = session.Map.Lights;
+            var colors = lights.Select(l => (l.Address >> 8) + 1 << 16 | (l.Address & 0xFF)).ToArray();
+            device.Answer = report => report[2] == 0x01 ? new byte[] { 0x80, 0x01, 0x03, 0x01 } : Topology(report);
+            device.Outs.Clear();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(device, device.Wait, lights, colors));
+            var frames = device.Outs.Where(o => o[2] == 0x09 && o[3] == 0x02 && o[4] == 0x00).ToList();
+            var first = Assert.Single(frames);
+            // The Gen1 port's six LEDs: strip 3, LEDs 0 to 5, then black.
+            Assert.Equal(new byte[] { 3, 0, 0, 3, 0, 1 }, first.Skip(6).Take(6).ToArray());
+            Assert.Equal(new byte[] { 3, 0, 5, 0, 0, 0 }, first.Skip(21).Take(6).ToArray());
         }
 
         [Fact]

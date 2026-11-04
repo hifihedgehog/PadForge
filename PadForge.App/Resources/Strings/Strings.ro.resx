@@ -1003,11 +1003,11 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Acest dispozitiv nu a răspuns încă. Culorile apar după ce se trezește.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Culorile trec prin {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Culorile trec prin {0}, care iluminează simultan toate dispozitivele de acest tip. Cât timp {0} nu rulează, PadForge iluminează singur acest dispozitiv.</value></data>
-  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
-  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} iluminează acest dispozitiv cât timp rulează. Cât timp {0} nu rulează, PadForge îl iluminează singur.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Culorile trec prin SDK Server din OpenRGB. Cât timp OpenRGB nu rulează, PadForge iluminează singur acest dispozitiv.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Culorile trec prin SDK Server din OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB ține acest dispozitiv și nu are mod Direct pentru el, așa că iluminarea lui rămâne la OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB rulează cu SDK Server oprit, așa că PadForge lasă acest dispozitiv la OpenRGB. Pornește SDK Server în OpenRGB și PadForge va ilumina dispozitivul prin el.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} iluminează simultan toate dispozitivele de acest tip, așa că cel de pe controlerul virtual {1} le stabilește culoarea.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} iluminează simultan toate dispozitivele de acest tip, așa că rândul {1} de pe controlerul virtual {2} le stabilește culoarea.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Controlerul virtual {0} iluminează și el acest dispozitiv, iar culoarea sa este cea afișată.</value></data>
@@ -1023,9 +1023,9 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>căști, mousepaduri și benzi Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>căști, mousepaduri și boxe</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>căști</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>plăci de bază, plăci video și memorie</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>plăci de bază și plăci video</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepaduri și suporturi pentru căști</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Bară luminoasă</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Introduceți o culoare hexazecimală de șase cifre (RRGGBB sau #RRGGBB) și apăsați Enter sau faceți clic în altă parte pentru a o aplica.</value></data>
@@ -1102,6 +1102,11 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Resetare paletă</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Înlocuiește paleta curentă cu cele patru culori implicite (roșu, verde, albastru, galben).</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Culorile tastelor</value></data>
+  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>Benzi LED</value></data>
+  <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>Câte LED-uri controlează fiecare conector adresabil. Cu un număr, fiecare LED primește propria culoare. La 0, conectorul luminează fără el.</value></data>
+  <data name="Pad_Lighting_LedStrips_Header_Format" xml:space="preserve"><value>Conector {0}</value></data>
+  <data name="Pad_Lighting_LedStrips_Tooltip" xml:space="preserve"><value>Numărul de LED-uri de pe ce este conectat la acest conector. Lasă 0 dacă nu îl știi.</value></data>
+  <data name="Pad_Lighting_LedStrips_ResetAll" xml:space="preserve"><value>Resetează numărul de LED-uri de pe toți conectorii</value></data>
   <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Culorile zonelor</value></data>
   <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Selectează taste pe imagine sau apasă-le pe tastatură și dă-le o culoare. Fiecare strat de shift poate avea culorile lui, afișate cât timp stratul este activ.</value></data>
   <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Selectează zone și dă-le o culoare. Fiecare strat de shift poate avea culorile lui, afișate cât timp stratul este activ.</value></data>
@@ -1128,7 +1133,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Mod joc</value></data>
   <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
   <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Ventilator</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Toate luminile</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Golire selecție</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Selectare prin apăsarea tastelor</value></data>

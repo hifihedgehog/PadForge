@@ -179,6 +179,7 @@
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Replace the current palette with the four default colours (red, green, blue, yellow).</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Key Colours</value></data>
   <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Zone Colours</value></data>
+  <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>How many LEDs each addressable header drives. With a count, each LED takes its own colour. At 0, the header lights without one.</value></data>
   <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Select keys on the picture, or press them on the keyboard, and give them a colour. Each shift layer can have its own colours, shown while the layer is engaged.</value></data>
   <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Select zones and give them a colour. Each shift layer can have its own colours, shown while the layer is engaged.</value></data>
   <data name="Pad_Lighting_KeyColors_ResetAll_Tooltip" xml:space="preserve"><value>Remove the colours from every layer.</value></data>

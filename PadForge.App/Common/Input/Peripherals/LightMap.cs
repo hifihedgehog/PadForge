@@ -145,6 +145,78 @@ namespace PadForge.Common.Input.Peripherals
         };
     }
 
+    /// <summary>A strip of addressable LEDs a unit drives, whose length
+    /// OpenRGB leaves to its user, its zones flagged
+    /// ZONE_FLAG_MANUALLY_CONFIGURABLE_SIZE (#557): its number among the
+    /// unit's strips, from 1, the most LEDs it takes, and the count set for
+    /// it, 0 for none.</summary>
+    internal readonly record struct LightStrip(int Number, int MaxLeds, int Leds);
+
+    /// <summary>The LED counts a device's config holds for its strips
+    /// (#557), in the order of the strips' numbers, in the text form
+    /// "30,0,12", with no trailing zeros. A count the text lacks is 0, so
+    /// a config that has never held any reads as none.</summary>
+    internal static class StripCounts
+    {
+        public static readonly IReadOnlyList<int> None = Array.Empty<int>();
+
+        /// <summary>The counts in <paramref name="text"/>, a part that is no
+        /// count reading as 0.</summary>
+        public static IReadOnlyList<int> Parse(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text)) return None;
+            var parts = text.Split(',');
+            var counts = new int[parts.Length];
+            for (int i = 0; i < parts.Length; i++)
+                counts[i] = int.TryParse(parts[i].Trim(), System.Globalization.NumberStyles.None,
+                    System.Globalization.CultureInfo.InvariantCulture, out int count) ? count : 0;
+            return Trimmed(counts);
+        }
+
+        public static string Format(IReadOnlyList<int> counts)
+        {
+            var trimmed = Trimmed(counts);
+            return trimmed.Count == 0 ? string.Empty
+                : string.Join(",", System.Linq.Enumerable.Select(trimmed, c => c.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+        }
+
+        /// <summary>The count of strip <paramref name="number"/>, from 1, or 0
+        /// where none is set.</summary>
+        public static int At(IReadOnlyList<int> counts, int number)
+            => counts != null && number >= 1 && number <= counts.Count ? Math.Max(0, counts[number - 1]) : 0;
+
+        /// <summary>The counts with strip <paramref name="number"/>'s set to
+        /// <paramref name="count"/>.</summary>
+        public static IReadOnlyList<int> With(IReadOnlyList<int> counts, int number, int count)
+        {
+            if (number < 1) return Trimmed(counts);
+            var next = new int[Math.Max(counts?.Count ?? 0, number)];
+            for (int i = 0; i < next.Length; i++) next[i] = At(counts, i + 1);
+            next[number - 1] = Math.Max(0, count);
+            return Trimmed(next);
+        }
+
+        /// <summary>Whether two lists set the same counts, with null and
+        /// trailing zeros standing for none.</summary>
+        public static bool Same(IReadOnlyList<int> a, IReadOnlyList<int> b)
+        {
+            int longest = Math.Max(a?.Count ?? 0, b?.Count ?? 0);
+            for (int number = 1; number <= longest; number++)
+                if (At(a, number) != At(b, number)) return false;
+            return true;
+        }
+
+        private static IReadOnlyList<int> Trimmed(IReadOnlyList<int> counts)
+        {
+            int length = counts?.Count ?? 0;
+            while (length > 0 && At(counts, length) == 0) length--;
+            if (length == 0) return None;
+            var trimmed = new int[length];
+            for (int i = 0; i < length; i++) trimmed[i] = At(counts, i + 1);
+            return trimmed;
+        }
+    }
+
     /// <summary>The group names a key frame and the saved key colors use
     /// for lights that are not keys (#557).</summary>
     internal static class LightGroups
@@ -194,6 +266,10 @@ namespace PadForge.Common.Input.Peripherals
         /// Lights stores its names under (<see cref="LearnedKeyMaps"/>), or
         /// null for a map no names can be learned for.</summary>
         public string Product { get; init; }
+
+        /// <summary>The strips of addressable LEDs the unit drives that its
+        /// user can size, the Lighting tab's LED Strips card, or none.</summary>
+        public IReadOnlyList<LightStrip> Strips { get; init; } = Array.Empty<LightStrip>();
 
         /// <summary>True when every light has a position.</summary>
         public bool Positioned { get; }

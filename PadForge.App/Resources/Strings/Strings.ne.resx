@@ -1003,11 +1003,11 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>यो यन्त्रले अहिलेसम्म जवाफ दिएको छैन। यो ब्युँझिएपछि यसका रङहरू देखिन्छन्।</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>रङहरू {0} मार्फत जान्छन्।</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>रङहरू {0} मार्फत जान्छन्, जसले यो प्रकारका सबै यन्त्रहरूलाई एकैपटक बाल्छ। {0} नचलेको बेला PadForge ले यो यन्त्रलाई आफैँ बाल्छ।</value></data>
-  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
-  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} चलिरहेको बेला यो यन्त्र बाल्छ। {0} नचलेको बेला PadForge ले यसलाई आफैं बाल्छ।</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>रङहरू OpenRGB को SDK Server मार्फत जान्छन्। OpenRGB नचलेको बेला PadForge ले यो यन्त्र आफैं बाल्छ।</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>रङहरू OpenRGB को SDK Server मार्फत जान्छन्।</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB ले यो यन्त्र समातेको छ र यसका लागि Direct मोड छैन, त्यसैले यसको बत्ती OpenRGB मै रहन्छ।</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB आफ्नो SDK Server बन्द राखेर चलिरहेको छ, त्यसैले PadForge ले यो यन्त्र OpenRGB लाई छोड्छ। OpenRGB मा SDK Server खोल्नुहोस् र PadForge ले यसैमार्फत यन्त्र बाल्नेछ।</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} ले यो प्रकारका सबै यन्त्रहरूलाई एकैपटक बाल्छ, त्यसैले भर्चुअल कन्ट्रोलर {1} मा भएकोले तिनको रङ सेट गर्छ।</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} ले यो प्रकारका सबै यन्त्रहरूलाई एकैपटक बाल्छ, त्यसैले भर्चुअल कन्ट्रोलर {2} को {1} पङ्क्तिले तिनको रङ सेट गर्छ।</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>भर्चुअल कन्ट्रोलर {0} ले पनि यो यन्त्रलाई बाल्छ, र त्यसको रङ देखिन्छ।</value></data>
@@ -1023,9 +1023,9 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>हेडसेट, माउसप्याड र Chroma Link स्ट्रिपहरू</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>हेडसेट, माउसप्याड र स्पिकरहरू</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>हेडसेटहरू</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>मदरबोर्ड, ग्राफिक्स कार्ड र मेमोरी</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>मदरबोर्ड र ग्राफिक्स कार्ड</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>माउसप्याड र हेडसेट स्ट्यान्डहरू</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>लाइटबार</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>छ अङ्कको hex रङ (RRGGBB वा #RRGGBB) लेख्नुहोस् र लागू गर्न Enter थिच्नुहोस् वा बाहिर क्लिक गर्नुहोस्।</value></data>
@@ -1102,6 +1102,11 @@
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>प्यालेट रिसेट गर्नुहोस्</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>हालको प्यालेटलाई चार पूर्वनिर्धारित रङ (रातो, हरियो, नीलो, पहेँलो) ले प्रतिस्थापन गर्नुहोस्।</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>कुञ्जी रङहरू</value></data>
+  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>LED स्ट्रिपहरू</value></data>
+  <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>प्रत्येक एड्रेसेबल हेडरले कति LED चलाउँछ। सङ्ख्या दिँदा प्रत्येक LED ले आफ्नै रङ पाउँछ। 0 मा हेडर सङ्ख्या बिना बल्छ।</value></data>
+  <data name="Pad_Lighting_LedStrips_Header_Format" xml:space="preserve"><value>हेडर {0}</value></data>
+  <data name="Pad_Lighting_LedStrips_Tooltip" xml:space="preserve"><value>यो हेडरमा जोडिएको कुराको LED सङ्ख्या। थाहा छैन भने 0 मै छोड्नुहोस्।</value></data>
+  <data name="Pad_Lighting_LedStrips_ResetAll" xml:space="preserve"><value>सबै हेडरको LED सङ्ख्या रिसेट गर्नुहोस्</value></data>
   <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>क्षेत्र रङहरू</value></data>
   <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>चित्रमा कुञ्जीहरू छान्नुहोस्, वा किबोर्डमा थिच्नुहोस्, र तिनलाई रङ दिनुहोस्। प्रत्येक शिफ्ट तहको आफ्नै रङ हुन सक्छ, जुन तह सक्रिय हुँदा देखिन्छ।</value></data>
   <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>क्षेत्रहरू छान्नुहोस् र तिनलाई रङ दिनुहोस्। प्रत्येक शिफ्ट तहको आफ्नै रङ हुन सक्छ, जुन तह सक्रिय हुँदा देखिन्छ।</value></data>
@@ -1128,7 +1133,7 @@
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>गेम मोड</value></data>
   <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
   <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>पङ्खा</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>सबै बत्तीहरू</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>छनोट हटाउनुहोस्</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>कुञ्जी थिचेर छान्नुहोस्</value></data>

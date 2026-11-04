@@ -1003,11 +1003,11 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Ta naprava se še ni odzvala. Barve se prikažejo, ko se zbudi.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Barve gredo prek {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Barve gredo prek {0}, ki hkrati osvetljuje vse naprave te vrste. Dokler {0} ne deluje, PadForge to napravo osvetljuje sam.</value></data>
-  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
-  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} osvetljuje to napravo, dokler deluje. Dokler {0} ne deluje, jo PadForge osvetljuje sam.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Barve gredo prek SDK Server programa OpenRGB. Dokler OpenRGB ne deluje, PadForge to napravo osvetljuje sam.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Barve gredo prek SDK Server programa OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB drži to napravo in zanjo nima načina Direct, zato njena osvetlitev ostane pri OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB deluje z izklopljenim SDK Server, zato PadForge to napravo prepusti programu OpenRGB. Vklopi SDK Server v OpenRGB in PadForge bo napravo osvetljeval prek njega.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} hkrati osvetljuje vse naprave te vrste, zato njihovo barvo določa tista na navideznem krmilniku {1}.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} hkrati osvetljuje vse naprave te vrste, zato njihovo barvo določa vrstica {1} na navideznem krmilniku {2}.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>To napravo osvetljuje tudi navidezni krmilnik {0} in prikazana je njegova barva.</value></data>
@@ -1023,9 +1023,9 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>slušalke, podloge za miško in trakove Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>slušalke, podloge za miško in zvočnike</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>slušalke</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>matične plošče, grafične kartice in pomnilnik</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>matične plošče in grafične kartice</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>podloge za miško in stojala za slušalke</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Svetlobni trak</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Vnesite šestmestno šestnajstiško barvo (RRGGBB ali #RRGGBB) in za uporabo pritisnite Enter ali kliknite drugam.</value></data>
@@ -1102,6 +1102,11 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Ponastavi paleto</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Trenutno paleto zamenja s štirimi privzetimi barvami (rdeča, zelena, modra, rumena).</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Barve tipk</value></data>
+  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>Trakovi LED</value></data>
+  <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>Koliko LED poganja vsak naslovljivi priključek. S številom dobi vsaka LED svojo barvo. Pri 0 priključek sveti brez njega.</value></data>
+  <data name="Pad_Lighting_LedStrips_Header_Format" xml:space="preserve"><value>Priključek {0}</value></data>
+  <data name="Pad_Lighting_LedStrips_Tooltip" xml:space="preserve"><value>Število LED na tem, kar je priključeno na ta priključek. Če ga ne poznaš, pusti 0.</value></data>
+  <data name="Pad_Lighting_LedStrips_ResetAll" xml:space="preserve"><value>Ponastavi število LED vseh priključkov</value></data>
   <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Barve con</value></data>
   <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Izberi tipke na sliki ali jih pritisni na tipkovnici in jim dodeli barvo. Vsaka plast premika ima lahko svoje barve, ki se prikažejo, ko je plast vključena.</value></data>
   <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Izberi cone in jim dodeli barvo. Vsaka plast premika ima lahko svoje barve, ki se prikažejo, ko je plast vključena.</value></data>
@@ -1128,7 +1133,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Igralni način</value></data>
   <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
   <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Ventilator</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Vse lučke</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Počisti izbor</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Izberi s pritiskom tipk</value></data>

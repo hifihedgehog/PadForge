@@ -1382,6 +1382,11 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_HexTooltip => Get("Pad_Lighting_HexTooltip");
     public string Pad_Lighting_RemoveColor => Get("Pad_Lighting_RemoveColor");
     public string Pad_Lighting_KeyColors => Get("Pad_Lighting_KeyColors");
+    public string Pad_Lighting_LedStrips => Get("Pad_Lighting_LedStrips");
+    public string Pad_Lighting_LedStrips_Description => Get("Pad_Lighting_LedStrips_Description");
+    public string Pad_Lighting_LedStrips_Header_Format => Get("Pad_Lighting_LedStrips_Header_Format");
+    public string Pad_Lighting_LedStrips_Tooltip => Get("Pad_Lighting_LedStrips_Tooltip");
+    public string Pad_Lighting_LedStrips_ResetAll => Get("Pad_Lighting_LedStrips_ResetAll");
     public string Pad_Lighting_ZoneColors => Get("Pad_Lighting_ZoneColors");
     public string Pad_Lighting_KeyColors_Description => Get("Pad_Lighting_KeyColors_Description");
     public string Pad_Lighting_ZoneColors_Description => Get("Pad_Lighting_ZoneColors_Description");

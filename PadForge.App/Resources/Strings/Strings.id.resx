@@ -1003,11 +1003,11 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Perangkat ini belum menjawab. Warnanya tampil setelah perangkat bangun.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Warna dikirim melalui {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Warna dikirim melalui {0}, yang menerangi semua perangkat sejenis ini sekaligus. Selama {0} tidak berjalan, PadForge menerangi perangkat ini sendiri.</value></data>
-  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
-  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} menerangi perangkat ini selama berjalan. Selama {0} tidak berjalan, PadForge meneranginya sendiri.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Warna dikirim melalui SDK Server OpenRGB. Selama OpenRGB tidak berjalan, PadForge menerangi perangkat ini sendiri.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Warna dikirim melalui SDK Server OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB memegang perangkat ini dan tidak punya mode Direct untuknya, jadi pencahayaannya tetap di OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB berjalan dengan SDK Server mati, jadi PadForge menyerahkan perangkat ini kepada OpenRGB. Nyalakan SDK Server di OpenRGB dan PadForge akan menerangi perangkat melaluinya.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} menerangi semua perangkat sejenis ini sekaligus, sehingga yang ada di Kontroler Virtual {1} menentukan warna mereka.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} menerangi semua perangkat sejenis ini sekaligus, sehingga baris {1} di Kontroler Virtual {2} menentukan warna mereka.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Kontroler Virtual {0} juga menerangi perangkat ini, dan warnanyalah yang tampil.</value></data>
@@ -1023,9 +1023,9 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>headset, mousepad, dan strip Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>headset, mousepad, dan speaker</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headset</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboard, kartu grafis, dan memori</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboard dan kartu grafis</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepad dan dudukan headset</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Bilah lampu</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Masukkan warna heksa enam digit (RRGGBB atau #RRGGBB), lalu tekan Enter atau klik di tempat lain untuk menerapkannya.</value></data>
@@ -1102,6 +1102,11 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Atur ulang palet</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Ganti palet saat ini dengan empat warna default (merah, hijau, biru, kuning).</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Warna tombol</value></data>
+  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>Strip LED</value></data>
+  <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>Berapa LED yang digerakkan setiap header addressable. Dengan jumlah, setiap LED mendapat warnanya sendiri. Pada 0, header menyala tanpa jumlah.</value></data>
+  <data name="Pad_Lighting_LedStrips_Header_Format" xml:space="preserve"><value>Header {0}</value></data>
+  <data name="Pad_Lighting_LedStrips_Tooltip" xml:space="preserve"><value>Jumlah LED pada yang terpasang di header ini. Biarkan 0 jika Anda tidak tahu.</value></data>
+  <data name="Pad_Lighting_LedStrips_ResetAll" xml:space="preserve"><value>Atur ulang jumlah LED semua header</value></data>
   <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Warna zona</value></data>
   <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Pilih tombol pada gambar, atau tekan tombolnya di keyboard, lalu beri warna. Setiap lapisan shift dapat memiliki warnanya sendiri, yang ditampilkan saat lapisan itu aktif.</value></data>
   <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Pilih zona lalu beri warna. Setiap lapisan shift dapat memiliki warnanya sendiri, yang ditampilkan saat lapisan itu aktif.</value></data>
@@ -1128,7 +1133,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Mode Game</value></data>
   <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
   <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Kipas</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Semua lampu</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Kosongkan pilihan</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Pilih dengan menekan tombol</value></data>

@@ -1828,11 +1828,11 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Dieses Gerät hat noch nicht geantwortet. Seine Farben erscheinen, sobald es aufwacht.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Die Farben laufen über {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Die Farben laufen über {0}, das alle Geräte dieser Art gleichzeitig beleuchtet. Solange {0} nicht läuft, beleuchtet PadForge dieses Gerät selbst.</value></data>
-  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
-  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} beleuchtet dieses Gerät, solange es läuft. Solange {0} nicht läuft, beleuchtet PadForge es selbst.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Die Farben laufen über den SDK Server von OpenRGB. Solange OpenRGB nicht läuft, beleuchtet PadForge dieses Gerät selbst.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Die Farben laufen über den SDK Server von OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB hält dieses Gerät und hat dafür keinen Direct-Modus, daher bleibt die Beleuchtung bei OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB läuft mit ausgeschaltetem SDK Server, daher überlässt PadForge dieses Gerät OpenRGB. Wird der SDK Server in OpenRGB eingeschaltet, beleuchtet PadForge das Gerät darüber.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} beleuchtet alle Geräte dieser Art gleichzeitig, daher bestimmt das am virtuellen Controller {1} ihre Farbe.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} beleuchtet alle Geräte dieser Art gleichzeitig, daher bestimmt die Zeile {1} am virtuellen Controller {2} ihre Farbe.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Der virtuelle Controller {0} beleuchtet dieses Gerät ebenfalls, und seine Farbe erscheint.</value></data>
@@ -1848,9 +1848,9 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>Headsets, Mauspads und Chroma-Link-Lichtstreifen</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>Headsets, Mauspads und Lautsprecher</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>Headsets</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>Mainboards, Grafikkarten und Arbeitsspeicher</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>Mainboards und Grafikkarten</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>Mauspads und Headset-Ständer</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Sechsstelligen Hex-Farbwert eingeben (RRGGBB oder #RRGGBB) und Eingabe drücken oder den Bereich verlassen, um zu übernehmen.</value></data>
@@ -1917,6 +1917,11 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Palette zurücksetzen</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Ersetzt die aktuelle Palette durch die vier Standardfarben (Rot, Grün, Blau, Gelb).</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Tastenfarben</value></data>
+  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>LED-Streifen</value></data>
+  <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>Wie viele LEDs jeder adressierbare Anschluss ansteuert. Mit einer Anzahl erhält jede LED ihre eigene Farbe. Bei 0 leuchtet der Anschluss ohne Anzahl.</value></data>
+  <data name="Pad_Lighting_LedStrips_Header_Format" xml:space="preserve"><value>Anschluss {0}</value></data>
+  <data name="Pad_Lighting_LedStrips_Tooltip" xml:space="preserve"><value>Die Anzahl der LEDs an dem, was an diesem Anschluss hängt. Im Zweifel auf 0 lassen.</value></data>
+  <data name="Pad_Lighting_LedStrips_ResetAll" xml:space="preserve"><value>LED-Anzahl aller Anschlüsse zurücksetzen</value></data>
   <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Zonenfarben</value></data>
   <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Tasten im Bild auswählen oder auf der Tastatur drücken und ihnen eine Farbe geben. Jede Shift-Ebene kann eigene Farben haben, die angezeigt werden, solange die Ebene aktiv ist.</value></data>
   <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Zonen auswählen und ihnen eine Farbe geben. Jede Shift-Ebene kann eigene Farben haben, die angezeigt werden, solange die Ebene aktiv ist.</value></data>
@@ -1943,7 +1948,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Spielmodus</value></data>
   <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
   <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Lüfter</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Alle Lichter</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Auswahl aufheben</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Durch Tastendruck auswählen</value></data>

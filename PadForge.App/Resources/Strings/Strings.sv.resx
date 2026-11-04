@@ -1003,11 +1003,11 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Den här enheten har inte svarat än. Dess färger visas när den vaknar.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Färgerna skickas via {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Färgerna skickas via {0}, som lyser upp alla enheter av det här slaget samtidigt. När {0} inte körs lyser PadForge upp den här enheten på egen hand.</value></data>
-  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
-  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lyser upp den här enheten medan det körs. När {0} inte körs lyser PadForge upp den på egen hand.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Färgerna skickas via SDK Server i OpenRGB. När OpenRGB inte körs lyser PadForge upp den här enheten på egen hand.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Färgerna skickas via SDK Server i OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB håller den här enheten och har inget Direct-läge för den, så dess belysning stannar hos OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB körs med SDK Server avstängd, så PadForge lämnar den här enheten till OpenRGB. Slå på SDK Server i OpenRGB så lyser PadForge upp enheten genom den.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} lyser upp alla enheter av det här slaget samtidigt, så den som sitter på virtuell handkontroll {1} bestämmer deras färg.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} lyser upp alla enheter av det här slaget samtidigt, så raden {1} på virtuell handkontroll {2} bestämmer deras färg.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Virtuell handkontroll {0} lyser också upp den här enheten, och det är dess färg som visas.</value></data>
@@ -1023,9 +1023,9 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>headset, musmattor och Chroma Link-slingor</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>headset, musmattor och högtalare</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headset</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>moderkort, grafikkort och minnen</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>moderkort och grafikkort</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>musmattor och headsetställ</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Ljusfält</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Ange en sexsiffrig hexfärg (RRGGBB eller #RRGGBB) och tryck på Retur eller klicka utanför för att tillämpa.</value></data>
@@ -1102,6 +1102,11 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Återställ palett</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Ersätt den aktuella paletten med de fyra standardfärgerna (röd, grön, blå, gul).</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Tangentfärger</value></data>
+  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>LED-slingor</value></data>
+  <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>Hur många lysdioder varje adresserbar kontakt driver. Med ett antal får varje lysdiod sin egen färg. Vid 0 lyser kontakten utan antal.</value></data>
+  <data name="Pad_Lighting_LedStrips_Header_Format" xml:space="preserve"><value>Kontakt {0}</value></data>
+  <data name="Pad_Lighting_LedStrips_Tooltip" xml:space="preserve"><value>Antalet lysdioder på det som är anslutet till den här kontakten. Låt det stå på 0 om du inte vet.</value></data>
+  <data name="Pad_Lighting_LedStrips_ResetAll" xml:space="preserve"><value>Återställ antalet lysdioder på alla kontakter</value></data>
   <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Zonfärger</value></data>
   <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Markera tangenter på bilden, eller tryck på dem på tangentbordet, och ge dem en färg. Varje skiftlager kan ha egna färger, som visas medan lagret är aktivt.</value></data>
   <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Markera zoner och ge dem en färg. Varje skiftlager kan ha egna färger, som visas medan lagret är aktivt.</value></data>
@@ -1128,7 +1133,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Spelläge</value></data>
   <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
   <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fläkt</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Alla lampor</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Rensa markering</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Markera genom att trycka på tangenter</value></data>

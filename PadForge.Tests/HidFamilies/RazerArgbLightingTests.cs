@@ -41,6 +41,40 @@ namespace PadForge.Tests
         private static (RazerScriptChannel Control, RazerScriptChannel Argb) Channels(Func<byte[], byte[]> reply)
             => (new RazerScriptChannel { FeatureReply = reply }, new RazerScriptChannel { FeatureReportLength = 321 });
 
+        /// <summary>A channel's count narrows its lights to that many, leaves
+        /// the others' addresses, and goes out as the size report
+        /// (RGBController_RazerAddressable.cpp:235-247,
+        /// RazerController.cpp:681-708): 0F/08 at size 0D, 06, then 19 and the
+        /// count on a sized channel, its number and 0 on another. Its packet
+        /// goes black past the count.</summary>
+        [Fact]
+        public void AChannelsCount_NarrowsItsLights_AndGoesOutAsTheSizeReport()
+        {
+            var (control, argb) = Channels(request => RazerReport90.Reply(request));
+            var model = RazerArgbLighting.Instance.Model("Razer Chroma Addressable RGB Controller", 0x0F1F, 0xFF00);
+            Assert.Equal(480, model.Map.Lights.Count);
+            Assert.Equal(Enumerable.Range(1, 6).Select(n => new LightStrip(n, 80, 0)), model.Map.Strips);
+            var session = model.BeginWith(control, new[] { argb }, control.Wait);
+            Assert.Null(session.Map);
+            control.Writes.Clear();
+            // No count yet: nothing to tell the controller.
+            Assert.True(session.SizeStrips(control, control.Wait, StripCounts.None));
+            Assert.Empty(control.Writes);
+            Assert.Equal(480, session.Map.Lights.Count);
+            Assert.True(session.SizeStrips(control, control.Wait, new[] { 2, 0, 90 }));
+            Assert.Equal(RazerReport90.Of(0x3F, 0x0F, 0x08, 0x0D, 0x06, 0x19, 0x02, 0x02, 0x00, 0x19, 0x50, 0x04, 0x00, 0x05, 0x00, 0x06, 0x00),
+                Hex(Assert.Single(control.Writes)));
+            Assert.Equal(2 + 80 + 80 + 3 * 80, session.Map.Lights.Count);
+            Assert.Equal(new[] { 0, 1, 80, 81 }, session.Map.Lights.Take(4).Select(l => l.Address));
+
+            var colors = session.Map.Lights.Select(_ => 0x112233).ToArray();
+            argb.Writes.Clear();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(control, control.Wait, session.Map.Lights, colors));
+            var first = argb.Writes[0];
+            Assert.Equal(new byte[] { 0x11, 0x22, 0x33, 0x11, 0x22, 0x33, 0x00, 0x00, 0x00 }, first.Skip(6).Take(9).ToArray());
+            Assert.Equal(new byte[] { 0x11, 0x22, 0x33 }, argb.Writes[1].Skip(6 + 3 * 79).Take(3).ToArray());
+        }
+
         /// <summary>The session reads LED 05's stored effect and each
         /// channel's stored brightness (0F/84 [01 LED], razerchromacommon.c:731-739,
         /// razeraccessory_driver.c:1612-1620) under 3F, then sends the six

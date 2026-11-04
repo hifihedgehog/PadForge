@@ -1003,11 +1003,11 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Это устройство пока не ответило. Цвета появятся, когда оно проснется.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Цвета идут через {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Цвета идут через {0}, а эта программа подсвечивает все устройства такого типа сразу. Пока {0} не работает, PadForge подсвечивает это устройство сам.</value></data>
-  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
-  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} подсвечивает это устройство, пока работает. Пока {0} не работает, PadForge подсвечивает его сам.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Цвета идут через SDK Server программы OpenRGB. Пока OpenRGB не работает, PadForge подсвечивает это устройство сам.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Цвета идут через SDK Server программы OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB удерживает это устройство и не имеет для него режима Direct, поэтому его подсветка остаётся за OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB работает с выключенным SDK Server, поэтому PadForge оставляет это устройство программе OpenRGB. Включите SDK Server в OpenRGB, и PadForge будет подсвечивать устройство через него.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} подсвечивает все устройства такого типа сразу, поэтому их цвет задает то, что назначено виртуальному контроллеру {1}.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} подсвечивает все устройства такого типа сразу, поэтому их цвет задает строка «{1}» на виртуальном контроллере {2}.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Виртуальный контроллер {0} тоже подсвечивает это устройство, и виден его цвет.</value></data>
@@ -1023,9 +1023,9 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>гарнитуры, коврики для мыши и ленты Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>гарнитуры, коврики для мыши и колонки</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>гарнитуры</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>материнские платы, видеокарты и память</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>материнские платы и видеокарты</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>коврики для мыши и подставки для гарнитур</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Световая панель</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Введите шестизначный шестнадцатеричный код цвета (RRGGBB или #RRGGBB) и нажмите Enter или щелкните в стороне, чтобы применить.</value></data>
@@ -1102,6 +1102,11 @@
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Сбросить палитру</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Заменить текущую палитру четырьмя цветами по умолчанию (красный, зеленый, синий, желтый).</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Цвета клавиш</value></data>
+  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>Светодиодные ленты</value></data>
+  <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>Сколько светодиодов питает каждый адресуемый разъём. С заданным числом каждый светодиод получает свой цвет. При 0 разъём светится без него.</value></data>
+  <data name="Pad_Lighting_LedStrips_Header_Format" xml:space="preserve"><value>Разъём {0}</value></data>
+  <data name="Pad_Lighting_LedStrips_Tooltip" xml:space="preserve"><value>Число светодиодов на том, что подключено к этому разъёму. Оставьте 0, если не знаете.</value></data>
+  <data name="Pad_Lighting_LedStrips_ResetAll" xml:space="preserve"><value>Сбросить число светодиодов на всех разъёмах</value></data>
   <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Цвета зон</value></data>
   <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Выберите клавиши на рисунке или нажмите их на клавиатуре и задайте им цвет. У каждого слоя переключения могут быть свои цвета, они показываются, пока слой задействован.</value></data>
   <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Выберите зоны и задайте им цвет. У каждого слоя переключения могут быть свои цвета, они показываются, пока слой задействован.</value></data>
@@ -1128,7 +1133,7 @@
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Игровой режим</value></data>
   <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
   <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Вентилятор</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Вся подсветка</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Снять выбор</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Выбор нажатием клавиш</value></data>

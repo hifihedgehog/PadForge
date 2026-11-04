@@ -1068,6 +1068,38 @@ namespace PadForge.ViewModels
         internal PadForge.Common.Input.Peripherals.KeyLightingSettings KeyLightingParsed
             => System.Threading.Volatile.Read(ref _keyLightingParsed);
 
+        private string _ledStripCounts = string.Empty;
+        private IReadOnlyList<int> _ledStripCountsParsed = PadForge.Common.Input.Peripherals.StripCounts.None;
+
+        /// <summary>How many LEDs each strip of this device has (#557), the
+        /// Lighting tab's LED Strips card, in the text form
+        /// <see cref="PadForge.Common.Input.Peripherals.StripCounts"/> reads and
+        /// writes. Empty for a device whose strips no count was set for.</summary>
+        public string LedStripCounts
+        {
+            get => _ledStripCounts;
+            set
+            {
+                var parsed = PadForge.Common.Input.Peripherals.StripCounts.Parse(value);
+                string text = PadForge.Common.Input.Peripherals.StripCounts.Format(parsed);
+                if (string.Equals(_ledStripCounts, text, StringComparison.Ordinal)) return;
+                // The parsed form first: the change notice runs a dispatcher
+                // pass, which reads it.
+                System.Threading.Volatile.Write(ref _ledStripCountsParsed, parsed);
+                SetProperty(ref _ledStripCounts, text);
+            }
+        }
+
+        /// <summary>The counts <see cref="LedStripCounts"/> holds, whole, for
+        /// the dispatcher's thread.</summary>
+        internal IReadOnlyList<int> LedStripCountsParsed
+            => System.Threading.Volatile.Read(ref _ledStripCountsParsed);
+
+        /// <summary>Sets the count of strip <paramref name="number"/>, from 1.</summary>
+        internal void SetLedStripCount(int number, int count)
+            => LedStripCounts = PadForge.Common.Input.Peripherals.StripCounts.Format(
+                PadForge.Common.Input.Peripherals.StripCounts.With(LedStripCountsParsed, number, count));
+
         // Bit 8 the switch, the low byte the hold. One field, so a reader
         // on another thread never pairs the switch of one moment with the
         // hold of the next.
@@ -1820,6 +1852,10 @@ namespace PadForge.ViewModels
 
         /// <summary>The Key Colors card's Reset All (#557): every layer's
         /// light colors and Other Lights rule, back to none.</summary>
+        public RelayCommand ResetLedStripCountsCommand =>
+            _resetLedStripCounts ??= new RelayCommand(() => LedStripCounts = string.Empty);
+        private RelayCommand _resetLedStripCounts;
+
         public RelayCommand ResetKeyLightingCommand =>
             _resetKeyLighting ??= new RelayCommand(() => KeyLighting = string.Empty);
         private RelayCommand _resetKeyLighting;
@@ -2258,6 +2294,11 @@ namespace PadForge.ViewModels
         /// (KeyLightingSettings text). Empty when absent, so a save from
         /// before them colors no key.</summary>
         [XmlAttribute] public string KeyLighting { get; set; } = string.Empty;
+
+        /// <summary>How many LEDs each strip of the device has (#557,
+        /// StripCounts text). Empty when absent, so a save from before the
+        /// setting loads as no count on any strip.</summary>
+        [XmlAttribute] public string LedStripCounts { get; set; } = string.Empty;
         [XmlAttribute] public int LightbarRainbowBrightness { get; set; } = 100;
         [XmlAttribute] public byte LightbarBatteryLowR  { get; set; } = 0xFF;
         [XmlAttribute] public byte LightbarBatteryLowG  { get; set; } = 0x00;

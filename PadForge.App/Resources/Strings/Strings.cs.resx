@@ -1003,11 +1003,11 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Toto zařízení zatím neodpovědělo. Jeho barvy se zobrazí, jakmile se probudí.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Barvy jdou přes software {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Barvy jdou přes software {0}, který rozsvěcuje všechna zařízení tohoto druhu najednou. Dokud software {0} neběží, rozsvěcuje PadForge toto zařízení sám.</value></data>
-  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
-  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>Software {0} rozsvěcuje toto zařízení, dokud běží. Dokud software {0} neběží, rozsvěcuje ho PadForge sám.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Barvy jdou přes SDK Server programu OpenRGB. Dokud OpenRGB neběží, rozsvěcuje PadForge toto zařízení sám.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Barvy jdou přes SDK Server programu OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB drží toto zařízení a nemá pro něj režim Direct, takže jeho osvětlení zůstává na OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB běží s vypnutým SDK Serverem, takže PadForge nechává toto zařízení programu OpenRGB. Zapněte SDK Server v OpenRGB a PadForge bude zařízení rozsvěcovat přes něj.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>Software {0} rozsvěcuje všechna zařízení tohoto druhu najednou, takže jejich barvu určuje to na virtuálním ovladači {1}.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>Software {0} rozsvěcuje všechna zařízení tohoto druhu najednou, takže jejich barvu určuje řádek {1} na virtuálním ovladači {2}.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Toto zařízení rozsvěcuje také virtuální ovladač {0} a zobrazuje se jeho barva.</value></data>
@@ -1023,9 +1023,9 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>headsety, podložky pod myš a pásky Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>headsety, podložky pod myš a reproduktory</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headsety</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>základní desky, grafické karty a paměti</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>základní desky a grafické karty</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>podložky pod myš a stojany na sluchátka</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Světelný panel</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Zadejte šestimístnou hexadecimální barvu (RRGGBB nebo #RRGGBB) a potvrďte ji klávesou Enter nebo kliknutím jinam.</value></data>
@@ -1102,6 +1102,11 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Resetovat paletu</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Nahradí aktuální paletu čtyřmi výchozími barvami (červená, zelená, modrá, žlutá).</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Barvy kláves</value></data>
+  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>LED pásky</value></data>
+  <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>Kolik LED ovládá každý adresovatelný konektor. S počtem dostane každá LED vlastní barvu. Při 0 konektor svítí bez něj.</value></data>
+  <data name="Pad_Lighting_LedStrips_Header_Format" xml:space="preserve"><value>Konektor {0}</value></data>
+  <data name="Pad_Lighting_LedStrips_Tooltip" xml:space="preserve"><value>Počet LED na tom, co je k tomuto konektoru připojeno. Pokud to nevíte, nechte 0.</value></data>
+  <data name="Pad_Lighting_LedStrips_ResetAll" xml:space="preserve"><value>Obnovit počet LED všech konektorů</value></data>
   <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Barvy zón</value></data>
   <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Vyberte klávesy na obrázku nebo je stiskněte na klávesnici a přiřaďte jim barvu. Každá vrstva posunu může mít vlastní barvy, které se zobrazí, dokud je vrstva aktivní.</value></data>
   <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Vyberte zóny a přiřaďte jim barvu. Každá vrstva posunu může mít vlastní barvy, které se zobrazí, dokud je vrstva aktivní.</value></data>
@@ -1128,7 +1133,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Herní režim</value></data>
   <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
   <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
-  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Ventilátor</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Všechna světla</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Zrušit výběr</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Vybírat stisknutím kláves</value></data>

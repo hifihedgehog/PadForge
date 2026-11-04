@@ -42,9 +42,11 @@ namespace PadForge.Common.Input.Peripherals
     /// light count, command 0x87, two bytes per channel high first
     /// (GaiZhongGaiController.cpp:70-98), four channels on the green hub and
     /// eight on the blue (RGBController_GaiZhongGai.cpp:477-490), and each
-    /// channel is a zone of its own lights. PadForge does not change a
-    /// hub's counts: OpenRGB writes them only when its user resizes a
-    /// zone (lines 676-692).</para>
+    /// channel is a zone of its own lights. A count set on the Lighting tab
+    /// goes to the hub as OpenRGB writes one when its user resizes a zone
+    /// (lines 676-692, SetChannelLen, GaiZhongGaiController.cpp:100-147), and
+    /// the hub's answer gives the lights. A channel with no count keeps what
+    /// the hub reports.</para>
     ///
     /// <para>The hand-back. The colors are stored nowhere ("@save :x:",
     /// lines 360-382). OpenRGB's controller sends 0xFF when it closes,
@@ -244,6 +246,24 @@ namespace PadForge.Common.Input.Peripherals
             return lights;
         }
 
+        /// <summary>A hub's strips: each channel, the most lights it takes
+        /// (RGBController_GaiZhongGai.cpp:568 and 605), and the count set for
+        /// it.</summary>
+        internal static IReadOnlyList<LightStrip> HubStrips(ushort pid, IReadOnlyList<int> counts)
+        {
+            int channels = pid == HubBlue ? 8 : 4;
+            int most = pid == HubBlue ? HubBlueMaxLeds : HubGreenMaxLeds;
+            var strips = new LightStrip[channels];
+            for (int ch = 0; ch < channels; ch++)
+                strips[ch] = new LightStrip(ch + 1, most, Math.Min(StripCounts.At(counts, ch + 1), most));
+            return strips;
+        }
+
+        /// <summary>The count the green hub's fourth channel takes as an order
+        /// to measure its strip, its most (GaiZhongGaiController.cpp:104-119),
+        /// and the blue hub's most.</summary>
+        internal const int HubGreenMaxLeds = 637, HubBlueMaxLeds = 633;
+
         /// <summary>A hub's lights: each channel's count in order, the
         /// lights of channel n zone n + 1.</summary>
         internal static IReadOnlyList<LightInfo> HubLights(ushort pid, byte[] lengths)
@@ -383,20 +403,68 @@ namespace PadForge.Common.Input.Peripherals
             return lengths;
         }
 
+        /// <summary>SetChannelLen's write (GaiZhongGaiController.cpp:126-135):
+        /// 0x86 and every channel's count from byte 3.</summary>
+        internal static byte[] HubWriteLengths(byte[] lengths)
+        {
+            var frame = new byte[ReportLength];
+            frame[1] = 0x86;
+            Array.Copy(lengths, 0, frame, 3, 16);
+            return frame;
+        }
+
+        /// <summary>The wait after that write (line 136).</summary>
+        internal const int HubWriteWaitMs = 50;
+
         internal sealed class Session : HidLightingSession
         {
             private readonly ushort _pid;
             private readonly byte[][] _crash = { Restore };
+            private byte[] _lengths;
 
-            private Session(ushort pid, LightMap map)
+            private Session(ushort pid, LightMap map, byte[] lengths = null)
             {
                 _pid = pid;
-                Map = map;
+                _map = map;
+                _lengths = lengths;
             }
 
             /// <summary>The LightBoard's and the hubs' lights, read from them,
             /// or null for a board whose lights are fixed.</summary>
-            public override LightMap Map { get; }
+            public override LightMap Map => _map;
+            private LightMap _map;
+
+            /// <summary>SetChannelLen for each channel whose count differs from
+            /// the hub's, and the hub's lights from its answer. A board that is
+            /// no hub has no strips.</summary>
+            public override bool SizeStrips(IHidReportChannel io, Action<int> wait, IReadOnlyList<int> counts)
+            {
+                if (_lengths == null) return true;
+                var strips = HubStrips(_pid, counts);
+                foreach (var strip in strips)
+                {
+                    int at = (strip.Number - 1) * 2;
+                    if (strip.Leds == 0 || strip.Leds == (_lengths[at] << 8 | _lengths[at + 1])) continue;
+                    if (_pid == HubGreen && strip.Number == 4 && strip.Leds == HubGreenMaxLeds)
+                    {
+                        var command = new byte[ReportLength];
+                        command[1] = 0x88;
+                        var answer = Read(io, command);
+                        if (answer == null) return false;
+                        Array.Copy(answer, 2, _lengths, 0, 16);
+                        continue;
+                    }
+                    _lengths[at] = (byte)(strip.Leds >> 8);
+                    _lengths[at + 1] = (byte)strip.Leds;
+                    if (!io.WriteOutput(HubWriteLengths(_lengths))) return false;
+                    wait(HubWriteWaitMs);
+                    var read = ReadHubLengths(io);
+                    if (read == null) return false;
+                    _lengths = read;
+                }
+                _map = new LightMap(HubLights(_pid, _lengths), _map.Source) { Product = _map.Product, Strips = strips };
+                return true;
+            }
 
             public override bool Feature => false;
 
@@ -417,7 +485,11 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         var lengths = ReadHubLengths(io);
                         if (lengths == null) return null;
-                        return new Session(pid, new LightMap(HubLights(pid, lengths), "GaiZhongGai RGB hub, from the hub") { Product = product });
+                        return new Session(pid, new LightMap(HubLights(pid, lengths), "GaiZhongGai RGB hub, from the hub")
+                        {
+                            Product = product,
+                            Strips = HubStrips(pid, null),
+                        }, lengths);
                     }
                     default:
                         return new Session(pid, null);

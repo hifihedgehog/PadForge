@@ -2326,7 +2326,8 @@ namespace PadForge.Common.Input
             // (#557), with the slot's macro key colors over them, over the
             // color above.
             var keys = KeyFrameFor(devCfg, nowMs);
-            Common.Input.Peripherals.PeripheralOutputs.SetLighting(guid, _padIndex, slotNumber, r, g, b, level, keys);
+            Common.Input.Peripherals.PeripheralOutputs.SetLighting(guid, _padIndex, slotNumber, r, g, b, level, keys,
+                devCfg.LedStripCountsParsed);
             return true;
         }
 

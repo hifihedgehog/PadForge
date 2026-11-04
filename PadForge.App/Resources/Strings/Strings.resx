@@ -1102,6 +1102,11 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Reset Palette</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Replace the current palette with the four default colors (red, green, blue, yellow).</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Key Colors</value></data>
+  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>LED Strips</value><comment>Title of a settings card on a device's Lighting tab. An LED strip is a strip of addressable lights plugged into a header on the device.</comment></data>
+  <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>How many LEDs each addressable header drives. With a count, each LED takes its own color. At 0, the header lights without one.</value><comment>Sentence under the LED Strips card title. A header is the connector on the device that a strip or fan plugs into.</comment></data>
+  <data name="Pad_Lighting_LedStrips_Header_Format" xml:space="preserve"><value>Header {0}</value><comment>Label of one row, {0} is the header's number. A header is the connector a strip or fan plugs into. Keep it short.</comment></data>
+  <data name="Pad_Lighting_LedStrips_Tooltip" xml:space="preserve"><value>The number of LEDs on what is plugged into this header. Leave it at 0 if you do not know.</value><comment>Tooltip of the number box in one row.</comment></data>
+  <data name="Pad_Lighting_LedStrips_ResetAll" xml:space="preserve"><value>Reset the LED count of every header</value><comment>Tooltip of the card's Reset All button.</comment></data>
   <data name="Pad_Lighting_ZoneColors" xml:space="preserve"><value>Zone Colors</value></data>
   <data name="Pad_Lighting_KeyColors_Description" xml:space="preserve"><value>Select keys on the picture, or press them on the keyboard, and give them a color. Each shift layer can have its own colors, shown while the layer is engaged.</value></data>
   <data name="Pad_Lighting_ZoneColors_Description" xml:space="preserve"><value>Select zones and give them a color. Each shift layer can have its own colors, shown while the layer is engaged.</value></data>

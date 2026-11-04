@@ -780,11 +780,18 @@ namespace PadForge.Tests
             Assert.True(small.Identify(new FakeReportChannel { SerialNumber = "A202104052336" }));
             Assert.False(small.Identify(new FakeReportChannel { SerialNumber = "A202105291658" }));
             Assert.False(small.Identify(new FakeReportChannel { SerialNumber = "" }));
-            // Every write is stored ("@save :robot:").
+            // A mode is stored ("@save :robot:"), and the ARGB controller's
+            // pictures start as modes. The Small's are Direct frames, which
+            // SignalRGB's plugin streams on each frame.
             Assert.Equal((150, 500), (argb.HoldMs, argb.RepaintMs));
-            Assert.Equal((150, 500), (small.HoldMs, small.RepaintMs));
+            Assert.Equal((0, 40), (small.HoldMs, small.RepaintMs));
             Assert.Equal(5, argb.Map.Lights.Count);
             Assert.Single(small.Map.Lights);
+            // Four addressable headers, 48 LEDs at most each, and the Small's
+            // one (RGBController_CMARGBController.cpp:400-401,
+            // RGBController_CMSmallARGBController.h:19).
+            Assert.Equal(new[] { 1, 2, 3, 4 }.Select(n => new LightStrip(n, 48, 0)), argb.Map.Strips);
+            Assert.Equal(new[] { new LightStrip(1, 48, 0) }, small.Map.Strips);
             // The other models check nothing.
             Assert.Null(ModelOf(CoolerMasterLighting.ProS).Identify);
         }
@@ -804,6 +811,130 @@ namespace PadForge.Tests
             answer[9 - at] = 0x02;
             answer[10 - at] = 0x03;
             return answer;
+        }
+
+        private static CoolerMasterDevice ArgbDevice()
+        {
+            var device = new CoolerMasterDevice();
+            device.Answer = report => report[1] == 0x80 && report[2] == 0x0B && report[3] == 0x01 ? ArgbAnswer(false, 0x01)
+                : report[1] == 0x80 && report[2] == 0x0A ? ArgbAnswer(true, 0x03)
+                : null;
+            return device;
+        }
+
+        /// <summary>A count goes out as SetPortLEDCount, 80 0D 02, the port's ID,
+        /// the count and 01 (CMARGBController.cpp:151-164), for the headers
+        /// whose count changed, and turns the header's zone into its LEDs. The
+        /// device takes pictures at the realtime rate from then on.</summary>
+        [Fact]
+        public void AnArgbCount_GoesToItsHeader_AndMakesItsLights()
+        {
+            var device = ArgbDevice();
+            var session = Assert.IsType<CoolerMasterLighting.ArgbSession>(ModelOf(0x1011).Begin(device.Channel, NoWait));
+            Assert.Null(session.Map);
+            Assert.Null(session.HoldMs);
+            device.Clear();
+            Assert.True(session.SizeStrips(device.Channel, NoWait, new[] { 0, 2 }));
+            Same(new[] { F(0x80, 0x0D, 0x02, 0x02, 0x02, 0x01) }, device.Outs);
+            Assert.Equal(new[] { new LightStrip(1, 48, 0), new LightStrip(2, 48, 2), new LightStrip(3, 48, 0), new LightStrip(4, 48, 0) },
+                session.Map.Strips);
+            Assert.Equal(new[] { 0, 2 << 8, 2 << 8 | 1, 2, 3, 4 }, session.Map.Lights.Select(l => l.Address));
+            Assert.Equal(new[] { LightKind.Zone, LightKind.Edge, LightKind.Edge, LightKind.Zone, LightKind.Zone, LightKind.Zone },
+                session.Map.Lights.Select(l => l.Kind));
+            Assert.Equal(0, session.HoldMs);
+            Assert.Equal(40, session.RepaintMs);
+            // The same counts send nothing, and a count past the most is the most.
+            device.Clear();
+            Assert.True(session.SizeStrips(device.Channel, NoWait, new[] { 0, 2 }));
+            Assert.Empty(device.Outs);
+            Assert.True(session.SizeStrips(device.Channel, NoWait, new[] { 0, 2, 900 }));
+            Same(new[] { F(0x80, 0x0D, 0x02, 0x04, 0x30, 0x01) }, device.Outs);
+        }
+
+        /// <summary>OpenRGB's Direct mode, the device's as a whole (80 01 01 02,
+        /// CMARGBController.cpp:182-200), then each picture: SetPortLEDsDirect
+        /// (lines 245-297) for each header, a sized one's own LEDs and an
+        /// unsized one's color for 48 LEDs, and the RGB header's Static mode
+        /// when its color changed (RGBController_CMARGBController.cpp:483-503).
+        /// With every count gone, Static comes back on each header.</summary>
+        [Fact]
+        public void ASizedArgbController_LightsInDirectMode_AndLeavesItWhenNoCountIsLeft()
+        {
+            var device = ArgbDevice();
+            var session = Assert.IsType<CoolerMasterLighting.ArgbSession>(ModelOf(0x1011).Begin(device.Channel, NoWait));
+            Assert.True(session.SizeStrips(device.Channel, NoWait, new[] { 2 }));
+            var lights = session.Map.Lights;
+            var colors = new[] { 0x010203, 0x040506, 0x111111, 0x222222, 0x333333, 0x555555 };
+            device.Clear();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(device.Channel, NoWait, lights, colors));
+            var outs = device.Outs;
+            Same(F(0x80, 0x01, 0x01, 0x02), outs[0]);
+            // The sized header: packet 0 is also the last, so 80, then 07, the
+            // port's index, the count, and the colors from byte 5.
+            Same(F(0x80, 0x07, 0x00, 0x02, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06), outs[1]);
+            // 48 LEDs on an unsized header: 60 bytes, 63 and 21 in three packets.
+            var second = outs[2];
+            Assert.Equal(new byte[] { 0x00, 0x07, 0x01, 0x30, 0x11, 0x11 }, second.Skip(1).Take(6).ToArray());
+            Assert.Equal(0x01, outs[3][1]);
+            Assert.Equal(0x82, outs[4][1]);
+            Assert.Equal(0x11, outs[4][22]);
+            Assert.Equal(0x00, outs[4][23]);
+            // The next header's first frame carries its own index.
+            Assert.Equal(0x02, outs[5][3]);
+            Same(F(0x80, 0x01, 0x03), outs[outs.Count - 2]);
+            Same(F(0x80, 0x04, 0x05, 0x10, 0x00, 0xFF, 0x55, 0x55, 0x55), outs[outs.Count - 1]);
+            Assert.Equal(10, session.CrashFrames.Length);
+
+            // The next picture sends no mode, and the RGB header only on a change.
+            device.Clear();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(device.Channel, NoWait, lights, colors));
+            Assert.DoesNotContain(device.Outs, o => o[1] == 0x80 && o[2] != 0x07);
+
+            // No count left: 0 goes to the header, the zone comes back, and
+            // Static replaces Direct on every header at the next picture.
+            device.Clear();
+            Assert.True(session.SizeStrips(device.Channel, NoWait, StripCounts.None));
+            Same(new[] { F(0x80, 0x0D, 0x02, 0x01, 0x00, 0x01) }, device.Outs);
+            Assert.Null(session.HoldMs);
+            Assert.Equal(5, session.Map.Lights.Count);
+            device.Clear();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(device.Channel, NoWait, session.Map.Lights,
+                new[] { 0x111111, 0x111111, 0x111111, 0x111111, 0x555555 }));
+            Assert.Equal(10, device.Outs.Count);
+            Same(F(0x80, 0x01, 0x01), device.Outs[0]);
+        }
+
+        /// <summary>A count on the Small ARGB goes out as SetLedCount, 80 0D 02, the
+        /// zone 1, 0F less the count and the count
+        /// (CMSmallARGBController.cpp:148-158), and its frames carry that many
+        /// colors in place of 48.</summary>
+        [Fact]
+        public void ASmallArgbCount_GoesToTheController_AndSizesItsFrames()
+        {
+            var device = new CoolerMasterDevice();
+            device.Answer = report => report.Skip(1).ToArray();
+            var session = Assert.IsType<CoolerMasterLighting.SmallArgbSession>(ModelOf(0x1000).Begin(device.Channel, NoWait));
+            device.Clear();
+            Assert.True(session.SizeStrips(device.Channel, NoWait, new[] { 3 }));
+            Same(new[] { F(0x80, 0x0D, 0x02, 0x01, 0x0C, 0x03) }, device.Outs);
+            Assert.Equal(new[] { new LightStrip(1, 48, 3) }, session.Map.Strips);
+            Assert.Equal(new[] { 1 << 8, 1 << 8 | 1, 1 << 8 | 2 }, session.Map.Lights.Select(l => l.Address));
+            device.Clear();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(device.Channel, NoWait, session.Map.Lights, new[] { 0x010203, 0x040506, 0x070809 }));
+            Same(F(0x80, 0x10, 0x02, 0xFF, 0x03, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09), device.Outs[2]);
+            Assert.Equal(3, device.Outs.Count);
+            // More than 14 LEDs: 0F less the count is not above 0, so 01.
+            device.Clear();
+            Assert.True(session.SizeStrips(device.Channel, NoWait, new[] { 20 }));
+            Same(new[] { F(0x80, 0x0D, 0x02, 0x01, 0x01, 0x14) }, device.Outs);
+            // No count: back to one zone, sent as 48 LEDs.
+            device.Clear();
+            Assert.True(session.SizeStrips(device.Channel, NoWait, StripCounts.None));
+            Same(new[] { F(0x80, 0x0D, 0x02, 0x01, 0x0F, 0x00) }, device.Outs);
+            Assert.Single(session.Map.Lights);
+            device.Clear();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(device.Channel, NoWait, session.Map.Lights, new[] { 0x112233 }));
+            Assert.Equal(0x30, device.Outs[0][5]);
         }
 
         [Fact]

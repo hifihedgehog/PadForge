@@ -43,6 +43,74 @@ namespace PadForge.Tests
             Assert.Null(WinbondKeyboardLighting.RegionOf(Answer(""), 64));
         }
 
+        /// <summary>SetNameVendorDescription (WinbondGamingKeyboardController.cpp:32-99):
+        /// each product string's size, vendor, logo light and default region.</summary>
+        [Theory]
+        [InlineData(null, "winbond_gaming_keyboard_full_layouts_other", false, KeyboardLayout.IsoQwerty)]
+        [InlineData("", "winbond_gaming_keyboard_full_layouts_other", false, KeyboardLayout.IsoQwerty)]
+        [InlineData("KT108", "winbond_gaming_keyboard_full_layouts_other", false, KeyboardLayout.IsoQwerty)]
+        [InlineData("PCMK", "winbond_gaming_keyboard_full_layouts_other", false, KeyboardLayout.IsoQwerty)]
+        [InlineData("PCMK TKL", "winbond_gaming_keyboard_tkl_layouts_other", true, KeyboardLayout.IsoQwerty)]
+        [InlineData("PCMK 60", "winbond_gaming_keyboard_60_layouts_other", false, KeyboardLayout.IsoQwerty)]
+        [InlineData("Hator Rockfall 2", "winbond_gaming_keyboard_full_layouts_hator", false, KeyboardLayout.AnsiQwerty)]
+        [InlineData("Hator Skyfall TKL", "winbond_gaming_keyboard_tkl_layouts_hator", false, KeyboardLayout.AnsiQwerty)]
+        [InlineData("pcmk tkl", "winbond_gaming_keyboard_full_layouts_other", false, KeyboardLayout.IsoQwerty)]
+        internal void AProductString_NamesTheBoard(string product, string recipe, bool logo, KeyboardLayout fallback)
+            => Assert.Equal(new WinbondKeyboardLighting.Board(recipe, logo, fallback), WinbondKeyboardLighting.BoardOf(product));
+
+        /// <summary>A Hator board stays ANSI where the version string names no
+        /// region, and takes the region one names
+        /// (WinbondGamingKeyboardController.cpp:83-85 and 120-143).</summary>
+        [Fact]
+        public void TheRegionsFallback_IsTheBoards()
+        {
+            Assert.Equal(KeyboardLayout.AnsiQwerty, WinbondKeyboardLighting.RegionOf(Answer("SOMETHING"), 64, KeyboardLayout.AnsiQwerty));
+            Assert.Equal(KeyboardLayout.IsoQwerty, WinbondKeyboardLighting.RegionOf(Answer("K221UKCVRGB"), 64, KeyboardLayout.AnsiQwerty));
+        }
+
+        /// <summary>A PCMK TKL's map is OpenRGB's TKL layout with one logo light
+        /// at KV(255, 0), and a picture ends with the logo report, its color
+        /// unscaled (WinbondGamingKeyboardController.cpp:228-258 and 326-333). The
+        /// color reports pass the logo by.</summary>
+        [Fact]
+        public void APcmkTkl_LightsItsLogo_AfterThePicture()
+        {
+            var io = new FakeReportChannel { OutputReportLength = 64, InputReportLength = 64, ProductString = "PCMK TKL" };
+            var session = Model().Begin(io, _ => { });
+            var map = session.Map;
+            Assert.NotNull(map);
+            var logo = Assert.Single(map.Lights, l => l.Kind == LightKind.Logo);
+            Assert.Equal(0x1FF00, logo.Address);
+            var keys = KeyboardLayouts.Build("winbond_gaming_keyboard_tkl_layouts_other", KeyboardLayout.IsoQwerty).GetKeyCount();
+            Assert.Equal(keys + 1, map.Lights.Count);
+            io.Calls.Clear();
+            var colors = map.Lights.Select(l => l.Kind == LightKind.Logo ? 0x102030 : 0xFFFFFF).ToArray();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, map.Lights, colors));
+            var outs = io.Calls.Where(c => c.Kind == "out").Select(c => c.Bytes).ToList();
+            Assert.Equal(9, outs.Count);
+            Assert.Equal("01 08 00 00 00 0D 00 04 03 10 20 30 00 00 00 00 00", Hex(outs[8], 17));
+            Assert.All(outs.Take(8), o => Assert.Equal(0x09, o[1]));
+        }
+
+        /// <summary>A board with no logo sends no logo report, and the plain
+        /// board on ISO keeps the model's map.</summary>
+        [Fact]
+        public void AnyOtherBoard_SendsNoLogoReport()
+        {
+            var model = Model();
+            var io = new FakeReportChannel { OutputReportLength = 64, InputReportLength = 64 };
+            var session = model.Begin(io, _ => { });
+            Assert.Null(session.Map);
+            io.Calls.Clear();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, model.Map.Lights.Select(_ => 0x102030).ToArray()));
+            Assert.Equal(8, io.Calls.Count(c => c.Kind == "out"));
+
+            var hator = new FakeReportChannel { OutputReportLength = 64, InputReportLength = 64, ProductString = "Skyfall TKL" };
+            var map = model.Begin(hator, _ => { }).Map;
+            Assert.DoesNotContain(map.Lights, l => l.Kind == LightKind.Logo);
+            Assert.EndsWith("winbond_gaming_keyboard_tkl_layouts_hator:AnsiQwerty", map.Product);
+        }
+
         [Fact]
         public void TheModeAndThePicture_AreOpenRgbs()
         {

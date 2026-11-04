@@ -18,17 +18,18 @@ namespace PadForge.Common.Input.Peripherals
     /// "Skyfall" for Hator, "TKL" or "60" for the size, and takes a full-size
     /// board of another vendor when the string names none of them
     /// (SetNameVendorDescription, lines 32-99; GetSize's default,
-    /// WinbondGamingKeyboardController.h:84-86). PadForge's walk reads no
-    /// string from a device (<see cref="HidCollectionInfo"/>), so every
-    /// board is taken as that full-size board, OpenRGB's own choice when no
-    /// string tells. The region comes from the device: a session asks for
+    /// WinbondGamingKeyboardController.h:84-86). A session reads the same
+    /// string from the channel (<see cref="BoardOf"/>). The map before a
+    /// session is that full-size board, OpenRGB's own choice when no string
+    /// tells. The region comes from the device: a session asks for
     /// the version string, 01 0D, reads up to ten input reports for 150 ms
     /// each for the answer 01 0D with 0 in byte 4, and takes "UK" ahead of
     /// "CVRGB" as ISO, "JP" as JIS and anything else ahead of it as ANSI,
-    /// and ISO when the string has no "CVRGB" or nothing answers
+    /// and the board's default when the string has no "CVRGB" or nothing
+    /// answers: ANSI on a Hator board and ISO on any other
     /// (SetVersionLayout and ParseVersionString, lines 101-213). The keys
-    /// are OpenRGB's full-size layout for that region with the four keys
-    /// above the number pad, each at its place in the color reports
+    /// are OpenRGB's layout of the board's size and vendor for that region,
+    /// each at its place in the color reports
     /// (InitLayouts, RGBController_WinbondGamingKeyboard.cpp:233-531; the KV
     /// value, lines 29-35), and a session publishes the region's map
     /// (<see cref="HidLightingSession.Map"/>).</para>
@@ -52,8 +53,9 @@ namespace PadForge.Common.Input.Peripherals
     /// <para>Hand-back. No source reads the mode the keyboard ran before or
     /// returns it to it, and OpenRGB sends nothing when it closes, so the
     /// keyboard keeps PadForge's last picture in its Custom mode. The Pulsar
-    /// PCMK TKL's logo light, which OpenRGB sets through the logo mode report
-    /// (lines 326-333), needs the product string and is not lit. No source
+    /// PCMK TKL's logo light is one light for its three LEDs, set through the
+    /// logo mode report after each picture (lines 326-333,
+    /// RGBController_WinbondGamingKeyboard.cpp:790-808). No source
     /// names a program that lights these keyboards.</para>
     /// </summary>
     internal sealed class WinbondKeyboardLighting : IHidLightingFamily
@@ -79,6 +81,42 @@ namespace PadForge.Common.Input.Peripherals
         /// vendor other than Hator (RGBController_WinbondGamingKeyboard.cpp:744-766).</summary>
         internal const string Recipe = "winbond_gaming_keyboard_full_layouts_other";
 
+        /// <summary>What a product string tells of a board: its layout recipe,
+        /// whether it has the logo light, and its region where the version
+        /// string names none.</summary>
+        internal readonly record struct Board(string Recipe, bool LogoLight, KeyboardLayout Fallback);
+
+        /// <summary>SetNameVendorDescription (lines 32-99): "PCMK" is a Pulsar
+        /// board, TKL with the logo light or 60%, and "Rockfall" or "Skyfall" a
+        /// Hator board, ANSI and full size or TKL. Any other, or none, is the
+        /// full-size board of another vendor.</summary>
+        internal static Board BoardOf(string product)
+        {
+            string name = product ?? string.Empty;
+            bool tkl = name.Contains("TKL", StringComparison.Ordinal);
+            if (name.Contains("PCMK", StringComparison.Ordinal))
+            {
+                if (tkl) return new Board("winbond_gaming_keyboard_tkl_layouts_other", true, KeyboardLayout.IsoQwerty);
+                if (name.Contains("60", StringComparison.Ordinal))
+                    return new Board("winbond_gaming_keyboard_60_layouts_other", false, KeyboardLayout.IsoQwerty);
+            }
+            else if (name.Contains("Rockfall", StringComparison.Ordinal) || name.Contains("Skyfall", StringComparison.Ordinal))
+            {
+                return new Board(tkl ? "winbond_gaming_keyboard_tkl_layouts_hator" : "winbond_gaming_keyboard_full_layouts_hator",
+                    false, KeyboardLayout.AnsiQwerty);
+            }
+            return new Board(Recipe, false, KeyboardLayout.IsoQwerty);
+        }
+
+        /// <summary>The logo light's value, KV(255, 0)
+        /// (RGBController_WinbondGamingKeyboard.cpp:35 and 803).</summary>
+        internal const int LogoValue = 255 << 8 | 1 << 16;
+
+        /// <summary>WINBOND_GK_MODE_STATIC and the logo report's speed, 3
+        /// (RGBController_WinbondGamingKeyboard.h:19,
+        /// WinbondGamingKeyboardController.cpp:332).</summary>
+        internal const byte StaticMode = 0, LogoSpeed = 3;
+
         public string Name => "Winbond";
 
         private readonly KeyboardLedNames.ModelCache _models = new();
@@ -94,10 +132,17 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The full-size layout in a region.</summary>
         internal static LightMap Map(KeyboardLayout layout, ushort productId)
-            => new(KeyboardLedNames.FromLayout(KeyboardLayouts.Build(Recipe, layout)), "OpenRGB RGBController_WinbondGamingKeyboard.cpp")
+            => Map(BoardOf(null), layout, productId);
+
+        internal static LightMap Map(Board board, KeyboardLayout layout, ushort productId)
+        {
+            var lights = KeyboardLedNames.FromLayout(KeyboardLayouts.Build(board.Recipe, layout));
+            if (board.LogoLight) lights.Add(new LightInfo(LogoValue, LightKind.Logo, 0, LightKeySource.None));
+            return new LightMap(lights, "OpenRGB RGBController_WinbondGamingKeyboard.cpp")
             {
-                Product = $"winbond:{VendorId:X4}:{productId:X4}:{layout}",
+                Product = $"winbond:{VendorId:X4}:{productId:X4}:{board.Recipe}:{layout}",
             };
+        }
 
         private static HidLightingModel Model(string name, ushort productId) => new()
         {
@@ -137,7 +182,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The region a version answer names, or null when the
         /// report is not the answer or holds no string (lines 177-207 and
         /// 120-144).</summary>
-        internal static KeyboardLayout? RegionOf(byte[] answer, int length)
+        internal static KeyboardLayout? RegionOf(byte[] answer, int length, KeyboardLayout fallback = KeyboardLayout.IsoQwerty)
         {
             if (length < 5 || answer[0] != ReportId || answer[1] != VersionCommand || answer[4] != 0) return null;
             int at = 2;
@@ -148,7 +193,7 @@ namespace PadForge.Common.Input.Peripherals
             while (stop < end && answer[stop] != 0) stop++;
             string text = Encoding.ASCII.GetString(answer, at, stop - at);
             int cvrgb = text.IndexOf("CVRGB", StringComparison.Ordinal);
-            if (cvrgb <= 2) return KeyboardLayout.IsoQwerty;
+            if (cvrgb <= 2) return fallback;
             string lang = text.Substring(cvrgb - 2, 2);
             return lang == "UK" ? KeyboardLayout.IsoQwerty : lang == "JP" ? KeyboardLayout.Jis : KeyboardLayout.AnsiQwerty;
         }
@@ -182,24 +227,41 @@ namespace PadForge.Common.Input.Peripherals
             return reports;
         }
 
+        /// <summary>setModeImpl for the logo (lines 228-258 and 326-333): 01 08
+        /// 00 00 00 0D, the Static mode, the brightness, the speed 3 and the
+        /// color with no scaling, since the logo report takes it whole.</summary>
+        internal static byte[] LogoReport(int rgb)
+        {
+            var report = Report(0x08);
+            report[5] = 0x0D;
+            report[6] = StaticMode;
+            report[7] = Brightness;
+            report[8] = LogoSpeed;
+            report[9] = (byte)(rgb >> 16);
+            report[10] = (byte)(rgb >> 8);
+            report[11] = (byte)rgb;
+            return report;
+        }
+
         private static HidLightingSession Begin(IHidReportChannel io, ushort productId)
         {
             if (io == null || !io.WriteOutput(Report(VersionCommand))) return null;
-            var region = KeyboardLayout.IsoQwerty;
+            var board = BoardOf(io.ProductString);
+            var region = board.Fallback;
             var answer = new byte[Math.Max(PacketSize, io.InputReportLength)];
             for (int read = 0; read < VersionReads; read++)
             {
                 Array.Clear(answer);
                 int length = io.ReadInput(answer, VersionMs);
                 if (length < 0) continue;
-                if (RegionOf(answer, length) is KeyboardLayout found)
+                if (RegionOf(answer, length, board.Fallback) is KeyboardLayout found)
                 {
                     region = found;
                     break;
                 }
             }
             if (!io.WriteOutput(CustomModeReport())) return null;
-            return new Session(region == KeyboardLayout.IsoQwerty ? null : Map(region, productId));
+            return new Session(board.Recipe == Recipe && region == KeyboardLayout.IsoQwerty ? null : Map(board, region, productId));
         }
 
         internal sealed class Session : HidLightingSession
@@ -223,6 +285,10 @@ namespace PadForge.Common.Input.Peripherals
                 if (io == null) return HidLightingPaint.Failed;
                 foreach (var report in Picture(lights, colors))
                     if (!io.WriteOutput(report)) return HidLightingPaint.Failed;
+                int count = Math.Min(lights?.Count ?? 0, colors?.Count ?? 0);
+                for (int i = 0; i < count; i++)
+                    if (lights[i].Address == LogoValue && !io.WriteOutput(LogoReport(colors[i])))
+                        return HidLightingPaint.Failed;
                 return HidLightingPaint.Sent;
             }
 

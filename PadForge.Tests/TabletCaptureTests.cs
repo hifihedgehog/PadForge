@@ -13,6 +13,12 @@ namespace PadForge.Tests;
 
 public class TabletCaptureTests
 {
+    /// <summary>Every wait here guards against a hang and makes no timing
+    /// claim, so a run that works never reaches it. A 5 s bound ran out
+    /// while other test hosts loaded the machine (2026-11-04: the failed
+    /// run took the bound to the millisecond), so the bound is 30 s.</summary>
+    private static readonly TimeSpan Bound = TimeSpan.FromSeconds(30);
+
     private sealed class Input : Stream
     {
         internal readonly Channel<byte[]> Reports = Channel.CreateUnbounded<byte[]>();
@@ -48,7 +54,7 @@ public class TabletCaptureTests
 
     private static async Task Until(Func<bool> condition)
     {
-        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        using var timeout = new CancellationTokenSource(Bound);
         while (!condition()) await Task.Delay(5, timeout.Token);
     }
 
@@ -64,7 +70,7 @@ public class TabletCaptureTests
             Interlocked.Increment(ref restarts);
         });
         device.SetCapture(true);
-        await input.Reading.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        await input.Reading.Task.WaitAsync(Bound);
         Assert.Equal(TabletCaptureState.WaitingForInput, device.CaptureState);
         input.Reports.Writer.TryWrite(new byte[] { 1, 0 });
         await Until(() => device.CaptureState == TabletCaptureState.Captured);
@@ -89,17 +95,17 @@ public class TabletCaptureTests
         using var device = new WindowsTabletDevice(f.Decoder, null, () => input, _ =>
         {
             entered.TrySetResult();
-            if (!release.Wait(TimeSpan.FromSeconds(5))) throw new TimeoutException();
+            if (!release.Wait(Bound)) throw new TimeoutException();
         });
         try
         {
             device.SetCapture(true);
-            await input.Reading.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            await input.Reading.Task.WaitAsync(Bound);
             device.SetCapture(false);
-            await entered.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            await entered.Task.WaitAsync(Bound);
             device.ReportPolicyFailure("readback failed");
             release.Set();
-            Assert.True(await Task.Run(() => device.WaitForTransition(TimeSpan.FromSeconds(5))));
+            Assert.True(await Task.Run(() => device.WaitForTransition(Bound)));
             Assert.Equal(TabletCaptureState.Failed, device.CaptureState);
             Assert.Equal("readback failed", device.CaptureError);
         }
@@ -117,13 +123,13 @@ public class TabletCaptureTests
         using var device = new WindowsTabletDevice(f.Decoder, (d, _, _, _) => events.Enqueue(d.CaptureState), () =>
         {
             entered.TrySetResult();
-            if (!release.Wait(TimeSpan.FromSeconds(5))) throw new TimeoutException();
+            if (!release.Wait(Bound)) throw new TimeoutException();
             return input;
         }, _ => { });
         try
         {
             device.SetCapture(true);
-            await entered.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            await entered.Task.WaitAsync(Bound);
             device.SetCapture(false);
             release.Set();
             await Until(() => device.CaptureState == TabletCaptureState.Shared);
@@ -146,7 +152,7 @@ public class TabletCaptureTests
             if (error == "access denied") result.TrySetResult(rollback);
         }, () => throw new UnauthorizedAccessException("access denied"));
         device.SetCapture(true, fresh);
-        Assert.Equal(fresh, await result.Task.WaitAsync(TimeSpan.FromSeconds(5)));
+        Assert.Equal(fresh, await result.Task.WaitAsync(Bound));
         Assert.Equal(TabletCaptureState.Failed, device.CaptureState);
     }
 
@@ -160,7 +166,7 @@ public class TabletCaptureTests
             if (rollback) failure.TrySetResult(version);
         }, () => throw new UnauthorizedAccessException());
         device.SetCapture(true, true);
-        int revision = await failure.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        int revision = await failure.Task.WaitAsync(Bound);
         device.Dispose();
         Assert.False(device.IsCurrentCaptureRevision(revision));
         Assert.True(device.CanRollbackCaptureRevision(revision));
@@ -189,7 +195,7 @@ public class TabletCaptureTests
             if (error.Length > 0) failed.TrySetResult(rollback);
         }, () => input);
         device.SetCapture(true, true);
-        await input.Reading.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        await input.Reading.Task.WaitAsync(Bound);
         if (reportId != 0)
         {
             input.Reports.Writer.TryWrite(new byte[] { (byte)reportId, 0 });
@@ -202,7 +208,7 @@ public class TabletCaptureTests
         }
         else Assert.Equal(TabletCaptureState.WaitingForInput, device.CaptureState);
         input.Reports.Writer.TryComplete(new IOException("device removed"));
-        Assert.Equal(expectedRollback, await failed.Task.WaitAsync(TimeSpan.FromSeconds(5)));
+        Assert.Equal(expectedRollback, await failed.Task.WaitAsync(Bound));
         Assert.False(device.GetCurrentState().Touchpads[0].FingerDown[0]);
     }
 
@@ -262,7 +268,7 @@ public class TabletCaptureTests
             {
                 if (Interlocked.Increment(ref opens) == 1) throw new IOException("collection is busy");
                 opening.TrySetResult();
-                if (!releaseOpen.Wait(TimeSpan.FromSeconds(5))) throw new TimeoutException();
+                if (!releaseOpen.Wait(Bound)) throw new TimeoutException();
                 return oldInput;
             }, _ => Interlocked.Increment(ref restarts), () => true))
         using (var replacement = new WindowsTabletDevice(newFixture.Decoder, null, () =>
@@ -274,7 +280,7 @@ public class TabletCaptureTests
             try
             {
                 oldDevice.SetCapture(true);
-                await opening.Task.WaitAsync(TimeSpan.FromSeconds(5));
+                await opening.Task.WaitAsync(Bound);
                 Volatile.Write(ref releasing, true);
                 oldDevice.PrepareForUnhide(retireCapture: !retireAfterRestoreRequest);
                 oldDevice.SetCapture(false);
@@ -286,7 +292,7 @@ public class TabletCaptureTests
                 oldDevice.Dispose();
                 replacement.SetCapture(true);
                 releaseOpen.Set();
-                await newInput.Reading.Task.WaitAsync(TimeSpan.FromSeconds(5));
+                await newInput.Reading.Task.WaitAsync(Bound);
                 Assert.Equal(2, restarts);
                 Assert.Equal(2, replacementSawRestarts);
                 Assert.Equal(1, oldInput.DisposeCount);
@@ -314,7 +320,7 @@ public class TabletCaptureTests
         {
             if (Interlocked.Increment(ref opens) == 1) throw new IOException("collection is busy");
             opening.TrySetResult();
-            if (!releaseOpen.Wait(TimeSpan.FromSeconds(5))) throw new TimeoutException();
+            if (!releaseOpen.Wait(Bound)) throw new TimeoutException();
             return staleInput;
         }, _ =>
         {
@@ -329,7 +335,7 @@ public class TabletCaptureTests
         try
         {
             oldDevice.SetCapture(true);
-            await opening.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            await opening.Task.WaitAsync(Bound);
             oldDevice.PrepareForUnhide();
             oldDevice.SetCapture(false);
             Assert.False(await Task.Run(() => oldDevice.WaitForTransition(TimeSpan.FromMilliseconds(25))));
@@ -338,12 +344,12 @@ public class TabletCaptureTests
             await Task.WhenAny(replacementOpening.Task, Task.Delay(200));
             Assert.False(replacementOpening.Task.IsCompleted);
             releaseOpen.Set();
-            await newInput.Reading.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            await newInput.Reading.Task.WaitAsync(Bound);
             Assert.Equal(2, restarts);
             Assert.Equal(2, observedRestarts);
             Assert.Equal(1, staleInput.DisposeCount);
             Assert.Equal(TabletCaptureState.Offline, oldDevice.CaptureState);
-            Assert.True(await Task.Run(() => oldDevice.WaitForTransition(TimeSpan.FromSeconds(5))));
+            Assert.True(await Task.Run(() => oldDevice.WaitForTransition(Bound)));
         }
         finally { releaseOpen.Set(); }
     }

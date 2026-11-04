@@ -9,6 +9,12 @@ namespace PadForge.Tests
 {
     public class PsmPatchCoordinatorTests
     {
+        /// <summary>Every wait here guards against a hang and makes no timing
+        /// claim, so a run that works never reaches it. A 5 s bound ran out
+        /// while other test hosts loaded the machine (2026-11-04: the failed
+        /// run took the bound to the millisecond), so the bound is 30 s.</summary>
+        private static readonly TimeSpan Bound = TimeSpan.FromSeconds(30);
+
         private sealed class ImmediateProgress<T>(Action<T> report) : IProgress<T>
         {
             public void Report(T value) => report(value);
@@ -154,14 +160,14 @@ namespace PadForge.Tests
             {
                 if (rig.RestoreCalls != 1) return;
                 oldRestoreEntered.Set();
-                if (!finishOldRestore.Wait(TimeSpan.FromSeconds(5))) throw new TimeoutException();
+                if (!finishOldRestore.Wait(Bound)) throw new TimeoutException();
             };
             var oldRelease = Task.Run(first.Dispose);
             var newRelease = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
             Thread newOwner = null;
             try
             {
-                Assert.True(oldRestoreEntered.Wait(TimeSpan.FromSeconds(5)));
+                Assert.True(oldRestoreEntered.Wait(Bound));
                 var second = rig.Coordinator.Suspend();
                 Assert.True(second.VerifyDisabled(out _));
                 rig.WantEnabled = false;
@@ -171,9 +177,9 @@ namespace PadForge.Tests
                     catch (Exception ex) { newRelease.SetException(ex); }
                 }) { IsBackground = true };
                 newOwner.Start();
-                Assert.True(SpinWait.SpinUntil(() => !rig.Coordinator.IsSuspended, TimeSpan.FromSeconds(5)));
+                Assert.True(SpinWait.SpinUntil(() => !rig.Coordinator.IsSuspended, Bound));
                 Assert.True(SpinWait.SpinUntil(() => newRelease.Task.IsCompleted
-                    || (newOwner.ThreadState & ThreadState.WaitSleepJoin) != 0, TimeSpan.FromSeconds(5)));
+                    || (newOwner.ThreadState & ThreadState.WaitSleepJoin) != 0, Bound));
                 Assert.False(newRelease.Task.IsCompleted);
                 finishOldRestore.Set();
                 await Task.WhenAll(oldRelease, newRelease.Task);
@@ -465,14 +471,14 @@ namespace PadForge.Tests
             worker.Start();
             try
             {
-                Assert.True(firstPass.Wait(TimeSpan.FromSeconds(5)));
+                Assert.True(firstPass.Wait(Bound));
                 Assert.True(SpinWait.SpinUntil(() => finished.Task.IsCompleted
-                    || (worker.ThreadState & ThreadState.WaitSleepJoin) != 0, TimeSpan.FromSeconds(5)));
+                    || (worker.ThreadState & ThreadState.WaitSleepJoin) != 0, Bound));
                 Assert.False(finished.Task.IsCompleted);
                 Assert.Equal(1, Volatile.Read(ref passes));
                 Assert.True(rig.Coordinator.IsSuspended);
                 cancellation.Cancel();
-                await finished.Task.WaitAsync(TimeSpan.FromSeconds(5));
+                await finished.Task.WaitAsync(Bound);
                 Assert.Equal(1, passes);
                 Assert.Equal(1, rig.RestoreCalls);
                 Assert.False(rig.Coordinator.IsSuspended);
@@ -480,7 +486,7 @@ namespace PadForge.Tests
             finally
             {
                 cancellation.Cancel();
-                await finished.Task.WaitAsync(TimeSpan.FromSeconds(5));
+                await finished.Task.WaitAsync(Bound);
             }
         }
 
@@ -512,7 +518,7 @@ namespace PadForge.Tests
             var writer = Task.Run(() => rig.Coordinator.Apply(true, () =>
             {
                 enteredWrite.Set();
-                if (!finishWrite.Wait(TimeSpan.FromSeconds(5))) throw new TimeoutException();
+                if (!finishWrite.Wait(Bound)) throw new TimeoutException();
                 rig.Enabled[0] = true;
                 return 1;
             }));
@@ -524,18 +530,18 @@ namespace PadForge.Tests
             }) { IsBackground = true };
             try
             {
-                Assert.True(enteredWrite.Wait(TimeSpan.FromSeconds(5)));
+                Assert.True(enteredWrite.Wait(Bound));
                 entrant.Start();
-                Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref attemptingScope), TimeSpan.FromSeconds(5)));
+                Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref attemptingScope), Bound));
                 // The only blocking operation after the attempt signal is the
                 // coordinator lock. A start signal alone would not prove that
                 // this thread actually reached the contended operation.
                 Assert.True(SpinWait.SpinUntil(() => acquiredScope.IsSet
-                    || (entrant.ThreadState & ThreadState.WaitSleepJoin) != 0, TimeSpan.FromSeconds(5)));
+                    || (entrant.ThreadState & ThreadState.WaitSleepJoin) != 0, Bound));
                 Assert.False(acquiredScope.IsSet);
                 finishWrite.Set();
                 await writer;
-                Assert.True(acquiredScope.Wait(TimeSpan.FromSeconds(5)));
+                Assert.True(acquiredScope.Wait(Bound));
                 Assert.True(scan.VerifyDisabled(out _));
                 Assert.False(rig.Enabled[0]);
             }
@@ -544,7 +550,7 @@ namespace PadForge.Tests
                 finishWrite.Set();
                 await writer;
                 if ((entrant.ThreadState & ThreadState.Unstarted) == 0)
-                    Assert.True(entrant.Join(TimeSpan.FromSeconds(5)));
+                    Assert.True(entrant.Join(Bound));
                 scan?.Dispose();
             }
         }

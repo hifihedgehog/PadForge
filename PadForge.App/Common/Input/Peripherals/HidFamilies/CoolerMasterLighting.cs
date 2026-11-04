@@ -25,12 +25,16 @@ namespace PadForge.Common.Input.Peripherals
     /// 0 from the front (hidapi windows/hid.c:1221-1228), so byte k of an
     /// answer in OpenRGB is byte k + 1 of the report Windows delivers.</para>
     ///
-    /// <para>Devices registered and not lit. The MK850 (0x0069) and the
-    /// SK620 Black and White (0x0157, 0x0159): DetectCoolerMasterV2Keyboards
-    /// has no case for them, so OpenRGB makes no controller
-    /// (CoolerMasterControllerDetect.cpp:180-229). The ARGB and Small ARGB
-    /// controllers are lit only on the firmware their serial string names
-    /// (CoolerMasterArgb.cs).</para>
+    /// <para>The MK850 (0x0069) and the SK620 Black and White (0x0157,
+    /// 0x0159). OpenRGB registers all three and holds their layouts, and
+    /// DetectCoolerMasterV2Keyboards has no case for them, so it makes no
+    /// controller (CoolerMasterControllerDetect.cpp:180-229). The SK620 has its
+    /// case in the V2 controller's Initialize (CMKeyboardV2Controller.cpp:113-116),
+    /// and the commit that added it means it lit ("add sk620", d86f59cf), so
+    /// PadForge lights it as a V2 keyboard. The MK850 takes the frames of
+    /// SignalRGB's plugin, the one source that drives it (CoolerMasterMk850.cs).
+    /// The ARGB and Small ARGB controllers are lit only on the firmware their
+    /// serial string names (CoolerMasterArgb.cs).</para>
     /// </summary>
     internal sealed partial class CoolerMasterLighting : IHidLightingFamily
     {
@@ -69,7 +73,8 @@ namespace PadForge.Common.Input.Peripherals
         public HidLightingModel Match(HidCollectionInfo collection)
         {
             if (collection == null || collection.VendorId != VendorId) return null;
-            var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
+            var registrations = OpenRgbRegistrations.Match(OpenRgbFamily,
+                collection.ProductId == Sk650Other ? collection with { ProductId = Sk650 } : collection);
             if (registrations.Count == 0) return null;
             // OpenRGB runs the detectors in this order and keeps the first
             // that makes a controller.

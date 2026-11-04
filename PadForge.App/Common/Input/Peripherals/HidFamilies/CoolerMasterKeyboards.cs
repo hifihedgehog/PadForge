@@ -79,6 +79,11 @@ namespace PadForge.Common.Input.Peripherals
         internal const ushort Sk622W = 0x014B;
         internal const ushort Sk630 = 0x0089;
         internal const ushort Sk650 = 0x008D;
+
+        /// <summary>The SK650's other product ID, which SignalRGB's plugin lists
+        /// with the first (CoolerMaster_SK650_Keyboard.js:3). OpenRGB has it
+        /// not, and the frames and keys are the first's.</summary>
+        internal const ushort Sk650Other = 0x0123;
         internal const ushort Sk652 = 0x015D;
         internal const ushort Sk653 = 0x01AB;
 
@@ -90,10 +95,11 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The keyboards DetectCoolerMasterV2Keyboards makes a V2
         /// controller for (CoolerMasterControllerDetect.cpp:202-213).</summary>
         internal static readonly ushort[] V2Keyboards =
-            { Sk622B, Sk622W, Sk630, Sk650, Sk652, Sk653, Ck530, Ck530V2, Ck550V2, Ck552V2, Mk730, Mk750 };
+            { Sk620B, Sk620W, Sk622B, Sk622W, Sk630, Sk650, Sk650Other, Sk652, Sk653, Ck530, Ck530V2, Ck550V2, Ck552V2, Mk730, Mk750 };
 
         private static HidLightingModel KeyboardModel(string name, ushort productId)
         {
+            if (productId == Mk850) return Mk850Model(name);
             bool v1 = Array.IndexOf(V1Keyboards, productId) >= 0;
             if (!v1 && Array.IndexOf(V2Keyboards, productId) < 0) return null;
             var lights = KeyboardLights(productId, KeyboardLayout.AnsiQwerty);
@@ -108,7 +114,7 @@ namespace PadForge.Common.Input.Peripherals
         /// layout.</summary>
         internal static IReadOnlyList<LightInfo> KeyboardLights(ushort productId, KeyboardLayout region)
         {
-            var row = KeyboardLayouts.ModelsOf(LayoutFamily, productId).FirstOrDefault();
+            var row = KeyboardLayouts.ModelsOf(LayoutFamily, productId == Sk650Other ? Sk650 : productId).FirstOrDefault();
             var layout = row == null ? null : KeyboardLayouts.Build(row.Recipe, region);
             return layout?.Lights((_, key) => (int)key.Value);
         }
@@ -200,6 +206,7 @@ namespace PadForge.Common.Input.Peripherals
                     break;
                 case Sk630:
                 case Sk650:
+                case Sk650Other:
                     frames.Add(ActiveProfile(0x0C));
                     break;
                 case Sk652:

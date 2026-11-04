@@ -99,18 +99,8 @@ namespace PadForge.Tests
 
         // ── Registrations ──
 
-        /// <summary>The registrations OpenRGB makes no controller PadForge can
-        /// drive for, each with its reason in the family's class
-        /// comment.</summary>
-        private static readonly Dictionary<string, string> Unlit = new()
-        {
-            ["Cooler Master MK850"] = "no case in DetectCoolerMasterV2Keyboards",
-            ["Cooler Master SK620 White"] = "no case in DetectCoolerMasterV2Keyboards",
-            ["Cooler Master SK620 Black"] = "no case in DetectCoolerMasterV2Keyboards",
-        };
-
         [Fact]
-        public void EveryRegistration_IsMatchedByOpenRgbsRules_OrListedAsUnlit()
+        public void EveryRegistration_IsMatchedByOpenRgbsRules()
         {
             var registrations = OpenRgbRegistrations.Of(CoolerMasterLighting.OpenRgbFamily).ToList();
             // CoolerMasterControllerDetect.cpp:389-451, MM531 commented out
@@ -120,11 +110,6 @@ namespace PadForge.Tests
             foreach (var r in registrations)
             {
                 var model = CoolerMasterLighting.Instance.Match(Collection(r));
-                if (Unlit.ContainsKey(r.Name))
-                {
-                    Assert.True(model == null, r.Name);
-                    continue;
-                }
                 Assert.True(model != null, r.Name);
                 Assert.Equal(r.Name, model.Name);
                 Assert.Same(CoolerMasterLighting.Instance, model.Family);
@@ -136,7 +121,135 @@ namespace PadForge.Tests
                 // Through the family list too.
                 Assert.Same(model, HidLightingFamilies.Match(Collection(r)));
             }
-            Assert.Equal(Unlit.Count, registrations.Count(r => Unlit.ContainsKey(r.Name)));
+        }
+
+        // ── The keyboards OpenRGB's V2 detector leaves out ──
+
+        [Fact]
+        public void TheSk620_IsAV2Keyboard_WithItsOwnStart()
+        {
+            foreach (ushort pid in new[] { CoolerMasterLighting.Sk620B, CoolerMasterLighting.Sk620W })
+            {
+                var r = OpenRgbRegistrations.Of(CoolerMasterLighting.OpenRgbFamily).Single(x => x.ProductId == pid);
+                var model = CoolerMasterLighting.Instance.Match(Collection(r));
+                Assert.NotNull(model);
+                // CMKeyboardV2Controller.cpp:113-116: the magic command alone.
+                var frames = CoolerMasterLighting.V2Initialize(pid);
+                Assert.Equal(Hex(CoolerMasterLighting.Magic(0x09)), Hex(Assert.Single(frames)));
+                Assert.True(model.Map.Lights.Count > 60);
+            }
+        }
+
+        [Fact]
+        public void TheSk650sOtherId_IsAnSk650()
+        {
+            var r = OpenRgbRegistrations.Of(CoolerMasterLighting.OpenRgbFamily).Single(x => x.ProductId == CoolerMasterLighting.Sk650);
+            var collection = Collection(r);
+            var other = collection with
+            {
+                ProductId = CoolerMasterLighting.Sk650Other,
+                Path = collection.Path.Replace("pid_008d", "pid_0123"),
+            };
+            var model = CoolerMasterLighting.Instance.Match(other);
+            Assert.NotNull(model);
+            Assert.Equal(CoolerMasterLighting.Instance.Match(collection).Map.Lights.Count, model.Map.Lights.Count);
+            Assert.Equal("coolermaster:2516:0123", model.Map.Product);
+            Assert.Equal(Hex(Assert.Single(CoolerMasterLighting.V2Initialize(CoolerMasterLighting.Sk650))),
+                Hex(Assert.Single(CoolerMasterLighting.V2Initialize(CoolerMasterLighting.Sk650Other))));
+        }
+
+        private static string HexOf(byte[] bytes, int count) => Hex(bytes.Take(count).ToArray());
+
+        private static CoolerMasterLighting.Mk850Session Mk850(byte? profile = 0x02, byte? effect = 0x07)
+            => new(profile, effect);
+
+        [Fact]
+        public void TheMk850_StartsWithThePluginsProfileAndCommit_Once()
+        {
+            var io = new FakeReportChannel { OutputReportLength = 65, InputReportLength = 65 };
+            var lights = CoolerMasterLighting.Mk850Lights();
+            var colors = new int[lights.Count];
+            var session = Mk850();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, NoWait, lights, colors));
+            var sent = io.Calls.Where(c => c.Kind == "out").Select(c => c.Bytes).ToList();
+            // CoolerMaster_Mk850_Keyboard.js:61-62, then Render.
+            Assert.Equal("00 51 00 00 00 05", HexOf(sent[0], 6));
+            Assert.Equal("00 51 28 00 00 FF", HexOf(sent[1], 6));
+            Assert.Equal(2 + 9 + 1, sent.Count);
+            Assert.Equal("00 51 28 00 00 FF", HexOf(sent[^1], 6));
+            int before = sent.Count;
+            session.Paint(io, NoWait, lights, colors);
+            Assert.Equal(before + 9 + 1, io.Calls.Count(c => c.Kind == "out"));
+        }
+
+        [Fact]
+        public void TheMk850_ColorsStartAtLedZeroInReportOne_NotAtByte40()
+        {
+            var map = new int[CoolerMasterLighting.Mk850Slots];
+            map[0] = 0x010203;
+            map[20] = 0x040506;
+            map[160] = 0x070809;
+            var reports = CoolerMasterLighting.Mk850Session.ColorReports(map);
+            Assert.Equal(9, reports.Count);
+            Assert.Equal("00 56 83 01 00 01 02 03", HexOf(reports[0], 8));
+            Assert.Equal("00 56 83 02 00 04 05 06", HexOf(reports[1], 8));
+            Assert.Equal("00 56 83 09 00 07 08 09", HexOf(reports[8], 8));
+            Assert.All(reports, r => Assert.Equal(65, r.Length));
+        }
+
+        [Fact]
+        public void TheMk850_KeysAreOpenRgbs_WithThePluginsNumLockAndMacroNumbers()
+        {
+            var lights = CoolerMasterLighting.Mk850Lights();
+            Assert.Contains(lights, l => l.Usage == 0x53 && l.Address == CoolerMasterLighting.Mk850NumLockLed);
+            Assert.DoesNotContain(lights, l => l.Address == 254);
+            // The plugin's first macro key at the top is LED 0.
+            var macro = lights.Where(l => l.Label == LightLabel.MacroKey).OrderBy(l => l.Y).ToList();
+            Assert.Equal(new[] { 1, 2, 3, 4, 5 }, macro.Select(l => l.LabelNumber));
+            Assert.Equal(new[] { 0, 1, 2, 3, 4 }, macro.Select(l => l.Address));
+            Assert.All(lights, l => Assert.InRange(l.Address, 0, CoolerMasterLighting.Mk850Slots - 1));
+        }
+
+        [Fact]
+        public void TheMk850_HandsBackWhatItRead_AndNeverSaves()
+        {
+            var io = new FakeReportChannel { OutputReportLength = 65, InputReportLength = 65 };
+            var session = Mk850(profile: 0x02, effect: 0x07);
+            var lights = CoolerMasterLighting.Mk850Lights();
+            session.Paint(io, NoWait, lights, new int[lights.Count]);
+            Assert.Equal(new[] { "00 51 00 00 00 02", "00 41 80 00 00 00", "00 51 28 00 00 07", "00 41 00 00 00 00" },
+                session.CrashFrames.Select(f => HexOf(f, 6)));
+            io.Calls.Clear();
+            Assert.True(session.HandBack(io, NoWait));
+            Assert.Equal(new[] { "00 51 00 00 00 02", "00 41 80 00 00 00", "00 51 28 00 00 07", "00 41 00 00 00 00" },
+                io.Calls.Where(c => c.Kind == "out").Select(c => HexOf(c.Bytes, 6)));
+            Assert.DoesNotContain(io.Calls, c => c.Bytes.Length > 2 && c.Bytes[1] == 0x50);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData((byte)0xFF)]
+        public void TheMk850_WithNoEffectOfItsOwnToRestore_TakesThePluginsEffect(object effect)
+        {
+            var session = Mk850(profile: null, effect: (byte?)effect);
+            var io = new FakeReportChannel { OutputReportLength = 65, InputReportLength = 65 };
+            var lights = CoolerMasterLighting.Mk850Lights();
+            session.Paint(io, NoWait, lights, new int[lights.Count]);
+            // No profile was read, so none is set.
+            Assert.Equal(new[] { "00 41 80 00 00 00", "00 51 28 00 00 01", "00 41 00 00 00 00" },
+                session.CrashFrames.Select(f => HexOf(f, 6)));
+        }
+
+        [Fact]
+        public void TheMk850_ReadsTheProfileAndEffect_OnlyFromTheirOwnAnswers()
+        {
+            var answer = new byte[65];
+            answer[1] = 0x28;
+            answer[4] = 0x07;
+            Assert.Equal((byte)0x07, CoolerMasterLighting.Mk850ValueOf(answer, 0x28));
+            Assert.Null(CoolerMasterLighting.Mk850ValueOf(answer, 0x00));
+            Assert.Null(CoolerMasterLighting.Mk850ValueOf(new byte[4], 0x00));
+            Assert.Null(CoolerMasterLighting.Mk850ValueOf(null, 0x00));
         }
 
         [Fact]
@@ -165,7 +278,7 @@ namespace PadForge.Tests
         [Fact]
         public void EveryKeyboard_HasOpenRgbsLayoutInEachRegion_AddressedByItsLedValue()
         {
-            foreach (ushort pid in CoolerMasterLighting.V1Keyboards.Concat(CoolerMasterLighting.V2Keyboards))
+            foreach (ushort pid in CoolerMasterLighting.V1Keyboards.Concat(CoolerMasterLighting.V2Keyboards).Where(p => p != CoolerMasterLighting.Sk650Other))
             {
                 var row = KeyboardLayouts.ModelsOf("CoolerMaster", pid).Single();
                 foreach (var region in new[] { KeyboardLayout.AnsiQwerty, KeyboardLayout.IsoQwerty, KeyboardLayout.Jis })

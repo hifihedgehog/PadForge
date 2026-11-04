@@ -1,0 +1,95 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace PadForge.Common.Input.Peripherals.HidFamilies
+{
+    /// <summary>The key names SignalRGB's plugins use, as HID usages of the
+    /// keyboard page by the key's place (HID Usage Tables 1.6, section 10), or
+    /// as labels for a key no usage names.</summary>
+    internal static class PluginKeyNames
+    {
+        private static readonly Dictionary<string, ushort> s_usages = Build();
+
+        private static Dictionary<string, ushort> Build()
+        {
+            var usages = new Dictionary<string, ushort>(StringComparer.Ordinal)
+            {
+                ["Esc"] = 0x29, ["`"] = 0x35, ["-_"] = 0x2D, ["=+"] = 0x2E, ["+="] = 0x2E, ["Backspace"] = 0x2A,
+                ["Tab"] = 0x2B, ["["] = 0x2F, ["]"] = 0x30, ["\\"] = 0x31, ["CapsLock"] = 0x39,
+                [";"] = 0x33, ["'"] = 0x34, ["Enter"] = 0x28, ["Left Shift"] = 0xE1, [","] = 0x36, ["."] = 0x37,
+                ["/"] = 0x38, ["Right Shift"] = 0xE5, ["Left Ctrl"] = 0xE0, ["Left Win"] = 0xE3, ["Left Alt"] = 0xE2,
+                ["Space"] = 0x2C, ["Right Alt"] = 0xE6, ["Menu"] = 0x65, ["Right Ctrl"] = 0xE4,
+                ["Print Screen"] = 0x46, ["Scroll Lock"] = 0x47, ["Pause Break"] = 0x48, ["Insert"] = 0x49,
+                ["Home"] = 0x4A, ["Page Up"] = 0x4B, ["Del"] = 0x4C, ["End"] = 0x4D, ["Page Down"] = 0x4E,
+                ["Page DoWN"] = 0x4E, ["Right Arrow"] = 0x4F, ["Left Arrow"] = 0x50, ["Down Arrow"] = 0x51,
+                ["Up Arrow"] = 0x52, ["NumLock"] = 0x53, ["Num /"] = 0x54, ["Num *"] = 0x55, ["Num -"] = 0x56,
+                ["Num +"] = 0x57, ["Num Enter"] = 0x58, ["Num 0"] = 0x62, ["Num ."] = 0x63, ["Num ,"] = 0x63,
+                ["ISO #"] = 0x32, ["ISO /"] = 0x32, ["ISO <"] = 0x64,
+                // The Speedlink ORIOS keyboard names its legends in German.
+                ["^"] = 0x35, ["ß"] = 0x2D, ["´"] = 0x2E, ["Ü"] = 0x2F, ["+"] = 0x30, ["Ö"] = 0x33, ["Ä"] = 0x34,
+                ["#"] = 0x32, ["<"] = 0x64, ["AltGr"] = 0xE6, ["-"] = 0x38,
+            };
+            for (int i = 0; i < 26; i++) usages[((char)('A' + i)).ToString()] = (ushort)(0x04 + i);
+            for (int i = 1; i <= 9; i++) usages[i.ToString()] = (ushort)(0x1D + i);
+            usages["0"] = 0x27;
+            for (int i = 1; i <= 12; i++) usages["F" + i] = (ushort)(0x39 + i);
+            for (int i = 1; i <= 9; i++) usages["Num " + i] = (ushort)(0x58 + i);
+            return usages;
+        }
+
+        /// <summary>The lights of a keyboard's table, each at its LED index
+        /// less <paramref name="baseIndex"/>. <paramref name="places"/> gives
+        /// a name another usage where a keyboard's legends differ, the
+        /// Speedlink's QWERTZ Y and Z, or the Fnatic's ISO keys.</summary>
+        internal static IReadOnlyList<LightInfo> Lights(PluginKeyTable table, int baseIndex = 0,
+            IReadOnlyDictionary<string, ushort> places = null)
+        {
+            var lights = new LightInfo[table.Names.Length];
+            for (int i = 0; i < lights.Length; i++)
+            {
+                string name = table.Names[i];
+                int address = table.Indexes[i] - baseIndex;
+                LightInfo light;
+                if (places != null && places.TryGetValue(name, out ushort place))
+                    light = new LightInfo(address, LightKind.Key, place, LightKeySource.Generated);
+                else if (s_usages.TryGetValue(name, out ushort usage))
+                    light = new LightInfo(address, LightKind.Key, usage, LightKeySource.Generated);
+                else
+                    light = Other(address, name);
+                lights[i] = light with { X = table.X[i], Y = table.Y[i], Width = 1, Height = 1, HasPosition = true };
+            }
+            return lights;
+        }
+
+        /// <summary>A light no keyboard-page usage names.</summary>
+        internal static LightInfo Other(int address, string name)
+        {
+            var label = name switch
+            {
+                "Fn" or "FN Lock" => LightLabel.Fn,
+                "Brightness" => LightLabel.Brightness,
+                "Mute" or "Media Mute" or "Mute Mic" => LightLabel.Mute,
+                "MediaPlayPause" => LightLabel.PlayPause,
+                "MediaStop" => LightLabel.Stop,
+                "MediaFastForward" => LightLabel.Next,
+                "MediaRewind" => LightLabel.Previous,
+                "Game Mode" or "Lock" => LightLabel.GameMode,
+                _ => LightLabel.None,
+            };
+            if (name.StartsWith("Logo", StringComparison.Ordinal))
+                return new LightInfo(address, LightKind.Logo, 0, LightKeySource.None);
+            if (name == "Profile")
+                return new LightInfo(address, LightKind.Other, 0, LightKeySource.None) { Label = LightLabel.ProfileKey, LabelNumber = 1 };
+            if (name is "Space Left" or "Space Right")
+                return new LightInfo(address, LightKind.Key, 0x2C, LightKeySource.Generated);
+            return new LightInfo(address, LightKind.Other, 0, LightKeySource.None) { Label = label };
+        }
+
+        /// <summary>The names <see cref="Lights"/> finds neither a usage nor a
+        /// label for, for the tests.</summary>
+        internal static IEnumerable<string> Unresolved(PluginKeyTable table)
+            => table.Names.Where(n => !s_usages.ContainsKey(n)
+                && Other(0, n) is { Kind: LightKind.Other, Label: LightLabel.None });
+    }
+}

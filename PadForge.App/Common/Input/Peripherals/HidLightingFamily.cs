@@ -423,6 +423,7 @@ namespace PadForge.Common.Input.Peripherals
             RazerHanboLighting.Instance,
             RazerArgbLighting.Instance,
             RazerChargingPadLighting.Instance,
+            PluginDeviceLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

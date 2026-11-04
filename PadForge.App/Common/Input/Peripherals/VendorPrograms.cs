@@ -223,6 +223,13 @@ namespace PadForge.Common.Input.Peripherals
         /// (AuroraDeviceManager/Devices/RGBNet/Implementations/OpenRgbNetDevice.cs:27-35).</summary>
         public static readonly VendorProgram OpenRgb = new("OpenRGB", "OpenRGB");
 
+        /// <summary>Skydimo's app, which lights its headset stand and its
+        /// light strips. Its executable is SkyDimo.exe, in
+        /// C:\Program Files (x86)\Skydimo (the file lists Advanced Uninstaller
+        /// PRO gives for Skydimo's Windows installs, among them version
+        /// 1.0.0.240202). No source code names its processes.</summary>
+        public static readonly VendorProgram Skydimo = new("Skydimo", "SkyDimo");
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
@@ -230,6 +237,7 @@ namespace PadForge.Common.Input.Peripherals
             LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor, CorsairIcue,
             LegionAccessoryCentral, MasterPlus, Ngenuity, MsiMysticLight, SteelSeriesGG, AlienwareCommandCenter,
             RoccatSwarm, XpgPrime, WootingWootility, OpenRgb,
+            Skydimo,
         };
     }
 

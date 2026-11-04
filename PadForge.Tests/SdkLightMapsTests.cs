@@ -66,7 +66,9 @@ namespace PadForge.Tests
             for (int m = 1; m <= 5; m++)
             {
                 var macro = byCell[Cell(m << 8)];
-                Assert.Equal((LightKind.Other, LightLabel.GKey, m), (macro.Kind, macro.Label, macro.LabelNumber));
+                // Printed M1 to M5 on the board, as OpenRGB names them
+                // (RazerDevices.cpp:119-123), never G.
+                Assert.Equal((LightKind.Other, LightLabel.MacroKey, m), (macro.Kind, macro.Label, macro.LabelNumber));
             }
             Assert.Equal((LightKind.Other, LightLabel.Fn), (byCell[Cell(0x050C)].Kind, byCell[Cell(0x050C)].Label));
             Assert.Equal(LightKind.Logo, byCell[Cell(0x0014)].Kind);

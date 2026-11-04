@@ -164,6 +164,42 @@ namespace PadForge.Tests
             Assert.Equal("G5", KeyLightsView.LightName(Light(LightLabel.GKey, 5), "G5", IntPtr.Zero));
             Assert.Null(KeyLightsView.LabelText(new LightInfo(1, LightKind.Other, 0, LightKeySource.None)));
         }
+
+        /// <summary>The labels the generated layouts' edit lists name (#557):
+        /// a macro or profile key by its letter and number in the
+        /// interface's string, a numbered key as its two digits, the volume
+        /// keys, the dial and the scroll wheel by the words the rest of the
+        /// app gives them, the fan key by its own word, and the ROG and
+        /// Aimpad keys by the names printed on them. Every label has its
+        /// words.</summary>
+        [Fact]
+        public void TheEditListLabels_ReadAsTheBoardsPrintThem()
+        {
+            var s = Strings.Instance;
+            LightInfo Light(LightLabel label, int number = 0)
+                => new(7, LightKind.Other, 0, LightKeySource.Generated) { Label = label, LabelNumber = number };
+            Assert.Equal("M3", KeyLightsView.Legend(Light(LightLabel.MacroKey, 3), IntPtr.Zero));
+            Assert.Equal("P4", KeyLightsView.Legend(Light(LightLabel.ProfileKey, 4), IntPtr.Zero));
+            Assert.Equal("07", KeyLightsView.Legend(Light(LightLabel.Numbered, 7), IntPtr.Zero));
+            Assert.Equal("20", KeyLightsView.Legend(Light(LightLabel.Numbered, 20), IntPtr.Zero));
+            Assert.Equal(s.Key_VolumeUp, KeyLightsView.Legend(Light(LightLabel.VolumeUp), IntPtr.Zero));
+            Assert.Equal(s.Key_VolumeDown, KeyLightsView.Legend(Light(LightLabel.VolumeDown), IntPtr.Zero));
+            Assert.Equal(s.Macro_Sound_Volume_Label, KeyLightsView.Legend(Light(LightLabel.Volume), IntPtr.Zero));
+            Assert.Equal(s.Pad_Lighting_KeyColors_Fan, KeyLightsView.Legend(Light(LightLabel.Fan), IntPtr.Zero));
+            Assert.Equal("ROG", KeyLightsView.Legend(Light(LightLabel.Rog), IntPtr.Zero));
+            Assert.Equal(s.DevObj_Dial, KeyLightsView.Legend(Light(LightLabel.Dial), IntPtr.Zero));
+            Assert.Equal(s.Stick_ScrollWheel, KeyLightsView.Legend(Light(LightLabel.ScrollWheel), IntPtr.Zero));
+            Assert.Equal("Aimpad", KeyLightsView.Legend(Light(LightLabel.Aimpad), IntPtr.Zero));
+            Assert.Equal("Aimpad -", KeyLightsView.Legend(Light(LightLabel.AimpadDown), IntPtr.Zero));
+            Assert.Equal("Aimpad +", KeyLightsView.Legend(Light(LightLabel.AimpadUp), IntPtr.Zero));
+            string En(string key) => Strings.ResourceManager.GetString(key, System.Globalization.CultureInfo.InvariantCulture);
+            Assert.Equal("M{0}", En(nameof(s.Pad_Lighting_KeyColors_MacroKey_Format)));
+            Assert.Equal("P{0}", En(nameof(s.Pad_Lighting_KeyColors_ProfileKey_Format)));
+            Assert.Equal("Fan", En(nameof(s.Pad_Lighting_KeyColors_Fan)));
+            foreach (LightLabel label in Enum.GetValues(typeof(LightLabel)))
+                if (label != LightLabel.None)
+                    Assert.False(string.IsNullOrEmpty(KeyLightsView.LabelText(Light(label, 1))), label.ToString());
+        }
     }
 
     /// <summary>

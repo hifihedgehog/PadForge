@@ -1125,6 +1125,9 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logo</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Status</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Game Mode</value></data>
+  <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value><comment>Chip on the Key Colors picture for a keyboard's macro key, as the key is printed: M1, M2 and so on. {0} is the key's number. Keep the M as the keyboards print it unless keyboards sold in this language print another letter.</comment></data>
+  <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value><comment>Chip on the Key Colors picture for a keyboard's profile key, as the key is printed: P1 to P4. {0} is the key's number. Keep the P as the keyboards print it unless keyboards sold in this language print another letter.</comment></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value><comment>Chip on the Key Colors picture for the key of an ASUS ROG laptop that switches the fan mode. One short word for a cooling fan.</comment></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>All Lights</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Clear Selection</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Select by Pressing Keys</value></data>

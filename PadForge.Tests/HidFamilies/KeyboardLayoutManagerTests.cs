@@ -627,20 +627,137 @@ namespace PadForge.Tests
             Assert.Equal(((ushort)0, LightLabel.CapsLock, 0), Of("Indicator: C"));
             Assert.Equal(((ushort)0, LightLabel.ScrollLock, 0), Of("Indicator: S"));
             Assert.Equal(((ushort)0x04, LightLabel.None, 0), Of("Key: A"));
-            foreach (var name in new[] { "G", "G0", "G01", "Gx", "Key: G1234", "Key: M1", "Logo", null })
+            foreach (var name in new[] { "G", "G0", "G01", "Gx", "Key: G1234", "Logo", null })
                 Assert.False(OpenRgbKeys.TryGet(name, out _, out _, out _), name ?? "null");
             Assert.True(OpenRgbKeys.TryGet("Key: G3", out ushort u, out var l));
             Assert.Equal(((ushort)0, LightLabel.GKey), (u, l));
         }
 
+        /// <summary>The names the edit lists give keys outside the keyboard
+        /// page, each read from the layout that names it: the macro keys M1
+        /// to M6 (RazerDevices.cpp:119-123 and 321, CMKeyboardDevices.cpp:330-334),
+        /// the profile keys P1 to P4 (CMKeyboardDevices.cpp:302-305), the
+        /// Tartarus V2's keys 01 to 20 and scroll wheel
+        /// (RazerDevices.cpp:1256-1276), the volume keys and knobs
+        /// (RGBControllerKeyNames.cpp:143-144, RazerDevices.cpp:510, 1093
+        /// and 1121), the ROG laptops' Fan and ROG keys
+        /// (AsusAuraCoreLaptopDevices.cpp:201-202), the Command Dial
+        /// (RazerDevices.cpp:354), the MK850's Aimpad keys
+        /// (CMKeyboardDevices.cpp:327-329) and the Skyloong's split space
+        /// bar (RGBController_SkyloongGK104Pro.cpp:99-100). The letters and
+        /// digits alone stay keys of their own.</summary>
+        [Fact]
+        public void EditListNames_ResolveToTheirLabels()
+        {
+            (ushort, LightLabel, int) Of(string name)
+            {
+                Assert.True(OpenRgbKeys.TryGet(name, out ushort usage, out var label, out int number), name);
+                return (usage, label, number);
+            }
+            for (int i = 1; i <= 6; i++)
+                Assert.Equal(((ushort)0, LightLabel.MacroKey, i), Of("Key: M" + i));
+            for (int i = 1; i <= 4; i++)
+                Assert.Equal(((ushort)0, LightLabel.ProfileKey, i), Of("Key: P" + i));
+            for (int i = 1; i <= 20; i++)
+                Assert.Equal(((ushort)0, LightLabel.Numbered, i), Of($"Key: {i:00}"));
+            Assert.Equal(((ushort)0, LightLabel.VolumeUp, 0), Of("Key: Media Volume +"));
+            Assert.Equal(((ushort)0, LightLabel.VolumeDown, 0), Of("Key: Media Volume -"));
+            Assert.Equal(((ushort)0, LightLabel.Volume, 0), Of("Key: Media Volume"));
+            Assert.Equal(((ushort)0, LightLabel.Volume, 0), Of("Media: Volume Dial"));
+            Assert.Equal(((ushort)0, LightLabel.Fan, 0), Of("Key: Fan"));
+            Assert.Equal(((ushort)0, LightLabel.Rog, 0), Of("Key: ROG"));
+            Assert.Equal(((ushort)0, LightLabel.Dial, 0), Of("Key: Dial"));
+            Assert.Equal(((ushort)0, LightLabel.ScrollWheel, 0), Of("Key: Scroll Wheel"));
+            Assert.Equal(((ushort)0, LightLabel.Aimpad, 0), Of("Key: Aim <|>"));
+            Assert.Equal(((ushort)0, LightLabel.AimpadDown, 0), Of("Key: Aim -"));
+            Assert.Equal(((ushort)0, LightLabel.AimpadUp, 0), Of("Key: Aim +"));
+            Assert.Equal(((ushort)0x2C, LightLabel.None, 0), Of("Key: Left Space"));
+            Assert.Equal(((ushort)0x2C, LightLabel.None, 0), Of("Key: Right Space"));
+            // The letters and digits keep their usages, and no other shape
+            // of name is a macro, profile or numbered key.
+            Assert.Equal(((ushort)0x10, LightLabel.None, 0), Of("Key: M"));
+            Assert.Equal(((ushort)0x13, LightLabel.None, 0), Of("Key: P"));
+            Assert.Equal(((ushort)0x1E, LightLabel.None, 0), Of("Key: 1"));
+            foreach (var name in new[] { "M1", "Key: M0", "Key: M10", "Key: P0", "Key: 00", "Key: 001", "Key: 1x", "Key: Mx", "P1", "01" })
+                Assert.False(OpenRgbKeys.TryGet(name, out _, out _, out _), name);
+        }
+
+        /// <summary>A regional fix renames a typing-block key to the legend
+        /// its region prints, and the key keeps the usage of its place:
+        /// usages name places (HID Usage Tables 1.6, section 10). Every key
+        /// of every regional fix of every recipe resolves to the usage the
+        /// key at its place had without the fix, but for a key that is no
+        /// typing-block key, which keeps its own name's usage.</summary>
+        [Fact]
+        public void EveryRegionalLegend_TakesTheUsageOfItsPlace()
+        {
+            int legends = 0;
+            foreach (var recipe in KeyboardLayouts.Recipes)
+            {
+                foreach (var layout in recipe.Layouts)
+                {
+                    var with = recipe.Build(layout);
+                    var without = new KeyboardLayoutManager(layout, recipe.Size, recipe.DefaultValues,
+                        Array.Empty<(KeyboardLayout, KeyboardLed[])>());
+                    foreach (var edit in recipe.Edits) without.ChangeKeys(edit);
+                    foreach (var key in with.Keys)
+                    {
+                        if (key.PlaceUsage == 0) continue;
+                        legends++;
+                        Assert.True(OpenRgbKeys.IsTypingUsage(key.PlaceUsage), key.Name);
+                        var before = without.Keys.First(k => k.Row == key.Row && k.Col == key.Col);
+                        Assert.True(OpenRgbKeys.TryGet(before.Name, out ushort placeUsage, out _));
+                        Assert.Equal(placeUsage, key.PlaceUsage);
+                        Assert.True(KeyboardLayoutManager.TryResolve(key, out ushort usage, out _, out _), key.Name);
+                        bool named = OpenRgbKeys.TryGet(key.Name, out ushort own, out var label);
+                        if (!named || OpenRgbKeys.IsTypingUsage(own)) Assert.Equal(placeUsage, usage);
+                        else Assert.Equal(own, usage);
+                    }
+                }
+            }
+            Assert.True(legends >= 9, legends.ToString());
+        }
+
+        /// <summary>The VSG Mintaka's Spanish fix
+        /// (RGBController_MintakaKeyboard.cpp:41-56) on the ISO keyboard of
+        /// KeyboardLayoutManager.cpp's zone tables: each legend at its place's
+        /// usage, written out here from the ISO key at each row and column,
+        /// and the bottom row's Menu, Right Control and Right Fn, which the
+        /// fix moves, by their own names. No two keys share a usage.</summary>
+        [Fact]
+        public void TheMintakasSpanishLegends_LightTheirPlaces()
+        {
+            var lights = MintakaKeyboardLighting.Lights();
+            var byName = new Dictionary<string, ushort>();
+            var layout = MintakaKeyboardLighting.Layout();
+            for (int i = 0; i < layout.Keys.Count; i++)
+            {
+                KeyboardLayoutManager.TryResolve(layout.Keys[i], out ushort usage, out _, out _);
+                byName[layout.Keys[i].Name] = usage;
+            }
+            Assert.Equal(0x2D, byName["Key: '"]);    // row 1 column 11, the ISO - key
+            Assert.Equal(0x2E, byName["Key: ¿/¡"]);  // row 1 column 12, =
+            Assert.Equal(0x2F, byName["Key: ´/¨"]);  // row 2 column 11, [
+            Assert.Equal(0x30, byName["Key: +"]);    // row 2 column 12, ]
+            Assert.Equal(0x33, byName["Key: Ñ"]);    // row 3 column 10, ;
+            Assert.Equal(0x34, byName["Key: ["]);    // row 3 column 11, '
+            Assert.Equal(0x32, byName["Key: ]"]);    // row 3 column 12, ISO #
+            Assert.Equal(0x64, byName["Key: < >"]);  // row 4 column 1, ISO \
+            Assert.Equal(0x38, byName["Key: - _"]);  // row 4 column 11, /
+            Assert.Equal(0x65, byName["Key: Menu"]);
+            Assert.Equal(0xE4, byName["Key: Right Control"]);
+            Assert.Equal(0, byName["Key: Right Fn"]);
+            var usages = lights.Where(l => l.Kind == LightKind.Key).Select(l => l.Usage).ToList();
+            Assert.Equal(usages.Count, usages.Distinct().Count());
+        }
+
         /// <summary>
         /// The key names in OpenRGB's layouts that name no keyboard-page key
         /// and no label, written out so a new one fails here until someone
-        /// decides it. The Spanish and Nordic legends depend on the layout
-        /// they sit in (OpenRgbKeys' own rule). Volume, the M and P macro
-        /// keys, the Aim, Fan, ROG and dial keys have no keyboard-page usage
-        /// and no LightLabel. The Tartarus keypad's numbered keys and the
-        /// Skyloong's split space halves name a position, not a code.
+        /// decides it. One is left: the fourth media key the Winbond boards
+        /// add, which OpenRGB's own author could not name ("no idea what the
+        /// symbol meant, was a cylinder", RGBController_WinbondGamingKeyboard.cpp:71),
+        /// so its chip numbers it as an unnamed light.
         /// </summary>
         [Fact]
         public void TheKeyNamesWithNoUsageOrLabel_AreTheKnownOnes()
@@ -649,19 +766,9 @@ namespace PadForge.Tests
             foreach (var recipe in KeyboardLayouts.Recipes)
                 foreach (var layout in recipe.Layouts)
                     foreach (var key in recipe.Build(layout).Keys)
-                        if (key.Name.StartsWith("Key: ", StringComparison.Ordinal) && !OpenRgbKeys.TryGet(key.Name, out _, out _))
+                        if (key.Name.StartsWith("Key: ", StringComparison.Ordinal) && !KeyboardLayoutManager.TryResolve(key, out _, out _, out _))
                             unresolved.Add(key.Name);
-            var expected = new SortedSet<string>(StringComparer.Ordinal)
-            {
-                "Key: +", "Key: - _", "Key: < >", "Key: ¿/¡", "Key: ´/¨", "Key: Ñ",
-                "Key: Media Volume", "Key: Media Volume +", "Key: Media Volume -",
-                "Key: M1", "Key: M2", "Key: M3", "Key: M4", "Key: M5", "Key: M6",
-                "Key: P1", "Key: P2", "Key: P3", "Key: P4",
-                "Key: Aim +", "Key: Aim -", "Key: Aim <|>", "Key: Fan", "Key: ROG", "Key: Dial", "Key: Scroll Wheel",
-                "Key: Cylinder?!", "Key: Left Space", "Key: Right Space",
-            };
-            for (int i = 1; i <= 20; i++) expected.Add($"Key: {i:00}");
-            Assert.Equal(expected, unresolved);
+            Assert.Equal(new SortedSet<string>(StringComparer.Ordinal) { "Key: Cylinder?!" }, unresolved);
         }
     }
 }

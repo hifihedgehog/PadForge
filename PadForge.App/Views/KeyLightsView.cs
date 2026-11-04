@@ -538,13 +538,29 @@ namespace PadForge.Views
         /// or null for a light with none. A G-key reads as Logitech prints
         /// it, and the media keys and the lock lights take the names the
         /// macro editor gives those keys. The brightness key takes the
-        /// Lighting tab's word for brightness.</summary>
+        /// Lighting tab's word for brightness. A macro or profile key reads
+        /// as its letter and number, a numbered key as its two digits, and
+        /// the ROG and Aimpad keys by the names printed on them, which no
+        /// locale translates.</summary>
         internal static string LabelText(LightInfo light)
         {
             var s = Strings.Instance;
             return light.Label switch
             {
                 LightLabel.GKey => "G" + light.LabelNumber.ToString(CultureInfo.InvariantCulture),
+                LightLabel.MacroKey => string.Format(CultureInfo.CurrentCulture, s.Pad_Lighting_KeyColors_MacroKey_Format, light.LabelNumber),
+                LightLabel.ProfileKey => string.Format(CultureInfo.CurrentCulture, s.Pad_Lighting_KeyColors_ProfileKey_Format, light.LabelNumber),
+                LightLabel.Numbered => light.LabelNumber.ToString("00", CultureInfo.InvariantCulture),
+                LightLabel.VolumeUp => s.Key_VolumeUp,
+                LightLabel.VolumeDown => s.Key_VolumeDown,
+                LightLabel.Volume => s.Macro_Sound_Volume_Label,
+                LightLabel.Fan => s.Pad_Lighting_KeyColors_Fan,
+                LightLabel.Rog => "ROG",
+                LightLabel.Dial => s.DevObj_Dial,
+                LightLabel.ScrollWheel => s.Stick_ScrollWheel,
+                LightLabel.Aimpad => "Aimpad",
+                LightLabel.AimpadDown => "Aimpad -",
+                LightLabel.AimpadUp => "Aimpad +",
                 LightLabel.Brightness => s.Pad_Lighting_GuideLed_Brightness,
                 LightLabel.PlayPause => s.Key_MediaPlayPause,
                 LightLabel.Mute => s.Key_VolumeMute,

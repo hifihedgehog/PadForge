@@ -1,0 +1,560 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Threading;
+using PadForge.Common.Input.Peripherals;
+using PadForge.Engine;
+using Xunit;
+
+namespace PadForge.Tests
+{
+    /// <summary>
+    /// The ASUS Aura SDK route (#557 item 11): the key table against
+    /// RGB.NET's mapping and the Logitech LED SDK's scan code table, the
+    /// paths each Aura type is lit through, the COM interfaces against the
+    /// type library import, and the worker against a scripted SDK.
+    /// </summary>
+    public class AuraLightsTests
+    {
+        // ── The key table ──
+
+        /// <summary>Codes and usages written out from RGB.NET.Devices.Asus
+        /// (Enum/AsusLedId.cs, Keyboard/AsusKeyboardLedMapping.cs) and the
+        /// HID Usage Tables 1.6 Keyboard/Keypad page, never from the
+        /// generator.</summary>
+        [Theory]
+        [InlineData(0x01, 0x29)] // KEY_ESCAPE, Keyboard_Escape
+        [InlineData(0x02, 0x1E)] // KEY_1
+        [InlineData(0x0B, 0x27)] // KEY_0
+        [InlineData(0x1E, 0x04)] // KEY_A
+        [InlineData(0x2C, 0x1D)] // KEY_Z
+        [InlineData(0x1C, 0x28)] // KEY_RETURN, Enter
+        [InlineData(0x2B, 0x31)] // KEY_BACKSLASH
+        [InlineData(0x29, 0x35)] // KEY_GRAVE
+        [InlineData(0x3A, 0x39)] // KEY_CAPITAL
+        [InlineData(0x57, 0x44)] // KEY_F11
+        [InlineData(0x58, 0x45)] // KEY_F12
+        [InlineData(0x9C, 0x58)] // KEY_NUMPADENTER, E0 1C
+        [InlineData(0x9D, 0xE4)] // KEY_RCONTROL, E0 1D
+        [InlineData(0xB5, 0x54)] // KEY_DIVIDE, E0 35
+        [InlineData(0xB7, 0x46)] // KEY_SYSRQ, Print Screen
+        [InlineData(0xB8, 0xE6)] // KEY_RMENU, right Alt
+        [InlineData(0xC5, 0x48)] // KEY_PAUSE
+        [InlineData(0xC8, 0x52)] // KEY_UP, E0 48
+        [InlineData(0xCB, 0x50)] // KEY_LEFT
+        [InlineData(0xCD, 0x4F)] // KEY_RIGHT
+        [InlineData(0xD0, 0x51)] // KEY_DOWN
+        [InlineData(0xD3, 0x4C)] // KEY_DELETE
+        [InlineData(0xDB, 0xE3)] // KEY_LWIN
+        [InlineData(0xDD, 0x65)] // KEY_APPS
+        [InlineData(0x59, 0x64)] // UNDOCUMENTED_1, RGB.NET's Keyboard_NonUsBackslash
+        [InlineData(0x56, 0x32)] // UNDOCUMENTED_2, RGB.NET's Keyboard_NonUsTilde
+        [InlineData(0xB3, 0x85)] // KEY_NUMPADCOMMA, Keyboard_NumComma
+        [InlineData(0x64, 0x68)] // KEY_F13
+        [InlineData(0x7D, 0x89)] // KEY_YEN, International3
+        [InlineData(0x70, 0x88)] // KEY_KANA, International2
+        public void AKeyCode_LightsTheKeyRgbNetMapsItTo(int code, int usage)
+        {
+            var key = AuraLights.KeyboardKeys.Single(k => k.Code == code);
+            Assert.Equal(LightKind.Key, key.Kind);
+            Assert.Equal(usage, key.Usage);
+            var light = AuraLights.KeyboardMap.Lights.Single(l => l.Address == code);
+            Assert.Equal((ushort)usage, light.Usage);
+            Assert.Equal(LightKeySource.Vendor, light.KeySource);
+        }
+
+        /// <summary>The lights RGB.NET maps to an LED that is no key:
+        /// Keyboard_Function at 0x100, Logo at 0x101, the media keys.</summary>
+        [Fact]
+        public void TheLightsThatAreNoKey_KeepTheirKindAndLabel()
+        {
+            var fn = AuraLights.KeyboardMap.Lights.Single(l => l.Address == 0x100);
+            Assert.Equal(LightKind.Other, fn.Kind);
+            Assert.Equal(LightLabel.Fn, fn.Label);
+            Assert.Equal(0, fn.Usage);
+            Assert.Equal(LightKind.Logo, AuraLights.KeyboardMap.Lights.Single(l => l.Address == 0x101).Kind);
+            Assert.Equal(LightLabel.Mute, AuraLights.KeyboardMap.Lights.Single(l => l.Address == 0xA0).Label);
+            Assert.Equal(LightLabel.PlayPause, AuraLights.KeyboardMap.Lights.Single(l => l.Address == 0xA2).Label);
+            Assert.Equal(LightLabel.Stop, AuraLights.KeyboardMap.Lights.Single(l => l.Address == 0xA4).Label);
+            Assert.Equal(LightLabel.Next, AuraLights.KeyboardMap.Lights.Single(l => l.Address == 0x99).Label);
+            // RGB.NET maps 150 LEDs, one per code, every usage once.
+            Assert.Equal(150, AuraLights.KeyboardKeys.Length);
+            Assert.Equal(150, AuraLights.KeyboardKeys.Select(k => k.Code).Distinct().Count());
+            var usages = AuraLights.KeyboardKeys.Where(k => k.Usage != 0).Select(k => k.Usage).ToList();
+            Assert.Equal(usages.Count, usages.Distinct().Count());
+        }
+
+        /// <summary>The Aura code is a DirectInput scan code, 0x80 plus the
+        /// second byte for an E0-prefixed set 1 key. The Logitech LED SDK's
+        /// KeyName is the same set 1 code with 0x100 for the prefix
+        /// (LogitechLEDLib.h:31-149, in SdkKeyTables.g.cs), so every key both
+        /// tables hold must land on one usage.</summary>
+        [Fact]
+        public void EveryKeyTheLogitechTableHoldsToo_HasTheSameUsage()
+        {
+            var logitech = LogiLedKeys.Keys.Where(k => k.Usage != 0).ToDictionary(k => k.Code, k => k.Usage);
+            int compared = 0;
+            foreach (var key in AuraLights.KeyboardKeys.Where(k => k.Usage != 0))
+            {
+                int keyName = key.Code < 0x80 ? key.Code : 0x100 | (key.Code & 0x7F);
+                if (!logitech.TryGetValue(keyName, out ushort usage)) continue;
+                Assert.True(usage == key.Usage, $"{key.Name} 0x{key.Code:X}: Aura 0x{key.Usage:X2}, Logitech 0x{usage:X2}");
+                compared++;
+            }
+            Assert.True(compared >= 104, "compared " + compared);
+        }
+
+        [Fact]
+        public void TheGeneratedTable_IsReadAtThePinnedRgbNetCommit()
+            => Assert.Equal("3c5af72b25c77971c21ccf96c13c41c62c8212f6", AuraLights.RgbNetCommit);
+
+        // ── Types and paths ──
+
+        /// <summary>The device classes RGB.NET's provider gives each
+        /// AsusDeviceType (AsusDeviceProvider.cs:78-92, Enum/AsusDeviceType.cs).</summary>
+        [Theory]
+        [InlineData(0x80000u, "keyboard", true)]   // KEYBOARD_RGB
+        [InlineData(0x80001u, "keyboard", false)]  // KEYBOARD_5ZONE_RGB
+        [InlineData(0x81000u, "keyboard", true)]   // NB_KB_RGB
+        [InlineData(0x81001u, "keyboard", false)]  // NB_KB_4ZONE_RGB
+        [InlineData(0x90000u, "mouse", false)]     // MOUSE_RGB
+        [InlineData(0x40000u, "headset", false)]   // HEADSET_RGB
+        [InlineData(0x10000u, "mainboard", false)] // MB_RGB
+        [InlineData(0x11000u, "strip", false)]     // MB_ADDRESABLE
+        [InlineData(0x20000u, "vga", false)]       // VGA_RGB
+        [InlineData(0x70000u, "dram", false)]      // DRAM_RGB
+        [InlineData(0xE0000u, "other", false)]     // TERMINAL_RGB
+        [InlineData(0xD1000u, "other", false)]     // WATERCOOLER_RGB
+        [InlineData(0x12000u, "other", false)]     // DESKTOP_RGB
+        [InlineData(0u, "other", false)]
+        public void AnAuraType_IsLitThroughItsPath(uint type, string path, bool perKey)
+        {
+            Assert.Equal(path, AuraLights.CategoryOf(type));
+            Assert.Equal(perKey, AuraLights.PerKey(type));
+            Assert.Contains(path, AuraLights.Categories);
+        }
+
+        [Fact]
+        public void APathsLights_AreTheLongestLightsListAmongItsDevices()
+        {
+            var devices = new[]
+            {
+                new AuraDevice(0, AuraLights.DramRgb, "DRAM 1", 8, Array.Empty<ushort>()),
+                new AuraDevice(1, AuraLights.DramRgb, "DRAM 2", 5, Array.Empty<ushort>()),
+                new AuraDevice(2, AuraLights.MbRgb, "Mainboard", 1, Array.Empty<ushort>()),
+                new AuraDevice(3, AuraLights.KeyboardRgb, "Claymore", 6, new ushort[] { 0x1E }),
+                new AuraDevice(4, AuraLights.NotebookKeyboard4ZoneRgb, "TUF", 4, Array.Empty<ushort>()),
+            };
+            var dram = AuraLights.MapFor("dram", devices);
+            Assert.Equal(8, dram.Lights.Count);
+            Assert.All(dram.Lights, l => Assert.Equal(LightKind.Zone, l.Kind));
+            Assert.Equal(Enumerable.Range(0, 8), dram.Lights.Select(l => l.Address));
+            Assert.Equal(Enumerable.Range(1, 8), dram.Lights.Select(l => l.Zone));
+            // One light lights one color.
+            Assert.Null(AuraLights.MapFor("mainboard", devices));
+            Assert.Null(AuraLights.MapFor("vga", devices));
+            // The keyboard path: every key, and the zone keyboard's four
+            // lights. The per-key board's own Lights list adds no zone.
+            var keyboard = AuraLights.MapFor("keyboard", devices);
+            Assert.Equal(AuraLights.KeyboardKeys.Length + 4, keyboard.Lights.Count);
+            Assert.Equal(4, keyboard.ZoneCount);
+            Assert.Equal(AuraLights.ZoneBase, keyboard.Lights.First(l => l.Kind == LightKind.Zone).Address);
+            Assert.Same(AuraLights.KeyboardMap, AuraLights.MapFor("keyboard", devices.Take(3).ToArray()));
+        }
+
+        // ── The COM interfaces ──
+
+        /// <summary>The IIDs, the class ID and the method order of
+        /// Interop.AuraServiceLib.dll (SHA-256 B82FC09C363FF94B...), read
+        /// from its metadata and written out here.</summary>
+        [Theory]
+        [InlineData("IAuraSdk2", "EE69DBAE-33FF-4E45-B378-01797A59852D", "Enumerate,SwitchMode,ReleaseControl")]
+        [InlineData("IAuraSyncDeviceCollection", "87FC56AB-99CA-4FD3-B561-2EEDD719DA57", "GetEnumerator,get_Count,get_Item")]
+        [InlineData("IAuraSyncDevice", "6A30D789-F5DA-4F26-BF09-6DFB9DEDF91E", "get_Lights,get_Type,get_Name,get_Width,get_Height,Apply")]
+        [InlineData("IAuraSyncKeyboard", "87B03DD6-59E6-44F5-8772-56A7494F9900", "get_Lights,get_Type,get_Name,get_Width,get_Height,Apply,get_Key,get_Keys")]
+        [InlineData("IAuraRgbLightCollection", "003065BC-B562-454E-ADCB-A9B70042D486", "GetEnumerator,get_Count,get_Item")]
+        [InlineData("IAuraRgbLight", "9AF6260E-4311-417D-B3EF-B85A34CF3244", "get_Red,set_Red,get_Green,set_Green,get_Blue,set_Blue,get_Name,get_Color,set_Color")]
+        [InlineData("IAuraRgbKeyCollection", "81C61F82-4DA0-4081-BDDE-108E1FCDDA7F", "GetEnumerator,get_Count,get_Item")]
+        [InlineData("IAuraRgbKey", "95E6C828-6DE4-441E-873A-C44AE850F3A2", "get_Red,set_Red,get_Green,set_Green,get_Blue,set_Blue,get_Name,get_Color,set_Color,get_Code,get_X,get_Y")]
+        public void EachInterface_HasTheImportsIidAndMethodOrder(string name, string iid, string methods)
+        {
+            var type = typeof(AuraSdkNative).GetNestedType(name, BindingFlags.NonPublic);
+            Assert.NotNull(type);
+            Assert.True(type.IsInterface && type.IsImport);
+            Assert.Equal(new Guid(iid), type.GUID);
+            Assert.Equal(ComInterfaceType.InterfaceIsDual, type.GetCustomAttribute<InterfaceTypeAttribute>().Value);
+            var order = type.GetMethods().OrderBy(m => m.MetadataToken).Select(m => m.Name);
+            Assert.Equal(methods.Split(','), order);
+        }
+
+        [Fact]
+        public void TheClass_IsAuraServiceLibsAuraSdk()
+            => Assert.Equal(new Guid("05921124-5057-483E-A037-E9497B523590"), AuraSdkNative.AuraSdkClsid);
+
+        /// <summary>The test host opens no vendor SDK: the production seam
+        /// answers as on a PC without Armoury Crate.</summary>
+        [Fact]
+        public void TheProductionSeam_OpensNothingInTheTestHost()
+        {
+            var native = new AuraSdkNative();
+            Assert.False(native.Open(out string detail));
+            Assert.Contains("test host", detail);
+            Assert.Empty(native.Devices);
+            native.Close();
+        }
+    }
+
+    /// <summary>The Aura SDK worker against a scripted SDK.</summary>
+    [Collection("PeripheralOutputStatics")]
+    public class AuraSdkBackendTests : IDisposable
+    {
+        private static readonly Guid Keyboard = new("00000000-0000-0000-0000-0000000000b2");
+        private static readonly Guid Ram = new("00000000-0000-0000-0000-0000000000c3");
+
+        public AuraSdkBackendTests() => PeripheralOutputs.ResetForTest();
+        public void Dispose() => PeripheralOutputs.ResetForTest();
+
+        internal sealed class FakeAura : IAuraSdkNative
+        {
+            private readonly object _lock = new();
+            private readonly List<string> _calls = new();
+            public volatile bool OpenOk = true;
+            public volatile bool FailWrites;
+            public IReadOnlyList<AuraDevice> Script = new[]
+            {
+                new AuraDevice(0, AuraLights.KeyboardRgb, "ROG Strix Scope", 0, new ushort[] { 0x1E, 0x11, 0xC8, 0x101, 0x0777 }),
+                new AuraDevice(1, AuraLights.DramRgb, "DRAM", 3, Array.Empty<ushort>()),
+            };
+            private IReadOnlyList<AuraDevice> _devices = Array.Empty<AuraDevice>();
+
+            private void Log(string s) { lock (_lock) _calls.Add(s); }
+            public string[] Calls { get { lock (_lock) return _calls.ToArray(); } }
+            public int Count(string call) => Calls.Count(c => c == call);
+            public void Clear() { lock (_lock) _calls.Clear(); }
+
+            public IReadOnlyList<AuraDevice> Devices => _devices;
+            public bool Open(out string detail)
+            {
+                Log("open");
+                detail = "fake";
+                if (!OpenOk) return false;
+                _devices = Script;
+                return true;
+            }
+            public void SetLight(int device, int index, int rgb)
+            {
+                Log($"light:{device}:{index}:{rgb:X6}");
+                if (FailWrites) throw new COMException("server gone", unchecked((int)0x800706BA));
+            }
+            public void SetKey(int device, ushort code, int rgb)
+            {
+                Log($"key:{device}:{code:X}:{rgb:X6}");
+                if (FailWrites) throw new COMException("server gone", unchecked((int)0x800706BA));
+            }
+            public void Apply(int device) => Log("apply:" + device);
+            public void Close() { Log("close"); _devices = Array.Empty<AuraDevice>(); }
+        }
+
+        private static AuraSdkBackend Backend(FakeAura native) => new(native, pollMs: 10, retryMs: 100, stopWaitMs: 2000);
+
+        private static OutputPath Path(string key) => new(OutputFamily.AuraSdkType, key);
+
+        private static void Link(params DeviceLinks[] rows) => PeripheralOutputs.PublishLinks(new LinkTable(rows));
+
+        private static bool WaitFor(Func<bool> condition, int timeoutMs = 5000) => SpinWait.SpinUntil(condition, timeoutMs);
+
+        private static PeripheralPresence Presence(bool installed = true, bool running = true)
+            => new PeripheralPresence(false, false, false, false, false)
+            {
+                AsusAuraSdk = installed,
+                Programs = RunningPrograms.Of(running ? new[] { "LightingService" } : new[] { "explorer" }, VendorPrograms.All),
+            };
+
+        [Fact]
+        public void NothingClaimed_TheSdkIsNeverOpened()
+        {
+            var native = new FakeAura();
+            PeripheralOutputs.Presence = Presence();
+            PeripheralOutputs.SetBackendState(OutputFamily.AuraSdkType, BackendState.Waiting);
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            using var backend = Backend(native);
+            backend.Start();
+            Assert.True(WaitFor(() => PeripheralOutputs.StateOf(OutputFamily.AuraSdkType) == BackendState.Idle));
+            Thread.Sleep(80);
+            Assert.Empty(native.Calls);
+            // The keyboard path's keys are published from the start.
+            Assert.Same(AuraLights.KeyboardMap, PeripheralLightMaps.For(Path("keyboard")));
+        }
+
+        /// <summary>Claimed, but Armoury Crate does not run, or the SDK is
+        /// not installed: the worker waits and opens nothing, as Aurora
+        /// refuses without LightingService.exe (AsusDevice.cs:17-21).</summary>
+        [Theory]
+        [InlineData(true, false)]
+        [InlineData(false, true)]
+        public void WithoutTheProgramOrTheSdk_NothingIsOpened(bool installed, bool running)
+        {
+            var native = new FakeAura();
+            PeripheralOutputs.Presence = Presence(installed, running);
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x11, 0x22, 0x33);
+            using var backend = Backend(native);
+            backend.Start();
+            Assert.True(WaitFor(() => PeripheralOutputs.StateOf(OutputFamily.AuraSdkType) == BackendState.Waiting));
+            Thread.Sleep(80);
+            Assert.Empty(native.Calls);
+        }
+
+        /// <summary>A claim opens the session and lights every key of the
+        /// keyboard in its color through Key[code], a code the table lacks
+        /// included, then one Apply. The DRAM path, unclaimed, is not
+        /// touched. The same color again sends nothing.</summary>
+        [Fact]
+        public void AClaim_LightsEveryKeyOfItsKind_AndAppliesOnce()
+        {
+            var native = new FakeAura();
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            using var backend = Backend(native);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x11, 0x22, 0x33);
+            Assert.True(WaitFor(() => native.Count("apply:0") == 1));
+            Thread.Sleep(60);
+            Assert.Equal(new[]
+            {
+                "open",
+                "key:0:1E:112233", "key:0:11:112233", "key:0:C8:112233", "key:0:101:112233", "key:0:777:112233",
+                "apply:0",
+            }, native.Calls);
+            Assert.True(WaitFor(() => PeripheralOutputs.StateOf(OutputFamily.AuraSdkType) == BackendState.Connected));
+        }
+
+        /// <summary>Key colors light the keys they name, by HID usage, over
+        /// the background. A later change sends only the key that changed,
+        /// then one Apply.</summary>
+        [Fact]
+        public void KeyColors_LightTheirKeys_AndOnlyChangedKeysGoOutAgain()
+        {
+            var native = new FakeAura();
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            using var backend = Backend(native);
+            backend.Start();
+            // A (usage 0x04) red, W (0x1A) green, the logo group blue.
+            var frame = new KeyFrame(new Dictionary<ushort, int> { [0x04] = 0xFF0000, [0x1A] = 0x00FF00 },
+                new Dictionary<string, int> { [LightGroups.Logo] = 0x0000FF }, null, null);
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x10, 0x10, 0x10, keys: frame);
+            Assert.True(WaitFor(() => native.Count("apply:0") == 1));
+            var calls = native.Calls;
+            Assert.Contains("key:0:1E:FF0000", calls);
+            Assert.Contains("key:0:11:00FF00", calls);
+            Assert.Contains("key:0:101:0000FF", calls);
+            Assert.Contains("key:0:C8:101010", calls);
+            Assert.Contains("key:0:777:101010", calls);
+
+            native.Clear();
+            var next = new KeyFrame(new Dictionary<ushort, int> { [0x04] = 0xFF0000, [0x1A] = 0xFFFF00 },
+                new Dictionary<string, int> { [LightGroups.Logo] = 0x0000FF }, null, null);
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x10, 0x10, 0x10, keys: next);
+            Assert.True(WaitFor(() => native.Count("apply:0") == 1));
+            Thread.Sleep(40);
+            Assert.Equal(new[] { "key:0:11:FFFF00", "apply:0" }, native.Calls);
+        }
+
+        /// <summary>A path lit light by light: the session's map numbers the
+        /// DRAM's three lights, a zone color reaches its light, and each
+        /// light is set through the Lights list before one Apply.</summary>
+        [Fact]
+        public void AnotherKind_IsLitLightByLight_OnTheMapTheSessionRead()
+        {
+            var native = new FakeAura();
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Ram, Lighting = new[] { Path("dram") } });
+            using var backend = Backend(native);
+            backend.Start();
+            Assert.Null(PeripheralLightMaps.For(Path("dram")));
+            var frame = new KeyFrame(null, new Dictionary<string, int> { [LightGroups.Zone(2)] = 0x00FF00 }, null, null);
+            PeripheralOutputs.SetLighting(Ram, slot: 0, player: 1, 0xFF, 0x00, 0x00, keys: frame);
+            // The map comes with the session, ahead of its first picture.
+            Assert.True(WaitFor(() => native.Count("apply:1") == 1));
+            Assert.Equal(3, PeripheralLightMaps.For(Path("dram"))?.Lights.Count);
+            var calls = native.Calls;
+            Assert.Contains("light:1:1:00FF00", calls);
+            Assert.Contains("light:1:0:FF0000", calls);
+            Assert.Contains("light:1:2:FF0000", calls);
+            Assert.DoesNotContain(calls, c => c.StartsWith("key:"));
+        }
+
+        /// <summary>Two devices on one path: a light only the longer one has
+        /// changes, so only that device is set and sent with Apply.</summary>
+        [Fact]
+        public void OnlyTheDeviceWhoseLightsChanged_IsApplied()
+        {
+            var native = new FakeAura();
+            native.Script = new[]
+            {
+                new AuraDevice(0, AuraLights.DramRgb, "DRAM 1", 3, Array.Empty<ushort>()),
+                new AuraDevice(1, AuraLights.DramRgb, "DRAM 2", 1, Array.Empty<ushort>()),
+            };
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Ram, Lighting = new[] { Path("dram") } });
+            using var backend = Backend(native);
+            backend.Start();
+            var frame = new KeyFrame(null, new Dictionary<string, int> { [LightGroups.Zone(3)] = 0x00FF00 }, null, null);
+            PeripheralOutputs.SetLighting(Ram, slot: 0, player: 1, 0xFF, 0x00, 0x00, keys: frame);
+            Assert.True(WaitFor(() => native.Count("apply:0") == 1 && native.Count("apply:1") == 1));
+            native.Clear();
+            var next = new KeyFrame(null, new Dictionary<string, int> { [LightGroups.Zone(3)] = 0x0000FF }, null, null);
+            PeripheralOutputs.SetLighting(Ram, slot: 0, player: 1, 0xFF, 0x00, 0x00, keys: next);
+            Assert.True(WaitFor(() => native.Count("apply:0") == 1));
+            Thread.Sleep(40);
+            Assert.Equal(new[] { "light:0:2:0000FF", "apply:0" }, native.Calls);
+        }
+
+        /// <summary>A keyboard lit in zones (NB_KB_4ZONE_RGB) is lit through
+        /// its Lights list, as RGB.NET lights it (AsusKeyboardRGBDevice.cs:93-98
+        /// and AsusUpdateQueue.cs:76-87): its four lights are the keyboard
+        /// path's four zones, beside the keys of a per-key board.</summary>
+        [Fact]
+        public void AZoneKeyboard_IsLitThroughItsLights_AsTheKeyboardPathsZones()
+        {
+            var native = new FakeAura();
+            native.Script = new[]
+            {
+                new AuraDevice(0, AuraLights.NotebookKeyboard4ZoneRgb, "TUF", 4, Array.Empty<ushort>()),
+                new AuraDevice(1, AuraLights.KeyboardRgb, "Strix", 0, new ushort[] { 0x1E }),
+            };
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            using var backend = Backend(native);
+            backend.Start();
+            var frame = new KeyFrame(new Dictionary<ushort, int> { [0x04] = 0xFF0000 },
+                new Dictionary<string, int> { [LightGroups.Zone(3)] = 0x00FF00 }, null, null);
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x00, 0x00, 0xFF, keys: frame);
+            Assert.True(WaitFor(() => native.Count("apply:0") == 1 && native.Count("apply:1") == 1));
+            var calls = native.Calls;
+            Assert.Equal(new[] { "light:0:0:0000FF", "light:0:1:0000FF", "light:0:2:00FF00", "light:0:3:0000FF" },
+                calls.Where(c => c.StartsWith("light:")));
+            Assert.Equal(new[] { "key:1:1E:FF0000" }, calls.Where(c => c.StartsWith("key:")));
+            var map = PeripheralLightMaps.For(Path("keyboard"));
+            Assert.Equal(4, map.ZoneCount);
+            Assert.Equal(AuraLights.KeyboardKeys.Length + 4, map.Lights.Count);
+        }
+
+        /// <summary>The last claim going hands every device back with
+        /// ReleaseControl (the seam's Close), and the worker goes idle.</summary>
+        [Fact]
+        public void TheLastReleaseClosesTheSession()
+        {
+            var native = new FakeAura();
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            using var backend = Backend(native);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x11, 0x22, 0x33);
+            Assert.True(WaitFor(() => native.Count("apply:0") == 1));
+            PeripheralOutputs.ReleaseLighting(Keyboard, 0);
+            Assert.True(WaitFor(() => native.Count("close") == 1));
+            Assert.True(WaitFor(() => PeripheralOutputs.StateOf(OutputFamily.AuraSdkType) == BackendState.Idle));
+            Assert.Equal(1, native.Count("open"));
+        }
+
+        /// <summary>Armoury Crate stopping ends the session, and its start
+        /// again opens a new one that paints the whole picture.</summary>
+        [Fact]
+        public void TheProgramStopping_EndsTheSession_AndItsReturnOpensANewOne()
+        {
+            var native = new FakeAura();
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            using var backend = Backend(native);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x11, 0x22, 0x33);
+            Assert.True(WaitFor(() => native.Count("apply:0") == 1));
+            PeripheralOutputs.Presence = Presence(running: false);
+            Assert.True(WaitFor(() => native.Count("close") == 1));
+            Assert.True(WaitFor(() => PeripheralOutputs.StateOf(OutputFamily.AuraSdkType) == BackendState.Waiting));
+            PeripheralOutputs.Presence = Presence();
+            Assert.True(WaitFor(() => native.Count("apply:0") == 2));
+            Assert.Equal(2, native.Count("open"));
+        }
+
+        /// <summary>A write that fails ends the session, and a new one is
+        /// opened only after the retry interval.</summary>
+        [Fact]
+        public void AFailedWrite_EndsTheSession_AndRetriesLater()
+        {
+            var native = new FakeAura { FailWrites = true };
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            using var backend = Backend(native);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x11, 0x22, 0x33);
+            Assert.True(WaitFor(() => native.Count("close") >= 1));
+            Assert.Equal(0, native.Count("apply:0"));
+            native.FailWrites = false;
+            Assert.True(WaitFor(() => native.Count("apply:0") == 1));
+            Assert.True(native.Count("open") >= 2);
+        }
+
+        /// <summary>An SDK that cannot be opened is tried again after the
+        /// retry interval, not on every poll.</summary>
+        [Fact]
+        public void AnOpenThatFails_IsRetriedOnItsInterval()
+        {
+            var native = new FakeAura { OpenOk = false };
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            using var backend = new AuraSdkBackend(native, pollMs: 10, retryMs: 400, stopWaitMs: 2000);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x11, 0x22, 0x33);
+            Assert.True(WaitFor(() => native.Count("open") == 1));
+            Thread.Sleep(200);
+            Assert.Equal(1, native.Count("open"));
+            Assert.True(WaitFor(() => native.Count("open") == 2));
+        }
+
+        /// <summary>Stop hands the devices back, and the crash path's two
+        /// steps do too, on the worker's thread.</summary>
+        [Fact]
+        public void StopAndTheCrashPath_HandBack()
+        {
+            var native = new FakeAura();
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            var backend = Backend(native);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x11, 0x22, 0x33);
+            Assert.True(WaitFor(() => native.Count("apply:0") == 1));
+            backend.SignalStop();
+            backend.ReleaseClaimedNow(Environment.TickCount64 + 1000);
+            Assert.Equal(1, native.Count("close"));
+            backend.Stop();
+            Assert.Equal(1, native.Count("close"));
+            Assert.Null(PeripheralLightMaps.For(Path("keyboard")));
+            backend.Dispose();
+
+            var again = new FakeAura();
+            var second = Backend(again);
+            second.Start();
+            Assert.True(WaitFor(() => again.Count("apply:0") == 1));
+            second.Stop();
+            Assert.Equal(1, again.Count("close"));
+            second.Dispose();
+        }
+
+        /// <summary>The backend finds no units and needs no walk: its
+        /// snapshot is an empty scan from the start.</summary>
+        [Fact]
+        public void TheSnapshotIsAnEmptyScan()
+        {
+            using var backend = Backend(new FakeAura());
+            Assert.True(backend.Snapshot.Scanned);
+            Assert.Empty(backend.Snapshot.Units);
+            Assert.Equal(OutputFamily.AuraSdkType, backend.Family);
+            backend.Rescan(Array.Empty<PadForge.Common.Input.HidCollectionInfo>());
+        }
+    }
+}

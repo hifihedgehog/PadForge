@@ -832,12 +832,15 @@ namespace PadForge.ViewModels
              // to make the keyboard report at all.
              || _devicePath.StartsWith("analogkb://", StringComparison.Ordinal)
              // The Razer Chroma, Logitech LIGHTSYNC, SteelSeries GG and
-             // Razer Sensa rows (#494) stand for a vendor's software, not
-             // a HID device, so HidHide has no instance to cloak for them.
+             // Razer Sensa rows (#494), and the ASUS Aura and MSI Mystic
+             // Light rows (#557), stand for a vendor's software, not a HID
+             // device, so HidHide has no instance to cloak for them.
              || _devicePath.StartsWith("razerchroma://", StringComparison.Ordinal)
              || _devicePath.StartsWith("logilightsync://", StringComparison.Ordinal)
              || _devicePath.StartsWith("steelseriesgg://", StringComparison.Ordinal)
              || _devicePath.StartsWith("razersensa://", StringComparison.Ordinal)
+             || _devicePath.StartsWith("asusaura://", StringComparison.Ordinal)
+             || _devicePath.StartsWith("msimysticlight://", StringComparison.Ordinal)
              // A unit row (#494) stands for one lit device no mouse or
              // keyboard row reaches, under a path of PadForge's own that
              // names no HID instance, and it has no input to hide.

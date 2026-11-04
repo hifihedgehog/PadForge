@@ -97,12 +97,13 @@ namespace PadForge.Tests
             {
                 OutputFamily.ChromaCategory, OutputFamily.LedSdkType, OutputFamily.GameSenseColor,
                 OutputFamily.GameSenseTactile, OutputFamily.Interhaptics,
+                OutputFamily.AuraSdkType, OutputFamily.MysticLightType,
             };
             Assert.All(direct, family => Assert.False(new OutputPath(family, "k").Shared));
             Assert.All(shared, family => Assert.True(new OutputPath(family, "k").Shared));
             Assert.Equal(Enum.GetValues(typeof(OutputFamily)).Cast<OutputFamily>().OrderBy(f => f),
                 direct.Concat(shared).OrderBy(f => f));
-            Assert.Throws<ArgumentOutOfRangeException>(() => { _ = new OutputPath((OutputFamily)12, "k").Shared; });
+            Assert.Throws<ArgumentOutOfRangeException>(() => { _ = new OutputPath((OutputFamily)14, "k").Shared; });
         }
 
         [Fact]
@@ -258,7 +259,9 @@ namespace PadForge.Tests
             Assert.Equal(1, (int)PeripheralRowKind.LogitechLightsync);
             Assert.Equal(2, (int)PeripheralRowKind.RazerSensa);
             Assert.Equal(3, (int)PeripheralRowKind.SteelSeriesGG);
-            Assert.Equal(4, Enum.GetValues(typeof(PeripheralRowKind)).Length);
+            Assert.Equal(4, (int)PeripheralRowKind.AsusAura);
+            Assert.Equal(5, (int)PeripheralRowKind.MsiMysticLight);
+            Assert.Equal(6, Enum.GetValues(typeof(PeripheralRowKind)).Length);
 
             using var md5 = MD5.Create();
             Guid Hash(string s) => new(md5.ComputeHash(Encoding.UTF8.GetBytes(s)));
@@ -273,6 +276,10 @@ namespace PadForge.Tests
                     "Razer Sensa", "razersensa://local", (ushort)0x5345),
                 (PeripheralRowKind.SteelSeriesGG, "pfsteelseriesgg", InputDeviceType.PeripheralLighting,
                     "SteelSeries GG", "steelseriesgg://local", (ushort)0x5347),
+                (PeripheralRowKind.AsusAura, "pfasusaura", InputDeviceType.PeripheralLighting,
+                    "ASUS Aura", "asusaura://local", (ushort)0x4155),
+                (PeripheralRowKind.MsiMysticLight, "pfmsimysticlight", InputDeviceType.PeripheralLighting,
+                    "MSI Mystic Light", "msimysticlight://local", (ushort)0x4D4C),
             })
             {
                 var row = new PeripheralOutputRow(kind);

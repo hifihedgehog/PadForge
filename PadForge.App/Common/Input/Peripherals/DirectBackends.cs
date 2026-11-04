@@ -37,6 +37,13 @@ namespace PadForge.Common.Input.Peripherals
             // hand-back is two packets on a loopback connection.
             Add(backends, OutputFamily.OpenRgbDevice, () => new OpenRgbBackend());
 
+            // The ASUS Aura SDK while Armoury Crate runs (#557). Its
+            // hand-back waits at most 250 ms for its own worker.
+            Add(backends, OutputFamily.AuraSdkType, () => new AuraSdkBackend());
+
+            // The MSI Mystic Light SDK while Mystic Light runs (#557).
+            Add(backends, OutputFamily.MysticLightType, () => new MysticLightBackend());
+
             // Razer. Last of the lighting families: its hand-back can wait
             // on a lock other tools share.
             Add(backends, OutputFamily.RazerUnit, () => new RazerDirectBackend());

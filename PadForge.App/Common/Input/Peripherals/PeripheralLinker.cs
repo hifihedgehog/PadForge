@@ -32,6 +32,14 @@ namespace PadForge.Common.Input.Peripherals
         /// that name it (<see cref="HidLightingModel.Programs"/>).</summary>
         public RunningPrograms Programs { get; init; } = RunningPrograms.None;
 
+        /// <summary>The ASUS Aura SDK's COM class is registered, which
+        /// Armoury Crate's LightingService does (<see cref="AuraSdkNative.Registered"/>, #557).</summary>
+        public bool AsusAuraSdk { get; init; }
+
+        /// <summary>MSI's Mystic Light SDK library sits beside MSI's Mystic
+        /// Light service (<see cref="MysticLightNative.FindLibrary"/>, #557).</summary>
+        public bool MsiMysticLightSdk { get; init; }
+
         /// <summary>The Chroma SDK runtime Synapse installs, which Colore's
         /// native layer loads by this name.</summary>
         internal const string ChromaRuntimeDll = "RzChromaSDK64.dll";
@@ -106,7 +114,19 @@ namespace PadForge.Common.Input.Peripherals
             }
             catch { }
 
-            return new PeripheralPresence(ledSdk, false, synapse, gg, PlatformSupport.SensaAvailable);
+            bool aura = false;
+            try { aura = AuraSdkNative.Registered(); }
+            catch { }
+
+            bool mysticLight = false;
+            try { mysticLight = MysticLightNative.FindLibrary() != null; }
+            catch { }
+
+            return new PeripheralPresence(ledSdk, false, synapse, gg, PlatformSupport.SensaAvailable)
+            {
+                AsusAuraSdk = aura,
+                MsiMysticLightSdk = mysticLight,
+            };
         }
 
         /// <summary>A presence with its running flags from one snapshot of
@@ -608,6 +628,14 @@ namespace PadForge.Common.Input.Peripherals
                             foreach (var type in GameSenseColorTypes)
                                 lighting.Add(new OutputPath(OutputFamily.GameSenseColor, type));
                             break;
+                        case PeripheralRowKind.AsusAura when presence.AsusAuraSdk:
+                            foreach (var category in AuraLights.Categories)
+                                lighting.Add(new OutputPath(OutputFamily.AuraSdkType, category));
+                            break;
+                        case PeripheralRowKind.MsiMysticLight when presence.MsiMysticLightSdk:
+                            foreach (var type in MysticLightBackend.PathKeys)
+                                lighting.Add(new OutputPath(OutputFamily.MysticLightType, type));
+                            break;
                     }
                 }
                 else if (row.Unit is OutputPath unit)
@@ -750,7 +778,14 @@ namespace PadForge.Common.Input.Peripherals
                         // follow.
                         AddOwnUnits(native, direct, OutputFamily.HidLightingUnit, row);
                         holder = ProgramHolding(direct, row, presence, out ownPrograms);
+                        // An ASUS device no family of PadForge's lights is
+                        // Armoury Crate's while it runs, as every ASUS device
+                        // is, and is lit through the Aura SDK where it is
+                        // installed (#557 item 11).
+                        if (holder == null && row.VendorId == AsusVid && presence.AsusAuraSdk)
+                            holder = presence.Programs.FirstOf(ArmouryCrateOnly);
                         programRuns = holder != null;
+                        AddSdkRoute(shared, holder, presence, row);
                         // A program with an SDK route of PadForge's own
                         // (#557 item 11) adds that route's path to shared
                         // here. The row is then lit through it while the
@@ -850,6 +885,27 @@ namespace PadForge.Common.Input.Peripherals
                 });
             }
             return new LinkTable(result);
+        }
+
+        internal const ushort AsusVid = 0x0B05;
+
+        private static readonly IReadOnlyList<VendorProgram> ArmouryCrateOnly = new[] { VendorPrograms.ArmouryCrate };
+
+        /// <summary>The path of an SDK route of PadForge's own through the
+        /// program that has a row's device (#557 item 11): the Aura SDK's
+        /// path of the row's kind while Armoury Crate runs, Mystic Light's
+        /// while Mystic Light runs, each while its SDK is installed. A
+        /// keyboard row takes the keyboard path, any other row the mouse
+        /// path. Mystic Light's types are named by the SDK, and the
+        /// keyboard row takes "other", the path of every type RGB.NET does
+        /// not name (<see cref="MysticLightBackend"/>).</summary>
+        internal static void AddSdkRoute(List<OutputPath> shared, VendorProgram holder, PeripheralPresence presence, LinkRow row)
+        {
+            bool keyboard = IsKeyboard(row.CapType);
+            if (holder == VendorPrograms.ArmouryCrate && presence.AsusAuraSdk)
+                shared.Add(new OutputPath(OutputFamily.AuraSdkType, keyboard ? "keyboard" : "mouse"));
+            else if (holder == VendorPrograms.MsiMysticLight && presence.MsiMysticLightSdk)
+                shared.Add(new OutputPath(OutputFamily.MysticLightType, keyboard ? "other" : "MSI_MOUSE"));
         }
 
         /// <summary>Whether a vendor has a program that drives every device

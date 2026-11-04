@@ -375,6 +375,7 @@ namespace PadForge.Common.Input.Peripherals
             StreamDeckLighting.Instance,
             WushiDockLighting.Instance,
             RobobloqLightStripLighting.Instance,
+            ClevoLightbarLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

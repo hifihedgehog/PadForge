@@ -85,10 +85,19 @@ namespace PadForge.Common.Input.Peripherals
         /// (RazerController.cpp:1273-1306 and RazerControllerDetect.cpp:52
         /// at c6fc8016).</summary>
         PairedDevices,
+        /// <summary>0F/81 [LED] at size 50, the effects one region takes,
+        /// the first read OpenRGB sends an extended matrix product it paints
+        /// through an LED other than 00 (RazerController.cpp:1207-1216 and
+        /// 1242-1252 at c6fc8016).</summary>
+        RegionEffects,
     }
 
     /// <summary>A HID collection the product table names as the one a
-    /// product is driven through on Windows.</summary>
+    /// product is driven through on Windows. An interface of -1 is any
+    /// interface, for a product OpenRGB finds by usage alone (its
+    /// REGISTER_HID_DETECTOR_PU, RazerControllerDetect.cpp at c6fc8016), and
+    /// a usage page of 0 any usage, for one it finds by interface alone
+    /// (REGISTER_HID_DETECTOR_I).</summary>
     internal readonly record struct RazerCollection(int Interface, ushort UsagePage, ushort Usage);
 
     internal enum RazerFallbackKind : byte
@@ -169,6 +178,12 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The collection to open first, and a second one where a
         /// firmware update moved it.</summary>
         public RazerCollection[] Collections { get; init; } = Array.Empty<RazerCollection>();
+
+        /// <summary>The HID report ID the product's feature report carries:
+        /// 0 for every product but the Leviathan V2 speakers, whose report
+        /// is 07 (OpenRGB RazerController.cpp:50-60 at c6fc8016, its
+        /// report_index and response_index).</summary>
+        public byte ReportId { get; init; }
 
         public bool HasColorPath => Family >= RazerFamily.Classic;
         public bool Has(RazerRowFlags flag) => (Flags & flag) != 0;
@@ -401,6 +416,12 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>0F/80 with no argument and size 50: the device's list
         /// of lighting regions (OpenRGB RazerController.cpp:1221).</summary>
+        /// <summary>0F/81 [LED] at size 50: the effects one lighting region
+        /// takes, as OpenRGB asks it (RazerController.cpp:1244-1248 at
+        /// c6fc8016). A read: the command ID has its top bit set.</summary>
+        internal static byte[] RegionEffectsRead(byte transactionId, byte led)
+            => Report(transactionId, 0x0F, 0x81, 0x50, stackalloc byte[] { led });
+
         internal static byte[] RegionListRead(byte transactionId)
             => Report(transactionId, 0x0F, 0x80, 0x50, ReadOnlySpan<byte>.Empty);
 
@@ -858,6 +879,7 @@ namespace PadForge.Common.Input.Peripherals
             RazerProbe.ClassicState => ClassicStateRead(transactionId, row.ProbeLed),
             RazerProbe.RegionList => RegionListRead(transactionId),
             RazerProbe.PairedDevices => PairedDevicesRead(transactionId),
+            RazerProbe.RegionEffects => RegionEffectsRead(transactionId, row.ProbeLed),
             _ => null,
         };
 
@@ -1133,7 +1155,7 @@ namespace PadForge.Common.Input.Peripherals
             for (int i = 0; i < row.Collections.Length; i++)
             {
                 var wanted = row.Collections[i];
-                if (wanted.Interface != collection.InterfaceNumber) continue;
+                if (wanted.Interface >= 0 && wanted.Interface != collection.InterfaceNumber) continue;
                 bool usage = wanted.UsagePage == collection.UsagePage && wanted.Usage == collection.Usage;
                 named = Math.Min(named, 2 * i + (usage ? 0 : 1));
             }

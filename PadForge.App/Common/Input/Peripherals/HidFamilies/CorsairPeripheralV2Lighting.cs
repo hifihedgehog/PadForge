@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using PadForge.Common.Input.Peripherals.HidFamilies;
 
 namespace PadForge.Common.Input.Peripherals
@@ -144,8 +145,8 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (collection == null || collection.VendorId != CorsairLights.VendorId) return null;
             var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
-            if (registrations.Count == 0) return null;
-            var registration = registrations[0];
+            var registration = registrations.Count > 0 ? registrations[0] : PluginRegistration(collection);
+            if (registration == null) return null;
             lock (_gate)
             {
                 var key = (registration.Detector, registration.ProductId);
@@ -186,8 +187,71 @@ namespace PadForge.Common.Input.Peripherals
         {
             foreach (var device in CorsairLights.V2Devices)
                 if (device.ProductId == productId) return device;
+            foreach (var device in PluginDevices.Value)
+                if (device.ProductId == productId) return device;
             return null;
         }
+
+        /// <summary>
+        /// Corsair's devices on the same protocol that OpenRGB has no table for,
+        /// and SignalRGB's plugin does (Corsair_Bragi_Device.js:925-983): the
+        /// frames are this family's, opening the lighting endpoint and writing
+        /// to it, and a mouse takes its colors as blocks of reds, greens and
+        /// blues, as the plugin's ledSpacing says and this family's mice do. A
+        /// keyboard takes triplets at the plugin's LED numbers, which on the
+        /// K70 Pro Mini run four below this family's (its Esc is 37 where
+        /// OpenRGB's is 41). The K70 Pro's third ID takes OpenRGB's K70 Pro, as
+        /// the plugin lists them together.
+        /// </summary>
+        internal static readonly Lazy<CorsairV2Device[]> PluginDevices = new(() => new[]
+        {
+            PluginMouse("Corsair Sabre RGB Pro", 0x1B79, "Logo Zone", "Scroll Zone", "DPI Zone 1", "DPI Zone 2", "DPI Zone 3"),
+            PluginMouse("Corsair Sabre RGB Pro Wireless", 0x1B98, "Logo Zone", "Profile Indicator", "DPI Indicator"),
+            PluginMouse("Corsair Dark Core RGB Pro", 0x1B80, DarkCoreProLights),
+            PluginMouse("Corsair Dark Core RGB Pro", 0x1B81, DarkCoreProLights),
+            PluginMouse("Corsair Dark Core RGB Pro SE", 0x1B7F, DarkCoreProLights),
+            PluginMouse("Corsair Darkstar", 0x1BB2, "Logo", "Side Led 1", "Side Led 2", "Side Led 3", "Side Led 4", "Side Led 5", "Side Led 6", "Front Left", "Front Right"),
+            PluginKeyboard("Corsair K70 Pro Mini", 0x1BB6, PluginKeyTables.K70ProMini, baseIndex: -4),
+            PluginKeyboard("Corsair K100 Air", 0x1BAB, PluginKeyTables.K100Air, baseIndex: 0),
+            CorsairLights.K70RgbProDevice with { Name = "Corsair K70 RGB PRO", ProductId = 0x1BD4 },
+        });
+
+        private static readonly string[] DarkCoreProLights =
+        {
+            "Scroll Wheel", "Side Led 1", "Side Led 2", "Side Led 3", "Side Led 4", "Side Led 5", "logo", "Right Side Led",
+            "Dpi 1", "dpi 2", "Dpi 3", "Battery indicator",
+        };
+
+        private static CorsairV2Device PluginMouse(string name, ushort productId, params string[] lights)
+            => new(name, productId, CorsairDeviceType.Mouse, 1, lights.Length, Array.Empty<CorsairV2Zone>(), null)
+            {
+                OwnLights = lights.Select((light, i) => PluginKeyNames.Named(i, light)).ToArray(),
+            };
+
+        private static CorsairV2Device PluginKeyboard(string name, ushort productId, PluginKeyTable table, int baseIndex)
+            => new(name, productId, CorsairDeviceType.Keyboard, 1, table.Names.Length, Array.Empty<CorsairV2Zone>(), null)
+            {
+                OwnLights = PluginKeyNames.Lights(table, baseIndex),
+            };
+
+        /// <summary>The registration OpenRGB would make for a device of
+        /// <see cref="PluginDevices"/>: the interface and usage page of its
+        /// others, the hardware detector's.</summary>
+        internal static OpenRgbRegistration PluginRegistration(HidCollectionInfo collection)
+        {
+            var device = PluginDevices.Value.FirstOrDefault(d => d.ProductId == collection.ProductId);
+            if (device == null || collection.UsagePage != 0xFF42) return null;
+            if (OpenRgbRegistrations.InterfaceOf(collection, OpenRgbRegistrations.BusOf(collection)) != 1) return null;
+            return new OpenRgbRegistration(OpenRgbFamily, device.Name, DetectHardware, "SignalRGB", OpenRgbTransport.Hid,
+                CorsairLights.VendorId, device.ProductId, 1, 0xFF42, OpenRgbRegistration.Any, OpenRgbRegistration.Any,
+                true, false, "signal-plugins Corsair_Bragi_Device.js");
+        }
+
+        /// <summary>A Dark Core Pro's dongle or the mouse on its cable: the
+        /// plugin's two sources name these IDs both ways (its library's "Slip
+        /// Stream Dongle" against the standalone plugin's "Wired"), so the
+        /// session asks through the dongle's command first and takes the answer.</summary>
+        internal static bool MayBeReceiver(uint productId) => productId is 0x1B7F or 0x1B80 or 0x1B81;
 
         /// <summary>The board layout an answer to property 41 names
         /// (RGBController_CorsairV2Hardware.cpp:95-110).</summary>
@@ -214,6 +278,11 @@ namespace PadForge.Common.Input.Peripherals
         /// </summary>
         internal static List<LightInfo> Lights(CorsairV2Device device, KeyboardLayout layout, out int bufferLength)
         {
+            if (device.OwnLights != null)
+            {
+                bufferLength = device.OwnLights.Max(l => l.Address) + 1;
+                return device.OwnLights.ToList();
+            }
             var lights = new List<LightInfo>();
             uint max = 0;
             foreach (var zone in device.Zones)
@@ -431,6 +500,12 @@ namespace PadForge.Common.Input.Peripherals
                 link.WriteCmd = WriteWireless;
                 if (link.GetRetry(0x12) is not uint behind) return null;
                 pid = behind;
+            }
+            else if (MayBeReceiver(pid))
+            {
+                link.WriteCmd = WriteWireless;
+                if (link.GetRetry(0x12) is uint behind && DeviceOf(behind) != null) pid = behind;
+                else link.WriteCmd = WriteWired;
             }
             else if (pid == K57Wired)
             {

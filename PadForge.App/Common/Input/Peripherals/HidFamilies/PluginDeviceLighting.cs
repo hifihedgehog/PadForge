@@ -270,10 +270,9 @@ namespace PadForge.Common.Input.Peripherals
             {
                 _device = device;
                 _picture = picture;
-                _crashFrames = device.HandBack
-                    .Where(s => s.Kind is PluginStepKind.Output or PluginStepKind.Feature)
-                    .Select(s => s.Bytes)
-                    .ToArray();
+                // The crash path sends one kind of report, the session's.
+                var kind = device.Feature ? PluginStepKind.Feature : PluginStepKind.Output;
+                _crashFrames = device.HandBack.Where(s => s.Kind == kind).Select(s => s.Bytes).ToArray();
             }
 
             public override bool Feature => _device.Feature;

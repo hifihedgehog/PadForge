@@ -33,6 +33,22 @@ TABLES = [
     ("Rk84", "Royal Kludge/RK_84_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
 ]
 
+# Keyboards a plugin keeps in a library object: the table's name, the plugin and
+# the entry, whose ledNames, ledPositions and ledMap are the three lists.
+LIBRARY_TABLES = [
+    ("K70ProMini", "Corsair/Modern_Corsair/Corsair_Bragi_Device.js", "K70 Pro Mini"),
+    ("K100Air", "Corsair/Modern_Corsair/Corsair_Bragi_Device.js", "K100 Air"),
+]
+
+# The K70 Pro Mini's ledMap holds the second row's two side lights a row late,
+# 157 and 168, where its names and places hold them with Tab and backslash. Read
+# as written, every key of that row and the next would take its neighbor's LED.
+# The K65 Mini's plugin holds the same LED numbers with each key's own name: Tab
+# 39, Q 16, Caps Lock 53, A 0. A pair is the LED and the LED it goes beside.
+MOVED_LEDS = {
+    "K70ProMini": ((157, 39), (168, 45)),
+}
+
 # The Claymore II's table with the number pad on the right holds the two ISO
 # keys, at the places the plugin gives them, and its list of names leaves them
 # out, so every later name would land one or two keys off.
@@ -83,6 +99,17 @@ def parse_array(text, start):
             i = m.end()
 
 
+def read_entry_list(text, entry, name):
+    start = re.search(r'"' + re.escape(entry) + r'"\s*:\s*\{', text)
+    if not start:
+        raise ValueError(f"no entry {entry}")
+    m = re.compile(name + r"\s*:\s*\[").search(text, start.end())
+    if not m:
+        raise ValueError(f"no list {name} in {entry}")
+    items, _ = parse_array(text, m.end() - 1)
+    return items
+
+
 def read_list(text, name):
     m = re.search(r"\b(?:const|let|var)\s+" + name + r"\s*=\s*\[", text)
     if not m:
@@ -93,6 +120,16 @@ def read_list(text, name):
 
 def quote(value):
     return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+def write_table(lines, table, plugin, names, places, indexes):
+    lines.append("")
+    lines.append(f"        internal static readonly PluginKeyTable {table} = new(")
+    lines.append(f"            {quote(plugin)},")
+    lines.append("            new[] { " + ", ".join(quote(n) for n in names) + " },")
+    lines.append("            new[] { " + ", ".join(str(i) for i in indexes) + " },")
+    lines.append("            new byte[] { " + ", ".join(str(p[0]) for p in places) + " },")
+    lines.append("            new byte[] { " + ", ".join(str(p[1]) for p in places) + " });")
 
 
 def generate(root):
@@ -119,14 +156,18 @@ def generate(root):
         count = len(places)
         if len(names) < count or len(indexes) < count:
             raise ValueError(f"{table}: {len(names)} names, {len(places)} places, {len(indexes)} indexes")
-        names, places, indexes = names[:count], places[:count], indexes[:count]
-        lines.append("")
-        lines.append(f"        internal static readonly PluginKeyTable {table} = new(")
-        lines.append(f"            {quote(plugin)},")
-        lines.append("            new[] { " + ", ".join(quote(n) for n in names) + " },")
-        lines.append("            new[] { " + ", ".join(str(i) for i in indexes) + " },")
-        lines.append("            new byte[] { " + ", ".join(str(p[0]) for p in places) + " },")
-        lines.append("            new byte[] { " + ", ".join(str(p[1]) for p in places) + " });")
+        write_table(lines, table, plugin, names[:count], places[:count], indexes[:count])
+    for table, plugin, entry in LIBRARY_TABLES:
+        text = open(os.path.join(root, "Plugins", plugin), encoding="utf-8", errors="replace").read()
+        names = read_entry_list(text, entry, "ledNames")
+        places = read_entry_list(text, entry, "ledPositions")
+        indexes = read_entry_list(text, entry, "ledMap")
+        for led, before in MOVED_LEDS.get(table, ()):
+            indexes.remove(led)
+            indexes.insert(indexes.index(before) + (1 if led == 168 else 0), led)
+        if not len(names) == len(places) == len(indexes):
+            raise ValueError(f"{table}: {len(names)} names, {len(places)} places, {len(indexes)} indexes")
+        write_table(lines, table, plugin, names, places, indexes)
     lines.append("    }")
     lines.append("}")
     return "\r\n".join(lines) + "\r\n"

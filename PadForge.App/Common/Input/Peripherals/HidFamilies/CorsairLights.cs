@@ -49,7 +49,12 @@ namespace PadForge.Common.Input.Peripherals
     /// its product ID, type, size, zones in order and the name of its key
     /// layout in KeyboardLayouts, null for none.</summary>
     internal sealed record CorsairV2Device(string Name, ushort ProductId, CorsairDeviceType Type, int Rows, int Cols,
-        CorsairV2Zone[] Zones, string Layout);
+        CorsairV2Zone[] Zones, string Layout)
+    {
+        /// <summary>The lights of a device OpenRGB has no table for, from
+        /// SignalRGB's plugin, in place of <see cref="Zones"/>.</summary>
+        public IReadOnlyList<LightInfo> OwnLights { get; init; }
+    }
 
     /// <summary>
     /// The lights of the Corsair families (#557), from OpenRGB's tables

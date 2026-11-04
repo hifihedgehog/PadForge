@@ -69,7 +69,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             {
                 "Fn" or "FN Lock" => LightLabel.Fn,
                 "Brightness" => LightLabel.Brightness,
-                "Mute" or "Media Mute" or "Mute Mic" => LightLabel.Mute,
+                "Mute" or "Media Mute" or "Mute Mic" or "VOLUME_MUTE" => LightLabel.Mute,
                 "MediaPlayPause" => LightLabel.PlayPause,
                 "MediaStop" => LightLabel.Stop,
                 "MediaFastForward" => LightLabel.Next,
@@ -77,8 +77,13 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 "Game Mode" or "Lock" => LightLabel.GameMode,
                 _ => LightLabel.None,
             };
-            if (name.StartsWith("Logo", StringComparison.Ordinal))
+            if (name.StartsWith("Logo", StringComparison.Ordinal) || name is "LeftLogo" or "RightLogo")
                 return new LightInfo(address, LightKind.Logo, 0, LightKeySource.None);
+            if (name.StartsWith("TopBar", StringComparison.Ordinal) || name.StartsWith("BottomBar", StringComparison.Ordinal)
+                || name.StartsWith("LeftBar", StringComparison.Ordinal) || name.StartsWith("RightBar", StringComparison.Ordinal))
+                return new LightInfo(address, LightKind.Edge, 0, LightKeySource.None);
+            if (name.Length is 2 or 3 && name[0] == 'G' && int.TryParse(name.AsSpan(1), out int gKey))
+                return new LightInfo(address, LightKind.Other, 0, LightKeySource.None) { Label = LightLabel.GKey, LabelNumber = gKey };
             if (name == "Profile")
                 return new LightInfo(address, LightKind.Other, 0, LightKeySource.None) { Label = LightLabel.ProfileKey, LabelNumber = 1 };
             if (name is "Space Left" or "Space Right")
@@ -91,5 +96,20 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         internal static IEnumerable<string> Unresolved(PluginKeyTable table)
             => table.Names.Where(n => !s_usages.ContainsKey(n)
                 && Other(0, n) is { Kind: LightKind.Other, Label: LightLabel.None });
+
+        /// <summary>A light of a Corsair mouse or stand from what its plugin
+        /// names it.</summary>
+        internal static LightInfo Named(int address, string name)
+        {
+            var other = Other(address, name);
+            if (other.Kind != LightKind.Other || other.Label != LightLabel.None) return other;
+            if (name.Contains("Scroll", StringComparison.OrdinalIgnoreCase))
+                return new LightInfo(address, LightKind.Other, 0, LightKeySource.None) { Label = LightLabel.ScrollWheel };
+            if (name.Contains("logo", StringComparison.OrdinalIgnoreCase))
+                return new LightInfo(address, LightKind.Logo, 0, LightKeySource.None);
+            if (name.Contains("dpi", StringComparison.OrdinalIgnoreCase) || name.Contains("Indicator", StringComparison.OrdinalIgnoreCase))
+                return new LightInfo(address, LightKind.Status, 0, LightKeySource.None);
+            return new LightInfo(address, LightKind.Edge, 0, LightKeySource.None);
+        }
     }
 }

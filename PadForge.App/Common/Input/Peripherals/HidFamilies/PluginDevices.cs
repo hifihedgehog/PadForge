@@ -13,7 +13,293 @@ namespace PadForge.Common.Input.Peripherals
         private static IEnumerable<PluginDevice> BuildDevices()
             => Evga().Concat(Patriot()).Concat(Speedlink()).Concat(ThermaltakeArgent()).Concat(CreativeKatana())
                 .Concat(AlienwareDevices()).Concat(AsusDevices()).Concat(Fnatic()).Concat(HyperX()).Concat(RazerDevices())
-                .Concat(LogitechG19()).Concat(MountainMakalu()).Concat(CoolerMasterMat());
+                .Concat(LogitechG19()).Concat(MountainMakalu()).Concat(CoolerMasterMat()).Concat(CorsairHeadsets())
+                .Concat(CorsairDarkCore()).Concat(CorsairNexus());
+
+        // ── Corsair headsets (Corsair/Modern_Corsair/Virtuoso_HeadSets, Corsair/Void_HeadSets) ──
+
+        private static readonly VendorProgram[] s_icue = { VendorPrograms.CorsairIcue };
+
+        /// <summary>The Virtuoso plugins' device byte: 09 through the headset's
+        /// dongle, 08 on its cable. The plain Virtuoso's wired plugin switches
+        /// to 08 for its start and leaves 09 in its colors and hand-back, where
+        /// the SE's wired plugin uses 08 throughout, and PadForge sends the
+        /// SE's.</summary>
+        private static IEnumerable<PluginDevice> CorsairHeadsets()
+        {
+            const string Virtuoso = "Corsair/Modern_Corsair/Virtuoso_HeadSets/";
+            foreach (var (name, pid, device, plugin) in new (string, ushort, byte, string)[]
+            {
+                ("Corsair Virtuoso Headset", 0x0A42, 0x09, "Corsair_Virtuoso_Headset.js"),
+                ("Corsair Virtuoso Headset", 0x0A41, 0x09, "Corsair_Virtuoso_Headset_0x0A41.js"),
+                ("Corsair Virtuoso Headset - Wired", 0x0A43, 0x08, "Corsair_Virtuoso_Headset_Wired.js"),
+                ("Corsair Virtuoso Gaming SE Headset", 0xA346, 0x09, "Corsair_Virtuoso_SE_Gaming_Headset.js"),
+                ("Corsair Virtuoso SE Headset", 0x0A3E, 0x09, "Corsair_Virtuoso_SE_Headset.js"),
+                ("Corsair Virtuoso SE Headset - Wired", 0x0A3D, 0x08, "Corsair_Virtuoso_SE_Headset_Wired.js"),
+                ("Corsair Virtuoso Wireless Gaming Headset", 0x0A4C, 0x09, "Corsair_Virtuoso_Wireless_Gaming_Headset.js"),
+                ("Corsair Virtuoso Wireless Gaming Headset", 0x0A5C, 0x09, "Corsair_Virtuoso_Wireless_Gaming_Headset.js"),
+                ("Corsair Virtuoso XT Headset", 0x0A64, 0x09, "Corsair_Virtuoso_XT_Headset.js"),
+            })
+                yield return new PluginDevice
+                {
+                    Name = name,
+                    VendorId = CorsairLights.VendorId,
+                    ProductId = pid,
+                    Plugin = Virtuoso + plugin,
+                    Interface = 4,
+                    Usage = 0x0001,
+                    OutputLength = 64,
+                    // The left can, the right can and the microphone.
+                    Lights = Zones(3),
+                    Slots = 3,
+                    Programs = s_icue,
+                    Start = new[]
+                    {
+                        PluginStep.Output(Frame(64, 0x02, device, 0x01, 0x03, 0x00, 0x02)),
+                        PluginStep.Output(Frame(64, 0x02, device, 0x0D, 0x00, 0x01)),
+                    },
+                    Picture = colors => VirtuosoPicture(device, colors),
+                    HandBack = new[] { PluginStep.Output(Frame(64, 0x02, device, 0x01, 0x03, 0x00, 0x01)) },
+                };
+            foreach (var (name, pid, device, plugin) in new (string, ushort, byte, string)[]
+            {
+                ("Corsair HS80 RGB USB Gaming Headset", 0x0A69, 0x08, "Corsair_HS80_RGB_USB_Gaming_Headset.js"),
+                ("Corsair HS80 RGB USB Gaming Headset", 0x0A71, 0x08, "Corsair_HS80_RGB_USB_Gaming_Headset_0x0a71.js"),
+                ("Corsair HS80 RGB Wireless Gaming Headset", 0x0A6B, 0x09, "Corsair_HS80_RGB_Wireless_Gaming_Headset.js"),
+                ("Corsair HS80 RGB Wireless Gaming Headset", 0x0A73, 0x09, "Corsair_HS80_RGB_Wireless_Gaming_Headset_0x0a73.js"),
+            })
+                yield return new PluginDevice
+                {
+                    Name = name,
+                    VendorId = CorsairLights.VendorId,
+                    ProductId = pid,
+                    Plugin = Virtuoso + plugin,
+                    Interface = 3,
+                    UsagePage = 0xFF42,
+                    Usage = 0x0001,
+                    OutputLength = 64,
+                    Lights = new[] { Logo(0), Status(1) },
+                    Slots = 2,
+                    Programs = s_icue,
+                    // The plugin sets software mode again when the headset says
+                    // it turned on. A keep-alive does the same without a second
+                    // collection.
+                    KeepAliveMs = 5000,
+                    Start = new[]
+                    {
+                        PluginStep.Output(Frame(64, 0x02, device, 0x01, 0x03, 0x00, 0x02)),
+                        PluginStep.Output(Frame(64, 0x02, device, 0x0D, 0x00, 0x01)),
+                        PluginStep.Output(Frame(64, 0x02, device, 0x01, 0x02, 0x00, 0xE8, 0x03)),
+                    },
+                    Picture = colors =>
+                    {
+                        var frame = Frame(64, 0x02, device, 0x06, 0x00, 0x09);
+                        for (int i = 0; i < 2; i++)
+                        {
+                            frame[8 + i * 2] = R(colors[i]);
+                            frame[11 + i * 2] = G(colors[i]);
+                            frame[14 + i * 2] = B(colors[i]);
+                        }
+                        return new[] { PluginStep.Output(frame) };
+                    },
+                    HandBack = new[]
+                    {
+                        PluginStep.Output(Frame(64, 0x02, device, 0x01, 0x02)),
+                        PluginStep.Output(Frame(64, 0x02, device, 0x01, 0x03, 0x00, 0x01)),
+                    },
+                };
+            yield return new PluginDevice
+            {
+                Name = "Corsair HS80 RGB Wired Gaming Headset",
+                VendorId = CorsairLights.VendorId,
+                ProductId = 0x0A88,
+                Plugin = Virtuoso + "Corsair_HS80_RGB_Wired_Gaming_Headset.js",
+                Interface = 3,
+                UsagePage = 0xFFC5,
+                Usage = 0x0001,
+                OutputLength = 16,
+                Lights = new[] { Logo(0) },
+                Slots = 1,
+                Programs = s_icue,
+                Picture = colors => new[]
+                {
+                    PluginStep.Output(Frame(16, 0xCB, 0x03, 0x1C, R(colors[0]), 0x16, G(colors[0]), 0x17, B(colors[0]))),
+                    PluginStep.Wait(1),
+                },
+            };
+            foreach (var (name, pid, plugin) in new (string, ushort, string)[]
+            {
+                ("Corsair Void Pro Headset", 0x0A14, "Corsair_Void_Pro_HeadSet_0x0A14.js"),
+                ("Corsair Void Pro Headset", 0x0A17, "Corsair_Void_Pro_HeadSet_0x0A17.js"),
+                ("Corsair Void Pro Headset", 0x0A19, "Corsair_Void_Pro_HeadSet_0x0A19.js"),
+                ("Corsair Void Pro Headset", 0x0A1A, "Corsair_Void_Pro_HeadSet_0x0A1A.js"),
+                ("Corsair Void Pro Headset", 0x0A1D, "Corsair_Void_Pro_HeadSet_0x0A1D.js"),
+                ("Corsair Void Pro Headset", 0x1B23, "Corsair_Void_Pro_HeadSet_0x1B23.js"),
+                ("Corsair Void Elite Headset", 0x0A56, "Corsair_Void_Elite_HeadSet.js"),
+                ("Corsair Void Elite Headset", 0x0A52, "Corsair_Void_Elite_HeadSet_0x0A52.js"),
+                ("Corsair Void Elite Wireless Headset", 0x0A51, "Corsair_Void_Elite_HeadSet_Wireless_0x0A51.js"),
+                ("Corsair Void Elite Wireless Headset", 0x0A55, "Corsair_Void_Elite_HeadSet_Wireless_0x0A55.js"),
+                ("Corsair Void Elite Wireless Headset", 0x0A75, "Corsair_Void_Elite_HeadSet_Wireless_0x0A75.js"),
+            })
+                yield return new PluginDevice
+                {
+                    Name = name,
+                    VendorId = CorsairLights.VendorId,
+                    ProductId = pid,
+                    Plugin = "Corsair/Void_HeadSets/" + plugin,
+                    Interface = 3,
+                    UsagePage = 0xFFC5,
+                    Usage = 0x0001,
+                    OutputLength = 20,
+                    // The left and the right can.
+                    Lights = Zones(2),
+                    Slots = 2,
+                    Programs = s_icue,
+                    RepaintMs = VoidWaitMs,
+                    Start = new[] { PluginStep.Output(Frame(20, 0xC8, 0x01)) },
+                    Picture = colors => new[]
+                    {
+                        PluginStep.Output(Frame(20, 0xCB, 0x06, 0x1C, R(colors[0]), 0x16, G(colors[0]), 0x17, B(colors[0]),
+                            0x1D, R(colors[1]), 0x18, G(colors[1]), 0x19, B(colors[1]))),
+                    },
+                    HandBack = new[] { PluginStep.Output(Frame(20, 0xC8, 0x00)) },
+                };
+        }
+
+        /// <summary>The plugin waits 30 ms after each Void report.</summary>
+        internal const int VoidWaitMs = 30;
+
+        /// <summary>The reds, then the greens, then the blues.</summary>
+        internal static IEnumerable<PluginStep> VirtuosoPicture(byte device, int[] colors)
+        {
+            var frame = Frame(64, 0x02, device, 0x06, 0x00, 0x09);
+            for (int i = 0; i < 3; i++)
+            {
+                frame[8 + i] = R(colors[i]);
+                frame[11 + i] = G(colors[i]);
+                frame[14 + i] = B(colors[i]);
+            }
+            yield return PluginStep.Output(frame);
+        }
+
+        // ── Corsair Dark Core and Dark Core SE (Legacy_Corsair_Mouse.js) ──
+
+        private static IEnumerable<PluginDevice> CorsairDarkCore()
+        {
+            foreach (var (name, pid) in new (string, ushort)[]
+            {
+                ("Corsair Dark Core", 0x1B35), ("Corsair Dark Core", 0x1B64), ("Corsair Dark Core SE", 0x1B51),
+            })
+                yield return new PluginDevice
+                {
+                    Name = name,
+                    VendorId = CorsairLights.VendorId,
+                    ProductId = pid,
+                    Plugin = "Corsair/Legacy_Corsair/Legacy_Corsair_Mouse.js",
+                    Interface = 1,
+                    UsagePage = 0xFFC2,
+                    Usage = 0x0004,
+                    OutputLength = 65,
+                    // The logo, the sniper button's light and the front.
+                    Lights = new[] { Logo(0), Status(1), Zone(2, 1) },
+                    Slots = 3,
+                    Programs = s_icue,
+                    // A wireless mouse loses software mode when it sleeps. The
+                    // plugin sets it again when the mouse says it woke, and a
+                    // keep-alive does the same without a second collection.
+                    KeepAliveMs = 5000,
+                    Start = new[]
+                    {
+                        PluginStep.Output(Frame(65, 0x00, 0x07, 0x05, 0x02, 0x00, 0x01)),
+                        PluginStep.Output(Frame(65, 0x00, 0x07, 0x04, 0x02)),
+                    },
+                    Picture = DarkCorePicture,
+                    HandBack = new[]
+                    {
+                        PluginStep.Output(Frame(65, 0x00, 0x07, 0x05, 0x01, 0x00, 0x01)),
+                        PluginStep.Output(Frame(65, 0x00, 0x07, 0x04, 0x01)),
+                    },
+                };
+        }
+
+        /// <summary>A report per zone, 5 ms apart: setDarkCoreLighting.</summary>
+        internal static IEnumerable<PluginStep> DarkCorePicture(int[] colors)
+        {
+            byte[] zones = { 0x01, 0x02, 0x04 };
+            byte[] last = { 0x05, 0x04, 0x03 };
+            for (int i = 0; i < 3; i++)
+            {
+                yield return PluginStep.Output(Frame(65, 0x00, 0x07, 0xAA, 0x00, 0x00, zones[i], 0x07, 0x00, 0x00, 0x64,
+                    R(colors[i]), G(colors[i]), B(colors[i]), 0x00, 0x00, 0x00, last[i]));
+                yield return PluginStep.Wait(5);
+            }
+        }
+
+        // ── Corsair iCUE Nexus screen (Corsair_Nexus_Screen.js) ──
+
+        private static IEnumerable<PluginDevice> CorsairNexus()
+        {
+            static IEnumerable<PluginStep> Ask(params byte[] head)
+            {
+                yield return PluginStep.Feature(Frame(32, head));
+                yield return PluginStep.ReadFeature(0x03);
+            }
+            yield return new PluginDevice
+            {
+                Name = "Corsair Nexus",
+                VendorId = CorsairLights.VendorId,
+                ProductId = 0x1B8E,
+                Plugin = "Corsair/Corsair_Nexus_Screen.js",
+                Interface = 0,
+                OutputLength = 1024,
+                FeatureLength = 32,
+                Lights = Zones(1),
+                Slots = 1,
+                Programs = s_icue,
+                RepaintMs = NexusRepaintMs,
+                Start = Ask(0x03, 0x1D, 0x01, 0x00)
+                    .Concat(Ask(0x03, 0x19))
+                    .Concat(Ask(0x03, 0x20, 0x00, 0x19, 0x79, 0xE7, 0x32, 0x2E, 0x30, 0x2E, 0x30, 0x2E, 0x33))
+                    .Concat(Ask(0x03, 0x0B, 0x40, 0x01, 0x79, 0xE7, 0x32, 0x2E, 0x30, 0x2E, 0x30, 0x2E, 0x33))
+                    .ToArray(),
+                Picture = NexusPicture,
+                HandBack = new[] { NexusOwnScreen(0x0D, 0x01), NexusOwnScreen(0x01, 0x64) },
+            };
+        }
+
+        /// <summary>A whole screen is 121 reports of 1,024 bytes, so pictures
+        /// stay this far apart. No source bounds it, so the bound is PadForge's.</summary>
+        internal const int NexusRepaintMs = 100;
+
+        private static PluginStep NexusOwnScreen(byte first, byte second)
+        {
+            var frame = Frame(32, 0x03, first, second, 0x01, 0x78, 0x00, 0xC0, 0x03);
+            for (int i = 8; i < 32; i += 4)
+            {
+                frame[i] = frame[i + 1] = frame[i + 2] = 0x2F;
+                frame[i + 3] = 0xFF;
+            }
+            return PluginStep.Feature(frame);
+        }
+
+        /// <summary>The screen's 640 by 48 pixels as blue, green, red and FF.
+        /// The plugin draws every other pixel from the canvas. PadForge has one
+        /// color for the screen and draws them all.</summary>
+        internal static IEnumerable<PluginStep> NexusPicture(int[] colors)
+        {
+            for (int row = 0; row < 121; row++)
+            {
+                var frame = Frame(1024, 0x02, 0x05, 0x40, (byte)(row == 120 ? 1 : 0), (byte)row, 0x00, 0xF8, 0x03);
+                for (int at = 8; at < 1024; at += 4)
+                {
+                    frame[at] = B(colors[0]);
+                    frame[at + 1] = G(colors[0]);
+                    frame[at + 2] = R(colors[0]);
+                    frame[at + 3] = 0xFF;
+                }
+                yield return PluginStep.Output(frame);
+            }
+        }
 
         // ── EVGA X15 and X17 mice (X-15_Mouse.js, X-17_Mouse.js) ──
 

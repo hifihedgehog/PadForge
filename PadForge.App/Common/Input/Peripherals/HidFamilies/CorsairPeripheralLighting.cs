@@ -159,10 +159,27 @@ namespace PadForge.Common.Input.Peripherals
 
         public string Name => "Corsair (peripherals)";
 
+        /// <summary>Other product IDs of devices OpenRGB lists, which SignalRGB's
+        /// plugins list with them and drive with the same frames: the K65 Mini's
+        /// (Corsair_K65_Mini_Keyboard.js:3), the Strafe's
+        /// (Corsair_Strafe_Keyboard.js:3), the Sabre RGB's
+        /// (Corsair_Bragi_Device.js:936-937), and the K70 MKII Rapidfire Red's
+        /// (Corsair_Legacy_Keyboard.js:225).</summary>
+        internal static readonly Dictionary<ushort, ushort> OtherIds = new()
+        {
+            [0x1BCF] = 0x1BAF,
+            [0x1BC3] = 0x1BAF,
+            [0x1BBD] = 0x1BAF,
+            [0x1B15] = 0x1B20,
+            [0x1B14] = 0x1B2F,
+            [0x1B3A] = 0x1B49,
+        };
+
         public HidLightingModel Match(HidCollectionInfo collection)
         {
             if (collection == null || collection.VendorId != CorsairLights.VendorId) return null;
-            var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
+            var registrations = OpenRgbRegistrations.Match(OpenRgbFamily,
+                OtherIds.TryGetValue(collection.ProductId, out ushort sameAs) ? collection with { ProductId = sameAs } : collection);
             if (registrations.Count == 0) return null;
             var registration = registrations[0];
             lock (_gate)

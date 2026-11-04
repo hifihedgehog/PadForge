@@ -150,6 +150,7 @@ namespace PadForge.Tests
             {
                 PluginKeyTables.SpeedlinkOriosKb, PluginKeyTables.FnaticMiniStreak, PluginKeyTables.ClaymoreIiRight,
                 PluginKeyTables.ClaymoreIiLeft, PluginKeyTables.K65Mini, PluginKeyTables.Strafe, PluginKeyTables.Rk61, PluginKeyTables.Rk84,
+                PluginKeyTables.K70ProMini, PluginKeyTables.K100Air,
             })
             {
                 Assert.Empty(PluginKeyNames.Unresolved(table));
@@ -243,6 +244,206 @@ namespace PadForge.Tests
         }
 
         // ── The frames, from each plugin ──
+
+        [Theory]
+        [InlineData(0x0A42, 0x09)]
+        [InlineData(0x0A41, 0x09)]
+        [InlineData(0x0A43, 0x08)]
+        [InlineData(0xA346, 0x09)]
+        [InlineData(0x0A3E, 0x09)]
+        [InlineData(0x0A3D, 0x08)]
+        [InlineData(0x0A4C, 0x09)]
+        [InlineData(0x0A5C, 0x09)]
+        [InlineData(0x0A64, 0x09)]
+        public void Virtuoso_TakesSoftwareControl_ThenTheReds_Greens_Blues(int pid, int device)
+        {
+            var d = Device(0x1B1C, (ushort)pid);
+            string m = device.ToString("X2");
+            Assert.Equal(new[] { $"out 02 {m} 01 03 00 02", $"out 02 {m} 0D 00 01" }, ShortSteps(d.Start));
+            Assert.Equal(new[] { $"out 02 {m} 06 00 09 00 00 00 01 04 07 02 05 08 03 06 09" },
+                ShortSteps(d.Picture(new[] { 0x010203, 0x040506, 0x070809 })));
+            Assert.Equal(new[] { $"out 02 {m} 01 03 00 01" }, ShortSteps(d.HandBack));
+            Assert.Equal(4, d.Interface);
+        }
+
+        [Theory]
+        [InlineData(0x0A69, 0x08)]
+        [InlineData(0x0A71, 0x08)]
+        [InlineData(0x0A6B, 0x09)]
+        [InlineData(0x0A73, 0x09)]
+        public void Hs80_TakesSoftwareControl_AndKeepsIt(int pid, int device)
+        {
+            var d = Device(0x1B1C, (ushort)pid);
+            string m = device.ToString("X2");
+            Assert.Equal(new[] { $"out 02 {m} 01 03 00 02", $"out 02 {m} 0D 00 01", $"out 02 {m} 01 02 00 E8 03" }, ShortSteps(d.Start));
+            // Reds at 8 and 10, greens at 11 and 13, blues at 14 and 16.
+            Assert.Equal(new[] { $"out 02 {m} 06 00 09 00 00 00 01 00 04 02 00 05 03 00 06" },
+                ShortSteps(d.Picture(new[] { 0x010203, 0x040506 })));
+            Assert.Equal(new[] { $"out 02 {m} 01 02", $"out 02 {m} 01 03 00 01" }, ShortSteps(d.HandBack));
+            Assert.Equal(5000, d.KeepAliveMs);
+            Assert.Equal((3, 0xFF42, 1), (d.Interface, d.UsagePage, d.Usage));
+        }
+
+        [Fact]
+        public void Hs80Wired_OneReport()
+        {
+            var d = Device(0x1B1C, 0x0A88);
+            Assert.Equal(new[] { "out CB 03 1C 01 16 02 17 03", "wait 1" }, ShortSteps(d.Picture(new[] { 0x010203 })));
+            Assert.Equal(16, d.Picture(new int[1]).First().Bytes.Length);
+        }
+
+        [Theory]
+        [InlineData(0x0A14)]
+        [InlineData(0x0A17)]
+        [InlineData(0x0A19)]
+        [InlineData(0x0A1A)]
+        [InlineData(0x0A1D)]
+        [InlineData(0x1B23)]
+        [InlineData(0x0A56)]
+        [InlineData(0x0A52)]
+        [InlineData(0x0A51)]
+        [InlineData(0x0A55)]
+        [InlineData(0x0A75)]
+        public void Void_BothCans_WithItsWaitAsTheRate(int pid)
+        {
+            var d = Device(0x1B1C, (ushort)pid);
+            Assert.Equal(new[] { "out C8 01" }, ShortSteps(d.Start));
+            Assert.Equal(new[] { "out CB 06 1C 01 16 02 17 03 1D 04 18 05 19 06" }, ShortSteps(d.Picture(new[] { 0x010203, 0x040506 })));
+            Assert.Equal(new[] { "out C8" }, ShortSteps(d.HandBack));
+            Assert.Equal(20, d.HandBack[0].Bytes.Length);
+            Assert.Equal(30, d.RepaintMs);
+        }
+
+        [Theory]
+        [InlineData(0x1B35)]
+        [InlineData(0x1B64)]
+        [InlineData(0x1B51)]
+        public void DarkCore_AReportPerZone_FiveMsApart(int pid)
+        {
+            var d = Device(0x1B1C, (ushort)pid);
+            Assert.Equal(new[] { "out 00 07 05 02 00 01", "out 00 07 04 02" }, ShortSteps(d.Start));
+            Assert.Equal(new[]
+            {
+                "out 00 07 AA 00 00 01 07 00 00 64 01 02 03 00 00 00 05", "wait 5",
+                "out 00 07 AA 00 00 02 07 00 00 64 04 05 06 00 00 00 04", "wait 5",
+                "out 00 07 AA 00 00 04 07 00 00 64 07 08 09 00 00 00 03", "wait 5",
+            }, ShortSteps(d.Picture(new[] { 0x010203, 0x040506, 0x070809 })));
+            Assert.Equal(new[] { "out 00 07 05 01 00 01", "out 00 07 04 01" }, ShortSteps(d.HandBack));
+        }
+
+        [Fact]
+        public void Nexus_TheWholeScreen_In121Reports()
+        {
+            var d = Device(0x1B1C, 0x1B8E);
+            Assert.Equal(new[]
+            {
+                "set 03 1D 01", "get 03", "set 03 19", "get 03",
+                "set 03 20 00 19 79 E7 32 2E 30 2E 30 2E 33", "get 03",
+                "set 03 0B 40 01 79 E7 32 2E 30 2E 30 2E 33", "get 03",
+            }, ShortSteps(d.Start));
+            var frames = d.Picture(new[] { 0x010203 }).Select(s => s.Bytes).ToArray();
+            Assert.Equal(121, frames.Length);
+            Assert.Equal("02 05 40 00 00 00 F8 03 03 02 01 FF", Hex(frames[0], 12));
+            Assert.Equal("02 05 40 01 78 00 F8 03 03 02 01 FF", Hex(frames[120], 12));
+            Assert.All(frames, f => Assert.Equal(1024, f.Length));
+            // The hand-back is feature reports, and the crash path sends the
+            // session's own kind, so it leaves them out.
+            Assert.All(d.HandBack, s => Assert.Equal(PluginStepKind.Feature, s.Kind));
+            Assert.Equal("03 0D 01 01 78 00 C0 03 2F 2F 2F FF", Hex(d.HandBack[0].Bytes, 12));
+            Assert.Equal("03 01 64 01 78 00 C0 03 2F 2F 2F FF", Hex(d.HandBack[1].Bytes, 12));
+            var session = new F.Session(d, d.Picture);
+            session.Paint(new FakeReportChannel { OutputReportLength = 1024, FeatureReportLength = 32 }, _ => { }, d.Lights, new int[1]);
+            Assert.Empty(session.CrashFrames);
+        }
+
+        // ── Corsair IDs of the families OpenRGB holds ──
+
+        [Theory]
+        [InlineData(0x1BCF, 0x1BAF)]
+        [InlineData(0x1BC3, 0x1BAF)]
+        [InlineData(0x1BBD, 0x1BAF)]
+        [InlineData(0x1B15, 0x1B20)]
+        [InlineData(0x1B14, 0x1B2F)]
+        [InlineData(0x1B3A, 0x1B49)]
+        public void TheCorsairFamily_TakesAnotherIdAsTheDeviceItIs(int other, int same)
+        {
+            var r = OpenRgbRegistrations.Of(CorsairPeripheralLighting.OpenRgbFamily).First(x => x.ProductId == same);
+            var known = CollectionFor(r, output: 65, feature: 65, input: 64);
+            var collection = known with { ProductId = (ushort)other };
+            var model = CorsairPeripheralLighting.Instance.Match(collection);
+            Assert.NotNull(model);
+            Assert.Same(CorsairPeripheralLighting.Instance.Match(known), model);
+        }
+
+        [Theory]
+        [InlineData(0x1B79, 5)]
+        [InlineData(0x1B98, 3)]
+        [InlineData(0x1B80, 12)]
+        [InlineData(0x1B81, 12)]
+        [InlineData(0x1B7F, 12)]
+        [InlineData(0x1BB2, 9)]
+        public void TheBragiMice_AreMatched_WithThePluginsLights(int pid, int lights)
+        {
+            var collection = new HidCollectionInfo
+            {
+                Path = $@"\\?\hid#vid_1b1c&pid_{pid:x4}&mi_01#7&1&0&0000#{{4d1e55b2-f16f-11cf-88cb-001111000030}}",
+                VendorId = 0x1B1C,
+                ProductId = (ushort)pid,
+                InterfaceNumber = 1,
+                UsagePage = 0xFF42,
+                Usage = 1,
+                OutputReportLength = 65,
+                InputReportLength = 65,
+            };
+            var model = CorsairPeripheralV2Lighting.Instance.Match(collection);
+            Assert.NotNull(model);
+            Assert.Equal(lights, model.Map.Lights.Count);
+            Assert.Null(CorsairPeripheralV2Lighting.Instance.Match(collection with { UsagePage = 0xFF00 }));
+            Assert.Null(CorsairPeripheralV2Lighting.Instance.Match(collection with
+            {
+                InterfaceNumber = 2,
+                Path = collection.Path.Replace("mi_01", "mi_02"),
+            }));
+        }
+
+        [Fact]
+        public void TheK70ProMini_RunsFourBelowTheFamilysNumbers()
+        {
+            var device = CorsairPeripheralV2Lighting.DeviceOf(0x1BB6);
+            var lights = device.OwnLights;
+            // OpenRGB's K70 has Esc at 41 and A at 4. The plugin's Mini has 37 and 0.
+            Assert.Equal(41, lights.Single(l => l.Usage == 0x29).Address);
+            Assert.Equal(4, lights.Single(l => l.Usage == 0x04).Address);
+            Assert.All(lights, l => Assert.True(l.Address >= 0));
+            // Each key the LED the K65 Mini's plugin gives it, four up.
+            var k65 = PluginKeyTables.K65Mini;
+            foreach (var name in new[] { "Tab", "Q", "\\", "CapsLock", "S", "Enter", "Left Shift", "Z", "Right Ctrl" })
+            {
+                var mini = PluginKeyTables.K70ProMini;
+                Assert.Equal(k65.Indexes[Array.IndexOf(k65.Names, name)], mini.Indexes[Array.IndexOf(mini.Names, name)]);
+            }
+            var air = CorsairPeripheralV2Lighting.DeviceOf(0x1BAB).OwnLights;
+            Assert.Equal(41, air.Single(l => l.Usage == 0x29).Address);
+            Assert.Equal(4, air.Single(l => l.Usage == 0x04).Address);
+        }
+
+        [Fact]
+        public void TheK70Pros_ThirdId_IsTheK70Pro()
+        {
+            var third = CorsairPeripheralV2Lighting.DeviceOf(0x1BD4);
+            var first = CorsairPeripheralV2Lighting.DeviceOf(0x1BC4);
+            Assert.Equal(first.Layout, third.Layout);
+            Assert.Equal(first.Zones, third.Zones);
+        }
+
+        [Fact]
+        public void ADeviceOfThePlugin_HasALightMap_WithAColorBufferPastItsLastLight()
+        {
+            var device = CorsairPeripheralV2Lighting.DeviceOf(0x1BB2);
+            var map = CorsairPeripheralV2Lighting.MapOf(device, KeyboardLayout.AnsiQwerty, out int length);
+            Assert.Equal(9, length);
+            Assert.Equal(9, map.Lights.Count);
+        }
 
         [Fact]
         public void Evga_TwoZoneReports_TwoAnswers_TwoApplies()

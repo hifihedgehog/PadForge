@@ -4193,7 +4193,6 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con ба Pro Controller-ийн HID, HD чичиргээ, гэрийн LED тэмдэглэл, dekuNukem-ийн бүтээл, Switch 2-т ndeadly-ийн switch2_controller_research. Зөвхөн протоколын баримтын хувьд уншсан.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense ба DualShock 4-ийн гэрлийн зурвасны гаралтын тайлангийн байтын хэрэглээ, мөн Logitech HID++ 0x8070 гэрэлтүүлгийн фреймүүд ба цуглуулгын бүтэц. GPL-2.0-or-later, зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Програм доторх шинэчлэгчийн туслахын ард байгаа өндөр эрхтэй шинэчлэлийн командын загвар. LGPL-3.0, зөвхөн баримт бичиг болгон уншсан, LGPL код багтаагүй.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

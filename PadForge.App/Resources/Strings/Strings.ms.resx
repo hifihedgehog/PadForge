@@ -4209,7 +4209,6 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Nota HID Joy-Con dan Pro Controller, getaran HD dan LED rumah, oleh dekuNukem, dengan switch2_controller_research ndeadly untuk Switch 2. Dibaca untuk fakta protokol sahaja.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>Penggunaan bait laporan output bar cahaya DualSense dan DualShock 4, dan bingkai pencahayaan Logitech HID++ 0x8070 serta susun atur koleksi. GPL-2.0-or-later, dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Corak kata kerja kemas kini berhak tinggi di sebalik pembantu pengemas kini dalam aplikasi. LGPL-3.0, dibaca sebagai dokumentasi sahaja, tiada kod LGPL disertakan.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

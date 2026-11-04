@@ -4173,7 +4173,6 @@
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con-ի և Pro Controller-ի HID, HD թրթռոցի և home LED-ի նշումները՝ dekuNukem, Switch 2-ի համար՝ ndeadly-ի switch2_controller_research-ով։ Կարդացվել է միայն արձանագրության փաստերի համար։</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense-ի և DualShock 4-ի լուսաշերտի ելքային ռեպորտի բայթերի օգտագործումը, և Logitech HID++ 0x8070 լուսավորության շրջանակները ու հավաքածուի դասավորությունը։ GPL-2.0-or-later, կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Բարձրացված իրավունքներով թարմացման բայի օրինակը ծրագրի թարմացնողի օգնականի հիմքում։ LGPL-3.0, կարդացվել է միայն որպես փաստաթղթավորում, LGPL կոդ չի տեղակայվում։</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

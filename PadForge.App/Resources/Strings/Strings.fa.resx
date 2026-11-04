@@ -4364,7 +4364,13 @@
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>یادداشت‌های HID، لرزش HD و LED دکمه Home در Joy-Con و Pro Controller، اثر dekuNukem، همراه با switch2_controller_research اثر ndeadly برای Switch 2. فقط برای آگاهی از جزئیات پروتکل خوانده شده است.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>کاربرد بایت‌های گزارش خروجی نوار نوری DualSense و DualShock 4، و فریم‌های نورپردازی HID++ 0x8070 و چیدمان کالکشن در Logitech. GPL-2.0-or-later، فقط به‌عنوان مستندات خوانده شده و هیچ کد GPL عرضه نمی‌شود.</value></data>
+  <data name="About_OpenRgbDesc" xml:space="preserve"><value>قواعد شناسایی، فریم‌های گزارش، جدول‌های LED و چیدمان کلیدها برای خانواده‌های نورپردازی که PadForge مستقیم هدایت می‌کند، منتقل‌شده و تولیدشده از OpenRGB، و بایت‌های نوار نور DualSense و DualShock 4. GPL-2.0-or-later.</value></data>
+  <data name="About_LightingRefs" xml:space="preserve"><value>منابع نورپردازی</value></data>
+  <data name="About_LightingRefsDesc" xml:space="preserve"><value>فریم‌های گزارش، نام کلیدها و نام برنامه‌ها برای خانواده‌های نورپردازی مستقیم، خوانده‌شده از: SignalRGB plugins (facts only), uchroma (LGPL-3.0), Polychromatic (GPL-3.0), ckb-next (GPL-2.0), libcmmk (LGPL-3.0), Eruption (GPL-3.0-or-later), roccat-vulcan-api-rs, cherryrgb-rs, node-lib (MIT), wooting-rgb-sdk, asusctl (MPL-2.0), g-helper, Lenovo Legion Toolkit, L5P-Keyboard-RGB, OmenMon, Kaleidoscope, Bazecor, mouse_m908 (GPL-3.0), legion-spectrum-control, alienfx-tools, msi-perkeyrgb, Aurora, Colore, cooler_master_sdk (MIT), RGB.NET (LGPL-2.1), mystic-light-sdk (Apache-2.0), python-elgato-streamdeck, stb_image_write, hidapi (BSD-3-Clause).</value></data>
+  <data name="About_IcueSdk" xml:space="preserve"><value>iCUE SDK</value></data>
+  <data name="About_IcueSdkDesc" xml:space="preserve"><value>کتابخانه Corsair که درون PadForge قرار دارد و هنگام اجرای iCUE دستگاه‌های Corsair را روشن می‌کند. شرایط SDK شرکت Corsair برقرار است.</value></data>
+  <data name="About_MysticLightSdk" xml:space="preserve"><value>Mystic Light SDK</value></data>
+  <data name="About_MysticLightSdkDesc" xml:space="preserve"><value>کتابخانه MSI که درون PadForge قرار دارد و هنگام اجرای Mystic Light دستگاه‌های MSI را روشن می‌کند. بسته دانلود MSI شرطی را نام نمی‌برد.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>الگوی فعل به‌روزرسانی با دسترسی سرپرست که مبنای برنامه کمکی به‌روزرسان درون‌برنامه‌ای است. LGPL-3.0، فقط به‌عنوان مستندات خوانده شده و هیچ کد LGPL عرضه نمی‌شود.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

@@ -4212,7 +4212,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Bilješke o HID-u, HD vibraciji i LED-u gumba Home za Joy-Con i Pro Controller, autor dekuNukem, uz switch2_controller_research autora ndeadly za Switch 2. Korišteno samo za činjenice o protokolu.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>Upotreba bajtova izlaznog izvješća svjetlosne trake za DualSense i DualShock 4 te Logitech HID++ 0x8070 okviri osvjetljenja i raspored kolekcija. GPL-2.0-or-later, korišteno samo kao dokumentacija, ne isporučuje se nikakav GPL kôd.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Uzorak glagola ažuriranja s povišenim pravima za pomoćni program ugrađenog alata za ažuriranje. LGPL-3.0, korišteno samo kao dokumentacija, ne isporučuje se nikakav LGPL kôd.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

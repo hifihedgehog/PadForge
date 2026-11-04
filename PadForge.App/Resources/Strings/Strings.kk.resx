@@ -4208,7 +4208,6 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con және Pro Controller HID, HD діріл және home LED туралы жазбалар, автор dekuNukem, Switch 2 үшін ndeadly-дің switch2_controller_research материалымен. Тек протокол деректері үшін оқылған.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense және DualShock 4 жарық жолағының шығыс есебі байттарын қолдану, сондай-ақ Logitech HID++ 0x8070 жарықтандыру кадрлары мен коллекция орналасуы. GPL-2.0-or-later, тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Қолданбаның ішіндегі жаңартқыш көмекшісінің астарындағы биіктетілген жаңарту-пәрмен үлгісі. LGPL-3.0, тек құжаттама ретінде оқылған, LGPL коды жеткізілмейді.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

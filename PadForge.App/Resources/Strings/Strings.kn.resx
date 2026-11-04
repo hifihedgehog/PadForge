@@ -4194,7 +4194,6 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con ಮತ್ತು Pro Controller HID, HD ಕಂಪನ ಮತ್ತು ಹೋಮ್ LED ಟಿಪ್ಪಣಿಗಳು, dekuNukem ಅವರಿಂದ, Switch 2 ಗಾಗಿ ndeadly ಅವರ switch2_controller_research ಜೊತೆಗೆ. ಪ್ರೋಟೋಕಾಲ್ ಸಂಗತಿಗಳಿಗಾಗಿ ಮಾತ್ರ ಓದಲಾಗಿದೆ.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense ಮತ್ತು DualShock 4 ಲೈಟ್ ಬಾರ್ ಔಟ್‌ಪುಟ್-ರಿಪೋರ್ಟ್ ಬೈಟ್ ಬಳಕೆ, ಮತ್ತು Logitech HID++ 0x8070 ಬೆಳಕಿನ ಫ್ರೇಮ್‌ಗಳು ಹಾಗೂ ಕಲೆಕ್ಷನ್ ವಿನ್ಯಾಸ. GPL-2.0-or-later, ದಾಖಲೆಯಾಗಿ ಮಾತ್ರ ಓದಲಾಗಿದೆ, ಯಾವುದೇ GPL ಕೋಡ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>ಆ್ಯಪ್‌ನೊಳಗಿನ ಅಪ್‌ಡೇಟರ್‌ನ ಸಹಾಯಕದ ಹಿಂದಿನ ಎತ್ತರಿಸಿದ ಅಪ್‌ಡೇಟ್-ಕ್ರಿಯಾಪದ ಮಾದರಿ. LGPL-3.0, ದಾಖಲೆಯಾಗಿ ಮಾತ್ರ ಓದಲಾಗಿದೆ, ಯಾವುದೇ LGPL ಕೋಡ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

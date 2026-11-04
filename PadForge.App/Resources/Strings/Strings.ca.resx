@@ -4213,7 +4213,6 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Notes sobre l'HID, la vibració HD i el LED del botó Home dels Joy-Con i del Pro Controller, de dekuNukem, amb el switch2_controller_research de ndeadly per a la Switch 2. Llegit només per obtenir dades del protocol.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>Ús dels bytes dels informes de sortida de la barra de llum del DualSense i del DualShock 4, i les trames d'il·luminació HID++ 0x8070 de Logitech i la disposició de les col·leccions. GPL-2.0-or-later, llegit només com a documentació, no s'hi inclou cap codi GPL.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>El patró de verb d'actualització amb permisos elevats de l'ajudant de l'actualitzador integrat. LGPL-3.0, llegit només com a documentació, no s'hi inclou cap codi LGPL.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

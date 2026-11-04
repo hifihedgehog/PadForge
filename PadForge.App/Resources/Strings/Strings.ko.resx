@@ -4315,7 +4315,13 @@
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con과 Pro 컨트롤러의 HID, HD 진동, 홈 LED 노트. dekuNukem 제작. Switch 2는 ndeadly의 switch2_controller_research. 프로토콜 사실 확인용으로만 참조.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense 및 DualShock 4 라이트바 출력 리포트의 바이트 용도와 Logitech HID++ 0x8070 조명 프레임 및 컬렉션 구성. GPL-2.0-or-later, 문서로만 참고했으며 GPL 코드는 포함하지 않습니다.</value></data>
+  <data name="About_OpenRgbDesc" xml:space="preserve"><value>PadForge가 직접 구동하는 조명 제품군의 감지 규칙, 리포트 프레임, LED 표, 키 배열(OpenRGB에서 이식 및 생성)과 DualSense 및 DualShock 4 라이트바 바이트. GPL-2.0-or-later.</value></data>
+  <data name="About_LightingRefs" xml:space="preserve"><value>조명 참고 자료</value></data>
+  <data name="About_LightingRefsDesc" xml:space="preserve"><value>직접 조명 제품군의 리포트 프레임, 키 이름, 프로그램 이름의 출처: SignalRGB plugins (facts only), uchroma (LGPL-3.0), Polychromatic (GPL-3.0), ckb-next (GPL-2.0), libcmmk (LGPL-3.0), Eruption (GPL-3.0-or-later), roccat-vulcan-api-rs, cherryrgb-rs, node-lib (MIT), wooting-rgb-sdk, asusctl (MPL-2.0), g-helper, Lenovo Legion Toolkit, L5P-Keyboard-RGB, OmenMon, Kaleidoscope, Bazecor, mouse_m908 (GPL-3.0), legion-spectrum-control, alienfx-tools, msi-perkeyrgb, Aurora, Colore, cooler_master_sdk (MIT), RGB.NET (LGPL-2.1), mystic-light-sdk (Apache-2.0), python-elgato-streamdeck, stb_image_write, hidapi (BSD-3-Clause).</value></data>
+  <data name="About_IcueSdk" xml:space="preserve"><value>iCUE SDK</value></data>
+  <data name="About_IcueSdkDesc" xml:space="preserve"><value>PadForge에 포함된 Corsair 라이브러리로, iCUE 실행 중에 Corsair 장치를 밝힙니다. Corsair의 SDK 조건이 적용됩니다.</value></data>
+  <data name="About_MysticLightSdk" xml:space="preserve"><value>Mystic Light SDK</value></data>
+  <data name="About_MysticLightSdkDesc" xml:space="preserve"><value>PadForge에 포함된 MSI 라이브러리로, Mystic Light 실행 중에 MSI 장치를 밝힙니다. MSI 다운로드에는 조건이 명시되어 있지 않습니다.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>앱 내 업데이터 도우미를 뒷받침하는 상승된 업데이트 동사 패턴. LGPL-3.0, 문서로만 참고했으며 LGPL 코드는 포함하지 않습니다.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

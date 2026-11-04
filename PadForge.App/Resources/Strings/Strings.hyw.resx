@@ -4168,7 +4168,6 @@
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con եւ Pro Controller HID, HD թրթռում եւ Home կոճակի LED-ի նշումներ, հեղինակ՝ dekuNukem, ndeadly-ի switch2_controller_research-ով Switch 2-ի համար։ Կարդացուած միայն արձանագրութեան փաստերու համար։</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense եւ DualShock 4 լուսաշերտի ելքի զեկոյցի բայթերու գործածութիւն, եւ Logitech HID++ 0x8070 լուսաւորման շրջանակները ու հաւաքածուներու դասաւորութիւնը։ GPL-2.0-or-later, կարդացուած միայն որպէս փաստաթղթաւորում, GPL կոդ չի ներառուիր։</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Վարչական թարմացման հրամանի կաղապարը, որուն վրայ հիմնուած է ներծրագրային թարմացուցիչին օգնականը։ LGPL-3.0, կարդացուած միայն որպէս փաստաթղթաւորում, LGPL կոդ չի ներառուիր։</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

@@ -4203,7 +4203,6 @@
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>dekuNukem દ્વારા Joy-Con અને Pro Controller HID, HD રમ્બલ અને હોમ LED નોંધો, અને Switch 2 માટે ndeadly ના switch2_controller_research સાથે. માત્ર પ્રોટોકોલ તથ્યો માટે વાંચ્યું.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense અને DualShock 4 લાઇટબાર આઉટપુટ-રિપોર્ટ બાઇટ ઉપયોગ, અને Logitech HID++ 0x8070 લાઇટિંગ ફ્રેમ અને કલેક્શન લેઆઉટ. GPL-2.0-or-later, માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>ઇન-ઍપ અપડેટરના હેલ્પર પાછળની એલિવેટેડ અપડેટ-વર્બ પેટર્ન. LGPL-3.0, માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ LGPL કોડ આવતો નથી.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

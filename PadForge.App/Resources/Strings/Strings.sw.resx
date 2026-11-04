@@ -4151,7 +4151,6 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Maelezo ya HID ya Joy-Con na Pro Controller, mtetemo wa HD, na LED ya nyumbani, na dekuNukem, pamoja na switch2_controller_research ya ndeadly kwa Switch 2. Imesomwa kwa ukweli wa itifaki pekee.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>Matumizi ya baiti za ripoti ya matokeo ya lightbar ya DualSense na DualShock 4, na fremu za taa za Logitech HID++ 0x8070 na mpangilio wa mkusanyiko. GPL-2.0-or-later, imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Mchoro wa kitenzi cha sasisho chenye ruhusa ya juu nyuma ya msaidizi wa kisasishaji ndani ya programu. LGPL-3.0, imesomwa kama nyaraka pekee, hakuna msimbo wa LGPL unaosafirishwa.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

@@ -4176,7 +4176,6 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>የJoy-Con እና Pro Controller HID፣ HD ንዝረት እና የመነሻ LED ማስታወሻዎች፣ በdekuNukem፣ ለSwitch 2 ደግሞ የndeadly switch2_controller_research። ለፕሮቶኮል እውነታዎች ብቻ ተነቧል።</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>የDualSense እና DualShock 4 የብርሃን አሞሌ ውጤት-ሪፖርት ባይት አጠቃቀም፣ እና የLogitech HID++ 0x8070 የመብራት ፍሬሞች እና የስብስብ አቀማመጥ። GPL-2.0-or-later፣ እንደ ሰነድ ብቻ ተነቧል፣ ምንም የGPL ኮድ አይካተትም።</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>ከመተግበሪያው ውስጥ ማዘመኛ ረዳት በስተጀርባ ያለው ከፍ ያለ ፈቃድ ያለው የማዘመኛ-ግስ ንድፍ። LGPL-3.0፣ እንደ ሰነድ ብቻ ተነቧል፣ ምንም የLGPL ኮድ አይካተትም።</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

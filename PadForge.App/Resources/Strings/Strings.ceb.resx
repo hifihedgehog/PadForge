@@ -3167,7 +3167,6 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Mga nota sa HID, HD rumble, ug home LED sa Joy-Con ug Pro Controller, ni dekuNukem, uban ang switch2_controller_research ni ndeadly para sa Switch 2. Gibasa para sa mga kamatuoran sa protocol lamang.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>Paggamit sa byte sa output report sa lightbar sa DualSense ug DualShock 4, ug ang mga lighting frame sa Logitech HID++ 0x8070 ug layout sa collection. GPL-2.0-or-later, gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Ang elevated update-verb pattern luyo sa helper sa in-app updater. LGPL-3.0, gibasa isip dokumentasyon lang, walay LGPL code nga gilakip.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

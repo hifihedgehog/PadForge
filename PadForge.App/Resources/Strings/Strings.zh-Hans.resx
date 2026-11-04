@@ -4315,7 +4315,13 @@
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con 和 Pro 手柄的 HID、HD 振动与 HOME 键 LED 笔记，由 dekuNukem 整理。Switch 2 部分参考 ndeadly 的 switch2_controller_research。仅用于协议事实参考。</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense 与 DualShock 4 灯条输出报告的字节用法，以及 Logitech HID++ 0x8070 灯光帧与集合布局。GPL-2.0-or-later，仅作文档参考，不随附任何 GPL 代码。</value></data>
+  <data name="About_OpenRgbDesc" xml:space="preserve"><value>PadForge 直接驱动的灯光系列的检测规则、报告帧、LED 表和按键布局，由 OpenRGB 移植和生成，以及 DualSense 和 DualShock 4 灯条字节。 GPL-2.0-or-later.</value></data>
+  <data name="About_LightingRefs" xml:space="preserve"><value>灯光参考资料</value></data>
+  <data name="About_LightingRefsDesc" xml:space="preserve"><value>直接灯光系列的报告帧、按键名称和程序名称，读取自： SignalRGB plugins (facts only), uchroma (LGPL-3.0), Polychromatic (GPL-3.0), ckb-next (GPL-2.0), libcmmk (LGPL-3.0), Eruption (GPL-3.0-or-later), roccat-vulcan-api-rs, cherryrgb-rs, node-lib (MIT), wooting-rgb-sdk, asusctl (MPL-2.0), g-helper, Lenovo Legion Toolkit, L5P-Keyboard-RGB, OmenMon, Kaleidoscope, Bazecor, mouse_m908 (GPL-3.0), legion-spectrum-control, alienfx-tools, msi-perkeyrgb, Aurora, Colore, cooler_master_sdk (MIT), RGB.NET (LGPL-2.1), mystic-light-sdk (Apache-2.0), python-elgato-streamdeck, stb_image_write, hidapi (BSD-3-Clause).</value></data>
+  <data name="About_IcueSdk" xml:space="preserve"><value>iCUE SDK</value></data>
+  <data name="About_IcueSdkDesc" xml:space="preserve"><value>Corsair 的库，随 PadForge 提供，在 iCUE 运行时点亮 Corsair 设备。适用 Corsair 的 SDK 条款。</value></data>
+  <data name="About_MysticLightSdk" xml:space="preserve"><value>Mystic Light SDK</value></data>
+  <data name="About_MysticLightSdkDesc" xml:space="preserve"><value>MSI 的库，随 PadForge 提供，在 Mystic Light 运行时点亮 MSI 设备。MSI 的下载内容未列出任何条款。</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>应用内更新程序辅助进程背后的提权更新动词模式。LGPL-3.0，仅作文档参考，不随附任何 LGPL 代码。</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

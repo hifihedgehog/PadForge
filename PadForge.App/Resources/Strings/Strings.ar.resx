@@ -4214,7 +4214,6 @@
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>ملاحظات HID واهتزاز HD ومصباح LED لزر Home في Joy-Con وPro Controller، من إعداد dekuNukem، مع switch2_controller_research من ndeadly لجهاز Switch 2. تمت قراءته لمعرفة حقائق البروتوكول فقط.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>استخدام بايتات تقرير الإخراج لشريط الإضاءة في DualSense وDualShock 4، وإطارات الإضاءة 0x8070 في Logitech HID++ وتخطيط المجموعات. GPL-2.0-or-later، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>نمط فعل التحديث بصلاحيات مرتفعة الذي يقف وراء مساعد أداة التحديث داخل التطبيق. LGPL-3.0، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة LGPL.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

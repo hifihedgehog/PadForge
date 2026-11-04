@@ -4196,7 +4196,6 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Nodiadau HID, dirgryniad HD, a LED cartref Joy-Con a Pro Controller, gan dekuNukem, gyda switch2_controller_research ndeadly ar gyfer y Switch 2. Darllenwyd am ffeithiau protocol yn unig.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>Defnydd beit adroddiad allbwn bar golau DualSense a DualShock 4, a fframiau goleuo a chynllun casgliad Logitech HID++ 0x8070. GPL-2.0-or-later, wedi'i ddarllen fel dogfennaeth yn unig, ni ddosberthir cod GPL.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Y patrwm berf diweddaru drychiedig y tu ôl i gynorthwywr y diweddarwr yn yr ap. LGPL-3.0, wedi'i ddarllen fel dogfennaeth yn unig, ni ddosberthir cod LGPL.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

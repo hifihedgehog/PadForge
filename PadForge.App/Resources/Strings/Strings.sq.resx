@@ -4159,7 +4159,6 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Shënime për Joy-Con dhe Pro Controller HID, dridhjen HD dhe LED-in home, nga dekuNukem, me switch2_controller_research të ndeadly për Switch 2. Lexuar vetëm për fakte protokolli.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>Përdorimi i baytave në raportin e daljes së shiritit të dritës së DualSense dhe DualShock 4, dhe kornizat e ndriçimit Logitech HID++ 0x8070 dhe struktura e koleksionit. GPL-2.0-or-later, lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Modeli i foljes së përditësimit me privilegje pas ndihmësit të përditësuesit brenda aplikacionit. LGPL-3.0, lexuar vetëm si dokumentim, nuk përfshihet kod LGPL.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

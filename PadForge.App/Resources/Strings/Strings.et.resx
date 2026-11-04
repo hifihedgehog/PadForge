@@ -4211,7 +4211,6 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Märkmed Joy-Con- ja Pro Controlleri HID, HD-vibratsiooni ja Home-LED-i kohta, autor dekuNukem, koos ndeadly projektiga switch2_controller_research Switch 2 jaoks. Kasutatud ainult protokolli faktide jaoks.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense'i ja DualShock 4 valgusriba väljundaruande baitide kasutus ning Logitechi HID++ 0x8070 valgustuskaadrid ja kollektsiooni paigutus. GPL-2.0-or-later, kasutatud ainult dokumentatsioonina, GPL-koodi ei levitata.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Kõrgendatud õigustega uuendusverbi muster, millele tugineb rakendusesisese uuendaja abiprogramm. LGPL-3.0, kasutatud ainult dokumentatsioonina, LGPL-koodi ei levitata.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

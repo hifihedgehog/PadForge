@@ -4144,7 +4144,6 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Noti dwar l-HID, l-HD rumble u l-LED tad-dar tal-Joy-Con u tal-Pro Controller, minn dekuNukem, bi switch2_controller_research ta' ndeadly għall-Switch 2. Moqri biss għall-fatti tal-protokoll.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>L-użu tal-bytes tar-reports tal-output tal-lightbar tad-DualSense u tad-DualShock 4, u l-frames tad-dawl Logitech HID++ 0x8070 u t-tqassim tal-collections. GPL-2.0-or-later, moqri biss bħala dokumentazzjoni, l-ebda kodiċi GPL ma jiġi inkluż.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Il-pattern tal-verb tal-aġġornament elevat wara l-helper tal-aġġornatur fl-app. LGPL-3.0, moqri biss bħala dokumentazzjoni, l-ebda kodiċi LGPL ma jiġi inkluż.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

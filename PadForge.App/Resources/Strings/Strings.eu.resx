@@ -4205,7 +4205,6 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con eta Pro Controller-en HID, HD bibrazio eta hasierako LED oharrak, egilea: dekuNukem, eta ndeadly-ren switch2_controller_research Switch 2rako. Protokolo-datuengatik soilik irakurria.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense eta DualShock 4-ren argi-barraren irteera-txostenen byte-erabilera, eta Logitech HID++ 0x8070 argiztapen-markoak eta kolekzioen antolaketa. GPL-2.0-or-later, dokumentazio gisa soilik irakurria, ez da GPL koderik banatzen.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Aplikazioko eguneratzailearen laguntzailearen atzean dagoen pribilegio altuko eguneratze-aginduaren patroia. LGPL-3.0, dokumentazio gisa soilik irakurria, ez da LGPL koderik banatzen.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

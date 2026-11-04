@@ -4178,7 +4178,6 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>dekuNukem-ന്റെ Joy-Con, Pro Controller HID, HD റംബിൾ, ഹോം LED കുറിപ്പുകൾ, Switch 2-നായി ndeadly-യുടെ switch2_controller_research സഹിതം. പ്രോട്ടോക്കോൾ വസ്തുതകൾക്കായി മാത്രം വായിച്ചത്.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense, DualShock 4 ലൈറ്റ്ബാർ ഔട്ട്പുട്ട്-റിപ്പോർട്ട് ബൈറ്റ് ഉപയോഗവും, Logitech HID++ 0x8070 ലൈറ്റിംഗ് ഫ്രെയിമുകളും കളക്ഷൻ ലേഔട്ടും. GPL-2.0-or-later, ഡോക്യുമെന്റേഷനായി മാത്രം വായിച്ചത്, GPL കോഡ് ഒന്നും ഉൾപ്പെടുത്തുന്നില്ല.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>ആപ്പിനുള്ളിലെ അപ്ഡേറ്ററിന്റെ ഹെൽപ്പറിന് പിന്നിലെ എലവേറ്റഡ് അപ്ഡേറ്റ്-വെർബ് മാതൃക. LGPL-3.0, ഡോക്യുമെന്റേഷനായി മാത്രം വായിച്ചത്, LGPL കോഡ് ഒന്നും ഉൾപ്പെടുത്തുന്നില്ല.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

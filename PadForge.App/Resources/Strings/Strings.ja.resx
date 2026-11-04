@@ -4315,7 +4315,13 @@
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con と Pro コントローラーの HID、HD 振動、HOME ボタン LED に関するノート。dekuNukem 製。Switch 2 については ndeadly の switch2_controller_research。プロトコルの事実確認のためにのみ参照。</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense と DualShock 4 のライトバー出力レポートのバイト用途と、Logitech HID++ 0x8070 のライティングフレームとコレクション構成。GPL-2.0-or-later、ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
+  <data name="About_OpenRgbDesc" xml:space="preserve"><value>PadForge が直接駆動するライティングファミリーの検出ルール、レポートフレーム、LED テーブル、キーレイアウト（OpenRGB から移植および生成）と、DualSense と DualShock 4 のライトバーのバイト。 GPL-2.0-or-later.</value></data>
+  <data name="About_LightingRefs" xml:space="preserve"><value>ライティングの参考資料</value></data>
+  <data name="About_LightingRefsDesc" xml:space="preserve"><value>ダイレクトライティングファミリーのレポートフレーム、キー名、プログラム名の参照元: SignalRGB plugins (facts only), uchroma (LGPL-3.0), Polychromatic (GPL-3.0), ckb-next (GPL-2.0), libcmmk (LGPL-3.0), Eruption (GPL-3.0-or-later), roccat-vulcan-api-rs, cherryrgb-rs, node-lib (MIT), wooting-rgb-sdk, asusctl (MPL-2.0), g-helper, Lenovo Legion Toolkit, L5P-Keyboard-RGB, OmenMon, Kaleidoscope, Bazecor, mouse_m908 (GPL-3.0), legion-spectrum-control, alienfx-tools, msi-perkeyrgb, Aurora, Colore, cooler_master_sdk (MIT), RGB.NET (LGPL-2.1), mystic-light-sdk (Apache-2.0), python-elgato-streamdeck, stb_image_write, hidapi (BSD-3-Clause).</value></data>
+  <data name="About_IcueSdk" xml:space="preserve"><value>iCUE SDK</value></data>
+  <data name="About_IcueSdkDesc" xml:space="preserve"><value>PadForge に同梱される Corsair のライブラリで、iCUE の実行中に Corsair デバイスを点灯します。Corsair の SDK 条件が適用されます。</value></data>
+  <data name="About_MysticLightSdk" xml:space="preserve"><value>Mystic Light SDK</value></data>
+  <data name="About_MysticLightSdkDesc" xml:space="preserve"><value>PadForge に同梱される MSI のライブラリで、Mystic Light の実行中に MSI デバイスを点灯します。MSI のダウンロードには条件の記載がありません。</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>アプリ内アップデーターのヘルパーを支える、昇格した update 動詞のパターン。LGPL-3.0、ドキュメントとしてのみ参照、LGPL コードは同梱しません。</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

@@ -4364,7 +4364,13 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Noter om HID, HD-vibration og Home-LED i Joy-Con og Pro Controller, af dekuNukem, med switch2_controller_research af ndeadly til Switch 2. Kun læst for protokolfakta.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>Bytebrugen i output-reports til lysbjælken på DualSense og DualShock 4 samt belysningsrammerne for Logitech HID++ 0x8070 og samlingslayoutet. GPL-2.0-or-later, kun læst som dokumentation, ingen GPL-kode følger med.</value></data>
+  <data name="About_OpenRgbDesc" xml:space="preserve"><value>Registreringsregler, rapportrammer, LED-tabeller og tastelayout til de lysfamilier, PadForge styrer direkte, overført og genereret fra OpenRGB, samt lysbjælkebytes til DualSense og DualShock 4. GPL-2.0-or-later.</value></data>
+  <data name="About_LightingRefs" xml:space="preserve"><value>Kilder til lys</value></data>
+  <data name="About_LightingRefsDesc" xml:space="preserve"><value>Rapportrammer, tastenavne og programnavne til de direkte lysfamilier, læst fra: SignalRGB plugins (facts only), uchroma (LGPL-3.0), Polychromatic (GPL-3.0), ckb-next (GPL-2.0), libcmmk (LGPL-3.0), Eruption (GPL-3.0-or-later), roccat-vulcan-api-rs, cherryrgb-rs, node-lib (MIT), wooting-rgb-sdk, asusctl (MPL-2.0), g-helper, Lenovo Legion Toolkit, L5P-Keyboard-RGB, OmenMon, Kaleidoscope, Bazecor, mouse_m908 (GPL-3.0), legion-spectrum-control, alienfx-tools, msi-perkeyrgb, Aurora, Colore, cooler_master_sdk (MIT), RGB.NET (LGPL-2.1), mystic-light-sdk (Apache-2.0), python-elgato-streamdeck, stb_image_write, hidapi (BSD-3-Clause).</value></data>
+  <data name="About_IcueSdk" xml:space="preserve"><value>iCUE SDK</value></data>
+  <data name="About_IcueSdkDesc" xml:space="preserve"><value>Corsairs bibliotek, som følger med i PadForge og lyser Corsair-enheder, mens iCUE kører. Corsairs SDK-vilkår gælder.</value></data>
+  <data name="About_MysticLightSdk" xml:space="preserve"><value>Mystic Light SDK</value></data>
+  <data name="About_MysticLightSdkDesc" xml:space="preserve"><value>MSI's bibliotek, som følger med i PadForge og lyser MSI-enheder, mens Mystic Light kører. MSI's download nævner ingen vilkår.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Mønsteret for forhøjede opdateringsverber bag hjælpeprogrammet til opdatering i programmet. LGPL-3.0, kun læst som dokumentation, ingen LGPL-kode følger med.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

@@ -4213,7 +4213,6 @@ Pretende que o PadForge os desinstale agora? Esta operação requer elevação e
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Notas sobre o HID, a vibração HD e o LED Home dos Joy-Con e do Comando Pro, de dekuNukem, com o switch2_controller_research de ndeadly para a Switch 2. Lidas apenas para obter factos do protocolo.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>Utilização dos bytes do relatório de saída da barra de luz do DualSense e do DualShock 4, e as tramas de iluminação HID++ 0x8070 da Logitech e a estrutura das coleções. GPL-2.0-or-later, lido apenas como documentação, nenhum código GPL é distribuído.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>O padrão do verbo de atualização elevado por trás do auxiliar do atualizador integrado na aplicação. LGPL-3.0, lido apenas como documentação, nenhum código LGPL é distribuído.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

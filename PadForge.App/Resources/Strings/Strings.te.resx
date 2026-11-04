@@ -4364,7 +4364,13 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con మరియు Pro Controller HID, HD రంబుల్ మరియు హోమ్ LED గమనికలు, dekuNukem ద్వారా, Switch 2 కోసం ndeadly యొక్క switch2_controller_research తో. ప్రోటోకాల్ వాస్తవాల కోసం మాత్రమే చదవబడింది.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense మరియు DualShock 4 లైట్ బార్ అవుట్పుట్-రిపోర్ట్ బైట్ వినియోగం, మరియు Logitech HID++ 0x8070 లైటింగ్ ఫ్రేమ్లు మరియు కలెక్షన్ లేఅవుట్. GPL-2.0-or-later, డాక్యుమెంటేషన్గా మాత్రమే చదవబడింది, GPL కోడ్ ఏదీ పంపిణీ చేయబడదు.</value></data>
+  <data name="About_OpenRgbDesc" xml:space="preserve"><value>PadForge నేరుగా నడిపే లైటింగ్ కుటుంబాల గుర్తింపు నియమాలు, రిపోర్ట్ ఫ్రేమ్‌లు, LED పట్టికలు మరియు కీ అమరికలు, OpenRGB నుండి పోర్ట్ చేసి రూపొందించినవి, అలాగే DualSense మరియు DualShock 4 లైట్‌బార్ బైట్‌లు. GPL-2.0-or-later.</value></data>
+  <data name="About_LightingRefs" xml:space="preserve"><value>లైటింగ్ సూచనలు</value></data>
+  <data name="About_LightingRefsDesc" xml:space="preserve"><value>ప్రత్యక్ష లైటింగ్ కుటుంబాల రిపోర్ట్ ఫ్రేమ్‌లు, కీ పేర్లు మరియు ప్రోగ్రామ్ పేర్లు, వీటి నుండి చదివినవి: SignalRGB plugins (facts only), uchroma (LGPL-3.0), Polychromatic (GPL-3.0), ckb-next (GPL-2.0), libcmmk (LGPL-3.0), Eruption (GPL-3.0-or-later), roccat-vulcan-api-rs, cherryrgb-rs, node-lib (MIT), wooting-rgb-sdk, asusctl (MPL-2.0), g-helper, Lenovo Legion Toolkit, L5P-Keyboard-RGB, OmenMon, Kaleidoscope, Bazecor, mouse_m908 (GPL-3.0), legion-spectrum-control, alienfx-tools, msi-perkeyrgb, Aurora, Colore, cooler_master_sdk (MIT), RGB.NET (LGPL-2.1), mystic-light-sdk (Apache-2.0), python-elgato-streamdeck, stb_image_write, hidapi (BSD-3-Clause).</value></data>
+  <data name="About_IcueSdk" xml:space="preserve"><value>iCUE SDK</value></data>
+  <data name="About_IcueSdkDesc" xml:space="preserve"><value>PadForge లోపల వచ్చే Corsair లైబ్రరీ, iCUE నడుస్తున్నప్పుడు Corsair పరికరాలను వెలిగిస్తుంది. Corsair SDK నిబంధనలు వర్తిస్తాయి.</value></data>
+  <data name="About_MysticLightSdk" xml:space="preserve"><value>Mystic Light SDK</value></data>
+  <data name="About_MysticLightSdkDesc" xml:space="preserve"><value>PadForge లోపల వచ్చే MSI లైబ్రరీ, Mystic Light నడుస్తున్నప్పుడు MSI పరికరాలను వెలిగిస్తుంది. MSI డౌన్‌లోడ్ ఏ నిబంధనలనూ పేర్కొనదు.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>యాప్లోని అప్డేటర్ హెల్పర్ వెనుక ఉన్న ఎలివేటెడ్ అప్డేట్-వెర్బ్ నమూనా. LGPL-3.0, డాక్యుమెంటేషన్గా మాత్రమే చదవబడింది, LGPL కోడ్ ఏదీ పంపిణీ చేయబడదు.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

@@ -4199,7 +4199,6 @@
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>تێبینییەکانی HID، لەرزینی HD و LED ی دوگمەی Home ی Joy-Con و Pro Controller، لەلایەن dekuNukem، لەگەڵ switch2_controller_research ی ndeadly بۆ Switch 2. تەنها بۆ ڕاستییەکانی پرۆتۆکۆل خوێندراوەتەوە.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>بەکارهێنانی بایتی ڕاپۆرتی دەرچووی شریتی ڕووناکی DualSense و DualShock 4، و چوارچێوەکانی ڕووناککردنەوەی HID++ 0x8070 ی Logitech و ڕیزبەندیی کۆکراوەکان. GPL-2.0-or-later، تەنها وەک بەڵگەنامە خوێندراوەتەوە، هیچ کۆدێکی GPL لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>شێوازی کرداری نوێکردنەوەی بەرزکراو لە پشت یاریدەدەری نوێکەرەوەی ناو بەرنامە. LGPL-3.0، تەنها وەک بەڵگەنامە خوێندراوەتەوە، هیچ کۆدێکی LGPL لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

@@ -4193,7 +4193,6 @@
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>ບັນທຶກ HID, ການສັ່ນ HD ແລະ LED ປຸ່ມ Home ຂອງ Joy-Con ແລະ Pro Controller ໂດຍ dekuNukem ພ້ອມ switch2_controller_research ຂອງ ndeadly ສຳລັບ Switch 2 ອ່ານເພື່ອເອົາຂໍ້ເທັດຈິງໂປຣໂຕຄອນເທົ່ານັ້ນ</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>ການໃຊ້ໄບຕ໌ໃນລາຍງານສົ່ງອອກແຖບໄຟຂອງ DualSense ແລະ DualShock 4 ແລະ ເຟຣມແສງໄຟ Logitech HID++ 0x8070 ແລະ ໂຄງສ້າງ collection GPL-2.0-or-later, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>ຮູບແບບ update-verb ແບບສິດສູງທີ່ຢູ່ເບື້ອງຫຼັງຕົວຊ່ວຍຂອງຕົວອັບເດດໃນແອັບ LGPL-3.0, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ LGPL ຖືກລວມມາ</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

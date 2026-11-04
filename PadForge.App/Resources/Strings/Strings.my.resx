@@ -4203,7 +4203,6 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con နှင့် Pro Controller HID၊ HD တုန်ခါမှုနှင့် home LED မှတ်စုများ၊ ရေးသားသူ dekuNukem၊ Switch 2 အတွက် ndeadly ၏ switch2_controller_research နှင့်အတူ။ ပရိုတိုကော အချက်အလက်များအတွက်သာ ဖတ်ရှုထားသည်။</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>DualSense နှင့် DualShock 4 အလင်းတန်း output-report ဘိုက်အသုံးပြုပုံနှင့် Logitech HID++ 0x8070 မီးအလင်း frame များနှင့် collection အပြင်အဆင်။ GPL-2.0-or-later၊ စာရွက်စာတမ်းအဖြစ်သာ ဖတ်ရှုထားပြီး GPL ကုဒ် မပါဝင်ပါ။</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>အက်ပ်အတွင်း updater ၏ helper နောက်ကွယ်ရှိ elevated update-verb ပုံစံ။ LGPL-3.0၊ စာရွက်စာတမ်းအဖြစ်သာ ဖတ်ရှုထားပြီး LGPL ကုဒ် မပါဝင်ပါ။</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>

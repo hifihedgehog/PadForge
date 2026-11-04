@@ -4127,6 +4127,12 @@ public class Strings : INotifyPropertyChanged
     public string About_SwitchResearchDesc => Get("About_SwitchResearchDesc");
     public string About_OpenRgb => Get("About_OpenRgb");
     public string About_OpenRgbDesc => Get("About_OpenRgbDesc");
+    public string About_LightingRefs => Get("About_LightingRefs");
+    public string About_LightingRefsDesc => Get("About_LightingRefsDesc");
+    public string About_IcueSdk => Get("About_IcueSdk");
+    public string About_IcueSdkDesc => Get("About_IcueSdkDesc");
+    public string About_MysticLightSdk => Get("About_MysticLightSdk");
+    public string About_MysticLightSdkDesc => Get("About_MysticLightSdkDesc");
     public string About_OpenTabletDriver => Get("About_OpenTabletDriver");
     public string About_OpenTabletDriverDesc => Get("About_OpenTabletDriverDesc");
     public string About_PcscSharp => Get("About_PcscSharp");

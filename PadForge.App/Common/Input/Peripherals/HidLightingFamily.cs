@@ -374,6 +374,7 @@ namespace PadForge.Common.Input.Peripherals
             PatriotViperMouseLighting.Instance,
             TecknetLighting.Instance,
             GameSirLighting.Instance,
+            TurtleBeachKP7Lighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

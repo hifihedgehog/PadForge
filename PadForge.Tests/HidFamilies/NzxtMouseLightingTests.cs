@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using PadForge.Common.Input;
 using PadForge.Common.Input.Peripherals;
 using PadForge.Common.Input.Peripherals.HidFamilies;
 using Xunit;
@@ -63,6 +64,37 @@ namespace PadForge.Tests
             var broken = new FakeReportChannel { OutputReportLength = 64, InputReportLength = 64, FailWrites = true };
             Assert.Null(model.Begin(broken, _ => { }));
             Assert.Empty(broken.Calls);
+            // A read that fails ends the ask at once.
+            var unreadable = new UnreadableChannel();
+            Assert.Null(model.Begin(unreadable, _ => { }));
+            Assert.Equal((1, 1), (unreadable.Writes, unreadable.Reads));
+        }
+
+        /// <summary>A channel whose writes go out and whose reads fail.</summary>
+        private sealed class UnreadableChannel : IHidReportChannel
+        {
+            public int Writes, Reads;
+            public string Path => @"\\?\hid#vid_1e71&pid_2100&mi_00#unreadable";
+            public bool FeatureOnly => false;
+            public int InputReportLength => 64;
+            public int OutputReportLength => 64;
+            public int FeatureReportLength => 0;
+            public bool SetFeature(byte[] report) => false;
+            public bool GetFeature(byte reportId, byte[] buffer) => false;
+
+            public bool WriteOutput(byte[] report, int timeoutMs = HidReportChannel.WriteTimeoutMs)
+            {
+                Writes++;
+                return true;
+            }
+
+            public int ReadInput(byte[] buffer, int timeoutMs)
+            {
+                Reads++;
+                return -1;
+            }
+
+            public void Dispose() { }
         }
     }
 }

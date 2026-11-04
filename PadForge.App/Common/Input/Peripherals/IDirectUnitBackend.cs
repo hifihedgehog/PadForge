@@ -192,6 +192,13 @@ namespace PadForge.Common.Input.Peripherals
         /// has.</summary>
         public bool Scanned { get; }
 
+        /// <summary>The program the backend speaks to runs and has not said
+        /// which devices it holds: OpenRGB with its SDK server off or not
+        /// answering (#557, <see cref="OpenRgbBackend"/>). Every device it
+        /// may drive is then left to it
+        /// (<see cref="LinkInputs.OpenRgbUnanswered"/>).</summary>
+        public bool ProgramUnanswered { get; init; }
+
         public DirectBackendSnapshot(IReadOnlyList<DirectUnit> units, bool scanned = true)
         {
             Units = units ?? Array.Empty<DirectUnit>();

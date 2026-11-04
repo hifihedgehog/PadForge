@@ -108,6 +108,12 @@ namespace PadForge.Common.Input.Peripherals
             return string.IsNullOrWhiteSpace(name) ? ud.ResolvedName : name;
         }
 
+        /// <summary>OpenRGB's server by the name OpenRGB gives it: its tab
+        /// "SDK Server" (qt/OpenRGBDialog/OpenRGBDialog.cpp:967) and its Linux
+        /// service "OpenRGB SDK Server" (qt/openrgb.service:2). No locale
+        /// translates it.</summary>
+        internal const string OpenRgbServerName = "OpenRGB SDK Server";
+
         /// <summary>The vendor software a shared lighting path runs through,
         /// by its product name, which no locale translates.</summary>
         internal static string LightingApp(OutputFamily family) => family switch
@@ -164,6 +170,12 @@ namespace PadForge.Common.Input.Peripherals
             // the program, which holds only for a program with an SDK route
             // of PadForge's own, until the line of its own lands with the
             // next translation pass (#557).
+            // OpenRGB runs and its SDK server has not said which devices it
+            // holds (#557): the device waits for the server. Until the line
+            // of its own lands with the next translation pass, the waiting
+            // line names the server as OpenRGB's own window does.
+            if (links is { WaitsForOpenRgbServer: true })
+                return lightsHere ? string.Format(s.Pad_Lighting_RouteWaiting, OpenRgbServerName) : null;
             if (links?.LeftToProgram is string program)
                 return lightsHere ? string.Format(s.Pad_Lighting_RouteThroughOrDirect, program) : null;
             if (links == null || links.Lighting.Length == 0)

@@ -1940,6 +1940,104 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>A unit whose write failed is owed its hand-back, and the
+        /// stopping worker pays it through a write of its own. Not where
+        /// the linker closed the unit's path because OpenRGB holds the
+        /// device (#557): the hand-back would land on OpenRGB's lighting.
+        /// The same stop with no mark pays it.</summary>
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void AHandBackOwedAtStop_IsNotPaid_WhereOpenRgbTookThePath(bool taken)
+        {
+            var written = new System.Collections.Concurrent.ConcurrentQueue<(string Path, byte[] Frame)>();
+            var (backend, channel, _, path) = LitBench(reassertMs: int.MaxValue,
+                writeOnce: (p, f, t) => { written.Enqueue((p, f)); return true; });
+            using (backend)
+            {
+                var device = Guid.NewGuid();
+                byte[] red = HidppUnitProtocol.SetStaticColor(1, 0x0E, new HidppZone(0, 1), 0xFF, 0x00, 0x00);
+                byte[] handBack = HidppUnitProtocol.SetSwControl(1, 0x0E, claim: false);
+                PeripheralOutputs.PublishLinks(new LinkTable(new[] { new DeviceLinks { Device = device, Lighting = new[] { path } } }));
+                PeripheralOutputs.SetLighting(device, slot: 0, player: 1, 0xFF, 0x00, 0x00);
+                Assert.True(SpinWait.SpinUntil(() => channel.Writes.Any(w => w.Frame.SequenceEqual(red)), 30000), "lit");
+
+                // The next write fails, and the unit is owed its hand-back.
+                channel.FailWrites = true;
+                PeripheralOutputs.SetLighting(device, slot: 0, player: 1, 0x00, 0x00, 0xFF);
+                var record = typeof(HidppBackend).GetField("_owed",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                Assert.True(SpinWait.SpinUntil(() => ((System.Collections.ICollection)record.GetValue(backend)).Count > 0, 30000),
+                    "the hand-back is owed");
+
+                PeripheralOutputs.PublishLinks(new LinkTable(new[]
+                {
+                    new DeviceLinks
+                    {
+                        Device = device,
+                        Lighting = new[] { new OutputPath(OutputFamily.OpenRgbDevice, "openrgb") },
+                        TakenByOpenRgb = taken ? new[] { path } : Array.Empty<OutputPath>(),
+                    },
+                }));
+                backend.Stop();
+                Assert.Equal(taken ? 0 : 1, written.Count(w => w.Frame.SequenceEqual(handBack)));
+            }
+        }
+
+        /// <summary>The crash path, with the worker held inside a write so it
+        /// cannot hand back first, sends nothing through its own writer to
+        /// a unit whose path OpenRGB took (#557), and sends the hand-back
+        /// where nothing took it.</summary>
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void TheCrashPath_SendsNothingToAUnitOpenRgbTook(bool taken)
+        {
+            var written = new System.Collections.Concurrent.ConcurrentQueue<(string Path, byte[] Frame)>();
+            var (backend, channel, _, path) = LitBench(reassertMs: int.MaxValue,
+                writeOnce: (p, f, t) => { written.Enqueue((p, f)); return true; });
+            using var gate = new ManualResetEventSlim(false);
+            using var held = new ManualResetEventSlim(false);
+            using (backend)
+            {
+                var device = Guid.NewGuid();
+                byte[] red = HidppUnitProtocol.SetStaticColor(1, 0x0E, new HidppZone(0, 1), 0xFF, 0x00, 0x00);
+                byte[] handBack = HidppUnitProtocol.SetSwControl(1, 0x0E, claim: false);
+                PeripheralOutputs.PublishLinks(new LinkTable(new[] { new DeviceLinks { Device = device, Lighting = new[] { path } } }));
+                PeripheralOutputs.SetLighting(device, slot: 0, player: 1, 0xFF, 0x00, 0x00);
+                Assert.True(SpinWait.SpinUntil(() => channel.Writes.Any(w => w.Frame.SequenceEqual(red)), 30000), "lit");
+
+                // The worker's next write holds until the test lets it go.
+                channel.Writing = _ =>
+                {
+                    held.Set();
+                    gate.Wait(30000);
+                };
+                PeripheralOutputs.SetLighting(device, slot: 0, player: 1, 0x00, 0x00, 0xFF);
+                Assert.True(held.Wait(30000), "the worker is held");
+                // The table that took the path is in place while the worker
+                // is still held with its claim on record.
+                PeripheralOutputs.PublishLinks(new LinkTable(new[]
+                {
+                    new DeviceLinks
+                    {
+                        Device = device, Lighting = new[] { path },
+                        TakenByOpenRgb = taken ? new[] { path } : Array.Empty<OutputPath>(),
+                    },
+                }));
+                try
+                {
+                    backend.ReleaseClaimedNow();
+                    Assert.Equal(taken ? 0 : 1, written.Count(w => w.Frame.SequenceEqual(handBack)));
+                }
+                finally
+                {
+                    channel.Writing = null;
+                    gate.Set();
+                }
+            }
+        }
+
         /// <summary>The claim goes out again on its own interval while the
         /// color keeps changing, so an animated mode never holds back the
         /// re-claim a device that comes back from sleep needs. The color

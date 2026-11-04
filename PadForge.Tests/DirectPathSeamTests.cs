@@ -91,6 +91,14 @@ namespace PadForge.Tests
             SnapshotChanged?.Invoke();
         }
 
+        /// <summary>A program the backend speaks to runs and has not said
+        /// which devices it holds (#557), with what the backend found.</summary>
+        public void Unanswered(params DirectUnit[] units)
+        {
+            Volatile.Write(ref _snapshot, new DirectBackendSnapshot(units) { ProgramUnanswered = true });
+            SnapshotChanged?.Invoke();
+        }
+
         public void Start()
         {
             Journal.Enqueue("start " + _name);

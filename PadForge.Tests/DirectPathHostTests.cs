@@ -990,6 +990,37 @@ namespace PadForge.Tests
             Assert.Equal(4, journal.Count(e => e.StartsWith("stop ")));
         }
 
+        /// <summary>A backend whose program runs and has not said which
+        /// devices it holds, OpenRGB with its server off (#557): the pass
+        /// leaves every device it would light on its own to OpenRGB, and
+        /// names its paths taken. Once the backend says otherwise, the
+        /// device is lit again.</summary>
+        [Fact]
+        public void AnUnansweredOpenRgb_TakesEveryDevicesOwnPaths()
+        {
+            var razer = new FakeDirectBackend(OutputFamily.RazerUnit, "razer");
+            var openRgb = new FakeDirectBackend(OutputFamily.OpenRgbDevice, "openrgb");
+            using var host = Host(new IDirectUnitBackend[] { razer, openRgb });
+            var row = AddRow(PeripheralLinker.RazerVid, 0x0084, InputDeviceType.Mouse, BoxPath);
+            var unit = new DirectUnit(OutputFamily.RazerUnit, BoxPath, Box, PeripheralLinker.RazerVid, 0x0084);
+            host.Start();
+            razer.Found(unit);
+            openRgb.Unanswered();
+            Passes(host);
+            var links = PeripheralOutputs.Links.For(row.InstanceGuid);
+            Assert.Empty(links.Lighting);
+            Assert.True(links.WaitsForOpenRgbServer);
+            Assert.Equal(new[] { unit.Path }, links.TakenByOpenRgb);
+            Assert.True(PeripheralOutputs.TakenByOpenRgb(unit.Path));
+
+            openRgb.Found();
+            Passes(host);
+            links = PeripheralOutputs.Links.For(row.InstanceGuid);
+            Assert.Equal(new[] { unit.Path }, links.Lighting);
+            Assert.False(PeripheralOutputs.TakenByOpenRgb(unit.Path));
+            host.Stop();
+        }
+
         /// <summary>One family that cannot start keeps neither the others
         /// nor the link pass from running. It never scans, so a device row
         /// keeps what it had on record.</summary>

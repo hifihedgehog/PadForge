@@ -1157,13 +1157,18 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The stop path's share of what is owed: each unit's
         /// frames in their order through a write that opens its own handle,
         /// bounded, and a unit is left at its first failed write, as on the
-        /// crash path (<see cref="ReleaseClaimedNow"/>).</summary>
+        /// crash path (<see cref="ReleaseClaimedNow"/>). Not to a unit whose
+        /// path the linker closed because OpenRGB holds its device (#557,
+        /// <see cref="PeripheralOutputs.TakenByOpenRgb"/>): the hand-back
+        /// would land on OpenRGB's lighting, as on a running G HUB's.</summary>
         private void PayOwedNow()
         {
             foreach (var pair in _owed)
             {
-                foreach (var debt in pair.Value.Values)
+                foreach (var owed in pair.Value)
                 {
+                    if (TakenByOpenRgb(pair.Key, owed.Key)) continue;
+                    var debt = owed.Value;
                     foreach (var step in debt.HandBack)
                     {
                         bool written;
@@ -1272,6 +1277,8 @@ namespace PadForge.Common.Input.Peripherals
             try { _thread?.Join(PanicJoinMs); } catch { }
             foreach (var record in Interlocked.Exchange(ref _claimed, Array.Empty<ClaimRecord>()))
             {
+                // OpenRGB holds the device (#557): nothing goes to it.
+                if (TakenByOpenRgb(record.Path, record.DeviceIndex)) continue;
                 foreach (byte[] frame in record.HandBack)
                 {
                     bool written;
@@ -1281,6 +1288,15 @@ namespace PadForge.Common.Input.Peripherals
                 }
             }
         }
+
+        /// <summary>Whether the linker closed the lighting path of the unit at
+        /// <paramref name="deviceIndex"/> on the collection at
+        /// <paramref name="path"/> because OpenRGB holds its device. The
+        /// unit's key is the collection's path and its index
+        /// (<see cref="HidppUnit.Key"/>).</summary>
+        internal static bool TakenByOpenRgb(string path, byte deviceIndex)
+            => PeripheralOutputs.TakenByOpenRgb(new OutputPath(OutputFamily.HidppUnit,
+                path + "|" + deviceIndex.ToString("X2")));
 
         /// <summary>How long the crash path waits for the worker to stop and
         /// hand its devices back on its own channel.</summary>

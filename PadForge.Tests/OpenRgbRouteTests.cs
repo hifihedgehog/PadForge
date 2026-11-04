@@ -153,8 +153,8 @@ namespace PadForge.Tests
         }
 
         /// <summary>The server stopped answering while OpenRGB runs: the
-        /// row holds no path and keeps its record, and its own paths stay
-        /// taken.</summary>
+        /// row holds no path and keeps its record, its own paths stay
+        /// taken, and its tab names the server it waits for.</summary>
         [Fact]
         public void WhileOpenRgbsControllerSleeps_TheRowHoldsNoPath_AndItsPathsStayTaken()
         {
@@ -165,7 +165,8 @@ namespace PadForge.Tests
             var links = Link(row, inputs);
             Assert.NotNull(links);
             Assert.Empty(links.Lighting);
-            Assert.Null(links.LeftToProgram);
+            Assert.Equal("OpenRGB", links.LeftToProgram);
+            Assert.True(links.WaitsForOpenRgbServer);
             Assert.Equal(new[] { razer.Path }, links.TakenByOpenRgb);
             Assert.True(PeripheralLinker.StillLooking(row, inputs));
         }
@@ -255,7 +256,7 @@ namespace PadForge.Tests
     /// controller is handed back.
     /// </summary>
     [Collection("PeripheralOutputStatics")]
-    public class OpenRgbBackendTests : IDisposable
+    public partial class OpenRgbBackendTests : IDisposable
     {
         private static readonly Guid Box = new("33333333-4444-5555-6666-777777777777");
         private static readonly Guid Device = new("00000000-0000-0000-0000-0000000000d1");
@@ -263,6 +264,7 @@ namespace PadForge.Tests
         private readonly FakeOpenRgbServer _server = new();
         private readonly List<FakeOpenRgbLink> _links = new();
         private volatile bool _runs = true;
+        private volatile int _port = OpenRgbProtocol.DefaultPort;
 
         /// <summary>Set: the worker's next look at whether OpenRGB runs
         /// holds until it is reset, and <see cref="_held"/> says it is
@@ -303,7 +305,7 @@ namespace PadForge.Tests
         private IOpenRgbLink Connect(int port, int timeoutMs)
         {
             Interlocked.Increment(ref _connects);
-            Assert.Equal(OpenRgbProtocol.DefaultPort, port);
+            Assert.Equal(_port, port);
             Assert.Equal(OpenRgbBackend.ConnectTimeoutMs, timeoutMs);
             if (_server.Down) return null;
             var link = _server.Link();
@@ -313,7 +315,7 @@ namespace PadForge.Tests
 
         private OpenRgbBackend Started()
         {
-            var backend = new OpenRgbBackend(Connect, _ => Box, Tick, Runs, OpenRgbProtocol.DefaultPort,
+            var backend = new OpenRgbBackend(Connect, _ => Box, Tick, Runs, () => _port,
                 idleTickMs: 5, versionWaitMs: 50, replyWaitMs: 50);
             backend.Start();
             backend.Rescan(new[]
@@ -698,7 +700,7 @@ namespace PadForge.Tests
     /// <summary>The Lighting tab's line for a row lit through OpenRGB
     /// (#557).</summary>
     [Collection("PeripheralOutputStatics")]
-    public class OpenRgbRouteLineTests : IDisposable
+    public partial class OpenRgbRouteLineTests : IDisposable
     {
         private static readonly Guid A = new("00000000-0000-0000-0000-0000000000e1");
 

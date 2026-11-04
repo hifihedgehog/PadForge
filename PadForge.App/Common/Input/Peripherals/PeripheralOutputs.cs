@@ -172,6 +172,13 @@ namespace PadForge.Common.Input.Peripherals
         /// (<see cref="PeripheralOutputs.TakenByOpenRgb"/>).</summary>
         public OutputPath[] TakenByOpenRgb { get; init; } = Array.Empty<OutputPath>();
 
+        /// <summary>OpenRGB took the row's paths and lights it through none
+        /// of its own: its SDK server is off, has not answered yet, or
+        /// stopped answering while OpenRGB runs (#557). The row's tab names
+        /// the server it waits for, and <see cref="LeftToProgram"/> is
+        /// OpenRGB.</summary>
+        public bool WaitsForOpenRgbServer { get; init; }
+
         public PeripheralOutputKinds Kinds
             => (Lighting.Length > 0 || LeftToProgram != null ? PeripheralOutputKinds.Lighting : PeripheralOutputKinds.None)
              | (Haptics.Length > 0 ? PeripheralOutputKinds.Haptics : PeripheralOutputKinds.None)
@@ -245,6 +252,7 @@ namespace PadForge.Common.Input.Peripherals
                     || !SamePaths(theirs.Haptics, pair.Value.Haptics)
                     || !SamePaths(theirs.Shadows, pair.Value.Shadows)
                     || !SamePaths(theirs.TakenByOpenRgb, pair.Value.TakenByOpenRgb)
+                    || theirs.WaitsForOpenRgbServer != pair.Value.WaitsForOpenRgbServer
                     || !theirs.HidppUnits.AsSpan().SequenceEqual(pair.Value.HidppUnits))
                     return false;
             }

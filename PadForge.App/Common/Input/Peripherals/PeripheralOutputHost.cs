@@ -511,11 +511,12 @@ namespace PadForge.Common.Input.Peripherals
             // its scan state are of one scan, and the table, the records and
             // the snapshot the tabs read all come from one list.
             var found = new List<DirectUnit>();
-            bool directScanned = true;
+            bool directScanned = true, openRgbUnanswered = false;
             for (int i = 0; i < _direct.Count; i++)
             {
                 var theirs = ReadSnapshot(i);
                 directScanned &= theirs.Scanned;
+                openRgbUnanswered |= theirs.ProgramUnanswered;
                 foreach (var unit in theirs.Units)
                     if (unit != null) found.Add(unit);
             }
@@ -578,7 +579,10 @@ namespace PadForge.Common.Input.Peripherals
             }
             ForgetContainers(_containers, used);
 
-            var inputs = new LinkInputs(hidpp, presence) { Units = units, DirectScanned = directScanned };
+            var inputs = new LinkInputs(hidpp, presence)
+            {
+                Units = units, DirectScanned = directScanned, OpenRgbUnanswered = openRgbUnanswered,
+            };
             var table = PeripheralLinker.Build(rows, inputs);
             // The lit units no row reaches, which get rows of their own once
             // they have gone unreached for long enough.

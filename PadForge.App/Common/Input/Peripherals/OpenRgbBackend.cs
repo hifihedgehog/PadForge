@@ -132,7 +132,7 @@ namespace PadForge.Common.Input.Peripherals
         private readonly Func<string, Guid> _containerOf;
         private readonly Func<long> _ticks;
         private readonly Func<bool> _runs;
-        private readonly int _port;
+        private readonly Func<int> _port;
         private readonly int _idleTickMs;
         private readonly int _stopJoinMs;
         private readonly int _versionWaitMs;
@@ -154,23 +154,24 @@ namespace PadForge.Common.Input.Peripherals
         private static Thread s_lastWorker;
 
         public OpenRgbBackend()
-            : this(null, null, null, null, OpenRgbProtocol.DefaultPort, IdleTickMs) { }
+            : this(null, null, null, null, null, IdleTickMs) { }
 
         /// <summary>Test seam: the connection maker (port, timeout), the
-        /// container lookup, the clock, whether OpenRGB runs, the port, the
+        /// container lookup, the clock, whether OpenRGB runs, the port the
+        /// server listens on (<see cref="OpenRgbServerPort.Find"/>), the
         /// idle tick, Stop's wait and the session's two waits. The connection
         /// maker is the worker's only way to the server, and its default
         /// connects to nothing in the test host
         /// (<see cref="OpenRgbTcpLink.OffLimitsForTest"/>).</summary>
         internal OpenRgbBackend(Func<int, int, IOpenRgbLink> connect, Func<string, Guid> containerOf, Func<long> ticks,
-            Func<bool> runs, int port, int idleTickMs, int stopJoinMs = StopJoinMs,
+            Func<bool> runs, Func<int> port, int idleTickMs, int stopJoinMs = StopJoinMs,
             int versionWaitMs = OpenRgbSession.VersionWaitMs, int replyWaitMs = OpenRgbSession.ReplyWaitMs)
         {
             _connect = connect ?? OpenRgbTcpLink.Connect;
             _containerOf = containerOf ?? AudioPassthroughService.DevicePathContainerId;
             _ticks = ticks ?? (() => Environment.TickCount64);
             _runs = runs ?? OpenRgbRuns;
-            _port = port;
+            _port = port ?? OpenRgbServerPort.Find;
             _idleTickMs = idleTickMs;
             _stopJoinMs = stopJoinMs;
             _versionWaitMs = versionWaitMs;
@@ -286,7 +287,7 @@ namespace PadForge.Common.Input.Peripherals
                 PadForge.Engine.SdlDiagLog.WriteLine("PERIPHERAL OpenRGB previous worker still running, starting anyway");
             var units = new List<Unit>();
             OpenRgbSession session = null;
-            bool published = false;
+            bool published = false, unanswered = false;
             long nextConnect = 0;
             try
             {
@@ -296,7 +297,8 @@ namespace PadForge.Common.Input.Peripherals
                     bool changed = !published;
                     long due = long.MaxValue;
 
-                    if (!_runs())
+                    bool runs = _runs();
+                    if (!runs)
                     {
                         // OpenRGB stopped: its server and its hold went with
                         // it, so there is nothing to hand back to.
@@ -357,9 +359,18 @@ namespace PadForge.Common.Input.Peripherals
                         lit |= unit.Entered;
                     }
 
+                    // OpenRGB runs and its server has not said which devices
+                    // it holds: the link pass leaves every device it may
+                    // drive to it (LinkInputs.OpenRgbUnanswered).
+                    bool nowUnanswered = session == null && runs;
+                    if (nowUnanswered != unanswered)
+                    {
+                        unanswered = nowUnanswered;
+                        changed = true;
+                    }
                     if (changed)
                     {
-                        Publish(units);
+                        Publish(units, unanswered);
                         published = true;
                     }
                     PeripheralOutputs.SetBackendState(OutputFamily.OpenRgbDevice, lit ? BackendState.Connected : BackendState.Idle);
@@ -410,7 +421,10 @@ namespace PadForge.Common.Input.Peripherals
         private OpenRgbSession Connect()
         {
             IOpenRgbLink link = null;
-            try { link = _connect(_port, ConnectTimeoutMs); } catch { }
+            int port;
+            try { port = _port(); }
+            catch { port = OpenRgbProtocol.DefaultPort; }
+            try { link = _connect(port, ConnectTimeoutMs); } catch { }
             if (link == null) return null;
             OpenRgbSession session = null;
             try { session = OpenRgbSession.Begin(link, _versionWaitMs, _replyWaitMs); } catch { }
@@ -579,7 +593,7 @@ namespace PadForge.Common.Input.Peripherals
             return container != Guid.Empty;
         }
 
-        private void Publish(List<Unit> units)
+        private void Publish(List<Unit> units, bool unanswered)
         {
             var list = new DirectUnit[units.Count];
             for (int i = 0; i < list.Length; i++)
@@ -595,7 +609,7 @@ namespace PadForge.Common.Input.Peripherals
                     Asleep = unit.Asleep,
                 };
             }
-            Volatile.Write(ref _snapshot, new DirectBackendSnapshot(list));
+            Volatile.Write(ref _snapshot, new DirectBackendSnapshot(list) { ProgramUnanswered = unanswered });
             try { SnapshotChanged?.Invoke(); } catch { }
         }
 

@@ -8,175 +8,194 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
     internal static partial class PluginQmkTables
     {
         internal const string QmkPluginsCommit = "08c909a574c977969be1b51e6a9d4585e08fdc39";
+        internal const string KeychronFirmwareCommit = "9ada9b7baecb9591c469b9b068146ac5891a480a";
+        internal const string QmkFirmwareCommit = "7a1bbf37c5c07da4ea0a162bb139083a46ef40a1";
 
         internal static readonly PluginQmkBoard[] Boards =
         {
             new("Akko 5075 QMK Keyboard", "Akko/Akko_5075_QMK_Keyboard.js", 0xFFFE, new ushort[] { 0x000B }, Qmk_Akko_5075_QMK_Keyboard),
-            new("Alpaca Keyboards WhiteFox Eclipse QMK Keyboard", "Alpaca/Alpaca_WhiteFox_Eclipse_QMK_Keyboard.js", 0x308F, new ushort[] { 0x0038 }, Qmk_Alpaca_WhiteFox_Eclipse_QMK_Keyboard),
+            new("Alpaca Keyboards WhiteFox Eclipse QMK Keyboard", "Alpaca/Alpaca_WhiteFox_Eclipse_QMK_Keyboard.js", 0x308F, new ushort[] { 0x0038 }, Qmk_Alpaca_WhiteFox_Eclipse_QMK_Keyboard_fw_alpaca_wfeclipse, Firmware: "keyboards/alpaca/wfeclipse", LedsPerReport: 3),
             new("Cerakey Zen75 QMK ANSI Keyboard", "Cerakey/Cerakey_Zen75_QMK_ANSI_Keyboard.js", 0x36B0, new ushort[] { 0x3118 }, Qmk_Cerakey_Zen75_QMK_ANSI_Keyboard),
-            new("DZTech ANSI DZ60RGB", "DZTech/DZTech-60RGB_Keyboard.js", 0x445A, new ushort[] { 0x1220, 0x1221 }, Qmk_DZTech_60RGB_Keyboard),
-            new("DZTech DZ65RGB V3", "DZTech/DZTech-65RGB-V3_Keyboard.js", 0x445A, new ushort[] { 0x1424 }, Qmk_DZTech_65RGB_V3_Keyboard),
+            new("DZTech ANSI DZ60RGB", "DZTech/DZTech-60RGB_Keyboard.js", 0x445A, new ushort[] { 0x1220 }, Qmk_DZTech_60RGB_Keyboard_fw_dztech_dz60rgb_ansi_v1, Firmware: "keyboards/dztech/dz60rgb_ansi/v1"),
+            new("DZTech ANSI DZ60RGB", "DZTech/DZTech-60RGB_Keyboard.js", 0x445A, new ushort[] { 0x1221 }, Qmk_DZTech_60RGB_Keyboard_fw_dztech_dz60rgb_ansi_v2, Firmware: "keyboards/dztech/dz60rgb_ansi/v2"),
+            new("DZTech DZ65RGB V3", "DZTech/DZTech-65RGB-V3_Keyboard.js", 0x445A, new ushort[] { 0x1424 }, Qmk_DZTech_65RGB_V3_Keyboard_fw_dztech_dz65rgb_v3, Firmware: "keyboards/dztech/dz65rgb/v3"),
             new("Designed by GG Berserker QMK+VIA Keyboard", "DesignedByGG/GG_QMK_ISO_Keyboard_TKL_AZERTY_French.js", 0x320F, new ushort[] { 0x5042 }, Qmk_GG_QMK_ISO_Keyboard_TKL_AZERTY_French),
             new("Epomaker TH85 QMK Keyboard", "Epomaker/Epomaker_TH85_QMK.js", 0x36B0, new ushort[] { 0x305B }, Qmk_Epomaker_TH85_QMK),
             new("Epomaker TH96", "Epomaker/Epomaker_TH96_QMK.js", 0x3151, new ushort[] { 0x4010 }, Qmk_Epomaker_TH96_QMK),
-            new("Ergodox EZ Glow", "Ergodox_EZ/Ergodox_EZ_Glow_QMK.js", 0x3297, new ushort[] { 0x4976 }, Qmk_Ergodox_EZ_Glow_QMK),
-            new("Feker IK75 (QMK/VIA)", "Feker/Feker-IK75.js", 0xF2E7, new ushort[] { 0x1226 }, Qmk_Feker_IK75),
+            new("Ergodox EZ Glow", "Ergodox_EZ/Ergodox_EZ_Glow_QMK.js", 0x3297, new ushort[] { 0x4976 }, Qmk_Ergodox_EZ_Glow_QMK_fw_ergodox_ez_glow, Firmware: "keyboards/ergodox_ez/glow"),
+            new("Feker IK75 (QMK/VIA)", "Feker/Feker-IK75.js", 0xF2E7, new ushort[] { 0x1226 }, Qmk_Feker_IK75_fw_feker_ik75, Firmware: "keyboards/feker/ik75"),
             new("Framework Laptop 16 RGB Keyboard", "Framework/Framework_16_Keyboard.js", 0x32AC, new ushort[] { 0x0012 }, Qmk_Framework_16_Keyboard),
             new("Laptop 16 RGB Macropad", "Framework/Framework_Macropad.js", 0x32AC, new ushort[] { 0x0013 }, Qmk_Framework_Macropad),
-            new("GMMK 2 65% ANSI QMK Keyboard", "GMMK/GMMK_2_65_ANSI_QMK_Keyboard.js", 0x320F, new ushort[] { 0x5045 }, Qmk_GMMK_2_65_ANSI_QMK_Keyboard),
-            new("GMMK 2 65% ISO QMK Keyboard", "GMMK/GMMK_2_65_ISO_QMK_Keyboard.js", 0x320F, new ushort[] { 0x504A }, Qmk_GMMK_2_65_ISO_QMK_Keyboard),
-            new("GMMK 2 96% ANSI QMK Keyboard", "GMMK/GMMK_2_96_ANSI_QMK_Keyboard.js", 0x320F, new ushort[] { 0x504B, 0x505B }, Qmk_GMMK_2_96_ANSI_QMK_Keyboard),
-            new("GMMK 2 96% ISO QMK Keyboard", "GMMK/GMMK_2_96_ISO_QMK_Keyboard.js", 0x320F, new ushort[] { 0x505A }, Qmk_GMMK_2_96_ISO_QMK_Keyboard),
+            new("GMMK 2 65% ANSI QMK Keyboard", "GMMK/GMMK_2_65_ANSI_QMK_Keyboard.js", 0x320F, new ushort[] { 0x5045 }, Qmk_GMMK_2_65_ANSI_QMK_Keyboard_fw_gmmk_gmmk2_p65_ansi, Firmware: "keyboards/gmmk/gmmk2/p65/ansi"),
+            new("GMMK 2 65% ISO QMK Keyboard", "GMMK/GMMK_2_65_ISO_QMK_Keyboard.js", 0x320F, new ushort[] { 0x504A }, Qmk_GMMK_2_65_ISO_QMK_Keyboard_fw_gmmk_gmmk2_p65_iso, Firmware: "keyboards/gmmk/gmmk2/p65/iso"),
+            new("GMMK 2 96% ANSI QMK Keyboard", "GMMK/GMMK_2_96_ANSI_QMK_Keyboard.js", 0x320F, new ushort[] { 0x504B }, Qmk_GMMK_2_96_ANSI_QMK_Keyboard_fw_gmmk_gmmk2_p96_ansi, Firmware: "keyboards/gmmk/gmmk2/p96/ansi"),
+            new("GMMK 2 96% ANSI QMK Keyboard", "GMMK/GMMK_2_96_ANSI_QMK_Keyboard.js", 0x320F, new ushort[] { 0x505B }, Qmk_GMMK_2_96_ANSI_QMK_Keyboard),
+            new("GMMK 2 96% ISO QMK Keyboard", "GMMK/GMMK_2_96_ISO_QMK_Keyboard.js", 0x320F, new ushort[] { 0x505A }, Qmk_GMMK_2_96_ISO_QMK_Keyboard_fw_gmmk_gmmk2_p96_iso, Firmware: "keyboards/gmmk/gmmk2/p96/iso"),
             new("GMMK3 QMK Keyboard", "GMMK/GMMK_3_QMK_Keyboard.js", 0x504B, new ushort[] { 0x320F }, Qmk_GMMK_3_QMK_Keyboard_ANSIp65, new (byte?, Func<PluginKeyTable>)[] { (11, Qmk_GMMK_3_QMK_Keyboard_ANSIp65), (12, Qmk_GMMK_3_QMK_Keyboard_ISOp65), (13, Qmk_GMMK_3_QMK_Keyboard_ANSIp75), (14, Qmk_GMMK_3_QMK_Keyboard_ISOp75), (15, Qmk_GMMK_3_QMK_Keyboard_ANSIp100), (16, Qmk_GMMK_3_QMK_Keyboard_ISOp100) }),
-            new("GMMK Numpad", "GMMK/GMMK_Numpad_QMK.js", 0x320F, new ushort[] { 0x5088 }, Qmk_GMMK_Numpad_QMK),
+            new("GMMK Numpad", "GMMK/GMMK_Numpad_QMK.js", 0x320F, new ushort[] { 0x5088 }, Qmk_GMMK_Numpad_QMK_fw_gmmk_numpad, Firmware: "keyboards/gmmk/numpad"),
             new("Glorious GMMK Pro QMK Keyboard", "GMMK/GMMK_Pro_QMK_Keyboard.js", 0x320F, new ushort[] { 0x5044 }, Qmk_GMMK_Pro_QMK_Keyboard_ProAnsi, new (byte?, Func<PluginKeyTable>)[] { (null, Qmk_GMMK_Pro_QMK_Keyboard_ProAnsi), (6, Qmk_GMMK_Pro_QMK_Keyboard_ProIso) }),
             new("Freja 65 Keyboard", "Helheim Designs/Freja_65_QMK_Keyboard.js", 0x5453, new ushort[] { 0x0067 }, Qmk_Freja_65_QMK_Keyboard),
-            new("IDOBAO ID67", "IDOBAO/IDOBAO_ID67_QMK_Keyboard.js", 0x6964, new ushort[] { 0x0267 }, Qmk_IDOBAO_ID67_QMK_Keyboard),
-            new("Inland KB83 QMK Keyboard", "Inland/Inland_KB83_QMK_Keyboard.js", 0xFFFE, new ushort[] { 0x0007 }, Qmk_Inland_KB83_QMK_Keyboard),
+            new("IDOBAO ID67", "IDOBAO/IDOBAO_ID67_QMK_Keyboard.js", 0x6964, new ushort[] { 0x0267 }, Qmk_IDOBAO_ID67_QMK_Keyboard_fw_idobao_id67, Firmware: "keyboards/idobao/id67"),
+            new("Inland KB83 QMK Keyboard", "Inland/Inland_KB83_QMK_Keyboard.js", 0xFFFE, new ushort[] { 0x0007 }, Qmk_Inland_KB83_QMK_Keyboard_fw_inland_kb83, Firmware: "keyboards/inland/kb83"),
             new("KBDCraft Adam0110 QMK Keyboard", "KBDCraft/KBDCraft_Adam0110_QMK_Keyboard-Test.js", 0x586A, new ushort[] { 0xB002 }, Qmk_KBDCraft_Adam0110_QMK_Keyboard_Test),
-            new("KBDFans KBD67 RGB MKII", "KBDFans/KBDFans_KBD67_RGBMKII_QMK_Keyboard.js", 0x4B42, new ushort[] { 0x1224, 0x1225, 0x1226, 0x1227 }, Qmk_KBDFans_KBD67_RGBMKII_QMK_Keyboard),
-            new("KBDfans KBD67MKIIRGB ISO QMK Keyboard", "KBDFans/KBDFans_KBD67_V2_QMK_ISO_Keyboard.js", 0x4B42, new ushort[] { 0x0105 }, Qmk_KBDFans_KBD67_V2_QMK_ISO_Keyboard),
-            new("KPRepublic BM60 Poker Rev 2", "KPRepublic/KPRepublic_BM60_Poker_Rev_2.js", 0x4B50, new ushort[] { 0x1122 }, Qmk_KPRepublic_BM60_Poker_Rev_2),
-            new("Keychron C3 Pro 8K ANSI QMK Keyboard", "Keychron/C Series/Pro 8K/Keychron_C3_Pro_8K_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0530 }, Qmk_Keychron_C3_Pro_8K_QMK_ANSI_Keyboard),
-            new("Keychron C1 Pro QMK Keyboard", "Keychron/C Series/Pro/Keychron_C1_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0510 }, Qmk_Keychron_C1_Pro_QMK_ANSI_Keyboard_ANSI),
-            new("Keychron C2 Pro QMK Keyboard", "Keychron/C Series/Pro/Keychron_C2_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0520, 0x0526 }, Qmk_Keychron_C2_Pro_QMK_ANSI_Keyboard),
-            new("Keychron C3 Pro QMK Keyboard", "Keychron/C Series/Pro/Keychron_C3_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0433 }, Qmk_Keychron_C3_Pro_QMK_ANSI_Keyboard),
+            new("KBDFans KBD67 RGB MKII", "KBDFans/KBDFans_KBD67_RGBMKII_QMK_Keyboard.js", 0x4B42, new ushort[] { 0x1224 }, Qmk_KBDFans_KBD67_RGBMKII_QMK_Keyboard_fw_kbdfans_kbd67_mkiirgb_v1, Firmware: "keyboards/kbdfans/kbd67/mkiirgb/v1"),
+            new("KBDFans KBD67 RGB MKII", "KBDFans/KBDFans_KBD67_RGBMKII_QMK_Keyboard.js", 0x4B42, new ushort[] { 0x1225 }, Qmk_KBDFans_KBD67_RGBMKII_QMK_Keyboard_fw_kbdfans_kbd67_mkiirgb_v2, Firmware: "keyboards/kbdfans/kbd67/mkiirgb/v2"),
+            new("KBDFans KBD67 RGB MKII", "KBDFans/KBDFans_KBD67_RGBMKII_QMK_Keyboard.js", 0x4B42, new ushort[] { 0x1226 }, Qmk_KBDFans_KBD67_RGBMKII_QMK_Keyboard_fw_kbdfans_kbd67_mkiirgb_v3, Firmware: "keyboards/kbdfans/kbd67/mkiirgb/v3"),
+            new("KBDFans KBD67 RGB MKII", "KBDFans/KBDFans_KBD67_RGBMKII_QMK_Keyboard.js", 0x4B42, new ushort[] { 0x1227 }, Qmk_KBDFans_KBD67_RGBMKII_QMK_Keyboard_fw_kbdfans_kbd67_mkiirgb_v4, Firmware: "keyboards/kbdfans/kbd67/mkiirgb/v4"),
+            new("KBDfans KBD67MKIIRGB ISO QMK Keyboard", "KBDFans/KBDFans_KBD67_V2_QMK_ISO_Keyboard.js", 0x4B42, new ushort[] { 0x0105 }, Qmk_KBDFans_KBD67_V2_QMK_ISO_Keyboard_fw_kbdfans_kbd67_mkiirgb_iso, Firmware: "keyboards/kbdfans/kbd67/mkiirgb_iso"),
+            new("KPRepublic BM60 Poker Rev 2", "KPRepublic/KPRepublic_BM60_Poker_Rev_2.js", 0x4B50, new ushort[] { 0x1122 }, Qmk_KPRepublic_BM60_Poker_Rev_2_fw_kprepublic_bm60hsrgb_poker_rev2, Firmware: "keyboards/kprepublic/bm60hsrgb_poker/rev2"),
+            new("Keychron C3 Pro 8K ANSI QMK Keyboard", "Keychron/C Series/Pro 8K/Keychron_C3_Pro_8K_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0530 }, Qmk_Keychron_C3_Pro_8K_QMK_ANSI_Keyboard_fw_keychron_c3_pro_8k_ansi, Firmware: "keyboards/keychron/c3_pro_8k/ansi"),
+            new("Keychron C1 Pro QMK Keyboard", "Keychron/C Series/Pro/Keychron_C1_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0510 }, Qmk_Keychron_C1_Pro_QMK_ANSI_Keyboard_fw_keychron_c1_pro_ansi_rgb, Firmware: "keyboards/keychron/c1_pro/ansi/rgb"),
+            new("Keychron C2 Pro QMK Keyboard", "Keychron/C Series/Pro/Keychron_C2_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0520 }, Qmk_Keychron_C2_Pro_QMK_ANSI_Keyboard_fw_keychron_c2_pro_ansi_rgb, Firmware: "keyboards/keychron/c2_pro/ansi/rgb"),
+            new("Keychron C2 Pro QMK Keyboard", "Keychron/C Series/Pro/Keychron_C2_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0526 }, Qmk_Keychron_C2_Pro_QMK_ANSI_Keyboard_fw_keychron_c2_pro_v2_ansi_rgb, Firmware: "keyboards/keychron/c2_pro_v2/ansi/rgb"),
+            new("Keychron C3 Pro QMK Keyboard", "Keychron/C Series/Pro/Keychron_C3_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0433 }, Qmk_Keychron_C3_Pro_QMK_ANSI_Keyboard_fw_keychron_c3_pro_ansi_rgb, Firmware: "keyboards/keychron/c3_pro/ansi/rgb"),
             new("Keychron / Donkey J2 ANSI QMK Keyboard", "Keychron/J Series/Keychron_J2_QMK_ANSI_Keyboard.js", 0x362D, new ushort[] { 0x1509 }, Qmk_Keychron_J2_QMK_ANSI_Keyboard),
-            new("Keychron K10 HE ANSI QMK Keyboard", "Keychron/K Series/HE/Keychron_K10_HE_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0EA0 }, Qmk_Keychron_K10_HE_QMK_ANSI_Keyboard),
-            new("Keychron K10 HE ISO QMK Keyboard", "Keychron/K Series/HE/Keychron_K10_HE_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0EA1 }, Qmk_Keychron_K10_HE_QMK_ISO_Keyboard),
-            new("Keychron K2 HE ANSI QMK Keyboard", "Keychron/K Series/HE/Keychron_K2_HE_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0E20 }, Qmk_Keychron_K2_HE_QMK_ANSI_Keyboard),
-            new("Keychron K2 HE ISO QMK Keyboard", "Keychron/K Series/HE/Keychron_K2_HE_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0E21 }, Qmk_Keychron_K2_HE_QMK_ISO_Keyboard),
-            new("Keychron K4 HE ANSI QMK Keyboard", "Keychron/K Series/HE/Keychron_K4_HE_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0E40 }, Qmk_Keychron_K4_HE_QMK_ANSI_Keyboard),
-            new("Keychron K8 HE QMK Keyboard", "Keychron/K Series/HE/Keychron_K8_HE_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0E80 }, Qmk_Keychron_K8_HE_QMK_ANSI_Keyboard),
-            new("Keychron K8 HE ISO QMK Keyboard", "Keychron/K Series/HE/Keychron_K8_HE_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0E81 }, Qmk_Keychron_K8_HE_QMK_ISO_Keyboard),
-            new("Keychron K10 Max QMK Keyboard", "Keychron/K Series/Max/Keychron_K10_Max_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0AA0 }, Qmk_Keychron_K10_Max_QMK_ANSI_Keyboard),
-            new("Keychron K10 Max ISO QMK Keyboard", "Keychron/K Series/Max/Keychron_K10_Max_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0AA1 }, Qmk_Keychron_K10_Max_QMK_ISO_Keyboard),
+            new("Keychron K10 HE ANSI QMK Keyboard", "Keychron/K Series/HE/Keychron_K10_HE_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0EA0 }, Qmk_Keychron_K10_HE_QMK_ANSI_Keyboard_fw_keychron_k10_he_ansi, Firmware: "keyboards/keychron/k10_he/ansi"),
+            new("Keychron K10 HE ISO QMK Keyboard", "Keychron/K Series/HE/Keychron_K10_HE_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0EA1 }, Qmk_Keychron_K10_HE_QMK_ISO_Keyboard_fw_keychron_k10_he_iso, Firmware: "keyboards/keychron/k10_he/iso"),
+            new("Keychron K2 HE ANSI QMK Keyboard", "Keychron/K Series/HE/Keychron_K2_HE_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0E20 }, Qmk_Keychron_K2_HE_QMK_ANSI_Keyboard_fw_keychron_k2_he_ansi, Firmware: "keyboards/keychron/k2_he/ansi"),
+            new("Keychron K2 HE ISO QMK Keyboard", "Keychron/K Series/HE/Keychron_K2_HE_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0E21 }, Qmk_Keychron_K2_HE_QMK_ISO_Keyboard_fw_keychron_k2_he_iso, Firmware: "keyboards/keychron/k2_he/iso"),
+            new("Keychron K4 HE ANSI QMK Keyboard", "Keychron/K Series/HE/Keychron_K4_HE_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0E40 }, Qmk_Keychron_K4_HE_QMK_ANSI_Keyboard_fw_keychron_k4_he_ansi, Firmware: "keyboards/keychron/k4_he/ansi"),
+            new("Keychron K8 HE QMK Keyboard", "Keychron/K Series/HE/Keychron_K8_HE_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0E80 }, Qmk_Keychron_K8_HE_QMK_ANSI_Keyboard_fw_keychron_k8_he_ansi, Firmware: "keyboards/keychron/k8_he/ansi"),
+            new("Keychron K8 HE ISO QMK Keyboard", "Keychron/K Series/HE/Keychron_K8_HE_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0E81 }, Qmk_Keychron_K8_HE_QMK_ISO_Keyboard_fw_keychron_k8_he_iso, Firmware: "keyboards/keychron/k8_he/iso"),
+            new("Keychron K10 Max QMK Keyboard", "Keychron/K Series/Max/Keychron_K10_Max_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0AA0 }, Qmk_Keychron_K10_Max_QMK_ANSI_Keyboard_fw_keychron_k10_max_ansi_rgb, Firmware: "keyboards/keychron/k10_max/ansi/rgb"),
+            new("Keychron K10 Max ISO QMK Keyboard", "Keychron/K Series/Max/Keychron_K10_Max_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0AA1 }, Qmk_Keychron_K10_Max_QMK_ISO_Keyboard_fw_keychron_k10_max_iso_rgb, Firmware: "keyboards/keychron/k10_max/iso/rgb"),
             new("Keychron K10v2 Max QMK Keyboard", "Keychron/K Series/Max/Keychron_K10_v2_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0DA0 }, Qmk_Keychron_K10_v2_QMK_ANSI_Keyboard),
-            new("Keychron K17 Max QMK ANSI Keyboard", "Keychron/K Series/Max/Keychron_K17_Max_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0A00 }, Qmk_Keychron_K17_Max_QMK_ANSI_Keyboard),
-            new("Keychron K1 Max QMK Keyboard", "Keychron/K Series/Max/Keychron_K1_Max_QMK_Keyboard.js", 0x3434, new ushort[] { 0x0A10 }, Qmk_Keychron_K1_Max_QMK_Keyboard_ANSI),
-            new("Keychron K1 Max QMK Keyboard", "Keychron/K Series/Max/Keychron_K1_Max_QMK_Keyboard.js", 0x3434, new ushort[] { 0x0A11 }, Qmk_Keychron_K1_Max_QMK_Keyboard_ISO),
-            new("Keychon K2 Max ANSI", "Keychron/K Series/Max/Keychron_K2_Max_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0A20 }, Qmk_Keychron_K2_Max_QMK_ANSI_Keyboard),
-            new("Keychon K2 Max ISO", "Keychron/K Series/Max/Keychron_K2_Max_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0A21 }, Qmk_Keychron_K2_Max_QMK_ISO_Keyboard),
-            new("Keychron K5 Max ANSI QMK Keyboard", "Keychron/K Series/Max/Keychron_K5_Max_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0A50 }, Qmk_Keychron_K5_Max_QMK_ANSI_Keyboard),
-            new("Keychron K5 Max ISO QMK Keyboard", "Keychron/K Series/Max/Keychron_K5_Max_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0A51 }, Qmk_Keychron_K5_Max_QMK_ISO_Keyboard),
-            new("Keychron K8 Max QMK Keyboard", "Keychron/K Series/Max/Keychron_K8Max_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0A80 }, Qmk_Keychron_K8Max_QMK_ANSI_Keyboard),
-            new("Keychron K8 Max ISO QMK Keyboard", "Keychron/K Series/Max/Keychron_K8Max_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0A81 }, Qmk_Keychron_K8Max_QMK_ISO_Keyboard),
-            new("Keychron K10 Pro QMK Keyboard", "Keychron/K Series/Pro/Keychron_K10Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x02A0 }, Qmk_Keychron_K10Pro_QMK_ANSI_Keyboard),
-            new("Keychron K10 Pro ISO QMK Keyboard", "Keychron/K Series/Pro/Keychron_K10Pro_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x02A1 }, Qmk_Keychron_K10Pro_QMK_ISO_Keyboard),
-            new("Keychron K12 QMK Keyboard", "Keychron/K Series/Pro/Keychron_K12_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x02C0 }, Qmk_Keychron_K12_Pro_QMK_ANSI_Keyboard),
-            new("Keychron K1 Pro QMK Keyboard", "Keychron/K Series/Pro/Keychron_K1_Pro_QMK_Keyboard.js", 0x3434, new ushort[] { 0x0210 }, Qmk_Keychron_K1_Pro_QMK_Keyboard_ANSI),
-            new("Keychron K1 Pro QMK Keyboard", "Keychron/K Series/Pro/Keychron_K1_Pro_QMK_Keyboard.js", 0x3434, new ushort[] { 0x0211 }, Qmk_Keychron_K1_Pro_QMK_Keyboard_ISO),
-            new("Keychron K2 Pro QMK Keyboard", "Keychron/K Series/Pro/Keychron_K2_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0220 }, Qmk_Keychron_K2_Pro_QMK_ANSI_Keyboard),
-            new("Keychron K2 Pro ISO DE QMK Keyboard", "Keychron/K Series/Pro/Keychron_K2_Pro_QMK_ISO_DE_Keyboard.js", 0x3434, new ushort[] { 0x0221 }, Qmk_Keychron_K2_Pro_QMK_ISO_DE_Keyboard),
-            new("Keychron K3 Pro QMK Keyboard", "Keychron/K Series/Pro/Keychron_K3_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0230 }, Qmk_Keychron_K3_Pro_QMK_ANSI_Keyboard),
-            new("Keychron K3 Pro QMK ISO Keyboard", "Keychron/K Series/Pro/Keychron_K3_Pro_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0231 }, Qmk_Keychron_K3_Pro_QMK_ISO_Keyboard),
-            new("Keychron K4 Pro", "Keychron/K Series/Pro/Keychron_K4_Pro_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0240 }, Qmk_Keychron_K4_Pro_ANSI_Keyboard),
-            new("Keychron K4 Pro", "Keychron/K Series/Pro/Keychron_K4_Pro_ISO_DE_Keyboard.js", 0x3434, new ushort[] { 0x0241 }, Qmk_Keychron_K4_Pro_ISO_DE_Keyboard),
-            new("Keychron K5 Pro QMK Keyboard", "Keychron/K Series/Pro/Keychron_K5_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0250 }, Qmk_Keychron_K5_Pro_QMK_ANSI_Keyboard),
-            new("Keychron K6 Pro", "Keychron/K Series/Pro/Keychron_K6_Pro_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0260 }, Qmk_Keychron_K6_Pro_ANSI_Keyboard),
-            new("Keychron K8 Pro QMK Keyboard", "Keychron/K Series/Pro/Keychron_K8Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0280 }, Qmk_Keychron_K8Pro_QMK_ANSI_Keyboard),
-            new("Keychron K8 Pro ISO DE QMK Keyboard", "Keychron/K Series/Pro/Keychron_K8Pro_QMK_ISO_DE_Keyboard.js", 0x3434, new ushort[] { 0x0281 }, Qmk_Keychron_K8Pro_QMK_ISO_DE_Keyboard),
+            new("Keychron K17 Max QMK ANSI Keyboard", "Keychron/K Series/Max/Keychron_K17_Max_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0A00 }, Qmk_Keychron_K17_Max_QMK_ANSI_Keyboard_fw_keychron_k17_max_ansi_encoder_rgb, Firmware: "keyboards/keychron/k17_max/ansi_encoder/rgb"),
+            new("Keychron K1 Max QMK Keyboard", "Keychron/K Series/Max/Keychron_K1_Max_QMK_Keyboard.js", 0x3434, new ushort[] { 0x0A10 }, Qmk_Keychron_K1_Max_QMK_Keyboard_fw_keychron_k1_max_ansi_rgb, Firmware: "keyboards/keychron/k1_max/ansi/rgb"),
+            new("Keychron K1 Max QMK Keyboard", "Keychron/K Series/Max/Keychron_K1_Max_QMK_Keyboard.js", 0x3434, new ushort[] { 0x0A11 }, Qmk_Keychron_K1_Max_QMK_Keyboard_fw_keychron_k1_max_iso_rgb, Firmware: "keyboards/keychron/k1_max/iso/rgb"),
+            new("Keychon K2 Max ANSI", "Keychron/K Series/Max/Keychron_K2_Max_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0A20 }, Qmk_Keychron_K2_Max_QMK_ANSI_Keyboard_fw_keychron_k2_max_ansi_rgb, Firmware: "keyboards/keychron/k2_max/ansi/rgb"),
+            new("Keychon K2 Max ISO", "Keychron/K Series/Max/Keychron_K2_Max_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0A21 }, Qmk_Keychron_K2_Max_QMK_ISO_Keyboard_fw_keychron_k2_max_iso_rgb, Firmware: "keyboards/keychron/k2_max/iso/rgb"),
+            new("Keychron K5 Max ANSI QMK Keyboard", "Keychron/K Series/Max/Keychron_K5_Max_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0A50 }, Qmk_Keychron_K5_Max_QMK_ANSI_Keyboard_fw_keychron_k5_max_ansi_rgb, Firmware: "keyboards/keychron/k5_max/ansi/rgb"),
+            new("Keychron K5 Max ISO QMK Keyboard", "Keychron/K Series/Max/Keychron_K5_Max_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0A51 }, Qmk_Keychron_K5_Max_QMK_ISO_Keyboard_fw_keychron_k5_max_iso_rgb, Firmware: "keyboards/keychron/k5_max/iso/rgb"),
+            new("Keychron K8 Max QMK Keyboard", "Keychron/K Series/Max/Keychron_K8Max_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0A80 }, Qmk_Keychron_K8Max_QMK_ANSI_Keyboard_fw_keychron_k8_max_ansi_rgb, Firmware: "keyboards/keychron/k8_max/ansi/rgb"),
+            new("Keychron K8 Max ISO QMK Keyboard", "Keychron/K Series/Max/Keychron_K8Max_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0A81 }, Qmk_Keychron_K8Max_QMK_ISO_Keyboard_fw_keychron_k8_max_iso_rgb, Firmware: "keyboards/keychron/k8_max/iso/rgb"),
+            new("Keychron K10 Pro QMK Keyboard", "Keychron/K Series/Pro/Keychron_K10Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x02A0 }, Qmk_Keychron_K10Pro_QMK_ANSI_Keyboard_fw_keychron_k10_pro_ansi_rgb, Firmware: "keyboards/keychron/k10_pro/ansi/rgb"),
+            new("Keychron K10 Pro ISO QMK Keyboard", "Keychron/K Series/Pro/Keychron_K10Pro_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x02A1 }, Qmk_Keychron_K10Pro_QMK_ISO_Keyboard_fw_keychron_k10_pro_iso_rgb, Firmware: "keyboards/keychron/k10_pro/iso/rgb"),
+            new("Keychron K12 QMK Keyboard", "Keychron/K Series/Pro/Keychron_K12_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x02C0 }, Qmk_Keychron_K12_Pro_QMK_ANSI_Keyboard_fw_keychron_k12_pro_ansi_rgb, Firmware: "keyboards/keychron/k12_pro/ansi/rgb"),
+            new("Keychron K1 Pro QMK Keyboard", "Keychron/K Series/Pro/Keychron_K1_Pro_QMK_Keyboard.js", 0x3434, new ushort[] { 0x0210 }, Qmk_Keychron_K1_Pro_QMK_Keyboard_fw_keychron_k1_pro_ansi_rgb, Firmware: "keyboards/keychron/k1_pro/ansi/rgb"),
+            new("Keychron K1 Pro QMK Keyboard", "Keychron/K Series/Pro/Keychron_K1_Pro_QMK_Keyboard.js", 0x3434, new ushort[] { 0x0211 }, Qmk_Keychron_K1_Pro_QMK_Keyboard_fw_keychron_k1_pro_iso_rgb, Firmware: "keyboards/keychron/k1_pro/iso/rgb"),
+            new("Keychron K2 Pro QMK Keyboard", "Keychron/K Series/Pro/Keychron_K2_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0220 }, Qmk_Keychron_K2_Pro_QMK_ANSI_Keyboard_fw_keychron_k2_pro_ansi_rgb, Firmware: "keyboards/keychron/k2_pro/ansi/rgb"),
+            new("Keychron K2 Pro ISO DE QMK Keyboard", "Keychron/K Series/Pro/Keychron_K2_Pro_QMK_ISO_DE_Keyboard.js", 0x3434, new ushort[] { 0x0221 }, Qmk_Keychron_K2_Pro_QMK_ISO_DE_Keyboard_fw_keychron_k2_pro_iso_rgb, Firmware: "keyboards/keychron/k2_pro/iso/rgb"),
+            new("Keychron K3 Pro QMK Keyboard", "Keychron/K Series/Pro/Keychron_K3_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0230 }, Qmk_Keychron_K3_Pro_QMK_ANSI_Keyboard_fw_keychron_k3_pro_ansi_rgb, Firmware: "keyboards/keychron/k3_pro/ansi/rgb"),
+            new("Keychron K3 Pro QMK ISO Keyboard", "Keychron/K Series/Pro/Keychron_K3_Pro_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0231 }, Qmk_Keychron_K3_Pro_QMK_ISO_Keyboard_fw_keychron_k3_pro_iso_rgb, Firmware: "keyboards/keychron/k3_pro/iso/rgb"),
+            new("Keychron K4 Pro", "Keychron/K Series/Pro/Keychron_K4_Pro_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0240 }, Qmk_Keychron_K4_Pro_ANSI_Keyboard_fw_keychron_k4_pro_ansi_rgb, Firmware: "keyboards/keychron/k4_pro/ansi/rgb"),
+            new("Keychron K4 Pro", "Keychron/K Series/Pro/Keychron_K4_Pro_ISO_DE_Keyboard.js", 0x3434, new ushort[] { 0x0241 }, Qmk_Keychron_K4_Pro_ISO_DE_Keyboard_fw_keychron_k4_pro_iso_rgb, Firmware: "keyboards/keychron/k4_pro/iso/rgb"),
+            new("Keychron K5 Pro QMK Keyboard", "Keychron/K Series/Pro/Keychron_K5_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0250 }, Qmk_Keychron_K5_Pro_QMK_ANSI_Keyboard_fw_keychron_k5_pro_ansi_rgb, Firmware: "keyboards/keychron/k5_pro/ansi/rgb"),
+            new("Keychron K6 Pro", "Keychron/K Series/Pro/Keychron_K6_Pro_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0260 }, Qmk_Keychron_K6_Pro_ANSI_Keyboard_fw_keychron_k6_pro_ansi_rgb, Firmware: "keyboards/keychron/k6_pro/ansi/rgb"),
+            new("Keychron K8 Pro QMK Keyboard", "Keychron/K Series/Pro/Keychron_K8Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0280 }, Qmk_Keychron_K8Pro_QMK_ANSI_Keyboard_fw_keychron_k8_pro_ansi_rgb, Firmware: "keyboards/keychron/k8_pro/ansi/rgb"),
+            new("Keychron K8 Pro ISO DE QMK Keyboard", "Keychron/K Series/Pro/Keychron_K8Pro_QMK_ISO_DE_Keyboard.js", 0x3434, new ushort[] { 0x0281 }, Qmk_Keychron_K8Pro_QMK_ISO_DE_Keyboard_fw_keychron_k8_pro_iso_rgb, Firmware: "keyboards/keychron/k8_pro/iso/rgb"),
             new("Keychron K10 V2 ISO QMK Keyboard", "Keychron/K Series/Standard/Keychron_K10V2_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0DA1 }, Qmk_Keychron_K10V2_QMK_ISO_Keyboard),
-            new("Keychon K2v2+v3 ANSI", "Keychron/K Series/Standard/Keychron_K2v2+v3_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0xFE02, 0x0D20 }, Qmk_Keychron_K2v2_v3_QMK_ANSI_Keyboard),
-            new("Keychon K2v3 ISO", "Keychron/K Series/Standard/Keychron_K2v3_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0D21 }, Qmk_Keychron_K2v3_QMK_ISO_Keyboard),
-            new("Keychon K3v3 ISO", "Keychron/K Series/Standard/Keychron_K3v3_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0D31 }, Qmk_Keychron_K3v3_QMK_ISO_Keyboard),
+            new("Keychon K2v2+v3 ANSI", "Keychron/K Series/Standard/Keychron_K2v2+v3_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0D20 }, Qmk_Keychron_K2v2_v3_QMK_ANSI_Keyboard_fw_keychron_k2_version_3_ansi_rgb, Firmware: "keyboards/keychron/k2_version_3/ansi/rgb"),
+            new("Keychon K2v2+v3 ANSI", "Keychron/K Series/Standard/Keychron_K2v2+v3_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0xFE02 }, Qmk_Keychron_K2v2_v3_QMK_ANSI_Keyboard),
+            new("Keychon K2v3 ISO", "Keychron/K Series/Standard/Keychron_K2v3_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0D21 }, Qmk_Keychron_K2v3_QMK_ISO_Keyboard_fw_keychron_k2_version_3_iso_rgb, Firmware: "keyboards/keychron/k2_version_3/iso/rgb"),
+            new("Keychon K3v3 ISO", "Keychron/K Series/Standard/Keychron_K3v3_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0D31 }, Qmk_Keychron_K3v3_QMK_ISO_Keyboard_fw_keychron_k3_version_3_iso_rgb, Firmware: "keyboards/keychron/k3_version_3/iso/rgb"),
             new("Keychron K4v2 QMK Keyboard", "Keychron/K Series/Standard/Keychron_K4v2_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0xFE06 }, Qmk_Keychron_K4v2_QMK_ANSI_Keyboard),
             new("Keychron K5 v2 ISO QMK Keyboard", "Keychron/K Series/Standard/Keychron_K5_v2_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0D51 }, Qmk_Keychron_K5_v2_QMK_ISO_Keyboard),
             new("Keychron K8 TKL ISO QMK Keyboard", "Keychron/K Series/Standard/Keychron_K8_TKL_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0xFE0F }, Qmk_Keychron_K8_TKL_QMK_ISO_Keyboard),
             new("Keychron K8 v2 ANSI QMK Keyboard", "Keychron/K Series/Standard/Keychron_K8_TKL_Version_2_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0D80 }, Qmk_Keychron_K8_TKL_Version_2_QMK_ANSI_Keyboard),
             new("Keychron K8 v2 TKL ISO QMK Keyboard", "Keychron/K Series/Standard/Keychron_K8_TKL_Version_2_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0D81 }, Qmk_Keychron_K8_TKL_Version_2_QMK_ISO_Keyboard),
-            new("Keychron Q1 HE QMK ANSI Keyboard", "Keychron/Q Series/HE/Keychron_Q1_HE_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0B10 }, Qmk_Keychron_Q1_HE_QMK_ANSI_Keyboard),
-            new("Keychron Q1 HE QMK ISO Keyboard", "Keychron/Q Series/HE/Keychron_Q1_HE_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0B11 }, Qmk_Keychron_Q1_HE_QMK_ISO_Keyboard),
-            new("Keychron Q3 HE ANSI Encoder Keyboard", "Keychron/Q Series/HE/Keychron_Q3_HE_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0B30 }, Qmk_Keychron_Q3_HE_QMK_ANSI_Encoder_Keyboard),
-            new("Keychron Q5 HE QMK Keyboard", "Keychron/Q Series/HE/Keychron_Q5_HE_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0B50 }, Qmk_Keychron_Q5_HE_QMK_ANSI_Encoder_Keyboard),
-            new("Keychron Q6 HE QMK Keyboard", "Keychron/Q Series/HE/Keychron_Q6_HE_QMK_ANSI_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0B60 }, Qmk_Keychron_Q6_HE_QMK_ANSI_ISO_Keyboard_ANSI),
-            new("Keychron Q6 HE QMK Keyboard", "Keychron/Q Series/HE/Keychron_Q6_HE_QMK_ANSI_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0B61 }, Qmk_Keychron_Q6_HE_QMK_ANSI_ISO_Keyboard_ISO),
-            new("Keychron Q0 Max QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q0_Max_QMK_Keyboard.js", 0x3434, new ushort[] { 0x0800 }, Qmk_Keychron_Q0_Max_QMK_Keyboard),
-            new("Keychron Q12 Max ANSI QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q12_Max_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x08C3 }, Qmk_Keychron_Q12_Max_QMK_ANSI_Encoder_Keyboard),
-            new("Keychron Q1 Max ANSI QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q1_Max_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0810 }, Qmk_Keychron_Q1_Max_QMK_ANSI_Encoder_Keyboard),
-            new("Keychron Q1 Max ISO QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q1_Max_QMK_ISO_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0811 }, Qmk_Keychron_Q1_Max_QMK_ISO_Encoder_Keyboard),
-            new("Keychron Q2 Max ANSI QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q2_Max_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0820 }, Qmk_Keychron_Q2_Max_QMK_ANSI_Encoder_Keyboard),
-            new("Keychron Q3 Max ANSI QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q3_Max_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0830 }, Qmk_Keychron_Q3_Max_QMK_ANSI_Keyboard),
-            new("Keychron Q3 Max ISO QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q3_Max_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0831 }, Qmk_Keychron_Q3_Max_QMK_ISO_Keyboard),
-            new("Keychron Q5 Max ANSI Encoder QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q5_Max_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0850 }, Qmk_Keychron_Q5_Max_QMK_ANSI_Encoder_Keyboard),
-            new("Keychron Q65 Max QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q65_Max_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x08B0 }, Qmk_Keychron_Q65_Max_QMK_ANSI_Encoder_Keyboard),
-            new("Keychron Q6 Max ANSI QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q6_Max_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0860 }, Qmk_Keychron_Q6_Max_QMK_ANSI_Keyboard),
-            new("Keychron Q6 Max ISO QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q6_Max_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0861 }, Qmk_Keychron_Q6_Max_QMK_ISO_Keyboard),
-            new("Keychron Q8 Max ANSI QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q8_Max_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0880 }, Qmk_Keychron_Q8_Max_QMK_ANSI_Keyboard),
-            new("Keychron Q0 Plus QMK Keyboard", "Keychron/Q Series/Plus/Keychron_Q0_Plus_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0131 }, Qmk_Keychron_Q0_Plus_QMK_ANSI_Keyboard),
-            new("Keychron Q1 Pro / OnePlus 81 Pro QMK Keyboard", "Keychron/Q Series/Pro/Keychron_Q1_Pro_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0610 }, Qmk_Keychron_Q1_Pro_QMK_ANSI_Encoder_Keyboard),
-            new("Keychron Q1 Pro ISO QMK Keyboard", "Keychron/Q Series/Pro/Keychron_Q1_Pro_QMK_ISO_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0611 }, Qmk_Keychron_Q1_Pro_QMK_ISO_Encoder_Keyboard),
-            new("Keychron Q2 Pro ANSI Encoder", "Keychron/Q Series/Pro/Keychron_Q2_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0620 }, Qmk_Keychron_Q2_Pro_QMK_ANSI_Keyboard),
-            new("Keychron Q3 Pro SE ANSI", "Keychron/Q Series/Pro/Keychron_Q3_Pro_SE_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0630 }, Qmk_Keychron_Q3_Pro_SE_QMK_ANSI_Keyboard),
-            new("Keychron Q3 Pro SE ISO QMK Keyboard", "Keychron/Q Series/Pro/Keychron_Q3_Pro_SE_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0631 }, Qmk_Keychron_Q3_Pro_SE_QMK_ISO_Keyboard),
-            new("Keychron Q5 Pro", "Keychron/Q Series/Pro/Keychron_Q5_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0650 }, Qmk_Keychron_Q5_Pro_QMK_ANSI_Keyboard),
-            new("Keychron Q5 Pro ISO", "Keychron/Q Series/Pro/Keychron_Q5_Pro_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0651 }, Qmk_Keychron_Q5_Pro_QMK_ISO_Keyboard),
-            new("Keychron Q6 Pro ANSI QMK Keyboard", "Keychron/Q Series/Pro/Keychron_Q6_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0660 }, Qmk_Keychron_Q6_Pro_QMK_ANSI_Keyboard),
-            new("Keychron Q6 Pro ISO QMK Keyboard", "Keychron/Q Series/Pro/Keychron_Q6_Pro_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0661 }, Qmk_Keychron_Q6_Pro_QMK_ISO_Keyboard),
-            new("Keychron Q8 Pro ANSI QMK Keyboard", "Keychron/Q Series/Pro/Keychron_Q8_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0680 }, Qmk_Keychron_Q8_Pro_QMK_ANSI_Keyboard),
-            new("Keychron Q0 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q0_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0130 }, Qmk_Keychron_Q0_QMK_ANSI_Keyboard),
-            new("Keychron Q10", "Keychron/Q Series/Standard/Keychron_Q10_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x01A1 }, Qmk_Keychron_Q10_QMK_ANSI_Keyboard),
-            new("Keychron Q12 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q12_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x01D1 }, Qmk_Keychron_Q12_QMK_ANSI_Keyboard),
-            new("Keychron Q1v1 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q1v1_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0100, 0x0101 }, Qmk_Keychron_Q1v1_QMK_ANSI_Keyboard),
-            new("Keychron Q1v1 ISO QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q1v1_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0102, 0x0103 }, Qmk_Keychron_Q1v1_QMK_ISO_Keyboard),
-            new("Keychron Q1v2 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q1v2_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0106, 0x0107 }, Qmk_Keychron_Q1v2_QMK_ANSI_Encoder_Keyboard),
-            new("Keychron Q1v2 ISO QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q1v2_QMK_ISO_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0108, 0x0109 }, Qmk_Keychron_Q1v2_QMK_ISO_Encoder_Keyboard),
-            new("Keychron Q2 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q2_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0111 }, Qmk_Keychron_Q2_QMK_ANSI_Encoder_Keyboard),
-            new("Keychron Q2 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q2_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0110 }, Qmk_Keychron_Q2_QMK_ANSI_Keyboard),
-            new("Keychron Q3 ANSI Encoder Keyboard", "Keychron/Q Series/Standard/Keychron_Q3_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0121 }, Qmk_Keychron_Q3_QMK_ANSI_Encoder_Keyboard),
-            new("Keychron Q3 ANSI Keyboard", "Keychron/Q Series/Standard/Keychron_Q3_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0120 }, Qmk_Keychron_Q3_QMK_ANSI_Keyboard),
-            new("Keychron Q3 ISO Keyboard", "Keychron/Q Series/Standard/Keychron_Q3_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0122, 0x0123 }, Qmk_Keychron_Q3_QMK_ISO_Keyboard),
-            new("Keychron Q4 ANSI", "Keychron/Q Series/Standard/Keychron_Q4_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0140 }, Qmk_Keychron_Q4_QMK_ANSI_Keyboard),
-            new("Keychron Q5 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q5_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0151 }, Qmk_Keychron_Q5_QMK_ANSI_Encoder_Keyboard),
-            new("Keychron Q5 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q5_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0150 }, Qmk_Keychron_Q5_QMK_ANSI_Keyboard),
-            new("Keychron Q5 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q5_QMK_ISO_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0153 }, Qmk_Keychron_Q5_QMK_ISO_Encoder_Keyboard),
-            new("Keychron Q65 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q65_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x01B1 }, Qmk_Keychron_Q65_QMK_ANSI_Encoder_Keyboard),
-            new("Keychron Q6 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q6_QMK_ANSI_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0160 }, Qmk_Keychron_Q6_QMK_ANSI_ISO_Keyboard_ANSI),
-            new("Keychron Q6 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q6_QMK_ANSI_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0161 }, Qmk_Keychron_Q6_QMK_ANSI_ISO_Keyboard_ANSI),
-            new("Keychron Q6 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q6_QMK_ANSI_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0162 }, Qmk_Keychron_Q6_QMK_ANSI_ISO_Keyboard_ISO),
-            new("Keychron Q6 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q6_QMK_ANSI_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0163 }, Qmk_Keychron_Q6_QMK_ANSI_ISO_Keyboard_ISO),
-            new("Keychron V1 MAX ANSI + Encoder QMK Keyboard", "Keychron/V Series/Max/Keychron_V1_Max_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0913 }, Qmk_Keychron_V1_Max_QMK_ANSI_Encoder_Keyboard),
-            new("Keychron V1 MAX ISO + Encoder QMK Keyboard", "Keychron/V Series/Max/Keychron_V1_Max_QMK_ISO_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0914 }, Qmk_Keychron_V1_Max_QMK_ISO_Encoder_Keyboard),
-            new("Keychron V3 Max QMK Keyboard", "Keychron/V Series/Max/Keychron_V3_Max_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0933 }, Qmk_Keychron_V3_Max_QMK_ANSI_Encoder_Keyboard),
-            new("Keychron V3 Max QMK ISO Keyboard", "Keychron/V Series/Max/Keychron_V3_Max_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0934 }, Qmk_Keychron_V3_Max_QMK_ISO_Keyboard),
-            new("Keychron V5 MAX ANSI + Encoder QMK Keyboard", "Keychron/V Series/Max/Keychron_V5_Max_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0950 }, Qmk_Keychron_V5_Max_QMK_ANSI_Encoder_Keyboard),
-            new("Keychron V5 MAX ISO + Encoder QMK Keyboard", "Keychron/V Series/Max/Keychron_V5_Max_QMK_ISO_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0951 }, Qmk_Keychron_V5_Max_QMK_ISO_Encoder_Keyboard),
-            new("Keychron V6 Max ANSI QMK Keyboard", "Keychron/V Series/Max/Keychron_V6_Max_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0960 }, Qmk_Keychron_V6_Max_QMK_ANSI_Keyboard),
-            new("Keychron V6 Max ISO QMK Keyboard", "Keychron/V Series/Max/Keychron_V6_Max_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0961 }, Qmk_Keychron_V6_Max_QMK_ISO_Keyboard),
-            new("Keychron V1 QMK Keyboard", "Keychron/V Series/Standard/Keychron_V1_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0311 }, Qmk_Keychron_V1_QMK_ANSI_Encoder_Keyboard),
-            new("Keychron V1 QMK Keyboard", "Keychron/V Series/Standard/Keychron_V1_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0310 }, Qmk_Keychron_V1_QMK_ANSI_Keyboard),
-            new("Keychron V1 ISO QMK Keyboard", "Keychron/V Series/Standard/Keychron_V1_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0312, 0x0313 }, Qmk_Keychron_V1_QMK_ISO_Keyboard),
-            new("Keychron V2 QMK Keyboard", "Keychron/V Series/Standard/Keychron_V2_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0320, 0x0321 }, Qmk_Keychron_V2_QMK_ANSI_Keyboard),
-            new("Keychron V3 QMK ANSI Keyboard", "Keychron/V Series/Standard/Keychron_V3_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0330, 0x0331 }, Qmk_Keychron_V3_QMK_ANSI_Keyboard),
-            new("Keychron V3 QMK ISO Keyboard", "Keychron/V Series/Standard/Keychron_V3_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0332, 0x0333 }, Qmk_Keychron_V3_QMK_ISO_Keyboard),
-            new("Keychron V4 QMK ANSI Keyboard", "Keychron/V Series/Standard/Keychron_V4_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0340 }, Qmk_Keychron_V4_QMK_ANSI_Keyboard),
-            new("Keychron V4 QMK ISO Keyboard", "Keychron/V Series/Standard/Keychron_V4_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0342 }, Qmk_Keychron_V4_QMK_ISO_Keyboard),
-            new("Keychron V5 QMK ANSI Encoder Keyboard", "Keychron/V Series/Standard/Keychron_V5_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0351 }, Qmk_Keychron_V5_QMK_ANSI_Encoder_Keyboard),
-            new("Keychron V5 QMK Keyboard", "Keychron/V Series/Standard/Keychron_V5_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0350 }, Qmk_Keychron_V5_QMK_ANSI_Keyboard),
-            new("Keychron V5 QMK ISO Encoder Keyboard", "Keychron/V Series/Standard/Keychron_V5_QMK_ISO_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0353 }, Qmk_Keychron_V5_QMK_ISO_Encoder_Keyboard),
-            new("Keychron V6 ANSI QMK Keyboard", "Keychron/V Series/Standard/Keychron_V6_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0360, 0x0361 }, Qmk_Keychron_V6_QMK_ANSI_Keyboard),
-            new("Keychron V6 ISO QMK Keyboard", "Keychron/V Series/Standard/Keychron_V6_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0363 }, Qmk_Keychron_V6_QMK_ISO_Keyboard),
-            new("Magic Force / Kinst MF17 QMK Numpad", "Kinst/Kinst_MF17_QMK_Numpad.js", 0x3A54, new ushort[] { 0x4F5D }, Qmk_Kinst_MF17_QMK_Numpad),
-            new("Lemokey L1", "Lemokey/Lemokey_L1_ANSI_Keyboard.js", 0x362D, new ushort[] { 0x0110 }, Qmk_Lemokey_L1_ANSI_Keyboard),
-            new("Lemokey L1 HE", "Lemokey/Lemokey_L1_HE_ANSI_Keyboard.js", 0x362D, new ushort[] { 0x0510 }, Qmk_Lemokey_L1_HE_ANSI_Keyboard),
-            new("Lemokey L3", "Lemokey/Lemokey_L3_ANSI_Keyboard.js", 0x362D, new ushort[] { 0x0130 }, Qmk_Lemokey_L3_ANSI_Keyboard),
-            new("Lemokey P1 HE ANSI Keyboard", "Lemokey/Lemokey_P1_HE_ANSI_Keyboard.js", 0x362D, new ushort[] { 0x0610 }, Qmk_Lemokey_P1_HE_ANSI_Keyboard),
-            new("Lemokey P1 HE ISO Keyboard", "Lemokey/Lemokey_P1_HE_ISO_Keyboard.js", 0x362D, new ushort[] { 0x0611 }, Qmk_Lemokey_P1_HE_ISO_Keyboard),
-            new("Lemokey P1 Pro ANSI Keyboard", "Lemokey/Lemokey_P1_Pro_ANSI_Keyboard.js", 0x362D, new ushort[] { 0x0303 }, Qmk_Lemokey_P1_Pro_ANSI_Keyboard),
-            new("Lemokey P1 Pro ISO Keyboard", "Lemokey/Lemokey_P1_Pro_ISO_Keyboard.js", 0x362D, new ushort[] { 0x0304 }, Qmk_Lemokey_P1_Pro_ISO_Keyboard),
+            new("Keychron Q1 HE QMK ANSI Keyboard", "Keychron/Q Series/HE/Keychron_Q1_HE_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0B10 }, Qmk_Keychron_Q1_HE_QMK_ANSI_Keyboard_fw_keychron_q1_he_ansi_encoder, Firmware: "keyboards/keychron/q1_he/ansi_encoder"),
+            new("Keychron Q1 HE QMK ISO Keyboard", "Keychron/Q Series/HE/Keychron_Q1_HE_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0B11 }, Qmk_Keychron_Q1_HE_QMK_ISO_Keyboard_fw_keychron_q1_he_iso_encoder, Firmware: "keyboards/keychron/q1_he/iso_encoder"),
+            new("Keychron Q3 HE ANSI Encoder Keyboard", "Keychron/Q Series/HE/Keychron_Q3_HE_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0B30 }, Qmk_Keychron_Q3_HE_QMK_ANSI_Encoder_Keyboard_fw_keychron_q3_he_ansi_encoder, Firmware: "keyboards/keychron/q3_he/ansi_encoder"),
+            new("Keychron Q5 HE QMK Keyboard", "Keychron/Q Series/HE/Keychron_Q5_HE_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0B50 }, Qmk_Keychron_Q5_HE_QMK_ANSI_Encoder_Keyboard_fw_keychron_q5_he_ansi_encoder, Firmware: "keyboards/keychron/q5_he/ansi_encoder"),
+            new("Keychron Q6 HE QMK Keyboard", "Keychron/Q Series/HE/Keychron_Q6_HE_QMK_ANSI_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0B60 }, Qmk_Keychron_Q6_HE_QMK_ANSI_ISO_Keyboard_fw_keychron_q6_he_ansi_encoder, Firmware: "keyboards/keychron/q6_he/ansi_encoder"),
+            new("Keychron Q6 HE QMK Keyboard", "Keychron/Q Series/HE/Keychron_Q6_HE_QMK_ANSI_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0B61 }, Qmk_Keychron_Q6_HE_QMK_ANSI_ISO_Keyboard_fw_keychron_q6_he_iso_encoder, Firmware: "keyboards/keychron/q6_he/iso_encoder"),
+            new("Keychron Q0 Max QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q0_Max_QMK_Keyboard.js", 0x3434, new ushort[] { 0x0800 }, Qmk_Keychron_Q0_Max_QMK_Keyboard_fw_keychron_q0_max_encoder, Firmware: "keyboards/keychron/q0_max/encoder"),
+            new("Keychron Q12 Max ANSI QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q12_Max_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x08C3 }, Qmk_Keychron_Q12_Max_QMK_ANSI_Encoder_Keyboard_fw_keychron_q12_max_ansi_encoder, Firmware: "keyboards/keychron/q12_max/ansi_encoder"),
+            new("Keychron Q1 Max ANSI QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q1_Max_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0810 }, Qmk_Keychron_Q1_Max_QMK_ANSI_Encoder_Keyboard_fw_keychron_q1_max_ansi_encoder, Firmware: "keyboards/keychron/q1_max/ansi_encoder"),
+            new("Keychron Q1 Max ISO QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q1_Max_QMK_ISO_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0811 }, Qmk_Keychron_Q1_Max_QMK_ISO_Encoder_Keyboard_fw_keychron_q1_max_iso_encoder, Firmware: "keyboards/keychron/q1_max/iso_encoder"),
+            new("Keychron Q2 Max ANSI QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q2_Max_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0820 }, Qmk_Keychron_Q2_Max_QMK_ANSI_Encoder_Keyboard_fw_keychron_q2_max_ansi_encoder, Firmware: "keyboards/keychron/q2_max/ansi_encoder"),
+            new("Keychron Q3 Max ANSI QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q3_Max_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0830 }, Qmk_Keychron_Q3_Max_QMK_ANSI_Keyboard_fw_keychron_q3_max_ansi_encoder, Firmware: "keyboards/keychron/q3_max/ansi_encoder"),
+            new("Keychron Q3 Max ISO QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q3_Max_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0831 }, Qmk_Keychron_Q3_Max_QMK_ISO_Keyboard_fw_keychron_q3_max_iso_encoder, Firmware: "keyboards/keychron/q3_max/iso_encoder"),
+            new("Keychron Q5 Max ANSI Encoder QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q5_Max_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0850 }, Qmk_Keychron_Q5_Max_QMK_ANSI_Encoder_Keyboard_fw_keychron_q5_max_ansi_encoder, Firmware: "keyboards/keychron/q5_max/ansi_encoder"),
+            new("Keychron Q65 Max QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q65_Max_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x08B0 }, Qmk_Keychron_Q65_Max_QMK_ANSI_Encoder_Keyboard_fw_keychron_q65_max_ansi_encoder, Firmware: "keyboards/keychron/q65_max/ansi_encoder"),
+            new("Keychron Q6 Max ANSI QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q6_Max_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0860 }, Qmk_Keychron_Q6_Max_QMK_ANSI_Keyboard_fw_keychron_q6_max_ansi_encoder, Firmware: "keyboards/keychron/q6_max/ansi_encoder"),
+            new("Keychron Q6 Max ISO QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q6_Max_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0861 }, Qmk_Keychron_Q6_Max_QMK_ISO_Keyboard_fw_keychron_q6_max_iso_encoder, Firmware: "keyboards/keychron/q6_max/iso_encoder"),
+            new("Keychron Q8 Max ANSI QMK Keyboard", "Keychron/Q Series/Max/Keychron_Q8_Max_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0880 }, Qmk_Keychron_Q8_Max_QMK_ANSI_Keyboard_fw_keychron_q8_max_ansi_encoder, Firmware: "keyboards/keychron/q8_max/ansi_encoder"),
+            new("Keychron Q0 Plus QMK Keyboard", "Keychron/Q Series/Plus/Keychron_Q0_Plus_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0131 }, Qmk_Keychron_Q0_Plus_QMK_ANSI_Keyboard_fw_keychron_q0_plus, Firmware: "keyboards/keychron/q0/plus"),
+            new("Keychron Q1 Pro / OnePlus 81 Pro QMK Keyboard", "Keychron/Q Series/Pro/Keychron_Q1_Pro_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0610 }, Qmk_Keychron_Q1_Pro_QMK_ANSI_Encoder_Keyboard_fw_keychron_q1_pro_ansi_knob, Firmware: "keyboards/keychron/q1_pro/ansi_knob"),
+            new("Keychron Q1 Pro ISO QMK Keyboard", "Keychron/Q Series/Pro/Keychron_Q1_Pro_QMK_ISO_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0611 }, Qmk_Keychron_Q1_Pro_QMK_ISO_Encoder_Keyboard_fw_keychron_q1_pro_iso_knob, Firmware: "keyboards/keychron/q1_pro/iso_knob"),
+            new("Keychron Q2 Pro ANSI Encoder", "Keychron/Q Series/Pro/Keychron_Q2_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0620 }, Qmk_Keychron_Q2_Pro_QMK_ANSI_Keyboard_fw_keychron_q2_pro_ansi_encoder, Firmware: "keyboards/keychron/q2_pro/ansi_encoder"),
+            new("Keychron Q3 Pro SE ANSI", "Keychron/Q Series/Pro/Keychron_Q3_Pro_SE_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0630 }, Qmk_Keychron_Q3_Pro_SE_QMK_ANSI_Keyboard_fw_keychron_q3_pro_ansi_encoder_se, Firmware: "keyboards/keychron/q3_pro/ansi_encoder_se"),
+            new("Keychron Q3 Pro SE ISO QMK Keyboard", "Keychron/Q Series/Pro/Keychron_Q3_Pro_SE_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0631 }, Qmk_Keychron_Q3_Pro_SE_QMK_ISO_Keyboard_fw_keychron_q3_pro_iso_encoder_se, Firmware: "keyboards/keychron/q3_pro/iso_encoder_se"),
+            new("Keychron Q5 Pro", "Keychron/Q Series/Pro/Keychron_Q5_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0650 }, Qmk_Keychron_Q5_Pro_QMK_ANSI_Keyboard_fw_keychron_q5_pro_ansi_encoder, Firmware: "keyboards/keychron/q5_pro/ansi_encoder"),
+            new("Keychron Q5 Pro ISO", "Keychron/Q Series/Pro/Keychron_Q5_Pro_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0651 }, Qmk_Keychron_Q5_Pro_QMK_ISO_Keyboard_fw_keychron_q5_pro_iso_encoder, Firmware: "keyboards/keychron/q5_pro/iso_encoder"),
+            new("Keychron Q6 Pro ANSI QMK Keyboard", "Keychron/Q Series/Pro/Keychron_Q6_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0660 }, Qmk_Keychron_Q6_Pro_QMK_ANSI_Keyboard_fw_keychron_q6_pro_ansi_encoder, Firmware: "keyboards/keychron/q6_pro/ansi_encoder"),
+            new("Keychron Q6 Pro ISO QMK Keyboard", "Keychron/Q Series/Pro/Keychron_Q6_Pro_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0661 }, Qmk_Keychron_Q6_Pro_QMK_ISO_Keyboard_fw_keychron_q6_pro_iso_encoder, Firmware: "keyboards/keychron/q6_pro/iso_encoder"),
+            new("Keychron Q8 Pro ANSI QMK Keyboard", "Keychron/Q Series/Pro/Keychron_Q8_Pro_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0680 }, Qmk_Keychron_Q8_Pro_QMK_ANSI_Keyboard_fw_keychron_q8_pro_ansi_encoder, Firmware: "keyboards/keychron/q8_pro/ansi_encoder"),
+            new("Keychron Q0 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q0_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0130 }, Qmk_Keychron_Q0_QMK_ANSI_Keyboard_fw_keychron_q0_base, Firmware: "keyboards/keychron/q0/base"),
+            new("Keychron Q10", "Keychron/Q Series/Standard/Keychron_Q10_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x01A1 }, Qmk_Keychron_Q10_QMK_ANSI_Keyboard_fw_keychron_q10_ansi_encoder, Firmware: "keyboards/keychron/q10/ansi_encoder"),
+            new("Keychron Q12 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q12_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x01D1 }, Qmk_Keychron_Q12_QMK_ANSI_Keyboard_fw_keychron_q12_ansi_encoder, Firmware: "keyboards/keychron/q12/ansi_encoder"),
+            new("Keychron Q1v1 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q1v1_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0100 }, Qmk_Keychron_Q1v1_QMK_ANSI_Keyboard_fw_keychron_q1v1_ansi, Firmware: "keyboards/keychron/q1v1/ansi"),
+            new("Keychron Q1v1 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q1v1_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0101 }, Qmk_Keychron_Q1v1_QMK_ANSI_Keyboard_fw_keychron_q1v1_ansi_encoder, Firmware: "keyboards/keychron/q1v1/ansi_encoder"),
+            new("Keychron Q1v1 ISO QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q1v1_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0102 }, Qmk_Keychron_Q1v1_QMK_ISO_Keyboard_fw_keychron_q1v1_iso, Firmware: "keyboards/keychron/q1v1/iso"),
+            new("Keychron Q1v1 ISO QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q1v1_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0103 }, Qmk_Keychron_Q1v1_QMK_ISO_Keyboard_fw_keychron_q1v1_iso_encoder, Firmware: "keyboards/keychron/q1v1/iso_encoder"),
+            new("Keychron Q1v2 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q1v2_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0106 }, Qmk_Keychron_Q1v2_QMK_ANSI_Encoder_Keyboard_fw_keychron_q1v2_ansi, Firmware: "keyboards/keychron/q1v2/ansi"),
+            new("Keychron Q1v2 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q1v2_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0107 }, Qmk_Keychron_Q1v2_QMK_ANSI_Encoder_Keyboard_fw_keychron_q1v2_ansi_encoder, Firmware: "keyboards/keychron/q1v2/ansi_encoder"),
+            new("Keychron Q1v2 ISO QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q1v2_QMK_ISO_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0108 }, Qmk_Keychron_Q1v2_QMK_ISO_Encoder_Keyboard_fw_keychron_q1v2_iso, Firmware: "keyboards/keychron/q1v2/iso"),
+            new("Keychron Q1v2 ISO QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q1v2_QMK_ISO_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0109 }, Qmk_Keychron_Q1v2_QMK_ISO_Encoder_Keyboard_fw_keychron_q1v2_iso_encoder, Firmware: "keyboards/keychron/q1v2/iso_encoder"),
+            new("Keychron Q2 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q2_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0111 }, Qmk_Keychron_Q2_QMK_ANSI_Encoder_Keyboard_fw_keychron_q2_ansi_encoder, Firmware: "keyboards/keychron/q2/ansi_encoder"),
+            new("Keychron Q2 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q2_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0110 }, Qmk_Keychron_Q2_QMK_ANSI_Keyboard_fw_keychron_q2_ansi, Firmware: "keyboards/keychron/q2/ansi"),
+            new("Keychron Q3 ANSI Encoder Keyboard", "Keychron/Q Series/Standard/Keychron_Q3_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0121 }, Qmk_Keychron_Q3_QMK_ANSI_Encoder_Keyboard_fw_keychron_q3_ansi_encoder, Firmware: "keyboards/keychron/q3/ansi_encoder"),
+            new("Keychron Q3 ANSI Keyboard", "Keychron/Q Series/Standard/Keychron_Q3_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0120 }, Qmk_Keychron_Q3_QMK_ANSI_Keyboard_fw_keychron_q3_ansi, Firmware: "keyboards/keychron/q3/ansi"),
+            new("Keychron Q3 ISO Keyboard", "Keychron/Q Series/Standard/Keychron_Q3_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0122 }, Qmk_Keychron_Q3_QMK_ISO_Keyboard_fw_keychron_q3_iso, Firmware: "keyboards/keychron/q3/iso"),
+            new("Keychron Q3 ISO Keyboard", "Keychron/Q Series/Standard/Keychron_Q3_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0123 }, Qmk_Keychron_Q3_QMK_ISO_Keyboard_fw_keychron_q3_iso_encoder, Firmware: "keyboards/keychron/q3/iso_encoder"),
+            new("Keychron Q4 ANSI", "Keychron/Q Series/Standard/Keychron_Q4_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0140 }, Qmk_Keychron_Q4_QMK_ANSI_Keyboard_fw_keychron_q4_ansi, Firmware: "keyboards/keychron/q4/ansi"),
+            new("Keychron Q5 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q5_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0151 }, Qmk_Keychron_Q5_QMK_ANSI_Encoder_Keyboard_fw_keychron_q5_ansi_encoder, Firmware: "keyboards/keychron/q5/ansi_encoder"),
+            new("Keychron Q5 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q5_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0150 }, Qmk_Keychron_Q5_QMK_ANSI_Keyboard_fw_keychron_q5_ansi, Firmware: "keyboards/keychron/q5/ansi"),
+            new("Keychron Q5 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q5_QMK_ISO_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0153 }, Qmk_Keychron_Q5_QMK_ISO_Encoder_Keyboard_fw_keychron_q5_iso_encoder, Firmware: "keyboards/keychron/q5/iso_encoder"),
+            new("Keychron Q65 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q65_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x01B1 }, Qmk_Keychron_Q65_QMK_ANSI_Encoder_Keyboard_fw_keychron_q65_ansi_encoder, Firmware: "keyboards/keychron/q65/ansi_encoder"),
+            new("Keychron Q6 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q6_QMK_ANSI_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0160 }, Qmk_Keychron_Q6_QMK_ANSI_ISO_Keyboard_fw_keychron_q6_ansi, Firmware: "keyboards/keychron/q6/ansi"),
+            new("Keychron Q6 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q6_QMK_ANSI_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0161 }, Qmk_Keychron_Q6_QMK_ANSI_ISO_Keyboard_fw_keychron_q6_ansi_encoder, Firmware: "keyboards/keychron/q6/ansi_encoder"),
+            new("Keychron Q6 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q6_QMK_ANSI_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0162 }, Qmk_Keychron_Q6_QMK_ANSI_ISO_Keyboard_fw_keychron_q6_iso, Firmware: "keyboards/keychron/q6/iso"),
+            new("Keychron Q6 QMK Keyboard", "Keychron/Q Series/Standard/Keychron_Q6_QMK_ANSI_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0163 }, Qmk_Keychron_Q6_QMK_ANSI_ISO_Keyboard_fw_keychron_q6_iso_encoder, Firmware: "keyboards/keychron/q6/iso_encoder"),
+            new("Keychron V1 MAX ANSI + Encoder QMK Keyboard", "Keychron/V Series/Max/Keychron_V1_Max_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0913 }, Qmk_Keychron_V1_Max_QMK_ANSI_Encoder_Keyboard_fw_keychron_v1_max_ansi_encoder, Firmware: "keyboards/keychron/v1_max/ansi_encoder"),
+            new("Keychron V1 MAX ISO + Encoder QMK Keyboard", "Keychron/V Series/Max/Keychron_V1_Max_QMK_ISO_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0914 }, Qmk_Keychron_V1_Max_QMK_ISO_Encoder_Keyboard_fw_keychron_v1_max_iso_encoder, Firmware: "keyboards/keychron/v1_max/iso_encoder"),
+            new("Keychron V3 Max QMK Keyboard", "Keychron/V Series/Max/Keychron_V3_Max_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0933 }, Qmk_Keychron_V3_Max_QMK_ANSI_Encoder_Keyboard_fw_keychron_v3_max_ansi_encoder, Firmware: "keyboards/keychron/v3_max/ansi_encoder"),
+            new("Keychron V3 Max QMK ISO Keyboard", "Keychron/V Series/Max/Keychron_V3_Max_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0934 }, Qmk_Keychron_V3_Max_QMK_ISO_Keyboard_fw_keychron_v3_max_iso_encoder, Firmware: "keyboards/keychron/v3_max/iso_encoder"),
+            new("Keychron V5 MAX ANSI + Encoder QMK Keyboard", "Keychron/V Series/Max/Keychron_V5_Max_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0950 }, Qmk_Keychron_V5_Max_QMK_ANSI_Encoder_Keyboard_fw_keychron_v5_max_ansi_encoder, Firmware: "keyboards/keychron/v5_max/ansi_encoder"),
+            new("Keychron V5 MAX ISO + Encoder QMK Keyboard", "Keychron/V Series/Max/Keychron_V5_Max_QMK_ISO_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0951 }, Qmk_Keychron_V5_Max_QMK_ISO_Encoder_Keyboard_fw_keychron_v5_max_iso_encoder, Firmware: "keyboards/keychron/v5_max/iso_encoder"),
+            new("Keychron V6 Max ANSI QMK Keyboard", "Keychron/V Series/Max/Keychron_V6_Max_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0960 }, Qmk_Keychron_V6_Max_QMK_ANSI_Keyboard_fw_keychron_v6_max_ansi_encoder, Firmware: "keyboards/keychron/v6_max/ansi_encoder"),
+            new("Keychron V6 Max ISO QMK Keyboard", "Keychron/V Series/Max/Keychron_V6_Max_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0961 }, Qmk_Keychron_V6_Max_QMK_ISO_Keyboard_fw_keychron_v6_max_iso_encoder, Firmware: "keyboards/keychron/v6_max/iso_encoder"),
+            new("Keychron V1 QMK Keyboard", "Keychron/V Series/Standard/Keychron_V1_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0311 }, Qmk_Keychron_V1_QMK_ANSI_Encoder_Keyboard_fw_keychron_v1_ansi_encoder, Firmware: "keyboards/keychron/v1/ansi_encoder"),
+            new("Keychron V1 QMK Keyboard", "Keychron/V Series/Standard/Keychron_V1_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0310 }, Qmk_Keychron_V1_QMK_ANSI_Keyboard_fw_keychron_v1_ansi, Firmware: "keyboards/keychron/v1/ansi"),
+            new("Keychron V1 ISO QMK Keyboard", "Keychron/V Series/Standard/Keychron_V1_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0312 }, Qmk_Keychron_V1_QMK_ISO_Keyboard_fw_keychron_v1_iso, Firmware: "keyboards/keychron/v1/iso"),
+            new("Keychron V1 ISO QMK Keyboard", "Keychron/V Series/Standard/Keychron_V1_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0313 }, Qmk_Keychron_V1_QMK_ISO_Keyboard_fw_keychron_v1_iso_encoder, Firmware: "keyboards/keychron/v1/iso_encoder"),
+            new("Keychron V2 QMK Keyboard", "Keychron/V Series/Standard/Keychron_V2_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0320 }, Qmk_Keychron_V2_QMK_ANSI_Keyboard_fw_keychron_v2_ansi, Firmware: "keyboards/keychron/v2/ansi"),
+            new("Keychron V2 QMK Keyboard", "Keychron/V Series/Standard/Keychron_V2_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0321 }, Qmk_Keychron_V2_QMK_ANSI_Keyboard_fw_keychron_v2_ansi_encoder, Firmware: "keyboards/keychron/v2/ansi_encoder"),
+            new("Keychron V3 QMK ANSI Keyboard", "Keychron/V Series/Standard/Keychron_V3_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0330 }, Qmk_Keychron_V3_QMK_ANSI_Keyboard_fw_keychron_v3_ansi, Firmware: "keyboards/keychron/v3/ansi"),
+            new("Keychron V3 QMK ANSI Keyboard", "Keychron/V Series/Standard/Keychron_V3_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0331 }, Qmk_Keychron_V3_QMK_ANSI_Keyboard_fw_keychron_v3_ansi_encoder, Firmware: "keyboards/keychron/v3/ansi_encoder"),
+            new("Keychron V3 QMK ISO Keyboard", "Keychron/V Series/Standard/Keychron_V3_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0332 }, Qmk_Keychron_V3_QMK_ISO_Keyboard_fw_keychron_v3_iso, Firmware: "keyboards/keychron/v3/iso"),
+            new("Keychron V3 QMK ISO Keyboard", "Keychron/V Series/Standard/Keychron_V3_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0333 }, Qmk_Keychron_V3_QMK_ISO_Keyboard_fw_keychron_v3_iso_encoder, Firmware: "keyboards/keychron/v3/iso_encoder"),
+            new("Keychron V4 QMK ANSI Keyboard", "Keychron/V Series/Standard/Keychron_V4_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0340 }, Qmk_Keychron_V4_QMK_ANSI_Keyboard_fw_keychron_v4_ansi, Firmware: "keyboards/keychron/v4/ansi"),
+            new("Keychron V4 QMK ISO Keyboard", "Keychron/V Series/Standard/Keychron_V4_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0342 }, Qmk_Keychron_V4_QMK_ISO_Keyboard_fw_keychron_v4_iso, Firmware: "keyboards/keychron/v4/iso"),
+            new("Keychron V5 QMK ANSI Encoder Keyboard", "Keychron/V Series/Standard/Keychron_V5_QMK_ANSI_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0351 }, Qmk_Keychron_V5_QMK_ANSI_Encoder_Keyboard_fw_keychron_v5_ansi_encoder, Firmware: "keyboards/keychron/v5/ansi_encoder"),
+            new("Keychron V5 QMK Keyboard", "Keychron/V Series/Standard/Keychron_V5_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0350 }, Qmk_Keychron_V5_QMK_ANSI_Keyboard_fw_keychron_v5_ansi, Firmware: "keyboards/keychron/v5/ansi"),
+            new("Keychron V5 QMK ISO Encoder Keyboard", "Keychron/V Series/Standard/Keychron_V5_QMK_ISO_Encoder_Keyboard.js", 0x3434, new ushort[] { 0x0353 }, Qmk_Keychron_V5_QMK_ISO_Encoder_Keyboard_fw_keychron_v5_iso_encoder, Firmware: "keyboards/keychron/v5/iso_encoder"),
+            new("Keychron V6 ANSI QMK Keyboard", "Keychron/V Series/Standard/Keychron_V6_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0360 }, Qmk_Keychron_V6_QMK_ANSI_Keyboard_fw_keychron_v6_ansi, Firmware: "keyboards/keychron/v6/ansi"),
+            new("Keychron V6 ANSI QMK Keyboard", "Keychron/V Series/Standard/Keychron_V6_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x0361 }, Qmk_Keychron_V6_QMK_ANSI_Keyboard_fw_keychron_v6_ansi_encoder, Firmware: "keyboards/keychron/v6/ansi_encoder"),
+            new("Keychron V6 ISO QMK Keyboard", "Keychron/V Series/Standard/Keychron_V6_QMK_ISO_Keyboard.js", 0x3434, new ushort[] { 0x0363 }, Qmk_Keychron_V6_QMK_ISO_Keyboard_fw_keychron_v6_iso_encoder, Firmware: "keyboards/keychron/v6/iso_encoder"),
+            new("Magic Force / Kinst MF17 QMK Numpad", "Kinst/Kinst_MF17_QMK_Numpad.js", 0x3A54, new ushort[] { 0x4F5D }, Qmk_Kinst_MF17_QMK_Numpad_fw_magic_force_mf17, Firmware: "keyboards/magic_force/mf17"),
+            new("Lemokey L1", "Lemokey/Lemokey_L1_ANSI_Keyboard.js", 0x362D, new ushort[] { 0x0110 }, Qmk_Lemokey_L1_ANSI_Keyboard_fw_lemokey_l1_ansi, Firmware: "keyboards/lemokey/l1/ansi"),
+            new("Lemokey L1 HE", "Lemokey/Lemokey_L1_HE_ANSI_Keyboard.js", 0x362D, new ushort[] { 0x0510 }, Qmk_Lemokey_L1_HE_ANSI_Keyboard_fw_lemokey_l1_he_ansi, Firmware: "keyboards/lemokey/l1_he/ansi"),
+            new("Lemokey L3", "Lemokey/Lemokey_L3_ANSI_Keyboard.js", 0x362D, new ushort[] { 0x0130 }, Qmk_Lemokey_L3_ANSI_Keyboard_fw_lemokey_l3_ansi, Firmware: "keyboards/lemokey/l3/ansi"),
+            new("Lemokey P1 HE ANSI Keyboard", "Lemokey/Lemokey_P1_HE_ANSI_Keyboard.js", 0x362D, new ushort[] { 0x0610 }, Qmk_Lemokey_P1_HE_ANSI_Keyboard_fw_lemokey_p1_he_ansi, Firmware: "keyboards/lemokey/p1_he/ansi"),
+            new("Lemokey P1 HE ISO Keyboard", "Lemokey/Lemokey_P1_HE_ISO_Keyboard.js", 0x362D, new ushort[] { 0x0611 }, Qmk_Lemokey_P1_HE_ISO_Keyboard_fw_lemokey_p1_he_iso, Firmware: "keyboards/lemokey/p1_he/iso"),
+            new("Lemokey P1 Pro ANSI Keyboard", "Lemokey/Lemokey_P1_Pro_ANSI_Keyboard.js", 0x362D, new ushort[] { 0x0303 }, Qmk_Lemokey_P1_Pro_ANSI_Keyboard_fw_lemokey_p1_pro_ansi_encoder, Firmware: "keyboards/lemokey/p1_pro/ansi_encoder"),
+            new("Lemokey P1 Pro ISO Keyboard", "Lemokey/Lemokey_P1_Pro_ISO_Keyboard.js", 0x362D, new ushort[] { 0x0304 }, Qmk_Lemokey_P1_Pro_ISO_Keyboard_fw_lemokey_p1_pro_iso_encoder, Firmware: "keyboards/lemokey/p1_pro/iso_encoder"),
             new("MCHOSE GX87 ANSI QMK Keyboard", "MCHOSE/MCHOSE_GX87_QMK_ANSI_Keyboard.js", 0xFFFE, new ushort[] { 0x006F }, Qmk_MCHOSE_GX87_QMK_ANSI_Keyboard),
-            new("Drop ALT V2 QMK Keyboard", "Massdrop/Drop_ALT_V2_QMK_Keyboard.js", 0x359B, new ushort[] { 0x0006 }, Qmk_Drop_ALT_V2_QMK_Keyboard),
-            new("Drop CSTM80 QMK Keyboard", "Massdrop/Drop_CSTM80_QMK_Keyboard.js", 0x359B, new ushort[] { 0x0004 }, Qmk_Drop_CSTM80_QMK_Keyboard),
+            new("Drop ALT V2 QMK Keyboard", "Massdrop/Drop_ALT_V2_QMK_Keyboard.js", 0x359B, new ushort[] { 0x0006 }, Qmk_Drop_ALT_V2_QMK_Keyboard_fw_drop_alt_v2, Firmware: "keyboards/drop/alt/v2"),
+            new("Drop CSTM80 QMK Keyboard", "Massdrop/Drop_CSTM80_QMK_Keyboard.js", 0x359B, new ushort[] { 0x0004 }, Qmk_Drop_CSTM80_QMK_Keyboard_fw_drop_cstm80, Firmware: "keyboards/drop/cstm80"),
             new("Drop SHIFT v1 QMK Keyboard", "Massdrop/Drop_SHIFT_V1_QMK_Keyboard.js", 0x04D8, new ushort[] { 0xEE65 }, Qmk_Drop_SHIFT_V1_QMK_Keyboard),
-            new("Drop SHIFT v2 QMK Keyboard", "Massdrop/Drop_SHIFT_V2_QMK_Keyboard.js", 0x359B, new ushort[] { 0x000C }, Qmk_Drop_SHIFT_V2_QMK_Keyboard),
+            new("Drop SHIFT v2 QMK Keyboard", "Massdrop/Drop_SHIFT_V2_QMK_Keyboard.js", 0x359B, new ushort[] { 0x000C }, Qmk_Drop_SHIFT_V2_QMK_Keyboard_fw_drop_shift_v2, Firmware: "keyboards/drop/shift/v2"),
             new("massdrop_alt_default", "Massdrop/Massdrop_ALT_QMK_Keyboard.js", 0x04D8, new ushort[] { 0xEED3 }, Qmk_Massdrop_ALT_QMK_Keyboard),
             new("Massdrop CTRL QMK Keyboard", "Massdrop/Massdrop_CTRL_QMK_Keyboard.js", 0x04D8, new ushort[] { 0xEED2 }, Qmk_Massdrop_CTRL_QMK_Keyboard),
-            new("Massdrop CTRL V2 QMK Keyboard", "Massdrop/Massdrop_CTRL_V2_QMK_Keyboard.js", 0x359B, new ushort[] { 0x0009 }, Qmk_Massdrop_CTRL_V2_QMK_Keyboard),
-            new("Massdrop SENSE75 QMK Keyboard", "Massdrop/Massdrop_SENSE75_QMK_Keyboard.js", 0x359B, new ushort[] { 0x0001 }, Qmk_Massdrop_SENSE75_QMK_Keyboard),
-            new("Monsgeek M1_V3", "Monsgeek/Monsgeek_M1_V3_Keyboard.js", 0xFFFE, new ushort[] { 0x0005 }, Qmk_Monsgeek_M1_V3_Keyboard),
+            new("Massdrop CTRL V2 QMK Keyboard", "Massdrop/Massdrop_CTRL_V2_QMK_Keyboard.js", 0x359B, new ushort[] { 0x0009 }, Qmk_Massdrop_CTRL_V2_QMK_Keyboard_fw_drop_ctrl_v2, Firmware: "keyboards/drop/ctrl/v2"),
+            new("Massdrop SENSE75 QMK Keyboard", "Massdrop/Massdrop_SENSE75_QMK_Keyboard.js", 0x359B, new ushort[] { 0x0001 }, Qmk_Massdrop_SENSE75_QMK_Keyboard_fw_drop_sense75, Firmware: "keyboards/drop/sense75"),
+            new("Monsgeek M1_V3", "Monsgeek/Monsgeek_M1_V3_Keyboard.js", 0xFFFE, new ushort[] { 0x0005 }, Qmk_Monsgeek_M1_V3_Keyboard_fw_monsgeek_m1, Firmware: "keyboards/monsgeek/m1"),
             new("Monsgeek M1_V5 ANSI", "Monsgeek/Monsgeek_M1_V5_ANSI_Keyboard.js", 0x342D, new ushort[] { 0xE4C5 }, Qmk_Monsgeek_M1_V5_ANSI_Keyboard),
             new("Monsgeek M1_V5 ISO", "Monsgeek/Monsgeek_M1_V5_ISO_Keyboard.js", 0x342D, new ushort[] { 0xE4C2 }, Qmk_Monsgeek_M1_V5_ISO_Keyboard),
-            new("Monsgeek M3 QMK Keyboard", "Monsgeek/Monsgeek_M3_Keyboard_TKL.js", 0xFFFE, new ushort[] { 0x0009 }, Qmk_Monsgeek_M3_Keyboard_TKL),
+            new("Monsgeek M3 QMK Keyboard", "Monsgeek/Monsgeek_M3_Keyboard_TKL.js", 0xFFFE, new ushort[] { 0x0009 }, Qmk_Monsgeek_M3_Keyboard_TKL_fw_monsgeek_m3, Firmware: "keyboards/monsgeek/m3"),
             new("MonsGeek M7 QMK Keyboard", "Monsgeek/Monsgeek_M7_QMK_ANSI_Keyboard.js", 0x0021, new ushort[] { 0x001E }, Qmk_Monsgeek_M7_QMK_ANSI_Keyboard),
             new("NCR-80 Hotswap", "NCR/NCR-80_Hotswap_Keyboard.js", 0x4D54, new ushort[] { 0x2002 }, Qmk_NCR_80_Hotswap_Keyboard),
             new("NuPhy Air75 V2 QMK Keyboard", "Nuphy/NuPhy_Air75v2_QMK_Keyboard.js", 0x19F5, new ushort[] { 0x3245, 0x3246 }, Qmk_NuPhy_Air75v2_QMK_Keyboard),
@@ -186,12 +205,12 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new("Halo96 V2 Keyboard", "Nuphy/NuPhy_Halo96v2_QMK_Keyboard.js", 0x19F5, new ushort[] { 0x3302 }, Qmk_NuPhy_Halo96v2_QMK_Keyboard),
             new("Pulsar XBOARD QS", "Pulsar/pulsar_XBOARD QS_sRGB_240206.js", 0x3710, new ushort[] { 0x2400 }, Qmk_pulsar_XBOARD_QS_sRGB_240206),
             new("SW Eave65", "Swagkeys/SW_EAVE65.js", 0x4A16, new ushort[] { 0x4A16 }, Qmk_SW_EAVE65),
-            new("Launch Configurable Keyboard (launch_1)", "System76/System76_Launch-1_QMK_Keyboard.js", 0x3384, new ushort[] { 0x0001 }, Qmk_System76_Launch_1_QMK_Keyboard),
-            new("XBows KnightPlus Keyboard", "XBows/XBows_KnightPlus_QMK_ANSI_Keyboard.js", 0x5842, new ushort[] { 0x4B50 }, Qmk_XBows_KnightPlus_QMK_ANSI_Keyboard),
-            new("XBows KnightPlus Numpad", "XBows/XBows_KnightPlus_QMK_ANSI_Numpad.js", 0x5842, new ushort[] { 0x4E75 }, Qmk_XBows_KnightPlus_QMK_ANSI_Numpad),
-            new("XBows KnightPlus Keyboard", "XBows/XBows_Nature_QMK_ANSI_Keyboard.js", 0x5842, new ushort[] { 0x4E61 }, Qmk_XBows_Nature_QMK_ANSI_Keyboard),
+            new("Launch Configurable Keyboard (launch_1)", "System76/System76_Launch-1_QMK_Keyboard.js", 0x3384, new ushort[] { 0x0001 }, Qmk_System76_Launch_1_QMK_Keyboard_fw_system76_launch_1, Firmware: "keyboards/system76/launch_1"),
+            new("XBows KnightPlus Keyboard", "XBows/XBows_KnightPlus_QMK_ANSI_Keyboard.js", 0x5842, new ushort[] { 0x4B50 }, Qmk_XBows_KnightPlus_QMK_ANSI_Keyboard_fw_xbows_knight_plus, Firmware: "keyboards/xbows/knight_plus"),
+            new("XBows KnightPlus Numpad", "XBows/XBows_KnightPlus_QMK_ANSI_Numpad.js", 0x5842, new ushort[] { 0x4E75 }, Qmk_XBows_KnightPlus_QMK_ANSI_Numpad_fw_xbows_numpad, Firmware: "keyboards/xbows/numpad"),
+            new("XBows KnightPlus Keyboard", "XBows/XBows_Nature_QMK_ANSI_Keyboard.js", 0x5842, new ushort[] { 0x4E61 }, Qmk_XBows_Nature_QMK_ANSI_Keyboard_fw_xbows_nature, Firmware: "keyboards/xbows/nature"),
             new("YMDK Melody96 RGB QMK Keyboard", "YMDK/YMDK_Melody96rgb_QMK_Keyboard.js", 0x594D, new ushort[] { 0x6060 }, Qmk_YMDK_Melody96rgb_QMK_Keyboard),
-            new("YMDK YMD09 QMK Keyboard", "YMDK/YMDK_YMD09_QMK_Keyboard.js", 0x594D, new ushort[] { 0x4409 }, Qmk_YMDK_YMD09_QMK_Keyboard),
+            new("YMDK YMD09 QMK Keyboard", "YMDK/YMDK_YMD09_QMK_Keyboard.js", 0x594D, new ushort[] { 0x4409 }, Qmk_YMDK_YMD09_QMK_Keyboard_fw_ymdk_ymd09, Firmware: "keyboards/ymdk/ymd09"),
             new("AL68_Keyboard", "Yunzii/Yunzii_AL68_QMK_ANSI_Keyboard.js", 0x4D4B, new ushort[] { 0x304E }, Qmk_Yunzii_AL68_QMK_ANSI_Keyboard),
             new("Yunzii AL80 QMK Keyboard", "Yunzii/Yunzii_AL80_QMK_ANSI_Keyboard.js", 0x28E9, new ushort[] { 0x30AF }, Qmk_Yunzii_AL80_QMK_ANSI_Keyboard),
             new("B87 Keyboard", "Yunzii/Yunzii_B87_QMK_ANSI_Keyboard.js", 0x28E9, new ushort[] { 0x30AD }, Qmk_Yunzii_B87_QMK_ANSI_Keyboard),
@@ -201,78 +220,78 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new("nerdytec CYKEY QMK ANSI Keyboard", "nerdytec/nerdytec_CYKEY_QMK_ANSI_Keyboard.js", 0x16D0, new ushort[] { 0x12AF }, Qmk_nerdytec_CYKEY_QMK_ANSI_Keyboard),
             new("nerdytec CYKEY QMK ISO Keyboard", "nerdytec/nerdytec_CYKEY_QMK_ISO_Keyboard.js", 0x16D0, new ushort[] { 0x12B0 }, Qmk_nerdytec_CYKEY_QMK_ISO_Keyboard),
             new("Redragon K556/K582 Keyboard", "Redragon/Redragon_K556_K582_Keyboard_QMK.js", 0x0C45, new ushort[] { 0x5004 }, Qmk_Redragon_K556_K582_Keyboard_QMK),
-            new("redragon k667 QMK Keyboard", "Redragon/Redragon_k667_Keyboard_QMK.js", 0x369B, new ushort[] { 0x0021 }, Qmk_Redragon_k667_Keyboard_QMK),
+            new("redragon k667 QMK Keyboard", "Redragon/Redragon_k667_Keyboard_QMK.js", 0x369B, new ushort[] { 0x0021 }, Qmk_Redragon_k667_Keyboard_QMK_fw_redragon_k667, Firmware: "keyboards/redragon/k667"),
             new("nerdytec CYKEY QMK ANSI Keyboard", "nerdytec/nerdytec_CYKEY_QMK_ANSI_Keyboard.js", 0x1EA7, new ushort[] { 0x6075 }, Qmk_nerdytec_CYKEY_QMK_ANSI_Keyboard_2),
             new("nerdytec CYKEY QMK ISO Keyboard", "nerdytec/nerdytec_CYKEY_QMK_ISO_Keyboard.js", 0x1EA7, new ushort[] { 0x6076 }, Qmk_nerdytec_CYKEY_QMK_ISO_Keyboard_2),
             new("GMMK TKL ISO", "GMMK/GMMK_TKL_QMK_ISO_Keyboard.js", 0x0C45, new ushort[] { 0x652F }, Qmk_GMMK_TKL_QMK_ISO_Keyboard),
-            new("1upkeyboards 1upocarina QMK Keyboard", "1upkeyboards/1upkeyboards_1upocarina.js", 0x6F75, new ushort[] { 0x5607 }, Qmk_1upkeyboards_1upocarina),
-            new("1upkeyboards 1upsuper16v3 QMK Keyboard", "1upkeyboards/1upkeyboards_1upsuper16v3.js", 0x6F75, new ushort[] { 0x5610 }, Qmk_1upkeyboards_1upsuper16v3),
-            new("1upkeyboards pi40 QMK Keyboard", "1upkeyboards/1upkeyboards_pi40.js", 0x6F75, new ushort[] { 0x5600 }, Qmk_1upkeyboards_pi40),
-            new("1upkeyboards pi60 QMK Keyboard", "1upkeyboards/1upkeyboards_pi60.js", 0x6F75, new ushort[] { 0x5604 }, Qmk_1upkeyboards_pi60),
-            new("1upkeyboards pi60_hse QMK Keyboard", "1upkeyboards/1upkeyboards_pi60hse.js", 0x6F75, new ushort[] { 0x5603 }, Qmk_1upkeyboards_pi60hse),
-            new("1upkeyboards pi60_rgb QMK Keyboard", "1upkeyboards/1upkeyboards_pi60rgb.js", 0x6F75, new ushort[] { 0x5602 }, Qmk_1upkeyboards_pi60rgb),
-            new("1upkeyboards sweet16v2 QMK Keyboard", "1upkeyboards/1upkeyboards_sweet16v2.js", 0x6F75, new ushort[] { 0x5518 }, Qmk_1upkeyboards_sweet16v2),
+            new("1upkeyboards 1upocarina QMK Keyboard", "1upkeyboards/1upkeyboards_1upocarina.js", 0x6F75, new ushort[] { 0x5607 }, Qmk_1upkeyboards_1upocarina_fw_1upkeyboards_1upocarina, Firmware: "keyboards/1upkeyboards/1upocarina"),
+            new("1upkeyboards 1upsuper16v3 QMK Keyboard", "1upkeyboards/1upkeyboards_1upsuper16v3.js", 0x6F75, new ushort[] { 0x5610 }, Qmk_1upkeyboards_1upsuper16v3_fw_1upkeyboards_1upsuper16v3, Firmware: "keyboards/1upkeyboards/1upsuper16v3"),
+            new("1upkeyboards pi40 QMK Keyboard", "1upkeyboards/1upkeyboards_pi40.js", 0x6F75, new ushort[] { 0x5600 }, Qmk_1upkeyboards_pi40_fw_1upkeyboards_pi40_mit_v1_0, Firmware: "keyboards/1upkeyboards/pi40/mit_v1_0"),
+            new("1upkeyboards pi60 QMK Keyboard", "1upkeyboards/1upkeyboards_pi60.js", 0x6F75, new ushort[] { 0x5604 }, Qmk_1upkeyboards_pi60_fw_1upkeyboards_pi60, Firmware: "keyboards/1upkeyboards/pi60"),
+            new("1upkeyboards pi60_hse QMK Keyboard", "1upkeyboards/1upkeyboards_pi60hse.js", 0x6F75, new ushort[] { 0x5603 }, Qmk_1upkeyboards_pi60hse_fw_1upkeyboards_pi60_hse, Firmware: "keyboards/1upkeyboards/pi60_hse"),
+            new("1upkeyboards pi60_rgb QMK Keyboard", "1upkeyboards/1upkeyboards_pi60rgb.js", 0x6F75, new ushort[] { 0x5602 }, Qmk_1upkeyboards_pi60rgb_fw_1upkeyboards_pi60_rgb, Firmware: "keyboards/1upkeyboards/pi60_rgb"),
+            new("1upkeyboards sweet16v2 QMK Keyboard", "1upkeyboards/1upkeyboards_sweet16v2.js", 0x6F75, new ushort[] { 0x5518 }, Qmk_1upkeyboards_sweet16v2_fw_1upkeyboards_sweet16v2, Firmware: "keyboards/1upkeyboards/sweet16v2"),
             new("DesignedbyGG Ironclad V3 ISO QMK+VIA", "DesignedbyGG/QMK_ISO_DbGG_IroncladV3_1.0_QMKVIA_Full.js", 0x320F, new ushort[] { 0x511E }, Qmk_QMK_ISO_DbGG_IroncladV3_1_0_QMKVIA_Full),
             new("Meletrix Zoom98 QMK Keyboard", "_Random-Brands/Meletrix_Zoom98_QMK_Keyboard.js", 0x36B5, new ushort[] { 0x27D6 }, Qmk_Meletrix_Zoom98_QMK_Keyboard),
-            new("Novelkeys NK87 QMK Keyboard", "_Random-Brands/Novelkeys_NK87_QMK_Keyboard.js", 0x8968, new ushort[] { 0x4E4C }, Qmk_Novelkeys_NK87_QMK_Keyboard),
-            new("abko ak84bt QMK Keyboard", "_Random-Brands/abko_ak84bt.js", 0x7654, new ushort[] { 0x4321 }, Qmk_abko_ak84bt),
-            new("an_achronism tetromino QMK Keyboard", "_Random-Brands/anachronism_tetromino.js", 0x4161, new ushort[] { 0x3435 }, Qmk_anachronism_tetromino),
-            new("Atlantis PS17 QMK Keyboard", "_Random-Brands/atlantis_ps17.js", 0x0015, new ushort[] { 0x414B }, Qmk_atlantis_ps17),
-            new("Binepad BN006 QMK Keyboard", "_Random-Brands/binepad_bn006.js", 0x4249, new ushort[] { 0x426E }, Qmk_binepad_bn006),
-            new("CHOSFOX CHOSFOX CF81 QMK Keyboard", "_Random-Brands/chosfox_chosfox_cf81.js", 0xFFFE, new ushort[] { 0x0012 }, Qmk_chosfox_chosfox_cf81),
-            new("CXT cxt_studio QMK Keyboard", "_Random-Brands/cxt_cxtstudio.js", 0x5754, new ushort[] { 0xC401 }, Qmk_cxt_cxtstudio),
+            new("Novelkeys NK87 QMK Keyboard", "_Random-Brands/Novelkeys_NK87_QMK_Keyboard.js", 0x8968, new ushort[] { 0x4E4C }, Qmk_Novelkeys_NK87_QMK_Keyboard_fw_novelkeys_nk87, Firmware: "keyboards/novelkeys/nk87"),
+            new("abko ak84bt QMK Keyboard", "_Random-Brands/abko_ak84bt.js", 0x7654, new ushort[] { 0x4321 }, Qmk_abko_ak84bt_fw_abko_ak84bt, Firmware: "keyboards/abko/ak84bt"),
+            new("an_achronism tetromino QMK Keyboard", "_Random-Brands/anachronism_tetromino.js", 0x4161, new ushort[] { 0x3435 }, Qmk_anachronism_tetromino_fw_an_achronism_tetromino, Firmware: "keyboards/an_achronism/tetromino"),
+            new("Atlantis PS17 QMK Keyboard", "_Random-Brands/atlantis_ps17.js", 0x0015, new ushort[] { 0x414B }, Qmk_atlantis_ps17_fw_atlantis_ps17, Firmware: "keyboards/atlantis/ps17"),
+            new("Binepad BN006 QMK Keyboard", "_Random-Brands/binepad_bn006.js", 0x4249, new ushort[] { 0x426E }, Qmk_binepad_bn006_fw_binepad_bn006, Firmware: "keyboards/binepad/bn006"),
+            new("CHOSFOX CHOSFOX CF81 QMK Keyboard", "_Random-Brands/chosfox_chosfox_cf81.js", 0xFFFE, new ushort[] { 0x0012 }, Qmk_chosfox_chosfox_cf81_fw_chosfox_cf81, Firmware: "keyboards/chosfox/cf81"),
+            new("CXT cxt_studio QMK Keyboard", "_Random-Brands/cxt_cxtstudio.js", 0x5754, new ushort[] { 0xC401 }, Qmk_cxt_cxtstudio_fw_cxt_studio_12e4, Firmware: "keyboards/cxt_studio/12e4"),
             new("CZC.Gaming Dwarf QMK Keyboard", "_Random-Brands/czcgaming_dwarf.js", 0x4347, new ushort[] { 0x4B42 }, Qmk_czcgaming_dwarf),
-            new("dekuNukem duckyPad QMK Keyboard", "_Random-Brands/dekunukem_duckypad.js", 0x444E, new ushort[] { 0x4450 }, Qmk_dekunukem_duckypad),
-            new("depermana12 dp3000 QMK Keyboard", "_Random-Brands/depermana12_dp3000.js", 0x4450, new ushort[] { 0x6470 }, Qmk_depermana12_dp3000),
+            new("dekuNukem duckyPad QMK Keyboard", "_Random-Brands/dekunukem_duckypad.js", 0x444E, new ushort[] { 0x4450 }, Qmk_dekunukem_duckypad_fw_dekunukem_duckypad, Firmware: "keyboards/dekunukem/duckypad"),
+            new("depermana12 dp3000 QMK Keyboard", "_Random-Brands/depermana12_dp3000.js", 0x4450, new ushort[] { 0x6470 }, Qmk_depermana12_dp3000_fw_dp3000_rev1, Firmware: "keyboards/dp3000/rev1"),
             new("Doio doio/kb38 QMK Keyboard", "_Random-Brands/doio_doiokb38.js", 0xFEED, new ushort[] { 0x0000 }, Qmk_doio_doiokb38),
-            new("eggsworks egg58 QMK Keyboard", "_Random-Brands/eggsworks_egg58.js", 0x4557, new ushort[] { 0x3665 }, Qmk_eggsworks_egg58),
-            new("Fancytech FancyAlice66 QMK Keyboard", "_Random-Brands/fancytech_fancyalice66.js", 0xECED, new ushort[] { 0x3663 }, Qmk_fancytech_fancyalice66),
-            new("FLASHQUARK Horizon_Z QMK Keyboard", "_Random-Brands/flashquark_horizonz.js", 0x4B42, new ushort[] { 0x0223 }, Qmk_flashquark_horizonz),
-            new("Freya splaytoraid QMK Keyboard", "_Random-Brands/freya_splaytoraid.js", 0x2004, new ushort[] { 0xCB00 }, Qmk_freya_splaytoraid),
-            new("gkeyboard GPAD8-2R QMK Keyboard", "_Random-Brands/gkeyboard_gpad82r.js", 0x474B, new ushort[] { 0x4202 }, Qmk_gkeyboard_gpad82r),
-            new("Hoksi Technology DURGOD Hades (QMK) QMK Keyboard", "_Random-Brands/hoksi_technology_durgod_hades_qmk.js", 0xD60D, new ushort[] { 0x4AD4 }, Qmk_hoksi_technology_durgod_hades_qmk),
-            new("Inland MK47 QMK Keyboard", "_Random-Brands/inland_mk47.js", 0xFFFE, new ushort[] { 0x0002 }, Qmk_inland_mk47),
-            new("JZ-Skyloong DT40 QMK Keyboard", "_Random-Brands/jzskyloong_dt40.js", 0x1EA7, new ushort[] { 0x6040 }, Qmk_jzskyloong_dt40),
-            new("KBDCRAFT Adam64 QMK Keyboard", "_Random-Brands/kbdcraft_adam64.js", 0x586A, new ushort[] { 0xB001 }, Qmk_kbdcraft_adam64),
-            new("kbdfans Kbdpadmk3 QMK Keyboard", "_Random-Brands/kbdfans_kbdpadmk3.js", 0x4B42, new ushort[] { 0x0012 }, Qmk_kbdfans_kbdpadmk3),
-            new("Keebio Nyquistpad QMK Keyboard", "_Random-Brands/keebio_nyquistpad.js", 0xCB10, new ushort[] { 0x1356 }, Qmk_keebio_nyquistpad),
-            new("Kuro Kuro65 QMK Keyboard", "_Random-Brands/kuro_kuro65.js", 0x544D, new ushort[] { 0xC000 }, Qmk_kuro_kuro65),
-            new("Laser Ninja Pumpkin Pad QMK Keyboard", "_Random-Brands/laser_ninja_pumpkin_pad.js", 0x6C6E, new ushort[] { 0x7070 }, Qmk_laser_ninja_pumpkin_pad),
+            new("eggsworks egg58 QMK Keyboard", "_Random-Brands/eggsworks_egg58.js", 0x4557, new ushort[] { 0x3665 }, Qmk_eggsworks_egg58_fw_eggsworks_egg58, Firmware: "keyboards/eggsworks/egg58"),
+            new("Fancytech FancyAlice66 QMK Keyboard", "_Random-Brands/fancytech_fancyalice66.js", 0xECED, new ushort[] { 0x3663 }, Qmk_fancytech_fancyalice66_fw_fancytech_fancyalice66, Firmware: "keyboards/fancytech/fancyalice66"),
+            new("FLASHQUARK Horizon_Z QMK Keyboard", "_Random-Brands/flashquark_horizonz.js", 0x4B42, new ushort[] { 0x0223 }, Qmk_flashquark_horizonz_fw_flashquark_horizon_z, Firmware: "keyboards/flashquark/horizon_z"),
+            new("Freya splaytoraid QMK Keyboard", "_Random-Brands/freya_splaytoraid.js", 0x2004, new ushort[] { 0xCB00 }, Qmk_freya_splaytoraid_fw_0xcb_splaytoraid, Firmware: "keyboards/0xcb/splaytoraid"),
+            new("gkeyboard GPAD8-2R QMK Keyboard", "_Random-Brands/gkeyboard_gpad82r.js", 0x474B, new ushort[] { 0x4202 }, Qmk_gkeyboard_gpad82r_fw_gkeyboard_gpad8_2r, Firmware: "keyboards/gkeyboard/gpad8_2r"),
+            new("Hoksi Technology DURGOD Hades (QMK) QMK Keyboard", "_Random-Brands/hoksi_technology_durgod_hades_qmk.js", 0xD60D, new ushort[] { 0x4AD4 }, Qmk_hoksi_technology_durgod_hades_qmk_fw_durgod_dgk6x_hades_iso, Firmware: "keyboards/durgod/dgk6x/hades_iso"),
+            new("Inland MK47 QMK Keyboard", "_Random-Brands/inland_mk47.js", 0xFFFE, new ushort[] { 0x0002 }, Qmk_inland_mk47_fw_inland_mk47, Firmware: "keyboards/inland/mk47"),
+            new("JZ-Skyloong DT40 QMK Keyboard", "_Random-Brands/jzskyloong_dt40.js", 0x1EA7, new ushort[] { 0x6040 }, Qmk_jzskyloong_dt40_fw_skyloong_dt40, Firmware: "keyboards/skyloong/dt40"),
+            new("KBDCRAFT Adam64 QMK Keyboard", "_Random-Brands/kbdcraft_adam64.js", 0x586A, new ushort[] { 0xB001 }, Qmk_kbdcraft_adam64_fw_kbdcraft_adam64, Firmware: "keyboards/kbdcraft/adam64"),
+            new("kbdfans Kbdpadmk3 QMK Keyboard", "_Random-Brands/kbdfans_kbdpadmk3.js", 0x4B42, new ushort[] { 0x0012 }, Qmk_kbdfans_kbdpadmk3_fw_kbdfans_kbdpad_mk3, Firmware: "keyboards/kbdfans/kbdpad/mk3"),
+            new("Keebio Nyquistpad QMK Keyboard", "_Random-Brands/keebio_nyquistpad.js", 0xCB10, new ushort[] { 0x1356 }, Qmk_keebio_nyquistpad_fw_keebio_nyquistpad, Firmware: "keyboards/keebio/nyquistpad"),
+            new("Kuro Kuro65 QMK Keyboard", "_Random-Brands/kuro_kuro65.js", 0x544D, new ushort[] { 0xC000 }, Qmk_kuro_kuro65_fw_kuro_kuro65, Firmware: "keyboards/kuro/kuro65"),
+            new("Laser Ninja Pumpkin Pad QMK Keyboard", "_Random-Brands/laser_ninja_pumpkin_pad.js", 0x6C6E, new ushort[] { 0x7070 }, Qmk_laser_ninja_pumpkin_pad_fw_laser_ninja_pumpkinpad, Firmware: "keyboards/laser_ninja/pumpkinpad"),
             new("Ozone tactical QMK Keyboard", "_Random-Brands/ozone_tactical.js", 0x05AC, new ushort[] { 0x0250 }, Qmk_ozone_tactical),
             new("plywrks ply8x QMK Keyboard", "_Random-Brands/plywrks_ply8x.js", 0x706C, new ushort[] { 0x7905 }, Qmk_plywrks_ply8x),
-            new("ProjectD ProjectD 65% ANSI QMK Keyboard", "_Random-Brands/projectd_projectd_65_ansi.js", 0x3233, new ushort[] { 0x5319 }, Qmk_projectd_projectd_65_ansi),
-            new("skeletonkbd Frost68 QMK Keyboard", "_Random-Brands/skeletonkbd_frost68.js", 0x1209, new ushort[] { 0x68A0 }, Qmk_skeletonkbd_frost68),
-            new("SKMT SKMT 15k QMK Keyboard", "_Random-Brands/skmt_skmt_15k.js", 0xFEFE, new ushort[] { 0x3488 }, Qmk_skmt_skmt_15k),
-            new("Synth Labs 060 QMK Keyboard", "_Random-Brands/synth_labs_060.js", 0x534E, new ushort[] { 0x3630 }, Qmk_synth_labs_060),
-            new("tominabox1 Le Chiffre QMK Keyboard", "_Random-Brands/tominabox1_le_chiffre.js", 0x7431, new ushort[] { 0xD645 }, Qmk_tominabox1_le_chiffre),
-            new("Unknown Tan67 QMK Keyboard", "_Random-Brands/unknown_tan67.js", 0x4D4B, new ushort[] { 0x6067 }, Qmk_unknown_tan67),
-            new("Work Louder numpad QMK Keyboard", "_Random-Brands/work_louder_numpad.js", 0x574C, new ushort[] { 0x99EB }, Qmk_work_louder_numpad),
-            new("Yiancar-Designs NK+ QMK Keyboard", "_Random-Brands/yiancardesigns_nk.js", 0x8968, new ushort[] { 0x4E51 }, Qmk_yiancardesigns_nk),
-            new("zzeneg stront QMK Keyboard", "_Random-Brands/zzeneg_stront.js", 0xFEED, new ushort[] { 0x0844 }, Qmk_zzeneg_stront),
-            new("Akko 5108 QMK Keyboard", "akko/akko_5108.js", 0xFFFE, new ushort[] { 0x000D }, Qmk_akko_5108),
-            new("Akko ACR87 QMK Keyboard", "akko/akko_acr87.js", 0xFFFE, new ushort[] { 0x0010 }, Qmk_akko_acr87),
-            new("Akko TOP40 QMK Keyboard", "akko/akko_top40.js", 0xFFFE, new ushort[] { 0x000E }, Qmk_akko_top40),
-            new("Boardsource Beiwagon QMK Keyboard", "boardsource/boardsource_beiwagon.js", 0x4273, new ushort[] { 0x0066 }, Qmk_boardsource_beiwagon),
-            new("Boardsource lulu QMK Keyboard", "boardsource/boardsource_lulu.js", 0x4273, new ushort[] { 0x7685 }, Qmk_boardsource_lulu),
-            new("Boardsource Technik-O QMK Keyboard", "boardsource/boardsource_techniko.js", 0x4273, new ushort[] { 0x0079 }, Qmk_boardsource_techniko),
-            new("Boardsource Technik-S QMK Keyboard", "boardsource/boardsource_techniks.js", 0x4273, new ushort[] { 0x0083 }, Qmk_boardsource_techniks),
-            new("Boardsource The Mark65 QMK Keyboard", "boardsource/boardsource_the_mark65.js", 0x4273, new ushort[] { 0x0001 }, Qmk_boardsource_the_mark65),
-            new("Controller Works city42 QMK Keyboard", "controller_works/controller_works_city42.js", 0x4357, new ushort[] { 0x0005 }, Qmk_controller_works_city42),
-            new("Controller Works mini36 QMK Keyboard", "controller_works/controller_works_mini36.js", 0x4357, new ushort[] { 0x0004 }, Qmk_controller_works_mini36),
-            new("Controller Works mini42 QMK Keyboard", "controller_works/controller_works_mini42.js", 0x4357, new ushort[] { 0x0003 }, Qmk_controller_works_mini42),
+            new("ProjectD ProjectD 65% ANSI QMK Keyboard", "_Random-Brands/projectd_projectd_65_ansi.js", 0x3233, new ushort[] { 0x5319 }, Qmk_projectd_projectd_65_ansi_fw_projectd_65_projectd_65_ansi, Firmware: "keyboards/projectd/65/projectd_65_ansi"),
+            new("skeletonkbd Frost68 QMK Keyboard", "_Random-Brands/skeletonkbd_frost68.js", 0x1209, new ushort[] { 0x68A0 }, Qmk_skeletonkbd_frost68_fw_skeletonkbd_frost68, Firmware: "keyboards/skeletonkbd/frost68"),
+            new("SKMT SKMT 15k QMK Keyboard", "_Random-Brands/skmt_skmt_15k.js", 0xFEFE, new ushort[] { 0x3488 }, Qmk_skmt_skmt_15k_fw_skmt_15k, Firmware: "keyboards/skmt/15k"),
+            new("Synth Labs 060 QMK Keyboard", "_Random-Brands/synth_labs_060.js", 0x534E, new ushort[] { 0x3630 }, Qmk_synth_labs_060_fw_synthlabs_060, Firmware: "keyboards/synthlabs/060"),
+            new("tominabox1 Le Chiffre QMK Keyboard", "_Random-Brands/tominabox1_le_chiffre.js", 0x7431, new ushort[] { 0xD645 }, Qmk_tominabox1_le_chiffre_fw_tominabox1_le_chiffre_he, Firmware: "keyboards/tominabox1/le_chiffre/he"),
+            new("Unknown Tan67 QMK Keyboard", "_Random-Brands/unknown_tan67.js", 0x4D4B, new ushort[] { 0x6067 }, Qmk_unknown_tan67_fw_pangorin_tan67, Firmware: "keyboards/pangorin/tan67"),
+            new("Work Louder numpad QMK Keyboard", "_Random-Brands/work_louder_numpad.js", 0x574C, new ushort[] { 0x99EB }, Qmk_work_louder_numpad_fw_work_louder_numpad, Firmware: "keyboards/work_louder/numpad"),
+            new("Yiancar-Designs NK+ QMK Keyboard", "_Random-Brands/yiancardesigns_nk.js", 0x8968, new ushort[] { 0x4E51 }, Qmk_yiancardesigns_nk_fw_novelkeys_nk_plus, Firmware: "keyboards/novelkeys/nk_plus"),
+            new("zzeneg stront QMK Keyboard", "_Random-Brands/zzeneg_stront.js", 0xFEED, new ushort[] { 0x0844 }, Qmk_zzeneg_stront_fw_stront, Firmware: "keyboards/stront"),
+            new("Akko 5108 QMK Keyboard", "akko/akko_5108.js", 0xFFFE, new ushort[] { 0x000D }, Qmk_akko_5108_fw_akko_5108, Firmware: "keyboards/akko/5108"),
+            new("Akko ACR87 QMK Keyboard", "akko/akko_acr87.js", 0xFFFE, new ushort[] { 0x0010 }, Qmk_akko_acr87_fw_akko_acr87, Firmware: "keyboards/akko/acr87"),
+            new("Akko TOP40 QMK Keyboard", "akko/akko_top40.js", 0xFFFE, new ushort[] { 0x000E }, Qmk_akko_top40_fw_akko_top40, Firmware: "keyboards/akko/top40"),
+            new("Boardsource Beiwagon QMK Keyboard", "boardsource/boardsource_beiwagon.js", 0x4273, new ushort[] { 0x0066 }, Qmk_boardsource_beiwagon_fw_boardsource_beiwagon, Firmware: "keyboards/boardsource/beiwagon"),
+            new("Boardsource lulu QMK Keyboard", "boardsource/boardsource_lulu.js", 0x4273, new ushort[] { 0x7685 }, Qmk_boardsource_lulu_fw_boardsource_lulu_avr, Firmware: "keyboards/boardsource/lulu/avr"),
+            new("Boardsource Technik-O QMK Keyboard", "boardsource/boardsource_techniko.js", 0x4273, new ushort[] { 0x0079 }, Qmk_boardsource_techniko_fw_boardsource_technik_o, Firmware: "keyboards/boardsource/technik_o"),
+            new("Boardsource Technik-S QMK Keyboard", "boardsource/boardsource_techniks.js", 0x4273, new ushort[] { 0x0083 }, Qmk_boardsource_techniks_fw_boardsource_technik_s, Firmware: "keyboards/boardsource/technik_s"),
+            new("Boardsource The Mark65 QMK Keyboard", "boardsource/boardsource_the_mark65.js", 0x4273, new ushort[] { 0x0001 }, Qmk_boardsource_the_mark65_fw_boardsource_the_mark, Firmware: "keyboards/boardsource/the_mark"),
+            new("Controller Works city42 QMK Keyboard", "controller_works/controller_works_city42.js", 0x4357, new ushort[] { 0x0005 }, Qmk_controller_works_city42_fw_controllerworks_city42, Firmware: "keyboards/controllerworks/city42"),
+            new("Controller Works mini36 QMK Keyboard", "controller_works/controller_works_mini36.js", 0x4357, new ushort[] { 0x0004 }, Qmk_controller_works_mini36_fw_controllerworks_mini36, Firmware: "keyboards/controllerworks/mini36"),
+            new("Controller Works mini42 QMK Keyboard", "controller_works/controller_works_mini42.js", 0x4357, new ushort[] { 0x0003 }, Qmk_controller_works_mini42_fw_controllerworks_mini42, Firmware: "keyboards/controllerworks/mini42"),
             new("GG Ironclad QMK Keyboard", "gg/gg_ironclad.js", 0x320F, new ushort[] { 0x5041 }, Qmk_gg_ironclad),
-            new("Keychron Q11 QMK Keyboard", "keychron/Keychron_Q11_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x01E0 }, Qmk_Keychron_Q11_QMK_ANSI_Keyboard),
-            new("Lx3 fave60a QMK Keyboard", "lx3/lx3_fave60a.js", 0x4C58, new ushort[] { 0x000C }, Qmk_lx3_fave60a),
+            new("Keychron Q11 QMK Keyboard", "keychron/Keychron_Q11_QMK_ANSI_Keyboard.js", 0x3434, new ushort[] { 0x01E0 }, Qmk_Keychron_Q11_QMK_ANSI_Keyboard_fw_keychron_q11_ansi_encoder, Firmware: "keyboards/keychron/q11/ansi_encoder"),
+            new("Lx3 fave60a QMK Keyboard", "lx3/lx3_fave60a.js", 0x4C58, new ushort[] { 0x000C }, Qmk_lx3_fave60a_fw_linworks_fave60a, Firmware: "keyboards/linworks/fave60a"),
             new("Lx3 FAve 84H QMK Keyboard", "lx3/lx3_fave_84h.js", 0x4C58, new ushort[] { 0x0004 }, Qmk_lx3_fave_84h),
-            new("Lx3 favepada QMK Keyboard", "lx3/lx3_favepada.js", 0x4C58, new ushort[] { 0x000B }, Qmk_lx3_favepada),
-            new("MATTMCCA black_hellebore QMK Keyboard", "mattmcca/mattmcca_blackhellebore.js", 0x3141, new ushort[] { 0x4467 }, Qmk_mattmcca_blackhellebore),
-            new("MATTMCCA heliotrope QMK Keyboard", "mattmcca/mattmcca_heliotrope.js", 0x3141, new ushort[] { 0x4466 }, Qmk_mattmcca_heliotrope),
-            new("MonsGeek M5 QMK Keyboard", "monsgeek/monsgeek_m5.js", 0xFFFE, new ushort[] { 0x000A }, Qmk_monsgeek_m5),
-            new("MonsGeek M6 QMK Keyboard", "monsgeek/monsgeek_m6.js", 0xFFFE, new ushort[] { 0x0011 }, Qmk_monsgeek_m6),
-            new("Rama M6-C QMK Keyboard", "rama/rama_m6c.js", 0x5453, new ushort[] { 0x0060 }, Qmk_rama_m6c),
-            new("Rama Works M60-B QMK Keyboard", "rama/rama_works_m60b.js", 0x5453, new ushort[] { 0x0059 }, Qmk_rama_works_m60b),
-            new("WhirlwindFX Element V2 ANSI QMK Keyboard", "whirlwindfx/WhirlwindFX_Element-V2_QMK_ANSI_Keyboard.js", 0x0483, new ushort[] { 0xA33E }, Qmk_WhirlwindFX_Element_V2_QMK_ANSI_Keyboard),
-            new("YMDK Idobao x YMDK ID75 QMK Keyboard", "ymdk/ymdk_idobao_x_ymdk_id75.js", 0x594D, new ushort[] { 0x0075 }, Qmk_ymdk_idobao_x_ymdk_id75),
+            new("Lx3 favepada QMK Keyboard", "lx3/lx3_favepada.js", 0x4C58, new ushort[] { 0x000B }, Qmk_lx3_favepada_fw_linworks_favepada, Firmware: "keyboards/linworks/favepada"),
+            new("MATTMCCA black_hellebore QMK Keyboard", "mattmcca/mattmcca_blackhellebore.js", 0x3141, new ushort[] { 0x4467 }, Qmk_mattmcca_blackhellebore_fw_black_hellebore, Firmware: "keyboards/black_hellebore"),
+            new("MATTMCCA heliotrope QMK Keyboard", "mattmcca/mattmcca_heliotrope.js", 0x3141, new ushort[] { 0x4466 }, Qmk_mattmcca_heliotrope_fw_heliotrope, Firmware: "keyboards/heliotrope"),
+            new("MonsGeek M5 QMK Keyboard", "monsgeek/monsgeek_m5.js", 0xFFFE, new ushort[] { 0x000A }, Qmk_monsgeek_m5_fw_monsgeek_m5, Firmware: "keyboards/monsgeek/m5"),
+            new("MonsGeek M6 QMK Keyboard", "monsgeek/monsgeek_m6.js", 0xFFFE, new ushort[] { 0x0011 }, Qmk_monsgeek_m6_fw_monsgeek_m6, Firmware: "keyboards/monsgeek/m6"),
+            new("Rama M6-C QMK Keyboard", "rama/rama_m6c.js", 0x5453, new ushort[] { 0x0060 }, Qmk_rama_m6c_fw_wolf_m6_c, Firmware: "keyboards/wolf/m6_c"),
+            new("Rama Works M60-B QMK Keyboard", "rama/rama_works_m60b.js", 0x5453, new ushort[] { 0x0059 }, Qmk_rama_works_m60b_fw_wolf_m60_b, Firmware: "keyboards/wolf/m60_b"),
+            new("WhirlwindFX Element V2 ANSI QMK Keyboard", "whirlwindfx/WhirlwindFX_Element-V2_QMK_ANSI_Keyboard.js", 0x0483, new ushort[] { 0xA33E }, Qmk_WhirlwindFX_Element_V2_QMK_ANSI_Keyboard_fw_whirlwind_fx_element, Firmware: "keyboards/whirlwind_fx_element", GreenBlueRed: true),
+            new("YMDK Idobao x YMDK ID75 QMK Keyboard", "ymdk/ymdk_idobao_x_ymdk_id75.js", 0x594D, new ushort[] { 0x0075 }, Qmk_ymdk_idobao_x_ymdk_id75_fw_ymdk_id75_f103, Firmware: "keyboards/ymdk/id75/f103"),
         };
 
         private static PluginKeyTable Qmk_Akko_5075_QMK_Keyboard() => new(
@@ -283,13 +302,13 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 42, 41, 49, 49, 49, 49, 49, 49, 49, 50, 50, 50, 7, 12, 17, 23, 28, 33, 37, 42, 47, 50, 54, 7, 12, 17, 23, 28, 33, 37, 42, 47, 50, 54 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 0, 40, 78, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 74, 224, 227, 226, 44, 230, 231, 228, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_Alpaca_WhiteFox_Eclipse_QMK_Keyboard() => new(
+        private static PluginKeyTable Qmk_Alpaca_WhiteFox_Eclipse_QMK_Keyboard_fw_alpaca_wfeclipse() => new(
             "Alpaca/Alpaca_WhiteFox_Eclipse_QMK_Keyboard.js",
-            Names(71, (60, "Fn"), (66, "Fn")),
-            new[] { 70, 69, 68, 67, 66, 65, 64, 63, 62, 61, 60, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 0, 1, 2 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 73, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 74, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 77, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 0, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+            Names(83, (10, "Fn"), (71, "Underglow"), (72, "Underglow"), (73, "Underglow"), (74, "Underglow"), (75, "Underglow"), (76, "Underglow"), (77, "Underglow"), (78, "Underglow"), (79, "Underglow"), (80, "Underglow"), (81, "Underglow"), (82, "Underglow")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82 },
+            new byte[] { 16, 15, 14, 12, 11, 10, 4, 3, 1, 0, 16, 15, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 16, 15, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 16, 15, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },
+            new byte[] { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6 },
+            new ushort[] { 79, 81, 80, 228, 231, 230, 44, 226, 227, 224, 0, 82, 229, 56, 55, 54, 16, 17, 5, 25, 6, 27, 29, 225, 78, 77, 40, 52, 51, 15, 14, 13, 11, 10, 9, 7, 22, 4, 57, 75, 74, 49, 48, 47, 19, 18, 12, 24, 28, 23, 21, 8, 26, 20, 43, 73, 76, 42, 46, 45, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 41, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
         private static PluginKeyTable Qmk_Cerakey_Zen75_QMK_ANSI_Keyboard() => new(
             "Cerakey/Cerakey_Zen75_QMK_ANSI_Keyboard.js",
@@ -299,29 +318,37 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 73, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_DZTech_60RGB_Keyboard() => new(
+        private static PluginKeyTable Qmk_DZTech_60RGB_Keyboard_fw_dztech_dz60rgb_ansi_v1() => new(
             "DZTech/DZTech-60RGB_Keyboard.js",
-            Names(61, (59, "Fn")),
-            new[] { 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 52, 51, 50, 49, 48, 47, 46, 45, 44, 43, 42, 41, 60, 59, 58, 57, 56, 55, 54, 53 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 5, 9, 10, 11, 13 },
+            Names(61, (54, "Fn"), (55, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 },
+            new byte[] { 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 14, 13, 11, 10, 4, 3, 1, 0 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 224, 227, 226, 44, 230, 101, 0, 228 });
+            new ushort[] { 42, 46, 45, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 41, 49, 48, 47, 19, 18, 12, 24, 28, 23, 21, 8, 26, 20, 43, 40, 52, 51, 15, 14, 13, 11, 10, 9, 7, 22, 4, 57, 229, 56, 55, 54, 16, 17, 5, 25, 6, 27, 29, 225, 228, 0, 0, 230, 44, 226, 227, 224 });
 
-        private static PluginKeyTable Qmk_DZTech_65RGB_V3_Keyboard() => new(
+        private static PluginKeyTable Qmk_DZTech_60RGB_Keyboard_fw_dztech_dz60rgb_ansi_v2() => new(
+            "DZTech/DZTech-60RGB_Keyboard.js",
+            Names(61, (54, "Fn"), (55, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 },
+            new byte[] { 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 14, 13, 11, 10, 4, 3, 1, 0 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4 },
+            new ushort[] { 42, 46, 45, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 41, 49, 48, 47, 19, 18, 12, 24, 28, 23, 21, 8, 26, 20, 43, 40, 52, 51, 15, 14, 13, 11, 10, 9, 7, 22, 4, 57, 229, 56, 55, 54, 16, 17, 5, 25, 6, 27, 29, 225, 228, 0, 0, 230, 44, 226, 227, 224 });
+
+        private static PluginKeyTable Qmk_DZTech_65RGB_V3_Keyboard_fw_dztech_dz65rgb_v3() => new(
             "DZTech/DZTech-65RGB-V3_Keyboard.js",
             Names(68, (63, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
         private static PluginKeyTable Qmk_GG_QMK_ISO_Keyboard_TKL_AZERTY_French() => new(
             "DesignedByGG/GG_QMK_ISO_Keyboard_TKL_AZERTY_French.js",
             Names(88, (83, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
-            new byte[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 0, 37, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 101, 0, 228, 80, 81, 79 });
+            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
+            new byte[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 101, 0, 228, 80, 81, 79 });
 
         private static PluginKeyTable Qmk_Epomaker_TH85_QMK() => new(
             "Epomaker/Epomaker_TH85_QMK.js",
@@ -339,21 +366,21 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 84, 85, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 86, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 0, 80, 81, 79, 98, 99, 88 });
 
-        private static PluginKeyTable Qmk_Ergodox_EZ_Glow_QMK() => new(
+        private static PluginKeyTable Qmk_Ergodox_EZ_Glow_QMK_fw_ergodox_ez_glow() => new(
             "Ergodox_EZ/Ergodox_EZ_Glow_QMK.js",
             Names(48),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47 },
-            new byte[] { 0, 1, 2, 3, 4, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 8, 9, 10, 11, 12, 0, 1, 2, 3, 9, 10, 11, 12 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 52, 0, 80, 79, 82, 81, 48, 47 });
+            new byte[] { 11, 12, 13, 14, 15, 11, 12, 13, 14, 15, 11, 12, 13, 14, 15, 11, 12, 13, 14, 15, 12, 13, 14, 15, 6, 5, 4, 3, 2, 6, 5, 4, 3, 2, 6, 5, 4, 3, 2, 6, 5, 4, 3, 2, 5, 4, 3, 2 },
+            new byte[] { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4 },
+            new ushort[] { 35, 36, 37, 38, 39, 28, 24, 12, 18, 19, 11, 13, 14, 15, 51, 17, 16, 54, 55, 56, 82, 81, 47, 48, 34, 33, 32, 31, 30, 23, 21, 8, 26, 20, 10, 9, 7, 22, 4, 5, 25, 6, 27, 29, 79, 80, 225, 52 });
 
-        private static PluginKeyTable Qmk_Feker_IK75() => new(
+        private static PluginKeyTable Qmk_Feker_IK75_fw_feker_ik75() => new(
             "Feker/Feker-IK75.js",
-            Names(125, (0, "Underglow"), (1, "Underglow"), (2, "Underglow"), (3, "Underglow"), (4, "Underglow"), (5, "Underglow"), (6, "Underglow"), (7, "Underglow"), (8, "Underglow"), (9, "Underglow"), (10, "Underglow"), (11, "Underglow"), (12, "Underglow"), (13, "Underglow"), (14, "Underglow"), (15, "Underglow"), (16, "Underglow"), (31, "Knob"), (32, "Knob"), (33, "Knob"), (34, "Underglow"), (35, "Underglow"), (51, "Underglow"), (52, "Underglow"), (68, "Underglow"), (69, "Underglow"), (84, "Underglow"), (85, "Underglow"), (100, "Underglow"), (111, "Underglow"), (112, "Underglow"), (113, "Underglow"), (114, "Underglow"), (115, "Underglow"), (116, "Underglow"), (117, "Underglow"), (118, "Underglow"), (119, "Underglow"), (120, "Underglow"), (121, "Underglow"), (122, "Underglow"), (123, "Underglow"), (124, "Underglow")),
-            new[] { 95, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 96, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 100, 101, 99, 78, 97, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 102, 110, 98, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 105, 109, 111, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 103, 108, 112, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 45, 106, 107, 93, 94, 14, 15, 47, 31, 30, 60, 61, 62, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126 },
-            new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 16, 17, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 2, 3, 4, 7, 10, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 14, 15, 17 },
-            new byte[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 0, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 0, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 0, 0, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 0, 224, 227, 226, 44, 230, 231, 228, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            Names(127, (31, "Fn"), (46, "Underglow"), (63, "Underglow"), (64, "Underglow"), (65, "Underglow"), (66, "Underglow"), (67, "Underglow"), (68, "Underglow"), (69, "Underglow"), (70, "Underglow"), (71, "Underglow"), (72, "Underglow"), (73, "Underglow"), (74, "Underglow"), (75, "Underglow"), (76, "Underglow"), (77, "Underglow"), (78, "Underglow"), (95, "Underglow"), (96, "Underglow"), (97, "Underglow"), (98, "Underglow"), (99, "Underglow"), (100, "Underglow"), (101, "Mute"), (104, "Underglow"), (107, "Underglow"), (108, "Underglow"), (109, "Underglow"), (110, "Underglow"), (111, "Underglow"), (112, "Underglow"), (113, "Underglow"), (114, "Underglow"), (115, "Underglow"), (116, "Underglow"), (117, "Underglow"), (118, "Underglow"), (119, "Underglow"), (120, "Underglow"), (121, "Underglow"), (122, "Underglow"), (123, "Underglow"), (124, "Underglow"), (125, "Underglow"), (126, "Underglow")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 3, 4, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 12, 11, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 10, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 0, 1, 2, 3, 4, 5, 16, 16, 16, 6, 16, 16, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 },
+            new byte[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 5, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 8, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 6, 6, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 9, 9, 9, 9, 9, 9, 0, 1, 3, 9, 2, 4, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 },
+            new ushort[] { 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 226, 44, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 228, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 82, 0, 230, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 224, 227, 0, 0, 0, 0, 0, 0, 0, 73, 75, 0, 77, 78, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
         private static PluginKeyTable Qmk_Framework_16_Keyboard() => new(
             "Framework/Framework_16_Keyboard.js",
@@ -371,21 +398,29 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5 },
             new ushort[] { 0, 0, 0, 0, 83, 84, 85, 86, 95, 96, 97, 87, 92, 93, 94, 87, 89, 90, 91, 88, 98, 98, 99, 88 });
 
-        private static PluginKeyTable Qmk_GMMK_2_65_ANSI_QMK_Keyboard() => new(
+        private static PluginKeyTable Qmk_GMMK_2_65_ANSI_QMK_Keyboard_fw_gmmk_gmmk2_p65_ansi() => new(
             "GMMK/GMMK_2_65_ANSI_QMK_Keyboard.js",
             Names(87, (63, "Fn"), (67, "Underglow"), (68, "Underglow"), (69, "Underglow"), (70, "Underglow"), (71, "Underglow"), (72, "Underglow"), (73, "Underglow"), (74, "Underglow"), (75, "Underglow"), (76, "Underglow"), (77, "Underglow"), (78, "Underglow"), (79, "Underglow"), (80, "Underglow"), (81, "Underglow"), (82, "Underglow"), (83, "Underglow"), (84, "Underglow"), (85, "Underglow"), (86, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
-            new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 7, 11, 12, 13, 14, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7 },
             new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_GMMK_2_65_ISO_QMK_Keyboard() => new(
+        private static PluginKeyTable Qmk_GMMK_2_65_ISO_QMK_Keyboard_fw_gmmk_gmmk2_p65_iso() => new(
             "GMMK/GMMK_2_65_ISO_QMK_Keyboard.js",
             Names(88, (64, "Fn"), (68, "Underglow"), (69, "Underglow"), (70, "Underglow"), (71, "Underglow"), (72, "Underglow"), (73, "Underglow"), (74, "Underglow"), (75, "Underglow"), (76, "Underglow"), (77, "Underglow"), (78, "Underglow"), (79, "Underglow"), (80, "Underglow"), (81, "Underglow"), (82, "Underglow"), (83, "Underglow"), (84, "Underglow"), (85, "Underglow"), (86, "Underglow"), (87, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
-            new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 7, 11, 12, 13, 14, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 78, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+
+        private static PluginKeyTable Qmk_GMMK_2_96_ANSI_QMK_Keyboard_fw_gmmk_gmmk2_p96_ansi() => new(
+            "GMMK/GMMK_2_96_ANSI_QMK_Keyboard.js",
+            Names(119, (92, "Fn"), (99, "Underglow"), (100, "Underglow"), (101, "Underglow"), (102, "Underglow"), (103, "Underglow"), (104, "Underglow"), (105, "Underglow"), (106, "Underglow"), (107, "Underglow"), (108, "Underglow"), (109, "Underglow"), (110, "Underglow"), (111, "Underglow"), (112, "Underglow"), (113, "Underglow"), (114, "Underglow"), (115, "Underglow"), (116, "Underglow"), (117, "Underglow"), (118, "Underglow")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 76, 73, 75, 78, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
         private static PluginKeyTable Qmk_GMMK_2_96_ANSI_QMK_Keyboard() => new(
             "GMMK/GMMK_2_96_ANSI_QMK_Keyboard.js",
@@ -395,29 +430,29 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 76, 73, 75, 78, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_GMMK_2_96_ISO_QMK_Keyboard() => new(
+        private static PluginKeyTable Qmk_GMMK_2_96_ISO_QMK_Keyboard_fw_gmmk_gmmk2_p96_iso() => new(
             "GMMK/GMMK_2_96_ISO_QMK_Keyboard.js",
             Names(120, (93, "Fn"), (100, "Underglow"), (101, "Underglow"), (102, "Underglow"), (103, "Underglow"), (104, "Underglow"), (105, "Underglow"), (106, "Underglow"), (107, "Underglow"), (108, "Underglow"), (109, "Underglow"), (110, "Underglow"), (111, "Underglow"), (112, "Underglow"), (113, "Underglow"), (114, "Underglow"), (115, "Underglow"), (116, "Underglow"), (117, "Underglow"), (118, "Underglow"), (119, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119 },
-            new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 1, 2, 3, 7, 11, 12, 13, 14, 15, 16, 17, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 76, 73, 75, 78, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
         private static PluginKeyTable Qmk_GMMK_3_QMK_Keyboard_ANSIp65() => new(
             "GMMK/GMMK_3_QMK_Keyboard.js",
-            Names(85, (60, "Fn"), (84, "Logo")),
+            Names(85, (61, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84 },
-            new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1, 2, 3, 7, 11, 12, 13, 14, 15, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 },
-            new ushort[] { 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1, 2, 3, 7, 11, 12, 13, 14, 15, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 },
+            new ushort[] { 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
         private static PluginKeyTable Qmk_GMMK_3_QMK_Keyboard_ISOp65() => new(
             "GMMK/GMMK_3_QMK_Keyboard.js",
-            Names(85, (60, "Fn"), (84, "Logo")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84 },
-            new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1, 2, 3, 7, 11, 12, 13, 14, 15, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 },
-            new ushort[] { 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            Names(87, (62, "Fn"), (86, "Logo")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
+            new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 7, 11, 12, 13, 14, 15, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 },
+            new ushort[] { 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 50, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 0, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
         private static PluginKeyTable Qmk_GMMK_3_QMK_Keyboard_ANSIp75() => new(
             "GMMK/GMMK_3_QMK_Keyboard.js",
@@ -429,11 +464,11 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
 
         private static PluginKeyTable Qmk_GMMK_3_QMK_Keyboard_ISOp75() => new(
             "GMMK/GMMK_3_QMK_Keyboard.js",
-            Names(101, (13, "Logo"), (77, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 100, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99 },
-            new byte[] { 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 1, 2, 3, 7, 11, 12, 13, 14, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            Names(102, (13, "Logo"), (78, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 101, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100 },
+            new byte[] { 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 13, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 7, 11, 12, 13, 14, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 50, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
         private static PluginKeyTable Qmk_GMMK_3_QMK_Keyboard_ANSIp100() => new(
             "GMMK/GMMK_3_QMK_Keyboard.js",
@@ -446,18 +481,18 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         private static PluginKeyTable Qmk_GMMK_3_QMK_Keyboard_ISOp100() => new(
             "GMMK/GMMK_3_QMK_Keyboard.js",
             Names(126, (97, "Fn"), (105, "Underglow"), (106, "Underglow"), (107, "Underglow"), (108, "Underglow"), (109, "Underglow"), (110, "Underglow"), (111, "Underglow"), (112, "Underglow"), (113, "Underglow"), (114, "Underglow"), (115, "Underglow"), (116, "Underglow"), (117, "Underglow"), (118, "Underglow"), (119, "Underglow"), (120, "Underglow"), (121, "Underglow"), (122, "Underglow"), (123, "Underglow"), (124, "Underglow"), (125, "Logo")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125 },
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 70, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 50, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125 },
             new byte[] { 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 18, 19, 20, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 19, 20, 21, 1, 2, 3, 7, 11, 12, 13, 14, 15, 16, 17, 18, 20, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 0 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 0, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_GMMK_Numpad_QMK() => new(
+        private static PluginKeyTable Qmk_GMMK_Numpad_QMK_fw_gmmk_numpad() => new(
             "GMMK/GMMK_Numpad_QMK.js",
-            Names(31, (0, "Underglow"), (5, "Underglow"), (6, "Underglow"), (11, "Underglow"), (12, "Underglow"), (16, "Underglow"), (17, "Underglow"), (22, "Underglow"), (23, "Underglow"), (26, "Underglow"), (27, "Underglow"), (28, "Underglow"), (29, "Underglow"), (30, "Underglow")),
-            new[] { 17, 0, 1, 2, 3, 24, 18, 4, 5, 6, 7, 25, 19, 8, 9, 10, 26, 20, 11, 12, 13, 14, 27, 21, 15, 16, 28, 22, 29, 23, 30 },
-            new byte[] { 4, 0, 1, 2, 3, 5, 4, 0, 1, 2, 3, 5, 4, 0, 1, 2, 5, 4, 0, 1, 2, 3, 5, 4, 0, 1, 5, 4, 5, 4, 5 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6 },
-            new ushort[] { 0, 83, 84, 85, 86, 0, 0, 95, 96, 97, 87, 0, 0, 92, 93, 94, 0, 0, 89, 90, 91, 88, 0, 0, 98, 99, 0, 0, 0, 0, 0 });
+            Names(31, (0, "Fn"), (17, "Underglow"), (18, "Underglow"), (19, "Underglow"), (20, "Underglow"), (21, "Underglow"), (22, "Underglow"), (23, "Underglow"), (24, "Underglow"), (25, "Underglow"), (26, "Underglow"), (27, "Underglow"), (28, "Underglow"), (29, "Underglow"), (30, "Underglow")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 },
+            new byte[] { 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 0, 1, 2, 3, 0, 2, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3 },
+            new byte[] { 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8 },
+            new ushort[] { 0, 84, 85, 86, 95, 96, 97, 87, 92, 93, 94, 89, 90, 91, 88, 98, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
         private static PluginKeyTable Qmk_GMMK_Pro_QMK_Keyboard_ProAnsi() => new(
             "GMMK/GMMK_Pro_QMK_Keyboard.js",
@@ -483,21 +518,21 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
             new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 70, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 44, 230, 0, 228, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_IDOBAO_ID67_QMK_Keyboard() => new(
+        private static PluginKeyTable Qmk_IDOBAO_ID67_QMK_Keyboard_fw_idobao_id67() => new(
             "IDOBAO/IDOBAO_ID67_QMK_Keyboard.js",
-            Names(77, (62, "Fn"), (67, "Underglow"), (68, "Underglow"), (69, "Underglow"), (70, "Underglow"), (71, "Underglow"), (72, "Underglow"), (73, "Underglow"), (74, "Underglow"), (75, "Underglow"), (76, "Underglow")),
-            new[] { 66, 65, 64, 63, 62, 61, 60, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 6, 10, 11, 12, 13, 14, 1, 4, 8, 10, 13, 1, 4, 8, 10, 13 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 0, 228, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            Names(77, (4, "Fn"), (67, "Underglow"), (68, "Underglow"), (69, "Underglow"), (70, "Underglow"), (71, "Underglow"), (72, "Underglow"), (73, "Underglow"), (74, "Underglow"), (75, "Underglow"), (76, "Underglow")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76 },
+            new byte[] { 15, 14, 13, 11, 10, 4, 3, 1, 0, 15, 14, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 15, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 15, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 },
+            new byte[] { 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6 },
+            new ushort[] { 79, 81, 80, 228, 0, 44, 226, 227, 224, 78, 82, 229, 56, 55, 54, 16, 17, 5, 25, 6, 27, 29, 225, 75, 40, 52, 51, 15, 14, 13, 11, 10, 9, 7, 22, 4, 57, 76, 49, 48, 47, 19, 18, 12, 24, 28, 23, 21, 8, 26, 20, 43, 0, 42, 46, 45, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 41, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_Inland_KB83_QMK_Keyboard() => new(
+        private static PluginKeyTable Qmk_Inland_KB83_QMK_Keyboard_fw_inland_kb83() => new(
             "Inland/Inland_KB83_QMK_Keyboard.js",
-            Names(82, (77, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 14, 15, 0, 1, 2, 5, 9, 10, 11, 13, 14, 15 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 77, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 0, 101, 80, 81, 79 });
+            Names(92, (77, "Fn"), (82, "Underglow"), (83, "Underglow"), (84, "Underglow"), (85, "Underglow"), (86, "Underglow"), (87, "Underglow"), (88, "Underglow"), (89, "Underglow"), (90, "Underglow"), (91, "Underglow")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
         private static PluginKeyTable Qmk_KBDCraft_Adam0110_QMK_Keyboard_Test() => new(
             "KBDCraft/KBDCraft_Adam0110_QMK_Keyboard-Test.js",
@@ -505,63 +540,95 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 80, 79, 66, 65, 49, 48, 47, 46, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 77, 78, 67, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 76, 75, 68, 64, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 73, 74, 69, 0, 1, 2, 3, 4, 5, 6, 7, 8, 72, 71, 70 },
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 5, 9, 10, 11, 12, 13, 14, 16, 17 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 56, 37, 45, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 36, 37, 38, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 33, 34, 35, 46, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 76, 32, 31, 30, 224, 227, 226, 44, 230, 0, 80, 81, 79, 39, 55, 88 });
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 76, 91, 90, 89, 224, 227, 226, 44, 230, 0, 80, 81, 79, 98, 99, 88 });
 
-        private static PluginKeyTable Qmk_KBDFans_KBD67_RGBMKII_QMK_Keyboard() => new(
+        private static PluginKeyTable Qmk_KBDFans_KBD67_RGBMKII_QMK_Keyboard_fw_kbdfans_kbd67_mkiirgb_v1() => new(
             "KBDFans/KBDFans_KBD67_RGBMKII_QMK_Keyboard.js",
             Names(67, (63, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 1, 2, 6, 10, 11, 12, 13, 14 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 13, 14, 15 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
             new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_KBDFans_KBD67_V2_QMK_ISO_Keyboard() => new(
+        private static PluginKeyTable Qmk_KBDFans_KBD67_RGBMKII_QMK_Keyboard_fw_kbdfans_kbd67_mkiirgb_v2() => new(
+            "KBDFans/KBDFans_KBD67_RGBMKII_QMK_Keyboard.js",
+            Names(67, (63, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_KBDFans_KBD67_RGBMKII_QMK_Keyboard_fw_kbdfans_kbd67_mkiirgb_v3() => new(
+            "KBDFans/KBDFans_KBD67_RGBMKII_QMK_Keyboard.js",
+            Names(67, (63, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_KBDFans_KBD67_RGBMKII_QMK_Keyboard_fw_kbdfans_kbd67_mkiirgb_v4() => new(
+            "KBDFans/KBDFans_KBD67_RGBMKII_QMK_Keyboard.js",
+            Names(67, (63, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 15, 14, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 0, 1, 3, 4, 10, 11, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 75, 49, 48, 47, 19, 18, 12, 24, 28, 23, 21, 8, 26, 20, 43, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 77, 82, 229, 56, 55, 54, 16, 17, 5, 25, 6, 27, 29, 225, 224, 227, 226, 44, 230, 0, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_KBDFans_KBD67_V2_QMK_ISO_Keyboard_fw_kbdfans_kbd67_mkiirgb_iso() => new(
             "KBDFans/KBDFans_KBD67_V2_QMK_ISO_Keyboard.js",
             Names(68),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45, 44, 59, 60, 61, 62, 63, 64, 65, 66, 67 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 6, 10, 11, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 78, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 101, 80, 81, 79 });
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 15, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 15, 14, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 1, 3, 4, 10, 11, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 75, 48, 47, 19, 18, 12, 24, 28, 23, 21, 8, 26, 20, 43, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 49, 40, 78, 77, 82, 229, 56, 55, 54, 16, 17, 5, 25, 6, 27, 29, 100, 225, 224, 227, 226, 44, 230, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_KPRepublic_BM60_Poker_Rev_2() => new(
+        private static PluginKeyTable Qmk_KPRepublic_BM60_Poker_Rev_2_fw_kprepublic_bm60hsrgb_poker_rev2() => new(
             "KPRepublic/KPRepublic_BM60_Poker_Rev_2.js",
-            Names(61, (59, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 0, 1, 2, 5, 9, 10, 11, 13 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 224, 227, 226, 44, 230, 101, 0, 224 });
+            Names(67, (58, "Fn"), (61, "Underglow"), (62, "Underglow"), (63, "Underglow"), (64, "Underglow"), (65, "Underglow"), (66, "Underglow")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 3, 4, 10, 11, 13, 14, 0, 1, 2, 3, 4, 5 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 224, 227, 226, 44, 230, 0, 231, 228, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_Keychron_C3_Pro_8K_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_C3_Pro_8K_QMK_ANSI_Keyboard_fw_keychron_c3_pro_8k_ansi() => new(
             "Keychron/C Series/Pro 8K/Keychron_C3_Pro_8K_QMK_ANSI_Keyboard.js",
-            Names(99, (82, "Fn"), (87, "Underglow"), (88, "Underglow"), (89, "Underglow"), (90, "Underglow"), (91, "Underglow"), (92, "Underglow"), (93, "Underglow"), (94, "Underglow"), (95, "Underglow"), (96, "Underglow"), (97, "Underglow"), (98, "Underglow")),
+            Names(99, (15, "Light"), (82, "Fn"), (87, "Underglow"), (88, "Underglow"), (89, "Underglow"), (90, "Underglow"), (91, "Underglow"), (92, "Underglow"), (93, "Underglow"), (94, "Underglow"), (95, "Underglow"), (96, "Underglow"), (97, "Underglow"), (98, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 5, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_Keychron_C1_Pro_QMK_ANSI_Keyboard_ANSI() => new(
+        private static PluginKeyTable Qmk_Keychron_C1_Pro_QMK_ANSI_Keyboard_fw_keychron_c1_pro_ansi_rgb() => new(
             "Keychron/C Series/Pro/Keychron_C1_Pro_QMK_ANSI_Keyboard.js",
-            Names(87, (15, "Light"), (82, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 231, 80, 81, 79 });
+            Names(88, (15, "Light"), (63, "Underglow"), (83, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 0, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_C2_Pro_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_C2_Pro_QMK_ANSI_Keyboard_fw_keychron_c2_pro_ansi_rgb() => new(
             "Keychron/C Series/Pro/Keychron_C2_Pro_QMK_ANSI_Keyboard.js",
-            Names(104, (96, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
+            Names(108, (15, "Light"), (16, "Underglow"), (17, "Underglow"), (18, "Underglow"), (19, "Underglow"), (101, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
 
-        private static PluginKeyTable Qmk_Keychron_C3_Pro_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_C2_Pro_QMK_ANSI_Keyboard_fw_keychron_c2_pro_v2_ansi_rgb() => new(
+            "Keychron/C Series/Pro/Keychron_C2_Pro_QMK_ANSI_Keyboard.js",
+            Names(104, (15, "Light"), (97, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
+
+        private static PluginKeyTable Qmk_Keychron_C3_Pro_QMK_ANSI_Keyboard_fw_keychron_c3_pro_ansi_rgb() => new(
             "Keychron/C Series/Pro/Keychron_C3_Pro_QMK_ANSI_Keyboard.js",
-            Names(99, (92, "Fn")),
-            new[] { 87, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 93, 88, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 94, 89, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 95, 90, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 96, 91, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 97, 92, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 98 },
-            new byte[] { 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 18, 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 0, 1, 2, 3, 7, 11, 12, 13, 14, 15, 16, 17, 18 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 0, 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 0, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 0, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 0, 0, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 0, 0, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 0 });
+            Names(99, (81, "Fn"), (87, "Underglow"), (88, "Underglow"), (89, "Underglow"), (90, "Underglow"), (91, "Underglow"), (92, "Underglow"), (93, "Underglow"), (94, "Underglow"), (95, "Underglow"), (96, "Underglow"), (97, "Underglow"), (98, "Underglow")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98 },
+            new byte[] { 0, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
         private static PluginKeyTable Qmk_Keychron_J2_QMK_ANSI_Keyboard() => new(
             "Keychron/J Series/Keychron_J2_QMK_ANSI_Keyboard.js",
@@ -571,277 +638,277 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 77, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_K10_HE_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_K10_HE_QMK_ANSI_Keyboard_fw_keychron_k10_he_ansi() => new(
             "Keychron/K Series/HE/Keychron_K10_HE_QMK_ANSI_Keyboard.js",
-            Names(104, (96, "Fn")),
+            Names(104, (15, "Light"), (97, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
 
-        private static PluginKeyTable Qmk_Keychron_K10_HE_QMK_ISO_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_K10_HE_QMK_ISO_Keyboard_fw_keychron_k10_he_iso() => new(
             "Keychron/K Series/HE/Keychron_K10_HE_QMK_ISO_Keyboard.js",
-            Names(105, (98, "Fn")),
+            Names(105, (15, "Light"), (98, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 19 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
 
-        private static PluginKeyTable Qmk_Keychron_K2_HE_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_K2_HE_QMK_ANSI_Keyboard_fw_keychron_k2_he_ansi() => new(
             "Keychron/K Series/HE/Keychron_K2_HE_QMK_ANSI_Keyboard.js",
-            Names(84, (79, "Fn")),
+            Names(84, (15, "Light"), (79, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 76, 101, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_K2_HE_QMK_ISO_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_K2_HE_QMK_ISO_Keyboard_fw_keychron_k2_he_iso() => new(
             "Keychron/K Series/HE/Keychron_K2_HE_QMK_ISO_Keyboard.js",
             Names(85, (15, "Light"), (80, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15, 14, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_K4_HE_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_K4_HE_QMK_ANSI_Keyboard_fw_keychron_k4_he_ansi() => new(
             "Keychron/K Series/HE/Keychron_K4_HE_QMK_ANSI_Keyboard.js",
             Names(100, (18, "Light"), (93, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 16, 17, 18, 0, 1, 2, 5, 8, 9, 10, 12, 13, 14, 16, 17 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 16, 17 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 75, 78, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99 });
 
-        private static PluginKeyTable Qmk_Keychron_K8_HE_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_K8_HE_QMK_ANSI_Keyboard_fw_keychron_k8_he_ansi() => new(
             "Keychron/K Series/HE/Keychron_K8_HE_QMK_ANSI_Keyboard.js",
-            Names(87, (82, "Fn")),
+            Names(87, (15, "Light"), (82, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 114, 115, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_K8_HE_QMK_ISO_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_K8_HE_QMK_ISO_Keyboard_fw_keychron_k8_he_iso() => new(
             "Keychron/K Series/HE/Keychron_K8_HE_QMK_ISO_Keyboard.js",
-            Names(88, (83, "Fn")),
+            Names(88, (15, "Light"), (83, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 114, 115, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_K10_Max_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_K10_Max_QMK_ANSI_Keyboard_fw_keychron_k10_max_ansi_rgb() => new(
             "Keychron/K Series/Max/Keychron_K10_Max_QMK_ANSI_Keyboard.js",
-            Names(108, (16, "MediaRewind"), (17, "MediaPlayPause"), (18, "MediaFastForward"), (19, "MediaStop"), (101, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 72, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 73, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 74, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 75, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 19 },
+            Names(108, (15, "Light"), (101, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
 
-        private static PluginKeyTable Qmk_Keychron_K10_Max_QMK_ISO_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_K10_Max_QMK_ISO_Keyboard_fw_keychron_k10_max_iso_rgb() => new(
             "Keychron/K Series/Max/Keychron_K10_Max_QMK_ISO_Keyboard.js",
-            Names(109, (16, "Circle"), (17, "Triangle"), (18, "Square"), (19, "Cross"), (102, "Fn")),
+            Names(109, (15, "Light"), (102, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 19 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
 
         private static PluginKeyTable Qmk_Keychron_K10_v2_QMK_ANSI_Keyboard() => new(
             "Keychron/K Series/Max/Keychron_K10_v2_QMK_ANSI_Keyboard.js",
             Names(104, (97, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 13, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 19 },
+            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 19 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
 
-        private static PluginKeyTable Qmk_Keychron_K17_Max_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_K17_Max_QMK_ANSI_Keyboard_fw_keychron_k17_max_ansi_encoder_rgb() => new(
             "Keychron/K Series/Max/Keychron_K17_Max_QMK_ANSI_Keyboard.js",
-            Names(103, (14, "Light"), (16, "MediaRewind"), (17, "MediaPlayPause"), (18, "MediaFastForward"), (96, "Fn")),
+            Names(103, (14, "Light"), (96, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 17, 18, 19, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 18 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 18, 19, 20, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 17, 18, 19, 20, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 17, 19 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 76, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99 });
 
-        private static PluginKeyTable Qmk_Keychron_K1_Max_QMK_Keyboard_ANSI() => new(
+        private static PluginKeyTable Qmk_Keychron_K1_Max_QMK_Keyboard_fw_keychron_k1_max_ansi_rgb() => new(
             "Keychron/K Series/Max/Keychron_K1_Max_QMK_Keyboard.js",
-            Names(87, (15, "Light"), (81, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 231, 228, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_K1_Max_QMK_Keyboard_ISO() => new(
-            "Keychron/K Series/Max/Keychron_K1_Max_QMK_Keyboard.js",
-            Names(88, (15, "Light"), (83, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 231, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_K2_Max_QMK_ANSI_Keyboard() => new(
-            "Keychron/K Series/Max/Keychron_K2_Max_QMK_ANSI_Keyboard.js",
-            Names(84, (79, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 6, 9, 10, 11, 12, 13, 15 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 73, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_K2_Max_QMK_ISO_Keyboard() => new(
-            "Keychron/K Series/Max/Keychron_K2_Max_QMK_ISO_Keyboard.js",
-            Names(85, (80, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 6, 9, 10, 11, 12, 13, 15 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 73, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_K5_Max_QMK_ANSI_Keyboard() => new(
-            "Keychron/K Series/Max/Keychron_K5_Max_QMK_ANSI_Keyboard.js",
-            Names(108, (15, "Light"), (16, "Circle"), (17, "Triangle"), (18, "Square"), (100, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 0, 0, 0, 0, 0, 27, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
-
-        private static PluginKeyTable Qmk_Keychron_K5_Max_QMK_ISO_Keyboard() => new(
-            "Keychron/K Series/Max/Keychron_K5_Max_QMK_ISO_Keyboard.js",
-            Names(109, (15, "Light"), (16, "Circle"), (17, "Triangle"), (18, "Square"), (101, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 19 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 0, 0, 0, 0, 0, 27, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
-
-        private static PluginKeyTable Qmk_Keychron_K8Max_QMK_ANSI_Keyboard() => new(
-            "Keychron/K Series/Max/Keychron_K8Max_QMK_ANSI_Keyboard.js",
-            Names(87, (82, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 114, 115, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_K8Max_QMK_ISO_Keyboard() => new(
-            "Keychron/K Series/Max/Keychron_K8Max_QMK_ISO_Keyboard.js",
-            Names(88, (83, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_K10Pro_QMK_ANSI_Keyboard() => new(
-            "Keychron/K Series/Pro/Keychron_K10Pro_QMK_ANSI_Keyboard.js",
-            Names(108, (16, "Circle"), (17, "Triangle"), (18, "Square"), (19, "Cross"), (100, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15, 17, 18, 19, 20, 0, 1, 2, 3, 10, 11, 12, 13, 14, 15, 16, 17, 18 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
-
-        private static PluginKeyTable Qmk_Keychron_K10Pro_QMK_ISO_Keyboard() => new(
-            "Keychron/K Series/Pro/Keychron_K10Pro_QMK_ISO_Keyboard.js",
-            Names(109, (16, "Circle"), (17, "Triangle"), (18, "Square"), (19, "Cross"), (102, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 19 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
-
-        private static PluginKeyTable Qmk_Keychron_K12_Pro_QMK_ANSI_Keyboard() => new(
-            "Keychron/K Series/Pro/Keychron_K12_Pro_QMK_ANSI_Keyboard.js",
-            Names(61, (59, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 0, 1, 2, 6, 10, 11, 12, 13 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 224, 227, 226, 44, 230, 101, 0, 224 });
-
-        private static PluginKeyTable Qmk_Keychron_K1_Pro_QMK_Keyboard_ANSI() => new(
-            "Keychron/K Series/Pro/Keychron_K1_Pro_QMK_Keyboard.js",
             Names(87, (15, "Light"), (82, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 231, 80, 81, 79 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_K1_Pro_QMK_Keyboard_ISO() => new(
-            "Keychron/K Series/Pro/Keychron_K1_Pro_QMK_Keyboard.js",
+        private static PluginKeyTable Qmk_Keychron_K1_Max_QMK_Keyboard_fw_keychron_k1_max_iso_rgb() => new(
+            "Keychron/K Series/Max/Keychron_K1_Max_QMK_Keyboard.js",
             Names(88, (15, "Light"), (83, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 231, 80, 81, 79 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_K2_Pro_QMK_ANSI_Keyboard() => new(
-            "Keychron/K Series/Pro/Keychron_K2_Pro_QMK_ANSI_Keyboard.js",
-            Names(84, (79, "Fn")),
+        private static PluginKeyTable Qmk_Keychron_K2_Max_QMK_ANSI_Keyboard_fw_keychron_k2_max_ansi_rgb() => new(
+            "Keychron/K Series/Max/Keychron_K2_Max_QMK_ANSI_Keyboard.js",
+            Names(84, (15, "Light"), (79, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 76, 101, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_K2_Pro_QMK_ISO_DE_Keyboard() => new(
-            "Keychron/K Series/Pro/Keychron_K2_Pro_QMK_ISO_DE_Keyboard.js",
+        private static PluginKeyTable Qmk_Keychron_K2_Max_QMK_ISO_Keyboard_fw_keychron_k2_max_iso_rgb() => new(
+            "Keychron/K Series/Max/Keychron_K2_Max_QMK_ISO_Keyboard.js",
             Names(85, (15, "Light"), (80, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_K3_Pro_QMK_ANSI_Keyboard() => new(
-            "Keychron/K Series/Pro/Keychron_K3_Pro_QMK_ANSI_Keyboard.js",
-            Names(84, (15, "MediaStop")),
+        private static PluginKeyTable Qmk_Keychron_K5_Max_QMK_ANSI_Keyboard_fw_keychron_k5_max_ansi_rgb() => new(
+            "Keychron/K Series/Max/Keychron_K5_Max_QMK_ANSI_Keyboard.js",
+            Names(108, (15, "Light"), (101, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
+
+        private static PluginKeyTable Qmk_Keychron_K5_Max_QMK_ISO_Keyboard_fw_keychron_k5_max_iso_rgb() => new(
+            "Keychron/K Series/Max/Keychron_K5_Max_QMK_ISO_Keyboard.js",
+            Names(109, (15, "Light"), (102, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
+
+        private static PluginKeyTable Qmk_Keychron_K8Max_QMK_ANSI_Keyboard_fw_keychron_k8_max_ansi_rgb() => new(
+            "Keychron/K Series/Max/Keychron_K8Max_QMK_ANSI_Keyboard.js",
+            Names(87, (15, "Light"), (82, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_K8Max_QMK_ISO_Keyboard_fw_keychron_k8_max_iso_rgb() => new(
+            "Keychron/K Series/Max/Keychron_K8Max_QMK_ISO_Keyboard.js",
+            Names(88, (15, "Light"), (83, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_K10Pro_QMK_ANSI_Keyboard_fw_keychron_k10_pro_ansi_rgb() => new(
+            "Keychron/K Series/Pro/Keychron_K10Pro_QMK_ANSI_Keyboard.js",
+            Names(108, (15, "Light"), (101, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
+
+        private static PluginKeyTable Qmk_Keychron_K10Pro_QMK_ISO_Keyboard_fw_keychron_k10_pro_iso_rgb() => new(
+            "Keychron/K Series/Pro/Keychron_K10Pro_QMK_ISO_Keyboard.js",
+            Names(109, (15, "Light"), (102, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 19, 20, 21, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
+
+        private static PluginKeyTable Qmk_Keychron_K12_Pro_QMK_ANSI_Keyboard_fw_keychron_k12_pro_ansi_rgb() => new(
+            "Keychron/K Series/Pro/Keychron_K12_Pro_QMK_ANSI_Keyboard.js",
+            Names(61, (58, "Fn"), (59, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 3, 4, 10, 11, 13, 14 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 224, 227, 226, 44, 230, 0, 0, 228 });
+
+        private static PluginKeyTable Qmk_Keychron_K1_Pro_QMK_Keyboard_fw_keychron_k1_pro_ansi_rgb() => new(
+            "Keychron/K Series/Pro/Keychron_K1_Pro_QMK_Keyboard.js",
+            Names(87, (15, "Light"), (82, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_K1_Pro_QMK_Keyboard_fw_keychron_k1_pro_iso_rgb() => new(
+            "Keychron/K Series/Pro/Keychron_K1_Pro_QMK_Keyboard.js",
+            Names(88, (15, "Light"), (83, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_K2_Pro_QMK_ANSI_Keyboard_fw_keychron_k2_pro_ansi_rgb() => new(
+            "Keychron/K Series/Pro/Keychron_K2_Pro_QMK_ANSI_Keyboard.js",
+            Names(84, (15, "Light"), (79, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 231, 228, 80, 81, 79 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_K3_Pro_QMK_ISO_Keyboard() => new(
-            "Keychron/K Series/Pro/Keychron_K3_Pro_QMK_ISO_Keyboard.js",
-            Names(85),
+        private static PluginKeyTable Qmk_Keychron_K2_Pro_QMK_ISO_DE_Keyboard_fw_keychron_k2_pro_iso_rgb() => new(
+            "Keychron/K Series/Pro/Keychron_K2_Pro_QMK_ISO_DE_Keyboard.js",
+            Names(85, (15, "Light"), (80, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 231, 80, 81, 79 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_K4_Pro_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_K3_Pro_QMK_ANSI_Keyboard_fw_keychron_k3_pro_ansi_rgb() => new(
+            "Keychron/K Series/Pro/Keychron_K3_Pro_QMK_ANSI_Keyboard.js",
+            Names(84, (15, "Light"), (79, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_K3_Pro_QMK_ISO_Keyboard_fw_keychron_k3_pro_iso_rgb() => new(
+            "Keychron/K Series/Pro/Keychron_K3_Pro_QMK_ISO_Keyboard.js",
+            Names(85, (15, "Light"), (80, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 49, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_K4_Pro_ANSI_Keyboard_fw_keychron_k4_pro_ansi_rgb() => new(
             "Keychron/K Series/Pro/Keychron_K4_Pro_ANSI_Keyboard.js",
             Names(100, (18, "Light"), (93, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 16, 17, 18, 0, 1, 2, 5, 8, 9, 10, 12, 13, 14, 16, 17 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 17, 18, 19, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 17, 18 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 75, 78, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99 });
 
-        private static PluginKeyTable Qmk_Keychron_K4_Pro_ISO_DE_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_K4_Pro_ISO_DE_Keyboard_fw_keychron_k4_pro_iso_rgb() => new(
             "Keychron/K Series/Pro/Keychron_K4_Pro_ISO_DE_Keyboard.js",
             Names(101, (18, "Light"), (94, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 74, 77, 76, 75, 78, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 17, 18, 19, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 17, 18 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 75, 78, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99 });
 
-        private static PluginKeyTable Qmk_Keychron_K5_Pro_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_K5_Pro_QMK_ANSI_Keyboard_fw_keychron_k5_pro_ansi_rgb() => new(
             "Keychron/K Series/Pro/Keychron_K5_Pro_QMK_ANSI_Keyboard.js",
-            Names(108, (14, "Mute"), (15, "Light"), (16, "Circle"), (17, "Triangle"), (18, "Square"), (19, "Cross"), (100, "Fn")),
+            Names(108, (15, "Light"), (101, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 16, 17, 18, 19, 0, 1, 2, 5, 8, 9, 10, 11, 13, 14, 15, 16, 17, 18, 19 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99, 88 });
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
 
-        private static PluginKeyTable Qmk_Keychron_K6_Pro_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_K6_Pro_ANSI_Keyboard_fw_keychron_k6_pro_ansi_rgb() => new(
             "Keychron/K Series/Pro/Keychron_K6_Pro_ANSI_Keyboard.js",
-            Names(68, (14, "MediaStop"), (64, "Fn")),
+            Names(68, (14, "Light"), (63, "Fn"), (64, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 74, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 231, 0, 80, 81, 79 });
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 74, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 0, 0, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_K8Pro_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_K8Pro_QMK_ANSI_Keyboard_fw_keychron_k8_pro_ansi_rgb() => new(
             "Keychron/K Series/Pro/Keychron_K8Pro_QMK_ANSI_Keyboard.js",
-            Names(87, (82, "Fn")),
+            Names(87, (15, "Light"), (82, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 114, 115, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_K8Pro_QMK_ISO_DE_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_K8Pro_QMK_ISO_DE_Keyboard_fw_keychron_k8_pro_iso_rgb() => new(
             "Keychron/K Series/Pro/Keychron_K8Pro_QMK_ISO_DE_Keyboard.js",
-            Names(88, (83, "Fn")),
+            Names(88, (15, "Light"), (83, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 114, 115, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
 
         private static PluginKeyTable Qmk_Keychron_K10V2_QMK_ISO_Keyboard() => new(
             "Keychron/K Series/Standard/Keychron_K10V2_QMK_ISO_Keyboard.js",
@@ -851,6 +918,14 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
 
+        private static PluginKeyTable Qmk_Keychron_K2v2_v3_QMK_ANSI_Keyboard_fw_keychron_k2_version_3_ansi_rgb() => new(
+            "Keychron/K Series/Standard/Keychron_K2v2+v3_QMK_ANSI_Keyboard.js",
+            Names(84, (15, "Light"), (79, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
         private static PluginKeyTable Qmk_Keychron_K2v2_v3_QMK_ANSI_Keyboard() => new(
             "Keychron/K Series/Standard/Keychron_K2v2+v3_QMK_ANSI_Keyboard.js",
             Names(83, (79, "Fn")),
@@ -859,21 +934,21 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 73, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_K2v3_QMK_ISO_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_K2v3_QMK_ISO_Keyboard_fw_keychron_k2_version_3_iso_rgb() => new(
             "Keychron/K Series/Standard/Keychron_K2v3_QMK_ISO_Keyboard.js",
-            Names(85, (80, "Fn")),
+            Names(85, (15, "Light"), (80, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 76, 73, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_K3v3_QMK_ISO_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_K3v3_QMK_ISO_Keyboard_fw_keychron_k3_version_3_iso_rgb() => new(
             "Keychron/K Series/Standard/Keychron_K3v3_QMK_ISO_Keyboard.js",
-            Names(85),
+            Names(85, (15, "Light"), (80, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 2, 6, 11, 12, 13, 14, 15 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 73, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 78, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 101, 80, 81, 79 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
         private static PluginKeyTable Qmk_Keychron_K4v2_QMK_ANSI_Keyboard() => new(
             "Keychron/K Series/Standard/Keychron_K4v2_QMK_ANSI_Keyboard.js",
@@ -885,17 +960,17 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
 
         private static PluginKeyTable Qmk_Keychron_K5_v2_QMK_ISO_Keyboard() => new(
             "Keychron/K Series/Standard/Keychron_K5_v2_QMK_ISO_Keyboard.js",
-            Names(109, (15, "Light"), (16, "Circle"), (17, "Triangle"), (18, "Square"), (101, "Fn")),
+            Names(109, (15, "Light"), (16, "Circle"), (17, "Triangle"), (18, "Square"), (19, "Cross"), (101, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 },
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 19 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 0, 0, 0, 0, 0, 27, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
 
         private static PluginKeyTable Qmk_Keychron_K8_TKL_QMK_ISO_Keyboard() => new(
             "Keychron/K Series/Standard/Keychron_K8_TKL_QMK_ISO_Keyboard.js",
             Names(89, (84, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
+            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
 
@@ -913,623 +988,719 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
             new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_Q1_HE_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_Q1_HE_QMK_ANSI_Keyboard_fw_keychron_q1_he_ansi_encoder() => new(
             "Keychron/Q Series/HE/Keychron_Q1_HE_QMK_ANSI_Keyboard.js",
             Names(81, (76, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_Q1_HE_QMK_ISO_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_Q1_HE_QMK_ISO_Keyboard_fw_keychron_q1_he_iso_encoder() => new(
             "Keychron/Q Series/HE/Keychron_Q1_HE_QMK_ISO_Keyboard.js",
             Names(82, (77, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 0, 1, 2, 6, 11, 12, 13, 14, 15, 16 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_Q3_HE_QMK_ANSI_Encoder_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_Q3_HE_QMK_ANSI_Encoder_Keyboard_fw_keychron_q3_he_ansi_encoder() => new(
             "Keychron/Q Series/HE/Keychron_Q3_HE_QMK_ANSI_Encoder_Keyboard.js",
-            Names(87, (81, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 16, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 0, 1, 2, 5, 9, 10, 12, 13, 14, 15, 16 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q5_HE_QMK_ANSI_Encoder_Keyboard() => new(
-            "Keychron/Q Series/HE/Keychron_Q5_HE_QMK_ANSI_Encoder_Keyboard.js",
-            Names(101, (14, "MediaRewind"), (16, "MediaFastForward"), (94, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14, 16, 17 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 72, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99 });
-
-        private static PluginKeyTable Qmk_Keychron_Q6_HE_QMK_ANSI_ISO_Keyboard_ANSI() => new(
-            "Keychron/Q Series/HE/Keychron_Q6_HE_QMK_ANSI_ISO_Keyboard.js",
-            Names(108, (16, "MediaRewind"), (17, "MediaPlayPause"), (18, "MediaFastForward"), (19, "MediaStop"), (100, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15, 17, 18, 19, 0, 1, 2, 5, 9, 10, 11, 12, 14, 15, 16, 17, 18, 20 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99, 88 });
-
-        private static PluginKeyTable Qmk_Keychron_Q6_HE_QMK_ANSI_ISO_Keyboard_ISO() => new(
-            "Keychron/Q Series/HE/Keychron_Q6_HE_QMK_ANSI_ISO_Keyboard.js",
-            Names(109, (16, "MediaRewind"), (17, "MediaPlayPause"), (18, "MediaFastForward"), (19, "MediaStop"), (101, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 17, 18, 19, 0, 1, 2, 5, 9, 10, 11, 12, 14, 15, 16, 17, 18, 20 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 87, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99, 88 });
-
-        private static PluginKeyTable Qmk_Keychron_Q0_Max_QMK_Keyboard() => new(
-            "Keychron/Q Series/Max/Keychron_Q0_Max_QMK_Keyboard.js",
-            Names(26, (0, "Circle"), (1, "Triangle"), (2, "Square"), (3, "Cross"), (4, "M1"), (9, "M2"), (13, "M3"), (18, "M4"), (23, "M5")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 },
-            new byte[] { 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 0, 1, 2, 3, 4, 0, 1, 3 },
-            new byte[] { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5 },
-            new ushort[] { 0, 0, 0, 0, 0, 83, 84, 85, 86, 0, 95, 96, 97, 0, 92, 93, 94, 87, 0, 89, 90, 91, 88, 0, 98, 99 });
-
-        private static PluginKeyTable Qmk_Keychron_Q12_Max_QMK_ANSI_Encoder_Keyboard() => new(
-            "Keychron/Q Series/Max/Keychron_Q12_Max_QMK_ANSI_Encoder_Keyboard.js",
-            Names(102, (0, "Triangle"), (1, "Square"), (2, "Cross"), (17, "Light"), (97, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101 },
-            new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 19, 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 0, 2, 4, 5, 6, 10, 14, 15, 16, 17, 18, 19 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 0, 0, 0, 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 83, 84, 85, 86, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 95, 96, 97, 87, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 92, 93, 94, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 89, 90, 91, 88, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 98, 99, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q1_Max_QMK_ANSI_Encoder_Keyboard() => new(
-            "Keychron/Q Series/Max/Keychron_Q1_Max_QMK_ANSI_Encoder_Keyboard.js",
-            Names(81, (76, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 231, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q1_Max_QMK_ISO_Encoder_Keyboard() => new(
-            "Keychron/Q Series/Max/Keychron_Q1_Max_QMK_ISO_Encoder_Keyboard.js",
-            Names(82, (77, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q2_Max_QMK_ANSI_Encoder_Keyboard() => new(
-            "Keychron/Q Series/Max/Keychron_Q2_Max_QMK_ANSI_Encoder_Keyboard.js",
-            Names(66, (61, "Fn"), (62, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 0, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q3_Max_QMK_ANSI_Keyboard() => new(
-            "Keychron/Q Series/Max/Keychron_Q3_Max_QMK_ANSI_Keyboard.js",
-            Names(87, (15, "MediaStop"), (83, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q3_Max_QMK_ISO_Keyboard() => new(
-            "Keychron/Q Series/Max/Keychron_Q3_Max_QMK_ISO_Keyboard.js",
-            Names(88, (15, "MediaStop"), (83, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q5_Max_QMK_ANSI_Encoder_Keyboard() => new(
-            "Keychron/Q Series/Max/Keychron_Q5_Max_QMK_ANSI_Encoder_Keyboard.js",
-            Names(101, (14, "MediaRewind"), (15, "MediaPlayPause"), (16, "MediaFastForward"), (94, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99 });
-
-        private static PluginKeyTable Qmk_Keychron_Q65_Max_QMK_ANSI_Encoder_Keyboard() => new(
-            "Keychron/Q Series/Max/Keychron_Q65_Max_QMK_ANSI_Encoder_Keyboard.js",
-            Names(72, (68, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71 },
-            new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 7, 10, 11, 12, 13, 14, 15 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 104, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 74, 105, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 106, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 107, 224, 227, 226, 44, 230, 231, 0, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q6_Max_QMK_ANSI_Keyboard() => new(
-            "Keychron/Q Series/Max/Keychron_Q6_Max_QMK_ANSI_Keyboard.js",
-            Names(108, (16, "Circle"), (17, "Triangle"), (18, "Square"), (19, "Cross"), (101, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 72, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 73, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 74, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 75, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 19 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 101, 0, 228, 80, 81, 79, 98, 99 });
-
-        private static PluginKeyTable Qmk_Keychron_Q6_Max_QMK_ISO_Keyboard() => new(
-            "Keychron/Q Series/Max/Keychron_Q6_Max_QMK_ISO_Keyboard.js",
-            Names(109, (15, "Light"), (16, "Circle"), (17, "Triangle"), (18, "Square"), (19, "Cross"), (102, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 19, 40, 61, 95, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 20, 20, 20, 20, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 17, 18, 19, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 19 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 1, 2, 4, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
-
-        private static PluginKeyTable Qmk_Keychron_Q8_Max_QMK_ANSI_Keyboard() => new(
-            "Keychron/Q Series/Max/Keychron_Q8_Max_QMK_ANSI_Keyboard.js",
-            Names(68, (62, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 2, 5, 6, 7, 8, 10, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 73, 225, 29, 27, 6, 25, 5, 101, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 231, 0, 101, 230, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q0_Plus_QMK_ANSI_Keyboard() => new(
-            "Keychron/Q Series/Plus/Keychron_Q0_Plus_QMK_ANSI_Keyboard.js",
-            Names(26, (0, "Circle"), (1, "Triangle"), (2, "Square"), (3, "Cross"), (4, "M1"), (9, "M2"), (14, "M3"), (18, "M4"), (23, "M5")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 },
-            new byte[] { 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 0, 1, 2, 3, 4, 0, 1, 3 },
-            new byte[] { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5 },
-            new ushort[] { 0, 0, 0, 0, 0, 83, 84, 85, 86, 0, 95, 96, 97, 87, 0, 92, 93, 94, 0, 89, 90, 91, 88, 0, 98, 99 });
-
-        private static PluginKeyTable Qmk_Keychron_Q1_Pro_QMK_ANSI_Encoder_Keyboard() => new(
-            "Keychron/Q Series/Pro/Keychron_Q1_Pro_QMK_ANSI_Encoder_Keyboard.js",
-            Names(82, (14, "Knob"), (77, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 1, 2, 6, 10, 11, 12, 13, 15, 15 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 231, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q1_Pro_QMK_ISO_Encoder_Keyboard() => new(
-            "Keychron/Q Series/Pro/Keychron_Q1_Pro_QMK_ISO_Encoder_Keyboard.js",
-            Names(83, (14, "Mute"), (78, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q2_Pro_QMK_ANSI_Keyboard() => new(
-            "Keychron/Q Series/Pro/Keychron_Q2_Pro_QMK_ANSI_Keyboard.js",
-            Names(66),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 101, 0, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q3_Pro_SE_QMK_ANSI_Keyboard() => new(
-            "Keychron/Q Series/Pro/Keychron_Q3_Pro_SE_QMK_ANSI_Keyboard.js",
-            Names(91, (33, "M1"), (51, "M2"), (65, "M3"), (79, "M4"), (86, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90 },
-            new byte[] { 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 0, 1, 2, 3, 7, 11, 12, 13, 14, 15, 16, 17 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 0, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 0, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q3_Pro_SE_QMK_ISO_Keyboard() => new(
-            "Keychron/Q Series/Pro/Keychron_Q3_Pro_SE_QMK_ISO_Keyboard.js",
-            Names(92, (33, "M1"), (50, "M2"), (65, "M3"), (80, "M4"), (86, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 0, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 0, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q5_Pro_QMK_ANSI_Keyboard() => new(
-            "Keychron/Q Series/Pro/Keychron_Q5_Pro_QMK_ANSI_Keyboard.js",
-            Names(101, (14, "Circle"), (15, "Triangle"), (16, "Square"), (94, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 16, 17, 18, 0, 1, 2, 5, 9, 10, 11, 12, 13, 14, 15, 17 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99 });
-
-        private static PluginKeyTable Qmk_Keychron_Q5_Pro_QMK_ISO_Keyboard() => new(
-            "Keychron/Q Series/Pro/Keychron_Q5_Pro_QMK_ISO_Keyboard.js",
-            Names(102, (14, "Circle"), (15, "Triangle"), (16, "Square"), (95, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 0, 1, 2, 5, 9, 10, 11, 12, 13, 14, 15, 16 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 74, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99 });
-
-        private static PluginKeyTable Qmk_Keychron_Q6_Pro_QMK_ANSI_Keyboard() => new(
-            "Keychron/Q Series/Pro/Keychron_Q6_Pro_QMK_ANSI_Keyboard.js",
-            Names(108, (16, "Circle"), (17, "Triangle"), (18, "Square"), (19, "Cross"), (100, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15, 17, 18, 19, 20, 0, 1, 2, 5, 9, 10, 11, 12, 14, 15, 16, 17, 18 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
-
-        private static PluginKeyTable Qmk_Keychron_Q6_Pro_QMK_ISO_Keyboard() => new(
-            "Keychron/Q Series/Pro/Keychron_Q6_Pro_QMK_ISO_Keyboard.js",
-            Names(109, (15, "Light"), (16, "Circle"), (17, "Triangle"), (18, "Square"), (19, "Cross"), (100, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 17, 18, 19, 19, 0, 1, 2, 5, 9, 10, 11, 12, 14, 15, 16, 17, 19 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 87, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99, 88 });
-
-        private static PluginKeyTable Qmk_Keychron_Q8_Pro_QMK_ANSI_Keyboard() => new(
-            "Keychron/Q Series/Pro/Keychron_Q8_Pro_QMK_ANSI_Keyboard.js",
-            Names(68, (62, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 2, 5, 6, 7, 8, 10, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 73, 225, 29, 27, 6, 25, 5, 101, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 231, 0, 101, 230, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q0_QMK_ANSI_Keyboard() => new(
-            "Keychron/Q Series/Standard/Keychron_Q0_QMK_ANSI_Keyboard.js",
-            Names(21, (0, "Circle"), (1, "Triangle"), (2, "Square"), (3, "Cross")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 },
-            new byte[] { 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 0, 1, 2, 3, 0, 1, 2, 0, 2, 3 },
-            new byte[] { 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5 },
-            new ushort[] { 0, 0, 0, 0, 83, 84, 85, 86, 95, 96, 97, 92, 93, 94, 87, 89, 90, 91, 98, 99, 88 });
-
-        private static PluginKeyTable Qmk_Keychron_Q10_QMK_ANSI_Keyboard() => new(
-            "Keychron/Q Series/Standard/Keychron_Q10_QMK_ANSI_Keyboard.js",
-            Names(88, (15, "M1"), (31, "M2"), (47, "M3"), (62, "M4"), (77, "M5"), (82, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
-            new byte[] { 11, 19, 27, 34, 41, 50, 57, 71, 78, 87, 94, 101, 108, 118, 128, 3, 14, 21, 28, 35, 42, 49, 56, 68, 75, 82, 89, 96, 103, 114, 129, 2, 14, 23, 30, 37, 44, 51, 66, 73, 80, 87, 94, 101, 109, 118, 130, 1, 14, 24, 31, 38, 45, 52, 69, 76, 83, 90, 98, 105, 116, 131, 0, 14, 25, 33, 40, 47, 54, 65, 72, 79, 86, 93, 101, 110, 123, 0, 10, 19, 32, 44, 56, 72, 85, 115, 123, 130 },
-            new byte[] { 0, 0, 0, 0, 1, 3, 4, 4, 3, 1, 0, 0, 0, 0, 0, 8, 8, 8, 7, 9, 10, 11, 13, 13, 11, 10, 9, 7, 8, 8, 9, 14, 14, 14, 14, 16, 17, 18, 20, 18, 17, 16, 14, 14, 14, 14, 15, 21, 21, 21, 21, 22, 24, 25, 25, 24, 23, 22, 21, 21, 21, 21, 27, 27, 27, 28, 29, 30, 32, 32, 31, 30, 28, 27, 27, 27, 28, 33, 33, 33, 34, 36, 38, 37, 35, 35, 35, 35 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 104, 70, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 0, 225, 29, 27, 6, 25, 5, 5, 17, 16, 54, 55, 56, 229, 82, 0, 224, 227, 226, 44, 0, 44, 230, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q12_QMK_ANSI_Keyboard() => new(
-            "Keychron/Q Series/Standard/Keychron_Q12_QMK_ANSI_Keyboard.js",
-            Names(102, (0, "Triangle"), (1, "Square"), (2, "Cross"), (17, "Light"), (97, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 0, 2, 4, 5, 6, 10, 14, 15, 16, 17, 18, 19 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 0, 0, 0, 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 83, 84, 85, 86, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 95, 96, 97, 87, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 92, 93, 94, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 89, 90, 91, 88, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 98, 99, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q1v1_QMK_ANSI_Keyboard() => new(
-            "Keychron/Q Series/Standard/Keychron_Q1v1_QMK_ANSI_Keyboard.js",
-            Names(83, (79, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 2, 6, 11, 12, 13, 14, 15 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 73, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q1v1_QMK_ISO_Keyboard() => new(
-            "Keychron/Q Series/Standard/Keychron_Q1v1_QMK_ISO_Keyboard.js",
-            Names(83, (14, "Knob"), (78, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 5, 9, 10, 11, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q1v2_QMK_ANSI_Encoder_Keyboard() => new(
-            "Keychron/Q Series/Standard/Keychron_Q1v2_QMK_ANSI_Encoder_Keyboard.js",
-            Names(82, (14, "Knob"), (77, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 231, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q1v2_QMK_ISO_Encoder_Keyboard() => new(
-            "Keychron/Q Series/Standard/Keychron_Q1v2_QMK_ISO_Encoder_Keyboard.js",
-            Names(82, (77, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q2_QMK_ANSI_Encoder_Keyboard() => new(
-            "Keychron/Q Series/Standard/Keychron_Q2_QMK_ANSI_Encoder_Keyboard.js",
-            Names(67, (14, "Mute"), (62, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 101, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q2_QMK_ANSI_Keyboard() => new(
-            "Keychron/Q Series/Standard/Keychron_Q2_QMK_ANSI_Keyboard.js",
-            Names(67, (62, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 101, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q3_QMK_ANSI_Encoder_Keyboard() => new(
-            "Keychron/Q Series/Standard/Keychron_Q3_QMK_ANSI_Encoder_Keyboard.js",
-            Names(87, (81, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 0, 1, 2, 5, 9, 10, 12, 13, 14, 15, 16 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q3_QMK_ANSI_Keyboard() => new(
-            "Keychron/Q Series/Standard/Keychron_Q3_QMK_ANSI_Keyboard.js",
-            Names(87, (81, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 0, 1, 2, 3, 4, 5, 6, 8, 14, 15, 16 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q3_QMK_ISO_Keyboard() => new(
-            "Keychron/Q Series/Standard/Keychron_Q3_QMK_ISO_Keyboard.js",
-            Names(88, (82, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q4_QMK_ANSI_Keyboard() => new(
-            "Keychron/Q Series/Standard/Keychron_Q4_QMK_ANSI_Keyboard.js",
-            Names(61, (59, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 6, 10, 11, 12, 13 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 224, 227, 226, 44, 230, 101, 0, 224 });
-
-        private static PluginKeyTable Qmk_Keychron_Q5_QMK_ANSI_Encoder_Keyboard() => new(
-            "Keychron/Q Series/Standard/Keychron_Q5_QMK_ANSI_Encoder_Keyboard.js",
-            Names(98, (16, "Mute"), (90, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 0, 1, 2, 3, 10, 11, 12, 13, 14, 15, 16, 17, 18 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99, 88 });
-
-        private static PluginKeyTable Qmk_Keychron_Q5_QMK_ANSI_Keyboard() => new(
-            "Keychron/Q Series/Standard/Keychron_Q5_QMK_ANSI_Keyboard.js",
-            Names(100, (18, "MediaStop"), (92, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 0, 1, 2, 3, 10, 11, 12, 13, 14, 15, 16, 17, 18 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 75, 78, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99, 88 });
-
-        private static PluginKeyTable Qmk_Keychron_Q5_QMK_ISO_Encoder_Keyboard() => new(
-            "Keychron/Q Series/Standard/Keychron_Q5_QMK_ISO_Encoder_Keyboard.js",
-            Names(97, (89, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98 },
-            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99, 88 });
-
-        private static PluginKeyTable Qmk_Keychron_Q65_QMK_ANSI_Encoder_Keyboard() => new(
-            "Keychron/Q Series/Standard/Keychron_Q65_QMK_ANSI_Encoder_Keyboard.js",
-            Names(72, (15, "M1"), (31, "M2"), (46, "M3"), (61, "M4"), (68, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71 },
-            new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 7, 10, 11, 12, 13, 14, 15 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 74, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 0, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 0, 224, 227, 226, 44, 230, 231, 0, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_Q6_QMK_ANSI_ISO_Keyboard_ANSI() => new(
-            "Keychron/Q Series/Standard/Keychron_Q6_QMK_ANSI_ISO_Keyboard.js",
-            Names(108, (16, "MediaRewind"), (17, "MediaPlayPause"), (18, "MediaFastForward"), (19, "MediaStop"), (100, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15, 17, 18, 19, 0, 1, 2, 5, 9, 10, 11, 12, 14, 15, 16, 17, 18, 20 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99, 88 });
-
-        private static PluginKeyTable Qmk_Keychron_Q6_QMK_ANSI_ISO_Keyboard_ISO() => new(
-            "Keychron/Q Series/Standard/Keychron_Q6_QMK_ANSI_ISO_Keyboard.js",
-            Names(109, (16, "MediaRewind"), (17, "MediaPlayPause"), (18, "MediaFastForward"), (19, "MediaStop"), (101, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 17, 18, 19, 0, 1, 2, 5, 9, 10, 11, 12, 14, 15, 16, 17, 18, 20 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 87, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99, 88 });
-
-        private static PluginKeyTable Qmk_Keychron_V1_Max_QMK_ANSI_Encoder_Keyboard() => new(
-            "Keychron/V Series/Max/Keychron_V1_Max_QMK_ANSI_Encoder_Keyboard.js",
-            Names(81, (76, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 231, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_V1_Max_QMK_ISO_Encoder_Keyboard() => new(
-            "Keychron/V Series/Max/Keychron_V1_Max_QMK_ISO_Encoder_Keyboard.js",
-            Names(82, (77, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_Keychron_V3_Max_QMK_ANSI_Encoder_Keyboard() => new(
-            "Keychron/V Series/Max/Keychron_V3_Max_QMK_ANSI_Encoder_Keyboard.js",
             Names(87, (15, "Light"), (82, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 0, 1, 2, 6, 10, 12, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_V3_Max_QMK_ISO_Keyboard() => new(
-            "Keychron/V Series/Max/Keychron_V3_Max_QMK_ISO_Keyboard.js",
-            Names(88, (15, "Light"), (82, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79 });
+        private static PluginKeyTable Qmk_Keychron_Q5_HE_QMK_ANSI_Encoder_Keyboard_fw_keychron_q5_he_ansi_encoder() => new(
+            "Keychron/Q Series/HE/Keychron_Q5_HE_QMK_ANSI_Encoder_Keyboard.js",
+            Names(101, (94, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 18, 19, 20, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 17, 18, 19, 20, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 17, 19 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99 });
 
-        private static PluginKeyTable Qmk_Keychron_V5_Max_QMK_ANSI_Encoder_Keyboard() => new(
-            "Keychron/V Series/Max/Keychron_V5_Max_QMK_ANSI_Encoder_Keyboard.js",
-            Names(97),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96 },
-            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 101, 228, 80, 81, 79, 98, 99 });
-
-        private static PluginKeyTable Qmk_Keychron_V5_Max_QMK_ISO_Encoder_Keyboard() => new(
-            "Keychron/V Series/Max/Keychron_V5_Max_QMK_ISO_Encoder_Keyboard.js",
-            Names(98),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97 },
-            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 4, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 101, 228, 80, 81, 79, 98, 99 });
-
-        private static PluginKeyTable Qmk_Keychron_V6_Max_QMK_ANSI_Keyboard() => new(
-            "Keychron/V Series/Max/Keychron_V6_Max_QMK_ANSI_Keyboard.js",
-            Names(108, (16, "Circle"), (17, "Triangle"), (18, "Square"), (19, "Cross"), (100, "Fn")),
+        private static PluginKeyTable Qmk_Keychron_Q6_HE_QMK_ANSI_ISO_Keyboard_fw_keychron_q6_he_ansi_encoder() => new(
+            "Keychron/Q Series/HE/Keychron_Q6_HE_QMK_ANSI_ISO_Keyboard.js",
+            Names(108, (15, "Light"), (101, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15, 17, 18, 19, 0, 1, 2, 6, 9, 10, 11, 12, 14, 15, 16, 17, 19, 20 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99, 88 });
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 104, 105, 106, 107, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
 
-        private static PluginKeyTable Qmk_Keychron_V6_Max_QMK_ISO_Keyboard() => new(
-            "Keychron/V Series/Max/Keychron_V6_Max_QMK_ISO_Keyboard.js",
-            Names(109, (14, "Mute"), (15, "Light"), (16, "Circle"), (17, "Triangle"), (18, "Square"), (19, "Cross"), (101, "Fn")),
+        private static PluginKeyTable Qmk_Keychron_Q6_HE_QMK_ANSI_ISO_Keyboard_fw_keychron_q6_he_iso_encoder() => new(
+            "Keychron/Q Series/HE/Keychron_Q6_HE_QMK_ANSI_ISO_Keyboard.js",
+            Names(109, (15, "Light"), (102, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15, 17, 18, 19, 20, 0, 1, 2, 3, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 87, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99, 88 });
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 104, 105, 106, 107, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
 
-        private static PluginKeyTable Qmk_Keychron_V1_QMK_ANSI_Encoder_Keyboard() => new(
-            "Keychron/V Series/Standard/Keychron_V1_QMK_ANSI_Encoder_Keyboard.js",
-            Names(82, (14, "Knob"), (77, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 231, 80, 81, 79 });
+        private static PluginKeyTable Qmk_Keychron_Q0_Max_QMK_Keyboard_fw_keychron_q0_max_encoder() => new(
+            "Keychron/Q Series/Max/Keychron_Q0_Max_QMK_Keyboard.js",
+            Names(26, (23, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 },
+            new byte[] { 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 0, 1, 2, 3, 4, 0, 1, 3 },
+            new byte[] { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5 },
+            new ushort[] { 41, 76, 43, 42, 0, 83, 84, 85, 86, 0, 95, 96, 97, 87, 0, 92, 93, 94, 0, 89, 90, 91, 88, 0, 98, 99 });
 
-        private static PluginKeyTable Qmk_Keychron_V1_QMK_ANSI_Keyboard() => new(
-            "Keychron/V Series/Standard/Keychron_V1_QMK_ANSI_Keyboard.js",
+        private static PluginKeyTable Qmk_Keychron_Q12_Max_QMK_ANSI_Encoder_Keyboard_fw_keychron_q12_max_ansi_encoder() => new(
+            "Keychron/Q Series/Max/Keychron_Q12_Max_QMK_ANSI_Encoder_Keyboard.js",
+            Names(102, (17, "Light"), (97, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101 },
+            new byte[] { 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 20, 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 0, 1, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 20, 0, 1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 0, 2, 4, 6, 7, 8, 14, 15, 16, 18, 19, 20 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 104, 105, 106, 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 83, 84, 85, 86, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 95, 96, 97, 87, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 92, 93, 94, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 89, 90, 91, 88, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 98, 99, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q1_Max_QMK_ANSI_Encoder_Keyboard_fw_keychron_q1_max_ansi_encoder() => new(
+            "Keychron/Q Series/Max/Keychron_Q1_Max_QMK_ANSI_Encoder_Keyboard.js",
+            Names(81, (76, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q1_Max_QMK_ISO_Encoder_Keyboard_fw_keychron_q1_max_iso_encoder() => new(
+            "Keychron/Q Series/Max/Keychron_Q1_Max_QMK_ISO_Encoder_Keyboard.js",
             Names(82, (77, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q2_Max_QMK_ANSI_Encoder_Keyboard_fw_keychron_q2_max_ansi_encoder() => new(
+            "Keychron/Q Series/Max/Keychron_Q2_Max_QMK_ANSI_Encoder_Keyboard.js",
+            Names(66, (61, "Fn"), (62, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 0, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q3_Max_QMK_ANSI_Keyboard_fw_keychron_q3_max_ansi_encoder() => new(
+            "Keychron/Q Series/Max/Keychron_Q3_Max_QMK_ANSI_Keyboard.js",
+            Names(87, (15, "Light"), (82, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q3_Max_QMK_ISO_Keyboard_fw_keychron_q3_max_iso_encoder() => new(
+            "Keychron/Q Series/Max/Keychron_Q3_Max_QMK_ISO_Keyboard.js",
+            Names(88, (15, "Light"), (83, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q5_Max_QMK_ANSI_Encoder_Keyboard_fw_keychron_q5_max_ansi_encoder() => new(
+            "Keychron/Q Series/Max/Keychron_Q5_Max_QMK_ANSI_Encoder_Keyboard.js",
+            Names(101, (94, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 18, 19, 20, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 17, 18, 19, 20, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 17, 19 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99 });
+
+        private static PluginKeyTable Qmk_Keychron_Q65_Max_QMK_ANSI_Encoder_Keyboard_fw_keychron_q65_max_ansi_encoder() => new(
+            "Keychron/Q Series/Max/Keychron_Q65_Max_QMK_ANSI_Encoder_Keyboard.js",
+            Names(72, (67, "Fn"), (68, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71 },
+            new byte[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 0, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 0, 2, 3, 4, 5, 12, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 74, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 0, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 0, 224, 227, 226, 44, 230, 0, 0, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q6_Max_QMK_ANSI_Keyboard_fw_keychron_q6_max_ansi_encoder() => new(
+            "Keychron/Q Series/Max/Keychron_Q6_Max_QMK_ANSI_Keyboard.js",
+            Names(108, (15, "Light"), (101, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
+
+        private static PluginKeyTable Qmk_Keychron_Q6_Max_QMK_ISO_Keyboard_fw_keychron_q6_max_iso_encoder() => new(
+            "Keychron/Q Series/Max/Keychron_Q6_Max_QMK_ISO_Keyboard.js",
+            Names(109, (15, "Light"), (102, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
+
+        private static PluginKeyTable Qmk_Keychron_Q8_Max_QMK_ANSI_Keyboard_fw_keychron_q8_max_ansi_encoder() => new(
+            "Keychron/Q Series/Max/Keychron_Q8_Max_QMK_ANSI_Keyboard.js",
+            Names(68, (61, "Fn"), (62, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67 },
+            new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 17, 0, 2, 3, 4, 6, 7, 9, 10, 11, 12, 13, 14, 15, 17, 0, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 0, 1, 3, 5, 7, 8, 9, 12, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5, 5, 4, 4, 4, 4 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 0, 0, 44, 230, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q0_Plus_QMK_ANSI_Keyboard_fw_keychron_q0_plus() => new(
+            "Keychron/Q Series/Plus/Keychron_Q0_Plus_QMK_ANSI_Keyboard.js",
+            Names(26, (0, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 },
+            new byte[] { 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 0, 1, 2, 3, 4, 0, 1, 3 },
+            new byte[] { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5 },
+            new ushort[] { 0, 41, 42, 43, 0, 83, 84, 85, 86, 0, 95, 96, 97, 87, 0, 92, 93, 94, 0, 89, 90, 91, 88, 0, 98, 99 });
+
+        private static PluginKeyTable Qmk_Keychron_Q1_Pro_QMK_ANSI_Encoder_Keyboard_fw_keychron_q1_pro_ansi_knob() => new(
+            "Keychron/Q Series/Pro/Keychron_Q1_Pro_QMK_ANSI_Encoder_Keyboard.js",
+            Names(82, (14, "Mute"), (77, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q1_Pro_QMK_ISO_Encoder_Keyboard_fw_keychron_q1_pro_iso_knob() => new(
+            "Keychron/Q Series/Pro/Keychron_Q1_Pro_QMK_ISO_Encoder_Keyboard.js",
+            Names(83, (14, "Mute"), (72, "Underglow"), (78, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 8, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 49, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 0, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q2_Pro_QMK_ANSI_Keyboard_fw_keychron_q2_pro_ansi_encoder() => new(
+            "Keychron/Q Series/Pro/Keychron_Q2_Pro_QMK_ANSI_Keyboard.js",
+            Names(66, (61, "Fn"), (62, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 2, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 0, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q3_Pro_SE_QMK_ANSI_Keyboard_fw_keychron_q3_pro_ansi_encoder_se() => new(
+            "Keychron/Q Series/Pro/Keychron_Q3_Pro_SE_QMK_ANSI_Keyboard.js",
+            Names(91, (15, "Light"), (86, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90 },
+            new byte[] { 1, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19, 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 18, 0, 1, 3, 4, 5, 11, 13, 14, 15, 17, 18, 19 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 0, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 0, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q3_Pro_SE_QMK_ISO_Keyboard_fw_keychron_q3_pro_iso_encoder_se() => new(
+            "Keychron/Q Series/Pro/Keychron_Q3_Pro_SE_QMK_ISO_Keyboard.js",
+            Names(92, (15, "Light"), (87, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91 },
+            new byte[] { 1, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19, 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19, 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 18, 0, 1, 3, 4, 5, 11, 13, 14, 15, 17, 18, 19 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 0, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 0, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q5_Pro_QMK_ANSI_Keyboard_fw_keychron_q5_pro_ansi_encoder() => new(
+            "Keychron/Q Series/Pro/Keychron_Q5_Pro_QMK_ANSI_Keyboard.js",
+            Names(101, (94, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 18, 19, 20, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 17, 18, 19, 20, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 17, 19 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 104, 105, 106, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99 });
+
+        private static PluginKeyTable Qmk_Keychron_Q5_Pro_QMK_ISO_Keyboard_fw_keychron_q5_pro_iso_encoder() => new(
+            "Keychron/Q Series/Pro/Keychron_Q5_Pro_QMK_ISO_Keyboard.js",
+            Names(102, (95, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 18, 19, 20, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 18, 19, 20, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 17, 18, 19, 20, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 17, 19 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 104, 105, 106, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 74, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99 });
+
+        private static PluginKeyTable Qmk_Keychron_Q6_Pro_QMK_ANSI_Keyboard_fw_keychron_q6_pro_ansi_encoder() => new(
+            "Keychron/Q Series/Pro/Keychron_Q6_Pro_QMK_ANSI_Keyboard.js",
+            Names(108, (15, "Light"), (101, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
+
+        private static PluginKeyTable Qmk_Keychron_Q6_Pro_QMK_ISO_Keyboard_fw_keychron_q6_pro_iso_encoder() => new(
+            "Keychron/Q Series/Pro/Keychron_Q6_Pro_QMK_ISO_Keyboard.js",
+            Names(109, (15, "Light"), (102, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 19, 20, 21, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
+
+        private static PluginKeyTable Qmk_Keychron_Q8_Pro_QMK_ANSI_Keyboard_fw_keychron_q8_pro_ansi_encoder() => new(
+            "Keychron/Q Series/Pro/Keychron_Q8_Pro_QMK_ANSI_Keyboard.js",
+            Names(68, (61, "Fn"), (62, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67 },
+            new byte[] { 1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 18, 0, 2, 4, 5, 6, 7, 9, 10, 11, 12, 14, 15, 16, 19, 0, 2, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 17, 0, 1, 4, 5, 7, 9, 10, 13, 16, 17, 18 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 0, 0, 44, 230, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q0_QMK_ANSI_Keyboard_fw_keychron_q0_base() => new(
+            "Keychron/Q Series/Standard/Keychron_Q0_QMK_ANSI_Keyboard.js",
+            Names(21, (0, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 },
+            new byte[] { 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 0, 1, 2, 3, 0, 1, 2, 0, 2, 3 },
+            new byte[] { 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 2, 4, 4, 4, 5, 5, 4 },
+            new ushort[] { 0, 41, 42, 43, 83, 84, 85, 86, 95, 96, 97, 92, 93, 94, 87, 89, 90, 91, 98, 99, 88 });
+
+        private static PluginKeyTable Qmk_Keychron_Q10_QMK_ANSI_Keyboard_fw_keychron_q10_ansi_encoder() => new(
+            "Keychron/Q Series/Standard/Keychron_Q10_QMK_ANSI_Keyboard.js",
+            Names(88, (82, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
+            new byte[] { 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 15, 16, 18, 19, 1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 15, 16, 17, 19, 1, 2, 3, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 19, 0, 2, 3, 5, 6, 7, 8, 10, 11, 12, 13, 15, 16, 17, 20, 0, 2, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 18, 0, 1, 3, 5, 6, 8, 10, 12, 17, 18, 19 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 0, 225, 29, 27, 6, 25, 5, 5, 17, 16, 54, 55, 56, 229, 82, 0, 224, 227, 226, 44, 0, 44, 230, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q12_QMK_ANSI_Keyboard_fw_keychron_q12_ansi_encoder() => new(
+            "Keychron/Q Series/Standard/Keychron_Q12_QMK_ANSI_Keyboard.js",
+            Names(102, (17, "Light"), (97, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101 },
+            new byte[] { 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 20, 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 0, 1, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 20, 0, 1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 0, 2, 4, 6, 7, 8, 14, 15, 16, 18, 19, 20 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 0, 0, 0, 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 83, 84, 85, 86, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 95, 96, 97, 87, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 92, 93, 94, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 89, 90, 91, 88, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 98, 99, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q1v1_QMK_ANSI_Keyboard_fw_keychron_q1v1_ansi() => new(
+            "Keychron/Q Series/Standard/Keychron_Q1v1_QMK_ANSI_Keyboard.js",
+            Names(82, (77, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 73, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_V1_QMK_ISO_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_Q1v1_QMK_ANSI_Keyboard_fw_keychron_q1v1_ansi_encoder() => new(
+            "Keychron/Q Series/Standard/Keychron_Q1v1_QMK_ANSI_Keyboard.js",
+            Names(82, (14, "Mute"), (77, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q1v1_QMK_ISO_Keyboard_fw_keychron_q1v1_iso() => new(
+            "Keychron/Q Series/Standard/Keychron_Q1v1_QMK_ISO_Keyboard.js",
+            Names(83, (78, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 73, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q1v1_QMK_ISO_Keyboard_fw_keychron_q1v1_iso_encoder() => new(
+            "Keychron/Q Series/Standard/Keychron_Q1v1_QMK_ISO_Keyboard.js",
+            Names(83, (14, "Mute"), (78, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 46, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q1v2_QMK_ANSI_Encoder_Keyboard_fw_keychron_q1v2_ansi() => new(
+            "Keychron/Q Series/Standard/Keychron_Q1v2_QMK_ANSI_Encoder_Keyboard.js",
+            Names(82, (77, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 73, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q1v2_QMK_ANSI_Encoder_Keyboard_fw_keychron_q1v2_ansi_encoder() => new(
+            "Keychron/Q Series/Standard/Keychron_Q1v2_QMK_ANSI_Encoder_Keyboard.js",
+            Names(82, (14, "Mute"), (77, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q1v2_QMK_ISO_Encoder_Keyboard_fw_keychron_q1v2_iso() => new(
+            "Keychron/Q Series/Standard/Keychron_Q1v2_QMK_ISO_Encoder_Keyboard.js",
+            Names(83, (78, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 73, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q1v2_QMK_ISO_Encoder_Keyboard_fw_keychron_q1v2_iso_encoder() => new(
+            "Keychron/Q Series/Standard/Keychron_Q1v2_QMK_ISO_Encoder_Keyboard.js",
+            Names(82, (77, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q2_QMK_ANSI_Encoder_Keyboard_fw_keychron_q2_ansi_encoder() => new(
+            "Keychron/Q Series/Standard/Keychron_Q2_QMK_ANSI_Encoder_Keyboard.js",
+            Names(67, (14, "Mute"), (62, "Fn"), (63, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 0, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q2_QMK_ANSI_Keyboard_fw_keychron_q2_ansi() => new(
+            "Keychron/Q Series/Standard/Keychron_Q2_QMK_ANSI_Keyboard.js",
+            Names(67, (62, "Fn"), (63, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 0, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q3_QMK_ANSI_Encoder_Keyboard_fw_keychron_q3_ansi_encoder() => new(
+            "Keychron/Q Series/Standard/Keychron_Q3_QMK_ANSI_Encoder_Keyboard.js",
+            Names(87, (15, "Light"), (82, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q3_QMK_ANSI_Keyboard_fw_keychron_q3_ansi() => new(
+            "Keychron/Q Series/Standard/Keychron_Q3_QMK_ANSI_Keyboard.js",
+            Names(87, (15, "Light"), (82, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q3_QMK_ISO_Keyboard_fw_keychron_q3_iso() => new(
+            "Keychron/Q Series/Standard/Keychron_Q3_QMK_ISO_Keyboard.js",
+            Names(88, (15, "Light"), (83, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q3_QMK_ISO_Keyboard_fw_keychron_q3_iso_encoder() => new(
+            "Keychron/Q Series/Standard/Keychron_Q3_QMK_ISO_Keyboard.js",
+            Names(88, (15, "Light"), (83, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q4_QMK_ANSI_Keyboard_fw_keychron_q4_ansi() => new(
+            "Keychron/Q Series/Standard/Keychron_Q4_QMK_ANSI_Keyboard.js",
+            Names(61, (58, "Fn"), (59, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 3, 4, 10, 11, 13, 14 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 224, 227, 226, 44, 230, 0, 0, 228 });
+
+        private static PluginKeyTable Qmk_Keychron_Q5_QMK_ANSI_Encoder_Keyboard_fw_keychron_q5_ansi_encoder() => new(
+            "Keychron/Q Series/Standard/Keychron_Q5_QMK_ANSI_Encoder_Keyboard.js",
+            Names(98, (16, "Mute"), (90, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 17, 18, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 17, 18, 19 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 5, 5, 4 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99, 88 });
+
+        private static PluginKeyTable Qmk_Keychron_Q5_QMK_ANSI_Keyboard_fw_keychron_q5_ansi() => new(
+            "Keychron/Q Series/Standard/Keychron_Q5_QMK_ANSI_Keyboard.js",
+            Names(100, (18, "Light"), (92, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 17, 18, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 17, 18, 19 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 5, 5, 4 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 75, 78, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99, 88 });
+
+        private static PluginKeyTable Qmk_Keychron_Q5_QMK_ISO_Encoder_Keyboard_fw_keychron_q5_iso_encoder() => new(
+            "Keychron/Q Series/Standard/Keychron_Q5_QMK_ISO_Encoder_Keyboard.js",
+            Names(98, (90, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 17, 18, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 17, 18, 19 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 5, 5, 4 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 87, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99, 88 });
+
+        private static PluginKeyTable Qmk_Keychron_Q65_QMK_ANSI_Encoder_Keyboard_fw_keychron_q65_ansi_encoder() => new(
+            "Keychron/Q Series/Standard/Keychron_Q65_QMK_ANSI_Encoder_Keyboard.js",
+            Names(72, (67, "Fn"), (68, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71 },
+            new byte[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 0, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 0, 2, 3, 4, 5, 12, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 74, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 0, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 0, 224, 227, 226, 44, 230, 0, 0, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_Q6_QMK_ANSI_ISO_Keyboard_fw_keychron_q6_ansi() => new(
+            "Keychron/Q Series/Standard/Keychron_Q6_QMK_ANSI_ISO_Keyboard.js",
+            Names(108, (15, "Light"), (100, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21, 22 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99, 88 });
+
+        private static PluginKeyTable Qmk_Keychron_Q6_QMK_ANSI_ISO_Keyboard_fw_keychron_q6_ansi_encoder() => new(
+            "Keychron/Q Series/Standard/Keychron_Q6_QMK_ANSI_ISO_Keyboard.js",
+            Names(108, (15, "Light"), (100, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21, 22 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99, 88 });
+
+        private static PluginKeyTable Qmk_Keychron_Q6_QMK_ANSI_ISO_Keyboard_fw_keychron_q6_iso() => new(
+            "Keychron/Q Series/Standard/Keychron_Q6_QMK_ANSI_ISO_Keyboard.js",
+            Names(109, (15, "Light"), (101, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21, 22 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 87, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99, 88 });
+
+        private static PluginKeyTable Qmk_Keychron_Q6_QMK_ANSI_ISO_Keyboard_fw_keychron_q6_iso_encoder() => new(
+            "Keychron/Q Series/Standard/Keychron_Q6_QMK_ANSI_ISO_Keyboard.js",
+            Names(109, (15, "Light"), (101, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21, 22 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 87, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99, 88 });
+
+        private static PluginKeyTable Qmk_Keychron_V1_Max_QMK_ANSI_Encoder_Keyboard_fw_keychron_v1_max_ansi_encoder() => new(
+            "Keychron/V Series/Max/Keychron_V1_Max_QMK_ANSI_Encoder_Keyboard.js",
+            Names(81, (76, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_V1_Max_QMK_ISO_Encoder_Keyboard_fw_keychron_v1_max_iso_encoder() => new(
+            "Keychron/V Series/Max/Keychron_V1_Max_QMK_ISO_Encoder_Keyboard.js",
+            Names(82, (77, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_V3_Max_QMK_ANSI_Encoder_Keyboard_fw_keychron_v3_max_ansi_encoder() => new(
+            "Keychron/V Series/Max/Keychron_V3_Max_QMK_ANSI_Encoder_Keyboard.js",
+            Names(87, (15, "Light"), (82, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_V3_Max_QMK_ISO_Keyboard_fw_keychron_v3_max_iso_encoder() => new(
+            "Keychron/V Series/Max/Keychron_V3_Max_QMK_ISO_Keyboard.js",
+            Names(88, (15, "Light"), (83, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_V5_Max_QMK_ANSI_Encoder_Keyboard_fw_keychron_v5_max_ansi_encoder() => new(
+            "Keychron/V Series/Max/Keychron_V5_Max_QMK_ANSI_Encoder_Keyboard.js",
+            Names(97, (90, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 17, 18, 19, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 17, 18 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99 });
+
+        private static PluginKeyTable Qmk_Keychron_V5_Max_QMK_ISO_Encoder_Keyboard_fw_keychron_v5_max_iso_encoder() => new(
+            "Keychron/V Series/Max/Keychron_V5_Max_QMK_ISO_Encoder_Keyboard.js",
+            Names(98, (91, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 17, 18, 19, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 17, 18 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 92, 93, 94, 87, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99 });
+
+        private static PluginKeyTable Qmk_Keychron_V6_Max_QMK_ANSI_Keyboard_fw_keychron_v6_max_ansi_encoder() => new(
+            "Keychron/V Series/Max/Keychron_V6_Max_QMK_ANSI_Keyboard.js",
+            Names(108, (15, "Light"), (100, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21, 22 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 104, 105, 106, 107, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99, 88 });
+
+        private static PluginKeyTable Qmk_Keychron_V6_Max_QMK_ISO_Keyboard_fw_keychron_v6_max_iso_encoder() => new(
+            "Keychron/V Series/Max/Keychron_V6_Max_QMK_ISO_Keyboard.js",
+            Names(109, (15, "Light"), (101, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21, 22 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 92, 93, 94, 87, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99, 88 });
+
+        private static PluginKeyTable Qmk_Keychron_V1_QMK_ANSI_Encoder_Keyboard_fw_keychron_v1_ansi_encoder() => new(
+            "Keychron/V Series/Standard/Keychron_V1_QMK_ANSI_Encoder_Keyboard.js",
+            Names(82, (14, "Mute"), (77, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_V1_QMK_ANSI_Keyboard_fw_keychron_v1_ansi() => new(
+            "Keychron/V Series/Standard/Keychron_V1_QMK_ANSI_Keyboard.js",
+            Names(82, (77, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 73, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_V1_QMK_ISO_Keyboard_fw_keychron_v1_iso() => new(
             "Keychron/V Series/Standard/Keychron_V1_QMK_ISO_Keyboard.js",
             Names(83, (78, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 57, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 101, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 40, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 73, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_V2_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_V1_QMK_ISO_Keyboard_fw_keychron_v1_iso_encoder() => new(
+            "Keychron/V Series/Standard/Keychron_V1_QMK_ISO_Keyboard.js",
+            Names(83, (14, "Mute"), (78, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_V2_QMK_ANSI_Keyboard_fw_keychron_v2_ansi() => new(
             "Keychron/V Series/Standard/Keychron_V2_QMK_ANSI_Keyboard.js",
-            Names(66, (61, "Fn"), (62, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 1, 2, 5, 9, 10, 11, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 0, 80, 81, 79 });
+            Names(67, (62, "Fn"), (63, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 0, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_V3_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_V2_QMK_ANSI_Keyboard_fw_keychron_v2_ansi_encoder() => new(
+            "Keychron/V Series/Standard/Keychron_V2_QMK_ANSI_Keyboard.js",
+            Names(67, (14, "Underglow"), (62, "Fn"), (63, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 74, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 0, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_V3_QMK_ANSI_Keyboard_fw_keychron_v3_ansi() => new(
             "Keychron/V Series/Standard/Keychron_V3_QMK_ANSI_Keyboard.js",
-            Names(87, (81, "Fn")),
+            Names(87, (15, "Light"), (82, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
-            new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 1, 2, 3, 6, 10, 11, 12, 13, 15, 16, 17 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_V3_QMK_ISO_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_V3_QMK_ANSI_Keyboard_fw_keychron_v3_ansi_encoder() => new(
+            "Keychron/V Series/Standard/Keychron_V3_QMK_ANSI_Keyboard.js",
+            Names(87, (15, "Light"), (82, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_V3_QMK_ISO_Keyboard_fw_keychron_v3_iso() => new(
             "Keychron/V Series/Standard/Keychron_V3_QMK_ISO_Keyboard.js",
-            Names(88, (15, "Light"), (82, "Fn")),
+            Names(88, (15, "Light"), (83, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79 });
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Keychron_V4_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_V3_QMK_ISO_Keyboard_fw_keychron_v3_iso_encoder() => new(
+            "Keychron/V Series/Standard/Keychron_V3_QMK_ISO_Keyboard.js",
+            Names(88, (15, "Light"), (83, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
+
+        private static PluginKeyTable Qmk_Keychron_V4_QMK_ANSI_Keyboard_fw_keychron_v4_ansi() => new(
             "Keychron/V Series/Standard/Keychron_V4_QMK_ANSI_Keyboard.js",
-            Names(61, (59, "Fn")),
+            Names(61, (58, "Fn"), (59, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 1, 2, 6, 10, 11, 12, 13 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 3, 4, 10, 11, 13, 14 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 224, 227, 226, 44, 230, 101, 0, 224 });
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 224, 227, 226, 44, 230, 0, 0, 228 });
 
-        private static PluginKeyTable Qmk_Keychron_V4_QMK_ISO_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_V4_QMK_ISO_Keyboard_fw_keychron_v4_iso() => new(
             "Keychron/V Series/Standard/Keychron_V4_QMK_ISO_Keyboard.js",
-            Names(62, (60, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 40, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 1, 2, 6, 10, 11, 12, 13 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 224, 227, 226, 44, 230, 101, 0, 224 });
+            Names(62, (59, "Fn"), (60, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 3, 4, 10, 11, 13, 14 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 224, 227, 226, 44, 230, 0, 0, 228 });
 
-        private static PluginKeyTable Qmk_Keychron_V5_QMK_ANSI_Encoder_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_V5_QMK_ANSI_Encoder_Keyboard_fw_keychron_v5_ansi_encoder() => new(
             "Keychron/V Series/Standard/Keychron_V5_QMK_ANSI_Encoder_Keyboard.js",
             Names(98, (16, "Mute"), (90, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 0, 1, 2, 3, 10, 11, 12, 13, 14, 15, 16, 17, 18 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 17, 18, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 17, 18, 19 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 5, 5, 4 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99, 88 });
 
-        private static PluginKeyTable Qmk_Keychron_V5_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_V5_QMK_ANSI_Keyboard_fw_keychron_v5_ansi() => new(
             "Keychron/V Series/Standard/Keychron_V5_QMK_ANSI_Keyboard.js",
             Names(100, (18, "Light"), (92, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 9, 10, 11, 12, 13, 14, 15, 16, 17 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 17, 18, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 17, 18, 19 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 5, 5, 4 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 75, 78, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99, 88 });
 
-        private static PluginKeyTable Qmk_Keychron_V5_QMK_ISO_Encoder_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_V5_QMK_ISO_Encoder_Keyboard_fw_keychron_v5_iso_encoder() => new(
             "Keychron/V Series/Standard/Keychron_V5_QMK_ISO_Encoder_Keyboard.js",
-            Names(97, (89, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98 },
-            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99, 88 });
+            Names(99, (16, "Underglow"), (91, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 17, 18, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 17, 18, 19 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 5, 5, 4 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 87, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99, 88 });
 
-        private static PluginKeyTable Qmk_Keychron_V6_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_V6_QMK_ANSI_Keyboard_fw_keychron_v6_ansi() => new(
             "Keychron/V Series/Standard/Keychron_V6_QMK_ANSI_Keyboard.js",
-            Names(108, (14, "Mute"), (15, "Light"), (16, "Circle"), (17, "Triangle"), (18, "Square"), (19, "Cross"), (100, "Fn")),
+            Names(108, (15, "Light"), (100, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15, 17, 18, 19, 0, 1, 2, 3, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21, 22 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99, 88 });
 
-        private static PluginKeyTable Qmk_Keychron_V6_QMK_ISO_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_V6_QMK_ANSI_Keyboard_fw_keychron_v6_ansi_encoder() => new(
+            "Keychron/V Series/Standard/Keychron_V6_QMK_ANSI_Keyboard.js",
+            Names(108, (15, "Light"), (100, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21, 22 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99, 88 });
+
+        private static PluginKeyTable Qmk_Keychron_V6_QMK_ISO_Keyboard_fw_keychron_v6_iso_encoder() => new(
             "Keychron/V Series/Standard/Keychron_V6_QMK_ISO_Keyboard.js",
-            Names(109, (14, "Mute"), (15, "Light"), (16, "Circle"), (17, "Triangle"), (18, "Square"), (19, "Cross"), (101, "Fn")),
+            Names(109, (15, "Light"), (101, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15, 17, 18, 19, 20, 0, 1, 2, 3, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21, 22 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 87, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99, 88 });
 
-        private static PluginKeyTable Qmk_Kinst_MF17_QMK_Numpad() => new(
+        private static PluginKeyTable Qmk_Kinst_MF17_QMK_Numpad_fw_magic_force_mf17() => new(
             "Kinst/Kinst_MF17_QMK_Numpad.js",
-            Names(17),
+            Names(17, (0, "Underglow"), (2, "Underglow"), (9, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 },
-            new byte[] { 0, 1, 2, 3, 0, 1, 2, 0, 1, 2, 3, 0, 1, 2, 1, 2, 3 },
-            new byte[] { 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3 },
-            new ushort[] { 83, 46, 37, 45, 36, 37, 38, 33, 34, 35, 46, 30, 31, 32, 39, 55, 40 });
+            new byte[] { 0, 2, 1, 0, 1, 2, 0, 1, 2, 2, 0, 1, 2, 0, 1, 2, 3 },
+            new byte[] { 6, 4, 6, 3, 3, 3, 2, 2, 2, 6, 1, 1, 1, 0, 0, 0, 0 },
+            new ushort[] { 0, 99, 0, 89, 90, 91, 92, 93, 94, 0, 95, 96, 97, 83, 84, 85, 86 });
 
-        private static PluginKeyTable Qmk_Lemokey_L1_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Lemokey_L1_ANSI_Keyboard_fw_lemokey_l1_ansi() => new(
             "Lemokey/Lemokey_L1_ANSI_Keyboard.js",
-            Names(86, (30, "M0"), (46, "M1"), (61, "M2"), (75, "M3"), (81, "Fn")),
+            Names(86, (81, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85 },
-            new byte[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 1, 2, 3, 4, 8, 12, 13, 14, 16, 17, 18 },
-            new byte[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 73, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 0, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 0, 224, 0, 226, 44, 230, 0, 228, 80, 81, 79 });
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 2, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 73, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 0, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 0, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Lemokey_L1_HE_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Lemokey_L1_HE_ANSI_Keyboard_fw_lemokey_l1_he_ansi() => new(
             "Lemokey/Lemokey_L1_HE_ANSI_Keyboard.js",
-            Names(86, (30, "M0"), (46, "M1"), (61, "M2"), (75, "M3"), (81, "Fn")),
+            Names(86, (81, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85 },
-            new byte[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 1, 2, 3, 4, 8, 12, 13, 14, 16, 17, 18 },
-            new byte[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 73, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 0, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 0, 224, 0, 226, 44, 230, 0, 228, 80, 81, 79 });
+            new byte[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 0, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 0, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 0, 2, 3, 4, 6, 12, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 73, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 0, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 0, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Lemokey_L3_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Lemokey_L3_ANSI_Keyboard_fw_lemokey_l3_ansi() => new(
             "Lemokey/Lemokey_L3_ANSI_Keyboard.js",
-            Names(91, (33, "M0"), (51, "M1"), (65, "M2"), (79, "M3"), (85, "Fn")),
+            Names(91, (85, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90 },
-            new byte[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 1, 2, 3, 4, 8, 12, 13, 14, 15, 16, 17, 18 },
-            new byte[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6 },
+            new byte[] { 1, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19, 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 18, 0, 1, 3, 4, 5, 11, 13, 14, 15, 17, 18, 19 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 0, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 0, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Lemokey_P1_HE_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Lemokey_P1_HE_ANSI_Keyboard_fw_lemokey_p1_he_ansi() => new(
             "Lemokey/Lemokey_P1_HE_ANSI_Keyboard.js",
             Names(81, (76, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Lemokey_P1_HE_ISO_Keyboard() => new(
+        private static PluginKeyTable Qmk_Lemokey_P1_HE_ISO_Keyboard_fw_lemokey_p1_he_iso() => new(
             "Lemokey/Lemokey_P1_HE_ISO_Keyboard.js",
             Names(82, (77, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Lemokey_P1_Pro_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Lemokey_P1_Pro_ANSI_Keyboard_fw_lemokey_p1_pro_ansi_encoder() => new(
             "Lemokey/Lemokey_P1_Pro_ANSI_Keyboard.js",
             Names(81, (76, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Lemokey_P1_Pro_ISO_Keyboard() => new(
+        private static PluginKeyTable Qmk_Lemokey_P1_Pro_ISO_Keyboard_fw_lemokey_p1_pro_iso_encoder() => new(
             "Lemokey/Lemokey_P1_Pro_ISO_Keyboard.js",
             Names(82, (77, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 74, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 78, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
         private static PluginKeyTable Qmk_MCHOSE_GX87_QMK_ANSI_Keyboard() => new(
             "MCHOSE/MCHOSE_GX87_QMK_ANSI_Keyboard.js",
@@ -1537,23 +1708,23 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91 },
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15, 0, 1, 2, 5, 8, 9, 10, 11, 14, 15, 16, 13, 14, 15, 16 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 3, 3 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 104, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 5, 227, 226, 44, 230, 0, 231, 228, 80, 81, 79, 0, 0, 0, 0 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 104, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 231, 228, 80, 81, 79, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_Drop_ALT_V2_QMK_Keyboard() => new(
+        private static PluginKeyTable Qmk_Drop_ALT_V2_QMK_Keyboard_fw_drop_alt_v2() => new(
             "Massdrop/Drop_ALT_V2_QMK_Keyboard.js",
-            Names(105, (85, "Fn")),
-            new[] { 100, 99, 98, 97, 96, 95, 94, 93, 92, 91, 90, 89, 88, 87, 86, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 101, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 85, 102, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 84, 103, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 83, 104, 58, 59, 60, 61, 62, 63, 64, 65, 66, 82, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
-            new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 0, 1, 2, 3, 7, 11, 12, 13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 0, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 0, 0, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 0, 0, 224, 227, 226, 44, 230, 0, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            Names(105, (63, "Fn"), (67, "Underglow"), (68, "Underglow"), (69, "Underglow"), (70, "Underglow"), (71, "Underglow"), (72, "Underglow"), (73, "Underglow"), (74, "Underglow"), (75, "Underglow"), (76, "Underglow"), (77, "Underglow"), (78, "Underglow"), (79, "Underglow"), (80, "Underglow"), (81, "Underglow"), (82, "Underglow"), (83, "Underglow"), (84, "Underglow"), (85, "Underglow"), (86, "Underglow"), (87, "Underglow"), (88, "Underglow"), (89, "Underglow"), (90, "Underglow"), (91, "Underglow"), (92, "Underglow"), (93, "Underglow"), (94, "Underglow"), (95, "Underglow"), (96, "Underglow"), (97, "Underglow"), (98, "Underglow"), (99, "Underglow"), (100, "Underglow"), (101, "Underglow"), (102, "Underglow"), (103, "Underglow"), (104, "Underglow")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 74, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 0, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_Drop_CSTM80_QMK_Keyboard() => new(
+        private static PluginKeyTable Qmk_Drop_CSTM80_QMK_Keyboard_fw_drop_cstm80() => new(
             "Massdrop/Drop_CSTM80_QMK_Keyboard.js",
             Names(88, (82, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 104, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79 });
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 17, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 1, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 104, 70, 71, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 72, 75, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79 });
 
         private static PluginKeyTable Qmk_Drop_SHIFT_V1_QMK_Keyboard() => new(
             "Massdrop/Drop_SHIFT_V1_QMK_Keyboard.js",
@@ -1563,13 +1734,13 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7 },
             new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 75, 78, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 70, 0, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 86, 0, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 0, 0, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 0, 224, 227, 226, 44, 230, 0, 80, 81, 79, 98, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_Drop_SHIFT_V2_QMK_Keyboard() => new(
+        private static PluginKeyTable Qmk_Drop_SHIFT_V2_QMK_Keyboard_fw_drop_shift_v2() => new(
             "Massdrop/Drop_SHIFT_V2_QMK_Keyboard.js",
-            Names(155, (124, "Fn")),
-            new[] { 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 158, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 122, 157, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 123, 156, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 124, 155, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 125, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 154, 153, 152, 151, 150, 149, 148, 147, 146, 145, 144, 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130 },
-            new byte[] { 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 1, 3, 4, 5, 6, 8, 9, 10, 11, 12, 14, 15, 16, 18, 20, 21, 22, 23, 0, 1, 2, 4, 5, 6, 7, 8, 10, 11, 12, 13, 15, 16, 17, 20, 21, 22, 23, 24, 0, 1, 3, 4, 5, 7, 8, 9, 10, 12, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 0, 1, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 15, 17, 20, 21, 22, 23, 24, 0, 1, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 16, 18, 20, 21, 22, 23, 24, 1, 3, 4, 9, 13, 15, 17, 18, 19, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 75, 78, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 70, 0, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 86, 0, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 0, 0, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 0, 224, 227, 226, 44, 230, 0, 80, 81, 79, 98, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            Names(166, (93, "Fn"), (99, "Underglow"), (100, "Underglow"), (101, "Underglow"), (102, "Underglow"), (103, "Underglow"), (104, "Underglow"), (105, "Underglow"), (106, "Underglow"), (107, "Underglow"), (108, "Underglow"), (109, "Underglow"), (110, "Underglow"), (111, "Underglow"), (112, "Underglow"), (113, "Underglow"), (114, "Underglow"), (115, "Underglow"), (116, "Underglow"), (117, "Underglow"), (118, "Underglow"), (119, "Underglow"), (120, "Underglow"), (121, "Underglow"), (122, "Underglow"), (123, "Underglow"), (124, "Underglow"), (125, "Underglow"), (126, "Underglow"), (127, "Underglow"), (128, "Underglow"), (129, "Underglow"), (130, "Underglow"), (131, "Underglow"), (132, "Underglow"), (133, "Underglow"), (134, "Underglow"), (135, "Underglow"), (136, "Underglow"), (137, "Underglow"), (138, "Underglow"), (139, "Underglow"), (140, "Underglow"), (141, "Underglow"), (142, "Underglow"), (143, "Underglow"), (144, "Underglow"), (145, "Underglow"), (146, "Underglow"), (147, "Underglow"), (148, "Underglow"), (149, "Underglow"), (150, "Underglow"), (151, "Underglow"), (152, "Underglow"), (153, "Underglow"), (154, "Underglow"), (155, "Underglow"), (156, "Underglow"), (157, "Underglow"), (158, "Underglow"), (159, "Underglow"), (160, "Underglow"), (161, "Underglow"), (162, "Underglow"), (163, "Underglow"), (164, "Underglow"), (165, "Underglow")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 17, 18, 19, 0, 1, 3, 4, 10, 12, 13, 14, 15, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 5, 5, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11, 11 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 77, 75, 78, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 70, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 86, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 80, 81, 79, 98, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
         private static PluginKeyTable Qmk_Massdrop_ALT_QMK_Keyboard() => new(
             "Massdrop/Massdrop_ALT_QMK_Keyboard.js",
@@ -1587,29 +1758,29 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 4, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 4 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_Massdrop_CTRL_V2_QMK_Keyboard() => new(
+        private static PluginKeyTable Qmk_Massdrop_CTRL_V2_QMK_Keyboard_fw_drop_ctrl_v2() => new(
             "Massdrop/Massdrop_CTRL_V2_QMK_Keyboard.js",
-            Names(119, (81, "Fn")),
+            Names(119, (81, "Fn"), (87, "Underglow"), (88, "Underglow"), (89, "Underglow"), (90, "Underglow"), (91, "Underglow"), (92, "Underglow"), (93, "Underglow"), (94, "Underglow"), (95, "Underglow"), (96, "Underglow"), (97, "Underglow"), (98, "Underglow"), (99, "Underglow"), (100, "Underglow"), (101, "Underglow"), (102, "Underglow"), (103, "Underglow"), (104, "Underglow"), (105, "Underglow"), (106, "Underglow"), (107, "Underglow"), (108, "Underglow"), (109, "Underglow"), (110, "Underglow"), (111, "Underglow"), (112, "Underglow"), (113, "Underglow"), (114, "Underglow"), (115, "Underglow"), (116, "Underglow"), (117, "Underglow"), (118, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 18, 16, 14, 12, 11, 10, 9, 7, 6, 5, 4, 2, 0, 0, 0, 0, 0, 2, 4, 5, 6, 7, 9, 10, 11, 12, 14, 16, 18, 18, 18, 18 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 4 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 17, 0, 1, 3, 4, 10, 11, 13, 14, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_Massdrop_SENSE75_QMK_Keyboard() => new(
+        private static PluginKeyTable Qmk_Massdrop_SENSE75_QMK_Keyboard_fw_drop_sense75() => new(
             "Massdrop/Massdrop_SENSE75_QMK_Keyboard.js",
-            Names(111, (97, "Fn")),
+            Names(111, (0, "Underglow"), (1, "Underglow"), (2, "Underglow"), (3, "Underglow"), (4, "Underglow"), (5, "Underglow"), (6, "Underglow"), (7, "Underglow"), (8, "Underglow"), (9, "Underglow"), (10, "Underglow"), (11, "Underglow"), (12, "Underglow"), (27, "Underglow"), (28, "Underglow"), (44, "Underglow"), (45, "Underglow"), (61, "Underglow"), (76, "Underglow"), (90, "Underglow"), (91, "Underglow"), (97, "Fn"), (102, "Underglow"), (103, "Underglow"), (104, "Underglow"), (105, "Underglow"), (106, "Underglow"), (107, "Underglow"), (108, "Underglow"), (109, "Underglow"), (110, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110 },
-            new byte[] { 1, 9, 18, 24, 30, 37, 44, 54, 62, 69, 75, 78, 0, 2, 10, 15, 21, 25, 30, 35, 40, 46, 53, 59, 64, 69, 74, 79, 0, 2, 8, 14, 20, 24, 28, 32, 38, 42, 49, 55, 60, 65, 72, 77, 79, 0, 5, 12, 17, 22, 26, 30, 35, 40, 45, 51, 57, 63, 67, 73, 77, 79, 6, 13, 19, 23, 27, 31, 36, 41, 48, 52, 58, 64, 71, 77, 0, 7, 15, 21, 25, 29, 33, 39, 43, 50, 56, 61, 68, 75, 79, 0, 3, 11, 18, 34, 55, 60, 66, 70, 75, 77, 79, 4, 16, 26, 35, 47, 58, 69, 76 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 7, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 7, 12, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 12, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 11, 6, 9, 13, 13, 13, 13, 13, 13, 13, 15, 15, 15, 9, 1, 1, 1, 1, 1, 1, 1, 1 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 15, 0, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 2, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 3, 4, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 5, 6, 7, 8, 9, 10, 11, 12, 13 },
+            new byte[] { 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 8, 9, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 9, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 9, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 9, 9, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 9, 9, 9, 9, 9, 9, 9, 9, 9 },
             new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 0, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 0, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 0, 0, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_Monsgeek_M1_V3_Keyboard() => new(
+        private static PluginKeyTable Qmk_Monsgeek_M1_V3_Keyboard_fw_monsgeek_m1() => new(
             "Monsgeek/Monsgeek_M1_V3_Keyboard.js",
-            Names(82, (77, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 58, 57, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 0, 1, 2, 6, 10, 11, 12, 13 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+            Names(106, (79, "Fn"), (84, "Underglow"), (85, "Underglow"), (86, "Underglow"), (87, "Underglow"), (88, "Underglow"), (89, "Underglow"), (90, "Underglow"), (91, "Underglow"), (92, "Underglow"), (93, "Underglow"), (94, "Underglow"), (95, "Underglow"), (96, "Underglow"), (97, "Underglow"), (98, "Underglow"), (99, "Underglow"), (100, "Underglow"), (101, "Underglow"), (102, "Underglow"), (103, "Underglow"), (104, "Underglow"), (105, "Underglow")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 78, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
         private static PluginKeyTable Qmk_Monsgeek_M1_V5_ANSI_Keyboard() => new(
             "Monsgeek/Monsgeek_M1_V5_ANSI_Keyboard.js",
@@ -1627,11 +1798,11 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 78, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 228, 101, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_Monsgeek_M3_Keyboard_TKL() => new(
+        private static PluginKeyTable Qmk_Monsgeek_M3_Keyboard_TKL_fw_monsgeek_m3() => new(
             "Monsgeek/Monsgeek_M3_Keyboard_TKL.js",
             Names(87, (82, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79 });
 
@@ -1689,7 +1860,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98 },
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17, 18, 0, 1, 2, 6, 9, 10, 13, 14, 15, 16, 17 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 76, 74, 77, 75, 78, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 0, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 79, 81, 79, 98, 99 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 76, 74, 77, 75, 78, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 0, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 79, 81, 0, 98, 99 });
 
         private static PluginKeyTable Qmk_pulsar_XBOARD_QS_sRGB_240206() => new(
             "Pulsar/pulsar_XBOARD QS_sRGB_240206.js",
@@ -1707,37 +1878,37 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
             new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 101, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_System76_Launch_1_QMK_Keyboard() => new(
+        private static PluginKeyTable Qmk_System76_Launch_1_QMK_Keyboard_fw_system76_launch_1() => new(
             "System76/System76_Launch-1_QMK_Keyboard.js",
-            Names(84, (73, "Fn"), (80, "Fn")),
-            new[] { 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 68, 67, 66, 65, 64, 63, 62, 61, 60, 59, 58, 57, 56, 55, 54, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 1, 2, 3, 4, 6, 8, 9, 10, 12, 13, 14 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 77, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 0, 227, 226, 44, 44, 228, 230, 0, 80, 81, 79 });
+            Names(84, (15, "Fn"), (21, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83 },
+            new byte[] { 14, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 0, 2, 3, 4, 5, 7, 9, 10, 11, 13, 14, 15, 15, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 15, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15 },
+            new byte[] { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            new ushort[] { 82, 229, 56, 55, 54, 16, 17, 5, 25, 6, 27, 29, 225, 224, 226, 0, 227, 44, 44, 228, 230, 0, 80, 81, 79, 77, 40, 52, 51, 15, 14, 13, 11, 10, 9, 7, 22, 4, 57, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 78, 75, 42, 46, 45, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 53, 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 74 });
 
-        private static PluginKeyTable Qmk_XBows_KnightPlus_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_XBows_KnightPlus_QMK_ANSI_Keyboard_fw_xbows_knight_plus() => new(
             "XBows/XBows_KnightPlus_QMK_ANSI_Keyboard.js",
             Names(86, (81, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 16, 0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 4, 6, 7, 8, 10, 12, 13, 14, 15, 16 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 0, 1, 2, 3, 4, 5, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 7, 9, 10, 11, 12, 13, 14, 15, 17, 0, 1, 2, 3, 4, 5, 7, 9, 10, 11, 12, 13, 14, 16, 0, 1, 2, 4, 6, 8, 9, 11, 13, 14, 15, 16, 17 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 70, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 42, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 40, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 224, 225, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_XBows_KnightPlus_QMK_ANSI_Numpad() => new(
+        private static PluginKeyTable Qmk_XBows_KnightPlus_QMK_ANSI_Numpad_fw_xbows_numpad() => new(
             "XBows/XBows_KnightPlus_QMK_ANSI_Numpad.js",
             Names(22, (3, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 },
             new byte[] { 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 2 },
             new byte[] { 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5 },
-            new ushort[] { 41, 43, 42, 0, 83, 84, 85, 103, 95, 96, 97, 86, 92, 93, 94, 87, 89, 90, 91, 88, 98, 99 });
+            new ushort[] { 41, 43, 42, 0, 83, 84, 85, 46, 95, 96, 97, 86, 92, 93, 94, 87, 89, 90, 91, 88, 98, 99 });
 
-        private static PluginKeyTable Qmk_XBows_Nature_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_XBows_Nature_QMK_ANSI_Keyboard_fw_xbows_nature() => new(
             "XBows/XBows_Nature_QMK_ANSI_Keyboard.js",
-            Names(87, (82, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 37, 38, 39, 40, 41, 42, 43, 44, 36, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 16, 0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 4, 6, 7, 8, 10, 12, 13, 14, 15, 16 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 70, 53, 30, 31, 32, 33, 34, 0, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 42, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 40, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 224, 225, 44, 230, 0, 228, 80, 81, 79 });
+            Names(87, (21, "Underglow"), (82, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 0, 1, 2, 3, 4, 5, 0, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 17, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 17, 0, 1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 16, 0, 1, 2, 4, 6, 8, 9, 11, 13, 14, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 7, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 70, 53, 30, 31, 32, 33, 34, 0, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 75, 28, 24, 12, 18, 19, 47, 48, 49, 57, 4, 22, 7, 9, 10, 42, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 40, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 224, 225, 44, 230, 0, 228, 80, 81, 79 });
 
         private static PluginKeyTable Qmk_YMDK_Melody96rgb_QMK_Keyboard() => new(
             "YMDK/YMDK_Melody96rgb_QMK_Keyboard.js",
@@ -1747,13 +1918,13 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 3, 6, 7, 7, 7, 7, 7, 7, 6, 3 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 0, 0, 0, 75, 78, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_YMDK_YMD09_QMK_Keyboard() => new(
+        private static PluginKeyTable Qmk_YMDK_YMD09_QMK_Keyboard_fw_ymdk_ymd09() => new(
             "YMDK/YMDK_YMD09_QMK_Keyboard.js",
             Names(9),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 },
-            new byte[] { 0, 1, 2, 0, 1, 2, 0, 1, 2 },
+            new byte[] { 2, 1, 0, 2, 1, 0, 2, 1, 0 },
             new byte[] { 0, 0, 0, 1, 1, 1, 2, 2, 2 },
-            new ushort[] { 0, 0, 76, 41, 82, 40, 80, 81, 79 });
+            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
         private static PluginKeyTable Qmk_Yunzii_AL68_QMK_ANSI_Keyboard() => new(
             "Yunzii/Yunzii_AL68_QMK_ANSI_Keyboard.js",
@@ -1817,7 +1988,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 57, 56, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 78, 81, 82, 83, 84, 85, 86 },
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 40, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 0, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 40, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 88, 0, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
         private static PluginKeyTable Qmk_Redragon_K556_K582_Keyboard_QMK() => new(
             "Redragon/Redragon_K556_K582_Keyboard_QMK.js",
@@ -1827,12 +1998,12 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
 
-        private static PluginKeyTable Qmk_Redragon_k667_Keyboard_QMK() => new(
+        private static PluginKeyTable Qmk_Redragon_k667_Keyboard_QMK_fw_redragon_k667() => new(
             "Redragon/Redragon_k667_Keyboard_QMK.js",
-            Names(90, (83, "Fn")),
+            Names(90, (13, "Underglow"), (56, "Underglow"), (60, "Underglow"), (77, "Underglow"), (78, "Underglow"), (79, "Underglow"), (81, "Underglow"), (83, "Fn"), (88, "Underglow"), (89, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89 },
-            new byte[] { 2, 19, 27, 36, 46, 57, 62, 67, 4, 16, 24, 33, 43, 54, 2, 10, 19, 27, 36, 46, 53, 59, 64, 0, 8, 16, 24, 38, 54, 5, 15, 23, 32, 42, 50, 57, 62, 67, 4, 11, 20, 28, 40, 54, 6, 17, 26, 34, 44, 51, 58, 63, 68, 7, 14, 22, 31, 37, 54, 3, 12, 21, 29, 39, 47, 55, 60, 65, 1, 9, 18, 30, 45, 54, 3, 13, 25, 41, 49, 56, 61, 66, 8, 16, 24, 35, 45, 52, 48, 48 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 2, 5, 5, 5, 8, 8, 5, 8, 8, 5, 5, 5, 9, 9, 9, 6, 10 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 14, 17, 0, 2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 17, 0, 1, 3, 3, 4, 5, 4, 6, 10, 11, 13, 14, 15, 17, 7, 8 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 3, 3, 4, 7, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 7, 7, 7, 5, 7, 5, 5, 5, 5, 5, 5, 7, 7 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 0, 40, 75, 225, 0, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 0, 0, 0, 44, 0, 230, 0, 228, 80, 81, 79, 0, 0 });
 
         private static PluginKeyTable Qmk_nerdytec_CYKEY_QMK_ANSI_Keyboard_2() => new(
@@ -1849,7 +2020,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 57, 56, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 78, 81, 82, 83, 84, 85, 86 },
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 40, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 0, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 40, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 88, 0, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
         private static PluginKeyTable Qmk_GMMK_TKL_QMK_ISO_Keyboard() => new(
             "GMMK/GMMK_TKL_QMK_ISO_Keyboard.js",
@@ -1859,61 +2030,61 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_1upkeyboards_1upocarina() => new(
+        private static PluginKeyTable Qmk_1upkeyboards_1upocarina_fw_1upkeyboards_1upocarina() => new(
             "1upkeyboards/1upkeyboards_1upocarina.js",
-            Names(32),
+            Names(32, (5, "Underglow"), (6, "Underglow"), (7, "Underglow"), (8, "Underglow"), (9, "Underglow"), (10, "Underglow"), (11, "Underglow"), (12, "Underglow"), (13, "Underglow"), (14, "Underglow"), (15, "Underglow"), (16, "Underglow"), (17, "Underglow"), (18, "Underglow"), (19, "Underglow"), (20, "Underglow"), (21, "Underglow"), (22, "Underglow"), (23, "Underglow"), (24, "Underglow"), (25, "Underglow"), (26, "Underglow"), (27, "Underglow"), (28, "Underglow"), (29, "Underglow"), (30, "Underglow"), (31, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 },
-            new byte[] { 3, 9, 18, 6, 13, 2, 4, 7, 10, 15, 17, 17, 17, 14, 11, 7, 4, 2, 18, 16, 12, 8, 5, 1, 0, 0, 0, 1, 5, 8, 12, 16 },
-            new byte[] { 6, 6, 0, 6, 6, 1, 1, 1, 1, 3, 5, 8, 4, 2, 7, 7, 7, 7, 7, 7, 7, 7, 7, 2, 4, 8, 5, 3, 1, 1, 1, 1 },
+            new byte[] { 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1 },
+            new byte[] { 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 7, 7 },
             new ushort[] { 29, 27, 41, 6, 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_1upkeyboards_1upsuper16v3() => new(
+        private static PluginKeyTable Qmk_1upkeyboards_1upsuper16v3_fw_1upkeyboards_1upsuper16v3() => new(
             "1upkeyboards/1upkeyboards_1upsuper16v3.js",
-            Names(48),
+            Names(48, (0, "Underglow"), (1, "Underglow"), (2, "Underglow"), (3, "Underglow"), (4, "Underglow"), (5, "Underglow"), (8, "Underglow"), (9, "Underglow"), (12, "Underglow"), (13, "Underglow"), (16, "Underglow"), (17, "Underglow"), (18, "Underglow"), (19, "Fn"), (20, "Underglow"), (21, "Underglow"), (23, "Underglow"), (24, "Underglow"), (26, "Underglow"), (27, "Underglow"), (29, "Underglow"), (30, "Underglow"), (31, "Underglow"), (32, "Underglow"), (35, "Underglow"), (36, "Underglow"), (39, "Underglow"), (40, "Underglow"), (43, "Underglow"), (44, "Underglow"), (45, "Underglow"), (46, "Underglow"), (47, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47 },
-            new byte[] { 0, 3, 4, 6, 1, 1, 12, 9, 1, 1, 12, 9, 1, 1, 12, 9, 1, 1, 6, 12, 4, 3, 9, 0, 13, 5, 11, 10, 2, 7, 8, 8, 8, 2, 5, 8, 8, 2, 5, 8, 8, 2, 5, 8, 7, 10, 11, 13 },
-            new byte[] { 0, 0, 0, 0, 1, 5, 3, 3, 8, 12, 10, 10, 2, 6, 4, 4, 9, 7, 13, 11, 13, 13, 11, 13, 13, 11, 13, 13, 11, 13, 7, 9, 6, 4, 4, 2, 12, 10, 10, 8, 5, 3, 3, 1, 0, 0, 0, 0 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 0, 1, 0, 1, 2, 3, 0, 1, 0, 1, 0, 1, 2, 3, 0, 0, 1, 2, 1, 3, 0, 2, 1, 2, 3, 3, 0, 1, 2, 3, 2, 3, 0, 3, 2, 1, 2, 3, 2, 3, 0, 1, 2, 3 },
+            new byte[] { 5, 5, 5, 5, 6, 6, 0, 0, 6, 6, 1, 1, 7, 7, 2, 2, 7, 7, 8, 3, 8, 8, 3, 8, 9, 3, 9, 9, 3, 9, 10, 10, 10, 2, 2, 10, 11, 1, 1, 11, 11, 0, 0, 11, 12, 12, 12, 12 },
+            new ushort[] { 0, 0, 0, 0, 0, 0, 95, 96, 0, 0, 92, 93, 0, 0, 89, 90, 0, 0, 0, 0, 0, 0, 98, 0, 0, 99, 0, 0, 88, 0, 0, 0, 0, 84, 91, 0, 0, 87, 94, 0, 0, 86, 97, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_1upkeyboards_pi40() => new(
+        private static PluginKeyTable Qmk_1upkeyboards_pi40_fw_1upkeyboards_pi40_mit_v1_0() => new(
             "1upkeyboards/1upkeyboards_pi40.js",
-            Names(47),
+            Names(47, (40, "Fn"), (42, "Fn"), (46, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46 },
-            new byte[] { 3, 11, 5, 0, 8, 2, 10, 4, 12, 7, 1, 9, 9, 1, 7, 12, 4, 10, 2, 8, 0, 5, 11, 3, 3, 11, 5, 0, 8, 2, 10, 4, 12, 7, 1, 9, 9, 1, 7, 12, 4, 6, 8, 0, 5, 11, 3 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 11, 10, 9, 8, 7, 5, 4, 3, 2, 1, 0 },
+            new byte[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
+            new ushort[] { 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 42, 52, 51, 15, 14, 13, 11, 10, 9, 7, 22, 4, 41, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 40, 79, 82, 81, 80, 0, 44, 0, 227, 226, 224, 0 });
 
-        private static PluginKeyTable Qmk_1upkeyboards_pi60() => new(
+        private static PluginKeyTable Qmk_1upkeyboards_pi60_fw_1upkeyboards_pi60() => new(
             "1upkeyboards/1upkeyboards_pi60.js",
-            Names(21),
+            Names(21, (0, "Underglow"), (1, "Underglow"), (2, "Underglow"), (3, "Underglow"), (4, "Underglow"), (5, "Underglow"), (6, "Underglow"), (7, "Underglow"), (8, "Underglow"), (9, "Underglow"), (10, "Underglow"), (11, "Underglow"), (12, "Underglow"), (13, "Underglow"), (14, "Underglow"), (15, "Underglow"), (16, "Underglow"), (17, "Underglow"), (18, "Underglow"), (19, "Underglow"), (20, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 },
-            new byte[] { 1, 5, 9, 13, 16, 18, 0, 4, 7, 11, 14, 14, 10, 6, 2, 19, 17, 15, 12, 8, 3 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5 },
+            new byte[] { 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7 },
             new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_1upkeyboards_pi60hse() => new(
+        private static PluginKeyTable Qmk_1upkeyboards_pi60hse_fw_1upkeyboards_pi60_hse() => new(
             "1upkeyboards/1upkeyboards_pi60hse.js",
-            Names(16),
+            Names(16, (0, "Underglow"), (1, "Underglow"), (2, "Underglow"), (3, "Underglow"), (4, "Underglow"), (5, "Underglow"), (6, "Underglow"), (7, "Underglow"), (8, "Underglow"), (9, "Underglow"), (10, "Underglow"), (11, "Underglow"), (12, "Underglow"), (13, "Underglow"), (14, "Underglow"), (15, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
-            new byte[] { 0, 1, 3, 4, 4, 3, 2, 0, 10, 8, 7, 6, 5, 7, 9, 10 },
-            new byte[] { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0 },
+            new byte[] { 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7 },
             new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_1upkeyboards_pi60rgb() => new(
+        private static PluginKeyTable Qmk_1upkeyboards_pi60rgb_fw_1upkeyboards_pi60_rgb() => new(
             "1upkeyboards/1upkeyboards_pi60rgb.js",
-            Names(61, (3, "Fn")),
+            Names(61, (2, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 },
-            new byte[] { 53, 16, 28, 38, 48, 41, 26, 17, 9, 0, 57, 52, 47, 39, 32, 22, 25, 13, 3, 8, 6, 18, 27, 35, 42, 50, 55, 59, 4, 12, 21, 31, 43, 46, 36, 29, 19, 10, 1, 58, 54, 49, 40, 34, 24, 15, 5, 2, 11, 20, 30, 37, 45, 51, 56, 60, 7, 14, 23, 33, 44 },
-            new byte[] { 4, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-            new ushort[] { 44, 231, 0, 0, 228, 229, 56, 55, 54, 16, 17, 5, 25, 6, 27, 29, 226, 227, 224, 225, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 49, 48, 47, 19, 18, 12, 24, 28, 23, 21, 8, 26, 20, 43, 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42 });
+            new byte[] { 4, 11, 0, 13, 14, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 3, 1, 0, 0, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 },
+            new byte[] { 4, 4, 6, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            new ushort[] { 44, 231, 0, 101, 228, 229, 56, 55, 54, 16, 17, 5, 25, 6, 27, 29, 226, 227, 224, 225, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 49, 48, 47, 19, 18, 12, 24, 28, 23, 21, 8, 26, 20, 43, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42 });
 
-        private static PluginKeyTable Qmk_1upkeyboards_sweet16v2() => new(
+        private static PluginKeyTable Qmk_1upkeyboards_sweet16v2_fw_1upkeyboards_sweet16v2() => new(
             "1upkeyboards/1upkeyboards_sweet16v2.js",
-            Names(20),
+            Names(20, (4, "Underglow"), (8, "Underglow"), (14, "Underglow"), (18, "Underglow"), (19, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 },
-            new byte[] { 2, 3, 0, 1, 1, 1, 0, 3, 2, 2, 2, 3, 0, 1, 1, 1, 0, 3, 2, 2 },
-            new byte[] { 0, 0, 0, 0, 4, 5, 5, 5, 4, 5, 1, 1, 1, 1, 3, 2, 2, 2, 3, 2 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 0, 3, 2, 1, 1, 0, 0, 1, 2, 3, 2, 3, 2, 1, 3, 0 },
+            new byte[] { 0, 0, 0, 0, 5, 1, 1, 1, 5, 1, 2, 2, 2, 2, 5, 3, 3, 3, 5, 3 },
+            new ushort[] { 95, 96, 96, 86, 0, 87, 94, 93, 0, 92, 89, 90, 91, 84, 0, 88, 99, 98, 0, 0 });
 
         private static PluginKeyTable Qmk_QMK_ISO_DbGG_IroncladV3_1_0_QMKVIA_Full() => new(
             "DesignedbyGG/QMK_ISO_DbGG_IroncladV3_1.0_QMKVIA_Full.js",
@@ -1921,71 +2092,71 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 },
             new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 19 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 0, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 0, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 0, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
 
         private static PluginKeyTable Qmk_Meletrix_Zoom98_QMK_Keyboard() => new(
             "_Random-Brands/Meletrix_Zoom98_QMK_Keyboard.js",
             Names(103, (95, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 17, 18, 19, 20, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 104, 70, 71, 72, 0, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 104, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
 
-        private static PluginKeyTable Qmk_Novelkeys_NK87_QMK_Keyboard() => new(
+        private static PluginKeyTable Qmk_Novelkeys_NK87_QMK_Keyboard_fw_novelkeys_nk87() => new(
             "_Random-Brands/Novelkeys_NK87_QMK_Keyboard.js",
-            Names(87),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 0, 1, 2, 6, 11, 12, 13, 14, 15, 16 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 104, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 101, 224, 80, 81, 79 });
-
-        private static PluginKeyTable Qmk_abko_ak84bt() => new(
-            "_Random-Brands/abko_ak84bt.js",
-            Names(90, (83, "Fn")),
+            Names(90, (82, "Fn"), (87, "Underglow"), (88, "Underglow"), (89, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89 },
-            new byte[] { 2, 19, 27, 36, 46, 57, 62, 67, 4, 16, 24, 33, 43, 54, 2, 10, 19, 27, 36, 46, 53, 59, 64, 0, 8, 16, 24, 38, 54, 5, 15, 23, 32, 42, 50, 57, 62, 67, 4, 11, 20, 28, 40, 54, 6, 17, 26, 34, 44, 51, 58, 63, 68, 7, 14, 22, 31, 37, 54, 3, 12, 21, 29, 39, 47, 55, 60, 65, 1, 9, 18, 30, 45, 54, 3, 13, 25, 41, 49, 56, 61, 66, 8, 16, 24, 35, 45, 52, 48, 48 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 2, 5, 5, 5, 8, 8, 5, 8, 8, 5, 5, 5, 9, 9, 9, 6, 10 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 2, 3, 4, 11, 13, 14, 15, 16, 17, 0, 1, 2 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 104, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 0, 0, 0 });
+
+        private static PluginKeyTable Qmk_abko_ak84bt_fw_abko_ak84bt() => new(
+            "_Random-Brands/abko_ak84bt.js",
+            Names(90, (13, "Underglow"), (56, "Underglow"), (60, "Underglow"), (77, "Underglow"), (78, "Underglow"), (79, "Underglow"), (81, "Underglow"), (83, "Fn"), (88, "Underglow"), (89, "Underglow")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89 },
+            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 13, 15, 0, 2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 3, 4, 5, 4, 6, 10, 11, 12, 13, 14, 15, 7, 8 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 3, 3, 4, 7, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 7, 7, 7, 5, 7, 5, 5, 5, 5, 5, 5, 7, 7 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 0, 40, 75, 225, 0, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 0, 0, 0, 44, 0, 230, 0, 228, 80, 81, 79, 0, 0 });
 
-        private static PluginKeyTable Qmk_anachronism_tetromino() => new(
+        private static PluginKeyTable Qmk_anachronism_tetromino_fw_an_achronism_tetromino() => new(
             "_Random-Brands/anachronism_tetromino.js",
-            Names(70),
+            Names(70, (60, "Fn"), (62, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69 },
-            new byte[] { 0, 8, 2, 9, 3, 10, 4, 11, 5, 12, 6, 13, 7, 1, 0, 8, 2, 9, 3, 10, 4, 11, 5, 12, 6, 13, 7, 1, 0, 8, 2, 9, 3, 10, 4, 11, 5, 12, 6, 13, 7, 1, 0, 8, 2, 9, 3, 10, 4, 11, 5, 12, 6, 13, 7, 1, 0, 8, 2, 9, 3, 10, 4, 11, 5, 12, 6, 13, 7, 1 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
+            new ushort[] { 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 42, 224, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 101, 41, 224, 226, 227, 0, 44, 0, 231, 230, 228, 100, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_atlantis_ps17() => new(
+        private static PluginKeyTable Qmk_atlantis_ps17_fw_atlantis_ps17() => new(
             "_Random-Brands/atlantis_ps17.js",
-            Names(28),
+            Names(28, (17, "Underglow"), (18, "Underglow"), (19, "Underglow"), (20, "Underglow"), (21, "Underglow"), (22, "Underglow"), (23, "Underglow"), (24, "Underglow"), (25, "Underglow"), (26, "Underglow"), (27, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27 },
-            new byte[] { 2, 3, 6, 7, 2, 4, 5, 10, 2, 4, 5, 1, 4, 6, 10, 9, 6, 11, 11, 11, 11, 11, 0, 0, 0, 0, 8, 12 },
-            new byte[] { 3, 3, 3, 3, 1, 1, 1, 0, 14, 14, 14, 12, 12, 12, 6, 9, 9, 10, 11, 13, 4, 5, 5, 2, 13, 7, 10, 8 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 0, 1, 2, 3, 0, 2, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2 },
+            new byte[] { 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9 },
+            new ushort[] { 0, 84, 85, 86, 0, 0, 0, 87, 0, 0, 0, 0, 0, 0, 88, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_binepad_bn006() => new(
+        private static PluginKeyTable Qmk_binepad_bn006_fw_binepad_bn006() => new(
             "_Random-Brands/binepad_bn006.js",
-            Names(6),
+            Names(6, (0, "MediaPlayPause"), (1, "Mute"), (2, "Volume Up"), (3, "MediaRewind"), (4, "MediaFastForward"), (5, "Volume Down")),
             new[] { 0, 1, 2, 3, 4, 5 },
-            new byte[] { 0, 2, 1, 0, 2, 1 },
+            new byte[] { 0, 1, 2, 0, 1, 2 },
             new byte[] { 0, 0, 0, 1, 1, 1 },
             new ushort[] { 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_chosfox_chosfox_cf81() => new(
+        private static PluginKeyTable Qmk_chosfox_chosfox_cf81_fw_chosfox_cf81() => new(
             "_Random-Brands/chosfox_chosfox_cf81.js",
-            Names(105, (78, "Fn")),
+            Names(105, (78, "Fn"), (83, "Underglow"), (84, "Underglow"), (85, "Underglow"), (86, "Underglow"), (87, "Underglow"), (88, "Underglow"), (89, "Underglow"), (90, "Underglow"), (91, "Underglow"), (92, "Underglow"), (93, "Underglow"), (94, "Underglow"), (95, "Underglow"), (96, "Underglow"), (97, "Underglow"), (98, "Underglow"), (99, "Underglow"), (100, "Underglow"), (101, "Underglow"), (102, "Underglow"), (103, "Underglow"), (104, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104 },
-            new byte[] { 0, 4, 9, 14, 19, 23, 27, 32, 34, 2, 6, 10, 15, 20, 0, 4, 8, 13, 17, 21, 25, 31, 33, 35, 3, 7, 12, 16, 30, 0, 4, 8, 13, 17, 21, 25, 31, 33, 35, 3, 7, 12, 16, 30, 0, 8, 13, 17, 21, 25, 31, 33, 35, 3, 7, 12, 16, 20, 30, 0, 4, 8, 11, 17, 23, 29, 33, 1, 6, 12, 18, 22, 26, 0, 5, 11, 28, 3, 7, 12, 20, 24, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 3, 6, 8, 10, 1, 4, 7, 9, 11, 2, 0, 3, 6, 8, 10, 1, 4, 7, 9, 11, 2 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 51, 40, 78, 225, 51, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 230, 44, 226, 0, 228, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 78, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_cxt_cxtstudio() => new(
+        private static PluginKeyTable Qmk_cxt_cxtstudio_fw_cxt_studio_12e4() => new(
             "_Random-Brands/cxt_cxtstudio.js",
-            Names(12),
+            Names(12, (0, "MediaStop"), (8, "MediaFastForward"), (9, "MediaPlayPause"), (10, "MediaPlayPause")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },
             new byte[] { 3, 2, 1, 0, 0, 1, 2, 3, 3, 2, 1, 0 },
             new byte[] { 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new ushort[] { 0, 0, 68, 41, 0, 0, 0, 0, 0, 0, 0, 0 });
 
         private static PluginKeyTable Qmk_czcgaming_dwarf() => new(
             "_Random-Brands/czcgaming_dwarf.js",
@@ -1995,133 +2166,133 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
             new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_dekunukem_duckypad() => new(
+        private static PluginKeyTable Qmk_dekunukem_duckypad_fw_dekunukem_duckypad() => new(
             "_Random-Brands/dekunukem_duckypad.js",
             Names(15),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 },
-            new byte[] { 1, 2, 0, 0, 2, 1, 1, 2, 0, 0, 2, 1, 1, 2, 0 },
-            new byte[] { 0, 0, 0, 3, 3, 3, 1, 1, 1, 4, 4, 4, 2, 2, 2 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 2, 1, 0, 0, 1, 2, 2, 1, 0, 0, 1, 2, 2, 1, 0 },
+            new byte[] { 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4 },
+            new ushort[] { 91, 90, 89, 92, 93, 94, 97, 96, 95, 99, 98, 88, 46, 87, 86 });
 
-        private static PluginKeyTable Qmk_depermana12_dp3000() => new(
+        private static PluginKeyTable Qmk_depermana12_dp3000_fw_dp3000_rev1() => new(
             "_Random-Brands/depermana12_dp3000.js",
             Names(8),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7 },
-            new byte[] { 0, 1, 3, 2, 2, 3, 1, 0 },
-            new byte[] { 1, 1, 1, 1, 0, 0, 0, 0 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 0, 1, 2, 3 },
+            new byte[] { 1, 1, 1, 1, 2, 2, 2, 2 },
+            new ushort[] { 30, 31, 32, 33, 34, 35, 36, 37 });
 
         private static PluginKeyTable Qmk_doio_doiokb38() => new(
             "_Random-Brands/doio_doiokb38.js",
             Names(44, (2, "Light"), (3, "Light"), (4, "Light")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43 },
-            new byte[] { 0, 12, 2, 11, 8, 6, 3, 1, 0, 9, 7, 4, 2, 11, 8, 0, 9, 7, 4, 10, 11, 8, 0, 9, 7, 2, 11, 8, 0, 9, 7, 4, 11, 5, 7, 2, 11, 8, 1, 4, 0, 0, 4, 1 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 6, 6, 6, 1, 6, 6, 6, 3, 3, 3, 3, 3, 3, 5, 5, 5, 7, 5, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0 },
-            new ushort[] { 41, 42, 0, 0, 0, 0, 0, 0, 83, 84, 85, 86, 72, 71, 70, 36, 37, 38, 87, 73, 74, 75, 33, 34, 35, 77, 76, 78, 30, 31, 32, 88, 82, 39, 99, 80, 81, 79, 0, 0, 0, 0, 0, 0 });
+            null,
+            null,
+            new ushort[] { 41, 42, 0, 0, 0, 0, 0, 0, 83, 84, 85, 86, 72, 71, 70, 95, 96, 97, 87, 73, 74, 75, 92, 93, 94, 77, 76, 78, 89, 90, 91, 88, 82, 98, 99, 80, 81, 79, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_eggsworks_egg58() => new(
+        private static PluginKeyTable Qmk_eggsworks_egg58_fw_eggsworks_egg58() => new(
             "_Random-Brands/eggsworks_egg58.js",
-            Names(58),
+            Names(58, (25, "Fn"), (26, "Fn"), (54, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57 },
-            new byte[] { 14, 5, 12, 2, 8, 0, 0, 8, 2, 12, 5, 14, 14, 5, 12, 2, 8, 0, 0, 8, 2, 12, 5, 14, 3, 10, 12, 2, 8, 11, 4, 13, 7, 1, 9, 9, 1, 7, 13, 4, 11, 11, 4, 13, 7, 1, 9, 9, 1, 7, 13, 4, 11, 6, 15, 13, 7, 1 },
-            new byte[] { 3, 1, 0, 2, 4, 5, 9, 8, 7, 6, 7, 8, 12, 10, 9, 11, 13, 14, 18, 17, 16, 15, 16, 17, 23, 22, 19, 20, 21, 3, 1, 0, 2, 4, 5, 9, 8, 7, 6, 7, 8, 12, 10, 9, 11, 13, 14, 18, 17, 16, 15, 16, 17, 23, 22, 19, 20, 21 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 5, 4, 3, 2, 1, 0, 0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0, 0, 1, 2, 3, 4, 5, 6, 5, 3, 2, 1, 8, 9, 10, 11, 12, 13, 13, 12, 11, 10, 9, 8, 8, 9, 10, 11, 12, 13, 13, 12, 11, 10, 9, 8, 8, 9, 10, 11, 12 },
+            new byte[] { 0, 0, 0, 0, 0, 1, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 4, 3, 3, 3, 3, 3, 5, 5, 4, 4, 4, 0, 0, 0, 0, 0, 1, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 4, 3, 3, 3, 3, 3, 5, 5, 4, 4, 4 },
+            new ushort[] { 34, 33, 32, 31, 30, 53, 43, 20, 26, 8, 21, 23, 10, 9, 7, 22, 4, 225, 224, 29, 27, 6, 25, 5, 44, 0, 0, 226, 227, 35, 36, 37, 38, 39, 45, 46, 19, 18, 12, 24, 28, 11, 13, 14, 15, 51, 52, 42, 56, 55, 54, 16, 17, 40, 0, 47, 48, 49 });
 
-        private static PluginKeyTable Qmk_fancytech_fancyalice66() => new(
+        private static PluginKeyTable Qmk_fancytech_fancyalice66_fw_fancytech_fancyalice66() => new(
             "_Random-Brands/fancytech_fancyalice66.js",
-            Names(82),
+            Names(82, (60, "Fn"), (66, "Underglow"), (67, "Underglow"), (68, "Underglow"), (69, "Underglow"), (70, "Underglow"), (71, "Underglow"), (72, "Underglow"), (73, "Underglow"), (74, "Underglow"), (75, "Underglow"), (76, "Underglow"), (77, "Underglow"), (78, "Underglow"), (79, "Underglow"), (80, "Underglow"), (81, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81 },
-            new byte[] { 0, 2, 5, 8, 11, 13, 15, 17, 19, 1, 4, 6, 9, 12, 16, 0, 2, 5, 8, 11, 13, 17, 19, 1, 4, 6, 9, 12, 14, 16, 0, 2, 5, 8, 11, 13, 17, 19, 1, 4, 6, 9, 12, 16, 0, 2, 5, 8, 11, 13, 17, 19, 1, 4, 6, 9, 14, 0, 5, 8, 15, 17, 4, 12, 14, 16, 7, 13, 18, 3, 10, 16, 16, 16, 10, 3, 18, 13, 7, 0, 0, 0 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 17, 1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 18, 0, 2, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 16, 0, 4, 5, 7, 9, 12, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 226, 44, 0, 44, 230, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_flashquark_horizonz() => new(
+        private static PluginKeyTable Qmk_flashquark_horizonz_fw_flashquark_horizon_z() => new(
             "_Random-Brands/flashquark_horizonz.js",
-            Names(61),
+            Names(61, (58, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 },
-            new byte[] { 0, 9, 18, 27, 36, 44, 52, 57, 1, 10, 19, 28, 37, 48, 3, 14, 22, 32, 39, 47, 55, 59, 6, 15, 23, 33, 40, 50, 5, 16, 25, 34, 42, 49, 56, 60, 8, 17, 26, 35, 43, 7, 11, 29, 38, 46, 53, 58, 4, 12, 21, 30, 45, 2, 13, 24, 54, 20, 31, 41, 51 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 3, 4, 10, 11, 13, 14 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 224, 227, 226, 44, 230, 0, 231, 228 });
 
-        private static PluginKeyTable Qmk_freya_splaytoraid() => new(
+        private static PluginKeyTable Qmk_freya_splaytoraid_fw_0xcb_splaytoraid() => new(
             "_Random-Brands/freya_splaytoraid.js",
             Names(18),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 },
-            new byte[] { 0, 7, 9, 2, 4, 1, 0, 1, 7, 9, 2, 4, 9, 6, 3, 8, 5, 2 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 3, 1, 0, 0, 1, 3, 3, 4, 5, 7, 8, 9, 9, 11, 12, 12, 11, 9 },
+            new byte[] { 0, 0, 0, 1, 2, 2, 3, 3, 3, 3, 3, 3, 2, 2, 1, 0, 0, 0 },
+            new ushort[] { 8, 20, 43, 224, 29, 6, 225, 41, 40, 44, 76, 229, 54, 56, 52, 42, 19, 12 });
 
-        private static PluginKeyTable Qmk_gkeyboard_gpad82r() => new(
+        private static PluginKeyTable Qmk_gkeyboard_gpad82r_fw_gkeyboard_gpad8_2r() => new(
             "_Random-Brands/gkeyboard_gpad82r.js",
-            Names(16),
+            Names(16, (8, "Underglow"), (9, "Underglow"), (10, "Underglow"), (11, "Underglow"), (12, "Underglow"), (13, "Underglow"), (14, "Underglow"), (15, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
-            new byte[] { 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1 },
-            new byte[] { 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3 },
+            new byte[] { 1, 1, 1, 1, 2, 2, 2, 2, 4, 4, 4, 4, 5, 5, 5, 5 },
+            new ushort[] { 4, 5, 6, 7, 8, 9, 10, 11, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_hoksi_technology_durgod_hades_qmk() => new(
+        private static PluginKeyTable Qmk_hoksi_technology_durgod_hades_qmk_fw_durgod_dgk6x_hades_iso() => new(
             "_Random-Brands/hoksi_technology_durgod_hades_qmk.js",
             Names(69, (63, "Fn"), (64, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68 },
-            new byte[] { 0, 8, 17, 26, 34, 42, 49, 55, 1, 9, 18, 27, 35, 46, 56, 3, 13, 21, 30, 37, 45, 53, 58, 6, 14, 22, 31, 38, 56, 5, 15, 24, 32, 40, 47, 54, 59, 7, 16, 25, 33, 41, 48, 56, 2, 10, 19, 28, 36, 44, 51, 57, 4, 11, 20, 29, 39, 50, 56, 2, 12, 23, 52, 18, 27, 35, 43, 50, 56 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 74, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 32, 40, 75, 225, 49, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 0, 0, 0, 228, 80, 81, 79 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 74, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 75, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 0, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_inland_mk47() => new(
+        private static PluginKeyTable Qmk_inland_mk47_fw_inland_mk47() => new(
             "_Random-Brands/inland_mk47.js",
-            Names(47, (40, "Fn"), (42, "Fn"), (43, "Fn")),
+            Names(47, (37, "Fn"), (43, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46 },
-            new byte[] { 0, 8, 4, 11, 7, 3, 10, 6, 2, 9, 5, 1, 0, 8, 4, 11, 7, 3, 10, 6, 2, 9, 5, 1, 0, 8, 4, 11, 7, 3, 10, 6, 2, 9, 5, 1, 0, 8, 4, 11, 7, 3, 6, 2, 9, 5, 1 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 },
-            new ushort[] { 41, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 42, 43, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 82, 56, 224, 227, 226, 0, 0, 44, 0, 0, 80, 81, 79 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 },
+            new ushort[] { 41, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 42, 43, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 82, 56, 224, 0, 226, 76, 78, 44, 75, 0, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_jzskyloong_dt40() => new(
+        private static PluginKeyTable Qmk_jzskyloong_dt40_fw_skyloong_dt40() => new(
             "_Random-Brands/jzskyloong_dt40.js",
-            Names(44),
+            Names(44, (32, "Light")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43 },
-            new byte[] { 0, 6, 12, 20, 25, 32, 35, 2, 7, 13, 28, 0, 8, 14, 22, 26, 33, 36, 3, 16, 21, 27, 0, 11, 18, 24, 30, 34, 1, 5, 15, 23, 29, 0, 4, 11, 19, 31, 9, 3, 10, 17, 23, 29 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 0, 2, 3, 4, 5, 6, 7, 8, 10, 11, 11, 0, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 0, 1, 2, 3, 5, 9, 8, 9, 10, 11, 12 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 1, 3, 3, 3, 3, 3 },
+            new ushort[] { 41, 20, 26, 8, 21, 23, 28, 24, 18, 12, 42, 57, 4, 22, 7, 9, 10, 11, 13, 15, 19, 40, 225, 29, 27, 6, 25, 5, 17, 16, 229, 82, 0, 224, 226, 44, 227, 44, 14, 44, 101, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_kbdcraft_adam64() => new(
+        private static PluginKeyTable Qmk_kbdcraft_adam64_fw_kbdcraft_adam64() => new(
             "_Random-Brands/kbdcraft_adam64.js",
-            Names(64),
+            Names(64, (60, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63 },
-            new byte[] { 0, 7, 1, 8, 2, 9, 3, 10, 4, 11, 5, 12, 6, 13, 0, 7, 1, 8, 2, 9, 3, 10, 4, 11, 5, 12, 6, 13, 0, 7, 1, 8, 2, 9, 3, 10, 4, 11, 5, 12, 13, 0, 7, 1, 8, 2, 9, 3, 10, 4, 11, 5, 12, 6, 13, 0, 7, 1, 9, 11, 5, 12, 6, 13 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 3, 4, 10, 11, 12, 13, 14 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 76, 224, 226, 227, 44, 230, 0, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_kbdfans_kbdpadmk3() => new(
+        private static PluginKeyTable Qmk_kbdfans_kbdpadmk3_fw_kbdfans_kbdpad_mk3() => new(
             "_Random-Brands/kbdfans_kbdpadmk3.js",
             Names(21),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 },
-            new byte[] { 0, 3, 4, 1, 1, 4, 3, 0, 0, 3, 4, 1, 4, 3, 0, 0, 3, 4, 1, 4, 2 },
-            new byte[] { 0, 0, 0, 0, 4, 4, 4, 4, 7, 7, 7, 1, 3, 3, 3, 5, 5, 6, 8, 2, 2 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 3, 2, 1, 0, 0, 1, 2, 3, 2, 1, 0, 0, 1, 2, 3, 2, 0 },
+            new byte[] { 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5 },
+            new ushort[] { 41, 224, 226, 42, 86, 85, 84, 83, 95, 96, 97, 87, 94, 93, 92, 89, 90, 91, 88, 99, 98 });
 
-        private static PluginKeyTable Qmk_keebio_nyquistpad() => new(
+        private static PluginKeyTable Qmk_keebio_nyquistpad_fw_keebio_nyquistpad() => new(
             "_Random-Brands/keebio_nyquistpad.js",
-            Names(36),
+            Names(36, (3, "Underglow"), (8, "Underglow"), (13, "Underglow"), (22, "Underglow"), (25, "Underglow"), (28, "Underglow"), (30, "Fn"), (34, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35 },
-            new byte[] { 6, 8, 10, 5, 1, 3, 4, 4, 9, 3, 1, 10, 8, 2, 6, 6, 8, 10, 1, 3, 4, 4, 9, 3, 1, 5, 10, 8, 2, 6, 6, 8, 10, 1, 0, 7 },
-            new byte[] { 1, 1, 1, 1, 1, 1, 1, 4, 2, 4, 4, 4, 4, 2, 4, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 0, 3, 4, 5, 5, 1, 4, 3, 2, 1, 2, 0, 0, 1, 2, 3, 4, 5, 5, 3, 4, 3, 4, 2, 1, 5, 0, 0, 1, 2, 3, 4, 5 },
+            new byte[] { 0, 0, 0, 6, 0, 0, 0, 1, 6, 1, 1, 1, 1, 6, 1, 2, 2, 2, 2, 2, 2, 3, 6, 3, 3, 6, 3, 3, 6, 3, 4, 4, 4, 4, 4, 4 },
+            new ushort[] { 53, 30, 31, 0, 32, 33, 34, 23, 0, 21, 8, 26, 20, 0, 43, 41, 4, 22, 7, 9, 10, 5, 0, 25, 6, 0, 27, 29, 0, 225, 0, 224, 227, 226, 0, 44 });
 
-        private static PluginKeyTable Qmk_kuro_kuro65() => new(
+        private static PluginKeyTable Qmk_kuro_kuro65_fw_kuro_kuro65() => new(
             "_Random-Brands/kuro_kuro65.js",
-            Names(69, (2, "Fn"), (7, "Fn")),
+            Names(69, (2, "Fn"), (25, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68 },
-            new byte[] { 50, 13, 21, 30, 38, 45, 51, 51, 45, 35, 25, 16, 7, 59, 55, 49, 43, 37, 29, 20, 11, 23, 12, 2, 2, 5, 15, 24, 32, 40, 47, 53, 57, 3, 10, 19, 28, 36, 44, 51, 51, 34, 27, 18, 9, 1, 56, 52, 46, 39, 31, 22, 14, 4, 0, 8, 17, 26, 33, 41, 48, 54, 58, 6, 13, 21, 30, 42, 51 },
-            new byte[] { 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            new ushort[] { 44, 230, 0, 228, 80, 81, 79, 0, 82, 229, 45, 55, 54, 16, 17, 5, 25, 6, 27, 28, 54, 226, 227, 224, 225, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 52, 40, 78, 75, 37, 47, 19, 18, 12, 24, 29, 23, 21, 8, 26, 20, 43, 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 56, 53, 42, 76 });
+            new byte[] { 4, 10, 11, 12, 13, 14, 15, 15, 14, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 3, 1, 0, 0, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 15, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15 },
+            new byte[] { 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            new ushort[] { 44, 230, 0, 228, 80, 81, 79, 76, 82, 229, 56, 55, 54, 16, 17, 5, 25, 6, 27, 29, 100, 226, 227, 224, 225, 0, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 49, 40, 78, 75, 48, 47, 19, 18, 12, 24, 28, 23, 21, 8, 26, 20, 43, 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76 });
 
-        private static PluginKeyTable Qmk_laser_ninja_pumpkin_pad() => new(
+        private static PluginKeyTable Qmk_laser_ninja_pumpkin_pad_fw_laser_ninja_pumpkinpad() => new(
             "_Random-Brands/laser_ninja_pumpkin_pad.js",
-            Names(27),
+            Names(27, (0, "Underglow"), (1, "Underglow"), (2, "Underglow"), (3, "Underglow"), (4, "Underglow"), (5, "Underglow"), (9, "Underglow"), (10, "Underglow"), (11, "Underglow"), (12, "Underglow"), (13, "Underglow"), (17, "Underglow"), (18, "Underglow"), (19, "Underglow"), (20, "Underglow"), (22, "Underglow"), (23, "Fn"), (24, "Underglow"), (26, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26 },
-            new byte[] { 0, 8, 4, 12, 9, 9, 2, 6, 10, 3, 3, 1, 3, 3, 13, 7, 5, 11, 9, 9, 12, 2, 4, 6, 8, 10, 0 },
-            new byte[] { 1, 0, 0, 0, 5, 5, 6, 6, 6, 4, 4, 2, 7, 7, 3, 3, 3, 2, 7, 7, 9, 8, 9, 8, 9, 8, 9 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 0, 1, 3, 2, 1, 2, 3, 0, 1, 2, 0, 1, 2, 3, 0, 1, 2, 3, 3, 2, 0, 1, 1 },
+            new byte[] { 4, 4, 4, 4, 5, 5, 0, 0, 0, 5, 5, 6, 6, 6, 1, 1, 1, 6, 7, 7, 7, 2, 7, 2, 8, 2, 8 },
+            new ushort[] { 0, 0, 0, 0, 0, 0, 60, 59, 58, 0, 0, 0, 0, 0, 61, 62, 63, 0, 0, 0, 0, 67, 0, 0, 0, 65, 0 });
 
         private static PluginKeyTable Qmk_ozone_tactical() => new(
             "_Random-Brands/ozone_tactical.js",
@@ -2139,165 +2310,165 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 1, 0, 0, 0, 0, 0 },
             new ushort[] { 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_projectd_projectd_65_ansi() => new(
+        private static PluginKeyTable Qmk_projectd_projectd_65_ansi_fw_projectd_65_projectd_65_ansi() => new(
             "_Random-Brands/projectd_projectd_65_ansi.js",
-            Names(71, (67, "Fn")),
+            Names(71, (61, "Underglow"), (62, "Underglow"), (64, "Underglow"), (65, "Underglow"), (67, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70 },
-            new byte[] { 0, 3, 8, 13, 17, 21, 25, 31, 35, 39, 43, 47, 51, 1, 10, 0, 6, 11, 15, 19, 23, 28, 33, 37, 41, 45, 49, 53, 2, 10, 0, 7, 12, 16, 20, 24, 29, 34, 38, 42, 46, 50, 54, 10, 0, 9, 14, 18, 22, 27, 32, 36, 40, 44, 48, 52, 5, 10, 0, 4, 11, 26, 27, 28, 29, 30, 43, 48, 1, 5, 10 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 0, 1, 4, 2, 3, 10, 11, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 6, 6, 4, 6, 6, 4, 4, 4, 4, 4 },
             new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 0, 0, 44, 0, 0, 230, 0, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_skeletonkbd_frost68() => new(
+        private static PluginKeyTable Qmk_skeletonkbd_frost68_fw_skeletonkbd_frost68() => new(
             "_Random-Brands/skeletonkbd_frost68.js",
-            Names(68),
+            Names(68, (28, "Fn"), (66, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67 },
-            new byte[] { 13, 21, 30, 39, 47, 54, 62, 56, 50, 41, 33, 24, 15, 12, 25, 32, 42, 51, 57, 59, 53, 43, 36, 28, 14, 11, 22, 45, 58, 4, 19, 38, 48, 55, 63, 55, 44, 34, 26, 17, 8, 3, 64, 1, 6, 10, 20, 29, 37, 49, 63, 61, 52, 40, 31, 23, 16, 7, 2, 65, 0, 5, 9, 18, 27, 35, 46, 60 },
-            new byte[] { 2, 2, 1, 5, 7, 9, 11, 21, 19, 17, 14, 15, 15, 24, 24, 25, 26, 27, 28, 33, 32, 31, 30, 29, 29, 34, 34, 36, 38, 37, 35, 34, 34, 34, 34, 29, 29, 29, 29, 30, 31, 32, 33, 28, 27, 26, 25, 24, 24, 24, 23, 12, 15, 15, 15, 13, 16, 18, 20, 22, 10, 8, 6, 4, 3, 2, 2, 0 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 6, 5, 4, 3, 2, 0, 0, 2, 3, 4, 5, 6, 6, 5, 4, 3, 2, 0, 0, 2, 4, 6, 8, 11, 14, 15, 16, 17, 16, 14, 13, 12, 11, 10, 9, 8, 9, 10, 11, 12, 13, 14, 15, 17, 17, 16, 15, 14, 13, 12, 11, 10, 9, 9, 10, 11, 12, 13, 14, 0, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 6, 0 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 23, 21, 8, 26, 20, 43, 57, 4, 22, 7, 9, 10, 5, 25, 6, 27, 29, 225, 224, 226, 44, 0, 44, 231, 228, 80, 81, 79, 82, 229, 56, 55, 54, 16, 17, 0, 11, 13, 14, 15, 51, 52, 40, 77, 74, 49, 48, 47, 19, 18, 12, 24, 28, 36, 37, 38, 39, 45, 46, 0, 76 });
 
-        private static PluginKeyTable Qmk_skmt_skmt_15k() => new(
+        private static PluginKeyTable Qmk_skmt_skmt_15k_fw_skmt_15k() => new(
             "_Random-Brands/skmt_skmt_15k.js",
             Names(15),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 },
-            new byte[] { 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0 },
+            new byte[] { 4, 3, 2, 1, 0, 4, 3, 2, 1, 0, 4, 3, 2, 1, 0 },
             new byte[] { 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new ushort[] { 0, 0, 0, 0, 58, 0, 0, 0, 0, 59, 0, 0, 0, 0, 60 });
 
-        private static PluginKeyTable Qmk_synth_labs_060() => new(
+        private static PluginKeyTable Qmk_synth_labs_060_fw_synthlabs_060() => new(
             "_Random-Brands/synth_labs_060.js",
-            Names(63),
+            Names(63, (41, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62 },
-            new byte[] { 0, 8, 16, 24, 32, 40, 47, 52, 1, 9, 17, 25, 33, 44, 46, 36, 29, 21, 13, 5, 54, 50, 43, 35, 28, 20, 12, 2, 4, 14, 22, 30, 38, 45, 51, 55, 7, 15, 23, 31, 42, 48, 37, 27, 19, 11, 3, 53, 49, 41, 34, 26, 18, 6, 2, 12, 22, 39, 52, 10, 27, 36, 46 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 0, 2, 3, 4, 7, 8, 11, 13, 14 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 49, 48, 47, 19, 18, 12, 24, 28, 23, 21, 8, 26, 20, 43, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 0, 229, 56, 55, 54, 16, 17, 5, 25, 6, 27, 29, 225, 224, 227, 226, 44, 44, 44, 230, 231, 228 });
 
-        private static PluginKeyTable Qmk_tominabox1_le_chiffre() => new(
+        private static PluginKeyTable Qmk_tominabox1_le_chiffre_fw_tominabox1_le_chiffre_he() => new(
             "_Random-Brands/tominabox1_le_chiffre.js",
-            Names(11),
+            Names(11, (0, "Underglow"), (1, "Underglow"), (2, "Underglow"), (3, "Underglow"), (4, "Underglow"), (5, "Underglow"), (6, "Underglow"), (7, "Underglow"), (8, "Underglow"), (9, "Underglow"), (10, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 },
-            new byte[] { 1, 3, 0, 0, 5, 2, 6, 6, 4, 1, 1 },
-            new byte[] { 1, 1, 3, 0, 0, 0, 0, 3, 1, 2, 4 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 },
+            new byte[] { 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_unknown_tan67() => new(
+        private static PluginKeyTable Qmk_unknown_tan67_fw_pangorin_tan67() => new(
             "_Random-Brands/unknown_tan67.js",
-            Names(83),
+            Names(83, (62, "Fn"), (67, "Underglow"), (68, "Underglow"), (69, "Underglow"), (70, "Underglow"), (71, "Underglow"), (72, "Underglow"), (73, "Underglow"), (74, "Underglow"), (75, "Underglow"), (76, "Underglow"), (77, "Underglow"), (78, "Underglow"), (79, "Underglow"), (80, "Underglow"), (81, "Underglow"), (82, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82 },
-            new byte[] { 0, 9, 19, 29, 36, 44, 50, 57, 61, 5, 14, 22, 32, 43, 54, 3, 13, 23, 33, 40, 48, 55, 59, 63, 8, 18, 28, 35, 45, 54, 4, 17, 26, 34, 41, 49, 56, 60, 2, 10, 20, 30, 42, 54, 6, 21, 31, 38, 46, 52, 58, 62, 7, 16, 25, 37, 47, 54, 1, 12, 24, 53, 15, 27, 39, 47, 54, 51, 43, 32, 20, 2, 57, 48, 33, 19, 3, 11, 33, 50, 63, 22, 45 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 3, 3, 3, 3, 3, 3 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 3, 4, 10, 11, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 76, 224, 227, 226, 44, 0, 228, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_work_louder_numpad() => new(
+        private static PluginKeyTable Qmk_work_louder_numpad_fw_work_louder_numpad() => new(
             "_Random-Brands/work_louder_numpad.js",
             Names(16),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
-            new byte[] { 2, 0, 3, 1, 1, 3, 0, 2, 2, 0, 3, 1, 1, 3, 0, 2 },
-            new byte[] { 0, 0, 0, 0, 2, 2, 2, 2, 1, 1, 1, 1, 3, 3, 3, 3 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 3, 2, 1, 0, 0, 1, 2, 3, 3, 2, 1, 0, 0, 1, 2, 3 },
+            new byte[] { 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0 },
+            new ushort[] { 87, 88, 99, 98, 89, 90, 91, 86, 85, 94, 93, 92, 95, 96, 97, 84 });
 
-        private static PluginKeyTable Qmk_yiancardesigns_nk() => new(
+        private static PluginKeyTable Qmk_yiancardesigns_nk_fw_novelkeys_nk_plus() => new(
             "_Random-Brands/yiancardesigns_nk.js",
-            Names(76),
+            Names(76, (72, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75 },
-            new byte[] { 0, 5, 12, 20, 27, 34, 42, 47, 52, 56, 3, 8, 13, 21, 28, 39, 48, 48, 41, 31, 24, 17, 10, 6, 1, 54, 50, 45, 38, 30, 23, 14, 5, 0, 0, 5, 16, 25, 33, 40, 46, 51, 55, 2, 7, 11, 19, 26, 37, 48, 48, 43, 32, 22, 15, 9, 4, 57, 53, 49, 44, 36, 29, 18, 5, 0, 0, 5, 14, 23, 33, 56, 22, 35, 43, 48 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 18, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 1, 0, 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 18, 18, 17, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 3, 1, 0, 0, 1, 3, 4, 5, 7, 14, 16, 17, 18 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
+            new ushort[] { 58, 59, 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 75, 49, 48, 47, 19, 18, 12, 24, 28, 23, 21, 8, 26, 20, 43, 61, 60, 62, 63, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 77, 82, 229, 56, 55, 54, 16, 17, 5, 25, 6, 27, 29, 225, 65, 64, 66, 67, 224, 227, 226, 44, 0, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_zzeneg_stront() => new(
+        private static PluginKeyTable Qmk_zzeneg_stront_fw_stront() => new(
             "_Random-Brands/zzeneg_stront.js",
             Names(38),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37 },
-            new byte[] { 18, 14, 11, 6, 7, 3, 0, 1, 4, 8, 11, 11, 14, 18, 18, 14, 13, 18, 21, 2, 5, 10, 9, 5, 5, 9, 12, 12, 15, 19, 22, 23, 20, 16, 17, 12, 9, 5 },
-            new byte[] { 5, 3, 0, 3, 9, 12, 12, 7, 7, 4, 1, 8, 9, 10, 6, 4, 11, 13, 2, 2, 13, 11, 4, 6, 10, 9, 8, 1, 4, 7, 7, 12, 12, 9, 3, 0, 3, 5 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 5, 4, 3, 2, 2, 1, 0, 0, 1, 2, 3, 3, 4, 5, 5, 4, 4, 5, 6, 7, 8, 9, 9, 8, 8, 9, 10, 10, 11, 12, 13, 13, 12, 11, 11, 10, 9, 8 },
+            new byte[] { 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 2, 2, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 0, 0, 0, 0 },
+            new ushort[] { 23, 21, 8, 26, 0, 0, 20, 45, 29, 27, 6, 0, 0, 10, 5, 25, 0, 0, 0, 0, 0, 0, 16, 17, 11, 0, 0, 54, 55, 56, 52, 19, 0, 0, 18, 12, 24, 28 });
 
-        private static PluginKeyTable Qmk_akko_5108() => new(
+        private static PluginKeyTable Qmk_akko_5108_fw_akko_5108() => new(
             "akko/akko_5108.js",
             Names(108, (17, "Mute"), (18, "Volume Down"), (19, "Volume Up"), (101, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
-            new byte[] { 0, 7, 9, 11, 13, 16, 19, 21, 23, 24, 25, 2, 6, 8, 10, 12, 15, 18, 20, 22, 0, 5, 7, 9, 11, 13, 14, 16, 19, 21, 23, 24, 25, 6, 8, 10, 12, 15, 18, 20, 22, 0, 5, 7, 9, 11, 13, 14, 16, 19, 21, 23, 24, 1, 6, 8, 10, 12, 15, 18, 20, 22, 0, 5, 7, 9, 11, 13, 14, 16, 19, 21, 23, 24, 4, 15, 18, 20, 3, 7, 9, 11, 13, 14, 16, 19, 21, 23, 24, 4, 10, 15, 18, 20, 22, 0, 5, 7, 14, 23, 24, 2, 6, 8, 10, 12, 17, 20 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 56, 37, 45, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 36, 37, 38, 46, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 33, 34, 35, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 30, 31, 32, 40, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 39, 55 });
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
 
-        private static PluginKeyTable Qmk_akko_acr87() => new(
+        private static PluginKeyTable Qmk_akko_acr87_fw_akko_acr87() => new(
             "akko/akko_acr87.js",
-            Names(135, (82, "Fn")),
+            Names(135, (82, "Fn"), (87, "Underglow"), (88, "Underglow"), (89, "Underglow"), (90, "Underglow"), (91, "Underglow"), (92, "Underglow"), (93, "Underglow"), (94, "Underglow"), (95, "Underglow"), (96, "Underglow"), (97, "Underglow"), (98, "Underglow"), (99, "Underglow"), (100, "Underglow"), (101, "Underglow"), (102, "Underglow"), (103, "Underglow"), (104, "Underglow"), (105, "Underglow"), (106, "Underglow"), (107, "Underglow"), (108, "Underglow"), (109, "Underglow"), (110, "Underglow"), (111, "Underglow"), (112, "Underglow"), (113, "Underglow"), (114, "Underglow"), (115, "Underglow"), (116, "Underglow"), (117, "Underglow"), (118, "Underglow"), (119, "Underglow"), (120, "Underglow"), (121, "Underglow"), (122, "Underglow"), (123, "Underglow"), (124, "Underglow"), (125, "Underglow"), (126, "Underglow"), (127, "Underglow"), (128, "Underglow"), (129, "Underglow"), (130, "Underglow"), (131, "Underglow"), (132, "Underglow"), (133, "Underglow"), (134, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134 },
-            new byte[] { 0, 8, 16, 23, 29, 35, 40, 46, 50, 3, 11, 18, 24, 30, 36, 43, 0, 4, 10, 17, 23, 28, 34, 39, 44, 48, 1, 6, 14, 21, 26, 31, 36, 0, 5, 12, 19, 25, 32, 37, 42, 47, 51, 3, 11, 18, 24, 30, 36, 43, 0, 5, 12, 19, 25, 32, 37, 42, 47, 51, 3, 11, 24, 0, 5, 12, 19, 25, 32, 37, 42, 47, 51, 3, 11, 24, 0, 5, 12, 32, 51, 3, 11, 24, 30, 36, 43, 4, 8, 16, 23, 29, 35, 40, 46, 50, 3, 11, 18, 24, 30, 36, 43, 0, 43, 0, 43, 0, 43, 0, 43, 0, 43, 0, 43, 0, 43, 0, 4, 9, 15, 22, 27, 33, 38, 41, 45, 49, 2, 7, 13, 20, 30, 36, 43 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 8, 8, 11, 11, 1, 1, 6, 6, 9, 9, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 231, 226, 44, 230, 227, 0, 228, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_akko_top40() => new(
+        private static PluginKeyTable Qmk_akko_top40_fw_akko_top40() => new(
             "akko/akko_top40.js",
-            Names(76, (41, "Fn")),
+            Names(76, (41, "Fn"), (45, "Underglow"), (46, "Underglow"), (47, "Underglow"), (48, "Underglow"), (49, "Underglow"), (50, "Underglow"), (51, "Underglow"), (52, "Underglow"), (53, "Underglow"), (54, "Underglow"), (55, "Underglow"), (56, "Underglow"), (57, "Underglow"), (58, "Underglow"), (59, "Underglow"), (60, "Underglow"), (61, "Underglow"), (62, "Underglow"), (63, "Underglow"), (64, "Underglow"), (65, "Underglow"), (66, "Underglow"), (67, "Underglow"), (68, "Underglow"), (69, "Underglow"), (70, "Underglow"), (71, "Underglow"), (72, "Underglow"), (73, "Underglow"), (74, "Underglow"), (75, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75 },
-            new byte[] { 1, 5, 9, 13, 18, 22, 24, 2, 7, 11, 16, 20, 1, 5, 9, 13, 18, 22, 24, 2, 7, 11, 16, 20, 1, 5, 9, 13, 18, 22, 24, 2, 7, 11, 16, 20, 1, 5, 9, 18, 24, 7, 11, 16, 20, 0, 3, 6, 10, 15, 19, 23, 25, 4, 8, 12, 17, 21, 0, 21, 0, 21, 0, 21, 0, 3, 9, 14, 18, 22, 25, 4, 8, 12, 17, 21 },
-            new byte[] { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 1, 1, 6, 6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 3, 4, 6, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7 },
             new ushort[] { 41, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 42, 43, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 82, 229, 224, 227, 226, 44, 44, 0, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_boardsource_beiwagon() => new(
+        private static PluginKeyTable Qmk_boardsource_beiwagon_fw_boardsource_beiwagon() => new(
             "boardsource/boardsource_beiwagon.js",
-            Names(18),
+            Names(18, (0, "Underglow"), (1, "Underglow"), (2, "Underglow"), (3, "Underglow"), (4, "Underglow"), (5, "Underglow"), (17, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 },
-            new byte[] { 3, 3, 3, 4, 4, 4, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2 },
-            new byte[] { 2, 4, 6, 2, 4, 6, 0, 0, 0, 3, 3, 3, 5, 5, 5, 1, 1, 1 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2 },
+            new byte[] { 5, 5, 5, 6, 6, 6, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3 },
+            new ushort[] { 0, 0, 0, 0, 0, 0, 36, 37, 38, 33, 34, 35, 30, 31, 32, 39, 88, 0 });
 
-        private static PluginKeyTable Qmk_boardsource_lulu() => new(
+        private static PluginKeyTable Qmk_boardsource_lulu_fw_boardsource_lulu_avr() => new(
             "boardsource/boardsource_lulu.js",
-            Names(70),
+            Names(70, (0, "Underglow"), (1, "Underglow"), (2, "Underglow"), (3, "Underglow"), (4, "Underglow"), (5, "Underglow"), (35, "Underglow"), (36, "Underglow"), (37, "Underglow"), (38, "Underglow"), (39, "Underglow"), (40, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69 },
-            new byte[] { 16, 9, 2, 2, 9, 16, 16, 13, 9, 5, 2, 0, 0, 2, 5, 9, 13, 16, 16, 13, 9, 5, 2, 0, 0, 2, 5, 9, 13, 16, 19, 17, 14, 11, 7, 1, 8, 15, 15, 8, 1, 1, 4, 8, 12, 15, 18, 18, 15, 12, 8, 4, 1, 1, 4, 8, 12, 15, 18, 18, 15, 12, 8, 4, 1, 20, 21, 3, 6, 10 },
-            new byte[] { 7, 7, 3, 4, 4, 4, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 1, 1, 1, 1, 1, 1, 6, 6, 6, 6, 6, 6, 3, 2, 2, 2, 2, 7, 7, 3, 4, 4, 4, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 1, 1, 1, 1, 1, 1, 6, 6, 6, 6, 6, 6, 3, 2, 2, 2, 2 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0, 0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0, 0, 1, 2, 3, 4, 5, 6, 6, 5, 4, 3, 6, 7, 8, 9, 10, 11, 11, 12, 13, 14, 15, 16, 16, 15, 14, 13, 12, 11, 11, 12, 13, 14, 15, 16, 16, 15, 14, 13, 12, 11, 10, 10, 11, 12, 13 },
+            new byte[] { 6, 6, 6, 6, 6, 6, 0, 0, 0, 0, 0, 1, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 0, 0, 0, 0, 0, 1, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4 },
+            new ushort[] { 0, 0, 0, 0, 0, 0, 34, 33, 32, 31, 30, 41, 43, 20, 26, 8, 21, 23, 10, 9, 7, 22, 4, 224, 225, 29, 27, 6, 25, 5, 47, 44, 0, 227, 226, 0, 0, 0, 0, 0, 0, 35, 36, 37, 38, 39, 53, 45, 19, 18, 12, 24, 28, 11, 13, 14, 15, 51, 52, 229, 56, 55, 54, 16, 17, 48, 40, 0, 42, 231 });
 
-        private static PluginKeyTable Qmk_boardsource_techniko() => new(
+        private static PluginKeyTable Qmk_boardsource_techniko_fw_boardsource_technik_o() => new(
             "boardsource/boardsource_techniko.js",
-            Names(58),
+            Names(58, (0, "Underglow"), (1, "Underglow"), (2, "Underglow"), (3, "Underglow"), (4, "Underglow"), (5, "Underglow"), (6, "Underglow"), (7, "Underglow"), (8, "Underglow"), (9, "Underglow"), (46, "Light")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57 },
-            new byte[] { 15, 7, 9, 11, 3, 3, 11, 9, 7, 15, 0, 12, 5, 16, 10, 4, 14, 8, 2, 13, 6, 1, 0, 12, 5, 16, 10, 4, 14, 8, 2, 13, 6, 1, 0, 12, 5, 16, 10, 4, 14, 8, 2, 13, 6, 1, 0, 12, 5, 16, 10, 4, 14, 8, 2, 13, 6, 1 },
-            new byte[] { 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },
+            new byte[] { 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 },
+            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 42, 41, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 40, 0, 224, 226, 227, 0, 44, 44, 0, 80, 81, 82, 79 });
 
-        private static PluginKeyTable Qmk_boardsource_techniks() => new(
+        private static PluginKeyTable Qmk_boardsource_techniks_fw_boardsource_technik_s() => new(
             "boardsource/boardsource_techniks.js",
-            Names(55),
+            Names(55, (0, "Underglow"), (1, "Underglow"), (2, "Underglow"), (3, "Underglow"), (4, "Underglow"), (5, "Underglow"), (6, "Underglow"), (7, "Underglow"), (8, "Underglow"), (9, "Underglow"), (45, "Light")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54 },
-            new byte[] { 24, 11, 28, 13, 1, 1, 13, 28, 11, 24, 0, 5, 10, 16, 21, 27, 29, 4, 9, 15, 20, 25, 3, 8, 14, 19, 23, 28, 2, 6, 12, 17, 22, 0, 5, 10, 16, 21, 27, 29, 4, 9, 15, 20, 25, 0, 5, 10, 18, 26, 30, 7, 15, 20, 25 },
-            new byte[] { 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 5, 6, 8, 9, 10, 11 },
+            new byte[] { 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 },
+            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 42, 41, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 225, 225, 29, 27, 6, 25, 5, 17, 16, 54, 82, 40, 0, 224, 226, 0, 44, 44, 0, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_boardsource_the_mark65() => new(
+        private static PluginKeyTable Qmk_boardsource_the_mark65_fw_boardsource_the_mark() => new(
             "boardsource/boardsource_the_mark65.js",
-            Names(24),
+            Names(24, (0, "Underglow"), (1, "Underglow"), (2, "Underglow"), (3, "Underglow"), (4, "Underglow"), (5, "Underglow"), (6, "Underglow"), (7, "Underglow"), (8, "Underglow"), (9, "Underglow"), (10, "Underglow"), (11, "Underglow"), (12, "Underglow"), (13, "Underglow"), (14, "Underglow"), (15, "Underglow"), (16, "Underglow"), (17, "Underglow"), (18, "Underglow"), (19, "Underglow"), (20, "Underglow"), (21, "Underglow"), (22, "Underglow"), (23, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 },
-            new byte[] { 0, 0, 5, 6, 1, 2, 7, 8, 3, 4, 9, 9, 9, 9, 4, 3, 8, 7, 2, 1, 6, 5, 0, 0 },
-            new byte[] { 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7 },
+            new byte[] { 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7 },
             new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_controller_works_city42() => new(
+        private static PluginKeyTable Qmk_controller_works_city42_fw_controllerworks_city42() => new(
             "controller_works/controller_works_city42.js",
-            Names(42),
+            Names(42, (19, "Fn"), (22, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41 },
-            new byte[] { 31, 26, 20, 13, 7, 2, 1, 5, 12, 18, 24, 29, 27, 21, 16, 9, 3, 0, 18, 26, 29, 6, 10, 17, 35, 32, 25, 19, 14, 8, 6, 11, 17, 23, 30, 34, 33, 28, 22, 15, 10, 4 },
-            new byte[] { 10, 7, 6, 4, 4, 0, 9, 10, 10, 11, 13, 15, 8, 5, 1, 16, 15, 14, 12, 3, 2, 2, 3, 12, 14, 15, 15, 1, 5, 8, 16, 13, 11, 10, 10, 9, 0, 4, 4, 6, 7, 10 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 5, 4, 3, 2, 1, 0, 0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0, 4, 5, 6, 8, 9, 10, 13, 12, 11, 10, 9, 8, 8, 9, 10, 11, 12, 13, 13, 12, 11, 10, 9, 8 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 4, 4, 4, 4, 3, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 },
+            new ushort[] { 23, 21, 8, 26, 20, 43, 224, 4, 22, 7, 9, 10, 5, 25, 6, 27, 29, 225, 227, 0, 44, 44, 0, 230, 40, 56, 55, 54, 16, 17, 11, 13, 14, 15, 51, 52, 42, 19, 18, 12, 24, 28 });
 
-        private static PluginKeyTable Qmk_controller_works_mini36() => new(
+        private static PluginKeyTable Qmk_controller_works_mini36_fw_controllerworks_mini36() => new(
             "controller_works/controller_works_mini36.js",
-            Names(48),
+            Names(48, (0, "Underglow"), (1, "Underglow"), (2, "Underglow"), (3, "Underglow"), (4, "Underglow"), (5, "Underglow"), (13, "Fn"), (24, "Underglow"), (25, "Underglow"), (26, "Underglow"), (27, "Underglow"), (28, "Underglow"), (29, "Underglow"), (37, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47 },
-            new byte[] { 19, 9, 0, 4, 17, 26, 25, 23, 23, 23, 16, 16, 16, 21, 14, 12, 12, 12, 8, 8, 8, 3, 3, 3, 7, 18, 27, 22, 10, 1, 2, 5, 5, 5, 11, 11, 11, 6, 13, 15, 15, 15, 20, 20, 20, 24, 24, 24 },
-            new byte[] { 2, 1, 8, 13, 17, 15, 18, 11, 7, 3, 1, 6, 10, 17, 15, 9, 5, 0, 1, 6, 10, 12, 8, 4, 2, 1, 8, 14, 16, 15, 18, 11, 7, 3, 1, 6, 10, 17, 15, 9, 5, 0, 1, 6, 10, 12, 8, 4 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 5, 4, 4, 4, 3, 3, 3, 4, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0, 6, 7, 8, 9, 10, 11, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 11, 11, 11 },
+            new byte[] { 6, 6, 6, 6, 6, 6, 4, 2, 1, 0, 0, 1, 2, 4, 3, 2, 1, 0, 0, 1, 2, 2, 1, 0, 6, 6, 6, 6, 6, 6, 4, 2, 1, 0, 0, 1, 2, 4, 3, 2, 1, 0, 0, 1, 2, 2, 1, 0 },
+            new ushort[] { 0, 0, 0, 0, 0, 0, 44, 5, 10, 23, 21, 9, 25, 0, 227, 6, 7, 8, 26, 22, 27, 29, 4, 20, 0, 0, 0, 0, 0, 0, 44, 17, 11, 28, 24, 13, 16, 0, 43, 54, 14, 12, 18, 15, 55, 56, 51, 19 });
 
-        private static PluginKeyTable Qmk_controller_works_mini42() => new(
+        private static PluginKeyTable Qmk_controller_works_mini42_fw_controllerworks_mini42() => new(
             "controller_works/controller_works_mini42.js",
-            Names(54),
+            Names(54, (0, "Underglow"), (1, "Underglow"), (2, "Underglow"), (3, "Underglow"), (4, "Underglow"), (5, "Underglow"), (13, "Fn"), (27, "Underglow"), (28, "Underglow"), (29, "Underglow"), (30, "Underglow"), (31, "Underglow"), (32, "Underglow"), (40, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53 },
-            new byte[] { 20, 13, 3, 3, 15, 26, 25, 23, 23, 23, 19, 19, 19, 21, 17, 15, 15, 15, 10, 10, 10, 5, 5, 5, 0, 6, 11, 8, 16, 24, 24, 14, 1, 2, 4, 4, 4, 9, 9, 9, 7, 12, 14, 14, 14, 18, 18, 18, 22, 22, 22, 27, 27, 27 },
-            new byte[] { 2, 1, 5, 15, 16, 17, 19, 13, 9, 3, 1, 6, 12, 18, 17, 11, 7, 0, 1, 8, 12, 14, 10, 4, 4, 10, 14, 2, 1, 5, 15, 16, 17, 19, 13, 9, 3, 1, 8, 12, 18, 17, 11, 7, 0, 1, 8, 12, 14, 10, 4, 4, 10, 14 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 5, 5, 5, 4, 4, 4, 5, 4, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0, 6, 7, 8, 9, 10, 11, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 13 },
+            new byte[] { 6, 6, 6, 6, 6, 6, 4, 2, 1, 0, 0, 1, 2, 4, 3, 2, 1, 0, 0, 1, 2, 2, 1, 0, 0, 1, 2, 6, 6, 6, 6, 6, 6, 4, 2, 1, 0, 0, 1, 2, 4, 3, 2, 1, 0, 0, 1, 2, 2, 1, 0, 0, 1, 2 },
+            new ushort[] { 0, 0, 0, 0, 0, 0, 44, 5, 10, 23, 21, 9, 25, 0, 227, 6, 7, 8, 26, 22, 27, 29, 4, 20, 43, 224, 225, 0, 0, 0, 0, 0, 0, 44, 17, 11, 28, 24, 13, 16, 0, 230, 54, 14, 12, 18, 15, 55, 56, 51, 19, 42, 52, 40 });
 
         private static PluginKeyTable Qmk_gg_ironclad() => new(
             "gg/gg_ironclad.js",
@@ -2307,21 +2478,21 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
             new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_Keychron_Q11_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_Keychron_Q11_QMK_ANSI_Keyboard_fw_keychron_q11_ansi_encoder() => new(
             "keychron/Keychron_Q11_QMK_ANSI_Keyboard.js",
-            Names(83),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 0, 1, 2, 6, 11, 12, 13, 14, 15 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 73, 76, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 74, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 78, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 77, 224, 227, 226, 44, 230, 101, 80, 81, 79 });
+            Names(89, (40, "Fn"), (84, "Fn")),
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88 },
+            new byte[] { 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 3, 4, 5, 6, 7, 0, 1, 3, 4, 5, 6, 7, 0, 1, 4, 5, 6, 7, 8, 0, 1, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 8, 9, 10, 11, 12, 13, 14, 17, 8, 9, 10, 11, 12, 13, 14, 15, 17, 8, 9, 10, 11, 12, 13, 14, 17, 9, 10, 11, 12, 13, 14, 16, 9, 11, 12, 13, 15, 16, 17 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 0, 53, 30, 31, 32, 33, 34, 35, 0, 43, 20, 26, 8, 21, 23, 0, 57, 4, 22, 7, 9, 10, 0, 225, 29, 27, 6, 25, 5, 0, 224, 227, 226, 0, 44, 64, 65, 66, 67, 68, 69, 73, 76, 36, 37, 38, 39, 45, 46, 42, 75, 28, 24, 12, 18, 19, 47, 48, 49, 78, 11, 13, 14, 15, 51, 52, 40, 74, 17, 16, 54, 55, 56, 229, 82, 44, 230, 0, 228, 80, 81, 79 });
 
-        private static PluginKeyTable Qmk_lx3_fave60a() => new(
+        private static PluginKeyTable Qmk_lx3_fave60a_fw_linworks_fave60a() => new(
             "lx3/lx3_fave60a.js",
-            Names(91, (1, "Fn")),
+            Names(91, (1, "Fn"), (60, "Underglow"), (61, "Underglow"), (62, "Underglow"), (63, "Underglow"), (64, "Underglow"), (65, "Underglow"), (66, "Underglow"), (67, "Underglow"), (68, "Underglow"), (69, "Underglow"), (70, "Underglow"), (71, "Underglow"), (72, "Underglow"), (73, "Underglow"), (74, "Underglow"), (75, "Underglow"), (76, "Underglow"), (77, "Underglow"), (78, "Underglow"), (79, "Underglow"), (80, "Underglow"), (81, "Underglow"), (82, "Underglow"), (83, "Underglow"), (84, "Underglow"), (85, "Underglow"), (86, "Underglow"), (87, "Underglow"), (88, "Underglow"), (89, "Underglow"), (90, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90 },
-            new byte[] { 14, 6, 13, 3, 1, 8, 0, 0, 1, 9, 2, 10, 3, 11, 4, 12, 5, 13, 14, 14, 13, 5, 12, 4, 11, 3, 10, 2, 9, 15, 7, 0, 0, 8, 1, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 14, 6, 13, 5, 12, 4, 11, 3, 10, 2, 9, 1, 8, 0, 0, 8, 1, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 14, 14, 14, 13, 5, 12, 4, 11, 3, 10, 2, 9, 1, 8, 0, 0, 0 },
-            new byte[] { 2, 2, 2, 2, 2, 2, 2, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 4, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 4, 7 },
-            new ushort[] { 228, 0, 230, 0, 226, 227, 224, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 40, 52, 51, 15, 14, 13, 11, 10, 9, 7, 22, 4, 57, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 42, 46, 45, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 41, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 14, 13, 11, 4, 3, 2, 0, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0 },
+            new byte[] { 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8 },
+            new ushort[] { 228, 0, 230, 44, 226, 227, 224, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 40, 52, 51, 15, 14, 13, 11, 10, 9, 7, 22, 4, 57, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 42, 46, 45, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 41, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
         private static PluginKeyTable Qmk_lx3_fave_84h() => new(
             "lx3/lx3_fave_84h.js",
@@ -2331,77 +2502,77 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new byte[] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 6, 6, 6, 7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 5, 12, 8, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 8, 13, 5 },
             new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_lx3_favepada() => new(
+        private static PluginKeyTable Qmk_lx3_favepada_fw_linworks_favepada() => new(
             "lx3/lx3_favepada.js",
-            Names(37),
+            Names(37, (17, "Fn"), (21, "Underglow"), (22, "Underglow"), (23, "Underglow"), (24, "Underglow"), (25, "Underglow"), (26, "Underglow"), (27, "Underglow"), (28, "Underglow"), (29, "Underglow"), (30, "Underglow"), (31, "Underglow"), (32, "Underglow"), (33, "Underglow"), (34, "Underglow"), (35, "Underglow"), (36, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36 },
-            new byte[] { 3, 0, 0, 2, 3, 1, 3, 2, 0, 0, 2, 3, 1, 1, 3, 2, 0, 0, 2, 3, 1, 1, 3, 2, 0, 0, 0, 0, 0, 0, 2, 3, 1, 1, 1, 1, 1 },
-            new byte[] { 10, 10, 7, 7, 7, 7, 3, 3, 3, 9, 9, 9, 9, 5, 5, 5, 5, 0, 0, 0, 0, 2, 2, 2, 2, 6, 11, 4, 8, 1, 1, 1, 1, 8, 4, 11, 6 },
-            new ushort[] { 76, 39, 30, 31, 32, 40, 35, 34, 33, 36, 37, 38, 46, 45, 37, 56, 83, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 2, 0, 0, 1, 2, 3, 2, 1, 0, 0, 1, 2, 3, 3, 2, 1, 0, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3 },
+            new byte[] { 5, 5, 4, 4, 4, 4, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10 },
+            new ushort[] { 99, 98, 89, 90, 91, 88, 94, 93, 92, 95, 96, 97, 87, 86, 85, 84, 83, 0, 4, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_mattmcca_blackhellebore() => new(
+        private static PluginKeyTable Qmk_mattmcca_blackhellebore_fw_black_hellebore() => new(
             "mattmcca/mattmcca_blackhellebore.js",
             Names(61),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 },
-            new byte[] { 2, 11, 20, 30, 37, 45, 51, 56, 60, 7, 14, 23, 33, 44, 46, 36, 29, 19, 10, 1, 58, 54, 49, 40, 34, 24, 15, 5, 6, 18, 27, 35, 42, 50, 55, 59, 4, 12, 21, 31, 43, 41, 26, 17, 9, 0, 57, 52, 47, 39, 32, 22, 8, 3, 13, 25, 53, 16, 28, 38, 48 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 0, 1, 3, 4, 10, 11, 13, 14 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4 },
+            new ushort[] { 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 49, 48, 47, 19, 18, 12, 24, 28, 23, 21, 8, 26, 20, 43, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 229, 56, 55, 54, 16, 17, 5, 25, 6, 27, 29, 225, 224, 227, 226, 44, 230, 231, 101, 228 });
 
-        private static PluginKeyTable Qmk_mattmcca_heliotrope() => new(
+        private static PluginKeyTable Qmk_mattmcca_heliotrope_fw_heliotrope() => new(
             "mattmcca/mattmcca_heliotrope.js",
             Names(61),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 },
-            new byte[] { 2, 11, 20, 30, 37, 45, 51, 56, 60, 7, 14, 23, 33, 44, 46, 36, 29, 19, 10, 1, 58, 54, 49, 40, 34, 24, 15, 5, 6, 18, 27, 35, 42, 50, 55, 59, 4, 12, 21, 31, 43, 41, 26, 17, 9, 0, 57, 52, 47, 39, 32, 22, 8, 3, 13, 25, 53, 16, 28, 38, 48 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 0, 1, 3, 4, 10, 11, 13, 14 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4 },
+            new ushort[] { 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 49, 48, 47, 19, 18, 12, 24, 28, 23, 21, 8, 26, 20, 43, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 229, 56, 55, 54, 16, 17, 5, 25, 6, 27, 29, 225, 224, 227, 226, 44, 230, 231, 101, 228 });
 
-        private static PluginKeyTable Qmk_monsgeek_m5() => new(
+        private static PluginKeyTable Qmk_monsgeek_m5_fw_monsgeek_m5() => new(
             "monsgeek/monsgeek_m5.js",
-            Names(108, (13, "Mute"), (14, "MediaRewind"), (15, "MediaFastForward"), (16, "MediaPlayPause"), (17, "Mute"), (18, "Volume Down"), (19, "Volume Up"), (101, "Fn")),
+            Names(108, (17, "Mute"), (18, "Volume Down"), (19, "Volume Up"), (101, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107 },
-            new byte[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 19, 20, 21, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 16, 19, 20, 21, 22, 0, 1, 2, 6, 10, 11, 12, 13, 15, 16, 17, 19, 21 },
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 0, 0, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 56, 37, 45, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 36, 37, 38, 46, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 33, 34, 35, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 30, 31, 32, 40, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 39, 55 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 231, 0, 228, 80, 81, 79, 98, 99 });
 
-        private static PluginKeyTable Qmk_monsgeek_m6() => new(
+        private static PluginKeyTable Qmk_monsgeek_m6_fw_monsgeek_m6() => new(
             "monsgeek/monsgeek_m6.js",
-            Names(92, (66, "Fn")),
+            Names(92, (66, "Fn"), (70, "Underglow"), (71, "Underglow"), (72, "Underglow"), (73, "Underglow"), (74, "Underglow"), (75, "Underglow"), (76, "Underglow"), (77, "Underglow"), (78, "Underglow"), (79, "Underglow"), (80, "Underglow"), (81, "Underglow"), (82, "Underglow"), (83, "Underglow"), (84, "Underglow"), (85, "Underglow"), (86, "Underglow"), (87, "Underglow"), (88, "Underglow"), (89, "Underglow"), (90, "Underglow"), (91, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91 },
-            new byte[] { 0, 5, 13, 22, 30, 37, 44, 52, 1, 6, 14, 23, 31, 38, 48, 0, 9, 17, 26, 33, 40, 50, 54, 3, 10, 18, 27, 34, 41, 48, 0, 11, 19, 28, 35, 42, 51, 55, 4, 12, 21, 29, 36, 43, 48, 0, 7, 15, 24, 37, 44, 47, 49, 53, 2, 8, 16, 25, 32, 45, 0, 20, 33, 46, 49, 4, 16, 39, 45, 48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 3, 5, 9, 11, 1, 4, 6, 10, 12, 2, 0, 3, 5, 9, 11, 1, 4, 6, 10, 12, 2 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 51, 40, 78, 225, 51, 29, 27, 6, 25, 5, 5, 17, 16, 54, 55, 56, 229, 82, 224, 230, 44, 227, 44, 226, 0, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 17, 0, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 17, 0, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 16, 0, 3, 5, 7, 8, 11, 12, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7 },
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 75, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 78, 225, 100, 29, 27, 6, 25, 5, 5, 17, 16, 54, 55, 56, 229, 82, 224, 226, 44, 227, 44, 230, 0, 80, 81, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-        private static PluginKeyTable Qmk_rama_m6c() => new(
+        private static PluginKeyTable Qmk_rama_m6c_fw_wolf_m6_c() => new(
             "rama/rama_m6c.js",
             Names(6),
             new[] { 0, 1, 2, 3, 4, 5 },
-            new byte[] { 0, 1, 2, 3, 1, 0 },
+            new byte[] { 0, 1, 2, 2, 1, 0 },
             new byte[] { 0, 0, 0, 1, 1, 1 },
-            new ushort[] { 0, 0, 0, 0, 0, 0 });
+            new ushort[] { 30, 31, 32, 35, 34, 33 });
 
-        private static PluginKeyTable Qmk_rama_works_m60b() => new(
+        private static PluginKeyTable Qmk_rama_works_m60b_fw_wolf_m60_b() => new(
             "rama/rama_works_m60b.js",
-            Names(62),
+            Names(62, (38, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61 },
-            new byte[] { 3, 2, 11, 19, 27, 35, 42, 49, 1, 9, 16, 24, 32, 39, 48, 46, 34, 26, 18, 10, 4, 51, 44, 37, 29, 21, 13, 17, 25, 33, 40, 47, 53, 7, 14, 22, 30, 41, 50, 39, 30, 20, 52, 31, 21, 11, 5, 0, 8, 15, 23, 31, 38, 45, 52, 6, 12, 20, 28, 36, 43, 50 },
-            new byte[] { 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 5, 2, 5, 2, 2, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 0, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 13, 11, 13, 4, 15, 3, 2, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 },
+            new byte[] { 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 4, 3, 4, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            new ushort[] { 57, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 40, 52, 51, 15, 14, 13, 11, 10, 9, 7, 22, 4, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 0, 231, 230, 55, 44, 6, 226, 227, 225, 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76 });
 
-        private static PluginKeyTable Qmk_WhirlwindFX_Element_V2_QMK_ANSI_Keyboard() => new(
+        private static PluginKeyTable Qmk_WhirlwindFX_Element_V2_QMK_ANSI_Keyboard_fw_whirlwind_fx_element() => new(
             "whirlwindfx/WhirlwindFX_Element-V2_QMK_ANSI_Keyboard.js",
             Names(104, (96, "Fn")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 17, 18, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
+            new byte[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 22, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 19, 20, 21, 22, 0, 1, 3, 4, 10, 11, 13, 14, 15, 16, 17, 19, 21 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 87, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
 
-        private static PluginKeyTable Qmk_ymdk_idobao_x_ymdk_id75() => new(
+        private static PluginKeyTable Qmk_ymdk_idobao_x_ymdk_id75_fw_ymdk_id75_f103() => new(
             "ymdk/ymdk_idobao_x_ymdk_id75.js",
-            Names(89),
+            Names(89, (17, "Fn"), (75, "Underglow"), (76, "Underglow"), (77, "Underglow"), (78, "Underglow"), (79, "Underglow"), (80, "Underglow"), (81, "Underglow"), (82, "Underglow"), (83, "Underglow"), (84, "Underglow"), (85, "Underglow"), (86, "Underglow"), (87, "Underglow"), (88, "Underglow")),
             new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88 },
-            new byte[] { 17, 15, 12, 9, 6, 3, 1, 18, 16, 14, 11, 8, 5, 2, 0, 17, 15, 12, 9, 6, 3, 1, 18, 16, 14, 11, 8, 5, 2, 0, 17, 15, 12, 9, 6, 3, 1, 18, 16, 14, 11, 8, 5, 2, 0, 17, 15, 12, 9, 6, 3, 1, 18, 16, 14, 11, 8, 5, 2, 0, 17, 15, 12, 9, 6, 3, 1, 18, 16, 14, 11, 8, 5, 2, 0, 0, 7, 13, 19, 4, 10, 17, 0, 7, 13, 19, 4, 10, 17 },
-            new byte[] { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            new byte[] { 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 },
+            new byte[] { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6 },
+            new ushort[] { 79, 81, 80, 228, 228, 230, 44, 44, 44, 44, 44, 44, 226, 227, 224, 78, 82, 0, 229, 56, 55, 54, 16, 17, 5, 25, 6, 27, 29, 225, 75, 40, 40, 52, 51, 15, 14, 13, 11, 10, 9, 7, 22, 4, 57, 76, 42, 48, 47, 19, 18, 12, 24, 28, 23, 21, 8, 26, 20, 43, 53, 49, 46, 45, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 41, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
     }
 
     /// <summary>The boards of the plugins that keep many in one object.</summary>
@@ -2441,8 +2612,8 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             "Asus/Omni Controller/ASUS_Keyboard_Protocol.js",
             Names(108, (100, "Fn")),
             new[] { 0, 24, 32, 40, 48, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 168, 176, 1, 17, 25, 33, 41, 49, 57, 65, 73, 81, 89, 97, 105, 121, 129, 137, 145, 153, 161, 169, 177, 2, 18, 26, 34, 42, 50, 58, 66, 74, 82, 90, 98, 106, 122, 130, 138, 146, 154, 162, 170, 178, 3, 19, 27, 35, 43, 51, 59, 67, 75, 83, 91, 99, 107, 123, 155, 163, 171, 4, 12, 20, 28, 36, 44, 52, 60, 68, 76, 84, 92, 124, 140, 156, 164, 172, 180, 5, 21, 29, 53, 77, 93, 101, 125, 133, 141, 149, 157, 173 },
-            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 19 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 19 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
 
         private static PluginKeyTable AsusOmni_ROG_Strix_Scope_II_96_Wireless() => new(
@@ -2556,7 +2727,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 36, 37, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 58, 59, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 80, 81, 88, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 102, 103, 104, 110, 111, 112, 116, 120, 121, 122, 123, 125, 126 },
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 0, 1, 2, 5, 8, 9, 10, 12, 13, 14 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 52, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
         private static PluginKeyTable Nuvoton_68v2() => new(
             "Nuvoton/Nuvoton_Keyboard_Controller.js",
@@ -2564,7 +2735,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 36, 38, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 58, 60, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 80, 82, 88, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 102, 103, 104, 110, 111, 112, 116, 120, 123, 122, 124, 125, 126 },
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 0, 1, 2, 5, 8, 9, 10, 12, 13, 14 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 52, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
         private static PluginKeyTable Nuvoton_65() => new(
             "Nuvoton/Nuvoton_Keyboard_Controller.js",
@@ -2572,7 +2743,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 36, 37, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 59, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 101, 102, 103, 111, 112, 116, 120, 121, 122, 123, 124, 125, 126 },
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 74, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 0, 53, 48, 40, 75, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 74, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 75, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
         private static PluginKeyTable Nuvoton_60() => new(
             "Nuvoton/Nuvoton_Keyboard_Controller.js",
@@ -2588,15 +2759,15 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 18, 19, 20, 21, 40, 41, 42, 43, 62, 63, 64, 65, 84, 85, 86, 106, 107, 108, 109, 128, 130 },
             new byte[] { 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 0, 1, 2, 3, 0, 2 },
             new byte[] { 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5 },
-            new ushort[] { 41, 43, 42, 0, 83, 56, 37, 45, 95, 96, 97, 87, 92, 93, 94, 89, 90, 91, 88, 98, 55 });
+            new ushort[] { 41, 43, 42, 0, 83, 84, 85, 86, 95, 96, 97, 87, 92, 93, 94, 89, 90, 91, 88, 98, 99 });
 
         private static PluginKeyTable Nuvoton_Pulsar_TKL() => new(
             "Nuvoton/Nuvoton_Keyboard_Controller.js",
             Names(93, (83, "Fn"), (89, "Logo"), (90, "Logo"), (91, "Logo"), (92, "Logo")),
             new[] { 0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 36, 37, 38, 39, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 58, 59, 60, 61, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 102, 104, 110, 111, 112, 116, 120, 121, 122, 123, 125, 126, 127, 269, 270, 271, 281 },
-            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 14, 15, 16, 16 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 14, 15, 16, 16 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 3, 3 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 49, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 0, 0, 0, 0 });
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 40, 76, 77, 78, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 0, 0, 0, 0 });
 
         private static PluginKeyTable Nuvoton_Rapture_Alpha() => new(
             "Nuvoton/Nuvoton_Keyboard_Controller.js",
@@ -2612,7 +2783,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 36, 37, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 58, 59, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 80, 81, 88, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 101, 102, 103, 110, 111, 112, 116, 120, 121, 122, 123, 124, 125 },
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 0, 1, 2, 5, 8, 9, 10, 12, 13, 14 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 52, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
         private static PluginKeyTable Nuvoton_Husky_Blizzard() => new(
             "Nuvoton/Nuvoton_Keyboard_Controller.js",
@@ -2714,7 +2885,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 1, 7, 13, 19, 25, 31, 37, 43, 49, 55, 61, 67, 73, 79, 85, 2, 8, 14, 20, 26, 32, 38, 44, 50, 56, 62, 68, 74, 80, 86, 3, 9, 15, 21, 27, 33, 39, 45, 51, 57, 63, 69, 75, 81, 87, 4, 70, 10, 16, 22, 28, 34, 40, 46, 52, 58, 64, 76, 82, 88, 5, 11, 17, 35, 53, 65, 71, 77, 83, 89 },
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14 },
             new byte[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 52, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 75, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 0, 101, 80, 81, 79 });
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 75, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 0, 101, 80, 81, 79 });
 
         private static PluginKeyTable Sinowealth2_68v2() => new(
             "Sinowealth/Sinowealth_Keyboard_Controller2.js",
@@ -2722,7 +2893,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 1, 7, 13, 19, 25, 31, 37, 43, 49, 55, 61, 67, 73, 79, 91, 2, 8, 14, 20, 26, 32, 38, 44, 50, 56, 62, 68, 74, 80, 92, 3, 9, 15, 21, 27, 33, 39, 45, 51, 57, 63, 69, 75, 81, 93, 4, 70, 10, 16, 22, 28, 34, 40, 46, 52, 58, 64, 82, 88, 94, 5, 11, 17, 35, 53, 59, 65, 83, 89, 95 },
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14 },
             new byte[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 52, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 75, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 0, 101, 80, 81, 79 });
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 0, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 75, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 0, 101, 80, 81, 79 });
 
         private static PluginKeyTable Sinowealth2_60() => new(
             "Sinowealth/Sinowealth_Keyboard_Controller2.js",
@@ -2768,7 +2939,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 36, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 110, 111, 112, 116, 119, 120, 121, 122 },
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 6, 10, 11, 12, 13 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 0, 53, 48, 40, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 56, 229, 224, 227, 226, 44, 230, 101, 0, 228 });
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 84, 229, 224, 227, 226, 44, 230, 101, 0, 228 });
 
         private static PluginKeyTable Kbm_TG700() => new(
             "KBM Gaming/KBM_Keyboard_Controller.js",
@@ -2776,7 +2947,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 36, 38, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 60, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 82, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 101, 103, 104, 110, 111, 112, 116, 119, 120, 121, 122, 125, 126 },
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 6, 9, 10, 11, 12, 13, 14 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 74, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 0, 53, 48, 40, 75, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 76, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 74, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 75, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79 });
 
         internal static readonly PluginBoard[] Xiaohua =
         {
@@ -2889,7 +3060,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         private static PluginKeyTable EVision_Kreo_Hive98() => new(
             "EVision/EVision_Keyboard_Controller.js",
             Names(98, (91, "Fn")),
-            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 99, 100, 101, 102, 103 },
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 99, 100, 101, 102, 103, 104 },
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 76, 73, 75, 78, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 228, 80, 81, 79, 98, 0 });
@@ -3046,16 +3217,16 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             "Asus/ASUS_Keyboard.js",
             Names(108, (100, "Fn")),
             new[] { 0, 24, 32, 40, 48, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 168, 176, 1, 17, 25, 33, 41, 49, 57, 65, 73, 81, 89, 97, 105, 121, 129, 137, 145, 153, 161, 169, 177, 2, 18, 26, 34, 42, 50, 58, 66, 74, 82, 90, 98, 106, 122, 130, 138, 146, 154, 162, 170, 178, 3, 19, 27, 35, 43, 51, 59, 67, 75, 83, 91, 99, 107, 123, 155, 163, 171, 4, 12, 20, 28, 36, 44, 52, 60, 68, 76, 84, 92, 124, 140, 156, 164, 172, 180, 5, 21, 29, 53, 77, 93, 101, 125, 133, 141, 149, 157, 173 },
-            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 19 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 19 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
 
         private static PluginKeyTable AsusKeyboard_ROG_Strix_Scope_NX() => new(
             "Asus/ASUS_Keyboard.js",
             Names(108, (100, "Fn")),
             new[] { 0, 24, 32, 40, 48, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 168, 176, 1, 17, 25, 33, 41, 49, 57, 65, 73, 81, 89, 97, 105, 121, 129, 137, 145, 153, 161, 169, 177, 2, 18, 26, 34, 42, 50, 58, 66, 74, 82, 90, 98, 106, 122, 130, 138, 146, 154, 162, 170, 178, 3, 19, 27, 35, 43, 51, 59, 67, 75, 83, 91, 99, 107, 123, 155, 163, 171, 4, 12, 20, 28, 36, 44, 52, 60, 68, 76, 84, 92, 124, 140, 156, 164, 172, 180, 5, 21, 29, 53, 77, 93, 101, 125, 133, 141, 149, 157, 173 },
-            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 19 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20, 0, 1, 2, 6, 10, 11, 12, 13, 14, 15, 16, 17, 19 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
             new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
 
         private static PluginKeyTable AsusKeyboard_ROG_Strix_Scope_II_96() => new(
@@ -3076,19 +3247,19 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
 
         private static PluginKeyTable AsusKeyboard_ROG_Strix_Scope_II_NX() => new(
             "Asus/ASUS_Keyboard.js",
-            Names(108, (16, "Logo"), (100, "Fn")),
-            new[] { 0, 24, 32, 40, 48, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 160, 1, 17, 25, 33, 41, 49, 57, 65, 73, 81, 89, 97, 105, 121, 129, 137, 145, 153, 161, 169, 177, 2, 18, 26, 34, 42, 50, 58, 66, 74, 82, 90, 98, 106, 122, 130, 138, 146, 154, 162, 170, 178, 3, 19, 27, 35, 43, 51, 59, 67, 75, 83, 91, 99, 107, 123, 155, 163, 171, 4, 12, 20, 28, 36, 44, 52, 60, 68, 76, 84, 92, 124, 140, 156, 164, 172, 180, 5, 13, 21, 45, 53, 61, 77, 93, 101, 125, 133, 141, 149, 157 },
-            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20, 0, 1, 2, 5, 6, 7, 10, 11, 12, 13, 14, 15, 16, 17 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 44, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
+            Names(109, (16, "Logo"), (101, "Fn")),
+            new[] { 0, 24, 32, 40, 48, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 160, 1, 17, 25, 33, 41, 49, 57, 65, 73, 81, 89, 97, 105, 121, 129, 137, 145, 153, 161, 169, 177, 2, 18, 26, 34, 42, 50, 58, 66, 74, 82, 90, 98, 106, 122, 130, 138, 146, 154, 162, 170, 178, 3, 19, 27, 35, 43, 51, 59, 67, 75, 83, 91, 99, 107, 123, 155, 163, 171, 4, 12, 20, 28, 36, 44, 52, 60, 68, 76, 84, 92, 124, 140, 156, 164, 172, 180, 5, 13, 21, 45, 53, 61, 77, 93, 101, 125, 133, 141, 149, 157, 173 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20, 0, 1, 2, 5, 6, 7, 10, 11, 12, 13, 14, 15, 16, 17, 19 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 44, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
 
         private static PluginKeyTable AsusKeyboard_ROG_Strix_Scope_II_RX() => new(
             "Asus/ASUS_Keyboard.js",
-            Names(108, (16, "Logo"), (100, "Fn")),
-            new[] { 0, 24, 32, 40, 48, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 160, 1, 17, 25, 33, 41, 49, 57, 65, 73, 81, 89, 97, 105, 121, 129, 137, 145, 153, 161, 169, 177, 2, 18, 26, 34, 42, 50, 58, 66, 74, 82, 90, 98, 106, 122, 130, 138, 146, 154, 162, 170, 178, 3, 19, 27, 35, 43, 51, 59, 67, 75, 83, 91, 99, 107, 123, 155, 163, 171, 4, 12, 20, 28, 36, 44, 52, 60, 68, 76, 84, 92, 124, 140, 156, 164, 172, 180, 5, 13, 21, 45, 53, 61, 77, 93, 101, 125, 133, 141, 149, 157 },
-            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20, 0, 1, 2, 5, 6, 7, 10, 11, 12, 13, 14, 15, 16, 17 },
-            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
-            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 44, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
+            Names(109, (16, "Logo"), (101, "Fn")),
+            new[] { 0, 24, 32, 40, 48, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 160, 1, 17, 25, 33, 41, 49, 57, 65, 73, 81, 89, 97, 105, 121, 129, 137, 145, 153, 161, 169, 177, 2, 18, 26, 34, 42, 50, 58, 66, 74, 82, 90, 98, 106, 122, 130, 138, 146, 154, 162, 170, 178, 3, 19, 27, 35, 43, 51, 59, 67, 75, 83, 91, 99, 107, 123, 155, 163, 171, 4, 12, 20, 28, 36, 44, 52, 60, 68, 76, 84, 92, 124, 140, 156, 164, 172, 180, 5, 13, 21, 45, 53, 61, 77, 93, 101, 125, 133, 141, 149, 157, 173 },
+            new byte[] { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20, 0, 1, 2, 5, 6, 7, 10, 11, 12, 13, 14, 15, 16, 17, 19 },
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+            new ushort[] { 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 50, 40, 92, 93, 94, 225, 100, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 44, 44, 44, 230, 0, 101, 228, 80, 81, 79, 98, 99 });
 
         internal static readonly PluginBoard[] SteelSeriesKeyboard =
         {
@@ -3375,7 +3546,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 106, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 110, 105, 108, 107, 0, 44, 1, 111, 122, 101, 109, 50, 100 },
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 0, 1, 2, 4, 6, 8, 10, 11, 12, 13, 2, 12 },
             new byte[] { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 224, 227, 226, 0, 44, 0, 230, 0, 101, 228, 50, 50 });
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 224, 227, 226, 0, 44, 0, 230, 0, 101, 228, 50, 0 });
 
         private static PluginKeyTable Bragi_Darkstar() => new(
             "Corsair/Modern_Corsair/Corsair_Bragi_Device.js",
@@ -3390,7 +3561,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 128, 113, 114, 137, 138, 102, 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 123, 126, 124, 125, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 106, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 110, 82, 89, 90, 91, 88, 105, 108, 107, 140, 44, 141, 111, 122, 101, 109, 80, 81, 79, 98, 99, 50, 100 },
             new byte[] { 0, 1, 2, 8, 8, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 16, 18, 19, 20, 21, 0, 1, 2, 6, 7, 8, 11, 12, 13, 14, 15, 16, 17, 18, 20, 13, 2 },
             new byte[] { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 3, 5 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 0, 44, 0, 230, 0, 101, 228, 80, 81, 79, 98, 99, 49, 100 });
+            new ushort[] { 0, 0, 0, 0, 0, 0, 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 0, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 0, 44, 0, 230, 0, 101, 228, 80, 81, 79, 98, 99, 49, 100 });
 
         private static PluginKeyTable Bragi_M65_Ultra_Wireless() => new(
             "Corsair/Modern_Corsair/Corsair_Bragi_Device.js",
@@ -3427,7 +3598,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 128, 113, 114, 137, 138, 102, 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 123, 126, 124, 125, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 106, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 110, 82, 89, 90, 91, 88, 105, 108, 107, 140, 44, 141, 111, 122, 101, 109, 80, 81, 79, 98, 99, 50, 100 },
             new byte[] { 0, 1, 2, 8, 8, 19, 0, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 16, 18, 19, 20, 21, 0, 1, 2, 6, 7, 8, 11, 12, 13, 14, 15, 16, 17, 18, 20, 13, 2 },
             new byte[] { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 3, 5 },
-            new ushort[] { 0, 0, 0, 0, 0, 0, 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 0, 44, 0, 230, 0, 101, 228, 80, 81, 79, 98, 99, 49, 100 });
+            new ushort[] { 0, 0, 0, 0, 0, 0, 41, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 0, 53, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 73, 74, 75, 83, 84, 85, 86, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 0, 76, 77, 78, 95, 96, 97, 87, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 92, 93, 94, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 89, 90, 91, 88, 224, 227, 226, 0, 44, 0, 230, 0, 101, 228, 80, 81, 79, 98, 99, 49, 100 });
 
         private static PluginKeyTable Bragi_K60_Pro_TKL() => new(
             "Corsair/Modern_Corsair/Corsair_Bragi_Device.js",
@@ -3451,7 +3622,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             new[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 129, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 106, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 110, 82, 78, 105, 108, 107, 0, 44, 1, 111, 122, 80, 81, 79, 50, 100 },
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 1, 2, 4, 6, 8, 10, 11, 12, 13, 14, 1, 12 },
             new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3 },
-            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 0, 44, 0, 230, 0, 80, 81, 79, 100, 100 });
+            new ushort[] { 41, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 42, 0, 43, 20, 26, 8, 21, 23, 28, 24, 12, 18, 19, 47, 48, 49, 76, 57, 4, 22, 7, 9, 10, 11, 13, 14, 15, 51, 52, 40, 75, 225, 29, 27, 6, 25, 5, 17, 16, 54, 55, 56, 229, 82, 78, 224, 227, 226, 0, 44, 0, 230, 0, 80, 81, 79, 100, 0 });
 
         private static PluginKeyTable Bragi_Scimitar_Elite_Wireless() => new(
             "Corsair/Modern_Corsair/Corsair_Bragi_Device.js",

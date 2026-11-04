@@ -262,7 +262,15 @@ namespace PadForge.Tests
                 "set",
                 "set 00 04 02",
                 "get 00",
-            }, Steps(F.Sonix2Picture(new[] { 0x010203, 0x040506 })).Select(s => s.TrimEnd()));
+            }, Steps(F.Sonix2Picture(new[] { 0, 1 }, new[] { 0x010203, 0x040506 })).Select(s => s.TrimEnd()));
+        }
+
+        /// <summary>An LED the layout does not have stays zero, as in the plugin's array.</summary>
+        [Fact]
+        public void Sonix2_AnLedTheLayoutLacks_StaysZero()
+        {
+            var steps = Steps(F.Sonix2Picture(new[] { 0, 2 }, new[] { 0x010203, 0, 0x040506 }));
+            Assert.Contains(steps, s => s.StartsWith("set 00 00 01 02 03 00 00 00 00 02 04 05 06"));
         }
 
         [Fact]

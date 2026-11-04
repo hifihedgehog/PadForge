@@ -11,9 +11,12 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
 
     /// <summary>A keyboard flashed with the SignalRGB protocol. A plugin that
     /// tells its layouts apart by the third byte of the firmware's unique
-    /// identifier lists them by that byte, null for any other.</summary>
+    /// identifier lists them by that byte, null for any other. Firmware names the
+    /// keyboard's folder when its keys come from its QMK firmware, and is null when
+    /// they come from its plugin. A picture sends LedsPerReport LEDs to a report,
+    /// red first unless GreenBlueRed.</summary>
     internal sealed record PluginQmkBoard(string Name, string Plugin, ushort Vendor, ushort[] Products, Func<PluginKeyTable> Table,
-        (byte? Unique, Func<PluginKeyTable> Table)[] Variants = null);
+        (byte? Unique, Func<PluginKeyTable> Table)[] Variants = null, string Firmware = null, int LedsPerReport = 9, bool GreenBlueRed = false);
 
     /// <summary>What a device of Corsair's wireless family is.</summary>
     internal enum PluginCorsairKind { Keyboard, Mouse, Headset }
@@ -166,8 +169,8 @@ namespace PadForge.Common.Input.Peripherals
                     UsagePage = 0xFF32,
                     Usage = 0x04C0,
                     FeatureLength = A4TechLighting.PacketSize,
-                    // The wheel at LED 0, then the buttons, the sides and the bottom.
-                    Lights = new[] { Wheel(0), Edge(1), Edge(2), Edge(3), Edge(4), Edge(5), Edge(6), Edge(7) },
+                    // The left button, the wheel at LED 0, the right button, the sides and the bottom.
+                    Lights = new[] { Edge(1), Wheel(0), Edge(2), Edge(3), Edge(4), Edge(5), Edge(6), Edge(7) },
                     Slots = 8,
                     Start = A4TechLighting.ControlFrames(0x01).Select(PluginStep.Feature).ToArray(),
                     Picture = colors =>
@@ -797,19 +800,22 @@ namespace PadForge.Common.Input.Peripherals
                     AskVariant = (io, _, _) =>
                     {
                         var board = BoardNamed(PluginLibraryTables.Sonix2, io.ProductString);
-                        return board == null ? null : VariantOf(board.Table(), Sonix2Picture);
+                        if (board == null) return null;
+                        var table = board.Table();
+                        return VariantOf(table, colors => Sonix2Picture(table.Indexes, colors));
                     },
                 };
         }
 
-        /// <summary>Each LED's number and color, sixty-four bytes to a report,
-        /// between the plugin's opening and closing reports.</summary>
-        internal static IEnumerable<PluginStep> Sonix2Picture(int[] colors)
+        /// <summary>Each LED's number and color at four bytes times its number, sixty-four
+        /// bytes to a report, between the plugin's opening and closing reports. An LED the
+        /// layout does not have stays zero, as it does in the plugin's array.</summary>
+        internal static IEnumerable<PluginStep> Sonix2Picture(int[] leds, int[] colors)
         {
             yield return PluginStep.Feature(Frame(65, 0x00, 0x04, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08));
             yield return PluginStep.ReadFeature(0x00);
             var data = new byte[colors.Length * 4];
-            for (int led = 0; led < colors.Length; led++)
+            foreach (int led in leds)
             {
                 data[led * 4] = (byte)led;
                 PutRgb(data, led * 4 + 1, colors[led]);

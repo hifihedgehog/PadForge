@@ -27,13 +27,13 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 ["Num +"] = 0x57, ["Num Enter"] = 0x58, ["Num 0"] = 0x62, ["Num ."] = 0x63, ["Num ,"] = 0x63,
                 ["ISO #"] = 0x32, ["ISO /"] = 0x32, ["ISO <"] = 0x64, ["# ISO"] = 0x32, ["< ISO"] = 0x64,
                 // The Speedlink ORIOS keyboard names its legends in German.
-                ["^"] = 0x35, ["ß"] = 0x2D, ["´"] = 0x2E, ["Ü"] = 0x2F, ["+"] = 0x30, ["Ö"] = 0x33, ["Ä"] = 0x34,
-                ["#"] = 0x32, ["<"] = 0x64, ["AltGr"] = 0xE6, ["-"] = 0x38,
+                ["^"] = 0x35, ["ß"] = 0x2D, ["´"] = 0x2E, ["Ü"] = 0x2F, ["Ö"] = 0x33, ["Ä"] = 0x34,
+                ["#"] = 0x32, ["<"] = 0x64, ["AltGr"] = 0xE6,
                 // Other spellings in the QMK plugins.
                 ["Delete"] = 0x4C, ["Ins"] = 0x49, ["PgUp"] = 0x4B, ["PgDn"] = 0x4E, ["PrtSc"] = 0x46, ["Screenshot"] = 0x46,
                 ["L Alt"] = 0xE2, ["L Ctrl"] = 0xE0, ["R Alt"] = 0xE6, ["R Ctrl"] = 0xE4, ["R Shift"] = 0xE5,
                 ["Right Win"] = 0xE7, ["Win"] = 0xE3, ["Numlock"] = 0x53, ["Num"] = 0x53, ["ISO_#"] = 0x32, ["ISO_<"] = 0x64,
-                ["Upp Arrow"] = 0x52, ["|"] = 0x31, ["\\|"] = 0x31, ["~"] = 0x35, ["="] = 0x2E, ["F23"] = 0x72, ["F24"] = 0x73,
+                ["Upp Arrow"] = 0x52, ["|"] = 0x31, ["\\|"] = 0x31, ["~"] = 0x35, ["="] = 0x2E, ["-"] = 0x2D, ["+"] = 0x2E, ["F23"] = 0x72, ["F24"] = 0x73,
                 ["Enm"] = 0x4A, [">"] = 0x37, ["Space 1"] = 0x2C, ["Space 2"] = 0x2C, ["\\\\"] = 0x31,
                 // The Nordic legends of the GMMK and Keychron ISO boards.
                 ["§"] = 0x35, ["¨"] = 0x30, ["Å"] = 0x2F, ["Æ"] = 0x34, ["Ø"] = 0x33,
@@ -71,7 +71,9 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                     light = new LightInfo(address, LightKind.Key, usage, LightKeySource.Generated);
                 else
                     light = Other(address, name);
-                lights[i] = light with { X = table.X[i], Y = table.Y[i], Width = 1, Height = 1, HasPosition = true };
+                // A plugin whose places are not the board's gives none, and the key picker
+                // draws the keys from their usages.
+                lights[i] = table.X == null ? light : light with { X = table.X[i], Y = table.Y[i], Width = 1, Height = 1, HasPosition = true };
             }
             return lights;
         }

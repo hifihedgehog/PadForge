@@ -987,6 +987,8 @@ namespace PadForge.Tests
             => PluginQmkTables.Boards.Single(b => b.Vendor == vendor && b.Products.Contains(product));
 
         /// <summary>The usage of the key a board's table puts at a place.</summary>
+        private static ushort UsageOfLed(PluginKeyTable table, int led) => table.Usages[Array.IndexOf(table.Indexes, led)];
+
         private static ushort UsageAt(PluginKeyTable table, int x, int y)
         {
             for (int i = 0; i < table.Indexes.Length; i++)
@@ -997,25 +999,272 @@ namespace PadForge.Tests
         [Fact]
         public void Qmk_LegendsGoByPlace()
         {
-            // The Q1 ISO's legends are Nordic.
-            var iso = QmkBoard(0x3434, 0x0109).Table();
-            Assert.Equal(0x35, UsageAt(iso, 0, 1));
-            Assert.Equal(0x2D, UsageAt(iso, 11, 1));
-            Assert.Equal(0x2E, UsageAt(iso, 12, 1));
-            Assert.Equal(0x2F, UsageAt(iso, 11, 2));
-            Assert.Equal(0x30, UsageAt(iso, 12, 2));
-            Assert.Equal(0x32, UsageAt(iso, 12, 3));
-            // The Q1 ANSI's list of names has a comma where the quote is.
-            var ansi = QmkBoard(0x3434, 0x0107).Table();
-            Assert.Equal(0x2D, UsageAt(ansi, 11, 1));
-            Assert.Equal(0x2E, UsageAt(ansi, 12, 1));
-            Assert.Equal(0x34, UsageAt(ansi, 11, 3));
-            // QWERTZ: the K8 Pro ISO DE's Z sits where a US board has Y.
-            var german = QmkBoard(0x3434, 0x0281).Table();
-            Assert.Contains((ushort)0x1C, german.Usages);
-            Assert.Contains((ushort)0x1D, german.Usages);
-            Assert.Contains((ushort)0x64, german.Usages);
-            Assert.Contains((ushort)0x32, german.Usages);
+            // AZERTY: the French Berserker's plugin names the keys by their legends.
+            var french = QmkBoard(0x320F, 0x5042).Table();
+            Assert.Equal(0x35, UsageOfLed(french, 16));
+            Assert.Equal(0x14, UsageOfLed(french, 34));
+            Assert.Equal(0x1A, UsageOfLed(french, 35));
+            Assert.Equal(0x04, UsageOfLed(french, 51));
+            Assert.Equal(0x33, UsageOfLed(french, 60));
+            Assert.Equal(0x34, UsageOfLed(french, 61));
+            Assert.Equal(0x32, UsageOfLed(french, 62));
+            Assert.Equal(0xE1, UsageOfLed(french, 63));
+            Assert.Equal(0x64, UsageOfLed(french, 64));
+            Assert.Equal(0x1D, UsageOfLed(french, 65));
+        }
+
+        /// <summary>A name a plugin gets wrong does not move its LED's key.</summary>
+        [Fact]
+        public void APluginsWrongName_IsPutRight()
+        {
+            // The MCHOSE GX87 names its left Ctrl B, and its B is still the B.
+            var mchose = QmkBoard(0xFFFE, 0x006F).Table();
+            Assert.Equal(0xE0, UsageOfLed(mchose, 77));
+            Assert.Equal(0x05, UsageOfLed(mchose, 69));
+            // The kb38 plugin's places fold its rows together, so the key picker draws it from its usages.
+            var doio = PluginQmkTables.Boards.Single(b => b.Plugin == "_Random-Brands/doio_doiokb38.js").Table();
+            Assert.Null(doio.X);
+            Assert.False(PluginKeyNames.Lights(doio)[0].HasPosition);
+            // The K8 v2 TKL ISO lists its Enter with the home row, and every name between runs one off.
+            var k8 = QmkBoard(0x3434, 0x0D81).Table();
+            Assert.Equal(0x28, UsageOfLed(k8, 46));
+            Assert.Equal(0x4C, UsageOfLed(k8, 47));
+            Assert.Equal(0x39, UsageOfLed(k8, 50));
+            Assert.Equal(0x04, UsageOfLed(k8, 51));
+            Assert.Equal(0x32, UsageOfLed(k8, 62));
+        }
+
+        /// <summary>A second copy of a key is the number pad's, or names nothing.</summary>
+        [Fact]
+        public void ASecondCopyOfAKey_IsTheNumberPads()
+        {
+            // The Adam0110 names its pad's keys as the number row's.
+            var adam = QmkBoard(0x586A, 0xB002);
+            var table = adam.Table();
+            Assert.Equal(0x54, UsageOfLed(table, 79));
+            Assert.Equal(0x55, UsageOfLed(table, 66));
+            Assert.Equal(0x5F, UsageOfLed(table, 77));
+            Assert.Equal(0x38, UsageOfLed(table, 12));
+            Assert.Equal(0x24, UsageOfLed(table, 57));
+            // A board with no letters is a number pad, and its digits are the pad's.
+            var doio = PluginQmkTables.Boards.Single(b => b.Plugin == "_Random-Brands/doio_doiokb38.js").Table();
+            Assert.Equal(0x5C, UsageOfLed(doio, 22));
+            Assert.Equal(0x5F, UsageOfLed(doio, 15));
+            Assert.Equal(0x62, UsageOfLed(doio, 33));
+        }
+
+        /// <summary>The GMMK 3's numbers come from its firmware's list where the plugin's run off it.</summary>
+        [Fact]
+        public void TheGmmk3_NumbersItsKeysAsItsFirmwareDoes()
+        {
+            var board = PluginQmkTables.Boards.Single(b => b.Plugin == "GMMK/GMMK_3_QMK_Keyboard.js");
+            PluginKeyTable Layout(byte unique) => board.Variants.Single(v => v.Unique == unique).Table();
+            // The 65% ANSI: Backspace 13, Tab 14, and no badge.
+            var ansi65 = Layout(11);
+            Assert.Equal(0x2A, UsageOfLed(ansi65, 13));
+            Assert.Equal(0x2B, UsageOfLed(ansi65, 14));
+            Assert.Equal(0x14, UsageOfLed(ansi65, 15));
+            Assert.Equal(0xE1, UsageOfLed(ansi65, 42));
+            Assert.Equal(0xE0, UsageOfLed(ansi65, 56));
+            Assert.Equal(85, ansi65.Indexes.Length);
+            Assert.Equal(84, ansi65.Indexes.Max());
+            // The 65% ISO: # after the Tab row, Enter on the home row, the key beside the left shift, the badge last.
+            var iso65 = Layout(12);
+            Assert.Equal(0x32, UsageOfLed(iso65, 27));
+            Assert.Equal(0x28, UsageOfLed(iso65, 40));
+            Assert.Equal(0x64, UsageOfLed(iso65, 43));
+            Assert.Equal(0x1D, UsageOfLed(iso65, 44));
+            Assert.Equal(0x4E, UsageOfLed(iso65, 56));
+            Assert.Equal(86, iso65.Indexes.Max());
+            // The 75% ISO.
+            var iso75 = Layout(14);
+            Assert.Equal(0x32, UsageOfLed(iso75, 41));
+            Assert.Equal(0x28, UsageOfLed(iso75, 55));
+            Assert.Equal(0x64, UsageOfLed(iso75, 58));
+            Assert.Equal(0x1D, UsageOfLed(iso75, 59));
+            Assert.Equal(101, iso75.Indexes.Max());
+            // The 100% ISO has only # and Enter crossed in the plugin.
+            var iso100 = Layout(16);
+            Assert.Equal(0x32, UsageOfLed(iso100, 50));
+            Assert.Equal(0x28, UsageOfLed(iso100, 70));
+            // The ANSI 75% and 100% agree with the firmware already.
+            Assert.Equal(0x2B, UsageOfLed(Layout(13), 28));
+            Assert.Equal(0x2B, UsageOfLed(Layout(15), 37));
+        }
+
+        /// <summary>The plugin lists LED 17 twice, for its Dual Lines key and the backtick, and the
+        /// backtick writes last.</summary>
+        [Fact]
+        public void TwoKeysOnOneLed_TheLastKeepsIt()
+        {
+            var zoom = QmkBoard(0x36B5, 0x27D6).Table();
+            Assert.Equal(0x35, UsageOfLed(zoom, 17));
+            Assert.Equal(1, zoom.Indexes.Count(i => i == 17));
+        }
+
+        /// <summary>A plugin's names sit on the wrong LEDs on many boards, and what a light is comes
+        /// from the keyboard's own firmware where that is known: g_led_config, keyboard.json and the
+        /// default keymap of keyboards/keychron/q3_max/ansi_encoder.</summary>
+        [Fact]
+        public void AKeyboardsFirmware_NamesItsKeys()
+        {
+            var q3 = QmkBoard(0x3434, 0x0830);
+            Assert.Equal("keyboards/keychron/q3_max/ansi_encoder", q3.Firmware);
+            var keys = q3.Table();
+            Assert.Equal(87, keys.Indexes.Length);
+            Assert.Equal(0x28, UsageOfLed(keys, 62));
+            Assert.Equal(0xE1, UsageOfLed(keys, 63));
+            Assert.Equal(0x1D, UsageOfLed(keys, 64));
+            Assert.Equal(0xE5, UsageOfLed(keys, 74));
+            Assert.Equal(0xE7, UsageOfLed(keys, 81));
+            Assert.Equal(0xE4, UsageOfLed(keys, 83));
+        }
+
+        /// <summary>A board's plugin may have only "Light 1" for a key its firmware names.</summary>
+        [Fact]
+        public void AKeyWithNoNameInItsPlugin_TakesItsFirmwaresName()
+        {
+            var tetromino = PluginQmkTables.Boards.Single(b => b.Plugin == "_Random-Brands/anachronism_tetromino.js");
+            Assert.StartsWith("keyboards/an_achronism/tetromino", tetromino.Firmware);
+            var keys = tetromino.Table();
+            Assert.Equal(0x35, UsageOfLed(keys, 0));
+            Assert.Equal(0x1E, UsageOfLed(keys, 1));
+        }
+
+        /// <summary>The Claymore II's names agree with its LEDs as the plugin has them, on either side.</summary>
+        [Fact]
+        public void TheClaymoreIi_KeepsEveryKeyOnItsLed()
+        {
+            var right = PluginKeyNames.Lights(PluginKeyTables.ClaymoreIiRight);
+            ushort At(int led) => right.Single(l => l.Address == led).Usage;
+            Assert.Equal(0x34, At(99));
+            Assert.Equal(0x32, At(107));
+            Assert.Equal(0x28, At(123));
+            Assert.Equal(0x5C, At(155));
+            Assert.Equal(0xE1, At(4));
+            Assert.Equal(0x64, At(12));
+            Assert.Equal(0x1D, At(20));
+            Assert.Equal(0x62, At(157));
+            Assert.Equal(PluginKeyTables.ClaymoreIiLeft.Names, PluginKeyTables.ClaymoreIiRight.Names);
+            // With the pad on the left, every light has its number.
+            var colors = new int[182];
+            foreach (var led in PluginKeyTables.ClaymoreIiRight.Indexes) colors[led] = 0x112233;
+            var frames = F.ClaymorePicture(colors, left: true).Select(s => s.Bytes).ToArray();
+            int lit = 0;
+            foreach (var frame in frames)
+                for (int at = 5; at + 3 < 65; at += 4)
+                    if (frame[at] != 0xFF) lit++;
+            Assert.Equal(108, lit);
+        }
+
+        /// <summary>Lists in a plugin's library that run out of step are put back.</summary>
+        [Fact]
+        public void ALibrarysListsOutOfStep_ArePutBack()
+        {
+            PluginKeyTable Board(PluginBoard[] boards, string model) => boards.Single(b => b.Model == model).Table();
+            // The Kreo Hive98's number row lists an LED no key has, so its Tab row starts at 41.
+            var kreo = Board(PluginLibraryTables.EVision, "Kreo Hive98");
+            Assert.DoesNotContain(37, kreo.Indexes);
+            Assert.Equal(0x2B, UsageOfLed(kreo, 41));
+            Assert.Equal(0x14, UsageOfLed(kreo, 42));
+            Assert.Equal(0xE1, UsageOfLed(kreo, 75));
+            // The Strix Scope RX and NX cross / and the ISO #.
+            foreach (var scope in new[] { Board(PluginLibraryTables.AsusKeyboard, "ROG Strix Scope RX"), Board(PluginLibraryTables.AsusKeyboard, "ROG Strix Scope NX"), Board(PluginLibraryTables.AsusOmniKeyboard, "A23114802911") })
+            {
+                Assert.Equal(0x32, UsageOfLed(scope, 107));
+                Assert.Equal(0x38, UsageOfLed(scope, 92));
+                // Each key's place is on its own row, the left shift first.
+                int shift = Array.IndexOf(scope.Indexes, 4);
+                Assert.Equal(0, scope.X[shift]);
+                Assert.Equal(scope.Y[Array.IndexOf(scope.Indexes, 20)], scope.Y[shift]);
+            }
+            // The Strix Scope II has / missing from its row and named on the home row.
+            var two = Board(PluginLibraryTables.AsusKeyboard, "ROG Strix Scope II NX");
+            Assert.Equal(two.Indexes.Length, two.Names.Length);
+            Assert.Equal(0x32, UsageOfLed(two, 107));
+            Assert.Equal(0x38, UsageOfLed(two, 92));
+            Assert.Equal(0xE5, UsageOfLed(two, 124));
+            // The Pulsar TKL lists the ISO # after ] and runs its names an LED off from there to the quote.
+            var pulsar = Board(PluginLibraryTables.Nuvoton, "K221UKCVRGB");
+            Assert.Equal(0x28, UsageOfLed(pulsar, 58));
+            Assert.Equal(0x4C, UsageOfLed(pulsar, 59));
+            Assert.Equal(0x39, UsageOfLed(pulsar, 66));
+            Assert.Equal(0x04, UsageOfLed(pulsar, 68));
+            Assert.Equal(0x34, UsageOfLed(pulsar, 78));
+            Assert.Equal(0x32, UsageOfLed(pulsar, 79));
+            Assert.Equal(0x28, UsageOfLed(pulsar, 80));
+        }
+
+        /// <summary>A plugin's number-row minus and plus are that row's keys. Only the Speedlink's
+        /// German legends have them elsewhere.</summary>
+        [Fact]
+        public void TheMinusAndPlus_AreTheNumberRowsUnlessGerman()
+        {
+            var ck720 = PluginKeyNames.Lights(PluginKeyTables.Ck720);
+            Assert.Equal(0x2D, ck720[PluginKeyTables.Ck720.Names.ToList().IndexOf("-")].Usage);
+            Assert.Equal(0x2E, ck720[PluginKeyTables.Ck720.Names.ToList().IndexOf("+")].Usage);
+            var speedlink = F.Devices.Single(d => d.Plugin == PluginKeyTables.SpeedlinkOriosKb.Plugin).Lights;
+            Assert.Equal(0x38, speedlink[PluginKeyTables.SpeedlinkOriosKb.Names.ToList().IndexOf("-")].Usage);
+            Assert.Equal(0x30, speedlink[PluginKeyTables.SpeedlinkOriosKb.Names.ToList().IndexOf("+")].Usage);
+        }
+
+        /// <summary>The picture's report: most boards send nine LEDs red first.</summary>
+        [Fact]
+        public void AQmkPicture_FollowsItsPluginsReport()
+        {
+            var alpaca = QmkBoard(PluginQmkTables.Boards.Single(b => b.Plugin.EndsWith("Alpaca_WhiteFox_Eclipse_QMK_Keyboard.js")).Vendor, 0x0038);
+            Assert.Equal(3, alpaca.LedsPerReport);
+            var steps = F.QmkPicture(new[] { 0x112233, 0x112233, 0x112233, 0x112233 }, alpaca.LedsPerReport).ToArray();
+            Assert.Equal(2, steps.Length);
+            Assert.Equal("00 24 00 03 11 22 33 11 22 33 11 22 33 00", Hex(steps[0].Bytes, 14));
+            Assert.Equal("00 24 03 01 11 22 33 00", Hex(steps[1].Bytes, 8));
+            var element = PluginQmkTables.Boards.Single(b => b.Plugin.EndsWith("WhirlwindFX_Element-V2_QMK_ANSI_Keyboard.js"));
+            Assert.True(element.GreenBlueRed);
+            Assert.Equal("00 24 00 01 22 33 11", Hex(F.QmkPicture(new[] { 0x112233 }, 9, element.GreenBlueRed).Single().Bytes, 7));
+        }
+
+        /// <summary>SignalRGB's engine runs a plugin's Render all the time, so nothing in a plugin
+        /// shows what its device does when the host goes quiet.</summary>
+        [Fact]
+        public void APluginsPicture_GoesOutAgainWithNoChange()
+        {
+            var plugin = F.Devices.First(d => d.Source == null && d.KeepAliveMs == 0);
+            Assert.Equal(F.PictureAgainMs, F.PictureAgainMsOf(plugin));
+            Assert.True(F.PictureAgainMs < 1000);
+            var ownKeepAlive = F.Devices.First(d => d.Source == null && d.KeepAliveMs > 0);
+            Assert.Equal(ownKeepAlive.KeepAliveMs, F.PictureAgainMsOf(ownKeepAlive));
+            // A project that sends its picture once proves the device holds it.
+            var other = F.Devices.First(d => d.Source != null);
+            Assert.Equal(0, F.PictureAgainMsOf(other));
+            Assert.All(F.Devices.Where(d => d.Source == null), d => Assert.True(F.PictureAgainMsOf(d) > 0, d.Name));
+        }
+
+        /// <summary>The start goes out once, as a plugin's Initialize does: only a device that can
+        /// lose software control takes it again.</summary>
+        [Fact]
+        public void APictureGoingOutAgain_LeavesTheStartAlone()
+        {
+            var device = new PluginDevice
+            {
+                Name = "t", VendorId = 1, ProductId = 2, Plugin = "t.js", OutputLength = 4, Lights = new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } }, Slots = 1,
+                Start = new[] { PluginStep.Output(new byte[] { 1, 0, 0, 0 }) },
+                Picture = colors => new[] { PluginStep.Output(new byte[] { 2, (byte)colors[0], 0, 0 }) },
+            };
+            var kept = new PluginDevice
+            {
+                Name = "k", VendorId = 1, ProductId = 3, Plugin = "k.js", OutputLength = 4, Lights = device.Lights, Slots = 1, KeepAliveMs = 5000,
+                Start = device.Start, Picture = device.Picture,
+            };
+            foreach (var (row, starts) in new[] { (device, 1), (kept, 2) })
+            {
+                var io = new FakeReportChannel { OutputReportLength = 4 };
+                var session = PluginDeviceLighting.StartForTest(row, io, _ => { });
+                session.Paint(io, _ => { }, row.Lights, new[] { 5 });
+                Assert.True(session.KeepAlive(io, _ => { }, row.Lights, new[] { 5 }));
+                var sent = io.Calls.Where(c => c.Kind == "out").Select(c => c.Bytes[0]).ToArray();
+                Assert.Equal(starts, sent.Count(b => b == 1));
+                Assert.Equal(2, sent.Count(b => b == 2));
+            }
         }
 
         [Fact]
@@ -1038,8 +1287,13 @@ namespace PadForge.Tests
                 {
                     var t = table();
                     Assert.Equal(t.Indexes.Length, t.Names.Length);
-                    Assert.Equal(t.Indexes.Length, t.X.Length);
-                    Assert.Equal(t.Indexes.Length, t.Y.Length);
+                    // A plugin whose places are not its board's gives none.
+                    Assert.Equal(t.X == null, t.Y == null);
+                    if (t.X != null)
+                    {
+                        Assert.Equal(t.Indexes.Length, t.X.Length);
+                        Assert.Equal(t.Indexes.Length, t.Y.Length);
+                    }
                     Assert.Equal(t.Indexes.Length, t.Usages.Length);
                     Assert.True(t.Indexes.Max() < 256, board.Name);
                     Assert.Equal(t.Indexes.Length, PluginKeyNames.Lights(t).Count);

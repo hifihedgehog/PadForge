@@ -178,8 +178,8 @@ namespace PadForge.Common.Input.Peripherals
                     UsagePage = 0xFFC2,
                     Usage = 0x0004,
                     OutputLength = 65,
-                    // The logo, the sniper button's light and the front.
-                    Lights = new[] { Logo(0), Status(1), Zone(2, 1) },
+                    // The front, the logo and the sniper button's light, as the plugin lists them.
+                    Lights = new[] { Zone(2, 1), Logo(0), Status(1) },
                     Slots = 3,
                     Programs = s_icue,
                     // A wireless mouse loses software mode when it sleeps. The
@@ -1108,7 +1108,7 @@ namespace PadForge.Common.Input.Peripherals
                         Otherwise = (io, wait) => QmkRawHidLighting.Begin(io, wait, QmkLighting.Product(board.Vendor, product)),
                         AskVariant = (io, _, wait) => QmkVariant(board, table, io, wait),
                         Start = new[] { PluginStep.Output(Frame(32, 0x00, 0x25)), PluginStep.Wait(QmkCommandWaitMs) },
-                        Picture = colors => QmkPicture(colors),
+                        Picture = colors => QmkPicture(colors, board.LedsPerReport, board.GreenBlueRed),
                         HandBack = new[] { PluginStep.Output(Frame(32, 0x00, 0x26)), PluginStep.Wait(QmkCommandWaitMs) },
                     };
                 }
@@ -1120,13 +1120,14 @@ namespace PadForge.Common.Input.Peripherals
         /// GMMK_3_QMK_Keyboard.js).</summary>
         internal static PluginVariant QmkVariant(PluginQmkBoard board, Lazy<PluginKeyTable> table, IHidReportChannel io, Action<int> wait)
         {
-            if (board.Variants == null) return VariantOf(table.Value, QmkPicture);
+            Func<int[], IEnumerable<PluginStep>> picture = colors => QmkPicture(colors, board.LedsPerReport, board.GreenBlueRed);
+            if (board.Variants == null) return VariantOf(table.Value, picture);
             byte? unique = QmkUniqueByte(io, wait);
             foreach (var (byteValue, variant) in board.Variants)
-                if (byteValue == unique) return VariantOf(variant(), QmkPicture);
+                if (byteValue == unique) return VariantOf(variant(), picture);
             foreach (var (byteValue, variant) in board.Variants)
-                if (byteValue == null) return VariantOf(variant(), QmkPicture);
-            return VariantOf(table.Value, QmkPicture);
+                if (byteValue == null) return VariantOf(variant(), picture);
+            return VariantOf(table.Value, picture);
         }
 
         internal static byte? QmkUniqueByte(IHidReportChannel io, Action<int> wait)
@@ -1161,13 +1162,20 @@ namespace PadForge.Common.Input.Peripherals
             return false;
         }
 
-        internal static IEnumerable<PluginStep> QmkPicture(int[] colors)
+        /// <summary>The WhirlwindFX Element V2's plugin puts each LED's green first, then blue, then
+        /// red, and the Alpaca WhiteFox's sends three LEDs to a report.</summary>
+        internal static IEnumerable<PluginStep> QmkPicture(int[] colors, int ledsPerReport = 9, bool greenBlueRed = false)
         {
-            for (int led = 0; led < colors.Length; led += 9)
+            for (int led = 0; led < colors.Length; led += ledsPerReport)
             {
-                int count = Math.Min(9, colors.Length - led);
+                int count = Math.Min(ledsPerReport, colors.Length - led);
                 var frame = Frame(QmkReportLength, 0x00, 0x24, (byte)led, (byte)count);
-                for (int i = 0; i < count; i++) PutRgb(frame, 4 + i * 3, colors[led + i]);
+                for (int i = 0; i < count; i++)
+                {
+                    int color = colors[led + i];
+                    if (greenBlueRed) color = (color & 0xFFFF) << 8 | (color >> 16 & 0xFF);
+                    PutRgb(frame, 4 + i * 3, color);
+                }
                 yield return PluginStep.Output(frame);
             }
         }
@@ -1378,7 +1386,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The Speedlink keyboard's German legends by place: its Y and
         /// Z trade places with a US board's.</summary>
-        private static readonly Dictionary<string, ushort> s_qwertz = new() { ["Y"] = 0x1D, ["Z"] = 0x1C };
+        private static readonly Dictionary<string, ushort> s_qwertz = new() { ["Y"] = 0x1D, ["Z"] = 0x1C, ["-"] = 0x38, ["+"] = 0x30 };
 
         /// <summary>The start report, the colors and the commit of the
         /// Speedlink mouse and mousepad. The plugin writes each color's red at
@@ -1961,7 +1969,8 @@ namespace PadForge.Common.Input.Peripherals
                 UsagePage = 0x000C,
                 Usage = 0x0001,
                 FeatureLength = 91,
-                Lights = Edges(12),
+                // Around the monitor from the left, as the plugin lists them.
+                Lights = new[] { 0, 1, 2, 3, 4, 5, 8, 6, 9, 7, 10, 11 }.Select(led => Edge(led)).ToArray(),
                 Slots = 12,
                 Picture = RaptorPicture,
             };

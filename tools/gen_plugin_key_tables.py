@@ -16,15 +16,23 @@ them to PadForge.App/Common/Input/Peripherals/HidFamilies/PluginKeyTables.g.cs a
 PluginQmkTables.g.cs, with every product each plugin names in
 PadForge.Tests/HidFamilies/PluginInventory.g.cs. It takes the facts and no code.
 
+A plugin's names are labels nothing in SignalRGB checks, and many run off their
+LEDs. The SignalRGB protocol numbers a board's LEDs as its QMK firmware does, so a
+board whose firmware is in qmk_firmware or Keychron's fork takes its keys from
+there: g_led_config gives each LED's matrix cell, keyboard.json each cell's place in
+the layout, and the default keymap each place's keycode (FirmwareTree, below). A
+board with no firmware there keeps its plugin's lists.
+
 Release prep fetches the clones, moves the pins to the branch heads and reruns
 this. PluginInventoryTests then fails by name on any product a family does not
 light, and the --check run says what changed.
 
 Usage:
-    python tools/gen_plugin_key_tables.py SIGNAL_PLUGINS_CLONE QMK_PLUGINS_CLONE
-    python tools/gen_plugin_key_tables.py SIGNAL_PLUGINS_CLONE QMK_PLUGINS_CLONE --check   (compare, write nothing)
+    python tools/gen_plugin_key_tables.py SIGNAL_PLUGINS_CLONE QMK_PLUGINS_CLONE KEYCHRON_FIRMWARE_CLONE QMK_FIRMWARE_CLONE
+    python tools/gen_plugin_key_tables.py SIGNAL_PLUGINS_CLONE QMK_PLUGINS_CLONE KEYCHRON_FIRMWARE_CLONE QMK_FIRMWARE_CLONE --check   (compare, write nothing)
 """
 import argparse
+import json
 import os
 import re
 import subprocess
@@ -97,6 +105,37 @@ QMK_MISSING_NAMES = {
     "Keychron/V Series/Max/Keychron_V3_Max_QMK_ANSI_Encoder_Keyboard.js": (("Right Alt", "Right Win"), ("Fn", "Right Ctrl")),
 }
 
+# The K8 v2 TKL ISO's plugin leaves Enter out of the Tab row, where its LED is, as Keychron's other
+# ISO plugins do, and lists it with the home row, so every name between runs one key off: CapsLock
+# on Page Down's LED and A on CapsLock's. The name before Enter is the ISO # key. The boards with
+# firmware here take their keys from it.
+QMK_ISO_ENTER_ON_THE_TAB_ROW = {
+    "Keychron/K Series/Standard/Keychron_K8_TKL_Version_2_QMK_ISO_Keyboard.js",
+}
+
+# Names a plugin writes wrong, by LED. The MCHOSE's left Ctrl is named B.
+QMK_NAME_FIXES = {
+    "MCHOSE/MCHOSE_GX87_QMK_ANSI_Keyboard.js": {77: "Left Ctrl"},
+}
+
+# A place the plugin's list leaves out, after the place named, and one it has too many: the French
+# Berserker's names run a key off its places from F12 to the right shift.
+QMK_PLACE_LIST_FIXES = {
+    "DesignedByGG/GG_QMK_ISO_Keyboard_TKL_AZERTY_French.js": {"insert_after": ([12, 1], [13, 1]), "remove": [12, 5]},
+}
+
+# Places a plugin writes wrong, by list position: two keys on one place.
+QMK_PLACE_FIXES = {
+    "Keychron/K Series/Max/Keychron_K10_v2_QMK_ANSI_Keyboard.js": {"/": [11, 4]},
+    "Keychron/K Series/Standard/Keychron_K8_TKL_QMK_ISO_Keyboard.js": {"F7": [8, 0], "F8": [9, 0], "F9": [10, 0], "F10": [11, 0], "F11": [12, 0]},
+}
+
+# Plugins whose places are not the board's: the tool that wrote them folds rows into one another.
+# The key picker draws these from their usages on its own layout.
+QMK_NO_PLACES = {
+    "_Random-Brands/doio_doiokb38.js",
+}
+
 # Plugins that pick a board's lists when they run, by product, or by the third byte
 # of the firmware's unique identifier (None: whatever else it answers). The C1 Pro's
 # product test names the K1 Pro's product and would always pick ISO. The file is its
@@ -110,14 +149,6 @@ QMK_LAYOUTS = {
     "Keychron/Q Series/HE/Keychron_Q6_HE_QMK_ANSI_ISO_Keyboard.js": {0x0B60: "ANSI", 0x0B61: "ISO"},
     "Keychron/Q Series/Standard/Keychron_Q6_QMK_ANSI_ISO_Keyboard.js": {0x0160: "ANSI", 0x0161: "ANSI", 0x0162: "ISO", 0x0163: "ISO"},
 }
-
-# The Claymore II's table with the number pad on the right holds the two ISO
-# keys, at the places the plugin gives them, and its list of names leaves them
-# out, so every later name would land one or two keys off.
-MISSING_NAMES = {
-    "ClaymoreIiRight": (("'", "ISO #"), ("Left Shift", "ISO <")),
-}
-
 
 def parse_array(text, start):
     """The JavaScript array literal at text[start], as Python lists, numbers
@@ -209,8 +240,6 @@ def generate(signal):
         commit = SIGNAL_MASTER if table in READ_AT_MASTER else SIGNAL_BETA
         text = git_show(signal, commit, "Plugins/" + plugin)
         names = read_list(text, names_list)
-        for after, name in MISSING_NAMES.get(table, ()):
-            names.insert(names.index(after) + 1, name)
         places = read_list(text, places_list)
         indexes = read_list(text, indexes_list)
         # A plugin's loop runs over its places, so the places set the count.
@@ -495,7 +524,8 @@ def by_place(row, names, usages, sequence, spellings):
     start, length = found
     for offset, i in enumerate(row[start : start + len(sequence)]):
         usage = usages[i]
-        if offset >= length and (usage is None or usage not in PUNCTUATION):
+        # A legend of one character is a character key, the AZERTY u-grave among them.
+        if offset >= length and len(names[i].strip()) != 1 and (usage is None or usage not in PUNCTUATION):
             # A letter of the AZERTY home row's M runs past the nine of the others.
             if not (is_letter(names[i]) and offset < len(sequence)):
                 break
@@ -527,6 +557,34 @@ def place_fixes(names, places, usages):
                 usages[before] = 0x35
 
 
+# The number pad's key for a name.
+PAD_OF = {"1": 0x59, "2": 0x5A, "3": 0x5B, "4": 0x5C, "5": 0x5D, "6": 0x5E, "7": 0x5F, "8": 0x60, "9": 0x61, "0": 0x62,
+          "/": 0x54, "*": 0x55, "-": 0x56, "+": 0x57, ".": 0x63, "Enter": 0x58, "NumLock": 0x53}
+
+
+def number_pad_keys(names, places, usages):
+    """A board with no letters is a number pad, and its digits are the pad's. On a board with
+    letters a second copy of a key is the pad's when the pad has one, its names being "7" and
+    "/" where the number row's are the same or a shifted "&" and "?". Any other second copy
+    names nothing: a key lights one key's light."""
+    letters = any(u is not None and 0x04 <= u <= 0x1D for u in usages)
+    if not letters:
+        for i, u in enumerate(usages):
+            if names[i].strip() in PAD_OF:
+                usages[i] = PAD_OF[names[i].strip()]
+        return
+    by_usage = {}
+    for i, u in enumerate(usages):
+        if u is not None and u != 0x2C and not PART_OF_A_KEY.search(names[i].strip()) and not names[i].startswith("2nd "):
+            by_usage.setdefault(u, []).append(i)
+    for u, copies in by_usage.items():
+        if len(copies) < 2:
+            continue
+        copies.sort(key=lambda i: places[i][0])
+        for i in copies[1:]:
+            usages[i] = PAD_OF.get(names[i].strip())
+
+
 def key_usages(names, places):
     usages = []
     for name in names:
@@ -540,6 +598,7 @@ def key_usages(names, places):
             seen[(word, places[i][1])] = count + 1
             usages[i] = SIDES[word][0 if count == 0 else 1]
     place_fixes(names, places, usages)
+    number_pad_keys(names, places, usages)
     return usages
 
 
@@ -707,7 +766,7 @@ def generate_libraries(signal, lines):
             lines.append(f"            new({quote(serial)}, {quote(name)}, {made[name]}),")
     lines.append("        };")
     for name, method in made.items():
-        names, places, leds = entry_lists(boards[name])
+        names, places, leds = fix_library_lists("AsusOmni", name, *entry_lists(boards[name]))
         count = min(len(names), len(places), len(leds))
         write_qmk_method(lines, method, "Asus/Omni Controller/ASUS_Keyboard_Protocol.js", names[:count], places[:count], leds[:count], key_usages(names[:count], places[:count]))
     for library in LIBRARIES:
@@ -744,15 +803,63 @@ def generate_libraries(signal, lines):
             lines.append(f"            new({quote(model)}, {quote(title)}, {method}),")
         lines.append("        };")
         used = {method for _, _, method in rows}
-        for name, (method, (names, places, leds)) in methods.items():
+        for name, (method, lists) in methods.items():
             if method not in used:
                 continue
+            names, places, leds = fix_library_lists(prefix, name, *lists)
             count = len(places)
             if len(names) != count or len(leds) != count:
                 print(f"OUT OF STEP {prefix} {name}: {len(leds)} LEDs, {len(names)} names, {count} places", file=sys.stderr)
                 count = min(len(names), count, len(leds))
                 names, places, leds = names[:count], places[:count], leds[:count]
             write_qmk_method(lines, method, plugin, names, places, leds, key_usages(names, places))
+
+
+# Lists in a plugin's library that fall out of step, and what puts them back. The Kreo Hive98's
+# number row lists an LED, 37, its names and places leave out, so every later key would land one
+# off, and the plugin itself fails on it. The Strix Scope II's have the ISO # named "/" on the
+# home row and no / beside the "." on the row below, and the Strix Scope RX's and NX's have them
+# crossed, and their places leave out the second logo's, so a row's last key shows at the start
+# of the next, down to a place too many beside the "/".
+LIBRARY_FIXES = {
+    ("EVision", "Kreo Hive98"): {"drop_leds": (37,)},
+    ("AsusKeyboard", "ROG Strix Scope II NX"): {"rename_first": ("/", "ISO_#"), "insert_after": (".", "/")},
+    ("AsusKeyboard", "ROG Strix Scope II RX"): {"rename_first": ("/", "ISO_#"), "insert_after": (".", "/")},
+    ("AsusKeyboard", "ROG Strix Scope RX"): {"swap": ("/", "ISO_#"), "add_place": ([18, 0], [19, 0]), "drop_place": [12, 4]},
+    ("AsusKeyboard", "ROG Strix Scope NX"): {"swap": ("/", "ISO_#"), "add_place": ([18, 0], [19, 0]), "drop_place": [12, 4]},
+    ("AsusOmni", "ROG Strix Scope NX"): {"swap": ("/", "ISO_#"), "add_place": ([18, 0], [19, 0]), "drop_place": [12, 4]},
+    # The ISO # sits on the home row, and LED 58 under the Enter's upper half, where the list has
+    # the # and then a backslash, so the names from Del to the quote run an LED off.
+    ("Nuvoton", "Pulsar TKL"): {"remove": ("ISO_#",), "rename_first": ("\\", "Enter Upper"), "insert_after": ("'", "ISO_#"), "places": {"/": [11, 4]}},
+}
+
+
+def fix_library_lists(prefix, name, names, places, leds):
+    fix = LIBRARY_FIXES.get((prefix, name))
+    if not fix:
+        return names, places, leds
+    names, places, leds = list(names), list(places), list(leds)
+    for led in fix.get("drop_leds", ()):
+        leds.remove(led)
+    for name_ in fix.get("remove", ()):
+        names.remove(name_)
+    if "rename_first" in fix:
+        old, new = fix["rename_first"]
+        names[names.index(old)] = new
+    if "insert_after" in fix:
+        after, name_ = fix["insert_after"]
+        names.insert(names.index(after) + 1, name_)
+    if "swap" in fix:
+        a, b = fix["swap"]
+        i, j = names.index(a), names.index(b)
+        names[i], names[j] = names[j], names[i]
+    for name_, place in fix.get("places", {}).items():
+        places[names.index(name_)] = place
+    if "add_place" in fix:
+        after, place = fix["add_place"]
+        places.insert(places.index(after) + 1, place)
+        places.remove(fix["drop_place"])
+    return names, places, leds
 
 
 # Corsair's wireless family: every board and mouse of its two plugins, with the
@@ -820,15 +927,57 @@ def write_table_method(lines, method, plugin, names, places, indexes):
 
 
 def write_qmk_method(lines, method, plugin, names, places, indexes, usages):
+    placed = plugin not in QMK_NO_PLACES
     others = [(i, other_name(n)) for i, (n, u) in enumerate(zip(names, usages)) if u is None and other_name(n) != ""]
     lines.append("")
     lines.append(f"        private static PluginKeyTable {method}() => new(")
     lines.append(f"            {quote(plugin)},")
     lines.append(f"            Names({len(names)}" + "".join(f", ({i}, {quote(n)})" for i, n in others) + "),")
     lines.append("            new[] { " + ", ".join(str(i) for i in indexes) + " },")
-    lines.append("            new byte[] { " + ", ".join(str(p[0]) for p in places) + " },")
-    lines.append("            new byte[] { " + ", ".join(str(p[1]) for p in places) + " },")
+    lines.append(("            new byte[] { " + ", ".join(str(p[0]) for p in places) + " },") if placed else "            null,")
+    lines.append(("            new byte[] { " + ", ".join(str(p[1]) for p in places) + " },") if placed else "            null,")
     lines.append("            new ushort[] { " + ", ".join(str(u or 0) for u in usages) + " });")
+
+
+def gmmk3_from_firmware(suffix, names, places, keys):
+    """The plugin's numbers for the GMMK 3 run off the firmware's list on these layouts
+    (g_aw20216s_leds in keyboards/gmmk/gmmk3/SIZE/LAYOUT/LAYOUT.c at ell1010/QMK-OpenRGB
+    1ed5a75, built on Glorious's source). The 65% numbers Tab with Backspace and every key
+    after it one low, and its ISO list is the ANSI one. The ISO 75% leaves out the key
+    beside the left shift. Every ISO list has # and Enter crossed. The LEDs run in the
+    order of the lists, with the ISO keys added and the badge last."""
+    if suffix == "ISOp100":
+        keys[names.index("Enter")], keys[names.index("#")] = keys[names.index("#")], keys[names.index("Enter")]
+        return names, places, keys
+    if suffix not in ("ANSIp65", "ISOp65", "ISOp75"):
+        return names, places, keys
+    if suffix == "ANSIp65":
+        # The 65% ANSI has no badge: its last LED is the twentieth side light.
+        at = names.index("Logo")
+        del names[at], places[at], keys[at]
+        return names, places, list(range(len(names)))
+    # The # key sits on the home row, and Enter's LED where ANSI has its backslash.
+    hash_key, enter = names.index("\\"), names.index("Enter")
+    places[hash_key], places[enter] = places[enter], places[hash_key]
+    names[hash_key] = "#"
+    if suffix == "ISOp65":
+        names[names.index("End")] = "Page Down"
+    shift = names.index("Left Shift")
+    x, y = places[shift]
+    names.insert(shift + 1, "ISO_<")
+    places.insert(shift + 1, [x + 1, y])
+    keys.insert(shift + 1, 0)
+    # The row's keys move right until a gap takes it up.
+    at = shift + 2
+    while at < len(places) and places[at][1] == y and places[at][0] <= places[at - 1][0]:
+        places[at] = [places[at - 1][0] + 1, y]
+        at += 1
+    logo = names.index("Logo")
+    numbered = [i for i in range(len(names)) if i != logo]
+    for led, i in enumerate(numbered):
+        keys[i] = led
+    keys[logo] = len(numbered)
+    return names, places, keys
 
 
 def lists_of(board, text, suffix):
@@ -843,16 +992,305 @@ def lists_of(board, text, suffix):
         names.insert(names.index(after) + 1, name)
     if not len(names) == len(places) == len(keys):
         raise ValueError(f"{path}: {len(keys)} keys, {len(names)} names, {len(places)} places")
-    # Two keys on one LED: the GMMK 3's 65% lists numbers the Backspace ends and
-    # the Tab starts on the same one, the Zoom98's a knob. The first keeps it.
-    seen = set()
-    kept = [i for i, key in enumerate(keys) if not (key in seen or seen.add(key))]
+    if path == "GMMK/GMMK_3_QMK_Keyboard.js":
+        names, places, keys = gmmk3_from_firmware(suffix, names, places, keys)
+    if path in QMK_ISO_ENTER_ON_THE_TAB_ROW:
+        enter = names.index("Enter")
+        hash_key = enter - 1
+        if names[hash_key] != "'":
+            names[hash_key] = "ISO_#"
+        del names[enter]
+        names.insert(names.index("]") + 1, "Enter")
+    for name, place in QMK_PLACE_FIXES.get(path, {}).items():
+        places[names.index(name)] = place
+    for led, name in QMK_NAME_FIXES.get(path, {}).items():
+        names[keys.index(led)] = name
+    if path in QMK_PLACE_LIST_FIXES:
+        fix = QMK_PLACE_LIST_FIXES[path]
+        after, place = fix["insert_after"]
+        places.insert(places.index(after) + 1, place)
+        places.remove(fix["remove"])
+    if "Square" in names and "X" in names:
+        # The shapes above a number pad: its X is the cross, and the letter comes later.
+        names[names.index("X")] = "Cross"
+    # Two keys on one LED: the Zoom98 gives its Dual Lines key the backtick's. The
+    # plugin's picture lets the last one write, so the last keeps it.
+    last = {key: i for i, key in enumerate(keys)}
+    kept = [i for i, key in enumerate(keys) if last[key] == i]
     if len(kept) != len(keys):
         names, places, keys = [names[i] for i in kept], [places[i] for i in kept], [keys[i] for i in kept]
     return names, places, keys
 
 
-def generate_qmk(signal, qmk):
+# ---------------------------------------------------------------------------
+# The firmware a board runs
+# ---------------------------------------------------------------------------
+
+# Where the boards' firmware is, each tree at a pinned commit: the folders to read. Keychron keeps
+# its boards on several branches, the newest first here: 2025q3, wireless_playground, playground
+# and bluetooth_playground.
+KEYCHRON_FIRMWARE = ("9ada9b7baecb9591c469b9b068146ac5891a480a", "666862cb8123b64a6b96718d739c6203ad99031f",
+                     "4a8143cce9c2ab32a1384c352c3db324149abddd", "618127a725a1773e85f13455602cf6f72ab4de17")
+KEYCHRON_FOLDERS = ("keyboards/keychron", "keyboards/lemokey")
+QMK_FIRMWARE = "7a1bbf37c5c07da4ea0a162bb139083a46ef40a1"
+QMK_FOLDERS = ("keyboards",)
+
+KEYCODE_USAGES = {
+    "KC_ESC": 0x29, "KC_ENT": 0x28, "KC_ENTER": 0x28, "KC_BSPC": 0x2A, "KC_TAB": 0x2B, "KC_SPC": 0x2C, "KC_SPACE": 0x2C, "KC_MINS": 0x2D, "KC_EQL": 0x2E,
+    "KC_LBRC": 0x2F, "KC_RBRC": 0x30, "KC_BSLS": 0x31, "KC_NUHS": 0x32, "KC_SCLN": 0x33, "KC_QUOT": 0x34, "KC_GRV": 0x35, "KC_GESC": 0x29, "QK_GESC": 0x29,
+    "KC_COMM": 0x36, "KC_DOT": 0x37, "KC_SLSH": 0x38, "KC_CAPS": 0x39, "KC_PSCR": 0x46, "KC_SCRL": 0x47, "KC_SLCK": 0x47, "KC_PAUS": 0x48, "KC_BRK": 0x48,
+    "KC_INS": 0x49, "KC_HOME": 0x4A, "KC_PGUP": 0x4B, "KC_DEL": 0x4C, "KC_END": 0x4D, "KC_PGDN": 0x4E, "KC_RGHT": 0x4F, "KC_RIGHT": 0x4F, "KC_LEFT": 0x50,
+    "KC_DOWN": 0x51, "KC_UP": 0x52, "KC_NUM": 0x53, "KC_NLCK": 0x53, "KC_PSLS": 0x54, "KC_PAST": 0x55, "KC_PMNS": 0x56, "KC_PPLS": 0x57, "KC_PENT": 0x58,
+    "KC_P0": 0x62, "KC_PDOT": 0x63, "KC_NUBS": 0x64, "KC_APP": 0x65, "KC_LCTL": 0xE0, "KC_LSFT": 0xE1, "KC_LALT": 0xE2, "KC_LOPT": 0xE2, "KC_LOPTN": 0xE2,
+    "KC_LGUI": 0xE3, "KC_LWIN": 0xE3, "KC_LCMD": 0xE3, "KC_LCMMD": 0xE3, "KC_RCTL": 0xE4, "KC_RSFT": 0xE5, "KC_RALT": 0xE6, "KC_ROPT": 0xE6, "KC_ROPTN": 0xE6,
+    "KC_RGUI": 0xE7, "KC_RWIN": 0xE7, "KC_RCMD": 0xE7, "KC_RCMMD": 0xE7, "KC_MENU": 0x65,
+}
+for _i, _c in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ"):
+    KEYCODE_USAGES["KC_" + _c] = 0x04 + _i
+for _i, _c in enumerate("1234567890"):
+    KEYCODE_USAGES["KC_" + _c] = 0x1E + _i
+for _i in range(1, 13):
+    KEYCODE_USAGES[f"KC_F{_i}"] = 0x39 + _i
+for _i in range(13, 25):
+    KEYCODE_USAGES[f"KC_F{_i}"] = 0x68 + _i - 13
+for _i in range(1, 10):
+    KEYCODE_USAGES[f"KC_P{_i}"] = 0x58 + _i
+
+# What a keycode no usage names reads as, for a key's light.
+KEYCODE_NAMES = {"KC_MUTE": "Mute", "KC_VOLU": "Volu", "KC_VOLD": "Vold", "KC_MPLY": "MediaPlayPause", "KC_MSTP": "MediaStop", "KC_MNXT": "MediaNextTrack",
+                 "KC_MPRV": "MediaPreviousTrack", "RGB_MOD": "Light", "RGB_TOG": "Light", "RM_NEXT": "Light", "RM_TOGG": "Light", "UG_NEXT": "Light", "UG_TOGG": "Light",
+                 "BL_STEP": "Light", "BL_TOGG": "Light"}
+
+
+def strip_c_comments(text):
+    text = re.sub(r"/\*.*?\*/", "", text, flags=re.S)
+    return re.sub(r"//[^\n]*", "", text)
+
+
+def lenient_json(text):
+    """QMK's JSON files allow comments and trailing commas."""
+    text = re.sub(r'("(?:[^"\\]|\\.)*")|//[^\n]*', lambda m: m.group(1) or "", text)
+    return json.loads(re.sub(r",(\s*[}\]])", r"\1", text))
+
+
+def key_of_keycode(code):
+    """A keymap entry's keycode, out of whatever wraps it: LT(1, KC_A), LCTL_T(KC_A)."""
+    m = re.search(r"\b(KC_\w+|QK_GESC)\b", code)
+    return m.group(1) if m else code
+
+
+class FirmwareTree:
+    """One firmware tree at a pinned commit."""
+
+    def __init__(self, clone, commit, folders):
+        self.clone, self.commit = clone, commit
+        listed = subprocess.run(["git", "-C", clone, "ls-tree", "-r", "--name-only", commit, *folders], capture_output=True, check=True).stdout.decode("utf-8", "replace")
+        self.files = set(listed.splitlines())
+        self.beside = {}
+        for path in self.files:
+            self.beside.setdefault(path.rsplit("/", 1)[0], []).append(path)
+        self.batch = subprocess.Popen(["git", "-C", clone, "cat-file", "--batch"], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        self.boards = {}
+        for path in sorted(self.files):
+            if path.rsplit("/", 1)[-1] not in ("keyboard.json", "info.json") or "/keymaps/" in path:
+                continue
+            folder = path.rsplit("/", 1)[0]
+            pid = self.config_value(folder, "pid")
+            vid = self.config_value(folder, "vid")
+            if pid and vid:
+                key = (int(vid, 16), int(pid, 16))
+                if folder not in self.boards.setdefault(key, []):
+                    self.boards[key].append(folder)
+
+    def read(self, path):
+        if path not in self.files:
+            return None
+        self.batch.stdin.write(f"{self.commit}:{path}\n".encode())
+        self.batch.stdin.flush()
+        size = int(self.batch.stdout.readline().split()[2])
+        data = self.batch.stdout.read(size)
+        self.batch.stdout.read(1)
+        return data.decode("utf-8", "replace")
+
+    def configs(self, folder):
+        """The folder's config files, nearest first, up to its vendor's folder."""
+        found = []
+        d = folder
+        while d.count("/") >= 1:
+            for name in ("keyboard.json", "info.json"):
+                text = self.read(f"{d}/{name}")
+                if text:
+                    try:
+                        found.append(lenient_json(text))
+                    except ValueError:
+                        pass
+            d = d.rsplit("/", 1)[0]
+        return found
+
+    def config_value(self, folder, field):
+        for config in self.configs(folder):
+            value = config.get("usb", {}).get(field)
+            if value:
+                return value
+        return None
+
+    def up_from(self, folder):
+        d = folder
+        while d.count("/") >= 1:
+            yield d
+            d = d.rsplit("/", 1)[0]
+
+    def leds(self, folder, configs):
+        """Each LED's matrix cells and its point on the board, from g_led_config or, where a board has
+        no such table, rgb_matrix.layout. The Q1 v1 ISO has both, and its layout has a cell twice."""
+        for d in self.up_from(folder):
+            sources = sorted(p for p in self.beside.get(d, ()) if p.endswith(".c"))
+            for source in sources:
+                text = strip_c_comments(self.read(source))
+                m = re.search(r"g_led_config\s*=\s*\{\s*\{(.*?)\}\s*,\s*\{\s*\{(.*?)\}\s*,?\s*\}\s*,", text, re.S)
+                if not m:
+                    continue
+                cells = {}
+                for r, row in enumerate(re.findall(r"\{([^{}]*)\}", m.group(1))):
+                    for c, v in enumerate(x.strip() for x in row.split(",")):
+                        if re.fullmatch(r"\d+", v):
+                            cells.setdefault(int(v), []).append((r, c))
+                points = [(int(a), int(b)) for a, b in re.findall(r"\{\s*(\d+)\s*,\s*(\d+)\s*\}", "{" + m.group(2) + "}")]
+                return [(cells.get(i, []), point) for i, point in enumerate(points)]
+        for config in configs:
+            layout = config.get("rgb_matrix", {}).get("layout")
+            if layout:
+                return [([tuple(l["matrix"])] if l.get("matrix") else [], (l.get("x", 0), l.get("y", 0))) for l in layout]
+        return []
+
+    def keymap(self, folder, configs):
+        """Each matrix cell's keycode and place in the layout, from the default keymap's Windows
+        layer and the layout it names."""
+        args, layout_name = None, None
+        for d in self.up_from(folder):
+            text = self.read(f"{d}/keymaps/default/keymap.c")
+            if text:
+                text = strip_c_comments(text)
+                m = None
+                for layer in ("WIN_BASE", "WIN_BL", "_WIN", "WIN", "_BASE", "BASE", "_QWERTY", "0", "MAC_BASE"):
+                    m = re.search(r"\[\s*" + layer + r"\s*\]\s*=\s*(\w+)\s*\(", text)
+                    if m:
+                        break
+                m = m or re.search(r"\[[^\]]*\]\s*=\s*(LAYOUT\w*)\s*\(", text)
+                if not m:
+                    return {}
+                layout_name = m.group(1)
+                args, cur, depth, i = [], "", 1, m.end()
+                while i < len(text):
+                    c = text[i]
+                    depth += c == "("
+                    depth -= c == ")"
+                    if depth == 0:
+                        break
+                    if c == "," and depth == 1:
+                        args.append(cur.strip())
+                        cur = ""
+                    else:
+                        cur += c
+                    i += 1
+                if cur.strip():
+                    args.append(cur.strip())
+                break
+            text = self.read(f"{d}/keymaps/default/keymap.json")
+            if text:
+                data = lenient_json(text)
+                layout_name, args = data.get("layout"), (data.get("layers") or [None])[0]
+                break
+        if not args:
+            return {}
+        layout = None
+        for config in configs:
+            layouts = config.get("layouts", {})
+            name = config.get("layout_aliases", {}).get(layout_name, layout_name)
+            if name in layouts:
+                layout = layouts[name]["layout"]
+                break
+            if layout_name == "LAYOUT" and len(layouts) == 1:
+                layout = next(iter(layouts.values()))["layout"]
+                break
+        if not layout or len(layout) != len(args):
+            return {}
+        return {tuple(k["matrix"]): (a, k.get("x", 0), k.get("y", 0)) for k, a in zip(layout, args)}
+
+    def table(self, folder):
+        """The board's names, places, LEDs and usages, or None when its firmware does not say."""
+        configs = self.configs(folder)
+        leds, keys = self.leds(folder, configs), self.keymap(folder, configs)
+        if not leds or not keys:
+            return None
+        rows = sorted({int(k[2] + 0.5) for k in keys.values()})
+        columns = {}
+        for y in rows:
+            at = -1
+            for cell, k in sorted(((c, k) for c, k in keys.items() if int(k[2] + 0.5) == y), key=lambda e: e[1][1]):
+                at = max(at + 1, int(k[1] + 0.5))
+                columns[cell] = (at, rows.index(y))
+        width = max((c[0] for c in columns.values()), default=0) + 1
+        names, places, indexes, usages = [], [], [], []
+        edges = 0
+        taken = set()
+        for led, (cells, point) in enumerate(leds):
+            cell = next((c for c in cells if c in keys), None)
+            if cell is None:
+                # A light under no key: a row of its own below the keys, each in its own place.
+                names.append("Underglow")
+                usages.append(None)
+                places.append([edges % width, len(rows) + 1 + edges // width])
+                edges += 1
+            else:
+                code = key_of_keycode(keys[cell][0])
+                usage = KEYCODE_USAGES.get(code)
+                usages.append(usage)
+                names.append(KEYCODE_NAMES.get(code, "Fn" if re.match(r"(MO|TG|TT|OSL|LT|FN|KC_FN|TL_|MO\()", code) else "") if usage is None else code)
+                # A second LED under a key sits beside it in the picture.
+                x, y = columns[cell]
+                while (x, y) in taken:
+                    x += 1
+                taken.add((x, y))
+                places.append([x, y])
+            indexes.append(led)
+        return names, places, indexes, usages
+
+
+# Words every keyboard's name may share with another's.
+COMMON_WORDS = {"keyboards", "keyboard", "qmk", "via", "ansi", "iso", "rgb", "random", "brands", "js", "the", "full", "encoder", "rev", "v1", "v2", "v3"}
+
+
+def words_of(text):
+    return {w for w in re.split(r"[^0-9a-z]+", text.lower()) if len(w) > 1} - COMMON_WORDS
+
+
+def firmware_tables(trees, vendor, product, plugin_lights, plugin, title):
+    """The firmware table of a product: where several boards share its IDs, the one nearest the
+    plugin's LED count that names most keys. None when the firmware's count is too far off the
+    plugin's, as with the Zoom98 whose only firmware here drives its underglow. Many hobby boards
+    share a generic pair of IDs, so a folder has to share a word with the plugin's name as well."""
+    best = None
+    wanted = words_of(plugin + " " + title)
+    for tree in trees:
+        for folder in tree.boards.get((vendor, product), []):
+            if not wanted & words_of(folder.split("keyboards/", 1)[1]):
+                continue
+            built = tree.table(folder)
+            if not built:
+                continue
+            count = sum(1 for n in built[0] if n != "Underglow")
+            if abs(count - plugin_lights) > max(4, plugin_lights // 8) and abs(len(built[2]) - plugin_lights) > max(4, plugin_lights // 8):
+                continue
+            named = sum(1 for u in built[3] if u)
+            # RGB ahead of a white board with the same IDs.
+            score = (-abs(count - plugin_lights), "white" not in folder, named)
+            if best is None or score > best[0]:
+                best = (score, folder, built)
+    return (best[1], best[2]) if best else None
+
+
+def generate_qmk(signal, qmk, keychron_firmware, qmk_firmware):
     """The boards, and each one's tables as methods, so a table is built when its
     board is lit and not when PadForge starts."""
     head = [
@@ -866,12 +1304,17 @@ def generate_qmk(signal, qmk):
         "    internal static partial class PluginQmkTables",
         "    {",
         f'        internal const string QmkPluginsCommit = "{QMK_MAIN}";',
+        f'        internal const string KeychronFirmwareCommit = "{KEYCHRON_FIRMWARE[0]}";',
+        f'        internal const string QmkFirmwareCommit = "{QMK_FIRMWARE}";',
         "",
         "        internal static readonly PluginQmkBoard[] Boards =",
         "        {",
     ]
     methods = []
     seen = set()
+    trees = [FirmwareTree(keychron_firmware, commit, KEYCHRON_FOLDERS) for commit in KEYCHRON_FIRMWARE]
+    trees.append(FirmwareTree(qmk_firmware, QMK_FIRMWARE, QMK_FOLDERS))
+    made = {}
 
     def method_name(path, suffix=""):
         base = qmk_identifier(path) + ("_" + suffix if suffix else "")
@@ -899,16 +1342,41 @@ def generate_qmk(signal, qmk):
             write_qmk_method(methods, method, plugin, names, places, keys, key_usages(names, places))
             return method
 
+        # The picture's report: how many LEDs and in what order of channels.
+        per_report = re.search(r"LedsPerPacket\s*=\s*(\d+)", text)
+        extras = f", LedsPerReport: {per_report.group(1)}" if per_report and per_report.group(1) != "9" else ""
+        if re.search(r"rgbdata\[iLedIdx\]\s*=\s*\w+\[1\]", text):
+            extras += ", GreenBlueRed: true"
+
+        # What the firmware says, product by product, over the plugin's lists.
+        if not (layout and "asked" in layout):
+            kept = []
+            for product in products:
+                suffix = layout.get(product, "") if layout else ""
+                from_firmware = firmware_tables(trees, board["vendor"], product, len(lists_of(board, text, suffix)[2]), plugin, board["title"])
+                if from_firmware is None:
+                    kept.append(product)
+                    continue
+                folder, (names, places, keys, usages) = from_firmware
+                method = made.get(folder)
+                if method is None:
+                    method = made[folder] = method_name(path, "fw_" + re.sub(r"[^0-9A-Za-z]+", "_", folder.split("keyboards/", 1)[1]))
+                    write_qmk_method(methods, method, plugin, names, places, keys, usages)
+                head.append(f"            new({title}, {quote(plugin)}, {vendor}, new ushort[] {{ 0x{product:04X} }}, {method}, Firmware: {quote(folder)}{extras}),")
+            products = kept
+            if not products:
+                continue
+
         if layout and "asked" in layout:
             variants = [(byte, table(suffix)) for byte, suffix in layout["asked"]]
             pairs = ", ".join(f"({'null' if b is None else b}, {m})" for b, m in variants)
-            head.append(f"            new({title}, {quote(plugin)}, {vendor}, new ushort[] {{ {', '.join(f'0x{p:04X}' for p in products)} }}, {variants[0][1]}, new (byte?, Func<PluginKeyTable>)[] {{ {pairs} }}),")
+            head.append(f"            new({title}, {quote(plugin)}, {vendor}, new ushort[] {{ {', '.join(f'0x{p:04X}' for p in products)} }}, {variants[0][1]}, new (byte?, Func<PluginKeyTable>)[] {{ {pairs} }}{extras}),")
         elif layout:
             by_suffix = {}
             for product in products:
                 head.append(f"            new({title}, {quote(plugin)}, {vendor}, new ushort[] {{ 0x{product:04X} }}, {by_suffix.setdefault(layout[product], table(layout[product])) if layout[product] not in by_suffix else by_suffix[layout[product]]}),")
         else:
-            head.append(f"            new({title}, {quote(plugin)}, {vendor}, new ushort[] {{ {', '.join(f'0x{p:04X}' for p in products)} }}, {table('')}),")
+            head.append(f"            new({title}, {quote(plugin)}, {vendor}, new ushort[] {{ {', '.join(f'0x{p:04X}' for p in products)} }}, {table('')}{extras}),")
     tail = ["        };"] + methods + ["    }", ""]
     tail += [
         "    /// <summary>The boards of the plugins that keep many in one object.</summary>",
@@ -983,9 +1451,11 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("signal")
     parser.add_argument("qmk")
+    parser.add_argument("keychron_firmware")
+    parser.add_argument("qmk_firmware")
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
-    outputs = [(OUT, generate(args.signal)), (QMK_OUT, generate_qmk(args.signal, args.qmk)), (INVENTORY, inventory(args.signal, args.qmk))]
+    outputs = [(OUT, generate(args.signal)), (QMK_OUT, generate_qmk(args.signal, args.qmk, args.keychron_firmware, args.qmk_firmware)), (INVENTORY, inventory(args.signal, args.qmk))]
     if args.check:
         differs = [p for p, t in outputs if not os.path.exists(p) or open(p, encoding="utf-8", newline="").read() != t]
         for p in differs:

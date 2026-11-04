@@ -210,6 +210,21 @@ namespace PadForge.Common.Input.Peripherals
         /// names none: PadForge's.</summary>
         internal const int DefaultRepaintMs = 33;
 
+        /// <summary>How often a picture goes out again with no change, where a plugin is the
+        /// only proof of the device. SignalRGB's engine runs every plugin's Render all the time,
+        /// so a plugin shows nothing of what its device does when the host goes quiet. A firmware
+        /// that returns to its own lighting then would look fine in SignalRGB and go dark of
+        /// PadForge's color here. The SRGBmods boards store a setting that does it, after a second
+        /// at the shortest (HWL_returnafter, SRGBmods_LC_v1.js), so this is shorter than that. It
+        /// is far less traffic than the plugins send.</summary>
+        internal const int PictureAgainMs = 500;
+
+        /// <summary>How often <paramref name="device"/>'s picture goes out again with no change.
+        /// The projects other than SignalRGB send a picture once, and a row with a keep-alive of
+        /// its own has its interval.</summary>
+        internal static int PictureAgainMsOf(PluginDevice device)
+            => device.KeepAliveMs > 0 ? device.KeepAliveMs : device.Source == null ? PictureAgainMs : 0;
+
         /// <summary>How far apart two strips' addresses are, more than any strip
         /// takes.</summary>
         internal const int StripSpan = 8192;
@@ -261,14 +276,17 @@ namespace PadForge.Common.Input.Peripherals
             Programs = device.Programs,
             RepaintMs = device.RepaintMs,
             HoldMs = device.HoldMs,
-            KeepAliveMs = device.KeepAliveMs,
-            KeepAliveIdleMs = device.KeepAliveMs,
+            KeepAliveMs = PictureAgainMsOf(device),
+            KeepAliveIdleMs = PictureAgainMsOf(device),
             Siblings = device.Siblings,
             HeldByWindows = device.HeldByWindows,
             Begin = device.Siblings.Count > 0 ? null : (io, wait) => Start(device, device.Picture, io, null, wait),
             BeginWith = device.Siblings.Count == 0 ? null : (io, siblings, wait) =>
                 Start(device, device.PictureWith?.Invoke(siblings), io, siblings, wait),
         };
+
+        internal static HidLightingSession StartForTest(PluginDevice device, IHidReportChannel io, Action<int> wait)
+            => Start(device, device.Picture, io, null, wait);
 
         private static HidLightingSession Start(PluginDevice device, Func<int[], IEnumerable<PluginStep>> picture,
             IHidReportChannel io, IReadOnlyList<IHidReportChannel> siblings, Action<int> wait)
@@ -439,12 +457,14 @@ namespace PadForge.Common.Input.Peripherals
             }
 
             /// <summary>A device with a keep-alive can lose software control
-            /// on its own, so the keep-alive takes it again.</summary>
+            /// on its own, so the keep-alive takes it again. Any other sends
+            /// its picture again, as its plugin does, and its start once.</summary>
             public override bool KeepAlive(IHidReportChannel io, Action<int> wait,
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
             {
                 if (io == null) return false;
-                foreach (var step in _device.Start) Run(io, wait, step);
+                if (_device.KeepAliveMs > 0)
+                    foreach (var step in _device.Start) Run(io, wait, step);
                 return Paint(io, wait, lights, colors) != HidLightingPaint.Failed;
             }
 

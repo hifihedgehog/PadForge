@@ -708,7 +708,8 @@ namespace PadForge.Common.Input.Peripherals
                         {
                             families ??= DeviceFamilies.Of(direct, hidpp, result);
                             if (LightsUnitRow(own) && !UnitProgramRuns(own, presence)
-                                && !ReachedByAnyRow(own, rowList, lampArrays) && !families.Loses(own))
+                                && (RelaysPaired(own, direct) || !ReachedByAnyRow(own, rowList, lampArrays))
+                                && !families.Loses(own))
                                 lighting.Add(unit);
                         }
                     }
@@ -1113,13 +1114,37 @@ namespace PadForge.Common.Input.Peripherals
         private static void AddOwnUnits(List<Candidate> native, IReadOnlyList<DirectUnit> direct, OutputFamily family, LinkRow row)
         {
             foreach (var unit in direct)
-                if (unit.Family == family && MatchesDevice(unit, row))
+                if (unit.Family == family && MatchesDevice(unit, row) && !RelaysPaired(unit, direct))
                     native.Add(new Candidate(unit.Path, unit.MaxClaimLevel, false)
                     {
                         Asleep = unit.Asleep,
                         BesideWindows = unit.LitBesideWindows,
                         LiveThroughLampArray = unit.LiveThroughLampArray,
                     });
+        }
+
+        /// <summary>
+        /// Whether a Razer receiver relays a device paired to it that has a
+        /// unit of its own: the Mouse Dock Pro with a mouse paired
+        /// (<see cref="RazerDirectBackend.PairedKey"/>, the paired unit
+        /// listed under the receiver's product ID, as OpenRGB adds a
+        /// controller for each, RazerControllerDetect.cpp:42-82). The
+        /// receiver's rows then carry the paired device's input and light
+        /// the paired device, and the receiver's own lights are a device no
+        /// input row stands for: they get a unit row of their own
+        /// (<see cref="Orphans"/>) and with it a Key Colors card, since a row
+        /// shows the lights of one unit (<see cref="PeripheralLightMaps.FirstPerLight"/>).
+        /// A receiver with nothing paired is its rows' own unit.
+        /// </summary>
+        internal static bool RelaysPaired(DirectUnit unit, IReadOnlyList<DirectUnit> direct)
+        {
+            if (unit == null || unit.Family != OutputFamily.RazerUnit || unit.Key.IndexOf('|') >= 0) return false;
+            string prefix = unit.Key + "|";
+            foreach (var other in direct)
+                if (other != null && other.Family == OutputFamily.RazerUnit
+                    && other.Key.StartsWith(prefix, StringComparison.Ordinal))
+                    return true;
+            return false;
         }
 
         private static readonly List<Candidate> NoCandidates = new();
@@ -1546,10 +1571,12 @@ namespace PadForge.Common.Input.Peripherals
                 if (unit == null || !GetsUnitRow(unit.Family) || unit.ContainerId == Guid.Empty || IgnoresRawHost(unit))
                     continue;
                 if (UnitProgramRuns(unit, presence) || families.Loses(unit)) continue;
+                // A receiver relaying a paired device stands for no row
+                // that reaches it (RelaysPaired).
                 bool reached = false;
                 foreach (var row in rows)
                 {
-                    if (!Reaches(row, unit, lampArrays)) continue;
+                    if (!Reaches(row, unit, lampArrays) || RelaysPaired(unit, direct)) continue;
                     reached = true;
                     break;
                 }

@@ -109,6 +109,50 @@ namespace PadForge.Tests
             Assert.False(PeripheralLinker.GetsUnitRow(OutputFamily.ChromaCategory));
         }
 
+        /// <summary>A Razer Mouse Dock Pro with a mouse paired (#557): the
+        /// dock's rows carry the mouse's input and light the mouse, listed
+        /// under the dock's product ID (RazerDirectBackend.PairedKey, OpenRGB
+        /// RazerControllerDetect.cpp:42-82), and the dock's own nine lights
+        /// get a unit row and with it a card of their own. With nothing
+        /// paired, the dock is its rows' own unit again.</summary>
+        [Fact]
+        public void ADockRelayingAPairedMouse_GetsARowOfItsOwn()
+        {
+            const ushort MouseDockPro = 0x00A4, BasiliskV3ProWireless = 0x00AB;
+            var dock = new DirectUnit(OutputFamily.RazerUnit, "dock", Box, Razer, MouseDockPro) { Name = "Razer Mouse Dock Pro" };
+            var mouse = new DirectUnit(OutputFamily.RazerUnit, RazerDirectBackend.PairedKey(dock.Key, BasiliskV3ProWireless), Box,
+                Razer, MouseDockPro) { Name = "Razer Basilisk V3 Pro (Wireless)" };
+            var rows = new[] { Row(A, InputDeviceType.Mouse, Razer, MouseDockPro, Box), Row(B, InputDeviceType.Keyboard, Razer, MouseDockPro, Box) };
+
+            Assert.True(PeripheralLinker.RelaysPaired(dock, new[] { mouse, dock }));
+            Assert.False(PeripheralLinker.RelaysPaired(mouse, new[] { mouse, dock }));
+            Assert.False(PeripheralLinker.RelaysPaired(dock, new[] { dock }));
+            // Another receiver's paired unit, or a unit of another family
+            // with a bar in its key, is no relay of this one.
+            Assert.False(PeripheralLinker.RelaysPaired(dock, new[] { dock, mouse with { Key = "dock2|00AB" } }));
+            Assert.False(PeripheralLinker.RelaysPaired(dock, new[] { dock, mouse with { Family = OutputFamily.HidLightingUnit } }));
+
+            // Paired: the mouse rows light the mouse alone, and the dock is
+            // an orphan whose own row lights it.
+            var inputs = Inputs(Nothing, mouse, dock);
+            var table = PeripheralLinker.Build(rows, inputs);
+            Assert.Equal(new[] { mouse.Path }, table.For(A).Lighting);
+            Assert.Equal(new[] { mouse.Path }, table.For(B).Lighting);
+            Assert.Equal(new[] { dock }, PeripheralLinker.Orphans(rows, inputs));
+            var dockRow = UnitRow(C, dock.Path);
+            table = PeripheralLinker.Build(rows.Append(dockRow), inputs);
+            Assert.Equal(new[] { dock.Path }, table.For(C).Lighting);
+            Assert.Equal(new[] { mouse.Path }, table.For(A).Lighting);
+
+            // Nothing paired: the dock is its rows' own unit and no orphan.
+            inputs = Inputs(Nothing, dock);
+            Assert.Empty(PeripheralLinker.Orphans(rows, inputs));
+            Assert.Equal(new[] { dock.Path }, PeripheralLinker.Build(rows, inputs).For(A).Lighting);
+            // Its old row holds no path then, by the rule every reached unit
+            // follows.
+            Assert.Empty(PeripheralLinker.Build(rows.Append(dockRow), inputs).For(C)?.Lighting ?? Array.Empty<OutputPath>());
+        }
+
         /// <summary>A row of the unit's own device reaches it, by the rule
         /// its family links by: the same container, vendor and product.</summary>
         [Fact]

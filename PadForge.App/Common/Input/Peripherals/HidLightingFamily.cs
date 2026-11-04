@@ -372,6 +372,7 @@ namespace PadForge.Common.Input.Peripherals
             N5312ALighting.Instance,
             NzxtMouseLighting.Instance,
             PatriotViperMouseLighting.Instance,
+            TecknetLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

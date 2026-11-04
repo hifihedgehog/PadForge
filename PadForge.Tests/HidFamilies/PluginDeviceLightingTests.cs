@@ -871,11 +871,16 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Qmk_AStockFirmware_StaysDark_AndIsWrittenNoMore()
+        public void Qmk_AFirmwareThatAnswersNothing_StaysDark_AndIsOnlyAsked()
         {
             var silent = QmkChannel();
             Assert.Null(F.Instance.Match(CollectionOf(Q1)).Begin(silent, _ => { }));
-            Assert.Single(silent.Calls, c => c.Kind == "out");
+            // Its own question, VIA's and Vial's. None sets anything.
+            var asked = silent.Calls.Where(c => c.Kind == "out").Select(c => c.Bytes[1]).ToList();
+            Assert.Equal(0x28, asked[0]);
+            Assert.Contains((byte)0x01, asked);
+            Assert.DoesNotContain((byte)0x07, asked);
+            Assert.DoesNotContain((byte)0x25, asked);
             // VIA answers an unknown command with FF.
             Assert.Null(F.Instance.Match(CollectionOf(Q1)).Begin(QmkChannel(new byte[] { 0x00, 0xFF, 0x28 }), _ => { }));
             Assert.Null(F.Instance.Match(CollectionOf(Q1)).Begin(QmkChannel(new byte[] { 0x00, 0x28, 0x03 }), _ => { }));

@@ -515,7 +515,8 @@ namespace PadForge.Tests
         [Fact]
         public void TheFamily_ComesAfterTheRowsThatDescribeADevice()
         {
-            Assert.Same(AlienFxLighting.Instance, HidLightingFamilies.All[^1]);
+            var families = HidLightingFamilies.All.ToList();
+            Assert.True(families.IndexOf(AlienFxLighting.Instance) > families.IndexOf(PluginDeviceLighting.Instance));
             var dell = new HidCollectionInfo { Path = "fake", VendorId = 0x187C, ProductId = 0x0550, FeatureReportLength = 34, OutputReportLength = 34 };
             Assert.Same(AlienwareLighting.Instance, HidLightingFamilies.Match(dell, HidLightingFamilies.All).Family);
         }

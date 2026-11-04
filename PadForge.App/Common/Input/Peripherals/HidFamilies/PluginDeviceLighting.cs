@@ -114,6 +114,10 @@ namespace PadForge.Common.Input.Peripherals
         /// the device. False leaves it dark and writes nothing more.</summary>
         public Func<IHidReportChannel, Action<int>, bool> Answers { get; init; }
 
+        /// <summary>The session where <see cref="Answers"/> says no: the same keyboard on a
+        /// firmware that speaks something else. Null: it stays dark.</summary>
+        public Func<IHidReportChannel, Action<int>, HidLightingSession> Otherwise { get; init; }
+
         /// <summary>The steps that return the device to its own lighting.
         /// Empty for a device whose plugin only sends it one last color, which
         /// PadForge does not do.</summary>
@@ -267,7 +271,8 @@ namespace PadForge.Common.Input.Peripherals
         private static HidLightingSession Start(PluginDevice device, Func<int[], IEnumerable<PluginStep>> picture,
             IHidReportChannel io, IReadOnlyList<IHidReportChannel> siblings, Action<int> wait)
         {
-            if (io == null || device.Answers?.Invoke(io, wait) == false) return null;
+            if (io == null) return null;
+            if (device.Answers?.Invoke(io, wait) == false) return device.Otherwise?.Invoke(io, wait);
             PluginVariant variant = null;
             if (device.AskVariant != null)
             {

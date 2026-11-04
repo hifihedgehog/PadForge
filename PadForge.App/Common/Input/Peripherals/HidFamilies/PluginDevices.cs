@@ -1090,6 +1090,9 @@ namespace PadForge.Common.Input.Peripherals
                         // At most what one byte of a report can number.
                         Slots = 256,
                         Answers = QmkAnswers,
+                        // Most of these ship with VIA on them, and take a color through it
+                        // with no reflash.
+                        Otherwise = (io, wait) => QmkRawHidLighting.Begin(io, wait, QmkLighting.Product(board.Vendor, product)),
                         AskVariant = (io, _, wait) => QmkVariant(board, table, io, wait),
                         Start = new[] { PluginStep.Output(Frame(32, 0x00, 0x25)), PluginStep.Wait(QmkCommandWaitMs) },
                         Picture = colors => QmkPicture(colors),

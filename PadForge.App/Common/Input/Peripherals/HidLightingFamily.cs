@@ -431,6 +431,7 @@ namespace PadForge.Common.Input.Peripherals
             RazerChargingPadLighting.Instance,
             PluginDeviceLighting.Instance,
             AlienFxLighting.Instance,
+            QmkRawHidLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

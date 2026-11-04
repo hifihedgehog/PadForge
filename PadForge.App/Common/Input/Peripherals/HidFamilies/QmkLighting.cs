@@ -150,7 +150,9 @@ namespace PadForge.Common.Input.Peripherals
                     Product = product,
                 },
                 RepaintMs = RepaintMs,
-                Begin = (io, wait) => keychron ? KeychronSession.Begin(io, vendorId, productId) : VialSession.Begin(io, product),
+                // A firmware that speaks neither may still speak VIA (QmkRawHidLighting).
+                Begin = (io, wait) => (keychron ? KeychronSession.Begin(io, vendorId, productId) : VialSession.Begin(io, product))
+                    ?? QmkRawHidLighting.Begin(io, wait, product),
             };
         }
 

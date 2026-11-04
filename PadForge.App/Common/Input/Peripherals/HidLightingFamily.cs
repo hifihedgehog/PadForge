@@ -371,6 +371,7 @@ namespace PadForge.Common.Input.Peripherals
             DreamCheekyLighting.Instance,
             LuxaforLighting.Instance,
             MadCatzCyborgLighting.Instance,
+            ThingMBlinkLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

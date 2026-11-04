@@ -255,6 +255,12 @@ namespace PadForge.Common.Input.Peripherals
         /// code names its processes.</summary>
         public static readonly VendorProgram AmBx = new("amBX", "amBX");
 
+        /// <summary>Blink1Control2, ThingM's program for the blink(1). Its
+        /// executable is named by its package's productName, Blink1Control2
+        /// (Blink1Control2 package.json:19), and the prefix takes in the
+        /// Blink1Control before it.</summary>
+        public static readonly VendorProgram Blink1Control = new("Blink1Control", "Blink1Control");
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
@@ -262,7 +268,7 @@ namespace PadForge.Common.Input.Peripherals
             LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor, CorsairIcue,
             LegionAccessoryCentral, MasterPlus, Ngenuity, MsiMysticLight, SteelSeriesGG, AlienwareCommandCenter,
             RoccatSwarm, XpgPrime, WootingWootility, OpenRgb,
-            Skydimo, HyteNexus, LuxaforApp, AmBx,
+            Skydimo, HyteNexus, LuxaforApp, AmBx, Blink1Control,
         };
     }
 

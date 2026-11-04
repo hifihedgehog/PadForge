@@ -230,6 +230,15 @@ namespace PadForge.Common.Input.Peripherals
         /// 1.0.0.240202). No source code names its processes.</summary>
         public static readonly VendorProgram Skydimo = new("Skydimo", "SkyDimo");
 
+        /// <summary>HYTE Nexus, which lights the CNVS mousepad. Its main
+        /// executable is "HYTE Nexus.exe" and its service's
+        /// "HYTE Nexus Service.exe" in version 1.0.204 and
+        /// HYTE.Nexus.Service.exe from version 1.3.134 on (the file lists
+        /// Advanced Uninstaller PRO gives for HYTE Nexus 1.0.204, 1.3.134 and
+        /// 1.5.560). The two prefixes take in all three. No source code names
+        /// its processes.</summary>
+        public static readonly VendorProgram HyteNexus = new("HYTE Nexus", "HYTE Nexus", "HYTE.Nexus");
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
@@ -237,7 +246,7 @@ namespace PadForge.Common.Input.Peripherals
             LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor, CorsairIcue,
             LegionAccessoryCentral, MasterPlus, Ngenuity, MsiMysticLight, SteelSeriesGG, AlienwareCommandCenter,
             RoccatSwarm, XpgPrime, WootingWootility, OpenRgb,
-            Skydimo,
+            Skydimo, HyteNexus,
         };
     }
 

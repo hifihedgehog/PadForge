@@ -363,6 +363,7 @@ namespace PadForge.Common.Input.Peripherals
             RoyuanLighting.Instance,
             KeychronKeyboardLighting.Instance,
             CreativeSoundBlasterLighting.Instance,
+            EdifierHaloLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

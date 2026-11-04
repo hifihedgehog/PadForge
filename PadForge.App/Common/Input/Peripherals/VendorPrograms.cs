@@ -246,6 +246,15 @@ namespace PadForge.Common.Input.Peripherals
         /// and 75-85).</summary>
         public static readonly VendorProgram LuxaforApp = new("Luxafor", "LuxaforApp");
 
+        /// <summary>The amBX software that drives the Mad Catz Cyborg Gaming
+        /// Light: its engine service, C:\Program Files\amBX\System\amBX_Engine.exe
+        /// (the LASSH service entry for the amBX Engine at sysinfo.org), and
+        /// its effect generator amBXFxGen.exe, which holds the lights until it
+        /// is stopped (a MediaPortal forum thread on amBX lights, "Amb i
+        /// Light Support", page 5). The one prefix takes in both. No source
+        /// code names its processes.</summary>
+        public static readonly VendorProgram AmBx = new("amBX", "amBX");
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
@@ -253,7 +262,7 @@ namespace PadForge.Common.Input.Peripherals
             LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor, CorsairIcue,
             LegionAccessoryCentral, MasterPlus, Ngenuity, MsiMysticLight, SteelSeriesGG, AlienwareCommandCenter,
             RoccatSwarm, XpgPrime, WootingWootility, OpenRgb,
-            Skydimo, HyteNexus, LuxaforApp,
+            Skydimo, HyteNexus, LuxaforApp, AmBx,
         };
     }
 

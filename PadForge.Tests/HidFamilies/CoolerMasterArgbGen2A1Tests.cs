@@ -110,7 +110,7 @@ namespace PadForge.Tests
                 var model = Model(pid);
                 Assert.NotNull(model);
                 // RealtimeWorker's 40 ms period (CMARGBGen2A1Controller.cpp:655-696,
-                // CMARGBGen2A1Controller.h:39), nothing stored.
+                // CMARGBGen2A1Controller.h:37), nothing stored.
                 Assert.Equal(40, model.RepaintMs);
                 Assert.Equal(40, model.KeepAliveMs);
                 Assert.Equal(40, model.KeepAliveIdleMs);
@@ -132,7 +132,7 @@ namespace PadForge.Tests
             {
                 "out 80 0B 01 01", "out 80 07 01 01", "out 80 0B 01 02", "out 80 06 01 02", "out 80 0B 01 04",
             }, device.Log);
-            // Gen2 devices 01 x 24 and 04 x 60 (70 held to 60, line 1351), the
+            // Gen2 devices 01 x 24 and 04 x 60 (70 held to 60, line 1353), the
             // empty 00 x 00 left out (line 269). Gen1 port 2 at factor 30.
             Assert.Equal(new[]
             {

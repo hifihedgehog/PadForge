@@ -688,6 +688,56 @@ namespace PadForge.Tests
             Assert.Equal(1, Count("paint 445566,445566"));
         }
 
+        /// <summary>A keep-alive that falls due while the session's first
+        /// picture still waits out its hold has nothing to keep alive: no
+        /// call into the session, and the unit stays awake.</summary>
+        [Fact]
+        public void AKeepAliveDueBeforeTheFirstPicture_SendsNothing()
+        {
+            _family.With(m => new HidLightingModel
+            {
+                Family = m.Family, Name = m.Name, Map = m.Map, HoldMs = 1000, KeepAliveMs = 100,
+                Begin = (io, _) => new FakeWorkerSession(_family, io) { KeepAliveLine = "keep" },
+            });
+            using var backend = Lit(Collection());
+            Advance(100);
+            Passes(backend);
+            Advance(100);
+            Passes(backend);
+            Assert.Empty(_family.Calls());
+            Assert.False(Assert.Single(backend.Snapshot.Units).Asleep);
+            Advance(800);
+            Passes(backend);
+            // The picture first; with no idle time the keep-alive that was
+            // due goes out right after it.
+            Assert.Equal("paint 112233,112233", _family.Calls()[0]);
+        }
+
+        /// <summary>A sibling on the unit's own interface and page is another
+        /// collection than the unit's.</summary>
+        [Fact]
+        public void ASiblingOnTheUnitsOwnInterfaceAndPage_IsNeverTheUnitItself()
+        {
+            IReadOnlyList<IHidReportChannel> given = null;
+            _family.With(m => new HidLightingModel
+            {
+                Family = m.Family, Name = m.Name, Map = m.Map,
+                Siblings = new[] { new HidSibling(1, 0xFF00) },
+                BeginWith = (io, siblings, _) =>
+                {
+                    given = siblings;
+                    return new FakeWorkerSession(_family, io);
+                },
+            });
+            var first = Collection(tail: "1");
+            var second = Collection(tail: "2");
+            using var backend = Started(first, second);
+            Link(first);
+            Light(0x112233);
+            Passes(backend);
+            Assert.Equal(second.Path, Assert.Single(given).Path);
+        }
+
         [Fact]
         public void AModelWithNoKeepAlive_SendsNothingWhileThePictureHolds()
         {

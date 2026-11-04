@@ -261,6 +261,58 @@ namespace PadForge.Tests
             Assert.Equal(2, Count("paint 445566,445566"));
         }
 
+        /// <summary>A session that notes when it paints.</summary>
+        private sealed class PaintNotingSession : FakeWorkerSession
+        {
+            private readonly Action _painting;
+
+            public PaintNotingSession(FakeWorkerFamily family, IHidReportChannel io, Action painting)
+                : base(family, io) => _painting = painting;
+
+            public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait, IReadOnlyList<LightInfo> lights,
+                IReadOnlyList<int> colors)
+            {
+                _painting();
+                return base.Paint(io, wait, lights, colors);
+            }
+        }
+
+        /// <summary>The pass that sends a picture wakes the worker for the
+        /// first keep-alive after it. Without that the worker sleeps its idle
+        /// tick, which is longer than HyperX's 50 ms
+        /// (RGBController_HyperXAlloyElite2.cpp:287 and 308-323).</summary>
+        [Fact]
+        public void ThePassThatSendsAPicture_WakesTheWorkerForTheFirstKeepAlive()
+        {
+            HidLightingBackend backend = null;
+            int paintedIn = -1;
+            _family.With(m => new HidLightingModel
+            {
+                Family = m.Family, Name = m.Name, Map = m.Map, KeepAliveMs = 50, KeepAliveIdleMs = 50,
+                Begin = (io, _) => new PaintNotingSession(_family, io,
+                    () => Interlocked.CompareExchange(ref paintedIn, backend.PassCount, -1)),
+            });
+            var unit = Collection();
+            using (backend = new HidLightingBackend(new IHidLightingFamily[] { _family }, Open, _ => Box, Tick,
+                (_, _, _) => true, (_, _, _) => true, ms => Advance(ms), idleTickMs: 1000, query: Query))
+            {
+                backend.Start();
+                backend.Rescan(new[] { unit });
+                Passes(backend);
+                Link(unit);
+                Passes(backend);
+                // The claim wakes the worker once, and nothing wakes it
+                // again before the wait the painting pass chose runs out.
+                Light(0x112233);
+                // The pass that painted has ended once the count passes the
+                // count it painted at, and its wait is the last one written.
+                Assert.True(SpinWait.SpinUntil(
+                    () => Volatile.Read(ref paintedIn) >= 0 && backend.PassCount > Volatile.Read(ref paintedIn), 30000));
+                Assert.Equal(1, Count("paint 112233,112233"));
+                Assert.InRange(backend.WaitMs, 1, 50);
+            }
+        }
+
         /// <summary>Fnatic's: 500 ms idle after a picture, then one on every
         /// 100 ms (RGBController_FnaticStreak.cpp:480, 537 and 683-699), the
         /// session's own frame and never the picture.</summary>

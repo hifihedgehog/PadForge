@@ -357,6 +357,13 @@ namespace PadForge.Common.Input
             }, timeoutMs);
 
         /// <summary>One output report the same way.</summary>
+        public static bool WriteOutputOnce(string path, byte[] report, int timeoutMs)
+            => RunBounded(() =>
+            {
+                using var channel = Open(path);
+                return channel != null && channel.WriteOutput(report, timeoutMs);
+            }, timeoutMs);
+
         public string ManufacturerString => ReadString(HidD_GetManufacturerString);
 
         public string ProductString => ReadString(SonyHeadsetHid.HidD_GetProductString);
@@ -386,13 +393,6 @@ namespace PadForge.Common.Input
         }
 
         internal const int MaxStringChars = 256;
-
-        public static bool WriteOutputOnce(string path, byte[] report, int timeoutMs)
-            => RunBounded(() =>
-            {
-                using var channel = Open(path);
-                return channel != null && channel.WriteOutput(report, timeoutMs);
-            }, timeoutMs);
 
         public void Dispose()
         {

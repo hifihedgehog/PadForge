@@ -1055,6 +1055,10 @@ namespace PadForge.Common.Input.Peripherals
             unit.LaterAt = 0;
             if (first)
                 PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} lit, {colors.Length} lights");
+            // The worker wakes for the first keep-alive after this picture,
+            // not at its idle tick, which is longer than HyperX's 50 ms.
+            if (model.KeepAliveMs > 0)
+                Soonest(ref due, Math.Max(unit.KeptAt + model.KeepAliveMs, unit.SentAt + model.KeepAliveIdleMs));
             return true;
         }
 

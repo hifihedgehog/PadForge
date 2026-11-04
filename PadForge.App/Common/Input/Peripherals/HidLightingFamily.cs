@@ -363,6 +363,7 @@ namespace PadForge.Common.Input.Peripherals
             RoyuanLighting.Instance,
             KeychronKeyboardLighting.Instance,
             HyperXMouseLighting.Instance,
+            HyperXMousematLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

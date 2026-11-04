@@ -329,8 +329,14 @@ namespace PadForge.Tests
         [Fact]
         public void TheSnapshot_SaysWhileOpenRgbsServerDoesNotAnswer()
         {
+            // OpenRGB starts with its server off: that alone changes the
+            // snapshot.
+            _runs = false;
             _server.Down = true;
             using var backend = Started();
+            Assert.False(backend.Snapshot.ProgramUnanswered);
+            _runs = true;
+            Passes(backend);
             Assert.True(backend.Snapshot.ProgramUnanswered);
             Assert.Empty(backend.Snapshot.Units);
 

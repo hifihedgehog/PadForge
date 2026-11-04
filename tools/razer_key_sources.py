@@ -67,7 +67,7 @@ POLY_USAGE = {
     "0": 0x27, "enter": 0x28, "esc": 0x29, "tab": 0x2B, "-": 0x2D, "=": 0x2E, "[": 0x2F, "]": 0x30,
     "\\": 0x31, ";": 0x33, "'": 0x34, "`": 0x35, ",": 0x36, ".": 0x37, "/": 0x38, "caps": 0x39,
     **{"F%d" % n: 0x3A + (n - 1) for n in range(1, 13)},
-    "del": 0x4C,
+    "ins": 0x49, "del": 0x4C,
 }
 # A modifier's label names no side: the first of a row is the left one and
 # the next the right one, the order every keyboard has them in.

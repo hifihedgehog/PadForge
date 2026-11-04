@@ -205,6 +205,28 @@ def keyboard_zone(device):
     return None
 
 
+# A board whose OpenRGB layout misplaces one row, which a map drawn for the
+# board has right: product to row and map. OpenRGB's Blade 15 Advanced (2021)
+# overlay inserts Esc at column 1, which moves the top row one column right,
+# then swaps columns 14 and 15 for Insert and Delete as if PrtSc and ScrLk sat
+# there, where F12 and PrtSc sit after the shift (RazerDevices.cpp:562-603). F1
+# to F11 land a column off and no cell is F12. Polychromatic's map for the board
+# (c12135c) has Esc, F1 to F12, Insert and Delete in columns 1 to 15, the same
+# two keys at the row's end as the overlay. uchroma's entry ends the row Delete,
+# Power (laptop.yaml:462-463), and is not read here: the board has an Insert key
+# and its power button sits apart from the keyboard.
+ROW_FROM_SECOND_SOURCE = {0x0276: (0, "blade_advanced_2021_en_US.svg")}
+
+# Cells OpenRGB's layout leaves empty on a board, where both sources for the
+# board put the key OpenRGB has beside it: product to the cell, then the key's
+# cell. The Blade's overlay moves Backspace into the matrix's last column (line
+# 590) and leaves \ and Enter a column short of it. Polychromatic's map names
+# them in column 15 alone, uchroma's entry in columns 14 and 15. A cell with no
+# LED behind it changes nothing, and the cell takes whatever key the region has
+# beside it, since those two sources draw only the US layout.
+SAME_KEY_CELLS = {0x0276: ((2, 15, 2, 14), (3, 15, 3, 14))}
+
+
 def named_lights(named, cols):
     """The lights of the keys a second source names, each at its cell."""
     lights = []
@@ -216,10 +238,11 @@ def named_lights(named, cols):
     return lights
 
 
-def plan_for(pid, row, entry, device, sources=None):
+def plan_for(pid, row, entry, device, sources=None, drawn=None):
     """The light row of one product as a dict, or a reason it has none.
     sources names the keys of a board OpenRGB lays out with no layout, from
-    tools/razer_key_sources.py: (keys by cell, text) or (None, reason)."""
+    tools/razer_key_sources.py: (keys by cell, text) or (None, reason). drawn
+    reads one Polychromatic map: (keys by cell, text)."""
     family, flags = row["family"], row["flags"]
     note = []
     source = "OpenRGB RazerDevices.cpp:%d at %s" % (device["line"], PIN) if device is not None else None
@@ -277,15 +300,24 @@ def plan_for(pid, row, entry, device, sources=None):
                     source = "%s, keys from %s" % (source, why)
                 else:
                     note.append("no layout in OpenRGB, keys unnamed: " + why)
+            elif pid in ROW_FROM_SECOND_SOURCE and drawn:
+                fixed, filename = ROW_FROM_SECOND_SOURCE[pid]
+                every, why = drawn(filename)
+                named = {cell: key for cell, key in every.items() if cell[0] == fixed}
+                if not named:
+                    raise SystemExit("%04X: %s names nothing in row %d" % (pid, why, fixed))
+                note.append("row %d from a second source, OpenRGB's layout misplaces it" % fixed)
+                source = "%s, row %d keys from %s" % (source, fixed, why)
         lights = static_lights(device, rows, cols, note, keyboard_cells=grid, positioned=grid)
-        if grid and keys[0] is None and named:
+        if grid and named:
             lights = named_lights(named, cols) + lights
         count = len(lights) + (keys[2] * keys[3] if keys else 0)
         if count > 1 and (family != "ext" or grid or count > len(row["leds"])):
             if not grid and len(lights) < rows * cols and family == "ext":
                 note.append("%d lights in %d cells" % (len(lights), rows * cols))
             return {"plan": "Frame", "rows": rows, "cols": cols, "lights": lights, "keys": keys,
-                    "positioned": grid, "source": source, "note": "; ".join(note)}
+                    "positioned": grid, "source": source, "note": "; ".join(note),
+                    "same_key_cells": SAME_KEY_CELLS.get(pid, ())}
     if family in ("ext", "mext", "classic"):
         leds = row["leds"]
         if len(leds) < 2:
@@ -347,6 +379,8 @@ def emit(rows, commit):
             calls.append("At(%s, %d, %d)" % (call, row, col) if row >= 0 else call)
         if calls:
             parts.append("Lights = new[] { %s }" % ", ".join(calls))
+        if r.get("same_key_cells"):
+            parts.append("SameKeyCells = new[] { %s }" % ", ".join("(%d, %d, %d, %d)" % c for c in r["same_key_cells"]))
         parts.append('Source = "%s"' % r["source"])
         add("            new() { %s },%s" % (", ".join(parts), " // " + r["note"] if r["note"] else ""))
     add("        };")
@@ -373,6 +407,10 @@ def main():
     def sources(pid, name, rows_, cols_, zone):
         return key_sources.name_keys(pid, name, rows_, cols_, zone, uch_repo, poly_repo, uch_devices, poly_maps)
 
+    def drawn(filename):
+        return (key_sources.polychromatic_keys(poly_repo, filename),
+                "Polychromatic %s %s" % (filename, key_sources.POLYCHROMATIC_PIN))
+
     research = json.load(open(args.json, encoding="utf-8"))["devices"]
     rows, skipped = [], []
     for pid_text in sorted(research):
@@ -381,7 +419,7 @@ def main():
         if row["family"] not in table.COLOR_FAMILIES:
             continue
         pid = int(pid_text, 16)
-        result = plan_for(pid, row, entry, devices.get(pid), sources)
+        result = plan_for(pid, row, entry, devices.get(pid), sources, drawn)
         if isinstance(result, str):
             skipped.append((pid_text, entry["name"], result))
             continue

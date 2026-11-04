@@ -50,6 +50,12 @@ namespace PadForge.Common.Input.Peripherals
         public byte KeyColumns { get; init; }
         public byte DeviceColumns { get; init; }
 
+        /// <summary>Cells a key's light also sits in, which OpenRGB's layout
+        /// leaves empty: the cell, then the cell OpenRGB puts the key in, which
+        /// gives this cell whatever key the region has there, or none.</summary>
+        public (int Row, int Column, int KeyRow, int KeyColumn)[] SameKeyCells { get; init; }
+            = System.Array.Empty<(int, int, int, int)>();
+
         public bool HasKeys => KeyRows > 0;
 
         /// <summary>The reference the lights were read from, for the log
@@ -162,6 +168,12 @@ namespace PadForge.Common.Input.Peripherals
                     }
                     lights.Add(At(light, frameRow, frameCol));
                 }
+            }
+            foreach (var (cellRow, cellColumn, keyRow, keyColumn) in row.SameKeyCells)
+            {
+                int key = lights.FindIndex(l => l.Address == keyRow * row.Columns + keyColumn);
+                if (key >= 0)
+                    lights.Add(lights[key] with { Address = cellRow * row.Columns + cellColumn, X = cellColumn, Y = cellRow });
             }
             lights.AddRange(row.Lights);
             return lights.ToArray();

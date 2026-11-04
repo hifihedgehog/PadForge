@@ -230,6 +230,7 @@ namespace PadForge.Common.Input.Peripherals
             GaiZhongGaiLighting.Instance,
             AnnePro2Lighting.Instance,
             RedSquareKeyroxLighting.Instance,
+            RoyuanLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

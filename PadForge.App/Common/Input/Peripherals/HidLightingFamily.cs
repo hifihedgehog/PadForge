@@ -246,6 +246,22 @@ namespace PadForge.Common.Input.Peripherals
             AsusAuraUsbLighting.Instance,
             AsusAuraCoreLighting.Instance,
             AsusLegacyUsbLighting.Instance,
+            MountainKeyboardLighting.Instance,
+            MintakaKeyboardLighting.Instance,
+            SkyloongKeyboardLighting.Instance,
+            WitmodKeyboardLighting.Instance,
+            WinbondKeyboardLighting.Instance,
+            ZetKeyboardLighting.Instance,
+            XpgSummonerLighting.Instance,
+            OksKeyboardLighting.Instance,
+            LightSaltLighting.Instance,
+            DarkProjectKeyboardLighting.Instance,
+            MntKeyboardLighting.Instance,
+            FnaticStreakLighting.Instance,
+            PoseidonZRgbLighting.Instance,
+            SayoDeviceLighting.Instance,
+            HyteKeyboardLighting.Instance,
+            AocKeyboardLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

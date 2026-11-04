@@ -24,11 +24,28 @@ namespace PadForge.Common.Input.Peripherals
     /// every key white (CommonInit, lines 14-26), which PadForge's first
     /// picture takes the place of. The keyboard keeps no mode, so there is
     /// nothing to hand back, and it shows PadForge's last picture until its
-    /// firmware or another program sets one. Windows opens a keyboard
-    /// collection for itself and grants no other program write access to
-    /// it (<see cref="HidReportChannel"/>), so on Windows the worker finds
-    /// the collection taken and lists the unit asleep. No source names a
-    /// program that lights it.</para>
+    /// firmware or another program sets one. No source names a program that
+    /// lights it.</para>
+    ///
+    /// <para>Windows. These keyboards cannot be lit on Windows, by OpenRGB
+    /// or PadForge. The keyboard's firmware takes the colors only as an
+    /// output report, report type 2 with report ID 'x', and ignores a
+    /// feature report (tud_hid_set_report_cb, MNT reform
+    /// reform2-keyboard4-fw/src/main.c:589-662, at 9dcb9a8). OpenRGB writes
+    /// that output report with hid_write on the keyboard collection
+    /// (SendColorMatrix, MNTKeyboardController.cpp:19-32). Windows holds a
+    /// keyboard collection for itself and opens it for another program with
+    /// no access right only, on which only feature reports pass (hidapi
+    /// windows/hid.c:1009-1026), so the output report never leaves the PC.
+    /// The firmware's descriptor also declares no report 'x' at all, only
+    /// the keyboard's, the consumer controls' and the trackpad's
+    /// (desc_hid_report, usb_descriptors.c:296-302). The model does not ask
+    /// the worker to keep a handle with no access right
+    /// (<see cref="HidLightingModel.HeldByWindows"/>), which would carry no
+    /// output report, so the worker lists the unit asleep. Lighting them on
+    /// Windows needs firmware that declares a collection of its own, on a
+    /// vendor usage page, whose output or feature report carries the
+    /// "xXRGB" rows: Windows opens such a collection for read and write.</para>
     /// </summary>
     internal sealed class MntKeyboardLighting : IHidLightingFamily
     {

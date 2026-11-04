@@ -264,6 +264,11 @@ namespace PadForge.Tests
             var pocket = MntKeyboardLighting.Instance.Match(CollectionFor(registrations.First(r => r.ProductId == 0x6D06), output: 42));
             Assert.Equal(80, reform.Map.Lights.Count);
             Assert.Equal(64, pocket.Map.Lights.Count);
+            // The rows are output reports, which a handle with no access
+            // right does not carry, so the worker is not asked to keep one
+            // (reform2-keyboard4-fw/src/main.c:589-662).
+            Assert.False(reform.HeldByWindows);
+            Assert.False(pocket.HeldByWindows);
             // A keyboard collection whose output report cannot carry a row.
             Assert.Null(MntKeyboardLighting.Instance.Match(CollectionFor(registrations[0], output: 2)));
             var io = new FakeReportChannel { OutputReportLength = 42 };

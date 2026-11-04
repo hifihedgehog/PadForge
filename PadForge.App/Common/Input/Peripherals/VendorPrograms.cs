@@ -261,6 +261,12 @@ namespace PadForge.Common.Input.Peripherals
         /// Blink1Control before it.</summary>
         public static readonly VendorProgram Blink1Control = new("Blink1Control", "Blink1Control");
 
+        /// <summary>Elgato's Stream Deck app, which draws the Stream Deck's
+        /// keys while it runs. Elgato's own CLI counts it as running while
+        /// StreamDeck.exe runs on Windows (elgatosf/cli src/stream-deck.ts:61-63,
+        /// isStreamDeckRunning).</summary>
+        public static readonly VendorProgram ElgatoStreamDeck = new("Stream Deck", "StreamDeck");
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
@@ -268,7 +274,7 @@ namespace PadForge.Common.Input.Peripherals
             LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor, CorsairIcue,
             LegionAccessoryCentral, MasterPlus, Ngenuity, MsiMysticLight, SteelSeriesGG, AlienwareCommandCenter,
             RoccatSwarm, XpgPrime, WootingWootility, OpenRgb,
-            Skydimo, HyteNexus, LuxaforApp, AmBx, Blink1Control,
+            Skydimo, HyteNexus, LuxaforApp, AmBx, Blink1Control, ElgatoStreamDeck,
         };
     }
 

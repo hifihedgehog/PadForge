@@ -375,6 +375,7 @@ namespace PadForge.Common.Input.Peripherals
             TecknetLighting.Instance,
             GameSirLighting.Instance,
             TurtleBeachKP7Lighting.Instance,
+            LegoDimensionsToypadLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

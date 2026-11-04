@@ -364,6 +364,9 @@ namespace PadForge.Common.Input.Peripherals
             KeychronKeyboardLighting.Instance,
             LogitechG600Lighting.Instance,
             LogitechX56Lighting.Instance,
+            RazerKrakenLighting.Instance,
+            RazerKrakenV3Lighting.Instance,
+            RazerKrakenV4Lighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

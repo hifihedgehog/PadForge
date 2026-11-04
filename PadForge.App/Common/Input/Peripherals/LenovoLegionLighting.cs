@@ -142,7 +142,8 @@ namespace PadForge.Common.Input.Peripherals
     /// only an ISO or JIS board has.</para>
     ///
     /// <para>Windows Dynamic Lighting. The same keyboards also offer a
-    /// LampArray interface (048D:C193 on the owner's Legion), and an option
+    /// LampArray interface (048D:C193 on the owner's Legion, a second
+    /// interface of 048D:C195 itself on a Legion Pro 5 16IAX10), and an option
     /// in the BIOS decides whether it takes colors. With Dynamic Lighting
     /// off there, the interface takes none, even while the signed-in user's
     /// switch for it reads on, and this controller lights the keys. With it
@@ -152,7 +153,12 @@ namespace PadForge.Common.Input.Peripherals
     /// settings, save the one that echoes the last lamp asked about, so a
     /// Gen 10 row lights through both, and colors that change show through
     /// the interface wherever the BIOS lets it
-    /// (<see cref="HidLightingModel.LiveThroughLampArray"/>). Where Windows
+    /// (<see cref="HidLightingModel.LiveThroughLampArray"/>). The Legion Pro
+    /// 5 16IAX10's interface took colors on Linux while the keyboard's own
+    /// effect stayed on top (hid-rgb-ctl issue 10), which is what the owner's
+    /// does with the option off. That report did not look at the option, and
+    /// that tool's README puts it down to a firmware mode, so that keyboard
+    /// lights through both as well. Where Windows
     /// Dynamic Lighting lights that interface, this controller lights the
     /// keys alone. OpenRGB drives it with no regard to Windows, and Lenovo
     /// Legion Toolkit's maintained fork drives it while Windows Dynamic

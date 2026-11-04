@@ -795,41 +795,6 @@ namespace PadForge.Tests
                 Inputs(Presence(), null, Lamp("lost", Guid.Empty))).For(A));
         }
 
-        /// <summary>The Legion Pro 5's keyboard takes a raw host's frames and
-        /// keeps painting over them (hid-rgb-ctl issue 10), so it lights no
-        /// row and gets none. It is still there, so a second unit beside it
-        /// is told from it by kind.</summary>
-        [Fact]
-        public void AUnitThatIgnoresARawHost_LightsNoRow_GetsNoRow_AndStillCounts()
-        {
-            Assert.Contains(((ushort)0x048D, (ushort)0xC195), PeripheralLinker.LampArrayIgnoresRawHost);
-            var keyboard = Row(A, InputDeviceType.Keyboard, Lenovo, 0xC197, Pc);
-            var legion = Lamp("legion", Pc, kind: 1, vid: Lenovo, pid: 0xC195);
-            Assert.True(PeripheralLinker.IgnoresRawHost(legion));
-            Assert.False(PeripheralLinker.IgnoresRawHost(legion with { ProductId = 0xC193 }));
-            // The same IDs in another family mean nothing.
-            Assert.False(PeripheralLinker.IgnoresRawHost(new DirectUnit(OutputFamily.RazerUnit, "r", Pc, Lenovo, 0xC195)));
-
-            var alone = Inputs(Presence(), null, legion);
-            Assert.Null(PeripheralLinker.Build(new[] { keyboard }, alone).For(A));
-            Assert.Empty(PeripheralLinker.Orphans(new[] { keyboard }, alone));
-            Assert.Empty(PeripheralLinker.Orphans(Array.Empty<LinkRow>(), alone));
-
-            // A chassis light beside it is one of two units, so its kind
-            // decides, and kind 7 goes to no row.
-            var chassis = Lamp("chassis", Pc, kind: 7, vid: Lenovo, pid: 0xC193);
-            var both = Inputs(Presence(), null, legion, chassis);
-            Assert.Null(PeripheralLinker.Build(new[] { keyboard }, both).For(A));
-            Assert.Equal(new[] { chassis }, PeripheralLinker.Orphans(new[] { keyboard }, both));
-
-            // A unit row made for it earlier links nothing.
-            var unitRow = new LinkRow(B, InputDeviceType.PeripheralLighting, 0x5046, PeripheralUnitRow.UnitProductId, Guid.Empty, null)
-            {
-                Unit = legion.Path,
-            };
-            Assert.Null(PeripheralLinker.Build(new[] { unitRow }, alone).For(B));
-        }
-
         // ── Units no row reaches ──
 
         [Fact]
@@ -1072,13 +1037,6 @@ namespace PadForge.Tests
             Assert.Equal(new[] { headset }, PeripheralLinker.Orphans(new[] { unitRow }, alone));
             // Another unit asleep is none of this row's business.
             Assert.False(PeripheralLinker.StillLooking(unitRow with { Unit = P(OutputFamily.LampArrayUnit, "strip") }, alone));
-
-            // A unit that ignores a raw host lights nothing awake or asleep,
-            // so nothing is waited for.
-            var legion = Lamp("legion", Pc, kind: 1, vid: Lenovo, pid: 0xC195) with { Asleep = true };
-            var builtIn = Row(A, InputDeviceType.Keyboard, Lenovo, 0xC197, Pc);
-            Assert.False(PeripheralLinker.StillLooking(builtIn, Inputs(Presence(), null, legion)));
-            Assert.False(PeripheralLinker.StillLooking(unitRow with { Unit = legion.Path }, Inputs(Presence(), null, legion)));
         }
 
         // ── Units that left ──
@@ -1198,15 +1156,13 @@ namespace PadForge.Tests
             // Another unit's being there is not its unit's.
             Assert.Equal(new[] { C }, PeripheralLinker.HeldRows(own, new[] { unitRow }, new[] { lamp }, 1002));
 
-            // A unit that ignores a raw host, or whose container is not
-            // known yet, was never a unit of any row, so it holds none.
-            var legion = Lamp("legion", Pc, kind: 1, vid: Lenovo, pid: 0xC195);
-            var builtIn = Row(A, InputDeviceType.Keyboard, Lenovo, 0xC197, Pc);
+            // A unit whose container is not known yet was never a unit of
+            // any row, so it holds none.
             var unknown = new DirectUnit(OutputFamily.RazerUnit, "razer", Guid.Empty, Razer, 0x0084);
             var razerMouse = Row(B, InputDeviceType.Mouse, Razer, 0x0084, Guid.Empty);
             var unlit = new Dictionary<Guid, long>();
-            Assert.Empty(PeripheralLinker.HeldRows(unlit, new[] { builtIn, razerMouse }, new[] { legion, unknown }, 1000));
-            Assert.Empty(PeripheralLinker.HeldRows(unlit, new[] { builtIn, razerMouse }, none, 1001));
+            Assert.Empty(PeripheralLinker.HeldRows(unlit, new[] { razerMouse }, new[] { unknown }, 1000));
+            Assert.Empty(PeripheralLinker.HeldRows(unlit, new[] { razerMouse }, none, 1001));
             Assert.Empty(unlit);
         }
 

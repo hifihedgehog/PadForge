@@ -1671,6 +1671,43 @@ namespace PadForge.Tests
             Assert.False(lit.SameAs(unlit));
         }
 
+        /// <summary>The Legion Pro 5 16IAX10's controller and LampArray
+        /// interface are two interfaces of one product, 048D:C195, and hid-rgb-ctl
+        /// issue 10 has that interface taking colors while the keyboard's own
+        /// effect stays on top. The row takes both paths as the Legion 7 Gen
+        /// 10's does: the stored picture shows if the frames do not.</summary>
+        [Fact]
+        public void TheLegion5Gen10sKeyboardRow_IsLitThroughItsControllerAndItsLampArray()
+        {
+            var pc = PeripheralLinker.LocalMachineContainer;
+            var model = HidLightingFamilies.Match(new HidCollectionInfo
+            {
+                VendorId = 0x048D, ProductId = LenovoLegionLighting.Legion5Gen10,
+                UsagePage = 0xFF89, Usage = 0x07, FeatureReportLength = 960,
+            });
+            var row = new LinkRow(A, InputDeviceType.Keyboard, 0x048D, 0xC195, pc, null);
+            var spectrum = new DirectUnit(OutputFamily.HidLightingUnit, "spectrum", pc, 0x048D, 0xC195)
+            {
+                LitBesideWindows = model.LitBesideWindows, LiveThroughLampArray = model.LiveThroughLampArray,
+            };
+            var lamp = new DirectUnit(OutputFamily.LampArrayUnit, "lamp", pc, 0x048D, 0xC195)
+            {
+                Kind = PeripheralLinker.LampArrayKindKeyboard,
+            };
+
+            var links = PeripheralLinker.Build(new[] { row }, Inputs(spectrum, lamp)).For(A);
+            Assert.Equal(new[] { spectrum.Path, lamp.Path }, links.Lighting);
+            Assert.False(links.WindowsLightsLampArray);
+            Assert.Empty(PeripheralLinker.Orphans(new[] { row }, Inputs(spectrum, lamp)));
+
+            // Where Windows lights the interface, the controller lights the
+            // keys alone, and the tab's line says so.
+            var lit = lamp with { WindowsLit = true };
+            links = PeripheralLinker.Build(new[] { row }, Inputs(spectrum, lit)).For(A);
+            Assert.Equal(new[] { spectrum.Path }, links.Lighting);
+            Assert.True(links.WindowsLightsLampArray);
+        }
+
         [Fact]
         public void OnlyTheLightingAndRumbleRows_TakeOutputAlone()
         {

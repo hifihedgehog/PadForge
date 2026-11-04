@@ -572,18 +572,6 @@ namespace PadForge.Common.Input.Peripherals
         /// the scan as long again on a slow PC.</summary>
         internal const int UnitGoneHoldMs = 5000;
 
-        /// <summary>LampArray units whose firmware takes a raw host's frames
-        /// and keeps painting its own effect over them, by vendor and product
-        /// ID. Such a unit is linked to no row and gets no row of its own,
-        /// since a color sent to it never shows. The Lenovo Legion Pro 5
-        /// 16IAX10's keyboard, 048D:C195, is the one on record: "color
-        /// writes accepted but firmware overrides" (hid-rgb-ctl issue 10).
-        /// The entry goes if a run on that model holds a color.</summary>
-        internal static readonly (ushort VendorId, ushort ProductId)[] LampArrayIgnoresRawHost =
-        {
-            (0x048D, 0xC195),
-        };
-
         public static LinkTable Build(IEnumerable<LinkRow> rows, HidppSnapshot hidpp, PeripheralPresence presence)
             => Build(rows, new LinkInputs(hidpp, presence));
 
@@ -1332,7 +1320,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>How many LampArray units each container holds, which
         /// decides whether a unit there is told from its neighbors by
-        /// kind. A unit that ignores a raw host still counts: it is there.</summary>
+        /// kind.</summary>
         internal static Dictionary<Guid, int> LampArraysPerContainer(IReadOnlyList<DirectUnit> direct)
         {
             var counts = new Dictionary<Guid, int>();
@@ -1361,27 +1349,15 @@ namespace PadForge.Common.Input.Peripherals
         /// keyboard. Kind 1 then goes to the keyboard rows, kind 2 to the
         /// mouse rows and any other kind to no row, since nothing else tells
         /// the units apart.</para>
-        ///
-        /// <para>A unit that ignores a raw host
-        /// (<see cref="LampArrayIgnoresRawHost"/>) lights no row.</para>
         /// </summary>
         internal static bool MatchesLampArray(DirectUnit unit, LinkRow row, IReadOnlyDictionary<Guid, int> lampArrays)
         {
             if (!IsLinkable(row.CapType) || row.VendorRow != null || row.Unit != null) return false;
             if (row.Container == Guid.Empty || unit.ContainerId != row.Container) return false;
-            if (IgnoresRawHost(unit)) return false;
             lampArrays.TryGetValue(unit.ContainerId, out int count);
             if (count <= 1) return unit.ContainerId != LocalMachineContainer || IsKeyboard(row.CapType);
             return unit.Kind == LampArrayKindKeyboard ? IsKeyboard(row.CapType)
                 : unit.Kind == LampArrayKindMouse && row.CapType == InputDeviceType.Mouse;
-        }
-
-        internal static bool IgnoresRawHost(DirectUnit unit)
-        {
-            if (unit.Family != OutputFamily.LampArrayUnit) return false;
-            foreach (var (vendorId, productId) in LampArrayIgnoresRawHost)
-                if (unit.VendorId == vendorId && unit.ProductId == productId) return true;
-            return false;
         }
 
         /// <summary>The unit a unit row stands for, as its backend lists
@@ -1402,10 +1378,10 @@ namespace PadForge.Common.Input.Peripherals
             return null;
         }
 
-        /// <summary>Whether a unit row's unit is there to light: awake, of
-        /// a family that lights, and not one that ignores a raw host.</summary>
+        /// <summary>Whether a unit row's unit is there to light: awake and
+        /// of a family that lights.</summary>
         private static bool LightsUnitRow(DirectUnit unit)
-            => unit.Family != OutputFamily.TouchSenseUnit && !unit.Asleep && !IgnoresRawHost(unit);
+            => unit.Family != OutputFamily.TouchSenseUnit && !unit.Asleep;
 
         /// <summary>Whether a HID++ unit can be lit on its own: the units a
         /// Logitech row is given a HID++ lighting path to
@@ -1447,7 +1423,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (asleepOnly && !unit.Asleep) continue;
                 if (row.Unit is OutputPath own)
                 {
-                    if (unit.Family == own.Family && unit.Key == own.Key && !IgnoresRawHost(unit)) return true;
+                    if (unit.Family == own.Family && unit.Key == own.Key) return true;
                 }
                 else if (unit.Family == OutputFamily.LampArrayUnit)
                 {
@@ -1526,7 +1502,7 @@ namespace PadForge.Common.Input.Peripherals
         /// (<see cref="Reaches(LinkRow, DirectUnit, IReadOnlyDictionary{Guid, int})"/>),
         /// whichever path that row ends up lit through. A unit whose
         /// container is not known yet is not one: its row may be a lookup
-        /// away. Neither is a LampArray unit that ignores a raw host.</para>
+        /// away.</para>
         ///
         /// <para>A unit is not one while a program that drives its device
         /// runs: its vendor's for a Logitech, Razer or SteelSeries device,
@@ -1575,8 +1551,7 @@ namespace PadForge.Common.Input.Peripherals
             var families = DeviceFamilies.Of(direct, hidpp, Build(deviceRows, inputs).ByDevice.Values);
             foreach (var unit in direct)
             {
-                if (unit == null || !GetsUnitRow(unit.Family) || unit.ContainerId == Guid.Empty || IgnoresRawHost(unit))
-                    continue;
+                if (unit == null || !GetsUnitRow(unit.Family) || unit.ContainerId == Guid.Empty) continue;
                 if (UnitProgramRuns(unit, presence) || families.Loses(unit)) continue;
                 // A receiver relaying a paired device stands for no row
                 // that reaches it (RelaysPaired).
@@ -1747,8 +1722,7 @@ namespace PadForge.Common.Input.Peripherals
 
             /// <summary>The census of the direct units and the HID++ units
             /// a row could be lit through on their own: of a family that
-            /// gets unit rows, in a known container, and, for a LampArray
-            /// unit, not one that ignores a raw host. <paramref name="linked"/>
+            /// gets unit rows, in a known container. <paramref name="linked"/>
             /// are the links of the rows other than unit rows, whose
             /// lighting paths name the units a device row lights.</summary>
             internal static DeviceFamilies Of(IReadOnlyList<DirectUnit> direct, HidppSnapshot hidpp,
@@ -1759,7 +1733,7 @@ namespace PadForge.Common.Input.Peripherals
                 var families = new DeviceFamilies();
                 foreach (var unit in direct)
                 {
-                    if (unit == null || !GetsUnitRow(unit.Family) || IgnoresRawHost(unit)) continue;
+                    if (unit == null || !GetsUnitRow(unit.Family)) continue;
                     families.Count(unit);
                 }
                 foreach (var unit in hidpp.Units)

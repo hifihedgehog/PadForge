@@ -228,6 +228,8 @@ namespace PadForge.Common.Input.Peripherals
             QmkLighting.Instance,
             ValkyrieKeyboardLighting.Instance,
             GaiZhongGaiLighting.Instance,
+            AnnePro2Lighting.Instance,
+            RedSquareKeyroxLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

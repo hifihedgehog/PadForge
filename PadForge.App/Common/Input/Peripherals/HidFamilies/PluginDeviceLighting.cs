@@ -51,8 +51,12 @@ namespace PadForge.Common.Input.Peripherals
         public ushort VendorId { get; init; }
         public ushort ProductId { get; init; }
 
-        /// <summary>The plugin, under signal-plugins/Plugins or in qmk-plugins.</summary>
+        /// <summary>The plugin, under signal-plugins/Plugins or in qmk-plugins, or the
+        /// file of the project <see cref="Source"/> names.</summary>
         public string Plugin { get; init; }
+
+        /// <summary>The project a row comes from, where it is not SignalRGB.</summary>
+        public string Source { get; init; }
 
         /// <summary>The interface, usage page and usage a plugin's Validate
         /// asks of the collection. <see cref="OpenRgbRegistration.Any"/>:
@@ -115,6 +119,10 @@ namespace PadForge.Common.Input.Peripherals
         /// runs at the renderer's own rate and names none, so this is
         /// PadForge's, unless the plugin waits after its frames.</summary>
         public int RepaintMs { get; init; } = PluginDeviceLighting.DefaultRepaintMs;
+
+        /// <summary>How long a picture has to stay the same before it goes out, for a
+        /// device whose every picture is stored.</summary>
+        public int HoldMs { get; init; }
 
         public IReadOnlyList<VendorProgram> Programs { get; init; } = Array.Empty<VendorProgram>();
 
@@ -241,6 +249,7 @@ namespace PadForge.Common.Input.Peripherals
             Map = MapOf(device, Array.Empty<int>()),
             Programs = device.Programs,
             RepaintMs = device.RepaintMs,
+            HoldMs = device.HoldMs,
             KeepAliveMs = device.KeepAliveMs,
             KeepAliveIdleMs = device.KeepAliveMs,
             Siblings = device.Siblings,
@@ -263,7 +272,7 @@ namespace PadForge.Common.Input.Peripherals
             return new Session(device, picture, siblings, variant);
         }
 
-        private static string SourceOf(PluginDevice device) => "SignalRGB " + device.Plugin;
+        private static string SourceOf(PluginDevice device) => (device.Source ?? "SignalRGB") + " " + device.Plugin;
 
         private static string ProductOf(PluginDevice device) => $"plugin:{device.VendorId:X4}:{device.ProductId:X4}";
 

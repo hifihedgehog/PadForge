@@ -442,8 +442,11 @@ namespace PadForge.Tests
             var write = Assert.Single(writes);
             Assert.Equal("10 30 20", Hex(write, 0x39, 3));
             Assert.Equal(0x02, write[0x35]);
-            // Every read is asked for with 05 11 first (lines 190-211).
-            Assert.All(rig.Log.Of('F').Where(f => f[0] == 0x05), f => Assert.Equal("05 11 00 00 00 00", Hex(f, 6)));
+            // Its firmware first (driver-sinowealth.c:1043-1056), and every read is
+            // asked for with 05 11 (lines 190-211).
+            var asked = rig.Log.Of('F').Where(f => f[0] == 0x05).ToList();
+            Assert.Equal("05 01 00 00 00 00", Hex(asked[0], 6));
+            Assert.All(asked.Skip(1), f => Assert.Equal("05 11 00 00 00 00", Hex(f, 6)));
             var record = Assert.Single(backend.Recorded);
             Assert.Equal(0x05, Assert.Single(record.Frames)[0x35]);
             rig.Log.Clear();

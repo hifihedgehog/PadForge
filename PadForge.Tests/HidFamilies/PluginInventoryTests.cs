@@ -54,8 +54,14 @@ namespace PadForge.Tests
         {
             if (PluginDeviceLighting.Devices.Any(d => d.VendorId == vendor && d.ProductId == product)) return true;
             if (OpenRgbRegistrations.All.Any(r => r.VendorId == vendor && r.ProductId == product)) return true;
+            if (SinowealthMouseLighting.LibratbagMice.Any(m => m.Vendor == vendor && m.Product == product)) return true;
             switch (vendor)
             {
+                case AsusLaptopAura.VendorId:
+                    return product == AsusLaptopAura.RearLightProduct || AsusLaptopAura.Products.Contains(product)
+                        || AsusAuraUsbLighting.GHelperProducts.ContainsKey(product);
+                case RoccatKoneEmpLighting.VendorId when product == RoccatKoneEmpLighting.ProductId:
+                    return true;
                 // HID++ asks each device for its lighting features, so no table
                 // of products bounds it.
                 case PeripheralLinker.LogitechVid:
@@ -95,6 +101,64 @@ namespace PadForge.Tests
                 .Select(row => $"{row.Vendor:X4}:{row.Product:X4} {row.Plugin}")
                 .ToList();
             Assert.True(missed.Count == 0, missed.Count + " products no family lights:\n" + string.Join("\n", missed));
+        }
+
+        /// <summary>What the other projects name that PadForge does not light, and why.</summary>
+        private static readonly Dictionary<(ushort Vendor, ushort Product), string> OthersLeftOut = new()
+        {
+            // ckb-next: usb_legacy.c drives these with vendor control transfers, which take a
+            // driver other than Windows' HID driver.
+            [(0x1B1C, 0x1B02)] = LegacyTransfers,
+            [(0x1B1C, 0x1B06)] = LegacyTransfers,
+            [(0x1B1C, 0x1B07)] = LegacyTransfers,
+            [(0x1B1C, 0x1B08)] = LegacyTransfers,
+            [(0x1B1C, 0x1B09)] = LegacyTransfers,
+            // HAS_NO_LIGHTS (usb.h:226).
+            [(0x1B1C, 0x1B41)] = "The K66 has no lights.",
+            // updatergb_wireless returns at once for these (led_wireless.c:43-46).
+            [(0x1B1C, 0x1B45)] = K63Wireless,
+            [(0x1B1C, 0x1B50)] = K63Wireless,
+            [(0x1B1C, 0x1B8C)] = K63Wireless,
+            [(0x1B1C, 0x1B8F)] = K63Wireless,
+            // A dot-matrix screen on the lid, and Slash, a bar of white segments: they show
+            // pictures and do not light a keyboard (asusctl rog-anime, rog-slash).
+            [(0x0B05, 0x193B)] = LidScreen,
+            [(0x0B05, 0x19B3)] = LidScreen,
+            // Behind the Omni receiver, as asus-rog-strix-impact3-wireless.device says.
+            [(0x0B05, 0x1AD7)] = "A mouse behind the Omni receiver, lit through 1ACE.",
+            // An external disk's light, through SCSI (asusctl rog-scsi).
+            [(0x0B05, 0x1932)] = "ROG Strix Arion, an external disk lit through SCSI commands.",
+        };
+
+        private const string LegacyTransfers = "Lit through vendor control transfers, which need a driver swap.";
+        private const string K63Wireless = "ckb-next has no way to color it: a TODO in led_wireless.c.";
+        private const string LidScreen = "A display on the lid, not a keyboard light.";
+
+        /// <summary>The other projects as the plugins above: alienfx-tools goes by vendor and
+        /// report length, and so does <see cref="AlienFxLighting"/>, so it names no products.</summary>
+        [Fact]
+        public void EveryProductOfTheOtherProjects_IsLit_OrLeftOutForAStatedReason()
+        {
+            var missed = OtherProjectsInventory.All
+                .Where(row => !OthersLeftOut.ContainsKey((row.Vendor, row.Product)) && !IsLit(row.Vendor, row.Product))
+                .Select(row => $"{row.Vendor:X4}:{row.Product:X4} {row.Source}")
+                .Distinct()
+                .ToList();
+            Assert.True(missed.Count == 0, missed.Count + " products no family lights:\n" + string.Join("\n", missed));
+        }
+
+        [Fact]
+        public void EveryOtherLeftOut_StillNamesAProduct()
+        {
+            foreach (var (vendor, product) in OthersLeftOut.Keys)
+                Assert.True(OtherProjectsInventory.All.Any(r => r.Vendor == vendor && r.Product == product), $"{vendor:X4}:{product:X4}");
+        }
+
+        [Fact]
+        public void TheOtherInventory_ReadsEachProject()
+        {
+            foreach (string source in new[] { "ckb-next", "libratbag", "g-helper", "asusctl" })
+                Assert.Contains(OtherProjectsInventory.All, r => r.Source.StartsWith(source, StringComparison.Ordinal));
         }
 
         [Fact]

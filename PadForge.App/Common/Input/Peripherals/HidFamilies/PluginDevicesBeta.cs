@@ -636,8 +636,11 @@ namespace PadForge.Common.Input.Peripherals
                 Answers = (io, wait) => OmniConnected(io, wait, Frame(64, 0x02, 0x12, 0x03)),
                 AskVariant = (io, _, wait) =>
                 {
-                    var board = BoardNamed(PluginLibraryTables.AsusOmniKeyboard, OmniModel(io, wait, Frame(64, 0x02, 0x12, 0x14, 0x02)));
-                    if (board == null) return null;
+                    // A serial the plugin's library does not list still numbers its keys the
+                    // same way: G-Helper's keyboards share one table of key codes
+                    // (Keyboard/AuraKeyboardLayouts.cs:11-33).
+                    var board = BoardNamed(PluginLibraryTables.AsusOmniKeyboard, OmniModel(io, wait, Frame(64, 0x02, 0x12, 0x14, 0x02)))
+                                ?? PluginLibraryTables.AsusOmniKeyboard[0];
                     var table = board.Table();
                     return VariantOf(table, colors => OmniKeyboardPicture(table.Indexes, colors));
                 },
@@ -657,9 +660,12 @@ namespace PadForge.Common.Input.Peripherals
                 Slots = 1,
                 Answers = (io, wait) => OmniConnected(io, wait, Frame(64, 0x03, 0x12, 0x00, 0x02)),
                 Start = new[] { PluginStep.Output(Frame(65, 0x03, 0x51, 0x28, 0x03, 0x00, 0x02, 0x64, 0x02)) },
+                // A mouse the library does not list takes one light. Every other Omni mouse
+                // G-Helper and libratbag name has at least the wheel (MouseFromOmniPid,
+                // PeripheralsProvider.cs:792-804, asus-rog-strix-impact3-wireless.device).
                 AskVariant = (io, _, wait) => OmniMice.TryGetValue(OmniModel(io, wait, Frame(64, 0x03, 0x12, 0x12, 0x01)) ?? "", out var lights)
                     ? new PluginVariant(lights, lights.Length, OmniMousePicture)
-                    : null,
+                    : new PluginVariant(new[] { Wheel(0) }, 1, OmniMousePicture),
             };
         }
 

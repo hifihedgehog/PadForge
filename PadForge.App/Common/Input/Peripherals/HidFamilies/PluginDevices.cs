@@ -16,7 +16,7 @@ namespace PadForge.Common.Input.Peripherals
                 .Concat(LogitechG19()).Concat(MountainMakalu()).Concat(CoolerMasterMat()).Concat(CorsairHeadsets())
                 .Concat(CorsairDarkCore()).Concat(CorsairNexus()).Concat(Roccat()).Concat(RoyalKludge())
                 .Concat(NzxtFunction()).Concat(Glorious()).Concat(SteelSeriesKeyboards()).Concat(StripControllers())
-                .Concat(QmkBoards()).Concat(Macropad()).Concat(RamaM65B()).Concat(BetaDevices()).Concat(HasteWirelessNewFirmware());
+                .Concat(QmkBoards()).Concat(Macropad()).Concat(RamaM65B()).Concat(BetaDevices()).Concat(HasteWirelessNewFirmware()).Concat(OtherProjectDevices());
 
         // ── Corsair headsets (Corsair/Modern_Corsair/Virtuoso_HeadSets, Corsair/Void_HeadSets) ──
 

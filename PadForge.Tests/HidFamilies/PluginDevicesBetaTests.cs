@@ -474,8 +474,10 @@ namespace PadForge.Tests
             var model = F.Instance.Match(CollectionOf(keyboard));
             Assert.NotNull(model.Begin(Answering(null, connected, serial), _ => { }));
             Assert.Null(model.Begin(Answering(null, new byte[65], new byte[65], new byte[65], new byte[65]), _ => { }));
-            Assert.Null(model.Begin(Answering(null, connected, Text("nobody")), _ => { }));
+            // A serial no library lists still takes the keys' shared numbers.
+            Assert.NotEmpty(model.Begin(Answering(null, connected, Text("nobody")), _ => { }).Map.Lights);
             var mouse = Device(0x0B05, 0x1ACE, 0xFF01);
+            Assert.Single(F.Instance.Match(CollectionOf(mouse)).Begin(Answering(null, connected, Text("nobody")), _ => { }).Map.Lights);
             var mouseSerial = new byte[65];
             Encoding.ASCII.GetBytes("SAMPGDD00EAH").CopyTo(mouseSerial, 5);
             var session = F.Instance.Match(CollectionOf(mouse)).Begin(Answering(null, connected, mouseSerial), _ => { });

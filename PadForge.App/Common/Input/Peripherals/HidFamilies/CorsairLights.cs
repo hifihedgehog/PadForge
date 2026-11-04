@@ -62,6 +62,10 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The interface its plugin writes to.</summary>
         public int OwnInterface { get; init; } = 1;
+
+        /// <summary>A keyboard with red LEDs only, which opens its own lighting resource
+        /// and takes one byte per LED (ckb-next device_bragi.c:83-86, led_bragi.c:94-99).</summary>
+        public bool Monochrome { get; init; }
     }
 
     /// <summary>

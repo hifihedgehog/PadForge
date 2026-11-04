@@ -133,6 +133,9 @@ namespace PadForge.Common.Input.Peripherals
         /// lists (Corsair_Bragi_Device.js, ProductIDList).</summary>
         internal const ushort LaptopReceiver = 0x0D01;
 
+        /// <summary>BRAGI_RES_LIGHTING_MONOCHROME (ckb-next bragi_proto.h:61).</summary>
+        internal const byte LightCtrlMonochrome = 0x10;
+
         /// <summary>CORSAIR_K57_RGB_WIRED_PID (CorsairPeripheralV2Devices.h:72).</summary>
         internal const ushort K57Wired = 0x1B6E;
 
@@ -210,6 +213,7 @@ namespace PadForge.Common.Input.Peripherals
         internal static readonly Lazy<CorsairV2Device[]> PluginDevices = new(() => PluginCorsairTables.Devices
             .Where(d => !IsReceiver(d.Product) && CorsairLights.V2Devices.All(v => v.ProductId != d.Product))
             .Select(PluginDevice)
+            .Append(CorsairLights.K60RgbProDevice with { Name = "Corsair K60 PRO", ProductId = 0x1B83, Monochrome = true })
             .ToArray());
 
         /// <summary>The K70 Pro's ID OpenRGB does not list takes its table, as the
@@ -518,7 +522,8 @@ namespace PadForge.Common.Input.Peripherals
             link.Read(link.Buffer(), AnswerMs);
             var device = DeviceOf(pid);
             if (device == null) return null;
-            if (link.LightCtrl == LightCtrl2 && !KeepsResource22(pid))
+            if (device.Monochrome) link.LightCtrl = LightCtrlMonochrome;
+            else if (link.LightCtrl == LightCtrl2 && !KeepsResource22(pid))
             {
                 int result = link.Start(0);
                 if (result < 0) return null;
@@ -565,7 +570,9 @@ namespace PadForge.Common.Input.Peripherals
 
             protected override bool Send(IHidReportChannel io, Action<int> wait, IReadOnlyList<LightInfo> lights,
                 IReadOnlyList<int> colors)
-                => _link.SendData(PictureData(Triplets, BufferLength, lights, colors));
+                => _link.SendData(Device.Monochrome
+                    ? PictureData(false, BufferLength, lights, colors).Take(BufferLength).ToArray()
+                    : PictureData(Triplets, BufferLength, lights, colors));
 
             /// <summary>Hardware render mode and its answer (the
             /// destructor's SetRenderMode, lines 140-153).</summary>

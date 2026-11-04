@@ -138,7 +138,40 @@ namespace PadForge.Common.Input.Peripherals
             foreach (var r in OpenRgbRegistrations.Match(SinowealthLighting.FamilyName, collection))
                 if (r.Detector is MouseDetector or XenonDetector)
                     return r;
+            foreach (var (vendor, product, name) in LibratbagMice)
+                if (collection.VendorId == vendor && collection.ProductId == product)
+                    return new OpenRgbRegistration(SinowealthLighting.FamilyName, name, MouseDetector, "libratbag", OpenRgbTransport.Hid,
+                        vendor, product, OpenRgbRegistration.Any, VendorPage, OpenRgbRegistration.Any, OpenRgbRegistration.Any, true, false, "libratbag");
             return null;
+        }
+
+        /// <summary>Mice on the same configuration report that only libratbag lists, its
+        /// sinowealth-0027, sinowealth-0051 and glorious-model-o-eternal device files. The
+        /// offsets of its sinowealth_config_report are OpenRGB's: rgb_effect at 0x35,
+        /// single_mode at 0x38 and single_color at 0x39 (driver-sinowealth.h).</summary>
+        internal static readonly (ushort Vendor, ushort Product, string Name)[] LibratbagMice =
+        {
+            (0x258A, 0x0027, "DreamMachines DM5 Blink, Genesis Xenon 770, Glorious Model O"),
+            (0x258A, 0x0051, "T-Dagger Imperial"),
+            (0x3794, 0xA000, "Glorious Model O Eternal"),
+        };
+
+        /// <summary>libratbag's firmware versions with LedType=RGB, where OpenRGB's Static
+        /// mode sends red, blue, green as the Glorious mice want it.</summary>
+        internal static readonly HashSet<string> RgbFirmware = new(StringComparer.Ordinal) { "3106", "3110", "2642", "V127", "V287" };
+
+        /// <summary>The firmware libratbag lists with LedType=None: the G-Wolves Hati HT-M.</summary>
+        internal const string UnlitFirmware = "V161";
+
+        /// <summary>sinowealth_get_fw_version (driver-sinowealth.c:1043-1056): 05 01, then
+        /// the same report's four characters from byte 2. Null with no answer.</summary>
+        internal static string ReadFirmware(Channels pair, Action<int> wait)
+        {
+            if (!pair.Command.SetFeature(new byte[] { 0x05, 0x01, 0x00, 0x00, 0x00, 0x00 })) return null;
+            wait?.Invoke(10);
+            var answer = new byte[Math.Max(CommandReportSize, pair.Command.FeatureReportLength)];
+            if (!pair.Command.GetFeature(0x05, answer) || answer[1] != 0x01) return null;
+            return System.Text.Encoding.ASCII.GetString(answer, 2, 4);
         }
 
         public IReadOnlyList<OwnDevice> Look()
@@ -308,7 +341,7 @@ namespace PadForge.Common.Input.Peripherals
         /// for a color the Static mode, the brightness and red, blue and
         /// green (SinowealthController.cpp:91-121). The rest of the 520
         /// bytes is 0.</summary>
-        internal static byte[] GloriousWrite(byte[] configuration, int? rgb)
+        internal static byte[] GloriousWrite(byte[] configuration, int? rgb, bool rgbOrder = false)
         {
             var report = new byte[ConfigReportSize];
             Array.Copy(configuration, report, Math.Min(ConfigSize, configuration.Length));
@@ -319,8 +352,8 @@ namespace PadForge.Common.Input.Peripherals
                 report[0x35] = GloriousStatic;
                 report[0x38] = (byte)((GloriousBrightnessNormal & 0xF) << 4);
                 report[0x39] = (byte)(color >> 16);
-                report[0x3A] = (byte)color;
-                report[0x3B] = (byte)(color >> 8);
+                report[0x3A] = (byte)(rgbOrder ? color >> 8 : color);
+                report[0x3B] = (byte)(rgbOrder ? color : color >> 8);
             }
             return report;
         }
@@ -370,6 +403,13 @@ namespace PadForge.Common.Input.Peripherals
 
         private static HidLightingSession Begin(Channels pair, Action<int> wait, bool xenon, string product)
         {
+            bool rgbOrder = false;
+            if (!xenon)
+            {
+                string firmware = ReadFirmware(pair, wait);
+                if (firmware == UnlitFirmware) return null;
+                rgbOrder = firmware != null && RgbFirmware.Contains(firmware);
+            }
             var read = xenon ? ReadXenonReport(pair.Data) : ReadGloriousConfiguration(pair);
             if (read == null) return null;
             int length = xenon ? XenonReportSize : ConfigSize;
@@ -382,20 +422,21 @@ namespace PadForge.Common.Input.Peripherals
                 original = new byte[length];
                 Array.Copy(read, original, length);
             }
-            return new Session(pair, xenon, product, original);
+            return new Session(pair, xenon, product, original, rgbOrder);
         }
 
         internal sealed class Session : HidLightingSession
         {
             private readonly Channels _pair;
-            private readonly bool _xenon;
+            private readonly bool _xenon, _rgbOrder;
             private readonly string _product;
             private readonly byte[][] _crash;
 
-            public Session(Channels pair, bool xenon, string product, byte[] original)
+            public Session(Channels pair, bool xenon, string product, byte[] original, bool rgbOrder = false)
             {
                 _pair = pair;
                 _xenon = xenon;
+                _rgbOrder = rgbOrder;
                 _product = product;
                 Original = original;
                 _crash = new[] { Restore() };
@@ -434,7 +475,7 @@ namespace PadForge.Common.Input.Peripherals
                 }
                 var configuration = ReadGloriousConfiguration(_pair);
                 if (configuration == null) return HidLightingPaint.Failed;
-                if (!_pair.Data.SetFeature(GloriousWrite(configuration, rgb))) return HidLightingPaint.Failed;
+                if (!_pair.Data.SetFeature(GloriousWrite(configuration, rgb, _rgbOrder))) return HidLightingPaint.Failed;
                 wait(GloriousWaitMs);
                 return HidLightingPaint.Sent;
             }

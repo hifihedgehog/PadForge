@@ -164,9 +164,15 @@ namespace PadForge.Common.Input.Peripherals
         /// (Corsair_K65_Mini_Keyboard.js:3), the Strafe's
         /// (Corsair_Strafe_Keyboard.js:3), the Sabre RGB's
         /// (Corsair_Bragi_Device.js:936-937), and the K70 MKII Rapidfire Red's
-        /// (Corsair_Legacy_Keyboard.js:225).</summary>
+        /// (Corsair_Legacy_Keyboard.js:225). ckb-next (src/daemon/usb.h, led_keyboard.c and
+        /// led_mouse.c) drives three more with the same frames: the K63's non-RGB model,
+        /// red-only as OpenRGB's K68 RED is, its Sabre with the laser sensor, and the old
+        /// Katar, whose one light is a zone of the same mouse frame.</summary>
         internal static readonly Dictionary<ushort, ushort> OtherIds = new()
         {
+            [0x1B40] = 0x1B3F,
+            [0x1B19] = 0x1B2F,
+            [0x1B22] = 0x1B2F,
             [0x1BCF] = 0x1BAF,
             [0x1BC3] = 0x1BAF,
             [0x1BBD] = 0x1BAF,

@@ -317,6 +317,7 @@ namespace PadForge.Common.Input.Peripherals
     {
         public static readonly IReadOnlyList<IHidLightingFamily> All = new IHidLightingFamily[]
         {
+            RoccatKoneEmpLighting.Instance,
             LenovoLegionLighting.Instance,
             LenovoLegionUsbLighting.Instance,
             Lenovo4ZoneLighting.Instance,
@@ -429,6 +430,7 @@ namespace PadForge.Common.Input.Peripherals
             RazerArgbLighting.Instance,
             RazerChargingPadLighting.Instance,
             PluginDeviceLighting.Instance,
+            AlienFxLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

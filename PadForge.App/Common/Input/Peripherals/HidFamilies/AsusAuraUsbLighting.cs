@@ -83,18 +83,39 @@ namespace PadForge.Common.Input.Peripherals
 
         private readonly ConcurrentDictionary<string, HidLightingModel> _models = new(StringComparer.Ordinal);
 
+        /// <summary>Products OpenRGB has no row for that G-Helper treats as a model it does
+        /// have: the same class of keyboard with the same layout
+        /// (app/Peripherals/Keyboard/Models/Azoth.cs:162-230, StrixScopeRX.cs:3-38 and
+        /// TUFK3.cs:141-165), and the Keris Wireless's EVA edition
+        /// (Mouse/Models/KerisWireless.cs).</summary>
+        internal static readonly IReadOnlyDictionary<ushort, (ushort Product, string Name)> GHelperProducts =
+            new Dictionary<ushort, (ushort, string)>
+            {
+                [0x1B3F] = (0x1A83, "ASUS ROG Azoth Extreme"),
+                [0x1CEF] = (0x1A83, "ASUS ROG Azoth Extreme SE"),
+                [0x1C24] = (0x1A83, "ASUS ROG Azoth X"),
+                [0x1C25] = (0x1A85, "ASUS ROG Azoth X"),
+                [0x1A07] = (0x1A05, "ASUS ROG Strix Scope RX TKL Wireless Deluxe"),
+                [0x1C60] = (0x1B30, "ASUS TUF Gaming K3 GEN II Miku"),
+                [0x1B3A] = (0x1B30, "ASUS TX 98"),
+                [0x1A57] = (0x195E, "ASUS ROG Keris Wireless EVA"),
+            };
+
         public HidLightingModel Match(HidCollectionInfo collection)
         {
             if (collection == null || collection.VendorId != VendorId) return null;
-            var found = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
+            bool other = GHelperProducts.TryGetValue(collection.ProductId, out var same);
+            ushort product = other ? same.Product : collection.ProductId;
+            var found = OpenRgbRegistrations.Match(OpenRgbFamily, other ? collection with { ProductId = product } : collection);
             if (found.Count == 0) return null;
             var registration = found[0];
             if (!Carries(registration, collection)) return null;
+            if (other) registration = registration with { Name = same.Name };
             // A Claymore's region is its release number's, so its models
             // are one per release number.
-            int release = collection.ProductId == Claymore ? collection.ReleaseNumber : 0;
+            int release = product == Claymore ? collection.ReleaseNumber : 0;
             return _models.GetOrAdd(registration.Source + ":" + collection.ProductId.ToString("X4") + ":" + release.ToString("X4"),
-                _ => ModelFor(registration, collection.ProductId, release));
+                _ => ModelFor(registration, product, release));
         }
 
         /// <summary>Whether the collection has the reports the

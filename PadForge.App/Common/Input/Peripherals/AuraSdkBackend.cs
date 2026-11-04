@@ -17,7 +17,9 @@ namespace PadForge.Common.Input.Peripherals
     /// gives every one back (AsusDeviceProvider.cs:65 and 103), so while any
     /// path is claimed the SDK holds them all. A path nobody claims while
     /// another is claimed keeps the last picture it was sent, since the SDK
-    /// has no call that hands one device back. When the last claim goes,
+    /// has no call that hands one device back, and a kind no claim has
+    /// painted in the session shows whatever SwitchMode leaves on it, which
+    /// no reference records. When the last claim goes,
     /// the program stops or a call fails, ReleaseControl hands every device
     /// back to Armoury Crate's own lighting.</para>
     ///

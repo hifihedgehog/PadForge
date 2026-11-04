@@ -144,7 +144,7 @@ namespace PadForge.Tests
                 new AuraDevice(0, AuraLights.DramRgb, "DRAM 1", 8, Array.Empty<ushort>()),
                 new AuraDevice(1, AuraLights.DramRgb, "DRAM 2", 5, Array.Empty<ushort>()),
                 new AuraDevice(2, AuraLights.MbRgb, "Mainboard", 1, Array.Empty<ushort>()),
-                new AuraDevice(3, AuraLights.KeyboardRgb, "Claymore", 2, new ushort[] { 0x1E }),
+                new AuraDevice(3, AuraLights.KeyboardRgb, "Claymore", 6, new ushort[] { 0x1E }),
                 new AuraDevice(4, AuraLights.NotebookKeyboard4ZoneRgb, "TUF", 4, Array.Empty<ushort>()),
             };
             var dram = AuraLights.MapFor("dram", devices);

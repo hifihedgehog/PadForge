@@ -33,6 +33,13 @@ namespace PadForge.Common.Input.Peripherals
             // The OpenRGB families of the shared HID lighting worker (#557).
             Add(backends, OutputFamily.HidLightingUnit, () => new HidLightingBackend());
 
+            // The ASUS Aura SDK while Armoury Crate runs (#557). Its
+            // hand-back waits at most 250 ms for its own worker.
+            Add(backends, OutputFamily.AuraSdkType, () => new AuraSdkBackend());
+
+            // The MSI Mystic Light SDK while Mystic Light runs (#557).
+            Add(backends, OutputFamily.MysticLightType, () => new MysticLightBackend());
+
             // Razer. Last of the lighting families: its hand-back can wait
             // on a lock other tools share.
             Add(backends, OutputFamily.RazerUnit, () => new RazerDirectBackend());
@@ -40,12 +47,6 @@ namespace PadForge.Common.Input.Peripherals
             // TouchSense. Rumble only, so the crash path's lighting pass
             // asks nothing of it.
             Add(backends, OutputFamily.TouchSenseUnit, () => new TouchSenseBackend());
-
-            // The ASUS Aura SDK while Armoury Crate runs (#557).
-            Add(backends, OutputFamily.AuraSdkType, () => new AuraSdkBackend());
-
-            // The MSI Mystic Light SDK while Mystic Light runs (#557).
-            Add(backends, OutputFamily.MysticLightType, () => new MysticLightBackend());
 
             return backends;
         }

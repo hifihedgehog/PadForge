@@ -368,6 +368,7 @@ namespace PadForge.Common.Input.Peripherals
             HyperXMicrophoneV2Lighting.Instance,
             RedragonMouseLighting.Instance,
             AresonLighting.Instance,
+            InstantMouseLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

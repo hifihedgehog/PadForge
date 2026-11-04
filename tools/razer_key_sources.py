@@ -9,18 +9,20 @@ WHAT IT READS, each at a pinned commit with git show:
   input key name to the cells, row and column, its light sits in.
 - Polychromatic's device maps (data/devicemaps/maps.json and the SVG each
   names): a drawing per board whose key groups carry the id x<column>-y<row>
-  and the keycap's label. Polychromatic chooses a map by its name, not by
-  product ID, so a map is taken for a product only where its name is the
-  product's name, and only a map drawn for the US layout or for no locale.
+  and the keycap's label. Polychromatic ties no map to a product ID: its
+  editor lets the user pick one. A map is taken for a product where its name
+  is the product's name, or where the commit that added the map names the
+  models it was drawn for (POLY_MODELS), and only a map drawn for the US
+  layout or for no locale.
 
 WHAT IT GIVES. For a product and the frame it is painted with: the keys at
 each cell, HID usages on the Keyboard/Keypad page (HID Usage Tables 1.6,
 chapter 10) or a label, the sources that name them, and why a source was
 not used. A source is used only where its matrix is the frame's size and,
 where OpenRGB lists the board, OpenRGB's keyboard zone's size, and only where
-every cell it names lies in the frame. Two sources that both fit must name
-the same key at every cell both name, or neither is used; a cell only one of
-them names takes that one's key.
+every cell it names lies in the frame. Where two sources fit, a cell both
+name takes their key only where they name the same one, and is left unnamed
+where they differ; a cell only one of them names takes that one's key.
 """
 import json
 import re
@@ -71,6 +73,21 @@ POLY_USAGE = {
 # the next the right one, the order every keyboard has them in.
 POLY_SIDED = {"shift": (0xE1, 0xE5), "ctrl": (0xE0, 0xE4), "alt": (0xE2, 0xE6)}
 POLY_LABEL = {"fn": "Fn"}
+
+# The models a Polychromatic map was drawn for, as the commit that added it
+# says (polychromatic git log at cd024b2). A Pro is left out of the Blade
+# map: Polychromatic draws the Blade Pro (2019) on a map of its own
+# (data/devicemaps/blade_pro_2019_de_DE.svg).
+POLY_MODELS = {
+    # bce7798, "Add device map for Razer Blade (2018)": "Razer Blades between
+    # 2018 and 2019 used this design. Not the same as Razer Blade Stealth."
+    "blade_2018_en_US.svg": ("bce7798", {0x0233, 0x023A, 0x023B, 0x0240, 0x0245, 0x024B, 0x024D}),
+    # bb9e51a, "Add device map for Razer Blade Stealth (2016)": "This keyboard
+    # design is used on Blade Stealth's in 2016 and 2017."
+    "blade_stealth_2016_en_US.svg": ("bb9e51a", {0x0205, 0x0220, 0x022D, 0x0232}),
+    # c12135c, "Add device map for Razer Blade 2021 Advanced (#377)".
+    "blade_advanced_2021_en_US.svg": ("c12135c", {0x026D, 0x0276}),
+}
 
 
 def _show(repo, pin, path):
@@ -161,12 +178,16 @@ def name_keys(pid, name, rows, cols, zone, uch_repo, poly_repo, uch_devices, pol
             reasons.append("%s names cells outside its own %dx%d" % (where, rows, cols))
         elif keys:
             candidates.append((where, keys))
-    found = [(n, m) for n, m in poly_maps.items() if n == name and m.get("locale") in (None, "en_US")]
+    found = [(n, m) for n, m in poly_maps.items()
+             if (n == name or pid in POLY_MODELS.get(m["filename"], ("", ()))[1])
+             and m.get("locale") in (None, "en_US")]
     if not found:
-        reasons.append("Polychromatic has no US map named %r" % name)
+        reasons.append("Polychromatic has no US map named %r or drawn for it" % name)
     for map_name, spec in found:
         keys = polychromatic_keys(poly_repo, spec["filename"])
         where = "Polychromatic %s %s" % (spec["filename"], POLYCHROMATIC_PIN)
+        if map_name != name:
+            where += " (drawn for it, commit %s)" % POLY_MODELS[spec["filename"]][0]
         if (spec["rows"], spec["cols"]) != (rows, cols) or (zone and tuple(zone) != (rows, cols)):
             reasons.append("%s is %dx%d" % (where, spec["rows"], spec["cols"]))
         elif any(r >= rows or c >= cols for r, c in keys):
@@ -178,9 +199,9 @@ def name_keys(pid, name, rows, cols, zone, uch_repo, poly_repo, uch_devices, pol
     if len(candidates) == 1:
         return candidates[0][1], "%s, one source (%s)" % (candidates[0][0], "; ".join(reasons))
     (wa, ka), (wb, kb) = candidates[:2]
-    for cell in set(ka) & set(kb):
-        if ka[cell] != kb[cell]:
-            return None, "%s and %s disagree at row %d column %d" % (wa, wb, cell[0], cell[1])
-    merged = dict(ka)
-    merged.update(kb)
-    return merged, "%s and %s, which agree" % (wa, wb)
+    differ = sorted(cell for cell in set(ka) & set(kb) if ka[cell] != kb[cell])
+    merged = {cell: key for cell, key in {**ka, **kb}.items() if cell not in differ}
+    if not differ:
+        return merged, "%s and %s, which agree" % (wa, wb)
+    return merged, "%s and %s, which agree but at %s, left unnamed" % (
+        wa, wb, ", ".join("row %d column %d" % cell for cell in differ))

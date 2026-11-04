@@ -498,13 +498,13 @@ namespace PadForge.Tests
 
         /// <summary>A keyboard OpenRGB lists with no layout, and one only
         /// openrazer lists, have a key at every cell of the zone, whose key no
-        /// source names, for Map Key Lights: a Blade Stealth (Late 2017) its
-        /// 6 by 16 (RazerDevices.cpp, zone Keyboard), a Blade 18 (2025)
+        /// source names, for Map Key Lights: a Blade Stealth (2019) its 6 by
+        /// 16 (RazerDevices.cpp, zone Keyboard), a Blade 18 (2025)
         /// openrazer's 6 by 19.</summary>
         [Fact]
         public void AKeyboardNoLayoutNames_HasAnUnnamedKeyAtEveryCell()
         {
-            var blade = RazerLightTable.Map(0x0232);
+            var blade = RazerLightTable.Map(0x0239);
             Assert.Equal(96, blade.UnnamedKeyCount);
             Assert.Equal(96, blade.Lights.Count);
             var newest = RazerLightTable.Map(0x02C7);
@@ -661,25 +661,53 @@ namespace PadForge.Tests
         /// <summary>
         /// A Blade 15 (2018), which OpenRGB lists with no layout, takes its
         /// keys from uchroma's own key_mapping for it (uchroma
-        /// uchroma/server/data/laptop.yaml:571-656 at ab05c7f), the one source
-        /// whose 6 by 16 matrix fits OpenRGB's zone: Escape at row 0 column 1,
-        /// Q at row 2 column 2, Backspace over two cells, and at row 5 column
-        /// 3, where uchroma lists both, the first, left Meta. Cells uchroma
-        /// names nothing stay keys for Map Key Lights.
+        /// uchroma/server/data/laptop.yaml:571-656 at ab05c7f) and from
+        /// Polychromatic's map drawn for the Blades of 2018 and 2019
+        /// (blade_2018_en_US.svg, commit bce7798), both 6 by 16 as OpenRGB's
+        /// zone is. Where they name the same key it is that key: Escape at
+        /// row 0 column 1, Q at row 2 column 2. A key only uchroma names is
+        /// uchroma's: Backspace over two cells, and at row 5 column 3, where
+        /// uchroma lists both, the first, left Meta. Fn at row 5 column 2 is
+        /// Polychromatic's alone. Where they differ, at row 5 columns 5, 9 and
+        /// 15 (Space against left Alt, Space against right Alt, right Meta
+        /// against Fn), the key is left for Map Key Lights, as is every cell
+        /// neither names.
         /// </summary>
         [Fact]
-        public void ABlade15Of2018_TakesItsKeysFromUchroma()
+        public void ABlade15Of2018_TakesTheKeysUchromaAndPolychromaticAgreeOn()
         {
             var map = RazerLightTable.Map(0x0233);
-            ushort UsageAt(int row, int col) => map.Lights.Single(l => l.Address == row * 16 + col).Usage;
-            Assert.Equal((ushort)0x29, UsageAt(0, 1));
-            Assert.Equal((ushort)0x14, UsageAt(2, 2));
-            Assert.Equal(((ushort)0x2A, (ushort)0x2A), (UsageAt(1, 14), UsageAt(1, 15)));
-            Assert.Equal((ushort)0xE3, UsageAt(5, 3));
-            Assert.Equal((ushort)0x4F, UsageAt(5, 14));
+            LightInfo At(int row, int col) => map.Lights.Single(l => l.Address == row * 16 + col);
+            Assert.Equal((ushort)0x29, At(0, 1).Usage);
+            Assert.Equal((ushort)0x14, At(2, 2).Usage);
+            Assert.Equal(((ushort)0x2A, (ushort)0x2A), (At(1, 14).Usage, At(1, 15).Usage));
+            Assert.Equal((ushort)0xE3, At(5, 3).Usage);
+            Assert.Equal((ushort)0x4F, At(5, 14).Usage);
+            Assert.Equal((LightKind.Other, LightLabel.Fn), (At(5, 2).Kind, At(5, 2).Label));
+            Assert.All(new[] { At(5, 5), At(5, 9), At(5, 15), At(0, 0) },
+                l => Assert.Equal((LightKind.Key, (ushort)0, LightLabel.None), (l.Kind, l.Usage, l.Label)));
             Assert.Equal(96, map.Lights.Count);
-            Assert.Equal(0, UsageAt(0, 0));
             Assert.Contains("uchroma", map.Source);
+            Assert.Contains("bce7798", map.Source);
+            Assert.Contains("left unnamed", map.Source);
+        }
+
+        /// <summary>A Blade 15 (2018) Mercury, which uchroma gives its
+        /// parent's mapping that names cells outside its 6 by 16, takes its
+        /// keys from Polychromatic's map alone, the one drawn for the Blades
+        /// of 2018 and 2019 (commit bce7798), which fits its frame and OpenRGB's
+        /// zone: the extra Fn at row 5 column 15 that map was drawn for.</summary>
+        [Fact]
+        public void ABlade15Mercury_TakesItsKeysFromTheMapDrawnForItsYears()
+        {
+            var map = RazerLightTable.Map(0x0240);
+            LightInfo At(int row, int col) => map.Lights.Single(l => l.Address == row * 16 + col);
+            Assert.Equal((ushort)0x29, At(0, 1).Usage);
+            Assert.Equal((LightKind.Other, LightLabel.Fn), (At(5, 15).Kind, At(5, 15).Label));
+            Assert.Equal(((ushort)0xE1, (ushort)0xE5), (At(4, 1).Usage, At(4, 15).Usage));
+            Assert.Equal(96, map.Lights.Count);
+            Assert.Contains("Polychromatic blade_2018_en_US.svg", map.Source);
+            Assert.Contains("one source", map.Source);
         }
 
         /// <summary>A Blade 16 (2023), which only openrazer lists, takes its
@@ -702,17 +730,21 @@ namespace PadForge.Tests
         }
 
         /// <summary>A board no second source fits keeps a key at every cell
-        /// that no source names: a Blade Stealth (Late 2017), which neither
-        /// uchroma nor Polychromatic lists, and a Blade 15 (2018) Mercury,
-        /// whose uchroma entry takes its parent's mapping, which names cells
-        /// outside its 6 by 16 matrix.</summary>
+        /// that no source names: a Blade Stealth (2019), whose uchroma entry
+        /// takes its parent's mapping, which names cells outside its 6 by 16
+        /// matrix, and for which Polychromatic draws no map (its Stealth map
+        /// is for 2016 and 2017, commit bb9e51a), and a Blade 14 (2024),
+        /// which neither lists.</summary>
         [Fact]
         public void ABoardNoSecondSourceFits_KeepsItsKeysUnnamed()
         {
-            Assert.Equal(96, RazerLightTable.Map(0x0232).UnnamedKeyCount);
-            Assert.Equal(96, RazerLightTable.Map(0x0240).UnnamedKeyCount);
-            Assert.Empty(RazerLightTable.Find(0x0232).Lights);
-            Assert.Empty(RazerLightTable.Find(0x0240).Lights);
+            Assert.Equal(96, RazerLightTable.Map(0x0239).UnnamedKeyCount);
+            Assert.All(new ushort[] { 0x0239, 0x02B6 }, pid =>
+            {
+                var row = RazerLightTable.Find(pid);
+                Assert.Empty(row.Lights);
+                Assert.Equal(row.KeyRows * row.KeyColumns, RazerLightTable.Map(pid).UnnamedKeyCount);
+            });
         }
 
         /// <summary>Every light map's lights sit where its frames reach:

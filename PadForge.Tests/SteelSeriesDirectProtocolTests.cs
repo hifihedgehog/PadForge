@@ -677,6 +677,22 @@ namespace PadForge.Tests
             [SteelSeriesFamily.Apex3Tkl] = new byte[] { 0x21, 0x22 },
             [SteelSeriesFamily.ApexM750] = new byte[] { 0x00 },
             [SteelSeriesFamily.Apex2013] = new byte[] { 0x07 },
+            [SteelSeriesFamily.Arctis5] = new byte[] { 0x81, 0x8A },
+            [SteelSeriesFamily.ArctisNova3] = new byte[] { 0xAA, 0xA5, 0x09, 0xA3 },
+            [SteelSeriesFamily.Siberia350] = new byte[] { 0x00 },
+            [SteelSeriesFamily.QckPrismCloth] = new byte[] { 0x0E, 0x0D },
+        };
+
+        /// <summary>The report ID each family's frames carry: 06 on the Arctis
+        /// headsets (OpenRGB SteelSeriesArctis5Controller.h:159,
+        /// SteelSeriesArctisNova3Controller.h:19), 01 on the Siberia 350
+        /// (SteelSeriesSiberiaController.cpp:21-22), none, 00, on every
+        /// other.</summary>
+        private static byte ReportIdOf(SteelSeriesFamily family) => family switch
+        {
+            SteelSeriesFamily.Arctis5 or SteelSeriesFamily.ArctisNova3 => 0x06,
+            SteelSeriesFamily.Siberia350 => 0x01,
+            _ => 0x00,
         };
 
         /// <summary>Every frame every family can build, on either firmware
@@ -714,7 +730,12 @@ namespace PadForge.Tests
         /// 08 erases a flash page on the Rival 3 Gen 2 firmware (rival_re
         /// input/decomp.c:3868-3885) and is the Rival 300's color alone,
         /// 0A is the Apex 3's brightness and the Rival 3's color alone, and
-        /// 61 is the screen image of an Apex Pro Gen 3.</summary>
+        /// 61 is the screen image of an Apex Pro Gen 3. The headsets'
+        /// reports carry a report ID of their own, so their bytes are in
+        /// another numbering, and only their own lists hold them. The Arctis
+        /// Nova 3's 09 is its right LED's apply report, which OpenRGB also
+        /// saves with (SteelSeriesArctisNova3Controller.cpp:84-96 and
+        /// 112-115), the one exception the protocol's comment names.</summary>
         [Fact]
         public void NoBuilderEverProducesASaveAResetOrASetting()
         {
@@ -724,9 +745,10 @@ namespace PadForge.Tests
             {
                 frames++;
                 Assert.True(frame.Buffer.Length >= 2, $"{info.Family} {part}");
-                Assert.Equal(0x00, frame.Buffer[0]);
+                Assert.Equal(ReportIdOf(info.Family), frame.Buffer[0]);
                 Assert.Equal(frame.Buffer[1], frame.Command);
-                Assert.False(never.Contains(frame.Command), $"{info.Family} {part} sends {frame.Command:X2}");
+                if (frame.Buffer[0] == 0x00)
+                    Assert.False(never.Contains(frame.Command), $"{info.Family} {part} sends {frame.Command:X2}");
                 Assert.True(Allowed[info.Family].Contains(frame.Command),
                     $"{info.Family} {part} sends {frame.Command:X2}, which is not one of its commands");
                 if (frame.Command == 0x08) Assert.Equal(SteelSeriesFamily.Rival300, info.Family);
@@ -785,6 +807,14 @@ namespace PadForge.Tests
 
         // ── The family table ──
 
+        /// <summary>The families whose references send a color's reports
+        /// with no wait between them.</summary>
+        private static readonly SteelSeriesFamily[] BackToBack =
+        {
+            SteelSeriesFamily.Arctis5, SteelSeriesFamily.ArctisNova3, SteelSeriesFamily.Siberia350,
+            SteelSeriesFamily.QckPrismCloth,
+        };
+
         /// <summary>How fast each family takes its reports: the gap between
         /// two reports of one paint, the fastest repaint, the re-assert
         /// interval, and whether each report is answered. A figure is the
@@ -793,7 +823,8 @@ namespace PadForge.Tests
         /// differ (rivalcfg's 50 ms over libratbag's 10 on the Rival 100
         /// and 300, and on the Prime mice and the Rival 3 Wireless no
         /// capture gives a rate for). Every family has a re-assert
-        /// interval.</summary>
+        /// interval but the Arctis Nova 3, whose color ends with the report
+        /// OpenRGB saves it with.</summary>
         [Theory]
         [InlineData(SteelSeriesFamily.Rival100, 0, 1, 50, 50, 5000, false)]
         [InlineData(SteelSeriesFamily.Rival300, 0, 2, 50, 100, 5000, false)]
@@ -824,6 +855,10 @@ namespace PadForge.Tests
         [InlineData(SteelSeriesFamily.Apex3Tkl, 1, 1, 0, 33, 5000, false)]
         [InlineData(SteelSeriesFamily.ApexM750, 2, 1, 10, 55, 5000, false)]
         [InlineData(SteelSeriesFamily.Apex2013, 0, 1, 0, 50, 5000, false)]
+        [InlineData(SteelSeriesFamily.Arctis5, 5, 12, 0, 50, 5000, false)]
+        [InlineData(SteelSeriesFamily.ArctisNova3, 4, 6, 0, 500, 0, false)]
+        [InlineData(SteelSeriesFamily.Siberia350, 3, 4, 0, 500, 5000, false)]
+        [InlineData(SteelSeriesFamily.QckPrismCloth, 0, 2, 0, 33, 5000, false)]
         public void EachFamily_SitsOnItsInterface_AndIsPacedAsItsReferencesPaceIt(object familyValue, int iface,
             int reports, int gapMs, int repaintMs, int reassertMs, bool echoes)
         {
@@ -841,8 +876,15 @@ namespace PadForge.Tests
             Assert.Equal(reassertMs, info.ReassertMs);
             Assert.Equal(echoes, info.Echoes);
             // A family with several reports per paint, its claim counted,
-            // has a gap to keep between them.
-            if (reports + info.Claim(true).Length > 1) Assert.True(info.GapMs > 0, "a gap between its reports");
+            // has a gap to keep between them, but for the headsets and mats,
+            // whose every reference sends the reports back to back (OpenRGB
+            // SteelSeriesArctis5Controller.cpp:66-139,
+            // SteelSeriesArctisNova3Controller.cpp:144-147,
+            // SteelSeriesSiberiaController.cpp:82-104,
+            // SteelSeriesQCKMatController.cpp:96-99, and SignalRGB the
+            // Arctis 5's and the mats' on every render).
+            if (BackToBack.Contains(family)) Assert.Equal(0, info.GapMs);
+            else if (reports + info.Claim(true).Length > 1) Assert.True(info.GapMs > 0, "a gap between its reports");
             // One whole color, at its gaps, fits inside the fastest repaint,
             // so a color is never started before the last one is out.
             Assert.True((reports - 1) * gapMs < repaintMs, "a color finishes before the next may start");
@@ -902,6 +944,10 @@ namespace PadForge.Tests
         [InlineData(SteelSeriesFamily.Apex3Tkl, 27, 0)]
         [InlineData(SteelSeriesFamily.ApexM750, 0, 405)]
         [InlineData(SteelSeriesFamily.Apex2013, 23, 0)]
+        [InlineData(SteelSeriesFamily.Arctis5, 37, 0)]
+        [InlineData(SteelSeriesFamily.ArctisNova3, 521, 0)]
+        [InlineData(SteelSeriesFamily.Siberia350, 16, 0)]
+        [InlineData(SteelSeriesFamily.QckPrismCloth, 65, 525)]
         public void EachFamilysLongestFrames_AreWhatItsCollectionMustHold(object familyValue, int output, int feature)
         {
             var info = SteelSeriesDirectProtocol.Info((SteelSeriesFamily)familyValue);
@@ -912,16 +958,18 @@ namespace PadForge.Tests
 
         // ── The product table ──
 
-        /// <summary>Every product ID PadForge lists as a SteelSeries mouse
-        /// or keyboard has one row, no product ID has two, and the table
-        /// holds no product the lists lack.</summary>
+        /// <summary>Every product ID PadForge lists as a SteelSeries mouse,
+        /// keyboard, headset or mousemat has one row, no product ID has
+        /// two, and the table holds no product the lists lack.</summary>
         [Fact]
         public void EveryListedProductHasOneRow_AndNoProductIdComesTwice()
         {
             var ids = SteelSeriesDirectProtocol.Models.Select(m => m.ProductId).ToList();
             Assert.Equal(ids.Count, ids.Distinct().Count());
-            var listed = PeripheralProductIds.SteelSeriesMice.Concat(PeripheralProductIds.SteelSeriesKeyboards).ToList();
-            Assert.Equal(96, listed.Count);
+            var listed = PeripheralProductIds.SteelSeriesMice.Concat(PeripheralProductIds.SteelSeriesKeyboards)
+                .Concat(PeripheralProductIds.SteelSeriesHeadsets).Concat(PeripheralProductIds.SteelSeriesMousemats).ToList();
+            Assert.Equal(96 + 4 + 9, listed.Count);
+            Assert.Equal(listed.Count, listed.Distinct().Count());
             Assert.Equal(listed.OrderBy(id => id), ids.OrderBy(id => id));
 
             // Every row names a family of the table or none at all, and
@@ -935,15 +983,23 @@ namespace PadForge.Tests
             Assert.Equal(SteelSeriesDirectProtocol.Families.Select(f => f.Family).OrderBy(f => f),
                 SteelSeriesDirectProtocol.Models.Select(m => m.Family).Where(f => f != SteelSeriesFamily.None).Distinct().OrderBy(f => f));
 
-            // A keyboard's family is a keyboard's, and a mouse's a mouse's.
+            // A keyboard's family is a keyboard's, a headset's a headset's,
+            // a mat's a mat's, and a mouse's a mouse's.
             foreach (var (productId, family) in SteelSeriesDirectProtocol.Models)
             {
                 if (family == SteelSeriesFamily.None) continue;
-                bool keyboardFamily = family >= SteelSeriesFamily.ApexPro;
+                bool keyboardFamily = family >= SteelSeriesFamily.ApexPro && family <= SteelSeriesFamily.Apex2013;
+                bool headsetFamily = family is SteelSeriesFamily.Arctis5 or SteelSeriesFamily.ArctisNova3
+                    or SteelSeriesFamily.Siberia350;
                 Assert.Equal(PeripheralProductIds.SteelSeriesKeyboards.Contains(productId), keyboardFamily);
+                Assert.Equal(PeripheralProductIds.SteelSeriesHeadsets.Contains(productId), headsetFamily);
+                Assert.Equal(PeripheralProductIds.SteelSeriesMousemats.Contains(productId),
+                    family == SteelSeriesFamily.QckPrismCloth);
             }
-            // A product the table lacks has no family.
-            Assert.Equal(SteelSeriesFamily.None, SteelSeriesDirectProtocol.FamilyOf(0x12AA));
+            // A product the table lacks has no family: the QcK Prism of
+            // 0x1507, which SignalRGB alone lights (signal-plugins
+            // Steelseries_Qck_Prism_Mousepad.js:22-26).
+            Assert.Equal(SteelSeriesFamily.None, SteelSeriesDirectProtocol.FamilyOf(0x1507));
             Assert.Equal(SteelSeriesFamily.None, SteelSeriesDirectProtocol.FamilyOf(0x0000));
         }
 
@@ -962,15 +1018,17 @@ namespace PadForge.Tests
             Assert.Equal(none.OrderBy(id => id),
                 SteelSeriesDirectProtocol.Models.Where(m => m.Family == SteelSeriesFamily.None).Select(m => m.ProductId).OrderBy(id => id));
             Assert.All(none, id => Assert.Contains(id, PeripheralProductIds.SteelSeriesMice));
-            Assert.Equal(82, SteelSeriesDirectProtocol.Models.Count(m => m.Family != SteelSeriesFamily.None));
+            Assert.Equal(95, SteelSeriesDirectProtocol.Models.Count(m => m.Family != SteelSeriesFamily.None));
             Assert.Equal(19, SteelSeriesDirectProtocol.Models.Count(m => PeripheralProductIds.SteelSeriesKeyboards.Contains(m.ProductId)
                                                                          && m.Family != SteelSeriesFamily.None));
         }
 
         /// <summary>Which product is which family, row by row, from the
         /// references each row was read in: rivalcfg's device profiles for
-        /// the mice, OpenRGB's detectors for the keyboards and the Aerox 3
-        /// Wireless Gen 2.</summary>
+        /// the mice, OpenRGB's detectors for the keyboards, the Aerox 3
+        /// Wireless Gen 2, the headsets and the mats
+        /// (SteelSeriesControllerDetect.cpp:522-538 with
+        /// SteelSeriesDevices.h:69-85).</summary>
         [Theory]
         [InlineData(SteelSeriesFamily.Rival100, new ushort[] { 0x1702, 0x170A, 0x170B, 0x170C, 0x1729, 0x1810, 0x1814, 0x1816 })]
         [InlineData(SteelSeriesFamily.Rival300, new ushort[] { 0x1384, 0x1392, 0x1394, 0x1710, 0x1712, 0x1714, 0x1716, 0x1718, 0x171A, 0x171C })]
@@ -1001,22 +1059,26 @@ namespace PadForge.Tests
         [InlineData(SteelSeriesFamily.Apex3Tkl, new ushort[] { 0x1622 })]
         [InlineData(SteelSeriesFamily.ApexM750, new ushort[] { 0x0616 })]
         [InlineData(SteelSeriesFamily.Apex2013, new ushort[] { 0x1202, 0x1206 })]
+        [InlineData(SteelSeriesFamily.Arctis5, new ushort[] { 0x1250, 0x12AA })]
+        [InlineData(SteelSeriesFamily.ArctisNova3, new ushort[] { 0x12EC })]
+        [InlineData(SteelSeriesFamily.Siberia350, new ushort[] { 0x1229 })]
+        [InlineData(SteelSeriesFamily.QckPrismCloth, new ushort[] { 0x150A, 0x150D, 0x1514, 0x1516, 0x1518, 0x151A, 0x151C, 0x151E, 0x1520 })]
         public void EachFamilysProducts_AreTheOnesItsReferencesList(object familyValue, ushort[] productIds)
             => Assert.Equal(productIds.OrderBy(id => id),
                 SteelSeriesDirectProtocol.Models.Where(m => m.Family == (SteelSeriesFamily)familyValue)
                     .Select(m => m.ProductId).OrderBy(id => id));
 
-        /// <summary>35 of the 82 lit products have a frame that returns
-        /// them to their own lighting. The other 47 keep the last color
-        /// until they lose power.</summary>
+        /// <summary>35 of the 95 lit products have a frame that returns
+        /// them to their own lighting. The other 60, the headsets and mats
+        /// among them, keep the last color until they lose power.</summary>
         [Fact]
-        public void ThirtyFiveProductsCanBeHandedBack_AndFortySevenKeepTheirLastColor()
+        public void ThirtyFiveProductsCanBeHandedBack_AndSixtyKeepTheirLastColor()
         {
             bool HandsBack(SteelSeriesFamily family)
                 => SteelSeriesDirectProtocol.HandBack(family, false).Length > 0 && SteelSeriesDirectProtocol.HandBack(family, true).Length > 0;
             var lit = SteelSeriesDirectProtocol.Models.Where(m => m.Family != SteelSeriesFamily.None).ToList();
             Assert.Equal(35, lit.Count(m => HandsBack(m.Family)));
-            Assert.Equal(47, lit.Count(m => !HandsBack(m.Family)));
+            Assert.Equal(60, lit.Count(m => !HandsBack(m.Family)));
             // A family hands back on both firmware generations or on neither.
             Assert.All(SteelSeriesDirectProtocol.Families, f =>
                 Assert.Equal(f.HandBack(false).Length > 0, f.HandBack(true).Length > 0));
@@ -1076,7 +1138,7 @@ namespace PadForge.Tests
             // with no color, and a product the table lacks.
             Assert.Null(Plan(Collection(0x1870, 3, vendorId: 0x046D)));
             Assert.Null(Plan(Collection(0x1369, 0)));
-            Assert.Null(Plan(Collection(0x12AA, 5)));
+            Assert.Null(Plan(Collection(0x1507, 0)));
             Assert.Null(Plan(null));
         }
 

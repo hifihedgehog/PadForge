@@ -228,7 +228,7 @@ namespace PadForge.Tests
                 new HidCollectionInfo { Path = @"\\?\hid#vid_1038&pid_1870&mi_00#a", VendorId = 0x1038, ProductId = 0x1870,
                     UsagePage = 0x0001, Usage = 2, InterfaceNumber = 0, InputReportLength = 9 },
                 Control(0x1369, 0, tag: "raw"),
-                Control(0x12AA, 3, tag: "new"),
+                Control(0x1507, 3, tag: "new"),
                 new HidCollectionInfo { Path = @"\\?\hid#vid_046d&pid_1870&mi_03#a", VendorId = 0x046D, ProductId = 0x1870,
                     UsagePage = 0xFFC0, Usage = 1, InterfaceNumber = 3, InputReportLength = 65, OutputReportLength = 65,
                     FeatureReportLength = 643 },
@@ -250,8 +250,17 @@ namespace PadForge.Tests
             Assert.True(backend.Snapshot.Scanned);
             Assert.Equal(new[]
                 {
-                    new DirectUnit(OutputFamily.SteelSeriesUnit, mouse.Path, Box, 0x1038, 0x1870),
-                    new DirectUnit(OutputFamily.SteelSeriesUnit, keyboard.Path, OtherBox, 0x1038, 0x161A),
+                    // Each named as its references name it: rivalcfg
+                    // devices/rival3_gen2.py:8 and OpenRGB
+                    // SteelSeriesControllerDetect.cpp:543.
+                    new DirectUnit(OutputFamily.SteelSeriesUnit, mouse.Path, Box, 0x1038, 0x1870)
+                    {
+                        Name = "SteelSeries Rival 3 Gen 2",
+                    },
+                    new DirectUnit(OutputFamily.SteelSeriesUnit, keyboard.Path, OtherBox, 0x1038, 0x161A)
+                    {
+                        Name = "SteelSeries Apex 3",
+                    },
                 },
                 backend.Snapshot.Units);
             Assert.Equal(1, Volatile.Read(ref changes));

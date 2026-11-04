@@ -127,6 +127,10 @@ public class MotionRowsEngineTests
         // Angle: up tips the controller forward, nose down.
         pitch.MotionResponse = MappingRow.MotionResponseAngle;
         pitch.MotionAngle = 30;
+        // Level first, as the roll test does. The Speed polls above left the
+        // nose raised by however long they took, which on a loaded machine
+        // took back most of the 30 degrees.
+        InputManager.RequestMotionRowsLevel(0);
         for (int i = 0; i < 40; i++) rig.Poll(sleepMs: 5);
         var snap = rig.Manager.MotionSnapshots[0];
         Assert.True(snap.AccelZ > 0.1f, $"a forward tip reads gravity toward the player, got Z={snap.AccelZ}");

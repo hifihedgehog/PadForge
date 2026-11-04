@@ -400,6 +400,12 @@ namespace PadForge.Common.Input.Peripherals
             WushiDockLighting.Instance,
             RobobloqLightStripLighting.Instance,
             ClevoLightbarLighting.Instance,
+            AlienwareMonitorLighting.Instance,
+            AsusMonitorLighting.Instance,
+            LgMonitorLighting.Instance,
+            MsiMonitorLighting.Instance,
+            MsiOptixLighting.Instance,
+            ViewSonicMonitorLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

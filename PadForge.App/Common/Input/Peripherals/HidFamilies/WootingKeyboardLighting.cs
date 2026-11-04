@@ -40,8 +40,8 @@ namespace PadForge.Common.Input.Peripherals
     /// second: one report of 257 bytes, 00 D0 DA 0B and each color in 16
     /// bits, red 5, green 6 and blue 5, low byte first
     /// (WootingV2KeyboardController.cpp:17-72). The third: the same colors
-    /// in a report 0x04 of 2046 bytes, 04 D1 DA 0B
-    /// (WootingV3KeyboardController.cpp:16-75).</para>
+    /// in report 0x05 of 2047 bytes, 05 D1 DA 0B, as Wooting's own SDK
+    /// sends them (wooting-rgb-sdk wooting-usb.c:656-682).</para>
     ///
     /// <para>Where OpenRGB and Wooting's own SDK differ. A keyboard whose
     /// configuration collection takes output reports of 64 bytes takes the
@@ -51,9 +51,18 @@ namespace PadForge.Common.Input.Peripherals
     /// 620-640 sends it). OpenRGB writes the 257 bytes whole, which such a
     /// collection cannot take, so a session splits the frame as the SDK
     /// does when the collection's output report is shorter than the frame.
-    /// The SDK sends the third protocol's frame as report 0x05 of 2047 bytes
-    /// (lines 656-682) and its commands as report 0x01 with D1 DA
-    /// (lines 684-701). A session sends OpenRGB's frame and init. No
+    /// OpenRGB sends the third protocol's frame as report 0x04 of 2046 bytes
+    /// (WootingV3KeyboardController.cpp:16-75) and every command as report
+    /// 0 with D0 DA (WootingKeyboardController.cpp:71-90). The SDK's
+    /// comment says "the `4` byte report is 254 bytes long, which is 1 byte
+    /// short of what we need for full RGB data": the magic, the report and
+    /// 126 colors of two bytes are 255. So the SDK sends the frame as
+    /// report 0x05 of 2047 bytes (wooting-usb.c:24 and 656-682), and on
+    /// these multi-report keyboards its commands as report 0x01 with D1 DA
+    /// (lines 684-701), the color init included (lines 488-490). A session
+    /// on the third protocol sends the SDK's frame and commands, so the last
+    /// color reaches the keyboard and this family and the SDK route
+    /// (<see cref="WootingRgbSdkRoute"/>) write the same bytes. No
     /// reference reads the third protocol's report descriptor.</para>
     ///
     /// <para>What the writes do to the keyboard. OpenRGB's Direct mode is
@@ -118,10 +127,10 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The report sizes, the report ID included
         /// (WootingV1KeyboardController.h:16, WootingV2KeyboardController.cpp:17,
-        /// WootingV3KeyboardController.cpp:16).</summary>
+        /// and the SDK's WOOTING_V3_REPORT_SIZE, wooting-usb.c:24).</summary>
         internal const int V1ReportSize = 129;
         internal const int V2ReportSize = 257;
-        internal const int V3ReportSize = 2046;
+        internal const int V3ReportSize = 2047;
 
         /// <summary>The first protocol's driver buffer and the highest LED
         /// driver index OpenRGB sends, WOOTING_TWO_KEY_CODE_LIMIT
@@ -324,13 +333,13 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The second and third protocols' frame: the report ID and
         /// the magic, then each color in 16 bits, low byte first
-        /// (WootingV2KeyboardController.cpp:57-72,
-        /// WootingV3KeyboardController.cpp:56-75).</summary>
+        /// (WootingV2KeyboardController.cpp:57-72, and for the third the
+        /// SDK's report 0x05, wooting-usb.c:656-682).</summary>
         internal static byte[] ColorFrame(Protocol protocol, int[] buffer)
         {
             bool v3 = protocol == Protocol.V3;
             var frame = new byte[v3 ? V3ReportSize : V2ReportSize];
-            frame[0] = (byte)(v3 ? 0x04 : 0x00);
+            frame[0] = (byte)(v3 ? 0x05 : 0x00);
             frame[1] = (byte)(v3 ? 0xD1 : 0xD0);
             frame[2] = 0xDA;
             frame[3] = RawColorsReport;
@@ -429,13 +438,14 @@ namespace PadForge.Common.Input.Peripherals
         //  The session
         // ─────────────────────────────────────────────
 
-        /// <summary>Starts a session: the color init command and the wait
-        /// after it. OpenRGB sends the command and goes on whatever the
-        /// keyboard does with it (WootingKeyboardController.cpp:64-69), and
+        /// <summary>Starts a session: the color init command, in the SDK's
+        /// form on the third protocol, and the wait after it. OpenRGB and the
+        /// SDK send the command and go on whatever the keyboard does with it
+        /// (WootingKeyboardController.cpp:64-69, wooting-usb.c:488-490), and
         /// so does a session.</summary>
         private static HidLightingSession Begin(IHidReportChannel io, Action<int> wait, Protocol protocol)
         {
-            io.SetFeature(Command(ColorInitCommand));
+            io.SetFeature(SdkCommand(protocol, ColorInitCommand));
             wait(InitWaitMs);
             return new Session(protocol);
         }

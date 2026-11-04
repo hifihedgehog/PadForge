@@ -184,6 +184,9 @@ namespace PadForge.Tests
             Assert.Equal("00 D0 DA 20 00 00 00 00", Hex(W.SdkCommand(W.Protocol.V1, 32), 8));
             Assert.Equal("00 D0 DA 20 00 00 00 00", Hex(W.SdkCommand(W.Protocol.V2, 32), 8));
             Assert.Equal("01 D1 DA 20 00 00 00 00", Hex(W.SdkCommand(W.Protocol.V3, 32), 8));
+            // The SDK's color init on a multi-report keyboard, 33 through
+            // wooting_usb_send_feature (wooting-usb.c:488-490 and 684-701).
+            Assert.Equal("01 D1 DA 21 00 00 00 00", Hex(W.SdkCommand(W.Protocol.V3, W.ColorInitCommand), 8));
         }
 
         [Fact]
@@ -241,14 +244,30 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void TheThirdProtocol_IsReport4Of2046()
+        public void TheThirdProtocol_IsTheSdksReport5Of2047()
         {
             var (lights, colors) = Picture(W.KeyboardType.Eighty, (0, 0x00FF00));
             // A collection with short output reports changes nothing here.
             var frame = Assert.Single(W.Frames(W.Protocol.V3, 65, lights, colors));
-            Assert.Equal(2046, frame.Length);
-            // WootingV3KeyboardController.cpp:58-71.
-            Assert.Equal("04 D1 DA 0B E0 07", Hex(frame, 6));
+            Assert.Equal(2047, frame.Length);
+            // wooting_usb_send_buffer_v3: report 5, D1 DA, the colors
+            // report 0x0B, then the colors (wooting-usb.c:24 and 656-670).
+            Assert.Equal("05 D1 DA 0B E0 07", Hex(frame, 6));
+        }
+
+        /// <summary>The direct family and the SDK route
+        /// (<see cref="WootingRgbSdkRoute"/>) write one frame for one picture
+        /// on the second and third protocols, the last light's color
+        /// included, so a keyboard gets the same bytes whichever path lights
+        /// it.</summary>
+        [Fact]
+        public void TheFamilyAndTheSdkRoute_WriteOneFrame()
+        {
+            var lights = W.Lights(W.KeyboardType.Full);
+            var colors = lights.Select((_, n) => 0x010203 * (n + 1) & 0xFFFFFF).ToArray();
+            foreach (var protocol in new[] { W.Protocol.V2, W.Protocol.V3 })
+                Assert.Equal(WootingRgbSdkRoute.ColorReport(protocol, WootingRgbSdkRoute.Matrix(lights, colors)),
+                    W.ColorFrame(protocol, W.FrameBuffer(lights, colors)));
         }
 
         [Fact]
@@ -326,12 +345,15 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void AThirdProtocolClaim_HandsBackInTheMultiReportForm()
+        public void AThirdProtocolClaim_InitsPaintsAndHandsBackInTheMultiReportForm()
         {
-            using var rig = new KeyboardFamilyRig { OutputLength = 2046, FeatureLength = 8 };
-            var collection = Config(0x31E3, 0x1402, W.PageV3, output: 2046);
+            using var rig = new KeyboardFamilyRig { OutputLength = 2047, FeatureLength = 8 };
+            var collection = Config(0x31E3, 0x1402, W.PageV3, output: 2047);
             using var backend = rig.Lit(Families, collection, 0x00FF00);
-            Assert.Equal("04 D1 DA 0B", Hex(rig.Log.Of('O')[0], 4));
+            // The SDK's init and frame on a multi-report keyboard
+            // (wooting-usb.c:488-490, 656-682 and 684-701).
+            Assert.Equal("01 D1 DA 21 00 00 00 00", Hex(rig.Log.Of('F')[0], 8));
+            Assert.Equal("05 D1 DA 0B", Hex(rig.Log.Of('O')[0], 4));
             rig.Log.Clear();
             rig.Release(backend);
             Assert.Equal("01 D1 DA 20 00 00 00 00", Hex(Assert.Single(rig.Log.Of('F')), 8));

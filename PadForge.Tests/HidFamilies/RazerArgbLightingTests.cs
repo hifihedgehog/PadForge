@@ -96,9 +96,19 @@ namespace PadForge.Tests
         [Fact]
         public void AnUnreadEffect_HandsBackTheSpectrum()
         {
-            var (control, argb) = Channels(request => request[8] == 0x84 && request[10] == 0x1C
-                ? RazerReport90.Reply(request, (2, 0x80))
-                : request[8] == 0x82 ? RazerReport90.Reply(request, (2, 0x08)) : null);
+            // Channel 1C answers. 1D answers for another LED, 1E with status
+            // 05, not supported, and the rest not at all.
+            var (control, argb) = Channels(request =>
+            {
+                if (request[8] == 0x82) return RazerReport90.Reply(request, (2, 0x08));
+                if (request[8] != 0x84) return null;
+                if (request[10] == 0x1C) return RazerReport90.Reply(request, (2, 0x80));
+                if (request[10] == 0x1D) return RazerReport90.Reply(request, (1, 0x1E), (2, 0x81));
+                if (request[10] != 0x1E) return null;
+                var refused = RazerReport90.Reply(request, (2, 0x82));
+                refused[1] = 0x05;
+                return refused;
+            });
             var model = RazerArgbLighting.Instance.Model("x", 0x0F1F, 0xFF00);
             var session = model.BeginWith(control, new[] { argb }, control.Wait);
             session.Paint(control, control.Wait, model.Map.Lights, new int[480]);
@@ -107,12 +117,11 @@ namespace PadForge.Tests
                 RazerReport90.Of(0x3F, 0x0F, 0x02, 0x06, 0x00, 0x05, 0x03, 0x00, 0x00, 0x00),
                 RazerReport90.Of(0x3F, 0x0F, 0x04, 0x03, 0x00, 0x1C, 0x80),
             }, session.CrashFrames.Select(f => Hex(f)));
-            // Five tries 10 ms apart for each read that went unanswered
-            // (razeraccessory_driver.c:49-86).
-            // Five brightness reads went unanswered, five tries each, and
-            // the stored effect and channel 1C answered at once.
-            Assert.Equal(5 * 5 + 2, control.Log.Count(l => l == "G 00"));
-            Assert.Equal(5 * 4, control.Log.Count(l => l == "W 10"));
+            // Five tries 10 ms apart for each read with no reply of its own
+            // (razeraccessory_driver.c:49-86): 1A, 1B, 1E and 1F. The stored
+            // effect, 1C and 1D answered at the first.
+            Assert.Equal(5 * 4 + 3, control.Log.Count(l => l == "G 00"));
+            Assert.Equal(4 * 4, control.Log.Count(l => l == "W 10"));
         }
 
         /// <summary>An ARGB collection shorter than the packet begins no

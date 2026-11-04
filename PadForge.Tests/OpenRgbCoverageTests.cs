@@ -126,6 +126,7 @@ namespace PadForge.Tests
             // The Strix Scope TKL's grid does not follow its list, and its names and LEDs do.
             var scope = AsusAuraUsbLighting.KeyboardMap(0x190C, "AsusROGStrixScopeTKLLayouts", AsusAuraTables.RegionUk);
             Assert.False(scope.Positioned);
+            Assert.All(scope.Lights, light => Assert.False(light.HasPosition));
             Assert.Equal(0x1E, At(scope.Lights, 0x11));
             Assert.Equal(0x14, At(scope.Lights, 0x12));
             // The Vulcan II TKL Pro has both of its keys, Y and Z, once.

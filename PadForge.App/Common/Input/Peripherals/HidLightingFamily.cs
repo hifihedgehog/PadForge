@@ -226,6 +226,18 @@ namespace PadForge.Common.Input.Peripherals
             HyperXKeyboardLighting.Instance,
             CougarLighting.Instance,
             DuckyKeyboardLighting.Instance,
+            MsiKeyboardLighting.Instance,
+            MsiLaptopLighting.Instance,
+            Msi3ZoneLighting.Instance,
+            MsiVigorLighting.Instance,
+            AlienwareLighting.Instance,
+            AlienwareKeyboardLighting.Instance,
+            AcerNitroLighting.Instance,
+            IonicoLighting.Instance,
+            ClevoLighting.Instance,
+            GigabyteAorusLaptopLighting.Instance,
+            EvgaLighting.Instance,
+            A4TechLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

@@ -166,12 +166,32 @@ namespace PadForge.Common.Input.Peripherals
         /// names the program's processes.</summary>
         public static readonly VendorProgram Ngenuity = new("NGENUITY", "NGenuity");
 
+        /// <summary>MSI's Mystic Light, which lights MSI's Mystic Light
+        /// keyboards. Aurora counts it as running while
+        /// Mystic_Light_Service.exe runs (Aurora
+        /// AuroraDeviceManager/Devices/RGBNet/Implementations/MsiDevice.cs:22-26).</summary>
+        public static readonly VendorProgram MsiMysticLight = new("Mystic Light", "Mystic_Light_Service");
+
+        /// <summary>SteelSeries GG and the Engine before it, which light the
+        /// SteelSeries controllers of MSI laptops (msi-perkeyrgb
+        /// README.md:101-105), by the process names the linker counts GG by
+        /// (<see cref="PeripheralPresence.SteelSeriesHostPrefixes"/>).</summary>
+        public static readonly VendorProgram SteelSeriesGG = new("SteelSeries GG", PeripheralPresence.SteelSeriesHostPrefixes);
+
+        /// <summary>Alienware Command Center, which lights Dell's G series
+        /// laptops and Alienware's keyboards. alienfx-tools stops its
+        /// service, AWCCService, before it drives the lights itself
+        /// (alienfx-tools Common/Common.cpp:98-103), and Dell's forums name
+        /// the program's own process AWCC.exe and its service's
+        /// AWCC.Service.exe. The one prefix takes in both.</summary>
+        public static readonly VendorProgram AlienwareCommandCenter = new("Alienware Command Center", "AWCC");
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
         {
             LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor, CorsairIcue,
-            LegionAccessoryCentral, MasterPlus, Ngenuity,
+            LegionAccessoryCentral, MasterPlus, Ngenuity, MsiMysticLight, SteelSeriesGG, AlienwareCommandCenter,
         };
     }
 

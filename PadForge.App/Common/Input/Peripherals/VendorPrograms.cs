@@ -186,12 +186,26 @@ namespace PadForge.Common.Input.Peripherals
         /// AWCC.Service.exe. The one prefix takes in both.</summary>
         public static readonly VendorProgram AlienwareCommandCenter = new("Alienware Command Center", "AWCC");
 
+        /// <summary>ROCCAT Swarm, which lights Roccat's and Turtle Beach's
+        /// Roccat-made keyboards, mice, mousepads and headsets. Its main
+        /// executable is ROCCAT_Swarm.exe and its background monitor
+        /// ROCCAT_Swarm_Monitor.exe, both in C:\Program Files (x86)\ROCCAT\ROCCAT Swarm
+        /// (file.net's entry for roccat_swarm_monitor.exe, Advanced
+        /// Uninstaller's entries for ROCCAT Swarm). The one prefix takes in
+        /// both. No source code names Turtle Beach's Swarm II
+        /// processes.</summary>
+        public static readonly VendorProgram RoccatSwarm = new("ROCCAT Swarm", "ROCCAT_Swarm");
+
+        /// <summary>The programs that light a Roccat device.</summary>
+        public static readonly IReadOnlyList<VendorProgram> Roccat = new[] { RoccatSwarm };
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
         {
             LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor, CorsairIcue,
             LegionAccessoryCentral, MasterPlus, Ngenuity, MsiMysticLight, SteelSeriesGG, AlienwareCommandCenter,
+            RoccatSwarm,
         };
     }
 

@@ -238,6 +238,11 @@ namespace PadForge.Common.Input.Peripherals
             GigabyteAorusLaptopLighting.Instance,
             EvgaLighting.Instance,
             A4TechLighting.Instance,
+            RoccatLighting.Instance,
+            RoccatVulcanLighting.Instance,
+            CherryKeyboardLighting.Instance,
+            EVisionKeyboardLighting.Instance,
+            DasKeyboardLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

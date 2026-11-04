@@ -36,6 +36,23 @@ namespace PadForge.Common.Input.Peripherals
     /// Prism mousepads at once (standard-zones.md:29), so a mouse's colors
     /// there would land on a headset too. The headset has one zone,
     /// earcups, and stays one color.</para>
+    ///
+    /// <para>No other zone-count type is closer for the keyboards that are
+    /// neither per-key nor five-zone, or for the mice with numbered zones,
+    /// since every such type a handler names reaches every device of that
+    /// count, whatever its kind. rgb-3-zone covers the MSI 3 Zone keyboard
+    /// and the Sensei Wireless mouse at once (standard-zones.md:31), and
+    /// RGB.NET puts the Rival 3 and the Aerox mice on it too (RGB.NET
+    /// 3c5af72 RGB.NET.Devices.SteelSeries/SteelSeriesDeviceProvider.cs:48-50
+    /// and 64-71), so a keyboard's zones there would light those mice. The
+    /// MSI 3 Zone keyboard itself, 1770:FF00 (OpenRGB
+    /// MSI3ZoneControllerDetect.cpp:17-18), is no SteelSeries device, so no
+    /// GameSense path reaches its row: the shared worker lights it
+    /// (<see cref="Msi3ZoneLighting"/>). rgb-8-zone holds only
+    /// the Rival 600 and 650 (standard-zones.md:35, SteelSeriesDeviceProvider.cs:60-62),
+    /// but the general mouse type's wheel and logo zones are on the same
+    /// mice, and two handlers on one light confuse the user
+    /// (json-handlers-color.md:109).</para>
     /// </summary>
     internal static class GameSenseLights
     {

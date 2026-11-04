@@ -1313,6 +1313,9 @@ namespace PadForge.Tests
                 "stream 11 FF 12 1C 01 AA 00 00 02 00 BB 00 03 AA", "commit 11 FF 12 7C");
             S(plan.PaintLights(map, colors, new[] { 0xAA0000, 0xAA0000, 0xAA0000 }, full: false),
                 "stream 11 FF 12 1C 02 00 BB", "commit 11 FF 12 7C");
+            // A black zone goes out in the whole picture like any other.
+            S(plan.PaintLights(map, new[] { 0x000000, 0x00BB00, 0x000000 }, null, full: false),
+                "stream 11 FF 12 1C 01 00 00 00 02 00 BB 00 03", "commit 11 FF 12 7C");
             // The keep-alive sends the whole picture again.
             S(plan.KeepAliveLights(0, map, colors, painted: true),
                 "stream 11 FF 12 1C 01 AA 00 00 02 00 BB 00 03 AA", "commit 11 FF 12 7C");

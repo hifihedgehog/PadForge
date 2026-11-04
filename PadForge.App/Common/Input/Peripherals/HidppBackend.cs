@@ -1479,7 +1479,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Whether a scan has anything to ask this path: a slot not
         /// yet answered whose backoff is over.</summary>
-        private static bool HasQuestions(HidppPathState state, long now, bool bluetooth)
+        internal static bool HasQuestions(HidppPathState state, long now, bool bluetooth)
         {
             int first = state.Receiver ? HidppHapticProtocol.FirstReceiverIndex : 0;
             int last = HidppUnitProbe.LastSlot(state, bluetooth);

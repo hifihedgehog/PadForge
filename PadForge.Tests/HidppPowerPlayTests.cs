@@ -132,6 +132,58 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>A mat that does not answer the first scan keeps the
+        /// worker asking after its backoff, though every slot of the
+        /// receiver is settled or empty, and is found once it answers.</summary>
+        [Fact]
+        public void TheWorker_AsksASilentMatAgain_AndFindsIt()
+        {
+            PeripheralOutputs.ResetForTest();
+            try
+            {
+                var receiver = new VendorHidCollection
+                {
+                    Path = @"\\?\hid#vid_046d&pid_c53a&mi_02&col02#bench",
+                    VendorId = 0x046D, ProductId = 0xC53A, UsagePage = 0xFF00, Usage = 0x0002, InputReportLength = 20,
+                };
+                bool matUp = false;
+                var both = MouseAndMat();
+                var channel = Receiver((d, f, fn, p) => d == 7 && !matUp ? HidppHapticsTests.NoAnswer() : both(d, f, fn, p));
+                using var backend = new HidppBackend(() => new[] { receiver }, (c, s) => channel, _ => Guid.NewGuid(), 1, 5);
+                backend.Start();
+
+                Assert.True(System.Threading.SpinWait.SpinUntil(() => backend.Snapshot.Units.Count == 1
+                    && channel.Asked.Any(a => a.Device == 7), 5000), "the first scan found the mouse and asked the mat");
+                matUp = true;
+                Assert.True(System.Threading.SpinWait.SpinUntil(() => backend.Snapshot.Units.Count == 2,
+                    HidppHapticProbe.FirstRetryMs + 5000), "a later scan found the mat");
+            }
+            finally
+            {
+                PeripheralOutputs.ResetForTest();
+            }
+        }
+
+        /// <summary>A scan that does not read the pairing table asks a path
+        /// only while it has a question: the mat's index counts as one on
+        /// the POWERPLAY receiver, once its backoff is over, and on no other
+        /// receiver.</summary>
+        [Fact]
+        public void ASilentMat_IsAQuestion_OnThePowerPlayReceiverAlone()
+        {
+            var state = new HidppPathState { Receiver = true, BuiltInDevice = true };
+            for (int slot = 1; slot <= HidppHapticProtocol.LastReceiverIndex; slot++) state.Settled[slot] = true;
+            Assert.True(HidppBackend.HasQuestions(state, 0, bluetooth: false));
+            state.RetryAt[7] = 100;
+            Assert.False(HidppBackend.HasQuestions(state, 99, bluetooth: false));
+            Assert.True(HidppBackend.HasQuestions(state, 100, bluetooth: false));
+            state.Settled[7] = true;
+            Assert.False(HidppBackend.HasQuestions(state, 100, bluetooth: false));
+            state.Settled[7] = false;
+            state.BuiltInDevice = false;
+            Assert.False(HidppBackend.HasQuestions(state, 100, bluetooth: false));
+        }
+
         [Fact]
         public void TheLastSlot_FollowsThePath()
         {

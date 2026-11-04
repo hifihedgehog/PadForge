@@ -122,11 +122,12 @@ namespace PadForge.Common.Input.Peripherals
             if (collection == null) return null;
             foreach (var registration in OpenRgbRegistrations.Match(FamilyName, collection))
             {
-                if (registration.Detector == RoccatVulcanLighting.Detector) return null;
                 lock (_gate)
                 {
                     if (!_models.TryGetValue(registration.Name, out var model))
                     {
+                        // The Vulcan keyboards' detector is no model of this
+                        // family: RoccatVulcanLighting looks for them.
                         model = ModelOf(registration);
                         if (model == null) return null;
                         _models[registration.Name] = model;

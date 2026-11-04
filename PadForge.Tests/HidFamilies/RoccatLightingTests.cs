@@ -565,10 +565,16 @@ namespace PadForge.Tests
             {
                 ["ctrl-a"] = a, ["led-a"] = a, ["ctrl-b"] = b, ["led-b"] = b, ["other"] = a,
             };
-            var family = new RoccatVulcanLighting(() => walk, p => containers[p], _ => null, (_, _, _) => true);
+            var opened = new List<string>();
+            var family = new RoccatVulcanLighting(() => walk, p => containers[p],
+                p => { opened.Add(p); return new FakeReportChannel { Path = p }; }, (_, _, _) => true);
             var found = family.Look();
             Assert.Equal(new[] { "ctrl-a", "ctrl-b" }, found.Select(d => d.Key));
             Assert.Equal(new[] { a, b }, found.Select(d => d.Container));
+            // Each keyboard opens the LED collection in its own container.
+            found[0].Model.Open(found[0].Key)?.Dispose();
+            found[1].Model.Open(found[1].Key)?.Dispose();
+            Assert.Equal(new[] { "ctrl-a", "led-a", "ctrl-b", "led-b" }, opened);
             // The same model at the next look.
             Assert.Same(found[0].Model, family.Look()[0].Model);
 

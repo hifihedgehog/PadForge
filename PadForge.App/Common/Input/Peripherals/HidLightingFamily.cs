@@ -372,6 +372,20 @@ namespace PadForge.Common.Input.Peripherals
             AresonLighting.Instance,
             InstantMouseLighting.Instance,
             HoltekLighting.Instance,
+            TrustLighting.Instance,
+            AocMouseLighting.Instance,
+            AocMousematLighting.Instance,
+            GigabyteAorusMouseLighting.Instance,
+            LaviewTechnologyLighting.Instance,
+            LexipMouseLighting.Instance,
+            MsiClutchLighting.Instance,
+            N5312ALighting.Instance,
+            NzxtMouseLighting.Instance,
+            PatriotViperMouseLighting.Instance,
+            TecknetLighting.Instance,
+            GameSirLighting.Instance,
+            TurtleBeachKP7Lighting.Instance,
+            LegoDimensionsToypadLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

@@ -237,13 +237,87 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The programs that light a Logitech device.</summary>
         public static readonly IReadOnlyList<VendorProgram> Logitech = new[] { LogitechGHub, LogitechGamingSoftware };
 
+        /// <summary>Glorious CORE, which lights the Glorious Model I and
+        /// every Glorious product but the GMMK 1 and the first wired Model O
+        /// and Model D (Glorious's download page, gloriousgaming.com/pages/downloads).
+        /// Its executable is "Glorious Core.exe" in C:\Program Files (x86)\Glorious Core\Glorious Core
+        /// (Advanced Uninstaller's entry for Glorious Core,
+        /// Glorious-Core-a0a4910c42cad74a562cef2629742a21). No source code
+        /// names the program's processes.</summary>
+        public static readonly VendorProgram GloriousCore = new("Glorious CORE", "Glorious Core");
+
+        /// <summary>The program that lights the Glorious Model I.</summary>
+        public static readonly IReadOnlyList<VendorProgram> Glorious = new[] { GloriousCore };
+
+        /// <summary>Gigabyte's AORUS ENGINE, which Gigabyte's support page
+        /// for the Aorus M2 offers as "AORUS ENGINE (RGB Fusion 2.0
+        /// included)". Its main executable is AORUS.exe in
+        /// C:\Program Files (x86)\GIGABYTE\AORUS ENGINE (Advanced
+        /// Uninstaller's entry for AORUS ENGINE 1.8.9.0,
+        /// AORUS-ENGINE-418ba20628737ec515dfdd887fa85aae). No source code
+        /// names the program's processes.</summary>
+        public static readonly VendorProgram AorusEngine = new("AORUS ENGINE", "AORUS");
+
+        /// <summary>Gigabyte's RGB Fusion, the lighting part of AORUS ENGINE
+        /// and a program of its own. Its main executable is RGBFusion.exe
+        /// and its service GvLedServices.exe, in C:\Program Files (x86)\GIGABYTE\RGBFusion
+        /// (Advanced Uninstaller's entry for RGB Fusion 3.20.1019.1,
+        /// RGB-Fusion-154d6185f959b02303f1d8916dc67a60). No source code
+        /// names the program's processes.</summary>
+        public static readonly VendorProgram RgbFusion = new("RGB Fusion", "RGBFusion", "GvLedServices");
+
+        /// <summary>The programs that light the Gigabyte Aorus M2.</summary>
+        public static readonly IReadOnlyList<VendorProgram> GigabyteMice = new[] { AorusEngine, RgbFusion };
+
+        /// <summary>The program that lights the MSI Clutch GM11: Mystic
+        /// Light, in Dragon Center, which MSI's product page for the GM11
+        /// names for its lighting.</summary>
+        public static readonly IReadOnlyList<VendorProgram> MsiClutch = new[] { MsiMysticLight };
+
+        /// <summary>NZXT CAM, which lights NZXT's mice. Its executables are
+        /// "NZXT CAM.exe" and cam_helper.exe, among others, in
+        /// C:\Program Files\NZXT CAM (Advanced Uninstaller's entry for NZXT
+        /// CAM 4.41.4, NZXT-CAM-4_41_4-e666c00b3c05311abb700f01950ea266). No
+        /// source code names the program's processes.</summary>
+        public static readonly VendorProgram NzxtCam = new("NZXT CAM", "NZXT CAM", "cam_helper");
+
+        /// <summary>The program that lights the NZXT Lift.</summary>
+        public static readonly IReadOnlyList<VendorProgram> Nzxt = new[] { NzxtCam };
+
+        /// <summary>Patriot's Viper gaming mouse software, whose main
+        /// executable is "PATRIOT VIPER MOUSE.exe" in
+        /// C:\Program Files (x86)\PATRIOT VIPER GAMING MOUSE (Advanced
+        /// Uninstaller's entry for VIPER GAMING MOUSE 1.6,
+        /// VIPER-GAMING-MOUSE-7dd9ec9fad1b307f54432a407d85a1ce). The entry
+        /// names no mouse model. No source code names the program's
+        /// processes.</summary>
+        public static readonly VendorProgram PatriotViperMouse = new("Viper Gaming Mouse", "PATRIOT VIPER MOUSE");
+
+        /// <summary>The program that lights the Patriot Viper V550.</summary>
+        public static readonly IReadOnlyList<VendorProgram> PatriotViper = new[] { PatriotViperMouse };
+
+        /// <summary>Turtle Beach Swarm II, which lights the Command Series
+        /// KP7 keypad (Turtle Beach's product listing: "customize RGB
+        /// lighting" through Swarm II). Its executables are
+        /// "Turtle Beach Swarm II.exe" and "Turtle Beach Device Service.exe",
+        /// among others, in C:\Program Files\Turtle Beach Swarm II (Advanced
+        /// Uninstaller's entry for Turtle Beach Swarm II 1.0.0.24,
+        /// Turtle-Beach-Swarm-II-ff8854d8bfe58b79c9af9e93eaac5666). No
+        /// source code names the program's processes.</summary>
+        public static readonly VendorProgram TurtleBeachSwarmII = new("Turtle Beach Swarm II",
+            "Turtle Beach Swarm II", "Turtle Beach Device Service");
+
+        /// <summary>The program that lights the KP7.</summary>
+        public static readonly IReadOnlyList<VendorProgram> TurtleBeach = new[] { TurtleBeachSwarmII };
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
         {
             LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor, CorsairIcue,
             LegionAccessoryCentral, MasterPlus, Ngenuity, MsiMysticLight, SteelSeriesGG, AlienwareCommandCenter,
-            RoccatSwarm, XpgPrime, WootingWootility, OpenRgb, LogitechGHub, LogitechGamingSoftware,
+            RoccatSwarm, XpgPrime, WootingWootility, OpenRgb, LogitechGHub, LogitechGamingSoftware, GloriousCore,
+            AorusEngine, RgbFusion, NzxtCam, PatriotViperMouse, TurtleBeachSwarmII,
         };
     }
 

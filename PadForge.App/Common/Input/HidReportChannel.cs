@@ -67,6 +67,22 @@ namespace PadForge.Common.Input
     }
 
     /// <summary>
+    /// A channel that also reads an input report on request, the way hidapi's
+    /// hid_get_input_report does on Windows, IOCTL_HID_GET_INPUT_REPORT
+    /// (hidapi windows/hid.c:1413-1416), the same request as
+    /// HidD_GetInputReport. That read asks the device for the report over
+    /// the control pipe, where <see cref="IHidReportChannel.ReadInput"/>
+    /// waits for a report the device sends on its own.
+    /// </summary>
+    internal interface IHidInputReportReader
+    {
+        /// <summary>Reads the input report with this ID into
+        /// <paramref name="buffer"/>, whose byte 0 comes back as the ID.
+        /// False when the read failed.</summary>
+        bool GetInputReport(byte reportId, byte[] buffer);
+    }
+
+    /// <summary>
     /// The channel behind every direct family that speaks HID (#494).
     ///
     /// <para>The open is hidapi's ladder (hidapi windows/hid.c:357-372 and
@@ -91,7 +107,7 @@ namespace PadForge.Common.Input
     /// the crash path cannot, so its writes go through
     /// <see cref="RunBounded"/>.</para>
     /// </summary>
-    internal sealed class HidReportChannel : IHidReportChannel
+    internal sealed class HidReportChannel : IHidReportChannel, IHidInputReportReader
     {
         internal const int ErrorAccessDenied = 5;
         internal const int ErrorSharingViolation = 32;
@@ -242,6 +258,25 @@ namespace PadForge.Common.Input
             catch { return false; }
             int copied = Math.Min(FeatureReportLength, buffer.Length);
             Array.Copy(scratch, buffer, copied);
+            if (buffer.Length > copied) Array.Clear(buffer, copied, buffer.Length - copied);
+            return true;
+        }
+
+        public bool GetInputReport(byte reportId, byte[] buffer)
+        {
+            if (FeatureOnly || buffer == null || buffer.Length == 0 || InputReportLength == 0) return false;
+            if (Volatile.Read(ref _disposed) != 0) return false;
+            // At the collection's own length, as a feature read is, with the
+            // ID ahead of it.
+            var report = new byte[InputReportLength];
+            report[0] = reportId;
+            try
+            {
+                if (!HidD_GetInputReport(_handle, report, (uint)report.Length)) return false;
+            }
+            catch { return false; }
+            int copied = Math.Min(report.Length, buffer.Length);
+            Array.Copy(report, buffer, copied);
             if (buffer.Length > copied) Array.Clear(buffer, copied, buffer.Length - copied);
             return true;
         }
@@ -414,6 +449,9 @@ namespace PadForge.Common.Input
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool WriteFile(SafeFileHandle handle, IntPtr buffer,
             uint bytesToWrite, out uint bytesWritten, IntPtr overlapped);
+
+        [DllImport("hid.dll")]
+        private static extern bool HidD_GetInputReport(SafeFileHandle handle, byte[] buffer, uint bufferLength);
 
         [DllImport("hid.dll")]
         private static extern bool HidD_GetManufacturerString(SafeFileHandle handle, byte[] buffer, uint bufferLength);

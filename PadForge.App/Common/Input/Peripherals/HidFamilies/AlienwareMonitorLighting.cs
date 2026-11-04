@@ -5,25 +5,6 @@ using PadForge.Common.Input.Peripherals.HidFamilies;
 namespace PadForge.Common.Input.Peripherals
 {
     /// <summary>
-    /// A channel that also reads an input report on request, the way hidapi's
-    /// hid_get_input_report does on Windows: IOCTL_HID_GET_INPUT_REPORT,
-    /// HidD_GetInputReport (hidapi windows/hid.c:1413-1416). That read asks
-    /// the device for the report over the control pipe, which an input
-    /// report read (<see cref="IHidReportChannel.ReadInput"/>) does not: that
-    /// one waits for a report the device sends on its own. The shared
-    /// channel (<see cref="HidReportChannel"/>) does not read input reports
-    /// this way yet, so a session that needs one begins only on a channel
-    /// that does.
-    /// </summary>
-    internal interface IHidInputReportReader
-    {
-        /// <summary>Reads the input report with this ID into
-        /// <paramref name="buffer"/>, whose byte 0 comes back as the ID.
-        /// False when the read failed.</summary>
-        bool GetInputReport(byte reportId, byte[] buffer);
-    }
-
-    /// <summary>
     /// OpenRGB's AlienwareMonitorController family (#557): the Alienware
     /// AW3423DWF (187C:100E) and AW3225QF (187C:1013) monitors. Both detectors
     /// register the vendor and product ID alone
@@ -64,10 +45,9 @@ namespace PadForge.Common.Input.Peripherals
     /// data, then 40 C6 with the color at byte 68 of the data, followed by
     /// 200 ms (SendColor, PerformLogin, GetReportResponse and GenerateKey,
     /// AlienwareAW3423DWFController.cpp:22-158). The read is
-    /// hid_get_input_report, which the shared channel does not make
-    /// (<see cref="IHidInputReportReader"/>), so a session on the monitor
-    /// begins only on a channel that does, and on the shared channel it does
-    /// not begin, and nothing is written.</para>
+    /// hid_get_input_report (<see cref="IHidInputReportReader"/>), which
+    /// the shared channel makes as HidD_GetInputReport. A channel that
+    /// cannot make it gets no session, and nothing is written.</para>
     ///
     /// <para>What the writes store. OpenRGB marks both controllers as ones
     /// that save nothing ("@save :x:", RGBController_AlienwareAW3423DWF.cpp:18

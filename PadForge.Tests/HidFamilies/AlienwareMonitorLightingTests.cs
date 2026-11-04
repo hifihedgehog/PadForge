@@ -159,17 +159,19 @@ namespace PadForge.Tests.MonitorFamilies
             Assert.Equal($"{led:X2} 01 02 03 64 {second:X2}", MonitorTest.Hex(frame, 69, 6));
         }
 
-        /// <summary>The shared channel reads no input report on request, so an
-        /// AW3423DWF session does not begin on it, and nothing goes out.</summary>
+        /// <summary>The shared channel reads an input report on request, so an
+        /// AW3423DWF session begins on it. On a channel that cannot read one
+        /// it does not begin, and nothing goes out.</summary>
         [Fact]
-        public void AnAw3423DwfSession_DoesNotBegin_WithoutAnInputReportRead()
+        public void AnAw3423DwfSession_BeginsOnlyWhereAnInputReportCanBeRead()
         {
             var io = new MonitorChannel { OutputReportLength = 193 };
             var model = AlienwareMonitorLighting.Instance.Match(
                 MonitorTest.CollectionOf(Registration("Alienware AW3423DWF")));
             Assert.Null(model.Begin(io, io.Wait));
             Assert.Empty(io.Log);
-            Assert.False(typeof(IHidInputReportReader).IsAssignableFrom(typeof(HidReportChannel)));
+            Assert.True(typeof(IHidInputReportReader).IsAssignableFrom(typeof(HidReportChannel)));
+            Assert.NotNull(model.Begin(new RequestingMonitorChannel { OutputReportLength = 193 }, io.Wait));
             var session = new AlienwareMonitorLighting.DwfSession();
             Assert.Equal(HidLightingPaint.Failed, session.Paint(io, io.Wait, AlienwareMonitorLighting.Lights(), new[] { 1, 1, 1 }));
             Assert.Empty(io.Log);

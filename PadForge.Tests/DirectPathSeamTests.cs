@@ -1987,6 +1987,31 @@ namespace PadForge.Tests
             Assert.Null(plain.SerialNumber);
         }
 
+        /// <summary>An input report asked for over the control pipe
+        /// (HidD_GetInputReport): a handle that is no HID collection answers
+        /// none, a collection with no input report, a handle with no access
+        /// right and a closed channel are not asked at all.</summary>
+        [Fact]
+        public void TheChannelsInputReportRead_FailsWhereTheHandleCannotAnswer()
+        {
+            var buffer = new byte[8];
+            using var pipe = PipeEnd.Open(out var handle);
+            var channel = HidReportChannel.ForHandle("pipe", handle, featureOnly: false,
+                inputLength: 8, outputLength: 8, featureLength: 0);
+            Assert.False(channel.GetInputReport(0, buffer));
+            channel.Dispose();
+            Assert.False(channel.GetInputReport(0, buffer));
+            Assert.False(channel.GetInputReport(0, null));
+            using var noInput = PipeEnd.Open(out var second);
+            using var noInputChannel = HidReportChannel.ForHandle("pipe", second, featureOnly: false,
+                inputLength: 0, outputLength: 8, featureLength: 0);
+            Assert.False(noInputChannel.GetInputReport(0, buffer));
+            using var held = PipeEnd.Open(out var third);
+            using var heldChannel = HidReportChannel.ForHandle("pipe", third, featureOnly: true,
+                inputLength: 8, outputLength: 0, featureLength: 8);
+            Assert.False(heldChannel.GetInputReport(0, buffer));
+        }
+
         private static async Task<int> ReadWhole(System.IO.Stream stream, byte[] buffer)
         {
             int total = 0;

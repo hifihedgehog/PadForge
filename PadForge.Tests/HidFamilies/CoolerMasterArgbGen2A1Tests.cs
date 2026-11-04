@@ -222,6 +222,9 @@ namespace PadForge.Tests
             // The second strip, subport 04, its first LED light 24's color.
             Assert.Equal("00 00 09 01 04 3C", Hex(strip[3].Take(6)));
             Assert.Equal(colors[24] >> 16 & 0xFF, strip[3][6]);
+            // Its third report: data byte 121, LED 40's green, at 3.
+            Assert.Equal(colors[24 + 40] >> 8 & 0xFF, strip[5][3]);
+            Assert.Equal(colors[24 + 59] & 0xFF, strip[5][3 + 58]);
             // The Gen1 strip, subport 00.
             Assert.Equal("00 00 09 02 00 3C", Hex(strip[6].Take(6)));
             Assert.Equal(colors[84] >> 16 & 0xFF, strip[6][6]);

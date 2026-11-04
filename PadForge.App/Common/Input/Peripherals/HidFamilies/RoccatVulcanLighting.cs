@@ -134,8 +134,9 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The model at a control collection: the first of the
         /// family's registrations the collection answers to is the Vulcan
-        /// detector's, and the collection is on the control interface and
-        /// usage page OpenRGB opens for its product.</summary>
+        /// detector's, whose interface and usage page are the control
+        /// collection's (RoccatControllerDetect.cpp:392-405 against lines
+        /// 122-153).</summary>
         public HidLightingModel Match(HidCollectionInfo collection)
         {
             if (collection?.Path == null) return null;
@@ -146,10 +147,6 @@ namespace PadForge.Common.Input.Peripherals
                 break;
             }
             if (registration == null || registration.Detector != Detector) return null;
-            var (_, _, controlInterface, controlPage) = Interfaces(collection.ProductId);
-            int bus = OpenRgbRegistrations.BusOf(collection);
-            if (OpenRgbRegistrations.InterfaceOf(collection, bus) != controlInterface || collection.UsagePage != controlPage)
-                return null;
             var key = (registration.Name, collection.VendorId, collection.ProductId);
             lock (_models)
             {

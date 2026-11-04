@@ -306,7 +306,7 @@ namespace PadForge.Tests
             Assert.Equal(1, Count("paint 445566,445566"));
             Advance(99);
             Passes(backend);
-            Assert.Empty(_family.Calls().Where(c => c.StartsWith("08")));
+            Assert.DoesNotContain(_family.Calls(), c => c.StartsWith("08"));
             Advance(1);
             Passes(backend);
             Assert.Equal(1, Count("08 445566,445566"));
@@ -448,7 +448,11 @@ namespace PadForge.Tests
             });
             var unit = Collection();
             var sibling = Collection(iface: 3, page: 0xFF01, tail: "2");
-            using var backend = Started(unit, sibling, Collection(iface: 3, page: 0xFF02, tail: "3"));
+            // Collections ahead of it that differ in one of the page, the
+            // interface or the product are not the sibling.
+            using var backend = Started(unit, Collection(iface: 3, page: 0xFF02, tail: "3"),
+                Collection(iface: 2, page: 0xFF01, tail: "4"), Collection(iface: 3, page: 0xFF01, pid: 0x0002, tail: "5"),
+                sibling);
             Assert.Equal(new[] { unit.Path }, backend.Snapshot.Units.Select(u => u.Key));
             Link(unit);
             Light(0x112233);

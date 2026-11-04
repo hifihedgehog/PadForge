@@ -642,7 +642,7 @@ namespace PadForge.Tests
             // (RoccatVulcanKeyboardController.cpp:203-247): six.
             Assert.Equal(6, rig.Channel(rig.LedA).Calls.Count(c => c.Kind == "out"));
             Assert.Equal(6, rig.Channel(rig.LedB).Calls.Count(c => c.Kind == "out"));
-            Assert.Empty(rig.Channel(rig.ControlA).Calls.Where(c => c.Kind == "out"));
+            Assert.DoesNotContain(rig.Channel(rig.ControlA).Calls, c => c.Kind == "out");
             // The crash path's record names each control collection, feature
             // reports.
             Assert.Equal(new[] { rig.ControlA.Path, rig.ControlB.Path }, backend.Recorded.Select(r => r.Path).OrderBy(p => p));

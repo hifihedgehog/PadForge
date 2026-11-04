@@ -17,8 +17,9 @@ namespace PadForge.Common.Input.Peripherals
     /// (<see cref="Rescan"/>), by the families' registrations, with nothing
     /// asked of any device but the strings a model that has to tell its
     /// devices from others by them reads, once per appearance, through a
-    /// handle with no access right (<see cref="HidLightingModel.Identify"/>). A unit stays listed for as long as its
-    /// collection is in the last list, and its model's light map is
+    /// handle with no access right (<see cref="HidLightingModel.Identify"/>).
+    /// A unit stays listed for as long as its collection is in the last
+    /// list, and its model's light map is
     /// published for the Lighting tab and Map Key Lights from the scan on,
     /// with the names Map Key Lights learned for the model
     /// (<see cref="LearnedKeyMaps"/>). A family whose devices are no HID
@@ -39,8 +40,9 @@ namespace PadForge.Common.Input.Peripherals
     /// no access right only is one another program holds, and is not
     /// written to, unless its model's lighting lives on a mouse or keyboard
     /// collection, which Windows opens that way for everyone and which
-    /// takes feature reports on it (<see cref="HidLightingModel.HeldByWindows"/>). A unit no claim resolves on is opened only while its
-    /// model owes it colors an earlier run left in the device's memory
+    /// takes feature reports on it (<see cref="HidLightingModel.HeldByWindows"/>).
+    /// A unit no claim resolves on is opened only while its model owes it
+    /// colors an earlier run left in the device's memory
     /// (<see cref="HidLightingModel.Owed"/>), to hand those back, from
     /// <see cref="RepairGraceMs"/> after the worker starts.</para>
     ///
@@ -55,8 +57,8 @@ namespace PadForge.Common.Input.Peripherals
     /// interval. A device that drops the host's colors when the host goes
     /// quiet gets the session's keep-alive on the model's interval while a
     /// picture shows, with no change in the picture
-    /// (<see cref="HidLightingModel.KeepAliveMs"/>). The crash path's record holds the session's own frames for
-    /// undoing what it wrote, kept current after every call into the
+    /// (<see cref="HidLightingModel.KeepAliveMs"/>). The crash path's record
+    /// holds the session's own frames for undoing what it wrote, kept current after every call into the
     /// session.</para>
     ///
     /// <para>Hand back. When no claim resolves on the unit or its path
@@ -111,6 +113,9 @@ namespace PadForge.Common.Input.Peripherals
             /// <summary>The collection as the last walk gave it, or null for
             /// a unit an own look found.</summary>
             public HidCollectionInfo Info;
+
+            /// <summary>What the unit's worker keeps of its walks.</summary>
+            public WalkState Walk;
 
             public ushort VendorId;
             public ushort ProductId;
@@ -211,20 +216,26 @@ namespace PadForge.Common.Input.Peripherals
         private DirectBackendSnapshot _snapshot = DirectBackendSnapshot.NotScanned;
         private IReadOnlyList<HidCollectionInfo> _present;
 
-        /// <summary>The walk the worker last scanned, where a unit's
-        /// siblings are found. Worker thread only.</summary>
-        private IReadOnlyList<HidCollectionInfo> _walk = Array.Empty<HidCollectionInfo>();
+        /// <summary>What one worker keeps of the walks it scanned. Its own
+        /// thread's alone: a worker a timed-out Stop left behind keeps its
+        /// own while the next one runs.</summary>
+        private sealed class WalkState
+        {
+            /// <summary>The walk last scanned, where a unit's siblings are
+            /// found.</summary>
+            public IReadOnlyList<HidCollectionInfo> Present = Array.Empty<HidCollectionInfo>();
 
-        /// <summary>The containers of the walk's paths that siblings were
-        /// looked for among, kept while the path stays in the walk. Only a
-        /// container Windows named is kept. Worker thread only.</summary>
-        private readonly Dictionary<string, Guid> _siblingContainers = new(StringComparer.OrdinalIgnoreCase);
+            /// <summary>The containers of the walk's paths that siblings were
+            /// looked for among, kept while the path stays in the walk. Only
+            /// a container Windows named is kept.</summary>
+            public readonly Dictionary<string, Guid> Containers = new(StringComparer.OrdinalIgnoreCase);
 
-        /// <summary>What a model's identity check said of each path of the
-        /// walk (<see cref="HidLightingModel.Identify"/>), kept while the path
-        /// stays. A path whose strings could not be read has no entry and
-        /// is asked again at the next walk. Worker thread only.</summary>
-        private readonly Dictionary<string, bool> _identified = new(StringComparer.OrdinalIgnoreCase);
+            /// <summary>What a model's identity check said of each path of
+            /// the walk (<see cref="HidLightingModel.Identify"/>), kept while
+            /// the path stays. A path whose strings could not be read has no
+            /// entry and is asked again at the next walk.</summary>
+            public readonly Dictionary<string, bool> Identified = new(StringComparer.OrdinalIgnoreCase);
+        }
         private Thread _thread;
         private Thread _worker;
         private volatile WorkerRun _run;
@@ -390,6 +401,7 @@ namespace PadForge.Common.Input.Peripherals
                 PadForge.Engine.SdlDiagLog.WriteLine(
                     $"PERIPHERAL HidLighting previous worker still running after {_predecessorJoinMs} ms, starting anyway");
             var units = new List<Unit>();
+            var walk = new WalkState();
             int learned = LearnedKeyMaps.Version;
             try
             {
@@ -405,7 +417,7 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         // The first scan publishes whatever it found, so the
                         // host stops waiting for these families.
-                        changed = Scan(units, present, now) || scanned == null;
+                        changed = Scan(units, present, now, walk) || scanned == null;
                         scanned = present;
                     }
 
@@ -490,11 +502,11 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Brings the unit list in line with a walk. True when the
         /// list changed.</summary>
-        private bool Scan(List<Unit> units, IReadOnlyList<HidCollectionInfo> present, long now)
+        private bool Scan(List<Unit> units, IReadOnlyList<HidCollectionInfo> present, long now, WalkState walk)
         {
             bool changed = false;
-            _walk = present;
-            ForgetGone(present);
+            walk.Present = present;
+            ForgetGone(walk, present);
             foreach (var collection in present)
             {
                 var model = HidLightingFamilies.Match(collection, _families);
@@ -502,15 +514,15 @@ namespace PadForge.Common.Input.Peripherals
                 // A device that talks through more collections is one OpenRGB
                 // makes only once it found each of them
                 // (RoccatControllerDetect.cpp:155-201).
-                if (!SiblingsPresent(model, collection)) continue;
-                if (model.Identify != null && !Identified(model, collection)) continue;
+                if (!SiblingsPresent(walk, model, collection)) continue;
+                if (model.Identify != null && !Identified(walk, model, collection)) continue;
                 var unit = Find(units, collection.Path);
                 if (unit == null)
                 {
                     unit = new Unit
                     {
                         Path = collection.Path, VendorId = collection.VendorId, ProductId = collection.ProductId,
-                        Model = model,
+                        Model = model, Walk = walk,
                     };
                     LookUpContainer(unit, now);
                     Found(units, unit);
@@ -546,7 +558,7 @@ namespace PadForge.Common.Input.Peripherals
                         {
                             Path = device.Key, VendorId = device.VendorId, ProductId = device.ProductId,
                             Model = device.Model, Own = own, BuiltInKeyboard = device.BuiltInKeyboard,
-                            Container = device.Container,
+                            Container = device.Container, Walk = walk,
                         };
                         // A container the look gave is taken as it is.
                         if (unit.Container == Guid.Empty) LookUpContainer(unit, now);
@@ -580,18 +592,18 @@ namespace PadForge.Common.Input.Peripherals
         /// the walk, in the collection's container where Windows names both
         /// containers. One it cannot name yet is taken as present here, and
         /// the open finds out.</summary>
-        private bool SiblingsPresent(HidLightingModel model, HidCollectionInfo collection)
+        private bool SiblingsPresent(WalkState walk, HidLightingModel model, HidCollectionInfo collection)
         {
             var siblings = model.Siblings;
             if (siblings == null || siblings.Count == 0) return true;
-            Guid own = SiblingContainer(collection.Path);
+            Guid own = SiblingContainer(walk, collection.Path);
             foreach (var sibling in siblings)
             {
                 bool found = false;
-                foreach (var candidate in _walk)
+                foreach (var candidate in walk.Present)
                 {
                     if (!sibling.Is(collection, candidate)) continue;
-                    Guid theirs = own == Guid.Empty ? Guid.Empty : SiblingContainer(candidate.Path);
+                    Guid theirs = own == Guid.Empty ? Guid.Empty : SiblingContainer(walk, candidate.Path);
                     if (own != Guid.Empty && theirs != Guid.Empty && theirs != own) continue;
                     found = true;
                     break;
@@ -603,26 +615,26 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The container of a path of the walk, looked up once while
         /// it stays, or Guid.Empty while Windows cannot name it.</summary>
-        private Guid SiblingContainer(string path)
+        private Guid SiblingContainer(WalkState walk, string path)
         {
-            if (_siblingContainers.TryGetValue(path, out var known)) return known;
+            if (walk.Containers.TryGetValue(path, out var known)) return known;
             Guid container;
             try { container = _containerOf(path); }
             catch { container = Guid.Empty; }
-            if (container != Guid.Empty) _siblingContainers[path] = container;
+            if (container != Guid.Empty) walk.Containers[path] = container;
             return container;
         }
 
         /// <summary>Drops what the worker kept of paths that left the
         /// walk, so a device that comes back on one is asked again.</summary>
-        private void ForgetGone(IReadOnlyList<HidCollectionInfo> present)
+        private static void ForgetGone(WalkState walk, IReadOnlyList<HidCollectionInfo> present)
         {
-            if (_siblingContainers.Count == 0 && _identified.Count == 0) return;
+            if (walk.Containers.Count == 0 && walk.Identified.Count == 0) return;
             var here = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var collection in present)
                 if (collection?.Path != null) here.Add(collection.Path);
-            Forget(_siblingContainers, here);
-            Forget(_identified, here);
+            Forget(walk.Containers, here);
+            Forget(walk.Identified, here);
         }
 
         private static void Forget<T>(Dictionary<string, T> kept, HashSet<string> here)
@@ -637,16 +649,16 @@ namespace PadForge.Common.Input.Peripherals
         /// matched is one its family lights, asked once while it stays in
         /// the walk, on a handle with no access right. False, and asked again
         /// at the next walk, when that handle did not open.</summary>
-        private bool Identified(HidLightingModel model, HidCollectionInfo collection)
+        private bool Identified(WalkState walk, HidLightingModel model, HidCollectionInfo collection)
         {
-            if (_identified.TryGetValue(collection.Path, out bool known)) return known;
+            if (walk.Identified.TryGetValue(collection.Path, out bool known)) return known;
             IHidReportChannel io = null;
             try { io = _query(collection.Path); } catch { }
             if (io == null) return false;
             bool ours = false;
             try { ours = model.Identify(io); } catch { }
             try { io.Dispose(); } catch { }
-            _identified[collection.Path] = ours;
+            walk.Identified[collection.Path] = ours;
             if (!ours)
                 PadForge.Engine.SdlDiagLog.WriteLine(
                     $"PERIPHERAL HidLighting {collection.VendorId:X4}:{collection.ProductId:X4} is not a {model.Name} by its strings");
@@ -861,14 +873,14 @@ namespace PadForge.Common.Input.Peripherals
         /// that way.</summary>
         private IHidReportChannel[] OpenSiblings(Unit unit, IReadOnlyList<HidSibling> wanted)
         {
-            if (unit.Info == null || unit.Container == Guid.Empty) return null;
+            if (unit.Info == null || unit.Walk == null || unit.Container == Guid.Empty) return null;
             var opened = new IHidReportChannel[wanted.Count];
             for (int i = 0; i < wanted.Count; i++)
             {
                 string path = null;
-                foreach (var candidate in _walk)
+                foreach (var candidate in unit.Walk.Present)
                 {
-                    if (!wanted[i].Is(unit.Info, candidate) || SiblingContainer(candidate.Path) != unit.Container) continue;
+                    if (!wanted[i].Is(unit.Info, candidate) || SiblingContainer(unit.Walk, candidate.Path) != unit.Container) continue;
                     path = candidate.Path;
                     break;
                 }

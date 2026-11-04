@@ -35,7 +35,11 @@ namespace PadForge.Tests
                 Assert.Same(model, HidLightingFamilies.Match(collection));
                 bool second = r.Detector is "DetectEVisionV2Keyboards" or "DetectEndorfyKeyboards";
                 Assert.Equal(second ? 0 : LenovoLegionLighting.HoldMs, model.HoldMs);
-                Assert.Equal(second ? EVisionKeyboardLighting.RefreshMs : 0, model.RecheckMs);
+                // A byte after 200 ms with nothing sent, a byte included
+                // (RGBController_EVisionV2Keyboard.cpp:1009-1031).
+                Assert.Equal(second ? 200 : 0, model.KeepAliveMs);
+                Assert.Equal(second ? 200 : 0, model.KeepAliveIdleMs);
+                Assert.Equal(0, model.RecheckMs);
             }
             Assert.Contains(EVisionKeyboardLighting.Instance, HidLightingFamilies.All);
         }
@@ -137,16 +141,14 @@ namespace PadForge.Tests
 
             // The keep-alive, RefreshLedDirect: one byte at 18, 12 + 01 + 12 = 0x25.
             before = io.Calls.Count;
-            Assert.True(session.Recheck(io, _ => { }));
-            Assert.Equal("04 25 00 12 01 12 00 00 00", Hex(io.Calls.Skip(before).First().Bytes.Take(9)));
+            Assert.True(session.KeepAlive(io, _ => { }, model.Map.Lights, colors));
+            var refresh = io.Calls.Skip(before).Where(c => c.Kind == "out").ToList();
+            Assert.Equal("04 25 00 12 01 12 00 00 00", Hex(Assert.Single(refresh).Bytes.Take(9)));
 
             before = io.Calls.Count;
             Assert.True(session.HandBack(io, _ => { }));
             Assert.Equal("04 13 00 13 00 00 00 00", Hex(io.Calls.Skip(before).First().Bytes.Take(8)));
             Assert.Empty(session.CrashFrames);
-            before = io.Calls.Count;
-            Assert.True(session.Recheck(io, _ => { }));
-            Assert.Equal(before, io.Calls.Count);
         }
 
         /// <summary>Endorfy's key values (EVisionV2KeyboardController.cpp:40-49):

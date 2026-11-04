@@ -94,10 +94,13 @@ namespace PadForge.Common.Input.Peripherals
         internal const int PidRetries = 8;
         internal const int PidRetryMs = 120;
 
-        /// <summary>CORSAIR_V2_UPDATE_PERIOD and CORSAIR_V2_SLEEP_PERIOD
-        /// (lines 34-35).</summary>
+        /// <summary>CORSAIR_V2_UPDATE_PERIOD (CorsairPeripheralV2Controller.h:34): the last picture
+        /// goes out again once this long passes without one, the resend
+        /// included (RGBController_CorsairV2Software.cpp:205 and 225-238,
+        /// RGBController_CorsairV2Hardware.cpp:218 and 238-252). OpenRGB looks
+        /// every CORSAIR_V2_SLEEP_PERIOD, 12.5 s (line 35 of the header). The worker sends it
+        /// at the 30 s itself.</summary>
         internal const int KeepAliveMs = 30000;
-        internal const int KeepAliveCheckMs = 12500;
 
         /// <summary>The write commands (lines 27-28, and the K57's in
         /// CorsairPeripheralV2Controller.cpp:45-49).</summary>
@@ -132,14 +135,8 @@ namespace PadForge.Common.Input.Peripherals
         /// 116-124).</summary>
         internal static bool KeepsResource22(uint productId) => productId is 0x1B7C or 0x1BC5 or 0x1B7D;
 
-        private readonly Func<long> _ticks;
         private readonly Dictionary<(string Detector, int ProductId), HidLightingModel> _models = new();
         private readonly object _gate = new();
-
-        public CorsairPeripheralV2Lighting() : this(null) { }
-
-        /// <summary>Test seam: the clock the keep-alive reads.</summary>
-        internal CorsairPeripheralV2Lighting(Func<long> ticks) => _ticks = ticks ?? (() => Environment.TickCount64);
 
         public string Name => "Corsair (V2 peripherals)";
 
@@ -175,7 +172,8 @@ namespace PadForge.Common.Input.Peripherals
                 Map = map,
                 Programs = new[] { VendorPrograms.CorsairIcue },
                 RepaintMs = RepaintMs,
-                RecheckMs = KeepAliveCheckMs,
+                KeepAliveMs = KeepAliveMs,
+                KeepAliveIdleMs = KeepAliveMs,
                 Begin = (io, wait) => Begin(io, wait, hardware, product),
                 Owed = () => CorsairSession.Owed(product),
                 Repair = (io, wait) => CorsairSession.Repair(io, wait, product, 0),
@@ -461,16 +459,16 @@ namespace PadForge.Common.Input.Peripherals
             if (link.Get(0x41) is not uint layout) return null;
             var map = MapOf(device, LayoutOf(layout), out int bufferLength);
             bool triplets = hardware && link.LightCtrl == LightCtrl2;
-            return new Session(product, _ticks, link, device, map, bufferLength, triplets);
+            return new Session(product, link, device, map, bufferLength, triplets);
         }
 
         internal sealed class Session : CorsairSession
         {
             private readonly Link _link;
 
-            public Session(string product, Func<long> ticks, Link link, CorsairV2Device device, LightMap map, int bufferLength,
+            public Session(string product, Link link, CorsairV2Device device, LightMap map, int bufferLength,
                 bool triplets)
-                : base(product, ticks, link.RenderMode(0x01), 1, 0, CorsairPeripheralV2Lighting.KeepAliveMs)
+                : base(product, link.RenderMode(0x01), 1, 0)
             {
                 _link = link;
                 Device = device;

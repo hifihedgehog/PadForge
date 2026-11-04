@@ -68,7 +68,10 @@ namespace PadForge.Common.Input.Peripherals
     /// 46 23 EA every 500 ms to keep showing the picture (UpdateMountain,
     /// RGBController_Mountain60Keyboard.cpp:338-343 and 434-442,
     /// MOUNTAIN60_KEEP_LIVE_PERIOD, RGBController_Mountain60Keyboard.h:24),
-    /// which the session sends on its recheck. Its lights are OpenRGB's 60%
+    /// whatever else goes out between, which the worker sends on that
+    /// period as the session's keep-alive (<see cref="HidLightingModel.KeepAliveMs"/>,
+    /// with no idle time, since a picture does not move OpenRGB's sleep).
+    /// Its lights are OpenRGB's 60%
     /// layout with the number pad module and the edges
     /// (mountain60_keyboard_overlay_no_numpad, lines 46-170), each at its
     /// LED value. Hand-back: the same as the Everest's, nothing a source
@@ -339,7 +342,7 @@ namespace PadForge.Common.Input.Peripherals
                 Product = $"mountain:{VendorId:X4}:{pid:X4}",
             },
             RepaintMs = RepaintMs,
-            RecheckMs = KeepAliveMs,
+            KeepAliveMs = KeepAliveMs,
             Begin = (io, wait) => BeginEverest60(io, wait),
         };
 
@@ -460,8 +463,10 @@ namespace PadForge.Common.Input.Peripherals
                 return HidLightingPaint.Sent;
             }
 
-            /// <summary>The keep-alive, every <see cref="KeepAliveMs"/>.</summary>
-            public override bool Recheck(IHidReportChannel io, Action<int> wait)
+            /// <summary>The keep-alive, report 08 read back, never the
+            /// picture again.</summary>
+            public override bool KeepAlive(IHidReportChannel io, Action<int> wait,
+                IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
                 => io != null && Exchange60(io, KeepAlive60());
 
             /// <summary>Nothing to send: see the class comment.</summary>

@@ -33,8 +33,9 @@ namespace PadForge.Common.Input.Peripherals
     /// profile's effect unless it hears from the host, so OpenRGB sends the
     /// request 07 whenever no picture has gone out for 500 ms, checking
     /// every 100 ms (KeepaliveThread, RGBController_FnaticStreak.cpp:480-487
-    /// and 683-699; SendKeepalive, FnaticStreakController.cpp:110-119). A
-    /// session does the same on its recheck. Nothing a picture sends is
+    /// and 683-699; SendKeepalive, FnaticStreakController.cpp:110-119). The
+    /// model names those two times to the worker, which sends the session's
+    /// keep-alive on them (<see cref="HidLightingModel.KeepAliveMs"/>). Nothing a picture sends is
     /// saved: OpenRGB saves only after an effect request, 0x05
     /// (lines 172-183). The hand-back is the keyboard's own: once the
     /// keep-alives stop, it returns to its profile's effect, so a session
@@ -64,7 +65,10 @@ namespace PadForge.Common.Input.Peripherals
         internal const int MiniLeds = 106;
 
         /// <summary>The keep-alive's idle time and the period OpenRGB checks
-        /// it on (RGBController_FnaticStreak.cpp:693 and 698).</summary>
+        /// it on, which is the period of the keep-alives once the keyboard
+        /// is idle, since a keep-alive does not move OpenRGB's
+        /// last_update_time (RGBController_FnaticStreak.cpp:693 and 698, the
+        /// time set only at 480 and 537).</summary>
         internal const int IdleMs = 500;
         internal const int CheckMs = 100;
 
@@ -75,13 +79,7 @@ namespace PadForge.Common.Input.Peripherals
 
         public string Name => "Fnatic";
 
-        private readonly Func<long> _ticks;
         private readonly KeyboardLedNames.ModelCache _models = new();
-
-        public FnaticStreakLighting() : this(null) { }
-
-        /// <summary>Test seam: the clock the keep-alive is timed by.</summary>
-        internal FnaticStreakLighting(Func<long> ticks) => _ticks = ticks ?? (() => Environment.TickCount64);
 
         public HidLightingModel Match(HidCollectionInfo collection)
         {
@@ -114,8 +112,9 @@ namespace PadForge.Common.Input.Peripherals
                 Product = $"fnatic:{VendorId:X4}:{pid:X4}",
             },
             RepaintMs = RepaintMs,
-            RecheckMs = CheckMs,
-            Begin = (_, _) => new Session(pid, _ticks),
+            KeepAliveMs = CheckMs,
+            KeepAliveIdleMs = IdleMs,
+            Begin = (_, _) => new Session(pid),
         };
 
         /// <summary>SendRequest's reports for a command's prefix and data
@@ -179,15 +178,8 @@ namespace PadForge.Common.Input.Peripherals
         internal sealed class Session : HidLightingSession
         {
             private readonly ushort _pid;
-            private readonly Func<long> _ticks;
-            private long _sentAt;
 
-            public Session(ushort pid, Func<long> ticks)
-            {
-                _pid = pid;
-                _ticks = ticks;
-                _sentAt = ticks();
-            }
+            public Session(ushort pid) => _pid = pid;
 
             public override bool Feature => false;
 
@@ -209,17 +201,14 @@ namespace PadForge.Common.Input.Peripherals
                     foreach (var report in Picture(_pid == MiniStreakPid ? MiniLeds : FullLeds, lights, colors))
                         if (!io.WriteOutput(report)) return HidLightingPaint.Failed;
                 }
-                _sentAt = _ticks();
                 return HidLightingPaint.Sent;
             }
 
-            /// <summary>The keep-alive, once no picture has gone out for
-            /// <see cref="IdleMs"/>.</summary>
-            public override bool Recheck(IHidReportChannel io, Action<int> wait)
-            {
-                if (_ticks() - _sentAt <= IdleMs) return true;
-                return io != null && io.WriteOutput(KeepAlive());
-            }
+            /// <summary>The keep-alive request 07, never the picture
+            /// again.</summary>
+            public override bool KeepAlive(IHidReportChannel io, Action<int> wait,
+                IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
+                => io != null && io.WriteOutput(FnaticStreakLighting.KeepAlive());
 
             /// <summary>Nothing to send: see the class comment.</summary>
             public override bool HandBack(IHidReportChannel io, Action<int> wait) => true;

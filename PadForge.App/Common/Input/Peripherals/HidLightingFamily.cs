@@ -108,6 +108,18 @@ namespace PadForge.Common.Input.Peripherals
         /// (<see cref="HidLightingSession.Recheck"/>). 0: never.</summary>
         public int RecheckMs { get; init; }
 
+        /// <summary>For a device that drops the host's colors when the host
+        /// goes quiet: how often the session's keep-alive goes out
+        /// (<see cref="HidLightingSession.KeepAlive"/>) while a picture
+        /// shows, timed from the keep-alive before, or from the session's
+        /// start before the first one. 0: never.</summary>
+        public int KeepAliveMs { get; init; }
+
+        /// <summary>How long a keep-alive waits after a picture went out at
+        /// the least. 0: a picture does not put the next keep-alive
+        /// off.</summary>
+        public int KeepAliveIdleMs { get; init; }
+
         /// <summary>Starts a session on a channel open for read and write,
         /// reading what it needs first, with a wait the worker supplies.
         /// Null when the device did not answer, and then nothing is
@@ -195,6 +207,15 @@ namespace PadForge.Common.Input.Peripherals
         /// path holds follow it. False when the device did not
         /// answer.</summary>
         public virtual bool Recheck(IHidReportChannel io, Action<int> wait) => true;
+
+        /// <summary>What goes out on the model's keep-alive interval
+        /// (<see cref="HidLightingModel.KeepAliveMs"/>), given the picture
+        /// the device shows, <paramref name="colors"/> for
+        /// <paramref name="lights"/>: by default that picture again. False
+        /// when a write or a read failed.</summary>
+        public virtual bool KeepAlive(IHidReportChannel io, Action<int> wait,
+            IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
+            => Paint(io, wait, lights, colors) != HidLightingPaint.Failed;
 
         /// <summary>Returns the device to its own lighting. False when a
         /// write or a read failed.</summary>

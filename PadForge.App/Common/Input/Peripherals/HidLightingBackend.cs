@@ -43,7 +43,10 @@ namespace PadForge.Common.Input.Peripherals
     /// repaint interval has passed since the picture before, and a picture
     /// the session cannot send yet is tried again after the time it names.
     /// The session reads the device's state again on the model's recheck
-    /// interval. The crash path's record holds the session's own frames for
+    /// interval. A device that drops the host's colors when the host goes
+    /// quiet gets the session's keep-alive on the model's interval while a
+    /// picture shows, with no change in the picture
+    /// (<see cref="HidLightingModel.KeepAliveMs"/>). The crash path's record holds the session's own frames for
     /// undoing what it wrote, kept current after every call into the
     /// session.</para>
     ///
@@ -154,6 +157,10 @@ namespace PadForge.Common.Input.Peripherals
             /// <summary>When the session reads the device's state
             /// again.</summary>
             public long CheckAt;
+
+            /// <summary>When the session's last keep-alive went out, or when
+            /// the session began.</summary>
+            public long KeptAt;
 
             public string Label => $"{Model?.Name ?? "unit"} {VendorId:X4}:{ProductId:X4}";
         }
@@ -755,6 +762,7 @@ namespace PadForge.Common.Input.Peripherals
             unit.PendingMap = null;
             unit.LaterAt = 0;
             unit.CheckAt = _ticks() + unit.Model.RecheckMs;
+            unit.KeptAt = _ticks();
             // A session that read the device's own map lights and publishes
             // by it from now on, for as long as the device stays
             // (HidLightingSession.Map). A later session that reads none
@@ -801,7 +809,7 @@ namespace PadForge.Common.Input.Peripherals
                 // The device shows this picture already and keeps it.
                 unit.Pending = null;
                 unit.PendingMap = null;
-                return true;
+                return KeepAlive(unit, ref due);
             }
             if (unit.Pending == null || !ReferenceEquals(unit.PendingMap, map) || !LightRenderer.Same(colors, unit.Pending))
             {
@@ -814,8 +822,10 @@ namespace PadForge.Common.Input.Peripherals
             at = Math.Max(at, unit.LaterAt);
             if (now < at)
             {
+                // The device still shows the picture before, and is kept
+                // showing it meanwhile.
                 Soonest(ref due, at);
-                return true;
+                return KeepAlive(unit, ref due);
             }
 
             var session = unit.Session;
@@ -839,6 +849,32 @@ namespace PadForge.Common.Input.Peripherals
             unit.LaterAt = 0;
             if (first)
                 PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} lit, {colors.Length} lights");
+            return true;
+        }
+
+        /// <summary>Sends the session's keep-alive once the model's interval
+        /// has passed since the one before and its idle time since the last
+        /// picture (<see cref="HidLightingModel.KeepAliveMs"/>), while the
+        /// session shows a picture, and names when the next one is due.
+        /// The picture the device shows does not change. False when a write
+        /// or a read failed.</summary>
+        private bool KeepAlive(Unit unit, ref long due)
+        {
+            var model = unit.Model;
+            if (model.KeepAliveMs <= 0 || unit.Shown == null) return true;
+            long at = Math.Max(unit.KeptAt + model.KeepAliveMs, unit.SentAt + model.KeepAliveIdleMs);
+            if (_ticks() < at)
+            {
+                Soonest(ref due, at);
+                return true;
+            }
+            bool sent;
+            try { sent = unit.Session.KeepAlive(unit.Io, _wait, unit.ShownMap.Lights, unit.Shown); }
+            catch { sent = false; }
+            Track(unit);
+            if (!sent) return false;
+            unit.KeptAt = _ticks();
+            Soonest(ref due, Math.Max(unit.KeptAt + model.KeepAliveMs, unit.SentAt + model.KeepAliveIdleMs));
             return true;
         }
 

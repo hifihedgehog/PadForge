@@ -83,13 +83,11 @@ namespace PadForge.Tests
 
         private static string Hex(byte[] bytes, int from, int count) => BitConverter.ToString(bytes, from, count).Replace('-', ' ');
 
-        private long _tick = 1_000_000;
-
         public CorsairPeripheralLightingTests() => KeyboardProfileBackups.ResetForTest(persistAtOnce: true);
 
         public void Dispose() => KeyboardProfileBackups.ResetForTest();
 
-        private CorsairPeripheralLighting Family() => new(() => _tick);
+        private static CorsairPeripheralLighting Family() => new();
 
         internal static HidCollectionInfo Collection(ushort pid, ushort page = 0xFFC2, int iface = 1, ushort usage = 0x0004)
             => new()
@@ -633,7 +631,11 @@ namespace PadForge.Tests
         public void TheK65Mini_OpensWithItsWaits_AndKeepsItsPictureAlive()
         {
             var model = Family().Match(Collection(0x1BAF, page: 0xFF42));
-            Assert.Equal(CorsairPeripheralLighting.BoardKeepAliveCheckMs, model.RecheckMs);
+            // 50 s with nothing sent, a resend included
+            // (RGBController_CorsairK65Mini.cpp:219 and 238-250).
+            Assert.Equal(50000, model.KeepAliveMs);
+            Assert.Equal(50000, model.KeepAliveIdleMs);
+            Assert.Equal(0, model.RecheckMs);
             var io = new FakeCorsairChannel { OutputReportLength = 1025 };
             var session = model.Begin(io, io.Wait);
             Assert.Equal(new[] { "out 00 08 01 03 00 02", "wait 10", "out 00 08 02 6E 00 00", "wait 10",
@@ -643,18 +645,10 @@ namespace PadForge.Tests
             Assert.Null(session.Map);
             Assert.Equal(HidLightingPaint.Sent, session.Paint(io, io.Wait, lights, new int[lights.Count]));
             Assert.Single(io.Outputs.Skip(3));
-            // 50 seconds and no more: nothing. Past them: the picture again
-            // (RGBController_CorsairK65Mini.cpp:242).
-            _tick += 50000;
-            Assert.True(session.Recheck(io, io.Wait));
-            Assert.Equal(4, io.Outputs.Count);
-            _tick += 1;
-            Assert.True(session.Recheck(io, io.Wait));
+            // The keep-alive is the picture again (RGBController_CorsairK65Mini.cpp:242-245).
+            Assert.True(session.KeepAlive(io, io.Wait, lights, new int[lights.Count]));
             Assert.Equal(5, io.Outputs.Count);
             Assert.Equal(io.Outputs[3], io.Outputs[4]);
-            _tick += 3000;
-            Assert.True(session.Recheck(io, io.Wait));
-            Assert.Equal(5, io.Outputs.Count);
             io.Log.Clear();
             Assert.True(session.HandBack(io, io.Wait));
             Assert.Equal(new[] { "out 00 08 01 03 00 01" }, io.Log);
@@ -670,7 +664,8 @@ namespace PadForge.Tests
             Assert.Equal(3, io.Outputs.Count);
             session.Paint(io, io.Wait, model.Map.Lights, new int[model.Map.Lights.Count]);
             Assert.Equal(10, io.Outputs.Count);
-            Assert.Equal(CorsairPeripheralLighting.BoardKeepAliveMs, ((CorsairSession)session).KeepAliveMs);
+            Assert.Equal(50000, model.KeepAliveMs);
+            Assert.Equal(50000, model.KeepAliveIdleMs);
         }
 
         [Fact]

@@ -36,9 +36,10 @@ namespace PadForge.Common.Input.Peripherals
     /// query the keyboard answers with an echo of the command, the offset
     /// and the sum, and a status byte 0 (Query, lines 116-177). Dynamic
     /// colors are not stored. While they show, OpenRGB sends one byte of
-    /// them again whenever 200 ms pass without a picture
-    /// (RGBController_EVisionV2Keyboard.cpp:1009-1031), and the session does
-    /// the same on its recheck (<see cref="RefreshMs"/>). Hand-back: the end
+    /// them again whenever 200 ms pass without a picture or a byte
+    /// (RGBController_EVisionV2Keyboard.cpp:1009-1031), and the worker sends
+    /// that byte on the same terms as the session's keep-alive
+    /// (<see cref="RefreshMs"/>, <see cref="HidLightingModel.KeepAliveMs"/>). Hand-back: the end
     /// of dynamic colors, command 0x13 (EndLedsDirect, line 407-410), which
     /// OpenRGB sends when its Direct mode ends, and the keyboard shows its
     /// own effect again. The board's logo and edge lights take stored modes
@@ -118,7 +119,8 @@ namespace PadForge.Common.Input.Peripherals
                     Name = registration.Name,
                     Map = new LightMap(MatrixKeyboardLayouts.Lights(layout), "OpenRGB " + layout.Source) { Product = product },
                     RepaintMs = RepaintMs,
-                    RecheckMs = RefreshMs,
+                    KeepAliveMs = RefreshMs,
+                    KeepAliveIdleMs = RefreshMs,
                     Begin = (io, wait) => BeginV2(io, values, layout.Count),
                 };
             }
@@ -216,7 +218,6 @@ namespace PadForge.Common.Input.Peripherals
         {
             private readonly byte[] _values;
             private readonly int _count;
-            private bool _showing;
             private byte[][] _crash = Array.Empty<byte[]>();
 
             public V2Session(byte[] values, int count, int mapSize)
@@ -239,21 +240,21 @@ namespace PadForge.Common.Input.Peripherals
                 // Marked first: a write that reports a failure may still
                 // have landed.
                 if (_crash.Length == 0) _crash = new[] { EndFrame() };
-                _showing = true;
                 return Write(io, SendDynamicColors, 0, DynamicColors(colors, _values, _count, MapSize))
                     ? HidLightingPaint.Sent
                     : HidLightingPaint.Failed;
             }
 
-            /// <summary>RefreshLedDirect while dynamic colors show.</summary>
-            public override bool Recheck(IHidReportChannel io, Action<int> wait)
-                => !_showing || Query(io, SendDynamicColors, BlankSpace * 3, new byte[1], 1) != null;
+            /// <summary>RefreshLedDirect, one byte of the dynamic colors at
+            /// key 6, never the picture again.</summary>
+            public override bool KeepAlive(IHidReportChannel io, Action<int> wait,
+                IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
+                => Query(io, SendDynamicColors, BlankSpace * 3, new byte[1], 1) != null;
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
             {
                 if (_crash.Length == 0) return true;
                 if (Query(io, EndDynamicColors) == null) return false;
-                _showing = false;
                 _crash = Array.Empty<byte[]>();
                 return true;
             }

@@ -16,9 +16,14 @@ namespace PadForge.Common.Input.Peripherals
     /// alone and keeps its colors only while they keep coming: each
     /// RGBController sends the last picture again whenever none went out for
     /// 50 ms (KeepaliveThread, checked every 10 ms), and the Alloy Elite 2's
-    /// after 1000 ms (RGBController_HyperXAlloyElite2.cpp:308-323). Here the
-    /// session sends its last picture again at that interval
-    /// (<see cref="HidLightingModel.RecheckMs"/>). None of the frames is a
+    /// after 1000 ms (RGBController_HyperXAlloyElite2.cpp:308-323), and each
+    /// picture, a resend included, starts the wait again (line 287). The
+    /// Alloy Origins controllers never set that time, so OpenRGB resends
+    /// their picture on every 10 ms check
+    /// (RGBController_HyperXAlloyOrigins.cpp:280-293). PadForge keeps the
+    /// family's 50 ms for them. Here the worker sends the last
+    /// picture again on the same terms, as the session's keep-alive
+    /// (<see cref="HidLightingModel.KeepAliveMs"/>). None of the frames is a
     /// save, and no reference hands one of these keyboards back: OpenRGB's
     /// Shutdown sends nothing, and SignalRGB's plugins send a last color
     /// (signal-plugins HyperX_Alloy_Elite_2.js:87-89). When the frames stop,
@@ -123,7 +128,8 @@ namespace PadForge.Common.Input.Peripherals
                 Map = new LightMap(lights, "OpenRGB HyperXKeyboardController") { Product = product },
                 Programs = new[] { VendorPrograms.Ngenuity },
                 RepaintMs = RepaintMs,
-                RecheckMs = protocol == Protocol.Elite2 ? Elite2KeepAliveMs : KeepAliveMs,
+                KeepAliveMs = protocol == Protocol.Elite2 ? Elite2KeepAliveMs : KeepAliveMs,
+                KeepAliveIdleMs = protocol == Protocol.Elite2 ? Elite2KeepAliveMs : KeepAliveMs,
                 Begin = (io, wait) => Begin(io, protocol, productId, product),
             };
         }
@@ -473,7 +479,6 @@ namespace PadForge.Common.Input.Peripherals
         internal sealed class Session : HidLightingSession
         {
             private readonly LightMap _map;
-            private List<byte[]> _last;
 
             public Session(Protocol protocol, LightMap map)
             {
@@ -556,20 +561,11 @@ namespace PadForge.Common.Input.Peripherals
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
             {
                 var frames = PictureFrames(lights, colors);
-                if (!Send(io, wait, frames)) return HidLightingPaint.Failed;
-                _last = frames;
-                return HidLightingPaint.Sent;
+                return Send(io, wait, frames) ? HidLightingPaint.Sent : HidLightingPaint.Failed;
             }
 
-            /// <summary>The keep-alive: the last picture again.</summary>
-            public override bool Recheck(IHidReportChannel io, Action<int> wait)
-                => _last == null || Send(io, wait, _last);
-
-            public override bool HandBack(IHidReportChannel io, Action<int> wait)
-            {
-                _last = null;
-                return true;
-            }
+            /// <summary>Nothing to send: see the class comment.</summary>
+            public override bool HandBack(IHidReportChannel io, Action<int> wait) => true;
         }
     }
 }

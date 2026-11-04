@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace PadForge.Common.Input
 {
@@ -171,6 +173,108 @@ namespace PadForge.Common.Input
             return paths;
         }
 
+        /// <summary>The release number of a USB device, read from its hardware
+        /// IDs, for a collection whose HIDD_ATTRIBUTES give 0, as hidapi does:
+        /// the instance ID's device node, its parent, and that parent's parent
+        /// where the instance ID names an XInput collection with IG_, when the
+        /// parent's compatible IDs say USB (hid_internal_get_info and
+        /// hid_internal_get_usb_info, windows/hid.c at c3509c1, lines 480-516).
+        /// 0 where that finds none.</summary>
+        private static ushort UsbReleaseOf(string path)
+        {
+            try
+            {
+                var instanceKey = new DEVPROPKEY { fmtid = new Guid("78c34fc8-104a-4aca-9ea4-524d52996e57"), pid = 256 };
+                var buffer = new byte[2048];
+                uint size = (uint)buffer.Length;
+                if (CM_Get_Device_Interface_PropertyW(path, ref instanceKey, out uint _, buffer, ref size, 0) != 0) return 0;
+                string instanceId = Encoding.Unicode.GetString(buffer, 0, (int)size).TrimEnd('\0');
+                if (CM_Locate_DevNodeW(out uint node, instanceId, 0) != 0) return 0;
+                if (CM_Get_Parent(out node, node, 0) != 0) return 0;
+                if (!IsUsb(StringList(node, 4))) return 0;
+                string parentId = DevNodeInstanceId(node);
+                if (parentId != null && TokenValue(parentId, "IG_") != -1 && CM_Get_Parent(out node, node, 0) != 0) return 0;
+                return ReleaseFromHardwareIds(StringList(node, 3));
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        /// <summary>Whether a device's compatible IDs name the USB bus, as
+        /// hid_internal_detect_bus_type tells it (windows/hid.c): an ID that
+        /// holds USB, as hid_internal_detect_bus_type reads them (lines 658-666).</summary>
+        internal static bool IsUsb(IEnumerable<string> compatibleIds)
+            => compatibleIds.Any(id => id.Contains("USB", StringComparison.OrdinalIgnoreCase));
+
+        /// <summary>The first release number among a USB device's hardware IDs,
+        /// the digits after REV_, bcdDevice. One that reads 0 names none, and
+        /// hidapi goes on to the next ID. 0 for none.</summary>
+        internal static ushort ReleaseFromHardwareIds(IEnumerable<string> hardwareIds)
+        {
+            foreach (string id in hardwareIds)
+            {
+                int value = TokenValue(id, "REV_");
+                if (value > 0) return (ushort)value;
+            }
+            return 0;
+        }
+
+        /// <summary>The hexadecimal digits after a token, in either case, or -1
+        /// for an ID without the token or without digits after it, as
+        /// hid_internal_extract_int_token_value reads them (windows/hid.c:456-471).</summary>
+        internal static int TokenValue(string id, string token)
+        {
+            int at = id.IndexOf(token, StringComparison.OrdinalIgnoreCase);
+            if (at < 0) return -1;
+            int start = at + token.Length, end = start, value = 0;
+            while (end < id.Length && Uri.IsHexDigit(id[end]) && end - start < 8)
+                value = value << 4 | Convert.ToInt32(id[end++].ToString(), 16);
+            return end == start ? -1 : value & 0xFFFF;
+        }
+
+        private static string DevNodeInstanceId(uint node)
+        {
+            var key = new DEVPROPKEY { fmtid = new Guid("78c34fc8-104a-4aca-9ea4-524d52996e57"), pid = 256 };
+            var buffer = new byte[2048];
+            uint size = (uint)buffer.Length;
+            return CM_Get_DevNode_PropertyW(node, ref key, out uint _, buffer, ref size, 0) != 0 ? null
+                : Encoding.Unicode.GetString(buffer, 0, (int)size).TrimEnd('\0');
+        }
+
+        /// <summary>A device node's list of IDs: DEVPKEY_Device_HardwareIds (3)
+        /// or DEVPKEY_Device_CompatibleIds (4). Empty where it has none.</summary>
+        private static IReadOnlyList<string> StringList(uint node, uint pid)
+        {
+            var key = new DEVPROPKEY { fmtid = new Guid("a45c254e-df1c-4efd-8020-67d146a850e0"), pid = pid };
+            var buffer = new byte[4096];
+            uint size = (uint)buffer.Length;
+            if (CM_Get_DevNode_PropertyW(node, ref key, out uint _, buffer, ref size, 0) != 0) return Array.Empty<string>();
+            return Encoding.Unicode.GetString(buffer, 0, (int)size).Split('\0', StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct DEVPROPKEY
+        {
+            public Guid fmtid;
+            public uint pid;
+        }
+
+        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
+        private static extern int CM_Get_Device_Interface_PropertyW(string deviceInterface, ref DEVPROPKEY propertyKey,
+            out uint propertyType, [Out] byte[] propertyBuffer, ref uint propertyBufferSize, uint flags);
+
+        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
+        private static extern int CM_Locate_DevNodeW(out uint devInst, string deviceId, uint flags);
+
+        [DllImport("cfgmgr32.dll")]
+        private static extern int CM_Get_Parent(out uint parent, uint devInst, uint flags);
+
+        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
+        private static extern int CM_Get_DevNode_PropertyW(uint devInst, ref DEVPROPKEY propertyKey,
+            out uint propertyType, [Out] byte[] propertyBuffer, ref uint propertyBufferSize, uint flags);
+
         /// <summary>One collection's facts through a query-only open, or
         /// null when it could not be opened or read, which is a probe to
         /// make again and never a collection kept with a vendor ID and
@@ -199,7 +303,7 @@ namespace PadForge.Common.Input
                     ProductId = attributes.ProductID,
                     UsagePage = caps.UsagePage,
                     Usage = caps.Usage,
-                    ReleaseNumber = attributes.VersionNumber,
+                    ReleaseNumber = attributes.VersionNumber != 0 ? attributes.VersionNumber : UsbReleaseOf(path),
                     InterfaceNumber = InterfaceNumberOf(path),
                     InputReportLength = caps.InputReportByteLength,
                     OutputReportLength = caps.OutputReportByteLength,

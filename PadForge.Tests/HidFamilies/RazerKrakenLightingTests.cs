@@ -92,6 +92,7 @@ namespace PadForge.Tests
                          _ => null,
                          _ => new byte[] { 0x01, 0x05 },
                          r => r[3] == 0x17 ? new byte[] { 0x05, 0x05 } : new byte[] { 0x05, 0xAA, 0xBB },
+                         _ => new byte[] { 0x01, 0x05, 0xAA, 0xBB, 0xCC, 0xDD },
                      })
             {
                 var io = Headset(answer);

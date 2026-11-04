@@ -142,6 +142,7 @@ namespace PadForge.Tests
             var model = Model();
             var stale = (byte[])Info.Clone();
             stale[4] = 0x01;
+            stale[12] = 0x05;
             var answers = new Queue<byte[]>(new[] { stale, Info });
             var io = new FakeReportChannel
             {

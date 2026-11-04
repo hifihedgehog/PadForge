@@ -44,8 +44,9 @@ namespace PadForge.Tests
             Assert.Equal(94, lights.First(l => l.Usage == 0x2C).Address);   // Space
             Assert.Equal(lights.Count, lights.Select(l => l.Address).Distinct().Count());
             // The ISO key between Left Shift and Z, KEY_NORD_ANGLE_BRACKET at
-            // 109 (lines 30-31 and 51), is named by a legend, not a usage.
-            Assert.Contains(lights, l => l.Address == 109 && l.Usage == 0);
+            // 109 (lines 30-31 and 51), is a printed legend, and takes the
+            // usage of the place it sits in: Keyboard Non-US \ and | (0x64).
+            Assert.Contains(lights, l => l.Address == 109 && l.Usage == 0x64);
             Assert.All(lights, l => Assert.InRange(l.Address * 4 + 3, 0, MintakaKeyboardLighting.ColorBufSize - 1));
         }
 

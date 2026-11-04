@@ -41,6 +41,18 @@ namespace PadForge.Tests
         private static (RazerScriptChannel Control, RazerScriptChannel Argb) Channels(Func<byte[], byte[]> reply)
             => (new RazerScriptChannel { FeatureReply = reply }, new RazerScriptChannel { FeatureReportLength = 321 });
 
+        /// <summary>A read waits between asking and reading, the 1 ms the
+        /// Razer link gives the device's answer.</summary>
+        [Fact]
+        public void AQuery_WaitsAfterItsRequest_BeforeItReads()
+        {
+            var io = new RazerScriptChannel { FeatureReply = request => RazerReport90.Reply(request) };
+            Assert.NotNull(RazerFeatureLink.Query(io, io.Wait, RazerDirectProtocol.StoredEffectRead(0x3F, 0x05)));
+            int asked = io.Log.FindIndex(l => l.StartsWith("F ", StringComparison.Ordinal));
+            Assert.Equal("W 1", io.Log[asked + 1]);
+            Assert.StartsWith("G ", io.Log[asked + 2]);
+        }
+
         /// <summary>A channel's count narrows its lights to that many, leaves
         /// the others' addresses, and goes out as the size report
         /// (RGBController_RazerAddressable.cpp:235-247,
@@ -192,7 +204,7 @@ namespace PadForge.Tests
             Assert.Equal(new HidSibling(1, 0xFF42), Assert.Single(learned.Siblings));
             Assert.True(learned.Siblings[0].Is(unit, argb));
             // Another product's interface 1 teaches nothing.
-            Assert.Null(family.Match(argb with { ProductId = 0x0F20 }));
+            Assert.Null(family.Match(argb with { ProductId = 0x0F20, UsagePage = 0xFF77 }));
             Assert.Same(learned, family.Match(unit with { UsagePage = 0xFF07 }));
         }
     }

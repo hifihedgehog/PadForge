@@ -210,6 +210,45 @@ namespace PadForge.Tests
             Assert.Equal(Pattern, string.Concat(jpeg.Select(b => b.ToString("X2"))));
         }
 
+        /// <summary>stb_image_write v1.16's JPEG at quality 95 of an 8 by 8 gray
+        /// picture whose AC energy is all in the last zigzag coefficient, from a
+        /// build of OpenRGB's copy, so the coder writes its code for sixteen
+        /// zeros and then the rest of the run (stb_image_write.h:1381-1389).</summary>
+        private const string LongZeroRun
+            = "FFD8FFE000104A46494600010100000100010000FFDB00840002010101010102010101020202020204030202020205040403"
+            + "04060506060605060606070908060709070606080B08090A0A0A0A0A06080B0C0B0A0C090A0A0A0102020202020205030305"
+            + "0A0706070A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A"
+            + "0A0A0A0AFFC00011080008000803011100021101031101FFC401A20000010501010101010100000000000000000102030405"
+            + "060708090A0B100002010303020403050504040000017D01020300041105122131410613516107227114328191A1082342B1"
+            + "C11552D1F02433627282090A161718191A25262728292A3435363738393A434445464748494A535455565758595A63646566"
+            + "6768696A737475767778797A838485868788898A92939495969798999AA2A3A4A5A6A7A8A9AAB2B3B4B5B6B7B8B9BAC2C3C4"
+            + "C5C6C7C8C9CAD2D3D4D5D6D7D8D9DAE1E2E3E4E5E6E7E8E9EAF1F2F3F4F5F6F7F8F9FA010003010101010101010101000000"
+            + "0000000102030405060708090A0B110002010204040304070504040001027700010203110405213106124151076171132232"
+            + "8108144291A1B1C109233352F0156272D10A162434E125F11718191A262728292A35363738393A434445464748494A535455"
+            + "565758595A636465666768696A737475767778797A82838485868788898A92939495969798999AA2A3A4A5A6A7A8A9AAB2B3"
+            + "B4B5B6B7B8B9BAC2C3C4C5C6C7C8C9CAD2D3D4D5D6D7D8D9DAE2E3E4E5E6E7E8E9EAF2F3F4F5F6F7F8F9FAFFDA000C030100"
+            + "02110311003F003A7F9FF3FE7FF26803FFD9";
+
+        [Fact]
+        public void TheWriter_IsStbsByteForByte_OnARunOfMoreThanSixteenZeros()
+        {
+            byte[] gray =
+            {
+                129, 125, 132, 123, 133, 124, 131, 127,
+                125, 135, 117, 141, 115, 139, 121, 131,
+                132, 117, 145, 108, 148, 111, 139, 124,
+                123, 141, 108, 151, 105, 148, 115, 133,
+                133, 115, 148, 105, 151, 108, 141, 123,
+                124, 139, 111, 148, 108, 145, 117, 132,
+                131, 121, 139, 115, 141, 117, 135, 125,
+                127, 131, 124, 133, 123, 132, 125, 129,
+            };
+            var pixels = new byte[8 * 8 * 3];
+            for (int i = 0; i < gray.Length; i++) pixels[i * 3] = pixels[i * 3 + 1] = pixels[i * 3 + 2] = gray[i];
+            var jpeg = StreamDeckJpeg.Write(8, 8, pixels, 95);
+            Assert.Equal(LongZeroRun, string.Concat(jpeg.Select(b => b.ToString("X2"))));
+        }
+
         private static int IndexOf(byte[] bytes, byte a, byte b)
         {
             for (int i = 0; i + 1 < bytes.Length; i++)

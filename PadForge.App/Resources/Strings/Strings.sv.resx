@@ -1003,6 +1003,11 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Den här enheten har inte svarat än. Dess färger visas när den vaknar.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Färgerna skickas via {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Färgerna skickas via {0}, som lyser upp alla enheter av det här slaget samtidigt. När {0} inte körs lyser PadForge upp den här enheten på egen hand.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} lyser upp alla enheter av det här slaget samtidigt, så den som sitter på virtuell handkontroll {1} bestämmer deras färg.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} lyser upp alla enheter av det här slaget samtidigt, så raden {1} på virtuell handkontroll {2} bestämmer deras färg.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Virtuell handkontroll {0} lyser också upp den här enheten, och det är dess färg som visas.</value></data>
@@ -1018,6 +1023,8 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>headset, musmattor och Chroma Link-slingor</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>headset, musmattor och högtalare</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headset</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Ljusfält</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Ange en sexsiffrig hexfärg (RRGGBB eller #RRGGBB) och tryck på Retur eller klicka utanför för att tillämpa.</value></data>

@@ -1354,6 +1354,11 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_RouteAsleep => Get("Pad_Lighting_RouteAsleep");
     public string Pad_Lighting_RouteThrough => Get("Pad_Lighting_RouteThrough");
     public string Pad_Lighting_RouteThroughOrDirect => Get("Pad_Lighting_RouteThroughOrDirect");
+    public string Pad_Lighting_RouteLeftToProgram => Get("Pad_Lighting_RouteLeftToProgram");
+    public string Pad_Lighting_RouteThroughOpenRgb => Get("Pad_Lighting_RouteThroughOpenRgb");
+    public string Pad_Lighting_RouteThroughOpenRgbOnly => Get("Pad_Lighting_RouteThroughOpenRgbOnly");
+    public string Pad_Lighting_RouteLeftToOpenRgb => Get("Pad_Lighting_RouteLeftToOpenRgb");
+    public string Pad_Lighting_RouteOpenRgbServerOff => Get("Pad_Lighting_RouteOpenRgbServerOff");
     public string Pad_Lighting_RouteShared => Get("Pad_Lighting_RouteShared");
     public string Pad_Lighting_RouteSharedVendorRow => Get("Pad_Lighting_RouteSharedVendorRow");
     public string Pad_Lighting_RouteOtherController => Get("Pad_Lighting_RouteOtherController");
@@ -1369,6 +1374,8 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_VendorRowExamples_Chroma => Get("Pad_Lighting_VendorRowExamples_Chroma");
     public string Pad_Lighting_VendorRowExamples_LedSdk => Get("Pad_Lighting_VendorRowExamples_LedSdk");
     public string Pad_Lighting_VendorRowExamples_GameSense => Get("Pad_Lighting_VendorRowExamples_GameSense");
+    public string Pad_Lighting_VendorRowExamples_Aura => Get("Pad_Lighting_VendorRowExamples_Aura");
+    public string Pad_Lighting_VendorRowExamples_MysticLight => Get("Pad_Lighting_VendorRowExamples_MysticLight");
     public string Pad_Lighting_BaseColor => Get("Pad_Lighting_BaseColor");
     public string Pad_Lighting_Hex => Get("Pad_Lighting_Hex");
     public string Pad_Lighting_HexTooltip => Get("Pad_Lighting_HexTooltip");

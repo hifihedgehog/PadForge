@@ -1003,6 +1003,11 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>此裝置尚未回應。待它喚醒後便會顯示顏色。</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>顏色會經 {0} 傳送。</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>顏色會經 {0} 傳送，而它會同時為所有同類裝置亮燈。{0} 沒有執行時，PadForge 會自行為此裝置亮燈。</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} 會同時為所有同類裝置亮燈，因此由虛擬控制器 {1} 上的那一部決定它們的顏色。</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} 會同時為所有同類裝置亮燈，因此由虛擬控制器 {2} 上的「{1}」列決定它們的顏色。</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>虛擬控制器 {0} 亦為此裝置亮燈，而顯示的是它的顏色。</value></data>
@@ -1018,6 +1023,8 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>耳機、滑鼠墊和 Chroma Link 燈帶</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>耳機、滑鼠墊和喇叭</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>耳機</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>光條</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>輸入六位十六進制顏色（RRGGBB 或 #RRGGBB），然後按 Enter 或按一下其他位置以套用。</value></data>

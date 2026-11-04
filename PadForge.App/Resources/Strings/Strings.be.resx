@@ -1003,6 +1003,11 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Гэтая прылада яшчэ не адказала. Колеры з'явяцца, калі яна прачнецца.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Колеры ідуць праз {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Колеры ідуць праз {0}, які падсвечвае ўсе прылады гэтага тыпу адначасова. Пакуль {0} не працуе, PadForge падсвечвае гэтую прыладу сам.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} падсвечвае ўсе прылады гэтага тыпу адначасова, таму іх колер задае тая, што на віртуальным кантролеры {1}.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} падсвечвае ўсе прылады гэтага тыпу адначасова, таму іх колер задае радок {1} на віртуальным кантролеры {2}.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Віртуальны кантролер {0} таксама падсвечвае гэтую прыладу, і паказваецца яго колер.</value></data>
@@ -1018,6 +1023,8 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>гарнітуры, дыванкі для мышы і стужкі Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>гарнітуры, дыванкі для мышы і калонкі</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>гарнітуры</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Светлавая панэль</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Увядзіце шасцізначны шаснаццатковы колер (RRGGBB або #RRGGBB) і націсніце Enter або пстрыкніце па-за полем, каб ужыць.</value></data>

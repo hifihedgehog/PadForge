@@ -319,8 +319,16 @@ namespace PadForge.Tests
             };
             Link(new DeviceLinks { Device = A, LeftToProgram = "Lenovo Vantage", HasVendorProgram = true });
             string line = PeripheralRouteText.Lighting(keyboard, 0);
-            Assert.Equal(string.Format(s.Pad_Lighting_RouteThroughOrDirect, "Lenovo Vantage"), line);
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteLeftToProgram, "Lenovo Vantage"), line);
             Assert.DoesNotContain("{0}", line);
+            // The program is named in both places the line names it, and
+            // the line never says colors go through it, since PadForge has
+            // no path through it.
+            Assert.Equal(2, line.Split("Lenovo Vantage").Length - 1);
+            Assert.NotEqual(string.Format(s.Pad_Lighting_RouteThroughOrDirect, "Lenovo Vantage"), line);
+            Assert.Equal("{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.",
+                PadForge.Resources.Strings.Strings.ResourceManager.GetString(nameof(s.Pad_Lighting_RouteLeftToProgram),
+                    System.Globalization.CultureInfo.InvariantCulture));
             // A controller that leaves the device alone names no route.
             Assert.Null(PeripheralRouteText.Lighting(keyboard, 0, lightsHere: false));
             // Nor does a stopped engine.

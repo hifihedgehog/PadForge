@@ -1003,6 +1003,11 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>To urządzenie jeszcze nie odpowiedziało. Jego kolory pojawią się, gdy się wybudzi.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Kolory są wysyłane przez {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Kolory są wysyłane przez {0}, co podświetla naraz wszystkie urządzenia tego rodzaju. Gdy {0} nie działa, PadForge podświetla to urządzenie samodzielnie.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} podświetla naraz wszystkie urządzenia tego rodzaju, więc o ich kolorze decyduje to przypisane do wirtualnego kontrolera {1}.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} podświetla naraz wszystkie urządzenia tego rodzaju, więc o ich kolorze decyduje wiersz {1} na wirtualnym kontrolerze {2}.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Wirtualny kontroler {0} również podświetla to urządzenie i to jego kolor jest widoczny.</value></data>
@@ -1018,6 +1023,8 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>zestawy słuchawkowe, podkładki pod mysz i paski Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>zestawy słuchawkowe, podkładki pod mysz i głośniki</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>zestawy słuchawkowe</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Pasek świetlny</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Wpisz sześciocyfrowy kolor szesnastkowy (RRGGBB lub #RRGGBB) i naciśnij Enter albo kliknij poza polem, aby zastosować.</value></data>

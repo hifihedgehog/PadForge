@@ -1003,6 +1003,11 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>இந்தச் சாதனம் இன்னும் பதிலளிக்கவில்லை. அது விழித்ததும் அதன் நிறங்கள் தெரியும்.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>நிறங்கள் {0} வழியாகச் செல்லும்.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>நிறங்கள் {0} வழியாகச் செல்லும், அது இந்த வகையான எல்லாச் சாதனங்களையும் ஒரே நேரத்தில் ஒளிரச் செய்யும். {0} இயங்காதபோது, PadForge தானே இந்தச் சாதனத்தை ஒளிரச் செய்யும்.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} இந்த வகையான எல்லாச் சாதனங்களையும் ஒரே நேரத்தில் ஒளிரச் செய்கிறது, எனவே மெய்நிகர் கட்டுப்படுத்தி {1}-இல் உள்ளது அவற்றின் நிறத்தை அமைக்கும்.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} இந்த வகையான எல்லாச் சாதனங்களையும் ஒரே நேரத்தில் ஒளிரச் செய்கிறது, எனவே மெய்நிகர் கட்டுப்படுத்தி {2}-இல் உள்ள {1} வரிசை அவற்றின் நிறத்தை அமைக்கும்.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்தி {0}-உம் இந்தச் சாதனத்தை ஒளிரச் செய்கிறது, அதன் நிறமே தெரியும்.</value></data>
@@ -1018,6 +1023,8 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>ஹெட்செட்கள், மவுஸ்பேடுகள், Chroma Link ஸ்ட்ரிப்கள்</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>ஹெட்செட்கள், மவுஸ்பேடுகள், ஸ்பீக்கர்கள்</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>ஹெட்செட்கள்</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>லைட்பார்</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ஆறு இலக்க ஹெக்ஸ் நிறத்தை (RRGGBB அல்லது #RRGGBB) உள்ளிட்டு, பயன்படுத்த Enter-ஐ அழுத்தவும் அல்லது வெளியே கிளிக் செய்யவும்.</value></data>

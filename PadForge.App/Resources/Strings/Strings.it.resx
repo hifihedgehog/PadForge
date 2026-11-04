@@ -1848,6 +1848,11 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Questo dispositivo non ha ancora risposto. I suoi colori compariranno appena si riattiva.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>I colori passano da {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>I colori passano da {0}, che illumina insieme tutti i dispositivi di questo tipo. Finché {0} non è in esecuzione, PadForge illumina questo dispositivo da sé.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} illumina insieme tutti i dispositivi di questo tipo, quindi quello sul controller virtuale {1} decide il loro colore.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} illumina insieme tutti i dispositivi di questo tipo, quindi la riga {1} sul controller virtuale {2} decide il loro colore.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Anche il controller virtuale {0} illumina questo dispositivo, e si vede il suo colore.</value></data>
@@ -1863,6 +1868,8 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>cuffie, tappetini e strisce Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>cuffie, tappetini e altoparlanti</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>cuffie</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Barra luminosa</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Inserisci un colore esadecimale a sei cifre (RRGGBB o #RRGGBB) e premi Invio o fai clic altrove per applicarlo.</value></data>

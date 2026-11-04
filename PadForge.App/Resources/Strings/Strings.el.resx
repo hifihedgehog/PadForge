@@ -1003,6 +1003,11 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Αυτή η συσκευή δεν έχει απαντήσει ακόμη. Τα χρώματά της θα εμφανιστούν μόλις ξυπνήσει.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Τα χρώματα περνούν μέσω του {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Τα χρώματα περνούν μέσω του {0}, το οποίο φωτίζει ταυτόχρονα όλες τις συσκευές αυτού του είδους. Όσο το {0} δεν εκτελείται, το PadForge φωτίζει μόνο του αυτή τη συσκευή.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>Το {0} φωτίζει ταυτόχρονα όλες τις συσκευές αυτού του είδους, επομένως αυτή που βρίσκεται στο εικονικό χειριστήριο {1} ορίζει το χρώμα τους.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>Το {0} φωτίζει ταυτόχρονα όλες τις συσκευές αυτού του είδους, επομένως η γραμμή {1} στο εικονικό χειριστήριο {2} ορίζει το χρώμα τους.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Το εικονικό χειριστήριο {0} φωτίζει επίσης αυτή τη συσκευή και εμφανίζεται το δικό του χρώμα.</value></data>
@@ -1018,6 +1023,8 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>σετ κεφαλής, mousepad και ταινίες Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>σετ κεφαλής, mousepad και ηχεία</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>σετ κεφαλής</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Φωτεινή μπάρα</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Εισαγάγετε ένα εξαψήφιο δεκαεξαδικό χρώμα (RRGGBB ή #RRGGBB) και πατήστε Enter ή κάντε κλικ αλλού για εφαρμογή.</value></data>

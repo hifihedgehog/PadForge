@@ -1003,6 +1003,11 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Toto zariadenie ešte neodpovedalo. Jeho farby sa zobrazia, keď sa prebudí.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Farby sa posielajú cez {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Farby sa posielajú cez {0}, ktorý osvetľuje všetky zariadenia tohto druhu naraz. Kým {0} nebeží, PadForge osvetľuje toto zariadenie sám.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} osvetľuje všetky zariadenia tohto druhu naraz, preto ich farbu určuje zariadenie na virtuálnom ovládači {1}.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} osvetľuje všetky zariadenia tohto druhu naraz, preto ich farbu určuje riadok {1} na virtuálnom ovládači {2}.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Toto zariadenie osvetľuje aj virtuálny ovládač {0} a zobrazuje sa jeho farba.</value></data>
@@ -1018,6 +1023,8 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>headsety, podložky pod myš a pásy Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>headsety, podložky pod myš a reproduktory</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headsety</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Svetelná lišta</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Zadajte šesťmiestnu hexadecimálnu farbu (RRGGBB alebo #RRGGBB) a použite ju stlačením klávesu Enter alebo kliknutím mimo poľa.</value></data>

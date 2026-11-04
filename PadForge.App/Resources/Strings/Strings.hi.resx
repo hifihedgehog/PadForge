@@ -1003,6 +1003,11 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>इस डिवाइस ने अभी तक जवाब नहीं दिया है। इसके जागते ही इसके रंग दिखेंगे।</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>रंग {0} के ज़रिए जाते हैं।</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>रंग {0} के ज़रिए जाते हैं, जो इस तरह के हर डिवाइस को एक साथ रोशन करता है। जब {0} नहीं चल रहा होता, तब PadForge इस डिवाइस को खुद रोशन करता है।</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} इस तरह के हर डिवाइस को एक साथ रोशन करता है, इसलिए वर्चुअल कंट्रोलर {1} वाला डिवाइस ही उन सबका रंग तय करता है।</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} इस तरह के हर डिवाइस को एक साथ रोशन करता है, इसलिए वर्चुअल कंट्रोलर {2} की {1} पंक्ति ही उन सबका रंग तय करती है।</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>वर्चुअल कंट्रोलर {0} भी इस डिवाइस को रोशन करता है, और उसी का रंग दिखता है।</value></data>
@@ -1018,6 +1023,8 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>हेडसेट, माउसपैड और Chroma Link स्ट्रिप</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>हेडसेट, माउसपैड और स्पीकर</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>हेडसेट</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>लाइटबार</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>छह अंकों का हेक्स रंग (RRGGBB या #RRGGBB) डालें और लागू करने के लिए Enter दबाएँ या कहीं और क्लिक करें।</value></data>

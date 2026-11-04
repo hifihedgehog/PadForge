@@ -1003,6 +1003,11 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Bu cihaz henüz yanıt vermedi. Uyandığında renkleri görünür.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Renkler {0} üzerinden gider.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Renkler, bu türdeki tüm cihazları aynı anda aydınlatan {0} üzerinden gider. {0} çalışmıyorken PadForge bu cihazı kendi başına aydınlatır.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} bu türdeki tüm cihazları aynı anda aydınlattığı için renklerini Sanal kontrolcü {1} üzerindeki belirler.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} bu türdeki tüm cihazları aynı anda aydınlattığı için renklerini Sanal kontrolcü {2} üzerindeki {1} satırı belirler.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Sanal kontrolcü {0} da bu cihazı aydınlatıyor ve onun rengi görünüyor.</value></data>
@@ -1018,6 +1023,8 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>kulaklıklar, fare altlıkları ve Chroma Link şeritleri</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>kulaklıklar, fare altlıkları ve hoparlörler</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>kulaklıklar</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Işık çubuğu</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Altı haneli bir onaltılık renk (RRGGBB veya #RRGGBB) girin ve uygulamak için Enter'a basın ya da başka bir yere tıklayın.</value></data>

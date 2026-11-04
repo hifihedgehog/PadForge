@@ -1003,6 +1003,11 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>این دستگاه هنوز پاسخ نداده است. رنگ‌هایش پس از بیدار شدن نمایش داده می‌شود.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>رنگ‌ها از طریق {0} می‌روند.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>رنگ‌ها از طریق {0} می‌روند که همه دستگاه‌های این نوع را یکجا روشن می‌کند. تا وقتی {0} در حال اجرا نیست، PadForge خودش این دستگاه را روشن می‌کند.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} همه دستگاه‌های این نوع را یکجا روشن می‌کند، بنابراین دستگاهی که روی کنترلر مجازی {1} است رنگ همه را تعیین می‌کند.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} همه دستگاه‌های این نوع را یکجا روشن می‌کند، بنابراین ردیف {1} روی کنترلر مجازی {2} رنگ همه را تعیین می‌کند.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>کنترلر مجازی {0} هم این دستگاه را روشن می‌کند و رنگ همان نمایش داده می‌شود.</value></data>
@@ -1018,6 +1023,8 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>هدست‌ها، ماوس‌پدها و نوارهای Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>هدست‌ها، ماوس‌پدها و بلندگوها</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>هدست‌ها</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>نوار نوری</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>یک رنگ هگز شش‌رقمی (RRGGBB یا #RRGGBB) وارد کنید و برای اعمال، Enter را فشار دهید یا بیرون از کادر کلیک کنید.</value></data>

@@ -531,6 +531,40 @@ namespace PadForge.Tests
                 "Pad_Lighting_VendorRowExamples_GameSense", System.Globalization.CultureInfo.InvariantCulture));
         }
 
+        /// <summary>The ASUS Aura and MSI Mystic Light rows name what their
+        /// SDKs light that no device row reaches, as the three #494 rows do.
+        /// Without an arm in VendorRowExamples they showed no line at
+        /// all.</summary>
+        [Fact]
+        public void TheAuraAndMysticLightRows_NameTheirOwnExamples()
+        {
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            var aura = PeripheralOutputRow.IdentityFor(PeripheralRowKind.AsusAura);
+            var msi = PeripheralOutputRow.IdentityFor(PeripheralRowKind.MsiMysticLight);
+            Link(new DeviceLinks
+                 {
+                     Device = aura, CatchAll = true,
+                     Lighting = AuraLights.Categories.Select(c => new OutputPath(OutputFamily.AuraSdkType, c)).ToArray(),
+                 },
+                 new DeviceLinks
+                 {
+                     Device = msi, CatchAll = true,
+                     Lighting = MysticLightBackend.PathKeys.Select(k => new OutputPath(OutputFamily.MysticLightType, k)).ToArray(),
+                 });
+
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteVendorRow, "Armoury Crate", s.Pad_Lighting_VendorRowExamples_Aura),
+                PeripheralRouteText.Lighting(Device(aura, 0x0B05), 0));
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteVendorRow, "Mystic Light", s.Pad_Lighting_VendorRowExamples_MysticLight),
+                PeripheralRouteText.Lighting(Device(msi, 0x1462), 0));
+            PeripheralOutputs.SetBackendState(OutputFamily.AuraSdkType, BackendState.Waiting);
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteVendorRowWaiting, "Armoury Crate", s.Pad_Lighting_VendorRowExamples_Aura),
+                PeripheralRouteText.Lighting(Device(aura, 0x0B05), 0));
+
+            string En(string key) => PadForge.Resources.Strings.Strings.ResourceManager.GetString(key, System.Globalization.CultureInfo.InvariantCulture);
+            Assert.Equal("motherboards, graphics cards, and memory", En(nameof(s.Pad_Lighting_VendorRowExamples_Aura)));
+            Assert.Equal("motherboards and graphics cards", En(nameof(s.Pad_Lighting_VendorRowExamples_MysticLight)));
+        }
+
         /// <summary>An analog keyboard row's own path is synthetic, so its
         /// container comes from the HID collection it reads, and a Logitech
         /// analog keyboard finds its HID++ unit like any keyboard row.</summary>

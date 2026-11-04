@@ -1003,6 +1003,11 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Ta naprava se še ni odzvala. Barve se prikažejo, ko se zbudi.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Barve gredo prek {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Barve gredo prek {0}, ki hkrati osvetljuje vse naprave te vrste. Dokler {0} ne deluje, PadForge to napravo osvetljuje sam.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} hkrati osvetljuje vse naprave te vrste, zato njihovo barvo določa tista na navideznem krmilniku {1}.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} hkrati osvetljuje vse naprave te vrste, zato njihovo barvo določa vrstica {1} na navideznem krmilniku {2}.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>To napravo osvetljuje tudi navidezni krmilnik {0} in prikazana je njegova barva.</value></data>
@@ -1018,6 +1023,8 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>slušalke, podloge za miško in trakove Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>slušalke, podloge za miško in zvočnike</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>slušalke</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Svetlobni trak</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Vnesite šestmestno šestnajstiško barvo (RRGGBB ali #RRGGBB) in za uporabo pritisnite Enter ali kliknite drugam.</value></data>

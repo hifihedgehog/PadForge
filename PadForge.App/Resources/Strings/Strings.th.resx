@@ -1003,6 +1003,11 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>อุปกรณ์นี้ยังไม่ตอบกลับ สีจะแสดงเมื่ออุปกรณ์ตื่นขึ้น</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>สีจะส่งผ่าน {0}</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>สีจะส่งผ่าน {0} ซึ่งให้แสงไฟแก่อุปกรณ์ชนิดนี้ทุกตัวพร้อมกัน ขณะที่ {0} ไม่ได้ทำงาน PadForge จะให้แสงไฟแก่อุปกรณ์นี้เอง</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} ให้แสงไฟแก่อุปกรณ์ชนิดนี้ทุกตัวพร้อมกัน ตัวที่อยู่บนคอนโทรลเลอร์เสมือน {1} จึงเป็นตัวกำหนดสีของทั้งหมด</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} ให้แสงไฟแก่อุปกรณ์ชนิดนี้ทุกตัวพร้อมกัน แถว {1} บนคอนโทรลเลอร์เสมือน {2} จึงเป็นตัวกำหนดสีของทั้งหมด</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>คอนโทรลเลอร์เสมือน {0} ก็ให้แสงไฟแก่อุปกรณ์นี้ด้วย และสีของคอนโทรลเลอร์นั้นเป็นสีที่แสดง</value></data>
@@ -1018,6 +1023,8 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>ชุดหูฟัง แผ่นรองเมาส์ และแถบไฟ Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>ชุดหูฟัง แผ่นรองเมาส์ และลำโพง</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>ชุดหูฟัง</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>แถบไฟ</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ป้อนสีฐานสิบหกหกหลัก (RRGGBB หรือ #RRGGBB) แล้วกด Enter หรือคลิกที่อื่นเพื่อนำไปใช้</value></data>

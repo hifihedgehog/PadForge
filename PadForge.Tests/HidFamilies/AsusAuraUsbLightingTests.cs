@@ -337,6 +337,42 @@ namespace PadForge.Tests
             Starts("00 41 00", Assert.Single(Outs(io)), 65);
         }
 
+        /// <summary>The Claymore's region is its release number's
+        /// (AsusAuraKeyboardControllerDetect.cpp:62, AsusAuraKeyboardController.cpp:174-189):
+        /// the model of each release number lays it out by that region, and a
+        /// session too.</summary>
+        [Fact]
+        public void TheClaymore_TakesItsRegionFromItsReleaseNumber()
+        {
+            var r = OpenRgbRegistrations.Of(AsusAuraUsbLighting.OpenRgbFamily).First(x => x.ProductId == 0x184D);
+            var set = AsusAuraTables.KeyboardSet("AsusClaymoreNoNumpadLayouts");
+            var family = new AsusAuraUsbLighting();
+            var us = family.Match(CollectionOf(r) with { ReleaseNumber = 0x1000 });
+            var de = family.Match(CollectionOf(r) with { ReleaseNumber = 0x2000 });
+            var uk = family.Match(CollectionOf(r) with { ReleaseNumber = 0x3000 });
+            Assert.NotSame(us, de);
+            Assert.Same(de, family.Match(CollectionOf(r) with { ReleaseNumber = 0x2000 }));
+            Assert.Equal(AsusAuraUsbLighting.KeyboardMap(0x184D, "AsusClaymoreNoNumpadLayouts",
+                AsusAuraUsbLighting.RegionOf(set, 117)).Product, us.Map.Product);
+            Assert.Equal(AsusAuraUsbLighting.KeyboardMap(0x184D, "AsusClaymoreNoNumpadLayouts",
+                AsusAuraUsbLighting.RegionOf(set, 204)).Product, de.Map.Product);
+            Assert.Equal(AsusAuraUsbLighting.KeyboardMap(0x184D, "AsusClaymoreNoNumpadLayouts",
+                AsusAuraUsbLighting.RegionOf(set, 221)).Product, uk.Map.Product);
+            Assert.NotEqual(us.Map.Product, uk.Map.Product);
+
+            // A session with the numpad on the right reads 221's map.
+            var numpad = new byte[65];
+            numpad[6] = 1;
+            var session = AsusAuraUsbLighting.BeginKeyboard(Channel(numpad), 0x184D, 0x3000);
+            var right = AsusAuraTables.KeyboardSet("AsusClaymoreNumpadRightLayouts");
+            Assert.Equal(AsusAuraUsbLighting.KeyboardMap(0x184D, "AsusClaymoreNumpadRightLayouts",
+                AsusAuraUsbLighting.RegionOf(right, 221)).Product, session.Map.Product);
+            // Another keyboard's models do not split by release number.
+            var strix = OpenRgbRegistrations.Of(AsusAuraUsbLighting.OpenRgbFamily).First(x => x.ProductId == 0x18F8);
+            Assert.Same(family.Match(CollectionOf(strix) with { ReleaseNumber = 0x0102 }),
+                family.Match(CollectionOf(strix) with { ReleaseNumber = 0x0304 }));
+        }
+
         // ── Mice ──
 
         /// <summary>aura_mouse_devices keeps the first entry of 0x189E, the

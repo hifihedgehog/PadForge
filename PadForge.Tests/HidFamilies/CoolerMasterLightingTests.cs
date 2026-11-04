@@ -107,9 +107,6 @@ namespace PadForge.Tests
             ["Cooler Master MK850"] = "no case in DetectCoolerMasterV2Keyboards",
             ["Cooler Master SK620 White"] = "no case in DetectCoolerMasterV2Keyboards",
             ["Cooler Master SK620 Black"] = "no case in DetectCoolerMasterV2Keyboards",
-            ["Cooler Master ARGB Gen 2 A1"] = "not ported",
-            ["Cooler Master ARGB Gen 2 A1 V2"] = "not ported",
-            ["Cooler Master ARGB Gen 2 A1 Mini"] = "not ported",
         };
 
         [Fact]

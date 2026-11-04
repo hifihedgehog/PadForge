@@ -110,6 +110,8 @@ namespace PadForge.Common.Input.Peripherals
                     return ArgbModel(registration.Name, productId);
                 case "DetectCoolerMasterSmallARGB":
                     return SmallArgbModel(registration.Name, productId);
+                case "DetectCoolerMasterARGBGen2A1":
+                    return ArgbGen2A1Model(registration.Name, productId);
                 default:
                     return null;
             }

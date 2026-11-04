@@ -107,8 +107,6 @@ namespace PadForge.Tests
             ["Cooler Master MK850"] = "no case in DetectCoolerMasterV2Keyboards",
             ["Cooler Master SK620 White"] = "no case in DetectCoolerMasterV2Keyboards",
             ["Cooler Master SK620 Black"] = "no case in DetectCoolerMasterV2Keyboards",
-            ["Cooler Master ARGB"] = "firmware named by the serial string",
-            ["Cooler Master Small ARGB"] = "firmware named by the serial string",
             ["Cooler Master ARGB Gen 2 A1"] = "not ported",
             ["Cooler Master ARGB Gen 2 A1 V2"] = "not ported",
             ["Cooler Master ARGB Gen 2 A1 Mini"] = "not ported",
@@ -764,6 +762,189 @@ namespace PadForge.Tests
             Assert.Null(ModelOf(0x004F).Begin(device.Channel, NoWait));
             device.Answer = report => report[1] == 0x52 && report[2] == 0x2C ? new byte[] { 0x52, 0x2B } : report.Skip(1).ToArray();
             Assert.Null(ModelOf(0x004F).Begin(device.Channel, NoWait));
+        }
+
+        // ── ARGB and Small ARGB ──
+
+        /// <summary>OpenRGB makes a controller only for the firmware the
+        /// serial string names (CoolerMasterControllerDetect.cpp:86-111 and
+        /// 321-346, CMARGBController.cpp:60-80, CMSmallARGBController.cpp:90-106,
+        /// the strings at CMARGBController.h:31-32 and CMSmallARGBController.h:64).</summary>
+        [Fact]
+        public void TheArgbControllers_AreListedOnlyOnTheFirmwareTheirSerialNames()
+        {
+            var argb = ModelOf(0x1011);
+            var small = ModelOf(0x1000);
+            Assert.True(argb.Identify(new FakeReportChannel { SerialNumber = "A202011171238" }));
+            Assert.True(argb.Identify(new FakeReportChannel { SerialNumber = "A202105291658" }));
+            Assert.False(argb.Identify(new FakeReportChannel { SerialNumber = "A201804091608" }));
+            Assert.False(argb.Identify(new FakeReportChannel { SerialNumber = "A202104052336" }));
+            Assert.False(argb.Identify(new FakeReportChannel()));
+            Assert.True(small.Identify(new FakeReportChannel { SerialNumber = "A202104052336" }));
+            Assert.False(small.Identify(new FakeReportChannel { SerialNumber = "A202105291658" }));
+            Assert.False(small.Identify(new FakeReportChannel { SerialNumber = "" }));
+            // Every write is stored ("@save :robot:").
+            Assert.Equal((150, 500), (argb.HoldMs, argb.RepaintMs));
+            Assert.Equal((150, 500), (small.HoldMs, small.RepaintMs));
+            Assert.Equal(5, argb.Map.Lights.Count);
+            Assert.Single(small.Map.Lights);
+            // The other models check nothing.
+            Assert.Null(ModelOf(CoolerMasterLighting.ProS).Identify);
+        }
+
+        /// <summary>An ARGB status answer as hidapi hands it over: the mode at
+        /// 4, random at 5, speed 6, brightness 7, the color at 8, one byte
+        /// earlier for the RGB header (CMARGBController.cpp:139-148).</summary>
+        private static byte[] ArgbAnswer(bool rgb, byte mode)
+        {
+            int at = rgb ? 1 : 0;
+            var answer = new byte[64];
+            answer[4 - at] = mode;
+            answer[5 - at] = 0x10;
+            answer[6 - at] = 0x03;
+            answer[7 - at] = 0x80;
+            answer[8 - at] = 0x01;
+            answer[9 - at] = 0x02;
+            answer[10 - at] = 0x03;
+            return answer;
+        }
+
+        [Fact]
+        public void AnArgbSession_ReadsEachHeader_LightsByStatic_AndPutsEachBack()
+        {
+            var device = new CoolerMasterDevice();
+            device.Answer = report => report[1] == 0x80 && report[2] == 0x0B && report[3] == 0x01 ? ArgbAnswer(false, report[4] == 0x08 ? (byte)0xFF : (byte)0x01)
+                : report[1] == 0x80 && report[2] == 0x0A ? ArgbAnswer(true, 0x03)
+                : null;
+            var model = ModelOf(0x1011);
+            var session = Assert.IsType<CoolerMasterLighting.ArgbSession>(model.Begin(device.Channel, NoWait));
+            // GetPortStatus for ports 01, 02, 04, 08, then the RGB header
+            // (CMARGBController.cpp:107-137), each read.
+            Same(new[]
+            {
+                F(0x80, 0x0B, 0x01, 0x01), F(0x80, 0x0B, 0x01, 0x02), F(0x80, 0x0B, 0x01, 0x04),
+                F(0x80, 0x0B, 0x01, 0x08), F(0x80, 0x0A, 0x01, 0x00),
+            }, device.Outs);
+            Assert.Equal(5, device.Reads);
+            Assert.Equal(new CoolerMasterLighting.ArgbPortState(0x01, 0x03, 0x80, false, 0x010203), session.States[0]);
+            Assert.Equal(0xFF, session.States[3].Mode);
+            Assert.Equal(new CoolerMasterLighting.ArgbPortState(0x03, 0x03, 0x80, false, 0x010203), session.States[4]);
+            Assert.Empty(session.CrashFrames);
+
+            device.Clear();
+            var colors = new[] { 0x111111, 0x222222, 0x333333, 0x444444, 0x555555 };
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(device.Channel, NoWait, model.Map.Lights, colors));
+            // Static per header: 80 01 01, then 80 0B 02, the port, 0A, 10,
+            // speed 0, FF and the color; the RGB header 80 01 03, then 80 04
+            // 05 10 00 FF and the color (CMARGBController.cpp:166-243).
+            Same(new[]
+            {
+                F(0x80, 0x01, 0x01), F(0x80, 0x0B, 0x02, 0x01, 0x0A, 0x10, 0x00, 0xFF, 0x11, 0x11, 0x11),
+                F(0x80, 0x01, 0x01), F(0x80, 0x0B, 0x02, 0x02, 0x0A, 0x10, 0x00, 0xFF, 0x22, 0x22, 0x22),
+                F(0x80, 0x01, 0x01), F(0x80, 0x0B, 0x02, 0x04, 0x0A, 0x10, 0x00, 0xFF, 0x33, 0x33, 0x33),
+                F(0x80, 0x01, 0x01), F(0x80, 0x0B, 0x02, 0x08, 0x0A, 0x10, 0x00, 0xFF, 0x44, 0x44, 0x44),
+                F(0x80, 0x01, 0x03), F(0x80, 0x04, 0x05, 0x10, 0x00, 0xFF, 0x55, 0x55, 0x55),
+            }, device.Outs);
+            Assert.Equal(0, device.Reads);
+            Assert.Equal(10, session.CrashFrames.Length);
+
+            // Only the header whose color changed goes out again.
+            device.Clear();
+            colors[2] = 0x123456;
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(device.Channel, NoWait, model.Map.Lights, colors));
+            Same(new[] { F(0x80, 0x01, 0x01), F(0x80, 0x0B, 0x02, 0x04, 0x0A, 0x10, 0x00, 0xFF, 0x12, 0x34, 0x56) }, device.Outs);
+
+            // The hand-back writes each header's own mode back; the
+            // passthrough header takes function 02, the RGB header its
+            // breathing mode 03 at function 03.
+            device.Clear();
+            Assert.True(session.HandBack(device.Channel, NoWait));
+            Same(new[]
+            {
+                F(0x80, 0x01, 0x01), F(0x80, 0x0B, 0x02, 0x01, 0x01, 0x10, 0x03, 0x80, 0x01, 0x02, 0x03),
+                F(0x80, 0x01, 0x01), F(0x80, 0x0B, 0x02, 0x02, 0x01, 0x10, 0x03, 0x80, 0x01, 0x02, 0x03),
+                F(0x80, 0x01, 0x01), F(0x80, 0x0B, 0x02, 0x04, 0x01, 0x10, 0x03, 0x80, 0x01, 0x02, 0x03),
+                F(0x80, 0x01, 0x02), F(0x80, 0x0B, 0x02, 0x08, 0xFF, 0x10, 0x03, 0x80, 0x01, 0x02, 0x03),
+                F(0x80, 0x01, 0x03), F(0x80, 0x04, 0x03, 0x10, 0x03, 0x80, 0x01, 0x02, 0x03),
+            }, device.Outs);
+            Assert.Empty(session.CrashFrames);
+        }
+
+        [Fact]
+        public void TheArgbSetPortMode_ForDirectAndARgbPassthrough_IsOpenRgbs()
+        {
+            // Direct: one report, 80 01 01 02 (CMARGBController.cpp:187-201).
+            Same(new[] { F(0x80, 0x01, 0x01, 0x02) },
+                CoolerMasterLighting.ArgbSetPortMode(0, new CoolerMasterLighting.ArgbPortState(0xFE, 0, 0, false, 0)));
+            // The RGB header's passthrough: function 04, then 80 01 FF
+            // (lines 183 and 229-236), random colors 00.
+            Same(new[] { F(0x80, 0x01, 0x04), F(0x80, 0x01, 0xFF, 0x00, 0x02, 0x40, 0x0A, 0x0B, 0x0C) },
+                CoolerMasterLighting.ArgbSetPortMode(4, new CoolerMasterLighting.ArgbPortState(0xFF, 0x02, 0x40, true, 0x0A0B0C)));
+        }
+
+        [Fact]
+        public void AnArgbWhoseHeaderDoesNotAnswer_GetsNoSession()
+        {
+            var device = new CoolerMasterDevice();
+            device.Answer = report => report[2] == 0x0A ? null : ArgbAnswer(false, 0x01);
+            Assert.Null(ModelOf(0x1011).Begin(device.Channel, NoWait));
+            Assert.DoesNotContain(device.Outs, f => f[2] == 0x01);
+        }
+
+        [Fact]
+        public void ASmallArgbSession_ReadsItsMode_SetsDirect_SendsFortyEightLeds_AndPutsTheModeBack()
+        {
+            var device = new CoolerMasterDevice();
+            device.Answer = report =>
+            {
+                if (report[2] != 0x0B || report[3] != 0x01) return report.Skip(1).ToArray();
+                // GetStatus's answer (CMSmallARGBController.cpp:63-69).
+                var answer = new byte[64];
+                answer[4] = 0x04;
+                answer[5] = 0x02;
+                answer[6] = 0x10;
+                answer[7] = 0x90;
+                answer[8] = 0x0A;
+                answer[9] = 0x0B;
+                answer[10] = 0x0C;
+                return answer;
+            };
+            var model = ModelOf(0x1000);
+            var session = Assert.IsType<CoolerMasterLighting.SmallArgbSession>(model.Begin(device.Channel, NoWait));
+            // 80 01 01 FF 01, then 00 0B 01 01, each read (lines 44-61).
+            Same(new[] { F(0x80, 0x01, 0x01, 0xFF, 0x01), F(0x00, 0x0B, 0x01, 0x01) }, device.Outs);
+            Assert.Equal(new CoolerMasterLighting.ArgbPortState(0x04, 0x02, 0x90, false, 0x0A0B0C), session.State);
+
+            device.Clear();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(device.Channel, NoWait, model.Map.Lights, new[] { 0x112233 }));
+            var outs = device.Outs;
+            // SendUpdate for Direct: 80 10 01 00 02, then 80 0B 02 01 FE 00
+            // 10 FF and black, read (lines 224-251).
+            Same(F(0x80, 0x10, 0x01, 0x00, 0x02), outs[0]);
+            Same(F(0x80, 0x0B, 0x02, 0x01, 0xFE, 0x00, 0x10, 0xFF, 0x00, 0x00, 0x00), outs[1]);
+            // SetLedsDirect of 48 LEDs: 10 02 FF 30 and 59 color bytes, then
+            // 63, then 22 with 80 added to the packet number (lines 173-222).
+            Assert.Equal(5, outs.Count);
+            var first = new List<byte> { 0x00, 0x10, 0x02, 0xFF, 0x30 };
+            for (int i = 0; first.Count < 64; i++) first.Add((byte)(0x11 * (i % 3 + 1)));
+            Same(F(first.ToArray()), outs[2]);
+            Assert.Equal(0x01, outs[3][1]);
+            Assert.Equal(0x82, outs[4][1]);
+            Assert.Equal(0x33, outs[3][2]);
+            Assert.Equal(new byte[] { 0x11, 0x22, 0x33 }, outs[4].Skip(21).Take(3).ToArray());
+            Assert.All(outs[4].Skip(24), b => Assert.Equal(0, b));
+            Assert.Equal(2, session.CrashFrames.Length);
+
+            // The next picture sends the LEDs alone.
+            device.Clear();
+            session.Paint(device.Channel, NoWait, model.Map.Lights, new[] { 0x445566 });
+            Assert.Equal(3, device.Outs.Count);
+
+            device.Clear();
+            Assert.True(session.HandBack(device.Channel, NoWait));
+            Same(new[] { F(0x80, 0x01, 0x01, 0x00, 0x02), F(0x80, 0x0B, 0x02, 0x01, 0x04, 0x02, 0x10, 0x90, 0x0A, 0x0B, 0x0C) },
+                device.Outs);
+            Assert.Empty(session.CrashFrames);
         }
 
         // ── hidapi's shape of an answer ──

@@ -28,13 +28,9 @@ namespace PadForge.Common.Input.Peripherals
     /// <para>Devices registered and not lit. The MK850 (0x0069) and the
     /// SK620 Black and White (0x0157, 0x0159): DetectCoolerMasterV2Keyboards
     /// has no case for them, so OpenRGB makes no controller
-    /// (CoolerMasterControllerDetect.cpp:180-229). The ARGB controller
-    /// (0x1011) and the Small ARGB controller (0x1000): OpenRGB lights them
-    /// only when the USB serial number string names a firmware it knows
-    /// (lines 86-111 and 321-346, CMARGBController.cpp:60-80,
-    /// CMSmallARGBController GetVersion), and the channel the shared worker
-    /// hands a session reads no string. The three ARGB Gen 2 A1 controllers
-    /// are not ported yet.</para>
+    /// (CoolerMasterControllerDetect.cpp:180-229). The ARGB and Small ARGB
+    /// controllers are lit only on the firmware their serial string names
+    /// (CoolerMasterArgb.cs).</para>
     /// </summary>
     internal sealed partial class CoolerMasterLighting : IHidLightingFamily
     {
@@ -110,6 +106,10 @@ namespace PadForge.Common.Input.Peripherals
                     return GpuModel(registration.Name, productId);
                 case "DetectCoolerMasterRGB":
                     return RgbControllerModel(registration.Name, productId);
+                case "DetectCoolerMasterARGB":
+                    return ArgbModel(registration.Name, productId);
+                case "DetectCoolerMasterSmallARGB":
+                    return SmallArgbModel(registration.Name, productId);
                 default:
                     return null;
             }

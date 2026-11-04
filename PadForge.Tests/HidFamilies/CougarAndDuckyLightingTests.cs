@@ -56,6 +56,12 @@ namespace PadForge.Tests
             }
             Assert.Same(CougarLighting.Instance, Model(CougarLighting.OpenRgbFamily, 0x7010).Family);
             Assert.Same(DuckyKeyboardLighting.Instance, Model(DuckyKeyboardLighting.OpenRgbFamily, 0x0348).Family);
+            // The Revenger ST's mouse collection, page 1 usage 2
+            // (CougarControllerDetect.cpp:65), opens with no access right only
+            // and takes feature reports, so the worker keeps that handle. The
+            // 700K EVO's vendor collection (line 64) is an ordinary one.
+            Assert.True(Model(CougarLighting.OpenRgbFamily, 0x0412).HeldByWindows);
+            Assert.False(Model(CougarLighting.OpenRgbFamily, 0x7010).HeldByWindows);
             // The Revenger ST answers on its mouse collection's interface 0 only.
             var mouse = OpenRgbRegistrations.Of(CougarLighting.OpenRgbFamily).First(r => r.ProductId == 0x0412);
             Assert.Null(CougarLighting.Instance.Match(Collection(mouse) with

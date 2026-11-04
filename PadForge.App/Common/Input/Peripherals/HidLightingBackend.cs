@@ -35,7 +35,9 @@ namespace PadForge.Common.Input.Peripherals
     /// same container, and close with it
     /// (<see cref="HidLightingModel.Siblings"/>). A collection that opens with
     /// no access right only is one another program holds, and is not
-    /// written to. A unit no claim resolves on is opened only while its
+    /// written to, unless its model's lighting lives on a mouse or keyboard
+    /// collection, which Windows opens that way for everyone and which
+    /// takes feature reports on it (<see cref="HidLightingModel.HeldByWindows"/>). A unit no claim resolves on is opened only while its
     /// model owes it colors an earlier run left in the device's memory
     /// (<see cref="HidLightingModel.Owed"/>), to hand those back, from
     /// <see cref="RepairGraceMs"/> after the worker starts.</para>
@@ -789,7 +791,7 @@ namespace PadForge.Common.Input.Peripherals
                 return own;
             }
             try { io = _open(unit.Path); } catch { }
-            if (io == null || io.FeatureOnly)
+            if (!Usable(unit.Model, io))
             {
                 try { io?.Dispose(); } catch { }
                 io = null;
@@ -803,6 +805,12 @@ namespace PadForge.Common.Input.Peripherals
             io = null;
             return null;
         }
+
+        /// <summary>Whether a unit's channel opened the way its model needs:
+        /// for read and write, or with no access right for a model whose
+        /// collection Windows holds.</summary>
+        private static bool Usable(HidLightingModel model, IHidReportChannel io)
+            => io != null && (!io.FeatureOnly || model.HeldByWindows);
 
         /// <summary>Opens each sibling of a unit for read and write: the
         /// collection of the last walk the sibling names, in the unit's own
@@ -851,7 +859,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             IHidReportChannel io = null;
             try { io = _open(unit.Path); } catch { }
-            if (io == null || io.FeatureOnly)
+            if (!Usable(unit.Model, io))
             {
                 try { io?.Dispose(); } catch { }
                 return false;

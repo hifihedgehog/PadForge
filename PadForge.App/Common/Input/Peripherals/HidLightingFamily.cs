@@ -144,6 +144,17 @@ namespace PadForge.Common.Input.Peripherals
         /// written.</summary>
         public Func<IHidReportChannel, Action<int>, HidLightingSession> Begin { get; init; }
 
+        /// <summary>The device's lighting lives on a mouse or keyboard
+        /// collection, which Windows holds and opens with no access right
+        /// only, as it does for every program: "feature reports can still be
+        /// sent and received" on that handle, and hidapi hands OpenRGB that
+        /// handle (hidapi windows/hid.c:1009-1026). For every other model a
+        /// handle with no access right means another program holds the
+        /// collection, and the worker writes nothing to it. For this one the
+        /// worker keeps that handle, and the session sends feature reports
+        /// alone.</summary>
+        public bool HeldByWindows { get; init; }
+
         /// <summary>The other collections of the device a session talks
         /// through beside the unit's own, as OpenRGB opens a control and a
         /// LED collection of one keyboard (RoccatControllerDetect.cpp:101-203).

@@ -9,7 +9,7 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>A HID family scripted for the worker's own rules (#557): it
-    /// takes every collection of <see cref="VendorId"/> and answers
+    /// takes every collection of <see cref="VendorId"/> on page 0xFF00 and answers
     /// <see cref="Model"/>, whose sessions log what they are given.</summary>
     internal sealed class FakeWorkerFamily : IHidLightingFamily
     {
@@ -21,7 +21,7 @@ namespace PadForge.Tests
         public string Name => "Fake worker";
 
         public HidLightingModel Match(HidCollectionInfo collection)
-            => collection?.VendorId == VendorId ? Model : null;
+            => collection?.VendorId == VendorId && collection.UsagePage == 0xFF00 ? Model : null;
 
         public void Add(string line)
         {
@@ -102,7 +102,9 @@ namespace PadForge.Tests
     /// <summary>
     /// What the shared worker does for the families beyond one channel and
     /// one picture per change (#557): the keep-alive a device needs while
-    /// the host is quiet.
+    /// the host is quiet, the sibling collections a device talks through,
+    /// and the handle with no access right a collection Windows holds
+    /// gives.
     /// </summary>
     [Collection("PeripheralOutputStatics")]
     public class HidLightingWorkerTests : IDisposable
@@ -346,6 +348,109 @@ namespace PadForge.Tests
             Passes(backend);
             Assert.Equal(1, Count("keep 112233,112233"));
             Assert.True(Assert.Single(backend.Snapshot.Units).Asleep);
+        }
+
+        // ─────────────────────────────────────────────
+        //  Collections Windows holds
+        // ─────────────────────────────────────────────
+
+        private int _repairs;
+
+        private HidLightingModel FeatureOnlyModel(bool heldByWindows) => _family.With(m => new HidLightingModel
+        {
+            Family = m.Family, Name = m.Name, Map = m.Map, Begin = m.Begin, HeldByWindows = heldByWindows,
+            Owed = () => true,
+            Repair = (io, _) =>
+            {
+                Interlocked.Increment(ref _repairs);
+                return io.FeatureOnly;
+            },
+        });
+
+        /// <summary>A handle with no access right means another program
+        /// holds the collection, and nothing is written to it: the unit is
+        /// listed asleep, the handle closes, and no repair goes out.</summary>
+        [Fact]
+        public void AHandleWithNoAccessRight_IsNotWritten_ForAnOrdinaryModel()
+        {
+            FeatureOnlyModel(heldByWindows: false);
+            _channelFor = path => new FakeReportChannel { Path = path, FeatureOnly = true, FeatureReportLength = 65 };
+            var unit = Collection();
+            using var backend = Started(unit);
+            Advance(HidLightingBackend.RepairGraceMs);
+            Passes(backend);
+            Assert.Equal(0, Volatile.Read(ref _repairs));
+            Link(unit);
+            Light(0x112233);
+            Passes(backend);
+            Assert.Empty(_family.Calls());
+            Assert.True(Assert.Single(backend.Snapshot.Units).Asleep);
+            lock (_opened) Assert.All(_opened, c => Assert.True(c.Disposed));
+        }
+
+        /// <summary>A model whose lighting lives on a mouse or keyboard
+        /// collection keeps that handle, as hidapi hands OpenRGB one
+        /// (hidapi windows/hid.c:1009-1026): it opens, paints, and an owed
+        /// repair goes out on it.</summary>
+        [Fact]
+        public void AHandleWithNoAccessRight_IsKept_ForAModelWhoseCollectionWindowsHolds()
+        {
+            FeatureOnlyModel(heldByWindows: true);
+            _channelFor = path => new FakeReportChannel { Path = path, FeatureOnly = true, FeatureReportLength = 65 };
+            var unit = Collection();
+            using var backend = Started(unit);
+            Advance(HidLightingBackend.RepairGraceMs);
+            Passes(backend);
+            Assert.True(Volatile.Read(ref _repairs) > 0);
+            Link(unit);
+            Light(0x112233);
+            Passes(backend);
+            Assert.Equal(new[] { "paint 112233,112233" }, _family.Calls());
+            Assert.False(Assert.Single(backend.Snapshot.Units).Asleep);
+        }
+
+        /// <summary>A sibling that does not open, or a session that does not
+        /// begin, leaves no channel open, and a unit that fails closes its
+        /// siblings with its own.</summary>
+        [Fact]
+        public void SiblingChannels_CloseWithTheUnit_OnEveryPath()
+        {
+            bool begins = false;
+            IReadOnlyList<IHidReportChannel> given = null;
+            _family.With(m => new HidLightingModel
+            {
+                Family = m.Family, Name = m.Name, Map = m.Map, KeepAliveMs = 100, KeepAliveIdleMs = 100,
+                Siblings = new[] { new HidSibling(3, 0xFF01) },
+                BeginWith = (io, siblings, _) =>
+                {
+                    given = siblings;
+                    return begins ? new FakeWorkerSession(_family, io) { KeepAliveLine = "keep", KeepAliveFails = true } : null;
+                },
+            });
+            var unit = Collection();
+            var sibling = Collection(iface: 3, page: 0xFF01, tail: "2");
+            using var backend = Started(unit, sibling, Collection(iface: 3, page: 0xFF02, tail: "3"));
+            Assert.Equal(new[] { unit.Path }, backend.Snapshot.Units.Select(u => u.Key));
+            Link(unit);
+            Light(0x112233);
+            Passes(backend);
+            // The session did not begin: both channels closed.
+            Assert.Equal(sibling.Path, Assert.Single(given).Path);
+            lock (_opened)
+            {
+                Assert.Equal(new[] { unit.Path, sibling.Path }, _opened.Select(c => c.Path));
+                Assert.All(_opened, c => Assert.True(c.Disposed));
+            }
+
+            // It begins, and a failed keep-alive closes both.
+            begins = true;
+            Advance(HidLightingBackend.RetryMs);
+            Passes(backend, 3);
+            Assert.Contains("paint 112233,112233", _family.Calls());
+            Advance(100);
+            Passes(backend);
+            Assert.True(Assert.Single(backend.Snapshot.Units).Asleep);
+            lock (_opened) Assert.All(_opened, c => Assert.True(c.Disposed));
         }
 
         [Fact]

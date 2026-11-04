@@ -365,6 +365,7 @@ namespace PadForge.Common.Input.Peripherals
             TrustLighting.Instance,
             AocMouseLighting.Instance,
             AocMousematLighting.Instance,
+            GigabyteAorusMouseLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

@@ -41,7 +41,7 @@ namespace PadForge.Tests
             KeyboardFamilyRig.Passes(backend);
             var again = rig.Log.Of('O');
             Assert.Equal(3, again.Count);
-            Assert.Equal("00 53 43 C1 02 91 00 00 FF 00", ReportLog.Hex(again[0], 10));
+            Assert.Equal("00 53 43 C1 02 91 00 01 FF 01", ReportLog.Hex(again[0], 10));
             rig.Log.Clear();
             rig.Release(backend);
             Assert.Empty(rig.Log.Sent());

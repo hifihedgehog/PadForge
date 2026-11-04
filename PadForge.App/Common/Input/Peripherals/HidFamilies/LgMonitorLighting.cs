@@ -24,6 +24,13 @@ namespace PadForge.Common.Input.Peripherals
     /// frames (signal-plugins LG_UltraGear_27GN950.js:51-57 and 96-127),
     /// mode 08 being LG's video sync mode there.</para>
     ///
+    /// <para>A channel at zero. SignalRGB's plugins for both monitors warn
+    /// that a channel at zero can crash the monitor and send 1 in its place
+    /// (fixColor, LG_UltraGear_27GN950.js:112 and 137,
+    /// LG_UltraGear_38GL950G.js:79 and 96). OpenRGB's frames send the zero.
+    /// Here every channel goes out as at least 1, for the cost of 1 in 255
+    /// where black was asked.</para>
+    ///
     /// <para>Timing. OpenRGB's keep-alive sends the picture again once 500
     /// ms have passed since the last one while Direct is on
     /// (KeepaliveThread, RGBController_LGMonitor.cpp:146-157), so the model
@@ -153,6 +160,10 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>EnableMode(08) (lines 157-174).</summary>
         internal static byte[] DirectModeFrame() => Command(SetMode, ModeCtl, DirectMode);
 
+        /// <summary>One color channel as the monitor takes it: at least 1 (the
+        /// class comment says why).</summary>
+        internal static byte Channel(int value) => (byte)Math.Max(value & 0xFF, 1);
+
         /// <summary>SetDirect's three reports for the 48 colors (lines
         /// 69-107).</summary>
         internal static byte[][] DirectFrames(IReadOnlyList<int> colors)
@@ -168,9 +179,9 @@ namespace PadForge.Common.Input.Peripherals
             for (int i = 0; i < Leds; i++)
             {
                 int rgb = colors != null && i < colors.Count ? colors[i] : 0;
-                data[offset++] = (byte)(rgb >> 16);
-                data[offset++] = (byte)(rgb >> 8);
-                data[offset++] = (byte)rgb;
+                data[offset++] = Channel(rgb >> 16);
+                data[offset++] = Channel(rgb >> 8);
+                data[offset++] = Channel(rgb);
             }
             data[offset] = Crc(data, 0, offset);
             offset++;

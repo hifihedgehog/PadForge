@@ -223,6 +223,18 @@ namespace PadForge.Tests
             Assert.Contains(io.Calls, c => c.Kind == "get" && c.Bytes[0] == 0x07);
         }
 
+        /// <summary>The input-report read too: an answer that does not come is
+        /// no failure, the same as a feature report's.</summary>
+        [Fact]
+        public void AnInputReadThatBringsNothing_IsNoFailure()
+        {
+            var d = Device(0x1E71, 0x2004);
+            var io = new FakeReportChannel { OutputReportLength = 64, InputReportLength = 64, Input = () => null };
+            var session = new F.Session(d, null);
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, session.Map.Lights, new int[session.Map.Lights.Count]));
+            Assert.Contains(io.Calls, c => c.Kind == "in");
+        }
+
         [Fact]
         public void AWait_GoesThroughTheWorkersWait()
         {

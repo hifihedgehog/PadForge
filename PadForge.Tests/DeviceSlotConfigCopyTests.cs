@@ -179,6 +179,52 @@ namespace PadForge.Tests
             Assert.True(mouse.PeripheralLightingEnabled);
         }
 
+        /// <summary>How long a device's strips are is a fact about that device,
+        /// so a copy carries it to the same device on another controller and
+        /// leaves another device's own.</summary>
+        [Fact]
+        public void CopyFrom_CarriesStripCountsToTheSameDevice_AndLeavesAnotherDevicesOwn()
+        {
+            var (vm, settings) = Arrange();
+            var source = vm.Pads[0].GetOrCreateDeviceConfig(Mouse);
+            source.LedStripCounts = "30,0,12";
+            source.LightbarMode = LightbarMode.Static;
+            var sameDevice = vm.Pads[1].GetOrCreateDeviceConfig(Mouse);
+            var keyboard = vm.Pads[1].GetOrCreateDeviceConfig(Keyboard);
+            keyboard.LedStripCounts = "9";
+
+            settings.CopySlotConfigsAcrossSlots(0, 1);
+
+            Assert.Equal("30,0,12", sameDevice.LedStripCounts);
+            Assert.Equal(LightbarMode.Static, keyboard.LightbarMode);
+            Assert.Equal("9", keyboard.LedStripCounts);
+        }
+
+        /// <summary>A paste keeps the same rule, and leaves the clipboard's
+        /// stand-in as it came, since one paste applies it to several devices.</summary>
+        [Fact]
+        public void Paste_KeepsAnUnmatchedDevicesStripCounts_AndCarriesTheSameDevicesOwn()
+        {
+            var (vm, settings) = Arrange();
+            var keyboard = vm.Pads[1].GetOrCreateDeviceConfig(Keyboard);
+            keyboard.LedStripCounts = "9";
+            var mouse = vm.Pads[1].GetOrCreateDeviceConfig(Mouse);
+            var standIn = new DeviceSlotConfigData
+            {
+                DeviceGuid = DualSense, LightingRev = 1, LightbarMode = LightbarMode.Static, LedStripCounts = "4",
+            };
+            var own = new DeviceSlotConfigData
+            {
+                DeviceGuid = Mouse, LightingRev = 1, LightbarMode = LightbarMode.Static, LedStripCounts = "7",
+            };
+
+            settings.ApplyDeviceSlotConfigsToSlot(1, new[] { standIn, own });
+
+            Assert.Equal("9", keyboard.LedStripCounts);
+            Assert.Equal("7", mouse.LedStripCounts);
+            Assert.Equal("4", standIn.LedStripCounts);
+        }
+
         [Fact]
         public void CopyFrom_NeverTurnsOffAnUnmatchedDevicesSwitch()
         {

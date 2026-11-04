@@ -317,6 +317,31 @@ namespace PadForge.Tests
             Assert.Equal(1, Count("paint 112233,112233"));
         }
 
+        /// <summary>Map Key Lights asking about one light has no claim behind
+        /// it, so it leaves the strips as the claims sized them.</summary>
+        [Fact]
+        public void MapKeyLights_LeavesTheStripsAsTheClaimSizedThem()
+        {
+            _family.With(m => new HidLightingModel
+            {
+                Family = m.Family, Name = m.Name, Map = m.Map, Begin = (io, _) => new SizedSession(_family, io),
+            });
+            var unit = Collection();
+            using var backend = Started(unit);
+            Link(unit);
+            LightSized(0x112233, 3);
+            Passes(backend);
+            Assert.Equal(1, Count("size 3"));
+            var path = new OutputPath(OutputFamily.HidLightingUnit, unit.Path);
+            PeripheralOutputs.SetProbe(path, new KeyFrame(null, null, new System.Collections.Generic.Dictionary<int, int> { [0] = 0xFF0000 }, 0));
+            Passes(backend);
+            Assert.Equal(0, Count("size "));
+            Assert.Equal(3, PeripheralLightMaps.For(path).Lights.Count);
+            PeripheralOutputs.SetProbe(path, null);
+            Passes(backend);
+            Assert.Equal(1, Count("size 3"));
+        }
+
         /// <summary>A map an earlier session sized stays across closes, so a
         /// new session on the same device is told when the claim has no counts
         /// any more, and the map goes back with it.</summary>

@@ -371,6 +371,7 @@ namespace PadForge.Common.Input.Peripherals
             MsiClutchLighting.Instance,
             N5312ALighting.Instance,
             NzxtMouseLighting.Instance,
+            PatriotViperMouseLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

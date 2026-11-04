@@ -367,6 +367,7 @@ namespace PadForge.Common.Input.Peripherals
             LgMonitorLighting.Instance,
             MsiMonitorLighting.Instance,
             MsiOptixLighting.Instance,
+            ViewSonicMonitorLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

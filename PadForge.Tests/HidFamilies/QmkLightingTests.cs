@@ -92,6 +92,8 @@ namespace PadForge.Tests
             // 0x804020: M 128, m 32, delta 96, hue (64 - 32) x 60 / 96 = 20,
             // 20 x 0.7111 = 14.2, saturation (24576 - 8) / 128 = 191.
             Assert.Equal(((byte)14, (byte)191, (byte)128), Q.Hsv(0x804020));
+            // 0x640101: M 100, delta 99, saturation (25344 - 8) / 100 = 253.
+            Assert.Equal(((byte)0, (byte)253, (byte)100), Q.Hsv(0x640101));
             // Gray has no hue.
             Assert.Equal(((byte)0, (byte)0, (byte)0x40), Q.Hsv(0x404040));
         }
@@ -248,7 +250,9 @@ namespace PadForge.Tests
             {
                 case 0x01: return In(0x01, 0x00, 0x09);
                 case 0xFE: return In(0x06, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 0x01);
-                case 0x04: return In(0x04, 0x00, o[3], o[4], 0x00, 0x04);
+                // A layered A, LT(1, KC_A) = 0x4104, high byte first as VIA
+                // answers: OpenRGB's read takes its low byte and names A.
+                case 0x04: return In(0x04, 0x00, o[3], o[4], 0x41, 0x04);
                 case 0x08:
                     switch (o[2])
                     {

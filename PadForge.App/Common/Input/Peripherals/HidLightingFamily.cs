@@ -370,6 +370,7 @@ namespace PadForge.Common.Input.Peripherals
             LexipMouseLighting.Instance,
             MsiClutchLighting.Instance,
             N5312ALighting.Instance,
+            NzxtMouseLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

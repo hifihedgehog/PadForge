@@ -52,7 +52,12 @@ namespace PadForge.Tests
                 Assert.Equal(r.Name, model.Name);
                 Assert.Equal(new[] { VendorPrograms.Ngenuity }, model.Programs);
                 Assert.Same(model, HidLightingFamilies.Match(Collection(r)));
-                Assert.Equal(r.Detector == "DetectHyperXAlloyElite2" ? 1000 : 50, model.RecheckMs);
+                // RGBController_HyperXAlloyElite2.cpp:308-323 (1000 ms), and 50 ms
+                // in the family's other RGBControllers, a resend timed as a picture.
+                int keepAlive = r.Detector == "DetectHyperXAlloyElite2" ? 1000 : 50;
+                Assert.Equal(keepAlive, model.KeepAliveMs);
+                Assert.Equal(keepAlive, model.KeepAliveIdleMs);
+                Assert.Equal(0, model.RecheckMs);
             }
             // Another interface is not a lighting collection.
             var elite2 = registrations.First(r => r.ProductId == 0x1711);
@@ -255,15 +260,16 @@ namespace PadForge.Tests
             var model = ModelOf(0x0951, 0x1734);
             var session = model.Begin(channel, NoWait);
             Assert.Empty(session.CrashFrames);
-            Assert.True(session.Recheck(channel, NoWait));
-            Assert.Empty(channel.Calls);
             var lights = model.Map.Lights;
-            Assert.Equal(HidLightingPaint.Sent, session.Paint(channel, NoWait, lights, new int[lights.Count]));
-            Assert.Equal(6, channel.Calls.Count(c => c.Kind == "set"));
-            Assert.True(session.Recheck(channel, NoWait));
-            Assert.Equal(12, channel.Calls.Count(c => c.Kind == "set"));
+            var colors = Enumerable.Range(1, lights.Count).Select(i => i * 0x010101).ToArray();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(channel, NoWait, lights, colors));
+            var picture = channel.Calls.Where(c => c.Kind == "set").Select(c => c.Bytes).ToList();
+            Assert.Equal(6, picture.Count);
+            // The keep-alive is the same picture, report for report.
+            Assert.True(session.KeepAlive(channel, NoWait, lights, colors));
+            var again = channel.Calls.Where(c => c.Kind == "set").Skip(6).Select(c => c.Bytes).ToList();
+            Assert.Equal(picture, again);
             Assert.True(session.HandBack(channel, NoWait));
-            Assert.True(session.Recheck(channel, NoWait));
             Assert.Equal(12, channel.Calls.Count);
             channel.FailWrites = true;
             Assert.Equal(HidLightingPaint.Failed, session.Paint(channel, NoWait, lights, new int[lights.Count]));

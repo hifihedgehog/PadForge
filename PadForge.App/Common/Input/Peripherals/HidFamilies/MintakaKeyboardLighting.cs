@@ -31,12 +31,12 @@ namespace PadForge.Common.Input.Peripherals
     /// memory (<see cref="LenovoLegionLighting.HoldMs"/>).</para>
     ///
     /// <para>Windows. The collection OpenRGB registers is the keyboard
-    /// collection itself, which Windows opens for itself, so it opens for
-    /// another program with no access right only. Feature reports pass on
-    /// such a handle (<see cref="HidReportChannel"/>), and they are all this
-    /// keyboard takes, but the shared worker writes to no handle opened that
-    /// way (<see cref="HidLightingBackend"/>), so the unit is listed asleep
-    /// until the worker lets a model take one.</para>
+    /// collection itself, page 1 usage 6 (MintakaKeyboardControllerDetect.cpp:44),
+    /// which Windows opens for itself, so it opens for another program with
+    /// no access right only. Feature reports pass on such a handle (hidapi
+    /// windows/hid.c:1009-1026), and they are all this keyboard takes, so
+    /// its model tells the worker to keep it
+    /// (<see cref="HidLightingModel.HeldByWindows"/>).</para>
     ///
     /// <para>Hand-back. No source reads the effect area back, and OpenRGB
     /// sends nothing when it closes, so the keyboard keeps PadForge's last
@@ -126,6 +126,7 @@ namespace PadForge.Common.Input.Peripherals
             },
             HoldMs = LenovoLegionLighting.HoldMs,
             RepaintMs = LenovoLegionLighting.RepaintMs,
+            HeldByWindows = true,
             Begin = (_, _) => new Session(),
         };
 

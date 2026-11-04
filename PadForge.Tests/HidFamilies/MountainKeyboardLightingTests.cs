@@ -158,7 +158,10 @@ namespace PadForge.Tests
             Assert.Same(model, Everest60());
             Assert.NotSame(Everest60(0x0005), Everest60(0x0006));
             Assert.Equal("mountain:3282:0006", Everest60(0x0006).Map.Product);
-            Assert.Equal(500, model.RecheckMs);
+            // Every 500 ms whatever else goes out (RGBController_Mountain60Keyboard.cpp:434-442).
+            Assert.Equal(500, model.KeepAliveMs);
+            Assert.Equal(0, model.KeepAliveIdleMs);
+            Assert.Equal(0, model.RecheckMs);
         }
 
         [Fact]
@@ -205,13 +208,16 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "set", "get", "set", "get" }, Calls(io).Select(c => c.Kind));
             Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, lights, colors));
             Assert.Equal(4 + picture.Count * 2, Calls(io).Count);
-            Assert.True(session.Recheck(io, _ => { }));
+            int painted = Calls(io).Count;
+            Assert.True(session.KeepAlive(io, _ => { }, lights, colors));
+            // The keep-alive alone, read back: set then get.
+            Assert.Equal(painted + 2, Calls(io).Count);
             Assert.Equal("00 08 46 23 EA", Hex(Calls(io)[^2].Bytes, 5));
             int before = Calls(io).Count;
             Assert.True(session.HandBack(io, _ => { }));
             Assert.Equal(before, Calls(io).Count);
             io.FailWrites = true;
-            Assert.False(session.Recheck(io, _ => { }));
+            Assert.False(session.KeepAlive(io, _ => { }, lights, colors));
             Assert.Equal(HidLightingPaint.Failed, session.Paint(io, _ => { }, lights, colors));
         }
     }

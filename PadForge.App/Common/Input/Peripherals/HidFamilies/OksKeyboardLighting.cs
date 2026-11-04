@@ -15,11 +15,14 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>The board. OpenRGB lays out an 87-key board when the serial
     /// string starts with "B" and the full 6 by 21 board otherwise
-    /// (RGBController_OKSKeyboard.cpp:166-218). PadForge's walk reads no
-    /// string from a device (<see cref="HidCollectionInfo"/>), so every
-    /// board is the full one, OpenRGB's choice when the serial does not say
-    /// otherwise. Its keys are OpenRGB's led_names, each at its place in the
-    /// 6 by 21 grid (lines 54-69 and 223-252).</para>
+    /// (RGBController_OKSKeyboard.cpp:166-218). The full board's keys are
+    /// OpenRGB's led_names, each at its place in the 6 by 21 grid (lines
+    /// 54-69 and 223-252). The 87-key board's are its led_kb87_names in a 6
+    /// by 17 grid, each LED's color at the same row and column of the 6 by
+    /// 21 grid the frames carry (lines 26-32, 49-52, 71-90 and 237-247). A
+    /// session reads the serial string before it writes anything, and an
+    /// 87-key board's session publishes its map
+    /// (<see cref="HidLightingSession.Map"/>).</para>
     ///
     /// <para>The model of the device. A session sends OpenRGB's opening
     /// packet, the write-RGB command 0x15 with brightness 0, mode 0, speed 2
@@ -91,6 +94,20 @@ namespace PadForge.Common.Input.Peripherals
 
         internal static List<LightInfo> Lights() => KeyboardLedNames.FromNames(KeyboardLedNames.OksNames, i => i, Places);
 
+        /// <summary>zone_sizes_kb87 (RGBController_OKSKeyboard.cpp:49-52) and
+        /// its grid's width (line 182).</summary>
+        internal const int Kb87Leds = 102;
+        internal const int Kb87Width = 17;
+
+        /// <summary>The 87-key board's LEDs, each at the place DeviceUpdateLEDs
+        /// gives its color: its row times 21 plus its column (lines 237-247).</summary>
+        internal static List<LightInfo> Kb87Lights()
+            => KeyboardLedNames.FromNames(KeyboardLedNames.OksKb87Names, i => i / Kb87Width * 21 + i % Kb87Width, Kb87Leds);
+
+        /// <summary>Whether a serial string names the 87-key board: its first
+        /// character is 'B' (lines 178-184).</summary>
+        internal static bool IsKb87(string serial) => !string.IsNullOrEmpty(serial) && serial[0] == 'B';
+
         private static HidLightingModel Model(string name, ushort productId) => new()
         {
             Family = Instance,
@@ -100,7 +117,7 @@ namespace PadForge.Common.Input.Peripherals
                 Product = $"oks:{VendorId:X4}:{productId:X4}",
             },
             RepaintMs = RepaintMs,
-            Begin = (io, wait) => Begin(io, wait),
+            Begin = (io, wait) => Begin(io, wait, productId),
         };
 
         /// <summary>A kb2 packet: head, length, command, checksum, data
@@ -177,16 +194,28 @@ namespace PadForge.Common.Input.Peripherals
             return true;
         }
 
-        private static HidLightingSession Begin(IHidReportChannel io, Action<int> wait)
+        private static HidLightingSession Begin(IHidReportChannel io, Action<int> wait, ushort productId)
         {
-            if (io == null || !Send(io, wait, WriteRgbPacket(0, 0, Speed, Direction))
+            if (io == null) return null;
+            bool kb87 = IsKb87(io.SerialNumber);
+            if (!Send(io, wait, WriteRgbPacket(0, 0, Speed, Direction))
                 || !Send(io, wait, WriteRgbPacket(DirectBrightness, 0, Speed, Direction)))
                 return null;
-            return new Session();
+            return new Session(kb87
+                ? new LightMap(Kb87Lights(), "OpenRGB RGBController_OKSKeyboard.cpp") { Product = $"oks:{VendorId:X4}:{productId:X4}:kb87" }
+                : null);
         }
 
         internal sealed class Session : HidLightingSession
         {
+            private readonly LightMap _map;
+
+            public Session(LightMap map) => _map = map;
+
+            /// <summary>The 87-key board's map, or null for the model's full
+            /// board.</summary>
+            public override LightMap Map => _map;
+
             public override bool Feature => false;
 
             /// <summary>Nothing undoes the Direct mode: see the class comment.</summary>

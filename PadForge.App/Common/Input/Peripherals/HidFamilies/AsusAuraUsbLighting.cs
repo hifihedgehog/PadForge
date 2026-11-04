@@ -90,8 +90,11 @@ namespace PadForge.Common.Input.Peripherals
             if (found.Count == 0) return null;
             var registration = found[0];
             if (!Carries(registration, collection)) return null;
-            return _models.GetOrAdd(registration.Source + ":" + collection.ProductId.ToString("X4"),
-                _ => ModelFor(registration, collection.ProductId));
+            // A Claymore's region is its release number's, so its models
+            // are one per release number.
+            int release = collection.ProductId == Claymore ? collection.ReleaseNumber : 0;
+            return _models.GetOrAdd(registration.Source + ":" + collection.ProductId.ToString("X4") + ":" + release.ToString("X4"),
+                _ => ModelFor(registration, collection.ProductId, release));
         }
 
         /// <summary>Whether the collection has the reports the
@@ -110,11 +113,13 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>The model a registration's detector builds for a
-        /// product, or null for a detector this family does not port.</summary>
-        internal HidLightingModel ModelFor(OpenRgbRegistration registration, int productId)
+        /// product, or null for a detector this family does not port. The
+        /// release number is the device's, which only the Claymore's model
+        /// reads.</summary>
+        internal HidLightingModel ModelFor(OpenRgbRegistration registration, int productId, int release = 0)
             => registration.Detector switch
             {
-                "DetectAsusAuraUSBKeyboard" => Keyboard(registration.Name, productId),
+                "DetectAsusAuraUSBKeyboard" => Keyboard(registration.Name, productId, release),
                 "DetectAsusAuraUSBMice" => Mouse(registration.Name, productId),
                 "DetectAsusAuraUSBStrixEvolve" => StrixEvolve(registration.Name, productId),
                 "DetectAsusAuraUSBSpatha" => Spatha(registration.Name, productId),

@@ -139,6 +139,9 @@ namespace PadForge.Tests
         public int InputReportLength { get; init; }
         public int OutputReportLength { get; init; }
         public int FeatureReportLength { get; init; } = 91;
+        public string ManufacturerString { get; init; }
+        public string ProductString { get; init; }
+        public string SerialNumber { get; init; }
 
         public Func<long> Ticks = () => Environment.TickCount64;
         public volatile bool FailWrites;
@@ -1961,6 +1964,25 @@ namespace PadForge.Tests
             Assert.Equal(-1, limited.ReadInput(report, 50));
             Assert.False(limited.SetFeature(new byte[] { 0x00 }));
             Assert.False(limited.GetFeature(0x00, report));
+        }
+
+        /// <summary>The channel's strings are reads on its own handle: a
+        /// handle that is no HID collection answers none, and neither does a
+        /// closed channel.</summary>
+        [Fact]
+        public void TheChannelsStrings_AreNullWhereTheHandleCannotAnswer()
+        {
+            using var pipe = PipeEnd.Open(out var handle);
+            var channel = HidReportChannel.ForHandle("pipe", handle, featureOnly: false,
+                inputLength: 8, outputLength: 8, featureLength: 0);
+            Assert.Null(channel.ManufacturerString);
+            Assert.Null(channel.ProductString);
+            Assert.Null(channel.SerialNumber);
+            channel.Dispose();
+            Assert.Null(channel.SerialNumber);
+            // A channel that does not read strings answers null by default.
+            IHidReportChannel plain = new FakeReportChannel();
+            Assert.Null(plain.SerialNumber);
         }
 
         private static async Task<int> ReadWhole(System.IO.Stream stream, byte[] buffer)

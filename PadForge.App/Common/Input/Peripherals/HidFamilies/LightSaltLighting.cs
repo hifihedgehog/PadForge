@@ -15,12 +15,10 @@ namespace PadForge.Common.Input.Peripherals
     /// <para>Which device. 0483:5750 is STMicroelectronics' IDs, which other
     /// devices built on its chips carry too, so OpenRGB writes to a device
     /// only when its manufacturer and product strings both hold "Light&amp;Salt",
-    /// and only then asks its class (LightSaltController.cpp:38-76). PadForge's
-    /// walk reads no string from a device (<see cref="HidCollectionInfo"/>),
-    /// and the family never writes to a device whose strings it has not
-    /// seen, so a collection matches only when the strings the family is
-    /// given say Light&amp;Salt. Production gives it none yet, and the family
-    /// lights nothing until the walk reads those two strings.</para>
+    /// and only then asks its class (LightSaltController.cpp:38-76). The
+    /// model asks the same of the two strings before the worker lists the
+    /// collection (<see cref="HidLightingModel.Identify"/>), so the family
+    /// never writes to a device whose strings it has not seen.</para>
     ///
     /// <para>The model of the device. A session asks the class, 00 FE FF,
     /// and the model, 00 FE F5 06, each answered by a 32-byte input report
@@ -88,25 +86,13 @@ namespace PadForge.Common.Input.Peripherals
 
         public string Name => "LightSalt";
 
-        private readonly Func<HidCollectionInfo, (string Manufacturer, string Product)> _strings;
         private readonly KeyboardLedNames.ModelCache _models = new();
-
-        public LightSaltLighting() : this(null) { }
-
-        /// <summary>Test seam: the manufacturer and product strings of a
-        /// collection. Production has none to give (see the class comment).</summary>
-        internal LightSaltLighting(Func<HidCollectionInfo, (string, string)> strings)
-            => _strings = strings ?? (_ => (null, null));
 
         public HidLightingModel Match(HidCollectionInfo collection)
         {
             if (collection == null || collection.VendorId != VendorId) return null;
             var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
             if (registrations.Count == 0) return null;
-            var (manufacturer, product) = _strings(collection);
-            if (manufacturer == null || product == null
-                || !manufacturer.Contains(Maker, StringComparison.Ordinal) || !product.Contains(Maker, StringComparison.Ordinal))
-                return null;
             if (collection.OutputReportLength != 0 && collection.OutputReportLength < WriteLength) return null;
             return _models.Get(registrations[0].Name, () => Model(registrations[0].Name, collection.ProductId));
         }
@@ -131,8 +117,17 @@ namespace PadForge.Common.Input.Peripherals
             Name = name,
             Map = Map(false, productId),
             RepaintMs = RepaintMs,
+            Identify = IsLightSalt,
             Begin = (io, wait) => Begin(io, wait, productId),
         };
+
+        /// <summary>The detector's check: the manufacturer and the product
+        /// strings both hold "Light&amp;Salt" (strstr,
+        /// LightSaltController.cpp:44-63). A string that could not be read
+        /// is empty there, and holds nothing.</summary>
+        internal static bool IsLightSalt(IHidReportChannel io)
+            => io != null && (io.ManufacturerString ?? "").Contains(Maker, StringComparison.Ordinal)
+            && (io.ProductString ?? "").Contains(Maker, StringComparison.Ordinal);
 
         internal static byte[] Report(params byte[] bytes)
         {

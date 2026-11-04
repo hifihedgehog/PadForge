@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PadForge.Common.Input.Peripherals.HidFamilies;
 
 namespace PadForge.Common.Input.Peripherals
 {
@@ -61,6 +62,23 @@ namespace PadForge.Common.Input.Peripherals
         public bool BuiltInKeyboard { get; init; }
     }
 
+    /// <summary>A collection of the same device beside a unit's own
+    /// (<see cref="HidLightingModel.Siblings"/>): one with the unit's vendor
+    /// and product IDs, on the USB interface, as hidapi numbers it
+    /// (<see cref="OpenRgbRegistrations.InterfaceOf"/>), and the usage page
+    /// OpenRGB opens it by.</summary>
+    internal sealed record HidSibling(int Interface, ushort UsagePage)
+    {
+        /// <summary>Whether <paramref name="candidate"/> of the walk is this
+        /// sibling of <paramref name="unit"/>, the container aside.</summary>
+        public bool Is(HidCollectionInfo unit, HidCollectionInfo candidate)
+            => unit != null && candidate?.Path != null
+            && !string.Equals(candidate.Path, unit.Path, StringComparison.OrdinalIgnoreCase)
+            && candidate.VendorId == unit.VendorId && candidate.ProductId == unit.ProductId
+            && candidate.UsagePage == UsagePage
+            && OpenRgbRegistrations.InterfaceOf(candidate, OpenRgbRegistrations.BusOf(candidate)) == Interface;
+    }
+
     /// <summary>One model of a family: its lights in the order a session
     /// takes their colors, when a picture goes out, and how a session with
     /// it starts.</summary>
@@ -108,11 +126,61 @@ namespace PadForge.Common.Input.Peripherals
         /// (<see cref="HidLightingSession.Recheck"/>). 0: never.</summary>
         public int RecheckMs { get; init; }
 
+        /// <summary>For a device that drops the host's colors when the host
+        /// goes quiet: how often the session's keep-alive goes out
+        /// (<see cref="HidLightingSession.KeepAlive"/>) while a picture
+        /// shows, timed from the keep-alive before, or from the session's
+        /// start before the first one. 0: never.</summary>
+        public int KeepAliveMs { get; init; }
+
+        /// <summary>How long a keep-alive waits after a picture went out at
+        /// the least. 0: a picture does not put the next keep-alive
+        /// off.</summary>
+        public int KeepAliveIdleMs { get; init; }
+
         /// <summary>Starts a session on a channel open for read and write,
         /// reading what it needs first, with a wait the worker supplies.
         /// Null when the device did not answer, and then nothing is
         /// written.</summary>
         public Func<IHidReportChannel, Action<int>, HidLightingSession> Begin { get; init; }
+
+        /// <summary>For a family whose registration also matches collections
+        /// it does not light, other makers' devices on a shared ID pair or
+        /// firmware OpenRGB refuses: whether a collection is one it lights,
+        /// from the strings the device reports
+        /// (<see cref="IHidReportChannel.ProductString"/> and the others), as
+        /// OpenRGB's detector decides from the strings before it makes a
+        /// controller. The worker asks it once while the collection stays in
+        /// the walk, on a handle opened with no access right, which writes
+        /// nothing, and lists the unit only on true. Null: every collection
+        /// the family matches is one it lights.</summary>
+        public Func<IHidReportChannel, bool> Identify { get; init; }
+
+        /// <summary>The device's lighting lives on a mouse or keyboard
+        /// collection, which Windows holds and opens with no access right
+        /// only, as it does for every program: "feature reports can still be
+        /// sent and received" on that handle, and hidapi hands OpenRGB that
+        /// handle (hidapi windows/hid.c:1009-1026). For every other model a
+        /// handle with no access right means another program holds the
+        /// collection, and the worker writes nothing to it. For this one the
+        /// worker keeps that handle, and the session sends feature reports
+        /// alone.</summary>
+        public bool HeldByWindows { get; init; }
+
+        /// <summary>The other collections of the device a session talks
+        /// through beside the unit's own, as OpenRGB opens a control and a
+        /// LED collection of one keyboard (RoccatControllerDetect.cpp:101-203).
+        /// A collection is listed only while each of its siblings is in the
+        /// walk too. The worker opens them for read and write beside the
+        /// unit's channel, from the same container, hands them to
+        /// <see cref="BeginWith"/> in this order, and closes them with
+        /// it.</summary>
+        public IReadOnlyList<HidSibling> Siblings { get; init; } = Array.Empty<HidSibling>();
+
+        /// <summary>The counterpart of <see cref="Begin"/> for a model with
+        /// <see cref="Siblings"/>: the unit's channel, then one channel per
+        /// sibling in their order.</summary>
+        public Func<IHidReportChannel, IReadOnlyList<IHidReportChannel>, Action<int>, HidLightingSession> BeginWith { get; init; }
 
         /// <summary>For a family whose devices are no HID collections
         /// (<see cref="IOwnLookFamily"/>): opens the device a key names, in
@@ -191,10 +259,30 @@ namespace PadForge.Common.Input.Peripherals
         /// try.</summary>
         public int LaterMs { get; protected set; }
 
+        /// <summary>The hold and the shortest time between two pictures for
+        /// the device this session opened, where the session tells apart
+        /// devices one model covers, one that stores each picture and one
+        /// that does not. Null: the model's
+        /// (<see cref="HidLightingModel.HoldMs"/>,
+        /// <see cref="HidLightingModel.RepaintMs"/>). Read at every
+        /// picture.</summary>
+        public virtual int? HoldMs => null;
+
+        public virtual int? RepaintMs => null;
+
         /// <summary>Reads the device's state again, so the frames the crash
         /// path holds follow it. False when the device did not
         /// answer.</summary>
         public virtual bool Recheck(IHidReportChannel io, Action<int> wait) => true;
+
+        /// <summary>What goes out on the model's keep-alive interval
+        /// (<see cref="HidLightingModel.KeepAliveMs"/>), given the picture
+        /// the device shows, <paramref name="colors"/> for
+        /// <paramref name="lights"/>: by default that picture again. False
+        /// when a write or a read failed.</summary>
+        public virtual bool KeepAlive(IHidReportChannel io, Action<int> wait,
+            IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
+            => Paint(io, wait, lights, colors) != HidLightingPaint.Failed;
 
         /// <summary>Returns the device to its own lighting. False when a
         /// write or a read failed.</summary>
@@ -273,6 +361,7 @@ namespace PadForge.Common.Input.Peripherals
             AnnePro2Lighting.Instance,
             RedSquareKeyroxLighting.Instance,
             RoyuanLighting.Instance,
+            KeychronKeyboardLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

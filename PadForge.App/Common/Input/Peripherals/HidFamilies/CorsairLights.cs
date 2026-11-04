@@ -155,10 +155,11 @@ namespace PadForge.Common.Input.Peripherals
     /// before its first picture, as the Lenovo Y740 to Y760 session does
     /// (<see cref="LenovoLegionUsbLighting"/>), with the hand-back frame as
     /// its contents and the number of times it goes out as its profile, and
-    /// the next run sends it for a device a forced kill left. A picture
-    /// goes out again after <see cref="KeepAliveMs"/> without one, checked
-    /// on the model's recheck interval, where the reference keeps a device
-    /// from falling back to its own lighting that way.
+    /// the next run sends it for a device a forced kill left. Where the
+    /// reference keeps a device from falling back to its own lighting by
+    /// sending the last picture again after a time without one, the model
+    /// names that time and the worker sends it
+    /// (<see cref="HidLightingModel.KeepAliveMs"/>).
     /// </summary>
     internal abstract class CorsairSession : HidLightingSession
     {
@@ -168,31 +169,20 @@ namespace PadForge.Common.Input.Peripherals
         internal const int SavingMs = LenovoLegionUsbLighting.SavingMs;
 
         private readonly string _product;
-        private readonly Func<long> _ticks;
         private readonly byte[] _handBack;
         private readonly int _handBackCount;
         private readonly int _handBackGapMs;
         private readonly byte[][] _crash;
-        private IReadOnlyList<LightInfo> _lastLights;
-        private IReadOnlyList<int> _lastColors;
-        private long _lastSent;
 
-        protected CorsairSession(string product, Func<long> ticks, byte[] handBack, int handBackCount, int handBackGapMs,
-            int keepAliveMs)
+        protected CorsairSession(string product, byte[] handBack, int handBackCount, int handBackGapMs)
         {
             _product = product;
-            _ticks = ticks;
             _handBack = handBack;
             _handBackCount = Math.Max(1, handBackCount);
             _handBackGapMs = handBackGapMs;
-            KeepAliveMs = keepAliveMs;
             _crash = new byte[_handBackCount][];
             for (int i = 0; i < _crash.Length; i++) _crash[i] = handBack;
         }
-
-        /// <summary>How long the device may go without a picture before the
-        /// last one goes out again. 0: never.</summary>
-        public int KeepAliveMs { get; }
 
         public override bool Feature => false;
 
@@ -215,23 +205,7 @@ namespace PadForge.Common.Input.Peripherals
                 LaterMs = SavingMs;
                 return HidLightingPaint.Later;
             }
-            if (!Send(io, wait, lights, colors)) return HidLightingPaint.Failed;
-            _lastLights = lights;
-            _lastColors = colors;
-            _lastSent = _ticks();
-            return HidLightingPaint.Sent;
-        }
-
-        /// <summary>The keep-alive: the last picture again once
-        /// <see cref="KeepAliveMs"/> have passed without one.</summary>
-        public override bool Recheck(IHidReportChannel io, Action<int> wait)
-        {
-            if (KeepAliveMs <= 0 || _lastColors == null) return true;
-            long now = _ticks();
-            if (now - _lastSent <= KeepAliveMs) return true;
-            if (!Send(io, wait, _lastLights, _lastColors)) return false;
-            _lastSent = _ticks();
-            return true;
+            return Send(io, wait, lights, colors) ? HidLightingPaint.Sent : HidLightingPaint.Failed;
         }
 
         public override bool HandBack(IHidReportChannel io, Action<int> wait)

@@ -37,8 +37,9 @@ namespace PadForge.Common.Input.Peripherals
     /// (RGBController_SinowealthKeyboard10c.cpp:117-154). The keyboard
     /// leaves this Direct mode when the colors stop, so OpenRGB sends them
     /// again once a second has passed without a picture, looking every half
-    /// second (lines 63-69 and 181-191). A session sends its last report
-    /// again every second (<see cref="HidLightingSession.Recheck"/>). The
+    /// second (lines 63-69 and 181-191), a resend timed as a picture
+    /// (line 163). The worker sends the last picture again on the same
+    /// terms, as the session's keep-alive (<see cref="HidLightingModel.KeepAliveMs"/>). The
     /// mode is stored nowhere ("@save :x:", lines 21-30), and the hand-back
     /// is to stop sending, after which the keyboard returns to its own
     /// lighting.</para>
@@ -177,7 +178,7 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         Family = this, Name = name,
                         Map = new LightMap(Array.Empty<LightInfo>(), "OpenRGB SinowealthKeyboard10cDevices.cpp") { Product = product },
-                        RepaintMs = RepaintMs, RecheckMs = KeepaliveMs,
+                        RepaintMs = RepaintMs, KeepAliveMs = KeepaliveMs, KeepAliveIdleMs = KeepaliveMs,
                         Begin = (io, wait) => Keyboard10cSession.Begin(io, product),
                     };
                 case Thor300Detector:
@@ -319,8 +320,6 @@ namespace PadForge.Common.Input.Peripherals
 
         internal sealed class Keyboard10cSession : HidLightingSession
         {
-            private byte[] _last;
-
             private Keyboard10cSession(byte modelId, LightMap map)
             {
                 ModelId = modelId;
@@ -360,17 +359,7 @@ namespace PadForge.Common.Input.Peripherals
                 var report = Keyboard10cFrame(lights, colors);
                 if (!io.SetFeature(report)) return HidLightingPaint.Failed;
                 wait(Keyboard10cWaitMs);
-                _last = report;
                 return HidLightingPaint.Sent;
-            }
-
-            /// <summary>The keepalive: the last picture again.</summary>
-            public override bool Recheck(IHidReportChannel io, Action<int> wait)
-            {
-                if (_last == null) return true;
-                if (!io.SetFeature(_last)) return false;
-                wait(Keyboard10cWaitMs);
-                return true;
             }
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait) => true;

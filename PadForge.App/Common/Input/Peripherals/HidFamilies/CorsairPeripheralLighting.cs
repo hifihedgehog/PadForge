@@ -111,10 +111,14 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The newer protocol's boards: the wait after each open
         /// write of the K65 Mini (CorsairK65MiniController.cpp:70-89), and
-        /// the keep-alive OpenRGB keeps for both.</summary>
+        /// the keep-alive OpenRGB keeps for both: the last picture again once
+        /// 50 s pass without one, the resend included
+        /// (RGBController_CorsairK65Mini.cpp:219 and 238-250,
+        /// RGBController_CorsairK55RGBPROXT.cpp:394 and 424-437).
+        /// OpenRGB looks every 3 s. The worker sends it at the 50 s
+        /// itself.</summary>
         internal const int K65MiniOpenGapMs = 10;
         internal const int BoardKeepAliveMs = 50000;
-        internal const int BoardKeepAliveCheckMs = 3000;
 
         /// <summary>The K65 Mini's report length, PACKET_LENGTH
         /// (CorsairK65MiniController.h:16).</summary>
@@ -150,14 +154,8 @@ namespace PadForge.Common.Input.Peripherals
             Dubeolsik = 4,
         }
 
-        private readonly Func<long> _ticks;
         private readonly Dictionary<(string Detector, int ProductId), HidLightingModel> _models = new();
         private readonly object _gate = new();
-
-        public CorsairPeripheralLighting() : this(null) { }
-
-        /// <summary>Test seam: the clock the keep-alive reads.</summary>
-        internal CorsairPeripheralLighting(Func<long> ticks) => _ticks = ticks ?? (() => Environment.TickCount64);
 
         public string Name => "Corsair (peripherals)";
 
@@ -186,13 +184,15 @@ namespace PadForge.Common.Input.Peripherals
                 DetectK65Mini => new HidLightingModel
                 {
                     Map = new LightMap(K65MiniLights(), "OpenRGB RGBController_CorsairK65Mini.cpp") { Product = product },
-                    RecheckMs = BoardKeepAliveCheckMs,
+                    KeepAliveMs = BoardKeepAliveMs,
+                    KeepAliveIdleMs = BoardKeepAliveMs,
                     Begin = (io, wait) => BeginK65Mini(io, wait, product),
                 },
                 DetectK55ProXt => new HidLightingModel
                 {
                     Map = new LightMap(K55ProXtLights(), "OpenRGB RGBController_CorsairK55RGBPROXT.cpp") { Product = product },
-                    RecheckMs = BoardKeepAliveCheckMs,
+                    KeepAliveMs = BoardKeepAliveMs,
+                    KeepAliveIdleMs = BoardKeepAliveMs,
                     Begin = (io, wait) => BeginK55ProXt(io, wait, product),
                 },
                 _ => new HidLightingModel
@@ -209,7 +209,8 @@ namespace PadForge.Common.Input.Peripherals
                 Map = model.Map,
                 Programs = new[] { VendorPrograms.CorsairIcue },
                 RepaintMs = RepaintMs,
-                RecheckMs = model.RecheckMs,
+                KeepAliveMs = model.KeepAliveMs,
+                KeepAliveIdleMs = model.KeepAliveIdleMs,
                 Begin = model.Begin,
                 Owed = () => CorsairSession.Owed(product),
                 Repair = (io, wait) => CorsairSession.Repair(io, wait, product, KeyboardHandBackGapMs),
@@ -686,7 +687,7 @@ namespace PadForge.Common.Input.Peripherals
             var map = new LightMap(Lights(type, logical, name), $"OpenRGB RGBController_CorsairPeripheral.cpp, {type}")
             { Product = product };
             bool keyboard = type == CorsairDeviceType.Keyboard;
-            return new PeripheralSession(product, _ticks, type, logical, physical, map, keyboard ? 2 : 1);
+            return new PeripheralSession(product, type, logical, physical, map, keyboard ? 2 : 1);
         }
 
         private HidLightingSession BeginK65Mini(IHidReportChannel io, Action<int> wait, string product)
@@ -696,22 +697,22 @@ namespace PadForge.Common.Input.Peripherals
                 if (!io.WriteOutput(frame)) return null;
                 wait(K65MiniOpenGapMs);
             }
-            return new BoardSession(product, _ticks, (lights, colors) => new List<byte[]> { K65MiniPicture(lights, colors) });
+            return new BoardSession(product, (lights, colors) => new List<byte[]> { K65MiniPicture(lights, colors) });
         }
 
         private HidLightingSession BeginK55ProXt(IHidReportChannel io, Action<int> wait, string product)
         {
             foreach (var frame in K55ProXtOpenFrames())
                 if (!io.WriteOutput(frame)) return null;
-            return new BoardSession(product, _ticks, K55ProXtPicture);
+            return new BoardSession(product, K55ProXtPicture);
         }
 
         /// <summary>A session of the older protocol.</summary>
         internal sealed class PeripheralSession : CorsairSession
         {
-            public PeripheralSession(string product, Func<long> ticks, CorsairDeviceType type, Logical logical,
+            public PeripheralSession(string product, CorsairDeviceType type, Logical logical,
                 Physical physical, LightMap map, int handBacks)
-                : base(product, ticks, SpecialFunction(0x01), handBacks, KeyboardHandBackGapMs, 0)
+                : base(product, SpecialFunction(0x01), handBacks, KeyboardHandBackGapMs)
             {
                 Type = type;
                 Logical = logical;
@@ -741,9 +742,9 @@ namespace PadForge.Common.Input.Peripherals
         {
             private readonly Func<IReadOnlyList<LightInfo>, IReadOnlyList<int>, List<byte[]>> _picture;
 
-            public BoardSession(string product, Func<long> ticks,
+            public BoardSession(string product,
                 Func<IReadOnlyList<LightInfo>, IReadOnlyList<int>, List<byte[]>> picture)
-                : base(product, ticks, BoardHandBack(), 1, 0, BoardKeepAliveMs)
+                : base(product, BoardHandBack(), 1, 0)
                 => _picture = picture;
 
             protected override bool Send(IHidReportChannel io, Action<int> wait, IReadOnlyList<LightInfo> lights,

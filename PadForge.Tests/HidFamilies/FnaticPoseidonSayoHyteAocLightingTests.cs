@@ -57,34 +57,28 @@ namespace PadForge.Tests
         [Fact]
         public void ASession_KeepsItAlive_OnlyAfterHalfASecondIdle()
         {
-            long now = 1000;
-            var family = new FnaticStreakLighting(() => now);
-            var model = Model(family, 0x0101);
-            Assert.Equal(100, model.RecheckMs);
+            var model = Model(FnaticStreakLighting.Instance, 0x0101);
+            // 500 ms idle after a picture, then one on every 100 ms check,
+            // since a keep-alive leaves last_update_time where it was
+            // (RGBController_FnaticStreak.cpp:480, 537 and 683-699).
+            Assert.Equal(100, model.KeepAliveMs);
+            Assert.Equal(500, model.KeepAliveIdleMs);
+            Assert.Equal(0, model.RecheckMs);
             var io = new FakeReportChannel { OutputReportLength = 65 };
             var session = model.Begin(io, _ => { });
             Assert.Empty(io.Calls);
-            now = 1400;
-            Assert.True(session.Recheck(io, _ => { }));
-            Assert.Empty(io.Calls);
-            now = 1501;
-            Assert.True(session.Recheck(io, _ => { }));
-            Assert.Equal("00 07 01", Hex(Calls(io).Single().Bytes, 3));
-            // Every check while idle sends one (RGBController_FnaticStreak.cpp:683-699).
-            now = 1601;
-            Assert.True(session.Recheck(io, _ => { }));
-            Assert.Equal(2, io.Calls.Count);
-            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, Distinct(model.Map.Lights.Count)));
-            Assert.Equal(2 + 7, io.Calls.Count);
-            now = 2000;
-            Assert.True(session.Recheck(io, _ => { }));
-            Assert.Equal(9, io.Calls.Count);
+            var colors = Distinct(model.Map.Lights.Count);
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, colors));
+            Assert.Equal(7, io.Calls.Count);
+            // The keep-alive is the request 07 alone (SendKeepalive,
+            // FnaticStreakController.cpp:110-119), never the picture.
+            Assert.True(session.KeepAlive(io, _ => { }, model.Map.Lights, colors));
+            Assert.Equal("00 07 01", Hex(Calls(io).Skip(7).Single().Bytes, 3));
             Assert.True(session.HandBack(io, _ => { }));
-            Assert.Equal(9, io.Calls.Count);
+            Assert.Equal(8, io.Calls.Count);
             Assert.Empty(session.CrashFrames);
             io.FailWrites = true;
-            now = 3000;
-            Assert.False(session.Recheck(io, _ => { }));
+            Assert.False(session.KeepAlive(io, _ => { }, model.Map.Lights, colors));
         }
 
         [Fact]

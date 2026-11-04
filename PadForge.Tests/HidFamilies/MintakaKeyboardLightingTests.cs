@@ -27,6 +27,9 @@ namespace PadForge.Tests
             Assert.Equal(150, model.HoldMs);
             Assert.Equal(500, model.RepaintMs);
             Assert.Empty(model.Programs);
+            // The keyboard collection opens with no access right only, and
+            // the frames are all feature reports.
+            Assert.True(model.HeldByWindows);
         }
 
         [Fact]

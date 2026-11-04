@@ -147,19 +147,21 @@ namespace PadForge.Common.Input.Peripherals
             return new LightMap(lights, "OpenRGB " + set.Source) { Product = product };
         }
 
-        private HidLightingModel Keyboard(string name, int productId)
+        private HidLightingModel Keyboard(string name, int productId, int release)
         {
             string set = KeyboardSetOf(productId);
             int region = productId == Claymore
-                ? RegionOf(AsusAuraTables.KeyboardSet(set), ClaymoreRegion(0))
+                ? RegionOf(AsusAuraTables.KeyboardSet(set), ClaymoreRegion(release))
                 : AsusAuraTables.RegionUs;
             return Model(name, productId, KeyboardMap(productId, set, region),
-                (io, wait) => BeginKeyboard(io, productId));
+                (io, wait) => BeginKeyboard(io, productId, release));
         }
 
         /// <summary>Reads what the keyboard's map needs and puts it in
-        /// Direct mode. Null when it did not answer.</summary>
-        internal static HidLightingSession BeginKeyboard(IHidReportChannel io, int productId)
+        /// Direct mode. Null when it did not answer. A Claymore's region
+        /// comes from <paramref name="release"/>, the device's release
+        /// number (<see cref="HidCollectionInfo.ReleaseNumber"/>).</summary>
+        internal static HidLightingSession BeginKeyboard(IHidReportChannel io, int productId, int release = 0)
         {
             if (io == null) return null;
             var scratch = new byte[Math.Max(PacketSize, io.InputReportLength)];
@@ -171,9 +173,8 @@ namespace PadForge.Common.Input.Peripherals
                 var numpad = Ask(io, Frame(PacketSize, 0x00, 0x40, 0x60));
                 if (numpad == null) return null;
                 string set = KeyboardSetOf(productId, (byte)(numpad[5] * 2 + numpad[4]));
-                // The release number PadForge's walk does not read gives
-                // GetLayout's default (lines 176-188).
-                map = KeyboardMap(productId, set, RegionOf(AsusAuraTables.KeyboardSet(set), ClaymoreRegion(0)));
+                // GetLayout by the release number (lines 174-189).
+                map = KeyboardMap(productId, set, RegionOf(AsusAuraTables.KeyboardSet(set), ClaymoreRegion(release)));
                 // AllowRemoteControl(1), then (3) for Direct
                 // (RGBController_AsusAuraKeyboard.cpp:583-596).
                 if (!RemoteControl(io, scratch, 1) || !RemoteControl(io, scratch, 3)) return null;

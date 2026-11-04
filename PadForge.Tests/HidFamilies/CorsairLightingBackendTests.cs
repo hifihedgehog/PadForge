@@ -121,7 +121,7 @@ namespace PadForge.Tests
         {
             var families = new IHidLightingFamily[]
             {
-                new CorsairPeripheralLighting(Tick), new CorsairPeripheralV2Lighting(Tick),
+                new CorsairPeripheralLighting(), new CorsairPeripheralV2Lighting(),
             };
             var backend = new HidLightingBackend(families, Open, _ => Box, Tick,
                 (_, _, _) => true, (_, _, _) => true, ms => Advance(ms), idleTickMs: 5);
@@ -202,15 +202,20 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void AV2Device_IsKeptAlive_ThroughTheWorkersRecheck()
+        public void AV2Device_IsKeptAlive_ThroughTheWorkersKeepAlive()
         {
             var m75 = CorsairPeripheralLightingTests.Collection(0x1BF0, page: 0xFF42);
             using var backend = Lit(m75);
             int Blocks() => Outputs().Count(f => f[2] == 0x06);
             Assert.Equal(1, Blocks());
-            Advance(CorsairPeripheralV2Lighting.KeepAliveMs + CorsairPeripheralV2Lighting.KeepAliveCheckMs);
+            Advance(30000 - 1);
+            Passes(backend, 3);
+            Assert.Equal(1, Blocks());
+            Advance(1);
             Passes(backend, 3);
             Assert.Equal(2, Blocks());
+            var blocks = Outputs().Where(f => f[2] == 0x06).ToList();
+            Assert.Equal(blocks[0], blocks[1]);
             Unlight();
             Passes(backend);
             Assert.Equal("00 08 01 03 00 01", Hex(Outputs()[^1], 6));

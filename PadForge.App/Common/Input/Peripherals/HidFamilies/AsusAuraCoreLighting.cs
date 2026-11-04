@@ -72,6 +72,11 @@ namespace PadForge.Common.Input.Peripherals
     /// collection that answers report 5D. The session asks it the same way
     /// and lights it as a laptop only when it answers neither 5D nor 5E.</para>
     ///
+    /// <para>An Aura Core collection's kind is known only once its session
+    /// asks, so its model holds the four-zone keyboard's bounds, and a
+    /// GA15DH or laptop session names its own: no hold, and the stream's
+    /// interval (<see cref="HidLightingSession.HoldMs"/>).</para>
+    ///
     /// <para>Armoury Crate lights these keyboards, and while it runs each is
     /// left to it (<see cref="VendorPrograms.ArmouryCrate"/>).</para>
     /// </summary>
@@ -394,6 +399,13 @@ namespace PadForge.Common.Input.Peripherals
 
             public override LightMap Map => _map;
 
+            /// <summary>Nothing is stored, so no hold, and the stream's
+            /// interval, as the laptop's model has, where the Aura Core
+            /// model's bounds are the four-zone keyboard's.</summary>
+            public override int? HoldMs => 0;
+
+            public override int? RepaintMs => HidppBackend.PaintMs;
+
             public override byte[][] CrashFrames => Array.Empty<byte[]>();
 
             public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
@@ -591,6 +603,12 @@ namespace PadForge.Common.Input.Peripherals
             public override bool Feature => true;
 
             public override LightMap Map => _map;
+
+            /// <summary>The laptop model's bounds, also where an Aura Core
+            /// collection turns out to be a laptop.</summary>
+            public override int? HoldMs => 0;
+
+            public override int? RepaintMs => HidppBackend.PaintMs;
 
             public override byte[][] CrashFrames => Array.Empty<byte[]>();
 

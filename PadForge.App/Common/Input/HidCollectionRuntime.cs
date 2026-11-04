@@ -17,6 +17,13 @@ namespace PadForge.Common.Input
         public ushort UsagePage { get; init; }
         public ushort Usage { get; init; }
 
+        /// <summary>The device's release number, HIDD_ATTRIBUTES'
+        /// VersionNumber, which hidapi hands its callers as release_number
+        /// (hidapi windows/hid.c:767). OpenRGB's ASUS Claymore takes its
+        /// region from it (AsusAuraKeyboardControllerDetect.cpp:62,
+        /// AsusAuraKeyboardController.cpp:174-189).</summary>
+        public ushort ReleaseNumber { get; init; }
+
         /// <summary>The USB interface number, from "&amp;mi_xx" in the
         /// path, or -1 for a path without one: a device with a single
         /// interface, or one on Bluetooth.</summary>
@@ -192,6 +199,7 @@ namespace PadForge.Common.Input
                     ProductId = attributes.ProductID,
                     UsagePage = caps.UsagePage,
                     Usage = caps.Usage,
+                    ReleaseNumber = attributes.VersionNumber,
                     InterfaceNumber = InterfaceNumberOf(path),
                     InputReportLength = caps.InputReportByteLength,
                     OutputReportLength = caps.OutputReportByteLength,

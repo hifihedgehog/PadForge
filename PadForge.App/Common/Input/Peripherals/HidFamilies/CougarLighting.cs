@@ -26,7 +26,13 @@ namespace PadForge.Common.Input.Peripherals
     /// does when it opens (CougarRevengerSTController.cpp:16-25 and
     /// 186-200), and each picture sets each zone's red, green, blue and
     /// brightness at the addresses of DIRECT_MODE (SetDirect and
-    /// SendColourPacket, lines 61-86 and 178-184, CougarRevengerSTController.h).</para>
+    /// SendColourPacket, lines 61-86 and 178-184, CougarRevengerSTController.h).
+    /// OpenRGB registers the mouse collection itself, page 1 usage 2
+    /// (CougarControllerDetect.cpp:65), which Windows holds and opens for
+    /// another program with no access right only. Feature reports pass on
+    /// that handle (hidapi windows/hid.c:1009-1026), and they are all the
+    /// mouse takes, so its model tells the worker to keep it
+    /// (<see cref="HidLightingModel.HeldByWindows"/>).</para>
     ///
     /// <para>Hand-back: none. OpenRGB reads neither device's mode and sends
     /// nothing when it closes, and no other reference drives them, so each
@@ -121,6 +127,7 @@ namespace PadForge.Common.Input.Peripherals
                 new LightInfo(2, LightKind.Logo, 0, LightKeySource.None),
             }, "OpenRGB RGBController_CougarRevengerST.cpp") { Product = $"cougar:{MouseVid:X4}:{productId:X4}" },
             RepaintMs = RepaintMs,
+            HeldByWindows = true,
             Begin = (io, wait) => BeginMouse(io),
         };
 

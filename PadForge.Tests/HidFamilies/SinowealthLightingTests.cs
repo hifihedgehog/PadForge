@@ -232,9 +232,13 @@ namespace PadForge.Tests
             var map = PeripheralLightMaps.For(KeyboardFamilyRig.PathOf(collection));
             Assert.Equal("sinowealth:258A:010C:A4", map.Product);
             Assert.Equal(S.Keyboard10cLights(S.Keyboard10cModel(0xA4)).Count, map.Lights.Count);
-            // The same picture goes again after a second.
+            // The same picture goes again after a second with nothing sent
+            // (RGBController_SinowealthKeyboard10c.cpp:163 and 181-191).
             int frames = rig.Log.Of('F').Count;
-            rig.Advance(S.KeepaliveMs);
+            rig.Advance(999);
+            KeyboardFamilyRig.Passes(backend);
+            Assert.Equal(frames, rig.Log.Of('F').Count);
+            rig.Advance(1);
             KeyboardFamilyRig.Passes(backend);
             Assert.Equal(frames + 1, rig.Log.Of('F').Count);
             Assert.Equal("06 08 00 00 01 00 7A 01 11 22 33", Hex(rig.Log.Of('F')[^1], 11));

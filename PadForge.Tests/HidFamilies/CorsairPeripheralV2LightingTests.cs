@@ -21,13 +21,11 @@ namespace PadForge.Tests
 
         private static string Hex(byte[] bytes, int from, int count) => BitConverter.ToString(bytes, from, count).Replace('-', ' ');
 
-        private long _tick = 1_000_000;
-
         public CorsairPeripheralV2LightingTests() => KeyboardProfileBackups.ResetForTest(persistAtOnce: true);
 
         public void Dispose() => KeyboardProfileBackups.ResetForTest();
 
-        private CorsairPeripheralV2Lighting Family() => new(() => _tick);
+        private static CorsairPeripheralV2Lighting Family() => new();
 
         private static HidCollectionInfo Collection(ushort pid, ushort page = 0xFF42, int iface = 1)
             => CorsairPeripheralLightingTests.Collection(pid, page, iface);
@@ -105,7 +103,11 @@ namespace PadForge.Tests
                 Assert.NotNull(model);
                 Assert.Equal(r.Name, model.Name);
                 Assert.Equal(new[] { VendorPrograms.CorsairIcue }, model.Programs);
-                Assert.Equal(CorsairPeripheralV2Lighting.KeepAliveCheckMs, model.RecheckMs);
+                // CORSAIR_V2_UPDATE_PERIOD, a resend timed as a picture
+                // (CorsairPeripheralV2Controller.h:34, RGBController_CorsairV2Software.cpp:205 and 225-238).
+                Assert.Equal(30000, model.KeepAliveMs);
+                Assert.Equal(30000, model.KeepAliveIdleMs);
+                Assert.Equal(0, model.RecheckMs);
                 Assert.Null(family.Match(Collection((ushort)r.ProductId, iface: 0)));
                 Assert.Null(family.Match(Collection((ushort)r.ProductId, page: 0xFFC2)));
                 // A device in OpenRGB's list has its lights before a session;
@@ -406,16 +408,11 @@ namespace PadForge.Tests
             var session = model.Begin(io, io.Wait);
             session.Paint(io, io.Wait, session.Map.Lights, new[] { 0x112233, 0x445566 });
             int sent = io.Outputs.Count(f => f[2] == 0x06);
-            _tick += 30000;
-            Assert.True(session.Recheck(io, io.Wait));
-            Assert.Equal(sent, io.Outputs.Count(f => f[2] == 0x06));
-            _tick += 1;
-            Assert.True(session.Recheck(io, io.Wait));
+            Assert.True(session.KeepAlive(io, io.Wait, session.Map.Lights, new[] { 0x112233, 0x445566 }));
             Assert.Equal(sent + 1, io.Outputs.Count(f => f[2] == 0x06));
             Assert.Equal(io.Outputs.Where(f => f[2] == 0x06).First(), io.Outputs.Where(f => f[2] == 0x06).Last());
             io.FailWrites = true;
-            _tick += 30001;
-            Assert.False(session.Recheck(io, io.Wait));
+            Assert.False(session.KeepAlive(io, io.Wait, session.Map.Lights, new[] { 0x112233, 0x445566 }));
         }
 
         [Fact]

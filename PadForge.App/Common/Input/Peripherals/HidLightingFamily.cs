@@ -364,6 +364,7 @@ namespace PadForge.Common.Input.Peripherals
             KeychronKeyboardLighting.Instance,
             TrustLighting.Instance,
             AocMouseLighting.Instance,
+            AocMousematLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

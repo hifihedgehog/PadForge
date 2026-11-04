@@ -69,7 +69,7 @@ namespace PadForge.Tests
                 case PeripheralLinker.RazerVid:
                     return PeripheralProductIds.RazerMice.Contains(product) || PeripheralProductIds.RazerKeyboards.Contains(product)
                         || PeripheralProductIds.RazerAccessories.Contains(product) || PeripheralProductIds.RazerMousepads.Contains(product)
-                        || PeripheralProductIds.RazerHeadsets.Contains(product) || RazerLightTable.Rows.Any(r => r.ProductId == product)
+                        || PeripheralProductIds.RazerHeadsets.Contains(product)
                         || RazerHidTable.MapOf(product) != null;
                 case PeripheralLinker.SteelSeriesVid:
                     return SteelSeriesDirectProtocol.Models.Any(m => m.ProductId == product && m.Family != SteelSeriesFamily.None);

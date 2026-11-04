@@ -19,6 +19,21 @@ namespace PadForge.Tests
         private static PluginDevice Device(ushort vid, ushort pid)
             => F.Devices.First(d => d.VendorId == vid && d.ProductId == pid);
 
+        /// <summary>A device that drops back to its own lighting when no picture comes takes
+        /// its start again before the picture.</summary>
+        [Fact]
+        public void AKeepAlive_SendsTheStart_ThenThePicture()
+        {
+            var d = F.Devices.First(x => x.KeepAliveMs > 0 && x.Start.Count > 0 && x.Siblings.Count == 0 && x.Answers == null && x.AskVariant == null);
+            var io = new FakeReportChannel { FeatureReportLength = 65, OutputReportLength = 65, InputReportLength = 65 };
+            var session = F.Instance.Match(CollectionOf(d)).Begin(io, _ => { });
+            var colors = new int[Math.Max(d.Slots, d.Lights.Count)];
+            Assert.True(session.KeepAlive(io, _ => { }, d.Lights, colors));
+            var first = io.Calls.First(c => c.Kind is "out" or "set").Bytes;
+            var start = d.Start.First(s => s.Kind is PluginStepKind.Output or PluginStepKind.Feature).Bytes;
+            Assert.Equal(start, first);
+        }
+
         private static HidCollectionInfo CollectionOf(PluginDevice d)
         {
             int number = d.Interface == OpenRgbRegistration.Any ? 0 : d.Interface;

@@ -340,6 +340,23 @@ namespace PadForge.Tests
             Assert.Equal("00 09 01 03 00 01", Hex(Assert.Single(session.CrashFrames), 6));
         }
 
+        /// <summary>A row of the plugins' list can be a dongle too: the wireless command
+        /// is asked first, and a device it does not name leaves the wired one.</summary>
+        [Fact]
+        public void ARowOfThePluginsList_IsAskedAsADongle_ThenAsItself()
+        {
+            var model = Family().Match(Collection(0x2B0A));
+            var dongle = Device(0x2B0A, pidByCmd: cmd => cmd == 0x09 ? 0x2B02u : 0x2B0Au);
+            var behind = Assert.IsType<CorsairPeripheralV2Lighting.Session>(model.Begin(dongle, dongle.Wait));
+            Assert.Equal(CorsairPeripheralV2Lighting.WriteWireless, behind.WriteCmd);
+            Assert.Equal(0x2B02, behind.Device.ProductId);
+
+            var wired = Device(0x2B0A, pidByCmd: cmd => cmd == 0x09 ? 0xFFFFu : 0x2B0Au);
+            var itself = Assert.IsType<CorsairPeripheralV2Lighting.Session>(model.Begin(wired, wired.Wait));
+            Assert.Equal(CorsairPeripheralV2Lighting.WriteWired, itself.WriteCmd);
+            Assert.Equal(0x2B0A, itself.Device.ProductId);
+        }
+
         [Fact]
         public void AProductIdThatIsSlowToCome_IsAskedAgain120MsApart()
         {

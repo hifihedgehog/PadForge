@@ -515,6 +515,47 @@ namespace PadForge.Tests
             Assert.Equal("00 03 21 00 03 FF FF", Hex(frames[3], 7));
         }
 
+        /// <summary>A session's opening reports go out once, before its first picture.</summary>
+        [Fact]
+        public void AReportsSession_OpensOnce()
+        {
+            var io = new FakeReportChannel { OutputReportLength = 2 };
+            var session = new ReportsSession(false, 1, colors => new[] { new byte[] { 2, (byte)colors[0] } }, new[] { new byte[] { 1, 0 } });
+            var light = new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } };
+            session.Paint(io, _ => { }, light, new[] { 7 });
+            session.Paint(io, _ => { }, light, new[] { 8 });
+            Assert.Equal(new byte[] { 1, 2, 2 }, io.Calls.Select(c => c.Bytes[0]).ToArray());
+        }
+
+        /// <summary>A channel with no input reports waits the time the device needs instead of asking.</summary>
+        [Theory]
+        [InlineData(AlienFxLighting.Api.V2)]
+        [InlineData(AlienFxLighting.Api.V3)]
+        [InlineData(AlienFxLighting.Api.V4)]
+        internal void TheLaptopController_WaitsUntilItIsReady(AlienFxLighting.Api api)
+        {
+            var waits = new List<int>();
+            var io = new FakeReportChannel();
+            Assert.Equal(HidLightingPaint.Sent, new AlienFxLighting.Session(api).Paint(io, waits.Add, null, new[] { 0x112233 }));
+            Assert.NotEmpty(waits);
+            Assert.All(waits, ms => Assert.True(ms > 0));
+        }
+
+        /// <summary>The V7 mouse answers each light, and each answer is read before the next.</summary>
+        [Fact]
+        public void TheV7Mouse_ReadsAnAnswerForEachLight()
+        {
+            var io = new FakeReportChannel { InputReportLength = 65 };
+            Assert.Equal(HidLightingPaint.Sent, new AlienFxLighting.Session(AlienFxLighting.Api.V7).Paint(io, _ => { }, null, new[] { 0x112233 }));
+            var kinds = io.Calls.Select(c => c.Kind).ToList();
+            Assert.True(kinds.Count >= 2);
+            for (int i = 0; i < kinds.Count; i += 2)
+            {
+                Assert.Equal("out", kinds[i]);
+                Assert.Equal("in", kinds[i + 1]);
+            }
+        }
+
         /// <summary>Four bytes per key, the ID from 1, fifteen to a report of 64.</summary>
         [Fact]
         public void TheLaptopKeyboard_IsFeatureReports_FifteenKeysEach()

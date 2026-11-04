@@ -1239,6 +1239,18 @@ namespace PadForge.Tests
             Assert.All(F.Devices.Where(d => d.Source == null), d => Assert.True(F.PictureAgainMsOf(d) > 0, d.Name));
         }
 
+        /// <summary>The worker keeps time by the model, so the model has to carry the interval.</summary>
+        [Fact]
+        public void AModel_CarriesItsRowsInterval()
+        {
+            var plugin = F.Devices.First(d => d.Source == null && d.KeepAliveMs == 0 && d.Lights != null && d.StripMaxLeds.Count == 0 && d.Answers == null);
+            var model = F.Instance.Match(CollectionOf(plugin));
+            Assert.Equal(F.PictureAgainMs, model.KeepAliveMs);
+            Assert.Equal(F.PictureAgainMs, model.KeepAliveIdleMs);
+            var other = F.Devices.First(d => d.Source != null);
+            Assert.Equal(0, F.Instance.Match(CollectionOf(other)).KeepAliveMs);
+        }
+
         /// <summary>The start goes out once, as a plugin's Initialize does: only a device that can
         /// lose software control takes it again.</summary>
         [Fact]

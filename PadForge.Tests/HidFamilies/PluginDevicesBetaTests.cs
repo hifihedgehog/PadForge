@@ -588,6 +588,19 @@ namespace PadForge.Tests
             Assert.Equal("43 81 00 01", Short(io.Calls.First().Bytes));
         }
 
+        /// <summary>The row's session takes the frames its firmware's version names.</summary>
+        [Theory]
+        [InlineData(1, 3, 71, 1)]
+        [InlineData(1, 3, 70, 2)]
+        public void TheFunctionKeyboards_TheirVersion_PicksThePicture(int major, int minor, int patch, int frames)
+        {
+            var row = F.Devices.First(d => d.Plugin.EndsWith("NZXT_Function_Keyboard.js"));
+            var variant = row.AskVariant(Answering(null, new byte[65], Version((byte)major, (byte)minor, (byte)patch)), Array.Empty<IHidReportChannel>(), _ => { });
+            int sent = variant.Picture(new int[variant.Slots]).Count(s => s.Bytes != null && s.Kind == PluginStepKind.Output);
+            if (frames == 1) Assert.Equal(F.FunctionNewPicture(new int[10]).Count(s => s.Bytes != null), sent);
+            else Assert.Equal(F.FunctionPicture(new int[10], false, false).Count(s => s.Bytes != null), sent);
+        }
+
         [Fact]
         public void TheFunctionKeyboards_ASilentOne_KeepsTheOlderFrames()
         {

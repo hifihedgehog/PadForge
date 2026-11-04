@@ -144,6 +144,18 @@ namespace PadForge.Common.Input.Peripherals
         /// written.</summary>
         public Func<IHidReportChannel, Action<int>, HidLightingSession> Begin { get; init; }
 
+        /// <summary>For a family whose registration also matches collections
+        /// it does not light, other makers' devices on a shared ID pair or
+        /// firmware OpenRGB refuses: whether a collection is one it lights,
+        /// from the strings the device reports
+        /// (<see cref="IHidReportChannel.ProductString"/> and the others), as
+        /// OpenRGB's detector decides from the strings before it makes a
+        /// controller. The worker asks it once while the collection stays in
+        /// the walk, on a handle opened with no access right, which writes
+        /// nothing, and lists the unit only on true. Null: every collection
+        /// the family matches is one it lights.</summary>
+        public Func<IHidReportChannel, bool> Identify { get; init; }
+
         /// <summary>The device's lighting lives on a mouse or keyboard
         /// collection, which Windows holds and opens with no access right
         /// only, as it does for every program: "feature reports can still be

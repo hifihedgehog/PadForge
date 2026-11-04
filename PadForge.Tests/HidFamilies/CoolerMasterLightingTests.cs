@@ -23,7 +23,7 @@ namespace PadForge.Tests
         /// time.</summary>
         public Func<byte[], byte[]> Answer = report => report.Skip(1).ToArray();
 
-        public CoolerMasterDevice()
+        public CoolerMasterDevice(string product = null)
         {
             Channel = new FakeReportChannel
             {
@@ -31,6 +31,7 @@ namespace PadForge.Tests
                 InputReportLength = 65,
                 OutputReportLength = 65,
                 FeatureReportLength = 0,
+                ProductString = product,
             };
             Channel.Input = () =>
             {
@@ -306,6 +307,44 @@ namespace PadForge.Tests
             Assert.Equal(KeyboardLayout.Jis, CoolerMasterLighting.RegionOf("V3.01.02", 1));
             Assert.Equal(KeyboardLayout.IsoQwerty, CoolerMasterLighting.RegionOf("V2.01.02", 1));
             Assert.Equal(KeyboardLayout.AnsiQwerty, CoolerMasterLighting.RegionOf("V1.01.02", 1));
+            // A V2 keyboard's product string: "JP" makes it JIS, then "EU"
+            // ISO, over the firmware (CMKeyboardV2Controller.cpp:64-76).
+            Assert.Equal(KeyboardLayout.Jis, CoolerMasterLighting.V2Region(KeyboardLayout.AnsiQwerty, "SK630 JP"));
+            Assert.Equal(KeyboardLayout.IsoQwerty, CoolerMasterLighting.V2Region(KeyboardLayout.AnsiQwerty, "SK630 EU"));
+            Assert.Equal(KeyboardLayout.IsoQwerty, CoolerMasterLighting.V2Region(KeyboardLayout.Jis, "EU JP"));
+            Assert.Equal(KeyboardLayout.Jis, CoolerMasterLighting.V2Region(KeyboardLayout.Jis, "SK630"));
+            Assert.Equal(KeyboardLayout.AnsiQwerty, CoolerMasterLighting.V2Region(KeyboardLayout.AnsiQwerty, "eu jp"));
+            Assert.Equal(KeyboardLayout.IsoQwerty, CoolerMasterLighting.V2Region(KeyboardLayout.IsoQwerty, null));
+        }
+
+        /// <summary>A V2 keyboard whose firmware says ANSI and whose product
+        /// string holds "EU" is laid out ISO (CMKeyboardV2Controller.cpp:72-75).
+        /// A V1 keyboard's product string is not read for it.</summary>
+        [Fact]
+        public void AV2SessionsProductString_PicksTheRegion()
+        {
+            var device = new CoolerMasterDevice("MasterKeys SK630 EU");
+            device.Answer = report =>
+            {
+                var answer = report.Skip(1).ToArray();
+                if (report[1] == 0x12 && report[2] == 0x20) Encoding.Unicode.GetBytes("V1.02.03").CopyTo(answer, 8);
+                return answer;
+            };
+            var session = Assert.IsType<CoolerMasterLighting.KeyboardSession>(
+                ModelOf(CoolerMasterLighting.Sk630).Begin(device.Channel, NoWait));
+            Assert.Equal(KeyboardLayout.IsoQwerty, session.Region);
+            Assert.NotNull(session.Map);
+
+            var v1 = new CoolerMasterDevice("MasterKeys Pro S EU");
+            v1.Answer = report =>
+            {
+                var answer = report.Skip(1).ToArray();
+                if (report[1] == 0x01 && report[2] == 0x02) Encoding.ASCII.GetBytes("1.2.1\0").CopyTo(answer, 4);
+                return answer;
+            };
+            var v1Session = Assert.IsType<CoolerMasterLighting.KeyboardSession>(
+                ModelOf(CoolerMasterLighting.ProS).Begin(v1.Channel, NoWait));
+            Assert.Equal(KeyboardLayout.AnsiQwerty, v1Session.Region);
         }
 
         [Fact]

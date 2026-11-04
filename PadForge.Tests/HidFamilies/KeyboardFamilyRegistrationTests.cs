@@ -12,8 +12,7 @@ namespace PadForge.Tests
     /// registration table (#557), so a registration a family misses fails.</summary>
     public class KeyboardFamilyRegistrationTests
     {
-        /// <summary>Each family by its OpenRGB folder, with the strings the
-        /// LightSalt family needs to match at all.</summary>
+        /// <summary>Each family by its OpenRGB folder.</summary>
         public static IEnumerable<object[]> Families() => new[]
         {
             new object[] { "MountainKeyboardController" },
@@ -34,8 +33,6 @@ namespace PadForge.Tests
             new object[] { "AOCKeyboardController" },
         };
 
-        private static readonly LightSaltLighting LightSalt = new(_ => ("Light&Salt", "Light&Salt Keyboard"));
-
         private static IHidLightingFamily FamilyOf(string folder) => folder switch
         {
             "MountainKeyboardController" => MountainKeyboardLighting.Instance,
@@ -46,7 +43,7 @@ namespace PadForge.Tests
             "ZETKeyboardController" => ZetKeyboardLighting.Instance,
             "XPGSummonerKeyboardController" => XpgSummonerLighting.Instance,
             "OKSController" => OksKeyboardLighting.Instance,
-            "LightSaltController" => LightSalt,
+            "LightSaltController" => LightSaltLighting.Instance,
             "DarkProject" => DarkProjectKeyboardLighting.Instance,
             "MNTKeyboardController" => MntKeyboardLighting.Instance,
             "FnaticStreakController" => FnaticStreakLighting.Instance,
@@ -76,11 +73,8 @@ namespace PadForge.Tests
                 Assert.NotNull(model.Begin);
                 // A product's collections answer with one model.
                 Assert.Same(model, family.Match(collection));
-                // The shared worker reaches it through the family list, but
-                // for the LightSalt family, which matches nothing without
-                // the strings production cannot read yet.
-                if (folder != "LightSaltController")
-                    Assert.Same(model, HidLightingFamilies.Match(collection));
+                // The shared worker reaches it through the family list.
+                Assert.Same(model, HidLightingFamilies.Match(collection));
                 // Another vendor's collection with the same fields is not it.
                 Assert.Null(family.Match(collection with { VendorId = (ushort)(r.VendorId ^ 0x5555) }));
             }
@@ -92,7 +86,6 @@ namespace PadForge.Tests
             foreach (object[] row in Families())
             {
                 var family = FamilyOf((string)row[0]);
-                if (family is LightSaltLighting) family = LightSaltLighting.Instance;
                 Assert.Single(HidLightingFamilies.All, f => ReferenceEquals(f, family));
             }
         }

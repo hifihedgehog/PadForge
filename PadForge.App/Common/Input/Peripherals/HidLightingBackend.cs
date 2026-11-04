@@ -15,7 +15,9 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>Scan. From the list the host hands over
     /// (<see cref="Rescan"/>), by the families' registrations, with nothing
-    /// asked of any device. A unit stays listed for as long as its
+    /// asked of any device but the strings a model that has to tell its
+    /// devices from others by them reads, once per appearance, through a
+    /// handle with no access right (<see cref="HidLightingModel.Identify"/>). A unit stays listed for as long as its
     /// collection is in the last list, and its model's light map is
     /// published for the Lighting tab and Map Key Lights from the scan on,
     /// with the names Map Key Lights learned for the model
@@ -194,6 +196,7 @@ namespace PadForge.Common.Input.Peripherals
 
         private readonly IReadOnlyList<IHidLightingFamily> _families;
         private readonly Func<string, IHidReportChannel> _open;
+        private readonly Func<string, IHidReportChannel> _query;
         private readonly Func<string, Guid> _containerOf;
         private readonly Func<long> _ticks;
         private readonly Func<string, byte[], int, bool> _setFeatureOnce;
@@ -215,6 +218,12 @@ namespace PadForge.Common.Input.Peripherals
         /// looked for among, kept while the path stays in the walk. Only a
         /// container Windows named is kept. Worker thread only.</summary>
         private readonly Dictionary<string, Guid> _siblingContainers = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>What a model's identity check said of each path of the
+        /// walk (<see cref="HidLightingModel.Identify"/>), kept while the path
+        /// stays. A path whose strings could not be read has no entry and
+        /// is asked again at the next walk. Worker thread only.</summary>
+        private readonly Dictionary<string, bool> _identified = new(StringComparer.OrdinalIgnoreCase);
         private Thread _thread;
         private Thread _worker;
         private volatile WorkerRun _run;
@@ -234,17 +243,20 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Test seam: the families, the channel opener, the
         /// container lookup, the clock, the crash path's two one-shot
         /// writers, the wait a session takes between an exchange and the
-        /// next, the idle tick, the wait for a predecessor worker and Stop's
-        /// wait. The opener and the one-shot writers are the worker's only
-        /// ways to a device, and their defaults open nothing in the test
-        /// host (<see cref="RealHidAccess"/>).</summary>
+        /// next, the idle tick, the wait for a predecessor worker, Stop's
+        /// wait, and the opener with no access right the scan reads strings
+        /// through. The openers and the one-shot writers are the worker's
+        /// only ways to a device, and their defaults open nothing in the
+        /// test host (<see cref="RealHidAccess"/>).</summary>
         internal HidLightingBackend(IReadOnlyList<IHidLightingFamily> families, Func<string, IHidReportChannel> open,
             Func<string, Guid> containerOf, Func<long> ticks, Func<string, byte[], int, bool> setFeatureOnce,
             Func<string, byte[], int, bool> writeOutputOnce, Action<int> wait, int idleTickMs,
-            int predecessorJoinMs = PredecessorJoinMs, int stopJoinMs = StopJoinMs)
+            int predecessorJoinMs = PredecessorJoinMs, int stopJoinMs = StopJoinMs,
+            Func<string, IHidReportChannel> query = null)
         {
             _families = families ?? HidLightingFamilies.All;
             _open = open ?? HidReportChannel.Open;
+            _query = query ?? HidReportChannel.OpenFeatureOnly;
             _containerOf = containerOf ?? AudioPassthroughService.DevicePathContainerId;
             _ticks = ticks ?? (() => Environment.TickCount64);
             _setFeatureOnce = setFeatureOnce ?? HidReportChannel.SetFeatureOnce;
@@ -481,7 +493,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             bool changed = false;
             _walk = present;
-            ForgetGoneContainers(present);
+            ForgetGone(present);
             foreach (var collection in present)
             {
                 var model = HidLightingFamilies.Match(collection, _families);
@@ -490,6 +502,7 @@ namespace PadForge.Common.Input.Peripherals
                 // makes only once it found each of them
                 // (RoccatControllerDetect.cpp:155-201).
                 if (!SiblingsPresent(model, collection)) continue;
+                if (model.Identify != null && !Identified(model, collection)) continue;
                 var unit = Find(units, collection.Path);
                 if (unit == null)
                 {
@@ -599,16 +612,44 @@ namespace PadForge.Common.Input.Peripherals
             return container;
         }
 
-        private void ForgetGoneContainers(IReadOnlyList<HidCollectionInfo> present)
+        /// <summary>Drops what the worker kept of paths that left the
+        /// walk, so a device that comes back on one is asked again.</summary>
+        private void ForgetGone(IReadOnlyList<HidCollectionInfo> present)
         {
-            if (_siblingContainers.Count == 0) return;
+            if (_siblingContainers.Count == 0 && _identified.Count == 0) return;
             var here = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var collection in present)
                 if (collection?.Path != null) here.Add(collection.Path);
+            Forget(_siblingContainers, here);
+            Forget(_identified, here);
+        }
+
+        private static void Forget<T>(Dictionary<string, T> kept, HashSet<string> here)
+        {
             List<string> gone = null;
-            foreach (var path in _siblingContainers.Keys)
+            foreach (var path in kept.Keys)
                 if (!here.Contains(path)) (gone ??= new List<string>()).Add(path);
-            if (gone != null) foreach (var path in gone) _siblingContainers.Remove(path);
+            if (gone != null) foreach (var path in gone) kept.Remove(path);
+        }
+
+        /// <summary>Whether a collection a model with an identity check
+        /// matched is one its family lights, asked once while it stays in
+        /// the walk, on a handle with no access right. False, and asked again
+        /// at the next walk, when that handle did not open.</summary>
+        private bool Identified(HidLightingModel model, HidCollectionInfo collection)
+        {
+            if (_identified.TryGetValue(collection.Path, out bool known)) return known;
+            IHidReportChannel io = null;
+            try { io = _query(collection.Path); } catch { }
+            if (io == null) return false;
+            bool ours = false;
+            try { ours = model.Identify(io); } catch { }
+            try { io.Dispose(); } catch { }
+            _identified[collection.Path] = ours;
+            if (!ours)
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"PERIPHERAL HidLighting {collection.VendorId:X4}:{collection.ProductId:X4} is not a {model.Name} by its strings");
+            return ours;
         }
 
         /// <summary>The listed unit a key names, compared without case, or

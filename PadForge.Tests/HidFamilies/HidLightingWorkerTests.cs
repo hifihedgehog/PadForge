@@ -103,8 +103,8 @@ namespace PadForge.Tests
     /// What the shared worker does for the families beyond one channel and
     /// one picture per change (#557): the keep-alive a device needs while
     /// the host is quiet, the sibling collections a device talks through,
-    /// and the handle with no access right a collection Windows holds
-    /// gives.
+    /// the handle with no access right a collection Windows holds gives,
+    /// and the strings a family tells its devices from others by.
     /// </summary>
     [Collection("PeripheralOutputStatics")]
     public class HidLightingWorkerTests : IDisposable
@@ -158,10 +158,21 @@ namespace PadForge.Tests
             return channel;
         }
 
+        /// <summary>The channel the scan reads strings through, with no
+        /// access right, or null when it does not open.</summary>
+        private Func<string, FakeReportChannel> _queryFor = path => new FakeReportChannel { Path = path, FeatureOnly = true };
+        private readonly List<string> _queried = new();
+
+        private IHidReportChannel Query(string path)
+        {
+            lock (_queried) _queried.Add(path);
+            return _queryFor(path);
+        }
+
         private HidLightingBackend Started(params HidCollectionInfo[] present)
         {
             var backend = new HidLightingBackend(new IHidLightingFamily[] { _family }, Open, _ => Box, Tick,
-                (_, _, _) => true, (_, _, _) => true, ms => Advance(ms), idleTickMs: 5);
+                (_, _, _) => true, (_, _, _) => true, ms => Advance(ms), idleTickMs: 5, query: Query);
             backend.Start();
             backend.Rescan(present);
             Passes(backend);
@@ -451,6 +462,93 @@ namespace PadForge.Tests
             Passes(backend);
             Assert.True(Assert.Single(backend.Snapshot.Units).Asleep);
             lock (_opened) Assert.All(_opened, c => Assert.True(c.Disposed));
+        }
+
+        // ─────────────────────────────────────────────
+        //  Strings
+        // ─────────────────────────────────────────────
+
+        private HidLightingModel IdentifiedModel(List<string> asked) => _family.With(m => new HidLightingModel
+        {
+            Family = m.Family, Name = m.Name, Map = m.Map, Begin = m.Begin,
+            Identify = io =>
+            {
+                lock (asked) asked.Add($"{io.ManufacturerString}|{io.ProductString}|{io.SerialNumber}|{io.FeatureOnly}");
+                return io.SerialNumber == "ours";
+            },
+        });
+
+        private void Walk(HidLightingBackend backend, params HidCollectionInfo[] present)
+        {
+            backend.Rescan(present);
+            Passes(backend);
+        }
+
+        /// <summary>A model that tells its devices by their strings gets a
+        /// unit only for a collection whose strings it takes, read once per
+        /// appearance through a handle with no access right, which closes
+        /// again. Nothing else is opened.</summary>
+        [Fact]
+        public void AModelsIdentityCheck_ListsOnlyTheCollectionsItTakes_AskedOncePerAppearance()
+        {
+            var asked = new List<string>();
+            IdentifiedModel(asked);
+            var ours = Collection(tail: "1");
+            var theirs = Collection(tail: "2");
+            var queried = new List<FakeReportChannel>();
+            _queryFor = path =>
+            {
+                var channel = new FakeReportChannel
+                {
+                    Path = path, FeatureOnly = true, ManufacturerString = "Maker", ProductString = "Product",
+                    SerialNumber = path == ours.Path ? "ours" : "theirs",
+                };
+                lock (queried) queried.Add(channel);
+                return channel;
+            };
+            using var backend = Started(ours, theirs);
+            Assert.Equal(new[] { ours.Path }, backend.Snapshot.Units.Select(u => u.Key));
+            lock (asked) Assert.Equal(new[] { "Maker|Product|ours|True", "Maker|Product|theirs|True" }, asked);
+            lock (queried) Assert.All(queried, c => Assert.True(c.Disposed));
+            lock (_opened) Assert.Empty(_opened);
+
+            // The next walk asks nothing again.
+            Walk(backend, ours, theirs);
+            lock (asked) Assert.Equal(2, asked.Count);
+            Assert.Single(backend.Snapshot.Units);
+
+            // A collection that left and came back is asked again.
+            Walk(backend, ours);
+            Walk(backend, ours, theirs);
+            lock (asked) Assert.Equal(3, asked.Count);
+            Assert.Single(backend.Snapshot.Units);
+        }
+
+        /// <summary>Strings that could not be read say nothing: the
+        /// collection is not listed, and the next walk asks again.</summary>
+        [Fact]
+        public void ACollectionWhoseStringsCannotBeRead_IsNotListed_AndAskedAgain()
+        {
+            var asked = new List<string>();
+            IdentifiedModel(asked);
+            var ours = Collection();
+            _queryFor = _ => null;
+            using var backend = Started(ours);
+            Assert.Empty(backend.Snapshot.Units);
+            _queryFor = path => new FakeReportChannel { Path = path, FeatureOnly = true, SerialNumber = "ours" };
+            Walk(backend, ours);
+            Assert.Single(backend.Snapshot.Units);
+            lock (_queried) Assert.Equal(2, _queried.Count);
+        }
+
+        /// <summary>A model with no identity check reads no strings.</summary>
+        [Fact]
+        public void AModelWithNoIdentityCheck_ReadsNoStrings()
+        {
+            _family.With();
+            using var backend = Started(Collection());
+            Assert.Single(backend.Snapshot.Units);
+            lock (_queried) Assert.Empty(_queried);
         }
 
         [Fact]

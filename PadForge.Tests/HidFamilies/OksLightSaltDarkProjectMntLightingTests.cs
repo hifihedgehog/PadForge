@@ -70,7 +70,7 @@ namespace PadForge.Tests
     /// <summary>The LightSalt keyboard and keypad against OpenRGB's LightSaltController (#557).</summary>
     public class LightSaltLightingTests
     {
-        private static readonly LightSaltLighting Family = new(_ => ("Light&Salt", "Light&Salt Keyboard"));
+        private static readonly LightSaltLighting Family = LightSaltLighting.Instance;
 
         private static OpenRgbRegistration Registration() => OpenRgbRegistrations.Of(LightSaltLighting.OpenRgbFamily).Single();
 
@@ -88,13 +88,19 @@ namespace PadForge.Tests
         {
             var collection = CollectionFor(Registration(), output: 33);
             // STMicroelectronics' 0483:5750 (LightSaltControllerDetect.cpp:18-19)
-            // with no strings read, the production case: no model.
-            Assert.Null(LightSaltLighting.Instance.Match(collection));
-            Assert.Null(HidLightingFamilies.Match(collection));
-            // Strings that are not Light&Salt's (LightSaltController.cpp:63).
-            Assert.Null(new LightSaltLighting(_ => ("STMicroelectronics", "Light&Salt")).Match(collection));
-            Assert.Null(new LightSaltLighting(_ => ("Light&Salt", "Custom HID")).Match(collection));
-            Assert.NotNull(Family.Match(collection));
+            // answers with the model, whose check the worker asks of the
+            // strings before it lists the collection.
+            var model = LightSaltLighting.Instance.Match(collection);
+            Assert.Same(model, HidLightingFamilies.Match(collection));
+            Assert.NotNull(model.Identify);
+            // Both strings hold Light&Salt (LightSaltController.cpp:44-63).
+            Assert.True(model.Identify(new FakeReportChannel { ManufacturerString = "Light&Salt", ProductString = "Light&Salt Keyboard" }));
+            Assert.False(model.Identify(new FakeReportChannel { ManufacturerString = "STMicroelectronics", ProductString = "Light&Salt" }));
+            Assert.False(model.Identify(new FakeReportChannel { ManufacturerString = "Light&Salt", ProductString = "Custom HID" }));
+            Assert.False(model.Identify(new FakeReportChannel { ManufacturerString = "light&salt", ProductString = "light&salt" }));
+            // A string that could not be read holds nothing.
+            Assert.False(model.Identify(new FakeReportChannel { ProductString = "Light&Salt" }));
+            Assert.False(model.Identify(new FakeReportChannel()));
         }
 
         [Fact]

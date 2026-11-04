@@ -49,6 +49,21 @@ namespace PadForge.Common.Input
         /// that has to be read back before the next one (OpenRGB
         /// SteelSeriesAeroxWirelessController.cpp:254-268).</summary>
         int ReadInput(byte[] buffer, int timeoutMs);
+
+        /// <summary>The device's manufacturer, product and serial number
+        /// strings as the HID class driver hands them
+        /// (HidD_GetManufacturerString, HidD_GetProductString,
+        /// HidD_GetSerialNumberString): reads the driver answers from the
+        /// device's string descriptors, which pass on a handle with no access
+        /// right as well, where hidapi reads them (hidapi windows/hid.c:786-801,
+        /// on the handle opened at line 878). Empty for a string the device
+        /// does not have, null when the read failed. A channel that cannot
+        /// read them answers null.</summary>
+        string ManufacturerString => null;
+
+        string ProductString => null;
+
+        string SerialNumber => null;
     }
 
     /// <summary>
@@ -342,6 +357,36 @@ namespace PadForge.Common.Input
             }, timeoutMs);
 
         /// <summary>One output report the same way.</summary>
+        public string ManufacturerString => ReadString(HidD_GetManufacturerString);
+
+        public string ProductString => ReadString(SonyHeadsetHid.HidD_GetProductString);
+
+        public string SerialNumber => ReadString(HidD_GetSerialNumberString);
+
+        private delegate bool StringRead(SafeFileHandle handle, byte[] buffer, uint length);
+
+        /// <summary>One string read, up to its first NUL, in a buffer of 256
+        /// wide characters and the NUL, hidapi's MAX_STRING_WCHARS
+        /// (hid.c:80 and 743-786).</summary>
+        private string ReadString(StringRead read)
+        {
+            if (Volatile.Read(ref _disposed) != 0) return null;
+            var buffer = new byte[(MaxStringChars + 1) * 2];
+            try
+            {
+                if (!read(_handle, buffer, (uint)(MaxStringChars * 2))) return null;
+            }
+            catch
+            {
+                return null;
+            }
+            string text = System.Text.Encoding.Unicode.GetString(buffer);
+            int nul = text.IndexOf('\0');
+            return nul >= 0 ? text.Substring(0, nul) : text;
+        }
+
+        internal const int MaxStringChars = 256;
+
         public static bool WriteOutputOnce(string path, byte[] report, int timeoutMs)
             => RunBounded(() =>
             {
@@ -369,5 +414,11 @@ namespace PadForge.Common.Input
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool WriteFile(SafeFileHandle handle, IntPtr buffer,
             uint bytesToWrite, out uint bytesWritten, IntPtr overlapped);
+
+        [DllImport("hid.dll")]
+        private static extern bool HidD_GetManufacturerString(SafeFileHandle handle, byte[] buffer, uint bufferLength);
+
+        [DllImport("hid.dll")]
+        private static extern bool HidD_GetSerialNumberString(SafeFileHandle handle, byte[] buffer, uint bufferLength);
     }
 }

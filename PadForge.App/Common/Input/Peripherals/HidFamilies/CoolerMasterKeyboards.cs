@@ -42,10 +42,12 @@ namespace PadForge.Common.Input.Peripherals
     /// <para>The region. A V1 keyboard's firmware string starts with the
     /// region's figure, a V2's with "V" and then the figure: 1 ANSI, 2 ISO,
     /// 3 JIS, anything else ANSI (CMKeyboardV1Controller.cpp:470-500,
-    /// CMKeyboardV2Controller.cpp:35-62). OpenRGB also takes "EU" or "JP" in
-    /// a V2 keyboard's product string over the firmware (lines 64-76). The
-    /// channel a session is handed reads no string, so here the firmware
-    /// alone names the region.</para>
+    /// CMKeyboardV2Controller.cpp:35-62). OpenRGB also takes "JP" and then
+    /// "EU" in a V2 keyboard's product string over the firmware (lines
+    /// 64-76; the string it calls the serial number is the product string,
+    /// CMKeyboardAbstractController.cpp:26-28), and so does a session here,
+    /// reading that string before anything is written, as OpenRGB's
+    /// constructor does.</para>
     /// </summary>
     internal sealed partial class CoolerMasterLighting
     {
@@ -312,6 +314,17 @@ namespace PadForge.Common.Input.Peripherals
             };
         }
 
+        /// <summary>A V2 keyboard's region: the firmware's, unless the product
+        /// string holds "JP", which makes it JIS, or "EU", which makes it ISO
+        /// and wins over "JP" (CMKeyboardV2Controller.cpp:64-76).</summary>
+        internal static KeyboardLayout V2Region(KeyboardLayout firmware, string product)
+        {
+            var region = firmware;
+            if (product != null && product.Contains("JP", StringComparison.Ordinal)) region = KeyboardLayout.Jis;
+            if (product != null && product.Contains("EU", StringComparison.Ordinal)) region = KeyboardLayout.IsoQwerty;
+            return region;
+        }
+
         /// <summary>The profile in an answer to <see cref="ActiveProfileQuery"/>,
         /// byte 4 (CMKeyboardAbstractController.cpp:148-158, and libcmmk's
         /// cmmk_get_active_profile, libcmmk.c:498-509). Null for an answer
@@ -327,10 +340,12 @@ namespace PadForge.Common.Input.Peripherals
 
         private static HidLightingSession BeginKeyboard(IHidReportChannel io, ushort productId, bool v1)
         {
+            if (io == null) return null;
+            string product = v1 ? null : io.ProductString;
             if (Exchange(io, ControlMode(FirmwareControl), required: true) == null) return null;
             var firmware = Exchange(io, v1 ? V1FirmwareQuery() : V2FirmwareQuery(), required: true);
             if (firmware == null) return null;
-            var region = v1 ? RegionOf(V1Firmware(firmware), 0) : RegionOf(V2Firmware(firmware), 1);
+            var region = v1 ? RegionOf(V1Firmware(firmware), 0) : V2Region(RegionOf(V2Firmware(firmware), 1), product);
             byte? profile = null;
             if (!v1)
             {

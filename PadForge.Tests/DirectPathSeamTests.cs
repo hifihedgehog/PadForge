@@ -139,6 +139,9 @@ namespace PadForge.Tests
         public int InputReportLength { get; init; }
         public int OutputReportLength { get; init; }
         public int FeatureReportLength { get; init; } = 91;
+        public string ManufacturerString { get; init; }
+        public string ProductString { get; init; }
+        public string SerialNumber { get; init; }
 
         public Func<long> Ticks = () => Environment.TickCount64;
         public volatile bool FailWrites;

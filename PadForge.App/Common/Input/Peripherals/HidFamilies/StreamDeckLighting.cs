@@ -24,11 +24,14 @@ namespace PadForge.Common.Input.Peripherals
     /// sends all 15 keys, as DeviceUpdateLEDs does (lines 101-109). The
     /// keys keep nothing ("@save :x:", line 19).</para>
     ///
-    /// <para>Hand-back. OpenRGB sends nothing when it closes and names no
-    /// way back to the keys' own images, so the keys show PadForge's last
-    /// colors until the Stream Deck app draws them again, which it does
-    /// when it starts. The model names that app, so PadForge lets go of
-    /// the device while it runs.</para>
+    /// <para>Hand-back. The device's reset, a 32-byte feature report 03 02
+    /// (Reset, ElgatoStreamDeckController.cpp:81-85, which OpenRGB defines
+    /// and never calls, and reset, python-elgato-streamdeck
+    /// StreamDeckOriginalV2.py:91-94), which clears the keys' images and
+    /// shows the standby image (StreamDeck.py:636-640). The crash path
+    /// sends the same report. The Stream Deck app draws the keys again when
+    /// it starts. The model names that app, so PadForge lets go of the
+    /// device while it runs.</para>
     /// </summary>
     internal sealed class StreamDeckLighting : IHidLightingFamily
     {
@@ -81,7 +84,7 @@ namespace PadForge.Common.Input.Peripherals
             Map = new LightMap(Lights(), "OpenRGB RGBController_ElgatoStreamDeck.cpp") { Product = $"elgato:{vendorId:X4}:{productId:X4}" },
             Programs = new[] { VendorPrograms.ElgatoStreamDeck },
             RepaintMs = RepaintMs,
-            Begin = (_, _) => new ReportsSession(false, KeyCount, Frames),
+            Begin = (_, _) => new Session(),
         };
 
         /// <summary>CreateButtonImage: a key's color as OpenRGB's JPEG.</summary>
@@ -110,6 +113,33 @@ namespace PadForge.Common.Input.Peripherals
             report[5] = (byte)(jpeg.Length >> 8);
             Array.Copy(jpeg, 0, report, HeaderSize, Math.Min(jpeg.Length, PacketSize - HeaderSize));
             return report;
+        }
+
+        /// <summary>Reset's report (ElgatoStreamDeckController.cpp:81-85).</summary>
+        internal static byte[] ResetReport() => LightReports.Report(32, 0x03, 0x02);
+
+        internal sealed class Session : HidLightingSession
+        {
+            private static readonly byte[][] s_reset = { ResetReport() };
+
+            /// <summary>The crash path's frame is a feature report.</summary>
+            public override bool Feature => true;
+
+            /// <summary>The reset, from the session's start, since the keys
+            /// show the session's colors from its first picture.</summary>
+            public override byte[][] CrashFrames => s_reset;
+
+            public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
+                IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
+            {
+                if (io == null) return HidLightingPaint.Failed;
+                foreach (var report in Frames(KeyboardLedNames.ByAddress(lights, colors, KeyCount)))
+                    if (!io.WriteOutput(report)) return HidLightingPaint.Failed;
+                return HidLightingPaint.Sent;
+            }
+
+            public override bool HandBack(IHidReportChannel io, Action<int> wait)
+                => io != null && io.SetFeature(s_reset[0]);
         }
 
         /// <summary>SendFullFrame's reports, every key in order.</summary>

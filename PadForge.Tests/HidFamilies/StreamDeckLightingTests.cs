@@ -230,7 +230,6 @@ namespace PadForge.Tests
             Assert.All(model.Map.Lights, l => Assert.Equal(LightKind.Other, l.Kind));
             var io = new FakeReportChannel { OutputReportLength = 1024 };
             var session = model.Begin(io, _ => { });
-            Assert.False(session.Feature);
             var colors = Distinct(15);
             Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, colors));
             var calls = Calls(io);
@@ -241,9 +240,14 @@ namespace PadForge.Tests
                 Assert.Equal(Hex(StreamDeckLighting.KeyReport(key, colors[key])), Hex(calls[key].Bytes));
                 Assert.Equal(key, calls[key].Bytes[2]);
             }
+            // Reset's 32-byte feature report (ElgatoStreamDeckController.cpp:81-85),
+            // for the hand-back and the crash path alike.
+            string reset = "03 02" + string.Concat(Enumerable.Repeat(" 00", 30));
+            Assert.True(session.Feature);
+            Assert.Equal(reset, Hex(Assert.Single(session.CrashFrames)));
             Assert.True(session.HandBack(io, _ => { }));
-            Assert.Empty(session.CrashFrames);
-            Assert.Equal(15, io.Calls.Count);
+            Assert.Equal(16, io.Calls.Count);
+            Assert.Equal(reset, Hex(Calls(io)[15].Bytes));
         }
     }
 }

@@ -387,6 +387,32 @@ namespace PadForge.Tests
             Assert.DoesNotContain(calls, c => c.StartsWith("key:"));
         }
 
+        /// <summary>Two devices on one path: a light only the longer one has
+        /// changes, so only that device is set and sent with Apply.</summary>
+        [Fact]
+        public void OnlyTheDeviceWhoseLightsChanged_IsApplied()
+        {
+            var native = new FakeAura();
+            native.Script = new[]
+            {
+                new AuraDevice(0, AuraLights.DramRgb, "DRAM 1", 3, Array.Empty<ushort>()),
+                new AuraDevice(1, AuraLights.DramRgb, "DRAM 2", 1, Array.Empty<ushort>()),
+            };
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Ram, Lighting = new[] { Path("dram") } });
+            using var backend = Backend(native);
+            backend.Start();
+            var frame = new KeyFrame(null, new Dictionary<string, int> { [LightGroups.Zone(3)] = 0x00FF00 }, null, null);
+            PeripheralOutputs.SetLighting(Ram, slot: 0, player: 1, 0xFF, 0x00, 0x00, keys: frame);
+            Assert.True(WaitFor(() => native.Count("apply:0") == 1 && native.Count("apply:1") == 1));
+            native.Clear();
+            var next = new KeyFrame(null, new Dictionary<string, int> { [LightGroups.Zone(3)] = 0x0000FF }, null, null);
+            PeripheralOutputs.SetLighting(Ram, slot: 0, player: 1, 0xFF, 0x00, 0x00, keys: next);
+            Assert.True(WaitFor(() => native.Count("apply:0") == 1));
+            Thread.Sleep(40);
+            Assert.Equal(new[] { "light:0:2:0000FF", "apply:0" }, native.Calls);
+        }
+
         /// <summary>A keyboard lit in zones (NB_KB_4ZONE_RGB) is lit through
         /// its Lights list, as RGB.NET lights it (AsusKeyboardRGBDevice.cs:93-98
         /// and AsusUpdateQueue.cs:76-87): its four lights are the keyboard

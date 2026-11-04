@@ -705,6 +705,48 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>The lines for a device left to a program and for the
+        /// OpenRGB route (#557) read as written, and every complete locale
+        /// carries each with the same placeholders.</summary>
+        [Fact]
+        public void TheProgramAndOpenRgbLines_ReadAsWritten_InEveryLocale()
+        {
+            string En(string key) => Strings.ResourceManager.GetString(key, CultureInfo.InvariantCulture);
+            var s = Strings.Instance;
+            var expected = new (string Key, string English)[]
+            {
+                (nameof(s.Pad_Lighting_RouteLeftToProgram),
+                    "{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own."),
+                (nameof(s.Pad_Lighting_RouteThroughOpenRgb),
+                    "Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own."),
+                (nameof(s.Pad_Lighting_RouteThroughOpenRgbOnly), "Colors go through OpenRGB's SDK Server."),
+                (nameof(s.Pad_Lighting_RouteLeftToOpenRgb),
+                    "OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB."),
+                (nameof(s.Pad_Lighting_RouteOpenRgbServerOff),
+                    "OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it."),
+                (nameof(s.Pad_Lighting_VendorRowExamples_Aura), "motherboards, graphics cards, and memory"),
+                (nameof(s.Pad_Lighting_VendorRowExamples_MysticLight), "motherboards and graphics cards"),
+            };
+            foreach (var (key, english) in expected)
+            {
+                Assert.Equal(english, En(key));
+                foreach (string locale in LocaleFiles.CompleteTranslations)
+                {
+                    string value = Strings.ResourceManager.GetResourceSet(new CultureInfo(locale), true, false)?.GetString(key);
+                    Assert.False(string.IsNullOrEmpty(value), $"{locale} {key}");
+                    Assert.Equal(english.Split("{0}").Length, value.Split("{0}").Length);
+                    Assert.DoesNotContain("{1}", value);
+                }
+            }
+            // The OpenRGB lines name the server by its tab in OpenRGB's
+            // window (qt/OpenRGBDialog/OpenRGBDialog.cpp:967), and the
+            // with-a-promise line is the plain one and a sentence more.
+            Assert.StartsWith(s.Pad_Lighting_RouteThroughOpenRgbOnly, s.Pad_Lighting_RouteThroughOpenRgb);
+            Assert.Contains("SDK Server", En(nameof(s.Pad_Lighting_RouteOpenRgbServerOff)));
+            Assert.Contains("Direct", En(nameof(s.Pad_Lighting_RouteLeftToOpenRgb)));
+            Assert.Equal("Direct", OpenRgbDevices.DirectModeName);
+        }
+
         // ── The dispatcher ──
 
         /// <summary>A unit row has no Control This Device's Lighting switch,

@@ -832,15 +832,16 @@ namespace PadForge.ViewModels
              // to make the keyboard report at all.
              || _devicePath.StartsWith("analogkb://", StringComparison.Ordinal)
              // The Razer Chroma, Logitech LIGHTSYNC, SteelSeries GG and
-             // Razer Sensa rows (#494), and the ASUS Aura and MSI Mystic
-             // Light rows (#557), stand for a vendor's software, not a HID
-             // device, so HidHide has no instance to cloak for them.
+             // Razer Sensa rows (#494), and the ASUS Aura, MSI Mystic Light
+             // and Corsair iCUE rows (#557), stand for a vendor's software,
+             // not a HID device, so HidHide has no instance to cloak for them.
              || _devicePath.StartsWith("razerchroma://", StringComparison.Ordinal)
              || _devicePath.StartsWith("logilightsync://", StringComparison.Ordinal)
              || _devicePath.StartsWith("steelseriesgg://", StringComparison.Ordinal)
              || _devicePath.StartsWith("razersensa://", StringComparison.Ordinal)
              || _devicePath.StartsWith("asusaura://", StringComparison.Ordinal)
              || _devicePath.StartsWith("msimysticlight://", StringComparison.Ordinal)
+             || _devicePath.StartsWith("corsairicue://", StringComparison.Ordinal)
              // A unit row (#494) stands for one lit device no mouse or
              // keyboard row reaches, under a path of PadForge's own that
              // names no HID instance, and it has no input to hide.
@@ -1443,8 +1444,8 @@ namespace PadForge.ViewModels
         /// is mapped on its owner, the NFC button's peer:// rule.</summary>
         public bool ShowMapKeyLights
             => !(DevicePath != null && DevicePath.StartsWith("peer://", System.StringComparison.Ordinal))
-               && PadForge.Common.Input.Peripherals.PeripheralLightMaps.FirstPerLight(
-                   PadForge.Common.Input.Peripherals.PeripheralOutputs.Links.For(InstanceGuid)?.Lighting, out _)
+               && PadForge.Common.Input.Peripherals.PeripheralLightMaps.ForRow(
+                   PadForge.Common.Input.Peripherals.PeripheralOutputs.Links.For(InstanceGuid), out _)
                    is { HasKeys: true, Product: not null };
 
         /// <summary>The device's lights became known, changed or went.</summary>

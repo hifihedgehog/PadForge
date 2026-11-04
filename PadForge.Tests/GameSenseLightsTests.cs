@@ -28,6 +28,22 @@ namespace PadForge.Tests
         private static KeyFrame Frame(Dictionary<ushort, int> keys = null, Dictionary<string, int> groups = null)
             => new(keys, groups, null, null);
 
+        /// <summary>Each type's handlers name only device types that cover
+        /// that kind of device alone, so one row's colors never reach a
+        /// device of another kind: the keyboard's rgb-per-key-zones and
+        /// rgb-5-zone (standard-zones.md:33, keyboards only) and the mouse's
+        /// general type. rgb-2-zone and rgb-3-zone mix mice with headsets,
+        /// mousepads and a keyboard (lines 29 and 31), and rgb-8-zone shares
+        /// its mice with the mouse type's wheel and logo.</summary>
+        [Fact]
+        public void TheHandlers_NameOnlyDeviceTypesOfTheirOwnKind()
+        {
+            Assert.Equal(new[] { "rgb-5-zone", "rgb-per-key-zones" },
+                GameSenseLights.HandlersOf("keyboard").Select(h => h.DeviceType).Distinct().OrderBy(t => t, StringComparer.Ordinal));
+            Assert.Equal(new[] { "mouse" }, GameSenseLights.HandlersOf("mouse").Select(h => h.DeviceType).Distinct());
+            Assert.Empty(GameSenseLights.HandlersOf("headset"));
+        }
+
         /// <summary>
         /// The light event binds one context-color handler per light, run on
         /// every update (value_optional, sending-game-events.md:175). A key

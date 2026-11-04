@@ -376,7 +376,7 @@ namespace PadForge.Tests
                 InstanceGuid = A, IsOnline = true, CapType = InputDeviceType.Keyboard, VendorId = PeripheralLinker.RazerVid,
                 PeripheralOutputs = (int)PeripheralOutputKinds.Lighting,
             };
-            Assert.Equal(string.Format(PadForge.Resources.Strings.Strings.Instance.Pad_Lighting_RouteWaiting, "OpenRGB SDK Server"),
+            Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Pad_Lighting_RouteOpenRgbServerOff,
                 PeripheralRouteText.Lighting(ud, 0));
             Assert.Null(PeripheralRouteText.Lighting(ud, 0, lightsHere: false));
         }

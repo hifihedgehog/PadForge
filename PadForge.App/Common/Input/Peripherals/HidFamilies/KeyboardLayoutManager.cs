@@ -64,7 +64,13 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
     /// KeyboardLayoutManager.h:75-84). <see cref="Value"/> is what the
     /// family puts there, most often the LED's index in its frames. An
     /// empty <see cref="Name"/> is OpenRGB's unused key.</summary>
-    internal readonly record struct KeyboardLed(byte Zone, byte Row, byte Col, uint Value, string Name, string AltName, KeyboardOpcode Opcode);
+    internal readonly record struct KeyboardLed(byte Zone, byte Row, byte Col, uint Value, string Name, string AltName, KeyboardOpcode Opcode)
+    {
+        /// <summary>The usage of the typing-block key whose place a regional
+        /// fix gave this key's name, or 0 (<see cref="KeyboardLayoutManager.TryResolve"/>).
+        /// Not OpenRGB's: OpenRGB keeps names only.</summary>
+        public ushort PlaceUsage { get; init; }
+    }
 
     /// <summary>A key map (matrix_map_type): <see cref="Height"/> rows of
     /// <see cref="Width"/> cells, row by row, <see cref="KeyboardLayoutManager.NoKey"/>
@@ -158,7 +164,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 foreach (var (overlayLayout, keys) in regionalOverlay)
                     if (overlayLayout == layout)
                     {
-                        foreach (var key in keys) SwapKey(key);
+                        foreach (var key in keys) SwapRegionalKey(key);
                         break;
                     }
 
@@ -277,6 +283,37 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                     break;
                 }
             }
+        }
+
+        /// <summary>A key of a regional fix list, swapped in as OpenRGB does
+        /// (lines 422-429, <see cref="SwapKey"/>). Where it takes the place
+        /// of a typing-block key (<see cref="OpenRgbKeys.IsTypingUsage"/>),
+        /// it keeps that key's usage beside its new name: the fix renames
+        /// the key to the legend the region prints on it, and a key's usage
+        /// names its place, not its legend. The Mintaka's Spanish fix names
+        /// "Key: ¿/¡" where Key: = sits and "Key: Ñ" where Key: ; sits
+        /// (RGBController_MintakaKeyboard.cpp:41-56), names OpenRGB gives no
+        /// usage, and "Key: [" where the ' key sits, whose name alone would
+        /// give the usage of another place.</summary>
+        private void SwapRegionalKey(KeyboardLed key)
+        {
+            ushort place = 0;
+            foreach (var existing in _keymap)
+            {
+                if (existing.Row != key.Row || existing.Col != key.Col) continue;
+                place = existing.PlaceUsage;
+                if (place == 0 && OpenRgbKeys.TryGet(existing.Name, out ushort usage, out _) && OpenRgbKeys.IsTypingUsage(usage))
+                    place = usage;
+                break;
+            }
+            SwapKey(key);
+            if (place == 0 || key.Name.Length == 0) return;
+            for (int idx = 0; idx < _keymap.Count; idx++)
+                if (_keymap[idx].Row == key.Row && _keymap[idx].Col == key.Col)
+                {
+                    _keymap[idx] = _keymap[idx] with { PlaceUsage = place };
+                    break;
+                }
         }
 
         /// <summary>Lines 733-788. The key at the place goes, or with no key
@@ -477,13 +514,45 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             for (int i = 0; i < _keymap.Count; i++)
             {
                 var key = _keymap[i];
-                OpenRgbKeys.TryGet(key.Name, out ushort usage, out var label, out int number);
+                TryResolve(key, out ushort usage, out var label, out int number);
                 var light = usage != 0
                     ? new LightInfo(address(i, key), LightKind.Key, usage, LightKeySource.Generated)
                     : new LightInfo(address(i, key), LightKind.Other, 0, LightKeySource.None) { Label = label, LabelNumber = number };
                 lights.Add(light with { X = key.Col, Y = key.Row, Width = 1, Height = 1, HasPosition = true });
             }
             return lights;
+        }
+
+        /// <summary>The usage or label of a key of this layout: its name's
+        /// (<see cref="OpenRgbKeys"/>), or the usage of the place a regional
+        /// fix gave it (<see cref="KeyboardLed.PlaceUsage"/>) where its name
+        /// is a typing-block key's or names nothing. False for a key that
+        /// names neither.</summary>
+        public static bool TryResolve(KeyboardLed key, out ushort usage, out LightLabel label, out int number)
+        {
+            bool named = OpenRgbKeys.TryGet(key.Name, out usage, out label, out number);
+            if (key.PlaceUsage != 0 && (!named || (usage != 0 && OpenRgbKeys.IsTypingUsage(usage))))
+            {
+                usage = key.PlaceUsage;
+                label = LightLabel.None;
+                number = 0;
+                return true;
+            }
+            return named;
+        }
+
+        /// <summary><see cref="TryResolve(KeyboardLed, out ushort, out LightLabel, out int)"/>
+        /// for the first key at a place, as <see cref="GetKeyNameAt(int, int)"/>
+        /// finds it. False for a place with no key.</summary>
+        public bool TryResolveAt(int row, int col, out ushort usage, out LightLabel label, out int number)
+        {
+            foreach (var key in _keymap)
+                if (key.Row == row && key.Col == col)
+                    return TryResolve(key, out usage, out label, out number);
+            usage = 0;
+            label = LightLabel.None;
+            number = 0;
+            return false;
         }
     }
 

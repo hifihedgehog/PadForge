@@ -1828,6 +1828,11 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Este dispositivo aún no ha respondido. Sus colores aparecerán en cuanto despierte.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Los colores pasan por {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Los colores pasan por {0}, que ilumina a la vez todos los dispositivos de este tipo. Mientras {0} no se ejecuta, PadForge ilumina este dispositivo por su cuenta.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} ilumina a la vez todos los dispositivos de este tipo, así que el del control virtual {1} decide su color.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} ilumina a la vez todos los dispositivos de este tipo, así que la fila {1} del control virtual {2} decide su color.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>El control virtual {0} también ilumina este dispositivo, y se ve su color.</value></data>
@@ -1843,6 +1848,9 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>auriculares, alfombrillas y tiras Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>auriculares, alfombrillas y altavoces</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>auriculares</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Barra de luz</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Introduce un color hexadecimal de seis dígitos (RRGGBB o #RRGGBB) y pulsa Intro o haz clic fuera para aplicarlo.</value></data>
@@ -1933,6 +1941,9 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logotipo</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Estado</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Modo de juego</value></data>
+  <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
+  <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Todas las luces</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Borrar selección</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Seleccionar pulsando teclas</value></data>

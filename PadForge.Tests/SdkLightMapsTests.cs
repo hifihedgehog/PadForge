@@ -66,7 +66,9 @@ namespace PadForge.Tests
             for (int m = 1; m <= 5; m++)
             {
                 var macro = byCell[Cell(m << 8)];
-                Assert.Equal((LightKind.Other, LightLabel.GKey, m), (macro.Kind, macro.Label, macro.LabelNumber));
+                // Printed M1 to M5 on the board, as OpenRGB names them
+                // (RazerDevices.cpp:119-123), never G.
+                Assert.Equal((LightKind.Other, LightLabel.MacroKey, m), (macro.Kind, macro.Label, macro.LabelNumber));
             }
             Assert.Equal((LightKind.Other, LightLabel.Fn), (byCell[Cell(0x050C)].Kind, byCell[Cell(0x050C)].Label));
             Assert.Equal(LightKind.Logo, byCell[Cell(0x0014)].Kind);
@@ -209,6 +211,179 @@ namespace PadForge.Tests
             Assert.Equal(new[] { ("mouse", "wheel"), ("mouse", "logo"), ("mouse", "base") }, mouse.Select(h => (h.DeviceType, h.Zone)));
             Assert.Equal(new[] { LightKind.Zone, LightKind.Logo, LightKind.Zone }, GameSenseLights.MapOf("mouse").Lights.Select(l => l.Kind));
             Assert.Null(GameSenseLights.MapOf("headset"));
+        }
+    }
+
+    /// <summary>
+    /// Each Razer accessory reaches the Chroma SDK under what it is (#557):
+    /// a mat as a mousepad, a headset as a headset, and anything else as a
+    /// Chroma Link device, the SDK's category for every other lit thing
+    /// (RzChromaSDKDefines.h at CSDK_ChromaModSample fe641c4). The names are
+    /// OpenRGB's (RazerDevices.h:236-285) and openrazer's.
+    /// </summary>
+    public class RazerAccessoryCategoryTests
+    {
+        private static string Category(ushort pid, int capType = PadForge.Engine.InputDeviceType.Mouse)
+            => PeripheralLinker.RazerCategory(new LinkRow(Guid.NewGuid(), capType, PeripheralLinker.RazerVid, pid, Guid.NewGuid(), null));
+
+        [Theory]
+        [InlineData(0x0068, "mousepad")] // Firefly HyperFlux
+        [InlineData(0x0C00, "mousepad")] // Firefly
+        [InlineData(0x0C01, "mousepad")] // Goliathus Chroma
+        [InlineData(0x0C02, "mousepad")] // Goliathus Chroma Extended
+        [InlineData(0x0C04, "mousepad")] // Firefly V2
+        [InlineData(0x0C05, "mousepad")] // Strider Chroma
+        [InlineData(0x0C06, "mousepad")] // Goliathus Chroma 3XL
+        [InlineData(0x0C08, "mousepad")] // Firefly V2 Pro
+        [InlineData(0x0F03, "headset")] // Tiamat 7.1 V2
+        [InlineData(0x0F19, "headset")] // Kraken Kitty Edition
+        [InlineData(0x007E, "chromalink")] // Mouse Dock Chroma
+        [InlineData(0x0215, "chromalink")] // Core
+        [InlineData(0x0517, "chromalink")] // Nommo Chroma
+        [InlineData(0x0518, "chromalink")] // Nommo Pro
+        [InlineData(0x0532, "chromalink")] // Leviathan V2
+        [InlineData(0x054A, "chromalink")] // Leviathan V2 X
+        [InlineData(0x0F07, "chromalink")] // Chroma Mug
+        [InlineData(0x0F08, "chromalink")] // Base Station Chroma
+        [InlineData(0x0F09, "chromalink")] // Chroma HDK
+        [InlineData(0x0F0D, "chromalink")] // Laptop Stand Chroma
+        [InlineData(0x0F0E, "chromalink")] // Chroma PC Case Lighting Kit
+        [InlineData(0x0F13, "chromalink")] // O11 Dynamic
+        [InlineData(0x0F1A, "chromalink")] // Core X
+        [InlineData(0x0F1B, "chromalink")] // Seiren Emote
+        [InlineData(0x0F1D, "chromalink")] // Mouse Bungee V3 Chroma
+        [InlineData(0x0F20, "chromalink")] // Base Station V2 Chroma
+        [InlineData(0x0F21, "chromalink")] // Thunderbolt 4 Dock Chroma
+        [InlineData(0x0F2B, "chromalink")] // Laptop Stand Chroma V2
+        [InlineData(0x0F52, "chromalink")] // Thunderbolt 5 Dock Chroma
+        public void AnAccessory_ReachesTheCategoryOfWhatItIs(int pid, string category)
+        {
+            Assert.Equal(category, Category((ushort)pid));
+            // Whatever kind of collection the row is.
+            Assert.Equal(category, Category((ushort)pid, PadForge.Engine.InputDeviceType.Keyboard));
+        }
+
+        /// <summary>The theory names every accessory, and the two narrower
+        /// lists stay inside the list of accessories.</summary>
+        [Fact]
+        public void EveryAccessoryIsNamed_AndTheListsNest()
+        {
+            var named = typeof(RazerAccessoryCategoryTests).GetMethod(nameof(AnAccessory_ReachesTheCategoryOfWhatItIs))
+                .GetCustomAttributes(typeof(InlineDataAttribute), false).Cast<InlineDataAttribute>()
+                .Select(a => (ushort)(int)a.GetData(null).First()[0]).OrderBy(p => p);
+            Assert.Equal(PeripheralProductIds.RazerAccessories.OrderBy(p => p), named);
+            Assert.All(PeripheralProductIds.RazerMousepads, p => Assert.Contains(p, PeripheralProductIds.RazerAccessories));
+            Assert.All(PeripheralProductIds.RazerHeadsets, p => Assert.Contains(p, PeripheralProductIds.RazerAccessories));
+        }
+
+        /// <summary>A mouse, a keyboard and a keypad keep their categories.</summary>
+        [Fact]
+        public void AMouseAKeyboardAndAKeypad_KeepTheirs()
+        {
+            Assert.Equal("mouse", Category(PeripheralProductIds.RazerMice[0], PadForge.Engine.InputDeviceType.Keyboard));
+            Assert.Equal("keyboard", Category(PeripheralProductIds.RazerKeyboards[0]));
+            Assert.Equal("keypad", Category(PeripheralLinker.RazerKeypadPids[0]));
+        }
+    }
+
+    /// <summary>
+    /// A Logitech keyboard lit through the LED SDK's keyboard path shows the
+    /// lights its own board has (#557): the keys on a per-key board, the
+    /// five zones on a zone board such as the G213, never both. The path
+    /// serves every Logitech keyboard at once, so its published map holds
+    /// both kinds, and the row's HID++ unit tells which is the row's.
+    /// </summary>
+    [Collection("PeripheralOutputStatics")]
+    public class LedSdkKeyboardRowMapTests : IDisposable
+    {
+        private static readonly Guid Row = new("00000000-0000-0000-0000-0000000000c7");
+        private static readonly OutputPath Keyboard = new(OutputFamily.LedSdkType, "keyboard");
+
+        public LedSdkKeyboardRowMapTests()
+        {
+            PeripheralOutputs.ResetForTest();
+            PeripheralLightMaps.ResetForTest();
+            PeripheralLightMaps.Publish(Keyboard, LogiLedKeys.MapOf("keyboard"));
+        }
+
+        public void Dispose()
+        {
+            PeripheralOutputs.ResetForTest();
+            PeripheralLightMaps.ResetForTest();
+        }
+
+        private static DeviceLinks Links(params HidppUnit[] units)
+        {
+            PeripheralOutputs.Hidpp = new HidppSnapshot(units, Array.Empty<Guid>());
+            return new DeviceLinks { Device = Row, Lighting = new[] { Keyboard }, HidppUnits = units.Select(u => u.Key).ToArray() };
+        }
+
+        [Fact]
+        public void APerKeyBoard_ShowsItsKeys_AndAZoneBoard_ItsFiveZones()
+        {
+            var whole = LogiLedKeys.MapOf("keyboard");
+            // A G915 X: 0x8071 for its zones and 0x8081 for its keys.
+            var perKey = new HidppUnit
+            {
+                ChannelPath = "rx", DeviceIndex = 1, DeviceType = 0, RgbFeatureId = 0x8071, RgbIndex = 9,
+                PerKeyFeatureId = 0x8081, PerKeyIndex = 10,
+            };
+            var map = PeripheralLightMaps.ForRow(Links(perKey), out var found);
+            Assert.Equal(Keyboard, found);
+            Assert.All(map.Lights, l => Assert.True(LogiLedKeys.IsKey(l)));
+            Assert.Equal(whole.Lights.Count(l => LogiLedKeys.IsKey(l)), map.Lights.Count);
+            Assert.True(map.HasKeys);
+            Assert.Equal(0, map.ZoneCount);
+
+            // A G610 answers 0x8080.
+            var perKeyV1 = perKey with { PerKeyFeatureId = 0x8080 };
+            Assert.Same(map, PeripheralLightMaps.ForRow(Links(perKeyV1), out _));
+
+            // A G213: 0x8070 and no per-key feature.
+            var zones = new HidppUnit { ChannelPath = "usb", DeviceIndex = 0xFF, DeviceType = 0, RgbFeatureId = 0x8070, RgbIndex = 7 };
+            map = PeripheralLightMaps.ForRow(Links(zones), out found);
+            Assert.Equal(Keyboard, found);
+            Assert.Equal(Enumerable.Range(1, 5), map.Lights.Select(l => l.Zone));
+            Assert.All(map.Lights, l => Assert.Equal(LightKind.Zone, l.Kind));
+            Assert.False(map.HasKeys);
+        }
+
+        /// <summary>With no lit HID++ unit known for the row, the card shows
+        /// the path's whole map, as the path paints it. A row on another
+        /// path, or the mouse type, is never narrowed.</summary>
+        [Fact]
+        public void WithNoUnitKnown_TheWholeMapShows_AndOtherPathsAreUntouched()
+        {
+            var whole = LogiLedKeys.MapOf("keyboard");
+            Assert.Same(whole, PeripheralLightMaps.ForRow(Links(), out _));
+            var dark = new HidppUnit { ChannelPath = "usb", DeviceIndex = 0xFF, DeviceType = 0, PerKeyFeatureId = 0x8081 };
+            Assert.Same(whole, PeripheralLightMaps.ForRow(Links(dark), out _));
+            Assert.Null(PeripheralLightMaps.ForRow(null, out _));
+
+            var mouse = new OutputPath(OutputFamily.LedSdkType, "mouse");
+            var mouseMap = LogiLedKeys.MapOf("mouse");
+            PeripheralLightMaps.Publish(mouse, mouseMap);
+            var zones = new HidppUnit { ChannelPath = "usb", DeviceIndex = 0xFF, DeviceType = 3, RgbFeatureId = 0x8070, RgbIndex = 7 };
+            PeripheralOutputs.Hidpp = new HidppSnapshot(new[] { zones }, Array.Empty<Guid>());
+            var links = new DeviceLinks { Device = Row, Lighting = new[] { mouse }, HidppUnits = new[] { zones.Key } };
+            Assert.Same(mouseMap, PeripheralLightMaps.ForRow(links, out var found));
+            Assert.Equal(mouse, found);
+        }
+
+        /// <summary>A keyboard row on a receiver with a mouse beside it takes
+        /// the keyboard unit's kind, whichever unit is listed first.</summary>
+        [Fact]
+        public void TheKeyboardUnit_DecidesOverAMouseOnTheSameRow()
+        {
+            var mouse = new HidppUnit { ChannelPath = "rx", DeviceIndex = 2, DeviceType = 3, RgbFeatureId = 0x8070, RgbIndex = 7 };
+            var board = new HidppUnit
+            {
+                ChannelPath = "rx", DeviceIndex = 1, DeviceType = 0, RgbFeatureId = 0x8071, RgbIndex = 9,
+                PerKeyFeatureId = 0x8081, PerKeyIndex = 10,
+            };
+            var map = PeripheralLightMaps.ForRow(Links(mouse, board), out _);
+            Assert.True(map.HasKeys);
+            Assert.Equal(0, map.ZoneCount);
         }
     }
 }

@@ -712,21 +712,71 @@ namespace PadForge.Tests
 
         public void Dispose() => PeripheralOutputs.ResetForTest();
 
+        /// <summary>A device only OpenRGB reaches is lit through its server
+        /// and nothing more is promised. One whose own path OpenRGB took is
+        /// lit on that path once OpenRGB closes, and the line says so, but
+        /// for a LampArray unit Windows lights, which PadForge leaves
+        /// alone.</summary>
         [Fact]
         public void ARowLitThroughOpenRgb_SaysTheColorsGoThroughOpenRgb()
         {
+            var s = PadForge.Resources.Strings.Strings.Instance;
             var path = new OutputPath(OutputFamily.OpenRgbDevice, OpenRgbSamples.Keyboard().Location);
-            PeripheralOutputs.PublishLinks(new LinkTable(new[] { new DeviceLinks { Device = A, Lighting = new[] { path } } }));
+            var razer = new OutputPath(OutputFamily.RazerUnit, "razer");
+            var lamps = new OutputPath(OutputFamily.LampArrayUnit, "lamps");
+            void Link(params OutputPath[] taken) => PeripheralOutputs.PublishLinks(new LinkTable(new[]
+            {
+                new DeviceLinks { Device = A, Lighting = new[] { path }, TakenByOpenRgb = taken },
+            }));
             var ud = new PadForge.Engine.Data.UserDevice
             {
                 InstanceGuid = A, IsOnline = true, CapType = InputDeviceType.Keyboard, VendorId = PeripheralLinker.RazerVid,
                 PeripheralOutputs = (int)PeripheralOutputKinds.Lighting,
             };
-            Assert.Equal(string.Format(PadForge.Resources.Strings.Strings.Instance.Pad_Lighting_RouteThrough, "OpenRGB"),
-                PeripheralRouteText.Lighting(ud, 0));
-            // A device left to OpenRGB is named too.
+
+            Link();
+            Assert.Equal(s.Pad_Lighting_RouteThroughOpenRgbOnly, PeripheralRouteText.Lighting(ud, 0));
+            Link(razer);
+            Assert.Equal(s.Pad_Lighting_RouteThroughOpenRgb, PeripheralRouteText.Lighting(ud, 0));
+            Assert.Null(PeripheralRouteText.Lighting(ud, 0, lightsHere: false));
+
+            // A LampArray unit Windows lights is no path of PadForge's own.
+            PeripheralOutputs.Direct = new DirectSnapshot(new[]
+            {
+                new DirectUnit(OutputFamily.LampArrayUnit, "lamps", Guid.Empty, 0x1532, 0x0001) { WindowsLit = true },
+            }, new[] { OutputFamily.LampArrayUnit });
+            Link(lamps);
+            Assert.Equal(s.Pad_Lighting_RouteThroughOpenRgbOnly, PeripheralRouteText.Lighting(ud, 0));
+            Link(lamps, razer);
+            Assert.Equal(s.Pad_Lighting_RouteThroughOpenRgb, PeripheralRouteText.Lighting(ud, 0));
+            // Once Windows lets it go, PadForge lights it.
+            PeripheralOutputs.Direct = new DirectSnapshot(new[]
+            {
+                new DirectUnit(OutputFamily.LampArrayUnit, "lamps", Guid.Empty, 0x1532, 0x0001),
+            }, new[] { OutputFamily.LampArrayUnit });
+            Link(lamps);
+            Assert.Equal(s.Pad_Lighting_RouteThroughOpenRgb, PeripheralRouteText.Lighting(ud, 0));
+            // A unit no backend lists now is lit on its own when it comes back.
+            PeripheralOutputs.Direct = DirectSnapshot.Empty;
+            Assert.Equal(s.Pad_Lighting_RouteThroughOpenRgb, PeripheralRouteText.Lighting(ud, 0));
+        }
+
+        /// <summary>A device OpenRGB holds with no Direct mode is left to
+        /// OpenRGB (PeripheralLinker.LinkOpenRgb), and its line says why,
+        /// never that PadForge lights it once a program closes.</summary>
+        [Fact]
+        public void ARowLeftToOpenRgb_SaysItHasNoDirectMode()
+        {
+            var s = PadForge.Resources.Strings.Strings.Instance;
             PeripheralOutputs.PublishLinks(new LinkTable(new[] { new DeviceLinks { Device = A, LeftToProgram = "OpenRGB" } }));
-            Assert.Contains("OpenRGB", PeripheralRouteText.Lighting(ud, 0));
+            var ud = new PadForge.Engine.Data.UserDevice
+            {
+                InstanceGuid = A, IsOnline = true, CapType = InputDeviceType.Keyboard, VendorId = PeripheralLinker.RazerVid,
+                PeripheralOutputs = (int)PeripheralOutputKinds.Lighting,
+            };
+            Assert.Equal(s.Pad_Lighting_RouteLeftToOpenRgb, PeripheralRouteText.Lighting(ud, 0));
+            Assert.Null(PeripheralRouteText.Lighting(ud, 0, lightsHere: false));
+            Assert.Equal("OpenRGB", VendorPrograms.OpenRgb.Name);
         }
     }
 }

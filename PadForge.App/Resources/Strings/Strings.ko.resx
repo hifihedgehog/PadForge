@@ -1828,6 +1828,11 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>이 장치가 아직 응답하지 않았습니다. 깨어나면 색상이 표시됩니다.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>색상이 {0}을(를) 거쳐 전달됩니다.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>색상이 {0}을(를) 거쳐 전달되며, {0}은(는) 이 종류의 장치를 모두 한꺼번에 켭니다. {0}이(가) 실행되지 않는 동안에는 PadForge가 이 장치를 직접 켭니다.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0}은(는) 이 종류의 장치를 모두 한꺼번에 켜므로, 가상 컨트롤러 {1}의 장치가 색상을 정합니다.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0}은(는) 이 종류의 장치를 모두 한꺼번에 켜므로, 가상 컨트롤러 {2}의 {1} 행이 색상을 정합니다.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>가상 컨트롤러 {0}도 이 장치를 켜고 있으며 그 색상이 표시됩니다.</value></data>
@@ -1843,6 +1848,9 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>헤드셋, 마우스패드, Chroma Link 스트립</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>헤드셋, 마우스패드, 스피커</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>헤드셋</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>라이트바</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>여섯 자리 16진수 색상(RRGGBB 또는 #RRGGBB)을 입력하고 Enter 키를 누르거나 다른 곳을 클릭하면 적용됩니다.</value></data>
@@ -1933,6 +1941,9 @@
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>로고</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>상태</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>게임 모드</value></data>
+  <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
+  <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>모든 조명</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>선택 해제</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>키를 눌러 선택</value></data>

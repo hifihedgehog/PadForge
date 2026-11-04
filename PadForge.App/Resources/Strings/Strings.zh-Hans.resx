@@ -1827,6 +1827,11 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>此设备尚未响应。设备唤醒后即显示颜色。</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>颜色通过 {0} 发送。</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>颜色通过 {0} 发送，它会同时点亮所有此类设备。{0} 未运行时，PadForge 会单独点亮此设备。</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} 会同时点亮所有此类设备，因此由虚拟控制器 {1} 上的那一台决定它们的颜色。</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} 会同时点亮所有此类设备，因此由虚拟控制器 {2} 上的 {1} 行决定它们的颜色。</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>虚拟控制器 {0} 也在点亮此设备，显示的是它的颜色。</value></data>
@@ -1842,6 +1847,9 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>耳机、鼠标垫和 Chroma Link 灯带</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>耳机、鼠标垫和音箱</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>耳机</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>灯条</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>输入六位十六进制颜色 (RRGGBB 或 #RRGGBB),按 Enter 或移开焦点应用。</value></data>
@@ -1932,6 +1940,9 @@
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>标志</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>状态</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>游戏模式</value></data>
+  <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
+  <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>所有灯光</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>清除选择</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>按键选择</value></data>

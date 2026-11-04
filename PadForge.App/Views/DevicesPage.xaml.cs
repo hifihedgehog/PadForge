@@ -586,8 +586,8 @@ namespace PadForge.Views
         {
             var row = (DataContext as PadForge.ViewModels.DevicesViewModel)?.SelectedDevice;
             if (row == null) return;
-            var map = PadForge.Common.Input.Peripherals.PeripheralLightMaps.FirstPerLight(
-                PadForge.Common.Input.Peripherals.PeripheralOutputs.Links.For(row.InstanceGuid)?.Lighting, out var path);
+            var map = PadForge.Common.Input.Peripherals.PeripheralLightMaps.ForRow(
+                PadForge.Common.Input.Peripherals.PeripheralOutputs.Links.For(row.InstanceGuid), out var path);
             if (map == null) return;
             var dlg = new MapKeyLightsDialog(path, row.DeviceName) { Owner = Window.GetWindow(this) };
             dlg.ShowDialog();

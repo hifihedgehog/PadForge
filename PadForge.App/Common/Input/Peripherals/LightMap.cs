@@ -67,6 +67,38 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The Fn key, which has no usage: the keyboard handles it
         /// and never reports it.</summary>
         Fn = 12,
+        /// <summary>M and <see cref="LightInfo.LabelNumber"/>, a macro key
+        /// as Razer and Cooler Master print it (OpenRGB RazerDevices.cpp:119
+        /// and CMKeyboardDevices.cpp:330-334 name them "Key: M1" on).</summary>
+        MacroKey = 13,
+        /// <summary>P and <see cref="LightInfo.LabelNumber"/>, a profile
+        /// key (OpenRGB CMKeyboardDevices.cpp:302-305, the MK Pro L's "Key: P1"
+        /// to "Key: P4").</summary>
+        ProfileKey = 14,
+        VolumeUp = 15,
+        VolumeDown = 16,
+        /// <summary>A volume knob or dial, one light.</summary>
+        Volume = 17,
+        /// <summary>The fan key of an ASUS ROG laptop (OpenRGB
+        /// AsusAuraCoreLaptopDevices.cpp:201).</summary>
+        Fan = 18,
+        /// <summary>The ROG key of an ASUS ROG laptop, printed with ROG's
+        /// name, which no locale translates (AsusAuraCoreLaptopDevices.cpp:202).</summary>
+        Rog = 19,
+        /// <summary>A dial that is no volume knob, such as the BlackWidow V4
+        /// Pro's Command Dial (OpenRGB RazerDevices.cpp:354).</summary>
+        Dial = 20,
+        ScrollWheel = 21,
+        /// <summary>The Aimpad key that turns Aimpad on and off, and the two
+        /// that lower and raise its sensitivity, as the MK850 has them
+        /// (OpenRGB CMKeyboardDevices.cpp:327-329).</summary>
+        Aimpad = 22,
+        AimpadDown = 23,
+        AimpadUp = 24,
+        /// <summary>A key printed with its number alone, drawn as two digits
+        /// (<see cref="LightInfo.LabelNumber"/>), as the Tartarus V2's 01 to
+        /// 20 (OpenRGB RazerDevices.cpp:1256-1276).</summary>
+        Numbered = 25,
     }
 
     /// <summary>One light of a unit. <see cref="Address"/> is the index the

@@ -31,6 +31,10 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Every MSI device Mystic Light lights through its SDK,
         /// through its device types (#557).</summary>
         MsiMysticLight,
+        /// <summary>Every Corsair device iCUE lights through its SDK, through
+        /// its device types, the mousepads and headset stands no input row
+        /// stands for among them (#557).</summary>
+        CorsairIcue,
     }
 
     /// <summary>A row with no input of its own (#494): a vendor row
@@ -81,12 +85,14 @@ namespace PadForge.Common.Input.Peripherals
         private const string SteelSeriesTag = "pfsteelseriesgg";
         private const string AuraTag = "pfasusaura";
         private const string MysticLightTag = "pfmsimysticlight";
+        private const string IcueTag = "pfcorsairicue";
         private static readonly Guid ChromaId = Md5Guid(ChromaTag);
         private static readonly Guid LightsyncId = Md5Guid(LightsyncTag);
         private static readonly Guid SensaId = Md5Guid(SensaTag);
         private static readonly Guid SteelSeriesId = Md5Guid(SteelSeriesTag);
         private static readonly Guid AuraId = Md5Guid(AuraTag);
         private static readonly Guid MysticLightId = Md5Guid(MysticLightTag);
+        private static readonly Guid IcueId = Md5Guid(IcueTag);
 
         /// <summary>A row for one kind. Every kind has its own arm here and
         /// in <see cref="NameFor"/>, <see cref="IdentityFor"/> and
@@ -105,6 +111,7 @@ namespace PadForge.Common.Input.Peripherals
                 PeripheralRowKind.SteelSeriesGG => ("steelseriesgg://local", (ushort)0x5347, SteelSeriesTag),
                 PeripheralRowKind.AsusAura => ("asusaura://local", (ushort)0x4155, AuraTag),
                 PeripheralRowKind.MsiMysticLight => ("msimysticlight://local", (ushort)0x4D4C, MysticLightTag),
+                PeripheralRowKind.CorsairIcue => ("corsairicue://local", (ushort)0x4943, IcueTag),
                 _ => throw new ArgumentOutOfRangeException(nameof(kind)),
             };
             InstanceGuid = IdentityFor(kind);
@@ -121,6 +128,7 @@ namespace PadForge.Common.Input.Peripherals
             PeripheralRowKind.SteelSeriesGG => "SteelSeries GG",
             PeripheralRowKind.AsusAura => "ASUS Aura",
             PeripheralRowKind.MsiMysticLight => "MSI Mystic Light",
+            PeripheralRowKind.CorsairIcue => "Corsair iCUE",
             _ => throw new ArgumentOutOfRangeException(nameof(kind)),
         };
 
@@ -143,13 +151,15 @@ namespace PadForge.Common.Input.Peripherals
             PeripheralRowKind.SteelSeriesGG => SteelSeriesId,
             PeripheralRowKind.AsusAura => AuraId,
             PeripheralRowKind.MsiMysticLight => MysticLightId,
+            PeripheralRowKind.CorsairIcue => IcueId,
             _ => throw new ArgumentOutOfRangeException(nameof(kind)),
         };
 
         public static bool IsLightingRow(PeripheralRowKind kind) => kind switch
         {
             PeripheralRowKind.RazerChroma or PeripheralRowKind.LogitechLightsync or PeripheralRowKind.SteelSeriesGG
-                or PeripheralRowKind.AsusAura or PeripheralRowKind.MsiMysticLight => true,
+                or PeripheralRowKind.AsusAura or PeripheralRowKind.MsiMysticLight
+                or PeripheralRowKind.CorsairIcue => true,
             PeripheralRowKind.RazerSensa => false,
             _ => throw new ArgumentOutOfRangeException(nameof(kind)),
         };

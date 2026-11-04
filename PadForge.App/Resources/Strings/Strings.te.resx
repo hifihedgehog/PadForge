@@ -1003,6 +1003,11 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>ఈ పరికరం ఇంకా స్పందించలేదు. అది మేల్కొన్నాక దాని రంగులు కనిపిస్తాయి.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>రంగులు {0} ద్వారా వెళ్తాయి.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>రంగులు {0} ద్వారా వెళ్తాయి, ఇది ఈ రకమైన ప్రతి పరికరాన్ని ఒకేసారి వెలిగిస్తుంది. {0} నడవనప్పుడు, PadForge ఈ పరికరాన్ని తానే వెలిగిస్తుంది.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} ఈ రకమైన ప్రతి పరికరాన్ని ఒకేసారి వెలిగిస్తుంది, కాబట్టి వర్చువల్ కంట్రోలర్ {1}లోనిది వాటి రంగును సెట్ చేస్తుంది.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} ఈ రకమైన ప్రతి పరికరాన్ని ఒకేసారి వెలిగిస్తుంది, కాబట్టి వర్చువల్ కంట్రోలర్ {2}లోని {1} వరుస వాటి రంగును సెట్ చేస్తుంది.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్ {0} కూడా ఈ పరికరాన్ని వెలిగిస్తుంది, దాని రంగే కనిపిస్తుంది.</value></data>
@@ -1018,6 +1023,9 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>హెడ్సెట్లు, మౌస్ప్యాడ్లు మరియు Chroma Link స్ట్రిప్లు</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>హెడ్సెట్లు, మౌస్ప్యాడ్లు మరియు స్పీకర్లు</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>హెడ్సెట్లు</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>లైట్ బార్</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ఆరు అంకెల హెక్స్ రంగును (RRGGBB లేదా #RRGGBB) నమోదు చేసి, వర్తింపజేయడానికి Enter నొక్కండి లేదా వెలుపల క్లిక్ చేయండి.</value></data>
@@ -1118,6 +1126,9 @@
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>లోగో</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>స్థితి</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>గేమ్ మోడ్</value></data>
+  <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
+  <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>అన్ని లైట్లు</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>ఎంపికను తొలగించు</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>కీలను నొక్కి ఎంచుకో</value></data>

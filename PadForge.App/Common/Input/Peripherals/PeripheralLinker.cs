@@ -649,6 +649,10 @@ namespace PadForge.Common.Input.Peripherals
                             foreach (var type in MysticLightBackend.PathKeys)
                                 lighting.Add(new OutputPath(OutputFamily.MysticLightType, type));
                             break;
+                        case PeripheralRowKind.CorsairIcue when presence.CorsairIcueSdk:
+                            foreach (var (key, _) in IcueRoute.Types)
+                                lighting.Add(new OutputPath(OutputFamily.IcueDevice, key));
+                            break;
                     }
                 }
                 else if (row.Unit is OutputPath unit)
@@ -711,7 +715,8 @@ namespace PadForge.Common.Input.Peripherals
                         {
                             families ??= DeviceFamilies.Of(direct, hidpp, result);
                             if (LightsUnitRow(own) && !UnitProgramRuns(own, presence)
-                                && !ReachedByAnyRow(own, rowList, lampArrays) && !families.Loses(own))
+                                && (RelaysPaired(own, direct) || !ReachedByAnyRow(own, rowList, lampArrays))
+                                && !families.Loses(own))
                                 lighting.Add(unit);
                         }
                     }
@@ -1116,13 +1121,37 @@ namespace PadForge.Common.Input.Peripherals
         private static void AddOwnUnits(List<Candidate> native, IReadOnlyList<DirectUnit> direct, OutputFamily family, LinkRow row)
         {
             foreach (var unit in direct)
-                if (unit.Family == family && MatchesDevice(unit, row))
+                if (unit.Family == family && MatchesDevice(unit, row) && !RelaysPaired(unit, direct))
                     native.Add(new Candidate(unit.Path, unit.MaxClaimLevel, false)
                     {
                         Asleep = unit.Asleep,
                         BesideWindows = unit.LitBesideWindows,
                         LiveThroughLampArray = unit.LiveThroughLampArray,
                     });
+        }
+
+        /// <summary>
+        /// Whether a Razer receiver relays a device paired to it that has a
+        /// unit of its own: the Mouse Dock Pro with a mouse paired
+        /// (<see cref="RazerDirectBackend.PairedKey"/>, the paired unit
+        /// listed under the receiver's product ID, as OpenRGB adds a
+        /// controller for each, RazerControllerDetect.cpp:42-82). The
+        /// receiver's rows then carry the paired device's input and light
+        /// the paired device, and the receiver's own lights are a device no
+        /// input row stands for: they get a unit row of their own
+        /// (<see cref="Orphans"/>) and with it a Key Colors card, since a row
+        /// shows the lights of one unit (<see cref="PeripheralLightMaps.FirstPerLight"/>).
+        /// A receiver with nothing paired is its rows' own unit.
+        /// </summary>
+        internal static bool RelaysPaired(DirectUnit unit, IReadOnlyList<DirectUnit> direct)
+        {
+            if (unit == null || unit.Family != OutputFamily.RazerUnit || unit.Key.IndexOf('|') >= 0) return false;
+            string prefix = unit.Key + "|";
+            foreach (var other in direct)
+                if (other != null && other.Family == OutputFamily.RazerUnit
+                    && other.Key.StartsWith(prefix, StringComparison.Ordinal))
+                    return true;
+            return false;
         }
 
         private static readonly List<Candidate> NoCandidates = new();
@@ -1549,10 +1578,12 @@ namespace PadForge.Common.Input.Peripherals
                 if (unit == null || !GetsUnitRow(unit.Family) || unit.ContainerId == Guid.Empty || IgnoresRawHost(unit))
                     continue;
                 if (UnitProgramRuns(unit, presence) || families.Loses(unit)) continue;
+                // A receiver relaying a paired device stands for no row
+                // that reaches it (RelaysPaired).
                 bool reached = false;
                 foreach (var row in rows)
                 {
-                    if (!Reaches(row, unit, lampArrays)) continue;
+                    if (!Reaches(row, unit, lampArrays) || RelaysPaired(unit, direct)) continue;
                     reached = true;
                     break;
                 }
@@ -1819,11 +1850,20 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>The Chroma category a Razer row lights: the keypad
-        /// category for a keypad, else the device's kind by product ID, else
-        /// the row's own kind.</summary>
+        /// category for a keypad, an accessory's category by what it is,
+        /// else the device's kind by product ID, else the row's own
+        /// kind.</summary>
         internal static string RazerCategory(LinkRow row)
         {
             if (Array.IndexOf(RazerKeypadPids, row.ProductId) >= 0) return "keypad";
+            // An accessory by what it is. One that is no mat or headset, a
+            // dock, a speaker, a base station, a case kit, is a Chroma Link
+            // device, the SDK's category for every other lit thing
+            // (RzChromaSDKDefines.h, "Chroma Linked devices", the Razer Core
+            // among them).
+            if (Array.IndexOf(PeripheralProductIds.RazerMousepads, row.ProductId) >= 0) return "mousepad";
+            if (Array.IndexOf(PeripheralProductIds.RazerHeadsets, row.ProductId) >= 0) return "headset";
+            if (Array.IndexOf(PeripheralProductIds.RazerAccessories, row.ProductId) >= 0) return "chromalink";
             // The Huntsman V3 boards openrazer does not list yet, which the
             // analog keyboard reader already knows (AnalogKeyboardCatalog).
             if (PadForge.Engine.Common.AnalogKeyboard.AnalogKeyboardCatalog.IsRazerHuntsmanV3(row.ProductId))

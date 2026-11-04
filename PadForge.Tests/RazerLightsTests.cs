@@ -562,6 +562,10 @@ namespace PadForge.Tests
                     foreach (var ((keyRow, keyCol), name) in cells)
                     {
                         if (keyRow >= lights.KeyRows || keyCol >= lights.KeyColumns || name.Length == 0) continue;
+                        // The Blade's top row comes from the map drawn for it, where
+                        // OpenRGB's overlay loses F12
+                        // (ABlade15Advanced2021_TakesItsTopRowFromTheMapDrawnForIt).
+                        if (lights.ProductId == 0x0276 && keyRow == 0) continue;
                         int index = lights.KeyBase + keyRow * lights.KeyColumns + keyCol;
                         int frameRow = index / lights.DeviceColumns, frameCol = index % lights.DeviceColumns;
                         if (frameRow >= lights.Rows || frameCol >= lights.Columns) continue;
@@ -571,7 +575,8 @@ namespace PadForge.Tests
                         Assert.Equal(usage, light.Usage);
                         keys++;
                     }
-                    Assert.Equal(keys, map.Lights.Count - lights.Lights.Length);
+                    int sameKeyCells = lights.SameKeyCells.Count(c => map.Lights.Any(l => l.Address == c.KeyRow * lights.Columns + c.KeyColumn));
+                    Assert.Equal(keys, map.Lights.Count - lights.Lights.Length - sameKeyCells);
                     checkedLayouts++;
                 }
             }
@@ -727,6 +732,57 @@ namespace PadForge.Tests
             Assert.Equal((LightKind.Other, LightLabel.Fn), (At(5, 2).Kind, At(5, 2).Label));
             Assert.Equal((LightKind.Key, (ushort)0), (At(5, 13).Kind, At(5, 13).Usage));
             Assert.Contains("Polychromatic", map.Source);
+        }
+
+        [Fact]
+        public void ABlade15Advanced2021_TakesItsTopRowFromTheMapDrawnForIt()
+        {
+            // OpenRGB's overlay loses F12 and leaves F1 to F11 a column off
+            // (RazerDevices.cpp:562-603). Polychromatic's map for the board
+            // (blade_advanced_2021_en_US.svg, c12135c): Esc, F1 to F12, Insert
+            // and Delete in columns 1 to 15.
+            var lights = RazerLightTable.Map(0x0276).Lights;
+            ushort At(int row, int column) => lights.Single(l => l.Address == row * 16 + column).Usage;
+            Assert.Equal((ushort)0x29, At(0, 1));
+            for (int f = 0; f < 12; f++) Assert.Equal((ushort)(0x3A + f), At(0, 2 + f));
+            Assert.Equal((ushort)0x49, At(0, 14));
+            Assert.Equal((ushort)0x4C, At(0, 15));
+            // No top row key twice, and no light in the column nothing sits in.
+            var top = lights.Where(l => l.Address < 16 && l.Usage != 0).Select(l => l.Usage).ToList();
+            Assert.Equal(top.Count, top.Distinct().Count());
+            Assert.DoesNotContain(lights, l => l.Address == 0);
+            // The rest stays OpenRGB's layout: Backspace moved a column right
+            // (line 590), and Tab at column 1 of the row below.
+            Assert.Equal((ushort)0x2A, At(1, 15));
+            Assert.Equal((ushort)0x2B, At(2, 1));
+        }
+
+        /// <summary>uchroma's entry for the Blade 15 Advanced (2021) and
+        /// Polychromatic's map for it put \ and Enter in the last column, which
+        /// OpenRGB's layout leaves empty, naming them a column to the left. The
+        /// last column lights with whatever key the region has beside it: an
+        /// ISO board's Enter on the upper row, and nothing on the lower row,
+        /// where OpenRGB puts no key beside it.</summary>
+        [Fact]
+        public void ABlade15Advanced2021_LightsItsLastColumnWithTheKeyBesideIt()
+        {
+            const int Columns = 16;
+            LightInfo[] Cell(KeyboardLayout region, int row, int column)
+                => RazerLightTable.Map(0x0276, region).Lights.Where(l => l.Address == row * Columns + column).ToArray();
+
+            Assert.Equal((ushort)0x31, Assert.Single(Cell(KeyboardLayout.AnsiQwerty, 2, 15)).Usage);
+            Assert.Equal((ushort)0x31, Assert.Single(Cell(KeyboardLayout.AnsiQwerty, 2, 14)).Usage);
+            Assert.Equal((ushort)0x28, Assert.Single(Cell(KeyboardLayout.AnsiQwerty, 3, 15)).Usage);
+            Assert.Equal((ushort)0x28, Assert.Single(Cell(KeyboardLayout.AnsiQwerty, 3, 14)).Usage);
+
+            var enter = Assert.Single(Cell(KeyboardLayout.IsoQwerty, 2, 14));
+            var beside = Assert.Single(Cell(KeyboardLayout.IsoQwerty, 2, 15));
+            Assert.Equal(enter.Usage, beside.Usage);
+            Assert.Equal(enter.Kind, beside.Kind);
+            Assert.Equal(15, beside.X);
+            Assert.Equal(2, beside.Y);
+            Assert.Empty(Cell(KeyboardLayout.IsoQwerty, 3, 14));
+            Assert.Empty(Cell(KeyboardLayout.IsoQwerty, 3, 15));
         }
 
         /// <summary>A board no second source fits keeps a key at every cell

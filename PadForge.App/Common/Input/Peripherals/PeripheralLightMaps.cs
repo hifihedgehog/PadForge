@@ -43,6 +43,32 @@ namespace PadForge.Common.Input.Peripherals
             return null;
         }
 
+        /// <summary>The lights a row's Key Colors card shows: the first map
+        /// among its paths with more than one light
+        /// (<see cref="FirstPerLight"/>), narrowed to the lights the row's
+        /// own device has where that map serves many devices at once. The
+        /// LED SDK's keyboard path is the one such map: it holds the per-key
+        /// boards' keys and the zone boards' zones, and a row shows the kind
+        /// its own HID++ unit has (<see cref="LogiLedKeys.KeyboardOf"/>).
+        /// <paramref name="found"/> is the path the map belongs to.</summary>
+        public static LightMap ForRow(DeviceLinks links, out OutputPath found)
+        {
+            var map = FirstPerLight(links?.Lighting, out found);
+            if (map == null || found.Family != OutputFamily.LedSdkType || found.Key != "keyboard") return map;
+            HidppUnit unit = null;
+            var units = PeripheralOutputs.Hidpp.Units;
+            foreach (string key in links.HidppUnits)
+            {
+                foreach (var candidate in units)
+                {
+                    if (candidate.Key != key || !candidate.HasRgb) continue;
+                    if (unit == null || (candidate.IsKeyboardKind && !unit.IsKeyboardKind)) unit = candidate;
+                }
+            }
+            var own = LogiLedKeys.KeyboardOf(unit);
+            return own is { PerLight: true } ? own : map;
+        }
+
         public static void Publish(OutputPath path, LightMap map)
         {
             if (map == null)

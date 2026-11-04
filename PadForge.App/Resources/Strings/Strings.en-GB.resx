@@ -143,6 +143,8 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>This device has not answered yet. Its colours are shown once it wakes up.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Colours go through {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Colours go through {0}, which lights every device of this kind at once. While {0} is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colours go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colours go through OpenRGB's SDK Server.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} lights every device of this kind at once, so the one on Virtual Controller {1} sets their colour.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} lights every device of this kind at once, so the {1} row on Virtual Controller {2} sets their colour.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Virtual Controller {0} also lights this device, and its colour is shown.</value></data>

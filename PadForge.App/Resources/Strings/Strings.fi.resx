@@ -1003,6 +1003,11 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Laite ei ole vielä vastannut. Sen värit näkyvät, kun se herää.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Värit kulkevat ohjelman {0} kautta.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Värit kulkevat ohjelman {0} kautta, joka valaisee kaikki tämäntyyppiset laitteet kerralla. Kun {0} ei ole käynnissä, PadForge valaisee tämän laitteen itse.</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} valaisee kaikki tämäntyyppiset laitteet kerralla, joten virtuaaliohjaimen {1} laite määrää niiden värin.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} valaisee kaikki tämäntyyppiset laitteet kerralla, joten virtuaaliohjaimen {2} rivi {1} määrää niiden värin.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Myös virtuaaliohjain {0} valaisee tämän laitteen, ja sen väri näkyy.</value></data>
@@ -1018,6 +1023,9 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>kuulokkeet, hiirimatot ja Chroma Link -valonauhat</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>kuulokkeet, hiirimatot ja kaiuttimet</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>kuulokkeet</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Valopalkki</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Kirjoita kuusinumeroinen heksadesimaaliväri (RRGGBB tai #RRGGBB) ja ota se käyttöön painamalla Enteriä tai napsauttamalla muualle.</value></data>
@@ -1118,6 +1126,9 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>Logo</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>Tila</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>Pelitila</value></data>
+  <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
+  <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>Kaikki valot</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>Tyhjennä valinta</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>Valitse näppäimiä painamalla</value></data>

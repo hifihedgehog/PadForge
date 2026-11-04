@@ -50,6 +50,12 @@ namespace PadForge.Common.Input.Peripherals
         public byte KeyColumns { get; init; }
         public byte DeviceColumns { get; init; }
 
+        /// <summary>Cells a key's light also sits in, which OpenRGB's layout
+        /// leaves empty: the cell, then the cell OpenRGB puts the key in, which
+        /// gives this cell whatever key the region has there, or none.</summary>
+        public (int Row, int Column, int KeyRow, int KeyColumn)[] SameKeyCells { get; init; }
+            = System.Array.Empty<(int, int, int, int)>();
+
         public bool HasKeys => KeyRows > 0;
 
         /// <summary>The reference the lights were read from, for the log
@@ -120,8 +126,10 @@ namespace PadForge.Common.Input.Peripherals
         /// first LED plus its row times the zone's columns plus its column,
         /// on a frame the device's columns wide (RazerController.cpp:207-258),
         /// which is where it sits in the frame painted. Its key is the HID
-        /// usage OpenRGB's key name stands for (<see cref="OpenRgbKeys"/>), or
-        /// a label for a key with no usage. A zone with no layout makes every
+        /// usage OpenRGB's key name stands for (<see cref="OpenRgbKeys"/>) or
+        /// the place a regional fix renamed
+        /// (<see cref="KeyboardLayoutManager.TryResolve"/>), or a label for a
+        /// key with no usage. A zone with no layout makes every
         /// cell a key no source names, for Map Key Lights, but the cells a
         /// second source named, which are the row's own lights.
         /// </summary>
@@ -148,7 +156,7 @@ namespace PadForge.Common.Input.Peripherals
                         light = Key(address);
                     else
                     {
-                        OpenRgbKeys.TryGet(name, out ushort usage, out var label, out int number);
+                        layout.TryResolveAt(keyRow, keyCol, out ushort usage, out var label, out int number);
                         // The names Razer's layouts give lights that are no
                         // key: "Logo", "Left Underglow 0" to "Right
                         // Underglow 8", and a few others such as "Trackpad"
@@ -160,6 +168,12 @@ namespace PadForge.Common.Input.Peripherals
                     }
                     lights.Add(At(light, frameRow, frameCol));
                 }
+            }
+            foreach (var (cellRow, cellColumn, keyRow, keyColumn) in row.SameKeyCells)
+            {
+                int key = lights.FindIndex(l => l.Address == keyRow * row.Columns + keyColumn);
+                if (key >= 0)
+                    lights.Add(lights[key] with { Address = cellRow * row.Columns + cellColumn, X = cellColumn, Y = cellRow });
             }
             lights.AddRange(row.Lights);
             return lights.ToArray();

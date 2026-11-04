@@ -40,7 +40,8 @@ namespace PadForge.Common.Input.Peripherals
             // Corsair's (CorsairPeripheralV2Devices.cpp:67-72) and the G910's
             // (RGBController_LogitechHIDPP20.cpp:848-857), "G1" in the G915
             // X's (lines 443-451).
-            string g = name.StartsWith("Key: ", StringComparison.Ordinal) ? name.Substring(5) : name;
+            bool prefixed = name.StartsWith("Key: ", StringComparison.Ordinal);
+            string g = prefixed ? name.Substring(5) : name;
             if (g.Length >= 2 && g.Length <= 3 && g[0] == 'G' && g[1] != '0'
                 && int.TryParse(g.AsSpan(1), System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out int n))
             {
@@ -48,8 +49,35 @@ namespace PadForge.Common.Input.Peripherals
                 labelNumber = n;
                 return true;
             }
+            if (!prefixed || g.Length != 2) return false;
+            // The macro keys M1 to M6 and the profile keys P1 to P4 the edit
+            // lists add (RazerDevices.cpp:119 and 321, CMKeyboardDevices.cpp:302-305
+            // and 330-334), and the Tartarus V2's keys, which it numbers 01
+            // to 20 (RazerDevices.cpp:1256-1276). The letters and digits
+            // alone, "Key: M" and "Key: 1", are keys of their own above.
+            if ((g[0] == 'M' || g[0] == 'P') && g[1] >= '1' && g[1] <= '9')
+            {
+                label = g[0] == 'M' ? LightLabel.MacroKey : LightLabel.ProfileKey;
+                labelNumber = g[1] - '0';
+                return true;
+            }
+            if (g[0] >= '0' && g[0] <= '9' && g[1] >= '0' && g[1] <= '9' && (g[0] != '0' || g[1] != '0'))
+            {
+                label = LightLabel.Numbered;
+                labelNumber = (g[0] - '0') * 10 + (g[1] - '0');
+                return true;
+            }
             return false;
         }
+
+        /// <summary>Whether a usage is a key of the typing block, whose
+        /// legend changes with the region a board is made for while its
+        /// usage names its place (HID Usage Tables 1.6, section 10, "Typical
+        /// AT-101 Position"): the letters and digits, the symbol keys from -
+        /// to /, the ISO key beside Left Shift, and the Japanese Ro and Yen
+        /// keys.</summary>
+        public static bool IsTypingUsage(ushort usage)
+            => usage is >= 0x04 and <= 0x27 or >= 0x2D and <= 0x38 or 0x64 or 0x87 or 0x89;
 
         private static readonly Dictionary<string, ushort> s_usages = new(StringComparer.Ordinal)
         {
@@ -138,6 +166,10 @@ namespace PadForge.Common.Input.Peripherals
             ["Key: Left Windows"] = 0xE3,
             ["Key: Left Alt"] = 0xE2,
             ["Key: Space"] = 0x2C,
+            // The Skyloong GK104 Pro lights its space bar as two halves
+            // (RGBController_SkyloongGK104Pro.cpp:99-100), both one key.
+            ["Key: Left Space"] = 0x2C,
+            ["Key: Right Space"] = 0x2C,
             ["Key: Right Alt"] = 0xE6,
             ["Key: Right Windows"] = 0xE7,
             ["Key: Menu"] = 0x65,
@@ -220,6 +252,23 @@ namespace PadForge.Common.Input.Peripherals
             ["Indicator: N"] = LightLabel.NumLock,
             ["Indicator: C"] = LightLabel.CapsLock,
             ["Indicator: S"] = LightLabel.ScrollLock,
+            // The volume keys and knobs (RGBControllerKeyNames.cpp:143-144,
+            // RazerDevices.cpp:510, 1093 and 1121), the ROG laptops' Fan and
+            // ROG keys (AsusAuraCoreLaptopDevices.cpp:201-202), the
+            // BlackWidow V4 Pro's Command Dial (RazerDevices.cpp:354), the
+            // Tartarus V2's scroll wheel (line 1275) and the MK850's three
+            // Aimpad keys (CMKeyboardDevices.cpp:327-329).
+            ["Key: Media Volume +"] = LightLabel.VolumeUp,
+            ["Key: Media Volume -"] = LightLabel.VolumeDown,
+            ["Key: Media Volume"] = LightLabel.Volume,
+            ["Media: Volume Dial"] = LightLabel.Volume,
+            ["Key: Fan"] = LightLabel.Fan,
+            ["Key: ROG"] = LightLabel.Rog,
+            ["Key: Dial"] = LightLabel.Dial,
+            ["Key: Scroll Wheel"] = LightLabel.ScrollWheel,
+            ["Key: Aim <|>"] = LightLabel.Aimpad,
+            ["Key: Aim -"] = LightLabel.AimpadDown,
+            ["Key: Aim +"] = LightLabel.AimpadUp,
         };
     }
 }

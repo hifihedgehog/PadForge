@@ -108,12 +108,6 @@ namespace PadForge.Common.Input.Peripherals
             return string.IsNullOrWhiteSpace(name) ? ud.ResolvedName : name;
         }
 
-        /// <summary>OpenRGB's server by the name OpenRGB gives it: its tab
-        /// "SDK Server" (qt/OpenRGBDialog/OpenRGBDialog.cpp:967) and its Linux
-        /// service "OpenRGB SDK Server" (qt/openrgb.service:2). No locale
-        /// translates it.</summary>
-        internal const string OpenRgbServerName = "OpenRGB SDK Server";
-
         /// <summary>The vendor software a shared lighting path runs through,
         /// by its product name, which no locale translates.</summary>
         internal static string LightingApp(OutputFamily family) => family switch
@@ -131,7 +125,14 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The devices a vendor row's line names as examples: what
         /// its software lights that PadForge does not read. SteelSeries GG
         /// binds no mousepad type (gamesense-sdk standard-zones.md:5-17), so
-        /// its row names headsets alone.</summary>
+        /// its row names headsets alone. The ASUS Aura row names what the
+        /// Aura SDK lights beside keyboards and mice, its mainboard,
+        /// graphics card and DRAM types (RGB.NET 3c5af72
+        /// RGB.NET.Devices.Asus/AsusDeviceProvider.cs:80-84), and the MSI
+        /// Mystic Light row what Mystic Light lights there, MSI_MB and
+        /// MSI_VGA (RGB.NET.Devices.Msi/MsiDeviceProvider.cs:92-101). The
+        /// Corsair iCUE row names the two device types of IcueRoute.Types
+        /// with no input row (iCUESDK.h:45-62).</summary>
         internal static string VendorRowExamples(OutputFamily family)
         {
             var s = Strings.Instance;
@@ -140,6 +141,9 @@ namespace PadForge.Common.Input.Peripherals
                 OutputFamily.ChromaCategory => s.Pad_Lighting_VendorRowExamples_Chroma,
                 OutputFamily.LedSdkType => s.Pad_Lighting_VendorRowExamples_LedSdk,
                 OutputFamily.GameSenseColor => s.Pad_Lighting_VendorRowExamples_GameSense,
+                OutputFamily.AuraSdkType => s.Pad_Lighting_VendorRowExamples_Aura,
+                OutputFamily.MysticLightType => s.Pad_Lighting_VendorRowExamples_MysticLight,
+                OutputFamily.IcueDevice => s.Pad_Lighting_VendorRowExamples_Icue,
                 _ => null,
             };
         }
@@ -166,21 +170,25 @@ namespace PadForge.Common.Input.Peripherals
             if (ud == null || !PeripheralOutputs.Running) return null;
             var s = Strings.Instance;
             var links = PeripheralOutputs.Links.For(ud.InstanceGuid);
-            // A program the device's model names runs and lights it, and
-            // the device is lit on its own once that program is closed
-            // (DeviceLinks.LeftToProgram). The program's name stands where
-            // a shared path's app stands. This line says colors go through
-            // the program, which holds only for a program with an SDK route
-            // of PadForge's own, until the line of its own lands with the
-            // next translation pass (#557).
             // OpenRGB runs and its SDK server has not said which devices it
-            // holds (#557): the device waits for the server. Until the line
-            // of its own lands with the next translation pass, the waiting
-            // line names the server as OpenRGB's own window does.
+            // holds (#557): the device is left to OpenRGB until the server
+            // answers, and the line says how to turn the server on. The
+            // OpenRGB lines name the server by its tab in OpenRGB's window,
+            // "SDK Server" (qt/OpenRGBDialog/OpenRGBDialog.cpp:967).
             if (links is { WaitsForOpenRgbServer: true })
-                return lightsHere ? string.Format(s.Pad_Lighting_RouteWaiting, OpenRgbServerName) : null;
+                return lightsHere ? s.Pad_Lighting_RouteOpenRgbServerOff : null;
+            // A program the device's model names runs and lights it, and
+            // PadForge has no path through it: the device is lit on its own
+            // once that program is closed (DeviceLinks.LeftToProgram). A
+            // device OpenRGB holds with no Direct mode is left to OpenRGB
+            // (PeripheralLinker.LinkOpenRgb), which names it there.
             if (links?.LeftToProgram is string program)
-                return lightsHere ? string.Format(s.Pad_Lighting_RouteThroughOrDirect, program) : null;
+            {
+                if (!lightsHere) return null;
+                return program == VendorPrograms.OpenRgb.Name
+                    ? s.Pad_Lighting_RouteLeftToOpenRgb
+                    : string.Format(s.Pad_Lighting_RouteLeftToProgram, program);
+            }
             if (links == null || links.Lighting.Length == 0)
             {
                 // The record says it has lighting, and no path reaches it
@@ -272,10 +280,14 @@ namespace PadForge.Common.Input.Peripherals
             if (!path.Shared)
             {
                 // A device OpenRGB holds is lit through its SDK server
-                // (#557). Until the line of its own lands with the next
-                // translation pass, the line says where the colors go.
+                // (#557). Where OpenRGB took a path of the device's own, the
+                // device is lit on that path once OpenRGB closes, and the
+                // line says so. A device only OpenRGB reaches gets no such
+                // promise.
                 if (path.Family == OutputFamily.OpenRgbDevice)
-                    return string.Format(s.Pad_Lighting_RouteThrough, VendorPrograms.OpenRgb.Name);
+                    return LitOnItsOwnWithoutOpenRgb(links)
+                        ? s.Pad_Lighting_RouteThroughOpenRgb
+                        : s.Pad_Lighting_RouteThroughOpenRgbOnly;
                 // A unit this controller lights on its own, named as its
                 // backend read it, with what else is held where the device
                 // offers the hold this controller asks for.
@@ -309,6 +321,19 @@ namespace PadForge.Common.Input.Peripherals
             // The vendor's program lights it now, and it has a path of its
             // own for when the program is not running.
             return string.Format(links.DirectWhenClosed ? s.Pad_Lighting_RouteThroughOrDirect : s.Pad_Lighting_RouteThrough, app);
+        }
+
+        /// <summary>Whether a path OpenRGB took from the row
+        /// (<see cref="DeviceLinks.TakenByOpenRgb"/>) lights the device once
+        /// OpenRGB closes: any of them but a LampArray unit Windows Dynamic
+        /// Lighting lights, whose backend leaves it unpainted.</summary>
+        private static bool LitOnItsOwnWithoutOpenRgb(DeviceLinks links)
+        {
+            var direct = PeripheralOutputs.Direct;
+            foreach (var path in links.TakenByOpenRgb)
+                if (path.Family != OutputFamily.LampArrayUnit || direct.Find(path) is not { WindowsLit: true })
+                    return true;
+            return false;
         }
 
         /// <summary>Whether Windows Dynamic Lighting lights a LampArray unit

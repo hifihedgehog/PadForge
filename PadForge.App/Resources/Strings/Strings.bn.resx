@@ -1003,6 +1003,11 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>এই ডিভাইসটি এখনো সাড়া দেয়নি। এটি জেগে উঠলে এর রং দেখা যাবে।</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>রং {0}-এর মাধ্যমে যায়।</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>রং {0}-এর মাধ্যমে যায়, যা এই ধরনের সব ডিভাইস একসঙ্গে আলোকিত করে। {0} না চললে PadForge নিজেই এই ডিভাইসটি আলোকিত করে।</value></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB's SDK Server.</value></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} এই ধরনের সব ডিভাইস একসঙ্গে আলোকিত করে, তাই ভার্চুয়াল কন্ট্রোলার {1}-এর ডিভাইসটিই সবগুলোর রং ঠিক করে।</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} এই ধরনের সব ডিভাইস একসঙ্গে আলোকিত করে, তাই ভার্চুয়াল কন্ট্রোলার {2}-এর {1} সারিটিই সবগুলোর রং ঠিক করে।</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>ভার্চুয়াল কন্ট্রোলার {0}-ও এই ডিভাইসটি আলোকিত করে, আর সেটির রংই দেখা যায়।</value></data>
@@ -1018,6 +1023,9 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>হেডসেট, মাউসপ্যাড ও Chroma Link স্ট্রিপ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>হেডসেট, মাউসপ্যাড ও স্পিকার</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>হেডসেট</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads and headset stands</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>লাইটবার</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ছয় অঙ্কের হেক্স রং লিখুন (RRGGBB বা #RRGGBB), তারপর প্রয়োগ করতে Enter চাপুন বা অন্য কোথাও ক্লিক করুন।</value></data>
@@ -1118,6 +1126,9 @@
   <data name="Pad_Lighting_KeyColors_Logo" xml:space="preserve"><value>লোগো</value></data>
   <data name="Pad_Lighting_KeyColors_Status" xml:space="preserve"><value>স্ট্যাটাস</value></data>
   <data name="Pad_Lighting_KeyColors_GameMode" xml:space="preserve"><value>গেম মোড</value></data>
+  <data name="Pad_Lighting_KeyColors_MacroKey_Format" xml:space="preserve"><value>M{0}</value></data>
+  <data name="Pad_Lighting_KeyColors_ProfileKey_Format" xml:space="preserve"><value>P{0}</value></data>
+  <data name="Pad_Lighting_KeyColors_Fan" xml:space="preserve"><value>Fan</value></data>
   <data name="Pad_Lighting_KeyColors_SelectAllLights" xml:space="preserve"><value>সব লাইট</value></data>
   <data name="Pad_Lighting_KeyColors_ClearSelection" xml:space="preserve"><value>নির্বাচন সাফ করুন</value></data>
   <data name="Pad_Lighting_KeyColors_PickByPressing" xml:space="preserve"><value>কী চেপে নির্বাচন করুন</value></data>

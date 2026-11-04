@@ -77,9 +77,10 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>
         /// Every keyboard light, in cell order, its cell as its address: a
         /// key by its usage, the macro keys M1 to M5 by number, Fn by its
-        /// label and RZLED_LOGO as the logo. The macro keys carry the G-key
-        /// label with their number, as Aurora names them G1 to G5
-        /// (Modules/Razer/RazerLayoutMap.cs:35-119).
+        /// label and RZLED_LOGO as the logo. The macro keys carry the macro
+        /// key label with their number, M1 to M5 as the BlackWidow Chroma
+        /// prints them and OpenRGB names them (RazerDevices.cpp:119-123),
+        /// where Aurora calls them G1 to G5 (Modules/Razer/RazerLayoutMap.cs:35-119).
         /// </summary>
         private static IReadOnlyList<LightInfo> KeyboardLights()
         {
@@ -94,7 +95,7 @@ namespace PadForge.Common.Input.Peripherals
                 else if (key.Name.StartsWith("RZKEY_MACRO", StringComparison.Ordinal))
                     lights.Add(new LightInfo(cell, LightKind.Other, 0, LightKeySource.Vendor)
                     {
-                        Label = LightLabel.GKey,
+                        Label = LightLabel.MacroKey,
                         LabelNumber = key.Name[^1] - '0',
                     });
                 else

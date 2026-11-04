@@ -874,9 +874,12 @@ Protocol documentation references (no code from these projects ships)
   Lighting references: report frames, key names and program names for the
   direct lighting families, read from SignalRGB's plugins
   (https://gitlab.com/signalrgb/signal-plugins, no license published, facts
-  only, no code taken), uchroma (https://github.com/cyanogen/uchroma, LGPL-3.0),
+  only, no code taken), qmk-plugins (https://github.com/SRGBmods/qmk-plugins,
+  GPL-2.0), SRGBmods plugins (https://github.com/SRGBmods/plugins, no license
+  published, facts only), uchroma (https://github.com/cyanogen/uchroma, LGPL-3.0),
   Polychromatic (https://github.com/polychromatic/polychromatic, GPL-3.0),
-  ckb-next (https://github.com/ckb-next/ckb-next, GPL-2.0), libcmmk
+  ckb-next (https://github.com/ckb-next/ckb-next, GPL-2.0), libratbag
+  (https://github.com/libratbag/libratbag, MIT), libcmmk
   (https://github.com/chmod222/libcmmk, LGPL-3.0), Eruption
   (https://github.com/eruption-project/eruption, GPL-3.0-or-later),
   roccat-vulcan-api-rs (https://github.com/ChickenStorm/roccat-vulcan-api-rs,

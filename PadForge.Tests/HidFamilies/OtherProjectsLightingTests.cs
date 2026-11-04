@@ -392,7 +392,9 @@ namespace PadForge.Tests
             session.Paint(io, _ => { }, null, new[] { 0x112233 });
             var frames = io.Calls.Skip(2).Select(c => c.Bytes).ToList();
             Assert.Equal("CC 94", Hex(frames[0], 2));
-            Assert.Equal("CC 8C 02 00 01 11 22 33 02 11 22 33", Hex(frames[1], 12));
+            Assert.Equal("CC 93", Hex(frames[1], 2));
+            Assert.Equal("CC", Hex(frames[2], 1));
+            Assert.Equal("CC 8C 02 00 01 11 22 33 02 11 22 33", Hex(frames[3], 12));
             Assert.Equal("CC 8C 13", Hex(frames[^2], 3));
             Assert.Equal("CC 8B 01 FF", Hex(frames[^1], 4));
             var picture = AlienFxLighting.V5Picture(64, 0x112233);

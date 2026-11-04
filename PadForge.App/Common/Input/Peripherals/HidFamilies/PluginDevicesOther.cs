@@ -150,6 +150,7 @@ namespace PadForge.Common.Input.Peripherals
                 ProductId = 0x1369,
                 Source = "libratbag",
                 Plugin = "src/driver-steelseries.c",
+                OutputLength = 32,
                 Lights = new[] { Zone(0, 1) },
                 Slots = 1,
                 Programs = new[] { VendorPrograms.SteelSeriesGG },

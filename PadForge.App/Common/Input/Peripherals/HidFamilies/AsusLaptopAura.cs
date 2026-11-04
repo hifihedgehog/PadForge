@@ -55,7 +55,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
     /// program has no descriptor here, so the family asks the same thing of the
     /// collection, as OpenRGB's IdentifyDevice does, with a read
     /// (AsusAuraCoreController.cpp:316). OpenRGB's rows name the Aura collections on
-    /// page FF31, and this family looks only there.</para>
+    /// page FF31, and this family asks only on a vendor page.</para>
     ///
     /// <para>What kind of keyboard. G-Helper sends B9, the ID string and
     /// 05 20 31 00 20, reads report 5D, and takes the answer only when it echoes the
@@ -103,7 +103,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
     internal static class AsusLaptopAura
     {
         internal const ushort VendorId = 0x0B05;
-        internal const ushort UsagePage = 0xFF31;
+        internal const ushort FirstVendorPage = 0xFF00;
         internal const byte Report = 0x5D;
         internal const int Length = 64;
 
@@ -160,7 +160,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         /// <summary>Whether the family lights a collection of a product, before its
         /// machine and its answer are known.</summary>
         internal static bool Takes(HidCollectionInfo collection)
-            => collection != null && collection.VendorId == VendorId && collection.UsagePage == UsagePage
+            => collection != null && collection.VendorId == VendorId && collection.UsagePage >= FirstVendorPage
                && collection.FeatureReportLength > 0
                && (collection.ProductId == RearLightProduct || Array.IndexOf(Products, collection.ProductId) >= 0);
 

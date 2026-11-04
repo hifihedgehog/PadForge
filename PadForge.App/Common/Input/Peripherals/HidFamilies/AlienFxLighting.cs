@@ -50,8 +50,14 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         /// (AlienFX_SDK.h:15) with the SDK's own default where no brightness is set.</summary>
         private const byte V5Bright = 0xFF, V6Bright = 0x64, V7Bright = 0x64;
 
-        private const int ReadyPolls = 100, ReadyWaitMs = 10;
-        private const byte V2Ready = 0x10;
+        /// <summary>The SDK polls up to a second on the old protocols and with no bound on
+        /// the laptop controller. These bounds keep a device that never says ready from holding
+        /// the worker: its picture goes out after them, as the SDK's own does past its count.</summary>
+        private const int ReadyPolls = 10, ReadyWaitMs = 10;
+        private const int V4ReadyPolls = 25, V4ReadyWaitMs = 20;
+
+        /// <summary>ALIENFX_V2_READY and ALIENFX_V4_BUSY (AlienFX_SDK.h:15-20).</summary>
+        private const byte V2Ready = 0x10, V4Busy = 34;
 
         public string Name => "AlienFX";
 
@@ -133,21 +139,38 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 : Frame(12, 0x02, 0x03, 0x01, 0xFF, 0xFF, 0xFF, r, g, b, r, g, b);
         }
 
-        /// <summary>WaitForReady: the status command, then report 02's first byte, for at most a
-        /// second. A channel that cannot read an input report waits the same once.</summary>
+        /// <summary>WaitForReady: the status command, then the input report. A channel that
+        /// cannot read an input report waits as long once.</summary>
         private static void WaitV1Ready(IHidReportChannel io, Action<int> wait, int length)
         {
             if (io is not IHidInputReportReader reader)
             {
-                wait?.Invoke(ReadyPolls);
+                wait?.Invoke(ReadyPolls * ReadyWaitMs);
                 return;
             }
             var answer = new byte[Math.Max(length, io.InputReportLength)];
             for (int i = 0; i < ReadyPolls; i++)
             {
                 if (!io.WriteOutput(Frame(length, 0x02, 0x06))) return;
-                if (reader.GetInputReport(0x02, answer) && answer[0] == V2Ready) return;
+                if (reader.GetInputReport(0x02, answer) && (answer[0] == V2Ready || answer[1] == V2Ready)) return;
                 wait?.Invoke(ReadyWaitMs);
+            }
+        }
+
+        /// <summary>IsDeviceReady: byte 2 of input report 0 is not the busy status, and 0 is a
+        /// device that says nothing (AlienFX_SDK.cpp, IsDeviceReady).</summary>
+        private static void WaitV4Ready(IHidReportChannel io, Action<int> wait)
+        {
+            if (io is not IHidInputReportReader reader)
+            {
+                wait?.Invoke(V4ReadyWaitMs);
+                return;
+            }
+            var answer = new byte[Math.Max(34, io.InputReportLength)];
+            for (int i = 0; i < V4ReadyPolls; i++)
+            {
+                if (!reader.GetInputReport(0x00, answer) || answer[2] != V4Busy) return;
+                wait?.Invoke(V4ReadyWaitMs);
             }
         }
 
@@ -298,11 +321,14 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                         return io.WriteOutput(V1Color(_api, rgb)) && io.WriteOutput(Frame(length, 0x02, 0x04))
                                && io.WriteOutput(Frame(length, 0x02, 0x05));
                     case Api.V4:
+                        WaitV4Ready(io, wait);
                         return io.WriteOutput(V4Control(4)) && io.WriteOutput(V4Control(1)) && io.WriteOutput(V4Color(rgb))
                                && io.WriteOutput(V4Control(3));
                     case Api.V5:
                         int feature = io.FeatureReportLength;
-                        if (!io.SetFeature(Frame(feature, 0xCC, 0x94))) return false;
+                        // Reset, then GetDeviceStatus: the status command and a read.
+                        if (!io.SetFeature(Frame(feature, 0xCC, 0x94)) || !io.SetFeature(Frame(feature, 0xCC, 0x93))) return false;
+                        io.GetFeature(0xCC, new byte[Math.Max(feature, 64)]);
                         foreach (var frame in V5Picture(feature, rgb))
                             if (!io.SetFeature(frame)) return false;
                         return io.SetFeature(Frame(feature, 0xCC, 0x8C, 0x13)) && io.SetFeature(Frame(feature, 0xCC, 0x8B, 0x01, 0xFF));

@@ -71,7 +71,7 @@ namespace PadForge.Tests
                 Assert.NotNull(model.Identify);
                 Assert.Equal(0, model.HoldMs);
                 Assert.Equal(HidppBackend.PaintMs, model.RepaintMs);
-                Assert.Null(family.Match(Collection(product, page: 0xFF00)));
+                Assert.Null(family.Match(Collection(product, page: 0x0001)));
                 Assert.Null(family.Match(Collection(product, feature: 0)));
             }
         }

@@ -180,6 +180,10 @@ namespace PadForge.Tests
             Assert.Equal(CorsairPeripheralLighting.Logical.K68, CorsairPeripheralLighting.LogicalOf(0x1B4F));
             // The K95 RGB PLATINUM SE is no case of the switch.
             Assert.Equal(CorsairPeripheralLighting.Logical.Normal, CorsairPeripheralLighting.LogicalOf(0x1B82));
+            // The tables that take the key-input setup (lines 80-90).
+            Assert.Equal(new[] { CorsairPeripheralLighting.Logical.K95Platinum, CorsairPeripheralLighting.Logical.K55,
+                CorsairPeripheralLighting.Logical.K70Mk2, CorsairPeripheralLighting.Logical.K68 },
+                Enum.GetValues<CorsairPeripheralLighting.Logical>().Where(CorsairPeripheralLighting.TakesKeyInput));
         }
 
         // ─────────────────────────────────────────────
@@ -415,6 +419,11 @@ namespace PadForge.Tests
             var k95 = CorsairPeripheralLighting.PictureFrames(CorsairDeviceType.Keyboard, CorsairPeripheralLighting.Logical.K95Platinum,
                 new[] { new LightInfo(157, LightKind.Edge, 0, LightKeySource.None) }, new[] { 0x010203 });
             Assert.Equal("00 7F 03 30 00", Hex(k95[2], 5));
+            // The K95 RGB streams 48 too (line 218), the K70 MK.2 24.
+            Assert.Equal("00 7F 03 30 00", Hex(CorsairPeripheralLighting.PictureFrames(CorsairDeviceType.Keyboard,
+                CorsairPeripheralLighting.Logical.K95, lights, new[] { 0, 0 })[2], 5));
+            Assert.Equal("00 7F 03 18 00", Hex(CorsairPeripheralLighting.PictureFrames(CorsairDeviceType.Keyboard,
+                CorsairPeripheralLighting.Logical.K70Mk2, lights, new[] { 0, 0 })[2], 5));
             Assert.Equal(0x01, k95[2][5 + 37]);
         }
 

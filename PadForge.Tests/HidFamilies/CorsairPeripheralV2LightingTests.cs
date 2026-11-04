@@ -267,6 +267,13 @@ namespace PadForge.Tests
             // The hardware controller sends color blocks on resource 1
             // (CorsairPeripheralV2HardwareController.cpp:28-35).
             Assert.False(session.Triplets);
+            // The software controller sends blocks on resource 22 too
+            // (CorsairPeripheralV2SoftwareController.cpp:26-47).
+            var m55 = Family().Match(Collection(0x1B70));
+            var sw = Device(0x1B70);
+            var swSession = Assert.IsType<CorsairPeripheralV2Lighting.Session>(m55.Begin(sw, sw.Wait));
+            Assert.Equal(CorsairPeripheralV2Lighting.LightCtrl2, swSession.LightCtrl);
+            Assert.False(swSession.Triplets);
         }
 
         [Fact]

@@ -1843,11 +1843,20 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>The Chroma category a Razer row lights: the keypad
-        /// category for a keypad, else the device's kind by product ID, else
-        /// the row's own kind.</summary>
+        /// category for a keypad, an accessory's category by what it is,
+        /// else the device's kind by product ID, else the row's own
+        /// kind.</summary>
         internal static string RazerCategory(LinkRow row)
         {
             if (Array.IndexOf(RazerKeypadPids, row.ProductId) >= 0) return "keypad";
+            // An accessory by what it is. One that is no mat or headset, a
+            // dock, a speaker, a base station, a case kit, is a Chroma Link
+            // device, the SDK's category for every other lit thing
+            // (RzChromaSDKDefines.h, "Chroma Linked devices", the Razer Core
+            // among them).
+            if (Array.IndexOf(PeripheralProductIds.RazerMousepads, row.ProductId) >= 0) return "mousepad";
+            if (Array.IndexOf(PeripheralProductIds.RazerHeadsets, row.ProductId) >= 0) return "headset";
+            if (Array.IndexOf(PeripheralProductIds.RazerAccessories, row.ProductId) >= 0) return "chromalink";
             // The Huntsman V3 boards openrazer does not list yet, which the
             // analog keyboard reader already knows (AnalogKeyboardCatalog).
             if (PadForge.Engine.Common.AnalogKeyboard.AnalogKeyboardCatalog.IsRazerHuntsmanV3(row.ProductId))

@@ -215,6 +215,78 @@ namespace PadForge.Tests
     }
 
     /// <summary>
+    /// Each Razer accessory reaches the Chroma SDK under what it is (#557):
+    /// a mat as a mousepad, a headset as a headset, and anything else as a
+    /// Chroma Link device, the SDK's category for every other lit thing
+    /// (RzChromaSDKDefines.h at CSDK_ChromaModSample fe641c4). The names are
+    /// OpenRGB's (RazerDevices.h:236-285) and openrazer's.
+    /// </summary>
+    public class RazerAccessoryCategoryTests
+    {
+        private static string Category(ushort pid, int capType = PadForge.Engine.InputDeviceType.Mouse)
+            => PeripheralLinker.RazerCategory(new LinkRow(Guid.NewGuid(), capType, PeripheralLinker.RazerVid, pid, Guid.NewGuid(), null));
+
+        [Theory]
+        [InlineData(0x0068, "mousepad")] // Firefly HyperFlux
+        [InlineData(0x0C00, "mousepad")] // Firefly
+        [InlineData(0x0C01, "mousepad")] // Goliathus Chroma
+        [InlineData(0x0C02, "mousepad")] // Goliathus Chroma Extended
+        [InlineData(0x0C04, "mousepad")] // Firefly V2
+        [InlineData(0x0C05, "mousepad")] // Strider Chroma
+        [InlineData(0x0C06, "mousepad")] // Goliathus Chroma 3XL
+        [InlineData(0x0C08, "mousepad")] // Firefly V2 Pro
+        [InlineData(0x0F03, "headset")] // Tiamat 7.1 V2
+        [InlineData(0x0F19, "headset")] // Kraken Kitty Edition
+        [InlineData(0x007E, "chromalink")] // Mouse Dock Chroma
+        [InlineData(0x0215, "chromalink")] // Core
+        [InlineData(0x0517, "chromalink")] // Nommo Chroma
+        [InlineData(0x0518, "chromalink")] // Nommo Pro
+        [InlineData(0x0532, "chromalink")] // Leviathan V2
+        [InlineData(0x054A, "chromalink")] // Leviathan V2 X
+        [InlineData(0x0F07, "chromalink")] // Chroma Mug
+        [InlineData(0x0F08, "chromalink")] // Base Station Chroma
+        [InlineData(0x0F09, "chromalink")] // Chroma HDK
+        [InlineData(0x0F0D, "chromalink")] // Laptop Stand Chroma
+        [InlineData(0x0F0E, "chromalink")] // Chroma PC Case Lighting Kit
+        [InlineData(0x0F13, "chromalink")] // O11 Dynamic
+        [InlineData(0x0F1A, "chromalink")] // Core X
+        [InlineData(0x0F1B, "chromalink")] // Seiren Emote
+        [InlineData(0x0F1D, "chromalink")] // Mouse Bungee V3 Chroma
+        [InlineData(0x0F20, "chromalink")] // Base Station V2 Chroma
+        [InlineData(0x0F21, "chromalink")] // Thunderbolt 4 Dock Chroma
+        [InlineData(0x0F2B, "chromalink")] // Laptop Stand Chroma V2
+        [InlineData(0x0F52, "chromalink")] // Thunderbolt 5 Dock Chroma
+        public void AnAccessory_ReachesTheCategoryOfWhatItIs(int pid, string category)
+        {
+            Assert.Equal(category, Category((ushort)pid));
+            // Whatever kind of collection the row is.
+            Assert.Equal(category, Category((ushort)pid, PadForge.Engine.InputDeviceType.Keyboard));
+        }
+
+        /// <summary>The theory names every accessory, and the two narrower
+        /// lists stay inside the list of accessories.</summary>
+        [Fact]
+        public void EveryAccessoryIsNamed_AndTheListsNest()
+        {
+            var named = typeof(RazerAccessoryCategoryTests).GetMethod(nameof(AnAccessory_ReachesTheCategoryOfWhatItIs))
+                .GetCustomAttributes(typeof(InlineDataAttribute), false).Cast<InlineDataAttribute>()
+                .Select(a => (ushort)(int)a.GetData(null).First()[0]).OrderBy(p => p);
+            Assert.Equal(PeripheralProductIds.RazerAccessories.OrderBy(p => p), named);
+            Assert.All(PeripheralProductIds.RazerMousepads, p => Assert.Contains(p, PeripheralProductIds.RazerAccessories));
+            Assert.All(PeripheralProductIds.RazerHeadsets, p => Assert.Contains(p, PeripheralProductIds.RazerAccessories));
+        }
+
+        /// <summary>A mouse, a keyboard and a keypad keep their categories.</summary>
+        [Fact]
+        public void AMouseAKeyboardAndAKeypad_KeepTheirs()
+        {
+            Assert.Equal("mouse", Category(PeripheralProductIds.RazerMice[0], PadForge.Engine.InputDeviceType.Keyboard));
+            Assert.Equal("keyboard", Category(PeripheralProductIds.RazerKeyboards[0]));
+            Assert.Equal("keypad", Category(PeripheralLinker.RazerKeypadPids[0]));
+        }
+    }
+
+    /// <summary>
     /// A Logitech keyboard lit through the LED SDK's keyboard path shows the
     /// lights its own board has (#557): the keys on a per-key board, the
     /// five zones on a zone board such as the G213, never both. The path

@@ -78,6 +78,26 @@ namespace PadForge.Common.Input.Peripherals
             0x0F13, 0x0F19, 0x0F1A, 0x0F1B, 0x0F1D, 0x0F20, 0x0F21, 0x0F2B, 0x0F52,
         };
 
+        /// <summary>The accessories that are mousepads, the Chroma SDK's
+        /// mousepad category (RzChromaSDKDefines.h, "Mouse mat", at
+        /// CSDK_ChromaModSample fe641c4): the Firefly, Goliathus and Strider
+        /// mats and the Firefly HyperFlux (OpenRGB RazerDevices.h:265-271
+        /// and 283).</summary>
+        internal static readonly ushort[] RazerMousepads =
+        {
+            0x0068, 0x0C00, 0x0C01, 0x0C02, 0x0C04, 0x0C05, 0x0C06, 0x0C08,
+        };
+
+        /// <summary>The accessories that are headsets, the Chroma SDK's
+        /// headset category (RzChromaSDKDefines.h, "Headsets"): the Tiamat
+        /// 7.1 V2 and the Kraken Kitty Edition (OpenRGB RazerDevices.h:236
+        /// and 250). 0x0F21 is no headset here, though line 237 of that file
+        /// names it the Kraken Kitty Black Edition: no device of OpenRGB's
+        /// table uses that name, the table lists it as the Thunderbolt 4
+        /// Dock Chroma (RazerDevices.cpp:9704), and openrazer agrees
+        /// (driver/razeraccessory_driver.h:34).</summary>
+        internal static readonly ushort[] RazerHeadsets = { 0x0F03, 0x0F19 };
+
         /// <summary>The Aerox, Rival and Sensei detectors in OpenRGB
         /// Controllers/SteelSeriesController/SteelSeriesControllerDetect.cpp,
         /// with every product_id in rivalcfg's devices.</summary>

@@ -571,7 +571,7 @@ namespace PadForge.Common.Input.Peripherals
             protected override bool Send(IHidReportChannel io, Action<int> wait, IReadOnlyList<LightInfo> lights,
                 IReadOnlyList<int> colors)
                 => _link.SendData(Device.Monochrome
-                    ? PictureData(false, BufferLength, lights, colors).Take(BufferLength).ToArray()
+                    ? PictureData(false, BufferLength, lights, colors.Select(CorsairLights.Mono).ToList()).Take(BufferLength).ToArray()
                     : PictureData(Triplets, BufferLength, lights, colors));
 
             /// <summary>Hardware render mode and its answer (the

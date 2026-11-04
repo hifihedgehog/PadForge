@@ -401,7 +401,11 @@ namespace PadForge.Tests
             var collection = known with { ProductId = (ushort)other };
             var model = CorsairPeripheralLighting.Instance.Match(collection);
             Assert.NotNull(model);
-            Assert.Same(CorsairPeripheralLighting.Instance.Match(known), model);
+            var row = CorsairPeripheralLighting.Instance.Match(known);
+            Assert.Equal(row.Name, model.Name);
+            Assert.Equal(row.Map.Product, model.Map.Product);
+            // A board with one LED color has the same row and a model of its own.
+            if (!CorsairPeripheralLighting.OneColor.Contains((ushort)other)) Assert.Same(row, model);
         }
 
         [Theory]

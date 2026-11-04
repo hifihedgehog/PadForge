@@ -30,6 +30,9 @@ namespace PadForge.Common.Input.Peripherals
         /// failed.</summary>
         internal static string ProductSku() => Read("SELECT SystemSKUNumber FROM Win32_ComputerSystem", "SystemSKUNumber");
 
+        /// <summary>The DMI product family, or null.</summary>
+        internal static string ProductFamily() => Read("SELECT SystemFamily FROM Win32_ComputerSystem", "SystemFamily");
+
         /// <summary>The first object's value of <paramref name="key"/>, ""
         /// when there is no object, as readWMIQuery answers
         /// (dmiinfo.cpp:35-57), or null when the query failed.</summary>

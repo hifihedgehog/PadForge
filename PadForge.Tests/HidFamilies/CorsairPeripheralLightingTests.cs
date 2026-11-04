@@ -668,6 +668,65 @@ namespace PadForge.Tests
             Assert.Equal(50000, model.KeepAliveIdleMs);
         }
 
+        /// <summary>monoRgb in ckb-next (kblight.cpp:283-307), worked by hand from its formula.</summary>
+        [Fact]
+        public void TheOneBrightness_IsCkbNextsAverageInLinearLight()
+        {
+            Assert.Equal(0xFFFFFF, CorsairLights.Mono(0xFFFFFF));
+            Assert.Equal(0x000000, CorsairLights.Mono(0x000000));
+            Assert.Equal(0x9C9C9C, CorsairLights.Mono(0xFF0000));
+            Assert.Equal(0x9C9C9C, CorsairLights.Mono(0x00FF00));
+            Assert.Equal(0x9C9C9C, CorsairLights.Mono(0x0000FF));
+            Assert.Equal(0x808080, CorsairLights.Mono(0x808080));
+            Assert.Equal(0x222222, CorsairLights.Mono(0x102030));
+            Assert.Equal(0x020202, CorsairLights.Mono(0x010203));
+        }
+
+        /// <summary>The boards with red LEDs alone keep a key lit whatever its color, where its
+        /// own red byte would leave a blue key dark.</summary>
+        [Theory]
+        [InlineData(0x1B15)]
+        [InlineData(0x1B36)]
+        [InlineData(0x1B3A)]
+        [InlineData(0x1B3F)]
+        [InlineData(0x1B40)]
+        [InlineData(0x1B44)]
+        [InlineData(0x1BA5)]
+        public void ABoardWithOneLedColor_TakesOneBrightness(int product)
+        {
+            var model = Family().Match(Collection((ushort)product));
+            var io = new FakeCorsairChannel { Answer = q => q[1] == 0x0E ? Identity(0xC0, 1) : null };
+            var session = Assert.IsType<CorsairPeripheralLighting.PeripheralSession>(model.Begin(io, io.Wait));
+            io.Outputs.Clear();
+            var lights = session.Map.Lights;
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, io.Wait, lights, lights.Select(_ => 0x0000FF).ToList()));
+            var frames = io.Outputs.Where(f => f[1] == 0x7F).ToList();
+            int address = lights.First(l => l.Address < 60).Address;
+            Assert.Equal(0x9C, frames[0][5 + address]);
+            Assert.Equal(0x9C, frames[3][5 + address]);
+            Assert.Equal(0x9C, frames[6][5 + address]);
+        }
+
+        /// <summary>An RGB board that shares a row with one keeps its colors: the Strafe RGB's is
+        /// the row of ckb-next's one-color Strafe.</summary>
+        [Fact]
+        public void AnRgbBoard_KeepsItsColors()
+        {
+            var family = Family();
+            var strafe = family.Match(Collection(0x1B20));
+            Assert.NotSame(strafe, family.Match(Collection(0x1B15)));
+            var io = new FakeCorsairChannel { Answer = q => q[1] == 0x0E ? Identity(0xC0, 1) : null };
+            var session = strafe.Begin(io, io.Wait);
+            io.Outputs.Clear();
+            var lights = session.Map.Lights;
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, io.Wait, lights, lights.Select(_ => 0x0000FF).ToList()));
+            var frames = io.Outputs.Where(f => f[1] == 0x7F).ToList();
+            int address = lights.First(l => l.Address < 60).Address;
+            Assert.Equal(0x00, frames[0][5 + address]);
+            Assert.Equal(0x00, frames[3][5 + address]);
+            Assert.Equal(0xFF, frames[6][5 + address]);
+        }
+
         [Fact]
         public void AFailedWrite_FailsThePicture()
         {

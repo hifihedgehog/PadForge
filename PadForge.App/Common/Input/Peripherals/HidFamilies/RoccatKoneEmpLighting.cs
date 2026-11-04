@@ -39,7 +39,9 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
 
         private const int StatusAt = 19, FlowAt = 20, EffectAt = 21, LedsAt = 23;
         private const byte UserColor = 0x1E, EffectFixed = 0x01;
-        private const int ReadyPolls = 50, ReadyWaitMs = 10;
+        /// <summary>ROCCAT_MAX_RETRY_READY (line 57), and roccat_is_ready's and roccat_wait_ready's
+        /// sleeps (lines 391, 404, 415).</summary>
+        private const int ReadyPolls = 10, ReadyWaitMs = 10, BusyWaitMs = 100;
 
         public string Name => "Roccat Kone EMP";
 
@@ -97,8 +99,8 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             return report;
         }
 
-        /// <summary>roccat_wait_ready (lines 398-421). Report 04's second byte: 01 ready, 02 an
-        /// error, anything else not yet.</summary>
+        /// <summary>roccat_is_ready and roccat_wait_ready (lines 378-421). Report 04's second
+        /// byte: 01 ready, 02 an error, 03 not yet and 100 ms more, anything else not yet.</summary>
         internal static bool WaitReady(IHidReportChannel io, Action<int> wait)
         {
             var answer = new byte[Math.Max(3, io.FeatureReportLength)];
@@ -106,8 +108,9 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             for (int i = 0; i < ReadyPolls; i++)
             {
                 if (!io.GetFeature(ReportConfigure, answer)) return false;
-                if (answer[1] == 0x01) return true;
+                if (answer[1] == 0x03) wait?.Invoke(BusyWaitMs);
                 if (answer[1] == 0x02) return false;
+                if (answer[1] == 0x01) return true;
                 wait?.Invoke(ReadyWaitMs);
             }
             return false;

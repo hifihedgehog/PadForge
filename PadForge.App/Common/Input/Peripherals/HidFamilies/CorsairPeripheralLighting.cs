@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using PadForge.Common.Input.Peripherals.HidFamilies;
 
 namespace PadForge.Common.Input.Peripherals
@@ -154,7 +155,7 @@ namespace PadForge.Common.Input.Peripherals
             Dubeolsik = 4,
         }
 
-        private readonly Dictionary<(string Detector, int ProductId), HidLightingModel> _models = new();
+        private readonly Dictionary<(string Detector, int ProductId, bool OneColor), HidLightingModel> _models = new();
         private readonly object _gate = new();
 
         public string Name => "Corsair (peripherals)";
@@ -181,6 +182,11 @@ namespace PadForge.Common.Input.Peripherals
             [0x1B3A] = 0x1B49,
         };
 
+        /// <summary>The boards whose LEDs are all red: ckb-next's non-RGB products (usb.h:61, 80,
+        /// 86, 88, 111 and 112) and OpenRGB's K68 RED SHADOW. A picture goes to them as one
+        /// brightness (<see cref="CorsairLights.Mono"/>).</summary>
+        internal static readonly HashSet<ushort> OneColor = new() { 0x1B15, 0x1B36, 0x1B3A, 0x1B3F, 0x1B40, 0x1B44, 0x1BA5 };
+
         public HidLightingModel Match(HidCollectionInfo collection)
         {
             if (collection == null || collection.VendorId != CorsairLights.VendorId) return null;
@@ -190,14 +196,15 @@ namespace PadForge.Common.Input.Peripherals
             var registration = registrations[0];
             lock (_gate)
             {
-                var key = (registration.Detector, registration.ProductId);
+                bool oneColor = OneColor.Contains(collection.ProductId);
+                var key = (registration.Detector, registration.ProductId, oneColor);
                 if (!_models.TryGetValue(key, out var model))
-                    _models[key] = model = Model(registration);
+                    _models[key] = model = Model(registration, oneColor);
                 return model;
             }
         }
 
-        private HidLightingModel Model(OpenRgbRegistration registration)
+        private HidLightingModel Model(OpenRgbRegistration registration, bool oneColor)
         {
             ushort productId = (ushort)registration.ProductId;
             string product = CorsairLights.Product(productId);
@@ -222,7 +229,7 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     Map = new LightMap(Lights(TypeOf(productId), LogicalOf(productId), name), "OpenRGB RGBController_CorsairPeripheral.cpp")
                     { Product = product },
-                    Begin = (io, wait) => BeginPeripheral(io, wait, productId, name, product),
+                    Begin = (io, wait) => BeginPeripheral(io, wait, productId, name, product, oneColor),
                 },
             };
             return new HidLightingModel
@@ -699,7 +706,7 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         private HidLightingSession BeginPeripheral(IHidReportChannel io, Action<int> wait, ushort productId, string name,
-            string product)
+            string product, bool oneColor)
         {
             var identity = Identify(io, productId);
             if (identity == null) return null;
@@ -710,7 +717,7 @@ namespace PadForge.Common.Input.Peripherals
             var map = new LightMap(Lights(type, logical, name), $"OpenRGB RGBController_CorsairPeripheral.cpp, {type}")
             { Product = product };
             bool keyboard = type == CorsairDeviceType.Keyboard;
-            return new PeripheralSession(product, type, logical, physical, map, keyboard ? 2 : 1);
+            return new PeripheralSession(product, type, logical, physical, map, keyboard ? 2 : 1, oneColor);
         }
 
         private HidLightingSession BeginK65Mini(IHidReportChannel io, Action<int> wait, string product)
@@ -733,10 +740,13 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>A session of the older protocol.</summary>
         internal sealed class PeripheralSession : CorsairSession
         {
+            private readonly bool _oneColor;
+
             public PeripheralSession(string product, CorsairDeviceType type, Logical logical,
-                Physical physical, LightMap map, int handBacks)
+                Physical physical, LightMap map, int handBacks, bool oneColor = false)
                 : base(product, SpecialFunction(0x01), handBacks, KeyboardHandBackGapMs)
             {
+                _oneColor = oneColor;
                 Type = type;
                 Logical = logical;
                 Physical = physical;
@@ -754,7 +764,8 @@ namespace PadForge.Common.Input.Peripherals
             protected override bool Send(IHidReportChannel io, Action<int> wait, IReadOnlyList<LightInfo> lights,
                 IReadOnlyList<int> colors)
             {
-                foreach (var frame in PictureFrames(Type, Logical, lights, colors))
+                var shown = _oneColor ? colors.Select(CorsairLights.Mono).ToList() : colors;
+                foreach (var frame in PictureFrames(Type, Logical, lights, shown))
                     if (!io.WriteOutput(frame)) return false;
                 return true;
             }

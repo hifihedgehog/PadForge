@@ -55,8 +55,12 @@ namespace PadForge.Tests
             public void Dispose() { }
         }
 
-        /// <summary>A VIA firmware of a protocol, with the channels given.</summary>
-        private static Board Via(int protocol, params byte[] channels)
+        /// <summary>A VIA firmware of a protocol. It sends back the packet it got, with a value
+        /// written in where it has that value: from protocol 11 on the channels given, and before
+        /// that the value IDs given.</summary>
+        private static Board Via(int protocol, params byte[] has) => ViaBoard(protocol, has, vial: false);
+
+        private static Board ViaBoard(int protocol, byte[] has, bool vial)
         {
             var board = new Board();
             board.Reply = packet =>
@@ -69,21 +73,26 @@ namespace PadForge.Tests
                         answer[3] = (byte)protocol;
                         break;
                     case 0xFE:
-                        // Not Vial: the command is unknown.
-                        answer[1] = 0xFF;
+                        // Vial: its protocol, low byte first. Any other: the command is unknown.
+                        answer[1] = vial ? (byte)0x06 : (byte)0xFF;
                         break;
                     case 0x07:
                     case 0x08:
-                        if (protocol >= 0x0C && !channels.Contains(packet[2]))
+                        bool channels = protocol >= 0x0B;
+                        if (channels && !has.Contains(packet[2]))
                         {
                             answer[1] = 0xFF;
+                            break;
                         }
-                        else if (packet[1] == 0x08)
+                        int at = channels ? 4 : 3;
+                        byte id = packet[at - 1];
+                        bool known = !channels ? has.Contains(id)
+                            : packet[2] == 0 ? id is 0x09 or 0x0A or 0x0C
+                            : id is 0x01 or 0x02 || (id == 0x04 && packet[2] != 0x01);
+                        if (packet[1] == 0x08 && known)
                         {
-                            int at = protocol >= 0x0C ? 4 : 3;
-                            byte id = packet[at - 1];
-                            answer[at] = id switch { 0x01 or 0x80 => 200, 0x02 or 0x81 => 7, _ => 11 };
-                            if (id is 0x04 or 0x83) answer[at + 1] = 22;
+                            answer[at] = id switch { 0x01 or 0x80 or 0x09 => 200, 0x02 or 0x81 or 0x0A => 7, _ => 11 };
+                            if (id is 0x04 or 0x83 or 0x0C) answer[at + 1] = 22;
                         }
                         break;
                 }
@@ -116,8 +125,8 @@ namespace PadForge.Tests
             Assert.True(families.IndexOf(QmkRawHidLighting.Instance) > families.IndexOf(QmkLighting.Instance));
         }
 
-        /// <summary>Protocol 12 on: channel 3, then the effect, color and brightness read back,
-        /// the effect set to solid once, the color each picture, and all three back at the end.</summary>
+        /// <summary>Channel 3, then the effect, color and brightness read back, the effect set to
+        /// solid once, the color each picture, and all three back at the end.</summary>
         [Fact]
         public void AViaBoard_TakesItsColorThroughChannelValues()
         {
@@ -145,8 +154,8 @@ namespace PadForge.Tests
             Assert.Empty(session.CrashFrames);
         }
 
-        /// <summary>A channel the firmware lacks answers FF (via.c:683-686). A board with rgblight
-        /// alone takes channel 2, and one with neither stays dark.</summary>
+        /// <summary>A channel the firmware lacks answers FF (via.c:220-225). A board with rgblight
+        /// alone takes channel 2, and one with none of them stays dark.</summary>
         [Fact]
         public void TheChannels_GoByWhatTheFirmwareAnswers()
         {
@@ -157,21 +166,161 @@ namespace PadForge.Tests
             Assert.Null(QmkRawHidLighting.Begin(Via(0x000D), _ => { }, "p"));
         }
 
-        /// <summary>Before protocol 12: no channels, the RGB matrix's IDs and rgblight's.</summary>
+        /// <summary>QMK 0.19.0's via.h is the first with channels, at protocol 11. 0.18.0's is 10.</summary>
+        [Fact]
+        public void TheChannels_BeginAtProtocol11()
+        {
+            var eleven = Assert.IsType<QmkRawHidLighting.ViaSession>(QmkRawHidLighting.Begin(Via(0x000B, 0x03), _ => { }, "p"));
+            Assert.Equal((byte)3, Assert.Single(eleven.Targets).Head[0]);
+            var ten = Assert.IsType<QmkRawHidLighting.ViaSession>(QmkRawHidLighting.Begin(Via(0x000A, 0x80, 0x81, 0x83), _ => { }, "p"));
+            Assert.Empty(Assert.Single(ten.Targets).Head);
+        }
+
+        /// <summary>Before protocol 11: rgblight's values, which QMK's RGB matrix shares. A firmware
+        /// that is not Vial is never asked about 1, 2 and 4, which on Wilba's boards are layout
+        /// switches (wt_rgb_backlight_api.h).</summary>
         [Fact]
         public void AnOlderProtocol_HasNoChannels()
         {
-            var board = Via(0x0009);
+            var board = Via(0x0009, 0x80, 0x81, 0x83);
             var session = Assert.IsType<QmkRawHidLighting.ViaSession>(QmkRawHidLighting.Begin(board, _ => { }, "p"));
-            Assert.Equal(2, session.Targets.Count);
+            var target = Assert.Single(session.Targets);
+            Assert.Equal((200, 7, 11, 22), ((int)target.OldBrightness, (int)target.OldEffect, (int)target.OldHue, (int)target.OldSaturation));
+            Assert.DoesNotContain(board.Written, w => w[1] == 0x08 && w[2] is 0x01 or 0x02 or 0x04);
             board.Written.Clear();
             session.Paint(board, _ => { }, session.Map.Lights, new[] { 0xFF0000 });
-            Assert.Contains(board.Written, w => Hex(w, 0, 4) == "00 07 02 01");
-            Assert.Contains(board.Written, w => Hex(w, 0, 5) == "00 07 04 00 FF");
-            Assert.Contains(board.Written, w => Hex(w, 0, 3) == "00 07 01");
-            Assert.Contains(board.Written, w => Hex(w, 0, 4) == "00 07 81 01");
-            Assert.Contains(board.Written, w => Hex(w, 0, 5) == "00 07 83 00 FF");
-            Assert.Contains(board.Written, w => Hex(w, 0, 3) == "00 07 80");
+            Assert.Equal(new[] { "00 07 81 01", "00 07 83 00 FF", "00 07 80 FF" }, board.Written.Select(w => Hex(w, 0, w[2] == 0x83 ? 5 : 4)));
+            board.Written.Clear();
+            session.HandBack(board, _ => { });
+            Assert.Equal(new[] { "00 07 81 07", "00 07 83 0B 16", "00 07 80 C8" }, board.Written.Select(w => Hex(w, 0, w[2] == 0x83 ? 5 : 4)));
+            var other = Via(0x0009, 0x01, 0x02, 0x04);
+            Assert.Null(QmkRawHidLighting.Begin(other, _ => { }, "p"));
+            Assert.DoesNotContain(other.Written, w => w[1] == 0x07);
+        }
+
+        /// <summary>Vial stays at protocol 9 with its RGB matrix on 1, 2 and 4 (vial-qmk via.h:104-114),
+        /// and its rgblight on 80, 81 and 83.</summary>
+        [Fact]
+        public void AVialBoard_HasItsMatrixAtItsOwnValues()
+        {
+            var board = ViaBoard(0x0009, new byte[] { 0x01, 0x02, 0x04 }, vial: true);
+            var session = Assert.IsType<QmkRawHidLighting.ViaSession>(QmkRawHidLighting.Begin(board, _ => { }, "p"));
+            var target = Assert.Single(session.Targets);
+            Assert.Equal((byte)0x01, target.Brightness);
+            Assert.Equal((byte)0x04, target.Color);
+            var both = ViaBoard(0x0009, new byte[] { 0x01, 0x02, 0x04, 0x80, 0x81, 0x83 }, vial: true);
+            Assert.Equal(2, Assert.IsType<QmkRawHidLighting.ViaSession>(QmkRawHidLighting.Begin(both, _ => { }, "p")).Targets.Count);
+        }
+
+        /// <summary>A firmware that sends back what it got, or says nothing to Vial's question, has
+        /// none of these values, and nothing is written to it.</summary>
+        [Fact]
+        public void AValueTheFirmwareLacks_IsNeverWritten()
+        {
+            var echo = Via(0x0009);
+            Assert.Null(QmkRawHidLighting.Begin(echo, _ => { }, "p"));
+            Assert.DoesNotContain(echo.Written, w => w[1] == 0x07);
+            var channels = new Board();
+            channels.Reply = packet =>
+            {
+                var answer = (byte[])packet.Clone();
+                if (packet[1] == 0x01) answer[3] = 0x0D;
+                return answer;
+            };
+            Assert.Null(QmkRawHidLighting.Begin(channels, _ => { }, "qmk:5241:065B"));
+            Assert.DoesNotContain(channels.Written, w => w[1] == 0x07);
+            // A firmware that answers the version and nothing else: not Vial.
+            var quiet = Via(0x0009, 0x01, 0x02, 0x04);
+            var inner = quiet.Reply;
+            quiet.Reply = packet => packet[1] == 0xFE ? null : inner(packet);
+            Assert.Null(QmkRawHidLighting.Begin(quiet, _ => { }, "p"));
+        }
+
+        /// <summary>A value that holds the byte asked with is told by the second byte.</summary>
+        [Fact]
+        public void AValueThatHoldsTheProbe_IsStillSeen()
+        {
+            var board = Via(0x000D, 0x03);
+            var inner = board.Reply;
+            board.Reply = packet =>
+            {
+                var answer = inner(packet);
+                if (packet[1] == 0x08 && packet[3] == 0x01) answer[4] = 0x5A;
+                return answer;
+            };
+            var session = Assert.IsType<QmkRawHidLighting.ViaSession>(QmkRawHidLighting.Begin(board, _ => { }, "p"));
+            Assert.Equal((byte)0x5A, Assert.Single(session.Targets).OldBrightness);
+            var asked = board.Written.Where(w => w[1] == 0x08 && w[2] == 0x03 && w[3] == 0x01).Select(w => w[4]).ToList();
+            Assert.Equal(new byte[] { 0x5A, 0xA5 }, asked);
+        }
+
+        /// <summary>A one-color backlight, channel 1 or 9 and 0A: no color, and the effect is whether
+        /// it breathes (via.c:523-562).</summary>
+        [Fact]
+        public void AOneColorBacklight_TakesItsBrightnessAlone()
+        {
+            var board = Via(0x000D, 0x01);
+            var session = Assert.IsType<QmkRawHidLighting.ViaSession>(QmkRawHidLighting.Begin(board, _ => { }, "p"));
+            var target = Assert.Single(session.Targets);
+            Assert.Null(target.Color);
+            board.Written.Clear();
+            session.Paint(board, _ => { }, session.Map.Lights, new[] { 0x4080C0 });
+            Assert.Equal(new[] { "00 07 01 02 00", "00 07 01 01 C0" }, board.Written.Select(w => Hex(w, 0, 5)));
+            board.Written.Clear();
+            session.Paint(board, _ => { }, session.Map.Lights, new[] { 0x000020 });
+            Assert.Equal("00 07 01 01 20", Hex(Assert.Single(board.Written), 0, 5));
+            board.Written.Clear();
+            session.HandBack(board, _ => { });
+            Assert.Equal(new[] { "00 07 01 02 07", "00 07 01 01 C8" }, board.Written.Select(w => Hex(w, 0, 5)));
+
+            var old = Via(0x0009, 0x09, 0x0A);
+            var older = Assert.IsType<QmkRawHidLighting.ViaSession>(QmkRawHidLighting.Begin(old, _ => { }, "p"));
+            Assert.Null(Assert.Single(older.Targets).Color);
+            old.Written.Clear();
+            older.Paint(old, _ => { }, older.Map.Lights, new[] { 0x4080C0 });
+            Assert.Equal(new[] { "00 07 0A 00", "00 07 09 C0" }, old.Written.Select(w => Hex(w, 0, 4)));
+        }
+
+        /// <summary>Wilba's, Rama's and Zeal's firmware on channel 0 (wt_main.c), with effect 1 solid
+        /// color (wt_rgb_backlight.c:1705-1711). No other vendor's channel 0 is touched.</summary>
+        [Theory]
+        [InlineData("qmk:6582:060A")]
+        [InlineData("qmk:5241:065B")]
+        [InlineData("qmk:5A45:0060")]
+        public void WilbasBoards_TakeTheirOwnValues(string product)
+        {
+            var board = Via(0x000D, 0x00);
+            var session = Assert.IsType<QmkRawHidLighting.ViaSession>(QmkRawHidLighting.Begin(board, _ => { }, product));
+            var target = Assert.Single(session.Targets);
+            Assert.Equal((byte)0x00, target.Head[0]);
+            board.Written.Clear();
+            session.Paint(board, _ => { }, session.Map.Lights, new[] { 0xFF0000 });
+            Assert.Equal(new[] { "00 07 00 0A 01", "00 07 00 0C 00 FF", "00 07 00 09 FF" }, board.Written.Select(w => Hex(w, 0, w[3] == 0x0C ? 6 : 5)));
+            board.Written.Clear();
+            session.HandBack(board, _ => { });
+            Assert.Equal(new[] { "00 07 00 0A 07", "00 07 00 0C 0B 16", "00 07 00 09 C8" }, board.Written.Select(w => Hex(w, 0, w[3] == 0x0C ? 6 : 5)));
+        }
+
+        [Fact]
+        public void AnotherVendorsChannelZero_IsNeverAsked()
+        {
+            var board = Via(0x000D, 0x00);
+            Assert.Null(QmkRawHidLighting.Begin(board, _ => { }, "qmk:1234:5678"));
+            Assert.DoesNotContain(board.Written, w => w[1] is 0x07 or 0x08 && w[2] == 0x00);
+            Assert.Null(QmkRawHidLighting.Begin(Via(0x000D, 0x00), _ => { }, null));
+        }
+
+        /// <summary>Before channels Wilba's values share the list, and color tells them from a
+        /// backlight's 9 and 0A.</summary>
+        [Fact]
+        public void AnOlderWilbaBoard_TakesItsValuesWithoutAChannel()
+        {
+            var board = Via(0x0009, 0x09, 0x0A, 0x0C);
+            var session = Assert.IsType<QmkRawHidLighting.ViaSession>(QmkRawHidLighting.Begin(board, _ => { }, "p"));
+            Assert.Equal((byte)0x0C, Assert.Single(session.Targets).Color);
+            board.Written.Clear();
+            session.Paint(board, _ => { }, session.Map.Lights, new[] { 0xFF0000 });
+            Assert.Equal(new[] { "00 07 0A 01", "00 07 0C 00 FF", "00 07 09 FF" }, board.Written.Select(w => Hex(w, 0, w[2] == 0x0C ? 5 : 4)));
         }
 
         [Fact]
@@ -192,7 +341,11 @@ namespace PadForge.Tests
 
         // ── The QMK-OpenRGB firmware ──
 
-        private static Board OpenRgbBoard(byte revision, params byte[] modes)
+        private static Board OpenRgbBoard(byte revision, params byte[] modes) => OpenRgbBoard(revision, 2, 2, modes);
+
+        /// <summary>The firmware with two LEDs at most: A with the key flag and an underglow LED.
+        /// An LED past the count is a failure, at byte 62 on revision 9 and in the flags after it.</summary>
+        private static Board OpenRgbBoard(byte revision, byte total, byte withEmpty, byte[] modes)
         {
             var board = new Board { ReportLength = 65 };
             board.Reply = packet =>
@@ -205,8 +358,8 @@ namespace PadForge.Tests
                         answer[2] = revision;
                         break;
                     case 3:
-                        answer[2] = 2;
-                        answer[3] = 2;
+                        answer[2] = total;
+                        answer[3] = withEmpty;
                         break;
                     case 4:
                         answer[2] = 9;
@@ -216,14 +369,21 @@ namespace PadForge.Tests
                         answer[6] = 5;
                         break;
                     case 5:
-                        // Two LEDs: A with the key flag and Left Shift's neighbor underglow.
-                        answer[2] = 10;
-                        answer[3] = 20;
-                        answer[4] = 0x04;
-                        answer[8] = 0x04;
-                        answer[9] = 30;
-                        answer[10] = 40;
-                        answer[11] = 0x02;
+                        int count = revision == 0x09 ? 1 : packet[3];
+                        for (int i = 0; i < count; i++)
+                        {
+                            int led = packet[2] + i, at = 2 + i * 7;
+                            if (led >= total)
+                            {
+                                if (revision == 0x09) answer[1 + 62] = 25;
+                                else answer[at + 2] = 25;
+                                continue;
+                            }
+                            answer[at] = (byte)(led == 0 ? 10 : 30);
+                            answer[at + 1] = (byte)(led == 0 ? 20 : 40);
+                            answer[at + 2] = (byte)(led == 0 ? 0x04 : 0x02);
+                            answer[at + 6] = (byte)(led == 0 ? 0x04 : 0);
+                        }
                         break;
                     case 6:
                         if (revision == 0x09) answer[2] = (byte)(modes.Contains(packet[2]) ? 50 : 25);
@@ -247,7 +407,8 @@ namespace PadForge.Tests
             var session = Assert.IsType<QmkRawHidLighting.OpenRgbProtocolSession>(QmkRawHidLighting.Begin(board, _ => { }, "p"));
             Assert.Equal("00 01", Hex(board.Written[0], 0, 2));
             Assert.Equal(65, board.Written[0].Length);
-            Assert.True(session.Map.Lights.Count >= 1);
+            Assert.Equal(2, session.Map.Lights.Count);
+            Assert.Equal(LightKind.Edge, session.Map.Lights[1].Kind);
             var key = session.Map.Lights[0];
             Assert.Equal(0x04, key.Usage);
             Assert.Equal(10, key.X);
@@ -265,6 +426,40 @@ namespace PadForge.Tests
             Assert.True(session.HandBack(board, _ => { }));
             Assert.Equal("00 07 07 06 05 09 08 00", Hex(Assert.Single(board.Written), 0, 8));
             Assert.Empty(session.CrashFrames);
+        }
+
+        /// <summary>OpenRGB asks about the larger of the two counts on every revision
+        /// (RGBController_QMKOpenRGBRev9.cpp:278-281, RevB:280, RevD:283), and drops what the firmware
+        /// says it does not have: byte 62 on revision 9, the LED's flags on the others.</summary>
+        [Theory]
+        [InlineData(0x09)]
+        [InlineData(0x0B)]
+        [InlineData(0x0C)]
+        [InlineData(0x0D)]
+        [InlineData(0x0E)]
+        public void TheLargerCount_IsAsked_AndWhatFailsIsDropped(int revision)
+        {
+            var board = OpenRgbBoard((byte)revision, 2, 3, new byte[] { 2, 1 });
+            var session = Assert.IsType<QmkRawHidLighting.OpenRgbProtocolSession>(QmkRawHidLighting.Begin(board, _ => { }, "p"));
+            Assert.Equal(2, session.Map.Lights.Count);
+            Assert.Contains(board.Written, w => revision == 0x09 ? Hex(w, 0, 3) == "00 05 02" : Hex(w, 0, 4) == "00 05 00 03");
+            var larger = OpenRgbBoard((byte)revision, 2, 0, new byte[] { 2, 1 });
+            Assert.Equal(2, Assert.IsType<QmkRawHidLighting.OpenRgbProtocolSession>(QmkRawHidLighting.Begin(larger, _ => { }, "p")).Map.Lights.Count);
+            Assert.Null(QmkRawHidLighting.Begin(OpenRgbBoard((byte)revision, 0, 0, new byte[] { 2, 1 }), _ => { }, "p"));
+            Assert.Null(QmkRawHidLighting.Begin(OpenRgbBoard((byte)revision, 0, 2, new byte[] { 2, 1 }), _ => { }, "p"));
+        }
+
+        /// <summary>Before revision D a frame goes by place, so a color goes to its LED's place.</summary>
+        [Fact]
+        public void AnOlderFrame_PutsEachColorAtItsLedsPlace()
+        {
+            var lights = new[]
+            {
+                new LightInfo(1, LightKind.Key, 0, LightKeySource.None),
+                new LightInfo(0, LightKind.Key, 0, LightKeySource.None),
+            };
+            var frame = Assert.Single(QmkRawHidLighting.OpenRgbProtocolSession.Frames(0x0B, lights, new[] { 0x111111, 0x222222 }));
+            Assert.Equal("00 09 00 02 22 22 22 11 11 11", Hex(frame, 0, 10));
         }
 
         /// <summary>Revision D and E: four bytes per LED and fifteen to a frame. Earlier: the
@@ -292,6 +487,76 @@ namespace PadForge.Tests
             Assert.Null(QmkRawHidLighting.Begin(OpenRgbBoard(0x09, 2, 3), _ => { }, "p"));
             Assert.Null(QmkRawHidLighting.Begin(OpenRgbBoard(0x0A, 1), _ => { }, "p"));
             Assert.Null(QmkRawHidLighting.Begin(OpenRgbBoard(0x00, 1), _ => { }, "p"));
+        }
+
+        // ── VialRGB without Direct ──
+
+        /// <summary>A VialRGB firmware with these effects: its protocol, ID and flag, info, effect
+        /// list and current mode, and the packet back for anything else.</summary>
+        private static Board VialRgb(params byte[] effects)
+        {
+            var board = new Board();
+            board.Reply = packet =>
+            {
+                var answer = (byte[])packet.Clone();
+                switch (packet[1])
+                {
+                    case 0x01:
+                        answer[3] = 0x09;
+                        break;
+                    case 0xFE:
+                        Array.Clear(answer);
+                        answer[1] = 0x06;
+                        answer[13] = 0x01;
+                        break;
+                    case 0x08 when packet[2] == 0x41:
+                        answer[3] = 0x05;
+                        answer[5] = 0x80;
+                        answer[6] = 0x01;
+                        answer[7] = 0x02;
+                        answer[8] = 0x03;
+                        break;
+                    case 0x08 when packet[2] == 0x42:
+                        Array.Fill(answer, (byte)0xFF, 3, answer.Length - 3);
+                        if (packet[3] == 0)
+                            for (int i = 0; i < effects.Length; i++)
+                            {
+                                answer[3 + i * 2] = effects[i];
+                                answer[4 + i * 2] = 0;
+                            }
+                        break;
+                }
+                return answer;
+            };
+            return board;
+        }
+
+        /// <summary>VIALRGB_NO_DIRECT: the solid color effect, 2, with the color, at the speed it
+        /// read (RGBController_QMKVialRGB.cpp:256-272), and the mode read comes back.</summary>
+        [Fact]
+        public void AVialBoardWithoutDirect_TakesOneColorThroughItsSolidEffect()
+        {
+            var board = VialRgb(2, 3);
+            var session = Assert.IsType<QmkLighting.VialSolidSession>(QmkRawHidLighting.Begin(board, _ => { }, "p"));
+            Assert.Single(session.Map.Lights);
+            Assert.Empty(session.CrashFrames);
+            Assert.True(session.HandBack(board, _ => { }));
+            board.Written.Clear();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(board, _ => { }, session.Map.Lights, new[] { 0xFF0000 }));
+            Assert.Equal("00 07 41 02 00 80 00 FF FF", Hex(Assert.Single(board.Written), 0, 9));
+            Assert.Equal("00 07 41 05 00 80 01 02 03", Hex(Assert.Single(session.CrashFrames), 0, 9));
+            board.Written.Clear();
+            Assert.True(session.HandBack(board, _ => { }));
+            Assert.Equal("00 07 41 05 00 80 01 02 03", Hex(Assert.Single(board.Written), 0, 9));
+            Assert.Empty(session.CrashFrames);
+        }
+
+        /// <summary>With Direct it lights per LED, and with neither VIA's values do not answer.</summary>
+        [Fact]
+        public void AVialBoardsEffects_ChooseItsSession()
+        {
+            Assert.Null(QmkRawHidLighting.Begin(VialRgb(3, 4), _ => { }, "p"));
+            Assert.IsType<QmkLighting.VialSession>(QmkRawHidLighting.Begin(VialRgb(1, 2), _ => { }, "p"));
         }
 
         // ── The rows that fall back ──

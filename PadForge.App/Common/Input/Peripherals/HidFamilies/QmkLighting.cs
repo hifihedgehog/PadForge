@@ -544,6 +544,7 @@ namespace PadForge.Common.Input.Peripherals
         internal const byte VialRgbSetMode = 0x41;
         internal const byte VialRgbDirectFastSet = 0x42;
         internal const ushort VialEffectDirect = 1;
+        internal const ushort VialEffectSolid = 2;
         internal const ushort VialEffectSkip = 0xFFFF;
 
         /// <summary>SendCheckCommand: the command, the sub command and the
@@ -617,6 +618,54 @@ namespace PadForge.Common.Input.Peripherals
             return frames;
         }
 
+        /// <summary>A VialRGB firmware built with VIALRGB_NO_DIRECT (vial-qmk
+        /// quantum/rgb_matrix/animations/vialrgb_direct_anim.h), which has no Direct effect and no
+        /// list of its LEDs. Its solid color is a mode with a color, as OpenRGB sets it
+        /// (RGBController_QMKVialRGB.cpp:256-272), and the hand-back sets the mode read first.</summary>
+        internal sealed class VialSolidSession : HidLightingSession
+        {
+            private readonly byte _speed;
+            private readonly byte[][] _restore;
+            private bool _started;
+
+            private VialSolidSession(LightMap map, byte[] mode)
+            {
+                Map = map;
+                _speed = mode[2];
+                _restore = new[] { VialMode((ushort)(mode[0] | mode[1] << 8), mode[2], mode[3], mode[4], mode[5]) };
+            }
+
+            public override LightMap Map { get; }
+
+            public override bool Feature => false;
+
+            public override byte[][] CrashFrames => _started ? _restore : Array.Empty<byte[]>();
+
+            public static HidLightingSession Begin(IHidReportChannel io, string product)
+            {
+                var mode = VialCheck(io, LightingGet, VialRgbGetMode) ?? new byte[6];
+                var map = new LightMap(new[] { QmkRawHidLighting.WholeLight() }, "QMK VialRGB, from the keyboard") { Product = product };
+                return new VialSolidSession(map, mode);
+            }
+
+            public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
+                IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
+            {
+                var (h, s, v) = Hsv(colors != null && colors.Count > 0 ? colors[0] : 0);
+                if (!QmkRawHidLighting.ViaSession.Send(io, VialMode(VialEffectSolid, _speed, h, s, v))) return HidLightingPaint.Failed;
+                _started = true;
+                return HidLightingPaint.Sent;
+            }
+
+            public override bool HandBack(IHidReportChannel io, Action<int> wait)
+            {
+                if (!_started) return true;
+                if (!QmkRawHidLighting.ViaSession.Send(io, _restore[0])) return false;
+                _started = false;
+                return true;
+            }
+        }
+
         internal sealed class VialSession : HidLightingSession
         {
             private readonly int _count;
@@ -673,7 +722,8 @@ namespace PadForge.Common.Input.Peripherals
                         highest = effect;
                     }
                 }
-                if (!effects.Contains(VialEffectDirect)) return null;
+                if (!effects.Contains(VialEffectDirect))
+                    return effects.Contains(VialEffectSolid) ? VialSolidSession.Begin(io, product) : null;
                 var number = VialCheck(io, LightingGet, VialRgbGetNumberLeds);
                 int count = number == null ? 0 : number[0] | number[1] << 8;
                 var lights = new List<LightInfo>(count);

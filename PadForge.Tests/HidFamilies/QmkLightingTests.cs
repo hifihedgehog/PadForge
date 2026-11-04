@@ -302,7 +302,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void AVialBoardWithoutDirect_TakesOneColorThroughVia()
+        public void AVialBoardWithoutDirect_TakesOneColorThroughItsSolidEffect()
         {
             using var rig = new KeyboardFamilyRig { OutputLength = 33, InputLength = 33 };
             rig.Log.InputAnswer = o => o[1] == 0x08 && o[2] == 0x42
@@ -311,7 +311,7 @@ namespace PadForge.Tests
             var collection = Raw(0x20A0, 0x422D);
             using var backend = rig.Lit(Families, collection);
             Assert.False(backend.Snapshot.Units.Single().Asleep);
-            Assert.Contains(rig.Log.Of('O'), o => o[1] == 0x07 && o[2] == 0x04);
+            Assert.Contains(rig.Log.Of('O'), o => o[1] == 0x07 && o[2] == 0x41 && o[3] == 0x02);
         }
     }
 }

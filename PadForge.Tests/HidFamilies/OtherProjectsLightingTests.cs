@@ -29,23 +29,27 @@ namespace PadForge.Tests
 
         // ── G-Helper's mice ──
 
-        /// <summary>GetUpdateLightingModePacket, for each mouse's zones.</summary>
+        /// <summary>GetUpdateLightingModePacket with zone All, the one G-Helper's window and its
+        /// stream send a mouse with one zone, at each model's USBPacketSize (AsusMouse.cs:566,
+        /// HarpeAceMini.cs:110, HarpeIIAce.cs:122).</summary>
         [Theory]
-        [InlineData(0x1B0A, "00 51 28 00 00 00 64 11 22 33")]
-        [InlineData(0x1B67, "00 51 28 01 00 00 64 11 22 33")]
-        [InlineData(0x1B63, "00 51 28 01 00 00 64 11 22 33")]
-        [InlineData(0x1C8F, "00 51 28 01 00 00 64 11 22 33")]
-        [InlineData(0x1C69, "00 51 28 01 00 00 64 11 22 33")]
-        [InlineData(0x1B16, "00 51 28 03 00 00 64 11 22 33")]
-        [InlineData(0x1C56, "00 51 28 03 00 00 64 11 22 33")]
-        [InlineData(0x1C57, "00 51 28 03 00 00 64 11 22 33")]
-        public void AGHelperMouse_TakesItsZoneFrame(int product, string frame)
+        [InlineData(0x1B0A, 65)]
+        [InlineData(0x1B67, 65)]
+        [InlineData(0x1B63, 64)]
+        [InlineData(0x1C8F, 64)]
+        [InlineData(0x1C69, 64)]
+        [InlineData(0x1B16, 65)]
+        [InlineData(0x1C56, 65)]
+        [InlineData(0x1C57, 65)]
+        public void AGHelperMouse_TakesItsZoneFrame(int product, int length)
         {
             var row = Row(0x0B05, (ushort)product);
-            Assert.Equal(frame, First(row, 0x112233, 10));
+            Assert.Equal("00 51 28 03 00 00 64 11 22 33", First(row, 0x112233, 10));
             Assert.Equal(0, row.Interface);
             Assert.Equal(0xFF01, row.UsagePage);
-            Assert.Equal(65, row.OutputLength);
+            Assert.Equal(OpenRgbRegistration.Any, row.Usage);
+            Assert.Equal(length, row.OutputLength);
+            Assert.Equal(length, Assert.Single(row.Picture(new[] { 0x112233 })).Bytes.Length);
             Assert.Equal(new[] { VendorPrograms.ArmouryCrate }, row.Programs);
         }
 
@@ -53,8 +57,10 @@ namespace PadForge.Tests
         public void TheKerisIIOriginKjp_TakesAFramePerZone()
         {
             var row = Row(0x0B05, 0x1D4C);
+            Assert.Equal(64, row.OutputLength);
             var steps = row.Picture(new[] { 0x010203, 0x040506, 0x070809 }).ToList();
             Assert.Equal(3, steps.Count);
+            Assert.Equal(64, steps[0].Bytes.Length);
             Assert.Equal("00 51 28 00 00 00 64 01 02 03", Hex(steps[0].Bytes, 10));
             Assert.Equal("00 51 28 01 00 00 64 04 05 06", Hex(steps[1].Bytes, 10));
             Assert.Equal("00 51 28 02 00 00 64 07 08 09", Hex(steps[2].Bytes, 10));
@@ -65,7 +71,7 @@ namespace PadForge.Tests
         public void TheHarpeIIAceOnItsDongle_IsReport03()
         {
             var row = Row(0x0B05, 0x1AD0);
-            Assert.Equal("03 51 28 01 00 00 64 11 22 33", First(row, 0x112233, 10));
+            Assert.Equal("03 51 28 03 00 00 64 11 22 33", First(row, 0x112233, 10));
             Assert.Equal((2, 0xFF01), (row.Interface, row.UsagePage));
         }
 
@@ -100,7 +106,12 @@ namespace PadForge.Tests
         public void TheHeadsetsWithALedSwitch_TurnItOnFirst()
         {
             foreach (ushort product in new ushort[] { 0x1AFA, 0x1D41, 0x1B84 })
-                Assert.Equal("CC 51 10 00 00 01", Hex(Assert.Single(Row(0x0B05, product).Start).Bytes, 6));
+            {
+                var start = Row(0x0B05, product).Start;
+                Assert.Equal(2, start.Count);
+                Assert.Equal("CC 51 10 00 00 01", Hex(start[0].Bytes, 6));
+                Assert.Equal(PluginStepKind.ReadInput, start[1].Kind);
+            }
             Assert.Empty(Row(0x0B05, 0x195B).Start);
             Assert.Empty(Row(0x0B05, 0x1965).Start);
         }
@@ -113,7 +124,9 @@ namespace PadForge.Tests
             var row = Row(0x0B05, 0x1AD3);
             var steps = row.Picture(new[] { 0x112233 }).ToList();
             Assert.Equal("CC 51 28 00 00 01 01 11 22 33", Hex(steps[0].Bytes, 10));
-            Assert.Equal("CC 50 55", Hex(steps[1].Bytes, 3));
+            Assert.Equal(PluginStepKind.ReadInput, steps[1].Kind);
+            Assert.Equal("CC 50 55", Hex(steps[2].Bytes, 3));
+            Assert.Equal(PluginStepKind.ReadInput, steps[3].Kind);
             Assert.Equal(LenovoLegionLighting.HoldMs, row.HoldMs);
             Assert.Equal(LenovoLegionLighting.RepaintMs, row.RepaintMs);
         }
@@ -124,7 +137,10 @@ namespace PadForge.Tests
         public void TheDeltaS_StreamsDirect_AndLeavesDirectMode()
         {
             var row = Row(0x0B05, 0x1943);
-            var start = row.Start.Select(s => s.Bytes).ToList();
+            // Each setup write waits for its echo, as WriteRegister and PauseBus do.
+            Assert.All(row.Start.Where((_, i) => i % 2 == 1), s => Assert.Equal(PluginStepKind.ReadInput, s.Kind));
+            Assert.All(row.HandBack.Where((_, i) => i % 2 == 1), s => Assert.Equal(PluginStepKind.ReadInput, s.Kind));
+            var start = row.Start.Where(s => s.Kind == PluginStepKind.Output).Select(s => s.Bytes).ToList();
             Assert.Equal(9, start.Count);
             Assert.Equal("CC 60 10 00 00 00", Hex(start[0], 6));
             Assert.Equal("CC 80 00 CC 00 01 00 02 80 20", Hex(start[1], 10));
@@ -132,7 +148,7 @@ namespace PadForge.Tests
             Assert.Equal("CC 80 00 CC 00 01 00 02 80 2F", Hex(start[3], 10));
             Assert.Equal("CC 80 00 CC 00 01 01 01 01", Hex(start[4], 9));
             Assert.Equal("CC 80 00 CE 00 01 00 02 80 20", Hex(start[5], 10));
-            var back = row.HandBack.Select(s => s.Bytes).ToList();
+            var back = row.HandBack.Where(s => s.Kind == PluginStepKind.Output).Select(s => s.Bytes).ToList();
             Assert.Equal(10, back.Count);
             Assert.Equal("CC 80 00 CC 00 01 01 01 00", Hex(back[2], 9));
             Assert.Equal("CC 60 10 00 00 01", Hex(back[9], 6));
@@ -218,7 +234,10 @@ namespace PadForge.Tests
         {
             Assert.Equal(level, PluginDeviceLighting.SenseiRawLevel(color));
             Assert.Equal($"00 05 01 {level:X2}", First(Row(0x1038, 0x1369), color, 4));
-            Assert.Equal("00 07 01 01", Hex(Row(0x1038, 0x1369).Start.Single().Bytes, 4));
+            var start = Row(0x1038, 0x1369).Start;
+            Assert.Equal("00 07 01 01", Hex(start[0].Bytes, 4));
+            Assert.Equal(PluginStepKind.Wait, start[1].Kind);
+            Assert.Equal(10, start[1].Value);
         }
 
         // ── The Kone EMP ──
@@ -288,6 +307,60 @@ namespace PadForge.Tests
             Assert.Equal(LenovoLegionLighting.RepaintMs, model.RepaintMs);
         }
 
+        /// <summary>A picture or a hand-back waits for the mouse, as roccat_write_profile does.</summary>
+        [Fact]
+        public void TheKoneEmp_FailsAPictureTheMouseRefuses()
+        {
+            byte ready = 0x01;
+            var io = new FakeReportChannel { FeatureReportLength = 41 };
+            io.Feature = id => id switch
+            {
+                0x04 => new byte[] { 0x04, ready },
+                0x05 => new byte[] { 0x05, 0x03, 0x02 },
+                0x06 => EmpSettings(),
+                _ => null,
+            };
+            var session = RoccatKoneEmpLighting.Begin(io, _ => { });
+            var lights = RoccatKoneEmpLighting.Instance.Match(Collection(0x1E7D, 0x2E24, feature: 41)).Map.Lights;
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, lights, new[] { 1, 2, 3, 4 }));
+            ready = 0x02;
+            Assert.Equal(HidLightingPaint.Failed, session.Paint(io, _ => { }, lights, new[] { 1, 2, 3, 4 }));
+            Assert.False(session.HandBack(io, _ => { }));
+        }
+
+        /// <summary>roccat_wait_ready gives up at the first error and after ten polls, and a
+        /// mouse that answers 03 gets 100 ms more each time (roccat_is_ready).</summary>
+        [Fact]
+        public void TheKoneEmp_StopsAtAnError_AndGivesABusyMouseLonger()
+        {
+            var error = EmpChannel(ready: 0x02);
+            Assert.False(RoccatKoneEmpLighting.WaitReady(error, _ => { }));
+            Assert.Single(error.Calls, c => c.Kind == "get");
+
+            var busy = EmpChannel(ready: 0x03);
+            var waits = new List<int>();
+            Assert.False(RoccatKoneEmpLighting.WaitReady(busy, waits.Add));
+            Assert.Equal(10, busy.Calls.Count(c => c.Kind == "get"));
+            Assert.Equal(10 + 10 * (100 + 10), waits.Sum());
+
+            var notYet = EmpChannel(ready: 0x00);
+            waits.Clear();
+            Assert.False(RoccatKoneEmpLighting.WaitReady(notYet, waits.Add));
+            Assert.Equal(10, notYet.Calls.Count(c => c.Kind == "get"));
+            Assert.Equal(10 + 10 * 10, waits.Sum());
+        }
+
+        /// <summary>driver_probe_callb (ite_8291_lb.c:551-556): a Stellaris Gen5's 6010 that the
+        /// laptop does not use.</summary>
+        [Fact]
+        public void AStellarisGen5sUnusedLightbar_IsLeftAlone()
+        {
+            Assert.True(PluginDeviceLighting.LightbarUnused(0x6010, "STELLARIS1XI05", "STELLARIS15I05"));
+            Assert.False(PluginDeviceLighting.LightbarUnused(0x6010, "STELLARIS1XI05", "STELLARIS17I05"));
+            Assert.False(PluginDeviceLighting.LightbarUnused(0x7000, "STELLARIS1XI05", "STELLARIS15I05"));
+            Assert.False(PluginDeviceLighting.LightbarUnused(0x6010, "OTHER", "STELLARIS15I05"));
+        }
+
         // ── Sinowealth mice by firmware ──
 
         [Fact]
@@ -337,10 +410,11 @@ namespace PadForge.Tests
 
         /// <summary>ite_8291_lb.c:198-226, by product, at the Direct-free mono mode.</summary>
         [Theory]
-        [InlineData(0x6010, "14 00 01 11 22 33 00 00", "08 02 01 01 64 08 00 00")]
-        [InlineData(0x7000, "14 01 01 11 22 33 00 00", "08 21 01 01 64 01 00 00")]
-        public void ALightbar_IsItsProductsTwoReports(int product, string color, string mode)
+        [InlineData(0x6010, "14 00 01 11 22 33 00 00", "08 02 01 01 64 08 00 00", "1A 00 01 04 00 00 00 01")]
+        [InlineData(0x7000, "14 01 01 11 22 33 00 00", "08 21 01 01 64 01 00 00", "1A 01 01 04 00 00 00 01")]
+        public void ALightbar_IsItsProductsTwoReports(int product, string color, string mode, string on)
         {
+            Assert.Equal(on, Hex(Row(0x048D, (ushort)product).Start.Single().Bytes, 8));
             var steps = PluginDeviceLighting.TuxedoLightbarPicture((ushort)product, 0x112233, "", "").ToList();
             Assert.Equal(color, Hex(steps[0].Bytes, 8));
             Assert.Equal(mode, Hex(steps[1].Bytes, 8));
@@ -421,10 +495,10 @@ namespace PadForge.Tests
             Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, null, new[] { 0x112233 }));
             var out12 = io.Calls.Where(c => c.Kind == "out").Select(c => c.Bytes).ToList();
             Assert.Equal("02 07 04", Hex(out12[0], 3));
-            Assert.Equal("02 03 01 FF FF FF 11 22 33 11 22 33", Hex(out12.First(f => f[1] == 0x03), 12));
+            Assert.Equal("02 03 01 FF FF FF 11 22 33 00 00 00", Hex(out12.First(f => f[1] == 0x03), 12));
             Assert.Equal("02 04", Hex(out12[^2], 2));
             Assert.Equal("02 05", Hex(out12[^1], 2));
-            Assert.Equal("02 03 01 FF FF FF 12 31 23", Hex(AlienFxLighting.V1Color(AlienFxLighting.Api.V2, 0x112233), 9));
+            Assert.Equal("02 03 01 FF FF FF 12 30 00", Hex(AlienFxLighting.V1Color(AlienFxLighting.Api.V2, 0x112233), 9));
         }
 
         [Fact]
@@ -488,7 +562,9 @@ namespace PadForge.Tests
             Assert.Equal("00 40 10 0C 00 01 64 03 11 22 33", Hex(mouse[3], 11));
 
             io = new FakeReportChannel();
-            new AlienFxLighting.Session(AlienFxLighting.Api.V8).Paint(io, _ => { }, null, new[] { 0x112233 });
+            var waits = new List<int>();
+            new AlienFxLighting.Session(AlienFxLighting.Api.V8).Paint(io, waits.Add, null, new[] { 0x112233 });
+            Assert.Equal(new[] { 4, 6 }, waits);
             Assert.Equal("01 0E 80 00 01", Hex(io.Calls.First(c => c.Kind == "set").Bytes, 5));
             var blocks = io.Calls.Where(c => c.Kind == "out").Select(c => c.Bytes).ToList();
             Assert.Equal(AlienFxLighting.V8Lights / 4, blocks.Count);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using PadForge.Common.Input;
 
 namespace PadForge.Common.Input.Peripherals.HidFamilies
@@ -16,7 +17,8 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
     /// (<see cref="QmkLighting.VialSession"/>). A VIA firmware alone takes the whole
     /// keyboard's color through its custom values, which most boards with VIA on them ship
     /// with: no reflash, and nothing stored, since VIA's setters are the _noeeprom ones until
-    /// a save (qmk_firmware quantum/via.c:716-738).</para>
+    /// a save (qmk_firmware quantum/via.c:544-562 and 716-738, keyboards/wilba_tech
+    /// wt_rgb_backlight.c:1805-1890).</para>
     ///
     /// <para>This family comes last on the worker's list, and a row of OpenRGB's or SignalRGB's
     /// falls back to it where its firmware answers neither protocol. A collection on this page
@@ -68,35 +70,62 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         // ── VIA's custom values ──
 
         /// <summary>
-        /// The whole keyboard's color through VIA (qmk_firmware quantum/via.h and via.c,
-        /// Keychron-qmk_firmware and vial-qmk quantum/via.c).
+        /// The whole keyboard's color through VIA (qmk_firmware quantum/via.h and via.c, at HEAD
+        /// and at tags 0.18.0 and 0.19.0, vial-qmk quantum/via.c, keyboards/wilba_tech).
         ///
-        /// <para>From protocol 12 a value goes by channel, 2 for rgblight and 3 for the RGB
-        /// matrix, and a channel the firmware lacks answers FF (via.c:683-686). Before that
-        /// there are no channels: the RGB matrix takes values 1, 2 and 4 and rgblight 80, 81 and
-        /// 83, and each ignores the other's (vial-qmk via.h:104-114). The effect goes to 1, solid
-        /// color on both, and the hue, saturation and brightness follow each picture. The session
-        /// reads all three first, and the hand-back sets them again.</para>
+        /// <para>From protocol 11 (QMK 0.19.0) a value goes by channel: 3 the RGB matrix, 2
+        /// rgblight and 1 a one-color backlight, with values 1, 2 and 4, and a channel the firmware
+        /// lacks answers FF (via.c:220-225). Channel 0 is the board's own and its values mean what
+        /// that board says, so only Wilba's, Rama's and Zeal's boards are asked, which take 9, 0A
+        /// and 0C there (wt_main.c, wt_rgb_backlight_api.h).</para>
+        ///
+        /// <para>Before protocol 11 there are no channels and the values share one list. rgblight
+        /// and QMK's RGB matrix take 80, 81 and 83 (0.18.0's via.c:576-618). Vial, still at protocol
+        /// 9, moves its RGB matrix to 1, 2 and 4 (vial-qmk via.h:104-114). Wilba's lighting takes 9,
+        /// 0A and 0C, and a backlight 9 and 0A alone.</para>
+        ///
+        /// <para>A firmware sends back the packet it got, with the value written in where it has
+        /// that value (raw_hid_send at the end of via.c's raw_hid_receive). So a value it lacks
+        /// comes back as asked, and only what it has is ever written. The effect goes to solid color
+        /// once, 1 on all of these but a backlight, where 0 stops its breathing, and the color and
+        /// brightness follow each picture. The session reads them all first, and the hand-back sets
+        /// them again.</para>
         /// </summary>
         internal sealed class ViaSession : HidLightingSession
         {
             private const byte GetVersion = 0x01, ViaSet = QmkLighting.ViaSetValue, ViaGet = QmkLighting.ViaGetValue, Unhandled = 0xFF;
 
-            /// <summary>The first protocol with channels (via.h of QMK at that version).</summary>
-            private const int ChannelsFrom = 0x000C;
+            /// <summary>The first protocol with channels: 0.19.0's via.h has them at 000B, and
+            /// 0.18.0's at 000A has none.</summary>
+            private const int ChannelsFrom = 0x000B;
 
-            /// <summary>The first protocol that has values to set.</summary>
+            /// <summary>The protocol of QMK's oldest via.h, and OpenRGB's floor for a Vial board
+            /// (QMKVialRGBController.cpp:83-88).</summary>
             private const int OldestVersion = 9;
 
-            private const byte SolidColor = 0x01;
+            private const byte CustomChannel = 0x00, BacklightChannel = 0x01, RgbLightChannel = 0x02;
+
+            /// <summary>The older values: rgblight's and the matrix's (via.h of 0.18.0:100-103),
+            /// and Wilba's (wt_rgb_backlight_api.h).</summary>
+            private const byte OldBrightness = 0x80, OldEffect = 0x81, OldColor = 0x83;
+            private const byte WilbaBrightness = 0x09, WilbaEffect = 0x0A, WilbaColor = 0x0C;
+
+            private const byte SolidColor = 0x01, NoBreathing = 0x00;
+
+            /// <summary>Two different bytes, so a value that holds one still shows.</summary>
+            private static readonly byte[] Probes = { 0x5A, 0xA5 };
+
+            /// <summary>The vendors of every board in keyboards/wilba_tech.</summary>
+            private static readonly string[] WilbaVendors = { "qmk:6582:", "qmk:5241:", "qmk:5A45:" };
 
             /// <summary>The wait for a picture's echo. The firmware answers every write
             /// (via.c:290-297), and a board that stops answering must not hold the worker for
             /// a second a frame, as it may while the session asks at the start.</summary>
             private const int PaintAnswerMs = 20;
 
-            /// <summary>The head of a value's frame and its value IDs: by channel, or by ID alone.</summary>
-            internal sealed record Target(byte[] Head, byte Brightness, byte Effect, byte Color, byte OldBrightness, byte OldEffect, byte OldHue, byte OldSaturation);
+            /// <summary>The head of a value's frame and its value IDs, by channel or by ID alone.
+            /// A backlight has no color.</summary>
+            internal sealed record Target(byte[] Head, byte Brightness, byte Effect, byte? Color, byte Solid, byte OldBrightness, byte OldEffect, byte OldHue, byte OldSaturation);
 
             private readonly List<Target> _targets;
             private readonly byte[][] _restore;
@@ -125,46 +154,69 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 if (version == null || got <= 0 || version[0] != GetVersion) return null;
                 int protocol = version[1] << 8 | version[2];
                 if (protocol < OldestVersion) return null;
-                var targets = new List<Target>();
-                if (protocol >= ChannelsFrom)
-                {
-                    foreach (byte channel in new byte[] { QmkLighting.RgbMatrixChannel, 0x02 })
-                    {
-                        var target = Read(io, new[] { channel }, QmkLighting.RgbBrightness, QmkLighting.RgbEffect, QmkLighting.RgbColor);
-                        if (target != null) targets.Add(target);
-                    }
-                }
-                else
-                {
-                    AddIfAnswered(targets, Read(io, Array.Empty<byte>(), QmkLighting.RgbBrightness, QmkLighting.RgbEffect, QmkLighting.RgbColor));
-                    AddIfAnswered(targets, Read(io, Array.Empty<byte>(), 0x80, 0x81, 0x83));
-                }
+                var targets = (protocol >= ChannelsFrom ? ByChannel(io, product) : WithoutChannels(io))
+                    .Where(target => target != null).ToList();
                 if (targets.Count == 0) return null;
                 return new ViaSession(targets, new LightMap(new[] { WholeLight() }, "QMK VIA, from the keyboard") { Product = product });
             }
 
-            private static void AddIfAnswered(List<Target> targets, Target target)
+            private static IEnumerable<Target> ByChannel(IHidReportChannel io, string product)
             {
-                if (target != null) targets.Add(target);
+                byte brightness = QmkLighting.RgbBrightness, effect = QmkLighting.RgbEffect, color = QmkLighting.RgbColor;
+                yield return Read(io, new[] { QmkLighting.RgbMatrixChannel }, brightness, effect, color, SolidColor);
+                yield return Read(io, new[] { RgbLightChannel }, brightness, effect, color, SolidColor);
+                yield return Read(io, new[] { BacklightChannel }, brightness, effect, null, NoBreathing);
+                if (product != null && WilbaVendors.Any(vendor => product.StartsWith(vendor, StringComparison.Ordinal)))
+                    yield return Read(io, new[] { CustomChannel }, WilbaBrightness, WilbaEffect, WilbaColor, SolidColor);
+            }
+
+            private static IEnumerable<Target> WithoutChannels(IHidReportChannel io)
+            {
+                var none = Array.Empty<byte>();
+                yield return Read(io, none, OldBrightness, OldEffect, OldColor, SolidColor);
+                if (IsVial(io))
+                    yield return Read(io, none, QmkLighting.RgbBrightness, QmkLighting.RgbEffect, QmkLighting.RgbColor, SolidColor);
+                yield return Read(io, none, WilbaBrightness, WilbaEffect, WilbaColor, SolidColor)
+                    ?? Read(io, none, WilbaBrightness, WilbaEffect, null, NoBreathing);
+            }
+
+            /// <summary>Vial answers its ID with its protocol, low byte first (vial-qmk
+            /// quantum/vial.c:94-102). Any other firmware answers FF or sends the packet back.</summary>
+            private static bool IsVial(IHidReportChannel io)
+            {
+                var id = QmkLighting.Exchange(io, QmkLighting.Packet(QmkLighting.VialCommand, QmkLighting.VialGetKeyboardId), out int got);
+                return id != null && got > 0 && id[0] != Unhandled && id[0] != QmkLighting.VialCommand;
+            }
+
+            /// <summary>A value's answer, or null where the firmware does not have the value.</summary>
+            private static byte[] Value(IHidReportChannel io, byte[] head, byte id)
+            {
+                int at = 1 + head.Length + 1;
+                foreach (byte probe in Probes)
+                {
+                    var packet = new byte[at + 1];
+                    packet[0] = ViaGet;
+                    head.CopyTo(packet, 1);
+                    packet[at - 1] = id;
+                    packet[at] = probe;
+                    var answer = QmkLighting.Exchange(io, QmkLighting.Packet(packet), out int got);
+                    if (answer == null || got <= 0 || answer[0] == Unhandled) return null;
+                    if (answer[at] != probe) return answer;
+                }
+                return null;
             }
 
             /// <summary>Reads what a target shows now, or null where the firmware does not have it.</summary>
-            private static Target Read(IHidReportChannel io, byte[] head, byte brightness, byte effect, byte color)
+            private static Target Read(IHidReportChannel io, byte[] head, byte brightness, byte effect, byte? color, byte solid)
             {
-                byte[] Ask(byte id)
-                {
-                    var packet = new byte[1 + head.Length + 1];
-                    packet[0] = ViaGet;
-                    head.CopyTo(packet, 1);
-                    packet[1 + head.Length] = id;
-                    var answer = QmkLighting.Exchange(io, QmkLighting.Packet(packet), out int got);
-                    return answer != null && got > 0 && answer[0] != Unhandled ? answer : null;
-                }
                 int at = 1 + head.Length + 1;
-                var effects = Ask(effect);
-                var colors = effects == null ? null : Ask(color);
-                var levels = colors == null ? null : Ask(brightness);
-                return levels == null ? null : new Target(head, brightness, effect, color, levels[at], effects[at], colors[at], colors[at + 1]);
+                var effects = Value(io, head, effect);
+                if (effects == null) return null;
+                var colors = color is { } id ? Value(io, head, id) : null;
+                if (color != null && colors == null) return null;
+                var levels = Value(io, head, brightness);
+                return levels == null ? null : new Target(head, brightness, effect, color, solid,
+                    levels[at], effects[at], colors?[at] ?? 0, colors?[at + 1] ?? 0);
             }
 
             internal static byte[] Set(Target target, byte id, params byte[] values)
@@ -182,7 +234,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 foreach (var target in targets)
                 {
                     yield return Set(target, target.Effect, target.OldEffect);
-                    yield return Set(target, target.Color, target.OldHue, target.OldSaturation);
+                    if (target.Color is { } color) yield return Set(target, color, target.OldHue, target.OldSaturation);
                     yield return Set(target, target.Brightness, target.OldBrightness);
                 }
             }
@@ -196,9 +248,9 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 var (h, s, v) = QmkLighting.Hsv(rgb);
                 foreach (var target in _targets)
                 {
-                    if (!_started && !Send(io, Set(target, target.Effect, SolidColor))) return HidLightingPaint.Failed;
-                    if (!Send(io, Set(target, target.Color, h, s)) || !Send(io, Set(target, target.Brightness, v)))
-                        return HidLightingPaint.Failed;
+                    if (!_started && !Send(io, Set(target, target.Effect, target.Solid))) return HidLightingPaint.Failed;
+                    if (target.Color is { } color && !Send(io, Set(target, color, h, s))) return HidLightingPaint.Failed;
+                    if (!Send(io, Set(target, target.Brightness, v))) return HidLightingPaint.Failed;
                 }
                 _started = true;
                 return HidLightingPaint.Sent;
@@ -213,7 +265,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 return true;
             }
 
-            private static bool Send(IHidReportChannel io, byte[] frame)
+            internal static bool Send(IHidReportChannel io, byte[] frame)
             {
                 if (!io.WriteOutput(frame)) return false;
                 io.ReadInput(new byte[Math.Max(QmkLighting.ReportSize, io.InputReportLength)], PaintAnswerMs);
@@ -235,6 +287,11 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         /// RGBController_QMKOpenRGBRevD.cpp:236-239 and 467-478). It is set with no save, and
         /// the hand-back sets the mode, speed and color the session read first
         /// (QMKOpenRGBBaseController.cpp:232-256 and 262-290).</para>
+        ///
+        /// <para>Every revision asks about the larger of the firmware's two LED counts and drops
+        /// what it calls a failure, which revision 9 marks at byte 62 and the others in the LED's
+        /// flags (RGBController_QMKOpenRGBRev9.cpp:278-281, QMKOpenRGBRev9Controller.cpp:51,
+        /// QMKOpenRGBRevDController.cpp:75).</para>
         /// </summary>
         internal sealed class OpenRgbProtocolSession : HidLightingSession
         {
@@ -242,6 +299,9 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             private const byte Failure = 25, Success = 50;
             private const byte Rev9 = 0x09, RevB = 0x0B, RevC = 0x0C, RevD = 0x0D, RevE = 0x0E;
             private const byte DirectModeId = 1;
+
+            /// <summary>Where revision 9 marks an LED it does not have.</summary>
+            private const int Rev9FailureAt = 62;
 
             /// <summary>QMKOpenRGBRevD and Rev9 and RevB's constructors.</summary>
             internal const int LedsPerFrameD = 15, LedsPerFrameOlder = 20, LedInfoPerFrame = 8;
@@ -316,11 +376,11 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 byte revision = version[1];
                 var info = Ask(io, CmdDeviceInfo);
                 var mode = Ask(io, CmdModeInfo);
-                if (info == null || mode == null || info[1] == 0) return null;
+                if (info == null || mode == null) return null;
                 byte direct = DirectMode(io, revision);
                 if (direct == 0) return null;
                 var lights = new List<LightInfo>();
-                int total = info[1];
+                int total = Math.Max(info[1], info[2]);
                 int perAnswer = revision == Rev9 ? 1 : LedInfoPerFrame;
                 for (int sent = 0; sent < total; sent += perAnswer)
                 {
@@ -331,7 +391,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                     {
                         int offset = i * 7;
                         byte flags = answer[offset + 3];
-                        if (flags == Failure) continue;
+                        if ((revision == Rev9 ? answer[Rev9FailureAt] : flags) == Failure) continue;
                         byte keycode = answer[offset + 7];
                         lights.Add(QmkLighting.Light(lights.Count, keycode != 0, keycode, flags) with
                         {
@@ -339,6 +399,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                         });
                     }
                 }
+                if (lights.Count == 0) return null;
                 return new OpenRgbProtocolSession(revision, new LightMap(lights, "QMK OpenRGB, from the keyboard") { Product = product }, direct, mode);
             }
 
@@ -349,6 +410,13 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 int total = Math.Min(lights?.Count ?? 0, colors?.Count ?? 0);
                 bool numbered = revision is RevD or RevE;
                 int per = numbered ? LedsPerFrameD : LedsPerFrameOlder;
+                if (!numbered)
+                {
+                    var byAddress = new int[total];
+                    for (int i = 0; i < total; i++)
+                        if ((uint)lights[i].Address < (uint)total) byAddress[lights[i].Address] = colors[i];
+                    colors = byAddress;
+                }
                 var frames = new List<byte[]>();
                 for (int sent = 0; sent < total; sent += per)
                 {

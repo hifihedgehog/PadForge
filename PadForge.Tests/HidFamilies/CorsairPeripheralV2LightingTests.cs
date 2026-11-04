@@ -381,6 +381,24 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "out 00 08 02 12 00 00", "in 50", "out 00 08 02 11 00 00", "in 50" }, io.Log);
         }
 
+        /// <summary>The K60 PRO's one-color model: its own resource (ckb-next device_bragi.c:83-86),
+        /// one channel (led_bragi.c:92-99), and the color made one brightness first (ckb-next
+        /// kblight.cpp:296-307).</summary>
+        [Fact]
+        public void TheK60ProMono_OpensItsResource_AndSendsOneChannel()
+        {
+            var model = Family().Match(Collection(0x1B83));
+            var io = Device(0x1B83);
+            var session = Assert.IsType<CorsairPeripheralV2Lighting.Session>(model.Begin(io, io.Wait));
+            Assert.Equal(CorsairPeripheralV2Lighting.LightCtrlMonochrome, session.LightCtrl);
+            io.Outputs.Clear();
+            var lights = session.Map.Lights;
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, io.Wait, lights, lights.Select(_ => 0x0000FF).ToList()));
+            var block = io.Outputs.First(f => f[2] == 0x06);
+            Assert.Equal(session.BufferLength, block[4] | block[5] << 8 | block[6] << 16 | block[7] << 24);
+            Assert.Equal(0x9C, block[8 + lights[0].Address]);
+        }
+
         [Fact]
         public void APicture_IsOneTransaction()
         {

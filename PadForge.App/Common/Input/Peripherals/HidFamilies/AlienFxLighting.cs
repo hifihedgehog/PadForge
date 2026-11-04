@@ -47,7 +47,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         internal const int V4Lights = 26, V5Lights = 128, V7Lights = 4, V8Lights = 128;
 
         /// <summary>brightnessScale's maximum for the protocols that send it
-        /// (AlienFX_SDK.h:15) with the SDK's own default where no brightness is set.</summary>
+        /// (alienfx-controls.h:15).</summary>
         private const byte V5Bright = 0xFF, V6Bright = 0x64, V7Bright = 0x64;
 
         /// <summary>The SDK polls up to a second on the old protocols and with no bound on
@@ -130,13 +130,14 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         // ── Report 02 on 187C ──
 
         /// <summary>SetMaskAndColor: op 3 for a color, the chain's number, a mask of every light,
-        /// then the color twice, at 4 bits a channel on the 9-byte protocol.</summary>
+        /// then the color and a second color of black, which one action leaves
+        /// (AlienFX_SDK.cpp:30), at 4 bits a channel on the 9-byte protocol.</summary>
         internal static byte[] V1Color(Api api, int rgb)
         {
             byte r = (byte)(rgb >> 16), g = (byte)(rgb >> 8), b = (byte)rgb;
             return api == Api.V2
-                ? Frame(9, 0x02, 0x03, 0x01, 0xFF, 0xFF, 0xFF, (byte)((r & 0xF0) | (g >> 4)), (byte)((b & 0xF0) | (r >> 4)), (byte)((g & 0xF0) | (b >> 4)))
-                : Frame(12, 0x02, 0x03, 0x01, 0xFF, 0xFF, 0xFF, r, g, b, r, g, b);
+                ? Frame(9, 0x02, 0x03, 0x01, 0xFF, 0xFF, 0xFF, (byte)((r & 0xF0) | (g >> 4)), (byte)(b & 0xF0), 0x00)
+                : Frame(12, 0x02, 0x03, 0x01, 0xFF, 0xFF, 0xFF, r, g, b, 0x00, 0x00, 0x00);
         }
 
         /// <summary>WaitForReady: the status command, then the input report. A channel that
@@ -343,6 +344,8 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                         }
                         return true;
                     default:
+                        // PrepareAndSend's waits around the feature report (AlienFX_SDK.cpp:133-136).
+                        wait?.Invoke(4);
                         if (!io.SetFeature(V8Ready(V8Lights))) return false;
                         wait?.Invoke(6);
                         foreach (var frame in V8Picture(rgb))

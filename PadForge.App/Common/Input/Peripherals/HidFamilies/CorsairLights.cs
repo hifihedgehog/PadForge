@@ -83,6 +83,22 @@ namespace PadForge.Common.Input.Peripherals
         /// stored under.</summary>
         internal static string Product(ushort productId) => $"corsair:{VendorId:X4}:{productId:X4}";
 
+        /// <summary>The brightness a board with one LED color shows for a color: monoRgb in ckb-next
+        /// (src/gui/kblight.cpp:283-307), the channels averaged in linear light. A key of any color
+        /// stays lit, where the color's own red byte would leave a blue key dark.</summary>
+        internal static int Mono(int rgb)
+        {
+            static float Linear(int srgb)
+            {
+                float value = srgb / 255f;
+                return value <= 0.04045f ? value / 12.92f : MathF.Pow((value + 0.055f) / 1.055f, 2.4f);
+            }
+            float mean = (Linear((rgb >> 16) & 0xFF) + Linear((rgb >> 8) & 0xFF) + Linear(rgb & 0xFF)) / 3f;
+            float back = mean <= 0.0031308f ? 12.92f * mean * 255f : (1.055f * MathF.Pow(mean, 1f / 2.4f) - 0.055f) * 255f;
+            int level = (int)MathF.Round(back, MidpointRounding.AwayFromZero);
+            return level << 16 | level << 8 | level;
+        }
+
         /// <summary>
         /// The light at <paramref name="address"/> that OpenRGB calls
         /// <paramref name="name"/>. A name <see cref="OpenRgbKeys"/> gives a

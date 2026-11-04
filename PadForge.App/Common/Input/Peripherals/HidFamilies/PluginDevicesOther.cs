@@ -20,11 +20,13 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>GetUpdateLightingModePacket (AsusMouse.cs:2067-2090): the report, 51 28,
         /// the zone, 00, the Static mode, the brightness at its maximum of 100, and the color.
         /// Nothing is stored until 50 03 (GetSaveProfilePacket, line 2249), which PadForge
-        /// does not send.</summary>
+        /// does not send. A mouse with one zone takes All, as G-Helper's window and its stream
+        /// both send it (AsusMouseSettings.cs:24 and 1070-1077, AsusMouse.cs:2190-2210). The
+        /// length is USBPacketSize, 65 unless the model says 64.</summary>
         internal static byte[] GHelperMouseFrame(int length, byte report, byte zone, int color)
             => Frame(length, report, 0x51, 0x28, zone, 0x00, 0x00, 0x64, R(color), G(color), B(color));
 
-        private static PluginDevice GHelperMouse(string name, ushort product, string file, params (byte Zone, LightInfo Light)[] lights)
+        private static PluginDevice GHelperMouse(string name, ushort product, string file, int length, params (byte Zone, LightInfo Light)[] lights)
             => new()
             {
                 Name = name,
@@ -35,25 +37,24 @@ namespace PadForge.Common.Input.Peripherals
                 Programs = new[] { VendorPrograms.ArmouryCrate },
                 Interface = 0,
                 UsagePage = 0xFF01,
-                Usage = 0x0001,
-                OutputLength = 65,
+                OutputLength = length,
                 Lights = lights.Select(l => l.Light).ToArray(),
                 Slots = lights.Length,
-                Picture = colors => lights.Select((l, i) => PluginStep.Output(GHelperMouseFrame(65, 0x00, l.Zone, colors[i]))),
+                Picture = colors => lights.Select((l, i) => PluginStep.Output(GHelperMouseFrame(length, 0x00, l.Zone, colors[i]))),
             };
 
         private static IEnumerable<PluginDevice> GHelperMice()
         {
-            yield return GHelperMouse("ASUS ROG Gladius III Aimpoint EVA-02", 0x1B0A, "GladiusIIIAimpoint.cs", (GHelperLogo, Logo(0)));
-            yield return GHelperMouse("ASUS ROG Harpe Ace Extreme", 0x1B67, "HarpeAceAimLab.cs", (GHelperWheel, Wheel(0)));
-            yield return GHelperMouse("ASUS ROG Harpe Ace Mini", 0x1B63, "HarpeAceMini.cs", (GHelperWheel, Wheel(0)));
-            yield return GHelperMouse("ASUS ROG Harpe Mini Core", 0x1C8F, "HarpeAceMini.cs", (GHelperWheel, Wheel(0)));
-            yield return GHelperMouse("ASUS ROG Harpe II Ace", 0x1C69, "HarpeIIAce.cs", (GHelperWheel, Wheel(0)));
-            yield return GHelperMouse("ASUS ROG Keris II Ace", 0x1B16, "KerisIIAce.cs", (GHelperAll, Zone(0, 1)));
-            yield return GHelperMouse("ASUS ROG Keris II Origin KJP", 0x1D4C, "KerisIIOrigin.cs",
+            yield return GHelperMouse("ASUS ROG Gladius III Aimpoint EVA-02", 0x1B0A, "GladiusIIIAimpoint.cs", 65, (GHelperAll, Logo(0)));
+            yield return GHelperMouse("ASUS ROG Harpe Ace Extreme", 0x1B67, "HarpeAceAimLab.cs", 65, (GHelperAll, Wheel(0)));
+            yield return GHelperMouse("ASUS ROG Harpe Ace Mini", 0x1B63, "HarpeAceMini.cs", 64, (GHelperAll, Wheel(0)));
+            yield return GHelperMouse("ASUS ROG Harpe Mini Core", 0x1C8F, "HarpeAceMini.cs", 64, (GHelperAll, Wheel(0)));
+            yield return GHelperMouse("ASUS ROG Harpe II Ace", 0x1C69, "HarpeIIAce.cs", 64, (GHelperAll, Wheel(0)));
+            yield return GHelperMouse("ASUS ROG Keris II Ace", 0x1B16, "KerisIIAce.cs", 65, (GHelperAll, Zone(0, 1)));
+            yield return GHelperMouse("ASUS ROG Keris II Origin KJP", 0x1D4C, "KerisIIOrigin.cs", 64,
                 (GHelperLogo, Logo(0)), (GHelperWheel, Wheel(1)), (GHelperUnderglow, Edge(2)));
-            yield return GHelperMouse("ASUS TUF Gaming Mini Miku", 0x1C56, "TUFM4Wireless.cs", (GHelperAll, Zone(0, 1)));
-            yield return GHelperMouse("ASUS TUF Gaming Mini Miku", 0x1C57, "TUFM4Wireless.cs", (GHelperAll, Zone(0, 1)));
+            yield return GHelperMouse("ASUS TUF Gaming Mini Miku", 0x1C56, "TUFM4Wireless.cs", 65, (GHelperAll, Zone(0, 1)));
+            yield return GHelperMouse("ASUS TUF Gaming Mini Miku", 0x1C57, "TUFM4Wireless.cs", 65, (GHelperAll, Zone(0, 1)));
             // The same frame as report 03, on the collection the Omni receiver's mice use
             // (HarpeIIAce.cs, "mi_02&col03").
             yield return new PluginDevice
@@ -66,11 +67,10 @@ namespace PadForge.Common.Input.Peripherals
                 Programs = new[] { VendorPrograms.ArmouryCrate },
                 Interface = 2,
                 UsagePage = 0xFF01,
-                Usage = 0x0001,
                 OutputLength = 64,
                 Lights = new[] { Wheel(0) },
                 Slots = 1,
-                Picture = colors => new[] { PluginStep.Output(GHelperMouseFrame(64, 0x03, GHelperWheel, colors[0])) },
+                Picture = colors => new[] { PluginStep.Output(GHelperMouseFrame(64, 0x03, GHelperAll, colors[0])) },
             };
         }
 
@@ -142,7 +142,8 @@ namespace PadForge.Common.Input.Peripherals
                 },
             };
             // driver-steelseries.c:674-745, version 1 with the SenseiRAW quirk. Its one LED is
-            // white with three levels: 1 is off, and a brightness takes value/86 + 2.
+            // white with three levels: 1 is off, and a brightness takes value/86 + 2. The driver
+            // waits 10 ms before each write.
             yield return new PluginDevice
             {
                 Name = "SteelSeries Sensei Raw",
@@ -154,7 +155,7 @@ namespace PadForge.Common.Input.Peripherals
                 Lights = new[] { Zone(0, 1) },
                 Slots = 1,
                 Programs = new[] { VendorPrograms.SteelSeriesGG },
-                Start = new[] { PluginStep.Output(Frame(32, 0x00, 0x07, 0x01, 0x01)) },
+                Start = new[] { PluginStep.Output(Frame(32, 0x00, 0x07, 0x01, 0x01)), PluginStep.Wait(10) },
                 Picture = colors => new[] { PluginStep.Output(Frame(32, 0x00, 0x05, 0x01, SenseiRawLevel(colors[0]))) },
             };
         }
@@ -169,8 +170,18 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>color_scaling (ite_8291_lb.c:102-119): green and blue at 100/255 on three
         /// SKUs of 6010, and green at 200/255 on one board, read once.</summary>
-        private static readonly Lazy<(string Sku, string Board)> s_tuxedoMachine =
-            new(() => (HidFamilyDmi.ProductSku() ?? "", AsusAuraCoreLighting.MainboardName() ?? ""));
+        private static readonly Lazy<(string Sku, string Board, string Family)> s_tuxedoMachine =
+            new(() => (HidFamilyDmi.ProductSku() ?? "", AsusAuraCoreLighting.MainboardName() ?? "", HidFamilyDmi.ProductFamily() ?? ""));
+
+        /// <summary>The bar's controller a Stellaris Gen5 has and does not use, which the driver
+        /// leaves alone (driver_probe_callb, ite_8291_lb.c:551-556).</summary>
+        internal static bool LightbarUnused(ushort product, string sku, string family)
+            => product == 0x6010 && sku == "STELLARIS1XI05" && family != "STELLARIS17I05";
+
+        /// <summary>ite8291_write_on (ite_8291_lb.c:392-412), which the driver sends once when it
+        /// starts.</summary>
+        internal static byte[] TuxedoLightbarOn(ushort product)
+            => new byte[] { 0x1A, (byte)(product == 0x7000 ? 0x01 : 0x00), 0x01, 0x04, 0x00, 0x00, 0x00, 0x01 };
 
         internal static (byte G, byte B) LightbarScaled(ushort product, string sku, string board, byte g, byte b)
         {
@@ -211,8 +222,10 @@ namespace PadForge.Common.Input.Peripherals
                     Source = "tuxedo-drivers",
                     Plugin = "src/ite_8291_lb/ite_8291_lb.c",
                     FeatureLength = 8,
+                    OnlyWhen = () => !LightbarUnused(product, s_tuxedoMachine.Value.Sku, s_tuxedoMachine.Value.Family),
                     Lights = new[] { Edge(0) },
                     Slots = 1,
+                    Start = new[] { PluginStep.Feature(TuxedoLightbarOn(product)) },
                     Picture = colors => TuxedoLightbarPicture(product, colors[0], s_tuxedoMachine.Value.Sku, s_tuxedoMachine.Value.Board),
                 };
             yield return new PluginDevice
@@ -233,6 +246,11 @@ namespace PadForge.Common.Input.Peripherals
         // ── ASUS headsets (app/Peripherals/Headset) ──
 
         private const byte HeadsetReport = 0xCC;
+
+        /// <summary>A write that waits for its echo, as G-Helper's WriteForResponse does for every
+        /// command but the music stream's (AsusHeadset.cs:337-372).</summary>
+        private static IEnumerable<PluginStep> Answered(byte[] frame)
+            => new[] { PluginStep.Output(frame), PluginStep.ReadInput() };
 
         /// <summary>A headset's color as G-Helper's music mode streams it, the Static packet
         /// with no save after it (AsusHeadset.cs, WriteMusicColor and WriteStream): the
@@ -262,7 +280,7 @@ namespace PadForge.Common.Input.Peripherals
             => Frame(64, HeadsetReport, 0x51, 0x28, 0x00, 0x00, 0x01, 0x64, R(color), G(color), B(color));
 
         private static IReadOnlyList<PluginStep> HeadsetOn()
-            => new[] { PluginStep.Output(Frame(64, HeadsetReport, 0x51, 0x10, 0x00, 0x00, 0x01)) };
+            => Answered(Frame(64, HeadsetReport, 0x51, 0x10, 0x00, 0x00, 0x01)).ToArray();
 
         /// <summary>WriteRegister (DeltaS.cs:38-41).</summary>
         internal static byte[] DeltaSRegister(byte controller, byte register, params byte[] data)
@@ -330,11 +348,8 @@ namespace PadForge.Common.Input.Peripherals
                 Slots = 1,
                 HoldMs = LenovoLegionLighting.HoldMs,
                 RepaintMs = LenovoLegionLighting.RepaintMs,
-                Picture = colors => new[]
-                {
-                    PluginStep.Output(Frame(64, HeadsetReport, 0x51, 0x28, 0x00, 0x00, 0x01, 0x01, R(colors[0]), G(colors[0]), B(colors[0]))),
-                    PluginStep.Output(Frame(64, HeadsetReport, 0x50, 0x55)),
-                },
+                Picture = colors => Answered(Frame(64, HeadsetReport, 0x51, 0x28, 0x00, 0x00, 0x01, 0x01, R(colors[0]), G(colors[0]), B(colors[0])))
+                    .Concat(Answered(Frame(64, HeadsetReport, 0x50, 0x55))),
             };
             // DeltaS.cs:108-126: the music mode's direct stream, with sixteen LEDs of its
             // own. Its exit is the hand-back.
@@ -350,8 +365,8 @@ namespace PadForge.Common.Input.Peripherals
                 OutputLength = 64,
                 Lights = Edges(16),
                 Slots = 16,
-                Start = new[] { DeltaSPause(true) }.Concat(DeltaSDirect(true)).Select(PluginStep.Output).ToArray(),
-                HandBack = new[] { DeltaSPause(true) }.Concat(DeltaSDirect(false)).Append(DeltaSPause(false)).Select(PluginStep.Output).ToArray(),
+                Start = new[] { DeltaSPause(true) }.Concat(DeltaSDirect(true)).SelectMany(Answered).ToArray(),
+                HandBack = new[] { DeltaSPause(true) }.Concat(DeltaSDirect(false)).Append(DeltaSPause(false)).SelectMany(Answered).ToArray(),
                 Picture = colors => new[] { PluginStep.Output(DeltaSPicture(colors)) },
             };
         }

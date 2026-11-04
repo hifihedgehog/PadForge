@@ -458,6 +458,47 @@ namespace PadForge.Tests
             Assert.Null(KeyboardProfileBackups.Get("sinowealth:258A:0033"));
         }
 
+        /// <summary>What a Glorious claim writes on a firmware: libratbag's table of which take red,
+        /// green, blue (driver-sinowealth.c) and the V161 with no lights.</summary>
+        private static List<byte[]> GloriousWrites(string firmware)
+        {
+            var walk = new[] { Col(0x0033, 1, 6), Col(0x0033, 2, 520), Col(0x0033, 3, 0) };
+            using var rig = new KeyboardFamilyRig { FeatureLength = 520 };
+            var stored = new byte[520];
+            stored[0] = 0x04;
+            stored[0x35] = 0x05;
+            rig.Log.FeatureAnswer = (id, last) =>
+            {
+                if (id == 0x05 && last != null && last[1] == 0x01)
+                    return new byte[] { 0x05, 0x01 }.Concat(System.Text.Encoding.ASCII.GetBytes(firmware)).ToArray();
+                return id == 0x04 && last != null && last[0] == 0x05 ? (byte[])stored.Clone() : null;
+            };
+            IHidReportChannel Open(string path)
+                => new ReportLogChannel { Path = path, Device = rig.Log, FeatureReportLength = path == walk[0].Path ? 6 : 520 };
+            var family = Family(walk, Open);
+            var unit = KeyboardFamilyRig.Collection(0, 0, 0, 0) with { Path = walk[1].Path };
+            using var backend = rig.Started(new IHidLightingFamily[] { family }, unit);
+            KeyboardFamilyRig.Link(KeyboardFamilyRig.PathOf(unit));
+            KeyboardFamilyRig.Light(0x102030);
+            KeyboardFamilyRig.Passes(backend);
+            rig.Advance(SinowealthLighting.StoredHoldMs);
+            KeyboardFamilyRig.Passes(backend);
+            return rig.Log.Of('F').Where(f => f[0] == 0x04).ToList();
+        }
+
+        [Theory]
+        [InlineData("3106", "10 20 30")]
+        [InlineData("V287", "10 20 30")]
+        [InlineData("V102", "10 30 20")]
+        public void AGloriousClaim_TakesTheOrderOfItsFirmware(string firmware, string written)
+        {
+            Assert.Equal(written, Hex(Assert.Single(GloriousWrites(firmware)), 0x39, 3));
+        }
+
+        [Fact]
+        public void AFirmwareWithNoLights_GetsNoClaim()
+            => Assert.Empty(GloriousWrites(M.UnlitFirmware));
+
         [Fact]
         public void AXenonClaim_CommitsThroughTheCommandCollection()
         {

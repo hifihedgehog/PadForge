@@ -243,6 +243,9 @@ namespace PadForge.Common.Input.Peripherals
             CherryKeyboardLighting.Instance,
             EVisionKeyboardLighting.Instance,
             DasKeyboardLighting.Instance,
+            AsusAuraUsbLighting.Instance,
+            AsusAuraCoreLighting.Instance,
+            AsusLegacyUsbLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

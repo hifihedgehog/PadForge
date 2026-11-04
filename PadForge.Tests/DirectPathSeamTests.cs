@@ -272,7 +272,9 @@ namespace PadForge.Tests
             Assert.Equal(9, (int)OutputFamily.TouchSenseUnit);
             Assert.Equal(10, (int)OutputFamily.HidLightingUnit);
             Assert.Equal(11, (int)OutputFamily.OpenRgbDevice);
-            Assert.Equal(12, Enum.GetValues(typeof(OutputFamily)).Length);
+            Assert.Equal(12, (int)OutputFamily.IcueDevice);
+            Assert.Equal(13, (int)OutputFamily.WootingRgbSdk);
+            Assert.Equal(14, Enum.GetValues(typeof(OutputFamily)).Length);
 
             Assert.Equal(1, (int)PeripheralOutputKinds.Haptics);
             Assert.Equal(2, (int)PeripheralOutputKinds.Lighting);

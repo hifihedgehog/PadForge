@@ -232,16 +232,28 @@ namespace PadForge.Common.Input.Peripherals
             }
             finally
             {
-                // Not from a worker that outlived its Stop into the next run,
-                // whose worker holds the SDK now.
+                // A worker that outlived its Stop into the next run frees its
+                // library and nothing more: the next run's worker holds the
+                // SDK and the maps now.
                 var current = _run;
                 if (current == null || ReferenceEquals(current, run))
                 {
                     try { session.End(); } catch { }
                     PeripheralOutputs.SetBackendState(OutputFamily.IcueDevice, BackendState.Idle);
                 }
+                else
+                {
+                    try { session.Abandon(); } catch { }
+                }
             }
         }
+
+        /// <summary>The session whose connect the SDK's one client holds,
+        /// and the lock its connect and its disconnect go under, so a worker
+        /// that outlived its Stop never disconnects a newer worker's
+        /// session.</summary>
+        private static readonly object s_sdkGate = new();
+        private static Session s_sdkOwner;
 
         /// <summary>One worker's hold on the SDK. Worker thread only.</summary>
         private sealed class Session
@@ -331,7 +343,23 @@ namespace PadForge.Common.Input.Peripherals
                 }
                 _loadFailure = null;
                 _loaded = true;
-                int error = _native.Connect();
+                int error;
+                lock (s_sdkGate)
+                {
+                    error = _native.Connect();
+                    // The SDK's client is one per process, so a session a
+                    // worker that outlived its Stop never ended leaves it
+                    // connected, which CorsairConnect refuses with
+                    // CE_InvalidOperation (iCUESDK.h:29, docs CorsairConnect).
+                    // CorsairDisconnect takes that session's handler away,
+                    // and the connect goes again once.
+                    if (error == IcueRoute.InvalidOperation)
+                    {
+                        _native.Disconnect();
+                        error = _native.Connect();
+                    }
+                    if (error == IcueRoute.Success) s_sdkOwner = this;
+                }
                 if (error != IcueRoute.Success)
                 {
                     PadForge.Engine.SdlDiagLog.WriteLine("PERIPHERAL iCUE CorsairConnect refused: " + error);
@@ -506,12 +534,26 @@ namespace PadForge.Common.Input.Peripherals
                 Forget();
                 if (_connected)
                 {
-                    try { _native.Disconnect(); } catch { }
+                    // Not a session a newer worker's connect has replaced:
+                    // the SDK's client is the process's, and the newer
+                    // session is on it now.
+                    lock (s_sdkGate)
+                    {
+                        if (ReferenceEquals(s_sdkOwner, this))
+                        {
+                            try { _native.Disconnect(); } catch { }
+                            s_sdkOwner = null;
+                            PadForge.Engine.SdlDiagLog.WriteLine("PERIPHERAL iCUE SDK disconnected");
+                        }
+                    }
                     _connected = false;
-                    PadForge.Engine.SdlDiagLog.WriteLine("PERIPHERAL iCUE SDK disconnected");
                 }
                 Unload();
             }
+
+            /// <summary>Frees the library of a session a newer worker has
+            /// replaced, with nothing sent.</summary>
+            public void Abandon() => Unload();
 
             private void Unload()
             {

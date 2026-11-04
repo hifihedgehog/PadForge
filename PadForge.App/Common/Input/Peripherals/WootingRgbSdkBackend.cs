@@ -248,18 +248,23 @@ namespace PadForge.Common.Input.Peripherals
             {
                 var current = _run;
                 bool ownRun = current == null || ReferenceEquals(current, run);
+                // A keyboard handed back, or taken over by another writer,
+                // leaves the crash path's record. One whose reset did not go
+                // out, or is owed from a failed write, stays on it.
                 foreach (var unit in units.Values)
                 {
-                    if (ownRun && unit.Lit && unit.Channel != null && !TakenOver(unit.Key))
-                        try { HandBack(unit); } catch { }
+                    if (ownRun)
+                    {
+                        bool taken = TakenOver(unit.Key);
+                        bool back = false;
+                        if (!taken && unit.Lit && unit.Channel != null)
+                            try { back = HandBack(unit); } catch { }
+                        if (taken || back || (!unit.Lit && !unit.Owed)) Unrecord(unit.Key);
+                        PeripheralLightMaps.Remove(unit.Path);
+                    }
                     Close(unit);
-                    if (ownRun) PeripheralLightMaps.Remove(unit.Path);
                 }
-                if (ownRun)
-                {
-                    Volatile.Write(ref _recorded, Array.Empty<string>());
-                    PeripheralOutputs.SetBackendState(OutputFamily.WootingRgbSdk, BackendState.Idle);
-                }
+                if (ownRun) PeripheralOutputs.SetBackendState(OutputFamily.WootingRgbSdk, BackendState.Idle);
             }
         }
 

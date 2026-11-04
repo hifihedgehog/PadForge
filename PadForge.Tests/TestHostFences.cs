@@ -228,6 +228,14 @@ namespace PadForge.Tests
         internal static void Set() => OpenRgbTcpLink.OffLimitsForTest = true;
     }
 
+    /// <summary>The iCUE SDK's library is not loaded, so nothing reaches
+    /// Corsair iCUE on the PC (#557).</summary>
+    internal static class IcueSdkOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => IcueSdkNative.OffLimitsForTest = true;
+    }
+
     /// <summary>The GameInput service is left as it is. HIDMaestro's context
     /// asks sc.exe about the service as it is built, and where the service
     /// is stopped it sets it to start with Windows and starts it. The

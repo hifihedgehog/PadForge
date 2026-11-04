@@ -106,7 +106,7 @@ namespace PadForge.Tests
         /// <summary>A Sagaris that answers each request and nothing else: its
         /// mode once after 0B 03, its seven palette entries after 0B 05, each
         /// entry i as i, i + 1, i + 2.</summary>
-        private static FakeReportChannel Keyboard(byte mode, byte brightness, byte speed, byte index)
+        private static FakeReportChannel Keyboard(byte mode, byte brightness, byte speed, byte index, bool answersMode = true)
         {
             var io = new FakeReportChannel { InputReportLength = 65, OutputReportLength = 65 };
             int seenOuts = 0, sinceOut = 0;
@@ -121,7 +121,7 @@ namespace PadForge.Tests
                     sinceOut = 0;
                 }
                 sinceOut++;
-                if (lastOut == "06 0B 03" && sinceOut == 1) return In((3, mode), (4, brightness), (5, speed), (6, index));
+                if (lastOut == "06 0B 03" && sinceOut == 1 && answersMode) return In((3, mode), (4, brightness), (5, speed), (6, index));
                 if (lastOut == "06 0B 05" && sinceOut <= 7)
                 {
                     byte i = (byte)(sinceOut - 1);
@@ -179,6 +179,9 @@ namespace PadForge.Tests
             Assert.Null(KeyboardProfileBackups.Get(AsusLegacyUsbLighting.SagarisProduct));
             Assert.Null(AsusLegacyUsbLighting.ReadSagaris(new FakeReportChannel { InputReportLength = 65, OutputReportLength = 65 }));
             Assert.Null(model.Begin(new FakeReportChannel { InputReportLength = 65, OutputReportLength = 65 }, _ => { }));
+            // An unanswered mode request is no state, though the palette
+            // answers.
+            Assert.Null(AsusLegacyUsbLighting.ReadSagaris(Keyboard(4, 2, 1, 3, answersMode: false)));
         }
 
         /// <summary>No picture goes out before its backup is in the settings

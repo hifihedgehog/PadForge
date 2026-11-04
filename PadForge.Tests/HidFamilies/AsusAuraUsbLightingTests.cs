@@ -159,6 +159,9 @@ namespace PadForge.Tests
             Assert.Equal(17, AsusAuraUsbLighting.RegionOf(scope, 105));
             // 317 is 61 as a byte: no 61, hundreds digit 0, so US.
             Assert.Equal(17, AsusAuraUsbLighting.RegionOf(scope, 317));
+            // 273 is 17 as a byte, US's key. Read whole, its hundreds digit
+            // would pick UK.
+            Assert.Equal(17, AsusAuraUsbLighting.RegionOf(scope, 273));
             // 4 as a byte of 260 is UK's key itself.
             Assert.Equal(4, AsusAuraUsbLighting.RegionOf(scope, 260));
             Assert.Equal(117, AsusAuraUsbLighting.ClaymoreRegion(0x1000));
@@ -288,7 +291,10 @@ namespace PadForge.Tests
             var colors = lights.Select(_ => 0x112233).ToList();
             Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, lights, colors));
             Assert.Equal((lights.Count + 14) / 15, Outs(io).Count);
-            Assert.Equal("in", io.Calls.Last().Kind);
+            // Each frame after a drain of the input and before an awaited
+            // answer: read, write, read, for every frame.
+            var kinds = io.Calls.Select(c => c.Kind).ToList();
+            Assert.Equal(Enumerable.Repeat(new[] { "in", "out", "in" }, Outs(io).Count).SelectMany(k => k), kinds);
             io.Calls.Clear();
             Assert.True(session.HandBack(io, _ => { }));
             Assert.Empty(io.Calls);

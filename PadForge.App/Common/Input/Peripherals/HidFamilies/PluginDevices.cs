@@ -491,16 +491,19 @@ namespace PadForge.Common.Input.Peripherals
                 Programs = s_swarm,
                 Interface = 0,
                 OutputLength = 64,
-                Lights = Edges(1),
-                Slots = 1,
+                // The front and the rear.
+                Lights = Edges(2),
+                Slots = 2,
                 KeepAliveMs = 5000,
                 Start = new[]
                 {
                     PluginStep.Output(Frame(64, 0x00, 0xFE, 0x01, 0x00, 0x00, 0x00, 0x09, 0x08, 0x02, 0x00,
                         0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF)),
                     PluginStep.Output(Frame(64, 0x00, 0xFE, 0x02, 0x00, 0x00, 0x01)),
+                    // The plugin's keep-alive report (GetBatteryStatus).
+                    PluginStep.Output(Frame(64, 0x00, 0xFE, 0x04)),
                 },
-                Picture = colors => HeadsetColor(0xFE, 0x03, colors[0]),
+                Picture = SynProAirPicture,
             };
         }
 
@@ -583,6 +586,14 @@ namespace PadForge.Common.Input.Peripherals
             PutRgb(frame, 4, colors[0]);
             PutRgb(frame, 7, colors[1]);
             return frame;
+        }
+
+        internal static IEnumerable<PluginStep> SynProAirPicture(int[] colors)
+        {
+            var frame = Frame(65, 0x00, 0xFE, 0x03);
+            PutRgb(frame, 5, colors[0]);
+            PutRgb(frame, 8, colors[1]);
+            yield return PluginStep.Output(frame);
         }
 
         private static IEnumerable<PluginStep> HeadsetColor(byte first, byte second, int color)

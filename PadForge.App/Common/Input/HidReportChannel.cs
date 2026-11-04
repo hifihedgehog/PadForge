@@ -224,10 +224,11 @@ namespace PadForge.Common.Input
         /// after. A longer report is left alone, as hidapi leaves it.</summary>
         internal static byte[] Pad(byte[] report, int length, ref byte[] scratch)
         {
-            if (report.Length >= length) return report;
+            if (report.Length == length) return report;
             if (scratch == null || scratch.Length != length) scratch = new byte[length];
-            Array.Copy(report, scratch, report.Length);
-            Array.Clear(scratch, report.Length, length - report.Length);
+            int kept = Math.Min(report.Length, length);
+            Array.Copy(report, scratch, kept);
+            Array.Clear(scratch, kept, length - kept);
             return scratch;
         }
 

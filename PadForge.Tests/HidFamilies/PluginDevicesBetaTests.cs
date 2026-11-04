@@ -208,13 +208,12 @@ namespace PadForge.Tests
 
         // ── Cooler Master, OEM, Royuan ──
 
-        [Theory]
-        [InlineData(0x016B)]
-        [InlineData(0x016D)]
-        public void TheCk72x_EighteenLedsToAReport(int pid)
+        [Fact]
+        public void TheCk720_EighteenLedsToAReport()
         {
-            var d = Device(0x2516, (ushort)pid);
+            var d = Device(0x2516, 0x016B);
             Assert.Equal(new[] { "out 00 80 01 01 02 02", "out 00 01 81 C8 00 01 00 12" }, Steps(d.Start));
+            Assert.Equal(Steps(d.Start), Steps(Device(0x2516, 0x016D).Start));
             var frames = Steps(d.Picture(Colors(d.Slots, (0, 0x010203), (18, 0x040506))));
             Assert.Equal("out 00 56 42 00 00 02 12 00 00 01 02 03", frames[0]);
             Assert.Equal("out 00 56 42 00 00 02 12 12 00 04 05 06", frames[1]);

@@ -239,8 +239,10 @@ namespace PadForge.Common.Input.Peripherals
                 if (device.Interface != OpenRgbRegistration.Any && device.Interface != number) continue;
                 if (device.UsagePage != OpenRgbRegistration.Any && device.UsagePage != collection.UsagePage) continue;
                 if (device.Usage != OpenRgbRegistration.Any && device.Usage != collection.Usage) continue;
-                if (collection.OutputReportLength < device.OutputLength) continue;
-                if (collection.FeatureReportLength < device.FeatureLength) continue;
+                // A plugin's length may count a report ID the descriptor does not: Asus_Mouse.js
+                // writes 65 bytes to mice whose report G-Helper sizes at 64 (KerisIIOrigin.cs:119).
+                if (collection.OutputReportLength + 1 < device.OutputLength) continue;
+                if (collection.FeatureReportLength + 1 < device.FeatureLength) continue;
                 if (device.OnlyWhen != null && !device.OnlyWhen()) continue;
                 lock (_models)
                 {

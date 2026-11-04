@@ -314,40 +314,75 @@ namespace PadForge.Common.Input.Peripherals
 
         private static IEnumerable<PluginDevice> CoolerMasterCk72x()
         {
-            foreach (var (name, pid, table) in new (string, ushort, PluginKeyTable)[]
+            var start = new[]
             {
-                ("Cooler Master CK720", 0x016B, PluginKeyTables.Ck720),
-                ("Cooler Master CK721", 0x016D, PluginKeyTables.Ck721),
-            })
-                yield return new PluginDevice
-                {
-                    Name = name,
-                    VendorId = CoolerMasterLighting.VendorId,
-                    ProductId = pid,
-                    Plugin = table.Plugin,
-                    Programs = new[] { VendorPrograms.MasterPlus },
-                    Interface = 1,
-                    UsagePage = 0xFF00,
-                    Usage = 0x0001,
-                    OutputLength = 65,
-                    Lights = PluginKeyNames.Lights(table),
-                    Slots = table.Indexes.Max() + 1,
-                    Start = new[]
-                    {
-                        PluginStep.Output(Frame(65, 0x00, 0x80, 0x01, 0x01, 0x02, 0x02)),
-                        PluginStep.Output(Frame(65, 0x00, 0x01, 0x81, 0xC8, 0x00, 0x01, 0x00, 0x12)),
-                    },
-                    Picture = Ck72xPicture,
-                };
+                PluginStep.Output(Frame(65, 0x00, 0x80, 0x01, 0x01, 0x02, 0x02)),
+                PluginStep.Output(Frame(65, 0x00, 0x01, 0x81, 0xC8, 0x00, 0x01, 0x00, 0x12)),
+            };
+            yield return new PluginDevice
+            {
+                Name = "Cooler Master CK720",
+                VendorId = CoolerMasterLighting.VendorId,
+                ProductId = 0x016B,
+                Plugin = PluginKeyTables.Ck720.Plugin,
+                Programs = new[] { VendorPrograms.MasterPlus },
+                Interface = 1,
+                UsagePage = 0xFF00,
+                Usage = 0x0001,
+                OutputLength = 65,
+                Lights = PluginKeyNames.Lights(PluginKeyTables.Ck720),
+                Slots = PluginKeyTables.Ck720.Indexes.Max() + 1,
+                Start = start,
+                Picture = Ck720Picture,
+            };
+            yield return new PluginDevice
+            {
+                Name = "Cooler Master CK721",
+                VendorId = CoolerMasterLighting.VendorId,
+                ProductId = 0x016D,
+                Plugin = PluginKeyTables.Ck721.Plugin,
+                Programs = new[] { VendorPrograms.MasterPlus },
+                Interface = 3,
+                UsagePage = 0xFF00,
+                Usage = 0x0002,
+                OutputLength = 65,
+                Lights = PluginKeyNames.Lights(PluginKeyTables.Ck721),
+                Slots = PluginKeyTables.Ck721.Indexes.Max() + 1,
+                Start = start,
+                Picture = Ck721Picture,
+            };
         }
 
-        internal static IEnumerable<PluginStep> Ck72xPicture(int[] colors)
+        internal static IEnumerable<PluginStep> Ck720Picture(int[] colors)
         {
             for (int led = 0; led < colors.Length; led += 18)
             {
                 int count = Math.Min(18, colors.Length - led);
                 var frame = Frame(65, 0x00, 0x56, 0x42, 0x00, 0x00, 0x02, (byte)count, (byte)led, 0x00);
                 for (int i = 0; i < count; i++) PutRgb(frame, 9 + i * 3, colors[led + i]);
+                yield return PluginStep.Output(frame);
+            }
+        }
+
+        /// <summary>Four bytes an LED, the color and FF, at four times its number, in one
+        /// report of 58 bytes and four of 62 (sendColors, CoolerMaster_CK721_Keyboard.js).</summary>
+        internal static IEnumerable<PluginStep> Ck721Picture(int[] colors)
+        {
+            var data = new byte[58 + 4 * 62];
+            foreach (int led in PluginKeyTables.Ck721.Indexes)
+            {
+                int at = led * 4;
+                if (at + 3 >= data.Length) continue;
+                PutRgb(data, at, colors[led]);
+                data[at + 3] = 0xFF;
+            }
+            var first = Frame(65, 0x00, 0x0C, 0x85, 0x00, 0x00, 0x1C, 0x01);
+            Array.Copy(data, 0, first, 7, 58);
+            yield return PluginStep.Output(first);
+            for (int i = 1; i < 5; i++)
+            {
+                var frame = Frame(65, 0x00, 0x0C, (byte)i);
+                Array.Copy(data, 58 + (i - 1) * 62, frame, 3, 62);
                 yield return PluginStep.Output(frame);
             }
         }

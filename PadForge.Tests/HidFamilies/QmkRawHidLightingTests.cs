@@ -229,11 +229,43 @@ namespace PadForge.Tests
             };
             Assert.Null(QmkRawHidLighting.Begin(channels, _ => { }, "qmk:5241:065B"));
             Assert.DoesNotContain(channels.Written, w => w[1] == 0x07);
+            // A firmware that sends Vial's question back: not Vial.
+            var back = Via(0x0009, 0x01, 0x02, 0x04);
+            var through = back.Reply;
+            back.Reply = packet => packet[1] == 0xFE ? (byte[])packet.Clone() : through(packet);
+            Assert.Null(QmkRawHidLighting.Begin(back, _ => { }, "p"));
             // A firmware that answers the version and nothing else: not Vial.
             var quiet = Via(0x0009, 0x01, 0x02, 0x04);
             var inner = quiet.Reply;
             quiet.Reply = packet => packet[1] == 0xFE ? null : inner(packet);
             Assert.Null(QmkRawHidLighting.Begin(quiet, _ => { }, "p"));
+        }
+
+        /// <summary>A firmware that answers its version and then goes silent, or answers FF over
+        /// a blank report, has no values either.</summary>
+        [Fact]
+        public void AFirmwareWithNoAnswerToAValue_StaysDark()
+        {
+            var silent = new Board();
+            silent.Reply = packet =>
+            {
+                if (packet[1] != 0x01) return null;
+                var answer = (byte[])packet.Clone();
+                answer[3] = 0x0D;
+                return answer;
+            };
+            Assert.Null(QmkRawHidLighting.Begin(silent, _ => { }, "p"));
+            Assert.DoesNotContain(silent.Written, w => w[1] == 0x07);
+            var blank = new Board();
+            blank.Reply = packet =>
+            {
+                var answer = new byte[packet.Length];
+                answer[1] = packet[1] == 0x01 ? (byte)0x01 : (byte)0xFF;
+                if (packet[1] == 0x01) answer[3] = 0x0D;
+                return answer;
+            };
+            Assert.Null(QmkRawHidLighting.Begin(blank, _ => { }, "p"));
+            Assert.DoesNotContain(blank.Written, w => w[1] == 0x07);
         }
 
         /// <summary>A value that holds the byte asked with is told by the second byte.</summary>

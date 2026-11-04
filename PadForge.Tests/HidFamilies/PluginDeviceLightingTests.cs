@@ -108,9 +108,9 @@ namespace PadForge.Tests
                 if (d.Usage != OpenRgbRegistration.Any)
                     Assert.Null(F.Instance.Match(collection with { Usage = (ushort)(d.Usage ^ 0x0040) }));
                 if (d.OutputLength > 0)
-                    Assert.Null(F.Instance.Match(collection with { OutputReportLength = (ushort)(d.OutputLength - 1) }));
+                    Assert.Null(F.Instance.Match(collection with { OutputReportLength = (ushort)(d.OutputLength - 2) }));
                 if (d.FeatureLength > 0)
-                    Assert.Null(F.Instance.Match(collection with { FeatureReportLength = (ushort)(d.FeatureLength - 1) }));
+                    Assert.Null(F.Instance.Match(collection with { FeatureReportLength = (ushort)(d.FeatureLength - 2) }));
             }
             Assert.Null(F.Instance.Match(null));
         }
@@ -385,6 +385,74 @@ namespace PadForge.Tests
             Assert.Empty(session.CrashFrames);
         }
 
+        // ── Cooler Master's CK72x and Roccat's Syn Pro Air ──
+
+        /// <summary>The CK721's plugin has its own endpoint and report, unlike the CK720's: four
+        /// bytes an LED, the first report with 58 bytes and four more with 62.</summary>
+        [Fact]
+        public void TheCk721_HasItsOwnEndpointAndReports()
+        {
+            var ck721 = F.Devices.Single(d => d.ProductId == 0x016D && d.VendorId == CoolerMasterLighting.VendorId);
+            Assert.Equal((3, 0xFF00, 0x0002), (ck721.Interface, ck721.UsagePage, ck721.Usage));
+            var ck720 = F.Devices.Single(d => d.ProductId == 0x016B && d.VendorId == CoolerMasterLighting.VendorId);
+            Assert.Equal((1, 0xFF00, 0x0001), (ck720.Interface, ck720.UsagePage, ck720.Usage));
+            var colors = new int[ck721.Slots];
+            int first = PluginKeyTables.Ck721.Indexes.Min();
+            colors[first] = 0x112233;
+            var frames = F.Ck721Picture(colors).Select(s => s.Bytes).ToList();
+            Assert.Equal(5, frames.Count);
+            Assert.All(frames, f => Assert.Equal(65, f.Length));
+            Assert.Equal("00 0C 85 00 00 1C 01", Hex(frames[0], 7));
+            Assert.Equal("00 0C 01", Hex(frames[1], 3));
+            Assert.Equal("00 0C 04", Hex(frames[4], 3));
+            Assert.Equal(new byte[] { 0x11, 0x22, 0x33, 0xFF }, frames[0].Skip(7 + first * 4).Take(4).ToArray());
+            // LED 18 is at byte 72 of the data: 14 into the second report.
+            var last = new int[ck721.Slots];
+            int high = PluginKeyTables.Ck721.Indexes.Max();
+            last[high] = 0x445566;
+            int at = high * 4 - 58;
+            var tail = F.Ck721Picture(last).Select(s => s.Bytes).ToList();
+            Assert.Equal(new byte[] { 0x44, 0x55, 0x66, 0xFF }, tail[1 + at / 62].Skip(3 + at % 62).Take(4).ToArray());
+        }
+
+        /// <summary>The Syn Pro Air's plugin lights its front and rear, and sends a keep-alive.</summary>
+        [Fact]
+        public void TheSynProAir_LightsItsFrontAndRear()
+        {
+            var row = F.Devices.Single(d => d.ProductId == 0x3A3B && d.VendorId == 0x1E7D);
+            Assert.Equal(2, row.Lights.Count);
+            var frame = row.Picture(new[] { 0x112233, 0x445566 }).Single().Bytes;
+            Assert.Equal("00 FE 03 00 00 11 22 33 44 55 66", Hex(frame, 11));
+            Assert.Contains(row.Start, s => s.Kind == PluginStepKind.Output && Hex(s.Bytes, 3) == "00 FE 04");
+        }
+
+        // ── A plugin's lengths ──
+
+        /// <summary>Asus_Mouse.js writes 65 bytes to the Keris II Origin, whose report G-Helper
+        /// sizes at 64 (KerisIIOrigin.cs:119), so a collection one short still takes the row.</summary>
+        [Fact]
+        public void ACollectionOneShortOfAPluginsLength_StillTakesTheRow()
+        {
+            var keris = new HidCollectionInfo
+            {
+                Path = @"\\?\hid#vid_0b05&pid_1c0c&mi_00#fake", VendorId = 0x0B05, ProductId = 0x1C0C, InterfaceNumber = 0,
+                UsagePage = 0xFF01, Usage = 0x0001, OutputReportLength = 64,
+            };
+            Assert.NotNull(F.Instance.Match(keris));
+            Assert.Null(F.Instance.Match(keris with { OutputReportLength = 63 }));
+        }
+
+        /// <summary>A report goes out at the collection's own length, cut or padded.</summary>
+        [Fact]
+        public void AReport_GoesOutAtTheCollectionsLength()
+        {
+            byte[] scratch = null;
+            var exact = new byte[] { 1, 2, 3 };
+            Assert.Same(exact, HidReportChannel.Pad(exact, 3, ref scratch));
+            Assert.Equal(new byte[] { 1, 2, 3, 0 }, HidReportChannel.Pad(exact, 4, ref scratch));
+            Assert.Equal(new byte[] { 1, 2 }, HidReportChannel.Pad(exact, 2, ref scratch));
+        }
+
         // ── Corsair IDs of the families OpenRGB holds ──
 
         [Theory]
@@ -553,7 +621,7 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "out 00 FF 04 00 00 01 02 03" }, ShortSteps(elo.Picture(new[] { 0x010203 })));
             Assert.Equal(5000, elo.KeepAliveMs);
             var syn = Device(0x1E7D, 0x3A3B);
-            Assert.Equal(new[] { "out 00 FE 03 00 00 01 02 03" }, ShortSteps(syn.Picture(new[] { 0x010203 })));
+            Assert.Equal(new[] { "out 00 FE 03 00 00 01 02 03 04 05 06" }, ShortSteps(syn.Picture(new[] { 0x010203, 0x040506 })));
             Assert.Equal("out 00 FE 01 00 00 00 09 08 02 00 FF FF FF FF FF FF FF FF FF", ShortSteps(syn.Start)[0]);
         }
 

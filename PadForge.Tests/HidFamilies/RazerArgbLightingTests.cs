@@ -13,6 +13,10 @@ namespace PadForge.Tests
     /// <summary>The Chroma Addressable RGB Controller against OpenRGB's
     /// DetectRazerARGBControllers and RGBController_RazerAddressable
     /// (#557).</summary>
+    /// <remarks>In the RazerGuardLog collection: these sessions take the
+    /// Razer lock, whose guard writes a diagnostics line that
+    /// <see cref="RazerMutexOffLimitsTests"/> counts.</remarks>
+    [Collection("RazerGuardLog")]
     public class RazerArgbLightingTests
     {
         private static string Packet(byte report, byte channel, string colors)

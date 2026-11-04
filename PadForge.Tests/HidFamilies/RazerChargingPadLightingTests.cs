@@ -11,6 +11,10 @@ using static PadForge.Tests.KeyboardFamilyTestKit;
 namespace PadForge.Tests
 {
     /// <summary>The Charging Pad Chroma (#557).</summary>
+    /// <remarks>In the RazerGuardLog collection: these sessions take the
+    /// Razer lock, whose guard writes a diagnostics line that
+    /// <see cref="RazerMutexOffLimitsTests"/> counts.</remarks>
+    [Collection("RazerGuardLog")]
     public class RazerChargingPadLightingTests
     {
         /// <summary>The first picture: device mode 03 under 1F

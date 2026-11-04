@@ -4682,9 +4682,10 @@ namespace PadForge.Tests
     /// under a name nothing else knows, where the test is about a name or
     /// looks at the mutex from outside. No test here makes, opens or takes
     /// the mutex the tools share, which the test host refuses besides
-    /// (<see cref="RazerMutexOffLimitsTests"/>). The two classes share a
-    /// collection, so neither runs beside the other: both count lines of
-    /// the one diagnostics log that start alike.</summary>
+    /// (<see cref="RazerMutexOffLimitsTests"/>). The classes that write or
+    /// count that lock's diagnostics lines share a collection, so none runs
+    /// beside another: they use lines of the one diagnostics log that start
+    /// alike.</summary>
     [Collection("RazerGuardLog")]
     public class RazerGuardTests
     {

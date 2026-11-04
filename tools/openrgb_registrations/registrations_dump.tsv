@@ -470,3 +470,98 @@ WootingKeyboardController	Hid	Wooting UwU RGB	12771	5392	-1	-1	-1	-1	1
 WootingKeyboardController	Hid	Wooting UwU RGB	12771	5393	-1	-1	-1	-1	1
 XPGSummonerKeyboardController	Hid	XPG Summoner Gaming Keyboard	4703	37912	2	65281	1	-1	1
 ZETKeyboardController	Hid	ZET Blade Optical	11944	8485	1	65280	-1	-1	1
+AOCMouseController	Hid	AOC GM500	14648	4473	1	65305	65305	-1	1
+AOCMousematController	Hid	AOC AGON AMM700	14648	4450	1	65305	65305	-1	1
+AlienwareMonitorController	Hid	Alienware AW3423DWF	6268	4110	-1	-1	-1	-1	1
+AlienwareMonitorController	Hid	Alienware AW3225QF	6268	4115	-1	-1	-1	-1	1
+AresonController	Hid	ZET GAMING Edge Air Pro (Wireless)	9639	64063	1	65282	2	-1	1
+AresonController	Hid	ZET GAMING Edge Air Pro	9639	64064	1	65282	2	-1	1
+AresonController	Hid	ZET GAMING Edge Air Elit (Wireless)	9639	64072	1	65282	2	-1	1
+AresonController	Hid	ZET GAMING Edge Air Elit	9639	64073	1	65282	2	-1	1
+AresonController	Hid	Redragon M914 NIX (Wireless)	9639	64124	1	65282	2	-1	1
+AresonController	Hid	Redragon M914 NIX	9639	64123	1	65282	2	-1	1
+AsusMonitorController	Hid	Asus ROG STRIX XG27AQDMG	2821	7075	1	65394	161	-1	1
+AsusMonitorController	Hid	Asus ROG STRIX XG27ACDNG	2821	7113	1	65394	161	-1	1
+AsusMonitorController	Hid	Asus ROG STRIX XG27UCG	2821	7092	1	65394	161	-1	1
+AsusMonitorController	Hid	Asus ROG SWIFT PG32UCDM	2821	6955	1	65394	161	-1	1
+AsusMonitorController	Hid	Asus ROG SWIFT PG32UCDMR	2821	7323	1	65394	161	-1	1
+AsusMonitorController	Hid	Asus ROG SWIFT PG32UCDP	2821	7114	1	65394	161	-1	1
+AsusMonitorController	Hid	Asus ROG Aura Monitor Light Bar	2821	6856	2	65394	161	-1	1
+BlinkyTapeController	UsbSerial	BlinkyTape	7504	24670	-1	-1	-1	-1	1
+ClevoLightbarController	Hid	CLEVO Lightbar	1165	28673	-1	65283	2	-1	1
+CreativeController	Device	Creative SoundBlaster AE-5	-1	-1	-1	-1	-1	-1	1
+CreativeController	Hid	Creative SoundBlasterX G6	1054	12886	4	-1	-1	-1	1
+DreamCheekyController	Hid	Dream Cheeky Webmail Notifier	7476	4	-1	-1	-1	-1	1
+EdifierHaloController	Hid	Edifier Halo Pixelbar	11673	41222	4	65300	1	-1	1
+GameSirController	Hid	GameSir Nova 2 Lite	13623	4111	2	65402	1	-1	1
+GameSirController	Hid	GameSir Nova 2 Lite (Wireless)	13623	4248	2	65402	1	-1	1
+GigabyteAorusMouseController	Hid	Gigabyte Aorus M2	4164	31296	3	65281	1	-1	1
+HYTEMousematController	UsbSerial	HYTE CNVS	13314	2816	-1	-1	-1	-1	1
+HYTEMousematController	UsbSerial	HYTE CNVS	13314	2817	-1	-1	-1	-1	1
+HoltekController	Hid	Holtek USB Gaming Mouse	1241	41072	1	65280	2	-1	1
+HoltekController	Hid	Holtek Mousemat	1241	41466	2	65280	65280	-1	1
+HyperXMicrophoneController	HidWrapped	HyperX Quadcast S	2385	5919	0	-1	-1	-1	1
+HyperXMicrophoneController	HidWrapped	HyperX Quadcast S	1008	3979	0	-1	-1	-1	1
+HyperXMicrophoneController	HidWrapped	HyperX Quadcast S	1008	1676	0	-1	-1	-1	1
+HyperXMicrophoneController	HidWrapped	HyperX Quadcast S	1008	660	0	-1	-1	-1	1
+HyperXMicrophoneController	HidWrapped	HyperX Quadcast S	1008	652	0	-1	-1	-1	1
+HyperXMicrophoneController	HidWrapped	HyperX Quadcast S	1008	1164	0	-1	-1	-1	1
+HyperXMicrophoneController	HidWrapped	HyperX Quadcast S	1008	3467	0	-1	-1	-1	1
+HyperXMicrophoneController	HidWrapped	HyperX DuoCast	1008	2444	0	-1	-1	-1	1
+HyperXMicrophoneV2Controller	Hid	HyperX QuadCast 2 S	1008	693	1	65299	65280	-1	1
+HyperXMouseController	Hid	HyperX Pulsefire Surge	2385	5843	1	65281	-1	-1	1
+HyperXMouseController	Hid	HyperX Pulsefire Surge (HP)	1008	1168	1	65281	-1	-1	1
+HyperXMouseController	Hid	HyperX Pulsefire FPS Pro	2385	5847	1	65281	-1	-1	1
+HyperXMouseController	Hid	HyperX Pulsefire Core	2385	5854	1	65281	-1	-1	1
+HyperXMouseController	Hid	HyperX Pulsefire Core (HP)	1008	3471	1	65281	-1	-1	1
+HyperXMouseController	Hid	HyperX Pulsefire Dart (Wireless)	2385	5857	2	65280	-1	-1	1
+HyperXMouseController	Hid	HyperX Pulsefire Dart (Wireless)	1008	1678	2	65280	-1	-1	1
+HyperXMouseController	Hid	HyperX Pulsefire Dart (Wired)	2385	5858	1	65299	-1	-1	1
+HyperXMouseController	Hid	HyperX Pulsefire Dart (Wired)	1008	2190	1	65299	-1	-1	1
+HyperXMouseController	Hid	HyperX Pulsefire Raid	2385	5860	1	65281	1	-1	1
+HyperXMouseController	Hid	HyperX Pulsefire Haste	1008	3983	3	65424	-1	-1	1
+HyperXMouseController	Hid	HyperX Pulsefire Haste	2385	5927	3	65424	-1	-1	1
+HyperXMousematController	HidWrapped	HyperX Fury Ultra	2385	5893	0	-1	-1	-1	1
+HyperXMousematController	HidWrapped	HyperX Pulsefire Mat	1008	3981	1	65424	65280	-1	1
+HyperXMousematController	HidWrapped	HyperX Pulsefire Mat RGB Mouse Pad XL	2385	5953	1	65424	65280	-1	1
+InstantMouseController	Hid	Advanced GTA 250 USB Gaming Mouse	12538	4144	1	65281	1	-1	1
+InstantMouseController	Hid	Anko KM43243952 USB Gaming Mouse	12538	5184	1	65281	1	-1	1
+InstantMouseController	Hid	Anko KM43277483 USB Gaming Mouse	12538	5440	1	65281	1	-1	1
+InstantMouseController	Hid	AntEsports GM600 USB Gaming Mouse	12538	4160	1	65281	1	-1	1
+LGMonitorController	Hid	LG 27GN950-B Monitor	1086	39562	1	65281	1	-1	1
+LaviewTechnologyController	Hid	Glorious Model I	8916	5379	1	65281	2	-1	1
+LegoDimensionsToypadBaseController	Hid	Lego Dimensions Toypad Base	3695	577	-1	-1	-1	-1	1
+LexipMouseController	Hid	Np93 ALPHA - Gaming Mouse	1240	64778	0	1	2	-1	1
+LuxaforController	Hid	Luxafor Flag	1240	62322	-1	-1	-1	-1	1
+MSIClutchController	Hid	MSI Clutch GM11 controller	3504	3345	2	65280	65280	-1	1
+MSIMonitorController	Hid	MSI Monitor (Gaming Controller)	5218	16292	0	1	0	-1	1
+MSIOptixController	Hid	MSI Optix controller	5218	16292	0	65280	1	-1	1
+MadCatzCyborgController	Hid	MadCatz Cyborg Gaming Light	1699	3525	-1	-1	-1	-1	1
+N5312AController	Hid	N5312A USB Optical Mouse	20051	21510	1	65281	1	-1	1
+NZXTMouseController	Hid	NZXT Lift	7793	8448	0	65482	1	-1	1
+PatriotViperMouseController	Hid	Patriot Viper V550	3141	32280	2	65304	1	-1	1
+RedragonController	Hid	Redragon M711 Cobra	1241	64560	2	65440	-1	-1	1
+RedragonController	Hid	Redragon M715 Dagger	1241	64569	2	65440	-1	-1	1
+RedragonController	Hid	Redragon M716 Inquisitor	1241	64570	2	65440	-1	-1	1
+RedragonController	Hid	Redragon M908 Impact	1241	64589	2	65440	-1	-1	1
+RedragonController	Hid	Redragon M602 Griffin	1241	64568	2	65440	-1	-1	1
+RedragonController	Hid	Redragon M808 Storm	1241	64607	2	65440	-1	-1	1
+RedragonController	Hid	Redragon M801 Sniper	1241	64600	2	65440	-1	-1	1
+RedragonController	Hid	Redragon M810 Taipan	1241	64126	2	65440	-1	-1	1
+RedragonController	Hid	Redragon M987 Reaping	1241	64617	2	65440	-1	-1	1
+RedragonController	Hid	Redragon M921 Azzinoth	1241	64576	2	65440	-1	-1	1
+RedragonController	Hid	Redragon M711-FPS-1 Cobra FPS	1241	64610	2	65440	-1	-1	1
+RobobloqLightStripController	Hid	Robobloq Monitor Light Strip	6790	65031	-1	65280	1	-1	1
+SkydimoHIDController	Hid	Skydimo SK0902	6790	58134	0	65280	1	-1	1
+SkydimoSerialController	UsbSerial	Skydimo Serial	6790	29987	-1	-1	-1	-1	1
+StreamDeckController	Hid	Elgato Stream Deck MK.2	4057	128	-1	-1	-1	-1	1
+TecknetController	Hid	Tecknet M008	1241	64517	-1	65440	1	-1	1
+ThingMController	Hid	ThingM blink(1) mk2	10168	493	-1	65280	1	-1	1
+ThrustmasterSolController	Device	Thrustmaster Sol	-1	-1	-1	-1	-1	-1	1
+TrustController	Hid	Trust GXT 114	5215	621	1	65280	1	-1	1
+TrustController	Hid	Trust GXT 180	5215	584	1	65440	1	-1	1
+TurtleBeachKP7Controller	Hid	Turtle Beach Command Series KP7	4341	20538	4	-1	-1	-1	1
+ViewSonicController	Hid	ViewSonic Monitor XG270QG	1046	20512	0	65280	1	-1	1
+ViewSonicController	Hid	ViewSonic Monitor XG271QG	1347	40964	0	1	-1	-1	1
+ViewSonicController	Hid	ViewSonic Monitor XG270QC	1347	40962	0	1	0	-1	1
+WushiController	HidWrapped	JSAUX RGB Docking Station	12399	4660	-1	-1	-1	-1	1

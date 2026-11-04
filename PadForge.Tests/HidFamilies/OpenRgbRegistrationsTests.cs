@@ -66,7 +66,8 @@ namespace PadForge.Tests
                                                                     r.Interface, r.UsagePage, r.Usage, r.Bus, r.EnabledByDefault ? 1 : 0);
 
             var families = OpenRgbRegistrations.All.Select(r => r.Family).Distinct().ToList();
-            Assert.Equal(54, families.Count);
+            // The 54 families of the issue's table and the 43 peripheral families.
+            Assert.Equal(97, families.Count);
             foreach (var family in families)
             {
                 var mine = OpenRgbRegistrations.Of(family).Where(r => !r.FromSettings).Select(Key).OrderBy(x => x, StringComparer.Ordinal);
@@ -129,7 +130,8 @@ namespace PadForge.Tests
                 Assert.True(windowsBuild.GetValueOrDefault(family, count) == lines, $"{family}: {lines} lines");
                 Assert.Equal(family == "WootingKeyboardController" ? 2 + 3 * 11 : lines, rows.Count);
             }
-            Assert.Equal(473, OpenRgbRegistrations.All.Length);
+            Assert.Equal(473, OpenRgbRegistrations.All.Count(r => inventory.ContainsKey(r.Family)));
+            Assert.Equal(568, OpenRgbRegistrations.All.Length);
             Assert.DoesNotContain(OpenRgbRegistrations.All, r => r.Family is "HIDLampArrayController" or "LogitechController"
                                                                or "RazerController" or "SteelSeriesController");
         }

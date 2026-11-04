@@ -5,7 +5,8 @@ line per device and interface in each family's *Detect.cpp, each a macro of
 DetectionManager.h (lines 531-603) that constructs a detector object with a
 name, a detector function and, for a HID device, the vendor and product IDs,
 the interface, the usage page and the usage it answers to. This script reads
-every registration of the 54 families issue #557 ports at an OpenRGB commit
+every registration of the 54 families issue #557 ports at an OpenRGB commit,
+and of OpenRGB's families for other lit peripherals (PERIPHERAL_FAMILIES),
 and writes PadForge.App/Common/Input/Peripherals/HidFamilies/OpenRgbRegistrations.g.cs.
 
 How a registration is read, as the compiler would:
@@ -64,6 +65,28 @@ FAMILIES = [
     "ValkyrieKeyboardController", "WinbondGamingKeyboardController", "WitmodKeyboardController",
     "WootingKeyboardController", "XPGSummonerKeyboardController", "ZETKeyboardController",
 ]
+
+# OpenRGB's other families for lit peripherals and laptop lights, each its own
+# folder at the pinned commit: mice, mousepads, microphones, speakers and a
+# headset stand, a keypad, gamepads, desk lights and toys, monitors and their
+# light bars, and a laptop light bar. The families for parts inside a PC
+# (motherboards, graphics cards, memory, coolers, fans, cases) and for lights
+# on the network are not peripherals and are not listed.
+PERIPHERAL_FAMILIES = [
+    "AOCMouseController", "AOCMousematController", "AlienwareMonitorController", "AresonController",
+    "AsusMonitorController", "BlinkyTapeController", "ClevoLightbarController", "CreativeController",
+    "DreamCheekyController", "EdifierHaloController", "GameSirController", "GigabyteAorusMouseController",
+    "HYTEMousematController", "HoltekController", "HyperXMicrophoneController", "HyperXMicrophoneV2Controller",
+    "HyperXMouseController", "HyperXMousematController", "InstantMouseController", "LGMonitorController",
+    "LaviewTechnologyController", "LegoDimensionsToypadBaseController", "LexipMouseController",
+    "LuxaforController", "MSIClutchController", "MSIMonitorController", "MSIOptixController",
+    "MadCatzCyborgController", "N5312AController", "NZXTMouseController", "PatriotViperMouseController",
+    "RedragonController", "RobobloqLightStripController", "SkydimoHIDController", "SkydimoSerialController",
+    "StreamDeckController", "TecknetController", "ThingMController", "ThrustmasterSolController",
+    "TrustController", "TurtleBeachKP7Controller", "ViewSonicController", "WushiController",
+]
+
+ALL_FAMILIES = FAMILIES + PERIPHERAL_FAMILIES
 
 # Macro forms none of the 54 families uses, each decoded from a family that
 # does and held to the values on its source line every run, so a form the
@@ -416,7 +439,7 @@ def main():
     ctors = constructors(dm)
     hidapi_bus = {k: v for k, v in oc.enum_values(oc.Source(root, HIDAPI), "HID_API_BUS_UNKNOWN").items()}
     regs = []
-    for family in FAMILIES:
+    for family in ALL_FAMILIES:
         if not os.path.isdir(os.path.join(root, "Controllers", family)):
             sys.exit("no family " + family)
         found = read_family(root, family, dm, dm_macros, ctors, hidapi_bus)

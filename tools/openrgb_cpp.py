@@ -445,7 +445,12 @@ class Evaluator:
                 raise CppError("no closing parenthesis")
             return v, rest[1:]
         if kind == "num":
-            return int(text.rstrip("uUlL"), 0), toks[1:]
+            digits = text.rstrip("uUlL")
+            # A literal that starts with 0 and holds digits only is octal in
+            # C, as InstantMouseControllerDetect.cpp:38's usage 0001 is.
+            if re.fullmatch(r"0[0-7]+", digits):
+                return int(digits, 8), toks[1:]
+            return int(digits, 0), toks[1:]
         if kind == "id" and text in self.constants:
             return self.constants[text], toks[1:]
         raise CppError("unknown value %r" % text)

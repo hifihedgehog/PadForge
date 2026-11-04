@@ -82,7 +82,7 @@ def main():
     failed = []
     try:
         only = sys.argv[2:]
-        for family in (only or gen.FAMILIES):
+        for family in (only or gen.ALL_FAMILIES):
             regs = gen.read_family(root, family, dm, dm_macros, ctors, bus)
             files = sorted(set(r.invocation[0] for r in regs))
             fam_dir = os.path.join(work, family)

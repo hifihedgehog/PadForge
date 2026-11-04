@@ -39,8 +39,8 @@ namespace PadForge.Services
     /// (222-227). CorsairLedColor is an unsigned int and four bytes, 8 bytes
     /// (299-306). The session handler gets a pointer to
     /// CorsairSessionStateChanged, whose first field is the state (206-210,
-    /// 315). The handler's delegate is kept for as long as the library is
-    /// loaded, as RGB.NET keeps it (_CUESDK.cs:50-51).</para>
+    /// 315). The handler's delegate lives as long as the process, as
+    /// RGB.NET's does (_CUESDK.cs:50-51).</para>
     ///
     /// <para>Single caller: the worker's thread makes every call.</para>
     /// </summary>
@@ -114,10 +114,16 @@ namespace PadForge.Services
         private GetLedPositionsFn _getLedPositions;
         private SetLedColorsFn _setLedColors;
         private RequestControlFn _requestControl;
-        private StateHandler _handler;
-        private int _state;
 
-        public int State => Volatile.Read(ref _state);
+        /// <summary>The session handler and the state it keeps. The SDK's
+        /// client is one per process and keeps the handler it was given
+        /// until CorsairDisconnect, so both are the process's too, and the
+        /// handler's delegate is never collected, as RGB.NET keeps its
+        /// handler in a static field (_CUESDK.cs:50-51 and 66-69).</summary>
+        private static readonly StateHandler s_handler = OnStateChanged;
+        private static int s_state;
+
+        public int State => Volatile.Read(ref s_state);
 
         public bool TryLoad(out string detail)
         {
@@ -162,18 +168,17 @@ namespace PadForge.Services
             _getLedPositions = getLedPositions;
             _setLedColors = setLedColors;
             _requestControl = requestControl;
-            _handler = OnStateChanged;
             detail = "loaded " + path;
             return true;
         }
 
-        private void OnStateChanged(IntPtr context, IntPtr eventData)
+        private static void OnStateChanged(IntPtr context, IntPtr eventData)
         {
             if (eventData == IntPtr.Zero) return;
-            try { Volatile.Write(ref _state, Marshal.ReadInt32(eventData)); } catch { }
+            try { Volatile.Write(ref s_state, Marshal.ReadInt32(eventData)); } catch { }
         }
 
-        public int Connect() => _connect == null ? IcueRoute.NotConnected : _connect(_handler, IntPtr.Zero);
+        public int Connect() => _connect == null ? IcueRoute.NotConnected : _connect(s_handler, IntPtr.Zero);
 
         public int GetDevices(int typeMask, out IReadOnlyList<IcueDeviceInfo> devices)
         {
@@ -247,8 +252,6 @@ namespace PadForge.Services
                 try { FreeLibrary(_module); } catch { }
                 _module = IntPtr.Zero;
             }
-            _handler = null;
-            Volatile.Write(ref _state, 0);
         }
 
         /// <summary>A device id as the SDK takes it: the id's bytes, ended

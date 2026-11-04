@@ -513,6 +513,25 @@ namespace PadForge.Tests
             Assert.Empty(backend.Recorded);
         }
 
+        /// <summary>A keyboard whose collection left the walk is owed
+        /// nothing, and no handle is opened for it.</summary>
+        [Fact]
+        public void AKeyboardThatLeft_IsOwedNothing()
+        {
+            using var backend = Lit();
+            lock (_channels) _channels.Single().FailOutput = true;
+            Light(0x00FF00);
+            Advance(1000);
+            Passes(backend, 2);
+            Assert.Equal(new[] { Key }, backend.Recorded);
+            backend.Rescan(Array.Empty<HidCollectionInfo>());
+            Unlight();
+            Advance(WootingRgbSdkBackend.RetryMs);
+            Passes(backend, 3);
+            Assert.Empty(backend.Recorded);
+            lock (_channels) Assert.Single(_channels);
+        }
+
         [Fact]
         public void ACollectionThatWillNotOpen_IsTriedAgainAfterTheRetry()
         {

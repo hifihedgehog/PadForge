@@ -286,9 +286,20 @@ namespace PadForge.Common.Input.Peripherals
 
         private void Serve(WorkerRun run, Unit unit, LinkTable links, IReadOnlyList<HidCollectionInfo> present, long now, ref long due)
         {
+            if (Describe(unit.Key, present) == null)
+            {
+                // The collection left the walk, and with it whatever the
+                // keyboard showed: nothing is owed to a keyboard that is
+                // gone, as a direct backend's debt ends when its unit
+                // leaves the list (IDirectUnitBackend, "Owe").
+                if (unit.Lit || unit.Owed) Unrecord(unit.Key);
+                unit.Lit = unit.Owed = false;
+                Close(unit);
+                return;
+            }
             int rgb = 0;
             PeripheralOutputs.Claimant ruler = default;
-            bool wanted = links.ByPath.ContainsKey(unit.Path) && Describe(unit.Key, present) != null
+            bool wanted = links.ByPath.ContainsKey(unit.Path)
                           && PeripheralOutputs.TryResolveColor(unit.Path, out rgb, out ruler);
             if (!wanted || run.Stop)
             {

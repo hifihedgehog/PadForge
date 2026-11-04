@@ -368,6 +368,7 @@ namespace PadForge.Common.Input.Peripherals
             GigabyteAorusMouseLighting.Instance,
             LaviewTechnologyLighting.Instance,
             LexipMouseLighting.Instance,
+            MsiClutchLighting.Instance,
         };
 
         /// <summary>The model at a collection, from the first family that

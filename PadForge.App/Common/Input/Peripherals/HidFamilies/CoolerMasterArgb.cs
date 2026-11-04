@@ -27,8 +27,8 @@ namespace PadForge.Common.Input.Peripherals
     /// so each header takes its zone's color through OpenRGB's Static mode,
     /// as a zone mode sends it (DeviceUpdateZoneMode, lines 522-619): 00 80
     /// 01 01, then 00 80 0B 02, the port, the mode 0A, 10 (no random
-    /// colors), the speed 0, the brightness FF and the color (SetPortMode,
-    /// CMARGBController.cpp:166-243; Static, RGBController_CMARGBController.cpp:288-299).
+    /// colors), the speed 0, the brightness FF and the color (SetPortMode at
+    /// CMARGBController.cpp:166-243, Static at RGBController_CMARGBController.cpp:288-299).
     /// The RGB header takes its color as OpenRGB's Direct mode sends it to
     /// that header, its Static mode 05 at brightness FF (lines 491-501):
     /// 00 80 01 03, then 00 80 04 05 10 00 FF and the color. Only the headers
@@ -139,7 +139,7 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>SetPortMode's reports (CMARGBController.cpp:166-243): for
-        /// Direct one report, 80 01 01 02; else 80 01 and the function, then
+        /// Direct one report, 80 01 01 02. Otherwise 80 01 and the function, then
         /// the mode report, 80 0B 02 and the port for an addressable header,
         /// 80 04 (80 01 for passthrough) for the RGB header two bytes
         /// earlier.</summary>

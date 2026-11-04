@@ -13,11 +13,11 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>The protocol. Every frame is a 65-byte output report, report ID
     /// 0, then the command page 80, the command and the operation (01 read,
-    /// 02 write) and the payload; a command that answers is answered with an
+    /// 02 write) and the payload. A command that answers is answered with an
     /// input report 80, the command, 03 and the request's own first payload
     /// bytes, read within 150 ms after the queued answers are drained, and
     /// another answer is skipped (SendCommandPage and DrainPendingResponses,
-    /// CMARGBGen2A1Controller.cpp:1339-1468; CMARGBGen2A1Controller.h:26-58
+    /// CMARGBGen2A1Controller.cpp:1339-1468, and CMARGBGen2A1Controller.h:26-58
     /// and 81-110).</para>
     ///
     /// <para>The ports. A session reads what is plugged in, as OpenRGB's
@@ -82,7 +82,7 @@ namespace PadForge.Common.Input.Peripherals
         internal const byte A1All = 0xFF;
 
         /// <summary>How many queued answers a drain reads at most. OpenRGB
-        /// reads until none comes in 1 ms (lines 1460-1468); the bound is
+        /// reads until none comes in 1 ms (lines 1460-1468). The bound is
         /// PadForge's.</summary>
         internal const int A1DrainLimit = 64;
 
@@ -139,7 +139,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>SendCommandPage with an answer (lines 1339-1444): the
         /// queued answers drained, the command written, then input read for
         /// up to 150 ms until one is the page and the command, with
-        /// <paramref name="prefix"/> from its byte 3; a report ID 0 hidapi
+        /// <paramref name="prefix"/> from its byte 3. A report ID 0 hidapi
         /// left in front is stepped over. Null when nothing matching came or
         /// it was not a response (byte 2 not 03).</summary>
         internal static byte[] A1Exchange(IHidReportChannel io, byte[] frame, params byte[] prefix)

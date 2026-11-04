@@ -104646,7 +104646,7 @@
     "probe": {
      "frame": "0F/80 [] size 50",
      "openrazer_tx": null,
-     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612). OpenRGB's region list read, RazerController.cpp:1207-1224"
     },
     "stream": {
      "row": "0F/03",
@@ -104736,7 +104736,7 @@
     "probe": {
      "frame": "0F/80 [] size 50",
      "openrazer_tx": null,
-     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612). OpenRGB's region list read, RazerController.cpp:1207-1224"
     },
     "stream": {
      "row": "0F/03",
@@ -104835,7 +104835,7 @@
     "probe": {
      "frame": "0F/80 [] size 50",
      "openrazer_tx": null,
-     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612). OpenRGB's region list read, RazerController.cpp:1207-1224"
     },
     "stream": {
      "row": "0F/03",
@@ -104932,7 +104932,7 @@
     "probe": {
      "frame": "0F/80 [] size 50",
      "openrazer_tx": null,
-     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612). OpenRGB's region list read, RazerController.cpp:1207-1224"
     },
     "stream": {
      "row": "0F/03",
@@ -105017,7 +105017,7 @@
     "probe": {
      "frame": "0F/80 [] size 50",
      "openrazer_tx": null,
-     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612). OpenRGB's region list read, RazerController.cpp:1207-1224"
     },
     "stream": {
      "row": "0F/03",
@@ -105107,7 +105107,7 @@
     "probe": {
      "frame": "0F/80 [] size 50",
      "openrazer_tx": null,
-     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612). OpenRGB's region list read, RazerController.cpp:1207-1224"
     },
     "stream": {
      "row": "0F/03",
@@ -105204,7 +105204,7 @@
     "probe": {
      "frame": "0F/80 [] size 50",
      "openrazer_tx": null,
-     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612). OpenRGB's region list read, RazerController.cpp:1207-1224"
     },
     "stream": {
      "row": "0F/03",
@@ -105289,7 +105289,7 @@
     "probe": {
      "frame": "0F/81 [05] size 50",
      "openrazer_tx": null,
-     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region effects read, RazerController.cpp:1213-1216 and 1242-1252"
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612). OpenRGB's region effects read, RazerController.cpp:1213-1216 and 1242-1252"
     },
     "stream": {
      "row": "0F/03",
@@ -105764,7 +105764,7 @@
     "probe": {
      "frame": "0F/81 [05] size 50",
      "openrazer_tx": null,
-     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region effects read, RazerController.cpp:1213-1216 and 1242-1252"
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612). OpenRGB's region effects read, RazerController.cpp:1213-1216 and 1242-1252"
     },
     "stream": {
      "row": "0F/03",
@@ -105861,7 +105861,7 @@
     "probe": {
      "frame": "0F/80 [] size 50",
      "openrazer_tx": null,
-     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612). OpenRGB's region list read, RazerController.cpp:1207-1224"
     },
     "stream": {
      "row": "0F/03",
@@ -105946,7 +105946,7 @@
     "probe": {
      "frame": "0F/80 [] size 50",
      "openrazer_tx": null,
-     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612). OpenRGB's region list read, RazerController.cpp:1207-1224"
     },
     "stream": {
      "row": "0F/03",
@@ -106043,7 +106043,7 @@
     "probe": {
      "frame": "0F/81 [05] size 50",
      "openrazer_tx": null,
-     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region effects read, RazerController.cpp:1213-1216 and 1242-1252"
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612). OpenRGB's region effects read, RazerController.cpp:1213-1216 and 1242-1252"
     },
     "stream": {
      "row": "0F/03",
@@ -106350,7 +106350,7 @@
     "probe": {
      "frame": "0F/80 [] size 50",
      "openrazer_tx": null,
-     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612). OpenRGB's region list read, RazerController.cpp:1207-1224"
     },
     "stream": {
      "row": "0F/03",

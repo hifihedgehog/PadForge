@@ -617,7 +617,7 @@ namespace PadForge.Tests
 
         /// <summary>A collection OpenRGB finds by usage alone, on any
         /// interface (REGISTER_HID_DETECTOR_PU, RazerControllerDetect.cpp:411),
-        /// ranks first wherever it sits; one found by interface alone ranks by
+        /// ranks first wherever it sits. One found by interface alone ranks by
         /// its interface (REGISTER_HID_DETECTOR_I, 446).</summary>
         [Fact]
         public void ACollectionFoundByUsageAlone_RanksFirstOnAnyInterface()

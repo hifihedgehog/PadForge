@@ -832,7 +832,7 @@ namespace PadForge.Tests
             var colors = new[] { 0x111111, 0x222222, 0x333333, 0x444444, 0x555555 };
             Assert.Equal(HidLightingPaint.Sent, session.Paint(device.Channel, NoWait, model.Map.Lights, colors));
             // Static per header: 80 01 01, then 80 0B 02, the port, 0A, 10,
-            // speed 0, FF and the color; the RGB header 80 01 03, then 80 04
+            // speed 0, FF and the color. The RGB header: 80 01 03, then 80 04
             // 05 10 00 FF and the color (CMARGBController.cpp:166-243).
             Same(new[]
             {
@@ -851,7 +851,7 @@ namespace PadForge.Tests
             Assert.Equal(HidLightingPaint.Sent, session.Paint(device.Channel, NoWait, model.Map.Lights, colors));
             Same(new[] { F(0x80, 0x01, 0x01), F(0x80, 0x0B, 0x02, 0x04, 0x0A, 0x10, 0x00, 0xFF, 0x12, 0x34, 0x56) }, device.Outs);
 
-            // The hand-back writes each header's own mode back; the
+            // The hand-back writes each header's own mode back. The
             // passthrough header takes function 02, the RGB header its
             // breathing mode 03 at function 03.
             device.Clear();

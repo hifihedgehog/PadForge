@@ -133,7 +133,7 @@ namespace PadForge.Tests
                 "out 80 0B 01 01", "out 80 07 01 01", "out 80 0B 01 02", "out 80 06 01 02", "out 80 0B 01 04",
             }, device.Log);
             // Gen2 devices 01 x 24 and 04 x 60 (70 held to 60, line 1351), the
-            // empty 00 x 00 left out (line 269); Gen1 port 2 at factor 30.
+            // empty 00 x 00 left out (line 269). Gen1 port 2 at factor 30.
             Assert.Equal(new[]
             {
                 new CoolerMasterLighting.A1Target(0x01, 0x01, 24), new CoolerMasterLighting.A1Target(0x01, 0x04, 60),

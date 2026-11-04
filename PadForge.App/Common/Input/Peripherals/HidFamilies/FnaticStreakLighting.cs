@@ -32,8 +32,8 @@ namespace PadForge.Common.Input.Peripherals
     /// <para>Holding and handing back. The keyboard goes back to its
     /// profile's effect unless it hears from the host, so OpenRGB sends the
     /// request 07 whenever no picture has gone out for 500 ms, checking
-    /// every 100 ms (KeepaliveThread, RGBController_FnaticStreak.cpp:480-487
-    /// and 683-699; SendKeepalive, FnaticStreakController.cpp:110-119). The
+    /// every 100 ms (KeepaliveThread at RGBController_FnaticStreak.cpp:480-487
+    /// and 683-699, SendKeepalive at FnaticStreakController.cpp:110-119). The
     /// model names those two times to the worker, which sends the session's
     /// keep-alive on them (<see cref="HidLightingModel.KeepAliveMs"/>). Nothing a picture sends is
     /// saved: OpenRGB saves only after an effect request, 0x05

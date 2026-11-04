@@ -44,7 +44,7 @@ namespace PadForge.Common.Input.Peripherals
     /// 3 JIS, anything else ANSI (CMKeyboardV1Controller.cpp:470-500,
     /// CMKeyboardV2Controller.cpp:35-62). OpenRGB also takes "JP" and then
     /// "EU" in a V2 keyboard's product string over the firmware (lines
-    /// 64-76; the string it calls the serial number is the product string,
+    /// 64-76, where the string it calls the serial number is the product string,
     /// CMKeyboardAbstractController.cpp:26-28), and so does a session here,
     /// reading that string before anything is written, as OpenRGB's
     /// constructor does.</para>

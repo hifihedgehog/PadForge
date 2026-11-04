@@ -228,6 +228,14 @@ namespace PadForge.Tests
         internal static void Set() => OpenRgbTcpLink.OffLimitsForTest = true;
     }
 
+    /// <summary>OpenRGB's process is not opened for its command line, and
+    /// its settings file is not read (#557).</summary>
+    internal static class OpenRgbPortOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => OpenRgbServerPort.OffLimitsForTest = true;
+    }
+
     /// <summary>The GameInput service is left as it is. HIDMaestro's context
     /// asks sc.exe about the service as it is built, and where the service
     /// is stopped it sets it to start with Windows and starts it. The

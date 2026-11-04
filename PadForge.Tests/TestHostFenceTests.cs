@@ -197,6 +197,7 @@ namespace PadForge.Tests
         private const string OwnLighting = Input + "Peripherals/OwnLightingChannels.cs";
         private const string AuraCore = Input + "Peripherals/HidFamilies/AsusAuraCoreLighting.cs";
         private const string OpenRgb = Input + "Peripherals/OpenRgbClient.cs";
+        private const string OpenRgbPort = Input + "Peripherals/OpenRgbServerPort.cs";
 
         private const string RefusesHost = "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(host))";
         private const string VendorRefuses = "if (PadForge.Engine.Common.VendorProgramGate.Refuses";
@@ -230,6 +231,7 @@ namespace PadForge.Tests
             (OwnLighting, "OwnLightingChannels"),
             (AuraCore, "AsusAuraCoreLighting"),
             (OpenRgb, "OpenRgbTcpLink"),
+            (OpenRgbPort, "OpenRgbServerPort"),
         };
 
         private const string Flag = "OffLimitsForTest";
@@ -271,6 +273,7 @@ namespace PadForge.Tests
             Assert.True(OwnLightingChannels.OffLimitsForTest);
             Assert.True(PadForge.Common.Input.Peripherals.AsusAuraCoreLighting.OffLimitsForTest);
             Assert.True(OpenRgbTcpLink.OffLimitsForTest);
+            Assert.True(OpenRgbServerPort.OffLimitsForTest);
         }
 
         /// <summary>Each flag is a plain field that starts false, and no
@@ -465,6 +468,9 @@ namespace PadForge.Tests
             new object[] { OwnLighting, "internal static bool SetLenovoLightControlOwner(int owner, int timeoutMs)", "if (OffLimitsForTest) return false;" },
             new object[] { AuraCore, "internal static string MainboardName()", "if (OffLimitsForTest) return null;" },
             new object[] { OpenRgb, "internal static IOpenRgbLink Connect(int port, int timeoutMs)", "if (OffLimitsForTest) return null;" },
+            new object[] { OpenRgbPort, "internal static int Find()", "if (OffLimitsForTest) return OpenRgbProtocol.DefaultPort;" },
+            new object[] { OpenRgbPort, "internal static string ReadSettings(string path)", "if (OffLimitsForTest) return null;" },
+            new object[] { OpenRgbPort, "internal static string CommandLineOf(uint processId)", "if (OffLimitsForTest) return null;" },
 
             // Steam.
             new object[] { SteamHttpFile, "private static HttpClient CreateClient()", "var http = OffLimitsForTest ? new HttpClient(new SendsNothing()) : new HttpClient();" },

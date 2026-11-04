@@ -1239,6 +1239,58 @@ namespace PadForge.Tests
             Assert.All(F.Devices.Where(d => d.Source == null), d => Assert.True(F.PictureAgainMsOf(d) > 0, d.Name));
         }
 
+        /// <summary>A plugin's length may count a report ID the descriptor does not, so a feature
+        /// collection a byte short still matches. Two short does not.</summary>
+        [Fact]
+        public void AFeatureCollectionAByteShort_StillMatches()
+        {
+            var row = F.Devices.First(d => d.Feature && d.FeatureLength > 8 && d.AskVariant == null && d.Answers == null && d.Source == null);
+            var collection = CollectionOf(row);
+            Assert.NotNull(F.Instance.Match(collection with { FeatureReportLength = (ushort)(row.FeatureLength - 1) }));
+            Assert.Null(F.Instance.Match(collection with { FeatureReportLength = (ushort)(row.FeatureLength - 2) }));
+        }
+
+        /// <summary>A report shorter than the one before it leaves none of that one's bytes behind.</summary>
+        [Fact]
+        public void APaddedReport_LeavesNoBytesOfTheLastOne()
+        {
+            byte[] scratch = null;
+            var first = PadForge.Common.Input.HidReportChannel.Pad(new byte[] { 1, 2, 3, 4 }, 6, ref scratch);
+            Assert.Equal(new byte[] { 1, 2, 3, 4, 0, 0 }, first);
+            var second = PadForge.Common.Input.HidReportChannel.Pad(new byte[] { 9 }, 6, ref scratch);
+            Assert.Equal(new byte[] { 9, 0, 0, 0, 0, 0 }, second);
+        }
+
+        /// <summary>The plugin for the Void Pro's 0x0A14 names no usage page, and its siblings' do.</summary>
+        [Fact]
+        public void TheVoidPro0A14_TakesAnyUsagePage()
+        {
+            var any = F.Devices.Single(d => d.Plugin == "Corsair_Void_Pro_HeadSet_0x0A14.js" || d.ProductId == 0x0A14);
+            Assert.Equal(OpenRgbRegistration.Any, any.UsagePage);
+            Assert.NotNull(F.Instance.Match(CollectionOf(any) with { UsagePage = 0xFF42 }));
+            var other = F.Devices.First(d => d.Name != any.Name && d.Plugin.Contains("Corsair_Void") && d.ProductId != 0x0A14);
+            Assert.Equal(0xFFC5, other.UsagePage);
+        }
+
+        /// <summary>A row's picture keeps its plugin's report size and channel order, whichever way
+        /// the session gets its picture.</summary>
+        [Fact]
+        public void AQmkRow_KeepsItsPluginsReport()
+        {
+            var alpaca = PluginQmkTables.Boards.Single(b => b.Plugin.EndsWith("Alpaca_WhiteFox_Eclipse_QMK_Keyboard.js"));
+            var alpacaRow = F.Devices.Single(d => d.Plugin == alpaca.Plugin);
+            var through = alpacaRow.Picture(new[] { 0x112233, 0x112233, 0x112233, 0x112233 }).Where(s => s.Bytes != null).ToArray();
+            Assert.Equal(3, through[0].Bytes[3]);
+            var table = new Lazy<PluginKeyTable>(alpaca.Table);
+            var variant = F.QmkVariant(alpaca, table, new FakeReportChannel(), _ => { });
+            Assert.Equal(3, variant.Picture(new[] { 0x112233, 0x112233, 0x112233, 0x112233 }).First(s => s.Bytes != null).Bytes[3]);
+            var element = PluginQmkTables.Boards.Single(b => b.Plugin.EndsWith("WhirlwindFX_Element-V2_QMK_ANSI_Keyboard.js"));
+            var elementRow = F.Devices.Single(d => d.Plugin == element.Plugin);
+            Assert.Equal("00 24 00 01 22 33 11", Hex(elementRow.Picture(new[] { 0x112233 }).First(s => s.Bytes != null).Bytes, 7));
+            var elementVariant = F.QmkVariant(element, new Lazy<PluginKeyTable>(element.Table), new FakeReportChannel(), _ => { });
+            Assert.Equal("00 24 00 01 22 33 11", Hex(elementVariant.Picture(new[] { 0x112233 }).First(s => s.Bytes != null).Bytes, 7));
+        }
+
         /// <summary>The worker keeps time by the model, so the model has to carry the interval.</summary>
         [Fact]
         public void AModel_CarriesItsRowsInterval()

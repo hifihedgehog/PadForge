@@ -25,8 +25,8 @@ namespace PadForge.Common.Input.Peripherals
     /// as DeviceUpdateLEDs sends them, RGBController_EdifierHaloPixelbarAmbient.cpp:141-160):
     /// OpenRGB starts the controller in Static (line 115), whose brightness
     /// is 3, sent as 0x3C, and which has no speed, so the mode's speed of 0
-    /// goes out as 1 (lines 65-73 and 101-107 of the controller, and a
-    /// mode's speed of 0, RGBControllerInterface.h:339). The display's text takes
+    /// goes out as 1 (the same file's lines 65-73, EdifierHaloController.cpp:101-107,
+    /// and a mode's speed of 0, RGBControllerInterface.h:339). The display's text takes
     /// EF with 03 and the color (SetPixelScreenColor, lines 122-132, as
     /// RGBController_EdifierHaloPixelbarScreen.cpp:106-128 sends it). Only a
     /// light whose color changed goes out.</para>
@@ -40,9 +40,9 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>Hand-back. No reference reads the speaker's effect or display
     /// color back, and OpenRGB sends nothing when it closes, so the speaker
-    /// keeps PadForge's last colors, in its Static effect, until its own
-    /// controls or Edifier's app set others. No source names a process of
-    /// Edifier's software, so the model names no program.</para>
+    /// keeps PadForge's last colors, in its Static effect, until something
+    /// else sets others. No source names a process of Edifier's software,
+    /// so the model names no program.</para>
     /// </summary>
     internal sealed class EdifierHaloLighting : IHidLightingFamily
     {
@@ -73,11 +73,9 @@ namespace PadForge.Common.Input.Peripherals
 
         public HidLightingModel Match(HidCollectionInfo collection)
         {
-            if (collection == null) return null;
-            var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
-            if (registrations.Count == 0) return null;
+            var r = LightReports.Registered(OpenRgbFamily, collection);
+            if (r == null) return null;
             if (collection.OutputReportLength != 0 && collection.OutputReportLength < PacketSize) return null;
-            var r = registrations[0];
             return _models.Get(r.Name, () => Model(r.Name, (ushort)r.VendorId, (ushort)r.ProductId));
         }
 

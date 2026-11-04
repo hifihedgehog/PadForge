@@ -17,8 +17,9 @@ namespace PadForge.Common.Input.Peripherals
     /// (RGBController_HYTEMousemat.cpp:61-84).</para>
     ///
     /// <para>The frames. OpenRGB's Direct mode first turns the firmware's
-    /// animation off, FF DC 05 00 (FirmwareAnimationControl(false), lines
-    /// 42-63, from DeviceUpdateMode, RGBController_HYTEMousemat.cpp:101-107),
+    /// animation off, FF DC 05 00 (FirmwareAnimationControl(false),
+    /// HYTEMousematController_Windows_MacOS.cpp:42-63, from DeviceUpdateMode,
+    /// RGBController_HYTEMousemat.cpp:101-107),
     /// which the session sends once before its first picture. A picture is
     /// the 157-byte streaming command, FF EE 02 01 00 32 00 and then green,
     /// red and blue of each LED, each at 72 percent of its value in whole

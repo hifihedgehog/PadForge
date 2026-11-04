@@ -25,11 +25,11 @@ namespace PadForge.Common.Input.Peripherals
     /// 12 of the report PadForge reads. The session's map is that many
     /// lights, as OpenRGB lays them out: on a 34-inch strip, 15 on the
     /// right, the top, and 15 on the left, else one strip
-    /// (RGBController_RobobloqLightStrip.cpp:113-157,
-    /// GetLEDsPerSide, lines 68-77). A strip that does not answer gets no
-    /// session, since OpenRGB's Direct mode needs the count (SetCustom,
-    /// lines 204-216). The model's own map is empty until a session reads
-    /// the count, as QMK's is.</para>
+    /// (RGBController_RobobloqLightStrip.cpp:113-157, GetLEDsPerSide,
+    /// RobobloqLightStripController.cpp:68-77). A strip that does not answer
+    /// gets no session, since OpenRGB's Direct mode needs the count
+    /// (SetCustom, lines 204-216 of that file). The model's own map is empty
+    /// until a session reads the count, as QMK's is.</para>
     ///
     /// <para>The frames. A session begins as OpenRGB's constructor and its
     /// Direct mode do: the 82 request, the no-op 93 00 that stops the
@@ -47,8 +47,16 @@ namespace PadForge.Common.Input.Peripherals
     /// green, blue and end, and the low byte of the sum, padded to whole
     /// 64-byte packets with 1 ms between them (SetCustom, SendSyncScreen
     /// and SendMultiPacket, RobobloqLightStripController.cpp:204-280).
-    /// This is the stream the vendor's app sends from its screen sync
-    /// (lines 195-203), not a stored effect.</para>
+    /// The same reduction to 34 runs is what the vendor's app sends
+    /// (lines 195-203).</para>
+    ///
+    /// <para>What the writes do. 93 00 stays in the device for good (lines
+    /// 89-94), which is the point of it. OpenRGB's page tag says the device
+    /// saves ("@save :robot:", RGBController_RobobloqLightStrip.cpp:18), but
+    /// the Direct mode carries no save flag (line 53), so pictures go out
+    /// at the rate of a stream. No source says whether 80 reaches the
+    /// device's flash. The name of the command, sync screen, suggests a
+    /// live stream, and that reading is an inference.</para>
     ///
     /// <para>Hand-back. OpenRGB sends nothing when it closes and names no
     /// way back to the strip's own effect, so the strip keeps PadForge's
@@ -100,11 +108,9 @@ namespace PadForge.Common.Input.Peripherals
 
         public HidLightingModel Match(HidCollectionInfo collection)
         {
-            if (collection == null) return null;
-            var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
-            if (registrations.Count == 0) return null;
+            var r = LightReports.Registered(OpenRgbFamily, collection);
+            if (r == null) return null;
             if (collection.OutputReportLength != 0 && collection.OutputReportLength < ReportSize) return null;
-            var r = registrations[0];
             return _models.Get(r.Name, () => Model(r.Name, (ushort)r.VendorId, (ushort)r.ProductId));
         }
 

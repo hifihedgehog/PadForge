@@ -70,11 +70,9 @@ namespace PadForge.Common.Input.Peripherals
 
         public HidLightingModel Match(HidCollectionInfo collection)
         {
-            if (collection == null) return null;
-            var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
-            if (registrations.Count == 0) return null;
+            var r = LightReports.Registered(OpenRgbFamily, collection);
+            if (r == null) return null;
             if (collection.OutputReportLength != 0 && collection.OutputReportLength < PacketSize) return null;
-            var r = registrations[0];
             return _models.Get(r.Name, () => Model(r.Name, (ushort)r.VendorId, (ushort)r.ProductId));
         }
 

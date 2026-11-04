@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using PadForge.Common.Input.Peripherals.HidFamilies;
 
 namespace PadForge.Common.Input.Peripherals
@@ -19,6 +21,27 @@ namespace PadForge.Common.Input.Peripherals
             if (head != null) Array.Copy(head, report, Math.Min(head.Length, length));
             return report;
         }
+
+        /// <summary>The first registration of <paramref name="family"/> a
+        /// collection answers to by OpenRGB's rules
+        /// (<see cref="OpenRgbRegistrations.Match(string, HidCollectionInfo, int)"/>),
+        /// or null. A collection with none of the family's IDs is turned
+        /// away before the walk of the whole table, since every collection
+        /// of every scan is offered to every family.</summary>
+        public static OpenRgbRegistration Registered(string family, HidCollectionInfo collection)
+        {
+            if (collection == null) return null;
+            var own = s_registrations.GetOrAdd(family, f => OpenRgbRegistrations.Of(f).ToArray());
+            foreach (var registration in own)
+            {
+                if (!OpenRgbRegistrations.MatchingId(registration, collection)) continue;
+                var matches = OpenRgbRegistrations.Match(family, collection);
+                return matches.Count > 0 ? matches[0] : null;
+            }
+            return null;
+        }
+
+        private static readonly ConcurrentDictionary<string, OpenRgbRegistration[]> s_registrations = new(StringComparer.Ordinal);
 
         public static byte Red(int rgb) => (byte)(rgb >> 16);
 
@@ -72,10 +95,10 @@ namespace PadForge.Common.Input.Peripherals
     /// <summary>
     /// A session whose every picture is a list of reports, feature or
     /// output, built from the colors by light address, after reports that
-    /// go out once before the first picture, with an optional wait between
-    /// two reports. It has nothing to hand back: the families that use it
-    /// are those for which OpenRGB names no way back to the device's own
-    /// lighting, which each family's class comment says.
+    /// go out once before the first picture. It has nothing to hand back:
+    /// the families that use it are those for which OpenRGB names no way
+    /// back to the device's own lighting, which each family's class comment
+    /// says.
     /// </summary>
     internal sealed class ReportsSession : HidLightingSession
     {
@@ -83,22 +106,19 @@ namespace PadForge.Common.Input.Peripherals
         private readonly int _size;
         private readonly Func<int[], IReadOnlyList<byte[]>> _frames;
         private readonly IReadOnlyList<byte[]> _opening;
-        private readonly int _gapMs;
         private bool _opened;
 
         /// <param name="feature">Feature reports, else output reports.</param>
         /// <param name="size">The light addresses the colors are laid out by.</param>
         /// <param name="frames">The reports of one picture, from its colors by address.</param>
         /// <param name="opening">The reports that go out once, before the first picture.</param>
-        /// <param name="gapMs">The wait after each report but the last of a picture.</param>
         public ReportsSession(bool feature, int size, Func<int[], IReadOnlyList<byte[]>> frames,
-            IReadOnlyList<byte[]> opening = null, int gapMs = 0)
+            IReadOnlyList<byte[]> opening = null)
         {
             _feature = feature;
             _size = size;
             _frames = frames;
             _opening = opening ?? Array.Empty<byte[]>();
-            _gapMs = gapMs;
         }
 
         public override bool Feature => _feature;
@@ -115,12 +135,8 @@ namespace PadForge.Common.Input.Peripherals
                     if (!Send(io, report)) return HidLightingPaint.Failed;
                 _opened = true;
             }
-            var frames = _frames(KeyboardLedNames.ByAddress(lights, colors, _size));
-            for (int i = 0; i < frames.Count; i++)
-            {
-                if (!Send(io, frames[i])) return HidLightingPaint.Failed;
-                if (_gapMs > 0 && i < frames.Count - 1) wait?.Invoke(_gapMs);
-            }
+            foreach (var report in _frames(KeyboardLedNames.ByAddress(lights, colors, _size)))
+                if (!Send(io, report)) return HidLightingPaint.Failed;
             return HidLightingPaint.Sent;
         }
 

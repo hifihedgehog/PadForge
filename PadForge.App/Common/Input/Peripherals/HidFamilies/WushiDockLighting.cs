@@ -13,10 +13,12 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>The detector is a wrapped one, which OpenRGB runs in a pass of
     /// its own through its hidapi wrapper (DetectionManager.cpp:1631-1730).
-    /// The wrapper changes nothing on the wire: the controller sends its
-    /// report through the wrapper's hid_send_feature_report
-    /// (WushiL50USBController.cpp:87), and on Windows the report starts
-    /// with its ID, 0xCC (lines 62-67).</para>
+    /// The wrapper changes nothing on the wire on Windows: there it is
+    /// hidapi's own functions (default_hidapi_wrapper, lines 83-101, passed
+    /// at line 1199), and the libusb hidapi it loads in its place is
+    /// Linux's (#ifdef __linux__, lines 1469-1509). The controller sends its report through
+    /// the wrapper's hid_send_feature_report (WushiL50USBController.cpp:87),
+    /// and on Windows the report starts with its ID, 0xCC (lines 62-67).</para>
     ///
     /// <para>The frames. A picture is one 65-byte feature report: CC, 16,
     /// the effect, the speed, the brightness, the four zones' red, green
@@ -60,11 +62,9 @@ namespace PadForge.Common.Input.Peripherals
 
         public HidLightingModel Match(HidCollectionInfo collection)
         {
-            if (collection == null) return null;
-            var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
-            if (registrations.Count == 0) return null;
+            var r = LightReports.Registered(OpenRgbFamily, collection);
+            if (r == null) return null;
             if (collection.FeatureReportLength != 0 && collection.FeatureReportLength < PacketSize) return null;
-            var r = registrations[0];
             return _models.Get(r.Name, () => Model(r.Name, (ushort)r.VendorId, (ushort)r.ProductId));
         }
 

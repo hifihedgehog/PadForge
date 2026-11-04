@@ -55,8 +55,9 @@ namespace PadForge.Tests
             Assert.Equal(StripRuns, Hex(runs.ToArray()));
             // Fewer LEDs than runs: each LED its own run.
             Assert.Equal("01 10 20 30 01 02 40 50 60 02", Hex(RobobloqLightStripLighting.MergeRanges(new[] { 0x102030, 0x405060 }, 34).ToArray()));
-            // An average rounds half away from zero: 1 and 2 make 1.5, sent as 2.
-            Assert.Equal("01 02 00 00 02", Hex(RobobloqLightStripLighting.MergeRanges(new[] { 0x010000, 0x020000 }, 1).ToArray()));
+            // An average rounds half away from zero as std::round does: 2 and
+            // 3 make 2.5, sent as 3.
+            Assert.Equal("01 03 00 00 02", Hex(RobobloqLightStripLighting.MergeRanges(new[] { 0x020000, 0x030000 }, 1).ToArray()));
         }
 
         [Fact]

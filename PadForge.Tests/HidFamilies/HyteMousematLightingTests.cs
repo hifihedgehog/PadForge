@@ -33,6 +33,26 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void APortWhoseContainerIsNotKnownYet_WaitsForTheNextLook_AndAFailedPortListKeepsTheUnits()
+        {
+            var ports = new[]
+            {
+                new ComPort("COM8", "HYTE CNVS (COM8)", @"USB\VID_3402&PID_0B00\8&2&0&1"),
+                new ComPort("COM9", "HYTE CNVS (COM9)", @"usb\vid_3402&pid_0b01\8&2&0&2"),
+            };
+            var unknown = new HyteMousematLighting(() => ports, _ => Guid.Empty, _ => null, null);
+            Assert.Empty(unknown.Look());
+            var failing = new HyteMousematLighting(() => ports, _ => throw new InvalidOperationException(), _ => null, null);
+            Assert.Empty(failing.Look());
+            // The prefix is compared in any case, as DygmaRaiseLighting
+            // compares its own.
+            var known = new HyteMousematLighting(() => ports, _ => new Guid("11111111-2222-3333-4444-555555555555"), _ => null, null);
+            Assert.Equal(new[] { @"\\.\COM8", @"\\.\COM9" }, known.Look().Select(d => d.Key));
+            Assert.Null(new HyteMousematLighting(() => throw new InvalidOperationException(), _ => Guid.Empty, _ => null, null).Look());
+            Assert.Null(new HyteMousematLighting(() => null, _ => Guid.Empty, _ => null, null).Look());
+        }
+
+        [Fact]
         public void ASession_TurnsTheAnimationOffOnce_AndBackOnAtTheHandBack()
         {
             var port = new FakeSerialPort();

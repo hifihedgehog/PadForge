@@ -196,6 +196,7 @@ namespace PadForge.Tests
         private const string Kunos = Input + "Telemetry/KunosSharedMemory.cs";
         private const string OwnLighting = Input + "Peripherals/OwnLightingChannels.cs";
         private const string AuraCore = Input + "Peripherals/HidFamilies/AsusAuraCoreLighting.cs";
+        private const string OpenRgb = Input + "Peripherals/OpenRgbClient.cs";
 
         private const string RefusesHost = "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(host))";
         private const string VendorRefuses = "if (PadForge.Engine.Common.VendorProgramGate.Refuses";
@@ -228,6 +229,7 @@ namespace PadForge.Tests
             (Kunos, "KunosSharedMemory"),
             (OwnLighting, "OwnLightingChannels"),
             (AuraCore, "AsusAuraCoreLighting"),
+            (OpenRgb, "OpenRgbTcpLink"),
         };
 
         private const string Flag = "OffLimitsForTest";
@@ -268,6 +270,7 @@ namespace PadForge.Tests
             Assert.True(PadForge.Common.Input.Telemetry.KunosSharedMemory.OffLimitsForTest);
             Assert.True(OwnLightingChannels.OffLimitsForTest);
             Assert.True(PadForge.Common.Input.Peripherals.AsusAuraCoreLighting.OffLimitsForTest);
+            Assert.True(OpenRgbTcpLink.OffLimitsForTest);
         }
 
         /// <summary>Each flag is a plain field that starts false, and no
@@ -461,6 +464,7 @@ namespace PadForge.Tests
             new object[] { OwnLighting, "internal static bool SerialWriteOnce(string path, int baud, byte[] bytes, int timeoutMs)", "if (OffLimitsForTest) return false;" },
             new object[] { OwnLighting, "internal static bool SetLenovoLightControlOwner(int owner, int timeoutMs)", "if (OffLimitsForTest) return false;" },
             new object[] { AuraCore, "internal static string MainboardName()", "if (OffLimitsForTest) return null;" },
+            new object[] { OpenRgb, "internal static IOpenRgbLink Connect(int port, int timeoutMs)", "if (OffLimitsForTest) return null;" },
 
             // Steam.
             new object[] { SteamHttpFile, "private static HttpClient CreateClient()", "var http = OffLimitsForTest ? new HttpClient(new SendsNothing()) : new HttpClient();" },
@@ -725,8 +729,10 @@ namespace PadForge.Tests
             Assert.Equal(Map((Krpc, 1), (LinkServerFile, 2), (Stun, 1)), FenceSource.Census(@"\bDns\.[A-Z][A-Za-z]*\("));
 
             // A stream client: the relay's, the link's, Steam's and the
-            // Twitch Chat row's (#555), whose session asks the gate first.
-            Assert.Equal(Map((Relay, 1), (LinkServerFile, 1), (SteamClientFile, 1), (TwitchChat, 1)),
+            // Twitch Chat row's (#555), whose session asks the gate first,
+            // and the OpenRGB route's, which connects to loopback alone and
+            // asks its own fence first (#557).
+            Assert.Equal(Map((Relay, 1), (LinkServerFile, 1), (SteamClientFile, 1), (TwitchChat, 1), (OpenRgb, 1)),
                 FenceSource.Census(Creates("TcpClient|ClientWebSocket|SteamClient")));
 
             // An HTTP client. The driver installer's, the updater's and

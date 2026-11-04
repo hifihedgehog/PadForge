@@ -305,8 +305,11 @@ namespace PadForge.Common.Input.Peripherals
             {
                 // A program of the model runs and has the device: nothing
                 // goes to it, as the Razer worker sends nothing while
-                // Synapse runs (RazerDirectBackend.ReleaseClaimedNow).
-                if (ProgramRuns(record.Programs)) continue;
+                // Synapse runs (RazerDirectBackend.ReleaseClaimedNow). Nor
+                // while OpenRGB holds it (#557).
+                if (ProgramRuns(record.Programs)
+                    || PeripheralOutputs.TakenByOpenRgb(new OutputPath(OutputFamily.HidLightingUnit, record.Path)))
+                    continue;
                 foreach (byte[] frame in record.Frames)
                 {
                     left = deadline - _ticks();
@@ -643,7 +646,7 @@ namespace PadForge.Common.Input.Peripherals
                 // nothing this way (HidLightingModel.Repair takes a HID
                 // channel).
                 if (run.Stop || unit.Own != null || ProgramRuns(unit.Model.Programs)
-                    || unit.Model.Owed?.Invoke() != true) return;
+                    || PeripheralOutputs.TakenByOpenRgb(path) || unit.Model.Owed?.Invoke() != true) return;
                 long repairAt = Volatile.Read(ref _repairAt);
                 if (now < repairAt)
                 {
@@ -844,7 +847,12 @@ namespace PadForge.Common.Input.Peripherals
         private bool Release(Unit unit)
         {
             if (unit.Session == null) return true;
-            if (ProgramRunning(unit.Model.Programs) is VendorProgram program)
+            // OpenRGB holds the device and the linker closed the path
+            // (#557): the worker lets go without a frame, by the rule below.
+            var program = PeripheralOutputs.TakenByOpenRgb(PathOf(unit))
+                ? VendorPrograms.OpenRgb
+                : ProgramRunning(unit.Model.Programs);
+            if (program != null)
             {
                 // A program of the model started, and the linker takes the
                 // unit's path away from the pass that sees it. The program

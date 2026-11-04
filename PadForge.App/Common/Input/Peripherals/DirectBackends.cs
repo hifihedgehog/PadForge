@@ -33,6 +33,10 @@ namespace PadForge.Common.Input.Peripherals
             // The OpenRGB families of the shared HID lighting worker (#557).
             Add(backends, OutputFamily.HidLightingUnit, () => new HidLightingBackend());
 
+            // The OpenRGB SDK server while OpenRGB runs (#557). Its
+            // hand-back is two packets on a loopback connection.
+            Add(backends, OutputFamily.OpenRgbDevice, () => new OpenRgbBackend());
+
             // Razer. Last of the lighting families: its hand-back can wait
             // on a lock other tools share.
             Add(backends, OutputFamily.RazerUnit, () => new RazerDirectBackend());

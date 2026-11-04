@@ -256,6 +256,11 @@ namespace PadForge.Common.Input.Peripherals
             if (!lightsHere) return null;
             if (!path.Shared)
             {
+                // A device OpenRGB holds is lit through its SDK server
+                // (#557). Until the line of its own lands with the next
+                // translation pass, the line says where the colors go.
+                if (path.Family == OutputFamily.OpenRgbDevice)
+                    return string.Format(s.Pad_Lighting_RouteThrough, VendorPrograms.OpenRgb.Name);
                 // A unit this controller lights on its own, named as its
                 // backend read it, with what else is held where the device
                 // offers the hold this controller asks for.

@@ -220,6 +220,14 @@ namespace PadForge.Tests
         internal static void Set() => PadForge.Common.Input.Peripherals.AsusAuraCoreLighting.OffLimitsForTest = true;
     }
 
+    /// <summary>No connection is made to an OpenRGB SDK server, the one
+    /// OpenRGB serves on the PC included (#557).</summary>
+    internal static class OpenRgbServerOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => OpenRgbTcpLink.OffLimitsForTest = true;
+    }
+
     /// <summary>The GameInput service is left as it is. HIDMaestro's context
     /// asks sc.exe about the service as it is built, and where the service
     /// is stopped it sets it to start with Windows and starts it. The

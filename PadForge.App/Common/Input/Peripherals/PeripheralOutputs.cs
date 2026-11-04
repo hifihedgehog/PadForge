@@ -53,6 +53,9 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>One device of an OpenRGB controller family on its own
         /// lighting collection, through the shared HID lighting worker (#557).</summary>
         HidLightingUnit,
+        /// <summary>One controller of the OpenRGB SDK server while OpenRGB
+        /// runs and holds the device, LED by LED (#557).</summary>
+        OpenRgbDevice,
     }
 
     /// <summary>Where a backend stands, for the device tabs.</summary>
@@ -88,7 +91,8 @@ namespace PadForge.Common.Input.Peripherals
         public bool Shared => Family switch
         {
             OutputFamily.HidppUnit or OutputFamily.RazerUnit or OutputFamily.SteelSeriesUnit
-                or OutputFamily.LampArrayUnit or OutputFamily.TouchSenseUnit or OutputFamily.HidLightingUnit => false,
+                or OutputFamily.LampArrayUnit or OutputFamily.TouchSenseUnit or OutputFamily.HidLightingUnit
+                or OutputFamily.OpenRgbDevice => false,
             OutputFamily.ChromaCategory or OutputFamily.LedSdkType or OutputFamily.GameSenseColor
                 or OutputFamily.GameSenseTactile or OutputFamily.Interhaptics => true,
             _ => throw new ArgumentOutOfRangeException(nameof(Family)),
@@ -161,6 +165,13 @@ namespace PadForge.Common.Input.Peripherals
         /// names the program.</summary>
         public string LeftToProgram { get; init; }
 
+        /// <summary>The paths that would light the row's device on its own,
+        /// closed because the OpenRGB SDK server holds the device (#557,
+        /// <see cref="PeripheralLinker.ChooseLighting"/>). The backend of
+        /// such a path lets the device go with no hand-back
+        /// (<see cref="PeripheralOutputs.TakenByOpenRgb"/>).</summary>
+        public OutputPath[] TakenByOpenRgb { get; init; } = Array.Empty<OutputPath>();
+
         public PeripheralOutputKinds Kinds
             => (Lighting.Length > 0 || LeftToProgram != null ? PeripheralOutputKinds.Lighting : PeripheralOutputKinds.None)
              | (Haptics.Length > 0 ? PeripheralOutputKinds.Haptics : PeripheralOutputKinds.None)
@@ -172,22 +183,32 @@ namespace PadForge.Common.Input.Peripherals
     /// the linker so a reader never sees half a pass.</summary>
     internal sealed class LinkTable
     {
+        /// <summary>Ahead of <see cref="Empty"/>, which its constructor
+        /// reads.</summary>
+        private static readonly IReadOnlySet<OutputPath> NoPaths = new HashSet<OutputPath>();
+
         public static readonly LinkTable Empty = new(Array.Empty<DeviceLinks>());
 
         public IReadOnlyDictionary<Guid, DeviceLinks> ByDevice { get; }
         public IReadOnlyDictionary<OutputPath, Guid[]> ByPath { get; }
 
+        /// <summary>Every row's <see cref="DeviceLinks.TakenByOpenRgb"/>.</summary>
+        public IReadOnlySet<OutputPath> TakenByOpenRgb { get; }
+
         public LinkTable(IEnumerable<DeviceLinks> rows)
         {
             var byDevice = new Dictionary<Guid, DeviceLinks>();
             var byPath = new Dictionary<OutputPath, List<Guid>>();
+            HashSet<OutputPath> taken = null;
             foreach (var row in rows)
             {
                 if (row == null || row.Device == Guid.Empty) continue;
                 byDevice[row.Device] = row;
                 foreach (var path in row.Lighting) Add(byPath, path, row.Device);
                 foreach (var path in row.Haptics) Add(byPath, path, row.Device);
+                foreach (var path in row.TakenByOpenRgb) (taken ??= new HashSet<OutputPath>()).Add(path);
             }
+            TakenByOpenRgb = taken ?? NoPaths;
             ByDevice = byDevice;
             var frozen = new Dictionary<OutputPath, Guid[]>(byPath.Count);
             foreach (var pair in byPath) frozen[pair.Key] = pair.Value.ToArray();
@@ -223,6 +244,7 @@ namespace PadForge.Common.Input.Peripherals
                     || !SamePaths(theirs.Lighting, pair.Value.Lighting)
                     || !SamePaths(theirs.Haptics, pair.Value.Haptics)
                     || !SamePaths(theirs.Shadows, pair.Value.Shadows)
+                    || !SamePaths(theirs.TakenByOpenRgb, pair.Value.TakenByOpenRgb)
                     || !theirs.HidppUnits.AsSpan().SequenceEqual(pair.Value.HidppUnits))
                     return false;
             }
@@ -912,6 +934,15 @@ namespace PadForge.Common.Input.Peripherals
             }
             return false;
         }
+
+        /// <summary>Whether the link table now in place closed a direct path
+        /// because the OpenRGB SDK server holds its device (#557,
+        /// <see cref="DeviceLinks.TakenByOpenRgb"/>). OpenRGB has the device
+        /// then, and a hand-back that landed after its own writes would undo
+        /// them, so the path's backend lets the device go with nothing sent,
+        /// the rule a vendor program that starts sets for it. Read the table
+        /// that withdrew the path, which is the one that names it here.</summary>
+        public static bool TakenByOpenRgb(OutputPath path) => Links.TakenByOpenRgb.Contains(path);
 
         /// <summary>Whether one of the rows that hold a path holds it for
         /// lighting and is of a vendor whose program drives its devices.</summary>

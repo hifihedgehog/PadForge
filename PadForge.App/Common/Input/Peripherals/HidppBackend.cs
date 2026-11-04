@@ -606,6 +606,16 @@ namespace PadForge.Common.Input.Peripherals
                             PadForge.Engine.SdlDiagLog.WriteLine(
                                 $"PERIPHERAL HID++ '{unit.Name}' is another device than the one owed a hand-back at its slot, which is dropped");
                         }
+                        else if (PeripheralOutputs.TakenByOpenRgb(path))
+                        {
+                            // OpenRGB holds the device (#557), and a
+                            // hand-back would land on its lighting, so what
+                            // is owed ends with no frame, as when G HUB runs.
+                            Settle(pair.Key, unit.DeviceIndex);
+                            claims = true;
+                            PadForge.Engine.SdlDiagLog.WriteLine(
+                                $"PERIPHERAL HID++ '{unit.Name}' is held by OpenRGB, so the hand-back it was owed is dropped");
+                        }
                         else
                         {
                             // The unit is back, and its hand-back is owed
@@ -1190,7 +1200,10 @@ namespace PadForge.Common.Input.Peripherals
         /// off or a device unassigned, is handed back as ever. The table is
         /// read before the presence: the link pass publishes the presence
         /// first, so a table that shows the path withdrawn is never paired
-        /// with a presence older than it.</summary>
+        /// with a presence older than it. A path the linker closed because
+        /// OpenRGB holds the device (#557,
+        /// <see cref="PeripheralOutputs.TakenByOpenRgb"/>) is let go the same
+        /// way.</summary>
         private static bool LeftToLogitechProgram(OutputPath path)
         {
             var links = PeripheralOutputs.Links;
@@ -1202,7 +1215,7 @@ namespace PadForge.Common.Input.Peripherals
                     if (row != null && Array.IndexOf(row.Lighting, path) >= 0) return false;
                 }
             }
-            return PeripheralOutputs.Presence.LogitechGHubRunning;
+            return PeripheralOutputs.Presence.LogitechGHubRunning || PeripheralOutputs.TakenByOpenRgb(path);
         }
 
         /// <summary>Puts one unit and its hand-back frames on the crash

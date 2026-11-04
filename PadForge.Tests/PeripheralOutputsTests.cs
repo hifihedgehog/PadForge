@@ -91,6 +91,7 @@ namespace PadForge.Tests
             {
                 OutputFamily.HidppUnit, OutputFamily.RazerUnit, OutputFamily.SteelSeriesUnit,
                 OutputFamily.LampArrayUnit, OutputFamily.TouchSenseUnit, OutputFamily.HidLightingUnit,
+                OutputFamily.OpenRgbDevice,
             };
             var shared = new[]
             {
@@ -101,7 +102,7 @@ namespace PadForge.Tests
             Assert.All(shared, family => Assert.True(new OutputPath(family, "k").Shared));
             Assert.Equal(Enum.GetValues(typeof(OutputFamily)).Cast<OutputFamily>().OrderBy(f => f),
                 direct.Concat(shared).OrderBy(f => f));
-            Assert.Throws<ArgumentOutOfRangeException>(() => { _ = new OutputPath((OutputFamily)11, "k").Shared; });
+            Assert.Throws<ArgumentOutOfRangeException>(() => { _ = new OutputPath((OutputFamily)12, "k").Shared; });
         }
 
         [Fact]

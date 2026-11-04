@@ -1334,8 +1334,9 @@ namespace PadForge.Common.Input.Peripherals
                 // when it connects and then streams, so a hand-back that
                 // landed after its first frame would only clear a color GG
                 // just set. The worker lets go without a frame.
-                PadForge.Engine.SdlDiagLog.WriteLine(
-                    $"PERIPHERAL SteelSeries {unit.ProductId:X4} left to SteelSeries GG, which started");
+                PadForge.Engine.SdlDiagLog.WriteLine(PeripheralOutputs.TakenByOpenRgb(path)
+                    ? $"PERIPHERAL SteelSeries {unit.ProductId:X4} left to OpenRGB"
+                    : $"PERIPHERAL SteelSeries {unit.ProductId:X4} left to SteelSeries GG, which started");
                 return true;
             }
 
@@ -1422,7 +1423,9 @@ namespace PadForge.Common.Input.Peripherals
         /// never paired with a presence older than it
         /// (HidppBackend.LeftToLogitechProgram). No row holds the path of
         /// a unit listed asleep, so for a unit that is owed its hand-back
-        /// GG alone decides.</summary>
+        /// GG alone decides. A path the linker closed because OpenRGB holds
+        /// the device (#557, <see cref="PeripheralOutputs.TakenByOpenRgb"/>)
+        /// is let go the same way.</summary>
         private static bool LeftToVendorProgram(OutputPath path)
         {
             var links = PeripheralOutputs.Links;
@@ -1434,7 +1437,7 @@ namespace PadForge.Common.Input.Peripherals
                     if (row != null && Array.IndexOf(row.Lighting, path) >= 0) return false;
                 }
             }
-            return PeripheralOutputs.Presence.SteelSeriesGGRunning;
+            return PeripheralOutputs.Presence.SteelSeriesGGRunning || PeripheralOutputs.TakenByOpenRgb(path);
         }
 
         /// <summary>A write, a read or an open failed. The channel closes

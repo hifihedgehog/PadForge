@@ -1443,6 +1443,23 @@ namespace PadForge.Common.Input.Peripherals
             PeripheralOutputs.Claimant ruler = default;
             bool wanted = links.ByPath.ContainsKey(path) && PeripheralOutputs.TryResolveColor(path, out rgb, out ruler);
 
+            // OpenRGB holds the device and the linker closed the path
+            // (#557). A hand-back would land on OpenRGB's lighting, so the
+            // unit is let go as for Windows below, with nothing sent.
+            if (links.TakenByOpenRgb.Contains(path) && !lamp.WindowsLit)
+            {
+                if (lamp.Owed)
+                {
+                    lamp.Owed = false;
+                    pass.Claims = true;
+                }
+                if (lamp.Phase == Phase.Idle) return;
+                if (lamp.Claimed)
+                    PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL LampArray {lamp.Label} lighting left to OpenRGB");
+                Release(lamp, ref pass);
+                return;
+            }
+
             if (lamp.WindowsLit)
             {
                 // Windows holds the device. A claim held until now is let

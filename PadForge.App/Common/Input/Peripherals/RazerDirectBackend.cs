@@ -650,7 +650,9 @@ namespace PadForge.Common.Input.Peripherals
             foreach (var unit in work.Units.Values)
             {
                 if (resumed && unit.Claimed) unit.Reassert = true;
-                Serve(work, unit, links, programRuns);
+                // A unit whose path the linker closed because OpenRGB holds
+                // the device (#557) is let go as when a Razer program runs.
+                Serve(work, unit, links, programRuns || links.TakenByOpenRgb.Contains(unit.Path));
                 // A unit that is owed its hand-back stays until it has it.
                 if (unit.Gone && unit.Script == null && unit.Owed.Length == 0) (gone ??= new List<Unit>()).Add(unit);
             }

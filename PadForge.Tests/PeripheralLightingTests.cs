@@ -2096,6 +2096,64 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>OpenRGB holds the mouse (#557): the linker closes the
+        /// unit's lighting path and names it taken, and the worker lets go
+        /// without a frame, as when G HUB starts. The same table without
+        /// the mark hands the unit back.</summary>
+        [Fact]
+        public void APathOpenRgbTakes_IsLetGoWithNoFrame()
+        {
+            var (backend, channel, _, path) = LitBench(reassertMs: int.MaxValue);
+            using (backend)
+            {
+                var device = Guid.NewGuid();
+                var lit = new LinkTable(new[] { new DeviceLinks { Device = device, Lighting = new[] { path } } });
+                LinkTable ThroughOpenRgb(bool taken) => new(new[]
+                {
+                    new DeviceLinks
+                    {
+                        Device = device, Haptics = new[] { path },
+                        Lighting = new[] { new OutputPath(OutputFamily.OpenRgbDevice, "openrgb") },
+                        TakenByOpenRgb = taken ? new[] { path } : Array.Empty<OutputPath>(),
+                    },
+                });
+                byte[] claim = HidppUnitProtocol.SetSwControl(1, 0x0E, claim: true);
+                byte[] handBack = HidppUnitProtocol.SetSwControl(1, 0x0E, claim: false);
+                int Count(byte[] frame) => channel.Writes.Count(w => w.Frame.SequenceEqual(frame));
+                void Passes()
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        int before = backend.PassCount;
+                        Assert.True(SpinWait.SpinUntil(() => backend.PassCount > before, 30000), "the worker made a pass");
+                    }
+                }
+
+                PeripheralOutputs.PublishLinks(lit);
+                while (channel.Writes.TryDequeue(out _)) { }
+                PeripheralOutputs.SetLighting(device, slot: 0, player: 1, 0xFF, 0x00, 0x00);
+                Passes();
+                Assert.Equal((1, 0), (Count(claim), Count(handBack)));
+
+                PeripheralOutputs.PublishLinks(ThroughOpenRgb(taken: true));
+                Passes();
+                Assert.Equal(2, channel.Writes.Count);
+                Assert.Equal(0, Count(handBack));
+                var record = typeof(HidppBackend).GetField("_claimed",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                Assert.Empty((Array)record.GetValue(backend));
+
+                // OpenRGB lets go: claimed again. The path then goes with no
+                // mark: handed back.
+                PeripheralOutputs.PublishLinks(lit);
+                Passes();
+                Assert.Equal(2, Count(claim));
+                PeripheralOutputs.PublishLinks(ThroughOpenRgb(taken: false));
+                Passes();
+                Assert.Equal(1, Count(handBack));
+            }
+        }
+
         // ─────────────────────────────────────────────
         //  The SteelSeries worker's colors
         // ─────────────────────────────────────────────

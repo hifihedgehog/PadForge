@@ -1003,6 +1003,45 @@ namespace PadForge.Tests
             Assert.Empty(backend.Recorded);
         }
 
+        /// <summary>OpenRGB holds the mouse (#557): the linker closes the
+        /// unit's path and names it taken, and the worker lets go without a
+        /// frame, as when GG starts. The same table without the mark hands
+        /// the unit back.</summary>
+        [Fact]
+        public void APathOpenRgbTakes_IsLetGoWithNoFrame()
+        {
+            var mouse = Control(0x1870, 3);
+            LinkTable ThroughOpenRgb(bool taken) => new(new[]
+            {
+                new DeviceLinks
+                {
+                    Device = Device,
+                    Lighting = new[] { new OutputPath(OutputFamily.OpenRgbDevice, "openrgb") },
+                    TakenByOpenRgb = taken ? new[] { PathOf(mouse) } : Array.Empty<OutputPath>(),
+                },
+            });
+            using var backend = Started(mouse);
+            Link(PathOf(mouse));
+            Light(0x123456);
+            Passes(backend);
+            Assert.Equal("out 00 21 07 12 34 56 12 34 56 12 34 56", Sent(Channel()));
+
+            PeripheralOutputs.PublishLinks(ThroughOpenRgb(taken: true));
+            Passes(backend);
+            Assert.Single(Writes(Channel(0)));
+            Assert.True(Channel(0).Disposed);
+            Assert.Empty(backend.Recorded);
+
+            // OpenRGB lets go and the path comes back: painted again. Then
+            // the path goes with no mark: handed back.
+            Link(PathOf(mouse));
+            Passes(backend);
+            Assert.Equal("out 00 21 07 12 34 56 12 34 56 12 34 56", Sent(Channel(1)));
+            PeripheralOutputs.PublishLinks(ThroughOpenRgb(taken: false));
+            Passes(backend);
+            Assert.Equal("out 00 21 07 12 34 56 12 34 56 12 34 56 | out 00 22 07", Sent(Channel(1)));
+        }
+
         // ── A device that stops answering ──
 
         /// <summary>A write that fails closes the unit's channel and lists
@@ -3382,7 +3421,9 @@ namespace PadForge.Tests
                 Assert.DoesNotContain(other, source);
             int table = source.IndexOf("var links = PeripheralOutputs.Links;\r\n            if (links.ByPath.TryGetValue(path, out var devices))",
                 StringComparison.Ordinal);
-            int presence = source.IndexOf("return PeripheralOutputs.Presence.SteelSeriesGGRunning;", StringComparison.Ordinal);
+            // A path OpenRGB took (#557) is read from the same table.
+            int presence = source.IndexOf("return PeripheralOutputs.Presence.SteelSeriesGGRunning || PeripheralOutputs.TakenByOpenRgb(path);",
+                StringComparison.Ordinal);
             Assert.True(table > 0 && presence > table, "the table is read before the presence");
             Assert.Equal(1, source.Split("PeripheralOutputs.Presence").Length - 1);
         }

@@ -1864,6 +1864,44 @@ namespace PadForge.Tests
             Assert.Equal(new[] { Paint(0x445566) }, board.Take());
         }
 
+        /// <summary>OpenRGB holds the device (#557): the linker closes the
+        /// unit's path and names it taken, and the worker lets go without a
+        /// frame, as for Windows. The same table without the mark hands
+        /// the unit back.</summary>
+        [Fact]
+        public void APathOpenRgbTakes_IsLetGoWithNoFrame()
+        {
+            var (backend, board) = Lit();
+            var handle = board.Opened.Last();
+            LinkTable ThroughOpenRgb(bool taken) => new(new[]
+            {
+                new DeviceLinks
+                {
+                    Device = board.Row,
+                    Lighting = new[] { new OutputPath(OutputFamily.OpenRgbDevice, "openrgb") },
+                    TakenByOpenRgb = taken ? new[] { board.OutputPath } : Array.Empty<OutputPath>(),
+                },
+            });
+
+            PeripheralOutputs.PublishLinks(ThroughOpenRgb(taken: true));
+            Passes(backend);
+            Assert.Empty(board.Take());
+            Assert.True(handle.Disposed);
+            Assert.Empty(backend.ClaimedPaths);
+
+            // OpenRGB lets go: claimed and painted again. The path then
+            // goes with no mark: handed back.
+            Link(board);
+            Passes(backend);
+            Advance(20);
+            Passes(backend);
+            Assert.Equal(Paint(0x112233), board.Take().Last());
+            PeripheralOutputs.PublishLinks(ThroughOpenRgb(taken: false));
+            Passes(backend);
+            Assert.Contains("set 06 01", board.Take());
+            Assert.Empty(backend.ClaimedPaths);
+        }
+
         /// <summary>The switch is read again right before a hand-back,
         /// since the answer the worker holds can be a second old.</summary>
         [Fact]

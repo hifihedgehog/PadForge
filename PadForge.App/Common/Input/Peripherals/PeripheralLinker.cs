@@ -359,8 +359,22 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The device's product name, or null when it gave none.</summary>
         public string Name { get; init; }
 
-        /// <summary>LampArrayKind for a LampArray unit (1 keyboard, 2 mouse), 0 where the family has none.</summary>
+        /// <summary>LampArrayKind for a LampArray unit (1 keyboard, 2 mouse),
+        /// the same for an OpenRGB controller behind a receiver other
+        /// devices share (<see cref="OpenRgbDevices.KindOf"/>), and 0 where
+        /// the family has none.</summary>
         public int Kind { get; init; }
+
+        /// <summary>For an OpenRGB controller whose location names no HID
+        /// collection, the key of the shared worker's unit it holds: a
+        /// laptop's own keyboard or a serial device
+        /// (<see cref="OpenRgbDevices.HeldKey"/>). Null otherwise.</summary>
+        public string HeldKey { get; init; }
+
+        /// <summary>An OpenRGB controller with no Direct mode, which
+        /// PadForge does not color (<see cref="OpenRgbDevices.DirectModeName"/>).
+        /// OpenRGB still holds its device.</summary>
+        public bool NoDirectMode { get; init; }
 
         /// <summary>Windows Dynamic Lighting lights it (LampArray units only).</summary>
         public bool WindowsLit { get; init; }
@@ -560,6 +574,8 @@ namespace PadForge.Common.Input.Peripherals
                 var lighting = new List<OutputPath>();
                 var units = new List<string>();
                 var shadows = Array.Empty<OutputPath>();
+                // The paths closed because OpenRGB holds the device.
+                var taken = Array.Empty<OutputPath>();
                 int maxLevel = 0;
                 bool directWhenClosed = false;
                 bool windowsLightsLampArray = false;
@@ -621,10 +637,22 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         unitVendor = own.VendorId;
                         ownPrograms = own.Programs is { Count: > 0 };
-                        families ??= DeviceFamilies.Of(direct, hidpp, result);
-                        if (LightsUnitRow(own) && !UnitProgramRuns(own, presence)
-                            && !ReachedByAnyRow(own, rowList, lampArrays) && !families.Loses(own))
-                            lighting.Add(unit);
+                        // OpenRGB holds the unit's device: the unit's own
+                        // path closes and the row is lit through OpenRGB,
+                        // by the rule a device row follows (ChooseLighting).
+                        var holders = OpenRgbHolding(direct, own);
+                        if (holders.Count > 0)
+                        {
+                            LinkOpenRgb(holders, lighting, ref leftToProgram);
+                            taken = new[] { unit };
+                        }
+                        else
+                        {
+                            families ??= DeviceFamilies.Of(direct, hidpp, result);
+                            if (LightsUnitRow(own) && !UnitProgramRuns(own, presence)
+                                && !ReachedByAnyRow(own, rowList, lampArrays) && !families.Loses(own))
+                                lighting.Add(unit);
+                        }
                     }
                 }
                 else if (IsLinkable(row.CapType))
@@ -720,13 +748,27 @@ namespace PadForge.Common.Input.Peripherals
                     // name the wrong wait on its tab, and a unit Windows
                     // lights keeps the device's own protocol closed whether
                     // or not it answers.
-                    var chosen = ChooseLighting(programRuns, shared, sharedWaits, native, lamps, out directWhenClosed);
+                    var openRgb = OpenRgbHolding(direct, row);
+                    var chosen = ChooseLighting(programRuns, shared, sharedWaits, native, lamps, out directWhenClosed,
+                        openRgb);
+                    if (chosen == LightingChoice.OpenRgb)
+                    {
+                        // Every path that would light the device on its own
+                        // closes, asleep or not, and its backend lets the
+                        // device go with nothing sent (TakenByOpenRgb).
+                        LinkOpenRgb(openRgb, lighting, ref leftToProgram);
+                        taken = TakenPaths(native, lamps);
+                        // The Chroma session must not paint the category of
+                        // a mouse OpenRGB lights for this row, as for one
+                        // the row lights on its own.
+                        if (lighting.Count > 0 && shadow is OutputPath litBesideIt) shadows = new[] { litBesideIt };
+                    }
                     // A program of the device's model runs and PadForge
                     // has no path through it: the row holds no path, keeps
                     // its Lighting tab, and the tab names the program.
                     if (chosen == LightingChoice.None && holder != null) leftToProgram = holder.Name;
                     if (chosen == LightingChoice.Shared) lighting.AddRange(shared);
-                    else if (chosen != LightingChoice.None)
+                    else if (chosen is not (LightingChoice.None or LightingChoice.OpenRgb))
                     {
                         // The device's own units go first, so the Key Colors
                         // card shows their lights (PeripheralLightMaps.FirstPerLight).
@@ -751,7 +793,9 @@ namespace PadForge.Common.Input.Peripherals
                             AddOnce(haptics, candidate.Path);
                 }
 
-                if (haptics.Count == 0 && lighting.Count == 0 && leftToProgram == null) continue;
+                // A row whose paths OpenRGB took is kept while its OpenRGB
+                // controller sleeps, so the table goes on naming them.
+                if (haptics.Count == 0 && lighting.Count == 0 && leftToProgram == null && taken.Length == 0) continue;
                 result.Add(new DeviceLinks
                 {
                     Device = row.Device,
@@ -767,6 +811,7 @@ namespace PadForge.Common.Input.Peripherals
                     HasVendorProgram = row.VendorRow == null
                                        && (ownPrograms || HasVendorProgram(row.Unit == null ? row.VendorId : unitVendor)),
                     LeftToProgram = leftToProgram,
+                    TakenByOpenRgb = taken,
                 });
             }
             return new LinkTable(result);
@@ -827,6 +872,10 @@ namespace PadForge.Common.Input.Peripherals
             /// only, so a LampArray unit of the device lights the row beside
             /// it (<see cref="DirectUnit.LiveThroughLampArray"/>).</summary>
             public bool LiveThroughLampArray { get; init; }
+
+            /// <summary>An OpenRGB controller PadForge does not color
+            /// (<see cref="DirectUnit.NoDirectMode"/>).</summary>
+            public bool NoDirectMode { get; init; }
         }
 
         internal enum LightingChoice
@@ -840,6 +889,8 @@ namespace PadForge.Common.Input.Peripherals
             /// <summary>The device's own protocol and its LampArray units
             /// together (<see cref="Candidate.LiveThroughLampArray"/>).</summary>
             NativeAndLampArray,
+            /// <summary>The OpenRGB SDK server, which holds the device (#557).</summary>
+            OpenRgb,
         }
 
         /// <summary>
@@ -848,6 +899,22 @@ namespace PadForge.Common.Input.Peripherals
         /// (<see cref="DirectUnit.Asleep"/>): the family is the device's,
         /// and <see cref="Build(IEnumerable{LinkRow}, LinkInputs)"/> then
         /// links only the units of it that answer.
+        ///
+        /// <para>0. OpenRGB holds the device (#557): an OpenRGB controller
+        /// of the device is listed (<paramref name="openRgb"/>,
+        /// <see cref="OpenRgbHolding(IReadOnlyList{DirectUnit}, LinkRow)"/>),
+        /// which happens only while OpenRGB runs and its SDK server lists
+        /// the device (<see cref="OpenRgbBackend"/>). The row is lit
+        /// through the server and through nothing else, ahead of every step
+        /// below: OpenRGB opened the device when it found it and writes to
+        /// it whenever its own lighting changes, so a path of PadForge's own
+        /// would have two programs writing one device, the fight step 1
+        /// keeps PadForge out of beside a vendor's program. Ahead of step 1
+        /// too, since a vendor's program beside OpenRGB fights OpenRGB
+        /// whatever PadForge does, and the server is the one way in that
+        /// lands where OpenRGB already writes. The paths the row would be
+        /// lit through on its own close, and their backends let the device
+        /// go with no hand-back (<see cref="DeviceLinks.TakenByOpenRgb"/>).</para>
         ///
         /// <para>1. The vendor's program runs, or for a device of the
         /// shared worker a program its model names
@@ -913,9 +980,11 @@ namespace PadForge.Common.Input.Peripherals
         /// only while G HUB runs.</para>
         /// </summary>
         internal static LightingChoice ChooseLighting(bool programRuns, IReadOnlyList<OutputPath> shared, bool sharedWaits,
-            IReadOnlyList<Candidate> native, IReadOnlyList<Candidate> lamps, out bool directWhenClosed)
+            IReadOnlyList<Candidate> native, IReadOnlyList<Candidate> lamps, out bool directWhenClosed,
+            IReadOnlyList<Candidate> openRgb = null)
         {
             directWhenClosed = false;
+            if (openRgb is { Count: > 0 }) return LightingChoice.OpenRgb;
             bool windowsLit = false;
             foreach (var lamp in lamps) windowsLit |= lamp.WindowsLit;
             bool besideWindows = false, live = false;
@@ -947,6 +1016,103 @@ namespace PadForge.Common.Input.Peripherals
                         BesideWindows = unit.LitBesideWindows,
                         LiveThroughLampArray = unit.LiveThroughLampArray,
                     });
+        }
+
+        private static readonly List<Candidate> NoCandidates = new();
+
+        /// <summary>The OpenRGB controllers that hold a row's device
+        /// (<see cref="OpenRgbHolds(DirectUnit, LinkRow, IReadOnlyList{DirectUnit})"/>),
+        /// asleep or not. The list is empty, and shared, when there are
+        /// none.</summary>
+        internal static List<Candidate> OpenRgbHolding(IReadOnlyList<DirectUnit> direct, LinkRow row)
+        {
+            List<Candidate> found = null;
+            foreach (var unit in direct)
+                if (unit.Family == OutputFamily.OpenRgbDevice && OpenRgbHolds(unit, row, direct))
+                    (found ??= new List<Candidate>()).Add(OpenRgbCandidate(unit));
+            return found ?? NoCandidates;
+        }
+
+        /// <summary>The OpenRGB controllers that hold the device of a unit
+        /// with a row of its own (<see cref="OpenRgbHoldsUnit"/>).</summary>
+        internal static List<Candidate> OpenRgbHolding(IReadOnlyList<DirectUnit> direct, DirectUnit own)
+        {
+            List<Candidate> found = null;
+            foreach (var unit in direct)
+                if (unit.Family == OutputFamily.OpenRgbDevice && OpenRgbHoldsUnit(unit, own))
+                    (found ??= new List<Candidate>()).Add(OpenRgbCandidate(unit));
+            return found ?? NoCandidates;
+        }
+
+        private static Candidate OpenRgbCandidate(DirectUnit unit)
+            => new(unit.Path, 0, false) { Asleep = unit.Asleep, NoDirectMode = unit.NoDirectMode };
+
+        /// <summary>
+        /// Whether an OpenRGB controller holds a row's device. A controller
+        /// found by its HID collection names the device by container and
+        /// vendor and product ID, the tie a Razer or SteelSeries unit has
+        /// to its rows (<see cref="MatchesDevice"/>), so it holds every row
+        /// of the device. One behind a receiver other devices share holds
+        /// the rows of its own kind, as a HID++ unit on a receiver does
+        /// (<see cref="Matches"/>). One that lights a laptop's own keyboard
+        /// holds the keyboard rows in the PC's own container. One whose
+        /// location names no HID collection, a serial device, holds the rows
+        /// of the shared worker's unit it names (<see cref="DirectUnit.HeldKey"/>).
+        /// </summary>
+        internal static bool OpenRgbHolds(DirectUnit openRgb, LinkRow row, IReadOnlyList<DirectUnit> direct)
+        {
+            if (MatchesDevice(openRgb, row))
+                return openRgb.Kind == 0
+                       || (openRgb.Kind == LampArrayKindKeyboard ? IsKeyboard(row.CapType) : row.CapType == InputDeviceType.Mouse);
+            if (openRgb.HeldKey == null) return false;
+            foreach (var unit in direct)
+                if (unit.Family != OutputFamily.OpenRgbDevice && string.Equals(unit.Key, openRgb.HeldKey, StringComparison.OrdinalIgnoreCase)
+                    && MatchesDevice(unit, row))
+                    return true;
+            return false;
+        }
+
+        /// <summary>Whether an OpenRGB controller holds the device of a unit
+        /// with a row of its own, by the same ties as
+        /// <see cref="OpenRgbHolds(DirectUnit, LinkRow, IReadOnlyList{DirectUnit})"/>
+        /// made between the two units.</summary>
+        internal static bool OpenRgbHoldsUnit(DirectUnit openRgb, DirectUnit own)
+        {
+            if (own == null || own.Family == OutputFamily.OpenRgbDevice) return false;
+            if (openRgb.HeldKey != null && string.Equals(own.Key, openRgb.HeldKey, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (openRgb.ContainerId == Guid.Empty || openRgb.ContainerId != own.ContainerId) return false;
+            if (openRgb.Kind != 0 && own.Kind != openRgb.Kind) return false;
+            return openRgb.BuiltInKeyboard
+                ? own.ContainerId == LocalMachineContainer && own.Kind == LampArrayKindKeyboard
+                : openRgb.VendorId == own.VendorId && openRgb.ProductId == own.ProductId;
+        }
+
+        /// <summary>Links the OpenRGB controllers that answer and that
+        /// PadForge colors. A device every answering controller of which has
+        /// no Direct mode is left to OpenRGB, and its tab names it
+        /// (<see cref="DeviceLinks.LeftToProgram"/>). The one place both
+        /// kinds of row link through OpenRGB.</summary>
+        private static void LinkOpenRgb(List<Candidate> holders, List<OutputPath> lighting, ref string leftToProgram)
+        {
+            bool awake = false;
+            foreach (var candidate in holders)
+            {
+                if (candidate.Asleep) continue;
+                awake = true;
+                if (!candidate.NoDirectMode) AddOnce(lighting, candidate.Path);
+            }
+            if (awake && lighting.Count == 0) leftToProgram = VendorPrograms.OpenRgb.Name;
+        }
+
+        /// <summary>Every path a row would be lit through on its own, which
+        /// OpenRGB's hold closes.</summary>
+        private static OutputPath[] TakenPaths(List<Candidate> native, List<Candidate> lamps)
+        {
+            var paths = new List<OutputPath>(native.Count + lamps.Count);
+            foreach (var candidate in native) AddOnce(paths, candidate.Path);
+            foreach (var candidate in lamps) AddOnce(paths, candidate.Path);
+            return paths.ToArray();
         }
 
         /// <summary>The program that has a row's shared-worker device now:

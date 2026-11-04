@@ -214,13 +214,22 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The program that lights the Wooting keyboards.</summary>
         public static readonly IReadOnlyList<VendorProgram> Wooting = new[] { WootingWootility };
 
+        /// <summary>OpenRGB, which holds the devices of every family it
+        /// finds and serves them over its SDK server (#557,
+        /// <see cref="OpenRgbBackend"/>). No model names it: the OpenRGB
+        /// worker asks the server which devices it holds while this runs.
+        /// Its executable is OpenRGB.exe (OpenRGB OpenRGB.pro:59, TARGET),
+        /// the name Aurora asks for before it connects to the server
+        /// (AuroraDeviceManager/Devices/RGBNet/Implementations/OpenRgbNetDevice.cs:27-35).</summary>
+        public static readonly VendorProgram OpenRgb = new("OpenRGB", "OpenRGB");
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
         {
             LenovoVantage, LegionSpace, LegionZone, ArmouryCrate, OmenGamingHub, Bazecor, CorsairIcue,
             LegionAccessoryCentral, MasterPlus, Ngenuity, MsiMysticLight, SteelSeriesGG, AlienwareCommandCenter,
-            RoccatSwarm, XpgPrime, WootingWootility,
+            RoccatSwarm, XpgPrime, WootingWootility, OpenRgb,
         };
     }
 

@@ -2441,6 +2441,51 @@ namespace PadForge.Tests
             bench.Verify();
         }
 
+        /// <summary>OpenRGB holds the mouse (#557): the linker closes the
+        /// unit's path and names it taken, and from that pass nothing more
+        /// is sent, a hand-back least of all, as when Synapse starts. The
+        /// same table without the mark hands the unit back.</summary>
+        [Fact]
+        public void APathOpenRgbTakes_IsLetGoWithNothingSent()
+        {
+            using var bench = new Bench(reassertMs: int.MaxValue);
+            var mouse = bench.Add(DeathAdderV2);
+            bench.StartAndWalk();
+            bench.Link(mouse);
+            bench.Light(mouse, Red);
+            bench.Passes();
+            Assert.Single(bench.Backend.Claimed);
+            LinkTable ThroughOpenRgb(bool taken) => new(new[]
+            {
+                new DeviceLinks
+                {
+                    Device = mouse.Row,
+                    Lighting = new[] { new OutputPath(OutputFamily.OpenRgbDevice, "openrgb") },
+                    TakenByOpenRgb = taken ? new[] { mouse.Path } : Array.Empty<OutputPath>(),
+                },
+            });
+
+            long mark = bench.Mark;
+            PeripheralOutputs.PublishLinks(ThroughOpenRgb(taken: true));
+            bench.Passes();
+            Assert.Empty(mouse.Sent(mark));
+            Assert.False(mouse.Open);
+            Assert.Empty(bench.Backend.Claimed);
+            Assert.False(bench.Unit(mouse).Asleep);
+
+            // OpenRGB lets go: claimed and painted again. The path then
+            // goes with no mark: handed back.
+            bench.Link(mouse);
+            bench.Passes();
+            Assert.Single(bench.Backend.Claimed);
+            mark = bench.Mark;
+            PeripheralOutputs.PublishLinks(ThroughOpenRgb(taken: false));
+            bench.Passes();
+            Assert.Equal(Lines(P.ExtendedSpectrum(0x3F, 0x04), P.ExtendedSpectrum(0x3F, 0x01)), mouse.Sent(mark));
+            Assert.Empty(bench.Backend.Claimed);
+            bench.Verify();
+        }
+
         /// <summary>A Razer program that starts in the middle of a paint
         /// gets the device at once: the reports of that paint that were not
         /// sent yet stay unsent.</summary>

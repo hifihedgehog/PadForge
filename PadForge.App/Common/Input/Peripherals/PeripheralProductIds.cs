@@ -15,11 +15,14 @@ namespace PadForge.Common.Input.Peripherals
     {
         /// <summary>Every USB_PID in openrazer
         /// daemon/openrazer_daemon/hardware/mouse.py, the wireless receivers
-        /// included, and three more from OpenRGB at c6fc8016 (#557): the
-        /// Basilisk V4 Pro, 00E2 wired and 00E3 wireless
-        /// (Controllers/RazerController/RazerDevices.h:168-169), and the Mouse
-        /// Dock Pro, 00A4, a receiver whose rows carry the input of the mouse
-        /// paired to it (RazerDevices.h:278, RazerControllerDetect.cpp:42-82).</summary>
+        /// included, and the mice OpenRGB lights at c6fc8016 that openrazer
+        /// does not list (#557): the Basilisk V4 Pro, 00E2 wired and 00E3
+        /// wireless (Controllers/RazerController/RazerDevices.h:168-169), the
+        /// Mouse Dock Pro, 00A4, a receiver whose rows carry the input of the
+        /// mouse paired to it (RazerDevices.h:278, RazerControllerDetect.cpp:42-82),
+        /// the Mamba Hyperflux 0069, the Naga Classic 0093 and the Naga Pro V3,
+        /// 00E7 wired and 00E8 wireless (RazerControllerDetect.cpp:399, 402,
+        /// 411-412).</summary>
         internal static readonly ushort[] RazerMice =
         {
             0x0013, 0x0015, 0x0016, 0x001F, 0x0020, 0x0024, 0x0025, 0x0029, 0x002E, 0x002F,
@@ -33,11 +36,15 @@ namespace PadForge.Common.Input.Peripherals
             0x00A6, 0x00A7, 0x00A8, 0x00AA, 0x00AB, 0x00AF, 0x00B0, 0x00B2, 0x00B3, 0x00B4,
             0x00B6, 0x00B7, 0x00B8, 0x00B9, 0x00BE, 0x00BF, 0x00C0, 0x00C1, 0x00C2, 0x00C3,
             0x00C4, 0x00C5, 0x00C7, 0x00C8, 0x00CB, 0x00CC, 0x00CD, 0x00D0, 0x00D1, 0x00D3,
-            0x00D4, 0x00D6, 0x00D7, 0x00A4, 0x00E2, 0x00E3,
+            0x00D4, 0x00D6, 0x00D7, 0x00A4, 0x00E2, 0x00E3, 0x0069, 0x0093, 0x00E7, 0x00E8,
         };
 
         /// <summary>Every USB_PID in openrazer keyboards.py, the keypads
-        /// included.</summary>
+        /// included, and the keyboards OpenRGB lights at c6fc8016 that
+        /// openrazer does not list (#557): the BlackWidow V4 Pro 75%, 02B3
+        /// wired and 02B4 wireless, the BlackWidow V4 Low Profile TKL, 02D4
+        /// wired and 02D2 wireless, and the Huntsman V3 HE Magnetic Mini, 02E4
+        /// (RazerControllerDetect.cpp:274-275, 280-281, 303).</summary>
         internal static readonly ushort[] RazerKeyboards =
         {
             0x010D, 0x010E, 0x010F, 0x0111, 0x0113, 0x0118, 0x011A, 0x011B, 0x011C, 0x0201,
@@ -51,7 +58,24 @@ namespace PadForge.Common.Input.Peripherals
             0x0276, 0x0279, 0x027A, 0x0282, 0x0287, 0x028A, 0x028B, 0x028C, 0x028D, 0x028F,
             0x0290, 0x0292, 0x0293, 0x0294, 0x0295, 0x0296, 0x0298, 0x029D, 0x029E, 0x029F,
             0x02A0, 0x02A1, 0x02A2, 0x02A3, 0x02A5, 0x02A6, 0x02A7, 0x02B0, 0x02B6, 0x02B8,
-            0x02B9, 0x02BA, 0x02C5, 0x02C6, 0x02C7, 0x02CF, 0x02D5, 0x02D7, 0x0A24,
+            0x02B9, 0x02BA, 0x02C5, 0x02C6, 0x02C7, 0x02CF, 0x02D5, 0x02D7, 0x0A24, 0x02B3,
+            0x02B4, 0x02D2, 0x02D4, 0x02E4,
+        };
+
+        /// <summary>The Razer devices that are neither a mouse nor a
+        /// keyboard and that PadForge lights through their own report (#557):
+        /// mousepads, headsets, headset stands, docks, stands, speakers, light
+        /// kits, a microphone and the Core enclosures. Every product of
+        /// openrazer's accessory, mouse mat, core and headset files that
+        /// OpenRGB's RazerController drives with the 90-byte report, and those
+        /// OpenRGB alone drives so (RazerControllerDetect.cpp at c6fc8016). A
+        /// device with no input row gets a row of its own
+        /// (<see cref="PeripheralUnitRow"/>).</summary>
+        internal static readonly ushort[] RazerAccessories =
+        {
+            0x0068, 0x007E, 0x0215, 0x0517, 0x0518, 0x0532, 0x054A, 0x0C00, 0x0C01, 0x0C02,
+            0x0C04, 0x0C05, 0x0C06, 0x0C08, 0x0F03, 0x0F07, 0x0F08, 0x0F09, 0x0F0D, 0x0F0E,
+            0x0F13, 0x0F19, 0x0F1A, 0x0F1B, 0x0F1D, 0x0F20, 0x0F21, 0x0F2B, 0x0F52,
         };
 
         /// <summary>The Aerox, Rival and Sensei detectors in OpenRGB

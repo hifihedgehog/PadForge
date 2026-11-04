@@ -1528,6 +1528,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (unit.Io == null) yield break;
             }
             unit.HandBack = back.ToArray();
+            foreach (var report in unit.HandBack) Stamp(row, report);
 
             // The crash path learns of the claim before its first write
             // goes out, so no moment exists in which a device is painted
@@ -1988,6 +1989,7 @@ namespace PadForge.Common.Input.Peripherals
                         }
                     }
                     ask.Sends++;
+                    Stamp(row, ask.Request);
                     if (!unit.Io.SetFeature(ask.Request))
                     {
                         ask.HandleFaults++;
@@ -2014,7 +2016,7 @@ namespace PadForge.Common.Input.Peripherals
                 }
 
                 var reply = new byte[RazerDirectProtocol.BufferLength];
-                if (!unit.Io.GetFeature(0, reply))
+                if (!unit.Io.GetFeature(row.ReportId, reply))
                 {
                     ask.HandleFaults++;
                 }
@@ -2048,6 +2050,16 @@ namespace PadForge.Common.Input.Peripherals
                 if (!Again(work, unit, ask)) return true;
                 if (defer) return false;
             }
+        }
+
+        /// <summary>Puts the product's report ID in front of a report, for
+        /// the Leviathan V2 speakers, whose feature report is 07
+        /// (<see cref="RazerDirectRow.ReportId"/>). The checksum does not
+        /// cover it. A hand-back is stamped when it is read, so the crash
+        /// path's one-shot writes carry the ID too.</summary>
+        private static void Stamp(RazerDirectRow row, byte[] report)
+        {
+            if (row.ReportId != 0) report[0] = row.ReportId;
         }
 
         /// <summary>Whether another unit on the same receiver, the receiver
@@ -2300,7 +2312,7 @@ namespace PadForge.Common.Input.Peripherals
                         // back with the rest.
                         _wait(unit.Row.ReplyWaitUs);
                         var reply = new byte[RazerDirectProtocol.BufferLength];
-                        if (unit.Io.GetFeature(0, reply)
+                        if (unit.Io.GetFeature(unit.Row.ReportId, reply)
                             && RazerDirectProtocol.Check(unit.Flight.Request, reply) == RazerReply.Accepted
                             && (unit.Flight.Request[RazerDirectProtocol.CommandAt] & 0x80) == 0)
                             unit.Written = true;

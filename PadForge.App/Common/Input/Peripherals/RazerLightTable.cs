@@ -122,12 +122,16 @@ namespace PadForge.Common.Input.Peripherals
         /// which is where it sits in the frame painted. Its key is the HID
         /// usage OpenRGB's key name stands for (<see cref="OpenRgbKeys"/>), or
         /// a label for a key with no usage. A zone with no layout makes every
-        /// cell a key no source names, for Map Key Lights.
+        /// cell a key no source names, for Map Key Lights, but the cells a
+        /// second source named, which are the row's own lights.
         /// </summary>
         internal static LightInfo[] Compose(RazerLightRow row, KeyboardLayout region)
         {
             var layout = row.KeyboardRecipe != null ? KeyboardLayouts.Build(row.KeyboardRecipe, region) : null;
             var lights = new List<LightInfo>(row.KeyRows * row.KeyColumns + row.Lights.Length);
+            // A cell a second source named is among the row's own lights.
+            var own = new HashSet<int>();
+            foreach (var light in row.Lights) own.Add(light.Address);
             for (int keyRow = 0; keyRow < row.KeyRows; keyRow++)
             {
                 for (int keyCol = 0; keyCol < row.KeyColumns; keyCol++)
@@ -138,6 +142,7 @@ namespace PadForge.Common.Input.Peripherals
                     int frameRow = index / row.DeviceColumns, frameCol = index % row.DeviceColumns;
                     if (frameRow >= row.Rows || frameCol >= row.Columns) continue;
                     int address = frameRow * row.Columns + frameCol;
+                    if (own.Contains(address)) continue;
                     LightInfo light;
                     if (layout == null)
                         light = Key(address);
@@ -174,5 +179,15 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>A key whose usage no source names: a keypad key, which
         /// sends what its own keymap says. Map Key Lights can name it.</summary>
         private static LightInfo Key(int address) => new(address, LightKind.Key, 0, LightKeySource.None);
+
+        /// <summary>A key a second source names by its usage (uchroma's or
+        /// Polychromatic's map, tools/razer_key_sources.py), at its cell.</summary>
+        private static LightInfo Named(int address, ushort usage)
+            => new(address, LightKind.Key, usage, LightKeySource.Generated);
+
+        /// <summary>A light a second source names by a label, such as Fn or
+        /// a media key, which no Keyboard/Keypad usage names.</summary>
+        private static LightInfo Labeled(int address, LightLabel label)
+            => new(address, LightKind.Other, 0, LightKeySource.None) { Label = label };
     }
 }

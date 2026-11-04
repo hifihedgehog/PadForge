@@ -15,7 +15,7 @@
    "openrgb_557": "c6fc8016"
   },
   "counts": {
-   "rows": 235,
+   "rows": 273,
    "disagreements": 180
   },
   "reader_check": {
@@ -109,7 +109,8 @@
    "Frames are written class/id [arguments]. R G B stand for the color bytes. A frame whose data size differs from the number of arguments shown carries \"size NN\".",
    "plan.claim and plan.paint carry storage byte 00. The reference frame, with the storage byte the reference writes and its transaction ID, is under openrazer.zones[].frames.",
    "Line numbers refer to the revisions named under sources.",
-   "The rows 00A4, 00E2 and 00E3 were added for #557 from OpenRGB c6fc8016 and openrazer 477f4d6d; their cites name those revisions."
+   "The rows 00A4, 00E2 and 00E3 were added for #557 from OpenRGB c6fc8016 and openrazer 477f4d6d; their cites name those revisions.",
+   "The rows 0068, 0069, 007E, 0093, 00E7, 00E8, 0215, 02B3, 02B4, 02D2, 02D4, 02E4, 0517, 0518, 0532, 054A, 0C00-0C08, 0F03-0F52 were added for #557's second part from OpenRGB c6fc8016 and openrazer 477f4d6d."
   ]
  },
  "devices": {
@@ -104321,6 +104322,3331 @@
     }
    },
    "others": {}
+  },
+  "0C00": {
+   "pid": "0C00",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Firefly",
+   "name": "Razer Firefly",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:451",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [
+     {
+      "tx": 63,
+      "source": "OpenRGB device table, and openrazer's static effect (razeraccessory_driver.c:666-671)"
+     }
+    ],
+    "method": "std",
+    "tx": 255,
+    "leds": [],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "frame",
+    "frame_dims": {
+     "rows": 1,
+     "cols": 15
+    },
+    "paint": [
+     "03/0C [00 0E (R G B)x15] size 32",
+     "03/0A [05 00]"
+    ],
+    "handback_fallback": [],
+    "handback_read": "",
+    "probe": {
+     "frame": "03/83 [01 05 00]",
+     "openrazer_tx": 255,
+     "source": "openrazer brightness read, razeraccessory_driver.c"
+    },
+    "cite_openrazer": "razeraccessory_driver.c frame 1102-1106, show 592-597, brightness 1630-1644, mouse_mat.py:9 [1, 15]",
+    "cite_openrgb": "RazerDevices.cpp:7971 (LINEAR, ID 3F, LED 05, 1x15), detector RazerControllerDetect.cpp:451"
+   },
+   "disagreements": [
+    {
+     "pid": "0C00",
+     "category": "transaction_id",
+     "openrazer": "FF frames, 3F static",
+     "openrgb": "3F (RazerDevices.cpp:7971 (LINEAR, ID 3F, LED 05, 1x15))",
+     "resolution": "first FF, then 3F",
+     "name": "Razer Firefly",
+     "rule": "R-557",
+     "others": "none lists it",
+     "id": "D557-0C00-transaction_id"
+    }
+   ],
+   "confidence": "disagree: transaction_id",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "mouse_mat.py:9 [1, 15]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Firefly",
+     "line": 7971,
+     "matrix_type": "LINEAR",
+     "tx": 63,
+     "rows": 1,
+     "cols": 15,
+     "led": 5
+    }
+   },
+   "others": {}
+  },
+  "0F07": {
+   "pid": "0F07",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Chroma Mug Holder",
+   "name": "Razer Chroma Mug Holder",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:468",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [
+     "OpenRGB sets the device mode to software at open (RazerController.cpp:68-77); openrazer does not, and PadForge never sends a device-mode report"
+    ],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [
+     {
+      "tx": 63,
+      "source": "OpenRGB device table, and openrazer's static effect (razeraccessory_driver.c:666-671)"
+     }
+    ],
+    "method": "std",
+    "tx": 255,
+    "leds": [],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "frame",
+    "frame_dims": {
+     "rows": 1,
+     "cols": 15
+    },
+    "paint": [
+     "03/0C [00 0E (R G B)x15] size 32",
+     "03/0A [05 00]"
+    ],
+    "handback_fallback": [],
+    "handback_read": "",
+    "probe": {
+     "frame": "03/83 [01 05 00]",
+     "openrazer_tx": 255,
+     "source": "openrazer brightness read, razeraccessory_driver.c"
+    },
+    "cite_openrazer": "razeraccessory_driver.c frame 1102-1106, show 592-597, brightness 1630-1644, accessory.py:11 [1, 15]",
+    "cite_openrgb": "RazerDevices.cpp:8987 (LINEAR, ID 3F, LED 05, 1x15), detector RazerControllerDetect.cpp:468"
+   },
+   "disagreements": [
+    {
+     "pid": "0F07",
+     "category": "transaction_id",
+     "openrazer": "FF frames, 3F static",
+     "openrgb": "3F (RazerDevices.cpp:8987 (LINEAR, ID 3F, LED 05, 1x15))",
+     "resolution": "first FF, then 3F",
+     "name": "Razer Chroma Mug Holder",
+     "rule": "R-557",
+     "others": "none lists it",
+     "id": "D557-0F07-transaction_id"
+    }
+   ],
+   "confidence": "disagree: transaction_id",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "accessory.py:11 [1, 15]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Chroma Mug Holder",
+     "line": 8987,
+     "matrix_type": "LINEAR",
+     "tx": 63,
+     "rows": 1,
+     "cols": 15,
+     "led": 5
+    }
+   },
+   "others": {}
+  },
+  "0215": {
+   "pid": "0215",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Core",
+   "name": "Razer Core",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 65280,
+      "usage": 1,
+      "cite": "RazerControllerDetect.cpp:470",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [
+     {
+      "tx": 63,
+      "source": "OpenRGB device table, and openrazer's static effect (razeraccessory_driver.c:666-671)"
+     }
+    ],
+    "method": "std",
+    "tx": 255,
+    "leds": [],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "frame",
+    "frame_dims": {
+     "rows": 1,
+     "cols": 9
+    },
+    "paint": [
+     "03/0B [FF 00 00 08 (R G B)x9]",
+     "03/0A [05 00]"
+    ],
+    "handback_fallback": [],
+    "handback_read": "",
+    "probe": {
+     "frame": "03/83 [01 05 00]",
+     "openrazer_tx": 255,
+     "source": "openrazer brightness read, razeraccessory_driver.c"
+    },
+    "cite_openrazer": "razeraccessory_driver.c frame 1097-1100, show 592-597, brightness 1627-1644, core.py:9 [1, 9]",
+    "cite_openrgb": "RazerDevices.cpp:8903 (STANDARD, ID 3F, LED 05, 1x9), detector RazerControllerDetect.cpp:470"
+   },
+   "disagreements": [
+    {
+     "pid": "0215",
+     "category": "transaction_id",
+     "openrazer": "FF frames, 3F static",
+     "openrgb": "3F (RazerDevices.cpp:8903 (STANDARD, ID 3F, LED 05, 1x9))",
+     "resolution": "first FF, then 3F",
+     "name": "Razer Core",
+     "rule": "R-557",
+     "others": "none lists it",
+     "id": "D557-0215-transaction_id"
+    }
+   ],
+   "confidence": "disagree: transaction_id",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "core.py:9 [1, 9]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Core",
+     "line": 8903,
+     "matrix_type": "STANDARD",
+     "tx": 63,
+     "rows": 1,
+     "cols": 9,
+     "led": 5
+    }
+   },
+   "others": {}
+  },
+  "0C04": {
+   "pid": "0C04",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Firefly V2",
+   "name": "Razer Firefly V2",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:452",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 63,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "0F/80 [] size 50",
+     "openrazer_tx": null,
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      19
+     ],
+     "matrix_openrazer": [
+      1,
+      19
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 673-688, mouse_mat.py:24 [1, 19]",
+    "cite_openrgb": "RazerDevices.cpp:8068 (EXTENDED, ID 3F, LED 00, 1x19), detector RazerControllerDetect.cpp:452"
+   },
+   "disagreements": [],
+   "confidence": "both agree",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "mouse_mat.py:24 [1, 19]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Firefly V2",
+     "line": 8068,
+     "matrix_type": "EXTENDED",
+     "tx": 63,
+     "rows": 1,
+     "cols": 19,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "0C08": {
+   "pid": "0C08",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Firefly V2 Pro",
+   "name": "Razer Firefly V2 Pro",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:453",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [
+     {
+      "tx": 31,
+      "source": "OpenRGB device table"
+     }
+    ],
+    "method": "ext",
+    "tx": 63,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "0F/80 [] size 50",
+     "openrazer_tx": null,
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      17
+     ],
+     "matrix_openrazer": [
+      1,
+      17
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 673-688, mouse_mat.py:39 [1, 17]",
+    "cite_openrgb": "RazerDevices.cpp:8104 (EXTENDED, ID 1F, LED 00, 1x17), detector RazerControllerDetect.cpp:453"
+   },
+   "disagreements": [
+    {
+     "pid": "0C08",
+     "category": "transaction_id",
+     "openrazer": "3F",
+     "openrgb": "1F (RazerDevices.cpp:8104 (EXTENDED, ID 1F, LED 00, 1x17))",
+     "resolution": "first 3F, then 1F",
+     "name": "Razer Firefly V2 Pro",
+     "rule": "R-557",
+     "others": "none lists it",
+     "id": "D557-0C08-transaction_id"
+    }
+   ],
+   "confidence": "disagree: transaction_id",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "mouse_mat.py:39 [1, 17]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Firefly V2 Pro",
+     "line": 8104,
+     "matrix_type": "EXTENDED",
+     "tx": 31,
+     "rows": 1,
+     "cols": 17,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "0068": {
+   "pid": "0068",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Firefly Hyperflux",
+   "name": "Razer Firefly Hyperflux",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:454",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [
+     "OpenRGB sets the device mode to software at open (RazerController.cpp:68-77); openrazer does not, and PadForge never sends a device-mode report"
+    ],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 63,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "0F/80 [] size 50",
+     "openrazer_tx": null,
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      14
+     ],
+     "matrix_openrazer": [
+      1,
+      17
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 673-688, mouse_mat.py:54 [1, 17]",
+    "cite_openrgb": "RazerDevices.cpp:8032 (EXTENDED, ID 3F, LED 00, 1x14), detector RazerControllerDetect.cpp:454"
+   },
+   "disagreements": [
+    {
+     "pid": "0068",
+     "category": "matrix_size",
+     "openrazer": "[1, 17]",
+     "openrgb": "1x14 (RazerDevices.cpp:8032 (EXTENDED, ID 3F, LED 00, 1x14))",
+     "resolution": "OpenRGB's, whose frame the light map follows",
+     "name": "Razer Firefly Hyperflux",
+     "rule": "R-557",
+     "others": "none lists it",
+     "id": "D557-0068-matrix_size"
+    }
+   ],
+   "confidence": "disagree: matrix_size",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "mouse_mat.py:54 [1, 17]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Firefly Hyperflux",
+     "line": 8032,
+     "matrix_type": "EXTENDED",
+     "tx": 63,
+     "rows": 1,
+     "cols": 14,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "0C01": {
+   "pid": "0C01",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Goliathus",
+   "name": "Razer Goliathus",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:455",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 63,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "0F/80 [] size 50",
+     "openrazer_tx": null,
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      1
+     ],
+     "matrix_openrazer": [
+      1,
+      1
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 673-688, mouse_mat.py:69 [1, 1]",
+    "cite_openrgb": "RazerDevices.cpp:8140 (EXTENDED, ID 3F, LED 00, 1x1), detector RazerControllerDetect.cpp:455"
+   },
+   "disagreements": [],
+   "confidence": "both agree",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "mouse_mat.py:69 [1, 1]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Goliathus",
+     "line": 8140,
+     "matrix_type": "EXTENDED",
+     "tx": 63,
+     "rows": 1,
+     "cols": 1,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "0C02": {
+   "pid": "0C02",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Goliathus Extended",
+   "name": "Razer Goliathus Extended",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:457",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 63,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "0F/80 [] size 50",
+     "openrazer_tx": null,
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      1
+     ],
+     "matrix_openrazer": [
+      1,
+      1
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 673-688, mouse_mat.py:84 [1, 1]",
+    "cite_openrgb": "RazerDevices.cpp:8212 (EXTENDED, ID 3F, LED 00, 1x1), detector RazerControllerDetect.cpp:457"
+   },
+   "disagreements": [],
+   "confidence": "both agree",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "mouse_mat.py:84 [1, 1]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Goliathus Extended",
+     "line": 8212,
+     "matrix_type": "EXTENDED",
+     "tx": 63,
+     "rows": 1,
+     "cols": 1,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "0C06": {
+   "pid": "0C06",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Goliathus Chroma 3XL",
+   "name": "Razer Goliathus Chroma 3XL",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:456",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [
+     {
+      "tx": 31,
+      "source": "OpenRGB device table"
+     }
+    ],
+    "method": "ext",
+    "tx": 63,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "0F/80 [] size 50",
+     "openrazer_tx": null,
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      1
+     ],
+     "matrix_openrazer": [
+      1,
+      1
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 673-688, mouse_mat.py:99 [1, 1]",
+    "cite_openrgb": "RazerDevices.cpp:8176 (EXTENDED, ID 1F, LED 00, 1x1), detector RazerControllerDetect.cpp:456"
+   },
+   "disagreements": [
+    {
+     "pid": "0C06",
+     "category": "transaction_id",
+     "openrazer": "3F",
+     "openrgb": "1F (RazerDevices.cpp:8176 (EXTENDED, ID 1F, LED 00, 1x1))",
+     "resolution": "first 3F, then 1F",
+     "name": "Razer Goliathus Chroma 3XL",
+     "rule": "R-557",
+     "others": "none lists it",
+     "id": "D557-0C06-transaction_id"
+    }
+   ],
+   "confidence": "disagree: transaction_id",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "mouse_mat.py:99 [1, 1]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Goliathus Chroma 3XL",
+     "line": 8176,
+     "matrix_type": "EXTENDED",
+     "tx": 31,
+     "rows": 1,
+     "cols": 1,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "0C05": {
+   "pid": "0C05",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Strider Chroma",
+   "name": "Razer Strider Chroma",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:458",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 63,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "0F/80 [] size 50",
+     "openrazer_tx": null,
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      19
+     ],
+     "matrix_openrazer": [
+      1,
+      19
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 673-688, mouse_mat.py:114 [1, 19]",
+    "cite_openrgb": "RazerDevices.cpp:8248 (EXTENDED, ID 3F, LED 00, 1x19), detector RazerControllerDetect.cpp:458"
+   },
+   "disagreements": [],
+   "confidence": "both agree",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "mouse_mat.py:114 [1, 19]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Strider Chroma",
+     "line": 8248,
+     "matrix_type": "EXTENDED",
+     "tx": 63,
+     "rows": 1,
+     "cols": 19,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "007E": {
+   "pid": "007E",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Mouse Dock Chroma",
+   "name": "Razer Mouse Dock Chroma",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:477",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 31000,
+   "reply_wait_source": "RAZER_NEW_DEVICE_WAIT_US (razeraccessory_driver.c:35-37)",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 63,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "0F/81 [05] size 50",
+     "openrazer_tx": null,
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region effects read, RazerController.cpp:1213-1216 and 1242-1252"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      1
+     ],
+     "matrix_openrazer": [
+      1,
+      1
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 673-688, accessory.py:81 [1, 1]",
+    "cite_openrgb": "RazerDevices.cpp:9419 (EXTENDED, ID 3F, LED 05, 1x1), detector RazerControllerDetect.cpp:477"
+   },
+   "disagreements": [
+    {
+     "pid": "007E",
+     "category": "led",
+     "openrazer": "00",
+     "openrgb": "05 (RazerDevices.cpp:9419 (EXTENDED, ID 3F, LED 05, 1x1))",
+     "resolution": "openrazer LED 00",
+     "name": "Razer Mouse Dock Chroma",
+     "rule": "R-557",
+     "others": "none lists it",
+     "id": "D557-007E-led"
+    }
+   ],
+   "confidence": "disagree: led",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "accessory.py:81 [1, 1]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Mouse Dock Chroma",
+     "line": 9419,
+     "matrix_type": "EXTENDED",
+     "tx": 63,
+     "rows": 1,
+     "cols": 1,
+     "led": 5
+    }
+   },
+   "others": {}
+  },
+  "0F09": {
+   "pid": "0F09",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Chroma HDK",
+   "name": "Razer Chroma HDK",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 2,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:467",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 63,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "03/83 [01 05 00]",
+     "openrazer_tx": 255,
+     "source": "openrazer brightness read, razeraccessory_driver.c:1625-1642"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      4,
+      16
+     ],
+     "matrix_openrazer": [
+      4,
+      16
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 673-688, accessory.py:51 [4, 16]",
+    "cite_openrgb": "RazerDevices.cpp:9155 (EXTENDED, ID 3F, LED 00, 4x16), detector RazerControllerDetect.cpp:467"
+   },
+   "disagreements": [],
+   "confidence": "both agree",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "accessory.py:51 [4, 16]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Chroma HDK",
+     "line": 9155,
+     "matrix_type": "EXTENDED",
+     "tx": 63,
+     "rows": 4,
+     "cols": 16,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "0F08": {
+   "pid": "0F08",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Base Station Chroma",
+   "name": "Razer Base Station Chroma",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:463",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 63,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "03/83 [01 05 00]",
+     "openrazer_tx": 255,
+     "source": "openrazer brightness read, razeraccessory_driver.c:1625-1642"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      15
+     ],
+     "matrix_openrazer": [
+      1,
+      15
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 673-688, accessory.py:66 [1, 15]",
+    "cite_openrgb": "RazerDevices.cpp:9239 (EXTENDED, ID 3F, LED 00, 1x15), detector RazerControllerDetect.cpp:463"
+   },
+   "disagreements": [],
+   "confidence": "both agree",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "accessory.py:66 [1, 15]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Base Station Chroma",
+     "line": 9239,
+     "matrix_type": "EXTENDED",
+     "tx": 63,
+     "rows": 1,
+     "cols": 15,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "0518": {
+   "pid": "0518",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Nommo Pro",
+   "name": "Razer Nommo Pro",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 1,
+      "usage_page": 1,
+      "usage": 3,
+      "cite": "RazerControllerDetect.cpp:492",
+      "note": ""
+     },
+     {
+      "interface": 0,
+      "usage_page": 1,
+      "usage": 0,
+      "cite": "RazerControllerDetect.cpp:495",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 63,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "03/83 [01 05 00]",
+     "openrazer_tx": 255,
+     "source": "openrazer brightness read, razeraccessory_driver.c:1625-1642"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      2,
+      8
+     ],
+     "matrix_openrazer": [
+      2,
+      8
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 673-688, accessory.py:126 [2, 8]",
+    "cite_openrgb": "RazerDevices.cpp:9504 (EXTENDED, ID 3F, LED 05, 2x8), detector RazerControllerDetect.cpp:492, 495"
+   },
+   "disagreements": [
+    {
+     "pid": "0518",
+     "category": "led",
+     "openrazer": "00",
+     "openrgb": "05 (RazerDevices.cpp:9504 (EXTENDED, ID 3F, LED 05, 2x8))",
+     "resolution": "openrazer LED 00",
+     "name": "Razer Nommo Pro",
+     "rule": "R-557",
+     "others": "none lists it",
+     "id": "D557-0518-led"
+    }
+   ],
+   "confidence": "disagree: led",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "accessory.py:126 [2, 8]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Nommo Pro",
+     "line": 9504,
+     "matrix_type": "EXTENDED",
+     "tx": 63,
+     "rows": 2,
+     "cols": 8,
+     "led": 5
+    }
+   },
+   "others": {}
+  },
+  "0517": {
+   "pid": "0517",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Nommo Chroma",
+   "name": "Razer Nommo Chroma",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 1,
+      "usage_page": 1,
+      "usage": 3,
+      "cite": "RazerControllerDetect.cpp:491",
+      "note": ""
+     },
+     {
+      "interface": 0,
+      "usage_page": 1,
+      "usage": 0,
+      "cite": "RazerControllerDetect.cpp:494",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 63,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "03/83 [01 05 00]",
+     "openrazer_tx": 255,
+     "source": "openrazer brightness read, razeraccessory_driver.c:1625-1642"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      2,
+      24
+     ],
+     "matrix_openrazer": [
+      2,
+      24
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 673-688, accessory.py:111 [2, 24]",
+    "cite_openrgb": "RazerDevices.cpp:9553 (EXTENDED, ID 3F, LED 05, 2x24), detector RazerControllerDetect.cpp:491, 494"
+   },
+   "disagreements": [
+    {
+     "pid": "0517",
+     "category": "led",
+     "openrazer": "00",
+     "openrgb": "05 (RazerDevices.cpp:9553 (EXTENDED, ID 3F, LED 05, 2x24))",
+     "resolution": "openrazer LED 00",
+     "name": "Razer Nommo Chroma",
+     "rule": "R-557",
+     "others": "none lists it",
+     "id": "D557-0517-led"
+    }
+   ],
+   "confidence": "disagree: led",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "accessory.py:111 [2, 24]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Nommo Chroma",
+     "line": 9553,
+     "matrix_type": "EXTENDED",
+     "tx": 63,
+     "rows": 2,
+     "cols": 24,
+     "led": 5
+    }
+   },
+   "others": {}
+  },
+  "0F19": {
+   "pid": "0F19",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Kraken Kitty Edition",
+   "name": "Razer Kraken Kitty Edition",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 1,
+      "usage_page": 1,
+      "usage": 3,
+      "cite": "RazerControllerDetect.cpp:434",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 31,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "0F/81 [05] size 50",
+     "openrazer_tx": null,
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region effects read, RazerController.cpp:1213-1216 and 1242-1252"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      4
+     ],
+     "matrix_openrazer": [
+      1,
+      4
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 690-702, headsets.py:205 [1, 4]",
+    "cite_openrgb": "RazerDevices.cpp:8396 (EXTENDED, ID 1F, LED 05, 1x4), detector RazerControllerDetect.cpp:434"
+   },
+   "disagreements": [
+    {
+     "pid": "0F19",
+     "category": "led",
+     "openrazer": "00",
+     "openrgb": "05 (RazerDevices.cpp:8396 (EXTENDED, ID 1F, LED 05, 1x4))",
+     "resolution": "openrazer LED 00",
+     "name": "Razer Kraken Kitty Edition",
+     "rule": "R-557",
+     "others": "none lists it",
+     "id": "D557-0F19-led"
+    }
+   ],
+   "confidence": "disagree: led",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "headsets.py:205 [1, 4]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Kraken Kitty Edition",
+     "line": 8396,
+     "matrix_type": "EXTENDED",
+     "tx": 31,
+     "rows": 1,
+     "cols": 4,
+     "led": 5
+    }
+   },
+   "others": {}
+  },
+  "0F1D": {
+   "pid": "0F1D",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Mouse Bungee V3 Chroma",
+   "name": "Razer Mouse Bungee V3 Chroma",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:476",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 31,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "0F/80 [] size 50",
+     "openrazer_tx": null,
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      8
+     ],
+     "matrix_openrazer": [
+      1,
+      8
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 690-702, accessory.py:141 [1, 8]",
+    "cite_openrgb": "RazerDevices.cpp:9275 (EXTENDED, ID 1F, LED 00, 1x8), detector RazerControllerDetect.cpp:476"
+   },
+   "disagreements": [],
+   "confidence": "both agree",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "accessory.py:141 [1, 8]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Mouse Bungee V3 Chroma",
+     "line": 9275,
+     "matrix_type": "EXTENDED",
+     "tx": 31,
+     "rows": 1,
+     "cols": 8,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "0F20": {
+   "pid": "0F20",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Base Station V2 Chroma",
+   "name": "Razer Base Station V2 Chroma",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:464",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 31,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "0F/80 [] size 50",
+     "openrazer_tx": null,
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      8
+     ],
+     "matrix_openrazer": [
+      1,
+      8
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 690-702, accessory.py:158 [1, 8]",
+    "cite_openrgb": "RazerDevices.cpp:9311 (EXTENDED, ID 1F, LED 00, 1x8), detector RazerControllerDetect.cpp:464"
+   },
+   "disagreements": [],
+   "confidence": "both agree",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "accessory.py:158 [1, 8]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Base Station V2 Chroma",
+     "line": 9311,
+     "matrix_type": "EXTENDED",
+     "tx": 31,
+     "rows": 1,
+     "cols": 8,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "0F21": {
+   "pid": "0F21",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Thunderbolt 4 Dock Chroma",
+   "name": "Razer Thunderbolt 4 Dock Chroma",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 1,
+      "usage_page": 1,
+      "usage": 3,
+      "cite": "RazerControllerDetect.cpp:435",
+      "note": ""
+     },
+     {
+      "interface": -1,
+      "usage_page": 12,
+      "usage": 1,
+      "cite": "RazerControllerDetect.cpp:481",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 31000,
+   "reply_wait_source": "RAZER_NEW_DEVICE_WAIT_US (razeraccessory_driver.c:35-37)",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [
+     {
+      "tx": 63,
+      "source": "OpenRGB device table"
+     }
+    ],
+    "method": "ext",
+    "tx": 31,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "0F/81 [05] size 50",
+     "openrazer_tx": null,
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region effects read, RazerController.cpp:1213-1216 and 1242-1252"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      12
+     ],
+     "matrix_openrazer": [
+      1,
+      12
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 690-702, accessory.py:175 [1, 12]",
+    "cite_openrgb": "RazerDevices.cpp:9701 (EXTENDED, ID 3F, LED 05, 1x12), detector RazerControllerDetect.cpp:435, 481"
+   },
+   "disagreements": [
+    {
+     "pid": "0F21",
+     "category": "transaction_id",
+     "openrazer": "1F",
+     "openrgb": "3F (RazerDevices.cpp:9701 (EXTENDED, ID 3F, LED 05, 1x12))",
+     "resolution": "first 1F, then 3F",
+     "name": "Razer Thunderbolt 4 Dock Chroma",
+     "rule": "R-557",
+     "others": "none lists it",
+     "id": "D557-0F21-transaction_id"
+    },
+    {
+     "pid": "0F21",
+     "category": "led",
+     "openrazer": "00",
+     "openrgb": "05 (RazerDevices.cpp:9701 (EXTENDED, ID 3F, LED 05, 1x12))",
+     "resolution": "openrazer LED 00",
+     "name": "Razer Thunderbolt 4 Dock Chroma",
+     "rule": "R-557",
+     "others": "none lists it",
+     "id": "D557-0F21-led"
+    }
+   ],
+   "confidence": "disagree: transaction_id, led",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "accessory.py:175 [1, 12]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Thunderbolt 4 Dock Chroma",
+     "line": 9701,
+     "matrix_type": "EXTENDED",
+     "tx": 63,
+     "rows": 1,
+     "cols": 12,
+     "led": 5
+    }
+   },
+   "others": {}
+  },
+  "0F1A": {
+   "pid": "0F1A",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Core X",
+   "name": "Razer Core X",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 2,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:471",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [
+     {
+      "tx": 63,
+      "source": "OpenRGB device table"
+     }
+    ],
+    "method": "ext",
+    "tx": 31,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "03/83 [01 05 00]",
+     "openrazer_tx": 255,
+     "source": "openrazer brightness read, razeraccessory_driver.c:1625-1642"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      16
+     ],
+     "matrix_openrazer": [
+      1,
+      16
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 690-702, core.py:25 [1, 16]",
+    "cite_openrgb": "RazerDevices.cpp:8951 (EXTENDED, ID 3F, LED 00, 1x16), detector RazerControllerDetect.cpp:471"
+   },
+   "disagreements": [
+    {
+     "pid": "0F1A",
+     "category": "transaction_id",
+     "openrazer": "1F",
+     "openrgb": "3F (RazerDevices.cpp:8951 (EXTENDED, ID 3F, LED 00, 1x16))",
+     "resolution": "first 1F, then 3F",
+     "name": "Razer Core X",
+     "rule": "R-557",
+     "others": "none lists it",
+     "id": "D557-0F1A-transaction_id"
+    }
+   ],
+   "confidence": "disagree: transaction_id",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "core.py:25 [1, 16]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Core X",
+     "line": 8951,
+     "matrix_type": "EXTENDED",
+     "tx": 63,
+     "rows": 1,
+     "cols": 16,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "0F0D": {
+   "pid": "0F0D",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Laptop Stand Chroma",
+   "name": "Razer Laptop Stand Chroma",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:472",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 31,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "03/83 [01 05 00]",
+     "openrazer_tx": 255,
+     "source": "openrazer brightness read, razeraccessory_driver.c:1625-1642"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      15
+     ],
+     "matrix_openrazer": [
+      1,
+      16
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 690-702, accessory.py:215 [1, 16]",
+    "cite_openrgb": "RazerDevices.cpp:9347 (EXTENDED, ID 1F, LED 00, 1x15), detector RazerControllerDetect.cpp:472"
+   },
+   "disagreements": [
+    {
+     "pid": "0F0D",
+     "category": "matrix_size",
+     "openrazer": "[1, 16]",
+     "openrgb": "1x15 (RazerDevices.cpp:9347 (EXTENDED, ID 1F, LED 00, 1x15))",
+     "resolution": "OpenRGB's, whose frame the light map follows",
+     "name": "Razer Laptop Stand Chroma",
+     "rule": "R-557",
+     "others": "none lists it",
+     "id": "D557-0F0D-matrix_size"
+    }
+   ],
+   "confidence": "disagree: matrix_size",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "accessory.py:215 [1, 16]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Laptop Stand Chroma",
+     "line": 9347,
+     "matrix_type": "EXTENDED",
+     "tx": 31,
+     "rows": 1,
+     "cols": 15,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "0F2B": {
+   "pid": "0F2B",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Laptop Stand Chroma V2",
+   "name": "Razer Laptop Stand Chroma V2",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:473",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 31,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "0F/80 [] size 50",
+     "openrazer_tx": null,
+     "source": "openrazer reads no brightness from it (razeraccessory_driver.c:1595-1612); OpenRGB's region list read, RazerController.cpp:1207-1224"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      15
+     ],
+     "matrix_openrazer": [
+      1,
+      15
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 690-702, accessory.py:231 [1, 15]",
+    "cite_openrgb": "RazerDevices.cpp:9383 (EXTENDED, ID 1F, LED 00, 1x15), detector RazerControllerDetect.cpp:473"
+   },
+   "disagreements": [],
+   "confidence": "both agree",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "accessory.py:231 [1, 15]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Laptop Stand Chroma V2",
+     "line": 9383,
+     "matrix_type": "EXTENDED",
+     "tx": 31,
+     "rows": 1,
+     "cols": 15,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "0F13": {
+   "pid": "0F13",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Lian Li O11 Dynamic - Razer Edition",
+   "name": "Lian Li O11 Dynamic - Razer Edition",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 2,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:479",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "RAZER_ACCESSORY_WAIT_US",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 31,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrazer",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "03/83 [01 05 00]",
+     "openrazer_tx": 255,
+     "source": "openrazer brightness read, razeraccessory_driver.c:1625-1642"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      4,
+      16
+     ],
+     "matrix_openrazer": [
+      4,
+      16
+     ],
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrazer": "razeraccessory_driver.c static 690-702, accessory.py:249 [4, 16]",
+    "cite_openrgb": "RazerDevices.cpp:9627 (EXTENDED, ID 1F, LED 00, 4x16), detector RazerControllerDetect.cpp:479"
+   },
+   "disagreements": [],
+   "confidence": "both agree",
+   "openrazer": {
+    "rev": "477f4d6d",
+    "daemon": "accessory.py:249 [4, 16]"
+   },
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Lian Li O11 Dynamic - Razer Edition",
+     "line": 9627,
+     "matrix_type": "EXTENDED",
+     "tx": 31,
+     "rows": 4,
+     "cols": 16,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "0069": {
+   "pid": "0069",
+   "list": "mouse",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Mamba Hyperflux (Wired)",
+   "name": "Razer Mamba Hyperflux (Wired)",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:399",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "openrazer has no Mamba Hyperflux: RAZER_MOUSE_WAIT_US, the wait of a wired mouse (razermouse_driver.h:134)",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 63,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrgb",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "0F/80 [] size 50",
+     "openrazer_tx": null,
+     "source": "OpenRGB's region list read, RazerController.cpp:1207-1224"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      2
+     ],
+     "matrix_openrazer": null,
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrgb": "RazerDevices.cpp:7020 (EXTENDED, ID 3F, LED 00, 1x2), detector RazerControllerDetect.cpp:399"
+   },
+   "disagreements": [],
+   "confidence": "OpenRGB only",
+   "openrazer": null,
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Mamba Hyperflux (Wired)",
+     "line": 7020,
+     "matrix_type": "EXTENDED",
+     "tx": 63,
+     "rows": 1,
+     "cols": 2,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "0093": {
+   "pid": "0093",
+   "list": "mouse",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Naga Classic",
+   "name": "Razer Naga Classic",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:402",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "openrazer has no Naga Classic: RAZER_MOUSE_WAIT_US, the Naga Trinity's (razermouse_driver.h:134)",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 31,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrgb",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "0F/80 [] size 50",
+     "openrazer_tx": null,
+     "source": "OpenRGB's region list read, RazerController.cpp:1207-1224"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      3
+     ],
+     "matrix_openrazer": null,
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrgb": "RazerDevices.cpp:7140 (EXTENDED, ID 1F, LED 00, 1x3), detector RazerControllerDetect.cpp:402"
+   },
+   "disagreements": [],
+   "confidence": "OpenRGB only",
+   "openrazer": null,
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Naga Classic",
+     "line": 7140,
+     "matrix_type": "EXTENDED",
+     "tx": 31,
+     "rows": 1,
+     "cols": 3,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "00E7": {
+   "pid": "00E7",
+   "list": "mouse",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Naga Pro V3 (Wired)",
+   "name": "Razer Naga Pro V3 (Wired)",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": -1,
+      "usage_page": 1,
+      "usage": 3,
+      "cite": "RazerControllerDetect.cpp:411",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 31000,
+   "reply_wait_source": "openrazer has no Naga Pro V3: the Naga V2 Pro's, wired and wireless alike (RAZER_NEW_MOUSE_RECEIVER_WAIT_US, razermouse_driver.h:135)",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 31,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrgb",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "0F/80 [] size 50",
+     "openrazer_tx": null,
+     "source": "OpenRGB's region list read, RazerController.cpp:1207-1224"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      3
+     ],
+     "matrix_openrazer": null,
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrgb": "RazerDevices.cpp:7526 (EXTENDED, ID 1F, LED 00, 1x3), detector RazerControllerDetect.cpp:411"
+   },
+   "disagreements": [],
+   "confidence": "OpenRGB only",
+   "openrazer": null,
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Naga Pro V3 (Wired)",
+     "line": 7526,
+     "matrix_type": "EXTENDED",
+     "tx": 31,
+     "rows": 1,
+     "cols": 3,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "00E8": {
+   "pid": "00E8",
+   "list": "mouse",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Naga Pro V3 (Wireless)",
+   "name": "Razer Naga Pro V3 (Wireless)",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": -1,
+      "usage_page": 1,
+      "usage": 3,
+      "cite": "RazerControllerDetect.cpp:412",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 31000,
+   "reply_wait_source": "openrazer has no Naga Pro V3: the Naga V2 Pro's (RAZER_NEW_MOUSE_RECEIVER_WAIT_US, razermouse_driver.h:135)",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 31,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrgb",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "0F/80 [] size 50",
+     "openrazer_tx": null,
+     "source": "OpenRGB's region list read, RazerController.cpp:1207-1224"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      3
+     ],
+     "matrix_openrazer": null,
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrgb": "RazerDevices.cpp:7547 (EXTENDED, ID 1F, LED 00, 1x3), detector RazerControllerDetect.cpp:412"
+   },
+   "disagreements": [],
+   "confidence": "OpenRGB only",
+   "openrazer": null,
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Naga Pro V3 (Wireless)",
+     "line": 7547,
+     "matrix_type": "EXTENDED",
+     "tx": 31,
+     "rows": 1,
+     "cols": 3,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "02B3": {
+   "pid": "02B3",
+   "list": "keyboard",
+   "name_openrazer": null,
+   "name_openrgb": "Razer BlackWidow V4 Pro 75% (Wired)",
+   "name": "Razer BlackWidow V4 Pro 75% (Wired)",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 3,
+      "usage_page": 12,
+      "usage": 1,
+      "cite": "RazerControllerDetect.cpp:274",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "openrazer has no BlackWidow V4 Pro 75%: the BlackWidow V4 75%'s (RAZER_BLACKWIDOW_CHROMA_WAIT_US, razerkbd_driver.h:166)",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 31,
+    "leds": [
+     5
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrgb",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 05 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 05 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 05] size 0C",
+    "probe": {
+     "frame": "0F/81 [05] size 50",
+     "openrazer_tx": null,
+     "source": "OpenRGB's region effects read, RazerController.cpp:1213-1216 and 1242-1252"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      6,
+      18
+     ],
+     "matrix_openrazer": null,
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrgb": "RazerDevices.cpp:1904 (EXTENDED, ID 1F, LED 05, 6x18), detector RazerControllerDetect.cpp:274"
+   },
+   "disagreements": [],
+   "confidence": "OpenRGB only",
+   "openrazer": null,
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer BlackWidow V4 Pro 75% (Wired)",
+     "line": 1904,
+     "matrix_type": "EXTENDED",
+     "tx": 31,
+     "rows": 6,
+     "cols": 18,
+     "led": 5
+    }
+   },
+   "others": {}
+  },
+  "02B4": {
+   "pid": "02B4",
+   "list": "keyboard",
+   "name_openrazer": null,
+   "name_openrgb": "Razer BlackWidow V4 Pro 75% (Wireless)",
+   "name": "Razer BlackWidow V4 Pro 75% (Wireless)",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 2,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:275",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 4900,
+   "reply_wait_source": "openrazer has no BlackWidow V4 Pro 75%: a wireless keyboard's (RAZER_BLACKWIDOW_V3_WIRELESS_WAIT_US, razerkbd_driver.h:167)",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 31,
+    "leds": [
+     5
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrgb",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 05 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 05 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 05] size 0C",
+    "probe": {
+     "frame": "0F/81 [05] size 50",
+     "openrazer_tx": null,
+     "source": "OpenRGB's region effects read, RazerController.cpp:1213-1216 and 1242-1252"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      6,
+      18
+     ],
+     "matrix_openrazer": null,
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrgb": "RazerDevices.cpp:1940 (EXTENDED, ID 1F, LED 05, 6x18), detector RazerControllerDetect.cpp:275"
+   },
+   "disagreements": [],
+   "confidence": "OpenRGB only",
+   "openrazer": null,
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer BlackWidow V4 Pro 75% (Wireless)",
+     "line": 1940,
+     "matrix_type": "EXTENDED",
+     "tx": 31,
+     "rows": 6,
+     "cols": 18,
+     "led": 5
+    }
+   },
+   "others": {}
+  },
+  "02D4": {
+   "pid": "02D4",
+   "list": "keyboard",
+   "name_openrazer": null,
+   "name_openrgb": "Razer BlackWidow V4 Low Profile TKL (Wired)",
+   "name": "Razer BlackWidow V4 Low Profile TKL (Wired)",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 3,
+      "usage_page": 12,
+      "usage": 1,
+      "cite": "RazerControllerDetect.cpp:280",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "openrazer has no BlackWidow V4 Low Profile: a wired keyboard's (RAZER_BLACKWIDOW_CHROMA_WAIT_US, razerkbd_driver.h:166)",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 31,
+    "leds": [
+     5
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrgb",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 05 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 05 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 05] size 0C",
+    "probe": {
+     "frame": "0F/81 [05] size 50",
+     "openrazer_tx": null,
+     "source": "OpenRGB's region effects read, RazerController.cpp:1213-1216 and 1242-1252"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      6,
+      18
+     ],
+     "matrix_openrazer": null,
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrgb": "RazerDevices.cpp:2120 (EXTENDED, ID 1F, LED 05, 6x18), detector RazerControllerDetect.cpp:280"
+   },
+   "disagreements": [],
+   "confidence": "OpenRGB only",
+   "openrazer": null,
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer BlackWidow V4 Low Profile TKL (Wired)",
+     "line": 2120,
+     "matrix_type": "EXTENDED",
+     "tx": 31,
+     "rows": 6,
+     "cols": 18,
+     "led": 5
+    }
+   },
+   "others": {}
+  },
+  "02D2": {
+   "pid": "02D2",
+   "list": "keyboard",
+   "name_openrazer": null,
+   "name_openrgb": "Razer BlackWidow V4 Low Profile TKL (Wireless)",
+   "name": "Razer BlackWidow V4 Low Profile TKL (Wireless)",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 2,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:281",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 4900,
+   "reply_wait_source": "openrazer has no BlackWidow V4 Low Profile: a wireless keyboard's (RAZER_BLACKWIDOW_V3_WIRELESS_WAIT_US, razerkbd_driver.h:167)",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 159,
+    "leds": [
+     5
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrgb",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 05 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 05 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 05] size 0C",
+    "probe": {
+     "frame": "0F/81 [05] size 50",
+     "openrazer_tx": null,
+     "source": "OpenRGB's region effects read, RazerController.cpp:1213-1216 and 1242-1252"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      6,
+      18
+     ],
+     "matrix_openrazer": null,
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrgb": "RazerDevices.cpp:2156 (EXTENDED, ID 9F, LED 05, 6x18), detector RazerControllerDetect.cpp:281"
+   },
+   "disagreements": [],
+   "confidence": "OpenRGB only",
+   "openrazer": null,
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer BlackWidow V4 Low Profile TKL (Wireless)",
+     "line": 2156,
+     "matrix_type": "EXTENDED",
+     "tx": 159,
+     "rows": 6,
+     "cols": 18,
+     "led": 5
+    }
+   },
+   "others": {}
+  },
+  "02E4": {
+   "pid": "02E4",
+   "list": "keyboard",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Huntsman V3 HE Magnetic Mini",
+   "name": "Razer Huntsman V3 HE Magnetic Mini",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 3,
+      "usage_page": 12,
+      "usage": 1,
+      "cite": "RazerControllerDetect.cpp:303",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "openrazer has no Huntsman V3 HE: a wired keyboard's (RAZER_BLACKWIDOW_CHROMA_WAIT_US, razerkbd_driver.h:166)",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 63,
+    "leds": [
+     5
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrgb",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 05 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 05 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 05] size 0C",
+    "probe": {
+     "frame": "0F/81 [05] size 50",
+     "openrazer_tx": null,
+     "source": "OpenRGB's region effects read, RazerController.cpp:1213-1216 and 1242-1252"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      6,
+      22
+     ],
+     "matrix_openrazer": null,
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrgb": "RazerDevices.cpp:3215 (EXTENDED, ID 3F, LED 05, 6x22), detector RazerControllerDetect.cpp:303"
+   },
+   "disagreements": [],
+   "confidence": "OpenRGB only",
+   "openrazer": null,
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Huntsman V3 HE Magnetic Mini",
+     "line": 3215,
+     "matrix_type": "EXTENDED",
+     "tx": 63,
+     "rows": 6,
+     "cols": 22,
+     "led": 5
+    }
+   },
+   "others": {}
+  },
+  "0532": {
+   "pid": "0532",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Leviathan V2",
+   "name": "Razer Leviathan V2",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 2,
+      "usage_page": 12,
+      "usage": 1,
+      "cite": "RazerControllerDetect.cpp:474",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "openrazer has no Leviathan V2: RAZER_ACCESSORY_WAIT_US (razeraccessory_driver.h:38)",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [
+     "feature report ID 07, RazerController.cpp:50-60"
+    ],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 31,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrgb",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "0F/80 [] size 50",
+     "openrazer_tx": null,
+     "source": "OpenRGB's region list read, RazerController.cpp:1207-1224"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      2,
+      9
+     ],
+     "matrix_openrazer": null,
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrgb": "RazerDevices.cpp:6549 (EXTENDED, ID 1F, LED 00, 2x9), detector RazerControllerDetect.cpp:474",
+    "report_id": 7
+   },
+   "disagreements": [],
+   "confidence": "OpenRGB only",
+   "openrazer": null,
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Leviathan V2",
+     "line": 6549,
+     "matrix_type": "EXTENDED",
+     "tx": 31,
+     "rows": 2,
+     "cols": 9,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "054A": {
+   "pid": "054A",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Leviathan V2 X",
+   "name": "Razer Leviathan V2 X",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 12,
+      "usage": 1,
+      "cite": "RazerControllerDetect.cpp:475",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "openrazer has no Leviathan V2 X: RAZER_ACCESSORY_WAIT_US (razeraccessory_driver.h:38)",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [
+     "feature report ID 07, RazerController.cpp:50-60"
+    ],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 31,
+    "leds": [
+     0
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrgb",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 00 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 00 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 00] size 0C",
+    "probe": {
+     "frame": "0F/80 [] size 50",
+     "openrazer_tx": null,
+     "source": "OpenRGB's region list read, RazerController.cpp:1207-1224"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      14
+     ],
+     "matrix_openrazer": null,
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrgb": "RazerDevices.cpp:6585 (EXTENDED, ID 1F, LED 00, 1x14), detector RazerControllerDetect.cpp:475",
+    "report_id": 7
+   },
+   "disagreements": [],
+   "confidence": "OpenRGB only",
+   "openrazer": null,
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Leviathan V2 X",
+     "line": 6585,
+     "matrix_type": "EXTENDED",
+     "tx": 31,
+     "rows": 1,
+     "cols": 14,
+     "led": 0
+    }
+   },
+   "others": {}
+  },
+  "0F03": {
+   "pid": "0F03",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Tiamat 7.1 V2",
+   "name": "Razer Tiamat 7.1 V2",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 0,
+      "usage_page": 0,
+      "usage": 0,
+      "cite": "RazerControllerDetect.cpp:446",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "openrazer has no Tiamat 7.1 V2: RAZER_ACCESSORY_WAIT_US (razeraccessory_driver.h:38)",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 63,
+    "leds": [
+     5
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrgb",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 05 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 05 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 05] size 0C",
+    "probe": {
+     "frame": "0F/81 [05] size 50",
+     "openrazer_tx": null,
+     "source": "OpenRGB's region effects read, RazerController.cpp:1213-1216 and 1242-1252"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      17
+     ],
+     "matrix_openrazer": null,
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrgb": "RazerDevices.cpp:8851 (EXTENDED, ID 3F, LED 05, 1x17), detector RazerControllerDetect.cpp:446"
+   },
+   "disagreements": [],
+   "confidence": "OpenRGB only",
+   "openrazer": null,
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Tiamat 7.1 V2",
+     "line": 8851,
+     "matrix_type": "EXTENDED",
+     "tx": 63,
+     "rows": 1,
+     "cols": 17,
+     "led": 5
+    }
+   },
+   "others": {}
+  },
+  "0F0E": {
+   "pid": "0F0E",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Chroma PC Case Lighting Kit",
+   "name": "Razer Chroma PC Case Lighting Kit",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": 2,
+      "usage_page": 1,
+      "usage": 2,
+      "cite": "RazerControllerDetect.cpp:469",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "openrazer has no PC case lighting kit: RAZER_ACCESSORY_WAIT_US (razeraccessory_driver.h:38)",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 63,
+    "leds": [
+     5
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrgb",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 05 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 05 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 05] size 0C",
+    "probe": {
+     "frame": "0F/81 [05] size 50",
+     "openrazer_tx": null,
+     "source": "OpenRGB's region effects read, RazerController.cpp:1213-1216 and 1242-1252"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      2,
+      16
+     ],
+     "matrix_openrazer": null,
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrgb": "RazerDevices.cpp:9203 (EXTENDED, ID 3F, LED 05, 2x16), detector RazerControllerDetect.cpp:469"
+   },
+   "disagreements": [],
+   "confidence": "OpenRGB only",
+   "openrazer": null,
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Chroma PC Case Lighting Kit",
+     "line": 9203,
+     "matrix_type": "EXTENDED",
+     "tx": 63,
+     "rows": 2,
+     "cols": 16,
+     "led": 5
+    }
+   },
+   "others": {}
+  },
+  "0F1B": {
+   "pid": "0F1B",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Seiren Emote",
+   "name": "Razer Seiren Emote",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": -1,
+      "usage_page": 12,
+      "usage": 1,
+      "cite": "RazerControllerDetect.cpp:480",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 600,
+   "reply_wait_source": "openrazer has no Seiren Emote: RAZER_ACCESSORY_WAIT_US (razeraccessory_driver.h:38)",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 63,
+    "leds": [
+     5
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrgb",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 05 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 05 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 05] size 0C",
+    "probe": {
+     "frame": "0F/81 [05] size 50",
+     "openrazer_tx": null,
+     "source": "OpenRGB's region effects read, RazerController.cpp:1213-1216 and 1242-1252"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      4,
+      16
+     ],
+     "matrix_openrazer": null,
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrgb": "RazerDevices.cpp:9664 (EXTENDED, ID 3F, LED 05, 4x16), detector RazerControllerDetect.cpp:480"
+   },
+   "disagreements": [],
+   "confidence": "OpenRGB only",
+   "openrazer": null,
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Seiren Emote",
+     "line": 9664,
+     "matrix_type": "EXTENDED",
+     "tx": 63,
+     "rows": 4,
+     "cols": 16,
+     "led": 5
+    }
+   },
+   "others": {}
+  },
+  "0F52": {
+   "pid": "0F52",
+   "list": "accessory",
+   "name_openrazer": null,
+   "name_openrgb": "Razer Thunderbolt 5 Dock Chroma",
+   "name": "Razer Thunderbolt 5 Dock Chroma",
+   "windows_collection": {
+    "source": "OpenRGB detector",
+    "candidates": [
+     {
+      "interface": -1,
+      "usage_page": 12,
+      "usage": 1,
+      "cite": "RazerControllerDetect.cpp:482",
+      "note": ""
+     }
+    ]
+   },
+   "reply_wait_us": 31000,
+   "reply_wait_source": "openrazer has no Thunderbolt 5 dock: the Thunderbolt 4 dock's (RAZER_NEW_DEVICE_WAIT_US, razeraccessory_driver.c:35-37)",
+   "hardware_report": "",
+   "plan": {
+    "alternates": [],
+    "notes": [],
+    "claim": [],
+    "storage_byte": 0,
+    "color": true,
+    "tx_alternates": [],
+    "method": "ext",
+    "tx": 63,
+    "leds": [
+     5
+    ],
+    "zones": [
+     "all"
+    ],
+    "source": "openrgb",
+    "paint_mode": "effect",
+    "paint": [
+     "0F/02 [00 05 01 00 00 01 R G B]"
+    ],
+    "handback_fallback": [
+     "0F/02 [00 05 03 00 00 00]"
+    ],
+    "handback_read": "0F/82 [01 05] size 0C",
+    "probe": {
+     "frame": "0F/81 [05] size 50",
+     "openrazer_tx": null,
+     "source": "OpenRGB's region effects read, RazerController.cpp:1213-1216 and 1242-1252"
+    },
+    "stream": {
+     "row": "0F/03",
+     "matrix_openrgb": [
+      1,
+      12
+     ],
+     "matrix_openrazer": null,
+     "cite": "OpenRGB RazerController.cpp:207-258"
+    },
+    "cite_openrgb": "RazerDevices.cpp:9738 (EXTENDED, ID 3F, LED 05, 1x12), detector RazerControllerDetect.cpp:482"
+   },
+   "disagreements": [],
+   "confidence": "OpenRGB only",
+   "openrazer": null,
+   "openrgb": {
+    "rev": "c6fc8016",
+    "entry": {
+     "name": "Razer Thunderbolt 5 Dock Chroma",
+     "line": 9738,
+     "matrix_type": "EXTENDED",
+     "tx": 63,
+     "rows": 1,
+     "cols": 12,
+     "led": 5
+    }
+   },
+   "others": {}
   }
  },
  "disagreements": [
@@ -106314,6 +109640,160 @@
    "others": "none lists it",
    "resolution": "OpenRGB 1x9, whose frame this is",
    "id": "D557-1"
+  },
+  {
+   "pid": "0C00",
+   "category": "transaction_id",
+   "openrazer": "FF frames, 3F static",
+   "openrgb": "3F (RazerDevices.cpp:7971 (LINEAR, ID 3F, LED 05, 1x15))",
+   "resolution": "first FF, then 3F",
+   "name": "Razer Firefly",
+   "rule": "R-557",
+   "others": "none lists it",
+   "id": "D557-0C00-transaction_id"
+  },
+  {
+   "pid": "0F07",
+   "category": "transaction_id",
+   "openrazer": "FF frames, 3F static",
+   "openrgb": "3F (RazerDevices.cpp:8987 (LINEAR, ID 3F, LED 05, 1x15))",
+   "resolution": "first FF, then 3F",
+   "name": "Razer Chroma Mug Holder",
+   "rule": "R-557",
+   "others": "none lists it",
+   "id": "D557-0F07-transaction_id"
+  },
+  {
+   "pid": "0215",
+   "category": "transaction_id",
+   "openrazer": "FF frames, 3F static",
+   "openrgb": "3F (RazerDevices.cpp:8903 (STANDARD, ID 3F, LED 05, 1x9))",
+   "resolution": "first FF, then 3F",
+   "name": "Razer Core",
+   "rule": "R-557",
+   "others": "none lists it",
+   "id": "D557-0215-transaction_id"
+  },
+  {
+   "pid": "0C08",
+   "category": "transaction_id",
+   "openrazer": "3F",
+   "openrgb": "1F (RazerDevices.cpp:8104 (EXTENDED, ID 1F, LED 00, 1x17))",
+   "resolution": "first 3F, then 1F",
+   "name": "Razer Firefly V2 Pro",
+   "rule": "R-557",
+   "others": "none lists it",
+   "id": "D557-0C08-transaction_id"
+  },
+  {
+   "pid": "0068",
+   "category": "matrix_size",
+   "openrazer": "[1, 17]",
+   "openrgb": "1x14 (RazerDevices.cpp:8032 (EXTENDED, ID 3F, LED 00, 1x14))",
+   "resolution": "OpenRGB's, whose frame the light map follows",
+   "name": "Razer Firefly Hyperflux",
+   "rule": "R-557",
+   "others": "none lists it",
+   "id": "D557-0068-matrix_size"
+  },
+  {
+   "pid": "0C06",
+   "category": "transaction_id",
+   "openrazer": "3F",
+   "openrgb": "1F (RazerDevices.cpp:8176 (EXTENDED, ID 1F, LED 00, 1x1))",
+   "resolution": "first 3F, then 1F",
+   "name": "Razer Goliathus Chroma 3XL",
+   "rule": "R-557",
+   "others": "none lists it",
+   "id": "D557-0C06-transaction_id"
+  },
+  {
+   "pid": "007E",
+   "category": "led",
+   "openrazer": "00",
+   "openrgb": "05 (RazerDevices.cpp:9419 (EXTENDED, ID 3F, LED 05, 1x1))",
+   "resolution": "openrazer LED 00",
+   "name": "Razer Mouse Dock Chroma",
+   "rule": "R-557",
+   "others": "none lists it",
+   "id": "D557-007E-led"
+  },
+  {
+   "pid": "0518",
+   "category": "led",
+   "openrazer": "00",
+   "openrgb": "05 (RazerDevices.cpp:9504 (EXTENDED, ID 3F, LED 05, 2x8))",
+   "resolution": "openrazer LED 00",
+   "name": "Razer Nommo Pro",
+   "rule": "R-557",
+   "others": "none lists it",
+   "id": "D557-0518-led"
+  },
+  {
+   "pid": "0517",
+   "category": "led",
+   "openrazer": "00",
+   "openrgb": "05 (RazerDevices.cpp:9553 (EXTENDED, ID 3F, LED 05, 2x24))",
+   "resolution": "openrazer LED 00",
+   "name": "Razer Nommo Chroma",
+   "rule": "R-557",
+   "others": "none lists it",
+   "id": "D557-0517-led"
+  },
+  {
+   "pid": "0F19",
+   "category": "led",
+   "openrazer": "00",
+   "openrgb": "05 (RazerDevices.cpp:8396 (EXTENDED, ID 1F, LED 05, 1x4))",
+   "resolution": "openrazer LED 00",
+   "name": "Razer Kraken Kitty Edition",
+   "rule": "R-557",
+   "others": "none lists it",
+   "id": "D557-0F19-led"
+  },
+  {
+   "pid": "0F21",
+   "category": "transaction_id",
+   "openrazer": "1F",
+   "openrgb": "3F (RazerDevices.cpp:9701 (EXTENDED, ID 3F, LED 05, 1x12))",
+   "resolution": "first 1F, then 3F",
+   "name": "Razer Thunderbolt 4 Dock Chroma",
+   "rule": "R-557",
+   "others": "none lists it",
+   "id": "D557-0F21-transaction_id"
+  },
+  {
+   "pid": "0F21",
+   "category": "led",
+   "openrazer": "00",
+   "openrgb": "05 (RazerDevices.cpp:9701 (EXTENDED, ID 3F, LED 05, 1x12))",
+   "resolution": "openrazer LED 00",
+   "name": "Razer Thunderbolt 4 Dock Chroma",
+   "rule": "R-557",
+   "others": "none lists it",
+   "id": "D557-0F21-led"
+  },
+  {
+   "pid": "0F1A",
+   "category": "transaction_id",
+   "openrazer": "1F",
+   "openrgb": "3F (RazerDevices.cpp:8951 (EXTENDED, ID 3F, LED 00, 1x16))",
+   "resolution": "first 1F, then 3F",
+   "name": "Razer Core X",
+   "rule": "R-557",
+   "others": "none lists it",
+   "id": "D557-0F1A-transaction_id"
+  },
+  {
+   "pid": "0F0D",
+   "category": "matrix_size",
+   "openrazer": "[1, 16]",
+   "openrgb": "1x15 (RazerDevices.cpp:9347 (EXTENDED, ID 1F, LED 00, 1x15))",
+   "resolution": "OpenRGB's, whose frame the light map follows",
+   "name": "Razer Laptop Stand Chroma",
+   "rule": "R-557",
+   "others": "none lists it",
+   "id": "D557-0F0D-matrix_size"
   }
  ],
  "drift": [

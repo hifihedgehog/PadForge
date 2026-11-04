@@ -30,8 +30,12 @@ KEYS. A keyboard or keypad zone that OpenRGB lays out with its
 KeyboardLayoutManager is written as the layout's name and the zone's place;
 RazerLightTable lays it out at run time in the region the keyboard reports,
 through the port in HidFamilies. A keyboard zone with no layout, and a
-keyboard OpenRGB does not list, is a key at every cell that no source names,
-for Map Key Lights.
+keyboard OpenRGB does not list, takes its keys from a second source where
+one fits (tools/razer_key_sources.py: uchroma's device files and
+Polychromatic's device maps, at their pinned commits, read from the clones
+beside OPENRGB_ROOT), and every cell no source names is a key for Map Key
+Lights. The output says for each such board which source named it, or why
+none did.
 
 HOW A LIGHT IS NAMED. A logo is a logo light, an LED strip, underglow, side
 light or a dock's base is edge lighting, a keypad key is a key no source has
@@ -56,6 +60,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import gen_razer_direct_table as table  # noqa: E402
+import razer_key_sources as key_sources  # noqa: E402
 
 PROJ_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT = os.path.join(PROJ_ROOT, "PadForge.App", "Common", "Input", "Peripherals", "RazerLightTable.g.cs")
@@ -111,7 +116,8 @@ def openrgb_devices(openrgb):
 def zone_kind(name):
     if name in ("Logo", "Logo Zone", "Left Logo", "Right Logo"):
         return "Logo"
-    if any(word in name for word in ("Strip", "Underglow", "Chroma Zone")) or name == "Base":
+    if any(word in name for word in ("Strip", "Underglow", "Chroma Zone", "Channel", "Speaker")) \
+            or name in ("Base", "Mousemat", "Case LEDs"):
         return "Edge"
     if name.startswith("Keypad"):
         return "Key"
@@ -199,8 +205,21 @@ def keyboard_zone(device):
     return None
 
 
-def plan_for(pid, row, entry, device):
-    """The light row of one product as a dict, or a reason it has none."""
+def named_lights(named, cols):
+    """The lights of the keys a second source names, each at its cell."""
+    lights = []
+    for (r, c), (usage, label) in sorted(named.items()):
+        if usage:
+            lights.append(("Named", r * cols + c, usage, r, c))
+        else:
+            lights.append(("Labeled", r * cols + c, label, r, c))
+    return lights
+
+
+def plan_for(pid, row, entry, device, sources=None):
+    """The light row of one product as a dict, or a reason it has none.
+    sources names the keys of a board OpenRGB lays out with no layout, from
+    tools/razer_key_sources.py: (keys by cell, text) or (None, reason)."""
     family, flags = row["family"], row["flags"]
     note = []
     source = "OpenRGB RazerDevices.cpp:%d at %s" % (device["line"], PIN) if device is not None else None
@@ -227,12 +246,18 @@ def plan_for(pid, row, entry, device):
         rows = cols = 0
 
     if rows and device is None and keyboard and rows > 1:
-        # No OpenRGB entry: each cell of openrazer's frame is a key no source
-        # names, for Map Key Lights.
+        # No OpenRGB entry: each cell of openrazer's frame is a key, named by
+        # a second source where one fits, else for Map Key Lights.
+        named, why = sources(pid, entry["name"], rows, cols, None) if sources else (None, "no second source read")
+        if named:
+            return {"plan": "Frame", "rows": rows, "cols": cols, "lights": named_lights(named, cols),
+                    "keys": (None, 0, rows, cols, cols), "positioned": True,
+                    "source": "openrazer frame of %d by %d, keys from %s" % (rows, cols, why),
+                    "note": "no OpenRGB entry, keys from a second source"}
         return {"plan": "Frame", "rows": rows, "cols": cols, "lights": [],
                 "keys": (None, 0, rows, cols, cols), "positioned": True,
                 "source": "openrazer frame of %d by %d, keys unnamed" % (rows, cols),
-                "note": "no OpenRGB entry, keys unnamed"}
+                "note": "no OpenRGB entry, keys unnamed: " + why}
     if rows and device is not None:
         if device["matrix"] != "CUSTOM" and (device["rows"], device["cols"]) != (rows, cols):
             note.append("OpenRGB %dx%d, painted %dx%d" % (device["rows"], device["cols"], rows, cols))
@@ -241,9 +266,20 @@ def plan_for(pid, row, entry, device):
             base, key_rows, key_cols = keyboard_zone(device)
             recipe = device["layout_name"] if device["layout"] else None
             keys = (recipe, base, key_rows, key_cols, device["cols"])
+            named = None
             if recipe is None:
-                note.append("no layout in OpenRGB, keys unnamed")
+                named, why = (sources(pid, entry["name"], rows, cols, (key_rows, key_cols)) if sources
+                              else (None, "no second source read"))
+                if named and base != 0:
+                    named, why = None, "the keyboard zone is not OpenRGB's first"
+                if named:
+                    note.append("no layout in OpenRGB, keys from a second source")
+                    source = "%s, keys from %s" % (source, why)
+                else:
+                    note.append("no layout in OpenRGB, keys unnamed: " + why)
         lights = static_lights(device, rows, cols, note, keyboard_cells=grid, positioned=grid)
+        if grid and keys[0] is None and named:
+            lights = named_lights(named, cols) + lights
         count = len(lights) + (keys[2] * keys[3] if keys else 0)
         if count > 1 and (family != "ext" or grid or count > len(row["leds"])):
             if not grid and len(lights) < rows * cols and family == "ext":
@@ -302,7 +338,12 @@ def emit(rows, commit):
         calls = []
         for kind, address, zone, row, col in r["lights"]:
             a = "0x%02X" % address if plan == "PerLed" else str(address)
-            call = "Zone(%s, %d)" % (a, zone) if kind == "Zone" else "%s(%s)" % (kind, a)
+            if kind == "Named":
+                call = "Named(%s, 0x%02X)" % (a, zone)
+            elif kind == "Labeled":
+                call = "Labeled(%s, LightLabel.%s)" % (a, zone)
+            else:
+                call = "Zone(%s, %d)" % (a, zone) if kind == "Zone" else "%s(%s)" % (kind, a)
             calls.append("At(%s, %d, %d)" % (call, row, col) if row >= 0 else call)
         if calls:
             parts.append("Lights = new[] { %s }" % ", ".join(calls))
@@ -324,6 +365,14 @@ def main():
     commit = subprocess.run(["git", "-C", args.openrgb, "rev-parse", PIN], capture_output=True, text=True,
                             check=True).stdout.strip()
     devices = openrgb_devices(args.openrgb)
+    parent = os.path.dirname(os.path.abspath(args.openrgb))
+    uch_repo, poly_repo = os.path.join(parent, "uchroma"), os.path.join(parent, "polychromatic")
+    uch_devices = key_sources.uchroma_devices(uch_repo)
+    poly_maps = key_sources.polychromatic_maps(poly_repo)
+
+    def sources(pid, name, rows_, cols_, zone):
+        return key_sources.name_keys(pid, name, rows_, cols_, zone, uch_repo, poly_repo, uch_devices, poly_maps)
+
     research = json.load(open(args.json, encoding="utf-8"))["devices"]
     rows, skipped = [], []
     for pid_text in sorted(research):
@@ -332,7 +381,7 @@ def main():
         if row["family"] not in table.COLOR_FAMILIES:
             continue
         pid = int(pid_text, 16)
-        result = plan_for(pid, row, entry, devices.get(pid))
+        result = plan_for(pid, row, entry, devices.get(pid), sources)
         if isinstance(result, str):
             skipped.append((pid_text, entry["name"], result))
             continue

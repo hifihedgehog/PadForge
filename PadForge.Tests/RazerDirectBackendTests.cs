@@ -975,6 +975,27 @@ namespace PadForge.Tests
             bench.Verify();
         }
 
+        /// <summary>A Leviathan V2 X's reports carry report ID 07 and its
+        /// replies are read as report 07 (OpenRGB RazerController.cpp:50-60),
+        /// its hand-back on the crash path's record too.</summary>
+        [Fact]
+        public void ALeviathanV2XsReports_CarryReportIdSeven()
+        {
+            using var bench = new Bench(reassertMs: int.MaxValue);
+            var speaker = bench.Add(0x054A);
+            bench.StartAndWalk();
+            bench.Link(speaker);
+            bench.Light(speaker, Red);
+            bench.Passes();
+            var calls = speaker.Calls;
+            Assert.Equal(Lines(P.RegionListRead(0x1F), P.StoredEffectRead(0x1F, 0x00), P.ExtendedStatic(0x1F, 0x00, Red)),
+                speaker.Sent());
+            Assert.All(calls.Where(c => c.Kind == "set"), c => Assert.Equal(0x07, c.Bytes[0]));
+            Assert.All(calls.Where(c => c.Kind == "get"), c => Assert.Equal(new byte[] { 0x07 }, c.Bytes));
+            Assert.All(Assert.Single(bench.Backend.Claimed).HandBack, report => Assert.Equal(0x07, report[0]));
+            bench.Verify();
+        }
+
         /// <summary>A paired device the dock no longer lists leaves, and the
         /// dock's own product ID is never a unit behind it.</summary>
         [Fact]

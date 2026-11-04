@@ -80,6 +80,18 @@ COLLECTIONS = {
     ((3, 0x0C, 0x01),): "Interface3Consumer",
     ((3, 0x01, 0x00),): "Interface3Generic",
     ((3, 0x01, 0x00), (3, 0x0C, 0x01)): "Interface3GenericThenConsumer",
+    # The rules of the products #557 added, OpenRGB's detectors at c6fc8016.
+    # -1 is any interface (REGISTER_HID_DETECTOR_PU) and a usage page of 0
+    # any usage (REGISTER_HID_DETECTOR_I).
+    ((0, 0xFF00, 0x01),): "Interface0Vendor",
+    ((0, 0x0C, 0x01),): "Interface0Consumer",
+    ((2, 0x0C, 0x01),): "Interface2Consumer",
+    ((0, 0x00, 0x00),): "Interface0Any",
+    ((-1, 0x01, 0x03),): "AnyInterfaceGeneric3",
+    ((-1, 0x0C, 0x01),): "AnyInterfaceConsumer",
+    ((1, 0x01, 0x03),): "Interface1Generic3",
+    ((1, 0x01, 0x03), (0, 0x01, 0x00)): "Interface1Generic3ThenInterface0Generic",
+    ((1, 0x01, 0x03), (-1, 0x0C, 0x01)): "Interface1Generic3ThenConsumer",
 }
 
 # Alternates that are tried when the first paint is refused, in the order the
@@ -166,6 +178,8 @@ def build_probe(row):
         return (0x0F, 0x80, 0x50, [])
     if kind == "PairedDevices":
         return (0x00, 0xBF, 0x50, [])
+    if kind == "RegionEffects":
+        return (0x0F, 0x81, 0x50, [led])
     raise TableError("%s: no claim read" % row["pid"])
 
 
@@ -317,6 +331,7 @@ def to_row(pid, device):
         "flags": [],
         "wait_us": device["reply_wait_us"],
         "collections": COLLECTIONS[candidates],
+        "report_id": device["plan"].get("report_id", 0),
         "fallbacks": [],
         "note": device["confidence"],
     }
@@ -342,6 +357,9 @@ def to_row(pid, device):
         row["probe"] = "RegionList"
     elif probe == "00/BF [] size 50":
         row["probe"] = "PairedDevices"
+    elif re.match(r"^0F/81 \[([0-9A-F]{2})\] size 50$", probe):
+        row["probe"] = "RegionEffects"
+        row["probe_led"] = int(probe[7:9], 16)
     else:
         match = re.match(r"^(0F/84|03/83|03/80) \[01 ([0-9A-F]{2}) 00\]$", probe)
         need(match, pid, "unexpected claim read %r" % probe)
@@ -496,6 +514,8 @@ def emit_row(row):
             "new RazerFallback(RazerFallbackKind.%s, %d)" % fallback for fallback in row["fallbacks"]))
     parts.append("ReplyWaitUs = %d" % row["wait_us"])
     parts.append("Collections = %s" % row["collections"])
+    if row["report_id"]:
+        parts.append("ReportId = 0x%02X" % row["report_id"])
     return "            new() { %s }, // %s" % (", ".join(parts), row["note"])
 
 

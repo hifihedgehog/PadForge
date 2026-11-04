@@ -219,9 +219,12 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>A report at the length Windows wants: itself when it is
-        /// long enough, else a copy padded with zeros in
+        /// that long, else a copy padded with zeros or cut to length in
         /// <paramref name="scratch"/>, which is made on first use and reused
-        /// after. A longer report is left alone, as hidapi leaves it.</summary>
+        /// after. A plugin's stated length can count a report ID the
+        /// descriptor does not, and Windows cuts a longer report to the
+        /// collection's length anyway (hidapi windows/hid.c:1279-1283 and
+        /// 1380-1384).</summary>
         internal static byte[] Pad(byte[] report, int length, ref byte[] scratch)
         {
             if (report.Length == length) return report;

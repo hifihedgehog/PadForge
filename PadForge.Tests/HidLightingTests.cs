@@ -1682,6 +1682,7 @@ namespace PadForge.Tests
             var pc = PeripheralLinker.LocalMachineContainer;
             var model = HidLightingFamilies.Match(new HidCollectionInfo
             {
+                Path = @"\\?\hid#vid_048d&pid_c195#ff890007",
                 VendorId = 0x048D, ProductId = LenovoLegionLighting.Legion5Gen10,
                 UsagePage = 0xFF89, Usage = 0x07, FeatureReportLength = 960,
             });

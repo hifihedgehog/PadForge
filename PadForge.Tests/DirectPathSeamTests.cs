@@ -1778,7 +1778,7 @@ namespace PadForge.Tests
         /// a collection whose feature report is 51: Windows gets 51, the 10
         /// then zeros.</summary>
         [Fact]
-        public void AShortReport_GoesOutPaddedToTheCollectionsLength_AndALongOneAsItIs()
+        public void AShortReport_GoesOutPaddedToTheCollectionsLength_AndALongOneCutToIt()
         {
             byte[] range = { 0x05, 0x01, 0x00, 0x00, 0x3D, 0x01, 0x1E, 0x90, 0xFF, 0x01 };
             byte[] scratch = null;
@@ -1796,11 +1796,12 @@ namespace PadForge.Tests
             Assert.Equal(new byte[] { 0x06, 0x01 }, again.Take(2));
             Assert.All(again.Skip(2), b => Assert.Equal(0, b));
 
-            // The right length or more goes out as it is.
+            // The right length goes out as it is, and a longer report goes
+            // out cut to it.
             byte[] exact = new byte[91];
             Assert.Same(exact, HidReportChannel.Pad(exact, 91, ref scratch));
-            byte[] longer = new byte[92];
-            Assert.Same(longer, HidReportChannel.Pad(longer, 91, ref scratch));
+            byte[] longer = Enumerable.Range(1, 92).Select(n => (byte)n).ToArray();
+            Assert.Equal(longer.Take(91), HidReportChannel.Pad(longer, 91, ref scratch));
         }
 
         /// <summary>The crash path's call ends on time whatever the device

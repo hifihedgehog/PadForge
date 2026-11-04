@@ -11,18 +11,18 @@ namespace PadForge.Common.Input.Peripherals
     /// feature reports and a LED collection that takes the colors as output
     /// reports and answers each picture with an input report.
     ///
-    /// <para>The look. The shared worker hands a family one collection, and
-    /// these keyboards need both, so the family finds them on its own from
-    /// the HID walk (<see cref="IOwnLookFamily"/>): a control collection is
-    /// one a detector registration of the family matches, and its LED
-    /// collection is the one of the same product with the LED interface and
-    /// usage page OpenRGB opens for that product
-    /// (RoccatControllerDetect.cpp:101-203, the interfaces and pages at
-    /// lines 122-153). OpenRGB pairs the first two it finds that no other
-    /// keyboard took. This look pairs the two that share a container, which
-    /// is the same pair for one keyboard and the right pair for two of a
-    /// kind. A collection whose container cannot be read yet waits for the
-    /// next look. The unit's key is the control collection's path.</para>
+    /// <para>The two collections. The unit is the control collection, the
+    /// one a detector registration of the family matches on the control
+    /// interface and usage page OpenRGB opens for the product, and its LED
+    /// collection is the model's sibling: the one of the same product on
+    /// the LED interface and usage page (RoccatControllerDetect.cpp:101-203,
+    /// the interfaces and pages at lines 122-153,
+    /// <see cref="HidLightingModel.Siblings"/>). OpenRGB pairs the first two
+    /// it finds that no other keyboard took. The worker pairs the two that
+    /// share a container, which is the same pair for one keyboard and the
+    /// right pair for two of a kind, and lists the keyboard only while both
+    /// are in the walk, as OpenRGB makes it only once it found both
+    /// (lines 155-201).</para>
     ///
     /// <para>The session. It reads the device info report as OpenRGB's
     /// InitDeviceInfo reads it, twice (RoccatVulcanKeyboardController.cpp:72-148):
@@ -60,7 +60,7 @@ namespace PadForge.Common.Input.Peripherals
     /// <para>ROCCAT Swarm lights these keyboards, and while it runs the
     /// family leaves them to it (<see cref="VendorPrograms.RoccatSwarm"/>).</para>
     /// </summary>
-    internal sealed class RoccatVulcanLighting : IOwnLookFamily
+    internal sealed class RoccatVulcanLighting : IHidLightingFamily
     {
         public static readonly RoccatVulcanLighting Instance = new();
 
@@ -125,32 +125,39 @@ namespace PadForge.Common.Input.Peripherals
         internal static bool SecondGeneration(ushort pid) => pid is Pyro or Magma or MagmaMini or VulcanPro or VulcanTklPro
             or VulcanII or VulcanIIMini or VulcanIIMax or TurtleBeachVulcanII or TurtleBeachVulcanIITklPro;
 
-        private readonly Func<IReadOnlyList<HidCollectionInfo>> _enumerate;
-        private readonly Func<string, Guid> _containerOf;
-        private readonly Func<string, IHidReportChannel> _open;
-        private readonly Func<string, byte[], int, bool> _setFeatureOnce;
-        private readonly Dictionary<string, HidLightingModel> _models = new(StringComparer.OrdinalIgnoreCase);
-
-        public RoccatVulcanLighting()
-            : this(null, null, null, null) { }
-
-        /// <summary>Test seam: the HID walk, the container lookup, the
-        /// channel opener and the crash path's one feature report.</summary>
-        internal RoccatVulcanLighting(Func<IReadOnlyList<HidCollectionInfo>> enumerate, Func<string, Guid> containerOf,
-            Func<string, IHidReportChannel> open, Func<string, byte[], int, bool> setFeatureOnce)
-        {
-            // The walk opens each collection with no access right to read
-            // its descriptor, which the test host leaves alone
-            // (RealHidAccess).
-            _enumerate = enumerate ?? (() => RealHidAccess.Refused ? Array.Empty<HidCollectionInfo>() : HidCollectionRuntime.Enumerate());
-            _containerOf = containerOf ?? AudioPassthroughService.DevicePathContainerId;
-            _open = open ?? HidReportChannel.Open;
-            _setFeatureOnce = setFeatureOnce ?? HidReportChannel.SetFeatureOnce;
-        }
+        /// <summary>One model per registration and product. Locked: a worker
+        /// a timed-out Stop left behind can match while the next one
+        /// does.</summary>
+        private readonly Dictionary<(string Name, ushort VendorId, ushort ProductId), HidLightingModel> _models = new();
 
         public string Name => "Roccat Vulcan";
 
-        public HidLightingModel Match(HidCollectionInfo collection) => null;
+        /// <summary>The model at a control collection: the first of the
+        /// family's registrations the collection answers to is the Vulcan
+        /// detector's, and the collection is on the control interface and
+        /// usage page OpenRGB opens for its product.</summary>
+        public HidLightingModel Match(HidCollectionInfo collection)
+        {
+            if (collection?.Path == null) return null;
+            OpenRgbRegistration registration = null;
+            foreach (var r in OpenRgbRegistrations.Match(FamilyName, collection))
+            {
+                registration = r;
+                break;
+            }
+            if (registration == null || registration.Detector != Detector) return null;
+            var (_, _, controlInterface, controlPage) = Interfaces(collection.ProductId);
+            int bus = OpenRgbRegistrations.BusOf(collection);
+            if (OpenRgbRegistrations.InterfaceOf(collection, bus) != controlInterface || collection.UsagePage != controlPage)
+                return null;
+            var key = (registration.Name, collection.VendorId, collection.ProductId);
+            lock (_models)
+            {
+                if (!_models.TryGetValue(key, out var model))
+                    _models[key] = model = Model(registration.Name, collection.VendorId, collection.ProductId);
+                return model;
+            }
+        }
 
         /// <summary>The LED collection's interface and usage page, and the
         /// control collection's, OpenRGB opens for a product
@@ -164,81 +171,11 @@ namespace PadForge.Common.Input.Peripherals
                 _ => (3, 0x0001, 1, 0x000B),
             };
 
-        public IReadOnlyList<OwnDevice> Look()
-        {
-            IReadOnlyList<HidCollectionInfo> all;
-            try { all = _enumerate(); }
-            catch { return null; }
-            if (all == null) return null;
-            var found = new List<OwnDevice>();
-            var taken = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            var containers = new Dictionary<string, Guid>(StringComparer.OrdinalIgnoreCase);
-            Guid ContainerOf(string path)
-            {
-                if (containers.TryGetValue(path, out var known)) return known;
-                Guid container;
-                try { container = _containerOf(path); }
-                catch { container = Guid.Empty; }
-                containers[path] = container;
-                return container;
-            }
-            foreach (var control in all)
-            {
-                if (control?.Path == null || taken.Contains(control.Path)) continue;
-                OpenRgbRegistration registration = null;
-                foreach (var r in OpenRgbRegistrations.Match(FamilyName, control))
-                {
-                    registration = r;
-                    break;
-                }
-                if (registration == null || registration.Detector != Detector) continue;
-                var (ledInterface, ledPage, controlInterface, controlPage) = Interfaces(control.ProductId);
-                int bus = OpenRgbRegistrations.BusOf(control);
-                if (OpenRgbRegistrations.InterfaceOf(control, bus) != controlInterface || control.UsagePage != controlPage)
-                    continue;
-                Guid container = ContainerOf(control.Path);
-                if (container == Guid.Empty) continue;
-                HidCollectionInfo led = null;
-                foreach (var c in all)
-                {
-                    if (c?.Path == null || taken.Contains(c.Path) || c.VendorId != control.VendorId
-                        || c.ProductId != control.ProductId || c.UsagePage != ledPage
-                        || OpenRgbRegistrations.InterfaceOf(c, OpenRgbRegistrations.BusOf(c)) != ledInterface)
-                        continue;
-                    if (ContainerOf(c.Path) != container) continue;
-                    led = c;
-                    break;
-                }
-                if (led == null) continue;
-                taken.Add(control.Path);
-                taken.Add(led.Path);
-                found.Add(new OwnDevice(control.Path, ModelFor(registration, control, led.Path))
-                {
-                    VendorId = control.VendorId, ProductId = control.ProductId, Container = container,
-                });
-            }
-            return found;
-        }
-
-        /// <summary>The model of one keyboard, the same object at every look
-        /// while its two paths stay. Locked: a worker a timed-out Stop left
-        /// behind can look while the next one does.</summary>
-        private HidLightingModel ModelFor(OpenRgbRegistration registration, HidCollectionInfo control, string ledPath)
-        {
-            string key = control.Path + "|" + ledPath;
-            lock (_models)
-            {
-                if (_models.TryGetValue(key, out var model)) return model;
-                model = Model(registration.Name, control.VendorId, control.ProductId, ledPath);
-                _models[key] = model;
-                return model;
-            }
-        }
-
-        internal HidLightingModel Model(string name, ushort vendorId, ushort productId, string ledPath)
+        internal HidLightingModel Model(string name, ushort vendorId, ushort productId)
         {
             string product = Product(vendorId, productId);
             string table = RoccatVulcanLayouts.TableOf(vendorId, productId);
+            var (ledInterface, ledPage, _, _) = Interfaces(productId);
             return new HidLightingModel
             {
                 Family = this,
@@ -246,9 +183,10 @@ namespace PadForge.Common.Input.Peripherals
                 Map = MapOf(table, RoccatVulcanLayouts.LayoutUs, product),
                 Programs = VendorPrograms.Roccat,
                 RepaintMs = RepaintMs,
-                Open = controlPath => OpenPair(controlPath, ledPath),
-                BeginOwn = (handle, wait) => handle is Channels pair ? Begin(pair, wait, productId, table, product) : null,
-                WriteOnce = (controlPath, frame, timeoutMs) => _setFeatureOnce(controlPath, frame, timeoutMs),
+                Siblings = new[] { new HidSibling(ledInterface, (ushort)ledPage) },
+                BeginWith = (control, siblings, wait) => siblings?.Count == 1
+                    ? Begin(control, siblings[0], wait, productId, table, product)
+                    : null,
             };
         }
 
@@ -259,53 +197,6 @@ namespace PadForge.Common.Input.Peripherals
         {
             var layout = RoccatVulcanLayouts.Find(table, reported);
             return new LightMap(RoccatVulcanLayouts.Lights(layout), "OpenRGB " + layout.Source) { Product = product };
-        }
-
-        /// <summary>The two collections of one keyboard, both open for read
-        /// and write, closed together.</summary>
-        internal sealed class Channels : IDisposable
-        {
-            public Channels(IHidReportChannel control, IHidReportChannel led)
-            {
-                Control = control;
-                Led = led;
-            }
-
-            public IHidReportChannel Control { get; }
-            public IHidReportChannel Led { get; }
-
-            public void Dispose()
-            {
-                try { Control?.Dispose(); } catch { }
-                try { Led?.Dispose(); } catch { }
-            }
-        }
-
-        /// <summary>Opens both collections for read and write, or neither. A
-        /// collection that opens with no access right only is held by
-        /// another program.</summary>
-        private Channels OpenPair(string controlPath, string ledPath)
-        {
-            IHidReportChannel control = null, led = null;
-            try
-            {
-                control = _open(controlPath);
-                if (control == null || control.FeatureOnly) return Close(control, null);
-                led = _open(ledPath);
-                if (led == null || led.FeatureOnly) return Close(control, led);
-                return new Channels(control, led);
-            }
-            catch
-            {
-                return Close(control, led);
-            }
-        }
-
-        private static Channels Close(IHidReportChannel control, IHidReportChannel led)
-        {
-            try { control?.Dispose(); } catch { }
-            try { led?.Dispose(); } catch { }
-            return null;
         }
 
         // ─────────────────────────────────────────────
@@ -540,37 +431,44 @@ namespace PadForge.Common.Input.Peripherals
             return true;
         }
 
-        private static HidLightingSession Begin(Channels pair, Action<int> wait, ushort pid, string table, string product)
+        private static HidLightingSession Begin(IHidReportChannel control, IHidReportChannel led, Action<int> wait,
+            ushort pid, string table, string product)
         {
+            if (control == null || led == null) return null;
             var (id, length) = InfoReport(pid);
             var buf = new byte[length];
             buf[0] = id;
-            if (!pair.Control.GetFeature(id, buf)) return null;
+            if (!control.GetFeature(id, buf)) return null;
             // OpenRGB reads the report a second time into the same buffer
             // and takes its bytes from that read (lines 104-110 and 133-136).
             var again = new byte[length];
             again[0] = id;
-            if (pair.Control.GetFeature(id, again)) Array.Copy(again, buf, length);
+            if (control.GetFeature(id, again)) Array.Copy(again, buf, length);
             byte version = buf[2];
             int layout = buf[6];
             // The Magma has no per-key lighting and OpenRGB takes the US
             // layout for it (lines 117-125).
             if (pid is Magma or MagmaMini) layout = RoccatVulcanLayouts.LayoutUs;
-            return new Session(pair, wait, pid, version, MapOf(table, layout, product));
+            return new Session(control, led, wait, pid, version, MapOf(table, layout, product));
         }
 
         internal sealed class Session : HidLightingSession
         {
-            private readonly Channels _pair;
+            private readonly IHidReportChannel _control;
+            private readonly IHidReportChannel _led;
             private readonly Action<int> _wait;
             private readonly ushort _pid;
             private readonly LightMap _map;
             private bool _direct;
             private byte[][] _crash = Array.Empty<byte[]>();
 
-            public Session(Channels pair, Action<int> wait, ushort pid, byte version, LightMap map)
+            /// <summary>The control collection's channel and the LED
+            /// collection's, which the worker opened and closes.</summary>
+            public Session(IHidReportChannel control, IHidReportChannel led, Action<int> wait, ushort pid, byte version,
+                LightMap map)
             {
-                _pair = pair;
+                _control = control;
+                _led = led;
                 _wait = wait;
                 _pid = pid;
                 Version = version;
@@ -598,35 +496,35 @@ namespace PadForge.Common.Input.Peripherals
                     // Marked first: a write that reports a failure may still
                     // have landed.
                     _crash = new[] { ModeReport(_pid, ModeDefault), DirectSwitch(_pid, false) };
-                    if (!_pair.Control.SetFeature(ModeReport(_pid, ModeDirect))
-                        || !WaitUntilReady(_pair.Control, wait, _pid)
-                        || !_pair.Control.SetFeature(DirectSwitch(_pid, true))
-                        || !WaitUntilReady(_pair.Control, wait, _pid))
+                    if (!_control.SetFeature(ModeReport(_pid, ModeDirect))
+                        || !WaitUntilReady(_control, wait, _pid)
+                        || !_control.SetFeature(DirectSwitch(_pid, true))
+                        || !WaitUntilReady(_control, wait, _pid))
                         return HidLightingPaint.Failed;
                     _direct = true;
                 }
                 var list = new List<(int, int)>(lights.Count);
                 for (int i = 0; i < lights.Count && i < colors.Count; i++) list.Add((lights[i].Address, colors[i]));
                 foreach (var packet in ColorPackets(_pid, BigEndian, list))
-                    if (!_pair.Led.WriteOutput(packet)) return HidLightingPaint.Failed;
+                    if (!_led.WriteOutput(packet)) return HidLightingPaint.Failed;
                 var answer = new byte[65];
                 for (int i = 0; i < DrainLimit; i++)
                 {
-                    int read = _pair.Led.ReadInput(answer, 0);
+                    int read = _led.ReadInput(answer, 0);
                     if (read < 0) return HidLightingPaint.Failed;
                     if (read == 0) break;
                 }
-                return _pair.Led.ReadInput(answer, AwaitMs) < 0 ? HidLightingPaint.Failed : HidLightingPaint.Sent;
+                return _led.ReadInput(answer, AwaitMs) < 0 ? HidLightingPaint.Failed : HidLightingPaint.Sent;
             }
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
             {
                 if (!_direct && _crash.Length == 0) return true;
                 wait ??= _wait;
-                if (!_pair.Control.SetFeature(ModeReport(_pid, ModeDefault))
-                    || !WaitUntilReady(_pair.Control, wait, _pid)
-                    || !_pair.Control.SetFeature(DirectSwitch(_pid, false))
-                    || !WaitUntilReady(_pair.Control, wait, _pid))
+                if (!_control.SetFeature(ModeReport(_pid, ModeDefault))
+                    || !WaitUntilReady(_control, wait, _pid)
+                    || !_control.SetFeature(DirectSwitch(_pid, false))
+                    || !WaitUntilReady(_control, wait, _pid))
                     return false;
                 _direct = false;
                 _crash = Array.Empty<byte[]>();

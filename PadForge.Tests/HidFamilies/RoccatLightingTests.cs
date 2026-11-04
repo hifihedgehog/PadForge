@@ -39,8 +39,8 @@ namespace PadForge.Tests
         /// <summary>RoccatControllerDetect.cpp:390-434 registers 28
         /// detectors. Every one but the Vulcan keyboards' is a model of the
         /// HID family, under OpenRGB's name, and the Vulcan keyboards' are
-        /// left to the own-look family, which finds each one's two
-        /// collections.</summary>
+        /// models of the Vulcan family at their control collection, with
+        /// their LED collection as its sibling.</summary>
         [Fact]
         public void EveryRegistration_IsLit()
         {
@@ -64,12 +64,15 @@ namespace PadForge.Tests
                         VendorId = (ushort)r.VendorId, ProductId = (ushort)r.ProductId, InterfaceNumber = ledIf,
                         UsagePage = (ushort)ledPage, Usage = 1,
                     };
-                    var family = new RoccatVulcanLighting(() => new[] { collection, led }, _ => Box, _ => null, (_, _, _) => false);
-                    var found = Assert.Single(family.Look());
-                    Assert.Equal(collection.Path, found.Key);
-                    Assert.Equal(r.Name, found.Model.Name);
-                    Assert.Same(VendorPrograms.Roccat, found.Model.Programs);
-                    Assert.True(found.Model.Map.Lights.Count > 0, r.Name);
+                    var vulcan = RoccatVulcanLighting.Instance.Match(collection);
+                    Assert.NotNull(vulcan);
+                    Assert.Same(vulcan, HidLightingFamilies.Match(collection));
+                    Assert.Equal(r.Name, vulcan.Name);
+                    Assert.Same(VendorPrograms.Roccat, vulcan.Programs);
+                    Assert.True(vulcan.Map.Lights.Count > 0, r.Name);
+                    Assert.True(Assert.Single(vulcan.Siblings).Is(collection, led), r.Name);
+                    Assert.False(vulcan.Siblings[0].Is(collection, collection), r.Name);
+                    Assert.Null(RoccatVulcanLighting.Instance.Match(led));
                     continue;
                 }
                 Assert.NotNull(model);
@@ -403,17 +406,16 @@ namespace PadForge.Tests
 
         // ── Vulcan sessions ──
 
-        private static readonly Guid Box = new("11111111-2222-3333-4444-555555555555");
-
         private sealed class Keyboard
         {
             public readonly FakeReportChannel Control;
-            public readonly FakeReportChannel Led = new() { Path = "led", OutputReportLength = 65, InputReportLength = 65 };
+            public readonly FakeReportChannel Led;
             public int ReadyAfter;
 
-            public Keyboard(byte version = 136, byte layout = 0, byte infoId = 0x0F)
+            public Keyboard(byte version = 136, byte layout = 0, byte infoId = 0x0F, string control = "ctrl", string led = "led")
             {
-                Control = new FakeReportChannel { Path = "ctrl" };
+                Control = new FakeReportChannel { Path = control };
+                Led = new FakeReportChannel { Path = led, OutputReportLength = 65, InputReportLength = 65 };
                 int readies = 0;
                 Control.Feature = id => id switch
                 {
@@ -424,14 +426,11 @@ namespace PadForge.Tests
             }
         }
 
-        private static (RoccatVulcanLighting Family, HidLightingModel Model) Vulcan(Keyboard keyboard, ushort pid = 0x3098,
-            List<(string, byte[], int)> shots = null)
-        {
-            var family = new RoccatVulcanLighting(null, _ => Box,
-                path => path == "ctrl" ? keyboard.Control : path == "led" ? keyboard.Led : null,
-                (p, f, t) => { shots?.Add((p, f, t)); return true; });
-            return (family, family.Model("Roccat Vulcan 120-Series Aimo", 0x1E7D, pid, "led"));
-        }
+        private static HidLightingModel Vulcan(ushort pid = 0x3098)
+            => RoccatVulcanLighting.Instance.Model("Roccat Vulcan 120-Series Aimo", 0x1E7D, pid);
+
+        private static HidLightingSession Begin(HidLightingModel model, Keyboard keyboard)
+            => model.BeginWith(keyboard.Control, new IHidReportChannel[] { keyboard.Led }, _ => { });
 
         private static List<(string Kind, byte[] Bytes)> Calls(FakeReportChannel channel)
             => channel.Calls.Select(c => (c.Kind, c.Bytes)).ToList();
@@ -440,18 +439,20 @@ namespace PadForge.Tests
         public void AVulcanSession_EntersDirectAsOpenRgbDoes_AndHandsBackTheDefaultMode()
         {
             var keyboard = new Keyboard(version: 136, layout: 2);
-            var (_, model) = Vulcan(keyboard);
-            var handle = model.Open("ctrl");
-            var session = Assert.IsType<RoccatVulcanLighting.Session>(model.BeginOwn(handle, _ => { }));
+            var model = Vulcan();
+            var session = Assert.IsType<RoccatVulcanLighting.Session>(Begin(model, keyboard));
             // InitDeviceInfo reads report 0F twice (lines 104-105).
             Assert.Equal(new[] { "get", "get" }, Calls(keyboard.Control).Select(c => c.Kind));
             Assert.Equal(105, session.Map.Lights.Count);
             Assert.True(session.BigEndian);
             Assert.Empty(session.CrashFrames);
+            // The control collection takes feature reports, so the crash path
+            // sends the hand-back to it as feature reports.
+            Assert.True(session.Feature);
 
             var lights = session.Map.Lights;
             var colors = Enumerable.Repeat(0x102030, lights.Count).ToArray();
-            Assert.Equal(HidLightingPaint.Sent, session.Paint(null, _ => { }, lights, colors));
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(keyboard.Control, _ => { }, lights, colors));
             var control = Calls(keyboard.Control).Skip(2).ToList();
             // DeviceUpdateMode (lines 299-316 of the RGBController): mode,
             // ready, switch on, ready.
@@ -467,10 +468,10 @@ namespace PadForge.Tests
 
             // The next picture writes the colors only.
             int before = keyboard.Control.Calls.Count;
-            Assert.Equal(HidLightingPaint.Sent, session.Paint(null, _ => { }, lights, colors));
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(keyboard.Control, _ => { }, lights, colors));
             Assert.Equal(before, keyboard.Control.Calls.Count);
 
-            Assert.True(session.HandBack(null, _ => { }));
+            Assert.True(session.HandBack(keyboard.Control, _ => { }));
             var back = Calls(keyboard.Control).Skip(before).ToList();
             Assert.Equal(new[] { "set", "get", "set", "get" }, back.Select(c => c.Kind));
             Assert.Equal("0D BB 01 00 02 06 00 45 00", Hex(back[0].Bytes.Take(9)));
@@ -495,8 +496,7 @@ namespace PadForge.Tests
         public void AJapaneseVulcanIIMax_LightsByItsJapaneseEntry()
         {
             var keyboard = new Keyboard(layout: 6, infoId: 0x09);
-            var (_, model) = Vulcan(keyboard, 0x2EE2);
-            var session = model.BeginOwn(model.Open("ctrl"), _ => { });
+            var session = Begin(Vulcan(0x2EE2), keyboard);
             Assert.Equal(151, session.Map.Lights.Count);
             Assert.Equal(new byte[] { 0x09 }, keyboard.Control.Calls.First().Bytes);
         }
@@ -506,32 +506,10 @@ namespace PadForge.Tests
         {
             var keyboard = new Keyboard();
             keyboard.Control.Feature = _ => null;
-            var (_, model) = Vulcan(keyboard);
-            Assert.Null(model.BeginOwn(model.Open("ctrl"), _ => { }));
+            Assert.Null(Begin(Vulcan(), keyboard));
             Assert.DoesNotContain(keyboard.Control.Calls, c => c.Kind == "set");
-        }
-
-        [Fact]
-        public void AVulcanHeldByAnotherProgram_IsNotOpened()
-        {
-            var keyboard = new Keyboard();
-            var held = new FakeReportChannel { Path = "led", FeatureOnly = true };
-            var family = new RoccatVulcanLighting(null, _ => Box, p => p == "ctrl" ? keyboard.Control : held, (_, _, _) => true);
-            var model = family.Model("x", 0x1E7D, 0x3098, "led");
-            Assert.Null(model.Open("ctrl"));
-            Assert.True(keyboard.Control.Disposed);
-            Assert.True(held.Disposed);
-        }
-
-        /// <summary>The crash path writes the hand-back's two reports to the
-        /// control collection.</summary>
-        [Fact]
-        public void TheVulcanCrashPath_WritesToTheControlCollection()
-        {
-            var shots = new List<(string, byte[], int)>();
-            var (_, model) = Vulcan(new Keyboard(), shots: shots);
-            Assert.True(model.WriteOnce("ctrl", new byte[] { 0x15, 0x00, 0x00 }, 200));
-            Assert.Equal("ctrl", Assert.Single(shots).Item1);
+            // A session needs its LED collection.
+            Assert.Null(Vulcan().BeginWith(keyboard.Control, Array.Empty<IHidReportChannel>(), _ => { }));
         }
 
         /// <summary>The LED and control collections OpenRGB opens per
@@ -544,45 +522,180 @@ namespace PadForge.Tests
             Assert.Equal((4, 0xFF00, 1, 0x0001), RoccatVulcanLighting.Interfaces(0x5001));
             foreach (ushort pid in new ushort[] { 0x307A, 0x3098, 0x2FEE, 0x5023 })
                 Assert.Equal((3, 0x0001, 1, 0x000B), RoccatVulcanLighting.Interfaces(pid));
+            // The model names the LED collection as its sibling.
+            Assert.Equal(new HidSibling(3, 0xFF00), Assert.Single(Vulcan(0x30F7).Siblings));
+            Assert.Equal(new HidSibling(4, 0xFF00), Assert.Single(Vulcan(0x5001).Siblings));
+            Assert.Equal(new HidSibling(3, 0x0001), Assert.Single(Vulcan(0x3098).Siblings));
         }
 
-        /// <summary>The look pairs a control collection with the LED
-        /// collection in its container and leaves a keyboard whose LED
-        /// collection is missing or elsewhere.</summary>
-        [Fact]
-        public void TheLook_PairsByContainer()
-        {
-            HidCollectionInfo C(string path, int iface, ushort page)
-                => new() { Path = path, VendorId = 0x1E7D, ProductId = 0x30F7, InterfaceNumber = iface, UsagePage = page, Usage = 1 };
-            var a = new Guid("00000000-0000-0000-0000-0000000000a1");
-            var b = new Guid("00000000-0000-0000-0000-0000000000b2");
-            var walk = new[]
-            {
-                C("ctrl-a", 1, 0xFF01), C("ctrl-b", 1, 0xFF01), C("led-b", 3, 0xFF00), C("led-a", 3, 0xFF00),
-                C("other", 3, 0x0001),
-            };
-            var containers = new Dictionary<string, Guid>
-            {
-                ["ctrl-a"] = a, ["led-a"] = a, ["ctrl-b"] = b, ["led-b"] = b, ["other"] = a,
-            };
-            var opened = new List<string>();
-            var family = new RoccatVulcanLighting(() => walk, p => containers[p],
-                p => { opened.Add(p); return new FakeReportChannel { Path = p }; }, (_, _, _) => true);
-            var found = family.Look();
-            Assert.Equal(new[] { "ctrl-a", "ctrl-b" }, found.Select(d => d.Key));
-            Assert.Equal(new[] { a, b }, found.Select(d => d.Container));
-            // Each keyboard opens the LED collection in its own container.
-            found[0].Model.Open(found[0].Key)?.Dispose();
-            found[1].Model.Open(found[1].Key)?.Dispose();
-            Assert.Equal(new[] { "ctrl-a", "led-a", "ctrl-b", "led-b" }, opened);
-            // The same model at the next look.
-            Assert.Same(found[0].Model, family.Look()[0].Model);
+        // ── Vulcan keyboards through the shared worker ──
 
-            var lonely = new RoccatVulcanLighting(() => walk.Take(2).ToArray(), p => containers[p], _ => null, (_, _, _) => true);
-            Assert.Empty(lonely.Look());
-            var unknown = new RoccatVulcanLighting(() => walk, _ => Guid.Empty, _ => null, (_, _, _) => true);
-            Assert.Empty(unknown.Look());
-            Assert.Null(new RoccatVulcanLighting(() => null, _ => a, _ => null, (_, _, _) => true).Look());
+        private static readonly Guid Device = new("00000000-0000-0000-0000-0000000000e1");
+
+        private static HidCollectionInfo ProCollection(string tail, int iface, ushort page) => new()
+        {
+            Path = $@"\\?\hid#vid_1e7d&pid_30f7&mi_{iface:x2}#{tail}#{{4d1e55b2-f16f-11cf-88cb-001111000030}}",
+            VendorId = 0x1E7D, ProductId = 0x30F7, InterfaceNumber = iface, UsagePage = page, Usage = 1,
+            OutputReportLength = 65, InputReportLength = 65, FeatureReportLength = 65,
+        };
+
+        /// <summary>Two Vulcan Pros, a and b, each a control collection and a
+        /// LED collection in its own container, and the worker over them.</summary>
+        private sealed class TwoKeyboards : IDisposable
+        {
+            public readonly HidCollectionInfo ControlA = ProCollection("ca", 1, 0xFF01);
+            public readonly HidCollectionInfo ControlB = ProCollection("cb", 1, 0xFF01);
+            public readonly HidCollectionInfo LedA = ProCollection("la", 3, 0xFF00);
+            public readonly HidCollectionInfo LedB = ProCollection("lb", 3, 0xFF00);
+            public readonly Guid A = new("00000000-0000-0000-0000-0000000000a1");
+            public readonly Guid B = new("00000000-0000-0000-0000-0000000000b2");
+            public readonly List<string> Opened = new();
+            public readonly Dictionary<string, FakeReportChannel> Channels = new(StringComparer.OrdinalIgnoreCase);
+            public readonly List<(string Path, byte[] Frame)> Shots = new();
+            public Func<string, Guid> ContainerOf;
+            public bool LedHeld;
+            public HidLightingBackend Backend;
+
+            public TwoKeyboards()
+            {
+                PeripheralOutputs.ResetForTest();
+                PeripheralLightMaps.ResetForTest();
+                ContainerOf = p => p.Contains("#ca#") || p.Contains("#la#") ? A : B;
+            }
+
+            public HidLightingBackend Start(params HidCollectionInfo[] walk)
+            {
+                Backend = new HidLightingBackend(new IHidLightingFamily[] { RoccatVulcanLighting.Instance }, Open,
+                    p => ContainerOf(p), () => 1_000_000,
+                    (p, f, _) => { lock (Shots) Shots.Add((p, f)); return true; }, (_, _, _) => true, _ => { }, idleTickMs: 5);
+                Backend.Start();
+                Backend.Rescan(walk);
+                Passes();
+                return Backend;
+            }
+
+            private IHidReportChannel Open(string path)
+            {
+                lock (Opened) Opened.Add(path);
+                bool led = path.Contains("&mi_03", StringComparison.OrdinalIgnoreCase);
+                var keyboard = new Keyboard(control: path, led: path);
+                var channel = led
+                    ? new FakeReportChannel { Path = path, OutputReportLength = 65, InputReportLength = 65, FeatureOnly = LedHeld }
+                    : keyboard.Control;
+                lock (Channels) Channels[path] = channel;
+                return channel;
+            }
+
+            public void Passes(int count = 2)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    int before = Backend.PassCount;
+                    Backend.Wake();
+                    Assert.True(System.Threading.SpinWait.SpinUntil(() => Backend.PassCount > before, 30000), "the worker made a pass");
+                }
+            }
+
+            public void Light(params HidCollectionInfo[] units)
+            {
+                PeripheralOutputs.PublishLinks(new LinkTable(new[]
+                {
+                    new DeviceLinks
+                    {
+                        Device = Device,
+                        Lighting = units.Select(u => new OutputPath(OutputFamily.HidLightingUnit, u.Path)).ToArray(),
+                    },
+                }));
+                PeripheralOutputs.SetLighting(Device, slot: 0, player: 1, 0x11, 0x22, 0x33);
+                Passes(3);
+            }
+
+            public FakeReportChannel Channel(HidCollectionInfo collection)
+            {
+                lock (Channels) return Channels[collection.Path];
+            }
+
+            public void Dispose()
+            {
+                Backend?.Dispose();
+                PeripheralOutputs.ResetForTest();
+                PeripheralLightMaps.ResetForTest();
+            }
+        }
+
+        /// <summary>The worker pairs each control collection with the LED
+        /// collection in its own container, lists a keyboard only while its
+        /// LED collection is in the walk, and sends the colors to the LED
+        /// collection and the hand-back's frames to the control one.</summary>
+        [Fact]
+        public void TheWorker_PairsEachKeyboardsTwoCollections_ByContainer()
+        {
+            using var rig = new TwoKeyboards();
+            var backend = rig.Start(rig.ControlA, rig.ControlB, rig.LedB, rig.LedA);
+            Assert.Equal(new[] { rig.ControlA.Path, rig.ControlB.Path }, backend.Snapshot.Units.Select(u => u.Key));
+            Assert.Empty(rig.Opened);
+
+            rig.Light(rig.ControlA, rig.ControlB);
+            lock (rig.Opened)
+                Assert.Equal(new[] { rig.ControlA.Path, rig.LedA.Path, rig.ControlB.Path, rig.LedB.Path }, rig.Opened);
+            // A Vulcan Pro's 384-byte frame in 64-byte packets
+            // (RoccatVulcanKeyboardController.cpp:203-247): six.
+            Assert.Equal(6, rig.Channel(rig.LedA).Calls.Count(c => c.Kind == "out"));
+            Assert.Equal(6, rig.Channel(rig.LedB).Calls.Count(c => c.Kind == "out"));
+            Assert.Empty(rig.Channel(rig.ControlA).Calls.Where(c => c.Kind == "out"));
+            // The crash path's record names each control collection, feature
+            // reports.
+            Assert.Equal(new[] { rig.ControlA.Path, rig.ControlB.Path }, backend.Recorded.Select(r => r.Path).OrderBy(p => p));
+            Assert.All(backend.Recorded, r => Assert.True(r.Feature));
+            Assert.All(backend.Recorded, r => Assert.Null(r.Write));
+
+            // The claim ends: the hand-back on each control collection, then
+            // both channels of each keyboard close.
+            PeripheralOutputs.ReleaseLighting(Device, 0);
+            rig.Passes();
+            Assert.Equal("0E 05 00 00 00", Hex(rig.Channel(rig.ControlA).Calls.Where(c => c.Kind == "set").Last().Bytes));
+            Assert.True(rig.Channel(rig.ControlA).Disposed);
+            Assert.True(rig.Channel(rig.LedA).Disposed);
+            Assert.True(rig.Channel(rig.LedB).Disposed);
+            Assert.Empty(backend.Recorded);
+        }
+
+        [Fact]
+        public void AKeyboardWithNoLedCollectionInTheWalk_IsNotListed_AndLeavesWhenItGoes()
+        {
+            using var rig = new TwoKeyboards();
+            var backend = rig.Start(rig.ControlA, rig.ControlB, rig.LedA);
+            Assert.Equal(new[] { rig.ControlA.Path }, backend.Snapshot.Units.Select(u => u.Key));
+            backend.Rescan(new[] { rig.ControlA, rig.ControlB });
+            rig.Passes();
+            Assert.Empty(backend.Snapshot.Units);
+        }
+
+        /// <summary>A LED collection that opens with no access right is held
+        /// by another program: neither collection is written, both close,
+        /// and the unit is listed asleep. So is a keyboard whose container
+        /// cannot be read, since its LED collection cannot be told.</summary>
+        [Fact]
+        public void AKeyboardWhoseLedCollectionIsHeld_OrWhoseContainerIsUnknown_IsNotWritten()
+        {
+            using (var rig = new TwoKeyboards { LedHeld = true })
+            {
+                var backend = rig.Start(rig.ControlA, rig.LedA);
+                rig.Light(rig.ControlA);
+                Assert.True(Assert.Single(backend.Snapshot.Units).Asleep);
+                Assert.DoesNotContain(rig.Channel(rig.ControlA).Calls, c => c.Kind == "set");
+                Assert.True(rig.Channel(rig.ControlA).Disposed);
+                Assert.True(rig.Channel(rig.LedA).Disposed);
+            }
+            using (var rig = new TwoKeyboards())
+            {
+                rig.ContainerOf = _ => Guid.Empty;
+                var backend = rig.Start(rig.ControlA, rig.LedA);
+                rig.Light(rig.ControlA);
+                Assert.True(Assert.Single(backend.Snapshot.Units).Asleep);
+                lock (rig.Opened) Assert.DoesNotContain(rig.LedA.Path, rig.Opened);
+                Assert.DoesNotContain(rig.Channel(rig.ControlA).Calls, c => c.Kind == "set");
+            }
         }
 
         // ── Mouse, pad and headset reports ──

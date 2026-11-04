@@ -29,7 +29,11 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>Open. Only a unit a row links and a claim resolves on, for
     /// read and write, and then the model reads what its session needs
-    /// (<see cref="HidLightingModel.Begin"/>). A collection that opens with
+    /// (<see cref="HidLightingModel.Begin"/>). A device that talks through
+    /// more collections than one is listed while each of them is in the
+    /// walk, and its other collections open beside the unit's, from the
+    /// same container, and close with it
+    /// (<see cref="HidLightingModel.Siblings"/>). A collection that opens with
     /// no access right only is one another program holds, and is not
     /// written to. A unit no claim resolves on is opened only while its
     /// model owes it colors an earlier run left in the device's memory
@@ -98,6 +102,11 @@ namespace PadForge.Common.Input.Peripherals
             /// <summary>The interface path, kept exactly as the first walk
             /// gave it: it is the unit's key, compared ordinally.</summary>
             public string Path;
+
+            /// <summary>The collection as the last walk gave it, or null for
+            /// a unit an own look found.</summary>
+            public HidCollectionInfo Info;
+
             public ushort VendorId;
             public ushort ProductId;
             public HidLightingModel Model;
@@ -134,6 +143,10 @@ namespace PadForge.Common.Input.Peripherals
             public IDisposable Handle;
             public IHidReportChannel Io;
             public HidLightingSession Session;
+
+            /// <summary>The channels of the model's siblings, open beside
+            /// <see cref="Io"/> in the model's order, or null.</summary>
+            public IHidReportChannel[] SiblingIo;
 
             public bool Recorded;
             public byte[][] RecordedFrames;
@@ -191,6 +204,15 @@ namespace PadForge.Common.Input.Peripherals
 
         private DirectBackendSnapshot _snapshot = DirectBackendSnapshot.NotScanned;
         private IReadOnlyList<HidCollectionInfo> _present;
+
+        /// <summary>The walk the worker last scanned, where a unit's
+        /// siblings are found. Worker thread only.</summary>
+        private IReadOnlyList<HidCollectionInfo> _walk = Array.Empty<HidCollectionInfo>();
+
+        /// <summary>The containers of the walk's paths that siblings were
+        /// looked for among, kept while the path stays in the walk. Only a
+        /// container Windows named is kept. Worker thread only.</summary>
+        private readonly Dictionary<string, Guid> _siblingContainers = new(StringComparer.OrdinalIgnoreCase);
         private Thread _thread;
         private Thread _worker;
         private volatile WorkerRun _run;
@@ -456,10 +478,16 @@ namespace PadForge.Common.Input.Peripherals
         private bool Scan(List<Unit> units, IReadOnlyList<HidCollectionInfo> present, long now)
         {
             bool changed = false;
+            _walk = present;
+            ForgetGoneContainers(present);
             foreach (var collection in present)
             {
                 var model = HidLightingFamilies.Match(collection, _families);
                 if (model == null) continue;
+                // A device that talks through more collections is one OpenRGB
+                // makes only once it found each of them
+                // (RoccatControllerDetect.cpp:155-201).
+                if (!SiblingsPresent(model, collection)) continue;
                 var unit = Find(units, collection.Path);
                 if (unit == null)
                 {
@@ -472,6 +500,7 @@ namespace PadForge.Common.Input.Peripherals
                     Found(units, unit);
                     changed = true;
                 }
+                unit.Info = collection;
                 unit.Seen = true;
             }
 
@@ -529,6 +558,55 @@ namespace PadForge.Common.Input.Peripherals
                 changed = true;
             }
             return changed;
+        }
+
+        /// <summary>Whether each of the model's siblings of a collection is in
+        /// the walk, in the collection's container where Windows names both
+        /// containers. One it cannot name yet is taken as present here, and
+        /// the open finds out.</summary>
+        private bool SiblingsPresent(HidLightingModel model, HidCollectionInfo collection)
+        {
+            var siblings = model.Siblings;
+            if (siblings == null || siblings.Count == 0) return true;
+            Guid own = SiblingContainer(collection.Path);
+            foreach (var sibling in siblings)
+            {
+                bool found = false;
+                foreach (var candidate in _walk)
+                {
+                    if (!sibling.Is(collection, candidate)) continue;
+                    Guid theirs = own == Guid.Empty ? Guid.Empty : SiblingContainer(candidate.Path);
+                    if (own != Guid.Empty && theirs != Guid.Empty && theirs != own) continue;
+                    found = true;
+                    break;
+                }
+                if (!found) return false;
+            }
+            return true;
+        }
+
+        /// <summary>The container of a path of the walk, looked up once while
+        /// it stays, or Guid.Empty while Windows cannot name it.</summary>
+        private Guid SiblingContainer(string path)
+        {
+            if (_siblingContainers.TryGetValue(path, out var known)) return known;
+            Guid container;
+            try { container = _containerOf(path); }
+            catch { container = Guid.Empty; }
+            if (container != Guid.Empty) _siblingContainers[path] = container;
+            return container;
+        }
+
+        private void ForgetGoneContainers(IReadOnlyList<HidCollectionInfo> present)
+        {
+            if (_siblingContainers.Count == 0) return;
+            var here = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var collection in present)
+                if (collection?.Path != null) here.Add(collection.Path);
+            List<string> gone = null;
+            foreach (var path in _siblingContainers.Keys)
+                if (!here.Contains(path)) (gone ??= new List<string>()).Add(path);
+            if (gone != null) foreach (var path in gone) _siblingContainers.Remove(path);
         }
 
         /// <summary>The listed unit a key names, compared without case, or
@@ -686,8 +764,9 @@ namespace PadForge.Common.Input.Peripherals
         /// again. Nothing is sent.</summary>
         private bool Answers(Unit unit)
         {
-            var handle = OpenHandle(unit, out _);
+            var handle = OpenHandle(unit, out _, out var siblings);
             try { handle?.Dispose(); } catch { }
+            Dispose(siblings);
             return handle != null;
         }
 
@@ -696,10 +775,13 @@ namespace PadForge.Common.Input.Peripherals
         /// whose devices are no HID collections through its model's
         /// (<see cref="HidLightingModel.Open"/>). Null when it did not open
         /// that way. <paramref name="io"/> is the HID channel, null for the
-        /// other kind.</summary>
-        private IDisposable OpenHandle(Unit unit, out IHidReportChannel io)
+        /// other kind. <paramref name="siblings"/> are the channels of the
+        /// model's siblings, open the same way, or null when it has none: a
+        /// sibling that does not open leaves every channel closed.</summary>
+        private IDisposable OpenHandle(Unit unit, out IHidReportChannel io, out IHidReportChannel[] siblings)
         {
             io = null;
+            siblings = null;
             if (unit.Own != null)
             {
                 IDisposable own = null;
@@ -707,10 +789,59 @@ namespace PadForge.Common.Input.Peripherals
                 return own;
             }
             try { io = _open(unit.Path); } catch { }
-            if (io != null && !io.FeatureOnly) return io;
-            try { io?.Dispose(); } catch { }
+            if (io == null || io.FeatureOnly)
+            {
+                try { io?.Dispose(); } catch { }
+                io = null;
+                return null;
+            }
+            var wanted = unit.Model.Siblings;
+            if (wanted == null || wanted.Count == 0) return io;
+            siblings = OpenSiblings(unit, wanted);
+            if (siblings != null) return io;
+            try { io.Dispose(); } catch { }
             io = null;
             return null;
+        }
+
+        /// <summary>Opens each sibling of a unit for read and write: the
+        /// collection of the last walk the sibling names, in the unit's own
+        /// container, so two devices of one kind each get their own. Null,
+        /// with nothing left open, when one is not found or does not open
+        /// that way.</summary>
+        private IHidReportChannel[] OpenSiblings(Unit unit, IReadOnlyList<HidSibling> wanted)
+        {
+            if (unit.Info == null || unit.Container == Guid.Empty) return null;
+            var opened = new IHidReportChannel[wanted.Count];
+            for (int i = 0; i < wanted.Count; i++)
+            {
+                string path = null;
+                foreach (var candidate in _walk)
+                {
+                    if (!wanted[i].Is(unit.Info, candidate) || SiblingContainer(candidate.Path) != unit.Container) continue;
+                    path = candidate.Path;
+                    break;
+                }
+                IHidReportChannel channel = null;
+                try { channel = path == null ? null : _open(path); } catch { }
+                if (channel == null || channel.FeatureOnly)
+                {
+                    try { channel?.Dispose(); } catch { }
+                    Dispose(opened);
+                    return null;
+                }
+                opened[i] = channel;
+            }
+            return opened;
+        }
+
+        private static void Dispose(IHidReportChannel[] channels)
+        {
+            if (channels == null) return;
+            foreach (var channel in channels)
+            {
+                try { channel?.Dispose(); } catch { }
+            }
         }
 
         /// <summary>Opens a unit no claim resolves on and hands back what an
@@ -738,23 +869,25 @@ namespace PadForge.Common.Input.Peripherals
         /// model's first reads went unanswered.</summary>
         private bool Open(Unit unit)
         {
-            var handle = OpenHandle(unit, out var io);
+            var handle = OpenHandle(unit, out var io, out var siblings);
             if (handle == null) return false;
             HidLightingSession session = null;
             try
             {
-                session = unit.Own != null
-                    ? unit.Model.BeginOwn?.Invoke(handle, _wait)
+                session = unit.Own != null ? unit.Model.BeginOwn?.Invoke(handle, _wait)
+                    : siblings != null ? unit.Model.BeginWith?.Invoke(io, siblings, _wait)
                     : unit.Model.Begin?.Invoke(io, _wait);
             }
             catch { }
             if (session == null)
             {
                 try { handle.Dispose(); } catch { }
+                Dispose(siblings);
                 return false;
             }
             unit.Handle = handle;
             unit.Io = io;
+            unit.SiblingIo = siblings;
             unit.Session = session;
             unit.Shown = null;
             unit.ShownMap = null;
@@ -930,14 +1063,17 @@ namespace PadForge.Common.Input.Peripherals
             PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} {why}, listed asleep");
         }
 
-        /// <summary>Closes the unit's channel and drops its session. The map
-        /// a session read from the device stays published.</summary>
+        /// <summary>Closes the unit's channel and its siblings' and drops its
+        /// session. The map a session read from the device stays
+        /// published.</summary>
         private void Close(Unit unit)
         {
             Unrecord(unit);
             var handle = unit.Handle;
+            var siblings = unit.SiblingIo;
             unit.Handle = null;
             unit.Io = null;
+            unit.SiblingIo = null;
             unit.Session = null;
             unit.Shown = null;
             unit.ShownMap = null;
@@ -945,6 +1081,7 @@ namespace PadForge.Common.Input.Peripherals
             unit.PendingMap = null;
             unit.LaterAt = 0;
             try { handle?.Dispose(); } catch { }
+            Dispose(siblings);
         }
 
         // ─────────────────────────────────────────────

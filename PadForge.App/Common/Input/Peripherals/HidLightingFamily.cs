@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PadForge.Common.Input.Peripherals.HidFamilies;
 
 namespace PadForge.Common.Input.Peripherals
 {
@@ -59,6 +60,23 @@ namespace PadForge.Common.Input.Peripherals
         /// keyboard rows in the PC's own container
         /// (<see cref="DirectUnit.BuiltInKeyboard"/>).</summary>
         public bool BuiltInKeyboard { get; init; }
+    }
+
+    /// <summary>A collection of the same device beside a unit's own
+    /// (<see cref="HidLightingModel.Siblings"/>): one with the unit's vendor
+    /// and product IDs, on the USB interface, as hidapi numbers it
+    /// (<see cref="OpenRgbRegistrations.InterfaceOf"/>), and the usage page
+    /// OpenRGB opens it by.</summary>
+    internal sealed record HidSibling(int Interface, ushort UsagePage)
+    {
+        /// <summary>Whether <paramref name="candidate"/> of the walk is this
+        /// sibling of <paramref name="unit"/>, the container aside.</summary>
+        public bool Is(HidCollectionInfo unit, HidCollectionInfo candidate)
+            => unit != null && candidate?.Path != null
+            && !string.Equals(candidate.Path, unit.Path, StringComparison.OrdinalIgnoreCase)
+            && candidate.VendorId == unit.VendorId && candidate.ProductId == unit.ProductId
+            && candidate.UsagePage == UsagePage
+            && OpenRgbRegistrations.InterfaceOf(candidate, OpenRgbRegistrations.BusOf(candidate)) == Interface;
     }
 
     /// <summary>One model of a family: its lights in the order a session
@@ -125,6 +143,21 @@ namespace PadForge.Common.Input.Peripherals
         /// Null when the device did not answer, and then nothing is
         /// written.</summary>
         public Func<IHidReportChannel, Action<int>, HidLightingSession> Begin { get; init; }
+
+        /// <summary>The other collections of the device a session talks
+        /// through beside the unit's own, as OpenRGB opens a control and a
+        /// LED collection of one keyboard (RoccatControllerDetect.cpp:101-203).
+        /// A collection is listed only while each of its siblings is in the
+        /// walk too. The worker opens them for read and write beside the
+        /// unit's channel, from the same container, hands them to
+        /// <see cref="BeginWith"/> in this order, and closes them with
+        /// it.</summary>
+        public IReadOnlyList<HidSibling> Siblings { get; init; } = Array.Empty<HidSibling>();
+
+        /// <summary>The counterpart of <see cref="Begin"/> for a model with
+        /// <see cref="Siblings"/>: the unit's channel, then one channel per
+        /// sibling in their order.</summary>
+        public Func<IHidReportChannel, IReadOnlyList<IHidReportChannel>, Action<int>, HidLightingSession> BeginWith { get; init; }
 
         /// <summary>For a family whose devices are no HID collections
         /// (<see cref="IOwnLookFamily"/>): opens the device a key names, in

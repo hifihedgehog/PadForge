@@ -269,8 +269,8 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>Takes in every linked path whose collection is present,
-        /// with its lights published, and drops the map of one whose
-        /// collection left.</summary>
+        /// with its lights published. A path that is no longer linked
+        /// leaves, map and all, once it owes nothing, in the worker's pass.</summary>
         private static void Track(Dictionary<string, Unit> units, LinkTable links, IReadOnlyList<HidCollectionInfo> present)
         {
             foreach (var path in links.ByPath.Keys)

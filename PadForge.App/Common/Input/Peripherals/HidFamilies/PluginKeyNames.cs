@@ -25,7 +25,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 ["Page DoWN"] = 0x4E, ["Right Arrow"] = 0x4F, ["Left Arrow"] = 0x50, ["Down Arrow"] = 0x51,
                 ["Up Arrow"] = 0x52, ["NumLock"] = 0x53, ["Num /"] = 0x54, ["Num *"] = 0x55, ["Num -"] = 0x56,
                 ["Num +"] = 0x57, ["Num Enter"] = 0x58, ["Num 0"] = 0x62, ["Num ."] = 0x63, ["Num ,"] = 0x63,
-                ["ISO #"] = 0x32, ["ISO /"] = 0x32, ["ISO <"] = 0x64,
+                ["ISO #"] = 0x32, ["ISO /"] = 0x32, ["ISO <"] = 0x64, ["# ISO"] = 0x32, ["< ISO"] = 0x64,
                 // The Speedlink ORIOS keyboard names its legends in German.
                 ["^"] = 0x35, ["ß"] = 0x2D, ["´"] = 0x2E, ["Ü"] = 0x2F, ["+"] = 0x30, ["Ö"] = 0x33, ["Ä"] = 0x34,
                 ["#"] = 0x32, ["<"] = 0x64, ["AltGr"] = 0xE6, ["-"] = 0x38,

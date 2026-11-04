@@ -117,9 +117,10 @@ namespace PadForge.Tests
         {
             foreach (var d in F.Devices)
             {
-                Assert.NotEmpty(d.Lights);
-                Assert.All(d.Lights, l => Assert.InRange(l.Address, 0, d.Slots - 1));
-                Assert.Equal(d.Lights.Count, d.Lights.Select(l => l.Address).Distinct().Count());
+                var lights = F.MapOf(d, Array.Empty<int>()).Lights;
+                Assert.NotEmpty(lights);
+                Assert.All(lights, l => Assert.InRange(l.Address, 0, d.Slots - 1));
+                Assert.Equal(lights.Count, lights.Select(l => l.Address).Distinct().Count());
             }
         }
 
@@ -130,11 +131,14 @@ namespace PadForge.Tests
         {
             foreach (var d in F.Devices)
             {
-                var picture = d.Picture ?? d.PictureWith(new IHidReportChannel[0]);
+                var noCounts = d.StripMaxLeds.Select(_ => -d.StripDefaultLeds).ToArray();
+                Func<int[], IEnumerable<PluginStep>> picture = d.StripPicture != null
+                    ? colors => d.StripPicture(colors, noCounts)
+                    : d.Picture ?? d.PictureWith(new IHidReportChannel[0]);
                 string Run(int[] colors) => string.Join("\n", picture(colors).Select(Text));
                 string black = Run(new int[d.Slots]);
                 var seen = new HashSet<string> { black };
-                foreach (var light in d.Lights)
+                foreach (var light in F.MapOf(d, Array.Empty<int>()).Lights)
                 {
                     var colors = new int[d.Slots];
                     colors[light.Address] = 0x123456;
@@ -150,7 +154,7 @@ namespace PadForge.Tests
             {
                 PluginKeyTables.SpeedlinkOriosKb, PluginKeyTables.FnaticMiniStreak, PluginKeyTables.ClaymoreIiRight,
                 PluginKeyTables.ClaymoreIiLeft, PluginKeyTables.K65Mini, PluginKeyTables.Strafe, PluginKeyTables.Rk61, PluginKeyTables.Rk84,
-                PluginKeyTables.K70ProMini, PluginKeyTables.K100Air,
+                PluginKeyTables.K70ProMini, PluginKeyTables.K100Air, PluginKeyTables.ApexM750TklPubg, PluginKeyTables.ApexProMini,
             })
             {
                 Assert.Empty(PluginKeyNames.Unresolved(table));
@@ -443,6 +447,379 @@ namespace PadForge.Tests
             var map = CorsairPeripheralV2Lighting.MapOf(device, KeyboardLayout.AnsiQwerty, out int length);
             Assert.Equal(9, length);
             Assert.Equal(9, map.Lights.Count);
+        }
+
+        // ── Roccat ──
+
+        [Fact]
+        public void RoccatDock_FourColorsWithFF()
+        {
+            var d = Device(0x1E7D, 0x2CB8);
+            Assert.Equal(39, d.Start[0].Bytes.Length);
+            Assert.Equal("02 00 09 12 FA", Hex(d.Start[0].Bytes, 5));
+            Assert.Equal("01 FF FF", Short(d.Start[1].Bytes));
+            Assert.Equal(new[] { "set 03 01 02 03 FF 04 05 06 FF 07 08 09 FF 0A 0B 0C FF" },
+                ShortSteps(d.Picture(new[] { 0x010203, 0x040506, 0x070809, 0x0A0B0C })));
+        }
+
+        [Fact]
+        public void KoneXpAir_WiredAndWireless_DifferInThePluginsHeaders()
+        {
+            var colors = new[] { 0x010203, 0, 0, 0, 0x040506 };
+            Assert.Equal("set 06 00 4D 06 15 6D 70 61 01 02 03 00 00 00 00 00 00 00 00 00 04 05 06",
+                ShortSteps(Device(0x1E7D, 0x2CB2).Picture(colors))[0]);
+            Assert.Equal("set 06 01 4D 06 15 00 00 00 01 02 03 00 00 00 00 00 00 00 00 00 04 05 06",
+                ShortSteps(Device(0x1E7D, 0x2CB6).Picture(colors))[0]);
+            var start = ShortSteps(Device(0x1E7D, 0x2CB6).Start).Where(s => s != "wait 30").ToArray();
+            Assert.Equal("set 06 01 13 07 02", start[0]);
+            Assert.Equal("set 06", start[1].Substring(0, 6));
+            Assert.Equal("set 06 01 4E 06 04 01 01 01 FF", start[6]);
+            Assert.Equal(10, start.Length);
+        }
+
+        [Fact]
+        public void BurstProAir_RunsItsStartTwice_AndFourColors()
+        {
+            var d = Device(0x1E7D, 0x2CAB);
+            Assert.Equal(20, d.Start.Count);
+            Assert.Equal(new[] { "set 06 00 4D 06 0C 01 02 03 04 05 06 07 08 09 0A 0B 0C", "wait 1" },
+                ShortSteps(d.Picture(new[] { 0x010203, 0x040506, 0x070809, 0x0A0B0C })));
+        }
+
+        [Fact]
+        public void Torch_PacksItsColor()
+        {
+            var d = Device(0x1E7D, 0x3A56);
+            // 0xF8 >> 3 = 1F, 0xF8 >> 6 | 0x84 >> 2 = 03 | 21 = 23, 0x84 >> 7 | 0x40 >> 2 = 01 | 10 = 11.
+            Assert.Equal(new[] { "out 00 80 1F 23 11", "wait 7", "out" }, ShortSteps(d.Picture(new[] { 0xF88440 })).Select(s => s.TrimEnd()));
+        }
+
+        [Fact]
+        public void Kain100And120_OneReport_AndAHandBack()
+        {
+            var d = Device(0x1E7D, 0x2D5C);
+            Assert.Equal(new[] { "set 0E 06 01 01 00 FF" }, ShortSteps(d.Start));
+            Assert.Equal(new[] { "set 0D 0B 01 02 03 04 05 06", "wait 1" }, ShortSteps(d.Picture(new[] { 0x010203, 0x040506 })));
+            Assert.Equal(new[] { "set 0E 06 00 00 00 FF" }, ShortSteps(d.HandBack));
+            Assert.Equal(new[] { "set 0D 0B 01 02 03", "wait 1" }, ShortSteps(Device(0x1E7D, 0x2D00).Picture(new[] { 0x010203 })));
+        }
+
+        [Fact]
+        public void KovaAimo_TheBackIsPlaceZero()
+        {
+            var d = Device(0x1E7D, 0x2CF1);
+            Assert.Equal(new[] { "set 0A 08 01 02 03 04 05 06", "wait 1" }, ShortSteps(d.Picture(new[] { 0x010203, 0x040506 })));
+            Assert.Equal(LightKind.Logo, d.Lights.Single(l => l.Address == 0).Kind);
+        }
+
+        [Fact]
+        public void Kain200_WiredTakesAnXor_WirelessThePluginsSum()
+        {
+            var colors = new[] { 0x010203, 0x040506 };
+            int xor = 0x08 ^ 0x09 ^ 0x33 ^ 0x01 ^ 0x02 ^ 0x03 ^ 0x04 ^ 0x05 ^ 0x06;
+            Assert.Equal($"set 08 09 33 00 01 02 03 04 05 06 {xor:X2}", ShortSteps(Device(0x1E7D, 0x2D5F).Picture(colors))[0]);
+            int sum = Math.Abs(1 - 2 + 3 - 4 + 5 - 6 - 0x32);
+            Assert.Equal($"set 08 09 33 00 01 02 03 04 05 06 {sum:X2}", ShortSteps(Device(0x1E7D, 0x2D60).Picture(colors))[0]);
+        }
+
+        [Fact]
+        public void EloAndSyn_ColorAtByteFive()
+        {
+            var elo = Device(0x1E7D, 0x3A37);
+            Assert.Equal(new[] { "out 00 FF 04 00 00 01 02 03" }, ShortSteps(elo.Picture(new[] { 0x010203 })));
+            Assert.Equal(5000, elo.KeepAliveMs);
+            var syn = Device(0x1E7D, 0x3A3B);
+            Assert.Equal(new[] { "out 00 FE 03 00 00 01 02 03" }, ShortSteps(syn.Picture(new[] { 0x010203 })));
+            Assert.Equal("out 00 FE 01 00 00 00 09 08 02 00 FF FF FF FF FF FF FF FF FF", ShortSteps(syn.Start)[0]);
+        }
+
+        // ── Royal Kludge ──
+
+        [Theory]
+        [InlineData(0x0055)]
+        [InlineData(0x007A)]
+        [InlineData(0x0060)]
+        [InlineData(0x004A)]
+        public void Rk61_GreenFirst_ColorsAtTheirByte(int pid)
+        {
+            var d = Device(0x258A, (ushort)pid);
+            var colors = new int[d.Slots];
+            colors[PluginKeyTables.Rk61.Indexes[0]] = 0x010203;
+            var steps = d.Picture(colors).ToArray();
+            var frames = steps.Where(s => s.Bytes != null).Select(s => s.Bytes).ToArray();
+            Assert.Equal(7, frames.Length);
+            Assert.Equal("0A 07 01 06", Hex(frames[0], 4));
+            Assert.Equal("0A 07 02", Hex(frames[1], 3));
+            Assert.Equal("0A 07 06", Short(frames[5]));
+            Assert.Equal("0A 07 07", Short(frames[6]));
+            int at = PluginKeyTables.Rk61.Indexes[0];
+            var all = frames[0].Skip(4).Take(61).Concat(frames[1].Skip(3).Take(62)).ToArray();
+            Assert.Equal(new byte[] { 0x02, 0x01, 0x03 }, all.Skip(at).Take(3));
+            Assert.Equal(PluginStepKind.Wait, steps[2].Kind);
+        }
+
+        [Theory]
+        [InlineData(0x005D)]
+        [InlineData(0x0059)]
+        [InlineData(0x00C8)]
+        [InlineData(0x010D)]
+        [InlineData(0x00F4)]
+        public void Rk84_RedFirst_WaitsBeforeAReport(int pid)
+        {
+            var d = Device(0x258A, (ushort)pid);
+            var colors = new int[d.Slots];
+            colors[PluginKeyTables.Rk84.Indexes[0]] = 0x010203;
+            var steps = d.Picture(colors).ToArray();
+            Assert.Equal(PluginStepKind.Wait, steps[1].Kind);
+            var frames = steps.Where(s => s.Bytes != null).Select(s => s.Bytes).ToArray();
+            Assert.Equal(7, frames.Length);
+            int at = PluginKeyTables.Rk84.Indexes[0];
+            var all = frames[0].Skip(4).Take(61).Concat(frames[1].Skip(3).Take(62)).ToArray();
+            Assert.Equal(new byte[] { 0x01, 0x02, 0x03 }, all.Skip(at).Take(3));
+        }
+
+        // ── NZXT ──
+
+        [Theory]
+        [InlineData(0x2103, 0)]
+        [InlineData(0x2106, 0)]
+        [InlineData(0x2104, 0)]
+        [InlineData(0x2105, 1)]
+        [InlineData(0x2108, 1)]
+        [InlineData(0x2107, 2)]
+        public void Function_FourReports_ZonesAtThePluginsPlaces(int pid, int boardNumber)
+        {
+            var board = (F.FunctionBoard)boardNumber;
+            var d = Device(0x1E71, (ushort)pid);
+            Assert.Equal(new[] { "out 43 81 00 84", "out 43 81 00 86" }, ShortSteps(d.Start));
+            var colors = new int[10];
+            for (int i = 0; i < 10; i++) colors[i] = 0x010101 * (i + 1);
+            var frames = d.Picture(colors).Select(s => s.Bytes).ToArray();
+            Assert.Equal(4, frames.Length);
+            Assert.All(frames, f => Assert.Equal(65, f.Length));
+            Assert.Equal("43 BD 03 10", Hex(frames[0], 4));
+            Assert.Equal("43 3D 02", Hex(frames[1], 3));
+            Assert.Equal("43 3D 01", Hex(frames[2], 3));
+            Assert.Equal("43 26 00 1C", Hex(frames[3], 4));
+            // Zone by zone: 23 and 45, then 6, 28 and 50, then 11, 33 and 55, then 16 and 38.
+            int[][] at = { new[] { 23, 45 }, new[] { 6, 28, 50 }, new[] { 11, 33, 55 }, new[] { 16, 38 } };
+            int zone = 1;
+            for (int f = 0; f < 4; f++)
+                foreach (int offset in at[f])
+                {
+                    Assert.Equal(new[] { (byte)zone, (byte)zone, (byte)zone }, frames[f].Skip(offset).Take(3));
+                    zone++;
+                }
+            Assert.Equal(board == F.FunctionBoard.TklIso ? 0x03 : 0x01, frames[0][0x0D]);
+            Assert.Equal(board == F.FunctionBoard.MiniTkl ? 0xF0 : 0x30, frames[2][0x26]);
+            Assert.Equal(board == F.FunctionBoard.MiniTkl ? 0xE0 : 0x60, frames[2][0x2A]);
+            Assert.Equal(board == F.FunctionBoard.TklIso ? 0x70 : 0x60, frames[2][0x2C]);
+        }
+
+        // ── Glorious ──
+
+        [Theory]
+        [InlineData(0x2024, false)]
+        [InlineData(0x2025, false)]
+        [InlineData(0x2013, true)]
+        [InlineData(0x2014, true)]
+        public void Glorious_TheColorReport_AndTheHandBackOfTheDongle(int pid, bool wired)
+        {
+            var d = Device(0x258A, (ushort)pid);
+            var steps = ShortSteps(d.Picture(new[] { 0x010203 }));
+            Assert.Equal("set 00 00 00 02 08 02 00 01 FF 04 00 09 01 02 03", steps[0]);
+            Assert.Equal(wired ? 3 : 1, steps.Length);
+            Assert.Equal(wired ? 0 : 3, d.HandBack.Count);
+            if (wired)
+            {
+                Assert.Equal("set 00 00 00 02 02 02 02 01 FF", steps[1]);
+                Assert.Equal("set 00 00 00 02 02 02 02 00 FF", steps[2]);
+            }
+            else
+            {
+                Assert.Equal(new[]
+                {
+                    "set 00 00 00 02 05 02 00 01 FF 01 00 09", "set 00 00 00 02 02 02 02 01 FF", "set 00 00 00 02 02 02 02 00 FF",
+                }, ShortSteps(d.HandBack));
+            }
+        }
+
+        // ── SteelSeries ──
+
+        [Fact]
+        public void ApexM750_ColorsFromByte9_ThenItsOwnApply()
+        {
+            var d = Device(0x1038, 0x0619);
+            var colors = new int[d.Slots];
+            int index = PluginKeyTables.ApexM750TklPubg.Indexes[0];
+            colors[index] = 0x010203;
+            var steps = d.Picture(colors).ToArray();
+            Assert.Equal("00 00 00 00 FF 01 03 06 12", Hex(steps[0].Bytes, 9));
+            Assert.Equal(new byte[] { 0x01, 0x02, 0x03 }, steps[0].Bytes.Skip(index * 3 + 9).Take(3));
+            Assert.Equal("set 00 00 00 00 03 01 04 00 2D 01", ShortSteps(steps)[1]);
+            Assert.Equal("wait 2", ShortSteps(steps)[2]);
+            Assert.Equal(513, steps[0].Bytes.Length);
+            Assert.Equal(6, d.Start.Count);
+        }
+
+        [Theory]
+        [InlineData(0x1626, 0x21, 3)]
+        [InlineData(0x161E, 0x40, 1)]
+        public void ApexProMini_NumberAndColor_ByIdsCommandAndInterface(int pid, int command, int number)
+        {
+            var d = Device(0x1038, (ushort)pid);
+            Assert.Equal(number, d.Interface);
+            var table = PluginKeyTables.ApexProMini;
+            var colors = new int[d.Slots];
+            colors[table.Indexes[1]] = 0x010203;
+            var frame = d.Picture(colors).Single().Bytes;
+            Assert.Equal(642, frame.Length);
+            Assert.Equal(new byte[] { 0x00, (byte)command, (byte)table.Indexes.Length }, frame.Take(3));
+            Assert.Equal(new byte[] { (byte)table.Indexes[1], 0x01, 0x02, 0x03 }, frame.Skip(7).Take(4));
+        }
+
+        [Fact]
+        public void TheQckDestinysOtherId_IsAClothMat()
+        {
+            Assert.Contains(SteelSeriesDirectProtocol.Models, m => m.ProductId == 0x3769 && m.Family == SteelSeriesFamily.QckPrismCloth);
+        }
+
+        // ── LG ──
+
+        [Fact]
+        public void The38gl950g_TakesTheFamilysFrames_OnItsOwnInterface()
+        {
+            var r = OpenRgbRegistrations.Of(LgMonitorLighting.OpenRgbFamily).Single();
+            var known = CollectionFor(r, output: 65, input: 64);
+            var collection = known with
+            {
+                ProductId = LgMonitorLighting.Ultragear38,
+                InterfaceNumber = 0,
+                Path = known.Path.Replace("pid_9a8a&mi_01", "pid_9a57&mi_00"),
+                UsagePage = 0xFF00,
+            };
+            var model = LgMonitorLighting.Instance.Match(collection);
+            Assert.NotNull(model);
+            Assert.Equal("LG UltraGear 38GL950G", model.Name);
+            Assert.Equal("lg:043E:9A57", model.Map.Product);
+            Assert.Equal(48, model.Map.Lights.Count);
+            Assert.Null(LgMonitorLighting.Instance.Match(collection with { UsagePage = 0xFF01 }));
+            Assert.Null(LgMonitorLighting.Instance.Match(collection with { InterfaceNumber = 1, Path = collection.Path.Replace("mi_00", "mi_01") }));
+        }
+
+        // ── Strips ──
+
+        [Fact]
+        public void AStrip_WithNoCount_IsOneColorAcrossItsDefaultLeds()
+        {
+            var d = Device(0x1532, 0x0F2C);
+            var map = F.MapOf(d, Array.Empty<int>());
+            Assert.Equal(3, map.Lights.Count);
+            Assert.Equal(new[] { 120, 120, 120 }, map.Strips.Select(s => s.MaxLeds));
+            Assert.All(map.Strips, s => Assert.Equal(0, s.Leds));
+            var colors = new int[d.Slots];
+            colors[0] = 0x010203;
+            var steps = F.ChromaStripPicture(colors, new[] { -80, -80, -80 }).ToArray();
+            Assert.Equal("00 04 00 00 00 4F 01 02 03 01 02 03", Hex(steps[0].Bytes, 12));
+            Assert.Equal("wait 10", ShortSteps(steps)[1]);
+            Assert.Equal("00 04 01 01 00 4F 00 00 00", Hex(steps[2].Bytes, 9));
+            Assert.Equal("00 84 02 02 00 4F", Hex(steps[4].Bytes, 6));
+            Assert.Equal(381, steps[0].Bytes.Length);
+        }
+
+        [Fact]
+        public void AStrip_WithACount_TakesAColorPerLed()
+        {
+            var d = Device(0x1532, 0x0F2C);
+            var map = F.MapOf(d, new[] { 3, 0, 200 });
+            Assert.Equal(new[] { 3, 0, 120 }, map.Strips.Select(s => s.Leds));
+            Assert.Equal(3 + 1 + 120, map.Lights.Count);
+            Assert.Contains(map.Lights, l => l.Address == F.StripSpan * 2 + 119);
+            Assert.DoesNotContain(map.Lights, l => l.Address == F.StripSpan * 2 + 120);
+            var colors = new int[d.Slots];
+            colors[0] = 0x010203;
+            colors[2] = 0x040506;
+            var frame = F.ChromaStripPicture(colors, new[] { 3, -80, -80 }).First().Bytes;
+            Assert.Equal("00 04 00 00 00 02 01 02 03 00 00 00 04 05 06", Hex(frame, 15));
+        }
+
+        [Fact]
+        public void TheSession_SizesItsStrips_AndPaintsByThem()
+        {
+            var d = Device(0x16D0, 0x1205);
+            var io = new FakeReportChannel { OutputReportLength = 65 };
+            var session = new F.Session(d, null);
+            Assert.Single(session.Map.Lights);
+            Assert.True(session.SizeStrips(io, _ => { }, new[] { 2 }));
+            Assert.Equal(2, session.Map.Lights.Count);
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, session.Map.Lights, new[] { 0x010203, 0x040506 }));
+            var call = Assert.Single(io.Calls);
+            Assert.Equal("00 01 01 00 AA 01 02 03 04 05 06", Hex(call.Bytes, 11));
+        }
+
+        [Fact]
+        public void TheChromaStrips_StartAndHandBackGoThroughTheOtherInterface()
+        {
+            var d = Device(0x1532, 0x0F2C);
+            Assert.Equal(new[] { new HidSibling(0, 0x000C) }, d.Siblings);
+            var unit = new FakeReportChannel { FeatureReportLength = 381 };
+            var other = new FakeReportChannel { FeatureReportLength = 91 };
+            var session = new F.Session(d, null, new IHidReportChannel[] { other });
+            session.Paint(unit, _ => { }, session.Map.Lights, new int[session.Map.Lights.Count]);
+            var start = other.Calls.Select(c => c.Bytes).ToArray();
+            Assert.Equal(4, start.Length);
+            Assert.Equal("00 00 1F 00 00 00 01 00 37 01", Hex(start[0], 10));
+            Assert.Equal("00 00 9F 00 00 00 02 00 47 01 01", Hex(start[1], 11));
+            Assert.Equal("00 00 1F 00 00 00 02 00 84 00 01", Hex(start[2], 11));
+            Assert.Equal("00 00 1F 00 00 00 02 00 04 03 01", Hex(start[3], 11));
+            foreach (var report in start) Assert.Equal(F.RazerCrc(report), report[89]);
+            Assert.Equal(3, unit.Calls.Count);
+            Assert.True(session.HandBack(unit, _ => { }));
+            var last = other.Calls.Last().Bytes;
+            Assert.Equal("00 00 1F 00 00 00 01 00 37 00", Hex(last, 10));
+            Assert.Equal(F.RazerCrc(last), last[89]);
+        }
+
+        [Fact]
+        public void Vertagear_TwentyLedsToAReport_GreenFirst_ThenTheSubmit()
+        {
+            var colors = new int[2 * F.StripSpan];
+            colors[0] = 0x010203;
+            var steps = ShortSteps(F.VertagearPicture(colors, new[] { -40, 1 }));
+            // Forty LEDs of one color in two reports, the submit, then one LED.
+            Assert.StartsWith("out 22 10 01 00 02 01 03 02 01 03", steps[0]);
+            Assert.Equal("read", steps[1]);
+            Assert.StartsWith("out 22 11 01 00 02 01 03", steps[2]);
+            Assert.Equal("out 22 A0 01 00 01 00 00 0A 00 00 80 00 32 00 00 01", steps[4]);
+            Assert.Equal("out 22 10 02", steps[6]);
+            Assert.Equal("out 22 A0 02 00 01 00 00 0A 00 00 80 00 32 00 00 01", steps[8]);
+        }
+
+        [Fact]
+        public void Pico_TwentyLedsToAReport_ByChannel()
+        {
+            var colors = new int[2 * F.StripSpan];
+            colors[0] = 0x010203;
+            colors[F.StripSpan] = 0x040506;
+            var steps = ShortSteps(F.PicoPicture(colors, new[] { 21, 1 }));
+            Assert.Equal("out 00 01 00 02 01 01 02 03", steps[0]);
+            Assert.Equal("out 00 02 00 02 01", steps[1]);
+            Assert.Equal("out 00 01 00 01 02 04 05 06", steps[2]);
+            Assert.Equal("wait 1", steps[3]);
+        }
+
+        [Fact]
+        public void LcV2_APacketOf169()
+        {
+            var colors = new int[F.StripSpan];
+            colors[0] = 0x010203;
+            colors[169] = 0x040506;
+            var d = Device(0x16D0, 0x1201);
+            var frames = d.StripPicture(colors, new[] { 170 }).Select(s => s.Bytes).ToArray();
+            Assert.Equal(2, frames.Length);
+            Assert.Equal("00 01 00 02 00 AA 01 02 03", Hex(frames[0], 9));
+            Assert.Equal("00 02 00 02 00 AA 04 05 06", Hex(frames[1], 9));
+            Assert.Equal(513, frames[0].Length);
         }
 
         [Fact]

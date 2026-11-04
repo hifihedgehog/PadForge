@@ -73,15 +73,25 @@ namespace PadForge.Common.Input.Peripherals
 
         public string Name => "LG Monitor";
 
+        /// <summary>LG_27GN950_B_PID, and the 38GL950G, which SignalRGB's plugin
+        /// lights with this family's frames and 48 colors
+        /// (LG_UltraGear_38GL950G.js:60-65 and 76-94). OpenRGB does not list it.</summary>
+        internal const ushort Ultragear27 = 0x9A8A;
+        internal const ushort Ultragear38 = 0x9A57;
+
         private readonly KeyboardLedNames.ModelCache _models = new();
 
         public HidLightingModel Match(HidCollectionInfo collection)
         {
             if (collection == null || collection.VendorId != VendorId) return null;
-            var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
+            bool other = collection.ProductId == Ultragear38;
+            var registrations = OpenRgbRegistrations.Match(OpenRgbFamily,
+                other && collection.UsagePage == 0xFF00 && OpenRgbRegistrations.InterfaceOf(collection, OpenRgbRegistrations.BusOf(collection)) == 0
+                    ? collection with { ProductId = Ultragear27, InterfaceNumber = 1, UsagePage = 0xFF01 }
+                    : collection);
             if (registrations.Count == 0) return null;
-            var registration = registrations[0];
-            return _models.Get(registration.Name, () => Model(registration.Name, collection.ProductId));
+            string name = other ? "LG UltraGear 38GL950G" : registrations[0].Name;
+            return _models.Get(name, () => Model(name, collection.ProductId));
         }
 
         /// <summary>The 48 LEDs in OpenRGB's order, each an edge light at its

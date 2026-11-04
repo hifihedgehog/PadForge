@@ -980,7 +980,7 @@ namespace PadForge.Tests
             var listed = PeripheralProductIds.SteelSeriesMice.Concat(PeripheralProductIds.SteelSeriesKeyboards)
                 .Concat(PeripheralProductIds.SteelSeriesHeadsets).Concat(PeripheralProductIds.SteelSeriesMousemats)
                 .Concat(PeripheralProductIds.SteelSeriesSpeakers).ToList();
-            Assert.Equal(96 + 6 + 10 + 2, listed.Count);
+            Assert.Equal(97 + 6 + 11 + 2, listed.Count);
             Assert.Equal(listed.Count, listed.Distinct().Count());
             Assert.Equal(listed.OrderBy(id => id), ids.OrderBy(id => id));
 
@@ -1029,7 +1029,7 @@ namespace PadForge.Tests
             Assert.Equal(none.OrderBy(id => id),
                 SteelSeriesDirectProtocol.Models.Where(m => m.Family == SteelSeriesFamily.None).Select(m => m.ProductId).OrderBy(id => id));
             Assert.All(none, id => Assert.Contains(id, PeripheralProductIds.SteelSeriesMice));
-            Assert.Equal(100, SteelSeriesDirectProtocol.Models.Count(m => m.Family != SteelSeriesFamily.None));
+            Assert.Equal(102, SteelSeriesDirectProtocol.Models.Count(m => m.Family != SteelSeriesFamily.None));
             Assert.Equal(19, SteelSeriesDirectProtocol.Models.Count(m => PeripheralProductIds.SteelSeriesKeyboards.Contains(m.ProductId)
                                                                          && m.Family != SteelSeriesFamily.None));
         }
@@ -1054,7 +1054,7 @@ namespace PadForge.Tests
         [InlineData(SteelSeriesFamily.Rival5, new ushort[] { 0x183C, 0x183E })]
         [InlineData(SteelSeriesFamily.PrimeMini, new ushort[] { 0x184D })]
         [InlineData(SteelSeriesFamily.AeroxWireless, new ushort[] { 0x183A, 0x1854, 0x185A, 0x185E, 0x1862, 0x1876, 0x187A })]
-        [InlineData(SteelSeriesFamily.AeroxWirelessDongle, new ushort[] { 0x1838, 0x1852, 0x1858, 0x185C, 0x1860, 0x1874, 0x1878, 0x1890 })]
+        [InlineData(SteelSeriesFamily.AeroxWirelessDongle, new ushort[] { 0x1838, 0x1852, 0x1858, 0x185C, 0x1860, 0x1874, 0x1878, 0x1890, 0x233A })]
         [InlineData(SteelSeriesFamily.PrimeWireless, new ushort[] { 0x1842, 0x184A })]
         [InlineData(SteelSeriesFamily.PrimeWirelessDongle, new ushort[] { 0x1840, 0x1848 })]
         [InlineData(SteelSeriesFamily.PrimePlus, new ushort[] { 0x182C })]
@@ -1076,24 +1076,24 @@ namespace PadForge.Tests
         [InlineData(SteelSeriesFamily.ArenaSpeakers, new ushort[] { 0x1A00, 0x1A05 })]
         [InlineData(SteelSeriesFamily.ArctisNova3, new ushort[] { 0x12EC })]
         [InlineData(SteelSeriesFamily.Siberia350, new ushort[] { 0x1229 })]
-        [InlineData(SteelSeriesFamily.QckPrismCloth, new ushort[] { 0x150A, 0x150D, 0x1514, 0x1516, 0x1518, 0x151A, 0x151C, 0x151E, 0x1520 })]
+        [InlineData(SteelSeriesFamily.QckPrismCloth, new ushort[] { 0x150A, 0x150D, 0x1514, 0x1516, 0x1518, 0x151A, 0x151C, 0x151E, 0x1520, 0x3769 })]
         public void EachFamilysProducts_AreTheOnesItsReferencesList(object familyValue, ushort[] productIds)
             => Assert.Equal(productIds.OrderBy(id => id),
                 SteelSeriesDirectProtocol.Models.Where(m => m.Family == (SteelSeriesFamily)familyValue)
                     .Select(m => m.ProductId).OrderBy(id => id));
 
-        /// <summary>36 of the 100 lit products have a frame that returns
-        /// them to their own lighting. The other 64, the headsets and mats
+        /// <summary>37 of the 102 lit products have a frame that returns
+        /// them to their own lighting. The other 65, the headsets and mats
         /// among them but for the GameDAC, keep the last color until they lose
         /// power.</summary>
         [Fact]
-        public void ThirtySixProductsCanBeHandedBack_AndSixtyFourKeepTheirLastColor()
+        public void ThirtySevenProductsCanBeHandedBack_AndSixtyFiveKeepTheirLastColor()
         {
             bool HandsBack(SteelSeriesFamily family)
                 => SteelSeriesDirectProtocol.HandBack(family, false).Length > 0 && SteelSeriesDirectProtocol.HandBack(family, true).Length > 0;
             var lit = SteelSeriesDirectProtocol.Models.Where(m => m.Family != SteelSeriesFamily.None).ToList();
-            Assert.Equal(36, lit.Count(m => HandsBack(m.Family)));
-            Assert.Equal(64, lit.Count(m => !HandsBack(m.Family)));
+            Assert.Equal(37, lit.Count(m => HandsBack(m.Family)));
+            Assert.Equal(65, lit.Count(m => !HandsBack(m.Family)));
             // A family hands back on both firmware generations or on neither.
             Assert.All(SteelSeriesDirectProtocol.Families, f =>
                 Assert.Equal(f.HandBack(false).Length > 0, f.HandBack(true).Length > 0));

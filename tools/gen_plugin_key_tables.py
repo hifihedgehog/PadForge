@@ -31,6 +31,8 @@ TABLES = [
     ("Strafe", "Corsair/Legacy_Corsair/Corsair_Strafe_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
     ("Rk61", "Royal Kludge/RK_61_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
     ("Rk84", "Royal Kludge/RK_84_Keyboard.js", "vKeyNames", "vKeyPositions", "vKeys"),
+    ("ApexM750TklPubg", "Steelseries/Steelseries_Apex_M750_TKL_PUBG_Keyboard.js", "vLedNames", "vLedPositions", "vKeymap"),
+    ("ApexProMini", "Steelseries/Steelseries_Apex_Pro_Mini_Keyboard.js", "vLedNames", "vLedPositions", "vKeymap"),
 ]
 
 # Keyboards a plugin keeps in a library object: the table's name, the plugin and

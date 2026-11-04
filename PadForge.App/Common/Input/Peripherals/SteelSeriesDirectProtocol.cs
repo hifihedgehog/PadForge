@@ -1677,6 +1677,7 @@ namespace PadForge.Common.Input.Peripherals
             (0x185E, SteelSeriesFamily.AeroxWireless),
             (0x1860, SteelSeriesFamily.AeroxWirelessDongle), // Aerox 5 Wireless Diablo IV Edition
             (0x1862, SteelSeriesFamily.AeroxWireless),
+            (0x233A, SteelSeriesFamily.AeroxWirelessDongle), // Aerox 5 Wireless Diablo IV Edition, an ID only SignalRGB lists
             (0x1858, SteelSeriesFamily.AeroxWirelessDongle), // Aerox 9 Wireless
             (0x185A, SteelSeriesFamily.AeroxWireless),
             (0x1874, SteelSeriesFamily.AeroxWirelessDongle), // Aerox 9 Wireless WoW Edition
@@ -1715,6 +1716,7 @@ namespace PadForge.Common.Input.Peripherals
             (0x151C, SteelSeriesFamily.QckPrismCloth),       // QCK Prism Cloth XL CS:GO Neo Noir
             (0x151E, SteelSeriesFamily.QckPrismCloth),       // QCK Prism Cloth XL Destiny
             (0x1520, SteelSeriesFamily.QckPrismCloth),       // QCK Prism Cloth XL Destiny 2 Lightfall
+            (0x3769, SteelSeriesFamily.QckPrismCloth),       // QCK Prism Cloth XL Destiny, an ID only SignalRGB lists
             (0x1507, SteelSeriesFamily.QckPrism12),          // QcK Prism
 
             (0x1A00, SteelSeriesFamily.ArenaSpeakers),       // Arena 7

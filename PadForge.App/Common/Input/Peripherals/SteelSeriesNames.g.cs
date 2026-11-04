@@ -131,6 +131,8 @@ namespace PadForge.Common.Input.Peripherals
             (0x1890, "SteelSeries Aerox 3 Wireless Gen 2", "OpenRGB SteelSeriesControllerDetect.cpp:478"),
             (0x1A00, "SteelSeries Arena 7", "SignalRGB Steelseries_Arena_7_Speakers.js:1"),
             (0x1A05, "SteelSeries Arena 9", "SignalRGB Steelseries_Arena_9_Speakers.js:1"),
+            (0x233A, "SteelSeries Aerox 5 Diablo IV Edition", "SignalRGB Steelseries_Aerox_Wireless_Mouse.js:1"),
+            (0x3769, "SteelSeries QcK Prism XL Destiny Edition", "SignalRGB Steelseries_Qck_Mousepad.js:1"),
         };
     }
 }

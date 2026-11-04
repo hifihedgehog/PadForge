@@ -41,6 +41,8 @@ SIGNAL_PLUGINS = {
     0x1507: "Steelseries_Qck_Prism_Mousepad.js",
     0x1A00: "Steelseries_Arena_7_Speakers.js",
     0x1A05: "Steelseries_Arena_9_Speakers.js",
+    0x233A: "Steelseries_Aerox_Wireless_Mouse.js",
+    0x3769: "Steelseries_Qck_Mousepad.js",
 }
 
 
@@ -118,9 +120,10 @@ def signal_names(root):
         if not m:
             sys.exit("no Name() in " + base)
         name = m.group(1).strip()
-        entry = re.search(r"0x%04x:\s*\"([^\"]+)\"" % product, text, re.I)
+        entry = re.search(r"0x%04x\s*:\s*\"([^\"]+)\"" % product, text, re.I)
         if entry:
-            name += " " + entry.group(1)
+            # The Aerox plugin's entry is the whole name, the QcK's only its end.
+            name = entry.group(1) if entry.group(1).startswith("Steelseries") else name + " " + entry.group(1)
         name = re.sub(r"^Steelseries\b", "SteelSeries", name)
         names[product] = (name, "SignalRGB %s:%d" % (base, line_of(text, m.start())))
     return names

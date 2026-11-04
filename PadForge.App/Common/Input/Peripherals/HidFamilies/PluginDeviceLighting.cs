@@ -99,6 +99,26 @@ namespace PadForge.Common.Input.Peripherals
         /// them.</summary>
         public Func<IReadOnlyList<IHidReportChannel>, Func<int[], IEnumerable<PluginStep>>> PictureWith { get; init; }
 
+        /// <summary>For a device whose lights are strips: the LEDs a strip can
+        /// take, one entry per strip. <see cref="Slots"/> and the addresses then
+        /// run by <see cref="StripPicture"/>'s rule, strip times
+        /// <see cref="PluginDeviceLighting.StripSpan"/> plus the LED.</summary>
+        public IReadOnlyList<int> StripMaxLeds { get; init; } = Array.Empty<int>();
+
+        /// <summary>The LEDs a strip with no count set takes one color across,
+        /// each plugin's own count for a strip it knows nothing about.</summary>
+        public int StripDefaultLeds { get; init; }
+
+        /// <summary>The steps of a picture for a device with strips, from the
+        /// colors by address and each strip's LED count, its default where no
+        /// count is set.</summary>
+        public Func<int[], IReadOnlyList<int>, IEnumerable<PluginStep>> StripPicture { get; init; }
+
+        /// <summary>For a device with <see cref="Siblings"/>: the steps of its
+        /// start and hand-back that go to the first sibling.</summary>
+        public IReadOnlyList<PluginStep> SiblingStart { get; init; } = Array.Empty<PluginStep>();
+        public IReadOnlyList<PluginStep> SiblingHandBack { get; init; } = Array.Empty<PluginStep>();
+
         /// <summary>How often the session's steps of <see cref="Start"/> and a
         /// picture go out again with no change, for a device that can lose
         /// software control on its own. 0: never.</summary>
@@ -145,6 +165,10 @@ namespace PadForge.Common.Input.Peripherals
         /// names none: PadForge's.</summary>
         internal const int DefaultRepaintMs = 33;
 
+        /// <summary>How far apart two strips' addresses are, more than any strip
+        /// takes.</summary>
+        internal const int StripSpan = 8192;
+
         public string Name => "Plugin devices";
 
         /// <summary>Every device of the table.</summary>
@@ -185,10 +209,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = this,
             Name = device.Name,
-            Map = new LightMap(device.Lights, "SignalRGB " + device.Plugin)
-            {
-                Product = $"plugin:{device.VendorId:X4}:{device.ProductId:X4}",
-            },
+            Map = MapOf(device, Array.Empty<int>()),
             Programs = device.Programs,
             RepaintMs = device.RepaintMs,
             KeepAliveMs = device.KeepAliveMs,
@@ -196,8 +217,38 @@ namespace PadForge.Common.Input.Peripherals
             Siblings = device.Siblings,
             Begin = device.Siblings.Count > 0 ? null : (io, _) => io == null ? null : new Session(device, device.Picture),
             BeginWith = device.Siblings.Count == 0 ? null : (io, siblings, _) =>
-                io == null ? null : new Session(device, device.PictureWith(siblings)),
+                io == null ? null : new Session(device, device.PictureWith?.Invoke(siblings), siblings),
         };
+
+        /// <summary>A device's lights. For strips: the count set for a strip
+        /// gives it that many lights, and with none it is one light across its
+        /// default LEDs.</summary>
+        internal static LightMap MapOf(PluginDevice device, IReadOnlyList<int> counts)
+        {
+            string source = "SignalRGB " + device.Plugin;
+            string product = $"plugin:{device.VendorId:X4}:{device.ProductId:X4}";
+            if (device.StripMaxLeds.Count == 0) return new LightMap(device.Lights, source) { Product = product };
+            var lights = new List<LightInfo>();
+            var strips = new LightStrip[device.StripMaxLeds.Count];
+            for (int s = 0; s < strips.Length; s++)
+            {
+                int leds = Math.Min(StripCounts.At(counts, s + 1), device.StripMaxLeds[s]);
+                strips[s] = new LightStrip(s + 1, device.StripMaxLeds[s], leds);
+                if (leds == 0) lights.Add(Zone(s * StripSpan, s + 1));
+                else for (int l = 0; l < leds; l++) lights.Add(Edge(s * StripSpan + l));
+            }
+            return new LightMap(lights, source) { Product = product, Strips = strips };
+        }
+
+        /// <summary>A strip's colors from the colors by address, one per LED.</summary>
+        internal static int[] StripColors(int[] byAddress, int strip, int leds, bool counted)
+        {
+            var colors = new int[leds];
+            int start = strip * StripSpan;
+            if (!counted) Array.Fill(colors, byAddress[start]);
+            else Array.Copy(byAddress, start, colors, 0, leds);
+            return colors;
+        }
 
         // ─────────────────────────────────────────────
         //  Frames
@@ -263,19 +314,35 @@ namespace PadForge.Common.Input.Peripherals
         {
             private readonly PluginDevice _device;
             private readonly Func<int[], IEnumerable<PluginStep>> _picture;
+            private readonly IReadOnlyList<IHidReportChannel> _siblings;
             private readonly byte[][] _crashFrames;
             private bool _started;
+            private LightMap _map;
+            private IReadOnlyList<int> _counts = Array.Empty<int>();
 
-            public Session(PluginDevice device, Func<int[], IEnumerable<PluginStep>> picture)
+            public Session(PluginDevice device, Func<int[], IEnumerable<PluginStep>> picture,
+                IReadOnlyList<IHidReportChannel> siblings = null)
             {
                 _device = device;
                 _picture = picture;
+                _siblings = siblings ?? Array.Empty<IHidReportChannel>();
+                _map = device.StripMaxLeds.Count > 0 ? MapOf(device, _counts) : null;
                 // The crash path sends one kind of report, the session's.
                 var kind = device.Feature ? PluginStepKind.Feature : PluginStepKind.Output;
                 _crashFrames = device.HandBack.Where(s => s.Kind == kind).Select(s => s.Bytes).ToArray();
             }
 
             public override bool Feature => _device.Feature;
+
+            public override LightMap Map => _map;
+
+            public override bool SizeStrips(IHidReportChannel io, Action<int> wait, IReadOnlyList<int> counts)
+            {
+                if (_device.StripMaxLeds.Count == 0) return true;
+                _counts = counts ?? Array.Empty<int>();
+                _map = MapOf(_device, _counts);
+                return true;
+            }
 
             /// <summary>The hand-back, once a picture may have gone out.</summary>
             public override byte[][] CrashFrames => _started ? _crashFrames : Array.Empty<byte[]>();
@@ -287,10 +354,14 @@ namespace PadForge.Common.Input.Peripherals
                 if (!_started)
                 {
                     _started = true;
+                    if (_siblings.Count > 0) foreach (var step in _device.SiblingStart) Run(_siblings[0], wait, step);
                     foreach (var step in _device.Start) Run(io, wait, step);
                 }
                 var byAddress = CoolerMasterLighting.ByAddress(lights, colors, _device.Slots);
-                foreach (var step in _picture(byAddress))
+                var steps = _device.StripPicture != null
+                    ? _device.StripPicture(byAddress, LedCounts())
+                    : _picture(byAddress);
+                foreach (var step in steps)
                     if (!Run(io, wait, step)) return HidLightingPaint.Failed;
                 return HidLightingPaint.Sent;
             }
@@ -311,8 +382,24 @@ namespace PadForge.Common.Input.Peripherals
                 if (io == null) return false;
                 foreach (var step in _device.HandBack)
                     if (!Run(io, wait, step)) return false;
+                if (_siblings.Count > 0)
+                    foreach (var step in _device.SiblingHandBack)
+                        if (!Run(_siblings[0], wait, step)) return false;
                 _started = false;
                 return true;
+            }
+
+            /// <summary>Each strip's count, negative where none is set, which a
+            /// picture reads as one color across the default LEDs.</summary>
+            private int[] LedCounts()
+            {
+                var leds = new int[_device.StripMaxLeds.Count];
+                for (int s = 0; s < leds.Length; s++)
+                {
+                    int count = Math.Min(StripCounts.At(_counts, s + 1), _device.StripMaxLeds[s]);
+                    leds[s] = count > 0 ? count : -_device.StripDefaultLeds;
+                }
+                return leds;
             }
 
             /// <summary>Runs one step. False when a write failed. A read that

@@ -14,7 +14,8 @@ namespace PadForge.Common.Input.Peripherals
             => Evga().Concat(Patriot()).Concat(Speedlink()).Concat(ThermaltakeArgent()).Concat(CreativeKatana())
                 .Concat(AlienwareDevices()).Concat(AsusDevices()).Concat(Fnatic()).Concat(HyperX()).Concat(RazerDevices())
                 .Concat(LogitechG19()).Concat(MountainMakalu()).Concat(CoolerMasterMat()).Concat(CorsairHeadsets())
-                .Concat(CorsairDarkCore()).Concat(CorsairNexus());
+                .Concat(CorsairDarkCore()).Concat(CorsairNexus()).Concat(Roccat()).Concat(RoyalKludge())
+                .Concat(NzxtFunction()).Concat(Glorious()).Concat(SteelSeriesKeyboards()).Concat(StripControllers());
 
         // ── Corsair headsets (Corsair/Modern_Corsair/Virtuoso_HeadSets, Corsair/Void_HeadSets) ──
 
@@ -297,6 +298,737 @@ namespace PadForge.Common.Input.Peripherals
                     frame[at + 2] = R(colors[0]);
                     frame[at + 3] = 0xFF;
                 }
+                yield return PluginStep.Output(frame);
+            }
+        }
+
+        // ── Roccat mice, dock, headsets and microphone (Roccat/*.js) ──
+
+        private static readonly VendorProgram[] s_swarm = { VendorPrograms.RoccatSwarm };
+
+        private static PluginDevice RoccatRow(string name, ushort pid, string plugin) => new()
+        {
+            Name = name,
+            VendorId = 0x1E7D,
+            ProductId = pid,
+            Plugin = "Roccat/" + plugin,
+            Programs = s_swarm,
+        };
+
+        private static PluginStep[] Steps(int waitMs, int length, params byte[][] heads)
+        {
+            var steps = new List<PluginStep>();
+            foreach (var head in heads)
+            {
+                steps.Add(PluginStep.Feature(Frame(length, head)));
+                if (waitMs > 0) steps.Add(PluginStep.Wait(waitMs));
+            }
+            return steps.ToArray();
+        }
+
+        private static IEnumerable<PluginDevice> Roccat()
+        {
+            yield return new PluginDevice
+            {
+                Name = "Roccat Kone XP Air Dock",
+                VendorId = 0x1E7D,
+                ProductId = 0x2CB8,
+                Plugin = "Roccat/Roccat_Kone_XP_Air_Dock.js",
+                Programs = s_swarm,
+                Interface = 0,
+                Usage = 0x0001,
+                FeatureLength = 17,
+                Lights = Edges(4),
+                Slots = 4,
+                Start = new[]
+                {
+                    PluginStep.Feature(new byte[]
+                    {
+                        0x02, 0x00, 0x09, 0x12, 0xFA, 0x00, 0xFF, 0x00, 0x00, 0xFF, 0x09, 0x12, 0xFA, 0x00, 0xFF, 0x7D, 0x00, 0xFF, 0x09, 0x12,
+                        0xFA, 0x00, 0xFF, 0xFF, 0x00, 0xFF, 0x09, 0x12, 0xFA, 0x00, 0x7D, 0xFF, 0x00, 0xFF, 0x00, 0x00, 0x01, 0xFF, 0x00,
+                    }),
+                    PluginStep.Feature(Frame(5, 0x01, 0xFF, 0xFF)),
+                },
+                Picture = colors =>
+                {
+                    var frame = Frame(17, 0x03);
+                    for (int i = 0; i < 4; i++)
+                    {
+                        PutRgb(frame, 1 + i * 4, colors[i]);
+                        frame[4 + i * 4] = 0xFF;
+                    }
+                    return new[] { PluginStep.Feature(frame) };
+                },
+            };
+            foreach (var (name, pid, plugin, id) in new (string, ushort, string, byte)[]
+            {
+                ("Roccat Kone XP Air - Wired", 0x2CB2, "Roccat_Kone_XP_Air_Mouse_Wired.js", 0x00),
+                ("Roccat Kone XP Air", 0x2CB6, "Roccat_Kone_XP_Air.js", 0x01),
+            })
+                yield return new PluginDevice
+                {
+                    Name = name,
+                    VendorId = 0x1E7D,
+                    ProductId = pid,
+                    Plugin = "Roccat/" + plugin,
+                    Programs = s_swarm,
+                    Interface = 2,
+                    Usage = 0xFF00,
+                    FeatureLength = 30,
+                    // The wheel and four lights on the shell.
+                    Lights = new[] { Wheel(0), Edge(1), Edge(2), Edge(3), Edge(4) },
+                    Slots = 5,
+                    Start = KoneXpStart(id),
+                    Picture = colors => KoneXpPicture(id, colors),
+                };
+            yield return new PluginDevice
+            {
+                Name = "Roccat Burst Pro Air - Wired",
+                VendorId = 0x1E7D,
+                ProductId = 0x2CAB,
+                Plugin = "Roccat/Roccat_Burst_Pro_Air_Mouse_Wired.js",
+                Programs = s_swarm,
+                Interface = 2,
+                Usage = 0xFF00,
+                FeatureLength = 30,
+                // The wheel, the two buttons and the back.
+                Lights = new[] { Wheel(0), Edge(1), Edge(2), Logo(3) },
+                Slots = 4,
+                Start = BurstStart().Concat(BurstStart()).ToArray(),
+                Picture = colors =>
+                {
+                    var frame = Frame(30, 0x06, 0x00, 0x4D, 0x06, 0x0C);
+                    for (int i = 0; i < 4; i++) PutRgb(frame, 5 + i * 3, colors[i]);
+                    return new[] { PluginStep.Feature(frame), PluginStep.Wait(1) };
+                },
+            };
+            yield return new PluginDevice
+            {
+                Name = "Roccat Torch",
+                VendorId = 0x1E7D,
+                ProductId = 0x3A56,
+                Plugin = "Roccat/Roccat_Torch_Microphone.js",
+                Programs = s_swarm,
+                Interface = 3,
+                OutputLength = 6,
+                Lights = Edges(1),
+                Slots = 1,
+                Start = new[]
+                {
+                    PluginStep.Output(Frame(6, 0x00, 0x80, 0x80)), PluginStep.Wait(100),
+                    PluginStep.Output(Frame(6, 0x00, 0x80, 0x02)), PluginStep.Wait(100),
+                    PluginStep.Output(Frame(6, 0x00, 0x80, 0x02)), PluginStep.Wait(100),
+                    PluginStep.Output(new byte[6]), PluginStep.Wait(100),
+                },
+                Picture = TorchPicture,
+            };
+            foreach (var (name, pid, plugin, lights) in new (string, ushort, string, LightInfo[])[]
+            {
+                ("Roccat Kain 100", 0x2D00, "Roccat_Kain_100_Mouse.js", new[] { Wheel(0) }),
+                ("Roccat Kain 120", 0x2D5C, "Roccat_Kain_120_Mouse.js", new[] { Wheel(0), Logo(1) }),
+            })
+                yield return new PluginDevice
+                {
+                    Name = name,
+                    VendorId = 0x1E7D,
+                    ProductId = pid,
+                    Plugin = "Roccat/" + plugin,
+                    Programs = s_swarm,
+                    Interface = 3,
+                    FeatureLength = 11,
+                    Lights = lights,
+                    Slots = lights.Length,
+                    Start = new[] { PluginStep.Feature(Frame(6, 0x0E, 0x06, 0x01, 0x01, 0x00, 0xFF)) },
+                    Picture = colors => RoccatZones(11, 0x0D, 0x0B, colors),
+                    HandBack = new[] { PluginStep.Feature(Frame(6, 0x0E, 0x06, 0x00, 0x00, 0x00, 0xFF)) },
+                };
+            yield return new PluginDevice
+            {
+                Name = "Roccat Kova Aimo",
+                VendorId = 0x1E7D,
+                ProductId = 0x2CF1,
+                Plugin = "Roccat/Roccat_Kova_Aimo_Mouse.js",
+                Programs = s_swarm,
+                Interface = 0,
+                Usage = 0x0000,
+                FeatureLength = 8,
+                // The plugin lists the wheel at place 1 and the back at place 0.
+                Lights = new[] { Wheel(1), Logo(0) },
+                Slots = 2,
+                Start = new[] { PluginStep.Feature(Frame(6, 0x0E, 0x06, 0x01, 0x01, 0x00, 0xFF)) },
+                Picture = colors => RoccatZones(8, 0x0A, 0x08, colors),
+                HandBack = new[] { PluginStep.Feature(Frame(6, 0x0E, 0x06, 0x00, 0x00, 0x00, 0xFF)) },
+            };
+            yield return new PluginDevice
+            {
+                Name = "Roccat Kain 200",
+                VendorId = 0x1E7D,
+                ProductId = 0x2D5F,
+                Plugin = "Roccat/Roccat_Kain_200_Mouse_Wired.js",
+                Programs = s_swarm,
+                Interface = 2,
+                UsagePage = 0xFF01,
+                Usage = 0x0001,
+                FeatureLength = 22,
+                Lights = new[] { Wheel(0), Logo(1) },
+                Slots = 2,
+                Picture = colors =>
+                {
+                    var frame = KainFrame(colors);
+                    byte crc = 0;
+                    for (int i = 0; i < 10; i++) crc ^= frame[i];
+                    frame[10] = crc;
+                    return new[] { PluginStep.Feature(frame) };
+                },
+            };
+            yield return new PluginDevice
+            {
+                Name = "Roccat Kain 200",
+                VendorId = 0x1E7D,
+                ProductId = 0x2D60,
+                Plugin = "Roccat/Roccat_Kain_200_Mouse_Wireless.js",
+                Programs = s_swarm,
+                FeatureLength = 22,
+                Lights = new[] { Wheel(0), Logo(1) },
+                Slots = 2,
+                Picture = colors =>
+                {
+                    var frame = KainFrame(colors);
+                    frame[10] = (byte)Math.Abs(frame[4] - frame[5] + frame[6] - frame[7] + frame[8] - frame[9] - 0x32);
+                    return new[] { PluginStep.Feature(frame) };
+                },
+            };
+            yield return new PluginDevice
+            {
+                Name = "Roccat Elo 7.1 Air",
+                VendorId = 0x1E7D,
+                ProductId = 0x3A37,
+                Plugin = "Roccat/Roccat_Elo_7.1_Air_Headset.js",
+                Programs = s_swarm,
+                Interface = 0,
+                OutputLength = 64,
+                Lights = Edges(1),
+                Slots = 1,
+                // The headset drops the host's colors when it goes off and
+                // comes back. The plugin watches for that on its reports, and a
+                // keep-alive takes it again with no watching.
+                KeepAliveMs = 5000,
+                Start = new[]
+                {
+                    PluginStep.Output(Frame(64, 0x00, 0xFF, 0x02)), PluginStep.Wait(10),
+                    PluginStep.Output(Frame(64, 0x00, 0xFF, 0x03, 0x00, 0x01, 0x00, 0x01)), PluginStep.Wait(10),
+                    PluginStep.Output(Frame(64, 0x00, 0xFF, 0x04)), PluginStep.Wait(10),
+                    PluginStep.Output(Frame(64, 0x00, 0xFF, 0x01)), PluginStep.Wait(10),
+                    PluginStep.ReadInput(),
+                },
+                Picture = colors => HeadsetColor(0xFF, 0x04, colors[0]),
+            };
+            yield return new PluginDevice
+            {
+                Name = "Roccat Syn Pro Air",
+                VendorId = 0x1E7D,
+                ProductId = 0x3A3B,
+                Plugin = "Roccat/Roccat_Syn_Pro_Air_Headset.js",
+                Programs = s_swarm,
+                Interface = 0,
+                OutputLength = 64,
+                Lights = Edges(1),
+                Slots = 1,
+                KeepAliveMs = 5000,
+                Start = new[]
+                {
+                    PluginStep.Output(Frame(64, 0x00, 0xFE, 0x01, 0x00, 0x00, 0x00, 0x09, 0x08, 0x02, 0x00,
+                        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF)),
+                    PluginStep.Output(Frame(64, 0x00, 0xFE, 0x02, 0x00, 0x00, 0x01)),
+                },
+                Picture = colors => HeadsetColor(0xFE, 0x03, colors[0]),
+            };
+        }
+
+        /// <summary>The Kone XP Air's Initialize. The wireless plugin's third
+        /// byte says 01 for the mouse and 00 for the receiver, its own note.</summary>
+        private static PluginStep[] KoneXpStart(byte id) => Steps(30, 30,
+            new byte[] { 0x06, id, 0x13, 0x07, 0x02 },
+            new byte[] { 0x06, 0x00, 0x00, 0x04 },
+            new byte[] { 0x06, 0x00, 0x00, 0x05 },
+            new byte[] { 0x06, id, 0x35, 0x07 },
+            new byte[] { 0x06, id, 0x00, 0x04 },
+            new byte[] { 0x06, id, 0x00, 0x05 },
+            new byte[] { 0x06, id, 0x4E, 0x06, 0x04, 0x01, 0x01, 0x01, 0xFF },
+            new byte[] { 0x06, id, 0x44, 0x07 },
+            new byte[] { 0x06, id, 0x49, 0x06, 0x01, 0x04 },
+            new byte[] { 0x06, id, 0x44, 0x07 });
+
+        /// <summary>The plugin for the wired Kone XP Air has fixed bytes before
+        /// the colors where the wireless one has zeros.</summary>
+        internal static IEnumerable<PluginStep> KoneXpPicture(byte id, int[] colors)
+        {
+            var frame = id == 0x00
+                ? Frame(30, 0x06, 0x00, 0x4D, 0x06, 0x15, 0x6D, 0x70, 0x61)
+                : Frame(30, 0x06, 0x01, 0x4D, 0x06, 0x15);
+            for (int i = 0; i < 5; i++) PutRgb(frame, 8 + i * 3, colors[i]);
+            yield return PluginStep.Feature(frame);
+            yield return PluginStep.Wait(1);
+        }
+
+        private static PluginStep[] BurstStart() => Steps(70, 30,
+            new byte[] { 0x06, 0x00, 0x35, 0x07 },
+            new byte[] { 0x06, 0x00, 0x43, 0x07, 0x0C, 0x11, 0x0D, 0x00, 0x0A, 0x0A, 0x0A, 0x0A, 0x0A, 0x0A, 0x0A },
+            new byte[] { 0x06, 0x00, 0x4E, 0x06, 0x04, 0x01, 0x01, 0x01, 0xFF },
+            new byte[] { 0x06, 0x00, 0x00, 0x04 },
+            new byte[] { 0x06, 0x00, 0x00, 0x05 });
+
+        /// <summary>The color packed as the plugin packs it, then an empty
+        /// report 7 ms later.</summary>
+        internal static IEnumerable<PluginStep> TorchPicture(int[] colors)
+        {
+            int r = R(colors[0]), g = G(colors[0]), b = B(colors[0]);
+            yield return PluginStep.Output(Frame(6, 0x00, 0x80, (byte)(r >> 3), (byte)(r >> 6 | g >> 2), (byte)(g >> 7 | b >> 2)));
+            yield return PluginStep.Wait(7);
+            yield return PluginStep.Output(new byte[6]);
+        }
+
+        internal static IEnumerable<PluginStep> RoccatZones(int length, byte first, byte second, int[] colors)
+        {
+            var frame = Frame(length, first, second);
+            for (int i = 0; i < colors.Length; i++) PutRgb(frame, 2 + i * 3, colors[i]);
+            yield return PluginStep.Feature(frame);
+            yield return PluginStep.Wait(1);
+        }
+
+        private static byte[] KainFrame(int[] colors)
+        {
+            var frame = Frame(22, 0x08, 0x09, 0x33, 0x00);
+            PutRgb(frame, 4, colors[0]);
+            PutRgb(frame, 7, colors[1]);
+            return frame;
+        }
+
+        private static IEnumerable<PluginStep> HeadsetColor(byte first, byte second, int color)
+        {
+            var frame = Frame(65, 0x00, first, second);
+            PutRgb(frame, 5, color);
+            yield return PluginStep.Output(frame);
+        }
+
+        // ── Royal Kludge RK61 and RK84 (Royal Kludge/*.js) ──
+
+        private static IEnumerable<PluginDevice> RoyalKludge()
+        {
+            foreach (ushort pid in new ushort[] { 0x0055, 0x007A, 0x0060, 0x004A })
+                yield return RoyalKludgeRow("Royal Kludge RK61", pid, PluginKeyTables.Rk61, colors => RoyalKludgePicture(colors, greenFirst: true, waitAfter: true));
+            foreach (ushort pid in new ushort[] { 0x005D, 0x0059, 0x00C8, 0x010D, 0x00F4 })
+                yield return RoyalKludgeRow("Royal Kludge RK84", pid, PluginKeyTables.Rk84, colors => RoyalKludgePicture(colors, greenFirst: false, waitAfter: false));
+        }
+
+        private static PluginDevice RoyalKludgeRow(string name, ushort pid, PluginKeyTable table, Func<int[], IEnumerable<PluginStep>> picture) => new()
+        {
+            Name = name,
+            VendorId = 0x258A,
+            ProductId = pid,
+            Plugin = table.Plugin,
+            Interface = 1,
+            UsagePage = 0xFF00,
+            Usage = 0x0001,
+            FeatureLength = 65,
+            Lights = PluginKeyNames.Lights(table),
+            Slots = RoyalKludgeBytes,
+            Picture = picture,
+        };
+
+        /// <summary>The bytes of a picture. A key's LED index in these plugins
+        /// is the byte of the color data its color starts at.</summary>
+        internal const int RoyalKludgeBytes = 425;
+
+        /// <summary>Five reports, then two empty ones the plugins send for zones
+        /// 6 and 7. The RK61 takes its colors green first and waits after a
+        /// report, the RK84 red first and waits before one.</summary>
+        internal static IEnumerable<PluginStep> RoyalKludgePicture(int[] colors, bool greenFirst, bool waitAfter)
+        {
+            var data = new byte[RoyalKludgeBytes];
+            for (int at = 0; at + 2 < RoyalKludgeBytes; at++)
+            {
+                int color = colors[at];
+                if (color == 0) continue;
+                data[at] = greenFirst ? G(color) : R(color);
+                data[at + 1] = greenFirst ? R(color) : G(color);
+                data[at + 2] = B(color);
+            }
+            var first = Frame(65, 0x0A, 0x07, 0x01, 0x06);
+            Array.Copy(data, 0, first, 4, 61);
+            yield return PluginStep.Feature(first);
+            int from = 61;
+            for (byte zone = 2; zone <= 5; zone++)
+            {
+                var frame = Frame(65, 0x0A, 0x07, zone);
+                Array.Copy(data, from, frame, 3, 62);
+                from += 62;
+                if (!waitAfter) yield return PluginStep.Wait(1);
+                yield return PluginStep.Feature(frame);
+                if (waitAfter) yield return PluginStep.Wait(1);
+            }
+            for (byte zone = 6; zone <= 7; zone++)
+            {
+                if (!waitAfter) yield return PluginStep.Wait(1);
+                yield return PluginStep.Feature(Frame(65, 0x0A, 0x07, zone));
+            }
+        }
+
+        // ── NZXT Function keyboards (Nzxt/Peripheral Protocol/*.js) ──
+
+        /// <summary>Which of the three boards' fixed bytes a keyboard takes.</summary>
+        internal enum FunctionBoard { Full, MiniTkl, TklIso }
+
+        private static IEnumerable<PluginDevice> NzxtFunction()
+        {
+            const string Folder = "Nzxt/Peripheral Protocol/";
+            foreach (var (name, pid, plugin, board) in new (string, ushort, string, FunctionBoard)[]
+            {
+                ("NZXT Function", 0x2103, "NZXT_Function_Keyboard.js", FunctionBoard.Full),
+                ("NZXT Function", 0x2106, "NZXT_Function_Keyboard.js", FunctionBoard.Full),
+                ("NZXT Function MiniTKL", 0x2105, "NZXT_Function_MiniTKL_Keyboard.js", FunctionBoard.MiniTkl),
+                ("NZXT Function MiniTKL", 0x2108, "NZXT_Function_MiniTKL_Keyboard.js", FunctionBoard.MiniTkl),
+                ("NZXT Function TKL", 0x2107, "NZXT_Function_TKL_ISO_Keyboard.js", FunctionBoard.TklIso),
+                ("NZXT Function TKL", 0x2104, "NZXT_Function_TKL_Keyboard.js", FunctionBoard.Full),
+            })
+                yield return new PluginDevice
+                {
+                    Name = name,
+                    VendorId = 0x1E71,
+                    ProductId = pid,
+                    Plugin = Folder + plugin,
+                    Interface = 1,
+                    OutputLength = 65,
+                    Lights = Zones(10),
+                    Slots = 10,
+                    Programs = new[] { VendorPrograms.NzxtCam },
+                    Start = new[]
+                    {
+                        PluginStep.Output(Frame(10, 0x43, 0x81, 0x00, 0x84)),
+                        PluginStep.Output(Frame(10, 0x43, 0x81, 0x00, 0x86)),
+                    },
+                    Picture = colors => FunctionPicture(colors, board),
+                };
+        }
+
+        /// <summary>Four reports that carry a keyboard's ten zones between fixed
+        /// bytes, each zone's color 22 bytes on from the last.</summary>
+        internal static IEnumerable<PluginStep> FunctionPicture(int[] colors, FunctionBoard board)
+        {
+            var one = Frame(65, 0x43, 0xBD, 0x03, 0x10, 0x01, 0x01, 0x00, 0x03, 0x00, 0x03, 0x00, 0x03, 0x00,
+                board == FunctionBoard.TklIso ? (byte)0x03 : (byte)0x01, 0x00, 0x03);
+            foreach (var (at, value) in new (int, byte)[]
+            {
+                (0x1A, 0x01), (0x1B, 0x06), (29, 0x0C), (31, 0x0C), (33, 0x0C), (35, 0x0C), (37, 0x04), (48, 0x01),
+                (49, 0x60), (51, 0xC0), (53, 0xC0), (55, 0xC0), (57, 0xC0), (59, 0x20),
+            })
+                one[at] = value;
+            for (int z = 0; z < 2; z++) PutRgb(one, z * 22 + 23, colors[z]);
+            yield return PluginStep.Output(one);
+
+            var two = Frame(65, 0x43, 0x3D, 0x02);
+            foreach (var (at, value) in new (int, byte)[]
+            {
+                (0x09, 0x01), (0x0A, 0x80), (0x0B, 0x01), (0x0D, 0x03), (0x0F, 0x03), (0x11, 0x03), (0x13, 0x03),
+                (0x1F, 0x01), (0x2C, 0xC0), (0x2E, 0x46), (0x2F, 0x0E), (0x35, 0x01),
+            })
+                two[at] = value;
+            for (int z = 0; z < 3; z++) PutRgb(two, z * 22 + 6, colors[z + 2]);
+            yield return PluginStep.Output(two);
+
+            var three = Frame(65, 0x43, 0x3D, 0x01, 0x00, 0x00, 0x32, 0x04, 0xB0, 0x11);
+            foreach (var (at, value) in new (int, byte)[]
+            {
+                (0x0E, 0x01), (0x10, 0x40), (0x18, 0x40), (0x1A, 0x40), (0x1B, 0x08), (0x1C, 0x43), (0x1D, 0x08), (0x1E, 0x40),
+                (0x24, 0x01), (0x26, board == FunctionBoard.MiniTkl ? (byte)0xF0 : (byte)0x30), (0x28, 0x40),
+                (0x2A, board == FunctionBoard.MiniTkl ? (byte)0xE0 : (byte)0x60),
+                (0x2C, board == FunctionBoard.TklIso ? (byte)0x70 : (byte)0x60), (0x2E, 0x20), (0x30, 0x34),
+                (58, 0x01), (60, 0x0E), (62, 0x1C),
+            })
+                three[at] = value;
+            for (int z = 0; z < 3; z++) PutRgb(three, z * 22 + 11, colors[z + 5]);
+            yield return PluginStep.Output(three);
+
+            var four = Frame(65, 0x43, 0x26, 0x00, 0x1C, 0x00, 0x0C, 0x00, 0x0C, 0x00, 0x0A);
+            foreach (var (at, value) in new (int, byte)[] { (0x13, 0x01), (0x14, 0x18), (0x16, 0x30), (0x18, 0x30), (0x1A, 0x30), (0x1C, 0x30) })
+                four[at] = value;
+            for (int z = 0; z < 2; z++) PutRgb(four, z * 22 + 16, colors[z + 8]);
+            yield return PluginStep.Output(four);
+        }
+
+        // ── Glorious Model O and D Wireless (Glorious/*.js) ──
+
+        private static IEnumerable<PluginDevice> Glorious()
+        {
+            foreach (var (name, pid, plugin, wired) in new (string, ushort, string, bool)[]
+            {
+                ("Glorious Model O Wireless", 0x2024, "Glorious_Model_O_Wireless.js", false),
+                ("Glorious Model D Wireless", 0x2025, "Glorious_Model_D_Wireless.js", false),
+                ("Glorious Model O Wireless - Wired", 0x2013, "Glorious_Model_O_Wireless_-_Wired.js", true),
+                ("Glorious Model D Wireless - Wired", 0x2014, "Glorious_Model_D_Wireless_-_Wired.js", true),
+            })
+                yield return new PluginDevice
+                {
+                    Name = name,
+                    VendorId = 0x258A,
+                    ProductId = pid,
+                    Plugin = "Glorious/" + plugin,
+                    Interface = 2,
+                    FeatureLength = 65,
+                    Lights = Zones(1),
+                    Slots = 1,
+                    Programs = new[] { VendorPrograms.GloriousCore },
+                    Picture = colors => GloriousPicture(colors, wired),
+                    HandBack = wired ? Array.Empty<PluginStep>() : new[]
+                    {
+                        PluginStep.Feature(Frame(65, 0x00, 0x00, 0x00, 0x02, 0x05, 0x02, 0x00, 0x01, 0xFF, 0x01, 0x00, 0x09)),
+                        PluginStep.Feature(Frame(65, 0x00, 0x00, 0x00, 0x02, 0x02, 0x02, 0x02, 0x01, 0xFF)),
+                        PluginStep.Feature(Frame(65, 0x00, 0x00, 0x00, 0x02, 0x02, 0x02, 0x02, 0x00, 0xFF)),
+                    },
+                };
+        }
+
+        /// <summary>The color report. The wired plugins follow it with the two
+        /// reports the wireless ones keep for their Shutdown.</summary>
+        internal static IEnumerable<PluginStep> GloriousPicture(int[] colors, bool wired)
+        {
+            var frame = Frame(65, 0x00, 0x00, 0x00, 0x02, 0x08, 0x02, 0x00, 0x01, 0xFF, 0x04, 0x00, 0x09);
+            PutRgb(frame, 12, colors[0]);
+            yield return PluginStep.Feature(frame);
+            if (!wired) yield break;
+            yield return PluginStep.Feature(Frame(65, 0x00, 0x00, 0x00, 0x02, 0x02, 0x02, 0x02, 0x01, 0xFF));
+            yield return PluginStep.Feature(Frame(65, 0x00, 0x00, 0x00, 0x02, 0x02, 0x02, 0x02, 0x00, 0xFF));
+        }
+
+        // ── SteelSeries Apex M750 TKL PUBG and Apex Pro Mini (Steelseries/*.js) ──
+
+        private static IEnumerable<PluginDevice> SteelSeriesKeyboards()
+        {
+            yield return new PluginDevice
+            {
+                Name = "SteelSeries Apex M750 TKL PUBG Edition",
+                VendorId = 0x1038,
+                ProductId = 0x0619,
+                Plugin = PluginKeyTables.ApexM750TklPubg.Plugin,
+                Interface = 2,
+                FeatureLength = 513,
+                Lights = PluginKeyNames.Lights(PluginKeyTables.ApexM750TklPubg),
+                Slots = (513 - 9) / 3,
+                Programs = new[] { VendorPrograms.SteelSeriesGG },
+                Start = new[]
+                {
+                    PluginStep.Feature(Frame(513, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x81)),
+                    PluginStep.Feature(Frame(513, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x04, 0x01)),
+                    PluginStep.Feature(Frame(513, 0x00, 0x00, 0x00, 0x00, 0x05, 0x01, 0x01, 0x01, 0x00, 0xEB, 0x0C, 0x0C)),
+                    PluginStep.Feature(Frame(513, 0x00, 0x00, 0x00, 0x00, 0x04, 0x01, 0x00, 0x00, 0x00, 0x01)),
+                    PluginStep.Feature(Frame(513, 0x00, 0x00, 0x00, 0x00, 0x03, 0x01, 0x04, 0x00, 0x2D, 0x01)),
+                    PluginStep.Feature(Frame(513, 0x00, 0x00, 0x00, 0x00, 0x04, 0x01, 0x00, 0xFE, 0x00, 0x06)),
+                },
+                Picture = ApexM750Picture,
+            };
+            foreach (var (pid, number, command) in new (ushort, int, byte)[] { (0x1626, 3, 0x21), (0x161E, 1, 0x40) })
+                yield return new PluginDevice
+                {
+                    Name = "SteelSeries Apex Pro Mini",
+                    VendorId = 0x1038,
+                    ProductId = pid,
+                    Plugin = PluginKeyTables.ApexProMini.Plugin,
+                    Interface = number,
+                    FeatureLength = 642,
+                    Lights = PluginKeyNames.Lights(PluginKeyTables.ApexProMini),
+                    Slots = 256,
+                    Programs = new[] { VendorPrograms.SteelSeriesGG },
+                    Picture = colors => ApexProMiniPicture(colors, command),
+                };
+        }
+
+        internal static IEnumerable<PluginStep> ApexM750Picture(int[] colors)
+        {
+            var frame = Frame(513, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x01, 0x03, 0x06, 0x12);
+            foreach (int index in PluginKeyTables.ApexM750TklPubg.Indexes) PutRgb(frame, index * 3 + 9, colors[index]);
+            yield return PluginStep.Feature(frame);
+            yield return PluginStep.Feature(Frame(513, 0x00, 0x00, 0x00, 0x00, 0x03, 0x01, 0x04, 0x00, 0x2D, 0x01));
+            yield return PluginStep.Wait(2);
+        }
+
+        internal static IEnumerable<PluginStep> ApexProMiniPicture(int[] colors, byte command)
+        {
+            var indexes = PluginKeyTables.ApexProMini.Indexes;
+            var frame = Frame(642, 0x00, command, (byte)indexes.Length);
+            for (int i = 0; i < indexes.Length; i++)
+            {
+                frame[3 + i * 4] = (byte)indexes[i];
+                PutRgb(frame, 4 + i * 4, colors[indexes[i]]);
+            }
+            yield return PluginStep.Feature(frame);
+        }
+
+        // ── LED strip controllers: Razer, Vertagear and SRGBmods ──
+
+        private static byte[] ChromaReport(params (int At, byte Value)[] bytes)
+        {
+            var report = Frame(91, bytes);
+            report[89] = RazerCrc(report);
+            return report;
+        }
+
+        private static IEnumerable<PluginDevice> StripControllers()
+        {
+            yield return new PluginDevice
+            {
+                Name = "Razer Chroma Light Strip Set",
+                VendorId = 0x1532,
+                ProductId = 0x0F2C,
+                Plugin = "Razer/Razer_Chroma_Light_Strip_Set.js",
+                Interface = 1,
+                UsagePage = 0x000C,
+                Usage = 0x0001,
+                FeatureLength = 381,
+                Slots = 3 * StripSpan,
+                StripMaxLeds = new[] { 120, 120, 120 },
+                StripDefaultLeds = 80,
+                Siblings = new[] { new HidSibling(0, 0x000C) },
+                PictureWith = _ => null,
+                SiblingStart = new[]
+                {
+                    PluginStep.Feature(ChromaReport((2, 0x1F), (6, 0x01), (8, 0x37), (9, 0x01))),
+                    PluginStep.Feature(ChromaReport((2, 0x9F), (6, 0x02), (8, 0x47), (9, 0x01), (10, 0x01))),
+                    PluginStep.Feature(ChromaReport((2, 0x1F), (6, 0x02), (8, 0x84), (10, 0x01))),
+                    PluginStep.Feature(ChromaReport((2, 0x1F), (6, 0x02), (8, 0x04), (9, 0x03), (10, 0x01))),
+                },
+                SiblingHandBack = new[] { PluginStep.Feature(ChromaReport((2, 0x1F), (6, 0x01), (8, 0x37))) },
+                StripPicture = ChromaStripPicture,
+            };
+            yield return new PluginDevice
+            {
+                Name = "Vertagear RGB LED Upgrade Kits",
+                VendorId = 0x1E71,
+                ProductId = 0x2004,
+                Plugin = "Nzxt/Vertagear_RGB_LED_Upgrade_Kits.js",
+                Interface = 0,
+                OutputLength = 64,
+                Slots = 2 * StripSpan,
+                StripMaxLeds = new[] { 40, 40 },
+                StripDefaultLeds = 40,
+                StripPicture = VertagearPicture,
+            };
+            yield return new PluginDevice
+            {
+                Name = "SRGBmods Pico LC",
+                VendorId = 0x16D0,
+                ProductId = 0x1123,
+                Plugin = "SRGBmods.net/SRGBmods_Pico_LC.js",
+                Interface = 2,
+                OutputLength = 65,
+                Slots = 2 * StripSpan,
+                StripMaxLeds = new[] { 512, 512 },
+                StripDefaultLeds = 90,
+                Start = new[] { PluginStep.Output(Frame(65, (2, 0x01))) },
+                StripPicture = PicoPicture,
+            };
+            yield return new PluginDevice
+            {
+                Name = "SRGBmods LED Controller v1",
+                VendorId = 0x16D0,
+                ProductId = 0x1205,
+                Plugin = "SRGBmods.net/SRGBmods_LC_v1.js",
+                Interface = 2,
+                OutputLength = 65,
+                Slots = StripSpan,
+                StripMaxLeds = new[] { 800 },
+                StripDefaultLeds = 512,
+                StripPicture = (colors, leds) => SrgbModsPicture(colors, leds[0], 20, 65,
+                    (current, total) => new byte[] { 0x00, current, total, 0x00, 0xAA }),
+            };
+            yield return new PluginDevice
+            {
+                Name = "SRGBmods LED Controller v2",
+                VendorId = 0x16D0,
+                ProductId = 0x1201,
+                Plugin = "SRGBmods.net/SRGBmods_LC_v2.js",
+                Interface = 0,
+                OutputLength = 513,
+                Slots = StripSpan,
+                StripMaxLeds = new[] { 4056 },
+                StripDefaultLeds = 1014,
+                StripPicture = (colors, leds) => SrgbModsPicture(colors, leds[0], 169, 513,
+                    (current, total) => new byte[] { 0x00, current, 0x00, total, 0x00, 0xAA }),
+            };
+        }
+
+        /// <summary>A strip's colors in order, whether its count was set.</summary>
+        private static int[] StripLeds(int[] byAddress, int strip, int leds)
+            => leds >= 0 ? StripColors(byAddress, strip, leds, counted: true) : StripColors(byAddress, strip, -leds, counted: false);
+
+        /// <summary>A report per channel with the count less one, 10 ms apart.
+        /// The third channel's report starts 84 where the others start 04.</summary>
+        internal static IEnumerable<PluginStep> ChromaStripPicture(int[] byAddress, IReadOnlyList<int> leds)
+        {
+            for (int c = 0; c < 3; c++)
+            {
+                var colors = StripLeds(byAddress, c, leds[c]);
+                var frame = Frame(381, 0x00, (byte)(c == 2 ? 0x84 : 0x04), (byte)c, (byte)c, 0x00, (byte)(colors.Length - 1));
+                for (int i = 0; i < colors.Length; i++) PutRgb(frame, 6 + i * 3, colors[i]);
+                yield return PluginStep.Feature(frame);
+                yield return PluginStep.Wait(10);
+            }
+        }
+
+        /// <summary>For each kit, reports of twenty LEDs green first, each with
+        /// its answer read, then the submit report.</summary>
+        internal static IEnumerable<PluginStep> VertagearPicture(int[] byAddress, IReadOnlyList<int> leds)
+        {
+            for (int c = 0; c < 2; c++)
+            {
+                var colors = StripLeds(byAddress, c, leds[c]);
+                byte channel = (byte)(1 << c);
+                int sent = 0;
+                for (byte number = 0; sent < colors.Length; number++)
+                {
+                    var frame = Frame(64, 0x22, (byte)(0x10 | number), channel, 0x00);
+                    int count = Math.Min(20, colors.Length - sent);
+                    for (int i = 0; i < count; i++)
+                    {
+                        frame[4 + i * 3] = G(colors[sent + i]);
+                        frame[5 + i * 3] = R(colors[sent + i]);
+                        frame[6 + i * 3] = B(colors[sent + i]);
+                    }
+                    sent += count;
+                    yield return PluginStep.Output(frame);
+                    yield return PluginStep.ReadInput();
+                }
+                yield return PluginStep.Output(Frame(64, 0x22, 0xA0, channel, 0x00, 0x01, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x80, 0x00, 0x32, 0x00, 0x00, 0x01));
+                yield return PluginStep.ReadInput();
+            }
+        }
+
+        internal static IEnumerable<PluginStep> PicoPicture(int[] byAddress, IReadOnlyList<int> leds)
+        {
+            for (int c = 0; c < 2; c++)
+            {
+                var colors = StripLeds(byAddress, c, leds[c]);
+                int total = (colors.Length + 19) / 20;
+                for (int n = 0; n < total; n++)
+                {
+                    var frame = Frame(65, 0x00, (byte)(n + 1), 0x00, (byte)total, (byte)(c + 1));
+                    int count = Math.Min(20, colors.Length - n * 20);
+                    for (int i = 0; i < count; i++) PutRgb(frame, 5 + i * 3, colors[n * 20 + i]);
+                    yield return PluginStep.Output(frame);
+                }
+            }
+            yield return PluginStep.Wait(1);
+        }
+
+        internal static IEnumerable<PluginStep> SrgbModsPicture(int[] byAddress, int leds, int perReport, int length, Func<byte, byte, byte[]> head)
+        {
+            var colors = StripLeds(byAddress, 0, leds);
+            int total = (colors.Length + perReport - 1) / perReport;
+            for (int n = 0; n < total; n++)
+            {
+                var start = head((byte)(n + 1), (byte)total);
+                var frame = Frame(length, start);
+                int count = Math.Min(perReport, colors.Length - n * perReport);
+                for (int i = 0; i < count; i++) PutRgb(frame, start.Length + i * 3, colors[n * perReport + i]);
                 yield return PluginStep.Output(frame);
             }
         }

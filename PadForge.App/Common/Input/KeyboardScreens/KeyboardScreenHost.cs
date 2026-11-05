@@ -95,9 +95,13 @@ namespace PadForge.Common.Input.KeyboardScreens
         private readonly AutoResetEvent _wake = new(false);
         private readonly Action<string> _log;
         private readonly LgsLcdScreens _lgs = new();
+        /// <summary>Test seam: the engine on LGS's library.</summary>
+        internal LgsLcdScreens Lgs { init => _lgs = value; }
         private readonly G15HidScreens _hid = new();
         private readonly G19UsbScreens _g19;
         private readonly ArxScreen _arx = new();
+        /// <summary>Test seam: the engine on Arx's library.</summary>
+        internal ArxScreen Arx { init => _arx = value; }
         private readonly Strike7Screen _strike7;
         private Thread _thread, _previous;
         private volatile bool _stop;
@@ -106,6 +110,12 @@ namespace PadForge.Common.Input.KeyboardScreens
         /// host's sessions are closed before the next host's open.</summary>
         private static Thread s_lastWorker;
         internal const int PredecessorJoinMs = 5000;
+        /// <summary>The host whose worker last came out of its wait for the one
+        /// before it. LGS's and Arx's libraries are the process's, and this
+        /// host's sessions are the ones on them.</summary>
+        private static KeyboardScreenHost s_holder;
+        /// <summary>How long the worker waits for the last host's. Test seam.</summary>
+        internal int PredecessorWaitMs = PredecessorJoinMs;
         /// <summary>Canceled when the host stops, for work the worker hands
         /// off, which may outlive the pass that started it.</summary>
         private readonly CancellationTokenSource _stopping = new();
@@ -244,14 +254,15 @@ namespace PadForge.Common.Input.KeyboardScreens
                 // (HidppBackend.PredecessorJoinMs).
                 var previous = _previous;
                 _previous = null;
-                long until = Environment.TickCount64 + PredecessorJoinMs;
+                long until = Environment.TickCount64 + PredecessorWaitMs;
                 while (previous != null && !_stop && !previous.Join(LoopMs))
                 {
                     if (Environment.TickCount64 < until) continue;
                     _log("Keyboard screens: the last host's worker is still running after "
-                         + PredecessorJoinMs + " ms, starting anyway");
+                         + PredecessorWaitMs + " ms, starting anyway");
                     break;
                 }
+                if (!_stop) Volatile.Write(ref s_holder, this);
 
                 while (!_stop)
                 {
@@ -339,10 +350,21 @@ namespace PadForge.Common.Input.KeyboardScreens
         /// that never started. Each screen's keys go with its engine.</summary>
         private void Close()
         {
-            try { _lgs.Dispose(); } catch (Exception) { }
+            // A worker the next host gave up waiting for ends no session of
+            // that host's on the two libraries, and its own while that host
+            // has none there.
+            var holder = Volatile.Read(ref s_holder);
+            bool later = holder != null && !ReferenceEquals(holder, this);
+            if (!later || !holder._lgs.Active)
+            {
+                try { _lgs.Dispose(); } catch (Exception) { }
+            }
             try { _hid.Dispose(); } catch (Exception) { }
             try { _g19.Dispose(); } catch (Exception) { }
-            try { _arx.Dispose(); } catch (Exception) { }
+            if (!later || !holder._arx.Active)
+            {
+                try { _arx.Dispose(); } catch (Exception) { }
+            }
             try { _strike7.Dispose(); } catch (Exception) { }
             foreach (string id in _lgsKeyed) KeyboardScreenKeys.Clear(id, LgsKeysSource);
             _lgsKeyed.Clear();

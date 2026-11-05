@@ -86,7 +86,8 @@ namespace PadForge.Tests
         }
 
         /// <summary>Port 1 Gen2 with two devices, the second reporting 70
-        /// LEDs; port 2 Gen1 with geometry factors 2 and 30; port 3 silent.
+        /// LEDs. Port 2 Gen1 with geometry factors 2 and 30. Port 3 Gen2 with
+        /// nothing plugged in, its topology read silent.
         /// Realtime on and off are answered.</summary>
         private static byte[] Topology(byte[] report)
         {
@@ -95,6 +96,7 @@ namespace PadForge.Tests
             {
                 (0x0B, 0x01, 0x01) => new byte[] { 0x80, 0x0B, 0x03, 0x01, 0x00 },
                 (0x0B, 0x01, 0x02) => new byte[] { 0x80, 0x0B, 0x03, 0x02, 0x01 },
+                (0x0B, 0x01, 0x04) => new byte[] { 0x80, 0x0B, 0x03, 0x04, 0x00 },
                 (0x07, 0x01, 0x01) => new byte[] { 0x80, 0x07, 0x03, 0x01, 0x03, 0x01, 24, 0x00, 0x00, 0x04, 70 },
                 (0x06, 0x01, 0x02) => new byte[] { 0x80, 0x06, 0x03, 0x02, 0x02, 30 },
                 (0x01, 0x02, _) => new byte[] { 0x80, 0x01, 0x03, arg },
@@ -130,7 +132,7 @@ namespace PadForge.Tests
             var session = Assert.IsType<CoolerMasterLighting.ArgbGen2A1Session>(Model(0x0173).Begin(device, device.Wait));
             Assert.Equal(new[]
             {
-                "out 80 0B 01 01", "out 80 07 01 01", "out 80 0B 01 02", "out 80 06 01 02", "out 80 0B 01 04",
+                "out 80 0B 01 01", "out 80 07 01 01", "out 80 0B 01 02", "out 80 06 01 02", "out 80 0B 01 04", "out 80 07 01 04",
             }, device.Log);
             // Gen2 devices 01 x 24 and 04 x 60 (70 held to 60, line 1353), the
             // empty 00 x 00 left out (line 269). Gen1 port 2 at factor 30.
@@ -338,6 +340,35 @@ namespace PadForge.Tests
             var empty = new FakeA1Device();
             Assert.Null(Model(0x0173).Begin(empty, empty.Wait));
             Assert.Equal(3, empty.Outs.Count);
+        }
+
+        /// <summary>ReadPortGeneration fails an answer that is neither
+        /// generation (CMARGBGen2A1Controller.cpp:195-213), and SetupZones
+        /// gives the port a Gen1 zone of 6 LEDs. RefreshTopology does not
+        /// count it as a valid port (lines 133-147), so answers of that kind
+        /// alone leave no session.</summary>
+        [Fact]
+        public void APortOfNeitherGeneration_GetsSixLedsOfGen1_AndDoesNotCountAsAnswering()
+        {
+            var device = new FakeA1Device
+            {
+                Answer = report => (report[2], report[3], report[4]) switch
+                {
+                    (0x0B, 0x01, 0x01) => new byte[] { 0x80, 0x0B, 0x03, 0x01, 0x02 },
+                    _ => Topology(report),
+                },
+            };
+            Assert.Equal(new[]
+            {
+                new CoolerMasterLighting.A1Target(0x01, 0x00, 6),
+                new CoolerMasterLighting.A1Target(0x02, 0x00, 30),
+            }, CoolerMasterLighting.A1Topology(device, 3));
+
+            var alone = new FakeA1Device
+            {
+                Answer = report => report[2] == 0x0B ? new byte[] { 0x80, 0x0B, 0x03, report[4], 0x02 } : null,
+            };
+            Assert.Empty(CoolerMasterLighting.A1Topology(alone, 3));
         }
     }
 }

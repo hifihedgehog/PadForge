@@ -104,7 +104,8 @@ namespace PadForge.Tests
             answer.Add(x);
             var reports = new Queue<byte[]>();
             for (int i = 0; i < answer.Count; i += 8) reports.Enqueue(answer.Skip(i).Take(8).ToArray());
-            var io = new FakeReportChannel { FeatureReportLength = 9 };
+            // Long enough for a key's modern report, 11 bytes.
+            var io = new FakeReportChannel { FeatureReportLength = 11 };
             io.Feature = _ => reports.Count > 0 ? reports.Dequeue() : new byte[8];
             return io;
         }
@@ -132,12 +133,10 @@ namespace PadForge.Tests
         {
             var io = new FakeReportChannel { FeatureReportLength = 9, Feature = _ => new byte[8] };
             var model = DasKeyboardLighting.Instance.Match(CherryKeyboardLightingTests.CollectionOf(Registration("Das Keyboard 4Q RGB"), 9));
-            var session = Assert.IsType<DasKeyboardLighting.Session>(model.Begin(io, _ => { }));
-            Assert.True(session.Traditional);
+            // No version even then: OpenRGB deletes the controller (DasKeyboardOpeningTests).
+            Assert.Null(model.Begin(io, _ => { }));
             var sets = io.Calls.Where(c => c.Kind == "set").Select(c => Hex(c.Bytes)).ToList();
             Assert.Equal(new[] { "01 EA 02 B0 58", "01 EA 02 B0 58 00 00 00" }, sets);
-            // No version: the grid that is not the US one.
-            Assert.True(session.Map.Lights[81].HasPosition);
         }
 
         [Fact]

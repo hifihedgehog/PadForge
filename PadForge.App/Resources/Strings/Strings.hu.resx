@@ -780,6 +780,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} ismét a Windows-illesztőprogramját használja.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Nem sikerült visszaállítani a Windows-illesztőprogramot ehhez: {0}.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>A Windows visszaállította a saját illesztőprogramjára a következőt: {0}. Az újbóli átváltáshoz válassza ki az Eszközök oldalon.</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>A(z) {0} már nincs a PadForge illesztőprogramján.</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>A(z) {0} még a PadForge illesztőprogramján van. Válaszd ki az Eszközök oldalon, hogy visszaadd a Windows számára.</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Használat csak a PadForge-ban</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>A PadForge ezt a billentyűzetet a Windows WinUSB illesztőprogramjára állítja át, és maga olvassa. A Windows ezután egyetlen programban sem gépel vele, még a PadForge bezárt állapotában sem, amíg a Windows-illesztőprogramját vissza nem állítják ezen az oldalon. A hozzárendelései és makrói a PadForge futása alatt továbbra is működnek.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>A PadForge ezt az egeret a Windows WinUSB illesztőprogramjára állítja át, és maga olvassa. A Windows ezután egyetlen programban sem mozgatja vele a mutatót, még a PadForge bezárt állapotában sem, amíg a Windows-illesztőprogramját vissza nem állítják ezen az oldalon. A hozzárendelései és makrói a PadForge futása alatt továbbra is működnek.</value></data>
@@ -957,6 +959,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>A rezgés a SteelSeries GG tapintási kezelőjén keresztül szólal meg.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>A SteelSeries GG egyszerre hajtja az összes tapintási visszajelzésű Rival egeret, ezért a rezgésüket a(z) {0}. virtuális kontrolleren lévő határozza meg.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>Várakozás a SteelSeries GG alkalmazásra. A rezgés megszólal, amint a GG fut.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>A SteelSeries GG fut, de nem válaszol a PadForge-nak. A rezgés akkor szólal meg, amint válaszol.</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>A rezgés a Razer Sensa HD eszközein szólal meg a Razer Synapse alkalmazáson keresztül.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Várakozás a Sensa HD Haptics funkcióra a Razer Synapse 4 alkalmazásban. A Synapse alkalmazásban állítsa az eszköz Haptic Source beállítását Sensa HD Games értékre.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Bal ravasz</value></data>
@@ -1000,6 +1003,12 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>A színek közvetlenül ide jutnak: {0}. Amíg világít, a beépített memóriás módja ki van kapcsolva.</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>A színek közvetlenül ide jutnak: {0}. A változó színekhez, például a színváltáshoz vagy a hangot követő színekhez be kell kapcsolni a Dynamic Lighting funkciót a laptop BIOS-ában. Enélkül a billentyűk az utolsó állandó színeiket tartják.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>A színek közvetlenül ide jutnak: {0}. Ha a laptop BIOS-ában be van kapcsolva a Dynamic Lighting, a billentyűket helyette a Windows Dinamikus megvilágítás funkciója világítja meg. Kapcsolja ki hozzá a Windows Dinamikus megvilágítást a Windows Gépházban, és a PadForge fogja megvilágítani őket, a változó színekkel együtt.</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>A színek közvetlenül ide jutnak: {0}. Az eszköz minden képet a saját memóriájában tárol, ezért a változó színek, például a színváltás vagy a hangot követő színek nem látszanak. Az állandó szín igen.</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>A színek közvetlenül ide jutnak: {0}. Az eszköz minden képet a saját memóriájában tárol, ezért a változó színek, például a színváltás vagy a hangot követő színek nem látszanak. Az állandó szín igen. Az első kép felülírja a billentyűzeten mentett effekteket, és a régiek nem térnek vissza.</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>Soros eszköz ezen a porton: {0}</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>Ez az eszköz csatlakoztatva van, de nem fogadta el a PadForge színeit. A PadForge percenként újra megpróbálja.</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>A Windows billentyűzetként vagy egérként kezeli ezt az eszközt, és elutasítja a színeit beállító jelentést, ezért a PadForge nem tudja megvilágítani Windowson.</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>Egy másik program megnyitva tartja ezt az eszközt, ezért a PadForge nem tudja megvilágítani. Amint a program bezárul, a PadForge megvilágítja.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Ez az eszköz még nem válaszolt. A színei megjelennek, amint felébred.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>A színek ezen keresztül jutnak el: {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>A színek ezen keresztül jutnak el: {0}, amely egyszerre világítja meg az összes ilyen fajta eszközt. Amíg a(z) {0} nem fut, a PadForge maga világítja meg ezt az eszközt.</value></data>
@@ -1007,7 +1016,9 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>A színek az OpenRGB SDK Serverén keresztül jutnak el. Amíg az OpenRGB nem fut, a PadForge maga világítja meg ezt az eszközt.</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>A színek az OpenRGB SDK Serverén keresztül jutnak el.</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>Az OpenRGB tartja ezt az eszközt, és nincs hozzá Direct módja, ezért a világítása az OpenRGB-nél marad.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>Az OpenRGB kikapcsolt SDK Serverrel fut, ezért a PadForge az OpenRGB-re hagyja ezt az eszközt. Kapcsold be az SDK Servert az OpenRGB-ben, és a PadForge azon keresztül világítja meg az eszközt.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>Az OpenRGB fut, de az SDK Server nem válaszol a(z) {0} porton, ezért a PadForge az OpenRGB-re hagyja ezt az eszközt. Kapcsold be az SDK Servert az OpenRGB-ben, és a PadForge azon keresztül világítja meg az eszközt.</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>A Corsair iCUE kikapcsolt SDK-val fut. Kapcsold be az iCUE SDK-t az iCUE beállításaiban, és a PadForge azon keresztül világítja meg az eszközt.</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>A(z) {0} fut, de nem engedi, hogy a PadForge megvilágítsa az eszközeit. A PadForge folyamatosan próbálkozik.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>A(z) {0} egyszerre világítja meg az összes ilyen fajta eszközt, ezért a színüket a(z) {1}. virtuális kontrolleren lévő határozza meg.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>A(z) {0} egyszerre világítja meg az összes ilyen fajta eszközt, ezért a színüket a(z) {2}. virtuális kontroller {1} sora határozza meg.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>A(z) {0}. virtuális kontroller is megvilágítja ezt az eszközt, és annak a színe látszik.</value></data>
@@ -1025,7 +1036,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headsetek</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>alaplapok, videokártyák és memóriák</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>alaplapok és videokártyák</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>egérpadok és headsetállványok</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>egérpadok, headsetek és headsetállványok</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Fénysáv</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Adjon meg egy hatjegyű hexadecimális színt (RRGGBB vagy #RRGGBB), majd az alkalmazáshoz nyomja meg az Enter billentyűt, vagy kattintson máshová.</value></data>
@@ -4671,6 +4682,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Csatlakozás {0} csevegéséhez…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>{0} csevegésének olvasása.</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>{0} csevegése nem érhető el. Újrapróbálkozás.</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>A Twitch nem talál csevegést ehhez: {0}. Ellenőrizd a csatorna nevét.</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Szüneteltetve.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>A közvetítésed kontrollerképe. Add hozzá ezt a címet az OBS-hez böngészőforrásként:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>A közvetítés kontrollerképéhez a Webes kontroller és a sima HTTP-cím kell. Kapcsold be a Sima HTTP kiszolgálása is lehetőséget a Webes kontroller kártyán. Az ezen a számítógépen futó OBS-hez elég a Csak ez a számítógép.</value></data>

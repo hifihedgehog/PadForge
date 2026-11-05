@@ -310,10 +310,8 @@ namespace PadForge.Common.Input.Peripherals
         private int _waitMs;
         private long _scanQuietMs;
 
-        /// <summary>The newest worker thread of any instance, which the next
-        /// one waits for. Static because the collections it holds are the
-        /// machine's.</summary>
-        private static Thread s_lastWorker;
+        /// <summary>The family's workers over the engine's restarts.</summary>
+        private static readonly WorkerSuccession s_workers = new();
 
         /// <summary>The worker's clock: milliseconds from the
         /// high-resolution counter. Environment.TickCount64 steps by 10 to
@@ -440,6 +438,12 @@ namespace PadForge.Common.Input.Peripherals
             try { _wake.Set(); } catch (ObjectDisposedException) { }
         }
 
+        /// <summary>Whether this thread is a worker a Stop gave up on, still
+        /// finishing the pass it was caught in. The books below are the next
+        /// run's, and a second thread in them would throw under its
+        /// enumerations.</summary>
+        private bool Superseded => !ReferenceEquals(Volatile.Read(ref _thread), Thread.CurrentThread);
+
         /// <summary>A name learned with Map Key Lights (#557) wakes the
         /// worker, which gives its maps the names on its next pass.</summary>
         private void OnLearned(object sender, EventArgs e) => Wake();
@@ -452,11 +456,7 @@ namespace PadForge.Common.Input.Peripherals
             // SensaHapticsService makes for its predecessor and the orphan
             // wait LedSdkBackend makes. A predecessor that never comes back
             // holds the new worker only for that bound.
-            var previous = Interlocked.Exchange(ref s_lastWorker, Thread.CurrentThread);
-            if (previous != null && previous != Thread.CurrentThread && previous.IsAlive
-                && !previous.Join(_predecessorJoinMs))
-                PadForge.Engine.SdlDiagLog.WriteLine(
-                    $"PERIPHERAL HID++ previous worker still running after {_predecessorJoinMs} ms, starting anyway");
+            s_workers.Enter(run, _predecessorJoinMs, "HID++");
             var channels = new Dictionary<string, Channel>(StringComparer.OrdinalIgnoreCase);
             var states = new Dictionary<string, HidppPathState>(StringComparer.OrdinalIgnoreCase);
             try
@@ -545,19 +545,24 @@ namespace PadForge.Common.Input.Peripherals
                     // Lighting goes back to the device's own effect before
                     // the channel closes, so stopping the engine leaves no
                     // mouse frozen on the last color.
-                    try { ReleaseLighting(channel); } catch { }
+                    try { ReleaseLighting(run, channel); } catch { }
                     try { channel.Io.Dispose(); } catch { }
                 }
                 // What is still owed goes out through a handle of its own,
                 // as on the crash path: its unit was not found again, so
                 // the worker has no channel that is known to reach it.
-                try { PayOwedNow(); } catch { }
-                _owed.Clear();
-                foreach (string key in _maps.Keys) PeripheralLightMaps.Remove(new OutputPath(OutputFamily.HidppUnit, key));
-                _maps.Clear();
-                _mapsVersion = -1;
-                Volatile.Write(ref _claimed, Array.Empty<ClaimRecord>());
-                Volatile.Write(ref _snapshot, HidppSnapshot.Empty);
+                try { PayOwedNow(run); } catch { }
+                // The maps, the list and the crash record of a worker that
+                // outlived its Stop into the next run are that run's by now.
+                if (s_workers.Holds(run))
+                {
+                    _owed.Clear();
+                    foreach (string key in _maps.Keys) PeripheralLightMaps.Remove(new OutputPath(OutputFamily.HidppUnit, key));
+                    _maps.Clear();
+                    _mapsVersion = -1;
+                    Volatile.Write(ref _claimed, Array.Empty<ClaimRecord>());
+                    Volatile.Write(ref _snapshot, HidppSnapshot.Empty);
+                }
             }
         }
 
@@ -647,7 +652,7 @@ namespace PadForge.Common.Input.Peripherals
                         int[] colors = map != null && ruler.Keys is { IsEmpty: false } keys
                             ? LightRenderer.Render(map, rgb, keys)
                             : null;
-                        ok = Drive(channel, unit, light, rgb, map, colors, level, now, ref claims);
+                        ok = Drive(run, channel, unit, light, rgb, map, colors, level, now, ref claims);
                     }
                     else if (light.Claimed && LeftToLogitechProgram(path))
                     {
@@ -715,7 +720,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>One lit unit's turn. False when a write failed, which
         /// means the collection is gone.</summary>
-        private bool Drive(Channel channel, HidppUnit unit, Light light, int rgb, LightMap map, int[] colors, int level,
+        private bool Drive(WorkerRun run, Channel channel, HidppUnit unit, Light light, int rgb, LightMap map, int[] colors, int level,
             long now, ref bool claims)
         {
             // A claim at another level is a claim to make over: the device
@@ -729,7 +734,7 @@ namespace PadForge.Common.Input.Peripherals
             }
 
             if (light.Queue != null) return Send(channel.Io, unit, light, now, ref claims);
-            if (!light.Claimed) return Claim(channel, unit, light, rgb, map, colors, level, now, ref claims);
+            if (!light.Claimed) return Claim(run, channel, unit, light, rgb, map, colors, level, now, ref claims);
 
             if (now - light.ClaimedAt >= _reassertMs)
                 return KeepAlive(channel, unit, light, rgb, map, colors, now, ref claims);
@@ -746,7 +751,7 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>Takes a unit's lighting and queues its first color.</summary>
-        private bool Claim(Channel channel, HidppUnit unit, Light light, int rgb, LightMap map, int[] colors, int level,
+        private bool Claim(WorkerRun run, Channel channel, HidppUnit unit, Light light, int rgb, LightMap map, int[] colors, int level,
             long now, ref bool claims)
         {
             var plan = light.Plan;
@@ -793,6 +798,7 @@ namespace PadForge.Common.Input.Peripherals
             // so no moment exists in which the device is claimed and the
             // hand-back does not know it. A claim that then fails is handed
             // back for nothing.
+            s_workers.Claim(unit.Key, run);
             light.HandBack = plan.HandBack(level, savedMode);
             light.Level = level;
             light.SavedMode = savedMode;
@@ -1062,7 +1068,7 @@ namespace PadForge.Common.Input.Peripherals
         /// for.</summary>
         private bool Owe(string path, byte deviceIndex, Light light)
         {
-            if (!light.Claimed || light.HandBack == null) return false;
+            if (Superseded || !light.Claimed || light.HandBack == null) return false;
             light.Queue = null;
             if (!_owed.TryGetValue(path, out var units)) _owed[path] = units = new Dictionary<byte, Light>();
             units[deviceIndex] = light;
@@ -1158,16 +1164,17 @@ namespace PadForge.Common.Input.Peripherals
         /// frames in their order through a write that opens its own handle,
         /// bounded, and a unit is left at its first failed write, as on the
         /// crash path (<see cref="ReleaseClaimedNow"/>). Not to a unit whose
-        /// path the linker closed because OpenRGB holds its device (#557,
-        /// <see cref="PeripheralOutputs.TakenByOpenRgb"/>): the hand-back
-        /// would land on OpenRGB's lighting, as on a running G HUB's.</summary>
-        private void PayOwedNow()
+        /// path the linker closed because G HUB runs or OpenRGB holds its
+        /// device (<see cref="LeftToLogitechProgram"/>): the hand-back would
+        /// land on that program's lighting.</summary>
+        private void PayOwedNow(WorkerRun run)
         {
             foreach (var pair in _owed)
             {
                 foreach (var owed in pair.Value)
                 {
-                    if (TakenByOpenRgb(pair.Key, owed.Key)) continue;
+                    var path = UnitPath(pair.Key, owed.Key);
+                    if (LeftToLogitechProgram(path) || !s_workers.MayReach(path.Key, run)) continue;
                     var debt = owed.Value;
                     foreach (var step in debt.HandBack)
                     {
@@ -1212,6 +1219,7 @@ namespace PadForge.Common.Input.Peripherals
         private static bool LeftToLogitechProgram(OutputPath path)
         {
             var links = PeripheralOutputs.Links;
+            if (links.TakenByOpenRgb.Contains(path)) return true;
             if (links.ByPath.TryGetValue(path, out var devices))
             {
                 foreach (var device in devices)
@@ -1220,7 +1228,7 @@ namespace PadForge.Common.Input.Peripherals
                     if (row != null && Array.IndexOf(row.Lighting, path) >= 0) return false;
                 }
             }
-            return PeripheralOutputs.Presence.LogitechGHubRunning || PeripheralOutputs.TakenByOpenRgb(path);
+            return PeripheralOutputs.Presence.LogitechGHubRunning;
         }
 
         /// <summary>Puts one unit and its hand-back frames on the crash
@@ -1242,6 +1250,7 @@ namespace PadForge.Common.Input.Peripherals
         /// path.</summary>
         private void PublishClaimed(Dictionary<string, Channel> channels)
         {
+            if (Superseded) return;
             var claimed = new List<ClaimRecord>();
             foreach (var channel in channels.Values)
                 foreach (var unit in channel.Units)
@@ -1277,8 +1286,10 @@ namespace PadForge.Common.Input.Peripherals
             try { _thread?.Join(PanicJoinMs); } catch { }
             foreach (var record in Interlocked.Exchange(ref _claimed, Array.Empty<ClaimRecord>()))
             {
-                // OpenRGB holds the device (#557): nothing goes to it.
-                if (TakenByOpenRgb(record.Path, record.DeviceIndex)) continue;
+                // G HUB runs or OpenRGB holds the device, and the link pass
+                // closed the path: nothing goes to it, as in the shared
+                // worker's crash path (HidLightingBackend.ReleaseClaimedNow).
+                if (LeftToLogitechProgram(UnitPath(record.Path, record.DeviceIndex))) continue;
                 foreach (byte[] frame in record.HandBack)
                 {
                     bool written;
@@ -1289,26 +1300,28 @@ namespace PadForge.Common.Input.Peripherals
             }
         }
 
-        /// <summary>Whether the linker closed the lighting path of the unit at
+        /// <summary>The lighting path of the unit at
         /// <paramref name="deviceIndex"/> on the collection at
-        /// <paramref name="path"/> because OpenRGB holds its device. The
-        /// unit's key is the collection's path and its index
-        /// (<see cref="HidppUnit.Key"/>).</summary>
-        internal static bool TakenByOpenRgb(string path, byte deviceIndex)
-            => PeripheralOutputs.TakenByOpenRgb(new OutputPath(OutputFamily.HidppUnit,
-                path + "|" + deviceIndex.ToString("X2")));
+        /// <paramref name="path"/>. The unit's key is the collection's path
+        /// and its index (<see cref="HidppUnit.Key"/>).</summary>
+        private static OutputPath UnitPath(string path, byte deviceIndex)
+            => new(OutputFamily.HidppUnit, path + "|" + deviceIndex.ToString("X2"));
 
         /// <summary>How long the crash path waits for the worker to stop and
         /// hand its devices back on its own channel.</summary>
         internal const int PanicJoinMs = 250;
 
         /// <summary>Hands every claimed unit on a channel back to its own
-        /// effect.</summary>
-        private void ReleaseLighting(Channel channel)
+        /// effect, but for one a program has taken since the worker's last
+        /// pass (<see cref="LeftToLogitechProgram"/>) and one a later run has
+        /// claimed, whose picture a hand-back would land on.</summary>
+        private void ReleaseLighting(WorkerRun run, Channel channel)
         {
             foreach (var unit in channel.Units)
             {
                 if (!channel.Lights.TryGetValue(unit.DeviceIndex, out var light) || !light.Claimed) continue;
+                if (LeftToLogitechProgram(new OutputPath(OutputFamily.HidppUnit, unit.Key))
+                    || !s_workers.MayReach(unit.Key, run)) continue;
                 if (!HandBack(channel.Io, light)) break;
             }
             channel.Lights.Clear();
@@ -1632,6 +1645,7 @@ namespace PadForge.Common.Input.Peripherals
         /// </summary>
         private void SyncMaps(Dictionary<string, Channel> channels)
         {
+            if (Superseded) return;
             _mapsDirty = false;
             int version = LearnedKeyMaps.Version;
             bool relearn = version != _mapsVersion;
@@ -1682,6 +1696,7 @@ namespace PadForge.Common.Input.Peripherals
 
         private void Publish(Dictionary<string, Channel> channels, Dictionary<string, HidppPathState> states)
         {
+            if (Superseded) return;
             SyncMaps(channels);
             var units = new List<HidppUnit>();
             foreach (var channel in channels.Values) units.AddRange(channel.Units);

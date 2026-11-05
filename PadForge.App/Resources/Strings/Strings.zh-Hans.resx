@@ -521,6 +521,8 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} 已恢复为 Windows 驱动程序。</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>无法恢复 {0} 的 Windows 驱动程序。</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows 已将 {0} 恢复为其自带驱动程序。请在设备页面中选择它以再次切换。</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} 已不再使用 PadForge 的驱动程序。</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} 仍在使用 PadForge 的驱动程序。在“设备”页面选中它，即可交还给 Windows。</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>仅在 PadForge 中使用</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge 会将此键盘切换到 Windows 的 WinUSB 驱动程序，并由自己读取它。之后在恢复其 Windows 驱动程序之前，Windows 不再在任何程序中使用此键盘打字，即使 PadForge 已关闭也是如此。PadForge 运行期间，其映射和宏仍可使用。您可以随时在此页面恢复 Windows 驱动程序。</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge 会将此鼠标切换到 Windows 的 WinUSB 驱动程序，并由自己读取它。之后在恢复其 Windows 驱动程序之前，Windows 不再在任何程序中使用此鼠标移动指针，即使 PadForge 已关闭也是如此。PadForge 运行期间，其映射和宏仍可使用。您可以随时在此页面恢复 Windows 驱动程序。</value></data>
@@ -1783,6 +1785,7 @@
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>震动通过 SteelSeries GG 的触觉处理程序播放。</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG 会同时驱动所有触觉 Rival，因此由虚拟控制器 {0} 上的那只决定它们的震动。</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>正在等待 SteelSeries GG。GG 运行后即播放震动。</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG 正在运行，但未响应 PadForge。它响应后即可播放震动。</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>震动通过 Razer Synapse 在你的 Razer Sensa HD 设备上播放。</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>正在等待 Razer Synapse 4 中的 Sensa HD 触感。请在 Synapse 中将设备的触感源设为 Sensa HD Games。</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>左扳机</value></data>
@@ -1824,6 +1827,12 @@
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>颜色直接发送到 {0}。点亮期间，设备的板载模式处于关闭状态。</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>颜色直接发送到 {0}。变化的颜色（如颜色循环或随声音变化的颜色）需要在笔记本电脑的 BIOS 中开启 Dynamic Lighting。未开启时，按键会保持最后的静态颜色。</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>颜色直接发送到 {0}。如果笔记本电脑的 BIOS 中已开启 Dynamic Lighting，则由 Windows 动态照明点亮按键。在 Windows 设置中为此键盘关闭 Windows 动态照明后，PadForge 即可点亮按键，包括变化的颜色。</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>颜色直接发送到 {0}。它把每幅图像存储在自己的内存中，因此颜色循环、随声音变化的颜色等动态颜色不会显示。固定不变的颜色可以显示。</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>颜色直接发送到 {0}。它把每幅图像存储在自己的内存中，因此颜色循环、随声音变化的颜色等动态颜色不会显示。固定不变的颜色可以显示。第一幅图像会覆盖键盘上已保存的灯效，旧灯效无法恢复。</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>{0} 上的串口设备</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>此设备已连接，但未接受 PadForge 的颜色。PadForge 每分钟重试一次。</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows 将此设备作为键盘或鼠标独占，并拒绝用于设置其颜色的报告，因此 PadForge 无法在 Windows 上点亮它。</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>另一个程序已打开此设备，因此 PadForge 无法点亮它。该程序关闭后，PadForge 会点亮此设备。</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>此设备尚未响应。设备唤醒后即显示颜色。</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>颜色通过 {0} 发送。</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>颜色通过 {0} 发送，它会同时点亮所有此类设备。{0} 未运行时，PadForge 会单独点亮此设备。</value></data>
@@ -1831,7 +1840,9 @@
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>颜色通过 OpenRGB 的 SDK Server 发送。OpenRGB 未运行时，PadForge 会单独点亮此设备。</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>颜色通过 OpenRGB 的 SDK Server 发送。</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB 占用此设备且没有适用于它的 Direct 模式，因此其灯光仍由 OpenRGB 控制。</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB 正在运行但其 SDK Server 已关闭，因此 PadForge 将此设备交给 OpenRGB。在 OpenRGB 中打开 SDK Server 后，PadForge 会通过它点亮此设备。</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB 正在运行，但其 SDK Server 未在端口 {0} 上响应，因此 PadForge 将此设备交给 OpenRGB。在 OpenRGB 中打开 SDK Server 后，PadForge 会通过它点亮此设备。</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE 正在运行，但其 SDK 已关闭。在 iCUE 的设置中打开 iCUE SDK 后，PadForge 会通过它点亮此设备。</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} 正在运行，但不允许 PadForge 点亮其设备。PadForge 会持续请求。</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} 会同时点亮所有此类设备，因此由虚拟控制器 {1} 上的那一台决定它们的颜色。</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} 会同时点亮所有此类设备，因此由虚拟控制器 {2} 上的 {1} 行决定它们的颜色。</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>虚拟控制器 {0} 也在点亮此设备，显示的是它的颜色。</value></data>
@@ -1849,7 +1860,7 @@
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>耳机</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>主板、显卡和内存</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>主板和显卡</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>鼠标垫和耳机支架</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>鼠标垫、耳机和耳机支架</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>灯条</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>输入六位十六进制颜色 (RRGGBB 或 #RRGGBB),按 Enter 或移开焦点应用。</value></data>
@@ -4622,6 +4633,7 @@
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>正在连接到 {0} 的聊天…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>正在读取 {0} 的聊天。</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>无法连接到 {0} 的聊天，正在重试。</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch 上没有 {0} 的聊天室。请检查频道名称。</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>已暂停。</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>用于直播画面的控制器图像。将此地址作为浏览器源添加到 OBS：</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>用于直播画面的控制器图像需要“网页控制器”及其未加密的 HTTP 地址。请在“网页控制器”卡片中开启“同时提供未加密的 HTTP”。若 OBS 在此电脑上运行，选择“仅限此电脑”即可。</value></data>

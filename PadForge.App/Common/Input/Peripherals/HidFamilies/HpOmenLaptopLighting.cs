@@ -23,9 +23,22 @@ namespace PadForge.Common.Input.Peripherals
     /// blue per zone, Right, Middle, Left, WASD (OmenMon
     /// Hardware/BiosData.cs:100-106 and 198-236, BiosCtl.cs:133-143).</para>
     ///
-    /// <para>Hand-back. The table as the session first read it goes back,
-    /// the way OmenMon writes a whole table it read (SetColorTable,
-    /// BiosCtl.cs:141-143).</para>
+    /// <para>Hand-back. The table as it stood before PadForge's first color
+    /// goes back, the way OmenMon writes a whole table it read (SetColorTable,
+    /// BiosCtl.cs:141-143). The table holds nothing that tells PadForge's
+    /// colors from the user's, so it is kept in
+    /// <see cref="KeyboardProfileBackups"/>, on disk before the first write,
+    /// as <see cref="LenovoK510Lighting"/> keeps its state. A failed BIOS call
+    /// or a forced kill ends a session with no hand-back, and the next session
+    /// takes the backup as the original, not the colors PadForge left. The
+    /// model has no repair (<see cref="HidLightingModel.RepairOwn"/>), so with
+    /// no later claim the keyboard keeps PadForge's colors. The table holds
+    /// colors and nothing else, so no read tells PadForge's from ones the Omen
+    /// Gaming Hub stored after such a run ended, and a write with no claim
+    /// behind it could undo the user's own. A claim is the user asking for
+    /// PadForge's lighting, so a table the Hub stored is taken for one of
+    /// PadForge's only then, and the backup goes back over it at the
+    /// hand-back.</para>
     /// </summary>
     internal sealed class HpOmenLaptopLighting : IOwnLookFamily
     {
@@ -53,8 +66,13 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Where the first zone's red is (HPOmenLaptopController_Windows.cpp:272).</summary>
         internal const int ColorsAt = 25;
 
-        /// <summary>The length of a color table, hpqBIOSInt128's answer.</summary>
-        internal const int TableLength = 128;
+        /// <summary>The key the keyboard's backup is kept under. A laptop has
+        /// one, so its product key is enough.</summary>
+        internal const string Product = "hp:omen-4zone";
+
+        /// <summary>How often a picture that waits for its backup to reach the
+        /// settings file looks again.</summary>
+        internal const int SavingMs = LenovoLegionLighting.SavingMs;
 
         /// <summary>The unit's key, OpenRGB's location for the device
         /// (RGBController_HPOmenLaptopWMI_Windows.cpp:33).</summary>
@@ -85,7 +103,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = this,
                 Name = "Omen 4-Zone Laptop Keyboard",
-                Map = new LightMap(Lights(), "OpenRGB HPOmenLaptopController") { Product = "hp:omen-4zone" },
+                Map = new LightMap(Lights(), "OpenRGB HPOmenLaptopController") { Product = Product },
                 Programs = new[] { VendorPrograms.OmenGamingHub },
                 RepaintMs = RepaintMs,
                 Open = _ => _open(),
@@ -144,12 +162,16 @@ namespace PadForge.Common.Input.Peripherals
             return found;
         }
 
-        /// <summary>A session from the table the BIOS holds now, or null
-        /// when it gave none.</summary>
+        /// <summary>A session from the table an earlier session saved and
+        /// never put back, else the one the BIOS holds now. Null when the BIOS
+        /// gave none.</summary>
         private static HidLightingSession Begin(IHpBiosChannel bios)
         {
             var table = bios.Call(KeyboardCommand, GetColorTable, Array.Empty<byte>());
-            return IsTable(table) ? new Session(bios, table) : null;
+            if (!IsTable(table)) return null;
+            return KeyboardProfileBackups.Get(Product) is { } owed && owed.Contents.Length == table.Length
+                ? new Session(bios, owed.Contents, ours: true)
+                : new Session(bios, table);
         }
 
         private static bool IsTable(byte[] table) => table != null && table.Length >= ColorsAt + 12;
@@ -178,16 +200,17 @@ namespace PadForge.Common.Input.Peripherals
             private readonly byte[] _original;
             private byte[][] _crash = Array.Empty<byte[]>();
 
-            public Session(IHpBiosChannel bios, byte[] original)
+            public Session(IHpBiosChannel bios, byte[] original, bool ours = false)
             {
                 _bios = bios;
                 _original = original;
+                if (ours) _crash = new[] { (byte[])original.Clone() };
             }
 
             public override bool Feature => true;
 
-            /// <summary>The table as the session first read it, once a color
-            /// may have gone out.</summary>
+            /// <summary>The table as it stood before PadForge's first color,
+            /// once a color may have gone out.</summary>
             public override byte[][] CrashFrames => _crash;
 
             /// <summary>Reads the table and writes it back with the colors,
@@ -195,6 +218,15 @@ namespace PadForge.Common.Input.Peripherals
             public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
             {
+                // The backup reaches the settings file before the first
+                // write it guards.
+                if (KeyboardProfileBackups.Get(Product) == null)
+                    KeyboardProfileBackups.Take(Product, 0, _original);
+                if (!KeyboardProfileBackups.IsPersisted(Product))
+                {
+                    LaterMs = SavingMs;
+                    return HidLightingPaint.Later;
+                }
                 var table = _bios.Call(KeyboardCommand, GetColorTable, Array.Empty<byte>());
                 if (!IsTable(table)) return HidLightingPaint.Failed;
                 // Marked first: a write that reports a failure may still
@@ -207,9 +239,12 @@ namespace PadForge.Common.Input.Peripherals
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
             {
-                if (_crash.Length == 0) return true;
-                if (_bios.Call(KeyboardCommand, SetColorTable, _original) == null) return false;
-                _crash = Array.Empty<byte[]>();
+                if (_crash.Length > 0)
+                {
+                    if (_bios.Call(KeyboardCommand, SetColorTable, _original) == null) return false;
+                    _crash = Array.Empty<byte[]>();
+                }
+                KeyboardProfileBackups.Drop(Product);
                 return true;
             }
         }

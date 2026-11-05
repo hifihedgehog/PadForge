@@ -816,9 +816,15 @@ namespace PadForge
         protected override void OnSessionEnding(SessionEndingCancelEventArgs e)
         {
             base.OnSessionEnding(e);
-            // WPF shuts down after an accepted session-ending request.
+            // WPF shuts down after an accepted session-ending request, and does
+            // not wait for the async close that request starts (wpf
+            // Application.cs:2125-2127, Window.cs:4408-4412). So a taken touchpad
+            // gets its hide off here, before this returns.
             if (!e.Cancel)
+            {
+                (MainWindow as PadForge.MainWindow)?.ReleaseTouchpadsForSessionEnd();
                 (MainWindow as PadForge.MainWindow)?.PrepareForExit();
+            }
         }
 
         private static bool IsGpuLostException(Exception ex)

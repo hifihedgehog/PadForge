@@ -70,19 +70,81 @@ namespace PadForge.Tests
             };
             string Read(string path) => files.TryGetValue(path, out var text) ? text : null;
             const string appData = @"C:\Users\u\AppData\Roaming";
-            Assert.Equal(6800, OpenRgbServerPort.Resolve("OpenRGB.exe --server-port 6800 --config D:\\cfg", appData, Read));
-            Assert.Equal(6760, OpenRgbServerPort.Resolve("OpenRGB.exe --config D:\\cfg", appData, Read));
-            Assert.Equal(6750, OpenRgbServerPort.Resolve("OpenRGB.exe --server", appData, Read));
-            Assert.Equal(6750, OpenRgbServerPort.Resolve(null, appData, Read));
-            Assert.Equal(6742, OpenRgbServerPort.Resolve("OpenRGB.exe", @"C:\Nowhere", Read));
-            Assert.Equal(6742, OpenRgbServerPort.Resolve("OpenRGB.exe", null, Read));
-            Assert.Equal(6742, OpenRgbServerPort.Resolve("OpenRGB.exe", appData, _ => throw new InvalidOperationException()));
+            Assert.Equal(6800, OpenRgbServerPort.Resolve("OpenRGB.exe --server-port 6800 --config D:\\cfg", appData, Read).Port);
+            Assert.Equal(6760, OpenRgbServerPort.Resolve("OpenRGB.exe --config D:\\cfg", appData, Read).Port);
+            Assert.Equal(6750, OpenRgbServerPort.Resolve("OpenRGB.exe --server", appData, Read).Port);
+            Assert.Equal(6750, OpenRgbServerPort.Resolve(null, appData, Read).Port);
+            Assert.Equal(6742, OpenRgbServerPort.Resolve("OpenRGB.exe", @"C:\Nowhere", Read).Port);
+            Assert.Equal(6742, OpenRgbServerPort.Resolve("OpenRGB.exe", null, Read).Port);
+            Assert.Equal(6742, OpenRgbServerPort.Resolve("OpenRGB.exe", appData, _ => throw new InvalidOperationException()).Port);
+        }
+
+        /// <summary>--localconfig reads OpenRGB.json from the working directory
+        /// (cli.cpp:1452-1454), which only the process's memory holds, so the
+        /// program's own folder stands in for it. The later of it and --config
+        /// sets the directory, as cli.cpp reads its arguments in order.</summary>
+        [Fact]
+        public void LocalConfig_ReadsTheSettingsBesideTheProgram()
+        {
+            var files = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                [@"C:\Users\u\AppData\Roaming\OpenRGB\OpenRGB.json"] = "{\"Server\":{\"default_port\":6750}}",
+                [@"D:\Portable\OpenRGB.json"] = "{\"Server\":{\"default_port\":6770}}",
+                [@"D:\cfg\OpenRGB.json"] = "{\"Server\":{\"default_port\":6760}}",
+            };
+            string Read(string path) => files.TryGetValue(path, out var text) ? text : null;
+            const string appData = @"C:\Users\u\AppData\Roaming";
+            Assert.Equal(6770, OpenRgbServerPort.Resolve(@"D:\Portable\OpenRGB.exe --localconfig", appData, Read).Port);
+            Assert.Equal(6760, OpenRgbServerPort.Resolve(@"D:\Portable\OpenRGB.exe --localconfig --config D:\cfg", appData, Read).Port);
+            Assert.Equal(6770, OpenRgbServerPort.Resolve(@"D:\Portable\OpenRGB.exe --config D:\cfg --localconfig", appData, Read).Port);
+            // A program named with no folder has none to stand in.
+            Assert.Equal(6750, OpenRgbServerPort.Resolve("OpenRGB.exe --localconfig", appData, Read).Port);
+        }
+
+        /// <summary>A host OpenRGB binds on this PC is where the worker looks.
+        /// One that names nothing here, or a name only a name server could
+        /// answer for, leaves it on loopback: nothing is connected to off this
+        /// PC, and no name server is asked.</summary>
+        [Theory]
+        [InlineData(null, "127.0.0.1")]
+        [InlineData("", "127.0.0.1")]
+        [InlineData("127.0.0.1", "127.0.0.1")]
+        [InlineData("127.0.0.2", "127.0.0.2")]
+        [InlineData("localhost", "127.0.0.1")]
+        [InlineData("LOCALHOST", "127.0.0.1")]
+        [InlineData("0.0.0.0", "127.0.0.1")]
+        [InlineData("::", "::1")]
+        [InlineData("::1", "::1")]
+        [InlineData("192.168.1.5", "192.168.1.5")]
+        [InlineData("BENCH-PC", "192.168.1.5")]
+        [InlineData("bench-pc", "192.168.1.5")]
+        [InlineData("10.0.0.9", "127.0.0.1")]
+        [InlineData("example.com", "127.0.0.1")]
+        public void TheHost_IsAnAddressOfThisPC_ElseLoopback(string host, string expected)
+        {
+            System.Net.IPAddress[] own = { System.Net.IPAddress.Parse("fe80::1"), System.Net.IPAddress.Parse("192.168.1.5") };
+            Assert.Equal(System.Net.IPAddress.Parse(expected), OpenRgbServerPort.HostToConnect(host, () => own, "BENCH-PC"));
+        }
+
+        /// <summary>The argument wins over the settings
+        /// (ResourceManager.cpp:1330-1339).</summary>
+        [Fact]
+        public void TheHost_IsTheArgument_ThenTheSettings()
+        {
+            System.Net.IPAddress[] own = { System.Net.IPAddress.Parse("192.168.1.5"), System.Net.IPAddress.Parse("192.168.1.6") };
+            static string Read(string _) => "{\"Server\":{\"default_host\":\"192.168.1.5\"}}";
+            Assert.Equal(System.Net.IPAddress.Parse("192.168.1.5"), OpenRgbServerPort.Resolve("OpenRGB.exe", @"C:\x", Read, () => own, "PC").Host);
+            Assert.Equal(System.Net.IPAddress.Parse("192.168.1.6"),
+                OpenRgbServerPort.Resolve("OpenRGB.exe --server-host 192.168.1.6", @"C:\x", Read, () => own, "PC").Host);
+            Assert.Equal(System.Net.IPAddress.Loopback, OpenRgbServerPort.Resolve("OpenRGB.exe", @"C:\x", _ => null, () => own, "PC").Host);
+            Assert.Null(OpenRgbServerPort.HostFromSettings("{not json"));
+            Assert.Null(OpenRgbServerPort.HostFromArguments(new[] { "x", "--server-host" }));
         }
 
         [Fact]
         public void InTheTestHost_NothingOfOpenRgbsIsRead()
         {
-            Assert.Equal(OpenRgbProtocol.DefaultPort, OpenRgbServerPort.Find());
+            Assert.Equal(OpenRgbServerAddress.Default, OpenRgbServerPort.Find());
             Assert.Null(OpenRgbServerPort.CommandLineOf((uint)Environment.ProcessId));
             Assert.Null(OpenRgbServerPort.ReadSettings(typeof(OpenRgbServerPortTests).Assembly.Location));
         }
@@ -376,8 +438,11 @@ namespace PadForge.Tests
                 InstanceGuid = A, IsOnline = true, CapType = InputDeviceType.Keyboard, VendorId = PeripheralLinker.RazerVid,
                 PeripheralOutputs = (int)PeripheralOutputKinds.Lighting,
             };
-            Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Pad_Lighting_RouteOpenRgbServerOff,
-                PeripheralRouteText.Lighting(ud, 0));
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteOpenRgbServerNoAnswer, 6742), PeripheralRouteText.Lighting(ud, 0));
+            // The line names the port the worker looked on, whatever it was.
+            PeripheralOutputs.OpenRgbPortTried = 6800;
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteOpenRgbServerNoAnswer, 6800), PeripheralRouteText.Lighting(ud, 0));
             Assert.Null(PeripheralRouteText.Lighting(ud, 0, lightsHere: false));
         }
     }

@@ -6299,9 +6299,12 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>A DualShock 4 on USB with audio, a wired second model or a
-        /// pad on Sony's adapter, whose route PadForge sets (#546).</summary>
+        /// pad on Sony's adapter, whose route PadForge sets (#546). A peer's
+        /// copy of one is not: its owner routes the pad by the owner's own
+        /// Output Path, and a choice here would reach nothing.</summary>
         private static bool IsUsbDs4WithAudio(PadForge.Engine.Data.UserDevice ud)
             => (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) < 0
+               && !PadForge.Common.Input.RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath)
                && PadForge.Common.Input.AudioPassthroughService.Ds4HasAudio((ushort)ud.ProdId, false);
 
         /// <summary>The selected device's sound can be routed, so the Audio tab
@@ -6364,7 +6367,7 @@ namespace PadForge.ViewModels
                 if (ud.ProdId is 0x0CE6 or 0x0DF2) return true;
                 if (ud.ProdId is 0x05C4 or 0x09CC or 0x0BA0)
                     return PadForge.Common.Input.AudioPassthroughService.Ds4HasAudio((ushort)ud.ProdId,
-                        (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0);
+                        PadForge.Common.Input.AudioPassthroughService.Ds4LinkIsBluetooth(ud));
                 return false;
             }
         }
@@ -6390,7 +6393,7 @@ namespace PadForge.ViewModels
                 if (ud.ProdId is 0x0CE6 or 0x0DF2) return true;
                 if (ud.ProdId is 0x05C4 or 0x09CC or 0x0BA0)
                     return PadForge.Common.Input.AudioPassthroughService.Ds4HasAudio((ushort)ud.ProdId,
-                        (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0);
+                        PadForge.Common.Input.AudioPassthroughService.Ds4LinkIsBluetooth(ud));
                 return false;
             }
         }

@@ -25,8 +25,11 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
     /// ID from 1, loop and update. Report 00 on 187C or 0424 with 65 bytes filled with FF: 92
     /// 37 with a mask and a checksum. On 0461, the mice, 40 10 0C per light with the answer
     /// read after it. On 04F2, the keyboards, a feature report with the count of lights, then
-    /// report 01 with four blocks of twelve bytes each. Nothing here is stored: each
+    /// report 01 with four blocks of thirteen bytes each. Nothing here is stored: each
     /// protocol's save is a command of its own.</para>
+    ///
+    /// <para>Pipes. The three old protocols go through HidD_SetOutputReport and the 65-byte
+    /// ones through WriteFile, as PrepareAndSend sends them (AlienFX_SDK.cpp:113-126).</para>
     ///
     /// <para>0424, 0461 and 04F2 are chip makers that sell to anyone, so a collection there
     /// must name Alienware in its strings. alienfx-tools does not ask, since its user runs
@@ -59,6 +62,10 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         /// <summary>ALIENFX_V2_READY and ALIENFX_V4_BUSY (AlienFX_SDK.h:15-20).</summary>
         private const byte V2Ready = 0x10, V4Busy = 34;
 
+        /// <summary>The shortest feature report that holds one key of the 0D62 keyboards: the
+        /// header up to byte 3 and the key's four bytes.</summary>
+        internal const int V5MinFeature = 8;
+
         public string Name => "AlienFX";
 
         private readonly Dictionary<(ushort, ushort, Api), HidLightingModel> _models = new();
@@ -69,7 +76,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             switch (c.VendorId)
             {
                 case Darfon:
-                    return c.Usage == 0xCC && c.OutputReportLength == 0 && c.FeatureReportLength > 0 ? Api.V5 : null;
+                    return c.Usage == 0xCC && c.OutputReportLength == 0 && c.FeatureReportLength >= V5MinFeature ? Api.V5 : null;
                 case Alienware:
                     return c.OutputReportLength switch
                     {
@@ -152,7 +159,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             var answer = new byte[Math.Max(length, io.InputReportLength)];
             for (int i = 0; i < ReadyPolls; i++)
             {
-                if (!io.WriteOutput(Frame(length, 0x02, 0x06))) return;
+                if (!io.SetOutputReport(Frame(length, 0x02, 0x06))) return;
                 if (reader.GetInputReport(0x02, answer) && (answer[0] == V2Ready || answer[1] == V2Ready)) return;
                 wait?.Invoke(ReadyWaitMs);
             }
@@ -251,8 +258,10 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         /// <summary>COMMV8_readyToColor with the count, which goes as a feature report.</summary>
         internal static byte[] V8Ready(int count) => Frame(65, 0x01, 0x0E, (byte)count, 0x00, 0x01);
 
-        /// <summary>AddV8DataBlock for a color, four blocks of twelve bytes to a frame, from byte 5
-        /// every fifteen. Byte 4 is the frame's number.</summary>
+        /// <summary>AddV8DataBlock for a color (AlienFX_SDK.cpp:364-369): the light, 81, the
+        /// tempo, A5, the time, the brightness 0A, the color, the second color and 02, four blocks
+        /// of thirteen bytes to a frame, from byte 5 every fifteen. Byte 4 is the frame's
+        /// number.</summary>
         internal static List<byte[]> V8Picture(int rgb)
         {
             var frames = new List<byte[]>();
@@ -267,10 +276,11 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                     frame[at + 2] = 0x00;
                     frame[at + 3] = 0xA5;
                     frame[at + 4] = 0x00;
-                    frame[at + 5] = frame[at + 8] = (byte)(rgb >> 16);
-                    frame[at + 6] = frame[at + 9] = (byte)(rgb >> 8);
-                    frame[at + 7] = frame[at + 10] = (byte)rgb;
-                    frame[at + 11] = 0x02;
+                    frame[at + 5] = 0x0A;
+                    frame[at + 6] = frame[at + 9] = (byte)(rgb >> 16);
+                    frame[at + 7] = frame[at + 10] = (byte)(rgb >> 8);
+                    frame[at + 8] = frame[at + 11] = (byte)rgb;
+                    frame[at + 12] = 0x02;
                 }
                 frames.Add(frame);
             }
@@ -317,14 +327,14 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                     case Api.V2:
                     case Api.V3:
                         int length = _api == Api.V2 ? 9 : 12;
-                        if (!io.WriteOutput(Frame(length, 0x02, 0x07, 0x04))) return false;
+                        if (!io.SetOutputReport(Frame(length, 0x02, 0x07, 0x04))) return false;
                         WaitV1Ready(io, wait, length);
-                        return io.WriteOutput(V1Color(_api, rgb)) && io.WriteOutput(Frame(length, 0x02, 0x04))
-                               && io.WriteOutput(Frame(length, 0x02, 0x05));
+                        return io.SetOutputReport(V1Color(_api, rgb)) && io.SetOutputReport(Frame(length, 0x02, 0x04))
+                               && io.SetOutputReport(Frame(length, 0x02, 0x05));
                     case Api.V4:
                         WaitV4Ready(io, wait);
-                        return io.WriteOutput(V4Control(4)) && io.WriteOutput(V4Control(1)) && io.WriteOutput(V4Color(rgb))
-                               && io.WriteOutput(V4Control(3));
+                        return io.SetOutputReport(V4Control(4)) && io.SetOutputReport(V4Control(1)) && io.SetOutputReport(V4Color(rgb))
+                               && io.SetOutputReport(V4Control(3));
                     case Api.V5:
                         int feature = io.FeatureReportLength;
                         // Reset, then GetDeviceStatus: the status command and a read.

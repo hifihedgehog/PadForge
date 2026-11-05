@@ -1821,7 +1821,7 @@ namespace PadForge.Services
 
         // Strips a leading I / H / IH inversion prefix off a source descriptor, matching
         // the primary-source cleaning above; steering reads the bare axis.
-        private static string StripSourcePrefix(string d)
+        internal static string StripSourcePrefix(string d)
         {
             if (string.IsNullOrEmpty(d)) return "";
             if (d.StartsWith("IH", StringComparison.OrdinalIgnoreCase)) return d.Substring(2);
@@ -1951,6 +1951,16 @@ namespace PadForge.Services
                         (keyless ??= new HashSet<MappingSource>()).Add(s);
             }
             return keyless;
+        }
+
+        /// <summary>Drops the sources <paramref name="remove"/> names from a
+        /// set, and the rows that leaves empty, under the rules of
+        /// <see cref="RemoveRowSources"/>.</summary>
+        internal static void RemoveSourcesFromSet(MappingSet ms, Predicate<MappingSource> remove)
+        {
+            if (ms?.Rows == null) return;
+            var kept = ms.Rows.FindAll(row => !RemoveRowSources(row, remove));
+            if (kept.Count != ms.Rows.Count) ms.Rows = kept;
         }
 
         /// <summary>Drops the sources <paramref name="remove"/> names from a
@@ -2880,7 +2890,9 @@ namespace PadForge.Services
         /// stand-in never carries either
         /// (<see cref="ApplyStandInDeviceSlotConfigData"/>), so a config that
         /// sets nothing else has nothing to give and is not chosen ahead of
-        /// one that has.</para></summary>
+        /// one that has. Key and group colors count, since a stand-in
+        /// carries them, and the color of a single light does not, since it
+        /// carries none.</para></summary>
         public static bool IsDeviceSlotConfigDataConfigured(ViewModels.DeviceSlotConfigData c)
             => c != null
             // Rev-aware default checks: a rev-0 DTO (old save / old
@@ -2927,7 +2939,15 @@ namespace PadForge.Services
                 // An input-reactive overlay is a deliberate configuration on
                 // its own: it rides OVER the base mode, so a slot carrying
                 // only an overlay above a default base is configured.
-                || c.InputReactiveMode != ViewModels.InputReactiveMode.Off);
+                || c.InputReactiveMode != ViewModels.InputReactiveMode.Off
+                || CarriesKeyColors(c.KeyLighting));
+
+        /// <summary>Whether a Key Colors setting holds anything a stand-in
+        /// carries: colors of keys and groups, and the Other Lights rules.
+        /// The colors of single lights stay with the device
+        /// (<see cref="ApplyStandInDeviceSlotConfigData"/>).</summary>
+        private static bool CarriesKeyColors(string keyLighting)
+            => !PadForge.Common.Input.Peripherals.KeyLightingSettings.Parse(keyLighting).WithoutLights().IsEmpty;
 
         /// <summary>VM-shape twin of <see cref="IsDeviceSlotConfigDataConfigured"/>,
         /// for the in-process Copy From path.</summary>
@@ -2959,7 +2979,8 @@ namespace PadForge.Services
                 || c.TouchpadSyntheticTouchPercent != 50
                 // Same overlay rule as the DTO twin above, and the same two
                 // settings left out.
-                || c.InputReactiveMode != ViewModels.InputReactiveMode.Off);
+                || c.InputReactiveMode != ViewModels.InputReactiveMode.Off
+                || CarriesKeyColors(c.KeyLighting));
 
         /// <summary>Paste companion. Applies a clipboard's device-config
         /// snapshot to the destination slot. Every per-device entry the
@@ -4850,19 +4871,17 @@ namespace PadForge.Services
                 // ran, which turned any XmlSerializer exception (e.g. an
                 // embedded-null device name sneaking past the sanitizer)
                 // into catastrophic settings loss at whatever byte was last
-                // flushed (issue #53).
+                // flushed (issue #53). The write itself goes to a temporary
+                // file in the same folder that replaces the settings file
+                // once it is whole on disk, so a process killed or a disk
+                // filled during the write leaves the previous file intact.
                 var serializer = s_settingsSerializer;
                 string dir = Path.GetDirectoryName(filePath);
                 if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
 
-                byte[] serializedBytes;
-                using (var ms = new System.IO.MemoryStream())
-                {
-                    serializer.Serialize(ms, data);
-                    serializedBytes = ms.ToArray();
-                }
-                File.WriteAllBytes(filePath, serializedBytes);
+                byte[] serializedBytes = PadForge.Engine.Common.XmlSafeText.Serialize(serializer, data);
+                WriteWhole(filePath, serializedBytes);
                 // A keyboard profile's backup is on disk now, and the write
                 // it guards may go out (#557).
                 PadForge.Common.Input.Peripherals.KeyboardProfileBackups.Persisted(_profileBackupsBuilt);
@@ -4877,6 +4896,52 @@ namespace PadForge.Services
             {
                 _mainVm.SetStatus(string.Format(Strings.Instance.Status_ErrorSavingSettings_Format, ex.Message), persist: true);
                 return false;
+            }
+        }
+
+        /// <summary>How many times a swap is tried, and how long apart: a scanner
+        /// that just opened the new file holds it for a moment.</summary>
+        private const int SwapTries = 5;
+        private const int SwapRetryMs = 50;
+
+        /// <summary>Writes <paramref name="bytes"/> to <paramref name="filePath"/>
+        /// through a file of the same name plus ".tmp" in the same folder:
+        /// the bytes are flushed to disk, then the temporary file replaces
+        /// the target in one step, so a process killed during the save leaves
+        /// the whole old file. A temporary file left by a process that died
+        /// during the write is overwritten here, so at most one stands beside
+        /// the settings file, and only for the milliseconds of a save or until
+        /// the next one. A folder that takes no new file, or a volume that
+        /// cannot swap files, gets the bytes written straight into the settings
+        /// file, as a save always did before.</summary>
+        private static void WriteWhole(string filePath, byte[] bytes)
+        {
+            string temp = filePath + ".tmp";
+            try
+            {
+                using (var stream = new FileStream(temp, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    stream.Write(bytes, 0, bytes.Length);
+                    stream.Flush(flushToDisk: true);
+                }
+                for (int tried = 1; ; tried++)
+                {
+                    try
+                    {
+                        if (File.Exists(filePath)) File.Replace(temp, filePath, null);
+                        else File.Move(temp, filePath);
+                        return;
+                    }
+                    catch (Exception ex) when (tried < SwapTries && ex is IOException or UnauthorizedAccessException)
+                    {
+                        System.Threading.Thread.Sleep(SwapRetryMs);
+                    }
+                }
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            {
+                try { File.Delete(temp); } catch { }
+                File.WriteAllBytes(filePath, bytes);
             }
         }
 
@@ -6057,6 +6122,15 @@ namespace PadForge.Services
                 // KeyboardProfileBackups.LoadRegistry keeps the ones held
                 // for the same reason: each is the only copy of a lighting
                 // profile PadForge wrote over.
+                //
+                // A taken keyboard or mouse stays on PadForge's WinUSB driver
+                // through a reset, whatever the settings say (#549). Its
+                // takeover is the record that gives it a row and a restore,
+                // and without one Windows has no driver for it and PadForge
+                // no way to reach it.
+                KeyboardTakeovers = _mainVm.Settings.KeyboardTakeovers.Count > 0
+                    ? _mainVm.Settings.KeyboardTakeovers.ToArray()
+                    : null,
             });
             // LoadAppSettings can't reset the language: a fresh
             // AppSettingsData carries Language = "" and
@@ -6767,7 +6841,7 @@ namespace PadForge.Services
         public LearnedKeyMapData[] LearnedKeyMaps { get; set; }
 
         /// <summary>Keyboard lighting profiles PadForge wrote over and has
-        /// not yet put back (#557), one per keyboard model.</summary>
+        /// not yet put back (#557), one per laptop keyboard and one per external device.</summary>
         [XmlArray("KeyboardProfileBackups")]
         [XmlArrayItem("Backup")]
         public KeyboardProfileBackupData[] KeyboardProfileBackups { get; set; }

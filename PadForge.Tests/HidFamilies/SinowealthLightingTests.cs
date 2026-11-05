@@ -276,13 +276,14 @@ namespace PadForge.Tests
             var writes = rig.Log.Of('F');
             var write = Assert.Single(writes);
             Assert.Equal("62 00 01 02 03", Hex(write, 21, 5));
-            Assert.Equal(stored, KeyboardProfileBackups.Get("sinowealth:258A:1007")?.Contents);
+            string key = KeyboardProfileBackups.DeviceKey("sinowealth:258A:1007", collection.Path);
+            Assert.Equal(stored, KeyboardProfileBackups.Get(key)?.Contents);
             var record = Assert.Single(backend.Recorded);
             Assert.Equal(stored, Assert.Single(record.Frames));
             rig.Log.Clear();
             rig.Release(backend);
             Assert.Equal(stored, Assert.Single(rig.Log.Of('F')));
-            Assert.Null(KeyboardProfileBackups.Get("sinowealth:258A:1007"));
+            Assert.Null(KeyboardProfileBackups.Get(key));
         }
 
         [Fact]
@@ -292,13 +293,20 @@ namespace PadForge.Tests
             var owed = new byte[59];
             owed[0] = 0x04;
             owed[21] = 0x31;
-            KeyboardProfileBackups.Take("sinowealth:258A:1007", 0, owed);
             var collection = Vendor(0x1007, 1, 1, 59);
+            string key = KeyboardProfileBackups.DeviceKey("sinowealth:258A:1007", collection.Path);
+            KeyboardProfileBackups.Take(key, 0, owed);
+            // The mouse still shows a picture of PadForge's.
+            var ours = new byte[59];
+            ours[0] = 0x04;
+            ours[21] = S.ZetModeCustomDefault;
+            ours[22] = S.ZetDirectionRight;
+            rig.Log.FeatureAnswer = (id, _) => id == 0x04 ? (byte[])ours.Clone() : null;
             using var backend = rig.Started(Families, collection);
             rig.Advance(HidLightingBackend.RepairGraceMs);
             KeyboardFamilyRig.Passes(backend);
             Assert.Equal(owed, Assert.Single(rig.Log.Of('F')));
-            Assert.Null(KeyboardProfileBackups.Get("sinowealth:258A:1007"));
+            Assert.Null(KeyboardProfileBackups.Get(key));
         }
 
         [Fact]
@@ -350,6 +358,49 @@ namespace PadForge.Tests
         private static M Family(IReadOnlyList<HidCollectionInfo> walk, Func<string, IHidReportChannel> open = null,
             Func<string, Guid> container = null)
             => new(() => walk, container ?? (_ => Box), open ?? (_ => null), (_, _, _) => true);
+
+        /// <summary>The pair a walk checks for a replug says its handles are dead
+        /// when either is, for the two collections and for one that is both.</summary>
+        [Fact]
+        public void ThePair_SaysItIsGone_WhenEitherHandleIs()
+        {
+            var data = new FakeReportChannel();
+            var command = new FakeReportChannel();
+            object pair = new M.Channels(data, command);
+            var connected = Assert.IsAssignableFrom<IConnectedChannel>(pair);
+            Assert.True(connected.StillConnected);
+            command.StillConnected = false;
+            Assert.False(connected.StillConnected);
+            command.StillConnected = true;
+            data.StillConnected = false;
+            Assert.False(connected.StillConnected);
+
+            object one = new M.Channels(command, command);
+            Assert.True(Assert.IsAssignableFrom<IConnectedChannel>(one).StillConnected);
+        }
+
+        /// <summary>Either collection opening with no access right leaves nothing
+        /// open and says another program has it. A collection that did not open
+        /// at all says nothing of the kind.</summary>
+        [Theory]
+        [InlineData(true, false, true)]
+        [InlineData(false, true, true)]
+        [InlineData(false, false, false)]
+        public void AnOpen_SaysWhenACollectionOpenedWithNoAccessRight(bool dataHeld, bool commandHeld, bool held)
+        {
+            var opened = new List<FakeReportChannel>();
+            IHidReportChannel Open(string path)
+            {
+                if (!dataHeld && !commandHeld) return null;
+                var channel = new FakeReportChannel { Path = path, FeatureOnly = path == "data" ? dataHeld : commandHeld };
+                opened.Add(channel);
+                return channel;
+            }
+            var model = Family(Array.Empty<HidCollectionInfo>(), Open).Model("Mouse", 0x0036, false, "command");
+            Assert.Null(model.Open("data"));
+            Assert.Equal(held, model.OpenFoundHeld());
+            Assert.All(opened, c => Assert.True(c.Disposed));
+        }
 
         [Fact]
         public void TheLook_PairsTheDataAndCommandCollections_ByTheirReports()
@@ -430,7 +481,7 @@ namespace PadForge.Tests
             }
             var family = Family(walk, Open);
             var unit = KeyboardFamilyRig.Collection(0, 0, 0, 0) with { Path = walk[1].Path };
-            using var backend = rig.Started(new IHidLightingFamily[] { family }, unit);
+            using var backend = rig.Started(new IHidLightingFamily[] { family }, walk);
             KeyboardFamilyRig.Link(KeyboardFamilyRig.PathOf(unit));
             KeyboardFamilyRig.Light(0x102030);
             KeyboardFamilyRig.Passes(backend);
@@ -451,11 +502,12 @@ namespace PadForge.Tests
             Assert.Equal(0x05, Assert.Single(record.Frames)[0x35]);
             rig.Log.Clear();
             rig.Release(backend);
-            var back = Assert.Single(rig.Log.Of('F'));
+            // The hand-back reads the configuration first, with 05 11.
+            var back = Assert.Single(rig.Log.Of('F'), f => f[0] == 0x04);
             Assert.Equal(0x05, back[0x35]);
             Assert.Equal(0x99, back[0x39]);
             Assert.Equal(0x7B, back[3]);
-            Assert.Null(KeyboardProfileBackups.Get("sinowealth:258A:0033"));
+            Assert.Null(KeyboardProfileBackups.Get(KeyboardProfileBackups.DeviceKey("sinowealth:258A:0033", walk[1].Path)));
         }
 
         /// <summary>What a Glorious claim writes on a firmware: libratbag's table of which take red,
@@ -477,7 +529,7 @@ namespace PadForge.Tests
                 => new ReportLogChannel { Path = path, Device = rig.Log, FeatureReportLength = path == walk[0].Path ? 6 : 520 };
             var family = Family(walk, Open);
             var unit = KeyboardFamilyRig.Collection(0, 0, 0, 0) with { Path = walk[1].Path };
-            using var backend = rig.Started(new IHidLightingFamily[] { family }, unit);
+            using var backend = rig.Started(new IHidLightingFamily[] { family }, walk);
             KeyboardFamilyRig.Link(KeyboardFamilyRig.PathOf(unit));
             KeyboardFamilyRig.Light(0x102030);
             KeyboardFamilyRig.Passes(backend);
@@ -515,7 +567,7 @@ namespace PadForge.Tests
             };
             var family = Family(walk, path => new ReportLogChannel { Path = path, Device = rig.Log, FeatureReportLength = path == walk[1].Path ? 9 : 154 });
             var unit = KeyboardFamilyRig.Collection(0, 0, 0, 0) with { Path = walk[0].Path };
-            using var backend = rig.Started(new IHidLightingFamily[] { family }, unit);
+            using var backend = rig.Started(new IHidLightingFamily[] { family }, walk);
             KeyboardFamilyRig.Link(KeyboardFamilyRig.PathOf(unit));
             KeyboardFamilyRig.Light(0x0A0B0C);
             KeyboardFamilyRig.Passes(backend);

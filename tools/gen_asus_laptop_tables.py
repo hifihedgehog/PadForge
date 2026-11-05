@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Writes HidFamilies/AsusLaptopTables.g.cs from asusctl's per-laptop data (#557).
 
-    python tools/gen_asus_laptop_tables.py ASUSCTL_CLONE [--check]
+    python tools/gen_asus_laptop_tables.py ASUSCTL_CLONE GHELPER_CLONE [--check]
 
 The board list is asusctl's rog-aura/data/aura_support.ron in file order, because
 asusctl walks it from the end and takes the first name the board name holds
@@ -11,9 +11,12 @@ per-key board come from its layout file: the keys it names and the place of each
 A key's LED numbers are not taken from asusctl alone. Its table leaves out the number
 pad and the media keys and reuses the main row's codes on the number pad, and its
 row 11 falls past its eleven packets (rgb_for_led_code,
-rog-aura/src/keyboard/advanced.rs). G-Helper's packetMap (app/USB/Aura.cs:553-575)
-numbers every LED, and OpenRGB's AsusAuraCoreLaptopDevices.cpp agrees with it where
-it names the same key. The numbers below follow G-Helper.
+rog-aura/src/keyboard/advanced.rs). G-Helper's packetMap (app/USB/Aura.cs:553-575 at
+the pin below) numbers every LED, and OpenRGB's AsusAuraCoreLaptopDevices.cpp agrees
+with it where it names the same key. The numbers below follow G-Helper. The script
+reads packetMap and stops on a number here that packetMap lacks, apart from the
+spacebar's LEDs, which it checks against asusctl's table, and when packetMap holds an
+LED the default table leaves out.
 
 The key at the right end of a row depends on the laptop: Home on one, Media Play on
 another. Its LED goes by its row, as G-Helper's map has it.
@@ -22,7 +25,12 @@ The arrows depend on the laptop too, since the LED numbers follow the key's plac
 matrix 21 wide. OpenRGB's G614JZ has them at 120, 140, 141 and 142, its G814JV and
 G814JIR at 121, 141, 142 and 143, and its G533ZM and G713RW, like asusctl's table, at
 139, 159, 160 and 161. G-Helper's map lights the first and last sets, with 143 for the
-right arrow.
+right arrow, on every laptop. No list says which set a given board has, so a table
+holds the set its layout's OpenRGB board has at the keys' places, then the rest of
+G-Helper's arrow LEDs on a row of their own, each lit with its arrow. An LED the
+layout's own key holds stays that key's: 120 is Right Shift on gx502 and gx531, and
+142 is the key right of Up on g513i and gx502, as OpenRGB's G533ZW has Print Screen
+there (line 128).
 """
 import argparse
 import os
@@ -31,6 +39,7 @@ import subprocess
 import sys
 
 ASUSCTL = "321b1114a0ac3782d67aa39201682effb749f4d9"
+GHELPER = "f62d584d24d4ea12ff902b873f9127edafbcd742"
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "PadForge.App", "Common", "Input", "Peripherals", "HidFamilies",
                    "AsusLaptopTables.g.cs")
 
@@ -60,7 +69,7 @@ def led_table():
         "NumPadPause": [39], "NumPadPrtSc": [40], "NumPadHome": [41],
         "LightbarRight": [169], "LightbarRightCorner": [170], "LightbarRightBottom": [171],
         "LightbarLeftBottom": [172], "LightbarLeftCorner": [173], "LightbarLeft": [174],
-        "LidLogo": [176, 177], "LidLeft": [176], "LidRight": [177],
+        "LidLogo": [167], "LidLeft": [176], "LidRight": [177],
     }
     for i, letter in enumerate(LETTERS_ROW2):
         leds[letter] = [64 + i]
@@ -83,8 +92,14 @@ ARROWS = {
 }
 ARROWS_ELSE = (139, 159, 160, 161)
 
-# A code that comes a second time in a layout is the number pad's key or the
-# other key of that name at the end of a row.
+# The arrow LEDs G-Helper's packetMap paints on every laptop.
+GHELPER_ARROWS = (("Up", 139), ("Left", 159), ("Down", 160), ("Right", 161),
+                  ("Up", 120), ("Left", 140), ("Down", 141), ("Right", 143))
+
+# A code that comes after NumLock in its row is the number pad's key, since g733pz and
+# g814ji list the number pad's "/" a few rows above the main one. A code that comes a
+# second time in a layout is the number pad's key or the other key of that name at the
+# end of a row.
 SECOND = {
     "N7": [80], "N8": [81], "N9": [82], "N4": [101], "N5": [102], "N6": [103], "N1": [122], "N2": [123], "N3": [124],
     "N0": [144], "FwdSlash": [60], "Hyphen": [62], "PrtSc": [142],
@@ -101,8 +116,26 @@ END_CODES = {
     "MediaPlay": "MediaPlayPause", "MediaStop": "MediaStop", "MediaPrev": "MediaRewind", "MediaNext": "MediaFastForward",
 }
 
+# The two media keys go by their row, as their LEDs do. asusctl's files disagree: g513i,
+# g634j and g635l list MediaNext in the Caps row and MediaPrev in the Shift row, and g533q
+# the other way round. LED 100 is Previous and 121 Next on G-Helper (PRV15 and NXT15), on
+# OpenRGB (AsusAuraCoreLaptopDevices.cpp:95 and 97) and on RGB.NET
+# (AsusKeyboardLedMapping.cs:225-226).
+MEDIA_BY_ROW = {"Caps": "MediaRewind", "LShift": "MediaFastForward"}
+
 # rgb_for_led_code's numbers for the same keys.
 ASUSCTL_END = {"Home": 58, "PgUp": 79, "PgDn": 100, "End": 121, "RFn": 142}
+
+# The one value of packetMap its column comments do not name, which no table lights.
+UNNAMED_IN_PACKET_MAP = {0, 138}
+
+# G-Helper's KSTN column holds a 0, the mark of an empty place in packetMap. OpenRGB has the
+# keystone at 175 on the G533ZW and the G733QR (AsusAuraCoreLaptopDevices.cpp:129 and 662).
+OPENRGB_ONLY = {175}
+
+# Lights OpenRGB's G533ZW has that asusctl's file for its layout leaves out
+# (AsusAuraCoreLaptopDevices.cpp:128-129).
+OPENRGB_BESIDE_LAYOUT = {"g533q-per-key": (("Print Screen", 142), ("Led Keystone", 175))}
 
 NAMES = {
     "VolDown": "Volume Down", "VolUp": "Volume Up", "MicMute": "Mute Mic", "RogFan": "Fan", "RogApp": "ROG",
@@ -152,12 +185,12 @@ DEFAULT_ROWS = [
      ("Num Enter", 146)],
     [("Led Bar Left", 174), ("Led Bar Left Corner", 173), ("Led Bar Left Bottom", 172), ("Led Bar Right Bottom", 171),
      ("Led Bar Right Corner", 170), ("Led Bar Right", 169)],
-    [("Logo", 167), ("Led Lid Left", 176), ("Led Lid Right", 177), ("Led Keystone", 0)],
+    [("Logo", 167), ("Led Lid Left", 176), ("Led Lid Right", 177), ("Led Keystone", 175)],
 ]
 
 
-def git_show(clone, path):
-    done = subprocess.run(["git", "-C", clone, "show", f"{ASUSCTL}:{path}"], capture_output=True)
+def git_show(clone, path, commit=ASUSCTL):
+    done = subprocess.run(["git", "-C", clone, "show", f"{commit}:{path}"], capture_output=True)
     if done.returncode != 0:
         sys.exit(f"git show failed for {path}: {done.stderr.decode(errors='replace')}")
     return done.stdout.decode("utf-8")
@@ -172,6 +205,47 @@ def git_files(clone, folder):
 
 def quote(text):
     return '"' + text.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+def packet_map(clone):
+    """The LED numbers of G-Helper's packetMap."""
+    text = git_show(clone, "app/USB/Aura.cs", GHELPER)
+    body = re.search(r"static byte\[\] packetMap = new byte\[\]\s*\{(.*?)\};", text, re.S)
+    if not body:
+        sys.exit("no packetMap in G-Helper's app/USB/Aura.cs")
+    return {int(n) for n in re.findall(r"\d+", re.sub(r"/\*.*?\*/", "", body.group(1), flags=re.S))}
+
+
+def spacebar_leds(clone):
+    """The spacebar's LEDs by asusctl's rgb_for_led_code: a code's (packet, byte) is LED
+    16 times the packet, plus the byte less 9 in threes. packetMap holds only 131."""
+    text = git_show(clone, "rog-aura/src/keyboard/advanced.rs")
+    found = {f"Spacebar5_{n}": 16 * int(packet) + (int(byte) - 9) // 3
+             for n, packet, byte in re.findall(r"LedCode::Spacebar5_(\d) => \((\d+), (\d+)\)", text)}
+    for code, led in found.items():
+        if LEDS[code] != [led]:
+            sys.exit(f"{code} is LED {led} in asusctl's table and {LEDS[code]} here")
+    if len(found) != 5:
+        sys.exit(f"read {len(found)} spacebar LEDs of 5 from asusctl's table")
+    return set(found.values())
+
+
+def check_numbers(asusctl, ghelper):
+    """Stops on a hand-written LED number G-Helper's packetMap lacks, and on an LED of
+    packetMap the default table leaves out."""
+    known = packet_map(ghelper)
+    written = {led for leds in LEDS.values() for led in leds}
+    for numbers in list(ARROWS.values()) + [ARROWS_ELSE, ROW_END.values(), ASUSCTL_END.values()]:
+        written.update(numbers)
+    written.update(led for _, led in GHELPER_ARROWS)
+    written.update(led for leds in SECOND.values() for led in leds)
+    default = {led for row in DEFAULT_ROWS for _, led in row}
+    missing = sorted((written | default) - known - spacebar_leds(asusctl) - OPENRGB_ONLY)
+    if missing:
+        sys.exit(f"LEDs written here that G-Helper's packetMap lacks: {missing}")
+    left_out = sorted(known - default - UNNAMED_IN_PACKET_MAP)
+    if left_out:
+        sys.exit(f"LEDs of G-Helper's packetMap the default table leaves out: {left_out}")
 
 
 def read_boards(clone):
@@ -197,19 +271,24 @@ def read_layout(clone, name):
     arrows = dict(zip(ARROW_CODES, ARROWS.get(name, ARROWS_ELSE)))
     used = set(arrows.values())
     seen = {}
-    for y, row in enumerate(re.split(r"\brow: \[", text)[1:]):
+    rows = re.split(r"\brow: \[", text)[1:]
+    for y, row in enumerate(rows):
         items = re.findall(r'\(\s*(\w+),\s*"(\w+)"\s*\)', row[:row.index("]")])
         first = next((code for code, _ in items if code not in ("Spacing", "Blocking")), None)
         x = 0.0
         cell = -1
+        after_num_lock = False
         for code, shape in items:
             width = widths[shape]
             at = x
             x += width
             if code in ("Spacing", "Blocking"):
                 continue
+            on_number_pad = after_num_lock and code in SECOND
+            after_num_lock = after_num_lock or code == "NumLock"
             count = seen.get(code, 0)
-            seen[code] = count + 1
+            if not on_number_pad:
+                seen[code] = count + 1
             if code in arrows:
                 place = max(cell + 1, round(at))
                 cell = place
@@ -224,7 +303,11 @@ def read_layout(clone, name):
                 else:
                     sys.exit(f"{name}: {code} in a row that starts with {first}")
                 light = END_CODES[code]
-            elif count > 0:
+                if code in ("MediaPrev", "MediaNext"):
+                    if first not in MEDIA_BY_ROW:
+                        sys.exit(f"{name}: {code} in a row that starts with {first}")
+                    light = MEDIA_BY_ROW[first]
+            elif on_number_pad or count > 0:
                 if code not in SECOND:
                     continue
                 leds = SECOND[code]
@@ -234,13 +317,24 @@ def read_layout(clone, name):
                 light = NAMES[code]
             else:
                 sys.exit(f"{name}: no LED for {code}")
-            for i, led in enumerate(leds):
+            named = [(light, led) for led in leds]
+            # asusctl names one light on the lid, and G-Helper's map writes the logo and
+            # the lid's two sides.
+            if code == "LidLogo":
+                named += [(NAMES[side], LEDS[side][0]) for side in ("LidLeft", "LidRight")]
+            for i, (light, led) in enumerate(named):
                 if led in used:
                     continue
                 used.add(led)
-                place = max(cell + 1, round(at + i * width / len(leds)))
+                place = max(cell + 1, round(at + i * width / len(named)))
                 cell = place
                 lights.append((light, led, place, y))
+    spare = [(code, led) for code, led in GHELPER_ARROWS if led not in used]
+    for place, (code, led) in enumerate(spare):
+        lights.append((NAMES[code], led, place, len(rows)))
+    for place, (light, led) in enumerate(OPENRGB_BESIDE_LAYOUT.get(name, ()), len(spare)):
+        if led not in used:
+            lights.append((light, led, place, len(rows)))
     return lights
 
 
@@ -277,7 +371,8 @@ def write_table(lines, method, source, lights):
     lines.append("")
 
 
-def generate(clone):
+def generate(clone, ghelper):
+    check_numbers(clone, ghelper)
     boards = read_boards(clone)
     per_key = sorted(set(b[2] for b in boards if b[3]))
     on_disk = {f[:-len("_US.ron")] for f in git_files(clone, "rog-aura/data/layouts") if f.endswith("_US.ron")}
@@ -293,6 +388,7 @@ def generate(clone):
         "    internal static class AsusLaptopTables",
         "    {",
         f"        internal const string AsusctlCommit = {quote(ASUSCTL)};",
+        f"        internal const string GHelperCommit = {quote(GHELPER)};",
         "",
         "        /// <summary>aura_support.ron in file order. asusctl walks it from the end.</summary>",
         "        internal static readonly AsusLaptopBoard[] Boards =",
@@ -324,9 +420,10 @@ def generate(clone):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("asusctl")
+    parser.add_argument("ghelper")
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
-    text = generate(args.asusctl)
+    text = generate(args.asusctl, args.ghelper)
     if args.check:
         if not os.path.exists(OUT) or open(OUT, encoding="utf-8", newline="").read() != text:
             print("AsusLaptopTables.g.cs differs")

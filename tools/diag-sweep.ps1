@@ -151,6 +151,8 @@ for ($i = 0; $i -lt 15 -and $best -eq 0; $i++) {
     if ($best -eq 0) { Start-Sleep 2 }
 }
 $walkSaw = 0
+# What the walk meant to reach and did not. A clean harvest speaks for what ran.
+$notReached = @()
 if (-not $win) { Note 'WINDOW NOT FOUND' }
 else {
     Note "window found, elements=$best"
@@ -199,6 +201,13 @@ public static class W {
         return $false
     }
 
+    # PadForge's window or a dialog of its own holds the focus.
+    function InFront {
+        $owner = [uint32]0
+        [W]::GetWindowThreadProcessId([W]::GetForegroundWindow(), [ref]$owner) | Out-Null
+        return $owner -eq $pfPid
+    }
+
     function Click-At([int]$x, [int]$y) {
         [W]::SetCursorPos($x, $y) | Out-Null
         Start-Sleep -Milliseconds 120
@@ -210,6 +219,10 @@ public static class W {
     # on them bypass the visual tree this harvest exists to realize.
     function Click-El($el, [double]$fx = 0.5, [double]$fy = 0.5) {
         if (-not $el) { return $false }
+        if (-not (InFront)) {
+            Note 'no click: another window is in front'
+            return $false
+        }
         try {
             $r = $el.Current.BoundingRectangle
             if ($r.Width -le 0 -or $r.Height -le 0) { return $false }
@@ -244,6 +257,7 @@ public static class W {
         if (-not $el) { $el = Find-ByName $page }
         $ok = Click-El $el
         Note "nav ${page}: found=$($null -ne $el) clicked=$ok"
+        if (-not $ok) { $notReached += $page }
         Start-Sleep 2
     }
 
@@ -320,7 +334,53 @@ public static class W {
             Start-Sleep 2
             Note "workshop dialog closed=$(-not [W]::IsWindowVisible($dlgHwnd))"
         }
-    } else { Note 'browse button not found' }
+    } else {
+        Note 'browse button not found'
+        $notReached += 'Workshop browse'
+    }
+
+    # ---- Map Key Lights (1o coverage rule): opened from the first row that
+    # offers it and closed again. Nothing in it is pressed, so no light on the
+    # device changes. ----
+    ForceFG $hwnd | Out-Null
+    Click-El (Find-NavItem 'Devices') | Out-Null
+    Start-Sleep 2
+    $mapButton = $null
+    $listItem = New-Object System.Windows.Automation.PropertyCondition($ae::ControlTypeProperty, $CT::ListItem)
+    $rows = $win.FindAll($TS::Descendants, $listItem)
+    for ($i = 0; $i -lt [Math]::Min($rows.Count, 40) -and -not $mapButton; $i++) {
+        Click-El $rows[$i] | Out-Null
+        Start-Sleep -Milliseconds 500
+        $found = Find-ByName 'Map Key Lights'
+        if ($found -and $found.Current.ControlType -eq $CT::Button -and -not $found.Current.IsOffscreen) { $mapButton = $found }
+    }
+    if ($mapButton) {
+        Note "map key lights click: $(Click-El $mapButton)"
+        $dlgHwnd = [IntPtr]::Zero
+        for ($t = 0; $t -lt 4 -and $dlgHwnd -eq [IntPtr]::Zero; $t++) {
+            Start-Sleep 1
+            foreach ($h in [W]::ForPid($pfPid)) {
+                if ($h -ne $hwnd -and [W]::IsWindowVisible($h)) {
+                    $r = New-Object W+RECT
+                    [W]::GetWindowRect($h, [ref]$r) | Out-Null
+                    if (($r.R - $r.L) -gt 400 -and ($r.B - $r.T) -gt 400) { $dlgHwnd = $h; break }
+                }
+            }
+        }
+        if ($dlgHwnd -eq [IntPtr]::Zero) { Note 'map key lights dialog HWND not found' }
+        else {
+            $sb = New-Object System.Text.StringBuilder 256
+            [W]::GetWindowText($dlgHwnd, $sb, 256) | Out-Null
+            Note "map key lights dialog hwnd=$dlgHwnd title='$($sb.ToString())'"
+            Start-Sleep 2
+            [W]::SendMessage($dlgHwnd, 0x0010, [IntPtr]::Zero, [IntPtr]::Zero) | Out-Null  # WM_CLOSE
+            Start-Sleep 1
+            Note "map key lights dialog closed=$(-not [W]::IsWindowVisible($dlgHwnd))"
+        }
+    } else {
+        Note 'no row offers Map Key Lights'
+        $notReached += 'Map Key Lights'
+    }
 
     foreach ($page in @('Devices','Dashboard')) {
         ForceFG $hwnd | Out-Null
@@ -365,6 +425,10 @@ else {
 # dialog, so it is no pass.
 if ($walkSaw -eq 0) {
     $verdict = "BLIND: $verdict, but the walk saw no elements and realized nothing"
+    Note "ACCEPTANCE: $verdict"
+}
+if ($notReached.Count -gt 0) {
+    $verdict = "PARTIAL: $verdict, for what ran. Not reached: $($notReached -join ', ')"
     Note "ACCEPTANCE: $verdict"
 }
 Write-Host "diag-sweep acceptance: $verdict"

@@ -308,10 +308,13 @@ namespace PadForge.Tests
             Assert.Null(offer.Bind);
             var keyboard = new KeyboardTakeoverEntry { NodeId = Node, BindId = "b", RowId = RowId.ToString() };
             Assert.Equal(Kind.Keyboard, WinUsbKeyboardBinding.RestoreOffer(keyboard, new[] { WinUsbNode }).Kind);
-            // Back on Windows' driver, unplugged, or no takeover: nothing.
+            // Back on Windows' driver, or no takeover: nothing.
             Assert.Null(WinUsbKeyboardBinding.RestoreOffer(mouse, new[] { HidUsbNode }));
-            Assert.Null(WinUsbKeyboardBinding.RestoreOffer(mouse, Array.Empty<VendorUsbDriverInstaller.UsbNode>()));
             Assert.Null(WinUsbKeyboardBinding.RestoreOffer(null, new[] { WinUsbNode }));
+            // Unplugged, the node may never return, so the restore is the way
+            // out of its takeover.
+            var unplugged = WinUsbKeyboardBinding.RestoreOffer(mouse, Array.Empty<VendorUsbDriverInstaller.UsbNode>());
+            Assert.Equal((Kind.Mouse, true, Node), (unplugged.Kind, unplugged.Restore, unplugged.NodeId));
 
             string page = AuditDelta20261002Tests.RepoText("PadForge.App", "ViewModels", "DevicesViewModel.cs");
             Assert.Contains("??Services.WinUsbKeyboardBinding.RestoreOffer(Common.Input.WinUsbKeyboards.KeyboardTakeovers.ForRow(device.InstanceGuid),nodes);",

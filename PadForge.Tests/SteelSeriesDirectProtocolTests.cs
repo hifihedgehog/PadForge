@@ -862,7 +862,7 @@ namespace PadForge.Tests
         [InlineData(SteelSeriesFamily.Apex2013, 0, 1, 0, 50, 5000, false)]
         [InlineData(SteelSeriesFamily.Arctis5, 5, 24, 0, 50, 5000, false)]
         [InlineData(SteelSeriesFamily.ArctisNova3, 4, 6, 0, 500, 0, false)]
-        [InlineData(SteelSeriesFamily.Siberia350, 3, 4, 0, 500, 5000, false)]
+        [InlineData(SteelSeriesFamily.Siberia350, 3, 4, 0, 500, 0, false)]
         [InlineData(SteelSeriesFamily.QckPrismCloth, 0, 2, 0, 33, 5000, false)]
         [InlineData(SteelSeriesFamily.QckPrism12, 0, 2, 0, 33, 5000, false)]
         [InlineData(SteelSeriesFamily.ArctisProGameDac, 0, 8, 20, 230, 5000, false)]

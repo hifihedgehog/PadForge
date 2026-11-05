@@ -582,7 +582,7 @@ namespace PadForge.Tests
             PeripheralOutputs.SetBackendState(OutputFamily.IcueDevice, BackendState.Waiting);
             Assert.Equal(string.Format(s.Pad_Lighting_RouteVendorRowWaiting, "Corsair iCUE", s.Pad_Lighting_VendorRowExamples_Icue),
                 PeripheralRouteText.Lighting(Device(icue, 0x5046), 0));
-            Assert.Equal("mousepads and headset stands", PadForge.Resources.Strings.Strings.ResourceManager.GetString(
+            Assert.Equal("mousepads, headsets, and headset stands", PadForge.Resources.Strings.Strings.ResourceManager.GetString(
                 nameof(s.Pad_Lighting_VendorRowExamples_Icue), System.Globalization.CultureInfo.InvariantCulture));
         }
 
@@ -654,6 +654,73 @@ namespace PadForge.Tests
             PeripheralOutputs.LedSdkPaintable = null;
             Assert.Equal(string.Format(s.Pad_Lighting_RouteVendorRowWaiting, "Logitech Gaming Software",
                 s.Pad_Lighting_VendorRowExamples_LedSdk), PeripheralRouteText.Lighting(Device(lightsync, PeripheralLinker.LogitechVid), 0));
+        }
+
+        /// <summary>A vendor's program that runs and answered no reads that,
+        /// ahead of the waiting line, on a device and on a vendor row alike.
+        /// A controller that does not light the device reads nothing. iCUE's
+        /// line names its setting.</summary>
+        [Theory]
+        [InlineData(OutputFamily.AuraSdkType, "keyboard", "Armoury Crate")]
+        [InlineData(OutputFamily.MysticLightType, "MSI_MB", "Mystic Light")]
+        [InlineData(OutputFamily.GameSenseColor, "keyboard", "SteelSeries GG")]
+        [InlineData(OutputFamily.ChromaCategory, "keyboard", "Razer Synapse")]
+        public void TheRouteLine_NamesAProgramThatRefused(object familyOf, string key, string app)
+        {
+            var family = (OutputFamily)familyOf;
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            var path = new OutputPath(family, key);
+            Assert.Equal(app, PeripheralRouteText.LightingApp(family));
+            var row = Device(A, 0x0B05);
+            Link(new DeviceLinks { Device = A, Lighting = new[] { path } });
+            PeripheralOutputs.SetLighting(A, slot: 1, player: 2, 3, 3, 3);
+            PeripheralOutputs.SetBackendState(family, BackendState.Waiting);
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteWaiting, app), PeripheralRouteText.Lighting(row, 1));
+
+            PeripheralOutputs.SetProgramRefusal(family, ProgramRefusal.Everything);
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteProgramRefused, app), PeripheralRouteText.Lighting(row, 1));
+            Assert.Null(PeripheralRouteText.Lighting(row, 1, lightsHere: false));
+
+            // Another path of the family, named alone, leaves this one's line.
+            PeripheralOutputs.SetProgramRefusal(family, new ProgramRefusal(new[] { "other" }));
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteWaiting, app), PeripheralRouteText.Lighting(row, 1));
+            PeripheralOutputs.SetProgramRefusal(family, new ProgramRefusal(new[] { key }));
+            PeripheralOutputs.SetBackendState(family, BackendState.Connected);
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteProgramRefused, app), PeripheralRouteText.Lighting(row, 1));
+        }
+
+        [Fact]
+        public void TheRouteLine_NamesICuesSetting_OnADeviceAndOnItsRow()
+        {
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            var keyboard = new OutputPath(OutputFamily.IcueDevice, "keyboard");
+            var row = Device(A, 0x1B1C);
+            Link(new DeviceLinks { Device = A, Lighting = new[] { keyboard } });
+            PeripheralOutputs.SetLighting(A, slot: 1, player: 2, 3, 3, 3);
+            PeripheralOutputs.SetBackendState(OutputFamily.IcueDevice, BackendState.Waiting);
+            PeripheralOutputs.SetProgramRefusal(OutputFamily.IcueDevice, new ProgramRefusal(null, SettingOff: true));
+            Assert.Equal(s.Pad_Lighting_RouteIcueSdkOff, PeripheralRouteText.Lighting(row, 1));
+            Assert.Contains("iCUE SDK", s.Pad_Lighting_RouteIcueSdkOff);
+
+            var vendor = PeripheralOutputRow.IdentityFor(PeripheralRowKind.CorsairIcue);
+            Link(new DeviceLinks { Device = vendor, CatchAll = true, Lighting = new[] { keyboard } });
+            PeripheralOutputs.SetLighting(vendor, slot: 0, player: 1, 4, 4, 4);
+            Assert.Equal(s.Pad_Lighting_RouteIcueSdkOff, PeripheralRouteText.Lighting(Device(vendor, 0x1B1C), 0));
+        }
+
+        /// <summary>The Force Feedback tab reads a GG that runs and does not
+        /// answer the same way.</summary>
+        [Fact]
+        public void TheRumbleLine_NamesAGgThatRunsAndDoesNotAnswer()
+        {
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            var tactile = PeripheralLinker.GameSenseTactilePath;
+            var ud = Device(A, 0x1038);
+            Link(new DeviceLinks { Device = A, Haptics = new[] { tactile } });
+            PeripheralOutputs.SetBackendState(OutputFamily.GameSenseTactile, BackendState.Waiting);
+            Assert.Equal(s.Pad_ForceFeedback_RouteGameSenseWaiting, PeripheralRouteText.Haptics(ud));
+            PeripheralOutputs.SetProgramRefusal(OutputFamily.GameSenseTactile, ProgramRefusal.Everything);
+            Assert.Equal(s.Pad_ForceFeedback_RouteGameSenseRefused, PeripheralRouteText.Haptics(ud));
         }
 
         /// <summary>A device type the Logitech LED engine on this PC cannot

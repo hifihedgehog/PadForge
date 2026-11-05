@@ -663,6 +663,36 @@ namespace PadForge.Common
             }
         }
 
+        /// <summary>Takes these ids off the driver's list, whoever wrote them,
+        /// and leaves every other entry. For a touchpad given back whose hide a
+        /// session before left behind, which no managed set of this session
+        /// names. <paramref name="removed"/> lists the ids the list carried.
+        /// False when the list could not be read or the write was
+        /// refused.</summary>
+        public static bool RemoveFromBlacklist(IEnumerable<string> ids, out List<string> removed)
+        {
+            removed = new List<string>();
+            lock (_lock)
+            {
+                var list = GetBlacklist();
+                // A failed read is never written back, as in RemoveManagedDevices.
+                if (list == null) return false;
+                foreach (var id in ids ?? Array.Empty<string>())
+                    if (!string.IsNullOrEmpty(id) && list.Contains(id, StringComparer.OrdinalIgnoreCase))
+                        removed.Add(id);
+                if (removed.Count == 0) return true;
+                var drop = new HashSet<string>(removed, StringComparer.OrdinalIgnoreCase);
+                list.RemoveAll(id => drop.Contains(id));
+                if (!SetBlacklist(list))
+                {
+                    removed.Clear();
+                    return false;
+                }
+                foreach (var id in drop) _managedDeviceIds.Remove(id);
+                return true;
+            }
+        }
+
         /// <summary>
         /// Syncs the blacklist to match the desired set of managed device IDs.
         /// Only adds/removes the diff and never clears the entire blacklist,

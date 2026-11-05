@@ -42,6 +42,11 @@ namespace PadForge.Common.Input.Peripherals
         /// the look could not be made, and then the units the last look
         /// found stay listed.</summary>
         IReadOnlyList<OwnDevice> Look();
+
+        /// <summary><see cref="Look()"/> with the HID walk the worker holds,
+        /// for a family that looks through the HID collections and so needs
+        /// no walk of its own.</summary>
+        IReadOnlyList<OwnDevice> Look(IReadOnlyList<HidCollectionInfo> walk) => Look();
     }
 
     /// <summary>One device an own-look family found.</summary>
@@ -60,6 +65,10 @@ namespace PadForge.Common.Input.Peripherals
         /// keyboard rows in the PC's own container
         /// (<see cref="DirectUnit.BuiltInKeyboard"/>).</summary>
         public bool BuiltInKeyboard { get; init; }
+
+        /// <summary>The name to list the device by where the model's would
+        /// claim more than the look knows. Null: the model's.</summary>
+        public string Name { get; init; }
     }
 
     /// <summary>A collection of the same device beside a unit's own
@@ -121,8 +130,16 @@ namespace PadForge.Common.Input.Peripherals
         public IReadOnlyList<VendorProgram> Programs { get; init; } = Array.Empty<VendorProgram>();
 
         /// <summary>How long a changed picture has to stay the same before
-        /// it goes out. 0: at once.</summary>
+        /// it goes out. 0: at once. Above 0 says the device stores each picture,
+        /// so a color that never holds sends nothing, the row's line says so,
+        /// and the worker also bounds how many go out
+        /// (<see cref="HidLightingBackend.StoredWriteBurst"/>).</summary>
         public int HoldMs { get; init; }
+
+        /// <summary>The first picture writes over effects the user stored on
+        /// the device, and nothing can read them first, so the row's line says
+        /// they are lost.</summary>
+        public bool ReplacesStoredEffects { get; init; }
 
         /// <summary>The shortest time between two pictures sent.</summary>
         public int RepaintMs { get; init; }
@@ -161,15 +178,22 @@ namespace PadForge.Common.Input.Peripherals
         /// the family matches is one it lights.</summary>
         public Func<IHidReportChannel, bool> Identify { get; init; }
 
+        /// <summary>For a device a plugin reaches through one of several collections: true when
+        /// the first collection given, of the same walk, is the device's unit in place of the
+        /// second, which then gets no unit. Null: every collection the model matches is a
+        /// unit.</summary>
+        public Func<HidCollectionInfo, HidCollectionInfo, bool> Outranks { get; init; }
+
         /// <summary>The device's lighting lives on a mouse or keyboard
         /// collection, which Windows holds and opens with no access right
         /// only, as it does for every program: "feature reports can still be
         /// sent and received" on that handle, and hidapi hands OpenRGB that
-        /// handle (hidapi windows/hid.c:1009-1026). For every other model a
-        /// handle with no access right means another program holds the
-        /// collection, and the worker writes nothing to it. For this one the
-        /// worker keeps that handle, and the session sends feature reports
-        /// alone.</summary>
+        /// handle (hidapi windows/hid.c:1009-1026). For this model the worker
+        /// keeps that handle, and the session sends feature reports alone.
+        /// Every other model writes nothing to such a handle. On a collection
+        /// <see cref="HidCollectionInfo.WindowsHolds"/> names, its row says
+        /// Windows holds it. On any other, the handle means another program has
+        /// the collection, and its row says that.</summary>
         public bool HeldByWindows { get; init; }
 
         /// <summary>The other collections of the device a session talks
@@ -194,6 +218,12 @@ namespace PadForge.Common.Input.Peripherals
         /// opens for read and write.</summary>
         public Func<string, IDisposable> Open { get; init; }
 
+        /// <summary>Whether the last <see cref="Open"/> on this thread answered
+        /// null because another program has the device: a HID collection that
+        /// opened with no access right only, or a serial port that refused
+        /// access. Null: the family cannot tell.</summary>
+        public Func<bool> OpenFoundHeld { get; init; }
+
         /// <summary>Starts a session on a channel <see cref="Open"/> made,
         /// the counterpart of <see cref="Begin"/>. The session talks through
         /// that channel and is handed no HID channel (null) by the
@@ -207,14 +237,24 @@ namespace PadForge.Common.Input.Peripherals
         /// milliseconds. True when it went out.</summary>
         public Func<string, byte[], int, bool> WriteOnce { get; init; }
 
-        /// <summary>Whether the device may still show colors an earlier run
-        /// wrote into its own memory and never handed back. Null: never.</summary>
-        public Func<bool> Owed { get; init; }
+        /// <summary>Whether the device at a unit's path may still show colors
+        /// an earlier run wrote into its own memory and never handed back. A
+        /// model that lights one built-in keyboard ignores the path. Null:
+        /// never.</summary>
+        public Func<string, bool> Owed { get; init; }
 
         /// <summary>Hands those colors back on a channel open for read and
         /// write, with no claim on the device. True when nothing is owed any
         /// more.</summary>
         public Func<IHidReportChannel, Action<int>, bool> Repair { get; init; }
+
+        /// <summary>The counterpart of <see cref="Repair"/> for a family whose
+        /// devices are no HID collections: hands those colors back on a channel
+        /// <see cref="Open"/> made, with no claim on the device. True when
+        /// nothing is owed any more. Null: such a family leaves them to its
+        /// next session, as one whose colors cannot be told from a user's
+        /// does.</summary>
+        public Func<IDisposable, Action<int>, bool> RepairOwn { get; init; }
     }
 
     /// <summary>What became of a picture a session was given.</summary>
@@ -239,8 +279,8 @@ namespace PadForge.Common.Input.Peripherals
     /// <c>io</c> it is handed is null.</summary>
     internal abstract class HidLightingSession
     {
-        /// <summary>True when the frames are feature reports, false for
-        /// output reports.</summary>
+        /// <summary>True when <see cref="CrashFrames"/> are feature reports,
+        /// false for output reports.</summary>
         public abstract bool Feature { get; }
 
         /// <summary>Shows <paramref name="colors"/>, one per light of
@@ -259,6 +299,12 @@ namespace PadForge.Common.Input.Peripherals
         /// closes and reopens. The model's map goes back only when the unit
         /// leaves the walk.</summary>
         public virtual LightMap Map => null;
+
+        /// <summary>The device's name from what it answered, for a device
+        /// its look could not name, or null. Read right after the session
+        /// begins. The worker lists the unit by it for as long as the device
+        /// stays in the walk.</summary>
+        public virtual string DeviceName => null;
 
         /// <summary>Sizes the strips the session's map lists
         /// (<see cref="LightMap.Strips"/>): <paramref name="counts"/> is the
@@ -291,6 +337,11 @@ namespace PadForge.Common.Input.Peripherals
         /// answer.</summary>
         public virtual bool Recheck(IHidReportChannel io, Action<int> wait) => true;
 
+        /// <summary>Read after <see cref="Recheck"/>: true when the recheck
+        /// found the device showed something else since the last picture and
+        /// has to be sent that picture again, unchanged as it is.</summary>
+        internal virtual bool RepaintDue => false;
+
         /// <summary>What goes out on the model's keep-alive interval
         /// (<see cref="HidLightingModel.KeepAliveMs"/>), given the picture
         /// the device shows, <paramref name="colors"/> for
@@ -309,6 +360,10 @@ namespace PadForge.Common.Input.Peripherals
         /// Empty when there is nothing to undo or the crash path cannot undo
         /// it. The same array until it changes.</summary>
         public abstract byte[][] CrashFrames { get; }
+
+        /// <summary>The collection <see cref="CrashFrames"/> go to where it is a sibling of the
+        /// unit's. Null: the unit's own.</summary>
+        public virtual string CrashPath => null;
     }
 
     /// <summary>The families the shared worker serves. One line per family,
@@ -441,7 +496,14 @@ namespace PadForge.Common.Input.Peripherals
             if (collection?.Path == null) return null;
             foreach (var family in families ?? All)
             {
-                var model = family.Match(collection);
+                // One family's fault leaves the collection to the families
+                // after it.
+                HidLightingModel model = null;
+                try { model = family.Match(collection); }
+                catch (Exception ex)
+                {
+                    PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {family.Name} fault at Match: {ex.GetType().Name}");
+                }
                 if (model != null) return model;
             }
             return null;

@@ -1045,6 +1045,8 @@ namespace PadForge.Common.Input
             _legacyPortListingRunning = true;
             System.Threading.Tasks.Task.Run(() =>
             {
+                // The watchdog above reads this answer on the poll thread.
+                try { _ = MidiServiceRecovery.ServiceExists; } catch { }
                 try { _legacyPortListing = new LegacyPortListing { Ports = legacy.EnumerateOutputPorts(), Generation = generation }; }
                 catch (Exception ex)
                 {

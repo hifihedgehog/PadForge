@@ -81,7 +81,7 @@ namespace PadForge.Tests
         /// dialog's static resource keys, runs the body on its STA thread,
         /// and puts the process back with no Application, as
         /// PairDeviceDialogSerialTests.RunWithApp does.</summary>
-        private static void RunWithApp(Action body)
+        internal static void RunWithApp(Action body)
         {
             Exception failure = null;
             var thread = new Thread(() =>
@@ -93,6 +93,7 @@ namespace PadForge.Tests
                     var app = new Application();
                     app.Resources["BodyFontFamily"] = new FontFamily("Segoe UI");
                     app.Resources["DisplayFontFamily"] = new FontFamily("Segoe UI");
+                    app.Resources["TelemetryFontFamily"] = new FontFamily("Segoe UI");
                     app.Resources["BoolToVisibilityConverter"] = new PadForge.Converters.BoolToVisibilityConverter();
                     app.Resources["CardTitle"] = new Style(typeof(TextBlock));
                     app.Resources["CardDescription"] = new Style(typeof(TextBlock));

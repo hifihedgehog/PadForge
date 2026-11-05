@@ -66,7 +66,9 @@ namespace PadForge.Tests
             // empty reports, nine color reports, the active page, 04 02 and
             // a read, 04 F0 (lines 113-218).
             Assert.Equal(4 + 5 + 3 + 9 + 1 + 2 + 1, steps.Count);
-            Assert.Equal("00 01 00 00 00 00 00 00 00 00 0F 00 00 00 00 AA 55 02",
+            // Static is stored white, since PadForge has no control for OpenRGB's
+            // per-effect color and its default of black shows no light.
+            Assert.Equal("00 01 FF FF FF 00 00 00 00 00 0F 00 00 00 00 AA 55 02",
                 Hex(steps[4], 18));
             Assert.Equal(0x80, steps[8][1 + 48]);
             Assert.Equal(0x0F, steps[8][1 + 48 + 9]);

@@ -70,6 +70,20 @@ namespace PadForge.Common.Input
 
         public static byte[] BuildRouteReport(byte route) => new byte[] { RouteReportId, 0x00, route };
 
+        /// <summary>Output report 0x05 with the speaker volume alone: only the
+        /// speaker's valid flag set, so rumble and lights stay as they are
+        /// (NFSU2-SplitScreen src/DualSense.cpp, UsbRoute: flag 0x80 at byte 1,
+        /// the volume at 22, 0x85 at 23).</summary>
+        public static byte[] BuildSpeakerVolumeReport()
+        {
+            var report = new byte[32];
+            report[0] = 0x05;
+            report[1] = Ds4BtAudio.FlagSpeaker;
+            report[22] = Ds4BtAudio.VolumeMax;
+            report[SpeakerAudioConfigOffset] = SpeakerAudioConfig;
+            return report;
+        }
+
         /// <summary>The route the effects dispatcher writes this tick, or -1.
         /// An explicit Output Path holds its route. Automatic puts the speaker
         /// on while PadForge plays to the pad and gives the headset back once

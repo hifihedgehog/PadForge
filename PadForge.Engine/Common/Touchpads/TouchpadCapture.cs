@@ -372,6 +372,9 @@ public sealed class TouchpadCapture : IDisposable
         });
     }
 
+    /// <summary>Whether Windows lists the collection as present now.</summary>
+    public static bool IsNodePresent(string instanceId) => TabletNative.IsPresent(instanceId);
+
     public void Dispose()
     {
         CancellationTokenSource cancel;

@@ -300,8 +300,9 @@ namespace PadForge.Common.Input.Peripherals
         /// the settings file looks again.</summary>
         internal const int SavingMs = 100;
 
-        /// <summary>How many times one run tries to put back a profile an
-        /// earlier run left, before it leaves that to the next run.</summary>
+        /// <summary>How many times in a row a run tries to put back a profile
+        /// an earlier run left, before it waits for the count to clear
+        /// (<see cref="KeyboardProfileBackups.FailuresClearMs"/>).</summary>
         internal const int RepairTries = 3;
 
         /// <summary>How often a session whose profile may hold a picture of
@@ -345,13 +346,9 @@ namespace PadForge.Common.Input.Peripherals
                 return null;
             // A collection with shorter feature reports is not the one
             // OpenRGB opens.
-            if (collection.FeatureReportLength != 0 && collection.FeatureReportLength < PacketSize) return null;
+            if (collection.FeatureReportLength < PacketSize) return null;
             return s_models.TryGetValue(collection.ProductId, out var model) ? model.Value : null;
         }
-
-        /// <summary>Whether <paramref name="productId"/> is a Gen 10
-        /// keyboard, which never takes a stream.</summary>
-        internal static bool IsGen10(ushort productId) => productId is Legion7Gen10 or Legion5Gen10;
 
         private static HidLightingModel Model(string name, ushort productId, IReadOnlyList<LightInfo> baseLights,
             Format format, bool stream)
@@ -376,7 +373,7 @@ namespace PadForge.Common.Input.Peripherals
                 RepaintMs = stream ? StreamRepaintMs : RepaintMs,
                 RecheckMs = RecheckMs,
                 Begin = (io, wait) => Begin(io, wait, spec),
-                Owed = () => KeyboardProfileBackups.Get(product) != null
+                Owed = _ => KeyboardProfileBackups.Get(product) != null
                              && KeyboardProfileBackups.Failures(product) < RepairTries,
                 Repair = (io, wait) => Repair(io, wait, spec),
             };
@@ -388,9 +385,6 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The zone IDs (LenovoDevices.h:1913-1985).</summary>
         internal const int KeyboardZone = 0;
-        internal const int NeonZone = 1;
-        internal const int VentZone = 3;
-        internal const int LogoZone = 5;
 
         /// <summary>The keys of legion7_gen7and8_ansi_leds, in its order
         /// (LenovoDevices.h:1739-1855).</summary>
@@ -873,8 +867,11 @@ namespace PadForge.Common.Input.Peripherals
         /// lights of the model, none twice. OpenRGB's Static mode writes the
         /// same, so a profile it wrote after a run of PadForge's ended without
         /// a hand-back reads as PadForge's. The length bytes of an answer
-        /// before Gen 10 are not checked: no reference reads them.</summary>
-        internal static bool IsOwnPicture(byte[] contents, byte profile, ISet<int> addresses, Format format = Format.Gen10)
+        /// before Gen 10 are not checked: no reference reads them.
+        /// <paramref name="anyLight"/> checks the shape alone, for a board
+        /// whose lights are not known yet.</summary>
+        internal static bool IsOwnPicture(byte[] contents, byte profile, ISet<int> addresses, Format format = Format.Gen10,
+            bool anyLight = false)
         {
             if (contents == null || contents.Length < 5
                 || (format == Format.Gen10 && (contents[0] | contents[1] << 8) != contents.Length - 2)
@@ -894,7 +891,7 @@ namespace PadForge.Common.Input.Peripherals
                 for (int k = 0; k < keys; k++)
                 {
                     int address = contents[at + 19 + 2 * k] | contents[at + 20 + 2 * k] << 8;
-                    if (addresses == null || !addresses.Contains(address) || !seen.Add(address)) return false;
+                    if ((!anyLight && (addresses == null || !addresses.Contains(address))) || !seen.Add(address)) return false;
                 }
                 number++;
                 at += 19 + 2 * keys;
@@ -1028,15 +1025,16 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Writes <paramref name="contents"/> back to the active
         /// <paramref name="profile"/> and reads it again. True when it reads
-        /// as they were, or at least no longer as a picture of PadForge's,
-        /// so a keyboard that stores the bytes its own way is not written
-        /// again and again.</summary>
-        private static bool Restore(IHidReportChannel io, Action<int> wait, byte profile, byte[] contents, Spec spec)
+        /// as they were, or at least no longer as a picture of PadForge's on
+        /// <paramref name="addresses"/>, the lights the caller judged the
+        /// picture by, so a keyboard that stores the bytes its own way is not
+        /// written again and again.</summary>
+        private static bool Restore(IHidReportChannel io, Action<int> wait, byte profile, byte[] contents, ISet<int> addresses, Spec spec)
         {
             if (!io.SetFeature(RestoreFrame(contents, spec.Format))) return false;
             wait(SettleMs);
             var now = ReadContents(io, wait, profile, spec.Format);
-            return now != null && (SameProfile(now, contents, spec.Format) || !IsOwnPicture(now, profile, spec.Addresses, spec.Format));
+            return now != null && (SameProfile(now, contents, spec.Format) || !IsOwnPicture(now, profile, addresses, spec.Format));
         }
 
         /// <summary>SET_DIRECT_MODE off for a profile that holds the Direct
@@ -1045,8 +1043,26 @@ namespace PadForge.Common.Input.Peripherals
         /// (DeviceUpdateMode, RGBController_Lenovo_Gen7_8.cpp:499-505 and
         /// 525-528). True when the profile holds no such group or the frame
         /// went out.</summary>
-        private static bool StopStream(IHidReportChannel io, byte profile, byte[] contents, Spec spec)
-            => !HoldsStream(contents, profile, spec.Addresses, spec.Format) || io.SetFeature(StreamOff(profile, spec.Format));
+        private static bool StopStream(IHidReportChannel io, byte profile, byte[] contents, ISet<int> addresses, Spec spec)
+            => !HoldsStream(contents, profile, addresses, spec.Format) || io.SetFeature(StreamOff(profile, spec.Format));
+
+        /// <summary>The lights a picture of PadForge's in
+        /// <paramref name="contents"/> may hold. The tables, unless the
+        /// contents have a picture's shape over a light no table lists: a board
+        /// can report keys none of its drawings hold
+        /// (<see cref="RegionMap"/>), and a session lights them, so the
+        /// keyboard's own key map is read and its keys count too. Null when
+        /// that read did not answer, and then nothing is known about the
+        /// contents and nothing may be dropped on their account.</summary>
+        private static ISet<int> OwnAddresses(IHidReportChannel io, Action<int> wait, Spec spec, byte[] contents, byte profile)
+        {
+            if (!spec.ReadsKeyMap || IsOwnPicture(contents, profile, spec.Addresses, spec.Format)
+                || !IsOwnPicture(contents, profile, null, spec.Format, anyLight: true))
+                return spec.Addresses;
+            var keys = ReadKeyMap(io, wait);
+            keys?.UnionWith(spec.Addresses);
+            return keys;
+        }
 
         /// <summary>Puts <paramref name="backup"/> back, with
         /// <paramref name="active"/> the profile active now, and lets the
@@ -1068,10 +1084,13 @@ namespace PadForge.Common.Input.Peripherals
             bool away = profile != active;
             if (away && !SwitchTo(io, wait, profile, spec.Format)) return false;
             var now = ReadContents(io, wait, profile, spec.Format);
-            bool settled = now != null
-                           && (SameProfile(now, backup.Contents, spec.Format) || !IsOwnPicture(now, profile, spec.Addresses, spec.Format)
-                               || (StopStream(io, profile, now, spec)
-                                   && Restore(io, wait, profile, backup.Contents, spec)));
+            bool settled = now != null && SameProfile(now, backup.Contents, spec.Format);
+            if (now != null && !settled && OwnAddresses(io, wait, spec, now, profile) is { } addresses)
+            {
+                settled = !IsOwnPicture(now, profile, addresses, spec.Format)
+                          || (StopStream(io, profile, now, addresses, spec)
+                              && Restore(io, wait, profile, backup.Contents, addresses, spec));
+            }
             if (settled) KeyboardProfileBackups.Drop(spec.Product);
             // Back to the profile the user chose, whatever the write did.
             if (away && !SwitchTo(io, wait, active, spec.Format)) return false;
@@ -1112,25 +1131,30 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     original = own.Contents;
                 }
-                else if (HoldsStream(contents, active, spec.Addresses, spec.Format))
-                {
-                    if (KeyboardProfileBackups.Failures(product) >= RepairTries) return null;
-                    if (!Settle(io, wait, spec, own, active))
-                    {
-                        KeyboardProfileBackups.NoteFailure(product);
-                        return null;
-                    }
-                    original = own.Contents;
-                }
-                else if (IsOwnPicture(contents, active, spec.Addresses, spec.Format))
-                {
-                    // An earlier run's picture, never handed back.
-                    original = own.Contents;
-                    ours = true;
-                }
                 else
                 {
-                    KeyboardProfileBackups.Drop(product);
+                    var addresses = OwnAddresses(io, wait, spec, contents, active);
+                    if (addresses == null) return null;
+                    if (HoldsStream(contents, active, addresses, spec.Format))
+                    {
+                        if (KeyboardProfileBackups.Failures(product) >= RepairTries) return null;
+                        if (!Settle(io, wait, spec, own, active))
+                        {
+                            KeyboardProfileBackups.NoteFailure(product);
+                            return null;
+                        }
+                        original = own.Contents;
+                    }
+                    else if (IsOwnPicture(contents, active, addresses, spec.Format))
+                    {
+                        // An earlier run's picture, never handed back.
+                        original = own.Contents;
+                        ours = true;
+                    }
+                    else
+                    {
+                        KeyboardProfileBackups.Drop(product);
+                    }
                 }
             }
             var keys = spec.ReadsKeyMap ? ReadKeyMap(io, wait) : null;
@@ -1165,6 +1189,8 @@ namespace PadForge.Common.Input.Peripherals
             /// <summary>A stream's direct mode is on and its group stored
             /// since the keyboard was last seen on the profile.</summary>
             private bool _entered;
+
+            private bool _repaintDue;
 
             private byte[][] _crash = Array.Empty<byte[]>();
 
@@ -1202,6 +1228,14 @@ namespace PadForge.Common.Input.Peripherals
 
             public override bool Feature => true;
 
+            /// <summary>A stream's keyboard came back to its profile, which
+            /// holds the one black Direct group a stream stores, so the same
+            /// picture has to go out again to enter the stream again. Lenovo
+            /// Legion Toolkit restarts its stream on every profile change
+            /// (SpectrumKeyboardBacklightController.cs, SetProfileAsync).
+            /// True until a picture has entered it.</summary>
+            internal override bool RepaintDue => _repaintDue;
+
             /// <summary>The restore, while the profile may hold a picture of
             /// PadForge's and is the active one, behind direct mode off for a
             /// stream. A hand-back on another profile takes switches the
@@ -1229,7 +1263,9 @@ namespace PadForge.Common.Input.Peripherals
                 var (picked, pickedColors) = Pick(lights, colors);
                 // A stream is entered again after the keyboard was seen on
                 // another profile: the recheck clears _entered when it finds
-                // the keyboard away.
+                // the keyboard away, and asks for the picture again when it
+                // finds the keyboard back (RepaintDue), since the worker sends
+                // no picture that did not change.
                 if (!_spec.Stream || !_entered)
                 {
                     if (ReadActiveProfile(io, wait, _spec.Format) is not byte active) return HidLightingPaint.Failed;
@@ -1253,6 +1289,7 @@ namespace PadForge.Common.Input.Peripherals
                     if (!io.SetFeature(StreamOn(_profile)) || !io.SetFeature(StreamGroupFrame(_profile, picked, _spec.Format)))
                         return HidLightingPaint.Failed;
                     _entered = true;
+                    _repaintDue = false;
                 }
                 return io.SetFeature(DirectFrame(picked, pickedColors)) ? HidLightingPaint.Sent : HidLightingPaint.Failed;
             }
@@ -1278,8 +1315,10 @@ namespace PadForge.Common.Input.Peripherals
             {
                 if (!_ours) return true;
                 if (ReadActiveProfile(io, wait, _spec.Format) is not byte active) return false;
+                bool wasAway = _away;
                 _away = active != _profile;
                 if (_away) _entered = false;
+                else if (wasAway && _spec.Stream) _repaintDue = true;
                 Track();
                 return true;
             }

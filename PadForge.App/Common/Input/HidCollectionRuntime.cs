@@ -19,6 +19,13 @@ namespace PadForge.Common.Input
         public ushort UsagePage { get; init; }
         public ushort Usage { get; init; }
 
+        /// <summary>A collection Windows opens exclusively, Microsoft's table
+        /// of HID clients: the mouse, the keyboard or keypad, and the pens,
+        /// touch screens and touchpads. On these a program takes feature
+        /// reports and no others, whichever call it makes.</summary>
+        public bool WindowsHolds => (UsagePage == 0x0001 && Usage is 0x0001 or 0x0002 or 0x0006 or 0x0007)
+                                    || (UsagePage == 0x000D && Usage is 0x0001 or 0x0002 or 0x0004 or 0x0005);
+
         /// <summary>The device's release number, HIDD_ATTRIBUTES'
         /// VersionNumber, which hidapi hands its callers as release_number
         /// (hidapi windows/hid.c:767). OpenRGB's ASUS Claymore takes its
@@ -281,6 +288,7 @@ namespace PadForge.Common.Input
         /// lengths of zero.</summary>
         private static HidCollectionInfo Probe(string path)
         {
+            if (RealHidAccess.Refused) return null;
             var handle = SonyHeadsetHid.CreateFile(path, 0,
                 SonyHeadsetHid.FILE_SHARE_READ | SonyHeadsetHid.FILE_SHARE_WRITE,
                 IntPtr.Zero, SonyHeadsetHid.OPEN_EXISTING, 0, IntPtr.Zero);

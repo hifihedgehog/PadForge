@@ -13,6 +13,8 @@ WHAT IT WRITES. PadForge.App/Common/Input/Peripherals/HidFamilies/WootingLayouts
 the tables as OpenRGB holds them: per type, the lights in the order SetupZones
 makes them, each with its row, column, frame buffer index and OpenRGB's name.
 
+Run it without Python's -I switch: it imports tools/openrgb_cpp.py.
+
 Usage:
     python tools/gen_wooting_layouts.py OPENRGB_ROOT
     python tools/gen_wooting_layouts.py OPENRGB_ROOT --check   (compare, write nothing)
@@ -20,8 +22,8 @@ Usage:
 import argparse
 import os
 import re
-import subprocess
 import sys
+import openrgb_cpp as oc
 
 PROJ_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT = os.path.join(PROJ_ROOT, "PadForge.App", "Common", "Input", "Peripherals", "HidFamilies", "WootingLayouts.g.cs")
@@ -145,8 +147,7 @@ def main():
     rgb = strip_comments(read(os.path.join(folder, rgb_rel)))
     v1 = strip_comments(read(os.path.join(folder, v1_rel)))
     names = key_names(os.path.join(args.openrgb, "RGBController", "RGBControllerKeyNames.cpp"))
-    commit = subprocess.run(["git", "-C", args.openrgb, "rev-parse", "HEAD"],
-                            capture_output=True, text=True, check=True).stdout.strip()
+    commit = oc.git_head(args.openrgb)
 
     tables = []
     for cs_name, matrix, led_names, rows, cols in TYPES:

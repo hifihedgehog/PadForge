@@ -114,7 +114,8 @@ namespace PadForge.Tests
             Assert.Equal("get", calls[3].Kind);
             // The first effect page: Static 01, brightness 0F at 9, AA 55 at
             // 14 and 15, then Keystroke light up 02 (lines 108-151).
-            Assert.Equal("00 01 00 00 00 00 00 00 00 00 0F 00 00 00 00 AA 55 02", Hex(calls[4].Bytes, 18));
+            // Stored white, not OpenRGB's black (MintakaKeyboardLighting.Effect).
+            Assert.Equal("00 01 FF FF FF 00 00 00 00 00 0F 00 00 00 00 AA 55 02", Hex(calls[4].Bytes, 18));
             // Three empty pages (lines 158-162).
             Assert.All(calls.Skip(9).Take(3), c => Assert.All(c.Bytes, b => Assert.Equal(0, b)));
             // The color pages: Escape's color at place 143, byte 572, the

@@ -780,6 +780,8 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} е повторно на својот двигател на Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Двигателот на Windows за {0} не можеше да се врати.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows го врати {0} на неговиот сопствен двигател. Изберете го на страницата Уреди за повторно да го префрлите.</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} веќе не е на двигателот на PadForge.</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} сѐ уште е на двигателот на PadForge. Изберете го на страницата Уреди за да му го вратите на Windows.</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Користи само во PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge ја префрла оваа тастатура на двигателот WinUSB на Windows и ја чита самиот. Тогаш Windows престанува да пишува со неа во сите програми, дури и кога PadForge е затворен, додека не се врати нејзиниот двигател на Windows од оваа страница. Нејзините мапирања и макроа продолжуваат да работат додека работи PadForge.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge го префрла овој глушец на двигателот WinUSB на Windows и го чита самиот. Тогаш Windows престанува да го движи покажувачот со него во сите програми, дури и кога PadForge е затворен, додека не се врати неговиот двигател на Windows од оваа страница. Неговите мапирања и макроа продолжуваат да работат додека работи PadForge.</value></data>
@@ -957,6 +959,7 @@
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>Вибрациите се репродуцираат преку тактилниот управувач во SteelSeries GG.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG ги управува сите тактилни Rival одеднаш, па оној на виртуелниот контролер {0} ги одредува нивните вибрации.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>Се чека SteelSeries GG. Вибрациите ќе се репродуцираат штом GG ќе проработи.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG работи и не одговара на PadForge. Вибрациите ќе се пуштат штом одговори.</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>Вибрациите се репродуцираат на вашите уреди Razer Sensa HD преку Razer Synapse.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Се чека Sensa HD Haptics во Razer Synapse 4. Во Synapse поставете го Haptic Source на уредот на Sensa HD Games.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Лев тригер</value></data>
@@ -1000,6 +1003,12 @@
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Боите одат директно до {0}. Неговиот режим на вградена меморија е исклучен додека е осветлен.</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Боите одат директно до {0}. Променливите бои, како циклус на бои или бои што го следат звукот, бараат вклучено Dynamic Lighting во BIOS на лаптопот. Без тоа, копчињата ги задржуваат последните постојани бои.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Боите одат директно до {0}. Ако Dynamic Lighting е вклучено во BIOS на лаптопот, копчињата ги осветлува Динамичкото осветлување на Windows. Исклучете го динамичкото осветлување на Windows за оваа тастатура во поставките на Windows и PadForge ќе ги осветлува, вклучувајќи ги и променливите бои.</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>Боите одат директно до {0}. Тој ја зачувува секоја слика во сопствената меморија, па променливите бои, како циклус на бои или бои што го следат звукот, не се прикажуваат. Боја што останува иста се прикажува.</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>Боите одат директно до {0}. Тој ја зачувува секоја слика во сопствената меморија, па променливите бои, како циклус на бои или бои што го следат звукот, не се прикажуваат. Боја што останува иста се прикажува. Првата слика ги презапишува ефектите зачувани на тастатурата, а старите не се враќаат.</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>Сериски уред на {0}</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>Овој уред е поврзан и не ги прифати боите од PadForge. PadForge се обидува повторно секоја минута.</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows го држи овој уред под своја контрола како тастатура или глушец и го одбива извештајот што ги поставува неговите бои, па PadForge не може да го осветли на Windows.</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>Друга програма го држи отворен овој уред, па PadForge не може да го осветли. PadForge ќе го осветли штом таа програма се затвори.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Овој уред сѐ уште не одговорил. Неговите бои ќе се прикажат штом се разбуди.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Боите одат преку {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Боите одат преку {0}, кој ги осветлува сите уреди од овој вид одеднаш. Додека {0} не работи, PadForge сам го осветлува овој уред.</value></data>
@@ -1007,7 +1016,9 @@
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Боите одат преку SDK Server на OpenRGB. Додека OpenRGB не работи, PadForge сам го осветлува овој уред.</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Боите одат преку SDK Server на OpenRGB.</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB го држи овој уред и нема режим Direct за него, па неговото осветлување останува кај OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB работи со исклучен SDK Server, па PadForge го остава овој уред на OpenRGB. Вклучете го SDK Server во OpenRGB и PadForge ќе го осветлува уредот преку него.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB работи, а неговиот SDK Server не одговара на портата {0}, па PadForge го остава овој уред на OpenRGB. Вклучете го SDK Server во OpenRGB и PadForge ќе го осветлува уредот преку него.</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE работи со исклучен SDK. Вклучете го iCUE SDK во поставките на iCUE и PadForge ќе го осветлува уредот преку него.</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} работи и не му дозволи на PadForge да ги осветлува неговите уреди. PadForge продолжува да бара дозвола.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} ги осветлува сите уреди од овој вид одеднаш, па оној на виртуелниот контролер {1} ја одредува нивната боја.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} ги осветлува сите уреди од овој вид одеднаш, па редот {1} на виртуелниот контролер {2} ја одредува нивната боја.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Виртуелниот контролер {0} исто така го осветлува овој уред и се прикажува неговата боја.</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>слушалки</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>матични плочи, графички картички и меморија</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>матични плочи и графички картички</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>подлоги за глушец и држачи за слушалки</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>подлоги за глушец, слушалки и држачи за слушалки</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Светлосна лента</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Внесете шестцифрена хексадецимална боја (RRGGBB или #RRGGBB) и притиснете Enter или кликнете надвор за да ја примените.</value></data>
@@ -4671,6 +4682,7 @@
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Се поврзува со четот на {0}…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Се чита четот на {0}.</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Четот на {0} не може да се достигне. Се обидува повторно.</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch нема чет за {0}. Проверете го името на каналот.</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Паузирано.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Сликата на контролерот за вашето емитување. Додајте ја оваа адреса во OBS како извор на прелистувач:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Сликата на контролерот за вашето емитување бара Веб-контролер и неговата обична HTTP адреса. Вклучете Опслужувај и обичен HTTP во картичката Веб-контролер. Само овој компјутер е доволно за OBS на овој компјутер.</value></data>

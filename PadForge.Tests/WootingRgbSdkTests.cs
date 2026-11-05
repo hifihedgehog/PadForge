@@ -260,6 +260,11 @@ namespace PadForge.Tests
         public volatile bool Answer = true;
         public volatile bool Disposed;
 
+        /// <summary>Set: the next output report waits for it, and
+        /// <see cref="Held"/> says one has arrived.</summary>
+        public ManualResetEventSlim Hold;
+        public readonly ManualResetEventSlim Held = new(false);
+
         public string Path { get; init; }
         public bool FeatureOnly => false;
         public int InputReportLength { get; init; } = 257;
@@ -287,6 +292,12 @@ namespace PadForge.Tests
         public bool WriteOutput(byte[] report, int timeoutMs = HidReportChannel.WriteTimeoutMs)
         {
             if (Disposed || FailOutput) return false;
+            var hold = Interlocked.Exchange(ref Hold, null);
+            if (hold != null)
+            {
+                Held.Set();
+                hold.Wait(30000);
+            }
             lock (_gate) Sent.Add(('O', (byte[])report.Clone()));
             return true;
         }
@@ -360,9 +371,9 @@ namespace PadForge.Tests
             lock (_channels) return _channels.SelectMany(c => c.Log()).ToList();
         }
 
-        private WootingRgbSdkBackend Started()
+        private WootingRgbSdkBackend Started(int stopJoinMs = WootingRgbSdkBackend.StopJoinMs)
         {
-            var backend = new WootingRgbSdkBackend(Open, OneShot, Tick, idleTickMs: 5, responseTimeoutMs: 1);
+            var backend = new WootingRgbSdkBackend(Open, OneShot, Tick, idleTickMs: 5, stopJoinMs: stopJoinMs, responseTimeoutMs: 1);
             backend.Start();
             backend.Rescan(new[]
             {
@@ -392,9 +403,9 @@ namespace PadForge.Tests
 
         private static string Hex(byte[] bytes) => Convert.ToHexString(bytes);
 
-        private WootingRgbSdkBackend Lit(int rgb = 0xFF8040)
+        private WootingRgbSdkBackend Lit(int rgb = 0xFF8040, int stopJoinMs = WootingRgbSdkBackend.StopJoinMs)
         {
-            var backend = Started();
+            var backend = Started(stopJoinMs);
             Link(Route);
             Light(rgb);
             Passes(backend, 3);
@@ -544,6 +555,102 @@ namespace PadForge.Tests
             Advance(WootingRgbSdkBackend.RetryMs);
             Passes(backend, 3);
             Assert.Single(Everything(), e => e.Kind == 'O');
+        }
+
+        /// <summary>A worker a stop gave up on comes out of a write while the
+        /// next run's worker still waits for it, with nothing opened. It
+        /// sends the reset, since nobody else knows the keyboard is lit, and
+        /// the keyboard leaves the crash path's record.</summary>
+        [Fact]
+        public void AWorkerAStopGaveUpOn_SendsTheReset_WhileItsSuccessorWaitsForIt()
+        {
+            using var backend = Lit(0xFF8040);
+            FakeWootingChannel channel;
+            lock (_channels) channel = _channels.Single();
+            using var gate = new ManualResetEventSlim(false);
+            Volatile.Write(ref channel.Hold, gate);
+            try
+            {
+                Advance(WootingRgbSdkBackend.RepaintMs);
+                Light(0x102030);
+                backend.Wake();
+                Assert.True(channel.Held.Wait(30000), "the worker is inside a write");
+                backend.Stop();
+                Unlight();
+                backend.Start();
+            }
+            finally
+            {
+                gate.Set();
+            }
+            Assert.True(SpinWait.SpinUntil(() => channel.Disposed, 30000), "the old worker came out and ended");
+            Assert.Contains(channel.Log(), e => e.Kind == 'F' && Hex(e.Report) == "00D0DA2000000000");
+            Assert.Empty(backend.Recorded);
+        }
+
+        /// <summary>A worker a stop gave up on comes out after the next run's
+        /// worker has left its wait and lit the keyboard on a backend of its
+        /// own, as each engine start has it. The old worker sends no reset, and
+        /// the keyboard's map stays up.</summary>
+        [Fact]
+        public void AWorkerAStopGaveUpOn_SendsNoReset_OnceTheNextRunHasTheKeyboard()
+        {
+            using var backend = Lit(0xFF8040, stopJoinMs: 50);
+            FakeWootingChannel channel;
+            lock (_channels) channel = _channels.Single();
+            using var gate = new ManualResetEventSlim(false);
+            Volatile.Write(ref channel.Hold, gate);
+            WootingRgbSdkBackend next = null;
+            try
+            {
+                Advance(WootingRgbSdkBackend.RepaintMs);
+                Light(0x102030);
+                backend.Wake();
+                Assert.True(channel.Held.Wait(30000), "the worker is inside a write");
+                backend.Dispose();
+                next = Started(stopJoinMs: 50);
+                Passes(next, 3);
+                lock (_channels) Assert.Equal(2, _channels.Count);
+            }
+            finally
+            {
+                gate.Set();
+            }
+            Assert.True(SpinWait.SpinUntil(() => channel.Disposed, 30000), "the old worker came out and ended");
+            Assert.DoesNotContain(channel.Log(), e => e.Kind == 'F' && Hex(e.Report) == "00D0DA2000000000");
+            Assert.NotNull(PeripheralLightMaps.For(Route));
+            next.Dispose();
+        }
+
+        /// <summary>The next run tried the keyboard and it did not open, so that
+        /// run has nothing to reset and the old worker still does.</summary>
+        [Fact]
+        public void AWorkerAStopGaveUpOn_SendsTheReset_WhenTheNextRunsOpenFails()
+        {
+            using var backend = Lit(0xFF8040, stopJoinMs: 50);
+            FakeWootingChannel channel;
+            lock (_channels) channel = _channels.Single();
+            using var gate = new ManualResetEventSlim(false);
+            Volatile.Write(ref channel.Hold, gate);
+            WootingRgbSdkBackend next = null;
+            try
+            {
+                Advance(WootingRgbSdkBackend.RepaintMs);
+                Light(0x102030);
+                backend.Wake();
+                Assert.True(channel.Held.Wait(30000), "the worker is inside a write");
+                backend.Dispose();
+                _opens = false;
+                next = Started(stopJoinMs: 50);
+                Passes(next, 3);
+            }
+            finally
+            {
+                gate.Set();
+            }
+            Assert.True(SpinWait.SpinUntil(() => channel.Disposed, 30000), "the old worker came out and ended");
+            Assert.Contains(channel.Log(), e => e.Kind == 'F' && Hex(e.Report) == "00D0DA2000000000");
+            next.Dispose();
         }
 
         /// <summary>The worker's stop sends the reset, and the crash path

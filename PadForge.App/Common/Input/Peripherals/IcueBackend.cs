@@ -27,6 +27,16 @@ namespace PadForge.Common.Input.Peripherals
     /// <see cref="DeviceReadMs"/> and after a device is not found, since a
     /// device can come or go while the session runs.</para>
     ///
+    /// <para>Names. A type's map carries the names Map Key Lights learned for
+    /// it (<see cref="LearnedKeyMaps"/>), again whenever they change, as every
+    /// other backend whose map has a product does.</para>
+    ///
+    /// <para>Refusal. The path exists only while iCUE runs
+    /// (<see cref="IcueRoute.AddShared"/>), so a session that does not come up
+    /// is iCUE answering no, which the tab says in place of its waiting line
+    /// (<see cref="PeripheralOutputs.RefusalOn"/>). CSS_ConnectionRefused
+    /// names a setting (iCUESDK.h:40, docs/index.html:166).</para>
+    ///
     /// <para>Paint. Each claimed type's picture is rendered on its map and
     /// sent to each of its devices through CorsairSetLedColors, the call
     /// RGB.NET's update queue makes (CorsairDeviceUpdateQueue.cs:400-410).
@@ -67,6 +77,9 @@ namespace PadForge.Common.Input.Peripherals
         /// Update/TimerUpdateTrigger.cs:36).</summary>
         internal const int RepaintMs = 33;
 
+        /// <summary>iCUE refuses SDK clients: the setting is off.</summary>
+        private static readonly ProgramRefusal SdkOff = new(null, SettingOff: true);
+
         /// <summary>One device the session holds.</summary>
         private sealed class Device
         {
@@ -91,9 +104,12 @@ namespace PadForge.Common.Input.Peripherals
         private int _passes;
         private int _waitMs;
 
-        /// <summary>The newest worker thread of any instance, which the next
-        /// one waits for, so two never hold the SDK at once.</summary>
-        private static Thread s_lastWorker;
+        /// <summary>The route's workers over the engine's restarts, so two
+        /// never hold the SDK at once.</summary>
+        private static readonly WorkerSuccession s_workers = new();
+
+        /// <summary>What a worker claims when it wants the SDK.</summary>
+        private const string SdkKey = "sdk";
 
         public IcueBackend() : this(null, null, IdleTickMs) { }
 
@@ -134,12 +150,14 @@ namespace PadForge.Common.Input.Peripherals
             _thread.Start();
             PeripheralOutputs.LightingChanged += Wake;
             PeripheralOutputs.LinksChanged += Wake;
+            LearnedKeyMaps.Changed += OnLearned;
         }
 
         public void Stop()
         {
             PeripheralOutputs.LightingChanged -= Wake;
             PeripheralOutputs.LinksChanged -= Wake;
+            LearnedKeyMaps.Changed -= OnLearned;
             if (_thread == null) return;
             _run.Stop = true;
             Wake();
@@ -176,6 +194,10 @@ namespace PadForge.Common.Input.Peripherals
             try { _wake.Set(); } catch (ObjectDisposedException) { }
         }
 
+        /// <summary>A name learned with Map Key Lights wakes the worker, which
+        /// gives its maps the name on its next pass.</summary>
+        private void OnLearned(object sender, EventArgs e) => Wake();
+
         /// <summary>What one type should show now: its path's ruling color
         /// and key frame, or false when no claim resolves on it or no row
         /// links it.</summary>
@@ -198,10 +220,8 @@ namespace PadForge.Common.Input.Peripherals
 
         private void Worker(WorkerRun run)
         {
-            var previous = Interlocked.Exchange(ref s_lastWorker, Thread.CurrentThread);
-            if (previous != null && previous != Thread.CurrentThread && previous.IsAlive && !previous.Join(_stopJoinMs))
-                PadForge.Engine.SdlDiagLog.WriteLine("PERIPHERAL iCUE previous worker still running, starting anyway");
-            var session = new Session(this);
+            s_workers.Enter(run, _stopJoinMs, "iCUE");
+            var session = new Session(this, run);
             try
             {
                 while (!run.Stop)
@@ -213,10 +233,12 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         if (session.Open) session.End();
                         session.Retry = 0;
+                        PeripheralOutputs.SetProgramRefusal(OutputFamily.IcueDevice, null);
                         PeripheralOutputs.SetBackendState(OutputFamily.IcueDevice, BackendState.Idle);
                     }
                     else
                     {
+                        s_workers.Claim(SdkKey, run);
                         session.Pass(run, links, now, ref due);
                     }
                     int wait = due == long.MaxValue ? _idleTickMs : (int)Math.Clamp(due - _ticks(), 1, _idleTickMs);
@@ -232,13 +254,13 @@ namespace PadForge.Common.Input.Peripherals
             }
             finally
             {
-                // A worker that outlived its Stop into the next run frees its
-                // library and nothing more: the next run's worker holds the
-                // SDK and the maps now.
-                var current = _run;
-                if (current == null || ReferenceEquals(current, run))
+                // A worker that outlived its Stop into a run that wants the SDK
+                // frees its library and nothing more: the next run's worker holds
+                // the SDK and the maps now.
+                if (s_workers.MayReach(SdkKey, run))
                 {
                     try { session.End(); } catch { }
+                    PeripheralOutputs.SetProgramRefusal(OutputFamily.IcueDevice, null);
                     PeripheralOutputs.SetBackendState(OutputFamily.IcueDevice, BackendState.Idle);
                 }
                 else
@@ -266,12 +288,26 @@ namespace PadForge.Common.Input.Peripherals
             private long _nextList;
             private string _loadFailure;
             private readonly List<Device> _devices = new();
-            private readonly Dictionary<string, LightMap> _maps = new();
+
+            /// <summary>Each type's map from its devices' LEDs, and that map
+            /// with the names Map Key Lights learned, the one published and
+            /// painted by.</summary>
+            private readonly Dictionary<string, (LightMap Base, LightMap Map)> _maps = new();
+
+            /// <summary>The <see cref="LearnedKeyMaps.Version"/> the maps were
+            /// last given their names at.</summary>
+            private int _mapsVersion = -1;
             private readonly Dictionary<string, long> _sentAt = new();
 
             public long Retry;
 
-            public Session(IcueBackend owner) => _owner = owner;
+            private readonly WorkerRun _run;
+
+            public Session(IcueBackend owner, WorkerRun run)
+            {
+                _owner = owner;
+                _run = run;
+            }
 
             public bool Open => _loaded;
 
@@ -291,20 +327,28 @@ namespace PadForge.Common.Input.Peripherals
                     }
                 }
                 if (run.Stop) return;
-                if (_native.State != IcueRoute.StateConnected)
+                int state = _native.State;
+                if (state != IcueRoute.StateConnected)
                 {
                     // Connecting, timed out, refused or lost: the SDK tries
                     // again on its own, and the devices it listed are gone
-                    // until it is back.
+                    // until it is back. Refused and timed out are iCUE, which
+                    // runs, not answering. The other two pass by themselves.
                     if (_listed) Forget();
+                    PeripheralOutputs.SetProgramRefusal(OutputFamily.IcueDevice,
+                        state == IcueRoute.StateConnectionRefused ? SdkOff
+                        : state == IcueRoute.StateTimeout ? ProgramRefusal.Everything
+                        : null);
                     PeripheralOutputs.SetBackendState(OutputFamily.IcueDevice, BackendState.Waiting);
                     Soonest(ref due, now + StatePollMs);
                     return;
                 }
+                PeripheralOutputs.SetProgramRefusal(OutputFamily.IcueDevice, null);
                 if (!_listed || now >= _nextList)
                 {
                     if (!List(now)) return;
                 }
+                else if (LearnedKeyMaps.Version != _mapsVersion) Publish();
                 Soonest(ref due, _nextList);
                 bool lost = false;
                 foreach (var (key, _) in IcueRoute.Types)
@@ -338,6 +382,7 @@ namespace PadForge.Common.Input.Peripherals
                     }
                     Unload();
                     Retry = now + RetryMs;
+                    PeripheralOutputs.SetProgramRefusal(OutputFamily.IcueDevice, ProgramRefusal.Everything);
                     PeripheralOutputs.SetBackendState(OutputFamily.IcueDevice, BackendState.Waiting);
                     return false;
                 }
@@ -365,6 +410,7 @@ namespace PadForge.Common.Input.Peripherals
                     PadForge.Engine.SdlDiagLog.WriteLine("PERIPHERAL iCUE CorsairConnect refused: " + error);
                     Unload();
                     Retry = now + RetryMs;
+                    PeripheralOutputs.SetProgramRefusal(OutputFamily.IcueDevice, ProgramRefusal.Everything);
                     PeripheralOutputs.SetBackendState(OutputFamily.IcueDevice, BackendState.Waiting);
                     return false;
                 }
@@ -415,23 +461,38 @@ namespace PadForge.Common.Input.Peripherals
             }
 
             /// <summary>Publishes each type's map from its devices' LEDs, and
-            /// takes away the map of a type with no device.</summary>
+            /// takes away the map of a type with no device. A type whose LEDs
+            /// did not change keeps its map, so the Lighting tab does not
+            /// redraw on every read, until the names Map Key Lights learned
+            /// change (HidppBackend.SyncMaps).</summary>
             private void Publish()
             {
+                int version = LearnedKeyMaps.Version;
+                bool relearn = version != _mapsVersion;
+                _mapsVersion = version;
                 foreach (var (key, _) in IcueRoute.Types)
                 {
                     var leds = new List<IReadOnlyList<IcueLedPosition>>();
                     foreach (var device in _devices)
                         if (device.Key == key) leds.Add(device.Leds);
-                    var map = IcueRoute.Map(key, leds);
+                    var fresh = IcueRoute.Map(key, leds);
                     var path = new OutputPath(OutputFamily.IcueDevice, key);
-                    if (map == null)
+                    if (fresh == null)
                     {
                         if (_maps.Remove(key)) PeripheralLightMaps.Remove(path);
                         continue;
                     }
-                    if (_maps.TryGetValue(key, out var old) && SameLights(old, map)) continue;
-                    _maps[key] = map;
+                    if (_maps.TryGetValue(key, out var known) && SameLights(known.Base, fresh))
+                    {
+                        if (!relearn) continue;
+                        var again = LearnedKeyMaps.Apply(known.Base);
+                        if (SameLights(again, known.Map)) continue;
+                        _maps[key] = (known.Base, again);
+                        PeripheralLightMaps.Publish(path, again);
+                        continue;
+                    }
+                    var map = LearnedKeyMaps.Apply(fresh);
+                    _maps[key] = (fresh, map);
                     PeripheralLightMaps.Publish(path, map);
                     foreach (var device in _devices)
                         if (device.Key == key) device.Shown = null;
@@ -450,7 +511,8 @@ namespace PadForge.Common.Input.Peripherals
             /// the session is lost.</summary>
             private bool Paint(string key, int rgb, KeyFrame keys, long now, ref long due)
             {
-                if (!_maps.TryGetValue(key, out var map)) return true;
+                if (!_maps.TryGetValue(key, out var maps)) return true;
+                var map = maps.Map;
                 var colors = LightRenderer.Render(map, rgb, keys);
                 int fill = LightRenderer.Fill(rgb, keys);
                 bool pending = false;
@@ -519,7 +581,9 @@ namespace PadForge.Common.Input.Peripherals
                 _listed = false;
                 _nextList = 0;
                 _sentAt.Clear();
-                foreach (var key in _maps.Keys) PeripheralLightMaps.Remove(new OutputPath(OutputFamily.IcueDevice, key));
+                // The maps are the next run's once it wants the SDK.
+                if (s_workers.MayReach(SdkKey, _run))
+                    foreach (var key in _maps.Keys) PeripheralLightMaps.Remove(new OutputPath(OutputFamily.IcueDevice, key));
                 _maps.Clear();
             }
 

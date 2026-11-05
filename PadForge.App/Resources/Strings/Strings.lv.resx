@@ -780,6 +780,8 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} atkal izmanto savu Windows draiveri.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Ierīces {0} Windows draiveri nevarēja atjaunot.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows atjaunoja ierīcei {0} tās draiveri. Atlasiet to lapā „Ierīces”, lai to atkal pārslēgtu.</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} vairs neizmanto PadForge draiveri.</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} joprojām izmanto PadForge draiveri. Lai atdotu to Windows, atlasiet to lapā Ierīces.</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Izmantot tikai programmā PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge pārslēdz šo tastatūru uz Windows WinUSB draiveri un pati to nolasa. Pēc tam Windows vairs neraksta ar šo tastatūru nevienā programmā, pat ja PadForge ir aizvērts, līdz tās Windows draiveris tiek atjaunots šajā lapā. Tās piešķīrumi un makro turpina darboties, kamēr darbojas PadForge.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge pārslēdz šo peli uz Windows WinUSB draiveri un pati to nolasa. Pēc tam Windows vairs nekustina rādītāju ar šo peli nevienā programmā, pat ja PadForge ir aizvērts, līdz tās Windows draiveris tiek atjaunots šajā lapā. Tās piešķīrumi un makro turpina darboties, kamēr darbojas PadForge.</value></data>
@@ -957,6 +959,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>Vibrācija tiek atskaņota caur taktilo apstrādātāju programmā SteelSeries GG.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG vada visas taktilās Rival peles vienlaikus, tāpēc to vibrāciju nosaka tā, kas piešķirta virtuālajam kontrollerim {0}.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>Gaida SteelSeries GG. Vibrācija tiks atskaņota, tiklīdz GG darbosies.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG darbojas, bet neatbild PadForge. Vibrācija darbosies, tiklīdz tas atbildēs.</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>Vibrācija tiek atskaņota jūsu Razer Sensa HD ierīcēs, izmantojot Razer Synapse.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Gaida Sensa HD Haptics programmā Razer Synapse 4. Programmā Synapse iestatiet ierīces opciju Haptic Source uz Sensa HD Games.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Kreisā mēlīte</value></data>
@@ -1000,6 +1003,12 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Krāsas tiek sūtītas tieši uz {0}. Kamēr ierīce ir izgaismota, tās iebūvētās atmiņas režīms ir izslēgts.</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Krāsas tiek sūtītas tieši uz {0}. Mainīgajām krāsām, piemēram, krāsu ciklam vai skaņai sekojošām krāsām, klēpjdatora BIOS jābūt ieslēgtam Dynamic Lighting. Bez tā taustiņi saglabā pēdējās nemainīgās krāsas.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Krāsas tiek sūtītas tieši uz {0}. Ja klēpjdatora BIOS ir ieslēgts Dynamic Lighting, taustiņus tā vietā izgaismo Windows dinamiskais apgaismojums. Izslēdziet šai tastatūrai dinamisko apgaismojumu Windows iestatījumos, un taustiņus izgaismos PadForge, arī ar mainīgajām krāsām.</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>Krāsas tiek sūtītas tieši uz {0}. Tā katru attēlu saglabā savā atmiņā, tāpēc mainīgas krāsas, piemēram, krāsu cikls vai skaņai sekojošas krāsas, netiek rādītas. Nemainīga krāsa tiek rādīta.</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>Krāsas tiek sūtītas tieši uz {0}. Tā katru attēlu saglabā savā atmiņā, tāpēc mainīgas krāsas, piemēram, krāsu cikls vai skaņai sekojošas krāsas, netiek rādītas. Nemainīga krāsa tiek rādīta. Pirmais attēls pārraksta tastatūrā saglabātos efektus, un vecie neatgriežas.</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>Seriālā ierīce portā {0}</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>Šī ierīce ir pievienota, bet nepieņēma PadForge krāsas. PadForge mēģina vēlreiz katru minūti.</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows tur šo ierīci kā tastatūru vai peli un noraida ziņojumu, kas iestata tās krāsas, tāpēc PadForge nevar to izgaismot operētājsistēmā Windows.</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>Cita programma ir atvērusi šo ierīci, tāpēc PadForge nevar to izgaismot. PadForge izgaismos to, tiklīdz šī programma aizvērsies.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Šī ierīce vēl nav atbildējusi. Tās krāsas parādīsies, tiklīdz tā pamodīsies.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Krāsas tiek sūtītas caur {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Krāsas tiek sūtītas caur {0}, kas vienlaikus izgaismo visas šāda veida ierīces. Kamēr {0} nedarbojas, PadForge izgaismo šo ierīci pats.</value></data>
@@ -1007,7 +1016,9 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Krāsas tiek sūtītas caur OpenRGB SDK Server. Kamēr OpenRGB nedarbojas, PadForge šo ierīci izgaismo pats.</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Krāsas tiek sūtītas caur OpenRGB SDK Server.</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB patur šo ierīci, un tam nav Direct režīma šai ierīcei, tāpēc tās apgaismojums paliek OpenRGB ziņā.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB darbojas ar izslēgtu SDK Server, tāpēc PadForge atstāj šo ierīci OpenRGB ziņā. Ieslēdziet SDK Server programmā OpenRGB, un PadForge izgaismos ierīci caur to.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB darbojas, bet tā SDK Server neatbild portā {0}, tāpēc PadForge atstāj šo ierīci OpenRGB ziņā. Ieslēdziet SDK Server programmā OpenRGB, un PadForge izgaismos ierīci caur to.</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE darbojas ar izslēgtu SDK. Ieslēdziet iCUE SDK iCUE iestatījumos, un PadForge izgaismos ierīci caur to.</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} darbojas un neļāva PadForge izgaismot savas ierīces. PadForge turpina lūgt.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} vienlaikus izgaismo visas šāda veida ierīces, tāpēc to krāsu nosaka ierīce, kas piešķirta virtuālajam kontrollerim {1}.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} vienlaikus izgaismo visas šāda veida ierīces, tāpēc to krāsu nosaka rinda {1} virtuālajā kontrollerī {2}.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Šo ierīci izgaismo arī virtuālais kontrolleris {0}, un redzama ir tā krāsa.</value></data>
@@ -1025,7 +1036,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>austiņas</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>mātesplates, videokartes un atmiņu</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>mātesplates un videokartes</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>peles paliktņus un austiņu statīvus</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>peles paliktņus, austiņas un austiņu statīvus</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Gaismas josla</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Ievadiet sešciparu heksadecimālu krāsu (RRGGBB vai #RRGGBB) un nospiediet Enter vai noklikšķiniet citur, lai to lietotu.</value></data>
@@ -4671,6 +4682,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Notiek savienojuma izveide ar kanāla {0} tērzēšanu…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Notiek kanāla {0} tērzēšanas lasīšana.</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Neizdevās sasniegt kanāla {0} tērzēšanu. Mēģina vēlreiz.</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch nav tērzēšanas kanālam {0}. Pārbaudiet kanāla nosaukumu.</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Apturēts.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Kontrollera attēls jūsu pārraidei. Pievienojiet šo adresi programmā OBS kā pārlūka avotu:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Kontrollera attēlam jūsu pārraidei ir vajadzīgs Tīmekļa kontrolleris un tā vienkāršā HTTP adrese. Kartītē Tīmekļa kontrolleris ieslēdziet Nodrošināt arī vienkāršu HTTP. Ar Tikai šis dators pietiek programmai OBS šajā datorā.</value></data>

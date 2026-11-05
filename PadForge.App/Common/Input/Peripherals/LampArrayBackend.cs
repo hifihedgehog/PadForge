@@ -804,10 +804,8 @@ namespace PadForge.Common.Input.Peripherals
 
         private static readonly (string Path, byte[] HandBack)[] NoClaims = Array.Empty<(string, byte[])>();
 
-        /// <summary>The newest worker thread of any instance, which the
-        /// next one waits for. Static because the collections it holds are
-        /// the machine's.</summary>
-        private static Thread s_lastWorker;
+        /// <summary>The family's workers over the engine's restarts.</summary>
+        private static readonly WorkerSuccession s_workers = new();
 
         private static readonly long s_clockStart = Stopwatch.GetTimestamp();
 
@@ -958,7 +956,8 @@ namespace PadForge.Common.Input.Peripherals
         /// never past the deadline. Each unit still on record after that
         /// goes back through a write that opens a handle of its own, each
         /// bounded, until the deadline. A unit Windows lights at that
-        /// moment is skipped, as the worker skips it.</summary>
+        /// moment is skipped, as the worker skips it, and so is one OpenRGB
+        /// holds (#557), as HidLightingBackend.ReleaseClaimedNow skips it.</summary>
         public void ReleaseClaimedNow(long deadline)
         {
             SignalStop();
@@ -972,7 +971,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 left = deadline - _deadlineTicks();
                 if (left <= 0) break;
-                if (LitNow(path)) continue;
+                if (LitNow(path) || PeripheralOutputs.TakenByOpenRgb(new OutputPath(OutputFamily.LampArrayUnit, path))) continue;
                 try { _setFeatureOnce(path, handBack, (int)Math.Min(OneShotMs, left)); }
                 catch { }
             }
@@ -1002,11 +1001,7 @@ namespace PadForge.Common.Input.Peripherals
             // its collections, and its finally hands its units back, so a
             // new worker waits for it before it opens anything, the bounded
             // join HidppBackend.Worker makes for its predecessor.
-            var previous = Interlocked.Exchange(ref s_lastWorker, Thread.CurrentThread);
-            if (previous != null && previous != Thread.CurrentThread && previous.IsAlive
-                && !previous.Join(_predecessorJoinMs))
-                PadForge.Engine.SdlDiagLog.WriteLine(
-                    $"PERIPHERAL LampArray previous worker still running after {_predecessorJoinMs} ms, starting anyway");
+            s_workers.Enter(run, _predecessorJoinMs, "LampArray");
 
             var lamps = new Dictionary<string, Lamp>(StringComparer.OrdinalIgnoreCase);
             try
@@ -1049,7 +1044,22 @@ namespace PadForge.Common.Input.Peripherals
 
                     var links = PeripheralOutputs.Links;
                     foreach (var lamp in lamps.Values)
-                        if (lamp.Unit != null && !lamp.Asleep) Paint(run, lamp, links, ref pass);
+                    {
+                        if (lamp.Unit == null) continue;
+                        if (!lamp.Asleep)
+                        {
+                            Paint(run, lamp, links, ref pass);
+                        }
+                        else if (lamp.Owed && links.TakenByOpenRgb.Contains(new OutputPath(OutputFamily.LampArrayUnit, lamp.Unit.Path)))
+                        {
+                            // OpenRGB took the device while the unit slept:
+                            // the linker closes the path "asleep or not", and
+                            // the hand-back would land on OpenRGB's lighting.
+                            // Paint drops the debt of a unit that is awake.
+                            lamp.Owed = false;
+                            pass.Claims = true;
+                        }
+                    }
 
                     // The first scan is over once every collection of the
                     // first walk has answered, been turned down, or been
@@ -1087,11 +1097,18 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     // Each device goes back to its own effect before its
                     // channel closes, so stopping the engine leaves no
-                    // keyboard frozen on the last color.
-                    try { HandBackOnStop(lamp); } catch { }
+                    // keyboard frozen on the last color. Not a device a later
+                    // run has claimed since: what it shows is that run's to
+                    // say.
+                    try { HandBackOnStop(run, lamp); } catch { }
                     Dispose(ref lamp.Io);
                     Dispose(ref lamp.ProbeIo);
                 }
+                // The maps go with the list they were the lights of, unless
+                // a later worker has left its wait, whose maps they are by then.
+                if (s_workers.Holds(run))
+                    foreach (var lamp in lamps.Values)
+                        PeripheralLightMaps.Remove(new OutputPath(OutputFamily.LampArrayUnit, lamp.Path));
                 if (InCharge(run))
                 {
                     Volatile.Write(ref _claimed, NoClaims);
@@ -1533,6 +1550,7 @@ namespace PadForge.Common.Input.Peripherals
                 // out, so no moment exists in which the device is claimed
                 // and the hand-back does not know it (HidppBackend.PaintLighting).
                 NoteClaimed(unit);
+                s_workers.Claim(unit.Path, run);
                 pass.Claims = true;
                 if (unit.HasControl && !Set(lamp, LampArrayProtocol.Control(unit.ControlId, autonomous: false)))
                 {
@@ -1765,9 +1783,11 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The lamps could not be read. The unit is painted with
         /// the frame that needs no level count, and is not asked again
-        /// while it stays awake.</summary>
+        /// while it stays awake. A map published before it fell asleep goes,
+        /// so the Lighting tab stops offering lights it paints one color.</summary>
         private static void Blind(Lamp lamp, string why)
         {
+            PeripheralLightMaps.Remove(new OutputPath(OutputFamily.LampArrayUnit, lamp.Unit.Path));
             lamp.Unit = lamp.Unit with { Runs = null, LampLevels = null, Map = null, DeviceMap = null };
             lamp.Descriptions = null;
             lamp.LampsRead = true;
@@ -1879,14 +1899,19 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>The stop path's hand-back, on the worker's own channel.
-        /// A unit Windows lights gets nothing. A unit that is asleep gets
+        /// A unit Windows lights gets nothing, nor one OpenRGB holds (#557),
+        /// nor one a later run has claimed. A unit that is asleep gets
         /// nothing either, unless its hand-back is owed
         /// (<see cref="Lamp.Owed"/>). That one goes out through a handle
         /// of its own, bounded, as on the crash path, since the worker has
         /// no channel to the unit.</summary>
-        private void HandBackOnStop(Lamp lamp)
+        private void HandBackOnStop(WorkerRun run, Lamp lamp)
         {
             var unit = lamp.Unit;
+            if (unit != null
+                && (PeripheralOutputs.TakenByOpenRgb(new OutputPath(OutputFamily.LampArrayUnit, unit.Path))
+                    || !s_workers.MayReach(unit.Path, run)))
+                return;
             if (lamp.Owed && unit != null)
             {
                 if (lamp.WindowsLit || LitNow(unit.Path)) return;

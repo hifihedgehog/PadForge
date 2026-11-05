@@ -30,27 +30,30 @@ namespace PadForge.Common.Input.Peripherals
         private static IEnumerable<PluginDevice> CorsairHeadsets()
         {
             const string Headsets = "Corsair/Modern_Corsair/Corsair_Headset_Controller.js";
-            foreach (var (name, pid, wireless) in new (string, ushort, bool)[]
+            // The interfaces of each model's list of endpoints, in its order
+            // (Corsair_Headset_Controller.js:430-650, its Validate on master for the last).
+            int[] three = { 3 }, four = { 4 }, threeFirst = { 3, 4 }, fourFirst = { 4, 3 };
+            foreach (var (name, pid, wireless, interfaces) in new (string, ushort, bool, int[])[]
             {
-                ("Corsair Virtuoso Wireless", 0x0A40, true),
-                ("Corsair Virtuoso", 0x0A41, false),
-                ("Corsair Virtuoso Wireless", 0x0A42, true),
-                ("Corsair Virtuoso", 0x0A43, false),
-                ("Corsair Virtuoso Wireless", 0x0A44, true),
-                ("Corsair Virtuoso Wireless", 0x0A4B, true),
-                ("Corsair Virtuoso Wireless", 0x0A4C, true),
-                ("Corsair Virtuoso", 0x0A5A, false),
-                ("Corsair Virtuoso Wireless", 0x0A5C, true),
-                ("Corsair Virtuoso SE", 0x0A3D, false),
-                ("Corsair Virtuoso SE Wireless", 0x0A3E, true),
-                ("Corsair Virtuoso XT", 0x0A62, false),
-                ("Corsair Virtuoso XT Wireless", 0x0A64, true),
-                ("Corsair HS80 RGB", 0x0A69, false),
-                ("Corsair HS80 RGB Wireless", 0x0A6B, true),
-                ("Corsair HS80 RGB White", 0x0A71, false),
-                ("Corsair HS80 RGB White Wireless", 0x0A73, true),
+                ("Corsair Virtuoso Wireless", 0x0A40, true, four),
+                ("Corsair Virtuoso", 0x0A41, false, threeFirst),
+                ("Corsair Virtuoso Wireless", 0x0A42, true, threeFirst),
+                ("Corsair Virtuoso", 0x0A43, false, four),
+                ("Corsair Virtuoso Wireless", 0x0A44, true, three),
+                ("Corsair Virtuoso Wireless", 0x0A4B, true, four),
+                ("Corsair Virtuoso Wireless", 0x0A4C, true, four),
+                ("Corsair Virtuoso", 0x0A5A, false, four),
+                ("Corsair Virtuoso Wireless", 0x0A5C, true, four),
+                ("Corsair Virtuoso SE", 0x0A3D, false, four),
+                ("Corsair Virtuoso SE Wireless", 0x0A3E, true, fourFirst),
+                ("Corsair Virtuoso XT", 0x0A62, false, three),
+                ("Corsair Virtuoso XT Wireless", 0x0A64, true, three),
+                ("Corsair HS80 RGB", 0x0A69, false, three),
+                ("Corsair HS80 RGB Wireless", 0x0A6B, true, three),
+                ("Corsair HS80 RGB White", 0x0A71, false, three),
+                ("Corsair HS80 RGB White Wireless", 0x0A73, true, three),
                 // On master only, and not on beta's list.
-                ("Corsair Virtuoso Gaming SE", 0xA346, true),
+                ("Corsair Virtuoso Gaming SE", 0xA346, true, four),
             })
             {
                 // The device byte: 09 through the dongle, 08 on the cable.
@@ -61,7 +64,9 @@ namespace PadForge.Common.Input.Peripherals
                     VendorId = CorsairLights.VendorId,
                     ProductId = pid,
                     Plugin = Headsets,
-                    // Interface 3 or 4 by the model: the plugin tries the ones it lists.
+                    // Interface 3 or 4 by the model: the plugin takes the first it lists that
+                    // the headset has.
+                    Interfaces = interfaces,
                     UsagePage = 0xFF42,
                     Usage = 0x0001,
                     OutputLength = 64,
@@ -71,7 +76,9 @@ namespace PadForge.Common.Input.Peripherals
                     Programs = s_icue,
                     // A wireless headset drops the host's colors when it sleeps. The
                     // plugin watches for that on its reports, and a keep-alive takes
-                    // it again with no second collection.
+                    // it again with no second collection. The brightness is the
+                    // plugin's way as well: read first, and written only when it is
+                    // not 1000 (modernDirectLightingMode).
                     KeepAliveMs = wireless ? 5000 : 0,
                     Start = new[]
                     {
@@ -79,7 +86,9 @@ namespace PadForge.Common.Input.Peripherals
                         PluginStep.Wait(100),
                         PluginStep.Output(Frame(64, 0x02, device, 0x0D, 0x00, 0x01)),
                         PluginStep.Wait(100),
-                        PluginStep.Output(Frame(64, 0x02, device, 0x01, 0x02, 0x00, 0xE8, 0x03)),
+                        PluginStep.OutputUnlessRead(Frame(64, 0x02, device, 0x02, 0x02, 0x00), 100,
+                            answer => answer.Length > 5 && answer[4] == 0xE8 && answer[5] == 0x03,
+                            Frame(64, 0x02, device, 0x01, 0x02, 0x00, 0xE8, 0x03)),
                     },
                     Picture = colors => VirtuosoPicture(device, colors),
                     HandBack = new[] { PluginStep.Output(Frame(64, 0x02, device, 0x01, 0x03, 0x00, 0x01)) },
@@ -125,8 +134,7 @@ namespace PadForge.Common.Input.Peripherals
                     ProductId = pid,
                     Plugin = "Corsair/Void_HeadSets/" + plugin,
                     Interface = 3,
-                    // This model's plugin takes page FF00 as well.
-                    UsagePage = pid == 0x0A14 ? OpenRgbRegistration.Any : 0xFFC5,
+                    UsagePage = 0xFFC5,
                     Usage = 0x0001,
                     OutputLength = 20,
                     // The left and the right can.
@@ -235,6 +243,7 @@ namespace PadForge.Common.Input.Peripherals
                 Slots = 1,
                 Programs = s_icue,
                 RepaintMs = NexusRepaintMs,
+                PictureAgainMs = NexusPictureAgainMs,
                 Start = Ask(0x03, 0x1D, 0x01, 0x00)
                     .Concat(Ask(0x03, 0x19))
                     .Concat(Ask(0x03, 0x20, 0x00, 0x19, 0x79, 0xE7, 0x32, 0x2E, 0x30, 0x2E, 0x30, 0x2E, 0x33))
@@ -248,6 +257,11 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>A whole screen is 121 reports of 1,024 bytes, so pictures
         /// stay this far apart. No source bounds it, so the bound is PadForge's.</summary>
         internal const int NexusRepaintMs = 100;
+
+        /// <summary>How often the same screen goes out again. The whole screen on the shared
+        /// worker twice a second keeps every other unit waiting for no change, and this is the
+        /// interval of the other rows with a keep-alive of their own. No source bounds it.</summary>
+        internal const int NexusPictureAgainMs = 5000;
 
         private static PluginStep NexusOwnScreen(byte first, byte second)
         {
@@ -282,15 +296,6 @@ namespace PadForge.Common.Input.Peripherals
         // ── Roccat mice, dock, headsets and microphone (Roccat/*.js) ──
 
         private static readonly VendorProgram[] s_swarm = { VendorPrograms.RoccatSwarm };
-
-        private static PluginDevice RoccatRow(string name, ushort pid, string plugin) => new()
-        {
-            Name = name,
-            VendorId = 0x1E7D,
-            ProductId = pid,
-            Plugin = "Roccat/" + plugin,
-            Programs = s_swarm,
-        };
 
         private static PluginStep[] Steps(int waitMs, int length, params byte[][] heads)
         {
@@ -448,6 +453,9 @@ namespace PadForge.Common.Input.Peripherals
                 ProductId = 0x2D60,
                 Plugin = "Roccat/Roccat_Kain_200_Mouse_Wireless.js",
                 Programs = s_swarm,
+                Interface = 2,
+                UsagePage = 0xFF01,
+                Usage = 0x0001,
                 FeatureLength = 22,
                 Lights = new[] { Wheel(0), Logo(1) },
                 Slots = 2,
@@ -707,12 +715,11 @@ namespace PadForge.Common.Input.Peripherals
                         PluginStep.Output(Frame(64, 0x43, 0x97, 0x00, 0x10, 0x01)),
                     },
                     Picture = colors => FunctionPicture(colors, iso, mini),
-                    AskVariant = (io, _, _) =>
-                    {
-                        Func<int[], IEnumerable<PluginStep>> picture = colors => FunctionPicture(colors, iso, mini);
-                        if (FunctionFirmwareIsNew(io)) picture = FunctionNewPicture;
-                        return new PluginVariant(Zones(10), 10, picture);
-                    },
+                    // The plugin sends the new firmware's report only when a color changed
+                    // (NZXT_Function_Keyboard.js:338-342), so that firmware holds a picture.
+                    AskVariant = (io, _, _) => FunctionFirmwareIsNew(io)
+                        ? new PluginVariant(Zones(10), 10, FunctionNewPicture, PictureHolds: true)
+                        : new PluginVariant(Zones(10), 10, colors => FunctionPicture(colors, iso, mini)),
                 };
         }
 
@@ -912,6 +919,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Name = "Razer Chroma Light Strip Set",
                 VendorId = 0x1532,
+                Programs = VendorPrograms.Razer,
                 ProductId = 0x0F2C,
                 Plugin = "Razer/Razer_Chroma_Light_Strip_Set.js",
                 Interface = 1,
@@ -1074,16 +1082,22 @@ namespace PadForge.Common.Input.Peripherals
         /// firmware has the same IDs and no such protocol, so a session first asks
         /// for the firmware type (00 28), which only that firmware answers, with 01
         /// for mainline QMK or 02 for VIA (requestFirmwareType, Keychron_Q1_QMK_Keyboard.js).
-        /// With no such answer the board stays dark.
+        /// With no such answer the board takes what its firmware does speak, through VIA
+        /// or OpenRGB's QMK protocol, and stays dark with neither.
+        ///
+        /// <para>The plugins name interface 1 alone. The firmware speaks on QMK's raw HID
+        /// collection, page FF60 and usage 61 (RAW_USAGE_PAGE and RAW_USAGE_ID, qmk_firmware
+        /// tmk_core/protocol/usb_descriptor_common.h:44-50), so a row takes that collection and
+        /// no probe reaches a stock board's others, which belong to its own family or row. No
+        /// board's folder in Keychron-qmk_firmware defines either value otherwise. OpenRGB's
+        /// registration of Keychron's vendor puts <see cref="QmkLighting"/> ahead of this family
+        /// on the same collection, and it asks the firmware type first.</para>
         ///
         /// <para>A session turns the protocol's lighting on (00 25), and a picture
         /// goes out nine LEDs to a report (00 24, the first LED, the count, the
         /// colors). The hand-back turns it off (00 26), and the board's own effect
-        /// returns. The GMMK Pro's plugin asks its user whether the board is ANSI
-        /// or ISO and nothing on the wire says, so PadForge lists its ANSI keys.
-        /// The GMMK 2 96%'s second ID, 0x505B, is an EVision board in OpenRGB, whose
-        /// family lights it, and so stays there. The plugin for the Redragon K556
-        /// names no IDs.</para>
+        /// returns. The GMMK Pro's firmware says ISO in the third byte of its unique
+        /// identifier, 6, and any other byte takes the ANSI keys (GMMK_Pro_QMK_Keyboard.js).</para>
         /// </summary>
         private static IEnumerable<PluginDevice> QmkBoards()
         {
@@ -1098,7 +1112,10 @@ namespace PadForge.Common.Input.Peripherals
                         ProductId = product,
                         Plugin = board.Plugin,
                         Interface = 1,
+                        UsagePage = QmkRawHidLighting.RawPage,
+                        Usage = QmkRawHidLighting.RawUsage,
                         OutputLength = QmkReportLength,
+                        QmkFirmware = true,
                         BuildLights = () => PluginKeyNames.Lights(table.Value),
                         // At most what one byte of a report can number.
                         Slots = 256,
@@ -1330,8 +1347,6 @@ namespace PadForge.Common.Input.Peripherals
 
         // ── Speedlink ORIOS mouse, mousepad and keyboard (SpeedLink/*.js) ──
 
-        private static readonly VendorProgram s_orios = new("ORIOS", "ORIOS");
-
         private const int SonixPage = 0xFF1C;
         private const int SonixUsage = 0x0092;
 
@@ -1349,7 +1364,7 @@ namespace PadForge.Common.Input.Peripherals
                 OutputLength = 64,
                 Lights = Zones(6),
                 Slots = 6,
-                Programs = new[] { s_orios },
+                Programs = new[] { VendorPrograms.Orios },
                 Picture = colors => SonixPicture(Frame(64, 0x04, 0x00, 0x00, 0x12, 0x38), colors),
             };
             yield return new PluginDevice
@@ -1364,7 +1379,7 @@ namespace PadForge.Common.Input.Peripherals
                 OutputLength = 64,
                 Lights = Edges(10),
                 Slots = 10,
-                Programs = new[] { s_orios },
+                Programs = new[] { VendorPrograms.Orios },
                 Picture = colors => SonixPicture(Frame(64, 0x04, 0x00, 0x00, 0x12, 0x21), colors),
             };
             yield return new PluginDevice
@@ -1379,7 +1394,7 @@ namespace PadForge.Common.Input.Peripherals
                 OutputLength = 64,
                 Lights = PluginKeyNames.Lights(PluginKeyTables.SpeedlinkOriosKb, places: s_qwertz),
                 Slots = OriosKeyboardSlots,
-                Programs = new[] { s_orios },
+                Programs = new[] { VendorPrograms.Orios },
                 Picture = OriosKeyboardPicture,
             };
         }
@@ -1683,12 +1698,6 @@ namespace PadForge.Common.Input.Peripherals
             0x00, 0x51, 0x2C, 0x04, 0x00, 0x48, 0x64, 0x00, 0x00, 0x02, 0x07, 0x0E, 0xF5, 0x00, 0xFF, 0x1D, 0x00, 0x06, 0xFF,
             0x2B, 0x00, 0xFA, 0xFF, 0x39, 0x01, 0xFF, 0x00, 0x48, 0xFF, 0xF6, 0x00, 0x56, 0xFF, 0x78, 0x07, 0x64, 0xFF, 0x00, 0x0D);
 
-        /// <summary>The number pad comes off and goes on either side, and every
-        /// LED number moves with it. The keyboard reports the side on its
-        /// interface 2 as 03 81 04 00 and 1 for the right or 0 for the left, and
-        /// the plugin starts from the right. A light's address stays its LED
-        /// number with the pad on the right, and the frames take the other
-        /// side's number for the same key, so the card does not change.</summary>
         /// <summary>The pad's place as the keyboard reports it: byte 17 of its answer,
         /// FF with no pad and 01 for the right (ASUS_ROG_Claymore_II.js).</summary>
         internal static bool ClaymoreStartsLeft(IHidReportChannel io)
@@ -1698,6 +1707,12 @@ namespace PadForge.Common.Input.Peripherals
             return io.ReadInput(answer, AskMs) > 0 && answer[17] != 0xFF && answer[17] != 0x01;
         }
 
+        /// <summary>The number pad comes off and goes on either side, and every
+        /// LED number moves with it. The keyboard reports the side on its
+        /// interface 2 as 03 81 04 00 and 1 for the right or 0 for the left, and
+        /// the plugin starts from the right. A light's address stays its LED
+        /// number with the pad on the right, and the frames take the other
+        /// side's number for the same key, so the card does not change.</summary>
         internal static Func<int[], IEnumerable<PluginStep>> ClaymorePictureWith(IReadOnlyList<IHidReportChannel> siblings, bool startsLeft = false)
         {
             bool left = startsLeft;
@@ -1943,6 +1958,7 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     Name = name,
                     VendorId = 0x1532,
+                    Programs = VendorPrograms.Razer,
                     ProductId = pid,
                     Plugin = plugin,
                     Interface = 5,
@@ -1963,6 +1979,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Name = "Razer Raptor 27 Inch",
                 VendorId = 0x1532,
+                Programs = VendorPrograms.Razer,
                 ProductId = 0x0F12,
                 Plugin = "Razer/Razer_Raptor_27_Inch_Monitor.js",
                 Interface = 0,
@@ -2002,6 +2019,7 @@ namespace PadForge.Common.Input.Peripherals
             yield return new PluginDevice
             {
                 Name = "Logitech G19",
+                Programs = VendorPrograms.Logitech,
                 VendorId = 0x046D,
                 ProductId = 0xC229,
                 Plugin = "Logitech/Logitech_G19_Keyboard.js",

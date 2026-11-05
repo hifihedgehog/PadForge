@@ -107,6 +107,7 @@ namespace PadForge.Tests
         [InlineData("RawHidOutput.cs", "public static bool Write(string devicePath, byte[] buf)")]
         [InlineData("RawHidOutput.cs", "public static bool WriteOnce(string devicePath, byte[] buf, int timeoutMs = 1000)")]
         [InlineData("RawHidOutput.cs", "public static bool SetFeature(string devicePath, byte[] buf, bool stampSonyBtCrc)")]
+        [InlineData("RawHidOutput.cs", "public static bool SetFeatureOwnLengthFirst(string devicePath, byte[] report)")]
         [InlineData("VendorHidRuntime.cs", "public bool Open()")]
         public void EachHelperAsksBeforeItOpens(string file, string signature)
         {

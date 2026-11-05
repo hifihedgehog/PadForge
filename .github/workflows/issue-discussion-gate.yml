@@ -2,7 +2,8 @@
 #
 # Runs on every issue open/edit/reopen. Acts only on issues that carry the
 # `bug` label. Never acts on issues whose author is OWNER, COLLABORATOR,
-# or MEMBER.
+# or MEMBER. An edit or a reopen counts only when the reporter made it, so a
+# maintainer who edits or reopens an older report does not close it again.
 #
 # Parses the issue body for a Discussion URL of the shape:
 #   https://github.com/hifihedgehog/PadForge/discussions/<digits>
@@ -39,7 +40,10 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       ISSUE_NUMBER: ${{ github.event.issue.number }}
       ISSUE_AUTHOR_ASSOCIATION: ${{ github.event.issue.author_association }}
+      ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
       ISSUE_BODY: ${{ github.event.issue.body }}
+      EVENT_ACTION: ${{ github.event.action }}
+      EVENT_SENDER: ${{ github.event.sender.login }}
       REPO: ${{ github.repository }}
     steps:
       - name: Skip if issue author is a project member
@@ -52,7 +56,12 @@ jobs:
               echo "skip=true" >> "$GITHUB_OUTPUT"
               ;;
             *)
-              echo "skip=false" >> "$GITHUB_OUTPUT"
+              if [ "$EVENT_ACTION" != "opened" ] && [ "$EVENT_SENDER" != "$ISSUE_AUTHOR" ]; then
+                echo "$EVENT_SENDER, not the reporter, made this $EVENT_ACTION. Skipping gate."
+                echo "skip=true" >> "$GITHUB_OUTPUT"
+              else
+                echo "skip=false" >> "$GITHUB_OUTPUT"
+              fi
               ;;
           esac
 

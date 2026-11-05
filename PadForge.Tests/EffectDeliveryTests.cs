@@ -82,7 +82,9 @@ public sealed class EffectDeliveryTests(ITestOutputHelper output)
             dispatcher?.Dispose();lock(gate)clears.Remove(id);RemoteLinkOutputRouter.Unregister(path);RemoteLinkOutputRouter.ReleaseDevice(path);
             RemoteLinkOutputRouter.SendOutput=sender;UserEffectsDispatcher.SlotPerDeviceConfigsProvider=cfgs;
             SettingsManager.UserDevices=oldDevices;SettingsManager.UserSettings=oldSettings;
-            if(System.IO.File.Exists(file))System.IO.File.Delete(file);System.IO.Directory.Delete(dir);
+            // A virus scanner can still hold the file the frames landed in. Nothing the test
+            // says depends on the folder going away.
+            try{System.IO.Directory.Delete(dir,true);}catch(System.IO.IOException){}
         }
     }
 
@@ -182,7 +184,9 @@ public sealed class EffectDeliveryTests(ITestOutputHelper output)
         {
             dispatcher?.Dispose();seqs.TryRemove(file,out _);mics.Remove(id);
             UserEffectsDispatcher.SlotPerDeviceConfigsProvider=cfgs;SettingsManager.UserDevices=oldDevices;SettingsManager.UserSettings=oldSettings;
-            if(System.IO.File.Exists(file))System.IO.File.Delete(file);System.IO.Directory.Delete(dir);
+            // A virus scanner can still hold the file the frames landed in. Nothing the test
+            // says depends on the folder going away.
+            try{System.IO.Directory.Delete(dir,true);}catch(System.IO.IOException){}
         }
     }
 
@@ -192,7 +196,7 @@ public sealed class EffectDeliveryTests(ITestOutputHelper output)
     [Fact] public void ALateCommitCannotUndoAReArmOrANewerCommit()
     {
         var dispatcher=(UserEffectsDispatcher)System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(typeof(UserEffectsDispatcher));
-        foreach(var f in new[]{"_audioPrevGate","_audioCommitSeq","_prevHeadphoneVolume","_prevAudioOutputPath","_prevDs4MicArmed","_prevDs4UsbRoute"})
+        foreach(var f in new[]{"_audioPrevGate","_audioCommitSeq","_prevHeadphoneVolume","_prevAudioOutputPath","_prevDs4MicArmed","_prevDs4UsbRoute","_usbRouteRetryAt"})
         {
             var field=typeof(UserEffectsDispatcher).GetField(f,Private)!;
             field.SetValue(dispatcher,Activator.CreateInstance(field.FieldType));

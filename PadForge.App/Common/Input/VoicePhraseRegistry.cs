@@ -13,7 +13,9 @@ namespace PadForge.Common.Input
     /// 0 stays "Any Phrase", and each phrase keeps the button it was assigned
     /// at registration forever, so removing a middle phrase leaves a gap
     /// rather than renumbering the others (renumbering would silently repoint
-    /// every existing mapping). Mirrors <see cref="NfcTagRegistry"/>: a static
+    /// every existing mapping). A new phrase takes the lowest free button, so
+    /// <see cref="ButtonFreed"/> has everything mapped to a removed phrase's
+    /// button cleared first. Mirrors <see cref="NfcTagRegistry"/>: a static
     /// registry, a <see cref="RegistryChanged"/> event for UI refresh, and a
     /// Load/Save pair that SettingsService round-trips through PadForge.xml.
     ///
@@ -55,6 +57,10 @@ namespace PadForge.Common.Input
         /// <summary>Raised when the registry changes (input-picker refresh and
         /// the recognizer's grammar rebuild both ride this).</summary>
         public static event EventHandler RegistryChanged;
+
+        /// <summary>Raised with a removed phrase's button, outside the lock
+        /// and before <see cref="RegistryChanged"/>.</summary>
+        public static event Action<int> ButtonFreed;
 
         /// <summary>Snapshot of the registered phrases ordered by their stable
         /// button, each copied so a caller cannot mutate the registry.</summary>
@@ -161,8 +167,15 @@ namespace PadForge.Common.Input
         {
             string norm = NormalizePhrase(phrase);
             bool removed;
-            lock (_lock) removed = _phrases.RemoveAll(p => string.Equals(p.Phrase, norm, StringComparison.Ordinal)) > 0;
-            if (removed) RegistryChanged?.Invoke(null, EventArgs.Empty);
+            int freed;
+            lock (_lock)
+            {
+                freed = _phrases.FirstOrDefault(p => string.Equals(p.Phrase, norm, StringComparison.Ordinal))?.Button ?? -1;
+                removed = _phrases.RemoveAll(p => string.Equals(p.Phrase, norm, StringComparison.Ordinal)) > 0;
+            }
+            if (!removed) return;
+            ButtonFreed?.Invoke(freed);
+            RegistryChanged?.Invoke(null, EventArgs.Empty);
         }
 
         /// <summary>Replaces the registry from persisted settings (load time).

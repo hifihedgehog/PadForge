@@ -23,9 +23,13 @@ namespace PadForge.Common.Input.Peripherals
     /// color of each LED at four times its value as red, green, blue and
     /// brightness 127, then "save" (1A 02) (SendColorPacket and SetLEDefine,
     /// lines 67-116; BRIGHTNESS_MAX, RGBController_SkyloongGK104Pro.h:18).
-    /// OpenRGB sends that for its Direct mode, whose updates it does not mark
-    /// as saving, at every picture (lines 63-72 and 133-136), so PadForge
-    /// does the same at its repaint interval. The hand-back takes the
+    /// OpenRGB sends that for its Direct mode at every picture and does not
+    /// mark the mode as saving (lines 63-72 and 133-136), and no source says
+    /// where the save lands. A command that saves is taken to reach the
+    /// keyboard's memory, so a picture goes out once it has held for 150 ms and
+    /// no sooner than 500 ms after the one before, the spacing PadForge keeps
+    /// for every write that lands there
+    /// (<see cref="LenovoLegionLighting.HoldMs"/>). The hand-back takes the
     /// keyboard offline again, 0B 04, as OpenRGB's controller does when it
     /// closes (lines 35-39), and the crash path sends the same report. No
     /// source names a program that lights it.</para>
@@ -57,11 +61,6 @@ namespace PadForge.Common.Input.Peripherals
         /// (RGBController_SkyloongGK104Pro.h:18, .cpp:70).</summary>
         internal const byte Brightness = 127;
 
-        /// <summary>The shortest time between two pictures. No reference
-        /// bounds it, so the bound is PadForge's, the one the other keyboard
-        /// families of the shared worker keep.</summary>
-        internal const int RepaintMs = 50;
-
         public string Name => "Skyloong";
 
         private readonly KeyboardLedNames.ModelCache _models = new();
@@ -84,7 +83,8 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Product = $"skyloong:{VendorId:X4}:{productId:X4}",
             },
-            RepaintMs = RepaintMs,
+            HoldMs = LenovoLegionLighting.HoldMs,
+            RepaintMs = LenovoLegionLighting.RepaintMs,
             Begin = (io, _) => Begin(io),
         };
 

@@ -1214,7 +1214,7 @@ Knowing PadForge is useful is reward enough. If you truly insist on donating, pl
 
 ## License
 
-This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International).
+This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International). The tables generated from OpenRGB and the family classes that cite OpenRGB source lines are GPL-2.0-or-later, and the LICENSE file says so.
 
 - **2D controller assets** from [Gamepad-Asset-Pack](https://github.com/AL2009man/Gamepad-Asset-Pack) (MIT), by AL2009man. The web controller's WLG finish is drawn from them by Yuriy (KLAVIATURKIN), from [ForgePlay](https://github.com/KLAVIATURKIN/ForgePlay) (ISC).
 - **3D controller models**: the Xbox 360 and Steam Deck bodies and the 3D view's model and animation code are adapted from [Handheld Companion](https://github.com/Valkirie/HandheldCompanion) (CC BY-NC-SA 4.0). Copyright (c) CasperH2O, Lesueur Benjamin, trippyone. The DualShock 4, DualSense, DualSense Edge, Xbox Series and Switch 2 Pro Controller models are by [hado](https://www.cgtrader.com/designers/hado), bought on CGTrader under its Royalty Free License. The DualShock 3 model is by [3doverstock](https://www.cgtrader.com/designers/3doverstock), bought on CGTrader under the same license. Handheld Companion also documented the Steam Deck report and haptic decode, the Steam Controller (2015) power-off report, the handheld daemon watch list, the update check timing, and the hub port cycle, 500 ms apart, that reconnects a hidden USB controller so programs that opened it first lose it.

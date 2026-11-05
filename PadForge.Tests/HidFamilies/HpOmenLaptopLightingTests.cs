@@ -55,8 +55,13 @@ namespace PadForge.Tests
 
     /// <summary>The HP Omen four-zone laptop family against OpenRGB's
     /// HPOmenLaptopController and OmenMon's color table (#557).</summary>
-    public class HpOmenLaptopLightingTests
+    [Collection("PeripheralOutputStatics")]
+    public class HpOmenLaptopLightingTests : IDisposable
     {
+        public HpOmenLaptopLightingTests() => KeyboardProfileBackups.ResetForTest(persistAtOnce: true);
+
+        public void Dispose() => KeyboardProfileBackups.ResetForTest();
+
         private static HpOmenLaptopLighting Family(FakeHpBios bios, bool classPresent = true,
             List<(int, int, byte[], int)> shots = null)
             => new(() => classPresent, () => bios, (c, t, frame, ms) => { shots?.Add((c, t, frame, ms)); return true; });

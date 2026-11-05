@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using PadForge.Common.Input.Peripherals.HidFamilies;
 
 namespace PadForge.Common.Input.Peripherals
@@ -18,14 +19,18 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>What Windows changes. OpenRGB registers the mouse collection
     /// itself, page 1 usage 2, which Windows holds: it opens for another
-    /// program with no access right only, and on such a handle feature
-    /// reports pass and nothing else does (hidapi windows/hid.c:1009-1026,
-    /// <see cref="HidReportChannel"/>). The color goes out as an output
-    /// report, so neither OpenRGB's hidapi nor PadForge can send it there.
-    /// The model is not one Windows holds (<see cref="HidLightingModel.HeldByWindows"/>
-    /// stays false), so where Windows holds the collection the worker lists
-    /// the unit asleep and writes nothing, and where a collection opens for
-    /// read and write it is lit.</para>
+    /// program with no access right only, and there feature reports pass
+    /// and output reports do not, by WriteFile or by HidD_SetOutputReport
+    /// (measured on a virtual mouse, and hidapi windows/hid.c:1009-1026). The
+    /// color goes out as an output report, an interrupt OUT in OpenRGB's capture
+    /// (LexipMouseController.cpp:54-58). Lexip's own program runs on Windows and
+    /// could not send that on the mouse collection, so by inference the mouse
+    /// has a collection that opens for write. No descriptor of the mouse is on
+    /// disk to name it, so any collection of this mouse Windows does not hold,
+    /// with an output report that holds the frame, is the unit in place of the
+    /// mouse collection (<see cref="Lit"/>). A mouse with no such collection
+    /// keeps the registered one, whose row says Windows holds it, and nothing
+    /// is written (<see cref="DirectUnit.WindowsHolds"/>).</para>
     ///
     /// <para>Hand-back. No source reads the color the mouse showed before,
     /// and OpenRGB sends nothing when it closes, so the mouse keeps
@@ -38,6 +43,7 @@ namespace PadForge.Common.Input.Peripherals
 
         internal const string OpenRgbFamily = "LexipMouseController";
         internal const ushort VendorId = 0x04D8;
+        internal const ushort ProductId = 0xFD0A;
 
         /// <summary>PACKET_DATA_LENGTH (LexipMouseController.h:18).</summary>
         internal const int ReportSize = 64;
@@ -48,13 +54,16 @@ namespace PadForge.Common.Input.Peripherals
 
         public HidLightingModel Match(HidCollectionInfo collection)
         {
-            if (collection == null || collection.VendorId != VendorId) return null;
-            var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
-            if (registrations.Count == 0) return null;
-            if (collection.OutputReportLength != 0 && collection.OutputReportLength < ReportSize) return null;
-            ushort pid = collection.ProductId;
-            return _models.Get(registrations[0].Name + pid, () => Model(registrations[0].Name, pid));
+            if (collection == null || collection.VendorId != VendorId || collection.ProductId != ProductId) return null;
+            if (!Lit(collection) && OpenRgbRegistrations.Match(OpenRgbFamily, collection).Count == 0) return null;
+            string name = OpenRgbRegistrations.Of(OpenRgbFamily).First().Name;
+            return _models.Get(name, () => Model(name, ProductId));
         }
+
+        /// <summary>A collection the frame can go out on: one Windows does not
+        /// hold, with an output report that holds it.</summary>
+        internal static bool Lit(HidCollectionInfo collection)
+            => !collection.WindowsHolds && collection.OutputReportLength >= ReportSize;
 
         internal static IReadOnlyList<LightInfo> Lights()
             => new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } };
@@ -65,6 +74,8 @@ namespace PadForge.Common.Input.Peripherals
             Name = name,
             Map = new LightMap(Lights(), "OpenRGB RGBController_LexipMouse.cpp") { Product = $"lexip:{VendorId:X4}:{productId:X4}" },
             RepaintMs = AocMouseLighting.RepaintMs,
+            Outranks = (first, second) => first.VendorId == VendorId && first.ProductId == second.ProductId && Lit(first)
+                                          && (!Lit(second) || string.CompareOrdinal(first.Path, second.Path) < 0),
             Begin = (io, _) => io == null ? null : new Session(),
         };
 

@@ -36,11 +36,17 @@ namespace PadForge.Common.Input.Peripherals
     /// more collections than one is listed while each of them is in the
     /// walk, and its other collections open beside the unit's, from the
     /// same container, and close with it
-    /// (<see cref="HidLightingModel.Siblings"/>). A collection that opens with
-    /// no access right only is one another program holds, and is not
-    /// written to, unless its model's lighting lives on a mouse or keyboard
-    /// collection, which Windows opens that way for everyone and which
-    /// takes feature reports on it (<see cref="HidLightingModel.HeldByWindows"/>).
+    /// (<see cref="HidLightingModel.Siblings"/>). Windows opens a collection
+    /// <see cref="HidCollectionInfo.WindowsHolds"/> names with no access right
+    /// only, for everyone, and takes feature reports on that handle, so a model
+    /// whose lighting lives on one keeps it
+    /// (<see cref="HidLightingModel.HeldByWindows"/>). Any other model writes
+    /// nothing there and its unit says Windows holds it
+    /// (<see cref="DirectUnit.WindowsHolds"/>). On any other collection a handle
+    /// with no access right means another program has the collection: nothing
+    /// is written, the unit says so (<see cref="DirectUnit.HeldByProgram"/>),
+    /// and it is tried every <see cref="RetryMs"/>, so the device lights soon
+    /// after that program closes.
     /// A unit no claim resolves on is opened only while its model owes it
     /// colors an earlier run left in the device's memory
     /// (<see cref="HidLightingModel.Owed"/>), to hand those back, from
@@ -53,11 +59,22 @@ namespace PadForge.Common.Input.Peripherals
     /// has passed since the picture before, the model's or, where the
     /// session tells its device apart, the session's, and a picture
     /// the session cannot send yet is tried again after the time it names.
-    /// The session reads the device's state again on the model's recheck
-    /// interval. A device that drops the host's colors when the host goes
+    /// A model with a hold stores each picture, so a color that never holds,
+    /// a rainbow or a light that follows the sound, goes out not at all and
+    /// the row's line says so, and its pictures after the first are also held
+    /// to a burst and a rate (<see cref="StoredWriteBurst"/>,
+    /// <see cref="StoredWriteRefillMs"/>), whatever the hold let through.
+    /// The session reads the device's state
+    /// again on the model's recheck interval, and the picture goes out once
+    /// more when the session says the device showed something else since
+    /// (<see cref="HidLightingSession.RepaintDue"/>), or when Windows resumes
+    /// from sleep (<see cref="NoteResume"/>). A device that drops the host's colors when the host goes
     /// quiet gets the session's keep-alive on the model's interval while a
     /// picture shows, with no change in the picture
-    /// (<see cref="HidLightingModel.KeepAliveMs"/>). The crash path's record
+    /// (<see cref="HidLightingModel.KeepAliveMs"/>), also from inside the
+    /// waits of another unit's session. One thread serves every unit, so a
+    /// session that waits does hold up other units' pictures, for the length
+    /// of its wait. The crash path's record
     /// holds the session's own frames for undoing what it wrote, kept current after every call into the
     /// session.</para>
     ///
@@ -72,8 +89,21 @@ namespace PadForge.Common.Input.Peripherals
     /// <para>Fail. A write or a read that fails, a hand-back included,
     /// closes the unit's channel and lists the unit asleep, asks the host
     /// for a walk, and tries the unit again every <see cref="RetryMs"/> by
-    /// opening it. What a failed hand-back leaves owed stays in the model's
-    /// keeping, which the next open or the next run settles.</para>
+    /// opening it. The frames of the session it lost are owed
+    /// (<see cref="IDirectUnitBackend"/>, Owe): they stay on the crash record
+    /// and go out on a handle of their own once the unit answers, claim or no
+    /// claim, ahead of any new session, unless a program or OpenRGB has the
+    /// device by then. A model with a backup of its own keeps what is owed
+    /// itself (<see cref="HidLightingModel.Owed"/>). A handle that opens and
+    /// whose session is refused says the device is there and takes no
+    /// lighting from PadForge, so it asks for no walk, the unit says so
+    /// (<see cref="DirectUnit.Refused"/>), and each try waits twice as long as
+    /// the one before, up to <see cref="RefusedRetryMaxMs"/>. A collection Windows
+    /// holds says so the same way, and is asked each minute. A handle found
+    /// dead at a walk, a device unplugged and plugged back in between two
+    /// walks, fails the same way as a write, with the walk already made. A
+    /// fault in one unit or one family costs that unit or that collection,
+    /// and never the worker.</para>
     /// </summary>
     internal sealed class HidLightingBackend : IDirectUnitBackend
     {
@@ -101,6 +131,32 @@ namespace PadForge.Common.Input.Peripherals
         /// run's claims, so a keyboard a claim lights again is not handed
         /// back and lit again a moment later.</summary>
         internal const int RepairGraceMs = 5000;
+
+        /// <summary>How long a unit that just answered again waits before the
+        /// colors it holds go back with no claim on it. The link pass took its
+        /// path away while it slept, and this is time for that pass
+        /// (<see cref="PeripheralOutputHost.LinkMs"/>) to see it awake and link
+        /// it again, so a device a claim still lights is not handed back and
+        /// lit again a moment later.</summary>
+        internal const int WakeRepairGraceMs = 2 * PeripheralOutputHost.LinkMs;
+
+        /// <summary>The longest a unit whose session was refused waits before
+        /// the next try. A device that really is asleep lights within this
+        /// long of waking.</summary>
+        internal const int RefusedRetryMaxMs = 60_000;
+
+        /// <summary>How many pictures a stored-picture model takes in a row
+        /// after its first, as a user drags a color into place, before they
+        /// go out only as <see cref="StoredWriteRefillMs"/> allows. No
+        /// reference states what memory these controllers store to, or how
+        /// many writes it lasts, so the bound is PadForge's. The newest
+        /// picture is the one that goes out when one comes due.</summary>
+        internal const int StoredWriteBurst = 30;
+
+        /// <summary>How often a stored-picture model earns one more picture:
+        /// 360 an hour at the most, where a color a game drives could
+        /// otherwise reach 7,200.</summary>
+        internal const int StoredWriteRefillMs = 10_000;
 
         /// <summary>One present lighting collection and what the worker
         /// holds of it. Worker thread only.</summary>
@@ -130,6 +186,14 @@ namespace PadForge.Common.Input.Peripherals
 
             public bool BuiltInKeyboard;
 
+            /// <summary>The name a look gave the unit, and the name a session
+            /// gave it from what the device answered, kept while the device
+            /// stays. Null: the look's, then the model's.</summary>
+            public string LookName;
+            public string AnsweredName;
+
+            public string Name => AnsweredName ?? LookName ?? Model?.Name;
+
             /// <summary>The map a session read from the device
             /// (<see cref="HidLightingSession.Map"/>), or null for the
             /// model's. Kept while the device stays, across closes and
@@ -144,6 +208,47 @@ namespace PadForge.Common.Input.Peripherals
 
             public bool Asleep;
             public long RetryAt;
+
+            /// <summary>When the unit last answered again, plus
+            /// <see cref="WakeRepairGraceMs"/>.</summary>
+            public long RepairAt;
+
+            /// <summary>The handle opened and the session was refused, and how
+            /// many times in a row.</summary>
+            public bool Refused;
+
+            /// <summary>The collection opened with no access right for a model
+            /// that needs more, and it is one
+            /// <see cref="HidCollectionInfo.WindowsHolds"/> names, so Windows takes
+            /// none of the model's reports. A kind of refusal.</summary>
+            public bool WindowsHolds;
+
+            /// <summary>The same handle on any other collection: another program
+            /// has it open.</summary>
+            public bool HeldByProgram;
+            public int Refusals;
+
+            /// <summary>The frames of a session that ended with no hand-back,
+            /// which go out once the unit answers, and whether they are
+            /// feature reports. Null when nothing is owed.</summary>
+            public byte[][] OwedFrames;
+            public bool OwedFeature;
+            public string OwedPath;
+
+            /// <summary>A keep-alive sent from inside another unit's wait
+            /// failed. The unit's own turn fails it, unless a close dropped the
+            /// session it failed on first.</summary>
+            public bool KeepAliveFailed;
+
+            /// <summary>The device stores each picture, by its session where
+            /// the session tells its device apart, else by its model.</summary>
+            public bool StoresPictures;
+
+            /// <summary>The pictures a stored-picture model may still send at
+            /// once, and when they were last counted. Kept across closes and
+            /// reopens, since the device's memory is.</summary>
+            public int StoredWrites = StoredWriteBurst;
+            public long StoredWritesAt;
 
             /// <summary>The open channel and its session, or null.
             /// Everything below is of one open and is reset by the next.
@@ -193,15 +298,16 @@ namespace PadForge.Common.Input.Peripherals
             /// the session began.</summary>
             public long KeptAt;
 
-            public string Label => $"{Model?.Name ?? "unit"} {VendorId:X4}:{ProductId:X4}";
+            public string Label => $"{Name ?? "unit"} {VendorId:X4}:{ProductId:X4}";
         }
 
         /// <summary>One unit's entry on the crash path's record: its key, the
         /// frames that undo what its session wrote, whether they are feature
-        /// reports, its model's programs, and for a unit an own look found,
-        /// the model's one-shot writer (<see cref="HidLightingModel.WriteOnce"/>).</summary>
+        /// reports, its model's programs, for a unit an own look found, the
+        /// model's one-shot writer (<see cref="HidLightingModel.WriteOnce"/>),
+        /// and the collection the frames go to where it is not the key's.</summary>
         internal sealed record CrashRecord(string Path, byte[][] Frames, bool Feature,
-            IReadOnlyList<VendorProgram> Programs, Func<string, byte[], int, bool> Write);
+            IReadOnlyList<VendorProgram> Programs, Func<string, byte[], int, bool> Write, string WritePath = null);
 
         /// <summary>The units whose sessions name frames that undo what they
         /// wrote, for the crash path, which cannot wait on this worker.
@@ -219,7 +325,21 @@ namespace PadForge.Common.Input.Peripherals
         private readonly int _idleTickMs;
         private readonly int _predecessorJoinMs;
         private readonly int _stopJoinMs;
+        private readonly bool _powerEvents;
+        private readonly Action<int> _sessionWait;
         private readonly AutoResetEvent _wake = new(false);
+
+        /// <summary>The worker's units while it serves them, and the unit whose
+        /// session has the worker now, for the wait a session is handed. Each
+        /// worker thread keeps its own: a worker a timed-out Stop left behind
+        /// waits on its own units, and its end clears its own, while the next
+        /// one runs.</summary>
+        [ThreadStatic] private static List<Unit> t_served;
+        [ThreadStatic] private static WorkerRun t_run;
+        [ThreadStatic] private static Unit t_serving;
+        [ThreadStatic] private static bool t_inNestedKeepAlive;
+
+        private int _resumed;
 
         private DirectBackendSnapshot _snapshot = DirectBackendSnapshot.NotScanned;
         private IReadOnlyList<HidCollectionInfo> _present;
@@ -252,13 +372,11 @@ namespace PadForge.Common.Input.Peripherals
         private int _waitMs;
         private long _repairAt;
 
-        /// <summary>The newest worker thread of any instance, which the
-        /// next one waits for. Static because the collections it holds are
-        /// the machine's.</summary>
-        private static Thread s_lastWorker;
+        /// <summary>The family's workers over the engine's restarts.</summary>
+        private static readonly WorkerSuccession s_workers = new();
 
         public HidLightingBackend()
-            : this(null, null, null, null, null, null, null, IdleTickMs) { }
+            : this(null, null, null, null, null, null, null, IdleTickMs) => _powerEvents = true;
 
         /// <summary>Test seam: the families, the channel opener, the
         /// container lookup, the clock, the crash path's two one-shot
@@ -285,6 +403,7 @@ namespace PadForge.Common.Input.Peripherals
             _idleTickMs = idleTickMs;
             _predecessorJoinMs = predecessorJoinMs;
             _stopJoinMs = stopJoinMs;
+            _sessionWait = SessionWait;
         }
 
         public OutputFamily Family => OutputFamily.HidLightingUnit;
@@ -319,6 +438,7 @@ namespace PadForge.Common.Input.Peripherals
             PeripheralOutputs.LightingChanged += Wake;
             PeripheralOutputs.LinksChanged += Wake;
             LearnedKeyMaps.Changed += OnLearned;
+            if (_powerEvents) Microsoft.Win32.SystemEvents.PowerModeChanged += OnPowerMode;
         }
 
         public void Stop()
@@ -326,6 +446,7 @@ namespace PadForge.Common.Input.Peripherals
             PeripheralOutputs.LightingChanged -= Wake;
             PeripheralOutputs.LinksChanged -= Wake;
             LearnedKeyMaps.Changed -= OnLearned;
+            if (_powerEvents) Microsoft.Win32.SystemEvents.PowerModeChanged -= OnPowerMode;
             if (_thread == null) return;
             _run.Stop = true;
             Wake();
@@ -377,7 +498,7 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     left = deadline - _ticks();
                     if (left <= 0) return;
-                    try { WriteOnce(record.Path, frame, record.Feature, record.Write, (int)Math.Min(left, OneShotMs)); } catch { }
+                    try { WriteOnce(record.WritePath ?? record.Path, frame, record.Feature, record.Write, (int)Math.Min(left, OneShotMs)); } catch { }
                 }
             }
         }
@@ -391,6 +512,22 @@ namespace PadForge.Common.Input.Peripherals
 
         private void OnLearned(object sender, EventArgs e) => Wake();
 
+        private void OnPowerMode(object sender, Microsoft.Win32.PowerModeChangedEventArgs e)
+        {
+            if (e.Mode == Microsoft.Win32.PowerModes.Resume) NoteResume();
+        }
+
+        /// <summary>Windows resumed from sleep: every open unit gets its
+        /// picture once more, since a device whose firmware does not keep a
+        /// written state through sleep shows its own lighting again while its
+        /// collection never left the list (Lenovo Legion Toolkit
+        /// PowerStateListener.cs:145-146, SteelSeriesDirectBackend.NoteResume).</summary>
+        internal void NoteResume()
+        {
+            Interlocked.Exchange(ref _resumed, 1);
+            Wake();
+        }
+
         /// <summary>Brings the worker's next pass forward. Any thread.</summary>
         internal void Wake()
         {
@@ -403,17 +540,15 @@ namespace PadForge.Common.Input.Peripherals
             // collections, and its finally hands its units back, so a new
             // worker waits for it before it opens anything
             // (SteelSeriesDirectBackend.Worker).
-            var previous = Interlocked.Exchange(ref s_lastWorker, Thread.CurrentThread);
-            if (previous != null && previous != Thread.CurrentThread && previous.IsAlive
-                && !previous.Join(_predecessorJoinMs))
-                PadForge.Engine.SdlDiagLog.WriteLine(
-                    $"PERIPHERAL HidLighting previous worker still running after {_predecessorJoinMs} ms, starting anyway");
+            s_workers.Enter(run, _predecessorJoinMs, "HidLighting");
             var units = new List<Unit>();
             var walk = new WalkState();
             int learned = LearnedKeyMaps.Version;
             try
             {
                 IReadOnlyList<HidCollectionInfo> scanned = null;
+                t_served = units;
+                t_run = run;
                 while (!run.Stop)
                 {
                     long now = _ticks();
@@ -425,8 +560,17 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         // The first scan publishes whatever it found, so the
                         // host stops waiting for these families.
-                        changed = Scan(units, present, now, walk) || scanned == null;
+                        changed = Scan(units, present, now, walk, ref due) || scanned == null;
                         scanned = present;
+                    }
+
+                    if (Interlocked.Exchange(ref _resumed, 0) != 0)
+                    {
+                        foreach (var unit in units)
+                        {
+                            unit.Shown = null;
+                            unit.ShownMap = null;
+                        }
                     }
 
                     int version = LearnedKeyMaps.Version;
@@ -440,10 +584,20 @@ namespace PadForge.Common.Input.Peripherals
                     foreach (var unit in units)
                     {
                         if (run.Stop) break;
-                        Serve(run, unit, links, _ticks(), ref changed, ref failed, ref due);
+                        t_serving = unit;
+                        try { Serve(run, unit, links, _ticks(), ref changed, ref failed, ref due); }
+                        catch (Exception ex)
+                        {
+                            // One unit's fault costs that unit, listed asleep
+                            // and tried again, and every other family stays lit.
+                            Fail(unit, "fault: " + ex.GetType().Name, ref changed, ref failed, ref due);
+                        }
                     }
+                    t_serving = null;
 
-                    if (changed) Publish(units);
+                    // A stopped worker publishes nothing more: its finally takes
+                    // the list down, or the next run has it by then.
+                    if (changed && !run.Stop) Publish(units);
                     if (failed)
                     {
                         try { RescanRequested?.Invoke(); } catch { }
@@ -465,15 +619,33 @@ namespace PadForge.Common.Input.Peripherals
                 // Each device goes back to its own lighting before its
                 // handle closes, so stopping the engine leaves no keyboard
                 // held in a color of ours.
-                var successor = _run;
-                bool ownRun = successor == null || ReferenceEquals(successor, run);
+                t_served = null;
+                t_serving = null;
+                t_run = null;
                 foreach (var unit in units)
                 {
-                    if (unit.Handle == null) continue;
+                    // A later run that claimed this collection may have it open
+                    // by now, and a hand-back would land on its picture.
+                    bool reach = s_workers.MayReach(unit.Path, run);
+                    if (unit.Handle == null)
+                    {
+                        // What a lost session still owes goes out once more,
+                        // on a handle of its own.
+                        if (reach)
+                        {
+                            try { PayOwed(unit); } catch { }
+                        }
+                        else Unrecord(unit);
+                        continue;
+                    }
                     bool released = false;
-                    try { released = Release(unit); } catch { }
+                    if (reach)
+                    {
+                        try { released = Release(unit); } catch { }
+                    }
                     var frames = released ? null : unit.Session?.CrashFrames;
                     bool feature = unit.Session?.Feature ?? true;
+                    string target = unit.Session?.CrashPath ?? unit.Path;
                     var own = unit.Own != null ? unit.Model.WriteOnce : null;
                     // The maps are taken down below, and a successor's are
                     // its own.
@@ -481,19 +653,16 @@ namespace PadForge.Common.Input.Peripherals
                     // A hand-back that did not go out on the worker's
                     // channel goes out through a report of its own, as on
                     // the crash path, where the session names frames for it.
-                    // Not from a worker that outlived its Stop into the next
-                    // run, whose worker has the collections by then. A unit
-                    // whose program runs is released with nothing to send
-                    // (Release). What stays owed is in the model's keeping
-                    // for the next run.
-                    if (frames == null || !ownRun) continue;
+                    // A unit whose program runs is released with nothing to send
+                    // (Release). What a model's own backup holds stays in the
+                    // model's keeping for the next run.
+                    if (frames == null || !reach) continue;
                     foreach (var frame in frames)
                     {
-                        try { WriteOnce(unit.Path, frame, feature, own, OneShotMs); } catch { }
+                        try { WriteOnce(target, frame, feature, own, OneShotMs); } catch { }
                     }
                 }
-                var current = _run;
-                if (current == null || ReferenceEquals(current, run))
+                if (s_workers.Holds(run))
                 {
                     foreach (var unit in units) PeripheralLightMaps.Remove(PathOf(unit));
                     Volatile.Write(ref _recorded, Array.Empty<CrashRecord>());
@@ -510,34 +679,47 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Brings the unit list in line with a walk. True when the
         /// list changed.</summary>
-        private bool Scan(List<Unit> units, IReadOnlyList<HidCollectionInfo> present, long now, WalkState walk)
+        private bool Scan(List<Unit> units, IReadOnlyList<HidCollectionInfo> present, long now, WalkState walk, ref long due)
         {
             bool changed = false;
             walk.Present = present;
             ForgetGone(walk, present);
             foreach (var collection in present)
             {
-                var model = HidLightingFamilies.Match(collection, _families);
-                if (model == null) continue;
-                // A device that talks through more collections is one OpenRGB
-                // makes only once it found each of them
-                // (RoccatControllerDetect.cpp:155-201).
-                if (!SiblingsPresent(walk, model, collection)) continue;
-                if (model.Identify != null && !Identified(walk, model, collection)) continue;
-                var unit = Find(units, collection.Path);
-                if (unit == null)
+                // A fault in a family or a model costs that collection, and
+                // every other family stays lit.
+                try
                 {
-                    unit = new Unit
+                    var model = HidLightingFamilies.Match(collection, _families);
+                    if (model == null) continue;
+                    // A device that talks through more collections is one OpenRGB
+                    // makes only once it found each of them
+                    // (RoccatControllerDetect.cpp:155-201).
+                    if (!SiblingsPresent(walk, model, collection)) continue;
+                    // A plugin that tries the collections of its list takes the first the
+                    // device has, and the others stay out of its way.
+                    if (Outranked(walk, model, collection)) continue;
+                    if (model.Identify != null && !Identified(walk, model, collection)) continue;
+                    var unit = Find(units, collection.Path);
+                    if (unit == null)
                     {
-                        Path = collection.Path, VendorId = collection.VendorId, ProductId = collection.ProductId,
-                        Model = model, Walk = walk,
-                    };
-                    LookUpContainer(unit, now);
-                    Found(units, unit);
-                    changed = true;
+                        unit = new Unit
+                        {
+                            Path = collection.Path, VendorId = collection.VendorId, ProductId = collection.ProductId,
+                            Model = model, Walk = walk,
+                        };
+                        LookUpContainer(unit, now);
+                        Found(units, unit);
+                        changed = true;
+                    }
+                    unit.Info = collection;
+                    unit.Seen = true;
                 }
-                unit.Info = collection;
-                unit.Seen = true;
+                catch (Exception ex)
+                {
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"PERIPHERAL HidLighting fault at {collection?.VendorId:X4}:{collection?.ProductId:X4}: {ex.GetType().Name}");
+                }
             }
 
             // The families whose devices are no HID collections look on
@@ -546,7 +728,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 if (family is not IOwnLookFamily own) continue;
                 IReadOnlyList<OwnDevice> found;
-                try { found = own.Look(); }
+                try { found = own.Look(present); }
                 catch { found = null; }
                 if (found == null)
                 {
@@ -566,7 +748,7 @@ namespace PadForge.Common.Input.Peripherals
                         {
                             Path = device.Key, VendorId = device.VendorId, ProductId = device.ProductId,
                             Model = device.Model, Own = own, BuiltInKeyboard = device.BuiltInKeyboard,
-                            Container = device.Container, Walk = walk,
+                            Container = device.Container, Walk = walk, LookName = device.Name,
                         };
                         // A container the look gave is taken as it is.
                         if (unit.Container == Guid.Empty) LookUpContainer(unit, now);
@@ -583,11 +765,22 @@ namespace PadForge.Common.Input.Peripherals
                 if (unit.Seen)
                 {
                     unit.Seen = false;
+                    // A device unplugged and plugged back in between two walks
+                    // is on the same path with its handle dead for good, and a
+                    // picture that does not change would never find out. The
+                    // walk is what brought this here, so it asks for none.
+                    if (unit.Handle is IConnectedChannel { StillConnected: false })
+                    {
+                        bool ignored = false;
+                        Fail(unit, "handle went away", ref changed, ref ignored, ref due);
+                        unit.RetryAt = _ticks();
+                    }
                     continue;
                 }
                 // The device is gone, so there is nothing to hand back to,
                 // and the unit, with the map its sessions read, goes off the
                 // list. A device that comes back is a new unit.
+                unit.OwedFrames = null;
                 Close(unit);
                 PeripheralLightMaps.Remove(PathOf(unit));
                 units.RemoveAt(i);
@@ -619,6 +812,26 @@ namespace PadForge.Common.Input.Peripherals
                 if (!found) return false;
             }
             return true;
+        }
+
+        /// <summary>Whether the model names another collection of the walk as the unit in
+        /// place of this one, in the collection's container. One whose container Windows
+        /// cannot name yet does not count against a collection whose container it can: nothing
+        /// says the two are one device, and this one may be lit. With this one's unnamed, the
+        /// model's word stands, and the next walk asks again.</summary>
+        private bool Outranked(WalkState walk, HidLightingModel model, HidCollectionInfo collection)
+        {
+            if (model.Outranks == null) return false;
+            Guid own = SiblingContainer(walk, collection.Path);
+            foreach (var candidate in walk.Present)
+            {
+                if (candidate?.Path == null || string.Equals(candidate.Path, collection.Path, StringComparison.OrdinalIgnoreCase)
+                    || !model.Outranks(candidate, collection))
+                    continue;
+                if (own != Guid.Empty && SiblingContainer(walk, candidate.Path) != own) continue;
+                return true;
+            }
+            return false;
         }
 
         /// <summary>The container of a path of the walk, looked up once while
@@ -656,16 +869,23 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Whether a collection a model with an identity check
         /// matched is one its family lights, asked once while it stays in
         /// the walk, on a handle with no access right. False, and asked again
-        /// at the next walk, when that handle did not open.</summary>
+        /// at the next walk, when that handle did not open or a check that
+        /// said no had no string to go by.</summary>
         private bool Identified(WalkState walk, HidLightingModel model, HidCollectionInfo collection)
         {
             if (walk.Identified.TryGetValue(collection.Path, out bool known)) return known;
             IHidReportChannel io = null;
             try { io = _query(collection.Path); } catch { }
             if (io == null) return false;
-            bool ours = false;
-            try { ours = model.Identify(io); } catch { }
+            bool ours = false, read = false;
+            try
+            {
+                ours = model.Identify(io);
+                read = ours || io.ManufacturerString != null || io.ProductString != null || io.SerialNumber != null;
+            }
+            catch { }
             try { io.Dispose(); } catch { }
+            if (!read) return false;
             walk.Identified[collection.Path] = ours;
             if (!ours)
                 PadForge.Engine.SdlDiagLog.WriteLine(
@@ -685,6 +905,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Lists a unit a scan found and publishes its map.</summary>
         private static void Found(List<Unit> units, Unit unit)
         {
+            unit.StoresPictures = unit.Model.HoldMs > 0;
             PublishMap(unit);
             units.Add(unit);
             PadForge.Engine.SdlDiagLog.WriteLine(
@@ -722,8 +943,13 @@ namespace PadForge.Common.Input.Peripherals
                 var unit = units[i];
                 list[i] = new DirectUnit(OutputFamily.HidLightingUnit, unit.Path, unit.Container, unit.VendorId, unit.ProductId)
                 {
-                    Name = unit.Model.Name,
+                    Name = unit.Name,
                     Asleep = unit.Asleep,
+                    Refused = unit.Refused,
+                    WindowsHolds = unit.WindowsHolds,
+                    HeldByProgram = unit.HeldByProgram,
+                    StoresPictures = unit.StoresPictures,
+                    ReplacesStoredEffects = unit.Model.ReplacesStoredEffects,
                     LitBesideWindows = unit.Model.LitBesideWindows,
                     LiveThroughLampArray = unit.Model.LiveThroughLampArray,
                     Programs = unit.Model.Programs ?? Array.Empty<VendorProgram>(),
@@ -756,15 +982,22 @@ namespace PadForge.Common.Input.Peripherals
             {
                 if (now >= unit.RetryAt)
                 {
-                    if (Answers(unit))
+                    bool windows = unit.WindowsHolds, program = unit.HeldByProgram;
+                    if (Answers(unit) && PayOwed(unit))
                     {
                         unit.Asleep = false;
+                        unit.RepairAt = _ticks() + WakeRepairGraceMs;
                         changed = true;
                         PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} answers again");
                     }
                     else
                     {
-                        unit.RetryAt = now + RetryMs;
+                        // A collection Windows holds does not stop being held
+                        // on its own, so it is asked as rarely as a refusal.
+                        unit.RetryAt = _ticks() + (unit.WindowsHolds ? RefusedRetryMaxMs : RetryMs);
+                        // The row says who holds the collection, which a try
+                        // can find out for a unit asleep for another reason.
+                        if (unit.WindowsHolds != windows || unit.HeldByProgram != program) changed = true;
                     }
                 }
                 if (unit.Asleep)
@@ -772,6 +1005,13 @@ namespace PadForge.Common.Input.Peripherals
                     Soonest(ref due, unit.RetryAt);
                     return;
                 }
+            }
+
+            if (unit.KeepAliveFailed)
+            {
+                unit.KeepAliveFailed = false;
+                Fail(unit, "write failed", ref changed, ref failed, ref due);
+                return;
             }
 
             var path = PathOf(unit);
@@ -783,27 +1023,28 @@ namespace PadForge.Common.Input.Peripherals
                 if (unit.Handle != null)
                 {
                     if (Release(unit)) Close(unit);
-                    else Fail(unit, now, "hand-back failed", ref changed, ref failed, ref due);
+                    else Fail(unit, "hand-back failed", ref changed, ref failed, ref due);
                     return;
                 }
                 // Colors an earlier run left in the device's memory go back
                 // with no claim on it, once this run's first claims have had
-                // the time to resolve, and once per answer of the unit's.
-                // Not while a program of the model has the device: they
+                // the time to resolve and a unit that just answered again has
+                // had the time to be linked again, and once per answer of the
+                // unit's. Not while a program of the model has the device: they
                 // stay owed, in the model's keeping, until it has stopped.
-                // A family whose devices are no HID collections owes
-                // nothing this way (HidLightingModel.Repair takes a HID
-                // channel).
-                if (run.Stop || unit.Own != null || ProgramRuns(unit.Model.Programs)
-                    || PeripheralOutputs.TakenByOpenRgb(path) || unit.Model.Owed?.Invoke() != true) return;
-                long repairAt = Volatile.Read(ref _repairAt);
+                // A family whose devices are no HID collections does this
+                // through a channel of its own, where it has the call for
+                // it (HidLightingModel.RepairOwn).
+                if (run.Stop || (unit.Own != null && unit.Model.RepairOwn == null) || ProgramRuns(unit.Model.Programs)
+                    || PeripheralOutputs.TakenByOpenRgb(path) || unit.Model.Owed?.Invoke(unit.Path) != true) return;
+                long repairAt = Math.Max(Volatile.Read(ref _repairAt), unit.RepairAt);
                 if (now < repairAt)
                 {
                     Soonest(ref due, repairAt);
                     return;
                 }
                 if (!Repair(unit))
-                    Fail(unit, now, "did not take back the colors an earlier run left", ref changed, ref failed, ref due);
+                    Fail(unit, "did not take back the colors an earlier run left", ref changed, ref failed, ref due);
                 return;
             }
 
@@ -813,17 +1054,101 @@ namespace PadForge.Common.Input.Peripherals
             // A program of the model started. The link pass publishes the
             // presence before the table it links from it, so the path is
             // still linked for the moment between, and nothing goes out
-            // meanwhile. The next table lets the unit go (Release).
-            if (ProgramRuns(unit.Model.Programs)) return;
-            if (unit.Handle == null && !Open(unit))
+            // meanwhile. The next table lets the unit go (Release). The same
+            // for OpenRGB taking the path during this pass, which read its
+            // table before another unit's wait: the next pass lets the unit go.
+            if (ProgramRuns(unit.Model.Programs) || PeripheralOutputs.TakenByOpenRgb(path)) return;
+            if (unit.Handle == null)
             {
-                Fail(unit, now, "did not open for read and write or did not answer", ref changed, ref failed, ref due);
-                return;
+                if (!Open(unit, out bool refused))
+                {
+                    if (refused) Refuse(unit, ref changed, ref due);
+                    else if (unit.HeldByProgram)
+                    {
+                        // Nothing says the device left, so this asks for no walk.
+                        bool noWalk = false;
+                        Fail(unit, "is open in another program", ref changed, ref noWalk, ref due);
+                    }
+                    else Fail(unit, "did not open for read and write", ref changed, ref failed, ref due);
+                    return;
+                }
+                s_workers.Claim(unit.Path, run);
+                if (unit.Refused)
+                {
+                    unit.Refused = false;
+                    unit.Refusals = 0;
+                    changed = true;
+                }
+                string answered = null;
+                try { answered = unit.Session.DeviceName; } catch { }
+                if (answered != null && answered != unit.AnsweredName)
+                {
+                    unit.AnsweredName = answered;
+                    changed = true;
+                }
             }
             // Map Key Lights asking about one light has no claim behind it,
             // so the strips stay as the claims sized them.
             if ((ruler.Device != Guid.Empty && !SizeStrips(unit, ruler.Strips)) || !Paint(unit, rgb, ruler.Keys, ref due))
-                Fail(unit, now, "write failed", ref changed, ref failed, ref due);
+            {
+                Fail(unit, "write failed", ref changed, ref failed, ref due);
+                return;
+            }
+            // The row's line follows what the session says of its device.
+            bool stores;
+            try { stores = (unit.Session.HoldMs ?? unit.Model.HoldMs) > 0; }
+            catch { stores = unit.Model.HoldMs > 0; }
+            if (stores != unit.StoresPictures)
+            {
+                unit.StoresPictures = stores;
+                changed = true;
+            }
+        }
+
+        /// <summary>The wait a session is handed. It sends the keep-alives
+        /// other units' models need while this session waits on its device, so
+        /// a session that waits between its reports, 2 s a picture on a Dell G
+        /// series, does not let a keyboard that drops the host's colors when the
+        /// host goes quiet fall back to its own lighting
+        /// (HyperXKeyboardLighting.KeepAliveMs is 50). A keep-alive that fails
+        /// here fails its own unit on that unit's turn.</summary>
+        private void SessionWait(int ms)
+        {
+            var units = t_served;
+            if (units == null || t_inNestedKeepAlive)
+            {
+                _wait(ms);
+                return;
+            }
+            int left = ms;
+            while (left > 0)
+            {
+                long next = long.MaxValue;
+                t_inNestedKeepAlive = true;
+                try
+                {
+                    foreach (var unit in units)
+                    {
+                        if (ReferenceEquals(unit, t_serving) || unit.Asleep || unit.KeepAliveFailed
+                            || unit.Session == null || unit.Model.KeepAliveMs <= 0) continue;
+                        // A program of the model or OpenRGB took the device since
+                        // this unit's turn. Nothing goes out, as on that turn
+                        // (Serve), and the turn lets the unit go.
+                        if (ProgramRuns(unit.Model.Programs) || PeripheralOutputs.TakenByOpenRgb(PathOf(unit))) continue;
+                        // A later run claimed the collection, and the keep-alive
+                        // of a stopped worker is its old picture.
+                        if (!s_workers.MayReach(unit.Path, t_run)) continue;
+                        if (!KeepAlive(unit, ref next)) unit.KeepAliveFailed = true;
+                    }
+                }
+                finally
+                {
+                    t_inNestedKeepAlive = false;
+                }
+                int step = next == long.MaxValue ? left : (int)Math.Clamp(next - _ticks(), 1, left);
+                _wait(step);
+                left -= step;
+            }
         }
 
         /// <summary>Whether an asleep unit can be opened for read and write
@@ -852,9 +1177,13 @@ namespace PadForge.Common.Input.Peripherals
             {
                 IDisposable own = null;
                 try { own = unit.Model.Open?.Invoke(unit.Path); } catch { }
+                bool held = false;
+                try { held = own == null && unit.Model.OpenFoundHeld?.Invoke() == true; } catch { }
+                unit.HeldByProgram = held;
                 return own;
             }
             try { io = _open(unit.Path); } catch { }
+            NoteHolder(unit, io is { FeatureOnly: true } && !unit.Model.HeldByWindows ? unit.Info : null);
             if (!Usable(unit.Model, io))
             {
                 try { io?.Dispose(); } catch { }
@@ -870,6 +1199,16 @@ namespace PadForge.Common.Input.Peripherals
             return null;
         }
 
+        /// <summary>Says who has a collection that opened with no access right
+        /// for a model that needs more: Windows where
+        /// <see cref="HidCollectionInfo.WindowsHolds"/> names it, and another
+        /// program anywhere else. Null: nobody does.</summary>
+        private static void NoteHolder(Unit unit, HidCollectionInfo collection)
+        {
+            unit.WindowsHolds = collection?.WindowsHolds == true;
+            unit.HeldByProgram = collection != null && !collection.WindowsHolds;
+        }
+
         /// <summary>Whether a unit's channel opened the way its model needs:
         /// for read and write, or with no access right for a model whose
         /// collection Windows holds.</summary>
@@ -880,24 +1219,26 @@ namespace PadForge.Common.Input.Peripherals
         /// collection of the last walk the sibling names, in the unit's own
         /// container, so two devices of one kind each get their own. Null,
         /// with nothing left open, when one is not found or does not open
-        /// that way.</summary>
+        /// that way, and one that opened with no access right says who has
+        /// it.</summary>
         private IHidReportChannel[] OpenSiblings(Unit unit, IReadOnlyList<HidSibling> wanted)
         {
             if (unit.Info == null || unit.Walk == null || unit.Container == Guid.Empty) return null;
             var opened = new IHidReportChannel[wanted.Count];
             for (int i = 0; i < wanted.Count; i++)
             {
-                string path = null;
+                HidCollectionInfo sibling = null;
                 foreach (var candidate in unit.Walk.Present)
                 {
                     if (!wanted[i].Is(unit.Info, candidate) || SiblingContainer(unit.Walk, candidate.Path) != unit.Container) continue;
-                    path = candidate.Path;
+                    sibling = candidate;
                     break;
                 }
                 IHidReportChannel channel = null;
-                try { channel = path == null ? null : _open(path); } catch { }
+                try { channel = sibling == null ? null : _open(sibling.Path); } catch { }
                 if (channel == null || channel.FeatureOnly)
                 {
+                    if (channel != null) NoteHolder(unit, sibling);
                     try { channel?.Dispose(); } catch { }
                     Dispose(opened);
                     return null;
@@ -917,10 +1258,23 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>Opens a unit no claim resolves on and hands back what an
-        /// earlier run left in it (<see cref="HidLightingModel.Repair"/>).
-        /// True when nothing is owed any more.</summary>
+        /// earlier run left in it (<see cref="HidLightingModel.Repair"/>, or
+        /// <see cref="HidLightingModel.RepairOwn"/> through the family's own
+        /// channel). True when nothing is owed any more.</summary>
         private bool Repair(Unit unit)
         {
+            if (unit.Own != null)
+            {
+                IDisposable own = null;
+                try { own = unit.Model.Open?.Invoke(unit.Path); } catch { }
+                if (own == null) return false;
+                bool done = false;
+                try { done = unit.Model.RepairOwn?.Invoke(own, _sessionWait) ?? true; } catch { }
+                try { own.Dispose(); } catch { }
+                if (done)
+                    PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} colors an earlier run left handed back");
+                return done;
+            }
             IHidReportChannel io = null;
             try { io = _open(unit.Path); } catch { }
             if (!Usable(unit.Model, io))
@@ -929,7 +1283,7 @@ namespace PadForge.Common.Input.Peripherals
                 return false;
             }
             bool settled = false;
-            try { settled = unit.Model.Repair?.Invoke(io, _wait) ?? true; } catch { }
+            try { settled = unit.Model.Repair?.Invoke(io, _sessionWait) ?? true; } catch { }
             try { io.Dispose(); } catch { }
             if (settled)
                 PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} colors an earlier run left handed back");
@@ -937,24 +1291,32 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>Opens the unit's collection for read and write and
-        /// starts its session. False when it did not open that way or the
-        /// model's first reads went unanswered.</summary>
-        private bool Open(Unit unit)
+        /// starts its session. False when it did not open that way, or, with
+        /// <paramref name="refused"/>, when Windows holds the collection, or
+        /// when it opened and the model's first reads went unanswered or
+        /// showed a device the model does not light.</summary>
+        private bool Open(Unit unit, out bool refused)
         {
+            refused = false;
             var handle = OpenHandle(unit, out var io, out var siblings);
-            if (handle == null) return false;
+            if (handle == null)
+            {
+                refused = unit.WindowsHolds;
+                return false;
+            }
             HidLightingSession session = null;
             try
             {
-                session = unit.Own != null ? unit.Model.BeginOwn?.Invoke(handle, _wait)
-                    : siblings != null ? unit.Model.BeginWith?.Invoke(io, siblings, _wait)
-                    : unit.Model.Begin?.Invoke(io, _wait);
+                session = unit.Own != null ? unit.Model.BeginOwn?.Invoke(handle, _sessionWait)
+                    : siblings != null ? unit.Model.BeginWith?.Invoke(io, siblings, _sessionWait)
+                    : unit.Model.Begin?.Invoke(io, _sessionWait);
             }
             catch { }
             if (session == null)
             {
                 try { handle.Dispose(); } catch { }
                 Dispose(siblings);
+                refused = true;
                 return false;
             }
             unit.Handle = handle;
@@ -999,7 +1361,7 @@ namespace PadForge.Common.Input.Peripherals
             unit.SizeDue = false;
             unit.Sized = counts;
             bool sent;
-            try { sent = unit.Session.SizeStrips(unit.Io, _wait, counts ?? StripCounts.None); }
+            try { sent = unit.Session.SizeStrips(unit.Io, _sessionWait, counts ?? StripCounts.None); }
             catch { sent = false; }
             Track(unit);
             if (!sent) return false;
@@ -1021,11 +1383,20 @@ namespace PadForge.Common.Input.Peripherals
                 if (now >= unit.CheckAt)
                 {
                     unit.CheckAt = now + model.RecheckMs;
-                    bool answered;
-                    try { answered = unit.Session.Recheck(unit.Io, _wait); }
+                    bool answered, repaint = false;
+                    try
+                    {
+                        answered = unit.Session.Recheck(unit.Io, _sessionWait);
+                        repaint = answered && unit.Session.RepaintDue;
+                    }
                     catch { answered = false; }
                     Track(unit);
                     if (!answered) return false;
+                    if (repaint)
+                    {
+                        unit.Shown = null;
+                        unit.ShownMap = null;
+                    }
                 }
                 Soonest(ref due, unit.CheckAt);
             }
@@ -1056,7 +1427,11 @@ namespace PadForge.Common.Input.Peripherals
                 repaintMs = model.RepaintMs;
             }
             long at = unit.PendingAt + holdMs;
-            if (unit.Shown != null) at = Math.Max(at, unit.SentAt + repaintMs);
+            if (unit.Shown != null)
+            {
+                at = Math.Max(at, unit.SentAt + repaintMs);
+                if (holdMs > 0) at = Math.Max(at, StoredWriteDue(unit, now));
+            }
             at = Math.Max(at, unit.LaterAt);
             if (now < at)
             {
@@ -1068,7 +1443,7 @@ namespace PadForge.Common.Input.Peripherals
 
             var session = unit.Session;
             HidLightingPaint result;
-            try { result = session.Paint(unit.Io, _wait, map.Lights, colors); }
+            try { result = session.Paint(unit.Io, _sessionWait, map.Lights, colors); }
             catch { result = HidLightingPaint.Failed; }
             Track(unit);
             if (result == HidLightingPaint.Failed) return false;
@@ -1079,6 +1454,7 @@ namespace PadForge.Common.Input.Peripherals
                 return true;
             }
             bool first = unit.Shown == null;
+            if (!first && holdMs > 0) unit.StoredWrites--;
             unit.Shown = colors;
             unit.ShownMap = map;
             unit.SentAt = _ticks();
@@ -1111,13 +1487,28 @@ namespace PadForge.Common.Input.Peripherals
                 return true;
             }
             bool sent;
-            try { sent = unit.Session.KeepAlive(unit.Io, _wait, unit.ShownMap.Lights, unit.Shown); }
+            try { sent = unit.Session.KeepAlive(unit.Io, _sessionWait, unit.ShownMap.Lights, unit.Shown); }
             catch { sent = false; }
             Track(unit);
             if (!sent) return false;
             unit.KeptAt = _ticks();
             Soonest(ref due, Math.Max(unit.KeptAt + model.KeepAliveMs, unit.SentAt + model.KeepAliveIdleMs));
             return true;
+        }
+
+        /// <summary>When a stored-picture model may send its next picture: at
+        /// once while it has one left of its burst, else when it earns the next
+        /// (<see cref="StoredWriteBurst"/>).</summary>
+        private static long StoredWriteDue(Unit unit, long now)
+        {
+            if (unit.StoredWritesAt == 0) unit.StoredWritesAt = now;
+            long earned = (now - unit.StoredWritesAt) / StoredWriteRefillMs;
+            if (earned > 0)
+            {
+                unit.StoredWrites = (int)Math.Min(StoredWriteBurst, unit.StoredWrites + earned);
+                unit.StoredWritesAt += earned * StoredWriteRefillMs;
+            }
+            return unit.StoredWrites > 0 ? now : unit.StoredWritesAt + StoredWriteRefillMs;
         }
 
         /// <summary>The unit's session returns the device to its own
@@ -1146,7 +1537,7 @@ namespace PadForge.Common.Input.Peripherals
                 return true;
             }
             bool released = false;
-            try { released = unit.Session.HandBack(unit.Io, _wait); } catch { }
+            try { released = unit.Session.HandBack(unit.Io, _sessionWait); } catch { }
             Track(unit);
             if (released) PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} lighting handed back");
             return released;
@@ -1159,17 +1550,85 @@ namespace PadForge.Common.Input.Peripherals
 
         private static bool ProgramRuns(IReadOnlyList<VendorProgram> programs) => ProgramRunning(programs) != null;
 
-        /// <summary>A write, an open or a read failed. The channel closes and
-        /// the unit is listed asleep, never taken off the list.</summary>
-        private void Fail(Unit unit, long now, string why, ref bool changed, ref bool failed, ref long due)
+        /// <summary>A write, an open or a read failed. What the session would
+        /// have handed back stays owed, the channel closes and the unit is
+        /// listed asleep, never taken off the list. The retry counts from now,
+        /// after whatever the failure held the worker for.</summary>
+        private void Fail(Unit unit, string why, ref bool changed, ref bool failed, ref long due)
         {
+            Owe(unit);
             Close(unit);
+            RecordOwed(unit);
             unit.Asleep = true;
-            unit.RetryAt = now + RetryMs;
+            unit.RetryAt = _ticks() + RetryMs;
             changed = true;
             failed = true;
             Soonest(ref due, unit.RetryAt);
             PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} {why}, listed asleep");
+        }
+
+        /// <summary>The handle opened and the session was refused, or Windows
+        /// holds the collection: the device is there and takes no lighting from
+        /// PadForge, for now or for good. No walk is asked for, since nothing
+        /// says it left. After a refused session each try waits twice as long
+        /// as the one before, up to <see cref="RefusedRetryMaxMs"/>. A collection
+        /// Windows holds comes here once: its next try waits
+        /// <see cref="RetryMs"/>, and every try after that waits the bound
+        /// (Serve).</summary>
+        private void Refuse(Unit unit, ref bool changed, ref long due)
+        {
+            long wait = Math.Min(RefusedRetryMaxMs, (long)RetryMs << Math.Min(unit.Refusals, 16));
+            unit.Refusals++;
+            unit.Refused = true;
+            unit.Asleep = true;
+            unit.RetryAt = _ticks() + wait;
+            changed = true;
+            Soonest(ref due, unit.RetryAt);
+            if (unit.Refusals == 1)
+                PadForge.Engine.SdlDiagLog.WriteLine(unit.WindowsHolds
+                    ? $"PERIPHERAL HidLighting {unit.Label} is a collection Windows holds, and its reports do not pass, listed asleep"
+                    : $"PERIPHERAL HidLighting {unit.Label} opened and took no session, listed asleep");
+        }
+
+        /// <summary>Keeps the frames of a session that ends with no hand-back.
+        /// A model with a backup of its own settles that itself, by the next
+        /// session or its repair.</summary>
+        private static void Owe(Unit unit)
+        {
+            var session = unit.Session;
+            if (session == null || unit.Model.Owed != null) return;
+            if (unit.Own != null && unit.Model.WriteOnce == null) return;
+            byte[][] frames = null;
+            try { frames = session.CrashFrames; } catch { }
+            if (frames == null || frames.Length == 0) return;
+            unit.OwedFrames = frames;
+            unit.OwedFeature = session.Feature;
+            unit.OwedPath = session.CrashPath;
+        }
+
+        /// <summary>Sends what the unit is owed, ahead of whatever else it is
+        /// sent. It ends with nothing sent where a hand-back sends nothing: a
+        /// program of the model or OpenRGB has the device (<see cref="Release"/>).
+        /// True when nothing is owed any more, false when a frame did not go
+        /// out, and then the unit stays owed.</summary>
+        private bool PayOwed(Unit unit)
+        {
+            var frames = unit.OwedFrames;
+            if (frames == null) return true;
+            if (!ProgramRuns(unit.Model.Programs) && !PeripheralOutputs.TakenByOpenRgb(PathOf(unit)))
+            {
+                var own = unit.Own != null ? unit.Model.WriteOnce : null;
+                foreach (var frame in frames)
+                {
+                    bool sent = false;
+                    try { sent = WriteOnce(unit.OwedPath ?? unit.Path, frame, unit.OwedFeature, own, OneShotMs); } catch { }
+                    if (!sent) return false;
+                }
+                PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} owed hand-back sent");
+            }
+            unit.OwedFrames = null;
+            Unrecord(unit);
+            return true;
         }
 
         /// <summary>Closes the unit's channel and its siblings' and drops its
@@ -1189,6 +1648,7 @@ namespace PadForge.Common.Input.Peripherals
             unit.Pending = null;
             unit.PendingMap = null;
             unit.LaterAt = 0;
+            unit.KeepAliveFailed = false;
             try { handle?.Dispose(); } catch { }
             Dispose(siblings);
         }
@@ -1209,15 +1669,33 @@ namespace PadForge.Common.Input.Peripherals
             var next = new CrashRecord[current.Length + 1];
             current.CopyTo(next, 0);
             next[current.Length] = new CrashRecord(unit.Path, frames, unit.Session.Feature, unit.Model.Programs,
-                unit.Own != null ? unit.Model.WriteOnce : null);
+                unit.Own != null ? unit.Model.WriteOnce : null, unit.Session.CrashPath);
             Volatile.Write(ref _recorded, next);
             unit.Recorded = true;
             unit.RecordedFrames = frames;
         }
 
-        /// <summary>Takes the unit's own entry off the record. Not every
-        /// entry of its path: a worker a timed-out Stop left behind closes
-        /// its units while the next worker holds the same collections.</summary>
+        /// <summary>Keeps what the unit is owed on the record until it is
+        /// settled, with its session gone.</summary>
+        private void RecordOwed(Unit unit)
+        {
+            var frames = unit.OwedFrames;
+            if (frames == null) return;
+            var current = Volatile.Read(ref _recorded);
+            var next = new CrashRecord[current.Length + 1];
+            current.CopyTo(next, 0);
+            next[current.Length] = new CrashRecord(unit.Path, frames, unit.OwedFeature, unit.Model.Programs,
+                unit.Own != null ? unit.Model.WriteOnce : null, unit.OwedPath);
+            Volatile.Write(ref _recorded, next);
+            unit.Recorded = true;
+            unit.RecordedFrames = frames;
+        }
+
+        /// <summary>Takes the unit's own entry off the record: its path and
+        /// its frames. Not every entry of its path: a worker a timed-out Stop
+        /// left behind closes its units while the next worker holds the same
+        /// collections. Not every entry of its frames: two units of one model
+        /// can share one array of them.</summary>
         private void Unrecord(Unit unit)
         {
             if (!unit.Recorded) return;
@@ -1227,7 +1705,8 @@ namespace PadForge.Common.Input.Peripherals
             var current = Volatile.Read(ref _recorded);
             var next = new List<CrashRecord>(current.Length);
             foreach (var entry in current)
-                if (!ReferenceEquals(entry.Frames, frames)) next.Add(entry);
+                if (!ReferenceEquals(entry.Frames, frames) || !string.Equals(entry.Path, unit.Path, StringComparison.Ordinal))
+                    next.Add(entry);
             Volatile.Write(ref _recorded, next.ToArray());
         }
 

@@ -91,10 +91,10 @@ namespace PadForge.Tests
             return new[] { ("", Channel(d), none) };
         }
 
-        private static string Row(PluginDevice d, string model, string picture, string note, int stripLeds, string shading = "flat")
+        private static string Row(PluginDevice d, string model, string picture, string note, int stripLeds, string shading = "flat", bool holds = false)
         {
             string start = string.Join(";", new[] { Steps(d.SiblingStart), Steps(d.Start) }.Where(s => s.Length > 0));
-            return $"{d.ProductId:X4}\t{d.VendorId:X4}\t{d.Plugin}\t{d.Source}\t{start}\t{picture}\t{note}\t{(d.AskVariant != null ? 1 : 0)}\t{d.StripMaxLeds.Count}\t{(d.Answers != null ? 1 : 0)}\t{model}\t{stripLeds}\t{PluginDeviceLighting.PictureAgainMsOf(d)}\t{shading}";
+            return $"{d.ProductId:X4}\t{d.VendorId:X4}\t{d.Plugin}\t{d.Source}\t{start}\t{picture}\t{note}\t{(d.AskVariant != null ? 1 : 0)}\t{d.StripMaxLeds.Count}\t{(d.Answers != null ? 1 : 0)}\t{model}\t{stripLeds}\t{(holds ? 0 : PluginDeviceLighting.PictureAgainMsOf(d))}\t{shading}";
         }
 
         private static string StripRow(PluginDevice d)
@@ -114,6 +114,7 @@ namespace PadForge.Tests
                 IReadOnlyList<LightInfo> lights = d.Lights;
                 int slots = d.Slots;
                 var draw = d.Picture;
+                bool holds = false;
                 if (d.AskVariant != null)
                 {
                     var variant = d.AskVariant(io, siblings, _ => { });
@@ -122,6 +123,7 @@ namespace PadForge.Tests
                         lights = variant.Lights;
                         slots = variant.Slots;
                         if (variant.Picture != null) draw = variant.Picture;
+                        holds = variant.PictureHolds;
                     }
                 }
                 if (draw == null || slots <= 0) return Row(d, model, "", "nopicture", 0);
@@ -137,7 +139,7 @@ namespace PadForge.Tests
                     if (light.Address < 0 || light.Address >= slots) continue;
                     byAddress[light.Address] = firmware ? Shown : byRank ? Shade(light with { HasPosition = false }, rank) : Shade(light, rank);
                 }
-                return Row(d, model, Steps(draw(byAddress)), "", 0, firmware ? "firmware" : byRank ? "rank" : "place");
+                return Row(d, model, Steps(draw(byAddress)), "", 0, firmware ? "firmware" : byRank ? "rank" : "place", holds);
             }
             catch (Exception e) { return Row(d, model, "", e.GetType().Name, 0); }
         }

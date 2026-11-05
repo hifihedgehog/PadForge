@@ -361,6 +361,21 @@ namespace PadForge.Engine.RemoteLink
         // record [record index].
         private const byte DeviceListExtV13Magic = 0xEE;
 
+        // Fourteenth extension tail: the Device Dossier's FIRMWARE and REV as
+        // the owner shows them, and a DualShock 4's link. Both texts come from
+        // the open SDL device or a Bluetooth read on the owner, and a peer's
+        // peer:// path says nothing of the link, on which a first model's audio
+        // rests. The periodic push carries a version learned after open and a
+        // pad that moved to the other link. Written only when some row carries
+        // one and the list with it fits the old peers' budget. Encoding:
+        // [magic][records], then per record [record index][link byte: 0 not
+        // said, 1 wired, 2 Bluetooth][firmware string][revision string].
+        private const byte DeviceListExtV14Magic = 0xEF;
+
+        /// <summary>The longest FIRMWARE or REV the v14 tail accepts, far past
+        /// a four-part version.</summary>
+        private const int MaxDossierTextLength = 64;
+
         /// <summary>The longest identity the v11 tail accepts: twelve hex
         /// digits, "/node:", a driver release and "/cal" fit with room to
         /// spare.</summary>
@@ -415,25 +430,28 @@ namespace PadForge.Engine.RemoteLink
             // DualShock 3 identities, which decide what a calibration takes,
             // then the capacitive sensor masks, which decide what the automap
             // binds, where the voice phrase rows and a key list change only
-            // what the picker offers.
+            // what the picker offers, and the dossier's text changes only what
+            // the Devices page shows.
             var keyOrders = EncodeKeyOrderTail(devices, count);
             var restMasks = EncodeRestMaskTail(devices, count);
             var identities = EncodeDs3IdentityTail(devices, count);
             var capSense = EncodeCapSenseTail(devices, count);
             var voice = EncodeVoicePhraseTail(devices, count);
+            var dossier = EncodeDossierTail(devices, count);
             int required = buf.Count + 1 + tail.Count + (count > 0 ? after[0] + MandatoryMetadataBytes(devices[0]) : 0);
             var fit = FitOptionalTails(required, tailBudget, restMasks.Count, identities.Count, capSense.Count,
-                voice.Count, keyOrders.Count);
+                voice.Count, keyOrders.Count, dossier.Count);
             // The names get the room the older budget leaves them whichever
             // budget the tails ride in, so a tail only a full-list peer takes
             // never costs a device its names.
             int namesTail = tail.Count + FitOptionalTails(required, OldPeerPayloadBudget,
-                restMasks.Count, identities.Count, capSense.Count, voice.Count, keyOrders.Count).Bytes;
+                restMasks.Count, identities.Count, capSense.Count, voice.Count, keyOrders.Count, dossier.Count).Bytes;
             if (fit.KeyOrders) tail.AddRange(keyOrders);
             if (fit.Masks) tail.AddRange(restMasks);
             if (fit.Identities) tail.AddRange(identities);
             if (fit.CapSense) tail.AddRange(capSense);
             if (fit.Voice) tail.AddRange(voice);
+            if (fit.Dossier) tail.AddRange(dossier);
 
             // Metadata extension (one section per v1 record, same order), so
             // a remote device's mapping picker and Devices-page preview show
@@ -673,8 +691,8 @@ namespace PadForge.Engine.RemoteLink
         /// <summary>Which of the v10, v11, v12, v13 and v9 tails fit in
         /// <paramref name="budget"/> after <paramref name="required"/> bytes,
         /// taken in that order, and the bytes they add.</summary>
-        private static (bool Masks, bool Identities, bool CapSense, bool Voice, bool KeyOrders, int Bytes) FitOptionalTails(
-            int required, int budget, int masks, int identities, int capSense, int voice, int keyOrders)
+        private static (bool Masks, bool Identities, bool CapSense, bool Voice, bool KeyOrders, bool Dossier, int Bytes) FitOptionalTails(
+            int required, int budget, int masks, int identities, int capSense, int voice, int keyOrders, int dossier)
         {
             bool m = masks > 0 && required + masks <= budget;
             if (m) required += masks;
@@ -685,9 +703,40 @@ namespace PadForge.Engine.RemoteLink
             bool v = voice > 0 && required + voice <= budget;
             if (v) required += voice;
             bool k = keyOrders > 0 && required + keyOrders <= budget;
-            return (m, id, c, v, k, (m ? masks : 0) + (id ? identities : 0) + (c ? capSense : 0)
-                + (v ? voice : 0) + (k ? keyOrders : 0));
+            if (k) required += keyOrders;
+            bool f = dossier > 0 && required + dossier <= budget;
+            return (m, id, c, v, k, f, (m ? masks : 0) + (id ? identities : 0) + (c ? capSense : 0)
+                + (v ? voice : 0) + (k ? keyOrders : 0) + (f ? dossier : 0));
         }
+
+        /// <summary>The v14 tail, the link, FIRMWARE and REV of each row that has
+        /// any, or nothing when none does. A longer text than the decoder takes
+        /// goes as none.</summary>
+        private static List<byte> EncodeDossierTail(IReadOnlyList<RemotePeerDeviceInfo> devices, int count)
+        {
+            var tail = new List<byte>();
+            static string Wire(string text) => IsWireDossierText(text) ? text : "";
+            int rows = 0;
+            for (int i = 0; i < count; i++)
+                if (devices[i].OnBluetooth != null
+                    || Wire(devices[i].FirmwareText).Length > 0 || Wire(devices[i].ProductRevision).Length > 0) rows++;
+            if (rows == 0) return tail;
+            tail.Add(DeviceListExtV14Magic);
+            tail.Add((byte)rows);
+            for (int i = 0; i < count; i++)
+            {
+                string firmware = Wire(devices[i].FirmwareText), revision = Wire(devices[i].ProductRevision);
+                if (devices[i].OnBluetooth == null && firmware.Length == 0 && revision.Length == 0) continue;
+                tail.Add((byte)i);
+                tail.Add(devices[i].OnBluetooth switch { true => (byte)2, false => (byte)1, null => (byte)0 });
+                WriteString(tail, firmware);
+                WriteString(tail, revision);
+            }
+            return tail;
+        }
+
+        private static bool IsWireDossierText(string text)
+            => !string.IsNullOrEmpty(text) && text.Length <= MaxDossierTextLength;
 
         /// <summary>The v13 tail, the rows whose pad carries voice phrases on
         /// the owner, or nothing when none does.</summary>
@@ -1225,6 +1274,50 @@ namespace PadForge.Engine.RemoteLink
                 catch
                 {
                     foreach (var info in list) info.HasVoicePhrases = null;
+                    v1ExtOk = false; // cursor unreliable: do not read v14
+                }
+            }
+
+            // v14 tail: the link, FIRMWARE and REV. Same guarantees as v9.
+            if (v1ExtOk)
+            {
+                try
+                {
+                    if (o < data.Length && data[o] == DeviceListExtV14Magic)
+                    {
+                        o++;
+                        int records = data[o++];
+                        var texts = new (byte Link, string Firmware, string Revision)?[count];
+                        for (int r = 0; r < records; r++)
+                        {
+                            int index = data[o++];
+                            if (index >= count || texts[index] != null)
+                                throw new InvalidOperationException("dossier record");
+                            byte link = data[o++];
+                            if (link > 2) throw new InvalidOperationException("dossier link");
+                            string firmware = ReadString(data, ref o);
+                            string revision = ReadString(data, ref o);
+                            if (firmware.Length > MaxDossierTextLength || revision.Length > MaxDossierTextLength)
+                                throw new InvalidOperationException("dossier text");
+                            texts[index] = (link, firmware, revision);
+                        }
+                        for (int i = 0; i < count; i++)
+                            if (texts[i] is { } text)
+                            {
+                                list[i].OnBluetooth = text.Link == 0 ? null : text.Link == 2;
+                                list[i].FirmwareText = text.Firmware;
+                                list[i].ProductRevision = text.Revision;
+                            }
+                    }
+                }
+                catch
+                {
+                    foreach (var info in list)
+                    {
+                        info.OnBluetooth = null;
+                        info.FirmwareText = null;
+                        info.ProductRevision = null;
+                    }
                 }
             }
             return list;

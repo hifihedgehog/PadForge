@@ -521,6 +521,8 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} utilise de nouveau le pilote Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Le pilote Windows de {0} n'a pas pu être restauré.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows a remis {0} sur son propre pilote. Sélectionnez-le sur la page Appareils pour le changer à nouveau.</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} n’utilise plus le pilote de PadForge.</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} utilise encore le pilote de PadForge. Sélectionnez-le dans la page Appareils pour le rendre à Windows.</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Utiliser uniquement dans PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge passe ce clavier sur le pilote WinUSB de Windows et le lit lui-même. Windows cesse alors de saisir avec ce clavier dans tous les programmes, même lorsque PadForge est fermé, jusqu’à ce que son pilote Windows soit restauré depuis cette page. Ses mappages et ses macros continuent de fonctionner tant que PadForge est ouvert.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge passe cette souris sur le pilote WinUSB de Windows et la lit elle-même. Windows cesse alors de déplacer le pointeur avec cette souris dans tous les programmes, même lorsque PadForge est fermé, jusqu’à ce que son pilote Windows soit restauré depuis cette page. Ses mappages et ses macros continuent de fonctionner tant que PadForge est ouvert.</value></data>
@@ -1784,6 +1786,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>Les vibrations passent par le gestionnaire tactile de SteelSeries GG.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG pilote toutes les souris Rival tactiles à la fois, donc celle du contrôleur virtuel {0} décide de leurs vibrations.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>En attente de SteelSeries GG. Les vibrations seront jouées dès que GG sera lancé.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG tourne et ne répond pas à PadForge. Les vibrations reprendront dès qu’il répondra.</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>Les vibrations sont jouées sur vos périphériques Razer Sensa HD via Razer Synapse.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>En attente de Sensa HD Haptics dans Razer Synapse 4. Dans Synapse, réglez la source haptique de l’appareil sur Sensa HD Games.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Gâchette gauche</value></data>
@@ -1825,6 +1828,12 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Les couleurs vont directement à {0}. Tant qu’il est éclairé, son mode mémoire intégrée est désactivé.</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Les couleurs vont directement à {0}. Les couleurs changeantes, comme un cycle de couleurs ou des couleurs qui suivent le son, exigent que Dynamic Lighting soit activé dans le BIOS de l’ordinateur portable. Sans cela, les touches gardent les dernières couleurs fixes.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Les couleurs vont directement à {0}. Si Dynamic Lighting est activé dans le BIOS de l’ordinateur portable, l’Éclairage dynamique de Windows éclaire les touches à la place. Désactivez l’Éclairage dynamique de Windows pour ce clavier dans les Paramètres Windows et PadForge les éclairera, couleurs changeantes comprises.</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>Les couleurs vont directement à {0}. Il garde chaque image dans sa propre mémoire, donc les couleurs qui changent, comme un cycle de couleurs ou des couleurs qui suivent le son, ne s’affichent pas. Une couleur fixe s’affiche.</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>Les couleurs vont directement à {0}. Il garde chaque image dans sa propre mémoire, donc les couleurs qui changent, comme un cycle de couleurs ou des couleurs qui suivent le son, ne s’affichent pas. Une couleur fixe s’affiche. La première image écrase les effets enregistrés sur le clavier, et les anciens ne reviennent pas.</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>Appareil série sur {0}</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>Cet appareil est connecté et n’a pas accepté les couleurs de PadForge. PadForge réessaie chaque minute.</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows garde cet appareil comme clavier ou souris et refuse le rapport qui règle ses couleurs, donc PadForge ne peut pas l’éclairer sous Windows.</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>Un autre programme a ouvert cet appareil, donc PadForge ne peut pas l’éclairer. PadForge l’éclaire dès que ce programme se ferme.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Cet appareil n’a pas encore répondu. Ses couleurs s’afficheront dès son réveil.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Les couleurs passent par {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Les couleurs passent par {0}, qui éclaire tous les appareils de ce type à la fois. Tant que {0} n’est pas lancé, PadForge éclaire lui-même cet appareil.</value></data>
@@ -1832,7 +1841,9 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Les couleurs passent par le SDK Server d’OpenRGB. Tant qu’OpenRGB n’est pas lancé, PadForge éclaire lui-même cet appareil.</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Les couleurs passent par le SDK Server d’OpenRGB.</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB détient cet appareil et n’a pas de mode Direct pour lui, son éclairage reste donc à OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB tourne avec son SDK Server désactivé, PadForge lui laisse donc cet appareil. Activez le SDK Server dans OpenRGB et PadForge éclairera l’appareil par son intermédiaire.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB tourne et son SDK Server ne répond pas sur le port {0}, donc PadForge lui laisse cet appareil. Activez le SDK Server dans OpenRGB et PadForge éclairera l’appareil par son intermédiaire.</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE tourne avec son SDK désactivé. Activez iCUE SDK dans les paramètres d’iCUE et PadForge éclairera l’appareil par son intermédiaire.</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} tourne et n’a pas laissé PadForge éclairer ses appareils. PadForge continue de demander.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} éclaire tous les appareils de ce type à la fois, donc celui du contrôleur virtuel {1} décide de leur couleur.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} éclaire tous les appareils de ce type à la fois, donc la ligne {1} du contrôleur virtuel {2} décide de leur couleur.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Le contrôleur virtuel {0} éclaire aussi cet appareil, et c’est sa couleur qui s’affiche.</value></data>
@@ -1850,7 +1861,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>les casques</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>les cartes mères, les cartes graphiques et la mémoire</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>les cartes mères et les cartes graphiques</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>les tapis de souris et les supports de casque</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>les tapis de souris, les casques et les supports de casque</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Barre lumineuse</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Entrez une couleur hexadécimale à six chiffres (RRGGBB ou #RRGGBB) et appuyez sur Entrée ou cliquez ailleurs pour l'appliquer.</value></data>
@@ -4622,6 +4633,7 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Connexion au chat de {0}…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Lecture du chat de {0}.</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Impossible de joindre le chat de {0}. Nouvelle tentative.</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch n’a pas de chat pour {0}. Vérifiez le nom de la chaîne.</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>En pause.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>L'image de la manette pour votre diffusion. Ajoutez cette adresse à OBS comme source navigateur :</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>L'image de la manette pour votre diffusion nécessite le Contrôleur Web et son adresse HTTP non chiffrée. Activez Servir aussi en HTTP non chiffré dans la carte Contrôleur Web. Ce PC uniquement suffit pour OBS sur ce PC.</value></data>

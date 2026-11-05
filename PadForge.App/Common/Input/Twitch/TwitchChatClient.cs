@@ -136,7 +136,7 @@ namespace PadForge.Common.Input.Twitch
     }
 
     /// <summary>Where the client stands, for the Dashboard's status line.</summary>
-    internal enum TwitchChatState { Connecting, Reading, Retrying }
+    internal enum TwitchChatState { Connecting, Reading, Retrying, NoChat }
 
     /// <summary>
     /// Reads a Twitch channel's chat (issue #555). It connects to the secure
@@ -148,10 +148,27 @@ namespace PadForge.Common.Input.Twitch
     /// never posts.
     ///
     /// <para>A RECONNECT, a closed socket or a silent one is met by
-    /// connecting again, at once after a RECONNECT and after a delay that
-    /// doubles to 30 seconds otherwise. The client sends a PING of its own
-    /// each minute, so a link that dies without a word is noticed within
-    /// <see cref="SilenceMs"/>.</para>
+    /// connecting again, at once after a RECONNECT and after a delay otherwise.
+    /// The delay doubles to 30 seconds and starts over once a session has
+    /// joined the channel, as tmi.js does on connecting (ClientBase.js,
+    /// reconnections and reconnectTimer). A connection that never finishes
+    /// counts as a failed one after <see cref="ConnectMs"/>.</para>
+    ///
+    /// <para>The client sends a PING of its own each minute whether or not
+    /// chat is moving (tmi.js's pingLoop, ClientBase.js), and Twitch answers
+    /// it, so a quiet channel stays connected and a link that dies without a
+    /// word is noticed <see cref="SilenceMs"/> after the last thing it sent.
+    /// The wait for that PING races the pending receive and never cancels it,
+    /// because canceling a receive ends a ClientWebSocket.</para>
+    ///
+    /// <para>Twitch drops a JOIN for a channel that does not exist without a
+    /// word, and answers one for a suspended channel with a NOTICE. Neither is
+    /// a failed connection, so the session stays up, reads as
+    /// <see cref="TwitchChatState.NoChat"/>, and asks again each minute.</para>
+    ///
+    /// <para>Twitch can send a message twice. Each carries an "id" tag, and a
+    /// message whose id was seen among the last <see cref="RememberedIds"/>
+    /// is dropped.</para>
     /// </summary>
     internal sealed class TwitchChatClient : IDisposable
     {
@@ -160,6 +177,24 @@ namespace PadForge.Common.Input.Twitch
         public const int KeepAliveMs = 60_000;
         public const int SilenceMs = 90_000;
         public const int MaxRetryMs = 30_000;
+        public const int FirstRetryMs = 1000;
+        public const int ConnectMs = 15_000;
+        public const int JoinAnswerMs = 10_000;
+        public const int RememberedIds = 256;
+
+        // The NOTICE ids tmi.js lists for a channel that cannot be read
+        // (ClientBase.js, "Permission error"). The others it lists there are
+        // about the sender's own rights, and this client sends no message.
+        private static readonly HashSet<string> s_noChatNotices = new(StringComparer.Ordinal)
+        {
+            "msg_channel_suspended", "msg_room_not_found", "tos_ban",
+        };
+
+        /// <summary>Test seams: the periods, shorter under test.</summary>
+        internal int KeepAlivePeriodMs { get; init; } = KeepAliveMs;
+        internal int SilencePeriodMs { get; init; } = SilenceMs;
+        internal int ConnectPeriodMs { get; init; } = ConnectMs;
+        internal int JoinAnswerPeriodMs { get; init; } = JoinAnswerMs;
 
         private readonly string _channel;
         private readonly Func<IChatSocket> _newSocket;
@@ -169,11 +204,14 @@ namespace PadForge.Common.Input.Twitch
         private TwitchChatState _state = TwitchChatState.Connecting;
         private string _problem = string.Empty;
         private int _statusVersion;
+        private bool _joined;
+        private readonly HashSet<string> _seenIds = new(StringComparer.Ordinal);
+        private readonly Queue<string> _seenOrder = new();
 
-        /// <summary>A chat message: who sent it, whether a moderator or the
-        /// broadcaster did, whether the broadcaster did, and its
-        /// text.</summary>
-        public event Action<string, bool, bool, string> Message;
+        /// <summary>A chat message: the sender's login, the name Twitch shows
+        /// for them, whether a moderator or the broadcaster sent it, whether
+        /// the broadcaster did, and its text.</summary>
+        public event Action<string, string, bool, bool, string> Message;
 
         public TwitchChatClient(string channel, Func<IChatSocket> newSocket = null)
         {
@@ -195,7 +233,7 @@ namespace PadForge.Common.Input.Twitch
             lock (_lock)
             {
                 if (_loop != null) return;
-                _loop = Task.Run(() => RunAsync(_stop.Token));
+                _loop = Task.Run(() => RunAsync(SessionAsync, Task.Delay, _stop.Token));
             }
         }
 
@@ -210,18 +248,21 @@ namespace PadForge.Common.Input.Twitch
             }
         }
 
-        private async Task RunAsync(CancellationToken ct)
+        /// <summary>The loop around the sessions. The tests pass their own
+        /// session and delay.</summary>
+        internal async Task RunAsync(Func<CancellationToken, Task<bool>> session,
+            Func<int, CancellationToken, Task> wait, CancellationToken ct)
         {
-            int delay = 1000;
+            int delay = FirstRetryMs;
             while (!ct.IsCancellationRequested)
             {
                 SetState(TwitchChatState.Connecting, Problem);
                 bool reconnectNow = false;
                 string problem = string.Empty;
+                _joined = false;
                 try
                 {
-                    reconnectNow = await SessionAsync(ct).ConfigureAwait(false);
-                    if (reconnectNow) delay = 1000;
+                    reconnectNow = await session(ct).ConfigureAwait(false);
                 }
                 catch (OperationCanceledException) when (ct.IsCancellationRequested)
                 {
@@ -234,9 +275,11 @@ namespace PadForge.Common.Input.Twitch
                         PadForge.Engine.SdlDiagLog.WriteLine($"Twitch chat: #{_channel}: {problem}");
                 }
                 if (ct.IsCancellationRequested) break;
+                // A session that joined was a healthy one, however it ended.
+                if (reconnectNow || _joined) delay = FirstRetryMs;
                 SetState(TwitchChatState.Retrying, problem);
                 if (reconnectNow) continue;
-                try { await Task.Delay(delay, ct).ConfigureAwait(false); }
+                try { await wait(delay, ct).ConfigureAwait(false); }
                 catch (OperationCanceledException) { break; }
                 delay = Math.Min(delay * 2, MaxRetryMs);
             }
@@ -249,7 +292,22 @@ namespace PadForge.Common.Input.Twitch
             if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(Host))
                 throw new InvalidOperationException("Twitch could not be reached.");
             using var socket = _newSocket();
-            await socket.ConnectAsync(Endpoint, ct).ConfigureAwait(false);
+            return await ReadAsync(socket, ct).ConfigureAwait(false);
+        }
+
+        /// <summary>Logs in on a socket and reads it until it ends. The tests
+        /// call it with a scripted socket.</summary>
+        internal async Task<bool> ReadAsync(IChatSocket socket, CancellationToken ct)
+        {
+            using (var connecting = CancellationTokenSource.CreateLinkedTokenSource(ct))
+            {
+                connecting.CancelAfter(ConnectPeriodMs);
+                try { await socket.ConnectAsync(Endpoint, connecting.Token).ConfigureAwait(false); }
+                catch (OperationCanceledException) when (!ct.IsCancellationRequested)
+                {
+                    throw new TimeoutException("Twitch did not answer the connection.");
+                }
+            }
             await socket.SendAsync("CAP REQ :twitch.tv/tags twitch.tv/commands", ct).ConfigureAwait(false);
             await socket.SendAsync("PASS SCHMOOPIIE", ct).ConfigureAwait(false);
             string nick = "justinfan" + Random.Shared.Next(10000, 100000);
@@ -257,32 +315,59 @@ namespace PadForge.Common.Input.Twitch
             await socket.SendAsync("JOIN #" + _channel, ct).ConfigureAwait(false);
 
             long lastPing = Environment.TickCount64;
-            while (!ct.IsCancellationRequested)
+            long lastFrame = lastPing;
+            long askAgainAt = lastPing + JoinAnswerPeriodMs;
+            Task<string> receiving = null;
+            try
             {
-                if (Environment.TickCount64 - lastPing >= KeepAliveMs)
+                while (!ct.IsCancellationRequested)
                 {
-                    await socket.SendAsync("PING :tmi.twitch.tv", ct).ConfigureAwait(false);
-                    lastPing = Environment.TickCount64;
-                }
-                string frame;
-                using (var silent = CancellationTokenSource.CreateLinkedTokenSource(ct))
-                {
-                    silent.CancelAfter(SilenceMs);
-                    try { frame = await socket.ReceiveAsync(silent.Token).ConfigureAwait(false); }
-                    catch (OperationCanceledException) when (!ct.IsCancellationRequested)
+                    receiving ??= socket.ReceiveAsync(ct);
+                    if (!receiving.IsCompleted)
                     {
-                        throw new TimeoutException("Twitch stopped answering.");
+                        long now = Environment.TickCount64;
+                        if (now - lastFrame >= SilencePeriodMs)
+                            throw new TimeoutException("Twitch stopped answering.");
+                        if (now - lastPing >= KeepAlivePeriodMs)
+                        {
+                            await socket.SendAsync("PING :tmi.twitch.tv", ct).ConfigureAwait(false);
+                            lastPing = now;
+                        }
+                        if (!_joined && now >= askAgainAt)
+                        {
+                            SetState(TwitchChatState.NoChat, string.Empty);
+                            await socket.SendAsync("JOIN #" + _channel, ct).ConfigureAwait(false);
+                            askAgainAt = now + KeepAlivePeriodMs;
+                        }
+                        long wake = Math.Min(lastPing + KeepAlivePeriodMs, lastFrame + SilencePeriodMs);
+                        if (!_joined) wake = Math.Min(wake, askAgainAt);
+                        using var waiting = CancellationTokenSource.CreateLinkedTokenSource(ct);
+                        await Task.WhenAny(receiving, Task.Delay((int)Math.Max(1, wake - now), waiting.Token)).ConfigureAwait(false);
+                        waiting.Cancel();
+                        if (!receiving.IsCompleted) continue;
+                    }
+                    string frame = await receiving.ConfigureAwait(false);
+                    receiving = null;
+                    lastFrame = Environment.TickCount64;
+                    if (frame == null) throw new InvalidOperationException("Twitch closed the connection.");
+                    foreach (string raw in frame.Split("\r\n", StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        var outcome = Handle(IrcLine.Parse(raw), nick, out string reply);
+                        if (reply != null) await socket.SendAsync(reply, ct).ConfigureAwait(false);
+                        if (outcome == LineOutcome.Joined) _joined = true;
+                        if (outcome == LineOutcome.Reconnect) return true;
                     }
                 }
-                if (frame == null) throw new InvalidOperationException("Twitch closed the connection.");
-                foreach (string raw in frame.Split("\r\n", StringSplitOptions.RemoveEmptyEntries))
-                {
-                    var outcome = Handle(IrcLine.Parse(raw), nick, out string reply);
-                    if (reply != null) await socket.SendAsync(reply, ct).ConfigureAwait(false);
-                    if (outcome == LineOutcome.Reconnect) return true;
-                }
+                return false;
             }
-            return false;
+            finally
+            {
+                // A receive left pending ends when the socket closes, and its
+                // error has nobody else to read it.
+                if (receiving != null)
+                    _ = receiving.ContinueWith(static t => _ = t.Exception, CancellationToken.None,
+                        TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+            }
         }
 
         internal enum LineOutcome { None, Joined, Reconnect, Message }
@@ -307,8 +392,14 @@ namespace PadForge.Common.Input.Twitch
                         return LineOutcome.Joined;
                     }
                     return LineOutcome.None;
+                case "NOTICE":
+                    if (s_noChatNotices.Contains(line.Tag("msg-id")))
+                        SetState(TwitchChatState.NoChat, string.Empty);
+                    return LineOutcome.None;
                 case "PRIVMSG":
-                    if (line.Trailing == null) return LineOutcome.None;
+                    if (line.Trailing == null || !FirstTimeSeen(line.Tag("id"))) return LineOutcome.None;
+                    // The login identifies the sender. A display name can be
+                    // a translation of it (ComfyJS keeps both, app.js 1037).
                     string user = line.Tag("display-name");
                     if (user.Length == 0) user = line.Nick;
                     // ComfyJS's test (app.js 1039): the sender's login, the
@@ -318,11 +409,21 @@ namespace PadForge.Common.Input.Twitch
                     // broadcaster as a moderator (ChatMessage.js 22 to 28).
                     bool broadcaster = string.Equals(line.Nick, _channel, StringComparison.OrdinalIgnoreCase);
                     bool moderator = broadcaster || line.Tag("mod") == "1";
-                    Message?.Invoke(user, moderator, broadcaster, line.Trailing);
+                    Message?.Invoke(line.Nick, user, moderator, broadcaster, line.Trailing);
                     return LineOutcome.Message;
                 default:
                     return LineOutcome.None;
             }
+        }
+
+        // True for a message id not seen lately, and for a message with none.
+        private bool FirstTimeSeen(string id)
+        {
+            if (id.Length == 0) return true;
+            if (!_seenIds.Add(id)) return false;
+            _seenOrder.Enqueue(id);
+            if (_seenOrder.Count > RememberedIds) _seenIds.Remove(_seenOrder.Dequeue());
+            return true;
         }
 
         /// <summary>A channel as typed, a name or its twitch.tv address, as

@@ -92,8 +92,9 @@ namespace PadForge.Common.Input.Peripherals
     /// nothing and the mouse keeps the last color in its Static mode,
     /// written as the Thor 300's pictures are.</para>
     ///
-    /// <para>No program is named for these devices: no source names the
-    /// processes of Glorious CORE, Genesis's or ZET's software.</para>
+    /// <para>The Glorious Model O and Model D Wireless are left to Glorious
+    /// CORE while it runs (<see cref="VendorPrograms.Glorious"/>). No source
+    /// names the processes of Genesis's or ZET's software.</para>
     /// </summary>
     internal sealed class SinowealthLighting : IHidLightingFamily
     {
@@ -195,16 +196,17 @@ namespace PadForge.Common.Input.Peripherals
                         Family = this, Name = name,
                         Map = new LightMap(ZetLights(), "OpenRGB RGBController_Sinowealth1007.cpp") { Product = product },
                         HoldMs = StoredHoldMs, RepaintMs = StoredRepaintMs,
-                        Begin = (io, wait) => ZetSession.Begin(io, product),
-                        Owed = () => KeyboardProfileBackups.Get(product) != null
-                                     && KeyboardProfileBackups.Failures(product) < RepairTries,
-                        Repair = (io, _) => ZetSession.Repair(io, product),
+                        Begin = (io, wait) => ZetSession.Begin(io, KeyboardProfileBackups.SessionKey(product, io?.Path)),
+                        Owed = path => KeyboardProfileBackups.Get(KeyboardProfileBackups.DeviceKey(product, path)) != null
+                                       && KeyboardProfileBackups.Failures(KeyboardProfileBackups.DeviceKey(product, path)) < RepairTries,
+                        Repair = (io, _) => ZetSession.Repair(io, KeyboardProfileBackups.DeviceKey(product, io?.Path)),
                     };
                 default:
                     return new HidLightingModel
                     {
                         Family = this, Name = name,
                         Map = new LightMap(OneLight(), "OpenRGB RGBController_SinowealthGMOW.cpp") { Product = product },
+                        Programs = VendorPrograms.Glorious,
                         HoldMs = StoredHoldMs, RepaintMs = StoredRepaintMs,
                         Begin = (io, wait) => new GmowSession(),
                     };
@@ -467,14 +469,29 @@ namespace PadForge.Common.Input.Peripherals
             return configuration;
         }
 
+        /// <summary>Whether a configuration shows what <see cref="ZetFrame"/>
+        /// leaves: the custom mode and the right direction.</summary>
+        internal static bool ZetLooksOurs(byte[] configuration)
+            => configuration[21] == ZetModeCustomDefault && configuration[22] == ZetDirectionRight;
+
+        /// <summary>The configuration the mouse holds now with the lighting of
+        /// <paramref name="original"/>, the bytes <see cref="ZetFrame"/> moves:
+        /// the mode, the direction and the seven colors.</summary>
+        internal static byte[] ZetRestore(byte[] now, byte[] original)
+        {
+            var report = (byte[])now.Clone();
+            Array.Copy(original, 21, report, 21, 23);
+            return report;
+        }
+
         internal sealed class ZetSession : HidLightingSession
         {
-            private readonly string _product;
+            private readonly string _key;
             private readonly byte[][] _crash;
 
-            private ZetSession(string product, byte[] original)
+            private ZetSession(string key, byte[] original)
             {
-                _product = product;
+                _key = key;
                 Original = original;
                 _crash = new[] { original };
             }
@@ -486,23 +503,32 @@ namespace PadForge.Common.Input.Peripherals
 
             public override bool Feature => true;
 
-            public override byte[][] CrashFrames => KeyboardProfileBackups.Get(_product) != null ? _crash : Array.Empty<byte[]>();
+            public override byte[][] CrashFrames => KeyboardProfileBackups.Get(_key) != null ? _crash : Array.Empty<byte[]>();
 
-            public static HidLightingSession Begin(IHidReportChannel io, string product)
+            public static HidLightingSession Begin(IHidReportChannel io, string key)
             {
                 var read = ReadZetConfiguration(io);
                 if (read == null) return null;
-                var owed = KeyboardProfileBackups.Get(product);
-                var original = owed is { } backup && backup.Contents.Length == ZetReportLength ? backup.Contents : read;
-                return new ZetSession(product, original);
+                var original = read;
+                if (KeyboardProfileBackups.Get(key) is { } backup)
+                {
+                    // Something else set the mouse since a backup that no
+                    // longer matches it, and the mouse's lighting stays.
+                    if (backup.Contents.Length == ZetReportLength
+                        && (ZetLooksOurs(read) || backup.Contents.AsSpan().SequenceEqual(read)))
+                        original = backup.Contents;
+                    else
+                        KeyboardProfileBackups.Drop(key);
+                }
+                return new ZetSession(key, original);
             }
 
             public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
             {
-                if (KeyboardProfileBackups.Get(_product) == null)
-                    KeyboardProfileBackups.Take(_product, 0, Original);
-                if (!KeyboardProfileBackups.IsPersisted(_product))
+                if (KeyboardProfileBackups.Get(_key) == null)
+                    KeyboardProfileBackups.Take(_key, 0, Original);
+                if (!KeyboardProfileBackups.IsPersisted(_key))
                 {
                     LaterMs = SavingMs;
                     return HidLightingPaint.Later;
@@ -516,24 +542,32 @@ namespace PadForge.Common.Input.Peripherals
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
             {
-                if (KeyboardProfileBackups.Get(_product) == null) return true;
-                if (!io.SetFeature(Original)) return false;
-                KeyboardProfileBackups.Drop(_product);
+                if (KeyboardProfileBackups.Get(_key) == null) return true;
+                // Only what a picture moved goes back: a DPI or a report rate
+                // the user changed during the session stays.
+                var now = ReadZetConfiguration(io);
+                if (now == null || !io.SetFeature(ZetRestore(now, Original))) return false;
+                KeyboardProfileBackups.Drop(_key);
                 return true;
             }
 
-            /// <summary>Writes back what an earlier run left owed. True when
-            /// nothing is owed any more.</summary>
-            public static bool Repair(IHidReportChannel io, string product)
+            /// <summary>Settles what an earlier run left owed, reading the
+            /// mouse first as <see cref="AsusLegacyUsbLighting.RepairSagaris"/>
+            /// does. True when nothing is owed any more.</summary>
+            public static bool Repair(IHidReportChannel io, string key)
             {
-                var owed = KeyboardProfileBackups.Get(product);
+                var owed = KeyboardProfileBackups.Get(key);
                 if (owed == null) return true;
-                if (owed.Value.Contents.Length == ZetReportLength && io.SetFeature(owed.Value.Contents))
+                var now = ReadZetConfiguration(io);
+                if (now != null
+                    && (owed.Value.Contents.Length != ZetReportLength || !ZetLooksOurs(now)
+                        || now.AsSpan().SequenceEqual(owed.Value.Contents)
+                        || io.SetFeature(ZetRestore(now, owed.Value.Contents))))
                 {
-                    KeyboardProfileBackups.Drop(product);
+                    KeyboardProfileBackups.Drop(key);
                     return true;
                 }
-                KeyboardProfileBackups.NoteFailure(product);
+                KeyboardProfileBackups.NoteFailure(key);
                 return false;
             }
         }

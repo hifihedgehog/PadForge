@@ -19,6 +19,8 @@ tables as OpenRGB holds them, each OpenRGB identifier written in Pascal case
 (legion_Y760_ansi_leds becomes LegionY760AnsiLeds). The families resolve the
 names to keys and build their light maps in LenovoLights.cs.
 
+Run it without Python's -I switch: it imports tools/openrgb_cpp.py.
+
 Usage:
     python tools/gen_lenovo_lights.py OPENRGB_ROOT
     python tools/gen_lenovo_lights.py OPENRGB_ROOT --check   (compare, write nothing)
@@ -26,8 +28,8 @@ Usage:
 import argparse
 import os
 import re
-import subprocess
 import sys
+import openrgb_cpp as oc
 
 PROJ_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT = os.path.join(PROJ_ROOT, "PadForge.App", "Common", "Input", "Peripherals", "LenovoLights.g.cs")
@@ -144,8 +146,7 @@ def main():
 
     lenovo = os.path.join(args.openrgb, "Controllers", "LenovoControllers")
     names = key_names(os.path.join(args.openrgb, "RGBController", "RGBControllerKeyNames.cpp"))
-    commit = subprocess.run(["git", "-C", args.openrgb, "rev-parse", "HEAD"],
-                            capture_output=True, text=True, check=True).stdout.strip()
+    commit = oc.git_head(args.openrgb)
 
     sources = [
         ("LenovoDevices.h", os.path.join(lenovo, "LenovoDevices.h")),

@@ -780,6 +780,8 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} käyttää taas Windowsin ajuria.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Windowsin ajuria ei voitu palauttaa: {0}.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows palautti laitteen {0} omalle ajurilleen. Valitse se Laitteet-sivulla, jos haluat vaihtaa sen uudelleen.</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} ei enää käytä PadForge-sovelluksen ajuria.</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} on edelleen PadForge-sovelluksen ohjaimen käytössä. Valitse se Laitteet-sivulta, niin se palautuu Windowsille.</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Käytä vain PadForge-sovelluksessa</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge siirtää tämän näppäimistön Windowsin WinUSB-ajurille ja lukee sen itse. Windows lakkaa sen jälkeen kirjoittamasta sillä kaikissa ohjelmissa, myös PadForgen ollessa suljettuna, kunnes sen Windowsin ajuri palautetaan tältä sivulta. Sen yhdistämiset ja makrot toimivat edelleen PadForgen ollessa käynnissä.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge siirtää tämän hiiren Windowsin WinUSB-ajurille ja lukee sen itse. Windows lakkaa sen jälkeen liikuttamasta sillä osoitinta kaikissa ohjelmissa, myös PadForge-sovelluksen ollessa suljettuna, kunnes sen Windowsin ajuri palautetaan tältä sivulta. Sen yhdistämiset ja makrot toimivat edelleen PadForge-sovelluksen ollessa käynnissä.</value></data>
@@ -957,6 +959,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>Tärinä toistetaan SteelSeries GG:n tuntopalautekäsittelijän kautta.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG ohjaa kaikkia tuntopalautteellisia Rival-hiiriä kerralla, joten virtuaaliohjaimen {0} hiiri määrää niiden tärinän.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>Odotetaan SteelSeries GG:tä. Tärinä toistetaan, kun GG on käynnissä.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG on käynnissä, mutta ei vastaa PadForge-sovellukselle. Värinä toimii, kun se vastaa.</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>Tärinä toistetaan Razer Sensa HD -laitteillasi Razer Synapsen kautta.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Odotetaan Sensa HD Haptics -toimintoa Razer Synapse 4:ssä. Aseta Synapsessa laitteen Haptic Source -asetukseksi Sensa HD Games.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Vasen liipaisin</value></data>
@@ -1000,6 +1003,12 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Värit lähetetään suoraan laitteeseen {0}. Sen sisäisen muistin tila on pois päältä valaistuksen aikana.</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Värit lähetetään suoraan laitteeseen {0}. Muuttuvat värit, kuten värikierto tai ääntä seuraavat värit, vaativat, että Dynamic Lighting on otettu käyttöön kannettavan BIOS-asetuksissa. Ilman sitä näppäimet pitävät viimeiset pysyvät värit.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Värit lähetetään suoraan laitteeseen {0}. Jos Dynamic Lighting on käytössä kannettavan BIOS-asetuksissa, Windowsin dynaaminen valaistus valaisee näppäimet sen sijaan. Poista dynaaminen valaistus käytöstä tältä näppäimistöltä Windowsin asetuksissa, niin PadForge valaisee ne, muuttuvat värit mukaan lukien.</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>Värit lähetetään suoraan laitteeseen {0}. Se tallentaa jokaisen kuvan omaan muistiinsa, joten muuttuvat värit, kuten värikierto tai ääntä seuraavat värit, eivät näy. Muuttumaton väri näkyy.</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>Värit lähetetään suoraan laitteeseen {0}. Se tallentaa jokaisen kuvan omaan muistiinsa, joten muuttuvat värit, kuten värikierto tai ääntä seuraavat värit, eivät näy. Muuttumaton väri näkyy. Ensimmäinen kuva korvaa näppäimistölle tallennetut tehosteet, eivätkä vanhat palaa.</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>Sarjalaite portissa {0}</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>Tämä laite on yhdistetty, mutta se ei ottanut vastaan PadForge-sovelluksen värejä. PadForge yrittää uudelleen minuutin välein.</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows pitää tätä laitetta näppäimistönä tai hiirenä ja hylkää raportin, joka asettaa sen värit, joten PadForge ei voi valaista sitä Windowsissa.</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>Toinen ohjelma on avannut tämän laitteen, joten PadForge ei voi valaista sitä. PadForge valaisee sen, kun kyseinen ohjelma sulkeutuu.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Laite ei ole vielä vastannut. Sen värit näkyvät, kun se herää.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Värit kulkevat ohjelman {0} kautta.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Värit kulkevat ohjelman {0} kautta, joka valaisee kaikki tämäntyyppiset laitteet kerralla. Kun {0} ei ole käynnissä, PadForge valaisee tämän laitteen itse.</value></data>
@@ -1007,7 +1016,9 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Värit kulkevat OpenRGB:n SDK Serverin kautta. Kun OpenRGB ei ole käynnissä, PadForge valaisee tämän laitteen itse.</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Värit kulkevat OpenRGB:n SDK Serverin kautta.</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB pitää tätä laitetta hallussaan, eikä sillä ole tälle laitteelle Direct-tilaa, joten laitteen valaistus jää OpenRGB:lle.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB on käynnissä SDK Server pois päältä, joten PadForge jättää tämän laitteen OpenRGB:lle. Kytke SDK Server päälle OpenRGB:ssä, niin PadForge valaisee laitteen sen kautta.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB on käynnissä, mutta sen SDK Server ei vastaa portissa {0}, joten PadForge jättää tämän laitteen OpenRGB:lle. Kytke SDK Server päälle OpenRGB:ssä, niin PadForge valaisee laitteen sen kautta.</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE on käynnissä SDK pois päältä. Kytke iCUE SDK päälle iCUE:n asetuksista, niin PadForge valaisee laitteen sen kautta.</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} on käynnissä, mutta ei antanut PadForge-sovelluksen valaista laitteitaan. PadForge pyytää edelleen.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} valaisee kaikki tämäntyyppiset laitteet kerralla, joten virtuaaliohjaimen {1} laite määrää niiden värin.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} valaisee kaikki tämäntyyppiset laitteet kerralla, joten virtuaaliohjaimen {2} rivi {1} määrää niiden värin.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Myös virtuaaliohjain {0} valaisee tämän laitteen, ja sen väri näkyy.</value></data>
@@ -1025,7 +1036,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>kuulokkeet</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>emolevyt, näytönohjaimet ja muistit</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>emolevyt ja näytönohjaimet</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>hiirimatot ja kuuloketelineet</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>hiirimatot, kuulokkeet ja kuuloketelineet</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Valopalkki</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Kirjoita kuusinumeroinen heksadesimaaliväri (RRGGBB tai #RRGGBB) ja ota se käyttöön painamalla Enteriä tai napsauttamalla muualle.</value></data>
@@ -4671,6 +4682,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Yhdistetään kanavan {0} chattiin…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Luetaan kanavan {0} chattia.</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Kanavan {0} chattiin ei saatu yhteyttä. Yritetään uudelleen.</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch ei löydä chattia kanavalle {0}. Tarkista kanavan nimi.</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Keskeytetty.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Lähetyksesi ohjainkuva. Lisää tämä osoite OBS-ohjelmaan selainlähteeksi:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Lähetyksesi ohjainkuva tarvitsee Web-ohjaimen ja sen salaamattoman HTTP-osoitteen. Ota Web-ohjain-kortissa käyttöön Tarjoa myös salaamaton HTTP. Vain tämä tietokone riittää, kun käytät OBS-ohjelmaa tällä tietokoneella.</value></data>

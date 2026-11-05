@@ -46,7 +46,9 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>The headsets are Razer's, so the linker's Razer row reaches
     /// them and closes their path while Synapse runs
-    /// (<see cref="PeripheralLinker.VendorProgramRuns"/>).</para>
+    /// (<see cref="PeripheralLinker.VendorProgramRuns"/>).
+    /// The model names Synapse too, so the worker sends them nothing while
+    /// it runs, and no hand-back lands on Synapse's colors.</para>
     /// </summary>
     internal sealed class RazerKrakenV4Lighting : IHidLightingFamily
     {
@@ -107,6 +109,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = this,
                 Name = name,
+                Programs = VendorPrograms.Razer,
                 Map = RazerHidTable.MapOf(productId),
                 RepaintMs = RepaintMs,
                 Begin = (io, wait) => io == null ? null : new Session(transaction, wireless, columns),

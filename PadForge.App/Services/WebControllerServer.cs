@@ -52,6 +52,16 @@ namespace PadForge.Services
         /// <summary>The first slot (0-based) the Twitch Chat row is assigned
         /// to, or -1. Set by InputService.</summary>
         internal Func<int> DisplayChatSlot { get; set; }
+
+        /// <summary>The slot (0-based) PadForge shows as a 1-based number, or
+        /// -1 when none does. Set by InputService. Without it a number names
+        /// the slot at its place.</summary>
+        internal Func<int, int> DisplayNamedSlot { get; set; }
+
+        /// <summary>The 1-based number PadForge shows for a slot (0-based).
+        /// Set by InputService. Without it a slot's number follows its
+        /// place.</summary>
+        internal Func<int, int> DisplayShownNumber { get; set; }
         private const string WebAssetPrefix = "PadForge.WebAssets.";
 
         private IWebControllerListener _listener;
@@ -1680,13 +1690,14 @@ namespace PadForge.Services
 
         /// <summary>A viewer's name as a device row shows it, or null for
         /// none: control and format characters out (a right-to-left override
-        /// could make one name pose as another), trimmed, at most
+        /// could make one name pose as another), and anything the settings
+        /// file cannot hold, trimmed, at most
         /// <see cref="MaxViewerNameLength"/> characters.</summary>
         internal static string CleanViewerName(string raw)
         {
             if (string.IsNullOrWhiteSpace(raw)) return null;
             var sb = new StringBuilder(MaxViewerNameLength);
-            foreach (char c in raw.Trim())
+            foreach (char c in PadForge.Engine.Common.XmlSafeText.Clean(raw).Trim())
             {
                 var category = char.GetUnicodeCategory(c);
                 if (category is System.Globalization.UnicodeCategory.Control
@@ -1703,16 +1714,27 @@ namespace PadForge.Services
         }
 
         /// <summary>The slot (0-based) a picture page watches: the number it
-        /// names (1-based, as PadForge shows slots), else the first slot the
-        /// Twitch Chat row is assigned to, else the first slot.</summary>
+        /// names, as PadForge shows slots (<see cref="DisplayNamedSlot"/>),
+        /// else the first slot the Twitch Chat row is assigned to, else the
+        /// slot shown first.</summary>
         internal int DisplaySlotFor(string view)
         {
             if (int.TryParse(view, System.Globalization.NumberStyles.None,
                     System.Globalization.CultureInfo.InvariantCulture, out int n) && n >= 1 && n <= PadForge.Common.Input.InputManager.MaxPads)
-                return n - 1;
+            {
+                int named = NamedSlot(n);
+                if (named >= 0) return named;
+            }
             int chat = -1;
             try { chat = DisplayChatSlot?.Invoke() ?? -1; } catch { }
-            return chat >= 0 && chat < PadForge.Common.Input.InputManager.MaxPads ? chat : 0;
+            if (chat >= 0 && chat < PadForge.Common.Input.InputManager.MaxPads) return chat;
+            return Math.Max(0, NamedSlot(1));
+        }
+
+        private int NamedSlot(int number)
+        {
+            try { return DisplayNamedSlot?.Invoke(number) ?? number - 1; }
+            catch { return -1; }
         }
 
         /// <summary>
@@ -1789,7 +1811,7 @@ namespace PadForge.Services
                         layout = wantLayout;
                         finish = wantFinish;
                         lastState = null;
-                        await SendJsonAsync(ws, new { type = "slot", slot = slot + 1, layout, finish }, token).ConfigureAwait(false);
+                        await SendJsonAsync(ws, new { type = "slot", slot = DisplayShownNumber?.Invoke(slot) ?? slot + 1, layout, finish }, token).ConfigureAwait(false);
                     }
                     // Sent only when it moved: a still pad costs nothing.
                     string state = JsonSerializer.Serialize((frame?.Pose ?? RestPose).ToMessage());
@@ -1845,6 +1867,7 @@ namespace PadForge.Services
                     null => "nochannel",
                     PadForge.Common.Input.Twitch.TwitchChatState.Reading => "reading",
                     PadForge.Common.Input.Twitch.TwitchChatState.Retrying => "retrying",
+                    PadForge.Common.Input.Twitch.TwitchChatState.NoChat => "nochat",
                     _ => "connecting",
                 },
                 paused = s.Paused,

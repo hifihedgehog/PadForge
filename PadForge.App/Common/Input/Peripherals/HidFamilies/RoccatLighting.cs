@@ -68,9 +68,11 @@ namespace PadForge.Common.Input.Peripherals
     /// <see cref="StoredRepaintMs"/> after the one before, and the profile
     /// as the session first read it is saved in the settings file before
     /// the first write (<see cref="KeyboardProfileBackups"/>), as the
-    /// Lenovo family saves its keyboard's profile. The hand-back writes it
-    /// back and lets the backup go, and a run that ends without one leaves
-    /// the backup for the next run to put back.</para>
+    /// Lenovo family saves its keyboard's profile. The hand-back reads the
+    /// profile again, puts back the bytes a picture moves and lets the backup
+    /// go, so a DPI the user changed meanwhile stands. A run that ends without
+    /// one leaves the backup for the next run, which reads the mouse first and
+    /// leaves alone one that Swarm or the user set since.</para>
     ///
     /// <para>Sense Aimo. OpenRGB's Direct mode writes the pad's mode report
     /// with mode 0x0B and the colors, and then sends the colors as report
@@ -108,8 +110,9 @@ namespace PadForge.Common.Input.Peripherals
         /// the settings file looks again.</summary>
         internal const int SavingMs = LenovoLegionLighting.SavingMs;
 
-        /// <summary>How many times one run tries to put back what an earlier
-        /// run left, before it leaves that to the next run.</summary>
+        /// <summary>How many times in a row a run tries to put back what an
+        /// earlier run left, before it waits for the count to clear
+        /// (<see cref="KeyboardProfileBackups.FailuresClearMs"/>).</summary>
         internal const int RepairTries = LenovoLegionLighting.RepairTries;
 
         public string Name => "Roccat";
@@ -126,20 +129,24 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (collection == null) return null;
             // Turtle Beach's AIMO Pad Wide takes the Sense Aimo's reports on the
-            // same collection (Turtle_Beach_AIMO_Wide_Mousepad.js).
-            if (collection.VendorId == RoccatVulcanLighting.TurtleBeachVendorId && collection.ProductId == TurtleBeachAimoWide)
+            // same collection (Turtle_Beach_AIMO_Wide_Mousepad.js), and is
+            // Turtle Beach's own, so it keeps a model of its own for the program
+            // that lights it.
+            bool turtleBeach = collection.VendorId == RoccatVulcanLighting.TurtleBeachVendorId && collection.ProductId == TurtleBeachAimoWide;
+            if (turtleBeach)
                 collection = collection with { VendorId = RoccatVulcanLighting.RoccatVendorId, ProductId = SenseAimoMid };
             foreach (var registration in OpenRgbRegistrations.Match(FamilyName, collection))
             {
                 lock (_gate)
                 {
-                    if (!_models.TryGetValue(registration.Name, out var model))
+                    string key = turtleBeach ? TurtleBeachAimoWide.ToString("X4") : registration.Name;
+                    if (!_models.TryGetValue(key, out var model))
                     {
                         // The Vulcan keyboards' detector is no model of this
                         // family: RoccatVulcanLighting looks for them.
-                        model = ModelOf(registration);
+                        model = ModelOf(registration, turtleBeach ? VendorPrograms.TurtleBeach : VendorPrograms.Roccat);
                         if (model == null) return null;
-                        _models[registration.Name] = model;
+                        _models[key] = model;
                     }
                     return model;
                 }
@@ -149,18 +156,27 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The model a registration names, by its detector
         /// function, or null for one this family does not light.</summary>
-        internal HidLightingModel ModelOf(OpenRgbRegistration registration)
+        internal HidLightingModel ModelOf(OpenRgbRegistration registration, IReadOnlyList<VendorProgram> programs = null)
         {
+            programs ??= VendorPrograms.Roccat;
             string product = $"roccat:{registration.VendorId:X4}:{registration.ProductId:X4}";
-            HidLightingModel Direct(IReadOnlyList<LightInfo> lights, string source, Func<Protocol> protocol) => new()
+            HidLightingModel Direct(IReadOnlyList<LightInfo> lights, string source, Func<Protocol> protocol, bool heldByWindows = false)
             {
-                Family = this,
-                Name = registration.Name,
-                Map = new LightMap(lights, source) { Product = product },
-                Programs = VendorPrograms.Roccat,
-                RepaintMs = RepaintMs,
-                Begin = (io, wait) => new DirectSession(protocol(), wait),
-            };
+                // A device with no frame that gives control back owes nothing.
+                bool owes = protocol().ReleaseFrames.Length > 0;
+                return new()
+                {
+                    Family = this,
+                    Name = registration.Name,
+                    Map = new LightMap(lights, source) { Product = product },
+                    Programs = VendorPrograms.Roccat,
+                    RepaintMs = RepaintMs,
+                    HeldByWindows = heldByWindows,
+                    Begin = (io, wait) => new DirectSession(protocol(), wait, KeyboardProfileBackups.SessionKey(product, io?.Path)),
+                    Owed = owes ? path => Owed(KeyboardProfileBackups.DeviceKey(product, path)) : null,
+                    Repair = owes ? (io, wait) => RepairDirect(io, wait, KeyboardProfileBackups.DeviceKey(product, io?.Path), protocol()) : null,
+                };
+            }
             switch (registration.Detector)
             {
                 case "DetectRoccatBurstCoreControllers":
@@ -174,8 +190,11 @@ namespace PadForge.Common.Input.Peripherals
                 case "DetectRoccatMouseControllers":
                     return Direct(KoneAimoLights(), "OpenRGB RGBController_RoccatKoneAimo.cpp:58-157", KoneAimo);
                 case "DetectRoccatBurstProAirControllers":
+                    // Its one registration is the mouse collection, which Windows
+                    // holds, and its frames are feature reports, which pass there
+                    // (RoccatControllerDetect.cpp:412, RoccatBurstProAirController.cpp:72,93).
                     return Direct(new[] { Zone(0, 1), Logo(1), Zone(2, 2), Zone(3, 3) },
-                        "OpenRGB RGBController_RoccatBurstProAir.cpp:95-121", BurstProAir);
+                        "OpenRGB RGBController_RoccatBurstProAir.cpp:95-121", BurstProAir, heldByWindows: true);
                 case "DetectRoccatKoneProAirControllers":
                     return Direct(new[] { Zone(0, 1), Zone(1, 2) }, "OpenRGB RGBController_RoccatKoneProAir.cpp:129-153", KoneProAir);
                 case "DetectRoccatEloControllers":
@@ -195,9 +214,9 @@ namespace PadForge.Common.Input.Peripherals
                         Programs = VendorPrograms.Roccat,
                         HoldMs = StoredHoldMs,
                         RepaintMs = StoredRepaintMs,
-                        Begin = (io, wait) => BeginKova(io, product),
-                        Owed = () => Owed(product),
-                        Repair = (io, wait) => Repair(io, product),
+                        Begin = (io, wait) => BeginKova(io, KeyboardProfileBackups.SessionKey(product, io?.Path)),
+                        Owed = path => Owed(KeyboardProfileBackups.DeviceKey(product, path)),
+                        Repair = (io, wait) => RepairKova(io, KeyboardProfileBackups.DeviceKey(product, io?.Path)),
                     };
                 case "DetectRoccatSenseAimoControllers":
                     return new HidLightingModel
@@ -205,11 +224,11 @@ namespace PadForge.Common.Input.Peripherals
                         Family = this,
                         Name = registration.Name,
                         Map = new LightMap(new[] { Edge(0), Edge(1) }, "OpenRGB RGBController_RoccatSenseAimo.cpp:141-160") { Product = product },
-                        Programs = VendorPrograms.Roccat,
+                        Programs = programs,
                         RepaintMs = RepaintMs,
-                        Begin = (io, wait) => BeginSenseAimo(io, product),
-                        Owed = () => Owed(product),
-                        Repair = (io, wait) => Repair(io, product),
+                        Begin = (io, wait) => BeginSenseAimo(io, KeyboardProfileBackups.SessionKey(product, io?.Path)),
+                        Owed = path => Owed(KeyboardProfileBackups.DeviceKey(product, path)),
+                        Repair = (io, wait) => RepairSenseAimo(io, KeyboardProfileBackups.DeviceKey(product, io?.Path)),
                     };
                 default:
                     return null;
@@ -540,17 +559,42 @@ namespace PadForge.Common.Input.Peripherals
             Frame = HordeColors,
         };
 
+        /// <summary>Gives control back to a device a forced kill left in host
+        /// control, from the record its session kept. True when nothing is
+        /// owed any more.</summary>
+        private static bool RepairDirect(IHidReportChannel io, Action<int> wait, string key, Protocol protocol)
+        {
+            if (KeyboardProfileBackups.Get(key) == null) return true;
+            if (protocol.Release == null || protocol.Release(io, wait))
+            {
+                KeyboardProfileBackups.Drop(key);
+                return true;
+            }
+            KeyboardProfileBackups.NoteFailure(key);
+            return false;
+        }
+
+        /// <summary>A session that takes control of a device. A device with a
+        /// frame that gives control back is recorded as owed before the first
+        /// write, as a Corsair session does (<see cref="CorsairSession"/>), and
+        /// the next run sends that frame for a device a forced kill left. No
+        /// reference says these firmwares give up host control on their own.</summary>
         internal sealed class DirectSession : HidLightingSession
         {
             private readonly Protocol _protocol;
             private readonly Action<int> _wait;
+            private readonly string _key;
             private bool _started;
             private byte[][] _crash = Array.Empty<byte[]>();
 
-            public DirectSession(Protocol protocol, Action<int> wait)
+            public DirectSession(Protocol protocol, Action<int> wait, string key = null)
             {
                 _protocol = protocol;
                 _wait = wait;
+                _key = key;
+                // A record a killed run left is owed from the first moment,
+                // whether or not a picture of this session's goes out.
+                if (key != null && KeyboardProfileBackups.Get(key) != null) _crash = protocol.ReleaseFrames;
             }
 
             public override bool Feature => _protocol.Feature;
@@ -563,6 +607,16 @@ namespace PadForge.Common.Input.Peripherals
                 wait ??= _wait;
                 if (!_started)
                 {
+                    if (_key != null && _protocol.ReleaseFrames.Length > 0)
+                    {
+                        if (KeyboardProfileBackups.Get(_key) == null)
+                            KeyboardProfileBackups.Take(_key, 0, _protocol.ReleaseFrames[0]);
+                        if (!KeyboardProfileBackups.IsPersisted(_key))
+                        {
+                            LaterMs = SavingMs;
+                            return HidLightingPaint.Later;
+                        }
+                    }
                     // Marked first: a write that reports a failure may still
                     // have landed.
                     _crash = _protocol.ReleaseFrames;
@@ -578,10 +632,13 @@ namespace PadForge.Common.Input.Peripherals
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
             {
-                if (!_started && _crash.Length == 0) return true;
-                if (_protocol.Release != null && !_protocol.Release(io, wait ?? _wait)) return false;
-                _started = false;
-                _crash = Array.Empty<byte[]>();
+                if (_started || _crash.Length > 0)
+                {
+                    if (_protocol.Release != null && !_protocol.Release(io, wait ?? _wait)) return false;
+                    _started = false;
+                    _crash = Array.Empty<byte[]>();
+                }
+                KeyboardProfileBackups.Drop(_key);
                 return true;
             }
         }
@@ -690,29 +747,93 @@ namespace PadForge.Common.Input.Peripherals
             return buf;
         }
 
-        private static bool Owed(string product)
-            => KeyboardProfileBackups.Get(product) != null && KeyboardProfileBackups.Failures(product) < RepairTries;
+        private static bool Owed(string key)
+            => KeyboardProfileBackups.Get(key) != null && KeyboardProfileBackups.Failures(key) < RepairTries;
 
-        /// <summary>Writes back what an earlier run saved, with no claim on
-        /// the device. True when nothing is owed any more.</summary>
-        private static bool Repair(IHidReportChannel io, string product)
+        /// <summary>Whether a Kova's profile shows what a picture of PadForge's
+        /// leaves (<see cref="KovaProfile"/>): custom colors and lights on, no
+        /// color flow, the Static mode and speed 0.</summary>
+        private static bool KovaLooksOurs(byte[] report)
+            => (report[KovaFlags] & KovaCustomColors) == KovaCustomColors && (report[KovaFlags] & KovaLightsOn) == KovaLightsOn
+               && report[KovaColorFlow] == 0 && report[KovaMode] == KovaStatic && report[KovaSpeed] == 0;
+
+        /// <summary>The profile the mouse holds now with the lighting of
+        /// <paramref name="original"/>: only the bytes a picture moves go back,
+        /// so the DPI and the polling rate OpenRGB's header names at bytes 5 to
+        /// 13 (RoccatKovaController.h) stay as the user left them. The checksum
+        /// is summed again as SetColor sums it.</summary>
+        internal static byte[] KovaRestore(byte[] now, byte[] original)
         {
-            if (KeyboardProfileBackups.Get(product) is not { } backup) return true;
-            if (io.SetFeature(backup.Contents))
+            var report = (byte[])now.Clone();
+            report[KovaFlags] = original[KovaFlags];
+            report[KovaColorFlow] = original[KovaColorFlow];
+            report[KovaMode] = original[KovaMode];
+            report[KovaSpeed] = original[KovaSpeed];
+            Array.Copy(original, KovaPipe, report, KovaPipe, 4);
+            Array.Copy(original, KovaWheel, report, KovaWheel, 4);
+            ushort sum = 0;
+            for (int i = 0; i < KovaProfileLength - 2; i++) sum += report[i];
+            report[KovaChecksum] = (byte)(sum & 0xFF);
+            report[KovaChecksum + 1] = (byte)(sum >> 8);
+            return report;
+        }
+
+        /// <summary>Whether a Sense Aimo shows PadForge's Direct mode on both
+        /// its LEDs (<see cref="SenseAimoMode"/>).</summary>
+        private static bool SenseLooksOurs(byte[] report)
+            => report[0x02] == SenseDirect && report[0x0A] == SenseDirect;
+
+        /// <summary>Settles a backup an earlier run left, with no claim on the
+        /// device, as <see cref="AsusLegacyUsbLighting.RepairSagaris"/> does:
+        /// the device is read first. Swarm may have stored settings since, and
+        /// those stay. A device that still shows PadForge's picture gets
+        /// <paramref name="restore"/>. True when nothing is owed any more.</summary>
+        private static bool Repair(IHidReportChannel io, string key, byte id, int length, Func<byte[], bool> looksOurs,
+            Func<byte[], byte[], byte[]> restore)
+        {
+            if (KeyboardProfileBackups.Get(key) is not { } backup) return true;
+            var now = ReadReport(io, id, length);
+            if (now != null)
             {
-                KeyboardProfileBackups.Drop(product);
-                return true;
+                if (backup.Contents.Length != length || now.AsSpan().SequenceEqual(backup.Contents) || !looksOurs(now)
+                    || io.SetFeature(restore(now, backup.Contents)))
+                {
+                    KeyboardProfileBackups.Drop(key);
+                    return true;
+                }
             }
-            KeyboardProfileBackups.NoteFailure(product);
+            KeyboardProfileBackups.NoteFailure(key);
             return false;
         }
 
-        /// <summary>The report a session puts back: what an earlier run
-        /// saved and never put back, else what the device holds now.</summary>
-        private static byte[] Original(string product, byte[] read)
-            => KeyboardProfileBackups.Get(product) is { } held && held.Contents.Length == read.Length ? held.Contents : read;
+        private static bool RepairKova(IHidReportChannel io, string key)
+        {
+            if (KeyboardProfileBackups.Get(key) == null) return true;
+            // OpenRGB's constructor sends the init report ahead of any read.
+            if (!io.SetFeature(KovaInit()))
+            {
+                KeyboardProfileBackups.NoteFailure(key);
+                return false;
+            }
+            return Repair(io, key, KovaProfileReport, KovaProfileLength, KovaLooksOurs, KovaRestore);
+        }
 
-        private static HidLightingSession BeginKova(IHidReportChannel io, string product)
+        private static bool RepairSenseAimo(IHidReportChannel io, string key)
+            => Repair(io, key, SenseModeReport, SenseModeLength, SenseLooksOurs, (_, original) => original);
+
+        /// <summary>The report a session puts back: what an earlier run saved
+        /// and never put back while the device still shows that run's picture
+        /// or those very bytes, else what the device holds now, and then the
+        /// backup goes, since Swarm or the user set the device since.</summary>
+        private static byte[] Original(string key, byte[] read, Func<byte[], bool> looksOurs)
+        {
+            if (KeyboardProfileBackups.Get(key) is not { } held || held.Contents.Length != read.Length) return read;
+            if (looksOurs(read) || held.Contents.AsSpan().SequenceEqual(read)) return held.Contents;
+            KeyboardProfileBackups.Drop(key);
+            return read;
+        }
+
+        private static HidLightingSession BeginKova(IHidReportChannel io, string key)
         {
             // OpenRGB's constructor: the init report, then the version
             // (RoccatKovaController.cpp:17-25 and 111-131).
@@ -722,22 +843,29 @@ namespace PadForge.Common.Input.Peripherals
             io.GetFeature(KovaVersionReport, version);
             var read = ReadReport(io, KovaProfileReport, KovaProfileLength);
             if (read == null) return null;
-            return new StoredSession(product, 0, Original(product, read), stored: true,
+            var saved = Original(key, read, KovaLooksOurs);
+            return new StoredSession(key, 0, saved, stored: true,
                 (channel, original, colors) =>
                 {
                     var now = ReadReport(channel, KovaProfileReport, KovaProfileLength);
                     return now != null && channel.SetFeature(KovaProfile(now, At(colors, 0), At(colors, 1)));
-                });
+                },
+                (channel, original) =>
+                {
+                    var now = ReadReport(channel, KovaProfileReport, KovaProfileLength);
+                    return now != null && channel.SetFeature(KovaRestore(now, original));
+                },
+                ours: !saved.AsSpan().SequenceEqual(read));
         }
 
-        private static HidLightingSession BeginSenseAimo(IHidReportChannel io, string product)
+        private static HidLightingSession BeginSenseAimo(IHidReportChannel io, string key)
         {
             var read = ReadReport(io, SenseModeReport, SenseModeLength);
             if (read == null) return null;
-            var original = Original(product, read);
+            var original = Original(key, read, SenseLooksOurs);
             byte profile = original[1];
             bool moded = false;
-            return new StoredSession(product, profile, original, stored: false,
+            return new StoredSession(key, profile, original, stored: false,
                 (channel, _, colors) =>
                 {
                     if (!moded)
@@ -746,7 +874,8 @@ namespace PadForge.Common.Input.Peripherals
                         moded = true;
                     }
                     return channel.SetFeature(SenseAimoDirect(colors));
-                });
+                },
+                ours: !original.AsSpan().SequenceEqual(read));
         }
 
         /// <summary>A feature report read whole, its ID in byte 0, or
@@ -762,24 +891,33 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>A session on a device whose stored setting a picture
         /// changes. The setting as it stood is saved before the first write
-        /// and written back at the hand-back.</summary>
+        /// and goes back at the hand-back, by the session's restore where a
+        /// report holds more than a picture moves, whole otherwise. The crash
+        /// path sends it whole, since it cannot read first.</summary>
         internal sealed class StoredSession : HidLightingSession
         {
-            private readonly string _product;
+            private readonly string _key;
             private readonly byte _profile;
             private readonly byte[] _original;
             private readonly Func<IHidReportChannel, byte[], IReadOnlyList<int>, bool> _paint;
+            private readonly Func<IHidReportChannel, byte[], bool> _restore;
             private bool _ours;
             private byte[][] _crash = Array.Empty<byte[]>();
 
-            public StoredSession(string product, byte profile, byte[] original, bool stored,
-                Func<IHidReportChannel, byte[], IReadOnlyList<int>, bool> paint)
+            public StoredSession(string key, byte profile, byte[] original, bool stored,
+                Func<IHidReportChannel, byte[], IReadOnlyList<int>, bool> paint,
+                Func<IHidReportChannel, byte[], bool> restore = null, bool ours = false)
             {
-                _product = product;
+                _key = key;
                 _profile = profile;
                 _original = original;
                 Stored = stored;
                 _paint = paint;
+                _restore = restore;
+                // An earlier run's picture is owed its hand-back from the first
+                // moment, whether or not a picture of this session's goes out.
+                _ours = ours;
+                if (ours) _crash = new[] { original };
             }
 
             /// <summary>Every picture is stored, not only the first.</summary>
@@ -797,10 +935,10 @@ namespace PadForge.Common.Input.Peripherals
             {
                 // The backup reaches the settings file before the first
                 // write it guards.
-                if (KeyboardProfileBackups.Get(_product) is not { } held || held.Profile != _profile
+                if (KeyboardProfileBackups.Get(_key) is not { } held || held.Profile != _profile
                     || !held.Contents.AsSpan().SequenceEqual(_original))
-                    KeyboardProfileBackups.Take(_product, _profile, _original);
-                if (!KeyboardProfileBackups.IsPersisted(_product))
+                    KeyboardProfileBackups.Take(_key, _profile, _original);
+                if (!KeyboardProfileBackups.IsPersisted(_key))
                 {
                     LaterMs = SavingMs;
                     return HidLightingPaint.Later;
@@ -814,11 +952,11 @@ namespace PadForge.Common.Input.Peripherals
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
             {
-                if (_ours && !io.SetFeature(_original)) return false;
+                if (_ours && !(_restore?.Invoke(io, _original) ?? io.SetFeature(_original))) return false;
                 _ours = false;
                 _crash = Array.Empty<byte[]>();
-                if (KeyboardProfileBackups.Get(_product) is { } held && held.Contents.AsSpan().SequenceEqual(_original))
-                    KeyboardProfileBackups.Drop(_product);
+                if (KeyboardProfileBackups.Get(_key) is { } held && held.Contents.AsSpan().SequenceEqual(_original))
+                    KeyboardProfileBackups.Drop(_key);
                 return true;
             }
         }

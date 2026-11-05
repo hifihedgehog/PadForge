@@ -24,11 +24,16 @@ namespace PadForge.Common.Input.Peripherals
     /// every mode of this keyboard as one that saves by itself
     /// (MODE_FLAG_AUTOMATIC_SAVE, RGBController_MintakaKeyboard.cpp:93 and
     /// 100-202), so each picture lands in the keyboard's memory, and the
-    /// effects the user had set on the keyboard are replaced with OpenRGB's
-    /// defaults from the first picture on. A picture goes out once it has
-    /// held for 150 ms and no sooner than 500 ms after the one before, the
-    /// spacing PadForge keeps for every write that lands in a keyboard's
-    /// memory (<see cref="LenovoLegionLighting.HoldMs"/>).</para>
+    /// effects the user had set on the keyboard are replaced from the first
+    /// picture on, which the row's line says
+    /// (<see cref="HidLightingModel.ReplacesStoredEffects"/>). The new effects
+    /// are OpenRGB's defaults with one change. OpenRGB's user sets each effect's
+    /// color over a default of black, and PadForge has no such control, so an
+    /// effect that takes a color is stored white, and the keyboard's own
+    /// lighting key still shows it. A picture goes out once it has held for 150
+    /// ms and no sooner than 500 ms after the one before, the spacing PadForge
+    /// keeps for every write that lands in a keyboard's memory
+    /// (<see cref="LenovoLegionLighting.HoldMs"/>).</para>
     ///
     /// <para>Windows. The collection OpenRGB registers is the keyboard
     /// collection itself, page 1 usage 6 (MintakaKeyboardControllerDetect.cpp:44),
@@ -41,7 +46,8 @@ namespace PadForge.Common.Input.Peripherals
     /// <para>Hand-back. No source reads the effect area back, and OpenRGB
     /// sends nothing when it closes, so the keyboard keeps PadForge's last
     /// picture in its Custom mode until another program or its own controls
-    /// change it. No source names a program that lights it.</para>
+    /// change it, and the effects it held before the first picture do not
+    /// come back. No source names a program that lights it.</para>
     /// </summary>
     internal sealed class MintakaKeyboardLighting : IHidLightingFamily
     {
@@ -91,7 +97,7 @@ namespace PadForge.Common.Input.Peripherals
             if (collection == null || collection.VendorId != VendorId) return null;
             var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
             if (registrations.Count == 0) return null;
-            if (collection.FeatureReportLength != 0 && collection.FeatureReportLength < PacketSize) return null;
+            if (collection.FeatureReportLength < PacketSize) return null;
             return _models.Get(registrations[0].Name, () => Model(registrations[0].Name, collection.ProductId));
         }
 
@@ -127,6 +133,7 @@ namespace PadForge.Common.Input.Peripherals
             HoldMs = LenovoLegionLighting.HoldMs,
             RepaintMs = LenovoLegionLighting.RepaintMs,
             HeldByWindows = true,
+            ReplacesStoredEffects = true,
             Begin = (_, _) => new Session(),
         };
 
@@ -147,14 +154,27 @@ namespace PadForge.Common.Input.Peripherals
             return Report(data);
         }
 
-        /// <summary>One effect's 16 bytes as OpenRGB's defaults make them:
-        /// its value, brightness 15, the check code AA 55 (SetMode,
-        /// MintakaKeyboardController.cpp:113-153). Every default color is
-        /// black, every default speed and direction 0, and no effect starts
-        /// in random colors.</summary>
+        /// <summary>The effects with no color of their own: Random colors,
+        /// Spectrum cycle and Off, which alone lack
+        /// MODE_FLAG_HAS_MODE_SPECIFIC_COLOR
+        /// (RGBController_MintakaKeyboard.cpp:100-202).</summary>
+        private static bool TakesAColor(byte value) => value is not (0x06 or 0x08 or 0x80);
+
+        /// <summary>One effect's 16 bytes: its value, white where it takes a
+        /// color, brightness 15, the check code AA 55 (SetMode,
+        /// MintakaKeyboardController.cpp:113-153). OpenRGB's default color is
+        /// black, which the keyboard would show as no light. Every default
+        /// speed and direction is 0, and no effect starts in random
+        /// colors.</summary>
         internal static void Effect(Span<byte> page, byte value)
         {
             page[0] = value;
+            if (TakesAColor(value))
+            {
+                page[1] = 0xFF;
+                page[2] = 0xFF;
+                page[3] = 0xFF;
+            }
             page[9] = Brightness;
             page[14] = 0xAA;
             page[15] = 0x55;

@@ -167,6 +167,65 @@ namespace PadForge.Tests
             Assert.True(store.AnyTimed);
         }
 
+        /// <summary>A macro that repeats while held fires its action on every
+        /// poll. A timed action fired again unchanged starts over in place and
+        /// wakes nothing: the writer its time keeps alive paints it.</summary>
+        [Fact]
+        public void ATimedActionFiredAgainUnchanged_StartsOver_AndWakesNothing()
+        {
+            int wakes = 0;
+            MacroKeyColorState.Changed = _ => wakes++;
+            var store = new MacroKeyColorState(0);
+            object action = new();
+            store.Play(action, Row, 0xC86432, MacroKeyColorStyle.Fade, MacroKeyColorRest.Keep, 0, 1000, 2000, null);
+            Assert.Equal(1, wakes);
+            store.Play(action, Row, 0xC86432, MacroKeyColorStyle.Fade, MacroKeyColorRest.Keep, 0, 1500, 2500, null);
+            Assert.Equal(1, wakes);
+            Assert.Equal(0xC86432, LightRenderer.Render(Keys, 0, store.Compose(null, 1500))[0]);
+            Assert.Equal(0x643219, LightRenderer.Render(Keys, 0, store.Compose(null, 2000))[0]);
+            Assert.True(store.AnyTimed);
+            Assert.Equal(1, wakes);
+            Assert.Null(store.Compose(null, 2500));
+            Assert.False(store.Any);
+            Assert.Equal(2, wakes);
+        }
+
+        /// <summary>An action that repeats while held reads its lights on every
+        /// poll, so one text parses once.</summary>
+        [Fact]
+        public void AnActionsLights_ParseOncePerText()
+        {
+            var action = new MacroAction { Type = MacroActionType.SetKeyColors, KeyColorTargets = "k1E,k1F" };
+            var first = action.KeyColorTargetsParsed;
+            Assert.Equal(KeyColorTarget.Parse("k1E,k1F"), first);
+            Assert.Same(first, action.KeyColorTargetsParsed);
+            action.KeyColorTargets = "k20";
+            Assert.Equal(KeyColorTarget.Parse("k20"), action.KeyColorTargetsParsed);
+        }
+
+        /// <summary>Fired again unchanged, an action still goes on top of what
+        /// started after it, and a change to what it plays still wakes the
+        /// writer.</summary>
+        [Fact]
+        public void ATimedActionFiredAgain_GoesOnTop_AndAChangeWakes()
+        {
+            int wakes = 0;
+            MacroKeyColorState.Changed = _ => wakes++;
+            var store = new MacroKeyColorState(0);
+            object red = new(), blue = new();
+            var key = KeyColorTarget.Parse("k1E");
+            store.Play(red, key, 0xFF0000, MacroKeyColorStyle.Steady, MacroKeyColorRest.Keep, 0, 0, 1000, null);
+            store.Play(blue, key, 0x0000FF, MacroKeyColorStyle.Steady, MacroKeyColorRest.Keep, 0, 0, 1000, null);
+            Assert.Equal(2, wakes);
+            Assert.Equal(0x0000FF, LightRenderer.Render(Keys, 0, store.Compose(null, 10))[0]);
+            store.Play(red, key, 0xFF0000, MacroKeyColorStyle.Steady, MacroKeyColorRest.Keep, 0, 20, 1020, null);
+            Assert.Equal(2, wakes);
+            Assert.Equal(0xFF0000, LightRenderer.Render(Keys, 0, store.Compose(null, 30))[0]);
+            store.Play(red, key, 0x00FF00, MacroKeyColorStyle.Steady, MacroKeyColorRest.Keep, 0, 40, 1040, null);
+            Assert.Equal(3, wakes);
+            Assert.Equal(0x00FF00, LightRenderer.Render(Keys, 0, store.Compose(null, 50))[0]);
+        }
+
         [Fact]
         public void AHeldActionFiredAgainChangesNothing_AndWakesNothing()
         {

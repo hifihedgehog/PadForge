@@ -17,9 +17,12 @@
 #
 # Archive: before a discussion is deleted, the delete step and the sweep
 # both save it with its replies as one Markdown file in the private
-# repository PadForge-discussion-archive, never in this public one. A
-# discussion that could not be saved is not deleted, and the sweep
-# deletes nothing while the token cannot reach the archive.
+# repository PadForge-discussion-archive, never in this public one. The
+# owner's notice is left out of the file and every other comment is kept.
+# A discussion that could not be saved is not deleted, and that includes
+# one with more than 50 comments, or a comment with more than 50 replies,
+# which one read cannot hold. The sweep deletes nothing while the token
+# cannot reach the archive.
 #
 # Auth: ISSUE_BOT_TOKEN, the owner's token. Deleting a discussion needs
 # admin rights, which GITHUB_TOKEN does not carry.
@@ -109,14 +112,21 @@ jobs:
           archive() {
             local json num path md
             json=$(gh api graphql \
-              -f query='query($d:ID!){node(id:$d){... on Discussion{number title url createdAt body authorAssociation author{login} category{name} comments(first:50){nodes{createdAt body author{login} replies(first:50){nodes{createdAt body author{login}}}}}}}}' \
+              -f query='query($d:ID!){node(id:$d){... on Discussion{number title url createdAt body authorAssociation author{login} category{name} comments(first:50){pageInfo{hasNextPage} nodes{createdAt body author{login} replies(first:50){pageInfo{hasNextPage} nodes{createdAt body author{login}}}}}}}}' \
               -f d="$1") || return 1
+            # More than 50 comments, or 50 replies to one, would be cut from the file and
+            # then deleted. Such a discussion is not saved, so it is not deleted.
+            if jq -e '[.data.node.comments.pageInfo.hasNextPage, (.data.node.comments.nodes[]?.replies.pageInfo.hasNextPage)] | any' <<<"$json" > /dev/null; then
+              return 1
+            fi
             num=$(jq -r '.data.node.number' <<<"$json")
             path="removed/$(jq -r '.data.node.createdAt[0:10]' <<<"$json")-${num}.md"
             if gh api "repos/$ARCHIVE/contents/$path" --silent 2>/dev/null; then
               return 0
             fi
-            md=$(jq -r --arg m "$MARKER" '
+            # The owner's notice is left out. A comment anyone else wrote is kept,
+            # whatever it contains.
+            md=$(jq -r --arg m "$MARKER" --arg owner "${GITHUB_REPOSITORY%/*}" '
                 .data.node as $d
                 | "# #\($d.number) \($d.title)\n\n"
                   + "- Author: \($d.author.login // "ghost") (\($d.authorAssociation))\n"
@@ -125,7 +135,7 @@ jobs:
                   + "- Was at: \($d.url)\n\n"
                   + $d.body + "\n"
                   + ([$d.comments.nodes[]
-                      | select(.body | contains($m) | not)
+                      | select(.author.login == $owner and (.body | contains($m)) | not)
                       | "\n## \(.author.login // "ghost"), \(.createdAt)\n\n\(.body)\n"
                         + ([.replies.nodes[]
                             | "\n### \(.author.login // "ghost"), \(.createdAt)\n\n\(.body)\n"] | join(""))]
@@ -196,14 +206,21 @@ jobs:
           archive() {
             local json num path md
             json=$(gh api graphql \
-              -f query='query($d:ID!){node(id:$d){... on Discussion{number title url createdAt body authorAssociation author{login} category{name} comments(first:50){nodes{createdAt body author{login} replies(first:50){nodes{createdAt body author{login}}}}}}}}' \
+              -f query='query($d:ID!){node(id:$d){... on Discussion{number title url createdAt body authorAssociation author{login} category{name} comments(first:50){pageInfo{hasNextPage} nodes{createdAt body author{login} replies(first:50){pageInfo{hasNextPage} nodes{createdAt body author{login}}}}}}}}' \
               -f d="$1") || return 1
+            # More than 50 comments, or 50 replies to one, would be cut from the file and
+            # then deleted. Such a discussion is not saved, so it is not deleted.
+            if jq -e '[.data.node.comments.pageInfo.hasNextPage, (.data.node.comments.nodes[]?.replies.pageInfo.hasNextPage)] | any' <<<"$json" > /dev/null; then
+              return 1
+            fi
             num=$(jq -r '.data.node.number' <<<"$json")
             path="removed/$(jq -r '.data.node.createdAt[0:10]' <<<"$json")-${num}.md"
             if gh api "repos/$ARCHIVE/contents/$path" --silent 2>/dev/null; then
               return 0
             fi
-            md=$(jq -r --arg m "$MARKER" '
+            # The owner's notice is left out. A comment anyone else wrote is kept,
+            # whatever it contains.
+            md=$(jq -r --arg m "$MARKER" --arg owner "${GITHUB_REPOSITORY%/*}" '
                 .data.node as $d
                 | "# #\($d.number) \($d.title)\n\n"
                   + "- Author: \($d.author.login // "ghost") (\($d.authorAssociation))\n"
@@ -212,7 +229,7 @@ jobs:
                   + "- Was at: \($d.url)\n\n"
                   + $d.body + "\n"
                   + ([$d.comments.nodes[]
-                      | select(.body | contains($m) | not)
+                      | select(.author.login == $owner and (.body | contains($m)) | not)
                       | "\n## \(.author.login // "ghost"), \(.createdAt)\n\n\(.body)\n"
                         + ([.replies.nodes[]
                             | "\n### \(.author.login // "ghost"), \(.createdAt)\n\n\(.body)\n"] | join(""))]

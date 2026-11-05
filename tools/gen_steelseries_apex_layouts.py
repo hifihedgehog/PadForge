@@ -17,6 +17,8 @@ then the region patch. patch_lookup is a std::map built from an initializer
 list, which keeps the first entry of a SKU listed twice, and so does this
 script. Lines OpenRGB has commented out are left out.
 
+Run it without Python's -I switch: it imports tools/openrgb_cpp.py.
+
 Usage:
     python tools/gen_steelseries_apex_layouts.py OPENRGB_ROOT
     python tools/gen_steelseries_apex_layouts.py OPENRGB_ROOT --check   (compare, write nothing)
@@ -24,8 +26,8 @@ Usage:
 import argparse
 import os
 import re
-import subprocess
 import sys
+import openrgb_cpp as oc
 
 PROJ_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT = os.path.join(PROJ_ROOT, "PadForge.App", "Common", "Input", "Peripherals", "SteelSeriesApexLayouts.g.cs")
@@ -80,8 +82,7 @@ def main():
     regions = strip_comments(read(os.path.join(ss, "SteelSeriesApexRegions.h")))
     apex = strip_comments(read(os.path.join(ss, "SteelSeriesApexController", "SteelSeriesApexController.cpp")))
     apex_m = strip_comments(read(os.path.join(ss, "SteelSeriesApexMController", "SteelSeriesApexMController.cpp")))
-    commit = subprocess.run(["git", "-C", args.openrgb, "rev-parse", "HEAD"],
-                            capture_output=True, text=True, check=True).stdout.strip()
+    commit = oc.git_head(args.openrgb)
 
     keys = cells(array_body(apex, "keys"), None)
     if None in keys or len(keys) != 112:

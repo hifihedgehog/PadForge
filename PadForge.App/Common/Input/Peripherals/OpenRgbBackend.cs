@@ -14,8 +14,8 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>Presence. The worker connects only while OpenRGB runs, by the
     /// process snapshot the link pass already takes
-    /// (<see cref="VendorPrograms.OpenRgb"/>), and then to loopback on the
-    /// server's default port (<see cref="OpenRgbProtocol.DefaultPort"/>),
+    /// (<see cref="VendorPrograms.OpenRgb"/>), and then to the address its
+    /// command line and settings name (<see cref="OpenRgbServerPort"/>),
     /// once every <see cref="RetryMs"/> while nothing answers. A server
     /// that answers is asked for its controllers, which is all it takes to
     /// learn which devices OpenRGB holds. Nothing is written to any of them
@@ -52,7 +52,17 @@ namespace PadForge.Common.Input.Peripherals
     /// colors that follow it (RGBController.cpp:2091-2140). A hand-back
     /// that cannot go out is owed and goes out when the server answers
     /// again, ahead of any new claim, which takes it over as its own. The
-    /// worker's finally and the crash path send what is on record.</para>
+    /// worker's finally and the crash path send what is on record, the
+    /// finally what is owed too while it has a session. What cannot go out at
+    /// a stop stays owed to the next run, or the next run would read
+    /// PadForge's Direct mode as the controller's own, and goes with OpenRGB
+    /// if that stops first.</para>
+    ///
+    /// <para>A controller OpenRGB registers again under the same location
+    /// (DetectionManager.cpp:2167-2200) is the same unit to the worker, and
+    /// the list shows it in another mode than the Direct one the worker set
+    /// (the server keeps the active mode, NetworkServer.cpp:3240). The worker
+    /// sets Direct again, paints again and keeps the hand-back it holds.</para>
     /// </summary>
     internal sealed class OpenRgbBackend : IDirectUnitBackend
     {
@@ -128,11 +138,19 @@ namespace PadForge.Common.Input.Peripherals
 
         private CrashRecord[] _recorded = Array.Empty<CrashRecord>();
 
-        private readonly Func<int, int, IOpenRgbLink> _connect;
+        /// <summary>The hand-backs a run could not send at its stop, by unit
+        /// key, for the next run's list. Handed from one worker to the next,
+        /// which waits for it, over the engine's restarts.</summary>
+        private static Dictionary<string, HandBack> s_carried;
+
+        /// <summary>For a test: nothing carried from the last one.</summary>
+        internal static void ForgetCarriedForTest() => Volatile.Write(ref s_carried, null);
+
+        private readonly Func<OpenRgbServerAddress, int, IOpenRgbLink> _connect;
         private readonly Func<string, Guid> _containerOf;
         private readonly Func<long> _ticks;
         private readonly Func<bool> _runs;
-        private readonly Func<int> _port;
+        private readonly Func<OpenRgbServerAddress> _address;
         private readonly int _idleTickMs;
         private readonly int _stopJoinMs;
         private readonly int _versionWaitMs;
@@ -148,30 +166,29 @@ namespace PadForge.Common.Input.Peripherals
         private int _passes;
         private int _waitMs;
 
-        /// <summary>The newest worker thread of any instance, which the
-        /// next one waits for, so two never hold the server's controllers
-        /// at once.</summary>
-        private static Thread s_lastWorker;
+        /// <summary>The family's workers over the engine's restarts, so two
+        /// never hold the server's controllers at once.</summary>
+        private static readonly WorkerSuccession s_workers = new();
 
         public OpenRgbBackend()
             : this(null, null, null, null, null, IdleTickMs) { }
 
-        /// <summary>Test seam: the connection maker (port, timeout), the
-        /// container lookup, the clock, whether OpenRGB runs, the port the
+        /// <summary>Test seam: the connection maker (address, timeout), the
+        /// container lookup, the clock, whether OpenRGB runs, the address the
         /// server listens on (<see cref="OpenRgbServerPort.Find"/>), the
         /// idle tick, Stop's wait and the session's two waits. The connection
         /// maker is the worker's only way to the server, and its default
         /// connects to nothing in the test host
         /// (<see cref="OpenRgbTcpLink.OffLimitsForTest"/>).</summary>
-        internal OpenRgbBackend(Func<int, int, IOpenRgbLink> connect, Func<string, Guid> containerOf, Func<long> ticks,
-            Func<bool> runs, Func<int> port, int idleTickMs, int stopJoinMs = StopJoinMs,
+        internal OpenRgbBackend(Func<OpenRgbServerAddress, int, IOpenRgbLink> connect, Func<string, Guid> containerOf, Func<long> ticks,
+            Func<bool> runs, Func<OpenRgbServerAddress> address, int idleTickMs, int stopJoinMs = StopJoinMs,
             int versionWaitMs = OpenRgbSession.VersionWaitMs, int replyWaitMs = OpenRgbSession.ReplyWaitMs)
         {
             _connect = connect ?? OpenRgbTcpLink.Connect;
             _containerOf = containerOf ?? AudioPassthroughService.DevicePathContainerId;
             _ticks = ticks ?? (() => Environment.TickCount64);
             _runs = runs ?? OpenRgbRuns;
-            _port = port ?? OpenRgbServerPort.Find;
+            _address = address ?? OpenRgbServerPort.Find;
             _idleTickMs = idleTickMs;
             _stopJoinMs = stopJoinMs;
             _versionWaitMs = versionWaitMs;
@@ -282,9 +299,7 @@ namespace PadForge.Common.Input.Peripherals
 
         private void Worker(WorkerRun run)
         {
-            var previous = Interlocked.Exchange(ref s_lastWorker, Thread.CurrentThread);
-            if (previous != null && previous != Thread.CurrentThread && previous.IsAlive && !previous.Join(_stopJoinMs))
-                PadForge.Engine.SdlDiagLog.WriteLine("PERIPHERAL OpenRGB previous worker still running, starting anyway");
+            s_workers.Enter(run, _stopJoinMs, "OpenRGB");
             var units = new List<Unit>();
             OpenRgbSession session = null;
             bool published = false, unanswered = false;
@@ -302,6 +317,7 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         // OpenRGB stopped: its server and its hold went with
                         // it, so there is nothing to hand back to.
+                        Volatile.Write(ref s_carried, null);
                         if (session != null || units.Count > 0)
                         {
                             Close(ref session);
@@ -389,28 +405,44 @@ namespace PadForge.Common.Input.Peripherals
             finally
             {
                 // Each controller goes back to OpenRGB's own lighting before
-                // the connection closes. Not from a worker that outlived its
-                // Stop into the next run, whose worker has the controllers.
-                var successor = _run;
-                bool ownRun = successor == null || ReferenceEquals(successor, run);
-                if (session != null && ownRun)
-                {
-                    foreach (var unit in units)
-                    {
-                        if (!unit.Entered) continue;
-                        try { SendBack(session, unit); } catch { }
-                    }
-                }
+                // the connection closes, what was owed since a lost connection
+                // included. What does not go out is left to the next run. A
+                // controller a later run has entered is that run's to say.
+                HandBackAtStop(run, session, units);
                 Close(ref session);
-                PeripheralOutputs.SetBackendState(OutputFamily.OpenRgbDevice, BackendState.Idle);
-                var current = _run;
-                if (current == null || ReferenceEquals(current, run))
+                if (s_workers.Holds(run))
                 {
+                    PeripheralOutputs.SetBackendState(OutputFamily.OpenRgbDevice, BackendState.Idle);
                     foreach (var unit in units) PeripheralLightMaps.Remove(PathOf(unit));
                     Volatile.Write(ref _recorded, Array.Empty<CrashRecord>());
                     Volatile.Write(ref _snapshot, DirectBackendSnapshot.NotScanned);
                 }
             }
+        }
+
+        /// <summary>The worker's last act for each unit. A unit that is asleep
+        /// has an index the server has not confirmed, so what it is owed waits
+        /// for the next run's list, as with no session at all. A run that never
+        /// read a list has no units and writes nothing, so what the run before
+        /// it carried waits for the first list that is read.</summary>
+        private void HandBackAtStop(WorkerRun run, OpenRgbSession session, List<Unit> units)
+        {
+            Dictionary<string, HandBack> carried = null;
+            foreach (var unit in units)
+            {
+                if (!s_workers.MayReach(unit.Key, run)) continue;
+                bool sent = true;
+                try
+                {
+                    if (session != null && unit.Entered) sent = SendBack(session, unit);
+                    else if (session != null && unit.Owed != null && !unit.Asleep) sent = PayOwed(session, unit);
+                }
+                catch { sent = false; }
+                if (!sent)
+                    PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL OpenRGB {unit.Label} hand-back did not go out at the stop, owed to the next run");
+                if (unit.Owed != null) (carried ??= new Dictionary<string, HandBack>(StringComparer.Ordinal))[unit.Key] = unit.Owed;
+            }
+            if (carried != null) Volatile.Write(ref s_carried, carried);
         }
 
         private static void Soonest(ref long due, long at)
@@ -421,10 +453,11 @@ namespace PadForge.Common.Input.Peripherals
         private OpenRgbSession Connect()
         {
             IOpenRgbLink link = null;
-            int port;
-            try { port = _port(); }
-            catch { port = OpenRgbProtocol.DefaultPort; }
-            try { link = _connect(port, ConnectTimeoutMs); } catch { }
+            OpenRgbServerAddress address;
+            try { address = _address(); }
+            catch { address = OpenRgbServerAddress.Default; }
+            PeripheralOutputs.OpenRgbPortTried = address.Port;
+            try { link = _connect(address, ConnectTimeoutMs); } catch { }
             if (link == null) return null;
             OpenRgbSession session = null;
             try { session = OpenRgbSession.Begin(link, _versionWaitMs, _replyWaitMs); } catch { }
@@ -499,6 +532,7 @@ namespace PadForge.Common.Input.Peripherals
             var keys = KeysOf(controllers);
             var present = Volatile.Read(ref _present);
             var listed = new HashSet<Unit>();
+            var carried = Interlocked.Exchange(ref s_carried, null);
             for (int i = 0; i < controllers.Count; i++)
             {
                 var controller = controllers[i];
@@ -509,6 +543,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (unit == null)
                 {
                     unit = new Unit { Key = keys[i] };
+                    if (carried != null && carried.TryGetValue(keys[i], out var owed)) unit.Owed = owed;
                     units.Add(unit);
                     Describe(unit, controller, present, now);
                     PadForge.Engine.SdlDiagLog.WriteLine(
@@ -523,6 +558,16 @@ namespace PadForge.Common.Input.Peripherals
                 unit.Asleep = false;
                 if (unit.Recorded) Track(session, unit, force: true);
                 listed.Add(unit);
+                // Registered again under this location, in a mode of its own:
+                // the claim stands, so Direct goes back on and the picture
+                // with it. The hand-back held is still the controller's.
+                if (unit.Entered && unit.DirectMode >= 0 && controller.ActiveMode != unit.DirectMode)
+                {
+                    unit.Shown = null;
+                    unit.ShownMap = null;
+                    if (!session.UpdateMode(unit.Index, unit.DirectMode, controller.Modes[unit.DirectMode])) return false;
+                    PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL OpenRGB {unit.Label} listed out of its Direct mode, set to it again");
+                }
             }
             for (int i = units.Count - 1; i >= 0; i--)
             {
@@ -631,15 +676,15 @@ namespace PadForge.Common.Input.Peripherals
             {
                 if (unit.Entered) return SendBack(session, unit);
                 // A hand-back owed from a session that ended. A stopping
-                // worker sends it from its finally if it is entered again,
-                // and leaves an owed one to the next run otherwise.
+                // worker sends it from its finally, and leaves it to the next
+                // run when it cannot (HandBackAtStop).
                 if (unit.Owed != null && !run.Stop) return PayOwed(session, unit);
                 return true;
             }
             if (run.Stop) return true;
             if (!unit.Entered)
             {
-                if (!Enter(session, unit, ref changed)) return false;
+                if (!Enter(run, session, unit, ref changed)) return false;
                 if (!unit.Entered) return true;
                 // A stop that came while the mode was set paints nothing
                 // more. The finally sets the controller back.
@@ -652,7 +697,7 @@ namespace PadForge.Common.Input.Peripherals
         /// what sets it back, and sets its Direct mode. A unit whose
         /// controller turns out to be another, or to have no Direct mode
         /// now, is not entered, and the list is read again.</summary>
-        private bool Enter(OpenRgbSession session, Unit unit, ref bool changed)
+        private bool Enter(WorkerRun run, OpenRgbSession session, Unit unit, ref bool changed)
         {
             var fresh = session.ReadController(unit.Index);
             if (fresh == null) return false;
@@ -671,6 +716,7 @@ namespace PadForge.Common.Input.Peripherals
             var back = unit.Owed ?? new HandBack(fresh.ActiveMode,
                 fresh.ActiveMode >= 0 && fresh.ActiveMode < fresh.Modes.Count ? fresh.Modes[fresh.ActiveMode] : null,
                 (uint[])fresh.Colors.Clone());
+            s_workers.Claim(unit.Key, run);
             unit.Back = back;
             unit.Owed = null;
             unit.Entered = true;

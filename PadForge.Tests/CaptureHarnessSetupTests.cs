@@ -690,6 +690,37 @@ namespace PadForge.Tests
             string Name, string Settings, string Backup, string Exe, string Kill,
             int FewestWrites, int FewestCopies, int Backups, int ClosingRestores, int FewestLoads, int FewestSaves);
 
+        /// <summary>Every tool that makes a real click asks first who holds the
+        /// focus, since a click while another program's window is in front goes
+        /// to that window, whoever is using the machine. ForceFG's answer is not
+        /// enough to go on: SetForegroundWindow is allowed to refuse.</summary>
+        [Theory]
+        [InlineData("diag-sweep.ps1", "if (-not (InFront))", "Click-At ([int]($r.X")]
+        [InlineData("capture_all.ps1", "if ($front -ne $own)", "[Win32]::ClickAt($X, $Y)")]
+        [InlineData("a11y_uia_audit.ps1", "if (-not (Front)) { return 'not in front' }", "[A11yWin]::mouse_event(2, 0, 0, 0, [UIntPtr]::Zero)")]
+        [InlineData("a11y_nvda_tab_pass.ps1", "elseif ([NvdaPassWin]::GetForegroundWindow() -ne $h)", "[NvdaPassWin]::mouse_event(2, 0, 0, 0, [UIntPtr]::Zero)")]
+        [InlineData("add_slots_via_ui.ps1", "if ([AddSlotsWin]::GetForegroundWindow() -ne $proc.MainWindowHandle)", "[AddSlotsWin]::mouse_event(2, 0, 0, 0, [UIntPtr]::Zero)")]
+        [InlineData("probe_macro_list.ps1", "if ([PW]::GetForegroundWindow() -ne $hwnd)", "[PW]::ClickAt([int]($r.X")]
+        public void EveryToolThatClicks_AsksWhoHoldsTheFocusFirst(string script, string guard, string click)
+        {
+            string text = AuditDelta20261002Tests.RepoText("tools", script);
+            int asked = text.IndexOf(guard, StringComparison.Ordinal);
+            int clicked = text.IndexOf(click, StringComparison.Ordinal);
+            Assert.True(asked > 0 && clicked > asked, $"{script}: {asked} {clicked}");
+        }
+
+        /// <summary>A sweep that stopped short says so. The word PASS on a
+        /// harvest that reached one page in five read as the whole walk.</summary>
+        [Fact]
+        public void TheSweep_NamesWhatItDidNotReach()
+        {
+            string text = AuditDelta20261002Tests.RepoText("tools", "diag-sweep.ps1");
+            Assert.Contains("if (-not $ok) { $notReached += $page }", text);
+            Assert.Contains("$notReached += 'Workshop browse'", text);
+            Assert.Contains("$notReached += 'Map Key Lights'", text);
+            Assert.Contains("$verdict = \"PARTIAL: $verdict, for what ran. Not reached:", text);
+        }
+
         private static readonly SettingsScript[] SettingsScriptList =
         {
             new("capture_all.ps1", "PadForgeXml", "xmlBak", "PadForgeExe", "Stop-Process", 19, 4, 2, 1, 15, 6),
@@ -1130,8 +1161,11 @@ namespace PadForge.Tests
             string src = File.ReadAllText(AuditDelta20260823Tests.FindRepoFile(
                 Path.Combine("PadForge.App", "Services", "SettingsService.cs")));
             Assert.Contains("new(typeof(SettingsFileData));", src);
-            Assert.Contains("serializer.Serialize(ms, data);", src);
-            Assert.Contains("File.WriteAllBytes(filePath, serializedBytes);", src);
+            Assert.Contains("PadForge.Engine.Common.XmlSafeText.Serialize(serializer, data);", src);
+            Assert.Contains("WriteWhole(filePath, serializedBytes);", src);
+            // WriteWhole puts those bytes on disk as they are, through a
+            // temporary file that replaces the settings file.
+            Assert.Contains("stream.Write(bytes, 0, bytes.Length);", src);
 
             byte[] bytes = SerializeAsPadForgeDoes(new SettingsFileData { Devices = new[] { NamedOutsideAscii() } });
             Assert.False(bytes[0] == 0xEF && bytes[1] == 0xBB && bytes[2] == 0xBF, "the settings file starts with a byte order mark");
@@ -1658,6 +1692,7 @@ namespace PadForge.Tests
             Assert.False(ud.ForceRawJoystickMode, who);
             Assert.False(ud.QuickChargeEnabled, who);
             Assert.False(ud.TouchpadOnlyInPadForge, who);
+            Assert.False(ud.TouchpadKeepPending, who);
             Assert.Equal(0, ud.IdleDisconnectSeconds);
             Assert.Equal(0, ud.PeripheralOutputs);
             Assert.False(ud.HasAccelAux, who);
@@ -1809,9 +1844,7 @@ namespace PadForge.Tests
         /// serializer into a MemoryStream, then those bytes to the file.</summary>
         private static byte[] SerializeAsPadForgeDoes(SettingsFileData data)
         {
-            using var ms = new MemoryStream();
-            new XmlSerializer(typeof(SettingsFileData)).Serialize(ms, data);
-            return ms.ToArray();
+            return PadForge.Engine.Common.XmlSafeText.Serialize(new XmlSerializer(typeof(SettingsFileData)), data);
         }
 
         // ─── The driver ───

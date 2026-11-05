@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Xml.Serialization;
 using PadForge.Services;
@@ -41,6 +42,12 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         /// <summary><see cref="MouseKind"/> for a mouse, empty for a
         /// keyboard.</summary>
         [XmlAttribute] public string Kind { get; set; }
+
+        /// <summary>True from before the bind until the user keeps the switch.
+        /// The file holds it at once, so a takeover still pending when PadForge
+        /// starts is one nobody kept, and it goes back to Windows
+        /// (<see cref="WinUsbKeyboardBinding.PendingToRestore"/>).</summary>
+        [XmlAttribute, DefaultValue(false)] public bool Pending { get; set; }
 
         /// <summary>True for a mouse's takeover.</summary>
         [XmlIgnore]
@@ -131,6 +138,7 @@ namespace PadForge.Common.Input.WinUsbKeyboards
             VendorId = entry.VendorId,
             ProductId = entry.ProductId,
             Kind = entry.Kind,
+            Pending = entry.Pending,
         };
     }
 }

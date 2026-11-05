@@ -780,6 +780,8 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} använder sin Windows-drivrutin igen.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Windows-drivrutinen för {0} kunde inte återställas.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows flyttade tillbaka {0} till sin egen drivrutin. Välj enheten på sidan Enheter för att byta igen.</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} använder inte längre PadForge-drivrutinen.</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} använder fortfarande PadForge-drivrutinen. Välj enheten på sidan Enheter för att ge tillbaka den till Windows.</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Använd bara i PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge flyttar det här tangentbordet till WinUSB-drivrutinen i Windows och läser av det själv. Windows slutar då skriva med det i alla program, även när PadForge är stängt, tills dess Windows-drivrutin har återställts från den här sidan. Dess mappningar och makron fortsätter att fungera medan PadForge körs.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge flyttar den här musen till WinUSB-drivrutinen i Windows och läser av den själv. Windows slutar då flytta pekaren med den i alla program, även när PadForge är stängt, tills dess Windows-drivrutin har återställts från den här sidan. Dess mappningar och makron fortsätter att fungera medan PadForge körs.</value></data>
@@ -957,6 +959,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>Vibration spelas upp via den taktila hanteraren i SteelSeries GG.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG driver alla taktila Rival-möss samtidigt, så den som sitter på virtuell handkontroll {0} bestämmer deras vibration.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>Väntar på SteelSeries GG. Vibration spelas upp när GG körs.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG körs men svarar inte PadForge. Vibrationen spelas så fort det svarar.</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>Vibration spelas upp på dina Razer Sensa HD-enheter via Razer Synapse.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Väntar på Sensa HD Haptics i Razer Synapse 4. Ställ in enhetens Haptic Source på Sensa HD Games i Synapse.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Vänster avtryckare</value></data>
@@ -1000,6 +1003,12 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Färgerna skickas direkt till {0}. Dess läge för inbyggt minne är av medan den lyser.</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Färgerna skickas direkt till {0}. Skiftande färger, till exempel en färgcykel eller färger som följer ljud, kräver att Dynamic Lighting är aktiverat i den bärbara datorns BIOS. Utan det behåller tangenterna de senaste jämna färgerna.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Färgerna skickas direkt till {0}. Om Dynamic Lighting är aktiverat i den bärbara datorns BIOS lyser Dynamisk belysning i Windows upp tangenterna i stället. Stäng av Dynamisk belysning i Windows för det här tangentbordet i Windows-inställningarna, så lyser PadForge upp dem, även med skiftande färger.</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>Färgerna skickas direkt till {0}. Enheten sparar varje bild i sitt eget minne, så färger som ändras, till exempel en färgcykel eller färger som följer ljud, syns inte. En färg som förblir densamma syns.</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>Färgerna skickas direkt till {0}. Enheten sparar varje bild i sitt eget minne, så färger som ändras, till exempel en färgcykel eller färger som följer ljud, syns inte. En färg som förblir densamma syns. Den första bilden skriver över effekterna som sparats på tangentbordet, och de gamla kommer inte tillbaka.</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>Seriell enhet på {0}</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>Den här enheten är ansluten men tog inte emot färgerna från PadForge. PadForge försöker igen varje minut.</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows håller den här enheten som ett tangentbord eller en mus och avvisar rapporten som anger dess färger, så PadForge kan inte lysa upp den i Windows.</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>Ett annat program har den här enheten öppen, så PadForge kan inte lysa upp den. PadForge lyser upp den när programmet har stängts.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Den här enheten har inte svarat än. Dess färger visas när den vaknar.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Färgerna skickas via {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Färgerna skickas via {0}, som lyser upp alla enheter av det här slaget samtidigt. När {0} inte körs lyser PadForge upp den här enheten på egen hand.</value></data>
@@ -1007,7 +1016,9 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Färgerna skickas via SDK Server i OpenRGB. När OpenRGB inte körs lyser PadForge upp den här enheten på egen hand.</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Färgerna skickas via SDK Server i OpenRGB.</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB håller den här enheten och har inget Direct-läge för den, så dess belysning stannar hos OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB körs med SDK Server avstängd, så PadForge lämnar den här enheten till OpenRGB. Slå på SDK Server i OpenRGB så lyser PadForge upp enheten genom den.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB körs men dess SDK Server svarar inte på port {0}, så PadForge lämnar den här enheten till OpenRGB. Slå på SDK Server i OpenRGB så lyser PadForge upp enheten genom den.</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE körs med SDK avstängd. Slå på iCUE SDK i iCUE:s inställningar så lyser PadForge upp enheten genom det.</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} körs men släppte inte in PadForge för att lysa upp dess enheter. PadForge fortsätter fråga.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} lyser upp alla enheter av det här slaget samtidigt, så den som sitter på virtuell handkontroll {1} bestämmer deras färg.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} lyser upp alla enheter av det här slaget samtidigt, så raden {1} på virtuell handkontroll {2} bestämmer deras färg.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Virtuell handkontroll {0} lyser också upp den här enheten, och det är dess färg som visas.</value></data>
@@ -1025,7 +1036,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headset</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>moderkort, grafikkort och minnen</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>moderkort och grafikkort</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>musmattor och headsetställ</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>musmattor, headset och headsetställ</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Ljusfält</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Ange en sexsiffrig hexfärg (RRGGBB eller #RRGGBB) och tryck på Retur eller klicka utanför för att tillämpa.</value></data>
@@ -4671,6 +4682,7 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Ansluter till chatten för {0}…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Läser chatten för {0}.</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Det gick inte att nå chatten för {0}. Försöker igen.</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch har ingen chatt för {0}. Kontrollera kanalens namn.</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Pausad.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Handkontrollbilden för din sändning. Lägg till den här adressen i OBS som en webbläsarkälla:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Handkontrollbilden för din sändning kräver Webbhandkontroll och dess vanliga HTTP-adress. Slå på Erbjud även vanlig HTTP på kortet Webbhandkontroll. Endast den här datorn räcker för OBS på den här datorn.</value></data>

@@ -76,8 +76,15 @@ namespace PadForge.Tests
             Assert.Equal(new ushort[] { 0x0001, 0x0002, 0x0010 }, unit.KeyTypes.Select(k => k.Type));
             var media = unit.KeyTypes[1];
             Assert.Equal(new byte[] { 0xCD, 0xB6, 0xB5, 0xB7, 0xE2 }, media.Keys);
-            Assert.Equal((0xFF, 0xFF, 0xFF), (media.MaxRed, media.MaxGreen, media.MaxBlue));
         }
+
+        /// <summary>A key type holds its bit and its keys. Nothing paints by
+        /// the top values getKeyTypeInfo answers: colors go out as 8-bit
+        /// bytes, as OpenRGB's SetPerKey8080 sends them.</summary>
+        [Fact]
+        public void AKeyType_HoldsItsBitAndItsKeys_Alone()
+            => Assert.Equal(new[] { "Type", "Keys" },
+                typeof(HidppKeyType).GetConstructors().Single().GetParameters().Select(p => p.Name));
 
         /// <summary>The G810's map: its keys by usage, with the ANSI backslash
         /// and the JIS keys of a UK board left out, its logo without the
@@ -133,9 +140,9 @@ namespace PadForge.Tests
             {
                 KeyTypes = new[]
                 {
-                    new HidppKeyType(0x0002, 0x01, 0x00, 0x00, new byte[] { 0xB5, 0xB6 }),
-                    new HidppKeyType(0x0004, 0xFF, 0xFF, 0xFF, Enumerable.Range(1, 9).Select(k => (byte)k).ToArray()),
-                    new HidppKeyType(0x0010, 0xFF, 0xFF, 0xFF, new byte[] { 0x01, 0x02 }),
+                    new HidppKeyType(0x0002, new byte[] { 0xB5, 0xB6 }),
+                    new HidppKeyType(0x0004, Enumerable.Range(1, 9).Select(k => (byte)k).ToArray()),
+                    new HidppKeyType(0x0010, new byte[] { 0x01, 0x02 }),
                 },
             };
             var lights = HidppKeyMap.Of(g910).Lights;

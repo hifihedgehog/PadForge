@@ -33,13 +33,15 @@ namespace PadForge.Common.Input.Peripherals
         Matrix,
     }
 
-    /// <summary>The OpenRGB device types the Corsair tables use.</summary>
+    /// <summary>The OpenRGB device types the Corsair tables use, and the
+    /// headset, which only SignalRGB's Bragi headset plugin lists.</summary>
     internal enum CorsairDeviceType
     {
         Keyboard,
         Mouse,
         Mousemat,
         HeadsetStand,
+        Headset,
     }
 
     /// <summary>One corsair_v2_zone (CorsairPeripheralV2Devices.h:41-47).</summary>
@@ -186,9 +188,11 @@ namespace PadForge.Common.Input.Peripherals
     /// never reverted" (CorsairPeripheralV2Controller.cpp:142-150). So a
     /// session records the device as owed in <see cref="KeyboardProfileBackups"/>
     /// before its first picture, as the Lenovo Y740 to Y760 session does
-    /// (<see cref="LenovoLegionUsbLighting"/>), with the hand-back frame as
-    /// its contents and the number of times it goes out as its profile, and
-    /// the next run sends it for a device a forced kill left. Where the
+    /// (<see cref="LenovoLegionUsbLighting"/>), under the device's own key
+    /// (<see cref="KeyboardProfileBackups.DeviceKey"/>), with the hand-back
+    /// frame as its contents and the number of times it goes out as its
+    /// profile, and the next run sends it for a device a forced kill left.
+    /// Where the
     /// reference keeps a device from falling back to its own lighting by
     /// sending the last picture again after a time without one, the model
     /// names that time and the worker sends it
@@ -201,15 +205,15 @@ namespace PadForge.Common.Input.Peripherals
         /// (<see cref="LenovoLegionUsbLighting.SavingMs"/>).</summary>
         internal const int SavingMs = LenovoLegionUsbLighting.SavingMs;
 
-        private readonly string _product;
+        private readonly string _key;
         private readonly byte[] _handBack;
         private readonly int _handBackCount;
         private readonly int _handBackGapMs;
         private readonly byte[][] _crash;
 
-        protected CorsairSession(string product, byte[] handBack, int handBackCount, int handBackGapMs)
+        protected CorsairSession(string key, byte[] handBack, int handBackCount, int handBackGapMs)
         {
-            _product = product;
+            _key = key;
             _handBack = handBack;
             _handBackCount = Math.Max(1, handBackCount);
             _handBackGapMs = handBackGapMs;
@@ -231,9 +235,9 @@ namespace PadForge.Common.Input.Peripherals
         public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
             IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
         {
-            if (KeyboardProfileBackups.Get(_product) == null)
-                KeyboardProfileBackups.Take(_product, (byte)_handBackCount, _handBack);
-            if (!KeyboardProfileBackups.IsPersisted(_product))
+            if (KeyboardProfileBackups.Get(_key) == null)
+                KeyboardProfileBackups.Take(_key, (byte)_handBackCount, _handBack);
+            if (!KeyboardProfileBackups.IsPersisted(_key))
             {
                 LaterMs = SavingMs;
                 return HidLightingPaint.Later;
@@ -244,7 +248,7 @@ namespace PadForge.Common.Input.Peripherals
         public override bool HandBack(IHidReportChannel io, Action<int> wait)
         {
             if (!SendHandBack(io, wait)) return false;
-            KeyboardProfileBackups.Drop(_product);
+            KeyboardProfileBackups.Drop(_key);
             return true;
         }
 
@@ -262,9 +266,9 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Hands back a device an earlier run left in software
         /// mode, from its record. True when nothing is owed any more.</summary>
-        internal static bool Repair(IHidReportChannel io, Action<int> wait, string product, int gapMs)
+        internal static bool Repair(IHidReportChannel io, Action<int> wait, string key, int gapMs)
         {
-            var backup = KeyboardProfileBackups.Get(product);
+            var backup = KeyboardProfileBackups.Get(key);
             if (backup == null) return true;
             int count = Math.Max(1, (int)backup.Value.Profile);
             for (int i = 0; i < count; i++)
@@ -272,11 +276,11 @@ namespace PadForge.Common.Input.Peripherals
                 if (i > 0 && gapMs > 0) wait(gapMs);
                 if (!io.WriteOutput(backup.Value.Contents))
                 {
-                    KeyboardProfileBackups.NoteFailure(product);
+                    KeyboardProfileBackups.NoteFailure(key);
                     return false;
                 }
             }
-            KeyboardProfileBackups.Drop(product);
+            KeyboardProfileBackups.Drop(key);
             return true;
         }
 
@@ -285,9 +289,9 @@ namespace PadForge.Common.Input.Peripherals
         /// (<see cref="LenovoLegionUsbLighting.RepairTries"/>).</summary>
         internal const int RepairTries = LenovoLegionUsbLighting.RepairTries;
 
-        /// <summary>Whether a device of <paramref name="product"/> is owed a
+        /// <summary>Whether the device keyed <paramref name="key"/> is owed a
         /// hand-back this run can still try.</summary>
-        internal static bool Owed(string product)
-            => KeyboardProfileBackups.Get(product) != null && KeyboardProfileBackups.Failures(product) < RepairTries;
+        internal static bool Owed(string key)
+            => KeyboardProfileBackups.Get(key) != null && KeyboardProfileBackups.Failures(key) < RepairTries;
     }
 }

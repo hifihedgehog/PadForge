@@ -82,6 +82,7 @@ namespace PadForge.Common.Input.Peripherals
                 Programs = new[] { VendorPrograms.HyteNexus },
                 RepaintMs = RepaintMs,
                 Open = key => _open(key),
+                OpenFoundHeld = () => OwnLightingChannels.SerialDenied,
                 BeginOwn = (channel, _) => channel is ISerialLineChannel port
                     ? new SerialFramesSession(port, LedCount, Stream, opening: AnimationOff, handBack: AnimationOn)
                     : null,

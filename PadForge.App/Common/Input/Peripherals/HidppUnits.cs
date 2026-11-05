@@ -9,15 +9,14 @@ namespace PadForge.Common.Input.Peripherals
     /// cluster's own list, which differs between zones of one device.</summary>
     internal readonly record struct HidppZone(byte Zone, byte StaticEffectIndex);
 
-    /// <summary>One key type of a feature 0x8080 keyboard (#557): its bit,
-    /// the top value each channel takes, and the IDs of its keys, as the
-    /// keyboard lists them (<see cref="HidppUnitProbe.KeyTypes"/>).</summary>
-    internal sealed record HidppKeyType(ushort Type, byte MaxRed, byte MaxGreen, byte MaxBlue, byte[] Keys)
+    /// <summary>One key type of a feature 0x8080 keyboard (#557): its bit and
+    /// the IDs of its keys, as the keyboard lists them
+    /// (<see cref="HidppUnitProbe.KeyTypes"/>).</summary>
+    internal sealed record HidppKeyType(ushort Type, byte[] Keys)
     {
-        /// <summary>Whether two hold the same type, values and keys.</summary>
+        /// <summary>Whether two hold the same type and keys.</summary>
         public bool SameAs(HidppKeyType other)
-            => other != null && Type == other.Type && MaxRed == other.MaxRed && MaxGreen == other.MaxGreen
-               && MaxBlue == other.MaxBlue && Keys.AsSpan().SequenceEqual(other.Keys);
+            => other != null && Type == other.Type && Keys.AsSpan().SequenceEqual(other.Keys);
     }
 
     /// <summary>
@@ -1355,9 +1354,7 @@ namespace PadForge.Common.Input.Peripherals
                     if (live == 0) break;
                 }
                 if (keys.Count == 0) continue;
-                found.Add(new HidppKeyType(type,
-                    counted ? typeInfo.Param(2) : (byte)0xFF, counted ? typeInfo.Param(3) : (byte)0xFF,
-                    counted ? typeInfo.Param(4) : (byte)0xFF, keys.ToArray()));
+                found.Add(new HidppKeyType(type, keys.ToArray()));
             }
             types = found.ToArray();
             return true;

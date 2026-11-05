@@ -201,6 +201,18 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             return new List<byte[]> { Frame(Report, 0xB9), id, Frame(Report, 0x05, 0x20, 0x31, 0x00, 0x20) };
         }
 
+        /// <summary>A frame as a feature report, and as an output report when that fails.
+        /// G-Helper sends the keyboard's direct frames as feature reports
+        /// (SetFeatureAura, AsusHid.cs:187-213).</summary>
+        internal static bool Send(IHidReportChannel io, byte[] frame)
+            => io.SetFeature(frame) || (io.OutputReportLength > 0 && io.WriteOutput(frame));
+
+        /// <summary>A frame as an output report, and as a feature report where the collection
+        /// has none or the write fails. G-Helper writes the Z13's opening and every frame it
+        /// stores with stream.Write (Aura.cs:388-389 and 863, AsusHid.cs:160-173).</summary>
+        internal static bool SendOutputFirst(IHidReportChannel io, byte[] frame)
+            => (io.OutputReportLength > 0 && io.WriteOutput(frame)) || io.SetFeature(frame);
+
         /// <summary>The firmware's answer, or null where it does not echo the query.
         /// G-Helper writes these as output reports and OpenRGB's query goes as a
         /// feature report (AsusAuraCoreLaptopController.cpp:99-139), so a feature report
@@ -208,7 +220,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         internal static Answer? Ask(IHidReportChannel io)
         {
             foreach (var frame in Query())
-                if (!io.SetFeature(frame) && !(io.OutputReportLength > 0 && io.WriteOutput(frame))) return null;
+                if (!Send(io, frame)) return null;
             var answer = new byte[Math.Max(Length, io.FeatureReportLength)];
             if (!io.GetFeature(Report, answer)) return null;
             if (answer[0] != Report || answer[1] != 0x05 || answer[2] != 0x20 || answer[3] != 0x31) return null;
@@ -418,8 +430,9 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 Kind.Zones => ZonesMap(productId, (features & FeatureLightbar) != 0 || OldStrix(answer, machine)),
                 _ => WholeMap(productId),
             };
-            foreach (var frame in Opening(kind, answer, machine))
-                if (!io.SetFeature(frame)) return null;
+            var opening = Opening(kind, answer, machine);
+            for (int i = 0; i < opening.Count; i++)
+                if (!(machine.Z13 && i == 0 ? SendOutputFirst(io, opening[i]) : Send(io, opening[i]))) return null;
             if (kind != Kind.Static) wait?.Invoke(50);
             return new Session(map, kind, WhiteOnly(answer, machine), false, rearStrip);
         }
@@ -454,7 +467,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
             {
                 foreach (var frame in Frames(_kind, lights, colors, _white, _stored, _rearStrip))
-                    if (!io.SetFeature(frame)) return HidLightingPaint.Failed;
+                    if (!(_stored ? SendOutputFirst(io, frame) : Send(io, frame))) return HidLightingPaint.Failed;
                 return HidLightingPaint.Sent;
             }
 

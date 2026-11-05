@@ -320,7 +320,10 @@ namespace PadForge.ViewModels
             // The section's heading and dividers are the row's, and a
             // switched keyboard's row shows neither of the section's toggles.
             if (_selectedDevice != null)
+            {
                 _selectedDevice.ShowsHidingDriverSwitch = ShowHidingDriverBind || ShowHidingDriverRestore;
+                _selectedDevice.NotifyTakeoverChanged();
+            }
         }
 
         // ─────────────────────────────────────────────

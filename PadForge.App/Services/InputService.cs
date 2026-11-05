@@ -927,6 +927,12 @@ namespace PadForge.Services
             PadForge.Common.Input.VoicePhraseRegistry.RegistryChanged += OnVoicePhraseRegistryChanged;
             // Twitch chat words (#555): the voice fan-out.
             PadForge.Common.Input.Twitch.ChatCommandRegistry.RegistryChanged += OnChatCommandRegistryChanged;
+            // A removed entry's button goes to the next one added, so what
+            // named it is cleared. Each is queued ahead of the fan-out above.
+            PadForge.Common.Input.Twitch.ChatCommandRegistry.ButtonFreed += OnChatWordFreed;
+            PadForge.Common.Input.VoicePhraseRegistry.ButtonFreed += OnVoicePhraseFreed;
+            PadForge.Common.Input.NfcTagRegistry.ButtonFreed += OnNfcTagFreed;
+            PadForge.Common.Input.HandheldButtonRegistry.ButtonFreed += OnHandheldButtonFreed;
             // Handheld hidden buttons (#343): same fan-out as NFC, plus the
             // hook keep-alive re-evaluation when a chord appears or a Learn
             // dialog arms a capture.
@@ -957,6 +963,10 @@ namespace PadForge.Services
             _inputManager.DevicesUpdated += OnDevicesUpdated;
             _inputManager.TabletCaptureChanged += OnTabletCaptureChanged;
             _inputManager.TouchpadCaptureChanged += OnTouchpadCaptureChanged;
+            _inputManager.WinUsbTakeoversFound += OnWinUsbTakeoversFound;
+            // Read on the look's worker. A list that changes under it fails
+            // that look, and the next one asks again.
+            _inputManager.WinUsbOrphanFind = () => WinUsbKeyboardBinding.FindOrphans(_mainVm.Settings.WinUsbOptIns.ToArray());
             _inputManager.FrequencyUpdated += OnFrequencyUpdated;
             _inputManager.ErrorOccurred += OnErrorOccurred;
             _inputManager.ErrorResolved += OnErrorResolved;
@@ -2640,6 +2650,10 @@ namespace PadForge.Services
             try { PadForge.Common.Input.NfcTagRegistry.RegistryChanged -= OnNfcTagRegistryChanged; } catch { }
             try { PadForge.Common.Input.VoicePhraseRegistry.RegistryChanged -= OnVoicePhraseRegistryChanged; } catch { }
             try { PadForge.Common.Input.Twitch.ChatCommandRegistry.RegistryChanged -= OnChatCommandRegistryChanged; } catch { }
+            try { PadForge.Common.Input.Twitch.ChatCommandRegistry.ButtonFreed -= OnChatWordFreed; } catch { }
+            try { PadForge.Common.Input.VoicePhraseRegistry.ButtonFreed -= OnVoicePhraseFreed; } catch { }
+            try { PadForge.Common.Input.NfcTagRegistry.ButtonFreed -= OnNfcTagFreed; } catch { }
+            try { PadForge.Common.Input.HandheldButtonRegistry.ButtonFreed -= OnHandheldButtonFreed; } catch { }
             try { PadForge.Common.Input.HandheldButtonRegistry.RegistryChanged -= OnHandheldRegistryChanged; } catch { }
             try { PadForge.Common.Input.Peripherals.LearnedKeyMaps.Changed -= OnLearnedKeyMapsChanged; } catch { }
             try { PadForge.Common.Input.Peripherals.KeyboardProfileBackups.Changed -= OnKeyboardProfileBackupsChanged; } catch { }
@@ -2651,6 +2665,7 @@ namespace PadForge.Services
                 _inputManager.DevicesUpdated -= OnDevicesUpdated;
                 _inputManager.TabletCaptureChanged -= OnTabletCaptureChanged;
                 _inputManager.TouchpadCaptureChanged -= OnTouchpadCaptureChanged;
+                _inputManager.WinUsbTakeoversFound -= OnWinUsbTakeoversFound;
                 _inputManager.FrequencyUpdated -= OnFrequencyUpdated;
                 _inputManager.ErrorOccurred -= OnErrorOccurred;
                 _inputManager.ErrorResolved -= OnErrorResolved;
@@ -11425,6 +11440,8 @@ namespace PadForge.Services
             // The controller picture page (#555) reads slots through these.
             _webServer.DisplaySlot = DisplayFrameFor;
             _webServer.DisplayChatSlot = FirstTwitchChatSlot;
+            _webServer.DisplayNamedSlot = SettingsManager.SlotOrders.PadIndexForGlobalSlotNumber;
+            _webServer.DisplayShownNumber = ShownSlotNumber;
             _webServer.DeviceDisconnected += device =>
             {
                 _inputManager.UnregisterExternalDevice(device.InstanceGuid);
@@ -11703,6 +11720,8 @@ namespace PadForge.Services
             // A peer's last session dropped: release the output ownership it held
             // on local shared devices (#402), so a rumble it left running ends.
             _linkServer.PeerDropped += RemoteLinkOutputRouter.ReleasePeer;
+            // And what it left on a DualSense goes back, after the release.
+            _linkServer.PeerDropped += UserEffectsDispatcher.NotePeerDropped;
             // Membership for the router's claim and release decisions (#402):
             // the link server's own list, read at the moment of the decision.
             var link = _linkServer;
@@ -12720,6 +12739,11 @@ namespace PadForge.Services
                                 // A Bluetooth DualShock 4's phrases rest on a
                                 // path the peer's copy does not have.
                                 HasVoicePhrases = ud.HasVoicePhrases ? true : null,
+                                // The dossier reads these from the open device,
+                                // which a peer's copy does not have.
+                                FirmwareText = DossierFirmware(ud),
+                                ProductRevision = DossierRevision(ud),
+                                OnBluetooth = AudioPassthroughService.Ds4LinkToShare(ud),
                                 TouchpadPressureSupported = dev.TouchpadPressureSupported,
                                 TouchpadClickSupported = dev.TouchpadClickSupported,
                                 InputDeviceType = devType,
@@ -12779,7 +12803,10 @@ namespace PadForge.Services
                 // output (#402): a peer cannot hold what it can no longer reach.
                 foreach (var old in _remoteLinkExposedSnapshot)
                     if (old.ud != null && !sources.Any(s => ReferenceEquals(s.Item3, old.ud)))
+                    {
                         RemoteLinkOutputRouter.ReleaseDevice(old.ud.DevicePath);
+                        UserEffectsDispatcher.NoteDeviceUnshared(old.ud.InstanceGuid);
+                    }
                 _remoteLinkExposed.Clear();
                 _remoteLinkExposed.AddRange(sources);
                 _remoteLinkExposedSnapshot = sources.ToArray();
@@ -13049,10 +13076,19 @@ namespace PadForge.Services
                 switch (effect.Kind)
                 {
                     case OutputEffectCodec.Kind.SonyEffect:
-                        // Replay the DualSense effect body through SDL, which re-frames it
-                        // for the physical pad's transport (USB 0x02 / BT 0x31 + CRC).
+                        // Replay the effect body through SDL, which re-frames it for the
+                        // physical pad's transport (a DualSense's USB 0x02 or BT 0x31 + CRC,
+                        // a DualShock 4's USB 0x05 or BT 0x11 + CRC). The consumer ships the
+                        // shape each driver takes (PlayStationEffectWriter.SonyEffectBodyOffset).
+                        if (ud != null)
+                        {
+                            AudioPassthroughService.NoteRemoteSonyBody(ud.InstanceGuid, (ushort)ud.ProdId, effect.SonyBody);
+                            UserEffectsDispatcher.NotePeerEffectBody(ud.InstanceGuid, ud.DevicePath, (ushort)ud.ProdId,
+                                effect.SonyBody, peerFingerprint);
+                        }
                         if (handle != IntPtr.Zero && effect.SonyBody != null && effect.SonyBody.Length > 0)
                             SDL3.SDL.SDL_SendGamepadEffect(handle, effect.SonyBody, 0, effect.SonyBody.Length);
+                        if (ud != null) UserEffectsDispatcher.NotePeerFrameApplied(ud.InstanceGuid);
                         break;
 
                     case OutputEffectCodec.Kind.Vibration:
@@ -14254,7 +14290,8 @@ namespace PadForge.Services
         /// zero rumble on all devices and stop any sustained haptic
         /// tones. Wired into the crash handler and ProcessExit so an
         /// abnormal exit cannot leave a Steam Deck (or any pad) buzzing
-        /// on the last command it received (discussion #179).</summary>
+        /// on the last command it received (discussion #179). A taken touchpad
+        /// goes back to Windows here too, within its own budget.</summary>
         public void PanicQuiesceOutputs()
         {
             try { _inputManager?.QuiesceOutputs(); } catch { }
@@ -14268,6 +14305,7 @@ namespace PadForge.Services
             // #236: quiesce is an explicit silence edge; the shaker tone
             // must die with the other outputs.
             try { PadForge.Common.Input.RumbleAudioService.SilenceAll(); } catch { }
+            try { ReleaseTouchpadsNow(); } catch { }
         }
 
         /// <summary>Clears every HidHide blacklist entry, exactly like the
@@ -15919,15 +15957,26 @@ namespace PadForge.Services
         /// revision its Device Information service reports
         /// (BluetoothFirmwareService), which is how an Xbox pad on Bluetooth LE
         /// gets one when SDL's XInput driver finds no GameInput version for
-        /// it (hifihedgehog/SDL#44). The row fill and the 5 s battery tick both
+        /// it (hifihedgehog/SDL#44). A peer's copy shows what its owner shows,
+        /// from the device list. The row fill and the 5 s battery tick both
         /// write it, so a version learned after open reaches the dossier.</summary>
         internal static string DossierFirmware(UserDevice ud)
         {
+            if (ud?.Device is PadForge.Engine.RemoteLink.RemotePeerDevice peer) return peer.OwnerFirmware;
             var sdl = ud?.Device as PadForge.Engine.SdlDeviceWrapper;
             if (sdl != null && sdl.FirmwareText.Length > 0) return sdl.FirmwareText;
             string text = DeviceRowViewModel.FormatFirmwareVersion(sdl?.FirmwareVersion ?? 0, sdl?.VendorId ?? 0);
             if (text.Length > 0 || sdl == null || !ud.IsOnline) return text;
             return PadForge.Common.Input.BluetoothFirmwareService.TryGet(sdl) ?? string.Empty;
+        }
+
+        /// <summary>The Device Dossier's REV: the open SDL device's product
+        /// version, or what the owner shows for a peer's copy.</summary>
+        internal static string DossierRevision(UserDevice ud)
+        {
+            if (ud?.Device is PadForge.Engine.RemoteLink.RemotePeerDevice peer) return peer.OwnerProductRevision;
+            var sdl = ud?.Device as PadForge.Engine.SdlDeviceWrapper;
+            return DeviceRowViewModel.FormatProductRevision(sdl?.ProductVersion ?? 0);
         }
 
         /// <summary>
@@ -15943,11 +15992,10 @@ namespace PadForge.Services
             // Dossier (#175 item 7): SDL's serial (BT MAC on most wireless
             // pads), already persisted on UserDevice. Empty when unreported.
             row.SerialNumber = ud.SerialNumber ?? string.Empty;
-            // FIRMWARE and REV come from the open SDL device, so an offline
-            // row shows neither.
-            var sdl = ud.Device as PadForge.Engine.SdlDeviceWrapper;
+            // FIRMWARE and REV come from the open SDL device, or the owner's
+            // for a peer's copy, so an offline row shows neither.
             row.FirmwareVersion = DossierFirmware(ud);
-            row.ProductRevision = DeviceRowViewModel.FormatProductRevision(sdl?.ProductVersion ?? 0);
+            row.ProductRevision = DossierRevision(ud);
             row.DeviceName = ud.DevicePath == "aggregate://keyboards" ? Strings.Instance.Devices_AllKeyboardsMerged
                            : ud.DevicePath == "aggregate://mice" ? Strings.Instance.Devices_AllMiceMerged
                            : ud.DevicePath == "aggregate://touchpads" ? Strings.Instance.Devices_AllTouchpadsMerged

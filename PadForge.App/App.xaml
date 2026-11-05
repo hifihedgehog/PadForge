@@ -1063,6 +1063,7 @@
             <conv:IndexToLetterConverter x:Key="IndexToLetterConverter" />
             <conv:IndexLessThanVisibilityConverter x:Key="IndexLessThanVisibilityConverter" />
             <conv:OneBasedIndexConverter x:Key="OneBasedIndexConverter" />
+            <conv:LogScaleConverter x:Key="LogScaleConverter" />
             <conv:ExeIconConverter x:Key="ExeIconConverter" />
             <conv:CultureLanguageConverter x:Key="CultureLanguageConverter" />
 

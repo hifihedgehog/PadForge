@@ -25,16 +25,27 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Waits <see cref="PluginStep.Value"/> ms (device.pause).</summary>
         Wait,
+
+        /// <summary>Drops the reports already waiting, writes
+        /// <see cref="PluginStep.Ask"/> as an output report, waits
+        /// <see cref="PluginStep.Value"/> ms and reads the answer, then writes
+        /// <see cref="PluginStep.Bytes"/> as an output report unless
+        /// <see cref="PluginStep.Settled"/> says the answer already holds what they
+        /// set. No answer in time gets the write, as a plugin's comparison of an empty
+        /// read does.</summary>
+        OutputUnlessRead,
     }
 
     /// <summary>One step of a plugin device's frames.</summary>
-    internal readonly record struct PluginStep(PluginStepKind Kind, byte[] Bytes, int Value)
+    internal readonly record struct PluginStep(PluginStepKind Kind, byte[] Bytes, int Value, byte[] Ask = null, Func<byte[], bool> Settled = null)
     {
         public static PluginStep Output(byte[] frame) => new(PluginStepKind.Output, frame, 0);
         public static PluginStep Feature(byte[] frame) => new(PluginStepKind.Feature, frame, 0);
         public static PluginStep ReadInput(int ms = PluginDeviceLighting.AnswerMs) => new(PluginStepKind.ReadInput, null, ms);
         public static PluginStep ReadFeature(byte id) => new(PluginStepKind.ReadFeature, null, id);
         public static PluginStep Wait(int ms) => new(PluginStepKind.Wait, null, ms);
+        public static PluginStep OutputUnlessRead(byte[] ask, int ms, Func<byte[], bool> settled, byte[] frame)
+            => new(PluginStepKind.OutputUnlessRead, frame, ms, ask, settled);
     }
 
     /// <summary>A keyboard's keys as a plugin lists them
@@ -64,6 +75,13 @@ namespace PadForge.Common.Input.Peripherals
         public int Interface { get; init; } = OpenRgbRegistration.Any;
         public int UsagePage { get; init; } = OpenRgbRegistration.Any;
         public int Usage { get; init; } = OpenRgbRegistration.Any;
+
+        /// <summary>The interfaces of a plugin that tries several in the order of its list.
+        /// A collection on any other is not the device, and a device with collections on
+        /// several is one unit, at the first its list names. Within one interface that is
+        /// the lowest of its collections, the order every such list gives them. Null: the
+        /// row goes by <see cref="Interface"/>.</summary>
+        public int[] Interfaces { get; init; }
 
         /// <summary>The report lengths the frames take, the report ID
         /// included. Plugins name an interface alone where several collections
@@ -111,12 +129,17 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Whether the device answers as the plugin's firmware does,
         /// asked ahead of any picture. Null: every collection the row matches is
-        /// the device. False leaves it dark and writes nothing more.</summary>
+        /// the device. False goes to <see cref="Otherwise"/>.</summary>
         public Func<IHidReportChannel, Action<int>, bool> Answers { get; init; }
 
         /// <summary>The session where <see cref="Answers"/> says no: the same keyboard on a
         /// firmware that speaks something else. Null: it stays dark.</summary>
         public Func<IHidReportChannel, Action<int>, HidLightingSession> Otherwise { get; init; }
+
+        /// <summary>The keyboard is one flashed with SignalRGB's QMK firmware. A family ahead
+        /// of this one that holds its IDs by OpenRGB's registration asks
+        /// <see cref="Answers"/> first (<see cref="PluginDeviceLighting.QmkRowOf"/>).</summary>
+        public bool QmkFirmware { get; init; }
 
         /// <summary>The steps that return the device to its own lighting.
         /// Empty for a device whose plugin only sends it one last color, which
@@ -167,6 +190,11 @@ namespace PadForge.Common.Input.Peripherals
         /// picture go out again with no change, for a device that can lose
         /// software control on its own. 0: never.</summary>
         public int KeepAliveMs { get; init; }
+
+        /// <summary>How often the picture alone goes out again with no change, for a row
+        /// whose picture is too large for <see cref="PluginDeviceLighting.PictureAgainMs"/>.
+        /// 0: by <see cref="PluginDeviceLighting.PictureAgainMsOf"/>'s rule.</summary>
+        public int PictureAgainMs { get; init; }
 
         /// <summary>Whether the frames are feature reports.</summary>
         public bool Feature => FeatureLength > 0 && OutputLength == 0;
@@ -220,10 +248,11 @@ namespace PadForge.Common.Input.Peripherals
         internal const int PictureAgainMs = 500;
 
         /// <summary>How often <paramref name="device"/>'s picture goes out again with no change.
-        /// The projects other than SignalRGB send a picture once, and a row with a keep-alive of
-        /// its own has its interval.</summary>
+        /// The projects other than SignalRGB send a picture once, a row with a keep-alive of
+        /// its own has its interval, and a row may name its own for the picture alone.</summary>
         internal static int PictureAgainMsOf(PluginDevice device)
-            => device.KeepAliveMs > 0 ? device.KeepAliveMs : device.Source == null ? PictureAgainMs : 0;
+            => device.PictureAgainMs > 0 ? device.PictureAgainMs
+                : device.KeepAliveMs > 0 ? device.KeepAliveMs : device.Source == null ? PictureAgainMs : 0;
 
         /// <summary>How far apart two strips' addresses are, more than any strip
         /// takes.</summary>
@@ -246,12 +275,25 @@ namespace PadForge.Common.Input.Peripherals
 
         public HidLightingModel Match(HidCollectionInfo collection)
         {
+            var device = RowOf(collection);
+            if (device == null) return null;
+            lock (_models)
+            {
+                if (!_models.TryGetValue(device, out var model)) _models[device] = model = ModelOf(device);
+                return model;
+            }
+        }
+
+        /// <summary>The first row whose collection this is, or null.</summary>
+        private static PluginDevice RowOf(HidCollectionInfo collection)
+        {
             if (collection == null || !s_byProduct.Value.TryGetValue((collection.VendorId, collection.ProductId), out var rows))
                 return null;
-            int number = OpenRgbRegistrations.InterfaceOf(collection, OpenRgbRegistrations.BusOf(collection));
+            int number = InterfaceOf(collection);
             foreach (var device in rows)
             {
                 if (device.Interface != OpenRgbRegistration.Any && device.Interface != number) continue;
+                if (device.Interfaces != null && Array.IndexOf(device.Interfaces, number) < 0) continue;
                 if (device.UsagePage != OpenRgbRegistration.Any && device.UsagePage != collection.UsagePage) continue;
                 if (device.Usage != OpenRgbRegistration.Any && device.Usage != collection.Usage) continue;
                 // A plugin's length may count a report ID the descriptor does not: Asus_Mouse.js
@@ -259,13 +301,33 @@ namespace PadForge.Common.Input.Peripherals
                 if (collection.OutputReportLength + 1 < device.OutputLength) continue;
                 if (collection.FeatureReportLength + 1 < device.FeatureLength) continue;
                 if (device.OnlyWhen != null && !device.OnlyWhen()) continue;
-                lock (_models)
-                {
-                    if (!_models.TryGetValue(device, out var model)) _models[device] = model = ModelOf(device);
-                    return model;
-                }
+                return device;
             }
             return null;
+        }
+
+        private static int InterfaceOf(HidCollectionInfo collection)
+            => OpenRgbRegistrations.InterfaceOf(collection, OpenRgbRegistrations.BusOf(collection));
+
+        /// <summary>The row of a keyboard flashed with SignalRGB's QMK firmware at this
+        /// collection, or null. For <see cref="QmkLighting"/>, which OpenRGB's registration puts
+        /// ahead of this family on the same IDs.</summary>
+        internal static PluginDevice QmkRowOf(HidCollectionInfo collection)
+            => RowOf(collection) is { QmkFirmware: true } row ? row : null;
+
+        /// <summary>The row's session if the keyboard answers as that firmware does, else null
+        /// with nothing more written.</summary>
+        internal static HidLightingSession BeginIfFlashed(PluginDevice row, IHidReportChannel io, Action<int> wait)
+            => io != null && row.Answers(io, wait) ? Asked(row, row.Picture, io, null, wait) : null;
+
+        /// <summary>Whether <paramref name="candidate"/> is the device's unit in place of
+        /// <paramref name="collection"/>, both of a row with <see cref="PluginDevice.Interfaces"/>.</summary>
+        private static bool Outranks(PluginDevice device, HidCollectionInfo candidate, HidCollectionInfo collection)
+        {
+            if (!ReferenceEquals(RowOf(candidate), device)) return false;
+            int theirs = Array.IndexOf(device.Interfaces, InterfaceOf(candidate));
+            int ours = Array.IndexOf(device.Interfaces, InterfaceOf(collection));
+            return theirs != ours ? theirs < ours : string.Compare(candidate.Path, collection.Path, StringComparison.OrdinalIgnoreCase) < 0;
         }
 
         private HidLightingModel ModelOf(PluginDevice device) => new()
@@ -279,6 +341,7 @@ namespace PadForge.Common.Input.Peripherals
             KeepAliveMs = PictureAgainMsOf(device),
             KeepAliveIdleMs = PictureAgainMsOf(device),
             Siblings = device.Siblings,
+            Outranks = device.Interfaces == null ? null : (candidate, collection) => Outranks(device, candidate, collection),
             HeldByWindows = device.HeldByWindows,
             Begin = device.Siblings.Count > 0 ? null : (io, wait) => Start(device, device.Picture, io, null, wait),
             BeginWith = device.Siblings.Count == 0 ? null : (io, siblings, wait) =>
@@ -293,6 +356,13 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (io == null) return null;
             if (device.Answers?.Invoke(io, wait) == false) return device.Otherwise?.Invoke(io, wait);
+            return Asked(device, picture, io, siblings, wait);
+        }
+
+        /// <summary>The session of a device that answered, with the board it says it is.</summary>
+        private static HidLightingSession Asked(PluginDevice device, Func<int[], IEnumerable<PluginStep>> picture,
+            IHidReportChannel io, IReadOnlyList<IHidReportChannel> siblings, Action<int> wait)
+        {
             PluginVariant variant = null;
             if (device.AskVariant != null)
             {
@@ -402,6 +472,9 @@ namespace PadForge.Common.Input.Peripherals
             private readonly Func<int[], IEnumerable<PluginStep>> _picture;
             private readonly IReadOnlyList<IHidReportChannel> _siblings;
             private readonly byte[][] _crashFrames;
+            private readonly bool _crashFeature;
+            private readonly string _crashPath;
+            private readonly bool _pictureHolds;
             private readonly int _slots;
             private bool _started;
             private LightMap _map;
@@ -417,12 +490,21 @@ namespace PadForge.Common.Input.Peripherals
                 _map = variant != null
                     ? new LightMap(variant.Lights, SourceOf(device)) { Product = ProductOf(device) }
                     : device.StripMaxLeds.Count > 0 ? MapOf(device, _counts) : null;
-                // The crash path sends one kind of report, the session's.
-                var kind = device.Feature ? PluginStepKind.Feature : PluginStepKind.Output;
-                _crashFrames = device.HandBack.Where(s => s.Kind == kind).Select(s => s.Bytes).ToArray();
+                _pictureHolds = variant?.PictureHolds == true;
+                // The crash path sends the hand-back's reports, which may be of another kind than
+                // the pictures, and to the collection the hand-back goes to. No row hands back
+                // through both of its collections or in both kinds of report.
+                bool onSibling = _siblings.Count > 0 && device.SiblingHandBack.Count > 0;
+                var reports = (onSibling ? device.SiblingHandBack : device.HandBack)
+                    .Where(s => s.Kind is PluginStepKind.Output or PluginStepKind.Feature).ToArray();
+                _crashFrames = reports.Select(s => s.Bytes).ToArray();
+                _crashFeature = reports.Length > 0 ? reports[0].Kind == PluginStepKind.Feature : device.Feature;
+                _crashPath = onSibling ? _siblings[0].Path : null;
             }
 
-            public override bool Feature => _device.Feature;
+            public override bool Feature => _crashFeature;
+
+            public override string CrashPath => _crashPath;
 
             public override LightMap Map => _map;
 
@@ -458,11 +540,13 @@ namespace PadForge.Common.Input.Peripherals
 
             /// <summary>A device with a keep-alive can lose software control
             /// on its own, so the keep-alive takes it again. Any other sends
-            /// its picture again, as its plugin does, and its start once.</summary>
+            /// its picture again, as its plugin does, and its start once. A
+            /// firmware whose plugin sends only a changed picture gets nothing.</summary>
             public override bool KeepAlive(IHidReportChannel io, Action<int> wait,
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
             {
                 if (io == null) return false;
+                if (_pictureHolds) return true;
                 if (_device.KeepAliveMs > 0)
                     foreach (var step in _device.Start) Run(io, wait, step);
                 return Paint(io, wait, lights, colors) != HidLightingPaint.Failed;
@@ -494,6 +578,9 @@ namespace PadForge.Common.Input.Peripherals
                 return leds;
             }
 
+            /// <summary>The waiting reports one step drops, at most.</summary>
+            private const int StaleReports = 8;
+
             /// <summary>Runs one step. False when a write failed. A read that
             /// brings nothing is no failure, as in the plugins, which use the
             /// read to pace and to keep the answers from piling up.</summary>
@@ -514,6 +601,12 @@ namespace PadForge.Common.Input.Peripherals
                     case PluginStepKind.Wait:
                         wait?.Invoke(step.Value);
                         return true;
+                    case PluginStepKind.OutputUnlessRead:
+                        var answer = new byte[Math.Max(io.InputReportLength, 1)];
+                        for (int i = 0; i < StaleReports && io.ReadInput(answer, 0) > 0; i++) { }
+                        if (!io.WriteOutput(step.Ask)) return false;
+                        wait?.Invoke(step.Value);
+                        return io.ReadInput(answer, AnswerMs) > 0 && step.Settled(answer) || io.WriteOutput(step.Bytes);
                     default:
                         return true;
                 }

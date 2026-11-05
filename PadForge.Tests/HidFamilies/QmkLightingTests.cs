@@ -184,23 +184,25 @@ namespace PadForge.Tests
             var collection = Raw(0x3434, 0x0106);
             using var backend = rig.Lit(Families, collection, 0x00FF00);
             var outputs = rig.Log.Of('O');
-            // The reads: B2, A2, A8 01, A8 05, 32 rows of A8 06, three
-            // keycodes, four values and the per-key type.
-            Assert.Equal("00 B2", Hex(outputs[0], 2));
-            Assert.Equal("00 A2", Hex(outputs[1], 2));
-            Assert.Equal("00 A8 01", Hex(outputs[2], 3));
-            Assert.Equal("00 A8 05", Hex(outputs[3], 3));
-            Assert.Equal("00 A8 06 00 FF FF FF", Hex(outputs[4], 7));
-            Assert.Equal("00 A8 06 1F FF FF FF", Hex(outputs[35], 7));
-            Assert.Equal("00 04 00 00 00", Hex(outputs[36], 5));
-            Assert.Equal("00 04 00 01 00", Hex(outputs[38], 5));
-            Assert.Equal("00 08 03 02", Hex(outputs[39], 4));
-            Assert.Equal("00 A8 07", Hex(outputs[43], 3));
+            // 0x0106 has a row of SignalRGB's firmware, so its question goes first, and
+            // Keychron's firmware sends it back unanswered. Then the reads: B2, A2, A8 01,
+            // A8 05, 32 rows of A8 06, three keycodes, four values and the per-key type.
+            Assert.Equal("00 28", Hex(outputs[0], 2));
+            Assert.Equal("00 B2", Hex(outputs[1], 2));
+            Assert.Equal("00 A2", Hex(outputs[2], 2));
+            Assert.Equal("00 A8 01", Hex(outputs[3], 3));
+            Assert.Equal("00 A8 05", Hex(outputs[4], 3));
+            Assert.Equal("00 A8 06 00 FF FF FF", Hex(outputs[5], 7));
+            Assert.Equal("00 A8 06 1F FF FF FF", Hex(outputs[36], 7));
+            Assert.Equal("00 04 00 00 00", Hex(outputs[37], 5));
+            Assert.Equal("00 04 00 01 00", Hex(outputs[39], 5));
+            Assert.Equal("00 08 03 02", Hex(outputs[40], 4));
+            Assert.Equal("00 A8 07", Hex(outputs[44], 3));
             // Then Direct and one colors report of four LEDs.
-            Assert.Equal("00 07 03 02 17", Hex(outputs[44], 5));
-            Assert.Equal("00 A8 08 00", Hex(outputs[45], 4));
-            Assert.Equal("00 A8 0A 00 04 55 FF FF 55 FF FF 55 FF FF 55 FF FF", Hex(outputs[46], 17));
-            Assert.Equal(47, outputs.Count);
+            Assert.Equal("00 07 03 02 17", Hex(outputs[45], 5));
+            Assert.Equal("00 A8 08 00", Hex(outputs[46], 4));
+            Assert.Equal("00 A8 0A 00 04 55 FF FF 55 FF FF 55 FF FF 55 FF FF", Hex(outputs[47], 17));
+            Assert.Equal(48, outputs.Count);
             // The map is the board's: Escape and F1 by their keycodes, the
             // transparent key labeled Fn, the fourth LED on no key.
             var map = PeripheralLightMaps.For(KeyboardFamilyRig.PathOf(collection));
@@ -269,6 +271,95 @@ namespace PadForge.Tests
                     break;
             }
             return In(o.Skip(1).Take(32).ToArray());
+        }
+
+        /// <summary>A channel that answers each write from <paramref name="answer"/>, or with
+        /// nothing where that gives null.</summary>
+        private static FakeReportChannel Answering(Func<byte[], byte[]> answer)
+        {
+            FakeReportChannel io = null;
+            io = new FakeReportChannel
+            {
+                OutputReportLength = 33, InputReportLength = 33,
+                Input = () => answer(io.Calls.Where(c => c.Kind == "out").Last().Bytes),
+            };
+            return io;
+        }
+
+        /// <summary>A board that stops answering after its session began must not hold the shared
+        /// worker for a second a frame, as <see cref="QmkRawHidLighting.ViaSession"/> says. Twelve
+        /// frames at a second each outlast the worker's stop.</summary>
+        [Fact]
+        public void APictureAndAHandBack_WaitBriefly_OnKeychronAndVial()
+        {
+            var keychron = Answering(Keychron);
+            var keychronSession = Q.KeychronSession.Begin(keychron, 0x3434, 0x0110);
+            var vial = Answering(Vial);
+            var vialSession = Q.VialSession.Begin(vial, "qmk:2E8A:0011");
+            foreach (var (io, session) in new (FakeReportChannel, HidLightingSession)[] { (keychron, keychronSession), (vial, vialSession) })
+            {
+                Assert.NotNull(session);
+                io.LongestReadMs = 0;
+                Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, session.Map.Lights, new int[session.Map.Lights.Count]));
+                Assert.InRange(io.LongestReadMs, 1, 20);
+                io.LongestReadMs = 0;
+                Assert.True(session.HandBack(io, _ => { }));
+                Assert.InRange(io.LongestReadMs, 1, 20);
+            }
+        }
+
+        /// <summary>A read with no answer is no state to restore. Effect 0 and brightness 0 turn
+        /// the keyboard off (Keychron-qmk_firmware quantum/via.c:722), and so does VialRGB's mode 0
+        /// (vial-qmk quantum/vialrgb.c), so the session does not begin.</summary>
+        [Theory]
+        [InlineData(new byte[] { 0x08, 0x03, 0x02 })]
+        [InlineData(new byte[] { 0x08, 0x03, 0x04 })]
+        [InlineData(new byte[] { 0x08, 0x03, 0x01 })]
+        [InlineData(new byte[] { 0x08, 0x03, 0x03 })]
+        [InlineData(new byte[] { 0xA8, 0x07, 0x00 })]
+        public void AKeychronStateReadWithNoAnswer_BeginsNoSession(byte[] missed)
+        {
+            bool Is(byte[] o) => missed[0] == 0xA8 ? o[1] == 0xA8 && o[2] == 0x07 : o[1] == missed[0] && o[2] == missed[1] && o[3] == missed[2];
+            var io = Answering(o => Is(o) ? null : Keychron(o));
+            Assert.Null(Q.KeychronSession.Begin(io, 0x3434, 0x0110));
+            Assert.NotNull(Q.KeychronSession.Begin(Answering(Keychron), 0x3434, 0x0110));
+        }
+
+        /// <summary>OpenRGB sends a picture once, and the firmware holds it in memory. These
+        /// sessions can sit under a model that repeats a flashed board's picture.</summary>
+        [Fact]
+        public void AVialSession_RepeatsNothing()
+        {
+            byte[] Solid(byte[] o) => o[1] == 0x08 && o[2] == 0x42
+                ? In(new byte[] { 0x08, 0x42, 0x02, 0x00 }.Concat(Enumerable.Repeat((byte)0xFF, 28)).ToArray())
+                : Vial(o);
+            foreach (var io in new[] { Answering(Vial), Answering(Solid) })
+            {
+                var session = Q.VialSession.Begin(io, "qmk:2E8A:0011");
+                var colors = new int[session.Map.Lights.Count];
+                Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, session.Map.Lights, colors));
+                int before = io.Calls.Count(c => c.Kind == "out");
+                Assert.True(session.KeepAlive(io, _ => { }, session.Map.Lights, colors));
+                Assert.Equal(before, io.Calls.Count(c => c.Kind == "out"));
+            }
+        }
+
+        [Fact]
+        public void AVialModeReadWithNoAnswer_BeginsNoSession()
+        {
+            Assert.Null(Q.VialSession.Begin(Answering(o => o[1] == 0x08 && o[2] == 0x41 ? null : Vial(o)), "qmk:2E8A:0011"));
+            Assert.NotNull(Q.VialSession.Begin(Answering(Vial), "qmk:2E8A:0011"));
+        }
+
+        /// <summary>A firmware with no Direct effect (VIALRGB_NO_DIRECT) takes the same refusal.</summary>
+        [Fact]
+        public void AVialSolidModeReadWithNoAnswer_BeginsNoSession()
+        {
+            byte[] Solid(byte[] o) => o[1] == 0x08 && o[2] == 0x42
+                ? In(new byte[] { 0x08, 0x42, 0x02, 0x00 }.Concat(Enumerable.Repeat((byte)0xFF, 28)).ToArray())
+                : Vial(o);
+            Assert.Null(Q.VialSession.Begin(Answering(o => o[1] == 0x08 && o[2] == 0x41 ? null : Solid(o)), "qmk:2E8A:0011"));
+            Assert.IsType<Q.VialSolidSession>(Q.VialSession.Begin(Answering(Solid), "qmk:2E8A:0011"));
         }
 
         [Fact]

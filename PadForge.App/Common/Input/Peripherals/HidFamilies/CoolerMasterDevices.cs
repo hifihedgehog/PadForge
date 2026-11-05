@@ -42,9 +42,18 @@ namespace PadForge.Common.Input.Peripherals
         ///
         /// <para>The pad has no Direct mode. OpenRGB lights it through its
         /// Static mode, one frame per color (SetColor and SendUpdate,
-        /// CMMP750Controller.cpp:142-176), and SignalRGB sends the same frame
-        /// at every render (signal-plugins CoolerMaster_MP750L_Mat.js:44-80).
-        /// Neither names a save. A session reads the state first, 07, whose
+        /// CMMP750Controller.cpp:142-176), and SignalRGB sends the same frame,
+        /// then 00 06, at every render (signal-plugins
+        /// CoolerMaster_MP750L_Mat.js:44-80). No source explains that second
+        /// report, and OpenRGB lights the pad without it. OpenRGB's page tag
+        /// says the controller saves on every update (@save :robot:,
+        /// RGBController_CMMP750Controller.cpp:18, the meaning from its commit
+        /// 8f876423). The Static mode carries no save flag (line 40), and
+        /// SignalRGB sends the frame on every render, so pictures go out at the
+        /// rate of a stream. The ARGB controller holds its addressable headers'
+        /// mode frames, which no reference streams, by the rule in
+        /// CoolerMasterArgb.cs. No source says whether the frame reaches the
+        /// pad's flash. A session reads the state first, 07, whose
         /// answer is 80 05, the mode, the color and the speed (GetStatus,
         /// lines 54-84), and hands back by sending that state as SendUpdate
         /// would. An answer that is not one leaves nothing to hand back, so
@@ -416,7 +425,6 @@ namespace PadForge.Common.Input.Peripherals
         //  RGB controller (CMRGBController)
         // ─────────────────────────────────────────────
 
-        internal const byte RgbcStatic = 0x00;
         internal const byte RgbcBreathing = 0x01;
         internal const byte RgbcColorCycle = 0x02;
         internal const byte RgbcStar = 0x03;

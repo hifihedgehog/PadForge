@@ -37,10 +37,22 @@ namespace PadForge.Common.Input.Peripherals
     /// mode 0x02 at 0x35, the brightness in the high nibble of 0x38 and the
     /// color as red, blue, green at 0x39, then 50 ms
     /// (SinowealthController.cpp:91-220). OpenRGB writes nothing when the
-    /// read gave fewer than 131 bytes. Static's brightness is OpenRGB's
-    /// default, normal (2). The session keeps the configuration it read
-    /// first, and the hand-back writes it back the same way, which puts
-    /// back the mouse's own mode and colors.</para>
+    /// read gave fewer than 131 bytes, libratbag when it gave fewer than 123
+    /// (driver-sinowealth.c:70 and 1183-1186), so the count of the read is
+    /// read too (<see cref="IHidReportChannel.GetFeatureCounted"/>). Static's
+    /// brightness is OpenRGB's default, normal (2). The session keeps the
+    /// configuration it read first, and the hand-back reads the mouse again
+    /// and puts back the mode and the Static fields, which leaves a DPI or a
+    /// report rate the user changed meanwhile as it stands.</para>
+    ///
+    /// <para>The mice only libratbag lists. libratbag lights a firmware its
+    /// device file has a section for and refuses any other ("Device with
+    /// firmware version ... is not supported", driver-sinowealth.c:1730-1738),
+    /// leaves alone a mouse whose effect byte says it has no LEDs
+    /// (RGB_NOT_SUPPORTED, lines 191-195 and 1803), and writes the size the
+    /// read gave less 8 where OpenRGB writes 0x7B
+    /// (line 1953, data/devices/sinowealth-0051.device: "Configuration data
+    /// size: 123 bytes"). A session does the same.</para>
     ///
     /// <para>The Xenon 200. OpenRGB colors it through its Static mode too
     /// ("@save :white_check_mark:", RGBController_GenesisXenon200.cpp:12-46):
@@ -57,14 +69,20 @@ namespace PadForge.Common.Input.Peripherals
     /// (<see cref="LenovoLegionLighting"/>). What a session read first is
     /// kept in <see cref="KeyboardProfileBackups"/>, on disk before
     /// anything is written. A run that ends without its hand-back leaves
-    /// that owed, and the next session of the mouse takes the backup as
-    /// the mouse's own and hands it back when it ends. The crash path sends
+    /// that owed. With no claim on the mouse the next run reads it and puts
+    /// the lighting back, and the next session takes the backup as the mouse's
+    /// own and hands it back when it ends. Either way a mouse that no longer
+    /// shows a picture of PadForge's was set by something else, and the backup
+    /// goes. Each mouse keeps a backup of its own
+    /// (<see cref="KeyboardProfileBackups.DeviceKey"/>). The crash path sends
     /// the backup to the data collection, which for the Xenon 200 leaves
     /// out the command collection's report, since that one needs a read
     /// first.</para>
     ///
-    /// <para>No program is named for these mice: no source names the
-    /// processes of Glorious CORE or Genesis's software.</para>
+    /// <para>The Model O Eternal is left to Glorious CORE while it runs
+    /// (<see cref="VendorPrograms.Glorious"/>). The first wired Model O and
+    /// Model D are not among the products CORE lights, and no source names the
+    /// processes of Genesis's software.</para>
     /// </summary>
     internal sealed class SinowealthMouseLighting : IOwnLookFamily
     {
@@ -78,6 +96,21 @@ namespace PadForge.Common.Input.Peripherals
         /// SINOWEALTH_COMMAND_REPORT_SIZE (SinowealthController.h:18-21).</summary>
         internal const int ConfigSize = 167;
         internal const int ConfigSizeMin = 131;
+
+        /// <summary>The least a read gives on a mouse libratbag lights
+        /// (SINOWEALTH_CONFIG_SIZE_MIN, driver-sinowealth.c:70).</summary>
+        internal const int LibratbagConfigSizeMin = 123;
+
+        /// <summary>The write length OpenRGB always sends
+        /// (SinowealthController.cpp:105).</summary>
+        internal const byte ConfigWrite = 0x7B;
+
+        /// <summary>RGB_NOT_SUPPORTED (driver-sinowealth.c:191-195).</summary>
+        internal const byte EffectNoLeds = 0xFF;
+
+        /// <summary>The Model O Eternal's product ID (its libratbag device
+        /// file), the one mouse of this family Glorious CORE lights.</summary>
+        internal const ushort EternalProduct = 0xA000;
         internal const int ConfigReportSize = 520;
         internal const int CommandReportSize = 6;
 
@@ -160,6 +193,15 @@ namespace PadForge.Common.Input.Peripherals
         /// mode sends red, blue, green as the Glorious mice want it.</summary>
         internal static readonly HashSet<string> RgbFirmware = new(StringComparer.Ordinal) { "3106", "3110", "2642", "V127", "V287" };
 
+        /// <summary>The firmware each mouse only libratbag lists has a section for with lights, in
+        /// its device file: sinowealth-0027, sinowealth-0051 and glorious-model-o-eternal.</summary>
+        internal static readonly IReadOnlyDictionary<ushort, string[]> LibratbagFirmware = new Dictionary<ushort, string[]>
+        {
+            [0x0027] = new[] { "3106", "3110", "V102" },
+            [0x0051] = new[] { "2642" },
+            [EternalProduct] = new[] { "1009" },
+        };
+
         /// <summary>The firmware libratbag lists with LedType=None: the G-Wolves Hati HT-M.</summary>
         internal const string UnlitFirmware = "V161";
 
@@ -174,11 +216,18 @@ namespace PadForge.Common.Input.Peripherals
             return System.Text.Encoding.ASCII.GetString(answer, 2, 4);
         }
 
-        public IReadOnlyList<OwnDevice> Look()
+        public IReadOnlyList<OwnDevice> Look() => Look(null);
+
+        /// <summary>The look through the walk the worker holds, which saves a
+        /// walk of its own at each of the worker's.</summary>
+        public IReadOnlyList<OwnDevice> Look(IReadOnlyList<HidCollectionInfo> walk)
         {
-            IReadOnlyList<HidCollectionInfo> all;
-            try { all = _enumerate(); }
-            catch { return null; }
+            IReadOnlyList<HidCollectionInfo> all = walk;
+            if (all == null)
+            {
+                try { all = _enumerate(); }
+                catch { return null; }
+            }
             if (all == null) return null;
             var found = new List<OwnDevice>();
             var containers = new Dictionary<string, Guid>(StringComparer.OrdinalIgnoreCase);
@@ -247,24 +296,31 @@ namespace PadForge.Common.Input.Peripherals
         internal HidLightingModel Model(string name, ushort productId, bool xenon, string commandPath)
         {
             string product = SinowealthLighting.Product(productId);
+            bool held = false;
             return new HidLightingModel
             {
                 Family = this,
                 Name = name,
                 Map = new LightMap(SinowealthLighting.OneLight(),
                     xenon ? "OpenRGB RGBController_GenesisXenon200.cpp" : "OpenRGB RGBController_Sinowealth.cpp") { Product = product },
+                Programs = productId == EternalProduct ? VendorPrograms.Glorious : Array.Empty<VendorProgram>(),
                 HoldMs = SinowealthLighting.StoredHoldMs,
                 RepaintMs = SinowealthLighting.StoredRepaintMs,
-                Open = dataPath => OpenPair(dataPath, commandPath),
-                BeginOwn = (handle, wait) => handle is Channels pair ? Begin(pair, wait, xenon, product) : null,
+                Open = dataPath => OpenPair(dataPath, commandPath, out held),
+                OpenFoundHeld = () => held,
+                BeginOwn = (handle, wait) => handle is Channels pair ? Begin(pair, wait, xenon, product, productId) : null,
+                Owed = path => KeyboardProfileBackups.Get(KeyboardProfileBackups.DeviceKey(product, path)) != null
+                               && KeyboardProfileBackups.Failures(KeyboardProfileBackups.DeviceKey(product, path)) < SinowealthLighting.RepairTries,
+                RepairOwn = (handle, wait) => handle is not Channels pair || Repair(pair, wait, xenon, product, productId),
                 WriteOnce = (dataPath, frame, timeoutMs) => _setFeatureOnce(dataPath, frame, timeoutMs),
             };
         }
 
         /// <summary>The data and the command collections of one mouse, open
         /// for read and write, closed together. One channel when they are
-        /// one collection.</summary>
-        internal sealed class Channels : IDisposable
+        /// one collection. A mouse plugged back in has new handles for both,
+        /// so either one dead says the pair is.</summary>
+        internal sealed class Channels : IDisposable, IConnectedChannel
         {
             public Channels(IHidReportChannel data, IHidReportChannel command)
             {
@@ -274,6 +330,10 @@ namespace PadForge.Common.Input.Peripherals
 
             public IHidReportChannel Data { get; }
             public IHidReportChannel Command { get; }
+
+            public bool StillConnected => Connected(Data) && Connected(Command);
+
+            private static bool Connected(IHidReportChannel channel) => channel is not IConnectedChannel { StillConnected: false };
 
             public void Dispose()
             {
@@ -287,17 +347,21 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Opens both collections for read and write, or neither. A
         /// collection that opens with no access right only is held by
-        /// another program.</summary>
-        private Channels OpenPair(string dataPath, string commandPath)
+        /// another program, as <paramref name="held"/> says: both sit on the
+        /// vendor page, which Windows does not hold.</summary>
+        private Channels OpenPair(string dataPath, string commandPath, out bool held)
         {
+            held = false;
             IHidReportChannel data = null, command = null;
             try
             {
                 data = _open(dataPath);
+                held = data is { FeatureOnly: true };
                 if (data == null || data.FeatureOnly) return Close(data, null);
                 if (string.Equals(dataPath, commandPath, StringComparison.OrdinalIgnoreCase))
                     return new Channels(data, data);
                 command = _open(commandPath);
+                held = command is { FeatureOnly: true };
                 if (command == null || command.FeatureOnly) return Close(data, command);
                 return new Channels(data, command);
             }
@@ -324,28 +388,51 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>GetProfile: the request to the command collection, then
         /// report 0x04 from the data collection (lines 190-220). Null when
-        /// either failed.</summary>
-        internal static byte[] ReadGloriousConfiguration(Channels pair)
+        /// either failed or the answer was shorter than
+        /// <paramref name="fewest"/>, which SetMode writes nothing on
+        /// (line 100). <paramref name="count"/> is the answer's length, 0 when
+        /// the channel cannot tell.</summary>
+        internal static byte[] ReadGloriousConfiguration(Channels pair, int fewest, out int count)
         {
+            count = -1;
             if (!pair.Command.SetFeature(ConfigRequest())) return null;
             var answer = new byte[Math.Max(ConfigReportSize, pair.Data.FeatureReportLength)];
-            if (!pair.Data.GetFeature(0x04, answer)) return null;
+            count = pair.Data.GetFeatureCounted(0x04, answer);
+            if (count < 0 || (count > 0 && count < fewest)) return null;
             var configuration = new byte[ConfigReportSize];
             Array.Copy(answer, configuration, ConfigReportSize);
             configuration[0] = 0x04;
             return configuration;
         }
 
+        /// <summary>The length byte a write carries: OpenRGB's, or on a mouse
+        /// only libratbag lists the size its read gave less 8
+        /// (driver-sinowealth.c:1953). A count outside libratbag's bounds, or
+        /// a channel that cannot tell, leaves OpenRGB's.</summary>
+        internal static byte WriteLength(bool libratbagOnly, int count)
+            => libratbagOnly && count >= LibratbagConfigSizeMin && count <= ConfigSize ? (byte)(count - 8) : ConfigWrite;
+
+        /// <summary>Whether a configuration shows what
+        /// <see cref="GloriousWrite"/> leaves for a color: the Static mode at
+        /// the normal brightness.</summary>
+        internal static bool GloriousLooksOurs(byte[] configuration)
+            => configuration[0x35] == GloriousStatic && configuration[0x38] == (byte)((GloriousBrightnessNormal & 0xF) << 4);
+
+        /// <summary>Whether a Xenon 200's report shows what
+        /// <see cref="XenonWrite"/> leaves: the Static mode at its brightness.</summary>
+        internal static bool XenonLooksOurs(byte[] report)
+            => report[0x5D] == XenonStatic && report[0x60] == XenonBrightness;
+
         /// <summary>A configuration write, SetMode: the first 167 bytes of
-        /// <paramref name="configuration"/>, byte 3 = 0x7B, byte 6 = 0, and
-        /// for a color the Static mode, the brightness and red, blue and
-        /// green (SinowealthController.cpp:91-121). The rest of the 520
+        /// <paramref name="configuration"/>, byte 3 the write length, byte 6 =
+        /// 0, and for a color the Static mode, the brightness and red, blue
+        /// and green (SinowealthController.cpp:91-121). The rest of the 520
         /// bytes is 0.</summary>
-        internal static byte[] GloriousWrite(byte[] configuration, int? rgb, bool rgbOrder = false)
+        internal static byte[] GloriousWrite(byte[] configuration, int? rgb, bool rgbOrder = false, byte writeLength = ConfigWrite)
         {
             var report = new byte[ConfigReportSize];
             Array.Copy(configuration, report, Math.Min(ConfigSize, configuration.Length));
-            report[0x03] = 0x7B;
+            report[0x03] = writeLength;
             report[0x06] = 0x00;
             if (rgb is int color)
             {
@@ -401,43 +488,114 @@ namespace PadForge.Common.Input.Peripherals
         //  The session
         // ─────────────────────────────────────────────
 
-        private static HidLightingSession Begin(Channels pair, Action<int> wait, bool xenon, string product)
+        private static HidLightingSession Begin(Channels pair, Action<int> wait, bool xenon, string product, ushort productId)
         {
             bool rgbOrder = false;
+            bool libratbagOnly = false;
             if (!xenon)
             {
                 string firmware = ReadFirmware(pair, wait);
                 if (firmware == UnlitFirmware) return null;
+                libratbagOnly = LibratbagFirmware.TryGetValue(productId, out var listed);
+                if (libratbagOnly && Array.IndexOf(listed, firmware) < 0) return null;
                 rgbOrder = firmware != null && RgbFirmware.Contains(firmware);
             }
-            var read = xenon ? ReadXenonReport(pair.Data) : ReadGloriousConfiguration(pair);
+            int fewest = libratbagOnly ? LibratbagConfigSizeMin : ConfigSizeMin;
+            int count = 0;
+            var read = xenon ? ReadXenonReport(pair.Data) : ReadGloriousConfiguration(pair, fewest, out count);
             if (read == null) return null;
+            if (libratbagOnly && read[0x35] == EffectNoLeds) return null;
             int length = xenon ? XenonReportSize : ConfigSize;
-            var owed = KeyboardProfileBackups.Get(product);
-            byte[] original;
-            if (owed is { } backup && backup.Contents.Length == length)
-                original = backup.Contents;
-            else
+            string key = KeyboardProfileBackups.SessionKey(product, pair.Data.Path);
+            var original = new byte[length];
+            Array.Copy(read, original, length);
+            if (KeyboardProfileBackups.Get(key) is { } backup)
             {
-                original = new byte[length];
-                Array.Copy(read, original, length);
+                bool ours = xenon ? XenonLooksOurs(read) : GloriousLooksOurs(read);
+                if (backup.Contents.Length == length && (ours || backup.Contents.AsSpan().SequenceEqual(original)))
+                    original = backup.Contents;
+                else
+                    KeyboardProfileBackups.Drop(key);
             }
-            return new Session(pair, xenon, product, original, rgbOrder);
+            return new Session(pair, xenon, key, original, rgbOrder, fewest, WriteLength(libratbagOnly, count));
+        }
+
+        /// <summary>The write that puts back only what a picture moved, over
+        /// what the mouse holds now: the mode, the brightness and the color.</summary>
+        private static byte[] RestoreOver(byte[] now, byte[] original, bool xenon, byte writeLength)
+        {
+            if (xenon)
+            {
+                var report = (byte[])now.Clone();
+                report[0x5D] = original[0x5D];
+                Array.Copy(original, 0x60, report, 0x60, 4);
+                return report;
+            }
+            var write = GloriousWrite(now, null, false, writeLength);
+            write[0x35] = original[0x35];
+            Array.Copy(original, 0x38, write, 0x38, 4);
+            return write;
+        }
+
+        /// <summary>Sends a restore: the Xenon 200's with its commit, the
+        /// others followed by the wait a read needs. False when a write
+        /// failed.</summary>
+        private static bool SendRestore(Channels pair, Action<int> wait, bool xenon, byte[] restore)
+        {
+            if (!pair.Data.SetFeature(restore)) return false;
+            if (xenon) return XenonCommit(pair.Command, restore);
+            wait(GloriousWaitMs);
+            return true;
+        }
+
+        /// <summary>Settles a backup an earlier run left, with no claim on the
+        /// mouse, reading it first as <see cref="AsusLegacyUsbLighting.RepairSagaris"/>
+        /// does. A mouse that shows the Static mode at PadForge's brightness
+        /// takes its lighting back, and any other keeps what it holds. True
+        /// when nothing is owed any more.</summary>
+        private static bool Repair(Channels pair, Action<int> wait, bool xenon, string product, ushort productId)
+        {
+            string key = KeyboardProfileBackups.DeviceKey(product, pair.Data.Path);
+            if (KeyboardProfileBackups.Get(key) is not { } backup) return true;
+            bool libratbagOnly = !xenon && LibratbagFirmware.ContainsKey(productId);
+            int count = 0;
+            var now = xenon
+                ? ReadXenonReport(pair.Data)
+                : ReadGloriousConfiguration(pair, libratbagOnly ? LibratbagConfigSizeMin : ConfigSizeMin, out count);
+            if (now != null)
+            {
+                int length = xenon ? XenonReportSize : ConfigSize;
+                if (backup.Contents.Length != length
+                    || now.AsSpan(0, length).SequenceEqual(backup.Contents)
+                    || !(xenon ? XenonLooksOurs(now) : GloriousLooksOurs(now))
+                    || SendRestore(pair, wait, xenon, RestoreOver(now, backup.Contents, xenon, WriteLength(libratbagOnly, count))))
+                {
+                    KeyboardProfileBackups.Drop(key);
+                    return true;
+                }
+            }
+            KeyboardProfileBackups.NoteFailure(key);
+            return false;
         }
 
         internal sealed class Session : HidLightingSession
         {
             private readonly Channels _pair;
             private readonly bool _xenon, _rgbOrder;
-            private readonly string _product;
+            private readonly string _key;
+            private readonly int _fewest;
+            private readonly byte _writeLength;
             private readonly byte[][] _crash;
 
-            public Session(Channels pair, bool xenon, string product, byte[] original, bool rgbOrder = false)
+            public Session(Channels pair, bool xenon, string key, byte[] original, bool rgbOrder = false,
+                int fewest = ConfigSizeMin, byte writeLength = ConfigWrite)
             {
                 _pair = pair;
                 _xenon = xenon;
                 _rgbOrder = rgbOrder;
-                _product = product;
+                _key = key;
+                _fewest = fewest;
+                _writeLength = writeLength;
                 Original = original;
                 _crash = new[] { Restore() };
             }
@@ -448,17 +606,18 @@ namespace PadForge.Common.Input.Peripherals
 
             public override bool Feature => true;
 
-            public override byte[][] CrashFrames => KeyboardProfileBackups.Get(_product) != null ? _crash : Array.Empty<byte[]>();
+            public override byte[][] CrashFrames => KeyboardProfileBackups.Get(_key) != null ? _crash : Array.Empty<byte[]>();
 
-            /// <summary>The write that puts <see cref="Original"/> back.</summary>
-            internal byte[] Restore() => _xenon ? (byte[])Original.Clone() : GloriousWrite(Original, null);
+            /// <summary>The write that puts <see cref="Original"/> back whole,
+            /// for the crash path, which cannot read first.</summary>
+            internal byte[] Restore() => _xenon ? (byte[])Original.Clone() : GloriousWrite(Original, null, false, _writeLength);
 
             public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
             {
-                if (KeyboardProfileBackups.Get(_product) == null)
-                    KeyboardProfileBackups.Take(_product, 0, Original);
-                if (!KeyboardProfileBackups.IsPersisted(_product))
+                if (KeyboardProfileBackups.Get(_key) == null)
+                    KeyboardProfileBackups.Take(_key, 0, Original);
+                if (!KeyboardProfileBackups.IsPersisted(_key))
                 {
                     LaterMs = SinowealthLighting.SavingMs;
                     return HidLightingPaint.Later;
@@ -473,27 +632,20 @@ namespace PadForge.Common.Input.Peripherals
                     if (!_pair.Data.SetFeature(written)) return HidLightingPaint.Failed;
                     return XenonCommit(_pair.Command, written) ? HidLightingPaint.Sent : HidLightingPaint.Failed;
                 }
-                var configuration = ReadGloriousConfiguration(_pair);
+                var configuration = ReadGloriousConfiguration(_pair, _fewest, out _);
                 if (configuration == null) return HidLightingPaint.Failed;
-                if (!_pair.Data.SetFeature(GloriousWrite(configuration, rgb, _rgbOrder))) return HidLightingPaint.Failed;
+                if (!_pair.Data.SetFeature(GloriousWrite(configuration, rgb, _rgbOrder, _writeLength))) return HidLightingPaint.Failed;
                 wait(GloriousWaitMs);
                 return HidLightingPaint.Sent;
             }
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
             {
-                if (KeyboardProfileBackups.Get(_product) == null) return true;
-                var restore = Restore();
-                if (!_pair.Data.SetFeature(restore)) return false;
-                if (_xenon)
-                {
-                    if (!XenonCommit(_pair.Command, restore)) return false;
-                }
-                else
-                {
-                    wait(GloriousWaitMs);
-                }
-                KeyboardProfileBackups.Drop(_product);
+                if (KeyboardProfileBackups.Get(_key) == null) return true;
+                var now = _xenon ? ReadXenonReport(_pair.Data) : ReadGloriousConfiguration(_pair, _fewest, out _);
+                if (now == null) return false;
+                if (!SendRestore(_pair, wait, _xenon, RestoreOver(now, Original, _xenon, _writeLength))) return false;
+                KeyboardProfileBackups.Drop(_key);
                 return true;
             }
         }

@@ -19,8 +19,11 @@ namespace PadForge.Common.Input.Peripherals
     /// has a mode that streams. OpenRGB marks both as saving every write on
     /// their own ("@save :robot:", RGBController_MSIMysticLightKB.cpp:18 and
     /// RGBController_MSIMysticLight64.cpp:20, the legend's "Feature is
-    /// automatic and can not be turned off"), so every picture lands in the
-    /// keyboard's memory. A changed picture goes out once it has held for
+    /// automatic and can not be turned off"). The Static modes carry no save
+    /// flag (RGBController_MSIMysticLightKB.cpp:105,
+    /// RGBController_MSIMysticLight64.cpp:107), and no reference sends them
+    /// as a stream, so every picture is taken to land in the keyboard's
+    /// memory. A changed picture goes out once it has held for
     /// <see cref="HoldMs"/>, and no sooner than <see cref="RepaintMs"/> after
     /// the one before, as the Lenovo family writes its stored pictures
     /// (<see cref="LenovoLegionLighting"/>).</para>

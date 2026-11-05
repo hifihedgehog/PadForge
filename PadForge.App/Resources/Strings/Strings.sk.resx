@@ -780,6 +780,8 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} opäť používa svoj ovládač systému Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Ovládač systému Windows pre {0} sa nepodarilo obnoviť.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Systém Windows vrátil {0} na vlastný ovládač zariadenia. Ak ho chcete znova prepnúť, vyberte ho na stránke Zariadenia.</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>Zariadenie {0} už nie je na ovládači programu PadForge.</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>Zariadenie {0} je stále na ovládači programu PadForge. Vyberte ho na stránke Zariadenia a vrátite ho systému Windows.</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Používať iba v programe PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge prepne túto klávesnicu na ovládač WinUSB systému Windows a bude ju čítať sám. Systém Windows potom túto klávesnicu prestane používať na písanie vo všetkých programoch, aj keď je PadForge zatvorený, kým sa jej ovládač systému Windows neobnoví na tejto stránke. Jej mapovania a makrá fungujú ďalej, kým PadForge beží.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge prepne túto myš na ovládač WinUSB systému Windows a bude ju čítať sám. Systém Windows potom túto myš prestane používať na pohyb ukazovateľa vo všetkých programoch, aj keď je PadForge zatvorený, kým sa jej ovládač systému Windows neobnoví na tejto stránke. Jej mapovania a makrá fungujú ďalej, kým PadForge beží.</value></data>
@@ -957,6 +959,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>Vibrácie sa prehrávajú cez obsluhu hmatovej odozvy v SteelSeries GG.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG ovláda všetky myši Rival s hmatovou odozvou naraz, preto ich vibrácie určuje myš na virtuálnom ovládači {0}.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>Čaká sa na SteelSeries GG. Vibrácie sa prehrajú, keď sa GG spustí.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG beží a neodpovedá programu PadForge. Vibrácie sa spustia, keď odpovie.</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>Vibrácie sa prehrávajú na vašich zariadeniach Razer Sensa HD cez Razer Synapse.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Čaká sa na Sensa HD Haptics v Razer Synapse 4. V Synapse nastavte pre zariadenie možnosť Haptic Source na Sensa HD Games.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Ľavá spúšť</value></data>
@@ -1000,6 +1003,12 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Farby sa posielajú priamo do zariadenia {0}. Počas osvetlenia je jeho režim vstavanej pamäte vypnutý.</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Farby sa posielajú priamo do zariadenia {0}. Meniace sa farby, napríklad cyklus farieb alebo farby reagujúce na zvuk, vyžadujú zapnuté Dynamic Lighting v systéme BIOS notebooku. Bez neho klávesy zostanú v posledných stálych farbách.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Farby sa posielajú priamo do zariadenia {0}. Ak je Dynamic Lighting zapnuté v systéme BIOS notebooku, klávesy namiesto toho osvetľuje Dynamické osvetlenie systému Windows. Vypnite pre túto klávesnicu Dynamické osvetlenie systému Windows v Nastaveniach systému Windows a PadForge ich bude osvetľovať, vrátane meniacich sa farieb.</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>Farby sa posielajú priamo do zariadenia {0}. Každý obraz ukladá do vlastnej pamäte, takže meniace sa farby, napríklad cyklus farieb alebo farby reagujúce na zvuk, sa nezobrazia. Farba, ktorá sa nemení, sa zobrazí.</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>Farby sa posielajú priamo do zariadenia {0}. Každý obraz ukladá do vlastnej pamäte, takže meniace sa farby, napríklad cyklus farieb alebo farby reagujúce na zvuk, sa nezobrazia. Farba, ktorá sa nemení, sa zobrazí. Prvý obraz prepíše efekty uložené v klávesnici a pôvodné sa už nevrátia.</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>Sériové zariadenie na porte {0}</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>Toto zariadenie je pripojené a neprijalo farby z programu PadForge. PadForge to skúša znova každú minútu.</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Systém Windows drží toto zariadenie ako klávesnicu alebo myš a odmieta hlásenie, ktoré nastavuje jeho farby, preto ho PadForge v systéme Windows nemôže osvetliť.</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>Iný program má toto zariadenie otvorené, preto ho PadForge nemôže osvetliť. Osvetlí ho, hneď ako sa tento program zatvorí.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Toto zariadenie ešte neodpovedalo. Jeho farby sa zobrazia, keď sa prebudí.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Farby sa posielajú cez {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Farby sa posielajú cez {0}, ktorý osvetľuje všetky zariadenia tohto druhu naraz. Kým {0} nebeží, PadForge osvetľuje toto zariadenie sám.</value></data>
@@ -1007,7 +1016,9 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Farby sa posielajú cez SDK Server programu OpenRGB. Kým OpenRGB nebeží, PadForge osvetľuje toto zariadenie sám.</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Farby sa posielajú cez SDK Server programu OpenRGB.</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB drží toto zariadenie a nemá preň režim Direct, takže jeho osvetlenie zostáva na OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB beží s vypnutým SDK Serverom, takže PadForge nechá toto zariadenie programu OpenRGB. Zapnite SDK Server v OpenRGB a PadForge bude zariadenie osvetľovať cez neho.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB beží a jeho SDK Server neodpovedá na porte {0}, takže PadForge nechá toto zariadenie programu OpenRGB. Zapnite SDK Server v OpenRGB a PadForge bude zariadenie osvetľovať cez neho.</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE beží s vypnutým SDK. Zapnite iCUE SDK v nastaveniach iCUE a PadForge bude zariadenie osvetľovať cez neho.</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} beží a nedovolil programu PadForge osvetľovať svoje zariadenia. PadForge žiada ďalej.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} osvetľuje všetky zariadenia tohto druhu naraz, preto ich farbu určuje zariadenie na virtuálnom ovládači {1}.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} osvetľuje všetky zariadenia tohto druhu naraz, preto ich farbu určuje riadok {1} na virtuálnom ovládači {2}.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Toto zariadenie osvetľuje aj virtuálny ovládač {0} a zobrazuje sa jeho farba.</value></data>
@@ -1025,7 +1036,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headsety</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>základné dosky, grafické karty a pamäte</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>základné dosky a grafické karty</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>podložky pod myš a stojany na slúchadlá</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>podložky pod myš, slúchadlá a stojany na slúchadlá</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Svetelná lišta</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Zadajte šesťmiestnu hexadecimálnu farbu (RRGGBB alebo #RRGGBB) a použite ju stlačením klávesu Enter alebo kliknutím mimo poľa.</value></data>
@@ -4671,6 +4682,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Pripája sa k chatu kanála {0}…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Číta sa chat kanála {0}.</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>K chatu kanála {0} sa nepodarilo pripojiť. Skúša sa to znova.</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch nemá pre {0} žiadny chat. Skontrolujte názov kanála.</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Pozastavené.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Obraz ovládača pre vaše vysielanie. Pridajte túto adresu do OBS ako zdroj prehliadača:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Obraz ovládača pre vaše vysielanie vyžaduje Webový ovládač a jeho obyčajnú adresu HTTP. Zapnite Poskytovať aj obyčajné HTTP na karte Webový ovládač. Pre OBS na tomto počítači stačí Iba tento počítač.</value></data>

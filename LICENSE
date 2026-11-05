@@ -871,6 +871,9 @@ Protocol documentation references (no code from these projects ships)
   families PadForge drives directly, ported and generated from OpenRGB at commit
   c6fc8016, DualSense and DualShock 4 lightbar output-report byte usage, and the
   Logitech HID++ 0x8070 lighting frames and collection layout.
+  The generated tables, whose header comments name OpenRGB, and the family
+  classes that cite OpenRGB source lines are GPL-2.0-or-later. PadForge's
+  other files stay under the license at the top of this file.
   Lighting references: report frames, key names and program names for the
   direct lighting families, read from SignalRGB's plugins
   (https://gitlab.com/signalrgb/signal-plugins, no license published, facts

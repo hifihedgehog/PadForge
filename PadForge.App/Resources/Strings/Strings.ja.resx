@@ -521,6 +521,8 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} は Windows のドライバーに戻りました。</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>{0} の Windows ドライバーを復元できませんでした。</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows が {0} を元のドライバーに戻しました。もう一度切り替えるには、デバイスページで選択してください。</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} は PadForge のドライバーを使わなくなりました。</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} はまだ PadForge のドライバーを使っています。Windows に戻すには、デバイスページでこのデバイスを選択してください。</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>PadForge でのみ使用する</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge はこのキーボードを Windows の WinUSB ドライバーに切り替え、自分で読み取ります。その後、このページで Windows のドライバーに戻すまで、PadForge を閉じていても、Windows はすべてのプログラムでこのキーボードを文字入力に使用しなくなります。PadForge の実行中は、マッピングとマクロは引き続き動作します。</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge はこのマウスを Windows の WinUSB ドライバーに切り替え、自分で読み取ります。その後、このページで Windows のドライバーに戻すまで、PadForge を閉じていても、Windows はすべてのプログラムでこのマウスをポインターの操作に使用しなくなります。PadForge の実行中は、マッピングとマクロは引き続き動作します。</value></data>
@@ -1784,6 +1786,7 @@
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>振動は SteelSeries GG のタクタイルハンドラーを通じて再生されます。</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG はすべての触覚 Rival を同時に駆動するため、仮想コントローラー {0} の Rival が振動を決めます。</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>SteelSeries GG を待っています。GG が起動すると振動が再生されます。</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG は起動していますが、PadForge に応答しません。応答すると振動が再生されます。</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>振動は Razer Synapse を通じて Razer Sensa HD デバイスで再生されます。</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Razer Synapse 4 の Sensa HD ハプティクスを待っています。Synapse でデバイスのハプティックソースを Sensa HD Games に設定してください。</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>左トリガー</value></data>
@@ -1825,6 +1828,12 @@
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>色は {0} に直接送られます。点灯している間、デバイスのオンボードモードはオフになります。</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>色は {0} に直接送られます。変化する色（カラーサイクルや音に合わせて変わる色など）には、ノート PC の BIOS で Dynamic Lighting をオンにする必要があります。オンにしないと、キーは最後の固定色のままになります。</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>色は {0} に直接送られます。ノート PC の BIOS で Dynamic Lighting がオンの場合は、代わりに Windows の動的ライティングがキーを点灯させます。Windows の設定でこのキーボードの動的ライティングをオフにすると、変化する色を含め、PadForge がキーを点灯させます。</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>色は {0} に直接送られます。{0} は各画像を自身のメモリに保存するため、カラーサイクルや音に追従する色のような変化する色は表示されません。変化しない色は表示されます。</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>色は {0} に直接送られます。{0} は各画像を自身のメモリに保存するため、カラーサイクルや音に追従する色のような変化する色は表示されません。変化しない色は表示されます。最初の画像は、キーボードに保存されているエフェクトを上書きし、元のエフェクトは戻りません。</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>{0} 上のシリアルデバイス</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>このデバイスは接続されていますが、PadForge の色を受け付けませんでした。PadForge は 1 分ごとに再試行します。</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows がこのデバイスをキーボードまたはマウスとして占有し、色を設定するレポートを拒否するため、PadForge は Windows 上でこのデバイスを点灯させられません。</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>別のプログラムがこのデバイスを開いているため、PadForge は点灯させられません。そのプログラムが終了すると、PadForge が点灯させます。</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>このデバイスはまだ応答していません。スリープから復帰すると色が表示されます。</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>色は {0} を通して送られます。</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>色は {0} を通して送られます。{0} はこの種類のデバイスをすべて同時に点灯させます。{0} が起動していない間は、PadForge がこのデバイスを単独で点灯させます。</value></data>
@@ -1832,7 +1841,9 @@
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>色は OpenRGB の SDK Server を通して送られます。OpenRGB が起動していない間は、PadForge がこのデバイスを単独で点灯させます。</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>色は OpenRGB の SDK Server を通して送られます。</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB がこのデバイスを保持していて、このデバイス用の Direct モードがないため、照明は OpenRGB に任せたままになります。</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB は SDK Server をオフにして起動しているため、PadForge はこのデバイスを OpenRGB に任せます。OpenRGB で SDK Server をオンにすると、PadForge はそれを通してデバイスを点灯させます。</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB は起動していますが、その SDK Server がポート {0} で応答しないため、PadForge はこのデバイスを OpenRGB に任せます。OpenRGB で SDK Server をオンにすると、PadForge はそれを通してデバイスを点灯させます。</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE は SDK をオフにして起動しています。iCUE の設定で iCUE SDK をオンにすると、PadForge はそれを通してデバイスを点灯させます。</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} は起動していますが、PadForge によるデバイスの点灯を許可しません。PadForge は要求を続けます。</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} はこの種類のデバイスをすべて同時に点灯させるため、仮想コントローラー {1} のデバイスが色を決めます。</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} はこの種類のデバイスをすべて同時に点灯させるため、仮想コントローラー {2} の {1} の行が色を決めます。</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>仮想コントローラー {0} もこのデバイスを点灯させており、その色が表示されます。</value></data>
@@ -1850,7 +1861,7 @@
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>ヘッドセット</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>マザーボード、グラフィックスカード、メモリ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>マザーボードとグラフィックスカード</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>マウスパッドとヘッドセットスタンド</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>マウスパッド、ヘッドセット、ヘッドセットスタンド</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>ライトバー</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>6 桁の 16 進カラー (RRGGBB または #RRGGBB) を入力し、Enter キーを押すかフォーカスを外すと適用されます。</value></data>
@@ -4622,6 +4633,7 @@
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>{0} のチャットに接続しています…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>{0} のチャットを読み取り中です。</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>{0} のチャットに接続できませんでした。再試行しています。</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch に {0} のチャットはありません。チャンネル名を確認してください。</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>一時停止中です。</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>配信用のコントローラー画像です。次のアドレスを OBS のブラウザーソースに追加してください:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>配信用のコントローラー画像には、Web コントローラーと暗号化なしの HTTP アドレスが必要です。Web コントローラーのカードで「暗号化なしの HTTP も提供する」をオンにしてください。この PC 上の OBS で使うなら「この PC のみ」で足ります。</value></data>

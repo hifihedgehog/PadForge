@@ -32,10 +32,14 @@ namespace PadForge.Common.Input.Peripherals
     /// 194-224 and 324-399). Those five bytes are F1's five, in F1's order,
     /// the effect numbered as OpenRGB numbers F1's modes (solid 0, breathe
     /// 1, cycle 2) and the duration in OpenRGB's unit for F1's speed,
-    /// seconds. So a session reads the active profile's lighting once at
-    /// its start, with feature reads that change nothing, and hands back by
-    /// sending those bytes as F1. A mouse whose profile cannot be read is
-    /// lit and handed back nothing.</para>
+    /// seconds. So a session reads the active profile's lighting at its
+    /// start, with feature reads that change nothing, and hands back by sending
+    /// those bytes as F1. The mouse's profile button can change the active
+    /// profile at any time, so the session reads F0 again on the model's
+    /// recheck interval, and after a switch it reads the new profile's lighting
+    /// for the hand-back and sends its picture once more, since no source says
+    /// whether the switch overwrites F1's color. A mouse whose profile cannot
+    /// be read is lit, and handed back the last lighting read or nothing.</para>
     ///
     /// <para>The mouse is Logitech's, so the linker's Logitech row lights
     /// it and leaves it to G HUB or Logitech Gaming Software while one runs
@@ -71,6 +75,11 @@ namespace PadForge.Common.Input.Peripherals
         /// (<see cref="AsusTufLaptopLighting.RepaintMs"/>).</summary>
         internal const int RepaintMs = AsusTufLaptopLighting.RepaintMs;
 
+        /// <summary>How often a session reads the active profile again. No
+        /// reference times it, so it is PadForge's, the interval of
+        /// <see cref="LenovoLegionLighting.RecheckMs"/>.</summary>
+        internal const int RecheckMs = LenovoLegionLighting.RecheckMs;
+
         public string Name => "Logitech G600";
 
         private static readonly Lazy<HidLightingModel> s_model = new(() => new HidLightingModel
@@ -79,6 +88,7 @@ namespace PadForge.Common.Input.Peripherals
             Name = "Logitech G600 Gaming Mouse",
             Map = new LightMap(Lights(), "OpenRGB LogitechG600Controller") { Product = "logitech:046D:C24A" },
             RepaintMs = RepaintMs,
+            RecheckMs = RecheckMs,
             Programs = VendorPrograms.Logitech,
             Begin = (io, _) => Session.Begin(io),
         });
@@ -122,10 +132,9 @@ namespace PadForge.Common.Input.Peripherals
 
         internal sealed class Session : HidLightingSession
         {
-            private readonly byte[][] _handBack;
-
-            private Session(byte[] handBack)
-                => _handBack = handBack == null ? Array.Empty<byte[]>() : new[] { handBack };
+            private byte[][] _handBack = Array.Empty<byte[]>();
+            private int _profile = -1;
+            private bool _repaint;
 
             /// <summary>Reads the active profile's lighting, the session's
             /// hand-back. A collection too short for the profile report, or
@@ -133,24 +142,43 @@ namespace PadForge.Common.Input.Peripherals
             /// none.</summary>
             internal static Session Begin(IHidReportChannel io)
             {
-                byte[] handBack = null;
-                if (io != null && io.FeatureReportLength >= ProfileReportLength)
-                {
-                    var active = new byte[4];
-                    int index = io.GetFeature(ActiveReportId, active) ? ActiveProfile(active) : -1;
-                    if (index >= 0)
-                    {
-                        var profile = new byte[ProfileReportLength];
-                        if (io.GetFeature((byte)(FirstProfileReportId + index), profile))
-                            handBack = HandBackFrame(profile, index);
-                    }
-                }
-                return new Session(handBack);
+                var session = new Session();
+                session.ReadProfile(io);
+                return session;
+            }
+
+            /// <summary>Reads F0, and the lighting of a profile other than the
+            /// one last read. True when the hand-back moved to it. A read that
+            /// fails leaves the hand-back as it was.</summary>
+            private bool ReadProfile(IHidReportChannel io)
+            {
+                if (io == null || io.FeatureReportLength < ProfileReportLength) return false;
+                var active = new byte[4];
+                int index = io.GetFeature(ActiveReportId, active) ? ActiveProfile(active) : -1;
+                if (index < 0 || index == _profile) return false;
+                var profile = new byte[ProfileReportLength];
+                if (!io.GetFeature((byte)(FirstProfileReportId + index), profile)) return false;
+                var frame = HandBackFrame(profile, index);
+                if (frame == null) return false;
+                _profile = index;
+                _handBack = new[] { frame };
+                return true;
             }
 
             public override bool Feature => true;
 
             public override byte[][] CrashFrames => _handBack;
+
+            /// <summary>True whatever the reads did: the session goes on without
+            /// a profile it can read, as it starts without one, and a mouse that
+            /// left fails at its next picture or at the next walk.</summary>
+            public override bool Recheck(IHidReportChannel io, Action<int> wait)
+            {
+                _repaint = ReadProfile(io);
+                return true;
+            }
+
+            internal override bool RepaintDue => _repaint;
 
             public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)

@@ -61,7 +61,7 @@ namespace PadForge.Services
                     ? idProp.GetString()
                     : Guid.NewGuid().ToString("N").Substring(0, 12);
                 string name = root.TryGetProperty("name", out var nameProp) && nameProp.ValueKind == JsonValueKind.String
-                    ? nameProp.GetString().Trim()
+                    ? PadForge.Engine.Common.XmlSafeText.Clean(nameProp.GetString()).Trim()
                     : "";
                 if (string.IsNullOrEmpty(name)) name = "Custom Pad";
                 if (name.Length > 40) name = name.Substring(0, 40);

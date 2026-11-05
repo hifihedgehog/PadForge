@@ -105,7 +105,8 @@ namespace PadForge.Tests
             Assert.Equal("02 F2 49 04 07", Hex(sent[3].Report, 5));
             Assert.Equal('G', sent[4].Kind);
             Assert.Equal("02 F5 01", Hex(sent[5].Report, 3));
-            var backup = KeyboardProfileBackups.Get(Fc30);
+            string key = KeyboardProfileBackups.DeviceKey(Fc30, collection.Path);
+            var backup = KeyboardProfileBackups.Get(key);
             Assert.NotNull(backup);
             Assert.Equal(0x02, backup.Value.Profile);
             Assert.Equal(new byte[] { 0xFF, 0x00, 0x00, 0x01, 0x05, 0x08 }, backup.Value.Contents);
@@ -125,7 +126,7 @@ namespace PadForge.Tests
             rig.Release(backend);
             Assert.Equal(R.RestoreFrames(0x02, new byte[] { 0xFF, 0x00, 0x00, 0x01, 0x05, 0x08 }).Select(f => Hex(f)),
                 rig.Log.Of('F').Select(f => Hex(f)));
-            Assert.Null(KeyboardProfileBackups.Get(Fc30));
+            Assert.Null(KeyboardProfileBackups.Get(key));
         }
 
         [Fact]
@@ -153,29 +154,34 @@ namespace PadForge.Tests
         {
             using var rig = new KeyboardFamilyRig { FeatureLength = 16 };
             var owed = new byte[] { 0x01, 0x02, 0x03, 0x01, 0x00, 0x08 };
-            KeyboardProfileBackups.Take(Fc30, 0x04, owed);
-            using var backend = rig.Started(Families, Mouse());
+            var mouse = Mouse();
+            string key = KeyboardProfileBackups.DeviceKey(Fc30, mouse.Path);
+            KeyboardProfileBackups.Take(key, 0x04, owed);
+            // The mouse still shows a picture of PadForge's.
+            rig.Log.FeatureAnswer = Answers(0x00, 0x44, 0x55, 0x66, 0x01, 0x00, R.StaticMode, 0x03);
+            using var backend = rig.Started(Families, mouse);
             rig.Advance(HidLightingBackend.RepairGraceMs);
             KeyboardFamilyRig.Passes(backend);
-            Assert.Equal(R.RestoreFrames(0x04, owed).Select(f => Hex(f)), rig.Log.Of('F').Select(f => Hex(f)));
-            Assert.Null(KeyboardProfileBackups.Get(Fc30));
+            Assert.Equal(R.RestoreFrames(0x04, owed).Select(f => Hex(f)), rig.Log.Of('F').Skip(4).Select(f => Hex(f)));
+            Assert.Null(KeyboardProfileBackups.Get(key));
         }
 
         [Fact]
-        public void ASessionWithABackupOwed_ReadsNothing_AndHandsBackTheBackup()
+        public void ASessionWithABackupOwed_ThatStillShowsPadForgesPicture_HandsBackTheBackup()
         {
             var owed = new byte[] { 0x09, 0x08, 0x07, 0x01, 0x02, 0x04 };
             KeyboardProfileBackups.ResetForTest(persistAtOnce: true);
             try
             {
                 KeyboardProfileBackups.Take(Fc30, 0x01, owed);
-                var io = new FakeReportChannel { FeatureReportLength = 16 };
+                var log = new ReportLog { FeatureAnswer = Answers(0x00, 0x44, 0x55, 0x66, 0x01, 0x00, R.StaticMode, 0x03) };
+                var io = new ReportLogChannel { Device = log, FeatureReportLength = 16 };
                 var session = (R.Session)R.Instance.Match(Mouse()).Begin(io, _ => { });
-                Assert.Empty(io.Calls);
                 Assert.Equal(owed, session.Record);
                 Assert.Equal(0x01, session.Profile);
+                log.Clear();
                 Assert.True(session.HandBack(io, _ => { }));
-                Assert.Equal(R.RestoreFrames(0x01, owed).Select(f => Hex(f)), Calls(io).Select(c => Hex(c.Bytes)));
+                Assert.Equal(R.RestoreFrames(0x01, owed).Select(f => Hex(f)), log.Of('F').Select(f => Hex(f)));
                 Assert.Null(KeyboardProfileBackups.Get(Fc30));
             }
             finally
@@ -191,14 +197,20 @@ namespace PadForge.Tests
             try
             {
                 var io = new FakeReportChannel { FeatureReportLength = 16 };
-                io.Feature = id => id == 0x02 ? new byte[16] : null;
+                io.Feature = id =>
+                {
+                    if (id != 0x02) return null;
+                    var answer = new byte[16];
+                    answer[8] = 0x01;
+                    return answer;
+                };
                 var model = R.Instance.Match(Mouse());
                 var session = model.Begin(io, _ => { });
                 int before = io.Calls.Count;
                 Assert.Equal(HidLightingPaint.Later, session.Paint(io, _ => { }, model.Map.Lights, new[] { 0x123456 }));
                 Assert.Equal(R.SavingMs, session.LaterMs);
                 Assert.Equal(before, io.Calls.Count);
-                Assert.NotNull(KeyboardProfileBackups.Get(Fc30));
+                Assert.NotNull(KeyboardProfileBackups.Get(KeyboardProfileBackups.DeviceKey(Fc30, io.Path)));
             }
             finally
             {

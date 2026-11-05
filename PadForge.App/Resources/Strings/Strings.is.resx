@@ -780,6 +780,8 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} notar aftur Windows-rekil sinn.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Ekki tókst að endurheimta Windows-rekilinn fyrir {0}.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows setti {0} aftur á eigin rekil. Veldu það á síðunni „Tæki“ til að skipta aftur.</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} er ekki lengur á rekli PadForge.</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} er enn á rekli PadForge. Veldu það á síðunni Tæki til að skila því aftur til Windows.</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Nota aðeins í PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge færir þetta lyklaborð yfir á WinUSB-rekil Windows og les það sjálft. Windows hættir þá að nota lyklaborðið til innsláttar í öllum forritum, jafnvel þegar PadForge er lokað, þar til Windows-rekill þess er endurheimtur á þessari síðu. Varpanir þess og fjölvar halda áfram að virka á meðan PadForge keyrir.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge færir þessa mús yfir á WinUSB-rekil Windows og les hana sjálft. Windows hættir þá að færa bendilinn með henni í öllum forritum, jafnvel þegar PadForge er lokað, þar til Windows-rekill hennar er endurheimtur á þessari síðu. Varpanir hennar og fjölvar halda áfram að virka á meðan PadForge keyrir.</value></data>
@@ -957,6 +959,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>Titringur spilast í gegnum snertivinnsluna í SteelSeries GG.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG stýrir öllum Rival-músum með snertisvörun í einu, svo sú sem er á sýndarstýringu {0} ræður titringi þeirra.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>Bíður eftir SteelSeries GG. Titringur spilast þegar GG er í gangi.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG er í gangi og svarar ekki PadForge. Titringur hefst þegar það svarar.</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>Titringur spilast á Razer Sensa HD-tækjunum þínum í gegnum Razer Synapse.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Bíður eftir Sensa HD Haptics í Razer Synapse 4. Stilltu „Haptic Source“ tækisins á „Sensa HD Games“ í Synapse.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Vinstri gikkur</value></data>
@@ -1000,6 +1003,12 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Litir fara beint til {0}. Slökkt er á ham innbyggðs minnis þess á meðan það er lýst.</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Litir fara beint til {0}. Breytilegir litir, svo sem litahringrás eða litir sem fylgja hljóði, krefjast þess að kveikt sé á Dynamic Lighting í BIOS fartölvunnar. Án þess halda takkarnir síðustu föstu litum.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Litir fara beint til {0}. Ef kveikt er á Dynamic Lighting í BIOS fartölvunnar lýsir Windows Dynamic Lighting takkana í staðinn. Slökktu á Windows Dynamic Lighting fyrir þetta lyklaborð í stillingum Windows og þá lýsir PadForge þá, þar á meðal með breytilegum litum.</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>Litir fara beint til {0}. Það geymir hverja mynd í eigin minni, svo breytilegir litir, eins og litahringrás eða litir sem fylgja hljóði, birtast ekki. Litur sem helst óbreyttur birtist.</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>Litir fara beint til {0}. Það geymir hverja mynd í eigin minni, svo breytilegir litir, eins og litahringrás eða litir sem fylgja hljóði, birtast ekki. Litur sem helst óbreyttur birtist. Fyrsta myndin skrifar yfir áhrifin sem eru vistuð á lyklaborðinu og þau gömlu koma ekki aftur.</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>Raðtengt tæki á {0}</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>Þetta tæki er tengt og tók ekki við litum PadForge. PadForge reynir aftur á hverri mínútu.</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows hefur einkaumráð yfir þessu tæki sem lyklaborði eða mús og hafnar skeytinu sem stillir liti þess, svo PadForge getur ekki lýst það í Windows.</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>Annað forrit hefur þetta tæki opið, svo PadForge getur ekki lýst það. PadForge lýsir það um leið og því forriti er lokað.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Þetta tæki hefur ekki svarað enn. Litir þess birtast þegar það vaknar.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Litir fara í gegnum {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Litir fara í gegnum {0}, sem lýsir öll tæki af þessari gerð í einu. Á meðan {0} er ekki í gangi lýsir PadForge þetta tæki sjálft.</value></data>
@@ -1007,7 +1016,9 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Litir fara í gegnum SDK Server í OpenRGB. Á meðan OpenRGB er ekki í gangi lýsir PadForge þetta tæki sjálft.</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Litir fara í gegnum SDK Server í OpenRGB.</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB heldur þessu tæki og er ekki með Direct-stillingu fyrir það, svo lýsing þess verður áfram hjá OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB er í gangi með slökkt á SDK Server, svo PadForge lætur OpenRGB eftir þetta tæki. Kveiktu á SDK Server í OpenRGB og PadForge lýsir tækið í gegnum hann.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB er í gangi og SDK Server þess svarar ekki á gátt {0}, svo PadForge lætur OpenRGB eftir þetta tæki. Kveiktu á SDK Server í OpenRGB og PadForge lýsir tækið í gegnum hann.</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE er í gangi með slökkt á SDK. Kveiktu á iCUE SDK í stillingum iCUE og PadForge lýsir tækið í gegnum það.</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} er í gangi og leyfði PadForge ekki að lýsa tækin sín. PadForge heldur áfram að biðja um það.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} lýsir öll tæki af þessari gerð í einu, svo tækið á sýndarstýringu {1} ræður lit þeirra.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} lýsir öll tæki af þessari gerð í einu, svo línan {1} á sýndarstýringu {2} ræður lit þeirra.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Sýndarstýring {0} lýsir líka þetta tæki og litur hennar birtist.</value></data>
@@ -1025,7 +1036,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>heyrnartól</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>móðurborð, skjákort og minni</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>móðurborð og skjákort</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>músamottur og heyrnartólastandar</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>músamottur, heyrnartól og heyrnartólastandar</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Ljósrönd</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Sláðu inn sex stafa hex-lit (RRGGBB eða #RRGGBB) og ýttu á Enter eða smelltu annars staðar til að virkja hann.</value></data>
@@ -4671,6 +4682,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Tengist spjalli rásarinnar {0}…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Les spjall rásarinnar {0}.</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Náði ekki sambandi við spjall rásarinnar {0}. Reyni aftur.</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch er ekki með spjall fyrir {0}. Athugaðu heiti rásarinnar.</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Í hléi.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Stýripinnamyndin fyrir útsendinguna þína. Bættu þessu vistfangi við OBS sem vafrauppsprettu (browser source):</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Stýripinnamyndin fyrir útsendinguna þína krefst Vefstýringar og ódulkóðaða HTTP-vistfangsins hennar. Kveiktu á Bjóða einnig upp á ódulkóðað HTTP á spjaldinu Vefstýring. Aðeins þessi tölva nægir fyrir OBS á þessari tölvu.</value></data>

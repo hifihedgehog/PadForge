@@ -389,12 +389,13 @@ namespace PadForge.Tests
         {
             var io = Answering(Answered(4));
             var session = AsusLaptopAura.Begin(io, _ => { }, 0x1A30, new AsusLaptopMachine("ROG Flow Z13", "GZ302EA"));
+            // The opening frame goes as an output report, the rest as feature reports.
             var sets = Sets(io);
-            Assert.Equal(7, sets.Count);
-            Starts("5D C0 03 01", sets[3], 64);
-            Starts("5D BC 01", sets[4], 64);
-            Starts("5D BA C5 C4 03", sets[5], 64);
-            Starts("5D BC 01", sets[6], 64);
+            Assert.Equal(6, sets.Count);
+            Starts("5D C0 03 01", io.Calls.Single(c => c.Kind == "out").Bytes, 64);
+            Starts("5D BC 01", sets[3], 64);
+            Starts("5D BA C5 C4 03", sets[4], 64);
+            Starts("5D BC 01", sets[5], 64);
             Assert.Single(session.Map.Lights);
             int before = Sets(io).Count;
             session.Paint(io, _ => { }, session.Map.Lights, new[] { 0x112233 });
@@ -495,6 +496,7 @@ namespace PadForge.Tests
             Assert.Equal(125, AsusLaptopTables.Boards.Length);
             Assert.Equal(38, AsusLaptopTables.Boards.Count(b => b.PerKey));
             Assert.Equal("321b1114a0ac3782d67aa39201682effb749f4d9", AsusLaptopTables.AsusctlCommit);
+            Assert.Equal("f62d584d24d4ea12ff902b873f9127edafbcd742", AsusLaptopTables.GHelperCommit);
             foreach (var board in AsusLaptopTables.Boards.Where(b => b.PerKey))
                 Assert.NotNull(AsusLaptopTables.Layout(board.Layout));
             Assert.Null(AsusLaptopTables.Layout("no such layout"));
@@ -564,13 +566,196 @@ namespace PadForge.Tests
             int compared = 0;
             var differs = new List<string>();
             foreach (var light in map.Lights.Where(l => l.Kind == LightKind.Key && l.Usage != 0 && l.Address != 0 && l.Address != 136
-                         && l.Address != 96 && l.Address != 106 && l.Address is not (58 or 79 or 100 or 121 or 142)))
+                         && l.Address != 96 && l.Address != 106 && l.Address is not (58 or 79 or 100 or 121)))
             {
                 if (known[light.Address].Any(k => k.Usage == light.Usage)) compared++;
                 else differs.Add($"LED {light.Address} usage {light.Usage:X2}");
             }
             Assert.True(differs.Count == 0, $"{board}: {string.Join(", ", differs)}");
             Assert.True(compared > 70, $"{compared} keys compared on {board}");
+        }
+
+        // HID usages of the keys these tests name.
+        private const ushort Up = 0x52, Left = 0x50, Down = 0x51, Right = 0x4F, Dot = 0x37, Slash = 0x38, NumLock = 0x53, NumSlash = 0x54,
+            RightShift = 0xE5, PrintScreen = 0x46;
+
+        /// <summary>asusctl's g733pz and g814ji files put the number pad's row first, so a
+        /// code's first time is not always the main key. The number pad's "/" follows NumLock
+        /// at G-Helper's 60, and the main "/" follows "." at 116 (app/USB/Aura.cs:553-575).</summary>
+        [Theory]
+        [InlineData("g733pz-per-key")]
+        [InlineData("g814ji-per-key")]
+        public void TheTwoSlashKeys_SitWhereTheirKeysAre(string layout)
+        {
+            var lights = PluginKeyNames.Lights(TableOf(layout));
+            LightInfo Key(ushort usage) => lights.First(l => l.Usage == usage);
+            Assert.Equal(116, Key(Slash).Address);
+            Assert.Equal(Key(Dot).Y, Key(Slash).Y);
+            Assert.True(Key(Slash).X > Key(Dot).X);
+            Assert.True(Key(Slash).X < Key(RightShift).X);
+            Assert.Equal(60, Key(NumSlash).Address);
+            Assert.Equal(Key(NumLock).Y, Key(NumSlash).Y);
+            Assert.True(Key(NumSlash).X > Key(NumLock).X);
+        }
+
+        /// <summary>The keyboard-order rules every plugin's list is held to, on each key's
+        /// first light: a second LED under a key sits apart by design.</summary>
+        [Theory]
+        [MemberData(nameof(PerKeyTables))]
+        public void EveryTable_KeepsItsKeysInKeyboardOrder(string layout)
+        {
+            var table = TableOf(layout);
+            var lights = PluginKeyNames.Lights(table);
+            var first = lights.Where((_, i) => !table.Names[i].StartsWith("2nd ", StringComparison.Ordinal)).ToList();
+            var faults = KeyTableOrderTests.Faults(first).ToList();
+            Assert.True(faults.Count == 0, string.Join("; ", faults));
+        }
+
+        /// <summary>asusctl's g513i, g634j and g635l files list MediaNext in the Caps row and
+        /// MediaPrev in the Shift row, and its g533q file the other way round. LED 100 is
+        /// Previous and LED 121 Next on G-Helper (PRV15 and NXT15, app/USB/Aura.cs:565-568), on
+        /// OpenRGB (AsusAuraCoreLaptopDevices.cpp:95 and 97, :121-122) and on RGB.NET
+        /// (AsusKeyboardLedMapping.cs:225-226).</summary>
+        [Theory]
+        [InlineData("g513i-per-key")]
+        [InlineData("g533q-per-key")]
+        [InlineData("g634j-per-key")]
+        [InlineData("g635l-per-key")]
+        [InlineData("")]
+        public void TheMediaKeysAtARowsEnd_AreNamedByTheirRow(string layout)
+        {
+            var lights = PluginKeyNames.Lights(TableOf(layout));
+            Assert.Equal(LightLabel.Previous, lights.Single(l => l.Address == 100).Label);
+            Assert.Equal(LightLabel.Next, lights.Single(l => l.Address == 121).Label);
+        }
+
+        /// <summary>Every name in a table finds a usage or a label, and a second LED's name
+        /// counts as its key's.</summary>
+        [Theory]
+        [MemberData(nameof(PerKeyTables))]
+        public void EveryName_IsAUsageOrALabel(string layout)
+            => Assert.Empty(PluginKeyNames.Unresolved(TableOf(layout)));
+
+        /// <summary>A second LED under a key that has no usage keeps that key's label or kind,
+        /// as a second LED under a key with a usage keeps the usage.</summary>
+        [Fact]
+        public void ASecondLight_KeepsItsKeysLabelAndKind()
+        {
+            string[] names = { "Fn", "2nd Fn", "Logo", "2nd Logo", "Led Lid Left", "2nd Led Lid Left", "Up Arrow", "2nd Up Arrow" };
+            var table = new PluginKeyTable("test", names, Enumerable.Range(0, names.Length).ToArray(), new byte[names.Length], new byte[names.Length]);
+            var lights = PluginKeyNames.Lights(table);
+            Assert.Equal(LightLabel.Fn, lights[1].Label);
+            Assert.Equal(LightKind.Other, lights[1].Kind);
+            Assert.Equal(LightKind.Logo, lights[3].Kind);
+            Assert.Equal(LightKind.Edge, lights[5].Kind);
+            Assert.Equal(Up, lights[7].Usage);
+            Assert.Empty(PluginKeyNames.Unresolved(table));
+
+            // A table of usages names only the lights no usage does, by the same rule.
+            var byUsage = new PluginKeyTable("test", new[] { "2nd Fn" }, new[] { 0 }, new byte[1], new byte[1], new ushort[1]);
+            Assert.Equal(LightLabel.Fn, PluginKeyNames.Lights(byUsage)[0].Label);
+        }
+
+        /// <summary>asusctl's fan and ROG keys carry the labels OpenRGB's path gives them.</summary>
+        [Fact]
+        public void TheFanAndRogKeys_HaveTheirLabels()
+        {
+            var lights = PluginKeyNames.Lights(TableOf("g634j-per-key"));
+            Assert.Equal(LightLabel.Fan, lights.Single(l => l.Address == 5).Label);
+            Assert.Equal(LightLabel.Rog, lights.Single(l => l.Address == 6).Label);
+        }
+
+        /// <summary>The G635L's lid is three LEDs on G-Helper (KSTN LOGO LIDL LIDR, 0, 167, 176,
+        /// 177), on OpenRGB's lid layouts (AsusAuraCoreLaptopDevices.cpp:155-157 and 622-624)
+        /// and in this script's default table. Its logo is 167.</summary>
+        [Fact]
+        public void TheG635lLid_HasItsLogoAt167_AndItsTwoSidesApart()
+        {
+            var lights = PluginKeyNames.Lights(TableOf("g635l-per-key"));
+            Assert.Equal(LightKind.Logo, lights.Single(l => l.Address == 167).Kind);
+            Assert.Equal(LightKind.Edge, lights.Single(l => l.Address == 176).Kind);
+            Assert.Equal(LightKind.Edge, lights.Single(l => l.Address == 177).Kind);
+            Assert.Single(lights, l => l.Kind == LightKind.Logo);
+        }
+
+        /// <summary>G-Helper paints both sets of arrow LEDs on every laptop (packetMap: ARWU
+        /// ARWL ARWD ARWR at 139, 159, 160, 161, and ARW? at 120, 140, 141, 143), since a board
+        /// has its arrows on one or the other and no list says which. Each set's LEDs reach
+        /// their arrow's usage, except where the layout's own key holds the LED.</summary>
+        public static IEnumerable<object[]> ArrowLeds()
+        {
+            foreach (object[] layout in PerKeyTables())
+                foreach (var (led, usage) in new[]
+                {
+                    (139, Up), (159, Left), (160, Down), (161, Right), (120, Up), (140, Left), (141, Down), (143, Right),
+                })
+                    yield return new object[] { layout[0], led, usage };
+        }
+
+        [Theory]
+        [MemberData(nameof(ArrowLeds))]
+        public void EveryTable_NamesBothArrowSets(string layout, int led, ushort usage)
+        {
+            var table = TableOf(layout);
+            var lights = PluginKeyNames.Lights(table);
+            int at = Array.IndexOf(table.Indexes, led);
+            Assert.True(at >= 0, $"LED {led} is in no light");
+            // gx502 and gx531 give 120 to Right Shift's third LED, and the g814ji table has
+            // its Left and Down one LED on from the second set.
+            bool ownKey = lights[at].Usage == RightShift
+                || (layout == "g814ji-per-key" && led == 141 && lights[at].Usage == Left);
+            Assert.True(ownKey || lights[at].Usage == usage, $"LED {led}: usage {lights[at].Usage:X2}");
+        }
+
+        /// <summary>LED 142 is an arrow on the tables whose arrows OpenRGB puts there, and the
+        /// key to the right of Up where the layout has one: Print Screen, as OpenRGB's G533ZW has
+        /// it (AsusAuraCoreLaptopDevices.cpp:128), or Right Fn (asusctl's rgb_for_led_code).</summary>
+        [Theory]
+        [InlineData("g634j-per-key", Right)]
+        [InlineData("g635l-per-key", Right)]
+        [InlineData("g814ji-per-key", Down)]
+        [InlineData("g513i-per-key", PrintScreen)]
+        [InlineData("g533q-per-key", PrintScreen)]
+        public void Led142_IsTheKeyItsLayoutPutsThere(string layout, ushort usage)
+            => Assert.Equal(usage, PluginKeyNames.Lights(TableOf(layout)).Single(l => l.Address == 142).Usage);
+
+        /// <summary>The keystone is LED 175 in OpenRGB, on the G533ZW and the G733QR
+        /// (AsusAuraCoreLaptopDevices.cpp:129 and 662). G-Helper's KSTN column holds a 0, the
+        /// mark of an empty place in its packetMap, and no table lights LED 0 for it.</summary>
+        [Theory]
+        [InlineData("g533q-per-key")]
+        [InlineData("")]
+        public void TheKeystone_IsLed175(string layout)
+        {
+            var lights = PluginKeyNames.Lights(TableOf(layout));
+            Assert.Contains(lights, l => l.Address == 175);
+            Assert.DoesNotContain(lights, l => l.Address == 0);
+        }
+
+        /// <summary>A color set on one arrow reaches every LED of that arrow, whichever set a
+        /// board has its key on (LightRenderer.ColorOf goes by the usage), and leaves the others
+        /// to the background.</summary>
+        [Theory]
+        [MemberData(nameof(PerKeyTables))]
+        public void AKeyColor_LightsBothLightsOfAnArrow(string layout)
+        {
+            var map = AsusLaptopAura.PerKeyMap(0x19B6, TableOf(layout), false, false);
+            const int color = 0x123456, background = 0x010203;
+            var colors = LightRenderer.Render(map, background, new KeyFrame(new Dictionary<ushort, int> { [Left] = color }, null, null, null));
+            var lit = map.Lights.Where((_, i) => colors[i] == color).ToList();
+            Assert.Contains(lit, l => l.Address == 159);
+            Assert.Contains(lit, l => l.Address == 140);
+            Assert.All(lit, l => Assert.Equal(Left, l.Usage));
+        }
+
+        /// <summary>The key picker draws a table's lights at their places, so no two share one.</summary>
+        [Theory]
+        [MemberData(nameof(PerKeyTables))]
+        public void EveryTable_GivesEveryLightItsOwnPlace(string layout)
+        {
+            var table = TableOf(layout);
+            var places = table.X.Zip(table.Y, (x, y) => (x, y)).ToList();
+            Assert.Equal(places.Count, places.Distinct().Count());
         }
 
         // ── The ACPI family ──

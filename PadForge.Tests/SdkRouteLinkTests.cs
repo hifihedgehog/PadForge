@@ -135,7 +135,7 @@ namespace PadForge.Tests
                 PeripheralRowKind.CorsairIcue);
             var links = PeripheralLinker.Build(new[] { icue }, HidppSnapshot.Empty, Presence("explorer.exe") with { CorsairIcueSdk = true })
                 .For(icue.Device);
-            Assert.Equal(new[] { "keyboard", "mouse", "mousemat", "headsetstand" }.Select(k => new OutputPath(OutputFamily.IcueDevice, k)),
+            Assert.Equal(new[] { "keyboard", "mouse", "mousemat", "headset", "headsetstand" }.Select(k => new OutputPath(OutputFamily.IcueDevice, k)),
                 links.Lighting);
             Assert.True(links.CatchAll);
             Assert.True(links.OutputOnly);

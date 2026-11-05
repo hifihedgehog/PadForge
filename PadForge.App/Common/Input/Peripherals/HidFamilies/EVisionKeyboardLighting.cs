@@ -34,7 +34,14 @@ namespace PadForge.Common.Input.Peripherals
     /// as dynamic colors, command 0x12, each LED's color at the place its
     /// key value map gives (SetLedsDirect, lines 371-389). Every report is a
     /// query the keyboard answers with an echo of the command, the offset
-    /// and the sum, and a status byte 0 (Query, lines 116-177). Dynamic
+    /// and the sum, and a status byte 0 (Query, lines 116-177). A query the
+    /// keyboard refuses ends that write, as Write stops at its first error
+    /// (lines 210-225), and costs that frame alone: OpenRGB drops Write's and
+    /// Query's results and goes on at the next frame (lines 386, 404 and 409),
+    /// and the session sends the picture again after the refresh interval. An
+    /// answer that does not come in time costs nothing but its wait
+    /// (<see cref="SonixKeyboard.AnswerMs"/>). Only a write or a read that fails
+    /// ends the session. The capabilities have to answer. Dynamic
     /// colors are not stored. While they show, OpenRGB sends one byte of
     /// them again whenever 200 ms pass without a picture or a byte
     /// (RGBController_EVisionV2Keyboard.cpp:1009-1031), and the worker sends
@@ -142,44 +149,69 @@ namespace PadForge.Common.Input.Peripherals
         //  The second generation
         // ─────────────────────────────────────────────
 
-        /// <summary>One query (EVisionV2KeyboardController.cpp:116-177): the
-        /// report, then the keyboard's answer, read past any other report,
-        /// which must be 64 bytes of report 04 that echo the sum, the
-        /// command and the offset, with status 0. The answer's data, or null
-        /// when it failed.</summary>
-        internal static byte[] Query(IHidReportChannel io, byte command, int offset = 0, ReadOnlySpan<byte> data = default,
-            int size = 0)
+        /// <summary>What came of a query.</summary>
+        internal enum V2Answer
         {
-            var packet = SonixKeyboard.Packet(command, size, offset, data);
-            if (!io.WriteOutput(packet)) return null;
+            /// <summary>The keyboard answered it with status 0.</summary>
+            Good,
+
+            /// <summary>No answer came in time.</summary>
+            Silent,
+
+            /// <summary>The keyboard answered otherwise.</summary>
+            Refused,
+
+            /// <summary>The write or the read failed.</summary>
+            Failed,
+        }
+
+        /// <summary>One query (EVisionV2KeyboardController.cpp:116-177): the
+        /// report, then the keyboard's answer, read past any other report and
+        /// past a late answer to an earlier query, which must be 64 bytes of
+        /// report 04 that echo the sum, the command and the offset, with status
+        /// 0. <paramref name="data"/> is the answer's data when it is
+        /// <see cref="V2Answer.Good"/>. <paramref name="silent"/> says the last
+        /// answer did not come, and then this read does not wait
+        /// (<see cref="SonixKeyboard.AnswerMs"/>).</summary>
+        internal static V2Answer Query(IHidReportChannel io, byte command, ref bool silent, out byte[] data, int offset = 0,
+            ReadOnlySpan<byte> sent = default, int size = 0)
+        {
+            data = null;
+            var packet = SonixKeyboard.Packet(command, size, offset, sent);
+            if (!io.WriteOutput(packet)) return V2Answer.Failed;
             var answer = new byte[SonixKeyboard.PacketSize + 1];
             int read;
             int tries = 0;
+            bool echoes;
             do
             {
-                read = io.ReadInput(answer, SonixKeyboard.AnswerMs);
-                if (read < 0) return null;
-            } while (read != 0 && answer[0] != SonixKeyboard.ReportId && ++tries < 16);
-            if (read < SonixKeyboard.PacketSize || answer[0] != SonixKeyboard.ReportId
-                || answer[1] != packet[1] || answer[2] != packet[2] || answer[3] != command
-                || answer[5] != packet[5] || answer[6] != packet[6] || answer[7] != 0)
-                return null;
+                read = io.ReadInput(answer, silent ? 0 : SonixKeyboard.AnswerMs);
+                if (read < 0) return V2Answer.Failed;
+                silent = read == 0;
+                if (silent) return V2Answer.Silent;
+                echoes = answer[0] == SonixKeyboard.ReportId && answer[1] == packet[1] && answer[2] == packet[2]
+                    && answer[3] == command && answer[5] == packet[5] && answer[6] == packet[6];
+            } while (!echoes && ++tries < 16);
+            if (!echoes || read < SonixKeyboard.PacketSize || answer[7] != 0) return V2Answer.Refused;
             int length = answer[4];
-            if (length > SonixKeyboard.PacketSize - 8) return null;
-            return answer.AsSpan(8, length).ToArray();
+            if (length > SonixKeyboard.PacketSize - 8) return V2Answer.Refused;
+            data = answer.AsSpan(8, length).ToArray();
+            return V2Answer.Good;
         }
 
         /// <summary>A write cut into queries of up to 56 bytes, Write
-        /// (lines 210-225).</summary>
-        internal static bool Write(IHidReportChannel io, byte command, int offset, byte[] data)
+        /// (lines 210-225). It stops at a query the keyboard refused or one
+        /// that failed, and goes on past an answer that did not come.</summary>
+        internal static V2Answer Write(IHidReportChannel io, byte command, int offset, byte[] data, ref bool silent)
         {
             for (int at = 0; at < data.Length;)
             {
                 int size = Math.Min(data.Length - at, SonixKeyboard.PacketSize - 8);
-                if (Query(io, command, offset + at, data.AsSpan(at, size), size) == null) return false;
+                var answer = Query(io, command, ref silent, out _, offset + at, data.AsSpan(at, size), size);
+                if (answer is V2Answer.Refused or V2Answer.Failed) return answer;
                 at += size;
             }
-            return true;
+            return V2Answer.Good;
         }
 
         /// <summary>The dynamic colors of a picture, SetLedsDirect (lines
@@ -208,8 +240,10 @@ namespace PadForge.Common.Input.Peripherals
             // Read(READ_CAPABILITIES, 0, 7) and its check, which OpenRGB
             // passes unless both of the first two bytes differ from AA 55
             // (lines 61-72).
-            var capabilities = Query(io, ReadCapabilities, 0, default, CapabilitiesLength);
-            if (capabilities == null || capabilities.Length < CapabilitiesLength) return null;
+            bool silent = false;
+            if (Query(io, ReadCapabilities, ref silent, out var capabilities, 0, default, CapabilitiesLength) != V2Answer.Good
+                || capabilities.Length < CapabilitiesLength)
+                return null;
             if (capabilities[0] != 0xAA && capabilities[1] != 0x55) return null;
             return new V2Session(values, count, capabilities[5]);
         }
@@ -219,6 +253,7 @@ namespace PadForge.Common.Input.Peripherals
             private readonly byte[] _values;
             private readonly int _count;
             private byte[][] _crash = Array.Empty<byte[]>();
+            private bool _silent;
 
             public V2Session(byte[] values, int count, int mapSize)
             {
@@ -240,21 +275,28 @@ namespace PadForge.Common.Input.Peripherals
                 // Marked first: a write that reports a failure may still
                 // have landed.
                 if (_crash.Length == 0) _crash = new[] { EndFrame() };
-                return Write(io, SendDynamicColors, 0, DynamicColors(colors, _values, _count, MapSize))
-                    ? HidLightingPaint.Sent
-                    : HidLightingPaint.Failed;
+                switch (Write(io, SendDynamicColors, 0, DynamicColors(colors, _values, _count, MapSize), ref _silent))
+                {
+                    case V2Answer.Failed:
+                        return HidLightingPaint.Failed;
+                    case V2Answer.Refused:
+                        LaterMs = RefreshMs;
+                        return HidLightingPaint.Later;
+                    default:
+                        return HidLightingPaint.Sent;
+                }
             }
 
             /// <summary>RefreshLedDirect, one byte of the dynamic colors at
             /// key 6, never the picture again.</summary>
             public override bool KeepAlive(IHidReportChannel io, Action<int> wait,
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
-                => Query(io, SendDynamicColors, BlankSpace * 3, new byte[1], 1) != null;
+                => Query(io, SendDynamicColors, ref _silent, out _, BlankSpace * 3, new byte[1], 1) != V2Answer.Failed;
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
             {
                 if (_crash.Length == 0) return true;
-                if (Query(io, EndDynamicColors) == null) return false;
+                if (Query(io, EndDynamicColors, ref _silent, out _) == V2Answer.Failed) return false;
                 _crash = Array.Empty<byte[]>();
                 return true;
             }

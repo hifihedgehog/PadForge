@@ -345,7 +345,7 @@ namespace PadForge.Common.Input
             // non-default base mode (the hard Off included, which authors
             // black), a macro override, or a reactive overlay. Pips
             // (PlayerLedMode) are a SEPARATE subsystem, handled in full
-            // above with their own enable bit, and must not appear here.
+            // below with their own enable bit, and must not appear here.
             // Coupling them would assert the lightbar enable bit for a
             // pips-only change and, once the floor has stood down after a
             // game write, ship black over the game's persisted color. The
@@ -752,6 +752,21 @@ namespace PadForge.Common.Input
             { "validFlag1",        (byte)(EnableAudioControl2 >> 8) },
             { "audioControlFlags", (byte)0 },
             { "audioControl2",     (byte)0 },
+        };
+
+        /// <summary>The Headphone Volume register at full, what the slider's
+        /// default of 100 writes (duaLib's struct comment: "max 0x7f").</summary>
+        internal const byte HeadphoneVolumeFull = 0x7F;
+
+        /// <summary>A report that sets the Headphone Volume register to full
+        /// alone, with every other valid flag clear. PadForge sends it to a
+        /// pad it left lower when it lets go
+        /// (UserEffectsDispatcher.ReleaseAudioRoutes).</summary>
+        internal static Dictionary<string, object> FullHeadphoneVolumeFields() => new()
+        {
+            { "btTag",           NextBtSeqTag() },
+            { "validFlag0",      (byte)(EnableHeadphoneVolume & 0xFF) },
+            { "headphoneVolume", HeadphoneVolumeFull },
         };
 
         // Linear interpolation between two RGB colors. t is clamped

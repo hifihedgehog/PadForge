@@ -64,7 +64,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             var r = LightReports.Registered(OpenRgbFamily, collection);
             if (r == null) return null;
-            if (collection.FeatureReportLength != 0 && collection.FeatureReportLength < PacketSize) return null;
+            if (collection.FeatureReportLength < PacketSize) return null;
             return _models.Get(r.Name, () => Model(r.Name, (ushort)r.VendorId, (ushort)r.ProductId));
         }
 

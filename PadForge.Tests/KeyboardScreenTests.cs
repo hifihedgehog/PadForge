@@ -464,6 +464,61 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>A last worker that outlives the next host's wait ends no
+        /// session of that host's on the libraries the process shares, and its
+        /// own while that host has none there.</summary>
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ALastWorkerThatOutlivesTheNextHostsWait_EndsNoSessionOfThatHost(bool theNextHostHasOne)
+        {
+            using var entered = new ManualResetEventSlim();
+            using var release = new ManualResetEventSlim();
+            var firstLcd = new FakeLcd();
+            var firstArx = new FakeArx();
+            var nextLcd = new FakeLcd();
+            var nextArx = new FakeArx();
+            KeyboardScreenHost Host(FakeLcd lcdLib, FakeArx arxLib, bool active, int waitMs, int joinMs)
+            {
+                var lgs = new LgsLcdScreens(_ => lcdLib, () => Array.Empty<uint>());
+                var arx = new ArxScreen(_ => arxLib);
+                if (active)
+                {
+                    lgs.Step(new byte[MonoW * MonoH * 4], 1, null, 0, 1_000);
+                    arx.Step(new byte[KeyboardScreenFormats.ArxWidth * KeyboardScreenFormats.ArxHeight * 4], 1, 1_000);
+                }
+                return new KeyboardScreenHost(new byte[4], 1, 1, null) { Lgs = lgs, Arx = arx, PredecessorWaitMs = waitMs, JoinMs = joinMs };
+            }
+            var first = Host(firstLcd, firstArx, true, KeyboardScreenHost.PredecessorJoinMs, 50);
+            first.PassForTest = () =>
+            {
+                entered.Set();
+                release.Wait(TimeSpan.FromSeconds(30));
+            };
+            var second = Host(nextLcd, nextArx, theNextHostHasOne, 50, 5000);
+            int passes = 0;
+            second.PassForTest = () => Interlocked.Increment(ref passes);
+            try
+            {
+                first.Start();
+                Assert.True(entered.Wait(TimeSpan.FromSeconds(30)));
+                first.Dispose();
+                second.Start();
+                Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref passes) > 0, TimeSpan.FromSeconds(30)));
+                release.Set();
+                Assert.True(SpinWait.SpinUntil(() => first.ClosedOnThread != 0, TimeSpan.FromSeconds(30)));
+                Assert.Equal(theNextHostHasOne ? 0 : 1, firstLcd.Shutdowns);
+                Assert.Equal(theNextHostHasOne ? 0 : 1, firstArx.Shutdowns);
+            }
+            finally
+            {
+                release.Set();
+                second.Dispose();
+            }
+            Assert.Equal(theNextHostHasOne ? 1 : 0, nextLcd.Shutdowns);
+            Assert.Equal(theNextHostHasOne ? 1 : 0, nextArx.Shutdowns);
+        }
+
         private sealed class FakeLcd : ILogitechLcd
         {
             public int Inits, Shutdowns;

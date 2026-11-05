@@ -123,7 +123,7 @@ namespace PadForge.Common.Input.Peripherals
             if (collection == null || collection.VendorId != VendorId
                 || collection.UsagePage != UsagePage || collection.Usage != Usage)
                 return null;
-            if (collection.FeatureReportLength != 0 && collection.FeatureReportLength < PacketSize) return null;
+            if (collection.FeatureReportLength < PacketSize) return null;
             return s_models.TryGetValue(collection.ProductId, out var model) ? model.Value : null;
         }
 
@@ -141,7 +141,7 @@ namespace PadForge.Common.Input.Peripherals
                 HoldMs = 0,
                 RepaintMs = RepaintMs,
                 Begin = (io, wait) => Begin(io, wait, productId, product),
-                Owed = () => KeyboardProfileBackups.Get(product) != null
+                Owed = _ => KeyboardProfileBackups.Get(product) != null
                              && KeyboardProfileBackups.Failures(product) < RepairTries,
                 Repair = (io, _) => Repair(io, product),
             };

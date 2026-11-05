@@ -62,11 +62,12 @@ namespace PadForge.Tests
         [Fact]
         public void HeldPress_FiresAtWindowExpiryWhileStillDown()
         {
-            var im = new InputManager();
+            var now = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var im = new InputManager { SinglePressUtcNow = () => now };
             var macros = new[] { Macro(MacroTriggerMode.SinglePress, 1000) };
 
             Assert.Equal(0, Tick(im, macros, held: true));
-            Thread.Sleep(950);
+            now = now.AddMilliseconds(950);
             Assert.Equal(2001, Tick(im, macros, held: true));
         }
 

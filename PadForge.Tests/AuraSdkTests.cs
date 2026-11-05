@@ -79,6 +79,9 @@ namespace PadForge.Tests
             Assert.Equal(LightLabel.PlayPause, AuraLights.KeyboardMap.Lights.Single(l => l.Address == 0xA2).Label);
             Assert.Equal(LightLabel.Stop, AuraLights.KeyboardMap.Lights.Single(l => l.Address == 0xA4).Label);
             Assert.Equal(LightLabel.Next, AuraLights.KeyboardMap.Lights.Single(l => l.Address == 0x99).Label);
+            // Keyboard_MediaVolumeDown and Keyboard_MediaVolumeUp (AsusKeyboardLedMapping.cs:127-128).
+            Assert.Equal(LightLabel.VolumeDown, AuraLights.KeyboardMap.Lights.Single(l => l.Address == 0xAE).Label);
+            Assert.Equal(LightLabel.VolumeUp, AuraLights.KeyboardMap.Lights.Single(l => l.Address == 0xB0).Label);
             // RGB.NET maps 150 LEDs, one per code, every usage once.
             Assert.Equal(150, AuraLights.KeyboardKeys.Length);
             Assert.Equal(150, AuraLights.KeyboardKeys.Select(k => k.Code).Distinct().Count());
@@ -164,6 +167,52 @@ namespace PadForge.Tests
             Assert.Same(AuraLights.KeyboardMap, AuraLights.MapFor("keyboard", devices.Take(3).ToArray()));
         }
 
+        /// <summary>The lights RGB.NET adds to two ROG laptops' per-key boards
+        /// by the device's name, written out from
+        /// RGB.NET.Devices.Asus Keyboard/AsusKeyboardLedMapping.cs:177-189 and
+        /// 203-235 at the pinned commit: the bars under wide keys, which light
+        /// with their key, and on the Strix its other lights. A name that
+        /// matches neither table adds nothing.</summary>
+        [Theory]
+        [InlineData("ROG Zephyrus Duo 15 GX551", new[] { 39, 40, 55, 57, 97, 99, 118, 120, 130, 131, 133 })]
+        [InlineData("ROG Strix G513QM", new[]
+        {
+            2, 3, 4, 5, 6, 55, 57, 58, 79, 97, 99, 100, 118, 120, 121, 130, 131, 133, 169, 170, 171, 172, 173, 174,
+        })]
+        public void TwoRogLaptops_CarryTheirExtraLights(string name, int[] indexes)
+        {
+            var devices = new[] { new AuraDevice(0, AuraLights.NotebookKeyboardRgb, name, 200, new ushort[] { 0x1E }) };
+            var map = AuraLights.MapFor("keyboard", devices);
+            var extra = map.Lights.Where(l => l.Address >= AuraLights.ExtraBase).ToList();
+            Assert.Equal(indexes, extra.Select(l => l.Address - AuraLights.ExtraBase));
+            Assert.Equal(AuraLights.KeyboardKeys.Length + indexes.Length, map.Lights.Count);
+            ushort UsageAt(int index) => extra.Single(l => l.Address == AuraLights.ExtraBase + index).Usage;
+            Assert.Equal((ushort)0x2A, UsageAt(55));
+            Assert.Equal((ushort)0x2A, UsageAt(57));
+            Assert.Equal((ushort)0x28, UsageAt(97));
+            Assert.Equal((ushort)0xE5, UsageAt(118));
+            Assert.Equal((ushort)0x2C, UsageAt(133));
+            Assert.Same(AuraLights.KeyboardMap, AuraLights.MapFor("keyboard",
+                new[] { new AuraDevice(0, AuraLights.NotebookKeyboardRgb, "NotebookKeyboard", 200, new ushort[] { 0x1E }) }));
+        }
+
+        [Fact]
+        public void TheStrixsOtherLights_KeepWhatRgbNetNamesThem()
+        {
+            var map = AuraLights.MapFor("keyboard",
+                new[] { new AuraDevice(0, AuraLights.NotebookKeyboardRgb, "ROG Strix G513QM", 200, new ushort[] { 0x1E }) });
+            LightInfo At(int index) => map.Lights.Single(l => l.Address == AuraLights.ExtraBase + index);
+            Assert.Equal(LightKind.Logo, At(6).Kind);
+            Assert.Equal(LightKind.Edge, At(174).Kind);
+            Assert.Equal((LightKind.Other, LightLabel.Fan), (At(5).Kind, At(5).Label));
+            Assert.Equal((LightKind.Other, LightLabel.VolumeDown), (At(2).Kind, At(2).Label));
+            Assert.Equal((LightKind.Other, LightLabel.VolumeUp), (At(3).Kind, At(3).Label));
+            Assert.Equal((LightKind.Other, LightLabel.PlayPause), (At(58).Kind, At(58).Label));
+            Assert.Equal((LightKind.Other, LightLabel.Stop), (At(79).Kind, At(79).Label));
+            Assert.Equal((LightKind.Other, LightLabel.Previous), (At(100).Kind, At(100).Label));
+            Assert.Equal((LightKind.Other, LightLabel.Next), (At(121).Kind, At(121).Label));
+        }
+
         // ── The COM interfaces ──
 
         /// <summary>The IIDs, the class ID and the method order of
@@ -234,6 +283,12 @@ namespace PadForge.Tests
             public int Count(string call) => Calls.Count(c => c == call);
             public void Clear() { lock (_lock) _calls.Clear(); }
 
+            /// <summary>Set: the next light holds until it is set, and
+            /// <see cref="Held"/> says it is there, on <see cref="HeldThread"/>.</summary>
+            public ManualResetEventSlim Hold;
+            public readonly ManualResetEventSlim Held = new(false);
+            public Thread HeldThread;
+
             public IReadOnlyList<AuraDevice> Devices => _devices;
             public bool Open(out string detail)
             {
@@ -243,13 +298,26 @@ namespace PadForge.Tests
                 _devices = Script;
                 return true;
             }
+            public volatile bool HeldCallFails;
+
+            private void HoldHere()
+            {
+                var hold = Interlocked.Exchange(ref Hold, null);
+                if (hold == null) return;
+                HeldThread = Thread.CurrentThread;
+                Held.Set();
+                hold.Wait(30000);
+                if (HeldCallFails) throw new COMException("server gone", unchecked((int)0x800706BA));
+            }
             public void SetLight(int device, int index, int rgb)
             {
+                HoldHere();
                 Log($"light:{device}:{index}:{rgb:X6}");
                 if (FailWrites) throw new COMException("server gone", unchecked((int)0x800706BA));
             }
             public void SetKey(int device, ushort code, int rgb)
             {
+                HoldHere();
                 Log($"key:{device}:{code:X}:{rgb:X6}");
                 if (FailWrites) throw new COMException("server gone", unchecked((int)0x800706BA));
             }
@@ -459,6 +527,262 @@ namespace PadForge.Tests
             Assert.True(WaitFor(() => native.Count("close") == 1));
             Assert.True(WaitFor(() => PeripheralOutputs.StateOf(OutputFamily.AuraSdkType) == BackendState.Idle));
             Assert.Equal(1, native.Count("open"));
+        }
+
+        /// <summary>A board with extra lights takes them through its Lights
+        /// list, beside its keys, as RGB.NET's update queue writes
+        /// AsusLedType.Light on a per-key board (AsusUpdateQueue.cs:50-73). A
+        /// key's color reaches the bars under that key.</summary>
+        [Fact]
+        public void AnExtraLight_IsSetThroughTheLightsList_WithItsKey()
+        {
+            var native = new FakeAura();
+            native.Script = new[]
+            {
+                new AuraDevice(0, AuraLights.NotebookKeyboardRgb, "ROG Zephyrus Duo 15", 134, new ushort[] { 0x1E }),
+            };
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            using var backend = Backend(native);
+            backend.Start();
+            var frame = new KeyFrame(new Dictionary<ushort, int> { [0x2C] = 0xFF0000 }, null, null, null);
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x00, 0x00, 0xFF, keys: frame);
+            Assert.True(WaitFor(() => native.Count("apply:0") == 1));
+            var calls = native.Calls;
+            Assert.Contains("key:0:1E:0000FF", calls);
+            Assert.Contains("light:0:39:0000FF", calls);
+            Assert.Contains("light:0:130:FF0000", calls);
+            Assert.Contains("light:0:133:FF0000", calls);
+            Assert.Equal(11, calls.Count(c => c.StartsWith("light:")));
+        }
+
+        /// <summary>A list shorter than a table's index leaves that light out,
+        /// since the SDK has no such light to set.</summary>
+        [Fact]
+        public void AnExtraLightPastTheLightsList_IsLeftOut()
+        {
+            var native = new FakeAura();
+            native.Script = new[]
+            {
+                new AuraDevice(0, AuraLights.NotebookKeyboardRgb, "ROG Zephyrus Duo 15", 56, new ushort[] { 0x1E }),
+            };
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            using var backend = Backend(native);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x00, 0x00, 0xFF);
+            Assert.True(WaitFor(() => native.Count("apply:0") == 1));
+            Assert.Equal(new[] { "light:0:39:0000FF", "light:0:40:0000FF", "light:0:55:0000FF" },
+                native.Calls.Where(c => c.StartsWith("light:")));
+        }
+
+        /// <summary>Armoury Crate runs and the SDK will not open: the tab says
+        /// so and not "Waiting for". Armoury Crate not running reads as ever.
+        /// A session that opens clears it.</summary>
+        [Fact]
+        public void AnOpenRefused_WhileTheProgramRuns_IsARefusal_AndASessionClearsIt()
+        {
+            var native = new FakeAura { OpenOk = false };
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            using var backend = new AuraSdkBackend(native, pollMs: 10, retryMs: 50, stopWaitMs: 2000);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x11, 0x22, 0x33);
+            Assert.True(WaitFor(() => PeripheralOutputs.RefusalOn(Path("keyboard")) != null), "the refusal was recorded");
+            Assert.Equal(BackendState.Waiting, PeripheralOutputs.StateOf(OutputFamily.AuraSdkType));
+            Assert.NotNull(PeripheralOutputs.RefusalOn(Path("dram")));
+            Assert.False(PeripheralOutputs.RefusalOn(Path("keyboard")).SettingOff);
+
+            PeripheralOutputs.Presence = Presence(running: false);
+            Assert.True(WaitFor(() => PeripheralOutputs.RefusalOn(Path("keyboard")) == null), "the program is gone, so it refused nothing");
+
+            PeripheralOutputs.Presence = Presence();
+            Assert.True(WaitFor(() => PeripheralOutputs.RefusalOn(Path("keyboard")) != null));
+            native.OpenOk = true;
+            Assert.True(WaitFor(() => PeripheralOutputs.StateOf(OutputFamily.AuraSdkType) == BackendState.Connected));
+            Assert.Null(PeripheralOutputs.RefusalOn(Path("keyboard")));
+        }
+
+        /// <summary>A worker a stop left inside the SDK is waited for by the next
+        /// engine start's worker, on a backend of its own, so two never call the
+        /// SDK at once.</summary>
+        [Fact]
+        public void TheNextBackend_WaitsForAWorkerLeftInsideTheSdk()
+        {
+            var native = new FakeAura();
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            using var first = new AuraSdkBackend(native, pollMs: 10, retryMs: 50, stopWaitMs: 50);
+            first.Start();
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x11, 0x22, 0x33);
+            Assert.True(WaitFor(() => native.Calls.Any(c => c.StartsWith("key:", StringComparison.Ordinal))), "the first worker painted");
+            using var gate = new ManualResetEventSlim(false);
+            native.Hold = gate;
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x44, 0x55, 0x66);
+            Assert.True(native.Held.Wait(30000), "the worker is inside the SDK");
+            first.Dispose();
+
+            using var next = new AuraSdkBackend(native, pollMs: 10, retryMs: 50, stopWaitMs: 50);
+            try
+            {
+                next.Start();
+                Thread.Sleep(300);
+                Assert.Equal(1, native.Count("open"));
+            }
+            finally
+            {
+                gate.Set();
+            }
+            Assert.True(WaitFor(() => native.Count("open") == 2), "the next worker opened the SDK");
+            var calls = native.Calls;
+            Assert.True(Array.IndexOf(calls, "close") < Array.LastIndexOf(calls, "open"), string.Join(", ", calls));
+        }
+
+        /// <summary>A worker the next one gave up waiting for still ends its own
+        /// session when that one opens none: nothing else would give the
+        /// devices back.</summary>
+        [Fact]
+        public void AWorkerTheNextOneGaveUpOn_EndsItsSession_WhenThatOneOpensNone()
+        {
+            var native = new FakeAura();
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            using var first = new AuraSdkBackend(native, pollMs: 10, retryMs: 50, stopWaitMs: 50, predecessorWaitMs: 50);
+            first.Start();
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x11, 0x22, 0x33);
+            Assert.True(WaitFor(() => native.Calls.Any(c => c.StartsWith("key:", StringComparison.Ordinal))), "the first worker painted");
+            using var gate = new ManualResetEventSlim(false);
+            native.Hold = gate;
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x44, 0x55, 0x66);
+            Assert.True(native.Held.Wait(30000), "the worker is inside the SDK");
+            first.Dispose();
+
+            Link(new DeviceLinks { Device = Keyboard, Lighting = Array.Empty<OutputPath>() });
+            using var next = new AuraSdkBackend(native, pollMs: 10, retryMs: 50, stopWaitMs: 50, predecessorWaitMs: 50);
+            try
+            {
+                next.Start();
+                Thread.Sleep(200);
+            }
+            finally
+            {
+                gate.Set();
+            }
+            Assert.True(native.HeldThread.Join(30000), "the first worker ended");
+            Assert.Equal(1, native.Count("open"));
+            Assert.Equal(1, native.Count("close"));
+        }
+
+        /// <summary>The same when the next one tried and the SDK refused it:
+        /// that worker has no session to hand back.</summary>
+        [Fact]
+        public void AWorkerTheNextOneGaveUpOn_EndsItsSession_WhenThatOnesOpenFails()
+        {
+            var native = new FakeAura();
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            using var first = new AuraSdkBackend(native, pollMs: 10, retryMs: 50, stopWaitMs: 50, predecessorWaitMs: 50);
+            first.Start();
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x11, 0x22, 0x33);
+            Assert.True(WaitFor(() => native.Calls.Any(c => c.StartsWith("key:", StringComparison.Ordinal))), "the first worker painted");
+            using var gate = new ManualResetEventSlim(false);
+            native.Hold = gate;
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x44, 0x55, 0x66);
+            Assert.True(native.Held.Wait(30000), "the worker is inside the SDK");
+            first.Dispose();
+
+            native.OpenOk = false;
+            using var next = new AuraSdkBackend(native, pollMs: 10, retryMs: 60000, stopWaitMs: 50, predecessorWaitMs: 50);
+            try
+            {
+                next.Start();
+                Assert.True(WaitFor(() => native.Count("open") == 2), "the next worker tried the SDK");
+            }
+            finally
+            {
+                gate.Set();
+            }
+            Assert.True(native.HeldThread.Join(30000), "the first worker ended");
+            Assert.Equal(1, native.Count("close"));
+        }
+
+        /// <summary>A worker the next one gave up waiting for comes out of the
+        /// SDK and closes nothing: the SDK is the process's, and the next
+        /// worker's session is on it. The same when the call it comes out of
+        /// failed, which sends it down its path for a program that stopped
+        /// answering.</summary>
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void AWorkerTheNextOneGaveUpOn_ClosesNothing(bool itsCallFails)
+        {
+            var native = new FakeAura { HeldCallFails = itsCallFails };
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            using var first = new AuraSdkBackend(native, pollMs: 10, retryMs: 50, stopWaitMs: 50, predecessorWaitMs: 50);
+            first.Start();
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x11, 0x22, 0x33);
+            Assert.True(WaitFor(() => native.Calls.Any(c => c.StartsWith("key:", StringComparison.Ordinal))), "the first worker painted");
+            using var gate = new ManualResetEventSlim(false);
+            native.Hold = gate;
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x44, 0x55, 0x66);
+            Assert.True(native.Held.Wait(30000), "the worker is inside the SDK");
+            first.Dispose();
+
+            using var next = new AuraSdkBackend(native, pollMs: 10, retryMs: 50, stopWaitMs: 50, predecessorWaitMs: 50);
+            try
+            {
+                next.Start();
+                Assert.True(WaitFor(() => native.Count("open") == 2), "the next worker opened the SDK");
+            }
+            finally
+            {
+                gate.Set();
+            }
+            Assert.True(native.HeldThread.Join(30000), "the first worker ended");
+            Assert.Equal(0, native.Count("close"));
+        }
+
+        /// <summary>A write that fails with the program running reads the same
+        /// until the next session opens, and a stop clears it.</summary>
+        [Fact]
+        public void AFailedWrite_IsARefusal_AndAStopClearsIt()
+        {
+            var native = new FakeAura { FailWrites = true };
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            var backend = new AuraSdkBackend(native, pollMs: 10, retryMs: 60000, stopWaitMs: 2000);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x11, 0x22, 0x33);
+            Assert.True(WaitFor(() => PeripheralOutputs.RefusalOn(Path("keyboard")) != null), "the refusal was recorded");
+            backend.Dispose();
+            Assert.Null(PeripheralOutputs.RefusalOn(Path("keyboard")));
+        }
+
+        /// <summary>A kind nobody claims any more goes back to Armoury Crate
+        /// though another stays claimed. The SDK hands every device back at
+        /// once, so the session closes and opens again in the same pass, as
+        /// ChromaBackend reopens on a change of categories, and only what
+        /// stays claimed is painted.</summary>
+        [Fact]
+        public void AKindLetGo_WhileAnotherStays_ReopensTheSession_AndRepaintsWhatStays()
+        {
+            var native = new FakeAura();
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } },
+                 new DeviceLinks { Device = Ram, Lighting = new[] { Path("dram") } });
+            using var backend = Backend(native);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x11, 0x22, 0x33);
+            PeripheralOutputs.SetLighting(Ram, slot: 1, player: 2, 0x44, 0x55, 0x66);
+            Assert.True(WaitFor(() => native.Count("apply:0") == 1 && native.Count("apply:1") == 1));
+            native.Clear();
+
+            PeripheralOutputs.ReleaseLighting(Keyboard, 0);
+            Assert.True(WaitFor(() => native.Count("apply:1") == 1));
+            Thread.Sleep(40);
+            Assert.Equal(new[] { "close", "open", "light:1:0:445566", "light:1:1:445566", "light:1:2:445566", "apply:1" }, native.Calls);
+            Assert.True(WaitFor(() => PeripheralOutputs.StateOf(OutputFamily.AuraSdkType) == BackendState.Connected));
         }
 
         /// <summary>Armoury Crate stopping ends the session, and its start

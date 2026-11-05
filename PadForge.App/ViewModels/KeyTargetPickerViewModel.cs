@@ -144,13 +144,17 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Picks <paramref name="indexes"/>, in their order, in
-        /// place of what was picked.</summary>
+        /// place of what was picked. The sequence is read before the picks
+        /// are cleared: a drag hands over the picks themselves followed by
+        /// the lights it covered, and a lazy sequence over the picks would
+        /// read the empty list.</summary>
         public void SetSelection(IEnumerable<int> indexes)
         {
+            var wanted = indexes?.ToArray();
             _all = false;
             _order.Clear();
-            if (indexes != null)
-                foreach (int i in indexes)
+            if (wanted != null)
+                foreach (int i in wanted)
                     if (i >= 0 && i < _map.Lights.Count && !_order.Contains(i)) _order.Add(i);
             Write();
         }

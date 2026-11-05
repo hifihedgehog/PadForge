@@ -55,8 +55,10 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         private volatile bool _ended;
 
         // What the reader gathered since the last poll, and the buttons
-        // down now, bit n - 1 for HID button n. Guarded by _sync.
-        private int _dx, _dy, _wheel, _buttons;
+        // down now, bit n - 1 for HID button n. The residue is the part of a
+        // notch a wheel with a Resolution Multiplier has counted so far.
+        // Guarded by _sync.
+        private int _dx, _dy, _wheel, _wheelResidue, _buttons;
 
         /// <param name="start">False leaves the reader off, for a test that
         /// feeds reports itself (<see cref="Feed"/>).</param>
@@ -216,8 +218,17 @@ namespace PadForge.Common.Input.WinUsbKeyboards
             return state;
         }
 
+        /// <summary>The whole notches gathered since the last poll, for a
+        /// test.</summary>
+        internal int PendingWheelForTest
+        {
+            get { lock (_sync) return _wheel; }
+        }
+
         /// <summary>One input report as the pipe delivered it. A report the
-        /// layout does not know is passed over.</summary>
+        /// layout does not know is passed over. The wheel counts in parts of
+        /// a notch while its Resolution Multiplier is set, and only whole
+        /// notches reach the row (hidinput_handle_scroll, hid-input.c:1534-1538).</summary>
         internal void Feed(ReadOnlySpan<byte> report)
         {
             var pointer = _channel.Pointer;
@@ -228,7 +239,13 @@ namespace PadForge.Common.Input.WinUsbKeyboards
                 if (!pointer.Decode(report, ref dx, ref dy, ref wheel, ref buttons)) return;
                 _dx += dx;
                 _dy += dy;
-                _wheel += wheel;
+                if (wheel != 0)
+                {
+                    _wheelResidue += wheel * WheelDelta / _channel.WheelMultiplier;
+                    int notches = _wheelResidue / WheelDelta;
+                    _wheelResidue -= notches * WheelDelta;
+                    _wheel += notches;
+                }
                 _buttons = buttons;
             }
         }

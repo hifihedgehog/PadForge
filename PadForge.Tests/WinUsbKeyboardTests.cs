@@ -252,6 +252,10 @@ namespace PadForge.Tests
         public ushort PacketSize = 8;
         public byte[] Configuration = KeyboardDescriptors.TwoInterfaceConfiguration;
         public byte[] Descriptor = KeyboardDescriptors.Boot;
+
+        /// <summary>The answer to a GET_REPORT, or null when the device
+        /// refuses one.</summary>
+        public byte[] FeatureReport;
         public readonly ConcurrentQueue<string> Journal = new();
         public readonly ConcurrentQueue<(int Got, int Error, byte[] Data)> Reads = new();
         public int Disposals;
@@ -272,6 +276,14 @@ namespace PadForge.Tests
         public bool ControlIn(byte[] setup, byte[] buffer, out int length)
         {
             Journal.Enqueue("in " + BitConverter.ToString(setup));
+            if (setup[1] == 0x01)
+            {
+                length = 0;
+                if (FeatureReport == null) return false;
+                length = Math.Min(buffer.Length, FeatureReport.Length);
+                Array.Copy(FeatureReport, buffer, length);
+                return true;
+            }
             length = Math.Min(buffer.Length, Descriptor.Length);
             Array.Copy(Descriptor, buffer, length);
             return true;
@@ -318,6 +330,7 @@ namespace PadForge.Tests
         public HidKeyboardReports Reports { get; }
         public HidMouseReports Pointer { get; }
         public int ReadLength => 8;
+        public int WheelMultiplier { get; init; } = 1;
 
         public bool TryRead(Span<byte> report, out int length)
         {
@@ -866,6 +879,27 @@ namespace PadForge.Tests
             Assert.Equal(2, reads);   // the deselect's own read, and none for the path
         }
 
+        /// <summary>A take or a restore changes the takeover list, and where
+        /// the WinUSB row never opened it changes no path. The offer that
+        /// follows raises what the row's toggles read.</summary>
+        [Fact]
+        public void AFreshOffer_RaisesTheTogglesThatReadTheTakeoverList()
+        {
+            var vm = new DevicesViewModel();
+            var row = new DeviceRowViewModel
+            {
+                DeviceTypeKey = "Keyboard",
+                DevicePath = @"\\?\HID#VID_048D&PID_C197&Col04#8&11b458cb&0&0003#{884b96c3-56ef-11d1-bc8c-00a0c91405dd}",
+            };
+            vm.SelectedDevice = row;
+            var raised = new List<string>();
+            row.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
+            vm.ApplyDriverOffer(null);
+            Assert.Contains(nameof(DeviceRowViewModel.ShowHidHideToggle), raised);
+            Assert.Contains(nameof(DeviceRowViewModel.ShowConsumeToggle), raised);
+            Assert.Contains(nameof(DeviceRowViewModel.ShowInputHidingSection), raised);
+        }
+
         /// <summary>A keyboard's switch hides the keyboard from Windows, so
         /// its buttons stand in the Input Hiding section, which keeps its
         /// heading and dividers for a switched keyboard's restore alone.
@@ -968,12 +1002,14 @@ namespace PadForge.Tests
             public readonly List<FakeKeyboardChannel> Opened = new();
             public volatile WinUsbKeyboard[] Bound = Array.Empty<WinUsbKeyboard>();
             public bool FailOpens;
+            public Exception OpenThrows;
 
             public Lane()
             {
                 Manager.WinUsbKeyboardFind = () => Bound;
                 Manager.WinUsbKeyboardOpen = keyboard =>
                 {
+                    if (OpenThrows != null) throw OpenThrows;
                     if (FailOpens) return null;
                     var channel = new FakeKeyboardChannel(keyboard.Path, mouse: keyboard.IsMouse);
                     lock (Opened) Opened.Add(channel);
@@ -1120,6 +1156,25 @@ namespace PadForge.Tests
             lane.Advance(InputManager.WinUsbKeyboardReopenMs);
             Assert.True(lane.Cycle());
             Assert.Single(lane.Opened);
+        }
+
+        /// <summary>An open that throws is tried again as a failed one is, and
+        /// the log names what it threw, once.</summary>
+        [Fact]
+        public void AnOpenThatThrows_LogsWhatItThrew_Once()
+        {
+            using var lane = new Lane();
+            lane.Bound = new[] { Pad };
+            lane.OpenThrows = new TimeoutException("scripted");
+            string line = "WinUsbKeyboard: open failed for keyboard " + Pad.VendorId.ToString("X4") + ":" + Pad.ProductId.ToString("X4")
+                + " at " + Pad.Path + " (TimeoutException)";
+            int Said() => PadForge.Engine.SdlDiagLog.Snapshot().Split((char)10).Count(l => l.Contains(line));
+            int before = Said();
+            Assert.False(lane.Cycle());
+            Assert.Equal(before + 1, Said());
+            lane.Advance(InputManager.WinUsbKeyboardSweepMs + InputManager.WinUsbKeyboardReopenMs);
+            Assert.False(lane.Cycle());
+            Assert.Equal(before + 1, Said());
         }
 
         [Fact]

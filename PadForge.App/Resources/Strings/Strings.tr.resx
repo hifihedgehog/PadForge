@@ -780,6 +780,8 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} yeniden Windows sürücüsünü kullanıyor.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>{0} için Windows sürücüsü geri yüklenemedi.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows, {0} cihazını yeniden kendi sürücüsüne aldı. Tekrar değiştirmek için Cihazlar sayfasında onu seçin.</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} artık PadForge'un sürücüsünde değil.</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} hâlâ PadForge'un sürücüsünde. Windows'a geri vermek için Cihazlar sayfasında seçin.</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Yalnızca PadForge'da kullan</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge, bu klavyeyi Windows'un WinUSB sürücüsüne taşır ve onu kendisi okur. Bunun ardından Windows, sürücüsü bu sayfadan geri yüklenene kadar, PadForge kapalıyken bile hiçbir programda bu klavyeyle yazı yazmaz. Eşlemeleri ve makroları PadForge çalışırken çalışmaya devam eder.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge, bu fareyi Windows'un WinUSB sürücüsüne taşır ve onu kendisi okur. Bunun ardından Windows, sürücüsü bu sayfadan geri yüklenene kadar, PadForge kapalıyken bile hiçbir programda bu fareyle işaretçiyi hareket ettirmez. Eşlemeleri ve makroları PadForge çalışırken çalışmaya devam eder.</value></data>
@@ -957,6 +959,7 @@
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>Titreşim, SteelSeries GG içindeki dokunsal işleyici üzerinden oynatılır.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG tüm dokunsal Rival fareleri aynı anda sürdüğü için titreşimlerini Sanal kontrolcü {0} üzerindeki belirler.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>SteelSeries GG bekleniyor. GG çalıştığında titreşim oynatılır.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG çalışıyor ve PadForge'a yanıt vermiyor. Yanıt verdiğinde titreşim çalar.</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>Titreşim, Razer Sensa HD cihazlarınızda Razer Synapse üzerinden oynatılır.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Razer Synapse 4 içindeki Sensa HD Haptics bekleniyor. Synapse'te cihazın Haptic Source ayarını Sensa HD Games yapın.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Sol tetik</value></data>
@@ -1000,6 +1003,12 @@
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Renkler doğrudan {0} cihazına gider. Cihaz aydınlatılırken dahili bellek modu kapalıdır.</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Renkler doğrudan {0} cihazına gider. Değişen renkler, örneğin renk döngüsü veya sesi izleyen renkler, dizüstü bilgisayarın BIOS'unda Dynamic Lighting'in açık olmasını gerektirir. Açık değilse tuşlar son sabit renklerde kalır.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Renkler doğrudan {0} cihazına gider. Dizüstü bilgisayarın BIOS'unda Dynamic Lighting açıksa tuşları bunun yerine Windows Dinamik Aydınlatma aydınlatır. Windows Ayarları'nda bu klavye için Windows Dinamik Aydınlatma'yı kapatırsanız tuşları, değişen renkler dahil, PadForge aydınlatır.</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>Renkler doğrudan {0} cihazına gider. Cihaz her görüntüyü kendi belleğinde saklar, bu yüzden renk döngüsü veya sese uyan renkler gibi değişen renkler görünmez. Sabit kalan bir renk görünür.</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>Renkler doğrudan {0} cihazına gider. Cihaz her görüntüyü kendi belleğinde saklar, bu yüzden renk döngüsü veya sese uyan renkler gibi değişen renkler görünmez. Sabit kalan bir renk görünür. İlk görüntü klavyede kayıtlı efektlerin üzerine yazılır ve eski efektler geri gelmez.</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>{0} üzerinde seri cihaz</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>Bu cihaz bağlı ancak PadForge'un renklerini almadı. PadForge her dakika yeniden dener.</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows bu cihazı klavye veya fare olarak tutuyor ve renklerini ayarlayan raporu reddediyor, bu yüzden PadForge cihazı Windows'ta aydınlatamaz.</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>Başka bir program bu cihazı açık tutuyor, bu yüzden PadForge cihazı aydınlatamıyor. O program kapanınca PadForge cihazı aydınlatır.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Bu cihaz henüz yanıt vermedi. Uyandığında renkleri görünür.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Renkler {0} üzerinden gider.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Renkler, bu türdeki tüm cihazları aynı anda aydınlatan {0} üzerinden gider. {0} çalışmıyorken PadForge bu cihazı kendi başına aydınlatır.</value></data>
@@ -1007,7 +1016,9 @@
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Renkler OpenRGB'nin SDK Server'ı üzerinden gider. OpenRGB çalışmıyorken PadForge bu cihazı kendi başına aydınlatır.</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Renkler OpenRGB'nin SDK Server'ı üzerinden gider.</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB bu cihazı elinde tutuyor ve onun için Direct modu yok, bu yüzden aydınlatması OpenRGB'de kalır.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB, SDK Server'ı kapalı olarak çalışıyor, bu yüzden PadForge bu cihazı OpenRGB'ye bırakır. OpenRGB'de SDK Server'ı açın, PadForge cihazı onun üzerinden aydınlatsın.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB çalışıyor ancak SDK Server'ı {0} bağlantı noktasında yanıt vermiyor, bu yüzden PadForge bu cihazı OpenRGB'ye bırakır. OpenRGB'de SDK Server'ı açın, PadForge cihazı onun üzerinden aydınlatsın.</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE, SDK'sı kapalı olarak çalışıyor. iCUE'nun ayarlarında iCUE SDK'yı açın, PadForge cihazı onun üzerinden aydınlatsın.</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} çalışıyor ve PadForge'un cihazlarını aydınlatmasına izin vermedi. PadForge sormaya devam eder.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} bu türdeki tüm cihazları aynı anda aydınlattığı için renklerini Sanal kontrolcü {1} üzerindeki belirler.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} bu türdeki tüm cihazları aynı anda aydınlattığı için renklerini Sanal kontrolcü {2} üzerindeki {1} satırı belirler.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Sanal kontrolcü {0} da bu cihazı aydınlatıyor ve onun rengi görünüyor.</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>kulaklıklar</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>anakartlar, grafik kartları ve bellek</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>anakartlar ve grafik kartları</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>fare altlıkları ve kulaklık standları</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>fare altlıkları, kulaklıklar ve kulaklık standları</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Işık çubuğu</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Altı haneli bir onaltılık renk (RRGGBB veya #RRGGBB) girin ve uygulamak için Enter'a basın ya da başka bir yere tıklayın.</value></data>
@@ -4671,6 +4682,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>{0} kanalının sohbetine bağlanılıyor…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>{0} kanalının sohbeti okunuyor.</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>{0} kanalının sohbetine ulaşılamadı. Yeniden deneniyor.</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch'te {0} için sohbet yok. Kanal adını kontrol edin.</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Duraklatıldı.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Yayınınız için kontrolcü görüntüsü. Bu adresi OBS'ye tarayıcı kaynağı olarak ekleyin:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Yayınınız için kontrolcü görüntüsü, Web kontrolcüsü ve düz HTTP adresi gerektirir. Web kontrolcüsü kartında Düz HTTP de sun seçeneğini açın. Bu bilgisayardaki OBS için Yalnızca bu bilgisayar yeterlidir.</value></data>

@@ -24,6 +24,8 @@ to 0 and is labeled in the C#.
 WHAT IT WRITES. PadForge.App/Common/Input/Peripherals/SdkKeyTables.g.cs, with
 CRLF line endings.
 
+Run it without Python's -I switch: it imports tools/openrgb_cpp.py.
+
 Usage:
     python tools/gen_sdk_key_tables.py CHROMA_SAMPLE_ROOT COLORE_ROOT LED_SDK_ROOT
     python tools/gen_sdk_key_tables.py CHROMA_SAMPLE_ROOT COLORE_ROOT LED_SDK_ROOT --check
@@ -32,8 +34,8 @@ import argparse
 import hashlib
 import os
 import re
-import subprocess
 import sys
+import openrgb_cpp as oc
 
 PROJ_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT = os.path.join(PROJ_ROOT, "PadForge.App", "Common", "Input", "Peripherals", "SdkKeyTables.g.cs")
@@ -131,8 +133,7 @@ def const(body, name):
 
 
 def commit_of(root):
-    return subprocess.run(["git", "-C", root, "rev-parse", "HEAD"],
-                          capture_output=True, text=True, check=True).stdout.strip()
+    return oc.git_head(root)
 
 
 def main():

@@ -18,10 +18,14 @@ namespace PadForge.Common.Input.Peripherals
     /// (SetMode, LaviewTechnologyController.cpp:58-102,
     /// LaviewTechnologyController.h:18-45; DeviceUpdateMode,
     /// RGBController_LaviewTechnology.cpp:196-201). Custom's brightness is
-    /// its default, 50, and its speed OpenRGB's mode default, 0
+    /// the top of its range, 100, and its speed OpenRGB's mode default, 0
     /// (RGBController_LaviewTechnology.cpp:37-45, RGBControllerInterface.h:325-343).
-    /// SetMode passes each through std::clamp(0u, value, 64u), which with
-    /// those two gives the value itself.</para>
+    /// SetMode passes each through std::clamp(0u, value, 64u) (lines 68-69),
+    /// its bounds out of order, which the C++ standard leaves undefined for a
+    /// value above 64. The MSVC library OpenRGB's Windows builds use
+    /// (scripts/build-windows.bat) returns 100 for 100, so that build's slider
+    /// at its top sends the byte sent here. libstdc++ returns 64 for it. No
+    /// source names the mouse's own ceiling.</para>
     ///
     /// <para>The mouse saves each mode it is sent ("@save :robot:", line 18:
     /// automatic and not to be turned off), so a picture is held before it
@@ -46,10 +50,13 @@ namespace PadForge.Common.Input.Peripherals
         internal const int ReportSize = 64;
         internal const byte StaticMode = 0x01;
 
-        /// <summary>Custom's brightness, LAVIEW_TECHNOLOGY_BRIGHTNESS_NORMAL
-        /// (LaviewTechnologyController.h:40-45), and its speed, OpenRGB's
-        /// mode default.</summary>
-        internal const byte Brightness = 50;
+        /// <summary>Custom's most brightness, LAVIEW_TECHNOLOGY_BRIGHTNESS_FAST,
+        /// since PadForge dims a color itself, where OpenRGB's default is 50
+        /// (LaviewTechnologyController.h:40-45,
+        /// RGBController_LaviewTechnology.cpp:40-42, and the class comment for
+        /// what line 68 does with it), and its speed, OpenRGB's mode
+        /// default.</summary>
+        internal const byte Brightness = 100;
         internal const byte Speed = 0;
 
         public string Name => "Laview Technology";
@@ -61,7 +68,7 @@ namespace PadForge.Common.Input.Peripherals
             if (collection == null || collection.VendorId != VendorId) return null;
             var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
             if (registrations.Count == 0) return null;
-            if (collection.FeatureReportLength != 0 && collection.FeatureReportLength < ReportSize) return null;
+            if (collection.FeatureReportLength < ReportSize) return null;
             ushort pid = collection.ProductId;
             return _models.Get(registrations[0].Name + pid, () => Model(registrations[0].Name, pid));
         }

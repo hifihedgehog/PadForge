@@ -11,6 +11,8 @@ WHAT IT WRITES. PadForge.App/Common/Input/Peripherals/HidFamilies/GaiZhongGaiLay
 per board, the lights its matrix holds, by number, each with its name, row
 and column.
 
+Run it without Python's -I switch: it imports tools/openrgb_cpp.py.
+
 Usage:
     python tools/gen_gaizhonggai_layouts.py OPENRGB_ROOT
     python tools/gen_gaizhonggai_layouts.py OPENRGB_ROOT --check   (compare, write nothing)
@@ -18,8 +20,8 @@ Usage:
 import argparse
 import os
 import re
-import subprocess
 import sys
+import openrgb_cpp as oc
 
 PROJ_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT = os.path.join(PROJ_ROOT, "PadForge.App", "Common", "Input", "Peripherals", "HidFamilies", "GaiZhongGaiLayouts.g.cs")
@@ -112,8 +114,7 @@ def main():
     folder = os.path.join(args.openrgb, "Controllers", "GaiZongGaiKeyboardController")
     rgb = strip_comments(read(os.path.join(folder, RGB_REL)))
     names = key_names(os.path.join(args.openrgb, "RGBController", "RGBControllerKeyNames.cpp"))
-    commit = subprocess.run(["git", "-C", args.openrgb, "rev-parse", "HEAD"],
-                            capture_output=True, text=True, check=True).stdout.strip()
+    commit = oc.git_head(args.openrgb)
 
     name_lists = {}
     for list_name in ("led_names_general", "led_names_42key"):

@@ -231,6 +231,8 @@ namespace PadForge.Common.Input.Peripherals
                         }
                         if (!client.Connected)
                         {
+                            PeripheralOutputs.SetProgramRefusal(OutputFamily.GameSenseTactile, null);
+                            PeripheralOutputs.SetProgramRefusal(OutputFamily.GameSenseColor, null);
                             PeripheralOutputs.SetBackendState(OutputFamily.GameSenseTactile, BackendState.Idle);
                             PeripheralOutputs.SetBackendState(OutputFamily.GameSenseColor, BackendState.Idle);
                         }
@@ -272,6 +274,13 @@ namespace PadForge.Common.Input.Peripherals
                             }
                         }
                         var state = client.Connected ? BackendState.Connected : BackendState.Waiting;
+                        // GG runs and does not take PadForge's game: the tabs
+                        // name that in place of a wait for GG to start.
+                        bool refused = !client.Connected && PeripheralOutputs.Presence.SteelSeriesGGRunning;
+                        PeripheralOutputs.SetProgramRefusal(OutputFamily.GameSenseTactile,
+                            refused && ruler != Guid.Empty ? ProgramRefusal.Everything : null);
+                        PeripheralOutputs.SetProgramRefusal(OutputFamily.GameSenseColor,
+                            refused && colors.Count > 0 ? ProgramRefusal.Everything : null);
                         PeripheralOutputs.SetBackendState(OutputFamily.GameSenseTactile,
                             ruler == Guid.Empty ? BackendState.Idle : state);
                         PeripheralOutputs.SetBackendState(OutputFamily.GameSenseColor,
@@ -302,6 +311,8 @@ namespace PadForge.Common.Input.Peripherals
                 try { client?.Dispose(); } catch { }
                 Volatile.Write(ref _posted, 0);
                 Volatile.Write(ref _posting, 0);
+                PeripheralOutputs.SetProgramRefusal(OutputFamily.GameSenseTactile, null);
+                PeripheralOutputs.SetProgramRefusal(OutputFamily.GameSenseColor, null);
                 PeripheralOutputs.SetBackendState(OutputFamily.GameSenseTactile, BackendState.Idle);
                 PeripheralOutputs.SetBackendState(OutputFamily.GameSenseColor, BackendState.Idle);
             }

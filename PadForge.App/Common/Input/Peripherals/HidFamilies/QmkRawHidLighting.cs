@@ -118,7 +118,8 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             /// <summary>The vendors of every board in keyboards/wilba_tech.</summary>
             private static readonly string[] WilbaVendors = { "qmk:6582:", "qmk:5241:", "qmk:5A45:" };
 
-            /// <summary>The wait for a picture's echo. The firmware answers every write
+            /// <summary>The wait for a picture's echo, on this session and on Keychron's and
+            /// VialRGB's (<see cref="Send"/>). The firmware answers every write
             /// (via.c:290-297), and a board that stops answering must not hold the worker for
             /// a second a frame, as it may while the session asks at the start.</summary>
             private const int PaintAnswerMs = 20;

@@ -9,8 +9,9 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>A HID family scripted for the worker's own rules (#557): it
-    /// takes every collection of <see cref="VendorId"/> on page 0xFF00 and answers
-    /// <see cref="Model"/>, whose sessions log what they are given.</summary>
+    /// takes every collection of <see cref="VendorId"/> on page 0xFF00, and
+    /// every one Windows holds, and answers <see cref="Model"/>, whose sessions
+    /// log what they are given.</summary>
     internal sealed class FakeWorkerFamily : IHidLightingFamily
     {
         public const ushort VendorId = 0xF00D;
@@ -21,7 +22,7 @@ namespace PadForge.Tests
         public string Name => "Fake worker";
 
         public HidLightingModel Match(HidCollectionInfo collection)
-            => collection?.VendorId == VendorId && collection.UsagePage == 0xFF00 ? Model : null;
+            => collection?.VendorId == VendorId && (collection.UsagePage == 0xFF00 || collection.WindowsHolds) ? Model : null;
 
         public void Add(string line)
         {
@@ -577,7 +578,7 @@ namespace PadForge.Tests
         private HidLightingModel FeatureOnlyModel(bool heldByWindows) => _family.With(m => new HidLightingModel
         {
             Family = m.Family, Name = m.Name, Map = m.Map, Begin = m.Begin, HeldByWindows = heldByWindows,
-            Owed = () => true,
+            Owed = _ => true,
             Repair = (io, _) =>
             {
                 Interlocked.Increment(ref _repairs);

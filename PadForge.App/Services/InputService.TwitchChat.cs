@@ -76,6 +76,7 @@ namespace PadForge.Services
                 null => s.TwitchChat_Status_NoChannel,
                 TwitchChatState.Reading => string.Format(culture, s.TwitchChat_Status_Reading_Format, channel),
                 TwitchChatState.Retrying => string.Format(culture, s.TwitchChat_Status_Retrying_Format, channel),
+                TwitchChatState.NoChat => string.Format(culture, s.TwitchChat_Status_NoChat_Format, channel),
                 _ => string.Format(culture, s.TwitchChat_Status_Connecting_Format, channel),
             };
             return paused ? line + " " + s.TwitchChat_Status_Paused : line;
@@ -108,13 +109,12 @@ namespace PadForge.Services
 
         /// <summary>The web controller's layout key for a 2D asset folder:
         /// the folder lower-cased, which is the web controller's own key for
-        /// each drawing it has, and the nearest drawing for the two it
+        /// each drawing it has, and the nearest drawing for the one it
         /// lacks.</summary>
         internal static string WebLayoutFor(string folder2D) => folder2D switch
         {
             null or "" => "xbox360",
             "DS3" => "ds4",
-            "STEAMCONTROLLER2" => "steamcontroller",
             _ => folder2D.ToLowerInvariant(),
         };
 
@@ -163,6 +163,15 @@ namespace PadForge.Services
             return first;
         }
 
+        /// <summary>The 1-based number PadForge shows for a slot, its index +
+        /// 1 for a slot in no group's order list (the fallback
+        /// GetGlobalSlotNumber names).</summary>
+        internal static int ShownSlotNumber(int slot)
+        {
+            int number = SettingsManager.SlotOrders.GetGlobalSlotNumber(slot);
+            return number > 0 ? number : slot + 1;
+        }
+
         /// <summary>Re-derives the Twitch Chat row's words, the voice row's
         /// refresh: its objects and its button span follow the list, or a
         /// word added after the row opened could not be mapped until the row
@@ -183,6 +192,18 @@ namespace PadForge.Services
             }
             catch { /* refresh is best-effort */ }
         }
+
+        private void OnChatWordFreed(int button)
+            => _dispatcher.BeginInvoke(new Action(() => FreedButtonCleanup.ForChatWord(button, _mainVm.Pads)));
+
+        private void OnVoicePhraseFreed(int button)
+            => _dispatcher.BeginInvoke(new Action(() => FreedButtonCleanup.ForVoicePhrase(button, _mainVm.Pads)));
+
+        private void OnNfcTagFreed(int button)
+            => _dispatcher.BeginInvoke(new Action(() => FreedButtonCleanup.ForNfcTag(button, _mainVm.Pads)));
+
+        private void OnHandheldButtonFreed(int button)
+            => _dispatcher.BeginInvoke(new Action(() => FreedButtonCleanup.ForHandheldButton(button, _mainVm.Pads)));
 
         /// <summary>The chat word list changed (#555): the voice phrase
         /// handler's rules. Re-derive the row's objects under the UserDevices

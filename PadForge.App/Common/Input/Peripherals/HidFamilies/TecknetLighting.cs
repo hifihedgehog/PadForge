@@ -48,7 +48,7 @@ namespace PadForge.Common.Input.Peripherals
             if (collection == null || collection.VendorId != VendorId) return null;
             var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
             if (registrations.Count == 0) return null;
-            if (collection.FeatureReportLength != 0 && collection.FeatureReportLength < ReportSize) return null;
+            if (collection.FeatureReportLength < ReportSize) return null;
             ushort pid = collection.ProductId;
             return _models.Get(registrations[0].Name + pid, () => Model(registrations[0].Name, pid));
         }

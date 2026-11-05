@@ -780,6 +780,8 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} वापस अपने Windows ड्राइवर पर है।</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>{0} का Windows ड्राइवर पुनर्स्थापित नहीं हो सका।</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows ने {0} को वापस अपने ड्राइवर पर रख दिया। इसे फिर से स्विच करने के लिए डिवाइस पेज पर इसे चुनें।</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} अब PadForge के ड्राइवर पर नहीं है।</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} अभी भी PadForge के ड्राइवर पर है। इसे Windows को लौटाने के लिए Devices पेज पर चुनें।</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>केवल PadForge में उपयोग करें</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge इस कीबोर्ड को Windows के WinUSB ड्राइवर पर ले जाता है और उसे खुद पढ़ता है। इसके बाद Windows हर प्रोग्राम में इससे टाइपिंग करना बंद कर देता है, PadForge बंद होने पर भी, जब तक इस पेज से इसका Windows ड्राइवर पुनर्स्थापित न किया जाए। PadForge चलने तक इसके मैपिंग और मैक्रो काम करते रहते हैं।</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge इस माउस को Windows के WinUSB ड्राइवर पर ले जाता है और उसे खुद पढ़ता है। इसके बाद Windows हर प्रोग्राम में इससे पॉइंटर हिलाना बंद कर देता है, PadForge बंद होने पर भी, जब तक इस पेज से इसका Windows ड्राइवर पुनर्स्थापित न किया जाए। PadForge चलने तक इसके मैपिंग और मैक्रो काम करते रहते हैं।</value></data>
@@ -957,6 +959,7 @@
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>रंबल SteelSeries GG के टैक्टाइल हैंडलर के ज़रिए चलता है।</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG हर टैक्टाइल Rival को एक साथ चलाता है, इसलिए वर्चुअल कंट्रोलर {0} वाला Rival ही उन सबका रंबल तय करता है।</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>SteelSeries GG की प्रतीक्षा है। GG के चलते ही रंबल चलेगा।</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG चल रहा है और PadForge को जवाब नहीं दे रहा। जवाब देते ही रंबल चलेगा।</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>रंबल Razer Synapse के ज़रिए आपके Razer Sensa HD डिवाइसों पर चलता है।</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Razer Synapse 4 में Sensa HD Haptics की प्रतीक्षा है। Synapse में डिवाइस का Haptic Source “Sensa HD Games” पर सेट करें।</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>बायाँ ट्रिगर</value></data>
@@ -1000,6 +1003,12 @@
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>रंग सीधे {0} को जाते हैं। रोशन रहने के दौरान उसका ऑन-बोर्ड मेमोरी मोड बंद रहता है।</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>रंग सीधे {0} को जाते हैं। बदलते रंग, जैसे कलर साइकिल या ध्वनि के साथ चलने वाले रंग, तभी दिखते हैं जब लैपटॉप के BIOS में Dynamic Lighting चालू हो। इसके बिना कीज़ आखिरी स्थिर रंग पर बनी रहती हैं।</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>रंग सीधे {0} को जाते हैं। अगर लैपटॉप के BIOS में Dynamic Lighting चालू है, तो कीज़ को Windows की डायनेमिक लाइटिंग रोशन करती है। Windows सेटिंग्स में इस कीबोर्ड के लिए डायनेमिक लाइटिंग बंद करें, तब PadForge उन्हें रोशन करेगा, बदलते रंग भी।</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>रंग सीधे {0} को जाते हैं। यह हर तस्वीर को अपनी मेमोरी में रखता है, इसलिए बदलते रंग, जैसे रंग चक्र या ध्वनि के साथ चलने वाले रंग, नहीं दिखते। स्थिर रंग दिखता है।</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>रंग सीधे {0} को जाते हैं। यह हर तस्वीर को अपनी मेमोरी में रखता है, इसलिए बदलते रंग, जैसे रंग चक्र या ध्वनि के साथ चलने वाले रंग, नहीं दिखते। स्थिर रंग दिखता है। पहली तस्वीर कीबोर्ड पर सहेजे गए इफ़ेक्ट मिटा देती है, और पुराने वापस नहीं आते।</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>{0} पर सीरियल डिवाइस</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>यह डिवाइस जुड़ा है, पर इसने PadForge के रंग नहीं लिए। PadForge हर मिनट दोबारा कोशिश करता है।</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows इस डिवाइस को कीबोर्ड या माउस के रूप में थामे रखता है और इसके रंग तय करने वाली रिपोर्ट को ठुकरा देता है, इसलिए PadForge इसे Windows पर रोशन नहीं कर सकता।</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>कोई दूसरा प्रोग्राम इस डिवाइस को खोले हुए है, इसलिए PadForge इसे रोशन नहीं कर सकता। वह प्रोग्राम बंद होते ही PadForge इसे रोशन करता है।</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>इस डिवाइस ने अभी तक जवाब नहीं दिया है। इसके जागते ही इसके रंग दिखेंगे।</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>रंग {0} के ज़रिए जाते हैं।</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>रंग {0} के ज़रिए जाते हैं, जो इस तरह के हर डिवाइस को एक साथ रोशन करता है। जब {0} नहीं चल रहा होता, तब PadForge इस डिवाइस को खुद रोशन करता है।</value></data>
@@ -1007,7 +1016,9 @@
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>रंग OpenRGB के SDK Server के ज़रिए जाते हैं। जब OpenRGB नहीं चल रहा होता, तब PadForge इस डिवाइस को खुद रोशन करता है।</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>रंग OpenRGB के SDK Server के ज़रिए जाते हैं।</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB ने यह डिवाइस थाम रखा है और उसके पास इसके लिए Direct मोड नहीं है, इसलिए इसकी रोशनी OpenRGB के पास ही रहती है।</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB अपना SDK Server बंद करके चल रहा है, इसलिए PadForge यह डिवाइस OpenRGB पर छोड़ देता है। OpenRGB में SDK Server चालू करें, और PadForge इसके ज़रिए डिवाइस को रोशन करेगा।</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB चल रहा है, पर उसका SDK Server पोर्ट {0} पर जवाब नहीं देता, इसलिए PadForge यह डिवाइस OpenRGB पर छोड़ देता है। OpenRGB में SDK Server चालू करें, और PadForge इसके ज़रिए डिवाइस को रोशन करेगा।</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE अपना SDK बंद करके चल रहा है। iCUE की सेटिंग में iCUE SDK चालू करें, और PadForge इसके ज़रिए डिवाइस को रोशन करेगा।</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} चल रहा है और उसने PadForge को अपने डिवाइस रोशन नहीं करने दिए। PadForge पूछता रहता है।</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} इस तरह के हर डिवाइस को एक साथ रोशन करता है, इसलिए वर्चुअल कंट्रोलर {1} वाला डिवाइस ही उन सबका रंग तय करता है।</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} इस तरह के हर डिवाइस को एक साथ रोशन करता है, इसलिए वर्चुअल कंट्रोलर {2} की {1} पंक्ति ही उन सबका रंग तय करती है।</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>वर्चुअल कंट्रोलर {0} भी इस डिवाइस को रोशन करता है, और उसी का रंग दिखता है।</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>हेडसेट</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>मदरबोर्ड, ग्राफ़िक्स कार्ड और मेमोरी</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>मदरबोर्ड और ग्राफ़िक्स कार्ड</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>माउसपैड और हेडसेट स्टैंड</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>माउसपैड, हेडसेट और हेडसेट स्टैंड</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>लाइटबार</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>छह अंकों का हेक्स रंग (RRGGBB या #RRGGBB) डालें और लागू करने के लिए Enter दबाएँ या कहीं और क्लिक करें।</value></data>
@@ -4671,6 +4682,7 @@
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>{0} की चैट से कनेक्ट हो रहा है…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>{0} की चैट पढ़ रहा है।</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>{0} की चैट तक नहीं पहुँच सका। फिर कोशिश कर रहा है।</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch पर {0} के लिए कोई चैट नहीं है। चैनल का नाम जाँचें।</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>रुका हुआ।</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>आपके प्रसारण के लिए कंट्रोलर की तस्वीर। इस पते को OBS में ब्राउज़र सोर्स के रूप में जोड़ें:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>आपके प्रसारण के लिए कंट्रोलर की तस्वीर को वेब कंट्रोलर और उसका सादा HTTP पता चाहिए। वेब कंट्रोलर कार्ड में सादा HTTP भी उपलब्ध कराएँ चालू करें। इस PC पर OBS के लिए केवल यह PC काफ़ी है।</value></data>

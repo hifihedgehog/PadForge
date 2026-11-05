@@ -25,6 +25,7 @@ using System.Runtime.InteropServices;
 public class PW {
     [DllImport("user32.dll")] public static extern bool SetProcessDPIAware();
     [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr h);
+    [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
     [DllImport("user32.dll")] public static extern bool SetCursorPos(int x, int y);
     [DllImport("user32.dll")] public static extern void mouse_event(uint f, uint x, uint y, uint d, IntPtr e);
     public static void ClickAt(int x, int y) {
@@ -61,6 +62,11 @@ function Click-Named([string]$name) {
         if ($null -eq $r) { continue }
         [PW]::SetForegroundWindow($hwnd) | Out-Null
         Start-Sleep -Milliseconds 120
+        # A click while another program's window is in front goes to that window.
+        if ([PW]::GetForegroundWindow() -ne $hwnd) {
+            Write-Host "  !! another window is in front, no click on '$name'"
+            return $false
+        }
         [PW]::ClickAt([int]($r.X + $r.Width / 2), [int]($r.Y + $r.Height / 2))
         Start-Sleep -Milliseconds 900
         Write-Host "  clicked '$name'"

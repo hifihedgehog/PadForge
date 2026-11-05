@@ -26,6 +26,9 @@ namespace PadForge.Tests
         /// <summary>The map a session reads from the device, or null.</summary>
         public volatile LightMap SessionMap;
 
+        /// <summary>The name a session gives its device, or null.</summary>
+        public volatile string SessionName;
+
         /// <summary>Set: the next paint waits on it, after it sets
         /// <see cref="Held"/>.</summary>
         public volatile ManualResetEventSlim Hold;
@@ -114,6 +117,8 @@ namespace PadForge.Tests
         public override bool Feature => false;
 
         public override LightMap Map => _family.SessionMap;
+
+        public override string DeviceName => _family.SessionName;
 
         public override byte[][] CrashFrames => _crash;
 
@@ -341,7 +346,9 @@ namespace PadForge.Tests
             Passes(backend);
             Assert.True(Assert.Single(backend.Snapshot.Units).Asleep);
             Assert.True(_family.Channels.Single().Disposed);
-            Assert.Empty(backend.Recorded);
+            // What the lost session would have handed back stays owed, on the
+            // crash record until the unit answers (IDirectUnitBackend, Owe).
+            Assert.Single(backend.Recorded);
         }
 
         [Fact]
@@ -424,7 +431,7 @@ namespace PadForge.Tests
             {
                 Family = family, Name = family.Model.Name, Map = family.Model.Map,
                 Open = family.Model.Open, BeginOwn = family.Model.BeginOwn, WriteOnce = family.Model.WriteOnce,
-                Owed = () => true,
+                Owed = _ => true,
                 Repair = (_, _) => { Interlocked.Increment(ref repairs); return true; },
             };
             family.Found = new[] { new OwnDevice(Key, model) { Container = Box } };

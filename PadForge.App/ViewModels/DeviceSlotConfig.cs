@@ -1850,12 +1850,12 @@ namespace PadForge.ViewModels
             _resetPeripheralClaimLevel ??= new RelayCommand(() => PeripheralClaimLevel = PeripheralClaimLevel.Colors);
         private RelayCommand _resetPeripheralClaimLevel;
 
-        /// <summary>The Key Colors card's Reset All (#557): every layer's
-        /// light colors and Other Lights rule, back to none.</summary>
         public RelayCommand ResetLedStripCountsCommand =>
             _resetLedStripCounts ??= new RelayCommand(() => LedStripCounts = string.Empty);
         private RelayCommand _resetLedStripCounts;
 
+        /// <summary>The Key Colors card's Reset All (#557): every layer's
+        /// light colors and Other Lights rule, back to none.</summary>
         public RelayCommand ResetKeyLightingCommand =>
             _resetKeyLighting ??= new RelayCommand(() => KeyLighting = string.Empty);
         private RelayCommand _resetKeyLighting;
@@ -1957,9 +1957,10 @@ namespace PadForge.ViewModels
         public MicLedDeviceItem(string id, string display) { Id = id; Display = display; }
     }
 
-    /// <summary>Player indicator LED selection. Sequential 0-5 to map
-    /// 1:1 with the ComboBox dropdown via <c>EnumIndexConverter</c>.
-    /// The synthesizer translates these to the wire-form bit patterns
+    /// <summary>Player indicator LED selection. The ComboBox binds it by
+    /// SelectedValue and each item's Tag, so the values keep their numbers
+    /// whatever the list's order. The synthesizer translates 0-5 to the
+    /// wire-form bit patterns
     /// at byte 43 (playerIndicator):
     /// Off=0x00, Player1=0x04, Player2=0x0A, Player3=0x15,
     /// Player4=0x1B, All=0x1F (per dualsense-tester's

@@ -194,6 +194,9 @@ namespace PadForge.Common.Input.Peripherals
                 OtherIds.TryGetValue(collection.ProductId, out ushort sameAs) ? collection with { ProductId = sameAs } : collection);
             if (registrations.Count == 0) return null;
             var registration = registrations[0];
+            // The K65 Mini's registration names no usage page, and a collection
+            // with no report as long as its frame cannot carry a picture.
+            if (registration.Detector == DetectK65Mini && collection.OutputReportLength < K65MiniPacketLength) return null;
             lock (_gate)
             {
                 bool oneColor = OneColor.Contains(collection.ProductId);
@@ -242,8 +245,8 @@ namespace PadForge.Common.Input.Peripherals
                 KeepAliveMs = model.KeepAliveMs,
                 KeepAliveIdleMs = model.KeepAliveIdleMs,
                 Begin = model.Begin,
-                Owed = () => CorsairSession.Owed(product),
-                Repair = (io, wait) => CorsairSession.Repair(io, wait, product, KeyboardHandBackGapMs),
+                Owed = path => CorsairSession.Owed(KeyboardProfileBackups.DeviceKey(product, path)),
+                Repair = (io, wait) => CorsairSession.Repair(io, wait, KeyboardProfileBackups.DeviceKey(product, io?.Path), KeyboardHandBackGapMs),
             };
         }
 
@@ -349,10 +352,12 @@ namespace PadForge.Common.Input.Peripherals
                     break;
                 case CorsairDeviceType.Mouse:
                 {
-                    // The names OpenRGB's code ends up with: the second
-                    // test of the chain replaces what the first set for the
-                    // M65 RGB Elite and the Harpoon RGB PRO (lines 1283-1304).
-                    string[] mouse = name == "Corsair Ironclaw RGB" ? CorsairLights.CorsairM65EliteLeds
+                    // The table OpenRGB holds for each mouse (lines 854-930). Its
+                    // chain at lines 1283-1304 has a slip, a second test that
+                    // replaces what the first set for the M65 RGB Elite and the
+                    // Harpoon RGB PRO, so those two read their own tables here.
+                    string[] mouse = name is "Corsair M65 RGB Elite" or "Corsair Ironclaw RGB" ? CorsairLights.CorsairM65EliteLeds
+                        : name == "Corsair Harpoon RGB PRO" ? CorsairLights.CorsairHarpoonProLeds
                         : name == "Corsair Sabre RGB" ? CorsairLights.CorsairSabreRgbLeds
                         : CorsairLights.CorsairMouseLeds;
                     for (int i = 0; i < MouseZones; i++)
@@ -717,7 +722,7 @@ namespace PadForge.Common.Input.Peripherals
             var map = new LightMap(Lights(type, logical, name), $"OpenRGB RGBController_CorsairPeripheral.cpp, {type}")
             { Product = product };
             bool keyboard = type == CorsairDeviceType.Keyboard;
-            return new PeripheralSession(product, type, logical, physical, map, keyboard ? 2 : 1, oneColor);
+            return new PeripheralSession(KeyboardProfileBackups.SessionKey(product, io.Path), type, logical, physical, map, keyboard ? 2 : 1, oneColor);
         }
 
         private HidLightingSession BeginK65Mini(IHidReportChannel io, Action<int> wait, string product)
@@ -727,14 +732,14 @@ namespace PadForge.Common.Input.Peripherals
                 if (!io.WriteOutput(frame)) return null;
                 wait(K65MiniOpenGapMs);
             }
-            return new BoardSession(product, (lights, colors) => new List<byte[]> { K65MiniPicture(lights, colors) });
+            return new BoardSession(KeyboardProfileBackups.SessionKey(product, io.Path), (lights, colors) => new List<byte[]> { K65MiniPicture(lights, colors) });
         }
 
         private HidLightingSession BeginK55ProXt(IHidReportChannel io, Action<int> wait, string product)
         {
             foreach (var frame in K55ProXtOpenFrames())
                 if (!io.WriteOutput(frame)) return null;
-            return new BoardSession(product, K55ProXtPicture);
+            return new BoardSession(KeyboardProfileBackups.SessionKey(product, io.Path), K55ProXtPicture);
         }
 
         /// <summary>A session of the older protocol.</summary>

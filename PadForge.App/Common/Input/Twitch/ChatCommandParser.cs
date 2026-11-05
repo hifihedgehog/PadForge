@@ -36,6 +36,11 @@ namespace PadForge.Common.Input.Twitch
     /// included, so one viewer cannot hold the game for minutes. A command
     /// over a limit, or with a word the streamer has not added, does not
     /// play at all.</para>
+    ///
+    /// <para>The row's buttons are read as levels, so a press landing on its
+    /// own release would read as one long hold. A press of a button therefore
+    /// waits until the button has been up for <see cref="ReleaseGapMs"/>, and
+    /// that wait counts toward the command's time.</para>
     /// </summary>
     internal static class ChatCommandParser
     {
@@ -55,6 +60,16 @@ namespace PadForge.Common.Input.Twitch
         /// <summary>Twitch's own limit on a chat message.</summary>
         public const int MaxLength = 500;
 
+        /// <summary>How long a button stays up before its next press: two
+        /// frames at 40 Hz.</summary>
+        public const int ReleaseGapMs = 50;
+
+        /// <summary>The most groups one message parses. A step sits inside
+        /// at most <see cref="MaxNesting"/> groups, so the longest command
+        /// the limits allow stays inside this, and an empty group ends the
+        /// parse before it comes near.</summary>
+        public const int MaxGroupParses = MaxSteps * MaxNesting;
+
         // ForgePlay's two patterns: a time at the end of a token, and a whole
         // token that is a time.
         private static readonly Regex s_trailingTime = new(@"(\d+(?:\.\d+)?)(ms|s)$", RegexOptions.CultureInvariant);
@@ -67,14 +82,20 @@ namespace PadForge.Common.Input.Twitch
         /// does not play it. <paramref name="buttonFor"/> gives a word's
         /// button, below 1 for a word the list does not have.</summary>
         public static IReadOnlyList<ChatStep> Parse(string text, Func<string, int> buttonFor)
+            => Parse(text, buttonFor, out _);
+
+        /// <summary>The same, and how many groups the parse read.</summary>
+        internal static IReadOnlyList<ChatStep> Parse(string text, Func<string, int> buttonFor, out int groups)
         {
+            groups = 0;
             if (string.IsNullOrWhiteSpace(text) || text.Length > MaxLength || buttonFor == null) return null;
             try
             {
                 var steps = new List<ChatStep>();
-                ParseTokens(Tokenize(text.Trim()), null, steps, buttonFor);
-                if (steps.Count == 0 || Duration(steps) > MaxCommandMs) return null;
-                return steps;
+                ParseTokens(Tokenize(text.Trim()), null, steps, buttonFor, ref groups);
+                if (steps.Count == 0) return null;
+                Timeline(steps, out int endMs);
+                return endMs > MaxCommandMs ? null : steps;
             }
             catch (Rejected)
             {
@@ -82,32 +103,16 @@ namespace PadForge.Common.Input.Twitch
             }
         }
 
-        /// <summary>How long the steps play: each step lasts as long as its
-        /// longest timed action (ForgePlay's executor waits for all of
-        /// them), a pause as long as its time.</summary>
-        public static int Duration(IReadOnlyList<ChatStep> steps)
-        {
-            long total = 0;
-            foreach (var step in steps)
-                total += StepMs(step);
-            return (int)Math.Min(total, int.MaxValue);
-        }
-
-        private static int StepMs(ChatStep step)
-        {
-            if (step.Actions.Length == 0) return step.DelayMs;
-            int longest = 0;
-            foreach (var action in step.Actions)
-                if (action.DurationMs > longest) longest = action.DurationMs;
-            return longest;
-        }
-
         /// <summary>The presses and releases the steps play, in order, and
-        /// the time the command ends. Every button still down at the end is
-        /// released then, ForgePlay's reset.</summary>
+        /// the time the command ends. A step lasts as long as its longest
+        /// timed action (ForgePlay's executor waits for all of them), a pause
+        /// as long as its time. Every button still down at the end is released
+        /// then, ForgePlay's reset.</summary>
         public static List<ChatEvent> Timeline(IReadOnlyList<ChatStep> steps, out int endMs)
         {
             var events = new List<ChatEvent>();
+            // When each button last went up, for the release gap.
+            var upAt = new Dictionary<int, int>();
             int t = 0;
             foreach (var step in steps)
             {
@@ -116,23 +121,44 @@ namespace PadForge.Common.Input.Twitch
                     t += step.DelayMs;
                     continue;
                 }
+                // A step's actions start together, so the whole step waits for
+                // the button it presses that went up last.
+                foreach (var action in step.Actions)
+                    if (action.Kind != ChatActionKind.Release && upAt.TryGetValue(action.Button, out int up))
+                        t = Math.Max(t, up + ReleaseGapMs);
                 int stepEnd = t;
                 foreach (var action in step.Actions)
                 {
                     int d = action.DurationMs;
+                    int actionEnd;
                     if (action.Kind == ChatActionKind.Release)
                     {
                         // A timed release presses the button again after its
-                        // time, ForgePlay's executor.
+                        // time, ForgePlay's executor, and never before the gap.
                         events.Add(new ChatEvent(t, action.Button, false));
-                        if (d >= 0) events.Add(new ChatEvent(t + d, action.Button, true));
+                        NoteUp(upAt, action.Button, t);
+                        actionEnd = t;
+                        if (d >= 0)
+                        {
+                            actionEnd = t + Math.Max(d, ReleaseGapMs);
+                            events.Add(new ChatEvent(actionEnd, action.Button, true));
+                        }
                     }
                     else
                     {
-                        events.Add(new ChatEvent(t, action.Button, true));
-                        if (d >= 0) events.Add(new ChatEvent(t + d, action.Button, false));
+                        // Past the step's start only when this same step let
+                        // the button up.
+                        int at = upAt.TryGetValue(action.Button, out int up) ? Math.Max(t, up + ReleaseGapMs) : t;
+                        events.Add(new ChatEvent(at, action.Button, true));
+                        actionEnd = at;
+                        if (d >= 0)
+                        {
+                            actionEnd = at + d;
+                            events.Add(new ChatEvent(actionEnd, action.Button, false));
+                            NoteUp(upAt, action.Button, actionEnd);
+                        }
                     }
-                    if (d > 0 && t + d > stepEnd) stepEnd = t + d;
+                    if (actionEnd > stepEnd) stepEnd = actionEnd;
                 }
                 t = stepEnd;
             }
@@ -149,6 +175,11 @@ namespace PadForge.Common.Input.Twitch
             });
             foreach (int i in indices) ordered.Add(events[i]);
             return ordered;
+        }
+
+        private static void NoteUp(Dictionary<int, int> upAt, int button, int at)
+        {
+            if (!upAt.TryGetValue(button, out int up) || at > up) upAt[button] = at;
         }
 
         private static List<string> Tokenize(string input)
@@ -182,13 +213,13 @@ namespace PadForge.Common.Input.Twitch
             return tokens;
         }
 
-        private static void ParseTokens(List<string> tokens, int? groupMs, List<ChatStep> steps, Func<string, int> buttonFor)
+        private static void ParseTokens(List<string> tokens, int? groupMs, List<ChatStep> steps, Func<string, int> buttonFor, ref int groups)
         {
             foreach (string token in tokens)
             {
                 if (token.StartsWith('[') && token.Contains(']'))
                 {
-                    ParseGroup(token, steps, buttonFor);
+                    ParseGroup(token, steps, buttonFor, ref groups);
                     continue;
                 }
                 Add(steps, ParseToken(token, groupMs, buttonFor));
@@ -202,13 +233,18 @@ namespace PadForge.Common.Input.Twitch
             steps.Add(step);
         }
 
-        private static void ParseGroup(string token, List<ChatStep> steps, Func<string, int> buttonFor)
+        private static void ParseGroup(string token, List<ChatStep> steps, Func<string, int> buttonFor, ref int groups)
         {
+            if (++groups > MaxGroupParses) throw new Rejected();
             int closing = ClosingBracket(token);
             if (closing < 0) throw new Rejected();
             string content = token.Substring(1, closing - 1);
             string suffix = token.Substring(closing + 1);
             var inner = Tokenize(content);
+            // A group that holds anything reaches a step, and the step limit,
+            // on its first pass. An empty one never would, however often it
+            // repeats, so it is refused here.
+            if (inner.Count == 0) throw new Rejected();
 
             var repeat = s_repeat.Match(suffix);
             if (repeat.Success)
@@ -217,7 +253,7 @@ namespace PadForge.Common.Input.Twitch
                     || count <= 0 || count > MaxSteps)
                     throw new Rejected();
                 for (int i = 0; i < count; i++)
-                    ParseTokens(inner, null, steps, buttonFor);
+                    ParseTokens(inner, null, steps, buttonFor, ref groups);
                 return;
             }
 
@@ -228,7 +264,7 @@ namespace PadForge.Common.Input.Twitch
                 if (ms < 0) throw new Rejected();
                 groupMs = ms;
             }
-            ParseTokens(inner, groupMs, steps, buttonFor);
+            ParseTokens(inner, groupMs, steps, buttonFor, ref groups);
         }
 
         private static int ClosingBracket(string token)

@@ -46,10 +46,12 @@ namespace PadForge.Common.Input.Peripherals
     /// <para>What the writes do. OpenRGB marks the Custom mode as one that
     /// saves by itself (MODE_FLAG_AUTOMATIC_SAVE, line 444), and every
     /// picture writes the stored effect table whole, so the effects the
-    /// user had set are replaced with OpenRGB's defaults from the first
-    /// picture on. A picture goes out once it has held for 150 ms and no
-    /// sooner than 500 ms after the one before, the spacing PadForge keeps
-    /// for every write that lands in a keyboard's memory
+    /// user had set are replaced from the first picture on, which the row's
+    /// line says (<see cref="HidLightingModel.ReplacesStoredEffects"/>). The
+    /// new ones are white where they take a color, for the reason
+    /// <see cref="MintakaKeyboardLighting"/> gives. A picture goes out once it
+    /// has held for 150 ms and no sooner than 500 ms after the one before, the
+    /// spacing PadForge keeps for every write that lands in a keyboard's memory
     /// (<see cref="LenovoLegionLighting.HoldMs"/>).</para>
     ///
     /// <para>Windows. The collection OpenRGB registers is the keyboard
@@ -62,8 +64,9 @@ namespace PadForge.Common.Input.Peripherals
     /// <para>Hand-back. No source reads the effect area back, and OpenRGB
     /// sends nothing when it closes (the destructor, lines 597-602), so the
     /// keyboard keeps PadForge's last picture in its Custom mode until
-    /// another program or its own controls change it. No source names a
-    /// program that lights it.</para>
+    /// another program or its own controls change it, and the effects it held
+    /// before the first picture do not come back. No source names a program
+    /// that lights it.</para>
     /// </summary>
     internal sealed class KeychronKeyboardLighting : IHidLightingFamily
     {
@@ -95,7 +98,7 @@ namespace PadForge.Common.Input.Peripherals
             if (collection == null || collection.VendorId != VendorId) return null;
             var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
             if (registrations.Count == 0) return null;
-            if (collection.FeatureReportLength != 0 && collection.FeatureReportLength < MintakaKeyboardLighting.PacketSize)
+            if (collection.FeatureReportLength < MintakaKeyboardLighting.PacketSize)
                 return null;
             return _models.Get(registrations[0].Name, () => Model(registrations[0].Name, collection.ProductId));
         }
@@ -135,6 +138,7 @@ namespace PadForge.Common.Input.Peripherals
             HoldMs = LenovoLegionLighting.HoldMs,
             RepaintMs = LenovoLegionLighting.RepaintMs,
             HeldByWindows = true,
+            ReplacesStoredEffects = true,
             Begin = (_, _) => new MintakaKeyboardLighting.Session(),
         };
     }

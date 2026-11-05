@@ -12,12 +12,13 @@ namespace PadForge.Common.Input.Peripherals
     /// (<see cref="LenovoLegionLighting"/>), so the hand-back has to write
     /// the profile's old contents back, and a run that ends without a
     /// hand-back, as a forced kill does, leaves that owed to the next run.
-    /// One backup per keyboard model, by its product key
-    /// (<see cref="LightMap.Product"/>), since PadForge writes one profile
-    /// of a keyboard at a time. Process-wide and saved with the app
-    /// settings, like the learned key maps, and saved at once: a backup is
-    /// worth nothing if it is not on disk before the first write it
-    /// guards.
+    /// A laptop's own keyboard keeps one backup, by its product key
+    /// (<see cref="LightMap.Product"/>), since a PC has one and PadForge
+    /// writes one profile of it at a time. An external device keeps one of
+    /// its own (<see cref="DeviceKey"/>), since a PC can hold two of one
+    /// model. Process-wide and saved with the app settings, like the learned
+    /// key maps, and saved at once: a backup is worth nothing if it is not on
+    /// disk before the first write it guards.
     /// </summary>
     internal static class KeyboardProfileBackups
     {
@@ -26,14 +27,21 @@ namespace PadForge.Common.Input.Peripherals
         /// byte and the effects.</summary>
         internal readonly record struct Backup(byte Profile, byte[] Contents);
 
+        /// <summary>What comes between a model's product key and a device's
+        /// path in <see cref="DeviceKey"/>.</summary>
+        private const char PathMark = '|';
+
         private sealed record Entry(byte Profile, byte[] Contents, int Version);
 
         private static readonly object s_lock = new();
         private static Dictionary<string, Entry> s_entries = new(StringComparer.OrdinalIgnoreCase);
         private static readonly Dictionary<string, int> s_failures = new(StringComparer.OrdinalIgnoreCase);
+        private static readonly Dictionary<string, long> s_failedAt = new(StringComparer.OrdinalIgnoreCase);
+        private static Func<long> s_ticks = () => Environment.TickCount64;
         private static int s_version;
         private static int s_persisted;
         private static bool s_persistAtOnce;
+        private static Func<string, bool> s_pathPresent;
 
         /// <summary>Raised after a backup was taken or dropped. Any thread.
         /// The service saves the settings on it.</summary>
@@ -43,78 +51,163 @@ namespace PadForge.Common.Input.Peripherals
         /// bytes less the report ID and the opcode.</summary>
         internal const int MaxContents = 958;
 
-        /// <summary>The backup on record for <paramref name="product"/>, or
-        /// null.</summary>
-        public static Backup? Get(string product)
+        /// <summary>The key an external device's backup is kept under: its
+        /// model's product key and the path of the collection PadForge wrote
+        /// through. Windows gives two present devices two paths whatever
+        /// serial numbers they report, and the path is at hand with no handle
+        /// open, which <see cref="HidLightingModel.Owed"/> needs. A channel
+        /// with no path keeps the product key.</summary>
+        internal static string DeviceKey(string product, string path)
+            => string.IsNullOrEmpty(path) ? product : product + PathMark + path;
+
+        /// <summary>The key a session of the device at
+        /// <paramref name="path"/> keeps its backup under. A device with no
+        /// serial number takes a new path on another USB port, so with no
+        /// backup of its own it takes over one a device of its model left at
+        /// a path that is gone. A session checks a backup against what its
+        /// device shows, so a backup that was another device's is dropped and
+        /// not written. A device away on another port with no session keeps
+        /// its backup, under its old path, until a claim opens it.</summary>
+        internal static string SessionKey(string product, string path)
         {
-            if (string.IsNullOrEmpty(product)) return null;
+            string key = DeviceKey(product, path);
+            if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(product)) return key;
+            string prefix = product + PathMark;
+            List<string> others = null;
             lock (s_lock)
-                return s_entries.TryGetValue(product, out var entry) ? new Backup(entry.Profile, entry.Contents) : null;
+            {
+                if (s_entries.ContainsKey(key)) return key;
+                foreach (string held in s_entries.Keys)
+                    if (held.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) (others ??= new()).Add(held);
+            }
+            if (others == null) return key;
+            foreach (string other in others)
+            {
+                bool present;
+                try { present = (s_pathPresent ?? PathPresent)(other.Substring(prefix.Length)); }
+                catch { present = true; }
+                if (present) continue;
+                Move(other, key);
+                break;
+            }
+            return key;
         }
 
-        /// <summary>Records what <paramref name="profile"/> of
-        /// <paramref name="product"/> holds, in place of any backup of the
-        /// model.</summary>
-        public static void Take(string product, byte profile, byte[] contents)
+        /// <summary>Whether a collection is still in the system: an open with
+        /// no access right, which asks the device nothing. The test host
+        /// opens no device (<see cref="RealHidAccess"/>), so to it every path
+        /// is present.</summary>
+        private static bool PathPresent(string path)
         {
-            if (string.IsNullOrEmpty(product) || contents == null || contents.Length < 3 || contents.Length > MaxContents)
+            if (RealHidAccess.Refused) return true;
+            using var channel = HidReportChannel.OpenFeatureOnly(path);
+            return channel != null;
+        }
+
+        private static void Move(string from, string to)
+        {
+            lock (s_lock)
+            {
+                if (!s_entries.TryGetValue(from, out var entry) || s_entries.ContainsKey(to)) return;
+                var entries = new Dictionary<string, Entry>(s_entries, StringComparer.OrdinalIgnoreCase);
+                entries.Remove(from);
+                int version = Interlocked.Increment(ref s_version);
+                entries[to] = entry with { Version = version };
+                s_entries = entries;
+                s_failures.Remove(from);
+                if (s_persistAtOnce) Volatile.Write(ref s_persisted, version);
+            }
+            Raise();
+        }
+
+        /// <summary>The backup on record for <paramref name="key"/>, or
+        /// null.</summary>
+        public static Backup? Get(string key)
+        {
+            if (string.IsNullOrEmpty(key)) return null;
+            lock (s_lock)
+                return s_entries.TryGetValue(key, out var entry) ? new Backup(entry.Profile, entry.Contents) : null;
+        }
+
+        /// <summary>Records what <paramref name="profile"/> of the device or
+        /// keyboard keyed <paramref name="key"/> holds, in place of any
+        /// backup under that key.</summary>
+        public static void Take(string key, byte profile, byte[] contents)
+        {
+            if (string.IsNullOrEmpty(key) || contents == null || contents.Length < 3 || contents.Length > MaxContents)
                 return;
             lock (s_lock)
             {
                 var entries = new Dictionary<string, Entry>(s_entries, StringComparer.OrdinalIgnoreCase);
                 int version = Interlocked.Increment(ref s_version);
-                entries[product] = new Entry(profile, (byte[])contents.Clone(), version);
+                entries[key] = new Entry(profile, (byte[])contents.Clone(), version);
                 s_entries = entries;
-                s_failures.Remove(product);
+                s_failures.Remove(key);
                 if (s_persistAtOnce) Volatile.Write(ref s_persisted, version);
             }
             Raise();
         }
 
-        /// <summary>Forgets the backup of <paramref name="product"/>: the
+        /// <summary>Forgets the backup of <paramref name="key"/>: the
         /// profile holds its own contents again, or someone else's.</summary>
-        public static void Drop(string product)
+        public static void Drop(string key)
         {
-            if (string.IsNullOrEmpty(product)) return;
+            if (string.IsNullOrEmpty(key)) return;
             lock (s_lock)
             {
-                if (!s_entries.ContainsKey(product)) return;
+                if (!s_entries.ContainsKey(key)) return;
                 var entries = new Dictionary<string, Entry>(s_entries, StringComparer.OrdinalIgnoreCase);
-                entries.Remove(product);
+                entries.Remove(key);
                 s_entries = entries;
-                s_failures.Remove(product);
+                s_failures.Remove(key);
                 int version = Interlocked.Increment(ref s_version);
                 if (s_persistAtOnce) Volatile.Write(ref s_persisted, version);
             }
             Raise();
         }
 
-        /// <summary>How many times this run failed to put the backup of
-        /// <paramref name="product"/> back.</summary>
-        public static int Failures(string product)
+        /// <summary>How long after its last failed try a backup's count of
+        /// failures clears. What fails a try can pass, another program's
+        /// exchange with the keyboard or a late answer, so a device is never
+        /// locked out for the run: it gets its tries again a minute on.</summary>
+        internal const int FailuresClearMs = 60000;
+
+        /// <summary>How many times in a row this run failed to put the backup
+        /// of <paramref name="key"/> back, with the last of them less than
+        /// <see cref="FailuresClearMs"/> ago.</summary>
+        public static int Failures(string key)
         {
-            if (string.IsNullOrEmpty(product)) return 0;
+            if (string.IsNullOrEmpty(key)) return 0;
             lock (s_lock)
-                return s_failures.TryGetValue(product, out int failures) ? failures : 0;
+            {
+                if (!s_failures.TryGetValue(key, out int failures)) return 0;
+                if (s_ticks() - s_failedAt[key] < FailuresClearMs) return failures;
+                s_failures.Remove(key);
+                s_failedAt.Remove(key);
+                return 0;
+            }
         }
 
         /// <summary>Counts a try that did not put the backup of
-        /// <paramref name="product"/> back. Not saved: the next run tries
+        /// <paramref name="key"/> back. Not saved: the next run tries
         /// again.</summary>
-        public static void NoteFailure(string product)
+        public static void NoteFailure(string key)
         {
-            if (string.IsNullOrEmpty(product)) return;
+            if (string.IsNullOrEmpty(key)) return;
             lock (s_lock)
-                s_failures[product] = (s_failures.TryGetValue(product, out int failures) ? failures : 0) + 1;
+            {
+                s_failures[key] = (s_failures.TryGetValue(key, out int failures) ? failures : 0) + 1;
+                s_failedAt[key] = s_ticks();
+            }
         }
 
-        /// <summary>Whether the backup of <paramref name="product"/> on
+        /// <summary>Whether the backup of <paramref name="key"/> on
         /// record has reached the settings file.</summary>
-        public static bool IsPersisted(string product)
+        public static bool IsPersisted(string key)
         {
-            if (string.IsNullOrEmpty(product)) return false;
+            if (string.IsNullOrEmpty(key)) return false;
             lock (s_lock)
-                return s_entries.TryGetValue(product, out var entry) && entry.Version <= Volatile.Read(ref s_persisted);
+                return s_entries.TryGetValue(key, out var entry) && entry.Version <= Volatile.Read(ref s_persisted);
         }
 
         /// <summary>Every backup, for the settings file, with the version
@@ -181,10 +274,13 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Clears every backup. <paramref name="persistAtOnce"/>
         /// counts each change as saved the moment it is made, for a test
         /// with no settings service.</summary>
-        internal static void ResetForTest(bool persistAtOnce = false)
+        internal static void ResetForTest(bool persistAtOnce = false, Func<string, bool> pathPresent = null,
+            Func<long> ticks = null)
         {
             lock (s_lock)
             {
+                s_pathPresent = pathPresent;
+                s_ticks = ticks ?? (() => Environment.TickCount64);
                 s_entries = new Dictionary<string, Entry>(StringComparer.OrdinalIgnoreCase);
                 s_failures.Clear();
                 int version = Interlocked.Increment(ref s_version);

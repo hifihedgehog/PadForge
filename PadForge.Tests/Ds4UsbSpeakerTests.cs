@@ -143,10 +143,11 @@ namespace PadForge.Tests
         {
             string writer = RepoFile("PadForge.App", "Common", "Input", "PlayStationEffectWriter.cs");
             Assert.Contains("ApplyDs4UsbAudioConfig(packet, fields);", writer);
-            Assert.Contains("return WriteRaw(devicePath, packet) && WriteDs4UsbRoute(devicePath, packet, fields);", writer);
-            Assert.Contains("return written && WriteDs4UsbRoute(devicePath, packet, fields);", writer);
+            Assert.Contains("if (!WriteRaw(devicePath, packet)) return false;", writer);
+            Assert.Contains("if (!written) return false;", writer);
+            Assert.Contains("routeLanded = WriteDs4UsbRoute(devicePath, packet, fields);", writer);
             Assert.Contains("if (packet[0] != 0x05) return true;", writer);
-            Assert.Contains("RawHidOutput.SetFeature(devicePath, Ds4UsbAudio.BuildRouteReport(route), stampSonyBtCrc: false)", writer);
+            Assert.Contains("RawHidOutput.SetFeatureOwnLengthFirst(devicePath, report)", writer);
         }
 
         /// <summary>The dispatcher routes a USB pad with audio, never a

@@ -2096,6 +2096,9 @@ namespace PadForge.Common.Input
                 {
                     try
                     {
+                        // The watchdog below reads this answer on the poll
+                        // thread, where the service manager is not asked.
+                        _ = MidiServiceRecovery.ServiceExists;
                         // A MIDI service restarted under PadForge leaves every
                         // slot and input on a dead instance. A new generation
                         // rebuilds them.
@@ -3818,10 +3821,12 @@ namespace PadForge.Common.Input
                     {
                         // When PTP is active, the trackpad's mouse collection
                         // disappears from GetRawInputDeviceList but synthetic
-                        // mouse WM_INPUT still arrives at hDevice=0. Keep the
+                        // mouse WM_INPUT still arrives at hDevice=0. Keep that
                         // device online and redirect its wrapper to IntPtr.Zero.
-                        if (_ptpReader != null && _ptpReader.IsAvailable &&
-                            ud.Device is SdlMouseWrapper mouseWrapper)
+                        // Any other mouse whose handle left was unplugged.
+                        // The device tree is read here on a removal alone.
+                        if (ud.Device is SdlMouseWrapper mouseWrapper &&
+                            StaysOnlineWhenHandleLeaves(_ptpReader != null && _ptpReader.IsAvailable, ud, PadForge.Services.InputService.IsTouchpadMouseRow))
                         {
                             mouseWrapper.UpdateHandle(IntPtr.Zero);
                             redirected.Add(handle);

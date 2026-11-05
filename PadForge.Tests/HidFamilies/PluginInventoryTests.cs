@@ -52,7 +52,10 @@ namespace PadForge.Tests
 
         private static bool IsLit(ushort vendor, ushort product)
         {
-            if (PluginDeviceLighting.Devices.Any(d => d.VendorId == vendor && d.ProductId == product)) return true;
+            // A row counts where the whole family list brings a device to it, by name in
+            // PluginRowBehaviorTests when it does not.
+            if (PluginDeviceLighting.Devices.Any(d => d.VendorId == vendor && d.ProductId == product && d.OnlyWhen == null && PluginRowReach.Unreached(d) == null)) return true;
+            if (PluginDeviceLighting.Devices.Any(d => d.VendorId == vendor && d.ProductId == product && d.OnlyWhen != null)) return true;
             if (OpenRgbRegistrations.All.Any(r => r.VendorId == vendor && r.ProductId == product)) return true;
             if (SinowealthMouseLighting.LibratbagMice.Any(m => m.Vendor == vendor && m.Product == product)) return true;
             switch (vendor)
@@ -99,10 +102,34 @@ namespace PadForge.Tests
         public void EveryProductOfEveryPlugin_IsLit_OrLeftOutForAStatedReason()
         {
             var missed = PluginInventory.All
-                .Where(row => !IsLeftOut(row.Plugin) && !NoLights.Contains((row.Vendor, row.Product)) && !IsLit(row.Vendor, row.Product))
+                .Where(row => !IsLeftOut(row.Plugin) && !NoLights.Contains((row.Vendor, row.Product))
+                    && !PluginCommentedOut.ContainsKey((row.Vendor, row.Product)) && !IsLit(row.Vendor, row.Product))
                 .Select(row => $"{row.Vendor:X4}:{row.Product:X4} {row.Plugin}")
                 .ToList();
             Assert.True(missed.Count == 0, missed.Count + " products no family lights:\n" + string.Join("\n", missed));
+        }
+
+        /// <summary>The entries a plugin keeps in a comment and says why: the generator reads
+        /// these from the comment, and stops when the comment no longer says so.</summary>
+        private static readonly Dictionary<(ushort Vendor, ushort Product), string> PluginCommentedOut = new()
+        {
+            // Corsair_Headset_Controller.js:520 and 597, "PID for wired WHILE wireless dongle
+            // plugged in, doesnt control the headset".
+            [(0x1B1C, 0x0A5B)] = WiredWhileDongled,
+            [(0x1B1C, 0x0A6A)] = WiredWhileDongled,
+        };
+
+        private const string WiredWhileDongled = "The wired ID while the dongle is plugged in, which does not control the headset.";
+
+        [Fact]
+        public void TheInventory_HoldsThePluginsCommentedOutHeadsets()
+        {
+            foreach (var (vendor, product) in PluginCommentedOut.Keys)
+            {
+                Assert.Contains(PluginInventory.All, r => r.Vendor == vendor && r.Product == product
+                    && r.Plugin == "Corsair/Modern_Corsair/Corsair_Headset_Controller.js");
+                Assert.False(IsLit(vendor, product), $"{vendor:X4}:{product:X4} is lit, so it no longer belongs in the list");
+            }
         }
 
         /// <summary>What the other projects name that PadForge does not light, and why.</summary>
@@ -172,6 +199,20 @@ namespace PadForge.Tests
             Assert.Contains(PluginInventory.All, r => r.Vendor == 0x1E7D && r.Product == 0x2D5C);
             // A plugin that keeps its products in a library is read too.
             Assert.Contains(PluginInventory.All, r => r.Vendor == 0x1B1C && r.Product == 0x1BAB);
+        }
+
+        /// <summary>The Logitech plugin returns <c>LogitechDevice.ProductIDs</c>, a list a class
+        /// holds, from its ProductId. The generator read it as nothing and left the plugin's 45
+        /// products out, receivers and wired G devices among them.</summary>
+        [Fact]
+        public void TheInventory_HoldsTheLogitechPluginsClassList()
+        {
+            var rows = PluginInventory.All
+                .Where(r => r.Plugin == "Logitech/Logitech_Modern_Device.js").ToList();
+            Assert.True(rows.Count >= 45, rows.Count + " products");
+            Assert.All(rows, r => Assert.Equal(PeripheralLinker.LogitechVid, r.Vendor));
+            foreach (ushort product in new ushort[] { 0xC539, 0xC547, 0xC081, 0xC35B })
+                Assert.Contains(rows, r => r.Product == product);
         }
 
         [Fact]

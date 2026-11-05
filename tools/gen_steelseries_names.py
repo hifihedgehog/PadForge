@@ -19,6 +19,8 @@ lists it (rivalcfg's devices/__init__.py, which repeats profiles, is not
 read). rivalcfg writes a no-break space inside "2.4 GHz", which is written
 as a plain space. Lines OpenRGB has commented out are left out.
 
+Run it without Python's -I switch: it imports tools/openrgb_cpp.py.
+
 Usage:
     python tools/gen_steelseries_names.py OPENRGB_ROOT RIVALCFG_ROOT SIGNAL_ROOT
     python tools/gen_steelseries_names.py OPENRGB_ROOT RIVALCFG_ROOT SIGNAL_ROOT --check   (compare, write nothing)
@@ -27,8 +29,8 @@ import argparse
 import glob
 import os
 import re
-import subprocess
 import sys
+import openrgb_cpp as oc
 
 PROJ_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT = os.path.join(PROJ_ROOT, "PadForge.App", "Common", "Input", "Peripherals", "SteelSeriesNames.g.cs")
@@ -59,8 +61,7 @@ def read(path):
 
 
 def commit_of(root):
-    return subprocess.run(["git", "-C", root, "rev-parse", "HEAD"],
-                          capture_output=True, text=True, check=True).stdout.strip()
+    return oc.git_head(root)
 
 
 def line_of(text, index):

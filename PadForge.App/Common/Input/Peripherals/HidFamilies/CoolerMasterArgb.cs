@@ -62,10 +62,22 @@ namespace PadForge.Common.Input.Peripherals
     /// streams these frames (Cooler_Master_A-RGB_LED_Small_Controller.js,
     /// Render), so they go out at the realtime rate.</para>
     ///
-    /// <para>What the writes do. OpenRGB marks both devices' modes as saved
-    /// by the device ("@save :robot:", RGBController_CMARGBController.cpp:18,
-    /// RGBController_CMSmallARGBController.cpp:18), so a picture sent as a
-    /// mode is held
+    /// <para>What the writes do. One rule holds across this family, and it goes by the
+    /// frame. OpenRGB's page tag says both devices save on every update
+    /// ("@save :robot:", RGBController_CMARGBController.cpp:18,
+    /// RGBController_CMSmallARGBController.cpp:18, the meaning from its commit
+    /// 8f876423), and it says the same of the MP750 and the Hanbo, so it tells
+    /// them apart in nothing. A frame that saves, a mode with
+    /// MODE_FLAG_AUTOMATIC_SAVE or one that ends with the save command 50 55
+    /// (<see cref="RgbcHoldMs"/>), holds its pictures. A Direct frame streams. So does
+    /// a mode frame a reference sends as a stream: the MP750's Static
+    /// (CoolerMaster_MP750L_Mat.js:54-81) and the RGB header's here
+    /// (RGBController_CMARGBController.cpp:500, Cooler_Master_ARGB_Controller.js:66
+    /// and 172). Any other mode frame is taken to land in the device's memory,
+    /// since nothing shows that rate is safe for it. The addressable headers' Static
+    /// frames are that case (SetPortMode, CMARGBController.cpp:214-226, no save flag
+    /// at RGBController_CMARGBController.cpp:291, and no reference sends them
+    /// repeatedly), so a picture sent as a mode is held
     /// 150 ms and such pictures go out no sooner than 500 ms apart, PadForge's
     /// spacing for writes that land in a device's memory
     /// (<see cref="LenovoLegionLighting.HoldMs"/>). A session first reads
@@ -74,7 +86,13 @@ namespace PadForge.Common.Input.Peripherals
     /// CMSmallARGBController.cpp:44-70), and the hand-back writes that back
     /// with SetPortMode or SetMode, which is also the crash frames. A device
     /// that does not answer the read gets no session, since its own
-    /// lighting could not be put back.</para>
+    /// lighting could not be put back. A header that reads as Direct is
+    /// showing what an earlier run left and no lighting of its own, so it
+    /// takes the device's first effect, Spectrum, at OpenRGB's defaults
+    /// (RGBController_CMARGBController.cpp:236-244,
+    /// RGBController_CMSmallARGBController.cpp:183-192), as the MK850 takes
+    /// its effect 1. The RGB header has no Spectrum and takes its Static with
+    /// the color it read.</para>
     ///
     /// <para>No source names a process of Cooler Master's software for these
     /// controllers beyond MasterPlus, which the family names on every
@@ -101,6 +119,11 @@ namespace PadForge.Common.Input.Peripherals
         internal const byte ArgbDirect = 0xFE;
         internal const byte SmallDirect = 0xFE;
         internal const byte SmallPassthrough = 0xFF;
+
+        /// <summary>CM_ARGB_MODE_SPECTRUM and CM_SMALL_ARGB_MODE_SPECTRUM, and
+        /// CM_ARGB_SPEED_NORMAL and CM_SMALL_ARGB_SPEED_NORMAL.</summary>
+        internal const byte ArgbSpectrum = 0x01;
+        internal const byte ArgbSpeedNormal = 0x02;
 
         /// <summary>CM_ARGB_BRIGHTNESS_MAX and CM_SMALL_ARGB_BRIGHTNESS_MAX.</summary>
         internal const byte ArgbBrightness = 0xFF;
@@ -263,6 +286,17 @@ namespace PadForge.Common.Input.Peripherals
             return new[] { first, second };
         }
 
+        /// <summary>The mode a header goes back to from what its read gave:
+        /// that mode, or for Direct, which an earlier run left, Spectrum, or
+        /// the RGB header's Static.</summary>
+        internal static ArgbPortState ArgbOwnState(int port, ArgbPortState read)
+        {
+            if (read.Mode != ArgbDirect) return read;
+            return port == ArgbRgbPort
+                ? new ArgbPortState(RgbStatic, 0, ArgbBrightness, false, read.Color)
+                : new ArgbPortState(ArgbSpectrum, ArgbSpeedNormal, ArgbBrightness, false, 0);
+        }
+
         /// <summary>A header's still color: the Static mode at full
         /// brightness, speed 0, no random colors.</summary>
         internal static byte[][] ArgbColor(int port, int color)
@@ -295,7 +329,7 @@ namespace PadForge.Common.Input.Peripherals
                 States = states;
                 _product = product;
                 var frames = new List<byte[]>();
-                for (int port = 0; port < states.Length; port++) frames.AddRange(ArgbSetPortMode(port, states[port]));
+                for (int port = 0; port < states.Length; port++) frames.AddRange(ArgbSetPortMode(port, ArgbOwnState(port, states[port])));
                 SetHandBack(frames.ToArray());
             }
 
@@ -514,7 +548,9 @@ namespace PadForge.Common.Input.Peripherals
             {
                 State = state;
                 _product = product;
-                SetHandBack(SmallSetMode(state));
+                SetHandBack(SmallSetMode(state.Mode == SmallDirect
+                    ? new ArgbPortState(ArgbSpectrum, ArgbSpeedNormal, ArgbBrightness, false, 0)
+                    : state));
             }
 
             /// <summary>What the header ran when the session began.</summary>

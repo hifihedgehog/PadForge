@@ -21,6 +21,45 @@ namespace PadForge.Tests
         /// its first paragraph. #494's families speak their own protocols and
         /// have lists of their own.</summary>
         [Fact]
+        public void EveryRegistrationOnACollectionWindowsHolds_TakesFeatureReports_OrIsNamed()
+        {
+            // On a collection Windows holds, feature reports pass and output
+            // reports do not, by either call. A family registered on one needs
+            // a model that keeps the handle with no access right. The two named
+            // send output reports alone: their rows say Windows holds them.
+            var outputOnly = new HashSet<string> { "LexipMouseController", "MNTKeyboardController" };
+            var seen = new HashSet<string>();
+            foreach (var r in OpenRgbRegistrations.All.Where(x => x.UsagePage == 1 && x.Usage is 1 or 2 or 6 or 7))
+            {
+                var collection = KeyboardFamilyTestKit.CollectionFor(r, output: 2048, feature: 2048, input: 2048);
+                Assert.True(collection.WindowsHolds, r.Name);
+                var model = HidLightingFamilies.All.Select(f => f.Match(collection)).FirstOrDefault(m => m != null);
+                Assert.True(model != null, r.Name + " has no model");
+                Assert.True(model.HeldByWindows != outputOnly.Contains(r.Family), r.Name);
+                seen.Add(r.Family);
+            }
+            Assert.Superset(outputOnly, seen);
+        }
+
+        /// <summary>A handle with no access right on any other collection means
+        /// another program has it, and nothing is written to it. So every model
+        /// that keeps such a handle matches only collections Windows holds.</summary>
+        [Fact]
+        public void EveryModelThatKeepsAHandleWithNoAccessRight_IsOnACollectionWindowsHolds()
+        {
+            int seen = 0;
+            foreach (var r in OpenRgbRegistrations.All)
+            {
+                var collection = KeyboardFamilyTestKit.CollectionFor(r, output: 2048, feature: 2048, input: 2048);
+                var model = HidLightingFamilies.All.Select(f => f.Match(collection)).FirstOrDefault(m => m != null);
+                if (model?.HeldByWindows != true) continue;
+                seen++;
+                Assert.True(collection.WindowsHolds, r.Name);
+            }
+            Assert.True(seen > 0);
+        }
+
+        [Fact]
         public void TheTable_HoldsEveryPortedFamily()
         {
             var families = OpenRgbRegistrations.All.Select(r => r.Family).Distinct().ToList();
@@ -57,7 +96,7 @@ namespace PadForge.Tests
         /// ask for one length exactly, so a registration is offered each.</summary>
         private static readonly ushort[] Lengths =
         {
-            0, 7, 8, 9, 16, 17, 20, 21, 32, 33, 37, 49, 59, 61, 64, 65, 72, 78, 90, 91, 129, 145, 193, 256, 264, 321, 513, 520, 525, 1024,
+            0, 7, 8, 9, 16, 17, 20, 21, 32, 33, 37, 49, 59, 61, 64, 65, 72, 78, 90, 91, 129, 145, 193, 256, 264, 321, 513, 520, 525, 1024, 1025,
         };
 
         /// <summary>The usage pages a family asks of a registration that names

@@ -100,6 +100,7 @@ using System;
 using System.Runtime.InteropServices;
 public static class AddSlotsWin {
     [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr h);
+    [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
     [DllImport("user32.dll")] public static extern bool SetCursorPos(int x, int y);
     [DllImport("user32.dll")] public static extern void mouse_event(uint f, uint dx, uint dy, uint d, UIntPtr e);
 }
@@ -118,6 +119,9 @@ public static class AddSlotsWin {
         # so the entry is clicked at its center, as tools/a11y_uia_audit.ps1
         # selects pages.
         [AddSlotsWin]::SetForegroundWindow($proc.MainWindowHandle) | Out-Null
+        Start-Sleep -Milliseconds 200
+        # A click while another program's window is in front goes to that window.
+        if ([AddSlotsWin]::GetForegroundWindow() -ne $proc.MainWindowHandle) { "  !! another window is in front, no click" | Out-File $logFile -Encoding ascii -Append; return $false }
         $r = $addBtn.Current.BoundingRectangle
         [AddSlotsWin]::SetCursorPos([int]($r.X + $r.Width / 2), [int]($r.Y + $r.Height / 2)) | Out-Null
         [AddSlotsWin]::mouse_event(2, 0, 0, 0, [UIntPtr]::Zero)

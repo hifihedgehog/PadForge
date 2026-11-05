@@ -76,7 +76,8 @@ namespace PadForge.Common.Input.Peripherals
         private int _disposed;
         private int _passes;
 
-        private static Thread s_lastWorker;
+        /// <summary>The route's workers over the engine's restarts.</summary>
+        private static readonly WorkerSuccession s_workers = new();
 
         public WootingRgbSdkBackend() : this(null, null, null, IdleTickMs) { }
 
@@ -207,9 +208,7 @@ namespace PadForge.Common.Input.Peripherals
 
         private void Worker(WorkerRun run)
         {
-            var previous = Interlocked.Exchange(ref s_lastWorker, Thread.CurrentThread);
-            if (previous != null && previous != Thread.CurrentThread && previous.IsAlive && !previous.Join(_stopJoinMs))
-                PadForge.Engine.SdlDiagLog.WriteLine("PERIPHERAL Wooting SDK previous worker still running, starting anyway");
+            s_workers.Enter(run, _stopJoinMs, "Wooting SDK");
             var units = new Dictionary<string, Unit>(StringComparer.OrdinalIgnoreCase);
             try
             {
@@ -246,25 +245,24 @@ namespace PadForge.Common.Input.Peripherals
             }
             finally
             {
-                var current = _run;
-                bool ownRun = current == null || ReferenceEquals(current, run);
                 // A keyboard handed back, or taken over by another writer,
                 // leaves the crash path's record. One whose reset did not go
-                // out, or is owed from a failed write, stays on it.
+                // out, or is owed from a failed write, stays on it. A keyboard
+                // a later run has claimed is that run's to say.
                 foreach (var unit in units.Values)
                 {
-                    if (ownRun)
+                    if (s_workers.MayReach(unit.Key, run))
                     {
                         bool taken = TakenOver(unit.Key);
                         bool back = false;
                         if (!taken && unit.Lit && unit.Channel != null)
                             try { back = HandBack(unit); } catch { }
                         if (taken || back || (!unit.Lit && !unit.Owed)) Unrecord(unit.Key);
-                        PeripheralLightMaps.Remove(unit.Path);
                     }
+                    if (s_workers.Holds(run)) PeripheralLightMaps.Remove(unit.Path);
                     Close(unit);
                 }
-                if (ownRun) PeripheralOutputs.SetBackendState(OutputFamily.WootingRgbSdk, BackendState.Idle);
+                if (s_workers.Holds(run)) PeripheralOutputs.SetBackendState(OutputFamily.WootingRgbSdk, BackendState.Idle);
             }
         }
 
@@ -313,7 +311,7 @@ namespace PadForge.Common.Input.Peripherals
                     Soonest(ref due, unit.RetryAt);
                     return;
                 }
-                if (!Enter(unit, now))
+                if (!Enter(run, unit, now))
                 {
                     Soonest(ref due, unit.RetryAt);
                     return;
@@ -343,7 +341,7 @@ namespace PadForge.Common.Input.Peripherals
         /// reset goes on record before the command, since the keyboard shows
         /// the route's colors from its first picture. False when the
         /// collection did not open or the command did not go out.</summary>
-        private bool Enter(Unit unit, long now)
+        private bool Enter(WorkerRun run, Unit unit, long now)
         {
             IHidReportChannel channel = null;
             try { channel = _open(unit.Key); } catch { }
@@ -353,6 +351,7 @@ namespace PadForge.Common.Input.Peripherals
                 return false;
             }
             unit.Channel = channel;
+            s_workers.Claim(unit.Key, run);
             Record(unit.Key);
             if (!Command(unit, WootingRgbSdkRoute.ColorInitCommand))
             {

@@ -156,6 +156,7 @@ namespace PadForge.Tests
         private const string HeadTracker = Input + "HeadTrackerDevice.cs";
         private const string Hooks = "PadForge.Engine/Common/InputHookManager.cs";
         private const string Startup = "PadForge.App/Common/StartupHelper.cs";
+        private const string GiveBack = Services + "GiveBackTask.cs";
         private const string Ds3Driver = Services + "Ds3DriverInstaller.cs";
         private const string WebTls = Services + "WebControllerTls.cs";
         private const string Mutex = "PadForge.Engine/Common/AnalogKeyboard/AnalogKeyboardNamedMutex.cs";
@@ -217,6 +218,7 @@ namespace PadForge.Tests
             (HeadTracker, "FreeTrackReader"),
             (Hooks, "InputHookManager"),
             (Startup, "StartupHelper"),
+            (GiveBack, "GiveBackTask"),
             (Ds3Driver, "Ds3DriverInstaller"),
             (WebTls, "WebControllerTls"),
             (Mutex, "AnalogKeyboardNamedMutex"),
@@ -258,6 +260,7 @@ namespace PadForge.Tests
             Assert.True(InputHookManager.OffLimitsForTest);
             Assert.True(InputHookManager.DesktopInputOffLimits);
             Assert.True(StartupHelper.OffLimitsForTest);
+            Assert.True(GiveBackTask.OffLimitsForTest);
             Assert.True(Ds3DriverInstaller.OffLimitsForTest);
             Assert.True(WebControllerTls.OffLimitsForTest);
             Assert.True(AnalogKeyboardNamedMutex.OffLimitsForTest);
@@ -475,8 +478,8 @@ namespace PadForge.Tests
             new object[] { OwnLighting, "internal static bool SerialWriteOnce(string path, int baud, byte[] bytes, int timeoutMs)", "if (OffLimitsForTest) return false;" },
             new object[] { OwnLighting, "internal static bool SetLenovoLightControlOwner(int owner, int timeoutMs)", "if (OffLimitsForTest) return false;" },
             new object[] { AuraCore, "internal static string MainboardName()", "if (OffLimitsForTest) return null;" },
-            new object[] { OpenRgb, "internal static IOpenRgbLink Connect(int port, int timeoutMs)", "if (OffLimitsForTest) return null;" },
-            new object[] { OpenRgbPort, "internal static int Find()", "if (OffLimitsForTest) return OpenRgbProtocol.DefaultPort;" },
+            new object[] { OpenRgb, "internal static IOpenRgbLink Connect(OpenRgbServerAddress address, int timeoutMs)", "if (OffLimitsForTest) return null;" },
+            new object[] { OpenRgbPort, "internal static OpenRgbServerAddress Find()", "if (OffLimitsForTest) return OpenRgbServerAddress.Default;" },
             new object[] { OpenRgbPort, "internal static string ReadSettings(string path)", "if (OffLimitsForTest) return null;" },
             new object[] { OpenRgbPort, "internal static string CommandLineOf(uint processId)", "if (OffLimitsForTest) return null;" },
             // Corsair iCUE's SDK library (#557).
@@ -576,6 +579,7 @@ namespace PadForge.Tests
                 ("PadForge.App/Common/HidHideArm64Installer.cs", 1),
                 (Shell, 2),
                 (Startup, 1),
+                (GiveBack, 1),
                 (Ds3Driver, 1),
                 (Services + "UpdateService.cs", 1),
                 (Services + "WebControllerServer.cs", 1),

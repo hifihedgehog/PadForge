@@ -61,13 +61,14 @@ namespace PadForge.Common.Input.Peripherals
         /// <paramref name="productId"/>, as OpenRGB's look takes every
         /// present device whose hardware ID starts so
         /// (find_usb_serial_port_win.cpp:62-104), each keyed \\.\COMn with
-        /// the model <paramref name="modelOf"/> gives it. A port whose
-        /// container cannot be read yet is left for the next look, since the
-        /// key is no interface path to look it up by, as DygmaRaiseLighting
+        /// the model <paramref name="modelOf"/> gives it and the name
+        /// <paramref name="nameOf"/> gives it, or the model's without one. A port
+        /// whose container cannot be read yet is left for the next look, since
+        /// the key is no interface path to look it up by, as DygmaRaiseLighting
         /// leaves it. <paramref name="modelOf"/> answers null for a port the
         /// family does not list.</summary>
         public static List<OwnDevice> SerialPorts(IReadOnlyList<ComPort> ports, Func<string, Guid> containerOf,
-            ushort vendorId, ushort productId, Func<ComPort, HidLightingModel> modelOf)
+            ushort vendorId, ushort productId, Func<ComPort, HidLightingModel> modelOf, Func<ComPort, string> nameOf = null)
         {
             var found = new List<OwnDevice>();
             if (ports == null) return found;
@@ -85,7 +86,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (container == Guid.Empty) continue;
                 found.Add(new OwnDevice(@"\\.\" + port.PortName, model)
                 {
-                    VendorId = vendorId, ProductId = productId, Container = container,
+                    VendorId = vendorId, ProductId = productId, Container = container, Name = nameOf?.Invoke(port),
                 });
             }
             return found;
@@ -162,6 +163,7 @@ namespace PadForge.Common.Input.Peripherals
         private readonly byte[] _opening;
         private readonly byte[] _handBack;
         private readonly LightMap _map;
+        private readonly string _deviceName;
         private bool _opened;
         private byte[][] _crash = Array.Empty<byte[]>();
 
@@ -171,9 +173,11 @@ namespace PadForge.Common.Input.Peripherals
         /// <param name="opening">Bytes that go out once, before the first picture, or null.</param>
         /// <param name="handBack">The bytes that give the device back, or null for none.</param>
         /// <param name="map">The map of the device the session opened, or null for the model's.</param>
+        /// <param name="deviceName">The name the device answered to, or null.</param>
         public SerialFramesSession(ISerialLineChannel port, int size, Func<int[], byte[]> frame,
-            byte[] opening = null, byte[] handBack = null, LightMap map = null)
+            byte[] opening = null, byte[] handBack = null, LightMap map = null, string deviceName = null)
         {
+            _deviceName = deviceName;
             _port = port;
             _size = size;
             _frame = frame;
@@ -185,6 +189,8 @@ namespace PadForge.Common.Input.Peripherals
         public override bool Feature => false;
 
         public override LightMap Map => _map;
+
+        public override string DeviceName => _deviceName;
 
         /// <summary>The hand-back, once a picture may have gone out.</summary>
         public override byte[][] CrashFrames => _crash;

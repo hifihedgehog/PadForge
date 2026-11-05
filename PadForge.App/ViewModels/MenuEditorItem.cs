@@ -9,9 +9,12 @@ using PadForge.Resources.Strings;
 namespace PadForge.ViewModels
 {
     /// <summary>One pickable menu opener (Left Stick / Right Stick /
-    /// Touchpad N) on the PHYSICAL controller. Equality is by descriptor:
-    /// the option lists rebuild on culture / capability changes, and the
-    /// ComboBox's SelectedItem must keep matching across instance churn.</summary>
+    /// Touchpad N) on the PHYSICAL controller. Equality is by descriptor and
+    /// label: the option lists rebuild on every read, and the ComboBox's
+    /// SelectedItem must keep matching across instance churn in one
+    /// language. A new language gives the same descriptor a new label, and
+    /// an item the box counts as equal to the one it holds would keep the
+    /// old label on the closed box.</summary>
     public sealed class MenuHostOption
     {
         public string Descriptor { get; init; } = "";
@@ -19,24 +22,31 @@ namespace PadForge.ViewModels
         public bool IsTouchpad { get; init; }
         public override string ToString() => Label;
         public override bool Equals(object obj)
-            => obj is MenuHostOption o && string.Equals(o.Descriptor, Descriptor, StringComparison.Ordinal);
+            => obj is MenuHostOption o && string.Equals(o.Descriptor, Descriptor, StringComparison.Ordinal)
+               && string.Equals(o.Label, Label, StringComparison.Ordinal);
         public override int GetHashCode() => Descriptor.GetHashCode();
     }
 
     /// <summary>Generic labeled int option (fire mode, half, binding kind,
     /// key, button). <see cref="Description"/> feeds the option's tooltip
     /// and, for fire modes, the persistent caption under the combo; empty
-    /// for options that need no explanation. Equal by value, as
-    /// <see cref="MenuHostOption"/> is by descriptor: lists built per read
-    /// hand a combo new objects, and a combo whose list is replaced keeps
-    /// its selection only when the new list holds an equal item.</summary>
+    /// for options that need no explanation. Equal by value, label and
+    /// description, as <see cref="MenuHostOption"/> is by descriptor and
+    /// label: lists built per read hand a combo new objects, and a combo
+    /// whose list is replaced keeps its selection only when the new list
+    /// holds an equal item. After a language switch the items are not equal,
+    /// so the value raised again selects the new item and the closed box
+    /// shows the new label.</summary>
     public sealed class MenuIntOption
     {
         public int Value { get; init; }
         public string Label { get; init; } = "";
         public string Description { get; init; } = "";
         public override string ToString() => Label;
-        public override bool Equals(object obj) => obj is MenuIntOption o && o.Value == Value;
+        public override bool Equals(object obj)
+            => obj is MenuIntOption o && o.Value == Value
+               && string.Equals(o.Label, Label, StringComparison.Ordinal)
+               && string.Equals(o.Description, Description, StringComparison.Ordinal);
         public override int GetHashCode() => Value;
     }
 

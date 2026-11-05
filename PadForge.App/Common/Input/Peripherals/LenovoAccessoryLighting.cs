@@ -84,10 +84,10 @@ namespace PadForge.Common.Input.Peripherals
                     "OpenRGB RGBController_LenovoK510.cpp") { Product = product },
                 HoldMs = LenovoLegionLighting.HoldMs,
                 RepaintMs = LenovoLegionLighting.RepaintMs,
-                Begin = (io, wait) => Begin(io, product),
-                Owed = () => KeyboardProfileBackups.Get(product) != null
-                             && KeyboardProfileBackups.Failures(product) < RepairTries,
-                Repair = (io, _) => Repair(io, product),
+                Begin = (io, wait) => Begin(io, KeyboardProfileBackups.SessionKey(product, io?.Path)),
+                Owed = path => KeyboardProfileBackups.Get(KeyboardProfileBackups.DeviceKey(product, path)) != null
+                               && KeyboardProfileBackups.Failures(KeyboardProfileBackups.DeviceKey(product, path)) < RepairTries,
+                Repair = (io, _) => Repair(io, KeyboardProfileBackups.DeviceKey(product, io?.Path)),
             };
         });
 
@@ -97,7 +97,7 @@ namespace PadForge.Common.Input.Peripherals
                 || collection.UsagePage != UsagePage || collection.Usage != Usage)
                 return null;
             if (collection.InterfaceNumber >= 0 && collection.InterfaceNumber != Interface) return null;
-            if (collection.OutputReportLength != 0 && collection.OutputReportLength < PacketSize) return null;
+            if (collection.OutputReportLength < PacketSize) return null;
             return s_model.Value;
         }
 
@@ -319,7 +319,7 @@ namespace PadForge.Common.Input.Peripherals
             if (collection == null || collection.VendorId != VendorId || collection.ProductId != ProductId
                 || collection.UsagePage != UsagePage || collection.Usage != Usage)
                 return null;
-            if (collection.OutputReportLength != 0 && collection.OutputReportLength < PacketSize) return null;
+            if (collection.OutputReportLength < PacketSize) return null;
             return s_model.Value;
         }
 
@@ -506,9 +506,12 @@ namespace PadForge.Common.Input.Peripherals
 
             public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
-                => io.SetFeature(Prelude()) && io.WriteOutput(ModeReport(lights, colors))
-                    ? HidLightingPaint.Sent
-                    : HidLightingPaint.Failed;
+            {
+                // OpenRGB sends the mode report whatever the feature report
+                // answered (LenovoK500Controller.cpp:167-173).
+                io.SetFeature(Prelude());
+                return io.WriteOutput(ModeReport(lights, colors)) ? HidLightingPaint.Sent : HidLightingPaint.Failed;
+            }
 
             /// <summary>Nothing to send: see the class comment.</summary>
             public override bool HandBack(IHidReportChannel io, Action<int> wait) => true;

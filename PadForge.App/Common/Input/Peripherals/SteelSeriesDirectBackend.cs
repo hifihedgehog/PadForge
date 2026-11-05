@@ -235,6 +235,15 @@ namespace PadForge.Common.Input.Peripherals
             public LightMap SentMap;
             public int SentFill;
 
+            /// <summary>The picture a family with a hold is waiting on, and
+            /// when it was first seen (<see cref="SteelSeriesFamilyInfo.HoldMs"/>).</summary>
+            public bool Holding;
+            public int HeldRgb;
+            public int[] HeldColors;
+            public LightMap HeldMap;
+            public int HeldFill;
+            public long HeldSince;
+
             /// <summary>A per-key board's SKU, which picks the keys of its
             /// map (<see cref="SteelSeriesApexLayouts"/>), or null. Asked once
             /// while the device stays: <see cref="SkuAsked"/> after the
@@ -310,10 +319,8 @@ namespace PadForge.Common.Input.Peripherals
         private readonly bool _powerEvents;
         private int _resumed;
 
-        /// <summary>The newest worker thread of any instance, which the
-        /// next one waits for. Static because the collections it holds are
-        /// the machine's.</summary>
-        private static Thread s_lastWorker;
+        /// <summary>The family's workers over the engine's restarts.</summary>
+        private static readonly WorkerSuccession s_workers = new();
 
         public SteelSeriesDirectBackend()
             : this(null, null, null, null, ActiveTickMs, IdleTickMs, powerEvents: true) { }
@@ -421,7 +428,10 @@ namespace PadForge.Common.Input.Peripherals
         /// worker that does not stop in time claims nothing more, and each
         /// unit still on record gets its hand-back through a one-shot write
         /// that opens a handle of its own. Every hand-back of the family is
-        /// an output report, so one writer serves them all.</summary>
+        /// an output report, so one writer serves them all. A unit whose path
+        /// the link pass closed because GG runs or OpenRGB holds it gets
+        /// nothing (<see cref="LeftToVendorProgram"/>), as in the shared
+        /// worker's crash path (HidLightingBackend.ReleaseClaimedNow).</summary>
         public void ReleaseClaimedNow(long deadline)
         {
             var run = _run;
@@ -434,6 +444,7 @@ namespace PadForge.Common.Input.Peripherals
             }
             foreach (var (path, frames) in Interlocked.Exchange(ref _recorded, Array.Empty<(string, byte[][])>()))
             {
+                if (LeftToVendorProgram(new OutputPath(OutputFamily.SteelSeriesUnit, path))) continue;
                 foreach (byte[] frame in frames)
                 {
                     left = deadline - _ticks();
@@ -473,11 +484,7 @@ namespace PadForge.Common.Input.Peripherals
             // worker waits for it before it opens anything
             // (HidppBackend.Worker). One that never comes back holds the
             // new worker only for that bound.
-            var previous = Interlocked.Exchange(ref s_lastWorker, Thread.CurrentThread);
-            if (previous != null && previous != Thread.CurrentThread && previous.IsAlive
-                && !previous.Join(_predecessorJoinMs))
-                PadForge.Engine.SdlDiagLog.WriteLine(
-                    $"PERIPHERAL SteelSeries previous worker still running after {_predecessorJoinMs} ms, starting anyway");
+            s_workers.Enter(run, _predecessorJoinMs, "SteelSeries");
             var units = new List<Unit>();
             try
             {
@@ -540,26 +547,28 @@ namespace PadForge.Common.Input.Peripherals
             {
                 // Each device goes back to its own lighting before its
                 // handle closes, so stopping the engine leaves no keyboard
-                // held in host lighting.
+                // held in host lighting. Not one a later run has claimed,
+                // since it may have the device open, and a hand-back would
+                // land on its picture.
                 foreach (var unit in units)
                 {
                     if (unit.Io == null) continue;
                     long due = long.MaxValue;
-                    try { Release(unit, new OutputPath(OutputFamily.SteelSeriesUnit, unit.Path), _ticks(), blocking: true, ref due, out _); }
-                    catch { }
+                    if (s_workers.MayReach(unit.Path, run))
+                    {
+                        try { Release(unit, new OutputPath(OutputFamily.SteelSeriesUnit, unit.Path), _ticks(), blocking: true, ref due, out _); }
+                        catch { }
+                    }
                     Close(unit);
                 }
                 // A unit that is owed its hand-back has no handle of the
                 // worker's, and gets it now through a one-shot write, as on
                 // the crash path. Not where SteelSeries GG has the device,
-                // and not from a worker that outlived its Stop into the
-                // next run, whose worker has the collections by then.
-                var successor = _run;
-                bool ownRun = successor == null || ReferenceEquals(successor, run);
+                // and not where a later run has claimed it.
                 foreach (var unit in units)
                 {
                     if (unit.Owed == null) continue;
-                    if (ownRun && !LeftToVendorProgram(new OutputPath(OutputFamily.SteelSeriesUnit, unit.Path)))
+                    if (s_workers.MayReach(unit.Path, run) && !LeftToVendorProgram(new OutputPath(OutputFamily.SteelSeriesUnit, unit.Path)))
                     {
                         foreach (var frame in unit.Owed)
                         {
@@ -571,8 +580,7 @@ namespace PadForge.Common.Input.Peripherals
                 // A worker that outlived a timed-out Stop can end after the
                 // next Start's worker has scanned and painted. The record
                 // and the list are that worker's by then, and stay.
-                var current = _run;
-                if (current == null || ReferenceEquals(current, run))
+                if (s_workers.Holds(run))
                 {
                     Volatile.Write(ref _recorded, Array.Empty<(string, byte[][])>());
                     Volatile.Write(ref _snapshot, DirectBackendSnapshot.NotScanned);
@@ -739,6 +747,7 @@ namespace PadForge.Common.Input.Peripherals
                     Fail(unit, now, "did not open for read and write", ref changed, ref failed, ref due);
                     return;
                 }
+                s_workers.Claim(unit.Path, run);
                 if (!AskVersion(unit, now))
                 {
                     Fail(unit, now, "write failed", ref changed, ref failed, ref due);
@@ -809,6 +818,7 @@ namespace PadForge.Common.Input.Peripherals
             unit.Reassert = false;
             unit.Announced = false;
             unit.Queue = null;
+            unit.Holding = false;
             // The family's gap holds across a close: no report goes out
             // sooner than the gap after the one before, a hand-back
             // included.
@@ -916,6 +926,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 // The color is read when its first report can go, so the
                 // one that goes is the newest.
+                NoteHeld(unit, info, rgb, map, colors, fill, now);
                 long startAt = StartAt(unit, info, rgb, map, colors, fill, now);
                 if (now < startAt)
                 {
@@ -1017,15 +1028,42 @@ namespace PadForge.Common.Input.Peripherals
         /// the one after a dongle's pause, go at once. A new picture waits
         /// out the family's fastest repaint, and an unchanged one its
         /// re-assert, where the family has one. None starts inside the gap
-        /// after the report before.</summary>
+        /// after the report before. A family with a hold also waits until the
+        /// new picture has stood that long (<see cref="NoteHeld"/>).</summary>
         private static long StartAt(Unit unit, SteelSeriesFamilyInfo info, int rgb, LightMap map, int[] colors, int fill,
             long now)
         {
             long at = unit.SentRgb == NoColor || unit.Reassert ? now
-                : !Showing(unit, rgb, map, colors, fill) ? unit.PaintAt + info.RepaintMs
+                : !Showing(unit, rgb, map, colors, fill)
+                    ? Math.Max(unit.PaintAt + info.RepaintMs, unit.Holding ? unit.HeldSince + info.HoldMs : 0)
                 : info.ReassertMs > 0 ? unit.PaintAt + info.ReassertMs
                 : long.MaxValue;
             return at == long.MaxValue ? at : Math.Max(at, unit.NextAt);
+        }
+
+        /// <summary>Times how long the picture asked for has stood, for a
+        /// family with a hold. A picture that differs from the one held starts
+        /// the time again, and the one showing ends it.</summary>
+        private static void NoteHeld(Unit unit, SteelSeriesFamilyInfo info, int rgb, LightMap map, int[] colors, int fill, long now)
+        {
+            if (info.HoldMs <= 0) return;
+            if (Showing(unit, rgb, map, colors, fill))
+            {
+                unit.Holding = false;
+                return;
+            }
+            bool same = unit.Holding
+                        && (colors == null
+                            ? unit.HeldColors == null && rgb == unit.HeldRgb
+                            : unit.HeldColors != null && ReferenceEquals(unit.HeldMap, map) && fill == unit.HeldFill
+                              && LightRenderer.Same(colors, unit.HeldColors));
+            if (same) return;
+            unit.Holding = true;
+            unit.HeldRgb = rgb;
+            unit.HeldColors = colors;
+            unit.HeldMap = map;
+            unit.HeldFill = fill;
+            unit.HeldSince = now;
         }
 
         /// <summary>Whether the last picture sent whole is the one asked for

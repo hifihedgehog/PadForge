@@ -54,10 +54,16 @@ namespace PadForge.Common.Input.Peripherals
     /// the transaction closed (SetLEDs, lines 361-457).</para>
     ///
     /// <para>The model of the device. Software render mode shows each
-    /// picture as it comes and keeps none ("@save :x:" and ":robot:",
-    /// RGBController_CorsairV2Software.cpp:22 and
-    /// RGBController_CorsairV2Hardware.cpp:23), and it lasts until the
-    /// device re-enumerates unless it is reverted. OpenRGB reverts it with
+    /// picture as it comes, and it lasts until the device re-enumerates
+    /// unless it is reverted. A picture is not kept, so pictures go out as a
+    /// stream. Direct carries no save flag on either controller
+    /// (RGBController_CorsairV2Software.cpp:45 and
+    /// RGBController_CorsairV2Hardware.cpp:45), and the device drops a
+    /// picture after a minute, as below. OpenRGB's page for the software
+    /// controller says it saves nothing ("@save :x:", line 22). Its page for
+    /// the hardware controller says it saves on every update ("@save :robot:",
+    /// line 22, the meaning from its commit 8f876423), which nothing in that
+    /// controller's Direct path bears out. OpenRGB reverts the render mode with
     /// hardware render mode, 01 03 00 01, when it closes a device, because
     /// a K70 Core RGB stops sending its knob's input while left in software
     /// mode (lines 140-153). That is the hand-back and the crash path. A
@@ -80,7 +86,6 @@ namespace PadForge.Common.Input.Peripherals
         internal const string OpenRgbFamily = "CorsairPeripheralV2Controller";
 
         internal const string DetectHardware = "DetectCorsairV2HardwareControllers";
-        internal const string DetectSoftware = "DetectCorsairV2SoftwareControllers";
 
         internal const int RepaintMs = LenovoLegionUsbLighting.RepaintMs;
 
@@ -183,8 +188,8 @@ namespace PadForge.Common.Input.Peripherals
                 KeepAliveMs = KeepAliveMs,
                 KeepAliveIdleMs = KeepAliveMs,
                 Begin = (io, wait) => Begin(io, wait, hardware, product),
-                Owed = () => CorsairSession.Owed(product),
-                Repair = (io, wait) => CorsairSession.Repair(io, wait, product, 0),
+                Owed = path => CorsairSession.Owed(KeyboardProfileBackups.DeviceKey(product, path)),
+                Repair = (io, wait) => CorsairSession.Repair(io, wait, KeyboardProfileBackups.DeviceKey(product, io?.Path), 0),
             };
         }
 
@@ -225,7 +230,12 @@ namespace PadForge.Common.Input.Peripherals
             var lights = table.Usages != null
                 ? PluginKeyNames.Lights(table)
                 : table.Names.Select((name, i) => PluginKeyNames.Named(table.Indexes[i], name)).ToArray();
-            var type = row.Kind == PluginCorsairKind.Keyboard ? CorsairDeviceType.Keyboard : CorsairDeviceType.Mouse;
+            var type = row.Kind switch
+            {
+                PluginCorsairKind.Keyboard => CorsairDeviceType.Keyboard,
+                PluginCorsairKind.Headset => CorsairDeviceType.Headset,
+                _ => CorsairDeviceType.Mouse,
+            };
             return new CorsairV2Device(row.Name, row.Product, type, 1, table.Names.Length, Array.Empty<CorsairV2Zone>(), null)
             {
                 OwnLights = lights,
@@ -539,16 +549,16 @@ namespace PadForge.Common.Input.Peripherals
             if (link.Get(0x41) is not uint layout) return null;
             var map = MapOf(device, LayoutOf(layout), out int bufferLength);
             bool triplets = hardware && link.LightCtrl == LightCtrl2;
-            return new Session(product, link, device, map, bufferLength, triplets);
+            return new Session(KeyboardProfileBackups.SessionKey(product, io.Path), link, device, map, bufferLength, triplets);
         }
 
         internal sealed class Session : CorsairSession
         {
             private readonly Link _link;
 
-            public Session(string product, Link link, CorsairV2Device device, LightMap map, int bufferLength,
+            public Session(string key, Link link, CorsairV2Device device, LightMap map, int bufferLength,
                 bool triplets)
-                : base(product, link.RenderMode(0x01), 1, 0)
+                : base(key, link.RenderMode(0x01), 1, 0)
             {
                 _link = link;
                 Device = device;

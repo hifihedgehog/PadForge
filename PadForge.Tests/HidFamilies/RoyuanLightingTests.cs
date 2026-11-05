@@ -48,10 +48,11 @@ namespace PadForge.Tests
         [Fact]
         public void TheReports_AreOpenRgbs()
         {
-            // The Akko's Static: 07 01, speed 4, brightness 3, option 08.
+            // The Akko's Static: 07 01, speed 4, brightness 4 (its most, since
+            // PadForge dims the color itself), option 08. The sum drops by one.
             var akko = R.Picture(R.Board.Akko, 0x102030);
             Assert.Equal(65, akko.Length);
-            Assert.Equal("00 07 01 04 03 08 10 20 30 88", Hex(akko, 10));
+            Assert.Equal("00 07 01 04 04 08 10 20 30 87", Hex(akko, 10));
             // The Epomaker's Always On: speed 0, brightness 4, option 07,
             // sum 0x07+1+0+4+7+0x60 = 0x73, 0x80 - 0x73 - 1 = 0x0C.
             Assert.Equal("00 07 01 00 04 07 10 20 30 0C", Hex(R.Picture(R.Board.Legacy, 0x102030), 10));
@@ -101,7 +102,7 @@ namespace PadForge.Tests
             // The first read missed, the second answered, 80 ms after each ask.
             Assert.Equal(2, sent.Count(s => s.Kind == 'G'));
             Assert.Equal(2, rig.Waits.Count(w => w == R.ReadWaitMs));
-            Assert.Equal("00 07 01 04 03 08 FF 00 00", Hex(rig.Log.Of('F')[1], 9));
+            Assert.Equal("00 07 01 04 04 08 FF 00 00", Hex(rig.Log.Of('F')[1], 9));
             var restore = "00 07 05 02 03 13 0A 0B 0C";
             Assert.Equal(restore, Hex(Assert.Single(Assert.Single(backend.Recorded).Frames), 9));
             // A new color waits 1.5 s after the last.

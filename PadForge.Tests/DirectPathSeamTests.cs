@@ -128,12 +128,15 @@ namespace PadForge.Tests
 
     /// <summary>A scripted HID report channel for a backend that speaks
     /// feature and output reports (#494). It records each call as its kind
-    /// ("set", "get", "out", "in"), the caller's bytes before any padding
-    /// and the tick it came at, answers a feature or input read from a
-    /// script, and fails every write while <see cref="FailWrites"/> is
-    /// set.</summary>
-    internal sealed class FakeReportChannel : IHidReportChannel
+    /// ("set", "get", "out", "setout", "in"), the caller's bytes before any
+    /// padding and the tick it came at, answers a feature or input read from
+    /// a script, and fails every write while <see cref="FailWrites"/> is
+    /// set. <see cref="FailFeatureWrites"/> fails feature writes alone, and
+    /// <see cref="FailReads"/> makes every input read fail.</summary>
+    internal sealed class FakeReportChannel : IHidReportChannel, IConnectedChannel
     {
+        public bool StillConnected { get; set; } = true;
+
         public string Path { get; init; } = @"\\?\hid#vid_1532&pid_0084&mi_00#fake";
         public bool FeatureOnly { get; init; }
         public int InputReportLength { get; init; }
@@ -145,6 +148,8 @@ namespace PadForge.Tests
 
         public Func<long> Ticks = () => Environment.TickCount64;
         public volatile bool FailWrites;
+        public volatile bool FailFeatureWrites;
+        public volatile bool FailReads;
         public volatile bool Disposed;
         public readonly ConcurrentQueue<(string Kind, byte[] Bytes, long Tick)> Calls = new();
 
@@ -157,7 +162,7 @@ namespace PadForge.Tests
 
         public bool SetFeature(byte[] report)
         {
-            if (FailWrites || Disposed || report == null) return false;
+            if (FailWrites || FailFeatureWrites || Disposed || report == null) return false;
             Calls.Enqueue(("set", (byte[])report.Clone(), Ticks()));
             return true;
         }
@@ -180,9 +185,20 @@ namespace PadForge.Tests
             return true;
         }
 
+        public bool SetOutputReport(byte[] report)
+        {
+            if (FeatureOnly || FailWrites || Disposed || report == null) return false;
+            Calls.Enqueue(("setout", (byte[])report.Clone(), Ticks()));
+            return true;
+        }
+
+        /// <summary>The longest wait any read was given since the test last set it.</summary>
+        public int LongestReadMs;
+
         public int ReadInput(byte[] buffer, int timeoutMs)
         {
-            if (FeatureOnly || Disposed || buffer == null) return -1;
+            if (FeatureOnly || FailReads || Disposed || buffer == null) return -1;
+            LongestReadMs = Math.Max(LongestReadMs, timeoutMs);
             Calls.Enqueue(("in", Array.Empty<byte>(), Ticks()));
             byte[] answer = Input();
             if (answer == null) return 0;

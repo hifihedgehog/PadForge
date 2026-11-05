@@ -87,7 +87,7 @@ namespace PadForge.Common.Input.Peripherals
                 bool gxt114 = registration.Detector == Gxt114Detector;
                 if (!gxt114 && registration.Detector != Gxt180Detector) continue;
                 int size = gxt114 ? Gxt114Size : Gxt180Size;
-                if (collection.FeatureReportLength != 0 && collection.FeatureReportLength < size) return null;
+                if (collection.FeatureReportLength < size) return null;
                 ushort pid = collection.ProductId;
                 return _models.Get(registration.Name + pid, () => Model(registration.Name, pid, gxt114));
             }

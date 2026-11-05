@@ -210,7 +210,8 @@ namespace PadForge.Tests
         public void TheMarsGamingMm4_TakesItsColorInverted()
         {
             var row = Row(0x04D9, 0xFA58);
-            Assert.Equal("02 04 EE DD CC 03 00", First(row, 0x112233, 7));
+            // marsgaming-command.c:44: red, green, blue, brightness, breathing, then 01.
+            Assert.Equal("02 04 EE DD CC 03 00 01", First(row, 0x112233, 8));
             Assert.Equal(PluginStepKind.Feature, row.Picture(new[] { 0 }).Single().Kind);
             Assert.Equal(16, row.FeatureLength);
         }
@@ -251,6 +252,7 @@ namespace PadForge.Tests
             settings[19] = 0xF0;
             settings[20] = 0x01;
             settings[21] = 0x03;
+            RoccatKoneEmpLighting.PutChecksum(settings);
             return settings;
         }
 
@@ -272,6 +274,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheKoneEmp_ReadsItsProfile_WritesColors_AndHandsItBack()
         {
+            KeyboardProfileBackups.ResetForTest(persistAtOnce: true);
             var io = EmpChannel();
             var session = RoccatKoneEmpLighting.Begin(io, _ => { });
             var sets = io.Calls.Where(c => c.Kind == "set").Select(c => c.Bytes).ToList();
@@ -288,9 +291,11 @@ namespace PadForge.Tests
             Assert.Equal((byte)sum, written[39]);
             Assert.Equal((byte)(sum >> 8), written[40]);
             // Stored, so the stored bounds, and what it read goes back.
+            Assert.Equal(EmpSettings(), Assert.Single(session.CrashFrames));
             Assert.True(session.HandBack(io, _ => { }));
             Assert.Equal(EmpSettings(), io.Calls.Where(c => c.Kind == "set").Last().Bytes);
-            Assert.Equal(EmpSettings(), Assert.Single(session.CrashFrames));
+            Assert.Empty(session.CrashFrames);
+            KeyboardProfileBackups.ResetForTest();
         }
 
         [Fact]
@@ -320,12 +325,14 @@ namespace PadForge.Tests
                 0x06 => EmpSettings(),
                 _ => null,
             };
+            KeyboardProfileBackups.ResetForTest(persistAtOnce: true);
             var session = RoccatKoneEmpLighting.Begin(io, _ => { });
             var lights = RoccatKoneEmpLighting.Instance.Match(Collection(0x1E7D, 0x2E24, feature: 41)).Map.Lights;
             Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, lights, new[] { 1, 2, 3, 4 }));
             ready = 0x02;
             Assert.Equal(HidLightingPaint.Failed, session.Paint(io, _ => { }, lights, new[] { 1, 2, 3, 4 }));
             Assert.False(session.HandBack(io, _ => { }));
+            KeyboardProfileBackups.ResetForTest();
         }
 
         /// <summary>roccat_wait_ready gives up at the first error and after ten polls, and a
@@ -493,7 +500,7 @@ namespace PadForge.Tests
             var session = new AlienFxLighting.Session(AlienFxLighting.Api.V3);
             Assert.False(session.Feature);
             Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, null, new[] { 0x112233 }));
-            var out12 = io.Calls.Where(c => c.Kind == "out").Select(c => c.Bytes).ToList();
+            var out12 = io.Calls.Where(c => c.Kind == "setout").Select(c => c.Bytes).ToList();
             Assert.Equal("02 07 04", Hex(out12[0], 3));
             Assert.Equal("02 03 01 FF FF FF 11 22 33 00 00 00", Hex(out12.First(f => f[1] == 0x03), 12));
             Assert.Equal("02 04", Hex(out12[^2], 2));
@@ -609,7 +616,7 @@ namespace PadForge.Tests
             Assert.Equal("01 0E 80 00 01", Hex(io.Calls.First(c => c.Kind == "set").Bytes, 5));
             var blocks = io.Calls.Where(c => c.Kind == "out").Select(c => c.Bytes).ToList();
             Assert.Equal(AlienFxLighting.V8Lights / 4, blocks.Count);
-            Assert.Equal("01 0E 01 00 01 00 81 00 A5 00 11 22 33 11 22 33 02", Hex(blocks[0], 17));
+            Assert.Equal("01 0E 01 00 01 00 81 00 A5 00 0A 11 22 33 11 22 33 02", Hex(blocks[0], 18));
             Assert.Equal(0x01, blocks[0][20]);
             Assert.Equal(2, blocks[1][4]);
         }

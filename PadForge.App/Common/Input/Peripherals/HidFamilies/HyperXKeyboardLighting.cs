@@ -79,11 +79,27 @@ namespace PadForge.Common.Input.Peripherals
             var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
             if (registrations.Count == 0) return null;
             var registration = registrations[0];
+            // Several registrations name an interface alone, and the collection
+            // that takes the frames is the one with reports long enough for them.
+            if (ProtocolOf(registration.Detector) is Protocol protocol && !Carries(protocol, collection)) return null;
             var key = (registration.Detector, (int)collection.ProductId);
             if (_models.TryGetValue(key, out var known)) return known;
             var model = Model(registration, collection.ProductId);
             return model == null ? null : _models.GetOrAdd(key, model);
         }
+
+        /// <summary>Whether a collection has the reports a protocol sends: the Alloy Elite's and
+        /// the FPS's feature reports of 264 bytes (HyperXAlloyEliteController.cpp:266,
+        /// HyperXAlloyFPSController.cpp:135), the other Alloys' of 65
+        /// (HyperXAlloyElite2Controller.cpp:182, HyperXAlloyOriginsController.cpp:115,
+        /// HyperXAlloyOrigins60and65Controller.cpp:104), and the output reports of 65 of the rest
+        /// (HyperXAlloyOriginsCoreController.cpp:89, HyperXEve1800Controller.cpp:61).</summary>
+        internal static bool Carries(Protocol protocol, HidCollectionInfo collection) => protocol switch
+        {
+            Protocol.Elite or Protocol.Fps => collection.FeatureReportLength >= 264,
+            Protocol.OriginsCore or Protocol.Eve1800 or Protocol.Origins2_65 => collection.OutputReportLength >= 65,
+            _ => collection.FeatureReportLength >= 65,
+        };
 
         /// <summary>The protocol a detector drives.</summary>
         internal enum Protocol

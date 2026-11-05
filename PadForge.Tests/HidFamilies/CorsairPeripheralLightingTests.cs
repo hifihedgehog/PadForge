@@ -13,7 +13,7 @@ namespace PadForge.Tests
     /// answered once per output report by <see cref="Answer"/>.</summary>
     internal sealed class FakeCorsairChannel : IHidReportChannel
     {
-        public string Path { get; init; } = @"\\?\hid#vid_1b1c&pid_1b2d&mi_01#fake";
+        public string Path { get; init; }
         public bool FeatureOnly => false;
         public int InputReportLength { get; init; } = 65;
         public int OutputReportLength { get; init; } = 65;
@@ -94,7 +94,7 @@ namespace PadForge.Tests
             {
                 Path = $@"\\?\hid#vid_1b1c&pid_{pid:x4}&mi_{iface:x2}#{page:x4}",
                 VendorId = 0x1B1C, ProductId = pid, UsagePage = page, Usage = usage, InterfaceNumber = iface,
-                InputReportLength = 65, OutputReportLength = 65, FeatureReportLength = 65,
+                InputReportLength = 65, OutputReportLength = (ushort)(pid is 0x1BAF or 0x1BCF or 0x1BC3 or 0x1BBD ? 1025 : 65), FeatureReportLength = 65,
             };
 
         /// <summary>An identification answer as Windows reads it: report ID
@@ -284,7 +284,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void AMouse_HasFifteenZones_NamedAsOpenRgbsCodeEndsUp()
+        public void AMouse_HasFifteenZones_NamedByItsOwnTable()
         {
             // The Ironclaw takes the M65 Elite's names (lines 1292-1295).
             var ironclaw = CorsairPeripheralLighting.Lights(CorsairDeviceType.Mouse, 0, "Corsair Ironclaw RGB");
@@ -294,10 +294,10 @@ namespace PadForge.Tests
             Assert.Equal(LightKind.Zone, ironclaw[4].Kind);
             // The Sabre RGB's underglow (lines 873-890).
             Assert.Equal(LightKind.Edge, CorsairPeripheralLighting.Lights(CorsairDeviceType.Mouse, 0, "Corsair Sabre RGB")[1].Kind);
-            // The M65 RGB Elite's own names are replaced by the second test.
+            // The M65 RGB Elite reads its own table (lines 854-871), which the
+            // chain's second test loses in OpenRGB.
             var elite = CorsairPeripheralLighting.Lights(CorsairDeviceType.Mouse, 0, "Corsair M65 RGB Elite");
-            Assert.All(elite, l => Assert.Equal(LightKind.Zone, l.Kind));
-            Assert.Equal(Enumerable.Range(1, 15), elite.Select(l => l.Zone));
+            Assert.Equal(ironclaw, elite);
             Assert.Equal(Enumerable.Range(0, 15), elite.Select(l => l.Address));
         }
 
@@ -573,7 +573,7 @@ namespace PadForge.Tests
             KeyboardProfileBackups.Persisted(int.MaxValue);
             Assert.Equal(HidLightingPaint.Sent, session.Paint(io, io.Wait, lights, colors));
             Assert.Equal(before + 12, io.Outputs.Count);
-            Assert.True(model.Owed());
+            Assert.True(model.Owed(null));
         }
 
         [Fact]
@@ -609,22 +609,22 @@ namespace PadForge.Tests
         public void ADeviceAnEarlierRunLeft_IsHandedBackFromItsRecord()
         {
             var model = Family().Match(Collection(0x1B13));
-            Assert.False(model.Owed());
+            Assert.False(model.Owed(null));
             KeyboardProfileBackups.Take("corsair:1B1C:1B13", 2, CorsairPeripheralLighting.SpecialFunction(0x01));
-            Assert.True(model.Owed());
+            Assert.True(model.Owed(null));
             var io = new FakeCorsairChannel();
             Assert.True(model.Repair(io, io.Wait));
             Assert.Equal(new[] { "out 00 07 04 01 00 00", "wait 30", "out 00 07 04 01 00 00" }, io.Log);
-            Assert.False(model.Owed());
+            Assert.False(model.Owed(null));
             // A failed one stays owed until it has failed three times.
             KeyboardProfileBackups.Take("corsair:1B1C:1B13", 2, CorsairPeripheralLighting.SpecialFunction(0x01));
             io.FailWrites = true;
             for (int i = 0; i < 3; i++)
             {
-                Assert.True(model.Owed());
+                Assert.True(model.Owed(null));
                 Assert.False(model.Repair(io, io.Wait));
             }
-            Assert.False(model.Owed());
+            Assert.False(model.Owed(null));
         }
 
         [Fact]

@@ -119,7 +119,19 @@ namespace PadForge.Common.Input
             string devicePath,
             HMProfile profile,
             IReadOnlyDictionary<string, object> fields)
+            => Write(devicePath, profile, fields, out _);
+
+        /// <param name="routeLanded">False when the output report landed and the
+        /// DualShock 4 USB route the frame carries did not. Rumble and lights
+        /// are through, so the frame is delivered, and the caller retries the
+        /// route alone.</param>
+        public static bool Write(
+            string devicePath,
+            HMProfile profile,
+            IReadOnlyDictionary<string, object> fields,
+            out bool routeLanded)
         {
+            routeLanded = true;
             if (string.IsNullOrEmpty(devicePath)) return false;
             if (profile == null || fields == null) return false;
             if (!profile.HasExtendedOutput) return false;
@@ -140,16 +152,17 @@ namespace PadForge.Common.Input
             // Reverse output relay (#138): a "peer://" device lives on another PC. The
             // dispatcher has already baked the full config (rumble + adaptive triggers +
             // lightbar + mic/player LED + audio-control) into this USB-shape packet, so
-            // ship the report body (report-id stripped) to the owner, which replays it
-            // via SDL_SendGamepadEffect and re-frames for its own transport (USB/BT).
+            // ship the part SDL takes to the owner, which replays it via
+            // SDL_SendGamepadEffect and re-frames for its own transport (USB/BT).
             if (RemoteLinkOutputRouter.IsPeerPath(devicePath))
             {
                 // 0x02 = DualSense USB output report, 0x05 = DualShock 4 USB output report.
                 // A peer:// path is never classified Bluetooth, so these are the only two
-                // ids the consumer encoder produces here — accept both or DS4 output is
+                // ids the consumer encoder produces here. Accept both or DS4 output is
                 // silently dropped on the owner (#138 F29).
-                return packet.Length >= 2 && (packet[0] == 0x02 || packet[0] == 0x05)
-                    && RemoteLinkOutputRouter.ShipSonyEffect(devicePath, packet.AsSpan(1));
+                int body = packet.Length > 0 ? SonyEffectBodyOffset(packet[0]) : 0;
+                return body > 0 && packet.Length > body
+                    && RemoteLinkOutputRouter.ShipSonyEffect(devicePath, packet.AsSpan(body));
             }
 
             // Sole-writer guard (#138): a remote game holds the output lease on this LOCAL
@@ -159,10 +172,14 @@ namespace PadForge.Common.Input
 
             // A DualShock 4's USB route (#546) follows its output report, so
             // the speaker volume is in place when the route reaches the
-            // speaker, and a route that fails fails the frame, which the
-            // dispatcher retries as it retries a failed output write.
+            // speaker. A pad that refuses the route takes the report all the
+            // same.
             if (!Ds5WriteTrace.Enabled || packet.Length <= 3)
-                return WriteRaw(devicePath, packet) && WriteDs4UsbRoute(devicePath, packet, fields);
+            {
+                if (!WriteRaw(devicePath, packet)) return false;
+                routeLanded = WriteDs4UsbRoute(devicePath, packet, fields);
+                return true;
+            }
 
             // USB report 0x02 carries the payload at byte 1. The BT
             // report 0x31 has the sequence tag at byte 1 and the 0x10
@@ -174,8 +191,25 @@ namespace PadForge.Common.Input
             bool written = WriteRaw(devicePath, packet);
             int start = packet[0] == 0x31 ? 3 : 1;
             Ds5WriteTrace.Log(written ? "pass" : "pass-fail", packet, start, packet.Length - start);
-            return written && WriteDs4UsbRoute(devicePath, packet, fields);
+            if (!written) return false;
+            routeLanded = WriteDs4UsbRoute(devicePath, packet, fields);
+            return true;
         }
+
+        /// <summary>Where the bytes SDL_SendGamepadEffect takes start in a USB
+        /// report, 0 for a report it does not take. SDL's PS5 driver reads the
+        /// validity flags from them, so a DualSense's start after the report ID
+        /// (0x02). Its PS4 driver sets the flags itself and copies them to byte
+        /// 4 of its own report, where the right motor is, so a DualShock 4's
+        /// (0x05) start there (SDL_hidapi_ps4.c,
+        /// HIDAPI_DriverPS4_SendJoystickEffect: "the PS4 driver does not expect
+        /// the validity bits").</summary>
+        internal static int SonyEffectBodyOffset(byte reportId) => reportId switch
+        {
+            0x02 => 1,
+            0x05 => 4,
+            _ => 0,
+        };
 
         /// <summary>Byte 23 of a DualShock 4's USB report 0x05 while its route
         /// plays the speaker (#546, <see cref="Ds4UsbAudio.SpeakerAudioConfig"/>).
@@ -196,7 +230,33 @@ namespace PadForge.Common.Input
         {
             if (!fields.TryGetValue("ds4UsbRoute", out var raw) || raw is not byte route) return true;
             if (packet[0] != 0x05) return true;
-            return RawHidOutput.SetFeature(devicePath, Ds4UsbAudio.BuildRouteReport(route), stampSonyBtCrc: false);
+            return SendDs4UsbRoute(devicePath, route);
+        }
+
+        /// <summary>Test seam: stands in for the feature report's write. Null
+        /// in production.</summary>
+        internal static Func<string, byte[], bool> RouteReportSeam;
+
+        /// <summary>Sends a DualShock 4's USB route as feature report 0xE0, at
+        /// its own length first (<see cref="RawHidOutput.SendOwnLengthFirst"/>).</summary>
+        internal static bool SendDs4UsbRoute(string devicePath, byte route)
+        {
+            byte[] report = Ds4UsbAudio.BuildRouteReport(route);
+            var seam = RouteReportSeam;
+            return seam != null
+                ? seam(devicePath, report)
+                : RawHidOutput.SetFeatureOwnLengthFirst(devicePath, report);
+        }
+
+        /// <summary>Routes a DualShock 4 on USB with no effects frame beside the
+        /// route: a route with the speaker takes the speaker volume alone first
+        /// (<see cref="Ds4UsbAudio.BuildSpeakerVolumeReport"/>).</summary>
+        internal static bool WriteDs4UsbRouteAlone(string devicePath, byte route)
+        {
+            if (Ds4UsbAudio.RouteHasSpeaker(route)
+                && !WriteRaw(devicePath, Ds4UsbAudio.BuildSpeakerVolumeReport()))
+                return false;
+            return SendDs4UsbRoute(devicePath, route);
         }
 
         /// <summary>The DS5 audio_flags2 byte (speaker pre-gain in bits 0-2,

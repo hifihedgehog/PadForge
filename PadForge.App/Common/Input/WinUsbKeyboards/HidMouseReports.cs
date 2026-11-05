@@ -23,6 +23,12 @@ namespace PadForge.Common.Input.WinUsbKeyboards
     /// <para>Motion and the wheel are changes since the last report, so
     /// they add up. A button field carries the state of its buttons, so it
     /// replaces them, and buttons in no field of the report keep theirs.</para>
+    ///
+    /// <para>A wheel with a Resolution Multiplier feature counts that many
+    /// times finer while the feature is set (hid-core.c:1209-1219). Windows'
+    /// mouse driver can leave it set, so <see cref="WheelMultiplierFeature"/>
+    /// names the one that applies to the wheel, and the row divides by what
+    /// it reads there (<see cref="EffectiveMultiplier"/>).</para>
     /// </summary>
     internal sealed class HidMouseReports
     {
@@ -38,15 +44,25 @@ namespace PadForge.Common.Input.WinUsbKeyboards
 
         private readonly HidKeyboardReports.Field[] _fields;
 
-        private HidMouseReports(HidKeyboardReports.Field[] fields, bool usesReportIds)
+        private HidMouseReports(HidKeyboardReports.Field[] fields, bool usesReportIds, HidKeyboardReports.Shape shape)
         {
             _fields = fields;
             UsesReportIds = usesReportIds;
+            LongestInputReport = shape.LongestInputReport;
+            WheelMultiplierFeature = MultiplierOfTheWheel(shape);
         }
 
         /// <summary>True when the descriptor declares report IDs, so every
         /// input report starts with one.</summary>
         public bool UsesReportIds { get; }
+
+        /// <summary>The bytes of the longest input report the descriptor
+        /// declares, on any page, the report ID included.</summary>
+        public int LongestInputReport { get; }
+
+        /// <summary>The Resolution Multiplier that applies to the wheel, or
+        /// null when none does.</summary>
+        internal HidKeyboardReports.Multiplier WheelMultiplierFeature { get; }
 
         /// <summary>The fields that carry buttons, motion or the wheel, in
         /// descriptor order.</summary>
@@ -56,15 +72,50 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         /// or declares no relative X or Y, which is no mouse to read.</summary>
         internal static HidMouseReports Parse(ReadOnlySpan<byte> descriptor)
         {
-            var fields = HidKeyboardReports.ParseFields(descriptor, CarriesPointer, out bool usesReportIds);
+            var fields = HidKeyboardReports.ParseFields(descriptor, CarriesPointer, out bool usesReportIds, out var shape);
             if (fields == null) return null;
             foreach (var field in fields)
             {
                 if (!field.IsVariable || !field.IsRelative) continue;
                 foreach (uint usage in field.Usages)
-                    if (usage == X || usage == Y) return new HidMouseReports(fields, usesReportIds);
+                    if (usage == X || usage == Y) return new HidMouseReports(fields, usesReportIds, shape);
             }
             return null;
+        }
+
+        /// <summary>The multiplier a wheel takes: one in a logical collection
+        /// the wheel sits in, or one in no logical collection, the last such
+        /// in the descriptor, as Linux leaves it (hid-core.c:1177-1198). A
+        /// mouse that gives its wheel and its horizontal wheel a multiplier
+        /// each keeps them in separate logical collections.</summary>
+        private static HidKeyboardReports.Multiplier MultiplierOfTheWheel(HidKeyboardReports.Shape shape)
+        {
+            HidKeyboardReports.Multiplier found = null;
+            foreach (var multiplier in shape.Multipliers)
+            {
+                if (multiplier.LogicalCollection < 0) { found = multiplier; continue; }
+                foreach (int[] chain in shape.WheelCollections)
+                    if (Array.IndexOf(chain, multiplier.LogicalCollection) >= 0) found = multiplier;
+            }
+            return found;
+        }
+
+        /// <summary>What the wheel counts per notch with the feature report
+        /// as read, the HID Usage Tables' Effective Resolution Multiplier. A
+        /// range of nothing, a report too short, or an answer of zero or past
+        /// 255 reads as 1, as Linux takes it (hid_calculate_multiplier,
+        /// hid-core.c:1083-1120).</summary>
+        internal int EffectiveMultiplier(ReadOnlySpan<byte> featureReport)
+        {
+            var feature = WheelMultiplierFeature;
+            if (feature == null) return 1;
+            int span = feature.LogicalMaximum - feature.LogicalMinimum;
+            if (span == 0 || featureReport.Length < feature.ReportLength) return 1;
+            ReadOnlySpan<byte> data = UsesReportIds ? featureReport.Slice(1) : featureReport;
+            int value = HidKeyboardReports.Extract(data, feature.BitOffset, feature.Size, feature.LogicalMinimum < 0);
+            long multiplier = (long)(value - feature.LogicalMinimum) * (feature.PhysicalMaximum - feature.PhysicalMinimum) / span
+                + feature.PhysicalMinimum;
+            return multiplier == 0 || multiplier > 255 || multiplier < -255 ? 1 : (int)multiplier;
         }
 
         /// <summary>Decodes one input report as the pipe delivered it: adds

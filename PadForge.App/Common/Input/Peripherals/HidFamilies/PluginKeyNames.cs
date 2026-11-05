@@ -64,13 +64,13 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 if (table.Usages != null && table.Usages[i] != 0)
                     light = new LightInfo(address, LightKind.Key, table.Usages[i], LightKeySource.Generated);
                 else if (table.Usages != null)
-                    light = Other(address, name);
+                    light = Other(address, key);
                 else if (places != null && places.TryGetValue(key, out ushort place))
                     light = new LightInfo(address, LightKind.Key, place, LightKeySource.Generated);
                 else if (s_usages.TryGetValue(key, out ushort usage))
                     light = new LightInfo(address, LightKind.Key, usage, LightKeySource.Generated);
                 else
-                    light = Other(address, name);
+                    light = Other(address, key);
                 // A plugin whose places are not the board's gives none, and the key picker
                 // draws the keys from their usages.
                 lights[i] = table.X == null ? light : light with { X = table.X[i], Y = table.Y[i], Width = 1, Height = 1, HasPosition = true };
@@ -104,6 +104,8 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 "MediaFastForward" => LightLabel.Next,
                 "MediaRewind" => LightLabel.Previous,
                 "Game Mode" or "Lock" => LightLabel.GameMode,
+                "Fan" => LightLabel.Fan,
+                "ROG" => LightLabel.Rog,
                 _ => LightLabel.None,
             };
             if (name.StartsWith("Logo", StringComparison.Ordinal) || name is "LeftLogo" or "RightLogo")
@@ -131,14 +133,10 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         }
 
         /// <summary>The names <see cref="Lights"/> finds neither a usage nor a
-        /// label for, for the tests.</summary>
+        /// label for, for the tests. A second LED's name counts as its key's.</summary>
         internal static IEnumerable<string> Unresolved(PluginKeyTable table)
-            => table.Names.Select(n => (n ?? "").Trim()).Where(n => !s_usages.ContainsKey(n.StartsWith("2nd ", StringComparison.Ordinal) ? n.Substring(4) : n)
-                && Other(0, n) is { Kind: LightKind.Other, Label: LightLabel.None });
-
-        /// <summary>The usage or label each name of the lists resolves to, so a
-        /// test can name a table's keys.</summary>
-        internal static bool IsNamedKey(string name) => s_usages.ContainsKey(name);
+            => table.Names.Select(n => (n ?? "").Trim()).Select(n => n.StartsWith("2nd ", StringComparison.Ordinal) ? n.Substring(4) : n)
+                .Where(n => !s_usages.ContainsKey(n) && Other(0, n) is { Kind: LightKind.Other, Label: LightLabel.None });
 
         /// <summary>A light of a Corsair mouse or stand from what its plugin
         /// names it.</summary>

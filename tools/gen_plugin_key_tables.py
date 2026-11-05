@@ -27,6 +27,11 @@ Release prep fetches the clones, moves the pins to the branch heads and reruns
 this. PluginInventoryTests then fails by name on any product a family does not
 light, and the --check run says what changed.
 
+A form of plugin or firmware data this script does not read stops the run with a
+message: a ProductId that yields no product, a library entry whose names, places
+and LEDs differ in length, a Corsair product with no entry, a firmware config that
+does not parse. Each exception is listed beside the code with the reason.
+
 Usage:
     python tools/gen_plugin_key_tables.py SIGNAL_PLUGINS_CLONE QMK_PLUGINS_CLONE KEYCHRON_FIRMWARE_CLONE QMK_FIRMWARE_CLONE
     python tools/gen_plugin_key_tables.py SIGNAL_PLUGINS_CLONE QMK_PLUGINS_CLONE KEYCHRON_FIRMWARE_CLONE QMK_FIRMWARE_CLONE --check   (compare, write nothing)
@@ -45,6 +50,14 @@ INVENTORY = os.path.join(HERE, "..", "PadForge.Tests", "HidFamilies", "PluginInv
 
 SIGNAL_BETA = "9511979fa21a0a00a35a236d0aac8c438179094f"
 SIGNAL_MASTER = "95031635526054e267124fb32cf04509375f34ea"
+
+# Entries a plugin keeps in a block comment, with the reason its own comment gives. They
+# go in the inventory, where PluginInventoryTests leaves them out by name. The run stops
+# when the comment no longer says so. (plugin, product, the comment's words).
+COMMENTED_OUT_PRODUCTS = [
+    ("Plugins/Corsair/Modern_Corsair/Corsair_Headset_Controller.js", 0x0A5B, "doesnt control the headset"),
+    ("Plugins/Corsair/Modern_Corsair/Corsair_Headset_Controller.js", 0x0A6A, "doesnt control the headset"),
+]
 
 # Products a plugin names only on a branch beta has not taken up.
 SIGNAL_BRANCH_FILES = [
@@ -323,9 +336,26 @@ def object_keys(text, brace):
     return keys
 
 
-def products_of(text):
+# Plugins whose ProductId returns names that are not USB products. The MSI Mystic Light
+# plugins return the keys of a library of motherboard names, so they name no product.
+NAMES_NO_USB_PRODUCT = {
+    "Plugins/Msi/185 Byte Motherboard Controller/MSI_185Byte_Controller.js",
+    "Plugins/Msi/185 Byte Motherboard Controller/MSI_185Byte_Controller_0x0DB0.js",
+}
+
+
+def products_of(text, path):
     """What a plugin's ProductId returns: a number, a list, or the keys of an
-    object it names, which may be a table, a field or a method's result."""
+    object it names, which may be a table, a field or a method's result. A plugin
+    with a ProductId that yields nothing stops the run, so a form this does not
+    read cannot leave a plugin out of the tables and the coverage test."""
+    found = products_in(text)
+    if not found and re.search(r"function\s+ProductId\s*\(", text) and path not in NAMES_NO_USB_PRODUCT:
+        raise SystemExit(f"{path}: ProductId names no product this script reads")
+    return found
+
+
+def products_in(text):
     number = r"0[xX][0-9a-fA-F]+|\d+"
     plain = re.search(r"function\s+ProductId\s*\(\s*\)\s*\{\s*return\s*(\[[^\]]*\]|" + number + ")", text, re.S)
     if plain:
@@ -333,14 +363,16 @@ def products_of(text):
     keyed = re.search(r"function\s+ProductId\s*\(\s*\)\s*\{\s*return\s*Object\.keys\(\s*([\w.]+)(\(\s*\))?\s*\)", text)
     if keyed:
         name = keyed.group(1).split(".")[-1]
-        pattern = r"\b" + re.escape(name) + r"\s*(?:\(\s*\)\s*\{\s*return\s*(?:Object\.freeze\(\s*)?|[:=]\s*(?:Object\.freeze\(\s*)?)\{"
+        # A method may hold a development list under an if, ahead of the list it returns
+        # otherwise (Corsair_Bragi_Device.js at signal-plugins master). The first is the larger.
+        pattern = r"\b" + re.escape(name) + r"\s*(?:\(\s*\)\s*\{\s*(?:if\s*\([^)]*\)\s*\{\s*)?return\s*(?:Object\.freeze\(\s*)?|[:=]\s*(?:Object\.freeze\(\s*)?)\{"
         found = re.search(pattern, text)
         if found:
             return object_keys(text, found.end() - 1)
         return []
-    named = re.search(r"function\s+ProductId\s*\(\s*\)\s*\{\s*return\s*(\w+)", text)
+    named = re.search(r"function\s+ProductId\s*\(\s*\)\s*\{\s*return\s*([\w.]+)", text)
     if named:
-        listed = re.search(r"\b" + re.escape(named.group(1)) + r"\s*=\s*\[([^\]]*)\]", text, re.S)
+        listed = re.search(r"\b" + re.escape(named.group(1).split(".")[-1]) + r"\s*=\s*\[([^\]]*)\]", text, re.S)
         if listed:
             return [int(p, 0) for p in re.findall(number, listed.group(1))]
     return []
@@ -619,7 +651,7 @@ def read_qmk_boards(qmk_clone, signal_clone):
             continue
         text = without_comments(re.sub(r'return "(iVBOR|data:image)[^"]*"', 'return ""', git_show(clone, commit, path)))
         vendor = re.search(r"function\s+VendorId\s*\(\s*\)\s*\{\s*return\s*(0[xX][0-9a-fA-F]+)", text)
-        products = products_of(text)
+        products = products_of(text, path)
         name = re.search(r'function\s+Name\s*\(\s*\)\s*\{\s*return\s*"([^"]*)"', text)
         if not vendor or not products:
             continue
@@ -767,8 +799,8 @@ def generate_libraries(signal, lines):
     lines.append("        };")
     for name, method in made.items():
         names, places, leds = fix_library_lists("AsusOmni", name, *entry_lists(boards[name]))
-        count = min(len(names), len(places), len(leds))
-        write_qmk_method(lines, method, "Asus/Omni Controller/ASUS_Keyboard_Protocol.js", names[:count], places[:count], leds[:count], key_usages(names[:count], places[:count]))
+        names, places, leds = in_step(f"AsusOmni {name}", names, places, leds)
+        write_qmk_method(lines, method, "Asus/Omni Controller/ASUS_Keyboard_Protocol.js", names, places, leds, key_usages(names, places))
     for library in LIBRARIES:
         prefix, plugin, boards_object, layouts_object = library[:4]
         fields = library[4] if len(library) > 4 else ("vLedNames", "vLedPositions", "vLeds")
@@ -807,11 +839,7 @@ def generate_libraries(signal, lines):
             if method not in used:
                 continue
             names, places, leds = fix_library_lists(prefix, name, *lists)
-            count = len(places)
-            if len(names) != count or len(leds) != count:
-                print(f"OUT OF STEP {prefix} {name}: {len(leds)} LEDs, {len(names)} names, {count} places", file=sys.stderr)
-                count = min(len(names), count, len(leds))
-                names, places, leds = names[:count], places[:count], leds[:count]
+            names, places, leds = in_step(f"{prefix} {name}", names, places, leds)
             write_qmk_method(lines, method, plugin, names, places, leds, key_usages(names, places))
 
 
@@ -832,6 +860,23 @@ LIBRARY_FIXES = {
     # the # and then a backslash, so the names from Del to the quote run an LED off.
     ("Nuvoton", "Pulsar TKL"): {"remove": ("ISO_#",), "rename_first": ("\\", "Enter Upper"), "insert_after": ("'", "ISO_#"), "places": {"/": [11, 4]}},
 }
+
+
+# Entries whose lists the plugin itself leaves out of step, and what the plugin does about it.
+# Bragi Voyager A1600: ledMap has an 83rd LED that ledNames and ledPositions lack. The plugin walks
+# ledPositions (Corsair_Bragi_Device.js:642 and 676), so that LED is never driven.
+OUT_OF_STEP_IN_THE_PLUGIN = {"Bragi Voyager A1600"}
+
+
+def in_step(label, names, places, leds):
+    """A library entry's three lists as long as each other once the fixes are applied. An entry
+    out of step stops the run, because cutting it to the shortest would move every later key off
+    its LED, unless it is listed as out of step in the plugin, which walks its places."""
+    if len(names) == len(places) == len(leds):
+        return names, places, leds
+    if label in OUT_OF_STEP_IN_THE_PLUGIN and len(names) >= len(places) <= len(leds):
+        return names[:len(places)], places, leds[:len(places)]
+    raise ValueError(f"OUT OF STEP {label}: {len(leds)} LEDs, {len(names)} names, {len(places)} places")
 
 
 def fix_library_lists(prefix, name, names, places, leds):
@@ -892,7 +937,12 @@ def generate_corsair(signal, lines):
         made = {}
         for product, name in sorted(products.items()):
             body = entries.get(name)
-            lists = entry_lists(body, "ledNames", "ledPositions", "ledMap") if body else None
+            if body is None:
+                # The Bragi plugin names this receiver and gives it no DeviceList entry, so it has no lights to read.
+                if name == "Laptop Slipstream Dongle":
+                    continue
+                raise ValueError(f"{plugin}: ProductIDList names {name} and DeviceList has no entry for it")
+            lists = entry_lists(body, "ledNames", "ledPositions", "ledMap")
             if not lists or not lists[2]:
                 continue
             spacing = re.search(r"ledSpacing\s*:\s*(\d+)", body)
@@ -900,8 +950,7 @@ def generate_corsair(signal, lines):
             if name not in made:
                 method = layout_identifier(prefix, name)
                 names, places, leds = lists
-                count = min(len(names), len(places), len(leds))
-                names, places, leds = names[:count], places[:count], leds[:count]
+                names, places, leds = in_step(f"{prefix} {name}", names, places, leds)
                 if keyboard:
                     write_qmk_method(methods, method, plugin, names, places, leds, key_usages(names, places))
                 else:
@@ -1068,9 +1117,55 @@ def strip_c_comments(text):
 
 
 def lenient_json(text):
-    """QMK's JSON files allow comments and trailing commas."""
+    """QMK reads its JSON files as Hjson (qmk_cli depends on the hjson package): comments,
+    trailing commas, a line break where a comma belongs, and \\' in a string are all allowed."""
     text = re.sub(r'("(?:[^"\\]|\\.)*")|//[^\n]*', lambda m: m.group(1) or "", text)
-    return json.loads(re.sub(r",(\s*[}\]])", r"\1", text))
+    out = []
+    ended = False  # the last token closed a value, so a value that follows needs a comma first
+    i, n = 0, len(text)
+    while i < n:
+        c = text[i]
+        if c == '"':
+            j = i + 1
+            while j < n and text[j] != '"':
+                j += 2 if text[j] == "\\" else 1
+            if ended:
+                out.append(",")
+            out.append(text[i:j + 1].replace("\\'", "'"))
+            i = j + 1
+            k = i
+            while k < n and text[k] in " \t\r\n":
+                k += 1
+            ended = not (k < n and text[k] == ":")
+        elif c in "{[":
+            if ended:
+                out.append(",")
+            out.append(c)
+            ended = False
+            i += 1
+        elif c in "}]":
+            out.append(c)
+            ended = True
+            i += 1
+        elif c in ",:":
+            out.append(c)
+            ended = False
+            i += 1
+        elif c in " \t\r\n":
+            out.append(c)
+            i += 1
+        else:
+            m = re.match(r"-?\d[\w.+\-]*|true|false|null", text[i:i + 40])
+            if m:
+                if ended:
+                    out.append(",")
+                out.append(m.group())
+                ended = True
+                i += m.end()
+            else:
+                out.append(c)
+                i += 1
+    return json.loads(re.sub(r",(\s*[}\]])", r"\1", "".join(out)))
 
 
 def key_of_keycode(code):
@@ -1122,8 +1217,9 @@ class FirmwareTree:
                 if text:
                     try:
                         found.append(lenient_json(text))
-                    except ValueError:
-                        pass
+                    except ValueError as e:
+                        # A config left out drops its board's vid and pid without a word.
+                        raise ValueError(f"{self.commit}:{d}/{name} does not parse: {e}")
             d = d.rsplit("/", 1)[0]
         return found
 
@@ -1407,17 +1503,35 @@ def inventory_rows(clone, commit, prefix_strip, prefix_add, keep=None, only=None
             continue
         plugin = prefix_add + path[len(prefix_strip):]
         for vid in (int(v, 0) for v in re.findall(number, vendor.group(1))):
-            for pid in products_of(text):
+            for pid in products_of(text, path):
                 if vid != 0 or pid != 0:
                     rows.add((vid, pid & 0xFFFF, plugin))
     return rows
 
 
+def commented_out_rows(clone, rows):
+    """The rows of COMMENTED_OUT_PRODUCTS: a plugin's vendor is the one its live rows have."""
+    found = set()
+    for path, pid, words in COMMENTED_OUT_PRODUCTS:
+        comments = re.findall(r"/\*.*?\*/", git_show(clone, SIGNAL_BETA, path), re.S)
+        entry = rf"0[xX]{pid:04X}\s*:\s*\{{[^\n]*{re.escape(words)}"
+        if not any(re.search(entry, comment) for comment in comments):
+            raise SystemExit(f"{path}: no comment on 0x{pid:04X} that says {words!r}")
+        plugin = path[len("Plugins/"):]
+        vendors = {v for v, _, p in rows if p == plugin}
+        if not vendors:
+            raise SystemExit(f"{path}: no product of the plugin to take a vendor from")
+        found |= {(v, pid, plugin) for v in vendors}
+    return found
+
+
 def inventory(signal, qmk):
-    """Every product every plugin names, for the coverage test. A product keeps
-    the newest plugin that names it."""
+    """Every product every plugin names, for the coverage test, and the entries a
+    plugin keeps in a comment with its reason. A product keeps the newest plugin that
+    names it."""
     in_plugins = lambda path: path.startswith("Plugins/")
     rows = inventory_rows(signal, SIGNAL_BETA, "Plugins/", "", in_plugins)
+    rows |= commented_out_rows(signal, rows)
     have = {(v, p) for v, p, _ in rows}
 
     def add(more):

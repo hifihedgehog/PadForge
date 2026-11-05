@@ -12,6 +12,10 @@ using PadForge.Services;
 
 namespace PadForge.Tests;
 
+// The release reads SettingsManager.UserDevices, a static other classes swap,
+// and these services are built without their field initializers, so the
+// class shares those classes' collection.
+[Collection("SettingsManagerStatics")]
 public class InputServiceHidingLifecycleTests
 {
     private const BindingFlags Fields = BindingFlags.Instance | BindingFlags.NonPublic;

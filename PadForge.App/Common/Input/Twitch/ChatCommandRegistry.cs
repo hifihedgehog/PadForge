@@ -12,7 +12,9 @@ namespace PadForge.Common.Input.Twitch
     /// a word leaves a gap rather than repointing every mapping, a
     /// <see cref="RegistryChanged"/> event raised outside the lock, and a
     /// Load/Save pair SettingsService round-trips through PadForge.xml.
-    /// Button 0 is "Any Command", held while a command plays.
+    /// Button 0 is "Any Command", held while a command plays. A new word takes
+    /// the lowest free button, so <see cref="ButtonFreed"/> has everything
+    /// mapped to a removed word's button cleared first.
     ///
     /// <para>The usual Twitch Plays words come preset
     /// (<see cref="UsualWords"/>). The default mapping places each on the
@@ -62,6 +64,10 @@ namespace PadForge.Common.Input.Twitch
 
         /// <summary>Raised when the list changes, outside the lock.</summary>
         public static event EventHandler RegistryChanged;
+
+        /// <summary>Raised with a removed word's button, outside the lock and
+        /// before <see cref="RegistryChanged"/>.</summary>
+        public static event Action<int> ButtonFreed;
 
         /// <summary>Bumps on every change, so a reader can tell its copy is
         /// stale without comparing lists.</summary>
@@ -160,12 +166,16 @@ namespace PadForge.Common.Input.Twitch
         {
             string norm = Normalize(word);
             bool removed;
+            int freed;
             lock (_lock)
             {
+                freed = _words.FirstOrDefault(w => string.Equals(w.Word, norm, StringComparison.Ordinal))?.Button ?? -1;
                 removed = _words.RemoveAll(w => string.Equals(w.Word, norm, StringComparison.Ordinal)) > 0;
                 if (removed) _version++;
             }
-            if (removed) RegistryChanged?.Invoke(null, EventArgs.Empty);
+            if (!removed) return;
+            ButtonFreed?.Invoke(freed);
+            RegistryChanged?.Invoke(null, EventArgs.Empty);
         }
 
         /// <summary>Adds back every usual word the list is missing. Words

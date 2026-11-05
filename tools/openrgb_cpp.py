@@ -535,5 +535,12 @@ def add_enum_constants(evaluator, source):
 
 
 def git_head(root):
+    """The commit a generator writes into its output as the source it read. The tables are
+    read from the working tree, so a clone with an edited file stops the run: its tables
+    would carry a commit that does not hold them."""
+    edited = subprocess.run(["git", "-C", root, "status", "--porcelain", "--untracked-files=no"],
+                            capture_output=True, text=True, check=True).stdout.strip()
+    if edited:
+        raise SystemExit("%s has uncommitted changes, so no commit names what it holds:\n%s" % (root, edited))
     return subprocess.run(["git", "-C", root, "rev-parse", "HEAD"],
                           capture_output=True, text=True, check=True).stdout.strip()

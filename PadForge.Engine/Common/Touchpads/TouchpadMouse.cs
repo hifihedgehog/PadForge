@@ -77,7 +77,7 @@ public sealed class TouchpadMouse
     /// <summary>The mouse row's buttons: left, right and middle.</summary>
     public const int Left = 1, Right = 2, Middle = 4;
 
-    private readonly TouchpadSettings settings;
+    private TouchpadSettings settings;
     private readonly double widthMm, heightMm;
     private readonly Dictionary<int, (double X, double Y)> start = new();
     private Dictionary<int, (double X, double Y)> last = new();
@@ -95,6 +95,10 @@ public sealed class TouchpadMouse
         this.widthMm = widthMm;
         this.heightMm = heightMm;
     }
+
+    /// <summary>The Windows touchpad settings as they read now. A touch under
+    /// way ends by them.</summary>
+    public void UseSettings(TouchpadSettings settings) => this.settings = settings ?? TouchpadSettings.Default;
 
     /// <summary>The wheel the frames left since the last call to
     /// <see cref="TakeWheel"/>, in wheel units, 120 to a notch.</summary>

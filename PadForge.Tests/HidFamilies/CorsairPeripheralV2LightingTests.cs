@@ -50,9 +50,10 @@ namespace PadForge.Tests
         /// transaction's error byte, acknowledges the other writes, and
         /// answers no block write.</summary>
         private static FakeCorsairChannel Device(uint pid, uint layout = 1, byte startError = 0,
-            Func<byte, uint?> pidByCmd = null)
+            Func<byte, uint?> pidByCmd = null, string path = null)
             => new()
             {
+                Path = path,
                 Answer = q =>
                 {
                     byte cmd = q[1], op = q[2], prop = q[3];
@@ -464,9 +465,30 @@ namespace PadForge.Tests
             // A record left by an earlier run goes back once.
             KeyboardProfileBackups.Take("corsair:1B1C:1BF0", 1, session.CrashFrames[0]);
             var repair = new FakeCorsairChannel();
-            Assert.True(model.Owed());
+            Assert.True(model.Owed(null));
             Assert.True(model.Repair(repair, repair.Wait));
             Assert.Equal(new[] { "out 00 08 01 03 00 01" }, repair.Log);
+        }
+
+        /// <summary>A session records its hand-back under its device's path,
+        /// where the worker asks after it and the next run's repair reads it.
+        /// Another device of the model owes nothing.</summary>
+        [Fact]
+        public void ARecordLeftAtADevicesPath_IsOwedAndRepaired_AtThatPath()
+        {
+            const string path = @"\\?\hid#vid_1b1c&pid_1bf0&mi_01#first";
+            const string other = @"\\?\hid#vid_1b1c&pid_1bf0&mi_01#second";
+            var model = Family().Match(Collection(0x1BF0));
+            var io = Device(0x1BF0, path: path);
+            var session = model.Begin(io, io.Wait);
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, io.Wait, session.Map.Lights, new int[2]));
+            // Killed: no hand-back.
+            Assert.True(model.Owed(path));
+            Assert.False(model.Owed(other));
+            var repair = new FakeCorsairChannel { Path = path };
+            Assert.True(model.Repair(repair, repair.Wait));
+            Assert.Equal(new[] { "out 00 08 01 03 00 01" }, repair.Log);
+            Assert.False(model.Owed(path));
         }
     }
 }

@@ -47,7 +47,9 @@ namespace PadForge.Common.Input.Peripherals
 
     /// <summary>What a device told a session about itself: the lights and
     /// frames of the board it turned out to be.</summary>
-    internal sealed record PluginVariant(IReadOnlyList<LightInfo> Lights, int Slots, Func<int[], IEnumerable<PluginStep>> Picture = null);
+    /// <param name="PictureHolds">The firmware keeps a picture with nothing sent, as its plugin's
+    /// sending only a changed one shows, so the session repeats nothing.</param>
+    internal sealed record PluginVariant(IReadOnlyList<LightInfo> Lights, int Slots, Func<int[], IEnumerable<PluginStep>> Picture = null, bool PictureHolds = false);
 
     internal sealed partial class PluginDeviceLighting
     {
@@ -701,6 +703,11 @@ namespace PadForge.Common.Input.Peripherals
                 OutputLength = 64,
                 Lights = new[] { Wheel(0) },
                 Slots = 1,
+                // A mouse that comes back on its dongle has left direct mode. The plugin
+                // watches for that on the dongle's interface 3 (ASUS_Omni_Device.js:96-104,
+                // ASUS_Mouse_Protocol.js:119-121), and a keep-alive takes it again with no
+                // second collection.
+                KeepAliveMs = 5000,
                 Answers = (io, wait) => OmniConnected(io, wait, Frame(64, 0x03, 0x12, 0x00, 0x02)),
                 Start = new[] { PluginStep.Output(Frame(65, 0x03, 0x51, 0x28, 0x03, 0x00, 0x02, 0x64, 0x02)) },
                 // A mouse the library does not list takes one light. Every other Omni mouse

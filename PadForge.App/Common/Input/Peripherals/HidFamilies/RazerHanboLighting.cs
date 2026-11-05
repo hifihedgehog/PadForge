@@ -38,14 +38,20 @@ namespace PadForge.Common.Input.Peripherals
     /// cooler's own it drives: 82 01, 80 01, 80 01 01, each with its read
     /// (SetModeSpectrumCycle, cpp:112-131). No reference reads the cooler's
     /// own effect back, so a cooler whose own lighting was another effect
-    /// shows the spectrum cycle after it. OpenRGB marks the controller as
-    /// saving nothing on the cooler (@save :robot:,
-    /// RGBController_RazerHanbo.cpp:19). The crash path sends the three
+    /// shows the spectrum cycle after it. The crash path sends the three
     /// reports with no reads.</para>
+    ///
+    /// <para>What the writes do. OpenRGB's page tag says the controller saves
+    /// on every update (@save :robot:, RGBController_RazerHanbo.cpp:19, the
+    /// meaning from its commit 8f876423), but the Direct mode carries no save
+    /// flag (line 40), so pictures go out at the rate of a stream. No source
+    /// says whether the colors reach the cooler's flash.</para>
     ///
     /// <para>The cooler is Razer's, so the linker's Razer row reaches it and
     /// closes its path while Synapse runs
-    /// (<see cref="PeripheralLinker.VendorProgramRuns"/>).</para>
+    /// (<see cref="PeripheralLinker.VendorProgramRuns"/>).
+    /// The model names Synapse too, so the worker sends it nothing while
+    /// it runs, and no hand-back lands on Synapse's colors.</para>
     /// </summary>
     internal sealed class RazerHanboLighting : IHidLightingFamily
     {
@@ -94,6 +100,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = this,
                 Name = name,
+                Programs = VendorPrograms.Razer,
                 Map = RazerHidTable.MapOf(productId),
                 RepaintMs = RepaintMs,
                 Begin = (io, wait) => io == null ? null : new Session(zones),

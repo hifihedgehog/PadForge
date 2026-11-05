@@ -179,26 +179,28 @@ namespace PadForge.Tests
             var record = Assert.Single(backend.Recorded);
             Assert.False(record.Feature);
             Assert.Equal(2, record.Frames.Length);
-            Assert.NotNull(KeyboardProfileBackups.Get("corsair:1B1C:1B13"));
+            Assert.NotNull(KeyboardProfileBackups.Get(KeyboardProfileBackups.DeviceKey("corsair:1B1C:1B13", k70.Path)));
             Assert.Equal(113, PeripheralLightMaps.For(PathOf(k70)).Lights.Count);
 
             Unlight();
             Passes(backend);
             Assert.Equal(new[] { "00 07 04 01", "00 07 04 01" }, Outputs().Skip(14).Select(f => Hex(f, 4)));
-            Assert.Null(KeyboardProfileBackups.Get("corsair:1B1C:1B13"));
+            Assert.Null(KeyboardProfileBackups.Get(KeyboardProfileBackups.DeviceKey("corsair:1B1C:1B13", k70.Path)));
             Assert.Empty(backend.Recorded);
         }
 
         [Fact]
         public void AKilledRunsDevice_IsHandedBack_WithNoClaim()
         {
-            KeyboardProfileBackups.LoadRegistry(new[] { ("corsair:1B1C:1BF0", 1, "0008010300010000") });
-            using var backend = Started(CorsairPeripheralLightingTests.Collection(0x1BF0, page: 0xFF42));
+            var device = CorsairPeripheralLightingTests.Collection(0x1BF0, page: 0xFF42);
+            string key = KeyboardProfileBackups.DeviceKey("corsair:1B1C:1BF0", device.Path);
+            KeyboardProfileBackups.LoadRegistry(new[] { (key, 1, "0008010300010000") });
+            using var backend = Started(device);
             Assert.Empty(Outputs());
             Advance(HidLightingBackend.RepairGraceMs);
             Passes(backend);
             Assert.Equal(new[] { "00 08 01 03 00 01" }, Outputs().Select(f => Hex(f, 6)));
-            Assert.Null(KeyboardProfileBackups.Get("corsair:1B1C:1BF0"));
+            Assert.Null(KeyboardProfileBackups.Get(key));
         }
 
         [Fact]

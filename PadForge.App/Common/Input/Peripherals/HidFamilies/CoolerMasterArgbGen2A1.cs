@@ -179,24 +179,34 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>RefreshTopology's reads (CMARGBGen2A1Controller.cpp:133-276)
         /// and the strips SetupZones makes of them
-        /// (RGBController_CMARGBGen2A1Controller.cpp:1320-1446): a port whose
-        /// generation does not answer has none, a Gen2 port one per device
-        /// it reports with a mask and LEDs, a Gen1 port one.</summary>
+        /// (RGBController_CMARGBGen2A1Controller.cpp:1320-1446): a Gen2 port
+        /// one per device it reports with a mask and LEDs, and any other port
+        /// one, a port whose generation did not answer or answered neither
+        /// value among them (ReadPortGeneration, CMARGBGen2A1Controller.cpp:195-213),
+        /// of 6 LEDs where no geometry says otherwise (lines 1333 and
+        /// 1400-1404). None where no port answered with a generation, so a
+        /// silent controller gets no session.</summary>
         internal static List<A1Target> A1Topology(IHidReportChannel io, int ports)
         {
             var targets = new List<A1Target>();
+            bool answered = false;
             for (int port = 0; port < ports; port++)
             {
                 byte mask = (byte)(1 << port);
                 var generation = A1Exchange(io, A1Command(A1Generation, A1Read, mask), mask);
-                if (generation == null || generation[3] != mask) continue;
-                if (generation[4] == A1Gen1)
+                bool valid = generation != null && generation[3] == mask && generation[4] is A1Gen1 or A1Gen2;
+                answered |= valid;
+                if (!valid)
+                {
+                    targets.Add(new A1Target(mask, 0x00, A1Gen1Leds(0)));
+                }
+                else if (generation[4] == A1Gen1)
                 {
                     var geometry = A1Exchange(io, A1Command(A1Gen1Geometry, A1Read, mask), mask);
                     int factorB = geometry != null && geometry[3] == mask ? geometry[5] : 0;
                     targets.Add(new A1Target(mask, 0x00, A1Gen1Leds(factorB)));
                 }
-                else if (generation[4] == A1Gen2)
+                else
                 {
                     var topology = A1Exchange(io, A1Command(A1Gen2Topology, A1Read, mask), mask);
                     if (topology == null || topology[3] != mask) continue;
@@ -211,6 +221,7 @@ namespace PadForge.Common.Input.Peripherals
                     }
                 }
             }
+            if (!answered) targets.Clear();
             return targets;
         }
 

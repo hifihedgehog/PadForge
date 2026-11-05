@@ -780,6 +780,8 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} మళ్లీ దాని విండోస్ డ్రైవర్పైకి వచ్చింది.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>{0} కోసం విండోస్ డ్రైవర్ను పునరుద్ధరించలేకపోయాం.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>విండోస్ {0} ను తిరిగి దాని స్వంత డ్రైవర్పై ఉంచింది. దాన్ని మళ్లీ మార్చడానికి పరికరాల పేజీలో ఎంచుకోండి.</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} ఇక PadForge డ్రైవర్‌పై లేదు.</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} ఇంకా PadForge డ్రైవర్‌పైనే ఉంది. దాన్ని Windowsకు తిరిగి ఇవ్వడానికి పరికరాల పేజీలో ఎంచుకోండి.</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>PadForgeలో మాత్రమే ఉపయోగించు</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge ఈ కీబోర్డ్‌ను Windows యొక్క WinUSB డ్రైవర్‌కు మారుస్తుంది మరియు దాన్ని స్వయంగా చదువుతుంది. అప్పుడు ఈ పేజీలో దాని Windows డ్రైవర్‌ను పునరుద్ధరించే వరకు, PadForge మూసివేసి ఉన్నప్పుడు కూడా, Windows ప్రతి ప్రోగ్రామ్‌లో దానితో టైప్ చేయడం ఆపేస్తుంది. PadForge నడుస్తున్నప్పుడు దాని మ్యాపింగ్‌లు మరియు మాక్రోలు పనిచేస్తూనే ఉంటాయి.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge ఈ మౌస్‌ను Windows యొక్క WinUSB డ్రైవర్‌కు మారుస్తుంది మరియు దాన్ని స్వయంగా చదువుతుంది. అప్పుడు ఈ పేజీలో దాని Windows డ్రైవర్‌ను పునరుద్ధరించే వరకు, PadForge మూసివేసి ఉన్నప్పుడు కూడా, Windows ప్రతి ప్రోగ్రామ్‌లో దానితో పాయింటర్‌ను కదిలించడం ఆపేస్తుంది. PadForge నడుస్తున్నప్పుడు దాని మ్యాపింగ్‌లు మరియు మాక్రోలు పనిచేస్తూనే ఉంటాయి.</value></data>
@@ -957,6 +959,7 @@
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>రంబుల్ SteelSeries GGలోని టాక్టైల్ హ్యాండ్లర్ ద్వారా ప్లే అవుతుంది.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG ప్రతి టాక్టైల్ Rivalను ఒకేసారి నడుపుతుంది, కాబట్టి వర్చువల్ కంట్రోలర్ {0}లోనిది వాటి రంబుల్ను సెట్ చేస్తుంది.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>SteelSeries GG కోసం వేచి ఉంది. GG నడిచాక రంబుల్ ప్లే అవుతుంది.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG నడుస్తోంది, కానీ PadForgeకు స్పందించడం లేదు. అది స్పందించగానే రంబుల్ పని చేస్తుంది.</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>రంబుల్ మీ Razer Sensa HD పరికరాలపై Razer Synapse ద్వారా ప్లే అవుతుంది.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Razer Synapse 4లో Sensa HD హాప్టిక్స్ కోసం వేచి ఉంది. Synapseలో పరికరం హాప్టిక్ సోర్స్ను Sensa HD Gamesకు సెట్ చేయండి.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>ఎడమ ట్రిగ్గర్</value></data>
@@ -1000,6 +1003,12 @@
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>రంగులు నేరుగా {0}కు వెళ్తాయి. ఇది వెలుగుతున్నప్పుడు దాని ఆన్-బోర్డ్ మెమరీ మోడ్ ఆఫ్లో ఉంటుంది.</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>రంగులు నేరుగా {0}కు వెళ్తాయి. రంగుల చక్రం లేదా ధ్వనిని అనుసరించే రంగుల వంటి మారే రంగులకు ల్యాప్టాప్ BIOSలో Dynamic Lighting ఆన్ చేసి ఉండాలి. అది లేకపోతే కీలు చివరి స్థిరమైన రంగులనే ఉంచుకుంటాయి.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>రంగులు నేరుగా {0}కు వెళ్తాయి. ల్యాప్టాప్ BIOSలో Dynamic Lighting ఆన్‌లో ఉంటే, కీలను Windows డైనమిక్ లైటింగ్ వెలిగిస్తుంది. Windows సెట్టింగులలో ఈ కీబోర్డ్ కోసం Windows డైనమిక్ లైటింగ్ ఆఫ్ చేయండి, అప్పుడు PadForge వాటిని వెలిగిస్తుంది, మారే రంగులతో సహా.</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>రంగులు నేరుగా {0}కు వెళ్తాయి. ఇది ప్రతి చిత్రాన్ని తన సొంత మెమరీలో నిల్వ చేస్తుంది, కాబట్టి రంగుల చక్రం లేదా ధ్వనిని అనుసరించే రంగుల వంటి మారే రంగులు కనిపించవు. మారని రంగు కనిపిస్తుంది.</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>రంగులు నేరుగా {0}కు వెళ్తాయి. ఇది ప్రతి చిత్రాన్ని తన సొంత మెమరీలో నిల్వ చేస్తుంది, కాబట్టి రంగుల చక్రం లేదా ధ్వనిని అనుసరించే రంగుల వంటి మారే రంగులు కనిపించవు. మారని రంగు కనిపిస్తుంది. మొదటి చిత్రం కీబోర్డ్‌లో సేవ్ చేసిన ఎఫెక్ట్‌లపై రాస్తుంది, పాతవి తిరిగి రావు.</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>{0}లో సీరియల్ పరికరం</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>ఈ పరికరం కనెక్ట్ అయి ఉంది, కానీ PadForge రంగులను తీసుకోలేదు. PadForge ప్రతి నిమిషం మళ్లీ ప్రయత్నిస్తుంది.</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows ఈ పరికరాన్ని కీబోర్డ్ లేదా మౌస్‌గా తన నియంత్రణలో ఉంచుకుని, దాని రంగులను సెట్ చేసే రిపోర్ట్‌ను తిరస్కరిస్తోంది, కాబట్టి PadForge Windowsలో దీన్ని వెలిగించలేదు.</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>మరో ప్రోగ్రామ్ ఈ పరికరాన్ని తెరిచి ఉంచింది, కాబట్టి PadForge దీన్ని వెలిగించలేదు. ఆ ప్రోగ్రామ్ మూసివేయగానే PadForge దీన్ని వెలిగిస్తుంది.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>ఈ పరికరం ఇంకా స్పందించలేదు. అది మేల్కొన్నాక దాని రంగులు కనిపిస్తాయి.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>రంగులు {0} ద్వారా వెళ్తాయి.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>రంగులు {0} ద్వారా వెళ్తాయి, ఇది ఈ రకమైన ప్రతి పరికరాన్ని ఒకేసారి వెలిగిస్తుంది. {0} నడవనప్పుడు, PadForge ఈ పరికరాన్ని తానే వెలిగిస్తుంది.</value></data>
@@ -1007,7 +1016,9 @@
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>రంగులు OpenRGB యొక్క SDK Server ద్వారా వెళ్తాయి. OpenRGB నడవనప్పుడు, PadForge ఈ పరికరాన్ని తానే వెలిగిస్తుంది.</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>రంగులు OpenRGB యొక్క SDK Server ద్వారా వెళ్తాయి.</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB ఈ పరికరాన్ని పట్టుకుంది, దీనికి దానిలో Direct మోడ్ లేదు, కాబట్టి దీని లైటింగ్ OpenRGB దగ్గరే ఉంటుంది.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB తన SDK Server ఆపివేసి నడుస్తోంది, కాబట్టి PadForge ఈ పరికరాన్ని OpenRGBకే వదిలేస్తుంది. OpenRGBలో SDK Server ఆన్ చేయి, అప్పుడు PadForge దాని ద్వారా పరికరాన్ని వెలిగిస్తుంది.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB నడుస్తోంది, కానీ దాని SDK Server పోర్ట్ {0}లో స్పందించడం లేదు, కాబట్టి PadForge ఈ పరికరాన్ని OpenRGBకే వదిలేస్తుంది. OpenRGBలో SDK Server ఆన్ చేయి, అప్పుడు PadForge దాని ద్వారా పరికరాన్ని వెలిగిస్తుంది.</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE తన SDK ఆపివేసి నడుస్తోంది. iCUE సెట్టింగ్‌లలో iCUE SDK ఆన్ చేయి, అప్పుడు PadForge దాని ద్వారా పరికరాన్ని వెలిగిస్తుంది.</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} నడుస్తోంది, కానీ తన పరికరాలను వెలిగించడానికి PadForgeను అనుమతించడం లేదు. PadForge అడుగుతూనే ఉంటుంది.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} ఈ రకమైన ప్రతి పరికరాన్ని ఒకేసారి వెలిగిస్తుంది, కాబట్టి వర్చువల్ కంట్రోలర్ {1}లోనిది వాటి రంగును సెట్ చేస్తుంది.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} ఈ రకమైన ప్రతి పరికరాన్ని ఒకేసారి వెలిగిస్తుంది, కాబట్టి వర్చువల్ కంట్రోలర్ {2}లోని {1} వరుస వాటి రంగును సెట్ చేస్తుంది.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్ {0} కూడా ఈ పరికరాన్ని వెలిగిస్తుంది, దాని రంగే కనిపిస్తుంది.</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>హెడ్సెట్లు</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>మదర్బోర్డులు, గ్రాఫిక్స్ కార్డులు మరియు మెమరీ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>మదర్బోర్డులు మరియు గ్రాఫిక్స్ కార్డులు</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>మౌస్ప్యాడ్లు మరియు హెడ్సెట్ స్టాండ్లు</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>మౌస్ప్యాడ్లు, హెడ్సెట్లు మరియు హెడ్సెట్ స్టాండ్లు</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>లైట్ బార్</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ఆరు అంకెల హెక్స్ రంగును (RRGGBB లేదా #RRGGBB) నమోదు చేసి, వర్తింపజేయడానికి Enter నొక్కండి లేదా వెలుపల క్లిక్ చేయండి.</value></data>
@@ -4671,6 +4682,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>{0} చాట్‌కు కనెక్ట్ అవుతోంది…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>{0} చాట్‌ను చదువుతోంది.</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>{0} చాట్‌ను చేరుకోలేకపోయింది. మళ్లీ ప్రయత్నిస్తోంది.</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>{0}కు Twitchలో చాట్ లేదు. ఛానెల్ పేరును సరిచూడండి.</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>పాజ్ అయింది.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>మీ ప్రసారం కోసం కంట్రోలర్ చిత్రం. ఈ చిరునామాను OBS-లో బ్రౌజర్ సోర్స్‌గా జోడించండి:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>మీ ప్రసారం కోసం కంట్రోలర్ చిత్రానికి వెబ్ కంట్రోలర్, దాని సాధారణ HTTP చిరునామా అవసరం. వెబ్ కంట్రోలర్ కార్డ్‌లో సాధారణ HTTP-ను కూడా అందించు ఆన్ చేయండి. ఈ PCలో OBS కోసం ఈ PC మాత్రమే సరిపోతుంది.</value></data>

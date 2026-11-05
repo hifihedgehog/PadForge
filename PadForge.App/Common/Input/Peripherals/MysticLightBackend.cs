@@ -25,6 +25,17 @@ namespace PadForge.Common.Input.Peripherals
     /// (MsiDeviceUpdateQueue.cs:41-42). Only LEDs whose color changed are
     /// sent again.</para>
     ///
+    /// <para>Refusals. RGB.NET reads neither answer, so one LED that refuses
+    /// costs it nothing, and an LED's style can refuse colors (mystic-light-sdk
+    /// README.md:173-175). Here an LED that refuses before it ever took a
+    /// color gets its own state back, is logged once and is left out for the
+    /// session, and the others are lit. A path whose every LED refuses says so
+    /// on its tab (<see cref="SdkCategoryBackend.NotePathRefused"/>). The
+    /// session ends on an answer that means the program is gone,
+    /// MLAPI_TIMEOUT or MLAPI_NOT_INITIALIZED (mystic_light.rs:186-188), and
+    /// on a refusal from an LED that took a color before, which no style
+    /// explains.</para>
+    ///
     /// <para>Hand-back. Before it changes an LED the worker reads its style
     /// and color (MLAPI_GetLedStyle, MLAPI_GetLedColor, pp. 4-5), and when
     /// the LED's path is no longer claimed, the program stops or the session
@@ -37,6 +48,11 @@ namespace PadForge.Common.Input.Peripherals
     {
         internal const string SteadyStyle = "Steady";
         internal const int MlapiOk = 0;
+
+        /// <summary>MLAPI_TIMEOUT and MLAPI_NOT_INITIALIZED
+        /// (mystic-light-sdk src/sdk/mystic_light.rs:186-188).</summary>
+        internal const int MlapiTimeout = -2;
+        internal const int MlapiNotInitialized = -4;
 
         /// <summary>The paths, in paint order.</summary>
         internal static readonly string[] PathKeys = { "MSI_MB", "MSI_VGA", "MSI_MOUSE", "other" };
@@ -52,13 +68,28 @@ namespace PadForge.Common.Input.Peripherals
         /// it, kept from its first change to its hand-back.</summary>
         private readonly Dictionary<(string Type, int Index), (string Style, int R, int G, int B)> _saved = new();
 
+        /// <summary>The LEDs that took a color in this session, and the ones
+        /// left out of it.</summary>
+        private readonly HashSet<(string Type, int Index)> _took = new();
+        private readonly HashSet<(string Type, int Index)> _refused = new();
+
+        /// <summary>The LEDs already logged as refused, and as not restored,
+        /// across sessions, since a session that ends tries them all again.</summary>
+        private readonly HashSet<(string Type, int Index)> _refusedLogged = new();
+        private readonly HashSet<(string Type, int Index)> _restoreLogged = new();
+
         public MysticLightBackend() : this(null) { }
 
-        internal MysticLightBackend(IMysticLightNative native, int pollMs = 50, int retryMs = 30000, int stopWaitMs = 3000)
-            : base(pollMs, retryMs, stopWaitMs)
+        internal MysticLightBackend(IMysticLightNative native, int pollMs = 50, int retryMs = 30000, int stopWaitMs = 3000,
+            int predecessorWaitMs = DefaultPredecessorWaitMs)
+            : base(pollMs, retryMs, stopWaitMs, predecessorWaitMs)
         {
             _native = native ?? new MysticLightNative();
         }
+
+        private static readonly WorkerSuccession s_workers = new();
+
+        protected override WorkerSuccession Workers => s_workers;
 
         public override OutputFamily Family => OutputFamily.MysticLightType;
 
@@ -83,6 +114,8 @@ namespace PadForge.Common.Input.Peripherals
         {
             _leds.Clear();
             _saved.Clear();
+            _took.Clear();
+            _refused.Clear();
             if (!_native.TryLoad(out detail)) return false;
             _loaded = true;
             int status = _native.Initialize();
@@ -127,23 +160,58 @@ namespace PadForge.Common.Input.Peripherals
             for (int i = 0; i < leds.Count; i++)
             {
                 var led = leds[i];
+                if (_refused.Contains(led)) continue;
                 int rgb = picture.ColorAt(i);
                 bool first = !_saved.ContainsKey(led);
                 if (!first && last != null && last.ColorAt(i) == rgb) continue;
+                int status;
                 if (first)
                 {
                     // The LED's own style and color, for its hand-back,
-                    // before anything of PadForge's reaches it.
-                    if (_native.GetLedStyle(led.Type, led.Index, out string style) != MlapiOk
-                        || _native.GetLedColor(led.Type, led.Index, out int r, out int g, out int b) != MlapiOk)
-                        return false;
+                    // before anything of PadForge's reaches it. An LED whose
+                    // state cannot be read is never changed.
+                    int r = 0, g = 0, b = 0;
+                    status = _native.GetLedStyle(led.Type, led.Index, out string style);
+                    if (status == MlapiOk) status = _native.GetLedColor(led.Type, led.Index, out r, out g, out b);
+                    if (status != MlapiOk)
+                    {
+                        if (ProgramGone(status)) return false;
+                        Refuse(led, status);
+                        continue;
+                    }
                     _saved[led] = (style, r, g, b);
-                    if (_native.SetLedStyle(led.Type, led.Index, SteadyStyle) != MlapiOk) return false;
+                    // The color's answer says whether the LED shows it, so a
+                    // refused style ends nothing here, as RGB.NET discards
+                    // this answer (MsiMainboardRGBDevice.cs:36-41).
+                    status = _native.SetLedStyle(led.Type, led.Index, SteadyStyle);
+                    if (ProgramGone(status)) return false;
                 }
-                if (_native.SetLedColor(led.Type, led.Index, (rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF) != MlapiOk)
-                    return false;
+                status = _native.SetLedColor(led.Type, led.Index, (rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
+                if (status == MlapiOk)
+                {
+                    _took.Add(led);
+                    continue;
+                }
+                if (ProgramGone(status) || _took.Contains(led)) return false;
+                Restore(led);
+                Refuse(led, status);
             }
+            if (leds.Count > 0 && leds.TrueForAll(_refused.Contains)) NotePathRefused(category);
             return true;
+        }
+
+        /// <summary>Whether an answer means the program no longer serves the
+        /// session, as opposed to one LED saying no.</summary>
+        private static bool ProgramGone(int status) => status is MlapiTimeout or MlapiNotInitialized;
+
+        /// <summary>Leaves an LED out of the session, and logs the first time
+        /// it does.</summary>
+        private void Refuse((string Type, int Index) led, int status)
+        {
+            _refused.Add(led);
+            if (_refusedLogged.Add(led))
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"PERIPHERAL {LogName} LED {led.Type}:{led.Index} left out for this session, it answered {status.ToString(CultureInfo.InvariantCulture)}");
         }
 
         /// <summary>A path nobody claims any more: each of its LEDs gets its
@@ -158,12 +226,24 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (!_saved.TryGetValue(led, out var saved)) return;
             _saved.Remove(led);
+            string failure = null;
             try
             {
-                _native.SetLedColor(led.Type, led.Index, saved.R, saved.G, saved.B);
-                if (!string.IsNullOrEmpty(saved.Style)) _native.SetLedStyle(led.Type, led.Index, saved.Style);
+                int status = _native.SetLedColor(led.Type, led.Index, saved.R, saved.G, saved.B);
+                if (status != MlapiOk) failure = status.ToString(CultureInfo.InvariantCulture);
+                if (!string.IsNullOrEmpty(saved.Style))
+                {
+                    status = _native.SetLedStyle(led.Type, led.Index, saved.Style);
+                    if (status != MlapiOk) failure ??= status.ToString(CultureInfo.InvariantCulture);
+                }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                failure = ex.GetType().Name;
+            }
+            // The effect the user chose did not come back, once per LED.
+            if (failure != null && _restoreLogged.Add(led))
+                PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL {LogName} could not restore LED {led.Type}:{led.Index}, it answered {failure}");
         }
 
         protected override void Close()

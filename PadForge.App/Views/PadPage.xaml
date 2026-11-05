@@ -2801,8 +2801,8 @@
                                                         Visibility="{Binding IsKeyColorTimed, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_KeyColors_Duration, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Width="120" Margin="0,0,8,0"/>
-                                                <Slider Value="{Binding KeyColorMs, Mode=TwoWay}"
-                                                        Minimum="1" Maximum="600000" Width="220" SmallChange="100" LargeChange="1000"
+                                                <Slider Value="{Binding KeyColorMs, Mode=TwoWay, Converter={StaticResource LogScaleConverter}, ConverterParameter=600000}"
+                                                        Minimum="0" Maximum="100" Width="220" SmallChange="1" LargeChange="10"
                                                         VerticalAlignment="Center"
                                                         AutomationProperties.Name="{Binding MacroAction_KeyColors_Duration, Source={x:Static strings:Strings.Instance}}"/>
                                                 <TextBox Text="{Binding KeyColorMs, Mode=TwoWay}" Width="80" Margin="8,0,0,0"
@@ -10979,9 +10979,7 @@
                                      rather than as element Content, so the closed
                                      combo's selection box instantiates its own copy of
                                      the template instead of stealing the popup item's
-                                     visual. Content stays the localized string and the
-                                     SelectedIndex + EnumIndexConverter contract is
-                                     unchanged. -->
+                                     visual. Content stays the localized string. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_Lighting_PlayerPattern, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <!-- SelectedValue + Tag binding (the LightbarMode combo's

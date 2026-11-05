@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 using PadForge.Engine;
@@ -24,7 +25,15 @@ namespace PadForge.Common.Input.Twitch
     /// ForgePlay's controller.js: a turn command is handled, a
     /// viewer without control is ignored, and anything else is parsed whole
     /// and put in line, or ignored when it does not parse. While the streamer
-    /// pauses, every message is ignored.</para>
+    /// pauses, every message is ignored. A viewer who takes sole control takes
+    /// the line too: the commands of others stop and leave it, moderators'
+    /// stay.</para>
+    ///
+    /// <para>Chatterino sends a message that repeats the last one with " " and
+    /// U+034F on the end (TwitchChannel.cpp, MAGIC_MESSAGE_SUFFIX), so that
+    /// Twitch takes it. No word holds such a mark
+    /// (<see cref="ChatCommandRegistry.Check"/>), so marks that draw nothing
+    /// at the end of a message are cut before it is read.</para>
     /// </summary>
     internal sealed class TwitchChatDevice : ISdlInputDevice
     {
@@ -203,19 +212,19 @@ namespace PadForge.Common.Input.Twitch
             return true;
         }
 
-        private void OnMessage(string user, bool moderator, bool broadcaster, string text)
+        private void OnMessage(string login, string user, bool moderator, bool broadcaster, string text)
         {
             if (_disposed) return;
-            try { HandleMessage(user, moderator, text, broadcaster); }
+            try { HandleMessage(user, moderator, text, broadcaster, login); }
             catch (Exception ex) { SdlDiagLog.WriteLine("Twitch chat: a message failed: " + ex.Message); }
         }
 
         /// <summary>Acts on one chat message. The client calls it for every
         /// message, and the tests call it directly.</summary>
-        internal void HandleMessage(string user, bool moderator, string text, bool broadcaster = false)
+        internal void HandleMessage(string user, bool moderator, string text, bool broadcaster = false, string login = null)
         {
             if (_disposed || string.IsNullOrEmpty(text)) return;
-            string t = text.Trim();
+            string t = TrimInvisibleEnd(text).Trim();
             // A reply starts with "@name ", and ComfyJS reads a command after
             // it too (app.js 1091 to 1097).
             if (t.Length > 0 && t[0] == '@')
@@ -239,15 +248,53 @@ namespace PadForge.Common.Input.Twitch
             string rest = space < 0 ? string.Empty : body.Substring(space + 1);
             string[] args = rest.Split((char[])null, 2, StringSplitOptions.RemoveEmptyEntries);
             string argument = args.Length > 0 ? args[0] : string.Empty;
-            if (_turns.Handle(user, moderator, command, argument, _player.IsPlaying, all => _player.Skip(all), broadcaster))
+            if (_turns.Handle(user, moderator, command, argument, _player.IsPlaying, all => _player.Skip(all), broadcaster, login))
+            {
+                if (_turns.Owner != null) _player.KeepOnly(p => _turns.CanPlay(p.User, p.Moderator, p.Login));
                 return;
-            if (!_turns.CanPlay(user, moderator)) return;
+            }
+            if (!_turns.CanPlay(user, moderator, login)) return;
 
             string sequence = rest.Length > 0 ? command + " " + rest : command;
             var steps = ChatCommandParser.Parse(sequence, ChatCommandRegistry.ButtonFor);
             if (steps == null) return;
             var events = ChatCommandParser.Timeline(steps, out int endMs);
-            _player.Enqueue(new ChatPlay { User = ChatTurns.Clean(user), Text = body, Events = events, EndMs = endMs });
+            _player.Enqueue(new ChatPlay
+            {
+                User = ChatTurns.Clean(user),
+                Login = login,
+                Moderator = moderator,
+                Text = body,
+                Events = events,
+                EndMs = endMs,
+            });
+        }
+
+        /// <summary>The text without the spaces, combining marks and format
+        /// characters at its end, nor anything from Unicode's tag and
+        /// variation block (U+E0000 to U+E0FFF), which draws nothing
+        /// either.</summary>
+        internal static string TrimInvisibleEnd(string text)
+        {
+            int end = text.Length;
+            while (end > 0)
+            {
+                char c = text[end - 1];
+                if (char.IsWhiteSpace(c)
+                    || char.GetUnicodeCategory(c) is UnicodeCategory.NonSpacingMark or UnicodeCategory.Format)
+                {
+                    end--;
+                    continue;
+                }
+                if (end >= 2 && char.IsSurrogatePair(text[end - 2], c)
+                    && char.ConvertToUtf32(text[end - 2], c) is >= 0xE0000 and <= 0xE0FFF)
+                {
+                    end -= 2;
+                    continue;
+                }
+                break;
+            }
+            return end == text.Length ? text : text.Substring(0, end);
         }
 
         /// <summary>The streamer's Pause: stops the command playing and clears

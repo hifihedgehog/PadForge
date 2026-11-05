@@ -780,6 +780,8 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} फेरि आफ्नो Windows ड्राइभरमा फर्कियो।</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>{0} को Windows ड्राइभर पुनर्स्थापना गर्न सकिएन।</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows ले {0} लाई फेरि यसको आफ्नै ड्राइभरमा राख्यो। फेरि स्विच गर्न यन्त्रहरू पृष्ठमा यसलाई चयन गर्नुहोस्।</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} अब PadForge को ड्राइभरमा छैन।</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} अझै PadForge को ड्राइभरमा छ। यसलाई Windows लाई फिर्ता दिन यन्त्रहरू पृष्ठमा चयन गर्नुहोस्।</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>PadForge मा मात्र प्रयोग गर्नुहोस्</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge ले यो किबोर्डलाई Windows को WinUSB ड्राइभरमा सार्छ र आफैं पढ्छ। त्यसपछि यो पृष्ठबाट यसको Windows ड्राइभर नफर्काएसम्म, PadForge बन्द भएको बेला पनि, Windows ले कुनै पनि प्रोग्राममा यसबाट टाइप गर्न छोड्छ। PadForge चलिरहेको बेला यसका म्यापिङ र म्याक्रोहरूले काम गरिरहन्छन्।</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge ले यो माउसलाई Windows को WinUSB ड्राइभरमा सार्छ र आफैं पढ्छ। त्यसपछि यो पृष्ठबाट यसको Windows ड्राइभर नफर्काएसम्म, PadForge बन्द भएको बेला पनि, Windows ले कुनै पनि प्रोग्राममा यसबाट पोइन्टर सार्न छोड्छ। PadForge चलिरहेको बेला यसका म्यापिङ र म्याक्रोहरूले काम गरिरहन्छन्।</value></data>
@@ -957,6 +959,7 @@
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>कम्पन SteelSeries GG को ट्याक्टाइल ह्यान्डलरमार्फत बज्छ।</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG ले सबै ट्याक्टाइल Rival लाई एकैपटक चलाउँछ, त्यसैले भर्चुअल कन्ट्रोलर {0} मा भएकोले तिनको कम्पन सेट गर्छ।</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>SteelSeries GG को प्रतीक्षा गर्दै। GG चलेपछि कम्पन बज्छ।</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG चलिरहेको छ तर PadForge लाई जवाफ दिँदैन। जवाफ दिएपछि रम्बल चल्छ।</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>कम्पन तपाईंका Razer Sensa HD यन्त्रहरूमा Razer Synapse मार्फत बज्छ।</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Razer Synapse 4 मा Sensa HD Haptics को प्रतीक्षा गर्दै। Synapse मा यन्त्रको Haptic Source लाई Sensa HD Games मा सेट गर्नुहोस्।</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>बायाँ ट्रिगर</value></data>
@@ -1000,6 +1003,12 @@
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>रङहरू सिधै {0} मा जान्छन्। बालिएको बेला यसको अन-बोर्ड मेमोरी मोड बन्द रहन्छ।</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>रङहरू सिधै {0} मा जान्छन्। रङ चक्र वा आवाजसँगै बदलिने रङहरू जस्ता बदलिने रङहरूका लागि ल्यापटपको BIOS मा Dynamic Lighting सक्रिय हुनुपर्छ। त्यसबिना, कुञ्जीहरूमा अन्तिम स्थिर रङहरू रहन्छन्।</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>रङहरू सिधै {0} मा जान्छन्। ल्यापटपको BIOS मा Dynamic Lighting सक्रिय छ भने, बरु Windows Dynamic Lighting ले कुञ्जीहरूलाई बाल्छ। Windows सेटिङहरूमा यो किबोर्डका लागि Windows Dynamic Lighting बन्द गर्नुहोस्, अनि PadForge ले बदलिने रङहरूसमेत तिनलाई बाल्छ।</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>रङहरू सिधै {0} मा जान्छन्। यसले प्रत्येक चित्र आफ्नै मेमोरीमा भण्डारण गर्छ, त्यसैले रङ चक्र वा आवाजअनुसार चल्ने रङ जस्ता बदलिने रङहरू देखिँदैनन्। एउटै रहने रङ देखिन्छ।</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>रङहरू सिधै {0} मा जान्छन्। यसले प्रत्येक चित्र आफ्नै मेमोरीमा भण्डारण गर्छ, त्यसैले रङ चक्र वा आवाजअनुसार चल्ने रङ जस्ता बदलिने रङहरू देखिँदैनन्। एउटै रहने रङ देखिन्छ। पहिलो चित्रले किबोर्डमा सुरक्षित गरिएका इफेक्टहरूमाथि लेख्छ, र पुराना इफेक्टहरू फर्किँदैनन्।</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>{0} मा रहेको सिरियल यन्त्र</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>यो यन्त्र जोडिएको छ तर यसले PadForge का रङहरू लिएन। PadForge ले हरेक मिनेट फेरि प्रयास गर्छ।</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows ले यो यन्त्रलाई किबोर्ड वा माउसको रूपमा आफ्नो एकल नियन्त्रणमा राख्छ र यसको रङ सेट गर्ने रिपोर्ट अस्वीकार गर्छ, त्यसैले PadForge ले यसलाई Windows मा बाल्न सक्दैन।</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>अर्को प्रोग्रामले यो यन्त्र खोलेको छ, त्यसैले PadForge ले यसलाई बाल्न सक्दैन। त्यो प्रोग्राम बन्द भएपछि PadForge ले यसलाई बाल्छ।</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>यो यन्त्रले अहिलेसम्म जवाफ दिएको छैन। यो ब्युँझिएपछि यसका रङहरू देखिन्छन्।</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>रङहरू {0} मार्फत जान्छन्।</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>रङहरू {0} मार्फत जान्छन्, जसले यो प्रकारका सबै यन्त्रहरूलाई एकैपटक बाल्छ। {0} नचलेको बेला PadForge ले यो यन्त्रलाई आफैँ बाल्छ।</value></data>
@@ -1007,7 +1016,9 @@
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>रङहरू OpenRGB को SDK Server मार्फत जान्छन्। OpenRGB नचलेको बेला PadForge ले यो यन्त्र आफैं बाल्छ।</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>रङहरू OpenRGB को SDK Server मार्फत जान्छन्।</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB ले यो यन्त्र समातेको छ र यसका लागि Direct मोड छैन, त्यसैले यसको बत्ती OpenRGB मै रहन्छ।</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB आफ्नो SDK Server बन्द राखेर चलिरहेको छ, त्यसैले PadForge ले यो यन्त्र OpenRGB लाई छोड्छ। OpenRGB मा SDK Server खोल्नुहोस् र PadForge ले यसैमार्फत यन्त्र बाल्नेछ।</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB चलिरहेको छ तर यसको SDK Server ले पोर्ट {0} मा जवाफ दिँदैन, त्यसैले PadForge ले यो यन्त्र OpenRGB लाई छोड्छ। OpenRGB मा SDK Server खोल्नुहोस् र PadForge ले यसैमार्फत यन्त्र बाल्नेछ।</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE आफ्नो SDK बन्द राखेर चलिरहेको छ। iCUE को सेटिङहरूमा iCUE SDK खोल्नुहोस् र PadForge ले यसैमार्फत यन्त्र बाल्नेछ।</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} चलिरहेको छ र यसले PadForge लाई आफ्ना यन्त्रहरू बाल्न दिएन। PadForge ले सोधिरहन्छ।</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} ले यो प्रकारका सबै यन्त्रहरूलाई एकैपटक बाल्छ, त्यसैले भर्चुअल कन्ट्रोलर {1} मा भएकोले तिनको रङ सेट गर्छ।</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} ले यो प्रकारका सबै यन्त्रहरूलाई एकैपटक बाल्छ, त्यसैले भर्चुअल कन्ट्रोलर {2} को {1} पङ्क्तिले तिनको रङ सेट गर्छ।</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>भर्चुअल कन्ट्रोलर {0} ले पनि यो यन्त्रलाई बाल्छ, र त्यसको रङ देखिन्छ।</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>हेडसेटहरू</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>मदरबोर्ड, ग्राफिक्स कार्ड र मेमोरी</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>मदरबोर्ड र ग्राफिक्स कार्ड</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>माउसप्याड र हेडसेट स्ट्यान्डहरू</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>माउसप्याड, हेडसेट र हेडसेट स्ट्यान्डहरू</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>लाइटबार</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>छ अङ्कको hex रङ (RRGGBB वा #RRGGBB) लेख्नुहोस् र लागू गर्न Enter थिच्नुहोस् वा बाहिर क्लिक गर्नुहोस्।</value></data>
@@ -4671,6 +4682,7 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>{0} को च्याटमा जडान हुँदै…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>{0} को च्याट पढ्दै।</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>{0} को च्याटमा पुग्न सकिएन। फेरि प्रयास गर्दै।</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch मा {0} को लागि कुनै च्याट छैन। च्यानलको नाम जाँच गर्नुहोस्।</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>पज गरिएको।</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>तपाईंको प्रसारणका लागि कन्ट्रोलरको चित्र। यो ठेगानालाई OBS मा ब्राउजर स्रोतको रूपमा थप्नुहोस्:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>तपाईंको प्रसारणका लागि कन्ट्रोलरको चित्रलाई वेब कन्ट्रोलर र त्यसको सादा HTTP ठेगाना चाहिन्छ। वेब कन्ट्रोलर कार्डमा “सादा HTTP पनि दिनुहोस्” सक्रिय गर्नुहोस्। यही PC मा चल्ने OBS का लागि “यो PC मात्र” पर्याप्त छ।</value></data>

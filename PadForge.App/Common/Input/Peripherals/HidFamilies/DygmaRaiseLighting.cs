@@ -82,6 +82,7 @@ namespace PadForge.Common.Input.Peripherals
                 Programs = new[] { VendorPrograms.Bazecor },
                 RepaintMs = RepaintMs,
                 Open = key => _open(key),
+                OpenFoundHeld = () => OwnLightingChannels.SerialDenied,
                 BeginOwn = (channel, wait) => channel is ISerialLineChannel port ? Begin(port, wait) : null,
                 WriteOnce = (key, frame, timeoutMs) => _writeOnce(key, frame, timeoutMs),
             };
@@ -202,12 +203,16 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Reads the firmware's answer up to the line that is a
         /// single period, as Bazecor reads it: lines end in "\r\n", and a
         /// line that is "." or ends in "." ends the answer, which is the
-        /// lines before it, trimmed (Focus.ts:111-133). Null when no such
-        /// line came within <see cref="AnswerWaitMs"/> or the read failed.</summary>
+        /// lines before it, trimmed (Focus.ts:111-133). Null when the read
+        /// failed or no such line came within <see cref="AnswerWaitMs"/>. The
+        /// wait counts each empty read's time on the port beside the waits
+        /// between reads, and the clock cuts off a device that keeps sending
+        /// and ends no line.</summary>
         internal static string ReadAnswer(ISerialLineChannel port, Action<int> wait)
         {
             var text = new StringBuilder();
             var buffer = new byte[256];
+            long deadline = Environment.TickCount64 + AnswerWaitMs;
             string result = null;
             for (int waited = 0; ; )
             {
@@ -233,9 +238,11 @@ namespace PadForge.Common.Input.Peripherals
                         answer.Append(line);
                     }
                     if (result != null) return result;
+                    if (Environment.TickCount64 >= deadline) return null;
                     continue;
                 }
-                if (waited >= AnswerWaitMs) return null;
+                waited += OwnLightingChannels.SerialReadBoundMs(buffer.Length);
+                if (waited >= AnswerWaitMs || Environment.TickCount64 >= deadline) return null;
                 wait(50);
                 waited += 50;
             }

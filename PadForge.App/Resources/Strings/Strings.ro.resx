@@ -780,6 +780,8 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} folosește din nou driverul său Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Driverul Windows pentru {0} nu a putut fi restaurat.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows a readus {0} pe propriul driver. Selectați-l pe pagina Dispozitive pentru a-l schimba din nou.</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} nu mai este pe driverul PadForge.</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} este încă pe driverul PadForge. Selectează-l în pagina Dispozitive pentru a-l reda Windows.</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Folosire numai în PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge mută această tastatură pe driverul WinUSB din Windows și o citește singur. Windows nu mai scrie apoi cu ea în niciun program, nici cât timp PadForge este închis, până la restaurarea driverului său Windows din această pagină. Maparea și macrocomenzile ei continuă să funcționeze cât timp rulează PadForge.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge mută acest mouse pe driverul WinUSB din Windows și îl citește singur. Windows nu mai mișcă apoi indicatorul cu el în niciun program, nici cât timp PadForge este închis, până la restaurarea driverului său Windows din această pagină. Maparea și macrocomenzile lui continuă să funcționeze cât timp rulează PadForge.</value></data>
@@ -957,6 +959,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>Vibrațiile se redau prin modulul tactil din SteelSeries GG.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG controlează simultan toate mouse-urile Rival tactile, așa că cel de pe controlerul virtual {0} le stabilește vibrațiile.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>Se așteaptă SteelSeries GG. Vibrațiile se redau după ce GG pornește.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG rulează și nu răspunde la PadForge. Vibrația funcționează de îndată ce răspunde.</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>Vibrațiile se redau pe dispozitivele Razer Sensa HD prin Razer Synapse.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Se așteaptă Sensa HD Haptics în Razer Synapse 4. Setați Haptic Source al dispozitivului la Sensa HD Games în Synapse.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Trăgaci stâng</value></data>
@@ -1000,6 +1003,12 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Culorile ajung direct la {0}. Cât timp este iluminat, modul său de memorie integrată este dezactivat.</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Culorile ajung direct la {0}. Culorile care se schimbă, cum ar fi un ciclu de culori sau culorile care urmăresc sunetul, necesită Dynamic Lighting activat în BIOS-ul laptopului. Fără aceasta, tastele păstrează ultimele culori fixe.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Culorile ajung direct la {0}. Dacă Dynamic Lighting este activat în BIOS-ul laptopului, Iluminarea dinamică Windows iluminează tastele în locul lui PadForge. Dezactivați Iluminarea dinamică Windows pentru această tastatură în Setări Windows, iar PadForge le va ilumina, inclusiv cu culorile care se schimbă.</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>Culorile ajung direct la {0}. Acesta stochează fiecare imagine în propria memorie, așa că culorile care se schimbă, cum ar fi un ciclu de culori sau culorile care urmează sunetul, nu apar. O culoare fixă apare.</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>Culorile ajung direct la {0}. Acesta stochează fiecare imagine în propria memorie, așa că culorile care se schimbă, cum ar fi un ciclu de culori sau culorile care urmează sunetul, nu apar. O culoare fixă apare. Prima imagine suprascrie efectele salvate pe tastatură, iar cele vechi nu se mai recuperează.</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>Dispozitiv serial pe {0}</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>Acest dispozitiv este conectat și nu a preluat culorile PadForge. PadForge încearcă din nou în fiecare minut.</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows ține acest dispozitiv ca tastatură sau mouse și refuză raportul care îi setează culorile, așa că PadForge nu îl poate ilumina în Windows.</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>Alt program are acest dispozitiv deschis, așa că PadForge nu îl poate ilumina. PadForge îl iluminează după ce programul respectiv se închide.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Acest dispozitiv nu a răspuns încă. Culorile apar după ce se trezește.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Culorile trec prin {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Culorile trec prin {0}, care iluminează simultan toate dispozitivele de acest tip. Cât timp {0} nu rulează, PadForge iluminează singur acest dispozitiv.</value></data>
@@ -1007,7 +1016,9 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Culorile trec prin SDK Server din OpenRGB. Cât timp OpenRGB nu rulează, PadForge iluminează singur acest dispozitiv.</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Culorile trec prin SDK Server din OpenRGB.</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB ține acest dispozitiv și nu are mod Direct pentru el, așa că iluminarea lui rămâne la OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB rulează cu SDK Server oprit, așa că PadForge lasă acest dispozitiv la OpenRGB. Pornește SDK Server în OpenRGB și PadForge va ilumina dispozitivul prin el.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB rulează, dar SDK Server nu răspunde pe portul {0}, așa că PadForge lasă acest dispozitiv la OpenRGB. Pornește SDK Server în OpenRGB și PadForge va ilumina dispozitivul prin el.</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE rulează cu SDK oprit. Pornește iCUE SDK în setările iCUE și PadForge va ilumina dispozitivul prin el.</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} rulează și nu a lăsat PadForge să-i lumineze dispozitivele. PadForge continuă să ceară.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} iluminează simultan toate dispozitivele de acest tip, așa că cel de pe controlerul virtual {1} le stabilește culoarea.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} iluminează simultan toate dispozitivele de acest tip, așa că rândul {1} de pe controlerul virtual {2} le stabilește culoarea.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Controlerul virtual {0} iluminează și el acest dispozitiv, iar culoarea sa este cea afișată.</value></data>
@@ -1025,7 +1036,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>căști</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>plăci de bază, plăci video și memorie</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>plăci de bază și plăci video</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepaduri și suporturi pentru căști</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepaduri, căști și suporturi pentru căști</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Bară luminoasă</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Introduceți o culoare hexazecimală de șase cifre (RRGGBB sau #RRGGBB) și apăsați Enter sau faceți clic în altă parte pentru a o aplica.</value></data>
@@ -4671,6 +4682,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Se conectează la chatul canalului {0}…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Se citește chatul canalului {0}.</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Chatul canalului {0} nu a putut fi accesat. Se încearcă din nou.</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch nu are chat pentru {0}. Verifică numele canalului.</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>În pauză.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Imaginea controlerului pentru transmisia dvs. Adăugați această adresă în OBS ca sursă de browser:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Imaginea controlerului pentru transmisie necesită Controler web și adresa lui HTTP simplă. Activați Servește și HTTP simplu în cardul Controler web. Doar acest PC este suficient pentru OBS de pe acest PC.</value></data>

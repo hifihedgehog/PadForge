@@ -49,7 +49,6 @@ namespace PadForge.Common.Input.Peripherals
         internal const string OpenRgbFamily = "FnaticStreakController";
 
         internal const ushort VendorId = 0x2F0E;
-        internal const ushort StreakPid = 0x0101;
         internal const ushort MiniStreakPid = 0x0102;
         internal const ushort Streak65Pid = 0x0105;
 

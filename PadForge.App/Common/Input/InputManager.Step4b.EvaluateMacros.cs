@@ -4099,7 +4099,7 @@ namespace PadForge.Common.Input
         {
             int slotIndex = macro.PadIndex;
             if (slotIndex < 0 || slotIndex >= MaxPads) return;
-            var targets = KeyColorTarget.Parse(action.KeyColorTargets);
+            var targets = action.KeyColorTargetsParsed;
             if (targets.Length == 0) return;
             long now = Environment.TickCount64;
             var hold = action.EffectiveKeyColorHold;
@@ -4120,7 +4120,7 @@ namespace PadForge.Common.Input
             int slotIndex = macro.PadIndex;
             if (slotIndex < 0 || slotIndex >= MaxPads) return;
             var colors = MacroKeyColors[slotIndex];
-            if (colors.Any) colors.Clear(KeyColorTarget.Parse(action.KeyColorTargets));
+            if (colors.Any) colors.Clear(action.KeyColorTargetsParsed);
         }
 
         /// <summary>Parses "RRGGBB,RRGGBB,..." into palette entries.

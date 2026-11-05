@@ -4080,6 +4080,52 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>The watchdogs run on the poll thread, while something is
+        /// already hung behind the MIDI service. Whether this PC has that
+        /// service is asked on a worker, and a watchdog reads the last
+        /// answer.</summary>
+        [Fact]
+        public void TheEndpointQueryWatchdog_AsksTheServiceManagerOffThePollThread()
+        {
+            var savedSettings = SettingsManager.UserSettings;
+            var savedDevices = SettingsManager.UserDevices;
+            var gate = new ManualResetEventSlim(false);
+            try
+            {
+                SettingsManager.UserDevices = new DeviceCollection();
+                SettingsManager.UserSettings = new SettingsCollection();
+                var backend = Use(new FakeBackend(MidiApiKind.InBox) { EnumerateGate = gate });
+                MidiServiceRecovery.CooldownMs = FarOff;
+                MidiServiceRecovery.ResetCooldownForTest();
+                MidiServiceRecovery.RecoverSeam = () => true;
+                Assert.True(MidiVirtualController.IsAvailable());
+                int sweepThread = Environment.CurrentManagedThreadId, onSweep = 0, offSweep = 0;
+                MidiServiceRecovery.ServiceExistsSeam = () =>
+                {
+                    if (Environment.CurrentManagedThreadId == sweepThread) Interlocked.Increment(ref onSweep);
+                    else Interlocked.Increment(ref offSweep);
+                    return true;
+                };
+                var im = new InputManager { MidiEnumHungMs = 0 };
+                var sweep = typeof(InputManager).GetMethod("UpdateMidiInputDevices", BindingFlags.Instance | BindingFlags.NonPublic);
+                var log = LogAfterMark();
+
+                sweep.Invoke(im, null);
+                Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref backend.Enumerations) == 1, 10_000));
+                sweep.Invoke(im, null);
+
+                Assert.Contains(log(), l => l.Contains("MIDIINPUT endpoint query in flight"));
+                Assert.Equal(0, Volatile.Read(ref onSweep));
+                Assert.True(Volatile.Read(ref offSweep) > 0);
+            }
+            finally
+            {
+                gate.Set();
+                SettingsManager.UserSettings = savedSettings;
+                SettingsManager.UserDevices = savedDevices;
+            }
+        }
+
         /// <summary>The endpoint-query watchdog times the query, not the
         /// worker's wait for the availability probe before it. The two bounds
         /// are the same 10 s, so a probe that hung tripped the watchdog on

@@ -70,7 +70,6 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The 0x72 layout (MSIMonitorController.h:34-38).</summary>
         internal const int PacketSize72 = 168;
         internal const int StoreIndex72 = 167;
-        internal const int ArrayAIndex72 = 23;
         internal const int ArrayBIndex72 = 95;
         internal const int ArraySlots72 = 24;
 
@@ -102,7 +101,7 @@ namespace PadForge.Common.Input.Peripherals
         internal const byte Brightness72 = 100;
 
         /// <summary>The fill directions (MSIMonitorController.h:48-55).</summary>
-        internal const int RightToLeft = 0, LeftToRight = 1, UpToDown = 2, Circle = 3, CType = 4;
+        internal const int RightToLeft = 0, LeftToRight = 1, Circle = 3, CType = 4;
 
         /// <summary>The shortest time between two pictures. Direct stores
         /// nothing and no reference bounds the rate, so the bound is

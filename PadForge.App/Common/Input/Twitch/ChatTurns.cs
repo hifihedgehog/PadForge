@@ -46,7 +46,16 @@ namespace PadForge.Common.Input.Twitch
     ///
     /// <para>ForgePlay says each result in chat. PadForge posts nothing there,
     /// so each one is a notice the controller picture page shows. The text is
-    /// English, like the rest of the web controller's pages.</para>
+    /// English, like the rest of the web controller's pages. A notice goes on
+    /// the broadcast, so it never repeats what a viewer typed: an unknown
+    /// target from someone who cannot approve is answered without its
+    /// text.</para>
+    ///
+    /// <para>A viewer is known by their login, and shown by the name Twitch
+    /// shows for them, which can be a translation of it. "@name" finds a
+    /// request by either. A grant to a name typed with no request behind it
+    /// matches that name as either, since only the viewer's next message tells
+    /// which it was.</para>
     /// </summary>
     internal sealed class ChatTurns
     {
@@ -60,6 +69,7 @@ namespace PadForge.Common.Input.Twitch
         private sealed class Request
         {
             public string User;
+            public string Key;
             public long ExpiresAt;
             public readonly HashSet<string> Voters = new(StringComparer.Ordinal);
         }
@@ -76,6 +86,8 @@ namespace PadForge.Common.Input.Twitch
         private readonly Dictionary<string, Request> _requests = new(StringComparer.Ordinal);
         private readonly SkipVote[] _skips = new SkipVote[2];
         private string _owner;
+        private string _ownerKey;
+        private bool _ownerKeyIsLogin;
         private long _ownerExpiresAt;
         private string _notice = string.Empty;
         private int _version;
@@ -128,12 +140,12 @@ namespace PadForge.Common.Input.Twitch
 
         /// <summary>True when a viewer's command may play: nobody holds
         /// control, the viewer holds it, or the viewer is a moderator.</summary>
-        public bool CanPlay(string user, bool moderator)
+        public bool CanPlay(string user, bool moderator, string login = null)
         {
             lock (_lock)
             {
                 ExpireOwner();
-                return _owner == null || moderator || Same(user, _owner);
+                return _owner == null || moderator || OwnerIs(user, login);
             }
         }
 
@@ -145,17 +157,19 @@ namespace PadForge.Common.Input.Twitch
         /// needs, and <paramref name="skip"/> stops it, clearing the line too
         /// when its argument is true, and says whether anything
         /// stopped. <paramref name="broadcaster"/> says the streamer sent
-        /// it.</summary>
+        /// it. <paramref name="user"/> is the name shown and
+        /// <paramref name="login"/> the sender's login, the name itself when
+        /// null.</summary>
         public bool Handle(string user, bool moderator, string command, string argument, bool running, Func<bool, bool> skip,
-            bool broadcaster = false)
+            bool broadcaster = false, string login = null)
         {
             switch (command)
             {
-                case "claim": Claim(user, Approves(moderator, broadcaster), argument); return true;
-                case "accept": Accept(user, Approves(moderator, broadcaster), argument); return true;
-                case "release": Release(user, moderator, argument); return true;
-                case "skip": Skip(user, moderator, running, all: false, skip); return true;
-                case "skipall": Skip(user, moderator, running, all: true, skip); return true;
+                case "claim": Claim(user, login, Approves(moderator, broadcaster), argument); return true;
+                case "accept": Accept(user, login, Approves(moderator, broadcaster), argument); return true;
+                case "release": Release(user, login, moderator, argument); return true;
+                case "skip": Skip(user, login, moderator, running, all: false, skip); return true;
+                case "skipall": Skip(user, login, moderator, running, all: true, skip); return true;
                 default: return false;
             }
         }
@@ -172,32 +186,19 @@ namespace PadForge.Common.Input.Twitch
             }
         }
 
-        /// <summary>Forgets every claim, request and skip vote.</summary>
-        public void Reset()
-        {
-            lock (_lock)
-            {
-                _owner = null;
-                _requests.Clear();
-                _skips[0] = _skips[1] = null;
-                _notice = string.Empty;
-                _version++;
-            }
-        }
-
         /// <summary>True when the sender approves claims alone under the
         /// streamer's setting.</summary>
         private bool Approves(bool moderator, bool broadcaster)
             => broadcaster || (moderator && _approval() != TwitchClaimApproval.Streamer);
 
-        private void Claim(string user, bool approver, string argument)
+        private void Claim(string user, string login, bool approver, string argument)
         {
             lock (_lock)
             {
                 ExpireRequests();
                 if (string.IsNullOrEmpty(argument))
                 {
-                    RequestControl(user);
+                    RequestControl(user, login);
                     return;
                 }
                 if (string.Equals(argument, "status", StringComparison.OrdinalIgnoreCase))
@@ -208,21 +209,22 @@ namespace PadForge.Common.Input.Twitch
                 string target = Normalize(argument);
                 if (!argument.StartsWith('@') || target.Length == 0)
                 {
-                    Say($"@{Clean(user)}: invalid claim target {argument}.");
+                    Say($"@{Clean(user)}: use !claim or !claim @name.");
                     return;
                 }
                 if (approver)
                 {
-                    string granted = _requests.TryGetValue(target, out var request) ? request.User : Clean(argument);
-                    Grant(granted);
-                    Say($"@{Clean(user)} gave @{granted} control for {ControlMs / 60000} minutes.");
+                    var request = FindRequest(target);
+                    if (request != null) Grant(request.User, request.Key, keyIsLogin: true);
+                    else Grant(Clean(argument), target, keyIsLogin: false);
+                    Say($"@{Clean(user)} gave @{_owner} control for {ControlMs / 60000} minutes.");
                     return;
                 }
-                Vote(user, target);
+                Vote(user, login, target);
             }
         }
 
-        private void Accept(string user, bool approver, string argument)
+        private void Accept(string user, string login, bool approver, string argument)
         {
             lock (_lock)
             {
@@ -234,7 +236,7 @@ namespace PadForge.Common.Input.Twitch
                     return;
                 }
                 if (approver) Approve(user, target);
-                else Vote(user, target);
+                else Vote(user, login, target);
             }
         }
 
@@ -245,22 +247,23 @@ namespace PadForge.Common.Input.Twitch
             ExpireOwner();
             string name = Clean(user);
             if (_owner != null) { Say($"@{name}: control belongs to @{_owner}."); return; }
-            if (!_requests.TryGetValue(target, out var request)) { Say($"@{name}: @{target} has not asked for control."); return; }
-            Grant(request.User);
+            var request = FindRequest(target);
+            if (request == null) { Say($"@{name}: @{target} has not asked for control."); return; }
+            Grant(request.User, request.Key, keyIsLogin: true);
             Say($"@{name} gave @{request.User} control for {ControlMs / 60000} minutes.");
         }
 
         // Caller holds _lock.
-        private void RequestControl(string user)
+        private void RequestControl(string user, string login)
         {
             ExpireOwner();
             string name = Clean(user);
             if (_owner != null) { Say($"@{name}: control already belongs to @{_owner}."); return; }
-            string key = Normalize(user);
+            string key = Key(user, login);
             if (key.Length == 0) return;
             if (_requests.ContainsKey(key)) { Say($"@{name}: you already asked for control."); return; }
             if (_requests.Count >= MaxPendingRequests) { Say($"@{name}: {MaxPendingRequests} requests are already waiting."); return; }
-            _requests[key] = new Request { User = name, ExpiresAt = _now() + VoteMs };
+            _requests[key] = new Request { User = name, Key = key, ExpiresAt = _now() + VoteMs };
             string approvers = _approval() switch
             {
                 TwitchClaimApproval.Streamer => "The streamer",
@@ -272,7 +275,7 @@ namespace PadForge.Common.Input.Twitch
 
         // Caller holds _lock. A viewer's "!accept @name" or "!claim @name",
         // which counts only while viewers can approve.
-        private void Vote(string user, string target)
+        private void Vote(string user, string login, string target)
         {
             ExpireOwner();
             string name = Clean(user);
@@ -282,13 +285,14 @@ namespace PadForge.Common.Input.Twitch
                 case TwitchClaimApproval.Moderators: Say($"@{name}: only the streamer and moderators approve claims."); return;
             }
             if (_owner != null) { Say($"@{name}: control belongs to @{_owner}."); return; }
-            if (!_requests.TryGetValue(target, out var request)) { Say($"@{name}: @{target} has not asked for control."); return; }
-            string voter = Normalize(user);
-            if (voter == target) { Say($"@{name}: you cannot approve your own request."); return; }
+            var request = FindRequest(target);
+            if (request == null) { Say($"@{name}: that viewer has not asked for control."); return; }
+            string voter = Key(user, login);
+            if (voter == request.Key) { Say($"@{name}: you cannot approve your own request."); return; }
             if (!request.Voters.Add(voter)) { Say($"@{name}: you already approved @{request.User}."); return; }
             if (request.Voters.Count >= RequiredVotes)
             {
-                Grant(request.User);
+                Grant(request.User, request.Key, keyIsLogin: true);
                 Say($"@{request.User} has control for {ControlMs / 60000} minutes.");
                 return;
             }
@@ -312,7 +316,7 @@ namespace PadForge.Common.Input.Twitch
                 $"@{r.User} {(votes ? $"{r.Voters.Count} of {RequiredVotes}, " : "")}{(Math.Max(0, r.ExpiresAt - now) + 999) / 1000} seconds")) + ".");
         }
 
-        private void Release(string user, bool moderator, string argument)
+        private void Release(string user, string login, bool moderator, string argument)
         {
             lock (_lock)
             {
@@ -323,20 +327,21 @@ namespace PadForge.Common.Input.Twitch
                 {
                     if (!moderator) { Say($"@{name}: only moderators can end someone else's control."); return; }
                     string target = Normalize(argument);
-                    if (target != Normalize(_owner)) { Say($"@{name}: @{Clean(argument)} does not have control."); return; }
+                    if (target != Normalize(_owner) && target != _ownerKey) { Say($"@{name}: @{Clean(argument)} does not have control."); return; }
                     Say($"@{name} ended @{_owner}'s control.");
                     _owner = null;
                     return;
                 }
-                if (!Same(user, _owner)) { Say($"@{name}: only @{_owner} or a moderator can end control."); return; }
+                if (!OwnerIs(user, login)) { Say($"@{name}: only @{_owner} or a moderator can end control."); return; }
                 _owner = null;
                 Say($"@{name} gave up control.");
             }
         }
 
-        private void Skip(string user, bool moderator, bool running, bool all, Func<bool, bool> skip)
+        private void Skip(string user, string login, bool moderator, bool running, bool all, Func<bool, bool> skip)
         {
             string name = Clean(user);
+            string key = Key(user, login);
             lock (_lock)
             {
                 if (!running) { Say($"@{name}: no command is playing."); return; }
@@ -351,11 +356,11 @@ namespace PadForge.Common.Input.Twitch
                     if (vote == null || now - vote.StartedAt > SkipWindowMs)
                     {
                         vote = new SkipVote { StartedAt = now };
-                        vote.Users.Add(Normalize(user));
+                        vote.Users.Add(key);
                         Say($"@{name} asked to {(all ? "skip everything" : "skip")}. Another viewer can confirm within {SkipWindowMs / 1000} seconds.");
                         return;
                     }
-                    if (!vote.Users.Add(Normalize(user))) { Say($"@{name}: you already asked."); return; }
+                    if (!vote.Users.Add(key)) { Say($"@{name}: you already asked."); return; }
                     if (vote.Users.Count < SkipConfirmations) return;
                     vote = null;
                 }
@@ -370,12 +375,29 @@ namespace PadForge.Common.Input.Twitch
         }
 
         // Caller holds _lock.
-        private void Grant(string user)
+        private void Grant(string shown, string key, bool keyIsLogin)
         {
             _requests.Clear();
-            _owner = Clean(user);
+            _owner = shown;
+            _ownerKey = key;
+            _ownerKeyIsLogin = keyIsLogin;
             _ownerExpiresAt = _now() + ControlMs;
         }
+
+        // Caller holds _lock. The request of a viewer named by login, or else
+        // by the name shown.
+        private Request FindRequest(string target)
+        {
+            if (_requests.TryGetValue(target, out var request)) return request;
+            foreach (var r in _requests.Values)
+                if (Normalize(r.User) == target) return r;
+            return null;
+        }
+
+        // Caller holds _lock. The holder of a request is known by login. A
+        // name typed by an approver can be either.
+        private bool OwnerIs(string user, string login)
+            => _owner != null && (Key(user, login) == _ownerKey || (!_ownerKeyIsLogin && Normalize(user) == _ownerKey));
 
         // Caller holds _lock.
         private void ExpireOwner()
@@ -405,7 +427,7 @@ namespace PadForge.Common.Input.Twitch
             _version++;
         }
 
-        private static bool Same(string a, string b) => Normalize(a) == Normalize(b);
+        private static string Key(string user, string login) => Normalize(string.IsNullOrEmpty(login) ? user : login);
 
         internal static string Clean(string user) => (user ?? string.Empty).Trim().TrimStart('@');
 

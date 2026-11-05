@@ -69,6 +69,26 @@ namespace PadForge.Common.Input
         internal Func<long> WinUsbKeyboardTicks = () => Environment.TickCount64;
         internal Func<Action, Task> WinUsbKeyboardRun = Task.Run;
 
+        /// <summary>How long the look for a keyboard or mouse left on
+        /// PadForge's package with no takeover waits for the next one
+        /// (<see cref="WinUsbKeyboardBinding.Orphans"/>). A device can come back
+        /// at any time, on a PC with no takeover at all, so this look has no
+        /// gate. The TouchSense sweep makes the same call once a second.</summary>
+        internal const int WinUsbOrphanLookMs = 5000;
+
+        /// <summary>Test seam: that look, null when it failed.</summary>
+        internal Func<IReadOnlyList<KeyboardTakeoverEntry>> WinUsbOrphanFind = () => WinUsbKeyboardBinding.FindOrphans(null);
+
+        /// <summary>Test seam: how that look runs off the poll thread.</summary>
+        internal Func<Action, Task> WinUsbOrphanRun = Task.Run;
+
+        /// <summary>Raised off the poll thread with the takeovers a look
+        /// built.</summary>
+        internal event Action<IReadOnlyList<KeyboardTakeoverEntry>> WinUsbTakeoversFound;
+
+        private volatile bool _winUsbOrphanLookRunning;
+        private long _winUsbOrphanNextTicks;
+
         /// <summary>Test seam: a row with no reader of its own, so a test
         /// feeds it reports.</summary>
         internal bool WinUsbKeyboardStartReaders = true;
@@ -89,8 +109,25 @@ namespace PadForge.Common.Input
         {
             if (_winUsbKeyboardsSuppressed) return false;
             long now = WinUsbKeyboardTicks();
-            // A PC with no takeover and no row costs no look at all: only a
-            // takeover's node is ever a bound keyboard.
+            if (!_winUsbOrphanLookRunning && now >= _winUsbOrphanNextTicks)
+            {
+                _winUsbOrphanLookRunning = true;
+                _winUsbOrphanNextTicks = now + WinUsbOrphanLookMs;
+                _ = WinUsbOrphanRun(() =>
+                {
+                    try
+                    {
+                        var found = WinUsbOrphanFind();
+                        if (found != null && found.Count > 0 && !_winUsbKeyboardsSuppressed)
+                            WinUsbTakeoversFound?.Invoke(found);
+                    }
+                    catch { }
+                    finally { _winUsbOrphanLookRunning = false; }
+                });
+            }
+            // A PC with no takeover and no row costs this sweep no look: only a
+            // takeover's node is ever a bound keyboard. The look above is what
+            // gives a device left with no record its takeover.
             if (!_winUsbKeyboardSweepRunning && now >= _winUsbKeyboardNextSweepTicks
                 && (KeyboardTakeovers.Current.Count > 0 || _winUsbKeyboardAnyRows))
             {
@@ -218,15 +255,16 @@ namespace PadForge.Common.Input
                     // way, so the keyboard never has two handles asked of it.
                     try { before?.Dispose(); } catch { }
                     IKeyboardChannel channel = null;
+                    string thrown = string.Empty;
                     try { channel = WinUsbKeyboardOpen(keyboard); }
-                    catch { }
+                    catch (Exception ex) { thrown = " (" + ex.GetType().Name + ")"; }
                     string what = keyboard.IsMouse ? "mouse" : "keyboard";
                     if (channel != null)
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"WinUsbKeyboard: opened {what} {keyboard.VendorId:X4}:{keyboard.ProductId:X4} at {keyboard.Path}");
                     else if (!failedBefore)
                         PadForge.Engine.SdlDiagLog.WriteLine(
-                            $"WinUsbKeyboard: open failed for {what} {keyboard.VendorId:X4}:{keyboard.ProductId:X4} at {keyboard.Path}, trying again every {WinUsbKeyboardReopenMs / 1000} s");
+                            $"WinUsbKeyboard: open failed for {what} {keyboard.VendorId:X4}:{keyboard.ProductId:X4} at {keyboard.Path}{thrown}, trying again every {WinUsbKeyboardReopenMs / 1000} s");
 
                     lock (_winUsbKeyboardLock)
                     {

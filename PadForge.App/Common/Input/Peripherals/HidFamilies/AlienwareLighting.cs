@@ -86,6 +86,13 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The wait after a report (AlienwareController.cpp:83-92).</summary>
         internal const int ReportWaitMs = 60;
 
+        /// <summary>The shortest time between two pictures. A picture is 10
+        /// exchanges on four zones and 34 on sixteen, up to 2 s of waits on the
+        /// worker every unit shares, so a color that keeps changing leaves the
+        /// other units at least that long between pictures. No reference bounds
+        /// it: OpenRGB gives each controller a thread of its own.</summary>
+        internal const int RepaintMs = 2000;
+
         /// <summary>The platform of the four zones the model's map holds
         /// until a session reads the controller: the G5 SE 5505
         /// (AlienwareController.cpp:32 and 46).</summary>
@@ -109,6 +116,7 @@ namespace PadForge.Common.Input.Peripherals
                         Name = registrations[0].Name,
                         Map = MapOf(DefaultPlatform, ZoneCount(DefaultPlatform, 0), collection.ProductId),
                         Programs = new[] { VendorPrograms.AlienwareCommandCenter },
+                        RepaintMs = RepaintMs,
                         Begin = (io, wait) => Begin(io, wait, collection.ProductId),
                     };
                 return model;
@@ -278,12 +286,20 @@ namespace PadForge.Common.Input.Peripherals
                 for (int n = 0; n < count; n++) ids[n] = (byte)lights[n].Address;
                 if (!_dimmed)
                 {
+                    // A controller that refuses the dim level still takes the
+                    // colors, and the next picture asks again: UpdateDim leaves
+                    // dirty_dim set, and no caller looks at it
+                    // (AlienwareController.cpp:714-745 and 1020-1024,
+                    // RGBController_Alienware.cpp:128).
+                    bool took = true;
                     for (int offset = 0; offset < count; offset += MaxZonesPerReport)
                     {
                         var dim = Dim(0, ids, offset, Math.Min(MaxZonesPerReport, count - offset));
-                        if (!Took(dim, Exchange(io, wait, dim))) return HidLightingPaint.Failed;
+                        var answer = Exchange(io, wait, dim);
+                        if (answer == null) return HidLightingPaint.Failed;
+                        took &= Took(dim, answer);
                     }
-                    _dimmed = true;
+                    _dimmed = took;
                 }
                 var start = Exchange(io, wait, Animation(AnimationNew, UnsavedSlot));
                 if (start == null || start[1] == 0) return HidLightingPaint.Failed;

@@ -436,10 +436,8 @@ namespace PadForge.Common.Input.Peripherals
         private int _waitMs;
         private int _resumed;
 
-        /// <summary>The newest worker thread of any instance, which the
-        /// next one waits for. Static because the collections it holds are
-        /// the machine's.</summary>
-        private static Thread s_lastWorker;
+        /// <summary>The family's workers over the engine's restarts.</summary>
+        private static readonly WorkerSuccession s_workers = new();
 
         public RazerDirectBackend()
             : this(powerEvents: true) { }
@@ -579,11 +577,7 @@ namespace PadForge.Common.Input.Peripherals
             // and hands its units back in its finally, so a new worker
             // waits for it before it opens anything, for a bounded time
             // (HidppBackend.Worker).
-            var previous = Interlocked.Exchange(ref s_lastWorker, Thread.CurrentThread);
-            if (previous != null && previous != Thread.CurrentThread && previous.IsAlive
-                && !previous.Join(_predecessorJoinMs))
-                PadForge.Engine.SdlDiagLog.WriteLine(
-                    $"PERIPHERAL Razer previous worker still running after {_predecessorJoinMs} ms, starting anyway");
+            s_workers.Enter(run, _predecessorJoinMs, "Razer");
             var work = new Work(run);
             try
             {
@@ -2200,6 +2194,7 @@ namespace PadForge.Common.Input.Peripherals
         /// hand-back the unit holds now.</summary>
         private void NoteClaimed(Unit unit)
         {
+            s_workers.Claim(unit.Listed.Key, unit.Run);
             lock (_claimedGate)
             {
                 var next = new List<(string, byte[][], WorkerRun, string)>(_claimed.Length + 1);
@@ -2245,19 +2240,6 @@ namespace PadForge.Common.Input.Peripherals
             unit.OwedPath = null;
         }
 
-        /// <summary>Whether the crash path's record holds a collection for
-        /// another run, which is the run of a worker that started after
-        /// this one's Stop gave up waiting for it.</summary>
-        private bool HeldByAnotherRun(string path, WorkerRun run)
-        {
-            if (path == null) return false;
-            foreach (var entry in Volatile.Read(ref _claimed))
-                if (!ReferenceEquals(entry.Run, run)
-                    && string.Equals(entry.Path, path, StringComparison.OrdinalIgnoreCase))
-                    return true;
-            return false;
-        }
-
         /// <summary>Sends what a unit is owed with no handle of the
         /// worker's: each report through a handle opened for it, as on the
         /// crash path, behind the lock where it is free within a paint's
@@ -2292,8 +2274,9 @@ namespace PadForge.Common.Input.Peripherals
         /// owed its hand-back has no handle of the worker's, and gets it
         /// last, through a handle opened for each report
         /// (<see cref="PayOnce"/>). Nothing is sent while a Razer program
-        /// runs. The snapshot goes back to "not scanned" unless a
-        /// successor's run has begun, whose snapshot it is by then.</summary>
+        /// runs, or to a unit whose path the linker closed because OpenRGB
+        /// holds its device (#557). The snapshot goes back to "not scanned" unless a
+        /// successor's worker has left its wait, whose snapshot it is by then.</summary>
         private void LetGo(Work work)
         {
             bool programRuns = PeripheralOutputs.Presence.RazerSoftwareRunning;
@@ -2305,7 +2288,8 @@ namespace PadForge.Common.Input.Peripherals
                     // A worker that outlived its run sends nothing to a
                     // collection its successor has claimed since: what
                     // that device shows is the successor's to say.
-                    bool reach = unit.Io != null && !programRuns && !HeldByAnotherRun(unit.IoPath, unit.Run);
+                    bool reach = unit.Io != null && !programRuns && !PeripheralOutputs.TakenByOpenRgb(unit.Path)
+                                 && s_workers.MayReach(unit.Listed.Key, unit.Run);
                     if (reach && unit.Flight != null && unit.Flight.Sent)
                     {
                         // A write this reply accepts went out, and is handed
@@ -2334,14 +2318,14 @@ namespace PadForge.Common.Input.Peripherals
             {
                 foreach (var unit in work.Units.Values)
                 {
-                    if (unit.Owed.Length == 0 || HeldByAnotherRun(unit.OwedPath, unit.Run)) continue;
+                    if (unit.Owed.Length == 0 || PeripheralOutputs.TakenByOpenRgb(unit.Path)
+                        || !s_workers.MayReach(unit.Listed.Key, unit.Run)) continue;
                     try { PayOnce(unit); } catch { }
                 }
             }
             lock (_claimedGate)
                 Volatile.Write(ref _claimed, Array.FindAll(_claimed, e => !ReferenceEquals(e.Run, work.Run)));
-            var current = _run;
-            if (current == null || ReferenceEquals(current, work.Run))
+            if (s_workers.Holds(work.Run))
             {
                 Volatile.Write(ref _snapshot, DirectBackendSnapshot.NotScanned);
                 // The maps go with the list they were the lights of.
@@ -2362,7 +2346,8 @@ namespace PadForge.Common.Input.Peripherals
         /// <para>The lock is waited for no longer than a paint waits and
         /// the report goes out all the same, as uncoil's shutdown write
         /// does. No reply is read. Nothing is sent while a Razer program
-        /// runs.</para>
+        /// runs, or to a unit OpenRGB holds (#557), as in the shared worker's
+        /// crash path (HidLightingBackend.ReleaseClaimedNow).</para>
         /// </summary>
         public void ReleaseClaimedNow(long deadline)
         {
@@ -2378,8 +2363,9 @@ namespace PadForge.Common.Input.Peripherals
                 Volatile.Write(ref _claimed, Array.Empty<(string, byte[][], WorkerRun, string)>());
             }
             if (PeripheralOutputs.Presence.RazerSoftwareRunning) return;
-            foreach (var (path, handBack, _, _) in claimed)
+            foreach (var (path, handBack, _, key) in claimed)
             {
+                if (PeripheralOutputs.TakenByOpenRgb(new OutputPath(OutputFamily.RazerUnit, key))) continue;
                 foreach (var report in handBack)
                 {
                     long left = deadline - _ticks();

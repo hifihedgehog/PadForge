@@ -12,6 +12,8 @@ WHAT IT READS, under OpenRGB's Controllers/ValkyrieKeyboardController:
 WHAT IT WRITES. PadForge.App/Common/Input/Peripherals/HidFamilies/ValkyrieLayouts.g.cs:
 per board, each light in order with its name, key code, row and column.
 
+Run it without Python's -I switch: it imports tools/openrgb_cpp.py.
+
 Usage:
     python tools/gen_valkyrie_layouts.py OPENRGB_ROOT
     python tools/gen_valkyrie_layouts.py OPENRGB_ROOT --check   (compare, write nothing)
@@ -19,8 +21,8 @@ Usage:
 import argparse
 import os
 import re
-import subprocess
 import sys
+import openrgb_cpp as oc
 
 PROJ_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT = os.path.join(PROJ_ROOT, "PadForge.App", "Common", "Input", "Peripherals", "HidFamilies", "ValkyrieLayouts.g.cs")
@@ -110,8 +112,7 @@ def main():
     rgb = strip_comments(read(os.path.join(folder, RGB_REL)))
     ctl = strip_comments(read(os.path.join(folder, CTL_REL)))
     names = key_names(os.path.join(args.openrgb, "RGBController", "RGBControllerKeyNames.cpp"))
-    commit = subprocess.run(["git", "-C", args.openrgb, "rev-parse", "HEAD"],
-                            capture_output=True, text=True, check=True).stdout.strip()
+    commit = oc.git_head(args.openrgb)
 
     tables = []
     for cs_name, matrix, led_names, codes_name, count in BOARDS:

@@ -36,7 +36,9 @@ namespace PadForge.Common.Input.Peripherals
     /// does the same, and each picture after it is OpenRGB's SendColors:
     /// output reports of 65 bytes to the LED collection, then the input
     /// reports drained and one more awaited for 20 ms (lines 197-398 and
-    /// 651-665).</para>
+    /// 651-665). OpenRGB looks at neither read's result, and SignalRGB only
+    /// writes to that collection, so a read that fails ends neither the
+    /// drain's picture nor the session.</para>
     ///
     /// <para>What the writes do to the keyboard. The mode report is the one
     /// OpenRGB sends for its Static, Rainbow Wave and Default modes, which
@@ -57,8 +59,9 @@ namespace PadForge.Common.Input.Peripherals
     /// the same way, to a rainbow, when it is dropped (keyboard.rs:247-251).
     /// The crash path sends the two reports with no wait between.</para>
     ///
-    /// <para>ROCCAT Swarm lights these keyboards, and while it runs the
-    /// family leaves them to it (<see cref="VendorPrograms.RoccatSwarm"/>).</para>
+    /// <para>ROCCAT Swarm lights the keyboards on Roccat's vendor ID and Turtle Beach
+    /// Swarm II those on Turtle Beach's, and while it runs the family leaves them to it
+    /// (<see cref="VendorPrograms.Roccat"/>, <see cref="VendorPrograms.TurtleBeach"/>).</para>
     /// </summary>
     internal sealed class RoccatVulcanLighting : IHidLightingFamily
     {
@@ -133,7 +136,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>One model per registration and product. Locked: a worker
         /// a timed-out Stop left behind can match while the next one
         /// does.</summary>
-        private readonly Dictionary<(string Name, ushort VendorId, ushort ProductId), HidLightingModel> _models = new();
+        private readonly Dictionary<(string Name, ushort VendorId, ushort ProductId, bool TurtleBeach), HidLightingModel> _models = new();
 
         public string Name => "Roccat Vulcan";
 
@@ -145,7 +148,8 @@ namespace PadForge.Common.Input.Peripherals
         public HidLightingModel Match(HidCollectionInfo collection)
         {
             if (collection?.Path == null) return null;
-            if (collection.VendorId == TurtleBeachVendorId && collection.ProductId == TurtleBeachVulcanIIMax)
+            bool turtleBeach = collection.VendorId == TurtleBeachVendorId;
+            if (turtleBeach && collection.ProductId == TurtleBeachVulcanIIMax)
                 collection = collection with { VendorId = RoccatVendorId, ProductId = VulcanIIMax };
             OpenRgbRegistration registration = null;
             foreach (var r in OpenRgbRegistrations.Match(FamilyName, collection))
@@ -154,11 +158,12 @@ namespace PadForge.Common.Input.Peripherals
                 break;
             }
             if (registration == null || registration.Detector != Detector) return null;
-            var key = (registration.Name, collection.VendorId, collection.ProductId);
+            var key = (registration.Name, collection.VendorId, collection.ProductId, turtleBeach);
             lock (_models)
             {
                 if (!_models.TryGetValue(key, out var model))
-                    _models[key] = model = Model(registration.Name, collection.VendorId, collection.ProductId);
+                    _models[key] = model = Model(registration.Name, collection.VendorId, collection.ProductId,
+                        turtleBeach ? VendorPrograms.TurtleBeach : VendorPrograms.Roccat);
                 return model;
             }
         }
@@ -175,7 +180,7 @@ namespace PadForge.Common.Input.Peripherals
                 _ => (3, 0x0001, 1, 0x000B),
             };
 
-        internal HidLightingModel Model(string name, ushort vendorId, ushort productId)
+        internal HidLightingModel Model(string name, ushort vendorId, ushort productId, IReadOnlyList<VendorProgram> programs = null)
         {
             string product = Product(vendorId, productId);
             string table = RoccatVulcanLayouts.TableOf(vendorId, productId);
@@ -185,12 +190,15 @@ namespace PadForge.Common.Input.Peripherals
                 Family = this,
                 Name = name,
                 Map = MapOf(table, RoccatVulcanLayouts.LayoutUs, product),
-                Programs = VendorPrograms.Roccat,
+                Programs = programs ?? VendorPrograms.Roccat,
                 RepaintMs = RepaintMs,
                 Siblings = new[] { new HidSibling(ledInterface, (ushort)ledPage) },
                 BeginWith = (control, siblings, wait) => siblings?.Count == 1
                     ? Begin(control, siblings[0], wait, productId, table, product)
                     : null,
+                Owed = path => KeyboardProfileBackups.Get(KeyboardProfileBackups.DeviceKey(product, path)) != null
+                               && KeyboardProfileBackups.Failures(KeyboardProfileBackups.DeviceKey(product, path)) < RoccatLighting.RepairTries,
+                Repair = (control, wait) => Repair(control, wait, productId, KeyboardProfileBackups.DeviceKey(product, control?.Path)),
             };
         }
 
@@ -453,9 +461,39 @@ namespace PadForge.Common.Input.Peripherals
             // The Magma has no per-key lighting and OpenRGB takes the US
             // layout for it (lines 117-125).
             if (pid is Magma or MagmaMini) layout = RoccatVulcanLayouts.LayoutUs;
-            return new Session(control, led, wait, pid, version, MapOf(table, layout, product));
+            return new Session(control, led, wait, pid, version, MapOf(table, layout, product),
+                KeyboardProfileBackups.SessionKey(product, control.Path));
         }
 
+        /// <summary>The hand-back: the Default mode and the direct switch off,
+        /// each followed by the ready wait (lines 299-316 of the
+        /// RGBController).</summary>
+        private static bool SendHandBack(IHidReportChannel control, Action<int> wait, ushort pid)
+            => control.SetFeature(ModeReport(pid, ModeDefault))
+               && WaitUntilReady(control, wait, pid)
+               && control.SetFeature(DirectSwitch(pid, false))
+               && WaitUntilReady(control, wait, pid);
+
+        /// <summary>Gives a keyboard a forced kill left in Direct mode back its
+        /// own lighting, with no claim on it. True when nothing is owed any
+        /// more.</summary>
+        private static bool Repair(IHidReportChannel control, Action<int> wait, ushort pid, string key)
+        {
+            if (KeyboardProfileBackups.Get(key) == null) return true;
+            if (SendHandBack(control, wait, pid))
+            {
+                KeyboardProfileBackups.Drop(key);
+                return true;
+            }
+            KeyboardProfileBackups.NoteFailure(key);
+            return false;
+        }
+
+        /// <summary>A session in the Direct mode. The keyboard is recorded as
+        /// owed before the mode goes out, as a Corsair session does
+        /// (<see cref="CorsairSession"/>), and the next run hands back a
+        /// keyboard a forced kill left. No reference says this firmware leaves
+        /// the Direct mode on its own.</summary>
         internal sealed class Session : HidLightingSession
         {
             private readonly IHidReportChannel _control;
@@ -463,14 +501,20 @@ namespace PadForge.Common.Input.Peripherals
             private readonly Action<int> _wait;
             private readonly ushort _pid;
             private readonly LightMap _map;
+            private readonly string _key;
             private bool _direct;
             private byte[][] _crash = Array.Empty<byte[]>();
 
             /// <summary>The control collection's channel and the LED
             /// collection's, which the worker opened and closes.</summary>
             public Session(IHidReportChannel control, IHidReportChannel led, Action<int> wait, ushort pid, byte version,
-                LightMap map)
+                LightMap map, string key = null)
             {
+                _key = key;
+                // A record a killed run left is owed from the first moment,
+                // whether or not a picture of this session's goes out.
+                if (key != null && KeyboardProfileBackups.Get(key) != null)
+                    _crash = new[] { ModeReport(pid, ModeDefault), DirectSwitch(pid, false) };
                 _control = control;
                 _led = led;
                 _wait = wait;
@@ -497,9 +541,19 @@ namespace PadForge.Common.Input.Peripherals
                 wait ??= _wait;
                 if (!_direct)
                 {
+                    if (_key != null)
+                    {
+                        if (KeyboardProfileBackups.Get(_key) == null)
+                            KeyboardProfileBackups.Take(_key, 0, ModeReport(_pid, ModeDefault));
+                        if (!KeyboardProfileBackups.IsPersisted(_key))
+                        {
+                            LaterMs = RoccatLighting.SavingMs;
+                            return HidLightingPaint.Later;
+                        }
+                    }
                     // Marked first: a write that reports a failure may still
                     // have landed.
-                    _crash = new[] { ModeReport(_pid, ModeDefault), DirectSwitch(_pid, false) };
+                    if (_crash.Length == 0) _crash = new[] { ModeReport(_pid, ModeDefault), DirectSwitch(_pid, false) };
                     if (!_control.SetFeature(ModeReport(_pid, ModeDirect))
                         || !WaitUntilReady(_control, wait, _pid)
                         || !_control.SetFeature(DirectSwitch(_pid, true))
@@ -511,27 +565,23 @@ namespace PadForge.Common.Input.Peripherals
                 for (int i = 0; i < lights.Count && i < colors.Count; i++) list.Add((lights[i].Address, colors[i]));
                 foreach (var packet in ColorPackets(_pid, BigEndian, list))
                     if (!_led.WriteOutput(packet)) return HidLightingPaint.Failed;
+                // The picture went out. What the reads find changes nothing
+                // (RoccatVulcanKeyboardController.cpp:651-665).
                 var answer = new byte[65];
-                for (int i = 0; i < DrainLimit; i++)
-                {
-                    int read = _led.ReadInput(answer, 0);
-                    if (read < 0) return HidLightingPaint.Failed;
-                    if (read == 0) break;
-                }
-                return _led.ReadInput(answer, AwaitMs) < 0 ? HidLightingPaint.Failed : HidLightingPaint.Sent;
+                for (int i = 0; i < DrainLimit && _led.ReadInput(answer, 0) > 0; i++) { }
+                _led.ReadInput(answer, AwaitMs);
+                return HidLightingPaint.Sent;
             }
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
             {
-                if (!_direct && _crash.Length == 0) return true;
-                wait ??= _wait;
-                if (!_control.SetFeature(ModeReport(_pid, ModeDefault))
-                    || !WaitUntilReady(_control, wait, _pid)
-                    || !_control.SetFeature(DirectSwitch(_pid, false))
-                    || !WaitUntilReady(_control, wait, _pid))
-                    return false;
-                _direct = false;
-                _crash = Array.Empty<byte[]>();
+                if (_direct || _crash.Length > 0)
+                {
+                    if (!SendHandBack(_control, wait ?? _wait, _pid)) return false;
+                    _direct = false;
+                    _crash = Array.Empty<byte[]>();
+                }
+                KeyboardProfileBackups.Drop(_key);
                 return true;
             }
         }

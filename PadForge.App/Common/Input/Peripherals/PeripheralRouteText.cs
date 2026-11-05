@@ -79,7 +79,9 @@ namespace PadForge.Common.Input.Peripherals
                 case OutputFamily.GameSenseTactile:
                 {
                     if (PeripheralOutputs.StateOf(OutputFamily.GameSenseTactile) == BackendState.Waiting)
-                        return s.Pad_ForceFeedback_RouteGameSenseWaiting;
+                        return PeripheralOutputs.RefusalOn(path) != null
+                            ? s.Pad_ForceFeedback_RouteGameSenseRefused
+                            : s.Pad_ForceFeedback_RouteGameSenseWaiting;
                     Func<Guid, int> playerOf = PeripheralOutputs.HapticRulingPlayer;
                     if (PeripheralOutputs.TryResolveHapticRuler(path, playerOf, out var ruler) && ruler != ud.InstanceGuid)
                     {
@@ -172,11 +174,16 @@ namespace PadForge.Common.Input.Peripherals
             var links = PeripheralOutputs.Links.For(ud.InstanceGuid);
             // OpenRGB runs and its SDK server has not said which devices it
             // holds (#557): the device is left to OpenRGB until the server
-            // answers, and the line says how to turn the server on. The
+            // answers, and the line names the port it was looked for on and
+            // says how to turn the server on. It holds for a server that is
+            // off and for one listening where PadForge could not find it. The
             // OpenRGB lines name the server by its tab in OpenRGB's window,
             // "SDK Server" (qt/OpenRGBDialog/OpenRGBDialog.cpp:967).
             if (links is { WaitsForOpenRgbServer: true })
-                return lightsHere ? s.Pad_Lighting_RouteOpenRgbServerOff : null;
+                return lightsHere
+                    ? string.Format(s.Pad_Lighting_RouteOpenRgbServerNoAnswer,
+                        PeripheralOutputs.OpenRgbPortTried is > 0 and var tried ? tried : OpenRgbProtocol.DefaultPort)
+                    : null;
             // A program the device's model names runs and lights it, and
             // PadForge has no path through it: the device is lit on its own
             // once that program is closed (DeviceLinks.LeftToProgram). A
@@ -195,6 +202,13 @@ namespace PadForge.Common.Input.Peripherals
                 // now: a device asleep or not plugged in, or one its backend
                 // has not scanned for yet.
                 if (!ud.HasPeripheralLighting || !lightsHere) return null;
+                // Its handle opened and it took no session, or Windows or
+                // another program holds it: it is here, and a line about waking
+                // would send the user to wake it.
+                if (RefusedUnit(ud) is { } refused)
+                    return refused.WindowsHolds ? s.Pad_Lighting_RouteWindowsHolds
+                        : refused.HeldByProgram ? s.Pad_Lighting_RouteHeldByProgram
+                        : s.Pad_Lighting_RouteRefused;
                 if (ud.VendorId == PeripheralLinker.LogitechVid) return s.Pad_Lighting_RouteAsleep;
                 // Any other device is found by a direct backend or by none,
                 // so without one running no device is being waited for. A
@@ -225,6 +239,9 @@ namespace PadForge.Common.Input.Peripherals
                     return !waiting && OtherSlotRules(ud.InstanceGuid, slot, links, out int lighting)
                         ? string.Format(s.Pad_Lighting_RouteOtherControllerOnly, lighting)
                         : null;
+                // The software runs and answered no, so the line names that
+                // and not a wait for it to start.
+                if (PeripheralOutputs.RefusalOn(path) is { } rowRefusal) return RefusedLine(rowRefusal, app);
                 // While the vendor's software is down, nothing shows from any
                 // controller.
                 if (waiting) return string.Format(s.Pad_Lighting_RouteVendorRowWaiting, app, examples);
@@ -249,6 +266,9 @@ namespace PadForge.Common.Input.Peripherals
                     ? s.Pad_Lighting_RouteWindowsLightingBuiltIn
                     : s.Pad_Lighting_RouteWindowsLighting;
             }
+            // The vendor's program runs and answered no on this path.
+            if (app != null && PeripheralOutputs.RefusalOn(path) is { } refusal)
+                return lightsHere ? RefusedLine(refusal, app) : null;
             if (waiting) return lightsHere ? string.Format(s.Pad_Lighting_RouteWaiting, app) : null;
 
             // Another claim rules the path: name the controller whose color
@@ -309,18 +329,42 @@ namespace PadForge.Common.Input.Peripherals
                 // shows changing colors through its LampArray interface,
                 // which an option in the laptop's BIOS turns on and off and
                 // which Windows may hold (HidLightingModel.LiveThroughLampArray).
-                if (PeripheralOutputs.Direct.Find(path) is { LiveThroughLampArray: true })
-                {
-                    if (links.WindowsLightsLampArray) line = s.Pad_Lighting_RouteDirectBesideWindows;
-                    else if (Array.Exists(links.Lighting, p => p.Family == OutputFamily.LampArrayUnit))
-                        line = s.Pad_Lighting_RouteDirectChangingNeedsBios;
-                }
+                var direct = PeripheralOutputs.Direct.Find(path);
+                if (direct is { LiveThroughLampArray: true } && links.WindowsLightsLampArray)
+                    line = s.Pad_Lighting_RouteDirectBesideWindows;
+                else if (direct is { LiveThroughLampArray: true } && Array.Exists(links.Lighting, p => p.Family == OutputFamily.LampArrayUnit))
+                    line = s.Pad_Lighting_RouteDirectChangingNeedsBios;
+                // A device that stores each picture is sent no color that
+                // keeps changing (HidLightingModel.HoldMs), and one whose
+                // pictures also write over the effects stored on it says those
+                // are lost (HidLightingModel.ReplacesStoredEffects).
+                else if (direct is { StoresPictures: true })
+                    line = direct.ReplacesStoredEffects ? s.Pad_Lighting_RouteDirectStoredEffects : s.Pad_Lighting_RouteDirectStored;
                 return string.Format(line, name);
             }
             if (app == null) return null;
             // The vendor's program lights it now, and it has a path of its
             // own for when the program is not running.
             return string.Format(links.DirectWhenClosed ? s.Pad_Lighting_RouteThroughOrDirect : s.Pad_Lighting_RouteThrough, app);
+        }
+
+        /// <summary>A unit of this row that opened and took no session
+        /// (<see cref="DirectUnit.Refused"/>), or whose collection Windows or
+        /// another program holds, or null. The row of a unit, or a device row
+        /// by the linker's own rule, so the row of an identical device in
+        /// another container says nothing of this one.</summary>
+        private static DirectUnit RefusedUnit(UserDevice ud)
+        {
+            var row = new LinkRow(ud.InstanceGuid, ud.CapType, ud.VendorId, ud.ProdId,
+                PeripheralOutputs.Links.ContainerOf(ud.InstanceGuid), null);
+            foreach (var unit in PeripheralOutputs.Direct.Units)
+            {
+                if (!unit.Refused && !unit.WindowsHolds && !unit.HeldByProgram) continue;
+                if (PeripheralUnitRow.IdentityFor(unit.Family, unit.Key) == ud.InstanceGuid
+                    || PeripheralLinker.MatchesDevice(unit, row))
+                    return unit;
+            }
+            return null;
         }
 
         /// <summary>Whether a path OpenRGB took from the row
@@ -361,6 +405,13 @@ namespace PadForge.Common.Input.Peripherals
             => paintable.Length == 0 && RuntimeInformation.ProcessArchitecture == Architecture.Arm64
                 ? Strings.Instance.Common_NotAvailableOnArm64
                 : Strings.Instance.Pad_Lighting_RouteCannotLight;
+
+        /// <summary>The line for a path whose vendor program runs and answered
+        /// no (<see cref="PeripheralOutputs.RefusalOn"/>).</summary>
+        private static string RefusedLine(ProgramRefusal refusal, string app)
+            => refusal.SettingOff
+                ? Strings.Instance.Pad_Lighting_RouteIcueSdkOff
+                : string.Format(Strings.Instance.Pad_Lighting_RouteProgramRefused, app);
 
         /// <summary>Whether a vendor row on this slot rules none of its paths
         /// while the same row on another slot rules one, and that slot's

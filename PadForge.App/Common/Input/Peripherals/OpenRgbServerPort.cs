@@ -1,19 +1,41 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 
 namespace PadForge.Common.Input.Peripherals
 {
+    /// <summary>Where the OpenRGB worker looks for the SDK server: an address
+    /// on this PC and a port.</summary>
+    internal readonly record struct OpenRgbServerAddress(IPAddress Host, int Port)
+    {
+        /// <summary>The server's defaults, OPENRGB_SDK_HOST and
+        /// OPENRGB_SDK_PORT (NetworkProtocol.h:30-33 and 40-44).</summary>
+        public static OpenRgbServerAddress Default => new(IPAddress.Loopback, OpenRgbProtocol.DefaultPort);
+    }
+
     /// <summary>
-    /// The port OpenRGB's SDK server listens on (#557), read the way OpenRGB
-    /// decides it (ResourceManager.cpp:1325-1352): the --server-port
-    /// argument OpenRGB was started with, where one was given, else the
-    /// "default_port" of the "Server" settings in OpenRGB.json, else the
-    /// default, 6742 (NetworkProtocol.h:40-44). OpenRGB.json is in the
-    /// directory a --config argument names, else in OpenRGB under
-    /// %APPDATA% (ResourceManager.cpp:1109-1153 and cli.cpp:1461-1475).
+    /// The address OpenRGB's SDK server listens on (#557), read the way
+    /// OpenRGB decides it (ResourceManager.cpp:1325-1352): the --server-host
+    /// and --server-port arguments OpenRGB was started with, where they were
+    /// given, else the "default_host" and "default_port" of the "Server"
+    /// settings in OpenRGB.json, else the defaults, 127.0.0.1 and 6742
+    /// (NetworkProtocol.h:30-33 and 40-44). OpenRGB.json is in the directory
+    /// a --config argument names, in the working directory under
+    /// --localconfig, else in OpenRGB under %APPDATA%
+    /// (ResourceManager.cpp:1109-1153 and cli.cpp:1452-1475).
+    ///
+    /// <para>Windows gives another process's working directory only out of
+    /// that process's memory, which PadForge does not read. Under
+    /// --localconfig the program's own folder stands in for it, the folder
+    /// Explorer and a shortcut start a portable OpenRGB in. A server started
+    /// from anywhere else is not found, and the Lighting tab says which port
+    /// was tried.</para>
     ///
     /// <para>Both are reads. The running process is opened with
     /// PROCESS_QUERY_LIMITED_INFORMATION alone, the right
@@ -29,6 +51,8 @@ namespace PadForge.Common.Input.Peripherals
 
         private const string PortOption = "--server-port";
         private const string ConfigOption = "--config";
+        private const string LocalConfigOption = "--localconfig";
+        private const string HostOption = "--server-host";
 
         /// <summary>The port an --server-port argument sets, or null. OpenRGB
         /// takes the argument after the option and keeps it only from 1024
@@ -48,15 +72,71 @@ namespace PadForge.Common.Input.Peripherals
             return port;
         }
 
-        /// <summary>The directory a --config argument names, or null
-        /// (cli.cpp:1461-1475).</summary>
+        /// <summary>The directory a --config argument names, or under
+        /// --localconfig the folder of the program, the first argument, or
+        /// null. OpenRGB reads its arguments in order, so the last of the two
+        /// sets it (cli.cpp:1452-1475).</summary>
         public static string ConfigFromArguments(IReadOnlyList<string> args)
         {
             if (args == null) return null;
             string config = null;
-            for (int i = 0; i + 1 < args.Count; i++)
-                if (string.Equals(args[i], ConfigOption, StringComparison.Ordinal)) config = args[i + 1];
+            for (int i = 1; i < args.Count; i++)
+            {
+                if (string.Equals(args[i], LocalConfigOption, StringComparison.Ordinal))
+                    config = Path.GetDirectoryName(args[0]);
+                else if (i + 1 < args.Count && string.Equals(args[i], ConfigOption, StringComparison.Ordinal))
+                    config = args[++i];
+            }
             return string.IsNullOrWhiteSpace(config) ? null : config;
+        }
+
+        /// <summary>The host a --server-host argument names, or null
+        /// (cli.cpp:1599-1614).</summary>
+        public static string HostFromArguments(IReadOnlyList<string> args)
+        {
+            if (args == null) return null;
+            string host = null;
+            for (int i = 0; i + 1 < args.Count; i++)
+                if (string.Equals(args[i], HostOption, StringComparison.Ordinal)) host = args[i + 1];
+            return string.IsNullOrWhiteSpace(host) ? null : host;
+        }
+
+        /// <summary>The "default_host" of the "Server" settings, or null
+        /// (ResourceManager.cpp:1330-1339).</summary>
+        public static string HostFromSettings(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json)) return null;
+            try
+            {
+                using var doc = JsonDocument.Parse(json);
+                if (doc.RootElement.ValueKind == JsonValueKind.Object
+                    && doc.RootElement.TryGetProperty("Server", out var server)
+                    && server.ValueKind == JsonValueKind.Object
+                    && server.TryGetProperty("default_host", out var host)
+                    && host.ValueKind == JsonValueKind.String)
+                    return string.IsNullOrWhiteSpace(host.GetString()) ? null : host.GetString();
+            }
+            catch (JsonException) { }
+            return null;
+        }
+
+        /// <summary>The address to reach a server bound to
+        /// <paramref name="host"/> at: loopback for an empty host and for a
+        /// host that names no address of this PC. OpenRGB resolves its host
+        /// with getaddrinfo and binds each answer (NetworkServer.cpp:492-510),
+        /// so a wildcard takes a loopback connection of its own family.
+        /// PadForge asks no name server and connects nowhere but this PC.</summary>
+        public static IPAddress HostToConnect(string host, Func<IReadOnlyList<IPAddress>> own, string machineName)
+        {
+            if (string.IsNullOrWhiteSpace(host) || string.Equals(host, "localhost", StringComparison.OrdinalIgnoreCase))
+                return IPAddress.Loopback;
+            var addresses = own?.Invoke() ?? Array.Empty<IPAddress>();
+            if (string.Equals(host, machineName, StringComparison.OrdinalIgnoreCase))
+                return addresses.FirstOrDefault(a => a.AddressFamily == AddressFamily.InterNetwork) ?? IPAddress.Loopback;
+            if (!IPAddress.TryParse(host, out var address)) return IPAddress.Loopback;
+            if (address.Equals(IPAddress.Any)) return IPAddress.Loopback;
+            if (address.Equals(IPAddress.IPv6Any)) return IPAddress.IPv6Loopback;
+            return IPAddress.IsLoopback(address) || addresses.Contains(address) ? address : IPAddress.Loopback;
         }
 
         /// <summary>The "default_port" of the "Server" settings, or null
@@ -82,23 +162,25 @@ namespace PadForge.Common.Input.Peripherals
             return null;
         }
 
-        /// <summary>The port OpenRGB listens on, from its command line and
-        /// a reader of its settings file: the argument first, then the
-        /// file in the directory --config names or in
-        /// <paramref name="appData"/>\OpenRGB, then the default.</summary>
-        public static int Resolve(string commandLine, string appData, Func<string, string> readFile)
+        /// <summary>The address OpenRGB listens on, from its command line and
+        /// a reader of its settings file: each argument first, then the file
+        /// in the directory --config names or in
+        /// <paramref name="appData"/>\OpenRGB, then the default.
+        /// <paramref name="own"/> lists this PC's addresses, asked only for a
+        /// host that is none of the plain ones.</summary>
+        public static OpenRgbServerAddress Resolve(string commandLine, string appData, Func<string, string> readFile,
+            Func<IReadOnlyList<IPAddress>> own = null, string machineName = null)
         {
             var args = Split(commandLine);
-            if (PortFromArguments(args) is int fromArguments) return fromArguments;
             string directory = ConfigFromArguments(args)
                                ?? (string.IsNullOrEmpty(appData) ? null : Path.Combine(appData, "OpenRGB"));
+            string text = null;
             if (directory != null)
             {
-                string text = null;
                 try { text = readFile?.Invoke(Path.Combine(directory, "OpenRGB.json")); } catch { }
-                if (PortFromSettings(text) is int fromSettings) return fromSettings;
             }
-            return OpenRgbProtocol.DefaultPort;
+            int port = PortFromArguments(args) ?? PortFromSettings(text) ?? OpenRgbProtocol.DefaultPort;
+            return new OpenRgbServerAddress(HostToConnect(HostFromArguments(args) ?? HostFromSettings(text), own, machineName), port);
         }
 
         /// <summary>A command line split into arguments by Windows' own
@@ -122,20 +204,39 @@ namespace PadForge.Common.Input.Peripherals
             return args;
         }
 
-        /// <summary>The port of the first OpenRGB process that runs, read
+        /// <summary>The address of the first OpenRGB process that runs, read
         /// from its command line and its settings, or the default when none
         /// runs or nothing can be read.</summary>
-        internal static int Find()
+        internal static OpenRgbServerAddress Find()
         {
-            if (OffLimitsForTest) return OpenRgbProtocol.DefaultPort;
+            if (OffLimitsForTest) return OpenRgbServerAddress.Default;
             var running = RunningProcessList.Read();
-            if (running == null) return OpenRgbProtocol.DefaultPort;
+            if (running == null) return OpenRgbServerAddress.Default;
             foreach (var process in running)
             {
                 if (!VendorPrograms.OpenRgb.Owns(process.Name)) continue;
-                return Resolve(CommandLineOf(process.Id), Environment.GetEnvironmentVariable("APPDATA"), ReadSettings);
+                return Resolve(CommandLineOf(process.Id), Environment.GetEnvironmentVariable("APPDATA"), ReadSettings,
+                    OwnAddresses, Environment.MachineName);
             }
-            return OpenRgbProtocol.DefaultPort;
+            return OpenRgbServerAddress.Default;
+        }
+
+        /// <summary>The addresses of this PC's network interfaces, a read of
+        /// its own configuration that sends nothing.</summary>
+        private static IReadOnlyList<IPAddress> OwnAddresses()
+        {
+            try
+            {
+                return NetworkInterface.GetAllNetworkInterfaces()
+                    .SelectMany(n => n.GetIPProperties().UnicastAddresses)
+                    .Select(a => a.Address)
+                    .Where(a => a.AddressFamily is AddressFamily.InterNetwork or AddressFamily.InterNetworkV6)
+                    .ToList();
+            }
+            catch
+            {
+                return Array.Empty<IPAddress>();
+            }
         }
 
         /// <summary>A settings file's text, or null when it cannot be

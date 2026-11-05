@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using PadForge.Common.Input.Touchpads;
@@ -28,9 +29,13 @@ public partial class InputManager
     /// Poll thread only.</summary>
     private readonly Dictionary<string, TouchpadMouseDevice> _touchpadMice = new(StringComparer.OrdinalIgnoreCase);
 
-    /// <summary>The mouse collections beside each captured touchpad, read
-    /// once per capture. Poll thread only.</summary>
-    private readonly Dictionary<string, List<string>> _touchpadMouseIds = new(StringComparer.OrdinalIgnoreCase);
+    /// <summary>The mouse collections beside each captured touchpad, read off
+    /// the poll thread (<see cref="LookUpMiceBeside"/>).</summary>
+    private readonly ConcurrentDictionary<string, List<string>> _touchpadMouseIds = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>When each touchpad's read may be asked for again. Poll thread
+    /// only.</summary>
+    private readonly Dictionary<string, long> _touchpadTreeDue = new(StringComparer.OrdinalIgnoreCase);
 
     private void AttachTouchpadCaptures(PrecisionTouchpadReader reader) => reader.CaptureChanged += OnTouchpadCaptureChanged;
 
@@ -45,6 +50,11 @@ public partial class InputManager
         TouchpadCaptureChanged?.Invoke(capture, revision, rollback, error);
         DevicesUpdated?.Invoke(this, EventArgs.Empty);
     }
+
+    /// <summary>Whether a mouse row whose Raw Input handle left stays online
+    /// on the synthetic records that arrive with handle 0.</summary>
+    internal static bool StaysOnlineWhenHandleLeaves(bool readerAvailable, UserDevice row, Func<UserDevice, bool> touchpadsMouse)
+        => readerAvailable && touchpadsMouse(row);
 
     /// <summary>Whether the running engine can read a touchpad alone: its
     /// touchpad reader exists. The hiding pass hides no touchpad before.</summary>
@@ -110,7 +120,8 @@ public partial class InputManager
         {
             var device = _touchpadMice[path];
             _touchpadMice.Remove(path);
-            _touchpadMouseIds.Remove(path);
+            _touchpadMouseIds.TryRemove(path, out _);
+            _touchpadTreeDue.Remove(path);
             RetireTouchpadMouse(device);
             MarkChanged(ref changed, "touchpad", $"- pointer of {path}");
         }
@@ -119,17 +130,47 @@ public partial class InputManager
         _ptpMouseRedirected = false;
     }
 
+    /// <summary>Test seam: the device tree read behind a captured touchpad's
+    /// mouse row.</summary>
+    internal Func<string, List<string>> TouchpadMiceBeside = TouchpadNodes.MiceBeside;
+
+    /// <summary>Test seam: how that read runs off the poll thread.</summary>
+    internal Func<Action, System.Threading.Tasks.Task> TouchpadTreeRun = System.Threading.Tasks.Task.Run;
+
+    /// <summary>Test seam: the clock the read's retry runs on.</summary>
+    internal Func<long> TouchpadTreeTicks = () => Environment.TickCount64;
+
+    /// <summary>How long an empty or failed read waits for its next try.</summary>
+    internal const int TouchpadTreeRetryMs = 5000;
+
+    /// <summary>Asks for the mouse collections beside a touchpad, unless a
+    /// read was asked for within the retry time. The read makes a device tree
+    /// call per child, so it runs off the poll thread, and an empty or failed
+    /// answer is asked again.</summary>
+    private void LookUpMiceBeside(TouchpadCapture capture)
+    {
+        string path = capture.DevicePath, instanceId = capture.DeviceInstanceId;
+        long now = TouchpadTreeTicks();
+        if (_touchpadTreeDue.TryGetValue(path, out long due) && now < due) return;
+        _touchpadTreeDue[path] = now + TouchpadTreeRetryMs;
+        _ = TouchpadTreeRun(() =>
+        {
+            try { _touchpadMouseIds[path] = TouchpadMiceBeside(instanceId) ?? new List<string>(); }
+            catch { }
+        });
+    }
+
     /// <summary>The mouse row of a captured touchpad: a mouse record whose
     /// collection is beside the touchpad's collection under one device. An
-    /// online record comes first.</summary>
-    private UserDevice FindTouchpadMouseRow(TouchpadCapture capture)
+    /// online record comes first. Null until the read of the device tree has
+    /// answered with one (<see cref="LookUpMiceBeside"/>).</summary>
+    internal UserDevice FindTouchpadMouseRow(TouchpadCapture capture)
     {
-        if (!_touchpadMouseIds.TryGetValue(capture.DevicePath, out var mice))
+        if (!_touchpadMouseIds.TryGetValue(capture.DevicePath, out var mice) || mice.Count == 0)
         {
-            mice = TouchpadNodes.MiceBeside(capture.DeviceInstanceId);
-            _touchpadMouseIds[capture.DevicePath] = mice;
+            LookUpMiceBeside(capture);
+            return null;
         }
-        if (mice.Count == 0) return null;
         var devices = SettingsManager.UserDevices?.Items;
         if (devices == null) return null;
         UserDevice found = null;
@@ -170,5 +211,6 @@ public partial class InputManager
         foreach (var device in _touchpadMice.Values) RetireTouchpadMouse(device);
         _touchpadMice.Clear();
         _touchpadMouseIds.Clear();
+        _touchpadTreeDue.Clear();
     }
 }

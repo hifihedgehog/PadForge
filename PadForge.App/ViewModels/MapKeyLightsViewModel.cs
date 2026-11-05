@@ -66,10 +66,18 @@ namespace PadForge.ViewModels
             if (IsKey(index)) Ask(index);
         }
 
+        /// <summary>A drag asks about the first key it covered. The picture hands
+        /// over the light lit now ahead of those, and a drag that covered no key
+        /// asks about nothing.</summary>
         void IKeyLightsSource.SetSelection(IEnumerable<int> indexes)
         {
-            var first = indexes?.FirstOrDefault(IsKey) ?? -1;
-            if (IsKey(first)) Ask(first);
+            if (indexes == null) return;
+            foreach (int index in indexes)
+            {
+                if (index == _current || !IsKey(index)) continue;
+                Ask(index);
+                return;
+            }
         }
 
         /// <summary>How many key lights have a name, and how many there

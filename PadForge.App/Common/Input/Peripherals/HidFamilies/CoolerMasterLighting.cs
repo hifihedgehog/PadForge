@@ -80,6 +80,9 @@ namespace PadForge.Common.Input.Peripherals
             // OpenRGB runs the detectors in this order and keeps the first
             // that makes a controller.
             var registration = registrations[0];
+            // The Radeon cards' registration names an interface and no usage
+            // page, and every frame of theirs is an output report of this length.
+            if (registration.Detector == "DetectCoolerMasterGPU" && collection.OutputReportLength < PacketLength) return null;
             var key = (registration.Detector, (int)collection.ProductId);
             if (_models.TryGetValue(key, out var known)) return known;
             var model = Model(registration, collection.ProductId);

@@ -270,10 +270,11 @@ namespace PadForge.Tests
             Assert.All(pad, l => Assert.Equal(LightKind.Edge, l.Kind));
         }
 
-        /// <summary>The devices are Razer's: no model names a program, and
-        /// the linker closes their path while Synapse runs by the Razer
-        /// vendor ID (PeripheralLinker.VendorProgramRuns), for a Razer row
-        /// that reaches the unit and for the unit's own row.</summary>
+        /// <summary>The devices are Razer's: each model names Synapse, so the
+        /// worker sends nothing while it runs, and the linker closes their path
+        /// while Synapse runs by the Razer vendor ID
+        /// (PeripheralLinker.VendorProgramRuns), for a Razer row that reaches
+        /// the unit and for the unit's own row.</summary>
         [Fact]
         public void WhileSynapseRuns_TheLinkerLeavesEveryUnitToIt()
         {
@@ -284,7 +285,7 @@ namespace PadForge.Tests
             foreach (var r in RazerHidTable.Registrations)
             {
                 var model = HidLightingFamilies.Match(CollectionFor(r, output: 512, feature: 512, input: 64));
-                Assert.Empty(model.Programs);
+                Assert.Equal(VendorPrograms.Razer, model.Programs);
                 // As HidLightingBackend.Publish lists the unit.
                 var unit = new DirectUnit(OutputFamily.HidLightingUnit, "u" + r.Source, box, (ushort)r.VendorId, (ushort)r.ProductId)
                 {

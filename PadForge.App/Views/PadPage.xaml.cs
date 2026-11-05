@@ -3840,12 +3840,6 @@ namespace PadForge.Views
             _lightbarBloom.Color = bloomColor;
         }
 
-        /// <summary>Parses a HEX color string (with or without leading #)
-        /// and writes the components back into DeviceConfig. The
-        /// per-channel sliders auto-update via their TwoWay bindings on
-        /// the same observable properties, so no extra UI poke is needed.
-        /// Invalid input is silently ignored — the textbox is restored
-        /// to the current canonical RGB hex on next focus loss.</summary>
         /// <summary>
         /// The Key Colors card (#557): shown for a lit device whose path
         /// knows its lights one by one, and attached, as the Lightbar card
@@ -3919,6 +3913,12 @@ namespace PadForge.Views
                 BindingOperations.GetBindingExpression(box, TextBox.TextProperty)?.UpdateSource();
         }
 
+        /// <summary>Parses a HEX color string (with or without leading #)
+        /// and writes the components back into DeviceConfig. The
+        /// per-channel sliders auto-update via their TwoWay bindings on
+        /// the same observable properties, so no extra UI poke is needed.
+        /// Invalid input is silently ignored. The textbox is restored
+        /// to the current canonical RGB hex on next focus loss.</summary>
         private void LightbarHexBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)

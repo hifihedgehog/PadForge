@@ -27,9 +27,10 @@ namespace PadForge.Common.Input.Peripherals
     /// <para>The model of the device. A session sends OpenRGB's opening
     /// packet, the write-RGB command 0x15 with brightness 0, mode 0, speed 2
     /// and direction 1 (SendInitialize, OKSKeyboardController.cpp:130-135),
-    /// then the Direct mode the same way with brightness 2, the mode's
-    /// default (RGBController_OKSKeyboard.cpp:121-133 and 264-280), each
-    /// followed by a 2 ms wait (Send, lines 102-128). A picture is nine
+    /// then the Direct mode the same way with brightness 5, the mode's most,
+    /// where OpenRGB's default is 2 (RGBController_OKSKeyboard.cpp:121-133 and
+    /// 264-280), since PadForge dims a color itself, each followed by a 2 ms
+    /// wait (Send, lines 102-128). A picture is nine
     /// write-LED packets, 0x17, each carrying 14 places as index, red,
     /// green and blue, then FF FF, and a 5 ms wait after the nine
     /// (SendColors and kb2M_wled, lines 59-93 and 177-184). The checksum is
@@ -62,10 +63,10 @@ namespace PadForge.Common.Input.Peripherals
         internal const byte WriteRgb = 0x15;
         internal const byte WriteLed = 0x17;
 
-        /// <summary>The Direct mode's brightness, speed and direction
-        /// (RGBController_OKSKeyboard.cpp:127-132; OKS_SPEED_NORMAL 2;
+        /// <summary>The Direct mode's most brightness, its speed and its
+        /// direction (RGBController_OKSKeyboard.cpp:127-132; OKS_SPEED_NORMAL 2;
         /// MODE_DIRECTION_RIGHT 1, RGBControllerInterface.h).</summary>
-        internal const byte DirectBrightness = 2;
+        internal const byte DirectBrightness = 5;
         internal const byte Speed = 2;
         internal const byte Direction = 1;
 

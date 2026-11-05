@@ -38,7 +38,6 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>SKYDIMO_HID_* (SkydimoHIDController.h:20-42).</summary>
         internal const int LedCount = 49;
-        internal const int MatrixSize = 7;
         internal const int PacketSize = 64;
         internal const int DataSize = 60;
         internal const int DataOffset = 3;
@@ -72,7 +71,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             var r = LightReports.Registered(OpenRgbFamily, collection);
             if (r == null) return null;
-            if (collection.OutputReportLength != 0 && collection.OutputReportLength < PacketSize) return null;
+            if (collection.OutputReportLength < PacketSize) return null;
             return _models.Get(r.Name, () => Model(r.Name, (ushort)r.VendorId, (ushort)r.ProductId));
         }
 

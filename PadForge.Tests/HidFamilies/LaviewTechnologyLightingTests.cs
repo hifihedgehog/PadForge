@@ -13,9 +13,9 @@ namespace PadForge.Tests
         [Fact]
         public void TheCustomModeReport_IsOpenRgbs()
         {
-            // A1 0C, profile 1 at 5, mode 1 at 16, RGB at 17, brightness 50
-            // at 56, speed 0 at 58 (LaviewTechnologyController.cpp:58-79).
-            var expected = Bytes(64, (0, 0xA1), (1, 0x0C), (5, 0x01), (16, 0x01), (17, 0x12), (18, 0x34), (19, 0x56), (56, 50));
+            // A1 0C, profile 1 at 5, mode 1 at 16, RGB at 17, brightness 100,
+            // the mode's most, at 56, speed 0 at 58 (LaviewTechnologyController.cpp:58-79).
+            var expected = Bytes(64, (0, 0xA1), (1, 0x0C), (5, 0x01), (16, 0x01), (17, 0x12), (18, 0x34), (19, 0x56), (56, 100));
             Assert.Equal(Hex(expected), Hex(LaviewTechnologyLighting.Frame(0x123456)));
         }
 

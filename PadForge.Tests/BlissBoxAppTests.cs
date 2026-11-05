@@ -512,7 +512,7 @@ namespace PadForge.Tests
             Assert.Contains("() => _settingsService?.SaveCount ?? 0);", wiring);
             // Counted once the file is written and only then, so a failed save
             // never releases the hold.
-            int written = settings.IndexOf("File.WriteAllBytes(filePath, serializedBytes);", StringComparison.Ordinal);
+            int written = settings.IndexOf("WriteWhole(filePath, serializedBytes);", StringComparison.Ordinal);
             int counted = settings.IndexOf("System.Threading.Interlocked.Increment(ref _saveCount);", StringComparison.Ordinal);
             Assert.True(written > 0 && counted > written);
             Assert.Equal(counted, settings.LastIndexOf("Increment(ref _saveCount)", StringComparison.Ordinal) - "System.Threading.Interlocked.".Length);

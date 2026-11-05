@@ -31,6 +31,8 @@ namespace PadForge.Tests
             UsagePage = r.UsagePage == OpenRgbRegistration.Any ? (ushort)0xFF00 : (ushort)r.UsagePage,
             Usage = 1,
             InterfaceNumber = r.Interface,
+            FeatureReportLength = 264,
+            OutputReportLength = 65,
         };
 
         private static HidLightingModel ModelOf(int vid, int pid)

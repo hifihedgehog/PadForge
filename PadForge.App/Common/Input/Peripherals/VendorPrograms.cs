@@ -30,13 +30,18 @@ namespace PadForge.Common.Input.Peripherals
             Processes = processes ?? Array.Empty<string>();
         }
 
+        /// <summary>The program's processes are whole image names, where each
+        /// is otherwise the start of one.</summary>
+        public bool WholeNames { get; init; }
+
         /// <summary>Whether a process of this image name, given without
         /// ".exe", is one of the program's.</summary>
         public bool Owns(string image)
         {
             if (string.IsNullOrEmpty(image)) return false;
             foreach (string process in Processes)
-                if (image.StartsWith(process, StringComparison.OrdinalIgnoreCase)) return true;
+                if (WholeNames ? string.Equals(image, process, StringComparison.OrdinalIgnoreCase)
+                    : image.StartsWith(process, StringComparison.OrdinalIgnoreCase)) return true;
             return false;
         }
 
@@ -186,14 +191,13 @@ namespace PadForge.Common.Input.Peripherals
         /// AWCC.Service.exe. The one prefix takes in both.</summary>
         public static readonly VendorProgram AlienwareCommandCenter = new("Alienware Command Center", "AWCC");
 
-        /// <summary>ROCCAT Swarm, which lights Roccat's and Turtle Beach's
-        /// Roccat-made keyboards, mice, mousepads and headsets. Its main
+        /// <summary>ROCCAT Swarm, which lights the keyboards, mice, mousepads
+        /// and headsets on Roccat's vendor ID. Its main
         /// executable is ROCCAT_Swarm.exe and its background monitor
         /// ROCCAT_Swarm_Monitor.exe, both in C:\Program Files (x86)\ROCCAT\ROCCAT Swarm
         /// (file.net's entry for roccat_swarm_monitor.exe, Advanced
         /// Uninstaller's entries for ROCCAT Swarm). The one prefix takes in
-        /// both. No source code names Turtle Beach's Swarm II
-        /// processes.</summary>
+        /// both.</summary>
         public static readonly VendorProgram RoccatSwarm = new("ROCCAT Swarm", "ROCCAT_Swarm");
 
         /// <summary>The programs that light a Roccat device.</summary>
@@ -230,12 +234,27 @@ namespace PadForge.Common.Input.Peripherals
         /// They light the Logitech devices of the shared worker, such as
         /// the G600 (<see cref="LogitechG600Lighting"/>).</summary>
         public static readonly VendorProgram LogitechGHub = new("Logitech G HUB",
-            PadForge.Services.LogiLedEngineNative.HostProcesses[0]);
+            PadForge.Services.LogiLedEngineNative.HostProcesses[0]) { WholeNames = true };
         public static readonly VendorProgram LogitechGamingSoftware = new("Logitech Gaming Software",
-            PadForge.Services.LogiLedEngineNative.HostProcesses[1], PadForge.Services.LogiLedEngineNative.HostProcesses[2]);
+            PadForge.Services.LogiLedEngineNative.HostProcesses[1], PadForge.Services.LogiLedEngineNative.HostProcesses[2]) { WholeNames = true };
 
         /// <summary>The programs that light a Logitech device.</summary>
         public static readonly IReadOnlyList<VendorProgram> Logitech = new[] { LogitechGHub, LogitechGamingSoftware };
+
+        /// <summary>Razer Synapse, by the same whole names the linker counts
+        /// it by (<see cref="PeripheralPresence.RazerHostProcesses"/>). It
+        /// lights the Razer devices of the shared worker, a Kraken, a Hanbo or
+        /// a Charging Pad: the linker closes their paths while it runs, and
+        /// naming it on the model stops the hand-back that would land on
+        /// Synapse's own colors.</summary>
+        public static readonly VendorProgram RazerSynapse = new("Razer Synapse", PeripheralPresence.RazerHostProcesses) { WholeNames = true };
+
+        /// <summary>The program that lights a Razer device.</summary>
+        public static readonly IReadOnlyList<VendorProgram> Razer = new[] { RazerSynapse };
+
+        /// <summary>Speedlink's ORIOS software, which lights its ORIOS mouse,
+        /// mousepad and keyboard (ConflictingProcesses, SpeedLink/*.js).</summary>
+        public static readonly VendorProgram Orios = new("ORIOS", "ORIOS");
 
         /// <summary>Glorious CORE, which lights the Glorious Model I and
         /// every Glorious product but the GMMK 1 and the first wired Model O
@@ -246,7 +265,8 @@ namespace PadForge.Common.Input.Peripherals
         /// names the program's processes.</summary>
         public static readonly VendorProgram GloriousCore = new("Glorious CORE", "Glorious Core");
 
-        /// <summary>The program that lights the Glorious Model I.</summary>
+        /// <summary>The program that lights the Glorious Model I, the Model O
+        /// and Model D Wireless and the Model O Eternal.</summary>
         public static readonly IReadOnlyList<VendorProgram> Glorious = new[] { GloriousCore };
 
         /// <summary>Gigabyte's AORUS ENGINE, which Gigabyte's support page
@@ -298,7 +318,10 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Turtle Beach Swarm II, which lights the Command Series
         /// KP7 keypad (Turtle Beach's product listing: "customize RGB
-        /// lighting" through Swarm II). Its executables are
+        /// lighting" through Swarm II) and the devices on Turtle Beach's
+        /// vendor ID: the Vulcan II keyboards (Gaming Trend's and APH
+        /// Networks' reviews of the Vulcan II TKL Pro), and the AIMO Pad Wide
+        /// by that vendor ID alone. Its executables are
         /// "Turtle Beach Swarm II.exe" and "Turtle Beach Device Service.exe",
         /// among others, in C:\Program Files\Turtle Beach Swarm II (Advanced
         /// Uninstaller's entry for Turtle Beach Swarm II 1.0.0.24,
@@ -370,7 +393,7 @@ namespace PadForge.Common.Input.Peripherals
             LegionAccessoryCentral, MasterPlus, Ngenuity, MsiMysticLight, SteelSeriesGG, AlienwareCommandCenter,
             RoccatSwarm, XpgPrime, WootingWootility, OpenRgb, LogitechGHub, LogitechGamingSoftware, GloriousCore,
             AorusEngine, RgbFusion, NzxtCam, PatriotViperMouse, TurtleBeachSwarmII, Skydimo, HyteNexus, LuxaforApp,
-            AmBx, Blink1Control, ElgatoStreamDeck,
+            AmBx, Blink1Control, ElgatoStreamDeck, RazerSynapse, Orios, ThermaltakeItake, KbmTeclado,
         };
     }
 

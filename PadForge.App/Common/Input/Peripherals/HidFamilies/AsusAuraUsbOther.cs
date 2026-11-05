@@ -78,7 +78,32 @@ namespace PadForge.Common.Input.Peripherals
         private HidLightingModel Mousemat(string name, int productId)
             => Model(name, productId,
                 new LightMap(Edges(MousematLeds), "OpenRGB RGBController_AsusAuraMousemat.cpp") { Product = ProductKey(productId) },
-                (io, wait) => io == null ? null : new FramesSession(MousematFrames));
+                (io, wait) => io == null ? null : new FramesSession(MousematFrames, MousematHandBack(io)));
+
+        /// <summary>The seven colors Rainbow takes from byte 10 (Balteus.cs:6).</summary>
+        private static readonly byte[] MousematRainbow =
+        {
+            0xF5, 0x00, 0xFF, 0x00, 0x06, 0xFF, 0x00, 0xFA, 0xFF, 0x01, 0xFF, 0x00, 0xFF, 0xF6, 0x00, 0xFF, 0x78, 0x07, 0xFF, 0x00, 0x0D,
+        };
+
+        /// <summary>What puts a Balteus back as the session found it, as G-Helper reads and
+        /// writes it (BalteusQi, Balteus.cs:12 and 100-136): 12 03 answers the mode at 5, the
+        /// brightness at 7, the pattern at 8 and the color at 10, and 51 28 takes the mode, a
+        /// speed and a pattern by mode, the brightness and the color. Nothing for a mode G-Helper
+        /// does not list (lines 69-76), or a mat that does not answer. 51 28 stores nothing
+        /// until 50 03, as on the mice.</summary>
+        internal static byte[][] MousematHandBack(IHidReportChannel io)
+        {
+            var answer = AskLighting(io, MousematReport, 0);
+            if (answer == null || answer[5] is not (0 or 1 or 2 or 3 or 5)) return Array.Empty<byte[]>();
+            byte mode = answer[5];
+            byte speed = mode switch { 0 => 0, 3 => 14, 5 => 2, _ => 1 };
+            byte pattern = mode switch { 1 => (byte)(answer[8] == 2 ? 2 : 0), 3 => 0x71, 5 => 1, _ => 0xFF };
+            var frame = Frame(PacketSize, MousematReport, 0x51, 0x28, 0x00, 0x00, mode, speed, Math.Min(answer[7], (byte)4), pattern, 0x00);
+            if (mode == 3) MousematRainbow.CopyTo(frame, 10);
+            else Array.Copy(answer, 10, frame, 10, 3);
+            return new[] { frame };
+        }
 
         /// <summary>UpdateLeds of a mousemat (AsusAuraMousematController.cpp:69-93).</summary>
         internal static List<byte[]> MousematFrames(IReadOnlyList<int> colors)
@@ -113,27 +138,43 @@ namespace PadForge.Common.Input.Peripherals
         private static int At(IReadOnlyList<int> colors, int index)
             => colors != null && index < colors.Count ? colors[index] : 0;
 
-        /// <summary>A session whose every picture is a list of output frames
-        /// and which has nothing to hand back.</summary>
+        /// <summary>A session whose every picture is a list of output frames,
+        /// and which hands back the frames it was given, none by default.</summary>
         internal sealed class FramesSession : HidLightingSession
         {
             private readonly Func<IReadOnlyList<int>, List<byte[]>> _frames;
+            private readonly byte[][] _handBack;
+            private byte[][] _crash = Array.Empty<byte[]>();
 
-            public FramesSession(Func<IReadOnlyList<int>, List<byte[]>> frames) => _frames = frames;
+            public FramesSession(Func<IReadOnlyList<int>, List<byte[]>> frames, byte[][] handBack = null)
+            {
+                _frames = frames;
+                _handBack = handBack ?? Array.Empty<byte[]>();
+            }
 
             public override bool Feature => false;
 
-            public override byte[][] CrashFrames => Array.Empty<byte[]>();
+            /// <summary>The hand-back, once a picture may have gone out.</summary>
+            public override byte[][] CrashFrames => _crash;
 
             public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
             {
+                // Marked first: a write that reports a failure may still
+                // have landed.
+                _crash = _handBack;
                 foreach (var frame in _frames(colors))
                     if (!io.WriteOutput(frame)) return HidLightingPaint.Failed;
                 return HidLightingPaint.Sent;
             }
 
-            public override bool HandBack(IHidReportChannel io, Action<int> wait) => true;
+            public override bool HandBack(IHidReportChannel io, Action<int> wait)
+            {
+                foreach (var frame in _crash)
+                    if (!io.WriteOutput(frame)) return false;
+                _crash = Array.Empty<byte[]>();
+                return true;
+            }
         }
 
         // ─────────────────────────────────────────────

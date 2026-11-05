@@ -178,7 +178,7 @@ namespace PadForge.Common.Input
         /// same way WriteFile rejects wrong OutputReportByteLength. When
         /// <paramref name="stampSonyBtCrc"/> is set, the last four bytes of
         /// the sized buffer receive the Sony BT feature-report CRC32 (seed
-        /// byte 0x53 + report bytes, little-endian) — per dualsense-tester's
+        /// byte 0x53 + report bytes, little-endian), per dualsense-tester's
         /// crc32.util.ts fillFeatureReportChecksum.</summary>
         public static bool SetFeature(string devicePath, byte[] buf, bool stampSonyBtCrc)
         {
@@ -233,6 +233,50 @@ namespace PadForge.Common.Input
                 return HidD_SetFeature(handle, outBuf, (uint)outBuf.Length);
             }
             finally { CloseHandle(handle); }
+        }
+
+        /// <summary>Sends a feature report through
+        /// <see cref="SendOwnLengthFirst"/>.</summary>
+        public static bool SetFeatureOwnLengthFirst(string devicePath, byte[] report)
+        {
+            if (string.IsNullOrEmpty(devicePath) || report == null || report.Length == 0)
+                return false;
+            if (RealHidAccess.Refused) return false;
+
+            IntPtr handle = CreateFileW(
+                devicePath,
+                GENERIC_READ | GENERIC_WRITE,
+                FILE_SHARE_READ | FILE_SHARE_WRITE,
+                IntPtr.Zero,
+                OPEN_EXISTING,
+                FILE_FLAG_OVERLAPPED,
+                IntPtr.Zero);
+
+            if (handle == IntPtr.Zero || handle == INVALID_HANDLE_VALUE) return false;
+
+            try
+            {
+                return SendOwnLengthFirst(report, QueryFeatureLen(devicePath, handle),
+                    b => HidD_SetFeature(handle, b, (uint)b.Length));
+            }
+            finally { CloseHandle(handle); }
+        }
+
+        /// <summary>Sends a feature report at its own length, and padded to
+        /// the collection's FeatureReportByteLength if that is refused. The
+        /// sources disagree on what a report shorter than the collection's
+        /// longest meets. hidapi pads, and says Windows fails anything shorter
+        /// (windows/hid.c, hid_send_feature_report). The one sender of a
+        /// DualShock 4's 0xE0 heard on a cable sends its three bytes as they are
+        /// (NFSU2-SplitScreen src/DualSense.cpp, UsbRoute). So the shape heard
+        /// on a cable goes first, and hidapi's follows.</summary>
+        internal static bool SendOwnLengthFirst(byte[] report, int collectionLength, Func<byte[], bool> send)
+        {
+            if (send(report)) return true;
+            if (collectionLength <= report.Length) return false;
+            var padded = new byte[collectionLength];
+            Array.Copy(report, padded, report.Length);
+            return send(padded);
         }
 
         private static uint Crc32Step(uint crc, byte b)

@@ -4,6 +4,7 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
         xmlns:controls="clr-namespace:PadForge.Controls"
+        xmlns:common="clr-namespace:PadForge.Common"
         xmlns:views="clr-namespace:PadForge.Views"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
@@ -88,8 +89,13 @@
                         Click="StopButton_Click" MinWidth="80" IsEnabled="{Binding IsListening}"/>
             </StackPanel>
 
-            <!-- What to do now, ember while the dialog listens. -->
-            <TextBlock Grid.Row="3" Text="{Binding Status}" TextWrapping="Wrap" Margin="0,0,0,8">
+            <!-- What to do now, ember while the dialog listens. A live region:
+                 the dialog is driven by key presses, and a screen reader hears
+                 the next light to name without leaving the keyboard. Naming a
+                 light moves the count beside the device and this line together,
+                 so the count is not announced as well. -->
+            <TextBlock Grid.Row="3" Text="{Binding Status}" TextWrapping="Wrap" Margin="0,0,0,8"
+                       common:LiveText.Polite="True">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
@@ -111,6 +117,7 @@
                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                     <!-- What an export or an import did. -->
                     <TextBlock x:Name="NoteText" TextWrapping="Wrap" Margin="0,8,0,0" Visibility="Collapsed"
+                               common:LiveText.Polite="True"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                 </StackPanel>
             </ScrollViewer>

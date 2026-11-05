@@ -13,6 +13,10 @@ public partial class InputService
 {
     private readonly HashSet<Guid> _requestedTabletHides = new();
 
+    /// <summary>A refused sync kept a tablet from going back to Windows. The
+    /// retry applies again until a sync lands (<see cref="RetryOwedGiveBacks"/>).</summary>
+    private bool _tabletGiveBackOwed;
+
     /// <summary>Releases the capture of every tablet the next blacklist
     /// write unhides, before that write. With <paramref name="hideNone"/>
     /// the write takes back every hide (#484: HidHide refused PadForge, or
@@ -35,19 +39,14 @@ public partial class InputService
         bool activeRead = HidHideController.TryGetActive(out bool active);
         if (!syncSucceeded || blacklist == null || !activeRead)
         {
-            foreach (var tablet in live)
+            if (StopTabletsAfterFailedSync(live, snapshot, _requestedTabletHides))
             {
-                var row = snapshot.FirstOrDefault(d => d.InstanceGuid == tablet.InstanceGuid);
-                if (row?.HidHideEnabled != true && tablet.CaptureWasRequested)
-                {
-                    tablet.SetCapture(false);
-                    _mainVm.StatusText = Strings.Instance.Tablet_InputFailed;
-                }
-                else if (row?.HidHideEnabled == true || _requestedTabletHides.Contains(tablet.InstanceGuid))
-                    tablet.ReportPolicyFailure("The device hiding change could not be verified.");
+                _tabletGiveBackOwed = true;
+                _mainVm.StatusText = Strings.Instance.Tablet_InputFailed;
             }
             return;
         }
+        _tabletGiveBackOwed = false;
         var hidden = new HashSet<string>(blacklist, StringComparer.OrdinalIgnoreCase);
         var newCloaks = new HashSet<string>(added, StringComparer.OrdinalIgnoreCase);
         _requestedTabletHides.Clear();
@@ -58,6 +57,29 @@ public partial class InputService
             if (requested) _requestedTabletHides.Add(tablet.InstanceGuid);
             tablet.SetCapture(active && hidden.Contains(tablet.DeviceInstanceId), requested && newCloaks.Contains(tablet.DeviceInstanceId));
         }
+    }
+
+    /// <summary>The touchpads' rule for a sync that was refused or could not
+    /// be read back (<see cref="StopCapturesAfterFailedSync"/>): a tablet on its
+    /// way back to Windows restarts only once a sync lands, since a restart
+    /// under the hide leaves Windows' reopen refused. True when one is left
+    /// waiting that way.</summary>
+    internal static bool StopTabletsAfterFailedSync(WindowsTabletDevice[] live, UserDevice[] snapshot, ISet<Guid> requested)
+    {
+        bool owed = false;
+        foreach (var tablet in live)
+        {
+            var row = snapshot.FirstOrDefault(d => d.InstanceGuid == tablet.InstanceGuid);
+            if (row?.HidHideEnabled != true && tablet.CaptureWasRequested)
+            {
+                if (tablet.CaptureState == TabletCaptureState.Shared) continue;
+                tablet.ReportPolicyFailure("The device hiding change could not be verified.");
+                owed = true;
+            }
+            else if (row?.HidHideEnabled == true || requested.Contains(tablet.InstanceGuid))
+                tablet.ReportPolicyFailure("The device hiding change could not be verified.");
+        }
+        return owed;
     }
 
     private void FinishTabletRelease(WindowsTabletDevice[] devices)

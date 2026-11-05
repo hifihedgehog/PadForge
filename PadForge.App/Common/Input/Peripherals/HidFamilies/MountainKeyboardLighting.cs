@@ -138,10 +138,10 @@ namespace PadForge.Common.Input.Peripherals
             if (registrations.Count == 0) return null;
             if (collection.ProductId == EverestPid)
             {
-                if (collection.OutputReportLength != 0 && collection.OutputReportLength < PacketSize) return null;
+                if (collection.OutputReportLength < PacketSize) return null;
                 return _models.Get("everest", () => EverestModel(registrations[0].Name));
             }
-            if (collection.FeatureReportLength != 0 && collection.FeatureReportLength < PacketSize) return null;
+            if (collection.FeatureReportLength < PacketSize) return null;
             ushort pid = collection.ProductId;
             return _models.Get("60:" + pid, () => Everest60Model(registrations[0].Name, pid));
         }

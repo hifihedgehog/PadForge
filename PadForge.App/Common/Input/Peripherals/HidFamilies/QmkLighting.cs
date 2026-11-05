@@ -88,6 +88,13 @@ namespace PadForge.Common.Input.Peripherals
     /// (QMKVialRGBController.cpp:243-261), which names a basic key right and
     /// a layered key by the key it taps, and so does a session.</para>
     ///
+    /// <para>SignalRGB's QMK firmware. Keychron's vendor is registered here whatever its product,
+    /// and SRGBmods flashes that firmware on the same IDs (SRGBmods/KeychronQMK), where effect 23
+    /// is the firmware's own SignalRGB effect and reads no per-key color. A keyboard with a row of
+    /// <see cref="PluginDeviceLighting"/> is asked the firmware type first. One that answers takes
+    /// the row's session and its repeated picture. Keychron's and VialRGB's sessions hold their
+    /// pictures in memory and repeat nothing.</para>
+    ///
     /// <para>No program is named: VIA and Vial are web and desktop editors
     /// that open the keyboard only while their window is used, and no source
     /// names Keychron Launcher's processes.</para>
@@ -115,7 +122,7 @@ namespace PadForge.Common.Input.Peripherals
 
         public string Name => "QMK";
 
-        private readonly Dictionary<(ushort, ushort, string), HidLightingModel> _models = new();
+        private readonly Dictionary<(ushort, ushort, string, PluginDevice), HidLightingModel> _models = new();
 
         public HidLightingModel Match(HidCollectionInfo collection)
         {
@@ -123,11 +130,12 @@ namespace PadForge.Common.Input.Peripherals
             foreach (var registration in OpenRgbRegistrations.Match(FamilyName, collection))
             {
                 if (registration.Detector is not (KeychronDetector or VialDetector)) continue;
-                var key = (collection.VendorId, collection.ProductId, registration.Detector);
+                var row = PluginDeviceLighting.QmkRowOf(collection);
+                var key = (collection.VendorId, collection.ProductId, registration.Detector, row);
                 lock (_models)
                 {
                     if (_models.TryGetValue(key, out var model)) return model;
-                    model = Model(registration, collection.VendorId, collection.ProductId);
+                    model = Model(registration, collection.VendorId, collection.ProductId, row);
                     _models[key] = model;
                     return model;
                 }
@@ -137,10 +145,11 @@ namespace PadForge.Common.Input.Peripherals
 
         internal static string Product(ushort vendorId, ushort productId) => $"qmk:{vendorId:X4}:{productId:X4}";
 
-        private HidLightingModel Model(OpenRgbRegistration registration, ushort vendorId, ushort productId)
+        private HidLightingModel Model(OpenRgbRegistration registration, ushort vendorId, ushort productId, PluginDevice row)
         {
             bool keychron = registration.Detector == KeychronDetector;
             string product = Product(vendorId, productId);
+            int again = row == null ? 0 : PluginDeviceLighting.PictureAgainMsOf(row);
             return new HidLightingModel
             {
                 Family = this,
@@ -150,8 +159,11 @@ namespace PadForge.Common.Input.Peripherals
                     Product = product,
                 },
                 RepaintMs = RepaintMs,
+                KeepAliveMs = again,
+                KeepAliveIdleMs = again,
                 // A firmware that speaks neither may still speak VIA (QmkRawHidLighting).
-                Begin = (io, wait) => (keychron ? KeychronSession.Begin(io, vendorId, productId) : VialSession.Begin(io, product))
+                Begin = (io, wait) => (row == null ? null : PluginDeviceLighting.BeginIfFlashed(row, io, wait))
+                    ?? (keychron ? KeychronSession.Begin(io, vendorId, productId) : VialSession.Begin(io, product))
                     ?? QmkRawHidLighting.Begin(io, wait, product),
             };
         }
@@ -475,26 +487,36 @@ namespace PadForge.Common.Input.Peripherals
                 var map = new LightMap(lights, "QMK Keychron, from the keyboard") { Product = Product(vendorId, pid) };
 
                 // What the keyboard shows now (via.c:684-708,
-                // keychron_rgb.c:164-169).
-                byte effect = ValueOf(io, RgbEffect, out _);
-                byte hue = ValueOf(io, RgbColor, out byte saturation);
-                byte brightness = ValueOf(io, RgbBrightness, out _);
-                byte speed = ValueOf(io, RgbSpeed, out _);
-                byte type = KeychronSub(io, KcRgb, KcPerKeyGetType)?[3] ?? KcPerKeySolid;
-                var state = new KeychronState(effect, hue, saturation, brightness, speed, type);
+                // keychron_rgb.c:164-169). A read with no answer is no state to set
+                // back: effect 0 or brightness 0 would turn the keyboard off
+                // (via.c:722), so the session does not begin.
+                if (!ValueOf(io, RgbEffect, out byte effect, out _)
+                    || !ValueOf(io, RgbColor, out byte hue, out byte saturation)
+                    || !ValueOf(io, RgbBrightness, out byte brightness, out _)
+                    || !ValueOf(io, RgbSpeed, out byte speed, out _))
+                    return null;
+                var type = KeychronSub(io, KcRgb, KcPerKeyGetType);
+                if (type == null) return null;
+                var state = new KeychronState(effect, hue, saturation, brightness, speed, type[3]);
                 return new KeychronSession(count, map, state);
             }
 
-            /// <summary>A VIA RGB matrix value's two data bytes, 0 when it did
+            /// <summary>A VIA RGB matrix value's two data bytes. False when it did
             /// not answer.</summary>
-            private static byte ValueOf(IHidReportChannel io, byte id, out byte second)
+            private static bool ValueOf(IHidReportChannel io, byte id, out byte first, out byte second)
             {
-                second = 0;
+                first = second = 0;
                 var answer = KeychronCommand(io, ViaGetValue, RgbMatrixChannel, id);
-                if (answer == null || answer[1] != RgbMatrixChannel || answer[2] != id) return 0;
+                if (answer == null || answer[1] != RgbMatrixChannel || answer[2] != id) return false;
+                first = answer[3];
                 second = answer[4];
-                return answer[3];
+                return true;
             }
+
+            /// <summary>The per-key colors stay in the firmware's memory until a save
+            /// (keychron_rgb.c:283-291), and OpenRGB sends a picture once.</summary>
+            public override bool KeepAlive(IHidReportChannel io, Action<int> wait,
+                IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors) => true;
 
             public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
@@ -502,7 +524,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (!_direct)
                 {
                     foreach (var packet in KeychronDirect())
-                        if (Exchange(io, packet, out _) == null) return HidLightingPaint.Failed;
+                        if (!QmkRawHidLighting.ViaSession.Send(io, packet)) return HidLightingPaint.Failed;
                     _direct = true;
                 }
                 // One color per LED index, black for an LED the picture
@@ -514,7 +536,7 @@ namespace PadForge.Common.Input.Peripherals
                 for (int i = 0; i < n; i++)
                     if ((uint)lights[i].Address < (uint)count) byIndex[lights[i].Address] = colors[i];
                 foreach (var frame in KeychronFrames(count, byIndex))
-                    if (Exchange(io, frame, out _) == null) return HidLightingPaint.Failed;
+                    if (!QmkRawHidLighting.ViaSession.Send(io, frame)) return HidLightingPaint.Failed;
                 return HidLightingPaint.Sent;
             }
 
@@ -522,7 +544,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 if (!_direct) return true;
                 foreach (var packet in _restore)
-                    if (Exchange(io, packet, out _) == null) return false;
+                    if (!QmkRawHidLighting.ViaSession.Send(io, packet)) return false;
                 _direct = false;
                 return true;
             }
@@ -618,6 +640,18 @@ namespace PadForge.Common.Input.Peripherals
             return frames;
         }
 
+        /// <summary>The mode, speed and color the board shows, from byte 2 of the answer. Null
+        /// when the write failed or no answer came: VialRGB's mode 0 is off (vial-qmk
+        /// quantum/vialrgb.c), and a session has to set back what the board really showed.</summary>
+        private static byte[] VialState(IHidReportChannel io)
+        {
+            var answer = Exchange(io, Packet(LightingGet, VialRgbGetMode), out int received);
+            if (answer == null || received <= 0) return null;
+            var state = new byte[PacketSize - 2];
+            Array.Copy(answer, 2, state, 0, state.Length);
+            return state;
+        }
+
         /// <summary>A VialRGB firmware built with VIALRGB_NO_DIRECT (vial-qmk
         /// quantum/rgb_matrix/animations/vialrgb_direct_anim.h), which has no Direct effect and no
         /// list of its LEDs. Its solid color is a mode with a color, as OpenRGB sets it
@@ -643,10 +677,16 @@ namespace PadForge.Common.Input.Peripherals
 
             public static HidLightingSession Begin(IHidReportChannel io, string product)
             {
-                var mode = VialCheck(io, LightingGet, VialRgbGetMode) ?? new byte[6];
+                var mode = VialState(io);
+                if (mode == null) return null;
                 var map = new LightMap(new[] { QmkRawHidLighting.WholeLight() }, "QMK VialRGB, from the keyboard") { Product = product };
                 return new VialSolidSession(map, mode);
             }
+
+            /// <summary>vial-qmk keeps the mode in memory (quantum/vialrgb.c:66-74), and OpenRGB
+            /// sets it once.</summary>
+            public override bool KeepAlive(IHidReportChannel io, Action<int> wait,
+                IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors) => true;
 
             public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
@@ -738,7 +778,8 @@ namespace PadForge.Common.Input.Peripherals
                     bool onKey = row != 0xFF && col != 0xFF;
                     lights.Add(Light(led, onKey, keycode, flags) with { X = x, Y = y, HasPosition = true });
                 }
-                var mode = VialCheck(io, LightingGet, VialRgbGetMode) ?? new byte[6];
+                var mode = VialState(io);
+                if (mode == null) return null;
                 var original = ((ushort)(mode[0] | mode[1] << 8), mode[2], mode[3], mode[4], mode[5]);
                 var map = new LightMap(lights, "QMK VialRGB, from the keyboard") { Product = product };
                 return new VialSession(count, map, original);
@@ -750,7 +791,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (!_direct)
                 {
                     // Direct with speed and color 0 (RGBController_QMKVialRGB.cpp:256-272).
-                    if (Exchange(io, VialMode(VialEffectDirect, 0, 0, 0, 0), out _) == null) return HidLightingPaint.Failed;
+                    if (!QmkRawHidLighting.ViaSession.Send(io, VialMode(VialEffectDirect, 0, 0, 0, 0))) return HidLightingPaint.Failed;
                     _direct = true;
                 }
                 var byIndex = new int[_count];
@@ -758,14 +799,19 @@ namespace PadForge.Common.Input.Peripherals
                 for (int i = 0; i < n; i++)
                     if ((uint)lights[i].Address < (uint)_count) byIndex[lights[i].Address] = colors[i];
                 foreach (var frame in VialFrames(_count, byIndex))
-                    if (Exchange(io, frame, out _) == null) return HidLightingPaint.Failed;
+                    if (!QmkRawHidLighting.ViaSession.Send(io, frame)) return HidLightingPaint.Failed;
                 return HidLightingPaint.Sent;
             }
+
+            /// <summary>vial-qmk keeps the direct colors in memory (fast_set_leds,
+            /// quantum/vialrgb.c), and OpenRGB sends a picture once.</summary>
+            public override bool KeepAlive(IHidReportChannel io, Action<int> wait,
+                IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors) => true;
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
             {
                 if (!_direct) return true;
-                if (Exchange(io, _restore[0], out _) == null) return false;
+                if (!QmkRawHidLighting.ViaSession.Send(io, _restore[0])) return false;
                 _direct = false;
                 return true;
             }

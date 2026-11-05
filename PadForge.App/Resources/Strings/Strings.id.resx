@@ -780,6 +780,8 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} kembali memakai driver Windows-nya.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Driver Windows untuk {0} tidak dapat dipulihkan.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows mengembalikan {0} ke drivernya sendiri. Pilih perangkat itu di halaman Perangkat untuk menggantinya lagi.</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} tidak lagi memakai driver PadForge.</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} masih memakai driver PadForge. Pilih perangkat ini di halaman Perangkat untuk mengembalikannya ke Windows.</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Pakai Hanya di PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge memindahkan keyboard ini ke driver WinUSB milik Windows dan membacanya sendiri. Windows lalu berhenti mengetik dengannya di semua program, bahkan saat PadForge ditutup, sampai driver Windows-nya dipulihkan dari halaman ini. Pemetaan dan makronya tetap berfungsi selama PadForge berjalan.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge memindahkan mouse ini ke driver WinUSB milik Windows dan membacanya sendiri. Windows lalu berhenti menggerakkan penunjuk dengannya di semua program, bahkan saat PadForge ditutup, sampai driver Windows-nya dipulihkan dari halaman ini. Pemetaan dan makronya tetap berfungsi selama PadForge berjalan.</value></data>
@@ -957,6 +959,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>Getaran dimainkan melalui handler taktil di SteelSeries GG.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG menggerakkan semua Rival taktil sekaligus, sehingga yang ada di Kontroler Virtual {0} menentukan getaran mereka.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>Menunggu SteelSeries GG. Getaran dimainkan setelah GG berjalan.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG berjalan tetapi tidak menjawab PadForge. Getaran berbunyi setelah SteelSeries GG menjawab.</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>Getaran dimainkan di perangkat Razer Sensa HD Anda melalui Razer Synapse.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Menunggu Sensa HD Haptics di Razer Synapse 4. Atur Haptic Source perangkat ke Sensa HD Games di Synapse.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Pelatuk kiri</value></data>
@@ -1000,6 +1003,12 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Warna dikirim langsung ke {0}. Mode memori on-board-nya nonaktif selama diterangi.</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Warna dikirim langsung ke {0}. Warna yang berubah, seperti siklus warna atau warna yang mengikuti suara, memerlukan Dynamic Lighting yang diaktifkan di BIOS laptop. Tanpa itu, tombol tetap menampilkan warna statis terakhir.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Warna dikirim langsung ke {0}. Jika Dynamic Lighting aktif di BIOS laptop, Pencahayaan Dinamis Windows menerangi tombol sebagai gantinya. Matikan Pencahayaan Dinamis untuk keyboard ini di Pengaturan Windows, dan PadForge akan meneranginya, termasuk warna yang berubah.</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>Warna dikirim langsung ke {0}. Perangkat ini menyimpan setiap gambar di memorinya sendiri, jadi warna yang berubah, seperti siklus warna atau warna yang mengikuti suara, tidak tampil. Warna yang tetap sama tampil.</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>Warna dikirim langsung ke {0}. Perangkat ini menyimpan setiap gambar di memorinya sendiri, jadi warna yang berubah, seperti siklus warna atau warna yang mengikuti suara, tidak tampil. Warna yang tetap sama tampil. Gambar pertama menimpa efek yang tersimpan di keyboard, dan efek lama tidak kembali.</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>Perangkat serial di {0}</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>Perangkat ini terhubung tetapi tidak menerima warna dari PadForge. PadForge mencoba lagi setiap menit.</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows menguasai perangkat ini sebagai keyboard atau mouse dan menolak laporan yang mengatur warnanya, sehingga PadForge tidak dapat menerangi perangkat ini di Windows.</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>Program lain membuka perangkat ini, sehingga PadForge tidak dapat menerangi perangkat ini. PadForge menerangi perangkat ini setelah program itu ditutup.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Perangkat ini belum menjawab. Warnanya tampil setelah perangkat bangun.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Warna dikirim melalui {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Warna dikirim melalui {0}, yang menerangi semua perangkat sejenis ini sekaligus. Selama {0} tidak berjalan, PadForge menerangi perangkat ini sendiri.</value></data>
@@ -1007,7 +1016,9 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Warna dikirim melalui SDK Server OpenRGB. Selama OpenRGB tidak berjalan, PadForge menerangi perangkat ini sendiri.</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Warna dikirim melalui SDK Server OpenRGB.</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB memegang perangkat ini dan tidak punya mode Direct untuknya, jadi pencahayaannya tetap di OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB berjalan dengan SDK Server mati, jadi PadForge menyerahkan perangkat ini kepada OpenRGB. Nyalakan SDK Server di OpenRGB dan PadForge akan menerangi perangkat melaluinya.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB berjalan tetapi SDK Server-nya tidak menjawab di port {0}, jadi PadForge menyerahkan perangkat ini kepada OpenRGB. Nyalakan SDK Server di OpenRGB dan PadForge akan menerangi perangkat melaluinya.</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE berjalan dengan SDK mati. Nyalakan iCUE SDK di pengaturan iCUE dan PadForge akan menerangi perangkat melaluinya.</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} berjalan tetapi tidak mengizinkan PadForge menerangi perangkatnya. PadForge terus meminta.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} menerangi semua perangkat sejenis ini sekaligus, sehingga yang ada di Kontroler Virtual {1} menentukan warna mereka.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} menerangi semua perangkat sejenis ini sekaligus, sehingga baris {1} di Kontroler Virtual {2} menentukan warna mereka.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Kontroler Virtual {0} juga menerangi perangkat ini, dan warnanyalah yang tampil.</value></data>
@@ -1025,7 +1036,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headset</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboard, kartu grafis, dan memori</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboard dan kartu grafis</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepad dan dudukan headset</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepad, headset, dan dudukan headset</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Bilah lampu</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Masukkan warna heksa enam digit (RRGGBB atau #RRGGBB), lalu tekan Enter atau klik di tempat lain untuk menerapkannya.</value></data>
@@ -4671,6 +4682,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Menyambung ke chat {0}…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Membaca chat {0}.</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Tidak dapat menjangkau chat {0}. Mencoba lagi.</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch tidak memiliki chat untuk {0}. Periksa nama kanal.</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Dijeda.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Gambar kontroler untuk siaran Anda. Tambahkan alamat ini ke OBS sebagai browser source:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Gambar kontroler untuk siaran Anda memerlukan Kontroler web beserta alamat HTTP biasanya. Aktifkan Sajikan juga HTTP biasa di kartu Kontroler web. Hanya PC ini sudah cukup untuk OBS di PC ini.</value></data>

@@ -302,8 +302,9 @@ namespace PadForge.ViewModels
         /// <summary>Points the card at a device's config on this controller,
         /// its lights and the slot's shift layers (the Mappings tab's layer
         /// tabs, Base first). A new device or a new map clears the
-        /// selection. The layer pick is kept while the layer still
-        /// exists.</summary>
+        /// selection, and Select by Pressing Keys goes off when the new map
+        /// has no keys, since its switch is hidden there. The layer pick is
+        /// kept while the layer still exists.</summary>
         internal void Attach(DeviceSlotConfig config, LightMap map, IEnumerable<ShiftLayerInfo> layers)
         {
             map ??= LightMap.Empty;
@@ -319,7 +320,11 @@ namespace PadForge.ViewModels
             // The page attaches on every pass that could change the tab.
             // One that changes nothing raises nothing.
             if (!deviceChanged && !layersChanged) return;
-            if (deviceChanged) _selection.Clear();
+            if (deviceChanged)
+            {
+                _selection.Clear();
+                if (!_map.HasKeys) PickByPressing = false;
+            }
             OnPropertyChanged(string.Empty);
             // Once more for the Other Lights rule, now that its ComboBox
             // holds the list the refresh above may have replaced.
@@ -332,12 +337,18 @@ namespace PadForge.ViewModels
         internal void Detach() => Attach(null, null, null);
 
         /// <summary>Takes the slot's shift layers again after the Mappings
-        /// tab added, renamed or removed one.</summary>
+        /// tab added, renamed or removed one, or a language switch rebuilt
+        /// the tabs.</summary>
         internal void UpdateLayers(IEnumerable<ShiftLayerInfo> layers)
         {
             string was = _selectedLayerMask;
             SyncLayers(layers);
             OnPropertyChanged(nameof(HasLayers));
+            // The texts below read the language on every get, so they
+            // follow a language switch from here.
+            OnPropertyChanged(nameof(Title));
+            OnPropertyChanged(nameof(Description));
+            OnPropertyChanged(nameof(SelectionSummary));
             if (was != _selectedLayerMask)
             {
                 OnPropertyChanged(nameof(SelectedLayerMask));
@@ -435,11 +446,17 @@ namespace PadForge.ViewModels
         //  Selecting
         // ─────────────────────────────────────────────
 
+        /// <summary>Selects <paramref name="indexes"/> in place of the
+        /// selection. The sequence is read before the selection is cleared,
+        /// since a drag hands over the selection itself followed by the
+        /// lights it covered, and a lazy sequence over the selection would
+        /// read the empty set.</summary>
         internal void SetSelection(IEnumerable<int> indexes)
         {
+            var wanted = indexes?.ToArray();
             _selection.Clear();
-            if (indexes != null)
-                foreach (int i in indexes)
+            if (wanted != null)
+                foreach (int i in wanted)
                     if (i >= 0 && i < _map.Lights.Count) _selection.Add(i);
             SelectionMoved();
         }

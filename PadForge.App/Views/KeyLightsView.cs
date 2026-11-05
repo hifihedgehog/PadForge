@@ -88,6 +88,9 @@ namespace PadForge.Views
         private LightMap _builtMap;
         private Point? _dragFrom;
         private bool _dragging;
+        /// <summary>Set when the picture was asked to draw while it was out
+        /// of sight, and cleared by the draw that follows.</summary>
+        private bool _stale;
         private int _focusIndex = -1;
 
         /// <summary>Picks made by a key still held, so Ctrl+Tab can take
@@ -120,6 +123,12 @@ namespace PadForge.Views
             };
             Content = _frame;
             _canvas.PreviewMouseLeftButtonDown += OnCanvasDown;
+            // The press ends here. A ScrollViewer above the picture takes the
+            // keyboard focus on a left press that reaches it, which would
+            // take it from the light OnCanvasDown just focused and end
+            // Select by Pressing Keys. The click itself is raised on the
+            // button's release, so nothing waits for the press.
+            _canvas.MouseLeftButtonDown += (_, e) => e.Handled = true;
             _canvas.PreviewMouseMove += OnCanvasMove;
             _canvas.PreviewMouseLeftButtonUp += OnCanvasUp;
             _canvas.LostMouseCapture += (_, _) => EndDrag();
@@ -129,6 +138,12 @@ namespace PadForge.Views
             {
                 if (!IsKeyboardFocusWithin) _held.Clear();
                 SyncFrame();
+            };
+            // A picture out of sight draws nothing (Rebuild), so one shown
+            // later draws what it was given then.
+            IsVisibleChanged += (_, _) =>
+            {
+                if (IsVisible && IsLoaded && _stale) Rebuild();
             };
             Loaded += (_, _) =>
             {
@@ -157,7 +172,8 @@ namespace PadForge.Views
             new PropertyMetadata(null, (d, e) => ((KeyLightsView)d).Attach(e.NewValue as IKeyLightsSource)));
 
         /// <summary>What the picture draws and edits: the Key Colors card,
-        /// or a key colors macro action's picker. Setting it redraws.</summary>
+        /// or a key colors macro action's picker. Setting it redraws, once the
+        /// picture is in sight.</summary>
         public object Source
         {
             get => GetValue(SourceProperty);
@@ -240,6 +256,15 @@ namespace PadForge.Views
                 Dispatcher.BeginInvoke(new Action(Rebuild));
                 return;
             }
+            // A macro action's editor holds a picture for every type of
+            // action, and a card that is collapsed shows none. Drawing
+            // waits until the picture can be seen.
+            if (!IsVisible)
+            {
+                _stale = true;
+                return;
+            }
+            _stale = false;
             bool hadFocus = IsKeyboardFocusWithin;
             _canvas.Children.Clear();
             _canvas.Children.Add(_band);

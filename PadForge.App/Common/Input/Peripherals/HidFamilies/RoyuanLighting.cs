@@ -19,19 +19,31 @@ namespace PadForge.Common.Input.Peripherals
     /// Shark (lines 26-96 and 249-271).</para>
     ///
     /// <para>The Akko lights its Static mode with a single color: mode 01,
-    /// option 0x08, brightness 3, and its speed byte reversed, 4 for
-    /// Static's speed 0 (RGBController_AkkoKeyboard.cpp, the Static mode and
-    /// DeviceUpdateLEDs, RoyuanKeyboardController.cpp:319-337). It locks up
-    /// when SETs come close together, so OpenRGB sends the latest one 500 ms
-    /// after it was asked for and at least 1.5 s after the one before
-    /// (lines 19-24 and 477-516), and so does a session, by its hold and
-    /// its repaint interval.</para>
+    /// option 0x08, its speed byte reversed, 4 for Static's speed 0
+    /// (RGBController_AkkoKeyboard.cpp, the Static mode and DeviceUpdateLEDs,
+    /// RoyuanKeyboardController.cpp:319-337), and brightness 4, its most
+    /// (RoyuanKeyboardController.h:99), since PadForge dims a color itself.
+    /// OpenRGB's default is 3. It locks up its control endpoint when a SET is
+    /// followed too quickly by another transfer, so OpenRGB sends the latest
+    /// one 500 ms after it was asked for and at least 1.5 s after the one
+    /// before, and waits out those 1.5 s before it closes, since the next open
+    /// reads the state right away (lines 19-24, 164-172 and 477-516). A session
+    /// keeps the same spacing between pictures by its hold and its repaint
+    /// interval, with one difference: the hold starts over at each change, so a
+    /// color that keeps changing goes out not at all, as for every model that
+    /// stores its pictures. The family remembers each keyboard's last SET and
+    /// waits out the rest of the 1.5 s before a hand-back and before the read a
+    /// new session starts with. The crash path cannot wait, so its one frame
+    /// can land inside the spacing.</para>
     ///
     /// <para>The Skyloong GK68HE Pro has a Direct mode, 0x15, whose color
     /// goes in its own report: 0E, red, green and blue, and the checksum at
     /// byte 8 (lines 379-427, RGBController_SkyloongGK68HEPro.cpp:77-88). A
     /// session sends SET_LEDPARAM with mode 0x15, its brightness 4 and its
-    /// speed byte 4, once, then the color report for each picture. OpenRGB
+    /// speed byte 4, once, then the color report for each picture. The mode
+    /// is the write OpenRGB flags as saving (MODE_FLAG_AUTOMATIC_SAVE, line
+    /// 80). The color report is its Direct write, sent on every update (lines
+    /// 393-403), so pictures go out at the realtime rate. OpenRGB
     /// also lights the board key by key through four Custom Static profiles
     /// (lines 295-345), each a picture written over one of the board's
     /// stored profiles (SetUserPic, RoyuanKeyboardController.cpp:429-475),
@@ -42,7 +54,11 @@ namespace PadForge.Common.Input.Peripherals
     /// On mode, 01, OpenRGB's "Direct", with speed 0, brightness 4 and the
     /// option 0x07 for a set color (RGBController_EpomakerController.cpp:
     /// the Always On mode and lines 282-290, RoyuanKeyboardController.cpp:366-372).
-    /// The mode is stored ("@save :robot:"), so pictures are held and spaced
+    /// OpenRGB's page says the keyboard saves on every update ("@save :robot:",
+    /// RGBController_EpomakerController.cpp:19, the meaning from its commit
+    /// 8f876423). The mode carries no save flag (line 47), and no reference
+    /// sends it as a stream, so each picture is taken to land in the keyboard's
+    /// memory, and pictures are held and spaced
     /// as the Lenovo Gen 10 keyboard's stored writes are
     /// (<see cref="LenovoLegionLighting"/>).</para>
     ///
@@ -62,10 +78,36 @@ namespace PadForge.Common.Input.Peripherals
     {
         public static readonly RoyuanLighting Instance = new();
 
+        private readonly Func<long> _clock;
+
+        /// <summary>When each Akko's collection last took a SET, by path.</summary>
+        private readonly Dictionary<string, long> _lastSet = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Test seam: the clock the Akko's spacing is measured
+        /// by.</summary>
+        internal RoyuanLighting(Func<long> clock = null) => _clock = clock ?? (() => Environment.TickCount64);
+
+        /// <summary>Waits out what is left of the spacing after this keyboard's
+        /// last SET (ROYUAN_POST_SET_DELAY_MS).</summary>
+        private void SpaceFromLastSet(IHidReportChannel io, Action<int> wait)
+        {
+            long last;
+            lock (_lastSet)
+            {
+                if (!_lastSet.TryGetValue(io.Path ?? "", out last)) return;
+            }
+            long left = last + AkkoPostSetMs - _clock();
+            if (left > 0) wait((int)left);
+        }
+
+        private void NoteSet(IHidReportChannel io)
+        {
+            lock (_lastSet) _lastSet[io.Path ?? ""] = _clock();
+        }
+
         internal const string FamilyName = "RoyuanKeyboardController";
         internal const string AkkoDetector = "DetectRoyuanAkkoKeyboardControllers";
         internal const string SkyloongDetector = "DetectRoyuanGK68HEProKeyboardControllers";
-        internal const string LegacyDetector = "DetectRoyuanLegacyKeyboardControllers";
 
         /// <summary>ROYUAN_REPORT_LENGTH and the report ID (RoyuanKeyboardController.h:9).</summary>
         internal const int ReportLength = 65;
@@ -131,7 +173,7 @@ namespace PadForge.Common.Input.Peripherals
                     },
                     HoldMs = board switch { Board.Akko => AkkoPreSetMs, Board.Legacy => SinowealthLighting.StoredHoldMs, _ => 0 },
                     RepaintMs = board switch { Board.Akko => AkkoPostSetMs, Board.Legacy => SinowealthLighting.StoredRepaintMs, _ => RepaintMs },
-                    Begin = (io, wait) => Session.Begin(io, wait, board),
+                    Begin = (io, wait) => Session.Begin(io, wait, board, board == Board.Akko ? this : null),
                 };
                 _models[collection.ProductId] = model;
                 return model;
@@ -168,8 +210,8 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>A picture's SET_LEDPARAM for the Akko and the Epomaker.</summary>
         internal static byte[] Picture(Board board, int rgb) => board == Board.Akko
-            // Static: speed 0 reversed from 4, brightness 3, option single.
-            ? LedParams(board, AkkoStatic, 4 - 0, 3, AkkoColorSingle, rgb)
+            // Static: speed 0 reversed from 4, brightness at its most, option single.
+            ? LedParams(board, AkkoStatic, 4 - 0, 4, AkkoColorSingle, rgb)
             // Always On: speed 0, brightness 4, dazzle off.
             : LedParams(board, EpomakerAlwaysOn, 0, 4, EpomakerDazzleOff, rgb);
 
@@ -241,12 +283,14 @@ namespace PadForge.Common.Input.Peripherals
             private readonly Board _board;
             private readonly byte[] _state;
             private readonly byte[][] _crash;
+            private readonly RoyuanLighting _spacing;
             private bool _direct;
 
-            private Session(Board board, byte[] state)
+            private Session(Board board, byte[] state, RoyuanLighting spacing)
             {
                 _board = board;
                 _state = state;
+                _spacing = spacing;
                 _crash = state == null ? Array.Empty<byte[]>() : new[] { RestoreReport(board, state) };
             }
 
@@ -254,13 +298,17 @@ namespace PadForge.Common.Input.Peripherals
 
             public override byte[][] CrashFrames => _crash;
 
-            public static HidLightingSession Begin(IHidReportChannel io, Action<int> wait, Board board)
+            /// <param name="spacing">The family that keeps the spacing around
+            /// this board's SETs, or null for a board that needs none.</param>
+            public static HidLightingSession Begin(IHidReportChannel io, Action<int> wait, Board board, RoyuanLighting spacing)
             {
-                if (board == Board.Legacy) return new Session(board, null);
+                if (board == Board.Legacy) return new Session(board, null, spacing);
                 // OpenRGB makes no controller of a board that does not answer
                 // (RoyuanKeyboardControllerDetect.cpp:22-37 and 43-57, line 146).
+                spacing?.SpaceFromLastSet(io, wait);
                 var state = ReadState(io, wait);
-                return state == null ? null : new Session(board, state);
+                spacing?.NoteSet(io);
+                return state == null ? null : new Session(board, state, spacing);
             }
 
             public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
@@ -276,11 +324,20 @@ namespace PadForge.Common.Input.Peripherals
                     }
                     return io.SetFeature(DirectColor(rgb)) ? HidLightingPaint.Sent : HidLightingPaint.Failed;
                 }
-                return io.SetFeature(Picture(_board, rgb)) ? HidLightingPaint.Sent : HidLightingPaint.Failed;
+                // Noted either way: a SET that reports a failure may have landed.
+                bool sent = io.SetFeature(Picture(_board, rgb));
+                _spacing?.NoteSet(io);
+                return sent ? HidLightingPaint.Sent : HidLightingPaint.Failed;
             }
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
-                => _crash.Length == 0 || io.SetFeature(_crash[0]);
+            {
+                if (_crash.Length == 0) return true;
+                _spacing?.SpaceFromLastSet(io, wait);
+                bool sent = io.SetFeature(_crash[0]);
+                _spacing?.NoteSet(io);
+                return sent;
+            }
         }
     }
 }

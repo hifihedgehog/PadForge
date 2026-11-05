@@ -54,9 +54,19 @@ namespace PadForge.Common.Input.Peripherals
 
         private HidLightingModel _full, _tkl;
 
+        /// <summary>Every frame's length, the report ID included
+        /// (DuckyKeyboardController.cpp:59-215). OpenRGB registers interface 1
+        /// with no usage (DuckyKeyboardControllerDetect.cpp:35-36) and hidapi on
+        /// Linux opens it as one device. Windows gives each of its collections
+        /// a path of its own, so the family takes the one whose output report
+        /// carries a frame. Aurora picks its collection by a 65-byte input
+        /// report (DuckyDevice.cs:177) and writes 65-byte frames to it
+        /// (line 149).</summary>
+        internal const int FrameLength = 65;
+
         public HidLightingModel Match(HidCollectionInfo collection)
         {
-            if (collection == null || collection.VendorId != VendorId) return null;
+            if (collection == null || collection.VendorId != VendorId || collection.OutputReportLength < FrameLength) return null;
             var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
             if (registrations.Count == 0) return null;
             var registration = registrations[0];
@@ -84,7 +94,7 @@ namespace PadForge.Common.Input.Peripherals
 
         private static byte[] Frame(params (int At, byte Value)[] bytes)
         {
-            var frame = new byte[65];
+            var frame = new byte[FrameLength];
             foreach (var (at, value) in bytes) frame[at] = value;
             return frame;
         }
@@ -111,7 +121,7 @@ namespace PadForge.Common.Input.Peripherals
             for (int id = 0; id < 8; id++)
             {
                 var frame = Frame((1, 0x56), (2, 0x83), (3, (byte)id));
-                int start = 0x05, room = 65 - 0x05;
+                int start = 0x05, room = FrameLength - 0x05;
                 if (id == 0)
                 {
                     frame[0x05] = 0x01;
@@ -123,7 +133,7 @@ namespace PadForge.Common.Input.Peripherals
                     frame[0x13] = 0xFF;
                     frame[0x14] = 0xFF;
                     start = 0x19;
-                    room = 65 - 0x19;
+                    room = FrameLength - 0x19;
                 }
                 int count = Math.Min(room, data.Length - at);
                 Array.Copy(data, at, frame, start, count);

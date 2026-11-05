@@ -83,10 +83,54 @@ namespace PadForge.Common.Input.Peripherals
     /// <summary>One Start of a peripheral worker thread: its stop flag. Each
     /// Start makes its own, the way each ChromaBackend.Start makes its own
     /// token, so a worker that outlived a timed-out Stop reads its own flag
-    /// set and ends, whatever a later Start of the same object does.</summary>
-    internal sealed class WorkerRun
+    /// set and ends, whatever a later Start does.</summary>
+    internal class WorkerRun
     {
         public volatile bool Stop;
+    }
+
+    /// <summary>One family's workers over the engine's restarts. Each engine
+    /// start builds new backends, so nothing on a backend object tells a worker
+    /// a timed-out Stop gave up on that a later one took over. A family keeps
+    /// one of these in a static field, because the devices its workers hold are
+    /// the machine's. A new worker waits for the last one with nothing opened,
+    /// for a bounded time, since that one's finally hands its units back. Once
+    /// out of that wait it holds what the family publishes for everyone, and a
+    /// device it claims is closed to every earlier worker. A device no later
+    /// run has claimed stays the earlier worker's to hand back: nobody else
+    /// knows it is lit.</summary>
+    internal sealed class WorkerSuccession
+    {
+        private Thread _last;
+        private volatile WorkerRun _holder;
+        private readonly ConcurrentDictionary<string, WorkerRun> _claimedBy = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>The wait a worker starts with. A run stopped during it has
+        /// opened nothing, so the worker it waited for keeps what it holds.</summary>
+        internal void Enter(WorkerRun run, int waitMs, string family)
+        {
+            var previous = Interlocked.Exchange(ref _last, Thread.CurrentThread);
+            if (previous != null && previous != Thread.CurrentThread && previous.IsAlive && !previous.Join(waitMs))
+                PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL {family} previous worker still running after {waitMs} ms, starting anyway");
+            if (!run.Stop) _holder = run;
+        }
+
+        /// <summary>Whether no later worker has come out of its wait. The
+        /// family's maps, states and lists are this run's while it does.</summary>
+        internal bool Holds(WorkerRun run) => ReferenceEquals(_holder, run);
+
+        /// <summary>A run has a device open and takes it, ahead of its first
+        /// picture. A run whose open failed has taken nothing, and the earlier
+        /// worker stays the one to hand the device back.</summary>
+        internal void Claim(string device, WorkerRun run)
+        {
+            if (device != null) _claimedBy[device] = run;
+        }
+
+        /// <summary>Whether a run may still send to a device: not one a later
+        /// run has claimed, whose picture a report would land on.</summary>
+        internal bool MayReach(string device, WorkerRun run)
+            => device == null || Holds(run) || !_claimedBy.TryGetValue(device, out var by) || ReferenceEquals(by, run);
     }
 
     /// <summary>One output path: a family and the key inside it (a HID++
@@ -208,6 +252,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Ahead of <see cref="Empty"/>, which its constructor
         /// reads.</summary>
         private static readonly IReadOnlySet<OutputPath> NoPaths = new HashSet<OutputPath>();
+        private static readonly IReadOnlyDictionary<Guid, Guid> NoContainers = new Dictionary<Guid, Guid>();
 
         public static readonly LinkTable Empty = new(Array.Empty<DeviceLinks>());
 
@@ -216,6 +261,11 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Every row's <see cref="DeviceLinks.TakenByOpenRgb"/>.</summary>
         public IReadOnlySet<OutputPath> TakenByOpenRgb { get; }
+
+        /// <summary>The container the link pass found each row in, those with
+        /// no path too, whose tab says what became of a unit of theirs
+        /// (<see cref="PeripheralRouteText.Lighting"/>).</summary>
+        public IReadOnlyDictionary<Guid, Guid> RowContainers { get; init; } = NoContainers;
 
         public LinkTable(IEnumerable<DeviceLinks> rows)
         {
@@ -245,14 +295,21 @@ namespace PadForge.Common.Input.Peripherals
 
         public DeviceLinks For(Guid device) => ByDevice.TryGetValue(device, out var links) ? links : null;
 
+        /// <summary>The row's container, or Guid.Empty while it is not known.</summary>
+        public Guid ContainerOf(Guid device) => RowContainers.TryGetValue(device, out var container) ? container : Guid.Empty;
+
         /// <summary>True when both tables link the same rows to the same
         /// paths, so the linker publishes only a change. The claim levels a
-        /// row offers, its waiting direct path and the paths it shadows
-        /// count too: a control that should appear, a hint that should
-        /// change or a shadow that should lift republishes the table.</summary>
+        /// row offers, its waiting direct path, the paths it shadows and the
+        /// container it was found in count too: a control that should appear,
+        /// a hint that should change or a shadow that should lift republishes
+        /// the table.</summary>
         public bool SameAs(LinkTable other)
         {
-            if (other == null || other.ByDevice.Count != ByDevice.Count) return false;
+            if (other == null || other.ByDevice.Count != ByDevice.Count
+                || other.RowContainers.Count != RowContainers.Count) return false;
+            foreach (var pair in RowContainers)
+                if (other.ContainerOf(pair.Key) != pair.Value) return false;
             foreach (var pair in ByDevice)
             {
                 var theirs = other.For(pair.Key);
@@ -280,6 +337,25 @@ namespace PadForge.Common.Input.Peripherals
             for (int i = 0; i < a.Length; i++)
                 if (a[i] != b[i]) return false;
             return true;
+        }
+    }
+
+    /// <summary>A vendor's program runs and answered no. <see cref="Keys"/>
+    /// names the path keys it refused, null for every path of the family.
+    /// <see cref="SettingOff"/> says a setting in the program is why, as the
+    /// iCUE SDK reports with CSS_ConnectionRefused (iCUESDK.h:40, docs
+    /// index.html:166), where any other refusal gives no reason.</summary>
+    internal sealed record ProgramRefusal(string[] Keys, bool SettingOff = false)
+    {
+        /// <summary>Every path of the family, for no reason the program
+        /// gave.</summary>
+        public static readonly ProgramRefusal Everything = new((string[])null);
+
+        public static bool Same(ProgramRefusal a, ProgramRefusal b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (a == null || b == null || a.SettingOff != b.SettingOff) return false;
+            return a.Keys == null || b.Keys == null ? a.Keys == b.Keys : a.Keys.AsSpan().SequenceEqual(b.Keys);
         }
     }
 
@@ -434,6 +510,41 @@ namespace PadForge.Common.Input.Peripherals
                     ? previous == value
                     : previous.AsSpan().SequenceEqual(value);
                 if (!same) RaiseStatusChanged();
+            }
+        }
+
+        private static readonly ProgramRefusal[] s_refusals = new ProgramRefusal[Enum.GetValues(typeof(OutputFamily)).Length];
+
+        /// <summary>Records that a vendor's program runs and answered no on
+        /// some of a family's paths, in place of what was recorded, or that
+        /// it no longer does (null). The Lighting and Force Feedback tabs read
+        /// it ahead of their waiting lines, whose remedy is to start a program
+        /// that runs already.</summary>
+        public static void SetProgramRefusal(OutputFamily family, ProgramRefusal refusal)
+        {
+            var previous = Interlocked.Exchange(ref s_refusals[(int)family], refusal);
+            if (!ProgramRefusal.Same(previous, refusal)) RaiseStatusChanged();
+        }
+
+        /// <summary>What the vendor's program answered on this path, or null
+        /// when it did not refuse it.</summary>
+        public static ProgramRefusal RefusalOn(OutputPath path)
+        {
+            var refusal = Volatile.Read(ref s_refusals[(int)path.Family]);
+            return refusal != null && (refusal.Keys == null || Array.IndexOf(refusal.Keys, path.Key) >= 0) ? refusal : null;
+        }
+
+        private static int s_openRgbPort;
+
+        /// <summary>The port the OpenRGB worker last looked for the SDK server
+        /// on, 0 before it looked. The Lighting tab names it while nothing
+        /// answers there.</summary>
+        public static int OpenRgbPortTried
+        {
+            get => Volatile.Read(ref s_openRgbPort);
+            set
+            {
+                if (Interlocked.Exchange(ref s_openRgbPort, value) != value) RaiseStatusChanged();
             }
         }
 
@@ -1225,6 +1336,8 @@ namespace PadForge.Common.Input.Peripherals
             Volatile.Write(ref s_unitRows, Array.Empty<DirectUnit>());
             Volatile.Write(ref s_ledSdkPaintable, null);
             for (int i = 0; i < s_states.Length; i++) Volatile.Write(ref s_states[i], 0);
+            Array.Clear(s_refusals);
+            Volatile.Write(ref s_openRgbPort, 0);
         }
     }
 }

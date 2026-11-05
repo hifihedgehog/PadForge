@@ -438,6 +438,10 @@ namespace PadForge.Tests
         /// <summary>Answers GET_ACTIVE_PROFILE with another opcode.</summary>
         public volatile bool Mute;
 
+        /// <summary>A SAVE_PROFILE goes out and the profile keeps what it
+        /// held.</summary>
+        public volatile bool LosesSaves;
+
         /// <summary>The frames each profile was last written with.</summary>
         public readonly Dictionary<byte, byte[]> Profiles = new();
 
@@ -474,7 +478,7 @@ namespace PadForge.Tests
                     }
                     case LenovoLegionLighting.SaveProfile:
                         Log.Add("CB " + report[4]);
-                        Profiles[report[4]] = (byte[])report.Clone();
+                        if (!LosesSaves) Profiles[report[4]] = (byte[])report.Clone();
                         break;
                     case LenovoLegionLighting.SwitchProfile:
                         Log.Add("C8 " + report[4]);
@@ -1548,7 +1552,7 @@ namespace PadForge.Tests
         public void TheSave_MarksTheBackupsItWrote_AsOnDisk()
         {
             string source = AuditDelta20261002Tests.RepoText("PadForge.App", "Services", "SettingsService.cs");
-            int write = source.IndexOf("File.WriteAllBytes(filePath, serializedBytes);", StringComparison.Ordinal);
+            int write = source.IndexOf("WriteWhole(filePath, serializedBytes);", StringComparison.Ordinal);
             int mark = source.IndexOf("KeyboardProfileBackups.Persisted(_profileBackupsBuilt);", StringComparison.Ordinal);
             Assert.True(write > 0 && mark > write, "the backups count as saved only after the file is written");
             Assert.Contains(".SaveRegistry(out _profileBackupsBuilt)", source);

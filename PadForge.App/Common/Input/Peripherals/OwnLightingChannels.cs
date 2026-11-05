@@ -301,18 +301,27 @@ namespace PadForge.Common.Input.Peripherals
                 : Guid.Empty;
         }
 
+        private const int ErrorAccessDenied = 5;
+
+        /// <summary>The last <see cref="OpenSerial"/> on this thread found the
+        /// port taken: it opens for one program at a time, and Windows answers
+        /// any other with access denied.</summary>
+        [ThreadStatic] internal static bool SerialDenied;
+
         /// <summary>Opens a serial port as OpenRGB's serial_port opens it
         /// (serial_port.cpp:197-318): read and write, not shared, the baud
         /// rate given, 8 data bits, no parity, one stop bit, no flow
-        /// control, DTR off, and its read and write timeouts.
-        /// <paramref name="path"/> is the port as \\.\COMn. Null when it did
-        /// not open.</summary>
+        /// control, DTR off, and its write timeouts, with the read timeouts of
+        /// <see cref="SerialReadTotalMs"/>. <paramref name="path"/> is the port
+        /// as \\.\COMn. Null when it did not open.</summary>
         internal static ISerialLineChannel OpenSerial(string path, int baud)
         {
             if (OffLimitsForTest) return null;
+            SerialDenied = false;
             var handle = CreateFileW(path, GenericReadWrite, 0, IntPtr.Zero, OpenExisting, 0, IntPtr.Zero);
             if (handle.IsInvalid)
             {
+                SerialDenied = Marshal.GetLastWin32Error() == ErrorAccessDenied;
                 handle.Dispose();
                 return null;
             }
@@ -333,12 +342,27 @@ namespace PadForge.Common.Input.Peripherals
             }
             var timeouts = new COMMTIMEOUTS
             {
-                ReadIntervalTimeout = 50, ReadTotalTimeoutConstant = 50, ReadTotalTimeoutMultiplier = 10,
+                ReadIntervalTimeout = 50, ReadTotalTimeoutConstant = SerialReadTotalMs, ReadTotalTimeoutMultiplier = SerialReadPerByteMs,
                 WriteTotalTimeoutConstant = 50, WriteTotalTimeoutMultiplier = 10,
             };
             SetCommTimeouts(handle, ref timeouts);
             return new SerialLineChannel(handle);
         }
+
+        /// <summary>How long a read waits on a port that sends nothing: this
+        /// much in all, and this much for each byte asked for. OpenRGB's Windows
+        /// build asks 50 ms and 10 ms a byte (serial_port.cpp:312-314), so a read
+        /// of 256 bytes from a silent device lasts 2.6 s on the one thread that
+        /// serves every lit unit. Its read on Linux waits 0.1 s whatever it asks
+        /// for (VTIME 1 and VMIN 0, lines 549-550), and that is the bound here.
+        /// A read hands back what has come by then, and the callers read
+        /// again.</summary>
+        internal const uint SerialReadTotalMs = 100;
+        internal const uint SerialReadPerByteMs = 0;
+
+        /// <summary>The longest a read of <paramref name="bytes"/> bytes takes
+        /// on a port that sends nothing.</summary>
+        internal static int SerialReadBoundMs(int bytes) => (int)(SerialReadTotalMs + SerialReadPerByteMs * (uint)bytes);
 
         /// <summary>The crash path's one write to a serial port, through a
         /// handle of its own, bounded. True when every byte went out.</summary>
@@ -352,12 +376,17 @@ namespace PadForge.Common.Input.Peripherals
             }, timeoutMs);
         }
 
-        private sealed class SerialLineChannel : ISerialLineChannel
+        private sealed class SerialLineChannel : ISerialLineChannel, IConnectedChannel
         {
             private readonly SafeFileHandle _handle;
             private int _disposed;
 
             public SerialLineChannel(SafeFileHandle handle) => _handle = handle;
+
+            /// <summary>Whether the port is still there: a serial device that
+            /// was removed fails this on its old handle.</summary>
+            public bool StillConnected => System.Threading.Volatile.Read(ref _disposed) == 0
+                && ClearCommError(_handle, out _, IntPtr.Zero);
 
             public bool Write(byte[] bytes)
             {
@@ -442,6 +471,9 @@ namespace PadForge.Common.Input.Peripherals
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool GetCommState(SafeFileHandle file, ref DCB dcb);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool ClearCommError(SafeFileHandle file, out uint errors, IntPtr status);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool SetCommState(SafeFileHandle file, ref DCB dcb);

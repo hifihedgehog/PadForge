@@ -722,8 +722,6 @@ namespace PadForge.Tests
                 (nameof(s.Pad_Lighting_RouteThroughOpenRgbOnly), "Colors go through OpenRGB's SDK Server."),
                 (nameof(s.Pad_Lighting_RouteLeftToOpenRgb),
                     "OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB."),
-                (nameof(s.Pad_Lighting_RouteOpenRgbServerOff),
-                    "OpenRGB is running with its SDK Server off, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it."),
                 (nameof(s.Pad_Lighting_VendorRowExamples_Aura), "motherboards, graphics cards, and memory"),
                 (nameof(s.Pad_Lighting_VendorRowExamples_MysticLight), "motherboards and graphics cards"),
             };
@@ -742,7 +740,9 @@ namespace PadForge.Tests
             // window (qt/OpenRGBDialog/OpenRGBDialog.cpp:967), and the
             // with-a-promise line is the plain one and a sentence more.
             Assert.StartsWith(s.Pad_Lighting_RouteThroughOpenRgbOnly, s.Pad_Lighting_RouteThroughOpenRgb);
-            Assert.Contains("SDK Server", En(nameof(s.Pad_Lighting_RouteOpenRgbServerOff)));
+            Assert.Equal(
+                "OpenRGB is running and its SDK Server does not answer on port {0}, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.",
+                En(nameof(s.Pad_Lighting_RouteOpenRgbServerNoAnswer)));
             Assert.Contains("Direct", En(nameof(s.Pad_Lighting_RouteLeftToOpenRgb)));
             Assert.Equal("Direct", OpenRgbDevices.DirectModeName);
         }
@@ -2222,6 +2222,41 @@ namespace PadForge.Tests
             lamp.Found();
             Passes(host);
             Assert.Empty(PeripheralOutputs.UnitRows);
+        }
+
+        /// <summary>A unit that learns its name after its row opened: the same
+        /// row and record take the name, and the device list hears of it
+        /// once.</summary>
+        [Fact]
+        public void ARow_TakesTheNameItsUnitLearned()
+        {
+            var port = new DirectUnit(OutputFamily.HidLightingUnit, @"\\.\COM5", Box, 0x1A86, 0x7523) { Name = "Serial device on COM5" };
+            Guid id = PeripheralUnitRow.IdentityFor(port.Family, port.Key);
+            var manager = new InputManager();
+            var phase = typeof(InputManager).GetMethod("UpdatePeripheralRows", BindingFlags.NonPublic | BindingFlags.Instance);
+            bool Update() => (bool)phase.Invoke(manager, null);
+            try
+            {
+                PeripheralOutputs.UnitRows = new[] { port };
+                Assert.True(Update());
+                UserDevice record;
+                lock (SettingsManager.UserDevices.SyncRoot)
+                    record = SettingsManager.UserDevices.Items.Single(d => d.InstanceGuid == id);
+                var row = Assert.IsType<PeripheralUnitRow>(record.Device);
+                Assert.Equal("Serial device on COM5", record.ResolvedName);
+
+                PeripheralOutputs.UnitRows = new[] { port with { Name = "Skydimo SK0402" } };
+                Assert.True(Update());
+                Assert.Same(row, record.Device);
+                Assert.Equal("Skydimo SK0402", row.Name);
+                Assert.Equal("Skydimo SK0402", record.ResolvedName);
+                Assert.True(record.IsOnline);
+                Assert.False(Update());
+            }
+            finally
+            {
+                manager.ShutdownPeripheralRows();
+            }
         }
 
         /// <summary>The poll thread's phase: a row opens for each listed

@@ -179,7 +179,9 @@ namespace PadForge.Tests
             var port = new FakeSerialLine { Mute = true };
             var model = Family(port).Model;
             Assert.Null(model.BeginOwn(port, ms => waited += ms));
-            Assert.True(waited >= DygmaRaiseLighting.AnswerWaitMs);
+            // The waits between reads. Each read's own time on the port counts
+            // toward AnswerWaitMs as well (SerialReadBoundTests).
+            Assert.True(waited > 0);
             Assert.Equal(new[] { "led.mode\n" }, port.Lines);
 
             // An answer that is no mode.

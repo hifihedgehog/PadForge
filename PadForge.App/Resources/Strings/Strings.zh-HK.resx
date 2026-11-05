@@ -780,6 +780,8 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} 已轉回其 Windows 驅動程式。</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>無法還原 {0} 的 Windows 驅動程式。</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows 已把 {0} 轉回其本身的驅動程式。請在「裝置」頁面選擇它，以再次切換。</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} 已不再使用 PadForge 的驅動程式。</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} 仍由 PadForge 的驅動程式使用。在「裝置」頁選取它，即可交還給 Windows。</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>只在 PadForge 使用</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge 會把此鍵盤轉用 Windows 的 WinUSB 驅動程式，並自行讀取它。其後 Windows 不會再在任何程式中以此鍵盤輸入文字，即使 PadForge 已關閉也一樣，直至在此頁面還原其 Windows 驅動程式為止。PadForge 執行期間，此鍵盤的對應和巨集仍會正常運作。</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge 會把此滑鼠轉用 Windows 的 WinUSB 驅動程式，並自行讀取它。其後 Windows 不會再在任何程式中以此滑鼠移動指標，即使 PadForge 已關閉也一樣，直至在此頁面還原其 Windows 驅動程式為止。PadForge 執行期間，此滑鼠的對應和巨集仍會正常運作。</value></data>
@@ -957,6 +959,7 @@
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>震動會透過 SteelSeries GG 的觸感處理常式播放。</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG 會同時驅動所有具觸感功能的 Rival，因此由虛擬控制器 {0} 上的那一隻決定它們的震動。</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>正在等待 SteelSeries GG。待 GG 執行後便會播放震動。</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG 正在執行，但沒有回應 PadForge。待它回應後便會震動。</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>震動會透過 Razer Synapse 在你的 Razer Sensa HD 裝置上播放。</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>正在等待 Razer Synapse 4 內的 Sensa HD Haptics。請在 Synapse 中把裝置的 Haptic Source（觸覺來源）設為 Sensa HD Games。</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>左扳機</value></data>
@@ -1000,6 +1003,12 @@
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>顏色會直接傳送到 {0}。亮燈期間，其內置記憶體模式會關閉。</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>顏色會直接傳送到 {0}。變色效果，例如顏色循環或隨聲音變化的顏色，需要在手提電腦的 BIOS 中開啟 Dynamic Lighting。未開啟時，按鍵會保持最後的固定顏色。</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>顏色會直接傳送到 {0}。如果手提電腦的 BIOS 中已開啟 Dynamic Lighting，按鍵會改由 Windows 動態燈光效果亮燈。在 Windows「設定」中為此鍵盤關閉 Windows 動態燈光效果，PadForge 便會為按鍵亮燈，包括變色效果。</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>顏色會直接傳送到 {0}。它把每張圖像儲存在自己的記憶體中，因此會變化的顏色，例如顏色循環或隨聲音變化的顏色，不會顯示。固定不變的顏色則可以顯示。</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>顏色會直接傳送到 {0}。它把每張圖像儲存在自己的記憶體中，因此會變化的顏色，例如顏色循環或隨聲音變化的顏色，不會顯示。固定不變的顏色則可以顯示。第一張圖像會覆寫鍵盤上已儲存的效果，舊效果無法復原。</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>{0} 上的序列裝置</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>此裝置已連接，但沒有接受 PadForge 的顏色。PadForge 每分鐘會再試一次。</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows 把此裝置當作鍵盤或滑鼠獨佔，並拒絕設定其顏色的報告，因此 PadForge 無法在 Windows 上為它亮燈。</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>另一個程式已開啟此裝置，因此 PadForge 無法為它亮燈。該程式關閉後，PadForge 會為它亮燈。</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>此裝置尚未回應。待它喚醒後便會顯示顏色。</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>顏色會經 {0} 傳送。</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>顏色會經 {0} 傳送，而它會同時為所有同類裝置亮燈。{0} 沒有執行時，PadForge 會自行為此裝置亮燈。</value></data>
@@ -1007,7 +1016,9 @@
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>顏色會經 OpenRGB 的 SDK Server 傳送。OpenRGB 沒有執行時，PadForge 會自行為此裝置亮燈。</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>顏色會經 OpenRGB 的 SDK Server 傳送。</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB 佔用此裝置且沒有適用於它的 Direct 模式，因此其燈光仍由 OpenRGB 控制。</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB 正在執行但其 SDK Server 已關閉，因此 PadForge 將此裝置交給 OpenRGB。在 OpenRGB 開啟 SDK Server 後，PadForge 會經它為此裝置亮燈。</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB 正在執行，但其 SDK Server 沒有在連接埠 {0} 回應，因此 PadForge 將此裝置交給 OpenRGB。在 OpenRGB 開啟 SDK Server 後，PadForge 會經它為此裝置亮燈。</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE 正在執行，但其 SDK 已關閉。在 iCUE 的設定中開啟 iCUE SDK 後，PadForge 會經它為此裝置亮燈。</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} 正在執行，但不讓 PadForge 為其裝置亮燈。PadForge 會持續要求。</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} 會同時為所有同類裝置亮燈，因此由虛擬控制器 {1} 上的那一部決定它們的顏色。</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} 會同時為所有同類裝置亮燈，因此由虛擬控制器 {2} 上的「{1}」列決定它們的顏色。</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>虛擬控制器 {0} 亦為此裝置亮燈，而顯示的是它的顏色。</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>耳機</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>主機板、顯示卡和記憶體</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>主機板和顯示卡</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>滑鼠墊和耳機架</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>滑鼠墊、耳機和耳機架</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>光條</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>輸入六位十六進制顏色（RRGGBB 或 #RRGGBB），然後按 Enter 或按一下其他位置以套用。</value></data>
@@ -4671,6 +4682,7 @@
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>正在連線到 {0} 的聊天室…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>正在讀取 {0} 的聊天室。</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>無法連線到 {0} 的聊天室，正在重試。</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch 沒有 {0} 的聊天室。請檢查頻道名稱。</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>已暫停。</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>供直播使用的控制器畫面。請將此位址加入 OBS 作為瀏覽器來源：</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>供直播使用的控制器畫面需要網頁控制器及其未加密的 HTTP 位址。請在網頁控制器卡片中開啟「同時提供未加密的 HTTP」。如果 OBS 在這部電腦上，只需選用「只限這部電腦」。</value></data>

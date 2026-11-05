@@ -4606,6 +4606,24 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary><see cref="KeyColorTargets"/> as a list, parsed once per
+        /// text: an action that repeats while held reads it on every poll.
+        /// Nobody may change the array.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal PadForge.Common.Input.KeyColorTarget[] KeyColorTargetsParsed
+        {
+            get
+            {
+                string text = _keyColorTargets;
+                var parsed = _keyColorTargetsParsed;
+                if (parsed != null && ReferenceEquals(parsed.Item1, text)) return parsed.Item2;
+                parsed = Tuple.Create(text, PadForge.Common.Input.KeyColorTarget.Parse(text));
+                _keyColorTargetsParsed = parsed;
+                return parsed.Item2;
+            }
+        }
+        private Tuple<string, PadForge.Common.Input.KeyColorTarget[]> _keyColorTargetsParsed;
+
         /// <summary>How many lights the action names.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public int KeyColorTargetCount => PadForge.Common.Input.KeyColorTarget.Parse(_keyColorTargets).Length;

@@ -780,6 +780,8 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} به درایور Windows خود برگشت.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>بازگردانی درایور Windows برای {0} ممکن نشد.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows درایور خودش را برای {0} برگرداند. برای تعویض دوباره، آن را در صفحه «دستگاه‌ها» انتخاب کنید.</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} دیگر روی درایور PadForge نیست.</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} هنوز روی درایور PadForge است. برای برگرداندن آن به Windows، آن را در صفحه دستگاه‌ها انتخاب کنید.</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>استفاده فقط در PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge این صفحه‌کلید را به درایور WinUSB در Windows منتقل می‌کند و خودش آن را می‌خواند. از آن پس Windows در هیچ برنامه‌ای با آن تایپ نمی‌کند، حتی وقتی PadForge بسته است، تا زمانی که درایور Windows آن از همین صفحه بازگردانده شود. نگاشت‌ها و ماکروهای آن تا وقتی PadForge اجرا می‌شود کار می‌کنند.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge این ماوس را به درایور WinUSB در Windows منتقل می‌کند و خودش آن را می‌خواند. از آن پس Windows در هیچ برنامه‌ای با آن نشانگر را حرکت نمی‌دهد، حتی وقتی PadForge بسته است، تا زمانی که درایور Windows آن از همین صفحه بازگردانده شود. نگاشت‌ها و ماکروهای آن تا وقتی PadForge اجرا می‌شود کار می‌کنند.</value></data>
@@ -957,6 +959,7 @@
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>لرزش از طریق کنترل‌کننده لمسی در SteelSeries GG پخش می‌شود.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG همه ماوس‌های Rival دارای بازخورد لمسی را یکجا کنترل می‌کند، بنابراین ماوسی که روی کنترلر مجازی {0} است لرزش همه آن‌ها را تعیین می‌کند.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>در انتظار SteelSeries GG. با اجرای GG لرزش پخش می‌شود.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG در حال اجراست و به PadForge پاسخ نمی‌دهد. لرزش پس از پاسخ‌دادن آن پخش می‌شود.</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>لرزش از طریق Razer Synapse روی دستگاه‌های Razer Sensa HD شما پخش می‌شود.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>در انتظار Sensa HD Haptics در Razer Synapse 4. در Synapse گزینه Haptic Source دستگاه را روی Sensa HD Games بگذارید.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>ماشه چپ</value></data>
@@ -1000,6 +1003,12 @@
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>رنگ‌ها مستقیماً به {0} می‌روند. تا وقتی نورپردازی می‌شود، حالت حافظه داخلی آن خاموش است.</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>رنگ‌ها مستقیماً به {0} می‌روند. رنگ‌های متغیر، مانند چرخه رنگ یا رنگ‌هایی که صدا را دنبال می‌کنند، به روشن بودن Dynamic Lighting در BIOS لپ‌تاپ نیاز دارند. بدون آن، کلیدها آخرین رنگ‌های ثابت را نگه می‌دارند.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>رنگ‌ها مستقیماً به {0} می‌روند. اگر Dynamic Lighting در BIOS لپ‌تاپ روشن باشد، Dynamic Lighting در Windows کلیدها را روشن می‌کند. Dynamic Lighting در Windows را برای این صفحه‌کلید در تنظیمات Windows خاموش کنید تا PadForge آن‌ها را روشن کند، از جمله رنگ‌های متغیر.</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>رنگ‌ها مستقیماً به {0} می‌روند. این دستگاه هر تصویر را در حافظه خودش ذخیره می‌کند، پس رنگ‌های متغیر، مانند چرخش رنگ یا رنگ‌هایی که صدا را دنبال می‌کنند، نمایش داده نمی‌شوند. رنگ ثابت نمایش داده می‌شود.</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>رنگ‌ها مستقیماً به {0} می‌روند. این دستگاه هر تصویر را در حافظه خودش ذخیره می‌کند، پس رنگ‌های متغیر، مانند چرخش رنگ یا رنگ‌هایی که صدا را دنبال می‌کنند، نمایش داده نمی‌شوند. رنگ ثابت نمایش داده می‌شود. اولین تصویر جلوه‌های ذخیره‌شده روی صفحه‌کلید را بازنویسی می‌کند و جلوه‌های قبلی برنمی‌گردند.</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>دستگاه سریال روی {0}</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>این دستگاه متصل است و رنگ‌های PadForge را نپذیرفت. PadForge هر دقیقه دوباره تلاش می‌کند.</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows این دستگاه را به‌عنوان صفحه‌کلید یا ماوس در اختیار دارد و گزارشی را که رنگ‌هایش را تنظیم می‌کند رد می‌کند، بنابراین PadForge نمی‌تواند آن را در Windows روشن کند.</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>برنامه‌ای دیگر این دستگاه را باز کرده است، بنابراین PadForge نمی‌تواند آن را روشن کند. PadForge پس از بسته شدن آن برنامه، دستگاه را روشن می‌کند.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>این دستگاه هنوز پاسخ نداده است. رنگ‌هایش پس از بیدار شدن نمایش داده می‌شود.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>رنگ‌ها از طریق {0} می‌روند.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>رنگ‌ها از طریق {0} می‌روند که همه دستگاه‌های این نوع را یکجا روشن می‌کند. تا وقتی {0} در حال اجرا نیست، PadForge خودش این دستگاه را روشن می‌کند.</value></data>
@@ -1007,7 +1016,9 @@
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>رنگ‌ها از طریق SDK Server برنامه OpenRGB می‌روند. تا وقتی OpenRGB در حال اجرا نیست، PadForge خودش این دستگاه را روشن می‌کند.</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>رنگ‌ها از طریق SDK Server برنامه OpenRGB می‌روند.</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB این دستگاه را در اختیار دارد و برای آن حالت Direct ندارد، پس نورپردازی آن نزد OpenRGB می‌ماند.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB با SDK Server خاموش در حال اجراست، پس PadForge این دستگاه را به OpenRGB می‌سپارد. SDK Server را در OpenRGB روشن کنید تا PadForge دستگاه را از طریق آن روشن کند.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB در حال اجراست و SDK Server آن در درگاه {0} پاسخ نمی‌دهد، پس PadForge این دستگاه را به OpenRGB می‌سپارد. SDK Server را در OpenRGB روشن کنید تا PadForge دستگاه را از طریق آن روشن کند.</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE با SDK خاموش در حال اجراست. iCUE SDK را در تنظیمات iCUE روشن کنید تا PadForge دستگاه را از طریق آن روشن کند.</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} در حال اجراست و اجازه نداد PadForge دستگاه‌هایش را روشن کند. PadForge همچنان درخواست می‌کند.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} همه دستگاه‌های این نوع را یکجا روشن می‌کند، بنابراین دستگاهی که روی کنترلر مجازی {1} است رنگ همه را تعیین می‌کند.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} همه دستگاه‌های این نوع را یکجا روشن می‌کند، بنابراین ردیف {1} روی کنترلر مجازی {2} رنگ همه را تعیین می‌کند.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>کنترلر مجازی {0} هم این دستگاه را روشن می‌کند و رنگ همان نمایش داده می‌شود.</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>هدست‌ها</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>مادربردها، کارت‌های گرافیک و حافظه</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>مادربردها و کارت‌های گرافیک</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>ماوس‌پدها و پایه‌های هدست</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>ماوس‌پدها، هدست‌ها و پایه‌های هدست</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>نوار نوری</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>یک رنگ هگز شش‌رقمی (RRGGBB یا #RRGGBB) وارد کنید و برای اعمال، Enter را فشار دهید یا بیرون از کادر کلیک کنید.</value></data>
@@ -4671,6 +4682,7 @@
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>در حال اتصال به چت {0}…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>در حال خواندن چت {0}.</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>اتصال به چت {0} برقرار نشد. دوباره تلاش می‌شود.</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch برای {0} چتی ندارد. نام کانال را بررسی کنید.</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>مکث شده.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>تصویر کنترلر برای پخش زنده شما. این نشانی را در OBS به‌عنوان منبع مرورگر اضافه کنید:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>تصویر کنترلر برای پخش زنده شما به کنترلر وب و نشانی HTTP ساده آن نیاز دارد. در کارت کنترلر وب، HTTP ساده هم ارائه شود را روشن کنید. فقط همین رایانه برای OBS روی همین رایانه کافی است.</value></data>

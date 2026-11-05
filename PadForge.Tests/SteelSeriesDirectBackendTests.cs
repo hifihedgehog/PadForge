@@ -550,6 +550,54 @@ namespace PadForge.Tests
             Assert.Equal(8, Writes(Channel()).Count);
         }
 
+        /// <summary>The Arctis Nova 3 and the Siberia 350 take stored pictures:
+        /// a color that keeps changing leaves them on the last one that held
+        /// (LenovoLegionLighting.HoldMs), and neither is sent its color again
+        /// while it stands.</summary>
+        [Theory]
+        [InlineData(0x12EC, 4)]
+        [InlineData(0x1229, 3)]
+        public void AStoredHeadset_HoldsAChangingColor_AndDoesNotRepeatAStillOne(int productId, int iface)
+        {
+            var headset = Control((ushort)productId, iface, output: 521);
+            using var backend = Started(headset);
+            Link(PathOf(headset));
+            Light(0x000001);
+            Passes(backend);
+            Advance(1000);
+            Passes(backend);
+            int first = Writes(Channel()).Count;
+            Assert.True(first > 0);
+
+            // A color that moves every 100 ms never holds for 150.
+            for (int i = 2; i < 30; i++)
+            {
+                Light(i);
+                Passes(backend);
+                Advance(100);
+                Passes(backend);
+            }
+            Assert.Equal(first, Writes(Channel()).Count);
+
+            // Held: it goes out 150 ms after it was first seen.
+            Light(0x00FF00);
+            Passes(backend);
+            Advance(149);
+            Passes(backend);
+            Assert.Equal(first, Writes(Channel()).Count);
+            Advance(1);
+            Passes(backend);
+            Advance(100);
+            Passes(backend);
+            int shown = Writes(Channel()).Count;
+            Assert.True(shown > first);
+
+            // Still: nothing more, past any re-assert.
+            Advance(3 * SteelSeriesDirectProtocol.ReassertMs);
+            Passes(backend);
+            Assert.Equal(shown, Writes(Channel()).Count);
+        }
+
         /// <summary>A wired family gets its color again on its interval
         /// too: a Sensei 310 that lost power while its collection stayed
         /// listed, over a PC's sleep or a fast replug, shows its stored
@@ -1661,13 +1709,14 @@ namespace PadForge.Tests
                 if (channel.Path == lit.Path && Interlocked.Increment(ref litOpens) == 1) channel.Ticks = () => held.Stamp(Tick);
             };
             var shots = new ConcurrentQueue<string>();
-            using var backend = new SteelSeriesDirectBackend(Open, path => _containerOf(path), Tick,
+            SteelSeriesDirectBackend Make() => new SteelSeriesDirectBackend(Open, path => _containerOf(path), Tick,
                 (path, _, _) =>
                 {
                     shots.Enqueue(path);
                     return true;
                 },
                 1, 5, predecessorJoinMs: 1, stopJoinMs: 1);
+            using var backend = Make();
             backend.Start();
             backend.Rescan(new[] { owed, lit });
             Passes(backend);
@@ -1684,23 +1733,79 @@ namespace PadForge.Tests
             // Stop gives up on the worker, held inside its hand-back to the
             // second mouse.
             held.HoldTheNextCall();
-            backend.Stop();
+            backend.Dispose();
             Assert.True(held.Entered.Wait(30000), "the stopping worker is inside its hand-back");
 
             // The next run begins, and paints both mice.
-            backend.Start();
-            backend.Rescan(new[] { owed, lit });
-            Passes(backend);
-            var second = WorkerThread(backend);
-            Assert.Contains(backend.Recorded, entry => entry.Path == owed.Path);
+            using var next = Make();
+            next.Start();
+            next.Rescan(new[] { owed, lit });
+            Passes(next);
+            var second = WorkerThread(next);
+            Assert.Contains(next.Recorded, entry => entry.Path == owed.Path);
 
             held.LetGo();
             Assert.True(first.Join(30000), "the first worker ended");
             Assert.Empty(shots);
-            Assert.Equal(owed.Path + " = 00 22 07 | " + lit.Path + " = 00 22 07", Recorded(backend));
+            Assert.Equal(owed.Path + " = 00 22 07 | " + lit.Path + " = 00 22 07", Recorded(next));
 
-            backend.Dispose();
+            next.Dispose();
             Assert.True(second.Join(30000), "the second worker ended");
+        }
+
+        /// <summary>A worker that outlives a Stop that gave up on it pays what
+        /// it is owed while the next run's worker still waits for it with
+        /// nothing opened: nobody else knows of it. The same with the next run
+        /// on the same backend or, as an engine start has it, on a new one.</summary>
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void AWorkerThatOutlivesItsStop_PaysWhatItIsOwed_WhileTheNextWorkerWaitsForIt(bool newBackend)
+        {
+            var owed = Control(0x1870, 3);
+            var lit = Control(0x1870, 3, tag: "b");
+            using var held = new HeldWorker();
+            int litOpens = 0;
+            _script = channel =>
+            {
+                if (channel.Path == lit.Path && Interlocked.Increment(ref litOpens) == 1) channel.Ticks = () => held.Stamp(Tick);
+            };
+            var shots = new ConcurrentQueue<string>();
+            SteelSeriesDirectBackend Make() => new SteelSeriesDirectBackend(Open, path => _containerOf(path), Tick,
+                (path, _, _) =>
+                {
+                    shots.Enqueue(path);
+                    return true;
+                },
+                1, 5, predecessorJoinMs: 30000, stopJoinMs: 1);
+            using var backend = Make();
+            backend.Start();
+            backend.Rescan(new[] { owed, lit });
+            Passes(backend);
+            Light(0x123456);
+            Link(PathOf(owed), PathOf(lit));
+            Passes(backend);
+            lock (_channels) _channels.Single(c => c.Path == owed.Path).FailWrites = true;
+            Advance(33);
+            Light(0xFF0000);
+            Passes(backend);
+            Assert.True(backend.Snapshot.Units.Single(u => u.Key == owed.Path).Asleep);
+            var worker = WorkerThread(backend);
+
+            held.HoldTheNextCall();
+            backend.Stop();
+            Assert.True(held.Entered.Wait(30000), "the stopping worker is inside its hand-back");
+            using var next = newBackend ? Make() : null;
+            if (newBackend)
+            {
+                backend.Dispose();
+                next.Start();
+            }
+            else backend.Start();
+            Assert.Empty(shots);
+            held.LetGo();
+            Assert.True(worker.Join(30000), "the worker ended");
+            Assert.Equal(new[] { owed.Path }, shots);
         }
 
         // ── Dongles ──
@@ -2734,6 +2839,96 @@ namespace PadForge.Tests
             Assert.True(second.Join(30000), "the second worker ended");
         }
 
+        /// <summary>A worker a stop gave up on inside a picture comes out after
+        /// the next run's worker left its wait for it. That worker may have the
+        /// device open, so the old one sends no hand-back.</summary>
+        [Fact]
+        public void AWorkerAStopGaveUpOn_SendsNoHandBack_OnceItsSuccessorHasTheDevice()
+        {
+            var mouse = Control(0x1870, 3);
+            using var held = new HeldWorker();
+            int opened = 0;
+            _script = channel =>
+            {
+                if (Interlocked.Increment(ref opened) == 1) channel.Ticks = () => held.Stamp(Tick);
+            };
+            SteelSeriesDirectBackend Make() => new SteelSeriesDirectBackend(Open, path => _containerOf(path), Tick, (_, _, _) => true,
+                1, 5, predecessorJoinMs: 1, stopJoinMs: 1);
+            using var backend = Make();
+            backend.Start();
+            backend.Rescan(new[] { mouse });
+            Passes(backend);
+            Light(0x123456);
+            Link(PathOf(mouse));
+            Passes(backend);
+            var first = WorkerThread(backend);
+
+            held.HoldTheNextCall();
+            Light(0x654321);
+            Assert.True(SpinWait.SpinUntil(() =>
+            {
+                Advance(33);
+                backend.Wake();
+                return held.Entered.IsSet;
+            }, 30000), "the worker is inside a picture");
+            backend.Dispose();
+
+            // Each engine start builds its own backends.
+            using var next = Make();
+            next.Start();
+            next.Rescan(new[] { mouse });
+            Passes(next);
+
+            held.LetGo();
+            Assert.True(first.Join(30000), "the first worker ended");
+            Assert.DoesNotContain("out 00 22 07", Sent(Channel(0)));
+            Assert.NotNull(PeripheralLightMaps.For(PathOf(mouse)));
+        }
+
+        /// <summary>The next run tried the mouse and it did not open, so that
+        /// run has nothing to hand back and the old worker still does.</summary>
+        [Fact]
+        public void AWorkerAStopGaveUpOn_SendsTheHandBack_WhenTheNextRunsOpenFails()
+        {
+            var mouse = Control(0x1870, 3);
+            using var held = new HeldWorker();
+            int opened = 0;
+            _script = channel =>
+            {
+                if (Interlocked.Increment(ref opened) == 1) channel.Ticks = () => held.Stamp(Tick);
+            };
+            SteelSeriesDirectBackend Make() => new SteelSeriesDirectBackend(Open, path => _containerOf(path), Tick, (_, _, _) => true,
+                1, 5, predecessorJoinMs: 1, stopJoinMs: 1);
+            using var backend = Make();
+            backend.Start();
+            backend.Rescan(new[] { mouse });
+            Passes(backend);
+            Light(0x123456);
+            Link(PathOf(mouse));
+            Passes(backend);
+            var first = WorkerThread(backend);
+
+            held.HoldTheNextCall();
+            Light(0x654321);
+            Assert.True(SpinWait.SpinUntil(() =>
+            {
+                Advance(33);
+                backend.Wake();
+                return held.Entered.IsSet;
+            }, 30000), "the worker is inside a picture");
+            backend.Dispose();
+
+            _opener = _ => null;
+            using var next = Make();
+            next.Start();
+            next.Rescan(new[] { mouse });
+            Passes(next);
+
+            held.LetGo();
+            Assert.True(first.Join(30000), "the first worker ended");
+            Assert.Contains("out 00 22 07", Sent(Channel(0)));
+        }
+
         /// <summary>A run that begins while the worker before it is still
         /// held past its Stop has scanned nothing yet. What that worker
         /// listed is not this run's, so the backend reads as not scanned
@@ -2906,6 +3101,53 @@ namespace PadForge.Tests
             _onOneShot = () => Advance(30);
             backend.ReleaseClaimedNow(Tick() + 20);
             Assert.Equal(new[] { (first.Path, "00 22 07", 20) }, _oneShots);
+
+            held.LetGo();
+            Assert.True(SpinWait.SpinUntil(() => !backend.WorkerAlive, 30000), "the worker stopped");
+        }
+
+        /// <summary>GG starts or OpenRGB takes the device and the link pass
+        /// closes the path, with the worker held inside a write so no pass
+        /// has let the unit go. The crash path's one-shot sends nothing: it
+        /// would land on that program's lighting.</summary>
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void TheCrashPath_SendsNothing_ToAUnitAnotherProgramHolds(bool gg)
+        {
+            var mouse = Control(0x1870, 3);
+            using var held = new HeldWorker();
+            _script = channel => channel.Ticks = () => held.Stamp(Tick);
+            using var backend = Started(mouse);
+            Light(0x123456);
+            Link(PathOf(mouse));
+            Passes(backend);
+            Advance(33);
+            Passes(backend);
+            Assert.Single(backend.Recorded);
+            held.HoldTheNextCall();
+            Light(0xFF0000);
+            Assert.True(held.Entered.Wait(30000), "the worker is inside a write");
+
+            if (gg)
+            {
+                PeripheralOutputs.Presence = PeripheralPresence.None with { SteelSeriesGGRunning = true };
+                PeripheralOutputs.PublishLinks(LinkTable.Empty);
+            }
+            else
+            {
+                PeripheralOutputs.PublishLinks(new LinkTable(new[]
+                {
+                    new DeviceLinks
+                    {
+                        Device = Device,
+                        Lighting = new[] { new OutputPath(OutputFamily.OpenRgbDevice, "openrgb") },
+                        TakenByOpenRgb = new[] { PathOf(mouse) },
+                    },
+                }));
+            }
+            backend.ReleaseClaimedNow(Tick() + 20);
+            Assert.Empty(_oneShots);
 
             held.LetGo();
             Assert.True(SpinWait.SpinUntil(() => !backend.WorkerAlive, 30000), "the worker stopped");

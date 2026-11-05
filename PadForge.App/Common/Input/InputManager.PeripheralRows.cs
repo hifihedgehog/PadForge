@@ -111,7 +111,17 @@ namespace PadForge.Common.Input
 
             foreach (var unit in wanted)
             {
-                if (_peripheralUnitRows.ContainsKey(unit.Path)) continue;
+                if (_peripheralUnitRows.TryGetValue(unit.Path, out var open))
+                {
+                    // A unit can learn its name after its row opened, as a
+                    // serial port does from its device's answer.
+                    if (open.Rename(unit))
+                    {
+                        FindOnlineDeviceByInstanceGuid(open.InstanceGuid)?.LoadInstance(open.InstanceGuid, open.Name, open.ProductGuid, open.Name);
+                        MarkChanged(ref changed, "peripheral", "~ " + open.Name);
+                    }
+                    continue;
+                }
                 try
                 {
                     var created = new PeripheralUnitRow(unit);

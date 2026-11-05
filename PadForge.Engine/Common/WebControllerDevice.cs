@@ -303,8 +303,10 @@ namespace PadForge.Engine
         /// is additive — every WebControllerServer call site passes the explicit value).</param>
         public WebControllerDevice(string clientId, string displayName, bool isTouchpad = false, string layoutKey = "xbox360")
         {
-            Name = displayName;
-            DevicePath = $"web://{clientId}";
+            // Both come from the browser and reach the settings file through
+            // the device row.
+            Name = PadForge.Engine.Common.XmlSafeText.Clean(displayName);
+            DevicePath = $"web://{PadForge.Engine.Common.XmlSafeText.Clean(clientId)}";
             InstanceGuid = BuildGuid(clientId);
             ProductGuid = BuildProductGuid(layoutKey);
             SdlInstanceId = SyntheticInstanceId.From(clientId);

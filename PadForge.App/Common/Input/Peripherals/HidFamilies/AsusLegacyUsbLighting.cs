@@ -93,8 +93,8 @@ namespace PadForge.Common.Input.Peripherals
                 new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } },
                     "OpenRGB RGBController_AsusSagarisKeyboard.cpp") { Product = SagarisProduct },
                 (io, wait) => BeginSagaris(io),
-                () => KeyboardProfileBackups.Get(SagarisProduct) != null
-                      && KeyboardProfileBackups.Failures(SagarisProduct) < LenovoLegionLighting.RepairTries,
+                path => KeyboardProfileBackups.Get(KeyboardProfileBackups.DeviceKey(SagarisProduct, path)) != null
+                        && KeyboardProfileBackups.Failures(KeyboardProfileBackups.DeviceKey(SagarisProduct, path)) < LenovoLegionLighting.RepairTries,
                 (io, wait) => RepairSagaris(io)));
             _claw = new(() => Model("ASUS ROG Strix Claw",
                 new LightMap(new[]
@@ -120,7 +120,7 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         private HidLightingModel Model(string name, LightMap map, Func<IHidReportChannel, Action<int>, HidLightingSession> begin,
-            Func<bool> owed = null, Func<IHidReportChannel, Action<int>, bool> repair = null)
+            Func<string, bool> owed = null, Func<IHidReportChannel, Action<int>, bool> repair = null)
             => new()
             {
                 Family = this,
@@ -300,8 +300,9 @@ namespace PadForge.Common.Input.Peripherals
             public bool LooksOurs => Mode == SagarisStatic && Brightness == SagarisBrightness && Speed == 0 && ColorIndex == 0;
         }
 
-        /// <summary>The key the Sagaris's backup is kept under in the settings
-        /// file (<see cref="KeyboardProfileBackups"/>).</summary>
+        /// <summary>The product key of the Sagaris, the first part of the key
+        /// each keyboard's backup is kept under in the settings file
+        /// (<see cref="KeyboardProfileBackups.DeviceKey"/>).</summary>
         internal const string SagarisProduct = "asus:0B05:1835";
 
         /// <summary>GetMode and GetColors (AsusSagarisKeyboardController.cpp:64-135),
@@ -338,7 +339,8 @@ namespace PadForge.Common.Input.Peripherals
             var state = ReadSagaris(io);
             if (state == null) return null;
             bool ours = false;
-            if (KeyboardProfileBackups.Get(SagarisProduct) is { } backup)
+            string key = KeyboardProfileBackups.SessionKey(SagarisProduct, io.Path);
+            if (KeyboardProfileBackups.Get(key) is { } backup)
             {
                 var saved = SagarisState.FromContents(backup.Contents);
                 if (saved != null && state.SameAs(saved))
@@ -353,23 +355,24 @@ namespace PadForge.Common.Input.Peripherals
                 }
                 else
                 {
-                    KeyboardProfileBackups.Drop(SagarisProduct);
+                    KeyboardProfileBackups.Drop(key);
                 }
             }
-            return new SagarisSession(state, ours);
+            return new SagarisSession(state, ours, key);
         }
 
         /// <summary>Puts back what an earlier run left, with no claim on the
         /// keyboard. True when nothing is owed any more.</summary>
         internal static bool RepairSagaris(IHidReportChannel io)
         {
-            if (KeyboardProfileBackups.Get(SagarisProduct) is not { } backup) return true;
+            string key = KeyboardProfileBackups.DeviceKey(SagarisProduct, io?.Path);
+            if (KeyboardProfileBackups.Get(key) is not { } backup) return true;
             var saved = SagarisState.FromContents(backup.Contents);
             var now = saved == null ? null : ReadSagaris(io);
             bool settled = saved == null
                            || (now != null && (now.SameAs(saved) || !now.LooksOurs || SendSagaris(io, saved.Restore())));
-            if (settled) KeyboardProfileBackups.Drop(SagarisProduct);
-            else KeyboardProfileBackups.NoteFailure(SagarisProduct);
+            if (settled) KeyboardProfileBackups.Drop(key);
+            else KeyboardProfileBackups.NoteFailure(key);
             return settled;
         }
 
@@ -395,14 +398,16 @@ namespace PadForge.Common.Input.Peripherals
         internal sealed class SagarisSession : HidLightingSession
         {
             private readonly SagarisState _state;
+            private readonly string _key;
             private readonly byte[] _contents;
             private readonly byte[][] _restore;
             private bool _ours;
             private byte[][] _crash = Array.Empty<byte[]>();
 
-            public SagarisSession(SagarisState state, bool ours = false)
+            public SagarisSession(SagarisState state, bool ours = false, string key = SagarisProduct)
             {
                 _state = state;
+                _key = key;
                 _contents = state.Contents();
                 _restore = state.Restore();
                 _ours = ours;
@@ -419,10 +424,10 @@ namespace PadForge.Common.Input.Peripherals
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
             {
                 if (colors == null || colors.Count == 0) return HidLightingPaint.Sent;
-                if (KeyboardProfileBackups.Get(SagarisProduct) is not { } held
+                if (KeyboardProfileBackups.Get(_key) is not { } held
                     || !held.Contents.AsSpan().SequenceEqual(_contents))
-                    KeyboardProfileBackups.Take(SagarisProduct, 0, _contents);
-                if (!KeyboardProfileBackups.IsPersisted(SagarisProduct))
+                    KeyboardProfileBackups.Take(_key, 0, _contents);
+                if (!KeyboardProfileBackups.IsPersisted(_key))
                 {
                     LaterMs = LenovoLegionLighting.SavingMs;
                     return HidLightingPaint.Later;
@@ -437,8 +442,8 @@ namespace PadForge.Common.Input.Peripherals
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
             {
                 if (_ours && !SendSagaris(io, _restore)) return false;
-                if (KeyboardProfileBackups.Get(SagarisProduct) is { } held && held.Contents.AsSpan().SequenceEqual(_contents))
-                    KeyboardProfileBackups.Drop(SagarisProduct);
+                if (KeyboardProfileBackups.Get(_key) is { } held && held.Contents.AsSpan().SequenceEqual(_contents))
+                    KeyboardProfileBackups.Drop(_key);
                 _ours = false;
                 _crash = Array.Empty<byte[]>();
                 return true;

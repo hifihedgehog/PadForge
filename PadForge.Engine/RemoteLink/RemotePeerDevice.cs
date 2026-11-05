@@ -178,6 +178,21 @@ namespace PadForge.Engine.RemoteLink
         /// where the copy keeps the answer its own identity gives.</summary>
         public bool? HasVoicePhrases { get; set; }
 
+        /// <summary>The Device Dossier's FIRMWARE as the owner shows it. A
+        /// peer has no open SDL device to read it from. Null from a peer that
+        /// predates the v14 tail.</summary>
+        public string FirmwareText { get; set; }
+
+        /// <summary>The Device Dossier's REV as the owner shows it, the same
+        /// way.</summary>
+        public string ProductRevision { get; set; }
+
+        /// <summary>Whether the owner's DualShock 4 is on Bluetooth, the owner's
+        /// answer since a peer:// path has no link in it. Null for every other
+        /// device and from a peer that predates it, which leaves the copy's
+        /// rows as they were.</summary>
+        public bool? OnBluetooth { get; set; }
+
         internal RemotePeerDeviceInfo CloneForSlot(byte slot)
         {
             var copy = (RemotePeerDeviceInfo)MemberwiseClone();
@@ -365,6 +380,14 @@ namespace PadForge.Engine.RemoteLink
         /// Without it a shared Bluetooth DualShock 4 offered no voice phrases,
         /// its peer:// path failing the Bluetooth test its owner's row passes.</summary>
         public bool? OwnerHasVoicePhrases => Info.HasVoicePhrases;
+        /// <summary>The owner's FIRMWARE and REV, carried by the device list's
+        /// v14 tail. Read live, since the list's refresh carries a version the
+        /// owner learned after it opened the device.</summary>
+        public string OwnerFirmware => Info.FirmwareText ?? string.Empty;
+        public string OwnerProductRevision => Info.ProductRevision ?? string.Empty;
+        /// <summary>The owner's DualShock 4 link, the same way. Null when the
+        /// owner does not say.</summary>
+        public bool? OwnerOnBluetooth => Info.OnBluetooth;
         public bool? TouchpadPressureSupported => Info.TouchpadPressureSupported;
         public bool? TouchpadClickSupported => Info.TouchpadClickSupported;
         public HapticEffectStrategy HapticStrategy => HapticEffectStrategy.None;

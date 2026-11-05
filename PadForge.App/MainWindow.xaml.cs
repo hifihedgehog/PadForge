@@ -636,6 +636,8 @@ namespace PadForge
                      or nameof(SettingsViewModel.BatteryNotifyEnabled)
                      or nameof(SettingsViewModel.BatteryNotifyThreshold)
                      or nameof(SettingsViewModel.BatteryNotifyVibrate)
+                     or nameof(SettingsViewModel.BatteryNotifyRepeatMinutes)
+                     or nameof(SettingsViewModel.BatteryNotifyFull)
                      or nameof(SettingsViewModel.KeepHidHideCloaksBetweenLaunches)
                      or nameof(SettingsViewModel.FlydigiEnhancedProtocol)
                      or nameof(SettingsViewModel.GKeysEnabled)
@@ -2475,6 +2477,9 @@ namespace PadForge
             // Virtual controllers are created on demand by the engine
             // (CreateHMaestroController) when slots become active. No
             // pre-creation needed at startup.
+            // Before any engine takes a touchpad nobody kept again.
+            _inputService.GiveBackTouchpadsNobodyKept(_viewModel.Settings.AutoStartEngine);
+
             if (_viewModel.Settings.AutoStartEngine)
                 _inputService.Start();
 
@@ -2579,7 +2584,12 @@ namespace PadForge
 
             // A taken device's takeover is recorded before its bind, so the
             // device pass opens it under its own row the moment Windows lets
-            // it go. A bind that fails takes it back.
+            // it go. A bind that fails takes it back. It is pending until the
+            // user keeps it, in the file at once and not through the quiet
+            // timer, and a one-shot boot task stands by, so a crash, a power cut
+            // or a Windows restart during the prompt still gives the device
+            // back (Services.GiveBackTask). With no such task the bind is not
+            // made.
             Common.Input.WinUsbKeyboards.KeyboardTakeoverEntry takeover = null;
             if (bind && taken && row != null)
             {
@@ -2592,10 +2602,22 @@ namespace PadForge
                     VendorId = row.VendorId,
                     ProductId = row.ProductId,
                     Kind = mouse ? Common.Input.WinUsbKeyboards.KeyboardTakeoverEntry.MouseKind : null,
+                    Pending = true,
                 };
                 AddKeyboardTakeover(takeover);
+                _settingsService?.Save();
+                string bindId = takeover.BindId;
+                if (!await System.Threading.Tasks.Task.Run(() => Services.GiveBackTask.RegisterKeyboard(bindId, log)))
+                {
+                    RemoveKeyboardTakeover(offer.NodeId);
+                    _settingsService?.Save();
+                    devices.DriverBusy = false;
+                    _viewModel.SetStatus(string.Format(Strings.Instance.Status_DriverBindFailed_Format, name), persist: true);
+                    return;
+                }
             }
 
+            bool takenBack = false;
             bool ok = await System.Threading.Tasks.Task.Run(() =>
             {
                 if (!bind) return Services.VendorUsbDriverInstaller.Restore(offer.NodeId, log, default);
@@ -2608,7 +2630,7 @@ namespace PadForge
                 // prompt (#549, measured with Lenovo Legion Toolkit holding
                 // a laptop keyboard). The package is taken back, so nothing
                 // changes at that start.
-                Services.VendorUsbDriverInstaller.Restore(offer.NodeId, log, default);
+                takenBack = Services.VendorUsbDriverInstaller.Restore(offer.NodeId, log, default);
                 return false;
             });
             string format = bind
@@ -2618,23 +2640,51 @@ namespace PadForge
 
             if (taken)
             {
-                if (bind && !ok && takeover != null) RemoveKeyboardTakeover(offer.NodeId);
-                else if (!bind && ok) RemoveKeyboardTakeover(offer.NodeId);
+                if (bind && !ok && takeover != null)
+                {
+                    // A package that could not be taken back can still take
+                    // the device at the next start of Windows, so only the
+                    // record goes. The boot task removes that package, or
+                    // finds none, and deletes itself.
+                    if (takenBack) await EndKeyboardTakeoverAsync(offer.NodeId, log);
+                    else
+                    {
+                        RemoveKeyboardTakeover(offer.NodeId);
+                        _settingsService?.Save();
+                    }
+                }
+                else if (!bind && ok) await EndKeyboardTakeoverAsync(offer.NodeId, log);
 
                 // The automatic undo, while the page is still busy. Someone
                 // whose only keyboard or mouse was just taken cannot answer,
                 // and the prompt's end gives the device back to Windows.
-                if (bind && ok && !Views.KeepDriverDialog.Show(this, name, KeepDriverSeconds, mouse))
+                if (bind && ok)
                 {
-                    _viewModel.SetStatus(string.Format(Strings.Instance.Status_DriverSwitching_Format, name));
-                    bool restored = await System.Threading.Tasks.Task.Run(() =>
-                        Services.VendorUsbDriverInstaller.Restore(offer.NodeId, log, default));
-                    if (restored) RemoveKeyboardTakeover(offer.NodeId);
-                    format = restored
-                        ? Strings.Instance.Status_DriverKeepExpired_Format
-                        : Strings.Instance.Status_DriverRestoreFailed_Format;
-                    persist = true;
+                    if (Views.KeepDriverDialog.Show(this, name, KeepDriverSeconds, mouse))
+                    {
+                        string kept = offer.Bind.Value.BindId;
+                        await System.Threading.Tasks.Task.Run(() => Services.GiveBackTask.Delete(kept, log));
+                        ConfirmKeyboardTakeovers(kept);
+                    }
+                    else
+                    {
+                        _viewModel.SetStatus(string.Format(Strings.Instance.Status_DriverSwitching_Format, name));
+                        bool restored = await System.Threading.Tasks.Task.Run(() =>
+                            Services.VendorUsbDriverInstaller.Restore(offer.NodeId, log, default));
+                        // A restore that failed stays pending, with its boot
+                        // task, for the next try.
+                        if (restored) await EndKeyboardTakeoverAsync(offer.NodeId, log);
+                        format = restored
+                            ? Strings.Instance.Status_DriverKeepExpired_Format
+                            : Strings.Instance.Status_DriverRestoreFailed_Format;
+                        persist = true;
+                    }
                 }
+
+                // Removing a package moves every device it serves, so another
+                // of the model is back on Windows' driver too.
+                if (ok && (!bind || format == Strings.Instance.Status_DriverKeepExpired_Format))
+                    await DropTakeoversWindowsHasBackAsync();
             }
             else if (ok)
             {
@@ -2822,6 +2872,11 @@ namespace PadForge
                     : Strings.Instance.Status_TouchpadGiveBackFailed_Format;
                 persist = true;
             }
+            else if (take)
+            {
+                ud.TouchpadKeepPending = false;
+                _settingsService?.Save();
+            }
             devices.DriverBusy = false;
             _viewModel.SetStatus(string.Format(format, name), persist: persist);
             devices.RefreshDriverOffer();
@@ -2829,15 +2884,24 @@ namespace PadForge
 
         /// <summary>Sets a touchpad row's switch, hands it to the hiding pass,
         /// and waits for the touchpad's capture to settle: PadForge holding
-        /// the touchpad for a take, Windows having it back for a give-back.
-        /// True when it settled that way within <see cref="TouchpadSettleMs"/>.</summary>
+        /// the touchpad for a take, Windows having it back for a give-back,
+        /// with HidHide's list read to say so. True when it settled that way
+        /// within <see cref="TouchpadSettleMs"/>.</summary>
         private async System.Threading.Tasks.Task<bool> SetTouchpadOnlyInPadForgeAsync(Engine.Data.UserDevice ud, bool on)
         {
             ud.TouchpadOnlyInPadForge = on;
+            // A take stays pending until the user keeps it, in the file before
+            // the hide and not through the quiet timer, so a session that dies
+            // during the prompt ends with the touchpad given back.
+            ud.TouchpadKeepPending = on;
             var row = _viewModel.Devices.FindByGuid(ud.InstanceGuid);
             if (row != null) row.TouchpadOnlyInPadForge = on;
             _settingsService?.MarkDirty();
+            if (on) _settingsService?.Save();
             _inputService.ApplyAutomaticDeviceHiding();
+            // A give-back that leaves a hide on has given nothing back, and
+            // the apply's sync takes off only this session's hides.
+            if (!on && !_inputService.TakeTouchpadHideOff(ud)) return false;
             var timer = System.Diagnostics.Stopwatch.StartNew();
             while (timer.ElapsedMilliseconds < TouchpadSettleMs)
             {
@@ -2853,8 +2917,8 @@ namespace PadForge
                 }
                 else
                 {
-                    // No capture: the hiding pass restarted the collection for
-                    // Windows itself (TouchpadCapture.RestartForWindows).
+                    // No capture: the hiding pass or the check above restarted
+                    // the collection for Windows (TouchpadCapture.RestartForWindows).
                     if (capture == null || capture.CaptureState == Engine.Tablets.TabletCaptureState.Shared) return true;
                     if (capture.CaptureState == Engine.Tablets.TabletCaptureState.Failed) return false;
                 }
@@ -2904,6 +2968,56 @@ namespace PadForge
             _settingsService?.MarkDirty();
         }
 
+        /// <summary>The end of a takeover whose package is gone. Its record and
+        /// the boot task of its ID go together, the record in the file at
+        /// once.</summary>
+        private async System.Threading.Tasks.Task EndKeyboardTakeoverAsync(string nodeId, Action<string> log)
+        {
+            string bindId = _viewModel.Settings.KeyboardTakeovers
+                .FirstOrDefault(e => string.Equals(e.NodeId, nodeId, StringComparison.OrdinalIgnoreCase))?.BindId;
+            RemoveKeyboardTakeover(nodeId);
+            _settingsService?.Save();
+            if (bindId != null) await System.Threading.Tasks.Task.Run(() => Services.GiveBackTask.Delete(bindId, log));
+        }
+
+        /// <summary>The user kept a switch: no takeover of its ID is pending any
+        /// more, in the file at once.</summary>
+        private void ConfirmKeyboardTakeovers(string bindId)
+        {
+            var list = _viewModel.Settings.KeyboardTakeovers;
+            Services.WinUsbKeyboardBinding.ConfirmKept(list, bindId);
+            Common.Input.WinUsbKeyboards.KeyboardTakeovers.Apply(list);
+            _settingsService?.Save();
+        }
+
+        /// <summary>Drops the takeovers of nodes found off PadForge's driver, so
+        /// each keyboard is an ordinary one again to the hooks (#549), in the
+        /// file at once. The boot task stays: a look at the nodes cannot see a
+        /// package still set for the next start of Windows, and the task deletes
+        /// itself at that start.</summary>
+        private void DropMovedTakeovers(IReadOnlyCollection<Common.Input.WinUsbKeyboards.KeyboardTakeoverEntry> moved)
+        {
+            if (moved.Count == 0) return;
+            foreach (var entry in moved) RemoveKeyboardTakeover(entry.NodeId);
+            _settingsService?.Save();
+        }
+
+        /// <summary>Drops every takeover whose node a restore moved back to
+        /// Windows' driver with the one it was asked for: DiUninstallDriver
+        /// moves every device the package serves. That device types again, so
+        /// its stale takeover would only gate off its Consume and Hide and hide
+        /// its offer. Asked for a few times, since the other node restarts on
+        /// its own schedule.</summary>
+        private async System.Threading.Tasks.Task DropTakeoversWindowsHasBackAsync()
+        {
+            for (int look = 0; look < 3 && _viewModel.Settings.KeyboardTakeovers.Count > 0; look++)
+            {
+                await System.Threading.Tasks.Task.Delay(500);
+                var nodes = await System.Threading.Tasks.Task.Run(Services.VendorUsbDriverInstaller.ListPresentUsbNodes);
+                DropMovedTakeovers(Services.WinUsbKeyboardBinding.MovedBack(_viewModel.Settings.KeyboardTakeovers.ToList(), nodes));
+            }
+        }
+
         /// <summary>What the switch to PadForge's driver takes from a
         /// device, stated before the user agrees to it. A kind with no arm
         /// here is refused, so one appended later is never confirmed under
@@ -2924,15 +3038,41 @@ namespace PadForge
         /// <summary>Part 15's rule 4: Windows can hand an opted-in device its
         /// own driver again, from its INF directory or Windows Update, so a
         /// few seconds into each start PadForge says which ones it
-        /// did.</summary>
+        /// did. Before that wait, a takeover nobody kept when the last session
+        /// ended goes back to Windows (#549 Safeguard 2), and a keyboard or
+        /// mouse left on PadForge's driver with no record gets one, whether or
+        /// not an engine starts to look for it.</summary>
         private void CheckOptedInDrivers()
         {
             var ids = _viewModel.Settings.WinUsbOptIns.ToList();
             var takeovers = _viewModel.Settings.KeyboardTakeovers
                 .Select(Common.Input.WinUsbKeyboards.KeyboardTakeovers.Copy).ToList();
-            if (ids.Count == 0 && takeovers.Count == 0) return;
+            Action<string> log = m => PadForge.Engine.SdlDiagLog.WriteLine("VendorUSB: " + m);
             _ = System.Threading.Tasks.Task.Run(async () =>
             {
+                var orphans = Services.WinUsbKeyboardBinding.FindOrphans(ids);
+                if (orphans != null && orphans.Count > 0)
+                    _ = Dispatcher.BeginInvoke(new Action(() => _inputService.AdoptTakeovers(orphans)));
+                if (ids.Count == 0 && takeovers.Count == 0) return;
+
+                foreach (var entry in Services.WinUsbKeyboardBinding.PendingToRestore(takeovers,
+                             Services.VendorUsbDriverInstaller.ListPresentUsbNodes()))
+                {
+                    if (!Services.VendorUsbDriverInstaller.Restore(entry.NodeId, log, default)) continue;
+                    // Said here, so the look below does not say Windows did it.
+                    takeovers.Remove(entry);
+                    _ = Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        _ = EndKeyboardTakeoverAsync(entry.NodeId, log);
+                        _viewModel.SetStatus(string.Format(Strings.Instance.Status_DriverKeepExpired_Format,
+                            string.IsNullOrWhiteSpace(entry.Name)
+                                ? Services.VendorUsbDriverInstaller.NameOf(entry.IsMouse
+                                    ? Services.VendorUsbDriverInstaller.OptInKind.Mouse
+                                    : Services.VendorUsbDriverInstaller.OptInKind.Keyboard)
+                                : entry.Name), persist: true);
+                    }));
+                }
+
                 await System.Threading.Tasks.Task.Delay(8000);
                 var nodes = Services.VendorUsbDriverInstaller.ListPresentUsbNodes();
                 var moved = ids.Count == 0
@@ -2948,13 +3088,13 @@ namespace PadForge
                         ? Services.VendorUsbDriverInstaller.NameOf(Services.VendorUsbDriverInstaller.OptInKind.Keyboard)
                         : e.Name))
                     .Distinct());
+                bool onWindowsDriver = Services.WinUsbKeyboardBinding.AllOnWindowsDriver(movedKeyboards, nodes);
                 _ = Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    // A keyboard Windows took back types again, so its
-                    // takeover goes, and the hooks read it as any keyboard
-                    // (#549).
-                    foreach (var entry in movedKeyboards) RemoveKeyboardTakeover(entry.NodeId);
-                    _viewModel.SetStatus(string.Format(Strings.Instance.Status_DriverMovedBack_Format, names), persist: true);
+                    DropMovedTakeovers(movedKeyboards);
+                    _viewModel.SetStatus(string.Format(onWindowsDriver
+                        ? Strings.Instance.Status_DriverMovedBack_Format
+                        : Strings.Instance.Status_DriverLeft_Format, names), persist: true);
                 }));
             });
         }
@@ -2982,6 +3122,9 @@ namespace PadForge
                 // The engine installs HIDMaestro with its first virtual
                 // controller, so the card follows it here.
                 RefreshHIDMaestroStatus();
+                // A touchpad or tablet a refused HidHide write kept from
+                // Windows, or a hide a release could not take off.
+                _inputService?.RetryOwedGiveBacks();
                 // A pairing installs BthPS3. Two registry reads.
                 RefreshBthPS3Status();
                 RefreshMidiServicesStatus();
@@ -3209,6 +3352,10 @@ namespace PadForge
 
         internal void PrepareForExit() => _exitRequested = true;
 
+        /// <summary>A Windows restart or sign-out is under way: the touchpads
+        /// go back to Windows before the session ends.</summary>
+        internal void ReleaseTouchpadsForSessionEnd() => _inputService?.ReleaseTouchpadsNow();
+
         private async void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (_shutdownComplete)
@@ -3236,6 +3383,11 @@ namespace PadForge
                 // virtual controllers, which is itself a burst of device removals
                 // and arrivals, and re-applying the cloak partway through that is
                 // pointless work against state that is being dismantled.
+                if (_comPortNotify != IntPtr.Zero)
+                {
+                    try { UnregisterDeviceNotification(_comPortNotify); } catch { }
+                    _comPortNotify = IntPtr.Zero;
+                }
                 if (_hidNotify != IntPtr.Zero)
                 {
                     try { UnregisterDeviceNotification(_hidNotify); } catch { }
@@ -6791,8 +6943,15 @@ namespace PadForge
         // interface class arrives at PnP time, so the cloak is applied off
         // that instead and no longer inherits SDL's cadence.
         private IntPtr _hidNotify = IntPtr.Zero;
+        private IntPtr _comPortNotify = IntPtr.Zero;
         private const int WM_DEVICECHANGE = 0x0219;
         private const int DBT_DEVICEARRIVAL = 0x8000;
+        private const int DBT_DEVICEREMOVECOMPLETE = 0x8004;
+
+        /// <summary>A serial port's arrival and removal, for the lighting
+        /// families that talk through one (IOwnLookFamily).</summary>
+        private static readonly Guid GUID_DEVINTERFACE_COMPORT =
+            new("86E0D1E0-8089-11D0-9CE4-08003E301F73");
         private const int DBT_DEVTYP_DEVICEINTERFACE = 0x00000005;
         private const int DEVICE_NOTIFY_WINDOW_HANDLE = 0x00000000;
         private static readonly Guid GUID_DEVINTERFACE_HID =
@@ -6842,6 +7001,10 @@ namespace PadForge
             {
                 System.Runtime.InteropServices.Marshal.StructureToPtr(filter, buffer, false);
                 _hidNotify = RegisterDeviceNotification(
+                    source.Handle, buffer, DEVICE_NOTIFY_WINDOW_HANDLE);
+                filter.dbcc_classguid = GUID_DEVINTERFACE_COMPORT;
+                System.Runtime.InteropServices.Marshal.StructureToPtr(filter, buffer, false);
+                _comPortNotify = RegisterDeviceNotification(
                     source.Handle, buffer, DEVICE_NOTIFY_WINDOW_HANDLE);
             }
             finally
@@ -6904,15 +7067,16 @@ namespace PadForge
             {
                 try { _inputService?.ApplyAutomaticDeviceHiding(); }
                 catch { /* a notification must never take the window down */ }
-                // The same arrival is how a device lit on its own is found
-                // when it has no row to announce it, a light strip or a
-                // headset (#494): the peripheral host walks the present HID
-                // collections again. The ask does no more there than set a
-                // flag and wake the host's link thread. A removal asks for
-                // nothing here: the row of an unplugged device goes offline
-                // at the input manager's next device scan, which brings a
-                // walk by itself, and a device with no row is asked about
-                // by its backend once a write to it fails.
+            }
+            // An arrival is how a device lit on its own is found when it has
+            // no row to announce it, a light strip or a headset (#494): the
+            // peripheral host walks the present HID collections again. A
+            // removal asks too: a device with no row that sends nothing while
+            // its color holds would otherwise stay on its dead handle until
+            // the next periodic walk. The ask does no more there than set a
+            // flag and wake the host's link thread.
+            if (msg == WM_DEVICECHANGE && (int)wParam is DBT_DEVICEARRIVAL or DBT_DEVICEREMOVECOMPLETE)
+            {
                 try { _inputService?.RequestPeripheralRescan(); }
                 catch { }
             }

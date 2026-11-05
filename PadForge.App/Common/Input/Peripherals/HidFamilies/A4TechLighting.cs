@@ -49,9 +49,7 @@ namespace PadForge.Common.Input.Peripherals
 
         internal const string KeyboardDetector = "DetectBloodyB820R";
 
-        /// <summary>The product IDs (BloodyMouseController.h:21-29,
-        /// BloodyB820RController.h:32).</summary>
-        internal const ushort B820rPid = 0xFA10;
+        /// <summary>The product IDs (BloodyMouseController.h:21-29).</summary>
         internal const ushort W60ProPid = 0x37EA;
         internal const ushort W70MaxPid = 0x79EF;
         internal const ushort W90MaxPid = 0x3666;

@@ -161,8 +161,6 @@ namespace PadForge.Common.Input.Peripherals
         internal const uint PurposeAccent = 0x02;
         internal const uint PurposeBranding = 0x04;
         internal const uint PurposeStatus = 0x08;
-        internal const uint PurposeIllumination = 0x10;
-        internal const uint PurposePresentation = 0x20;
 
         /// <summary>LampArrayKind for a keyboard (26.2.1).</summary>
         internal const int KindKeyboard = 1;

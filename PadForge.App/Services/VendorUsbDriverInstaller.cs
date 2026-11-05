@@ -377,6 +377,28 @@ namespace PadForge.Services
         internal static bool IsOptInRow(ushort vid, ushort pid)
             => OptIns.Any(t => RowIsTarget(t, vid, pid));
 
+        /// <summary>Whether a table of this class names a node, so it reached
+        /// the package as a vendor pad, an opt-in or a G19's screen and keeps
+        /// that path: <see cref="Targets"/>, <see cref="OptIns"/>,
+        /// <see cref="Xusb22Targets"/>, <see cref="XidIdentities"/> and the
+        /// screen interface <see cref="PadForge.Common.Input.KeyboardScreens.G19UsbScreen"/>
+        /// binds. Each row is held to its own interface, so a device's other
+        /// interface, a keyboard beside a pad's for one, is no such
+        /// node.</summary>
+        internal static bool IsClaimedByATable(in UsbNode node)
+        {
+            foreach (var t in Targets)
+                if (t.Vid == node.Vid && t.Pid == node.Pid && Matches(t, node)) return true;
+            foreach (var t in OptIns)
+                if (t.Vid == node.Vid && t.Pid == node.Pid && NodeMatches(t.Match, t.Interface, null, node)) return true;
+            foreach (var x in Xusb22Targets)
+                if (x.Vid == node.Vid && x.Pid == node.Pid && node.Interface < 0) return true;
+            if (node.Interface < 0 && Array.IndexOf(XidIdentities, (node.Vid, node.Pid)) >= 0) return true;
+            if (HasCompatibleId(node, XidCompatibleId)) return true;
+            return node.Vid == PadForge.Common.Input.KeyboardScreens.G19UsbScreen.Vid
+                && node.Pid == PadForge.Common.Input.KeyboardScreens.G19UsbScreen.Pid && node.Interface == 0;
+        }
+
         /// <summary>The kind an opted-in ID belongs to, or null.</summary>
         internal static OptInKind? KindOfId(string id)
         {
@@ -410,14 +432,18 @@ namespace PadForge.Services
         /// package bound to it installs the best remaining driver on every
         /// device that package serves, xusb22 or HidUsb here, and the package
         /// leaves the driver store (Nefarius Devcon.DeleteDriver). Only a
-        /// package PadForge wrote is removed.</summary>
+        /// package PadForge wrote is removed. A node that is not present is
+        /// read through its stored properties: with its package gone it takes
+        /// Windows' driver when it returns, and there is nothing to wait for
+        /// now.</summary>
         internal static bool Restore(string instanceId, Action<string> log, CancellationToken ct)
         {
             // The test host changes no driver (NoDriverChangesForTest).
             if (NoDriverChangesForTest) return false;
             try
             {
-                var dev = PnPDevice.GetDeviceByInstanceId(instanceId, DeviceLocationFlags.Normal);
+                bool present = ServiceOf(instanceId) != null;
+                var dev = PnPDevice.GetDeviceByInstanceId(instanceId, present ? DeviceLocationFlags.Normal : DeviceLocationFlags.Phantom);
                 string inf = dev.GetProperty<string>(DevicePropertyKey.Device_DriverInfPath);
                 string provider = dev.GetProperty<string>(DevicePropertyKey.Device_DriverProvider);
                 if (string.IsNullOrEmpty(inf) || !string.Equals(provider, "PadForge", StringComparison.Ordinal))
@@ -431,6 +457,11 @@ namespace PadForge.Services
                 // opens nothing on it until the wait below is over.
                 using var letGo = LetGoOf(instanceId);
                 RemovePackage(inf, path);
+                if (!present)
+                {
+                    log($"{instanceId} is not plugged in, and {inf} was removed.");
+                    return true;
+                }
 
                 for (int i = 0; i < 20 && !ct.IsCancellationRequested; i++)
                 {

@@ -20,6 +20,8 @@ keyboard-page usage maps to 0 and carries the label the chip shows, or none.
 WHAT IT WRITES. PadForge.App/Common/Input/Peripherals/IcueLedIds.g.cs, with
 CRLF line endings.
 
+Run it without Python's -I switch: it imports tools/openrgb_cpp.py.
+
 Usage:
     python tools/gen_icue_led_ids.py CUE_SDK_ROOT RGBNET_ROOT
     python tools/gen_icue_led_ids.py CUE_SDK_ROOT RGBNET_ROOT --check
@@ -27,8 +29,8 @@ Usage:
 import argparse
 import os
 import re
-import subprocess
 import sys
+import openrgb_cpp as oc
 
 PROJ_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT = os.path.join(PROJ_ROOT, "PadForge.App", "Common", "Input", "Peripherals", "IcueLedIds.g.cs")
@@ -94,8 +96,7 @@ def entries(body):
 
 
 def commit_of(root):
-    return subprocess.run(["git", "-C", root, "rev-parse", "HEAD"],
-                          capture_output=True, text=True, check=True).stdout.strip()
+    return oc.git_head(root)
 
 
 def main():

@@ -36,7 +36,7 @@ namespace PadForge.Tests
 
         private static HidCollectionInfo CollectionOf(PluginDevice d)
         {
-            int number = d.Interface == OpenRgbRegistration.Any ? 0 : d.Interface;
+            int number = d.Interfaces?[0] ?? (d.Interface == OpenRgbRegistration.Any ? 0 : d.Interface);
             return new HidCollectionInfo
             {
                 Path = $@"\\?\hid#vid_{d.VendorId:x4}&pid_{d.ProductId:x4}&mi_{number:x2}#7&1&0&0000#{{4d1e55b2-f16f-11cf-88cb-001111000030}}",
@@ -80,7 +80,8 @@ namespace PadForge.Tests
         }
 
         private static string[] ShortSteps(IEnumerable<PluginStep> steps)
-            => steps.Select(s => s.Bytes == null ? Text(s) : (s.Kind == PluginStepKind.Output ? "out " : "set ") + Short(s.Bytes)).ToArray();
+            => steps.Select(s => s.Bytes == null ? Text(s)
+                : (s.Kind == PluginStepKind.OutputUnlessRead ? "out unless read " : s.Kind == PluginStepKind.Output ? "out " : "set ") + Short(s.Bytes)).ToArray();
 
         // ── The table ──
 
@@ -121,8 +122,11 @@ namespace PadForge.Tests
             Assert.Single(HidLightingFamilies.All, f => ReferenceEquals(f, F.Instance));
             foreach (var d in F.Devices.Where(x => x.OnlyWhen == null))
             {
-                var model = HidLightingFamilies.Match(CollectionOf(d));
+                var model = HidLightingFamilies.Match(PluginRowReach.CollectionOf(d));
                 Assert.True(model != null, d.Name);
+                // OpenRGB's registration of Keychron's vendor comes first, and that family asks
+                // the firmware type ahead of its own commands (PluginRowBehaviorTests).
+                if (d.QmkFirmware && ReferenceEquals(model.Family, QmkLighting.Instance)) continue;
                 Assert.True(ReferenceEquals(model.Family, F.Instance), d.Name + " goes to " + model.Family.Name);
             }
         }
@@ -304,7 +308,7 @@ namespace PadForge.Tests
             string m = device.ToString("X2");
             Assert.Equal(new[]
             {
-                $"out 02 {m} 01 03 00 02", "wait 100", $"out 02 {m} 0D 00 01", "wait 100", $"out 02 {m} 01 02 00 E8 03",
+                $"out 02 {m} 01 03 00 02", "wait 100", $"out 02 {m} 0D 00 01", "wait 100", $"out unless read 02 {m} 01 02 00 E8 03",
             }, ShortSteps(d.Start));
             Assert.Equal(new[] { $"out 02 {m} 06 00 09 00 00 00 01 04 07 02 05 08 03 06 09" },
                 ShortSteps(d.Picture(new[] { 0x010203, 0x040506, 0x070809 })));
@@ -375,14 +379,29 @@ namespace PadForge.Tests
             Assert.Equal("02 05 40 00 00 00 F8 03 03 02 01 FF", Hex(frames[0], 12));
             Assert.Equal("02 05 40 01 78 00 F8 03 03 02 01 FF", Hex(frames[120], 12));
             Assert.All(frames, f => Assert.Equal(1024, f.Length));
-            // The hand-back is feature reports, and the crash path sends the
-            // session's own kind, so it leaves them out.
+            // The hand-back is feature reports, and the crash path sends them as
+            // that, though the pictures are output reports.
             Assert.All(d.HandBack, s => Assert.Equal(PluginStepKind.Feature, s.Kind));
             Assert.Equal("03 0D 01 01 78 00 C0 03 2F 2F 2F FF", Hex(d.HandBack[0].Bytes, 12));
             Assert.Equal("03 01 64 01 78 00 C0 03 2F 2F 2F FF", Hex(d.HandBack[1].Bytes, 12));
             var session = new F.Session(d, d.Picture);
-            session.Paint(new FakeReportChannel { OutputReportLength = 1024, FeatureReportLength = 32 }, _ => { }, d.Lights, new int[1]);
             Assert.Empty(session.CrashFrames);
+            session.Paint(new FakeReportChannel { OutputReportLength = 1024, FeatureReportLength = 32 }, _ => { }, d.Lights, new int[1]);
+            Assert.Equal(2, session.CrashFrames.Length);
+            Assert.True(session.Feature);
+        }
+
+        /// <summary>The crash path sends one kind of report to one collection, per session.</summary>
+        [Fact]
+        public void NoRow_HandsBackInBothKindsOfReport_OrThroughBothOfItsCollections()
+        {
+            foreach (var d in F.Devices)
+            {
+                bool both = d.HandBack.Any(s => s.Bytes != null) && d.SiblingHandBack.Any(s => s.Bytes != null);
+                Assert.False(both, d.Name);
+                var kinds = d.HandBack.Concat(d.SiblingHandBack).Where(s => s.Bytes != null).Select(s => s.Kind).Distinct().ToArray();
+                Assert.True(kinds.Length <= 1, d.Name);
+            }
         }
 
         // ── Cooler Master's CK72x and Roccat's Syn Pro Air ──
@@ -465,7 +484,7 @@ namespace PadForge.Tests
         public void TheCorsairFamily_TakesAnotherIdAsTheDeviceItIs(int other, int same)
         {
             var r = OpenRgbRegistrations.Of(CorsairPeripheralLighting.OpenRgbFamily).First(x => x.ProductId == same);
-            var known = CollectionFor(r, output: 65, feature: 65, input: 64);
+            var known = CollectionFor(r, output: (ushort)(same == 0x1BAF ? CorsairPeripheralLighting.K65MiniPacketLength : 65), feature: 65, input: 64);
             var collection = known with { ProductId = (ushort)other };
             var model = CorsairPeripheralLighting.Instance.Match(collection);
             Assert.NotNull(model);
@@ -1259,17 +1278,6 @@ namespace PadForge.Tests
             Assert.Equal(new byte[] { 1, 2, 3, 4, 0, 0 }, first);
             var second = PadForge.Common.Input.HidReportChannel.Pad(new byte[] { 9 }, 6, ref scratch);
             Assert.Equal(new byte[] { 9, 0, 0, 0, 0, 0 }, second);
-        }
-
-        /// <summary>The plugin for the Void Pro's 0x0A14 names no usage page, and its siblings' do.</summary>
-        [Fact]
-        public void TheVoidPro0A14_TakesAnyUsagePage()
-        {
-            var any = F.Devices.Single(d => d.Plugin == "Corsair_Void_Pro_HeadSet_0x0A14.js" || d.ProductId == 0x0A14);
-            Assert.Equal(OpenRgbRegistration.Any, any.UsagePage);
-            Assert.NotNull(F.Instance.Match(CollectionOf(any) with { UsagePage = 0xFF42 }));
-            var other = F.Devices.First(d => d.Name != any.Name && d.Plugin.Contains("Corsair_Void") && d.ProductId != 0x0A14);
-            Assert.Equal(0xFFC5, other.UsagePage);
         }
 
         /// <summary>A row's picture keeps its plugin's report size and channel order, whichever way

@@ -232,6 +232,34 @@ namespace PadForge.Common.Input
                 }
             }
 
+            /// <summary>The pad index PadForge shows as 1-based number
+            /// <paramref name="number"/>, the inverse of
+            /// <see cref="GetGlobalSlotNumber"/>, or -1 when no slot shows
+            /// it. A created slot in no group's order list is shown as its
+            /// index + 1, the fallback GetGlobalSlotNumber's callers
+            /// take.</summary>
+            public static int PadIndexForGlobalSlotNumber(int number)
+            {
+                if (number < 1) return -1;
+                lock (OrderSync)
+                {
+                    int globalCount = 0;
+                    foreach (var groupType in Engine.VirtualControllerGroups.InOrder)
+                    {
+                        foreach (int idx in GetOrderFor(groupType))
+                        {
+                            if (idx < 0 || idx >= SlotCreated.Length) continue;
+                            if (!SlotCreated[idx]) continue;
+                            globalCount++;
+                            if (globalCount == number) return idx;
+                        }
+                    }
+                }
+                int fallback = number - 1;
+                return fallback < SlotCreated.Length && SlotCreated[fallback]
+                    && GetGlobalSlotNumber(fallback) == 0 ? fallback : -1;
+            }
+
             /// <summary>Player-identity precedence for a device feeding
             /// more than one virtual controller: the controller with the
             /// smallest global (displayed) player number owns the device's

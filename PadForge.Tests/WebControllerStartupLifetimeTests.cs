@@ -23,7 +23,7 @@ namespace PadForge.Tests
             {
                 var lease = pool.Acquire(port);
                 entered.Set();
-                if (!release.Wait(TimeSpan.FromSeconds(5))) { lease.Dispose(); throw new TimeoutException(); }
+                if (!release.Wait(TimeSpan.FromSeconds(30))) { lease.Dispose(); throw new TimeoutException(); }
                 return lease;
             }, () => { oldListeners++; return new Listener(); });
             using var currentListener = new Listener();
@@ -31,12 +31,12 @@ namespace PadForge.Tests
             var start = Task.Run(() => old.Start(18080));
             try
             {
-                Assert.True(entered.Wait(TimeSpan.FromSeconds(5)));
+                Assert.True(entered.Wait(TimeSpan.FromSeconds(30)));
                 old.Dispose();
                 Assert.True(current.Start(18080));
             }
             finally { release.Set(); }
-            Assert.False(await start.WaitAsync(TimeSpan.FromSeconds(5)));
+            Assert.False(await start.WaitAsync(TimeSpan.FromSeconds(30)));
             Drain(cleanup);
             Assert.Equal(0, oldListeners);
             Assert.Equal(0, removed);

@@ -413,6 +413,20 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Owner: whether a connected peer still holds this LOCAL device:
+        /// the one that asserted what it plays on, or the one that wrote it
+        /// last. Unset membership counts every peer as connected.</summary>
+        public static bool PeerKeepsDevice(string localDevicePath, string assertedBy)
+        {
+            lock (_ownerLock)
+            {
+                if (!string.IsNullOrEmpty(assertedBy) && PeerHasSession(assertedBy)) return true;
+                return !string.IsNullOrEmpty(localDevicePath)
+                    && _peerWroteLast.TryGetValue(localDevicePath, out var last)
+                    && !string.IsNullOrEmpty(last) && PeerHasSession(last);
+            }
+        }
+
         /// <summary>Owner: this local device is no longer shared out. Whatever a
         /// peer wrote to it is no longer the peer's to hold.</summary>
         public static void ReleaseDevice(string localDevicePath)

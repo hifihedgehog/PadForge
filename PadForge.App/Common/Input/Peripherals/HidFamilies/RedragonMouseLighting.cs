@@ -54,10 +54,13 @@ namespace PadForge.Common.Input.Peripherals
     /// writes, applied, then the profile, applied. A run that ends without
     /// its hand-back leaves that owed, and the next run writes it back once
     /// the mouse is present and unclaimed. A mouse that does not answer the
-    /// read is lit all the same, with nothing to hand back, and keeps
-    /// PadForge's last color stored until the user or Redragon's software
-    /// sets another. No source names that software's processes, so none is
-    /// in the vendor-program table.</para>
+    /// read, answers a profile above 5 or a record of zeros, or is a model no
+    /// source reads (<see cref="Readable"/>) is lit all the same, with nothing
+    /// to hand back, and keeps PadForge's last color stored until the user or
+    /// Redragon's software sets another. Any other answer is taken as it
+    /// comes: mouse_m908 checks none, and a capture of a whole answer is on
+    /// no disk. No source names that software's processes, so none is in the
+    /// vendor-program table.</para>
     /// </summary>
     internal sealed class RedragonMouseLighting : IHidLightingFamily
     {
@@ -86,6 +89,31 @@ namespace PadForge.Common.Input.Peripherals
         /// writes (RedragonMouseController.cpp:96-105).</summary>
         internal const int RecordRead = 7;
         internal const int RecordWritten = 6;
+
+        /// <summary>The last active profile a mouse can answer, counted from
+        /// 0: mouse_m908 prints its answer plus one and its profiles run 1 to
+        /// 5 (include/m711/readers.cpp:180-182).</summary>
+        internal const byte LastProfile = 4;
+
+        /// <summary>The models a source reads: mouse_m908's M711, M715, M908
+        /// and M607 (include/*/data.cpp:29). No source reads the other seven
+        /// of OpenRGB's, so none of them is asked, each is lit with nothing to
+        /// hand back, and no answer of theirs ever reaches its stored
+        /// profile.</summary>
+        internal static bool Readable(ushort productId) => productId is 0xFC30 or 0xFC39 or 0xFC4D or 0xFC38;
+
+        /// <summary>Whether a record shows what a picture of PadForge's
+        /// leaves: 01, the speed 0 and the Static mode behind the color
+        /// (<see cref="EnterFrames"/>).</summary>
+        internal static bool LooksOurs(byte[] record)
+            => record[3] == 0x01 && record[4] == 0x00 && record[5] == StaticMode;
+
+        private static bool IsAllZero(byte[] bytes, int count)
+        {
+            for (int i = 0; i < count; i++)
+                if (bytes[i] != 0) return false;
+            return true;
+        }
 
         /// <summary>The bounds of a mouse that stores every picture.</summary>
         internal const int HoldMs = LenovoLegionLighting.HoldMs;
@@ -116,7 +144,9 @@ namespace PadForge.Common.Input.Peripherals
             }
         }
 
-        /// <summary>The key a mouse model's backup is kept under.</summary>
+        /// <summary>The product key of a mouse model, the first part of the
+        /// key each mouse's backup is kept under
+        /// (<see cref="KeyboardProfileBackups.DeviceKey"/>).</summary>
         internal static string Product(ushort productId) => $"redragon:{HoltekVid:X4}:{productId:X4}";
 
         internal static HidLightingModel Model(string name, ushort productId)
@@ -130,10 +160,10 @@ namespace PadForge.Common.Input.Peripherals
                 Map = new LightMap(SinowealthLighting.OneLight(), "OpenRGB RGBController_RedragonMouse.cpp") { Product = product },
                 HoldMs = HoldMs,
                 RepaintMs = RepaintMs,
-                Begin = (io, wait) => Session.Begin(io, product),
-                Owed = () => KeyboardProfileBackups.Get(product) != null
-                             && KeyboardProfileBackups.Failures(product) < RepairTries,
-                Repair = (io, _) => Session.Repair(io, product),
+                Begin = (io, wait) => Session.Begin(io, KeyboardProfileBackups.SessionKey(product, io?.Path), Readable(productId)),
+                Owed = path => KeyboardProfileBackups.Get(KeyboardProfileBackups.DeviceKey(product, path)) != null
+                               && KeyboardProfileBackups.Failures(KeyboardProfileBackups.DeviceKey(product, path)) < RepairTries,
+                Repair = (io, _) => Session.Repair(io, KeyboardProfileBackups.DeviceKey(product, io?.Path), Readable(productId)),
             };
         }
 
@@ -244,13 +274,13 @@ namespace PadForge.Common.Input.Peripherals
 
         internal sealed class Session : HidLightingSession
         {
-            private readonly string _product;
+            private readonly string _key;
             private readonly byte[][] _restore;
             private bool _entered;
 
-            private Session(string product, byte profile, byte[] record)
+            private Session(string key, byte profile, byte[] record)
             {
-                _product = product;
+                _key = key;
                 Profile = profile;
                 Record = record;
                 _restore = record == null ? Array.Empty<byte[]>() : RestoreFrames(profile, record);
@@ -266,28 +296,54 @@ namespace PadForge.Common.Input.Peripherals
             public override bool Feature => true;
 
             public override byte[][] CrashFrames
-                => Record != null && KeyboardProfileBackups.Get(_product) != null ? _restore : Array.Empty<byte[]>();
+                => Record != null && KeyboardProfileBackups.Get(_key) != null ? _restore : Array.Empty<byte[]>();
 
             /// <summary>Reads what the hand-back needs, bracketed as the
             /// vendor's software brackets it. Null when a write failed, and
             /// then nothing is lit.</summary>
-            public static HidLightingSession Begin(IHidReportChannel io, string product)
+            public static HidLightingSession Begin(IHidReportChannel io, string key, bool readable = true)
             {
                 if (io == null) return null;
-                if (KeyboardProfileBackups.Get(product) is { } owed && owed.Contents.Length == RecordWritten)
-                    return new Session(product, owed.Profile, owed.Contents);
-                if (!io.SetFeature(Bracket(end: false))) return null;
-                var profile = ReadValue(io, ProfileAddress, 1, out bool failed);
-                if (failed) return null;
-                byte[] record = null;
-                if (profile != null)
+                var owed = KeyboardProfileBackups.Get(key) is { } held && held.Contents.Length == RecordWritten ? held : (KeyboardProfileBackups.Backup?)null;
+                if (!readable)
+                    return owed is { } kept ? new Session(key, kept.Profile, kept.Contents) : new Session(key, 0, null);
+                if (!ReadSettings(io, out byte profile, out byte[] record)) return null;
+                if (owed is { } backup)
+                {
+                    // A mouse that no answer speaks for, or that still shows
+                    // PadForge's picture or those very bytes, takes the backup.
+                    // Otherwise something else set it since, and the backup
+                    // goes.
+                    if (record == null || LooksOurs(record) || record.AsSpan().SequenceEqual(backup.Contents))
+                        return new Session(key, backup.Profile, backup.Contents);
+                    KeyboardProfileBackups.Drop(key);
+                }
+                return new Session(key, profile, record);
+            }
+
+            /// <summary>Reads the active profile and profile 1's record,
+            /// bracketed. False when a write failed. A null
+            /// <paramref name="record"/>: the mouse gave no answer that can be
+            /// one, a failed read, a profile above 5 or a record of
+            /// zeros.</summary>
+            private static bool ReadSettings(IHidReportChannel io, out byte profile, out byte[] record)
+            {
+                profile = 0;
+                record = null;
+                if (!io.SetFeature(Bracket(end: false))) return false;
+                var active = ReadValue(io, ProfileAddress, 1, out bool failed);
+                if (failed) return false;
+                if (active != null && active[0] <= LastProfile)
                 {
                     var read = ReadValue(io, ColorAddress, RecordRead, out failed);
-                    if (failed) return null;
-                    if (read != null) record = read.AsSpan(0, RecordWritten).ToArray();
+                    if (failed) return false;
+                    if (read != null && !IsAllZero(read, RecordWritten))
+                    {
+                        record = read.AsSpan(0, RecordWritten).ToArray();
+                        profile = active[0];
+                    }
                 }
-                if (!io.SetFeature(Bracket(end: true))) return null;
-                return new Session(product, record == null ? (byte)0 : profile[0], record);
+                return io.SetFeature(Bracket(end: true));
             }
 
             public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
@@ -296,9 +352,9 @@ namespace PadForge.Common.Input.Peripherals
                 if (io == null) return HidLightingPaint.Failed;
                 if (Record != null)
                 {
-                    if (KeyboardProfileBackups.Get(_product) == null)
-                        KeyboardProfileBackups.Take(_product, Profile, Record);
-                    if (!KeyboardProfileBackups.IsPersisted(_product))
+                    if (KeyboardProfileBackups.Get(_key) == null)
+                        KeyboardProfileBackups.Take(_key, Profile, Record);
+                    if (!KeyboardProfileBackups.IsPersisted(_key))
                     {
                         LaterMs = SavingMs;
                         return HidLightingPaint.Later;
@@ -312,25 +368,34 @@ namespace PadForge.Common.Input.Peripherals
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
             {
-                if (Record == null || KeyboardProfileBackups.Get(_product) == null) return true;
+                if (Record == null || KeyboardProfileBackups.Get(_key) == null) return true;
                 if (io == null || !SendAll(io, _restore)) return false;
-                KeyboardProfileBackups.Drop(_product);
+                KeyboardProfileBackups.Drop(_key);
                 return true;
             }
 
-            /// <summary>Writes back what an earlier run left owed. True when
-            /// nothing is owed any more.</summary>
-            public static bool Repair(IHidReportChannel io, string product)
+            /// <summary>Settles what an earlier run left owed, reading the
+            /// mouse first as <see cref="AsusLegacyUsbLighting.RepairSagaris"/>
+            /// does: a mouse that no longer shows a picture of PadForge's keeps
+            /// what it holds. True when nothing is owed any more.</summary>
+            public static bool Repair(IHidReportChannel io, string key, bool readable = true)
             {
-                var owed = KeyboardProfileBackups.Get(product);
+                var owed = KeyboardProfileBackups.Get(key);
                 if (owed == null) return true;
-                if (io != null && owed.Value.Contents.Length == RecordWritten
-                    && SendAll(io, RestoreFrames(owed.Value.Profile, owed.Value.Contents)))
+                if (io != null && owed.Value.Contents.Length == RecordWritten)
                 {
-                    KeyboardProfileBackups.Drop(product);
-                    return true;
+                    byte[] record = null;
+                    if (!readable || (ReadSettings(io, out _, out record) && record != null))
+                    {
+                        if ((record != null && (!LooksOurs(record) || record.AsSpan().SequenceEqual(owed.Value.Contents)))
+                            || SendAll(io, RestoreFrames(owed.Value.Profile, owed.Value.Contents)))
+                        {
+                            KeyboardProfileBackups.Drop(key);
+                            return true;
+                        }
+                    }
                 }
-                KeyboardProfileBackups.NoteFailure(product);
+                KeyboardProfileBackups.NoteFailure(key);
                 return false;
             }
         }

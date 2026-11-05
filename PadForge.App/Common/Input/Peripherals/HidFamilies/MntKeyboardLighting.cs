@@ -39,12 +39,14 @@ namespace PadForge.Common.Input.Peripherals
     /// windows/hid.c:1009-1026), so the output report never leaves the PC.
     /// The firmware's descriptor also declares no report 'x' at all, only
     /// the keyboard's, the consumer controls' and the trackpad's
-    /// (desc_hid_report, usb_descriptors.c:296-302). The model does not ask
-    /// the worker to keep a handle with no access right
-    /// (<see cref="HidLightingModel.HeldByWindows"/>), which would carry no
-    /// output report, so the worker lists the unit asleep. Lighting them on
-    /// Windows needs firmware that declares a collection of its own, on a
-    /// vendor usage page, whose output or feature report carries the
+    /// (desc_hid_report, usb_descriptors.c:296-302), and Windows refuses a
+    /// report the collection does not declare on any handle. The model does
+    /// not ask the worker to keep a handle with no access right
+    /// (<see cref="HidLightingModel.HeldByWindows"/>), so whatever the
+    /// keyboard collection declares, the unit's row says Windows holds it and
+    /// nothing is written (<see cref="DirectUnit.WindowsHolds"/>). Lighting
+    /// them on Windows needs firmware that declares a collection of its own,
+    /// on a vendor usage page, whose output or feature report carries the
     /// "xXRGB" rows: Windows opens such a collection for read and write.</para>
     /// </summary>
     internal sealed class MntKeyboardLighting : IHidLightingFamily
@@ -53,10 +55,9 @@ namespace PadForge.Common.Input.Peripherals
 
         internal const string OpenRgbFamily = "MNTKeyboardController";
 
-        /// <summary>KBD_VID and the two PIDs (MNTKeyboardController.h:28,
+        /// <summary>KBD_VID and the Pocket Reform's PID (MNTKeyboardController.h:28,
         /// MNTKeyboardControllerDetect.cpp:19-20).</summary>
         internal const ushort VendorId = 0x1209;
-        internal const ushort ReformPid = 0x6D02;
         internal const ushort PocketReformPid = 0x6D06;
 
         /// <summary>KBD_ROWS and the column counts (MNTKeyboardController.h:21,
@@ -85,8 +86,6 @@ namespace PadForge.Common.Input.Peripherals
             var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
             if (registrations.Count == 0) return null;
             bool pocket = collection.ProductId == PocketReformPid;
-            int cols = pocket ? PocketReformCols : ReformCols;
-            if (collection.OutputReportLength != 0 && collection.OutputReportLength < DataAt + cols * 3) return null;
             return _models.Get(registrations[0].Name, () => Model(registrations[0].Name, collection.ProductId, pocket));
         }
 

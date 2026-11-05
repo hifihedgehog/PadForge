@@ -108,7 +108,7 @@ namespace PadForge.Tests
         /// entry i as i, i + 1, i + 2.</summary>
         private static FakeReportChannel Keyboard(byte mode, byte brightness, byte speed, byte index, bool answersMode = true)
         {
-            var io = new FakeReportChannel { InputReportLength = 65, OutputReportLength = 65 };
+            var io = new FakeReportChannel { Path = null, InputReportLength = 65, OutputReportLength = 65 };
             int seenOuts = 0, sinceOut = 0;
             string lastOut = null;
             io.Input = () =>
@@ -177,8 +177,8 @@ namespace PadForge.Tests
             Starts("06 0B 01 04 02 01 03", outs[7], 65);
             Assert.Empty(session.CrashFrames);
             Assert.Null(KeyboardProfileBackups.Get(AsusLegacyUsbLighting.SagarisProduct));
-            Assert.Null(AsusLegacyUsbLighting.ReadSagaris(new FakeReportChannel { InputReportLength = 65, OutputReportLength = 65 }));
-            Assert.Null(model.Begin(new FakeReportChannel { InputReportLength = 65, OutputReportLength = 65 }, _ => { }));
+            Assert.Null(AsusLegacyUsbLighting.ReadSagaris(new FakeReportChannel { Path = null, InputReportLength = 65, OutputReportLength = 65 }));
+            Assert.Null(model.Begin(new FakeReportChannel { Path = null, InputReportLength = 65, OutputReportLength = 65 }, _ => { }));
             // An unanswered mode request is no state, though the palette
             // answers.
             Assert.Null(AsusLegacyUsbLighting.ReadSagaris(Keyboard(4, 2, 1, 3, answersMode: false)));
@@ -211,7 +211,7 @@ namespace PadForge.Tests
                 new byte[] { 2, 1, 0, 5, 9, 9, 9, 8, 8, 8, 7, 7, 7, 6, 6, 6, 5, 5, 5, 4, 4, 4, 3, 3, 3 });
             KeyboardProfileBackups.Take(AsusLegacyUsbLighting.SagarisProduct, 0, saved.Contents());
             var model = Model();
-            Assert.True(model.Owed());
+            Assert.True(model.Owed(null));
             var session = (AsusLegacyUsbLighting.SagarisSession)model.Begin(Keyboard(1, 3, 0, 0), _ => { });
             Assert.True(session.State.SameAs(saved));
             Assert.Equal(8, session.CrashFrames.Length);
@@ -221,7 +221,7 @@ namespace PadForge.Tests
             Assert.False(other.State.SameAs(saved));
             Assert.Empty(other.CrashFrames);
             Assert.Null(KeyboardProfileBackups.Get(AsusLegacyUsbLighting.SagarisProduct));
-            Assert.False(model.Owed());
+            Assert.False(model.Owed(null));
         }
 
         /// <summary>The repair with no claim: the backup is written back while
@@ -249,7 +249,7 @@ namespace PadForge.Tests
             Assert.Null(KeyboardProfileBackups.Get(AsusLegacyUsbLighting.SagarisProduct));
 
             KeyboardProfileBackups.Take(AsusLegacyUsbLighting.SagarisProduct, 0, saved);
-            Assert.False(model.Repair(new FakeReportChannel { InputReportLength = 65, OutputReportLength = 65 }, _ => { }));
+            Assert.False(model.Repair(new FakeReportChannel { Path = null, InputReportLength = 65, OutputReportLength = 65 }, _ => { }));
             Assert.NotNull(KeyboardProfileBackups.Get(AsusLegacyUsbLighting.SagarisProduct));
             Assert.Equal(1, KeyboardProfileBackups.Failures(AsusLegacyUsbLighting.SagarisProduct));
         }

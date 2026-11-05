@@ -521,6 +521,8 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} gebruikt weer het Windows-stuurprogramma.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Het Windows-stuurprogramma voor {0} kon niet worden hersteld.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows heeft {0} teruggezet op het eigen stuurprogramma. Selecteer het op de pagina Apparaten om opnieuw over te schakelen.</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} staat niet meer op het stuurprogramma van PadForge.</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} staat nog op het stuurprogramma van PadForge. Selecteer het apparaat op de pagina Apparaten om het terug te geven aan Windows.</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Alleen in PadForge gebruiken</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge zet dit toetsenbord over op het WinUSB-stuurprogramma van Windows en leest het zelf uit. Windows typt er daarna in geen enkel programma meer mee, ook niet als PadForge is gesloten, totdat het Windows-stuurprogramma op deze pagina is hersteld. De toewijzingen en macro's blijven werken zolang PadForge draait.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge zet deze muis over op het WinUSB-stuurprogramma van Windows en leest hem zelf uit. Windows beweegt de aanwijzer er daarna in geen enkel programma meer mee, ook niet als PadForge is gesloten, totdat het Windows-stuurprogramma op deze pagina is hersteld. De toewijzingen en macro's blijven werken zolang PadForge draait.</value></data>
@@ -1804,6 +1806,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>Rumble loopt via de tactiele handler in SteelSeries GG.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG stuurt alle tactiele Rivals tegelijk aan, dus die op virtuele controller {0} bepaalt hun rumble.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>Wachten op SteelSeries GG. Rumble speelt zodra GG draait.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG draait en antwoordt niet op PadForge. De trilling werkt zodra het antwoordt.</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>Rumble speelt via Razer Synapse op je Razer Sensa HD-apparaten.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Wachten op Sensa HD-haptiek in Razer Synapse 4. Zet in Synapse de haptische bron van het apparaat op Sensa HD Games.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Linker trigger</value></data>
@@ -1845,6 +1848,12 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>De kleuren gaan rechtstreeks naar {0}. Zolang het verlicht wordt, staat de onboardmodus ervan uit.</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>De kleuren gaan rechtstreeks naar {0}. Wisselende kleuren, zoals een kleurencyclus of kleuren die het geluid volgen, werken alleen als Dynamic Lighting aanstaat in het BIOS van de laptop. Zonder dat houden de toetsen de laatste vaste kleuren.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>De kleuren gaan rechtstreeks naar {0}. Staat Dynamic Lighting aan in het BIOS van de laptop, dan verlicht Dynamische verlichting van Windows de toetsen in plaats daarvan. Zet Dynamische verlichting voor dit toetsenbord uit in de Windows-instellingen en PadForge verlicht ze, ook met wisselende kleuren.</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>De kleuren gaan rechtstreeks naar {0}. Het apparaat slaat elke afbeelding op in zijn eigen geheugen, dus wisselende kleuren, zoals een kleurencyclus of kleuren die het geluid volgen, zijn niet te zien. Een kleur die gelijk blijft wel.</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>De kleuren gaan rechtstreeks naar {0}. Het apparaat slaat elke afbeelding op in zijn eigen geheugen, dus wisselende kleuren, zoals een kleurencyclus of kleuren die het geluid volgen, zijn niet te zien. Een kleur die gelijk blijft wel. De eerste afbeelding overschrijft de effecten die op het toetsenbord zijn opgeslagen, en de oude komen niet terug.</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>Serieel apparaat op {0}</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>Dit apparaat is verbonden en heeft de kleuren van PadForge niet overgenomen. PadForge probeert het elke minuut opnieuw.</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows houdt dit apparaat vast als toetsenbord of muis en weigert het rapport dat de kleuren instelt, dus PadForge kan het onder Windows niet verlichten.</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>Een ander programma heeft dit apparaat geopend, dus PadForge kan het niet verlichten. PadForge verlicht het zodra dat programma wordt gesloten.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Dit apparaat heeft nog niet geantwoord. De kleuren verschijnen zodra het wakker wordt.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>De kleuren lopen via {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>De kleuren lopen via {0}, dat alle apparaten van deze soort tegelijk verlicht. Zolang {0} niet draait, verlicht PadForge dit apparaat zelf.</value></data>
@@ -1852,7 +1861,9 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>De kleuren lopen via de SDK Server van OpenRGB. Zolang OpenRGB niet draait, verlicht PadForge dit apparaat zelf.</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>De kleuren lopen via de SDK Server van OpenRGB.</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB houdt dit apparaat vast en heeft er geen Direct-modus voor, dus de verlichting blijft bij OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB draait met de SDK Server uit, dus PadForge laat dit apparaat aan OpenRGB over. Zet de SDK Server in OpenRGB aan en PadForge verlicht het apparaat daarlangs.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB draait en de SDK Server antwoordt niet op poort {0}, dus PadForge laat dit apparaat aan OpenRGB over. Zet de SDK Server in OpenRGB aan en PadForge verlicht het apparaat daarlangs.</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE draait met de SDK uit. Zet iCUE SDK aan in de instellingen van iCUE en PadForge verlicht het apparaat daarlangs.</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} draait en liet PadForge de apparaten niet verlichten. PadForge blijft het vragen.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} verlicht alle apparaten van deze soort tegelijk, dus die op virtuele controller {1} bepaalt hun kleur.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} verlicht alle apparaten van deze soort tegelijk, dus de rij {1} op virtuele controller {2} bepaalt hun kleur.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Virtuele controller {0} verlicht dit apparaat ook, en die kleur is te zien.</value></data>
@@ -1870,7 +1881,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headsets</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>moederborden, videokaarten en geheugen</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>moederborden en videokaarten</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>muismatten en headsetstandaards</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>muismatten, headsets en headsetstandaards</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Voer een zescijferige hex-kleur in (RRGGBB of #RRGGBB) en druk op Enter of klik elders om toe te passen.</value></data>
@@ -4642,6 +4653,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Verbinden met de chat van {0}…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>De chat van {0} wordt gelezen.</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>De chat van {0} is niet bereikbaar. Opnieuw proberen.</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch heeft geen chat voor {0}. Controleer de naam van het kanaal.</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Gepauzeerd.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Het controllerbeeld voor je uitzending. Voeg dit adres toe aan OBS als browserbron:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Het controllerbeeld voor je uitzending heeft de Webcontroller en het onversleutelde HTTP-adres nodig. Zet Ook onversleuteld HTTP aanbieden aan in de kaart Webcontroller. Alleen deze pc is genoeg voor OBS op deze pc.</value></data>

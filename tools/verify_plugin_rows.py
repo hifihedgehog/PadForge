@@ -9,8 +9,13 @@ A light shows a color made of its place, or of where its row and its plugin list
 shows which LED has which place. A row that asks its device what it is has a line for each answer. A
 row in EXPLAINED differs for the reason beside it, and any other difference is a row to look at.
 A plugin that keeps sending with nothing changed proves its device only under that stream, so such
-a row has to send its picture again too. --starts lists what each plugin's Initialize sends beyond
+a row has to send its picture again too. A plugin that sends nothing while nothing changes proves
+its device holds a picture, so such a row sends nothing again either. --starts lists what each plugin's Initialize sends beyond
 the row's start, which is mostly its DPI, polling and battery settings.
+
+A row whose keys come from the firmware counts as held when it sends as many frames as its plugin,
+each of the same kind and length with the same first four bytes. Its colors differ by design.
+The exit status is 1 when a row is left to look at or a plugin could not run, otherwise 0.
 """
 import json
 import re
@@ -54,6 +59,19 @@ def trim(frame):
     return kind + ":" + hexes
 
 
+def same_frames_but_colors(picture, render):
+    """A row whose keys come from the firmware shows other colors than its plugin's lists. It still
+    sends the plugin's frames: as many, each of the same kind and length, with the same first
+    four bytes."""
+    mine = [x for x in picture.split(";") if x]
+    if len(mine) != len(render):
+        return False
+    for a, b in zip(mine, render):
+        if a.split(":", 1)[0] != b.split(":", 1)[0] or len(a) != len(b) or trim(a)[:10] != trim(b)[:10]:
+            return False
+    return True
+
+
 def main():
     rows = {}
     for line in open(sys.argv[1], encoding="utf-8"):
@@ -64,7 +82,7 @@ def main():
         o = json.loads(line)
         ran[(o["product"], o["plugin"], o.get("model", ""))] = o
     same = explained = firmware = 0
-    problems, starts, errors, quiet, skipped = [], [], {}, [], []
+    problems, starts, errors, quiet, loud, skipped = [], [], {}, [], [], []
     for key, row in rows.items():
         product, plugin, model = key
         o = ran.get(key)
@@ -78,6 +96,8 @@ def main():
             continue
         if (o.get("again") or o.get("later")) and not row["again"]:
             quiet.append((product, plugin))
+        if not (o.get("again") or o.get("later")) and row["again"] and o.get("render"):
+            loud.append((product, plugin, model))
         mine = [trim(x) for x in row["picture"].split(";") if x]
         theirs = [trim(x) for x in o.get("render", [])]
         if plugin in ASKED:
@@ -86,7 +106,7 @@ def main():
         extra = [t for t in map(trim, o.get("init", [])) if t not in known and not QMK_QUESTIONS.match(t)]
         if extra:
             starts.append((product, plugin, extra))
-        if row["shading"] == "firmware" and mine and theirs and mine[0][:10] == theirs[0][:10]:
+        if row["shading"] == "firmware" and mine and theirs and same_frames_but_colors(row["picture"], o.get("render", [])):
             firmware += 1
         elif mine == theirs:
             same += 1
@@ -94,11 +114,13 @@ def main():
             explained += 1
         else:
             problems.append((product, plugin, model, mine, theirs))
-    print(f"same {same}, keys from the firmware {firmware}, explained {explained}, to look at {len(problems)}, not run {len(skipped)}, quiet where the plugin streams {len(quiet)}")
+    print(f"same {same}, keys from the firmware {firmware}, explained {explained}, to look at {len(problems)}, not run {len(skipped)}, quiet where the plugin streams {len(quiet)}, repeating where the plugin does not {len(loud)}")
     for product, plugin, model, note in skipped:
         print(f"not run {product} {plugin} {model}: {note}")
     for product, plugin in quiet:
         print(f"quiet {product} {plugin}")
+    for product, plugin, model in loud:
+        print(f"repeats {product} {plugin} {model}")
     for product, plugin, model, mine, theirs in problems:
         print(f"* {product} {plugin} {model}: {len(mine)} frames here, {len(theirs)} in the plugin")
         for a, b in zip(mine, theirs):
@@ -113,6 +135,8 @@ def main():
             print(f"start {product} {plugin}")
             for frame in extra[:6]:
                 print(f"    {frame[:100]}")
+    # A row to look at or a plugin that could not run is a run that did not hold.
+    return 1 if problems or errors else 0
 
 
-main()
+sys.exit(main())

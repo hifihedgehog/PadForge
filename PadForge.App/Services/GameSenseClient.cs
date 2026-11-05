@@ -171,6 +171,12 @@ namespace PadForge.Services
         /// <summary>The types whose light event GG refused to bind in this
         /// connection.</summary>
         private readonly HashSet<string> _lightsRefused = new();
+
+        /// <summary>How many times running each type's light event has gone
+        /// unanswered at its bind, across connections. The second puts the
+        /// type on its one-color event, so a bind GG always takes too long
+        /// over cannot hold the device dark.</summary>
+        private readonly Dictionary<string, int> _lightBindMisses = new();
         private string _base;
         private int _level;
         private long _lastPost;
@@ -277,16 +283,35 @@ namespace PadForge.Services
                 if (!bound)
                 {
                     bool lights = eventName != ColorEvent(want.Type);
-                    if (!Post(_base, "/bind_game_event",
-                            lights ? PadForge.Common.Input.Peripherals.GameSenseLights.BindBody(Game, want.Type)
-                                   : ColorBindBody(want.Type)))
+                    var answer = Send(_base, "/bind_game_event",
+                        lights ? PadForge.Common.Input.Peripherals.GameSenseLights.BindBody(Game, want.Type)
+                               : ColorBindBody(want.Type));
+                    if (answer == PostAnswer.Taken)
+                    {
+                        if (lights) _lightBindMisses.Remove(want.Type);
+                    }
+                    else
                     {
                         if (!lights) return Drop();
-                        // GG answered and would not take the light event:
-                        // the type stays on its one-color event from here.
+                        // No answer says nothing about the event. GG may be
+                        // gone, and the connection drops. The next connection
+                        // removes the event in case GG finished the bind, and
+                        // binds it again.
+                        int misses = 0;
+                        if (answer == PostAnswer.NoAnswer)
+                        {
+                            _lightBindMisses.TryGetValue(want.Type, out misses);
+                            _lightBindMisses[want.Type] = ++misses;
+                            if (misses == 1) return Drop();
+                        }
+                        // GG answered and would not take the light event, or
+                        // never answers its bind in time: the type stays on
+                        // its one-color event for this connection.
                         _lightsRefused.Add(want.Type);
-                        PadForge.Engine.SdlDiagLog.WriteLine(
-                            $"PERIPHERAL GameSense refused the {want.Type} light event, painting one color");
+                        if (answer == PostAnswer.Refused)
+                            PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL GameSense refused the {want.Type} light event, painting one color");
+                        else if (misses == 2)
+                            PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL GameSense did not answer the {want.Type} light event twice, painting one color");
                         (eventName, body) = PostFor(want);
                         if (!Post(_base, "/bind_game_event", ColorBindBody(want.Type))) return Drop();
                     }
@@ -344,7 +369,18 @@ namespace PadForge.Services
             _colors.Clear();
         }
 
-        private bool Post(string baseUrl, string path, string body)
+        /// <summary>What became of a post: GG took it, GG answered and refused
+        /// it, or no answer came inside the timeout.</summary>
+        private enum PostAnswer
+        {
+            Taken,
+            Refused,
+            NoAnswer,
+        }
+
+        private bool Post(string baseUrl, string path, string body) => Send(baseUrl, path, body) == PostAnswer.Taken;
+
+        private PostAnswer Send(string baseUrl, string path, string body)
         {
             try
             {
@@ -353,11 +389,11 @@ namespace PadForge.Services
                     Content = new StringContent(body, Encoding.UTF8, "application/json"),
                 };
                 using var response = _http.Send(request);
-                return response.IsSuccessStatusCode;
+                return response.IsSuccessStatusCode ? PostAnswer.Taken : PostAnswer.Refused;
             }
             catch
             {
-                return false;
+                return PostAnswer.NoAnswer;
             }
         }
 

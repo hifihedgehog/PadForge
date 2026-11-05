@@ -43,6 +43,11 @@ namespace PadForge.Common.Input
         /// <summary>Raised when the registry changes (input-picker refresh).</summary>
         public static event EventHandler RegistryChanged;
 
+        /// <summary>Raised with a removed tag's button, outside the lock and
+        /// before <see cref="RegistryChanged"/>. The next tag takes the lowest
+        /// free button, so what was mapped to this one is cleared first.</summary>
+        public static event Action<int> ButtonFreed;
+
         /// <summary>Raised when a Switch controller reads a tag (issue #241),
         /// carrying the UID. The registration dialog listens so a tag can be
         /// recorded from the controller exactly as from a PC/SC reader; the
@@ -176,8 +181,15 @@ namespace PadForge.Common.Input
         {
             string norm = NormalizeUid(uid);
             bool removed;
-            lock (_lock) removed = _tags.RemoveAll(t => string.Equals(t.Uid, norm, StringComparison.Ordinal)) > 0;
-            if (removed) RegistryChanged?.Invoke(null, EventArgs.Empty);
+            int freed;
+            lock (_lock)
+            {
+                freed = _tags.FirstOrDefault(t => string.Equals(t.Uid, norm, StringComparison.Ordinal))?.Button ?? -1;
+                removed = _tags.RemoveAll(t => string.Equals(t.Uid, norm, StringComparison.Ordinal)) > 0;
+            }
+            if (!removed) return;
+            ButtonFreed?.Invoke(freed);
+            RegistryChanged?.Invoke(null, EventArgs.Empty);
         }
 
         /// <summary>Replaces the registry from persisted settings (load time). The

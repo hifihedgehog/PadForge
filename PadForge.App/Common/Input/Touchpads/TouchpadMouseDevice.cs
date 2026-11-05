@@ -16,8 +16,9 @@ namespace PadForge.Common.Input.Touchpads
     /// (<see cref="PrecisionTouchpadReader.ConsumeCapturedPointer"/>) and
     /// presents them as any mouse row does: two motion axes, the wheel and
     /// five buttons, with the scales of <see cref="SdlMouseWrapper"/>. The
-    /// wheel stays at rest. Two-finger scrolling and taps are the touchpad
-    /// row's gestures.
+    /// wheel reads the touchpad's two-finger scrolling and the buttons its
+    /// clicks and taps, as Windows' pointer gave them
+    /// (<see cref="PadForge.Engine.Touchpads.TouchpadMouse"/>).
     ///
     /// <para>The row keeps the ID, path and name it had as a Raw Input mouse,
     /// so its slots and mappings carry over, and the device pass, which skips

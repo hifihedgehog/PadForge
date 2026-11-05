@@ -796,9 +796,12 @@
                                     <TextBlock Text="SERIAL" Width="64" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
                                     <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" Text="{Binding SelectedDevice.SerialNumber, Mode=OneWay}"/>
                                 </StackPanel>
-                                <!-- Firmware as SDL reports it (today the DualSense
-                                     and the Edge) and the USB release number.
-                                     Each hides when unreported. -->
+                                <!-- Firmware as SDL reports it, or the revision a
+                                     Bluetooth LE pad's Device Information service
+                                     gives (DeviceRowViewModel.FirmwareVersion), and
+                                     the product version, its USB release number or
+                                     PnP ID version over Bluetooth LE. Each hides
+                                     when unreported. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,2"
                                             Visibility="{Binding SelectedDevice.FirmwareVersion, Converter={StaticResource StringToVisibility}}">
                                     <TextBlock Text="FIRMWARE" Width="64" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>

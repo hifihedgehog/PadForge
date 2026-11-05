@@ -780,6 +780,8 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} மீண்டும் அதன் Windows இயக்கிக்குத் திரும்பியது.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>{0}-க்கான Windows இயக்கியை மீட்டெடுக்க முடியவில்லை.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows {0}-ஐ மீண்டும் தன் சொந்த இயக்கிக்கு மாற்றிவிட்டது. அதை மீண்டும் மாற்ற, சாதனங்கள் பக்கத்தில் அதைத் தேர்ந்தெடுக்கவும்.</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} இனி PadForge-இன் இயக்கியில் இல்லை.</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} இன்னும் PadForge-இன் இயக்கியில் உள்ளது. அதை Windows-இடம் திருப்பிக் கொடுக்க, சாதனங்கள் பக்கத்தில் அதைத் தேர்ந்தெடுக்கவும்.</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>PadForge-இல் மட்டும் பயன்படுத்து</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge இந்த விசைப்பலகையை Windows-இன் WinUSB இயக்கிக்கு மாற்றி, தானே படிக்கும். அதன் பிறகு, இதன் Windows இயக்கி இந்தப் பக்கத்திலிருந்து மீட்டெடுக்கப்படும் வரை, PadForge மூடியிருந்தாலும் எல்லா நிரல்களிலும் Windows இதைக் கொண்டு தட்டச்சு செய்யாது. PadForge இயங்கும்போது இதன் மேப்பிங்குகளும் மேக்ரோக்களும் தொடர்ந்து வேலை செய்யும்.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge இந்தச் சுட்டியை Windows-இன் WinUSB இயக்கிக்கு மாற்றி, தானே படிக்கும். அதன் பிறகு, இதன் Windows இயக்கி இந்தப் பக்கத்திலிருந்து மீட்டெடுக்கப்படும் வரை, PadForge மூடியிருந்தாலும் எல்லா நிரல்களிலும் Windows இதைக் கொண்டு சுட்டிக்குறியை நகர்த்தாது. PadForge இயங்கும்போது இதன் மேப்பிங்குகளும் மேக்ரோக்களும் தொடர்ந்து வேலை செய்யும்.</value></data>
@@ -957,6 +959,7 @@
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>அதிர்வு SteelSeries GG-யில் உள்ள டாக்டைல் ஹேண்ட்லர் வழியாக இயங்கும்.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG அனைத்து டாக்டைல் Rival சுட்டிகளையும் ஒரே நேரத்தில் இயக்குகிறது, எனவே மெய்நிகர் கட்டுப்படுத்தி {0}-இல் உள்ளது அவற்றின் அதிர்வை அமைக்கும்.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>SteelSeries GG-க்காகக் காத்திருக்கிறது. GG இயங்கியதும் அதிர்வு இயங்கும்.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG இயங்குகிறது, ஆனால் PadForge-க்குப் பதிலளிக்கவில்லை. அது பதிலளித்ததும் அதிர்வு இயங்கும்.</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>அதிர்வு உங்கள் Razer Sensa HD சாதனங்களில் Razer Synapse வழியாக இயங்கும்.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Razer Synapse 4-இல் Sensa HD Haptics-க்காகக் காத்திருக்கிறது. Synapse-இல் சாதனத்தின் Haptic Source என்பதை Sensa HD Games என அமைக்கவும்.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>இடது டிரிகர்</value></data>
@@ -1000,6 +1003,12 @@
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>நிறங்கள் நேரடியாக {0}-க்குச் செல்லும். அது ஒளிரும்போது அதன் ஆன்-போர்டு நினைவகப் பயன்முறை ஆஃப் ஆக இருக்கும்.</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>நிறங்கள் நேரடியாக {0}-க்குச் செல்லும். நிறச் சுழற்சி அல்லது ஒலியைப் பின்தொடரும் நிறங்கள் போன்ற மாறும் நிறங்களுக்கு, லேப்டாப்பின் BIOS-இல் Dynamic Lighting ஆன் செய்யப்பட்டிருக்க வேண்டும். இல்லையெனில், விசைகள் கடைசியாக இருந்த நிலையான நிறங்களிலேயே இருக்கும்.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>நிறங்கள் நேரடியாக {0}-க்குச் செல்லும். லேப்டாப்பின் BIOS-இல் Dynamic Lighting ஆன் ஆக இருந்தால், அதற்குப் பதிலாக Windows Dynamic Lighting விசைகளை ஒளிரச் செய்யும். Windows அமைப்புகளில் இந்த விசைப்பலகைக்கான Dynamic Lighting-ஐ ஆஃப் செய்தால், PadForge அவற்றை ஒளிரச் செய்யும், மாறும் நிறங்களும் உட்பட.</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>நிறங்கள் நேரடியாக {0}-க்குச் செல்லும். அது ஒவ்வொரு படத்தையும் தனது சொந்த நினைவகத்தில் சேமிக்கிறது, எனவே நிறச் சுழற்சி அல்லது ஒலியைப் பின்தொடரும் நிறங்கள் போன்ற மாறும் நிறங்கள் தெரியாது. மாறாத நிறம் தெரியும்.</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>நிறங்கள் நேரடியாக {0}-க்குச் செல்லும். அது ஒவ்வொரு படத்தையும் தனது சொந்த நினைவகத்தில் சேமிக்கிறது, எனவே நிறச் சுழற்சி அல்லது ஒலியைப் பின்தொடரும் நிறங்கள் போன்ற மாறும் நிறங்கள் தெரியாது. மாறாத நிறம் தெரியும். முதல் படம் விசைப்பலகையில் சேமிக்கப்பட்ட விளைவுகளை மேலெழுதும், பழையவை திரும்ப வராது.</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>{0}-இல் உள்ள தொடர் சாதனம்</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>இந்தச் சாதனம் இணைக்கப்பட்டுள்ளது, ஆனால் PadForge-இன் நிறங்களை ஏற்கவில்லை. PadForge ஒவ்வொரு நிமிடமும் மீண்டும் முயற்சிக்கிறது.</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows இந்தச் சாதனத்தை விசைப்பலகையாகவோ சுட்டியாகவோ தன் கட்டுப்பாட்டில் வைத்திருக்கிறது, அதன் நிறங்களை அமைக்கும் அறிக்கையை மறுக்கிறது, எனவே Windows-இல் PadForge-ஆல் இதை ஒளிரச் செய்ய முடியாது.</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>மற்றொரு நிரல் இந்தச் சாதனத்தைத் திறந்து வைத்திருப்பதால் PadForge-ஆல் இதை ஒளிரச் செய்ய முடியவில்லை. அந்த நிரல் மூடப்பட்டதும் PadForge இதை ஒளிரச் செய்யும்.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>இந்தச் சாதனம் இன்னும் பதிலளிக்கவில்லை. அது விழித்ததும் அதன் நிறங்கள் தெரியும்.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>நிறங்கள் {0} வழியாகச் செல்லும்.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>நிறங்கள் {0} வழியாகச் செல்லும், அது இந்த வகையான எல்லாச் சாதனங்களையும் ஒரே நேரத்தில் ஒளிரச் செய்யும். {0} இயங்காதபோது, PadForge தானே இந்தச் சாதனத்தை ஒளிரச் செய்யும்.</value></data>
@@ -1007,7 +1016,9 @@
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>நிறங்கள் OpenRGB-இன் SDK Server வழியாகச் செல்லும். OpenRGB இயங்காதபோது PadForge தானே இந்தச் சாதனத்தை ஒளிரச் செய்கிறது.</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>நிறங்கள் OpenRGB-இன் SDK Server வழியாகச் செல்லும்.</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB இந்தச் சாதனத்தைப் பிடித்து வைத்துள்ளது, இதற்கான Direct பயன்முறை அதில் இல்லை, எனவே இதன் ஒளி OpenRGB-இடமே இருக்கும்.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB அதன் SDK Server அணைக்கப்பட்ட நிலையில் இயங்குகிறது, எனவே PadForge இந்தச் சாதனத்தை OpenRGB-இடம் விடுகிறது. OpenRGB-இல் SDK Server-ஐ இயக்கினால் PadForge அதன் வழியாகச் சாதனத்தை ஒளிரச் செய்யும்.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB இயங்குகிறது, ஆனால் அதன் SDK Server போர்ட் {0}-இல் பதிலளிக்கவில்லை, எனவே PadForge இந்தச் சாதனத்தை OpenRGB-இடம் விடுகிறது. OpenRGB-இல் SDK Server-ஐ இயக்கினால் PadForge அதன் வழியாகச் சாதனத்தை ஒளிரச் செய்யும்.</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE அதன் SDK அணைக்கப்பட்ட நிலையில் இயங்குகிறது. iCUE-இன் அமைப்புகளில் iCUE SDK-ஐ இயக்கினால் PadForge அதன் வழியாகச் சாதனத்தை ஒளிரச் செய்யும்.</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} இயங்குகிறது, ஆனால் PadForge தன் சாதனங்களை ஒளிரச் செய்ய அனுமதிக்கவில்லை. PadForge தொடர்ந்து கேட்கிறது.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} இந்த வகையான எல்லாச் சாதனங்களையும் ஒரே நேரத்தில் ஒளிரச் செய்கிறது, எனவே மெய்நிகர் கட்டுப்படுத்தி {1}-இல் உள்ளது அவற்றின் நிறத்தை அமைக்கும்.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} இந்த வகையான எல்லாச் சாதனங்களையும் ஒரே நேரத்தில் ஒளிரச் செய்கிறது, எனவே மெய்நிகர் கட்டுப்படுத்தி {2}-இல் உள்ள {1} வரிசை அவற்றின் நிறத்தை அமைக்கும்.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்தி {0}-உம் இந்தச் சாதனத்தை ஒளிரச் செய்கிறது, அதன் நிறமே தெரியும்.</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>ஹெட்செட்கள்</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>மதர்போர்டுகள், கிராபிக்ஸ் கார்டுகள், நினைவகம்</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>மதர்போர்டுகள், கிராபிக்ஸ் கார்டுகள்</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>மவுஸ்பேடுகள், ஹெட்செட் ஸ்டாண்டுகள்</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>மவுஸ்பேடுகள், ஹெட்செட்டுகள், ஹெட்செட் ஸ்டாண்டுகள்</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>லைட்பார்</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ஆறு இலக்க ஹெக்ஸ் நிறத்தை (RRGGBB அல்லது #RRGGBB) உள்ளிட்டு, பயன்படுத்த Enter-ஐ அழுத்தவும் அல்லது வெளியே கிளிக் செய்யவும்.</value></data>
@@ -4671,6 +4682,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>{0}-இன் அரட்டையுடன் இணைக்கிறது…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>{0}-இன் அரட்டையைப் படிக்கிறது.</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>{0}-இன் அரட்டையை அடைய முடியவில்லை. மீண்டும் முயல்கிறது.</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>{0}-க்கு Twitch-இல் அரட்டை இல்லை. சேனலின் பெயரைச் சரிபார்க்கவும்.</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>இடைநிறுத்தப்பட்டது.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>உங்கள் ஒளிபரப்புக்கான கட்டுப்படுத்திப் படம். இந்த முகவரியை OBS-இல் உலாவி மூலமாகச் சேர்க்கவும்:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>ஒளிபரப்புக்கான கட்டுப்படுத்திப் படத்துக்கு வலைக் கட்டுப்படுத்தியும் அதன் சாதாரண HTTP முகவரியும் தேவை. வலைக் கட்டுப்படுத்தி அட்டையில் சாதாரண HTTP-யிலும் வழங்கு என்பதை இயக்கவும். இந்த PC-யில் உள்ள OBS-க்கு இந்த PC மட்டும் போதும்.</value></data>

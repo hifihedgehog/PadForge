@@ -21,8 +21,11 @@ namespace PadForge.Common.Input.Peripherals
     /// list, as RGB.NET lights it (AsusKeyboardRGBDevice.cs:69 and 93-98), so
     /// once the session has read the devices the path also carries one
     /// zone light per index of the longest such list, at
-    /// <see cref="ZoneBase"/> plus the index. Every other path carries one
-    /// zone per index of the longest Lights list among its devices, as
+    /// <see cref="ZoneBase"/> plus the index. Two ROG laptops' per-key boards
+    /// have lights their Keys list leaves out, which RGB.NET finds by the
+    /// device's name (<see cref="ExtraLightsOf"/>), so the path also carries
+    /// those, at <see cref="ExtraBase"/> plus the light's index. Every other
+    /// path carries one zone per index of the longest Lights list among its devices, as
     /// RGB.NET lights each light of a mainboard, a graphics card or any
     /// other device as one LED (AsusMainboardRGBDevice.cs:31-33,
     /// AsusUnspecifiedRGBDevice.cs:40-42). Two devices of one path show
@@ -33,6 +36,66 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The first zone light's address on the keyboard path,
         /// clear of every key code (the highest is 0x103).</summary>
         internal const int ZoneBase = 0x10000;
+
+        /// <summary>The first extra light's address on the keyboard path,
+        /// clear of every key code and of every zone light.</summary>
+        internal const int ExtraBase = 0x20000;
+
+        /// <summary>A light of a per-key board's Lights list that its Keys
+        /// list leaves out: its index there, and what it lights.</summary>
+        internal readonly record struct ExtraLight(int Index, LightKind Kind, ushort Usage = 0, LightLabel Label = LightLabel.None);
+
+        // The bars under wide keys, RGB.NET's Keyboard_Custom52 to Custom60,
+        // which its ROG Strix G15 table names and says match the Zephyrus
+        // table's (AsusKeyboardLedMapping.cs:211-219). Each lights with its
+        // key, by the HID usages of Backspace, Enter, Right Shift and Space.
+        private static readonly ExtraLight[] s_wideKeyBars =
+        {
+            new(55, LightKind.Key, 0x2A), new(57, LightKind.Key, 0x2A),
+            new(97, LightKind.Key, 0x28), new(99, LightKind.Key, 0x28),
+            new(118, LightKind.Key, 0xE5), new(120, LightKind.Key, 0xE5),
+            new(130, LightKind.Key, 0x2C), new(131, LightKind.Key, 0x2C), new(133, LightKind.Key, 0x2C),
+        };
+
+        /// <summary>RGB.NET's ROGZephyrusDuo15 table
+        /// (AsusKeyboardLedMapping.cs:177-190). It names no place for lights
+        /// 39 and 40.</summary>
+        private static readonly ExtraLight[] s_zephyrusDuo15 =
+        {
+            new(39, LightKind.Other), new(40, LightKind.Other),
+            s_wideKeyBars[0], s_wideKeyBars[1], s_wideKeyBars[2], s_wideKeyBars[3], s_wideKeyBars[4],
+            s_wideKeyBars[5], s_wideKeyBars[6], s_wideKeyBars[7], s_wideKeyBars[8],
+        };
+
+        /// <summary>RGB.NET's ROGStrixG15 table
+        /// (AsusKeyboardLedMapping.cs:203-235), in index order. Its strip runs
+        /// right to left, and each of its six lights is an edge light here.</summary>
+        private static readonly ExtraLight[] s_strixG15 =
+        {
+            new(2, LightKind.Other, 0, LightLabel.VolumeDown), new(3, LightKind.Other, 0, LightLabel.VolumeUp),
+            new(4, LightKind.Other), new(5, LightKind.Other, 0, LightLabel.Fan), new(6, LightKind.Logo),
+            s_wideKeyBars[0], s_wideKeyBars[1],
+            new(58, LightKind.Other, 0, LightLabel.PlayPause), new(79, LightKind.Other, 0, LightLabel.Stop),
+            s_wideKeyBars[2], s_wideKeyBars[3],
+            new(100, LightKind.Other, 0, LightLabel.Previous),
+            s_wideKeyBars[4], s_wideKeyBars[5],
+            new(121, LightKind.Other, 0, LightLabel.Next),
+            s_wideKeyBars[6], s_wideKeyBars[7], s_wideKeyBars[8],
+            new(169, LightKind.Edge), new(170, LightKind.Edge), new(171, LightKind.Edge),
+            new(172, LightKind.Edge), new(173, LightKind.Edge), new(174, LightKind.Edge),
+        };
+
+        /// <summary>The extra lights of a per-key board by the name the SDK
+        /// gives it, as RGB.NET matches its two tables by regular expressions
+        /// with no anchor (AsusKeyboardRGBDevice.cs:38-42). Empty for any other
+        /// name.</summary>
+        internal static IReadOnlyList<ExtraLight> ExtraLightsOf(string name)
+        {
+            if (name == null) return Array.Empty<ExtraLight>();
+            if (name.Contains("ROG Zephyrus Duo 15", StringComparison.Ordinal)) return s_zephyrusDuo15;
+            if (name.Contains("ROG Strix G513QM", StringComparison.Ordinal)) return s_strixG15;
+            return Array.Empty<ExtraLight>();
+        }
 
         /// <summary>The paths, in the order the worker paints them.</summary>
         internal static readonly string[] Categories =
@@ -73,7 +136,7 @@ namespace PadForge.Common.Input.Peripherals
         /// through its Lights list (AsusUpdateQueue.cs:76-87).</summary>
         internal static bool PerKey(uint type) => type == KeyboardRgb || type == NotebookKeyboardRgb;
 
-        private static readonly Lazy<LightMap> s_keyboard = new(() => BuildKeyboard(0));
+        private static readonly Lazy<LightMap> s_keyboard = new(() => BuildKeyboard(0, Array.Empty<ExtraLight>()));
 
         /// <summary>The keyboard path's lights before the session has read
         /// the devices: every key of <see cref="KeyboardKeys"/>.</summary>
@@ -85,13 +148,18 @@ namespace PadForge.Common.Input.Peripherals
         internal static LightMap MapFor(string category, IReadOnlyList<AuraDevice> devices)
         {
             int zones = 0;
+            IReadOnlyList<ExtraLight> extras = Array.Empty<ExtraLight>();
             foreach (var device in devices ?? Array.Empty<AuraDevice>())
             {
                 if (CategoryOf(device.Type) != category) continue;
-                if (category == "keyboard" && PerKey(device.Type)) continue;
+                if (category == "keyboard" && PerKey(device.Type))
+                {
+                    if (extras.Count == 0) extras = ExtraLightsOf(device.Name);
+                    continue;
+                }
                 zones = Math.Max(zones, device.LightCount);
             }
-            if (category == "keyboard") return zones == 0 ? KeyboardMap : BuildKeyboard(zones);
+            if (category == "keyboard") return zones == 0 && extras.Count == 0 ? KeyboardMap : BuildKeyboard(zones, extras);
             if (zones < 2) return null;
             var lights = new LightInfo[zones];
             for (int i = 0; i < zones; i++)
@@ -99,9 +167,9 @@ namespace PadForge.Common.Input.Peripherals
             return new LightMap(lights, "ASUS Aura SDK, " + category + " lights");
         }
 
-        private static LightMap BuildKeyboard(int zones)
+        private static LightMap BuildKeyboard(int zones, IReadOnlyList<ExtraLight> extras)
         {
-            var lights = new List<LightInfo>(KeyboardKeys.Length + zones);
+            var lights = new List<LightInfo>(KeyboardKeys.Length + zones + extras.Count);
             foreach (var key in KeyboardKeys)
                 lights.Add(new LightInfo(key.Code, key.Kind, key.Usage, key.Usage != 0 ? LightKeySource.Vendor : LightKeySource.None)
                 {
@@ -109,6 +177,9 @@ namespace PadForge.Common.Input.Peripherals
                 });
             for (int i = 0; i < zones; i++)
                 lights.Add(new LightInfo(ZoneBase + i, LightKind.Zone, 0, LightKeySource.None) { Zone = i + 1 });
+            foreach (var extra in extras)
+                lights.Add(new LightInfo(ExtraBase + extra.Index, extra.Kind, extra.Usage,
+                    extra.Usage != 0 ? LightKeySource.Vendor : LightKeySource.None) { Label = extra.Label });
             lights.Sort((a, b) => a.Address.CompareTo(b.Address));
             return new LightMap(lights, "ASUS Aura SDK, RGB.NET.Devices.Asus LedMappings.KeyboardMapping");
         }

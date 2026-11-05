@@ -5,6 +5,14 @@ using Microsoft.Win32.SafeHandles;
 
 namespace PadForge.Common.Input
 {
+    /// <summary>A channel that can tell whether its device is still the one
+    /// it opened: a device unplugged and plugged back in between two walks
+    /// comes back on the same path, and the old handle is dead for good.</summary>
+    internal interface IConnectedChannel
+    {
+        bool StillConnected { get; }
+    }
+
     /// <summary>One open HID collection as a direct peripheral backend
     /// speaks to it (#494): feature reports both ways, and output and input
     /// reports where the handle carries them. The production channel is
@@ -35,10 +43,26 @@ namespace PadForge.Common.Input
         /// <paramref name="buffer"/>, whose byte 0 comes back as the ID.</summary>
         bool GetFeature(byte reportId, byte[] buffer);
 
+        /// <summary>Reads a feature report as <see cref="GetFeature"/> does and
+        /// answers how many bytes the device gave, as hidapi's
+        /// hid_get_feature_report does (windows/hid.c:1313-1359). HidD_GetFeature
+        /// reports no count, so a short answer reads as a whole one with zeros
+        /// behind it. -1 when the read failed, 0 for a channel that cannot
+        /// tell.</summary>
+        int GetFeatureCounted(byte reportId, byte[] buffer) => GetFeature(reportId, buffer) ? 0 : -1;
+
         /// <summary>Writes an output report, padded like a feature report,
         /// and waits at most <paramref name="timeoutMs"/> for it. False on a
         /// feature-only handle, which never carries one.</summary>
         bool WriteOutput(byte[] report, int timeoutMs = HidReportChannel.WriteTimeoutMs);
+
+        /// <summary>Sends an output report over the control pipe,
+        /// HidD_SetOutputReport, padded like a feature report, where
+        /// <see cref="WriteOutput"/> takes the interrupt pipe of a device
+        /// that has one. False on a feature-only handle. It has no timeout,
+        /// as a feature report has none. A channel with no control pipe of
+        /// its own writes the report as any other.</summary>
+        bool SetOutputReport(byte[] report) => WriteOutput(report);
 
         /// <summary>Waits at most <paramref name="timeoutMs"/> for one input
         /// report and copies it into <paramref name="buffer"/>, byte 0 the
@@ -107,7 +131,7 @@ namespace PadForge.Common.Input
     /// the crash path cannot, so its writes go through
     /// <see cref="RunBounded"/>.</para>
     /// </summary>
-    internal sealed class HidReportChannel : IHidReportChannel, IHidInputReportReader
+    internal sealed class HidReportChannel : IHidReportChannel, IConnectedChannel, IHidInputReportReader
     {
         internal const int ErrorAccessDenied = 5;
         internal const int ErrorSharingViolation = 32;
@@ -129,6 +153,19 @@ namespace PadForge.Common.Input
         public int InputReportLength { get; }
         public int OutputReportLength { get; }
         public int FeatureReportLength { get; }
+
+        /// <summary>Whether the handle still reaches a device: a collection
+        /// that was removed fails every call on its old handle, and a device
+        /// plugged back in has a new one.</summary>
+        public bool StillConnected
+        {
+            get
+            {
+                if (Volatile.Read(ref _disposed) != 0) return false;
+                var attributes = new SonyHeadsetHid.HIDD_ATTRIBUTES { Size = Marshal.SizeOf<SonyHeadsetHid.HIDD_ATTRIBUTES>() };
+                return SonyHeadsetHid.HidD_GetAttributes(_handle, ref attributes);
+            }
+        }
 
         private HidReportChannel(string path, SafeFileHandle handle, bool featureOnly, SonyHeadsetHid.HIDP_CAPS caps)
         {
@@ -266,6 +303,64 @@ namespace PadForge.Common.Input
             return true;
         }
 
+        public int GetFeatureCounted(byte reportId, byte[] buffer)
+        {
+            if (buffer == null || buffer.Length == 0 || FeatureReportLength == 0) return -1;
+            if (Volatile.Read(ref _disposed) != 0) return -1;
+            var scratch = _readScratch;
+            if (scratch == null || scratch.Length < FeatureReportLength)
+                _readScratch = scratch = new byte[Math.Max(FeatureReportLength, InputReportLength)];
+            Array.Clear(scratch, 0, FeatureReportLength);
+            scratch[0] = reportId;
+            int count = GetReport(IoctlHidGetFeature, scratch, FeatureReportLength);
+            if (count < 0) return -1;
+            // "When numbered reports aren't used, bytes_returned seem to
+            // include only what is actually received from the device (not
+            // including the first byte with 0...)" (hid.c:1352-1356).
+            if (scratch[0] == 0) count++;
+            int copied = Math.Min(FeatureReportLength, buffer.Length);
+            Array.Copy(scratch, buffer, copied);
+            if (buffer.Length > copied) Array.Clear(buffer, copied, buffer.Length - copied);
+            return count;
+        }
+
+        /// <summary>IOCTL_HID_GET_FEATURE, HID_OUT_CTL_CODE(100): device type
+        /// FILE_DEVICE_KEYBOARD, METHOD_OUT_DIRECT, FILE_ANY_ACCESS
+        /// (hidapi windows/hidapi_hidclass.h:50-51).</summary>
+        internal const uint IoctlHidGetFeature = 0x0B << 16 | 100 << 2 | 2;
+
+        /// <summary>hid_get_report (hidapi windows/hid.c:1313-1359): the
+        /// request with one buffer both ways, and a wait with no bound, as
+        /// HidD_GetFeature has none. The bytes moved, or -1.</summary>
+        private int GetReport(uint code, byte[] buffer, int length)
+        {
+            _ioEvent ??= new ManualResetEvent(false);
+            if (_overlapped == IntPtr.Zero)
+                _overlapped = Marshal.AllocHGlobal(Marshal.SizeOf<NativeOverlapped>());
+            var pin = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            try
+            {
+                _ioEvent.Reset();
+                Marshal.StructureToPtr(new NativeOverlapped
+                {
+                    EventHandle = _ioEvent.SafeWaitHandle.DangerousGetHandle(),
+                }, _overlapped, false);
+                var at = pin.AddrOfPinnedObject();
+                if (!DeviceIoControl(_handle, code, at, (uint)length, at, (uint)length, out uint moved, _overlapped)
+                    && Marshal.GetLastWin32Error() != SonyHeadsetHid.ERROR_IO_PENDING)
+                    return -1;
+                return SonyHeadsetHid.GetOverlappedResult(_handle, _overlapped, out moved, true) ? (int)moved : -1;
+            }
+            catch
+            {
+                return -1;
+            }
+            finally
+            {
+                pin.Free();
+            }
+        }
+
         public bool GetInputReport(byte reportId, byte[] buffer)
         {
             if (FeatureOnly || buffer == null || buffer.Length == 0 || InputReportLength == 0) return false;
@@ -291,6 +386,15 @@ namespace PadForge.Common.Input
             if (Volatile.Read(ref _disposed) != 0) return false;
             byte[] sized = Pad(report, OutputReportLength, ref _outputScratch);
             return Transfer(sized, sized.Length, timeoutMs, write: true) > 0;
+        }
+
+        public bool SetOutputReport(byte[] report)
+        {
+            if (FeatureOnly || report == null || report.Length == 0 || OutputReportLength == 0) return false;
+            if (Volatile.Read(ref _disposed) != 0) return false;
+            byte[] sized = Pad(report, OutputReportLength, ref _outputScratch);
+            try { return HidD_SetOutputReport(_handle, sized, (uint)sized.Length); }
+            catch { return false; }
         }
 
         public int ReadInput(byte[] buffer, int timeoutMs)
@@ -454,8 +558,15 @@ namespace PadForge.Common.Input
         private static extern bool WriteFile(SafeFileHandle handle, IntPtr buffer,
             uint bytesToWrite, out uint bytesWritten, IntPtr overlapped);
 
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool DeviceIoControl(SafeFileHandle handle, uint code, IntPtr inBuffer, uint inLength,
+            IntPtr outBuffer, uint outLength, out uint returned, IntPtr overlapped);
+
         [DllImport("hid.dll")]
         private static extern bool HidD_GetInputReport(SafeFileHandle handle, byte[] buffer, uint bufferLength);
+
+        [DllImport("hid.dll")]
+        private static extern bool HidD_SetOutputReport(SafeFileHandle handle, byte[] buffer, uint bufferLength);
 
         [DllImport("hid.dll")]
         private static extern bool HidD_GetManufacturerString(SafeFileHandle handle, byte[] buffer, uint bufferLength);

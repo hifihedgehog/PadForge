@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Nefarius.Utilities.DeviceManagement.PnP;
 using PadForge.Common.Input;
 using PadForge.Common.Input.Peripherals;
 using PadForge.Common.Input.WinUsbKeyboards;
@@ -108,9 +110,11 @@ namespace PadForge.Services
         /// row holds. A row whose WinUSB channel never opened, for a
         /// descriptor PadForge cannot read, keeps its Raw Input path, which
         /// names a collection that is gone, so the restore is offered by the
-        /// node the takeover recorded. Null when that node is not present on
-        /// WinUSB. Restore itself removes only a package PadForge
-        /// wrote.</summary>
+        /// node the takeover recorded. A node that is not present is offered
+        /// it too: a keyboard moved to another port has a new node, and the
+        /// old one may never return, so this is the way out of its takeover.
+        /// Null when the node is present on another driver. Restore itself
+        /// removes only a package PadForge wrote.</summary>
         internal static VendorUsbDriverInstaller.OptInOffer RestoreOffer(KeyboardTakeoverEntry takeover,
             IReadOnlyList<VendorUsbDriverInstaller.UsbNode> nodes)
         {
@@ -119,11 +123,128 @@ namespace PadForge.Services
             {
                 if (!string.Equals(n.InstanceId, takeover.NodeId, StringComparison.OrdinalIgnoreCase)) continue;
                 if (!string.Equals(n.Service, "WINUSB", StringComparison.OrdinalIgnoreCase)) return null;
-                return new VendorUsbDriverInstaller.OptInOffer(
-                    takeover.IsMouse ? VendorUsbDriverInstaller.OptInKind.Mouse : VendorUsbDriverInstaller.OptInKind.Keyboard,
-                    null, From, n.InstanceId, true);
+                break;
             }
-            return null;
+            return new VendorUsbDriverInstaller.OptInOffer(
+                takeover.IsMouse ? VendorUsbDriverInstaller.OptInKind.Mouse : VendorUsbDriverInstaller.OptInKind.Keyboard,
+                null, From, takeover.NodeId, true);
+        }
+
+        /// <summary>The keyboards and mice on PadForge's package that no
+        /// takeover names, read from this PC, or null when the look failed.
+        /// The USB nodes are read only when such an interface is there, so a
+        /// PC with nothing left over pays for one look at the interfaces. The
+        /// test host reads nothing from the PC it runs on.</summary>
+        internal static List<KeyboardTakeoverEntry> FindOrphans(IEnumerable<string> optIns)
+        {
+            if (RealTouchSenseAccess.Refused) return null;
+            var paths = VendorUsbDriverInstaller.ActiveInterfacePaths(VendorUsbDriverInstaller.InterfaceGuid);
+            if (paths == null) return null;
+            var takeovers = KeyboardTakeovers.Current;
+            if (paths.All(path => KeyboardTakeovers.ForInterfacePath(takeovers, path) != null))
+                return new List<KeyboardTakeoverEntry>();
+            return Orphans(paths, VendorUsbDriverInstaller.ListPresentUsbNodes(), takeovers, optIns, NameInTheTree);
+        }
+
+        /// <summary>
+        /// A takeover for each keyboard or mouse left on PadForge's package
+        /// with none, which is what deleting or replacing PadForge.xml leaves:
+        /// Windows has no driver for the device and PadForge no record of it,
+        /// so it has no row and no Restore.
+        ///
+        /// <para>Only the take switch puts a HID-class node on the package that
+        /// nothing else claims, so a node qualifies when it is on WinUSB, its
+        /// compatible IDs say HID class, and no opted-in ID, no opt-in row and
+        /// no row of the vendor tables names it. Those keep their own paths. No
+        /// class ID, a read that failed included, adopts nothing, and the next
+        /// look asks again.</para>
+        ///
+        /// <para>The kind comes from the interface's boot protocol: Prot_02 is
+        /// a mouse. Prot_01 is a keyboard, and so is a HID interface with no
+        /// boot protocol, the form an NKRO keyboard's takes. A mouse among
+        /// those opens no channel, and its row still offers the Restore. The
+        /// row ID is the one a WinUSB row takes with none recorded, so a second
+        /// loss of the file finds the same row.</para>
+        /// </summary>
+        internal static List<KeyboardTakeoverEntry> Orphans(IEnumerable<string> interfacePaths,
+            IReadOnlyList<VendorUsbDriverInstaller.UsbNode> nodes, IReadOnlyList<KeyboardTakeoverEntry> takeovers,
+            IEnumerable<string> optIns, Func<string, string> nameOf)
+        {
+            var found = new List<KeyboardTakeoverEntry>();
+            if (interfacePaths == null || nodes == null) return found;
+            foreach (string path in interfacePaths)
+            {
+                if (KeyboardTakeovers.ForInterfacePath(takeovers, path) != null) continue;
+                if (!TryParseInterfacePath(path, out string nodeId)) continue;
+                foreach (var node in nodes)
+                {
+                    if (!string.Equals(node.InstanceId, nodeId, StringComparison.OrdinalIgnoreCase)) continue;
+                    if (string.Equals(node.Service, "WINUSB", StringComparison.OrdinalIgnoreCase)
+                        && VendorUsbDriverInstaller.HasCompatibleId(node, HidClassId)
+                        && !VendorUsbDriverInstaller.IsClaimedByATable(node)
+                        && (optIns == null || !optIns.Any(id => VendorUsbDriverInstaller.Names(node, id))))
+                    {
+                        bool mouse = node.CompatibleIds.Any(c => c.EndsWith("&Prot_02", StringComparison.OrdinalIgnoreCase));
+                        var kind = mouse ? VendorUsbDriverInstaller.OptInKind.Mouse : VendorUsbDriverInstaller.OptInKind.Keyboard;
+                        string name = nameOf?.Invoke(node.InstanceId);
+                        found.Add(new KeyboardTakeoverEntry
+                        {
+                            NodeId = node.InstanceId,
+                            BindId = VendorUsbDriverInstaller.BindId(node),
+                            RowId = (mouse ? WinUsbMouseDevice.IdentityFor(path) : WinUsbKeyboardDevice.IdentityFor(path)).ToString(),
+                            Name = string.IsNullOrWhiteSpace(name) ? VendorUsbDriverInstaller.NameOf(kind) : name,
+                            VendorId = node.Vid,
+                            ProductId = node.Pid,
+                            Kind = mouse ? KeyboardTakeoverEntry.MouseKind : null,
+                        });
+                    }
+                    break;
+                }
+            }
+            return found;
+        }
+
+        /// <summary>The compatible ID Windows builds from a HID interface.</summary>
+        internal const string HidClassId = @"USB\Class_03";
+
+        /// <summary>The name the device itself reports. The package's own name
+        /// is what Device Manager shows, and says nothing of which keyboard
+        /// this is.</summary>
+        private static string NameInTheTree(string instanceId)
+        {
+            try
+            {
+                return PnPDevice.GetDeviceByInstanceId(instanceId, DeviceLocationFlags.Normal)
+                    .GetProperty<string>(DevicePropertyKey.Device_BusReportedDeviceDesc);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>The pending takeovers to give back at a start: nobody kept
+        /// them, and the process that asked is gone. A node present on any
+        /// driver but PadForge's needs nothing of the restore, the boot task
+        /// having got there first, and <see cref="MovedBack"/> drops its
+        /// takeover. A node that is not present still has its package in the
+        /// driver store, which would take it again on its return.</summary>
+        internal static List<KeyboardTakeoverEntry> PendingToRestore(IEnumerable<KeyboardTakeoverEntry> takeovers,
+            IReadOnlyList<VendorUsbDriverInstaller.UsbNode> nodes)
+        {
+            var restore = new List<KeyboardTakeoverEntry>();
+            if (takeovers == null || nodes == null) return restore;
+            foreach (var entry in takeovers)
+            {
+                if (entry == null || !entry.Pending || !KeyboardTakeovers.IsValid(entry)) continue;
+                bool elsewhere = false;
+                foreach (var n in nodes)
+                    if (string.Equals(n.InstanceId, entry.NodeId, StringComparison.OrdinalIgnoreCase)
+                        && !string.Equals(n.Service, "WINUSB", StringComparison.OrdinalIgnoreCase))
+                        elsewhere = true;
+                if (!elsewhere) restore.Add(entry);
+            }
+            return restore;
         }
 
         /// <summary>The node's instance ID in a WinUSB interface path of
@@ -226,11 +347,42 @@ namespace PadForge.Services
             return Takes.Other;
         }
 
-        /// <summary>The takeovers whose node Windows put back on its own
-        /// driver, for the check at each start: a node of the takeover that
-        /// is present on Windows' HID driver again. A keyboard plugged into
-        /// another port is a new node, which Windows gives its own driver,
-        /// and is no takeover's.</summary>
+        /// <summary>Whether each of these takeovers' nodes is on Windows' own HID
+        /// driver, where the Devices page offers its switch again. A node on a
+        /// vendor's driver, or on none, gets no such offer.</summary>
+        internal static bool AllOnWindowsDriver(IEnumerable<KeyboardTakeoverEntry> takeovers,
+            IReadOnlyList<VendorUsbDriverInstaller.UsbNode> nodes)
+        {
+            foreach (var entry in takeovers)
+            {
+                bool onHid = false;
+                foreach (var n in nodes)
+                    if (string.Equals(n.InstanceId, entry.NodeId, StringComparison.OrdinalIgnoreCase)
+                        && string.Equals(n.Service, "HidUsb", StringComparison.OrdinalIgnoreCase))
+                        onHid = true;
+                if (!onHid) return false;
+            }
+            return true;
+        }
+
+        /// <summary>The user kept a switch. The package serves every device of
+        /// the ID, so each takeover of that ID stands with it: one left pending
+        /// would go back at the next start and take the kept device along.</summary>
+        internal static void ConfirmKept(IEnumerable<KeyboardTakeoverEntry> takeovers, string bindId)
+        {
+            foreach (var entry in takeovers)
+                if (string.Equals(entry.BindId, bindId, StringComparison.OrdinalIgnoreCase))
+                    entry.Pending = false;
+        }
+
+        /// <summary>The takeovers whose node left PadForge's driver, for the
+        /// check at each start: a node of the takeover that is present on
+        /// Windows' HID driver again, or on a vendor's, which no Restore is
+        /// offered for. A pending one also goes with no driver, since nothing
+        /// restores that. A kept node with no driver stays, as it can be on its
+        /// way back to PadForge's. A keyboard plugged into another port is a
+        /// new node, which Windows gives its own driver, and is no
+        /// takeover's.</summary>
         internal static List<KeyboardTakeoverEntry> MovedBack(IEnumerable<KeyboardTakeoverEntry> takeovers,
             IReadOnlyList<VendorUsbDriverInstaller.UsbNode> nodes)
         {
@@ -242,7 +394,9 @@ namespace PadForge.Services
                 foreach (var n in nodes)
                 {
                     if (!string.Equals(n.InstanceId, entry.NodeId, StringComparison.OrdinalIgnoreCase)) continue;
-                    if (string.Equals(n.Service ?? string.Empty, "HidUsb", StringComparison.OrdinalIgnoreCase))
+                    string service = n.Service ?? string.Empty;
+                    if (!string.Equals(service, "WINUSB", StringComparison.OrdinalIgnoreCase)
+                        && (service.Length > 0 || entry.Pending))
                         moved.Add(entry);
                     break;
                 }

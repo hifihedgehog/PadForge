@@ -596,6 +596,14 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public bool TouchpadOnlyInPadForge { get; set; }
 
+        /// <summary>True from the moment the switch is set until the user keeps
+        /// it at the Keep prompt. The file holds it at once, so a touchpad still
+        /// pending when PadForge starts is one nobody kept, and it goes back to
+        /// Windows.</summary>
+        [XmlElement]
+        [DefaultValue(false)]
+        public bool TouchpadKeepPending { get; set; }
+
         /// <summary>Whether to bypass SDL's gamepad remapping and read raw joystick indices instead.</summary>
         [XmlElement]
         public bool ForceRawJoystickMode { get; set; }

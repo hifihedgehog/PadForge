@@ -29,6 +29,10 @@
     var lastNotice = "";
     var noticeSince = 0;
 
+    // A command can run to Twitch's 500 characters. The box shows its start,
+    // so it cannot crowd the drawing off the stage.
+    var MAX_SHOWN_COMMAND = 60;
+
     // ── Drawing ──
 
     function redraw(layoutKey, finish) {
@@ -49,7 +53,9 @@
         if (lastState) applyState(lastState);
     }
 
-    window.addEventListener("resize", refit);
+    // The box changes size with the window and with whatever the chat box
+    // shows.
+    new ResizeObserver(refit).observe(padBox);
 
     // Lights the press art, fills the triggers and moves the stick caps,
     // the way the controller page does (controller_client.js:
@@ -96,6 +102,10 @@
         });
     }
 
+    function shown(text) {
+        return text.length > MAX_SHOWN_COMMAND ? text.substring(0, MAX_SHOWN_COMMAND) + "…" : text;
+    }
+
     function clock(seconds) {
         var m = Math.floor(seconds / 60), s = seconds % 60;
         return m + ":" + (s < 10 ? "0" : "") + s;
@@ -103,18 +113,20 @@
 
     function applyChat(c) {
         if (!c.on) {
-            if (chatEl.style.display !== "none") { chatEl.style.display = "none"; refit(); }
+            chatEl.style.display = "none";
             return;
         }
         var playing = document.getElementById("playing");
         if (c.user) {
-            line(playing, [{ cls: "who", text: c.user }, " ", { cls: "cmd", text: "!" + c.text }]);
+            line(playing, [{ cls: "who", text: c.user }, " ", { cls: "cmd", text: "!" + shown(c.text) }]);
         } else if (c.paused) {
             line(playing, [{ cls: "paused", text: "Chat control is paused." }]);
         } else if (c.state === "reading") {
             line(playing, ["Type a command like ", { cls: "cmd", text: "!a" }, " in chat to play."]);
         } else if (c.state === "nochannel") {
             line(playing, []);
+        } else if (c.state === "nochat") {
+            line(playing, ["Twitch has no chat for " + c.channel + "."]);
         } else {
             line(playing, ["Connecting to " + (c.channel ? c.channel + "'s " : "") + "chat…"]);
         }
@@ -125,7 +137,7 @@
             parts.push("Next: ");
             next.forEach(function (n, i) {
                 if (i) parts.push(", ");
-                parts.push({ cls: "who", text: n.user }, " ", { cls: "cmd", text: "!" + n.text });
+                parts.push({ cls: "who", text: n.user }, " ", { cls: "cmd", text: "!" + shown(n.text) });
             });
             if (c.waiting > next.length) parts.push(" and " + (c.waiting - next.length) + " more");
         }
@@ -151,7 +163,7 @@
         var fresh = lastNotice && Date.now() - noticeSince < 15000;
         document.getElementById("notice").textContent = fresh ? lastNotice : "";
 
-        if (chatEl.style.display !== "block") { chatEl.style.display = "block"; refit(); }
+        chatEl.style.display = "block";
     }
 
     // ── Socket ──

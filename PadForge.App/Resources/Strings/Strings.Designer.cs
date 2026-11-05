@@ -1091,6 +1091,7 @@ public class Strings : INotifyPropertyChanged
     public string Status_DriverRestored_Format => Get("Status_DriverRestored_Format");
     public string Status_DriverRestoreFailed_Format => Get("Status_DriverRestoreFailed_Format");
     public string Status_DriverMovedBack_Format => Get("Status_DriverMovedBack_Format");
+    public string Status_DriverAdopted_Format => Get("Status_DriverAdopted_Format");
     public string Devices_DriverBind_OnlyInPadForge => Get("Devices_DriverBind_OnlyInPadForge");
     public string Devices_DriverConfirm_Keyboard => Get("Devices_DriverConfirm_Keyboard");
     public string Devices_DriverConfirm_Mouse => Get("Devices_DriverConfirm_Mouse");
@@ -1308,6 +1309,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ForceFeedback_RouteGameSense => Get("Pad_ForceFeedback_RouteGameSense");
     public string Pad_ForceFeedback_RouteGameSenseShared => Get("Pad_ForceFeedback_RouteGameSenseShared");
     public string Pad_ForceFeedback_RouteGameSenseWaiting => Get("Pad_ForceFeedback_RouteGameSenseWaiting");
+    public string Pad_ForceFeedback_RouteGameSenseRefused => Get("Pad_ForceFeedback_RouteGameSenseRefused");
     public string Pad_ForceFeedback_RouteSensa => Get("Pad_ForceFeedback_RouteSensa");
     public string Pad_ForceFeedback_RouteSensaWaiting => Get("Pad_ForceFeedback_RouteSensaWaiting");
     public string Pad_AdaptiveTriggers_Subtitle => Get("Pad_AdaptiveTriggers_Subtitle");
@@ -1351,6 +1353,13 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_RouteDirectHostMode => Get("Pad_Lighting_RouteDirectHostMode");
     public string Pad_Lighting_RouteDirectChangingNeedsBios => Get("Pad_Lighting_RouteDirectChangingNeedsBios");
     public string Pad_Lighting_RouteDirectBesideWindows => Get("Pad_Lighting_RouteDirectBesideWindows");
+    public string Pad_Lighting_RouteDirectStored => Get("Pad_Lighting_RouteDirectStored");
+    public string Pad_Lighting_RouteDirectStoredEffects => Get("Pad_Lighting_RouteDirectStoredEffects");
+    public string Peripheral_SerialDeviceOnPort => Get("Peripheral_SerialDeviceOnPort");
+    public string Pad_Lighting_RouteRefused => Get("Pad_Lighting_RouteRefused");
+    public string Status_DriverLeft_Format => Get("Status_DriverLeft_Format");
+    public string Pad_Lighting_RouteWindowsHolds => Get("Pad_Lighting_RouteWindowsHolds");
+    public string Pad_Lighting_RouteHeldByProgram => Get("Pad_Lighting_RouteHeldByProgram");
     public string Pad_Lighting_RouteAsleep => Get("Pad_Lighting_RouteAsleep");
     public string Pad_Lighting_RouteThrough => Get("Pad_Lighting_RouteThrough");
     public string Pad_Lighting_RouteThroughOrDirect => Get("Pad_Lighting_RouteThroughOrDirect");
@@ -1358,7 +1367,9 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_RouteThroughOpenRgb => Get("Pad_Lighting_RouteThroughOpenRgb");
     public string Pad_Lighting_RouteThroughOpenRgbOnly => Get("Pad_Lighting_RouteThroughOpenRgbOnly");
     public string Pad_Lighting_RouteLeftToOpenRgb => Get("Pad_Lighting_RouteLeftToOpenRgb");
-    public string Pad_Lighting_RouteOpenRgbServerOff => Get("Pad_Lighting_RouteOpenRgbServerOff");
+    public string Pad_Lighting_RouteOpenRgbServerNoAnswer => Get("Pad_Lighting_RouteOpenRgbServerNoAnswer");
+    public string Pad_Lighting_RouteIcueSdkOff => Get("Pad_Lighting_RouteIcueSdkOff");
+    public string Pad_Lighting_RouteProgramRefused => Get("Pad_Lighting_RouteProgramRefused");
     public string Pad_Lighting_RouteShared => Get("Pad_Lighting_RouteShared");
     public string Pad_Lighting_RouteSharedVendorRow => Get("Pad_Lighting_RouteSharedVendorRow");
     public string Pad_Lighting_RouteOtherController => Get("Pad_Lighting_RouteOtherController");
@@ -4433,6 +4444,7 @@ public class Strings : INotifyPropertyChanged
     public string TwitchChat_Status_Connecting_Format => Get("TwitchChat_Status_Connecting_Format");
     public string TwitchChat_Status_Reading_Format => Get("TwitchChat_Status_Reading_Format");
     public string TwitchChat_Status_Retrying_Format => Get("TwitchChat_Status_Retrying_Format");
+    public string TwitchChat_Status_NoChat_Format => Get("TwitchChat_Status_NoChat_Format");
     public string TwitchChat_Status_Paused => Get("TwitchChat_Status_Paused");
     public string Dashboard_TwitchChatDisplay => Get("Dashboard_TwitchChatDisplay");
     public string Dashboard_TwitchChatDisplayOff => Get("Dashboard_TwitchChatDisplayOff");

@@ -780,6 +780,8 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} znova uporablja svoj gonilnik sistema Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Gonilnika sistema Windows za {0} ni bilo mogoče obnoviti.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows je za {0} znova nastavil lasten gonilnik. Za ponovni preklop izberite napravo na strani Naprave.</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} ni več na gonilniku programa PadForge.</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} je še vedno na gonilniku programa PadForge. Izberi ga na strani Naprave, da ga vrneš sistemu Windows.</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Uporabljaj samo v programu PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge to tipkovnico prestavi na gonilnik WinUSB sistema Windows in jo bere sam. Windows nato s tipkovnico v nobenem programu več ne tipka, tudi ko PadForge ni zagnan, dokler njen gonilnik sistema Windows ni obnovljen na tej strani. Njene preslikave in makri delujejo, dokler se PadForge izvaja.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge to miško prestavi na gonilnik WinUSB sistema Windows in jo bere sam. Windows nato z miško v nobenem programu več ne premika kazalca, tudi ko PadForge ni zagnan, dokler njen gonilnik sistema Windows ni obnovljen na tej strani. Njene preslikave in makri delujejo, dokler se PadForge izvaja.</value></data>
@@ -957,6 +959,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>Vibriranje se predvaja prek taktilnega upravljalnika v programu SteelSeries GG.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG hkrati upravlja vse taktilne miške Rival, zato njihovo vibriranje določa tista na navideznem krmilniku {0}.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>Čakanje na SteelSeries GG. Vibriranje se predvaja, ko se GG zažene.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG deluje in se ne odziva programu PadForge. Vibriranje se predvaja, ko se začne odzivati.</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>Vibriranje se predvaja na vaših napravah Razer Sensa HD prek programa Razer Synapse.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Čakanje na Sensa HD Haptics v programu Razer Synapse 4. V programu Synapse nastavite „Haptic Source“ naprave na „Sensa HD Games“.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Levi sprožilec</value></data>
@@ -1000,6 +1003,12 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Barve gredo neposredno na {0}. Dokler je osvetljena, je njen način vgrajenega pomnilnika izklopljen.</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Barve gredo neposredno na {0}. Spreminjajoče se barve, na primer barvni cikel ali barve, ki sledijo zvoku, zahtevajo vklopljeno funkcijo Dynamic Lighting v BIOS-u prenosnika. Brez nje tipke obdržijo zadnje stalne barve.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Barve gredo neposredno na {0}. Če je Dynamic Lighting v BIOS-u prenosnika vklopljen, tipke namesto tega osvetljuje dinamična osvetlitev sistema Windows. V nastavitvah sistema Windows za to tipkovnico izklopite dinamično osvetlitev in PadForge jih bo osvetljeval, vključno s spreminjajočimi se barvami.</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>Barve gredo neposredno na {0}. Vsako sliko shrani v svoj pomnilnik, zato se spreminjajoče se barve, na primer kroženje barv ali barve, ki sledijo zvoku, ne prikažejo. Barva, ki ostane enaka, se prikaže.</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>Barve gredo neposredno na {0}. Vsako sliko shrani v svoj pomnilnik, zato se spreminjajoče se barve, na primer kroženje barv ali barve, ki sledijo zvoku, ne prikažejo. Barva, ki ostane enaka, se prikaže. Prva slika prepiše učinke, shranjene na tipkovnici, stari pa se ne vrnejo.</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>Serijska naprava na {0}</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>Ta naprava je povezana in ni sprejela barv programa PadForge. PadForge poskusi znova vsako minuto.</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Sistem Windows drži to napravo kot tipkovnico ali miško in zavrača poročilo, ki nastavi njene barve, zato je PadForge v sistemu Windows ne more osvetljevati.</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>Drug program ima to napravo odprto, zato je PadForge ne more osvetljevati. PadForge jo osvetli, ko se ta program zapre.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Ta naprava se še ni odzvala. Barve se prikažejo, ko se zbudi.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Barve gredo prek {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Barve gredo prek {0}, ki hkrati osvetljuje vse naprave te vrste. Dokler {0} ne deluje, PadForge to napravo osvetljuje sam.</value></data>
@@ -1007,7 +1016,9 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Barve gredo prek SDK Server programa OpenRGB. Dokler OpenRGB ne deluje, PadForge to napravo osvetljuje sam.</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Barve gredo prek SDK Server programa OpenRGB.</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB drži to napravo in zanjo nima načina Direct, zato njena osvetlitev ostane pri OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB deluje z izklopljenim SDK Server, zato PadForge to napravo prepusti programu OpenRGB. Vklopi SDK Server v OpenRGB in PadForge bo napravo osvetljeval prek njega.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB deluje, vendar se njegov SDK Server ne odziva na vratih {0}, zato PadForge to napravo prepusti programu OpenRGB. Vklopi SDK Server v OpenRGB in PadForge bo napravo osvetljeval prek njega.</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE deluje z izklopljenim SDK. Vklopi iCUE SDK v nastavitvah programa iCUE in PadForge bo napravo osvetljeval prek njega.</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} deluje in ne dovoli, da bi PadForge osvetljeval njegove naprave. PadForge ga še naprej prosi.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} hkrati osvetljuje vse naprave te vrste, zato njihovo barvo določa tista na navideznem krmilniku {1}.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} hkrati osvetljuje vse naprave te vrste, zato njihovo barvo določa vrstica {1} na navideznem krmilniku {2}.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>To napravo osvetljuje tudi navidezni krmilnik {0} in prikazana je njegova barva.</value></data>
@@ -1025,7 +1036,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>slušalke</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>matične plošče, grafične kartice in pomnilnik</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>matične plošče in grafične kartice</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>podloge za miško in stojala za slušalke</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>podloge za miško, slušalke in stojala za slušalke</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Svetlobni trak</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Vnesite šestmestno šestnajstiško barvo (RRGGBB ali #RRGGBB) in za uporabo pritisnite Enter ali kliknite drugam.</value></data>
@@ -4671,6 +4682,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Povezovanje s klepetom kanala {0}…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Branje klepeta kanala {0}.</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Klepeta kanala {0} ni mogoče doseči. Poskus se ponovi.</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch nima klepeta za {0}. Preveri ime kanala.</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Pavza.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Slika krmilnika za vaš prenos. Ta naslov dodajte v OBS kot vir brskalnika:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Slika krmilnika za vaš prenos potrebuje Spletni krmilnik in njegov navaden naslov HTTP. Vklopite Streži tudi navaden HTTP na kartici Spletni krmilnik. Samo ta računalnik zadostuje za OBS na tem računalniku.</value></data>

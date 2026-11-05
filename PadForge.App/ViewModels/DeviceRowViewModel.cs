@@ -925,7 +925,7 @@ namespace PadForge.ViewModels
         };
 
         /// <summary>True for a row PadForge reads over its own WinUSB driver:
-        /// a keyboard taken from Windows (#549) or a bound TouchSense mouse
+        /// a keyboard or mouse taken from Windows (#549) or a bound TouchSense mouse
         /// (#494). Windows sees neither as a keyboard or mouse, so there is
         /// nothing to hide from games and nothing for the hook to consume,
         /// and both toggles leave the row (InputService.ServedByPadForgeDriver
@@ -935,7 +935,7 @@ namespace PadForge.ViewModels
             || Common.Input.WinUsbKeyboards.KeyboardTakeovers.IsTakenOver(InstanceGuid);
 
         /// <summary>True when at least one input-hiding toggle would be shown,
-        /// or a button of a keyboard's or mouse's switch, so the "Input Hiding" section
+        /// or a button of a keyboard's, mouse's or precision touchpad's switch, so the "Input Hiding" section
         /// can hide its heading along with its (now-empty) body when nothing
         /// applies. It names the toggles and the switch rather than
         /// restating their rules, so a row where none applies (a merged
@@ -945,10 +945,10 @@ namespace PadForge.ViewModels
         private bool _showsHidingDriverSwitch;
 
         /// <summary>Set by the Devices page while this row is selected and a
-        /// button of its keyboard's or mouse's switch (#549) shows. The
-        /// button stands in the Input Hiding section, which a switched
-        /// device keeps for it alone, since both toggles leave such a
-        /// row.</summary>
+        /// button of its keyboard's or mouse's switch (#549), or of a precision
+        /// touchpad's switch, shows. The button stands in the Input Hiding
+        /// section, which a switched device keeps for it alone, since both
+        /// toggles leave such a row.</summary>
         public bool ShowsHidingDriverSwitch
         {
             get => _showsHidingDriverSwitch;
@@ -960,6 +960,20 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(ShowRawInputDivider));
                 OnPropertyChanged(nameof(ShowGunCalibrationDivider));
             }
+        }
+
+        /// <summary>The takeover list changed. <see cref="IsPadForgeDriverRow"/>
+        /// reads it, and a taken device whose WinUSB row never opened keeps its
+        /// path, so nothing else raises what follows from the list.</summary>
+        internal void NotifyTakeoverChanged()
+        {
+            OnPropertyChanged(nameof(IsPadForgeDriverRow));
+            OnPropertyChanged(nameof(ShowHidHideToggle));
+            OnPropertyChanged(nameof(ShowConsumeToggle));
+            OnPropertyChanged(nameof(ShowInputHidingSection));
+            OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
+            OnPropertyChanged(nameof(ShowRawInputDivider));
+            OnPropertyChanged(nameof(ShowGunCalibrationDivider));
         }
 
         public bool IsTabletDevice => DeviceTypeKey == "Tablet";

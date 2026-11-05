@@ -356,6 +356,22 @@ namespace PadForge.Common.Input
                 var k = s_fixed[vk];
                 if (k.IsKeyboard && k.Usage <= 0xFF) t[k.Usage] = vk;
             }
+
+            // Keys a keyboard read over WinUSB reports by usage that no fixed
+            // row sends, each at the virtual-key code Windows names for it.
+            // Linux gives every one of these a key (linux-hid hid-input.c,
+            // hid_keyboard). Mute and the two volume keys take the row of
+            // their Consumer page usages, the form most keyboards send.
+            t[0x67] = 0x92;   // Keypad =, VK_OEM_NEC_EQUAL
+            t[0x7F] = 0xAD;   // Mute
+            t[0x80] = 0xAF;   // Volume Up
+            t[0x81] = 0xAE;   // Volume Down
+            t[0x85] = 0xC2;   // Keypad comma, VK_ABNT_C2
+            t[0x90] = 0x15;   // LANG1 (Hangul), VK_HANGUL
+            t[0x91] = 0x19;   // LANG2 (Hanja), VK_HANJA
+            t[0x92] = 0xF1;   // LANG3 (Katakana), VK_OEM_FINISH
+            t[0x93] = 0xF2;   // LANG4 (Hiragana), VK_OEM_COPY
+            t[0x94] = 0xF3;   // LANG5 (Zenkaku/Hankaku), VK_OEM_AUTO
             return t;
         }
 

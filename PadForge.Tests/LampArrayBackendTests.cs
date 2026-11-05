@@ -2901,6 +2901,185 @@ namespace PadForge.Tests
             Assert.All(board.Opened, handle => Assert.True(handle.Disposed));
         }
 
+        /// <summary>The table that names a unit's path taken by OpenRGB, the
+        /// row lit through OpenRGB's own path.</summary>
+        private static LinkTable TakenByOpenRgb(LampBoard board) => new(new[]
+        {
+            new DeviceLinks
+            {
+                Device = board.Row,
+                Lighting = new[] { new OutputPath(OutputFamily.OpenRgbDevice, "openrgb") },
+                TakenByOpenRgb = new[] { board.OutputPath },
+            },
+        });
+
+        /// <summary>A unit asleep and owed its hand-back loses the debt the
+        /// pass after OpenRGB takes its device: the worker's pass walks an
+        /// asleep unit for that alone, and nothing reaches OpenRGB's lighting
+        /// at stop or on the crash path.</summary>
+        [Fact]
+        public void AnAsleepUnitOwedItsHandBack_LosesTheDebt_OnceOpenRgbTakesItsDevice()
+        {
+            var (backend, board) = Lit();
+            board.FailWrites = true;
+            Color(board, 0x445566);
+            Advance(33);
+            Passes(backend);
+            Assert.True(Unit(backend, board).Asleep);
+            Assert.Equal(new[] { BoardPath }, backend.ClaimedPaths);
+            board.Take();
+
+            PeripheralOutputs.PublishLinks(TakenByOpenRgb(board));
+            Passes(backend);
+            Assert.Empty(backend.ClaimedPaths);
+            backend.Stop();
+            Assert.Empty(_oneShots);
+            Assert.Empty(board.Take());
+        }
+
+        /// <summary>OpenRGB takes the device while the worker is held inside
+        /// a report, so no pass has let the unit go yet. The crash path's
+        /// one-shot skips it, as HidLightingBackend.ReleaseClaimedNow does.</summary>
+        [Fact]
+        public void TheCrashPath_SendsNothing_ToAUnitOpenRgbHolds()
+        {
+            var (backend, board) = Lit();
+            Advance(33);
+            var release = HoldInTheNextReport(board);
+            try
+            {
+                PeripheralOutputs.PublishLinks(TakenByOpenRgb(board));
+                backend.ReleaseClaimedNow(Tick() + 100);
+                Assert.Empty(_oneShots);
+                Assert.Empty(backend.ClaimedPaths);
+            }
+            finally
+            {
+                board.OnCall = null;
+                release.Set();
+            }
+            Assert.True(SpinWait.SpinUntil(() => !backend.WorkerAlive, 30000), "the worker stopped");
+        }
+
+        /// <summary>A stop that comes before any pass has seen OpenRGB's hold
+        /// hands nothing back on the worker's own channel either.</summary>
+        [Fact]
+        public void AtStop_TheWorkersChannelSendsNothing_ToAUnitOpenRgbHolds()
+        {
+            var (backend, board) = Lit();
+            Advance(33);
+            var release = HoldInTheNextReport(board);
+            try
+            {
+                board.Take();
+                PeripheralOutputs.PublishLinks(TakenByOpenRgb(board));
+                backend.SignalStop();
+            }
+            finally
+            {
+                board.OnCall = null;
+                release.Set();
+            }
+            Assert.True(SpinWait.SpinUntil(() => !backend.WorkerAlive, 30000), "the worker stopped");
+            Assert.DoesNotContain("set 06 01", board.Take());
+            Assert.Empty(_oneShots);
+        }
+
+        /// <summary>The worker's maps go when it stops, as every other direct
+        /// backend's do, so a unit unplugged while the engine is stopped does
+        /// not stay on the zone picker's list.</summary>
+        [Fact]
+        public void AtStop_AUnitsMapIsTakenDown()
+        {
+            var (backend, board) = Found(Describing);
+            Color(board, 0x112233);
+            Passes(backend);
+            Advance(20);
+            Passes(backend);
+            Assert.NotNull(PeripheralLightMaps.For(board.OutputPath));
+            backend.Stop();
+            Assert.Null(PeripheralLightMaps.For(board.OutputPath));
+        }
+
+        /// <summary>A worker a stop gave up on leaves the map of its
+        /// successor's unit where it is, and sends that unit nothing.</summary>
+        [Fact]
+        public void AWorkerAStopGaveUpOn_LeavesItsSuccessorsMapUp_AndHandsNothingBack()
+        {
+            var board = Board();
+            Describing(board);
+            var backend = Backend(predecessorJoinMs: 1, stopJoinMs: 1);
+            backend.Start();
+            Walk(backend, board);
+            Passes(backend);
+            Link(board);
+            Color(board, 0x112233);
+            Passes(backend);
+            Advance(20);
+            Passes(backend);
+            Advance(33);
+            var release = HoldInTheNextReport(board, out var old);
+            var oldHandle = board.Opened.Last();
+            try
+            {
+                backend.Dispose();
+                // The old worker is inside its report already. The new one
+                // goes through, on a backend of its own, as each engine start
+                // has it.
+                board.OnCall = null;
+                var next = Backend(predecessorJoinMs: 1, stopJoinMs: 1);
+                next.Start();
+                Walk(next, board);
+                Passes(next);
+                Passes(next);
+                Advance(20);
+                Passes(next);
+                Assert.NotNull(PeripheralLightMaps.For(board.OutputPath));
+            }
+            finally
+            {
+                board.OnCall = null;
+                release.Set();
+            }
+            Assert.True(old.Join(30000), "the old worker came out and ended");
+            Assert.DoesNotContain(oldHandle.Calls, call => call.Kind == "set" && call.Bytes.SequenceEqual(new byte[] { 0x06, 0x01 }));
+            Assert.Empty(_oneShots);
+            Assert.NotNull(PeripheralLightMaps.For(board.OutputPath));
+        }
+
+        /// <summary>A unit with a published map falls asleep, wakes, and its
+        /// lamps can no longer be read. It is painted one color from then on,
+        /// so the Key Colors card stops offering its keys.</summary>
+        [Fact]
+        public void AUnitThatGoesBlindAfterAWake_LosesItsPublishedMap()
+        {
+            var (backend, board) = Found(Describing);
+            Color(board, 0x112233);
+            Passes(backend);
+            Advance(20);
+            Passes(backend);
+            Assert.NotNull(PeripheralLightMaps.For(board.OutputPath));
+
+            board.FailWrites = true;
+            Color(board, 0x445566);
+            Advance(33);
+            Passes(backend);
+            Assert.True(Unit(backend, board).Asleep);
+            board.FailWrites = false;
+            board.FailLampIndex = 0;
+            board.FailLampReads = LampArrayBackend.ReadAttempts;
+
+            string line = $"PERIPHERAL LampArray '{board.Name}' lamps could not be read (lamp 0 did not answer)";
+            int before = LogLines(line);
+            for (int i = 0; i < 40 && LogLines(line) == before; i++)
+            {
+                Advance(5000);
+                Passes(backend);
+            }
+            Assert.Equal(before + 1, LogLines(line));
+            Assert.Null(PeripheralLightMaps.For(board.OutputPath));
+        }
+
         /// <summary>The crash path hands an owed unit back too: it is on
         /// the record, and whichever of the worker and the crash path gets
         /// to it sends the unit's own hand-back through a bounded write.</summary>

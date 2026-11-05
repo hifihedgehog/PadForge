@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PadForge.Resources.Strings;
 
 namespace PadForge.Common.Input.Peripherals
 {
@@ -16,13 +17,16 @@ namespace PadForge.Common.Input.Peripherals
     /// keeps a port only when the device answers "Moni-A" with a line
     /// starting "SK" and its model code (IsPresent and QueryInfo,
     /// SkydimoSerialController.cpp:155-268). A look asks no device anything,
-    /// so the look lists every such port, and the question goes out when a
-    /// session begins, at 115200 baud (SKYDIMO_SERIAL_BAUD_RATE,
+    /// so the look lists every such port under the port's own name, "Serial
+    /// device on COM5" (<see cref="OwnDevice.Name"/>), and nothing goes to it
+    /// until the user assigns that row. The question then goes out as a session
+    /// begins, at 115200 baud (SKYDIMO_SERIAL_BAUD_RATE,
     /// SkydimoSerialController.h:20): the port's waiting bytes are read and
     /// dropped, "Moni-A" goes out, and up to ten reads collect the answer,
-    /// stopping at a line end or 63 bytes (lines 173-223). A port that does
-    /// not answer as a Skydimo gets no session, nothing more is written to
-    /// it, and the look leaves it out for as long as it stays present. A
+    /// stopping at a line end or 63 bytes (lines 173-223). A port that answers
+    /// as a Skydimo takes OpenRGB's name for it, "Skydimo" and its model code
+    /// (line 238). A port that does not gets no session, nothing more is written
+    /// to it, and the look leaves it out for as long as it stays present. A
     /// port whose write or read failed is no answer, and the worker tries
     /// it again as it tries any unit that failed.</para>
     ///
@@ -176,6 +180,7 @@ namespace PadForge.Common.Input.Peripherals
                     var port = _open(key);
                     return port == null ? null : new KeyedPort(key, port);
                 },
+                OpenFoundHeld = () => OwnLightingChannels.SerialDenied,
                 BeginOwn = (channel, wait) => channel is KeyedPort port ? Begin(port) : null,
                 WriteOnce = (key, frame, timeoutMs) => _writeOnce(key, frame, timeoutMs),
             };
@@ -203,7 +208,8 @@ namespace PadForge.Common.Input.Peripherals
                     StringComparer.OrdinalIgnoreCase);
                 _refused.RemoveWhere(key => !present.Contains(key));
                 return LightReports.SerialPorts(ports, _containerOf, VendorId, ProductId,
-                    port => _refused.Contains(@"\\.\" + port.PortName) ? null : Model);
+                    port => _refused.Contains(@"\\.\" + port.PortName) ? null : Model,
+                    port => string.Format(Strings.Instance.Peripheral_SerialDeviceOnPort, port.PortName));
             }
         }
 
@@ -408,7 +414,8 @@ namespace PadForge.Common.Input.Peripherals
             Func<int[], byte[]> frame = zone
                 ? colors => Frame(Enumerable.Repeat(colors.Length > 0 ? colors[0] : 0, leds).ToArray(), leds)
                 : colors => Frame(colors, leds);
-            return new SerialFramesSession(port, zone ? 1 : leds, frame, handBack: Frame(null, leds), map: map);
+            return new SerialFramesSession(port, zone ? 1 : leds, frame, handBack: Frame(null, leds), map: map,
+                deviceName: "Skydimo " + model);
         }
 
         /// <summary>A port and the key it was opened by.</summary>

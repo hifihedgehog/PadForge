@@ -388,6 +388,9 @@ namespace PadForge.Engine
             /// <summary>When the last report came, in Environment.TickCount64
             /// milliseconds.</summary>
             public long LastReportMs;
+            /// <summary>When the Windows touchpad settings were last asked
+            /// for, in Environment.TickCount64 milliseconds.</summary>
+            public long SettingsReadMs;
 
             public PtpDeviceState()
             {
@@ -633,8 +636,12 @@ namespace PadForge.Engine
         /// units of its scrolling, the fractions kept for the next call, and
         /// its buttons as a mouse row's left (bit 0), right (bit 1) and
         /// middle (bit 2). A touchpad silent past the contacts' own staleness
-        /// limit has lifted, as its contacts have (ReadDeviceState). False
-        /// when no capture reads the touchpad.</summary>
+        /// limit has lifted its contacts (ReadDeviceState). Its external
+        /// buttons stay as its last report left them: a held button sends no
+        /// report until it changes, and Linux's timer releases contacts alone
+        /// (hid-multitouch.c mt_release_contacts). The Windows touchpad
+        /// settings are read again on this call's cadence. False when no
+        /// capture reads the touchpad.</summary>
         public bool ConsumeCapturedPointer(string path, out int dx, out int dy, out int wheel, out int buttons)
         {
             dx = dy = wheel = buttons = 0;
@@ -643,22 +650,31 @@ namespace PadForge.Engine
             {
                 if (!_capturedKeys.TryGetValue(path, out var key) || !_deviceStates.TryGetValue(key, out var ds))
                     return false;
-                // Toward zero, so what stays behind keeps its sign.
-                dx = (int)ds.PointerX;
-                dy = (int)ds.PointerY;
-                ds.PointerX -= dx;
-                ds.PointerY -= dy;
-                long now = DateTime.UtcNow.Ticks;
                 long nowMs = Environment.TickCount64;
-                bool stale = ds.LastReportTicks > 0 && now - ds.LastReportTicks > StaleThresholdTicks;
-                if (stale) ds.Mouse?.Silence(ds.LastReportMs);
-                buttons = stale ? 0 : TouchpadPointer.MouseButtons(ds.PointerButtons);
-                if (ds.Mouse != null)
-                {
-                    wheel = ds.Mouse.TakeWheel();
-                    buttons |= ds.Mouse.Buttons(nowMs);
-                }
+                RefreshSettingsIfDue(ds, nowMs, _stateLock, TouchpadSettings.Read, work => Task.Run(work));
+                ConsumePointer(ds, DateTime.UtcNow.Ticks, nowMs, out dx, out dy, out wheel, out buttons);
                 return true;
+            }
+        }
+
+        /// <summary>The body of <see cref="ConsumeCapturedPointer"/>, on one
+        /// touchpad's state. Caller holds the state lock.</summary>
+        internal static void ConsumePointer(PtpDeviceState ds, long now, long nowMs,
+            out int dx, out int dy, out int wheel, out int buttons)
+        {
+            wheel = 0;
+            // Toward zero, so what stays behind keeps its sign.
+            dx = (int)ds.PointerX;
+            dy = (int)ds.PointerY;
+            ds.PointerX -= dx;
+            ds.PointerY -= dy;
+            if (ds.LastReportTicks > 0 && now - ds.LastReportTicks > StaleThresholdTicks)
+                ds.Mouse?.Silence(ds.LastReportMs);
+            buttons = TouchpadPointer.MouseButtons(ds.PointerButtons);
+            if (ds.Mouse != null)
+            {
+                wheel = ds.Mouse.TakeWheel();
+                buttons |= ds.Mouse.Buttons(nowMs);
             }
         }
 
@@ -687,6 +703,7 @@ namespace PadForge.Engine
                 var state = _deviceStates[key];
                 state.Mouse = new TouchpadMouse(TouchpadSettings.Read(),
                     state.ExtentX / state.UnitsPerMmX, state.ExtentY / state.UnitsPerMmY);
+                state.SettingsReadMs = Environment.TickCount64;
                 _capturedKeys[capture.DevicePath] = key;
                 return key;
             }
@@ -1213,7 +1230,7 @@ namespace PadForge.Engine
                 ds.LastReportTicks = DateTime.UtcNow.Ticks;
                 long nowMs = Environment.TickCount64;
                 ds.LastReportMs = nowMs;
-                if (ds.FeedsPointer && buttons >= 0) ds.PointerButtons = buttons;
+                TakeButtons(ds, buttons, contactCount);
 
                 // Frame-assembly: PTP frames span multiple reports on
                 // most hardware (≤2 contacts per report; total carried
@@ -1272,6 +1289,42 @@ namespace PadForge.Engine
                 if (frameComplete) CommitFrame(ds, nowMs);
             }
             return true;
+        }
+
+        /// <summary>How long a captured touchpad goes between reads of the
+        /// Windows touchpad settings.</summary>
+        internal const int TouchpadSettingsRefreshMs = 2000;
+
+        /// <summary>Asks for the Windows touchpad settings again once the
+        /// refresh time is up, so a change in Windows reaches a touchpad
+        /// already taken. <paramref name="run"/> does the registry read away
+        /// from the poll thread that asks, and the answer is handed over under
+        /// <paramref name="gate"/>, the state lock the caller holds now.</summary>
+        internal static void RefreshSettingsIfDue(PtpDeviceState ds, long nowMs, object gate,
+            Func<TouchpadSettings> read, Action<Action> run)
+        {
+            var mouse = ds.Mouse;
+            if (mouse == null || nowMs - ds.SettingsReadMs < TouchpadSettingsRefreshMs) return;
+            ds.SettingsReadMs = nowMs;
+            run(() =>
+            {
+                var settings = read();
+                lock (gate) mouse.UseSettings(settings);
+            });
+        }
+
+        /// <summary>Files the buttons one report carries for a touchpad whose
+        /// frames move its mouse row. A frame can span several reports, and
+        /// only its first says anything about the buttons
+        /// (hid-multitouch.c:1272-1279). A contact count above zero always
+        /// opens a frame, and a report with a count of zero opens one when
+        /// nothing is under way, which is a report of a button alone (:1329-1334).
+        /// Caller holds the state lock, before the report's contacts are
+        /// counted.</summary>
+        internal static void TakeButtons(PtpDeviceState ds, int buttons, uint contactCount)
+        {
+            if (!ds.FeedsPointer || buttons < 0) return;
+            if (contactCount > 0 || ds.FrameSeen + ds.FrameLifted == 0) ds.PointerButtons = buttons;
         }
 
         /// <summary>Commits an assembled frame with slot-stable assignment,

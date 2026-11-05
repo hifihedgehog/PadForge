@@ -174,6 +174,95 @@ namespace PadForge.Tests
             Assert.Null(PeripheralLightMaps.For(Type("keyboard")));
         }
 
+        /// <summary>GG runs and will not take PadForge's game: the tabs read
+        /// that, not a wait for GG to start. With GG not running the wait
+        /// stands. A connection clears it.</summary>
+        [Fact]
+        public void AnEngineThatRunsAndRefuses_IsARefusal_AndAConnectionClearsIt()
+        {
+            using var server = new HidppHapticsTests.FakeGameSense { Status = 500 };
+            long now = 1_000_000;
+            PeripheralOutputs.Presence = PeripheralPresence.None with { SteelSeriesGGRunning = true };
+            PeripheralOutputs.PublishLinks(new LinkTable(new[] { new DeviceLinks { Device = Keyboard, Lighting = new[] { Type("keyboard") } } }));
+            using var backend = Backend(server, () => Volatile.Read(ref now));
+            backend.Start();
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x00, 0x00, 0xFF);
+            Assert.True(SpinWait.SpinUntil(() => PeripheralOutputs.RefusalOn(Type("keyboard")) != null, 5000), "the refusal was recorded");
+            Assert.Equal(BackendState.Waiting, PeripheralOutputs.StateOf(OutputFamily.GameSenseColor));
+
+            PeripheralOutputs.Presence = PeripheralPresence.None;
+            Assert.True(SpinWait.SpinUntil(() => PeripheralOutputs.RefusalOn(Type("keyboard")) == null, 5000), "GG is gone, so it refused nothing");
+
+            PeripheralOutputs.Presence = PeripheralPresence.None with { SteelSeriesGGRunning = true };
+            server.Status = 200;
+            Volatile.Write(ref now, now + GameSenseBackend.RetryMs);
+            Assert.True(SpinWait.SpinUntil(() => PeripheralOutputs.StateOf(OutputFamily.GameSenseColor) == BackendState.Connected, 5000));
+            Assert.Null(PeripheralOutputs.RefusalOn(Type("keyboard")));
+        }
+
+        /// <summary>A bind that outlasts the post's timeout is no answer. It
+        /// is not recorded as GG refusing the event: the connection drops, and
+        /// the next one binds the light event and paints the keys.</summary>
+        [Fact]
+        public void ALightBindThatGetsNoAnswer_IsNotARefusal_AndTheNextConnectionBindsItAgain()
+        {
+            using var server = new HidppHapticsTests.FakeGameSense();
+            int binds = 0;
+            server.BeforeAnswer = path =>
+            {
+                if (path == "/bind_game_event" && server.Posts.LastOrDefault().Body?.Contains("\"LIGHTS_") == true
+                    && Interlocked.Increment(ref binds) == 1)
+                    Thread.Sleep(600);
+            };
+            const string refused = "PERIPHERAL GameSense refused the keyboard light event";
+            int before = PadForge.Engine.SdlDiagLog.Snapshot().Split('\n').Count(l => l.Contains(refused));
+            long now = 1_000_000;
+            PeripheralOutputs.PublishLinks(new LinkTable(new[] { new DeviceLinks { Device = Keyboard, Lighting = new[] { Type("keyboard") } } }));
+            using var backend = new GameSenseBackend(() => new GameSenseClient(server.WriteCoreProps(), 200), _ => 0, 2,
+                clock: () => Volatile.Read(ref now));
+            backend.Start();
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x00, 0x00, 0xFF,
+                keys: Frame(new Dictionary<ushort, int> { [0x1A] = 0xFF0000 }));
+            Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref binds) >= 1, 5000), "the first bind went out");
+            Thread.Sleep(700);
+            Volatile.Write(ref now, now + GameSenseBackend.RetryMs);
+            Assert.True(SpinWait.SpinUntil(() => server.Posts.Any(p => p.Path == "/game_event" && EventOf(p.Body) == "LIGHTS_KEYBOARD"), 5000),
+                "the light event was bound on the next connection and the picture posted");
+            Assert.Equal(before, PadForge.Engine.SdlDiagLog.Snapshot().Split('\n').Count(l => l.Contains(refused)));
+            Assert.DoesNotContain(server.Posts, p => p.Path == "/bind_game_event" && EventOf(p.Body) == "COLOR_KEYBOARD");
+        }
+
+        /// <summary>A bind that outlasts the timeout on every connection does
+        /// not hold the device dark: the second miss paints one color, and
+        /// the log says GG did not answer.</summary>
+        [Fact]
+        public void ALightBindThatNeverGetsAnAnswer_PaintsOneColor_AfterTheSecondMiss()
+        {
+            using var server = new HidppHapticsTests.FakeGameSense();
+            server.BeforeAnswer = path =>
+            {
+                if (path == "/bind_game_event" && server.Posts.LastOrDefault().Body?.Contains("\"LIGHTS_") == true)
+                    Thread.Sleep(400);
+            };
+            const string line = "PERIPHERAL GameSense did not answer the keyboard light event twice";
+            int before = PadForge.Engine.SdlDiagLog.Snapshot().Split('\n').Count(l => l.Contains(line));
+            long now = 1_000_000;
+            PeripheralOutputs.PublishLinks(new LinkTable(new[] { new DeviceLinks { Device = Keyboard, Lighting = new[] { Type("keyboard") } } }));
+            using var backend = new GameSenseBackend(() => new GameSenseClient(server.WriteCoreProps(), 200), _ => 0, 2,
+                clock: () => Volatile.Read(ref now));
+            backend.Start();
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x00, 0x00, 0xFF,
+                keys: Frame(new Dictionary<ushort, int> { [0x1A] = 0xFF0000 }));
+            bool Painted() => server.ColorValues("COLOR_KEYBOARD").Contains(0x0000FF);
+            Assert.True(SpinWait.SpinUntil(() =>
+            {
+                Interlocked.Add(ref now, GameSenseBackend.RetryMs);
+                Thread.Sleep(50);
+                return Painted();
+            }, 15000), "the one color was posted");
+            Assert.Equal(before + 1, PadForge.Engine.SdlDiagLog.Snapshot().Split('\n').Count(l => l.Contains(line)));
+        }
+
         /// <summary>A GG that will not take the light event leaves the type
         /// on its one-color event, in the claim's color, and logs it once.</summary>
         [Fact]

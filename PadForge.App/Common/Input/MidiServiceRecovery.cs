@@ -172,6 +172,9 @@ namespace PadForge.Common.Input
         // the next read, in case an update has installed it since.
         private static volatile bool s_serviceFound;
 
+        // Set when the last read of ServiceExists answered no.
+        private static volatile bool s_serviceMissing;
+
         /// <summary>Whether this PC has the MIDI service at all, by the
         /// service manager's answer to an open of it for a status read. The
         /// build and the API mode do not say: a Windows 11 24H2 or later PC
@@ -184,15 +187,32 @@ namespace PadForge.Common.Input
             get
             {
                 var seam = ServiceExistsSeam;
-                if (seam != null) return seam();
+                if (seam != null)
+                {
+                    bool answer = seam();
+                    s_serviceMissing = !answer;
+                    return answer;
+                }
                 if (s_serviceFound) return true;
                 bool exists;
                 try { exists = ReadServiceExists(); }
                 catch { exists = true; }
                 if (exists) s_serviceFound = true;
+                s_serviceMissing = !exists;
                 return exists;
             }
         }
+
+        /// <summary>The last answer <see cref="ServiceExists"/> gave, with no
+        /// call to the service manager, for the poll thread's watchdogs, which
+        /// fire while something is already hung behind the MIDI service. The
+        /// workers they watch ask first. Before any answer the service reads as
+        /// there, as one the manager cannot be asked about does.</summary>
+        internal static bool ServiceLastSeen => !s_serviceMissing;
+
+        /// <summary>Forgets the last answer, for a test that changes the
+        /// PC it stands in for.</summary>
+        internal static void ForgetServiceAnswerForTest() => s_serviceMissing = false;
 
         private static bool ReadServiceExists()
         {

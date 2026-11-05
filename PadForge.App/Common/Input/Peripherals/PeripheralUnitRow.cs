@@ -62,6 +62,17 @@ namespace PadForge.Common.Input.Peripherals
             SdlInstanceId = SyntheticInstanceId.From(DevicePath);
         }
 
+        /// <summary>The row takes the name its unit learned after the row
+        /// opened. Its ids stay, so it keeps its assignment. False when it has
+        /// that name already.</summary>
+        internal bool Rename(DirectUnit unit)
+        {
+            string name = NameFor(unit);
+            if (name == Name) return false;
+            Name = name;
+            return true;
+        }
+
         /// <summary>The row's id for a unit, stable across sessions.</summary>
         public static Guid IdentityFor(OutputFamily family, string key) => Md5Guid(IdentityTag(family, key));
 
@@ -84,7 +95,9 @@ namespace PadForge.Common.Input.Peripherals
         /// (VendorHidRuntime.Probe), and the vendor ID alone for a unit
         /// whose product ID its backend does not know (0), a HID++ device
         /// behind a receiver. A product name is not translated, and neither
-        /// is the other form.</summary>
+        /// is the other form. A USB serial port nothing has answered on yet has
+        /// its unit's plain name, and takes the product's once it answers
+        /// (<see cref="Rename"/>).</summary>
         public static string NameFor(DirectUnit unit)
         {
             if (!string.IsNullOrWhiteSpace(unit.Name)) return unit.Name.Trim();
@@ -94,7 +107,7 @@ namespace PadForge.Common.Input.Peripherals
 
         // ─── ISdlInputDevice identity / capabilities ───
         public uint SdlInstanceId { get; }
-        public string Name { get; }
+        public string Name { get; private set; }
         public int NumAxes => 0;
         public int NumButtons => 0;
         public int RawButtonCount => 0;

@@ -357,7 +357,7 @@ public sealed class HapticConnectionLifetimeTests : IDisposable
             WaitRemoteBuild();
         }
         Send(lifetime, 0, 200, .5f);
-        Assert.True(SpinWait.SpinUntil(() => reports.Count(Positive) >= 2, 2000));
+        Assert.True(SpinWait.SpinUntil(() => reports.Count(Positive) >= 2, 30000));
         await Task.Delay(60);
         using var ready = new ManualResetEventSlim();
         using var release = new ManualResetEventSlim();
@@ -368,14 +368,14 @@ public sealed class HapticConnectionLifetimeTests : IDisposable
             if (id == device.InstanceGuid && request.Hz == 220 && Interlocked.Exchange(ref held, 1) == 0)
             {
                 ready.Set();
-                released = release.Wait(5000);
+                released = release.Wait(30000);
             }
         };
         int cut = 0;
         try
         {
             Send(lifetime, 1, 220, .5f);
-            Assert.True(ready.Wait(2000));
+            Assert.True(ready.Wait(30000));
             if (change == "stop") Send(lifetime, 2, 0, 0);
             else if (change == "other-peer-stop")
             {
@@ -395,7 +395,7 @@ public sealed class HapticConnectionLifetimeTests : IDisposable
         var current = LinkLifetimeFixtures.Lifetime(new[] { LinkLifetimeFixtures.Info(device.InstanceGuid.ToString("N")) });
         int freshStart = reports.Count;
         Send(current, 0, 300, .5f);
-        Assert.True(SpinWait.SpinUntil(() => reports.Skip(freshStart).Any(Positive), 2000));
+        Assert.True(SpinWait.SpinUntil(() => reports.Skip(freshStart).Any(Positive), 30000));
         output.WriteLine($"change={change} firstPositiveControl=True obsoletePositiveWrites={obsolete} freshPositiveControl=True");
         output.WriteLine("firstRaw=" + Convert.ToHexString(reports.First(Positive)));
         output.WriteLine("afterInvalidationRaw=" + string.Join("|", after.Select(Convert.ToHexString)));

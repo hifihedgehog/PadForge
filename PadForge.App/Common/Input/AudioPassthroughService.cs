@@ -72,6 +72,30 @@ namespace PadForge.Common.Input
         internal static bool Ds4HasAudio(ushort productId, bool isBluetooth)
             => isBluetooth || productId is 0x09CC or 0x0BA0;
 
+        /// <summary>A DualShock 4's link as the owner tells a peer, by the path
+        /// test its own sink makes. Null for every other device.</summary>
+        internal static bool? Ds4LinkToShare(Engine.Data.UserDevice ud)
+            => ud.VendorId == SonyVid && Ds4Pids.Contains((ushort)ud.ProdId)
+                ? (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0
+                : null;
+
+        /// <summary>Whether a DualShock 4's row counts as on Bluetooth: its path
+        /// says on this PC, and its owner says for a peer's copy. An owner that
+        /// says nothing reads as wired, which is what a peer:// path read as
+        /// before owners said.</summary>
+        internal static bool Ds4LinkIsBluetooth(Engine.Data.UserDevice ud)
+            => ud.Device is Engine.RemoteLink.RemotePeerDevice peer
+                ? peer.OwnerOnBluetooth == true
+                : (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0;
+
+        /// <summary>A peer's copy of a DualShock 4 whose owner says it is on a
+        /// cable, on a model with no USB audio. Sound shipped to it plays
+        /// nowhere, so it takes no sink, like the pad on the owner's own PC. An
+        /// owner that says nothing keeps the sink.</summary>
+        private static bool PeerDs4HasNoAudio(Engine.Data.UserDevice ud)
+            => ud.Device is Engine.RemoteLink.RemotePeerDevice { OwnerOnBluetooth: false }
+               && Ds4Pids.Contains((ushort)ud.ProdId) && !Ds4HasAudio((ushort)ud.ProdId, false);
+
         /// <summary>Whether a pad takes the slot's macro sounds: every pad
         /// but a DualShock 4 on USB whose route plays only through the jack
         /// (Headphones (Stereo) or (Mono), <see cref="Ds4UsbAudio"/>) while its
@@ -86,10 +110,37 @@ namespace PadForge.Common.Input
         // (Sink.ResolvedPath), never the provider, which takes settings locks.
         private static bool TakesMacroSounds(Sink s) => TakesMacroSounds(s.UsbDs4, s.ResolvedPath, s.DeviceGuid);
 
+        /// <summary>The slot of a remote-fed sink, on no pad of this PC.</summary>
+        private const int RemoteFedSlot = 255;
+
+        // The Output Path a peer's effect report last named for a DualSense of
+        // this PC. Firmware holds what the report set, so a remote-fed sink maps
+        // its channels to match. A later peer's report replaces it.
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, int> _remotePeerPath = new();
+
+        /// <summary>Owner side: reads the output path a peer's DualSense effect
+        /// body asserts (valid_flag0 bit 7, the path in bits 4-5 of byte 7, one
+        /// below the Output Path value,
+        /// <see cref="Ds5EffectSynthesizer.BuildFields"/>). A DualShock 4's body
+        /// has no such bytes: its USB route goes as a feature report, and its
+        /// Bluetooth one rides the sound stream.</summary>
+        internal static void NoteRemoteSonyBody(Guid device, ushort productId, byte[] body)
+        {
+            if (!Ds5Pids.Contains(productId) || body == null || body.Length < 8 || (body[0] & 0x80) == 0) return;
+            _remotePeerPath[device] = ((body[7] >> 4) & 0x03) + 1;
+        }
+
+        /// <summary>No peer holds the pad any more, so a remote-fed sink maps
+        /// its channels by this PC's own Output Path again.</summary>
+        internal static void ForgetRemotePath(Guid device) => _remotePeerPath.TryRemove(device, out _);
+
         /// <summary>A device's resolved Output Path on a slot, 0 (Automatic)
-        /// when nothing answers. Never called under <see cref="_lock"/>.</summary>
+        /// when nothing answers. A remote-fed sink's is what the peer's reports
+        /// named, and the owner's own without one. Never called under
+        /// <see cref="_lock"/>.</summary>
         private static int ResolvedPathOf(int slot, Guid device)
         {
+            if (slot == RemoteFedSlot && _remotePeerPath.TryGetValue(device, out int peerPath)) return peerPath;
             try { return DeviceAudioOutputPathProvider?.Invoke(slot, device) ?? 0; }
             catch { return 0; }
         }
@@ -169,6 +220,12 @@ namespace PadForge.Common.Input
             /// the PCM source is the network ring.</summary>
             public bool RemoteFed;
             public RemoteAudioRing Remote;
+
+            /// <summary>The USB route the worker last wrote for a remote-fed
+            /// DualShock 4 (<see cref="UserEffectsDispatcher.WriteRemoteFedRoute"/>),
+            /// -1 for none. A new transport is a pad that may have reset, so it
+            /// starts over. Worker only.</summary>
+            public int RemoteRoute = -1;
 
             /// <summary>Consumer side (#138): this pad lives on a peer (HidPath is
             /// "peer://..."). It has NO local device transport — the stream thread's
@@ -1236,9 +1293,7 @@ namespace PadForge.Common.Input
                 // Read its current owner for each output block. A DualShock 4's
                 // USB routes are the DualSense's (Ds4UsbAudio), so one map
                 // serves both.
-                int outPath = 0;
-                try { outPath = DeviceAudioOutputPathProvider?.Invoke(_sink.Slot, _deviceGuid) ?? 0; }
-                catch { }
+                int outPath = ResolvedPathOf(_sink.Slot, _deviceGuid);
                 _sink.ResolvedPath = outPath;
 
                 for (int f = 0; f < frames; f++)
@@ -1272,7 +1327,7 @@ namespace PadForge.Common.Input
         /// (engine / UI). <paramref name="pendingActivation"/> is true when
         /// the slot has eligible speaker pads whose sinks aren't live yet —
         /// the caller should drop the sound (not leak it to the PC speakers);
-        /// the worker is signalled and the next trigger lands on the pad.
+        /// the worker is signaled and the next trigger lands on the pad.
         /// OwnsMaster is true where the sink applies the slot's master volume
         /// itself, so the caller leaves the samples at the action's
         /// volume.</summary>
@@ -1281,11 +1336,16 @@ namespace PadForge.Common.Input
             bool anyEligible = false;
             foreach (var (padGuid, ud) in EnumerateAssignedSonyPads(slot))
             {
-                // A peer:// pad's transport realities (BT vs USB) are the owner's
-                // problem; the consumer just ships the mix. Always eligible so a
-                // remote DS4 (whose peer path lacks the BT container guid) isn't
-                // wrongly excluded by the wired-DS4 filter below.
-                if ((ud.DevicePath ?? "").StartsWith("peer://", StringComparison.Ordinal)) { anyEligible = true; break; }
+                // A peer:// pad's route is the owner's to set, and the consumer
+                // just ships the mix. Eligible so a remote DS4 (whose peer path
+                // lacks the BT container guid) isn't wrongly excluded by the
+                // wired-DS4 filter below, unless its owner says it has no audio.
+                if ((ud.DevicePath ?? "").StartsWith("peer://", StringComparison.Ordinal))
+                {
+                    if (PeerDs4HasNoAudio(ud)) continue;
+                    anyEligible = true;
+                    break;
+                }
                 bool isBt = (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0;
                 bool isDs4 = Ds4Pids.Contains((ushort)ud.ProdId);
                 // A wired first-model DS4 has no audio. See ReconcileOnWorker.
@@ -1309,10 +1369,11 @@ namespace PadForge.Common.Input
                     .Where(s => s.Slot == slot && SinkAlive(s)
                                 && (deviceFilter == null ? TakesMacroSounds(s) : s.DeviceGuid == deviceFilter.Value))
                     // A DualSense carries the slot's master volume in its
-                    // firmware speaker byte, and a peer's owner renders its
-                    // own. PadForge drives a DualShock 4's speaker at one
+                    // firmware speaker byte, and a peer's owner replays that
+                    // byte. PadForge drives a DualShock 4's speaker at one
                     // level and leaves its USB endpoint to Windows, so its
-                    // macro sounds carry the master volume in their samples.
+                    // macro sounds carry the master volume in their samples,
+                    // and a peer's copy of one ships them that way.
                     .Select(s => (s.MacroMixer, !s.IsDs4))
                     .ToList();
             }
@@ -3086,6 +3147,7 @@ namespace PadForge.Common.Input
                 {
                     _remoteRings.Clear();
                     _remoteAudioDemand.Clear();
+                    _remotePeerPath.Clear();
                 }
                 Array.Clear(_lastRouted, 0, _lastRouted.Length);
                 lock (_jackLock)
@@ -3163,13 +3225,15 @@ namespace PadForge.Common.Input
                     if ((ud.DevicePath ?? "").StartsWith("peer://", StringComparison.Ordinal))
                     {
                         if (!ptOn && !demand && !personaDemand) continue;
+                        if (PeerDs4HasNoAudio(ud)) continue;
                         // A peer pad on a composite slot still receives the
                         // persona speaker mix (SinkSource reads the ring),
                         // shipped over the peer lane. Marked BT-shaped so
                         // the mic capture never binds to it.
                         // Peer pads are excluded from every mic role.
                         personaPads?.Add((guid, ud.DevicePath, true, true));
-                        desired.Add((slot, guid, ud.DevicePath, false, false, ptOn, mirrorSrc, false, true, false));
+                        desired.Add((slot, guid, ud.DevicePath, false, Ds4Pids.Contains((ushort)ud.ProdId),
+                            ptOn, mirrorSrc, false, true, false));
                         continue;
                     }
                     bool isBt = (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0;
@@ -3214,13 +3278,14 @@ namespace PadForge.Common.Input
                 bool isBt = ud.DevicePath.IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0;
                 bool isDs4 = Ds4Pids.Contains((ushort)ud.ProdId);
                 if (isDs4 && !Ds4HasAudio((ushort)ud.ProdId, isBt)) continue;
-                desired.Add((255, kv.Key, ud.DevicePath, isBt, isDs4, false, "", true, false,
+                desired.Add((RemoteFedSlot, kv.Key, ud.DevicePath, isBt, isDs4, false, "", true, false,
                     isDs4 && !isBt));
             }
 
             // Phase 2 — state sync under the lock; no I/O.
             var toDispose = new List<Sink>();
             var toBuild = new List<Sink>();
+            var remoteRoutesEnded = new List<(Guid Device, string Path)>();
             lock (_lock)
             {
                 if (!IsCurrentAudioWorker(worker)) return;
@@ -3256,6 +3321,13 @@ namespace PadForge.Common.Input
                     bool transportShapeChanged = !d.IsPeer
                         && (sink.IsBt != d.IsBt
                             || !string.Equals(sink.HidPath, d.Path, StringComparison.OrdinalIgnoreCase));
+                    // A pad on a slot with a peer's sound on it has two entries,
+                    // the slot's first. The route ends when no entry is the peer's.
+                    if (sink.RemoteRoute >= 0 && !desired.Any(e => e.RemoteFed && e.Guid == d.Guid))
+                    {
+                        remoteRoutesEnded.Add((d.Guid, sink.HidPath));
+                        sink.RemoteRoute = -1;
+                    }
                     sink.Slot = d.Slot;
                     sink.HidPath = d.Path;
                     sink.IsBt = d.IsBt;
@@ -3287,6 +3359,7 @@ namespace PadForge.Common.Input
                 {
                     // (dispose tracing added below at the decision sites)
                     if (wanted.Contains(kv.Key)) continue;
+                    if (kv.Value.RemoteRoute >= 0) remoteRoutesEnded.Add((kv.Key, kv.Value.HidPath));
                     toDispose.Add(DetachTransport_NoLock(kv.Value));
                     _sinks.Remove(kv.Key);
                 }
@@ -3311,6 +3384,37 @@ namespace PadForge.Common.Input
                 if (!IsCurrentAudioWorker(worker)) return;
                 BuildTransportOnWorker(s, worker);
             }
+
+            // A peer's sound over on a DualShock 4 on USB gives the headset back.
+            foreach (var (device, path) in remoteRoutesEnded)
+                if (IsCurrentAudioWorker(worker))
+                    UserEffectsDispatcher.WriteRemoteFedRoute(device, path, Ds4UsbAudio.RouteStereoHeadset);
+            // A sink gone from a pad no slot holds was the last thing holding
+            // its route (UserEffectsDispatcher.SweepOrphanedRoutes).
+            if (toDispose.Count > 0 && IsCurrentAudioWorker(worker))
+                UserEffectsDispatcher.SweepOrphanedRoutes();
+
+            // Phase 3a: a peer's sound on a DualShock 4 on USB. The owner's own
+            // Output Path picks the route and the render thread's channel map
+            // alike, Automatic being the speaker, so the two agree. A dispatcher
+            // writes no route while the peer holds the lease, and a pad on no
+            // slot has no dispatcher at all, so the worker writes it. A write
+            // that fails goes again on the next pass.
+            List<Sink> remoteRouted = null;
+            lock (_lock)
+            {
+                if (!IsCurrentAudioWorker(worker)) return;
+                foreach (var s in _sinks.Values)
+                    if (s.RemoteFed && s.UsbDs4) (remoteRouted ??= new()).Add(s);
+            }
+            if (remoteRouted != null)
+                foreach (var s in remoteRouted)
+                {
+                    byte route = Ds4UsbAudio.RouteFor(ResolvedPathOf(s.Slot, s.DeviceGuid));
+                    if (route != s.RemoteRoute && IsCurrentAudioWorker(worker)
+                        && UserEffectsDispatcher.WriteRemoteFedRoute(s.DeviceGuid, s.HidPath, route))
+                        s.RemoteRoute = route;
+                }
 
             // Phase 3b: headphone-jack watches follow the sink set. The jack
             // only matters while a sink exists, and observing it no longer
@@ -3447,6 +3551,7 @@ namespace PadForge.Common.Input
             s.PlayerStopped = null;
             s.BtHandle = new IntPtr(-1);
             s.Tx = null;
+            s.RemoteRoute = -1;
             s.Ds5OpusEncoder = null;   // rebuilt sinks start with a fresh encoder
             s.Ds4Sbc = null;
             s.Ds4Frames = null;
@@ -3554,9 +3659,7 @@ namespace PadForge.Common.Input
                 if (s.IsDs4)
                 {
                     bool mic = IsDs4MicArmed(s.DeviceGuid);
-                    int armPath = 0;
-                    try { armPath = DeviceAudioOutputPathProvider?.Invoke(s.Slot, s.DeviceGuid) ?? 0; }
-                    catch { }
+                    int armPath = ResolvedPathOf(s.Slot, s.DeviceGuid);
                     var (hpVol, spkVol) = Ds4BtAudio.VolumesFor(armPath, ResolveHeadphoneVolume(s.Slot, s.DeviceGuid));
                     var vol = Ds4BtAudio.BuildControlReport(
                         mic ? Ds4BtAudio.ModeMicrophone : Ds4BtAudio.ModeSpeaker,
@@ -4243,9 +4346,10 @@ namespace PadForge.Common.Input
 
         /// <summary>Consumer (#138): pull one tick of a peer pad's per-pad mix (test
         /// tone + slot macros + system passthrough) and ship it as s16 48 kHz stereo
-        /// in sub-MTU 1024 B blocks to the owner. Full-scale PCM — speaker VOLUME is a
-        /// firmware byte the OWNER's effects dispatcher asserts (WantsSpeakerPath),
-        /// matching the local model where volume never lives in the samples.</summary>
+        /// in sub-MTU 1024 B blocks to the owner, at the level a local pad of its kind
+        /// would play. A DualSense's speaker volume is a firmware byte in the effect
+        /// body the owner replays, and a DualShock 4's macro sounds carry the master
+        /// volume in their samples (<see cref="GetSlotSinkMixers"/>).</summary>
         private static void ShipPeerAudioTick(Sink s, float[] pull)
         {
             // Same drift trim as the BT lanes: steer the consumer's loopback cursor to
@@ -4351,9 +4455,7 @@ namespace PadForge.Common.Input
         private static void SendDs5BtFrame(Sink s, float[] pull, byte[] opus, byte[] report,
                                            short[] hapticPcm = null)
         {
-            int outPath = 0;
-            try { outPath = DeviceAudioOutputPathProvider?.Invoke(s.Slot, s.DeviceGuid) ?? 0; }
-            catch { }
+            int outPath = ResolvedPathOf(s.Slot, s.DeviceGuid);
             // Mono sinks get a mono frame (see Ds5BtFrameNeedsMonoFold):
             // the split/mono headset paths by register semantics, and the
             // 0x13 speaker lane because the mono speaker taps one channel.
@@ -5117,9 +5219,7 @@ namespace PadForge.Common.Input
             // first, the rule the DS5 lane applies (Ds5BtFrameNeedsMonoFold).
             // pull is refilled per sink, so the in-place fold cannot leak into
             // another sink's tick.
-            int outPath = 0;
-            try { outPath = DeviceAudioOutputPathProvider?.Invoke(s.Slot, s.DeviceGuid) ?? 0; }
-            catch { }
+            int outPath = ResolvedPathOf(s.Slot, s.DeviceGuid);
             if (!Ds4BtAudio.IsStereoRoute(outPath)) FoldFrameToMono(pull);
             byte target = Ds4BtAudio.TargetFor(outPath);
             byte mode = Ds4AudioMode(s.DeviceGuid);

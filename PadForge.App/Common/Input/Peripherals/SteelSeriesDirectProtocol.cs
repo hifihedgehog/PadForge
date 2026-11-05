@@ -129,10 +129,18 @@ namespace PadForge.Common.Input.Peripherals
         /// colors.</summary>
         public int RepaintMs { get; init; }
 
+        /// <summary>How long a changed color has to stay the same before it
+        /// goes out, for a family whose every color may be stored, as
+        /// <see cref="LenovoLegionLighting.HoldMs"/> does: a color that never
+        /// holds, a rainbow or one that follows the sound, leaves the device
+        /// on the last that did. 0: at once.</summary>
+        public int HoldMs { get; init; }
+
         /// <summary>How long the claim and an unchanged color stand before
         /// they are sent again. Every family has one but the Arctis Nova 3,
-        /// whose color frames end with the report OpenRGB saves it with: 0,
-        /// never.</summary>
+        /// whose color frames end with the report OpenRGB saves it with, and
+        /// the Siberia 350, which takes stored pictures only: 0, never. Both
+        /// still get their color again after Windows resumes.</summary>
         public int ReassertMs { get; init; }
 
         /// <summary>A 2.4 GHz dongle: each report is answered by an input
@@ -836,13 +844,13 @@ namespace PadForge.Common.Input.Peripherals
             // 120-148, SteelSeriesArctisNova3Controller.h:17-19). OpenRGB
             // registers it on interface 4, usage page 0xFFC0, usage 1
             // (SteelSeriesControllerDetect.cpp:523). Its save is the apply
-            // report again (lines 112-115), so this family repaints slowly
-            // and never re-asserts (above). No reference has a frame that
-            // returns the stored lighting.
+            // report again (lines 112-115), so this family holds a changed
+            // color, repaints slowly and never re-asserts (above). No
+            // reference has a frame that returns the stored lighting.
             new()
             {
                 Family = SteelSeriesFamily.ArctisNova3, Interface = 4, Report = SteelSeriesReport.Output,
-                RepaintMs = 500, ReassertMs = 0,
+                HoldMs = LenovoLegionLighting.HoldMs, RepaintMs = 500, ReassertMs = 0,
                 Lights = Zones(2),
                 Paint = (_, _, _, c, _) =>
                 {
@@ -860,13 +868,13 @@ namespace PadForge.Common.Input.Peripherals
             // (SteelSeriesControllerDetect.cpp:522), and offers it as a
             // static color with no Direct mode and no save ("@direct :x:",
             // RGBController_SteelSeriesSiberia.cpp:14-40), the one reference
-            // for it. So a color goes no sooner than 500 ms after the last,
-            // the bound PadForge keeps for a device that takes stored
-            // pictures only.
+            // for it. So a changed color holds, goes no sooner than 500 ms
+            // after the last and is never repeated, the bounds PadForge keeps
+            // for a device that takes stored pictures only.
             new()
             {
                 Family = SteelSeriesFamily.Siberia350, Interface = 3, UsagePage = null, Usage = null,
-                Report = SteelSeriesReport.Output, RepaintMs = 500, ReassertMs = ReassertMs,
+                Report = SteelSeriesReport.Output, HoldMs = LenovoLegionLighting.HoldMs, RepaintMs = 500, ReassertMs = 0,
                 OneColor = (_, _, r, g, b) => new[]
                 {
                     SiberiaCommand(0x95, 0x80, 0xBF),

@@ -231,6 +231,7 @@ namespace PadForge.Tests
     /// <summary>The ARGB controller through the shared worker: listed only
     /// with its ARGB interface, lit through both, handed back on the
     /// control collection (#557).</summary>
+    [Collection("PeripheralOutputStatics")]
     public class RazerArgbWorkerTests
     {
         [Fact]

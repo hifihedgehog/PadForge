@@ -315,6 +315,7 @@ namespace PadForge.Common.Input.Peripherals
                         }
                         retryAt = 0;
                         waitingLogged = false;
+                        PeripheralOutputs.SetProgramRefusal(OutputFamily.ChromaCategory, null);
                         PeripheralOutputs.SetBackendState(OutputFamily.ChromaCategory, BackendState.Idle);
                         await WaitAsync(_pollMs, ct).ConfigureAwait(false);
                         continue;
@@ -341,6 +342,7 @@ namespace PadForge.Common.Input.Peripherals
                         {
                             sessionCategories = null;
                             retryAt = _clock() + _retryMs;
+                            ReportRefusal();
                             PeripheralOutputs.SetBackendState(OutputFamily.ChromaCategory, BackendState.Waiting);
                             if (!waitingLogged)
                             {
@@ -354,6 +356,7 @@ namespace PadForge.Common.Input.Peripherals
                         rejectLogged.Clear();
                         waitingLogged = false;
                         lastHeartbeat = _clock();
+                        PeripheralOutputs.SetProgramRefusal(OutputFamily.ChromaCategory, null);
                         PeripheralOutputs.SetBackendState(OutputFamily.ChromaCategory, BackendState.Connected);
                         PadForge.Engine.SdlDiagLog.WriteLine("PERIPHERAL Chroma session for " + string.Join(",", categories));
                     }
@@ -394,6 +397,7 @@ namespace PadForge.Common.Input.Peripherals
                         session = null;
                         sessionCategories = null;
                         retryAt = _clock() + _retryMs;
+                        ReportRefusal();
                         PeripheralOutputs.SetBackendState(OutputFamily.ChromaCategory, BackendState.Waiting);
                         PadForge.Engine.SdlDiagLog.WriteLine("PERIPHERAL Chroma session lost");
                         continue;
@@ -409,9 +413,16 @@ namespace PadForge.Common.Input.Peripherals
             finally
             {
                 if (session != null) await EndSessionAsync(session).ConfigureAwait(false);
+                PeripheralOutputs.SetProgramRefusal(OutputFamily.ChromaCategory, null);
                 PeripheralOutputs.SetBackendState(OutputFamily.ChromaCategory, BackendState.Idle);
             }
         }
+
+        /// <summary>No session stands. With Synapse running that is its answer,
+        /// which the tab names in place of a wait for it to start.</summary>
+        private static void ReportRefusal()
+            => PeripheralOutputs.SetProgramRefusal(OutputFamily.ChromaCategory,
+                PeripheralOutputs.Presence.RazerSoftwareRunning ? ProgramRefusal.Everything : null);
 
         /// <summary>Waits a poll interval, or less when a claim changes.</summary>
         private async Task WaitAsync(int ms, CancellationToken ct)

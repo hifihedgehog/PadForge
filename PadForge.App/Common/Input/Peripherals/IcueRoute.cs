@@ -12,7 +12,7 @@ namespace PadForge.Common.Input.Peripherals
 
     /// <summary>One LED of a device and where it sits, CorsairLedPosition
     /// (iCUESDK.h:222-227): in millimeters for keyboards, mice, mousemats
-    /// and headset stands.</summary>
+    /// and headset stands, and in logical units for headsets.</summary>
     internal readonly record struct IcueLedPosition(uint Id, double X, double Y);
 
     /// <summary>One LED and its color, CorsairLedColor (iCUESDK.h:299-306):
@@ -87,19 +87,14 @@ namespace PadForge.Common.Input.Peripherals
     /// </summary>
     internal static class IcueRoute
     {
-        // CorsairError (iCUESDK.h:22-32).
+        // The CorsairError values the route tells apart (iCUESDK.h:22-32).
         internal const int Success = 0;
         internal const int NotConnected = 1;
-        internal const int NoControl = 2;
-        internal const int IncompatibleProtocol = 3;
         internal const int InvalidArguments = 4;
         internal const int InvalidOperation = 5;
         internal const int DeviceNotFound = 6;
-        internal const int NotAllowed = 7;
 
-        // CorsairSessionState (iCUESDK.h:34-43).
-        internal const int StateClosed = 1;
-        internal const int StateConnecting = 2;
+        // The CorsairSessionState values the route tells apart (iCUESDK.h:34-43).
         internal const int StateTimeout = 3;
         internal const int StateConnectionRefused = 4;
         internal const int StateConnectionLost = 5;
@@ -135,6 +130,7 @@ namespace PadForge.Common.Input.Peripherals
             ("keyboard", 0x0001),
             ("mouse", 0x0002),
             ("mousemat", 0x0004),
+            ("headset", 0x0008),
             ("headsetstand", 0x0010),
         };
 
@@ -164,12 +160,15 @@ namespace PadForge.Common.Input.Peripherals
         {
             CorsairDeviceType.Mouse => "mouse",
             CorsairDeviceType.Mousemat => "mousemat",
+            CorsairDeviceType.Headset => "headset",
             CorsairDeviceType.HeadsetStand => "headsetstand",
             _ => "keyboard",
         };
 
         /// <summary>The type of a Corsair row's device: the type OpenRGB's
-        /// V2 table gives its product (CorsairPeripheralV2Devices.cpp,
+        /// V2 table or SignalRGB's Bragi plugins give its product
+        /// (CorsairPeripheralV2Devices.cpp, Corsair_Bragi_Device.js,
+        /// Corsair_Headset_Controller_Bragi.js,
         /// <see cref="CorsairPeripheralV2Lighting.DeviceOf"/>), else the
         /// section of CorsairPeripheralControllerDetect.cpp its product is
         /// registered in (<see cref="CorsairPeripheralLighting.TypeOf"/>),
@@ -213,8 +212,8 @@ namespace PadForge.Common.Input.Peripherals
         /// (Generic/LedMappings.cs:195-197). The edge group is the keyboard's
         /// light pipe, and the vendor group lights such as a profile switch
         /// or a dial ring (iCUESDKLedIdEnum.h:5-8). Any other group's LED is
-        /// a zone, numbered by <see cref="Map"/>. Each light sits where iCUE
-        /// places it, in millimeters.
+        /// a zone, as a headset's are, numbered by <see cref="Map"/>. Each
+        /// light sits where iCUE places it.
         /// </summary>
         internal static LightInfo LightOf(in IcueLedPosition led)
         {

@@ -75,7 +75,6 @@ namespace PadForge.Common.Input.Peripherals
         internal const ushort VendorId = 0x187C;
         internal const ushort Aw3423Dwf = 0x100E;
         internal const ushort Aw2724Dm = 0x1010;
-        internal const ushort Aw3225Qf = 0x1013;
 
         /// <summary>The AW3225QF's report with its ID (packet[65],
         /// AlienwareMonitorController.cpp:61).</summary>
@@ -119,14 +118,17 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (collection == null || collection.VendorId != VendorId) return null;
             // SignalRGB's plugin sends the AW2724DM what OpenRGB sends the AW3423DWF,
-            // to the same lights (Alienware_Monitor_Gen3_Controller.js).
-            if (collection.ProductId == Aw2724Dm) collection = collection with { ProductId = Aw3423Dwf };
+            // to the same lights (Alienware_Monitor_Gen3_Controller.js:332-333), so
+            // it matches as that monitor and keeps its own name and product.
+            ushort productId = collection.ProductId;
+            if (productId == Aw2724Dm) collection = collection with { ProductId = Aw3423Dwf };
             var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
             if (registrations.Count == 0) return null;
             var registration = registrations[0];
             bool dwf = registration.Detector == "DetectAlienwareAW3423DWFControllers";
             if (collection.OutputReportLength < (dwf ? DwfReportSize : QfReportSize)) return null;
-            return _models.Get(registration.Name, () => Model(registration.Name, collection.ProductId, dwf));
+            string name = productId == Aw2724Dm ? "Alienware AW2724DM" : registration.Name;
+            return _models.Get(name, () => Model(name, productId, dwf));
         }
 
         /// <summary>The logo, the number and the power button, each at its

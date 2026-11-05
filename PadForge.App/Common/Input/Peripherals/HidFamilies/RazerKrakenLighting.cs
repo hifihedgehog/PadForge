@@ -60,7 +60,9 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>The headsets are Razer's, so the linker's Razer row reaches
     /// them and closes their path while Synapse runs
-    /// (<see cref="PeripheralLinker.VendorProgramRuns"/>).</para>
+    /// (<see cref="PeripheralLinker.VendorProgramRuns"/>).
+    /// The model names Synapse too, so the worker sends them nothing while
+    /// it runs, and no hand-back lands on Synapse's colors.</para>
     /// </summary>
     internal sealed class RazerKrakenLighting : IHidLightingFamily
     {
@@ -69,8 +71,6 @@ namespace PadForge.Common.Input.Peripherals
         internal const string Detector = "DetectRazerKrakenControllers";
 
         /// <summary>The product IDs (RazerDevices.h:234-241).</summary>
-        internal const ushort KrakenClassic = 0x0501;
-        internal const ushort KrakenClassicAlt = 0x0506;
         internal const ushort Kraken = 0x0504;
         internal const ushort KrakenV2 = 0x0510;
         internal const ushort KrakenUltimate = 0x0527;
@@ -129,6 +129,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = this,
             Name = name,
+            Programs = VendorPrograms.Razer,
             Map = MapOf(productId),
             RepaintMs = RepaintMs,
             Begin = (io, wait) => Session.Begin(io, productId),

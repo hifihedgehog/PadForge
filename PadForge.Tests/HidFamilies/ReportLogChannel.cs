@@ -190,13 +190,17 @@ namespace PadForge.Tests
         }
 
         public HidLightingBackend Started(IReadOnlyList<IHidLightingFamily> families, HidCollectionInfo present)
+            => Started(families, new[] { present });
+
+        /// <summary>A worker handed a walk of several collections.</summary>
+        public HidLightingBackend Started(IReadOnlyList<IHidLightingFamily> families, HidCollectionInfo[] present)
         {
             var backend = new HidLightingBackend(families, Open, _ => Box, Tick,
                 (path, frame, _) => { lock (OneShots) OneShots.Add((path, frame, true)); return true; },
                 (path, frame, _) => { lock (OneShots) OneShots.Add((path, frame, false)); return true; },
                 ms => { lock (Waits) Waits.Add(ms); Advance(ms); }, idleTickMs: 5);
             backend.Start();
-            backend.Rescan(new[] { present });
+            backend.Rescan(present);
             Passes(backend);
             return backend;
         }

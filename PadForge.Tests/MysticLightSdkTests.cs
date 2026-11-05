@@ -34,6 +34,13 @@ namespace PadForge.Tests
             public string[] Types = { "MSI_MB", "MSI_MOUSE", "MSI_KEYBOARD", "MSI_HEADSET" };
             public string[] Counts = { "2", "1", "1", "x" };
 
+            /// <summary>What each call answers for one LED, by its type and
+            /// index, 0 where the script names none.</summary>
+            public Func<string, int, int> GetStyleStatus = (_, _) => 0;
+            public Func<string, int, int> SetSteadyStatus = (_, _) => 0;
+            public Func<string, int, int, int, int> ColorStatus;
+            public Func<string, int, string, int> RestoreStyleStatus = (_, _, _) => 0;
+
             private void Log(string s) { lock (_lock) _calls.Add(s); }
             public string[] Calls { get { lock (_lock) return _calls.ToArray(); } }
             public int Count(string call) => Calls.Count(c => c == call);
@@ -52,7 +59,7 @@ namespace PadForge.Tests
             {
                 Log($"getstyle:{type}:{index}");
                 style = "Rainbow";
-                return 0;
+                return GetStyleStatus(type, index);
             }
             public int GetLedColor(string type, int index, out int r, out int g, out int b)
             {
@@ -63,12 +70,12 @@ namespace PadForge.Tests
             public int SetLedStyle(string type, int index, string style)
             {
                 Log($"style:{type}:{index}:{style}");
-                return 0;
+                return style == "Steady" ? SetSteadyStatus(type, index) : RestoreStyleStatus(type, index, style);
             }
             public int SetLedColor(string type, int index, int r, int g, int b)
             {
                 Log($"color:{type}:{index}:{r},{g},{b}");
-                return SetStatus;
+                return ColorStatus != null ? ColorStatus(type, index, r, g) : SetStatus;
             }
             public int Release() { Log("release"); return 0; }
             public void Unload() => Log("unload");
@@ -270,6 +277,171 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "color:MSI_MB:0:1,2,3", "style:MSI_MB:0:Rainbow", "release", "unload" },
                 calls.Skip(failed + 1).Take(4));
             Assert.DoesNotContain("getstyle:MSI_MB:1", calls.Take(failed + 1));
+        }
+
+        private const int NotSupported = -103;
+
+        private static int Lines(string text)
+            => PadForge.Engine.SdlDiagLog.Snapshot().Split('\n').Count(l => l.Contains(text));
+
+        /// <summary>One LED answers MLAPI_NOT_SUPPORTED to its color
+        /// (mystic_light.rs:191, README.md:173-175). It gets its own state back
+        /// and is left out for the session, once in the log, and the LED after
+        /// it is lit. RGB.NET reads neither answer and goes on the same way
+        /// (MsiMainboardRGBDevice.cs:36-41, MsiDeviceUpdateQueue.cs:41-42).</summary>
+        [Fact]
+        public void OneLedThatRefusesItsColor_IsLeftOut_AndTheNextIsLit()
+        {
+            var native = new FakeMysticLight { ColorStatus = (type, index, r, g) => index == 0 && r != 1 ? NotSupported : 0 };
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Board, Lighting = new[] { Path("MSI_MB") } });
+            string line = "PERIPHERAL MYSTIC LIGHT SDK LED MSI_MB:0 left out for this session";
+            int before = Lines(line);
+            using var backend = Backend(native);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Board, slot: 0, player: 1, 0x10, 0x20, 0x30);
+            Assert.True(WaitFor(() => native.Count("color:MSI_MB:1:16,32,48") == 1), "the next LED was lit");
+            Assert.Equal(new[]
+            {
+                "load", "init", "info",
+                "getstyle:MSI_MB:0", "getcolor:MSI_MB:0", "style:MSI_MB:0:Steady", "color:MSI_MB:0:16,32,48",
+                "color:MSI_MB:0:1,2,3", "style:MSI_MB:0:Rainbow",
+                "getstyle:MSI_MB:1", "getcolor:MSI_MB:1", "style:MSI_MB:1:Steady", "color:MSI_MB:1:16,32,48",
+            }, native.Calls);
+            Assert.Equal(before + 1, Lines(line));
+
+            native.Clear();
+            PeripheralOutputs.SetLighting(Board, slot: 0, player: 1, 0xFF, 0x00, 0x00);
+            Assert.True(WaitFor(() => native.Count("color:MSI_MB:1:255,0,0") == 1));
+            Thread.Sleep(40);
+            Assert.Equal(new[] { "color:MSI_MB:1:255,0,0" }, native.Calls);
+            Assert.Equal(before + 1, Lines(line));
+            Assert.True(WaitFor(() => PeripheralOutputs.StateOf(OutputFamily.MysticLightType) == BackendState.Connected));
+            Assert.Null(PeripheralOutputs.RefusalOn(Path("MSI_MB")));
+        }
+
+        /// <summary>An LED whose state cannot be read has nothing to come back
+        /// to, so it is never changed.</summary>
+        [Fact]
+        public void AnLedWhoseStateCannotBeRead_IsNeverChanged()
+        {
+            var native = new FakeMysticLight { GetStyleStatus = (_, index) => index == 0 ? NotSupported : 0 };
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Board, Lighting = new[] { Path("MSI_MB") } });
+            using var backend = Backend(native);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Board, slot: 0, player: 1, 0x10, 0x20, 0x30);
+            Assert.True(WaitFor(() => native.Count("color:MSI_MB:1:16,32,48") == 1), "the next LED was lit");
+            Assert.DoesNotContain(native.Calls, c => c.StartsWith("style:MSI_MB:0") || c.StartsWith("color:MSI_MB:0"));
+            Assert.Equal(0, native.Count("release"));
+        }
+
+        /// <summary>An LED that refuses "Steady" is still given its color, as
+        /// RGB.NET gives it, whose call discards that answer.</summary>
+        [Fact]
+        public void AnLedThatRefusesSteady_IsStillGivenItsColor()
+        {
+            var native = new FakeMysticLight { SetSteadyStatus = (_, index) => index == 0 ? NotSupported : 0 };
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Board, Lighting = new[] { Path("MSI_MB") } });
+            using var backend = Backend(native);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Board, slot: 0, player: 1, 0x10, 0x20, 0x30);
+            Assert.True(WaitFor(() => native.Count("color:MSI_MB:1:16,32,48") == 1));
+            Assert.Equal(1, native.Count("color:MSI_MB:0:16,32,48"));
+            Assert.Equal(0, native.Count("release"));
+        }
+
+        /// <summary>Every LED claimed refuses: nothing can be lit, so the
+        /// session ends and the tab says the program refused.</summary>
+        [Fact]
+        public void EveryLedRefusing_EndsTheSession_AndIsARefusal()
+        {
+            var native = new FakeMysticLight { SetStatus = NotSupported };
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Board, Lighting = new[] { Path("MSI_MB") } });
+            using var backend = new MysticLightBackend(native, pollMs: 10, retryMs: 60000, stopWaitMs: 2000);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Board, slot: 0, player: 1, 0x10, 0x20, 0x30);
+            Assert.True(WaitFor(() => native.Count("release") == 1), "the session ended");
+            Assert.Equal(1, native.Count("color:MSI_MB:1:16,32,48"));
+            Assert.True(WaitFor(() => PeripheralOutputs.RefusalOn(Path("MSI_MB")) != null));
+            Assert.Equal(BackendState.Waiting, PeripheralOutputs.StateOf(OutputFamily.MysticLightType));
+        }
+
+        /// <summary>A whole path refuses while another is lit. The lit one
+        /// stays lit, the session stays, and only the path that refused says
+        /// so on its tab.</summary>
+        [Fact]
+        public void APathThatRefuses_LeavesTheSession_ForThePathThatIsLit()
+        {
+            var native = new FakeMysticLight { ColorStatus = (type, _, r, _) => type == "MSI_KEYBOARD" && r != 1 ? NotSupported : 0 };
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Board, Lighting = new[] { Path("MSI_MB") } },
+                 new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("other") } });
+            using var backend = Backend(native);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Board, slot: 0, player: 1, 0x10, 0x20, 0x30);
+            PeripheralOutputs.SetLighting(Keyboard, slot: 1, player: 2, 0x40, 0x50, 0x60);
+            Assert.True(WaitFor(() => PeripheralOutputs.RefusalOn(Path("other")) != null), "the path that refused says so");
+            Assert.Null(PeripheralOutputs.RefusalOn(Path("MSI_MB")));
+            Assert.Equal(0, native.Count("release"));
+            Assert.True(WaitFor(() => PeripheralOutputs.StateOf(OutputFamily.MysticLightType) == BackendState.Connected));
+        }
+
+        /// <summary>An LED that took a color and then refuses one did not lose
+        /// a feature: the program stopped answering, and the session ends.</summary>
+        [Fact]
+        public void AnLedThatTookAColorAndThenRefuses_EndsTheSession()
+        {
+            var native = new FakeMysticLight();
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Board, Lighting = new[] { Path("MSI_MB") } });
+            using var backend = Backend(native);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Board, slot: 0, player: 1, 0x10, 0x20, 0x30);
+            Assert.True(WaitFor(() => native.Count("color:MSI_MB:1:16,32,48") == 1));
+            native.SetStatus = NotSupported;
+            PeripheralOutputs.SetLighting(Board, slot: 0, player: 1, 0xFF, 0x00, 0x00);
+            Assert.True(WaitFor(() => native.Count("release") == 1), "the session ended");
+        }
+
+        /// <summary>A failed call to Initialize is the program answering no,
+        /// and the tab says so.</summary>
+        [Fact]
+        public void AFailedInitialize_IsARefusal()
+        {
+            var native = new FakeMysticLight { InitStatus = -3 };
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Board, Lighting = new[] { Path("MSI_MB") } });
+            using var backend = Backend(native);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Board, slot: 0, player: 1, 0x10, 0x20, 0x30);
+            Assert.True(WaitFor(() => PeripheralOutputs.RefusalOn(Path("MSI_MB")) != null), "the refusal was recorded");
+        }
+
+        /// <summary>A restore the SDK refuses is logged once for its LED, so
+        /// an effect that did not come back has a trace.</summary>
+        [Fact]
+        public void ARestoreThatFails_IsLoggedOnce()
+        {
+            var native = new FakeMysticLight { RestoreStyleStatus = (_, index, _) => index == 0 ? NotSupported : 0 };
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Board, Lighting = new[] { Path("MSI_MB") } });
+            string line = "PERIPHERAL MYSTIC LIGHT SDK could not restore LED MSI_MB:0";
+            int before = Lines(line);
+            using var backend = Backend(native);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Board, slot: 0, player: 1, 0x10, 0x20, 0x30);
+            Assert.True(WaitFor(() => native.Count("color:MSI_MB:1:16,32,48") == 1));
+            PeripheralOutputs.ReleaseLighting(Board, 0);
+            Assert.True(WaitFor(() => native.Count("unload") == 1));
+            Assert.Equal(before + 1, Lines(line));
+            PeripheralOutputs.SetLighting(Board, slot: 0, player: 1, 0x10, 0x20, 0x30);
+            Assert.True(WaitFor(() => native.Count("color:MSI_MB:1:16,32,48") == 2));
+            PeripheralOutputs.ReleaseLighting(Board, 0);
+            Assert.True(WaitFor(() => native.Count("unload") == 2));
+            Assert.Equal(before + 1, Lines(line));
         }
 
         // ── Finding the library ──

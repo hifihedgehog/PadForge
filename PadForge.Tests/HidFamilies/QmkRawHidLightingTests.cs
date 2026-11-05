@@ -10,6 +10,7 @@ namespace PadForge.Tests
 {
     /// <summary>QMK's raw HID collection with no list of IDs, against qmk_firmware's via.c,
     /// vial-qmk's and OpenRGB's QMKOpenRGBController (#557).</summary>
+    [Collection("PeripheralOutputStatics")]
     public class QmkRawHidLightingTests
     {
         private static string Hex(byte[] bytes, int from, int count) => BitConverter.ToString(bytes, from, count).Replace('-', ' ');

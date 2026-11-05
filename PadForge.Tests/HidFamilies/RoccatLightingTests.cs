@@ -68,7 +68,7 @@ namespace PadForge.Tests
                     Assert.NotNull(vulcan);
                     Assert.Same(vulcan, HidLightingFamilies.Match(collection));
                     Assert.Equal(r.Name, vulcan.Name);
-                    Assert.Same(VendorPrograms.Roccat, vulcan.Programs);
+                    Assert.Same(r.VendorId == RoccatVulcanLighting.TurtleBeachVendorId ? VendorPrograms.TurtleBeach : VendorPrograms.Roccat, vulcan.Programs);
                     Assert.True(vulcan.Map.Lights.Count > 0, r.Name);
                     Assert.True(Assert.Single(vulcan.Siblings).Is(collection, led), r.Name);
                     Assert.False(vulcan.Siblings[0].Is(collection, collection), r.Name);
@@ -801,7 +801,7 @@ namespace PadForge.Tests
         [Fact]
         public void ABurstSession_TakesControl_AndGivesItBack()
         {
-            var io = new FakeReportChannel { FeatureReportLength = 11 };
+            var io = new FakeReportChannel { Path = null, FeatureReportLength = 11 };
             var model = ModelNamed("Roccat Burst Pro");
             var session = model.Begin(io, _ => { });
             Assert.Empty(io.Calls);
@@ -817,7 +817,7 @@ namespace PadForge.Tests
         public void AKoneXpSession_WaitsForTheMouse()
         {
             int reads = 0;
-            var io = new FakeReportChannel { Feature = id => id == 0x04 ? new byte[] { 0x04, (byte)(reads++ >= 1 ? 1 : 0), 0, 0 } : null };
+            var io = new FakeReportChannel { Path = null, Feature = id => id == 0x04 ? new byte[] { 0x04, (byte)(reads++ >= 1 ? 1 : 0), 0, 0 } : null };
             var model = ModelNamed("Roccat Kone XP");
             var waits = new List<int>();
             var session = model.Begin(io, waits.Add);
@@ -831,7 +831,7 @@ namespace PadForge.Tests
         [Fact]
         public void AKoneAimoSession_ReadsAsSwarmDoes_AndGivesTheMouseBack()
         {
-            var io = new FakeReportChannel();
+            var io = new FakeReportChannel { Path = null };
             var model = ModelNamed("Roccat Kone Aimo 16K");
             var session = model.Begin(io, _ => { });
             Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, new int[11]));
@@ -880,7 +880,7 @@ namespace PadForge.Tests
             read[1] = 0x1C;
             read[14] = 0x41;
             read[16] = 0x02;
-            read[26] = 0x6B;
+            read[26] = 0x65;
             return read;
         }
 
@@ -889,7 +889,7 @@ namespace PadForge.Tests
         {
             const string product = "roccat:1E7D:2CEE";
             var stored = KovaRead();
-            var io = new FakeReportChannel { Feature = id => id == 0x06 ? stored : id == 0x09 ? new byte[8] : null };
+            var io = new FakeReportChannel { Path = null, Feature = id => id == 0x06 ? stored : id == 0x09 ? new byte[8] : null };
             var model = ModelNamed("Roccat Kova");
             Assert.Equal(RoccatLighting.StoredHoldMs, model.HoldMs);
             Assert.Equal(RoccatLighting.StoredRepaintMs, model.RepaintMs);
@@ -915,7 +915,7 @@ namespace PadForge.Tests
         {
             KeyboardProfileBackups.ResetForTest();
             var stored = KovaRead();
-            var io = new FakeReportChannel { Feature = id => id == 0x06 ? stored : new byte[8] };
+            var io = new FakeReportChannel { Path = null, Feature = id => id == 0x06 ? stored : new byte[8] };
             var model = ModelNamed("Roccat Kova");
             var session = model.Begin(io, _ => { });
             int before = io.Calls.Count;
@@ -934,19 +934,19 @@ namespace PadForge.Tests
             var original = KovaRead();
             KeyboardProfileBackups.Take(product, 0, original);
             var model = ModelNamed("Roccat Kova");
-            Assert.True(model.Owed());
+            Assert.True(model.Owed(null));
 
             var ours = RoccatLighting.KovaProfile(original, 0x112233, 0x445566);
-            var io = new FakeReportChannel { Feature = id => id == 0x06 ? ours : new byte[8] };
+            var io = new FakeReportChannel { Path = null, Feature = id => id == 0x06 ? ours : new byte[8] };
             var session = Assert.IsType<RoccatLighting.StoredSession>(model.Begin(io, _ => { }));
             Assert.Equal(original, session.Original);
 
             Assert.True(model.Repair(io, _ => { }));
             Assert.Equal(original, io.Calls.Last().Bytes);
-            Assert.False(model.Owed());
+            Assert.False(model.Owed(null));
 
             KeyboardProfileBackups.Take(product, 0, original);
-            var broken = new FakeReportChannel { FailWrites = true };
+            var broken = new FakeReportChannel { Path = null, FailWrites = true };
             Assert.False(model.Repair(broken, _ => { }));
             Assert.Equal(1, KeyboardProfileBackups.Failures(product));
         }
@@ -956,7 +956,7 @@ namespace PadForge.Tests
         {
             const string product = "roccat:1E7D:343A";
             var stored = new byte[] { 0x02, 0x03, 0x0A, 0x05, 0xFF, 0x00, 0x10, 0x20, 0x30, 0xFF, 0x0A, 0x05, 0xFF, 0x00, 0x40, 0x50, 0x60, 0xFF, 0x80 };
-            var io = new FakeReportChannel { Feature = id => id == 0x02 ? stored : null };
+            var io = new FakeReportChannel { Path = null, Feature = id => id == 0x02 ? stored : null };
             var model = ModelNamed("Roccat Sense Aimo Mid");
             var session = model.Begin(io, _ => { });
             Assert.Equal(new[] { "get" }, io.Calls.Select(c => c.Kind));
@@ -979,7 +979,7 @@ namespace PadForge.Tests
         [Fact]
         public void ASessionWhoseWriteFails_ReportsIt()
         {
-            var io = new FakeReportChannel { FailWrites = true };
+            var io = new FakeReportChannel { Path = null, FailWrites = true };
             var model = ModelNamed("Roccat Kone Pro");
             var session = model.Begin(io, _ => { });
             Assert.Equal(HidLightingPaint.Failed, session.Paint(io, _ => { }, model.Map.Lights, new int[2]));

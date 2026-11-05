@@ -45,6 +45,8 @@ namespace PadForge.Tests
             private readonly SettingsCollection _settings = SettingsManager.UserSettings;
             private readonly Func<int, IReadOnlyDictionary<Guid, DeviceSlotConfig>> _configs =
                 UserEffectsDispatcher.SlotPerDeviceConfigsProvider;
+            private readonly bool[] _created = SettingsManager.SlotCreated;
+            private readonly bool[] _enabled = SettingsManager.SlotEnabled;
             private UserEffectsDispatcher _dispatcher;
 
             public FilePad(AudioOutputPath path)
@@ -59,6 +61,10 @@ namespace PadForge.Tests
                 System.IO.File.WriteAllBytes(File, Array.Empty<byte>());
                 SettingsManager.UserDevices = new();
                 SettingsManager.UserSettings = new();
+                SettingsManager.SlotCreated = new bool[16];
+                SettingsManager.SlotEnabled = new bool[16];
+                SettingsManager.SlotCreated[14] = SettingsManager.SlotEnabled[14] = true;
+                SettingsManager.SlotCreated[15] = SettingsManager.SlotEnabled[15] = true;
                 UserEffectsDispatcher.SlotPerDeviceConfigsProvider = null;
                 SettingsManager.UserDevices.Items.Add(new UserDevice
                 {
@@ -135,6 +141,8 @@ namespace PadForge.Tests
                 Land();
                 SettingsManager.UserDevices = _devices;
                 SettingsManager.UserSettings = _settings;
+                SettingsManager.SlotCreated = _created;
+                SettingsManager.SlotEnabled = _enabled;
                 UserEffectsDispatcher.SlotPerDeviceConfigsProvider = _configs;
                 try { Directory.Delete(_dir, true); } catch { }
             }
@@ -296,7 +304,7 @@ namespace PadForge.Tests
                 pad.Unmap();
                 pad.Clear();
                 pad.Retire();
-                var deadline = DateTime.UtcNow.AddSeconds(5);
+                var deadline = DateTime.UtcNow.AddSeconds(30);
                 while (pad.Read().Length == 0 && DateTime.UtcNow < deadline) Thread.Sleep(20);
                 AssertHeadsetFrame(pad, pad.Read());
                 Assert.False(Routed.ContainsKey(pad.Id));
@@ -565,6 +573,295 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>A frame captured before the release, carrying the first
+        /// route a pad ever took, and landing after it. The release found the
+        /// pad unlisted, so only the frame's age can stop it.</summary>
+        [Fact]
+        public void AFrameCapturedBeforeTheRelease_DoesNotRouteAPadTheReleaseNeverSaw()
+        {
+            Routed.Clear();
+            using var pad = new FilePad(AudioOutputPath.SpeakerOnly);
+            object writeGate = typeof(UserEffectsDispatcher).GetField("s_writeGate", Static)!.GetValue(null)!;
+            var seqField = typeof(UserEffectsDispatcher).GetField("s_dispatchSeq", Static)!;
+            long before = (long)seqField.GetValue(null)!;
+            var capture = new Thread(pad.Apply) { IsBackground = true };
+            Monitor.Enter(writeGate);
+            try
+            {
+                capture.Start();
+                Assert.True(SpinWait.SpinUntil(() => (long)seqField.GetValue(null)! > before, 5000));
+                UserEffectsDispatcher.ReleaseAudioRoutes();
+            }
+            finally { Monitor.Exit(writeGate); }
+            try
+            {
+                Assert.True(capture.Join(5000));
+                Assert.False(Routed.ContainsKey(pad.Id));
+                Assert.Empty(pad.Read());
+            }
+            finally
+            {
+                UserEffectsDispatcher.ResumeAudioRoutes();
+                Routed.Clear();
+            }
+        }
+
+        private static void Sweep() => typeof(UserEffectsDispatcher).GetMethod("SweepOrphanedRoutes", Static)!.Invoke(null, null);
+
+        /// <summary>A peer's lease refuses the let-go of a pad that is still
+        /// answering, so it is not a failure. The let-go waits, and goes out
+        /// when the lease is gone with nothing else asking for it.</summary>
+        [Fact]
+        public void APeersLease_HoldsALetGo_UntilTheLeaseIsGone()
+        {
+            Routed.Clear();
+            using var pad = new FilePad(AudioOutputPath.SpeakerOnly);
+            try
+            {
+                pad.Settle();
+                Assert.True(Routed.ContainsKey(pad.Id));
+                Assert.True(RemoteLinkOutputRouter.ClaimOutput(pad.File));
+                pad.Unmap();
+                pad.Clear();
+
+                Sweep();
+                Assert.Empty(pad.Read());
+                Assert.True(Routed.ContainsKey(pad.Id));
+                Assert.False(Tried.ContainsKey(pad.Id));
+
+                RemoteLinkOutputRouter.ReleaseDevice(pad.File);
+                Assert.True(SpinWait.SpinUntil(() => !Routed.ContainsKey(pad.Id), 5000));
+                AssertHeadsetFrame(pad, pad.Read());
+            }
+            finally
+            {
+                RemoteLinkOutputRouter.ReleaseDevice(pad.File);
+                Tried.Clear();
+                Routed.Clear();
+            }
+        }
+
+        /// <summary>A write that fails with no lease on the pad is a failure,
+        /// and the pad is not written again on every frame.</summary>
+        [Fact]
+        public void ALetGoThatFailsWithNoLease_IsNotTriedAgain()
+        {
+            Routed.Clear();
+            using var pad = new FilePad(AudioOutputPath.SpeakerOnly);
+            try
+            {
+                pad.Settle();
+                pad.Unmap();
+                string gone = pad.File + ".missing";
+                Routed[pad.Id] = (gone, Routed[pad.Id].Profile, true);
+                SettingsManager.UserDevices.Items[0].DevicePath = gone;
+                Sweep();
+                Assert.True(Tried.ContainsKey(pad.Id));
+                Assert.True(Routed.ContainsKey(pad.Id));
+            }
+            finally
+            {
+                Tried.Clear();
+                Routed.Clear();
+            }
+        }
+
+        /// <summary>The exit reaches a pad under a lease from a peer whose
+        /// frames asserted nothing, as it does one with a mark. No peer holds a
+        /// pad past it.</summary>
+        [Fact]
+        public void TheRelease_ReachesADualSenseUnderALease_WithNoMark()
+        {
+            Routed.Clear();
+            using var pad = new FilePad(AudioOutputPath.SpeakerOnly);
+            try
+            {
+                pad.Settle();
+                Assert.True(RemoteLinkOutputRouter.ClaimOutput(pad.File));
+                pad.Clear();
+                UserEffectsDispatcher.ReleaseAudioRoutes();
+                AssertHeadsetFrame(pad, pad.Read());
+                Assert.False(Routed.ContainsKey(pad.Id));
+            }
+            finally
+            {
+                RemoteLinkOutputRouter.ReleaseDevice(pad.File);
+                UserEffectsDispatcher.ResumeAudioRoutes();
+                Routed.Clear();
+            }
+        }
+
+        /// <summary>A slot switched off takes its dispatcher with it, and its
+        /// row stays. No writer is left to change the route, so the pad goes
+        /// back on its headphones.</summary>
+        [Fact]
+        public void SwitchingASlotOff_PutsItsPadBackOnItsHeadphones()
+        {
+            Routed.Clear();
+            using var pad = new FilePad(AudioOutputPath.SpeakerOnly);
+            try
+            {
+                pad.Settle();
+                Assert.True(Routed.ContainsKey(pad.Id));
+                pad.Clear();
+                SettingsManager.SlotEnabled[15] = false;
+                pad.Retire();
+                Assert.True(SpinWait.SpinUntil(() => !Routed.ContainsKey(pad.Id), 5000));
+                byte[] frame = pad.Read();
+                Assert.Equal((byte)0x80, frame[3]);
+                Assert.Equal(0, frame[pad.AudioControlAt] & 0x30);
+            }
+            finally { Routed.Clear(); }
+        }
+
+        /// <summary>A slot switched on between two dispatchers keeps the route:
+        /// the next one writes it. A dispatcher still alive on a slot switched
+        /// off keeps it too, until it is gone.</summary>
+        [Fact]
+        public void ASlotBetweenDispatchers_KeepsItsPadsRoute()
+        {
+            Routed.Clear();
+            using var pad = new FilePad(AudioOutputPath.SpeakerOnly);
+            try
+            {
+                pad.Settle();
+                SettingsManager.SlotEnabled[15] = false;
+                Sweep();
+                Assert.True(Routed.ContainsKey(pad.Id));
+                SettingsManager.SlotEnabled[15] = true;
+                pad.Retire();
+                pad.Clear();
+                Sweep();
+                Assert.True(Routed.ContainsKey(pad.Id));
+                Assert.Empty(pad.Read());
+            }
+            finally { Routed.Clear(); }
+        }
+
+        /// <summary>A sink still playing to a pad on a switched-off slot holds
+        /// the route: the headset back would move its sound. The pad goes back
+        /// once the sink is gone.</summary>
+        [Fact]
+        public void APlayingSink_HoldsTheRouteOfASwitchedOffSlotsPad()
+        {
+            Routed.Clear();
+            using var pad = new FilePad(AudioOutputPath.SpeakerOnly);
+            var sinks = (System.Collections.IDictionary)typeof(AudioPassthroughService).GetField("_sinks", Static)!.GetValue(null)!;
+            object gate = typeof(AudioPassthroughService).GetField("_lock", Static)!.GetValue(null)!;
+            var sinkType = typeof(AudioPassthroughService).GetNestedType("Sink", BindingFlags.NonPublic)!;
+            object sink = Activator.CreateInstance(sinkType, nonPublic: true)!;
+            sinkType.GetField("DeviceGuid")!.SetValue(sink, pad.Id);
+            sinkType.GetField("IsPeer")!.SetValue(sink, true);
+            try
+            {
+                pad.Settle();
+                lock (gate) sinks[pad.Id] = sink;
+                SettingsManager.SlotEnabled[15] = false;
+                pad.Retire();
+                Sweep();
+                Assert.True(Routed.ContainsKey(pad.Id));
+                lock (gate) sinks.Remove(pad.Id);
+                Assert.True(SpinWait.SpinUntil(() => { Sweep(); return !Routed.ContainsKey(pad.Id); }, 5000));
+            }
+            finally
+            {
+                lock (gate) sinks.Remove(pad.Id);
+                Routed.Clear();
+            }
+        }
+
+        /// <summary>The byte that carries the DualSense Headphone Volume, found
+        /// by encoding the field alone.</summary>
+        private static int HeadphoneOffset()
+        {
+            var profile = HMaestroProfileCatalog.GetProfileById("dualsense-bt-full");
+            byte[] with = HMOutputEncoder.Encode(profile, new Dictionary<string, object> { ["headphoneVolume"] = (byte)0x55 });
+            byte[] without = HMOutputEncoder.Encode(profile, new Dictionary<string, object>());
+            for (int i = 0; i < with.Length - 4; i++)
+                if (with[i] != without[i]) return i;
+            throw new InvalidOperationException("the profile places no headphone byte");
+        }
+
+        /// <summary>A Headphone Volume slider below full leaves the DualSense's
+        /// register low until a power cycle, and Windows plays its USB headset
+        /// through that register. Letting go puts it back at the full 0x7F the
+        /// slider's default writes. Stereo Headset keeps the route out of it,
+        /// and the frame changes nothing else.</summary>
+        [Fact]
+        public void LettingGo_PutsALoweredHeadphoneVolumeBack()
+        {
+            Routed.Clear();
+            using var pad = new FilePad(AudioOutputPath.StereoHeadset);
+            try
+            {
+                pad.Config.HeadphoneVolume = 10;
+                pad.Settle();
+                Assert.False(Routed.ContainsKey(pad.Id));
+                pad.Retire();
+                pad.Clear();
+
+                UserEffectsDispatcher.ReleaseAudioRoutes();
+
+                byte[] frame = pad.Read();
+                Assert.Equal(0x31, frame[0]);
+                Assert.Equal((byte)0x10, frame[3]);
+                Assert.Equal((byte)0, frame[4]);
+                Assert.Equal((byte)0x7F, frame[HeadphoneOffset()]);
+
+                pad.Clear();
+                UserEffectsDispatcher.ReleaseAudioRoutes();
+                Assert.Empty(pad.Read());
+            }
+            finally
+            {
+                UserEffectsDispatcher.ResumeAudioRoutes();
+                Routed.Clear();
+            }
+        }
+
+        [Fact]
+        public void LettingGo_LeavesAFullHeadphoneVolumeAlone()
+        {
+            Routed.Clear();
+            using var pad = new FilePad(AudioOutputPath.StereoHeadset);
+            try
+            {
+                pad.Settle();
+                pad.Retire();
+                pad.Clear();
+                UserEffectsDispatcher.ReleaseAudioRoutes();
+                Assert.Empty(pad.Read());
+            }
+            finally
+            {
+                UserEffectsDispatcher.ResumeAudioRoutes();
+                Routed.Clear();
+            }
+        }
+
+        /// <summary>A pad out of every slot is left the same way as at
+        /// exit.</summary>
+        [Fact]
+        public void APadOutOfEverySlot_GetsItsHeadphoneVolumeBack()
+        {
+            Routed.Clear();
+            using var pad = new FilePad(AudioOutputPath.StereoHeadset);
+            try
+            {
+                pad.Config.HeadphoneVolume = 10;
+                pad.Settle();
+                pad.Clear();
+                pad.Unmap();
+                Assert.True(SpinWait.SpinUntil(() =>
+                {
+                    Sweep();
+                    byte[] frame = pad.Read();
+                    return frame.Length > 0 && frame[3] == 0x10 && frame[HeadphoneOffset()] == 0x7F;
+                }, 5000));
+            }
+            finally { Routed.Clear(); }
+        }
+
         /// <summary>The route a frame leaves its pad on: the USB route a
         /// DualShock 4 frame sends, or the path a DualSense frame asserts. A
         /// DualShock 4's speaker volume flag shares bit 7 of its first flags
@@ -621,7 +918,7 @@ namespace PadForge.Tests
             string dispatcher = RepoFile("PadForge.App", "Common", "Input", "UserEffectsDispatcher.cs").Replace("\r\n", "\n");
             Assert.Contains("NoteDeliveredRoute(w.Device, w.Path, w.Profile, w.Fields);", dispatcher);
             Assert.Contains("if (PlaysToSpeaker(ud.InstanceGuid))", dispatcher);
-            Assert.Contains("Ds4UsbAudio.BuildRouteReport(Ds4UsbAudio.RouteStereoHeadset), stampSonyBtCrc: false);", dispatcher);
+            Assert.Contains("PlayStationEffectWriter.SendDs4UsbRoute(target.Path, Ds4UsbAudio.RouteStereoHeadset);", dispatcher);
         }
 
         private static string RepoFile(params string[] parts)

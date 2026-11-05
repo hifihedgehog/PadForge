@@ -53,6 +53,10 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         /// <summary>The bytes one read asks for.</summary>
         int ReadLength { get; }
 
+        /// <summary>The wheel counts a mouse's notch takes, 1 for a wheel
+        /// with no Resolution Multiplier and on a keyboard's channel.</summary>
+        int WheelMultiplier => 1;
+
         /// <summary>Waits for one input report, for at most the pipe's
         /// timeout. True with a length above zero for a report, true with
         /// zero when none came in time, false when the keyboard left or the
@@ -87,6 +91,12 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         /// interface 0 the same way).</summary>
         public static byte[] ReportDescriptorSetup(byte interfaceNumber, int length)
             => new byte[] { 0x81, 0x06, 0x00, 0x22, interfaceNumber, 0x00, (byte)length, (byte)(length >> 8) };
+
+        /// <summary>HID GET_REPORT for a feature report (USB HID 1.11 section
+        /// 7.2.1): type 3 in wValue's high byte, the report's ID in its low
+        /// byte, the interface in wIndex.</summary>
+        public static byte[] GetFeatureSetup(byte interfaceNumber, byte reportId, int length)
+            => new byte[] { 0xA1, 0x01, reportId, 0x03, interfaceNumber, 0x00, (byte)length, (byte)(length >> 8) };
 
         /// <summary>The length of one interface's report descriptor, from
         /// the HID descriptor that follows that interface's descriptor in
@@ -139,7 +149,9 @@ namespace PadForge.Common.Input.WinUsbKeyboards
     /// (<see cref="HidKeyboardReports.Parse"/>). SET_IDLE goes out once.
     /// Nothing else is asked of the keyboard, and nothing about it is
     /// changed: it stays in the report protocol Windows left it in, so the
-    /// reports read the way its descriptor says.</para>
+    /// reports read the way its descriptor says. A mouse whose wheel has a
+    /// Resolution Multiplier is also asked what that feature holds, and the
+    /// row divides by the answer. The feature itself stays as it was.</para>
     ///
     /// <para>Close. Any thread may close it, once, and a close returns
     /// only after the handle is gone, so a keyboard is never opened while
@@ -162,9 +174,12 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         /// full-speed interrupt pipe's largest packet.</summary>
         internal const int DefaultReadLength = 64;
 
-        /// <summary>The largest packet a high-speed interrupt pipe carries,
-        /// the most one read asks for.</summary>
+        /// <summary>The largest packet a high-speed interrupt pipe carries.</summary>
         internal const int MaxReadLength = 1024;
+
+        /// <summary>The longest report a read is sized for, the longest the
+        /// parser takes (<see cref="HidKeyboardReports.MaxReportBits"/>).</summary>
+        internal const int MaxReportLength = HidKeyboardReports.MaxReportBits / 8;
 
         private readonly IKeyboardUsb _usb;
         private readonly byte _inPipe;
@@ -182,8 +197,9 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         private int _readFaults;
 
         private WinUsbKeyboardChannel(string path, IKeyboardUsb usb, byte interfaceNumber, byte inPipe, int readLength,
-            HidKeyboardReports reports, HidMouseReports pointer, int maxReadFaults, int readFaultPauseMs)
+            HidKeyboardReports reports, HidMouseReports pointer, int wheelMultiplier, int maxReadFaults, int readFaultPauseMs)
         {
+            WheelMultiplier = wheelMultiplier;
             Path = path;
             _usb = usb;
             InterfaceNumber = interfaceNumber;
@@ -209,8 +225,16 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         /// and wheel, null on a keyboard's channel.</summary>
         public HidMouseReports Pointer { get; }
 
-        /// <summary>The bytes one read asks for: the pipe's packet size.</summary>
+        /// <summary>The bytes one read asks for: the longest input report
+        /// the descriptor declares, or the pipe's packet size when that is
+        /// more. usbhid sizes its read from the longest report
+        /// (usbhid/hid-core.c:1103,1157), so a report past one packet arrives
+        /// whole, and a shorter one ends at its short packet.</summary>
         public int ReadLength => _readBuffer.Length;
+
+        /// <summary>The wheel counts a mouse's notch takes, as its Resolution
+        /// Multiplier read at the open.</summary>
+        public int WheelMultiplier { get; }
 
         /// <summary>Opens the bound keyboard at a WinUSB interface path, or
         /// with <paramref name="mouse"/> the bound mouse, or null when it
@@ -243,6 +267,19 @@ namespace PadForge.Common.Input.WinUsbKeyboards
                 var configuration = new byte[MaxConfigurationLength];
                 int read = usb.ReadConfiguration(configuration);
                 if (read <= 0 || read > configuration.Length) return null;
+                // A configuration that runs past this read names its whole
+                // length in wTotalLength (USB 2.0, 9.6.3), and the interface
+                // to open can sit past the cut.
+                if (read >= 4 && (configuration[2] | (configuration[3] << 8)) is int total && total > read)
+                {
+                    var whole = new byte[total];
+                    int again = usb.ReadConfiguration(whole);
+                    if (again > read && again <= whole.Length)
+                    {
+                        configuration = whole;
+                        read = again;
+                    }
+                }
                 int length = WinUsbKeyboardProtocol.ReportDescriptorLength(configuration.AsSpan(0, read), number);
                 if (length == 0) return null;
                 var descriptor = new byte[length];
@@ -262,9 +299,11 @@ namespace PadForge.Common.Input.WinUsbKeyboards
                 // open treats it (TouchSenseChannel.Open).
                 usb.ControlOut(WinUsbKeyboardProtocol.SetIdleSetup(number), Array.Empty<byte>());
                 usb.SetTimeout(inPipe, ReadTimeoutMs);
-                int readLength = packetSize == 0 ? DefaultReadLength : Math.Min((int)packetSize, MaxReadLength);
+                int packet = packetSize == 0 ? DefaultReadLength : Math.Min((int)packetSize, MaxReadLength);
+                int longest = reports?.LongestInputReport ?? pointer.LongestInputReport;
+                int readLength = Math.Max(packet, Math.Min(longest, MaxReportLength));
                 opened = new WinUsbKeyboardChannel(path, usb, number, inPipe, readLength, reports, pointer,
-                    maxReadFaults, readFaultPauseMs);
+                    ReadWheelMultiplier(usb, number, pointer), maxReadFaults, readFaultPauseMs);
                 return opened;
             }
             catch
@@ -278,6 +317,20 @@ namespace PadForge.Common.Input.WinUsbKeyboards
                     try { usb.Dispose(); } catch { }
                 }
             }
+        }
+
+        /// <summary>What the wheel's Resolution Multiplier holds now, 1 for a
+        /// wheel with none and for a mouse that does not answer. Windows'
+        /// mouse driver can leave the feature set when the mouse moves to
+        /// WinUSB, and nothing here writes it.</summary>
+        private static int ReadWheelMultiplier(IKeyboardUsb usb, byte number, HidMouseReports pointer)
+        {
+            var feature = pointer?.WheelMultiplierFeature;
+            if (feature == null) return 1;
+            var report = new byte[feature.ReportLength];
+            return usb.ControlIn(WinUsbKeyboardProtocol.GetFeatureSetup(number, feature.ReportId, report.Length), report, out int got)
+                ? pointer.EffectiveMultiplier(report.AsSpan(0, got))
+                : 1;
         }
 
         /// <summary>One read, as <see cref="IKeyboardChannel.TryRead"/> says.

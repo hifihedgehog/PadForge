@@ -69,7 +69,7 @@ namespace PadForge.Common
                 {
                     var entry = zip.CreateEntry(ProfileEntry);
                     using (var s = entry.Open())
-                        Serializer.Serialize(s, profile);
+                        s.Write(PadForge.Engine.Common.XmlSafeText.Serialize(Serializer, profile));
 
                     var aliasMap = new List<string>();
                     foreach (string pkg in ReferencedPackages(profile))

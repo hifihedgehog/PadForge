@@ -414,11 +414,14 @@ namespace PadForge.Common.Input
         /// cooldown, or a call no restart reaches.
         /// <paramref name="restarts"/> says whether the request is worth
         /// making. A watchdog that makes none looks again when it next
-        /// fires.</summary>
+        /// fires. It runs on the poll thread, so it reads the last answer on
+        /// the MIDI service and asks the service manager nothing
+        /// (<see cref="MidiServiceRecovery.ServiceLastSeen"/>).</summary>
         internal static string DescribeRestartRequest(bool legacyCall, out bool restarts)
         {
             restarts = false;
-            if (!ServiceRestartCanHelp(legacyCall))
+            if (!MidiApiSelection.ServiceRestartCanHelp(MidiApiSelection.OsBuild, MidiApiSelection.ApiMode(), legacyCall)
+                || !MidiServiceRecovery.ServiceLastSeen)
                 return "no MIDI service restart reaches a classic MIDI driver";
             if (MidiServiceRecovery.CooldownRemainingMs > 0)
                 return $"a MIDI service restart was tried less than {MidiServiceRecovery.CooldownMs / 1000} s ago, so none follows yet";
@@ -1728,6 +1731,7 @@ namespace PadForge.Common.Input
             MidiApiSelection.OsBuildSeam = factory == null ? null : () => MidiApiSelection.AppSdkMinBuild;
             MidiServiceRecovery.ProcessIdSeam = factory == null ? null : () => 0u;
             MidiServiceRecovery.ServiceExistsSeam = factory == null ? null : () => true;
+            MidiServiceRecovery.ForgetServiceAnswerForTest();
             lock (_availLock)
             {
                 s_backendFactory = factory ?? CreateBackend;

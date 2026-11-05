@@ -780,6 +780,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} đã trở lại trình điều khiển Windows của nó.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Không khôi phục được trình điều khiển Windows cho {0}.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows đã đưa {0} trở lại trình điều khiển riêng của nó. Hãy chọn nó trên trang Thiết bị để chuyển lại.</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} không còn dùng trình điều khiển của PadForge.</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} vẫn đang dùng driver của PadForge. Hãy chọn thiết bị này trên trang Thiết bị để trả lại cho Windows.</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Chỉ dùng trong PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge chuyển bàn phím này sang trình điều khiển WinUSB của Windows và tự đọc nó. Khi đó Windows ngừng nhận gõ phím từ bàn phím này trong mọi chương trình, kể cả khi PadForge đã đóng, cho đến khi trình điều khiển Windows của nó được khôi phục từ trang này. Các ánh xạ và macro của nó vẫn hoạt động khi PadForge đang chạy.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge chuyển chuột này sang trình điều khiển WinUSB của Windows và tự đọc nó. Khi đó Windows ngừng di chuyển con trỏ bằng chuột này trong mọi chương trình, kể cả khi PadForge đã đóng, cho đến khi trình điều khiển Windows của nó được khôi phục từ trang này. Các ánh xạ và macro của nó vẫn hoạt động khi PadForge đang chạy.</value></data>
@@ -957,6 +959,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>Rung được phát thông qua trình xử lý xúc giác trong SteelSeries GG.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG điều khiển mọi chuột Rival có phản hồi xúc giác cùng lúc, nên chuột trên Tay cầm ảo {0} quyết định độ rung của chúng.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>Đang chờ SteelSeries GG. Rung sẽ phát khi GG chạy.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG đang chạy nhưng không phản hồi PadForge. Rung sẽ hoạt động khi nó phản hồi.</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>Rung được phát trên các thiết bị Razer Sensa HD của bạn thông qua Razer Synapse.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Đang chờ Sensa HD Haptics trong Razer Synapse 4. Hãy đặt Haptic Source của thiết bị thành Sensa HD Games trong Synapse.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Cò trái</value></data>
@@ -1000,6 +1003,12 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Màu được gửi thẳng đến {0}. Chế độ bộ nhớ tích hợp của nó tắt trong lúc được chiếu sáng.</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Màu được gửi thẳng đến {0}. Các màu thay đổi, như chu kỳ màu hoặc màu theo âm thanh, cần bật Dynamic Lighting trong BIOS của laptop. Nếu không, các phím giữ màu tĩnh gần nhất.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Màu được gửi thẳng đến {0}. Nếu Dynamic Lighting được bật trong BIOS của laptop, Ánh sáng động (Dynamic Lighting) của Windows sẽ chiếu sáng các phím thay thế. Hãy tắt Ánh sáng động của Windows cho bàn phím này trong Cài đặt của Windows, khi đó PadForge sẽ chiếu sáng chúng, kể cả các màu thay đổi.</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>Màu được gửi thẳng đến {0}. Thiết bị này lưu mỗi hình trong bộ nhớ riêng, nên các màu thay đổi, như màu chuyển vòng hoặc màu theo âm thanh, sẽ không hiện. Màu giữ nguyên thì vẫn hiện.</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>Màu được gửi thẳng đến {0}. Thiết bị này lưu mỗi hình trong bộ nhớ riêng, nên các màu thay đổi, như màu chuyển vòng hoặc màu theo âm thanh, sẽ không hiện. Màu giữ nguyên thì vẫn hiện. Hình đầu tiên ghi đè các hiệu ứng đã lưu trên bàn phím, và các hiệu ứng cũ không quay lại.</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>Thiết bị nối tiếp trên {0}</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>Thiết bị này đã kết nối nhưng không nhận màu của PadForge. PadForge thử lại mỗi phút.</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows giữ thiết bị này như bàn phím hoặc chuột và từ chối báo cáo đặt màu của nó, nên PadForge không thể chiếu sáng thiết bị trên Windows.</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>Một chương trình khác đang mở thiết bị này nên PadForge không thể chiếu sáng nó. PadForge sẽ chiếu sáng thiết bị khi chương trình đó đóng.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Thiết bị này chưa trả lời. Màu của nó sẽ hiện khi nó thức dậy.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Màu được gửi qua {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Màu được gửi qua {0}, phần mềm này chiếu sáng mọi thiết bị cùng loại cùng lúc. Khi {0} không chạy, PadForge tự chiếu sáng thiết bị này.</value></data>
@@ -1007,7 +1016,9 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Màu được gửi qua SDK Server của OpenRGB. Khi OpenRGB không chạy, PadForge tự chiếu sáng thiết bị này.</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Màu được gửi qua SDK Server của OpenRGB.</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB đang giữ thiết bị này và không có chế độ Direct cho nó, nên đèn của thiết bị vẫn do OpenRGB quản lý.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB đang chạy với SDK Server tắt, nên PadForge để thiết bị này cho OpenRGB. Hãy bật SDK Server trong OpenRGB và PadForge sẽ chiếu sáng thiết bị qua đó.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB đang chạy nhưng SDK Server của nó không phản hồi trên cổng {0}, nên PadForge để thiết bị này cho OpenRGB. Hãy bật SDK Server trong OpenRGB và PadForge sẽ chiếu sáng thiết bị qua đó.</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE đang chạy với SDK tắt. Hãy bật iCUE SDK trong phần cài đặt của iCUE và PadForge sẽ chiếu sáng thiết bị qua đó.</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} đang chạy và không cho PadForge chiếu sáng các thiết bị của nó. PadForge vẫn tiếp tục hỏi.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} chiếu sáng mọi thiết bị cùng loại cùng lúc, nên thiết bị trên Tay cầm ảo {1} quyết định màu của chúng.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} chiếu sáng mọi thiết bị cùng loại cùng lúc, nên hàng {1} trên Tay cầm ảo {2} quyết định màu của chúng.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Tay cầm ảo {0} cũng chiếu sáng thiết bị này, và màu của nó được hiển thị.</value></data>
@@ -1025,7 +1036,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>tai nghe</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>bo mạch chủ, card đồ họa và bộ nhớ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>bo mạch chủ và card đồ họa</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>tấm lót chuột và giá đỡ tai nghe</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>tấm lót chuột, tai nghe và giá đỡ tai nghe</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Thanh đèn</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Nhập mã màu hex sáu chữ số (RRGGBB hoặc #RRGGBB) rồi nhấn Enter hoặc nhấp ra ngoài để áp dụng.</value></data>
@@ -4671,6 +4682,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Đang kết nối tới chat của {0}…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Đang đọc chat của {0}.</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Không kết nối được tới chat của {0}. Đang thử lại.</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch không có khung chat cho {0}. Hãy kiểm tra tên kênh.</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Đã tạm dừng.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Hình tay cầm cho buổi phát của bạn. Thêm địa chỉ này vào OBS làm nguồn trình duyệt:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Hình tay cầm cho buổi phát của bạn cần Tay cầm web và địa chỉ HTTP thường của nó. Bật Phục vụ cả HTTP thường trong thẻ Tay cầm web. Chỉ PC này là đủ cho OBS trên PC này.</value></data>

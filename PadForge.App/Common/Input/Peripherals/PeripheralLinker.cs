@@ -452,6 +452,31 @@ namespace PadForge.Common.Input.Peripherals
         /// tabs stay up until it answers again.</summary>
         public bool Asleep { get; init; }
 
+        /// <summary>The unit's handle opens and its session was refused: the
+        /// device is there and took no lighting from PadForge
+        /// (<see cref="HidLightingBackend"/>, Fail). It reads asleep to the
+        /// link pass, and its tab says which of the two it is.</summary>
+        public bool Refused { get; init; }
+
+        /// <summary>A unit whose collection Windows holds as a keyboard or mouse
+        /// (<see cref="HidCollectionInfo.WindowsHolds"/>), where the reports its
+        /// model sends do not pass, so its tab says that in place of the
+        /// retry.</summary>
+        public bool WindowsHolds { get; init; }
+
+        /// <summary>A unit whose collection opens with no access right only,
+        /// and that is no collection Windows holds: another program has it
+        /// open, so its tab says that in place of a line about waking it.</summary>
+        public bool HeldByProgram { get; init; }
+
+        /// <summary>The device stores each picture, so changing colors do not
+        /// show (<see cref="HidLightingModel.HoldMs"/>).</summary>
+        public bool StoresPictures { get; init; }
+
+        /// <summary>The first picture replaces effects stored on the device
+        /// (<see cref="HidLightingModel.ReplacesStoredEffects"/>).</summary>
+        public bool ReplacesStoredEffects { get; init; }
+
         public OutputPath Path => new(Family, Key);
     }
 
@@ -587,6 +612,9 @@ namespace PadForge.Common.Input.Peripherals
             // device census is taken at the first of them, from the links
             // of every other row.
             var rowList = rows as IReadOnlyList<LinkRow> ?? new List<LinkRow>(rows);
+            var containers = new Dictionary<Guid, Guid>();
+            foreach (var row in rowList)
+                if (row.Container != Guid.Empty) containers[row.Device] = row.Container;
             var ordered = new List<LinkRow>(rowList.Count);
             foreach (var row in rowList)
                 if (row.VendorRow != null || row.Unit == null) ordered.Add(row);
@@ -665,7 +693,16 @@ namespace PadForge.Common.Input.Peripherals
                             unitVendor = LogitechVid;
                             units.Add(own.Key);
                             families ??= DeviceFamilies.Of(direct, hidpp, result);
-                            if (inputs.OpenRgbUnanswered && LightsUnitRow(own))
+                            // OpenRGB holds the unit's device: its path closes
+                            // and the row is lit through OpenRGB, the rule the
+                            // other units' rows follow below.
+                            var holders = LightsUnitRow(own) ? OpenRgbHolding(direct, own) : NoCandidates;
+                            if (holders.Count > 0)
+                            {
+                                LinkOpenRgb(holders, lighting, ref leftToProgram);
+                                taken = new[] { unit };
+                            }
+                            else if (inputs.OpenRgbUnanswered && LightsUnitRow(own))
                                 taken = new[] { unit };
                             else if (LightsUnitRow(own) && !VendorProgramRuns(LogitechVid, presence)
                                 && !ReachedByAnyRow(own, rowList) && !families.Loses(UnitOf(own)))
@@ -685,7 +722,7 @@ namespace PadForge.Common.Input.Peripherals
                             // A device OpenRGB holds that no other row
                             // reaches (OpenRgbOrphans): lit through OpenRGB,
                             // whatever program runs, by step 0's rule.
-                            if (!own.Asleep && !own.NoDirectMode && !OpenRgbReachesAny(own, rowList, direct))
+                            if (!own.Asleep && !own.NoDirectMode && !OpenRgbReachesAny(own, rowList, direct, hidpp))
                                 lighting.Add(unit);
                         }
                         else if (holders.Count > 0)
@@ -886,14 +923,17 @@ namespace PadForge.Common.Input.Peripherals
                     DirectWhenClosed = directWhenClosed,
                     WindowsLightsLampArray = windowsLightsLampArray,
                     Shadows = shadows,
+                    // An ASUS row's program is Armoury Crate wherever the Aura
+                    // SDK is installed, whichever path lights it.
                     HasVendorProgram = row.VendorRow == null
-                                       && (ownPrograms || HasVendorProgram(row.Unit == null ? row.VendorId : unitVendor)),
+                                       && (ownPrograms || HasVendorProgram(row.Unit == null ? row.VendorId : unitVendor)
+                                           || (row.Unit == null && row.VendorId == AsusVid && presence.AsusAuraSdk)),
                     LeftToProgram = leftToProgram,
                     TakenByOpenRgb = taken,
                     WaitsForOpenRgbServer = waitsForServer,
                 });
             }
-            return new LinkTable(result);
+            return new LinkTable(result) { RowContainers = containers };
         }
 
         internal const ushort AsusVid = 0x0B05;
@@ -1168,6 +1208,30 @@ namespace PadForge.Common.Input.Peripherals
             return found ?? NoCandidates;
         }
 
+        /// <summary>The OpenRGB controllers that hold the device of a HID++
+        /// unit (<see cref="OpenRgbHoldsHidpp"/>).</summary>
+        internal static List<Candidate> OpenRgbHolding(IReadOnlyList<DirectUnit> direct, HidppUnit own)
+        {
+            List<Candidate> found = null;
+            foreach (var unit in direct)
+                if (unit.Family == OutputFamily.OpenRgbDevice && OpenRgbHoldsHidpp(unit, own))
+                    (found ??= new List<Candidate>()).Add(OpenRgbCandidate(unit));
+            return found ?? NoCandidates;
+        }
+
+        /// <summary>Whether an OpenRGB controller holds a HID++ unit's device.
+        /// The worker knows no product ID for a unit, which may sit behind a
+        /// receiver (<see cref="UnitOf"/>), so the tie is the container and
+        /// Logitech's vendor ID, and on a receiver the unit's kind, as a HID++
+        /// unit ties to a row (<see cref="Matches(HidppUnit, LinkRow)"/>).</summary>
+        internal static bool OpenRgbHoldsHidpp(DirectUnit openRgb, HidppUnit own)
+        {
+            if (own == null || openRgb.ContainerId == Guid.Empty || openRgb.ContainerId != own.ContainerId
+                || openRgb.VendorId != LogitechVid) return false;
+            return openRgb.Kind == 0 || own.DeviceType < 0
+                || (openRgb.Kind == LampArrayKindKeyboard ? own.IsKeyboardKind : own.IsMouseKind);
+        }
+
         private static Candidate OpenRgbCandidate(DirectUnit unit)
             => new(unit.Path, 0, false) { Asleep = unit.Asleep, NoDirectMode = unit.NoDirectMode };
 
@@ -1226,12 +1290,16 @@ namespace PadForge.Common.Input.Peripherals
         /// (<see cref="OpenRgbHolds(DirectUnit, LinkRow, IReadOnlyList{DirectUnit})"/>,
         /// <see cref="OpenRgbHoldsUnit"/>). Such a controller gets no row of
         /// its own, so no device is lit from two rows.</summary>
-        internal static bool OpenRgbReachesAny(DirectUnit openRgb, IReadOnlyList<LinkRow> rows, IReadOnlyList<DirectUnit> direct)
+        internal static bool OpenRgbReachesAny(DirectUnit openRgb, IReadOnlyList<LinkRow> rows, IReadOnlyList<DirectUnit> direct,
+            HidppSnapshot hidpp = null)
         {
             foreach (var row in rows)
                 if (row.Unit == null && row.VendorRow == null && OpenRgbHolds(openRgb, row, direct)) return true;
             foreach (var unit in direct)
                 if (unit != null && unit.Family != OutputFamily.OpenRgbDevice && OpenRgbHoldsUnit(openRgb, unit)) return true;
+            if (hidpp != null)
+                foreach (var unit in hidpp.Units)
+                    if (unit != null && LightsUnitRow(unit) && OpenRgbHoldsHidpp(openRgb, unit)) return true;
             return false;
         }
 
@@ -1552,7 +1620,10 @@ namespace PadForge.Common.Input.Peripherals
             foreach (var unit in direct)
             {
                 if (unit == null || !GetsUnitRow(unit.Family) || unit.ContainerId == Guid.Empty) continue;
-                if (UnitProgramRuns(unit, presence) || families.Loses(unit)) continue;
+                // A device OpenRGB holds keeps its row whatever program runs:
+                // the row is lit through OpenRGB (Build), and OpenRgbReachesAny
+                // gives the controller no row of its own.
+                if ((UnitProgramRuns(unit, presence) && OpenRgbHolding(direct, unit).Count == 0) || families.Loses(unit)) continue;
                 // A receiver relaying a paired device stands for no row
                 // that reaches it (RelaysPaired).
                 bool reached = false;
@@ -1564,22 +1635,21 @@ namespace PadForge.Common.Input.Peripherals
                 }
                 if (!reached) orphans.Add(unit);
             }
-            if (!VendorProgramRuns(LogitechVid, presence))
+            bool logitechProgram = VendorProgramRuns(LogitechVid, presence);
+            foreach (var unit in hidpp.Units)
             {
-                foreach (var unit in hidpp.Units)
+                if (unit == null || !LightsUnitRow(unit) || unit.ContainerId == Guid.Empty) continue;
+                if (logitechProgram && OpenRgbHolding(direct, unit).Count == 0) continue;
+                bool reached = false;
+                foreach (var row in rows)
                 {
-                    if (unit == null || !LightsUnitRow(unit) || unit.ContainerId == Guid.Empty) continue;
-                    bool reached = false;
-                    foreach (var row in rows)
-                    {
-                        if (!Reaches(row, unit)) continue;
-                        reached = true;
-                        break;
-                    }
-                    if (reached) continue;
-                    var listed = UnitOf(unit);
-                    if (!families.Loses(listed)) orphans.Add(listed);
+                    if (!Reaches(row, unit)) continue;
+                    reached = true;
+                    break;
                 }
+                if (reached) continue;
+                var listed = UnitOf(unit);
+                if (!families.Loses(listed)) orphans.Add(listed);
             }
             // A device OpenRGB holds that no row and no other family's unit
             // reaches: memory, a graphics card, a mainboard, a fan hub, a
@@ -1591,7 +1661,7 @@ namespace PadForge.Common.Input.Peripherals
             foreach (var unit in direct)
             {
                 if (unit == null || unit.Family != OutputFamily.OpenRgbDevice || unit.NoDirectMode) continue;
-                if (!OpenRgbReachesAny(unit, rows, direct)) orphans.Add(unit);
+                if (!OpenRgbReachesAny(unit, rows, direct, hidpp)) orphans.Add(unit);
             }
             // The family is chosen as if every unit answered, as a row's
             // is, so a device whose own unit sleeps does not hand its row

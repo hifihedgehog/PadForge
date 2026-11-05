@@ -1,12 +1,17 @@
 # Bug-report log gate.
 #
-# Runs on every bug report opened, edited or reopened. A report must carry a
-# log: a file attached in its "Log files" section (GitHub stores an attached
-# file at github.com/user-attachments/files/...), or the diagnostics log's
-# own lines pasted there (they start with a time such as 18:57:09.874). A
-# screenshot is not a log. A report without one is labeled missing-logs,
-# answered with how to capture a log, closed as not planned, locked, and then
-# deleted with ISSUE_BOT_TOKEN, the owner's token, as the discussion pause does.
+# Runs on every bug report opened, and on an edit the reporter makes to a
+# report filed after the form began asking for a log. An edit by anyone else
+# and a reopening do not run it, so the owner touching an older report never
+# deletes it. A report must carry a log: a file attached in its "Log files"
+# section (GitHub stores an attached file at github.com/user-attachments/files/...),
+# or the diagnostics log's own lines pasted there (they start with a time such
+# as 18:57:09.874). A screenshot is not a log. A report without one is labeled
+# missing-logs, answered with how to capture a log, closed as not planned,
+# locked, saved as one Markdown file in the private repository
+# PadForge-discussion-archive, and then deleted with ISSUE_BOT_TOKEN, the
+# owner's token, as the discussion pause does. A report that could not be saved
+# is not deleted.
 #
 # Never acts on issues whose author is OWNER, COLLABORATOR or MEMBER.
 # GITHUB_TOKEN with issues: write covers the label, comment, close and lock.
@@ -15,7 +20,7 @@ name: Issue log gate
 
 on:
   issues:
-    types: [opened, edited, reopened]
+    types: [opened, edited]
 
 permissions:
   contents: read
@@ -30,16 +35,32 @@ jobs:
       ISSUE_NUMBER: ${{ github.event.issue.number }}
       ISSUE_AUTHOR_ASSOCIATION: ${{ github.event.issue.author_association }}
       ISSUE_BODY: ${{ github.event.issue.body }}
+      ISSUE_CREATED_AT: ${{ github.event.issue.created_at }}
+      ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
+      EVENT_ACTION: ${{ github.event.action }}
+      EVENT_SENDER: ${{ github.event.sender.login }}
       REPO: ${{ github.repository }}
+      ARCHIVE: ${{ github.repository_owner }}/PadForge-discussion-archive
+      # When the form began asking for a log (commit d22200d1, 2026-10-29 11:10 -04:00).
+      # A report filed before it has no "Log files" section to find.
+      FORM_ASKS_FOR_A_LOG_SINCE: '2026-10-29T15:10:08Z'
     steps:
-      - name: Skip project members
+      - name: Skip what the gate does not judge
         id: skip
         run: |
           set -euo pipefail
+          skip=false
           case "$ISSUE_AUTHOR_ASSOCIATION" in
-            OWNER|COLLABORATOR|MEMBER) echo "skip=true" >> "$GITHUB_OUTPUT" ;;
-            *) echo "skip=false" >> "$GITHUB_OUTPUT" ;;
+            OWNER|COLLABORATOR|MEMBER) skip=true ;;
           esac
+          # An edit counts only when the reporter made it, to a report filed after the form
+          # asked for a log. The timestamps are the same length, so string order is time order.
+          if [ "$EVENT_ACTION" = "edited" ]; then
+            if [ "$EVENT_SENDER" != "$ISSUE_AUTHOR" ] || [[ "$ISSUE_CREATED_AT" < "$FORM_ASKS_FOR_A_LOG_SINCE" ]]; then
+              skip=true
+            fi
+          fi
+          echo "skip=$skip" >> "$GITHUB_OUTPUT"
 
       - name: Look for a log
         if: ${{ steps.skip.outputs.skip == 'false' }}
@@ -90,8 +111,9 @@ jobs:
           gh api --method PUT "repos/${REPO}/issues/${ISSUE_NUMBER}/lock" -f lock_reason='resolved' || true
 
       # Deleting an issue takes a repository admin's token, which GITHUB_TOKEN is not. The reply above
-      # has already gone to the author by notification, so the report is then deleted outright.
-      - name: Delete the rejected report
+      # has already gone to the author by notification. The report is saved to the private archive
+      # first and then deleted. One that could not be saved stays closed and locked.
+      - name: Save and delete the rejected report
         if: ${{ steps.skip.outputs.skip == 'false' && steps.detect.outputs.missing == 'true' }}
         env:
           GH_TOKEN: ${{ secrets.ISSUE_BOT_TOKEN }}
@@ -100,5 +122,25 @@ jobs:
           if [ -z "${GH_TOKEN:-}" ]; then
             echo "No ISSUE_BOT_TOKEN secret. The report stays closed and locked under missing-logs."
             exit 0
+          fi
+          json=$(gh api "repos/$REPO/issues/$ISSUE_NUMBER")
+          path="removed/issues/$(jq -r '.created_at[0:10]' <<<"$json")-${ISSUE_NUMBER}.md"
+          # An earlier run saved it, so the file is there already.
+          if ! gh api "repos/$ARCHIVE/contents/$path" --silent 2>/dev/null; then
+            comments=$(gh api --paginate "repos/$REPO/issues/$ISSUE_NUMBER/comments" \
+              --jq '.[] | "\n## \(.user.login // "ghost"), \(.created_at)\n\n\(.body)\n"')
+            md=$(jq -r '
+                "# #\(.number) \(.title)\n\n"
+                + "- Author: \(.user.login // "ghost") (\(.author_association))\n"
+                + "- Posted: \(.created_at)\n"
+                + "- Labels: \([.labels[].name] | join(", "))\n"
+                + "- Was at: \(.html_url)\n\n"
+                + (.body // "") + "\n"' <<<"$json")
+            if ! gh api -X PUT "repos/$ARCHIVE/contents/$path" \
+                 -f message="Removed issue #$ISSUE_NUMBER" \
+                 -f content="$(printf '%s\n%s\n' "$md" "$comments" | base64 -w0)" --silent; then
+              echo "Could not save #$ISSUE_NUMBER to $ARCHIVE, so it stays closed and locked." >&2
+              exit 1
+            fi
           fi
           gh issue delete "$ISSUE_NUMBER" --repo "$REPO" --yes

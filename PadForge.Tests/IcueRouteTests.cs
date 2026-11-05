@@ -208,10 +208,12 @@ namespace PadForge.Tests
             Assert.Equal((0, 1, 6), (IcueRoute.Success, IcueRoute.NotConnected, IcueRoute.DeviceNotFound));
             Assert.Equal((5, 6), (IcueRoute.StateConnectionLost, IcueRoute.StateConnected));
             Assert.Equal(0, IcueRoute.AccessShared);
-            Assert.Equal(new[] { ("keyboard", 1), ("mouse", 2), ("mousemat", 4), ("headsetstand", 0x10) }, IcueRoute.Types);
-            Assert.Equal(0x17, IcueRoute.TypeMask);
+            Assert.Equal(new[] { ("keyboard", 1), ("mouse", 2), ("mousemat", 4), ("headset", 8), ("headsetstand", 0x10) }, IcueRoute.Types);
+            Assert.Equal(0x1F, IcueRoute.TypeMask);
             Assert.Equal("mouse", IcueRoute.KeyOf(2));
-            Assert.Null(IcueRoute.KeyOf(8));
+            Assert.Equal("headset", IcueRoute.KeyOf(8));
+            // CDT_MemoryModule: no Corsair row is lit through it.
+            Assert.Null(IcueRoute.KeyOf(0x80));
         }
 
         // ── A row's type ──
@@ -223,6 +225,9 @@ namespace PadForge.Tests
         [InlineData(0x0A34, InputDeviceType.Mouse, "headsetstand")] // ST100, V1 Headset Stands
         [InlineData(0x1B4B, InputDeviceType.Keyboard, "mouse")] // Dark Core SE, V2
         [InlineData(0x1B6E, InputDeviceType.Mouse, "keyboard")] // K57 wired, V2
+        [InlineData(0x2A00, InputDeviceType.Mouse, "headset")] // Virtuoso Max, the Bragi headset plugin
+        [InlineData(0x2A08, InputDeviceType.Keyboard, "headset")] // Void Wireless V2
+        [InlineData(0x0A96, InputDeviceType.Mouse, "headset")] // HS80 Max
         [InlineData(0x1FFF, InputDeviceType.Keyboard, "keyboard")] // listed nowhere
         [InlineData(0x1FFF, InputDeviceType.Mouse, "mouse")]
         public void ARowsType_IsItsProducts_ElseItsOwnKind(int productId, int capType, string key)
@@ -260,6 +265,41 @@ namespace PadForge.Tests
             var (mouseRow, mouse) = Corsair(0x1B34, InputDeviceType.Mouse);
             var mouseLinks = PeripheralLinker.Build(new[] { mouseRow }, Inputs(true, new[] { "iCUE.exe" }, mouse)).For(A);
             Assert.Equal(new[] { new OutputPath(OutputFamily.IcueDevice, "mouse") }, mouseLinks.Lighting);
+        }
+
+        /// <summary>A headset's row goes the way a mouse's does: while iCUE runs and its SDK is
+        /// there, through its type's path, and a row of its own unit gives the unit up.</summary>
+        [Fact]
+        public void WhileICueRuns_AHeadsetsRow_IsLitThroughTheHeadsetPath()
+        {
+            var (row, unit) = Corsair(0x2A00, InputDeviceType.Mouse);
+            var links = PeripheralLinker.Build(new[] { row }, Inputs(true, new[] { "iCUE.exe" }, unit)).For(A);
+            Assert.Equal(new[] { new OutputPath(OutputFamily.IcueDevice, "headset") }, links.Lighting);
+            Assert.True(links.DirectWhenClosed);
+        }
+
+        /// <summary>One headset, one owner. A headset has no input row, so the Corsair family's
+        /// unit row stands for it and iCUE's row holds the type's path. While iCUE runs the unit
+        /// row holds nothing and iCUE's row lights headsets. While it does not run, the unit row
+        /// lights the headset through its own frames and iCUE's path carries nothing.</summary>
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void AHeadset_IsLitByTheCorsairFamilyOrByICue_NeverBoth(bool icueRuns)
+        {
+            var icue = PeripheralOutputRow.IdentityFor(PeripheralRowKind.CorsairIcue);
+            var unit = new DirectUnit(OutputFamily.HidLightingUnit, "headset", Box, 0x1B1C, 0x2A00)
+            {
+                Programs = new[] { VendorPrograms.CorsairIcue },
+            };
+            var unitRow = new LinkRow(A, InputDeviceType.PeripheralLighting, 0x5046, PeripheralUnitRow.UnitProductId, Guid.Empty, null) { Unit = unit.Path };
+            var icueRow = new LinkRow(icue, InputDeviceType.PeripheralLighting, 0x5046, 0x4943, Guid.Empty, PeripheralRowKind.CorsairIcue);
+            var headset = new OutputPath(OutputFamily.IcueDevice, "headset");
+            var table = PeripheralLinker.Build(new[] { icueRow, unitRow }, Inputs(true, icueRuns ? new[] { "iCUE.exe" } : new[] { "explorer.exe" }, unit));
+            Assert.Contains(headset, table.For(icue).Lighting);
+            // A row that holds nothing has no links.
+            if (icueRuns) Assert.Null(table.For(A));
+            else Assert.Equal(new[] { unit.Path }, table.For(A).Lighting);
         }
 
         [Fact]
@@ -401,8 +441,25 @@ namespace PadForge.Tests
             return IcueRoute.Success;
         }
 
+        /// <summary>Set: the next write holds until it is set, and
+        /// <see cref="Held"/> says it is there, on <see cref="HeldThread"/>.</summary>
+        public ManualResetEventSlim Hold;
+        public readonly ManualResetEventSlim Held = new(false);
+        public Thread HeldThread;
+
+        /// <summary>What the held write answers, when not the rest's.</summary>
+        public int? HeldResult;
+
         public int SetLedColors(string deviceId, IcueLedColor[] colors)
         {
+            var hold = Interlocked.Exchange(ref Hold, null);
+            if (hold != null)
+            {
+                HeldThread = Thread.CurrentThread;
+                Held.Set();
+                hold.Wait(30000);
+                if (HeldResult is int result) return result;
+            }
             Log("set " + deviceId);
             lock (_gate)
             {
@@ -462,6 +519,92 @@ namespace PadForge.Tests
 
         private long Tick() => Interlocked.Read(ref _tick);
         private void Advance(long ms) => Interlocked.Add(ref _tick, ms);
+
+        /// <summary>A worker a stop gave up on still ends its session when the
+        /// next run wants nothing of the SDK: nothing else would give the
+        /// devices back.</summary>
+        [Fact]
+        public void AWorkerAStopGaveUpOn_EndsItsSession_WhenTheNextRunWantsNone()
+        {
+            using var first = new IcueBackend(() => _sdk, Tick, idleTickMs: 5, stopJoinMs: 50);
+            first.Start();
+            Link(Keyboard);
+            Light(0x112233);
+            Passes(first);
+            _sdk.StateNow = IcueRoute.StateConnected;
+            Passes(first, 3);
+            using var gate = new ManualResetEventSlim(false);
+            _sdk.Hold = gate;
+            Advance(1000);
+            Light(0x445566);
+            IcueBackend next = null;
+            try
+            {
+                first.Wake();
+                Assert.True(_sdk.Held.Wait(30000), "the worker is inside a write");
+                first.Dispose();
+                Link();
+                next = new IcueBackend(() => _sdk, Tick, idleTickMs: 5, stopJoinMs: 50);
+                next.Start();
+                Passes(next, 2);
+            }
+            finally
+            {
+                gate.Set();
+            }
+            Assert.True(_sdk.HeldThread.Join(30000), "the first worker ended");
+            Assert.Contains("disconnect", _sdk.Calls());
+            next.Dispose();
+        }
+
+        /// <summary>A worker a stop gave up on comes out after the next run's
+        /// worker left its wait, on a backend of its own, as each engine start
+        /// has it. The SDK's client and the maps are that run's by then, so
+        /// nothing is cleared, nothing is disconnected and the map stays. The
+        /// same when the write it comes out of says the SDK is not connected,
+        /// which sends it down its path for a lost connection.</summary>
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void AWorkerAStopGaveUpOn_LeavesTheNextRunsSessionAlone(bool itsWriteFails)
+        {
+            if (itsWriteFails) _sdk.HeldResult = IcueRoute.NotConnected;
+            using var first = new IcueBackend(() => _sdk, Tick, idleTickMs: 5, stopJoinMs: 50);
+            first.Start();
+            Link(Keyboard);
+            Light(0x112233);
+            Passes(first);
+            _sdk.StateNow = IcueRoute.StateConnected;
+            Passes(first, 3);
+            using var gate = new ManualResetEventSlim(false);
+            _sdk.Hold = gate;
+            Advance(1000);
+            Light(0x445566);
+            IcueBackend next = null;
+            int calls;
+            try
+            {
+                first.Wake();
+                Assert.True(_sdk.Held.Wait(30000), "the worker is inside a write");
+                first.Dispose();
+                next = new IcueBackend(() => _sdk, Tick, idleTickMs: 5, stopJoinMs: 50);
+                next.Start();
+                Passes(next, 3);
+                Assert.NotNull(PeripheralLightMaps.For(Keyboard));
+                calls = _sdk.Calls().Count;
+            }
+            finally
+            {
+                gate.Set();
+            }
+            Assert.True(_sdk.HeldThread.Join(30000), "the first worker ended");
+            var after = _sdk.Calls().Skip(calls).ToList();
+            Assert.DoesNotContain("disconnect", after);
+            // Its own write goes out when it comes back, the one set after this point.
+            Assert.True(after.Count(c => c.StartsWith("set ", StringComparison.Ordinal)) <= 1, string.Join(", ", after));
+            Assert.NotNull(PeripheralLightMaps.For(Keyboard));
+            next.Dispose();
+        }
 
         private IcueBackend Started()
         {
@@ -531,7 +674,25 @@ namespace PadForge.Tests
             Assert.True(backend.WaitMs <= IcueBackend.StatePollMs);
         }
 
-        /// <summary>Once connected: the device list by the four types' mask,
+        /// <summary>A headset iCUE lists takes its type's path, as a keyboard or a mouse does:
+        /// its LEDs are the group CLG_Headset (iCUESDKLedIdEnum.h:11), zones on the map, and
+        /// a claim on that path paints it and nothing else (RGB.NET CorsairDeviceProvider.cs:188-189).</summary>
+        [Fact]
+        public void AListedHeadset_IsPaintedThroughItsTypesPath()
+        {
+            _sdk.Devices.Add(new IcueDeviceInfo(8, "{hs}", "S4", "VIRTUOSO MAX", 2, 0));
+            _sdk.Leds["{hs}"] = new[] { new IcueLedPosition(0x60001, 1, 1), new IcueLedPosition(0x60002, 2, 2) };
+            var headset = new OutputPath(OutputFamily.IcueDevice, "headset");
+            using var backend = Connected(0x102030, headset);
+            var map = PeripheralLightMaps.For(headset);
+            Assert.Equal(new[] { 1, 2 }, map.Lights.Select(l => l.Zone));
+            Assert.All(map.Lights, l => Assert.Equal(LightKind.Zone, l.Kind));
+            var set = Assert.Single(_sdk.SetsNow());
+            Assert.Equal("{hs}", set.Id);
+            Assert.Equal(new[] { new IcueLedColor(0x60001, 0x10, 0x20, 0x30, 255), new IcueLedColor(0x60002, 0x10, 0x20, 0x30, 255) }, set.Colors);
+        }
+
+        /// <summary>Once connected: the device list by the five types' mask,
         /// each listed device of those types read and asked for shared
         /// control (CorsairDeviceProvider.cs:155-165), the map published, and
         /// the keyboard painted opaque in its own LED order. The memory
@@ -541,7 +702,7 @@ namespace PadForge.Tests
         {
             using var backend = Connected(0x102030);
             var calls = _sdk.Calls();
-            Assert.Equal(new[] { "load", "connect", "devices 17", "leds {kbd}", "control {kbd} 0", "leds {mouse}", "control {mouse} 0", "set {kbd}" },
+            Assert.Equal(new[] { "load", "connect", "devices 1F", "leds {kbd}", "control {kbd} 0", "leds {mouse}", "control {mouse} 0", "set {kbd}" },
                 calls);
             var map = PeripheralLightMaps.For(Keyboard);
             Assert.Equal(new[] { 1, 30, 0x10001 }, map.Lights.Select(l => l.Address));
@@ -651,7 +812,7 @@ namespace PadForge.Tests
             Advance(1000);
             Passes(backend, 3);
             Assert.Equal(2, _sdk.SetsNow().Count);
-            Assert.Equal(2, _sdk.Calls().Count(c => c == "devices 17"));
+            Assert.Equal(2, _sdk.Calls().Count(c => c == "devices 1F"));
             Assert.Equal(1, _sdk.Calls().Count(c => c == "connect"));
         }
 
@@ -664,9 +825,15 @@ namespace PadForge.Tests
             _sdk.SetResult = IcueRoute.NotConnected;
             Light(0x405060);
             Advance(1000);
+            // The pass after the one that forgets lists the devices again, so
+            // the map is gone for one pass at a time.
+            Assert.True(SpinWait.SpinUntil(() =>
+            {
+                backend.Wake();
+                return PeripheralLightMaps.For(Keyboard) == null;
+            }, 30000), "the map went with the devices");
             Passes(backend, 2);
-            Assert.Null(PeripheralLightMaps.For(Keyboard));
-            Assert.True(_sdk.Calls().Count(c => c == "devices 17") >= 2);
+            Assert.True(_sdk.Calls().Count(c => c == "devices 1F") >= 2);
         }
 
         /// <summary>The list is read again every five seconds, and a new
@@ -742,6 +909,118 @@ namespace PadForge.Tests
             Assert.All(sets.Last().Colors, c => Assert.Equal(0, c.A));
             backend.Dispose();
             Assert.Equal(1, _sdk.Calls().Count(c => c == "disconnect"));
+        }
+
+        /// <summary>CSS_ConnectionRefused is iCUE running with third-party
+        /// control off (iCUESDK.h:40, docs/index.html:166), which names the
+        /// setting. CSS_Connecting names nothing. CSS_Connected clears it.</summary>
+        [Fact]
+        public void ARefusedSession_NamesTheSetting_AndConnectingClearsIt()
+        {
+            using var backend = Started();
+            Link(Keyboard);
+            Light(0x102030);
+            Passes(backend, 2);
+            Assert.Null(PeripheralOutputs.RefusalOn(Keyboard));
+
+            _sdk.StateNow = IcueRoute.StateConnectionRefused;
+            Passes(backend, 2);
+            Assert.True(PeripheralOutputs.RefusalOn(Keyboard).SettingOff);
+            Assert.True(PeripheralOutputs.RefusalOn(Mouse).SettingOff);
+            Assert.Equal(BackendState.Waiting, PeripheralOutputs.StateOf(OutputFamily.IcueDevice));
+
+            _sdk.StateNow = IcueRoute.StateTimeout;
+            Passes(backend, 2);
+            Assert.False(PeripheralOutputs.RefusalOn(Keyboard).SettingOff);
+
+            _sdk.StateNow = IcueRoute.StateConnected;
+            Passes(backend, 2);
+            Assert.Null(PeripheralOutputs.RefusalOn(Keyboard));
+        }
+
+        /// <summary>A library that will not load and a connect the SDK refuses
+        /// come with iCUE running, since the link pass adds the path only
+        /// then. Neither gives a reason, and letting the claim go clears it.</summary>
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void AnSdkThatWillNotOpen_IsARefusal_WithNoSettingNamed(bool load)
+        {
+            if (load) _sdk.Loads = false;
+            else _sdk.ConnectResult = IcueRoute.InvalidArguments;
+            using var backend = Started();
+            Link(Keyboard);
+            Light(0x102030);
+            Passes(backend, 3);
+            Assert.False(PeripheralOutputs.RefusalOn(Keyboard).SettingOff);
+            Unlight();
+            Passes(backend, 2);
+            Assert.Null(PeripheralOutputs.RefusalOn(Keyboard));
+        }
+
+        /// <summary>A name learned with Map Key Lights for a type's model
+        /// reaches the published map with no call to the worker, and the
+        /// key's color then reaches that LED. Forgetting it takes the name
+        /// iCUE's table gave back. CLK_Escape (LED 1) is taught as the A key,
+        /// usage 0x04.</summary>
+        [Fact]
+        public void ALearnedName_ReachesTheMapAndThePicture_AndForgettingItTakesItBack()
+        {
+            LearnedKeyMaps.ResetForTest();
+            try
+            {
+                using var backend = new IcueBackend(() => _sdk, Tick, idleTickMs: 60000);
+                backend.Start();
+                Link(Keyboard);
+                Light(0x000000);
+                Passes(backend);
+                _sdk.StateNow = IcueRoute.StateConnected;
+                Passes(backend, 3);
+                var map = PeripheralLightMaps.For(Keyboard);
+                Assert.Equal("icue:keyboard", map.Product);
+                Assert.Equal((ushort)0x29, map.Lights[0].Usage);
+
+                LearnedKeyMaps.Set(map.Product, 1, 0x04);
+                Assert.True(SpinWait.SpinUntil(() => PeripheralLightMaps.For(Keyboard)?.Lights[0].Usage == 0x04, 5000),
+                    "the worker gave the map the name on its own");
+                var named = PeripheralLightMaps.For(Keyboard).Lights[0];
+                Assert.Equal(LightKeySource.Learned, named.KeySource);
+
+                Light(0x000000, new KeyFrame(new Dictionary<ushort, int> { [0x04] = 0xFF0000 }, null, null, null));
+                Advance(1000);
+                Passes(backend, 2);
+                Assert.Equal(new IcueLedColor(1, 0xFF, 0, 0, 255), _sdk.SetsNow().Last().Colors[0]);
+
+                LearnedKeyMaps.Set(map.Product, 1, 0);
+                Passes(backend, 2);
+                Assert.Equal((ushort)0x29, PeripheralLightMaps.For(Keyboard).Lights[0].Usage);
+            }
+            finally
+            {
+                LearnedKeyMaps.ResetForTest();
+            }
+        }
+
+        /// <summary>A list that reads the same keeps the map whole, learned
+        /// names included.</summary>
+        [Fact]
+        public void AListReadAgain_KeepsALearnedName()
+        {
+            LearnedKeyMaps.ResetForTest();
+            try
+            {
+                LearnedKeyMaps.Set("icue:keyboard", 1, 0x04);
+                using var backend = Connected(0x102030);
+                var map = PeripheralLightMaps.For(Keyboard);
+                Assert.Equal((ushort)0x04, map.Lights[0].Usage);
+                Advance(IcueBackend.DeviceReadMs);
+                Passes(backend, 3);
+                Assert.Same(map, PeripheralLightMaps.For(Keyboard));
+            }
+            finally
+            {
+                LearnedKeyMaps.ResetForTest();
+            }
         }
 
         [Fact]

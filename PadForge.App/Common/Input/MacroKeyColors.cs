@@ -131,9 +131,11 @@ namespace PadForge.Common.Input
         /// Starts an action, or starts it over when it runs already: its
         /// lights go on top. <paramref name="untilMs"/> is long.MaxValue for
         /// a hold with no time, and <paramref name="owner"/> is the macro for
-        /// the until-release hold. A held action fired again by a macro that
-        /// repeats while held keeps running as it is, the way a held trigger
-        /// effect does.
+        /// the until-release hold. A macro that repeats while held fires its
+        /// actions on every poll, so an action fired again unchanged wakes
+        /// nothing, the way a held trigger effect does: a hold keeps running
+        /// as it is, and a timed action starts over where it is in the list
+        /// or on top, for the writer its time keeps alive to paint.
         /// </summary>
         internal void Play(object action, KeyColorTarget[] targets, int rgb, MacroKeyColorStyle style,
             MacroKeyColorRest rest, int restRgb, long nowMs, long untilMs, object owner)
@@ -141,14 +143,28 @@ namespace PadForge.Common.Input
             if (action == null || targets == null || targets.Length == 0) return;
             lock (_lock)
             {
-                int at = _entries.FindIndex(e => ReferenceEquals(e.Action, action));
+                int at = -1;
+                for (int i = 0; i < _entries.Count && at < 0; i++)
+                    if (ReferenceEquals(_entries[i].Action, action)) at = i;
                 if (at >= 0)
                 {
                     var was = _entries[at];
-                    if (was.UntilMs == long.MaxValue && untilMs == long.MaxValue && was.Owner == owner
+                    bool bothHeld = was.UntilMs == long.MaxValue && untilMs == long.MaxValue;
+                    bool bothTimed = was.UntilMs != long.MaxValue && untilMs != long.MaxValue;
+                    if ((bothHeld || bothTimed) && was.Owner == owner
                         && was.Rgb == (rgb & 0xFFFFFF) && was.Style == style && was.Rest == rest
                         && was.RestRgb == (restRgb & 0xFFFFFF) && was.Targets.SequenceEqual(targets))
+                    {
+                        if (bothHeld) return;
+                        was.StartMs = nowMs;
+                        was.UntilMs = untilMs;
+                        if (at != _entries.Count - 1)
+                        {
+                            _entries.RemoveAt(at);
+                            _entries.Add(was);
+                        }
                         return;
+                    }
                     _entries.RemoveAt(at);
                 }
                 _entries.Add(new Entry
@@ -213,6 +229,21 @@ namespace PadForge.Common.Input
                 if (changed) Recount();
             }
             if (changed) Changed?.Invoke(_slot);
+        }
+
+        /// <summary>Ends the actions past their time. The dispatcher's tick
+        /// calls it, so an action ends on a slot whose passes paint nothing
+        /// and never reach <see cref="Compose"/>.</summary>
+        internal void Expire(long nowMs)
+        {
+            if (!_timed) return;
+            bool expired;
+            lock (_lock)
+            {
+                expired = _entries.RemoveAll(e => nowMs >= e.UntilMs) > 0;
+                if (expired) Recount();
+            }
+            if (expired) Changed?.Invoke(_slot);
         }
 
         /// <summary>

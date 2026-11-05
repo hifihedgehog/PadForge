@@ -893,8 +893,8 @@ namespace PadForge.Tests
             Assert.True(small.Identify(new FakeReportChannel { SerialNumber = "A202104052336" }));
             Assert.False(small.Identify(new FakeReportChannel { SerialNumber = "A202105291658" }));
             Assert.False(small.Identify(new FakeReportChannel { SerialNumber = "" }));
-            // A mode is stored ("@save :robot:"), and the ARGB controller's
-            // pictures start as modes. The Small's are Direct frames, which
+            // The ARGB controller's pictures start as mode frames no reference
+            // streams, so they are held. The Small's are Direct frames, which
             // SignalRGB's plugin streams on each frame.
             Assert.Equal((150, 500), (argb.HoldMs, argb.RepaintMs));
             Assert.Equal((0, 40), (small.HoldMs, small.RepaintMs));

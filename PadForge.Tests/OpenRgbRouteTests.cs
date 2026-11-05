@@ -265,6 +265,7 @@ namespace PadForge.Tests
         private readonly List<FakeOpenRgbLink> _links = new();
         private volatile bool _runs = true;
         private volatile int _port = OpenRgbProtocol.DefaultPort;
+        private volatile System.Net.IPAddress _host = System.Net.IPAddress.Loopback;
 
         /// <summary>Set: the worker's next look at whether OpenRGB runs
         /// holds until it is reset, and <see cref="_held"/> says it is
@@ -289,6 +290,7 @@ namespace PadForge.Tests
         {
             PeripheralOutputs.ResetForTest();
             PeripheralLightMaps.ResetForTest();
+            OpenRgbBackend.ForgetCarriedForTest();
             _server.Controllers.Add(OpenRgbSamples.Keyboard());
             _server.Controllers.Add(OpenRgbSamples.Mousepad());
         }
@@ -302,10 +304,11 @@ namespace PadForge.Tests
         private long Tick() => Interlocked.Read(ref _tick);
         private void Advance(long ms) => Interlocked.Add(ref _tick, ms);
 
-        private IOpenRgbLink Connect(int port, int timeoutMs)
+        private IOpenRgbLink Connect(OpenRgbServerAddress address, int timeoutMs)
         {
             Interlocked.Increment(ref _connects);
-            Assert.Equal(_port, port);
+            Assert.Equal(_port, address.Port);
+            Assert.Equal(_host, address.Host);
             Assert.Equal(OpenRgbBackend.ConnectTimeoutMs, timeoutMs);
             if (_server.Down) return null;
             var link = _server.Link();
@@ -313,10 +316,13 @@ namespace PadForge.Tests
             return link;
         }
 
-        private OpenRgbBackend Started()
+        private OpenRgbBackend Unstarted(int stopJoinMs = OpenRgbBackend.StopJoinMs)
+            => new OpenRgbBackend(Connect, _ => Box, Tick, Runs, () => new OpenRgbServerAddress(_host, _port),
+                idleTickMs: 5, stopJoinMs: stopJoinMs, versionWaitMs: 50, replyWaitMs: 50);
+
+        private OpenRgbBackend Started(int stopJoinMs = OpenRgbBackend.StopJoinMs)
         {
-            var backend = new OpenRgbBackend(Connect, _ => Box, Tick, Runs, () => _port,
-                idleTickMs: 5, versionWaitMs: 50, replyWaitMs: 50);
+            var backend = Unstarted(stopJoinMs);
             backend.Start();
             backend.Rescan(new[]
             {
@@ -375,9 +381,9 @@ namespace PadForge.Tests
 
         private static int[] Repeat(int rgb, int count = 8) => Enumerable.Repeat(rgb, count).ToArray();
 
-        private OpenRgbBackend Lit(int rgb = 0x112233)
+        private OpenRgbBackend Lit(int rgb = 0x112233, int stopJoinMs = OpenRgbBackend.StopJoinMs)
         {
-            var backend = Started();
+            var backend = Started(stopJoinMs);
             Link(KeyboardPath);
             Light(rgb);
             Passes(backend);
@@ -562,6 +568,245 @@ namespace PadForge.Tests
             Unlight();
             Passes(backend);
             Assert.Equal(new[] { ModePacket(0, 1, OpenRgbSamples.Static()) }, Writes());
+        }
+
+        /// <summary>The worker connects where the address names, and the tab
+        /// is told the port it tried.</summary>
+        [Fact]
+        public void TheWorker_ConnectsToTheAddressItFinds_AndPublishesThePort()
+        {
+            _host = System.Net.IPAddress.Parse("192.168.1.5");
+            _port = 6800;
+            using var backend = Started();
+            Assert.Equal(1, Volatile.Read(ref _connects));
+            Assert.Equal(6800, PeripheralOutputs.OpenRgbPortTried);
+        }
+
+        /// <summary>A hand-back that does not go out at the stop is logged
+        /// and stays owed to the next run.</summary>
+        [Fact]
+        public void AHandBackThatFailsAtTheStop_IsLogged_AndPaidByTheNextRun()
+        {
+            using var backend = Lit();
+            string line = "PERIPHERAL OpenRGB 'Razer BlackWidow V3' hand-back did not go out at the stop";
+            int before = SdlDiagLog.Snapshot().Split('\n').Count(l => l.Contains(line));
+            lock (_links) _links.Last().RefuseSends = true;
+            backend.Stop();
+            Assert.Equal(before + 1, SdlDiagLog.Snapshot().Split('\n').Count(l => l.Contains(line)));
+
+            Unlight();
+            _server.Clear();
+            backend.Start();
+            Passes(backend, 3);
+            Assert.Equal(new[] { ModePacket(0, 1, OpenRgbSamples.Static()) }, Writes());
+        }
+
+        /// <summary>The stop arrives in the pass that finds the server again,
+        /// so that pass pays nothing. The worker's way out pays the owed
+        /// hand-back on the session it holds.</summary>
+        [Fact]
+        public void AStopInThePassThatFindsTheServerAgain_PaysTheOwedHandBack()
+        {
+            var backend = Lit();
+            _server.Down = true;
+            Passes(backend);
+            Unlight();
+            _server.Down = false;
+            _server.Clear();
+            Advance(OpenRgbBackend.RetryMs);
+            var hold = new ManualResetEventSlim(false);
+            _held.Reset();
+            _hold = hold;
+            backend.Wake();
+            Assert.True(_held.Wait(30000), "the worker is held");
+            backend.SignalStop();
+            _hold = null;
+            hold.Set();
+            Assert.True(SpinWait.SpinUntil(() => !backend.WorkerAlive, 30000), "the worker stopped");
+            Assert.Equal(new[] { ModePacket(0, 1, OpenRgbSamples.Static()) }, Writes());
+            backend.Dispose();
+        }
+
+        /// <summary>A worker a stop gave up on comes out while the next run's
+        /// worker still waits for it, with no connection of its own. It
+        /// sets the controller back, since nobody else knows it was
+        /// entered.</summary>
+        [Fact]
+        public void AWorkerAStopGaveUpOn_SetsTheControllerBack_WhileItsSuccessorWaitsForIt()
+        {
+            using var backend = Lit();
+            _server.Clear();
+            var hold = new ManualResetEventSlim(false);
+            _held.Reset();
+            _hold = hold;
+            backend.Wake();
+            Assert.True(_held.Wait(30000), "the worker is held");
+            int connects;
+            using var next = Unstarted();
+            try
+            {
+                backend.Dispose();
+                Unlight();
+                connects = Volatile.Read(ref _connects);
+                _hold = null;
+                next.Start();
+            }
+            finally
+            {
+                hold.Set();
+            }
+            Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref _connects) > connects, 30000), "the new worker connected");
+            Assert.Equal(new[] { ModePacket(0, 1, OpenRgbSamples.Static()) }, Writes());
+        }
+
+        /// <summary>A worker a stop gave up on comes out after the next run's
+        /// worker has left its wait and entered the controller on a backend of
+        /// its own, as each engine start has it. The old worker sets nothing
+        /// back and the map stays up.</summary>
+        [Fact]
+        public void AWorkerAStopGaveUpOn_SendsTheControllerNothing_OnceTheNextRunEnteredIt()
+        {
+            using var backend = Lit(stopJoinMs: 50);
+            var hold = new ManualResetEventSlim(false);
+            _held.Reset();
+            _hold = hold;
+            backend.Wake();
+            Assert.True(_held.Wait(30000), "the worker is held");
+            OpenRgbBackend next = null;
+            try
+            {
+                backend.Dispose();
+                _hold = null;
+                next = Started(stopJoinMs: 50);
+                Passes(next, 3);
+                _server.Clear();
+            }
+            finally
+            {
+                hold.Set();
+            }
+            Assert.True(SpinWait.SpinUntil(() => !backend.WorkerAlive, 30000), "the old worker ended");
+            Assert.Empty(Writes());
+            Assert.NotNull(PeripheralLightMaps.For(KeyboardPath));
+            next.Dispose();
+        }
+
+        /// <summary>The engine stops with the server not answering, so the
+        /// hand-back cannot go out. The next run pays it once the server
+        /// answers, and does not read the Direct mode PadForge left as the
+        /// controller's own.</summary>
+        [Fact]
+        public void AHandBackOwedAtAStopWithNoServer_IsPaidByTheNextRun()
+        {
+            using var backend = Lit();
+            _server.Down = true;
+            Passes(backend);
+            backend.Dispose();
+            Unlight();
+
+            _server.Down = false;
+            _server.Clear();
+            _server.Controllers[0] = OpenRgbSamples.Keyboard(active: 0);
+            using var next = Started();
+            Passes(next, 3);
+            Assert.Equal(new[] { ModePacket(0, 1, OpenRgbSamples.Static()) }, Writes());
+        }
+
+        /// <summary>A run that never reaches the server leaves what the run
+        /// before it carried, and the run that reaches it pays that instead of
+        /// reading the Direct mode PadForge left as the controller's own.</summary>
+        [Fact]
+        public void AHandBackCarried_SurvivesARunThatNeverReachesTheServer()
+        {
+            using var backend = Lit();
+            _server.Down = true;
+            Passes(backend);
+            backend.Dispose();
+            Unlight();
+
+            using var neverReached = Started();
+            Passes(neverReached);
+            neverReached.Dispose();
+
+            _server.Down = false;
+            _server.Clear();
+            _server.Controllers[0] = OpenRgbSamples.Keyboard(active: 0);
+            using var next = Started();
+            Passes(next, 3);
+            Assert.Equal(new[] { ModePacket(0, 1, OpenRgbSamples.Static()) }, Writes());
+        }
+
+        /// <summary>A claim the next run finds standing takes the owed
+        /// hand-back over: it sets the controller back when it ends.</summary>
+        [Fact]
+        public void AClaimInTheNextRun_TakesOverTheHandBackOwedAtTheStop()
+        {
+            using var backend = Lit();
+            _server.Down = true;
+            Passes(backend);
+            backend.Dispose();
+
+            _server.Down = false;
+            _server.Controllers[0] = OpenRgbSamples.Keyboard(active: 0);
+            using var next = Started();
+            Passes(next, 3);
+            _server.Clear();
+            Unlight();
+            Passes(next);
+            Assert.Equal(new[] { ModePacket(0, 1, OpenRgbSamples.Static()) }, Writes());
+        }
+
+        /// <summary>OpenRGB stopped after the engine did: its hold went with
+        /// it, so the next run owes nothing to the OpenRGB that starts
+        /// later.</summary>
+        [Fact]
+        public void AHandBackOwedAtAStop_IsDropped_WhenOpenRgbStopsBeforeTheNextRunFindsIt()
+        {
+            using var backend = Lit();
+            _server.Down = true;
+            Passes(backend);
+            backend.Stop();
+            Unlight();
+
+            _runs = false;
+            backend.Start();
+            Passes(backend);
+            _runs = true;
+            _server.Down = false;
+            _server.Clear();
+            Advance(OpenRgbBackend.RetryMs);
+            Passes(backend, 3);
+            Assert.Empty(Writes());
+        }
+
+        /// <summary>OpenRGB deleted and registered a lit controller again
+        /// under the same location, with the list read landing after the new
+        /// registration (DetectionManager.cpp:2167-2200). The new controller
+        /// is in another mode: the worker sets its Direct mode again, paints
+        /// the picture again, and keeps the hand-back it held.</summary>
+        [Fact]
+        public void AControllerListedInAnotherMode_IsSetToDirectAgain_AndKeepsItsHandBack()
+        {
+            using var backend = Lit(0x112233);
+            _server.Clear();
+            _server.Controllers[0] = OpenRgbSamples.Keyboard(active: 2);
+            lock (_links) _links.Last().Notice();
+            Passes(backend, 3);
+            Assert.Equal(new[] { ModePacket(0, 0, OpenRgbSamples.Direct()), Leds(0, Repeat(0x112233)) }, Writes());
+            Assert.Equal(new[] { ModePacket(0, 1, OpenRgbSamples.Static()) }, Assert.Single(backend.Recorded).Packets.Select(p => Hex(p)));
+        }
+
+        /// <summary>The server names the Direct mode the worker set, so a
+        /// list read changes nothing on the device.</summary>
+        [Fact]
+        public void AControllerListedInItsDirectMode_IsNotSetAgain()
+        {
+            using var backend = Lit(0x112233);
+            _server.Clear();
+            _server.Controllers[0] = OpenRgbSamples.Keyboard(active: 0);
+            lock (_links) _links.Last().Notice();
+            Passes(backend, 3);
+            Assert.Empty(Writes());
         }
 
         /// <summary>The list changed: a controller listed at another index

@@ -323,18 +323,23 @@ namespace PadForge.Tests
             var numpad = new byte[65];
             numpad[6] = 1;
             var io = Channel(numpad);
+            KeyboardProfileBackups.ResetForTest(persistAtOnce: true);
             var session = AsusAuraUsbLighting.BeginKeyboard(io, 0x184D);
             var outs = Outs(io);
-            Assert.Equal(3, outs.Count);
-            Starts("00 40 60", outs[0], 65);
-            Starts("00 41 01", outs[1], 65);
-            Starts("00 41 03", outs[2], 65);
+            Starts("00 40 60", Assert.Single(outs), 65);
             var right = AsusAuraTables.KeyboardSet("AsusClaymoreNumpadRightLayouts").Find(17);
             Assert.Equal(right.Size, session.Map.Lights.Count);
+            Assert.Empty(session.CrashFrames);
+            var lights = session.Map.Lights;
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, lights, new int[lights.Count]));
+            outs = Outs(io);
+            Starts("00 41 01", outs[1], 65);
+            Starts("00 41 03", outs[2], 65);
             Starts("00 41 00", Assert.Single(session.CrashFrames), 65);
             io.Calls.Clear();
             Assert.True(session.HandBack(io, _ => { }));
             Starts("00 41 00", Assert.Single(Outs(io)), 65);
+            KeyboardProfileBackups.ResetForTest();
         }
 
         /// <summary>The Claymore's region is its release number's
@@ -403,7 +408,9 @@ namespace PadForge.Tests
             Assert.Equal(new[] { LightKind.Logo, LightKind.Zone, LightKind.Edge }, model.Map.Lights.Select(l => l.Kind));
             var io = Channel();
             var session = model.Begin(io, _ => { });
-            Assert.Empty(io.Calls);
+            // The session asks what the mouse shows, and this one does not answer.
+            Assert.Equal(new[] { "00 12 03 00" }, Outs(io).Select(f => Hex(f.Take(4).ToArray())));
+            io.Calls.Clear();
             Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, new[] { 0x010101, 0x020202, 0x030303 }));
             var outs = Outs(io);
             Assert.Equal(3, outs.Count);
@@ -441,26 +448,26 @@ namespace PadForge.Tests
         {
             var model = new AsusAuraUsbLighting().ModelFor(
                 OpenRgbRegistrations.Of(AsusAuraUsbLighting.OpenRgbFamily).Single(r => r.Name == "ASUS ROG Strix Evolve"), 0x185B);
+            KeyboardProfileBackups.ResetForTest(persistAtOnce: true);
             var io = Channel();
             var waits = new List<int>();
             var session = model.Begin(io, waits.Add);
+            Assert.Empty(Sets(io));
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, waits.Add, model.Map.Lights, new[] { 0x102030 }));
             var sets = Sets(io);
-            Assert.Equal(2, sets.Count);
             Starts("0C C4 0F 00 19 01", sets[0], 9);
             Starts("0C C4 0F 00 1A FF", sets[1], 9);
-            Assert.Equal(new[] { 15, 15 }, waits);
-            Assert.Equal(2, io.Calls.Count(c => c.Kind == "get"));
-            io.Calls.Clear();
-            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, new[] { 0x102030 }));
-            sets = Sets(io);
-            Starts("0C C4 0F 00 1C 10", sets[0], 9);
-            Starts("0C C4 0F 00 1D 20", sets[1], 9);
-            Starts("0C C4 0F 00 1E 30", sets[2], 9);
+            Assert.Equal(new[] { 15, 15, 15, 15, 15 }, waits);
+            Assert.Equal(5, io.Calls.Count(c => c.Kind == "get"));
+            Starts("0C C4 0F 00 1C 10", sets[2], 9);
+            Starts("0C C4 0F 00 1D 20", sets[3], 9);
+            Starts("0C C4 0F 00 1E 30", sets[4], 9);
             Assert.True(session.Feature);
             Starts("0C C4", Assert.Single(session.CrashFrames), 9);
             io.Calls.Clear();
             Assert.True(session.HandBack(io, _ => { }));
             Starts("0C C4", Assert.Single(Sets(io)), 9);
+            KeyboardProfileBackups.ResetForTest();
         }
 
         /// <summary>SendDirectSpatha: report 10 of 33 bytes, 00 F0 00, then

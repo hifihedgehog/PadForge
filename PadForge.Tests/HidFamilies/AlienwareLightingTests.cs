@@ -26,7 +26,7 @@ namespace PadForge.Tests.LaptopFamilies
                 Assert.Same(model, HidLightingFamilies.Match(CollectionOf(r, feature: 34)));
                 Assert.Equal("Dell G Series LED Controller", model.Name);
                 Assert.Equal(new[] { VendorPrograms.AlienwareCommandCenter }, model.Programs);
-                Assert.Equal(0, model.RepaintMs);
+                Assert.Equal(AlienwareLighting.RepaintMs, model.RepaintMs);
                 Assert.Equal(4, model.Map.Lights.Count);
                 Assert.Null(AlienwareLighting.Instance.Match(CollectionOf(r, feature: 33)));
             }

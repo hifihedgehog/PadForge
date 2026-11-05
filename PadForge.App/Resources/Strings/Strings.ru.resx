@@ -780,6 +780,8 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} снова работает на своем драйвере Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Не удалось вернуть драйвер Windows для {0}.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows вернула {0} на свой драйвер. Выберите это устройство на странице «Устройства», чтобы переключить его снова.</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>Устройство {0} больше не использует драйвер PadForge.</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>Устройство {0} все еще использует драйвер PadForge. Выберите его на странице «Устройства», чтобы вернуть его Windows.</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Использовать только в PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge переведет эту клавиатуру на драйвер WinUSB из состава Windows и будет считывать ее сам. После этого Windows перестанет набирать текст с нее во всех программах, даже когда PadForge закрыт, пока ее драйвер Windows не вернут на этой странице. Ее назначения и макросы продолжат работать, пока запущен PadForge.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge переведет эту мышь на драйвер WinUSB из состава Windows и будет считывать ее сам. После этого Windows перестанет двигать курсор с ее помощью во всех программах, даже когда PadForge закрыт, пока ее драйвер Windows не вернут на этой странице. Ее назначения и макросы продолжат работать, пока запущен PadForge.</value></data>
@@ -957,6 +959,7 @@
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>Вибрация воспроизводится через тактильный обработчик в SteelSeries GG.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG управляет всеми тактильными Rival сразу, поэтому их вибрацию задает та мышь, что назначена виртуальному контроллеру {0}.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>Ожидание SteelSeries GG. Вибрация заработает, когда GG запустится.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG работает, но не отвечает PadForge. Вибрация заработает, когда он ответит.</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>Вибрация воспроизводится на ваших устройствах Razer Sensa HD через Razer Synapse.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Ожидание Sensa HD Haptics в Razer Synapse 4. В Synapse выберите для устройства в параметре «Haptic Source» значение «Sensa HD Games».</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Левый триггер</value></data>
@@ -1000,6 +1003,12 @@
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Цвета идут напрямую на {0}. Пока устройство подсвечивается, его режим встроенной памяти отключен.</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Цвета идут напрямую на {0}. Для меняющихся цветов, например смены цветов по кругу или цветов, следующих за звуком, нужно включить Dynamic Lighting в BIOS ноутбука. Без этого клавиши сохраняют последние постоянные цвета.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Цвета идут напрямую на {0}. Если Dynamic Lighting включено в BIOS ноутбука, клавиши подсвечивает «Динамическое освещение» Windows. Отключите для этой клавиатуры «Динамическое освещение» Windows в параметрах Windows, и подсвечивать клавиши будет PadForge, включая меняющиеся цвета.</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>Цвета идут напрямую на {0}. Устройство хранит каждую картинку в собственной памяти, поэтому меняющиеся цвета, например смена цветов по кругу или цвета, следующие за звуком, не отображаются. Неизменный цвет отображается.</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>Цвета идут напрямую на {0}. Устройство хранит каждую картинку в собственной памяти, поэтому меняющиеся цвета, например смена цветов по кругу или цвета, следующие за звуком, не отображаются. Неизменный цвет отображается. Первая картинка записывается поверх эффектов, сохраненных на клавиатуре, и прежние эффекты не возвращаются.</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>Последовательное устройство на {0}</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>Это устройство подключено, но не приняло цвета PadForge. PadForge повторяет попытку каждую минуту.</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows удерживает это устройство как клавиатуру или мышь и отклоняет отчет, который задает его цвета, поэтому PadForge не может подсвечивать его в Windows.</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>Другая программа открыла это устройство, поэтому PadForge не может его подсвечивать. Как только эта программа закроется, PadForge начнет его подсвечивать.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Это устройство пока не ответило. Цвета появятся, когда оно проснется.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Цвета идут через {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Цвета идут через {0}, а эта программа подсвечивает все устройства такого типа сразу. Пока {0} не работает, PadForge подсвечивает это устройство сам.</value></data>
@@ -1007,7 +1016,9 @@
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Цвета идут через SDK Server программы OpenRGB. Пока OpenRGB не работает, PadForge подсвечивает это устройство сам.</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Цвета идут через SDK Server программы OpenRGB.</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB удерживает это устройство и не имеет для него режима Direct, поэтому его подсветка остаётся за OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB работает с выключенным SDK Server, поэтому PadForge оставляет это устройство программе OpenRGB. Включите SDK Server в OpenRGB, и PadForge будет подсвечивать устройство через него.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB работает, но его SDK Server не отвечает на порту {0}, поэтому PadForge оставляет это устройство программе OpenRGB. Включите SDK Server в OpenRGB, и PadForge будет подсвечивать устройство через него.</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE работает с выключенным SDK. Включите iCUE SDK в настройках iCUE, и PadForge будет подсвечивать устройство через него.</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} работает и не разрешает PadForge подсвечивать свои устройства. PadForge продолжает спрашивать.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} подсвечивает все устройства такого типа сразу, поэтому их цвет задает то, что назначено виртуальному контроллеру {1}.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} подсвечивает все устройства такого типа сразу, поэтому их цвет задает строка «{1}» на виртуальном контроллере {2}.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Виртуальный контроллер {0} тоже подсвечивает это устройство, и виден его цвет.</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>гарнитуры</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>материнские платы, видеокарты и память</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>материнские платы и видеокарты</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>коврики для мыши и подставки для гарнитур</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>коврики для мыши, гарнитуры и подставки для гарнитур</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Световая панель</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Введите шестизначный шестнадцатеричный код цвета (RRGGBB или #RRGGBB) и нажмите Enter или щелкните в стороне, чтобы применить.</value></data>
@@ -4671,6 +4682,7 @@
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Подключение к чату канала {0}…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Чтение чата канала {0}.</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Не удалось подключиться к чату канала {0}. Повторная попытка.</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>В Twitch нет чата для {0}. Проверьте название канала.</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>Пауза.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Изображение контроллера для вашей трансляции. Добавьте этот адрес в OBS как источник «Браузер»:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Изображению контроллера для вашей трансляции нужны «Веб-контроллер» и адрес обычного HTTP. Включите «Также отдавать по обычному HTTP» в карточке «Веб-контроллер». Для OBS на этом ПК достаточно «Только этот ПК».</value></data>

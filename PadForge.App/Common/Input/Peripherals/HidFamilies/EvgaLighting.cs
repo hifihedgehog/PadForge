@@ -22,7 +22,15 @@ namespace PadForge.Common.Input.Peripherals
     /// mode saves nothing ("@save :x:"). The hand-back is the report OpenRGB
     /// sends when it leaves Direct for one of the keyboard's own modes,
     /// "Initialise Hardware Modes" (SetHWModes, lines 198-206, sent from
-    /// RGBController_EVGAKeyboard.cpp:501-504). OpenRGB also sets the
+    /// RGBController_EVGAKeyboard.cpp:501-504). OpenRGB then sends the mode it
+    /// is going to (SetMode, EVGAKeyboardController.cpp:134-140). PadForge has
+    /// none to send: OpenRGB's calls to GetMode and GetStatus are commented
+    /// out (RGBController_EVGAKeyboard.cpp:232-387), GetMode needs packets its
+    /// author could not explain (NFIPacket, EVGAKeyboardController.cpp:392-396),
+    /// and SignalRGB's plugin ends on a last color frame
+    /// (Z-20_Keyboard.js:79-81). That the keyboard resumes its stored effect
+    /// from this report alone is taken from its name and has not been seen on
+    /// a device. OpenRGB also sets the
     /// keyboard's sleep timer whenever it opens one (SetSleepTime,
     /// EVGAKeyboardController.cpp:67 and 405-426), a setting of the user's
     /// that has nothing to do with the colors, which PadForge leaves
@@ -42,9 +50,13 @@ namespace PadForge.Common.Input.Peripherals
     /// <see cref="HoldMs"/> and pictures are <see cref="RepaintMs"/> apart.
     /// The hand-back writes back what the session read: each light's mode,
     /// then its brightness, speed and colors, as OpenRGB writes a mode
-    /// (DeviceUpdateMode, RGBController_EVGAMouse.cpp:214-240). The speed is
-    /// read at the offset it is written to (EVGA_PERIPHERAL_SPEED_BYTE,
-    /// EVGAMouseController.h:58), which OpenRGB does not read.</para>
+    /// (DeviceUpdateMode, RGBController_EVGAMouse.cpp:214-240). Each color
+    /// frame carries its own light's mode, where OpenRGB puts the logo's in
+    /// all three, its own limit by its comment: "Unleash RGB supports
+    /// individual modes on the LEDs, but OpenRGB does not"
+    /// (EVGAMouseController.cpp:195-199). The speed is read at the offset it
+    /// is written to (EVGA_PERIPHERAL_SPEED_BYTE, EVGAMouseController.h:58),
+    /// which OpenRGB does not read.</para>
     ///
     /// <para>The X12 mouse. Three lights, side, wheel and logo, in firmware
     /// slots 0, 2 and 3 of four (EVGAX12Controller.h:38-44,
@@ -104,11 +116,6 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The X20 Static mode's brightness, EVGA_PERIPHERAL_BRIGHTNESS_MAX
         /// (RGBController_EVGAMouse.h:19, RGBController_EVGAMouse.cpp:43).</summary>
         internal const byte MouseBrightness = 100;
-
-        /// <summary>The logo, whose mode every color write carries
-        /// (EVGA_PERIPHERAL_LED_SOURCE_OF_TRUTH, EVGAMouseController.cpp:21
-        /// and 199).</summary>
-        internal const int MouseLogo = 2;
 
         /// <summary>The receiver's connection type and the wait it takes
         /// between packets (EVGAMouseController.h:77-81,
@@ -488,20 +495,19 @@ namespace PadForge.Common.Input.Peripherals
             }
 
             /// <summary>What puts every light back as the session found it:
-            /// each light's mode, then each light's brightness, speed and
-            /// colors with the logo's mode, twice with the second to activate
+            /// each light's mode, then each light's mode again with its
+            /// brightness, speed and colors, twice with the second to activate
             /// where that mode is breathing.</summary>
             internal List<byte[]> RestoreFrames()
             {
                 var frames = new List<byte[]>();
                 for (int led = 0; led < MouseLeds; led++) frames.Add(MouseModeFrame(led, _saved[led].Mode));
-                byte mode = _saved[MouseLogo].Mode;
                 for (int led = 0; led < MouseLeds; led++)
                 {
                     var s = _saved[led];
-                    frames.Add(MouseColorFrame(_connection, led, mode, s.Brightness, s.Speed, s.Colors));
-                    if (mode == MouseBreathing)
-                        frames.Add(MouseColorFrame(_connection, led, mode, s.Brightness, s.Speed, s.Colors, activate: true));
+                    frames.Add(MouseColorFrame(_connection, led, s.Mode, s.Brightness, s.Speed, s.Colors));
+                    if (s.Mode == MouseBreathing)
+                        frames.Add(MouseColorFrame(_connection, led, s.Mode, s.Brightness, s.Speed, s.Colors, activate: true));
                 }
                 return frames;
             }

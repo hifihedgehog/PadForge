@@ -118,7 +118,7 @@ namespace PadForge.Common.Input.Peripherals
                 Slots = 1,
                 Picture = colors => new[]
                 {
-                    PluginStep.Feature(Frame(16, 0x02, 0x04, (byte)(0xFF - R(colors[0])), (byte)(0xFF - G(colors[0])), (byte)(0xFF - B(colors[0])), 0x03, 0x00)),
+                    PluginStep.Feature(Frame(16, 0x02, 0x04, (byte)(0xFF - R(colors[0])), (byte)(0xFF - G(colors[0])), (byte)(0xFF - B(colors[0])), 0x03, 0x00, 0x01)),
                 },
             };
             // driver-sinowealth-nubwo.c:245-261: report 03, its command, the color, mode 01,

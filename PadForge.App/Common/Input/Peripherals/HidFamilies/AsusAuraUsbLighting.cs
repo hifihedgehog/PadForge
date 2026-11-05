@@ -33,18 +33,23 @@ namespace PadForge.Common.Input.Peripherals
     /// (50 55 for keyboards and headset stands, 50 03 for mice and mousemats,
     /// EC 3F 55 for mainboards, 5A B4 for the Ally, UpdateProfile for the
     /// first ROG mice). So nothing is written to the device's memory, and a
-    /// replug brings back what the device stored. No reference reads the
-    /// mode a device of this family shows, so none can be put back while the
-    /// device stays plugged in, save where the device has a command for it:
-    /// the first ROG mice take ResetToSavedLighting
+    /// replug brings back what the device stored. A device goes back while it
+    /// stays plugged in where a reference reads what it shows or it has a
+    /// command for that: the mice and the Balteus answer 12 03 in G-Helper
+    /// (<see cref="MouseHandBack"/>, <see cref="MousematHandBack"/>), the first
+    /// ROG mice take ResetToSavedLighting
     /// (AsusAuraMouseGen1Controller.cpp:171-181), and the Claymore takes
     /// AllowRemoteControl(0), the frame OpenRGB ends every mode change of the
     /// Claymore with (RGBController_AsusAuraKeyboard.cpp:657-662). Every other
     /// device keeps the last colors PadForge sent until it is replugged or
-    /// Armoury Crate lights it. SignalRGB's plugins for these devices end on a
+    /// Armoury Crate lights it, since no reference reads its mode. SignalRGB's plugins for these devices end on a
     /// shutdown color or a rainbow mode they save
     /// (signal-plugins Plugins/Asus/ASUS_ROG_Strix_Scope.js:41-45), and
-    /// return none of them to its own lighting either.</para>
+    /// return none of them to its own lighting either. The devices with such
+    /// a command are recorded as owed before their first write, as a Corsair
+    /// session does (<see cref="CorsairSession"/>), and the next run sends it
+    /// for a device a forced kill left. No reference says their firmwares give
+    /// up host control on their own.</para>
     ///
     /// <para>Timing. No reference keeps these devices alive or bounds their
     /// rate. A picture goes out at most every <see cref="HidppBackend.PaintMs"/>,
@@ -160,7 +165,8 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>A model with the family's programs and the stream's
         /// repaint interval.</summary>
         private HidLightingModel Model(string name, int productId, LightMap map,
-            Func<IHidReportChannel, Action<int>, HidLightingSession> begin)
+            Func<IHidReportChannel, Action<int>, HidLightingSession> begin,
+            Func<IHidReportChannel, bool> handBack = null)
             => new()
             {
                 Family = this,
@@ -169,7 +175,43 @@ namespace PadForge.Common.Input.Peripherals
                 Programs = new[] { VendorPrograms.ArmouryCrate },
                 RepaintMs = HidppBackend.PaintMs,
                 Begin = begin,
+                Owed = handBack == null ? null : path => OwedHandBack(KeyboardProfileBackups.DeviceKey(ProductKey(productId), path)),
+                Repair = handBack == null ? null : (io, _) => RepairHandBack(KeyboardProfileBackups.DeviceKey(ProductKey(productId), io?.Path), io, handBack),
             };
+
+        /// <summary>How many times in a row a run tries to hand back a device
+        /// a forced kill left.</summary>
+        internal const int RepairTries = LenovoLegionLighting.RepairTries;
+
+        /// <summary>How often a picture that waits for its record to reach the
+        /// settings file looks again.</summary>
+        internal const int SavingMs = LenovoLegionLighting.SavingMs;
+
+        /// <summary>The record of a device's hand-back, the frame as its
+        /// contents, on disk before the first write. False while it is on its
+        /// way, and the picture then comes back later.</summary>
+        internal static bool Recorded(string key, byte[] handBack)
+        {
+            if (KeyboardProfileBackups.Get(key) == null) KeyboardProfileBackups.Take(key, 0, handBack);
+            return KeyboardProfileBackups.IsPersisted(key);
+        }
+
+        private static bool OwedHandBack(string key)
+            => KeyboardProfileBackups.Get(key) != null && KeyboardProfileBackups.Failures(key) < RepairTries;
+
+        /// <summary>Hands back a device an earlier run left, with no claim on
+        /// it. True when nothing is owed any more.</summary>
+        private static bool RepairHandBack(string key, IHidReportChannel io, Func<IHidReportChannel, bool> handBack)
+        {
+            if (KeyboardProfileBackups.Get(key) == null) return true;
+            if (handBack(io))
+            {
+                KeyboardProfileBackups.Drop(key);
+                return true;
+            }
+            KeyboardProfileBackups.NoteFailure(key);
+            return false;
+        }
 
         /// <summary>The key Map Key Lights stores a model's names under.</summary>
         internal static string ProductKey(int productId, string detail = null)

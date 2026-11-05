@@ -207,6 +207,10 @@ namespace PadForge.Tests
         public bool Disposed;
         private uint _version;
 
+        /// <summary>Set: a packet does not go out, while what came in can
+        /// still be read.</summary>
+        public volatile bool RefuseSends;
+
         public FakeOpenRgbLink(FakeOpenRgbServer server) => _server = server;
 
         /// <summary>Puts a device list changed notice in the reply
@@ -218,7 +222,7 @@ namespace PadForge.Tests
 
         public bool Send(byte[] packet)
         {
-            if (Disposed || _server.Down) return false;
+            if (Disposed || _server.Down || RefuseSends) return false;
             _server.Received(packet);
             uint device = BitConverter.ToUInt32(packet, 4);
             uint id = BitConverter.ToUInt32(packet, 8);

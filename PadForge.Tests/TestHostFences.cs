@@ -88,6 +88,14 @@ namespace PadForge.Tests
         internal static void Set() => StartupHelper.OffLimitsForTest = true;
     }
 
+    /// <summary>No give-back task is registered or deleted, so nothing runs
+    /// at the next boot of the PC that ran the tests.</summary>
+    internal static class GiveBackTaskOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => GiveBackTask.OffLimitsForTest = true;
+    }
+
     /// <summary>No driver is installed, removed, signed or forced onto a
     /// device, no certificate added or removed, no radio cycled or
     /// switched, no setup's uninstaller run, and no pairing record

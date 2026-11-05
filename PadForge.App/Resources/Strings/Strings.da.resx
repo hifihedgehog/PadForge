@@ -780,6 +780,8 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} bruger igen sin Windows-driver.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Windows-driveren for {0} kunne ikke gendannes.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows satte {0} tilbage på dens egen driver. Vælg den på siden Enheder for at skifte igen.</value></data>
+  <data name="Status_DriverLeft_Format" xml:space="preserve"><value>{0} ligger ikke længere på driveren fra PadForge.</value></data>
+  <data name="Status_DriverAdopted_Format" xml:space="preserve"><value>{0} ligger stadig på driveren fra PadForge. Vælg den på siden Enheder for at give den tilbage til Windows.</value></data>
   <data name="Devices_DriverBind_OnlyInPadForge" xml:space="preserve"><value>Brug kun i PadForge</value></data>
   <data name="Devices_DriverConfirm_Keyboard" xml:space="preserve"><value>PadForge flytter dette tastatur over på WinUSB-driveren fra Windows og læser det selv. Windows holder derefter op med at skrive med det i alle programmer, også når PadForge er lukket, indtil dets Windows-driver er gendannet fra denne side. Dets tildelinger og makroer bliver ved med at virke, mens PadForge kører.</value></data>
   <data name="Devices_DriverConfirm_Mouse" xml:space="preserve"><value>PadForge flytter denne mus over på WinUSB-driveren fra Windows og læser den selv. Windows holder derefter op med at flytte markøren med den i alle programmer, også når PadForge er lukket, indtil dens Windows-driver er gendannet fra denne side. Dens tildelinger og makroer bliver ved med at virke, mens PadForge kører.</value></data>
@@ -957,6 +959,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>Vibration afspilles via den taktile behandler i SteelSeries GG.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG styrer alle taktile Rival-mus på én gang, så den på virtuel controller {0} bestemmer deres vibration.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>Venter på SteelSeries GG. Vibration afspilles, når GG kører.</value></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG kører og svarer ikke PadForge. Vibration afspilles, så snart det svarer.</value></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>Vibration afspilles på dine Razer Sensa HD-enheder via Razer Synapse.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Venter på Sensa HD Haptics i Razer Synapse 4. Sæt enhedens Haptic Source til Sensa HD Games i Synapse.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Venstre trigger</value></data>
@@ -1000,6 +1003,12 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>Farverne sendes direkte til {0}. Dens tilstand med indbygget hukommelse er slået fra, mens den er belyst.</value></data>
   <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>Farverne sendes direkte til {0}. Skiftende farver, f.eks. et farveskift eller farver, der følger lyden, kræver, at Dynamic Lighting er slået til i den bærbares BIOS. Uden det beholder tasterne de seneste faste farver.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Farverne sendes direkte til {0}. Hvis Dynamic Lighting er slået til i den bærbares BIOS, er det Dynamisk belysning i Windows, der belyser tasterne i stedet. Slå Dynamisk belysning i Windows fra for dette tastatur i Indstillinger i Windows, så belyser PadForge dem, også med skiftende farver.</value></data>
+  <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>Farverne sendes direkte til {0}. Den gemmer hvert billede i sin egen hukommelse, så skiftende farver, for eksempel et farveskift eller farver, der følger lyd, vises ikke. En farve, der forbliver den samme, vises.</value></data>
+  <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>Farverne sendes direkte til {0}. Den gemmer hvert billede i sin egen hukommelse, så skiftende farver, for eksempel et farveskift eller farver, der følger lyd, vises ikke. En farve, der forbliver den samme, vises. Det første billede overskriver de effekter, der er gemt på tastaturet, og de gamle kommer ikke tilbage.</value></data>
+  <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>Seriel enhed på {0}</value></data>
+  <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>Denne enhed er forbundet og tog ikke imod farverne fra PadForge. PadForge prøver igen hvert minut.</value></data>
+  <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows har eneret på denne enhed som tastatur eller mus og afviser den rapport, der sætter dens farver, så PadForge kan ikke belyse den på Windows.</value></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>Et andet program har denne enhed åben, så PadForge kan ikke belyse den. PadForge belyser den, når programmet lukker.</value></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>Denne enhed har ikke svaret endnu. Dens farver vises, når den vågner.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Farverne sendes via {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Farverne sendes via {0}, som belyser alle enheder af denne slags på én gang. Mens {0} ikke kører, belyser PadForge selv denne enhed.</value></data>
@@ -1007,7 +1016,9 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Farverne sendes via OpenRGB's SDK Server. Mens OpenRGB ikke kører, belyser PadForge selv denne enhed.</value></data>
   <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Farverne sendes via OpenRGB's SDK Server.</value></data>
   <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holder denne enhed og har ingen Direct-tilstand til den, så dens belysning bliver hos OpenRGB.</value></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerOff" xml:space="preserve"><value>OpenRGB kører med sin SDK Server slået fra, så PadForge overlader denne enhed til OpenRGB. Slå SDK Server til i OpenRGB, så belyser PadForge enheden gennem den.</value></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB kører, og dets SDK Server svarer ikke på port {0}, så PadForge overlader denne enhed til OpenRGB. Slå SDK Server til i OpenRGB, så belyser PadForge enheden gennem den.</value></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE kører med sin SDK slået fra. Slå iCUE SDK til i indstillingerne i iCUE, så belyser PadForge enheden gennem det.</value></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} kører og ville ikke lade PadForge belyse sine enheder. PadForge bliver ved med at spørge.</value></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} belyser alle enheder af denne slags på én gang, så den på virtuel controller {1} bestemmer deres farve.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} belyser alle enheder af denne slags på én gang, så rækken {1} på virtuel controller {2} bestemmer deres farve.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Virtuel controller {0} belyser også denne enhed, og dens farve vises.</value></data>
@@ -1025,7 +1036,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headsets</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>bundkort, grafikkort og hukommelse</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>bundkort og grafikkort</value></data>
-  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>musemåtter og headsetholdere</value></data>
+  <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>musemåtter, headsets og headsetholdere</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lysbjælke</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Angiv en sekscifret hexfarve (RRGGBB eller #RRGGBB), og tryk på Enter, eller klik et andet sted for at anvende den.</value></data>
@@ -4671,6 +4682,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="TwitchChat_Status_Connecting_Format" xml:space="preserve"><value>Forbinder til chatten på {0}…</value></data>
   <data name="TwitchChat_Status_Reading_Format" xml:space="preserve"><value>Læser chatten på {0}.</value></data>
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>Kunne ikke nå chatten på {0}. Prøver igen.</value></data>
+  <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch har ingen chat for {0}. Tjek kanalens navn.</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>På pause.</value></data>
   <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>Controllerbilledet til din udsendelse. Føj denne adresse til OBS som en browserkilde:</value></data>
   <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>Controllerbilledet til din udsendelse kræver Webcontroller og dens almindelige HTTP-adresse. Slå Lever også almindelig HTTP til på kortet Webcontroller. Kun denne pc er nok til OBS på denne pc.</value></data>

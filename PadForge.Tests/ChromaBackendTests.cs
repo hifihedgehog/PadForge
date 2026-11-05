@@ -505,6 +505,37 @@ namespace PadForge.Tests
             Assert.Equal(lines + 1, Lines(line));
         }
 
+        /// <summary>Synapse runs and refuses the session: the tab reads that,
+        /// not a wait for Synapse to start. A session that opens clears it.</summary>
+        [Fact]
+        public void ASessionRefused_WhileSynapseRuns_IsARefusal_AndASessionClearsIt()
+        {
+            using var server = new FakeChromaServer { InitStatus = 500 };
+            Link(new DeviceLinks { Device = Mouse, Lighting = new[] { Category("mouse") } });
+            PeripheralOutputs.Presence = PeripheralPresence.None with { RazerSoftwareRunning = true };
+            using var backend = Backend(server, retryMs: 50);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Mouse, slot: 0, player: 1, 1, 2, 3);
+            Assert.True(SpinWait.SpinUntil(() => PeripheralOutputs.RefusalOn(Category("mouse")) != null, 5000), "the refusal was recorded");
+            server.InitStatus = 200;
+            Assert.True(SpinWait.SpinUntil(() => PeripheralOutputs.StateOf(OutputFamily.ChromaCategory) == BackendState.Connected, 5000));
+            Assert.Null(PeripheralOutputs.RefusalOn(Category("mouse")));
+        }
+
+        /// <summary>With Synapse not running, the wait stands.</summary>
+        [Fact]
+        public void ASessionRefused_WhileSynapseDoesNotRun_IsNoRefusal()
+        {
+            using var server = new FakeChromaServer { InitStatus = 500 };
+            Link(new DeviceLinks { Device = Mouse, Lighting = new[] { Category("mouse") } });
+            using var backend = Backend(server, retryMs: 50);
+            backend.Start();
+            PeripheralOutputs.SetLighting(Mouse, slot: 0, player: 1, 1, 2, 3);
+            Assert.True(SpinWait.SpinUntil(() => server.Count("POST", "/razer/chromasdk") >= 2, 5000), "the session was tried");
+            Assert.Equal(BackendState.Waiting, PeripheralOutputs.StateOf(OutputFamily.ChromaCategory));
+            Assert.Null(PeripheralOutputs.RefusalOn(Category("mouse")));
+        }
+
         /// <summary>The wait is logged again once the worker has moved on:
         /// after a spell with nothing claimed, and after a session that
         /// opened was lost.</summary>

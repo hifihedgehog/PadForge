@@ -76,6 +76,7 @@ namespace PadForge.Common.Input.Peripherals
                     "OpenRGB RGBController_BlinkyTape.cpp") { Product = $"blinkinlabs:{VendorId:X4}:{ProductId:X4}" },
                 RepaintMs = RepaintMs,
                 Open = key => _open(key),
+                OpenFoundHeld = () => OwnLightingChannels.SerialDenied,
                 BeginOwn = (channel, _) => channel is ISerialLineChannel port
                     ? new SerialFramesSession(port, 1, colors => Frame(colors[0]))
                     : null,

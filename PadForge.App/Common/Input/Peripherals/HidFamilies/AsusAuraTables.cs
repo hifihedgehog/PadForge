@@ -61,10 +61,6 @@ namespace PadForge.Common.Input.Peripherals
         internal const int RegionUk = 4;
         internal const int RegionUs = 17;
 
-        /// <summary>The ASUS_TUF_K7_LAYOUT_NO key, the one region besides UK
-        /// and US a map holds (AsusAuraKeyboardLayouts.h:31).</summary>
-        internal const int RegionNo = 11;
-
         /// <summary>A keyboard line's map by OpenRGB's name for it, or
         /// null.</summary>
         public static AsusKeyboardLayoutSet KeyboardSet(string name)

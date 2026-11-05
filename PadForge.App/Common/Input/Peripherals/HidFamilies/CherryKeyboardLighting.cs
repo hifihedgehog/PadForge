@@ -122,7 +122,10 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>How long a session waits for the keyboard's answer to a
         /// report. OpenRGB waits as long as it takes (hid_read); cherryrgb-rs
-        /// waits 1000 ms (lib.rs TIMEOUT_MS).</summary>
+        /// waits 1000 ms (lib.rs TIMEOUT_MS). A session waits this long once.
+        /// After an answer that did not come, it takes only what has already
+        /// come until the keyboard answers again, since one thread serves every
+        /// lit unit.</summary>
         internal const int AnswerMs = 1000;
 
         /// <summary>A report with its sum: the bytes 3 to 63 added as
@@ -182,13 +185,17 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Writes a report and reads the keyboard's answer. False
         /// when the write or the read failed. An answer that does not come
-        /// in time is not a failure: OpenRGB drops every answer
-        /// unread.</summary>
-        internal static bool Exchange(IHidReportChannel io, byte[] packet)
+        /// in time is not a failure: OpenRGB drops every answer unread.
+        /// <paramref name="silent"/> says the last answer did not come, and
+        /// then this read does not wait (<see cref="AnswerMs"/>).</summary>
+        internal static bool Exchange(IHidReportChannel io, byte[] packet, ref bool silent)
         {
             if (!io.WriteOutput(packet)) return false;
             var answer = new byte[PacketSize + 1];
-            return io.ReadInput(answer, AnswerMs) >= 0;
+            int read = io.ReadInput(answer, silent ? 0 : AnswerMs);
+            if (read < 0) return false;
+            silent = read == 0;
+            return true;
         }
     }
 
@@ -202,6 +209,7 @@ namespace PadForge.Common.Input.Peripherals
         private readonly byte _colorCommand;
         private readonly int _count;
         private bool _moded;
+        private bool _silent;
 
         public SonixCustomSession(byte[] mode, byte colorCommand, int count)
         {
@@ -219,11 +227,11 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (!_moded)
             {
-                if (!SonixKeyboard.Exchange(io, _mode)) return HidLightingPaint.Failed;
+                if (!SonixKeyboard.Exchange(io, _mode, ref _silent)) return HidLightingPaint.Failed;
                 _moded = true;
             }
             foreach (var packet in SonixKeyboard.ColorPackets(_colorCommand, SonixKeyboard.ColorData(colors, _count)))
-                if (!SonixKeyboard.Exchange(io, packet)) return HidLightingPaint.Failed;
+                if (!SonixKeyboard.Exchange(io, packet, ref _silent)) return HidLightingPaint.Failed;
             return HidLightingPaint.Sent;
         }
 

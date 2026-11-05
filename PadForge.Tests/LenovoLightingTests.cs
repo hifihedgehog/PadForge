@@ -215,15 +215,12 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void OnlyTheGen10Keyboards_AreGen10()
+        public void OnlyTheGen10Keyboards_NeverStream()
         {
-            Assert.True(LenovoLegionLighting.IsGen10(0xC197));
-            Assert.True(LenovoLegionLighting.IsGen10(0xC195));
+            Assert.Equal(LenovoLegionLighting.RepaintMs, HidLightingFamilies.Match(Spectrum(0xC197)).RepaintMs);
+            Assert.Equal(LenovoLegionLighting.RepaintMs, HidLightingFamilies.Match(Spectrum(0xC195)).RepaintMs);
             foreach (ushort pid in new ushort[] { 0xC977, 0xC978, 0xC988, 0xC987, 0xC997, 0xC998 })
-                Assert.False(LenovoLegionLighting.IsGen10(pid));
-            // A Gen 10 model never streams.
-            Assert.Equal(500, HidLightingFamilies.Match(Spectrum(0xC197)).RepaintMs);
-            Assert.Equal(500, HidLightingFamilies.Match(Spectrum(0xC195)).RepaintMs);
+                Assert.Equal(LenovoLegionLighting.StreamRepaintMs, HidLightingFamilies.Match(Spectrum(pid)).RepaintMs);
         }
 
         // ─────────────────────────────────────────────
@@ -925,6 +922,8 @@ namespace PadForge.Tests
             InterfaceNumber = 1,
         };
 
+        private static string K510Key => KeyboardProfileBackups.DeviceKey("lenovo:17EF:619A", K510.Path);
+
         private static byte[] State(params byte[] state)
         {
             var answer = new byte[64];
@@ -943,14 +942,14 @@ namespace PadForge.Tests
             // The state request, then the static mode in the claim's color.
             Assert.Equal(new[] { "O 04 00 00 05 38", "O 04 00 00 06 38" }, _device.Log());
             Assert.Equal("06 02 00 01 00 11 22 33", Hex(_device.Outputs[1].AsSpan(9, 8).ToArray(), 8));
-            Assert.Equal(Stored, KeyboardProfileBackups.Get("lenovo:17EF:619A")?.Contents);
+            Assert.Equal(Stored, KeyboardProfileBackups.Get(K510Key)?.Contents);
             Assert.False(Assert.Single(backend.Recorded).Feature);
 
             Unlight();
             Passes(backend);
             Assert.Equal(Stored, _device.Outputs[^1].AsSpan(9, 8).ToArray());
             Assert.Equal(0x06, _device.Outputs[^1][3]);
-            Assert.Null(KeyboardProfileBackups.Get("lenovo:17EF:619A"));
+            Assert.Null(KeyboardProfileBackups.Get(K510Key));
         }
 
         [Fact]
@@ -959,44 +958,44 @@ namespace PadForge.Tests
             using var backend = Lit(K510, holdMs: LenovoLegionLighting.HoldMs);
             Assert.All(_device.Log(), c => Assert.Equal("O 04 00 00 05 38", c));
             Assert.True(Assert.Single(backend.Snapshot.Units).Asleep);
-            Assert.Null(KeyboardProfileBackups.Get("lenovo:17EF:619A"));
+            Assert.Null(KeyboardProfileBackups.Get(K510Key));
         }
 
         [Fact]
         public void AK510PictureAKilledRunLeft_IsWrittenBack_WithNoClaim()
         {
-            KeyboardProfileBackups.LoadRegistry(new[] { ("lenovo:17EF:619A", 0, Convert.ToHexString(Stored)) });
+            KeyboardProfileBackups.LoadRegistry(new[] { (K510Key, 0, Convert.ToHexString(Stored)) });
             _device.InputAnswer = o => o[3] == 0x05 ? State(0x06, 0x02, 0x00, 0x01, 0x00, 0x11, 0x22, 0x33) : null;
             using var backend = Started(K510);
             Advance(HidLightingBackend.RepairGraceMs);
             Passes(backend);
             Assert.Equal(new[] { "O 04 00 00 05 38", "O 04 00 00 06 38" }, _device.Log());
             Assert.Equal(Stored, _device.Outputs[1].AsSpan(9, 8).ToArray());
-            Assert.Null(KeyboardProfileBackups.Get("lenovo:17EF:619A"));
+            Assert.Null(KeyboardProfileBackups.Get(K510Key));
         }
 
         [Fact]
         public void AK510TheUserSetSince_IsLeftAsItIs()
         {
-            KeyboardProfileBackups.LoadRegistry(new[] { ("lenovo:17EF:619A", 0, Convert.ToHexString(Stored)) });
+            KeyboardProfileBackups.LoadRegistry(new[] { (K510Key, 0, Convert.ToHexString(Stored)) });
             _device.InputAnswer = o => o[3] == 0x05 ? State(0x04, 0x02, 0x02, 0x00, 0x01, 0x00, 0x00, 0x00) : null;
             using var backend = Started(K510);
             Advance(HidLightingBackend.RepairGraceMs);
             Passes(backend);
             Assert.Equal(new[] { "O 04 00 00 05 38" }, _device.Log());
-            Assert.Null(KeyboardProfileBackups.Get("lenovo:17EF:619A"));
+            Assert.Null(KeyboardProfileBackups.Get(K510Key));
         }
 
         [Fact]
         public void AK510BackupOfAnotherLength_IsDropped_AndNothingWritten()
         {
-            KeyboardProfileBackups.LoadRegistry(new[] { ("lenovo:17EF:619A", 0, "0D0103") });
+            KeyboardProfileBackups.LoadRegistry(new[] { (K510Key, 0, "0D0103") });
             _device.InputAnswer = o => o[3] == 0x05 ? State(0x06, 0x02, 0x00, 0x01, 0x00, 0x11, 0x22, 0x33) : null;
             using var backend = Started(K510);
             Advance(HidLightingBackend.RepairGraceMs);
             Passes(backend);
             Assert.Equal(new[] { "O 04 00 00 05 38" }, _device.Log());
-            Assert.Null(KeyboardProfileBackups.Get("lenovo:17EF:619A"));
+            Assert.Null(KeyboardProfileBackups.Get(K510Key));
 
             // A claim then takes the stored mode as the keyboard holds it.
             Link(PathOf(K510));
@@ -1004,7 +1003,7 @@ namespace PadForge.Tests
             Passes(backend);
             Advance(LenovoLegionLighting.HoldMs);
             Passes(backend);
-            Assert.Equal(8, KeyboardProfileBackups.Get("lenovo:17EF:619A")?.Contents.Length);
+            Assert.Equal(8, KeyboardProfileBackups.Get(K510Key)?.Contents.Length);
         }
 
         [Fact]

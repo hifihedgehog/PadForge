@@ -149,7 +149,7 @@ namespace PadForge.Tests
                         foreach (var (type, count) in KeyTypes)
                             if (type.Type == asked)
                                 return HidppHapticsTests.Ans(d, f, 1, (byte)(count >> 8), (byte)count,
-                                    type.MaxRed, type.MaxGreen, type.MaxBlue);
+                                    (byte)0xFF, (byte)0xFF, (byte)0xFF);
                         return new HidppReply(HidppReplyKind.Error, 0x02);
                     case 2:
                         int offset = (p[2] << 8) | p[3];
@@ -246,10 +246,10 @@ namespace PadForge.Tests
                 .Select(k => (byte)k).ToArray();
             device.KeyTypes = new[]
             {
-                (new HidppKeyType(0x0001, 0xFF, 0xFF, 0xFF, keys), 105),
-                (new HidppKeyType(0x0002, 0xFF, 0xFF, 0xFF, new byte[] { 0xCD, 0xB6, 0xB5, 0xB7, 0xE2 }), 5),
-                (new HidppKeyType(0x0010, 0xFF, 0xFF, 0xFF, new byte[] { 0x01, 0x02 }), 1),
-                (new HidppKeyType(0x0040, 0xFF, 0xFF, 0xFF, new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05 }), 5),
+                (new HidppKeyType(0x0001, keys), 105),
+                (new HidppKeyType(0x0002, new byte[] { 0xCD, 0xB6, 0xB5, 0xB7, 0xE2 }), 5),
+                (new HidppKeyType(0x0010, new byte[] { 0x01, 0x02 }), 1),
+                (new HidppKeyType(0x0040, new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05 }), 5),
             };
             return device;
         }
@@ -1601,7 +1601,7 @@ namespace PadForge.Tests
             private long _now = 100_000;
             public readonly HidppLightDevice Device;
             public readonly HidppHapticsTests.FakeChannel Channel;
-            public readonly HidppBackend Backend;
+            public HidppBackend Backend;
             public readonly VendorHidCollection Collection;
             public readonly HidppUnit Unit;
             public readonly OutputPath Path;
@@ -1617,13 +1617,13 @@ namespace PadForge.Tests
             public volatile bool Present = true;
 
             public Bench(HidppLightDevice device, VendorHidCollection collection = null, int reassertMs = int.MaxValue,
-                int idleTickMs = 1, bool veryLong = false)
+                int idleTickMs = 1, bool veryLong = false, int predecessorJoinMs = HidppBackend.PredecessorJoinMs)
             {
                 Device = device;
                 Collection = collection ?? (device.Index == HidppHapticProtocol.DirectDeviceIndex ? Cable : Receiver);
                 Channel = device.Channel(Collection.Path, HidppHapticProtocol.IsBluetoothPath(Collection.Path));
                 Channel.HasVeryLong = veryLong;
-                Backend = new HidppBackend(() => Present ? new[] { Collection } : Array.Empty<VendorHidCollection>(),
+                _make = join => new HidppBackend(() => Present ? new[] { Collection } : Array.Empty<VendorHidCollection>(),
                     (c, s) => Channel, _ => Container, 1, idleTickMs, reassertMs,
                     (path, frame, timeout) =>
                     {
@@ -1631,7 +1631,8 @@ namespace PadForge.Tests
                         OnceTimeouts.Enqueue(timeout);
                         return !OnceFails;
                     },
-                    ticks: () => Interlocked.Read(ref _now));
+                    join, ticks: () => Interlocked.Read(ref _now));
+                Backend = _make(predecessorJoinMs);
                 Backend.Start();
                 Assert.True(SpinWait.SpinUntil(() => Backend.Snapshot.Units.Count == 1, 30000), "the scan found the unit");
                 Unit = Backend.Snapshot.Units[0];
@@ -1639,6 +1640,16 @@ namespace PadForge.Tests
                 Passes();
                 Clear();
                 _foundAt = _past.Count;
+            }
+
+            private readonly Func<int, HidppBackend> _make;
+
+            /// <summary>What an engine start does: a new backend on the same
+            /// device and clock.</summary>
+            public void NextBackend(int predecessorJoinMs)
+            {
+                Backend = _make(predecessorJoinMs);
+                Backend.Start();
             }
 
             /// <summary>The traffic each <see cref="Clear"/> set aside, and
@@ -2236,6 +2247,249 @@ namespace PadForge.Tests
                 Assert.Empty(bench.Record());
                 bench.Backend.ReleaseClaimedNow();
                 Assert.Equal(expected.Length, bench.Once.Count);
+            }
+            finally
+            {
+                gate.Set();
+            }
+        }
+
+        /// <summary>G HUB starts or OpenRGB takes the device and the link
+        /// pass closes the path, with the worker held inside a scan so none
+        /// of its passes has let the unit go. Neither the crash path's
+        /// one-shot nor the worker's way out sends a frame: it would land on
+        /// that program's lighting.</summary>
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void TheCrashPathAndTheWorkersWayOut_SendNothing_ToAUnitAnotherProgramHolds(bool gHub)
+        {
+            using var gate = new ManualResetEventSlim(false);
+            using var bench = new Bench(HidppLightDevice.G903());
+            try
+            {
+                bench.Link();
+                bench.Light(0xFF0000);
+                bench.After(3);
+                bench.Clear();
+
+                int asked = bench.Channel.RegistersAsked.Count;
+                bench.Channel.Register = (r, s) => { gate.Wait(30000); return HidppHapticsTests.NoAnswer(); };
+                bench.Advance(HidppBackend.FirstScanMs);
+                Assert.True(SpinWait.SpinUntil(() => bench.Channel.RegistersAsked.Count > asked, 30000), "the worker is inside its scan");
+
+                if (gHub)
+                {
+                    PeripheralOutputs.Presence = PeripheralPresence.None with { LogitechGHubRunning = true };
+                    PeripheralOutputs.PublishLinks(LinkTable.Empty);
+                }
+                else
+                {
+                    PeripheralOutputs.PublishLinks(new LinkTable(new[]
+                    {
+                        new DeviceLinks
+                        {
+                            Device = bench.Row,
+                            Lighting = new[] { new OutputPath(OutputFamily.OpenRgbDevice, "openrgb") },
+                            TakenByOpenRgb = new[] { bench.Path },
+                        },
+                    }));
+                }
+                bench.Backend.ReleaseClaimedNow();
+                Assert.Empty(bench.Once);
+            }
+            finally
+            {
+                gate.Set();
+            }
+            bench.Backend.Stop();
+            Assert.Empty(bench.Lit());
+            Assert.Empty(bench.Once);
+        }
+
+        /// <summary>A worker a stop gave up on comes out of a write after the
+        /// next run has found the unit. It leaves that run's maps, list and
+        /// crash record alone, and sends the unit nothing: what the device
+        /// shows is the new run's to say. The same when the write it comes
+        /// out of failed, which sends it down its path for a lost channel.</summary>
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void AWorkerAStopGaveUpOn_LeavesItsSuccessorsState_AndHandsNothingBack(bool itsWriteFails)
+        {
+            using var gate = new ManualResetEventSlim(false);
+            using var entered = new ManualResetEventSlim(false);
+            using var bench = new Bench(HidppLightDevice.G915X(), predecessorJoinMs: 1);
+            try
+            {
+                bench.Link();
+                bench.Light(0x112233);
+                bench.After(8);
+                Assert.NotNull(PeripheralLightMaps.For(bench.Path));
+                string[] handBack = bench.Record();
+                Assert.NotEmpty(handBack);
+
+                // The worker sticks inside the next request it makes.
+                int held = 0;
+                var answer = bench.Channel.Answer;
+                bench.Channel.Answer = (d, f, fn, p) =>
+                {
+                    if (Interlocked.CompareExchange(ref held, 1, 0) == 0)
+                    {
+                        entered.Set();
+                        gate.Wait(30000);
+                        if (itsWriteFails) return new HidppReply(HidppReplyKind.WriteFailed);
+                    }
+                    return answer(d, f, fn, p);
+                };
+                bench.Light(0x445566);
+                for (int i = 0; i < 400 && !entered.IsSet; i++)
+                {
+                    bench.Advance(HidppBackend.FrameTickMs);
+                    entered.Wait(5);
+                }
+                Assert.True(entered.IsSet, "the worker is inside a write");
+
+                // The stop gives up after its 3 s, and the next run's worker
+                // finds the unit and claims it.
+                bench.Backend.Dispose();
+                bench.NextBackend(predecessorJoinMs: 1);
+                Assert.True(SpinWait.SpinUntil(() => bench.Backend.Snapshot.Units.Count == 1, 30000), "the new run found the unit");
+                bench.Advance(HidppBackend.FrameTickMs);
+                bench.Passes();
+                Assert.NotNull(PeripheralLightMaps.For(bench.Path));
+                bench.Clear();
+
+                gate.Set();
+                Assert.True(SpinWait.SpinUntil(() => bench.Channel.Disposed, 30000), "the old worker came out and ended");
+                bench.Passes();
+                Assert.Single(bench.Backend.Snapshot.Units);
+                Assert.NotEmpty(bench.Backend.ClaimedRecords);
+                Assert.NotNull(PeripheralLightMaps.For(bench.Path));
+                foreach (string frame in handBack)
+                    Assert.DoesNotContain(bench.Lit(), line => line.EndsWith(frame, StringComparison.Ordinal));
+            }
+            finally
+            {
+                gate.Set();
+            }
+        }
+
+        /// <summary>A worker a stop gave up on still owes a hand-back when it
+        /// comes out, on a unit the next run has claimed since. What that device
+        /// shows is the next run's to say, so nothing goes out.</summary>
+        [Fact]
+        public void AWorkerAStopGaveUpOn_PaysNothingOwed_OnAUnitTheNextRunClaimed()
+        {
+            var device = HidppLightDevice.G903();
+            bool silent = false;
+            device.Silent = (f, fn, p) => silent;
+            using var gate = new ManualResetEventSlim(false);
+            using var entered = new ManualResetEventSlim(false);
+            using var bench = new Bench(device, predecessorJoinMs: 1);
+            Thread stale = null;
+            try
+            {
+                bench.Link();
+                bench.Light(0xFF0000);
+                bench.After(3);
+                silent = true;
+                bench.Advance(HidppBackend.CheckMs);
+                bench.Away();
+                Assert.NotEmpty(bench.Record());
+
+                // The worker sticks inside the next question it asks.
+                int held = 0;
+                var answer = bench.Channel.Answer;
+                bench.Channel.Answer = (d, f, fn, p) =>
+                {
+                    if (Interlocked.CompareExchange(ref held, 1, 0) == 0)
+                    {
+                        stale = Thread.CurrentThread;
+                        entered.Set();
+                        gate.Wait(30000);
+                    }
+                    return answer(d, f, fn, p);
+                };
+                silent = false;
+                for (int i = 0; i < 400 && !entered.IsSet; i++)
+                {
+                    bench.Advance(HidppBackend.FirstScanMs);
+                    entered.Wait(5);
+                }
+                Assert.True(entered.IsSet, "the worker is inside a question");
+
+                bench.Backend.Dispose();
+                bench.NextBackend(predecessorJoinMs: 1);
+                Assert.True(SpinWait.SpinUntil(() => bench.Backend.Snapshot.Units.Count == 1, 30000), "the new run found the unit");
+                bench.Advance(HidppBackend.FrameTickMs);
+                bench.Passes();
+                Assert.NotEmpty(bench.Backend.ClaimedRecords);
+            }
+            finally
+            {
+                gate.Set();
+            }
+            Assert.True(stale.Join(30000), "the old worker ended");
+            Assert.Empty(bench.Once);
+        }
+
+        /// <summary>A worker a stop gave up on comes out of a write while the
+        /// next run's worker still waits for it, with nothing opened. Nobody
+        /// else knows the unit is claimed, so it hands the unit back, and a
+        /// claim of the new run comes after that.</summary>
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void AWorkerAStopGaveUpOn_HandsBack_WhileItsSuccessorWaitsForIt(bool theNewRunClaims)
+        {
+            using var gate = new ManualResetEventSlim(false);
+            using var entered = new ManualResetEventSlim(false);
+            using var bench = new Bench(HidppLightDevice.G915X(), predecessorJoinMs: 60000);
+            try
+            {
+                bench.Link();
+                bench.Light(0x112233);
+                bench.After(8);
+                string[] handBack = bench.Record();
+                Assert.NotEmpty(handBack);
+
+                int held = 0;
+                var answer = bench.Channel.Answer;
+                bench.Channel.Answer = (d, f, fn, p) =>
+                {
+                    if (Interlocked.CompareExchange(ref held, 1, 0) == 0)
+                    {
+                        entered.Set();
+                        gate.Wait(30000);
+                    }
+                    return answer(d, f, fn, p);
+                };
+                bench.Light(0x445566);
+                for (int i = 0; i < 400 && !entered.IsSet; i++)
+                {
+                    bench.Advance(HidppBackend.FrameTickMs);
+                    entered.Wait(5);
+                }
+                Assert.True(entered.IsSet, "the worker is inside a write");
+
+                bench.Backend.Dispose();
+                if (!theNewRunClaims) bench.Release();
+                bench.NextBackend(predecessorJoinMs: 60000);
+                bench.Clear();
+
+                gate.Set();
+                Assert.True(SpinWait.SpinUntil(() => bench.Channel.Disposed, 30000), "the old worker came out and ended");
+                var lit = bench.Lit();
+                foreach (string frame in handBack)
+                    Assert.Contains(lit, line => line.EndsWith(frame, StringComparison.Ordinal));
+                Assert.True(SpinWait.SpinUntil(() => bench.Backend.Snapshot.Units.Count == 1, 30000), "the new run found the unit");
+                if (theNewRunClaims)
+                {
+                    var after = bench.After(lit.Length + 1);
+                    Assert.True(after.Length > lit.Length, "the new run claimed the unit");
+                    Assert.Equal(lit, after.Take(lit.Length));
+                }
             }
             finally
             {

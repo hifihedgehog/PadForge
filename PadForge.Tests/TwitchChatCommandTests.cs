@@ -232,6 +232,94 @@ namespace PadForge.Tests
             Assert.Null(P(new string('a', 501)));
         }
 
+        // ── The release gap between presses of one button ──
+
+        [Fact]
+        public void APressOfTheSameButtonWaitsUntilItHasBeenUpForFiftyMilliseconds()
+        {
+            int a = B("a");
+            var events = T("a a", out int end);
+            Assert.Equal(new[]
+            {
+                new ChatEvent(0, a, true), new ChatEvent(200, a, false),
+                new ChatEvent(250, a, true), new ChatEvent(450, a, false),
+            }, events);
+            Assert.Equal(450, end);
+        }
+
+        [Fact]
+        public void EachRepeatOfAGroupIsItsOwnPress()
+            => Assert.Equal(new[] { 0, 250, 500 }, T("[a]*3", out _).Where(e => e.Down).Select(e => e.AtMs));
+
+        [Fact]
+        public void APressOfAnotherButtonNeedsNoGap()
+            => Assert.Equal(new[] { 0, 200 }, T("a b", out _).Where(e => e.Down).Select(e => e.AtMs));
+
+        [Fact]
+        public void AChordWaitsWhole_ForTheButtonThatJustWentUp()
+        {
+            var events = T("a a+b", out _);
+            Assert.Contains(new ChatEvent(250, B("a"), true), events);
+            Assert.Contains(new ChatEvent(250, B("b"), true), events);
+        }
+
+        [Fact]
+        public void APauseShorterThanTheGapIsStretchedToIt()
+            => Assert.Equal(new[] { 0, 250 }, T("a #20ms a", out _).Where(e => e.Down).Select(e => e.AtMs));
+
+        [Fact]
+        public void APressAfterARelease_AndABriefTimedRelease_KeepTheGap()
+        {
+            int a = B("a");
+            Assert.Contains(new ChatEvent(150, a, true), T("_a #100ms -a a", out _));
+            var events = T("_a -a20ms", out int end);
+            Assert.Equal(new[] { new ChatEvent(0, a, true), new ChatEvent(0, a, false), new ChatEvent(50, a, true) }, events);
+            Assert.Equal(50, end);
+        }
+
+        [Fact]
+        public void AButtonReleasedAndPressedInOneStepStillGetsTheGap()
+            => Assert.Equal(new[] { 0, 50 }, T("_a -a+a", out _).Where(e => e.Down).Select(e => e.AtMs));
+
+        [Fact]
+        public void TheGapCountsTowardTheTenSecondLimit()
+        {
+            Assert.NotNull(P("a5s b5s"));
+            Assert.Null(P("a5s a5s"));
+        }
+
+        // ── A group with nothing in it ──
+
+        [Theory]
+        [InlineData("[] a")]
+        [InlineData("a [ ]")]
+        [InlineData("[[] a]")]
+        [InlineData("[]*50 a")]
+        [InlineData("[]500ms a")]
+        public void AnEmptyGroupBreaksTheRules_SoTheCommandDoesNotPlay(string text)
+            => Assert.Null(P(text));
+
+        [Fact]
+        public void AMessageOfEmptyGroupsEndsAtTheFirstOne()
+        {
+            string bomb = "[[[" + string.Concat(Enumerable.Repeat("[]*50 ", 80)) + "]*50]*50]*50";
+            Assert.True(bomb.Length <= ChatCommandParser.MaxLength);
+            Assert.Null(ChatCommandParser.Parse(bomb, ChatCommandRegistry.ButtonFor, out int groups));
+            // The read that goes over the budget is counted before it is refused.
+            Assert.True(groups <= ChatCommandParser.MaxGroupParses + 1, $"{groups} groups");
+        }
+
+        [Fact]
+        public void TheLongestCommandTheLimitsAllowStaysInsideTheParseBudget()
+        {
+            string text = string.Join(" ", Enumerable.Range(0, ChatCommandParser.MaxSteps)
+                .Select(i => i % 2 == 0 ? "[[[[a]]]]" : "[[[[b]]]]"));
+            Assert.True(text.Length <= ChatCommandParser.MaxLength);
+            var steps = ChatCommandParser.Parse(text, ChatCommandRegistry.ButtonFor, out int groups);
+            Assert.Equal(ChatCommandParser.MaxSteps, steps?.Count);
+            Assert.Equal(ChatCommandParser.MaxGroupParses, groups);
+        }
+
         // ── Taking turns (ForgePlay ClaimControl.js, SkipControl.js) ──
 
         private sealed class Clock { public long Now; }
@@ -410,6 +498,77 @@ namespace PadForge.Tests
             var turns = new ChatTurns(() => 0);
             turns.Handle("Mod", true, "skip", "", running: true, _ => false);
             Assert.Contains("nothing was available to skip", turns.Notice);
+        }
+
+        // ── A notice goes on the broadcast ──
+
+        [Fact]
+        public void ANoticeNeverRepeatsWhatAViewerTyped()
+        {
+            var turns = new ChatTurns(() => 0, () => TwitchClaimApproval.Viewers);
+            turns.Handle("Troll", false, "claim", "buy-my-stuff", false, null);
+            Assert.DoesNotContain("buy-my-stuff", turns.Notice);
+            Assert.Contains("@Troll", turns.Notice);
+            turns.Handle("Troll", false, "claim", "@buy-my-stuff", false, null);
+            Assert.DoesNotContain("buy-my-stuff", turns.Notice);
+            turns.Handle("Troll", false, "accept", "@buy-my-stuff", false, null);
+            Assert.DoesNotContain("buy-my-stuff", turns.Notice);
+        }
+
+        // ── A viewer is their login ──
+
+        [Fact]
+        public void AVoteAndARequestAreCountedByLogin_WhateverNameIsShown()
+        {
+            var turns = new ChatTurns(() => 0, () => TwitchClaimApproval.Viewers);
+            const string Shown = "\u5C0F\u660E";
+            turns.Handle(Shown, false, "claim", "", false, null, login: "xiaoming");
+            // Asking again under the same login is the same request.
+            turns.Handle(Shown, false, "claim", "", false, null, login: "xiaoming");
+            Assert.Single(turns.PendingRequests);
+            // Their own vote does not count, by either name.
+            turns.Handle(Shown, false, "accept", "@xiaoming", false, null, login: "xiaoming");
+            turns.Handle(Shown, false, "accept", "@" + Shown, false, null, login: "xiaoming");
+            Assert.Equal(0, turns.PendingRequests[0].Votes);
+            // Two accounts showing one name are two voters.
+            turns.Handle("Same", false, "accept", "@" + Shown, false, null, login: "one");
+            turns.Handle("Same", false, "accept", "@xiaoming", false, null, login: "two");
+            Assert.Equal(Shown, turns.Owner);
+            Assert.True(turns.CanPlay(Shown, false, "xiaoming"));
+            Assert.False(turns.CanPlay(Shown, false, "impostor"));
+            turns.Handle(Shown, false, "release", "", false, null, login: "impostor");
+            Assert.Equal(Shown, turns.Owner);
+            turns.Handle(Shown, false, "release", "", false, null, login: "xiaoming");
+            Assert.Null(turns.Owner);
+        }
+
+        [Fact]
+        public void TwoAccountsShowingOneNameAreTwoSkipVotes()
+        {
+            var turns = new ChatTurns(() => 0);
+            int skips = 0;
+            bool Skip(bool all) { skips++; return true; }
+            turns.Handle("Same", false, "skip", "", true, Skip, login: "one");
+            turns.Handle("Same", false, "skip", "", true, Skip, login: "one");
+            Assert.Equal(0, skips);
+            turns.Handle("Same", false, "skip", "", true, Skip, login: "two");
+            Assert.Equal(1, skips);
+        }
+
+        [Fact]
+        public void AModeratorEndsAClaimByLoginOrByTheNameShown()
+        {
+            var turns = new ChatTurns(() => 0, () => TwitchClaimApproval.Moderators);
+            const string Shown = "\u5C0F\u660E";
+            turns.Handle(Shown, false, "claim", "", false, null, login: "xiaoming");
+            turns.Handle("Mod", true, "accept", "@xiaoming", false, null);
+            turns.Handle("Mod", true, "release", "@xiaoming", false, null);
+            Assert.Null(turns.Owner);
+            turns.Handle(Shown, false, "claim", "", false, null, login: "xiaoming");
+            turns.Handle("Mod", true, "accept", "@" + Shown, false, null);
+            Assert.Equal(Shown, turns.Owner);
+            turns.Handle("Mod", true, "release", "@" + Shown, false, null);
+            Assert.Null(turns.Owner);
         }
 
         [Fact]

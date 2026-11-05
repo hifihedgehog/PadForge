@@ -872,6 +872,15 @@ function Park-Pointer {
 # here, Click-El's included.
 function Click-At {
     param([int]$X, [int]$Y)
+    # A click while another program's window is in front goes to that window.
+    $own = [uint32]0
+    $front = [uint32]0
+    [void][Win32]::GetWindowThreadProcessId([IntPtr]$script:hwnd, [ref]$own)
+    [void][Win32]::GetWindowThreadProcessId([Win32]::GetForegroundWindow(), [ref]$front)
+    if ($front -ne $own) {
+        Write-Host "  !! ANOTHER WINDOW IN FRONT, no click at ($X,$Y)" -ForegroundColor Red
+        return
+    }
     [Win32]::ClickAt($X, $Y)
     Park-Pointer
 }
@@ -3392,7 +3401,7 @@ try {
             $set = { param($tag, $val) $n = $d.SelectSingleNode($tag); if ($n) { $n.InnerText = "$val" } }
             foreach ($tag in @("SerialNumber", "SdlGuid", "DisplayName", "GunCalibration", "FalconCalibration")) { & $set $tag "" }
             foreach ($tag in @("HidHideEnabled", "ConsumeInputEnabled", "ForceRawJoystickMode",
-                               "QuickChargeEnabled", "TouchpadOnlyInPadForge", "HasAccelAux", "HasGyroAux")) { & $set $tag "false" }
+                               "QuickChargeEnabled", "TouchpadOnlyInPadForge", "TouchpadKeepPending", "HasAccelAux", "HasGyroAux")) { & $set $tag "false" }
             foreach ($tag in @("IdleDisconnectSeconds", "PeripheralOutputs", "CapTouchpadCount")) { & $set $tag 0 }
             foreach ($tag in @("HidHideInstanceIds", "CapTouchpadFingerCounts")) {
                 $n = $d.SelectSingleNode($tag); if ($n) { $n.RemoveAll() }

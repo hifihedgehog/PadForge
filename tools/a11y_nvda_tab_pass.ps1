@@ -137,6 +137,8 @@ if ($Page) {
     $c = New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::AutomationIdProperty, "Nav_$Page")
     $nav = $win.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $c)
     if (-not $nav) { "page Nav_$Page not found" | Add-Content $status }
+    # A click while another program's window is in front goes to that window.
+    elseif ([NvdaPassWin]::GetForegroundWindow() -ne $h) { "page Nav_$Page not clicked, another window is in front" | Add-Content $status }
     else {
         $r = $nav.Current.BoundingRectangle
         $from = Log-Length

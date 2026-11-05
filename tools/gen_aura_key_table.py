@@ -18,6 +18,8 @@ unseen.
 WHAT IT WRITES. PadForge.App/Common/Input/Peripherals/AuraKeys.g.cs, with CRLF
 line endings.
 
+Run it without Python's -I switch: it imports tools/openrgb_cpp.py.
+
 Usage:
     python tools/gen_aura_key_table.py RGBNET_ROOT
     python tools/gen_aura_key_table.py RGBNET_ROOT --check   (compare, write nothing)
@@ -25,8 +27,8 @@ Usage:
 import argparse
 import os
 import re
-import subprocess
 import sys
+import openrgb_cpp as oc
 
 PROJ_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT = os.path.join(PROJ_ROOT, "PadForge.App", "Common", "Input", "Peripherals", "AuraKeys.g.cs")
@@ -59,7 +61,8 @@ USAGE["Num0"] = 0x62
 
 # Lights RGB.NET maps to an LED that names no key of its own: the Aura code
 # says what they are. Kind, usage, label. RGB.NET lights these as
-# Keyboard_CustomN, Logo and the media LEDs.
+# Keyboard_CustomN, Logo and the media LEDs. A media LED this table lacks stops
+# the run, since its label would be lost without a word.
 OTHER = {
     # AsusLedId name -> (kind, usage, label)
     "KEY_F13": ("Key", 0x68, "None"), "KEY_F14": ("Key", 0x69, "None"), "KEY_F15": ("Key", 0x6A, "None"),
@@ -72,6 +75,7 @@ OTHER = {
     "KEY_FN": ("Other", 0, "Fn"),
     "KEY_MUTE": ("Other", 0, "Mute"), "KEY_PLAYPAUSE": ("Other", 0, "PlayPause"),
     "KEY_MEDIASTOP": ("Other", 0, "Stop"), "KEY_NEXTTRACK": ("Other", 0, "Next"),
+    "KEY_VOLUMEDOWN": ("Other", 0, "VolumeDown"), "KEY_VOLUMEUP": ("Other", 0, "VolumeUp"),
     "UNDOCUMENTED_3": ("Logo", 0, "None"),
 }
 
@@ -95,8 +99,7 @@ def main():
     asus = os.path.join(args.rgbnet, "RGB.NET.Devices.Asus")
     ids_text = strip_comments(read(os.path.join(asus, "Enum", "AsusLedId.cs")))
     mapping_text = strip_comments(read(os.path.join(asus, "Keyboard", "AsusKeyboardLedMapping.cs")))
-    commit = subprocess.run(["git", "-C", args.rgbnet, "rev-parse", "HEAD"],
-                            capture_output=True, text=True, check=True).stdout.strip()
+    commit = oc.git_head(args.rgbnet)
 
     codes = {}
     for name, value in re.findall(r"\b([A-Z][A-Z0-9_]*)\s*=\s*(0x[0-9A-Fa-f]+)\s*,", ids_text):
@@ -128,9 +131,9 @@ def main():
         elif asus_name in OTHER:
             kind, usage, label = OTHER[asus_name]
             rows.append((code, kind, usage, label, asus_name, led))
-        elif key is not None and (key.startswith("Custom") or key.startswith("Media")):
-            # A custom or media LED with no keyboard-page key and no label:
-            # a web, power or calculator key, lit as a light of its own.
+        elif key is not None and key.startswith("Custom"):
+            # A custom LED with no keyboard-page key and no label: a web, power
+            # or calculator key, lit as a light of its own.
             rows.append((code, "Other", 0, "None", asus_name, led))
         else:
             sys.exit("no usage for LedId.%s (AsusLedId.%s)" % (led, asus_name))

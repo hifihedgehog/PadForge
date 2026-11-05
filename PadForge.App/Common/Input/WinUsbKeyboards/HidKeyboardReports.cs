@@ -92,13 +92,56 @@ namespace PadForge.Common.Input.WinUsbKeyboards
             public uint[] Usages { get; init; }
         }
 
+        /// <summary>A Resolution Multiplier feature (HID Usage Tables,
+        /// Generic Desktop 0x48) as the descriptor lays it out, and the
+        /// logical collection it applies to, -1 when it sits in none and so
+        /// applies to the whole device (linux-hid hid-core.c:1162-1185).</summary>
+        internal sealed class Multiplier
+        {
+            public byte ReportId { get; init; }
+            public int BitOffset { get; init; }
+            public int Size { get; init; }
+            public int LogicalMinimum { get; init; }
+            public int LogicalMaximum { get; init; }
+            public int PhysicalMinimum { get; init; }
+            public int PhysicalMaximum { get; init; }
+            public int LogicalCollection { get; init; }
+
+            /// <summary>The bytes of its feature report, the report ID
+            /// included when the descriptor numbers its reports.</summary>
+            public int ReportLength { get; set; }
+        }
+
+        /// <summary>What a descriptor says beyond its Input fields.</summary>
+        internal sealed class Shape
+        {
+            /// <summary>The bytes of the longest input report, the report ID
+            /// included when the descriptor numbers its reports, as usbhid
+            /// sizes its read (hid_find_max_report, usbhid/hid-core.c:842-853).</summary>
+            public int LongestInputReport { get; set; }
+
+            /// <summary>Every Resolution Multiplier feature, in descriptor
+            /// order.</summary>
+            public List<Multiplier> Multipliers { get; } = new();
+
+            /// <summary>The collections each Input field with a Wheel usage
+            /// sits in, innermost last.</summary>
+            public List<int[]> WheelCollections { get; } = new();
+        }
+
+        internal const uint ResolutionMultiplier = (0x01u << 16) | 0x48;
+        internal const uint WheelUsage = (0x01u << 16) | 0x38;
+
+        private const int LogicalCollectionType = 2;
+
         private readonly Field[] _fields;
         private readonly HashSet<uint>[] _pressed;
 
-        private HidKeyboardReports(Field[] fields, bool usesReportIds)
+        private HidKeyboardReports(Field[] fields, bool usesReportIds, int longestInputReport)
         {
             _fields = fields;
             UsesReportIds = usesReportIds;
+            LongestInputReport = longestInputReport;
             _pressed = new HashSet<uint>[fields.Length];
             for (int i = 0; i < fields.Length; i++) _pressed[i] = new HashSet<uint>();
         }
@@ -106,6 +149,10 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         /// <summary>True when the descriptor declares report IDs, so every
         /// input report starts with one.</summary>
         public bool UsesReportIds { get; }
+
+        /// <summary>The bytes of the longest input report the descriptor
+        /// declares, on any page, the report ID included.</summary>
+        public int LongestInputReport { get; }
 
         /// <summary>The fields that carry keys, in descriptor order.</summary>
         internal IReadOnlyList<Field> Fields => _fields;
@@ -115,21 +162,27 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         /// page.</summary>
         internal static HidKeyboardReports Parse(ReadOnlySpan<byte> descriptor)
         {
-            var fields = ParseFields(descriptor, CarriesKeys, out bool usesReportIds);
-            return fields == null || fields.Length == 0 ? null : new HidKeyboardReports(fields, usesReportIds);
+            var fields = ParseFields(descriptor, CarriesKeys, out bool usesReportIds, out Shape shape);
+            return fields == null || fields.Length == 0 ? null : new HidKeyboardReports(fields, usesReportIds, shape.LongestInputReport);
         }
 
         /// <summary>The Input fields of a report descriptor whose usage list
         /// <paramref name="keep"/> accepts, in descriptor order, or null
         /// when the descriptor is malformed. Every Input item moves its
         /// report's offset, kept or not.</summary>
-        internal static Field[] ParseFields(ReadOnlySpan<byte> descriptor, Func<uint[], bool> keep, out bool usesReportIds)
+        internal static Field[] ParseFields(ReadOnlySpan<byte> descriptor, Func<uint[], bool> keep, out bool usesReportIds, out Shape shape)
         {
             usesReportIds = false;
+            shape = new Shape();
             if (descriptor.Length == 0 || descriptor.Length > MaxDescriptorLength) return null;
 
             var fields = new List<Field>();
             var offsets = new Dictionary<byte, int>();
+            var featureOffsets = new Dictionary<byte, int>();
+            // The open collections, each with its type: an index into the
+            // descriptor's collections, in the order they open.
+            var collections = new List<(int Index, int Type)>();
+            int nextCollection = 0;
             var stack = new Stack<Globals>();
             var globals = new Globals();
             var usages = new List<uint>();
@@ -177,6 +230,8 @@ namespace PadForge.Common.Input.WinUsbKeyboards
                             case 0: globals.UsagePage = udata & 0xFFFF; break;
                             case 1: globals.LogicalMinimum = sdata; break;
                             case 2: globals.LogicalMaximum = globals.LogicalMinimum < 0 ? sdata : (int)udata; break;
+                            case 3: globals.PhysicalMinimum = sdata; break;
+                            case 4: globals.PhysicalMaximum = globals.PhysicalMinimum < 0 ? sdata : (int)udata; break;
                             case 7: globals.ReportSize = (int)udata; break;
                             case 8:
                                 if (udata == 0 || udata > 0xFF) return null;
@@ -258,6 +313,9 @@ namespace PadForge.Common.Input.WinUsbKeyboards
                             if (end > MaxReportBits) return null;
                             offsets[globals.ReportId] = (int)end;
 
+                            if (usages.Contains(WheelUsage))
+                                shape.WheelCollections.Add(collections.ConvertAll(c => c.Index).ToArray());
+
                             // A field with no usage is padding (:334-335).
                             if (usages.Count > 0 && globals.ReportSize > 0 && globals.ReportSize <= 32
                                 && globals.ReportCount > 0)
@@ -284,6 +342,43 @@ namespace PadForge.Common.Input.WinUsbKeyboards
                             }
                         }
 
+                        else if (tag == 11) // Feature
+                        {
+                            if (globals.ReportSize < 0 || globals.ReportSize > MaxReportSize || globals.ReportCount < 0) return null;
+                            featureOffsets.TryGetValue(globals.ReportId, out int offset);
+                            long end = (long)offset + (long)globals.ReportSize * globals.ReportCount;
+                            if (end > MaxReportBits) return null;
+                            featureOffsets[globals.ReportId] = (int)end;
+                            // Any count but one has no reason to be, and Linux
+                            // passes it over (hid-input.c:1957-1962).
+                            if (globals.ReportCount == 1 && globals.ReportSize > 0 && globals.ReportSize <= 32
+                                && usages.Contains(ResolutionMultiplier))
+                            {
+                                int logical = -1;
+                                for (int c = collections.Count - 1; c >= 0 && logical < 0; c--)
+                                    if (collections[c].Type == LogicalCollectionType) logical = collections[c].Index;
+                                shape.Multipliers.Add(new Multiplier
+                                {
+                                    ReportId = globals.ReportId,
+                                    BitOffset = offset,
+                                    Size = globals.ReportSize,
+                                    LogicalMinimum = globals.LogicalMinimum,
+                                    LogicalMaximum = globals.LogicalMaximum,
+                                    PhysicalMinimum = globals.PhysicalMinimum,
+                                    PhysicalMaximum = globals.PhysicalMaximum,
+                                    LogicalCollection = logical,
+                                });
+                            }
+                        }
+                        else if (tag == 10) // Collection
+                        {
+                            collections.Add((nextCollection++, (int)(udata & 0xFF)));
+                        }
+                        else if (tag == 12) // End Collection
+                        {
+                            if (collections.Count > 0) collections.RemoveAt(collections.Count - 1);
+                        }
+
                         // Every main item ends the local items (:675).
                         usages.Clear();
                         usageSizes.Clear();
@@ -294,6 +389,14 @@ namespace PadForge.Common.Input.WinUsbKeyboards
                 }
             }
 
+            int numbered = usesReportIds ? 1 : 0;
+            foreach (int bits in offsets.Values)
+                if (bits > 0) shape.LongestInputReport = Math.Max(shape.LongestInputReport, ((bits - 1) >> 3) + 1 + numbered);
+            foreach (var multiplier in shape.Multipliers)
+            {
+                featureOffsets.TryGetValue(multiplier.ReportId, out int bits);
+                multiplier.ReportLength = ((bits - 1) >> 3) + 1 + numbered;
+            }
             return fields.ToArray();
         }
 
@@ -426,6 +529,8 @@ namespace PadForge.Common.Input.WinUsbKeyboards
             public uint UsagePage;
             public int LogicalMinimum;
             public int LogicalMaximum;
+            public int PhysicalMinimum;
+            public int PhysicalMaximum;
             public int ReportSize;
             public int ReportCount;
             public byte ReportId;

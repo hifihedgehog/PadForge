@@ -36,9 +36,10 @@ namespace PadForge.Common.Input.Peripherals
     }
 
     /// <summary>
-    /// The TCP connection to the OpenRGB SDK server on this PC (#557),
-    /// to loopback only, the address the server binds by default
-    /// (NetworkProtocol.h:30-33, OPENRGB_SDK_HOST).
+    /// The TCP connection to the OpenRGB SDK server on this PC (#557), at the
+    /// address <see cref="OpenRgbServerPort"/> finds, which is on this PC and
+    /// by default loopback, the address the server binds unless told
+    /// otherwise (NetworkProtocol.h:30-33, OPENRGB_SDK_HOST).
     ///
     /// <para>PadForge speaks the protocol with a client of its own and does
     /// not take OpenRGB.NET, the client RGB.NET's OpenRGB provider uses
@@ -76,13 +77,13 @@ namespace PadForge.Common.Input.Peripherals
             _socket = client.Client;
         }
 
-        /// <summary>Connects to the server on loopback at
-        /// <paramref name="port"/>, waiting up to
-        /// <paramref name="timeoutMs"/>. Null when nothing answers.</summary>
-        internal static IOpenRgbLink Connect(int port, int timeoutMs)
+        /// <summary>Connects to the server at <paramref name="address"/>,
+        /// waiting up to <paramref name="timeoutMs"/>. Null when nothing
+        /// answers.</summary>
+        internal static IOpenRgbLink Connect(OpenRgbServerAddress address, int timeoutMs)
         {
             if (OffLimitsForTest) return null;
-            var client = new TcpClient(AddressFamily.InterNetwork);
+            var client = new TcpClient(address.Host.AddressFamily);
             try
             {
                 // Packets go out as they are written, the setting
@@ -90,7 +91,7 @@ namespace PadForge.Common.Input.Peripherals
                 // (OpenRgbConnection.cs:31-32).
                 client.NoDelay = true;
                 client.SendTimeout = SendTimeoutMs;
-                var connect = client.ConnectAsync(IPAddress.Loopback, port);
+                var connect = client.ConnectAsync(address.Host, address.Port);
                 // A connection given up on still ends in a fault once the
                 // client is disposed, and that fault is read here.
                 _ = connect.ContinueWith(t => _ = t.Exception,

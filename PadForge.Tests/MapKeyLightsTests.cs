@@ -172,6 +172,25 @@ namespace PadForge.Tests
             Assert.Equal(new Dictionary<int, ushort> { [1] = 0x04, [2] = 0x05, [4] = 0x06 }, LearnedKeyMaps.For(Product));
         }
 
+        /// <summary>The picture hands over what is selected, the light lit now,
+        /// then what a drag covered. A drag asks about the first key it covered,
+        /// and one that covered no key asks about nothing.</summary>
+        [Fact]
+        public void ADragAsksAboutTheFirstKeyItCovered_AndADragOverNoKeyAsksNothing()
+        {
+            using var vm = Dialog();
+            IKeyLightsSource source = vm;
+            source.SetSelection(Array.Empty<int>());
+            Assert.False(vm.IsListening);
+
+            vm.Start();
+            Assert.Equal(1, Lit());
+            source.SetSelection(source.Selection.Concat(new[] { 4 }));
+            Assert.Equal(4, Lit());
+            source.SetSelection(source.Selection);
+            Assert.Equal(4, Lit());
+        }
+
         [Fact]
         public void ClosingTheDialogEndsTheProbe()
         {

@@ -459,7 +459,9 @@ namespace PadForge.Tests
                 $"{listed} {before} {confirm} {again} {after} {bind}");
             Assert.Equal(2, body.Split(asks).Length - 1);
             Assert.Equal(1, body.Split("devices.DriverBusy = true;").Length - 1);
-            Assert.Equal(3, body.Split("devices.DriverBusy = false;").Length - 1);
+            // The two refusals, a keyboard's that no boot task could cover, and
+            // the end of the switch.
+            Assert.Equal(4, body.Split("devices.DriverBusy = false;").Length - 1);
             Assert.True(body.IndexOf("devices.DriverBusy = true;", StringComparison.Ordinal) < listed);
 
             string helper = Body(window, "private bool TakesOthersAlong(Services.VendorUsbDriverInstaller.OptInOffer offer,");

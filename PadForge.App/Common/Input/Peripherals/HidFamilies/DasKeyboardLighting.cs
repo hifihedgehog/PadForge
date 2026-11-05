@@ -25,7 +25,12 @@ namespace PadForge.Common.Input.Peripherals
     /// takes (SendDataTraditional, lines 232-281). The answer is the
     /// firmware's version string, whose characters 3 and 4 tell a US board
     /// (16 or 63) from any other (GetLayoutString, lines 34-52), which picks
-    /// the grid (RGBController_DasKeyboard.cpp:256-294). A picture sends
+    /// the grid (RGBController_DasKeyboard.cpp:256-294). A board whose version
+    /// came short of 17 characters or not at all gets no session, as OpenRGB's
+    /// detector deletes its controller (DasKeyboardControllerDetect.cpp:40-43).
+    /// A collection too short for a key's modern report takes the 8-byte form
+    /// from then on, since Windows cuts a report to the collection's length,
+    /// and a cut report would lose the key's blue and its XOR. A picture sends
     /// each key whose color changed, EA 08 78 08, the key, mode 1 (Direct,
     /// RGBController_DasKeyboard.h:19) and the color, or for the Q button
     /// (LED 130) EA 06 78 06 and the color, then applies them with
@@ -52,10 +57,16 @@ namespace PadForge.Common.Input.Peripherals
         internal const byte ReportId = 0x01;
 
         /// <summary>The feature report's bytes a read takes, the ID included
-        /// (DasKeyboardController.cpp:285-298), and the most the modern
-        /// form sends, a 9-byte message, its XOR and the ID (lines 98-108
-        /// and 193-217).</summary>
+        /// (DasKeyboardController.cpp:285-298).</summary>
         internal const int ReportBytes = 8;
+
+        /// <summary>The most the modern form sends, a 9-byte message, its XOR
+        /// and the ID (lines 98-108 and 193-217).</summary>
+        internal const int ModernKeyBytes = 11;
+
+        /// <summary>The shortest version string GetLayoutString takes (lines
+        /// 38-41).</summary>
+        internal const int MinVersionLength = 17;
 
         internal const int LedCount = 131;
         internal const int QButton = 130;
@@ -211,7 +222,7 @@ namespace PadForge.Common.Input.Peripherals
         /// 34-52): 17 characters or more, and "16" or "63" at 3.</summary>
         internal static bool IsUs(string version)
         {
-            if (version == null || version.Length < 17) return false;
+            if (version == null || version.Length < MinVersionLength) return false;
             string id = version.Substring(3, 2);
             return id is "16" or "63";
         }
@@ -240,6 +251,8 @@ namespace PadForge.Common.Input.Peripherals
             // The version string starts at byte 2 of the answer and ends at
             // its first 0 (std::string from &usb_buf[2], line 165).
             string version = VersionOf(answer);
+            if (version.Length < MinVersionLength) return null;
+            if (io.FeatureReportLength < ModernKeyBytes) session.Traditional = true;
             session.SetMap(MapOf(IsUs(version), product), version);
             return session;
         }

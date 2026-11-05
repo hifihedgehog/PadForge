@@ -158,13 +158,17 @@ namespace PadForge.Common.Input.Peripherals
                 ? RegionOf(AsusAuraTables.KeyboardSet(set), ClaymoreRegion(release))
                 : AsusAuraTables.RegionUs;
             return Model(name, productId, KeyboardMap(productId, set, region),
-                (io, wait) => BeginKeyboard(io, productId, release));
+                (io, wait) => BeginKeyboard(io, productId, release),
+                productId == Claymore
+                    ? io => RemoteControl(io, new byte[Math.Max(PacketSize, io.InputReportLength)], 0)
+                    : null);
         }
 
-        /// <summary>Reads what the keyboard's map needs and puts it in
-        /// Direct mode. Null when it did not answer. A Claymore's region
-        /// comes from <paramref name="release"/>, the device's release
-        /// number (<see cref="HidCollectionInfo.ReleaseNumber"/>).</summary>
+        /// <summary>Reads what the keyboard's map needs. Null when it did not
+        /// answer. A Claymore's region comes from <paramref name="release"/>,
+        /// the device's release number
+        /// (<see cref="HidCollectionInfo.ReleaseNumber"/>), and the first
+        /// picture puts it in Direct mode, once its hand-back is on disk.</summary>
         internal static HidLightingSession BeginKeyboard(IHidReportChannel io, int productId, int release = 0)
         {
             if (io == null) return null;
@@ -179,9 +183,6 @@ namespace PadForge.Common.Input.Peripherals
                 string set = KeyboardSetOf(productId, (byte)(numpad[5] * 2 + numpad[4]));
                 // GetLayout by the release number (lines 174-189).
                 map = KeyboardMap(productId, set, RegionOf(AsusAuraTables.KeyboardSet(set), ClaymoreRegion(release)));
-                // AllowRemoteControl(1), then (3) for Direct
-                // (RGBController_AsusAuraKeyboard.cpp:583-596).
-                if (!RemoteControl(io, scratch, 1) || !RemoteControl(io, scratch, 3)) return null;
             }
             else
             {
@@ -191,7 +192,8 @@ namespace PadForge.Common.Input.Peripherals
                 if (answer == null) return null;
                 map = KeyboardMap(productId, set, RegionOf(AsusAuraTables.KeyboardSet(set), answer[4] * 100 + answer[5]));
             }
-            return new KeyboardSession(map, PerLedKeyboard(productId), productId == Claymore);
+            return new KeyboardSession(map, PerLedKeyboard(productId), productId == Claymore,
+                productId == Claymore ? KeyboardProfileBackups.SessionKey(ProductKey(productId), io.Path) : null);
         }
 
         /// <summary>AllowRemoteControl (AsusAuraKeyboardController.cpp:230-242).</summary>
@@ -230,15 +232,20 @@ namespace PadForge.Common.Input.Peripherals
             private readonly LightMap _map;
             private readonly bool _perLed;
             private readonly bool _claymore;
-            private readonly byte[][] _crash;
+            private readonly string _key;
+            private byte[][] _crash = Array.Empty<byte[]>();
+            private bool _entered;
             private byte[] _scratch;
 
-            public KeyboardSession(LightMap map, bool perLed, bool claymore)
+            public KeyboardSession(LightMap map, bool perLed, bool claymore, string key = null)
             {
                 _map = map;
                 _perLed = perLed;
                 _claymore = claymore;
-                _crash = claymore ? new[] { RemoteControlFrame(0) } : Array.Empty<byte[]>();
+                _key = key;
+                // A record a killed run left is owed from the first moment,
+                // whether or not a picture of this session's goes out.
+                if (key != null && KeyboardProfileBackups.Get(key) != null) _crash = new[] { RemoteControlFrame(0) };
             }
 
             public override bool Feature => false;
@@ -251,6 +258,20 @@ namespace PadForge.Common.Input.Peripherals
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
             {
                 _scratch ??= new byte[Math.Max(PacketSize, io.InputReportLength)];
+                if (_claymore && !_entered)
+                {
+                    if (_key != null && !Recorded(_key, RemoteControlFrame(0)))
+                    {
+                        LaterMs = SavingMs;
+                        return HidLightingPaint.Later;
+                    }
+                    // Marked first: a write that reports a failure may still
+                    // have landed. AllowRemoteControl(1), then (3) for Direct
+                    // (RGBController_AsusAuraKeyboard.cpp:583-596).
+                    if (_crash.Length == 0) _crash = new[] { RemoteControlFrame(0) };
+                    if (!RemoteControl(io, _scratch, 1) || !RemoteControl(io, _scratch, 3)) return HidLightingPaint.Failed;
+                    _entered = true;
+                }
                 foreach (var frame in KeyboardFrames(lights, colors, _perLed))
                 {
                     Clear(io, _scratch);
@@ -263,8 +284,15 @@ namespace PadForge.Common.Input.Peripherals
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
             {
                 if (!_claymore) return true;
-                _scratch ??= new byte[Math.Max(PacketSize, io.InputReportLength)];
-                return RemoteControl(io, _scratch, 0);
+                if (_crash.Length > 0)
+                {
+                    _scratch ??= new byte[Math.Max(PacketSize, io.InputReportLength)];
+                    if (!RemoteControl(io, _scratch, 0)) return false;
+                    _entered = false;
+                    _crash = Array.Empty<byte[]>();
+                }
+                KeyboardProfileBackups.Drop(_key);
+                return true;
             }
         }
     }

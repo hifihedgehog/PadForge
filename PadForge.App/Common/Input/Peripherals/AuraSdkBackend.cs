@@ -15,19 +15,23 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>SwitchMode takes every Aura device at once and ReleaseControl
     /// gives every one back (AsusDeviceProvider.cs:65 and 103), so while any
-    /// path is claimed the SDK holds them all. A path nobody claims while
-    /// another is claimed keeps the last picture it was sent, since the SDK
-    /// has no call that hands one device back, and a kind no claim has
-    /// painted in the session shows whatever SwitchMode leaves on it, which
-    /// no reference records. When the last claim goes,
-    /// the program stops or a call fails, ReleaseControl hands every device
-    /// back to Armoury Crate's own lighting.</para>
+    /// path is claimed the SDK holds them all. The SDK has no call that hands
+    /// one device back, so a path nobody claims any more while another stays
+    /// claimed ends the session and opens a new one in the same pass, which
+    /// paints what stays, as <see cref="ChromaBackend"/> reopens when its
+    /// categories change. PadForge's picture leaves the kind that was let go.
+    /// A kind no claim paints in a session shows whatever SwitchMode leaves on
+    /// it, which no reference records. When the last claim goes, the program
+    /// stops or a call fails, ReleaseControl hands every device back to
+    /// Armoury Crate's own lighting.</para>
     ///
     /// <para>Each device is sent with one Apply after its lights are set,
     /// as RGB.NET sends it (AsusUpdateQueue.cs:90). A device whose lights
     /// did not change is not sent. Within a device only the lights whose
     /// color changed are set again, and the first picture of a session
-    /// sets every one.</para>
+    /// sets every one. A per-key board RGB.NET gives extra lights by its name
+    /// (<see cref="AuraLights.ExtraLightsOf"/>) takes them through its Lights
+    /// list beside its keys (AsusUpdateQueue.cs:50-73).</para>
     /// </summary>
     internal sealed class AuraSdkBackend : SdkCategoryBackend
     {
@@ -35,11 +39,16 @@ namespace PadForge.Common.Input.Peripherals
 
         public AuraSdkBackend() : this(null) { }
 
-        internal AuraSdkBackend(IAuraSdkNative native, int pollMs = 50, int retryMs = 30000, int stopWaitMs = 3000)
-            : base(pollMs, retryMs, stopWaitMs)
+        internal AuraSdkBackend(IAuraSdkNative native, int pollMs = 50, int retryMs = 30000, int stopWaitMs = 3000,
+            int predecessorWaitMs = DefaultPredecessorWaitMs)
+            : base(pollMs, retryMs, stopWaitMs, predecessorWaitMs)
         {
             _native = native ?? new AuraSdkNative();
         }
+
+        private static readonly WorkerSuccession s_workers = new();
+
+        protected override WorkerSuccession Workers => s_workers;
 
         public override OutputFamily Family => OutputFamily.AuraSdkType;
 
@@ -75,6 +84,15 @@ namespace PadForge.Common.Input.Peripherals
                         _native.SetKey(device.Index, code, rgb);
                         changed = true;
                     }
+                    foreach (var extra in AuraLights.ExtraLightsOf(device.Name))
+                    {
+                        if (extra.Index >= device.LightCount) continue;
+                        int address = AuraLights.ExtraBase + extra.Index;
+                        int rgb = picture.ColorAt(address);
+                        if (last != null && last.ColorAt(address) == rgb) continue;
+                        _native.SetLight(device.Index, extra.Index, rgb);
+                        changed = true;
+                    }
                 }
                 else
                 {
@@ -92,10 +110,9 @@ namespace PadForge.Common.Input.Peripherals
             return true;
         }
 
-        /// <summary>The SDK hands every device back at once, never one kind
-        /// alone, so a path that leaves while others stay keeps its last
-        /// picture until the session ends.</summary>
-        protected override void Release(string category) { }
+        /// <summary>ReleaseControl hands every device back at once, never one
+        /// kind alone (AsusDeviceProvider.cs:103).</summary>
+        protected override bool HandsBackAllAtOnce => true;
 
         protected override void Close() => _native.Close();
     }

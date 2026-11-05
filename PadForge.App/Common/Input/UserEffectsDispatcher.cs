@@ -247,7 +247,7 @@ namespace PadForge.Common.Input
         }
         // ConcurrentDictionary: GetOrCreateDeviceState inserts from the
         // animation-timer thread (DrainInputPulses) while DispatchSnapshot
-        // reads it from the polling thread (battery-percent change); a plain
+        // reads it from the thread pool (battery-percent change); a plain
         // Dictionary resizing during that read is undefined behavior, and two
         // overlapping (non-serialized) timer callbacks could double-insert.
         private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, DeviceState> _deviceStates = new();
@@ -255,10 +255,10 @@ namespace PadForge.Common.Input
         // ── Write ordering across concurrent dispatches ──────────────────
         //
         // DispatchSnapshot runs from the UI thread (ApplyOnce /
-        // OnConfigChanged), the ~1 kHz polling thread (OnPollingTickInstance /
-        // NotifyBatteryPercentChanged), the 33 ms animation timer, and the
-        // audio callback. It is NOT serialized as a whole. _animTickBusy only
-        // excludes timer-vs-timer overlap.
+        // OnConfigChanged), the thread pool (QueueDispatch, for the polling
+        // thread, which never runs it, and the other queued passes), the 33 ms
+        // animation timer, and the audio callback. It is NOT serialized as a
+        // whole. _animTickBusy only excludes timer-vs-timer overlap.
         //
         // While the HID write still happened inside devices.SyncRoot, that lock
         // made capture+write one unit and the last writer was necessarily the
@@ -298,12 +298,38 @@ namespace PadForge.Common.Input
         // go. A pad PadForge never routed is never listed.
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, (string Path, HMProfile Profile, bool Ds5)> s_routedOffHeadset = new();
 
+        // DualSense pads whose last delivered Headphone Volume is below full,
+        // by the last frame that lowered it. The register holds until a power
+        // cycle, and PadForge has no way to read what it was before, so a pad
+        // PadForge lets go takes the full 0x7F its default slider writes
+        // (DS5_Bridge controller_output_state.cpp sets kHeadphoneVolumeMax on
+        // the headphone path). duaLib's letGo leaves the register alone
+        // (duaLibUtils.cpp, AllowHeadphoneVolume = false). A DualShock 4 is not
+        // listed: PadForge leaves its USB headset level to Windows and its
+        // Bluetooth volumes reach only PadForge's own stream.
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, (string Path, HMProfile Profile)> s_headphoneLowered = new();
+
+        // What a peer's effect frames left on a DualSense of this PC, an output
+        // path off the headset or a Headphone Volume below full, and the peer
+        // that last asserted either. The firmware holds both until something
+        // writes them. The marks move to the two lists above once no connected
+        // peer holds the pad (LetGoOfPeerMarks).
+        private readonly record struct PeerAudioMark(string Path, HMProfile Profile, string Peer, bool OffHeadset, bool Lowered);
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, PeerAudioMark> s_peerAudioMarks = new();
+
         // Set when the routes are released and cleared at the next engine
         // start (ResumeAudioRoutes). While set, no frame routes a pad: none
-        // counts PadForge as playing to it, asserts an explicit path or sends
-        // a USB route. The dispatchers still run after an abnormal exit's
-        // release.
+        // counts PadForge as playing to it, asserts an explicit path or a
+        // Headphone Volume, or sends a USB route. The dispatchers still run
+        // after an abnormal exit's release.
         private static volatile bool s_audioRoutesReleased;
+
+        // The sequence the last release took. A frame captured before it that
+        // puts a pad off the headset or lowers its Headphone Volume is dropped
+        // at the write, listed or not: the release saw no such pad and would
+        // never put it back. One already inside its write when the release
+        // gives up waiting puts its own pad back when it lands.
+        private static long s_audioReleaseSeq;
 
         // Per-device flag remembering whether PadForge's last dispatched
         // packet carried non-zero rumble. Drives the validFlag0 bit-0
@@ -398,6 +424,29 @@ namespace PadForge.Common.Input
         // one, so a pad PadForge never routed is left alone.
         private readonly Dictionary<Guid, int> _prevDs4UsbRoute = new();
 
+        // When a USB route the pad refused goes out again, per device. Rumble
+        // and lights landed, so the frame is delivered and nothing re-arms, and
+        // the route alone waits the time XboxImpulseHidWriter.FailedRetryCooldownMs
+        // waits. A pad that keeps refusing gets one frame and one try a second.
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, long> _usbRouteRetryAt = new();
+        internal const long UsbRouteRetryMs = 1000;
+
+        private bool UsbRouteRetryDue(Guid device, long nowMs)
+        {
+            if (!_usbRouteRetryAt.TryGetValue(device, out long at)) return true;
+            if (nowMs < at) return false;
+            _usbRouteRetryAt.TryRemove(device, out _);
+            return true;
+        }
+
+        private bool AnyUsbRouteRetryDue(long nowMs)
+        {
+            if (_usbRouteRetryAt.IsEmpty) return false;
+            foreach (var entry in _usbRouteRetryAt)
+                if (nowMs >= entry.Value) return true;
+            return false;
+        }
+
         // The four maps above hold what the pad has RECEIVED. A frame
         // commits its values only after PlayStationEffectWriter.Write accepts
         // it (CommitDeliveredAudio), the delivery contract SpeakerCleared and
@@ -421,6 +470,7 @@ namespace PadForge.Common.Input
                 _prevDs4UsbRoute.Remove(device);
                 _audioCommitSeq[device] = System.Threading.Interlocked.Read(ref s_dispatchSeq);
             }
+            _usbRouteRetryAt.TryRemove(device, out _);
         }
 
         private void CommitDeliveredAudio(Guid device, long seq,
@@ -472,12 +522,149 @@ namespace PadForge.Common.Input
             else s_routedOffHeadset[device] = (path, profile, ds5);
         }
 
-        /// <summary>Puts every pad PadForge left off the headset back on it.
-        /// duaLib releases a pad when it closes too (duaLibUtils.cpp letGo,
-        /// from scePadClose and scePadTerminate), but it turns a DualShock 4's
-        /// route off (AudioOutput::Disabled), which would leave Windows audio
-        /// to the pad nowhere to play, and leaves a DualSense's audio path
-        /// where it was. Here a DualSense takes
+        /// <summary>Whether a frame asserts a DualSense Headphone Volume below
+        /// full (valid_flag0 bit 4).</summary>
+        internal static bool LowersHeadphones(IReadOnlyDictionary<string, object> fields, out bool asserted)
+        {
+            asserted = fields.TryGetValue("headphoneVolume", out var level) && level is byte
+                && fields.TryGetValue("validFlag0", out var valid) && valid is byte flag0
+                && (flag0 & 0x10) != 0;
+            return asserted && (byte)level < Ds5EffectSynthesizer.HeadphoneVolumeFull;
+        }
+
+        /// <summary>Lists or clears a pad in <see cref="s_headphoneLowered"/>
+        /// from a frame that landed.</summary>
+        private static void NoteDeliveredHeadphoneVolume(Guid device, string path, HMProfile profile,
+            IReadOnlyDictionary<string, object> fields)
+        {
+            bool lowered = LowersHeadphones(fields, out bool asserted);
+            if (!asserted || RemoteLinkOutputRouter.IsPeerPath(path)) return;
+            if (lowered) s_headphoneLowered[device] = (path, profile);
+            else s_headphoneLowered.TryRemove(device, out _);
+        }
+
+        /// <summary>Owner side: reads what a peer's DualSense effect body
+        /// asserts: valid_flag0 bit 7 with the path in bits 4-5 of byte 7, and
+        /// valid_flag0 bit 4 with the Headphone Volume in byte 4. What it leaves
+        /// alone stays as the last frame set it.</summary>
+        internal static void NotePeerEffectBody(Guid device, string path, ushort productId, byte[] body, string peer)
+        {
+            if (productId is not (PidStandard or PidEdge) || body == null || body.Length < 8) return;
+            bool assertsPath = (body[0] & 0x80) != 0, assertsLevel = (body[0] & 0x10) != 0;
+            if (!assertsPath && !assertsLevel) return;
+            s_peerAudioMarks.TryGetValue(device, out var mark);
+            bool offHeadset = assertsPath ? ((body[7] >> 4) & 0x03) != 0 : mark.OffHeadset;
+            bool lowered = assertsLevel ? body[4] < Ds5EffectSynthesizer.HeadphoneVolumeFull : mark.Lowered;
+            if (!offHeadset && !lowered) s_peerAudioMarks.TryRemove(device, out _);
+            else s_peerAudioMarks[device] = new PeerAudioMark(path,
+                ResolveSonyProfile(productId, PlayStationEffectWriter.IsBluetoothPath(path)), peer, offHeadset, lowered);
+        }
+
+        /// <summary>A peer's last session dropped. Runs after
+        /// <see cref="RemoteLinkOutputRouter.ReleasePeer"/>, on the thread pool,
+        /// since the link server calls it and the pads take a write.</summary>
+        internal static void NotePeerDropped(string peer)
+        {
+            if (s_peerAudioMarks.IsEmpty) return;
+            System.Threading.ThreadPool.QueueUserWorkItem(static _ =>
+            {
+                try { LetGoOfPeerMarks(); } catch { }
+            });
+        }
+
+        /// <summary>A peer's frame has reached the pad. Its last session can
+        /// have dropped after the frame's claim, with the let-go already gone
+        /// and finding nothing, so a mark the frame left for a peer that no
+        /// longer holds the pad takes the let-go now. It runs after the frame,
+        /// so the headset path lands last.</summary>
+        internal static void NotePeerFrameApplied(Guid device)
+        {
+            if (!s_peerAudioMarks.TryGetValue(device, out var mark)
+                || RemoteLinkOutputRouter.PeerKeepsDevice(mark.Path, mark.Peer)) return;
+            System.Threading.ThreadPool.QueueUserWorkItem(static _ =>
+            {
+                try { LetGoOfPeerMarks(); } catch { }
+            });
+        }
+
+        /// <summary>This PC stopped sharing a pad, so no peer can hold it.</summary>
+        internal static void NoteDeviceUnshared(Guid device)
+        {
+            if (!s_peerAudioMarks.ContainsKey(device)) return;
+            System.Threading.ThreadPool.QueueUserWorkItem(_ =>
+            {
+                try { LetGoOfPeerMarks(device); } catch { }
+            });
+        }
+
+        /// <summary>Hands what peers left on a pad to the lists this PC's own
+        /// routes use, once no connected peer holds it, or for
+        /// <paramref name="unshared"/> alone. A connected peer that asserted
+        /// the path or wrote last keeps it, since its frames own the pad. After
+        /// that the two usual writers take over: a slot that holds the pad
+        /// forgets what it wrote and asserts its own path and level again, an
+        /// Automatic slot gives the headset back to a listed pad, and with no
+        /// slot <see cref="SweepOrphanedRoutes"/> writes the headset path and
+        /// full volume. A remote-fed sink still draining holds the pad until the
+        /// worker takes it down and sweeps.</summary>
+        internal static void LetGoOfPeerMarks(Guid? unshared = null)
+        {
+            List<Guid> moved = null;
+            foreach (var entry in s_peerAudioMarks)
+            {
+                if (unshared is Guid only ? entry.Key != only
+                    : RemoteLinkOutputRouter.PeerKeepsDevice(entry.Value.Path, entry.Value.Peer)) continue;
+                MovePeerMark(entry.Key, entry.Value);
+                (moved ??= new List<Guid>()).Add(entry.Key);
+            }
+            if (moved == null) return;
+            foreach (var dispatcher in _instances.Values)
+            {
+                if (dispatcher == null) continue;
+                foreach (var device in moved) dispatcher.RearmAudioAsserts(device);
+                dispatcher.QueueDispatch();
+            }
+            SweepOrphanedRoutes();
+        }
+
+        private static void MovePeerMark(Guid device, PeerAudioMark mark)
+        {
+            s_peerAudioMarks.TryRemove(device, out _);
+            s_orphanReleaseTried.TryRemove(device, out _);
+            AudioPassthroughService.ForgetRemotePath(device);
+            if (mark.OffHeadset) s_routedOffHeadset[device] = (mark.Path, mark.Profile, true);
+            if (mark.Lowered) s_headphoneLowered[device] = (mark.Path, mark.Profile);
+        }
+
+        /// <summary>Puts one pad back on its headset and at full Headphone
+        /// Volume. Called under s_writeGate. True when nothing is left to put
+        /// back.</summary>
+        private static bool LetGoOfPad(Guid device)
+        {
+            bool done = true;
+            if (s_routedOffHeadset.TryGetValue(device, out var route))
+            {
+                if (WriteHeadsetRoute(route)) s_routedOffHeadset.TryRemove(device, out _);
+                else done = false;
+            }
+            if (s_headphoneLowered.TryGetValue(device, out var level))
+            {
+                bool written = false;
+                try { written = PlayStationEffectWriter.Write(level.Path, level.Profile, Ds5EffectSynthesizer.FullHeadphoneVolumeFields()); }
+                catch { }
+                if (written) s_headphoneLowered.TryRemove(device, out _);
+                else done = false;
+            }
+            return done;
+        }
+
+        /// <summary>Puts every pad PadForge left off the headset back on it,
+        /// and every DualSense it left at a lowered Headphone Volume back at
+        /// full. duaLib releases a pad when it closes too (duaLibUtils.cpp
+        /// letGo, from scePadClose and scePadTerminate), but it turns a
+        /// DualShock 4's route off (AudioOutput::Disabled), which would leave
+        /// Windows audio to the pad nowhere to play, and leaves a DualSense's
+        /// audio path where it was. Here a DualSense takes
         /// <see cref="Ds5EffectSynthesizer.HeadsetPathFields"/> and a
         /// DualShock 4 takes USB route 0. Runs when the engine stops and when
         /// the outputs are quiesced on an abnormal exit, and waits at most
@@ -492,25 +679,63 @@ namespace PadForge.Common.Input
             {
                 s_audioRoutesReleased = true;
                 seq = System.Threading.Interlocked.Increment(ref s_dispatchSeq);
+                System.Threading.Interlocked.Exchange(ref s_audioReleaseSeq, seq);
             }
-            if (s_routedOffHeadset.IsEmpty) return;
+            // No peer holds a pad past this PC's exit, and its lease guards a
+            // DualSense's frames, so it goes with the marks.
+            foreach (var mark in s_peerAudioMarks)
+            {
+                RemoteLinkOutputRouter.ReleaseDevice(mark.Value.Path);
+                MovePeerMark(mark.Key, mark.Value);
+            }
+            // A peer whose frames asserted nothing has no mark and can still
+            // hold the lease on a pad this PC's frames listed.
+            foreach (var entry in s_routedOffHeadset) RemoteLinkOutputRouter.ReleaseDevice(entry.Value.Path);
+            foreach (var entry in s_headphoneLowered) RemoteLinkOutputRouter.ReleaseDevice(entry.Value.Path);
+            LetGoOfEveryPadAtRelease(seq);
+        }
+
+        /// <summary>The release's writes, under the gate. A write that holds
+        /// the gate past the wait can land and let go itself, or fail, and the
+        /// frames after a release route nothing, so the release is tried again
+        /// until the gate comes free. The engine starting again ends it: the
+        /// pads are that run's to route.</summary>
+        private static void LetGoOfEveryPadAtRelease(long seq)
+        {
             bool gated = false;
             try
             {
                 System.Threading.Monitor.TryEnter(s_writeGate, 250, ref gated);
-                if (!gated) return;
-                foreach (var entry in s_routedOffHeadset)
+                if (!gated)
                 {
-                    // A frame captured before the release that lands after it
-                    // is dropped as stale.
-                    s_lastWriteSeq.AddOrUpdate(entry.Value.Path, seq, (_, last) => Math.Max(last, seq));
-                    if (WriteHeadsetRoute(entry.Value)) s_routedOffHeadset.TryRemove(entry.Key, out _);
+                    s_releaseRetry.Change(ReleaseRetryMs, System.Threading.Timeout.Infinite);
+                    return;
                 }
+                if (!s_audioRoutesReleased) return;
+                // Read under the gate: a frame inside its write lists its pad
+                // before it lets go of the gate. A write that outlasts the wait
+                // puts its own pad back when it lands.
+                if (s_routedOffHeadset.IsEmpty && s_headphoneLowered.IsEmpty) return;
+                // A frame captured before the release that lands after it is
+                // dropped as stale.
+                foreach (var entry in s_routedOffHeadset)
+                    s_lastWriteSeq.AddOrUpdate(entry.Value.Path, seq, (_, last) => Math.Max(last, seq));
+                foreach (var entry in s_headphoneLowered)
+                    s_lastWriteSeq.AddOrUpdate(entry.Value.Path, seq, (_, last) => Math.Max(last, seq));
+                LetGoOfEveryListedPad();
             }
             finally
             {
                 if (gated) System.Threading.Monitor.Exit(s_writeGate);
             }
+        }
+
+        /// <summary>Puts every pad on the two lists back. Called under
+        /// s_writeGate.</summary>
+        private static void LetGoOfEveryListedPad()
+        {
+            foreach (var device in s_routedOffHeadset.Keys.Union(s_headphoneLowered.Keys))
+                LetGoOfPad(device);
         }
 
         /// <summary>Lets frames route a pad again. The engine calls it when it
@@ -526,67 +751,164 @@ namespace PadForge.Common.Input
             {
                 if (target.Ds5)
                     return PlayStationEffectWriter.Write(target.Path, target.Profile, Ds5EffectSynthesizer.HeadsetPathFields());
-                return !RemoteLinkOutputRouter.IsClaimedByPeer(target.Path)
-                    && RawHidOutput.SetFeature(target.Path,
-                        Ds4UsbAudio.BuildRouteReport(Ds4UsbAudio.RouteStereoHeadset), stampSonyBtCrc: false);
+                // A peer's output lease guards the effect reports. A peer's
+                // frames carry no route, so a DualShock 4's USB route is the
+                // owner's alone.
+                return PlayStationEffectWriter.SendDs4UsbRoute(target.Path, Ds4UsbAudio.RouteStereoHeadset);
             }
             catch { return false; }
         }
 
+        /// <summary>Owner side: routes a DualShock 4 on USB that plays a peer's
+        /// sound (#138, #546). The consumer's frames cannot: 0xE0 is a feature
+        /// report, and SDL's PS4 driver sets the valid flags, so no effect body
+        /// turns the speaker's volume on. The audio worker calls it past the
+        /// peer's output lease, which guards only the effect reports. A route
+        /// off the headset is listed for <see cref="ReleaseAudioRoutes"/>. The
+        /// slots that map the pad forget what they wrote, so each one writes
+        /// its own route again when the lease lets it, and the headset coming
+        /// back owes them a pass.</summary>
+        internal static bool WriteRemoteFedRoute(Guid device, string path, byte route)
+        {
+            lock (s_writeGate)
+            {
+                if (s_audioRoutesReleased) return false;
+                try { if (!PlayStationEffectWriter.WriteDs4UsbRouteAlone(path, route)) return false; }
+                catch { return false; }
+                if (route == Ds4UsbAudio.RouteStereoHeadset) s_routedOffHeadset.TryRemove(device, out _);
+                else s_routedOffHeadset[device] = (path, null, false);
+                // The release ran during the write and could not wait for it.
+                if (s_audioRoutesReleased) LetGoOfEveryListedPad();
+            }
+            foreach (var dispatcher in _instances.Values)
+            {
+                if (dispatcher == null) continue;
+                dispatcher.RearmAudioAsserts(device);
+                if (route == Ds4UsbAudio.RouteStereoHeadset) dispatcher.QueueDispatch();
+            }
+            return true;
+        }
+
         // Pads whose release after leaving every slot failed, so a pad that
         // stops answering is not written on every frame. Cleared when a slot
-        // maps the pad again, and the engine stop tries it once more.
+        // maps the pad again, and the engine stop tries it once more. A peer's
+        // lease refusing the write says nothing about the pad, so that pad is
+        // not listed here.
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, byte> s_orphanReleaseTried = new();
 
-        /// <summary>Puts a pad PadForge left off its headset back on it once no
-        /// slot maps it: unassigned, its slot deleted, or dropped by a profile
-        /// (#546). The decision and its sequence are taken under the capture
-        /// lock, so a slot that maps the pad afterwards captures a newer frame,
-        /// and that frame wins. An offline pad waits until it is back. Runs on
-        /// every dispatch, and on the thread pool when a dispatcher is
-        /// disposed, since a deleted slot takes its dispatcher with it.</summary>
-        private static void SweepOrphanedRoutes()
+        // Goes off after a release that could not wait for the gate.
+        internal const int ReleaseRetryMs = 500;
+        private static readonly System.Threading.Timer s_releaseRetry = new(static _ =>
         {
-            if (s_routedOffHeadset.IsEmpty) return;
+            try { LetGoOfEveryPadAtRelease(System.Threading.Interlocked.Read(ref s_audioReleaseSeq)); } catch { }
+        });
+
+        // Goes off a second after the last sweep a peer's lease held back. No
+        // dispatcher may be left to sweep when the lease lapses, and a quiet
+        // peer that stays connected sends no event when it does.
+        private const int LeaseRetryMs = 1000;
+        private static readonly System.Threading.Timer s_leaseRetry = new(static _ =>
+        {
+            try { SweepOrphanedRoutes(); } catch { }
+        });
+
+        /// <summary>Lets go of a pad PadForge left off its headset or at a
+        /// lowered Headphone Volume (<see cref="LetGoOfPad"/>) once no slot
+        /// holds it: unassigned, its slot deleted or switched off, or dropped
+        /// by a profile (#546). A slot switched off takes its dispatcher with
+        /// it and keeps its row, so a row counts while its slot has a
+        /// dispatcher or is switched on, the second for the moment between two
+        /// dispatchers. A sink playing to the pad holds it too, since the
+        /// headset back would move its sound, and taking the sink down sweeps
+        /// again. The decision and its sequence are taken under the capture
+        /// lock, so a slot that maps the pad afterwards captures a newer frame,
+        /// and that frame wins. An offline pad waits until it is back. A peer's
+        /// lease refuses a DualSense's frames, so that pad waits for the lease
+        /// and a timer sweeps again. A connected peer's mark holds the pad until
+        /// <see cref="LetGoOfPeerMarks"/> moves it. Runs on every dispatch, on
+        /// the thread pool when a dispatcher is disposed, since a deleted slot
+        /// takes its dispatcher with it, and on the audio worker when it takes a
+        /// sink down.</summary>
+        internal static void SweepOrphanedRoutes()
+        {
+            if (s_routedOffHeadset.IsEmpty && s_headphoneLowered.IsEmpty) return;
             var devices = SettingsManager.UserDevices;
             var settings = SettingsManager.UserSettings;
             if (devices == null || settings == null) return;
             List<Guid> orphans = null;
             long seq = 0;
-            var probe = new UserSetting[1];
             // Devices before settings, the canonical order.
             lock (devices.SyncRoot)
             {
-                foreach (var device in s_routedOffHeadset.Keys)
-                {
-                    if (settings.FindByInstanceGuid(device, probe) > 0)
-                    {
-                        s_orphanReleaseTried.TryRemove(device, out _);
-                        continue;
-                    }
-                    if (s_orphanReleaseTried.ContainsKey(device)) continue;
-                    foreach (var ud in devices.Items)
-                    {
-                        if (ud == null || ud.InstanceGuid != device || !ud.IsOnline) continue;
-                        (orphans ??= new List<Guid>()).Add(device);
-                        break;
-                    }
-                }
+                foreach (var device in s_routedOffHeadset.Keys) NoteIfOrphaned(device);
+                foreach (var device in s_headphoneLowered.Keys)
+                    if (!s_routedOffHeadset.ContainsKey(device)) NoteIfOrphaned(device);
                 if (orphans != null) seq = System.Threading.Interlocked.Increment(ref s_dispatchSeq);
             }
             if (orphans == null) return;
+            bool leaseHeld = false;
             lock (s_writeGate)
             {
                 foreach (var device in orphans)
                 {
-                    if (!s_routedOffHeadset.TryGetValue(device, out var target)) continue;
+                    bool listed = s_routedOffHeadset.TryGetValue(device, out var route);
+                    bool lowered = s_headphoneLowered.TryGetValue(device, out var level);
+                    string path = listed ? route.Path : lowered ? level.Path : null;
+                    if (path == null) continue;
+                    // A DualShock 4's route passes the lease (WriteHeadsetRoute).
+                    if (((listed && route.Ds5) || lowered) && RemoteLinkOutputRouter.IsClaimedByPeer(path))
+                    {
+                        leaseHeld = true;
+                        continue;
+                    }
                     // A slot that took the pad since wrote a newer frame.
-                    if (s_lastWriteSeq.TryGetValue(target.Path, out long last) && last > seq) continue;
-                    s_lastWriteSeq[target.Path] = seq;
-                    if (WriteHeadsetRoute(target)) s_routedOffHeadset.TryRemove(device, out _);
+                    if (s_lastWriteSeq.TryGetValue(path, out long last) && last > seq) continue;
+                    s_lastWriteSeq[path] = seq;
+                    if (LetGoOfPad(device)) continue;
+                    // A claim that came in since the check above refused it.
+                    if (RemoteLinkOutputRouter.IsClaimedByPeer(path)) leaseHeld = true;
                     else s_orphanReleaseTried[device] = 0;
                 }
             }
+            if (leaseHeld) s_leaseRetry.Change(LeaseRetryMs, System.Threading.Timeout.Infinite);
+
+            void NoteIfOrphaned(Guid device)
+            {
+                if (ASlotHolds(settings, device))
+                {
+                    s_orphanReleaseTried.TryRemove(device, out _);
+                    return;
+                }
+                if (s_orphanReleaseTried.ContainsKey(device)) return;
+                if (s_peerAudioMarks.ContainsKey(device)) return;
+                if (AudioPassthroughService.WantsSpeakerPath(device)) return;
+                foreach (var ud in devices.Items)
+                {
+                    if (ud == null || ud.InstanceGuid != device || !ud.IsOnline) continue;
+                    (orphans ??= new List<Guid>()).Add(device);
+                    return;
+                }
+            }
+        }
+
+        /// <summary>Whether a row maps the pad to a slot with a dispatcher, or
+        /// to one switched on, which has or is about to have one.</summary>
+        private static bool ASlotHolds(SettingsCollection settings, Guid device)
+        {
+            var created = SettingsManager.SlotCreated;
+            var enabled = SettingsManager.SlotEnabled;
+            lock (settings.SyncRoot)
+            {
+                foreach (var row in settings.Items)
+                {
+                    if (row == null || row.InstanceGuid != device || row.MapTo < 0) continue;
+                    int slot = row.MapTo;
+                    if (_instances.ContainsKey(slot)) return true;
+                    if (created != null && enabled != null && slot < created.Length && slot < enabled.Length
+                        && created[slot] && enabled[slot]) return true;
+                }
+            }
+            return false;
         }
 
         // Devices seen offline since their last dispatch, so the return
@@ -903,6 +1225,8 @@ namespace PadForge.Common.Input
             {
                 foreach (var device in _failedDeliveries.Keys)
                     if (!guids.Contains(device)) _failedDeliveries.TryRemove(device, out _);
+                foreach (var device in _usbRouteRetryAt.Keys)
+                    if (!guids.Contains(device)) _usbRouteRetryAt.TryRemove(device, out _);
                 // Set before the no-change return, so the first change a
                 // dispatcher sees after a quiet first look still counts.
                 bool firstLook = !_assignmentSeen;
@@ -1465,8 +1789,29 @@ namespace PadForge.Common.Input
             if (need != _slotNeedsRumbleTimer)
             {
                 _slotNeedsRumbleTimer = need;
-                UpdateAnimTimer();
+                if (StartOrStopAnimTimer()) QueueDispatch();
             }
+        }
+
+        /// <summary>1 while a pass from <see cref="QueueDispatch"/> is queued.</summary>
+        private int _dispatchQueued;
+
+        /// <summary>Queues one pass off the caller's thread, for the poll
+        /// thread, whose next read of every pad must not wait on a HID write,
+        /// and the audio worker. A pass reads the current values when it
+        /// captures, so a burst of requests queues one.</summary>
+        private void QueueDispatch()
+        {
+            if (System.Threading.Interlocked.Exchange(ref _dispatchQueued, 1) != 0) return;
+            System.Threading.ThreadPool.UnsafeQueueUserWorkItem(static d =>
+            {
+                System.Threading.Volatile.Write(ref d._dispatchQueued, 0);
+                try { d.DispatchSnapshot(); }
+                catch (Exception ex)
+                {
+                    Engine.SdlDiagLog.WriteLine("DISPATCH queued pass failed: " + ex.GetType().Name);
+                }
+            }, this, preferLocal: false);
         }
 
         /// <summary>Re-binds to a new <see cref="DeviceSlotConfig"/>
@@ -1615,9 +1960,10 @@ namespace PadForge.Common.Input
             ((System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<int, UserEffectsDispatcher>>)_instances)
                 .Remove(new System.Collections.Generic.KeyValuePair<int, UserEffectsDispatcher>(_padIndex, this));
             // A deleted slot takes its dispatcher with it, and no other slot
-            // may dispatch soon, so the pads it left off their headsets are
-            // swept from here (#546). Off this thread: the sweep may write.
-            if (!s_routedOffHeadset.IsEmpty)
+            // may dispatch soon, so the pads it left off their headsets or at
+            // a lowered Headphone Volume are swept from here (#546). Off this
+            // thread: the sweep may write.
+            if (!s_routedOffHeadset.IsEmpty || !s_headphoneLowered.IsEmpty)
                 System.Threading.ThreadPool.QueueUserWorkItem(static _ =>
                 {
                     try { SweepOrphanedRoutes(); } catch { }
@@ -1690,12 +2036,12 @@ namespace PadForge.Common.Input
         /// <summary>One-shot refresh request from InputManager when the
         /// slot's reported battery percent changes. The dispatcher
         /// reads the new percent via <see cref="SlotBatteryPercentProvider"/>
-        /// inside DispatchSnapshot, so this method just kicks the
-        /// snapshot. Safe to call from the polling thread.</summary>
+        /// inside DispatchSnapshot, so this method just queues the snapshot.
+        /// The polling thread calls it and never waits on the pass.</summary>
         public static void NotifyBatteryPercentChanged(int padIndex)
         {
             if (_instances.TryGetValue(padIndex, out var inst) && inst != null)
-                inst.DispatchSnapshot();
+                inst.QueueDispatch();
         }
 
         /// <summary>Audio-tab routing or volume changed for the slot — push a
@@ -1767,7 +2113,7 @@ namespace PadForge.Common.Input
                     if (LightingDriven(pair.Key, pair.Value, peripherals) && ConfigNeedsTimer(pair.Value)) return true;
             }
             else if (ConfigNeedsTimer(_config)) return true;
-            return !_failedDeliveries.IsEmpty || _slotNeedsRumbleTimer
+            return !_failedDeliveries.IsEmpty || !_usbRouteRetryAt.IsEmpty || _slotNeedsRumbleTimer
                 || AudioPassthroughService.SlotWantsSpeakerPath(_padIndex)
                 // An armed DualShock 4 microphone lapses after about four
                 // seconds without a 0xA1 effects report (#528).
@@ -1828,6 +2174,23 @@ namespace PadForge.Common.Input
 
         private void UpdateAnimTimer()
         {
+            if (StartOrStopAnimTimer()) DispatchSnapshot();
+        }
+
+        /// <summary>Starts or stops the writer by its demand. True when it
+        /// stopped, which owes the pad a final snapshot, after the timer lock
+        /// and on a thread that may wait on a pad write: dispatch touches
+        /// HID/effect paths and must not run under the lifecycle lock. Without
+        /// that snapshot, the dispatcher's last per-tick write was the live
+        /// rumble, and when the polling thread reports gameRumble=false and
+        /// the timer stops, the controller never gets a "rumble = 0" packet
+        /// and keeps rumbling until the next dispatch, which can be 6-8s away
+        /// if the user has no animated lightbar or audio rumble running.
+        /// <see cref="OnPollingTickInstance"/> queues it and every other
+        /// caller runs it, the counterpart to OnAnimTick's early-exit final
+        /// snapshot.</summary>
+        private bool StartOrStopAnimTimer()
+        {
             // Animation, reactive overlays, rumble and speaker routing share
             // one writer. Every demand keeps that writer alive.
             bool wantTimer = HasTimerDemand();
@@ -1847,27 +2210,11 @@ namespace PadForge.Common.Input
                 }
                 else if (!wantTimer && _animTickActive)
                 {
-                    // Stop the timer under the lock, but defer the final
-                    // snapshot dispatch until after releasing it (dispatch
-                    // touches HID/effect paths and must not run under the
-                    // lifecycle lock).
                     StopAnimTimerLocked();
                     dispatchFinal = true;
                 }
             }
-
-            if (dispatchFinal)
-                // Dispatch a final snapshot after stopping so the rumble
-                // bytes (now zeroed) reach the firmware. Without this,
-                // the dispatcher's last per-tick write was the live
-                // rumble; when the polling thread reports gameRumble=false
-                // and we stop the timer, the controller never gets a
-                // "rumble = 0" packet and keeps rumbling until the next
-                // dispatch (which can be 6-8s away if the user has no
-                // animated lightbar / audio rumble running). This is the
-                // OnPollingTickInstance counterpart to OnAnimTick's
-                // early-exit final snapshot at line ~479.
-                DispatchSnapshot();
+            return dispatchFinal;
         }
 
 
@@ -1975,16 +2322,32 @@ namespace PadForge.Common.Input
             }
 
             bool outputNeedsDispatch = !_failedDeliveries.IsEmpty || _slotNeedsRumbleTimer
+                || AnyUsbRouteRetryDue(Environment.TickCount64)
                 || AudioPassthroughService.SlotWantsSpeakerPath(_padIndex)
                 // An armed DualShock 4 microphone lapses after about four
                 // seconds without a 0xA1 effects report (#528).
                 || AudioPassthroughService.SlotHasArmedDs4Mic(_padIndex);
 
+            // A macro's trigger effect and key color end at a time no event
+            // announces, and HasTimerDemand keeps this writer alive for it. A
+            // pass reaches neither store on a slot with no pad or no lit
+            // peripheral, so the tick ends them, and the end's Changed wakes
+            // the pass that writes it. A key color still running fades or
+            // counts down, which only the lit peripherals show.
+            long macroNowMs = Environment.TickCount64;
+            var macroTriggers = MacroTriggerEffectsProvider?.Invoke(_padIndex);
+            if (macroTriggers?.AnyTimed == true) macroTriggers.Read(macroNowMs, out byte[] _, out byte[] _);
+            var macroColors = MacroKeyColorsProvider?.Invoke(_padIndex);
+            macroColors?.Expire(macroNowMs);
+            bool keyColorsPaint = macroColors?.AnyTimed == true && _litPeripherals > 0;
+
             // If no device wants an animated mode, no Reactive override,
             // no input-reactive overlay, and no output work to push,
             // dispatch one final snapshot (so a just-expired override
             // hands off cleanly) and stop the timer. Sticky holds don't
-            // keep the timer running — RGB and intensity are constant.
+            // keep the timer running. RGB and intensity are constant. A
+            // running key color repaints the lit peripherals and writes no
+            // Sony report.
             if (!anyAnimated && !anyReactiveRunning && !anyInputReactiveOverlay && !outputNeedsDispatch)
             {
                 if (_lastTickOverrideActive)
@@ -1992,6 +2355,7 @@ namespace PadForge.Common.Input
                     DispatchSnapshot();
                 }
                 _lastTickOverrideActive = false;
+                if (keyColorsPaint) DispatchSnapshot(peripheralsOnly: true);
                 StopAnimTimerIfStillIdle();
                 return;
             }
@@ -2084,7 +2448,10 @@ namespace PadForge.Common.Input
                 if (!zeroCrossing && !rumbleChanged && delta < 0.004f && !anyAudioPulseRainbow
                     && !anyReactiveRunning && !anyInputReactiveOverlay
                     && !anyTimeDrivenMode && !outputNeedsDispatch)
+                {
+                    if (keyColorsPaint) DispatchSnapshot(peripheralsOnly: true);
                     return;
+                }
                 _lastDispatchedPeak = scaled;
                 _lastDispatchedRumbleR = rRight;
                 _lastDispatchedRumbleL = rLeft;
@@ -2536,7 +2903,7 @@ namespace PadForge.Common.Input
                 // every payload's sequence below, so capture order is
                 // sequence order. Captured before the lock, a dispatch could
                 // snapshot a nonzero mirror, wait on the lock while a
-                // release and the polling thread's final snapshot went
+                // release and the queued final snapshot went
                 // through, then stamp a HIGHER sequence and write the stale
                 // pair after the stop with no timer left to correct it
                 // (#434).
@@ -2587,6 +2954,7 @@ namespace PadForge.Common.Input
                             (peripheralKinds ??= new Dictionary<Guid, bool>())[ud.InstanceGuid] = false;
                         Common.Input.Peripherals.PeripheralOutputs.ReleaseLighting(ud.InstanceGuid, _padIndex);
                         _failedDeliveries.TryRemove(ud.InstanceGuid, out _);
+                        _usbRouteRetryAt.TryRemove(ud.InstanceGuid, out _);
                         // Remember the outage so the return re-arms below.
                         _deviceWasOffline.Add(ud.InstanceGuid);
                         continue;
@@ -2786,6 +3154,7 @@ namespace PadForge.Common.Input
                     {
                         _ownedLastDispatch.Remove(ud.InstanceGuid);
                         _failedDeliveries.TryRemove(ud.InstanceGuid, out _);
+                        _usbRouteRetryAt.TryRemove(ud.InstanceGuid, out _);
                         continue;
                     }
                     // New ownership or a failed delivery owes a full state
@@ -3192,7 +3561,7 @@ namespace PadForge.Common.Input
                         ds4MicWasArmed = _prevDs4MicArmed.TryGetValue(ud.InstanceGuid, out var dma) && dma;
                         lastUsbRoute = _prevDs4UsbRoute.TryGetValue(ud.InstanceGuid, out var lur) ? lur : -1;
                     }
-                    bool assertHeadphone = assertAudioMute || hpChanged;
+                    bool assertHeadphone = (assertAudioMute || hpChanged) && !s_audioRoutesReleased;
                     // Released routes stay released until the engine starts.
                     bool assertAudioCtl = pathVal > 0 && (assertAudioMute || pathChanged)
                         && !s_audioRoutesReleased;
@@ -3222,6 +3591,8 @@ namespace PadForge.Common.Input
                         ? Ds4UsbAudio.RouteToWrite(pathVal, PlaysToSpeaker(ud.InstanceGuid), lastUsbRoute,
                             s_routedOffHeadset.ContainsKey(ud.InstanceGuid))
                         : -1;
+                    if (ds4UsbRoute < 0) _usbRouteRetryAt.TryRemove(ud.InstanceGuid, out _);
+                    else if (!UsbRouteRetryDue(ud.InstanceGuid, nowMs)) ds4UsbRoute = -1;
                     // Track whether THIS tick wrote a trigger effect for
                     // either source — PadForge cfg OR a dispatcher-injected
                     // override (external mirror, impulse-trigger → AT
@@ -3256,29 +3627,21 @@ namespace PadForge.Common.Input
                         // motors pulse audio→0→audio→0 — average strength
                         // collapses (the v3.1.x audio-rumble regression).
                         //
-                        // Two rules that MUST hold for audio rumble to
-                        // feel right:
-                        //   1. Bit 0 of validFlag0 (EnableRumbleEmulation)
-                        //      stays set unconditionally on every dispatcher
-                        //      packet. Clearing it ("disable compatibility
-                        //      motor mode") races SDL's bit-0-set writes off
-                        //      the channel.
-                        //   2. The rumble bytes the dispatcher carries MUST
-                        //      include audio mix (when audio rumble is
-                        //      enabled) so the dispatcher reinforces SDL's
+                        // What keeps audio rumble from pulsing:
+                        //   1. A frame that does not author rumble claims
+                        //      none. ResolveRumble clears every rumble bit, so
+                        //      its motor bytes write over nothing SDL sent (#434).
+                        //   2. The rumble bytes of a frame that does author
+                        //      rumble include the audio mix (when audio rumble
+                        //      is enabled), so the dispatcher reinforces SDL's
                         //      audio rumble rather than fighting it.
                         //      SlotRumbleForDeviceProvider runs
-                        //      ScaleRumbleForDevice for this — it pulls raw
+                        //      ScaleRumbleForDevice for this: it pulls raw
                         //      VibrationStates (game rumble) and mixes audio
                         //      in, yielding the same value SDL sends.
                         //
-                        // For test-rumble target gating, we still zero rR/rL
-                        // on non-target devices — but bit 0 stays set so the
-                        // firmware applies our zero in compatibility mode
-                        // (a transient zero SDL's next write can replace if
-                        // it really wants to drive that device). Matches
-                        // 3.1.0 behavior; does NOT compound into a steady-
-                        // state motor kill.
+                        // For test-rumble target gating, rR/rL are zero on
+                        // non-target devices.
                         // The BT connect one-shot rides this device's next
                         // built frame. Spent on delivery, not here: a frame
                         // the stale-skip drops must leave it armed.
@@ -3448,6 +3811,9 @@ namespace PadForge.Common.Input
                         // and no further dispatch is scheduled to correct it.
                         if (s_lastWriteSeq.TryGetValue(w.Path, out var last) && last > w.Seq)
                             continue;
+                        if (w.Seq < System.Threading.Interlocked.Read(ref s_audioReleaseSeq)
+                            && (DeliveredRoute(w.Fields, out _) > 0 || LowersHeadphones(w.Fields, out _)))
+                            continue;
                         // A prebuilt frame has not re-armed the transitions
                         // lost by a later failure. Let the retry build fresh state.
                         if (_failedDeliveries.TryGetValue(w.Device, out long failedAt)
@@ -3457,7 +3823,7 @@ namespace PadForge.Common.Input
                             continue;
                         }
                         s_lastWriteSeq[w.Path] = w.Seq;
-                        if (!PlayStationEffectWriter.Write(w.Path, w.Profile, w.Fields))
+                        if (!PlayStationEffectWriter.Write(w.Path, w.Profile, w.Fields, out bool routeLanded))
                         {
                             _failedDeliveries[w.Device] = w.Seq;
                             deliveryStateChanged = true;
@@ -3474,12 +3840,27 @@ namespace PadForge.Common.Input
                         // or failed frame leaves it armed for the next tick.
                         if (w.BtBarReleased != Guid.Empty)
                             _btBarReleasePending.TryRemove(w.BtBarReleased, out _);
-                        // Same contract for the route the pad now plays on,
-                        // which ReleaseAudioRoutes reads when PadForge lets go.
-                        NoteDeliveredRoute(w.Device, w.Path, w.Profile, w.Fields);
+                        // Same contract for the route the pad now plays on and
+                        // its Headphone Volume, which ReleaseAudioRoutes reads
+                        // when PadForge lets go. A route the pad refused is not
+                        // one it plays on, and the frame commits without it.
+                        var audio = w.Audio;
+                        if (routeLanded) NoteDeliveredRoute(w.Device, w.Path, w.Profile, w.Fields);
+                        else
+                        {
+                            audio.Ds4UsbRoute = -1;
+                            _usbRouteRetryAt[w.Device] = Environment.TickCount64 + UsbRouteRetryMs;
+                            deliveryStateChanged = true;
+                        }
+                        NoteDeliveredHeadphoneVolume(w.Device, w.Path, w.Profile, w.Fields);
+                        // The release ran during this write and could not wait
+                        // for it, so it put back nothing, and never saw what the
+                        // frame just listed.
+                        if (w.Seq < System.Threading.Interlocked.Read(ref s_audioReleaseSeq))
+                            LetGoOfEveryListedPad();
                         // The audio values are committed once the gate is
                         // released, which takes nothing while held.
-                        (delivered ??= new()).Add((w.Device, w.Seq, w.Audio));
+                        (delivered ??= new()).Add((w.Device, w.Seq, audio));
                     }
                     catch
                     {

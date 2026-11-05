@@ -14,6 +14,8 @@ WHAT IT WRITES. PadForge.App/Common/Input/Peripherals/HidFamilies/AnnePro2Keyrox
 per board, each light in order with its name, its place in the board's
 frame, and its row and column.
 
+Run it without Python's -I switch: it imports tools/openrgb_cpp.py.
+
 Usage:
     python tools/gen_annepro2_keyrox_layouts.py OPENRGB_ROOT
     python tools/gen_annepro2_keyrox_layouts.py OPENRGB_ROOT --check   (compare, write nothing)
@@ -21,8 +23,8 @@ Usage:
 import argparse
 import os
 import re
-import subprocess
 import sys
+import openrgb_cpp as oc
 
 PROJ_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT = os.path.join(PROJ_ROOT, "PadForge.App", "Common", "Input", "Peripherals", "HidFamilies", "AnnePro2KeyroxLayouts.g.cs")
@@ -139,8 +141,7 @@ def main():
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     names = key_names(os.path.join(args.openrgb, "RGBController", "RGBControllerKeyNames.cpp"))
-    commit = subprocess.run(["git", "-C", args.openrgb, "rev-parse", "HEAD"],
-                            capture_output=True, text=True, check=True).stdout.strip()
+    commit = oc.git_head(args.openrgb)
 
     anne = strip_comments(read(os.path.join(args.openrgb, ANNE_REL)))
     m = re.search(r"matrix_map\s*\[5\]\s*\[14\]\s*=", anne)

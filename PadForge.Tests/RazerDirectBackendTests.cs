@@ -2351,12 +2351,14 @@ namespace PadForge.Tests
                 bench.Advance(RazerDirectBackend.PaintMs);
                 bench.Light(keyboard, Blue);
                 Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref held) == 1, 30000), "the first worker is held in a read");
-                bench.Backend.Stop();
+                bench.Backend.Dispose();
 
                 // The mouse answers again, and the next run claims it and
-                // paints it.
+                // paints it, on a backend of its own, as each engine start
+                // has it.
                 mouse.Answer = Answers;
                 long mark = bench.Mark;
+                bench.Backend = bench.Make(reassertMs: int.MaxValue, predecessorJoinMs: 100, stopJoinMs: 50);
                 bench.Backend.Start();
                 bench.Walk();
                 Assert.True(SpinWait.SpinUntil(
@@ -4259,6 +4261,49 @@ namespace PadForge.Tests
             Assert.Single(mouse.Sent(0, r => Is(r, 0x03, 0x0D) && r[P.ArgumentsAt + 2] == 0x06 && r[P.ArgumentsAt + 5] == 0xFF));
         }
 
+        /// <summary>OpenRGB takes the device with the worker held in a read,
+        /// so no pass has let the unit go. Neither the crash path's one-shot
+        /// nor the worker's way out sends a hand-back: it would land on
+        /// OpenRGB's lighting, as on a running Synapse's.</summary>
+        [Fact]
+        public void TheCrashPathAndTheWorkersWayOut_SendNothing_ToAUnitOpenRgbHolds()
+        {
+            using var bench = new Bench(reassertMs: int.MaxValue);
+            var mouse = bench.Add(DeathAdderV2);
+            using var gate = new ManualResetEventSlim(false);
+            bench.StartAndWalk();
+            bench.Link(mouse);
+            bench.Light(mouse, Red);
+            bench.Passes();
+            long mark;
+            try
+            {
+                HoldTheWorkerInARead(bench, mouse, gate);
+                PeripheralOutputs.PublishLinks(new LinkTable(new[]
+                {
+                    new DeviceLinks
+                    {
+                        Device = mouse.Row,
+                        Lighting = new[] { new OutputPath(OutputFamily.OpenRgbDevice, "openrgb") },
+                        TakenByOpenRgb = new[] { mouse.Path },
+                    },
+                }));
+                mark = bench.Mark;
+                bench.Backend.SignalStop();
+                bench.Backend.ReleaseClaimedNow(bench.Now + 750);
+                Assert.Empty(bench.OneShots);
+                Assert.Empty(bench.Backend.Claimed);
+            }
+            finally
+            {
+                gate.Set();
+            }
+            Assert.True(SpinWait.SpinUntil(() => !bench.Backend.WorkerAlive, 30000), "the worker ended once it came back");
+            string[] handBack = Lines(P.ExtendedSpectrum(0x3F, 0x04), P.ExtendedSpectrum(0x3F, 0x01));
+            Assert.DoesNotContain(mouse.Sent(mark), line => handBack.Contains(line));
+            Assert.Empty(bench.OneShots);
+        }
+
         /// <summary>A deadline that has passed by the time the crash path
         /// reaches this backend: nothing is written, and no lock is asked
         /// for.</summary>
@@ -4423,6 +4468,92 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>A dock and the mouse paired to it share one collection. The
+        /// next run lights only the dock, so the old worker still hands the
+        /// mouse back: a claim is on a device, and nobody else knows that mouse
+        /// is lit.</summary>
+        [Fact]
+        public void AWorkerThatOutlivedItsRun_HandsBackAPairedMouseTheNextRunLeftAlone()
+        {
+            PeripheralLightMaps.ResetForTest();
+            using var bench = new Bench(reassertMs: int.MaxValue, predecessorJoinMs: 100, stopJoinMs: 50);
+            var dock = bench.Add(MouseDockPro);
+            byte[] polled = null;
+            int busy = 0, armed = 0;
+            using var gate = new ManualResetEventSlim(false);
+            using var heldNow = new ManualResetEventSlim(false);
+            dock.Answer = request =>
+            {
+                if (Interlocked.CompareExchange(ref armed, 0, 1) == 1)
+                {
+                    heldNow.Set();
+                    gate.Wait(30000);
+                }
+                if (Is(request, 0x00, 0xBF))
+                    return Reply(request, P.StatusSuccess, 2, 0x01, 0x00, 0xAB, 0x01, 0x00, 0xA4);
+                if (request[P.TransactionAt] != 0x1F) return Answers(request);
+                if (!ReferenceEquals(request, polled))
+                {
+                    polled = request;
+                    busy = 0;
+                }
+                return ++busy <= 3 ? Reply(request, P.StatusBusy) : Answers(request);
+            };
+            try
+            {
+                bench.StartAndWalk();
+                bench.Link(dock);
+                bench.Light(dock, Red);
+                bench.Passes();
+                string pairedKey = RazerDirectBackend.PairedKey(dock.Key, BasiliskV3ProWireless);
+                bench.Passes();
+                var pairedPath = new OutputPath(OutputFamily.RazerUnit, pairedKey);
+                long painted = bench.Mark;
+                PeripheralOutputs.PublishLinks(new LinkTable(new[]
+                {
+                    new DeviceLinks { Device = dock.Row, Lighting = new[] { pairedPath, dock.Path }, HasVendorProgram = true },
+                }));
+                LightKeys(dock, Red, Logo(Green));
+                for (int step = 0; step < 400 && dock.Sent(painted, r => r[P.TransactionAt] == 0x1F).Length < 5; step++)
+                {
+                    bench.Advance(2);
+                    bench.Passes(1);
+                }
+                for (int step = 0; step < 8; step++)
+                {
+                    bench.Advance(2);
+                    bench.Passes(1);
+                }
+                bench.Passes();
+                Assert.True(dock.Sent(painted, r => r[P.TransactionAt] == 0x1F).Length >= 5, "the first worker painted the mouse");
+                var first = Assert.Single(bench.Workers);
+
+                // The first worker is held in the next call it makes.
+                Volatile.Write(ref armed, 1);
+                bench.Advance(RazerDirectBackend.PaintMs);
+                bench.Light(dock, Blue);
+                Assert.True(heldNow.Wait(30000), "the first worker is held");
+                bench.Backend.Dispose();
+
+                // The next run lights the dock and leaves the mouse alone.
+                bench.Link(dock);
+                bench.Backend = bench.Make(reassertMs: int.MaxValue, predecessorJoinMs: 100, stopJoinMs: 50);
+                bench.Backend.Start();
+                bench.Walk();
+                Assert.True(SpinWait.SpinUntil(() => bench.Backend.Claimed.Any(c => c.Path == dock.Key), 30000), "the next run claimed the dock");
+                bench.Passes();
+                long mark = bench.Mark;
+
+                gate.Set();
+                Assert.True(first.Join(30000), "the first worker ended");
+                Assert.NotEmpty(dock.Sent(mark, r => r[P.TransactionAt] == 0x1F));
+            }
+            finally
+            {
+                gate.Set();
+            }
+        }
+
         /// <summary>A worker that outlived its run, wedged in a device call
         /// past the wait its successor made for it, takes nothing of its
         /// successor's with it when it comes back. The successor claimed
@@ -4456,11 +4587,13 @@ namespace PadForge.Tests
                 var first = Assert.Single(bench.Workers);
                 Assert.Single(bench.Backend.Claimed);
                 Assert.False(bench.Backend.Snapshot.Scanned);
-                bench.Backend.Stop();
+                bench.Backend.Dispose();
 
                 // The next run waits 100 ms for the worker before it, then
                 // goes on: it lists the unit, claims it through a handle of
-                // its own and paints it.
+                // its own and paints it, on a backend of its own, as each
+                // engine start has it.
+                bench.Backend = bench.Make(reassertMs: int.MaxValue, predecessorJoinMs: 100, stopJoinMs: 50);
                 bench.Backend.Start();
                 bench.Walk();
                 Assert.True(SpinWait.SpinUntil(() => mouse.Sent(0, r => Is(r, 0x0F, 0x02)).Length == 3, 30000), "the second worker painted");

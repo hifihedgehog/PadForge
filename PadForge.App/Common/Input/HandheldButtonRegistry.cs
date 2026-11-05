@@ -82,6 +82,12 @@ namespace PadForge.Common.Input
         /// <summary>Raised when the registry changes (picker and preview refresh).</summary>
         public static event EventHandler RegistryChanged;
 
+        /// <summary>Raised with a removed entry's button, outside the lock and
+        /// before <see cref="RegistryChanged"/>. The next entry takes the
+        /// lowest free button, so what was mapped to this one is cleared
+        /// first.</summary>
+        public static event Action<int> ButtonFreed;
+
         /// <summary>Raised when <see cref="LearnCaptureActive"/> or
         /// <see cref="FeatureEnabled"/> flips, so the hook host re-evaluates
         /// whether the keyboard and mouse hooks must stay installed.</summary>
@@ -240,7 +246,9 @@ namespace PadForge.Common.Input
         {
             bool removed;
             lock (_lock) removed = _entries.RemoveAll(e => e.Button == button) > 0;
-            if (removed) RegistryChanged?.Invoke(null, EventArgs.Empty);
+            if (!removed) return;
+            ButtonFreed?.Invoke(button);
+            RegistryChanged?.Invoke(null, EventArgs.Empty);
         }
 
         /// <summary>Replaces the registry from persisted settings. Stored

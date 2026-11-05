@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using PadForge.Common.Input;
 using PadForge.Common.Input.Peripherals;
 using Xunit;
@@ -50,6 +51,38 @@ namespace PadForge.Tests
         public void Dispose() => Disposed = true;
     }
 
+    /// <summary>A Raise that answers its mode and goes silent at the first picture,
+    /// with what the reads cost counted from the moment its worker stops.</summary>
+    internal sealed class StopsAnsweringPort : ISerialLineChannel
+    {
+        private readonly FakeSerialLine _line = new();
+        private bool _waitedForTheStop;
+        public readonly ManualResetEventSlim InAPicture = new(false);
+        public long ElapsedMs;
+
+        public bool Write(byte[] bytes)
+        {
+            if (Encoding.ASCII.GetString(bytes).StartsWith("led.theme", StringComparison.Ordinal)) _line.Mute = true;
+            return _line.Write(bytes);
+        }
+
+        public int Read(byte[] buffer)
+        {
+            if (_line.Mute && !_waitedForTheStop)
+            {
+                _waitedForTheStop = true;
+                InAPicture.Set();
+                SpinWait.SpinUntil(() => HidLightingBackend.WorkerStopping, 30000);
+                Interlocked.Exchange(ref ElapsedMs, 0);
+            }
+            int read = _line.Read(buffer);
+            if (read == 0) Interlocked.Add(ref ElapsedMs, OwnLightingChannels.SerialReadBoundMs(buffer.Length));
+            return read;
+        }
+
+        public void Dispose() => _line.Dispose();
+    }
+
     /// <summary>The Dygma Raise family against OpenRGB's DygmaRaiseController
     /// and the Raise firmware's Focus commands (#557).</summary>
     public class DygmaRaiseLightingTests
@@ -60,6 +93,53 @@ namespace PadForge.Tests
             List<(string, byte[], int)> shots = null)
             => new(() => ports ?? Array.Empty<ComPort>(), _ => Box, _ => port,
                 (path, bytes, ms) => { shots?.Add((path, bytes, ms)); return true; });
+
+        /// <summary>A stop that lands while a silent Raise holds a picture's read has that
+        /// read on the stop's clock. A Raise cannot keep the worker past what the stop
+        /// waits.</summary>
+        [Fact]
+        public void ASilentRaise_HoldsAStoppingWorkerForLessThanTheStopWaits()
+        {
+            PeripheralOutputs.ResetForTest();
+            PeripheralLightMaps.ResetForTest();
+            try
+            {
+                var port = new StopsAnsweringPort();
+                var ports = new[] { new ComPort("COM3", "Raise (COM3)", @"USB\VID_1209&PID_2201\6&1A2B3C4D&0&2") };
+                var family = new DygmaRaiseLighting(() => ports, _ => Box, _ => port, (_, _, _) => true);
+                long now = 1_000_000;
+                var row = Guid.NewGuid();
+                var backend = new HidLightingBackend(new IHidLightingFamily[] { family }, _ => null, _ => Box,
+                    () => Interlocked.Read(ref now), (_, _, _) => true, (_, _, _) => true,
+                    ms =>
+                    {
+                        Interlocked.Add(ref now, ms);
+                        Interlocked.Add(ref port.ElapsedMs, ms);
+                    },
+                    idleTickMs: 5);
+                backend.Start();
+                backend.Rescan(new HidCollectionInfo[0]);
+                PeripheralOutputs.PublishLinks(new LinkTable(new[]
+                {
+                    new DeviceLinks { Device = row, Lighting = new[] { new OutputPath(OutputFamily.HidLightingUnit, @"\\.\COM3") } },
+                }));
+                PeripheralOutputs.SetLighting(row, slot: 0, player: 1, 0x11, 0x22, 0x33);
+                Assert.True(SpinWait.SpinUntil(() =>
+                {
+                    backend.Wake();
+                    return port.InAPicture.IsSet;
+                }, 30000), "a picture went out");
+
+                backend.Dispose();
+                long limit = DygmaRaiseLighting.HandBackAnswerWaitMs + 100;
+                Assert.True(Interlocked.Read(ref port.ElapsedMs) <= limit, Interlocked.Read(ref port.ElapsedMs) + " ms");
+            }
+            finally
+            {
+                PeripheralOutputs.ResetForTest();
+                PeripheralLightMaps.ResetForTest();
+            }
+        }
 
         [Fact]
         public void APicture_IsOpenRgbsThemeLine()

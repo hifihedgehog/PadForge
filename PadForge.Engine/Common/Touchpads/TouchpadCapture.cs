@@ -352,8 +352,9 @@ public sealed class TouchpadCapture : IDisposable
     /// <summary>Restarts a touchpad collection no capture reads, so Windows
     /// opens it again now that HidHide shows it: a hide taken back while the
     /// engine was stopped, or one an earlier session left. It waits for any
-    /// capture's turn on the collection, as a capture's own restart does.</summary>
-    public static Task RestartForWindows(string instanceId)
+    /// capture's turn on the collection, as a capture's own restart does.
+    /// Whether the restart went through.</summary>
+    public static Task<bool> RestartForWindows(string instanceId)
     {
         var turn = TabletCaptureQueue.Reserve(instanceId);
         return Task.Run(async () =>
@@ -363,10 +364,12 @@ public sealed class TouchpadCapture : IDisposable
                 await turn.Predecessor.ConfigureAwait(false);
                 TabletNative.RestartCollection(instanceId, CancellationToken.None);
                 SdlDiagLog.WriteLine($"TOUCHPAD restarted for Windows: {instanceId}");
+                return true;
             }
             catch (Exception error)
             {
                 SdlDiagLog.WriteLine($"TOUCHPAD restart for Windows failed: {instanceId}: {error.Message}");
+                return false;
             }
             finally { turn.Complete(); }
         });

@@ -627,6 +627,28 @@ namespace PadForge.Tests
             backend.Dispose();
         }
 
+        /// <summary>A stop that comes during the read a claim starts with enters nothing:
+        /// a worker a stop gave up on comes back from that read with the next run on the
+        /// controller.</summary>
+        [Fact]
+        public void AStopDuringAClaimsRead_SetsNoMode()
+        {
+            using var backend = Started();
+            _server.Clear();
+            int asked = 0;
+            _server.ControllerDataAsked = () =>
+            {
+                Interlocked.Increment(ref asked);
+                backend.SignalStop();
+            };
+            Link(KeyboardPath);
+            Light(0x112233);
+            backend.Wake();
+            Assert.True(SpinWait.SpinUntil(() => !backend.WorkerAlive, 30000), "the worker stopped");
+            Assert.True(Volatile.Read(ref asked) > 0, "the claim read the controller");
+            Assert.Empty(Writes());
+        }
+
         /// <summary>A worker a stop gave up on comes out while the next run's
         /// worker still waits for it, with no connection of its own. It
         /// sets the controller back, since nobody else knows it was
@@ -689,6 +711,36 @@ namespace PadForge.Tests
             Assert.Empty(Writes());
             Assert.NotNull(PeripheralLightMaps.For(KeyboardPath));
             next.Dispose();
+        }
+
+        /// <summary>The next run of a worker a stop gave up on finds its Direct mode on
+        /// the controller, and sets back what that worker read, not that.</summary>
+        [Fact]
+        public void AWorkerAStopGaveUpOn_LeavesWhatItReadToTheNextRun()
+        {
+            using var backend = Lit(stopJoinMs: 50);
+            var hold = new ManualResetEventSlim(false);
+            _held.Reset();
+            _hold = hold;
+            backend.Wake();
+            Assert.True(_held.Wait(30000), "the worker is held");
+            OpenRgbBackend next = null;
+            try
+            {
+                backend.Dispose();
+                _hold = null;
+                _server.Controllers[0] = OpenRgbSamples.Keyboard(active: 0);
+                next = Started(stopJoinMs: 50);
+                Passes(next, 3);
+                _server.Clear();
+                next.Dispose();
+                Assert.Contains(ModePacket(0, 1, OpenRgbSamples.Static()), Writes());
+            }
+            finally
+            {
+                hold.Set();
+            }
+            Assert.True(SpinWait.SpinUntil(() => !backend.WorkerAlive, 30000), "the old worker ended");
         }
 
         /// <summary>The engine stops with the server not answering, so the

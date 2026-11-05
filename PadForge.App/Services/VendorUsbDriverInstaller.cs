@@ -862,6 +862,47 @@ namespace PadForge.Services
             return true;
         }
 
+        /// <summary>Removes every package of PadForge's that binds this ID. True
+        /// when none is left, none there at all included.</summary>
+        internal static bool RemovePackagesBinding(string bindId, Action<string> log, string infFolder = null)
+        {
+            string folder = infFolder ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "INF");
+            bool clear = true;
+            foreach (string path in Directory.GetFiles(folder, "oem*.inf"))
+            {
+                string inf = Path.GetFileName(path);
+                try
+                {
+                    if (!IsPackageOf(File.ReadAllText(path), bindId)) continue;
+                    // RemovePackage asks NoDriverChangesForTest itself.
+                    RemovePackage(inf, path);
+                    if (File.Exists(path)) clear = false;
+                    log($"{inf} binds {bindId}, and {(clear ? "was removed" : "is still there")}.");
+                }
+                catch (Exception ex)
+                {
+                    clear = false;
+                    log($"{inf} could not be read or removed: {ex.Message}");
+                }
+            }
+            return clear;
+        }
+
+        /// <summary>Whether an INF is a package of PadForge's binding this ID: the
+        /// catalog's line, and the ID ending its line, so an interface's package
+        /// is not taken for its device's.</summary>
+        internal static bool IsPackageOf(string inf, string bindId)
+        {
+            bool ours = false, binds = false;
+            foreach (string line in inf.Split('\n'))
+            {
+                string text = line.TrimEnd();
+                if (string.Equals(text, "CatalogFile = " + CatalogName, StringComparison.OrdinalIgnoreCase)) ours = true;
+                if (text.EndsWith("USB_Install, " + bindId, StringComparison.OrdinalIgnoreCase)) binds = true;
+            }
+            return ours && binds;
+        }
+
         private static void RemovePackage(string inf, string path)
         {
             if (NoDriverChangesForTest) return;

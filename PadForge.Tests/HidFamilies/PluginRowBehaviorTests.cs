@@ -256,14 +256,14 @@ namespace PadForge.Tests
             Assert.Single(Written(io), w => Hex(w, 7) == "02 09 01 02 00 E8 03");
         }
 
-        /// <summary>A whole screen is 121 reports of 1,024 bytes. Repeating it is far slower than
-        /// the row's picture rate, and takes no start: the plugin's Initialize runs once.</summary>
+        /// <summary>A whole screen is 121 reports of 1,024 bytes, about 15 ms. It repeats as
+        /// every SignalRGB row's picture does, and takes no start: the plugin's Initialize runs
+        /// once.</summary>
         [Fact]
-        public void TheNexus_RepeatsItsScreenRarely_AndNotItsStart()
+        public void TheNexus_RepeatsItsScreen_AndNotItsStart()
         {
             var row = Device(0x1B1C, 0x1B8E);
-            Assert.Equal(F.NexusPictureAgainMs, F.PictureAgainMsOf(row));
-            Assert.Equal(5000, F.NexusPictureAgainMs);
+            Assert.Equal(F.PictureAgainMs, F.PictureAgainMsOf(row));
             var model = F.Instance.Match(PluginRowReach.CollectionOf(row));
             Assert.Equal(F.PictureAgainMsOf(row), model.KeepAliveMs);
             Assert.Equal(F.PictureAgainMsOf(row), model.KeepAliveIdleMs);

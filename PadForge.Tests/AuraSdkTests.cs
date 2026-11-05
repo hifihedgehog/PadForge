@@ -290,10 +290,22 @@ namespace PadForge.Tests
             public Thread HeldThread;
 
             public IReadOnlyList<AuraDevice> Devices => _devices;
+            /// <summary>Set: the next open holds until it is set, and
+            /// <see cref="OpenHeld"/> says it is there, on <see cref="HeldThread"/>.</summary>
+            public ManualResetEventSlim HoldOpen;
+            public readonly ManualResetEventSlim OpenHeld = new(false);
+
             public bool Open(out string detail)
             {
                 Log("open");
                 detail = "fake";
+                var hold = Interlocked.Exchange(ref HoldOpen, null);
+                if (hold != null)
+                {
+                    HeldThread = Thread.CurrentThread;
+                    OpenHeld.Set();
+                    hold.Wait(30000);
+                }
                 if (!OpenOk) return false;
                 _devices = Script;
                 return true;
@@ -741,6 +753,78 @@ namespace PadForge.Tests
             }
             Assert.True(native.HeldThread.Join(30000), "the first worker ended");
             Assert.Equal(0, native.Count("close"));
+        }
+
+        /// <summary>A worker a stop gave up on inside the SDK's open, with only an earlier
+        /// run's session in the books, ends the session it comes back with when the next run
+        /// opens none: nothing else would give the devices back.</summary>
+        [Fact]
+        public void AWorkerTheNextOneGaveUpOn_InItsOpen_EndsItsSession_WhenThatOneOpensNone()
+        {
+            var native = new FakeAura();
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x11, 0x22, 0x33);
+            using (var earlier = new AuraSdkBackend(native, pollMs: 10, retryMs: 50, stopWaitMs: 2000, predecessorWaitMs: 50))
+            {
+                earlier.Start();
+                Assert.True(WaitFor(() => native.Calls.Any(c => c.StartsWith("key:", StringComparison.Ordinal))), "the earlier run painted");
+            }
+            native.Clear();
+
+            using var gate = new ManualResetEventSlim(false);
+            native.HoldOpen = gate;
+            using var first = new AuraSdkBackend(native, pollMs: 10, retryMs: 50, stopWaitMs: 50, predecessorWaitMs: 50);
+            first.Start();
+            Assert.True(native.OpenHeld.Wait(30000), "the worker is inside the SDK's open");
+            first.Dispose();
+
+            Link(new DeviceLinks { Device = Keyboard, Lighting = Array.Empty<OutputPath>() });
+            using var next = new AuraSdkBackend(native, pollMs: 10, retryMs: 50, stopWaitMs: 50, predecessorWaitMs: 50);
+            try
+            {
+                next.Start();
+                Thread.Sleep(200);
+            }
+            finally
+            {
+                gate.Set();
+            }
+            Assert.True(native.HeldThread.Join(30000), "the first worker ended");
+            Assert.Equal(1, native.Count("open"));
+            Assert.Equal(1, native.Count("close"));
+        }
+
+        /// <summary>A worker a stop gave up on inside the SDK sets no more lights when it
+        /// comes back, in each of the three loops of a paint. The laptop's one key leads to
+        /// its extra lights, and the DRAM has zones.</summary>
+        [Theory]
+        [InlineData("keys")]
+        [InlineData("extras")]
+        [InlineData("zones")]
+        public void AWorkerThatComesBackFromTheSdk_SetsNoMoreLights(string loop)
+        {
+            var native = new FakeAura();
+            if (loop == "extras")
+                native.Script = new[] { new AuraDevice(0, AuraLights.NotebookKeyboardRgb, "ROG Zephyrus Duo 15 GX551", 134, new ushort[] { 0x1E }) };
+            bool zones = loop == "zones";
+            var row = zones ? Ram : Keyboard;
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = row, Lighting = new[] { Path(zones ? "dram" : "keyboard") } });
+            using var first = new AuraSdkBackend(native, pollMs: 10, retryMs: 50, stopWaitMs: 50, predecessorWaitMs: 50);
+            first.Start();
+            PeripheralOutputs.SetLighting(row, slot: 0, player: 1, 0x11, 0x22, 0x33);
+            Assert.True(WaitFor(() => native.Calls.Any(c => c.EndsWith(":112233", StringComparison.Ordinal))), "the first worker painted");
+            using var gate = new ManualResetEventSlim(false);
+            native.Hold = gate;
+            PeripheralOutputs.SetLighting(row, slot: 0, player: 1, 0x44, 0x55, 0x66);
+            Assert.True(native.Held.Wait(30000), "the worker is inside the SDK");
+            first.Dispose();
+            native.Clear();
+
+            gate.Set();
+            Assert.True(native.HeldThread.Join(30000), "the first worker ended");
+            Assert.True(native.Calls.Count(c => c.EndsWith(":445566", StringComparison.Ordinal)) <= 1, string.Join(" | ", native.Calls));
         }
 
         /// <summary>A write that fails with the program running reads the same

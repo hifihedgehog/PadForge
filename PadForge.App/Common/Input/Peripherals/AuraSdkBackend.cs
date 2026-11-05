@@ -79,6 +79,7 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     foreach (ushort code in device.KeyCodes)
                     {
+                        if (RunEnded) return true;
                         int rgb = picture.ColorAt(code);
                         if (last != null && last.ColorAt(code) == rgb) continue;
                         _native.SetKey(device.Index, code, rgb);
@@ -86,6 +87,7 @@ namespace PadForge.Common.Input.Peripherals
                     }
                     foreach (var extra in AuraLights.ExtraLightsOf(device.Name))
                     {
+                        if (RunEnded) return true;
                         if (extra.Index >= device.LightCount) continue;
                         int address = AuraLights.ExtraBase + extra.Index;
                         int rgb = picture.ColorAt(address);
@@ -99,6 +101,7 @@ namespace PadForge.Common.Input.Peripherals
                     int zoneBase = category == "keyboard" ? AuraLights.ZoneBase : 0;
                     for (int i = 0; i < device.LightCount; i++)
                     {
+                        if (RunEnded) return true;
                         int rgb = picture.ColorAt(zoneBase + i);
                         if (last != null && last.ColorAt(zoneBase + i) == rgb) continue;
                         _native.SetLight(device.Index, i, rgb);

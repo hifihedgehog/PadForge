@@ -191,11 +191,6 @@ namespace PadForge.Common.Input.Peripherals
         /// software control on its own. 0: never.</summary>
         public int KeepAliveMs { get; init; }
 
-        /// <summary>How often the picture alone goes out again with no change, for a row
-        /// whose picture is too large for <see cref="PluginDeviceLighting.PictureAgainMs"/>.
-        /// 0: by <see cref="PluginDeviceLighting.PictureAgainMsOf"/>'s rule.</summary>
-        public int PictureAgainMs { get; init; }
-
         /// <summary>Whether the frames are feature reports.</summary>
         public bool Feature => FeatureLength > 0 && OutputLength == 0;
     }
@@ -248,11 +243,10 @@ namespace PadForge.Common.Input.Peripherals
         internal const int PictureAgainMs = 500;
 
         /// <summary>How often <paramref name="device"/>'s picture goes out again with no change.
-        /// The projects other than SignalRGB send a picture once, a row with a keep-alive of
-        /// its own has its interval, and a row may name its own for the picture alone.</summary>
+        /// The projects other than SignalRGB send a picture once, and a row with a keep-alive
+        /// of its own has its interval.</summary>
         internal static int PictureAgainMsOf(PluginDevice device)
-            => device.PictureAgainMs > 0 ? device.PictureAgainMs
-                : device.KeepAliveMs > 0 ? device.KeepAliveMs : device.Source == null ? PictureAgainMs : 0;
+            => device.KeepAliveMs > 0 ? device.KeepAliveMs : device.Source == null ? PictureAgainMs : 0;
 
         /// <summary>How far apart two strips' addresses are, more than any strip
         /// takes.</summary>

@@ -313,6 +313,8 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The family's workers over the engine's restarts.</summary>
         private static readonly WorkerSuccession s_workers = new();
 
+        internal static bool HandBackHeldForTest(string device) => s_workers.HoldsHandBack(device);
+
         /// <summary>The worker's clock: milliseconds from the
         /// high-resolution counter. Environment.TickCount64 steps by 10 to
         /// 16 ms on Windows, which cannot keep two frames 8 ms apart.</summary>
@@ -579,6 +581,9 @@ namespace PadForge.Common.Input.Peripherals
             // here with no frame.
             if (_owed.Count > 0 && PeripheralOutputs.Presence.LogitechGHubRunning)
             {
+                foreach (var pair in _owed)
+                    foreach (var owed in pair.Value)
+                        s_workers.HandedBack(UnitPath(pair.Key, owed.Key).Key, run);
                 _owed.Clear();
                 claims = true;
             }
@@ -607,6 +612,7 @@ namespace PadForge.Common.Input.Peripherals
                             // left, at its indexes, and would mean something
                             // else here, so nothing is sent.
                             Settle(pair.Key, unit.DeviceIndex);
+                            s_workers.HandedBack(unit.Key, run);
                             claims = true;
                             PadForge.Engine.SdlDiagLog.WriteLine(
                                 $"PERIPHERAL HID++ '{unit.Name}' is another device than the one owed a hand-back at its slot, which is dropped");
@@ -634,6 +640,7 @@ namespace PadForge.Common.Input.Peripherals
                             if (ok)
                             {
                                 Settle(pair.Key, unit.DeviceIndex);
+                                s_workers.HandedBack(unit.Key, run);
                                 claims = true;
                                 PadForge.Engine.SdlDiagLog.WriteLine(
                                     $"PERIPHERAL HID++ '{unit.Name}' lighting handed back, owed since the unit was let go");
@@ -654,18 +661,22 @@ namespace PadForge.Common.Input.Peripherals
                             : null;
                         ok = Drive(run, channel, unit, light, rgb, map, colors, level, now, ref claims);
                     }
-                    else if (light.Claimed && LeftToLogitechProgram(path))
+                    else if (LeftToLogitechProgram(path))
                     {
-                        // G HUB or Logitech Gaming Software started and the
-                        // linker took the unit's path away. The program
+                        // G HUB or Logitech Gaming Software runs, and no row has
+                        // the unit's path, or OpenRGB holds it. The program
                         // lights the device from here on, and a hand-back
                         // that landed after its own claim would clear that
                         // claim, and at level 2 undo the mode it just set,
                         // so the worker lets go without a frame.
-                        Forget(light);
-                        claims = true;
-                        PadForge.Engine.SdlDiagLog.WriteLine(
-                            $"PERIPHERAL HID++ '{unit.Name}' lighting left to the Logitech program that started");
+                        s_workers.LeftToAProgram(unit.Key, run);
+                        if (light.Claimed)
+                        {
+                            Forget(light);
+                            claims = true;
+                            PadForge.Engine.SdlDiagLog.WriteLine(
+                                $"PERIPHERAL HID++ '{unit.Name}' lighting left to the Logitech program that started");
+                        }
                     }
                     else if (light.Claimed)
                     {
@@ -674,6 +685,7 @@ namespace PadForge.Common.Input.Peripherals
                         ok = HandBack(channel.Io, light);
                         if (ok)
                         {
+                            s_workers.HandedBack(unit.Key, run);
                             Forget(light);
                             claims = true;
                             PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HID++ '{unit.Name}' lighting handed back");
@@ -729,15 +741,16 @@ namespace PadForge.Common.Input.Peripherals
             if (light.Claimed && light.Level != level)
             {
                 if (!HandBack(channel.Io, light)) return false;
+                s_workers.HandedBack(unit.Key, run);
                 Forget(light);
                 claims = true;
             }
 
-            if (light.Queue != null) return Send(channel.Io, unit, light, now, ref claims);
+            if (light.Queue != null) return Send(run, channel.Io, unit, light, now, ref claims);
             if (!light.Claimed) return Claim(run, channel, unit, light, rgb, map, colors, level, now, ref claims);
 
             if (now - light.ClaimedAt >= _reassertMs)
-                return KeepAlive(channel, unit, light, rgb, map, colors, now, ref claims);
+                return KeepAlive(run, channel, unit, light, rgb, map, colors, now, ref claims);
 
             // A new color, or a color whose paint was not answered. A paint
             // that failed is made again at once, since the floor between
@@ -747,7 +760,7 @@ namespace PadForge.Common.Input.Peripherals
             if (light.FailedPaints >= HidppLightPlan.FailedPaintLimit) return true;
             if (light.FailedPaints == 0 && now - light.SentAt < light.Plan.PaintMs) return true;
             Enqueue(light, PaintSteps(light, rgb, map, colors), rgb, map, colors, now);
-            return Send(channel.Io, unit, light, now, ref claims);
+            return Send(run, channel.Io, unit, light, now, ref claims);
         }
 
         /// <summary>Takes a unit's lighting and queues its first color.</summary>
@@ -757,6 +770,16 @@ namespace PadForge.Common.Input.Peripherals
             var plan = light.Plan;
             byte savedMode = 0;
             byte[] modeRead = level >= 2 ? plan.ModeRead : null;
+            // A worker running late left the device in host mode, and what it read
+            // is the device's own. Whatever level rules now, this claim is of a device
+            // in that mode, so its hand-back puts the mode back, and a lower level
+            // takes its turn after that (Drive).
+            if (s_workers.TakeHandBack(unit.Key, run, out byte late))
+            {
+                savedMode = late;
+                modeRead = null;
+                level = Math.Max(level, 2);
+            }
             if (modeRead != null)
             {
                 // A read that keeps going unanswered is made again with the
@@ -770,6 +793,8 @@ namespace PadForge.Common.Input.Peripherals
                 // restore the on-board mode unread.
                 var reply = Ask(channel.Io, modeRead, HidppHapticProtocol.TimeoutMs(channel.Io.Bluetooth));
                 if (reply.Kind == HidppReplyKind.WriteFailed) return false;
+                // A stop that came during the read claims nothing.
+                if (run.Stop) return true;
                 if (reply.Kind == HidppReplyKind.Answer)
                 {
                     savedMode = plan.ModeOf(reply);
@@ -799,6 +824,7 @@ namespace PadForge.Common.Input.Peripherals
             // hand-back does not know it. A claim that then fails is handed
             // back for nothing.
             s_workers.Claim(unit.Key, run);
+            if (savedMode != 0) s_workers.NoteHandBack(unit.Key, run, savedMode);
             light.HandBack = plan.HandBack(level, savedMode);
             light.Level = level;
             light.SavedMode = savedMode;
@@ -808,7 +834,7 @@ namespace PadForge.Common.Input.Peripherals
             NoteClaimed(channel.Io.Path, unit.DeviceIndex, HidppLightPlan.Frames(light.HandBack));
 
             EnqueueClaim(light, rgb, map, colors, now);
-            return Send(channel.Io, unit, light, now, ref claims);
+            return Send(run, channel.Io, unit, light, now, ref claims);
         }
 
         /// <summary>Queues the frames of a unit's claim, at the level and
@@ -830,7 +856,7 @@ namespace PadForge.Common.Input.Peripherals
         /// claim first (<see cref="HidppLightPlan.ClaimRead"/>) repeats
         /// nothing that would take the display from its per-key frames, and
         /// claims in full again only when the read shows the claim gone.</summary>
-        private bool KeepAlive(Channel channel, HidppUnit unit, Light light, int rgb, LightMap map, int[] colors, long now,
+        private bool KeepAlive(WorkerRun run, Channel channel, HidppUnit unit, Light light, int rgb, LightMap map, int[] colors, long now,
             ref bool claims)
         {
             var plan = light.Plan;
@@ -858,7 +884,7 @@ namespace PadForge.Common.Input.Peripherals
                         $"PERIPHERAL HID++ '{unit.Name}' was back in its on-board memory mode, claiming again");
                     light.FailedPaints = 0;
                     EnqueueClaim(light, rgb, map, colors, now);
-                    return Send(channel.Io, unit, light, now, ref claims);
+                    return Send(run, channel.Io, unit, light, now, ref claims);
                 }
             }
             if (claimRead != null)
@@ -879,14 +905,14 @@ namespace PadForge.Common.Input.Peripherals
                     PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HID++ '{unit.Name}' lighting claim was gone, claiming again");
                     light.FailedPaints = 0;
                     EnqueueClaim(light, rgb, map, colors, now);
-                    return Send(channel.Io, unit, light, now, ref claims);
+                    return Send(run, channel.Io, unit, light, now, ref claims);
                 }
             }
             var keep = colors == null
                 ? plan.KeepAlive(light.Level, rgb, light.Painted)
                 : plan.KeepAliveLights(light.Level, map, colors, light.Painted);
             Enqueue(light, keep, rgb, map, colors, now);
-            return Send(channel.Io, unit, light, now, ref claims);
+            return Send(run, channel.Io, unit, light, now, ref claims);
         }
 
         /// <summary>Puts the frames of one claim or one paint in a unit's
@@ -904,12 +930,14 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Sends what a unit has waiting: every frame at once for a
         /// plan that spaces none, and one frame for a plan that does, the
-        /// next following on the worker's frame tick. False when a write
-        /// failed.</summary>
-        private bool Send(IHidppChannel io, HidppUnit unit, Light light, long now, ref bool claims)
+        /// next following on the worker's frame tick. A stopping worker sends
+        /// no more of it: one a stop gave up on comes back from a frame here, and
+        /// the next run has the unit by now. False when a write failed.</summary>
+        private bool Send(WorkerRun run, IHidppChannel io, HidppUnit unit, Light light, long now, ref bool claims)
         {
             while (light.Queue != null)
             {
+                if (run.Stop) return true;
                 if (now < light.NextAt) return true;
                 var step = light.Queue[light.Next];
                 var outcome = Put(io, step);
@@ -1174,15 +1202,24 @@ namespace PadForge.Common.Input.Peripherals
                 foreach (var owed in pair.Value)
                 {
                     var path = UnitPath(pair.Key, owed.Key);
-                    if (LeftToLogitechProgram(path) || !s_workers.MayReach(path.Key, run)) continue;
+                    if (LeftToLogitechProgram(path))
+                    {
+                        s_workers.HandedBack(path.Key, run);
+                        continue;
+                    }
+                    if (!s_workers.MayReach(path.Key, run)) continue;
                     var debt = owed.Value;
+                    bool paid = true;
                     foreach (var step in debt.HandBack)
                     {
                         bool written;
                         try { written = _writeOnce(pair.Key, step.Frame, OneShotMs); }
                         catch { written = false; }
-                        if (!written) break;
+                        if (written) continue;
+                        paid = false;
+                        break;
                     }
+                    if (paid) s_workers.HandedBack(path.Key, run);
                 }
             }
         }
@@ -1205,9 +1242,9 @@ namespace PadForge.Common.Input.Peripherals
             light.FailedPaints = 0;
         }
 
-        /// <summary>Whether a claimed unit's lighting path is gone because a
-        /// Logitech program started: no row is linked to the path for
-        /// lighting any more, and G HUB or Logitech Gaming Software runs. A
+        /// <summary>Whether a unit's lighting path is closed to the worker because a
+        /// Logitech program runs: no row is linked to the path for
+        /// lighting, and G HUB or Logitech Gaming Software runs. A
         /// path that is still linked and merely unclaimed, a switch turned
         /// off or a device unassigned, is handed back as ever. The table is
         /// read before the presence: the link pass publishes the presence
@@ -1320,9 +1357,14 @@ namespace PadForge.Common.Input.Peripherals
             foreach (var unit in channel.Units)
             {
                 if (!channel.Lights.TryGetValue(unit.DeviceIndex, out var light) || !light.Claimed) continue;
-                if (LeftToLogitechProgram(new OutputPath(OutputFamily.HidppUnit, unit.Key))
-                    || !s_workers.MayReach(unit.Key, run)) continue;
+                if (LeftToLogitechProgram(new OutputPath(OutputFamily.HidppUnit, unit.Key)))
+                {
+                    s_workers.HandedBack(unit.Key, run);
+                    continue;
+                }
+                if (!s_workers.MayReach(unit.Key, run)) continue;
                 if (!HandBack(channel.Io, light)) break;
+                s_workers.HandedBack(unit.Key, run);
             }
             channel.Lights.Clear();
         }
@@ -1413,11 +1455,14 @@ namespace PadForge.Common.Input.Peripherals
             bool left = false;
             foreach (var path in _owed.Keys.Where(p => !present.Contains(p)).ToList())
             {
+                foreach (var owed in _owed[path]) s_workers.HandedBack(UnitPath(path, owed.Key).Key, run);
                 _owed.Remove(path);
                 left = true;
             }
             foreach (var path in states.Keys.Where(p => !present.Contains(p)).ToList())
             {
+                if (channels.TryGetValue(path, out var gone))
+                    foreach (var unit in gone.Units) s_workers.HandedBack(unit.Key, run);
                 Close(channels, states, path, forget: true);
                 _containers.Remove(path);
                 left = true;

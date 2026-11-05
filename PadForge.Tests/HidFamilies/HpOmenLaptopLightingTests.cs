@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using PadForge.Common.Input;
 using PadForge.Common.Input.Peripherals;
 using Xunit;
 
@@ -154,6 +156,171 @@ namespace PadForge.Tests
             Assert.Equal(expected, painted);
             // OmenMon reads the same zones back (BiosData.cs:222-234).
             Assert.Equal(new byte[] { 0x12, 0x34, 0x56 }, painted.Skip(24 + 1).Take(3));
+        }
+
+        private long _now = 1_000_000;
+
+        private HpOmenLaptopLighting Clocked(FakeHpBios bios)
+            => new(() => true, () => bios, (_, _, _, _) => true, () => _now);
+
+        private static readonly int[] OneColors = { 1, 2, 3, 4 };
+        private static readonly int[] OtherColors = { 5, 6, 7, 8 };
+
+        /// <summary>A forced kill and no later claim: the BIOS holds what PadForge
+        /// last kept, so the first table goes back, with nothing left behind. A new
+        /// family is what the next process has.</summary>
+        [Fact]
+        public void AKillWithNoLaterClaim_PutsTheFirstTableBack()
+        {
+            var bios = new FakeHpBios();
+            var original = (byte[])bios.Table.Clone();
+            var model = Clocked(bios).Model;
+            var session = model.BeginOwn(model.Open("x"), _ => { });
+            Assert.False(model.Owed("x"));
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(null, _ => { }, model.Map.Lights, OneColors));
+            Assert.True(model.Owed("x"));
+
+            var next = Clocked(bios).Model;
+            Assert.True(next.Owed("x"));
+            Assert.True(next.RepairOwn(next.Open("x"), _ => { }));
+            Assert.Equal(original, bios.Table);
+            Assert.False(next.Owed("x"));
+            Assert.Null(KeyboardProfileBackups.Get(HpOmenLaptopLighting.Product));
+            Assert.Null(KeyboardProfileBackups.Get(HpOmenLaptopLighting.ShownKey));
+        }
+
+        /// <summary>The Hub stored colors after the kill, and no read can say
+        /// otherwise of a table that differs: nothing is written, and it is not
+        /// asked about again until the next session. A later claim still takes the
+        /// backup.</summary>
+        [Fact]
+        public void AKillAndColorsThatDiffer_LeavesThemAlone()
+        {
+            var bios = new FakeHpBios();
+            var original = (byte[])bios.Table.Clone();
+            var model = Clocked(bios).Model;
+            model.BeginOwn(model.Open("x"), _ => { }).Paint(null, _ => { }, model.Map.Lights, OneColors);
+            var hub = HpOmenLaptopLighting.Painted(bios.Table, model.Map.Lights, OtherColors);
+            bios.Table = (byte[])hub.Clone();
+            int calls = bios.Calls.Count;
+
+            var next = Clocked(bios).Model;
+            Assert.True(next.RepairOwn(next.Open("x"), _ => { }));
+            Assert.Equal(hub, bios.Table);
+            Assert.DoesNotContain(bios.Calls.Skip(calls), c => c.Type == HpOmenLaptopLighting.SetColorTable);
+            Assert.False(next.Owed("x"));
+
+            var claim = next.BeginOwn(next.Open("x"), _ => { });
+            Assert.Equal(original, Assert.Single(claim.CrashFrames));
+            Assert.True(next.Owed("x"));
+        }
+
+        /// <summary>Only a picture that stands is kept: a save of the settings per
+        /// frame of an animation is no price for this. A picture after a run of them
+        /// is kept once it has stood, however soon it came.</summary>
+        [Fact]
+        public void APictureIsKept_OnceItHasStood()
+        {
+            var bios = new FakeHpBios();
+            var original = (byte[])bios.Table.Clone();
+            var model = Clocked(bios).Model;
+            Assert.Equal(HpOmenLaptopLighting.ShownStandsMs, model.RecheckMs);
+            var session = model.BeginOwn(model.Open("x"), _ => { });
+            var lights = model.Map.Lights;
+            session.Paint(null, _ => { }, lights, OneColors);
+            var kept = KeyboardProfileBackups.Get(HpOmenLaptopLighting.ShownKey)!.Value.Contents;
+            Assert.Equal(bios.Table, kept);
+
+            // An animation: a look at the interval finds a picture too young.
+            _now += HpOmenLaptopLighting.ShownStandsMs - 1;
+            session.Paint(null, _ => { }, lights, OtherColors);
+            _now += HpOmenLaptopLighting.ShownStandsMs - 1;
+            Assert.True(session.Recheck(null, _ => { }));
+            Assert.Equal(kept, KeyboardProfileBackups.Get(HpOmenLaptopLighting.ShownKey)!.Value.Contents);
+            int calls = bios.Calls.Count;
+
+            // It stood.
+            _now += 1;
+            Assert.True(session.Recheck(null, _ => { }));
+            Assert.Equal(bios.Table, KeyboardProfileBackups.Get(HpOmenLaptopLighting.ShownKey)!.Value.Contents);
+            Assert.Equal(calls, bios.Calls.Count);
+
+            Assert.True(session.HandBack(null, _ => { }));
+            Assert.Equal(original, bios.Table);
+            Assert.Null(KeyboardProfileBackups.Get(HpOmenLaptopLighting.ShownKey));
+            Assert.False(model.Owed("x"));
+        }
+
+        /// <summary>The worker asks on the model's interval, on a channel of the family's
+        /// own, with no picture to send.</summary>
+        [Fact]
+        public void TheWorker_KeepsAPictureThatStood()
+        {
+            PeripheralOutputs.ResetForTest();
+            PeripheralLightMaps.ResetForTest();
+            try
+            {
+                var bios = new FakeHpBios();
+                var family = new HpOmenLaptopLighting(() => true, () => bios, (_, _, _, _) => true, () => Interlocked.Read(ref _now));
+                var row = Guid.NewGuid();
+                using var backend = new HidLightingBackend(new IHidLightingFamily[] { family }, _ => null, _ => Guid.Empty,
+                    () => Interlocked.Read(ref _now), (_, _, _) => true, (_, _, _) => true, ms => Interlocked.Add(ref _now, ms), idleTickMs: 5);
+                backend.Start();
+                backend.Rescan(Array.Empty<HidCollectionInfo>());
+                PeripheralOutputs.PublishLinks(new LinkTable(new[]
+                {
+                    new DeviceLinks { Device = row, Lighting = new[] { new OutputPath(OutputFamily.HidLightingUnit, HpOmenLaptopLighting.Key) } },
+                }));
+                PeripheralOutputs.SetLighting(row, slot: 0, player: 1, 0x11, 0x22, 0x33);
+                Assert.True(SpinWait.SpinUntil(() =>
+                {
+                    backend.Wake();
+                    return KeyboardProfileBackups.Get(HpOmenLaptopLighting.ShownKey) != null;
+                }, 30000), "the first picture went out and was kept");
+                var first = KeyboardProfileBackups.Get(HpOmenLaptopLighting.ShownKey)!.Value.Contents;
+
+                PeripheralOutputs.SetLighting(row, slot: 0, player: 1, 0x44, 0x55, 0x66);
+                Assert.True(SpinWait.SpinUntil(() =>
+                {
+                    Interlocked.Add(ref _now, 1000);
+                    backend.Wake();
+                    return bios.Table[HpOmenLaptopLighting.ColorsAt] == 0x44;
+                }, 30000), "the second picture went out");
+                Assert.True(SpinWait.SpinUntil(() =>
+                {
+                    Interlocked.Add(ref _now, 1000);
+                    backend.Wake();
+                    return !KeyboardProfileBackups.Get(HpOmenLaptopLighting.ShownKey)!.Value.Contents.SequenceEqual(first);
+                }, 30000), "the worker kept the second once it had stood");
+                Assert.Equal(bios.Table, KeyboardProfileBackups.Get(HpOmenLaptopLighting.ShownKey)!.Value.Contents);
+            }
+            finally
+            {
+                PeripheralOutputs.ResetForTest();
+                PeripheralLightMaps.ResetForTest();
+            }
+        }
+
+        /// <summary>A failed BIOS call of this process's left the colors, whatever was
+        /// kept: this process wrote them, so the first table goes back with no later
+        /// claim. A session's hand-back ends that.</summary>
+        [Fact]
+        public void AFailedCallWithNoLaterClaim_PutsTheFirstTableBack()
+        {
+            var bios = new FakeHpBios();
+            var original = (byte[])bios.Table.Clone();
+            var model = Clocked(bios).Model;
+            var session = model.BeginOwn(model.Open("x"), _ => { });
+            var lights = model.Map.Lights;
+            session.Paint(null, _ => { }, lights, OneColors);
+            session.Paint(null, _ => { }, lights, OtherColors);
+            bios.FailWrites = true;
+            Assert.Equal(HidLightingPaint.Failed, session.Paint(null, _ => { }, lights, OneColors));
+            bios.FailWrites = false;
+
+            Assert.True(model.RepairOwn(model.Open("x"), _ => { }));
+            Assert.Equal(original, bios.Table);
+            Assert.False(model.Owed("x"));
         }
 
         [Fact]

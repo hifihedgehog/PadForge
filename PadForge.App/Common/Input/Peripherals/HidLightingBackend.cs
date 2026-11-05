@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 
 namespace PadForge.Common.Input.Peripherals
@@ -298,6 +299,10 @@ namespace PadForge.Common.Input.Peripherals
             /// the session began.</summary>
             public long KeptAt;
 
+            /// <summary>How long the unit's last picture took, waits included, or
+            /// -1 before its first.</summary>
+            public long PaintTookMs = -1;
+
             public string Label => $"{Name ?? "unit"} {VendorId:X4}:{ProductId:X4}";
         }
 
@@ -322,6 +327,7 @@ namespace PadForge.Common.Input.Peripherals
         private readonly Func<string, byte[], int, bool> _setFeatureOnce;
         private readonly Func<string, byte[], int, bool> _writeOutputOnce;
         private readonly Action<int> _wait;
+        private readonly Func<long> _elapsedMs;
         private readonly int _idleTickMs;
         private readonly int _predecessorJoinMs;
         private readonly int _stopJoinMs;
@@ -337,7 +343,35 @@ namespace PadForge.Common.Input.Peripherals
         [ThreadStatic] private static List<Unit> t_served;
         [ThreadStatic] private static WorkerRun t_run;
         [ThreadStatic] private static Unit t_serving;
-        [ThreadStatic] private static bool t_inNestedKeepAlive;
+
+        /// <summary>0 on a unit's turn, 1 in the pass beside its wait, 2 in the
+        /// keep-alives beside a wait of that pass, which waits plainly.</summary>
+        [ThreadStatic] private static int t_besideDepth;
+
+        /// <summary>The unit the pass beside a wait is serving.</summary>
+        [ThreadStatic] private static Unit t_servedBeside;
+
+        [ThreadStatic] private static long t_picturesBesideAt;
+
+        /// <summary>How often a long wait lets the other units' pictures out. Once
+        /// per display frame, since a session can take many short waits, and each
+        /// look renders every unit's picture.</summary>
+        internal const int PicturesBesideMs = 16;
+
+        /// <summary>Whether the worker this runs on is stopping. Its session's reads
+        /// are on the stop's clock then.</summary>
+        internal static bool WorkerStopping => t_run is { Stop: true };
+
+        /// <summary>The high-resolution counter a wait goes by, as the HID++ worker's
+        /// clock does: the worker's own clock moves in steps of 15.6 ms, longer than the
+        /// 5 ms a session can wait between two reports.</summary>
+        private static readonly Stopwatch s_elapsed = Stopwatch.StartNew();
+
+        private int MsSince(long at) => (int)Math.Min(int.MaxValue, _elapsedMs() - at);
+
+        /// <summary>What a session names for its crash path, carried to the next
+        /// run when a worker running late has not handed it back.</summary>
+        private sealed record LateFrames(byte[][] Frames, bool Feature, string Path);
 
         private int _resumed;
 
@@ -382,16 +416,18 @@ namespace PadForge.Common.Input.Peripherals
         /// container lookup, the clock, the crash path's two one-shot
         /// writers, the wait a session takes between an exchange and the
         /// next, the idle tick, the wait for a predecessor worker, Stop's
-        /// wait, and the opener with no access right the scan reads strings
-        /// through. The openers and the one-shot writers are the worker's
+        /// wait, the opener with no access right the scan reads strings
+        /// through, and the clock a wait goes by, the given clock when it is
+        /// left out. The openers and the one-shot writers are the worker's
         /// only ways to a device, and their defaults open nothing in the
         /// test host (<see cref="RealHidAccess"/>).</summary>
         internal HidLightingBackend(IReadOnlyList<IHidLightingFamily> families, Func<string, IHidReportChannel> open,
             Func<string, Guid> containerOf, Func<long> ticks, Func<string, byte[], int, bool> setFeatureOnce,
             Func<string, byte[], int, bool> writeOutputOnce, Action<int> wait, int idleTickMs,
             int predecessorJoinMs = PredecessorJoinMs, int stopJoinMs = StopJoinMs,
-            Func<string, IHidReportChannel> query = null)
+            Func<string, IHidReportChannel> query = null, Func<long> elapsedMs = null)
         {
+            _elapsedMs = elapsedMs ?? ticks ?? (static () => s_elapsed.ElapsedMilliseconds);
             _families = families ?? HidLightingFamilies.All;
             _open = open ?? HidReportChannel.Open;
             _query = query ?? HidReportChannel.OpenFeatureOnly;
@@ -621,7 +657,9 @@ namespace PadForge.Common.Input.Peripherals
                 // held in a color of ours.
                 t_served = null;
                 t_serving = null;
-                t_run = null;
+                // The hand-backs below read the run from here, with nothing else
+                // of the turn's state.
+                t_run = run;
                 foreach (var unit in units)
                 {
                     // A later run that claimed this collection may have it open
@@ -657,10 +695,13 @@ namespace PadForge.Common.Input.Peripherals
                     // (Release). What a model's own backup holds stays in the
                     // model's keeping for the next run.
                     if (frames == null || !reach) continue;
+                    bool sent = true;
                     foreach (var frame in frames)
                     {
-                        try { WriteOnce(target, frame, feature, own, OneShotMs); } catch { }
+                        try { sent &= WriteOnce(target, frame, feature, own, OneShotMs); }
+                        catch { sent = false; }
                     }
+                    if (sent) s_workers.HandedBack(unit.Path, run);
                 }
                 if (s_workers.Holds(run))
                 {
@@ -972,6 +1013,16 @@ namespace PadForge.Common.Input.Peripherals
         private void Serve(WorkerRun run, Unit unit, LinkTable links, long now, ref bool changed, ref bool failed,
             ref long due)
         {
+            // What a program stores on the device is its own lighting from here on,
+            // whether or not the device answers while the program has it, so nothing
+            // owed goes out once the program has stopped.
+            var path = PathOf(unit);
+            if (ProgramRuns(unit.Model.Programs) || PeripheralOutputs.TakenByOpenRgb(path))
+            {
+                s_workers.LeftToAProgram(unit.Path, run);
+                if (unit.OwedFrames != null) EndOwed(unit);
+            }
+
             if (unit.Container == Guid.Empty)
             {
                 if (now >= unit.ContainerRetryAt && LookUpContainer(unit, now)) changed = true;
@@ -1014,7 +1065,6 @@ namespace PadForge.Common.Input.Peripherals
                 return;
             }
 
-            var path = PathOf(unit);
             int rgb = 0;
             PeripheralOutputs.Claimant ruler = default;
             bool wanted = links.ByPath.ContainsKey(path) && PeripheralOutputs.TryResolveColor(path, out rgb, out ruler);
@@ -1060,6 +1110,21 @@ namespace PadForge.Common.Input.Peripherals
             if (ProgramRuns(unit.Model.Programs) || PeripheralOutputs.TakenByOpenRgb(path)) return;
             if (unit.Handle == null)
             {
+                // A worker running late left its picture on the device, so what it
+                // would hand back goes first, and the session reads the device's
+                // own lighting.
+                if (unit.OwedFrames == null && s_workers.TakeHandBack(unit.Path, run, out LateFrames late))
+                {
+                    unit.OwedFrames = late.Frames;
+                    unit.OwedFeature = late.Feature;
+                    unit.OwedPath = late.Path;
+                    RecordOwed(unit);
+                }
+                if (unit.OwedFrames != null && !PayOwed(unit))
+                {
+                    Fail(unit, "did not take back the colors a worker running late left", ref changed, ref failed, ref due);
+                    return;
+                }
                 if (!Open(unit, out bool refused))
                 {
                     if (refused) Refuse(unit, ref changed, ref due);
@@ -1072,6 +1137,9 @@ namespace PadForge.Common.Input.Peripherals
                     else Fail(unit, "did not open for read and write", ref changed, ref failed, ref due);
                     return;
                 }
+                // A session's Begin can read the device. A stop that came during
+                // it paints nothing, and the finally decides on the hand-back.
+                if (run.Stop) return;
                 s_workers.Claim(unit.Path, run);
                 if (unit.Refused)
                 {
@@ -1105,17 +1173,22 @@ namespace PadForge.Common.Input.Peripherals
             }
         }
 
-        /// <summary>The wait a session is handed. It sends the keep-alives
-        /// other units' models need while this session waits on its device, so
-        /// a session that waits between its reports, 2 s a picture on a Dell G
-        /// series, does not let a keyboard that drops the host's colors when the
-        /// host goes quiet fall back to its own lighting
-        /// (HyperXKeyboardLighting.KeepAliveMs is 50). A keep-alive that fails
-        /// here fails its own unit on that unit's turn.</summary>
+        /// <summary>The wait a session is handed. It serves the other units while
+        /// this session waits on its device, so a session that waits between its
+        /// reports, 2 s a picture on a Dell G series, holds nothing up: another
+        /// unit's new picture goes out as it would on that unit's turn, and a
+        /// keyboard that drops the host's colors when the host goes quiet does not
+        /// fall back to its own lighting (HyperXKeyboardLighting.KeepAliveMs is 50).
+        /// A picture goes out here only when its last one fit in what is left of
+        /// the wait, so the waiting session keeps its pace, and what the pass takes
+        /// comes off the wait. A session that waits inside that picture has the
+        /// keep-alives served beside it, and nothing further. A write that fails here
+        /// fails its own unit on that unit's turn.</summary>
         private void SessionWait(int ms)
         {
             var units = t_served;
-            if (units == null || t_inNestedKeepAlive)
+            int depth = t_besideDepth;
+            if (units == null || depth >= 2)
             {
                 _wait(ms);
                 return;
@@ -1124,13 +1197,17 @@ namespace PadForge.Common.Input.Peripherals
             while (left > 0)
             {
                 long next = long.MaxValue;
-                t_inNestedKeepAlive = true;
+                long passAt = _elapsedMs();
+                long lookAt = _ticks();
+                bool pictures = depth == 0 && t_run is { Stop: false } && lookAt - t_picturesBesideAt >= PicturesBesideMs;
+                if (pictures) t_picturesBesideAt = lookAt;
+                t_besideDepth = depth + 1;
                 try
                 {
                     foreach (var unit in units)
                     {
-                        if (ReferenceEquals(unit, t_serving) || unit.Asleep || unit.KeepAliveFailed
-                            || unit.Session == null || unit.Model.KeepAliveMs <= 0) continue;
+                        if (ReferenceEquals(unit, t_serving) || ReferenceEquals(unit, t_servedBeside) || unit.Asleep
+                            || unit.KeepAliveFailed || unit.Session == null) continue;
                         // A program of the model or OpenRGB took the device since
                         // this unit's turn. Nothing goes out, as on that turn
                         // (Serve), and the turn lets the unit go.
@@ -1138,17 +1215,58 @@ namespace PadForge.Common.Input.Peripherals
                         // A later run claimed the collection, and the keep-alive
                         // of a stopped worker is its old picture.
                         if (!s_workers.MayReach(unit.Path, t_run)) continue;
-                        if (!KeepAlive(unit, ref next)) unit.KeepAliveFailed = true;
+                        if (depth == 0) t_servedBeside = unit;
+                        try
+                        {
+                            bool fits = unit.PaintTookMs >= 0 && unit.PaintTookMs < left - MsSince(passAt);
+                            bool sent = pictures && fits && !OnOneDevice(unit, t_serving)
+                                ? PictureBeside(unit, ref next)
+                                : KeepAlive(unit, ref next);
+                            if (!sent) unit.KeepAliveFailed = true;
+                        }
+                        catch
+                        {
+                            unit.KeepAliveFailed = true;
+                        }
+                        finally
+                        {
+                            if (depth == 0) t_servedBeside = null;
+                        }
                     }
                 }
                 finally
                 {
-                    t_inNestedKeepAlive = false;
+                    t_besideDepth = depth;
                 }
+                left -= Math.Min(MsSince(passAt), left);
+                if (left <= 0) break;
                 int step = next == long.MaxValue ? left : (int)Math.Clamp(next - _ticks(), 1, left);
+                // A color that comes during a long wait goes out during it. A unit with
+                // nothing else to serve just waits.
+                if (depth == 0 && units.Count > 1) step = Math.Min(step, PicturesBesideMs);
+                // A short sleep can take twice what it asks, on a timer the system
+                // keeps coarse, and many of them must not stretch the wait.
+                long sleptAt = _elapsedMs();
                 _wait(step);
-                left -= step;
+                left -= Math.Max(step, MsSince(sleptAt));
             }
+        }
+
+        /// <summary>Two collections of one device: a session's reports may not
+        /// have another's between them.</summary>
+        private static bool OnOneDevice(Unit a, Unit b)
+            => a != null && b != null && a.Container != Guid.Empty && a.Container == b.Container;
+
+        /// <summary>What a unit's turn sends once it has a session: its picture or
+        /// its keep-alive. Everything else of a turn waits for that turn: a unit
+        /// nobody wants any more is let go there. False when a write failed.</summary>
+        private bool PictureBeside(Unit unit, ref long due)
+        {
+            var path = PathOf(unit);
+            if (!PeripheralOutputs.Links.ByPath.ContainsKey(path)
+                || !PeripheralOutputs.TryResolveColor(path, out int rgb, out var ruler))
+                return KeepAlive(unit, ref due);
+            return (ruler.Device == Guid.Empty || SizeStrips(unit, ruler.Strips)) && Paint(unit, rgb, ruler.Keys, ref due);
         }
 
         /// <summary>Whether an asleep unit can be opened for read and write
@@ -1272,7 +1390,7 @@ namespace PadForge.Common.Input.Peripherals
                 try { done = unit.Model.RepairOwn?.Invoke(own, _sessionWait) ?? true; } catch { }
                 try { own.Dispose(); } catch { }
                 if (done)
-                    PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} colors an earlier run left handed back");
+                    PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} colors an earlier run left are settled");
                 return done;
             }
             IHidReportChannel io = null;
@@ -1330,6 +1448,7 @@ namespace PadForge.Common.Input.Peripherals
             unit.LaterAt = 0;
             unit.CheckAt = _ticks() + unit.Model.RecheckMs;
             unit.KeptAt = _ticks();
+            unit.PaintTookMs = -1;
             unit.Sized = null;
             ReadSessionMap(unit);
             unit.SizeDue = (unit.SessionMap ?? unit.Model.Map).Strips.Count > 0;
@@ -1443,8 +1562,12 @@ namespace PadForge.Common.Input.Peripherals
 
             var session = unit.Session;
             HidLightingPaint result;
+            long paintAt = _elapsedMs();
             try { result = session.Paint(unit.Io, _sessionWait, map.Lights, colors); }
             catch { result = HidLightingPaint.Failed; }
+            // A picture that went out. A session's Later has sent nothing, however
+            // long the picture it holds back will take.
+            if (result == HidLightingPaint.Sent) unit.PaintTookMs = MsSince(paintAt);
             Track(unit);
             if (result == HidLightingPaint.Failed) return false;
             if (result == HidLightingPaint.Later)
@@ -1534,11 +1657,13 @@ namespace PadForge.Common.Input.Peripherals
                 // wrote stays owed in the model's keeping.
                 PadForge.Engine.SdlDiagLog.WriteLine(
                     $"PERIPHERAL HidLighting {unit.Label} left to {program.Name}, which started");
+                s_workers.HandedBack(unit.Path, t_run);
                 return true;
             }
             bool released = false;
             try { released = unit.Session.HandBack(unit.Io, _sessionWait); } catch { }
             Track(unit);
+            if (released) s_workers.HandedBack(unit.Path, t_run);
             if (released) PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} lighting handed back");
             return released;
         }
@@ -1626,9 +1751,15 @@ namespace PadForge.Common.Input.Peripherals
                 }
                 PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL HidLighting {unit.Label} owed hand-back sent");
             }
+            EndOwed(unit);
+            return true;
+        }
+
+        private void EndOwed(Unit unit)
+        {
             unit.OwedFrames = null;
             Unrecord(unit);
-            return true;
+            s_workers.HandedBack(unit.Path, t_run);
         }
 
         /// <summary>Closes the unit's channel and its siblings' and drops its
@@ -1664,7 +1795,15 @@ namespace PadForge.Common.Input.Peripherals
             var frames = unit.Session?.CrashFrames ?? Array.Empty<byte[]>();
             if (unit.Recorded ? ReferenceEquals(frames, unit.RecordedFrames) : frames.Length == 0) return;
             Unrecord(unit);
-            if (frames.Length == 0) return;
+            if (frames.Length == 0)
+            {
+                s_workers.HandedBack(unit.Path, t_run);
+                return;
+            }
+            // What Owe keeps: a model with a backup of its own settles that itself,
+            // and a channel of a family's own needs that family's write.
+            if (unit.Model.Owed == null && (unit.Own == null || unit.Model.WriteOnce != null))
+                s_workers.NoteHandBack(unit.Path, t_run, new LateFrames(frames, unit.Session.Feature, unit.Session.CrashPath));
             var current = Volatile.Read(ref _recorded);
             var next = new CrashRecord[current.Length + 1];
             current.CopyTo(next, 0);

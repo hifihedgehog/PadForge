@@ -48,9 +48,14 @@ namespace PadForge.Common.Input.Peripherals
         internal const string HardwarePrefix = @"USB\VID_1209&PID_2201";
 
         /// <summary>How long a session waits for the firmware's answer to a
-        /// command. No reference times one: Bazecor's timeout is a field
-        /// of its own (Focus.ts:209-211). The bound is PadForge's.</summary>
-        internal const int AnswerWaitMs = 500;
+        /// command, Bazecor's timeout (Focus.ts:47 and 209-211). The waits between
+        /// its reads serve the worker's other units.</summary>
+        internal const int AnswerWaitMs = 5000;
+
+        /// <summary>The same at a hand-back, and for any read of a worker that is
+        /// stopping: the stop waits 3 s for the whole worker, with no other unit served
+        /// beside it. The keyboard answers in far less, or is not answering.</summary>
+        internal const int HandBackAnswerWaitMs = 500;
 
         /// <summary>The shortest time between two pictures. A picture is a
         /// line of up to 1,594 bytes and no reference bounds the rate, so
@@ -204,15 +209,17 @@ namespace PadForge.Common.Input.Peripherals
         /// single period, as Bazecor reads it: lines end in "\r\n", and a
         /// line that is "." or ends in "." ends the answer, which is the
         /// lines before it, trimmed (Focus.ts:111-133). Null when the read
-        /// failed or no such line came within <see cref="AnswerWaitMs"/>. The
+        /// failed or no such line came within <paramref name="waitMs"/>, or
+        /// <see cref="HandBackAnswerWaitMs"/> once the worker is stopping. The
         /// wait counts each empty read's time on the port beside the waits
         /// between reads, and the clock cuts off a device that keeps sending
         /// and ends no line.</summary>
-        internal static string ReadAnswer(ISerialLineChannel port, Action<int> wait)
+        internal static string ReadAnswer(ISerialLineChannel port, Action<int> wait, int waitMs = AnswerWaitMs)
         {
             var text = new StringBuilder();
             var buffer = new byte[256];
-            long deadline = Environment.TickCount64 + AnswerWaitMs;
+            long startedAt = Environment.TickCount64;
+            int Limit() => HidLightingBackend.WorkerStopping ? Math.Min(waitMs, HandBackAnswerWaitMs) : waitMs;
             string result = null;
             for (int waited = 0; ; )
             {
@@ -238,11 +245,11 @@ namespace PadForge.Common.Input.Peripherals
                         answer.Append(line);
                     }
                     if (result != null) return result;
-                    if (Environment.TickCount64 >= deadline) return null;
+                    if (Environment.TickCount64 - startedAt >= Limit()) return null;
                     continue;
                 }
                 waited += OwnLightingChannels.SerialReadBoundMs(buffer.Length);
-                if (waited >= AnswerWaitMs || Environment.TickCount64 >= deadline) return null;
+                if (waited >= Limit() || Environment.TickCount64 - startedAt >= Limit()) return null;
                 wait(50);
                 waited += 50;
             }
@@ -297,7 +304,7 @@ namespace PadForge.Common.Input.Peripherals
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
             {
                 if (_crash.Length == 0) return true;
-                if (!_port.Write(ModeLine(_mode)) || ReadAnswer(_port, wait ?? _wait) == null) return false;
+                if (!_port.Write(ModeLine(_mode)) || ReadAnswer(_port, wait ?? _wait, HandBackAnswerWaitMs) == null) return false;
                 _crash = Array.Empty<byte[]>();
                 return true;
             }

@@ -164,7 +164,10 @@ namespace PadForge.Common.Input.Twitch
     /// <para>Twitch drops a JOIN for a channel that does not exist without a
     /// word, and answers one for a suspended channel with a NOTICE. Neither is
     /// a failed connection, so the session stays up, reads as
-    /// <see cref="TwitchChatState.NoChat"/>, and asks again each minute.</para>
+    /// <see cref="TwitchChatState.NoChat"/>, and asks again each minute. A channel
+    /// suspended after a good join is the same: the NOTICE or a PART of this
+    /// session (tmi.js ClientBase.js, the PART case) ends the join, and it asks
+    /// again until the channel is back.</para>
     ///
     /// <para>Twitch can send a message twice. Each carries an "id" tag, and a
     /// message whose id was seen among the last <see cref="RememberedIds"/>
@@ -355,6 +358,11 @@ namespace PadForge.Common.Input.Twitch
                         var outcome = Handle(IrcLine.Parse(raw), nick, out string reply);
                         if (reply != null) await socket.SendAsync(reply, ct).ConfigureAwait(false);
                         if (outcome == LineOutcome.Joined) _joined = true;
+                        if (outcome == LineOutcome.Left)
+                        {
+                            _joined = false;
+                            askAgainAt = Environment.TickCount64 + KeepAlivePeriodMs;
+                        }
                         if (outcome == LineOutcome.Reconnect) return true;
                     }
                 }
@@ -370,7 +378,7 @@ namespace PadForge.Common.Input.Twitch
             }
         }
 
-        internal enum LineOutcome { None, Joined, Reconnect, Message }
+        internal enum LineOutcome { None, Joined, Reconnect, Message, Left }
 
         /// <summary>Acts on one line. <paramref name="reply"/> is a line to
         /// send back, the PONG for a PING.</summary>
@@ -392,10 +400,14 @@ namespace PadForge.Common.Input.Twitch
                         return LineOutcome.Joined;
                     }
                     return LineOutcome.None;
+                case "PART":
+                    if (!string.Equals(line.Nick, nick, StringComparison.OrdinalIgnoreCase)) return LineOutcome.None;
+                    SetState(TwitchChatState.NoChat, string.Empty);
+                    return LineOutcome.Left;
                 case "NOTICE":
-                    if (s_noChatNotices.Contains(line.Tag("msg-id")))
-                        SetState(TwitchChatState.NoChat, string.Empty);
-                    return LineOutcome.None;
+                    if (!s_noChatNotices.Contains(line.Tag("msg-id"))) return LineOutcome.None;
+                    SetState(TwitchChatState.NoChat, string.Empty);
+                    return LineOutcome.Left;
                 case "PRIVMSG":
                     if (line.Trailing == null || !FirstTimeSeen(line.Tag("id"))) return LineOutcome.None;
                     // The login identifies the sender. A display name can be

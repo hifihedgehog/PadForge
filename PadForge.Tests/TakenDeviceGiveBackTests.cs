@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using PadForge.Common;
 using PadForge.Common.Input;
@@ -617,6 +619,51 @@ namespace PadForge.Tests
             Assert.Single(restarted);
         }
 
+        /// <summary>A run's try: a hide off with a restart that failed leaves the
+        /// restart owed, and the retry that finds no hide still pays it. A restart
+        /// that went through owes nothing more. A refused write tries again. A
+        /// control device that is not there answers apart from one that is
+        /// busy.</summary>
+        [Fact]
+        public void ARunsTry_RemembersTheRestartItOwes()
+        {
+            var driver = new Driver();
+            driver.List.AddRange(new[] { Id, @"HID\OTHER\1" });
+            HidHideController.ResetManagedForTests();
+            HidHideController.IoSeam = driver.Io;
+            var restarted = new List<string>();
+            bool works = false;
+            bool Restart(string node) { restarted.Add(node); return works; }
+            bool owed = false;
+
+            driver.RefuseSet = true;
+            Assert.Equal(GiveBackRun.Attempt.TryAgain, GiveBackRun.TakeHideOffNow(Id, ref owed, Restart));
+            Assert.False(owed);
+            Assert.Empty(restarted);
+
+            driver.RefuseSet = false;
+            Assert.Equal(GiveBackRun.Attempt.TryAgain, GiveBackRun.TakeHideOffNow(Id, ref owed, Restart));
+            Assert.True(owed);
+            Assert.Equal(new[] { @"HID\OTHER\1" }, driver.List);
+
+            works = true;
+            Assert.Equal(GiveBackRun.Attempt.Done, GiveBackRun.TakeHideOffNow(Id, ref owed, Restart));
+            Assert.False(owed);
+            Assert.Equal(new[] { Id, Id }, restarted);
+
+            // No hide and nothing owed: nothing restarts.
+            Assert.Equal(GiveBackRun.Attempt.Done, GiveBackRun.TakeHideOffNow(Id, ref owed, Restart));
+            Assert.Equal(2, restarted.Count);
+
+            HidHideController.IoSeam = null;
+            HidHideController.ControlOpenSeam = () => 2;
+            try { Assert.Equal(GiveBackRun.Attempt.NothingAnswers, GiveBackRun.TakeHideOffNow(Id, ref owed, Restart)); }
+            finally { HidHideController.ControlOpenSeam = null; }
+            HidHideController.ControlOpenSeam = () => 5;
+            try { Assert.Equal(GiveBackRun.Attempt.TryAgain, GiveBackRun.TakeHideOffNow(Id, ref owed, Restart)); }
+            finally { HidHideController.ControlOpenSeam = null; }
+        }
+
         /// <summary>No control device: no HidHide, so nothing is hidden. A
         /// control device another client holds is not an answer.</summary>
         [Fact]
@@ -821,8 +868,603 @@ namespace PadForge.Tests
 
         public void Dispose()
         {
+            // What a test registered holds a pipe of this process until its task
+            // is deleted.
+            GiveBackTask.RunSeam = _ => 0;
+            GiveBackTask.Delete(Bind);
+            GiveBackTask.Delete(Touchpad);
             GiveBackTask.RunSeam = null;
             GiveBackTask.FileExistsSeam = null;
+            GiveBackTask.ExePathSeam = null;
+        }
+
+        /// <summary>The action, whole: the wait, the question whether the task
+        /// stands, the run, and what stands behind the run. A PC with no CLI has
+        /// nothing behind it, and an exe that cannot be quoted has no run.</summary>
+        [Fact]
+        public void TheAction_WaitsOnThePipe_ThenRunsPadForge_ThenFallsBack()
+        {
+            const string exe = @"C:\PadForge\PadForge.exe";
+            string name = GiveBackTask.NameOf(Touchpad);
+            string pipe = @"\\.\pipe\" + name.Replace(' ', '_');
+            string wait = @"C:\Windows\System32\find.exe /v """" < """ + pipe + @""" >nul 2>&1 "
+                + @"& C:\Windows\System32\schtasks.exe /Query /TN """ + name + @""" >nul 2>&1 && ( ";
+            string run = @"""" + exe + @""" --give-back-touchpad """ + Touchpad + @""" """ + name + @"""";
+            Assert.Equal(wait + run + " || ( the fallback ) )",
+                GiveBackTask.Action(name, exe, GiveBackRun.TouchpadSwitch, Touchpad, "the fallback", System32));
+            Assert.Equal(wait + run + " )",
+                GiveBackTask.Action(name, exe, GiveBackRun.TouchpadSwitch, Touchpad, null, System32));
+            Assert.Equal(wait + "the fallback )",
+                GiveBackTask.Action(name, @"C:\50%\PadForge.exe", GiveBackRun.TouchpadSwitch, Touchpad, "the fallback", System32));
+            Assert.Equal(wait + "the fallback )",
+                GiveBackTask.Action(name, null, GiveBackRun.TouchpadSwitch, Touchpad, "the fallback", System32));
+        }
+
+        /// <summary>A registration trigger starts the wait at once, only when the
+        /// app holds the pipe for it, and the wait may last as long as the app.
+        /// With no pipe the wait would end at once, and the device would go back
+        /// under a running app.</summary>
+        [Fact]
+        public void TheDefinition_StartsTheWaitAtOnce_OnlyOnAPipeTheAppHolds()
+        {
+            System.Xml.Linq.XNamespace ns = "http://schemas.microsoft.com/windows/2004/02/mit/task";
+            foreach (bool held in new[] { true, false })
+            {
+                var task = System.Xml.Linq.XDocument.Parse(GiveBackTask.TaskXml("x", System32, held)).Root;
+                var triggers = task.Element(ns + "Triggers");
+                Assert.NotNull(triggers.Element(ns + "BootTrigger"));
+                Assert.Equal(held, triggers.Element(ns + "RegistrationTrigger") != null);
+                Assert.Equal("PT0S", task.Element(ns + "Settings").Element(ns + "ExecutionTimeLimit").Value);
+                // A registration starts its own wait whatever an earlier one is doing.
+                Assert.Equal("Parallel", task.Element(ns + "Settings").Element(ns + "MultipleInstancesPolicy").Value);
+                // A boot's instance has no wait to last, and an exe older than the
+                // task starts the whole app.
+                Assert.Equal("PT10M", triggers.Element(ns + "BootTrigger").Element(ns + "ExecutionTimeLimit").Value);
+                Assert.True(GiveBackRun.RunLimitMs < 10 * 60 * 1000);
+            }
+        }
+
+        /// <summary>The action as Windows would run it: from the definition, by a
+        /// real cmd.exe and a real find.exe on a real pipe. Only schtasks,
+        /// PadForge and the fallback are stand-ins, so no task, driver or hide is
+        /// touched. These run by the hundred on one machine, so they have
+        /// nothing to do with its devices.</summary>
+        private sealed class RealAction : IDisposable
+        {
+            private readonly string dir = Path.Combine(Path.GetTempPath(), "PadForgeTests", "action-" + Guid.NewGuid().ToString("N"));
+            private Process process;
+            public string Exe => Path.Combine(dir, "padforge stand-in.cmd");
+            public string Log => Path.Combine(dir, "log.txt");
+
+            public RealAction(int schtasksExit, int exeExit, bool exeThere = true)
+            {
+                Directory.CreateDirectory(dir);
+                File.WriteAllText(Schtasks, $"@echo schtasks %*>>\"{Log}\"\r\n@exit /b {schtasksExit}\r\n");
+                if (exeThere) File.WriteAllText(Exe, $"@echo exe %*>>\"{Log}\"\r\n@exit /b {exeExit}\r\n");
+            }
+
+            private string Schtasks => Path.Combine(dir, "schtasks stand-in.cmd");
+
+            public string[] Lines => File.Exists(Log) ? File.ReadAllLines(Log) : Array.Empty<string>();
+
+            /// <summary>The definition's action, with the stand-ins put in. Refuses
+            /// a line that could still reach the real programs.</summary>
+            public void Start(string definition)
+            {
+                System.Xml.Linq.XNamespace ns = "http://schemas.microsoft.com/windows/2004/02/mit/task";
+                var exec = System.Xml.Linq.XDocument.Parse(definition).Root.Element(ns + "Actions").Element(ns + "Exec");
+                string arguments = exec.Element(ns + "Arguments").Value
+                    .Replace(System32 + @"\schtasks.exe", "\"" + Schtasks + "\"", StringComparison.OrdinalIgnoreCase)
+                    .Replace(Environment.GetFolderPath(Environment.SpecialFolder.System) + @"\schtasks.exe", "\"" + Schtasks + "\"", StringComparison.OrdinalIgnoreCase);
+                Assert.DoesNotContain(@"schtasks.exe", arguments, StringComparison.OrdinalIgnoreCase);
+                Assert.DoesNotContain(@"pnputil.exe", arguments, StringComparison.OrdinalIgnoreCase);
+                process = Process.Start(new ProcessStartInfo
+                {
+                    FileName = exec.Element(ns + "Command").Value,
+                    Arguments = arguments,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                });
+            }
+
+            public bool Waiting(int ms) => !process.WaitForExit(ms);
+
+            public void Finished()
+            {
+                Assert.True(process.WaitForExit(60000), "The action did not end. It logged: " + string.Join(" | ", Lines));
+            }
+
+            public void Dispose()
+            {
+                try { if (process is { HasExited: false }) process.Kill(); } catch { }
+                process?.Dispose();
+                try { Directory.Delete(dir, recursive: true); } catch { }
+            }
+        }
+
+        /// <summary>Registers through the production path with no schtasks, and
+        /// returns the definition schtasks would read.</summary>
+        private static string RegisterForTheAction(Func<GiveBackTask.Outcome> register)
+        {
+            string definition = null;
+            GiveBackTask.RunSeam = args =>
+            {
+                int at = args.IndexOf("/XML \"", StringComparison.Ordinal);
+                if (at >= 0)
+                {
+                    at += 6;
+                    // Past the byte order mark the definition carries.
+                    definition = System.Text.Encoding.Unicode.GetString(File.ReadAllBytes(args[at..args.IndexOf('"', at)])[2..]);
+                }
+                return 0;
+            };
+            Assert.Equal(GiveBackTask.Outcome.Registered, register());
+            return definition;
+        }
+
+        /// <summary>The wait lasts as long as the app holds the pipe. The app's
+        /// delete ends it, and with the task gone nothing of PadForge starts: a
+        /// normal exit and a Keep cost one schtasks call.</summary>
+        [Fact]
+        public void TheAction_WaitsWhileThePipeIsHeld_AndAskedTaskGone_StartsNothing()
+        {
+            using var action = new RealAction(schtasksExit: 1, exeExit: 0);
+            GiveBackTask.ExePathSeam = () => action.Exe;
+            GiveBackTask.FileExistsSeam = _ => false;
+            action.Start(RegisterForTheAction(() => GiveBackTask.RegisterTouchpad(Touchpad, null)));
+
+            Assert.True(action.Waiting(1500), "The wait ended with the pipe held.");
+            Assert.Empty(action.Lines);
+
+            GiveBackTask.Delete(Touchpad);
+            action.Finished();
+            string query = "schtasks /Query /TN \"" + GiveBackTask.NameOf(Touchpad) + "\"";
+            Assert.Equal(query, Assert.Single(action.Lines));
+        }
+
+        /// <summary>A task that stands when the wait ends owes a device. PadForge
+        /// starts with the ID and the task's name.</summary>
+        [Fact]
+        public void TheAction_WithItsTaskStanding_RunsPadForge_AndNothingElse()
+        {
+            using var action = new RealAction(schtasksExit: 0, exeExit: 0);
+            GiveBackTask.ExePathSeam = () => action.Exe;
+            GiveBackTask.FileExistsSeam = _ => false;
+            string definition = RegisterForTheAction(() => GiveBackTask.RegisterTouchpad(Touchpad, null));
+            GiveBackTask.Delete(Touchpad);
+
+            action.Start(definition);
+            action.Finished();
+            string name = GiveBackTask.NameOf(Touchpad);
+            Assert.Equal(new[]
+            {
+                "schtasks /Query /TN \"" + name + "\"",
+                "exe --give-back-touchpad \"" + Touchpad + "\" \"" + name + "\"",
+            }, action.Lines);
+        }
+
+        /// <summary>A run that did not get through, and an exe that is gone, both
+        /// fall to what the task holds behind them, and a good run does not. The
+        /// real keyboard fallback's text runs here, nested in the action, against
+        /// a package in a test folder.</summary>
+        [Theory]
+        [InlineData(true, 1)]
+        [InlineData(false, 1)]
+        [InlineData(true, 0)]
+        public void TheAction_FallsBack_FromAFailedRunOrAMissingExe(bool exeThere, int exeExit)
+        {
+            using var action = new RealAction(schtasksExit: 0, exeExit, exeThere);
+            string name = GiveBackTask.NameOf(Bind);
+            string infs = Path.Combine(Path.GetDirectoryName(action.Log), "INF");
+            Directory.CreateDirectory(infs);
+            File.WriteAllText(Path.Combine(infs, "oem7.inf"), VendorUsbDriverInstaller.BuildInf(Bind, "Keyboard"));
+            File.WriteAllText(Path.Combine(infs, "oem8.inf"), VendorUsbDriverInstaller.BuildInf(Bind + "&MI_00", "Keyboard"));
+            string pnputil = Path.Combine(Path.GetDirectoryName(action.Log), "pnputil stand-in.cmd");
+            File.WriteAllText(pnputil, $"@echo pnputil %*>>\"{action.Log}\"\r\n@exit /b 0\r\n");
+            string fallback = GiveBackTask.KeyboardCommand(name, Bind, infs, System32)
+                .Replace(System32 + @"\pnputil.exe", "\"" + pnputil + "\"");
+            string command = GiveBackTask.Action(name, action.Exe, GiveBackRun.PackageSwitch, Bind, fallback, System32);
+
+            action.Start(GiveBackTask.TaskXml(command, System32, pipeHeld: false));
+            action.Finished();
+
+            string query = "schtasks /Query /TN \"" + name + "\"";
+            var expected = new List<string> { query };
+            if (exeThere) expected.Add("exe --give-back-package \"" + Bind + "\" \"" + name + "\"");
+            if (!exeThere || exeExit != 0)
+            {
+                expected.Add("pnputil /delete-driver \"oem7.inf\" /uninstall /force");
+                expected.Add("schtasks /Delete /TN \"" + name + "\" /F");
+            }
+            Assert.Equal(expected, action.Lines);
+        }
+
+        /// <summary>A PC with no CLI has nothing behind a failed run, and its task
+        /// stays for the next boot. A run's exit never deletes it.</summary>
+        [Fact]
+        public void TheAction_WithNothingBehindAFailedRun_LeavesItsTask()
+        {
+            using var action = new RealAction(schtasksExit: 0, exeExit: 1);
+            GiveBackTask.ExePathSeam = () => action.Exe;
+            GiveBackTask.FileExistsSeam = _ => false;
+            string definition = RegisterForTheAction(() => GiveBackTask.RegisterTouchpad(Touchpad, null));
+            GiveBackTask.Delete(Touchpad);
+
+            action.Start(definition);
+            action.Finished();
+            Assert.DoesNotContain(action.Lines, line => line.Contains("/Delete", StringComparison.Ordinal));
+            Assert.Contains(action.Lines, line => line.StartsWith("exe ", StringComparison.Ordinal));
+        }
+
+        /// <summary>A registration holds its pipe, then waits for a run giving the
+        /// device back, then registers. A run that takes its turn after the look sees
+        /// the pipe. The real turn is a pipe of one instance.</summary>
+        [Fact]
+        public async Task ARunAndARegistration_TakeTurns()
+        {
+            string name = GiveBackTask.NameOf(Touchpad);
+            using (var first = GiveBackRun.TakeTheTurn(name))
+            {
+                Assert.NotNull(first);
+                Assert.Null(GiveBackRun.TakeTheTurn(name));
+            }
+            using (var again = GiveBackRun.TakeTheTurn(name)) Assert.NotNull(again);
+
+            var turn = GiveBackRun.TakeTheTurn(name);
+            GiveBackTask.ExePathSeam = () => @"C:\PadForge\PadForge.exe";
+            GiveBackTask.FileExistsSeam = _ => false;
+            int created = 0;
+            GiveBackTask.RunSeam = _ => { Interlocked.Increment(ref created); return 0; };
+            using var looked = new ManualResetEventSlim(false);
+            using var finished = new ManualResetEventSlim(false);
+            GiveBackTask.RunFinishSeam = task =>
+            {
+                Assert.True(GiveBackTask.AnAppHolds(task), "the pipe stands ahead of the look");
+                Assert.Equal(0, Volatile.Read(ref created));
+                looked.Set();
+                Assert.True(finished.Wait(30000));
+            };
+            try
+            {
+                var registering = Task.Run(() => GiveBackTask.RegisterTouchpad(Touchpad, null));
+                Assert.True(looked.Wait(30000));
+                Assert.Equal(0, Volatile.Read(ref created));
+                turn.Dispose();
+                finished.Set();
+                Assert.Equal(GiveBackTask.Outcome.Registered, await registering);
+                Assert.Equal(1, Volatile.Read(ref created));
+            }
+            finally
+            {
+                GiveBackTask.RunFinishSeam = null;
+            }
+        }
+
+        /// <summary>The look at a run's pipe is bounded, and ends as soon as the run
+        /// does. It runs on the thread of a hide's cover.</summary>
+        [Fact]
+        public void ARegistration_WaitsForARunOnlySoLong()
+        {
+            string name = GiveBackTask.NameOf(Bind);
+            GiveBackTask.ExePathSeam = () => @"C:\PadForge\PadForge.exe";
+            GiveBackTask.RunSeam = _ => 0;
+            var clock = Stopwatch.StartNew();
+            Assert.True(GiveBackTask.RegisterKeyboard(Bind, null));
+            Assert.True(clock.ElapsedMilliseconds < GiveBackTask.RunFinishWaitMs, "nothing to wait for, " + clock.ElapsedMilliseconds);
+            GiveBackTask.Delete(Bind);
+
+            using var turn = GiveBackRun.TakeTheTurn(name);
+            clock.Restart();
+            Assert.True(GiveBackTask.RegisterKeyboard(Bind, null));
+            Assert.True(clock.ElapsedMilliseconds >= GiveBackTask.RunFinishWaitMs - 100, "waited " + clock.ElapsedMilliseconds);
+        }
+
+        /// <summary>Only schtasks saying no says a task is gone. One that did not
+        /// answer says nothing: a wait's pipe stays, and a run goes on with the
+        /// device it may owe.</summary>
+        [Fact]
+        public void ATaskStands_UnlessSchtasksSaysItDoesNot()
+        {
+            GiveBackTask.RunSeam = _ => 0;
+            Assert.True(GiveBackTask.Stands("T"));
+            GiveBackTask.RunSeam = _ => 1;
+            Assert.False(GiveBackTask.Stands("T"));
+            GiveBackTask.RunSeam = _ => -1;
+            Assert.True(GiveBackTask.Stands("T"));
+
+            string name = GiveBackTask.NameOf(Touchpad);
+            GiveBackTask.ExePathSeam = () => @"C:\PadForge\PadForge.exe";
+            GiveBackTask.FileExistsSeam = _ => false;
+            GiveBackTask.RunSeam = _ => 0;
+            Assert.Equal(GiveBackTask.Outcome.Registered, GiveBackTask.RegisterTouchpad(Touchpad, null));
+            GiveBackTask.RunSeam = _ => -1;
+            GiveBackTask.Delete(Touchpad);
+            Assert.True(GiveBackTask.AnAppHolds(name));
+        }
+
+        /// <summary>A task that could not be deleted still stands, so its wait
+        /// goes on until the app ends. A registration that failed takes back its
+        /// own pipe, and one that stood before it keeps its own.</summary>
+        [Fact]
+        public void APipe_LastsAsLongAsItsTask()
+        {
+            string name = GiveBackTask.NameOf(Touchpad);
+            GiveBackTask.ExePathSeam = () => @"C:\PadForge\PadForge.exe";
+            GiveBackTask.FileExistsSeam = _ => false;
+            Assert.False(GiveBackTask.AnAppHolds(name));
+
+            GiveBackTask.RunSeam = _ => 1;
+            Assert.Equal(GiveBackTask.Outcome.Failed, GiveBackTask.RegisterTouchpad(Touchpad, null));
+            Assert.False(GiveBackTask.AnAppHolds(name));
+
+            GiveBackTask.RunSeam = _ => 0;
+            Assert.Equal(GiveBackTask.Outcome.Registered, GiveBackTask.RegisterTouchpad(Touchpad, null));
+            Assert.True(GiveBackTask.AnAppHolds(name));
+
+            GiveBackTask.RunSeam = _ => 1;
+            Assert.Equal(GiveBackTask.Outcome.Failed, GiveBackTask.RegisterTouchpad(Touchpad, null));
+            Assert.True(GiveBackTask.AnAppHolds(name));
+
+            // schtasks cannot delete it and says it still stands.
+            GiveBackTask.RunSeam = args => args.StartsWith("/Query", StringComparison.Ordinal) ? 0 : 1;
+            GiveBackTask.Delete(Touchpad);
+            Assert.True(GiveBackTask.AnAppHolds(name));
+
+            // It could not delete a task that was not there.
+            GiveBackTask.RunSeam = _ => 1;
+            GiveBackTask.Delete(Touchpad);
+            Assert.False(GiveBackTask.AnAppHolds(name));
+        }
+
+        private sealed class RunLog
+        {
+            public readonly List<string> Steps = new();
+            public int HidesTried, NothingUntil = -1;
+            public GiveBackRun.Attempt Answer = GiveBackRun.Attempt.Done;
+            public bool Stands = true, First = true, AppHolds, Updating, Installed;
+
+            public GiveBackRun.Seams Seams() => new()
+            {
+                AppHolds = task => { Steps.Add("holds " + task); return AppHolds; },
+                TaskStands = task => { Steps.Add("stands " + task); return Stands; },
+                UpdateInProgress = () => { Steps.Add("update"); return Updating; },
+                TakeHideOff = id =>
+                {
+                    Steps.Add("hide " + id);
+                    return HidesTried++ < NothingUntil ? GiveBackRun.Attempt.NothingAnswers : Answer;
+                },
+                RemovePackages = id => { Steps.Add("package " + id); return Answer; },
+                DeleteTask = task => Steps.Add("delete " + task),
+                HidHideInstalled = () => Installed,
+                Wait = (ms, _) => Steps.Add("sleep " + ms),
+                OneAtATime = _ => First ? new MemoryStream() : null,
+            };
+        }
+
+        /// <summary>A run asks whether an app holds the device and whether its
+        /// task stands, gives the device back and deletes the task, in that
+        /// order.</summary>
+        [Theory]
+        [InlineData(GiveBackRun.TouchpadSwitch, "hide ")]
+        [InlineData(GiveBackRun.PackageSwitch, "package ")]
+        public void ARun_GivesBack_AndDeletesItsTask(string runSwitch, string step)
+        {
+            var log = new RunLog();
+            Assert.Equal(0, GiveBackRun.Run(new[] { runSwitch, "ID", "T" }, log.Seams()));
+            Assert.Equal(new[] { "holds T", "stands T", "update", step + "ID", "holds T", "delete T" }, log.Steps);
+        }
+
+        /// <summary>A Keep or a give-back deleted the task: nothing is owed, and
+        /// nothing falls back.</summary>
+        [Fact]
+        public void ARun_WhoseTaskIsGone_GivesNothingBack()
+        {
+            var log = new RunLog { Stands = false, Updating = true };
+            Assert.Equal(0, GiveBackRun.Run(new[] { GiveBackRun.PackageSwitch, "ID", "T" }, log.Seams()));
+            Assert.Equal(new[] { "holds T", "stands T" }, log.Steps);
+        }
+
+        /// <summary>An app started and took the device again before this run got
+        /// through. It holds the pipe, and its registration started a wait of its own
+        /// (TheDefinition: instances run in parallel), so this run takes nothing from
+        /// under it and nothing falls back.</summary>
+        [Fact]
+        public void ARun_LeavesADeviceAnAppTookAgain()
+        {
+            var log = new RunLog { AppHolds = true };
+            Assert.Equal(0, GiveBackRun.Run(new[] { GiveBackRun.TouchpadSwitch, "ID", "T" }, log.Seams()));
+            Assert.Equal(new[] { "holds T" }, log.Steps);
+
+            // Between tries too.
+            var later = new RunLog { Answer = GiveBackRun.Attempt.TryAgain };
+            var seams = later.Seams();
+            seams.Wait = (_, _) => later.AppHolds = true;
+            Assert.Equal(0, GiveBackRun.Run(new[] { GiveBackRun.TouchpadSwitch, "ID", "T" }, seams));
+            Assert.Equal(1, later.HidesTried);
+
+            // During the attempt: the task is that app's now, and stays.
+            var during = new RunLog();
+            var seamsDuring = during.Seams();
+            seamsDuring.TakeHideOff = _ =>
+            {
+                during.AppHolds = true;
+                return GiveBackRun.Attempt.Done;
+            };
+            Assert.Equal(0, GiveBackRun.Run(new[] { GiveBackRun.TouchpadSwitch, "ID", "T" }, seamsDuring));
+            Assert.DoesNotContain(during.Steps, s => s.StartsWith("delete", StringComparison.Ordinal));
+        }
+
+        /// <summary>An update's helper replaces this exe now, so a run holding it
+        /// leaves at once, and the tools behind it take the device back.</summary>
+        [Fact]
+        public void ARun_LeavesTheExeToAnUpdate_AndSaysSo()
+        {
+            var log = new RunLog { Updating = true };
+            Assert.Equal(1, GiveBackRun.Run(new[] { GiveBackRun.PackageSwitch, "ID", "T" }, log.Seams()));
+            Assert.Equal(new[] { "holds T", "stands T", "update" }, log.Steps);
+        }
+
+        /// <summary>A give-back that does not get through is tried for two
+        /// minutes, and its task stays for what falls back and the next boot.</summary>
+        [Fact]
+        public void ARun_ThatNeverGetsThrough_LeavesItsTask_AndSaysSo()
+        {
+            var log = new RunLog { Answer = GiveBackRun.Attempt.TryAgain };
+            Assert.Equal(1, GiveBackRun.Run(new[] { GiveBackRun.TouchpadSwitch, "ID", "T" }, log.Seams()));
+            Assert.Equal(GiveBackRun.Tries, log.HidesTried);
+            Assert.Equal(GiveBackRun.Tries - 1, log.Steps.Count(s => s.StartsWith("sleep", StringComparison.Ordinal)));
+            Assert.DoesNotContain(log.Steps, s => s.StartsWith("delete", StringComparison.Ordinal));
+            Assert.Equal(120, GiveBackRun.Tries * GiveBackRun.TryEveryMs / 1000);
+        }
+
+        /// <summary>HidHide's control device can still be coming at a boot, so its
+        /// absence ends a run only at the last try: a driver that is gone took its
+        /// hides with it.</summary>
+        [Fact]
+        public void ARun_TakesNoControlDevice_AsNoHide_AtTheLastTryAlone()
+        {
+            var log = new RunLog { NothingUntil = GiveBackRun.Tries, Answer = GiveBackRun.Attempt.NothingAnswers };
+            Assert.Equal(0, GiveBackRun.Run(new[] { GiveBackRun.TouchpadSwitch, "ID", "T" }, log.Seams()));
+            Assert.Equal(GiveBackRun.Tries, log.HidesTried);
+            Assert.Equal("delete T", log.Steps[^1]);
+
+            var soon = new RunLog { NothingUntil = 2 };
+            Assert.Equal(0, GiveBackRun.Run(new[] { GiveBackRun.TouchpadSwitch, "ID", "T" }, soon.Seams()));
+            Assert.Equal(3, soon.HidesTried);
+
+            // A driver still installed that never answered keeps its hides for when
+            // it does, so its task stays and what stands behind the run tries.
+            var installed = new RunLog { Installed = true, NothingUntil = GiveBackRun.Tries, Answer = GiveBackRun.Attempt.NothingAnswers };
+            Assert.Equal(1, GiveBackRun.Run(new[] { GiveBackRun.TouchpadSwitch, "ID", "T" }, installed.Seams()));
+            Assert.DoesNotContain(installed.Steps, s => s.StartsWith("delete", StringComparison.Ordinal));
+        }
+
+        /// <summary>What stands behind a run looks at nothing, so a run that ends with
+        /// an app holding the device says it is done. The look between tries ends the
+        /// wait as soon as an app holds it.</summary>
+        [Fact]
+        public void ARun_LeavesNothingToFallBackOn_ForADeviceAnAppTook()
+        {
+            var last = new RunLog { Answer = GiveBackRun.Attempt.TryAgain };
+            var seams = last.Seams();
+            int tries = 0;
+            seams.TakeHideOff = _ =>
+            {
+                if (++tries == GiveBackRun.Tries) last.AppHolds = true;
+                return GiveBackRun.Attempt.TryAgain;
+            };
+            Assert.Equal(0, GiveBackRun.Run(new[] { GiveBackRun.TouchpadSwitch, "ID", "T" }, seams));
+
+            var thrown = new RunLog();
+            var seamsThrown = thrown.Seams();
+            seamsThrown.TaskStands = _ =>
+            {
+                thrown.AppHolds = true;
+                throw new InvalidOperationException("no schtasks");
+            };
+            Assert.Equal(0, GiveBackRun.Run(new[] { GiveBackRun.TouchpadSwitch, "ID", "T" }, seamsThrown));
+
+            string name = GiveBackTask.NameOf(Touchpad);
+            GiveBackTask.ExePathSeam = () => @"C:\PadForge\PadForge.exe";
+            GiveBackTask.FileExistsSeam = _ => false;
+            GiveBackTask.RunSeam = _ => 0;
+            Assert.Equal(GiveBackTask.Outcome.Registered, GiveBackTask.RegisterTouchpad(Touchpad, null));
+            var clock = Stopwatch.StartNew();
+            GiveBackRun.WaitUnlessAnAppHolds(30000, name);
+            Assert.True(clock.ElapsedMilliseconds < 10000, "waited " + clock.ElapsedMilliseconds);
+        }
+
+        /// <summary>Two waits can end at one app's end. The second run leaves it to
+        /// the first.</summary>
+        [Fact]
+        public void ASecondRun_LeavesItToTheFirst()
+        {
+            var log = new RunLog { First = false };
+            Assert.Equal(0, GiveBackRun.Run(new[] { GiveBackRun.TouchpadSwitch, "ID", "T" }, log.Seams()));
+            Assert.Empty(log.Steps);
+        }
+
+        /// <summary>A run that dies falls to what stands behind it.</summary>
+        [Fact]
+        public void ARunThatThrows_FallsBack()
+        {
+            var seams = new RunLog().Seams();
+            seams.TaskStands = _ => throw new InvalidOperationException("no schtasks");
+            Assert.Equal(1, GiveBackRun.Run(new[] { GiveBackRun.TouchpadSwitch, "ID", "T" }, seams));
+        }
+
+        /// <summary>The test host gives nothing back with no seams.</summary>
+        [Fact]
+        public void TheTestHost_RunsNoGiveBack()
+        {
+            Assert.True(GiveBackTask.OffLimitsForTest);
+            Assert.Equal(1, GiveBackRun.Run(new[] { GiveBackRun.TouchpadSwitch, "ID", "T" }));
+        }
+
+        /// <summary>A command line is a run's only with a switch, an ID and a name,
+        /// and the process enters through the check for one. Nothing of WPF is
+        /// reached first: the app's entry sits in a method of its own.</summary>
+        [Fact]
+        public void TheProcess_EntersThroughTheCheckForARun()
+        {
+            Assert.True(GiveBackRun.IsRun(new[] { GiveBackRun.TouchpadSwitch, "ID", "T" }));
+            Assert.True(GiveBackRun.IsRun(new[] { GiveBackRun.PackageSwitch, "ID", "T" }));
+            Assert.False(GiveBackRun.IsRun(new[] { GiveBackRun.TouchpadSwitch, "ID" }));
+            Assert.False(GiveBackRun.IsRun(new[] { "--profile", "ID", "T" }));
+            Assert.False(GiveBackRun.IsRun(Array.Empty<string>()));
+            var entry = typeof(App).Assembly.EntryPoint;
+            Assert.Equal("Program", entry.DeclaringType.Name);
+            Assert.NotEmpty(entry.GetCustomAttributes(typeof(STAThreadAttribute), false));
+            Assert.DoesNotContain("new App()", FenceSource.Body(
+                AuditDelta20261002Tests.RepoText("PadForge.App", "Program.cs"), "public static void Main(string[] args)"));
+        }
+
+        /// <summary>What a run takes for a package: PadForge's catalog and the ID
+        /// ending its line. An interface's package is not its device's, and a
+        /// vendor's package is not PadForge's.</summary>
+        [Fact]
+        public void APackage_IsFoundByItsCatalogAndItsId()
+        {
+            string inf = VendorUsbDriverInstaller.BuildInf(Bind, "Keyboard");
+            Assert.True(VendorUsbDriverInstaller.IsPackageOf(inf, Bind));
+            Assert.True(VendorUsbDriverInstaller.IsPackageOf(inf, Bind.ToLowerInvariant()));
+            Assert.False(VendorUsbDriverInstaller.IsPackageOf(VendorUsbDriverInstaller.BuildInf(Bind + "&MI_00", "Keyboard"), Bind));
+            Assert.False(VendorUsbDriverInstaller.IsPackageOf(inf.Replace(VendorUsbDriverInstaller.CatalogName, "vendor.cat"), Bind));
+        }
+
+        /// <summary>A run is clear of a package only once none binds the ID. Under
+        /// the test host's fence nothing is removed, so a package of the ID stays
+        /// and answers as one that could not be removed. A file that cannot be read
+        /// is not clear either.</summary>
+        [Fact]
+        public void APackageRemoval_IsClearOnlyWithNoneLeft()
+        {
+            string dir = Path.Combine(Path.GetTempPath(), "PadForgeTests", "packages-" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(dir);
+            try
+            {
+                var log = new List<string>();
+                Assert.True(VendorUsbDriverInstaller.RemovePackagesBinding(Bind, log.Add, dir));
+
+                string other = Path.Combine(dir, "oem8.inf");
+                File.WriteAllText(other, VendorUsbDriverInstaller.BuildInf(Bind + "&MI_00", "Keyboard"));
+                Assert.True(VendorUsbDriverInstaller.RemovePackagesBinding(Bind, log.Add, dir));
+                Assert.Empty(log);
+
+                string ours = Path.Combine(dir, "oem7.inf");
+                File.WriteAllText(ours, VendorUsbDriverInstaller.BuildInf(Bind, "Keyboard"));
+                Assert.False(VendorUsbDriverInstaller.RemovePackagesBinding(Bind, log.Add, dir));
+                Assert.True(File.Exists(ours) && File.Exists(other));
+                Assert.Contains(log, line => line.StartsWith("oem7.inf binds", StringComparison.Ordinal));
+                File.Delete(ours);
+
+                using (new FileStream(other, FileMode.Open, FileAccess.Read, FileShare.None))
+                    Assert.False(VendorUsbDriverInstaller.RemovePackagesBinding(Bind, log.Add, dir));
+            }
+            finally
+            {
+                Directory.Delete(dir, recursive: true);
+            }
         }
 
         [Fact]
@@ -861,7 +1503,7 @@ namespace PadForge.Tests
         public void TheDefinition_RunsAtBootAsSystem_OnBatteryToo()
         {
             string command = GiveBackTask.TouchpadCommand("T", Touchpad, @"C:\HidHideCLI.exe", System32);
-            var xml = System.Xml.Linq.XDocument.Parse(GiveBackTask.TaskXml(command, System32));
+            var xml = System.Xml.Linq.XDocument.Parse(GiveBackTask.TaskXml(command, System32, pipeHeld: true));
             System.Xml.Linq.XNamespace ns = "http://schemas.microsoft.com/windows/2004/02/mit/task";
             var task = xml.Root;
             Assert.NotNull(task.Element(ns + "Triggers").Element(ns + "BootTrigger"));
@@ -931,6 +1573,7 @@ namespace PadForge.Tests
             string name = GiveBackTask.NameOf(Bind);
             Assert.Equal($"/Create /TN \"{name}\" /XML \"{path}\" /RU SYSTEM /F", Assert.Single(calls));
             Assert.Contains("USB_Install, USB\\\\VID_046D&amp;PID_C31C", read);
+            Assert.Contains("RegistrationTrigger", read);
             Assert.False(File.Exists(path));
 
             GiveBackTask.RunSeam = _ => 1;
@@ -942,11 +1585,21 @@ namespace PadForge.Tests
             Assert.Equal($"/Delete /TN \"{name}\" /F", Assert.Single(calls));
         }
 
+        /// <summary>A PC with no HidHide CLI, as a HidHide PadForge installed on
+        /// ARM64 has none, still has its task: the run talks to the driver itself.
+        /// Only an exe path that cannot be quoted leaves no way to make one.</summary>
         [Fact]
-        public void ATouchpadOnAPcWithNoCli_HasNoTaskToMake()
+        public void ATouchpadOnAPcWithNoCli_StillHasItsTask()
         {
-            GiveBackTask.RunSeam = _ => throw new InvalidOperationException("no CLI, no task");
+            int made = 0;
+            GiveBackTask.RunSeam = _ => { made++; return 0; };
             GiveBackTask.FileExistsSeam = _ => false;
+            GiveBackTask.ExePathSeam = () => @"C:\PadForge\PadForge.exe";
+            Assert.Equal(GiveBackTask.Outcome.Registered, GiveBackTask.RegisterTouchpad(Touchpad, null));
+            Assert.Equal(1, made);
+
+            GiveBackTask.RunSeam = _ => throw new InvalidOperationException("no CLI and no exe, no task");
+            GiveBackTask.ExePathSeam = () => @"C:\50%\PadForge.exe";
             Assert.Equal(GiveBackTask.Outcome.NoTool, GiveBackTask.RegisterTouchpad(Touchpad, null));
 
             GiveBackTask.FileExistsSeam = p => p.EndsWith(@"HidHide\HidHideCLI.exe", StringComparison.Ordinal);

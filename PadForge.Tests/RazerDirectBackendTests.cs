@@ -1087,7 +1087,13 @@ namespace PadForge.Tests
             bench.Passes();
             Assert.Equal(new[] { "set" }, mouse.Calls.Select(c => c.Kind));
 
-            // The switch goes off while the claim read is still owed.
+            // The switch goes off with the last of the claim's reads out.
+            for (int step = 0; step < 8 && mouse.Calls.Count(c => c.Kind == "set") < 3; step++)
+            {
+                bench.Advance(60);
+                bench.Passes();
+            }
+            Assert.Equal(3, mouse.Calls.Count(c => c.Kind == "set"));
             PeripheralOutputs.ReleaseLighting(mouse.Row, 0);
             for (int step = 0; step < 8 && mouse.Open; step++)
             {
@@ -1100,6 +1106,31 @@ namespace PadForge.Tests
             Assert.All(bench.Records.Values, record => Assert.Empty(record));
             Assert.Empty(bench.Backend.Claimed);
             Assert.False(bench.Unit(mouse).Asleep);
+            bench.Verify();
+        }
+
+        /// <summary>A claim nobody wants by the time it would read the device's own
+        /// lighting reads none of it.</summary>
+        [Fact]
+        public void AClaimNobodyWantsAheadOfItsLastReads_AsksNothingMore()
+        {
+            using var bench = new Bench(reassertMs: int.MaxValue);
+            var mouse = bench.Add(0x007A);
+            bench.StartAndWalk();
+            bench.Link(mouse);
+            bench.Light(mouse, Red);
+            bench.Passes();
+            Assert.Equal(new[] { "set" }, mouse.Calls.Select(c => c.Kind));
+
+            PeripheralOutputs.ReleaseLighting(mouse.Row, 0);
+            for (int step = 0; step < 8 && mouse.Open; step++)
+            {
+                bench.Advance(60);
+                bench.Passes();
+            }
+            Assert.False(mouse.Open);
+            Assert.Equal(Lines(P.ExtendedBrightnessRead(0x3F, 0x04), P.RegionListRead(0x3F)), mouse.Sent());
+            Assert.Empty(bench.Backend.Claimed);
             bench.Verify();
         }
 
@@ -2312,6 +2343,439 @@ namespace PadForge.Tests
             Assert.Equal(mark, bench.Mark);
             bench.Backend.Stop();
             Assert.Empty(bench.OneShots);
+        }
+
+        /// <summary>One device hung keeps the worker past the next run's wait, and the
+        /// other shows that worker's picture. The next run reads none of that device's
+        /// own lighting, and hands back what that worker read.</summary>
+        [Fact]
+        public void AWorkerThatOutlivedItsRun_LeavesWhatItReadToTheNextRun()
+        {
+            using var bench = new Bench(reassertMs: int.MaxValue, predecessorJoinMs: 100, stopJoinMs: 50);
+            var mouse = bench.Add(DeathAdderV2);
+            var keyboard = bench.Add(BlackWidowChroma);
+            using var gate = new ManualResetEventSlim(false);
+            try
+            {
+                bench.StartAndWalk();
+                bench.Light(mouse, Red);
+                bench.Light(keyboard, Red);
+                bench.Link(mouse, keyboard);
+                bench.Passes();
+                var read = Lines(bench.Backend.Claimed.First(entry => entry.Path == mouse.Key).HandBack);
+                Assert.NotEmpty(read);
+                var first = Assert.Single(bench.Workers);
+
+                int held = 0;
+                keyboard.Answer = request =>
+                {
+                    if (Interlocked.Exchange(ref held, 1) == 0) gate.Wait(30000);
+                    return Answers(request);
+                };
+                bench.Advance(RazerDirectBackend.PaintMs);
+                bench.Light(keyboard, Blue);
+                Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref held) == 1, 30000), "the first worker is held");
+                bench.Backend.Dispose();
+
+                long mark = bench.Mark;
+                bench.Backend = bench.Make(reassertMs: int.MaxValue, predecessorJoinMs: 100, stopJoinMs: 50);
+                bench.Backend.Start();
+                bench.Walk();
+                Assert.True(SpinWait.SpinUntil(
+                    () => bench.Backend.Claimed.Any(entry => entry.Path == mouse.Key), 30000), "the next run claimed the mouse");
+                Assert.Empty(mouse.Sent(mark, r => Is(r, 0x0F, 0x82)));
+                Assert.Equal(read, Lines(bench.Backend.Claimed.First(entry => entry.Path == mouse.Key).HandBack));
+            }
+            finally
+            {
+                gate.Set();
+            }
+        }
+
+        /// <summary>A claim that ends before it takes a late worker's hand-back leaves it
+        /// for the next claim: a row unlinked during the claim's first reads and linked again
+        /// has the next run read none of what that worker left on the device.</summary>
+        [Fact]
+        public void AClaimThatEndsEarly_LeavesWhatALateWorkerReadForTheNext()
+        {
+            using var bench = new Bench(reassertMs: int.MaxValue, predecessorJoinMs: 100, stopJoinMs: 50);
+            // A Viper Ultimate, whose claim is spread over several passes.
+            var mouse = bench.Add(0x007A);
+            var keyboard = bench.Add(BlackWidowChroma);
+            using var gate = new ManualResetEventSlim(false);
+            try
+            {
+                bench.StartAndWalk();
+                bench.Light(mouse, Red);
+                bench.Light(keyboard, Red);
+                bench.Link(mouse, keyboard);
+                bool Painted(long after)
+                {
+                    bench.Advance(60);
+                    bench.Passes();
+                    return mouse.Sent(after, r => Is(r, 0x0F, 0x02)).Length > 0;
+                }
+                Assert.True(SpinWait.SpinUntil(() => Painted(0), 30000), "the first run painted the mouse");
+                var read = Lines(bench.Backend.Claimed.First(entry => entry.Path == mouse.Key).HandBack);
+                Assert.NotEmpty(read);
+
+                int held = 0;
+                keyboard.Answer = request =>
+                {
+                    if (Interlocked.Exchange(ref held, 1) == 0) gate.Wait(30000);
+                    return Answers(request);
+                };
+                bench.Advance(RazerDirectBackend.PaintMs);
+                bench.Light(keyboard, Blue);
+                Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref held) == 1, 30000), "the first worker is held");
+                bench.Backend.Dispose();
+
+                // The switch goes off with the next run's claim under way.
+                long mark = bench.Mark;
+                bench.Backend = bench.Make(reassertMs: int.MaxValue, predecessorJoinMs: 100, stopJoinMs: 50);
+                bench.Backend.Start();
+                bench.Walk();
+                Assert.True(SpinWait.SpinUntil(() => mouse.Sent(mark).Length > 0, 30000), "the next run began its claim");
+                PeripheralOutputs.ReleaseLighting(mouse.Row, 0);
+                for (int step = 0; step < 8; step++)
+                {
+                    bench.Advance(60);
+                    bench.Passes();
+                }
+                Assert.Empty(mouse.Sent(mark, r => Is(r, 0x0F, 0x02)));
+
+                bench.Light(mouse, Red);
+                Assert.True(SpinWait.SpinUntil(() => Painted(mark), 30000), "the next run painted the mouse");
+                Assert.Empty(mouse.Sent(mark, r => Is(r, 0x0F, 0x82)));
+                Assert.Equal(read, Lines(bench.Backend.Claimed.First(entry => entry.Path == mouse.Key).HandBack));
+            }
+            finally
+            {
+                gate.Set();
+            }
+        }
+
+        private static PeripheralPresence SynapseRuns()
+            => new(false, false, true, false, false) { RazerSoftwareRunning = true };
+
+        /// <summary>A Razer program takes the device from a unit at rest. What the run
+        /// read is old from here on, and no later run takes it.</summary>
+        [Fact]
+        public void ARazerProgramThatTakesAUnitAtRest_EndsWhatTheRunRead()
+        {
+            using var bench = new Bench(reassertMs: int.MaxValue);
+            var mouse = bench.Add(DeathAdderV2);
+            bench.StartAndWalk();
+            bench.Link(mouse);
+            bench.Light(mouse, Red);
+            bench.Passes();
+            Assert.True(RazerDirectBackend.HandBackHeldForTest(mouse.Key));
+
+            PeripheralOutputs.Presence = SynapseRuns();
+            bench.Passes();
+            Assert.False(mouse.Open);
+            Assert.False(RazerDirectBackend.HandBackHeldForTest(mouse.Key));
+        }
+
+        /// <summary>The same for a unit that stopped answering before a write of the
+        /// claim went through, with nothing owed.</summary>
+        [Fact]
+        public void ARazerProgramThatFindsAUnitAsleep_EndsWhatTheRunRead()
+        {
+            using var bench = new Bench(reassertMs: int.MaxValue);
+            var mouse = bench.Add(DeathAdderV2);
+            mouse.Answer = request => Is(request, 0x0F, 0x02) ? Silence(request) : Answers(request);
+            bench.StartAndWalk();
+            bench.Link(mouse);
+            bench.Light(mouse, Red);
+            Assert.True(SpinWait.SpinUntil(() => bench.Unit(mouse)?.Asleep == true, 30000), "the mouse stopped answering");
+            Assert.True(RazerDirectBackend.HandBackHeldForTest(mouse.Key));
+
+            PeripheralOutputs.Presence = SynapseRuns();
+            bench.Passes();
+            Assert.False(RazerDirectBackend.HandBackHeldForTest(mouse.Key));
+        }
+
+        /// <summary>A worker a stop gave up on, its mouse's own lighting in its books, and
+        /// a Razer program that has the mouse when the next run starts. What the program
+        /// stores is the mouse's own lighting from then on, so the next run reads it once
+        /// the program has stopped.</summary>
+        [Fact]
+        public void ARazerProgramBetweenTwoRuns_HasTheNextRunReadTheDevice()
+        {
+            using var bench = new Bench(reassertMs: int.MaxValue, predecessorJoinMs: 100, stopJoinMs: 50);
+            var mouse = bench.Add(DeathAdderV2);
+            var keyboard = bench.Add(BlackWidowChroma);
+            using var gate = new ManualResetEventSlim(false);
+            try
+            {
+                HoldTheFirstWorkerOnTheKeyboard(bench, mouse, keyboard, gate);
+                long mark = bench.Mark;
+                PeripheralOutputs.Presence = SynapseRuns();
+                bench.Backend = bench.Make(reassertMs: int.MaxValue, predecessorJoinMs: 100, stopJoinMs: 50);
+                bench.Backend.Start();
+                bench.Walk();
+                bench.Passes();
+                Assert.False(RazerDirectBackend.HandBackHeldForTest(mouse.Key));
+
+                PeripheralOutputs.Presence = PeripheralPresence.None;
+                Assert.True(SpinWait.SpinUntil(() => mouse.Sent(mark, r => Is(r, 0x0F, 0x82)).Length > 0, 30000),
+                    "the next run read the mouse");
+            }
+            finally
+            {
+                gate.Set();
+            }
+        }
+
+        /// <summary>The same worker coming back once that program has stopped, with no
+        /// row asking for the mouse, sends it nothing: its hand-back is older than what
+        /// the program stored.</summary>
+        [Fact]
+        public void AWorkerThatComesBackAfterARazerProgram_SendsNothing()
+        {
+            using var bench = new Bench(reassertMs: int.MaxValue, predecessorJoinMs: 100, stopJoinMs: 50);
+            var mouse = bench.Add(DeathAdderV2);
+            var keyboard = bench.Add(BlackWidowChroma);
+            using var gate = new ManualResetEventSlim(false);
+            try
+            {
+                HoldTheFirstWorkerOnTheKeyboard(bench, mouse, keyboard, gate);
+                var first = Assert.Single(bench.Workers);
+                PeripheralOutputs.Presence = SynapseRuns();
+                bench.Backend = bench.Make(reassertMs: int.MaxValue, predecessorJoinMs: 100, stopJoinMs: 50);
+                bench.Backend.Start();
+                bench.Walk();
+                bench.Passes();
+
+                PeripheralOutputs.ReleaseLighting(mouse.Row, 0);
+                PeripheralOutputs.Presence = PeripheralPresence.None;
+                bench.Passes();
+                long mark = bench.Mark;
+                gate.Set();
+                Assert.True(first.Join(30000), "the first worker ended");
+                Assert.Empty(mouse.Sent(mark));
+            }
+            finally
+            {
+                gate.Set();
+            }
+        }
+
+        private static void HoldTheFirstWorkerOnTheKeyboard(Bench bench, FakeRazer mouse, FakeRazer keyboard, ManualResetEventSlim gate)
+        {
+            bench.StartAndWalk();
+            bench.Light(mouse, Red);
+            bench.Light(keyboard, Red);
+            bench.Link(mouse, keyboard);
+            bench.Passes();
+            Assert.True(RazerDirectBackend.HandBackHeldForTest(mouse.Key));
+
+            int held = 0;
+            keyboard.Answer = request =>
+            {
+                if (Interlocked.Exchange(ref held, 1) == 0) gate.Wait(30000);
+                return Answers(request);
+            };
+            bench.Advance(RazerDirectBackend.PaintMs);
+            bench.Light(keyboard, Blue);
+            Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref held) == 1, 30000), "the first worker is held");
+            bench.Backend.Dispose();
+        }
+
+        /// <summary>A collection that leaves the walk takes what the run read of it along.</summary>
+        [Fact]
+        public void AUnitWhoseCollectionLeaves_EndsWhatTheRunRead()
+        {
+            using var bench = new Bench(reassertMs: int.MaxValue);
+            var mouse = bench.Add(DeathAdderV2);
+            bench.StartAndWalk();
+            bench.Link(mouse);
+            bench.Light(mouse, Red);
+            bench.Passes();
+            Assert.True(RazerDirectBackend.HandBackHeldForTest(mouse.Key));
+
+            mouse.Present = false;
+            bench.Walk();
+            bench.Passes();
+            Assert.False(RazerDirectBackend.HandBackHeldForTest(mouse.Key));
+        }
+
+        /// <summary>The same for a mouse its dock no longer lists.</summary>
+        [Fact]
+        public void APairedMouseItsDockNoLongerLists_EndsWhatTheRunRead()
+        {
+            PeripheralLightMaps.ResetForTest();
+            try
+            {
+                using var bench = new Bench(reassertMs: int.MaxValue);
+                var dock = bench.Add(MouseDockPro);
+                var listed = new byte[] { 2, 0x01, 0x00, 0xAB, 0x01, 0x00, 0xA4 };
+                dock.Answer = request => Is(request, 0x00, 0xBF) ? Reply(request, P.StatusSuccess, listed) : Answers(request);
+                bench.StartAndWalk();
+                bench.Link(dock);
+                bench.Light(dock, Red);
+                bench.Passes();
+                bench.Passes();
+
+                string pairedKey = RazerDirectBackend.PairedKey(dock.Key, BasiliskV3ProWireless);
+                var mouseRow = Guid.NewGuid();
+                PeripheralOutputs.PublishLinks(new LinkTable(new[]
+                {
+                    new DeviceLinks { Device = dock.Row, Lighting = new[] { dock.Path }, HasVendorProgram = true },
+                    new DeviceLinks { Device = mouseRow, Lighting = new[] { new OutputPath(OutputFamily.RazerUnit, pairedKey) }, HasVendorProgram = true },
+                }));
+                PeripheralOutputs.SetLighting(mouseRow, slot: 1, player: 2, 0x11, 0x22, 0x33);
+                Assert.True(SpinWait.SpinUntil(() =>
+                {
+                    bench.Advance(2);
+                    bench.Passes(1);
+                    return RazerDirectBackend.HandBackHeldForTest(pairedKey);
+                }, 30000), "the run read the mouse");
+
+                // Unpaired: the dock's next claim's list names nobody.
+                listed = new byte[] { 1, 0x00, 0xFF, 0xFF };
+                PeripheralOutputs.ReleaseLighting(dock.Row, 0);
+                bench.Passes();
+                bench.Light(dock, Red);
+                Assert.True(SpinWait.SpinUntil(() =>
+                {
+                    bench.Advance(2);
+                    bench.Passes(1);
+                    return bench.Backend.Snapshot.Units.Count == 1;
+                }, 30000), "the dock's list dropped the mouse");
+                Assert.Equal(new[] { dock.Key }, bench.Backend.Snapshot.Units.Select(u => u.Key));
+                Assert.False(RazerDirectBackend.HandBackHeldForTest(pairedKey));
+            }
+            finally
+            {
+                PeripheralLightMaps.ResetForTest();
+            }
+        }
+
+        /// <summary>A Razer program that starts in the middle of a paint ends what the run
+        /// read, as at rest.</summary>
+        [Fact]
+        public void ARazerProgramThatStartsInAPaint_EndsWhatTheRunRead()
+        {
+            using var bench = new Bench(reassertMs: int.MaxValue);
+            var mouse = bench.Add(DeathAdderV2);
+            bench.StartAndWalk();
+            bench.Link(mouse);
+            bench.Light(mouse, Red);
+            bench.Passes();
+            Assert.True(RazerDirectBackend.HandBackHeldForTest(mouse.Key));
+
+            mouse.Answer = request =>
+            {
+                if (Is(request, 0x0F, 0x02)) PeripheralOutputs.Presence = SynapseRuns();
+                return Answers(request);
+            };
+            bench.Advance(RazerDirectBackend.PaintMs);
+            bench.Light(mouse, Blue);
+            bench.Passes();
+            Assert.False(mouse.Open);
+            Assert.False(RazerDirectBackend.HandBackHeldForTest(mouse.Key));
+        }
+
+        /// <summary>The same on a worker that comes out of a hung read into its stop, with
+        /// a program on the device by then. Nothing goes out to it, and nothing it read
+        /// stays for the next run.</summary>
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void AStopWithAUnitLeftToAProgram_EndsWhatTheRunRead(bool razerProgram)
+        {
+            using var bench = new Bench(reassertMs: int.MaxValue, predecessorJoinMs: 100, stopJoinMs: 50);
+            var mouse = bench.Add(DeathAdderV2);
+            var keyboard = bench.Add(BlackWidowChroma);
+            using var gate = new ManualResetEventSlim(false);
+            try
+            {
+                bench.StartAndWalk();
+                bench.Light(mouse, Red);
+                bench.Light(keyboard, Red);
+                bench.Link(mouse, keyboard);
+                bench.Passes();
+                Assert.True(RazerDirectBackend.HandBackHeldForTest(mouse.Key));
+
+                int held = 0;
+                keyboard.Answer = request =>
+                {
+                    if (Interlocked.Exchange(ref held, 1) == 0) gate.Wait(30000);
+                    return Answers(request);
+                };
+                bench.Advance(RazerDirectBackend.PaintMs);
+                bench.Light(keyboard, Blue);
+                Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref held) == 1, 30000), "the worker is held");
+                bench.Backend.Dispose();
+
+                long mark = bench.Mark;
+                if (razerProgram) PeripheralOutputs.Presence = SynapseRuns();
+                else
+                    PeripheralOutputs.PublishLinks(new LinkTable(new[]
+                    {
+                        new DeviceLinks
+                        {
+                            Device = mouse.Row,
+                            Lighting = new[] { new OutputPath(OutputFamily.OpenRgbDevice, "openrgb") },
+                            TakenByOpenRgb = new[] { mouse.Path },
+                        },
+                    }));
+                gate.Set();
+                Assert.True(Assert.Single(bench.Workers).Join(30000), "the worker ended");
+                Assert.Empty(mouse.Sent(mark));
+                Assert.False(RazerDirectBackend.HandBackHeldForTest(mouse.Key));
+            }
+            finally
+            {
+                gate.Set();
+            }
+        }
+
+        /// <summary>The run that took a late worker's hand-back owes it from that moment,
+        /// though no write of its own went through: that worker has no more say on the
+        /// device, and the device shows its picture.</summary>
+        [Fact]
+        public void TheRunThatTookALateHandBack_OwesItWithNoWriteOfItsOwn()
+        {
+            using var bench = new Bench(reassertMs: int.MaxValue, predecessorJoinMs: 100, stopJoinMs: 50);
+            var mouse = bench.Add(DeathAdderV2);
+            var keyboard = bench.Add(BlackWidowChroma);
+            using var gate = new ManualResetEventSlim(false);
+            try
+            {
+                bench.StartAndWalk();
+                bench.Light(mouse, Red);
+                bench.Light(keyboard, Red);
+                bench.Link(mouse, keyboard);
+                bench.Passes();
+                var read = Lines(bench.Backend.Claimed.First(entry => entry.Path == mouse.Key).HandBack);
+
+                int held = 0;
+                keyboard.Answer = request =>
+                {
+                    if (Interlocked.Exchange(ref held, 1) == 0) gate.Wait(30000);
+                    return Answers(request);
+                };
+                bench.Advance(RazerDirectBackend.PaintMs);
+                bench.Light(keyboard, Blue);
+                Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref held) == 1, 30000), "the first worker is held");
+                bench.Backend.Dispose();
+
+                // Its paints go unanswered, in the next run.
+                mouse.Answer = request => Is(request, 0x0F, 0x02) ? Silence(request) : Answers(request);
+                bench.Backend = bench.Make(reassertMs: int.MaxValue, predecessorJoinMs: 100, stopJoinMs: 50);
+                bench.Backend.Start();
+                bench.Walk();
+                Assert.True(SpinWait.SpinUntil(() => bench.Unit(mouse)?.Asleep == true, 30000), "the mouse stopped answering the next run");
+                var owed = bench.Backend.Claimed.First(entry => entry.Path == mouse.Key);
+                Assert.Equal(read, Lines(owed.HandBack));
+            }
+            finally
+            {
+                gate.Set();
+            }
         }
 
         /// <summary>A worker that outlived its run pays nothing it is owed

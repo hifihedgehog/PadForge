@@ -172,6 +172,9 @@ namespace PadForge.Tests
         /// <summary>The version the last client asked for.</summary>
         public uint ClientVersion;
 
+        /// <summary>Runs as a request for a controller's data comes in.</summary>
+        public volatile Action ControllerDataAsked;
+
         public FakeOpenRgbLink Link()
         {
             lock (_gate) Connections++;
@@ -245,6 +248,7 @@ namespace PadForge.Tests
                         _replies.Enqueue(new OpenRgbPacket(0, id, BitConverter.GetBytes((uint)_server.Controllers.Count)));
                         break;
                     case OpenRgbProtocol.RequestControllerData:
+                        _server.ControllerDataAsked?.Invoke();
                         uint asked = data.Length == 4 ? BitConverter.ToUInt32(data, 0) : 0;
                         if (device < _server.Controllers.Count)
                             _replies.Enqueue(new OpenRgbPacket(device, id,

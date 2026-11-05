@@ -126,6 +126,19 @@ namespace PadForge.Tests
             Assert.True(port.ElapsedMs <= DygmaRaiseLighting.AnswerWaitMs + 100, $"{port.ElapsedMs} ms");
         }
 
+        /// <summary>A hand-back is on the stop's clock, with nothing served beside it.</summary>
+        [Fact]
+        public void ASilentDygma_HoldsAHandBackForLessThanTheStopWaits()
+        {
+            var port = new SilentTimedPort();
+            var session = new DygmaRaiseLighting.Session(port, ms => port.ElapsedMs += ms, 3);
+            session.Paint(null, null, Array.Empty<LightInfo>(), Array.Empty<int>());
+            port.ElapsedMs = 0;
+            Assert.False(session.HandBack(null, null));
+            Assert.True(port.ElapsedMs <= DygmaRaiseLighting.HandBackAnswerWaitMs + 100, $"{port.ElapsedMs} ms");
+        }
+
+
         [Fact]
         public async Task ADygmaAnswerThatNeverEnds_GivesUpAtItsWait()
         {

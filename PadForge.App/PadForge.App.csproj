@@ -33,6 +33,7 @@
     <Description>PadForge — Modern controller mapping application.</Description>
     <ApplicationIcon>Resources\PadForge.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <StartupObject>PadForge.Program</StartupObject>
   </PropertyGroup>
 
   <!-- Single-file portable publish: dotnet publish -c Release

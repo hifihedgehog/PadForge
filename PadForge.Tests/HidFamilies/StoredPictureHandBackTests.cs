@@ -497,17 +497,6 @@ namespace PadForge.Tests
             Assert.Equal(0, Held());
         }
 
-        /// <summary>The Omen's table holds colors and nothing else, so no read
-        /// tells PadForge's from ones the Hub stored, and with no claim behind
-        /// it a write could undo the user's own.</summary>
-        [Fact]
-        public void TheOmenKeyboard_HasNoRepairWithNoClaim()
-        {
-            var model = Omen(new FakeHpBios()).Model;
-            Assert.Null(model.Owed);
-            Assert.Null(model.RepairOwn);
-        }
-
         // ── HP Omen ──
 
         private const string OmenKey = "hp:omen-4zone";

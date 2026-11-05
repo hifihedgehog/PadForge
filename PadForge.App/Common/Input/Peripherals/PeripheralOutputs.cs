@@ -87,6 +87,14 @@ namespace PadForge.Common.Input.Peripherals
     internal class WorkerRun
     {
         public volatile bool Stop;
+
+        /// <summary>The worker's thread, from its wait on
+        /// (<see cref="WorkerSuccession.Enter"/>).</summary>
+        internal Thread Worker;
+
+        /// <summary>Which run of the family this is, from
+        /// <see cref="WorkerSuccession.Enter"/>.</summary>
+        internal long Order;
     }
 
     /// <summary>One family's workers over the engine's restarts. Each engine
@@ -102,17 +110,74 @@ namespace PadForge.Common.Input.Peripherals
     internal sealed class WorkerSuccession
     {
         private Thread _last;
+        private long _entered;
         private volatile WorkerRun _holder;
         private readonly ConcurrentDictionary<string, WorkerRun> _claimedBy = new(StringComparer.OrdinalIgnoreCase);
+        private readonly ConcurrentDictionary<string, (WorkerRun By, object HandBack)> _handBacks = new(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>The wait a worker starts with. A run stopped during it has
         /// opened nothing, so the worker it waited for keeps what it holds.</summary>
         internal void Enter(WorkerRun run, int waitMs, string family)
         {
+            run.Order = Interlocked.Increment(ref _entered);
+            run.Worker = Thread.CurrentThread;
             var previous = Interlocked.Exchange(ref _last, Thread.CurrentThread);
             if (previous != null && previous != Thread.CurrentThread && previous.IsAlive && !previous.Join(waitMs))
                 PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL {family} previous worker still running after {waitMs} ms, starting anyway");
+            // What a worker that has ended did not hand back is old by now: the
+            // user can have changed the lighting since. A worker still running
+            // has held the device all along (TakeHandBack).
+            foreach (var entry in _handBacks)
+                if (entry.Value.By.Worker is not { IsAlive: true }) _handBacks.TryRemove(entry.Key, out _);
             if (!run.Stop) _holder = run;
+        }
+
+        /// <summary>A run has read a device's own lighting, ahead of changing it.
+        /// One worker serves many devices, so a device that hangs keeps that worker
+        /// past the next run's wait while the others still answer. The next run's
+        /// read of one of those finds this run's picture, and this is what it reads
+        /// instead. A worker a later run has barred from the device, back from a read
+        /// it hung in, notes nothing.</summary>
+        internal void NoteHandBack(string device, WorkerRun run, object handBack)
+        {
+            if (device != null && MayReach(device, run)) _handBacks[device] = (run, handBack);
+        }
+
+        /// <summary>Whether a run's read of a device still stands, for a test.</summary>
+        internal bool HoldsHandBack(string device) => device != null && _handBacks.ContainsKey(device);
+
+        /// <summary>What this run read of the device no longer stands: the device has
+        /// its own lighting back from this run, or a program or another device has it, or
+        /// it left.</summary>
+        internal void HandedBack(string device, WorkerRun run)
+        {
+            if (device != null && _handBacks.TryGetValue(device, out var held) && ReferenceEquals(held.By, run))
+                _handBacks.TryRemove(new KeyValuePair<string, (WorkerRun, object)>(device, held));
+        }
+
+        /// <summary>A program has the device, and what it stores there is the device's own
+        /// lighting from here on. What any run read of it is old, and an earlier worker
+        /// that comes back sends it nothing. A worker a later one has replaced speaks only
+        /// for itself.</summary>
+        internal void LeftToAProgram(string device, WorkerRun run)
+        {
+            HandedBack(device, run);
+            if (device == null || !Holds(run)) return;
+            _handBacks.TryRemove(device, out _);
+            _claimedBy[device] = run;
+        }
+
+        /// <summary>What an earlier worker, running when this run began, read of a
+        /// device and has not handed back. It is this run's to hand back from
+        /// here on.</summary>
+        internal bool TakeHandBack<T>(string device, WorkerRun run, out T handBack)
+        {
+            handBack = default;
+            if (device == null || !_handBacks.TryGetValue(device, out var held)
+                || ReferenceEquals(held.By, run) || held.HandBack is not T value) return false;
+            if (!_handBacks.TryRemove(new KeyValuePair<string, (WorkerRun, object)>(device, held))) return false;
+            handBack = value;
+            return true;
         }
 
         /// <summary>Whether no later worker has come out of its wait. The
@@ -121,16 +186,18 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>A run has a device open and takes it, ahead of its first
         /// picture. A run whose open failed has taken nothing, and the earlier
-        /// worker stays the one to hand the device back.</summary>
+        /// worker stays the one to hand the device back. A worker a later run has
+        /// barred from the device, back from a read it hung in, stays barred.</summary>
         internal void Claim(string device, WorkerRun run)
         {
-            if (device != null) _claimedBy[device] = run;
+            if (device != null && MayReach(device, run)) _claimedBy[device] = run;
         }
 
         /// <summary>Whether a run may still send to a device: not one a later
         /// run has claimed, whose picture a report would land on.</summary>
         internal bool MayReach(string device, WorkerRun run)
-            => device == null || Holds(run) || !_claimedBy.TryGetValue(device, out var by) || ReferenceEquals(by, run);
+            => device == null || Holds(run) || !_claimedBy.TryGetValue(device, out var by)
+               || ReferenceEquals(by, run) || by.Order < run.Order;
     }
 
     /// <summary>One output path: a family and the key inside it (a HID++

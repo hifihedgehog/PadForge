@@ -208,6 +208,34 @@ namespace PadForge.Tests
             Assert.Equal(TwitchChatState.NoChat, client.State);
         }
 
+        /// <summary>A channel suspended after a good join reads as no chat and is
+        /// asked for again, by the NOTICE or by a PART of this session's, until it
+        /// is back. A PART of anyone else's changes nothing.</summary>
+        [Theory]
+        [InlineData("@msg-id=msg_channel_suspended :tmi.twitch.tv NOTICE #chan :No.")]
+        [InlineData(":{nick}!{nick}@{nick}.tmi.twitch.tv PART #chan")]
+        public void AChannelLostAfterAGoodJoin_IsAskedForAgain(string line)
+        {
+            using var client = new TwitchChatClient("chan") { JoinAnswerPeriodMs = 20, KeepAlivePeriodMs = 20 };
+            var socket = new ScriptedSocket { Answer = JoinAnswer };
+            using var stop = new CancellationTokenSource();
+            var session = client.ReadAsync(socket, stop.Token);
+            Assert.True(WaitFor(() => client.State == TwitchChatState.Reading), "the state stayed " + client.State);
+            int joins = socket.Count("JOIN #chan");
+
+            socket.Answer = null;
+            socket.Say(":someone!someone@x PART #chan");
+            Assert.False(WaitFor(() => client.State != TwitchChatState.Reading, 100));
+            socket.Say(line.Replace("{nick}", socket.Nick));
+            Assert.True(WaitFor(() => client.State == TwitchChatState.NoChat), "the state stayed " + client.State);
+            Assert.True(WaitFor(() => socket.Count("JOIN #chan") > joins), "no JOIN after the channel was lost");
+
+            socket.Answer = JoinAnswer;
+            Assert.True(WaitFor(() => client.State == TwitchChatState.Reading), "the state stayed " + client.State);
+            stop.Cancel();
+            Assert.True(WaitFor(() => session.IsCompleted));
+        }
+
         [Fact]
         public void ANoticeAboutAnythingElseLeavesTheState()
         {
@@ -233,6 +261,7 @@ namespace PadForge.Tests
             public bool ConnectNeverEnds;
 
             public int Receives => Volatile.Read(ref _receives);
+            public string Nick => _nick;
             public int Count(string line) { lock (_sent) return _sent.Count(s => s == line); }
             public void Say(string frame) => _frames.Writer.TryWrite(frame);
             public void Close() => _frames.Writer.TryComplete();

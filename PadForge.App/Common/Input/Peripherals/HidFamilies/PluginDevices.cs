@@ -243,7 +243,6 @@ namespace PadForge.Common.Input.Peripherals
                 Slots = 1,
                 Programs = s_icue,
                 RepaintMs = NexusRepaintMs,
-                PictureAgainMs = NexusPictureAgainMs,
                 Start = Ask(0x03, 0x1D, 0x01, 0x00)
                     .Concat(Ask(0x03, 0x19))
                     .Concat(Ask(0x03, 0x20, 0x00, 0x19, 0x79, 0xE7, 0x32, 0x2E, 0x30, 0x2E, 0x30, 0x2E, 0x33))
@@ -254,14 +253,10 @@ namespace PadForge.Common.Input.Peripherals
             };
         }
 
-        /// <summary>A whole screen is 121 reports of 1,024 bytes, so pictures
-        /// stay this far apart. No source bounds it, so the bound is PadForge's.</summary>
+        /// <summary>A whole screen is 121 reports of 1,024 bytes, about 15 ms, and the
+        /// panel takes 65 of them a second (Nexus-Manager docs/PROTOCOL.md, "achieved"
+        /// and "per frame"). Pictures stay this far apart, far inside that.</summary>
         internal const int NexusRepaintMs = 100;
-
-        /// <summary>How often the same screen goes out again. The whole screen on the shared
-        /// worker twice a second keeps every other unit waiting for no change, and this is the
-        /// interval of the other rows with a keep-alive of their own. No source bounds it.</summary>
-        internal const int NexusPictureAgainMs = 5000;
 
         private static PluginStep NexusOwnScreen(byte first, byte second)
         {

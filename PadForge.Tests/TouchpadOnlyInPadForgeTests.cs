@@ -496,7 +496,8 @@ namespace PadForge.Tests
         [Fact]
         public async Task ARestartForWindows_OnTheTestHost_RestartsNothingAndReturns()
         {
-            await TouchpadCapture.RestartForWindows(Instance()).WaitAsync(TimeSpan.FromSeconds(5));
+            // A run retries on this answer. The test host's fence refuses the restart.
+            Assert.False(await TouchpadCapture.RestartForWindows(Instance()).WaitAsync(TimeSpan.FromSeconds(5)));
         }
     }
 

@@ -2375,6 +2375,73 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>The next run of a worker a stop gave up on finds the device in host
+        /// mode, which that worker put it in. It reads no mode, and its hand-back puts
+        /// back the one that worker read, whatever level rules by then.</summary>
+        [Theory]
+        [InlineData(2)]
+        [InlineData(1)]
+        public void AWorkerAStopGaveUpOn_LeavesTheModeItReadToTheNextRun(int nextLevel)
+        {
+            using var gate = new ManualResetEventSlim(false);
+            using var entered = new ManualResetEventSlim(false);
+            using var bench = new Bench(HidppLightDevice.G903(), predecessorJoinMs: 1);
+            try
+            {
+                bench.FollowTheMode();
+                bench.Link();
+                bench.Light(0x112233, level: 2);
+                bench.After(8);
+                string[] handBack = bench.Record();
+                Assert.Contains("11 01 08 1C 01", handBack);
+                Assert.Equal(0x02, bench.Device.Mode);
+
+                int held = 0;
+                var answer = bench.Channel.Answer;
+                bench.Channel.Answer = (d, f, fn, p) =>
+                {
+                    if (Interlocked.CompareExchange(ref held, 1, 0) == 0)
+                    {
+                        entered.Set();
+                        gate.Wait(30000);
+                    }
+                    return answer(d, f, fn, p);
+                };
+                bench.Light(0x445566, level: 2);
+                for (int i = 0; i < 400 && !entered.IsSet; i++)
+                {
+                    bench.Advance(HidppBackend.FrameTickMs);
+                    entered.Wait(5);
+                }
+                Assert.True(entered.IsSet, "the worker is inside a write");
+
+                bench.Backend.Dispose();
+                bench.Clear();
+                bench.Light(0x778899, level: nextLevel);
+                bench.NextBackend(predecessorJoinMs: 1);
+                Assert.True(SpinWait.SpinUntil(() => bench.Backend.Snapshot.Units.Count == 1, 30000), "the new run found the unit");
+                const string Own = "11 01 08 1C 01";
+                if (nextLevel == 2)
+                {
+                    bench.After(4);
+                    Assert.Contains(Own, bench.Record());
+                }
+                else
+                {
+                    // A level below the one the device is held at is a claim to make
+                    // over: the device goes back first.
+                    for (int i = 0; i < 400 && !bench.Lit().Any(line => line.EndsWith(Own, StringComparison.Ordinal)); i++)
+                        bench.Tick(HidppBackend.FrameTickMs);
+                    Assert.Contains(bench.Lit(), line => line.EndsWith(Own, StringComparison.Ordinal));
+                }
+                Assert.DoesNotContain(bench.Lit(), line => line.EndsWith("11 01 08 2C", StringComparison.Ordinal));
+            }
+            finally
+            {
+                gate.Set();
+            }
+        }
+
         /// <summary>A worker a stop gave up on still owes a hand-back when it
         /// comes out, on a unit the next run has claimed since. What that device
         /// shows is the next run's to say, so nothing goes out.</summary>
@@ -2829,9 +2896,12 @@ namespace PadForge.Tests
                 if (differs == "name") device.Name = "G703";
                 else device.Features[0x8100] = 0x09;
                 silent = false;
+                Assert.True(HidppBackend.HandBackHeldForTest(bench.Path.Key));
                 bench.Back();
                 bench.Passes();
                 Assert.Empty(bench.Record());
+                // What the run read was of the other device.
+                Assert.False(HidppBackend.HandBackHeldForTest(bench.Path.Key));
                 // Neither the release nor a mode frame went to it.
                 Assert.DoesNotContain(bench.Channel.Traffic, t => t.Frame[2] == 0x07 && t.Frame[3] >> 4 == 5);
                 Assert.DoesNotContain(bench.Channel.Traffic, t => t.Frame[2] is 0x08 or 0x09 && t.Frame[3] >> 4 == 1 && t.Kind != "reg");
@@ -2920,6 +2990,314 @@ namespace PadForge.Tests
             Assert.Empty(bench.AfterFound(0));
             bench.Backend.Stop();
             Assert.Empty(bench.Once);
+        }
+
+        private static LinkTable HeldByOpenRgb(Bench bench) => new(new[]
+        {
+            new DeviceLinks
+            {
+                Device = bench.Row,
+                Lighting = new[] { new OutputPath(OutputFamily.OpenRgbDevice, "openrgb") },
+                TakenByOpenRgb = new[] { bench.Path },
+            },
+        });
+
+        /// <summary>A unit let go of with a hand-back owed, and read for one.</summary>
+        private static Bench OwedAtLevelTwo(out Action answerAgain)
+        {
+            var device = HidppLightDevice.G903();
+            bool silent = false;
+            device.Silent = (f, fn, p) => silent;
+            answerAgain = () => silent = false;
+            var bench = new Bench(device);
+            bench.Link();
+            bench.Light(0xFF0000, level: 2);
+            bench.After(7);
+            bench.Clear();
+            silent = true;
+            bench.Advance(HidppBackend.CheckMs);
+            bench.Away();
+            Assert.NotEmpty(bench.Record());
+            Assert.True(HidppBackend.HandBackHeldForTest(bench.Path.Key));
+            return bench;
+        }
+
+        /// <summary>A Logitech program that starts ends what the run read with what the
+        /// run owed: the next run reads the device as the program leaves it.</summary>
+        [Fact]
+        public void WhenALogitechProgramStarts_WhatTheRunReadEndsWithWhatItOwed()
+        {
+            using var bench = OwedAtLevelTwo(out _);
+            PeripheralOutputs.Presence = new PeripheralPresence(true, true, false, false, false);
+            bench.Passes();
+            Assert.Empty(bench.Record());
+            Assert.False(HidppBackend.HandBackHeldForTest(bench.Path.Key));
+        }
+
+        /// <summary>A worker a stop gave up on read the device's mode, and a program has
+        /// the device when the next run starts. What that program leaves is the device's
+        /// own from then on: once it has let go, the next run reads the mode.</summary>
+        [Fact]
+        public void AProgramBetweenTwoRuns_HasTheNextRunReadTheMode()
+        {
+            using var gate = new ManualResetEventSlim(false);
+            using var entered = new ManualResetEventSlim(false);
+            using var bench = new Bench(HidppLightDevice.G903(), predecessorJoinMs: 1);
+            try
+            {
+                bench.FollowTheMode();
+                bench.Link();
+                bench.Light(0x112233, level: 2);
+                bench.After(8);
+                Assert.True(HidppBackend.HandBackHeldForTest(bench.Path.Key));
+
+                int held = 0;
+                var answer = bench.Channel.Answer;
+                bench.Channel.Answer = (d, f, fn, p) =>
+                {
+                    if (Interlocked.CompareExchange(ref held, 1, 0) == 0)
+                    {
+                        entered.Set();
+                        gate.Wait(30000);
+                    }
+                    return answer(d, f, fn, p);
+                };
+                bench.Light(0x445566, level: 2);
+                for (int i = 0; i < 400 && !entered.IsSet; i++)
+                {
+                    bench.Advance(HidppBackend.FrameTickMs);
+                    entered.Wait(5);
+                }
+                Assert.True(entered.IsSet, "the worker is inside a write");
+                bench.Backend.Dispose();
+                bench.Clear();
+
+                PeripheralOutputs.PublishLinks(HeldByOpenRgb(bench));
+                bench.NextBackend(predecessorJoinMs: 1);
+                Assert.True(SpinWait.SpinUntil(() => bench.Backend.Snapshot.Units.Count == 1, 30000), "the new run found the unit");
+                bench.Passes();
+                Assert.False(HidppBackend.HandBackHeldForTest(bench.Path.Key));
+
+                bench.Link();
+                const string ReadsTheMode = "11 01 08 2C";
+                for (int i = 0; i < 400 && !bench.Lit().Any(line => line.EndsWith(ReadsTheMode, StringComparison.Ordinal)); i++)
+                    bench.Tick(HidppBackend.FrameTickMs);
+                Assert.Contains(bench.Lit(), line => line.EndsWith(ReadsTheMode, StringComparison.Ordinal));
+            }
+            finally
+            {
+                gate.Set();
+            }
+        }
+
+        /// <summary>A worker a stop gave up on inside a claim's read of the mode claims
+        /// nothing when it comes back, on a unit the next run holds.</summary>
+        [Fact]
+        public void AWorkerThatComesBackFromItsModeRead_ClaimsNothing()
+        {
+            using var gate = new ManualResetEventSlim(false);
+            using var entered = new ManualResetEventSlim(false);
+            using var bench = new Bench(HidppLightDevice.G903(), predecessorJoinMs: 1);
+            try
+            {
+                bench.FollowTheMode();
+                int held = 0;
+                var answer = bench.Channel.Answer;
+                bench.Channel.Answer = (d, f, fn, p) =>
+                {
+                    if (f == bench.Unit.ModeIndex && fn == HidppUnitProtocol.FunctionOnboardGetMode
+                        && Interlocked.CompareExchange(ref held, 1, 0) == 0)
+                    {
+                        entered.Set();
+                        gate.Wait(30000);
+                    }
+                    return answer(d, f, fn, p);
+                };
+                bench.Link();
+                bench.Light(0x112233, level: 2);
+                Assert.True(SpinWait.SpinUntil(() =>
+                {
+                    bench.Advance(HidppBackend.FrameTickMs);
+                    return entered.Wait(5);
+                }, 30000), "the worker is inside its read");
+                var first = bench.Backend;
+                first.Dispose();
+
+                bench.NextBackend(predecessorJoinMs: 1);
+                Assert.True(SpinWait.SpinUntil(() => bench.Backend.Snapshot.Units.Count == 1, 30000), "the new run found the unit");
+                bench.After(4);
+                bench.Clear();
+
+                gate.Set();
+                Assert.True(SpinWait.SpinUntil(() => bench.Channel.Disposed, 30000), "the old worker came out and ended");
+                bench.Passes();
+                Assert.Empty(bench.Lit());
+                Assert.Empty(first.ClaimedRecords);
+            }
+            finally
+            {
+                gate.Set();
+            }
+        }
+
+        /// <summary>A worker a stop gave up on inside a frame of its paint sends no more of
+        /// that paint when it comes back, on a unit the next run holds.</summary>
+        [Fact]
+        public void AWorkerThatComesBackFromAFrame_SendsNoMoreOfItsPaint()
+        {
+            using var gate = new ManualResetEventSlim(false);
+            using var entered = new ManualResetEventSlim(false);
+            // Two zones on the plan that spaces no frames, so one send goes through both.
+            var device = HidppLightDevice.ZoneOnly();
+            device.Zones = new[] { new ushort[] { 0x0000, 0x0001 }, new ushort[] { 0x0000, 0x0001 } };
+            using var bench = new Bench(device, predecessorJoinMs: 1);
+            try
+            {
+                bench.Link();
+                bench.Light(0x112233);
+                bench.After(3);
+                Assert.True(bench.Lit().Count(line => line.Contains("11 22 33", StringComparison.Ordinal)) >= 2, "a paint is more than one frame");
+                bench.Clear();
+
+                int held = 0;
+                bench.Channel.Writing = frame =>
+                {
+                    if (HidppHapticsTests.Text(frame).Contains("44 55 66", StringComparison.Ordinal)
+                        && Interlocked.CompareExchange(ref held, 1, 0) == 0)
+                    {
+                        entered.Set();
+                        gate.Wait(30000);
+                    }
+                };
+                bench.Light(0x445566);
+                Assert.True(SpinWait.SpinUntil(() =>
+                {
+                    bench.Advance(HidppBackend.PaintMs);
+                    return entered.Wait(5);
+                }, 30000), "the worker is inside a frame");
+                bench.Backend.Dispose();
+
+                bench.Light(0x778899);
+                bench.NextBackend(predecessorJoinMs: 1);
+                Assert.True(SpinWait.SpinUntil(() => bench.Backend.Snapshot.Units.Count == 1, 30000), "the new run found the unit");
+                bench.After(3);
+                bench.Clear();
+
+                gate.Set();
+                Assert.True(SpinWait.SpinUntil(() => bench.Channel.Disposed, 30000), "the old worker came out and ended");
+                bench.Passes();
+                // The frame it was inside lands as it comes back, and no other.
+                Assert.True(bench.Lit().Count(line => line.Contains("44 55 66", StringComparison.Ordinal)) <= 1, string.Join(" | ", bench.Lit()));
+            }
+            finally
+            {
+                gate.Set();
+            }
+        }
+
+        /// <summary>A collection that leaves the walk takes what the run read along, with
+        /// a debt on it or with the claim standing.</summary>
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ACollectionThatLeaves_EndsWhatTheRunRead(bool owed)
+        {
+            using var bench = owed ? OwedAtLevelTwo(out _) : new Bench(HidppLightDevice.G903());
+            if (!owed)
+            {
+                bench.Link();
+                bench.Light(0xFF0000, level: 2);
+                bench.After(7);
+                Assert.True(HidppBackend.HandBackHeldForTest(bench.Path.Key));
+            }
+
+            bench.Present = false;
+            int scans = bench.Backend.ScanCount;
+            for (int i = 0; i < 12 && bench.Backend.ScanCount == scans; i++)
+            {
+                bench.Advance(HidppBackend.FirstScanMs);
+                bench.Passes();
+            }
+            Assert.True(bench.Backend.ScanCount > scans, "a scan ran");
+            bench.Passes();
+            Assert.False(HidppBackend.HandBackHeldForTest(bench.Path.Key));
+        }
+
+        /// <summary>The same when the unit comes back held by OpenRGB.</summary>
+        [Fact]
+        public void AnOwedUnitThatComesBackHeldByOpenRgb_EndsWhatTheRunRead()
+        {
+            using var bench = OwedAtLevelTwo(out var answerAgain);
+            PeripheralOutputs.PublishLinks(HeldByOpenRgb(bench));
+            bench.Passes();
+            Assert.True(HidppBackend.HandBackHeldForTest(bench.Path.Key));
+
+            answerAgain();
+            bench.Back();
+            bench.Passes();
+            Assert.Empty(bench.Record());
+            Assert.False(HidppBackend.HandBackHeldForTest(bench.Path.Key));
+        }
+
+        /// <summary>The same at a stop, with the unit still not found.</summary>
+        [Fact]
+        public void AStopThatOwesAUnitHeldByOpenRgb_EndsWhatTheRunRead()
+        {
+            using var bench = OwedAtLevelTwo(out _);
+            PeripheralOutputs.PublishLinks(HeldByOpenRgb(bench));
+            bench.Passes();
+            bench.Backend.Stop();
+            Assert.Empty(bench.Once);
+            Assert.False(HidppBackend.HandBackHeldForTest(bench.Path.Key));
+        }
+
+        /// <summary>The same on a worker that comes out of a hung write into its stop, with
+        /// OpenRGB on the device by then.</summary>
+        [Fact]
+        public void AStopWithAClaimedUnitHeldByOpenRgb_EndsWhatTheRunRead()
+        {
+            using var gate = new ManualResetEventSlim(false);
+            using var entered = new ManualResetEventSlim(false);
+            using var bench = new Bench(HidppLightDevice.G903(), predecessorJoinMs: 1);
+            try
+            {
+                bench.FollowTheMode();
+                bench.Link();
+                bench.Light(0x112233, level: 2);
+                bench.After(8);
+                Assert.True(HidppBackend.HandBackHeldForTest(bench.Path.Key));
+
+                int held = 0;
+                var answer = bench.Channel.Answer;
+                bench.Channel.Answer = (d, f, fn, p) =>
+                {
+                    if (Interlocked.CompareExchange(ref held, 1, 0) == 0)
+                    {
+                        entered.Set();
+                        gate.Wait(30000);
+                    }
+                    return answer(d, f, fn, p);
+                };
+                bench.Light(0x445566, level: 2);
+                for (int i = 0; i < 400 && !entered.IsSet; i++)
+                {
+                    bench.Advance(HidppBackend.FrameTickMs);
+                    entered.Wait(5);
+                }
+                Assert.True(entered.IsSet, "the worker is inside a write");
+
+                bench.Backend.Dispose();
+                bench.Clear();
+                PeripheralOutputs.PublishLinks(HeldByOpenRgb(bench));
+                gate.Set();
+                Assert.True(SpinWait.SpinUntil(() => !HidppBackend.HandBackHeldForTest(bench.Path.Key), 30000),
+                    "what the run read ended with its stop");
+                Assert.DoesNotContain(bench.Lit(), line => line.EndsWith("11 01 08 1C 01", StringComparison.Ordinal));
+            }
+            finally
+            {
+                gate.Set();
+            }
         }
 
         /// <summary>A collection that leaves the walk takes what was owed

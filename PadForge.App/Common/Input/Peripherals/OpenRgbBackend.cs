@@ -324,6 +324,7 @@ namespace PadForge.Common.Input.Peripherals
                             foreach (var unit in units)
                             {
                                 Unrecord(unit);
+                                s_workers.HandedBack(unit.Key, run);
                                 PeripheralLightMaps.Remove(PathOf(unit));
                             }
                             units.Clear();
@@ -438,6 +439,7 @@ namespace PadForge.Common.Input.Peripherals
                     else if (session != null && unit.Owed != null && !unit.Asleep) sent = PayOwed(session, unit);
                 }
                 catch { sent = false; }
+                if (sent && unit.Owed == null) s_workers.HandedBack(unit.Key, run);
                 if (!sent)
                     PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL OpenRGB {unit.Label} hand-back did not go out at the stop, owed to the next run");
                 if (unit.Owed != null) (carried ??= new Dictionary<string, HandBack>(StringComparer.Ordinal))[unit.Key] = unit.Owed;
@@ -674,11 +676,21 @@ namespace PadForge.Common.Input.Peripherals
                           && PeripheralOutputs.TryResolveColor(path, out rgb, out ruler);
             if (!wanted)
             {
-                if (unit.Entered) return SendBack(session, unit);
+                if (unit.Entered)
+                {
+                    bool sent = SendBack(session, unit);
+                    if (sent) s_workers.HandedBack(unit.Key, run);
+                    return sent;
+                }
                 // A hand-back owed from a session that ended. A stopping
                 // worker sends it from its finally, and leaves it to the next
                 // run when it cannot (HandBackAtStop).
-                if (unit.Owed != null && !run.Stop) return PayOwed(session, unit);
+                if (unit.Owed != null && !run.Stop)
+                {
+                    bool paid = PayOwed(session, unit);
+                    if (paid) s_workers.HandedBack(unit.Key, run);
+                    return paid;
+                }
                 return true;
             }
             if (run.Stop) return true;
@@ -701,6 +713,8 @@ namespace PadForge.Common.Input.Peripherals
         {
             var fresh = session.ReadController(unit.Index);
             if (fresh == null) return false;
+            // A stop that came during the read enters nothing.
+            if (run.Stop) return true;
             if (fresh.Location != unit.Controller.Location || fresh.Name != unit.Controller.Name)
             {
                 session.ListChanged = true;
@@ -713,10 +727,13 @@ namespace PadForge.Common.Input.Peripherals
                 session.ListChanged = true;
                 return true;
             }
-            var back = unit.Owed ?? new HandBack(fresh.ActiveMode,
+            // A worker running late left its Direct mode on the controller, and
+            // what it read is the controller's own.
+            var back = unit.Owed ?? (s_workers.TakeHandBack(unit.Key, run, out HandBack late) ? late : new HandBack(fresh.ActiveMode,
                 fresh.ActiveMode >= 0 && fresh.ActiveMode < fresh.Modes.Count ? fresh.Modes[fresh.ActiveMode] : null,
-                (uint[])fresh.Colors.Clone());
+                (uint[])fresh.Colors.Clone()));
             s_workers.Claim(unit.Key, run);
+            s_workers.NoteHandBack(unit.Key, run, back);
             unit.Back = back;
             unit.Owed = null;
             unit.Entered = true;

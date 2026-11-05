@@ -13082,13 +13082,17 @@ namespace PadForge.Services
                         // shape each driver takes (PlayStationEffectWriter.SonyEffectBodyOffset).
                         if (ud != null)
                         {
-                            AudioPassthroughService.NoteRemoteSonyBody(ud.InstanceGuid, (ushort)ud.ProdId, effect.SonyBody);
+                            // In this order: a let-go between the two puts back the
+                            // path before this frame's, and this one's comes last.
                             UserEffectsDispatcher.NotePeerEffectBody(ud.InstanceGuid, ud.DevicePath, (ushort)ud.ProdId,
                                 effect.SonyBody, peerFingerprint);
+                            AudioPassthroughService.NoteRemoteSonyBody(ud.InstanceGuid, (ushort)ud.ProdId, effect.SonyBody);
                         }
                         if (handle != IntPtr.Zero && effect.SonyBody != null && effect.SonyBody.Length > 0)
                             SDL3.SDL.SDL_SendGamepadEffect(handle, effect.SonyBody, 0, effect.SonyBody.Length);
-                        if (ud != null) UserEffectsDispatcher.NotePeerFrameApplied(ud.InstanceGuid);
+                        if (ud != null)
+                            UserEffectsDispatcher.NotePeerFrameApplied(ud.InstanceGuid, ud.DevicePath, (ushort)ud.ProdId,
+                                effect.SonyBody, peerFingerprint);
                         break;
 
                     case OutputEffectCodec.Kind.Vibration:

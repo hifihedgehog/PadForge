@@ -81,6 +81,8 @@ namespace PadForge.Common.Input
         // VolumeHeadphones" (duaLib dataStructures.h /*0.4*/). Gates
         // byte 4 the same way bit 6 gates the mic byte.
         private const ushort EnableHeadphoneVolume  = 0x0010;
+        // validFlag0 bit 5 = AllowSpeakerVolume (duaLib /*0.5*/). Gates byte 5.
+        private const ushort EnableSpeakerVolume    = 0x0020;
         // validFlag0 bit 7 = AllowAudioControl, "Enable setting
         // AudioControl section" (duaLib /*0.7*/). Gates byte 7, whose
         // bits 4-5 are OutputPathSelect.
@@ -753,6 +755,38 @@ namespace PadForge.Common.Input
             { "audioControlFlags", (byte)0 },
             { "audioControl2",     (byte)0 },
         };
+
+        /// <summary>A report that sets only the audio fields named here, with every
+        /// other valid flag clear: what a pad goes back to when a peer leaves
+        /// (UserEffectsDispatcher.SettlePeerWords).</summary>
+        internal static Dictionary<string, object> PeerAudioFields(byte? audioControlFlags, byte? audioControl2,
+            byte? headphoneVolume, byte? speakerVolume)
+        {
+            var fields = new Dictionary<string, object> { { "btTag", NextBtSeqTag() } };
+            int flags = 0;
+            if (audioControlFlags is byte path)
+            {
+                flags |= EnableAudioControl;
+                fields["audioControlFlags"] = path;
+            }
+            if (headphoneVolume is byte level)
+            {
+                flags |= EnableHeadphoneVolume;
+                fields["headphoneVolume"] = level;
+            }
+            if (speakerVolume is byte speaker)
+            {
+                flags |= EnableSpeakerVolume;
+                fields["speakerVolume"] = speaker;
+            }
+            fields["validFlag0"] = (byte)(flags & 0xFF);
+            if (audioControl2 is byte control2)
+            {
+                fields["validFlag1"] = (byte)(EnableAudioControl2 >> 8);
+                fields["audioControl2"] = control2;
+            }
+            return fields;
+        }
 
         /// <summary>The Headphone Volume register at full, what the slider's
         /// default of 100 writes (duaLib's struct comment: "max 0x7f").</summary>

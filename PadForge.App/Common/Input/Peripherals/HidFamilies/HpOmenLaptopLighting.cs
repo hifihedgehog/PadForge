@@ -30,15 +30,16 @@ namespace PadForge.Common.Input.Peripherals
     /// <see cref="KeyboardProfileBackups"/>, on disk before the first write,
     /// as <see cref="LenovoK510Lighting"/> keeps its state. A failed BIOS call
     /// or a forced kill ends a session with no hand-back, and the next session
-    /// takes the backup as the original, not the colors PadForge left. The
-    /// model has no repair (<see cref="HidLightingModel.RepairOwn"/>), so with
-    /// no later claim the keyboard keeps PadForge's colors. The table holds
-    /// colors and nothing else, so no read tells PadForge's from ones the Omen
-    /// Gaming Hub stored after such a run ended, and a write with no claim
-    /// behind it could undo the user's own. A claim is the user asking for
-    /// PadForge's lighting, so a table the Hub stored is taken for one of
-    /// PadForge's only then, and the backup goes back over it at the
-    /// hand-back.</para>
+    /// takes the backup as the original, not the colors PadForge left. With no
+    /// later claim, the repair (<see cref="HidLightingModel.RepairOwn"/>) puts the
+    /// backup back after a failed call of this process's, and after a kill when the
+    /// BIOS still holds the table PadForge last kept beside it. Any other table can
+    /// be one the Omen Gaming Hub stored after such a run ended, and a write with no
+    /// claim behind it could undo the user's own, so it stays. Keeping a table takes
+    /// a save of the settings, so a picture is kept once it has stood a while: a kill
+    /// during an animation leaves that table too. A claim is the user asking for
+    /// PadForge's lighting, so a table the Hub stored is taken for one of PadForge's
+    /// only then, and the backup goes back over it at the hand-back.</para>
     /// </summary>
     internal sealed class HpOmenLaptopLighting : IOwnLookFamily
     {
@@ -86,6 +87,9 @@ namespace PadForge.Common.Input.Peripherals
         private readonly Func<bool> _classPresent;
         private readonly Func<IHpBiosChannel> _open;
         private readonly Func<int, int, byte[], int, bool> _callOnce;
+        private readonly Func<long> _ticks;
+        private volatile bool _leftAlone;
+        private volatile bool _leftColors;
         private OwnDevice[] _found;
 
         public HpOmenLaptopLighting()
@@ -94,11 +98,12 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Test seam: the method class check, the opener and the
         /// crash path's one call.</summary>
         internal HpOmenLaptopLighting(Func<bool> classPresent, Func<IHpBiosChannel> open,
-            Func<int, int, byte[], int, bool> callOnce)
+            Func<int, int, byte[], int, bool> callOnce, Func<long> ticks = null)
         {
             _classPresent = classPresent ?? OwnLightingChannels.HpBiosClassPresent;
             _open = open ?? OwnLightingChannels.OpenHpBios;
             _callOnce = callOnce ?? OwnLightingChannels.HpBiosCallOnce;
+            _ticks = ticks ?? (() => Environment.TickCount64);
             Model = new HidLightingModel
             {
                 Family = this,
@@ -109,6 +114,9 @@ namespace PadForge.Common.Input.Peripherals
                 Open = _ => _open(),
                 BeginOwn = (channel, _) => channel is IHpBiosChannel bios ? Begin(bios) : null,
                 WriteOnce = (_, frame, timeoutMs) => _callOnce(KeyboardCommand, SetColorTable, frame, timeoutMs),
+                Owed = _ => !_leftAlone && KeyboardProfileBackups.Get(Product) != null,
+                RepairOwn = (channel, _) => channel is IHpBiosChannel bios && Repair(bios),
+                RecheckMs = ShownStandsMs,
             };
         }
 
@@ -162,17 +170,52 @@ namespace PadForge.Common.Input.Peripherals
             return found;
         }
 
+        /// <summary>The key the table PadForge last kept goes under, beside the
+        /// backup.</summary>
+        internal const string ShownKey = Product + ":shown";
+
+        /// <summary>A picture that has stood this long is kept. An animation's never
+        /// stands that long.</summary>
+        internal const int ShownStandsMs = 10000;
+
         /// <summary>A session from the table an earlier session saved and
         /// never put back, else the one the BIOS holds now. Null when the BIOS
         /// gave none.</summary>
-        private static HidLightingSession Begin(IHpBiosChannel bios)
+        private HidLightingSession Begin(IHpBiosChannel bios)
         {
             var table = bios.Call(KeyboardCommand, GetColorTable, Array.Empty<byte>());
             if (!IsTable(table)) return null;
+            _leftAlone = false;
             return KeyboardProfileBackups.Get(Product) is { } owed && owed.Contents.Length == table.Length
-                ? new Session(bios, owed.Contents, ours: true)
-                : new Session(bios, table);
+                ? new Session(this, bios, owed.Contents, _ticks, ours: true)
+                : new Session(this, bios, table, _ticks);
         }
+
+        /// <summary>Puts back the table an earlier session saved, with no claim on
+        /// the keyboard, when a session of this process left colors (a failed call) or
+        /// the BIOS holds the colors that session last kept. Any other colors stay, and
+        /// are not asked about again until the next session. True when nothing is left
+        /// to do now, false when the BIOS did not answer.</summary>
+        private bool Repair(IHpBiosChannel bios)
+        {
+            if (KeyboardProfileBackups.Get(Product) is not { } owed) return true;
+            var table = bios.Call(KeyboardCommand, GetColorTable, Array.Empty<byte>());
+            if (!IsTable(table)) return false;
+            if (_leftColors || (KeyboardProfileBackups.Get(ShownKey) is { } shown && SameColors(table, shown.Contents)))
+            {
+                if (bios.Call(KeyboardCommand, SetColorTable, owed.Contents) == null) return false;
+                _leftColors = false;
+                KeyboardProfileBackups.Drop(Product);
+                KeyboardProfileBackups.Drop(ShownKey);
+                return true;
+            }
+            _leftAlone = true;
+            PadForge.Engine.SdlDiagLog.WriteLine("PERIPHERAL HidLighting HP Omen keyboard holds colors other than the ones PadForge kept, and they stay");
+            return true;
+        }
+
+        private static bool SameColors(byte[] table, byte[] other)
+            => IsTable(other) && table.AsSpan(ColorsAt, 12).SequenceEqual(other.AsSpan(ColorsAt, 12));
 
         private static bool IsTable(byte[] table) => table != null && table.Length >= ColorsAt + 12;
 
@@ -197,14 +240,33 @@ namespace PadForge.Common.Input.Peripherals
         internal sealed class Session : HidLightingSession
         {
             private readonly IHpBiosChannel _bios;
+            private readonly HpOmenLaptopLighting _family;
             private readonly byte[] _original;
+            private readonly Func<long> _ticks;
             private byte[][] _crash = Array.Empty<byte[]>();
+            private long _paintedAt;
+            private bool _painted;
+            private byte[] _notKept;
 
-            public Session(IHpBiosChannel bios, byte[] original, bool ours = false)
+            public Session(HpOmenLaptopLighting family, IHpBiosChannel bios, byte[] original, Func<long> ticks, bool ours = false)
             {
+                _family = family;
                 _bios = bios;
                 _original = original;
+                _ticks = ticks;
                 if (ours) _crash = new[] { (byte[])original.Clone() };
+            }
+
+            /// <summary>Keeps a picture that has stood, on the model's interval. Nothing
+            /// goes to the BIOS.</summary>
+            public override bool Recheck(IHidReportChannel io, Action<int> wait)
+            {
+                if (_notKept != null && _ticks() - _paintedAt >= ShownStandsMs)
+                {
+                    KeyboardProfileBackups.Take(ShownKey, 0, _notKept);
+                    _notKept = null;
+                }
+                return true;
             }
 
             public override bool Feature => true;
@@ -232,9 +294,15 @@ namespace PadForge.Common.Input.Peripherals
                 // Marked first: a write that reports a failure may still
                 // have landed.
                 if (_crash.Length == 0) _crash = new[] { (byte[])_original.Clone() };
-                return _bios.Call(KeyboardCommand, SetColorTable, Painted(table, lights, colors)) != null
-                    ? HidLightingPaint.Sent
-                    : HidLightingPaint.Failed;
+                _family._leftColors = true;
+                var painted = Painted(table, lights, colors);
+                if (_bios.Call(KeyboardCommand, SetColorTable, painted) == null) return HidLightingPaint.Failed;
+                // The first is kept at once, for a kill in the first seconds.
+                if (_painted) _notKept = painted;
+                else KeyboardProfileBackups.Take(ShownKey, 0, painted);
+                _painted = true;
+                _paintedAt = _ticks();
+                return HidLightingPaint.Sent;
             }
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
@@ -244,7 +312,9 @@ namespace PadForge.Common.Input.Peripherals
                     if (_bios.Call(KeyboardCommand, SetColorTable, _original) == null) return false;
                     _crash = Array.Empty<byte[]>();
                 }
+                _family._leftColors = false;
                 KeyboardProfileBackups.Drop(Product);
+                KeyboardProfileBackups.Drop(ShownKey);
                 return true;
             }
         }

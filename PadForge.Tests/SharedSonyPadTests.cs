@@ -373,25 +373,54 @@ public sealed class SharedSonyPadTests : IDisposable
     {
         public readonly Guid Id = Guid.NewGuid();
         public readonly string File;
-        public readonly HMProfile Bt = HMaestroProfileCatalog.GetProfileById("dualsense-bt-full");
-        public SharedDualSense(string dir, int slot = -1)
+        /// <summary>The profile of the pad's connection.</summary>
+        public readonly HMProfile Wire;
+        public readonly ushort Pid;
+        /// <summary>Where the pre-gain sits (PlayStationEffectWriter.ApplyAudioControl2).</summary>
+        public readonly int Control2At;
+        public SharedDualSense(string dir, int slot = -1, bool usb = false, bool edge = false)
         {
-            File = Path.Combine(dir, "BTHENUM-" + Id.ToString("N") + ".bin");
+            Pid = edge ? (ushort)0x0DF2 : (ushort)0x0CE6;
+            Wire = HMaestroProfileCatalog.GetProfileById(edge
+                ? (usb ? "dualsense-edge" : "dualsense-edge-bt")
+                : (usb ? "dualsense" : "dualsense-bt-full"));
+            Control2At = usb ? 38 : 40;
+            File = Path.Combine(dir, (usb ? "USB-" : "BTHENUM-") + Id.ToString("N") + ".bin");
             System.IO.File.WriteAllBytes(File, []);
             SettingsManager.UserDevices.Items.Add(new UserDevice
             {
-                InstanceGuid = Id, VendorId = 0x054C, ProdId = 0x0CE6, IsOnline = true, IsEnabled = true, DevicePath = File,
+                InstanceGuid = Id, VendorId = 0x054C, ProdId = Pid, IsOnline = true, IsEnabled = true, DevicePath = File,
             });
             if (slot >= 0) SettingsManager.UserSettings.Items.Add(new UserSetting { InstanceGuid = Id, MapTo = slot });
         }
         public byte[] Read() => ReadShared(File);
+        /// <summary>A frame that asserts only some of these.</summary>
+        public void PeerAssertsOnly(string peer, int? path = null, int? percent = null, byte? control2 = null, byte? speaker = null)
+        {
+            var fields = Ds5EffectSynthesizer.BuildFields(new DeviceSlotConfig(),
+                audioOutputPath: path ?? 1, assertAudioControl: path != null,
+                headphoneVolumePercent: percent ?? 100, assertHeadphoneVolume: percent != null);
+            Assert.True(RemoteLinkOutputRouter.ClaimOutput(File, peer));
+            byte[] body = Shipped(HMaestroProfileCatalog.GetProfileById("dualsense"), fields);
+            if (control2 is byte value)
+            {
+                body[1] |= 0x80;
+                body[37] = value;
+            }
+            if (speaker is byte volume)
+            {
+                body[0] |= 0x20;
+                body[5] = volume;
+            }
+            UserEffectsDispatcher.NotePeerEffectBody(Id, File, Pid, body, peer);
+        }
         public void PeerAsserts(string peer, int path, bool lowered)
         {
             var fields = Ds5EffectSynthesizer.BuildFields(new DeviceSlotConfig(),
                 audioOutputPath: path, assertAudioControl: true,
                 headphoneVolumePercent: lowered ? 10 : 100, assertHeadphoneVolume: true);
             Assert.True(RemoteLinkOutputRouter.ClaimOutput(File, peer));
-            UserEffectsDispatcher.NotePeerEffectBody(Id, File, 0x0CE6,
+            UserEffectsDispatcher.NotePeerEffectBody(Id, File, Pid,
                 Shipped(HMaestroProfileCatalog.GetProfileById("dualsense"), fields), peer);
         }
     }
@@ -443,7 +472,7 @@ public sealed class SharedSonyPadTests : IDisposable
             Assert.Empty(Marks);
             byte[] last = pad.Read();
             Assert.Equal((byte)0x10, last[3]);
-            Assert.Equal((byte)0x7F, last[FieldOffset(pad.Bt, "headphoneVolume")]);
+            Assert.Equal((byte)0x7F, last[FieldOffset(pad.Wire, "headphoneVolume")]);
         });
     }
 
@@ -463,33 +492,458 @@ public sealed class SharedSonyPadTests : IDisposable
             UserEffectsDispatcher.LetGoOfPeerMarks();
             byte[] last = pad.Read();
             Assert.Equal((byte)0x80, last[3]);
-            Assert.Equal(0, last[FieldOffset(pad.Bt, "audioControlFlags")] & 0x30);
+            Assert.Equal(0, last[FieldOffset(pad.Wire, "audioControlFlags")] & 0x30);
             Assert.False(Routed.ContainsKey(pad.Id));
         });
     }
 
-    /// <summary>Another peer holding the pad owns the path through its frames,
-    /// so nothing is written until it leaves too.</summary>
+    /// <summary>A peer that holds the pad and has asserted nothing does not
+    /// own the path through its frames, which carry none. What the one that left
+    /// put there goes, past that peer's lease, and its leaving owes nothing
+    /// more.</summary>
     [Fact]
-    public void APeerLeaving_WritesNothing_WhileAnotherPeerHoldsThePad()
+    public void APeerLeaving_GivesTheHeadsetBack_PastAPeerThatAssertedNothing()
     {
         var connected = new HashSet<string> { "a", "b" };
         WithPeers(connected, () =>
         {
             var pad = new SharedDualSense(dir);
-            pad.PeerAsserts("a", 4, lowered: false);
+            pad.PeerAsserts("a", 4, lowered: true);
             Assert.True(RemoteLinkOutputRouter.ClaimOutput(pad.File, "b"));
 
             connected.Remove("a");
             RemoteLinkOutputRouter.ReleasePeer("a");
             UserEffectsDispatcher.LetGoOfPeerMarks();
+            byte[] last = pad.Read();
+            Assert.Equal(0, last[FieldOffset(pad.Wire, "audioControlFlags")] & 0x30);
+            Assert.Equal((byte)0x7F, last[FieldOffset(pad.Wire, "headphoneVolume")]);
+            Assert.Empty(Marks);
+
+            ClearShared(pad.File);
+            connected.Remove("b");
+            RemoteLinkOutputRouter.ReleasePeer("b");
+            UserEffectsDispatcher.LetGoOfPeerMarks();
             Assert.Empty(pad.Read());
-            Assert.NotEmpty(Marks);
+        });
+    }
+
+    /// <summary>Two peers play to one pad and the second writes over the first.
+    /// When the second leaves, the pad takes the path and level the first last
+    /// asserted, past its lease when it is still sending, since its frames assert
+    /// them only when its setting changes. When the first leaves too, the pad
+    /// goes back to the headset at full.</summary>
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void APeerLeaving_PutsBackWhatTheConnectedPeerAsserted(bool theOtherWroteLast)
+    {
+        var connected = new HashSet<string> { "a", "b" };
+        WithPeers(connected, () =>
+        {
+            var pad = new SharedDualSense(dir);
+            pad.PeerAsserts("a", 4, lowered: true);
+            pad.PeerAsserts("b", 2, lowered: false);
+            if (theOtherWroteLast) Assert.True(RemoteLinkOutputRouter.ClaimOutput(pad.File, "a"));
 
             connected.Remove("b");
             RemoteLinkOutputRouter.ReleasePeer("b");
             UserEffectsDispatcher.LetGoOfPeerMarks();
-            Assert.NotEmpty(pad.Read());
+
+            byte[] last = pad.Read();
+            Assert.NotEmpty(last);
+            Assert.Equal(0x30, last[FieldOffset(pad.Wire, "audioControlFlags")] & 0x30);
+            Assert.Equal((byte)0x46, last[FieldOffset(pad.Wire, "headphoneVolume")]);
+            Assert.Single(Marks);
+            var resolved = Audio.GetMethod("ResolvedPathOf", Static)!;
+            Assert.Equal(4, (int)resolved.Invoke(null, new object[] { 255, pad.Id })!);
+
+            connected.Remove("a");
+            RemoteLinkOutputRouter.ReleasePeer("a");
+            UserEffectsDispatcher.LetGoOfPeerMarks();
+            last = pad.Read();
+            Assert.Equal(0, last[FieldOffset(pad.Wire, "audioControlFlags")] & 0x30);
+            Assert.Equal((byte)0x7F, last[FieldOffset(pad.Wire, "headphoneVolume")]);
+            Assert.Empty(Marks);
+            Assert.Equal(0, (int)resolved.Invoke(null, new object[] { 255, pad.Id })!);
+        });
+    }
+
+    /// <summary>The newest word of the peers still connected stands, whichever
+    /// of them spoke first.</summary>
+    [Theory]
+    [InlineData(4, 3, 0x20)]
+    [InlineData(3, 4, 0x30)]
+    public void APeerLeaving_PutsBackTheNewestWordOfThoseConnected(int first, int second, int flags)
+    {
+        var connected = new HashSet<string> { "a", "c", "b" };
+        WithPeers(connected, () =>
+        {
+            var pad = new SharedDualSense(dir);
+            pad.PeerAsserts("a", first, lowered: false);
+            pad.PeerAsserts("c", second, lowered: false);
+            pad.PeerAsserts("b", 2, lowered: false);
+
+            connected.Remove("b");
+            RemoteLinkOutputRouter.ReleasePeer("b");
+            UserEffectsDispatcher.LetGoOfPeerMarks();
+            Assert.Equal(flags, pad.Read()[FieldOffset(pad.Wire, "audioControlFlags")] & 0x30);
+        });
+    }
+
+    /// <summary>A peer says its level, its path, its pre-gain and its Speaker
+    /// Volume in frames of their own, and the pad gets all of them back, on every
+    /// wire a DualSense has. It does so once: the word stands after that, and
+    /// another pass writes nothing.</summary>
+    [Theory]
+    [InlineData(false, false)]
+    [InlineData(true, false)]
+    [InlineData(false, true)]
+    [InlineData(true, true)]
+    public void APeerLeaving_PutsBackAllTheConnectedPeerSaid_Once(bool usb, bool edge)
+    {
+        var connected = new HashSet<string> { "a", "b" };
+        WithPeers(connected, () =>
+        {
+            var pad = new SharedDualSense(dir, usb: usb, edge: edge);
+            pad.PeerAssertsOnly("a", percent: 10);
+            pad.PeerAssertsOnly("a", path: 4);
+            // A sink's frames say these two alone.
+            pad.PeerAssertsOnly("a", control2: 3, speaker: 0x50);
+            pad.PeerAsserts("b", 2, lowered: false);
+            pad.PeerAssertsOnly("b", control2: 0, speaker: 0);
+
+            connected.Remove("b");
+            RemoteLinkOutputRouter.ReleasePeer("b");
+            UserEffectsDispatcher.LetGoOfPeerMarks();
+            byte[] last = pad.Read();
+            Assert.Equal(0x30, last[FieldOffset(pad.Wire, "audioControlFlags")] & 0x30);
+            Assert.Equal((byte)0x46, last[FieldOffset(pad.Wire, "headphoneVolume")]);
+            Assert.Equal((byte)0x50, last[FieldOffset(pad.Wire, "speakerVolume")]);
+            Assert.Equal((byte)3, last[pad.Control2At]);
+            int valid = FieldOffset(pad.Wire, "validFlag0");
+            Assert.Equal(0xB0, last[valid] & 0xB0);
+            Assert.Equal(0x80, last[FieldOffset(pad.Wire, "validFlag1")] & 0x80);
+
+            ClearShared(pad.File);
+            UserEffectsDispatcher.LetGoOfPeerMarks();
+            Assert.Empty(pad.Read());
+        });
+    }
+
+    /// <summary>A frame that says the level alone takes the level, and clears the
+    /// mark when that is full. The peer that asked for it leaving gives the pad back the
+    /// lower level the one still connected asked for, with no other pad marked and
+    /// with one.</summary>
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void APeerLeaving_PutsBackALevelItsFrameRaised(bool anotherPadMarked)
+    {
+        var connected = new HashSet<string> { "a", "b" };
+        WithPeers(connected, () =>
+        {
+            var pad = new SharedDualSense(dir);
+            if (anotherPadMarked) new SharedDualSense(dir).PeerAsserts("a", 4, lowered: true);
+            pad.PeerAssertsOnly("a", percent: 10);
+            pad.PeerAssertsOnly("b", percent: 100);
+            Assert.Equal(anotherPadMarked ? 1 : 0, Marks.Count);
+
+            connected.Remove("b");
+            RemoteLinkOutputRouter.ReleasePeer("b");
+            UserEffectsDispatcher.NotePeerDropped("b");
+            Assert.True(SpinWait.SpinUntil(() => pad.Read().Length > 0, 10000));
+            Assert.Equal((byte)0x46, pad.Read()[FieldOffset(pad.Wire, "headphoneVolume")]);
+            Assert.True(Marks.Contains(pad.Id));
+        });
+    }
+
+    /// <summary>A path outlives no peer that set it because another peer said
+    /// something else: with the one that set it gone, the path goes home and the
+    /// level the other said stays as it is.</summary>
+    [Fact]
+    public void APeerLeaving_TakesItsPathWithIt_FromAPeerThatSaidOnlyTheLevel()
+    {
+        var connected = new HashSet<string> { "a", "b" };
+        WithPeers(connected, () =>
+        {
+            var pad = new SharedDualSense(dir);
+            pad.PeerAssertsOnly("a", path: 4);
+            pad.PeerAssertsOnly("b", percent: 50);
+
+            connected.Remove("a");
+            RemoteLinkOutputRouter.ReleasePeer("a");
+            UserEffectsDispatcher.LetGoOfPeerMarks();
+            byte[] last = pad.Read();
+            Assert.Equal(0, last[FieldOffset(pad.Wire, "audioControlFlags")] & 0x30);
+            Assert.Equal(0x80, last[3] & 0x80);
+            // The level's valid flag stays clear.
+            Assert.Equal(0, last[3] & 0x10);
+        });
+    }
+
+    /// <summary>Each field goes by its own newest word. One peer holds the path and
+    /// another the level, and the peer that wrote over the path leaving moves the
+    /// path alone.</summary>
+    [Fact]
+    public void APeerLeaving_PutsBackEachFieldFromItsOwnPeer()
+    {
+        var connected = new HashSet<string> { "a", "c", "b" };
+        WithPeers(connected, () =>
+        {
+            var pad = new SharedDualSense(dir);
+            pad.PeerAssertsOnly("a", path: 4);
+            pad.PeerAssertsOnly("b", path: 2);
+            pad.PeerAssertsOnly("c", percent: 10);
+
+            connected.Remove("b");
+            RemoteLinkOutputRouter.ReleasePeer("b");
+            UserEffectsDispatcher.LetGoOfPeerMarks();
+            byte[] last = pad.Read();
+            Assert.Equal(0x30, last[FieldOffset(pad.Wire, "audioControlFlags")] & 0x30);
+            Assert.Equal(0, last[3] & 0x10);
+            Assert.Single(Marks);
+        });
+    }
+
+    /// <summary>A slot of this PC writing to the pad with the peers quiet keeps it.
+    /// A peer that is still connected and said a path long ago does not take the pad
+    /// from that slot, and the slot asserts its route again.</summary>
+    [Fact]
+    public void APeerLeaving_WritesNoQuietPeersWord_OverASlotThatHoldsThePad()
+    {
+        var connected = new HashSet<string> { "a", "b" };
+        WithPeers(connected, () =>
+        {
+            var pad = new SharedDualSense(dir, slot: 15);
+            var saved = UserEffectsDispatcher.SlotPerDeviceConfigsProvider;
+            UserEffectsDispatcher.SlotPerDeviceConfigsProvider = null;
+            var cfg = new DeviceSlotConfig { LightbarMode = LightbarMode.Off, AudioOutputPath = AudioOutputPath.StereoHeadset };
+            using var dispatcher = new UserEffectsDispatcher(15, cfg, startTimer: false);
+            try
+            {
+                pad.PeerAsserts("b", 4, lowered: false);
+                pad.PeerAsserts("a", 2, lowered: false);
+                RemoteLinkOutputRouter.ReleaseDevice(pad.File);
+                RemoteLinkOutputRouter.NoteLocalWrite(pad.File);
+                ClearShared(pad.File);
+
+                connected.Remove("a");
+                RemoteLinkOutputRouter.ReleasePeer("a");
+                UserEffectsDispatcher.LetGoOfPeerMarks();
+                byte[] last = pad.Read();
+                Assert.True(last.Length == 0 || (last[FieldOffset(pad.Wire, "audioControlFlags")] & 0x30) != 0x30,
+                    "the quiet peer's speaker went out over the slot");
+                Assert.Empty(Marks);
+            }
+            finally
+            {
+                UserEffectsDispatcher.SlotPerDeviceConfigsProvider = saved;
+            }
+        });
+    }
+
+    /// <summary>A put-back drops the mark, and the slot that maps the pad asserts
+    /// its route again once it may: it wrote that route, and the pad no longer shows
+    /// it.</summary>
+    [Fact]
+    public void APutBack_HasTheSlotsAssertTheirRouteAgain()
+    {
+        var connected = new HashSet<string> { "a", "b" };
+        WithPeers(connected, () =>
+        {
+            var pad = new SharedDualSense(dir, slot: 15);
+            var saved = UserEffectsDispatcher.SlotPerDeviceConfigsProvider;
+            UserEffectsDispatcher.SlotPerDeviceConfigsProvider = null;
+            var cfg = new DeviceSlotConfig { LightbarMode = LightbarMode.Off, AudioOutputPath = AudioOutputPath.StereoHeadset };
+            using var dispatcher = new UserEffectsDispatcher(15, cfg, startTimer: false);
+            try
+            {
+                dispatcher.ApplyOnce();
+                const BindingFlags Private = BindingFlags.Instance | BindingFlags.NonPublic;
+                var prior = (Dictionary<Guid, int>)typeof(UserEffectsDispatcher).GetField("_prevAudioOutputPath", Private)!.GetValue(dispatcher)!;
+                Assert.True(prior.ContainsKey(pad.Id));
+
+                pad.PeerAsserts("a", 4, lowered: true);
+                Assert.True(RemoteLinkOutputRouter.ClaimOutput(pad.File, "b"));
+                connected.Remove("a");
+                RemoteLinkOutputRouter.ReleasePeer("a");
+                UserEffectsDispatcher.LetGoOfPeerMarks();
+                Assert.Empty(Marks);
+                Assert.False(prior.ContainsKey(pad.Id));
+            }
+            finally
+            {
+                UserEffectsDispatcher.SlotPerDeviceConfigsProvider = saved;
+            }
+        });
+    }
+
+    /// <summary>A let-go that comes after the release writes nothing: the pads are
+    /// the release's by then, and a frame past its guard can have said something
+    /// since.</summary>
+    [Fact]
+    public void APeerLeaving_WritesNothing_AfterTheRelease()
+    {
+        var connected = new HashSet<string> { "a", "b" };
+        WithPeers(connected, () =>
+        {
+            var pad = new SharedDualSense(dir);
+            UserEffectsDispatcher.ReleaseAudioRoutes();
+            try
+            {
+                pad.PeerAsserts("a", 4, lowered: false);
+                pad.PeerAsserts("b", 2, lowered: false);
+                ClearShared(pad.File);
+
+                connected.Remove("b");
+                RemoteLinkOutputRouter.ReleasePeer("b");
+                UserEffectsDispatcher.LetGoOfPeerMarks();
+                Assert.Empty(pad.Read());
+            }
+            finally
+            {
+                UserEffectsDispatcher.ResumeAudioRoutes();
+            }
+        });
+    }
+
+    /// <summary>A frame past its guard marks a pad after the release cleared what
+    /// peers said. The mark is all there is, and it moves when its peer is gone.</summary>
+    [Fact]
+    public void AMarkWithNoWords_MovesOnceItsPeerIsGone()
+    {
+        var connected = new HashSet<string> { "a", "b" };
+        WithPeers(connected, () =>
+        {
+            var pad = new SharedDualSense(dir);
+            UserEffectsDispatcher.ReleaseAudioRoutes();
+            try
+            {
+                pad.PeerAsserts("a", 4, lowered: true);
+                Assert.True(RemoteLinkOutputRouter.ClaimOutput(pad.File, "b"));
+                connected.Remove("a");
+                RemoteLinkOutputRouter.ReleasePeer("a");
+                UserEffectsDispatcher.LetGoOfPeerMarks();
+                Assert.Single(Marks);
+            }
+            finally
+            {
+                UserEffectsDispatcher.ResumeAudioRoutes();
+            }
+
+            connected.Remove("b");
+            RemoteLinkOutputRouter.ReleasePeer("b");
+            UserEffectsDispatcher.LetGoOfPeerMarks();
+            Assert.Empty(Marks);
+            Assert.Equal(0, pad.Read()[FieldOffset(pad.Wire, "audioControlFlags")] & 0x30);
+        });
+    }
+
+    /// <summary>The last peer's path goes with it even when it left no mark: a peer
+    /// that asked for the headset leaves no sink mapping by what it asked.</summary>
+    [Fact]
+    public void TheLastPeerLeaving_ForgetsThePathItSaid_MarkOrNoMark()
+    {
+        var connected = new HashSet<string> { "a" };
+        WithPeers(connected, () =>
+        {
+            var pad = new SharedDualSense(dir);
+            pad.PeerAssertsOnly("a", path: 1);
+            var body = Shipped(HMaestroProfileCatalog.GetProfileById("dualsense"),
+                Ds5EffectSynthesizer.BuildFields(new DeviceSlotConfig(), audioOutputPath: 1, assertAudioControl: true));
+            AudioPassthroughService.NoteRemoteSonyBody(pad.Id, pad.Pid, body);
+            var resolved = Audio.GetMethod("ResolvedPathOf", Static)!;
+            Assert.Equal(1, (int)resolved.Invoke(null, new object[] { 255, pad.Id })!);
+
+            connected.Clear();
+            RemoteLinkOutputRouter.ReleasePeer("a");
+            UserEffectsDispatcher.LetGoOfPeerMarks();
+            Assert.Equal(0, (int)resolved.Invoke(null, new object[] { 255, pad.Id })!);
+        });
+    }
+
+    /// <summary>A peer that left and came back has said nothing to this session,
+    /// so what it said before stays gone.</summary>
+    [Fact]
+    public void APeerThatCameBack_HasSaidNothingYet()
+    {
+        var connected = new HashSet<string> { "a", "b" };
+        WithPeers(connected, () =>
+        {
+            var pad = new SharedDualSense(dir);
+            pad.PeerAsserts("a", 4, lowered: true);
+            pad.PeerAsserts("b", 2, lowered: false);
+
+            connected.Remove("a");
+            RemoteLinkOutputRouter.ReleasePeer("a");
+            UserEffectsDispatcher.LetGoOfPeerMarks();
+            connected.Add("a");
+
+            connected.Remove("b");
+            RemoteLinkOutputRouter.ReleasePeer("b");
+            UserEffectsDispatcher.LetGoOfPeerMarks();
+            Assert.Equal(0, pad.Read()[FieldOffset(pad.Wire, "audioControlFlags")] & 0x30);
+            Assert.Empty(Marks);
+        });
+    }
+
+    /// <summary>A pad this PC stopped sharing, and a release of every route, end
+    /// what peers said of it, connected or not.</summary>
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void WhatPeersSaid_EndsWithTheShareAndTheRelease(bool release)
+    {
+        var connected = new HashSet<string> { "a", "b" };
+        WithPeers(connected, () =>
+        {
+            var pad = new SharedDualSense(dir);
+            pad.PeerAsserts("a", 4, lowered: true);
+            if (release)
+            {
+                UserEffectsDispatcher.ReleaseAudioRoutes();
+                UserEffectsDispatcher.ResumeAudioRoutes();
+            }
+            else
+            {
+                UserEffectsDispatcher.NoteDeviceUnshared(pad.Id);
+                Assert.True(System.Threading.SpinWait.SpinUntil(() => Marks.Count == 0, 10000));
+            }
+
+            pad.PeerAsserts("b", 2, lowered: false);
+            connected.Remove("b");
+            RemoteLinkOutputRouter.ReleasePeer("b");
+            UserEffectsDispatcher.LetGoOfPeerMarks();
+            Assert.Equal(0, pad.Read()[FieldOffset(pad.Wire, "audioControlFlags")] & 0x30);
+        });
+    }
+
+    /// <summary>What a peer asserted leaves with it: the first peer is gone when
+    /// the second leaves, so nothing of the first's comes back. The second left
+    /// the level full, so only the path goes back.</summary>
+    [Fact]
+    public void APeerThatLeftEarlier_IsNotPutBack()
+    {
+        var connected = new HashSet<string> { "a", "b" };
+        WithPeers(connected, () =>
+        {
+            var pad = new SharedDualSense(dir);
+            pad.PeerAsserts("a", 4, lowered: true);
+            pad.PeerAsserts("b", 2, lowered: false);
+
+            connected.Remove("a");
+            RemoteLinkOutputRouter.ReleasePeer("a");
+            UserEffectsDispatcher.NotePeerDropped("a");
+            UserEffectsDispatcher.LetGoOfPeerMarks();
+            Assert.Empty(pad.Read());
+
+            connected.Remove("b");
+            RemoteLinkOutputRouter.ReleasePeer("b");
+            UserEffectsDispatcher.LetGoOfPeerMarks();
+            byte[] last = pad.Read();
+            Assert.NotEmpty(last);
+            Assert.Equal(0, last[FieldOffset(pad.Wire, "audioControlFlags")] & 0x30);
+            Assert.NotEqual((byte)0x46, last[FieldOffset(pad.Wire, "headphoneVolume")]);
             Assert.Empty(Marks);
         });
     }
@@ -511,7 +965,7 @@ public sealed class SharedSonyPadTests : IDisposable
             try
             {
                 dispatcher.ApplyOnce();
-                var levelAt = FieldOffset(pad.Bt, "headphoneVolume");
+                var levelAt = FieldOffset(pad.Wire, "headphoneVolume");
                 byte slotLevel = pad.Read()[levelAt];
                 Assert.True(slotLevel is > 0 and < 0x7F);
                 // The claim burst asserts everything on every frame, so it runs
@@ -524,7 +978,7 @@ public sealed class SharedSonyPadTests : IDisposable
 
                 pad.PeerAsserts("a", 4, lowered: true);
                 AudioPassthroughService.NoteRemoteSonyBody(pad.Id, 0x0CE6, new byte[] { 0x80, 0, 0, 0, 0, 0, 0, 0x30 });
-                System.IO.File.WriteAllBytes(pad.File, []);
+                ClearShared(pad.File);
                 connected.Clear();
                 RemoteLinkOutputRouter.ReleasePeer("a");
                 UserEffectsDispatcher.LetGoOfPeerMarks();
@@ -534,7 +988,7 @@ public sealed class SharedSonyPadTests : IDisposable
                     byte[] frame = pad.Read();
                     return frame.Length > 0 && !Routed.ContainsKey(pad.Id)
                         && (frame[3] & 0x90) == 0x90 && frame[levelAt] == slotLevel
-                        && (frame[FieldOffset(pad.Bt, "audioControlFlags")] & 0x30) == 0;
+                        && (frame[FieldOffset(pad.Wire, "audioControlFlags")] & 0x30) == 0;
                 }, 5000));
                 var resolved = Audio.GetMethod("ResolvedPathOf", Static)!;
                 Assert.Equal(0, (int)resolved.Invoke(null, new object[] { 255, pad.Id })!);
@@ -602,7 +1056,7 @@ public sealed class SharedSonyPadTests : IDisposable
         WithPeers(connected, () =>
         {
             var pad = new SharedDualSense(dir);
-            Routed[pad.Id] = (pad.File, pad.Bt, true);
+            Routed[pad.Id] = (pad.File, pad.Wire, true);
             pad.PeerAsserts("a", 4, lowered: false);
             RemoteLinkOutputRouter.ReleaseDevice(pad.File);
 
@@ -613,7 +1067,7 @@ public sealed class SharedSonyPadTests : IDisposable
             connected.Clear();
             RemoteLinkOutputRouter.ReleasePeer("a");
             UserEffectsDispatcher.LetGoOfPeerMarks();
-            Assert.Equal(0, pad.Read()[FieldOffset(pad.Bt, "audioControlFlags")] & 0x30);
+            Assert.Equal(0, pad.Read()[FieldOffset(pad.Wire, "audioControlFlags")] & 0x30);
             Assert.False(Routed.ContainsKey(pad.Id));
             Assert.Empty(Marks);
         });
@@ -634,19 +1088,21 @@ public sealed class SharedSonyPadTests : IDisposable
             Assert.True(RemoteLinkOutputRouter.ClaimOutput(pad.File, "a"));
 
             UserEffectsDispatcher.NotePeerEffectBody(pad.Id, pad.File, 0x0CE6, body, "a");
-            UserEffectsDispatcher.NotePeerFrameApplied(pad.Id);
+            UserEffectsDispatcher.NotePeerFrameApplied(pad.Id, pad.File, 0x0CE6, body, "a");
             Assert.Single(Marks);
             Assert.Empty(pad.Read());
 
             connected.Clear();
             RemoteLinkOutputRouter.ReleasePeer("a");
-            Marks.Clear();
-            UserEffectsDispatcher.NotePeerDropped("a");
+            UserEffectsDispatcher.LetGoOfPeerMarks();
+            Assert.Empty(Marks);
+            ClearShared(pad.File);
 
-            UserEffectsDispatcher.NotePeerEffectBody(pad.Id, pad.File, 0x0CE6, body, "a");
-            UserEffectsDispatcher.NotePeerFrameApplied(pad.Id);
+            // The let-go ran between this frame's note and its send, and took the note
+            // with it. The frame says it again when it has landed.
+            UserEffectsDispatcher.NotePeerFrameApplied(pad.Id, pad.File, 0x0CE6, body, "a");
             Assert.True(SpinWait.SpinUntil(() => Marks.Count == 0 && !Routed.ContainsKey(pad.Id) && pad.Read().Length > 0, 5000));
-            Assert.Equal(0, pad.Read()[FieldOffset(pad.Bt, "audioControlFlags")] & 0x30);
+            Assert.Equal(0, pad.Read()[FieldOffset(pad.Wire, "audioControlFlags")] & 0x30);
         });
     }
 
@@ -661,8 +1117,12 @@ public sealed class SharedSonyPadTests : IDisposable
         string src = File.ReadAllText(Path.Combine(root.FullName, "PadForge.App", "Services", "InputService.cs"));
         int mark = src.IndexOf("UserEffectsDispatcher.NotePeerEffectBody(", StringComparison.Ordinal);
         int send = src.IndexOf("SDL3.SDL.SDL_SendGamepadEffect(handle, effect.SonyBody,", mark, StringComparison.Ordinal);
-        int asked = src.IndexOf("UserEffectsDispatcher.NotePeerFrameApplied(ud.InstanceGuid);", StringComparison.Ordinal);
+        int asked = src.IndexOf("UserEffectsDispatcher.NotePeerFrameApplied(ud.InstanceGuid, ud.DevicePath,", StringComparison.Ordinal);
         Assert.True(mark > 0 && send > mark && asked > send);
+        // A let-go between the two puts back the path before this frame's, and this
+        // frame's comes last.
+        int path = src.IndexOf("AudioPassthroughService.NoteRemoteSonyBody(ud.InstanceGuid,", StringComparison.Ordinal);
+        Assert.True(path > mark && path < send, $"{mark} {path} {send}");
     }
 
     /// <summary>The owner applies each relayed body to the marks, and a peer's
@@ -727,6 +1187,12 @@ public sealed class SharedSonyPadTests : IDisposable
 
     static System.Collections.Concurrent.ConcurrentDictionary<Guid, long> Demand =>
         (System.Collections.Concurrent.ConcurrentDictionary<Guid, long>)Audio.GetField("_remoteAudioDemand", Static)!.GetValue(null)!;
+
+    static void ClearShared(string file)
+    {
+        using var stream = new FileStream(file, FileMode.Open, FileAccess.Write, FileShare.ReadWrite);
+        stream.SetLength(0);
+    }
 
     static byte[] ReadShared(string file)
     {

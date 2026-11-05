@@ -317,6 +317,45 @@ namespace PadForge.Common.Input
         private readonly record struct PeerAudioMark(string Path, HMProfile Profile, string Peer, bool OffHeadset, bool Lowered);
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, PeerAudioMark> s_peerAudioMarks = new();
 
+        // What each peer last said of a DualSense of this PC, field by field, and
+        // when. A peer's frames say a field only when its own setting changes, and
+        // the relay drops a body that has not changed, so when a peer leaves this
+        // is the only record of what the ones still connected want. A pad shows
+        // the newest word of each field (SettlePeerWords).
+        private readonly record struct PeerWord(long Order, byte Value);
+        private readonly record struct PeerAudioWords(string Path, HMProfile Profile,
+            PeerWord? Route, PeerWord? Control2, PeerWord? Level, PeerWord? Speaker);
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<(Guid Device, string Peer), PeerAudioWords> s_peerAudioWords = new();
+        private static long s_peerWordOrder;
+
+        // Held while a frame records what it says, and while what peers said is
+        // read and written to a pad, so an older word never lands over a newer
+        // one. Frames that say none of these fields never take it. It is taken
+        // outside s_writeGate, which stays a leaf.
+        private static readonly object s_peerWordGate = new();
+
+        /// <summary>One field's newest word on a pad, and its newest word from a
+        /// peer still connected.</summary>
+        private struct NewestWord
+        {
+            public PeerWord? Standing, Kept;
+            public string KeptBy;
+
+            public void Note(PeerWord? word, bool keeps, string peer)
+            {
+                if (word is not PeerWord said) return;
+                if (Standing is not PeerWord standing || said.Order > standing.Order) Standing = said;
+                if (keeps && (Kept is not PeerWord kept || said.Order > kept.Order))
+                {
+                    Kept = said;
+                    KeptBy = peer;
+                }
+            }
+
+            /// <summary>What the pad shows of this field came from a peer that left.</summary>
+            public readonly bool Left => Standing != null && Standing != Kept;
+        }
+
         // Set when the routes are released and cleared at the next engine
         // start (ResumeAudioRoutes). While set, no frame routes a pad: none
         // counts PadForge as playing to it, asserts an explicit path or a
@@ -544,20 +583,34 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Owner side: reads what a peer's DualSense effect body
-        /// asserts: valid_flag0 bit 7 with the path in bits 4-5 of byte 7, and
-        /// valid_flag0 bit 4 with the Headphone Volume in byte 4. What it leaves
-        /// alone stays as the last frame set it.</summary>
+        /// asserts: valid_flag0 bit 7 with the path in bits 4-5 of byte 7,
+        /// valid_flag0 bit 4 with the Headphone Volume in byte 4, valid_flag0 bit 5
+        /// with the Speaker Volume in byte 5, and valid_flag1 bit 7 with the
+        /// pre-gain in byte 37. What it leaves alone stays as the last frame set
+        /// it.</summary>
         internal static void NotePeerEffectBody(Guid device, string path, ushort productId, byte[] body, string peer)
         {
             if (productId is not (PidStandard or PidEdge) || body == null || body.Length < 8) return;
             bool assertsPath = (body[0] & 0x80) != 0, assertsLevel = (body[0] & 0x10) != 0;
-            if (!assertsPath && !assertsLevel) return;
-            s_peerAudioMarks.TryGetValue(device, out var mark);
-            bool offHeadset = assertsPath ? ((body[7] >> 4) & 0x03) != 0 : mark.OffHeadset;
-            bool lowered = assertsLevel ? body[4] < Ds5EffectSynthesizer.HeadphoneVolumeFull : mark.Lowered;
-            if (!offHeadset && !lowered) s_peerAudioMarks.TryRemove(device, out _);
-            else s_peerAudioMarks[device] = new PeerAudioMark(path,
-                ResolveSonyProfile(productId, PlayStationEffectWriter.IsBluetoothPath(path)), peer, offHeadset, lowered);
+            bool assertsSpeaker = (body[0] & 0x20) != 0, assertsControl2 = (body[1] & 0x80) != 0 && body.Length > 37;
+            if (!assertsPath && !assertsLevel && !assertsSpeaker && !assertsControl2) return;
+            lock (s_peerWordGate)
+            {
+                s_peerAudioWords.TryGetValue((device, peer), out var said);
+                var profile = said.Path == path ? said.Profile
+                    : ResolveSonyProfile(productId, PlayStationEffectWriter.IsBluetoothPath(path));
+                s_peerAudioWords[(device, peer)] = new PeerAudioWords(path, profile,
+                    assertsPath ? new PeerWord(++s_peerWordOrder, body[7]) : said.Route,
+                    assertsControl2 ? new PeerWord(++s_peerWordOrder, body[37]) : said.Control2,
+                    assertsLevel ? new PeerWord(++s_peerWordOrder, body[4]) : said.Level,
+                    assertsSpeaker ? new PeerWord(++s_peerWordOrder, body[5]) : said.Speaker);
+                if (!assertsPath && !assertsLevel) return;
+                s_peerAudioMarks.TryGetValue(device, out var mark);
+                bool offHeadset = assertsPath ? ((body[7] >> 4) & 0x03) != 0 : mark.OffHeadset;
+                bool lowered = assertsLevel ? body[4] < Ds5EffectSynthesizer.HeadphoneVolumeFull : mark.Lowered;
+                if (!offHeadset && !lowered) s_peerAudioMarks.TryRemove(device, out _);
+                else s_peerAudioMarks[device] = new PeerAudioMark(path, profile, peer, offHeadset, lowered);
+            }
         }
 
         /// <summary>A peer's last session dropped. Runs after
@@ -565,7 +618,7 @@ namespace PadForge.Common.Input
         /// since the link server calls it and the pads take a write.</summary>
         internal static void NotePeerDropped(string peer)
         {
-            if (s_peerAudioMarks.IsEmpty) return;
+            if (s_peerAudioMarks.IsEmpty && s_peerAudioWords.IsEmpty) return;
             System.Threading.ThreadPool.QueueUserWorkItem(static _ =>
             {
                 try { LetGoOfPeerMarks(); } catch { }
@@ -573,14 +626,16 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>A peer's frame has reached the pad. Its last session can
-        /// have dropped after the frame's claim, with the let-go already gone
-        /// and finding nothing, so a mark the frame left for a peer that no
-        /// longer holds the pad takes the let-go now. It runs after the frame,
-        /// so the headset path lands last.</summary>
-        internal static void NotePeerFrameApplied(Guid device)
+        /// have dropped after the frame's claim, with the let-go already gone and
+        /// finding nothing, or having taken this frame's word with it. So what the
+        /// frame said for a peer that no longer holds the pad is noted again, and
+        /// takes the let-go now. It runs after the frame, so what the pad goes back
+        /// to lands last.</summary>
+        internal static void NotePeerFrameApplied(Guid device, string path, ushort productId, byte[] body, string peer)
         {
-            if (!s_peerAudioMarks.TryGetValue(device, out var mark)
-                || RemoteLinkOutputRouter.PeerKeepsDevice(mark.Path, mark.Peer)) return;
+            if (RemoteLinkOutputRouter.PeerKeepsDevice(null, peer)) return;
+            NotePeerEffectBody(device, path, productId, body, peer);
+            if (!s_peerAudioWords.ContainsKey((device, peer))) return;
             System.Threading.ThreadPool.QueueUserWorkItem(static _ =>
             {
                 try { LetGoOfPeerMarks(); } catch { }
@@ -590,6 +645,8 @@ namespace PadForge.Common.Input
         /// <summary>This PC stopped sharing a pad, so no peer can hold it.</summary>
         internal static void NoteDeviceUnshared(Guid device)
         {
+            foreach (var said in s_peerAudioWords.Keys)
+                if (said.Device == device) s_peerAudioWords.TryRemove(said, out _);
             if (!s_peerAudioMarks.ContainsKey(device)) return;
             System.Threading.ThreadPool.QueueUserWorkItem(_ =>
             {
@@ -597,10 +654,9 @@ namespace PadForge.Common.Input
             });
         }
 
-        /// <summary>Hands what peers left on a pad to the lists this PC's own
-        /// routes use, once no connected peer holds it, or for
-        /// <paramref name="unshared"/> alone. A connected peer that asserted
-        /// the path or wrote last keeps it, since its frames own the pad. After
+        /// <summary>Settles the pads a peer that left said something of
+        /// (<see cref="SettlePeerWords"/>), or hands what peers left on
+        /// <paramref name="unshared"/> to the lists this PC's own routes use. After
         /// that the two usual writers take over: a slot that holds the pad
         /// forgets what it wrote and asserts its own path and level again, an
         /// Automatic slot gives the headset back to a listed pad, and with no
@@ -610,12 +666,20 @@ namespace PadForge.Common.Input
         internal static void LetGoOfPeerMarks(Guid? unshared = null)
         {
             List<Guid> moved = null;
-            foreach (var entry in s_peerAudioMarks)
+            if (unshared is Guid only)
             {
-                if (unshared is Guid only ? entry.Key != only
-                    : RemoteLinkOutputRouter.PeerKeepsDevice(entry.Value.Path, entry.Value.Peer)) continue;
-                MovePeerMark(entry.Key, entry.Value);
-                (moved ??= new List<Guid>()).Add(entry.Key);
+                if (s_peerAudioMarks.TryGetValue(only, out var mark))
+                {
+                    MovePeerMark(only, mark);
+                    moved = new List<Guid> { only };
+                }
+            }
+            else
+            {
+                var pads = new HashSet<Guid>(s_peerAudioMarks.Keys);
+                foreach (var said in s_peerAudioWords.Keys) pads.Add(said.Device);
+                foreach (var pad in pads)
+                    if (SettlePeerWords(pad)) (moved ??= new List<Guid>()).Add(pad);
             }
             if (moved == null) return;
             foreach (var dispatcher in _instances.Values)
@@ -625,6 +689,108 @@ namespace PadForge.Common.Input
                 dispatcher.QueueDispatch();
             }
             SweepOrphanedRoutes();
+        }
+
+        /// <summary>Settles one pad once a peer has left. A field whose newest word
+        /// came from a peer still connected stays as it is. A field whose newest word
+        /// came from one that left goes to the newest word of those connected, or
+        /// where it starts when none has said it: the headset, full volume, no
+        /// pre-gain. That goes past the lease, since a connected peer's frames will
+        /// not say it again and the lease is theirs. With no connected peer holding
+        /// the pad, or a slot of this PC writing to it with the lease lapsed, the usual
+        /// let-go takes over instead. True when the pad's slots owe an assert: what
+        /// they last wrote is no longer what it shows.</summary>
+        private static bool SettlePeerWords(Guid device)
+        {
+            // Ahead of the gate, which is taken outside the write gate alone.
+            var settings = SettingsManager.UserSettings;
+            bool slotHolds = settings != null && ASlotHolds(settings, device);
+            lock (s_peerWordGate)
+            {
+                NewestWord route = default, control2 = default, level = default, speaker = default;
+                string path = null;
+                HMProfile profile = null;
+                List<(Guid, string)> gone = null;
+                foreach (var entry in s_peerAudioWords)
+                {
+                    if (entry.Key.Device != device) continue;
+                    bool keeps = RemoteLinkOutputRouter.PeerKeepsDevice(null, entry.Key.Peer);
+                    if (!keeps) (gone ??= new List<(Guid, string)>()).Add(entry.Key);
+                    path = entry.Value.Path;
+                    profile = entry.Value.Profile;
+                    route.Note(entry.Value.Route, keeps, entry.Key.Peer);
+                    control2.Note(entry.Value.Control2, keeps, entry.Key.Peer);
+                    level.Note(entry.Value.Level, keeps, entry.Key.Peer);
+                    speaker.Note(entry.Value.Speaker, keeps, entry.Key.Peer);
+                }
+                // What a peer that left said is settled here, and it says nothing
+                // to a session it opens later.
+                if (gone != null)
+                    foreach (var key in gone) s_peerAudioWords.TryRemove(key, out _);
+
+                bool hadMark = s_peerAudioMarks.TryGetValue(device, out var mark);
+                // A frame past its guard can mark a pad after the release cleared
+                // the words, and only the mark says what it left.
+                if (path == null)
+                {
+                    if (!hadMark || RemoteLinkOutputRouter.PeerKeepsDevice(mark.Path, mark.Peer)) return false;
+                    MovePeerMark(device, mark);
+                    return true;
+                }
+                if (!route.Left && !control2.Left && !level.Left && !speaker.Left) return false;
+                bool peerHolds = route.Kept != null || control2.Kept != null || level.Kept != null || speaker.Kept != null
+                    || RemoteLinkOutputRouter.PeerKeepsDevice(path, null);
+                if (!peerHolds || (slotHolds && !RemoteLinkOutputRouter.IsClaimedByPeer(path)))
+                {
+                    if (!peerHolds) AudioPassthroughService.ForgetRemotePath(device);
+                    if (hadMark) MovePeerMark(device, mark);
+                    return hadMark;
+                }
+
+                byte? writeRoute = route.Left ? route.Kept?.Value ?? 0 : null;
+                byte? writeLevel = level.Left ? level.Kept?.Value ?? Ds5EffectSynthesizer.HeadphoneVolumeFull : null;
+                // The headset frame's pre-gain, when nobody has said one.
+                byte? writeControl2 = control2.Left ? control2.Kept?.Value ?? 0
+                    : route.Left && route.Kept == null && control2.Standing == null ? (byte)0 : null;
+                // A Speaker Volume nobody said any more stays: only a speaker reads it.
+                byte? writeSpeaker = speaker.Left ? speaker.Kept?.Value : null;
+                bool offHeadset = (((route.Kept?.Value ?? 0) >> 4) & 0x03) != 0;
+                bool lowered = (level.Kept?.Value ?? Ds5EffectSynthesizer.HeadphoneVolumeFull) < Ds5EffectSynthesizer.HeadphoneVolumeFull;
+                bool written = false;
+                lock (s_writeGate)
+                {
+                    // The release has every pad from here on (WriteRemoteFedRoute).
+                    if (s_audioRoutesReleased) return false;
+                    try
+                    {
+                        written = PlayStationEffectWriter.WritePastTheLease(path, profile,
+                            Ds5EffectSynthesizer.PeerAudioFields(writeRoute, writeControl2, writeLevel, writeSpeaker));
+                    }
+                    catch { }
+                    // The release ran during the write and could not wait for it.
+                    if (written && s_audioRoutesReleased)
+                    {
+                        if (offHeadset) s_routedOffHeadset[device] = (path, profile, true);
+                        if (lowered) s_headphoneLowered[device] = (path, profile);
+                        LetGoOfEveryListedPad();
+                        return false;
+                    }
+                }
+                if (!written)
+                {
+                    if (hadMark) MovePeerMark(device, mark);
+                    return hadMark;
+                }
+                if (offHeadset || lowered)
+                    s_peerAudioMarks[device] = new PeerAudioMark(path, profile, offHeadset ? route.KeptBy : level.KeptBy, offHeadset, lowered);
+                else s_peerAudioMarks.TryRemove(device, out _);
+                if (route.Left)
+                {
+                    if (route.Kept is PeerWord named) AudioPassthroughService.NoteRemotePath(device, named.Value);
+                    else AudioPassthroughService.ForgetRemotePath(device);
+                }
+                return true;
+            }
         }
 
         private static void MovePeerMark(Guid device, PeerAudioMark mark)
@@ -692,6 +858,7 @@ namespace PadForge.Common.Input
             // hold the lease on a pad this PC's frames listed.
             foreach (var entry in s_routedOffHeadset) RemoteLinkOutputRouter.ReleaseDevice(entry.Value.Path);
             foreach (var entry in s_headphoneLowered) RemoteLinkOutputRouter.ReleaseDevice(entry.Value.Path);
+            s_peerAudioWords.Clear();
             LetGoOfEveryPadAtRelease(seq);
         }
 

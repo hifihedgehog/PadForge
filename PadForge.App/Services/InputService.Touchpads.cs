@@ -22,10 +22,10 @@ namespace PadForge.Services;
 /// restarted, so Windows opens it again. A touchpad is often a laptop's only
 /// pointer, so it is not left hidden with nothing reading it, kept cloaks
 /// included. A crash or a Windows restart releases it at once
-/// (<see cref="ReleaseTouchpadsNow"/>). A kill or a power cut cannot, and the
-/// one-shot task registered before the hide is written releases it at the next
-/// boot (<see cref="GiveBackTask"/>). Until that boot, or the next start of
-/// PadForge, a killed PadForge leaves it hidden.
+/// (<see cref="ReleaseTouchpadsNow"/>). A kill cannot, and the task registered
+/// before the hide is written is waiting for PadForge to end, and releases it at
+/// once. A power cut stops that wait too, and the same task releases it at the
+/// next boot (<see cref="GiveBackTask"/>).
 /// </summary>
 public partial class InputService
 {
@@ -128,9 +128,9 @@ public partial class InputService
 
     /// <summary>Registers a touchpad's give-back task unless one from this
     /// session still stands. False when schtasks refused it, and the touchpad is then not hidden. A
-    /// PC with no HidHide CLI has no such task to make, and its touchpad is
-    /// hidden with the release at crash and session end alone. True when the
-    /// hide may be written.</summary>
+    /// PC where no task can take a hide off (<see cref="GiveBackTask.Outcome.NoTool"/>)
+    /// has its touchpad hidden with the release at crash and session end alone.
+    /// True when the hide may be written.</summary>
     internal static bool CoverTouchpadHide(string id, ISet<string> covered, ref long retryAt, long now,
         Func<string, GiveBackTask.Outcome> register, List<string> hidLog)
     {
@@ -143,7 +143,7 @@ public partial class InputService
                 return true;
             case GiveBackTask.Outcome.NoTool:
                 covered.Add(id);
-                hidLog.Add($"HIDHIDE touchpad {id} has no boot give-back: this PC has no HidHide CLI");
+                hidLog.Add($"HIDHIDE touchpad {id} has no give-back task: its path cannot be quoted and this PC has no HidHide CLI");
                 return true;
             default:
                 retryAt = now + TouchpadCoverRetryMs;

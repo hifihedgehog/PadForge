@@ -99,8 +99,23 @@ namespace PadForge.Tests
             public void Drop() => LastWrites[File] = long.MaxValue;
             public void Land() => LastWrites.TryRemove(File, out _);
 
-            public void Clear() => System.IO.File.WriteAllBytes(File, Array.Empty<byte>());
-            public byte[] Read() => System.IO.File.ReadAllBytes(File);
+            /// <summary>These two share as a HID handle shares
+            /// (PlayStationEffectWriter opens FILE_SHARE_READ | FILE_SHARE_WRITE), as
+            /// SharedSonyPadTests.ReadShared does. File.ReadAllBytes denies writers, so
+            /// a poll that met a sweep's write failed it, and a let-go has one try.</summary>
+            public void Clear()
+            {
+                using var stream = new FileStream(File, FileMode.Open, FileAccess.Write, FileShare.ReadWrite);
+                stream.SetLength(0);
+            }
+
+            public byte[] Read()
+            {
+                using var stream = new FileStream(File, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                var bytes = new byte[stream.Length];
+                stream.ReadExactly(bytes);
+                return bytes;
+            }
 
             /// <summary>Retires the dispatcher, as engine stop destroys the
             /// virtual controllers before it releases the routes.</summary>
@@ -282,8 +297,8 @@ namespace PadForge.Tests
             {
                 pad.Settle();
                 Assert.True(Routed.ContainsKey(pad.Id));
-                pad.Unmap();
                 pad.Clear();
+                pad.Unmap();
                 pad.Apply();
                 AssertHeadsetFrame(pad, pad.Read());
                 Assert.False(Routed.ContainsKey(pad.Id));
@@ -301,13 +316,12 @@ namespace PadForge.Tests
             try
             {
                 pad.Settle();
-                pad.Unmap();
+                Assert.True(Routed.ContainsKey(pad.Id));
                 pad.Clear();
+                pad.Unmap();
                 pad.Retire();
-                var deadline = DateTime.UtcNow.AddSeconds(30);
-                while (pad.Read().Length == 0 && DateTime.UtcNow < deadline) Thread.Sleep(20);
+                Assert.True(SpinWait.SpinUntil(() => !Routed.ContainsKey(pad.Id), 30000), "the sweep let the pad go");
                 AssertHeadsetFrame(pad, pad.Read());
-                Assert.False(Routed.ContainsKey(pad.Id));
             }
             finally { Routed.Clear(); }
         }
@@ -384,9 +398,9 @@ namespace PadForge.Tests
             try
             {
                 pad.Settle();
-                pad.Unmap();
                 pad.Drop();
                 pad.Clear();
+                pad.Unmap();
                 pad.Apply();
                 Assert.Empty(pad.Read());
                 Assert.True(Routed.ContainsKey(pad.Id));
@@ -651,10 +665,10 @@ namespace PadForge.Tests
             try
             {
                 pad.Settle();
-                pad.Unmap();
                 string gone = pad.File + ".missing";
                 Routed[pad.Id] = (gone, Routed[pad.Id].Profile, true);
                 SettingsManager.UserDevices.Items[0].DevicePath = gone;
+                pad.Unmap();
                 Sweep();
                 Assert.True(Tried.ContainsKey(pad.Id));
                 Assert.True(Routed.ContainsKey(pad.Id));

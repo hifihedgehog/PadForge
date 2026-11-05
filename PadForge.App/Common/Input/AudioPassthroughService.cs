@@ -127,8 +127,12 @@ namespace PadForge.Common.Input
         internal static void NoteRemoteSonyBody(Guid device, ushort productId, byte[] body)
         {
             if (!Ds5Pids.Contains(productId) || body == null || body.Length < 8 || (body[0] & 0x80) == 0) return;
-            _remotePeerPath[device] = ((body[7] >> 4) & 0x03) + 1;
+            NoteRemotePath(device, body[7]);
         }
+
+        /// <summary>The path a peer asserted, from its audio control byte.</summary>
+        internal static void NoteRemotePath(Guid device, byte audioControl)
+            => _remotePeerPath[device] = ((audioControl >> 4) & 0x03) + 1;
 
         /// <summary>No peer holds the pad any more, so a remote-fed sink maps
         /// its channels by this PC's own Output Path again.</summary>

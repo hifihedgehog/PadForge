@@ -159,6 +159,7 @@ namespace PadForge.Common.Input.Peripherals
             if (!_leds.TryGetValue(category, out var leds)) return true;
             for (int i = 0; i < leds.Count; i++)
             {
+                if (RunEnded) return true;
                 var led = leds[i];
                 if (_refused.Contains(led)) continue;
                 int rgb = picture.ColorAt(i);
@@ -169,17 +170,26 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     // The LED's own style and color, for its hand-back,
                     // before anything of PadForge's reaches it. An LED whose
-                    // state cannot be read is never changed.
-                    int r = 0, g = 0, b = 0;
-                    status = _native.GetLedStyle(led.Type, led.Index, out string style);
-                    if (status == MlapiOk) status = _native.GetLedColor(led.Type, led.Index, out r, out g, out b);
-                    if (status != MlapiOk)
+                    // state cannot be read is never changed. A worker running
+                    // late left its color on the LED, and what it read is the
+                    // LED's own.
+                    string key = KeyOf(led);
+                    if (!Workers.TakeHandBack(key, CurrentRun, out (string Style, int R, int G, int B) own))
                     {
-                        if (ProgramGone(status)) return false;
-                        Refuse(led, status);
-                        continue;
+                        int r = 0, g = 0, b = 0;
+                        status = _native.GetLedStyle(led.Type, led.Index, out string style);
+                        if (status == MlapiOk) status = _native.GetLedColor(led.Type, led.Index, out r, out g, out b);
+                        if (status != MlapiOk)
+                        {
+                            if (ProgramGone(status)) return false;
+                            Refuse(led, status);
+                            continue;
+                        }
+                        if (RunEnded) return true;
+                        own = (style, r, g, b);
                     }
-                    _saved[led] = (style, r, g, b);
+                    _saved[led] = own;
+                    Workers.NoteHandBack(key, CurrentRun, own);
                     // The color's answer says whether the LED shows it, so a
                     // refused style ends nothing here, as RGB.NET discards
                     // this answer (MsiMainboardRGBDevice.cs:36-41).
@@ -222,6 +232,9 @@ namespace PadForge.Common.Input.Peripherals
             foreach (var led in leds) Restore(led);
         }
 
+        private static string KeyOf((string Type, int Index) led)
+            => led.Type + ":" + led.Index.ToString(CultureInfo.InvariantCulture);
+
         private void Restore((string Type, int Index) led)
         {
             if (!_saved.TryGetValue(led, out var saved)) return;
@@ -241,6 +254,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 failure = ex.GetType().Name;
             }
+            if (failure == null) Workers.HandedBack(KeyOf(led), CurrentRun);
             // The effect the user chose did not come back, once per LED.
             if (failure != null && _restoreLogged.Add(led))
                 PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL {LogName} could not restore LED {led.Type}:{led.Index}, it answered {failure}");

@@ -78,6 +78,14 @@ namespace PadForge.Common.Input.Peripherals
         /// static field of the backend, so two never call the SDK at once.</summary>
         protected abstract WorkerSuccession Workers { get; }
 
+        /// <summary>This backend's run, for a family's own hand-back books.</summary>
+        protected WorkerRun CurrentRun => _run;
+
+        /// <summary>Whether this run is over. A paint looks between its SDK calls: a
+        /// worker a stop gave up on comes back from one of them, and the next run has
+        /// these lights by now.</summary>
+        protected bool RunEnded => _run is { Ended: true };
+
         /// <summary>The path keys, in paint order.</summary>
         protected abstract IReadOnlyList<string> Categories { get; }
 

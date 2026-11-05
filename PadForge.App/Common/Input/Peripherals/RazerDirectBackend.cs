@@ -439,6 +439,8 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The family's workers over the engine's restarts.</summary>
         private static readonly WorkerSuccession s_workers = new();
 
+        internal static bool HandBackHeldForTest(string device) => s_workers.HoldsHandBack(device);
+
         public RazerDirectBackend()
             : this(powerEvents: true) { }
 
@@ -804,6 +806,7 @@ namespace PadForge.Common.Input.Peripherals
                     // too.
                     ClearOwed(unit);
                     Abandon(unit);
+                    s_workers.HandedBack(unit.Listed.Key, unit.Run);
                     Shut(unit);
                     work.Units.Remove(unit.Listed.Key);
                     PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL Razer '{unit.Row.Name}' left");
@@ -871,6 +874,7 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         ClearOwed(unit);
                         Abandon(unit);
+                        s_workers.HandedBack(unit.Listed.Key, unit.Run);
                         Shut(unit);
                         work.Units.Remove(unit.Listed.Key);
                         work.Dirty = work.MapsDirty = true;
@@ -1034,6 +1038,7 @@ namespace PadForge.Common.Input.Peripherals
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"PERIPHERAL Razer '{unit.Row.Name}' lighting left to the Razer program that started");
                 }
+                s_workers.LeftToAProgram(unit.Listed.Key, unit.Run);
                 // What a unit was owed ends the same way, asleep as it is:
                 // the program has the device.
                 ClearOwed(unit);
@@ -1516,23 +1521,37 @@ namespace PadForge.Common.Input.Peripherals
             // written, for the hand-back. A fallback has none: no
             // reference says what undoes another family's paint.
             var back = new List<byte[]>();
+            // A stopping worker claims nothing more, and neither does a unit nobody
+            // wants by now. Ahead of the take: a claim that ends here leaves it for
+            // the next.
+            if (work.Run.Stop || !unit.Wants)
+            {
+                Shut(unit);
+                yield break;
+            }
             if (unit.Plan == 0)
             {
-                foreach (var ask in OwnLighting(work, unit, back)) yield return ask;
-                if (unit.Io == null) yield break;
+                // A worker running late left its picture on the device, and what
+                // it read is the device's own.
+                if (s_workers.TakeHandBack(unit.Listed.Key, unit.Run, out byte[][] late))
+                {
+                    foreach (var report in late) back.Add((byte[])report.Clone());
+                    // Its hand-back is this run's to send now, whether or not a
+                    // write of this run's goes through: that worker has no more say.
+                    unit.Written = true;
+                }
+                else
+                {
+                    foreach (var ask in OwnLighting(work, unit, back)) yield return ask;
+                    if (unit.Io == null) yield break;
+                }
             }
             unit.HandBack = back.ToArray();
             foreach (var report in unit.HandBack) Stamp(row, report);
 
             // The crash path learns of the claim before its first write
             // goes out, so no moment exists in which a device is painted
-            // and the hand-back does not know it. A stopping worker claims
-            // nothing more, and neither does a unit nobody wants by now.
-            if (work.Run.Stop || !unit.Wants)
-            {
-                Shut(unit);
-                yield break;
-            }
+            // and the hand-back does not know it.
             NoteClaimed(unit);
             unit.Rgb = NoColor;
             foreach (var ask in Paint(work, unit, claim: true)) yield return ask;
@@ -2152,6 +2171,9 @@ namespace PadForge.Common.Input.Peripherals
         private void Release(Unit unit, bool handedBack, bool lost = false)
         {
             bool lit = unit.Claimed;
+            // Its own lighting is back, or it never lost it, unless it did not take
+            // the report: the run after this one reads none of what it shows then.
+            if (!lost) s_workers.HandedBack(unit.Listed.Key, unit.Run);
             Shut(unit);
             if (!lit) return;
             PadForge.Engine.SdlDiagLog.WriteLine(
@@ -2195,6 +2217,7 @@ namespace PadForge.Common.Input.Peripherals
         private void NoteClaimed(Unit unit)
         {
             s_workers.Claim(unit.Listed.Key, unit.Run);
+            if (unit.HandBack.Length > 0) s_workers.NoteHandBack(unit.Listed.Key, unit.Run, unit.HandBack);
             lock (_claimedGate)
             {
                 var next = new List<(string, byte[][], WorkerRun, string)>(_claimed.Length + 1);
@@ -2236,6 +2259,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (unit.Owed.Length == 0) return;
             Unrecord(unit.OwedPath, unit);
+            s_workers.HandedBack(unit.Listed.Key, unit.Run);
             unit.Owed = Array.Empty<byte[]>();
             unit.OwedPath = null;
         }
@@ -2261,6 +2285,7 @@ namespace PadForge.Common.Input.Peripherals
                 }
                 if (!sent) return;
             }
+            s_workers.HandedBack(unit.Listed.Key, unit.Run);
         }
 
         /// <summary>The worker's last act: every unit it painted gets its
@@ -2302,6 +2327,9 @@ namespace PadForge.Common.Input.Peripherals
                             unit.Written = true;
                     }
                     Abandon(unit);
+                    // A program has the device now, and what this run read is old.
+                    if (programRuns || PeripheralOutputs.TakenByOpenRgb(unit.Path))
+                        s_workers.HandedBack(unit.Listed.Key, unit.Run);
                     if (reach && unit.Written && unit.HandBack.Length > 0)
                         foreach (var ask in HandBack(work, unit)) Exchange(work, unit, ask);
                 }

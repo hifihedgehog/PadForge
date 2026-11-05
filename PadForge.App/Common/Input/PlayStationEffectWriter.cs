@@ -196,6 +196,22 @@ namespace PadForge.Common.Input
             return true;
         }
 
+        /// <summary>A report past the sole-writer guard, of what connected peers
+        /// asserted and their frames will not say again. A lease guarding the pad is
+        /// a connected peer's, so waiting for it would hold the report for as long
+        /// as that peer plays.</summary>
+        internal static bool WritePastTheLease(string devicePath, HMProfile profile,
+            IReadOnlyDictionary<string, object> fields)
+        {
+            if (string.IsNullOrEmpty(devicePath) || profile == null || fields == null || !profile.HasExtendedOutput)
+                return false;
+            byte[] packet;
+            try { packet = HMOutputEncoder.Encode(profile, fields); }
+            catch { return false; }
+            ApplyAudioControl2(packet, fields);
+            return WriteRaw(devicePath, packet);
+        }
+
         /// <summary>Where the bytes SDL_SendGamepadEffect takes start in a USB
         /// report, 0 for a report it does not take. SDL's PS5 driver reads the
         /// validity flags from them, so a DualSense's start after the report ID

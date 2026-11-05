@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Pipes;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,21 +11,33 @@ using System.Text;
 namespace PadForge.Services
 {
     /// <summary>
-    /// One-shot Task Scheduler tasks that give a device back to Windows at the
-    /// next boot, for the times no PadForge is left to do it: a crash, a kill,
-    /// a power cut or a Windows restart while a keyboard or mouse waits on its
-    /// Keep prompt (#549), or while a touchpad is taken (Use Only in PadForge).
-    /// Whoever just lost their only keyboard or pointer can still press the
-    /// power button, and the login screen that follows must have it back.
+    /// One-shot Task Scheduler tasks that give a device back to Windows when no
+    /// PadForge is left to do it: a crash, a kill, a power cut or a Windows
+    /// restart while a keyboard or mouse waits on its Keep prompt (#549), or
+    /// while a touchpad is taken (Use Only in PadForge). Whoever just lost their
+    /// only keyboard or pointer can still press the power button, and the login
+    /// screen that follows must have it back.
     ///
-    /// <para>Each task runs as SYSTEM at boot and uses tools Windows ships, and
-    /// HidHide's own for a hide, so no PadForge process runs and a moved or
-    /// deleted exe changes nothing. It deletes itself once the device is back,
-    /// and one whose give-back failed stays for the next boot. A task is
+    /// <para>Each task runs as SYSTEM, as soon as it is registered and at boot.
+    /// The app holds a pipe for it and writes nothing, and the task's first step
+    /// reads that pipe with find.exe. Windows closes a pipe's server with its
+    /// process however that ends, so the read ends at once when the app is
+    /// killed, and costs a cmd.exe and a find.exe until then. It ends too when
+    /// the app deletes the task, and at a boot no pipe is there to read. If the
+    /// task still stands after that, a device is owed: PadForge.exe starts in
+    /// <see cref="GiveBackRun"/>'s mode, the same on every platform. Instances run
+    /// in parallel (Microsoft, MultipleInstancesPolicy), so a registration always
+    /// starts a wait of its own, whatever an earlier one is doing. An exe moved
+    /// or deleted since, or a run that did not get through, falls back to tools
+    /// Windows ships, and HidHide's own for a hide. Either way the task goes once
+    /// the device is back, and one whose give-back failed stays for the next
+    /// boot. A task is
     /// created from an XML definition, the form a boot task of Windows' own
     /// takes (Tasks\Microsoft\Windows\Device Setup\Driver Recovery on Reboot):
-    /// the definition states that a laptop on battery runs it, and the action
-    /// outgrows the length schtasks' /TR takes (Microsoft, schtasks create).</para>
+    /// the definition states that a laptop on battery runs it and that a run may
+    /// wait for as long as the app runs (Microsoft, ExecutionTimeLimit: PT0S), and
+    /// the action outgrows the length schtasks' /TR takes (Microsoft, schtasks
+    /// create).</para>
     ///
     /// <para>schtasks is driven by exit code alone, as
     /// <see cref="PadForge.Common.StartupHelper"/> drives it, since its text is
@@ -45,6 +59,19 @@ namespace PadForge.Services
         /// <summary>Test seam: whether a file is there. Null in production.</summary>
         internal static Func<string, bool> FileExistsSeam;
 
+        /// <summary>Test seam: PadForge's own exe. Null in production.</summary>
+        internal static Func<string> ExePathSeam;
+
+        /// <summary>Test seam: the wait for a run to finish. Null in production.</summary>
+        internal static Action<string> RunFinishSeam;
+
+        /// <summary>The pipes this app holds, by task. A registration holds one
+        /// for the wait it starts. They go when the task is deleted, and with the
+        /// process however it ends.</summary>
+        private static readonly Dictionary<string, List<NamedPipeServerStream>> s_pipes = new(StringComparer.OrdinalIgnoreCase);
+
+        private static string OwnExe => ExePathSeam != null ? ExePathSeam() : Environment.ProcessPath;
+
         /// <summary>How long one schtasks run is waited for.</summary>
         internal const int RunWaitMs = 10000;
 
@@ -53,8 +80,8 @@ namespace PadForge.Services
         {
             /// <summary>The task is registered.</summary>
             Registered,
-            /// <summary>This PC has no HidHide CLI, as a HidHide PadForge
-            /// installed on ARM64 has none: no task can take a hide off.</summary>
+            /// <summary>PadForge's own path cannot stand in the action's quotes
+            /// and this PC has no HidHide CLI, so no task can take a hide off.</summary>
             NoTool,
             /// <summary>schtasks refused, or the ID cannot be quoted.</summary>
             Failed,
@@ -74,7 +101,38 @@ namespace PadForge.Services
             return "PadForge Give Back " + Convert.ToHexString(hash, 0, 8);
         }
 
-        /// <summary>The action for a keyboard or mouse: what
+        /// <summary>The name of the pipe a task's wait reads.</summary>
+        internal static string PipeName(string taskName) => taskName.Replace(' ', '_');
+
+        private static string PipePath(string taskName) => @"\\.\pipe\" + PipeName(taskName);
+
+        /// <summary>The name of the pipe a run holds while it gives a device back,
+        /// which makes it the only run of its task. Pipes, since a run and the app
+        /// are in two sessions and two accounts, and a name is one for all of
+        /// them.</summary>
+        internal static string RunPipeName(string taskName) => PipeName(taskName) + "_run";
+
+        /// <summary>How long a registration waits for a run giving the device back
+        /// to finish, so it does not take a hide or a package off after this app
+        /// wrote its own. An attempt takes a moment, and past this one a run that
+        /// sees the app's pipe leaves what it has not done.</summary>
+        internal const int RunFinishWaitMs = 3000;
+
+        /// <summary>A task's whole action. It waits while the app holds the pipe,
+        /// then gives the device back only if the task still stands: a device
+        /// kept or given back has no task, and a normal exit starts nothing. A
+        /// missing exe or a run that exits 1 falls to
+        /// <paramref name="otherwise"/>, when there is one. The reader is
+        /// find.exe, since cmd's own type ends at once on a pipe.</summary>
+        internal static string Action(string taskName, string exe, string runSwitch, string id, string otherwise, string system32)
+        {
+            string run = CanQuote(exe) ? $"\"{exe}\" {runSwitch} \"{id}\" \"{taskName}\"" : null;
+            string giveBack = run == null ? otherwise : otherwise == null ? run : $"{run} || ( {otherwise} )";
+            return $"{Path.Combine(system32, "find.exe")} /v \"\" < \"{PipePath(taskName)}\" >nul 2>&1 "
+                + $"& {Path.Combine(system32, "schtasks.exe")} /Query /TN \"{taskName}\" >nul 2>&1 && ( {giveBack} )";
+        }
+
+        /// <summary>The fallback for a keyboard or mouse: what
         /// <see cref="VendorUsbDriverInstaller.Restore"/> does, through pnputil.
         /// /delete-driver with /uninstall and /force takes a package off the
         /// devices it serves and out of the driver store (Microsoft, PnPUtil
@@ -101,7 +159,7 @@ namespace PadForge.Services
                 + "& if not defined GIVE_BACK_FAILED " + SelfDelete(taskName, system32);
         }
 
-        /// <summary>The action for a touchpad: HidHide's CLI takes the hide off
+        /// <summary>The fallback for a touchpad: HidHide's CLI takes the hide off
         /// (HidHideCLI Commands.cpp, dev-unhide), then the collection restarts,
         /// so Windows opens it again as TouchpadCapture.RestartForWindows has it
         /// do. /restart-device needs Windows 10 version 2004 (Microsoft, PnPUtil
@@ -123,8 +181,15 @@ namespace PadForge.Services
             => $"{Path.Combine(system32, "schtasks.exe")} /Delete /TN \"{taskName}\" /F";
 
         /// <summary>The task's definition. cmd.exe runs the action, with its
-        /// whole line in one pair of quotes (/s).</summary>
-        internal static string TaskXml(string command, string system32)
+        /// whole line in one pair of quotes (/s). A registration trigger starts
+        /// the wait now (Microsoft, registrationTrigger), and only when the app
+        /// holds the pipe for it, since with no pipe the wait ends at once. A boot
+        /// trigger stands either way. The wait lasts as long as the app, so a
+        /// registration's instance has no time limit (Microsoft, ExecutionTimeLimit:
+        /// PT0S), and a boot's has no wait to last, so it has one: an exe older than
+        /// the task, which has no run mode, starts the whole app (Microsoft,
+        /// ExecutionTimeLimit of a trigger).</summary>
+        internal static string TaskXml(string command, string system32, bool pipeHeld)
         {
             string program = SecurityElement.Escape(Path.Combine(system32, "cmd.exe"));
             string arguments = SecurityElement.Escape($"/q /d /s /c \"{command}\"");
@@ -136,7 +201,9 @@ namespace PadForge.Services
                 + "  <Triggers>\r\n"
                 + "    <BootTrigger>\r\n"
                 + "      <Enabled>true</Enabled>\r\n"
+                + "      <ExecutionTimeLimit>PT10M</ExecutionTimeLimit>\r\n"
                 + "    </BootTrigger>\r\n"
+                + (pipeHeld ? "    <RegistrationTrigger>\r\n      <Enabled>true</Enabled>\r\n    </RegistrationTrigger>\r\n" : string.Empty)
                 + "  </Triggers>\r\n"
                 + "  <Principals>\r\n"
                 + "    <Principal id=\"LocalSystem\">\r\n"
@@ -145,11 +212,11 @@ namespace PadForge.Services
                 + "    </Principal>\r\n"
                 + "  </Principals>\r\n"
                 + "  <Settings>\r\n"
-                + "    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>\r\n"
+                + "    <MultipleInstancesPolicy>Parallel</MultipleInstancesPolicy>\r\n"
                 + "    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>\r\n"
                 + "    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>\r\n"
                 + "    <StartWhenAvailable>true</StartWhenAvailable>\r\n"
-                + "    <ExecutionTimeLimit>PT5M</ExecutionTimeLimit>\r\n"
+                + "    <ExecutionTimeLimit>PT0S</ExecutionTimeLimit>\r\n"
                 + "    <Enabled>true</Enabled>\r\n"
                 + "  </Settings>\r\n"
                 + "  <Actions Context=\"LocalSystem\">\r\n"
@@ -182,7 +249,8 @@ namespace PadForge.Services
         {
             if (!CanQuote(bindId)) return false;
             string name = NameOf(bindId);
-            return Register(name, KeyboardCommand(name, bindId, InfFolder, System32), log);
+            return Register(name, Action(name, OwnExe, GiveBackRun.PackageSwitch, bindId,
+                KeyboardCommand(name, bindId, InfFolder, System32), System32), log);
         }
 
         /// <summary>Registers the give-back of a touchpad before its hide is
@@ -191,9 +259,12 @@ namespace PadForge.Services
         {
             if (!CanQuote(instanceId)) return Outcome.Failed;
             string cli = FindCli(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
-            if (cli == null) return Outcome.NoTool;
+            string exe = OwnExe;
+            if (cli == null && !CanQuote(exe)) return Outcome.NoTool;
             string name = NameOf(instanceId);
-            return Register(name, TouchpadCommand(name, instanceId, cli, System32), log) ? Outcome.Registered : Outcome.Failed;
+            string otherwise = cli != null ? TouchpadCommand(name, instanceId, cli, System32) : null;
+            return Register(name, Action(name, exe, GiveBackRun.TouchpadSwitch, instanceId, otherwise, System32), log)
+                ? Outcome.Registered : Outcome.Failed;
         }
 
         /// <summary>HidHide's CLI where its setup puts it: under x64 by the
@@ -212,14 +283,21 @@ namespace PadForge.Services
         {
             if (RunSeam == null && OffLimitsForTest) return false;
             string xml = Path.Combine(Path.GetTempPath(), "PadForge", "GiveBack", name.Replace(' ', '_') + ".xml");
+            // The pipe stands before the task, so the wait its registration
+            // starts finds it.
+            var pipe = HoldPipe(name);
+            bool registered = false;
             try
             {
+                // Its pipe stands first, so a run that took its turn after this
+                // look sees the pipe and leaves the device to this app.
+                WaitForARunToFinish(name);
                 Directory.CreateDirectory(Path.GetDirectoryName(xml));
                 // The encoding the definition declares, with its byte order mark.
-                File.WriteAllText(xml, TaskXml(command, System32), Encoding.Unicode);
+                File.WriteAllText(xml, TaskXml(command, System32, pipe != null), Encoding.Unicode);
                 int exit = Run(CreateArguments(name, xml));
                 if (exit != 0) log?.Invoke($"schtasks could not register {name} (exit {exit}).");
-                return exit == 0;
+                return registered = exit == 0;
             }
             catch (Exception ex)
             {
@@ -228,19 +306,109 @@ namespace PadForge.Services
             }
             finally
             {
+                if (!registered) LetGoOfOne(name, pipe);
                 try { File.Delete(xml); } catch { }
             }
         }
 
+        /// <summary>Holds one more pipe for a task. An instance serves one reader,
+        /// so a later registration of a task gets its own. A reader can connect
+        /// before the server calls ConnectNamedPipe (Microsoft, ConnectNamedPipe),
+        /// so this never calls it. Null when Windows refused the pipe.</summary>
+        private static NamedPipeServerStream HoldPipe(string name)
+        {
+            try
+            {
+                var pipe = new NamedPipeServerStream(PipeName(name), PipeDirection.Out, NamedPipeServerStream.MaxAllowedServerInstances);
+                lock (s_pipes)
+                {
+                    if (!s_pipes.TryGetValue(name, out var held)) s_pipes[name] = held = new List<NamedPipeServerStream>();
+                    held.Add(pipe);
+                }
+                return pipe;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private static void WaitForARunToFinish(string name)
+        {
+            var seam = RunFinishSeam;
+            if (seam != null)
+            {
+                seam(name);
+                return;
+            }
+            long until = Environment.TickCount64 + RunFinishWaitMs;
+            while (AnyInstance(RunPipeName(name)) && Environment.TickCount64 < until)
+                System.Threading.Thread.Sleep(50);
+        }
+
+        /// <summary>Closes every pipe of a task, which ends the waits that read
+        /// them.</summary>
+        private static void LetGo(string name)
+        {
+            lock (s_pipes)
+            {
+                if (!s_pipes.Remove(name, out var held)) return;
+                foreach (var pipe in held)
+                {
+                    try { pipe.Dispose(); } catch { }
+                }
+            }
+        }
+
+        /// <summary>Closes the pipe of a registration that failed. One from before
+        /// it stays, with the task it reads for.</summary>
+        private static void LetGoOfOne(string name, NamedPipeServerStream pipe)
+        {
+            if (pipe == null) return;
+            lock (s_pipes)
+            {
+                if (s_pipes.TryGetValue(name, out var held) && held.Remove(pipe) && held.Count == 0) s_pipes.Remove(name);
+            }
+            try { pipe.Dispose(); } catch { }
+        }
+
         /// <summary>Deletes the task of a package or collection, whose give-back
         /// is done or no longer wanted. A task that is not there is the same
-        /// answer. A task that stays gives the device back at the next boot, the
-        /// safe side of a failure.</summary>
+        /// answer. A task that stays keeps its pipe, and gives the device back
+        /// when the app ends or at the next boot, the safe side of a
+        /// failure.</summary>
         internal static void Delete(string id, Action<string> log = null)
         {
-            int exit = Run(DeleteArguments(NameOf(id)));
+            string name = NameOf(id);
+            int exit = Run(DeleteArguments(name));
             log?.Invoke($"Give-back task of {id}: delete exit {exit}.");
+            if (exit == 0 || !Stands(name)) LetGo(name);
         }
+
+        /// <summary>Whether a task of this name is registered. A device kept or
+        /// given back has no task. Only schtasks saying no says it is gone, 1 for a
+        /// task it does not have (measured). A schtasks that did not answer says
+        /// nothing, and a device that may be owed stays owed.</summary>
+        internal static bool Stands(string taskName) => Run($"/Query /TN \"{taskName}\"") != 1;
+
+        /// <summary>Whether an app holds a pipe for this task now, with a reader
+        /// on it or not.</summary>
+        internal static bool AnAppHolds(string taskName) => AnyInstance(PipeName(taskName));
+
+        /// <summary>Whether a pipe of this name has an instance, free or busy
+        /// (Microsoft, WaitNamedPipe: with none it returns at once).</summary>
+        private static bool AnyInstance(string pipeName)
+        {
+            const int ERROR_FILE_NOT_FOUND = 2;
+            return WaitNamedPipe(@"\\.\pipe\" + pipeName, 1) || Marshal.GetLastPInvokeError() != ERROR_FILE_NOT_FOUND;
+        }
+
+        [DllImport("kernel32.dll", EntryPoint = "WaitNamedPipeW", CharSet = CharSet.Unicode, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool WaitNamedPipe(string name, uint timeoutMs);
+
+        /// <summary>Deletes a task by its name, a run's last act.</summary>
+        internal static void DeleteByName(string taskName) => Run(DeleteArguments(taskName));
 
         private static int Run(string arguments)
         {

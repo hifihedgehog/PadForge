@@ -25,6 +25,23 @@ namespace PadForge.Tests
         private readonly FakeWorkerFamily _family = new();
         private readonly List<FakeReportChannel> _opened = new();
         private readonly List<(string Path, byte[] Frame)> _oneShots = new();
+
+        /// <summary>Runs in each wait the worker's clock passes through.</summary>
+        private Action _duringWait;
+
+        /// <summary>The waits the worker asked for, once a test has made this.</summary>
+        private List<int> _asked;
+
+        /// <summary>Set: each wait takes this many times what it asks, on
+        /// <see cref="_elapsed"/>.</summary>
+        private int _sleepTimes;
+
+        /// <summary>Set: the clock a wait goes by, apart from the worker's. It moves in
+        /// the worker's waits and where a test moves it.</summary>
+        private Func<long> _elapsed;
+        private long _elapsedNow;
+
+        private void Elapse(long ms) => Interlocked.Add(ref _elapsedNow, ms);
         private long _tick = 1_000_000;
         private bool _oneShotsTaken = true;
         private int _walksAsked;
@@ -84,8 +101,17 @@ namespace PadForge.Tests
 
         private HidLightingBackend Started(IHidLightingFamily[] families, params HidCollectionInfo[] present)
         {
-            var backend = new HidLightingBackend(families, Open, path => _containerOf(path), Tick, OneShot, OneShot, ms => Advance(ms),
-                idleTickMs: 5, query: path => _queryFor(path));
+            var backend = new HidLightingBackend(families, Open, path => _containerOf(path), Tick, OneShot, OneShot,
+                ms =>
+                {
+                    var asked = _asked;
+                    if (asked != null)
+                        lock (asked) asked.Add(ms);
+                    Elapse(ms * Math.Max(1, _sleepTimes));
+                    Advance(ms);
+                    _duringWait?.Invoke();
+                },
+                idleTickMs: 5, query: path => _queryFor(path), elapsedMs: _elapsed);
             backend.RescanRequested += () => Interlocked.Increment(ref _walksAsked);
             backend.Start();
             backend.Rescan(present);
@@ -270,6 +296,45 @@ namespace PadForge.Tests
             Passes(backend);
             Assert.Equal(0, OneShots());
             Assert.Empty(backend.Recorded);
+        }
+
+        /// <summary>The same when the program holds the collection, so the device does
+        /// not answer until the program has stopped. What the program stored by then is
+        /// the device's own lighting.</summary>
+        [Fact]
+        public void AnOwedHandBack_EndsWithNothingSent_WhenAProgramHoldsTheCollection()
+        {
+            var program = new VendorProgram("Fake hub", "FakeHub");
+            OwingModel(m => new HidLightingModel
+            {
+                Family = m.Family, Name = m.Name, Map = m.Map, Begin = m.Begin, Programs = new[] { program },
+            });
+            var unit = Unit();
+            using var backend = Started(unit);
+            Link(unit);
+            Light(0x112233);
+            Passes(backend);
+            _paintFails = true;
+            Light(0x445566);
+            Passes(backend);
+            _paintFails = false;
+            Assert.NotEmpty(backend.Recorded);
+
+            var open = _channelFor;
+            _channelFor = path => new FakeReportChannel { Path = path, FeatureOnly = true, FeatureReportLength = 65 };
+            PeripheralOutputs.Presence = PeripheralPresence.WithRunning(PeripheralPresence.None, new[] { "FakeHub.exe" }, new[] { program });
+            Advance(HidLightingBackend.RetryMs);
+            Passes(backend);
+            Assert.Equal(0, OneShots());
+            Assert.Empty(backend.Recorded);
+
+            _channelFor = open;
+            PeripheralOutputs.Presence = PeripheralPresence.None;
+            Unlight();
+            Advance(HidLightingBackend.RetryMs);
+            Passes(backend);
+            Assert.False(backend.Snapshot.Units[0].Asleep);
+            Assert.Equal(0, OneShots());
         }
 
         /// <summary>OpenRGB holds the device: the same.</summary>
@@ -848,7 +913,12 @@ namespace PadForge.Tests
 
             public byte[][] Frames { get; init; } = Array.Empty<byte[]>();
 
+            /// <summary>What its hand-back answers.</summary>
+            public bool HandsBack { get; init; } = true;
+
             public override byte[][] CrashFrames => Frames;
+
+            public override bool HandBack(IHidReportChannel io, Action<int> wait) => base.HandBack(io, wait) && HandsBack;
 
             public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait, IReadOnlyList<LightInfo> lights,
                 IReadOnlyList<int> colors)
@@ -1187,14 +1257,849 @@ namespace PadForge.Tests
             Passes(next);
             Assert.Equal(2, Volatile.Read(ref begins));
             var theirs = next.Snapshot;
+            // The next run sent what the first would hand back, ahead of its session.
+            Assert.Equal(1, OneShots());
 
             gate.Set();
             Assert.True(left.Join(30000), "the first worker ended");
             Assert.Same(theirs, next.Snapshot);
             Assert.False(next.Snapshot.Units.Single().Asleep);
             Assert.Empty(next.Recorded);
-            lock (_oneShots) Assert.Empty(_oneShots);
+            Assert.Equal(1, OneShots());
             Assert.NotNull(PeripheralLightMaps.For(PathOf(slow)));
+        }
+
+        /// <summary>One worker serves every unit, so a device that hangs keeps it
+        /// past the next run's wait while the others still answer, showing its
+        /// picture. What it would hand back of one goes out ahead of the next run's
+        /// session, so that session reads the device's own lighting.</summary>
+        [Fact]
+        public void AWorkerAStopGaveUpOn_HasTheNextRunSendWhatItOwes_AheadOfItsSession()
+        {
+            using var gate = new ManualResetEventSlim(false);
+            using var entered = new ManualResetEventSlim(false);
+            Thread left = null;
+            int run = 1, hungPaints = 0;
+            var healthy = HidLightingWorkerTests.Collection(pid: 1, tail: "1");
+            var hung = HidLightingWorkerTests.Collection(pid: 2, tail: "2");
+            _family.Model = new HidLightingModel
+            {
+                Family = _family, Name = "Held", Map = FakeWorkerFamily.Map(),
+                Begin = (io, _) =>
+                {
+                    bool first = Volatile.Read(ref run) == 1;
+                    bool isHung = io.Path == hung.Path;
+                    _family.Add(isHung ? "begin hung" : "begin healthy");
+                    return new HookedSession(_family, io, _ =>
+                    {
+                        if (first && isHung && Interlocked.Increment(ref hungPaints) == 2)
+                        {
+                            left = Thread.CurrentThread;
+                            entered.Set();
+                            gate.Wait(30000);
+                        }
+                        return true;
+                    }) { Frames = first ? new[] { HandBackFrame } : Array.Empty<byte[]>() };
+                },
+            };
+            using var backend = UnstartedGivingUpFast(new IHidLightingFamily[] { _family });
+            Link(healthy, hung);
+            Light(0x112233);
+            backend.Start();
+            backend.Rescan(new[] { healthy, hung });
+            Passes(backend);
+            Assert.Equal(0, OneShots());
+            Light(0x445566);
+            Assert.True(entered.Wait(30000), "the worker hung on one device");
+            backend.Dispose();
+
+            Volatile.Write(ref run, 2);
+            int mark = _family.Calls().Count;
+            using var next = UnstartedGivingUpFast(new IHidLightingFamily[] { _family });
+            next.Start();
+            next.Rescan(new[] { healthy, hung });
+            Passes(next);
+            var calls = _family.Calls().Skip(mark).ToList();
+            int paid = calls.IndexOf("oneshot");
+            Assert.True(paid >= 0 && paid < calls.IndexOf("begin healthy"), string.Join(" | ", calls));
+            lock (_oneShots) Assert.Contains(_oneShots, shot => shot.Path == healthy.Path && shot.Frame.SequenceEqual(HandBackFrame));
+
+            // The old worker comes back and sends the healthy device nothing.
+            int sent = OneShots();
+            gate.Set();
+            Assert.True(left.Join(30000), "the first worker ended");
+            Assert.Equal(sent, OneShots());
+        }
+
+        /// <summary>A program of the model has the device when the next run starts, and
+        /// the worker a stop gave up on is still running. What the program stores is the
+        /// device's own lighting from then on: once it has stopped, the next run sends
+        /// nothing that worker owed, and that worker sends nothing when it comes back.</summary>
+        [Fact]
+        public void AProgramBetweenTwoRuns_EndsWhatAWorkerRunningLateOwes()
+        {
+            using var gate = new ManualResetEventSlim(false);
+            using var entered = new ManualResetEventSlim(false);
+            var hub = new VendorProgram("Fake hub", "FakeHub");
+            Thread left = null;
+            int run = 1, hungPaints = 0;
+            var healthy = HidLightingWorkerTests.Collection(pid: 1, tail: "1");
+            var hung = HidLightingWorkerTests.Collection(pid: 2, tail: "2");
+            _family.Model = new HidLightingModel
+            {
+                Family = _family, Name = "Held", Map = FakeWorkerFamily.Map(), Programs = new[] { hub },
+                Begin = (io, _) =>
+                {
+                    bool first = Volatile.Read(ref run) == 1;
+                    bool isHung = io.Path == hung.Path;
+                    return new HookedSession(_family, io, _ =>
+                    {
+                        if (first && isHung && Interlocked.Increment(ref hungPaints) == 2)
+                        {
+                            left = Thread.CurrentThread;
+                            entered.Set();
+                            gate.Wait(30000);
+                        }
+                        return true;
+                    }) { Frames = first ? new[] { HandBackFrame } : Array.Empty<byte[]>() };
+                },
+            };
+            using var backend = UnstartedGivingUpFast(new IHidLightingFamily[] { _family });
+            Link(healthy, hung);
+            Light(0x112233);
+            backend.Start();
+            backend.Rescan(new[] { healthy, hung });
+            Passes(backend);
+            Light(0x445566);
+            Assert.True(entered.Wait(30000), "the worker hung on one device");
+            backend.Dispose();
+
+            Volatile.Write(ref run, 2);
+            PeripheralOutputs.Presence = PeripheralPresence.WithRunning(PeripheralPresence.None, new[] { "FakeHub.exe" }, new[] { hub });
+            using var next = UnstartedGivingUpFast(new IHidLightingFamily[] { _family });
+            next.Start();
+            next.Rescan(new[] { healthy, hung });
+            Passes(next);
+
+            // The program stops with no row asking for the device, so nothing the next
+            // run does bars the first worker but what the program's turn did.
+            Unlight();
+            PeripheralOutputs.Presence = PeripheralPresence.None;
+            Passes(next);
+            int mark = _family.Calls().Count;
+            gate.Set();
+            Assert.True(left.Join(30000), "the first worker ended");
+            Assert.Equal(0, OneShots());
+            Assert.DoesNotContain("handback", _family.Calls().Skip(mark));
+
+            // A row asks for it again: the next run owes nothing and lights it.
+            Light(0x778899);
+            Passes(next);
+            Assert.Equal(0, OneShots());
+            Assert.Contains("paint 778899,778899", _family.Calls().Skip(mark));
+        }
+
+        /// <summary>A worker a stop gave up on inside a session's Begin, with only an earlier
+        /// run's claim of the device in the books and no later run claiming it, hands back
+        /// what that Begin did: nothing else would.</summary>
+        [Fact]
+        public void AWorkerThatComesBackFromItsOpen_HandsBack_WhenNoLaterRunClaimed()
+        {
+            using var gate = new ManualResetEventSlim(false);
+            using var entered = new ManualResetEventSlim(false);
+            Thread left = null;
+            int run = 1;
+            var unit = Unit();
+            _family.Model = new HidLightingModel
+            {
+                Family = _family, Name = "Held", Map = FakeWorkerFamily.Map(),
+                Begin = (io, _) =>
+                {
+                    if (Volatile.Read(ref run) == 2)
+                    {
+                        left = Thread.CurrentThread;
+                        entered.Set();
+                        gate.Wait(30000);
+                    }
+                    return new FakeWorkerSession(_family, io);
+                },
+            };
+            Link(unit);
+            Light(0x112233);
+            using (var earlier = UnstartedGivingUpFast(new IHidLightingFamily[] { _family }))
+            {
+                earlier.Start();
+                earlier.Rescan(new[] { unit });
+                Passes(earlier);
+                Assert.Contains("paint 112233,112233", _family.Calls());
+            }
+
+            Volatile.Write(ref run, 2);
+            using var backend = UnstartedGivingUpFast(new IHidLightingFamily[] { _family });
+            backend.Start();
+            backend.Rescan(new[] { unit });
+            Assert.True(entered.Wait(30000), "the worker hung in its open");
+            backend.Dispose();
+
+            Unlight();
+            Volatile.Write(ref run, 3);
+            using var next = UnstartedGivingUpFast(new IHidLightingFamily[] { _family });
+            next.Start();
+            next.Rescan(new[] { unit });
+            Passes(next);
+            int mark = _family.Calls().Count;
+
+            gate.Set();
+            Assert.True(left.Join(30000), "the first worker ended");
+            Assert.Contains("handback", _family.Calls().Skip(mark));
+        }
+
+        /// <summary>A worker a stop gave up on inside a session's Begin paints nothing when
+        /// it comes back, and the next run's picture stands.</summary>
+        [Fact]
+        public void AWorkerThatComesBackFromItsOpen_PaintsNothing()
+        {
+            using var gate = new ManualResetEventSlim(false);
+            using var entered = new ManualResetEventSlim(false);
+            Thread left = null;
+            int run = 1, begins = 0;
+            var unit = Unit();
+            _family.Model = new HidLightingModel
+            {
+                Family = _family, Name = "Held", Map = FakeWorkerFamily.Map(),
+                Begin = (io, _) =>
+                {
+                    if (Volatile.Read(ref run) == 1 && Interlocked.Increment(ref begins) == 1)
+                    {
+                        left = Thread.CurrentThread;
+                        entered.Set();
+                        gate.Wait(30000);
+                    }
+                    return new FakeWorkerSession(_family, io);
+                },
+            };
+            using var backend = UnstartedGivingUpFast(new IHidLightingFamily[] { _family });
+            Link(unit);
+            Light(0x112233);
+            backend.Start();
+            backend.Rescan(new[] { unit });
+            Assert.True(entered.Wait(30000), "the worker hung in its open");
+            backend.Dispose();
+
+            Volatile.Write(ref run, 2);
+            Light(0x445566);
+            using var next = UnstartedGivingUpFast(new IHidLightingFamily[] { _family });
+            next.Start();
+            next.Rescan(new[] { unit });
+            Passes(next);
+            Assert.Contains("paint 445566,445566", _family.Calls());
+
+            gate.Set();
+            Assert.True(left.Join(30000), "the first worker ended");
+            Assert.DoesNotContain("paint 112233,112233", _family.Calls());
+            Assert.DoesNotContain("handback", _family.Calls());
+        }
+
+        /// <summary>What a worker that has ended did not hand back is old by the next
+        /// run: the user can have changed the lighting since. The next run reads
+        /// the device.</summary>
+        [Fact]
+        public void AWorkerThatEnded_LeavesTheNextRunNothingToSend()
+        {
+            var unit = Unit();
+            _family.Model = new HidLightingModel
+            {
+                Family = _family, Name = "Plain", Map = FakeWorkerFamily.Map(),
+                Begin = (io, _) => new HookedSession(_family, io, _ => true) { Frames = new[] { HandBackFrame }, HandsBack = false },
+            };
+            // Neither its hand-back nor the report of its own goes through.
+            _oneShotsTaken = false;
+            var first = Started(unit);
+            Link(unit);
+            Light(0x112233);
+            Passes(first);
+            first.Dispose();
+            int sent = OneShots();
+            Assert.Equal(1, sent);
+
+            _oneShotsTaken = true;
+            using var next = Started(unit);
+            Passes(next);
+            Assert.Equal(sent, OneShots());
+        }
+
+        private static readonly Guid SecondRow = new("00000000-0000-0000-0000-0000000000d3");
+        private static readonly Guid OtherBox = new("11111111-2222-3333-4444-666666666666");
+
+        /// <summary>Two units on rows of their own, each with a session that logs its
+        /// pictures. The slow one, once armed, gives the other row a new color and then
+        /// waits inside its picture, so what the other shows during that wait is what
+        /// the wait let out.</summary>
+        private (HidCollectionInfo Slow, HidCollectionInfo Other) TwoRows(Func<bool> armed, Func<IHidReportChannel, HidLightingSession> otherSession = null,
+            int keepAliveMs = 0, HidCollectionInfo third = null)
+        {
+            var slow = HidLightingWorkerTests.Collection(pid: 1, tail: "1");
+            var other = HidLightingWorkerTests.Collection(pid: 2, tail: "2");
+            _family.Model = new HidLightingModel
+            {
+                Family = _family, Name = "Two", Map = FakeWorkerFamily.Map(),
+                KeepAliveMs = keepAliveMs, KeepAliveIdleMs = keepAliveMs,
+                Begin = (io, _) =>
+                {
+                    if (third != null && io.Path == third.Path) return new FakeWorkerSession(_family, io) { KeepAliveLine = "keep" };
+                    if (io.Path != slow.Path) return otherSession?.Invoke(io) ?? new FakeWorkerSession(_family, io);
+                    return new HookedSession(_family, io, wait =>
+                    {
+                        if (!armed()) return true;
+                        _family.Add("waiting");
+                        PeripheralOutputs.SetLighting(SecondRow, slot: 1, player: 2, 0x44, 0x55, 0x66);
+                        wait(2000);
+                        _family.Add("waited");
+                        return true;
+                    }) { KeepAliveLine = "slow keep" };
+                },
+            };
+            PeripheralOutputs.PublishLinks(new LinkTable(new[]
+            {
+                new DeviceLinks { Device = Device, Lighting = third == null ? new[] { PathOf(slow) } : new[] { PathOf(slow), PathOf(third) } },
+                new DeviceLinks { Device = SecondRow, Lighting = new[] { PathOf(other) } },
+            }));
+            return (slow, other);
+        }
+
+        private static void LightBoth(int rgb)
+        {
+            Light(rgb);
+            PeripheralOutputs.SetLighting(SecondRow, slot: 1, player: 2, (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb);
+        }
+
+        /// <summary>A session that waits between its reports holds nothing up: another
+        /// unit's new picture goes out during the wait.</summary>
+        [Fact]
+        public void ASlowSessionsWait_LetsAnotherUnitsPictureOut()
+        {
+            bool armed = false;
+            var (slow, other) = TwoRows(() => Volatile.Read(ref armed));
+            _containerOf = path => path == slow.Path ? Box : OtherBox;
+            using var backend = Started(slow, other);
+            LightBoth(0x112233);
+            Passes(backend);
+            Volatile.Write(ref armed, true);
+            int mark = _family.Calls().Count;
+            Light(0x778899);
+            Passes(backend);
+            var calls = _family.Calls().Skip(mark).ToList();
+            int waiting = calls.IndexOf("waiting"), painted = calls.IndexOf("paint 445566,445566"), waited = calls.IndexOf("waited");
+            Assert.True(waiting >= 0 && waiting < painted && painted < waited, string.Join(" | ", calls));
+        }
+
+        /// <summary>A color that comes during a long wait goes out during it.</summary>
+        [Fact]
+        public void AColorThatComesDuringALongWait_GoesOutDuringIt()
+        {
+            bool armed = false;
+            int colored = 0;
+            var slow = HidLightingWorkerTests.Collection(pid: 1, tail: "1");
+            var other = HidLightingWorkerTests.Collection(pid: 2, tail: "2");
+            _family.Model = new HidLightingModel
+            {
+                Family = _family, Name = "Two", Map = FakeWorkerFamily.Map(),
+                Begin = (io, _) => io.Path == slow.Path
+                    ? new HookedSession(_family, io, wait =>
+                    {
+                        if (!Volatile.Read(ref armed)) return true;
+                        wait(2000);
+                        _family.Add("waited");
+                        return true;
+                    })
+                    : new FakeWorkerSession(_family, io),
+            };
+            PeripheralOutputs.PublishLinks(new LinkTable(new[]
+            {
+                new DeviceLinks { Device = Device, Lighting = new[] { PathOf(slow) } },
+                new DeviceLinks { Device = SecondRow, Lighting = new[] { PathOf(other) } },
+            }));
+            _containerOf = path => path == slow.Path ? Box : OtherBox;
+            _duringWait = () =>
+            {
+                if (Volatile.Read(ref armed) && Interlocked.Exchange(ref colored, 1) == 0)
+                    PeripheralOutputs.SetLighting(SecondRow, slot: 1, player: 2, 0x44, 0x55, 0x66);
+            };
+            using var backend = Started(slow, other);
+            LightBoth(0x112233);
+            Passes(backend);
+            Volatile.Write(ref armed, true);
+            int mark = _family.Calls().Count;
+            Light(0x778899);
+            Passes(backend);
+            var calls = _family.Calls().Skip(mark).ToList();
+            int painted = calls.IndexOf("paint 445566,445566"), waited = calls.IndexOf("waited");
+            Assert.True(painted >= 0 && painted < waited, string.Join(" | ", calls));
+        }
+
+        /// <summary>Two rows where the first, once armed, waits <paramref name="waitMs"/>
+        /// inside its picture while the waits are being counted, and the second is served
+        /// keep-alives beside that wait. Each runs <paramref name="eachKeepAlive"/>. The sum
+        /// of what the wait asked for comes back.</summary>
+        private int WaitsAsked(int waitMs, Action eachKeepAlive = null)
+        {
+            _elapsed = () => Interlocked.Read(ref _elapsedNow);
+            bool armed = false;
+            var waits = new List<int>();
+            var first = HidLightingWorkerTests.Collection(pid: 1, tail: "1");
+            var other = HidLightingWorkerTests.Collection(pid: 2, tail: "2");
+            _family.Model = new HidLightingModel
+            {
+                Family = _family, Name = "Two", Map = FakeWorkerFamily.Map(), KeepAliveMs = 5, KeepAliveIdleMs = 5,
+                Begin = (io, _) => io.Path == first.Path
+                    ? new HookedSession(_family, io, wait =>
+                    {
+                        if (!Volatile.Read(ref armed)) return true;
+                        Volatile.Write(ref armed, false);
+                        _asked = waits;
+                        wait(waitMs);
+                        _asked = null;
+                        _family.Add("waited");
+                        return true;
+                    })
+                    : new TimedKeepAliveSession(_family, io, () =>
+                    {
+                        if (_asked != null) eachKeepAlive?.Invoke();
+                    }),
+            };
+            PeripheralOutputs.PublishLinks(new LinkTable(new[]
+            {
+                new DeviceLinks { Device = Device, Lighting = new[] { PathOf(first) } },
+                new DeviceLinks { Device = SecondRow, Lighting = new[] { PathOf(other) } },
+            }));
+            _containerOf = path => path == first.Path ? Box : OtherBox;
+            using var backend = Started(first, other);
+            LightBoth(0x112233);
+            Passes(backend);
+            Volatile.Write(ref armed, true);
+            Light(0x778899);
+            Assert.True(SpinWait.SpinUntil(() => _family.Calls().Contains("waited"), 30000), "the wait ended");
+            lock (waits) return waits.Sum();
+        }
+
+        /// <summary>A wait lasts as long as it asks, by the clock it goes by. A step of the
+        /// worker's clock during the pass beside it is no time spent: the clock moves in
+        /// steps three times the length of the shortest waits.</summary>
+        [Fact]
+        public void AWaitDoesNotEndEarly_OnAStepOfTheClock()
+        {
+            int keepAlives = 0;
+            int asked = WaitsAsked(1000, () =>
+            {
+                keepAlives++;
+                Advance(1000);
+            });
+            Assert.True(keepAlives > 0, "a keep-alive ran beside the wait");
+            Assert.Equal(1000, asked);
+        }
+
+        /// <summary>A sleep can take twice what it asks, on a coarse timer, and a long wait
+        /// cut into many of them does not last twice as long.</summary>
+        [Fact]
+        public void ALongWait_CountsWhatItsSleepsTook()
+        {
+            _sleepTimes = 2;
+            Assert.InRange(WaitsAsked(200), 95, 105);
+        }
+
+        /// <summary>What the pass beside a wait really takes comes off the wait, so a session
+        /// keeps its pace.</summary>
+        [Fact]
+        public void WhatAPassTakes_ComesOffTheWait()
+        {
+            Assert.InRange(WaitsAsked(50, () => Elapse(100)), 0, 5);
+        }
+
+        /// <summary>A session whose keep-alive does this first.</summary>
+        private sealed class TimedKeepAliveSession : FakeWorkerSession
+        {
+            private readonly Action _each;
+
+            public TimedKeepAliveSession(FakeWorkerFamily family, IHidReportChannel io, Action each) : base(family, io) => _each = each;
+
+            public override bool KeepAlive(IHidReportChannel io, Action<int> wait, IReadOnlyList<LightInfo> lights,
+                IReadOnlyList<int> colors)
+            {
+                _each();
+                return base.KeepAlive(io, wait, lights, colors);
+            }
+        }
+
+        /// <summary>What one picture of a pass took comes off what the next must fit in.
+        /// Each of these two fits the wait alone, and only one fits beside the other.</summary>
+        [Fact]
+        public void ASecondPictureOfAPass_FitsWhatIsLeftAfterTheFirst()
+        {
+            _elapsed = () => Interlocked.Read(ref _elapsedNow);
+            bool armed = false;
+            var thirdRow = Guid.NewGuid();
+            var slow = HidLightingWorkerTests.Collection(pid: 1, tail: "1");
+            var two = HidLightingWorkerTests.Collection(pid: 2, tail: "2");
+            var three = HidLightingWorkerTests.Collection(pid: 3, tail: "3");
+            _family.Model = new HidLightingModel
+            {
+                Family = _family, Name = "Three", Map = FakeWorkerFamily.Map(),
+                Begin = (io, _) => io.Path == slow.Path
+                    ? new HookedSession(_family, io, wait =>
+                    {
+                        if (!Volatile.Read(ref armed)) return true;
+                        Volatile.Write(ref armed, false);
+                        PeripheralOutputs.SetLighting(SecondRow, slot: 1, player: 2, 0x44, 0x55, 0x66);
+                        PeripheralOutputs.SetLighting(thirdRow, slot: 2, player: 3, 0x44, 0x55, 0x66);
+                        wait(300);
+                        _family.Add("waited");
+                        return true;
+                    })
+                    : new TimedPictureSession(_family, io, () => Elapse(io.Path == two.Path ? 200 : 150)),
+            };
+            PeripheralOutputs.PublishLinks(new LinkTable(new[]
+            {
+                new DeviceLinks { Device = Device, Lighting = new[] { PathOf(slow) } },
+                new DeviceLinks { Device = SecondRow, Lighting = new[] { PathOf(two) } },
+                new DeviceLinks { Device = thirdRow, Lighting = new[] { PathOf(three) } },
+            }));
+            var thirdBox = Guid.NewGuid();
+            _containerOf = path => path == slow.Path ? Box : path == two.Path ? OtherBox : thirdBox;
+            using var backend = Started(slow, two, three);
+            LightBoth(0x112233);
+            PeripheralOutputs.SetLighting(thirdRow, slot: 2, player: 3, 0x11, 0x22, 0x33);
+            Assert.True(SpinWait.SpinUntil(() =>
+            {
+                backend.Wake();
+                return _family.Calls().Count(call => call == "paint 112233,112233") >= 3;
+            }, 30000), "all three painted");
+            Passes(backend);
+            Advance(HidLightingBackend.PicturesBesideMs);
+            int mark = _family.Calls().Count;
+            Volatile.Write(ref armed, true);
+            Light(0x778899);
+            Assert.True(SpinWait.SpinUntil(() => _family.Calls().Contains("waited"), 30000), "the wait ended");
+            var calls = _family.Calls().Skip(mark).ToList();
+            int beside = calls.Take(calls.IndexOf("waited")).Count(call => call == "paint 445566,445566");
+            Assert.True(beside == 1, string.Join(" | ", calls));
+        }
+
+        /// <summary>A session whose pictures do this first.</summary>
+        private sealed class TimedPictureSession : FakeWorkerSession
+        {
+            private readonly Action _each;
+
+            public TimedPictureSession(FakeWorkerFamily family, IHidReportChannel io, Action each) : base(family, io) => _each = each;
+
+            public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait, IReadOnlyList<LightInfo> lights,
+                IReadOnlyList<int> colors)
+            {
+                _each();
+                return base.Paint(io, wait, lights, colors);
+            }
+        }
+
+        /// <summary>A session's Later has sent nothing, so it says nothing of how long the
+        /// picture will take. That picture goes on its own turn, not beside a wait.</summary>
+        [Fact]
+        public void APictureThatCameLater_IsNotTakenToFitAWait()
+            => APictureHeldBack_GoesAfterAWait(reopened: false);
+
+        /// <summary>The same for the first picture of a session opened again, whatever the
+        /// last session's pictures took.</summary>
+        [Fact]
+        public void APictureHeldBackByAReopenedSession_IsNotTakenToFitAWait()
+            => APictureHeldBack_GoesAfterAWait(reopened: true);
+
+        private void APictureHeldBack_GoesAfterAWait(bool reopened)
+        {
+            bool armed = false;
+            int later = reopened ? 0 : 1;
+            var quick = HidLightingWorkerTests.Collection(pid: 1, tail: "1");
+            var other = HidLightingWorkerTests.Collection(pid: 2, tail: "2");
+            _family.Model = new HidLightingModel
+            {
+                Family = _family, Name = "Two", Map = FakeWorkerFamily.Map(),
+                Begin = (io, _) => io.Path == quick.Path
+                    ? new HookedSession(_family, io, wait =>
+                    {
+                        if (!Volatile.Read(ref armed)) return true;
+                        wait(2000);
+                        _family.Add("waited");
+                        return true;
+                    })
+                    : new LaterSession(_family, io, () => Interlocked.Exchange(ref later, 0) == 1),
+            };
+            PeripheralOutputs.PublishLinks(new LinkTable(new[]
+            {
+                new DeviceLinks { Device = Device, Lighting = new[] { PathOf(quick) } },
+                new DeviceLinks { Device = SecondRow, Lighting = new[] { PathOf(other) } },
+            }));
+            _containerOf = path => path == quick.Path ? Box : OtherBox;
+            using var backend = Started(quick, other);
+            LightBoth(0x112233);
+            Passes(backend);
+            if (reopened)
+            {
+                Assert.Contains("paint 112233,112233", _family.Calls());
+                PeripheralOutputs.ReleaseLighting(SecondRow, 1);
+                Passes(backend);
+                Volatile.Write(ref later, 1);
+                PeripheralOutputs.SetLighting(SecondRow, slot: 1, player: 2, 0x44, 0x55, 0x66);
+                Passes(backend);
+            }
+            Assert.Equal(0, Volatile.Read(ref later));
+            string held = reopened ? "paint 445566,445566" : "paint 112233,112233";
+            Volatile.Write(ref armed, true);
+            int mark = _family.Calls().Count;
+            Light(0x778899);
+            Passes(backend);
+            var calls = _family.Calls().Skip(mark).ToList();
+            int waited = calls.IndexOf("waited"), painted = calls.IndexOf(held);
+            Assert.True(waited >= 0 && (painted < 0 || painted > waited), string.Join(" | ", calls));
+        }
+
+        /// <summary>A session that holds its first picture back, as a family does while its
+        /// backup is being saved.</summary>
+        private sealed class LaterSession : FakeWorkerSession
+        {
+            private readonly Func<bool> _later;
+
+            public LaterSession(FakeWorkerFamily family, IHidReportChannel io, Func<bool> later) : base(family, io) => _later = later;
+
+            public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait, IReadOnlyList<LightInfo> lights,
+                IReadOnlyList<int> colors)
+            {
+                if (_later())
+                {
+                    // Long enough to come due inside the 2 s wait, past what the
+                    // setup's passes take.
+                    LaterMs = 1000;
+                    return HidLightingPaint.Later;
+                }
+                return base.Paint(io, wait, lights, colors);
+            }
+        }
+
+        /// <summary>A picture that took longer than what is left of a wait waits for its
+        /// turn: a short gap in a stream of reports is no place for 2 s of another
+        /// device's, and the stream's own device drops the colors when they stop.</summary>
+        [Fact]
+        public void APictureThatDoesNotFitAWait_WaitsForItsTurn()
+        {
+            bool armed = false;
+            var quick = HidLightingWorkerTests.Collection(pid: 1, tail: "1");
+            var slow = HidLightingWorkerTests.Collection(pid: 2, tail: "2");
+            _family.Model = new HidLightingModel
+            {
+                Family = _family, Name = "Two", Map = FakeWorkerFamily.Map(),
+                Begin = (io, _) => io.Path == quick.Path
+                    ? new HookedSession(_family, io, wait =>
+                    {
+                        if (!Volatile.Read(ref armed)) return true;
+                        _family.Add("gap");
+                        PeripheralOutputs.SetLighting(SecondRow, slot: 1, player: 2, 0x44, 0x55, 0x66);
+                        wait(5);
+                        _family.Add("gap over");
+                        return true;
+                    })
+                    : new HookedSession(_family, io, wait =>
+                    {
+                        wait(2000);
+                        return true;
+                    }),
+            };
+            PeripheralOutputs.PublishLinks(new LinkTable(new[]
+            {
+                new DeviceLinks { Device = Device, Lighting = new[] { PathOf(quick) } },
+                new DeviceLinks { Device = SecondRow, Lighting = new[] { PathOf(slow) } },
+            }));
+            _containerOf = path => path == quick.Path ? Box : OtherBox;
+            using var backend = Started(quick, slow);
+            LightBoth(0x112233);
+            Passes(backend);
+            // The look for pictures is open, so what keeps this one out is that it does
+            // not fit.
+            Advance(HidLightingBackend.PicturesBesideMs);
+            Volatile.Write(ref armed, true);
+            int mark = _family.Calls().Count;
+            Light(0x778899);
+            Passes(backend);
+            var calls = _family.Calls().Skip(mark).ToList();
+            int over = calls.IndexOf("gap over"), painted = calls.IndexOf("paint 445566,445566");
+            Assert.True(over >= 0 && painted > over, string.Join(" | ", calls));
+        }
+
+        /// <summary>Two collections of one device: a session's reports may not have
+        /// another's between them, so the other's picture waits for its turn.</summary>
+        [Fact]
+        public void ASlowSessionsWait_LeavesACollectionOfItsDeviceAlone()
+        {
+            bool armed = false;
+            var (slow, other) = TwoRows(() => Volatile.Read(ref armed));
+            _containerOf = _ => Box;
+            using var backend = Started(slow, other);
+            LightBoth(0x112233);
+            Passes(backend);
+            Volatile.Write(ref armed, true);
+            int mark = _family.Calls().Count;
+            Light(0x778899);
+            Passes(backend);
+            var calls = _family.Calls().Skip(mark).ToList();
+            int waited = calls.IndexOf("waited"), painted = calls.IndexOf("paint 445566,445566");
+            Assert.True(waited >= 0 && painted > waited, string.Join(" | ", calls));
+        }
+
+        /// <summary>A stopping worker paints nothing more, its waits included: its
+        /// finally hands back what it holds.</summary>
+        [Fact]
+        public void AStoppingWorkersWait_LetsNoPictureOut()
+        {
+            using var inWait = new ManualResetEventSlim(false);
+            using var stopping = new ManualResetEventSlim(false);
+            bool armed = false;
+            var slow = HidLightingWorkerTests.Collection(pid: 1, tail: "1");
+            var other = HidLightingWorkerTests.Collection(pid: 2, tail: "2");
+            _family.Model = new HidLightingModel
+            {
+                Family = _family, Name = "Two", Map = FakeWorkerFamily.Map(),
+                Begin = (io, _) => io.Path == slow.Path
+                    ? new HookedSession(_family, io, wait =>
+                    {
+                        if (!Volatile.Read(ref armed)) return true;
+                        PeripheralOutputs.SetLighting(SecondRow, slot: 1, player: 2, 0x44, 0x55, 0x66);
+                        inWait.Set();
+                        stopping.Wait(30000);
+                        wait(2000);
+                        _family.Add("waited");
+                        return true;
+                    })
+                    : new FakeWorkerSession(_family, io),
+            };
+            PeripheralOutputs.PublishLinks(new LinkTable(new[]
+            {
+                new DeviceLinks { Device = Device, Lighting = new[] { PathOf(slow) } },
+                new DeviceLinks { Device = SecondRow, Lighting = new[] { PathOf(other) } },
+            }));
+            _containerOf = path => path == slow.Path ? Box : OtherBox;
+            var backend = new HidLightingBackend(new IHidLightingFamily[] { _family }, Open, path => _containerOf(path), Tick, OneShot, OneShot,
+                ms => Advance(ms), idleTickMs: 5, stopJoinMs: 50, query: path => _queryFor(path));
+            backend.Start();
+            backend.Rescan(new[] { slow, other });
+            Passes(backend);
+            LightBoth(0x112233);
+            Passes(backend);
+            Volatile.Write(ref armed, true);
+            int mark = _family.Calls().Count;
+            Light(0x778899);
+            Assert.True(inWait.Wait(30000), "the worker is inside the slow picture");
+            // The stop gives up on the worker, with its flag set.
+            backend.Dispose();
+            stopping.Set();
+            Assert.True(SpinWait.SpinUntil(() => !backend.WorkerAlive, 30000), "the worker ended");
+            Assert.DoesNotContain("paint 445566,445566", _family.Calls().Skip(mark));
+        }
+
+        /// <summary>A write that fails beside a wait fails its own unit, on that unit's
+        /// turn, and takes nothing from the session that was waiting.</summary>
+        [Fact]
+        public void APictureThatFailsBesideAWait_FailsItsOwnUnit()
+        {
+            bool armed = false;
+            int paints = 0;
+            var (slow, other) = TwoRows(() => Volatile.Read(ref armed), io => new HookedSession(_family, io,
+                _ => Interlocked.Increment(ref paints) == 1));
+            _containerOf = path => path == slow.Path ? Box : OtherBox;
+            using var backend = Started(slow, other);
+            LightBoth(0x112233);
+            Passes(backend);
+            Volatile.Write(ref armed, true);
+            Light(0x778899);
+            Passes(backend, 3);
+            Assert.True(backend.Snapshot.Units.Single(u => u.Path == PathOf(other)).Asleep);
+            Assert.False(backend.Snapshot.Units.Single(u => u.Path == PathOf(slow)).Asleep);
+        }
+
+        /// <summary>A picture that waits beside another's wait has the keep-alives
+        /// served beside it, of units other than the two, and the slow session is not
+        /// entered again.</summary>
+        [Fact]
+        public void APictureBesideAWait_HasTheKeepAlivesServedBesideItsOwnWait()
+        {
+            bool armed = false;
+            var third = HidLightingWorkerTests.Collection(pid: 3, tail: "3");
+            var (slow, other) = TwoRows(() => Volatile.Read(ref armed), io => new HookedSession(_family, io, wait =>
+            {
+                if (!Volatile.Read(ref armed)) return true;
+                _family.Add("other waiting");
+                wait(500);
+                _family.Add("other waited");
+                return true;
+            }) { KeepAliveLine = "other keep" }, keepAliveMs: 50, third: third);
+            _containerOf = path => path == slow.Path ? Box : OtherBox;
+            using var backend = Started(slow, other, third);
+            LightBoth(0x112233);
+            Passes(backend);
+            Volatile.Write(ref armed, true);
+            int mark = _family.Calls().Count;
+            Light(0x778899);
+            Passes(backend);
+            var calls = _family.Calls().Skip(mark).ToList();
+            int waiting = calls.IndexOf("other waiting"), waited = calls.IndexOf("other waited");
+            Assert.True(waiting >= 0 && waited > waiting, string.Join(" | ", calls));
+            var beside = calls.Skip(waiting).Take(waited - waiting).ToList();
+            Assert.Contains(beside, line => line.StartsWith("keep", StringComparison.Ordinal));
+            Assert.DoesNotContain(beside, line => line.StartsWith("slow keep", StringComparison.Ordinal));
+            // Keep-alives alone beside this wait, and neither session entered twice.
+            Assert.DoesNotContain("paint 778899,778899", beside);
+            Assert.Single(calls, "waiting");
+            Assert.Single(calls, "other waiting");
+        }
+
+        /// <summary>A session can take many short waits, and each look renders every
+        /// unit's picture, so the look comes once per display frame.</summary>
+        [Fact]
+        public void ManyShortWaits_LookForPicturesOncePerFrame()
+        {
+            bool armed = false;
+            var slow = HidLightingWorkerTests.Collection(pid: 1, tail: "1");
+            var other = HidLightingWorkerTests.Collection(pid: 2, tail: "2");
+            _family.Model = new HidLightingModel
+            {
+                Family = _family, Name = "Two", Map = FakeWorkerFamily.Map(),
+                Begin = (io, _) => io.Path == slow.Path
+                    ? new HookedSession(_family, io, wait =>
+                    {
+                        if (!Volatile.Read(ref armed)) return true;
+                        // A new color before each of three waits of 1 ms.
+                        foreach (byte shade in new byte[] { 0x10, 0x20, 0x30 })
+                        {
+                            PeripheralOutputs.SetLighting(SecondRow, slot: 1, player: 2, shade, shade, shade);
+                            wait(1);
+                        }
+                        _family.Add("waited");
+                        return true;
+                    })
+                    : new FakeWorkerSession(_family, io),
+            };
+            PeripheralOutputs.PublishLinks(new LinkTable(new[]
+            {
+                new DeviceLinks { Device = Device, Lighting = new[] { PathOf(slow) } },
+                new DeviceLinks { Device = SecondRow, Lighting = new[] { PathOf(other) } },
+            }));
+            _containerOf = path => path == slow.Path ? Box : OtherBox;
+            using var backend = Started(slow, other);
+            LightBoth(0x112233);
+            Passes(backend);
+            Advance(HidLightingBackend.PicturesBesideMs);
+            Volatile.Write(ref armed, true);
+            int mark = _family.Calls().Count;
+            Light(0x778899);
+            Passes(backend);
+            var calls = _family.Calls().Skip(mark).ToList();
+            var beside = calls.Take(calls.IndexOf("waited")).ToList();
+            Assert.Contains("paint 101010,101010", beside);
+            Assert.DoesNotContain("paint 202020,202020", beside);
         }
 
         /// <summary>A program of a unit's model starts, or OpenRGB takes its

@@ -613,15 +613,21 @@ namespace PadForge.Tests
                 FenceSource.Census(@"\b(SendInputNative|SetCursorPosNative|SetWindowsHookExNative)\("));
         }
 
-        /// <summary>A pipe is served in one place and connected to in two.
+        /// <summary>A pipe is served in three places and connected to in two.
         /// The app's own startup forwards a command to the instance that
         /// already runs, which no test runs. The control service asks its
         /// fence as it starts, and both its server and the nudge its Stop
-        /// sends exist only once it has started.</summary>
+        /// sends exist only once it has started. A give-back task's pipe stands
+        /// only behind its registration's fence.</summary>
         [Fact]
         public void EveryPipe_IsOnTheList()
         {
-            Assert.Equal(Map((ControlPipe, 1)), FenceSource.Census(@"NamedPipeServerStreamAcl\.Create\(|" + Creates("NamedPipeServerStream")));
+            Assert.Equal(Map((ControlPipe, 1), (Services + "GiveBackTask.cs", 1), (Services + "GiveBackRun.cs", 1)),
+                FenceSource.Census(@"NamedPipeServerStreamAcl\.Create\(|" + Creates("NamedPipeServerStream")));
+            string task = OffLimitsSource.Read(Services + "GiveBackTask.cs");
+            Assert.StartsWith("if (RunSeam == null && OffLimitsForTest) return false;",
+                FenceSource.FirstStatement(task, "private static bool Register(string name, string command, Action<string> log)"), StringComparison.Ordinal);
+            Assert.Single(OffLimitsSource.Calls(task, "HoldPipe(name)"));
             Assert.Equal(Map(("PadForge.App/App.xaml.cs", 1), (ControlPipe, 1)), FenceSource.Census(Creates("NamedPipeClientStream")));
 
             string service = OffLimitsSource.Read(ControlPipe);

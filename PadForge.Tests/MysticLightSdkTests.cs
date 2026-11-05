@@ -352,6 +352,171 @@ namespace PadForge.Tests
             Assert.Equal(0, native.Count("release"));
         }
 
+        /// <summary>A worker a stop gave up on inside the SDK's read of an LED's own style
+        /// writes nothing when it comes back.</summary>
+        [Fact]
+        public void AWorkerThatComesBackFromARead_WritesNothing()
+        {
+            var native = new FakeMysticLight();
+            using var gate = new ManualResetEventSlim(false);
+            using var entered = new ManualResetEventSlim(false);
+            Thread stuck = null;
+            int holds = 0;
+            native.GetStyleStatus = (_, _) =>
+            {
+                if (Interlocked.Exchange(ref holds, 1) == 0)
+                {
+                    stuck = Thread.CurrentThread;
+                    entered.Set();
+                    gate.Wait(30000);
+                }
+                return 0;
+            };
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Board, Lighting = new[] { Path("MSI_MB") } });
+            var first = new MysticLightBackend(native, pollMs: 10, retryMs: 100, stopWaitMs: 50, predecessorWaitMs: 50);
+            first.Start();
+            PeripheralOutputs.SetLighting(Board, slot: 0, player: 1, 0x10, 0x20, 0x30);
+            Assert.True(entered.Wait(30000), "the worker is stuck in the SDK");
+            first.Dispose();
+            native.Clear();
+
+            gate.Set();
+            Assert.True(stuck.Join(30000), "the first worker ended");
+            Assert.DoesNotContain(native.Calls, call => call.StartsWith("color:", StringComparison.Ordinal));
+            Assert.DoesNotContain(native.Calls, call => call.StartsWith("style:", StringComparison.Ordinal));
+        }
+
+        /// <summary>A worker a stop gave up on inside the SDK colors no more LEDs when it
+        /// comes back.</summary>
+        [Fact]
+        public void AWorkerThatComesBackFromTheSdk_ColorsNoMoreLeds()
+        {
+            var native = new FakeMysticLight();
+            using var gate = new ManualResetEventSlim(false);
+            using var entered = new ManualResetEventSlim(false);
+            Thread stuck = null;
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Board, Lighting = new[] { Path("MSI_MB") } });
+            var first = new MysticLightBackend(native, pollMs: 10, retryMs: 100, stopWaitMs: 50, predecessorWaitMs: 50);
+            first.Start();
+            PeripheralOutputs.SetLighting(Board, slot: 0, player: 1, 0x10, 0x20, 0x30);
+            Assert.True(WaitFor(() => native.Count("color:MSI_MB:1:16,32,48") == 1), "the first worker lit the LEDs");
+
+            int holds = 0;
+            native.ColorStatus = (_, _, r, _) =>
+            {
+                if (r == 0x40 && Interlocked.Exchange(ref holds, 1) == 0)
+                {
+                    stuck = Thread.CurrentThread;
+                    entered.Set();
+                    gate.Wait(30000);
+                }
+                return 0;
+            };
+            PeripheralOutputs.SetLighting(Board, slot: 0, player: 1, 0x40, 0x50, 0x60);
+            Assert.True(entered.Wait(30000), "the first worker is stuck in the SDK");
+            first.Dispose();
+            native.Clear();
+
+            gate.Set();
+            Assert.True(stuck.Join(30000), "the first worker ended");
+            Assert.Equal(0, native.Count("color:MSI_MB:1:64,80,96"));
+        }
+
+        /// <summary>A worker stuck in the SDK past the next run's wait left its color
+        /// on each LED. The next run reads no LED, and its hand-back restores what the
+        /// stuck worker read.</summary>
+        [Fact]
+        public void AWorkerTheNextRunGaveUpOn_LeavesWhatItReadOfEachLed()
+        {
+            var native = new FakeMysticLight();
+            using var gate = new ManualResetEventSlim(false);
+            using var entered = new ManualResetEventSlim(false);
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Board, Lighting = new[] { Path("MSI_MB") } });
+            var first = new MysticLightBackend(native, pollMs: 10, retryMs: 100, stopWaitMs: 50, predecessorWaitMs: 50);
+            first.Start();
+            PeripheralOutputs.SetLighting(Board, slot: 0, player: 1, 0x10, 0x20, 0x30);
+            Assert.True(WaitFor(() => native.Count("color:MSI_MB:1:16,32,48") == 1), "the first worker lit the LEDs");
+
+            int holds = 0;
+            native.ColorStatus = (_, _, r, _) =>
+            {
+                if (r == 0x40 && Interlocked.Exchange(ref holds, 1) == 0)
+                {
+                    entered.Set();
+                    gate.Wait(30000);
+                }
+                return 0;
+            };
+            PeripheralOutputs.SetLighting(Board, slot: 0, player: 1, 0x40, 0x50, 0x60);
+            Assert.True(entered.Wait(30000), "the first worker is stuck in the SDK");
+            first.Dispose();
+            native.Clear();
+
+            var next = new MysticLightBackend(native, pollMs: 10, retryMs: 100, stopWaitMs: 2000, predecessorWaitMs: 50);
+            try
+            {
+                next.Start();
+                Assert.True(WaitFor(() => native.Count("color:MSI_MB:1:64,80,96") >= 1), "the next run lit the LEDs");
+                Assert.Equal(0, native.Count("getstyle:MSI_MB:1"));
+                Assert.Equal(0, native.Count("getcolor:MSI_MB:1"));
+            }
+            finally
+            {
+                gate.Set();
+            }
+            next.Dispose();
+            Assert.Equal(1, native.Count("style:MSI_MB:1:Rainbow"));
+            Assert.Equal(1, native.Count("color:MSI_MB:1:1,2,3"));
+        }
+
+        /// <summary>A worker can stick in the SDK in its hand-back too. Until the LED has
+        /// its own lighting back, what that worker read stands for the next run.</summary>
+        [Fact]
+        public void AWorkerStuckInItsHandBack_LeavesWhatItReadOfEachLed()
+        {
+            var native = new FakeMysticLight();
+            using var gate = new ManualResetEventSlim(false);
+            using var entered = new ManualResetEventSlim(false);
+            PeripheralOutputs.Presence = Presence();
+            Link(new DeviceLinks { Device = Board, Lighting = new[] { Path("MSI_MB") } });
+            var first = new MysticLightBackend(native, pollMs: 10, retryMs: 100, stopWaitMs: 50, predecessorWaitMs: 50);
+            first.Start();
+            PeripheralOutputs.SetLighting(Board, slot: 0, player: 1, 0x10, 0x20, 0x30);
+            Assert.True(WaitFor(() => native.Count("color:MSI_MB:1:16,32,48") == 1), "the first worker lit the LEDs");
+
+            int holds = 0;
+            native.ColorStatus = (_, _, r, _) =>
+            {
+                // The saved color's red, its hand-back.
+                if (r == 1 && Interlocked.Exchange(ref holds, 1) == 0)
+                {
+                    entered.Set();
+                    gate.Wait(30000);
+                }
+                return 0;
+            };
+            first.Dispose();
+            Assert.True(entered.Wait(30000), "the first worker is stuck in its hand-back");
+            native.ColorStatus = null;
+            native.Clear();
+
+            var next = new MysticLightBackend(native, pollMs: 10, retryMs: 100, stopWaitMs: 2000, predecessorWaitMs: 50);
+            try
+            {
+                next.Start();
+                Assert.True(WaitFor(() => native.Count("color:MSI_MB:0:16,32,48") >= 1), "the next run lit the LEDs");
+                Assert.Equal(0, native.Count("getstyle:MSI_MB:0"));
+            }
+            finally
+            {
+                gate.Set();
+                next.Dispose();
+            }
+        }
+
         /// <summary>Every LED claimed refuses: nothing can be lit, so the
         /// session ends and the tab says the program refused.</summary>
         [Fact]

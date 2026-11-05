@@ -1188,6 +1188,23 @@ public sealed class SharedSonyPadTests : IDisposable
     static System.Collections.Concurrent.ConcurrentDictionary<Guid, long> Demand =>
         (System.Collections.Concurrent.ConcurrentDictionary<Guid, long>)Audio.GetField("_remoteAudioDemand", Static)!.GetValue(null)!;
 
+    /// <summary>Of two connected peers' words for one field the newer stands, whichever
+    /// the walk of the words comes to first.</summary>
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void TheNewestWordOfAField_IsKept_WhicheverComesFirst(bool olderFirst)
+    {
+        var older = new UserEffectsDispatcher.PeerWord(1, 0x10);
+        var newer = new UserEffectsDispatcher.PeerWord(2, 0x20);
+        var word = default(UserEffectsDispatcher.NewestWord);
+        word.Note(olderFirst ? older : newer, true, olderFirst ? "older" : "newer");
+        word.Note(olderFirst ? newer : older, true, olderFirst ? "newer" : "older");
+        Assert.Equal(newer, word.Kept);
+        Assert.Equal("newer", word.KeptBy);
+        Assert.False(word.Left);
+    }
+
     static void ClearShared(string file)
     {
         using var stream = new FileStream(file, FileMode.Open, FileAccess.Write, FileShare.ReadWrite);

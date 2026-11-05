@@ -322,7 +322,7 @@ namespace PadForge.Common.Input
         // the relay drops a body that has not changed, so when a peer leaves this
         // is the only record of what the ones still connected want. A pad shows
         // the newest word of each field (SettlePeerWords).
-        private readonly record struct PeerWord(long Order, byte Value);
+        internal readonly record struct PeerWord(long Order, byte Value);
         private readonly record struct PeerAudioWords(string Path, HMProfile Profile,
             PeerWord? Route, PeerWord? Control2, PeerWord? Level, PeerWord? Speaker);
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<(Guid Device, string Peer), PeerAudioWords> s_peerAudioWords = new();
@@ -336,7 +336,7 @@ namespace PadForge.Common.Input
 
         /// <summary>One field's newest word on a pad, and its newest word from a
         /// peer still connected.</summary>
-        private struct NewestWord
+        internal struct NewestWord
         {
             public PeerWord? Standing, Kept;
             public string KeptBy;
